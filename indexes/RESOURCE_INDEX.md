@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T18:52:32Z`
-- Tree/content state: `ba65145b2389772b8de9f6179c2ef217f980215f8ae8f5423948074df395ff96`
+- Scanned: `2026-09-07T18:58:33Z`
+- Tree/content state: `c8535876dd85acad3167ce88858d0714d87f96007c82888008e2f7f73f8d10a3`
 - Coverage: complete structural traversal
-- Files: 1041
-- Uploaded source files: 1034
-- PDF papers: 952
+- Files: 1084
+- Uploaded source files: 1077
+- PDF papers: 961
 - Repository machinery files: 7
-- Byte-identical duplicate groups: 59
+- Byte-identical duplicate groups: 60
 
 ## Top-level coverage
 
@@ -19,8 +19,9 @@
 | `.gitignore` | 1 |
 | `ARXIV PAPER - 2503.14745v2.pdf` | 1 |
 | `BIG PAPERS` | 3 |
+| `Consciousness + AI` | 16 |
 | `DATA` | 12 |
-| `EXPOSURE_STATS` | 87 |
+| `EXPOSURE_STATS` | 114 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -80,6 +81,9 @@
 - `313b0d3ab3470848f203ba1333537ab08805a40322d93fabfc19a562e2485cbc`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Commits over time.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Satobloc's Commits.csv`
+- `35b46d6497c947b41f3f314065412c57d48b44c8de827eaa5174429a47c8e3c9`
+  - `EXPOSURE_STATS/EXP_ANALYSIS/CONCAT_DAI_Transcripts_TEXT.txt`
+  - `EXPOSURE_STATS/PODCAST_EPs/DAI_Transcripts_TEXT.txt`
 - `483983ea4c464f1f6df3029c049e63cedf68b960746741b01427157d298c1a3a`
   - `HAUL 2/ssrn-6972282 (1).pdf`
   - `HAUL 2/ssrn-6972282.pdf`
@@ -234,6 +238,15 @@
 | `BIG PAPERS/qt2f18n5nk.pdf` | 14358136 |  |
 | `BIG PAPERS/ssrn-7385521.pdf` | 10277174 | ssrn:7385521 |
 | `BIG PAPERS/ssrn-7394178.pdf` | 15622060 | ssrn:7394178 |
+| `Consciousness + AI/CHAT — Tell me.pdf` | 147977 |  |
+| `Consciousness + AI/Consciousness_of_AI.pdf` | 214244 |  |
+| `Consciousness + AI/Over 1.pdf` | 150212 |  |
+| `Consciousness + AI/Over 2.pdf` | 180049 |  |
+| `Consciousness + AI/Over 3.pdf` | 144527 |  |
+| `Consciousness + AI/rusty button.pdf` | 13519 |  |
+| `Consciousness + AI/Silence.pdf` | 336149 |  |
+| `Consciousness + AI/solonoid2.pdf` | 275890 |  |
+| `Consciousness + AI/solonoid5.pdf` | 124358 |  |
 | `DATA/DATA REL - DESI spectral viewer.pdf` | 229413 |  |
 | `DATA/DATA REL - DESI spectral viewer2.pdf` | 237397 |  |
 | `DATA/DATA REL - DESI spectral viewer3.pdf` | 230747 |  |
