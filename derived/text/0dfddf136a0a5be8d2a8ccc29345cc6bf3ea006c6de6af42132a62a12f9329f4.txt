@@ -1,0 +1,769 @@
+===== PAGE 1 =====
+Hamiltonian Two-Way Coupling of Nonlinear Waves and 3D Flows
+SINAN WANG∗,Georgia Institute of Technology, USA
+RUICHENG WANG∗,Georgia Institute of Technology, USA
+TAIYUAN ZHANG,Dartmouth College, USA
+FAN FENG,Dartmouth College, USA
+JINJIN HE,Georgia Institute of Technology, USA
+YUCHEN SUN,Georgia Institute of Technology, USA
+ZHIQI LI,Georgia Institute of Technology, USA
+BO ZHU,Georgia Institute of Technology, USA
+Fig. 1. A seaplane landing on the ocean surface, shown in near view (top-left) and far view (top-right). Near views of a battleship navigating through heavy
+waves (middle-left), two boats chasing each other (middle-center), and a submarine rising to the ocean surface (middle-right), with their corresponding far
+views shown in the bottom row.
+Simulating large-scale free-surface flow by coupling a localized 3D fluid
+solver to a cheaper 2D surface model has long faced a mismatch in wave
+dynamics: efficient 2D wave models used in graphics are typically either
+linear or non-dispersive. These models are fast, simple, and accurate for calm,
+small-amplitude seas, but coupling them to strongly nonlinear 3D solvers
+produces visible reflections and artifacts at the 2D–3D interface. We address
+this problem by introducing a nonlinear and dispersive 2D wave model
+based on the canonical Zakharov formulation. Its Hamiltonian structure
+enables canonically consistent two-way coupling, allowing information to
+∗Both authors contributed equally to this research.
+Authors’ Contact Information: Sinan Wang, swang3081@gatech.edu, Georgia Institute
+of Technology, USA; Ruicheng Wang, wrc0326@outlook.com, Georgia Institute of Tech-
+nology, USA; Taiyuan Zhang, imaginer.tai@gmail.com, Dartmouth College, USA; Fan
+Feng, fan.feng.gr@dartmouth.edu, Dartmouth College, USA; Jinjin He, jhe433@gatech.
+edu, Georgia Institute of Technology, USA; Yuchen Sun, yuchen.sun.eecs@gmail.com,
+Georgia Institute of Technology, USA; Zhiqi Li, zli3167@gatech.edu, Georgia Institute
+of Technology, USA; Bo Zhu, bo.zhu@gatech.edu, Georgia Institute of Technology,
+USA.
+This work is licensed under a Creative Commons Attribution 4.0 International License.
+©2026 Copyright held by the owner/author(s).
+ACM 1557-7368/2026/12-ART179
+https://doi.org/10.1145/3842540
+pass smoothly across the 2D–3D interface. Our 2D solver reduces mean
+wave-height error by factors of1 .7–5× relative to SWE, BEM, and Airy
+baselines while running more than10 3× faster than BEM; it achieves greater
+nonlinear accuracy and coupling fidelity than SWE and Airy, with minor
+losses in speed and stability. Coupling it with a 3D Navier–Stokes solver
+yields a full system that suppresses visible seam artifacts across a range
+of experiments, including dispersion-matching and Kelvin-wake tests, and
+runs over4×faster than a full-domain GPU NB-FLIP simulation.
+CCS Concepts:•Computing methodologies→Physical simulation.
+Additional Key Words and Phrases: Fluid simulation, wave simulation
+ACM Reference Format:
+Sinan Wang, Ruicheng Wang, Taiyuan Zhang, Fan Feng, Jinjin He, Yuchen
+Sun, Zhiqi Li, and Bo Zhu. 2026. Hamiltonian Two-Way Coupling of Non-
+linear Waves and 3D Flows.ACM Trans. Graph.45, 6, Article 179 (Decem-
+ber 2026), 20 pages. https://doi.org/10.1145/3842540
+1 Introduction
+Simulating large-scale free-surface flow remains a long-standing
+computational bottleneck in graphics, whether the scene is a sea-
+plane splashing down on the open ocean, a battleship plowing
+through heavy seas, or a submarine breaking the ocean surface.
+ACM Trans. Graph., Vol. 45, No. 6, Article 179. Publication date: December 2026.
+arXiv:2608.25203v1  [cs.GR]  25 Aug 2026
+
+===== PAGE 2 =====
+179:2•Sinan Wang, Ruicheng Wang, Taiyuan Zhang, Fan Feng, Jinjin He, Yuchen Sun, Zhiqi Li, and Bo Zhu
+A fully three-dimensional incompressible Navier–Stokes (NS) simu-
+lation captures every regime of interest, including splashes, breaking
+waves, and fluid–solid coupling, but its memory and compute costs
+grow prohibitive once the domain spans hundreds of meters. A
+practical remedy is to confine the expensive 3D solver to a small
+embedding region and model the surrounding open ocean with a
+much cheaper 2D surface theory [Chentanez et al. 2015; Huang et al.
+2021; Schreck and Wojtan 2022; Stomakhin and Selle 2017; Thürey
+et al. 2006] in order to propagate far-field waves efficiently. The
+success of this 2D–3D decomposition rests on the quality of the 2D
+model and the fidelity of the coupling between the two solvers.
+Within this 2D–3D decomposition, a key obstacle to practical,
+high-fidelity coupling is that graphics currently lacks an efficient
+2D wave model that is simultaneouslynonlinear and dispersive:
+none retains the wave–wave interactions whose strength grows
+with wave steepness (nonlinearity) while allowing waves of differ-
+ent wavelengths to travel at their correct, wavelength-dependent
+speeds (dispersion). The two wave theories that dominate the litera-
+ture both bypass the nonlinear surface dynamics. Airy wave theory
+[Airy 1845; Canabal et al. 2016; Schreck et al. 2019; Tessendorf 2014]
+linearizes the free-surface boundary conditions around the flat state,
+retaining the correct dispersion 𝜔 2 =𝑔𝑘tanh (𝑘ℎ) but discarding
+every nonlinear interaction that gives rise to scenarios like the steep-
+ening of Stokes wavetrains. The discarded terms scale with wave
+steepness, so for the gentle ambient swell that Airy solvers typically
+animate, the linearization costs little and buys great speed and sim-
+plicity. The shallow-water equations (SWE) [Chentanez and Müller
+2010; Kass and Miller 1990; Layton and van de Panne 2002] carry
+nonlinear depth-averaged advection but collapse the dispersion re-
+lation to𝜔=
+√︁
+𝑔ℎ𝑘 , removing the very dispersive structure that
+distinguishes a real ocean from a sloshing tank, a sacrifice that is
+acceptable in the transport-dominated shallow flows SWE was built
+for, but not in open water. Lagrangian alternatives that have gained
+traction in graphics, e.g., wave particles [Yuksel et al. 2007], wave
+packets [Jeschke and Wojtan 2017], wavefront tracking [Jeschke
+and Wojtan 2015], and water-surface wavelets [Jeschke et al. 2018],
+all transport their primitives along linear ray paths and inherit the
+same linearization. Each of these trade-offs is defensible in its in-
+tended regime. Once strongly nonlinear waves dominate, however,
+these models lose accuracy, whereas our method makes the oppo-
+site trade-off, sacrificing a little speed and stability in exchange for
+greater nonlinear accuracy and coupling fidelity.
+Coupling a localized 3D NS solver to such a linear 2D wave
+model creates precisely such a strongly nonlinear setting. The 3D
+solver is strongly nonlinear by construction, so waves reaching the
+embedding-box boundary exhibit nonlinear effects such as crest
+steepening and amplitude-dependent dispersion. A linear 2D model
+cannot represent any of these, so the two solvers disagree on the
+very content of the surface state at the interface. The disagreement
+shows up as spurious reflections at the seam and visible surface
+artifacts. We therefore identify the absence of a nonlinear and dis-
+persive 2D wave model in graphics as a key obstacle to a 2D–3D
+coupling pipeline that is at once practical, accurate, and largely free
+of interface artifacts. The one prior nonlinear route, the boundary-
+element method (BEM) [Huang et al. 2021], recovers the nonlinear
+free-surface potential flow at the PDE level, but discretizes it on
+a Lagrangian surface mesh, and pays for its nonlinear accuracy
+with per-step surface tracking/remeshing, denseO(𝑁 3) boundary
+interactions, and high implementation complexity.
+We address this limitation by introducing a 2D Eulerian wave
+model that is at oncenonlinearanddispersive, and we show that
+its underlyingHamiltonianstructure is what makes the two-way
+coupling to a 3D NS solver natural. The wave model evolves the
+canonical Zakharov pair [Zakharov 1968]: the surface elevation𝜂
+and the surface value𝜓 of the velocity potential. HereHamiltonian
+means that(𝜂,𝜓) form a canonical pair in the sense of classical
+mechanics: they evolve like position and momentum under the total
+wave energy, the Hamiltonian (Section 3). We advance the Zakharov
+system using the Craig–Sulem expansion of the Dirichlet–Neumann
+operator (DNO)𝐺(𝜂) [Craig and Sulem 1993]. This reduces every
+nonlinear correction to FFTs and pointwise products on a regu-
+lar grid atO(𝑁 2 log𝑁) cost. In practice, we retain this expansion
+through second or third order (Section 3). The same DNO machinery
+enables two-way coupling: it lifts(𝜂,𝜓) to depth-resolved boundary
+velocities for the 3D solver and, in reverse, reconstitutes a canonical
+wave state after relaxing𝜂toward the 3D surface.
+On standalone 2D wave-propagation benchmarks, our wave model
+alone lowers the mean wave-height error by1.7× (deep water) to
+2.4× (shallow water) over the strongest linear baseline (Airy with
+dispersion kernels) and by3to5 × over SWE and BEM, while run-
+ning more than10 3× faster than BEM; the price of this accuracy is a
+modestly more expensive and slightly less stable wave step than the
+linear baselines, a few milliseconds per substep in absolute terms
+(Table 3). Once coupled to the 3D NS solver, a dispersion-matching
+test in which a wave packet radiates from the 3D box across the seam
+and a single-boat experiment in which a hull radiates a Kelvin wake
+through the seam together show that our coupled pipeline yields
+symmetric wave fields with minimal seam artifacts, whereas prior
+coupling schemes exhibit varying degrees of asymmetric propaga-
+tion, spurious reflection, or visible 2D–3D inconsistency (Section 8);
+on the single-boat scene, our solver also runs more than4× faster
+than a GPU NB-FLIP simulation of the same domain, i.e., the bound-
+ing box of the entire visible water region. We further run a suite of
+large-scale scenarios, a battleship in heavy seas, a surfacing subma-
+rine, two chasing boats, and a seaplane landing on the open ocean, in
+which the 2D–3D interface remains largely free of visible artifacts.
+Contributions.Our main contributions are:
+(1) A nonlinear and dispersive Eulerian wave model for graph-
+ics.We evolve the canonical Zakharov pair (𝜂,𝜓) under the
+exact water-wave Hamiltonian on a structured grid at FFT cost,
+capturing nonlinear surface phenomena such as the steepening
+of Stokes wavetrains. This retains the nonlinear modeling capa-
+bility of the prior BEM approach while reducing computational
+complexity fromO(𝑁 3) toO(𝑁 2 log𝑁) without requiring per-
+step surface tracking or remeshing.
+(2) A canonically consistent two-way coupling between (𝜂,𝜓)
+and a 3D NS solver.Both directions build on the DNO expan-
+sion: the forward direction harmonically extends(𝜂,𝜓) to depth-
+resolved bulk velocities on the embedding-box faces, while the
+ACM Trans. Graph., Vol. 45, No. 6, Article 179. Publication date: December 2026.
+
+===== PAGE 3 =====
+Hamiltonian Two-Way Coupling of Nonlinear Waves and 3D Flows•179:3
+reverse direction relaxes the wave model’s𝜂 toward the 3D free-
+surface elevation and reconstitutes 𝜓 from the relaxed 𝜂 and
+the wave’s own surface velocity through an inverse DNO solve,
+keeping the wave state canonical at every substep.
+(3) A continuously tunable nonlinear wave model.A scalar
+perturbation parameter𝜀∈[ 0, 1] modulates every nonlinear
+correction in the truncated DNO and the Bernoulli equation
+for stability, parametrizing a continuous family of solvers that
+degenerates to linear Airy theory at 𝜀= 0and recovers the
+nonlinear (truncated) Zakharov system at𝜀=1.
+2 Related Work
+2.1 2D simulation
+SWE.The SWE, a simplified form of the Navier–Stokes equations,
+originated in engineering physics [Crapper 1984; Le Méhauté 2013;
+Stoker 2019] and were first introduced to computer graphics by Kass
+and Miller [1990]. Layton and van de Panne [2002] introduced an
+implicit semi-Lagrangian scheme to improve stability and support
+larger time steps. Chentanez and Müller [2010] extended SWE to
+handle arbitrary slopes and depths. Later works enhanced SWE by
+adding surface tension [Wang et al. 2007], reducing numerical dissi-
+pation while ensuring stability via implicit Newmark integration
+[Angst et al. 2008], and improving efficiency using a collocated grid
+and a simplified SWE formulation [Lee and O’Sullivan 2007].
+Airy Wave Theory.Airy wave theory [Airy 1845; Birkhoff 2015;
+Dean and Dalrymple 1991], popularized in computer graphics by
+Tessendorf [2001], synthesizes ocean height fields by evolving wave
+spectra according to dispersion relations. Some implementations
+augment linearly evolved waves with geometric displacement or
+post-sharpening [Stomakhin and Selle 2017; Tessendorf 2001]; we
+distinguish this geometric nonlinearity from the dynamical non-
+linearity in our wave evolution. Horvath [2015] further improved
+spectral realism using an advanced empirical model, and proposed
+an artist-friendly parameterization scheme to facilitate intuitive con-
+trol over ocean wave elongation. Beyond Tessendorf’s formulation,
+Stam [2001] proposed a compact FFT-based fluid solver widely used
+in 2D surface simulations. Nielsen et al. [2013] fit artist-created wave
+fields to spectral parameters for consistent high-frequency synthesis.
+Later, Tessendorf [2014] presented theeWavemodel, which provides
+a time integration in both Fourier and convolution forms, enabling
+more flexible boundary treatments. Dispersion-kernel approaches
+[Canabal et al. 2016] handle solid boundaries via convolution and
+shadow masks. More recently, Schreck et al. [2019] introduced a fun-
+damental solution-based method using Green’s functions to capture
+wave–obstacle interactions in open domains without grids.
+High-Order Spectral Method.Starting from the canonical Hamil-
+tonian formulation of Zakharov [1968], the high-order spectral
+(HOS) method was independently introduced by Dommermuth and
+Yue [1987] and West et al. [1987] to evolve nonlinear surface waves
+on a flat reference grid via a Taylor expansion of the Dirichlet–
+Neumann operator, with Craig and Sulem [1993] casting the expan-
+sion in the explicit operator form used in modern HOS solvers. Such
+interior-to-boundary reductions via Dirichlet–Neumann (Steklov–
+Poincaré) operators also appear in graphics, including extrinsic
+shape analysis [Wang et al . 2018], boundary-first conformal flat-
+tening [Sawhney and Crane 2017], and boundary-only physics-
+based skinning [Gao et al. 2014]. Subsequent work extended HOS
+to directional sea states [Bateman et al. 2001], variable bathymetry
+[Guyenne and Nicholls 2008], and large-scale open-ocean simula-
+tion [Ducrozet et al . 2016]. We adopt the HOS expansion as the
+engine of our 2D wave solver.
+Other Wave Simulation.A variety of approaches have explored
+alternative physical representations to better capture dispersion,
+boundary interactions, and visual detail. These include wave parti-
+cles [Yuksel et al. 2007], wave packets [Jeschke and Wojtan 2017],
+wavefront tracking [Jeschke and Wojtan 2015], and water surface
+wavelets [Jeschke et al . 2018]. Hybrid models combine different
+regimes, such as SWE with Airy theory [Jeschke and Wojtan 2023],
+or augment height fields with particles for breaking waves [Thurey
+et al. 2007]. Others enhance detail as a post-process, like wave curves
+on deforming surfaces [Skrivan et al. 2020].
+2.2 3D simulation
+Early works in 3D fluid simulation for graphics [Foster and Fed-
+kiw 2001; Foster and Metaxas 1996; Stam 1999] primarily adopt
+Eulerian frameworks, but often suffer from numerical dissipation.
+Pure Lagrangian approaches, such as smoothed particle hydrody-
+namics (SPH) [Ihmsen et al. 2014; Müller et al. 2003], require costly
+neighbor searches and struggle to enforce incompressibility. Hybrid
+Lagrangian-Eulerian methods such as Particle-in-Cell (PIC) [Harlow
+1964] alleviate some issues but still exhibit dissipation. To address
+this, the Fluid-Implicit Particle (FLIP) method was introduced to
+graphics by Zhu and Bridson [2005], building on Brackbill et al .
+[1988], significantly reducing dissipation. To improve efficiency,
+Narrow Band FLIP (NB-FLIP) [Ferstl et al. 2016] and extended NB-
+FLIP [Sato et al. 2018] were later proposed. Furthermore, several
+approaches [Ando and Batty 2020; Losasso et al. 2006, 2004; Nielsen
+and Bridson 2016; Wang et al. 2025a; Zhu et al. 2013] have employed
+adaptive techniques to resolve fine-scale fluid features while main-
+taining computational efficiency for large-scale scenes. Recently,
+flow-map-based methods [Chen et al. 2025a, 2024, 2025b; Deng et al.
+2023; He et al. 2026; Li et al. 2024, 2026, 2025a,b; Nabizadeh et al .
+2022; Sun et al. 2024, 2025; Wang et al. 2026, 2024, 2025b; Zhou et al.
+2024] and the Coadjoint Orbit FLIP [Nabizadeh et al . 2024] have
+reduced numerical dissipation and better preserved vortices.
+2.3 Coupled 2D and 3D simulation
+Thürey et al. [2006] coupled shallow water with a 3D solver us-
+ing the Lattice Boltzmann method. Nielsen and Bridson [2011] im-
+proved art-directability by introducing guide shapes to constrain
+high-resolution liquid simulations to low-resolution inputs. Chen-
+tanez et al. [2015] combined SWE, SPH, and a 3D Eulerian solver,
+enabling efficient simulation but lacking accurate wave dispersion.
+Huang et al. [2021] addressed this by coupling BEM [Da et al. 2016;
+Huang and Michels 2020] with FLIP for more realistic ocean–ship
+interaction, though BEM’s mesh operations are computationally
+expensive and limit scalability. The fluxed animated boundary (FAB)
+method [Stomakhin and Selle 2017] allows artistic control but only
+supports one-way coupling (the 3D simulation cannot affect the
+ACM Trans. Graph., Vol. 45, No. 6, Article 179. Publication date: December 2026.
+
+===== PAGE 4 =====
+179:4•Sinan Wang, Ruicheng Wang, Taiyuan Zhang, Fan Feng, Jinjin He, Yuchen Sun, Zhiqi Li, and Bo Zhu
+Table 1. Comparison with prior 2D–3D coupled water-simulation methods.
+“GPU-native” means that the 2D solver advances a height field stored on
+a uniform structured grid, making it well suited for GPU implementation;
+“Mesh-op-free” means the 2D solver requires no per-step mesh operations
+on an unstructured surface mesh (mesh construction, tracking, or remesh-
+ing) during simulation, in contrast to BEM-style methods that maintain
+a Lagrangian surface mesh; “Warmup-free” means the 2D solver is usable
+from𝑡= 0without first accumulating a temporal sampling window; “Non-
+linear” means nonlinear wave dynamics rather than geometric sharpening;
+“Dispersive” means the 2D wave model reproduces the correct deep-water
+dispersion relation, so waves of different wavelengths propagate at different
+speeds; “Hamiltonian” means the 2D solver evolves the canonical Zakharov
+pair(𝜂,𝜓)under the water-wave Hamiltonian (Section 3).
+Method Hamiltonian Two-way Nonlinear GPU-native Mesh-op-free Warmup-free Dispersive
+Thürey et al. [2006]✗ ✓ ✓ ✓ ✓ ✓ ✗
+FAB [Stomakhin and Selle 2017]✗ ✗ ✗ ✓ ✓ ✓ ✓
+Chentanez et al. [2015]✗ ✓ ✓ ✓ ✓ ✓ ✗
+Schreck and Wojtan [2022]✗ ✓ ✗ ✓ ✓ ✗ ✓
+Huang et al. [2021]✗ ✓ ✓ ✗ ✗ ✓ ✓
+Ours✓ ✓ ✓ ✓ ✓ ✓ ✓
+2D simulation). Perfectly Matched Layers (PML)-based methods
+[Berenger 1994; Bojsen-Hansen and Wojtan 2016; Söderström et al.
+2010] reduce reflection at the interface via non-reflecting bound-
+aries and allow localized re-simulation, but are also one-way. More
+recently, Schreck and Wojtan [2022] coupled a 2D fundamental so-
+lution solver [Schreck et al. 2019] with a 3D FLIP simulation, using
+dispersion matching to reduce coupling artifacts. Nonetheless, its
+underlying wave model remains linear Airy theory and therefore
+does not capture nonlinear wave effects. Table 1 summarizes how
+our method compares to representative prior coupled 2D–3D water
+solvers. To our knowledge, ours is the first to combine nonlinear
+and dispersive surface-wave dynamics with two-way coupling and
+ocean-scale efficiency in a single framework.
+3 Hamiltonian Spectral Wave Solver
+We model the open-ocean portion of the domain as the free sur-
+face of an incompressible, irrotational, inviscid fluid of finite depth
+−𝑑≤𝑦≤𝜂(𝑥,𝑧,𝑡) under gravity𝑔. Throughout this section we
+let 𝒙=(𝑥,𝑧) denote the horizontal coordinates,𝑦 the vertical co-
+ordinate,𝜂(𝒙,𝑡) the surface elevation, Φ(𝒙,𝑦,𝑡) the bulk velocity
+potential (𝒖=∇Φ , ΔΦ= 0), and𝜓(𝒙,𝑡)=Φ(𝒙,𝜂(𝒙,𝑡),𝑡) the veloc-
+ity potential evaluated on the moving free surface. Our full method
+couples the 2D wave solver developed in this section to a localized
+3D NS solver (Sections 4 and 5); to keep the two components clearly
+distinguished, we refer to the former as thewavemodel and to
+the latter as theNSsolver; when we speak of the “2D (wave) side”
+and the “3D (NS) side”, we mean these two subdomains and their
+respective solvers. The dimension labels describe our default con-
+figuration; the same construction applies verbatim one dimension
+lower, where a 1D wave model embeds a 2D NS solver, as in some
+of our validation experiments (Section 8). Symbol conventions are
+summarized in Table 2.
+3.1 Canonical Zakharov formulation
+Following Zakharov [1968], the water-wave problem admits a Hamil-
+tonian formulation in which the canonical pair is exactly(𝜂,𝜓) . The
+Table 2. Summary of the main symbols and notations.
+Notation Type Definition
+𝜂scalar free-surface elevation
+𝜓scalar surface velocity potentialΦ| surface
+Φscalar bulk velocity potential,𝒖=∇Φ
+𝐺(𝜂)operator Dirichlet–Neumann operator (DNO)
+𝐺0 operator DNO at the flat state𝜂≡0
+𝐵0 operator Fourier multiplier with symbol|𝒌| 2
+𝒌vector horizontal wave vector
+𝜔scalar wave angular frequency,𝜔 2 =𝑔𝐺 0
+𝒖vector velocity, components(𝑢,𝑣,𝑤)
+𝜀scalar nonlinear-amplitude parameter
+𝑑scalar still-water depth
+𝜎(𝒙)scalar relaxation source rate
+𝜙scalar 3D level-set field
+𝑡scalar time
+fluid Hamiltonian is the sum of kinetic and potential energy, ex-
+pressed entirely in surface variables,
+𝐻[𝜂,𝜓]= 1
+2
+∫
+𝜓𝐺(𝜂)𝜓𝑑𝒙+ 1
+2𝑔
+∫
+𝜂2𝑑𝒙,(1)
+and the equations of motion are
+𝜕𝑡𝜂= 𝛿𝐻
+𝛿𝜓, 𝜕 𝑡𝜓=− 𝛿𝐻
+𝛿𝜂 .(2)
+The single nontrivial object in this formulation is the Dirichlet–
+Neumann operator (DNO)𝐺(𝜂), defined by
+𝐺(𝜂)𝜓(𝒙)=
+√︁
+1+|∇𝜂| 2 𝜕𝑛Φ
+
+𝑦=𝜂,(3)
+i.e., the operator that, for each prescribed Dirichlet datum 𝜓 on
+the moving surface, returns the normal derivative of the harmonic
+extension Φ into the fluid. Knowing 𝐺(𝜂) collapses the original
+three-dimensional Laplace problem to two surface fields(𝜂,𝜓) on a
+flat horizontal grid.
+Carrying out the variational derivatives in (2) yields the canoni-
+cal Zakharov system (Zakharov [1968], recast by Craig and Sulem
+[1993]),
+𝜕𝑡𝜂=𝐺(𝜂)𝜓,(4)
+𝜕𝑡𝜓=−𝑔𝜂− 1
+2|∇𝜓| 2+
+ 𝐺(𝜂)𝜓+∇𝜂·∇𝜓  2
+2 1+|∇𝜂| 2 .(5)
+Equation (4) is the kinematic free-surface boundary condition ex-
+pressed through the DNO; (5) is the exact Bernoulli equation for the
+surface potential. The system is closed: a numerical method that
+can evaluate𝐺(𝜂)𝜓 for arbitrary(𝜂,𝜓) on a regular grid yields a
+nonlinear ocean solver. Throughout the paper, “Hamiltonian” and
+“canonical” refer to this Zakharov state(𝜂,𝜓) and its energy struc-
+ture. This structure is not a prerequisite for high-quality coupling
+in general; its value here is that (𝜂,𝜓) completely describes the
+irrotational surface state, so both directions of the 2D–3D exchange
+reduce to well-defined maps on these two fields: the 2D-to-3D di-
+rection (Section 4) lifts(𝜂,𝜓) to a depth-resolved bulk velocity, and
+ACM Trans. Graph., Vol. 45, No. 6, Article 179. Publication date: December 2026.
+
+===== PAGE 5 =====
+Hamiltonian Two-Way Coupling of Nonlinear Waves and 3D Flows•179:5
+1 2 3 4 5 6
+x
+-0.05
+0.00
+0.05
+η(x)
+ka = 0.080,  kh = 1.0,  t = 18Tlin
+Linear
+Nonlinear ε= 0.5
+Nonlinear ε= 1
+Analytical 2nd-order Stokes
+1 2 3 4 5 6
+x
+-0.04
+-0.02
+0.00
+0.02
+0.04
+η(x)
+ka = 0.100,  kh = 1.5,  t = 14Tlin
+1 2 3 4 5 6
+x
+-0.04
+-0.02
+0.00
+0.02
+0.04
+η(x)
+ka = 0.120,  kh = 1.8,  t = 12Tlin
+1 2 3 4 5 6
+x
+-0.02
+0.00
+0.02
+η(x)
+ka = 0.130,  kh = 2.0,  t = 10Tlin
+Fig. 2. Final-time surface elevation 𝜂(𝑥) of the linear wave solver (𝜀= 0,
+blue, equivalent to [Canabal et al. 2016]), our nonlinear High-Order Spectral
+(HOS)-3 solver with 𝜀= 0.5(red) and 𝜀= 1(green), and the analytical
+second-order Stokes wave (black dashed) in four mild Stokes regimes, i.e.,
+weakly nonlinear, non-breaking Stokes waves. The linear solver drifts out of
+phase due to the missing amplitude-dependent frequency shift, while the
+fully nonlinear (𝜀= 1) HOS-3 solver stays phase-locked to the analytical
+wave. The𝜀=0.5curve lies between the two.
+the 3D-to-2D direction (Section 5) folds the 3D surface state back
+into a valid pair.
+3.2 Spectral expansion of the Dirichlet–Neumann operator
+A direct evaluation of𝐺(𝜂)𝜓 requires solving Laplace’s equation
+in the irregular fluid domain at every step. Craig and Sulem [1993]
+observed that, for𝜂 small relative to the characteristic wavelength
+1/𝑘,𝐺(𝜂) admits a convergent Taylor expansion in homogeneous
+powers of 𝜂 that involves no Laplace solve at all. We adopt this
+expansion, known in ocean engineering as the High-Order Spectral
+(HOS) method [Dommermuth and Yue 1987], as the engine of our
+wave solver. Let𝐺0 denote the operator at the flat reference state
+𝜂≡0. Its symbol on a horizontal Fourier mode𝑒 𝑖𝒌·𝒙 is
+𝐺0(𝒌)=|𝒌|tanh (|𝒌|𝑑),(6)
+which is exactly the linear water-wave dispersion operator and
+reproduces𝜔 2(𝒌)=𝑔𝐺 0(𝒌) at leading order [Airy 1845]. Writing
+𝐺(𝜂)= ˝
+𝑗≥0 𝐺𝑗(𝜂) with𝐺𝑗 homogeneous of degree 𝑗 in𝜂, the
+recursion of Craig and Sulem [1993] gives, in spectral form,
+𝐺1(𝜂)𝜓=−𝐺 0
+ 𝜂𝐺 0𝜓 − ∇· 𝜂∇𝜓 ,(7)
+𝐺2(𝜂)𝜓=𝐺 0
+ 𝜂𝐺 0(𝜂𝐺 0𝜓)− 1
+2𝐺0
+ 𝜂2𝐵0𝜓
+−𝜂𝐵 0(𝜂𝐺 0𝜓)+ 1
+2𝜂2𝐺0(𝐵0𝜓)+|∇𝜂| 2𝐺0𝜓,(8)
+where𝐵0 is the homogeneous Fourier multiplier with symbol|𝒌| 2
+(the second vertical derivative of the harmonic extension at the
+flat state). All operators in (7)–(8) are concatenations of Fourier
+multipliers (𝐺0,𝐵0,∇) with pointwise products of𝜂,∇𝜂,∇𝜓, and are
+therefore evaluated with FFTs and physical-space multiplications.
+To improve stability in coupled simulations with steep 3D-driven
+surface features, we modulate every nonlinear term by a scalar
+amplitude parameter𝜀∈[0,1],
+𝐺(𝜂) ≈𝐺 0 +𝜀𝐺 1(𝜂) +𝜀 2𝐺2(𝜂),(9)
+and read𝜀= 1as the fully nonlinear model and 𝜀= 0as the linear
+Airy limit. The dynamic equation (5) is rewritten consistently as
+𝜕𝑡𝜓=−𝑔𝜂+𝜀
+h
+− 1
+2|∇𝜓| 2+ 1
+2
+ 1+𝜀 2|∇𝜂| 2𝑊 2
+i
+,(10)
+with
+𝑊= 𝐺0𝜓+𝜀𝐺 1(𝜂)𝜓+𝜀 2𝐺2(𝜂)𝜓+𝜀∇𝜂·∇𝜓
+1+𝜀 2|∇𝜂| 2 .(11)
+Throughout the paper we refer to the truncation in (9), which
+retains the three terms 𝐺0,𝜀𝐺 1,𝜀2𝐺2, as the Order-3 (or HOS-3)
+scheme; the Order-2 (HOS-2) variant referenced in our experiments
+retains only𝐺 0 and𝜀𝐺 1.
+We verify the effectiveness of this𝜀 modulation in Section 8: the
+wave-propagation sweep against a high-resolution 3D Eulerian ref-
+erence (Figure 14) and the Stokes-wave sweep against the analytical
+second-order Stokes solution (Figure 15) both show the height error
+decreasing monotonically as 𝜀 grows from0to1, with the drop
+between𝜀= 0and 𝜀≈ 0.1already accounting for a large fraction of
+the linear-model error. In other words, even a small𝜀 already yields
+a significant improvement over the linear case. Conversely, in sce-
+narios where strong forcing pushes the surface close to the breaking
+threshold and the higher-order DNO terms can excite numerical
+instabilities, we deliberately keep𝜀 small to preserve solver stability:
+𝜀= 0.3for the submarine, 𝜀= 0.2for the battleship in heavy waves,
+and𝜀=0.2for the pond.
+3.3 Boundary conditions via even extension
+The FFT machinery above is intrinsically periodic; closed boundaries
+(a tank wall, a coastline, the perimeter of a pond) require additional
+care. We support reflecting and replicating boundaries through an
+even extension of the wave domain. Given the physical state(𝜂,𝜓)
+on a rectangle of resolution(𝑀,𝑁), we form
+˜𝜂(𝒙)=𝜂  𝑅𝒙, ˜𝜓(𝒙)=𝜓  𝑅𝒙,(12)
+on a doubled(2𝑀, 2𝑁) grid, where𝑅 denotes the appropriate reflec-
+tion across each boundary. The operators𝐺0,𝐺1, and𝐺2 are then
+constructed on the doubled grid and applied to ˜𝜂, ˜𝜓; after the time
+step we crop the result back to (𝑀,𝑁) . The construction makes
+the discrete normal derivatives at the boundary vanish identically
+(Neumann condition) for reflecting walls, while a replicate variant
+approximates outflow. Because the extension only doubles the grid,
+the FFT cost increases only by a constant factor of four, and the
+boundary treatment carries no asymptotic overhead.
+3.4 Time integration: exact-linear Adams–Bashforth
+Following Craig and Sulem [1993], we split the system into an
+exactly integrated linear part and an AB2-advanced nonlinear part:
+𝜕𝑡
+ 
+𝜂
+𝜓
+!
+=L
+ 
+𝜂
+𝜓
+!
++ N(𝜂,𝜓),(13)
+where the linear part L=   0𝐺 0
+−𝑔0
+ is diagonal in Fourier space
+with eigenfrequency𝜔(𝒌)=
+√︁
+𝑔𝐺 0(𝒌) , and the nonlinear forcing
+N collects all terms in𝜀. The linear part is stiff at high wavenumber,
+ACM Trans. Graph., Vol. 45, No. 6, Article 179. Publication date: December 2026.
+
+===== PAGE 6 =====
+179:6•Sinan Wang, Ruicheng Wang, Taiyuan Zhang, Fan Feng, Jinjin He, Yuchen Sun, Zhiqi Li, and Bo ZhuLinear
+-2.0 -1.5 -1.0 -0.5 0.0 0.5 1.0
+x
+-0.4
+-0.3
+-0.2
+-0.1
+0.0
+0.1
+0.2
+0.3
+0.4
+y
+wavemaker 2D fluid simulator
+Nonlinear
+-2.0 -1.5 -1.0 -0.5 0.0 0.5 1.0
+x
+-0.4
+-0.3
+-0.2
+-0.1
+0.0
+0.1
+0.2
+0.3
+0.4
+y
+wavemaker 2D fluid simulator
+(a)𝑡≈2.65 s(≈3.7periods)
+-2.0 -1.5 -1.0 -0.5 0.0 0.5 1.0
+x
+-0.4
+-0.3
+-0.2
+-0.1
+0.0
+0.1
+0.2
+0.3
+0.4
+y
+wavemaker 2D fluid simulator
+-2.0 -1.5 -1.0 -0.5 0.0 0.5 1.0
+x
+-0.4
+-0.3
+-0.2
+-0.1
+0.0
+0.1
+0.2
+0.3
+0.4
+y
+wavemaker 2D fluid simulator
+ (b)𝑡≈3.75 s(≈5.2periods)
+-2.0 -1.5 -1.0 -0.5 0.0 0.5 1.0
+x
+-0.4
+-0.3
+-0.2
+-0.1
+0.0
+0.1
+0.2
+0.3
+0.4
+y
+wavemaker 2D fluid simulator
+-2.0 -1.5 -1.0 -0.5 0.0 0.5 1.0
+x
+-0.4
+-0.3
+-0.2
+-0.1
+0.0
+0.1
+0.2
+0.3
+0.4
+y
+wavemaker 2D fluid simulator
+ (c)𝑡≈5.0 s(≈7.0periods)
+Fig. 3. Continuous Stokes wavetrain crossing the 2D–3D coupling interface, comparing the linear wave model (𝜀= 0, top row of each column) with our fully
+nonlinear HOS model (𝜀= 1, bottom row). A 1D wave domain (𝑥∈[− 2, 1] m, still-water depth0.4 m) drives a second-order Stokes train of steepness𝑘𝑎= 0.3
+and wavelength0.8 mthrough an embedded 2D fluid box (𝑥∈[− 1, 1] m, light blue fill); yellow shading marks the left-edge wavemaker zone. The red boxes
+outline the wave free-propagation region just outside the fluid box, where the 1D wave solver carries the train on its own. Inside the red boxes the linear
+surface develops visible kinks, is no longer smooth, and shows no crest–trough asymmetry, while the nonlinear surface remains smooth, exhibits the sharpened
+crests and flattened troughs of a Stokes train, and continues the surface shape inside the 2D fluid box almost exactly. The mismatch in the linear case reflects
+the incompatibility between the Airy wave model and the natively nonlinear 2D NS solver across the coupling interface at this steepness (𝑘𝑎=0.3).
+i.e.,𝜔(𝒌) scales like
+√︁
+|𝒌| in deep water, so an explicit step on the
+full RHS would require Δ𝑡≲ 1/𝜔(𝑘 Nyq). We avoid the stiffness
+by integratingL exactly. Per Fourier mode, the linear flow is the
+rotation
+ 
+ˆ𝜂
+ˆ𝜓
+!
+lin
+(𝑡+Δ𝑡)=
+ 
+cos(𝜔Δ𝑡) 𝐺0
+𝜔 sin(𝜔Δ𝑡)
+−𝑔
+𝜔 sin(𝜔Δ𝑡) cos(𝜔Δ𝑡)
+! 
+ˆ𝜂
+ˆ𝜓
+!
+(𝑡),(14)
+with the limit ˆ𝜂→ ˆ𝜂, ˆ𝜓→ ˆ𝜓−𝑔Δ𝑡 ˆ𝜂 at 𝒌= 0. The nonlinear forcing
+ˆN𝑛 =( ˆ𝐹𝜂
+𝑛, ˆ𝐹𝜓
+𝑛) is then advanced through the Duhamel response of
+(14), i.e., the variation-of-constants formula, which propagates the
+accumulated nonlinear forcing with the exact linear flow: setting
+ˆ𝐹𝑞,★
+𝑛 = 3
+2 ˆ𝐹𝑞
+𝑛− 1
+2 ˆ𝐹𝑞
+𝑛−1 ,𝑞∈{𝜂,𝜓} (an Adams–Bashforth-2 extrapola-
+tion), we update
+ˆ𝜂𝑛+1 =cos(𝜔Δ𝑡) ˆ𝜂𝑛+ 𝐺0
+𝜔 sin(𝜔Δ𝑡) ˆ𝜓𝑛
++ sin(𝜔Δ𝑡)
+𝜔
+ˆ𝐹𝜂,★
+𝑛 + 1−cos(𝜔Δ𝑡)
+𝑔
+ˆ𝐹𝜓,★
+𝑛 ,(15)
+ˆ𝜓𝑛+1 =− 𝑔
+𝜔 sin(𝜔Δ𝑡) ˆ𝜂𝑛+cos(𝜔Δ𝑡) ˆ𝜓𝑛
+− 1−cos(𝜔Δ𝑡)
+𝐺0
+ˆ𝐹𝜂,★
+𝑛 + sin(𝜔Δ𝑡)
+𝜔
+ˆ𝐹𝜓,★
+𝑛 .(16)
+The first step (and any step in which Δ𝑡 changes) bootstraps with
+𝐹 ★
+0 =N 0, which reduces (15)–(16) to a first-order integrating-factor
+Euler step. The𝑘= 0singularities cancel analytically: sin(𝜔Δ𝑡)/𝜔→
+Δ𝑡and(1−cos (𝜔Δ𝑡))/𝐺0→ 1
+2𝑔Δ𝑡 2.
+The scheme has three concrete advantages for our coupled set-
+ting. First, (14) integrates the linear dispersion exactly per Fourier
+mode, so the surface step is non-dissipative on linear waves regard-
+less of Δ𝑡. Second, the AB2 extrapolation only touches the non-
+linear forcing, which is bounded; the time-step constraint reduces
+from𝜔(𝑘 Nyq)Δ𝑡< 1to a much milder CFL onN. Third, the same
+exponential-integrator strategy extends to the implicit relaxation
+source we add in Section 5: that source is linear in𝜂−𝜂 target with
+a position-dependent rate 𝜎(𝒙) , so it admits its own closed-form
+exponential decay (34), which we compose with the wave step by
+3D Sim
+Relaxation Zone
+(ψ, η)
+𝜂𝜂
+Relaxation
+𝛷𝛷|𝑦𝑦=𝜂𝜂=𝜓𝜓
+𝜂𝜂3D𝜕𝜕𝑡𝑡η = 𝐺𝐺 η ψ
+(𝑢𝑢, ϕ)
+𝑢𝑢 = ∇Φ (BC for p)
+2D Sim
+HOS Taylor Expansion
+Neumann BC (no-flux)
+𝜕𝜕𝑦𝑦𝛷𝛷|y=−d=0
+Dirichlet BC
+𝛷𝛷 �
+y=d1
+𝛷𝛷 �
+y=0
+Harmonic kernel (mixed BC)
+𝑢𝑢𝑥𝑥 = 𝜕𝜕𝑥𝑥Φ
+𝑢𝑢y = 𝜕𝜕𝑦𝑦Φ
+𝛷𝛷 �
+y=d0
+𝛷𝛷 �
+y=d2
+FAB
+Layer
+ϕ = 𝑦𝑦 − η
+Fig. 4. Two-way coupling between the 2D wave solver and the 3D NS
+solver.Left, 2D-to-3D (Section 4):(𝜂,𝜓) is lifted to𝑦= 0via the Craig–
+Sulem (HOS) Taylor expansion and propagated to depth layers by finite-
+depth harmonic kernels under Dirichlet top and Neumann no-flux bottom
+𝜕𝑦Φ| 𝑦=−𝑑 = 0. The FAB ring on the box faces takes its level-set BC from
+the 2D height field via𝜙=𝑦−𝜂 and its velocity BC from 𝒖=∇Φ .Right,
+3D-to-2D (Section 5):an exponential-decay source on the box footprint
+relaxes the wave-side 𝜂 toward the 3D surface 𝜂3D implicitly inside the
+relaxation zone, while outside the box the Zakharov equation𝜕𝑡𝜂=𝐺(𝜂)𝜓
+evolves the ocean freely.
+operator splitting (Step 8 of Alg. 2). Each half is therefore integrated
+exactly over Δ𝑡, and the time-step constraint never tightens with
+𝜎max. After each step we apply the spectral state filter of Craig and
+Sulem [1993],
+𝐴(𝒌)=
+Ö
+𝛼∈{𝑥,𝑧}
+1
+8
+h
+5+4 cos  𝜋|𝑘𝛼|/𝑘𝛼
+Nyq
+−cos 2𝜋|𝑘𝛼|/𝑘𝛼
+Nyq
+i
+,(17)
+to(𝜂,𝜓) . The filter is unity at low wavenumbers, smoothly sup-
+presses the highest modes, and removes residual high-frequency
+noise without affecting the resolved spectrum.
+ACM Trans. Graph., Vol. 45, No. 6, Article 179. Publication date: December 2026.

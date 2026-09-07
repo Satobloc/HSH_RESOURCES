@@ -1,0 +1,683 @@
+===== PAGE 1 =====
+DRAFE: Domain-Robust Asymmetric Fusion of
+Heterogeneous Detection Transformers for
+Cross-City Fine-Grained Traffic Object Detection
+Divine Yao Agbobli1, Geoffery Eyram Agorku2, Israel Afriyie3, Kwadwo
+Amankwah-Nkyi4, Marvin Osei-Kuffour5, Richmond Owusu Duah5, Bright
+Seglah4, Kelvin Asamoah Terkper6, and Kwabena Amoako Adjei5
+1 Iowa State University, Ames, IA, USA
+2 University of Arkansas, Fayetteville, AR, USA
+3 Parsons Corporation, USA
+4 Jacobs, USA
+5 University of South Florida, Tampa, FL, USA
+6 Neel-Schaffer, Inc., USA
+dya@iastate.edu, gagorku@uark.edu, Israel.afriyie@parsons.com,
+kwadwo.amankwahnkyi@jacobs.com, moseikuffour@usf.edu, rowusuduah@usf.edu,
+Bright.Seglah@jacobs.com, kelvin.terkper@neel-schaffer.com,
+Kwabenaadjei@usf.edu
+Abstract.Deep learning-based object detectors are fundamental to in-
+telligent transportation systems, enabling traffic monitoring, vehicle an-
+alytics, and infrastructure management. However, achieving both fine-
+grained vehicle recognition and robust cross-city domain generalization
+remains challenging. We present the Domain-Robust Asymmetric Fusion
+Ensemble (DRAFE), which combines independently trained LW-DETR
+and RF-DETR detectors for cross-city fine-grained traffic object detec-
+tion. DRAFE employs a two-stage training strategy that first pretrains
+complementary detectors on diverse public traffic datasets using pseudo-
+label expansion and human-in-the-loop annotation refinement, produc-
+ing a curated corpus of 6,049 images and 203,619 annotations, before
+challenge-compliant fine-tuning on the Project Hafnia Track 6 dataset.
+At inference, DRAFE applies anchor-conditioned class-consistent match-
+ing, reliability-weighted coordinate fusion, agreement-aware confidence
+recalibration, and complementary hypothesis recovery. On AI City Chal-
+lenge 2026 Track 6, DRAFE achieves 0.4022 mAP, ranks sixth among
+25 participating teams, and improves by 0.0553 mAP over a prelimi-
+nary ensemble evaluated under identical benchmark conditions. Code is
+available in the VisionOps Trainer repository.
+Keywords:Fine-grained object detection·Domain generalization·En-
+semble detector·Intelligent transportation systems·Privacy-preserving
+learning
+arXiv:2608.16632v1  [cs.CV]  17 Aug 2026
+
+===== PAGE 2 =====
+2 Agbobli et al.
+1 Introduction
+Object detection and classification are fundamental components of intelligent
+transportation systems (ITS), enabling traffic-state estimation, incident detec-
+tion, infrastructure monitoring, and autonomous traffic management [27,33].
+Recent advances through convolutional neural networks, transformer-based ar-
+chitectures, and large-scale pretraining have substantially improved detection
+performance [22,28,30,37,38,41].
+Despite these advances, deploying detectors beyond their training environ-
+ments remains challenging. Variations in camera viewpoints, roadway geometry,
+traffic density, and regional vehicle distributions introduce domain shifts that
+can degrade performance in previously unseen environments [7,32].
+Track 6 of the 10th AI City Challenge provides a practical benchmark for
+this problem [3]. Unlike coarse detection tasks, Track 6 requires fine-grained
+recognition across ten visually similar classes: Car, Pickup Truck, Single Truck,
+Combination Truck, Trailer, Heavy-Duty Vehicle, Van, Motorcycle, Bicycle, and
+Person. The dataset exhibits a pronounced long-tailed distribution, leaving sev-
+eral categories underrepresented [11,13,14]. Furthermore, Track 6 uses Project
+Hafnia, a GDPR-compliant Training-as-a-Service platform that prevents par-
+ticipants from downloading or directly accessing the underlying challenge im-
+agery [17,25,26]. Models are trained within Hafnia on labeled source-city data
+and evaluated on hidden benchmark data containing source-city and unseen
+target-city scenes, establishing a privacy-preserving setting for cross-city gener-
+alization.
+The Training-as-a-Service setup distinguishes Track 6 from traditional
+domain-adaptation benchmarks. Unsupervised domain-adaptation methods re-
+quire target-domain data during training [7,18,24], an assumption that does
+not hold in this setting. The problem therefore falls within single-source do-
+main generalization, where detectors must generalize from labeled source data
+alone [9,21,29,31,32]. Semi-supervised learning, pseudo-label refinement, and
+augmentation can improve robustness [16,19,34–36,40,42], while detector ensem-
+bles exploit complementary error characteristics across architectures [10,20,26].
+These approaches have seldom been integrated into a unified framework for
+privacy-preserving cross-city generalization.
+Motivated by these challenges, this study proposes DRAFE, a Domain-
+Robust Asymmetric Fusion Ensemble for cross-city fine-grained traffic object
+detection. DRAFE combines complementary detection transformers within a
+data-centric training and inference framework organized around two premises.
+First, a scalable pseudo-label expansion pipeline can increase annotated training
+coverage while maintaining annotation quality through complete human review.
+Second, asymmetric ensemble fusion with reliability-weighted coordinate fusion
+and complementary hypothesis recovery can improve prediction quality under
+cross-city domain shift.
+The contributions of this work are as follows:
+
+===== PAGE 3 =====
+DRAFE for Cross-City Fine-Grained Object Detection 3
+1. DRAFE is proposed as a Domain-Robust Asymmetric Fusion Ensemble for
+cross-city fine-grained traffic object detection. The method combines asym-
+metric detector roles, class-consistent localization fusion, agreement-aware
+confidence recalibration, and complementary hypothesis recovery.
+2. A scalable pseudo-label expansion pipeline produces a corpus of 6,049 images
+with 203,619 human-reviewed annotations. A meta-model trained on 1,683
+manually annotated images proposes labels for corpus expansion, followed
+by complete human review, yielding 3.6 times greater image coverage.
+3. Evaluation on Track 6 of the 10th AI City Challenge shows that DRAFE
+achieves an mAP of 0.4022 and ranks sixth among 25 participating teams.
+The method improves by 0.0553 mAP, or 15.9% relative, over a preliminary
+ensemble submission evaluated under identical benchmark conditions and
+by 0.0181 mAP, or 4.7% relative, over the strongest standalone component
+detector.
+2 Related Work
+2.1 Object Detection, Domain Generalization, and Data-Centric
+Learning
+Deep learning detectors have evolved from two-stage CNN architectures to one-
+stage models and subsequently to transformer-based frameworks with end-to-
+end set prediction and multi-scale feature representation [4–6,22,30,33]. Per-
+formance can degrade under domain shift from unseen environments. Domain-
+adaptation methods align source and target distributions [7,20,24], but require
+access to target-domain data during training. Single-source domain generaliza-
+tion instead seeks representations that transfer from labeled source data to un-
+seen domains through feature diversification, augmentation, and vision-language
+alignment [9,21,29,31,41]. Complementary data-centric strategies, including
+pseudo-label refinement, semi-supervised learning, and copy-paste augmenta-
+tion, can extend training diversity and improve robustness [11,12,15,16,36].
+Transportation studies have also demonstrated the value of systematic model
+comparison and context-aware learning, including multi-model evaluation for
+infrastructure-condition prediction [2], spatially informed machine learning for
+transportation-demand analysis [39], and safety-aware reinforcement learning for
+adaptive traffic control under changing work-zone conditions [1].
+2.2 Detector Ensembles and Fine-Grained Vehicle Recognition
+Ensembling can improve localization and robustness by combining comple-
+mentary predictions from multiple models. Common fusion strategies include
+non-maximum suppression, Soft-NMS, Non-Maximum Weighted averaging, and
+Weighted Boxes Fusion. Weighted Boxes Fusion computes confidence-weighted
+coordinate averages across overlapping detections [37]. Conventional Weighted
+Boxes Fusion clusters spatially overlapping predictions without explicitly as-
+signing anchor and support roles. Although fixed model-level weights can be
+
+===== PAGE 4 =====
+4 Agbobli et al.
+incorporated, the method does not inherently impose anchor-conditioned one-
+to-one matching, agreement-specific confidence recalibration, or explicit recovery
+of unmatched support hypotheses.
+Fine-grained vehicle recognition compounds these challenges. Najeeb et
+al. [28] examined confusion among visually similar urban traffic classes, while
+Ruan et al. [34] examined evidence fusion under degraded conditions. The AI
+CityChallengeseriesprovidesabenchmarkforintelligenttransportationsystems
+vision [38]. Track 6 of the 10th edition addresses cross-city fine-grained object
+detection through the Project Hafnia managed-training pipeline [3,25–27].
+While Weighted Boxes Fusion [37] and pseudo-label generation [36] are estab-
+lished techniques, DRAFE introduces three departures from standard ensemble
+practice:
+1. Asymmetric anchor-support role assignment, in which one detector governs
+the initial hypothesis space.
+2. Anchor-conditioned class-consistent one-to-one matching, which prevents
+cross-class merging when detections from different semantic categories over-
+lap spatially.
+3. Complementary hypothesis recovery, which retains selected unmatched sup-
+port detections and thereby relaxes the anchor-recall ceiling.
+3 Methodology
+3.1 Problem Formulation
+This study addresses fine-grained traffic-object detection under geographic do-
+main shift, as defined in AI City Challenge Track 6. A detector is trained on
+source-domaindatawithintheHafniaworkflowandevaluatedonhiddenimagery
+containing source-city and target-city scenes [3]. The label space comprises ten
+categories:car,pickuptruck,singletruck,combinationtruck,heavy-dutyvehicle,
+trailer, motorcycle, bicycle, van, and person.
+The set of predictions returned by detectormfor imagexis
+Dm(x) ={(b j, yj, sj)}Nm
+j=1,(1)
+whereb j denotes a normalized axis-aligned bounding box,yj denotes the class
+label,s j denotes the confidence score, andNm is the number of detections re-
+turned by detectorm.
+Cross-city evaluation introduces two coupled challenges. Classification and
+localization errors are not uniformly distributed across detectors, and aggressive
+suppression can remove uncertain but correct predictions in the target domain.
+DRAFE therefore preserves the hypothesis space of the strongest high-recall
+model, exploits cross-model agreement for localization refinement, and recovers
+complementary objects detected only by support models.
+
+===== PAGE 5 =====
+DRAFE for Cross-City Fine-Grained Object Detection 5
+3.2 Overview of the DRAFE Framework
+DRAFE is structured as a training-to-fusion pipeline with three independently
+trained detectors: two LW-DETR XLarge models and one RF-DETR Base
+model. The two LW-DETR XLarge instances share the same architecture but
+follow independent optimization trajectories, while RF-DETR Base introduces
+architecturalheterogeneityandadistinctprecision-recallprofile.LW-DETRcon-
+sists of a vision-transformer encoder, feature projector, and shallow DETR de-
+coder, with multilevel feature aggregation and interleaved local-global atten-
+tion [6]. RF-DETR is a real-time detection transformer designed around an
+accuracy-latency tradeoff [33]. Unlike symmetric fusion methods, DRAFE en-
+forces anchor-conditioned one-to-one matching, agreement-specific confidence re-
+calibration, and explicit recovery of unmatched support hypotheses.
+All detectors undergo traffic-domain intermediate pretraining on a curated
+corpus before challenge-specific fine-tuning within Hafnia. After independent
+training, the strongest LW-DETR XLarge model is assigned the anchor role, de-
+noted LW-XA. The second LW-DETR XLarge model, denoted LW-XB, provides
+within-family localization consensus. RF-DETR Base, denoted RF-B, provides
+cross-architecture complementarity. Table 1 summarizes these roles.
+T able 1:Asymmetric role assignment of the constituent detectors.
+Detector Role Primary contribution
+LW-DETR XLarge-A Anchor Dense, high-recall hypothesis set
+LW-DETR XLarge-B Support Localization consensus and additional recall
+RF-DETR Base Support Architecturally complementary detections
+As illustrated in Fig. 1, LW-XA provides the anchor hypotheses. LW-XB
+provides within-family localization consensus, while RF-B contributes cross-
+architecture complementarity. The inference procedure applies class-consistent
+anchor matching, reliability-weighted coordinate fusion, agreement-aware con-
+fidence recalibration, and complementary hypothesis recovery before retaining
+the 300 highest-ranked candidates.
+3.3 Traffic-Domain Intermediate Pretraining
+All component detectors undergo intermediate pretraining on a curated traffic-
+domain corpus assembled from five public sources: MIO-TCD Localization [23],
+UA-DETRAC [43], the Vehicle Detection Image Dataset, the Roboflow vehicle-
+detection dataset, and Roboflow 100 [8]. The corpus was constructed through
+a two-stage annotation pipeline designed to increase annotated coverage while
+controlling manual annotation effort.
+
+===== PAGE 6 =====
+6 Agbobli et al.
+Fig. 1:Overview of the DRAFE training and inference framework. During challenge-
+specific training, each Hafnia managed experiment combines the platform-hosted
+dataset with a trainer package, execution command, and selected GPU configuration.
+Stage 1: Meta-model training on seed annotations.A representative set of 1,683
+images was selected and fully annotated by human reviewers using CVAT.
+Original source labels were not transferred because the source taxonomies and
+bounding-boxconventionsdiffered.Allannotationsfollowedtheten-classTrack6
+ontology. Bicycle and Motorcycle boxes were restricted to the vehicle body, with
+a separate Person box assigned to each visible rider. Box pairs withIoU≥0.90
+were automatically flagged for duplicate review. The manually annotated seed
+set was then used to train a meta-model whose sole role was to generate initial
+bounding-box proposals for a larger image pool.
+Stage 2: Pseudo-label expansion and human review.The meta-model generated
+candidate annotations for the 6,049-image corpus. These predictions served only
+as initial annotation proposals. Every image subsequently underwent complete
+human review and correction in CVAT before inclusion in the training corpus.
+Therefore,noautomaticallygeneratedannotationwasincorporatedintodetector
+training without human verification.
+The resulting corpus contains 203,619 verified object instances and provides
+3.6 times greater image coverage than the 1,683-image seed set. The corpus was
+partitioned into 4,000 training images, 1,049 validation images, and 1,000 held-
+out test images. Car and Person account for 84.5% of all annotations, whereas
+Trailer and Heavy-Duty Vehicle contain 390 and 391 instances, respectively.
+
+===== PAGE 7 =====
+DRAFE for Cross-City Fine-Grained Object Detection 7
+The reviewed annotations were exported in COCO-compatible and RF-DETR-
+compatible formats and checked for image-annotation consistency before inter-
+mediate pretraining.
+3.4 Independent Detector Training
+Intermediate pretraining on the curated public corpus was completed outside
+the Hafnia challenge environment. Only pretrained model initializations and
+challenge-specific training implementations were incorporated into the trainer
+packages used for Hafnia fine-tuning. No external images were introduced into
+the managed challenge environment. Each detector was fine-tuned separately so
+that the component models retained distinct optimization histories and predic-
+tion errors. The ensemble was constructed from independently trained models
+rather than through post hoc modification of a single detector.
+At inference, each trained model independently processed every benchmark
+image,andfusionwasappliedonlyafterallthreecomponentdetectorscompleted
+inference.
+3.5 Anchor-Conditioned Class-Consistent Matching
+For each image, detections from LW-XA are sorted by descending confidence and
+treated as anchor hypotheses. Letda = (b a,y a,s a)denote an anchor detection
+with bounding boxb a, class labely a, and confidences a. The two support de-
+tectors are indexed byk∈{B,R}, representing LW-XB and RF-B, respectively.
+Thei-th detection from support detectorkisd k,i = (b k,i,y k,i,s k,i).
+LetU k denote the set of currently unused detections from detectork. For
+each anchord a, the selected support match is
+d∗
+k(a) = arg max
+dk,i∈Uk
+IoU (ba, bk,i),(2)
+subject to
+yk,i =y a andIoU (b a, bk,i)≥τ f, τ f = 0.55.(3)
+If no eligible support detection exists, thend∗
+k(a) =∅. Once assigned, a support
+detection is removed fromUk, preventing the same support prediction from being
+matched to multiple anchors. Class-consistent matching also prevents cross-class
+merging when objects belonging to different categories overlap spatially.
+3.6 Reliability-Weighted Coordinate Fusion
+The matched group associated with anchorda is
+Ga ={d a}∪{d ∗
+k(a)|k∈{B,R}, d ∗
+k(a)̸=∅}.(4)
+
+===== PAGE 8 =====
+8 Agbobli et al.
+For each contributing detectorm, the fusion weight is the product of detector
+reliabilityα m and detection confidencesm:
+wm =α msm.(5)
+The selected reliability coefficients areαA = 0.42,α B = 0.32, andα R = 0.26.
+The fused bounding box is
+ˆba =
+X
+m∈Ga
+wmbm
+X
+m∈Ga
+wm
+.(6)
+Fusion is performed in corner-coordinate form(x1,y 1,x 2,y 2), and the resulting
+coordinates are clipped to the normalized interval[0,1].
+3.7 Agreement-Aware Confidence Recalibration
+The fused confidence is designed for candidate ranking rather than probabilistic
+interpretation. DRAFE retains the maximum confidence in the matched group
+and applies a conservative multiplicative agreement bonus:
+ˆsa = min{1, smax [1 +λ(|G a|−1)]}, λ= 0.03.(7)
+Agreement between two detectors produces a 3% multiplicative increase, while
+agreement among all three detectors produces a 6% increase.
+3.8 Complementary Hypothesis Recovery
+Anchor-based fusion cannot recover an object that is absent from the anchor
+hypothesis set. DRAFE therefore retains unused support detections remaining
+inU k after matching, while conservatively scaling their confidence:
+ˆsk,i =γ ksk,i, γ B =γ R = 0.97, d k,i∈U k.(8)
+Becauseγ k <1, anchor-supported hypotheses receive a modest ranking ad-
+vantage, while strong unmatched support detections remain eligible for final
+selection.
+3.9 Budgeted High-Recall Selection
+The fused detections and complementary recovered hypotheses are pooled and
+sorted by recalibrated confidence. The 300 highest-ranked detections are re-
+tained:
+Dfinal(x) = TopK(Dfused(x)∪D CHR(x), K= 300).(9)
+No hard confidence threshold is applied before final ranking, and no additional
+non-maximum suppression is applied after fusion.
+
+===== PAGE 9 =====
+DRAFE for Cross-City Fine-Grained Object Detection 9
+Algorithm 1Domain-Robust Asymmetric Fusion Ensemble
+Require:Predictions from LW-X A, LW-XB, and RF-B for imagex
+1: Initialize unused support setsUB andU R
+2: InitializeD fused←∅
+3: Sort LW-XA detections by descending confidence
+4:foreach anchor detectiond a do
+5: InitializeG a←{d a}
+6:foreach support detectork∈{B,R}do
+7: Find the highest-IoU unused support detection satisfying the class constraint
+andIoU≥0.55
+8:ifan eligible support detection existsthen
+9: Add the support detection toG a
+10: Remove the support detection fromU k
+11:end if
+12:end for
+13: Compute ˆba using Eq. (6)
+14: Computeˆs a using Eq. (7)
+15: Add( ˆba,y a,ˆsa)toD fused
+16:end for
+17: Scale unused support detections byγk = 0.97
+18: FormD CHR from the scaled support detections
+19: Pool and sortDfused∪D CHR
+20: Return the 300 highest-ranked detections
+Ensure:Final detection setD final(x)
+T able 2:DRAFE inference configuration.
+Component Setting
+Anchor detector LW-DETR XLarge-A
+Support detectors LW-DETR XLarge-B; RF-DETR Base
+Reliability weights(0.42,0.32,0.26)
+Class constraint Exact class identity
+Matching strategy Greedy one-to-one matching
+Fusion IoU threshold0.55
+Agreement bonus0.03per additional detector
+Support confidence scale0.97
+Post-fusion threshold None
+Post-fusion NMS None
+Final detection budget 300 detections per image
+
+===== PAGE 10 =====
+10 Agbobli et al.
+3.10 Inference Algorithm and Configuration
+Algorithm 1 summarizes the DRAFE inference procedure. Table 2 reports the
+selected inference configuration.
+4 Experiments
+4.1 Dataset and Data Access
+Track6usesatrafficdatasetprovidedthroughtheMilestoneProjectHafniaplat-
+form [3,25,26]. The official training split contains 10,374 images, and the valida-
+tion split contains 2,564 images. The hidden benchmark contains 14,868 images
+from source-city and unseen target-city scenes. The dataset contains approxi-
+mately 150,000 annotated instances across ten fine-grained traffic categories.
+The challenge data were hosted in Hafnia’s Data Library and supplied to
+managed training experiments. Participants could inspect dataset-level informa-
+tion and sample data but could not download the underlying challenge imagery.
+Track 6 required challenge training and benchmark inference to be executed
+through managed experiments. Under the challenge account configuration, only
+one experiment could run at a time, and trained models and trainer packages
+were limited to 2 GB. Prediction artifacts were retrieved from completed exper-
+iments and submitted to the official AI City Challenge Evaluation Server.
+4.2 Evaluation Metrics
+The primary evaluation metric is mean Average Precision:
+mAP = 1
+C
+CX
+c=1
+APc,(10)
+whereCis the number of object classes andAP c is the Average Precision for
+classc. The evaluation server additionally reportsAP 50,AP 75, scale-stratified
+AP, and average recall at specified detection budgets.
+4.3 Implementation Details
+Each Hafnia experiment paired the platform-hosted challenge dataset with a
+trainer package, an execution command, and a selected GPU configuration.
+All challenge-specific experiments were conducted in the Project Hafnia man-
+aged environment [26,27]. The DRAFE ensemble consists of two independently
+trained LW-DETR XLarge detectors [6], denoted LW-XA and LW-XB, and one
+RF-DETR Base detector [33], denoted RF-B. Each model was initialized from
+intermediate pretraining on the curated traffic corpus before challenge-specific
+fine-tuning.
+
+===== PAGE 11 =====
+DRAFE for Cross-City Fine-Grained Object Detection 11
+RF-DETR.RF-DETR Base was fine-tuned for two epochs using AdamW with
+a learning rate of1×10 −4, batch size 4, and gradient accumulation over four
+steps, corresponding to an effective batch size of 16. Training used the Hafnia
+Lite compute tier with one NVIDIA T4 GPU and 16 GB of GPU memory.
+L W-DETR.LW-DETR XLarge-A and XLarge-B were independently fine-tuned
+for five and two epochs, respectively, using AdamW with a learning rate of
+5×10 −4 and batch size 1. The longer schedule produced the stronger full-test
+result for XLarge-A, which was consequently assigned the anchor role. XLarge-
+B retained an independent optimization history and served as a homogeneous
+support detector.
+Prediction files were written to the experiment artifact directory and re-
+trieved through Hafnia’s experiment-output mechanism before submission to the
+official evaluation server. The component detectors were executed independently,
+and fusion was applied after completion of component inference. Challenge jobs
+were executed sequentially because the account configuration permitted one ac-
+tive experiment at a time. These experiments demonstrate compatibility with
+the managed training environment but do not establish real-time deployment
+performance.
+5 Experimental Results and Discussion
+5.1 Evaluation Protocol
+Final model comparisons are based on scores returned by the official AI City
+Challenge Evaluation Server for predictions generated on the complete hidden
+benchmark of 14,868 images. Component-level configuration studies used the
+Hafnia development split. Standalone detector scores correspond to individual
+component submissions, while the reported DRAFE result corresponds to the
+best ensemble submission. The preliminary ensemble provides an earlier com-
+parison configuration evaluated through the same benchmark system.
+5.2 Standalone Detector and Baseline Performance
+LW-XA achievedthestrongeststandalonefull-testresultamongthethreecompo-
+nentdetectors,with0.3841mAPand300predictionsperimage.LW-X B achieved
+0.3822 mAP with 300 predictions per image, while RF-B achieved 0.3836 mAP
+with an average of 77.66 predictions per image. Although their aggregate mAP
+values were similar, LW-XB and RF-B exhibited different recall and localization
+profiles. LW-XB achieved higherAR100, while RF-B produced fewer predictions
+per image. These differences motivated their use as complementary support de-
+tectors.
+
+===== PAGE 12 =====
+12 Agbobli et al.
+T able 3:Standalone and preliminary ensemble performance on the hidden test set.
+Model Role mAP AP 50 AP75 APS APM APL AR@1AR@10AR 100 ARS ARM ARL Boxes/img
+Preliminary ensemble Comparison 0.3469 0.4732 0.3596 0.0515 0.1864 0.4800 0.2843 0.4227 0.4368 0.0840 0.2518 0.5779 300.00
+LW-DETR XLarge-A Anchor 0.3841 0.5253 0.3998 0.0557 0.2154 0.5276 0.4079 0.6467 0.6881 0.2323 0.4892 0.8193 300.00
+LW-DETR XLarge-B Homogeneous support 0.3822 0.5210 0.4051 0.0452 0.2015 0.5443 0.3957 0.6349 0.6709 0.2195 0.4571 0.8143 300.00
+RF-DETR Base Heterogeneous support 0.3836 0.5254 0.4048 0.0476 0.2070 0.5232 0.3868 0.5916 0.6169 0.1143 0.3820 0.7603 77.66
+5.3 Effect of Asymmetric Ensembling
+DRAFE achieved 0.4022 mAP on the complete hidden benchmark. This repre-
+sents an absolute improvement of 0.0553 mAP over the preliminary ensembleand
+0.0181 mAP over the strongest standalone component, LW-XA. Improvements
+were observed across the reported object-size strata and atAR100.
+T able 4:Full-test performance of the preliminary ensemble, strongest standalone com-
+ponent, and DRAFE.
+Method mAP AP 50 AP75 APS APM APL AR100
+Preliminary ensemble 0.3469 0.4732 0.3596 0.0515 0.1864 0.4800 0.4368
+LW-XA 0.3841 0.5253 0.3998 0.0557 0.2154 0.5276 0.6881
+DRAFE 0.4022 0.5333 0.4259 0.0571 0.2335 0.5460 0.6981
+Difference from preliminary ensemble +0.0553 +0.0601 +0.0663 +0.0056 +0.0471 +0.0660 +0.2613
+Difference from LW-XA +0.0181 +0.0080 +0.0261 +0.0014 +0.0181 +0.0184 +0.0100
+The gain over LW-XA was largest atAP 75, where DRAFE improved by
+0.0261. This result is consistent with improved localization among matched de-
+tections, although the aggregate benchmark metrics do not independently isolate
+the contribution of each fusion operation.
+Qualitative ComparisonFigure 2 compares ground-truth annotations with
+predictions from RF-DETR, LW-DETR, and DRAFE on three selected images.
+Across these examples, DRAFE recovers more ground-truth objects than either
+standalone detector. The ensemble increases the true-positive count from 7–8 to
+10 in the first image, from 11 to 12 in the second image, and from 5–8 to 9 in the
+third image. The recovered objects are accompanied by additional false-positive
+hypotheses, reflecting the precision-recall tradeoff associated with the high-recall
+candidate-retention strategy.
+5.4 Ablation Studies
+The ablation comparisons were conducted on the Hafnia development split dur-
+ing the challenge period and should not be directly compared with the full-test
+results reported above.
+
+===== PAGE 13 =====
+DRAFE for Cross-City Fine-Grained Object Detection 13
+Fig. 2:Qualitative comparison of standalone detectors and DRAFE.
+Model composition.Adding a fourth detector as a fusion-only support model did
+not improve overall development performance. The four-model variant increased
+AP75 from 0.4312 to 0.4321 andAR100 from 0.6968 to 0.6999, but reduced mAP
+from0.4074to0.4068.Theexperimentusedasingletrainingseed,andmulti-seed
+evaluation was not conducted within the challenge resource allocation.
+T able 5:Development-set ablation on ensemble size.
+Configuration mAP AP 50 AP75 APS APM APL AR100
+Three-model DRAFE0.4074 0.53980.43120.0604 0.2312 0.55420.6968
+Four-model support ensemble 0.4068 0.53790.43210.0584 0.2245 0.55280.6999
+Agreement bonus and reliability weights.Increasing the agreement bonus from
+λ= 0.03toλ= 0.04increasedAP 50 andAR 100 but reducedAP 75,
+medium-object AP, large-object AP, and overall mAP. Shifting one percent-
+age point of reliability weight from LW-XA to RF-B, from(0.43,0.32,0.25)to
+(0.42,0.32,0.26), increased the development score to 0.4077.
+Detection budget.A thresholding and suppression configuration that reduced
+output to 23.22 detections per image produced a development mAP of 0.3520.
+Thefinalconfigurationconsequentlyretaineditshigh-recallbudgetof300ranked
+detections per image without a hard preselection threshold.
+
+===== PAGE 14 =====
+14 Agbobli et al.
+T able 6:AI City Challenge 2026 Track 6 leaderboard based on each team’s best
+reported full-test score.
+Rank Team mAP AP 50 AP75 APS APM APL
+1 SKKU-AL-T1 0.4753 0.6207 0.5031 0.0920 0.3041 0.6110
+2 BIT-ODL 0.4281 0.5539 0.4568 0.0637 0.2639 0.5669
+3 Remote Vibecoders from Chisinau 0.4176 0.5727 0.4521 0.0790 0.2739 0.5339
+4 BK2TheFuture 0.4169 0.5289 0.4407 0.0591 0.2210 0.5548
+5 S2 Detection 0.4114 0.5447 0.4414 0.0747 0.2596 0.5407
+6VisionOps/DRAFE 0.4022 0.5333 0.4259 0.0571 0.2335 0.5460
+7 Team IPCV 0.3882 0.5021 0.4068 0.0578 0.1735 0.5307
+8 bfc 0.3741 0.5097 0.3989 0.0445 0.2369 0.5048
+9 NextITS 0.3654 0.4879 0.3857 0.0660 0.1924 0.5034
+10 Team United 0.3529 0.4655 0.3656 0.0487 0.1588 0.4675
+5.5 Object-Scale Analysis
+Performance varied substantially by object size. Large objects achievedAPL =
+0.5460andAR L = 0.8305, while medium objects achievedAPM = 0.2335and
+ARM = 0.4938. Small objects achievedAP S = 0.0571andAR S = 0.2131. The
+benchmark reports aggregate scale-stratified metrics without per-class or error-
+type decomposition. Consequently, the available results establish that small-
+object performance is substantially lower than medium- and large-object perfor-
+mance but do not identify the specific class, localization, or confusion mecha-
+nisms responsible for that difference.
+6 Conclusion
+This study introduced DRAFE, a Domain-Robust Asymmetric Fusion Ensem-
+ble for cross-city fine-grained traffic-object detection under privacy-preserving
+Training-as-a-Service constraints. The method combines traffic-domain interme-
+diate pretraining with anchor-conditioned class-consistent matching, reliability-
+weighted coordinate fusion, agreement-aware confidence recalibration, and com-
+plementary hypothesis recovery. The intermediate-pretraining pipeline produced
+a 6,049-image corpus containing 203,619 human-reviewed annotations. On the
+complete Track 6 hidden benchmark, DRAFE achieved 0.4022 mAP and ranked
+sixth among 25 participating teams. The ensemble improved by 0.0181 mAP
+over the strongest standalone component detector and by 0.0553 mAP over a
+preliminary ensemble evaluated through the same benchmark system.
+The results provide evidence that detector complementarity and asymmetric
+inference refinement can improve cross-city fine-grained object detection in a
+managed training environment. Further work should examine small-object rep-
+resentation, class-specific error patterns, calibration across geographic domains,
+and multi-seed evaluation of the component detectors and fusion configuration.
+
+===== PAGE 15 =====
+DRAFE for Cross-City Fine-Grained Object Detection 15
+References
+1. Afriyie, I., Amankwah-Nkyi, K., Agyei-Essiful, P., Adanu, E.K., Acheampong,
+E.K.: Safety-aware reinforcement learning model for adaptive traffic signal opti-
+mization in work zone environments. Preprints (Jun 2026).https://doi.org/10.
+20944/preprints202606.1590.v1, preprint, not peer reviewed
+2. Afriyie, I., Joshua, S.N., Abuanor, M.N.: Utilizing several machine learning tech-
+niques to investigate the bridge deck condition. Journal of Studies in Civil Engi-
+neering2(2), 35–53 (2025).https://doi.org/10.53898/jsce2025223
+3. AI City Challenge: Track 6: Cross-city object detection (Milestone Project Hafnia).
+https://www.aicitychallenge.org/2026-track6/(2026), accessed 20 July 2026
+4. Bochkovskiy,A.,Wang,C.Y.,Liao,H.Y.M.:YOLOv4:Optimalspeedandaccuracy
+of object detection. arXiv preprint arXiv:2004.10934 (2020).https://doi.org/10.
+48550/arXiv.2004.10934
+5. Cai, Z., Vasconcelos, N.: Cascade R-CNN: Delving into high quality object detec-
+tion. In: CVPR. pp. 6154–6162 (2018).https://doi.org/10.1109/CVPR.2018.
+00644
+6. Chen, Q., Su, X., Zhang, X., Wang, J., Chen, J., Shen, Y., Han, C., Chen,
+Z., Xu, W., Li, F., Zhang, S., Yao, K., Ding, E., Zhang, G., Wang, J.: LW-
+DETR:AtransformerreplacementtoYOLOforreal-timedetection.arXivpreprint
+arXiv:2406.03459 (2024).https://doi.org/10.48550/arXiv.2406.03459
+7. Chen, Y., Li, W., Sakaridis, C., Dai, D., Van Gool, L.: Domain adaptive faster
+R-CNN for object detection in the wild. In: CVPR. pp. 3339–3348 (2018)
+8. Ciaglia, F.S., Zuppichini, F.S., Dominici, P., Tabelini, B., Souza, J.: Roboflow 100:
+A rich, multi-domain object detection benchmark. arXiv preprint arXiv:2211.13523
+(2022).https://doi.org/10.48550/arXiv.2211.13523
+9. Cui, Y., Jia, M., Lin, T.Y., Song, Y., Belongie, S.: Class-balanced loss based on
+effective number of samples. In: CVPR. pp. 9268–9277 (2019).https://doi.org/
+10.1109/CVPR.2019.00949
+10. Danish, M.S., Khan, M.H., Munir, M.A., Sarfraz, M.S., Ali, M.: Improving single
+domain-generalized object detection: A focus on diversification and alignment. In:
+CVPR. pp. 17732–17742 (2024).https://doi.org/10.1109/CVPR52733.2024.
+01679
+11. Ghiasi, G., Cui, Y., Srinivas, A., Qian, R., Lin, T.Y., Cubuk, E.D., Le, Q.V.,
+Zoph, B.: Simple copy-paste is a strong data augmentation method for instance
+segmentation. In: CVPR. pp. 2918–2928 (2021)
+12. Gupta, A., Dollár, P., Girshick, R.: LVIS: A dataset for large vocabulary instance
+segmentation. In: CVPR. pp. 5356–5364 (2019)
+13. Hao, Y., Forest, F., Fink, O.: Simplifying source-free domain adaptation for object
+detection: Effective self-training strategies and performance insights. In: European
+Conference on Computer Vision. Lecture Notes in Computer Science, vol. 15112,
+pp. 196–213. Springer (2024).https://doi.org/10.1007/978-3-031-72949-2_12
+14. Hosang, J., Benenson, R., Schiele, B.: Learning non-maximum suppression. In:
+CVPR. pp. 4507–4515 (2017)
+15. Huang, S., Lu, Z., Cun, X., Yu, Y., Zhou, X., Shen, X.: DEIM: DETR with im-
+proved matching for fast convergence. In: CVPR. pp. 15162–15171 (2025)
+16. Kisantal, M., Wojna, Z., Murawski, J., Naruniec, J., Cho, K.: Augmentation for
+small object detection. arXiv preprint arXiv:1902.07296 (2019).https://doi.org/
+10.48550/arXiv.1902.07296
+
+===== PAGE 16 =====
+16 Agbobli et al.
+17. Lavoie, M.A., Mahmoud, A., Waslander, S.L.: Large self-supervised models bridge
+the gap in domain adaptive object detection. In: CVPR (2025)
+18. Li, B., Yao, Y., Tan, J., Zhang, G., Yu, F., Lu, J., Luo, Y.: Equalized focal loss
+for dense long-tailed object detection. In: CVPR. pp. 6990–6999 (2022).https:
+//doi.org/10.1109/CVPR52688.2022.00686
+19. Li, Y., Wang, T., Kang, B., Tang, S., Wang, C., Li, J., Feng, J.: Overcoming
+classifier imbalance for long-tail object detection with balanced group softmax. In:
+CVPR. pp. 10991–11000 (2020)
+20. Li, Y.J., Dai, X., Ma, C.Y., Liu, Y.C., Chen, K., Wu, B., He, Z., Kitani, K., Vajda,
+P.: Cross-domain adaptive teacher for object detection. In: CVPR. pp. 7581–7590
+(2022).https://doi.org/10.1109/CVPR52688.2022.00743
+21. Lin, C.T., Huang, S.W., Wu, Y.Y., Lai, S.H.: GAN-based day-to-night image style
+transfer for nighttime vehicle detection. IEEE Transactions on Intelligent Trans-
+portation Systems22(2), 951–963 (2021)
+22. Lin, T.Y., Goyal, P., Girshick, R., He, K., Dollár, P.: Focal loss for dense object
+detection. In: ICCV. pp. 2980–2988 (2017).https://doi.org/10.1109/ICCV.
+2017.324
+23. Luo, Z., Branchaud-Charron, F., Lemaire, C., Konrad, J., Li, S., Mishra, A.,
+Achkar, A., Eichel, J., Jodoin, P.M.: MIO-TCD: A new benchmark dataset for vehi-
+cle classification and localization. IEEE Transactions on Image Processing27(10),
+5129–5141 (2018).https://doi.org/10.1109/TIP.2018.2848705
+24. Michaelis, C., Mitzkus, B., Geirhos, R., Rusak, E., Bringmann, O., Ecker, A.S.,
+Bethge, M., Brendel, W.: Benchmarking robustness in object detection: Au-
+tonomous driving when winter is coming. arXiv preprint arXiv:1907.07484 (2019).
+https://doi.org/10.48550/arXiv.1907.07484
+25. Milestone Systems: Hafnia dataset: ECCV cross-city object detection dataset.
+https : / / mdi . milestonesys . com / datasets / 5070b3bd5 - 0266 - 4446 - a318 -
+052c993558ef(2024), part of Project Hafnia
+26. Milestone Systems: Project Hafnia: Video data and services for computer vision.
+https://hafnia.milestonesys.com/(2025)
+27. Milestone Systems: Hafnia training-as-a-service.https://hafnia.milestonesys.
+com/training-aas(2026), accessed 20 July 2026
+28. Najeeb, S.A., Raza, R.H., Yusuf, A., Sultan, Z.: Fine-grained vehicle classification
+inurbantrafficscenesusingdeeplearning.In:Proceedingsofthe11thInternational
+ConferenceonRobotics,Vision,SignalProcessingandPowerApplications.Lecture
+Notes in Electrical Engineering, vol. 829, pp. 902–908. Springer (2022).https:
+//doi.org/10.1007/978-981-16-8129-5_138
+29. Neubeck, A., Van Gool, L.: Efficient non-maximum suppression. In: ICPR. vol. 3,
+pp. 850–855 (2006).https://doi.org/10.1109/ICPR.2006.479
+30. Peng, Y., Li, H., Wu, P., Zhang, Y., Sun, X., Wu, F.: D-FINE: Redefine re-
+gression task of DETRs as fine-grained distribution refinement. arXiv preprint
+arXiv:2410.13842 (2025).https://doi.org/10.48550/arXiv.2410.13842
+31. Qi, L., Dong, P., Xiong, T., Xue, H., Geng, X.: DoubleAUG: Single-domain gen-
+eralized object detector in urban via color perturbation and dual-style memory.
+ACM Transactions on Multimedia Computing, Communications, and Applications
+20(5), 1–20 (2024).https://doi.org/10.1145/3634683
+32. Ren, S., He, K., Girshick, R., Sun, J.: Faster R-CNN: Towards real-time object
+detection with region proposal networks. In: Advances in Neural Information Pro-
+cessing Systems. vol. 28 (2015)
+
+===== PAGE 17 =====
+DRAFE for Cross-City Fine-Grained Object Detection 17
+33. Robinson, I., Robicheaux, P., Popov, M., Ramanan, D., Peri, N.: RF-DETR:
+Neural architecture search for real-time detection transformers. arXiv preprint
+arXiv:2511.09554 (2026).https://doi.org/10.48550/arXiv.2511.09554
+34. Ruan, G., Hu, T., Ding, C., Yang, K., Kong, F., Cheng, J., Yan, R.: Fine-
+grained vehicle recognition under low-light conditions using EfficientNet and im-
+age enhancement on LiDAR point-cloud data. Scientific Reports15, 4691 (2025).
+https://doi.org/10.1038/s41598-025-89002-3
+35. Saito, K., Ushiku, Y., Harada, T., Saenko, K.: Strong-weak distribution alignment
+for adaptive object detection. In: CVPR. pp. 6956–6965 (2019).https://doi.org/
+10.1109/CVPR.2019.00712
+36. Sohn, K., Zhang, Z., Li, C.L., Zhang, H., Lee, C.Y., Pfister, T.: A sim-
+ple semi-supervised learning framework for object detection. arXiv preprint
+arXiv:2005.04757 (2020).https://doi.org/10.48550/arXiv.2005.04757
+37. Solovyev, R., Wang, W., Gabruseva, T.: Weighted boxes fusion: Ensembling boxes
+from different object detection models. Image and Vision Computing107, 104117
+(2021).https://doi.org/10.1016/j.imavis.2021.104117
+38. Tang, Z., Wang, S., Anastasiu, D.C., Chang, M.C., Sharma, A., Kong, Q., et al.:
+The 9th AI City Challenge. In: 2025 IEEE/CVF International Conference on Com-
+puter Vision Workshops. pp. 5526–5535. IEEE (2025).https://doi.org/10.1109/
+ICCVW69036.2025.00579
+39. Terkper, K.A., Moomen, M., Rahman, M.A., Mohammed, N.H., Khan, W.A., Cod-
+joe,J.:Understandingvehicleavailabilitypatternsusingcensusdatawithspatially-
+hybrid machine learning models. Case Studies on Transport Policy22, 101641
+(2025).https://doi.org/10.1016/j.cstp.2025.101641
+40. Tian, Y., Ye, Q., Doermann, D.S.: YOLOv12: Attention-centric real-time object
+detectors. arXiv preprint arXiv:2502.12524 (2025).https://doi.org/10.48550/
+arXiv.2502.12524
+41. Vidit, V., Engilberge, M., Salzmann, M.: CLIP the gap: A single domain general-
+ization approach for object detection. In: CVPR. pp. 3219–3229 (2023)
+42. Wang, A., Chen, H., Liu, L., Chen, K., Lin, Z., Han, J., Ding, G.: YOLOv10: Real-
+time end-to-end object detection. In: Advances in Neural Information Processing
+Systems. vol. 37, pp. 107984–108011 (2024).https://doi.org/10.52202/079017-
+3429
+43. Wen, L., Du, D., Cai, Z., Lei, Z., Chang, M.C., Qi, H., Lim, J., Yang, M.H.,
+Lyu, S.: UA-DETRAC: A new benchmark and protocol for multi-object detection
+and tracking. Computer Vision and Image Understanding193, 102907 (2020).
+https://doi.org/10.1016/j.cviu.2020.102907
