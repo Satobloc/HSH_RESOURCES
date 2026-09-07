@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 SKIP_PARTS = {".git", "derived", "__pycache__", ".pytest_cache"}
 
 
@@ -160,6 +160,11 @@ def main() -> int:
     parser.add_argument("--min-chars-per-page", type=int, default=40)
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--apply", action="store_true", help="Write derived outputs; default is dry-run")
+    parser.add_argument(
+        "--allow-errors",
+        action="store_true",
+        help="Record per-file errors without failing the batch",
+    )
     args = parser.parse_args()
 
     root = args.root.resolve()
@@ -216,7 +221,7 @@ def main() -> int:
         rows[rel] = record
     write_manifest(manifest_path, rows)
     print(" ".join(f"{key}={value}" for key, value in summary.items()))
-    return 1 if summary["error"] else 0
+    return 0 if args.allow_errors or not summary["error"] else 1
 
 
 if __name__ == "__main__":
