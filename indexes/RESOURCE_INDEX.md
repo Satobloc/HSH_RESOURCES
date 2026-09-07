@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T17:06:05Z`
-- Tree/content state: `f532875c1236fbe92fb158d38566685094c46b181672006151dd795af5ac478b`
+- Scanned: `2026-09-07T17:19:27Z`
+- Tree/content state: `8743cffc3cbfe3bfa926753f3a8a8d3659f62bdc2e4386b5f7a1c0dc2bb1a6c2`
 - Coverage: complete structural traversal
-- Files: 529
-- Uploaded source files: 522
-- PDF papers: 514
+- Files: 538
+- Uploaded source files: 531
+- PDF papers: 523
 - Repository machinery files: 7
 - Byte-identical duplicate groups: 29
 
@@ -32,7 +32,7 @@
 | `HAUL 8` | 14 |
 | `HAUL 9` | 4 |
 | `KERR` | 16 |
-| `OUTSIDE RESEARCH LIBRARY` | 238 |
+| `OUTSIDE RESEARCH LIBRARY` | 247 |
 | `README.md` | 1 |
 | `derived` | 1 |
 | `requirements-tools.txt` | 1 |
@@ -644,10 +644,19 @@
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.24002v1.pdf` | 3104833 | arxiv:2608.24002v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.24690v1.pdf` | 12418335 | arxiv:2608.24690v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.28523v1.pdf` | 5746965 | arxiv:2608.28523v1 |
+| `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.29295v1_part001_p0001-0015.pdf` | 22043210 |  |
+| `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.29295v1_part002_p0016-0023.pdf` | 16815783 |  |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.30029v1.pdf` | 691046 | arxiv:2608.30029v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2609.03056v1.pdf` | 3363278 | arxiv:2609.03056v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2609.03710v1.pdf` | 615184 | arxiv:2609.03710v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/Long-term statistics of pulsar glitches due to history-dependent avalanches.pdf` | 2268501 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Caltech startup unveils physics AI that skips transformers_ No benchmark proof yet.pdf` | 1112359 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Chemical physicists quantitatively model electron interactions in real quantum materials.pdf` | 403955 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Long-predicted gravitational effect seen in a quantum object for the very first time – Einstein’s theory passes another crucial test.pdf` | 1384921 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Science says some spiders can launch into the sky using silk and electricity to fly and the physics is wild.pdf` | 1101043 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists observe Einstein's gravity in the quantum world.pdf` | 1298617 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/The physics of brain development_ How cells pull together to form the neural tube.pdf` | 144799 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/“Really bizarre” quantum discovery defies the rules of physics _ ScienceDaily.pdf` | 1584190 |  |
 
 ## Limitations
 

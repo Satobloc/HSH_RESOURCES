@@ -1,0 +1,1407 @@
+===== PAGE 1 =====
+Automated identification and subtraction of gravitational-wave glitches using
+boundary refinement
+Mohammad Abu Thaher Chowdhury ∗ and Soumya D Mohanty †
+Department of Physics and Astronomy, The University of Texas Rio Grande Valley,
+One West University Blvd., Brownsville, TX 78520, United States of America
+Transient noise artifacts, or glitches, in gravitational wave strain data elevate the false alarm rate
+of astrophysical searches and degrade parameter estimation when overlapping a signal. No method
+previously identified a glitch’s time boundary: existing detection and classification tools flag and
+label glitches without resolving their extent, forcing subtraction to run over padded windows that
+cost time and erase signal beyond the glitch itself. We present three boundary identification methods,
+AMPS (Amplitude-based Multi-glitch Pulse Segmenter), FLARE (Fitness-based Localization And
+Refinement Extractor), and CRISP (connected-region identification via spectrogram power), paired
+with three subtraction techniques, adaptive spline fitting, wavelet shrinkage, and their combination,
+across five glitches from the GravitySpy database spanning Advanced LIGO’s first three observing
+runs. AMPS sets a boundary from a robust amplitude threshold, FLARE from the best fitness
+of a segmented spline fit, and CRISP from spectrogram power. Injecting a chirp signal on four
+broadband glitches, the combined technique recovers 95 to 97 percent of the injected signal-to-
+noise ratio, against roughly 64 percent for wavelet shrinkage alone. CRISP gives the most uniform
+boundary width across glitches; AMPS and CRISP both identify a boundary in a fraction of a second,
+two to three orders of magnitude faster than FLARE. For the glitch overlapping GW170817, a low-
+frequency residual persists under the default boundary, a deliberate tradeoff against removing signal
+power. Scattered light glitches remain untested and are the primary direction for future work.
+I. INTRODUCTION
+The false alarm rate of searches for compact binary co-
+alescences and generic short duration gravitational wave
+bursts is dominated by transient non-astrophysical arti-
+facts, commonly called glitches. A glitch that overlaps a
+genuine signal can cause a search pipeline to reject the
+signal outright, as occurred for GW170817 [1], or can bias
+the estimated parameters of the signal even when the
+overlap is partial. In the third observing run of the Ad-
+vanced LIGO and Advanced Virgo detectors, a substan-
+tial fraction of detected signals overlapped with glitches,
+owing in part to the elevated glitch rate in Virgo.
+A number of methods exist for mitigating glitches,
+ranging from vetoes computed alongside the primary de-
+tection statistic [2, 3], to gating of the affected time in-
+terval [4–6], to estimation and subtraction of the glitch
+waveform itself using either auxiliary sensor data [7–9]
+or the strain time series alone [10–12]. Adaptive spline
+fitting, implemented in the algorithm Swarm Heuris-
+tics based Adaptive and Penalized Estimation of Splines
+(SHAPES) [12, 13], has been demonstrated to estimate
+and subtract broadband, short duration glitches with
+negligible impact on an overlapping astrophysical sig-
+nal [12], and wavelet shrinkage [14] provides a related
+nonparametric approach explored further in this work.
+A step that precedes glitch subtraction, and that has re-
+ceived comparatively less attention, is the identification
+of the glitch boundary, meaning the time interval over
+∗ chowdm4@rpi.edu; Also at Department of Physics, Applied
+Physics and Astronomy, Rensselaer Polytechnic Institute.
+† soumya.mohanty@utrgv.edu
+which the glitch waveform departs from the surround-
+ing noise floor. An inaccurate boundary leaves residual
+glitch power after subtraction, or removes signal power
+well outside the glitch’s true extent.
+GravitySpy combines citizen-science visual inspection
+of Q-transform spectrograms with a convolutional neu-
+ral network first pass that flags candidate glitches be-
+fore sorting them into morphological classes such as
+Blip, Tomte, and Koi Fish [15, 16]. Omicron takes a
+fully automated route, applying a bank of sine-Gaussian
+templates across the data stream to flag excess-power
+transients as glitch triggers without relying on a pre-
+labeled training set, and similarity-learning approaches
+push this further by embedding glitches in a learned fea-
+ture space, which allows a previously unseen morphol-
+ogy to be flagged as anomalous before it has a name
+[17, 18]. This open-ended identification proved useful in
+practice: detector characterization efforts combining cit-
+izen science with machine learning uncovered new glitch
+classes during the third observing run, including fast
+scattering and low-frequency blip morphologies that had
+not been catalogued before [19]. More recent methods
+identify glitches through statistical or geometric devia-
+tion rather than through learned templates altogether.
+A t-SNE based approach embeds Q-transform features
+into a low-dimensional space and tracks outlier transients
+across successive days of observing time [20], an autoen-
+coder trained on auxiliary-channel data encoded through
+fractal dimension flags departures from the learned back-
+ground distribution, uncovering glitches and glitch over-
+laps in about 6.6 percent of the data examined [21], and
+a Fisher information velocity model treats the detector
+noise floor as a point on a Riemannian manifold, flagging
+a glitch when the noise floor drifts or warps sharply across
+arXiv:2608.29295v1  [gr-qc]  29 Aug 2026
+
+===== PAGE 2 =====
+2
+frequency without requiring a spectrogram or waveform
+template at all [22]. Each of these methods is concerned
+with detecting that a glitch is present and, where possi-
+ble, marking its boundary or its class; none attempt to
+estimate or subtract the glitch waveform itself, which is
+addressed by a different family of methods discussed in
+Section II.
+Two further strands of prior work bear directly on
+the boundary and confirmation problem tackled below.
+Steltner et al. remove non-Gaussian transients ahead
+of continuous-wave searches using a paired amplitude-
+threshold scheme: a low threshold groups nearby excur-
+sions over a set duration, a much higher threshold de-
+cides whether a group is retained, and both thresholds
+are tuned iteratively against a frequency-domain power-
+spectral-density ratio in a clean reference band [6]. Their
+method decides what to gate out of the data outright; it
+does not hand off a bounded segment for subtraction. A
+related robust-statistics argument, using the median ab-
+solute deviation [23] rather than the sample standard de-
+viation so that an outlier cannot inflate the very statistic
+used to flag it, appears in pulsar-timing glitch detection
+applied to timing residuals [24]. On the boundary side,
+Omicron’s tile-based trigger does not resolve a boundary
+beyond the triggering tile itself [17]. Coherent WaveBurst
+also flags excess power in a wavelet representation, but
+distinguishes a genuine signal from a glitch using cross-
+detector coherence rather than power alone, since a real
+signal produces excess power that is coherent between de-
+tectors while a glitch’s excess power is typically confined
+to one [25]. Earlier work on individual glitch instances
+instead confirms a boundary by starting from the glitch’s
+peak and scanning the surrounding time series visually
+until the strain tapers to the noise floor [12]. None of
+these approaches produces a glitch boundary automati-
+cally: one requires visual inspection, and the others ei-
+ther gate data outright or stop at a triggering tile without
+ever defining a start and stop time for downstream use,
+which is the specific gap the boundary methods intro-
+duced in Section II are designed to close.
+A more recent line of work targets scattered light
+rather than treating it as a residual case. An adaptive
+time-varying filter approach decomposes the strain to iso-
+late and subtract scattering arches without requiring a
+template for the arch shape, and reports recovery within
+a fraction of a percent of the injected glitch amplitude on
+synthetic data built to resemble O3-era scattering [26].
+This is the identification and subtraction gap our own
+comparison leaves open, and we return to it in Section
+VI.
+A recurring limitation across these identification meth-
+ods is that a glitch’s actual duration is rarely known pre-
+cisely. Most subtraction pipelines apply their algorithm
+over a generously padded window, wasting computation
+and risking removal of power from stretches containing
+nothing but ordinary background. A tighter boundary
+would let the subtraction algorithm run only on the glitch
+segment, cutting runtime and making large-scale appli-
+cation across an observing run more practical. Accuracy
+matters for a second reason: gravitational wave signals
+can sit underneath a glitch, and the danger is not limited
+to long-duration signals, since a short-duration morphol-
+ogy such as GW170817, the Tomte glitch, or the Blip
+glitch can overlap a signal just as easily.”
+In this paper we present three boundary identifica-
+tion methods: AMPS, the Amplitude-based Multi-glitch
+Pulse Segmenter; FLARE, the Fitness-based Localiza-
+tion And Refinement Extractor; and CRISP, connected-
+region identification via spectrogram power, each de-
+scribed in Section II. We compare the boundaries these
+methods produce, and the subsequent subtraction results
+obtained using SHAPES and wavelet shrinkage, across
+Blip, Tomte, Koi Fish, the low frequency blip, and the
+glitch overlapping GW170817, drawn from the first, sec-
+ond, and third observing runs of Advanced LIGO.
+II. GLITCH IDENTIFICATION METHODS
+Reliable glitch subtraction depends first on locating
+and recognizing a glitch in the data, a task distinct from
+the subtraction itself. Gravity Spy combines citizen-
+science visual inspection of Q-transform spectrograms
+with a convolutional neural network first pass that flags
+candidate glitches before sorting them into morpholog-
+ical classes such as Blip, Tomte, and Koi Fish [15, 16].
+Omicron takes a fully automated route, applying a bank
+of sine-Gaussian templates across the data stream to flag
+excess-power transients as glitch triggers without rely-
+ing on a pre-labeled training set, and similarity-learning
+approaches push this further by embedding glitches in
+a learned feature space, which allows a previously un-
+seen morphology to be flagged as anomalous before it has
+a name [18, 27]. This open-ended identification proved
+useful in practice: detector characterization efforts com-
+bining citizen science with machine learning uncovered
+new glitch classes during the third observing run, includ-
+ing fast scattering and low-frequency blip morphologies
+that had not been catalogued before [19]. More recent
+methods identify glitches through statistical or geomet-
+ric deviation rather than through learned templates al-
+together. A t-SNE based approach embeds Q-transform
+features into a low-dimensional space and tracks out-
+lier transients across successive days of observing time
+[20], an autoencoder trained on auxiliary-channel data
+encoded through fractal dimension flags departures from
+the learned background distribution, uncovering glitches
+and glitch overlaps in about 6.6 percent of the data ex-
+amined [21], and Fisher information velocity models the
+detector noise floor as a point on a Riemannian mani-
+fold, flagging a glitch when the noise floor drifts or warps
+sharply across frequency without requiring a spectrogram
+or waveform template at all [22]. Each of these methods
+is concerned with detecting that a glitch is present and,
+where possible, marking its boundary or its class; none
+of them attempt to estimate or subtract the glitch wave-
+
+===== PAGE 3 =====
+3
+form itself, which is a separate problem addressed by a
+different family of methods and discussed in section III.
+Two further strands of prior work bear on the bound-
+ary and confirmation problem tackled below. Stelt-
+ner et al. remove non-Gaussian transients ahead of
+continuous-wave searches using a paired amplitude-
+threshold scheme: a low threshold groups nearby excur-
+sions over a set duration, a much higher threshold de-
+cides whether a group is retained, and both thresholds
+are tuned iteratively against a frequency-domain power-
+spectral-density ratio in a clean reference band [6]. Their
+method decides what to gate out of the data outright; it
+does not hand off a bounded segment for subtraction. A
+related robust-statistics argument, using the median ab-
+solute deviation [23] rather than the sample standard de-
+viation so that an outlier cannot inflate the very statistic
+used to flag it, appears in pulsar-timing glitch detection
+applied to timing residuals [24].
+On the boundary side, Omicron flags a time-frequency
+tile as a glitch trigger when its power in a sine-Gaussian
+tile bank exceeds what stationary Gaussian noise would
+produce at a set false-alarm probability, without resolv-
+ing a boundary beyond the triggering tile itself [17]. Co-
+herent WaveBurst also flags excess power in a wavelet
+representation, but distinguishes a genuine signal from a
+glitch using cross-detector coherence rather than power
+alone, since a real signal produces excess power that is co-
+herent between detectors while a glitch’s excess power is
+typically confined to one [25]. Neither tool is built to re-
+turn an explicit start and stop time for a single-detector
+glitch, which is the specific gap the boundary method
+introduced in Section II C is designed to close.
+A recurring limitation across these identification meth-
+ods is that the actual duration of a glitch is rarely known
+with precision. Most existing subtraction pipelines apply
+their algorithm over a generously padded window around
+a rough glitch location, wasting computation and risking
+removal of power from ordinary background. If the true
+glitch boundary could be located more tightly, the sub-
+traction algorithm would only need to run on the glitch
+segment itself rather than across the surrounding data,
+which would cut down runtime substantially and make
+large-scale application across an observing run far more
+practical.
+Accurate boundary identification also matters for a
+second reason. Gravitational-wave signals can, and some-
+times do, sit underneath a glitch, and the danger is not
+limited to long-duration signals; a short-duration mor-
+phology such as a Koi Fish or a Tomte glitch can over-
+lap with the merger portion of a compact binary sig-
+nal, where the signal-to-noise ratio is highest and where
+the cost of losing signal power is greatest. The clearest
+early case is GW170817, where a loud blip glitch over-
+lapped the tail of the binary neutron star signal in the
+LIGO Livingston strain [1]. A comparable case recurs in
+O3b: GW191109, a high-mass binary black hole event,
+had its Livingston data affected by a scattering glitch co-
+incident with the merger, and the presence of this glitch
+was shown to bias the inferred spin of the binary depend-
+ing on how the glitch was modeled [28]. These are not
+isolated incidents; a number of other events across O1
+through O3 have required some form of glitch modeling
+or subtraction before their parameters could be trusted
+[29]. The methods below were developed with both goals
+in mind: minimizing the time spent applying the subtrac-
+tion algorithm, and minimizing the amount of ordinary
+background that gets altered in the process.
+A. AMPS: an amplitude-threshold identification
+method
+FIG. 1: Whitened strain amplitude (vertical axis,
+dimensionless) against time in seconds (horizontal axis)
+for four segments, each containing a different glitch
+class: GW170817 (top left), Blip (top right), Tomte
+(bottom left), and Low Frequency Blip (bottom right).
+Each segment also contains several other glitches. The
+vertical axis range differs from panel to panel, scaled to
+the amplitude of the glitch shown, so peak heights
+should not be compared across panels. The sharp
+amplitude excursion above the surrounding background
+is visible for every glitch shown, motivating the
+amplitude threshold method described below.
+The amplitude threshold method rests on a simple em-
+pirical observation: glitches of the classes considered in
+this work (Blip, Tomte, Koi Fish, low frequency blip, and
+GW170817) all show noticeably higher sample amplitude
+than the surrounding Gaussian background. This is visi-
+ble in Figure 1, where the whitened strain amplitude rises
+sharply above the flat background level at the location of
+each glitch, whether it is the glitch near GW170817, the
+Tomte glitch, or the blip glitch.
+We refer to the identification procedure built on this
+observation as AMPS, the Amplitude-based Multi-glitch
+Pulse Segmenter. AMPS operates on the absolute value
+of the whitened strain and proceeds in three stages: set-
+ting a robust amplitude threshold, flagging and cluster-
+ing the samples that exceed it, and padding the resulting
+clusters into working data segments.
+
+===== PAGE 4 =====
+4
+The threshold is set from the median and the median
+absolute deviation (MAD) of the absolute strain rather
+than from the sample mean and standard deviation, be-
+cause a loud glitch can otherwise inflate the estimated
+noise level and suppress its own detection. Denoting the
+whitened strain samples byy i, the threshold is
+σr = 1.4826·MAD(|y i|),
+ythr = median(|yi|) +kσ r, (1)
+where the scale factor 1.4826 converts the MAD into an
+estimate of the standard deviation under a Gaussian as-
+sumption, andkis a user-set multiplier that controls the
+sensitivity of the detector. A default ofk= 10 was used
+for the raw amplitude check across all five glitch classes in
+this work, and this value cleared the background cleanly
+without flagging spurious noise fluctuations for any of
+them. Under the Gaussian assumption used to whiten
+the strain and underlying the MAD-based threshold con-
+struction [23], this threshold corresponds to a two-sided
+false-alarm probability of order 10−23 per sample. Com-
+bined across the full exposure of the O1, O2, and O3
+observing runs used in this work, the expected number
+of false-flagged samples remains below 10 −11 , leaving
+substantial margin against non-Gaussian tails in real de-
+tector noise while remaining sensitive to genuine glitches.
+Every sample with|y i|≥y thr is flagged and its index
+recorded. Figure 2 marks this threshold on a segment of
+O3a data as a pair of dashed gray lines, one aty thr and
+one at−y thr, against which the flagged excursions can
+be compared.
+The flagged indices are then partitioned into clusters
+using the gap between consecutive flagged sample indices,
+not the gap between their amplitude values. A gap of
+more than 100 samples between two consecutive flagged
+points was used to start a new cluster in this work, and
+this setting reliably separated distinct glitches without
+splitting a single glitch whose amplitude dipped briefly
+below threshold partway through. This index-based par-
+titioning is what lets AMPS separate two glitches that
+occur close together in time from a single, larger glitch
+behaving the same way. The inset of Figure 2 shows this
+directly: five glitches occurring within about one second
+of each other are each enclosed in their own red box,
+and the narrow gap between the third and fourth boxes
+marks a brief return of the strain belowy thr, which is
+what keeps AMPS from merging these two into a single
+detection.
+Each cluster is finally extended by a fixed total pad,
+split evenly across its two ends so that an equal number
+of samples is prepended before the cluster start and ap-
+pended after the cluster end. A pad of 200 samples on
+each side was used throughout this work to build the wing
+regions flanking each glitch, and this padding consistently
+captured enough quiescent background on both sides for
+the subtraction stage without extending far enough to
+risk overlapping a neighbouring glitch. Because the same
+number of samples is added on each side, the working seg-
+ment carries a matched stretch of quiescent background
+both before and after the flagged excursion. Boundary
+cases are handled independently at each end of the data:
+the padded start of the first cluster is clipped to the first
+sample if it would otherwise fall before the start of the
+time series, and the padded end of the last cluster is
+clipped to the last sample under the equivalent condition
+at the other end. The output of AMPS is a list of start
+and end index pairs, one per identified glitch, that can
+be passed to a subtraction or characterization pipeline.
+FIG. 2: Identification of multiple glitches by AMPS in a
+representative segment of O3a data. In the lower panel,
+the horizontal axis is time in seconds and the vertical
+axis is whitened strain amplitude, dimensionless. The
+dashed gray lines mark the amplitude thresholdy thr of
+Eq. 1, and red boxes enclose the segments where this
+threshold is exceeded. The pink arrow points to the
+region reproduced in the inset, spanning roughly 2591.7
+to 2592.7 s on the same two axes. Within this short
+window, five separate glitches are each enclosed in their
+own red box, showing that AMPS separates closely
+spaced glitches into distinct detections rather than
+merging them into one, provided the amplitude drops
+back below threshold between them.
+The strength of AMPS is its simplicity and speed: it
+requires no training, no auxiliary channel, and no itera-
+tive fitting. Its main weakness is that for weaker glitches
+the raw amplitude may not clear the threshold, which re-
+quires a low-pass filtering step before the check can suc-
+ceed, and the resulting boundary from padding is com-
+paratively coarse next to the best-fit spectrogram method
+described next.
+B. FLARE: a spline-fitness-guided boundary
+refinement method
+The second method leans on theSHAPES(explained
+in Section III A) adaptive spline-fitting algorithm it-
+self, rather than on the raw whitened amplitude used
+by AMPS. We refer to this identification procedure as
+FLARE, the Fitness-based Localization And Refinement
+Extractor. FLARE fits a spline [13, 30] model with a
+fixed number of knots to each of a sequence of consecu-
+tive, overlapping segments spanning the full time series,
+using particle swarm optimization [31] to search over knot
+placements, and repeating the search for several indepen-
+
+===== PAGE 5 =====
+5
+dent optimizer runs per segment before keeping the run
+with the best fitness as the representative model for that
+stretch of data. Prior to fitting, the strain may option-
+ally be passed through a short moving-average filter and
+resampled to a different sampling rate; both steps are
+optional, and the data is used unmodified when they are
+skipped. The trailing segment at the end of the series
+is merged inward with its predecessor whenever the data
+left over would otherwise fall short of a usable minimum
+length.
+Figure 3a shows an 8-second stretch of O1 data con-
+taining a Koi Fish glitch, with the region FLARE even-
+tually identifies marked by the red box. Applying the
+method to this stretch splits it into nine overlapping seg-
+ments rather than eight, since each segment’s overlap
+with its predecessor shifts the start of the next segment
+back by less than a full segment length; the segment over-
+lap used throughout this work is 30 samples out of a
+nominal segment length set by the sample count in use.
+Figure 3b plots the bestfitness value against this segment
+count, one point per segment, for the same stretch of
+data.
+Because Gaussian background is comparatively easy
+to fit, its bestfitness value stays close to a stable baseline
+across the whole time series, while a segment containing a
+glitch produces a markedly higher bestfitness value since
+the spline has to work harder to track the sharp features.
+This is visible in Figure 3b: the bestfitness value stays
+between roughly 15 and 25 for eight of the nine segments,
+then jumps to nearly 95 at segment 5, the segment that
+contains the glitch marked in panel (a). The working
+threshold is set from the fitness distribution itself rather
+than from a fixed cutoff. Writingfj for the best-fit fitness
+of segmentj, the threshold is
+fthr = mode(fj) +
+
+max
+j
+fj−min
+j̸=N
+fj
+
+,(2)
+where the minimum is taken over all segments except the
+final one, since a merged or undersized trailing segment
+can otherwise distort the spread estimate. Any segment
+whose fitness exceedsf thr is flagged as a glitch candi-
+date, and its boundaries are mapped from the (possibly
+resampled) fitting grid back onto the original sampling
+grid before the refinement stage. Segment 5 clears this
+threshold and is passed forward as the sole candidate;
+Figure 3c shows the corresponding one-second data win-
+dow on its own, with the glitch spike visible neart= 0.3 s
+against an otherwise flat background.
+Once a candidate segment is flagged, a spectrogram is
+built for that segment alone, and the maximum power
+within each time column, taken across frequency, forms
+an envelope describing how the signal content varies
+over the segment. Figure 3d shows this spectrogram
+for the Koi Fish segment, computed with the MATLAB
+spectrogramfunction [32], returns the square root of
+the power of the short-time Fourier transform (STFT) of
+the signal [33, 34], plotted here on a base-10 logarithmic
+scale. A broadband patch of elevated energy, extending
+from near 0 Hz to above 200 Hz, sits between roughly
+0.2 and 0.4 s, well above the flat, low-level background
+that fills the rest of the panel. Two separate fractions
+of this envelope are used at this stage, and it is worth
+keeping them distinct: one fraction governs the display
+thresholding shown in Figure 3e, in which time-frequency
+pixels below the fraction are zeroed out, leaving only the
+patch just described; a second fraction, applied to the
+envelope rather than to the full time-frequency plane, de-
+termines which time columns are taken to belong to the
+glitch, and it is this second criterion that sets the tight
+glitch boundary read off from the surviving columns and
+mapped back onto the time series in Figure 3f. Both frac-
+tions are reported in Section V together with the other
+method parameters.
+Panels (a) through (c) of Figure 3 therefore correspond
+to the coarse detection step, while panels (d) through
+(f) correspond to the boundary refinement step, so this
+single figure closes the loop between the two mechanisms
+described above. Panel (f) shows the glitch confined to a
+window of about 0.01 s width, with the strain returning
+to background level cleanly on both sides.
+FLARE additionally applies a downsampling factor of
+4 to the fitting grid before the particle swarm search,
+a step not used by AMPS or CRISP. Fitting a spline
+through particle swarm optimization at the native sam-
+pling rate of the strain is computationally demanding,
+and repeating that search once for every segment across
+a series that is mostly Gaussian background spends far
+more effort than the bulk of the data warrants. On an 8-
+second stretch of data originally sampled at 32768 points,
+running FLARE at the native rate takes close to 30 sec-
+onds to reach the best-fitness values for every segment,
+and pushing the sampling rate higher still, to twice the
+native length through upsampling, raises this past 240
+seconds. Reducing the sample count instead brings the
+timing down sharply: 22 seconds at 8192 samples and
+roughly 16 seconds at 4098 samples, a four- to eightfold
+count reduction from the native rate.
+This speed carries two costs. More samples mean more
+work for the particle swarm optimizer on every segment,
+so fitting time grows with data length, as the timings
+above show. Less obviously, the strain at native sam-
+pling, and more so under upsampling, carries additional
+high-frequency noise that the spline model must absorb
+along with the glitch itself, which degrades how cleanly
+FLARE isolates the glitch segment: the best-fitness curve
+grows noisier and less sharply peaked at the true glitch
+location. Downsampling suppresses this noise as a side
+effect of reducing the sample count, which is part of why
+boundary identification holds up well despite the coarser
+data. The reduction has a floor, since the segment-
+boundary bookkeeping that maps flagged segments back
+onto the original time grid is tied to the sampling rate
+in use; lowering it further would require adjusting that
+bookkeeping rather than rerunning the same pipeline. A
+sample count in the low thousands, rather than the native
+tens of thousands, gives the best balance of fitting time
+
+===== PAGE 6 =====
+6
+(a)
+ (b)
+ (c)
+(d)
+ (e)
+ (f)
+FIG. 3: Identification of a Koi Fish glitch using the bestfitness-spectrogram threshold method. (a) Whitened strain
+(vertical axis) against time in seconds (horizontal axis) for an 8-second stretch of O1 data, with the region FLARE
+identifies as the glitch marked by the red box. (b) Bestfitness value against segment count for the same stretch; the
+horizontal axis indexes the nine overlapping segments produced by splitting the 8-second stretch as described in the
+text, and the vertical axis is the bestfitness value of Eq. 2, dimensionless. (c) Whitened strain (vertical axis) against
+time in seconds (horizontal axis) for the one-second segment selected by the bestfitness value in (b), with the glitch
+spike visible neart= 0.3 s. (d) Spectrogram of the segment in (c), with time in seconds on the horizontal axis,
+frequency in Hz on the vertical axis, and normalized energy on a logarithmic color scale. (e) The same spectrogram
+after column-wise power thresholding, leaving only the pixels associated with the glitch, on the same three axes as
+(d). (f) Whitened strain (vertical axis) against time in seconds (horizontal axis) for the identified glitch boundary,
+obtained by mapping the surviving columns of (e) back onto the time series. Panels (a)-(c) illustrate the coarse
+detection step, and (d)-(f) illustrate the boundary refinement step.
+and boundary noise for the glitch classes considered here,
+and is the operating point used throughout Section V.
+Compared to the amplitude threshold method, this ap-
+proach identifies a noticeably tighter boundary because
+it draws on the frequency content of the glitch rather
+than on amplitude alone, at the cost of an additional
+spectrogram-construction step and a considerably heav-
+ier per-segment fitting cost.
+C. CRISP: a spectrogram-localized,
+amplitude-confirmed identification method
+The third identification method combines
+spectrogram-based localization with an amplitude-
+based confirmation step. We refer to this method as
+CRISP. CRISP is built on the strengths of the two
+methods above: it borrows AMPS’s amplitude confirma-
+tion for speed, and FLARE’s use of a spectrogram for
+a tight, frequency-informed boundary, without carrying
+FLARE’s per-segment spline-fitting cost. CRISP scans
+a full data stretch rather than requiring a pre-selected
+glitch segment. It determines the start and stop times
+from the magnitude of the STFT, computed as a
+spectrogram; AMPS is applied only to confirm a candi-
+date inside the resulting boundary and never redefines
+that boundary.CRISP operates on the automatically
+whitened strain data. Whitening removes much of the
+unwanted noise and improves the visibility of the glitch
+classes considered here, including the low frequency blip.
+CRISP begins with a coarse scan over the complete
+time series. The data are split into overlapping blocks of
+64 s duration with a 2 s overlap. Each block is turned
+into a spectrogram with a 512-sample Hann window, 480-
+sample overlap, and a 4096-point Fourier transform. The
+maximum STFT magnitude in each time column is com-
+puted, and a column is flagged as a candidate when this
+magnitude exceeds a robust threshold built from the me-
+dian and median absolute deviation of the column max-
+ima, with a default z-score of 3. Flagged columns within
+2 s of each other are merged, giving the rough candidate
+intervals of Stage A. Figure 4a shows this stage applied
+to an 8-second stretch of O3b data containing a Tomte
+glitch: the red box marks the interval CRISP eventu-
+ally identifies, against the whitened strain over the full
+stretch.
+Each Stage A candidate interval is extended by 0.5 s
+at its start and 0.5 s at its end, and the extended seg-
+ment is re-examined with a finer spectrogram. Figure 4c
+shows this finer spectrogram for the same glitch: the
+horizontal axis is time in seconds, the vertical axis is
+frequency in Hz, and the color scale is the base-10 log-
+arithm of the short-time Fourier transform magnitude.
+The strong STFT magnitude near the bottom of the
+panel is already visible in this unmasked spectrogram.
+A loose STFT magnitude mask, set at 20% of the largest
+
+===== PAGE 7 =====
+7
+(a)
+ (b)
+(c)
+ (d)
+FIG. 4: CRISP applied to a Tomte glitch drawn from
+O3b data. (a) Whitened strain (vertical axis) against
+time in seconds (horizontal axis) for an 8-second
+stretch, with the interval CRISP identifies marked by
+the red box. (b) Whitened strain (vertical axis) against
+time in seconds (horizontal axis) for the identified
+boundary, zoomed in, showing the glitch spike against
+the surrounding background. (c) Spectrogram of the
+candidate segment before masking; the horizontal axis
+is time in seconds, the vertical axis is frequency in Hz,
+and the color scale is the base-10 logarithm of the
+short-time Fourier transform magnitude. (d) The same
+spectrogram after the second, stricter power mask, on
+the same three axes as (c); the start and stop columns
+of the surviving region set the boundary shown in (a)
+and (b).
+column maximum, is passed to an eight-connected com-
+ponent search on this spectrogram to isolate this region
+formally. A component survives only if it has sufficient
+area, frequency span, and time span, and is rejected if it
+is line-like or spans too large a fraction of the candidate
+window; these conditions keep narrowband spectral lines
+and other persistent structures from being mistaken for
+transient glitches. As with the AMPS threshold, the z-
+score and mask fractions used here were tuned against
+the five instances in this study rather than derived from
+a general false-alarm argument; Section VI outlines a
+machine-learning-based search intended to fix these val-
+ues against a larger sample.
+The connected-component step confirms a candidate
+blob is real without giving a tight boundary; CRISP
+tightens it with a second, stricter STFT magnitude mask,
+set at three times the loose mask’s fraction, applied only
+within pixels the loose mask already validated. Fig-
+ure 4d shows the result of this stricter mask: the sur-
+viving region narrows relative to the unmasked spectro-
+gram in Figure 4c, and the start and stop columns of
+this tightened region define the final CRISP boundary.
+This boundary comes from the resolved time extent of a
+spectrogram-power component, not from an approximate
+sample count. Figure 4b shows the resulting boundary
+zoomed in on the whitened time series, confirming that
+the selected region lines up with the visible glitch spike.
+This excess-power premise is the same one behind Omi-
+cron’s tile-based triggering [17], but CRISP resolves a
+full start and stop boundary through its two-tier mask-
+ing step rather than stopping at the triggering tile, and
+it does not use the cross-detector coherence test that Co-
+herent WaveBurst relies on to separate signal from glitch
+[25], since CRISP’s task is to localize a glitch already
+known to be present rather than to classify it.
+The bounded segment is then tested with the AMPS
+procedure of Section II A, using the whole-dataset me-
+dian and median absolute deviation of the whitened
+strain computed once up front, rather than recomputed
+on each short segment, so that a short segment with un-
+usually flat statistics cannot bias its own threshold. Run-
+ning AMPS on the bounded segment confirms the glitch
+through an independent amplitude-based check. A full
+best-fit boundary refinement of the kind FLARE per-
+forms would still be costly to run on every Stage A can-
+didate, so confirming with a fast amplitude check instead
+keeps CRISP close to FLARE’s boundary accuracy with-
+out its per-candidate cost.
+III. GLITCH SUBTRACTION
+A number of methods have been developed for glitch
+subtraction, each resting on a different assumption about
+what separates a glitch from the surrounding back-
+ground.BayesW avemodels a glitch as a superposi-
+tion of wavelets and separates it from an astrophysi-
+cal signal using coherence across the detector network
+[10].gwsubtractestimates a linear transfer function
+from an auxiliary witness channel and subtracts the re-
+sulting noise estimate from the strain [35].glitch-
+schenapplies probabilistic principal component analy-
+sis to a library of known glitches to build a paramet-
+ric model [11], whileDeepCleanand related convolu-
+tional architectures learn a nonlinear mapping from aux-
+iliary channels to the noise component of the strain [36?
+]. More recently,DeepExtractorhas reframed sub-
+traction as a background-noise reconstruction problem,
+using a U-Net to predict and remove the noise compo-
+nent directly without a glitch template [37], and a null-
+stream-based method has been proposed for triangular
+third-generation detectors such as the Einstein Telescope,
+where any transient in the null stream can be attributed
+to a glitch by construction [38]. A fuller treatment of
+these methods and their relative strengths is given in
+[39]. In this work, glitch subtraction is carried out us-
+ing adaptive spline fitting, followed by wavelet shrinkage,
+both described below.
+A. Adaptive spline fitting
+Adaptive spline fitting, implemented in the algorithm
+SHAPES (Swarm Heuristics based Adaptive and Penal-
+ized Estimation of Splines), estimates a signals(t) buried
+
+===== PAGE 8 =====
+8
+in white Gaussian noise by modelings(t) as a cubic spline
+with a free number and placement of knots [13]. For sam-
+pled data
+yi =s(t i) +ϵi, i= 0,1,...,N−1,(3)
+withϵ i drawn fromN(0,1), the spline is written as a
+linear combination of cubic B-spline basis functions,
+s(t) =
+P−5X
+j=0
+αjBj,4(t),(4)
+whereτ= (τ 0,τ 1,...,τ P−1 ) is a sequence ofPknots and
+αthe corresponding spline coefficients. The B-spline ba-
+sis functionsB j,4(t) are computed efficiently using the
+Cox–de Boor recursion relations [30, 40]. Knots may re-
+peat up to three times, allowing the spline to represent
+point discontinuities in value or in derivatives up to sec-
+ond order, a feature required to fit both the smooth and
+rapidly varying parts of a glitch waveform within a single
+model.
+The best fit parametersαandτminimize a penalized
+least squares objective,
+L(α,τ) =
+N−1X
+i=0
+(yi−s(ti))2 +γR(α),(5)
+where
+R(α) =
+P−5X
+j=0
+α2
+j (6)
+suppresses spurious clustering of knots around noise out-
+liers, and the penalty gainγcontrols the smoothness of
+the fit. Sinceαenters the model linearly, the minimiza-
+tion overαfor a fixedτreduces to a closed form ridge
+regression solution. The harder problem, optimizing the
+placement of the knotsτ[41–44], is solved in SHAPES
+using particle swarm optimization [45], a metaheuristic
+that explores the knot placement space with a popula-
+tion of particles updated according to their own and their
+neighbors’ best located solutions. Multiple independent
+runs of the swarm are carried out in parallel, and the run
+with the lowest objective value is retained. The number
+of knotsPis chosen by minimizing the Akaike informa-
+tion criterion [46] over a fixed, user-specified range of can-
+didate values, while the penalty gainγremains a free pa-
+rameter set by the user, though SHAPES has been found
+to be fairly insensitive to its exact value across a range of
+glitch waveforms [12] (see [12, 13] for a complete deriva-
+tion, including model selection and the particle swarm
+scheme).
+Despite this penalization, SHAPES can still overfit a
+segment of data on occasion, placing a knot near a stretch
+of nothing but noise and fitting that stretch more closely
+than is warranted, which shows up as a spurious local
+feature in the estimated glitch waveform. This behavior
+motivates the wavelet shrinkage step applied on top of
+the SHAPES estimate, described next, which is designed
+to suppress exactly this kind of spurious feature while
+leaving a well-behaved fit largely unchanged.
+The spline model selection is carried out over
+five candidate knot-count groups,{5,6},{7,8,9},
+{10,12,14,16,18}, and{20,25,30,35,40}, with the reg-
+ulator gain fixed atγ= 0.1. Four independent particle
+swarm optimization runs are carried out per segment,
+each with a swarm size of 40 particles, a maximum of
+100 iterations, cognitive and social acceleration coeffi-
+cientsc 1 =c 2 = 2, a maximum particle velocity of 0.5,
+and inertia weight annealed linearly from 0.9 to 0.4 over
+the run. The data is upsampled by a factor of two before
+fitting, segments overlap by 30 samples, and the exponen-
+tial decay rate used to average estimates in the overlap
+region is set to 16.
+B. Wavelet shrinkage
+Wavelet shrinkage [14] provides a nonparametric, mul-
+tiresolution alternative to spline fitting for estimating a
+signal from noisy data. Unlike the Fourier transform,
+whose basis functions are localized in frequency alone,
+the wavelet transform decomposes the data on an or-
+thogonal basis of functions localized in both time and
+frequency, which makes it well suited to analyzing the
+nonstationary structure of a glitch. The transform pro-
+duces a set of wavelet coefficientsw=Wy T , whereW
+contains the wavelet basis functions sampled at each data
+point and arranged on a dyadic scale indexed by resolu-
+tion leveljand translationk. A soft threshold function,
+Tλ(x) = sgn(x)(|x|−λ) for|x|> λand 0 otherwise,
+is then applied to each coefficient, shrinking coefficients
+near the noise floor toward zero while leaving coefficients
+associated with genuine signal structure largely intact.
+The estimate of the signal is recovered by inverting the
+thresholded coefficients. In this work, wavelet shrinkage
+is applied using the WaveShrink implementation in the
+WaveLab package [47], with the threshold set by the Hy-
+brid method and the coarsest resolution level fixed at
+L= 1, a choice found to have little effect on the result
+across the values tested. We refer to this technique as
+WS for the remainder of this paper.
+Applied to the SHAPES estimate, this threshold-
+ing step targets exactly the overfitting described above:
+the wavelet coefficients produced by a spurious knot
+sit near the noise floor of the decomposition, making
+them the coefficients most affected by soft threshold-
+ing. When SHAPES has not overfit a given segment,
+the coefficients of its estimate already sit well above this
+floor, and wavelet shrinkage leaves the fit largely un-
+changed. This makes the combination of the two methods
+self-correcting: wavelet shrinkage only intervenes where
+SHAPES has actually overfit, and otherwise defers to
+the spline estimate. Wavelet shrinkage uses the Hybrid
+threshold rule with the coarsest resolution level fixed at
+L= 1 and the default Symmlet 8 quadrature mirror fil-
+
+===== PAGE 9 =====
+9
+ter.
+IV. DATA DESCRIPTION
+TABLE I: Glitch instances considered in this work, with
+the detector and observing run in which each was
+recorded and the signal-to-noise ratio of the glitch itself,
+prior to any subtraction. Event times, detectors, and
+glitch SNR values are drawn from the Gravity Spy
+glitch catalog [48].
+Glitch type Event time Glitch SNR Detector Observing run
+GW170817 1187008882 646.86 L1 O2
+Blip 1257429123 35.972 H1 O3b
+Koi Fish 1136368106 68.184 H1 O1
+Tomte 1257472072 16.51 L1 O3b
+Low frequency blip 1267778808 101.49 H1 O3b
+The strain segments used to demonstrate the three
+identification methods are drawn from the public data
+releases of the LIGO detectors, spanning the O1, O2,
+and O3b observing runs [1, 49, 50]. Each segment is a
+4kHz frame downloaded in its native HDF5 format, con-
+taining the standard GWOSC(Gravitational Wave Open
+Science Center) [51] metadata alongside the strain chan-
+nel itself. The glitch type, event time, and detector for
+each segment, along with an estimate of the glitch’s own
+signal-to-noise ratio prior to any subtraction, are taken
+from the Gravity Spy glitch catalog release [48], which
+provides both a morphological label and an amplitude-
+based SNR estimate for each cataloged glitch.
+Every method presented in this work assumes station-
+ary, white background noise, so each raw segment is con-
+ditioned before identification or subtraction. Condition-
+ing proceeds through a bandpass stage that removes seis-
+mic and other low-frequency contamination outside the
+band of interest, a robust estimate of the noise floor that
+resists distortion from narrow spectral lines, a whitening
+filter built from that estimate and applied in the time
+domain, and a final notch-filtering pass that suppresses
+the strongest remaining line features. This sequence fol-
+lows the conditioning logic already standard across LIGO
+search pipelines, so it is not repeated here beyond this
+summary.
+Table I lists the five glitch instances considered in this
+work. Koi Fish, Tomte, Blip, and the low frequency blip
+differ in time-frequency morphology from one another.
+The glitch overlapping GW170817 is included separately:
+Gravity Spy confirms it as a glitch and reports its SNR,
+but does not assign it a morphological class, so it is
+treated here as confirmed but unclassified rather than
+grouped with the other four. Its value lies in coinciding
+with a real astrophysical signal, and here the compar-
+ison is limited to visual inspection of how each identi-
+fication and subtraction combination affects the signal,
+rather than the quantitative recovery test used for the in-
+jected chirp of Section IV A. A supplementary matched-
+filter check for this instance is given in Appendix A. Ta-
+ble II accordingly reports its boundary only, leaving the
+SHAPES, WS, and Combined recovery columns empty
+for this row. The glitch SNR across the five instances
+spans roughly a factor of forty, from Tomte at the low
+end to the GW170817 glitch at the high end, so the sam-
+ple probes differing noise conditions, signal strength, and
+label certainty rather than establishing general applica-
+bility from so small a set.
+A. Injected signal
+To assess subtraction quality on a signal of known pa-
+rameters, a chirp of controlled amplitude is injected into
+each conditioned segment rather than a full compact-
+binary waveform. The injected signal takes the form
+s(t) =Asin
+ 
+2πϕ(t)
+
+,
+ϕ(t) =f 0(t−t a) + 1
+2k(t−t a)2 + θ0
+2π,
+(7)
+wheret a marks the onset of the injection,f 0 andf 1 set
+the starting and ending instantaneous frequency over the
+injection window,k= (f 1−f 0)/(tb−ta) is the resulting
+sweep rate, andθ 0 is an initial phase offset. The ampli-
+tudeAis fixed by normalizing the raw waveform to unit
+norm and rescaling to a chosen target value, so that in
+whitened, unit-variance noise this target value equals the
+optimal matched-filter SNR of the injected signal, follow-
+ing the convention used for the injected binary neutron
+star signal in the source method this work builds on [12].
+A linear chirp keeps the injection simple to reproduce and
+interpret, at the cost of not capturing the amplitude and
+frequency evolution of a genuine compact-binary wave-
+form; whether this simplification changes the recovered
+SNR comparison is left for the results rather than as-
+sumed here. This is also why the GW170817 instance is
+treated separately in Section IV rather than folded into
+the same recovery test: no synthetic chirp was injected
+there, so the comparison for that glitch relies on the real
+inspiral signal already present in the data, sidestepping
+the amplitude and frequency mismatch a linear chirp
+would introduce against an actual compact-binary wave-
+form. The starting frequencyf 0 is fixed at 30 Hz for
+every glitch class. The ending frequencyf 1 is 300 Hz for
+Koi Fish, Tomte, and the low frequency blip, and 600 Hz
+for Blip and GW170817, both broadband glitches. The
+injection window spans 1.5 s, beginning approximately
+0.5 s before the glitch is flagged so the two overlap. The
+injected SNR for each glitch class is reported in Table II.
+Recovery of the injected signal is quantified with a sin-
+gle matched-filter statistic rather than a sliding search,
+since the injection time is already known from the signal
+generation step. Writingr(t) for the residual after sub-
+traction and ˆs(t) =s(t)/∥s(t)∥for the injected template
+normalized to unit norm, the reported SNR is
+ρ=
+X
+i
+r(ti) ˆs(ti),(8)
+
+===== PAGE 10 =====
+10
+computed once over the full residual with the template
+held at its injected alignment. This is equivalent, for
+whitened unit-variance noise, to the peak of a sliding
+matched filter evaluated exactly at zero lag. A sepa-
+rate FFT-based sliding correlation with power-spectral-
+density weighting was checked against this value and
+found to agree, so only the simpler form is retained here.
+B. Time-frequency representation
+Time-frequency panels throughout this work are pro-
+duced with a continuous wavelet transform implementa-
+tion in the MATLAB Wavelet Toolbox [52], using a gen-
+eralized Morse wavelet [53, 54] evaluated at 48 voices per
+octave, rather than the sine-Gaussian tile bank of the
+Q-transform proper [55]. For each frequency row, the
+transform is evaluated at five values of the quality factor
+spanning the requested range, and the value producing
+the largest total energy in the segment is kept, giving a
+multiresolution time-frequency map in the spirit of a Q-
+transform without its tile decomposition. Energy in each
+frequency row is normalized by its median value across
+time before display and shown on a logarithmic color
+scale, so a fixed color range remains meaningful across
+panels of differing absolute energy. A narrow band near
+60 Hz, a residual of the powerline notch filter applied
+during whitening, is interpolated from neighbouring fre-
+quency rows where noted in a figure caption.
+V. RESULTS AND DISCUSSION
+The recovered-SNR percentages reported below are
+computed from one representative instance per glitch
+class, selected from a small number of instances checked
+per class during development to span a range of glitch
+SNR, consistent with the SNR spread already noted in
+Section IV, so they should be read as characterizing this
+specific sample rather than as class-level averages. Sec-
+tion VI discusses this limitation and a planned remedy.
+The recovered-SNR averages reported in Sections V A
+through V C carry an intrinsic spread of roughly one SNR
+unit, quantified directly in Section V E; readers should
+treat the reported figures as accurate to a few percent-
+age points rather than to the tenth of a percent implied
+by their stated precision. Upsampling was applied iden-
+tically to all five instances and does not distinguish the
+two groups. What differs between them is the rule used
+to choose a segment length. Segment length is drawn
+from a fixed set of candidate lengths, each a power of
+two from 256 to 32768 samples. The baseline rule selects
+the smallest candidate in this set that is large enough
+to contain the full data stretch. For Koi Fish, Tomte,
+and the low frequency blip, this baseline rule was used
+directly. For GW170817 and Blip, both of which carry
+substantial power above 500 Hz, the position of the base-
+line candidate within the set was halved before selec-
+tion, so the segment length used is a shorter entry drawn
+from earlier in the set rather than the one the baseline
+rule would otherwise pick. This gives a shorter segment,
+and so a higher density of knots per unit of data, for
+the two glitches whose structure extends to higher fre-
+quency. Once a segment length is fixed this way, the
+data is divided into overlapping segments of that length,
+and any leftover segment at the end shorter than a mini-
+mum length is dropped rather than kept as an undersized
+final segment.
+A. AMPS
+AMPS was applied to the five glitch instances, with
+the outcome shown in Figure 5. The first column of the
+whitened time series, shown once per glitch type in Fig-
+ure 5, is not repeated in the FLARE and CRISP fig-
+ures that follow, since the same underlying time series
+is shared across all three identification methods. The
+second column gives a closer view of the identified seg-
+ment, with the SHAPES, WS, and Combined estimates
+and their residuals. The third and fourth columns give
+the Q-transform before and after subtraction, with the
+fourth column built from the Combined residual in ev-
+ery case so the five glitches can be compared on equal
+footing.
+For Blip, Koi Fish, Tomte, and the low frequency blip,
+the aim of subtraction is to remove the glitch while keep-
+ing the injected chirp intact. The chirp track survives
+subtraction and stays clearly visible in all four cases, seen
+across the fourth column of rows two through five.
+Table II lists the AMPS boundary and recovered SNR
+for each glitch. AMPS returns a wider boundary for
+GW170817 than for any of the four injected glitches,
+matching the longer duration of that glitch relative to
+the others. Consistent with its qualitative treatment in
+Section IV, Table II reports only GW170817’s bound-
+ary. Figure 5d shows the underlying astrophysical signal
+remains visible after subtraction, with the glitch power
+removed and a faint trace consistent with the signal left
+in its place.
+Koi Fish recovers the highest fraction of injected SNR
+among the four glitches under SHAPES and Combined.
+Blip and Tomte give up the largest fraction of injected
+SNR among the four glitches under both SHAPES and
+Combined, while the low frequency blip retains a higher
+recovered fraction than either, second only to Koi Fish.
+Averaged over the four injected glitches, SHAPES re-
+covers about 92.7% of the injected SNR, WS alone recov-
+ers about 64.2%, and Combined recovers about 95.8%,
+each value capped at 100% per glitch before averaging,
+since recovered SNR cannot exceed complete signal re-
+covery. Combined gives the best recovered SNR for every
+glitch under AMPS boundaries, with the largest margin
+over SHAPES for Blip and Tomte. WS alone gives the
+lowest recovered SNR for every glitch by a clear margin.
+SHAPES and Combined both preserve the injected sig-
+
+===== PAGE 11 =====
+11
+TABLE II: Glitch boundary and residual signal-to-noise ratio of the injected signal after subtraction, compared
+across the three identification methods (AMPS, FLARE, CRISP) and three subtraction techniques (SHAPES, WS,
+Combined) for each glitch instance considered in this work. Koi Fish recovers the largest fraction of injected SNR
+among the four glitches under every method; Appendix C shows that recovered SNR at this injection position can
+exceed the injected value at other positions within the overlap window, a chance effect of the noise realization rather
+than of subtraction [56, 57].
+AMPS FLARE CRISP
+Glitch type Signal SNR Boundary SHAPES WS Combined Boundary SHAPES WS Combined Boundary SHAPES WS Combined
+GW170817 – 0.1921 – – – 0.1094 – – – 0.1094 – – –
+Blip 25 0.1001 22.4458 13.6502 23.3001 0.0938 23.0607 13.6482 23.3876 0.1250 22.0642 13.6502 23.3468
+Koi Fish 30 0.1125 29.2630 19.4828 29.4823 0.0938 29.8092 19.4886 29.7993 0.1094 29.6471 19.4828 29.7679
+Tomte 27 0.1118 24.2282 20.1158 25.7495 0.1094 24.9896 20.1136 25.8389 0.1094 24.2178 20.1158 25.7098
+Low frequency blip 25 0.1196 23.4842 15.7051 24.1364 0.1094 23.5905 15.7028 24.2804 0.1094 23.4624 15.7028 24.3804
+(a)
+ (b)
+ (c)
+ (d)
+(e)
+ (f)
+ (g)
+ (h)
+(i)
+ (j)
+ (k)
+ (l)
+(m)
+ (n)
+ (o)
+ (p)
+(q)
+ (r)
+ (s)
+ (t)
+FIG. 5: Identification and subtraction of the five glitch instances using AMPS, from top to bottom: GW170817,
+Blip, Koi Fish, Tomte, and the low frequency blip. First column: whitened strain time series around the glitch
+against time in seconds; this panel is shown once per glitch type and is not repeated for FLARE or CRISP later in
+this section. Second column: zoomed view of the identified glitch segment, whitened strain against time in seconds,
+with the SHAPES, WS, and SHAPES+WS estimates drawn as solid lines and their residuals as dotted lines of
+matching color. Third column: Q-transform of the segment before subtraction, time in seconds against frequency in
+Hz, with the colorbar giving normalized energy. Fourth column: Q-transform of the same segment after subtraction,
+using the same time window, frequency range, and color scale as the third column, so that any leftover glitch power
+or surviving chirp track can be read off by direct comparison between the two panels.
+
+===== PAGE 12 =====
+12
+nal better than WS alone under AMPS boundaries, and
+Combined holds a small, consistent edge over SHAPES
+on its own.
+B. FLARE
+FLARE was applied to the same five glitch instances
+used for AMPS, shown in Figure 6. Each row gives the
+zoomed segment with the SHAPES, WS, and Combined
+estimates, followed by the Q-transform before and after
+subtraction, the latter built from the Combined residual.
+Blip crosses the chirp track only briefly, at a single
+instant where the glitch spans nearly the full plotted fre-
+quency range, up to 1024 Hz. Koi Fish shows a similarly
+brief crossing, but confined to a lower band, reaching only
+about 300 Hz. Tomte and the low frequency blip each
+meet the rising chirp near 100 to 130 Hz, shortly before
+the glitch itself begins, the same brief, narrow character
+seen for Blip and Koi Fish, differing only in where the
+crossing falls.
+GW170817 takes the longest to fit among the five cases,
+at 70.34 s, consistent with its greater duration and com-
+plexity. The low frequency blip is the next slowest, at
+48.27 s against a 19.2 s average for Koi Fish, Tomte, and
+Blip. The cause of this extended SHAPES stage is not
+yet clear from the data alone, since Koi Fish and Blip
+also cross their chirp tracks without the same slowdown.
+Table II shows Blip and Tomte again give up the largest
+fraction of injected SNR among the four glitches, con-
+sistent with the pattern established under AMPS.Koi
+Fish gives the highest recovered fraction among the
+four glitches under both SHAPES and Combined, with
+SHAPES marginally ahead this time. Tomte and Blip
+behave as expected, with Combined ahead of SHAPES
+by a modest margin in both.
+For GW170817, the Q-transform after subtraction still
+shows a low-frequency patch. This patch sits on the as-
+trophysical signal’s own track before subtraction; once
+removed, it no longer overlaps the recovered track and
+does not take out a meaningful amount of signal power
+in the process. Appendix B traces this patch to the fixed
+threshold multiplier used to set the boundary and shows
+that it shrinks, without disappearing entirely, as the mul-
+tiplier is lowered.
+Averaged over the four injected glitches (capped at
+100% as in Section V A), Combined comes out ahead
+overall at about 96.4%, with SHAPES close behind at
+94.6%. WS alone trails both by a wide margin, at roughly
+64.2%. Combined gives the best recovered SNR for Blip,
+Tomte, and the low frequency blip; on Koi Fish, SHAPES
+edges out Combined by a narrow margin instead. WS
+alone stays lowest across every glitch, never approach-
+ing the other two. Under FLARE boundaries, then,
+SHAPES and Combined again preserve the injected sig-
+nal more effectively than WS alone, with Combined keep-
+ing a modest edge over SHAPES rather than a decisive
+one.
+C. CRISP
+CRISP was run on the same five instances as AMPS
+and FLARE, shown in Figure 7. Each row gives the
+zoomed boundary region with the three subtraction es-
+timates, then the Q-transform before and after subtrac-
+tion.
+The injected chirp survives subtraction in all four
+glitch cases and stays visible to the eye directly, with no
+need to search for it against the background. GW170817
+shows the same low-frequency patch seen under FLARE,
+expected since CRISP and FLARE share the 0.1094 s
+boundary for this glitch (Section V B).
+CRISP settles on a 448-sample boundary (0.1094 s)
+for four of the five glitches, GW170817, Koi Fish, Tomte,
+and the low frequency blip, and widens slightly to 512
+samples (0.1250 s) for Blip. That near-uniform width fol-
+lows from how the boundary is set, a spectrogram power
+threshold applied independently of any particular fitting
+technique, rather than from anything AMPS’s fixed-pad
+rule would produce on the same five cases. Estimation
+time, covering the subsequent SHAPES fit, is longer and
+more varied: 30.5 s for the low frequency blip up to 66.7 s
+for Blip, with GW170817, Koi Fish, and Tomte landing
+between 49 and 51 s.
+Koi Fish again gives the highest recovered fraction
+among the four glitches under CRISP boundaries, con-
+sistent with the pattern seen under AMPS and FLARE.
+Blip and Tomte again give up the largest fraction of in-
+jected SNR under CRISP, matching the pattern seen un-
+der AMPS and FLARE. For Tomte and Blip, Combined
+again gives the highest recovered SNR, SHAPES sits a
+moderate step behind it, and WS alone trails both by a
+wide margin, most visibly for Blip.
+Averaged over the four injected glitches and capping
+each at 100% before averaging, SHAPES reaches roughly
+92.7%, WS alone about 64.2%, and Combined about
+96.3%. Combined leads on every glitch, with the narrow-
+est margin over SHAPES on Koi Fish. WS alone stays
+well below the other two for every glitch, with the largest
+shortfall on Blip. CRISP’s recovery numbers land close
+to FLARE’s on this same set, while its boundary widths
+cluster far more tightly around a single value than either
+AMPS or FLARE manage, a point taken up directly in
+the cross-method comparison that follows.
+D. Comparison of identification methods
+Table II brings together the boundary and residual
+SNR values obtained from AMPS, FLARE, and CRISP
+for each glitch, and Table III lists the time each method
+took to identify a glitch in an 8 s data stretch.
+AMPS is the fastest of the three by a wide margin
+against FLARE, two to three orders of magnitude, iden-
+tifying every glitch in well under a tenth of a second.
+Against CRISP the gap is smaller, roughly two to six
+times depending on the glitch, since both methods rely
+
+===== PAGE 13 =====
+13
+(a)
+ (b)
+ (c)
+(d)
+ (e)
+ (f)
+(g)
+ (h)
+ (i)
+(j)
+ (k)
+ (l)
+(m)
+ (n)
+ (o)
+FIG. 6: Identification and subtraction of the five glitch instances using FLARE, from top to bottom: GW170817,
+Blip, Koi Fish, Tomte, and the low frequency blip. First column: zoomed view of the segment FLARE identifies,
+whitened strain against time in seconds, with the SHAPES, WS, and Combined estimates drawn as solid lines and
+their residuals as dotted lines of matching color. Second column: Q-transform of the segment before subtraction,
+time in seconds against frequency in Hz, with the colorbar giving normalized energy. Third column: Q-transform of
+the same segment after subtraction, using the same time window, frequency range, and color scale as the second
+column, built from the Combined residual in every case.
+TABLE III: Glitch identification time for AMPS,
+FLARE, and CRISP on an 8 s data segment.
+Glitch type AMPS (s) FLARE (s) CRISP (s)
+GW170817 0.0221 45.05 0.1020
+Blip 0.0261 11.88 0.1479
+Koi Fish 0.0364 15.12 0.0903
+Tomte 0.0139 18.91 0.0708
+Low frequency blip 0.0444 13.03 0.1027
+on a threshold scan rather than a fitted model. This
+speed comes at the cost of boundary precision: AMPS
+locates a glitch by an amplitude threshold and pads a
+fixed number of samples on each side, rather than resolv-
+ing the actual extent of the excess power. CRISP still
+performs a coarse power scan of the full segment before
+refining a candidate, which accounts for its larger runtime
+relative to AMPS, but it remains a fraction of a second
+
+===== PAGE 14 =====
+14
+(a)
+ (b)
+ (c)
+(d)
+ (e)
+ (f)
+(g)
+ (h)
+ (i)
+(j)
+ (k)
+ (l)
+(m)
+ (n)
+ (o)
+FIG. 7: Identification and subtraction of five glitch instances using CRISP: GW170817, Blip, Koi Fish, Tomte, and
+the low frequency blip, top to bottom. The first column (whitened strain versus time, in seconds) is shared with
+Figure 5 and is not repeated here. First column of each row: zoomed view of the boundary CRISP identifies, with
+the SHAPES, WS, and Combined estimates as solid lines and their residuals as dotted lines of matching color,
+whitened strain versus time in seconds. Second column: Q-transform of the segment before subtraction, time in
+seconds versus frequency in Hz, colorbar giving normalized energy. Third column: Q-transform of the same segment
+after subtraction, built from the Combined residual, using the same time window, frequency range, and color scale
+as the second column.
+per glitch. FLARE is the slowest of the three, need-
+ing between about 12 and 45 seconds per glitch, since it
+fits a segmented shape model with particle swarm opti-
+mization across the full data stretch instead of localizing
+the glitch first. That cost buys FLARE the most direct
+link between its boundary and the underlying waveform
+shape, whereas CRISP’s boundary comes from a spectro-
+gram power criterion and AMPS’s from padding around
+an amplitude threshold.
+Boundary values in Table II follow this same logic.
+FLARE and CRISP agree closely on boundary duration
+for most glitches, since both resolve the excess-power re-
+gion directly, while AMPS boundaries differ more, reflect-
+ing fixed-padding construction rather than a measured
+glitch duration. Residual SNR tracks this pattern only
+loosely: CRISP’s recovered SNR stays within about 0.2
+
+===== PAGE 15 =====
+15
+SNR of AMPS and FLARE for three of the four injected
+glitches, so a coarser, cheaper boundary is often enough
+to match a costlier, best-fit one at the subtraction stage.
+The choice of injection position within the overlap win-
+dow affects recovered SNR appreciably, and at some po-
+sitions recovered SNR for Koi Fish exceeds the injected
+value under SHAPES and Combined. This is consistent
+with expected matched-filter SNR fluctuations under sta-
+tionary, Gaussian noise [56, 57]. Appendix C examines
+this sensitivity directly and traces the excess to a chance
+noise contribution in the matched-filter output at those
+positions, rather than to a property of the subtraction
+method.
+Combined recovers less SNR than a more aggressive
+fit would, since the goal is avoiding removal of struc-
+ture that belongs to the signal rather than the glitch.
+Wavelet shrinkage is built on this trade-off directly: it
+accepts more bias in exchange for a large reduction in
+variance, shrinking small, noise-dominated coefficients
+while leaving coefficients carrying real signal structure
+intact [14]. Fitting the residual more tightly to erase ev-
+ery trace of the glitch would push the estimate toward
+the noise-fitting end of that trade-off, risking removal of
+genuine signal power along with the glitch. BayesWave’s
+glitch-subtraction procedure reflects the same caution op-
+erationally: when a glitch overlaps an astrophysical sig-
+nal, it relies on multi-detector coherence to separate sig-
+nal power from glitch power, since an aggressive single-
+detector fit cannot make that distinction on its own [58].
+A small residual left after subtraction is therefore consis-
+tent with established practice, not a shortcoming specific
+to Combined.
+For context against other detection tools already in
+operational use, Omicron, the excess-power trigger gen-
+erator used throughout LIGO-Virgo-KAGRA, produces
+triggers on the order of one second per data stretch on
+standard computing infrastructure and needs no train-
+ing, matching AMPS and CRISP for ease of deploy-
+ment though without AMPS’s raw-amplitude simplic-
+ity [17]. Coherent WaveBurst, which additionally tests
+coherence across a detector network to separate signals
+from glitches, is considerably more demanding than any
+of the three methods here, since it searches multiple time-
+frequency resolutions and detector combinations rather
+than a single spectrogram [25]. Machine-learning clas-
+sifiers built on Omicron triggers, such as Gravity Spy,
+add classification within a few seconds per glitch once
+trained, but need a labelled training set and substan-
+tial upfront training time that AMPS, FLARE, and
+CRISP do not [15]. Against this backdrop, AMPS and
+CRISP sit closer to Omicron’s speed and simplicity, while
+FLARE trades speed for a boundary tied directly to a fit-
+ted glitch model, a trade-off it shares conceptually with
+BayesWave [10], though BayesWave’s runtime of roughly
+one hour per glitch is far higher still [37].
+E. Comparison of subtraction techniques
+Figure 8 and Table II together point to one consistent
+story. SHAPES removes most of the glitch power on its
+own, seen in the drop from panel (a) to (b) for GW170817
+and from (i) to (j) for Koi Fish, though a faint trace of
+structure usually remains. WS alone leaves a residual
+that looks broadly similar to the other two techniques by
+eye, as in panel (k) for Koi Fish, but the resemblance
+is only visual. WS alone recovers just 19.48 out of an
+injected SNR of 30 for Koi Fish, against 29.26–29.81 for
+SHAPES and 29.48–29.80 for Combined across the three
+identification methods, a gap the Q-transform alone does
+not reveal. A residual that looks comparable to the eye
+can still carry far less of the injected signal, which is
+why the recovered SNR in Table II, not the Q-transform,
+is the reliable measure of what each technique actually
+preserves.
+Combined lands closest to SHAPES throughout. Ta-
+ble II shows Combined matching or beating SHAPES on
+three of the four injected glitches, Blip, Tomte, and the
+low frequency blip, and sitting within a narrow margin
+on Koi Fish, while clearing WS alone by a wide margin
+everywhere.
+The gap between Combined and SHAPES bears a di-
+rect comparison against the noise floor itself. Since ˆs(t) in
+Eq. (8) is unit-norm and the background is unit-variance
+under the noise model of Eq. (3), the matched-filter
+statistic carries an intrinsic noise-floor spread of order
+one SNR unit regardless of subtraction technique. Across
+the twelve identification-subtraction pairings in Table II,
+the Combined-minus-SHAPES gap ranges from−0.01 to
+1.52, with a mean of 0.74. This spread sits close to the
+expected noise-floor scale, so part of the apparent ad-
+vantage of Combined over SHAPES alone reflects the
+same noise-realization variance already invoked in Ap-
+pendix C for the Koi Fish repositioning result, rather
+than a uniformly large effect of wavelet shrinkage on top
+of the spline fit.
+Combined appears to apply WS’s cleanup only after
+SHAPES has already isolated most of the glitch, leaving
+too little residual glitch structure for the shrinkage step
+to cut into the injected signal the way WS does when
+applied on its own.
+GW170817 shows the same residuals qualitatively.
+Panel (b) still carries a visible streak after SHAPES; pan-
+els (c) and (d) both reduce it further, without the flatten-
+ing that would signal an overly aggressive fit. No chirp
+was injected here, so this row is read for residual shape
+alone, and it does not on its own distinguish WS from the
+other two, reinforcing that the Q-transform is not where
+the difference between techniques actually shows up; the
+SNR values from the four injected glitches are.
+Estimation time adds a separate axis to this compari-
+son. WS runs on the full 8 s segment regardless of bound-
+ary, so its cost is fixed and small, between 0.0034 s for
+Tomte and 0.0076 s for Koi Fish, several orders of magni-
+tude below SHAPES in every case. SHAPES itself takes
