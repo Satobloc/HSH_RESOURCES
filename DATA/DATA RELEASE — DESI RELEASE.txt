@@ -1,0 +1,515 @@
+BAO COSMO PARAMS
+https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params/
+
+# DESI DR2 BAO cosmology results
+
+## Overview
+This repository contains cosmology chains and posterior maximization results for the DESI DR2 BAO cosmology results referenced in the paper [DESI DR2 Results II: Measurement of Baryon Acoustic Oscillations and Cosmological Constraints](https://ui.adsabs.harvard.edu/abs/2025arXiv250314738D/abstract){: target='_blank'}, Phys. Rev. D in press.
+
+## Data Access
+
+**Data URL:** <https://data.desi.lbl.gov/public/papers/y3/bao-cosmo-params>{: target='_blank'}
+
+NERSC access:
+```
+/global/cfs/cdirs/desi/public/papers/y3/bao-cosmo-params
+```
+
+**Note**: When the full DR2 is released, these data will also be included as a DR2 Value Added Catalog (VAC).
+
+## Documentation
+
+The primary directory contains two folders: `cobaya/` contains MCMC chains and posterior samples obtained using the [`cobaya`](https://cobaya.readthedocs.io/en/latest/){: target='_blank'} sampling code, and `iminuit/` contains posterior maximization results determined using the [`iminuit`](https://scikit-hep.org/iminuit/){: target='_blank'} optimization code. Within each of these directories, results for different cosmological model scenarios and combinations of datasets are arranged in subfolders named according to the `[model]/[dataset]` convention, where `[model]` and `[dataset]` can take different values as explained below. The DESI DR2 BAO likelihoods used to produce these results are publicly available at <https://github.com/CobayaSampler/bao_data/tree/master/desi_bao_dr2>{: target='_blank'}.
+
+### Models
+
+Model naming follows the *Planck* convention: the base $\Lambda$CDM cosmological model is denoted by the root `base` in the folder name, with additional free parameters â€“Â when present â€“Â indicated by suffixes attached to this root. The naming convention relating suffixes to models is as follows:
+
+* `_w`: A dark energy equation of state parameter $w$ that is freely varied but restricted to be constant in time
+* `_w_wa`: A variable dark energy equation of state with two free parameters, $w_0$ and $w_a$
+* `_w-binned-3uniform`: A dark energy equation of state that is piecewise-constant in 3 uniform bins of redshift
+* `_mnu`:  Free sum of neutrino masses, $\sum m_\nu$, with only a non-negativity constraint, $\sum m_\nu>0$
+* `_mnu_binary_3`: Free sum of neutrino masses, $\sum m_\nu$, with additional physical priors on the minimum mass from the [NuFit-6.0](https://ui.adsabs.harvard.edu/abs/2024arXiv241005380E/abstract){: target='_blank'} flavor-oscillation constraints, incorporating either mass ordering
+* `_omegak`: Free curvature parameter, $\Omega_\mathrm{K}$
+
+Suffixes can also be chained together to represent models with more than one free parameter, *e.g.* the folder `base_omegak_w_wa/` contains results for the model where base $\Lambda$CDM is extended by allowing free curvature and a time-varying dark energy equation of state.
+
+### Datasets
+
+Different datasets or likelihoods are indicated by strings present in the folder names, according to the dictionary below. For combinations of several datasets, the folder names are formed by chaining together building blocks representing different individual datasets, separated by `_`.
+
+#### BAO likelihoods
+
+* `desi-bao-[X]`: DESI DR2 BAO data from [DESI DR2 Results I: Baryon Acoustic Oscillations from the Lyman Alpha Forest](https://ui.adsabs.harvard.edu/abs/2025arXiv250314739D/abstract){: target='_blank'} and [DESI DR2 Results II: Measurement of Baryon Acoustic Oscillations and Cosmological Constraints](https://ui.adsabs.harvard.edu/abs/2025arXiv250314738D/abstract){: target='_blank'}; the `[X]` placeholder specifies the subset of DESI data used and can take the following values:
+    - `bgs`: BAO measured in Bright Galaxy Sample, at effective redshift $z_\mathrm{eff}=0.295$
+    - `lrg-z0`: BAO from the first Luminous Red Galaxy (LRG) redshift bin, at $z_\mathrm{eff}=0.510$
+    - `lrg-z1`: BAO from the second LRG redshift bin, at $z_\mathrm{eff}=0.706$
+    - `lrg`: the combination of the above two redshift bins (`lrg-z0` and `lrg-z1`)
+    - `lrgpluselg`: BAO from the combined LRG and Emission Line Galaxy (ELG) sample at $z_\mathrm{eff}=0.934$
+    - `elg`: BAO from higher redshift ELGs, at $z_\mathrm{eff}=1.321$
+    - `qso`: BAO from the quasar sample (QSO), at $z_\mathrm{eff}=1.484$
+    - `lya`: BAO from the Lyman-$\alpha$ forest (and cross-correlation with quasars) at $z_\mathrm{eff}=2.330$
+    - `all`: the combination of DESI BAO data in all the above redshift bins
+
+#### Cosmic microwave background (CMB) likelihoods
+
+* `planck2018-lowl-TT-clik`: CMB low-$\ell$ ($\ell\le30$) TT `Commander` likelihood from *Planck* PR3
+* `planck2018-lowl-EE-clik`: CMB low-$\ell$ EE `simall` likelihood from *Planck* PR3
+* `planck-NPIPE-highl-CamSpec-TTTEEE`:  `CamSpec` CMB likelihood for $\ell>30$ TT, TE and EE from *Planck* PR4
+* `planck2018-highl-plik-TTTEEE`: alternative `plik` likelihood for TT, TE and EE at $\ell>30$ from *Planck* PR3
+* `planck2020-hillipop-TTTEEE`: alternative `hillipop` CMB likelihood for $\ell>30$ TT, TE and EE from *Planck* PR4
+* `planck2020-lollipop-lowlE`: alternative `lollipop` CMB likelihood for $\ell\le30$ TE and EE from *Planck* PR4
+* `planck-act-dr6-lensing`: CMB lensing data from the combination of *Planck* PR4 NPIPE and ACT DR6 (using v1.2 of the likelihood provided by the ACT team)
+* `CMB-compressed-theta-ombh2-ombch2`: Minimal "early-Universe" CMB prior in lieu of using the full CMB data
+* `planck2018-thetastar-fixed-marg-nnu`: An even more minimal CMB-derived prior on the acoustic angular scale $\theta_\ast$
+
+The default combination of CMB likelihoods used in the [DESI DR2 Results II: Measurement of Baryon Acoustic Oscillations and Cosmological Constraints](https://ui.adsabs.harvard.edu/abs/2025arXiv250314738D/abstract){: target='_blank'} paper, and denoted as "CMB" therein, is `planck2018-lowl-TT-clik_planck2018-lowl-EE-clik_planck-NPIPE-highl-CamSpec-TTTEEE_planck-act-dr6-lensing`.
+
+#### Type Ia supernova likelihoods
+
+* `pantheonplus`: SNIa data from the Pantheon+ dataset
+* `union3`: SNIa data from the Union3 dataset
+* `desy5sn`: SNIa data from the Dark Energy Survey 5-year SN dataset
+
+#### Additional external priors
+
+* `schoneberg2024-bbn`: A BBN prior on the baryon density $\Omega_\mathrm{b}h^2$
+* `schoneberg2024-bbn-fixed-nnu`: A more restrictive version of the above BBN prior derived by fixing $N_\mathrm{eff}$ rather than marginalising over it
+
+These individual likelihoods and priors can be combined together in too many ways to exhaustively list here. Combinations can be identified by chaining together the appropriate roots using `_` separators.
+
+### Data Model
+
+The individual `cobaya/[model]/[dataset]/` directories contain `cobaya` output files as described in full [here](https://cobaya.readthedocs.io/en/latest/output.html){: target='_blank'} (see also [here](https://cobaya.readthedocs.io/en/latest/sampler_mcmc.html){: target='_blank'} for additional information). The output files in the folders are:
+
+* `[prefix].[number].txt`:  ASCII formatted tables providing posterior samples, where `[number]` indicates the chain number from 1 to 4; `[prefix]` is `chain` for standard runs or `chain.post.importance` when any likelihoods have been added by importance sampling in post-processing
+* `[prefix].input.yaml` or `[prefix].updated.yaml`: YAML file recording the input settings provided for the MCMC run; the filename contains `updated` when the any component uses default settings not explicitly provided in the input, which are then recorded in this file. `[prefix]` takes the value `chain` for standard runs or `chain.post.lensing` when CMB lensing is added by importance sampling in post-processing
+* `chain.covmat`: ASCII-formatted covariance matrix for sampled cosmological parameters, which can be used as a proposal pdf for new runs using the same settings (not present for post-processed runs)
+* `chain.checkpoint`: text file with summary information about the convergence of the MCMC run (not present for post-processed runs)
+
+Chain data can easily be read and manipulated using the [`GetDist`](https://getdist.readthedocs.io/en/latest/){: target='_blank'} package, but can also be accessed by other commonly used chain-processing software.
+
+The individual `iminuit/[model]/[dataset]/` directories contain output files described in full [here](https://cobaya.readthedocs.io/en/latest/sampler_minimize.html){: target='_blank'}. The relevant files are:
+
+* `bestfit.minimum.txt`: ASCII-formatted file providing the parameter values and goodness-of-fit criteria at the maximum of the posterior (MAP)
+* `bestfit.minimum`: identical information to the file above, but recorded in [`GetDist`](https://getdist.readthedocs.io/en/latest/){: target='_blank'}-compatible formatting
+
+## Contact
+
+Contact [Seshadri Nadathur](mailto:seshadri.nadathur@port.ac.uk) for questions about this catalog.
+
+
+logo
+Sign In
+DESI (Dark Energy Spectroscopic Instrument)
+Description
+Scientific Goals
+DESI Spectra
+Data Releases
+DESI DR1
+DESI EDR
+Data Access
+Acknowledgments
+Description
+The Dark Energy Spectroscopic Instrument (DESI) was built by the Department of Energy (DOE) to conduct a Stage-IV dark energy experiment (Instrument Overview Paper). Over the course of the survey (2021-2026), the DESI collaboration will obtain spectra of about 40 million galaxies and quasars as well as 10 million stars (DESI collaboration 2016a,b).
+
+For more complete information about the DESI data, please visit https://data.desi.lbl.gov/doc/. General information about the instrument, experiment and science results can be found at https://www.desi.lbl.gov/.
+
+The NOIRLab Astro Data Lab will serve data from each DESI public data release, starting with the Early Data Release (EDR). The main spectroscopic and photometric catalogs are hosted at Data Lab and available for queries. The full-depth spectra ("HEALPix coadds") are searchable and retrievable from SPARCL as described in the Data Access section. These value-added services are provided for convenience to the astronomy community, with a reminder that any use of DESI data must be accompanied by the official DESI acknowledgments. Other types of spectra (per exposure, per night, tile coadds) are only available as files via NERSC.
+
+Both the desi_dr1.zpix and desi_edr.zpix tables have been crossmatched against our default reference datasets within a 1.5 arcsec radius, nearest neighbor only. These tables will appear with x1p5 in their name in our table browser. Example: desi_dr1.x1p5__zpix__gaia_dr3__gaia_source.
+
+Back to Top
+
+Scientific Goals
+The DESI collaboration seeks to understand the nature of dark energy and its evolution. In addition, the DESI data enable a suite of other scientific discoveries and research thanks to the legacy value of the immense spectroscopic dataset. The DESI collaboration maintains an ADS library of DESI papers.
+
+Back to Top
+
+DESI Spectra
+The DESI collaboration produces one-dimensional (1-D) spectra that have been sky-subtracted, flux-calibrated, and modeled with a best-fitting template to identify the spectral type (spectype) and measure the redshift (z) with the Redrock pipeline (Bailey et al., in preparation). There are a few categories of spectra at different stages of data combination. Namely:
+
+Per exposure (spectra from a single exposure at the telescope)
+Per night (coadded spectra obtained on multiple exposures during the same night)
+Per tile (coadded spectra obtained for the same tile but possibly from multiple nights)
+Per healpix (coadded spectra per position on the sky grouped by HEALPix (with n=64); which can be from multiple nights and/or multiple tiles)
+Furthermore, the spectra are treated separately per SURVEY:
+
+cmx = commissioning
+sv1 = first phase of Survey Validation (SV)
+sv2 = operations testing ("dress rehearsal" for sv3)
+sv3 = one-percent survey (covering 1% of area; final phase of SV)
+special = dedicated secondary targets or test targets
+main = main DESI survey (starting with DR1)
+And per PROGRAM:
+
+dark = dark time for the main targets: Luminous Red Galaxies (LRG), Emission-Line Galaxies (ELG), and Quasi-Stellar Objects / Quasars (QSO)
+bright = bright time for the Bright Galaxy Survey (BGS) and the Milky Way Survey (MWS)
+backup = when observing conditions were worse than the bright conditions
+other = none of the above
+The SPARCL database only includes DESI spectra that have been coadded per healpix. All other spectra are available in a file format directly through the public release at NERSC. See the DESI Data Access page for details.
+
+The following figure illustrates a DESI tile (divided into 10 petals) and a DESI rosette (divided into HEALPix for illustration purposes). The left-hand panel shows the sky positions of the fibers from a single tile (pointing) color-coded by PETAL_LOC values as labeled. The right-hand panel shows the fiber sky positions from Rosette 1, which was obtained by observing the same area of the sky with multiple dithered tiles, color-coded per HEALPIX value (figure credit: S. Juneau / DESI collaboration / NSF NOIRLab Astro Data Lab).
+
+desi_petal_healpix.png
+
+Back to Top
+
+Data Releases
+DESI DR1
+The First Data Release of DESI contains spectra and catalogs for more than 18 million unique targets from the first 13 months of the main survey ("Year 1") as well as a reprocessing of the same commissioning and survey validation (SV) data that were previously released as part of EDR. Information about the data release is presented in the DR1 Overview paper (DESI Collaboration et al. 2025).
+
+The DR1 data are released under the Creative Commons Attribution 4.0 International License (CC BY 4.0). Use of DESI data requires including the citation and acknowledgment text given on the Data License and Acknowledgments page.
+
+DESI DR1 Summary	
+Main Survey	
+Number of useful⁽¹⁾ spectra	18,659,804
+Galaxies (SPECTYPE==GALAXY)	13,049,402
+Quasars (SPECTYPE==QSO)	1,553,713
+Stars (SPECTYPE==STAR)	4,056,689
+Special Observations	
+Number of useful⁽¹⁾ spectra	141,473
+Galaxies (SPECTYPE==GALAXY)	83,961
+Quasars (SPECTYPE==QSO)	3,624
+Stars (SPECTYPE==STAR)	53,888
+Commissioning & Survey Validation	
+Number of useful⁽¹⁾ spectra	1,613,846
+Galaxies (SPECTYPE==GALAXY)	1,046,508
+Quasars (SPECTYPE==QSO)	88,505
+Stars (SPECTYPE==STAR)	478,833
+DESI Instrument	
+Spectral coverage⁽²⁾	360--982.4 nm
+Spectral resolution	2000 (at 360 nm) -- 5500 (at 980 nm)
+Wavelength system	vacuum barycentric
+Photometric bands (Legacy Surveys DR9)	g, r, z, W1, W2, W3, W4
+Approximate area	
+Main Survey / Backup	2,726 sq. deg.
+Main Survey / Bright	9,739 sq. deg.
+Main Survey / Dark	9,528 sq. deg.
+Footnotes: (1) "Useful spectra" are defined as having ZCAT_PRIMARY==True, OBJTYPE=='TGT', and ZWARN==0, which selects all unique, non-sky targets with no known redshift-fitting failures. The Main Survey additionally excludes PROGRAM=='other'; (2) Original spectra are split on three spectrograph arms: blue (B), red (R), infrared (Z). The version available in the SPARCL database has been coadded across cameras into a single array spanning the full BRZ spectral range.
+
+The catalog tables listed below include a redshift catalog per healpix (zpix; recommended for most analyses). We consider the zpix catalog as the primary spectroscopic catalog (analogous to specObjAll for SDSS) but some of the information such as photometry and observing conditions need to be obtained by joining with other catalog tables. This Jupyter notebook features several example queries that show how to join tables.
+
+DESI DR1 Tables	
+Table Name	Description
+exposure	Summary quantities for every DESI exposure (9,176 rows)
+fiberassign	Quantities obtained when a DESI target is assigned to a fiber (25,061,082 rows)
+frame	Summary quantities for each petal of the DESI instrument in a given exposure; in normal operation there are ten frames for every exposure (6,372,607 rows)
+photometry	Photometric quantities from LS DR9 for every TARGETID (76,001,458 rows)
+potential	For a given tile, this table lists all targets that could have received a fiber assignment (168,392,774 rows)
+target	The quantities obtained when photometric objects are analyzed in the target selection process (151,418,861 rows)
+tile	Summary quantities for every DESI tile (pointing on the sky) (6,101 rows)
+zpix	Redshift and other quantities for spectra that have been grouped and coadded by HEALPixel (23,060,727 rows)
+ztile	Redshift and other quantities for spectra that have been grouped and coadded by tile (24,896,930 rows)
+Known issues with Data Release 1 are documented here.
+
+DESI DR1 Value-Added Catalogs (VACs)	
+Table Name	Description
+agngal	Value-Added Catalog of DESI DR1 galaxies and quasars with spectral and infrared classification diagnostics (17,995,599 rows)
+emfit	Emission-Line flux and width measurements for low-redshift (z <= 0.45) sources in DR1 (7,378,347 rows)
+mws	Milky Way Survey Value-Added Catalog (6,372,607 rows)
+Milky Way Survey (MWS) Value-Added Catalog
+
+The desi_dr1.mws table contains several array-valued columns:
+
+covar: Covariance matrix for ([Fe/H], [a/Fe], log10micro, Teff, logg)
+elem: Elemental abundance ratios to hydrogen [elem/H]
+elem_err: Uncertainties in the elemental abundance ratios
+param: Array of atmospheric parameters ([Fe/H], [a/Fe], log10micro, Teff, logg)
+See the example code below on how to query and convert these columns into a matrix value.
+
+=================================
+
+from dl import queryClient as qc
+import numpy as np
+import pandas as pd
+from io import StringIO
+
+query = '''SELECT * FROM desi_dr1.mws
+            LIMIT 10
+        '''
+
+# Save the query in default format (string with comma-separated values).
+
+res = qc.query(sql=query)
+
+# Starting from 'res' as the result from the qc.query() call in default
+# format (csv string), the following properly formats the array columns.
+# Those need to be listed manually. 
+# Define the converter to split the array values and convert to float.
+# Note: the x[1:-1] gets rid of the opening and closing curly brackets
+# in the CSV string.
+
+float_converter = lambda x: np.array(x[1:-1].split(','), dtype='float')
+
+# Define the converters for all array columns.
+
+converters = {'covar': float_converter,
+              'elem': float_converter,
+              'elem_err': float_converter,
+              'param': float_converter}
+
+# Read into a pandas DataFrame.
+
+df = pd.read_csv(StringIO(res), converters=converters)
+
+=================================
+Back to Top
+
+DESI EDR
+The Early Data Release of DESI contains spectra and catalogs from commissioning and Survey Validation (SV) campaigns (Survey Validation paper; EDR Overview paper).
+
+DESI EDR Summary	
+Number of healpix coadded spectra⁽¹⁾	2,044,588
+Number of useful⁽²⁾ spectra	1,769,157
+Number of useful spectra of unique targets	1,712,004
+Galaxies (SPECTYPE==GALAXY)	1,125,635
+Quasars (SPECTYPE==QSO)	90,241
+Stars (SPECTYPE==STAR)	496,128
+Spectral coverage⁽³⁾	360-982.4 nm
+Spectral resolution R	2000 (at 360 nm) - 5500 (at 980 nm)
+Wavelength system	Vacuum
+Photometric bands (Legacy Surveys DR9)	g, r, z, W1, W2, W3, W4
+DESI EDR approximate area	∼1,390 square degrees
+Footnotes: (1) Number of spectra for fibers placed on targets (OBJTYPE="TGT"), which excludes sky fibers and known faulty fibers; (2) Useful spectra defined as having ZWARN=0, which means no errors due to instrument or data and no flags from spectral fitting issues; (3) Original spectra are split on three spectrograph arms: blue (B), red (R), infrared (Z). The version available in the SPARCL database has been coadded across cameras into a single array spanning the full BRZ spectral range.
+
+The catalog tables listed below include a redshift catalog per healpix (zpix; recommended for most analyses) and a redshift catalog per tile (ztile; can be useful for instrument-dependent analyses). We consider the zpix catalog as the primary spectroscopic catalog (analogous to specObjAll for SDSS) but some of the information such as photometry and observing conditions need to be obtained by joining with other catalog tables.
+
+DESI EDR Tables	
+Table Name	Description
+exposure	Summary quantities for every DESI exposure (2,480 rows)
+fiberassign	Quantities obtained when a DESI target is assigned to a fiber (2,829,277 rows)
+frame	Summary quantities for each petal of the DESI instrument in a given exposure; in normal operation there are ten frames for every exposure (70,256 rows)
+photometry	Photometric quantities from LS DR9 for every TARGETID (6,191,755 rows)
+potential	For a given tile, this table lists all targets that could have received a fiber assignment (18,127,881 rows)
+target	The quantities obtained when photometric objects are analyzed in the target selection process (16,460,561 rows)
+tile	Summary quantities for every DESI tile (pointing on the sky) (732 rows)
+zpix	Redshift and other quantities for spectra that have been grouped and coadded by HEALPixel (2,044,588 rows)
+ztile	Redshift and other quantities for spectra that have been grouped and coadded by tile (2,791,033 rows)
+Back to Top
+
+Data Access
+allskymaps_DESI.pngFigure: Object number density (per square degree) in Mollweide projection for DESI DR1 in Equatorial coordinates.
+
+The DESI data are accessible by a variety of means:
+
+SPARCL
+
+SPectra Analysis & Retrievable Catalog Lab (SPARCL) at NOIRLab provides flexible access to spectra from large optical and near-infrared surveys. SPARCL currently contains spectra from DESI and SDSS. The SPARCL client package is pre-installed in Data Lab and can also be installed in a user's local computing environment. See the How to Use SPARCL Jupyter Notebook.
+
+Data Lab Table Access Protocol (TAP) service
+
+TAP provides a convenient access layer to the DESI catalog database. TAP-aware clients (such as TOPCAT) can point to https://datalab.noirlab.edu/tap, select the desi_dr1 database, and see the database tables and descriptions. You can also view the DESI tables and descriptions in the Data Lab table browser.
+
+Data Lab Query Client
+
+The Query Client is available as part of the Data Lab software distribution. The Query Client provides a Python API to Data Lab database services. These services include anonymous and authenticated access through synchronous or asynchronous queries of the catalog made directly to the database. Additional Data Lab services for registered users include personal database storage and storage through the Data Lab VOSpace.
+
+The Query Client can be called from a Jupyter Notebook on the Data Lab Notebook server. Example notebooks are provided to users upon creation of their user account (register here), and are also available to browse on GitHub at https://github.com/astro-datalab/notebooks-latest.
+
+Jupyter Notebook Server
+
+The Data Lab Jupyter Notebook server (authenticated service) contains multiple examples of how to access and visualize the DESI catalogs and spectra:
+
+How to Use SPARCL
+Introduction to DESI First Data Release (DR1) at the Astro Data Lab
+Introduction to DESI First Data Release (DR1) at the Astro Data Lab (default Python 3 kernel version)
+Introduction to DESI Early Data Release (EDR) at the Astro Data Lab
+Comparing SDSS and DESI spectra using SPARCL
+Using the DESI AGN/Galaxy Classification Value-Added Catalog
+Stacking SDSS Spectra of Galaxies Selected from the BPT Diagram
+Multi-wavelength Image Cutouts and SDSS Spectra of Active Galaxies with Extreme Emission-Line Ratios
+Obtain spectra with SPARCL and plot them with Jdaviz
+Obtain spectra with SPARCL and plot them with Prospect
+Bulk File Access
+
+To download catalog files and/or spectra files from the public data releases NERSC or for bulk transfer using Globus see the Data Access page from the DESI Data Documentation website.
+
+Back to Top
+
+Acknowledgments
+Acknowledgments must be used following the complete instructions from the DESI Data Documentation website Acknowledgments page.
+
+If using the Astro Data Lab and/or SPARCL, please also include their respective acknowledgments as described below:
+
+Acknowledgment of SPARCL used jointly with the Astro Data Lab
+
+If you use SPARCL jointly with the Astro Data Lab platform (via JupyterLab, command-line or web interface) in your published research, include the text below in your paper:
+
+This research uses services or data provided by the SPectra Analysis and Retrievable Catalog Lab (SPARCL) and the Astro Data Lab, which are both part of the Community Science and Data Center (CSDC) program at NSF National Optical-Infrared Astronomy Research Laboratory. NOIRLab is operated by the Association of Universities for Research in Astronomy (AURA), Inc. under a cooperative agreement with the National Science Foundation.
+
+If publishing in a AAS journal, also add the keywords: \facility{Astro Data Lab} and \software{SPARCL (Juneau et al. 2024)} and cite:
+
+Juneau et al., "SPARCL: SPectra Analysis and Retrievable Catalog Lab", Conference Proceedings for ADASS XXXIII, 2024 https://doi.org/10.48550/arXiv.2401.05576
+Acknowledgment of SPARCL
+
+If you use SPARCL in your published research, please include the text below in your paper:
+
+This research uses services or data provided by the SPectra Analysis and Retrievable Catalog Lab (SPARCL), which is part of the Community Science and Data Center (CSDC) program at NSF National Optical-Infrared Astronomy Research Laboratory. NOIRLab is operated by the Association of Universities for Research in Astronomy (AURA), Inc. under a cooperative agreement with the National Science Foundation.
+
+If publishing in a AAS journal, also add the keyword: \software{SPARCL (Juneau et al. 2024)} and cite:
+
+Juneau et al., "SPARCL: SPectra Analysis and Retrievable Catalog Lab", Conference Proceedings for ADASS XXXIII, 2024 https://doi.org/10.48550/arXiv.2401.05576
+Back to Top
+
+NSF NOIRLab Logo Horizontal
+AboutPublicationsAcknowledgmentsDisclaimersPrivacy Policy
+ astrodatalab › Github › Contact Us ›
+Version: 0.20.0
+
+Skip to content
+DESI Data
+Data Access
+ 
+DESI Data
+Home
+Data Releases
+Data Releases
+Overview
+EDR
+DR1 (latest)
+Data Access
+Data Organization
+Data Model [external]
+Software
+Tutorials
+Glossary
+Value-added Catalogs
+Papers
+Data License and Acknowledgments
+Other Resources
+Contact Us
+Table of contents
+Web access
+File download
+Database access
+Spectroscopic Data as a Service
+Interactive Sky Viewer
+Bulk download with Globus
+Amazon Web Services
+If you have a NERSC account…
+DESI Software at NERSC
+Data Access¶
+
+Web access¶
+
+Public DESI data releases: https://data.desi.lbl.gov/public
+
+Latest data release (DR1): https://data.desi.lbl.gov/public/dr1/
+
+European mirror (DR1-only): https://webdav-hdfs.pic.es/data/public/DESI/DR1
+
+This is best suited for browsing the directory structure and downloading individual files, including both spectra and catalog files. To download large amounts of data, please use Globus described below.
+
+See Data Releases for information about individual data releases and their directory structure.
+
+See Data Organization for details on how the data is organized across directories.
+
+File download¶
+
+For users who want to download a small sample of DESI data for testing or exploration, we provide the desi_get_dr_subset script. This tool allows you to download a focused subset of DESI data by:
+
+Searching for targets near a specific sky position (RA/Dec)
+Finding the healpix with the most targets in that region
+Downloading all data files associated with that healpix
+Optionally downloading the corresponding tile data
+The script handles different data releases appropriately, automatically adjusting paths and defaults based on the data release. For example, it uses different default coordinates depending on the data release - for EDR it targets the Rosette 1 field (RA=179.6, Dec=0.0), while for DR1 it uses coordinates that retrieve healpix 23040 (RA=56.0, Dec=-9.0).
+
+You can find this script in the DESI data repository: https://github.com/desihub/desida/blob/main/bin/desi_get_dr_subset
+
+Basic usage:
+
+desi_get_dr_subset --dr dr1 --ra 56.0 --dec -9.0 --radius 0.1 --base-dir ./tiny_dr1
+Key options:
+
+--dr: Data release to use (edr, dr1)
+--ra, --dec: Sky coordinates to search around
+--radius: Search radius in degrees
+--base-dir: Directory where files will be downloaded
+--no-tiles: Download only healpix data, skip tile data
+Note
+Even a “small” sample of DESI data is pretty big – the default options will download 40 GB of data.
+
+Database access¶
+
+DESI catalogs also exist in a database format. People with NERSC accounts (e.g. through DESI, DES, LSST-DESC, CMB-S4…) can access the public portion of the databases at NERSC without requiring DESI membership. For convenience, a copy of the public databases is also hosted by the NOIRLab Astro Data Lab science platform, including both EDR and DR1. Please see Databases for connection information and further details about databases containing DESI data.
+
+Catalogs optimized for clustering measurements (tables originated from files with clustering in their names) can also be accessed through CosmoHub. CosmoHub is a science platform that, powered by Apache Hive, enables the interactive exploration, plotting and distribution of massive cosmological datasets. CosmoHub already hosts a wide range of public datasets — Gaia (all public data releases), Quaia, DESI Legacy Surveys (DR10 and DR8), Euclid Q1, DES DR2 & DR1, KIDS and more, making it a great platform for validation and cross-survey studies.
+
+Spectroscopic Data as a Service¶
+
+The SPectra Analysis and Retrievable Catalog Lab (SPARCL) service is provided by NOIRLab. This API provides functions for search and retrieval of multiple DESI spectra with the full flux versus wavelength. Although only the HEALPixel coadds are served at present, this provides a convenient way to retrieve spectra that could otherwise be spread among many separate files.
+
+Interactive Sky Viewer¶
+
+An interactive sky viewer shows the DESI Legacy Surveys DR9 imaging overlaid with locations of DESI tiles and spectra. Users can interactively pan and zoom, or pre-select specific RA,dec locations and zoom levels with URLs of the form
+
+https://www.legacysurvey.org/viewer/desi-dr1/?ra=218.1973&dec=2.5435&zoom=15
+
+Clicking through on an individual target brings up an interactive spectrum browser. Users can view any DESI science TARGETID from an DR1 catalog using URLs of the form
+
+https://www.legacysurvey.org/viewer/desi-spectrum/dr1/targetid39627848784286649 https://www.legacysurvey.org/viewer/desi-spectrum/dr1/targetid39627848784285507
+
+Bulk download with Globus¶
+
+Globus provides an interface suited for bulk downloads of data. You specify what to download and the destination, and then Globus coordinates a parallel transfer including error checking and retries. It emails you an alert when the transfer has successfully completed. If your home institution does not provide a Globus Server, you can use Globus Connect Personal to setup an endpoint on your personal device.
+
+All public DESI data are available from the DESI Public Data Globus collection. Each DESI Data Release is a separate subdirectory under that endpoint. This method requires a free Globus account but does not require a NERSC account or DESI membership.
+
+Warning
+Searching Globus collections for “DESI” returns a large number of collections unrelated to the DESI Survey, e.g. from people with “desi” in their name. Search for “DESI Public Data” or use the direct link to find the correct DESI Public Data collection.
+
+Warning
+Globus usually does not follow or copy symbolic links (“symlinks”), which occur in the DR1 target/ and spectro/redux/iron/exposures/ subdirectories. If you need to do bulk transfers of these directories, see the separate instructions for handling symlinks.
+
+Amazon Web Services¶
+
+As part of their Open Data program, Amazon Web Services (AWS) hosts both the DESI Early Data Release (under /edr) and Data Release 1 (under /dr1) in the desidata S3 bucket for on-demand querying. The web endpoint is located at desidata.s3.amazonaws.com/index.html. Amazon supports multiple ways to programmatically access the data for free, documented here.
+
+If you are specifically interested in scientific data analysis, we recommend running our pre-built Docker image, which bundles a cloud-synced filesystem for DESI data access with a Jupyter server and DESI Python packages, making it compatible with existing code at NERSC with minimal modifications.
+
+Public data releases at NERSC will be exactly mirrored by /<release> directories in the bucket, with the following exceptions: * All individual /<release>/target directories have been merged into the /target top-level directory. * All individual /<release>/spectro/data directories have been merged into the /raw_spectro_data top-level directory.
+
+All other symlinked files/directories have been converted into real files/directories.
+
+If you have a NERSC account…¶
+
+If you have a NERSC account, e.g. through DESI, DES, LSST-DESC, or other DOE-sponsored projects, all of the public DESI data are available on disk at
+
+/global/cfs/cdirs/desi/public/
+These are exactly the same files visible at https://data.desi.lbl.gov/public.
+
+This directory is also visible from https://jupyter.nersc.gov for Jupyter notebook access to the DESI data.
+
+DESI Software at NERSC¶
+
+DESI provides access to its software environment at NERSC. To enable the DESI environment, and access Data Release 1, you can run these two commands:
+
+source /global/common/software/desi/desi_environment.sh 24.11
+module swap desitree/dr1
+24.11 is one of the DESI software releases. Other releases are described below. We also support tcsh: just replace desi_environment.sh with desi_environment.csh.
+There are currently three software releases available for general use:
+
+24.11: recent, stable release; recommended.
+22.5: older release used to generate EDR/fuji.
+23.1: older release used to generate DR1/iron.
+main: based on git checkouts of DESI software packages; most up-to-date, but not guaranteed to be stable.
+DESI Collaborators with NERSC accounts can also use the NERSC DTN endpoint to access DESI Data.
+
+Note
+DESI data are released under the Creative Commons Attribution 4.0 International License (CC BY 4.0). Use of DESI data requires including the citation and acknowledgment text given on the Data License and Acknowledgments page.
+
+Made with Material for MkDocs
+
+
+DESI
+🏠 Home (current)
+Dark Energy Spectroscopic Instrument (DESI)
+epo/ — Data sets for Education and Public Outreach (EPO).
+dr1/ — Data Release 1 (DR1) based on the first full year of the DESI main survey. See DR1 documentation for details.
+edr/ — Early Data Release (EDR) based on commissioning and survey validation data. See EDR documentation for details.
+ets/ — Early Target Selection (ETS) based on Legacy Survey DR8 and DR9 imaging.
+external/ — Data sets that are closely associated with public DESI data but that are not actually produced by the DESI collaboration.
+papers/ — Data sets associated with DESI Working Group and Key Project papers.
+transients/ — Data sharing for rapid transient follow-up.
+Last modified: 2025-03-19
