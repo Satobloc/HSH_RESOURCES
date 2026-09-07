@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T16:23:30Z`
-- Tree/content state: `064b9a980b1dd829c0950845a92931ee7dc9302ed768b502924e75f0f7579300`
+- Scanned: `2026-09-07T16:25:31Z`
+- Tree/content state: `39606ce40eaa7e2db7aaca5b85c852804755892e1658ce5220dcb597a765bbf7`
 - Coverage: complete structural traversal
-- Files: 294
-- Uploaded source files: 287
-- PDF papers: 280
+- Files: 295
+- Uploaded source files: 288
+- PDF papers: 281
 - Repository machinery files: 7
 - Byte-identical duplicate groups: 25
 
@@ -17,6 +17,7 @@
 |---|---:|
 | `.github` | 1 |
 | `.gitignore` | 1 |
+| `BACKREACTION` | 1 |
 | `BIG PAPERS` | 3 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -121,6 +122,7 @@
 
 | Path | Bytes | Identifier hint |
 |---|---:|---|
+| `BACKREACTION/2007.07871v1.pdf` | 87981 | arxiv:2007.07871v1 |
 | `BIG PAPERS/qt2f18n5nk.pdf` | 14358136 |  |
 | `BIG PAPERS/ssrn-7385521.pdf` | 10277174 | ssrn:7385521 |
 | `BIG PAPERS/ssrn-7394178.pdf` | 15622060 | ssrn:7394178 |
