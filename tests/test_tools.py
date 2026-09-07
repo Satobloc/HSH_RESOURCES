@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -45,6 +47,27 @@ class ExtractionTests(unittest.TestCase):
         text = extract_papers.page_document(["one", "two"])
         self.assertIn("===== PAGE 1 =====", text)
         self.assertIn("===== PAGE 2 =====", text)
+
+    def test_bounded_runs_advance_past_current_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            files = []
+            for name in ("a.pdf", "b.pdf", "c.pdf"):
+                path = root / name
+                path.write_bytes(name.encode())
+                files.append(path)
+            prior = {
+                "a.pdf": {
+                    "source_path": "a.pdf",
+                    "sha256": extract_papers.file_sha256(files[0]),
+                    "status": "extracted",
+                }
+            }
+            planned, current = extract_papers.pending_pdfs(
+                root, files, prior, force=False, max_files=1
+            )
+            self.assertEqual(current, 1)
+            self.assertEqual([path.name for path, _digest in planned], ["b.pdf"])
 
 
 if __name__ == "__main__":

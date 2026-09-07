@@ -60,6 +60,19 @@ Each extracted page receives an explicit page marker. Empty or nearly empty
 results are marked `needs_ocr`; OCR is not silently substituted because it has a
 different error profile and should be separately auditable.
 
+## Automated extraction
+
+The `Extract and index papers` workflow runs after PDF uploads and can also be
+started manually from the repository's Actions tab. It installs the pinned tool
+requirements, runs the tests, extracts only new or changed PDFs, refreshes the
+structural index, and commits the derived text and extraction manifest back to
+this private repository. Workflow-generated text is force-added intentionally;
+it remains ignored during ordinary local work to prevent accidental bulk adds.
+
+Manual runs accept a `max_files` batch size. `0` means all pending PDFs. Bounded
+runs select pending files after excluding current manifest entries, so repeated
+runs advance through the corpus.
+
 ## Evidence discipline
 
 Keep these judgments separate:
@@ -70,4 +83,3 @@ Keep these judgments separate:
 4. the source was read;
 5. a result is relevant to an H(s)H dependency;
 6. the result supports, conflicts with, or merely resembles a model construction.
-

@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 SKIP_PARTS = {".git", "derived", "__pycache__", ".pytest_cache"}
 
 
@@ -116,6 +116,40 @@ def pdfs(root: Path, supplied: list[Path]) -> list[Path]:
     ]
 
 
+def pending_pdfs(
+    root: Path,
+    candidates: list[Path],
+    prior: dict[str, dict[str, Any]],
+    force: bool,
+    max_files: int | None,
+) -> tuple[list[tuple[Path, str]], int]:
+    """Return a bounded list of PDFs requiring work and the current-file count.
+
+    The bound is applied after already-extracted files are removed. This makes
+    repeated bounded runs advance through the corpus instead of selecting the
+    same completed prefix forever.
+    """
+    limit = None if max_files is None else max(max_files, 0)
+    planned: list[tuple[Path, str]] = []
+    current = 0
+    for path in candidates:
+        if limit is not None and len(planned) >= limit:
+            break
+        rel = path.relative_to(root).as_posix()
+        digest = file_sha256(path)
+        existing = prior.get(rel)
+        if (
+            not force
+            and existing
+            and existing.get("sha256") == digest
+            and existing.get("status") in {"extracted", "needs_ocr"}
+        ):
+            current += 1
+            continue
+        planned.append((path, digest))
+    return planned, current
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("paths", nargs="*", type=Path)
@@ -129,26 +163,24 @@ def main() -> int:
     args = parser.parse_args()
 
     root = args.root.resolve()
-    selected = pdfs(root, args.paths)
-    if args.max_files is not None:
-        selected = selected[: max(args.max_files, 0)]
     manifest_path = root / args.manifest
     prior = load_manifest(manifest_path)
-    print(f"selected={len(selected)} mode={'apply' if args.apply else 'dry-run'}")
+    selected, current = pending_pdfs(
+        root, pdfs(root, args.paths), prior, args.force, args.max_files
+    )
+    print(
+        f"pending={len(selected)} already_current={current} "
+        f"mode={'apply' if args.apply else 'dry-run'}"
+    )
     if not args.apply:
-        for path in selected:
+        for path, _digest in selected:
             print(f"would-process\t{path.relative_to(root).as_posix()}")
         return 0
 
     rows = dict(prior)
-    summary = {"extracted": 0, "skipped": 0, "needs_ocr": 0, "error": 0}
-    for path in selected:
+    summary = {"extracted": 0, "already_current": current, "needs_ocr": 0, "error": 0}
+    for path, digest in selected:
         rel = path.relative_to(root).as_posix()
-        digest = file_sha256(path)
-        existing = prior.get(rel)
-        if not args.force and existing and existing.get("sha256") == digest and existing.get("status") in {"extracted", "needs_ocr"}:
-            summary["skipped"] += 1
-            continue
         record: dict[str, Any] = {
             "schema_version": 1,
             "tool_version": VERSION,
@@ -189,4 +221,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

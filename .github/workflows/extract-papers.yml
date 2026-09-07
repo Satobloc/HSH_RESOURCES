@@ -1,0 +1,77 @@
+name: Extract and index papers
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_files:
+        description: "Maximum pending PDFs to process; 0 means all"
+        required: false
+        default: "0"
+  push:
+    branches: [main]
+    paths:
+      - "**/*.pdf"
+      - "tools/extract_papers.py"
+      - "tools/index_papers.py"
+      - "requirements-tools.txt"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: paper-extraction-main
+  cancel-in-progress: false
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-tools.txt
+
+      - name: Install extraction tools
+        run: python -m pip install --disable-pip-version-check -r requirements-tools.txt
+
+      - name: Test tools
+        run: python -m unittest discover -s tests -v
+
+      - name: Extract pending PDFs
+        env:
+          MAX_FILES: ${{ github.event.inputs.max_files || '0' }}
+        run: |
+          args=(--root . --apply)
+          if [[ "$MAX_FILES" =~ ^[0-9]+$ ]] && (( MAX_FILES > 0 )); then
+            args+=(--max-files "$MAX_FILES")
+          fi
+          python tools/extract_papers.py "${args[@]}"
+
+      - name: Refresh structural index
+        run: python tools/index_papers.py --root . --apply
+
+      - name: Validate generated state
+        run: |
+          python -m json.tool indexes/index-state.json >/dev/null
+          test -f derived/manifests/extraction.jsonl
+          python -c 'import json, pathlib; [json.loads(x) for x in pathlib.Path("derived/manifests/extraction.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]'
+
+      - name: Commit derived text and indexes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f derived/text derived/manifests
+          git add indexes/RESOURCE_INDEX.md indexes/index-state.json
+          if git diff --cached --quiet; then
+            echo "No extraction changes"
+            exit 0
+          fi
+          git commit -m "Extract and index uploaded papers"
+          git pull --rebase origin main
+          git push origin HEAD:main
