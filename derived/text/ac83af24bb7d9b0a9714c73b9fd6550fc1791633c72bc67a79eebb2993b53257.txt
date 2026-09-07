@@ -1,0 +1,1135 @@
+===== PAGE 1 =====
+Artifact-Conditioned Interval Diagnostics for Flow-Matching Neural Posterior
+Estimation in a Controlled Gravitational-Wave Benchmark
+Zhi Luo 1,∗ and Qi-Qin Jing 2
+1Department of Physics, Chongqing University, Chongqing 401331, China
+2School of Physics and Astronomy, China West Normal University, Nanchong 637002, China
+(Dated: June 16, 2026)
+Calibration checks for neural posterior estimators in gravitational-wave inference should remain in-
+terpretable when observations contain data-quality artifacts. We study marginal interval calibration
+in a controlled frequency-domain binary-black-hole benchmark with synthetic glitches, frequency
+masks, and power spectral density (PSD) mismatch. The posterior sampler is a support-aware flow-
+matching posterior estimator (FMPE) with a circular representation of coalescence phase. We com-
+pare raw marginal credible intervals with global rescaling, oracle artifact-stratified rescaling, hard
+predicted-label rescaling, and soft learned artifact-aware interval rescaling (LAIR). In the 1024-bin
+evaluation, a single global scale fitted on mixed calibration data transfers poorly to frequency-mask
+cases, giving a mean absolute 90% marginal coverage error (MA90CE) of 0.1195. Soft LAIR lowers
+the corresponding error to 0.0672, although it is not uniformly better than the raw FMPE inter-
+vals. A 40-split LAIR evaluation and a six-checkpoint FMPE training-seed study show that the
+frequency-mask behavior is not a single-split artifact. The classifier recognizes frequency masks and
+PSD mismatch reliably, while glitch recall remains low. Waveform-resolution tests, PyCBC/LAL
+TaylorF2 backend checks, prior and Gaussian baselines, and controlled-likelihood reference-posterior
+probes indicate that marginal coverage must be read together with posterior width, geometry, and
+likelihood-based diagnostics. These results support using LAIR as an artifact-structured interval
+diagnostic, not as a substitute for posterior validation.
+I. INTRODUCTION
+Gravitational-wave parameter estimation infers
+compact-binary source parameters from noisy detector
+strain. Likelihood-based analyses provide the standard
+reference for precision inference, but repeated waveform
+evaluations and stochastic sampling can be costly. Neu-
+ral posterior estimation reduces this cost by amortizing
+the map from strain data to posterior samples.
+Good calibration on clean simulations is not sufficient
+when the data distribution changes. Detector data can
+include nonstationary noise, missing frequency bands,
+glitches, power spectral density (PSD) drift, calibration
+uncertainty, and other effects absent from an idealized
+training set. Such effects can produce artifact-specific
+coverage errors. At the same time, acceptable marginal
+coverage is not by itself evidence of an informative pos-
+terior, since broad intervals can cover the truth while
+carrying little useful structure.
+We use a controlled frequency-domain binary-black-
+hole benchmark to isolate these effects. The simula-
+tor has a TaylorF2-like nonspinning waveform, analytic
+whitening, two detector channels, and known synthetic
+artifact labels. The posterior estimator is a conditional
+flow-matching posterior estimator (FMPE). Bounded pa-
+rameters are trained in stable logit coordinates, and co-
+alescence phase is represented by sine and cosine coordi-
+nates to avoid the artificial 0–2π discontinuity.
+The diagnostic considered here is learned artifact-
+aware interval rescaling (LAIR). Calibration events are
+∗ Corresponding author: zhiluo@cqu.edu.cn
+used to fit marginal interval scale factors for each arti-
+fact family and parameter. At evaluation time an artifact
+classifier returns probabilitiespψ(a|x), and the deployed
+scale for parameter k is the probability-weighted average
+of the artifact-specific scales. The procedure uses pre-
+dicted artifact information for evaluation events; it does
+not require simulator labels for those events.
+The analysis asks whether artifact-conditioned inter-
+val scaling exposes failure modes that are hidden by a
+single global calibration. We evaluate the main 1024-bin
+FMPE checkpoint, repeat the LAIR calculation across
+40 independent simulator/calibration splits, and assess
+six independently trained 1024-bin FMPE checkpoints.
+Classifier comparisons, waveform-resolution tests, sim-
+ple posterior baselines, and controlled-likelihood refer-
+ence probes are included so that the coverage results are
+not interpreted in isolation.
+Figure 1 gives the workflow. FMPE produces posterior
+samples, after which the LAIR-family procedures rescale
+marginal intervals and report artifact-conditioned cover-
+age.
+A. Relation to Prior Work
+Neural posterior estimation has become an important
+route to faster gravitational-wave inference. Autoregres-
+sive normalizing flows showed that neural density esti-
+mators can learn compact-binary posteriors in controlled
+settings [1]. DINGO-style systems extended this ap-
+proach to rapid gravitational-wave analyses and added
+importance-sampling corrections for amortized proposals
+[2, 3]. Flow matching formulates generation through a
+arXiv:2606.12496v2  [astro-ph.IM]  14 Jun 2026
+
+===== PAGE 2 =====
+2
+prior
+θ = (, q, dL, ϕc, tc)
+controlled
+waveform simulator
+observation
+x with artifact
+support-aware
+FMPE
+posterior samples
+θ(m)
+marginal
+intervals
+artifact classifier
+pψ(a ∣ x)
+calibrated scales
+sa, k
+LAIR scale
+∑
+a
+pψ(a ∣ x)sa, k
+rescaled
+intervals
+simulation posterior estimation
+calibration and diagnostic rescaling
+FIG. 1. Inference and diagnostic workflow. Simulated observations are passed to a support-aware flow-matching posterior
+estimator. Marginal intervals are then evaluated raw or after global, oracle artifact-stratified, hard predicted-label, or soft
+LAIR rescaling.
+learned continuous vector field [4], and has been adapted
+to simulation-based inference [5]. The estimator used
+here belongs to this flow-matching family, with the arti-
+fact label available only through the controlled simulator.
+Posterior validation is a separate issue. Simulation-
+based calibration tests rank uniformity under the as-
+sumed simulator [6], and TARP-style diagnostics provide
+related sampling-based checks [7]. Marginal credible-
+interval coverage is therefore used here as a focused diag-
+nostic. It can reveal artifact-dependent miscalibration,
+but it does not determine the joint posterior, tails, or
+information content.
+Likelihood-based parameter-estimation tools such as
+Bilby and PyCBC Inference remain the standard ref-
+erence implementations for production analyses [8, 9];
+LALSuite supplies core waveform and data-analysis in-
+frastructure [10]. Recent simulation-based studies have
+examined robustness to real noise and missing informa-
+tion [11, 12], and public LIGO-Virgo-KAGRA (LVK)
+open data make such questions directly testable [13, 14].
+The experiments below do not use LVK strain data. They
+instead use known artifact families so that mode-resolved
+calibration errors can be measured directly.
+1. Position relative to DINGO, FMPE, and
+likelihood-corrected neural inference
+DINGO is the closest established neural posterior-
+estimation benchmark family for gravitational-wave in-
+ference. Its importance-sampling correction also illus-
+trates how an amortized proposal can be checked against
+a likelihood. The present work does not implement that
+correction and does not run DINGO, Bilby, or PyCBC
+inference. The comparison is therefore limited in scope:
+LAIR is tested as a marginal artifact-conditioned inter-
+val diagnostic within a shared controlled simulator. The
+conditional RealNVP result in Sec. III C is included only
+as a lightweight discrete-flow comparator under the same
+simulator and metrics.
+2. Model-family choice: discrete flows, flow matching, and
+score-based diffusion
+Discrete normalizing flows are the established neural-
+density baseline for gravitational-wave parameter estima-
+tion. DINGO-style conditional flows show that amortized
+density estimators can produce rapid compact-binary
+posterior samples. The RealNVP baseline below tests
+this discrete-flow family only within our simulator; it is
+not a reproduction of DINGO or DINGO-IS.
+The main estimator uses flow matching. Rather
+than applying a finite sequence of invertible maps, the
+model learns a continuous vector field that transports a
+simple base distribution to the observation-conditioned
+posterior target. This formulation is compatible with
+simulation-based inference and with the support-aware
+and circular parameterization used in the benchmark.
+Score-based diffusion is a natural alternative for con-
+ditional posterior sampling, but it is outside the present
+comparison. A fair diffusion study would require a sep-
+arate sampler, runtime tuning, and calibration analysis
+under the same metrics.
+II. CONTROLLED INFERENCE PROBLEM
+AND METHODS
+A. Parameters and Priors
+The physical parameter vector is
+θ = (M,q,d L,ϕc,tc),
+whereM is detector-frame chirp mass, q = m2/m1≤ 1
+is the mass ratio, dL is luminosity distance, ϕc is coales-
+cence phase, and tc is coalescence time. The symmetric
+mass ratio and total mass are
+η = q
+(1 +q)2, M =Mη−3/5.
+
+===== PAGE 3 =====
+3
+In this paperM denotes chirp mass andM denotes total
+mass. The priors are independent and uniform:
+M∈ [8, 18]M⊙, q ∈ [0.55, 1], d L∈ [300, 1800] Mpc,
+ϕc∈ [0, 2π), t c∈ [−0.035, 0.035] s.
+The prior volume is deliberately compact: it spans mass,
+distance, phase, and time uncertainty while keeping re-
+peated single-GPU experiments feasible.
+B. Signal and Observation Model
+The simulator uses a transparent TaylorF2-like
+frequency-domain inspiral model rather than a produc-
+tion waveform approximant. The complex strain scales
+schematically as
+˜h(f;θ)∝M5/6
+dL
+f−7/6 exp{iΨ(f;θ)},
+with phase contributions from coalescence time, coales-
+cence phase, and a nonspinning post-Newtonian expan-
+sion. A smooth taper is applied near the inspiral cut-
+off. Each observation contains two detector channels rep-
+resented by real and imaginary frequency-domain com-
+ponents after analytic whitening, together with a mask
+channel.
+This setup is a controlled inverse problem, not a full
+waveform model. It omits spins, precession, higher
+modes, sky localization, inclination, calibration uncer-
+tainty, and real detector nonstationarity. The restric-
+tion keeps the prior-generating process and artifact label
+known exactly. The PyCBC/LAL TaylorF2 comparison
+below checks phase, amplitude, and the fixed detector-
+projection conventions used in this simulator.
+C. Controlled Likelihood and Whitening
+The reference-posterior probes use the Gaussian like-
+lihood implied by the whitened simulator. For detector
+channelI and frequency bin j,
+dIj =mj
+h
+˜hI(fj;θ) +nIj
+i
+,
+where mj ∈ {0, 1} is the frequency mask and the
+whitened noise satisfies nIj∼N (0, 1) independently for
+real and imaginary components. The controlled log like-
+lihood is
+logp(d|θ) =−1
+2
+X
+I,j
+mj
+dIj− ˜hI(fj;θ)
+
+2
++ const.
+PSD factors are absorbed into the whitening operation.
+The two detector channels use fixed gains and time de-
+lays rather than sky-dependent antenna patterns, so the
+problem remains a controlled two-channel inverse prob-
+lem rather than a production detector response model.
+PSD mismatch is introduced by changing the whiten-
+ing tilt used to generate an evaluation observation
+while retaining the nominal whitening convention for
+the trained estimator and controlled reference model.
+Frequency-mask artifacts set a contiguous band of mj
+to zero and expose the missingness through the mask
+channel. Glitch artifacts add a localized sine-Gaussian-
+like disturbance after the clean signal is generated. These
+definitions make the artifact label and the likelihood mis-
+match known by construction.
+D. Artifact Families
+The label set is
+a∈{ clean, glitch, frequency mask, PSD mismatch}.
+Clean observations use the nominal simulator. Glitch
+observations contain a localized sine-Gaussian-like dis-
+turbance. Frequency-mask observations remove a band
+of frequency bins and expose the missingness through the
+mask channel. PSD-mismatch observations perturb the
+whitening model.
+In mixed evaluation, a clean observation is drawn with
+probability 0.65 and an artifact observation with prob-
+ability 0.35. Conditional on an artifact, the three arti-
+fact families are sampled uniformly. A 4096-event sample
+gives the realized fractions in Table I and Fig. 2. Quali-
+tative examples appear in Fig. 3.
+TABLE I. Realized mixed-mode artifact composition from
+4096 simulated events.
+Artifact Count Fraction
+clean 2632 0.6426
+glitch 463 0.1130
+frequency mask 522 0.1274
+PSD mismatch 479 0.1169
+clean glitch frequency mask psd mismatch
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7realized fraction
+Mixed-mode artifact audit, 4096 events
+FIG. 2. Realized artifact counts in a 4096-event mixed-mode
+sample. The clean fraction follows the configured 0.65 prob-
+ability, and the artifact families are approximately balanced
+within the remaining probability mass.
+
+===== PAGE 4 =====
+4
+FIG. 3. Representative synthetic artifact examples. Frequency masks affect the mask channel directly; glitches and PSD
+mismatch appear as subtler frequency-dependent structure.
+E. Posterior Estimator and Calibration Diagnostics
+1. Support-Aware Transforms
+For each bounded scalar parameter x ∈ [ℓ,u ], the
+model uses
+z = x−ℓ
+u−ℓ, y = log z
+1−z,
+with numerical clipping before the logit. The inverse
+transform maps samples back into the physical prior in-
+terval. This keeps decoded M, q, dL, and tc samples
+inside the prior support. Unless stated otherwise, inter-
+val rescaling for bounded scalar parameters is performed
+in this transformed coordinate: endpoints are mapped
+through the box logit, widened or narrowed about the
+transformed posterior center, and decoded back to the
+physical interval. This convention avoids unnecessary
+asymmetry near hard prior boundaries.
+2. Circular Phase Treatment
+Coalescence phase is embedded as
+(cosϕc, sinϕc)
+during training and decoded with atan2 modulo 2π. The
+model target is therefore
+y(θ) = (logitM, logitq, logitdL, cosϕc, sinϕc, logittc).
+The phase coordinates are decoded after normalization
+byrϕ =
+q
+u2
+ϕ +v2
+ϕ, where (uϕ,vϕ) is the generated phase
+embedding. The implementation records rϕ as an off-
+circle diagnostic. Large departures from unity indicate
+that the Euclidean flow has moved away from the train-
+ing manifold even when the decoded angle is defined.
+Evaluation uses circular phase errors and geodesic inter-
+vals on S1. The wrapped phase residual is
+∆ϕ = atan2 (sin(ϕ−ϕ⋆), cos(ϕ−ϕ⋆)).
+For an interval with circular center ¯ϕ and half-widthh≤
+π, the truth is covered when
+atan2
+ 
+sin(ϕ⋆− ¯ϕ), cos(ϕ⋆− ¯ϕ)
+≤h.
+This definition removes the discontinuity at the 0–2 π
+boundary.
+3. Conditional Flow Matching
+Letx denote the observation and y the support-aware
+target. A base sample z0 is drawn from a standard Gaus-
+sian. Conditional flow matching trains a time-dependent
+vector fieldvφ(z,t,x ) using the straight-line interpolation
+zt = (1−t)z0 +ty,
+with target velocity y−z0. The objective is
+L(φ) = Ex,y,z0,t
+h
+∥vφ(zt,t,x )− (y−z0)∥2
+2
+i
+.
+At inference time the learned ordinary differential equa-
+tion is integrated from the Gaussian base distribution to
+t = 1, and generated samples are decoded to normalized
+physical coordinates for evaluation.
+
+===== PAGE 5 =====
+5
+4. Marginal Interval Rescaling
+Raw posterior samples define the marginal credible in-
+tervals. Global rescaling fits one scale factor per param-
+eter on calibration data and applies it to all evaluation
+intervals. Oracle artifact-stratified rescaling fits one scale
+per artifact and parameter, then uses the true artifact la-
+bel. Predicted-label rescaling replaces the true label with
+the classifier’s hard prediction. These operations affect
+marginal interval widths only; they do not move poste-
+rior centers or reconstruct joint correlations. For artifact
+classa, parameter k, and nominal levels α∈A , the cali-
+brated scale is
+sa,k = arg min
+s>0
+X
+α∈A
+wα|ˆccal(a,k,α ;s)−α|,
+where ˆccal is empirical calibration coverage after multi-
+plying the marginal half-width by s. Global rescaling
+uses the same objective after pooling artifact classes. The
+primary scalar metric below is based on α = 0.9, while
+coverage curves evaluate the fitted intervals over a grid
+of nominal levels.
+5. Artifact Classifier and LAIR
+The artifact classifier is a one-dimensional convolu-
+tional network over the frequency axis. Its channels are
+detector real and imaginary components plus the mask.
+Letpψ(a|x) be the classifier probability for artifact class
+a. LAIR fits scale factors sa,k for artifact class a and pa-
+rameter k on calibration data. The soft deployed scale
+is
+sk(x) =
+X
+a
+pψ(a|x)sa,k.
+The rescaled marginal interval is centered on the event’s
+posterior center, with its half-width multiplied by sk(x).
+This implementation of LAIR is an artifact-
+conditioned marginal interval diagnostic. It rescales in-
+tervals but leaves posterior centers and joint sample ge-
+ometry unchanged, so its output must be interpreted to-
+gether with the raw samples and reference diagnostics.
+6. Baselines
+Two baselines contextualize the coverage results. A
+prior-only baseline asks how often the truth falls in cen-
+tral prior intervals. A diagonal Gaussian posterior base-
+line gives a simple parametric approximation in the 256-
+bin low-resolution setting. Low MA90CE for either base-
+line does not imply an accurate posterior; it can also re-
+flect broad intervals.
+7. Metrics
+For nominal level α, the empirical marginal coverage
+for parameter k is
+ˆck(α) = 1
+N
+NX
+i=1
+1{θtrue
+i,k ∈Iα
+i,k}.
+The primary scalar metric is mean absolute 90% marginal
+coverage error,
+MA90CE = 1
+K
+KX
+k=1
+|ˆck(0.9)− 0.9|.
+We also track normalized mean absolute error, bias, pos-
+terior widths, and coverage curves. Event-bootstrap in-
+tervals resample evaluation events for a fixed trained
+model and fixed calibration procedure.
+III. EXPERIMENTS AND RESULTS
+All experiments use the controlled simulator described
+above. The FMPE tiers are summarized in Table II.
+The 1024-bin tier is the main high-resolution checkpoint.
+The 2048-bin tier tests frequency resolution at a smaller
+evaluation budget. The 256-bin tier is retained as a low-
+resolution check for earlier LAIR and baseline diagnos-
+tics.
+The 1024-bin LAIR evaluation uses the trained 1024-
+bin checkpoint, a matching 1024-bin artifact classifier,
+256 mixed calibration events, 256 evaluation events per
+mode, 512 posterior samples per event, 48 ODE steps,
+and 200 bootstrap resamples over evaluation events. A
+repeated evaluation reuses the same FMPE checkpoint
+across 40 independent simulator/calibration splits. That
+run measures evaluation-split and calibration-split vari-
+ability; it is not a multi-seed FMPE training study. The
+classifier is trained on balanced simulated artifact batches
+and evaluated on 2048 balanced validation events. All fig-
+ures and tables are generated from retained metric files.
+A. Waveform-Resolution Diagnostic
+The waveform-resolution diagnostic compares fre-
+quency grids from 64 to 2048 bins with a 4096-bin ref-
+erence over 30–300 Hz using 128 prior draws. The mis-
+match is maximized over constant phase but not over
+time shifts.
+Table III and Fig. 4 show the effect of frequency res-
+olution. The 256-bin grid has mismatch 0.0317 against
+the 4096-bin reference. The 1024-bin grid reduces the
+mismatch to 8.47× 10−4, and the 2048-bin grid reaches
+5.89× 10−5. We therefore use the 256-bin results only
+for low-resolution checks, while the 1024-bin results carry
+the main inference analysis.
+
+===== PAGE 6 =====
+6
+TABLE II. Support-aware FMPE experiment tiers. Evaluation counts are per artifact mode; provenance details are retained
+in the reproducibility records.
+Tier Bins Events Samples ODE steps Train steps
+low-resolution check 256 12 96 16 80
+intermediate check 512 64 256 32 600
+primary 1024-bin study 1024 256 512 48 2000
+2048-bin resolution study 2048 128 256 48 1500
+TABLE III. Waveform-resolution diagnostic against a 4096-
+bin reference over 30–300 Hz using 128 prior draws. Mismatch
+is phase-maximized but not time-shift-maximized.
+Bins Relative L2 Phase RMS [rad] Mismatch
+64 0.562471 136.647816 0.177342
+128 0.395162 123.246203 0.084973
+256 0.236611 96.954127 0.031709
+512 0.105759 48.762003 0.007561
+1024 0.033538 3.370806 0.000847
+2048 0.008697 0.000163 0.000059
+102 103
+frequency bins
+10 2
+10 1
+relative L2
+102 103
+frequency bins
+10 4
+10 3
+10 2
+10 1
+100
+101
+102
+phase RMS [rad]
+102 103
+frequency bins
+10 4
+10 3
+10 2
+10 1
+phase-maximized mismatch
+FIG. 4. Waveform-resolution diagnostic against a 4096-bin
+reference. The 64-, 128-, and 256-bin grids are visibly coarse,
+while the 1024- and 2048-bin grids are close to the reference
+under the phase-maximized mismatch used here.
+T ABLE IV. TaylorF2 backend checks against PyCBC/LAL routines.
+The controlled-response row uses the same fixed detector gains,
+delays, and analytic whitening as the simulator.
+Check Metric Interpretation
+Intrinsic
+phase/amplitude
+median phase RMS 0.0272
+rad; median mismatch
+0.00468
+consistent
+with
+controlled
+phase shape
+Convention-aligned
+controlled response
+median mismatch
+5.23× 10−4; max
+mismatch 0.0185
+consistent
+with
+controlled
+response
+Direct PyCBC sky
+projection
+mean relative L2 error
+1.411; mean phase RMS
+43.9 rad
+out of scope
+Table IV summarizes the TaylorF2 backend checks. In
+the intrinsic comparison, the PyCBC waveform is allowed
+to differ by arbitrary amplitude scale, constant phase,
+and time translation. After those convention-dependent
+factors are removed, the median phase residual is 0.0272
+rad and the median mismatch is 0.00468 over 20 prior
+draws. The controlled detector response then applies the
+same fixed gains, fixed delays, and analytic whitening
+as the simulator. In that like-for-like comparison, the
+median detector-response mismatch is 5 .23× 10−4 and
+the maximum mismatch is 0.0185. A direct comparison
+with a PyCBC sky-response projection uses a different
+detector-response model and is not used as validation ev-
+idence. The simulator is therefore treated as a controlled
+TaylorF2-like inverse problem throughout the analysis.
+B. High-Resolution FMPE Results
+TABLE V. Support-aware FMPE runs. MA90CE is mean ab-
+solute 90% marginal coverage error with circular phase treat-
+ment. Global denotes marginal interval rescaling fitted on a
+mixed calibration set.
+Mode 1024 bins 2048 bins
+Raw Global Raw Global
+clean 0.0305 0.0620 0.0372 0.0644
+glitch 0.0458 0.0605 0.0428 0.0625
+frequency mask 0.0369 0.1148 0.0559 0.1281
+PSD mismatch 0.0436 0.0575 0.0453 0.0581
+mixed 0.0319 0.0773 0.0272 0.0734
+clean glitch
+frequency maskPSD mismatch
+mixed
+0.00
+0.02
+0.04
+0.06
+0.08
+0.10
+0.12MA90CE
+1024 bins
+raw FMPE
+global rescaling
+clean glitch
+frequency maskPSD mismatch
+mixed
+MA90CE
+2048 bins
+FIG. 5. Raw and globally rescaled MA90CE for the trained
+1024-bin and 2048-bin FMPE evaluations. Global marginal
+rescaling is not reliably beneficial and is especially poor under
+frequency masking.
+The high-resolution FMPE evaluations are summa-
+rized in Table V and Fig. 5. At 1024 bins, raw MA90CE
+ranges from 0.0305 in clean mode to 0.0458 in glitch
+mode. The 2048-bin extended run is similar, with raw
+MA90CE from 0.0272 to 0.0559 across modes. In both
+tiers, global marginal rescaling increases MA90CE for ev-
+ery reported mode. The frequency-mask mode is most
+affected: global rescaling gives MA90CE 0.1148 at 1024
+bins and 0.1281 at 2048 bins.
+A scale fitted on mixed calibration data therefore does
+not transfer uniformly across artifact modes. It can re-
+duce an aggregate coverage error while worsening a par-
+ticular data-quality condition; in these runs, frequency
+
+===== PAGE 7 =====
+7
+masking is the most visible case.
+TABLE VI. Standardized 1024-bin FMPE training-seed study
+across six checkpoints. Values are mean MA90CE with seed-
+to-seed standard deviation in parentheses. Each checkpoint is
+evaluated with 256 calibration events, 256 evaluation events
+per mode, 512 posterior samples per event, and 48 ODE steps.
+Global denotes marginal interval rescaling fitted on the cali-
+bration set.
+Mode Raw FMPE Global
+clean 0.0421 (0.0093) 0.0402 (0.0158)
+glitch 0.0448 (0.0092) 0.0362 (0.0167)
+frequency mask 0.0443 (0.0128) 0.1175 (0.0271)
+PSD mismatch 0.0406 (0.0038) 0.0397 (0.0153)
+mixed 0.0334 (0.0082) 0.0393 (0.0222)
+Table VI reports a standardized 1024-bin training-
+seed study across six checkpoints: the main checkpoint,
+two earlier additional seeds, and three additional check-
+points trained with the same 2000-step protocol. All
+six are evaluated with 256 calibration events and 256
+evaluation events per artifact mode. The study sup-
+ports the frequency-mask conclusion: raw FMPE has
+mean frequency-mask MA90CE 0.0443 with seed-to-seed
+standard deviation 0.0128, whereas global rescaling gives
+0.1175 with standard deviation 0.0271. The mixed-mode
+global result also varies more than the raw result. This
+study probes training-initialization sensitivity within the
+controlled benchmark; it is not a substitute for larger
+production-scale retraining studies.
+C. Conditional Normalizing-Flow Baseline
+TABLE VII. 1024-bin conditional RealNVP baseline com-
+pared with the trained FMPE checkpoint. This is a controlled
+discrete-flow baseline in the same simulator, not a DINGO re-
+production. Entries are MA90CE.
+Mode FMPE Conditional RealNVP
+Raw Global Raw Global
+clean 0.0305 0.0620 0.0362 0.0541
+glitch 0.0458 0.0605 0.0425 0.0806
+frequency mask 0.0369 0.1148 0.0728 0.1141
+PSD mismatch 0.0436 0.0575 0.0303 0.0419
+mixed 0.0319 0.0773 0.0347 0.0619
+Table VII adds a 1024-bin conditional RealNVP base-
+line trained and evaluated in the same simulator. The
+baseline uses an invertible box-logit phase coordinate for
+density modeling and decodes phase circularly for met-
+rics. RealNVP is close to FMPE in clean and mixed raw
+MA90CE, worse under frequency masking, and better in
+this single run for PSD mismatch. Both model families
+are sensitive to global rescaling, so the artifact depen-
+dence is not unique to the FMPE sampler.
+D. Representative Posterior Geometry
+Figures 6 and 7 show posterior geometry for the
+trained 1024-bin checkpoint. They are included because
+marginal coverage tables do not display correlation struc-
+ture or multimodality. The likelihood-reference compar-
+ison is reported separately in Sec. III H; in the checked
+events it shows substantial FMPE–reference differences.
+E. 1024-Bin LAIR Evaluation
+Table VIII and Fig. 8 give the 1024-bin artifact-
+conditioned result. Global rescaling improves clean
+MA90CE from 0.0452 to 0.0331 and glitch MA90CE from
+0.0484 to 0.0169. Under frequency masking, however, the
+same global scale raises MA90CE from 0.0541 to 0.1195.
+Soft LAIR gives 0.0273 in glitch mode and reduces the
+frequency-mask error to 0.0672, but it is worse than the
+raw FMPE intervals for PSD-mismatch and mixed mode.
+The oracle artifact-stratified result is also not uni-
+formly beneficial. Even with true artifact labels, a
+marginal width correction can move coverage in the
+wrong direction when the fitted scale is noisy or when
+the dominant posterior error is not a width error. The
+method should therefore be read as a mode-resolved
+marginal coverage diagnostic, not as a correction to pos-
+terior sample geometry.
+The event-bootstrap intervals in Table IX quantify
+finite-evaluation uncertainty. For frequency masks, the
+raw, global, and soft-LAIR intervals are [0.0356, 0.0806],
+[0.0914, 0.1469], and [0.0470, 0.0930], respectively. For
+mixed mode, soft LAIR gives MA90CE 0.0594 with in-
+terval [0.0416, 0.0767], whereas the raw estimate is 0.0303
+with interval [0.0186, 0.0475].
+Figure 9 shows the corresponding coverage curves.
+Rescaling affects nominal levels differently, and the or-
+dering of methods changes across artifact modes.
+Table X and Fig. 10 report the repeated calibration
+study. The 40 repeats used the validation-selected clas-
+sifier from the classifier comparison, whose balanced ac-
+curacy was 0.5029; the study is therefore reported sepa-
+rately from the higher-performing classifier in Table XI.
+The frequency-mask pattern persists: global rescaling
+has mean MA90CE 0.1137, while soft LAIR gives 0.0679.
+In mixed mode, raw FMPE, global rescaling, and soft
+LAIR have mean MA90CE 0.0323, 0.0327, and 0.0403,
+respectively.
+F. Artifact Classifier
+Table XI reports the 1024-bin artifact classifier. Its
+balanced accuracy is 0.6982, negative log likelihood
+is 0.5028, and expected calibration error is 0.0489.
+Frequency-mask recall is 1.0000 and PSD-mismatch re-
+call is 0.9941. Clean recall is 0.5918, and glitch recall
+
+===== PAGE 8 =====
+8
+0.6
+0.7
+0.8
+0.9
+1.0
+q
+800
+1000
+1200
+1400
+1600
+dL [Mpc]
+0
+1
+2
+3
+4
+5
+6
+c
+13 14 15 16 17
+[M ]
+0.0275
+0.0250
+0.0225
+0.0200
+0.0175
+0.0150
+0.0125
+tc [s]
+0.6 0.7 0.8 0.9 1.0
+q
+800 1000 1200 1400 1600
+dL [Mpc]
+0 1 2 3 4 5 6
+c
+0.025
+ 0.020
+ 0.015
+tc [s]
+Clean event
+FIG. 6. Representative 1024-bin FMPE posterior geometry for one clean simulated event. The corner plot uses the trained
+1024-bin checkpoint and 768 posterior samples. It shows marginal and pairwise structure; no reference posterior is overlaid.
+TABLE VIII. 1024-bin LAIR evaluation using the trained 1024-bin FMPE checkpoint, a matching 1024-bin artifact classifier,
+256 calibration events, 256 evaluation events per mode, 512 posterior samples per event, 48 ODE steps, and 200 bootstrap
+resamples. Values are MA90CE.
+Mode Raw FMPE Global Oracle Predicted label Soft LAIR
+clean 0.0452 0.0331 0.0370 0.0447 0.0423
+glitch 0.0484 0.0169 0.0705 0.0253 0.0273
+frequency mask 0.0541 0.1195 0.0672 0.0672 0.0672
+PSD mismatch 0.0397 0.0394 0.0634 0.0486 0.0634
+mixed 0.0303 0.0414 0.0453 0.0422 0.0594
+is 0.2070. Thus, for this classifier, masks and PSD mis-
+match are well identified, while glitch recognition is the
+main limitation for LAIR.
+The classifier comparisons test whether residual or
+focal-loss variants improve this tradeoff.
+T ABLE XII. Glitch-targeted 1024-bin artifact-classifier comparisons.
+Bal. is balanced accuracy, NLL is negative log likelihood, and the
+recall columns correspond to clean, glitch, frequency-mask, and
+PSD-mismatch classes.
+Model Bal. NLL Rc Rg Rm Rp
+baseline 0.6982 0.5028 0.5918 0.2070 1.0000 0.9941
+residual+focal 0.5015 0.8247 0.1270 0.6289 1.0000 0.2500
+deep+focal 0.5049 0.8241 0.0078 0.0605 1.0000 0.9512
+wide residual 0.4980 0.8289 0.8164 0.0508 1.0000 0.1250
+validation seed 0.7510 0.3815 0.7715 0.2539 1.0000 0.9785
+Table XII gives the resulting tradeoff. In the ini-
+tial three-configuration comparison, a residual width-96
+focal-loss run raises glitch recall to 0.6289, but balanced
+accuracy falls to 0.5015, negative log likelihood increases
+
+===== PAGE 9 =====
+9
+0.6
+0.7
+0.8
+0.9
+1.0
+q
+300
+325
+350
+375
+400
+425
+450
+475
+500
+dL [Mpc]
+0
+1
+2
+3
+4
+5
+6
+c
+9 10 11 12 13
+[M ]
+0.034
+0.033
+0.032
+0.031
+0.030
+0.029
+0.028
+0.027
+tc [s]
+0.6 0.7 0.8 0.9 1.0
+q
+300 350 400 450 500
+dL [Mpc]
+0 1 2 3 4 5 6
+c
+0.034
+ 0.032
+ 0.030
+ 0.028
+tc [s]
+Frequency-mask event
+FIG. 7. Representative 1024-bin FMPE posterior geometry for one frequency-mask simulated event, using the same plotting
+convention as Fig. 6.
+TABLE IX. Event-bootstrap 95% intervals for 1024-bin MA90CE. Each entry is estimate [2.5%, 97.5%].
+Mode Raw FMPE Global Soft LAIR
+clean 0.0452 [0.0334, 0.0567] 0.0331 [0.0190, 0.0502] 0.0423 [0.0267, 0.0610]
+glitch 0.0484 [0.0383, 0.0594] 0.0169 [0.0136, 0.0369] 0.0273 [0.0159, 0.0500]
+frequency mask 0.0541 [0.0356, 0.0806] 0.1195 [0.0914, 0.1469] 0.0672 [0.0470, 0.0930]
+PSD mismatch 0.0397 [0.0289, 0.0530] 0.0394 [0.0268, 0.0560] 0.0634 [0.0439, 0.0814]
+mixed 0.0303 [0.0186, 0.0475] 0.0414 [0.0283, 0.0603] 0.0594 [0.0416, 0.0767]
+to 0.8247, and clean and PSD-mismatch recall deteri-
+orate. A follow-up residual/focal run with fresh valida-
+tion seeds reaches balanced accuracy 0.7510 and negative
+log likelihood 0.3815. It improves clean, frequency-mask,
+and PSD-mismatch recognition, but glitch recall remains
+0.2539.
+G. Prior and Gaussian Baselines
+T ABLE XIII. Diagonal Gaussian posterior baseline on the 256-bin
+support-aware low-resolution setting. Values are MA90CE.
+Mode Prior only Gaussian raw Gaussian global
+clean 0.0381 0.0313 0.0650
+glitch 0.0706 0.0256 0.1181
+frequency mask 0.0194 0.0288 0.0900
+PSD mismatch 0.0175 0.0425 0.1094
+mixed 0.0263 0.0219 0.0994
+Table XIII illustrates the limits of a marginal cover-
+age metric. The prior-only baseline has low MA90CE in
+several modes because broad central prior intervals often
+contain the truth. The diagonal Gaussian approximation
+also has low coverage error in some settings despite its
+limited posterior structure. Coverage error must there-
+
+===== PAGE 10 =====
+10
+TABLE X. Repeated 1024-bin LAIR calibration study across 40 independent simulator/calibration splits using the validation-
+selected classifier from the classifier comparison. Entries are mean MA90CE with split-to-split standard deviation in parentheses.
+This classifier is reported separately because it is not the higher-performing classifier in Table XI.
+Mode Raw FMPE Global Oracle Predicted label Soft LAIR
+clean 0.0433 (0.0059) 0.0367 (0.0119) 0.0394 (0.0121) 0.0427 (0.0136) 0.0425 (0.0142)
+glitch 0.0432 (0.0055) 0.0353 (0.0085) 0.0593 (0.0225) 0.0401 (0.0108) 0.0420 (0.0138)
+frequency mask 0.0521 (0.0096) 0.1137 (0.0165) 0.0679 (0.0202) 0.0679 (0.0202) 0.0679 (0.0201)
+PSD mismatch 0.0436 (0.0072) 0.0344 (0.0089) 0.0581 (0.0201) 0.0386 (0.0107) 0.0409 (0.0124)
+mixed 0.0323 (0.0068) 0.0327 (0.0100) 0.0380 (0.0111) 0.0374 (0.0107) 0.0403 (0.0123)
+clean glitch
+frequency mask PSD mismatch
+mixed
+Evaluation mode
+0.00
+0.02
+0.04
+0.06
+0.08
+0.10
+0.12MA90CE
+1024-bin artifact-aware interval rescaling
+raw FMPE
+global
+oracle
+predicted label
+soft LAIR
+FIG. 8. 1024-bin LAIR comparison using the trained high-
+resolution FMPE checkpoint and a matching 1024-bin artifact
+classifier. Rescaling changes the coverage error in a strongly
+mode-dependent way.
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0empirical coverage
+clean
+raw FMPE
+global
+soft LAIR
+glitch
+ frequency mask
+0.0 0.2 0.4 0.6 0.8 1.0
+nominal coverage
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0empirical coverage
+PSD mismatch
+0.0 0.2 0.4 0.6 0.8 1.0
+nominal coverage
+mixed
+1024-bin marginal coverage curves
+FIG. 9. 1024-bin marginal coverage curves averaged over
+parameters for raw FMPE, global rescaling, and soft LAIR.
+The diagonal is ideal calibration. Frequency masking shows
+the most visible separation between global rescaling and the
+artifact-aware diagnostic.
+fore be considered together with posterior width and ge-
+ometry.
+H. Controlled-Likelihood Reference Checks
+A first check compared a quadratic Laplace approxima-
+tion with FMPE samples for five clean 1024-bin events.
+The mean sliced Wasserstein distance was 0.3988 and the
+median Hessian condition number was 2.119× 105, indi-
+clean glitch
+frequency mask PSD mismatch
+mixed
+0.00
+0.02
+0.04
+0.06
+0.08
+0.10
+0.12MA90CE
+Repeated 1024-bin LAIR stress test
+Raw FMPE
+Global
+Oracle
+Predicted label
+Soft LAIR
+FIG. 10. Repeated 1024-bin LAIR calibration study across
+40 independent simulator/calibration splits. Error bars show
+split-to-split standard deviation.
+TABLE XI. 1024-bin artifact-classifier validation metrics on
+2048 balanced validation events.
+Metric Value
+Accuracy 0.6982
+Balanced accuracy 0.6982
+Negative log likelihood 0.5028
+Expected calibration error, 10 bins 0.0489
+Clean recall 0.5918
+Glitch recall 0.2070
+Frequency-mask recall 1.0000
+PSD-mismatch recall 0.9941
+Clean precision 0.4951
+Glitch precision 0.4753
+Frequency-mask precision 1.0000
+PSD-mismatch precision 0.7261
+cating a poorly conditioned local approximation rather
+than a reliable reference posterior. An exploratory
+importance-sampling run over three clean events pro-
+duced median effective sample size 1.0 from 20000 prior
+proposals. These runs show that the controlled likelihood
+can be interrogated, but they do not provide validated
+reference posteriors.
+Table XIV reports further controlled-likelihood
+reference-posterior checks. The dynesty runs cover the
+target event counts, namely five clean and two frequency-
+mask 1024-bin observations, but they do not meet the
+evidence-error gate: the median evidence-error diagnos-
+tics are 0.668 and 0.664 for clean and frequency-mask
+events, respectively. Repeated single-chain Hamiltonian
+Monte Carlo (HMC) runs also did not pass diagnostics,
+
+===== PAGE 11 =====
+11
+TABLE XIV. Controlled-likelihood reference-posterior checks. Wsliced and Wpar are mean sliced and parameter-wise Wasserstein
+distances in prior-unit coordinates. The dynesty and single-chain HMC rows did not satisfy the stated diagnostics. The final
+stretch-MCMC rows use a Laplace-preconditioned ensemble proposal and meet the split- ˆR and effective-sample-size diagnostics
+for the target clean and frequency-mask event counts.
+Method Mode Ev. Wsliced Wpar diagnostic
+dynesty clean 5 0.4399 0.356 median logzerr 0.668
+dynesty frequency mask 2 0.3851 0.347 median logzerr 0.664
+HMC clean 3 × 5 0.3947–0.4492 – median acceptance 0.0
+HMC frequency mask 2 × 2 0.3858–0.4297 – median acceptance 0.0
+stretch MCMC clean 5 0.3912 0.3301 max ˆR = 1.0089, ESSmin = 3744
+stretch MCMC frequency mask 2 0.4705 0.3596 max ˆR = 1.0091, ESSmin = 4182
+with median acceptance rate zero in all completed clean
+and frequency-mask runs.
+The most stable reference check uses a Laplace-
+preconditioned ensemble stretch Markov chain Monte
+Carlo (MCMC) sampler on the same controlled Gaus-
+sian likelihood. For five clean events it gives mean
+sliced Wasserstein distance 0.3912, mean parameter-
+wise Wasserstein distance 0.3301, maximum split- ˆR =
+1.0089, and minimum effective sample size 3744. For
+two frequency-mask events the corresponding values are
+0.4705, 0.3596, 1.0091, and 4182. Postprocessing of
+the MCMC samples gives mean 90% interval-overlap
+ratios 0.0097 and 0.0109 for clean and frequency-mask
+events. The small overlaps indicate substantial dif-
+ferences between the trained FMPE posterior and the
+controlled-likelihood reference in these examples. This
+check is a simulator-level reference diagnostic; it is not a
+Bilby/PyCBC or LVK-production posterior comparison.
+IV. DISCUSSION
+The 1024-bin experiments show clear artifact depen-
+dence in marginal interval calibration. A global scale fit-
+ted on mixed calibration data reduces the error in some
+modes but substantially worsens frequency-mask cover-
+age. Soft LAIR mitigates that failure, lowering the 1024-
+bin frequency-mask MA90CE from the global value of
+0.1195 to 0.0672, but it does not dominate the raw FMPE
+intervals across all artifact modes. The repeated evalu-
+ation gives the same qualitative result across simulator
+and calibration seeds.
+Classifier behavior is part of this outcome. Frequency
+masks are explicit in the mask channel and are identi-
+fied with high recall. PSD mismatch is also recognized
+reliably by the main classifier. Glitches are less well sep-
+arated from clean observations in the evaluated feature
+representation. When the classifier assigns little proba-
+bility to the glitch class, the soft LAIR scale is pulled
+toward other artifact scales, limiting glitch-conditioned
+rescaling.
+The auxiliary diagnostics constrain the interpretation
+of coverage. The waveform-resolution test shows that
+coarse frequency grids can change the inference problem.
+The prior-only and Gaussian baselines show that low
+coverage error can arise from broad or structurally sim-
+ple intervals. Posterior-geometry plots and controlled-
+likelihood reference checks further show that marginal
+coverage does not determine joint posterior structure or
+agreement with a likelihood-based target.
+The support-aware coordinate transform and circu-
+lar phase representation remove two avoidable imple-
+mentation artifacts: decoded samples leaving the prior
+domain and discontinuities at the phase boundary. In
+this controlled benchmark, the remaining limitations are
+artifact-dependent interval behavior, weak glitch recog-
+nition, and differences between FMPE samples and the
+controlled-likelihood reference. Extension to produc-
+tion gravitational-wave inference would require stronger
+transient-artifact classification, multivariate posterior di-
+agnostics, full-budget training seeds, and comparison
+with Bilby/PyCBC or related likelihood-based anal-
+yses in an International Gravitational-Wave Network
+(IGWN)-compatible environment.
+V. CONCLUSIONS
+We evaluated flow-matching neural posterior estima-
+tion in a controlled gravitational-wave inverse problem
+with explicit artifact labels. The analysis focused on
+marginal interval calibration for clean observations, syn-
+thetic glitches, frequency masks, and PSD mismatch.
+The central empirical observation is mode dependence.
+In the 1024-bin evaluation, global marginal rescaling
+improves some modes but raises the frequency-mask
+MA90CE to 0.1195. Soft LAIR reduces that value
+to 0.0672, while remaining worse than raw FMPE in
+PSD-mismatch and mixed mode. The 40-split calibra-
+tion study supports the same interpretation: frequency
+masks are a stable failure mode for global rescaling,
+and artifact-conditioned rescaling is useful primarily as a
+mode-resolved interval diagnostic.
+The classifier results identify a practical bottleneck.
+Frequency masks and PSD mismatch are recognized re-
+liably by the main 1024-bin classifier, whereas glitch
+recall is low. The best residual/focal seed improves
+aggregate validation metrics, reaching balanced accu-
+racy 0.7510, but its glitch recall is still 0.2539. More
+transient-sensitive features or architectures are needed
+before glitch-conditioned interval scaling can be relied
+on.
+
+===== PAGE 12 =====
+12
+The supporting checks are necessary for interpreting
+these numbers. Support-aware coordinates keep bounded
+parameters inside the prior domain, and the circular
+phase embedding removes the artificial boundary at 0
+and 2π. Waveform-resolution tests motivate the use
+of 1024- and 2048-bin grids. The prior-only, Gaus-
+sian, conditional-flow, Laplace, dynesty, and multi-chain
+MCMC checks show that marginal coverage alone can be
+misleading when intervals are broad, joint structure is
+wrong, or the neural posterior differs from a likelihood-
+based reference.
+Within this controlled setting, LAIR provides a repro-
+ducible way to expose artifact-conditioned interval fail-
+ures in neural posterior estimation. Moving to produc-
+tion gravitational-wave inference would require stronger
+glitch classification, multivariate posterior validation,
+and comparison with production-style likelihood-based
+analyses on more realistic detector data.
+[1] S. R. Green, C. Simpson, and J. Gair, Physical Review
+D 102, 104057 (2020), arXiv:2002.07656.
+[2] M. Dax, S. R. Green, J. Gair, J. H. Macke, A. Buonanno,
+and B. Sch¨ olkopf, Physical Review Letters127, 241103
+(2021), arXiv:2106.12594.
+[3] M. Dax, S. R. Green, J. Gair, M. P¨ urrer, J. Wildberger,
+J. H. Macke, A. Buonanno, and B. Sch¨ olkopf, Physical
+Review Letters 130, 171403 (2023), arXiv:2210.05686.
+[4] Y. Lipman, R. T. Q. Chen, H. Ben-Hamu, M. Nickel,
+and M. Le, arXiv preprint arXiv:2210.02747 (2022),
+arXiv:2210.02747.
+[5] M. Dax, J. Wildberger, S. Buchholz, S. R. Green, J. H.
+Macke, and B. Sch¨ olkopf, inAdvances in Neural Infor-
+mation Processing Systems (2023) arXiv:2305.17161.
+[6] S. Talts, M. Betancourt, D. Simpson, A. Vehtari, and
+A. Gelman, arXiv preprint arXiv:1804.06788 (2018),
+arXiv:1804.06788.
+[7] P. Lemos, A. Coogan, Y. Hezaveh, and L. Perreault-
+Levasseur, arXiv preprint arXiv:2302.03026 (2023),
+arXiv:2302.03026.
+[8] G. Ashton, M. Huebner, P. D. Lasky, et al. , The As-
+trophysical Journal Supplement Series 241, 27 (2019),
+arXiv:1811.02042.
+[9] C. M. Biwer, C. D. Capano, S. De, M. Cabero, D. A.
+Brown, A. H. Nitz, and V. Raymond, Publications of the
+Astronomical Society of the Pacific 131, 024503 (2019),
+arXiv:1807.10312.
+[10] K. Wette, SoftwareX 12, 100634 (2020),
+arXiv:2012.09552.
+[11] V. Raymond, S. Al-Shammari, and A. G¨ ottel, arXiv
+preprint arXiv:2406.03935 (2024), arXiv:2406.03935.
+[12] R. Mao, J. E. Lee, and M. C. Edwards, arXiv preprint
+arXiv:2512.18290 (2025), arXiv:2512.18290.
+[13] The LIGO Scientific Collaboration, The Virgo Col-
+laboration, and The KAGRA Collaboration, The As-
+trophysical Journal Supplement Series 267, 29 (2023),
+arXiv:2302.03676.
+[14] The LIGO Scientific Collaboration, The Virgo Collabo-
+ration, and The KAGRA Collaboration, arXiv preprint
+arXiv:2605.27090 (2026), arXiv:2605.27090.

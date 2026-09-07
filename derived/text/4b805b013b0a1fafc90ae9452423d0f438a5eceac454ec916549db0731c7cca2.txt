@@ -1,0 +1,950 @@
+===== PAGE 1 =====
+CHECKYOURLLM’SSECRETDICTIONARY!
+FIVELINES OFCODEREVEALWHATYOURLLM
+LEARNED(INCLUDINGWHATITSHOULDN’THAVE)
+Hisashi Miyashita
+Mgnite Inc.
+himi@mgnite.com
+ABSTRACT
+We show that singular value decomposition of thelm_headweight matrix of
+a transformer-based large language model—requiring only five lines of PyTorch
+and no model inference—reveals interpretable semantic subspaces directly from
+the model weights. Each left singular vector identifies the vocabulary tokens most
+readily selected when the hidden state aligns with the corresponding singular di-
+rection; inspecting these clusters exposes the model’s training data composition
+and curation philosophy.
+Analysing GPT-OSS-120B, Gemma-2-2B, and Qwen2.5-1.5B, we find that sin-
+gular value spectra and vocabulary cluster structures differ systematically across
+models: GPT exhibits a graduated hierarchy of functionally differentiated sub-
+spaces; Gemma is dominated by pre-nineteenth-century English orthography,
+forming a stepwise clustering structure that may contribute to high output con-
+trollability; and Qwen exhibits broad multilingual coverage alongside subspaces
+whose vocabulary the authors have determined to be ethically inappropriate for
+direct publication.
+Base–instruct comparison reveals that ethically concerning subspaces originate in
+pretraining and are not removed by post-training alignment. We introduce the V o-
+cabulary Cluster Score (VCS) to quantify subspace coherence, and the Weighted
+Projection Score (WPS) as a static glitch token detector; applying WPS to GPT-
+OSS-120B recovers_
+ (ID 137606), a well-known glitch token widely
+reported in the CJK language community, without any model inference. We pro-
+pose a taxonomy of root causes for problematic vocabulary content and call for
+lm_headSVD analysis to be adopted as a standard pre-release safety auditing
+step. Our findings further suggest directions toward SVD-guided tokenizer opti-
+misation and more controllable LLM design.
+1 INTRODUCTION
+The output projection layer of a transformer-based large language model—commonly referred to as
+lm_head—is a weight matrixW∈R V×d that maps hidden states to logits over the vocabulary of
+sizeV. It is the final gate through which every token the model produces must pass, yet it is rarely
+analysed in isolation. In this paper, we ask a simple question:what does thelm_headweight
+matrix itself reveal about a model, before any inference is run?
+The answer turns out to be surprisingly rich. Applying singular value decomposition (SVD) to
+Wand inspecting the top-scoring tokens of each left singular vector requires only five lines of
+PyTorch. Yet the resulting vocabulary clusters are interpretable, systematic, and—in at least one
+case—alarming. The singular vectors partition the vocabulary into groups that reflect the model’s
+training data composition, curation philosophy, and, as we show, the presence of content that the
+authors have determined to be ethically inappropriate for direct publication.
+Key findings.We analyse three publicly available models—GPT-OSS-120B, Gemma-2-2B, and
+Qwen2.5-1.5B—and report the following.
+1
+arXiv:2605.22005v1  [cs.LG]  21 May 2026
+
+===== PAGE 2 =====
+1.lm_head SVD reveals what a model is most likely to say, statically.Each left singular
+vectorU[:,i]identifies the vocabulary tokens that are most readily selected when the hidden
+state aligns with thei-th singular direction. Because RMSNorm normalises the hidden state
+onto the unit sphere before thelm_headprojection, only the directional structure of the
+hidden state matters; the singular directions are thus the fundamental axes of vocabulary
+selection. This analysis requires no model inference and no input data.
+2.The structure of these axes varies systematically across models.GPT-OSS-120B ex-
+hibits a graduated hierarchy of functionally differentiated subspaces—syntactic structure,
+attribute taxonomy, formal specification vocabulary, software engineering terminology—
+with a gentle decay in singular values. Gemma-2-2B is dominated by historical English
+orthography (pre-nineteenth-century long-s typography), forming a stepwise clustering
+structure in the singular value spectrum that may contribute to high output controllability.
+Qwen2.5-1.5B exhibits script-level clustering alongside geometrically dispersed subspaces
+spanning unrelated languages and domains. These differences directly reflect each model’s
+training data composition and curation philosophy.
+3.Post-training alignment (RLHF) does not resolve pretraining-level issues.Compar-
+ing base and instruction-tuned variants of Qwen2.5-1.5B and Gemma-2-2B, we find that
+thelm_headstructure of Gemma is virtually unchanged by RLHF, while Qwen under-
+goes substantial remapping of symbol clusters to multilingual lexical clusters. Critically,
+ethically concerning vocabulary subspaces—where present—persist across both base and
+instruct variants with comparable structure, demonstrating that their root cause lies in pre-
+training data rather than post-training procedure.
+4.lm_head SVD analysis is a viable safety auditing tool.The method surfaces ethically
+concerning vocabulary without adversarial prompting, red-teaming, or inference. We pro-
+pose a taxonomy of root causes for such observations and call forlm_headSVD analysis
+to be adopted as a standard pre-release auditing step.
+Additional contributions.Beyond these primary findings, our analysis yields two further contri-
+butions. First, the same SVD decomposition gives rise to the Weighted Projection Score (WPS),
+defined as WPS(v) = P
+kS[k]·|U[v,k]|for each tokenv. Tokens with low WPS are geometrically
+marginalised in thelm_headweight space and are candidates for glitch token status (Rumbelow
+& mwatkins, 2023). Applying WPS to GPT-OSS-120B recovers_
+ (ID 137606)—a glitch
+token widely known in the CJK language community 1—without any model inference (Section 5).
+Second, the V ocabulary Cluster Score (VCS) introduced in this paper provides a quantitative signal
+that may guide tokenizer optimisation: iteratively retaining high-VCS tokens and pruning low-VCS
+ones could yield smaller, more geometrically coherent vocabularies. The structural independence
+of Algebraic Ontology Projection (AOP) (Miyashita, 2026) fromlm_headeigenvector pathologies
+further suggests that AOP-based prompt optimisation may serve as a principled mitigation strategy
+for the output instability we identify.
+Reproducibility.The complete analysis requires only five lines of PyTorch, uses only the
+lm_headweight matrix and the model tokenizer, and runs in minutes on a single GPU. We re-
+lease all analysis code to facilitate adoption.
+2 METHOD
+2.1 SVD ANALYSIS OFL M_H E A D
+LetW∈R V×d denote thelm_headweight matrix of a transformer-based LLM, whereVis the
+vocabulary size anddis the hidden dimension. We compute the economy SVD:
+W=USV ⊤ (1)
+whereU∈R V×d contains the left singular vectors,S∈R d×d is a diagonal matrix of singular
+values in descending order, andV ⊤∈R d×d contains the right singular vectors.
+1Seehttps://note.com/xcloche/n/n55938e706986for a detailed account in Japanese.
+2
+
+===== PAGE 3 =====
+Each columnU[:,i]assigns a scalar score to every token in the vocabulary. The geometric interpre-
+tation is as follows: when the hidden stateh∈R d (after RMSNorm) is projected along thei-th right
+singular directionV[:,i], the resulting logit contribution is amplified byS[i]and distributed across
+the vocabulary according toU[:,i]. Tokens with the highest scores inU[:,i]are therefore the most
+likely to be selected when the hidden state aligns with that singular direction. RMSNorm normalizes
+each element ofhonto the unit sphere prior to re-scaling by learned weights (Zhang & Sennrich,
+2019), so the magnitude ofhis discarded and only its direction determines vocabulary selection.
+The singular directions ofWare thus the fundamental axes of this selection process.
+We extract the top-ktokens for each of the firstnsingular vectors and decode them using the model’s
+tokenizer. This requires no model inference and no input data: only the weight matrixWand the
+tokenizer are needed. The implementation reduces to the following:
+U, S , Vh = t o r c h . l i n a l g . svd (
+lm_head_weight .f l o a t( ) , f u l l _ m a t r i c e s = F a l s e )
+f o rii n range( n _ v e c t o r s ) :
+t o p _ i n d i c e s = U [ : , i ] . t o p k ( k ) . i n d i c e s
+t o k e n s = t o k e n i z e r . decode ( t o p _ i n d i c e s )
+2.2 VOCABULARYCLUSTERSCORE(VCS)
+To quantify the geometric coherence of the vocabulary cluster associated with each singular vec-
+tor, we introduce the V ocabulary Cluster Score (VCS). This metric adapts the mean pairwise cosine
+similarity used as a coherence measure in topic modelling (Röder et al., 2015) and word embedding
+evaluation (Schnabel et al., 2015) to the specific geometry of thelm_headweight space. We note
+that while cosine similarity is an imperfect measure of semantic similarity in general embedding
+spaces (Schnabel et al., 2015), it is particularly well-suited here: thelm_headcomputes token
+logits as the dot producth·W v =∥h∥∥W v∥cosθ, so cosine similarity between twolm_headrow
+vectors directly reflects the degree to which the model treats the corresponding tokens as contex-
+tually interchangeable—a property that is precisely what VCS is intended to capture. For thei-th
+singular vector, VCS is defined as the mean pairwise cosine similarity among thelm_headrow
+vectors of the top-kranked tokens:
+VCS(i) = 2
+k(k−1)
+X
+a<b
+wa·w b
+∥wa∥∥wb∥ (2)
+wherew j =W[t j,:]is thelm_headrow vector of thej-th top-ranked tokent j.
+A high VCS indicates that the top-ranked tokens occupy a compact region of the embedding space.
+This implies that small perturbations of the hidden state along that singular direction will consis-
+tently activate tokens within the same geometric neighborhood, resulting in stable and predictable
+output. A low VCS indicates a geometrically dispersed cluster: small perturbations may activate
+unrelated tokens, a condition directly associated with output instability and reduced auditability.
+We note that VCS measures geometric coherence in thelm_headweight space, which may reflect
+semantic similarity, script-level similarity, or functional similarity. Distinguishing between these
+cases requires qualitative inspection of the decoded tokens, and we perform this inspection for all
+models in Section 3.
+2.3 BASE–INSTRUCTCOMPARISON
+To investigate the effect of post-training alignment onlm_headstructure, we apply the same SVD
+analysis to both the base and instruction-tuned variants of Qwen2.5-1.5B and Gemma-2-2B. For
+GPT-OSS-120B, only the instruction-tuned variant is publicly available; base–instruct comparison
+was therefore not possible for this model.
+We compare (i) the decoded token clusters for corresponding singular vectors, and (ii) the VCS
+values, between base and instruct variants. Changes in token clusters reveal vocabulary remapping
+induced by post-training alignment; changes in VCS values reveal structural reorganization of the
+geometric relationships among vocabulary embeddings.
+3
+
+===== PAGE 4 =====
+2.4 MODELS ANDEXPERIMENTALSETUP
+We analyze the following models:
+Table 1: Models analyzed in this study.
+Model Variant(s)V d
+GPT-OSS-120B Instruct only 201,088 2,880
+Gemma-2-2B Base + Instruct 256,000 2,304
+Qwen2.5-1.5B Base + Instruct 151,936 1,536
+All SVD computations usetorch.linalg.svdwithfull_matrices=Falseon float32
+weight matrices. We report results for the topn= 30singular vectors withk= 20top tokens per
+vector. Experiments were conducted on a DGX Spark system with an NVIDIA GB10 GPU (128 GB
+unified memory).
+3 RESULTS
+3.1 OVERVIEW OFEIGENVECTORSTRUCTURE
+Table 2 summarises the V ocabulary Cluster Score (VCS) statistics for the top 30 singular vectors
+of each model. Despite differences in architecture and scale, all three models exhibit a consistent
+pattern: the leading singular vectors attain markedly higher VCS than the tail, indicating that the
+most influential directions in vocabulary space are also the most geometrically coherent.
+Table 2: VCS statistics over the top 30 singular vectors (instruct variants).i ∗ denotes the index of
+the singular vector attaining the maximum VCS.
+Model Mean VCS Max VCSi ∗ Dominant cluster type
+GPT-OSS-120B 0.14 0.30 0 Punctuation / structural tokens
+Gemma-2-2B 0.39 0.88 4 Historical English orthography
+Qwen2.5-1.5B 0.25 0.64 7 Hangul script characters
+The dominant cluster type for the highest-VCS eigenvector differs qualitatively across models, re-
+flecting systematic differences in training data composition discussed in Section 4.
+3.2 GPT-OSS-120B
+The leading singular vector (i= 0, VCS= 0.30) is dominated by punctuation and structural tokens
+common in English prose and code (,,(,in,and,the,a,to,for). This suggests that the most
+influential axis of vocabulary selection in GPT-OSS-120B encodes syntactic structure rather than
+lexical semantics.
+The subsequent singular vectors reveal a rich taxonomy of functional subspaces:
+•U[:,2](VCS= 0.10): Attribute and category nouns (Colours,Ages,Batteries,Bench,
+Arms), directly corresponding to theis-a/has-arelational structure exploited by Algebraic
+Ontology Projection (Miyashita, 2026).
+•U[:,7](VCS= 0.24): Formal specification vocabulary (INTERNAL,VALID,RESULT,
+REQUIRED,CURRENT,OPTION), consistent with systems engineering and audit termi-
+nology.
+•U[:,8](VCS= 0.19): Software engineering vocabulary (Instances,Arguments,Dependen-
+cies,Errors,Constraints).
+•U[:,5],U[:,6]: Simplified and traditional Chinese characters, indicating substantial multi-
+lingual training data.
+4
+
+===== PAGE 5 =====
+•U[:,25](VCS= 0.28): Purely numeric tokens, forming a geometrically coherent but se-
+mantically degenerate cluster.
+Notably,U[:,26]combines audit-related vocabulary (auditor,Auditor) with identity and authority
+terms (evangel,imperson,Avatar,vamp,sabot), suggesting a shared latent direction encoding con-
+cepts ofauthority, legitimacy, and their subversion.
+3.3 GEMMA-2-2B
+The highest-VCS eigenvector (U[:,4], VCS= 0.88) is dominated by tokens in historical English
+orthography, specifically the long-s convention used in typography prior to the nineteenth century
+(itself,Res,Dis,House,Ans,Monfieur,myself). 2 This is a striking finding: the most geometrically
+coherent vocabulary subspace in Gemma encodes an archaic writing system no longer in active use.
+The leading singular vectorU[:,0]also encodes historical English orthography with overlapping
+token sets (VCS= 0.88).
+This observation implies that Google’s pretraining corpus for Gemma includes a substantial volume
+of digitised historical documents, and that this corpus exerts a dominant influence on the directional
+structure of thelm_head. Further coherent subspaces include:
+•U[:,2](VCS= 0.61): Contemporary French adjectives in the plural form (sauvages,
+actuels,complètes,religieuses,automatiques), indicating a dedicated Romance-language
+subspace.
+•U[:,10](VCS= 0.54): Historical French vocabulary including past participles and legal
+register terms (supérieurs,blessés,fermés,refusé).
+•U[:,14](VCS= 0.28): Epistemic adverbs encoding evidential stance (Ironically,obvi-
+ously,needlessly,unnecessarily,conceivably,inevitably). This subspace captures a coher-
+ent pragmatic category with direct relevance to logical consistency analysis.
+•U[:,7](VCS= 0.33): Multilingual proper nouns and place names across Hebrew,
+Ukrainian, Spanish, and Greek.
+Critically, no eigenvector of Gemma-2-2B was found to contain vocabulary requiring ethical restric-
+tion in this paper.
+3.4 QWEN2.5-1.5B
+The highest-VCS eigenvectors of Qwen2.5-1.5B (U[:,7], VCS= 0.64;U[:,3], VCS= 0.66;U[:,12],
+VCS= 0.66;U[:,13], VCS= 0.62) are dominated by Hangul (Korean script) characters. These clus-
+ters exhibit high geometric coherence at the script level but low semantic coherence: the tokens share
+orthographic properties rather than meaning. This pattern differs qualitatively from the high-VCS
+clusters of GPT-OSS-120B (syntactic function) and Gemma-2-2B (historical register), suggesting
+that Qwen’s training corpus contains a large volume of Korean text whose embedding geometry was
+not integrated with semantic structure during training.
+The majority of remaining eigenvectors exhibit low VCS (below 0.25), with token clusters span-
+ning unrelated languages, domains, and registers within a single singular direction. This geometric
+dispersion implies that small perturbations of the hidden state along these directions may activate
+semantically unrelated tokens, reducing output predictability and auditability.
+Most significantly, several eigenvectors of Qwen2.5-1.5B contain vocabulary that the authors have
+determined to be ethically inappropriate for direct publication in this paper. A detailed discussion of
+this finding and its implications is provided in Section 4.
+2These tokens are reproduced as they appear in Gemma’s tokenizer vocabulary. The long-s character shown
+here (s) approximates Unicode U+017F (Latin small letter long s), which is present verbatim in the original
+tokens. The prevalence of this character in the dominant eigenvector is itself informative: it implies that
+Gemma’s pretraining corpus contains a substantial volume of pre-nineteenth-century printed text in which
+U+017F was used systematically, sufficient to leave a dominant geometric trace in thelm_headweight matrix.
+5
+
+===== PAGE 6 =====
+3.5 SINGULARVALUEDISTRIBUTION ANDVOCABULARYSELECTIONSTRATEGY
+Figure 1 shows the top-20 singular values for each model. The distributions differ qualitatively
+across all three models, revealing distinct vocabulary selection strategies encoded in thelm_head
+weight matrix.
+Table 3: Singular value statistics for the top 20 eigenvectors.
+ModelS[0]S[1]S[0]/S[1]Decay pattern
+Gemma-2-2B 409.66 107.16 3.82 Stepwise clustering
+Qwen2.5-1.5B 135.43 22.88 5.92 Cliff then plateau
+GPT-OSS-120B 21.76 11.44 1.90 Gentle slope
+0 2 4 6 8 10 12 14 16 18
+Singular vector index i
+0
+50
+100
+150
+200
+250
+300
+350
+400S[i]
+Linear scale
+0 2 4 6 8 10 12 14 16 18
+Singular vector index i
+10
+100
+S[i] (log scale)
+Log scale
+Gemma-2-2B Qwen2.5-1.5B GPT-OSS-120B
+Figure 1: Singular value decay curves for the top 20 singular vectors of each model (linear scale,
+left; log scale, right). Gemma exhibits power-law decay; Qwen shows a sharp cliff afterS[0]; GPT
+decays gradually.
+Gemma: stepwise clustering and high controllability.Viewed on a logarithmic scale, Gemma’s
+singular value decay does not follow a power law but instead exhibits a stepwise clustering structure:
+S[0] = 409.66is strongly dominant, followed by a first cluster (S[1]–S[3]: 107–74), a second cluster
+(S[4]–S[9]: 61–44), and a third cluster (S[10]–S[19]: 41–32). Whether intentional or emergent from
+training data composition, this structure has a critical practical implication: vocabulary selection
+can be controlled by manipulating a small number of dominant singular directions. Because the top
+singular vectors account for a disproportionate share of spectral energy, targeted interventions on a
+few eigenvectors suffice to steer the output vocabulary. This architectural property likely contributes
+to the high VCS values observed for Gemma (Section 2.2) and may explain why AOP achieves its
+highest accuracy on Gemma (Miyashita, 2026): the stepwise structure stabilisesF 2 projections by
+providing a small number of geometrically coherent and dominant directions.
+Speculation on design intent (unverified).We note, without empirical support, that the step-
+wise clustering structure described above is unlikely to arise from training data composition alone.
+One possible—though entirely unverified—interpretation is that Google’s pretraining pipeline in-
+corporates objectives or regularisation terms that encourage spectral concentration, thereby build-
+ing controllability into thelm_headgeometry prior to post-training alignment. The near-identical
+lm_headstructure between Gemma’s base and instruct variants (Section 2.3) is consistent with this
+interpretation, as it suggests that the controllable structure is established during pretraining rather
+than introduced by RLHF. We emphasise that this is purely speculative; verifying or refuting this
+hypothesis would require access to Google’s training methodology, which is not publicly available.
+We include this speculation solely to motivate future investigation.
+6
+
+===== PAGE 7 =====
+Qwen: two-tier structure.Qwen shows a sharp cliff afterS[0]: the ratioS[0]/S[1] = 5.92is
+the largest among the three models, andS[1]throughS[19]form a near-plateau (values between
+22.88 and 14.31). This two-tier structure implies that the first singular vector acts as a structural
+foundation, while the remaining directions contribute roughly equally—a pattern consistent with
+broad, less curated training data in which no single semantic domain dominates beyond the first.
+The low VCS values observed for most of Qwen’s eigenvectors (Section 2.2) are consistent with
+this interpretation: the plateau directions encode geometrically dispersed vocabulary clusters.
+GPT: graduated hierarchy.GPT-OSS-120B displays a gentle, monotone decay fromS[0] =
+21.76toS[19] = 5.07, withS[0]/S[1] = 1.90—the smallest ratio among the three models. No
+single direction dominates; instead, each singular vector carries a distinct and progressively smaller
+share of spectral energy. This graduated structure corresponds to the functionally differentiated
+subspaces identified in Section 3.2: syntactic structure, attribute taxonomy, formal specification
+vocabulary, software engineering vocabulary, and others each occupy a distinct and well-separated
+eigenvector. The result is the mostdemocratically distributedvocabulary selection architecture of
+the three models examined.
+Summary.The singular value distributions expose three distinct design philosophies: Gemma
+prioritises depth through a small number of dominant, coherent directions; Qwen exhibits a sharp
+two-tier structure reflecting broad coverage with limited curation; and GPT achieves a functionally
+graduated hierarchy in which many directions each carry distinct semantic content. These differ-
+ences are not merely quantitative—they reflect fundamentally different approaches to training data
+composition and vocabulary organisation, and they directly predict the qualitative differences in
+eigenvector interpretability reported in Sections 3.2–3.4.
+3.6 BASE–INSTRUCTCOMPARISON
+Gemma-2-2B.Thelm_headeigenvector structure of Gemma-2-2B is virtually identical between
+the base and instruction-tuned variants (VCS differences<0.003across all 30 singular vectors;
+token clusters unchanged). This indicates that Gemma’s post-training alignment procedure does not
+modify the vocabulary projection layer, and that instruction-following capability is achieved through
+modifications to other components of the network.
+Qwen2.5-1.5B.Qwen2.5-1.5B shows substantial restructuring oflm_headeigenvectors between
+base and instruct variants. Most notably, several singular vectors whose top tokens in the base model
+consist entirely of punctuation and bracket characters are remapped in the instruct variant to mul-
+tilingual lexical clusters spanning Turkish, Korean, and English. This suggests that Qwen’s RLHF
+procedure modifies the vocabulary projection layer directly, reassigning structural symbol subspaces
+to conversational lexical subspaces. The VCS of affected eigenvectors changes accordingly (e.g.
+U[:,1]: base VCS= 0.33with bracket tokens→instruct VCS= 0.23with multilingual tokens).
+Critically, eigenvectors containing ethically concerning vocabulary are present inboththe base and
+instruct variants of Qwen2.5-1.5B, with comparable VCS values. This demonstrates that post-
+training alignment does not remove the problematic subspaces: they originate in pretraining and
+persist through RLHF.
+Summary.The base–instruct comparison reveals a three-layer structure inlm_headeigenvec-
+tors:
+1.Tokenizer-determined structure: script-level clusters (e.g. Hangul in Qwen) that are in-
+variant to post-training in both models.
+2.Pretraining-determined structure: semantic and ethical content crystallised from train-
+ing data, persistent through RLHF in all observed cases.
+3.RLHF-induced restructuring: present in Qwen but absent in Gemma, remapping symbol
+clusters to multilingual lexical clusters without resolving pretraining-level issues.
+7
+
+===== PAGE 8 =====
+4 SAFETYIMPLICATIONS
+4.1 ETHICALLYCONCERNINGVOCABULARY IN LM_HEADEIGENVECTORS
+In the course of our analysis, we observed that several eigenvectors of Qwen2.5-1.5B contain vo-
+cabulary that the authors have determined to be ethically inappropriate for direct publication in this
+paper. We document this finding here without reproducing the specific tokens, in accordance with
+responsible disclosure principles.
+The concerning vocabulary appears in eigenvectors with low VCS scores (below 0.20), in the form
+of geometrically dispersed clusters that span unrelated semantic domains. Critically, these clus-
+ters are present inboththe base and instruction-tuned variants of Qwen2.5-1.5B with comparable
+VCS values, demonstrating that post-training alignment does not remove the problematic subspaces.
+The same vocabulary clusters are absent from the corresponding analysis of GPT-OSS-120B and
+Gemma-2-2B.
+We emphasise thatlm_headSVD analysis is a static, weight-only procedure: it does not require
+model inference, prompt engineering, or any form of adversarial attack. The fact that ethically
+concerning vocabulary is directly surfaced by this analysis—without any attempt to elicit it—is
+itself a significant safety-relevant observation.
+4.2 A TAXONOMY OFROOTCAUSES
+The presence of ethically concerning vocabulary in a model’slm_headeigenvectors implies that
+such vocabulary was present in the pretraining corpus with sufficient frequency and co-occurrence
+density to leave a geometric trace in the weight matrix. Beyond this, the underlying cause may vary.
+We propose the following taxonomy, not to assign responsibility in any specific case, but to structure
+future investigation and inform governance discussions.
+Category A: Deliberate inclusion.The training data containing the problematic vocabulary was
+intentionally selected or retained.
+Category B: Known omission.The presence of problematic content in the training data was
+known to the developers, but removal was not prioritised.
+Category C: Inadvertent inclusion.The problematic content was included without awareness,
+due to insufficient data auditing or filtering pipelines.
+Category D: Definitional divergence.The vocabulary in question is not universally recognised as
+problematic; cultural, linguistic, or jurisdictional differences in what constitutes harmful
+content may account for its presence.
+We make no determination as to which category applies to the observations reported in this paper.
+The distinction between categories matters considerably from a governance perspective: Category
+A implies legal liability; Category B implies accountability failures; Category C implies process
+failures that can be addressed through improved tooling; and Category D implies the need for inter-
+nationally harmonised standards. Regardless of which category applies in a given case, the outcome
+for downstream users is the same, and the detection method we propose is applicable in all cases.
+We note that the absence of an international regulatory framework governing training data compo-
+sition means that, at present, there is no mechanism to compel disclosure or remediation in any of
+these categories. This observation motivates the call to action in Section 7.
+4.3 RLHF DOESNOTRESOLVEPRETRAINING-LEVELISSUES
+Our base–instruct comparison (Section 2.3) provides direct evidence that post-training alignment
+through RLHF does not remove ethically concerning vocabulary subspaces from thelm_head. The
+problematic eigenvectors persist across both variants with comparable structure and VCS values.
+This finding has a practical implication for the current practice of AI safety: if safety evaluation is
+conducted only on instruction-tuned models, pretraining-level issues may go undetected. We recom-
+mend thatlm_headSVD analysis be applied to base models as a standard pre-release evaluation
+step, prior to any post-training procedure.
+8
+
+===== PAGE 9 =====
+4.4LM_HEADSVDAS ASAFETYAUDITINGTOOL
+The analysis presented in this paper requires only thelm_headweight matrix and the model’s
+tokenizer. It does not require:
+• model inference or GPU execution beyond weight loading,
+• labeled evaluation datasets,
+• adversarial prompts or red-teaming,
+• access to training data.
+This simplicity is both a strength and an argument for adoption: the barrier to running this analysis
+is low enough that it can reasonably be incorporated into any model release pipeline. We propose
+VCS-based eigenvector analysis as a lightweight complement to existing safety benchmarks, not a
+replacement.
+Existing glitch token detection methods—including GlitchHunter (Li et al., 2024), Glitch-
+Prober (Zhang et al., 2024), and GlitchMiner (Wu et al., 2025)—all require model inference and
+produce candidate lists that still require human judgement to interpret. As noted by a practitioner in
+the Japanese LLM development community3, manually reviewing the full vocabulary of a model (on
+the order of 100,000 tokens) is feasible in roughly half a day at a rate of ten tokens per second—and
+is currently the most reliable approach for ensuring vocabulary quality prior to release.lm_head
+SVD analysis can complement this human review process: by identifying eigenvectors with low
+VCS or ethically concerning token clusters, it can generate a prioritised list of tokens warranting
+closer human inspection, potentially concentrating the manual effort where it is most needed rather
+than eliminating it.
+4.5 RELATIONSHIP TOALGEBRAICONTOLOGYPROJECTION
+The Algebraic Ontology Projection (AOP) framework (Miyashita, 2026) operates on hidden state
+projections rather than on vocabulary distributions, and is therefore structurally independent of the
+lm_headeigenvector pathologies documented in this paper. This independence has two implica-
+tions.
+First, AOP can serve as an objective observer of model behaviour even in models whoselm_head
+structure is compromised, potentially detecting logical inconsistencies that originate from incoherent
+vocabulary subspaces.
+Second, the algebraic constraints imposed by AOP on prompt design suggest a potential pathway
+toward mitigating—though not eliminating—the influence of low-VCS vocabulary subspaces on
+model output. A full investigation of this possibility is left for future work.
+5 GLITCHTOKENDETECTION VIAWEIGHTEDPROJECTIONSCORE
+5.1 MOTIVATION
+Glitch tokens are vocabulary entries that cause LLMs to produce erratic or incoherent outputs when
+presented as input (Rumbelow & mwatkins, 2023; Li et al., 2024). Their root cause is a mismatch
+between the tokenizer training corpus and the LLM pretraining corpus: tokens that appear in the
+vocabulary but rarely in the pretraining data acquire poorly defined embeddings, rendering them
+geometrically isolated in thelm_headweight space.
+We note that glitch tokens are distinct from the ethically concerning vocabulary discussed in Sec-
+tion 4: the latter originates fromover-representationin the pretraining corpus, whereas glitch tokens
+arise fromunder-representation. Nevertheless, the same SVD framework introduced in this paper
+suggests a lightweight static approach to glitch token detection that does not require model inference.
+3Seehttps://x.com/imos/status/1966886238448959855
+9
+
+===== PAGE 10 =====
+5.2 WEIGHTEDPROJECTIONSCORE
+For each tokenvin the vocabulary, we define itsWeighted Projection Score(WPS) as the sum of its
+absolute contributions across all singular directions, weighted by the corresponding singular values:
+WPS(v) =
+dX
+k=1
+S[k]·|U[v,k]|(3)
+Intuitively, WPS(v)measures how strongly tokenvparticipates in the dominant directions of the
+lm_headweight space. Tokens with high WPS are readily activated by the model’s hidden states;
+tokens with low WPS are geometrically marginalised—theirlm_headrows point in directions that
+carry little singular value energy—and are therefore candidates for glitch token status.
+We propose a threshold ofµ−2σ(whereµandσare the mean and standard deviation of WPS across
+the full vocabulary) as a practical cutoff, identifying approximately the bottom 2–4% of tokens as
+candidates.
+The implementation requires no inference and adds only a few lines to the existing SVD analysis:
+# U: ( V , d ) , S : ( d , )
+w e i g h t e d _ u = U.abs( ) * S . u n s q u e e z e ( 0 )# ( V , d )
+wps = w e i g h t e d _ u .sum( dim =1)# ( V , )
+mean , s t d = wps . mean ( ) , wps . s t d ( )
+t h r e s h o l d = mean − 2 . 0 * s t d
+g l i t c h _ c a n d i d a t e s = ( wps < t h r e s h o l d ) . n o n z e r o ( a s _ t u p l e = True ) [ 0 ]
+5.3 PRELIMINARYRESULTS
+We applied this procedure to Gemma-2-2B and Qwen2.5-1.5B (instruct variants) and report sum-
+mary statistics in Table 4.
+Table 4: Glitch token candidate statistics (µ−2σthreshold).
+Modelµ σThreshold Candidates (%)
+GPT-OSS-120B 9.95 2.94 4.07 9,819 (4.88%)
+Gemma-2-2B 58.58 7.32 43.93 5,543 (2.17%)
+Qwen2.5-1.5B 29.23 5.30 18.62 5,885 (3.87%)
+The qualitative character of the candidates differs markedly across models.
+For GPT-OSS-120B, the lowest-scoring tokens (WPS≈0.63) are token IDs in the range 200000–
+201087 that decode as empty strings—consecutive reserved entries at the tail of the vocabulary.
+More diagnostically, tokens with WPS≈0.87include a dense cluster of Chinese-language gambling
+and lottery spam strings (tokens containing phrases meaning “daily lottery”, “fast three lottery”, and
+“lottery god” and their variants), full-width Japanese katakana, and—notably—the token_
+(ID 137606, WPS = 0.8807), a glitch token widely known in the CJK language community 4. Its
+detection by WPS without any inference confirms that the approach captures known problematic
+tokens.
+For Gemma-2-2B, the lowest-scoring tokens are predominantly single ASCII characters, control
+characters (U+0001–U+001F), and instances of the Unicode replacement character U+FFFD as-
+signed to multiple token IDs—suggesting redundant tokenizer entries rather than glitch tokens in
+the classical sense.
+For Qwen2.5-1.5B, a large cohort of tokens score at virtually the same minimum value (WPS≈
+3.01), comprising Thai-script tokens (e.g., tokens meaning “that”, “have”, and “all” in Thai), Arabic
+4Seehttps://note.com/xcloche/n/n55938e706986for a detailed account in Japanese.
+10
+
+===== PAGE 11 =====
+diacritics, Hebrew sequences, and isolated CJK characters. Additionally, token IDs in the high-index
+range (151829–151860) decode as empty or non-displayable strings—consecutive reserved entries
+at the tail of the vocabulary that are entirely absent from pretraining data. Further examples include
+IDE-derived compound tokens such asForCanBeConvertedToFand full-width numeric forms
+such as full-width20. In total, approximately 6,000 tokens (3.87% of the 151,936-entry vocabulary)
+fall below the threshold, suggesting that a non-trivial fraction of Qwen’s vocabulary is effectively
+unused by the model.
+This pattern—many tokens collapsed to the same near-zero score—is consistent with the
+embedding-space clustering reported by GlitchHunter (Li et al., 2024): tokens registered in the
+tokenizer but absent from pretraining data are assigned degeneratelm_headrows that all point in
+the same “garbage” direction.
+These observations suggest that WPS provides a complementary static signal to existing inference-
+based detection methods. Unlike GlitchHunter, which constructs a token embedding graph and
+applies the Leiden clustering algorithm (Traag et al., 2019), WPS requires no inference and produces
+a ranked list of candidates in a single pass over thelm_headweight matrix.
+5.4 LIMITATIONS ANDFUTUREWORK
+The WPS approach has two important limitations. First, it detects tokens that aregeometrically
+marginalisedin thelm_headspace, which correlates with but does not perfectly identify glitch
+tokens: some low-WPS tokens may be legitimately rare vocabulary items rather than pathological
+entries. Second, the thresholdµ−2σis a heuristic; a systematic evaluation against the labelled
+glitch token datasets of Li et al. (2024) and Zhang et al. (2024) is needed to calibrate precision and
+recall.
+We also note that WPS is entirely independent of token content: it cannot distinguish between a
+harmless rare token and an ethically problematic one. The two problems—geometric marginalisa-
+tion and ethical content—require separate analysis pipelines, as discussed in Section 4.
+A full empirical evaluation of WPS as a glitch token detector, including comparison with Glitch-
+Hunter, GlitchProber (Zhang et al., 2024), and GlitchMiner (Wu et al., 2025), is left for future
+work.
+6 RELATEDWORK
+6.1 GLITCHTOKENS
+Glitch tokens are vocabulary entries that cause LLMs to produce erratic, incoherent, or policy-
+violating outputs when encountered as input. The phenomenon was first systematically documented
+by Rumbelow and Watkins (Rumbelow & mwatkins, 2023), who identified a set of anomalous tokens
+in GPT-2 and GPT-3 that clustered near the centroid of the embedding space and could not be
+correctly repeated by the model. The underlying mechanism is a mismatch between the tokenizer
+training corpus and the LLM pretraining corpus: tokens that appear frequently enough to be included
+in the vocabulary but rarely enough in the LLM training data to acquire meaningful embeddings
+become geometrically isolated, resulting in unpredictable model behaviour (Rumbelow & mwatkins,
+2023).
+Li et al. (Li et al., 2024) conducted the first comprehensive empirical study of glitch tokens across
+seven LLMs and 182,517 tokens, proposing GlitchHunter: a detection method based on construct-
+ing a token embedding graph and applying the Leiden clustering algorithm (Traag et al., 2019) to
+identify dense anomalous clusters. Zhang et al. (Zhang et al., 2024) proposed GlitchProber, which
+instead analyses internal activations (hidden states and attention outputs) using PCA and SVM clas-
+sifiers, and additionally provides a mitigation mechanism that masks offending neurons at inference
+time. More recently, Liu et al. (Wu et al., 2025) proposed GlitchMiner, a gradient-based discrete
+optimisation framework that detects glitch tokens by maximising predictive entropy, overcoming the
+dependence on predefined embedding patterns shared by earlier methods.
+Our work relates to this literature in two ways. First, low-VCS eigenvectors in our analysis may over-
+lap with the embedding-space anomalies exploited by GlitchHunter, suggesting thatlm_headSVD
+11
+
+===== PAGE 12 =====
+analysis could serve as a static, inference-free complement to existing detection methods. Second,
+and importantly, the phenomena arenotidentical: glitch tokens arise fromunder-representationin
+the pretraining corpus (too few occurrences to form stable embeddings), whereas the ethically con-
+cerning vocabulary clusters we observe in Qwen2.5-1.5B appear inuppereigenvectors with substan-
+tial singular values, implyingover-representation—sufficient frequency and co-occurrence density
+to leave a dominant geometric trace in thelm_headweight matrix. These are complementary
+failure modes with different root causes and different implications for remediation.
+6.2 INTERPRETING THE LM_HEAD ANDVOCABULARYPROJECTION
+The Logit Lens (nostalgebraist, 2020) projects intermediate hidden states through thelm_headto
+visualise how token predictions evolve across layers, providing a tool for mechanistic interpretabil-
+ity. The Tuned Lens (Belrose et al., 2025) extends this by learning an affine transformation per layer
+to improve the quality of intermediate predictions. The Backward Lens (Katz et al., 2024) inverts
+the direction of analysis, projecting gradients rather than activations into vocabulary space.
+Our work is complementary but distinct: rather than projecting hidden statesthroughthelm_head,
+we analyse thelm_headweight matrixitselfvia SVD. This requires no input data and no model
+inference, and reveals the static geometric structure of vocabulary selection independent of any
+particular hidden state.
+The softmax bottleneck (Yang et al., 2018) identifies a fundamental limitation of the standard LM
+head architecture: when the hidden dimensiondis smaller than the vocabulary sizeV, the expres-
+siveness of the output distribution is constrained. Our singular value analysis provides a complemen-
+tary view of this bottleneck: the effective rank ofW, reflected in the decay profile of singular values,
+determines how many independent vocabulary selection directions are available to the model.
+6.3 TRAININGDATAQUALITY ANDSAFETY
+The quality and composition of pretraining data have been shown to have lasting effects on model
+behaviour that are difficult to reverse through post-training alignment (Longpre et al., 2023). Our
+base–instruct comparison provides direct empirical support for this claim at the level oflm_head
+geometry: problematic vocabulary subspaces present in base models persist through RLHF.
+This persistence is consistent with recent findings on the sparsity of alignment updates. Mukherjee
+et al. (Mukherjee et al., 2025) show that even with full-parameter finetuning, reinforcement learning
+updates only 5–30% of parameters (sparse subnetworks), with the remainder essentially unchanged.
+By matrix perturbation theory (Davis–Kahan theorem), adding a sparse, small-norm perturbation to
+a large pretraining matrix is unlikely to rotate its dominant singular vectors significantly—providing
+a theoretical account of whylm_headeigenvector structure is largely preserved after RLHF.
+To our knowledge, no prior work has directly tracked changes inlm_headsingular vectors between
+base and instruction-tuned variants at the token level. Our base–instruct comparison provides the
+first such direct evidence, connecting the macroscopic sparsity statistics of Mukherjee et al. (2025)
+to microscopic geometric changes in the vocabulary projection layer.
+6.4 TOKENIZEROPTIMISATION ANDVOCABULARYEFFICIENCY
+The design of LLM tokenizers has received increasing attention as a source of both performance and
+efficiency improvements. Standard subword algorithms such as Byte Pair Encoding (BPE) (Sennrich
+et al., 2016) construct vocabularies based on corpus frequency statistics, without regard to how the
+resulting vocabulary will interact with the model’s weight matrices during training.
+6.5 TOKENIZEROPTIMISATION ANDVOCABULARYEFFICIENCY
+Tokenizer design has received increasing attention as a source of LLM efficiency improvements.
+Standard BPE (Sennrich et al., 2016) constructs vocabularies from corpus frequency statistics alone.
+Recent work has explored several directions beyond this baseline.
+Frequency and compression-based approaches include BoundlessBPE (Schmidt et al., 2025), which
+relaxes pre-tokenization boundary constraints to allow cross-word merges, and LiteToken (Sun et al.,
+12
+
+===== PAGE 13 =====
+2026), which identifies and removes “intermediate merge residues”—tokens that are frequent during
+BPE training but rarely appear in final tokenized output, affecting approximately 10% of tokens in
+major tokenizers.
+Model-feedback-based approaches use LLM inference signals to guide vocabulary construction.
+Zheng et al. (Zheng et al., 2024) (NeurIPS 2024) propose an adaptive tokenizer that monitors
+changes in model perplexity during training to iteratively refine the vocabulary, selecting tokens
+that are closely aligned with the model’s evolving dynamics. Retrofitting LLMs with Dynamic To-
+kenization (Feher et al., 2025) (ACL 2025) enables flexible post-training tokenization by adaptively
+choosing token granularity during inference.
+Domain and language adaptation approaches (Li et al., 2025; Herold et al., 2025) extend or replace
+tokenizer vocabularies to improve compression rates for low-resource languages and specialised
+domains.
+Across all of these approaches, the feedback signal is derived from either the training corpus (fre-
+quency, compression ratio) or model inference (loss, latency).None uses the static geometric struc-
+ture of thelm_headweight matrix as a vocabulary quality criterion.Our proposed SVD-guided
+tokenizer optimisation direction fills this gap: the VCS metric provides a purely static, inference-
+free signal that reflects the geometric stability of vocabulary selection in the output projection layer.
+To our knowledge, this connection betweenlm_headeigenvector analysis and tokenizer design
+has not been previously proposed.
+V ocabulary adaptation for domain transfer and low-resource languages has also been studied exten-
+sively (Li et al., 2025; Herold et al., 2025), primarily motivated by compression efficiency (reducing
+sequence length) rather than vocabulary quality or geometric stability. Our motivation is orthogo-
+nal: we aim to identify tokens that are geometrically stable in thelm_headeigenspace, which we
+conjecture corresponds to tokens that the model can select reliably and consistently.
+To our knowledge, no prior work has proposed usinglm_headSVD analysis as a criterion for
+tokenizer construction or vocabulary pruning. The potential connection between high-VCS token
+selection and parameter efficiency—smaller vocabulary sizes with higher per-token representational
+quality—remains an open empirical question that we leave to future work.
+The Algebraic Ontology Projection (AOP) framework (Miyashita, 2026) projects LLM hidden states
+onto the binary fieldF 2 and measures the algebraic consistency ofis-a/has-aontological relations
+via the Semantic Crystallisation (SC) metric. AOP demonstrated zero-shot inclusion accuracy of
+up to 93.33% across multiple model families without fine-tuning, and identified Late-layer Collapse
+as a failure mode in which logical consistency degrades in intermediate layers. The present paper
+identifies a structural property of thelm_head—the VCS distribution across eigenvectors—that is
+complementary to the hidden-state analysis of AOP and may help explain why certain models are
+more amenable to AOP-based prompt optimisation than others.
+7 CONCLUSION
+We have shown that singular value decomposition of thelm_headweight matrix of a transformer-
+based LLM reveals interpretable semantic subspaces directly, without model inference, prompt en-
+gineering, or access to training data. The left singular vectors partition the vocabulary into geomet-
+rically coherent clusters whose character reflects the composition and curation philosophy of the
+pretraining corpus. We introduced the V ocabulary Cluster Score (VCS) to quantify this coherence,
+and demonstrated its utility across three models of different provenance and scale.
+Our principal findings are as follows.
+1.lm_head eigenvectors encode interpretable semantic subspaces.Each singular vector
+concentrates vocabulary from a distinct semantic, linguistic, or functional domain. The na-
+ture of these domains differs systematically across models: GPT-OSS-120B exhibits func-
+tionally differentiated subspaces (syntactic structure, formal specification vocabulary, soft-
+ware engineering terminology); Gemma-2-2B exhibits historically and linguistically strat-
+ified subspaces dominated by pre-nineteenth-century printed English; and Qwen2.5-1.5B
+exhibits script-level clustering alongside geometrically dispersed, low-VCS subspaces.
+13
+
+===== PAGE 14 =====
+2.Singular value distributions encode vocabulary selection strategy.The decay profile
+of singular values reflects the degree to which vocabulary selection is concentrated in a
+small number of dominant directions. Gemma exhibits stepwise clustering that confers
+high controllability; Qwen exhibits a sharp two-tier structure; and GPT exhibits a graduated
+hierarchy in which many directions carry distinct semantic content.
+3.Pretraining-level content persists through RLHF.Base–instruct comparison reveals that
+ethically concerning vocabulary subspaces, where present, are not removed by post-training
+alignment. RLHF in Qwen restructures some eigenvectors (remapping symbol clusters to
+multilingual lexical clusters) but does not resolve the underlying pretraining-level issues.
+In Gemma, RLHF leaves thelm_headstructure virtually unchanged.
+4.lm_head SVD analysis is a viable safety auditing tool.The analysis requires only the
+weight matrix and tokenizer, runs in minutes, and surfaces ethically concerning vocabulary
+without any form of adversarial prompting. We propose it as a lightweight complement to
+existing safety evaluation pipelines, to be applied to base models prior to post-training.
+Limitations.VCS measures geometric coherence in thelm_headweight space, which encom-
+passes semantic, script-level, and functional similarity without distinguishing between them. Quali-
+tative inspection of decoded tokens is therefore necessary to interpret VCS values. Our analysis cov-
+ers three models; broader coverage across architectures, scales, and training paradigms is needed to
+generalise the findings. The relationship betweenlm_headeigenvector structure and downstream
+model behaviour—including the connection to AOP and logical consistency—remains an empirical
+question for future work.
+Regarding the SVD-guided tokenizer optimisation direction described below: the proposed Best
+Token Extraction approach selects tokens based on geometric stability alone, without regard to con-
+tent. It will therefore select high-VCS tokens regardless of whether they are benign or harmful; it
+cannot be used as a safety auditing tool. Furthermore, the method operates at the level of token
+selection only: it cannot perform vocabulary restructuring operations such as merging tokens into
+more appropriate granularities or splitting coarse tokens. These limitations constrain its applicability
+to tokenizer quality improvement rather than safety assurance.
+Future work.The VCS metric introduced in this paper suggests a principled approach to tokenizer
+design. Eigenvectors with high VCS identify vocabulary clusters that are geometrically stable in the
+lm_headweight space—tokens that the model can select reliably and consistently. Conversely,
+tokens that appear only in low-VCS, low-eigenvalue eigenvectors may be candidates for removal or
+replacement.
+We term this directionSVD-guided tokenizer optimisationand sketch its iterative form:
+1. Train an initial LLM with a standard tokenizer.
+2. Applylm_headSVD analysis to compute per-token VCS contributions.
+3. Reconstruct the tokenizer, prioritising high-VCS tokens and removing low-VCS candi-
+dates.
+4. Retrain the LLM with the updated tokenizer.
+5. Repeat until convergence.
+If effective, this procedure would build vocabulary selection efficiency into the model from the
+ground up, potentially yielding a singular value distribution resembling Gemma’s stepwise cluster-
+ing structure with fewer training iterations. We leave empirical validation of this hypothesis to future
+work.
+A second direction concerns the relationship betweenlm_headeigenvector structure and glitch
+tokens (Rumbelow & mwatkins, 2023; Li et al., 2024). Tokens that cluster in low-VCS eigenvectors
+may overlap with the anomalous tokens identified by embedding-space methods such as Glitch-
+Hunter (Li et al., 2024). Unlike GlitchHunter, which requires inference,lm_headSVD analysis
+is entirely static; whether it can serve as a computationally cheaper proxy for glitch token detection
+remains to be verified.
+14
+
+===== PAGE 15 =====
+A third direction is the integration oflm_headSVD analysis with the Algebraic Ontology Pro-
+jection framework (Miyashita, 2026), both for prompt optimisation and for the detection of logical
+inconsistencies arising from low-VCS vocabulary subspaces.
+Call to action.We call upon the research community to adoptlm_headSVD analysis as a stan-
+dard component of model evaluation prior to public release. The simplicity of the method—only five
+lines of PyTorch—means that the barrier to adoption is low. We further call upon standards bodies
+and regulatory authorities to considerlm_headeigenvector analysis as a basis for training data
+auditing requirements, and upon the broader AI community to develop internationally harmonised
+standards for what constitutes ethically unacceptable content in pretraining corpora. The taxonomy
+of root causes proposed in Section 4 is intended as a starting point for that discussion.
+ACKNOWLEDGEMENTS
+The authors thank Taichi Kawabata for insightful discussions on practical challenges in LLM agent
+deployment that motivated this work.
+REFERENCES
+Nora Belrose, Igor Ostrovsky, Lev McKinney, Zach Furman, Logan Smith, Danny Halawi, Stella
+Biderman, and Jacob Steinhardt. Eliciting latent predictions from transformers with the tuned
+lens, 2025. URLhttps://arxiv.org/abs/2303.08112.
+Darius Feher, Ivan Vuli ´c, and Benjamin Minixhofer. Retrofitting large language models with dy-
+namic tokenization, 2025. URLhttps://arxiv.org/abs/2411.18553.
+Christian Herold, Michael Kozielski, Nicholas Santavas, Yannick Versley, and Shahram Khadivi.
+V ocabulary customization for efficient domain-specific llm deployment, 2025. URLhttps:
+//arxiv.org/abs/2509.26124.
+Shahar Katz, Yonatan Belinkov, Mor Geva, and Lior Wolf. Backward lens: Projecting language
+model gradients into the vocabulary space, 2024. URLhttps://arxiv.org/abs/2402.
+12865.
+Chong Li, Jiajun Zhang, and Chengqing Zong. TokAlign: Efficient vocabulary adaptation via token
+alignment, 2025. URLhttps://arxiv.org/abs/2506.03523.
+Yuxi Li, Yi Liu, Gelei Deng, Ying Zhang, Wenjia Song, Ling Shi, Kailong Wang, Yuekang Li, Yang
+Liu, and Haoyu Wang. Glitch tokens in large language models: Categorization taxonomy and
+effective detection.Proc. ACM Softw. Eng., 1(FSE), July 2024. doi: 10.1145/3660799. URL
+https://doi.org/10.1145/3660799.
+Shayne Longpre, Gregory Yauney, Emily Reif, Katherine Lee, Adam Roberts, Barret Zoph, Denny
+Zhou, Jason Wei, Kevin Robinson, David Mimno, and Daphne Ippolito. A pretrainer’s guide to
+training data: Measuring the effects of data age, domain coverage, quality, & toxicity, 2023. URL
+https://arxiv.org/abs/2305.13169.
+Hisashi Miyashita. Controlling logical collapse in LLMs via algebraic ontology projection over F2,
+2026. URLhttps://arxiv.org/abs/2605.12968.
+Sagnik Mukherjee, Lifan Yuan, Dilek Hakkani-Tur, and Hao Peng. Reinforcement learning finetunes
+small subnetworks in large language models, 2025. URLhttps://arxiv.org/abs/2505.
+11711.
+nostalgebraist. Interpreting GPT: the logit lens. LessWrong, 2020.
+URLhttps://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/
+interpreting-gpt-the-logit-lens.
+Michael Röder, Andreas Both, and Alexander Hinneburg. Exploring the space of topic coher-
+ence measures. InProceedings of the Eighth ACM International Conference on Web Search
+15
+
+===== PAGE 16 =====
+and Data Mining, WSDM ’15, pp. 399–408, New York, NY , USA, 2015. Association for Com-
+puting Machinery. ISBN 9781450333177. doi: 10.1145/2684822.2685324. URLhttps:
+//doi.org/10.1145/2684822.2685324.
+Jessica Rumbelow and mwatkins. SolidGoldMagikarp (plus, prompt generation). Alignment Forum,
+2023. URLhttps://www.alignmentforum.org/posts/aPeJE8bSo6rAFoLqg/.
+Craig W. Schmidt, Varshini Reddy, Chris Tanner, and Yuval Pinter. Boundless byte pair encod-
+ing: Breaking the pre-tokenization barrier, 2025. URLhttps://arxiv.org/abs/2504.
+00178.
+Tobias Schnabel, Igor Labutov, David Mimno, and Thorsten Joachims. Evaluation methods for
+unsupervised word embeddings. In Lluís Màrquez, Chris Callison-Burch, and Jian Su (eds.),
+Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing, pp.
+298–307, Lisbon, Portugal, September 2015. Association for Computational Linguistics. doi:
+10.18653/v1/D15-1036. URLhttps://aclanthology.org/D15-1036/.
+Rico Sennrich, Barry Haddow, and Alexandra Birch. Neural machine translation of rare words with
+subword units, 2016. URLhttps://arxiv.org/abs/1508.07909.
+Yike Sun, Haotong Yang, Zhouchen Lin, and Muhan Zhang. LiteToken: Removing intermediate
+merge residues from bpe tokenizers, 2026. URLhttps://arxiv.org/abs/2602.04706.
+V . A. Traag, L. Waltman, and N. J. van Eck. From louvain to leiden: guaranteeing well-
+connected communities.Scientific Reports, 9(1), March 2019. ISSN 2045-2322. doi: 10.1038/
+s41598-019-41695-z. URLhttp://dx.doi.org/10.1038/s41598-019-41695-z.
+Zihui Wu, Haichang Gao, Ping Wang, Shudong Zhang, Zhaoxiang Liu, and Shiguo Lian. Glitch-
+miner: Mining glitch tokens in large language models via gradient-based discrete optimization,
+2025. URLhttps://arxiv.org/abs/2410.15052.
+Zhilin Yang, Zihang Dai, Ruslan Salakhutdinov, and William W. Cohen. Breaking the softmax bot-
+tleneck: A high-rank rnn language model, 2018. URLhttps://arxiv.org/abs/1711.
+03953.
+Biao Zhang and Rico Sennrich.Root mean square layer normalization. Curran Associates Inc., Red
+Hook, NY , USA, 2019.
+Zhibo Zhang, Wuxia Bai, Yuxi Li, Mark Huasong Meng, Kailong Wang, Ling Shi, Li Li, Jun Wang,
+and Haoyu Wang. Glitchprober: Advancing effective detection and mitigation of glitch tokens
+in large language models. InProceedings of the 39th IEEE/ACM International Conference on
+Automated Software Engineering, ASE ’24, pp. 643–655, New York, NY , USA, 2024. Associa-
+tion for Computing Machinery. ISBN 9798400712487. doi: 10.1145/3691620.3695060. URL
+https://doi.org/10.1145/3691620.3695060.
+Mengyu Zheng, Hanting Chen, Tianyu Guo, Chong Zhu, Binfan Zheng, Chang Xu, and Yunhe
+Wang. Enhancing large language models through adaptive tokenizers. InProceedings of the 38th
+International Conference on Neural Information Processing Systems, NIPS ’24, Red Hook, NY ,
+USA, 2024. Curran Associates Inc. ISBN 9798331314385.
+16
+
+===== PAGE 17 =====
+A DETAILEDEIGENVECTORANALYSIS: GPT-OSS-120B
+The following table presents the top-15 tokens and VCS for the first 20 singular vectors of GPT-
+OSS-120B (instruct variant). Token strings are Pythonrepr()output; the integer suffix denotes
+the ratio of each token’s score to the maximum score in that vector (tokens below 10% are omitted).
+Singular valuesS[i]are shown in theS[i]column.
+Vector S[i] VCS Top tokens (top 15)
+U[:,0] 21.76 0.4106
+',', ' ', ' (', ' in', ' and', ' the', ' a', ' to', ' for', ' "', ':', ' as', " '", '.', ' is', ...
+U[:,1] 11.44 0.2300
+' B', ' Y', ' Z', ' D', ' J', ' Dir', ' N', ' O', ' G', ' L', ' K', ' M', ' Dr', ' “', ' V', ...
+U[:,2] 9.51 0.1092
+' Colours', ' Dressing', ' Batteries', ' Ages', ' Arms', ' Spill', ' Bench', ' Frequ', ' Favor'
+' Perman', ' Cutting', ' Radios', ' Seeds', ' Stabil', ' Cooling', ...
+U[:,3] 8.24 0.1765
+'Including', 'Multiple', 'External', 'Combined', 'Specific', 'Critical', 'Represent', 'Physical', 'With'
+'Structure', 'Standard', 'Reference', 'Dynamic', 'From', 'Partial', ...
+U[:,4] 7.57 0.2682
+'\n\n', ' \n\n', ' \n', ' (', ' ', '_', '-', '<', '\n', ' In', '\u200c', '\xa0', ' The', ' ...'
+' **', ...
+U[:,5] 6.92 0.1304
+'的', '、', '和', '方向', '及', '形成', '容', '或', '_async', '.cpu', '形', '.rb', '直接', '/debug', '寄', ...
+U[:,6] 6.48 0.2234
+'可', '使用', '相', '在', '先', '大', '分', '自', '全', '原', '前', '正', '特', '手', '合', ...
+U[:,7] 6.36 0.2458
+' INTERNAL', ' SINGLE', ' VALID', ' RESULT', ' CURRENT', ' REQUIRED', ' SOME', ' OPTION', ' GLOBAL'
+' ENTRY', ' LOCAL', ' TYPE', ' AVAILABLE', ' ACTIVE', ' MULT', ...
+U[:,8] 6.22 0.1945
+' Instances', ' Arguments', ' Dependencies', ' Errors', ' Objects', ' Items', ' Versions', ' Checks'
+' Execution', ' Restrictions', ' Attributes', ' Exceptions', ' Exists', ' Events', ' Features', ...
+U[:,9] 5.99 0.3422
+'_m', '_k', '_g', '_h', '_n', '_l', '_v', '_t', '_w', '_z', '_nd', '_s', '_j', '_r', '_d', ...
+U[:,10] 5.80 0.0769
+'ancia', 'ERI', 'ANO', 'ieta', 'ENA', 'aci', 'azar', 'IZA', 'ADI', 'IAL', 'Indic', 'acia', 'ód'
+'izo', 'ARI', ...
+U[:,11] 5.64 0.1867
+'-One', '-End', '-On', '-It', '/Sub', '-Web', '/Public', '/Open', '/T ext', '-Control', '/View'
+'-T ype', '-With', '-Or', '（一', ...
+U[:,12] 5.51 0.1070
+' bunny', '.bump', '.@', '.#', '.!', '.fly', '.п', '.kn', '.You', '.you', ' wink', '.k', '.watch'
+'.В', ' hoodie', ...
+U[:,13] 5.42 0.2313
+'.usuario', '.estado', '.codigo', '.tipo', '.de', '.modelo', '.met', '.est', '.cert', '.document'
+'.lista', '.fecha', '.author', '.pro', '.valor', ...
+U[:,14] 5.40 0.0696
+' taus', ' centres', ' gels', ' knots', ' ensembles', ' Müll', ' zwe', ' wedges', ' germs', ' kernels'
+' Zwe', 'wegs', ' complexes', ' verts', ' Eins', ...
+U[:,15] 5.34 0.1727
+' pizzas', ' cups', ' cafes', ' tacos', ' blogs', ' buses', ' scooters', '.todos', ' cargos'
+' laptops', ' bags', ' casinos', ' carts', ' carpets', ' phones', ...
+U[:,16] 5.26 0.1612
+'-cu', '-dia', '‑', '-pal', '-car', '-/', '-é', '-pot', '-fil', '-cart', '-pl', '-div', '-cent'
+'-col', '-sem', ...
+U[:,17] 5.20 0.2001
+'-kom', '-k', '-kon', '-kit', '-kl', '-kan', '-g', '-router', '-platform', '-b', '-z', '-shop'
+'-tool', '-market', '-K', ...
+U[:,18] 5.12 0.1300
+' T cl', ' dispatcher', ' Rpc', ' Vk', ' Fx', ' Vf', ' Plc', 'Tpl', ' Cv', ' Gst', ' verifier', ' Wx'
+'Tls', ' ZX', ' Rc', ...
+U[:,19] 5.07 0.1152
+' affiliate', ' administrator', '/business', ' ecommerce', ' advertiser', '/company', '/email', '/auth'
+' ebook', ' Etsy', ' ISBN', ' Joomla', ' webmaster', ' employer', ' Ebay', ...
+Figure 2: GPT-OSS-120B (instruct): top-15 tokens per singular vector,U[:,0]–U[:,19].
+17
+
+===== PAGE 18 =====
+B DETAILEDEIGENVECTORANALYSIS: GEMMA-2-2B
+The following table presents the top-15 tokens and VCS for the first 20 singular vectors of Gemma-2-
+2B (instruct variant). Tokens containing Unicode U+017F (Latin small letter long s) are reproduced
+verbatim as they appear in the model vocabulary; see the footnote in Section 3 for details.
+Vector S[i] VCS Top tokens (top 15)
+U[:,0] 409.66 0.8877
+' myſelf', ' Efq', ' Monfieur', ' itſelf', ' Theſe', ' ſeveral', ' Jefus', ' purpoſe', ' Anſ'
+' pleaſure', ' ―――――', ' Reſ', ' Houſe', ' Majefty', ' themſelves', ...
+U[:,1] 107.16 0.3760
+' ', ' “', ' "', ' tr', ' c', ' di', ' Del', ' l', ' Ver', ' C', ' ber', ' De', ' der', ' ver'
+' le', ...
+U[:,2] 92.54 0.6240
+' sauvages', ' actuels', ' complètes', ' automatiques', ' religieuses', ' enfans', ' supérieurs'
+' normaux', ' scolaires', ' nationaux', ' supérieures', ' réguli', ' démocr', ' européennes', ' sanitaires', ...
+U[:,3] 74.52 0.5466
+'1', 'v', 'I', '2', 'j', 'x', 'X', '3', 'k', 'A', 'c', 'w', 'B', 'T', 'C', ...
+U[:,4] 61.39 0.8974
+' itſelf', ' Reſ', ' Diſ', ' Houſe', ' Anſ', ' Monfieur', ' myſelf', ' Perſ', ' Conſ', ' Jefus'
+' houſe', ' raiſ', ' Eſ', ' ſche', 'ſelf', ...
+U[:,5] 56.12 0.8902
+' myſelf', ' purpoſe', ' houſe', ' pleaſure', ' Diſ', ' Theſe', ' Monfieur', ' Jefus', ' itſelf'
+' Efq', 'ſelf', ' Eſ', ' faſt', ' Reſ', ' Anſ', ...
+U[:,6] 53.73 0.7458
+'"]);\r', '")));\r', "'));\r", "']);\r", '"));\r', ')");\r', '"]));', '()));\r', '()]);', '"];\r'
+'"]];', ' "));', "'))\r", '())));', '"])\r', ...
+U[:,7] 50.43 0.3485
+дії', ' electrica', ' romano'
+fixa', ' raya', ...
+U[:,8] 45.61 0.3922
+'Personendaten', 'GEBURTSDATUM', 'parsedMessage', 'UnusedPrivate', 'RegressionT est', 'LookAnd'
+'WithIOException', 'NameInMap', 'webElementXpaths', 'contentLoaded', ' ProtoMessage', 'oredCriteria'
+' referenties', ' initComponents', ' nahilalakip', ...
+U[:,9] 44.36 0.6679
+"']))\r", '()]);', '()));\r', '"]];', "']))", '())));', '})).', "']));", '"]))', "']);\r", '"]));'
+'"]);', '])))', ')]);', '())))', ...
+U[:,10] 41.55 0.5402
+' supérieurs', ' blessés', ' fermés', ' ainfi', ' enfans', ' refusé', ' financières', ' égale', ' marié'
+' financière', ' juges', ' blessé', ' religieuses', ' prisonniers', ' rendus', ...
+U[:,11] 39.01 0.3685
+'GEBURTSDATUM', ' resourceCulture', ' AssemblyCulture', ' nahilalakip', 'addCriterion', 'tagHelperRunner'
+'MigrationBuilder', ' enfans', 'contentLoaded', ' protoimpl', 'Datuak', ' EconPapers', 'parsedMessage'
+' espagne', 'Personendaten', ...
+U[:,12] 38.86 0.3021
+' MessageBoxIcon', ' ибо', 'reszcie', ' 收納', 'ioutil', ' JT extArea', '未だ', 'いかがでしたか', 'それとも'
+'Cordialement', '昨日は', ' 時尚', '彼らはJPanel', ...
+U[:,13] 37.85 0.3975
+' betweenstory', ' Италијани', ' Bäume', 'ьаж', '")));\r', ' ]\r', ')");\r', "]';", '"]);\r', 'oa̍t'
+' "];', "']))\r", ' kaarangay', '\U000e0074', 'ględ', ...
+U[:,14] 35.52 0.2612
+'Ironically', ' Ironically', 'obviously', ' needlessly', ' unnecessarily', ' malheureusement'
+' conceivably', 'mittedly', ' inevitably', ' unduly', ' obviously', ' Sometime', ' ideally', ' invariably'
+' eventually', ...
+U[:,15] 35.29 0.2842
+' vertes', 'neurial', 'vician', ' 時尚', 'clusal', ' CWE', ' avoient', ' Prüf', 'istive', ' {_'
+'helial', ' Sewing', 'женские', 'baked', 'ruptcy', ...
+U[:,16] 34.02 0.3562
+'favourite', 'personalised', ' Италијани', 'oredCriteria', 'SharedCtor', 'RegressionT est', 'expensive'
+' Jefus', 'everybody', 'mystery', ' betweenstory', 'ьаж', ' Chriftian', 'invention', ' Efq', ...
+U[:,17] 33.47 0.3251
+'!*\\', 'Personensuche', 'MigrationBuilder', ' nahilalakip', ' Exacts', 'Portale', 'Alte', ' @"/'
+'contentLoaded', 'protoimpl', 'tagext', ' protoimpl', 'Maxi', 'ThroughAttribute', 'invokeLater', ...
+U[:,18] 33.18 0.1626
+'lapsingT oolbar', ' "..\\..\\', ' Subsequently', ' imidlertid', ' national', ' "{{', 'velocityX'
+' virksom', ' økonom', ' samostat', ' parliamentary', ' autonomous', ' çeşitli', ' principales', ' egyes', ...
+U[:,19] 32.53 0.4479
+' Económica', ' Nacionales', ' Constitucional', ' Sociales', ' Defensa', 'ſelf', ' Universitaria'
+' Monfieur', ' RIPRODUZIONE', ' Verdad', ' Escolar', ' Ciencia', ' Parigi', ' houſe', ' Energía', ...
+Figure 3: Gemma-2-2B (instruct): top-15 tokens per singular vector,U[:,0]–U[:,19].
+18
+
+===== PAGE 19 =====
+C NOTE ONQWEN2.5-1.5B APPENDIX
+Detailed token-level data for Qwen2.5-1.5B are not reproduced in this appendix. As noted in Sec-
+tion 4, several eigenvectors of this model contain vocabulary that the author have determined to be
+ethically inappropriate for direct publication. In accordance with responsible disclosure principles,
+we provide only the VCS values and qualitative descriptions in the main text. Researchers requiring
+the full token lists for verification or safety research purposes may contact the author directly.
+19

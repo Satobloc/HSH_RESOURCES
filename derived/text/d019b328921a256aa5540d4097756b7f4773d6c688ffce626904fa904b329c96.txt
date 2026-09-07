@@ -1,0 +1,787 @@
+===== PAGE 1 =====
+Efficient calculation of exclusive diffractive cross
+sections at the EIC and LHeC with the
+Sartre event generator
+Tobias Toll, Dipan Ghosh, Abhinav Srivastav
+Department of Physics, Indian Institute of Technology Delhi, Hauz
+Khas, New Delhi 110 016, India
+Email: tobiastoll@iitd.ac.in
+June 15, 2026
+Abstract
+We present a new version of the Sartre event generator for exclusive
+diffraction at smallx I P in the colour dipole model, forepandeA scat-
+tering at the EIC and the LHeC as well as ultra-peripheralpp,pA, and
+AA collisions at RHIC and the LHC. Sartre stores the first and second
+moment of the interaction amplitudes in lookup tables which are then
+used for efficient event generation. There are many possible combina-
+tions of processes in Sartre, with different initial state nuclear targets
+and different final state vector mesons or real photons. We also want to
+implement different versions of the dipole model: with and without non-
+linear saturation effects, with and without nucleon hotspot substructure.
+A long-standing bottleneck for simulating all possible exclusive processes
+has been the production of lookup tables, which take a few CPU-year for
+each combination, necessitating the use of computing farms. The calcu-
+lation also involves integrations of rapidly fluctuating integrands, which
+may cause numerical glitches which takes much effort to smoothen out. In
+this paper we present a solution to these issues, by presenting a new nu-
+merical calculation which improves the efficiency in the table production
+by 3-4 orders of magnitudes. This enables us to produce lookup tables
+for any process that we may be interested in, in a few hours. The new
+calculation does also not exhibit numerical glitches. We provide novel
+predictions for the EIC and the LHeC using the new version of Sartre.
+1 Introduction
+Exclusive Diffraction is seen as a key measurement for future Deeply Inelastic
+Scattering (DIS) experiments, such as the Electron-Ion Collider (EIC) [1, 2]
+1
+arXiv:2606.14633v1  [hep-ph]  12 Jun 2026
+
+===== PAGE 2 =====
+and the Large Hadron-electron Collider (LHeC) [3]. These processes constitute
+excellent probes, both for non-linear evolution of the gluon structure described
+by gluon saturation, as well as for spatial gluon structure and substructure.
+Sartre [4, 5] is an event generator for these processes at smallxforepandeA
+scattering, as well as for ultra-peripheralpp,pA, and AA scattering at the LHC
+and RHIC experiments [6, 7]. It has been used extensively in the preparations
+for the EIC. Sartre calculates cross sections using the dipole model framework,
+which is valid forx<0.01.
+There are two possible processes in diffractive scattering, either the virtual
+photon interacts coherently with the entire target (proton or nucleus), or it in-
+teracts coherently only with a subregion of the target. In the latter case, called
+incoherent diffraction, the nucleus gets excited and subsequently de-excites,
+mostly by emitting neutrons or breaking up. According to the Good-Walker
+picture [8], the coherent scattering cross section depends on theaverageof the
+dipole amplitude with respect to the inital state gluon distribution, while the
+incoherent cross section depends on thevarianceof the amplitude. In order to
+generate these events one therefore needs to calculate the first and the second
+moments of the amplitude with respect to the configuration of nucleons in the
+nucleus, as well as hotspots within the nucleons.
+Calculating these moments has been a long standing bottle-neck for incoher-
+ent diffraction. We have earlier shown [5] that for most parts of phase-space, one
+needs to average over∼500 nucleon configurations. This constitutes evaluating
+two four-dimensional integrals for each phase-space point 500 times, which is
+prohibitive for efficient event generation.
+In Sartre we have solved this by creating lookup tables for the first and second
+moments of the amplitude. This then ensures very efficient event generation.
+However, these lookup tables are incredibly cumbersome to produce, taking
+CPU-years for each combination of initial nuclear species and final state vector
+meson, necessitating heavy parallelization on computing farms. What further
+complicates the issue is that the integrands contain quickly fluctuating functions
+in some parts of phase-space, which makes the numerical intgration routines slow
+to converge. This also causes numerical glitches and spikes in some bins. To
+smoothen the lookup tables post production also takes a significant effort.
+These issues were partially solved in a recent publication [9] where we em-
+ployed neural network techniques. We showed that it is enough to create a
+lookup table containing only 10% of the bins, and train a fairly small neural
+network on this. The neural network model is then used to fill out the rest of
+bins in the tables. The neural network is also excellent at smoothening out the
+resulting tables, such that numerical glitches and spikes does not affect the final
+event generation.
+In this paper we present a significant update on the numerical calculation.
+The largest improvement comes from taking advantage of the fact that the
+integral constitutes a Fourier transform, which we turn into a discreet Fourier
+transform. This means that we can calculate the integral only on the phase-
+space points to be stored in the tables, and the numerical integration only
+need to take into account it’s reciprocal points. We also take full advantage
+2
+
+===== PAGE 3 =====
+of the structure of the calculation in order to make it as fast as possible, by
+precomputing all parts of the calculation that are used more than once in each
+phase-space point. We show that we reach speed-ups in the calculations of the
+amplitude modes of 3-4 orders of magnitude. This corresponds to a reduction
+from CPU-years to less than a CPU-day. Combining it with the parallelization
+available on most computers today, we have now moved the Sartre amplitude
+lookup table production from computing farms to users’ laptops.
+This speedup enables Sartre to simulate all combinations of intial state nu-
+clear targets and final state vector mesons or DVCS, with and without non-linear
+saturation physics, and with and without nucleon hotspot substructure. In the
+earlier version, one had to make choices for which processes to produce lookup
+tables for event-generation. In this version, these choices are no longer needed.
+The paper is organized as follows. In the next session we describe the un-
+derlying dipole formulation and describe the structure of the calculation. In
+section 3 we describe how we organize the numerical implementation in an ef-
+ficient way. In section 4 we present a comparison with the previous version of
+Sartre to show that the new version produces the same results. We also present
+a study of 3-4 order of magnitude improved efficiency. Then, in section 4.2 we
+present completely new physics predictions for the EIC and the LHeC.
+2 Structure of the calculation
+The total cross section is given by the second moment of the dipole interaction
+amplitude:
+dσT,L
+dt = 1
+16π
+DAT,L(x,Q 2,t,Ω)
+2E
+(1)
+The bracket on the right-hand side is the object that is tabulated in Sartre,
+together with the first moment of the amplitude. Here,
+AT,L(x,Q 2,t,Ω) =i
+Z
+dr
+Z
+dz(ψ ∗
+Vψ)T,L (r,z)2πJ 0([0.5−z]r∆)·
+·
+Z
+d2⃗b dσ
+d2b(x,r,⃗b,Ω)e −i⃗b·⃗∆ (2)
+whereris the dipole transverse size,zis the photon’s momentum fraction carried
+by the quark in the dipole, (ψ∗
+Vψ) is the photon-vector meson wave overlap, and
+dσ
+d2b is the so called dipole cross section, which is twice the dipole amplitude.
+In Sartre, two versions of the dipole cross section are implemented, IPsat, and
+IPnosat [10, 11].
+3
+
+===== PAGE 4 =====
+2.1 Proton targets
+For a proton target (without substructure) the dipole cross sections are given
+by:
+dσIPsat
+p
+d2b = 2
+h
+1−e −Ω(xI P,r,b)/2
+i
+(3)
+dσIPnosat
+p
+d2b = Ω(x IP,r,b) (4)
+here, the opacity Ω(xIP,r,b) =π 2r2/NCαS(µ2)xIPg(xIP,µ 2)T(b), where the fac-
+torization and renormalization scales are both taken atµ 2 =C/r 2 +µ 2
+0. The
+thickness functionT(b) is taken to be a Gaussian for the proton. The IPsat
+model clearly saturates at larger,xg, andT, while the IPnosat model is a
+linearized version of IPsat. Currently, there are three parametrization of these
+models corresponding to different fits to HERA data, namely KMW [11], HMPZ
+[12], and STU [6]. The latter two are fitted to the combined H1 and ZEUS in-
+clusive reduced cross sections [13] as well asF c
+2 [14] measurements. It should
+be noted that the STU parametrization contains a phenomenological Gaussian
+damping of large dipoles in the dipole amplitude to suppress unphysically large
+dipoles. In this paper we show results using the STU parametrization.
+2.2 Nuclear Targets
+For nuclear targets, Sartre implements the independent scattering approxima-
+tion, where
+1− 1
+2
+dσA
+d2b (xIP,r,⃗b) =
+AY
+i=1
+
+1− 1
+2
+dσp
+d2b (xIP,r,|⃗b− ⃗bi|)
+
+(5)
+whereAis the nucleus mass number, and the nucleon positionsb i are distributed
+according to a Woods-Saxon distribution. For the IPsat and IPnosat models,
+this manifests in a modified thickness function:
+TA(⃗b) =
+AX
+i=1
+Tp(|⃗b− ⃗bi|) (6)
+To get the cross section in eq.(1), one has to average the absolute amplitude
+square over all possible configurations of nucleons inside the nucleus. In practice
+it has been shown that∼500 configuration gives a reasonable convergence up
+to moderate values of|t|[5].
+However, according to the Good-Walker mechanism [8], there are two com-
+ponents to the total cross section in eq.(1), the coherent and incoherent cross
+sections, where:
+
+|A|2
+=⟨A⟩ 2 +
+h
+|A|2
+−⟨A⟩ 2
+i
+(7)
+4
+
+===== PAGE 5 =====
+Here, the first term on the right hand side corresponds to coherent interactions
+where the target stays intact, while the variance term in the square brackets
+corresponds to the incoherent cross section where the target gets excited in
+the interaction and subsequently decays. In order to capture this physics with
+Sartre we therefore need to calculate both the first and second moments of the
+amplitude and store them in lookup tables.
+A computational challenge comes from the fact that for already moderately
+large values of|t|, the incoherent cross section (variance) becomes orders of
+magnitude larger than the coherent cross section (mean), which tells us that the
+convergence of the first moment becomes very slow. In this region we instead
+use the optical approximation:
+dσA
+d2b
+
+Ω
+= 2
+"
+1−
+
+1− TA(b)
+2 σp
+A#
+(8)
+whereT A(b) is the two-dimensional projection of the Woods-Saxon distribution,
+andσ p =
+R
+d2⃗bdσ p/d2b.
+2.3 Nucleon Substructure
+We can use the independent scattering approximation to also include nucleon
+hotspot substructure [15, 16] by modifying the thickness function in the follow-
+ing way:
+Tp(⃗b) = 1
+Nhs
+NhsX
+j=1
+Ths(|⃗bj−⃗b|) (9)
+where the hotspot positionsb j are usually distributed according to a Gaussian.
+We takeN hs = 3 and the parameters from [17].
+2.4 Phenomenological Corrections to the Dipole Cross sec-
+tion
+The derivation of the amplitude relies on the approximation that theS-matrix
+is purely imaginary. However, one may take into account the real part of the
+S-matrix by multiplying the cross section by a factor (1 +β 2), whereβis the
+real-to-imaginary ratio of the amplitude given by [11]:
+β= tan
+π
+2λ
+
+, λ=
+∂logA γ∗p
+T,L
+∂logx (10)
+The two gluons in the interaction may carry different momentum fractions.
+This skewedness correction can be accounted for by multiplying the cross sec-
+tions by a factorR g given by:
+Rg(λ) = 22λ+3
+√π
+Γ(λ+ 5/2)
+Γ(λ+ 4) , λ= ∂logxg(x,µ 2)
+∂logx (11)
+5
+
+===== PAGE 6 =====
+This skewedness correction is strictly only true for non-linear versions of the
+dipole model.
+3 Optimising the computation
+In Sartre, we tabulate the first two moments of the amplitude, averaged over
+500 configurations, in bins ofQ 2,W 2, andt. These 3D tables typically con-
+tain 10,000-30,000 bins. For each bin we need to evaluate the four-dimensional
+integral, averaged over 500 configurations, for two photon polarizations. These
+integrations contain functionsJ 0([0.5−z]r∆) and exp(−i|⃗b||⃗∆|cos(ϕb∆)), which
+are rapidly oscillating at larget.
+In previous versions of Sartre, this process can sometimes take weeks of
+dedicated production time on computing farms, making it prohibitive to create
+a vast number of tables, as well as to implement changes in the models. In this
+section we will show how this process can be sped up by 3-4 orders of magnitude.
+3.1 Utilizing the Fourier transform structure of the cal-
+culation
+The main idea is to utilize the properties of the Fourier transform (FT) to our
+advantage. We may write the amplitude in the following form:
+AT,L(xIP,Q 2,t,Ω) =i
+Z
+drKT,L(r) ˜F(r, ⃗∆) (12)
+where
+˜F(r, ⃗∆) =
+Z
+d2⃗b dσ
+d2b(x,r,⃗b,Ω)e −i⃗b·⃗∆ (13)
+and
+KT,L(r) =
+Z
+dz(ψ ∗
+Vψ)T,L (r,z)2πJ 0([0.5−z]r∆) (14)
+The impact parameter integral inA T,L is a Fourier transform from⃗bto ⃗∆. One
+way to utilize this is to form a Discreet Fourier Transform (DFT), or a Fast
+Fourier Transform (FFT). A key property of the FFT is that it creates a grid in
+bx andby on which it evaluates the function and gives the Fourier transform as a
+reciprocal grid in ⃗∆-space. This means that the algorithm creates a whole array
+oft-values ast=−(∆ 2
+x + ∆2
+y). If we choose our FFT-parameters carefully, we
+can then directly save the entire grid as our t-values in the table. By utilizing this
+property of the FFT-algorithm we therefore reduce the problem from calculating
+our results inN Q2×NW 2×Nt∼20×20×40 3D bins in (Q 2,W 2,t) to a 2D
+problem where we make a calculation only in (Q 2,W 2) and get all thet-bins
+directly from the FFT evaluation. This by itself speeds up the table generation
+by a factor ofN t, where typicallyN t∼30−40. However, we may also use the
+6
+
+===== PAGE 7 =====
+projection-slice theorem to simplify the routine, since ˜F(r, ⃗∆) = ˜F(r,| ⃗∆|), by
+taking a slice in ∆x:
+˜F(r,| ⃗∆|) = ˜F(r,∆ x)
+
+∆y=0 =
+Z
+dbx
+Z
+dby
+dσ
+d2b(bx,by)
+
+e−2πi∆xbx (15)
+Then the routine reduces to a 1D FT. Since we are calculating the Fourier
+transform on a grid in⃗b-space, we needN 2
+b function calls for the inner sum, and
+NbNt/2 calls for the DFT step, which becomesN b log2(Nb) calls for an FFT.
+For the parts of the cross-section that have azimuthal symmetry in the im-
+pact parameter, we may instead use a 1D Hankel transform. Here, the integral
+over impact parameter becomes:
+H(r,∆) = 2π
+Z
+bdb dσ
+d2b(x,r,b)J 0(b∆).(16)
+3.2 Implementation
+The amplitude for a single configuration Ω becomes:
+AT,L = i
+2
+NrX
+i=1
+ωririKT,L[n](ri) ˜Fn(ri) (17)
+where we use Gauss-Legendre (G-L) 1D integration andωri are the G-L weights.
+Similarly, we use G-L to compute the kernelsK T,L:
+KT,L[n](ri) =
+NzX
+j=1
+ωzj(ψ∗
+Vψ)T,L(r,zj,Q 2)J0 ((1/2−z j)r∆n) (18)
+Here, the Bessel function argument ranges from 0 atz= 1/2 tor max∆Nb/2/2 =
+πNb/4. If we require at least two nodes per oscillation in the G-L integration,
+this givesNz =N b/2. We set it adaptively toN z = max(32,Nb/2). The kernels
+KT,L are common for each nuclear configuration and can therefore be calculated
+once for each kinematic point in (Q 2,W 2). This means that we are left with a
+1-dimensional integration overzfor each phase-space point and configuration.
+The opacity in the dipole cross section can be separated into a b-dependent
+and a b-independent part:
+Ω(xIP,r,⃗b) =ρ(x IP,r)T(⃗b) (19)
+Here, again, all nuclear configurations use the sameρ(x IP,r) which can be cal-
+culated once at each kinematic point. This assumes thatx IP is independent oft.
+There is, however, a smallt-dependence inρ(x IP,r), sincex IP =x IP(t,Q 2,W 2),
+leading to a slowtdependence ofxg(x,µ 2). We describe below how thist-
+dependence inρis treated.
+7
+
+===== PAGE 8 =====
+The Fourier transform step looks as follows:
+˜F(r,∆ x(n))
+
+∆y=0 =
+
+
+Nb−1X
+j=0
+Nb−1X
+k=0
+dσjk
+d2b (r) cos
+2πnj
+N
+
+ (δb)2(−1)n
+−i
+
+
+Nb−1X
+j=0
+Nb−1X
+k=0
+dσjk
+d2b (r) sin
+2πnj
+N
+
+ (δb)2(−1)n (20)
+Using the symmetries of the sine and cosine functions, this yieldsN b×N t/2
+functions calls.
+It should be noted that this is a discreet Fourier transform (DFT). If we turn
+it into an FFT, the number of function calls reduces toO(N b log(Nb)), while
+the DFT scales asN t×Nb, whereN t is the number oft-bins we are calling the
+algorithm with. The user has a choice between using the DFT version which
+enables arbitraryt-values for the table, or the FFT version which fixes thet
+values at the reciprocal ∆-grid. The reciprocal grid is given by, ∆ x(n) =nδ∆,
+whereδ∆ = 2π/(Nδb) =π/b max, andn∈[1,N b/2]. A further point to note is
+that the actual information of the Fourier transform sits at the reciprocal grid
+points, so using arbitrary ∆-values constitutes an interpolation. Given these
+considerations, we have implemented both the DFT and the FFT calculations
+as options in Sartre, where in the former case, thet-values are determined by
+the user.
+We precompute theb-dependence for each configuration on aN b×N b di-
+mensional grid:
+Tjk =T(b x(j),by(k)) (21)
+where
+bx(j) = (j−N b/2)δb, by(k) = (k−N b/2)δb,andδb= 2b max/Nb
+(22)
+using eqs. (6) and (9) for the functional form of the thickness.
+We also pre-computeρ(x IP,r) on a grid inx IP(t) andr, which is common
+for all nuclear configurations. We observe that the true value ofx IP at a given
+∆ grid pointnis given by:
+xIP(n) =x IP(0) + n2(δ∆)2
+W 2 +Q 2−m 2p
+(23)
+wherem p is the proton mass, andx IP(0) =x IP(t= 0). The approximation
+xIP =x IP(t= 0) is good for smallx IP and small|t|. We implement the correction
+to this by tabulatingρ(xIP,r) forn l values inxIP, equally spaced in log(xIP) and
+then doing a log-linear interpolation on this table. We choosen l dynamically
+8
+
+===== PAGE 9 =====
+by:
+L= log(x IP(Nb/2)/xIP(0)), n l =
+
+
+
+1 :L<0.05
+2 : 0.05≤L<0.14
+4 : 0.15≤L<0.40
+8 : 0.40≤L
+(24)
+This will increase the computational time by a factor of 8 for some kinematic
+points.
+For the Hankel transform in eq.(16) we again use the Gauss-Legendre Quadra-
+ture method. This is used for calculating the amplitude with protons without
+substructure, which is also used for calculating the real-part and skewedness cor-
+rections in eqs.(10) and (11), as well as the optical approximation for coherent
+diffraction in eq. (8).
+4 Results
+4.1 Comparisons with Cuhre
+The previous version of Sartre used the Cuhre algorithm in the Cuba library [18]
+for the 4D integral overz,r, and ⃗b. Cuhre is a adaptive integration routine that
+employs cubature rules of varying polynomial degrees to iteratively subdivide
+the integration domain. It works by splitting the integration domain into sub-
+regions and then calculates the integral on each subregion. The subregion with
+the largest error is further divided, until all subregions have reached the desired
+precision. It estimates the error by the difference between the evaluation of the
+integral using a polynomial of orderpand and using a polynomial of orderp−1.
+Since the integrand contains fluctuating functionsJ0((1/2−z)r∆) and exp(i∆bcos(ϕ ∆b)),
+this can force Cuhre to make many subdivisions on some parts of phase space.
+In practice one needs to find a good compromise between speed and precision
+for integration routines, and the default setting in Sartre involved demanding a
+relative error in each integral of 1%, and capping the integration at 109 function
+calls. Cuhre also provide its estimated error to its output.
+In table 1 we present a comparison of the results between the previous ver-
+sion using the Cuhre calculation, and the new DFT/FFT implementation, for
+three kinematic points inQ 2 andW 2. The FFT implementation generates the
+amplitude forN b/2 points intsimultaneously, while Cuhre calculates the entire
+integral for each point inQ 2,W 2, andtby making many function calls for
+different values of⃗b. In Sartre, we tabulate the DGLAP evolution of the gluon
+density inx IP andµ 2 which speeds up the cuhre integration by two orders of
+magnitude, but this interpolation also introduces noise in the integration, which
+sometimes lead to numerical glitches. To make the comparison between the two
+methods as fair as possible, we performed the calculation twice, once with the
+full DGLAP evolution in each point in order to compare the results of the inte-
+grals, and once with the DGLAP lookup table in order to compare the speeds.
+9
+
+===== PAGE 10 =====
+Q2 = 2 GeV 2,W= 40 GeV, time for 64 FFT bins: 26 ms
+|AT|2 |AL|2
+|t| Cuhre err (%) FFT ratio Cuhre err (%) FFT ratio
+0.006 1.004·10 −1 0.05 1.004·10 −1 1.000 1.249·10 −2 0.04 1.248·10 −2 0.999
+0.022 2.145·10 −4 1.20 2.128·10 −4 0.992 2.29·10 −5 0.91 2.264·10 −5 0.989
+0.140 4.348·10 −5 1.71 4.422·10 −5 1.017 4.685·10 −6 1.76 4.788·10 −6 1.022
+1.099 3.206·10 −4 1.45 3.251·10 −4 1.014 4.103·10 −5 1.04 4.148·10 −5 1.011
+2.242 1.82·10 −4 1.89 1.805·10 −4 0.992 2.356·10 −5 1.73 2.36·10 −5 1.002
+Q2 = 10 GeV 2,W= 75 GeV, time for 64 FFT bins: 14 ms
+|AT|2 |AL|2
+|t| Cuhre err (%) FFT ratio Cuhre err (%) FFT ratio
+0.006 3.398·10 −2 0.08 3.39·10 −2 0.998 2.056·10 −2 0.04 2.027·10 −2 0.986
+0.022 6.702·10 −5 1.91 6.366·10 −5 0.950 3.397·10 −5 1.18 3.26·10 −5 0.960
+0.140 1.316·10 −5 1.75 1.343·10 −5 1.021 7.037·10 −6 1.80 7.035·10 −6 1.000
+1.099 1.142·10 −4 1.59 1.136·10 −4 0.995 6.968·10 −5 1.10 7.05·10 −5 1.012
+2.242 6.525·10 −5 1.88 6.51·10 −5 0.998 4.101·10 −5 1.48 4.132·10 −5 1.008
+Q2 = 50 GeV 2,W= 140 GeV, time for 64 FFT bins: 8 ms
+|AT|2 |AL|2
+|t| Cuhre err (%) FFT ratio Cuhre err (%) FFT ratio
+0.006 1.243·10 −3 0.05 1.241·10 −3 0.998 3.492·10 −3 0.05 3.493·10 −3 1.000
+0.022 1.38·10 −6 1.72 1.328·10 −6 0.962 3.316·10 −6 1.89 3.286·10 −6 0.991
+0.140 3.079·10 −7 1.93 3.055·10 −7 0.992 7.665·10 −7 1.96 7.808·10 −7 1.019
+1.099 4.438·10 −6 1.55 4.436·10 −6 1.000 1.261·10 −5 1.53 1.267·10 −5 1.005
+2.242 2.701·10 −6 1.85 2.718·10 −6 1.007 7.782·10 −06 1.85 7.882·10 −06 1.013
+Table 1: Comparison between the two integration methods Cuhre and the DFT
+and FFT methods on a single configuration.|t|is in (GeV) 2,A T,L is in fm 2.
+Timings
+Q2 = 2 GeV2 Q2 = 10 GeV2 Q2 = 50 GeV2 Speedup
+Integration Routine W= 40 GeV W= 75 GeV W= 140 GeV Factor
+CuhreN t = 5 36s 43s 103s 1
+DFT,N b = 128,Nt = 5 14ms 7ms 4ms 7,100
+DFT,N b = 256,Nt = 5 49ms 25ms 13ms 2,000
+FFT,N b = 128,N t = 64 29ms 15ms 8ms 3,500
+FFT,N b = 256,N t = 128 100ms 100ms 51ms 720
+Table 2: An overview of the calculation times for the bins shown in table 1. The
+FFT timings are for all 64 and 128 points intrespectively.
+10
+
+===== PAGE 11 =====
+The precision of the FFT was not affected by choice of DGLAP evaluation.
+This ensures that we get a valid test of the precision of the integration method,
+as well as a comparison of timings which are relevant for the user. All models
+use the same nuclear configuration for the calculation. In table 1, we see that
+we have an agreement of 1−5% between the two numerical integrations in all
+kinematic points considered. We use thetdependence inx IP(t) as described in
+eq.(24). Without it, the difference between the calculations climb to∼10% for
+the largert-values.
+In table 2 we report on the timings to produce the calculations in tab.1.
+We present an average over six calculations using the same machine. We have
+made sure that all calculations run on a single core, since all methods can be
+paralellized to an arbitrary degree. We present the Cuhre result in seconds and
+the DFT and FFT results in ms. We see that the speed-up using a DFT gives
+an increase by 2,000-7,100 times. By comparison the tabulated FFT increase of
+720-3,500 times looks modest, but this method calculates allN t =N b/2 points
+at once, so we compare with a calculation of 5 points with a calculation of 128
+and 256 points respectively. An increase of 2,000 reduces one week of running
+to 5 minutes.
+4.2 Predictions for the Electron-Ion Collider and the Large
+Hadron-electron Collider
+For this paper we have created several sets of new tables inePb scattering, with
+NQ2×N W = 30×30 bins. We have considered three regions int. Region 1
+covers the first two coherent dips with|t|<0.04. Region 2 covers the region in
+which fluctuations at the scale of nucleons are resolved, which is 0.04≲|t|≲
+0.4 GeV2, and region 3 covers the region that is sensitive to hotspot fluctuations
+0.4≲|t|≲2.5. The hotspot model does not describe HERA measurements for
+|t|>2.5 GeV 2 [17]. We use the DFT approach in all three regions which
+enables us to choose our binning int. We produce three sets of tables that
+overlap slightly around the region edges, and then we merge the tables into a
+single set of tables for the entiret-spectrum for 0<|t|<2.5 GeV 2.
+In region 1, we setb max = 3RA, whereR A is the nuclear radius. It should be
+noted thatb max ≳1.8R A constitute zero-padding in the DFT integrand. This
+can be used to increase the resolution in the reciprocal grid, but comes at the
+cost of a decreased ⃗b-resolution. In region 1 we have to find a balance between
+goodt-resolution and being able to resolve the Woods-Saxon skin depth well
+enough not to affect the resulting cross-sections. We chooseN b = 128 and
+average over 200 configurations, which ensures good convergence in this region,
+and we useN t = 50 user specified linearly spacedt-bins.
+In region 2 we reduceb max tob max = 2.5RA and increase the number of
+configurations to 500. We also increaseN b to 256 and setN t = 22.
+For region 3, we setb max = 2.2RA, average over 600 configurations, keep
+Nb = 256 and calculate the amplitude moments atN t = 18 points. This gives
+ab-resolution ofδb≈0.11fm which is enough to resolve a hotspot width ofp
+Bq≈0.22fm.
+11
+
+===== PAGE 12 =====
+0
+0.01 0.02 0.03 0.04 0.05 )
+2|t| (GeV3
+104
+105
+106
+107
+10)
+-2 /d|t|  (nb GeV σ d Pb
+208 + ρ e + →Pb 208e + IPsat Coherent
+IPsat Incoherent
+IPnosat Coherent
+IPnosat Incoherent
+ < 0.01
+IPx8<W<60 GeV
+2
+<20 GeV20.01<Q 100 GeV
+×9 
+4
+−103 −102 −101 −101 )
+2|t| (GeV2
+103
+104
+105
+106
+107
+10)
+-2 /d|t|  (nb GeV σ d Pb
+208 + ρ e + →Pb 208e + With nucl. substr.
+Without nucl. substruct.
+ < 0.01
+IPx8<W<63 GeV
+2
+<20 GeV20.01<Q 100 GeV    IPsat
+×9 EIC
+Figure 1: Predictions forρproduction at the EIC using Sartre. Left side:
+Comparison between IPsat and IPnosat for small|t|. Right side: comparison
+between IPsat with and without nucleon hotspot substructure.
+It should be noted that we could have opted for the FFT approach as well. In
+that case, the binning intis given byδt= 2δ∆
+p
+|t|, whereδ∆ = 2π/(N bδb) =
+π/bmax, i.e. thet-binning of the reciprocal grid dependsonlyonb max, and not
+onN b orδb. When using this method, one needs therefore to be careful with
+setting the parameters such that one gets enough precision both inδtand inδb.
+For example, one may need to both resolve the coherent peak well int, for which
+the precision inbneeds to resolve the Woods-Saxon skin depth of 0.5fm. The
+reciprocal grid runs from|t|= (π/b max)2, to|t|= (N bπ/2bmax)2. For the region
+3 parameters above (bmax = 2.2RA≈14.6fm,N b = 256), this would correspond
+toN t = 128 bins, distributed in the region 0.0018≤|t|≤29.6 GeV 2. These
+points are denser towards the lower part of the range, and out of these, 37 points
+are withing|t|<2.5 GeV 2. The speedup from using an FFT rather than an
+arbitraryt-grid DFT is modest, the FFT scales asO(N b log2Nb) and the DFT
+asO(N t×Nb), and mostt-bins are not used in the FFT case. If one use the
+same 37 points in a DFT the computation times are comparable.
+In figure 1 we show the results of 10M events generated using tables produced
+with the new method. The left-side of the fig. 1 show exclusiveρ-production
+with both IPsat and IPnosat for small|t|at √s= 60 GeV, which is the planned
+initial energy at the Electron-Ion Collider (EIC) [19]. Sinceρhas a large dipole
+size, it is more sensitive to non-linear effects than heavier vector mesons, which
+is clearly visible in the figure. However, for the same reason,ρ-meson production
+is not a good probe for detailed nuclear structure, such as nucleon substructure,
+as can be seen in the right side of fig.1. Here, we showρproduction with
+and without subnucleon hotspot structure, and the two curves are close to each
+other. This graph still demonstrates Sartre’s capabilities to generate events in
+a large kinematic range for the EIC.
+For observing nuclear substructure one needs heavy vector meson produc-
+tion. On the right-hand side of fig. 2 we showJ/ψproduction in the IPsat
+model with and without nucleon substructure. We showJ/ψproduction at a
+12
+
+===== PAGE 13 =====
+4
+−103 −102 −101 −101 )
+2|t| (GeV3
+−102
+−101
+−101
+10
+2
+103
+104
+105
+10)
+-2 /d|t|  (nb GeV σ d Pb
+208 + ψ e + J/→Pb 208e + With nucl. substr.
+Without nucl. substruct.
+ < 0.01
+IPx30<W<70 GeV
+2
+<35 GeV20.01<Q 130 GeV    IPsat
+×9 EIC
+4
+−103 −102 −101 −101 )
+2|t| (GeV4
+−103
+−102
+−101
+−101
+10
+2
+103
+10)
+-2 /d|t|  (nb GeV σ d Pb
+208 + Υ e + →Pb 208e + With nucl. substr.
+Without nucl. substruct.
+ < 0.01
+IPx900<W<1300 GeV
+2
+<50 GeV20.01<Q 5360 GeV    IPsat
+×50 LHeC
+Figure 2: Predictions for heavy meson production at the EIC and the LHeC in
+the IPsat model with and without nucleon hotspot substructure. Left side:J/ψ
+production at the EIC. Right side: Υ production at the LHeC.
+later planned energy setting with √s= 68.4 GeV. Here we see a clear separa-
+tion between the predictions with nucleon substructure and without, at large
+|t|.
+The ultimate probe for substructure, due to its very small size, would be
+the Υ meson, as shown in [20]. To produce Υ mesons atx IP<0.01 one needs
+W≳90 GeV for moderateQ 2, which is not achievable at the EIC. At the LHeC
+[3], on the other hand, energies of √s= 1,035 GeV may become available. At
+those energies, Υ-production becomes feasible, which due to its very small size is
+an excellent probe for nuclear structure. We show the prediction from Sartre for
+this process at the LHeC, and we see that there is a pronounced difference if we
+use Gaussian nucleons or nucleons with hotspots in our event generator.
+5 Summary and Outlook
+Sartre is an event generator for exclusive diffraction at smallxinep,eA, as well
+as ultra-peripheralpp,pA and AA collisions. Sartre precomputes the first and
+second moments of the dipole amplitude and stores them in lookup tables, in a
+grid inQ 2,W 2, andt. This enables efficient event generation of both coherent
+and incoherent diffraction. However, these lookup tables has previously taken
+CPU-years of production time for each combination of initial state target nucleus
+and final state vector meson (or DVCS photon). Further, these tables often
+contained numerical glitches that caused spikes in event generation for some
+points. In a previous study, we reduced the production time of lookup tables by
+one order of magnitude, as well as smoothening the tables, by utilizing machine
+learning techniques [9].
+In this paper we have presented an improved calculation exhibiting 3-4 or-
+ders of magnitude improvement in efficiency, reducing each production to∼1
+CPU-day, which with parallelization becomes a feasible calculation on a single
+computer, rather than necessitating the use of farm computing.
+13
+
+===== PAGE 14 =====
+This has been achieved with a combination of techniques. The largest im-
+provement comes from turning the impact-parameter ⃗bintegral into a discreet
+Fourier transform (DFT) or a fast Fourier transform (FFT). This takes ad-
+vantage of the fact that ∆ = √−tis the Fourier reciprocal of ⃗b. Using the
+projection-slice theorem further turns it into a one-dimensional Fourier trans-
+form. This enables us to only calculate the Fourier transform at the points in
+tthat we are interested in, instead of performing a full two-dimensional nu-
+merical integration for each point int. We also further optimize the numerical
+calculation by precomputing all factors that are in common for each point in ⃗b.
+We have implemented both DFT, enabling arbitraryt-binning and FFT, which
+calculatesN t =N b/2t-values on the reciprocal grid.
+The overall improvement in efficiency finally enables Sartre to simulate all
+possible physics at smallxexclusive diffraction at the EIC and the LHeC. We
+have demonstrated this by showcasing completely new tables forePb, scattering
+and showing what physics it enables. For light vector mesons we have shown
+the impact of non-linear effects already at the initial energies of the EIC of
+9×100GeV, and the capabilities of heavy vector mesons to probe the fine
+details of nuclear structure at the EIC, withJ/ψmesons, or the LHeC where
+Υ mesons become kinematically available at smallx IP.
+Acknowledgements
+The authors acknowledge the support from the physics department of IIT Delhi.
+This research was supported by Core Research Grant (CRG) support CRG/2022/002507
+from Anusandhan National Research Foundation (ANRF), Department of Sci-
+ence and Technology, Government of India.
+References
+[1] A. Accardi et al. Electron Ion Collider: The Next QCD Frontier: Under-
+standing the glue that binds us all.Eur. Phys. J. A, 52(9):268, 2016.
+[2] R. Abdul Khalek et al. Science Requirements and Detector Concepts for
+the Electron-Ion Collider: EIC Yellow Report. 3 2021.
+[3] P. Agostini et al. The Large Hadron–Electron Collider at the HL-LHC.J.
+Phys. G, 48(11):110501, 2021.
+[4] Tobias Toll and Thomas Ullrich. The dipole model Monte Carlo generator
+Sartre 1.Comput. Phys. Commun., 185:1835–1853, 2014.
+[5] Tobias Toll and Thomas Ullrich. Exclusive diffractive processes in electron-
+ion collisions.Phys. Rev., C87(2):024913, 2013.
+[6] Bharath Sambasivam, Tobias Toll, and Thomas Ullrich. Investigating satu-
+ration effects in ultraperipheral collisions at the LHC with the color dipole
+model.Phys. Lett. B, 803:135277, 2020.
+14
+
+===== PAGE 15 =====
+[7] Vaidehi Nattoja and Tobias Toll. Describing UPC Data with the Sartre
+Event Generator. In2nd International Workshop on the Physics of Ultra
+Peripheral Collisions, 11 2025.
+[8] M. L. Good and W. D. Walker. Diffraction disssociation of beam particles.
+Phys. Rev., 120:1857–1860, 1960.
+[9] Jaswant Singh and Tobias Toll. Predicting the exclusive diffractive electron-
+ion cross section at small x with machine learning in Sartre.Comput. Phys.
+Commun., 292:108872, 2023.
+[10] Henri Kowalski and Derek Teaney. An Impact parameter dipole saturation
+model.Phys. Rev., D68:114005, 2003.
+[11] H. Kowalski, L. Motyka, and G. Watt. Exclusive diffractive processes at
+HERA within the dipole picture.Phys. Rev., D74:074016, 2006.
+[12] Heikki M¨ antysaari and Pia Zurita. In depth analysis of the combined
+HERA data in the dipole models with and without saturation.Phys. Rev.,
+D98:036002, 2018.
+[13] H. Abramowicz et al. Combination of measurements of inclusive deep in-
+elastice ±pscattering cross sections and QCD analysis of HERA data.Eur.
+Phys. J., C75(12):580, 2015.
+[14] H. Abramowicz et al. Combination and QCD analysis of charm and beauty
+production cross-section measurements in deep inelasticepscattering at
+HERA.Eur. Phys. J., C78(6):473, 2018.
+[15] Heikki M¨ antysaari and Bj¨ orn Schenke. Revealing proton shape fluctuations
+with incoherent diffraction at high energy.Phys. Rev., D94(3):034042, 2016.
+[16] Heikki M¨ antysaari and Bj¨ orn Schenke. Evidence of strong proton shape
+fluctuations from incoherent diffraction.Phys. Rev. Lett., 117(5):052301,
+2016.
+[17] Arjun Kumar and Tobias Toll. Saturation and fluctuations in the pro-
+ton wavefunction at large momentum transfers in exclusive diffraction at
+HERA. 3 2024.
+[18] T. Hahn. The CUBA library.Nucl. Instrum. Meth. A, 559:273–277, 2006.
+[19] John Lajoie. The eic: Physics, status and perspectives. 33rd International
+Workshop on Deep Inelastic Scattering and Related Subjects (DIS2026),
+2016.
+[20] S. Demirci, T. Lappi, and S. Schlichting. Proton hot spots and exclusive
+vector meson production.Phys. Rev. D, 106(7):074025, 2022.
+15

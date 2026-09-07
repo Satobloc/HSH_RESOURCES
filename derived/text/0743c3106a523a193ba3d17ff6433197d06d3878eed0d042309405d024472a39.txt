@@ -1,0 +1,1181 @@
+===== PAGE 1 =====
+PyCBC Live search for compact binary mergers in Advanced LIGO and Virgo’s
+fourth observing run
+Max Trevor ,1 Gareth S. Cabourn Davies ,2 Tito Dal Canton ,3
+Thomas Dent ,4 Ian Harry ,2 St´ ephanie Hoang,3 and Arthur Tolley 2
+1University of Maryland, College Park, MD 20742, USA ∗
+2Institute for Cosmology and Gravitation, University of Portsmouth, 1-8 Burnaby Road, Portsmouth, P01 3FZ, UK
+3Universit´ e Paris-Saclay, CNRS/IN2P3, IJCLab, 91405 Orsay, France
+4Instituto Galego de F´ ısica de Altas Enerx´ ıas, Universidade de
+Santiago de Compostela, 15782 Santiago de Compostela, Galicia, Spain
+(Dated: June 9, 2026)
+PyCBC Live is a low-latency search pipeline that identifies gravitational waves from compact
+binary coalescences and provides alerts for electromagnetic follow-up. This paper presents improve-
+ments to PyCBC Live that were implemented for the fourth observing run (O4) of the LIGO-Virgo-
+KAGRA network, which operated from May 2023 to November 2025. The ranking statistic was
+enhanced to incorporate time-dependent background modeling using data quality streams and daily
+updates of the noise model. Follow-up capabilities were improved through refined probability of
+astrophysical origin calculations, optimized SNR recovery with reduced computational cost, and
+a method to incorporate Virgo as a sky-map-only detector. An Early Warning search was imple-
+mented to detect binary neutron star and neutron star-black hole systems before merger, providing
+pre-merger alerts with a pipeline latency of 2.5–3.5 seconds and warning times up to 60 seconds
+before coalescence. The autogating procedure was extended to apply to the full strain buffer rather
+than individual analysis segments, improving rejection of loud and rapidly successive glitches. Per-
+formance validation using the Mock Data Challenge showed sensitivity improvements of factors of
+1.7 to 2.3 for the coincident search depending on source mass at an inverse false alarm rate of 10
+years, and factors of 1.3 to 1.7 for the single-detector search. For injections in two-detector time,
+the O4 configuration identified 1979 of 2495 injections with a decisive SNR greater than 6 at a false
+alarm rate below one per year (79.3%), compared to 1262 (50.6%) with the O3 configuration. For
+injections in single-detector time, the O4 configuration identified 218 of 1174 injections (18.6%),
+compared to 170 (14.5%) with the O3 configuration. The search maintained a median latency of
+15.94 seconds from merger to candidate upload.
+I. INTRODUCTION
+The detection of gravitational waves (GWs) from
+compact binary coalescences (CBCs) has become routine
+since the first observation of GW150914 [1]. The Ad-
+vanced LIGO [2], Advanced Virgo [3], and KAGRA [4–
+6] detector network identified multiple events per week
+during the fourth observing run (O4). The most recent
+catalog release, GWTC-5.0 [7], lists hundreds of CBC
+signals.
+Low-latency detection and characterization of these
+signals enables electromagnetic and neutrino follow-up
+observations, as demonstrated by the multi-messenger
+observations of the binary neutron star (BNS) merger
+GW170817 [8]. Rapid identification of GW candidates
+requires analysis pipelines that balance high sensitivity
+with low latency. The pipelines used for rapid detection
+in O4 included cWB [9], GstLAL [10], MBTA [11], Py-
+CBC Live [12, 13], and SPIIR [14].
+PyCBC Live was first deployed during the second
+observing run (O2) of Advanced LIGO [12]. The
+pipeline identified GW170104 and GW170608 during
+∗ mtrevor@umd.edu
+non-nominal detector operation and provided the ini-
+tial three-detector analysis of GW170817, producing a
+31 deg 2 sky localization [15] used to identify the opti-
+cal counterpart AT 2017gfo. During the third observing
+run (O3), PyCBC Live continued operations with up-
+dated ranking statistics and improved follow-up capabil-
+ities [13].
+The sensitivity of the LIGO detectors improved sub-
+stantially in O4, with LIGO Hanford and LIGO Liv-
+ingston achieving BNS ranges exceeding 160 Mpc [16].
+Virgo operated with comparable sensitivity to O3 [17].
+This sensitivity configuration, with two highly sensitive
+LIGO detectors and one less sensitive detector, motivated
+several updates to the PyCBC Live search strategy.
+O4 was divided into three parts: O4a (May 2023
+– January 2024), O4b (April 2024 – January 2025),
+and O4c (January – November 2025); some of the
+improvements described in this paper were deployed
+progressively across these periods. PyCBC Live’s
+first detection of the O4 era was GW230518 125908,
+a potential neutron–star–black–hole (NSBH) merger
+that occurred during an engineering run six days
+before the start of O4 [18]. Over the course of
+O4, PyCBC Live contributed to the low-latency
+detections of numerous high-profile events [7, 19], in-
+cluding GW230529 181500 [20], GW231123 135430 [21],
+arXiv:2606.07679v1  [astro-ph.IM]  4 Jun 2026
+
+===== PAGE 2 =====
+2
+GW241011 233834, GW241110 124123 [22], and
+GW250114 082203 [23].
+This paper describes low-latency operations in Sec-
+tion II and improvements to PyCBC Live implemented
+for O4 in Section III, including a new ranking statistic
+with time-dependent noise modeling, updated probabil-
+ity of astrophysical origin calculations, an early warning
+search for BNS and NSBH systems, signal-to-noise ra-
+tio (SNR) optimization, the use of Virgo as a localization-
+only detector, and improved autogating. Section IV
+presents performance validation using the Mock Data
+Challenge.
+II. LOW LATENCY OPERATIONS
+The full set of low-latency data products is described
+in [24]; we summarize the relevant details here. Search
+pipelines like PyCBC performed real-time matched fil-
+tering of the detector strain using a bank of simulated
+signal waveforms calledtemplates. High peaks in the
+matched-filter SNR were identified and stored astriggers.
+Both individual triggers and coincident trigger pairs were
+assigned a false-alarm rate (FAR). Low-latency alerts
+were sent for events with FAR below 2.3×10 −5 Hz (two
+per day); these were deemed low-significance candidates.
+Events with FAR below a lower threshold were consid-
+ered to be significant. The significant FAR threshold
+changed over the course of O4. It was always set as 1 per
+N months, with N being a trials factor based on the num-
+ber of active low-latency CBC searches. This was chosen
+so that the combined rate of significant false alarms from
+all CBC searches would be one per month.
+When a pipeline identified a candidate below the
+low-significance FAR threshold, it was uploaded to
+GraceDB [24], a database that aggregates event candi-
+dates from all search pipelines and triggers automated
+follow-up, and a machine-readable notice was distributed
+via the General Coordinates Network (GCN). Any sub-
+sequent events with a coalescence time within 1 sec-
+ond of the first upload were grouped into the same su-
+perevent. BAYESTAR [15] automatically computed spa-
+tial localizations for each uploaded event. After a delay
+ofO(minutes) to collect uploads from all pipelines, a pre-
+ferred event was selected from the superevent and an ad-
+ditional notice was sent . Notices included the FAR of
+the preferred event, and inferred source properties in-
+cluding the spatial location, probability of astrophysical
+origin and source classification. Significant events un-
+derwent human review before a human-readable GCN
+circular was issued.
+O4 introduced early-warning (EW) alerts [25, 26],
+which could be sent before the coalescence of a BNS or
+NSBH system. These used specialized search methods
+to identify the inspiral signal before merger, enabling
+astronomers to begin searching for an electromagnetic
+counterpart as early as possible.
+III. METHOD IMPROVEMENTS FOR O4
+This section describes the improvements made to Py-
+CBC Live for O4. The resulting sensitivity gains are
+quantified in Sec. IV using the Mock Data Challenge
+(MDC).
+A. Low-latency data quality information
+Detector noise is non-Gaussian [27]. Short bursts of ex-
+cess broadband noise,glitches, produce more high-SNR
+triggers than expected from Gaussian noise. We refer
+to time segments containing glitches asglitchy. Different
+glitch morphologies preferentially excite specific template
+subsets [28]: for example, blip glitches resemble high-
+mass binary black hole waveforms and trigger the cor-
+responding templates at elevated SNR more often than
+other templates in the bank. To assess the impact of
+non-Gaussian noise in different regions of the search pa-
+rameter space, we group templates into bins based on
+their template duration.
+During O4, we used time series produced in low latency
+by the iDQ [29] data quality pipeline to identify time
+segments likely to contain glitches. Whenever a glitch
+was reported by iDQ with a false-alarm probability less
+than 0.001, a segment was constructed from one second
+before the glitch to one second after.
+During O4a [18] and O4b [7], triggers falling into
+glitchy segments were vetoed to reduce the rate of false
+alarms. Starting in O4c, triggers falling within glitchy
+segments were instead marked as glitchy. These segments
+and triggers were used to calculate time-dependent trig-
+ger rate correction factors, which were applied to glitchy
+triggers when calculating the ranking statistic described
+in the next section.
+B. Updated ranking statistic
+The ranking statistic assigns a significance to each GW
+candidate and maps directly to FAR. In O3, the rank-
+ing statistic was constructed from the probabilityp S
+
+⃗θ
+
+of observed time and phase differences between detec-
+tors and a quadrature sum of the reweighted network
+SNR [13]:
+R2 = ˆρ2
+H + ˆρ2
+L + 2 ln
+
+pS(⃗θ)
+
+.(1)
+where ˆρ(H/L) are the reweighted SNRs from the LIGO
+Hanford and LIGO Livingston observatories respectively.
+The reweighted SNR ˆρis derived from the matched-filter
+SNR using aχ 2 signal consistency test [30]. At the start
+of O4 we extended the definition of ˆρto also include a
+high-frequency sine-Gaussian discriminator [31].
+In O4c, we adopted a ranking statistic developed
+for the offline search [32], which addressed template-
+dependent noise behavior in two ways: by fitting the
+
+===== PAGE 3 =====
+3
+trigger rate exponentially for each template, and by ap-
+plying time-dependent trigger rate corrections for each
+template bin.
+The improved ranking statistic is defined as the loga-
+rithm of the likelihood ratio:
+R(⃗ κ) = logrS(⃗ κ)−logrN(⃗ κ),(2)
+where⃗ κrepresents the trigger properties, including the
+template parameters ⃗θand the trigger times in each de-
+tector, andr S andr N are the rates of astrophysical sig-
+nals and noise events respectively. The signal modelr S
+follows the O3 offline search [33]. The coincident noise
+modelr N is proportional to the product of the single-
+detector noise modelsr N,d [34]:
+rN,d(ˆρ;⃗θ;t) =µ( ⃗θ)δ(⃗θ,t)α(⃗θ) exp[−α(⃗θ)(ˆρ−ˆρth)].(3)
+The constituent parts of the single-detector noise model
+are:
+•µ( ⃗θ), the rate of triggers with reweighted SNR ˆρ
+greater than ˆρth in template ⃗θ
+•α( ⃗θ), the exponential decay constant
+•δ( ⃗θ,t), the time-dependent correction factor [32].
+In the offline PyCBC search, data are analyzed in
+chunks of a few weeks, and the noise model for each
+chunk is based on all triggers within it. For the low-
+latency analysis there are no predefined chunks, so we
+reconstruct the noise model each day using triggers from
+the previous days. We include only triggers with ˆρ>ˆρth
+in the daily fitting process. In O4, the previous 20 days
+of data were used to fit the noise model, and we used a
+threshold ˆρth = 6.
+For each template, we model the rate of triggers as a
+decreasing exponential function of ˆρbefore applying the
+time-dependent correction. Maximum-likelihood estima-
+tion is used to fit theµandαparameters, which are then
+smoothed over nearby templates.
+We then calculate the time-dependent correction factor
+δfor each template bin. The original offline iDQ imple-
+mentation [32] used 100 time bins defined by percentiles
+of the iDQ log-likelihood; for low-latency use we simplify
+this to 2 bins corresponding to glitchy and clean (non-
+glitchy) segments. The use of a smaller number of time
+bins avoids small sample sizes when calculatingδfrom a
+limited amount of background data.
+For each template bin, the correction factor for glitchy
+segments is calculated by dividing the trigger rate during
+glitchy segments by the overall trigger rate in that bin:
+δ= Nglitchy
+Tglitchy
+Ntotal
+Ttotal
+−1
+(4)
+An analogous correction factor is calculated for clean
+segments. The results of these model fits are used to
+calculate the ranking statisticRfor pairs of coincident
+triggers. The ranking statistic is mapped to FAR using
+time-slides [35].
+PyCBC Live is also able to search for single-detector
+events, following the method developed for the offline
+search [36]. In O4, the single-detector search was re-
+stricted to BNS and NSBH systems expected to produce
+electromagnetic counterparts.
+The single-detector ranking statistic is obtained from
+the coincident statistic by dropping the terms that de-
+pend on trigger coincidence, giving
+R=−logr N(ˆρ;⃗θ;t) +R σ(⃗θ),(5)
+whereR σ is the logarithm of the sensitive volume for
+template ⃗θnormalized by a reference volume [36].
+To map ranking statistic to FAR for single-detector
+triggers, we sort the relevant templates into template bins
+based on their duration. In O4, the set of bins used
+for this calculation was different from the bins used to
+calculate the time-dependent correction factors described
+in the previous section. We only calculate FAR for single
+detector triggers above a ranking stat thresholdR thresh.
+The FAR in detectordand template biniis modeled as a
+decreasing exponential function of the ranking statistic:
+FARdi(R) =N d,iαd,i exp[−αd,i(R−R thresh)].(6)
+where N is the total rate of triggers above In O4, this
+model was refit each day using single-detector triggers
+from the previous 20 days.
+C. Probability of astrophysical origin and source
+classification
+Beyond the FAR, PyCBC also estimates the probabil-
+ity of astrophysical originp astro, and its complement, the
+probability of terrestrial origin,p terr. These estimates
+incorporate knowledge of the rate of astrophysical merg-
+ers from previous observing runs. Letℜ N(⃗ κ) andℜS(⃗ κ)
+denote the rate densities of noise and signal events as
+functions of the trigger properties⃗ κ. The probability of
+astrophysical origin is then [37]
+pastro
+1−p astro
+≡ pastro
+pterr
+=ℜS(⃗ κ)
+ℜN(⃗ κ).(7)
+These densities vary over the trigger parameter space.
+For the online calculation, we approximate the key de-
+pendencies using information available from the search,
+focusing on:
+•The variation of signal and noise densities over the
+bank parameters (binary masses and spins), de-
+noted schematically as ⃗θ.
+•The variation of densities over a trigger statis-
+ticρ c, which we take to be SNR-like, i.e. ap-
+proximately proportional to the quadrature sum of
+single-detector SNRs up toχ 2 and network consis-
+tency corrections. In O4 we used the network SNR
+ρ2
+c =ρ 2
+H +ρ 2
+L
+
+===== PAGE 4 =====
+4
+We factor the total rate density into a rate of triggers
+above threshold in each region of the bank,r N(⃗θ) or
+rS(⃗θ), multiplied by a normalized PDF overρ c:
+ℜS,N =r S,N(⃗θ)fS,N(ρc|⃗θ).(8)
+1. Modelling event PDFs over ranking statistic
+We model the background PDF with an exponential in
+ρc following [34]:
+fN(ρc|θ)≃α c exp(−αc(ρc−ρ th)) (ρ c >ρ th),(9)
+whereα c is a slope parameter (see also [38]). For lower-
+mass templates, which correspond to the systems most
+relevant for electromagnetic follow-up, we findα c = 6 is
+a good approximation of the distribution. We also use
+this value for higher-mass systems: although the corre-
+sponding templates have noise distributions with longer
+tails, so this choice yields a conservatively high (i.e. pes-
+simistic) estimate off N.
+We model the signal PDF using the ideal SNR distri-
+butionp(ρ c)∼ρ −4
+c [39], taken to be independent of the
+template parameters:
+fS(ρc)≃3ρ 3
+thρ−4
+c (ρc >ρ th),(10)
+whereρis the network SNR recovered by the search.
+2. Template dependence
+For the O3p astro estimate, the template bank was di-
+vided into 3 chirp mass bins [40], which provided only
+a coarse approximation of the signal distribution. For
+O4, we increased the number of bins (indexed byp) to
+8, each with a signal trigger rater S,p and noise trigger
+rater N,p. The signal rate in each bin is estimated from
+O1–O3 detections, scaled by a factor accounting for the
+sensitivity of the active detector network relative to O3.
+In the O4 configuration, bins were spaced by powers of 2
+in template chirp mass, except for the highest bin.
+For the background, the FAR at a givenρ c is the
+integral ofℜ N aboveρ c. With the exponential model
+above, the ratedensityatρ c equalsαc×FAR(ρc). Taking
+the noise trigger rate to be proportional to the template
+countn t
+p in each bin, the noise rate density in binpis
+ℜN,p(ρc) =α c·FAR(ρ c) nt
+pP
+pntp
+.(11)
+For the signal rate, we estimate network sensitivity
+via the BNS inspiral horizond h,D for each detectorD
+(approximately 2.26 times the inspiral range). Since the
+SNR of a signal at distanced L is proportional tod h,D,
+the network SNR scales as
+ρ2
+c∝d −2
+L
+X
+D
+d2
+h,D.(12)
+FIG. 1. Template counts (top) and O1–O3 detection counts
+(bottom) per chirp mass bin (M⊙), used to compute thep astro
+estimates.
+The rate of signals detected above a SNR thresholdρ th
+scales as the cube of the distance corresponding to a given
+network SNR, i.e.
+rS∝
+ 
+ρ−2
+th
+X
+D
+d2
+h,D
+!3/2
+.(13)
+Thus, we approximate the total rate of signals above SNR
+threshold in binpas
+rS,p =r p,O3
+ X
+D
+d2
+h,D
+!3/2 X
+D
+d2
+h,D(O3)
+!−3/2
+,(14)
+where O3 quantitiesrp,O3 andd h,D(O3) are the O3 detec-
+tion counts and representative horizon distances respec-
+tively. For reference, BNS ranges of [135,110,50] Mpc
+for LIGO Livingston Observatory (LLO), LIGO Hanford
+Observatory (LHO), and Virgo give a network horizon
+distance [P
+Dd2
+h,D(O3)]1/2 = 410 Mpc.
+We show in Fig. 1 the binned template counts for the
+O4 PyCBC Live template bank, and previous detection
+counts for observations up to O3. We then have
+pastro
+pterr
+≃3 ρ3
+th
+ρ4c
+rS,p
+P
+pnt
+p
+αc·FAR(ρc)ntp
+.(15)
+This relation requires minor corrections for practical
+implementation. The FAR estimate has a finite preci-
+sion limited by the available background time: for two-
+detector coincidences the minimum FAR is 1 per 100
+
+===== PAGE 5 =====
+5
+years. For loud candidates that saturate this limit, theρc
+dependence of Eq. (15) is modified as described in Sec. 4.2
+of [41]. In O3, multiple detector combinations were con-
+sidered for detection [13], requiring separate FAR esti-
+mates and signal rates for each event type; in O4 only
+LHO-LLO coincidences and single-detector events were
+used, simplifying the accounting (see Sec. 4.1 of [41]).
+3. Binary source type classification
+The resultingp astro value covers all astrophysical com-
+pact binary source classes (BNS, binary black hole
+(BBH), and NSBH). For electromagnetic follow-up plan-
+ning, the relative probabilities of these classes are also
+needed. In PyCBC Live, these are estimated from the
+template chirp mass and a redshift estimate based on
+the trigger SNRs and detector horizon distances for the
+trigger template [42]. The relative class probabilities are
+then multiplied byp astro to obtain absolute class proba-
+bilities, which are reported in public alerts together with
+pterr≡1−p astro [43].
+D. Early warning search
+Because the lower frequency limit of LIGO-like detec-
+tors is∼20 Hz, a 1.4 + 1.4M ⊙ BNS system can exist in
+the detector sensitive band for∼160 s before coalescence,
+and this time would be even longer for lower-mass sys-
+tems. Potential electromagnetic counterparts, like a kilo-
+nova [44] or short gamma-ray burst [45], are most likely
+produced at or after merger, and typically rapidly fade
+on time scales of seconds to days. Therefore, detecting
+the inspiral signal and localizing the source before coa-
+lescence provides an important warning window during
+which telescopes can be slewed to the approximate sky
+location and increase the chance of observing the short-
+lived counterpart [46, 47]. Since O4, PyCBC Live uses a
+dedicatedEWsearch to issue such pre-merger alerts.
+The EW search uses frequency-truncated templates:
+waveforms that begin at the lower frequency of the LIGO
+band and end at an upper cutoff frequency rather than
+continuing through merger [46]. By contrast, we re-
+fer to the post-merger search, which uses non-truncated
+templates, as thefull-bandwidthsearch. Six cutoff fre-
+quencies were used in O4—29, 32, 38, 44, 49, and 56
+Hz—corresponding to approximately 60, 46, 29, 20, 15,
+and 10 seconds before merger for a 1.4+1.4M ⊙ BNS. At
+the 29 Hz cutoff, only∼31% of the total matched-filter
+SNR has been accumulated; the remaining SNR builds
+up as the signal sweeps to higher frequencies.
+The O4 EW template bank was constructed as six
+separate sub-banks (one per cutoff) using a geometric
+placement algorithm [48] with a minimum match of 0.97
+and a noise power spectral density representative of the
+Advanced LIGO design sensitivity with a BNS range
+of 140 Mpc [49]. Templates covered component masses
+of 1–3M ⊙ with zero spin, targeting electromagnetically
+bright BNS and NSBH systems. The six sub-banks con-
+tained a total of 9180 templates, compared to∼700,000
+in the full-bandwidth search [50].
+The EW search is designed to minimize the time
+an alert takes to reach astronomers. The pipeline la-
+tency—time from the end of a data segment to candi-
+date upload—has three components: the 1-second anal-
+ysis stride (data must accumulate before processing),
+a 1.5-second overwhitening padding period required to
+avoid data conditioning artifacts at the edges of each
+segment, and the matched-filter processing time, which
+must complete within one stride. This yields a total
+latency of 2.5–3.5 seconds, compared to 12–20 seconds
+for the full-bandwidth search. To ensure processing fits
+within this budget, the EW search restricts matched fil-
+tering to the two LIGO detectors (LIGO-Hanford and
+LIGO-Livingston) and uses a simplified ranking statis-
+tic: a single-detector SNR threshold combined with
+the phase-time-amplitude coincident histogram statistic
+(Equation 1), rather than the more computationally ex-
+pensive statistic used by the full-bandwidth search [50].
+Spatial localization is provided by BAYESTAR [15],
+which can produce results in seconds from matched-filter
+trigger information. Because EW candidates are detected
+before the full inspiral SNR has accumulated, early lo-
+calizations are coarse but improve systematically as the
+signal is detected at successively higher frequency cut-
+offs with increasing accumulated SNR. Adding a third
+detector to the network would substantially improve lo-
+calization at all cutoff frequencies, but Virgo is not used
+by the EW search to maintain the strict latency require-
+ment.
+For a GW170817-like injection in O4 noise [16] placed
+at a distance giving a full-bandwidth network SNR of
+30, the 90% credible sky area decreases from∼16,000
+deg2 at 29 Hz to∼2,300 deg 2 at 56 Hz, approaching 149
+deg2 at full bandwidth [50]. The 29 Hz template de-
+tects the signal 67 seconds before merger. The original
+GW170817 detection alert was issued 27 minutes post-
+merger, largely due to a loud glitch in LIGO-Livingston
+that required manual data conditioning before a local-
+ization could be produced [51]. An EW search operating
+during a GW170817-like event today would provide up to
+a minute of pre-merger warning, giving electromagnetic
+observatories time to begin slewing before the merger and
+counterpart occur.
+E. SNR Optimizer
+The SNR optimizer is a post-detection algorithm that
+refines the template parameters of a detected event via
+a series of additional matched-filter searches, recover-
+ing signal power lost due to the discrete spacing of the
+template bank [13]. The BAYESTAR [15] sky localiza-
+tion algorithm ingests SNR timeseries from each detec-
+tor around the time of the event; higher SNR improves
+
+===== PAGE 6 =====
+6
+sky localization accuracy. This makes SNR optimization
+valuable for multi-messenger astronomy. The optimizer
+was used in O3 and in O4b and O4c, but was disabled
+during O4a due to technical issues.
+The loss of some portion of the true SNR is inevitable
+due to the discrete nature of template banks. PyCBC
+template banks are constructed with a minimum match
+criterion of 0.97, permitting up to 3% SNR loss for any
+GW event. When a signal is detected, the SNR opti-
+mizer performs a refined search over the template param-
+eter space surrounding the initially detected template to
+recover this potentially lost SNR. Following the initial
+event upload to GraceDB, PyCBC Live spawns a sub-
+process running the optimization algorithm, which maxi-
+mizes network SNR by tuning four template parameters:
+primary component mass, secondary component mass,
+and the z-components of both object spins. Parameter
+boundaries are calculated from the initial event values to
+constrain the search space.
+The SNR optimizer employs the differential evolution
+algorithm [52] as implemented in SciPy [53]. The four
+key hyperparameters of the differential evolution algo-
+rithm are the population sizeN, maximum number of
+iterations, mutation factor, and recombination constant.
+Between O3 and O4 the population size was reduced from
+200 to 100 and the maximum number of iterations from
+100 to 50, reducing runtime by approximately 25% while
+maintaining SNR recovery performance.
+Compared to the O3 implementation, the parameter
+space boundaries have been refined in two ways. First,
+chirp mass bounds are derived from a±2 s window in
+chirp timeτ 0∝M −5/3 around the initial event’s chirp
+time, providing a more physically motivated search re-
+gion than a flat chirp mass window. Second, astrophys-
+ically motivated spin bounds are applied based on the
+component masses: for templates whose maximum com-
+ponent mass falls below 3M ⊙, spin magnitudes are con-
+strained to 0.4, consistent with the theoretical neutron
+star spin limit; for higher-mass templates, the bounds
+are relaxed to 0.9. These tighter bounds avoid searching
+physically irrelevant regions of parameter space, reducing
+optimization time.
+The performance of the SNR optimizer for simulated
+signals is described in Sec. IV B 3.
+F. Usage of Virgo for spatial localization
+The PyCBC Live search used in O3 treated all three
+GW detectors (LHO, LLO, and Virgo) equally [13]. In
+O4, the sensitivity of the two LIGO detectors was sub-
+stantially increased while the sensitivity of Virgo was
+largely unchanged. This sensitivity difference increased
+the likelihood of a GW being seen in only the Hanford
+and Livingston detectors. Treating all three detectors
+as equal increases the computational cost of the analy-
+sis, while at the same time introducing a relatively large
+trials factor in the FAR calculation, which can be detri-
+mental if one of the detectors in not as sensitive as the
+others.
+After these considerations, for the O4 analysis, we
+treated Virgo as afollow-updetector rather than a trig-
+gering detector, similarly to what was done in O2 [12].
+We did not continuously perform matched filtering of the
+Virgo strain data. Instead, when a GW was identified in
+one or both LIGO detectors with FAR below the low-
+significance threshold, we performed matched filtering of
+the Virgo strain data with the reported template to pro-
+duce an SNR time series. This time series was then in-
+cluded in the upload to GraceDB and used in the spatial
+localization of the source [15], achieving a more infor-
+mative localization than would have been possible with
+two detectors alone. With respect to the implementation
+used in O2, the ability to use certain detectors only for
+the spatial localization has been generalized, and is now
+applicable to KAGRA as well with a simple configuration
+change.
+The SNR optimizer used only the strain data from the
+LIGO detectors as inputs; however, we used the best-fit
+parameters reported by the optimizer to perform a fur-
+ther matched filter of the Virgo data. The SNR time
+series of all three detectors using the optimized parame-
+ters were then uploaded to GraceDB and used to update
+the spatial localization.
+G. Improved autogating
+Like many other signal detection algorithms employed
+on GW data, PyCBC Live uses a data conditioning pro-
+cedure calledgatingin order to suppress large-amplitude
+glitches, which would damage the ability of the search
+to detect astrophysical signals if left in the data. Gat-
+ing consists in zeroing-out a short data segment around
+a glitch, typically for a maximum duration of a couple
+seconds, and tapering the zeroed-out segment to avoid
+discontinuities at the edges, which would themselves pro-
+duce a similar effect as the glitch being removed [35].
+Gating requires knowing the occurrence times of loud
+glitches. In PyCBC-based searches, including PyCBC
+Live, these are usually determined via a simple glitch-
+finding algorithm that looks for large excursions of the
+magnitude of the whitened strain time series. The re-
+sulting complete procedure, glitch identification from the
+strain data followed by gating, is referred to asautogat-
+ing.
+In O3, PyCBC Live applied autogating only once per
+analysis segment, which has a duration of 8 s only [13].
+Although still beneficial compared to the absence of au-
+togating, this approach was found to gate significantly
+fewer glitches that would otherwise be gated if a longer
+segment could be used. The main reasons are that i)
+glitches near the edges of the analysis segment cannot
+be easily detected due to the impulse response of the
+involved filters, and ii) many glitches are actually com-
+posed of multiple short transients in rapid succession,
+
+===== PAGE 7 =====
+7
+sometimes covering a total duration of a few seconds, and
+the basic glitch detector can fail to detect all of them if
+they are too close in time. This proved to be particu-
+larly problematic for the early-warning analysis, due to
+the analysis segment being even shorter than the full-
+bandwidth analysis.
+For O4, we instead applied autogating to the entire
+rolling window of time-domain strain that goes into the
+FFT, which must be much longer than the analysis seg-
+ment in order to accomodate the full length of the tem-
+plate and the impulse response of the various filters in-
+volved in the calculation of the SNR. This effectively
+gives autogating multiple chances to gate the same glitch,
+and multiple closely-spaced glitches can be progressively
+gated over multiple analysis segments. The result is a
+much higher probability that even multiple loud glitches
+in rapid succession will be correctly gated at some point
+before they are shifted out of the strain buffer, enabling
+the detection of long CBC signals that overlap the earlier
+glitches.
+IV. PERFORMANCE
+A. Test setup
+We compared the search sensitivity using the updated
+ranking statistic against a search using the O3-era statis-
+tic. Comparisons were made using the Mock Data Chal-
+lenge (MDC) described in [54], which replayed 40 days of
+O3 data with injected simulated compact binary signals
+to test the low-latency alert infrastructure.
+The injection set consisted of 50,000 simulated GW sig-
+nals spanning the full compact binary parameter space:
+40.9% BNS systems, 35.8% NSBH systems, and 23.3%
+BBH systems. Component masses ranged from 1M ⊙ for
+neutron stars up to 100M ⊙ for black holes, with mass
+distributions following astrophysically motivated power
+laws [54]. Spins were distributed uniformly in magni-
+tude with isotropic orientations, subject to theoretical
+constraints of a maximum neutron star spin magnitude
+of 0.4 and a maximum black hole spin magnitude of
+0.998. The IMRPhenomPv2 NRTidalv2 waveform ap-
+proximant [55, 56] was used to model matter effects in
+systems containing neutron stars, with the SLy equation
+of state [57] setting the neutron star maximum mass at
+approximately 2.05M ⊙. Injected signals were distributed
+uniformly in comoving volume assuming flat ΛCDM cos-
+mology with H 0 = 67.3km s −1 Mpc−1 and Ωm = 0.3,
+based on Planck 2018 results [58]. Maximum redshifts
+were tailored to source type: BNS systems to redshift
+0.15, NSBH systems to 0.25, and BBH systems to 1.9.
+To assess detection performance, we used thedecisive
+SNR: for injections occurring during two-detector time,
+this is the second-highest single-detector SNR, i.e. the
+SNR of the less sensitive detector that must observe the
+signal for a coincident detection; for injections during
+single-detector time, it equals the SNR in the active de-
+FIG. 2. Sensitive volume ratio (O4 vs. O3 ranking statistic)
+as a function of IFAR threshold; values above unity indicate
+improved sensitivity. (Top) Coincident search, for six chirp
+mass ranges (M⊙). (Bottom) Single-detector BNS and NSBH
+search, for three chirp mass ranges (M ⊙).
+tector. Injections with a decisive SNR below 6 had neg-
+ligible detection probability and were excluded from ef-
+ficiency calculations. Of the 50,000 injections, 4318 had
+a decisive SNR of 6 or more. Since the single-detector
+search did not target BBH signals, BBH injections oc-
+curring during single-detector time were also excluded
+from the efficiency calculation, leaving 3672 injections.
+Additionally, we investigated the performance of the
+SNR optimizer using the triggers produced from the test
+of the O4 ranking statistic on the MDC. We compared
+SNR optimized events against their unoptimized coun-
+terparts.
+The EW search was tested on a set of 32,599 BNS
+and NSBH injections in simulated Gaussian noise. We
+chose not to use the MDC to test the EW search because
+the MDC did not contain enough loud BNS or NSBH
+injections.
+B. Results
+1. Search sensitivity
+a. Coincident searchThe updated ranking statistic
+described in this paper improved the sensitivity of the
+coincident search compared to O3. The top of Figure 2
+shows the ratio of sensitive volume during two-detector
+
+===== PAGE 8 =====
+8
+FIG. 3. Cumulative distribution of merger-to-upload latencies
+on the MDC. Median: 15.94 s; 99.89% of events within 50 s.
+time between the O4 and O3 ranking statistic configura-
+tions as a function of IFAR threshold, for several source
+mass ranges.
+At low IFAR thresholds (below 0.1 years), all mass
+ranges converged to sensitive volume ratios near unity.
+At high IFAR thresholds (10 years), the sensitive volume
+ratio depended strongly on source mass. Lower-mass sys-
+tems (0.8–8.0 M ⊙) achieved the highest VT ratios, ex-
+ceeding 2.0. The intermediate mass range (2.5–8.0 M ⊙)
+showed the largest sensitivity improvement. Higher-mass
+systems (8.0–250.0 M ⊙) showed smaller improvements,
+with VT ratios plateauing near 1.7.
+The O4 configuration identified 1979 of the 2495 injec-
+tions in two-detector time at a FAR below one per year,
+an efficiency of 79.3%. The O3 configuration identified
+1262 injections at the same threshold, an efficiency of
+50.6%.
+b. Single-Detector SearchThe performance of the
+single-detector search was measured using BNS and
+NSBH injections occurring during times when only one
+detector was active. The bottom of Figure 2 shows the
+ratio of sensitive VT for the updated search compared to
+a single-detector search using the O3-era ranking statis-
+tic. The improvements were comparable to those seen in
+the coincident search, with VT ratios reaching approxi-
+mately 1.3–1.7 at an IFAR of 10 years, with the largest
+gains in the lowest mass bin. At lower IFAR thresholds
+the ratios converged toward unity, a trend similar to that
+seen in the coincident search.
+Of the 1174 BNS and NSBH injections with decisive
+SNR above 6 occurring during single-detector time, the
+updated search identified 218 at a FAR below one per
+year, an efficiency of 18.6%. The O3-era configuration
+identified 170 injections at the same threshold, an effi-
+ciency of 14.5%.
+2. Upload latency
+Figure 3 shows the cumulative distribution of upload
+latencies for PyCBC Live events on the MDC. The me-
+dian latency from merger to GraceDB upload was 15.94
+seconds. LIGO operations imposed a requirement [24]
+that 99% of uploads be completed within 50 seconds; Py-
+CBC Live met this requirement, with 99.89% of events
+uploaded within that threshold.
+3. SNR optimization
+We evaluated the SNR optimizer’s performance on the
+MDC, retrieving all PyCBC full-bandwidth GraceDB
+events uploaded between 2024 May 30 and 2024 July
+16 [50]. Of 10,270 GraceDB events retrieved, 5,091 were
+uploaded by the SNR optimizer. In 91.85% of cases, the
+optimized event was preferred over the original PyCBC
+Live upload. The mean SNR increase was +1.64%, with a
+mean additional latency of 37 seconds. The distribution
+of SNR optimizer latency is shown in the top of Figure
+4.
+As shown in the bottom of Fig. 4, a minority of events
+(8.15%) saw a decrease in SNR after optimization. These
+cases occurred primarily for signals with high mass ra-
+tios, large precessing spins, or long template durations,
+where the optimizer’s fixed number of iterations was in-
+sufficient to adequately explore the complex parameter
+space. Lower chirp mass events also required longer opti-
+mization times due to their extended template durations.
+4. Early warning search
+The EW search was evaluated using a dedicated in-
+jection campaign separate from the main MDC [50]. A
+set of 32,599 simulated BNS and NSBH signals were
+injected into 40 days of simulated colored Gaussian
+noise, with component masses 1–3M ⊙, near-zero spins
+(z-components drawn uniformly from±0.05), and net-
+work SNRs distributed uniformly between 12 and 60.
+Gaussian noise was used to isolate the effects of the search
+configuration from non-Gaussian transients, which are
+not suppressed by the simplified EW ranking statistic.
+Since each injection could in principle be detected at up
+to six frequency cutoffs, the maximum possible number
+of candidates was 195,594. The search found 175,219
+total candidates. After removing 1,211 candidates with
+coalescence times inconsistent with any injection (pure
+false alarms) and 17,432 duplicate-frequency candidates
+caused by signals straddling analysis stride boundaries,
+156,438 unique injection-associated candidates remained.
+The main sensitivity problem identified was a popula-
+tion of missed candidates at individual frequency cutoffs,
+affecting 873 injections (2.68%). The cause is that the
+EW search uses a coincidence timing window of 13 ms
+(the 10 ms light-travel time between LIGO-Hanford and
+
+===== PAGE 9 =====
+9
+FIG. 4. SNR optimizer performance on the MDC [50]. (Top)
+Additional upload latency relative to the original PyCBC Live
+upload (mean: 37 s). (Bottom) Network SNR change after
+optimization (mean: +1.64%).
+LIGO-Livingston plus a 3 ms margin for timing uncer-
+tainties), but the timing accuracy of frequency-truncated
+templates is limited by their small effective bandwidth
+and the 256 Hz sample rate of the EW search. The 1σ
+timing error ranges from 5.89 ms at 29 Hz to 1.89 ms at
+56 Hz; at the lower frequency cutoffs this error can push
+coincident trigger pairs outside the allowed window. The
+solutions identified are to widen the coincidence window
+on a frequency-dependent basis, apply subsample inter-
+polation to reduce sample-rate discretization errors, and
+regenerate the phase-time-amplitude ranking histogram
+with bins tuned to the 256 Hz sample spacing [50]. The
+histogram could alternatively be replaced by a normal-
+izing flow density estimator [59], which has been shown
+to reduce storage requirements by over three orders of
+magnitude while maintaining sensitivity.
+V. CONCLUSIONS
+We have described the configuration and performance
+of PyCBC Live during the fourth observing run. The
+central improvement was a new ranking statistic incor-
+porating template-dependent and time-dependent noise
+modeling. Per-template exponential noise models were
+fit daily to the preceding 20 days of triggers, and iDQ
+data quality streams were used to apply trigger rate cor-
+rections for glitchy time segments. This replaced the sim-
+pler O3 ranking statistic and was complemented by an
+updatedp astro calculation using finer chirp mass binning
+and signal rates scaled from O1–O3 detections. Three
+follow-up capabilities were added or improved: an SNR
+optimizer using differential evolution to refine template
+parameters after initial upload, achieving a mean SNR
+increase of +1.64% with a mean additional latency of
+37 seconds; a scheme treating Virgo as a sky-map-only
+detector to improve sky localization while avoiding the
+sensitivity penalty of three-detector coincidence require-
+ments; and an EW search using frequency-truncated tem-
+plates to issue pre-merger alerts for BNS and NSBH sys-
+tems. The autogating procedure was also improved, ex-
+tending glitch suppression from individual 8 s analysis
+segments to the full rolling strain buffer, enabling more
+reliable removal of loud and closely spaced glitches.
+Performance on the Mock Data Challenge demon-
+strated significant sensitivity gains over the O3 config-
+uration. For the coincident search, sensitive volume im-
+proved by factors of 1.7–2.3 at an inverse false alarm
+rate of 10 years, with the largest gains at lower masses,
+and overall detection efficiency at a false alarm rate be-
+low one per year improved from 50.6% to 79.3%. For the
+single-detector search the improvement was smaller, with
+sensitive volume gains of 1.3–1.7 and efficiency improv-
+ing from 14.5% to 18.6%. Upload latency requirements
+were met, with a median of 15.94 seconds from merger to
+candidate upload and 99.89% of events uploaded within
+50 seconds.
+The EW search was characterized through a dedicated
+injection study with 32,599 BNS and NSBH signals in
+simulated Gaussian noise. The study identified a timing
+accuracy limitation: at low frequency cutoffs, the effec-
+tive bandwidth of truncated templates is small enough
+that the 1σtiming error (up to 5.89 ms at 29 Hz) can
+exceed the 3 ms margin of the current 13 ms coinci-
+dence window, causing coincident trigger pairs to fall
+outside the window and preventing candidate formation.
+This affected 2.68% of injections. The solutions (widen-
+ing the coincidence window on a frequency-dependent
+basis, applying subsample interpolation, and retuning
+the phase-time-amplitude ranking histogram) have been
+identified and will be implemented in future observing
+runs, improving the sensitivity of the EW search for
+multi-messenger events.
+ACKNOWLEDGMENTS
+MT acknowledges support from the U.S. National Sci-
+ence Foundation through grant PHY-2409448. IWH
+and GCD acknowledge support from the STFC through
+grants ST/Y005260/1, ST/V005715/1 and UKRI2490.
+AT acknowledges support from the DISCNet doctoral
+
+===== PAGE 10 =====
+10
+training network. TD acknowledges support from
+Mar’ia de Maeztu grant CEX2023-001318-M funded by
+MICIU/AEI/10.13039/501100011033, and from Grant
+ED431F 2025/04 of the Galician Conselleria de Educa-
+cion, Ciencia, Universidades e Formacion Profesional.
+The analyses described here made use of the PyCBC
+software library [60]. This material is based upon work
+supported by NSF’s LIGO Laboratory which is a ma-
+jor facility fully funded by the National Science Foun-
+dation. The authors are grateful for computational re-
+sources provided by the LIGO Laboratory and supported
+by National Science Foundation Grants PHY-0757058
+and PHY-0823459.
+[1] B. P. Abbottet al.(LIGO Scientific, Virgo), GW150914:
+First results from the search for binary black hole coa-
+lescence with Advanced LIGO, Phys. Rev. D93, 122003
+(2016), arXiv:1602.03839 [gr-qc].
+[2] J. Aasiet al.(LIGO Scientific), Advanced LIGO, Class.
+Quant. Grav.32, 074001 (2015), arXiv:1411.4547 [gr-qc].
+[3] F. Acerneseet al.(Virgo), Advanced Virgo: a second-
+generation interferometric gravitational wave detector,
+Class. Quant. Grav.32, 024001 (2015), arXiv:1408.3978
+[gr-qc].
+[4] T. Akutsuet al.(KAGRA), Overview of KAGRA: Detec-
+tor design and construction history, PTEP2021, 05A101
+(2021), arXiv:2005.05574 [physics.ins-det].
+[5] K. Somiya (KAGRA), Detector configuration of KA-
+GRA: The Japanese cryogenic gravitational-wave de-
+tector, Class. Quant. Grav.29, 124007 (2012),
+arXiv:1111.7185 [gr-qc].
+[6] Y. Aso, Y. Michimura, K. Somiya, M. Ando,
+O. Miyakawa, T. Sekiguchi, D. Tatsumi, and H. Ya-
+mamoto (KAGRA), Interferometer design of the KA-
+GRA gravitational wave detector, Phys. Rev. D88,
+043007 (2013), arXiv:1306.6747 [gr-qc].
+[7] GWTC-5.0: Observations from the Second Part of
+the Fourth LIGO-Virgo-KAGRA Observing Run and
+Updates to the Gravitational-Wave Transient Catalog,
+arXiv (2026), arXiv:2605.27225 [gr-qc].
+[8] B. P. Abbottet al.(LIGO Scientific, Virgo, Fermi
+GBM, INTEGRAL, IceCube, AstroSat Cadmium Zinc
+Telluride Imager Team, IPN, Insight-Hxmt, ANTARES,
+Swift, AGILE Team, 1M2H Team, Dark Energy Camera
+GW-EM, DES, DLT40, GRAWITA, Fermi-LAT, ATCA,
+ASKAP, Las Cumbres Observatory Group, OzGrav,
+DWF (Deeper Wider Faster Program), AST3, CAAS-
+TRO, VINROUGE, MASTER, J-GEM, GROWTH,
+JAGWAR, CaltechNRAO, TTU-NRAO, NuSTAR, Pan-
+STARRS, MAXI Team, TZAC Consortium, KU, Nordic
+Optical Telescope, ePESSTO, GROND, Texas Tech
+University, SALT Group, TOROS, BOOTES, MWA,
+CALET, IKI-GW Follow-up, H.E.S.S., LOFAR, LWA,
+HAWC, Pierre Auger, ALMA, Euro VLBI Team, Pi of
+Sky, Chandra Team at McGill University, DFN, AT-
+LAS Telescopes, High Time Resolution Universe Sur-
+vey, RIMAS, RATIR, SKA South Africa/MeerKAT),
+Multi-messenger Observations of a Binary Neutron
+Star Merger, Astrophys. J. Lett.848, L12 (2017),
+arXiv:1710.05833 [astro-ph.HE].
+[9] T. Mishra, S. Bhaumik, V. Gayathri, M. J. Szczepa´ nczyk,
+I. Bartos, and S. Klimenko, Gravitational waves de-
+tected by a burst search in LIGO/Virgo’s third observing
+run, Phys. Rev. D111, 023054 (2025), arXiv:2410.15191
+[astro-ph.HE].
+[10] B. Ewinget al., Performance of the low-latency Gst-
+LAL inspiral search towards LIGO, Virgo, and KAGRA’s
+fourth observing run, Phys. Rev. D109, 042008 (2024),
+arXiv:2305.05625 [gr-qc].
+[11] C. All´ en´ eet al., The MBTA pipeline for detecting
+compact binary coalescences in the fourth LIGO-Virgo-
+KAGRA observing run, Class. Quant. Grav.42, 105009
+(2025), arXiv:2501.04598 [gr-qc].
+[12] A. H. Nitz, T. Dal Canton, D. Davis, and S. Reyes,
+Rapid detection of gravitational waves from compact bi-
+nary mergers with PyCBC Live, Phys. Rev. D98, 024050
+(2018), arXiv:1805.11174 [gr-qc].
+[13] T. Dal Canton, A. H. Nitz, B. Gadre, G. S.
+Cabourn Davies, V. Villa-Ortega, T. Dent, I. Harry, and
+L. Xiao, Real-time Search for Compact Binary Merg-
+ers in Advanced LIGO and Virgo’s Third Observing
+Run Using PyCBC Live, Astrophys. J.923, 254 (2021),
+arXiv:2008.07494 [astro-ph.HE].
+[14] Q. Chuet al., SPIIR online coherent pipeline to search for
+gravitational waves from compact binary coalescences,
+Phys. Rev. D105, 024023 (2022), arXiv:2011.06787 [gr-
+qc].
+[15] L. P. Singer and L. R. Price, Rapid Bayesian position
+reconstruction for gravitational-wave transients, Phys.
+Rev. D93, 024013 (2016), arXiv:1508.03634 [gr-qc].
+[16] E. Capoteet al., Advanced LIGO detector performance
+in the fourth observing run, Phys. Rev. D111, 062002
+(2025), arXiv:2411.14607 [gr-qc].
+[17] F. Acerneseet al.(Virgo), Increasing the Astrophysical
+Reach of the Advanced Virgo Detector via the Appli-
+cation of Squeezed Vacuum States of Light, Phys. Rev.
+Lett.123, 231108 (2019).
+[18] A. G. Abacet al.(LIGO Scientific, VIRGO, KAGRA),
+GWTC-4.0: Updating the Gravitational-Wave Transient
+Catalog with Observations from the First Part of the
+Fourth LIGO-Virgo-KAGRA Observing Run, Astrophys.
+J. Lett. (2025), arXiv:2508.18082 [gr-qc].
+[19] A. G. Abacet al.(LIGO Scientific, KAGRA, VIRGO),
+GWTC-4.0: An Introduction to Version 4.0 of the
+Gravitational-Wave Transient Catalog, Astrophys. J.
+Lett.995, L18 (2025), arXiv:2508.18080 [gr-qc].
+[20] A. G. Abacet al.(LIGO Scientific, KAGRA, VIRGO),
+Observation of Gravitational Waves from the Coalescence
+of a 2.5–4.5 M ⊙ Compact Object and a Neutron Star,
+Astrophys. J. Lett.970, L34 (2024), arXiv:2404.04248
+[astro-ph.HE].
+[21] A. G. Abacet al.(LIGO Scientific, VIRGO, KAGRA),
+GW231123: A Binary Black Hole Merger with Total
+Mass 190–265 M ⊙, Astrophys. J. Lett.993, L25 (2025),
+arXiv:2507.08219 [astro-ph.HE].
+[22] A. G. Abacet al.(LIGO Scientific, Virgo, KAGRA),
+GW241011 and GW241110: Exploring Binary Forma-
+tion and Fundamental Physics with Asymmetric, High-
+
+===== PAGE 11 =====
+11
+spin Black Hole Coalescences, Astrophys. J. Lett.993,
+L21 (2025), arXiv:2510.26931 [astro-ph.HE].
+[23] A. G. Abacet al.(LIGO Scientific, Virgo, KAGRA),
+GW250114: Testing Hawking’s Area Law and the Kerr
+Nature of Black Holes, Phys. Rev. Lett.135, 111403
+(2025), arXiv:2509.08054 [gr-qc].
+[24] S. S. Chaudharyet al., Low-latency gravitational wave
+alert products and their performance in anticipation of
+the fourth LIGO-Virgo-KAGRA observing run, arxiv e-
+prints (2023), arXiv:2308.04545 [astro-ph.HE].
+[25] A. H. Nitz, M. Sch¨ afer, and T. Dal Canton,
+Gravitational-wave Merger Forecasting: Scenarios for
+the Early Detection and Localization of Compact-binary
+Mergers with Ground-based Observatories, Astrophys. J.
+Lett.902, L29 (2020), arXiv:2009.04439 [astro-ph.HE].
+[26] R. Mageeet al., First demonstration of early warning
+gravitational wave alerts, Astrophys. J. Lett.910, L21
+(2021), arXiv:2102.04555 [astro-ph.HE].
+[27] S. Soniet al.(LIGO), LIGO Detector Characterization in
+the first half of the fourth Observing run, Class. Quant.
+Grav.42, 085016 (2025), arXiv:2409.02831 [astro-ph.IM].
+[28] Z. Yarbrough, A. Guimaraes, P. Joshi, G. Gonz´ alez,
+A. Valentini, and U. Shah, PINCH: pipeline-informed
+noise characterization in LIGO’s third observing run,
+Class. Quant. Grav.42, 165014 (2025), arXiv:2505.14949
+[gr-qc].
+[29] R. Essick, P. Godwin, C. Hanna, L. Blackburn, and
+E. Katsavounidis, iDQ: Statistical Inference of Non-
+Gaussian Noise with Auxiliary Degrees of Freedom in
+Gravitational-Wave Detectors, Mach. Learn. Sci. Tech-
+nol.2, 015004 (2020), arXiv:2005.12761 [astro-ph.IM].
+[30] B. Allen,χ 2 time-frequency discriminator for gravita-
+tional wave detection, Phys. Rev. D71, 062001 (2005),
+arXiv:gr-qc/0405045.
+[31] A. H. Nitz, Distinguishing short duration noise transients
+in LIGO data to improve the PyCBC search for gravita-
+tional waves from high mass binary black hole mergers,
+Class. Quant. Grav.35, 035016 (2018), arXiv:1709.08974
+[gr-qc].
+[32] D. Davis, M. Trevor, S. Mozzon, and L. K. Nuttall, In-
+corporating information from LIGO data quality streams
+into the PyCBC search for gravitational waves, Phys.
+Rev. D106, 102006 (2022), arXiv:2204.03091 [gr-qc].
+[33] G. S. Davies, T. Dent, M. T´ apai, I. Harry, C. McIsaac,
+and A. H. Nitz, Extending the PyCBC search for
+gravitational waves from compact binary mergers to
+a global network, Phys. Rev. D102, 022004 (2020),
+arXiv:2002.08291 [astro-ph.HE].
+[34] A. H. Nitz, T. Dent, T. Dal Canton, S. Fairhurst, and
+D. A. Brown, Detecting binary compact-object mergers
+with gravitational waves: Understanding and Improving
+the sensitivity of the PyCBC search, Astrophys. J.849,
+118 (2017), arXiv:1705.01513 [gr-qc].
+[35] S. A. Usmanet al., The PyCBC search for gravitational
+waves from compact binary coalescence, Class. Quant.
+Grav.33, 215004 (2016), arXiv:1508.02357 [gr-qc].
+[36] G. S. Cabourn Davies and I. W. Harry, Establishing
+significance of gravitational-wave signals from a single
+observatory in the PyCBC offline search, Class. Quant.
+Grav.39, 215012 (2022), arXiv:2203.08545 [gr-qc].
+[37] B. P. Abbottet al.(LIGO Scientific, Virgo), The Rate
+of Binary Black Hole Mergers Inferred from Advanced
+LIGO Observations Surrounding GW150914, Astrophys.
+J. Lett.833, L1 (2016), arXiv:1602.03842 [astro-ph.HE].
+[38] R. Lynch, M. Coughlin, S. Vitale, C. W. Stubbs, and
+E. Katsavounidis, Observational implications of lowering
+the LIGO-Virgo alert threshold, Astrophys. J. Lett.861,
+L24 (2018), arXiv:1803.02880 [astro-ph.HE].
+[39] B. F. Schutz, Networks of gravitational wave detectors
+and three figures of merit, Class. Quant. Grav.28, 125023
+(2011), arXiv:1102.5421 [astro-ph.IM].
+[40] R. Abbottet al.(LIGO Scientific, VIRGO), GWTC-2.1:
+Deep extended catalog of compact binary coalescences
+observed by LIGO and Virgo during the first half of the
+third observing run, Phys. Rev. D109, 022001 (2024),
+arXiv:2108.01045 [gr-qc].
+[41] T. Dent, Technical note: PyCBC Live p astro for O4,
+DCC LIGO-T2300168-v2 (2023).
+[42] V. Villa-Ortega, T. Dent, and A. C. Barroso, Rapid
+source classification and distance estimation for compact
+binary mergers with PyCBC live, Mon. Not. Roy. Astron.
+Soc.515, 5718 (2022), arXiv:2203.10080 [astro-ph.HE].
+[43] LVK, IGWN Public Alerts User Guide,
+https://emfollow.docs.ligo.org/userguide/content.html#inference
+(2026).
+[44] B. D. Metzger, Kilonovae, Living Rev. Rel.23, 1 (2020),
+arXiv:1910.01617 [astro-ph.HE].
+[45] E. Burns, Neutron Star Mergers and How to Study Them,
+Living Rev. Rel.23, 4 (2020), arXiv:1909.06085 [astro-
+ph.HE].
+[46] A. H. Nitz, M. Sch¨ afer, and T. Dal Canton,
+Gravitational-wave Merger Forecasting: Scenarios for
+the Early Detection and Localization of Compact-binary
+Mergers with Ground-based Observatories, ApJL902,
+L29 (2020), arXiv:2009.04439 [astro-ph.HE].
+[47] A. Tohuvavohu, J. A. Kennea, C. J. Roberts, J. De-
+Launay, S. Ronchini, S. B. Cenko, B. Ewing, R. Magee,
+C. Messick, S. Sachdev, and L. P. Singer, Swiftly Chasing
+Gravitational Waves across the Sky in Real Time, ApJL
+975, L19 (2024), arXiv:2410.05720 [astro-ph.HE].
+[48] D. A. Brown, I. Harry, A. Lundgren, and A. H. Nitz,
+Detecting binary neutron star systems with spin in ad-
+vanced gravitational-wave detectors, Phys. Rev. D86,
+084017 (2012), arXiv:1207.6406 [gr-qc].
+[49] LIGO Scientific Collaboration, Advanced LIGO antici-
+pated sensitivities, LIGO Document T0900288-v3 (2010).
+[50] A. Tolley,Improving the Detection of Gravitational-
+Wave Signals in Real Time, Ph.D. thesis, University of
+Portsmouth (2024), arXiv:2503.21417 [gr-qc].
+[51] B. P. Abbottet al.(LIGO Scientific, Virgo), GW170817:
+Observation of Gravitational Waves from a Binary Neu-
+tron Star Inspiral, Phys. Rev. Lett.119, 161101 (2017),
+arXiv:1710.05832 [gr-qc].
+[52] R. Storn and K. Price, Differential Evolution – A Sim-
+ple and Efficient Heuristic for Global Optimization over
+Continuous Spaces, Journal of Global Optimization11,
+341 (1997).
+[53] P. Virtanenet al., SciPy 1.0–Fundamental Algorithms
+for Scientific Computing in Python, Nat. Meth.17, 261
+(2020), arXiv:1907.10121 [cs.MS].
+[54] S. S. Chaudharyet al., Low-latency gravitational wave
+alert products and their performance at the time of the
+fourth LIGO-Virgo-KAGRA observing run, Proc. Nat.
+Acad. Sci.121, e2316474121 (2024), arXiv:2308.04545
+[astro-ph.HE].
+[55] M. Hannam, P. Schmidt, A. Boh´ e, L. Haegel, S. Husa,
+F. Ohme, G. Pratten, and M. P¨ urrer, Simple Model
+of Complete Precessing Black-Hole-Binary Gravitational
+
+===== PAGE 12 =====
+12
+Waveforms, Phys. Rev. Lett.113, 151101 (2014),
+arXiv:1308.3271 [gr-qc].
+[56] T. Dietrich, A. Samajdar, S. Khan, N. K. Johnson-
+McDaniel, R. Dudi, and W. Tichy, Improving the NR-
+Tidal model for binary neutron star systems, Phys. Rev.
+D100, 044003 (2019), arXiv:1905.06011 [gr-qc].
+[57] F. Douchin and P. Haensel, A unified equation of state
+of dense matter and neutron star structure, Astron. As-
+trophys.380, 151 (2001), arXiv:astro-ph/0111092.
+[58] N. Aghanimet al.(Planck), Planck 2018 results. VI.
+Cosmological parameters, Astron. Astrophys.641, A6
+(2020), [Erratum: Astron.Astrophys. 652, C4 (2021)],
+arXiv:1807.06209 [astro-ph.CO].
+[59] S. Insley, M. J. Williams, R. Dhurkunde, and I. Harry,
+Normalizing flows for density estimation in multi-
+detector gravitational-wave searches, arXiv (2026),
+arXiv:2604.26581 [astro-ph.HE].
+[60] A. Nitzet al., PyCBC: A Python toolkit for
+gravitational-wave astronomy,https://pycbc.org/
+(2026).

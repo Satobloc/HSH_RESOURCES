@@ -1,0 +1,929 @@
+===== PAGE 1 =====
+MNRAS000, 1–10 (2026) Preprint 1 July 2026 Compiled using MNRAS L ATEX style file v3.2
+A parametric signal plus noise inference framework for
+short duration non-Gaussian noise transients
+C. Hoy 1⋆, R. Bondarescu 2,3, A. Lundgren 4,5, L.K. Nuttall 1
+1Institute of Cosmology and Gravitation, University of Portsmouth, Portsmouth, PO1 3FX, UK
+2Institut de Ci` encies del Cosmos (ICCUB), Universitat de Barcelona (UB), c. Mart´ ı i Franqu` es, 1, 08028 Barcelona, Spain
+3Departament de F´ ısica Qu` antica i Astrof´ ısica (FQA), Universitat de Barcelona (UB), 08028 Barcelona, Spain
+4Institut de Fisica d’Altes Energies, E-08193 Barcelona, Spain
+5Instituci´ o Catalana de Recerca i Estudis Avan¸ cats, E-08010 Barcelona, Spain
+Accepted XX. Received YY; in original form ZZ
+ABSTRACT
+Gravitational waves are now routinely detected with ground-based observatories, and, through a process known as
+Bayesian inference, their source properties are inferred. However, terrestrial noise artifacts, often referred to asglitches,
+commonly overlap astrophysical signals. This invalidates a fundamental assumption of gravitational wave analyses:
+the noise is no longer stationary and Gaussian. As a result, traditional techniques can provide biased inferences in
+realistic data. One method for mitigating the effect of glitches is to jointly analyse both the signal and noise in
+a single framework. In this work, we introducebilby-antiglitchto infer the astrophysical signal properties in
+non-Gaussian noise. By additionally including a quasi-physical glitch model to describe short duration non-Gaussian
+noise transients, we show that unlike traditional techniques, we infer the true source properties of simulated signals
+contaminated with loud glitches. We also show thatbilby-antiglitchprevents false violation claims of General
+Relativity, and validates the exceptional nature of gravitational wave signals in spurious data.
+1 INTRODUCTION
+The Advanced LIGO (Aasi et al. 2015), Virgo (Acernese et al.
+2015) and KAGRA (Akutsu et al. 2021) gravitational wave
+(GW) detectors have observed∼400 signals originating from
+compact binary coalescences (CBCs, The LIGO Scientific &
+collaboration 2026a). The peak sensitivity of these detectors
+falls within the 20−1000 Hz frequency band, corresponding to
+the minimum of the noise power spectral density (PSD). Over
+short timescales, the detector noise is assumed to be Gaussian
+and stationary, allowing for the PSD to be estimated (see e.g.
+Cornish & Littenberg 2015; Littenberg et al. 2016). However,
+over longer durations (≳1 minute, Chatziioannou et al. 2019)
+the detector sensitivity is time dependent, meaning that the
+stationary assumption no longer holds (Mozzon et al. 2020;
+Edy et al. 2021). In addition, non-Gaussian noise artifacts of
+terrestrial origin, hereafter referred to asglitches, contami-
+nate the GW strain data at a rate of 0.5−1.28 per minute
+in each detector (Soni et al. 2025; Ashton et al. 2026). When
+glitches overlap an astrophysical signal in both time and fre-
+quency, they can cause significant biases when inferring the
+source properties through Bayesian inference (see e.g. Ghonge
+et al. 2024). The clearest and most famous event that was sig-
+nificantly affected by a glitch was GW170817 (Abbott et al.
+2017). In the third GW observing run, 20% of signals were
+polluted by glitches (Davis et al. 2022).
+Glitches are classified by their distinct morphologies in
+time-frequency spectrograms. By leveraging these distinct
+shapes, machine learning frameworks like Gravity Spy (Zevin
+et al. 2017, 2024) enable rapid, low-latency glitch classifica-
+tion. Examples of different glitch types include blips (nar-
+row, tear-drop shapes lasting∼5−10 ms, Cabero et al.
+2019), tomtes citep[wider, low-frequency triangular pro-
+files,][]Glanzer:2022avx, and koi fish (transients similar to
+blips but with excess noise on either side, Bahaadini et al.
+2018). Since glitches are typically caused by local effects, they
+are statistically independent between detectors. This lack of
+correlation distinguishes glitches from true astrophysical sig-
+nals, as only the latter is coincident in multiple detectors.
+Glitch mitigation is vital for ensuring unbiased astrophysi-
+cal inference. For example, Macas et al. (2022) demonstrated
+that glitches can have a drastic effect on the sky localisation
+of the GW source where, in extreme circumstances, the true
+position can lie outside of the inferred 90% credible interval.
+Lecoeuche et al. (2026) also recently highlighted that short
+duration GW signals in particular are sensitive to blips, thun-
+der, and fast-scattering, with parameter biases more severe
+when the glitch is near the merger time of the astrophys-
+ical signal. Several methods exist to subtract glitches from
+the data, includingBayesW ave, which models the glitch
+using a sum of sine-Gaussian wavelets (Cornish & Litten-
+berg 2015; Littenberg et al. 2016; Cornish et al. 2021; Gupta
+& Cornish 2024; Hourihane et al. 2022), andgwsubtract,
+which subtracts glitches based on data in auxiliary witness
+channels (Allen et al. 1999; Davis et al. 2019). Both these
+methods are preferred by the LIGO–Virgo-KAGRA collab-
+oration (LVK, The LIGO Scientific & collaboration 2026a),
+withBayesW avebeing consistently used since the second
+observing run (Abbott et al. 2017; Pankow et al. 2018) and
+gwsubtractsince the third observing run (Abbott et al.
+2023).
+To ensure that the underlying astrophysical signal is not
+©2026 The Authors
+arXiv:2606.31304v1  [gr-qc]  30 Jun 2026
+
+===== PAGE 2 =====
+2Hoy
+removed along with the glitch,BayesW aveperforms a joint
+transdimensional inference of the signal and noise (Chatzi-
+ioannou et al. 2021; Wijngaarden et al. 2022). However, it
+currently uses a simplified model for the astrophysical sig-
+nal (Khan et al. 2016; Husa et al. 2016), which neglects
+effects such as higher order multipole moments (Goldberg
+et al. 1967; Thorne 1980) and spin-induced orbital pre-
+cession (Apostolatos et al. 1994), and a data-driven noise
+model that is not derived from the phenomenology of real
+glitches. Therefore, it remains a potential concern that the
+sine-Gaussian noise model could remove astrophysical infor-
+mation from the GW signal, although this has been tested
+and shown to not be significant for several injections (Houri-
+hane et al. 2022). Alternative methods for glitch mitigation
+exist in the literature, including jointly inferring the signal
+and noise with other glitch models, such as Gaussian pro-
+cesses (Ashton 2023; Emma et al. 2026), machine learning al-
+gorithms (Malz & Veitch 2025), scattering light and wavelet
+models (Udall et al. 2026), applying first order corrections
+to the likelihood to handle PSD variations (Zackay et al.
+2021; Mozzon et al. 2020), defining an alternative hyperbolic
+likelihood (Sasli et al. 2026), and using machine learning to
+subtract glitches based on auxiliary witness channels (Macas
+et al. 2024).
+In this work, we combine the core concept of jointly infer-
+ring the signal and noise inBayesW avewithbilby;bilby
+has been used by the LVK to extract the source properties for
+all GW signals since the third observing run (Abbott et al.
+2023). Unlike previous (Ashton 2023; Malz & Veitch 2025;
+Udall et al. 2026) and also future in-preparation implemen-
+tations (Yin Cheung et al. 2026), we adopt a quasi-physical
+parameterised glitch model to describe short duration non-
+Gaussian noise transients, and interact with traditional off-
+the-shelf nested samplers. This removes the possibility of
+overfitting the data and provides improved interpretability
+with known failure modes. By implementing our methodol-
+ogy intobilby, our algorithm can trivially interface with the
+latest and most accurate waveform models and, thanks to its
+modular design, new glitch models can be added when avail-
+able. To verify our framework, namedbilby-antiglitch, we
+analyse a simulated signal and show that we recover the true
+source properties of the astrophysical signal injected into non-
+Gaussian data. We further highlight that, unlike traditional
+methods,bilby-antiglitchresolves possible false deviations
+of General Relativity that arise from spurious data. We fi-
+nally applybilby-antiglitchto GW250114 082203 (Abac
+et al. 2025a) and GW200129 065458 (Abbott et al. 2023).
+For GW250114 082203, we obtain consistent results with the
+LVK and no significant evidence for glitches in the data. For
+GW200129 065458 we show that the precession measurement
+reported in Hannam et al. (2022) is robust to possible short
+duration non-Gaussian noise transients.
+In Section 2 we discuss the methodology behind the joint
+signal plus noise inference inbilby-antiglitch. In Sec-
+tion 3 we verify thebilby-antiglitchalgorithm with a
+simulated GW signal, and discuss the implications of using
+standardbilby. In Section 4 we applybilby-antiglitch
+to GW250114 082203 and GW200129 065458, and finally we
+conclude in Section 5.
+2 BA YESIAN INFERENCE
+Being able to extract the source properties from an observed
+GW signal enables key astrophysical insights into the nature
+of black holes (see e.g. The LIGO Scientific & collaboration
+2026b) and their population properties (see e.g. Abac et al.
+2025b,a). Bayesian inference is generally used to estimate the
+source propertiesθfrom some datadgiven a modelm. The
+parameters are represented by theposterior probability dis-
+tribution, and calculated through Bayes theorem,
+P(θ|d,m) = L(d|θ,m) Π(θ|m)
+ζ (1)
+whereL(d|θ,m) is the probability of the data given the
+parameters and model, otherwise known as the likelihood,
+Π(θ|m) is the probability of the parameters given the model,
+otherwise known as the prior, andζ=
+R
+(L(d|θ,m) Π(θ|m)dθ
+is the probability of the data given the model, otherwise
+known as the evidence.
+Assuming an astrophysical signalhwith true parameters
+ˆθ, the GW datad=h+nwherenis the instrumental noise.
+Assuming the noise is Gaussian and stationary, the likelihood
+takes the simplified Whittle form (Veitch et al. 2015),
+L(d|θ,m) = exp
+
+−1
+2⟨d−m(θ)|d−m(θ)⟩
+
+,(2)
+where⟨a|b⟩denotes the inner product between two frequency
+seriesa(f) andb(f) (Finn 1992),
+⟨a|b⟩= 4Re
+Z
+dfa(f)b ∗(f)
+Sn(f) ,(3)
+andS n(f) is the PSD of the noise.
+Although the likelihood is well known, it is difficult to ana-
+lytically compute the posterior distribution. As such, stochas-
+tic sampling algorithms, such as nested sampling (Skilling
+2004, 2006) and Markov-Chain Monte-Carlo (Metropolis &
+Ulam 1949), are often used to draw samples from the un-
+known posterior distribution, although other approaches have
+also been proposed (Pankow et al. 2015; Lange et al. 2018;
+Gabbard et al. 2022; Green & Gair 2021; Green et al. 2020;
+Dax et al. 2021; Tiwari et al. 2023; Fairhurst et al. 2023; Dax
+et al. 2025; Raymond et al. 2025; Roulet et al. 2024; Mushkin
+et al. 2025; Williams et al. 2025; Roulet et al. 2026). Numer-
+ous software packages are available to perform Bayesian in-
+ference for GW astronomy (Ashton et al. 2019; Biwer et al.
+2019; Romero-Shaw et al. 2020), but in this work we use
+bilby(Ashton et al. 2019; Romero-Shaw et al. 2020) and the
+dynesty(Speagle 2020) nested sampler. Sincebilbysamples
+Eq. 2, it currently assumes the noise is stationary and Gaus-
+sian, see e.g. The LIGO Scientific & collaboration (2026a).
+2.1 The signal-only hypothesis
+A non-eccentric astrophysical signal from the merger of two
+black holes can be described by a fifteen dimensional model
+m=M(θ); two parameters describing the component masses
+m1 andm 2, six spin parameters characterising the spin vec-
+tors of each black holeχ 1,χ 2, four parameters describing the
+sky location, luminosity distance, and the inclination angle of
+the source, and three describing the geocentric merger time,
+MNRAS000, 1–10 (2026)
+
+===== PAGE 3 =====
+Signal plus noise inference withbilby3
+phase and polarization of the GW signal. Although formally
+described by fifteen parameters, mass-weighted effective pa-
+rameters – such asχ eff (Ajith et al. 2011) andχ p (Schmidt
+et al. 2015) – are more readily extracted from the data.χ eff
+describes the spin aligned with the orbital angular momen-
+tum, and it is defined as,
+χeff = (m1χ1 +m 2χ2)· ˆL
+m1 +m 2
+.(4)
+χeff ranges between−1 and 1 where−1 implies the spins
+are anti-aligned and 1 means the spins are aligned with the
+orbital angular momentum.
+Assuming the Whittle likelihood, Eq. 2 simplifies to,
+L(d|θ,m) = exp
+
+−1
+2⟨n|n⟩−⟨δM|n⟩− 1
+2⟨δM|δM⟩)
+
+,(5)
+whereδM=h−M(θ). If the model is a perfect description
+of the astrophysical signal, such thatδM= 0 atθ= ˆθ, the
+peak likelihood simplifies to,
+L(d|θ,m) = exp
+
+−1
+2⟨n|n⟩
+
+.(6)
+This demonstrates the fundamental assumption of the Whit-
+tle likelihood: the residual is assumed to follow a Gaussian
+distribution. In reality, a model is not a perfect description
+of the astrophysical signal, and any deviations from the peak
+likelihood is caused by random Gaussian noise fluctuations,
+⟨δM|n⟩̸= 0, and model systematics,⟨δM|δM⟩̸= 0.
+In GW astronomy, numerous models are available to de-
+scribe binary black hole mergers. In the latest GW tran-
+sient catalog (The LIGO Scientific & collaboration 2026a),
+the LVK used two models from the phenomenological family:
+IMRPhenomXPHM(Pratten et al. 2021; Colleoni et al. 2025) and
+IMRPhenomXPNR(Hamilton et al. 2026), one from the effective-
+one-body family:SEOBNRv5PHM(Ramos-Buades et al. 2023),
+and one from the NRSurrogate family:NRSur7dq4(Varma
+et al. 2019).
+2.2 The signal plus noise hypothesis
+When the noise is non-Gaussian, for example when a glitchg
+overlaps the astrophysical signal in both time and frequency,
+the GW strain data isd=h+n+g. The Whittle likelihood is
+no longer valid as the true statistical distribution of the noise
+has heavier tails than the assumed Gaussian model. In other
+words, extreme outliers in the noise happen more often than
+the Gaussian assumption would predict. As such, we expect
+to observe significant biases when performing Bayesian infer-
+ence under the signal-only hypothesis. For example, even if
+the model is a perfect description of the true underlying as-
+trophysical signal, such thatδM= 0, the Whittle likelihood
+in non-Gaussian noise simplifies to,
+L(d|θ,m) = exp
+
+−1
+2⟨n|n⟩−⟨n|g⟩− 1
+2⟨g|g⟩
+
+.(7)
+Note that wheng= 0, the fundamental Gaussian distribution
+in Eq. 6 is recovered.
+However, if we describe the astrophysical signal with the
+modelMand the non-Gaussian noise transient with the
+Figure 1.The spectrogram of a simulated GW signal in the pres-
+ence of non-Gaussian noise, which was used to verify our signal
+plus noise inference pipeline. The dashed line shows the frequency
+track of the simulated GW150914-like signal, and the solid box
+isolates the blip glitch 0.2 seconds before the merger.
+modelG, such thatm=M+G, we recover the fundamental
+assumption in the Whittle likelihood: any non-Gaussianities
+in the data can be removed alongside the astrophysical sig-
+nal when subtracting the modelmfrom the datad. In other
+words, ifh=M(θ) andg=G(β), Eq. 6 is recovered. The
+downside is the increase in the dimensionality of the parame-
+ter space fromθfor the signal-only hypothesis, toλ={θ,β}
+whereβdescribes the parameters of the glitch modelG.
+Several glitch models exist in the literature including the
+quasi-physical glitch modelAntiGlitch(Bondarescu et al.
+2023). Although other studies have used data-driven glitch
+models, such as Gaussian Processes (Ashton 2023) and con-
+tinuous wavelets (Cornish & Littenberg 2015; Littenberg
+et al. 2016; Cornish et al. 2021; Gupta & Cornish 2024;
+Hourihane et al. 2022),AntiGlitchadopts a parametric ap-
+proach. This has several advantages, including reducing the
+possibility of overfitting the data and improving the glitch in-
+terpretability. In the frequency-domain,AntiGlitchis pa-
+rameterised by five parameters per interferometer: two de-
+scribing the peak frequencyf 0 and the inverse bandwidth
+squaredγof the glitch, and three describing the amplitude
+A, phaseφand central time of the glitcht 0. The model is
+simply,
+G=Aexp (iφ−2πift 0)h 0(f) (8)
+h0(f) =N −1 exp
+
+−γ
+2 (logf−logf 0)
+
+,(9)
+where,
+N=
+s
+⟨h0(f)|h0(f)⟩
+Sn(f) .(10)
+This phenomenology was tested against glitches found in the
+third GW observing run. However,AntiGlitchalso has its
+disadvantages. Primarily, it has only been designed to handle
+short duration noise transients, such as tomtes, blips, low-
+frequency blips and koi fish (Bondarescu et al. 2023). This
+means that it will not model e.g. low-frequency scattering
+glitches; other models have been designed for this case (Udall
+MNRAS000, 1–10 (2026)
+
+===== PAGE 4 =====
+4Hoy
+Figure 2.The inferred posterior distribution of a simulated signal in non-Gaussian noise. TheTop LeftandTop rightpanels show
+the inferred component masses and effective aligned-spin obtained under the signal plus noisebilby-antiglitchand signal-onlybilby
+hypotheses respectively. The vertical and horizontal crosshairs show the true values, and the contours show the 90% credible intervals.
+Due to significant biases, theTop Rightpanel does not show the true values. TheBottompanel shows the the reconstructed GW signals
+inferred from thebilby-antiglitchandbilbyanalyses against the whitened strain data in LIGO-Livingston. The reconstructed GW
+signals are plotted as a band representing the 90% credible region.
+& Davis 2023; Tolley et al. 2023). Nevertheless,AntiGlitch
+has been shown to model the majority of glitches identified
+by GW detectors (Ashton et al. 2026).
+In this work, we introducebilby-antiglitch.bilby-
+antiglitchis an extension ofbilbyto jointly infer both
+the signal and noise. As a proof of principle, we implement
+theAntiGlitchmodel, but likebilby,bilby-antiglitchis
+designed to be modular, allowing for alternative glitch mod-
+els to be added when available. The user is free to choose the
+optimal glitch modela priori, which is possible, since glitch
+classification is performed ahead of time.
+3 VERIFICA TION AND IMPLICA TIONS
+First, we verifybilby-antiglitchfor a synthetic GW signal
+in the presence of loud glitches. We also demonstrate some
+of the implications of using a signal-only hypothesis in non-
+Gaussian data.
+For simplicity, we inject a GW150914-like signal simu-
+lated withIMRPhenomXPHMinto idealised Gaussian noise. We
+consider a binary with massesm 1 = 30M ⊙,m 2 = 28M ⊙
+and spins aligned with the orbital angular momentumχ 1 =
+0.2,χ 2 = 0.2. All other spin components are exactly zero,
+implying that there is no spin-precession in the binary. The
+luminosity distance of the source is chosen so that the signal-
+to-noise ratio (SNR) isρ= 30. In this analysis, we only
+consider LIGO-Livingston operating at its design sensitiv-
+ity since the probability of coincident glitches in a network
+of interferometers is minimal. To simulate a short duration
+non-Gaussian artifact, we inject a blip glitch 0.2 seconds be-
+fore merger with SNRρ= 70. We model the blip glitch using
+Eq. 8 with a central frequencyf peak = 100 Hz and an inverse
+bandwidth squaredγ= 5 Hz. Since we are using Eq. 8, we
+assume a blip phenomenology from the third GW observing
+run. An omegascan of the simulated signal can be seen in
+Fig. 1. Given that the glitch is loud and overlaps the sim-
+ulated signal in both time and frequency, we expect this to
+MNRAS000, 1–10 (2026)
+
+===== PAGE 5 =====
+Signal plus noise inference withbilby5
+Figure 3.The consistency of a simulated signal in non-Gaussian
+noise with a binary black hole in General Relativity. We use data
+from the inspiral and merger-ringdown to construct a posterior
+distribution for ∆M f/ ¯Mf and ∆χ f/¯χf . We compare the results
+under the signal plus noise hypothesis frombilby-antiglitchto
+the results from the signal-only hypothesis frombilby. The con-
+tours show the 90% credible interval and (0,0) is the expected
+value for General Relativity.
+be a worst-case scenario with significant biases in our param-
+eter estimation when analysing the data with a signal-only
+model (Hourihane et al. 2022). For comparison in the first
+half of the fourth GW observing run, the majority of glitches
+had SNRρ<10 (Soni et al. 2025).
+Throughout this analysis, we use wide and agnostic pri-
+ors for both the glitch and astrophysical signal. For the as-
+trophysical signal we follow the conventions adopted by the
+LVK. Specifically, we sample uniformly in component masses
+between a chirp mass 15M ⊙ <M<35M ⊙ and mass ratio
+0.05<m 2/m1 <1. The luminosity distance is also assumed
+to be uniform in volume between 10 Mpc<d L <10000 Mpc.
+For the glitch, we use uniform priors for the amplitude be-
+tween 0< A <500, peak frequency between 15< f 0 <
+1000 Hz and inverse bandwidth squared 0< γ <1000 Hz.
+All other parameters are assumed to be agnostic within their
+regions of validity. For the astrophysical signal, we recovered
+with theIMRPhenomXPHMmodel, and for the glitch we used
+AntiGlitch.
+In Fig. 2 we show the inferred posterior distribution when
+analysing the data withbilby-antiglitch. For compari-
+son, we also show the posterior inferred from the traditional
+signal-only model withbilby. As expected, the non-Gaussian
+noise transient causes significant biases in the inferred compo-
+nent masses and spin magnitudes when using the signal-only
+hypothesis; unlike the true source properties, we infer a heavy,
+asymmetric component mass binary with near-extremal spins
+that are anti-aligned with the angular momentum of the bi-
+nary. This is consistent with the signal-only model fitting the
+Figure 4.The inferred component masses when analysing a sim-
+ulated signal in non-Gaussian noise. We compare the inferred dis-
+tributions from our joint signal plus noise analysis withbilby-
+antiglitch, and from a signal-only analysis withbilbyafter the
+median realisation of the glitch inferred withbilby-antiglitchis
+subtracted. We also show the variation in the inferred component
+masses when performing a signal-only analysis after subtracting
+off random realisations of the glitch in grey.
+noise transient rather than the underlying astrophysical sig-
+nal, see e.g. Ashton et al. (2022). Indeed, this can be seen
+in the reconstructed GW signals. However, when the data
+is analysed under the joint signal plus noise hypothesis with
+bilby-antiglitch, we recover the true source properties of
+the binary. This is expected since the underlying noise distri-
+bution is Gaussian when subtracting both components of the
+injection. From the reconstructed GW signals, we see that
+both the glitch and astrophysical signal are recovered with
+high fidelity.
+When computing the inferred SNRs for both analyses, we
+see thatbilby-antiglitchobtains an SNR of 30.8 +0.1
+−0.1 for
+the astrophysical signal, and 69.86+0.01
+−0.05 for the glitch. This is
+comparable to the injected values. On the other hand,bilby
+obtains an SNR of 68.9+0.1
+−0.1 for the astrophysical signal, com-
+parable with the glitch. When computing the log Bayes fac-
+tor for signal versus noise, we see thatbilby-antiglitchout
+performsbilbyby a factor of∼10 250;bilby-antiglitchob-
+tains a log Bayes factor of log 10BS/N = 1244 compared to
+log10BS/N = 997.
+In terms of computational cost, we found thatbilby-
+antiglitchused 2×less computational cost thanbilby;
+bilby-antiglitchused 500 CPU hours compared to 940
+CPU hours forbilby. This is despitebilby-antiglitchsam-
+pling over a larger parameter space. This is consistent with
+bilbysampling from a non-trivial likelihood surface, where
+an astrophysical signal model is attempting to describe a
+glitch.
+Given that the signal-only analysis is fitting the glitch
+MNRAS000, 1–10 (2026)
+
+===== PAGE 6 =====
+6Hoy
+Figure 5.The reconstructed astrophysical and glitch signals inferred bybilby-antiglitchwhen analysing GW250114 082203. For
+simplicity we only show the glitch and astrophysical CBC signal projected into LIGO-Livingston. For comparison we show the whitened
+strain data. The reconstructed GW signals are plotted as a band representing the 90% credible interval.
+rather than the underlying GW signal, we expect signifi-
+cant biases when testing for binary black hole consistency
+across the waveform; this test has become a standard check
+for the LVK collaboration (Abac et al. 2026). For example,
+from the amplitude, phase and frequency evolution of the
+inspiral, estimates for the remnants mass and spin can be
+obtained through numerical-relativity fits (Jim´ enez-Forteza
+et al. 2017; Healy & Lousto 2017; Hofmann et al. 2016). On
+the other hand, from the frequency and decay time of the
+ringdown portion of the signal, estimates for the remnants
+mass and spin can be estimated by assuming the Kerr met-
+ric (Echeverria 1989; Finn 1992). Assuming General Relativ-
+ity is correct, these two independent methods for obtaining
+the final mass and spin of the remnant should agree (Abbott
+et al. 2016c). The following dimensionless quantities are used
+to quantify this agreement (Ghosh et al. 2016, 2018),
+∆Mf/ ¯Mf,∆χ f/¯χf,(11)
+where an overbar denotes the average between the inspiral
+(I) and the merger-ringdown (MR) values,
+¯Mf =
+
+MI
+f +M MR
+f
+
+/2,(12)
+¯χf :=
+
+χI
+f +χ MR
+f
+
+/2 (13)
+The transition frequency between the inspiral and the merger
+and ringdown portion of the signal, is typically chosen to be
+the Innermost Stable Circular Orbit frequency of an equato-
+rial, prograde timelike orbit around a Kerr black hole (Ghosh
+et al. 2016).
+In Fig. 3 we see that the signal-only hypothesis obtained
+withbilbyis not consistent with a binary black hole since
+∆Mf/ ¯Mf and ∆χ f/¯χf excludes (0,0) at more than 90%
+confidence. If this event was real, and in the rare case that
+the the glitch was not identifieda priori, this signal would
+show a deviation from General Relativity. Interestingly, we
+see that ∆χ f/¯χf is consistent with 0, and the remnant mass
+causes the deviation. As expected, the signal reconstructed
+with bilby-antiglitch is consistent with a binary black hole,
+recovering the expectation from General Relativity within the
+90% credible interval.
+In reality, the LVK does not perform a signal-only anal-
+ysis on the data shown in Fig. 1. Rather, glitch mitiga-
+tion techniques are applied before Bayesian inference is per-
+formed (see e.g. The LIGO Scientific & collaboration 2026a).
+Typically, a preliminary analysis is performed on the glitch
+withBayesW ave(Cornish & Littenberg 2015; Littenberg
+et al. 2016; Cornish et al. 2021; Gupta & Cornish 2024) and
+the median glitch realisation is subtracted from the data,
+leaving behind the underlying astrophysical signal for anal-
+ysis. Whilebilby-antiglitchis designed to perform joint
+inference, we can reproduce this process, and subtract only
+the non-Gaussian noise artifact for subsequent analyses to be
+undertaken withbilby.
+In Fig. 4 we show the inferred component masses when
+analysing our simulated signal withbilby, after subtracting
+the median glitch realisation inferred bybilby-antiglitch.
+For comparison, we also show the inferred posterior when
+subtracting different realisations of the glitch (rather than the
+median), and when jointly modeling the signal plus noise. In
+Appendix A, we also show the spectrogram after subtract-
+ing the median glitch and signal realisations. We see that
+all methods recover the true parameters of the binary. How-
+ever, we see a large variation in the inferred binary prop-
+erties when subtracting different glitch realisations, beyond
+those expected from the stochastic nature of sampling (see
+e.g. Romero-Shaw et al. 2020). This highlights one of the
+main disadvantages with removing a single glitch realisation.
+We also see small differences between the joint and signal-
+only inferences, implying that some of the astrophysical sig-
+nal is being removed by the glitch subtraction. This is the
+reason why, although possible, we recommend performing a
+joint signal plus noise inference where possible to marginalize
+over different glitch realisations.
+4 APPLICA TION
+After verifying thatbilby-antiglitchcan be used to analyse
+simulated signals in non-Gaussian noise, as well as demon-
+strating that it can prevent biased posterior distributions
+when analysing (potentially) realistic data with traditional
+bilby, we now analyse several real GW signals. Throughout
+this section, we use the same sampler settings, PSDs, calibra-
+tion envelopes etc. as the original LVK analyses. We also use
+theAntiGlitchmodel to describe any non-Gaussian noise
+transients. While this may not be the optimal model for the
+MNRAS000, 1–10 (2026)
+
+===== PAGE 7 =====
+Signal plus noise inference withbilby7
+real GW data considered in this section, we highlight that
+this is a proof of principle, and additional glitch models will
+be implemented in the future.
+4.1 GW250114 082203
+GW250114 082203 (Abac et al. 2025a) was observed in the
+second half of the fourth GW observing run (The LIGO Sci-
+entific & collaboration 2026a). It is the loudest GW signal
+detected to date, and was inferred to have source proper-
+ties similar to GW150914 (Abbott et al. 2016b,d). At the
+time of this event, there were no data quality issues re-
+ported in LIGO-Hanford, but there was some excess power
+in LIGO-Livingston at low frequencies. This is therefore an
+ideal candidate to testbilby-antiglitchin the high SNR
+regime. In our re-analysis, we use the NRSur7dq4 waveform
+model (Varma et al. 2019) due to its improved accuracy.
+In general, we obtain consistent results with the LVK: for
+the astrophysical signal, we infer an equal mass ratio binary
+withm 2/m1 = 0.95+0.05
+−0.09 and a chirp massM= 31.2 +0.4
+−0.6M⊙.
+In Fig. 5, we show the reconstructed GW signals obtained
+withbilby-antiglitch. We see remarkable agreement be-
+tween the CBC signal and the underlying whitened data. In-
+terestingly, we see small, but non-zero, vibrations inferred by
+the glitch model in LIGO-Livingston. This correlates with the
+model trying to capture the reported excess low-frequency
+power. As expected, we obtain no evidence for non-Gaussian
+noise artifacts in LIGO-Hanford.
+Regarding computational cost, we found thatbilby-
+antiglitchused 1.5×more computational resources than
+bilby. This is expected given the larger parameter space.
+Unlike in Section 3, this is because there is no strong evi-
+dence for a glitch in the data, meaning that the likelihood
+surface is not made more difficult to sample when using the
+signal-only hypothesis.
+From this analysis we see thatbilby-antiglitchis ro-
+bust to analysing real GW signals, even when there are no
+significant non-Gaussian noise transients reported. Although
+further testing is needed, this implies that it can generally be
+used for the majority of GW signals reported by the LVK.
+The only downside is an increase in the computational cost
+due to the larger parameter space explored.
+4.2 GW200129 065458
+Next, we consider GW200129 065458 (Abbott et al. 2023).
+GW200129 065458 was observed in the second half of the
+third GW observing run, and this signal sparked interest
+within the community as it was the first signal to show signifi-
+cant evidence for spin-precession (Hannam et al. 2022); initial
+analyses conducted by the LVK obtained different conclusions
+regarding the evidence for spin-precession in the signal, with
+one model showing evidence for spin-precession, and another
+showing no evidence (Abbott et al. 2023). However, the ex-
+ceptional nature of GW200129 065458 was later questioned,
+since it coincided with excess noise caused by the 45 MHz
+electro-optic modulator system (Abbott et al. 2016a). There-
+fore, the question was asked whether non-Gaussian noise ar-
+tifacts were causing biased inferences (Payne et al. 2022;
+Macas et al. 2024). Here, we re-analyse GW200129 065458
+withbilby-antiglitch. Unlike the original LVK analysis, we
+Figure 6.The two-dimensional posterior distribution for the spin
+of the primary black hole when analysing GW200129 065458 with
+bilby-antiglitch. Tilt angles of 90 ◦ means that the spin vector
+lies within the plane of the binary. The colour indicates the poste-
+rior probability per pixel. This plot is produced by using histogram
+bins that are constructed linearly in spin magnitude and the co-
+sine of the tilt angles such that each bin contains identical prior
+probability. The probabilities are marginalized over the azimuthal
+angles.
+employ the NRSur7dq4 waveform model since it was shown
+to more accurately describe General Relativity in this region
+of the parameter space (Hannam et al. 2022).
+In Fig. 6, we show the two dimensional probability dis-
+tribution for the spin of the larger black hole. We see that
+the spin lies almost within the plane of the binary, indicat-
+ing maximal spin-precession. Our results are consistent with
+those found in Hannam et al. (2022); Macas et al. (2024);
+Islam et al. (2025), and contrast those found in Payne et al.
+(2022) whereBayesW avewas used to model the noise. Based
+on our analysis, we find that the precession measurement
+of GW200129 065458 remains robust to short duration non-
+Gaussian noise transients.
+5 CONCLUSION
+In this work, we combined the core joint signal plus noise
+inference ideology presented inBayesW avewith the LVK
+flagship Bayesian inference pipelinebilbyto provide an al-
+ternative algorithm for mitigating the effect of short duration
+non-Gaussian noise transients on Bayesian parameter estima-
+tion. We demonstrated that, unlike traditional techniques,
+our algorithm successfully recovered the true source prop-
+erties of an astrophysical signal in non-Gaussian noise. We
+further demonstrated that it can help to prevent false viola-
+tion claims of General Relativity due to non-Gaussianities in
+the data. Finally, although not recommended, we also demon-
+strated thatbilby-antiglitchcan be used within the cur-
+rent infrastructure by producing glitch subtracted data for
+traditional techniques to analyse.
+In this work, we only implemented a quasi-physical pa-
+rameterised glitch model, suitable for short-duration non-
+MNRAS000, 1–10 (2026)
+
+===== PAGE 8 =====
+8Hoy
+Gaussian noise transients, as a proof of principle. Since
+bilby-antiglitchis designed to be modular, additional
+glitch models can trivially be added (see e.g. Merritt et al.
+2021; Udall & Davis 2023; Tolley et al. 2023). Once further
+glitch models are included, a more in depth investigation de-
+tailing the effect of non-Gaussian noise on Bayesian analyses
+can be conducted.
+Sincebilby-antiglitchbuilds upon the LVK’s flagship
+Bayesian inference library, it can also be used alongside all
+of the latest waveform models, likelihood acceleration algo-
+rithms (Cornish 2010; Canizares et al. 2015; Vinciguerra et al.
+2017; Zackay et al. 2018; Morisaki & Raymond 2020; Cornish
+2021; Morisaki 2021; Krishna et al. 2023; Prathaban et al.
+2026), waveform accuracy techniques (Hoy et al. 2025) and
+samplers. Similarly, although the expected glitches in next
+generation space-based detectors (Amaro-Seoane et al. 2017)
+will likely be much longer in duration, our framework can
+be easily incorporated into thebilby-lisapackage (Hoy &
+Nuttall 2024), and additional, next-generation specific glitch
+models, can be incorporated.
+6 ACKNOWLEDGMENTS
+We thank Ann-Kristin Malz for comments during the LIGO–
+Virgo–KAGRA internal review, as well as Christopher Berry,
+Shun Yin Cheung, Eric Thrane and Rhiannon Udall for dis-
+cussions. C.H thanks the University of Portsmouth for sup-
+port through the Dennis Sciama Fellowship. R.B acknowl-
+edges financial support from the grants RYC2022-035983-
+I, PID2024-159689NB-C22, and CEX2024-001451-M funded
+by MCIN/AEI/10.13039/501100011033 (State Agency for re-
+search of the Spanish Ministry of Science and Innovation) and
+SGR-2021-01069 (AGAUR). L.K.N thanks the UKRI Future
+Leaders Fellowship for support through the grant UKRI2745.
+We are also grateful for computational resources provided
+by the SCIAMA high perfomance computing cluster which
+is supported by the Institute of Cosmology and Gravitation
+(ICG) and the University of Portsmouth.
+This research has made use of data or software ob-
+tained from the Gravitational Wave Open Science Center
+(gwosc.org), a service of the LIGO Scientific Collaboration,
+the Virgo Collaboration, and KAGRA. This material is based
+upon work supported by NSF’s LIGO Laboratory which is a
+major facility fully funded by the National Science Founda-
+tion, as well as the Science and Technology Facilities Coun-
+cil (STFC) of the United Kingdom, the Max-Planck-Society
+(MPS), and the State of Niedersachsen/Germany for sup-
+port of the construction of Advanced LIGO and construc-
+tion and operation of the GEO600 detector. Additional sup-
+port for Advanced LIGO was provided by the Australian
+Research Council. Virgo is funded, through the European
+Gravitational Observatory (EGO), by the French Centre Na-
+tional de Recherche Scientifique (CNRS), the Italian Istituto
+Nazionale di Fisica Nucleare (INFN) and the Dutch Nikhef,
+with contributions by institutions from Belgium, Germany,
+Greece, Hungary, Ireland, Japan, Monaco, Poland, Portugal,
+Spain. KAGRA is supported by Ministry of Education, Cul-
+ture, Sports, Science and Technology (MEXT), Japan Society
+for the Promotion of Science (JSPS) in Japan; National Re-
+search Foundation (NRF) and Ministry of Science and ICT
+(MSIT) in Korea; Academia Sinica (AS) and National Science
+and Technology Council (NSTC) in Taiwan. For the purpose
+of open access, the author(s) has applied a Creative Com-
+mons Attribution (CC BY) licence to any Author Accepted
+Manuscript version arising.
+7 DA T A A V AILABILITY
+Thebilby-antiglitchsoftware is publicly available on
+GitHub to reproduce this work.
+APPENDIX A: GLITCH SUBTRACTED DA T A
+In Section 3, we highlighted that in reality, the LVK does
+not perform a signal-only analysis on data containing non-
+Gaussian noise transients. Instead, a signal-only analysis is
+performed on data where the median glitch realisation is
+subtracted. In Fig. A1, we show the spectrograms of the
+data before, and after the median glitch and signal real-
+isations have been subtracted. We see that whenbilby-
+antiglitchsubtracts the median glitch and signal joint re-
+alisation inferred from the original non-Gaussian data, the
+resulting background is Gaussian as expected. This implies
+that the fundamental assumption of the Whittle likelihood
+is valid. Similarly, we see that whenbilby-antiglitchsub-
+tracts the median glitch realisation inferred from the original
+non-Gaussian data, we obtain a clean astrophysical signal for
+bilbyto analyse. As expected, we see that whenbilbysub-
+tracts the median signal realisation inferred from the glitch
+subtracted data, we obtain the expected Gaussian assump-
+tion.
+REFERENCES
+Aasi J., et al., 2015, Class. Quant. Grav., 32, 074001
+Abac A. G., et al., 2025a, Phys. Rev. Lett., 135, 111403
+Abac A. G., et al., 2025b, Astrophys. J. Lett., 993, L21
+Abac A. G., et al., 2026, arXiv:2603.19019
+Abbott B. P., et al., 2016a, Class. Quant. Grav., 33, 134001
+Abbott B. P., et al., 2016b, Phys. Rev. Lett., 116, 061102
+Abbott B. P., et al., 2016c, Phys. Rev. Lett., 116, 221101
+Abbott B. P., et al., 2016d, Phys. Rev. Lett., 116, 241102
+Abbott B. P., et al., 2017, Phys. Rev. Lett., 119, 161101
+Abbott R., et al., 2023, Phys. Rev. X, 13, 041039
+Acernese F., et al., 2015, Class. Quant. Grav., 32, 024001
+Ajith P., et al., 2011, Phys. Rev. Lett., 106, 241101
+Akutsu T., et al., 2021, PTEP, 2021, 05A101
+Allen B., Hua W.-s., Ottewill A. C., 1999, arXiv:gr-qc/9909083
+Amaro-Seoane P., et al., 2017, arXiv:1702.00786
+Apostolatos T. A., Cutler C., Sussman G. J., Thorne K. S., 1994,
+Phys. Rev. D, 49, 6274
+Ashton G., 2023, Mon. Not. Roy. Astron. Soc., 520, 2983
+Ashton G., et al., 2019, Astrophys. J. Suppl., 241, 27
+Ashton G., Thiele S., Lecoeuche Y., McIver J., Nuttall L. K., 2022,
+Class. Quant. Grav., 39, 175004
+Ashton G., Talbot C., Lundgren A., Malz A.-K., Areeda J., 2026,
+arXiv:2604.16039
+Bahaadini S., Noroozi V., Rohani N., Coughlin S., Zevin M., Smith
+J. R., Kalogera V., Katsaggelos A., 2018, Info. Sci., 444, 172
+Biwer C. M., Capano C. D., De S., Cabero M., Brown D. A., Nitz
+A. H., Raymond V., 2019, Publ. Astron. Soc. Pac., 131, 024503
+Bondarescu R., Lundgren A., Macas R., 2023, Phys. Rev. D, 108,
+122004
+MNRAS000, 1–10 (2026)
+
+===== PAGE 9 =====
+Signal plus noise inference withbilby9
+Figure A1.The spectrogram of a simulated GW signal in the
+presence of non-Gaussian noise, after glitch and signal subtrac-
+tion is applied. TheFirstpanel is a reproduction of Fig. 1. The
+Secondpanel shows the spectrogram after subtracting the median
+glitch realisation inferred bybilby-antiglitch. This corresponds
+to the data analysed bybilbyin Fig. 4. TheThirdpanel shows
+the spectrogram after additionally subtracting the median signal
+realisation inferred bybilby, when analysing the data in theSec-
+ondpanel. Finally, theFourthpanel shows the spectrogram after
+subtracting the median signal plus glitch realisation inferred by
+bilby-antiglitch, when analysing the data in theFirstpanel.
+Cabero M., et al., 2019, Class. Quant. Grav., 36, 15
+Canizares P., Field S. E., Gair J., Raymond V., Smith R., Tiglio
+M., 2015, Phys. Rev. Lett., 114, 071104
+Chatziioannou K., Haster C.-J., Littenberg T. B., Farr W. M.,
+Ghonge S., Millhouse M., Clark J. A., Cornish N., 2019, Phys.
+Rev. D, 100, 104004
+Chatziioannou K., Cornish N., Wijngaarden M., Littenberg T. B.,
+2021, Phys. Rev. D, 103, 044013
+Colleoni M., Vidal F. A. R., Garc´ ıa-Quir´ os C., Ak¸ cay S., Bera S.,
+2025, Phys. Rev. D, 111, 104019
+Cornish N. J., 2010, arXiv:1007.4820
+Cornish N. J., 2021, Phys. Rev. D, 104, 104054
+Cornish N. J., Littenberg T. B., 2015, Class. Quant. Grav., 32,
+135012
+Cornish N. J., Littenberg T. B., B´ ecsy B., Chatziioannou K., Clark
+J. A., Ghonge S., Millhouse M., 2021, Phys. Rev. D, 103,
+044006
+Davis D., Massinger T. J., Lundgren A. P., Driggers J. C., Urban
+A. L., Nuttall L. K., 2019, Class. Quant. Grav., 36, 055011
+Davis D., Littenberg T. B., Romero-Shaw I. M., Millhouse M.,
+McIver J., Di Renzo F., Ashton G., 2022, Class. Quant. Grav.,
+39, 245013
+Dax M., Green S. R., Gair J., Macke J. H., Buonanno A., Sch¨ olkopf
+B., 2021, Phys. Rev. Lett., 127, 241103
+Dax M., et al., 2025, Nature, 639, 49
+Echeverria F., 1989, Phys. Rev. D, 40, 3194
+Edy O., Lundgren A., Nuttall L. K., 2021, Phys. Rev. D, 103,
+124061
+Emma M., Malz A.-K., Dias A., Ashton G., 2026, arXiv:2604.02018
+Fairhurst S., Hoy C., Green R., Mills C., Usman S. A., 2023, Phys.
+Rev. D, 108, 082006
+Finn L. S., 1992, Phys. Rev. D, 46, 5236
+Gabbard H., Messenger C., Heng I. S., Tonolini F., Murray-Smith
+R., 2022, Nature Phys., 18, 112
+Ghonge S., et al., 2024, Phys. Rev. D, 110, 122002
+Ghosh A., et al., 2016, Phys. Rev. D, 94, 021101
+Ghosh A., et al., 2018, Class. Quant. Grav., 35, 014002
+Goldberg J. N., MacFarlane A. J., Newman E. T., Rohrlich F.,
+Sudarshan E. C. G., 1967, J. Math. Phys., 8, 2155
+Green S. R., Gair J., 2021, Mach. Learn. Sci. Tech., 2, 03LT01
+Green S. R., Simpson C., Gair J., 2020, Phys. Rev. D, 102, 104057
+Gupta T., Cornish N. J., 2024, Phys. Rev. D, 110, 064053
+Hamilton E., et al., 2026, Phys. Rev. D, 113, 084055
+Hannam M., et al., 2022, Nature, 610, 652
+Healy J., Lousto C. O., 2017, Phys. Rev. D, 95, 024037
+Hofmann F., Barausse E., Rezzolla L., 2016, Astrophys. J. Lett.,
+825, L19
+Hourihane S., Chatziioannou K., Wijngaarden M., Davis D., Lit-
+tenberg T., Cornish N., 2022, Phys. Rev. D, 106, 042006
+Hoy C., Nuttall L. K., 2024, Mon. Not. Roy. Astron. Soc., 529,
+3052
+Hoy C., Akcay S., Mac Uilliam J., Thompson J. E., 2025, Nature
+Astron., 9, 1256
+Husa S., Khan S., Hannam M., P¨ urrer M., Ohme F.,
+Jim´ enez Forteza X., Boh´ e A., 2016, Phys. Rev. D, 93, 044006
+Islam T., et al., 2025, Phys. Rev. D, 112, 044001
+Jim´ enez-Forteza X., Keitel D., Husa S., Hannam M., Khan S.,
+P¨ urrer M., 2017, Phys. Rev. D, 95, 064024
+Khan S., Husa S., Hannam M., Ohme F., P¨ urrer M.,
+Jim´ enez Forteza X., Boh´ e A., 2016, Phys. Rev. D, 93, 044007
+Krishna K., Vijaykumar A., Ganguly A., Talbot C., Biscov-
+eanu S., George R. N., Williams N., Zimmerman A., 2023,
+arXiv:2312.06009
+Lange J., O’Shaughnessy R., Rizzo M., 2018, arXiv:1805.10457
+Lecoeuche Y., et al., 2026, arXiv:2604.07668
+Littenberg T. B., Kanner J. B., Cornish N. J., Millhouse M., 2016,
+Phys. Rev. D, 94, 044050
+Macas R., et al., 2022, Phys. Rev. D, 105, 103021
+MNRAS000, 1–10 (2026)
+
+===== PAGE 10 =====
+10Hoy
+Macas R., Lundgren A., Ashton G., 2024, Phys. Rev. D, 109,
+062006
+Malz A.-K., Veitch J., 2025, Phys. Rev. D, 112, 024071
+Merritt J., Farr B., Hur R., Edelman B., Doctor Z., 2021, Phys.
+Rev. D, 104, 102004
+Metropolis N., Ulam S., 1949, Journal of the American statistical
+association, 44, 335
+Morisaki S., 2021, Phys. Rev. D, 104, 044062
+Morisaki S., Raymond V., 2020, Phys. Rev. D, 102, 104020
+Mozzon S., Nuttall L. K., Lundgren A., Dent T., Kumar S., Nitz
+A. H., 2020, Class. Quant. Grav., 37, 215014
+Mushkin J., Roulet J., Zackay B., Venumadhav T., Ivashtenko O.,
+Wadekar D., Mehta A. K., Zaldarriaga M., 2025, Phys. Rev.
+D, 112, 104025
+Pankow C., Brady P., Ochsner E., O’Shaughnessy R., 2015, Phys.
+Rev. D, 92, 023002
+Pankow C., et al., 2018, Phys. Rev. D, 98, 084016
+Payne E., Hourihane S., Golomb J., Udall R., Udall R., Davis D.,
+Chatziioannou K., 2022, Phys. Rev. D, 106, 104017
+Prathaban M., Hoy C., Williams M. J., 2026, arXiv:2601.21630
+Pratten G., et al., 2021, Phys. Rev. D, 103, 104056
+Ramos-Buades A., Buonanno A., Estell´ es H., Khalil M., Mihaylov
+D. P., Ossokine S., Pompili L., Shiferaw M., 2023, Phys. Rev.
+D, 108, 124037
+Raymond V., Al-Shammari S., G¨ ottel A., 2025, Mon. Not. Roy.
+Astron. Soc., 542, 1103
+Romero-Shaw I. M., et al., 2020, Mon. Not. Roy. Astron. Soc., 499,
+3295
+Roulet J., Mushkin J., Wadekar D., Venumadhav T., Zackay B.,
+Zaldarriaga M., 2024, Phys. Rev. D, 110, 044010
+Roulet J., Crisostomi M., Thomas L. M., Chatziioannou K., 2026,
+arXiv:2604.08897
+Sasli A., Karamanis M., Karnesis N., Coughlin M. W., Mandic V.,
+Seljak U., Stergioulas N., 2026, arXiv:2602.22074
+Schmidt P., Ohme F., Hannam M., 2015, Phys. Rev. D, 91, 024043
+Skilling J., 2004, AIP Conf. Proc., 735, 395
+Skilling J., 2006, Bayesian Analysis, 1, 833
+Soni S., et al., 2025, Class. Quant. Grav., 42, 085016
+Speagle J. S., 2020, Mon. Not. Roy. Astron. Soc., 493, 3132
+The LIGO Scientific V., collaboration K., 2026a, arXiv:2605.27225
+The LIGO Scientific V., collaboration K., 2026b, arXiv:2605.27226
+Thorne K. S., 1980, Rev. Mod. Phys., 52, 299
+Tiwari V., Hoy C., Fairhurst S., MacLeod D., 2023, Phys. Rev. D,
+108, 023001
+Tolley A. E., Cabourn Davies G. S., Harry I. W., Lundgren A. P.,
+2023, Class. Quant. Grav., 40, 165005
+Udall R., Davis D., 2023, Appl. Phys. Lett., 122, 094103
+Udall R., Bini S., Chatziioannou K., Davis D., Hourihane S.,
+Lecoeuche Y., McIver J., Miller S., 2026, Phys. Rev. D, 113,
+042005
+Varma V., Field S. E., Scheel M. A., Blackman J., Gerosa D., Stein
+L. C., Kidder L. E., Pfeiffer H. P., 2019, Phys. Rev. Research.,
+1, 033015
+Veitch J., et al., 2015, Phys. Rev. D, 91, 042003
+Vinciguerra S., Veitch J., Mandel I., 2017, Class. Quant. Grav., 34,
+115006
+Wijngaarden M., Chatziioannou K., Bauswein A., Clark J. A., Cor-
+nish N. J., 2022, Phys. Rev. D, 105, 104019
+Williams M. J., Karamanis M., Luo Y., Seljak U., 2025, Mon. Not.
+Roy. Astron. Soc., 543, 1479
+Yin Cheung S., Udall R., Davis D., Lasky P., Thrane E., 2026, In
+preparation
+Zackay B., Dai L., Venumadhav T., 2018, arXiv:1806.08792
+Zackay B., Venumadhav T., Roulet J., Dai L., Zaldarriaga M.,
+2021, Phys. Rev. D, 104, 063034
+Zevin M., et al., 2017, Class. Quant. Grav., 34, 064003
+Zevin M., et al., 2024, Eur. Phys. J. Plus, 139, 100
+MNRAS000, 1–10 (2026)

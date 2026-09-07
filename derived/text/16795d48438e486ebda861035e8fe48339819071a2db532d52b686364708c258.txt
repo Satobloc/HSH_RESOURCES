@@ -1,0 +1,1302 @@
+===== PAGE 1 =====
+Draft version September 4, 2026
+Typeset using LATEXtwocolumnstyle in AASTeX7.0.2
+Single-pulse reanalysis of the 2024 V ela glitch and new observations of PSR J0437−4715 and
+PSR J1644−4559
+Carlos O. Lousto
+ ,1 Ruby Shrestha
+ ,2 Ezequiel Zubieta
+ ,3 Susana B. Araujo Furlan
+ ,3, 4
+Guillermo Gancio
+ ,3 Federico Garc´ıa
+ ,3, 5 Santiago del Palacio
+ ,3, 6 Ryan Missel
+ ,2 and Linwei Wang
+ 2
+1Center for Computational Relativity and Gravitation, Rochester Institute of Technology, 85 Lomb Memorial Drive, Rochester, NY
+14623, USA
+2Golisano College of Computing and Information Sciences, Rochester Institute of Technology, Rochester, NY 14623, USA
+3Instituto Argentino de Radioastronom´ ıa (CCT La Plata, CONICET; CICPBA; UNLP), C.C.5, (1894) Villa Elisa, Buenos Aires,
+Argentina
+4Facultad de Matem´ atica, Astronom´ ıa, F´ ısica y Computaci´ on, UNC, Av. Medina Allende s/n, Ciudad Universitaria, CP:X5000HUA
+C´ ordoba, Argentina
+5Facultad de Ciencias Astron´ omicas y Geof´ ısicas, Universidad Nacional de La Plata, Paseo del Bosque, B1900FWA La Plata, Argentina
+6Department of Space, Earth and Environment, Chalmers University of Technology, SE-412 96 Gothenburg, Sweden
+ABSTRACT
+The Pulsar Monitoring in Argentina (PuMA) collaboration systematically monitors southern glitch-
+ing pulsars, maintaining high-cadence single-pulse records of the Vela pulsar. We present a pulse-per-
+pulse reanalysis of the 2024 major glitch of Vela (PSR J0835−4510) with the 400 MHz-bandwidth
+ROACH backend of the Argentine Institute of Radioastronomy, and extend our machine-learning
+single-pulse pipeline—Isolation Forest outlier rejection,β-Variational-AutoEncoder denoising, and
+Self-Organizing-Map clustering—to new observations of PSR J1644−4559 and the millisecond pul-
+sar PSR J0437−4715. For Vela, the 4- and 6-cluster decompositions of the eight days bracketing the
+glitch reproduce, with seven times the previous bandwidth, the behavior found with the narrow-band
+ETTUS receivers: higher-amplitude clusters peak earlier in phase, are narrower, more skewed, and
+less populated. With the glitch jump and its two exponential recovery terms included in the timing
+solution, the mean profile is stable to 1% across all eight days (width change−0.5±0.9% from pre- to
+post-glitch); omitting the recovery terms would mimic a post-glitch broadening of up to 55% through
+a folding-frequency error at the 10−7 level. The clusters of PSR J1644−4559 differ almost exclusively
+in amplitude, as expected for a scattering-dominated profile. For PSR J0437−4715, retaining the 10%
+of pulses with the highest peak-dominance score doubles the signal-to-noise ratio, and a five-cluster
+decomposition yields narrow, phase-ordered groups a factor 3.6±0.4 narrower than the average pro-
+file, suggesting a∼3.5-fold improvement in cluster-based timing precision for this pulsar-timing-array
+target, to be confirmed in a follow-up paper.
+Keywords:Radio pulsars (1353) — Millisecond pulsars (1062) — Pulsar timing method (1305)
+1.INTRODUCTION
+Pulsars are highly magnetized, rapidly rotating neu-
+tron stars emitting collimated beams of electromag-
+netic radiation from their magnetic poles. Although
+their rotation is extraordinarily stable, allowing them
+to act as highly precise astrophysical clocks, a subset
+of (mostly young) pulsars undergo spontaneous spin-
+up events known as glitches. These abrupt increases
+in rotational frequency are generally understood to be
+triggered by the transfer of angular momentum from
+Corresponding author: Carlos O. Lousto (colsma@rit.edu)
+a rapidly rotating superfluid interior to the solid crust
+of the star (Anderson & Itoh 1975; Haskell & Melatos
+2015). Observations of glitches and their subsequent re-
+coveries are therefore crucial probes of the dense-matter
+equation of state and of the internal structure of neutron
+stars.
+The Vela pulsar (PSR J0835−4510) is one of the most
+prolific glitching pulsars, typically undergoing a major
+(giant) glitch every two to three years. Because Vela is
+extraordinarily bright, it presents an ideal laboratory for
+single-pulse studies, yielding tens of thousands of pulses
+in a standard multi-hour observation. Analyzing the
+variations of these individual pulses provides unique in-
+arXiv:2609.03056v1  [astro-ph.HE]  2 Sep 2026
+
+===== PAGE 2 =====
+2Lousto et al.
+sights into the varying structure of the emission regions
+within the pulsar’s magnetosphere.
+With the drastic increase in the volume of data gen-
+erated by modern radio telescopes, machine learning
+has emerged as an indispensable tool for pulsar studies.
+Our collaboration recently implemented a novel unsu-
+pervised machine-learning pipeline to study Vela’s indi-
+vidual pulses using the two radio telescopes of the Ar-
+gentine Institute of Radioastronomy (IAR; Lousto et al.
+2021). By applying Density-Based Spatial Clustering
+of Applications with Noise (DBSCAN), we associated
+pulses primarily by amplitude, confirming a correla-
+tion between higher-amplitude pulses and earlier arrival
+times (Lousto et al. 2021). Using a Variational AutoEn-
+coder (VAE) to reconstruct single pulses out of the back-
+ground noise, together with Self-Organizing Map (SOM)
+clustering, we successfully modeled pulse variations in-
+dicative of emission regions located at stratified heights
+within the magnetosphere (Lousto et al. 2021).
+The capabilities of this automated single-pulse
+pipeline naturally extend to the analysis of transient
+phenomena such as glitches. The unpredictable na-
+ture of glitches makes real-time, pulse-per-pulse observa-
+tions exceedingly rare, yet highly informative regarding
+the coupled dynamics between the neutron-star interior
+and the magnetosphere. Through the continuous high-
+cadence monitoring program at IAR, we successfully
+captured data surrounding the major Vela glitch of 2021
+July 22 (Zubieta et al. 2023). While precision timing
+provided insight into the fractional frequency jump and
+its corresponding decay timescales, our implementation
+of the VAE–SOM pipeline indicated no major qualita-
+tive systematic changes in the pulse cluster distributions
+during the days directly surrounding the event (Zubieta
+et al. 2023).
+Most recently, our campaign monitored the subse-
+quent major Vela glitch, which occurred on 2024 April
+29 (Zubieta et al. 2025). The initial rotational char-
+acterization, derived from the surrounding days of ob-
+servations, precisely determined two post-glitch recovery
+timescales of approximately 3 and 17 days (Zubieta et al.
+2025). VAE reconstructions during this period further
+quantified a correlation whereby higher amplitudes man-
+ifest with narrower pulse widths; however, the day-to-
+day clustering analysis once again demonstrated an over-
+all qualitative stability of the magnetospheric emission
+across the glitch epoch (Zubieta et al. 2025). This par-
+ticular event has since acquired a multimessenger dimen-
+sion: it was the target of the first dedicated search for
+gravitational waves associated with a Vela glitch, per-
+formed on data from the fourth LIGO–Virgo–KAGRA
+(LVK) observing run (Abac et al. 2026).
+To investigate whether the magnetospheric alterations
+accompanying a glitch occur on much shorter or sub-
+tler timescales than previously resolved, we present here
+a deeper, pulse-per-pulse reanalysis of the 2024 Vela
+glitch, based on the wider-bandwidth ROACH back-
+end and on a pipeline upgraded with an explicit outlier-
+rejection stage and aβ-VAE reconstruction. Building on
+our VAE and SOM architectures, this work aims to trace
+micro-variations immediately leading up to, and recover-
+ing from, the glitch epoch. Furthermore, to demonstrate
+the generalizability of our clustering techniques beyond
+Vela, we expand our study to report new single-pulse
+analyses of the millisecond pulsar PSR J0437−4715 and
+of the long-period pulsar PSR J1644−4559, investigat-
+ing their distinct clustering topologies.
+The paper is organized as follows. In Section 2 we
+describe the observations and the scientific motivation
+for single-pulse studies of each of the three pulsars. In
+Section 3 we review the IAR instrumentation, the new
+ROACH-based digital backend, and the updates to our
+machine-learning pipeline. Section 4 presents the results
+for each pulsar, and Section 5 contains our conclusions
+and a discussion of follow-up studies. Detailed tables of
+the clustering analyses are collected in the appendices.
+2.OBSERVATIONS
+All the observations reported in this paper were car-
+ried out with the second of the two 30-m antennas of
+the IAR, located near La Plata, Argentina: A2 (“Es-
+teban Bajaja”), the first one being A1 (“Carlos M.
+Varsavsky”). While our previous single-pulse analyses of
+Vela (Lousto et al. 2021; Zubieta et al. 2023, 2025) were
+based on data acquired with the original SDR-based
+(ETTUS) digital backends with 56 MHz of bandwidth
+per board (Gancio et al. 2020), the present work makes
+use of the new ROACH-based digital receiver installed
+at A2 (hereafter R2; see Section 3), which provides a
+much wider instantaneous bandwidth of 400 MHz in
+dual circular polarization and an improvement of up
+to a factor of 2.5 in the signal-to-noise ratio (S/N)
+(Gancio et al. 2024). These improvements are partic-
+ularly important for extending single-pulse studies to
+fainter and faster pulsars, such as the millisecond pul-
+sar PSR J0437−4715, and to strongly scattered pulsars,
+such as PSR J1644−4559 (see the discussion in Lousto
+et al. 2024). In the following subsections we briefly re-
+view the scientific interest of single-pulse studies for each
+of the three targets.
+The observational setup adopted for each of the
+three pulsars is summarized in Table 1. The sam-
+pling interval was matched to the rotation period of
+each target, from 327.68µs for the 455 ms period of
+
+===== PAGE 3 =====
+Single pulses of Vela, PSR J0437−4715, and PSR J1644−45593
+PSR J1644−4559 down to 20.48µs for the 5.76 ms pe-
+riod of PSR J0437−4715, so that the pulse profile is
+always resolved by a few hundred phase bins. A typical
+observation therefore yields∼1.5×10 5 single pulses for
+Vela,∼2.8×10 4 for PSR J1644−4559, and∼1.2×10 6
+for PSR J0437−4715.
+2.1.Relevance of studying individual pulses of
+PSR J0835−4510 (Vela)
+Historically, pulsar astronomy has relied heavily on in-
+tegrated profiles—stable, average pulse shapes produced
+by folding thousands of individual radio pulses. While
+this technique is fundamental for precision timing, it in-
+herently averages out the highly dynamic, underlying
+physics of the pulsar’s magnetospheric emission. Be-
+cause PSR J0835−4510 (the Vela pulsar) is exception-
+ally bright, it constitutes an ideal, naturally occurring
+laboratory for probing high-resolution magnetospheric
+physics that would otherwise be lost in the background
+noise of standard receivers (Krishnan et al. 2019; Lousto
+et al. 2021).
+Studying the individual, un-averaged pulses of Vela
+provides direct observational constraints on the physics
+of plasma generation and coherent radio emission mech-
+anisms. Individual pulses exhibit extreme pulse-to-pulse
+variability in amplitude, phase, and shape, and analyz-
+ing these variations helps to accurately map emission
+altitudes. For instance, the strong correlations between
+pulse amplitude and arrival phase observed in Vela sug-
+gest that different pulse emission modes originate from
+stratified heights within the open magnetic field lines
+(Lousto et al. 2021; Zubieta et al. 2025).
+Furthermore, Vela is renowned for undergoing ma-
+jor spin-up events, or glitches, typically every two to
+three years (Radhakrishnan & Manchester 1969). While
+glitches are primarily driven by internal neutron-star
+dynamics, continuous single-pulse monitoring allows us
+to investigate the immediate, short-timescale response
+of the external magnetosphere to these violent internal
+events. Notably, high-cadence observations of the 2016
+Vela glitch revealed transient nulling and changes in the
+single-pulse emission profile precisely at the epoch of
+the spin-up (Palfreyman et al. 2018). Detecting shifts
+in the single-pulse clustering or amplitude distributions
+directly surrounding a glitch epoch can reveal transient
+alterations of the magnetic field structure or of the par-
+ticle acceleration zones (Zubieta et al. 2023).
+Finally, the sheer volume of data generated by contin-
+uous single-pulse observations of Vela serves as a rigor-
+ous testing ground for advanced statistical and analyt-
+ical methods. A typical multi-hour observation yields
+tens of thousands of distinct pulses, necessitating mod-
+ern unsupervised machine-learning techniques to effi-
+ciently separate signal from noise and to cluster dis-
+tinct emission modes (Lousto et al. 2021). The au-
+tomated pipelines refined on the robust data sets of
+PSR J0835−4510 establish a crucial baseline for tracking
+magnetospheric stability across major glitches (Zubieta
+et al. 2023, 2025), and can subsequently be applied to
+fainter, more complex transient phenomena.
+2.2.Relevance of studying individual pulses of
+PSR J1644−4559
+In addition to the extensive monitoring of the
+Vela pulsar, extending our single-pulse machine-
+learning pipeline to PSR J1644−4559 (also known
+as B1641−45) provides a highly valuable comparative
+study. PSR J1644−4559 is a bright, long-period south-
+ern pulsar (P≈0.455 s) and, much like Vela, is a well-
+known glitching pulsar that undergoes frequent timing
+irregularities (Zubieta et al. 2024). Analyzing its un-
+averaged radio emission allows us to test the robustness
+and generalizability of our VAE and SOM architectures
+on a target with a distinctly different magnetospheric
+topology and rotational dynamics.
+Historically, single-pulse studies of PSR J1644−4559
+have revealed a complex emission phenomenology, in-
+cluding log-normal amplitude distributions, distinct
+sub-pulse features, and orthogonal polarization modes
+that occasionally disrupt the smooth position-angle
+swing (Karastergiou et al. 2004). Furthermore, test-
+ing our clustering algorithms on this pulsar investigates
+whether the amplitude-dependent phase shifting and
+magnetospheric stratification observed in Vela (Lousto
+et al. 2021) are universal traits among bright glitching
+pulsars, or whether they are unique to Vela’s specific
+emission geometry.
+A uniquely compelling scientific driver for studying
+the high-cadence individual pulses of PSR J1644−4559
+is its complex interaction with the interstellar medium
+(ISM). Because of its high dispersion measure, the
+emission of PSR J1644−4559 is significantly scatter-
+broadened by intervening plasma. Remarkably, this pul-
+sar represents the only known instance of natural, fast-
+switching stimulated emission (an interstellar maser)
+pumped by pulsar photons, initially discovered in OH
+transitions (Weisberg et al. 2005). More recent studies
+have used the pulsar’s line of sight to probe turbulence-
+induced tiny-scale atomic structures (TSAS) within the
+cold neutral medium (Liu et al. 2025).
+While integrated profiles provide an average measure
+of these scattering tails and ISM interactions, single-
+pulse observations provide a natural differential tracer.
+Monitoring variations in the un-averaged pulses al-
+
+===== PAGE 4 =====
+4Lousto et al.
+T able 1.Setup of the R2 single-pulse observations analyzed in this work.
+Pulsar EpochsN obs νc (MHz) Bandwidth (MHz)t samp (µs)T obs (h)N pulses
+PSR J0835−4510 2024 Apr 17–20, May 1–4 8 1400.4 400 163.84∼3.6∼1.5×10 5
+PSR J1644−4559 2026 Mar 3–5 3 1400.4 400 327.68∼3.5∼2.8×10 4
+PSR J0437−4715 2026 May 5, 18, 21 3 1425.0 351 20.48∼2.0∼1.2×10 6
+Note—The 400 MHz band is divided into 512 channels of 0.78125 MHz each (1200.8–1600 MHz); for PSR J0437−4715 the
+lowest 63 channels were discarded, leaving 449 channels over 1250–1600 MHz. Both circular polarizations are summed.T obs
+andN pulses are typical values for a single observation.
+lows for precise measurements of pulse-to-pulse fluctua-
+tions in the scattering timescale, tracing turbulence and
+plasma structures on micro-astronomical-unit scales.
+Ultimately, extending our automated single-pulse anal-
+yses to targets such as PSR J1644−4559 demonstrates
+the capability of the IAR pipeline to classify complex,
+scatter-broadened, and highly variable emission mecha-
+nisms beyond the optimal, unscattered conditions of the
+Vela pulsar.
+2.3.Relevance of studying individual pulses of
+PSR J0437−4715
+To further demonstrate the versatility of our unsuper-
+vised machine-learning pipeline across vastly different
+evolutionary stages of neutron stars, we include a new
+single-pulse analysis of the millisecond pulsar (MSP)
+PSR J0437−4715. Discovered as the closest and bright-
+est known MSP (Johnston et al. 1993), PSR J0437−4715
+resides in a binary system with a white-dwarf compan-
+ion. While Vela and PSR J1644−4559 are young(er),
+slowly rotating pulsars with strong surface magnetic
+fields, PSR J0437−4715 is a fully recycled pulsar char-
+acterized by a rapid rotational period (P≈5.75 ms)
+and a comparatively weak magnetic field.
+The primary challenge in studying the un-averaged
+emission of MSPs is their inherently low flux per single
+rotation, which typically buries individual pulses within
+the instrumental noise floor. Thanks to its extreme
+proximity and brightness, PSR J0437−4715 is one of
+the very few MSPs whose single-pulse emission can be
+resolved with high fidelity (Ables et al. 1997; Vivekanand
+et al. 1998). Applying our VAE and SOM architectures
+to this source allows us to probe whether the magneto-
+spheric clustering topologies and amplitude-dependent
+variations observed in young pulsars persist in the com-
+pact, rapidly rotating magnetospheres of recycled pul-
+sars.
+Furthermore, studying the individual pulses of
+PSR J0437−4715 holds critical importance for
+gravitational-wave astronomy. This pulsar is a corner-
+stone target for the global Pulsar Timing Arrays (PTAs)
+aiming to characterize the nanohertz gravitational-wave
+background. The ultimate limit to the timing precision
+of bright MSPs like PSR J0437−4715 is “phase jitter”—
+intrinsic, pulse-to-pulse variations in the emission phase
+and shape (Os lowski et al. 2011; Shannon et al. 2014).
+By systematically mapping the single-pulse variabil-
+ity of PSR J0437−4715 with our clustering algorithms,
+we aim to better characterize the statistical distribu-
+tions underlying this jitter. Identifying specific, distinct
+subpopulations of single pulses within its complex in-
+tegrated profile could eventually provide pathways for
+jitter mitigation, thereby enhancing the ultimate timing
+precision achievable for this key PTA pulsar. Extending
+our automated pipeline from bright, slow pulsars to a
+rapid, stable MSP fundamentally validates the general-
+izability of our machine-learning approach.
+3.UPDATED TECHNIQUES
+3.1.IAR instrumentation and the ROACH-based
+backend
+The IAR observatory, located at latitude
+−34◦51′57.′′35 and longitude−58 ◦08′25.′′04, within the
+Pereyra Iraola Park near the city of La Plata, Ar-
+gentina, operates two 30-m single-dish antennas, A1
+and A2, aligned in the North–South direction and sep-
+arated by 120 m. They cover a declination range of
+−90◦ < δ <−10 ◦ and an hour-angle range of two
+hours east/west, allowing daily observations of a given
+source for up to∼4 hours in the 1400 MHz band
+(L band). A thorough description of the front ends
+and of the initial digital backends, based on ETTUS
+software-defined-radio boards providing 56 MHz of in-
+stantaneous bandwidth per board, is given in Gancio
+et al. (2020), together with an analysis of the radio-
+frequency-interference (RFI) environment showing that
+the 1–2 GHz band has a low level of RFI activity, ad-
+equate for radio astronomy, despite the IAR not being
+located in an RFI-quiet zone. This configuration en-
+abled the systematic pulsar monitoring program of the
+
+===== PAGE 5 =====
+Single pulses of Vela, PSR J0437−4715, and PSR J1644−45595
+PuMA collaboration (Zubieta et al. 2023, 2024) and our
+previous single-pulse studies of Vela (see also the review
+in Lousto et al. 2024).
+In mid-2022, a parallel digitizer system based on
+ROACH (Reconfigurable Open Architecture Comput-
+ing Hardware) boards (Hickish et al. 2016) was added
+to both antennas 7,8 . The ROACH-1 backends are con-
+figured to observe in dual circular polarization over a
+bandwidth of 400 MHz centered at 1400 MHz, with in-
+tegration times down to 41 or 82µs, providing an im-
+provement of up to a factor of 2.5 in S/N with respect
+to the ETTUS boards (Gancio et al. 2024). A flux cal-
+ibration of A2, based on a noise diode injected into the
+front end, is described in Araujo Furlan et al. (2023); we
+do not apply it in the present analysis, and all single-
+pulse amplitudes in this paper are therefore reported
+in normalized (arbitrary) units. Throughout this pa-
+per we denote by R2 the ROACH backend installed at
+antenna A2, with which all the observations analyzed
+here were acquired; note that our previous single-pulse
+papers were instead based on A1/A2 ETTUS data. It
+is this increased sensitivity per pulse that makes single-
+pulse studies of the millisecond pulsar PSR J0437−4715
+and of the scatter-broadened pulsar PSR J1644−4559
+feasible at IAR, as anticipated in Lousto et al. (2024).
+For the single-pulse analyses presented here, the filter-
+bank data are first cleaned of radio-frequency interfer-
+ence in two stages:RFIClean(Maan et al. 2021), which
+excises periodic interference in the Fourier domain, is
+run with the rotation frequency of the pulsar supplied
+explicitly so that its own periodic signal is preserved,
+and a further mask is then derived with therfifind
+task ofPRESTO(Ransom 2011). The data are then inco-
+herently dedispersed withPRESTOandPSRCHIVE(Hotan
+et al. 2004), and the resulting time series is cut into indi-
+vidual rotations using the instantaneous topocentric pe-
+riod predicted by the correspondingpolycofile, which
+is re-evaluated every 100 pulses. For PSR J0835−4510
+the underlying timing solution is the full glitch so-
+lution derived from the IAR monitoring campaign in
+Zubieta et al. (2025) (their Table 1), referred to the
+epoch MJD 60408 withν= 11.18285953 Hz and ˙ν=
+−1.55405×10 −11 Hz s−1, and including the glitch at
+MJD 60429.86961 with its permanent frequency and
+spin-down jumps and two exponential recovery terms
+with decay timescales of 17.3 and 2.78 days. For the
+observations of PSR J0835−4510 discussed below, the
+polycomodels are tabulated in 60-min blocks with
+7 https://casper.astro.berkeley.edu/wiki/ROACH
+8 https://digicom.org/roach-board.html
+12 coefficients each, the epoch-dependent behavior—
+including the glitch and its relaxation—being carried by
+the polynomial coefficients. Across the eight days an-
+alyzed they give instantaneous topocentric periods be-
+tween 89.4259 and 89.4265 ms. Since the post-glitch
+relaxation is explicitly modeled, the residual error of
+the folding frequency is negligible on all days, a point
+we return to in Sections 4.1 and 5. The individual
+pulses are sampled onto a grid ofN bin = 545, 1388,
+and 281 phase bins per period for PSR J0835−4510,
+PSR J1644−4559, and PSR J0437−4715, respectively,
+the bin width being the sampling interval itself (163.84,
+327.68, and 20.48µs), so that the grid covers all but
+the last≲0.15% of each rotation. The residual intra-
+channel dispersion smearing,∼160µs for Vela and∼6µs
+for PSR J0437−4715, is in both cases at or below the
+sampling interval; for PSR J1644−4559 it amounts to
+∼1.1 ms, still well below the several-millisecond scatter-
+ing tail that dominates the observed width of its profile.
+3.2.Outlier detection with Isolation Forests
+A pulsar single-pulse data set may contain a few non-
+uniform signals that appear visibly different from the
+general signal structure, typically produced by RFI or
+instrumental dropouts. We refer to such non-uniform
+signals as outliers. We observed that the presence of out-
+liers distorts the SOM output, leading to some clusters
+exhibiting atypical mean signal structures and thereby
+compromising the analysis. We therefore employ the
+Isolation Forest algorithm (Liu et al. 2008) to filter out
+outliers from the data set prior to performing the VAE
+and SOM analyses.
+Isolation Forest is an unsupervised anomaly-detection
+algorithm based on the intuition that outliers are com-
+paratively easier to isolate than typical samples, and
+hence have shorter isolation paths. An ensemble of ran-
+dom isolation trees is built by recursively splitting the
+data at randomly chosen values of selected features until
+each point is isolated (or a predefined depth is reached).
+The average isolation-path length of each sample across
+the ensemble is converted into an anomaly score, and a
+threshold on this score determines the outlier list (for
+the precise definitions, see Liu et al. 2008). We employ
+the Isolation Forest implementation ofscikit-learn
+(Pedregosa et al. 2011) 9 with default hyperparameters.
+Our general application methodology proceeds as fol-
+lows: (i) we determine the pulse center as the position
+of the maximum of the average pulse; (ii) we window
+each pulse to±100 bins around the mean pulse center,
+9 https://scikit-learn.org/stable/modules/generated/sklearn.
+ensemble.IsolationForest.html
+
+===== PAGE 6 =====
+6Lousto et al.
+resulting in pulses of length 200 bins; (iii) we rebase each
+pulse by subtracting its mean; (iv) we run a 10×10 SOM
+on the signals, producing 100 clusters; (v) we apply the
+Isolation Forest algorithm to the mean signals of these
+100 clusters, using a set of features tailored to the out-
+lier detection, in order to identify the outlier clusters;
+(vi) among these, we retain as outliers only the clusters
+whose population does not exceed a count threshold;
+and (vii) we remove the pulses belonging to the selected
+outlier clusters from the data set.
+We introduce the cluster-count threshold to prevent
+overly aggressive outlier removal and the consequent
+exclusion of a substantial number of pulses. Upon
+careful analysis, we observed that a few clusters that
+were flagged as outliers exhibited only minor deviations
+from the general pattern with respect to the prede-
+fined feature set, while retaining mean-pulse morpholo-
+gies broadly consistent with those of valid clusters and
+containing a relatively large proportion of pulses. Con-
+sidering this, for each pulsar, we define the count thresh-
+old empirically through visual inspection of outlier SOM
+clusters across all selected observation days, setting it
+based on the count of the largest outlier cluster exhibit-
+ing clear morphological inconsistencies. We present the
+methodology customized for each pulsar as follows.
+3.2.1.PSR J0835−4510
+We use the general methodology as described, with the
+following set of features in step (v): the size of the cluster
+(number of pulses); theR 2 score (fraction of variance
+explained by the mean cluster signal); the position of
+the peak; the range of the mean cluster signal; and the
+slope of the mean cluster signal. The count threshold in
+step (vi) is set to 0.01% of the total number of pulses.
+3.2.2.PSR J1644−4559
+For this pulsar we noted that the pulse baselines did
+not consistently align at zero, even after the initial re-
+basing of step (iii). We therefore use a modified feature
+set designed to focus on the approximate baseline posi-
+tion: we omit the windowing steps (i)–(ii)—considering
+the entire pulse phase so that the peak does not over-
+influence the fit—and in step (v) we flag as outliers the
+clusters whose mean signal has a best-fit-liney-intercept
+≥0.5. The count threshold in step (vi) is set to 0.25%
+of the total number of pulses.
+3.2.3.PSR J0437−4715
+For this much fainter (per pulse) data set, in which
+a dominant peak appears in only a minor fraction of
+the single pulses, we first implement a filtering stage de-
+signed to retain only the pulses that display a distinct
+peak, and then apply the Isolation Forest algorithm to
+the filtered data set following the general methodology
+with one difference: we consider a 20×20 SOM instead
+of a 10×10 SOM for PSR J0437−4715 since the former
+led to more visibility of the outliers and eased their de-
+tection. The count threshold in step (vi) is set to 0.05%
+of the total number of pulses.
+Our filtering stage is illustrated in Figure 1. It pro-
+ceeds as follows: (i) we determine the mean pulse of the
+entire data set, its center (the position of the maximum
+of the mean pulse), and its peak width (computed as
+the full width at half maximum around the peak of the
+mean pulse); (ii) we define the radius as half the peak
+width of the mean pulse, and for each pulse, consider
+the window as±radius bins around the mean pulse cen-
+ter; (iii) we compute each pulse’s peak-dominance score
+(PDS) as the ratio of the maximum value within the
+window to the mean value outside the window; (iv) we
+retain only the pulses whose peak-dominance score falls
+in the top 10%, which offers a higher signal-to-noise ra-
+tio and a better baseline (as shown in Figure 2) while
+preserving a sufficient sample size of∼124 000 pulses
+(comparable to that available for PSR J0835−4510) for
+reliable single-pulse analysis.
+3.3.V AE reconstruction and SOM clustering
+Our machine-learning pipeline follows the architec-
+ture, latent dimension, and training strategy introduced
+in Lousto et al. (2021) for both the VAE and the
+SOM. However, instead of the standard VAE (Kingma &
+Welling 2013), we employβ-VAE (Higgins et al. 2017),
+which provides a greater control over the balance be-
+tween reconstruction loss and Kullback–Leibler (KL) di-
+vergence by weighting the KL term with a tunable pa-
+rameterβ, as shown in Eq. (1).
+L=E qϕ(y|x) [logpθ(x|y)]−βD KL (qϕ(y|x)∥p(y))
+(1)
+The parameters of the VAE encoder and decoder are
+jointly optimized with the Adam optimizer, with a learn-
+ing rate of 10−4. We finetune the VAE hyperparameters
+separately for each pulsar: for PSR J0835−4510, we set
+β= 0.3 and train for 30 epochs; for PSR J1644−4559,
+β= 0.1 with 50 epochs; and for PSR J0437−4715,
+β= 0.3 with 50 epochs. In addition, the SOM hy-
+perparameters are set to a learning rate of 0.3 and a
+neighborhood widthσ= 0.55, and the maps are fitted
+using 60 000 iterations for all pulsars.
+After filtering (only for PSR J0437−4715) and outlier
+removal, the remaining individual pulses in the obser-
+vation are first reconstructed with theβ-VAE, which
+acts as a non-linear denoiser: the VAE learns a low-
+dimensional latent representation of the pulse shapes
+
+===== PAGE 7 =====
+Single pulses of Vela, PSR J0437−4715, and PSR J1644−45597
+Figure 1.Visual representation of the filtering process for PSR J0437−4715.
+Figure 2.Mean pulses for the complete data set and for
+subsets corresponding to the top 70% to top 10% of peak–
+dominance scores.
+and reconstructs each pulse from it, effectively sepa-
+rating the coherent signal from the radiometer noise.
+The reconstructed pulses are then clustered with Self-
+Organizing Maps, using 4-, 6-, and 9-cluster decompo-
+sitions to test the robustness of the resulting group-
+ings in PSR J0835−4510 and PSR J1644−4559, and
+using 5 cluster decompositions in PSR J0437−4715.
+For PSR J0835−4510 and PSR J1644−4559, clusters
+#1 to #N are labeled in decreasing order of the
+peak amplitude of their mean reconstructed pulses; for
+PSR J0437−4715 they are instead labeled in increas-
+ing order of peak location since there is little variation
+in peak amplitude across clusters (see Section 4.3 for
+details). Cluster #0 denotes the mean reconstruction
+over all pulses that remain after filtering and outlier re-
+moval. For PSR J0437−4715 we additionally include
+cluster #-1 (cluster minus 1) denoting the mean over
+all raw pulsesin the observation for comparison with
+the clusters obtained from the filtered pulses. More-
+over, for the analyses presented here, a window of phase
+bins around the mean peak of each day is selected be-
+fore training (200 out of 545 bins for Vela, 200 out of
+1388 bins for PSR J1644−4559, and 200 out of 281 bins
+for PSR J0437−4715), and the same 200-phase-bin win-
+dow is used when computing the quantitative results
+reported in the tables.
+4.RESULTS
+We present the plots of mean cluster reconstructions
+for all SOM cluster decompositions of PSR J0835−4510,
+PSR J1644−4559, and PSR J0437−4715 for visual inter-
+pretation. Additionally, we report the quantitative char-
+acterization per mean cluster reconstructions—all with
+estimated 1σerrors—in the tables: the number of pulses
+in the cluster; the peak location, which is the index of
+the maximum value of the mean pulse; the peak height,
+which is the maximum value of the mean pulse; the peak
+width, which is computed as the full width at half max-
+imum around the peak; and the peak skew, which de-
+scribes the asymmetry of the mean pulse around the
+peak. Moreover, to assess the VAE reconstruction fi-
+delity, we report for all pulsars the root mean squared
+error (RMSE) between the mean VAE reconstruction
+and the mean raw pulse of each cluster, computed as
+RMSE = [ PN
+i=1(¯ri−¯xi)2/N]1/2, where ¯ri and ¯xi are,
+respectively, the mean reconstructed and the mean raw
+pulse in phase bini, andN= 200 is the number of
+phase bins considered. For PSR J0437−4715 we addi-
+tionally report the signal-to-noise ratio (S/N). For each
+pulse within a cluster, the S/N is calculated as the ra-
+
+===== PAGE 8 =====
+8Lousto et al.
+tio of the maximum amplitude inside the window to the
+absolute mean amplitude outside it; the median of these
+ratios is reported for each cluster. The cluster-specific
+window is determined following the approach described
+for the filtering stage of PSR J0437−4715 in Section 3.2.
+We repeated the experiments on PSR J0835−4510
+considering 4-, 6-, and 9-cluster SOM decompositions,
+in order to compare the results of the wider-band R2
+backend with those obtained with the narrower-band
+ETTUS-A2 configuration in Lousto et al. (2021). We
+observe that the 4- and 6-cluster SOM decompositions
+with R2 have systematic and consistent results across
+all days, while the 9-cluster decomposition is less sta-
+ble. Thus, we present the quantitative results in tabular
+form for the 6-cluster decompositions to provide consis-
+tent results with greater granularity in PSR J0835−4510
+and PSR J1644−4559. Moreover, in PSR J0437−4715,
+we consider 5-cluster SOM decomposition for visual and
+quantitative analyses as it lies between the 4- and 6-
+cluster settings that proved consistent for the other two
+pulsars; an odd number of clusters also yields a well-
+defined central cluster in phase, which can potentially
+help to determine the time of arrival of the pulses more
+precisely. The results for each pulsar are presented in
+Sections 4.1–4.3.
+4.1.PSR J0835−4510 (Vela)
+PSR J0835−4510 has a rotation periodP≈89.43 ms
+at the epoch of our observations, a dispersion measure
+DM≈68 pc cm −3, and a characteristic age of∼11 kyr;
+at a distance of∼290 pc it is one of the brightest radio
+pulsars in the sky, with a mean flux density of∼1.05 Jy
+at 1400 MHz and a pulse widthW 50≈1.7 ms (ATNF
+catalog, Manchester et al. 2005). It undergoes giant
+glitches quasi-periodically, roughly every two to three
+years; the latest, its 23rd recorded glitch, occurred on
+2024 April 29 (MJD 60429.86961) (Zubieta et al. 2025).
+Here we present the pulse-per-pulse analysis of eight
+observations with R2 bracketing the 2024 glitch: April
+17, 18, 19, and 20 (before the glitch) and May 1, 2, 3, and
+4 (after the glitch), all of them acquired with a sampling
+interval of 163.84µs (Table 1). Figures 5 and 6 display
+the mean reconstructed pulse of each cluster for the 4-,
+6-, and 9-cluster SOM decompositions, before and after
+the glitch, respectively. The corresponding quantitative
+characterization of the six-cluster decomposition (num-
+ber of pulses, peak location, peak height, peak width,
+pulse skewness, and reconstruction RMSE per cluster)
+is given in Tables 2 and 3 in Appendix A.
+From the 4- and 6-cluster SOM decompositions of each
+day of observation in Figures 5 and 6, we can observe
+a trend of the amplitude decreasing as we move later
+in the phase; the same pattern is generally observed in
+9-cluster SOM decomposition as well but with some in-
+consistencies. The peak location and peak height in Ta-
+bles 2 and 3 further support this observation. Moreover,
+the higher amplitude clusters are narrower, with lower
+width and higher skewness. It is also evident from the
+clusters that there are fewer pulses in the observation
+with higher amplitude than lower amplitude. Addition-
+ally, as observed in Lousto et al. (2021), the right shoul-
+der of the average reconstructed pulses for each cluster
+generally overlap in 4- and 6-cluster SOM decomposi-
+tions, while this overlap appears less cleanly in 9-cluster
+setting.
+Quantitatively, the phase drift between the brightest
+and the faintest cluster of the six-cluster decomposition
+amounts to 5 bins, i.e. 0.82 ms, on each of the four days
+preceding the glitch, and to 5–6 bins on the four days
+following it, while the peak height of cluster #1 exceeds
+that of cluster #6 by an order of magnitude on every day
+(Tables 2 and 3). The mean profile itself is remarkably
+reproducible: over the four pre-glitch days the width
+of cluster #0 is 9.19±0.10 bins (1.505±0.016 ms, in
+good agreement with the catalogW 50 = 1.7 ms) and its
+skewness 3.905±0.017, i.e. stable at the percent level.
+Against this very stable pre-glitch baseline, the four
+post-glitch days show no significant change. The width
+of cluster #0 on May 1, 2, 3 and 4 is 9.19, 9.28, 8.98 and
+9.13 bins, i.e. 9.15±0.13 bins (1.498±0.021 ms), and
+its skewness is 3.900±0.025: relative to the pre-glitch
+values these are changes of−0.5±0.9% in width and
+−0.1±0.4% in skewness, both consistent with zero. The
+phase drift between clusters #1 and #6, the amplitude
+ordering of the clusters, and the systematic narrowing
+and increase of skewness with peak height are likewise
+unchanged across the glitch. Averaged over all eight
+days, the width of the mean profile is 9.17±0.11 bins
+(1.502±0.018 ms), reproducible at the 1% level.
+We stress that this stability is obtained with single
+pulses extracted using the timing solution that mod-
+els the glitch jump together with its two exponential
+recovery terms (Section 3.1). An error in the folding
+frequency leaves each individual pulse untouched but
+makes the pulse phase drift monotonically through an
+observation, smearing any average taken over the whole
+data set; with the recovery terms included, the resid-
+ual frequency error is negligible and no such smearing
+is present on any of the eight days. We return to this
+point, and to its methodological implications for single-
+pulse studies around glitches, in Section 5.
+
+===== PAGE 9 =====
+Single pulses of Vela, PSR J0437−4715, and PSR J1644−45599
+4.2.PSR J1644−4559
+PSR J1644−4559 (B1641−45) has a rotation pe-
+riodP≈455 ms, a high dispersion measure DM≈
+478 pc cm−3, and a characteristic age of∼360 kyr; it is
+among the brightest pulsars at 1400 MHz, with a mean
+flux density of∼300 mJy and a pulse widthW 50≈8 ms,
+its profile being strongly scatter-broadened by the ISM
+(ATNF catalog, Manchester et al. 2005). It is an in-
+frequent glitcher, with four moderate glitches recorded
+since 1977 (Zubieta et al. 2024).
+We analyzed three consecutive observations with R2
+on 2026 March 3, 4, and 5, acquired with a sampling in-
+terval of 327.68µs (Table 1). Figure 3 shows the mean
+reconstructed pulse per cluster for the 4-, 6-, and 9-
+cluster SOM decompositions of each day. In Table 4
+(Appendix B) we provide the number of pulses, peak
+location, peak height, peak width, pulse skewness, and
+reconstruction RMSE per cluster. All metrics are mea-
+sured with respect to the 200 phase bins selected out
+of the 1388 bins per period, each bin corresponding to
+327.68µs.
+In contrast to the amplitude–phase drift ob-
+served in PSR J0835−4510 (Vela), the clusters for
+PSR J1644−4559 vary predominantly in amplitude
+while exhibiting nearly similar (scattered) shapes. This
+pattern remains consistent across all three days of obser-
+vation and within the 4-, 6-, and 9-cluster SOM decom-
+positions for each day (compare Figure 3 with Figures 5–
+6). The peak width and the skewness are very close in
+value across all clusters, all three SOM configurations
+(4, 6, and 9 clusters), and all three days of observation
+(averaging 26.58±0.51 bins, i.e. 8.7±0.2 ms, in peak
+width, and 1.89±0.02 in peak skew). Additionally, the
+peak height and peak location of cluster #0 are nearly
+constant throughout. The clusters therefore appear to
+differ only in amplitude.
+This behavior is the one expected when the observed
+pulse shape is set by propagation rather than by the
+emission geometry: the scattering tail imposed by the
+interstellar medium, of the order of several millisec-
+onds at 1400 MHz, is common to all pulses and largely
+erases the intrinsic amplitude–phase correlation that is
+so clearly seen in Vela. The constancy of the measured
+widths across clusters and days also indicates that we
+do not resolve pulse-to-pulse variations of the scattering
+timescale in the present data set; setting quantitative
+limits on such variations will require the polarimetric
+and higher-cadence observations discussed in Section 5.
+4.3.PSR J0437−4715
+PSR J0437−4715 is the closest and brightest millisec-
+ond pulsar known (Johnston et al. 1993), with a rotation
+periodP≈5.757 ms, DM≈2.6 pc cm −3, and a dis-
+tance of only∼157 pc; it is in a 5.74-day orbit with
+a helium white-dwarf companion and has a mean flux
+density of∼150 mJy at 1400 MHz, with a very nar-
+row pulse width ofW 50 ≈0.141 ms (ATNF catalog,
+Manchester et al. 2005). Its brightness and stability
+make it a cornerstone of pulsar timing arrays, one of
+the very few MSPs for which single pulses can be indi-
+vidually detected (Ables et al. 1997; Vivekanand et al.
+1998), and its timing precision is ultimately limited by
+pulse-to-pulse jitter, measured at the level of∼48 ns
+at 1400 MHz for one-hour integrations (Parthasarathy
+et al. 2021; Lam & Hazboun 2021). Previous IAR ob-
+serving campaigns of this pulsar are described in Sosa
+Fiscella et al. (2021).
+We performed a pulse-per-pulse analysis of three ob-
+servations with R2 on 2026 May 5, 18, and 21. For this
+millisecond pulsar the sampling interval was reduced to
+20.48µs (Table 1), so that its narrow profile is still re-
+solved by several phase bins. Figure 4 shows the mean
+reconstructed pulse per cluster for the five-cluster SOM
+decomposition. Table 5 (Appendix C) presents the num-
+ber of pulses, peak location, peak height, peak width,
+pulse skewness, reconstruction RMSE, and S/N for each
+cluster. All metrics are measured with respect to the 200
+phase bins selected out of the 281 bins per period, each
+bin corresponding to 20.48µs.
+We can observe in Figure 4 that retaining only the
+pulses with prominent peaks, i.e. going from cluster
+#-1 to the filtered sample, improves the signal-to-noise
+ratio: the S/N of clusters #0 to #5 is almost double
+that of cluster #-1. Owing to its low S/N, the peak
+height of cluster #-1 is significantly lower than those of
+the other clusters; we have thus provided a zoomed-in
+inset plot for cluster #-1 for better visibility.
+Clusters #1 to #5 are successively distributed along
+the pulse phase with slight overlap between the adjoin-
+ing clusters. These clusters contain comparable num-
+bers of pulses, between∼19 000 and∼28 000, and have
+largely the same peak amplitude. Cluster #0, repre-
+senting the mean of all pulses retained after filtering and
+outlier removal, is 32% of the average peak height of the
+clusters #1 through #5. Moreover, it spans much of the
+phase range covered by clusters #1 through #5. The
+five individual clusters are narrower, and have smaller
+width uncertainties, than either cluster #0 or cluster #-
+1, and this is consistently observed on all three days of
+observation.
+Since the timing precision achievable with a given tem-
+plate scales, to first order, with the width of the feature
+being matched, the narrowing of the individual clusters
+with respect to the mean profile is the quantity of inter-
+
+===== PAGE 10 =====
+10Lousto et al.
+Figure 3.Mean cluster reconstructions for the observations of PSR J1644−4559 with R2 on 2026 March 3 (top row), 4 (middle
+row), and 5 (bottom row), using 4 (left column), 6 (middle column), and 9 (right column) SOM clusters. The legends give the
+number of pulses in each cluster. A window of 200 (out of 1388) phase bins around the mean peak of each day is used for the
+single-pulse analysis and for plotting.
+est here. Averaged over the five clusters, the peak width
+is 2.26 bins, i.e. 46µs, to be compared with 8.2 bins
+(168µs) for cluster #0: the ratio of the daily means is
+3.62±0.39. The∼11% day-to-day scatter of this ratio
+is driven by the width of the mean profile (7.0 bins on
+May 5 against 8.7–8.9 bins on May 18 and 21) rather
+than by the cluster widths themselves, which agree to
+∼2% across the three days. We note that cluster #-1,
+which contains all the raw pulses, has a width of 7.4 bins
+(152µs), close to the catalog valueW 50 = 0.141 ms for
+this pulsar, which provides a useful check that our width
+estimator recovers the standard profile width when ap-
+plied to the unfiltered data.
+The central cluster #3 is the natural template for a
+cluster-based timing analysis, since its mean pulse is
+the one aligned with the peak of the integrated profile
+(peak locations of 33, 77 and 101 bins on the three days,
+against 33, 79 and 99 for cluster #0). Taken individu-
+ally, its width is smaller than that of cluster #0 by a
+factor 3.28±0.40, slightly below the five-cluster average
+because cluster #3 happens to be the broadest of the five
+clusters on each of the three days. Either estimate sug-
+gests that constructing times of arrival from the pulses
+of a single, phase-coherent cluster, rather than from the
+full pulse ensemble, could reduce the timing uncertainty
+of PSR J0437−4715 by a factor of∼3.5. We stress that
+this is an expectation based on the cluster widths, and
+not yet a timing measurement; the corresponding test is
+deferred to the follow-up work described in Section 5.
+5.CONCLUSIONS AND DISCUSSION
+We have presented a homogeneous single-pulse study
+of three bright southern pulsars observed with the up-
+graded ROACH-based digital backend (R2) at the IAR,
+applying the VAE reconstruction and SOM clustering
+pipeline developed in Lousto et al. (2021).
+
+===== PAGE 11 =====
+Single pulses of Vela, PSR J0437−4715, and PSR J1644−455911
+Figure 4.Mean cluster reconstructions for the observations of PSR J0437−4715 with R2 on 2026 May 5 (left column), 18
+(middle column), and 21 (right column), using 5 SOM clusters. The legends give the number of pulses in each cluster. The
+inset plot is a zoomed-in version of Cluster -1, which includes the entire non-filtered raw data set. A window of 200 (out of 281)
+phase bins around the mean peak of each day is used for the single-pulse analysis, and a zoomed-in version with 60 phase bins
+is shown in the plots.
+For the Vela pulsar, the pulse-per-pulse reanalysis of
+the eight days bracketing the 2024 April 29 giant glitch
+confirms, now with R2 data, the results previously ob-
+tained with the ETTUS-A1/A2 SDR backends (Lousto
+et al. 2021; Zubieta et al. 2023, 2025): higher-amplitude
+pulse clusters systematically peak earlier in phase, dis-
+play narrower widths, and show larger skewness, con-
+sistent with an emission-height stratification within the
+open field lines. The mean profile is stable at the percent
+level on all eight days, and the cluster properties repro-
+duce those obtained with the ETTUS receivers; that this
+is now recovered with a backend of seven times the band-
+width, and with an outlier-rejection stage that removes
+the spurious clusters which previously contaminated the
+SOM output, makes the comparison appreciably more
+robust than in our earlier analyses. Across the glitch
+itself we find no significant change of the single-pulse or-
+ganization: with the post-glitch relaxation explicitly in-
+cluded in the timing solution used to extract the pulses,
+the width of the mean profile agrees before and after the
+glitch to−0.5±0.9%, its skewness to−0.1±0.4%, and
+the amplitude–phase hierarchy of the clusters, including
+their phase separations, is preserved on every day. This
+extends to the 2024 event, and sharpens quantitatively,
+the null results obtained for the 2021 glitch (Zubieta
+et al. 2023) and in our first analysis of the 2024 glitch
+(Zubieta et al. 2025): on day timescales, the magneto-
+spheric emission of Vela appears remarkably insensitive
+to even a giant glitch, in contrast with the transient
+single-pulse phenomenology observed within minutes of
+the 2016 event (Palfreyman et al. 2018).
+This null result carries, in hindsight, a methodological
+lesson for single-pulse studies around glitches. In an ear-
+lier iteration of this analysis, based on a timing solution
+that absorbed the transient part of the frequency jump
+into a permanent step, the average post-glitch profile ap-
+peared to broaden progressively—by up to 55% on the
+fourth day after the glitch—while the individual clus-
+ters remained narrow and merely separated in phase.
+The apparent broadening scaled with the decayed frac-
+tion of the transient, corresponding to residual folding-
+frequency errors of only ∆ν/ν∼10 −7, and disappeared
+entirely once the exponential recovery terms of Zubieta
+et al. (2025) were incorporated into thepolycomodels.
+A folding-frequency error at that level leaves each indi-
+vidual pulse untouched but smears any quantity aver-
+aged over a several-hour observation; apparent changes
+of averaged pulse shapes in the days following a glitch
+should therefore be validated against the accuracy of
+the post-glitch timing model before any magnetospheric
+interpretation is attempted.
+The new results for PSR J1644−4559 probe a differ-
+ent type of object: an older, rotationally settled pul-
+sar whose radio emission reaches us strongly scatter-
+broadened. This is directly reflected in the morphol-
+ogy of its clusters, as shown in Figure 3: instead of the
+amplitude–phase drift characteristic of Vela, the clusters
+of PSR J1644−4559 are, to first order, amplitude-scaled
+versions of a common, scattering-dominated shape, their
+widths and skewnesses agreeing to within a few per-
+cent across all clusters, cluster decompositions, and
+days. This comparative behavior demonstrates that our
+pipeline can meaningfully classify single pulses under
+very different emission and propagation conditions.
+The main emphasis of this work is the possibil-
+ity of improving the timing of the millisecond pulsar
+PSR J0437−4715. Our analysis shows that selecting the
+10% of pulses with the highest peak-dominance score
+nearly doubles the signal-to-noise ratio, and that the re-
+sulting five SOM clusters are individually narrower than
+the mean profile by a factor 3.62±0.39 (46µs against
+168µs), which is the figure of merit that ultimately
+controls the achievable timing precision. This realizes,
+for this MSP, the prospect anticipated in Lousto et al.
+
+===== PAGE 12 =====
+12Lousto et al.
+(2024) from the narrower nature of the high-amplitude
+pulse clusters found in Vela (Lousto et al. 2021). Turn-
+ing it into an actual improvement requires the construc-
+tion of a pulsar template (Sosa Fiscella et al. 2021) to
+be matched against the observations. Since our single-
+pulse analysis collects pulses into large clusters and our
+typical observations extend over∼3 hours, the intrinsic
+jitter noise floor (∼48 ns at 1400 MHz for one-hour in-
+tegrations; Parthasarathy et al. 2021; Lam & Hazboun
+2021) is not currently the main limitation to our preci-
+sion. This improvement is to be confirmed in a follow-up
+paper using standard timing data and times-of-arrival
+(TOA) construction, comparing template matching on
+the full pulse ensemble with TOAs built from the se-
+lected high-amplitude clusters. If confirmed, such a
+cluster-based selection would provide a practical route
+to mitigate the shape-variability noise of bright MSPs
+(Os lowski et al. 2011; Shannon et al. 2014), of direct
+relevance to pulsar-timing-array science.
+Finally, we note that the continuous, high-cadence
+monitoring of southern pulsars at IAR is of interest well
+beyond pulsar astrophysics itself, and the very glitch
+analyzed in this work provides a concrete illustration.
+The LVK collaboration has searched the data of its
+fourth observing run for gravitational waves associated
+with the 2024 April 29 Vela glitch, both for seconds-
+long burst-like emission—primarily from fundamental-
+mode oscillations—and for longer quasi-monochromatic
+transients of up to four months in duration, primar-
+ily from quasi-static quadrupolar deformations (Abac
+et al. 2026). No significant candidate was found, but
+for the first time direct upper limits on the gravita-
+tional strain amplitude were set that are stricter than
+those inferred indirectly from the overall glitch energy
+scale. Searches of this kind rely on an accurate elec-
+tromagnetic determination of the glitch epoch and of
+the post-glitch relaxation—the latter over precisely the
+weeks-to-months baseline covered by the long-duration
+search—which is what high-cadence radio monitoring of
+the kind reported here provides.
+More generally, the temporal coincidence of our daily
+observations with gravitational-wave events detected
+by the LVK collaboration offers the opportunity to
+search for correlated electromagnetic signatures—for
+instance, glitches or emission-state changes contem-
+poraneous with candidate Galactic gravitational-wave
+transients—as well as to contribute radio monitoring of
+electromagnetic counterparts identified at other wave-
+lengths. The single-pulse sensitivity demonstrated here,
+combined with the flexibility of a dedicated facility able
+to react promptly to alerts, makes the IAR program a
+valuable component of multimessenger follow-up cam-
+paigns in the southern sky.
+ACKNOWLEDGMENTS
+COL gratefully acknowledges support from NSF awards
+AST-2319326, PHY-2207920, and PHY-2513442. We
+are very grateful to the staff of the IAR for their contin-
+uous technical support during the execution of this work.
+S.B.A.F. and E.Z. are PhD candidates with CONICET
+fellowships. F.G. acknowledges support from PIBAA
+1275 and PIP 0113 (CONICET). S.d.P. acknowledges
+support from ERC Advanced Grant 789410. This re-
+search has made use of the ATNF Pulsar Catalogue
+(Manchester et al. 2005).
+Software:PRESTO (Ransom 2011), PSRCHIVE
+(Hotan et al. 2004), RFIClean (Maan et al. 2021), scikit-
+learn (Pedregosa et al. 2011), SciPy
+REFERENCES
+Abac, A. G., et al. 2026, Astrophys. J., 1005, 12,
+doi: 10.3847/1538-4357/ae63bc
+Ables, J. G., McConnell, D., Deshpande, A. A., &
+Vivekanand, M. 1997, ApJL, 475, L33,
+doi: 10.1086/310468
+Anderson, P. W., & Itoh, N. 1975, Nature, 256, 25,
+doi: 10.1038/256025a0
+Araujo Furlan, S. B., Gancio, G., Galante, C. A., &
+Romero, G. E. 2023, Boletin de la Asociacion Argentina
+de Astronomia La Plata Argentina, 64, 304
+Gancio, G., Romero, G. E., Astudillo, J., Saavedra, E. A., &
+Combi, J. A. 2024, in Revista Mexicana de Astronomia y
+Astrofisica Conference Series, Vol. 56, Revista Mexicana
+de Astronomia y Astrofisica Conference Series, 131–133
+Gancio, G., Lousto, C. O., Combi, L., et al. 2020, Astron.
+Astrophys., 633, A84, doi: 10.1051/0004-6361/201936525
+Haskell, B., & Melatos, A. 2015, International Journal of
+Modern Physics D, 24, 1530008,
+doi: 10.1142/S021827181530008X
+Hickish, J., Abdurashidova, Z., Ali, Z., et al. 2016, Journal
+of Astronomical Instrumentation, 5, 1641001,
+doi: 10.1142/S2251171716410014
+
+===== PAGE 13 =====
+Single pulses of Vela, PSR J0437−4715, and PSR J1644−455913
+Higgins, I., Matthey, L., Pal, A., et al. 2017, in
+International Conference on Learning Representations.
+https://openreview.net/forum?id=Sy2fzU9gl
+Hotan, A. W., van Straten, W., & Manchester, R. N. 2004,
+PASA, 21, 302, doi: 10.1071/AS04022
+Johnston, S., Lorimer, D. R., Harrison, P. A., et al. 1993,
+Nature, 361, 613, doi: 10.1038/361613a0
+Karastergiou, A., Johnston, S., & Kramer, M. 2004,
+MNRAS, 348, 1229,
+doi: 10.1111/j.1365-2966.2004.07446.x
+Kingma, D. P., & Welling, M. 2013, arXiv e-prints,
+arXiv:1312.6114, doi: 10.48550/arXiv.1312.6114
+Krishnan, S., Bailes, M., van Straten, W., et al. 2019,
+MNRAS, 484, 5025, doi: 10.1093/mnras/stz327
+Lam, M. T., & Hazboun, J. S. 2021, Astrophys. J., 911,
+137, doi: 10.3847/1538-4357/abeb64
+Liu, F. T., Ting, K. M., & Zhou, Z.-H. 2008, in 2008 Eighth
+IEEE International Conference on Data Mining, 413–422,
+doi: 10.1109/ICDM.2008.17
+Liu, M., Li, D., Dawson, J. R., et al. 2025, ApJS, 278, 13,
+doi: 10.3847/1538-4365/adbe66
+Lousto, C. O., et al. 2021, Mon. Not. Roy. Astron. Soc.,
+509, 5790, doi: 10.1093/mnras/stab3287
+Lousto, C. O., Missel, R., Zubieta, E., et al. 2024, Rev.
+Mex. Astron. Astrof. Ser. Conf., 56, 134.
+https://arxiv.org/abs/2305.05458
+Maan, Y., van Leeuwen, J., & Vohl, D. 2021, Astron.
+Astrophys., 650, A80, doi: 10.1051/0004-6361/202040164
+Manchester, R. N., Hobbs, G. B., Teoh, A., & Hobbs, M.
+2005, Astron. J., 129, 1993, doi: 10.1086/428488
+Os lowski, S., van Straten, W., Hobbs, G. B., Bailes, M., &
+Demorest, P. 2011, MNRAS, 418, 1258,
+doi: 10.1111/j.1365-2966.2011.19578.x
+Palfreyman, J., Dickey, J. M., Hotan, A., Ellingsen, S., &
+van Straten, W. 2018, Nature, 556, 219,
+doi: 10.1038/s41586-018-0001-x
+Parthasarathy, A., et al. 2021, Mon. Not. Roy. Astron. Soc.,
+502, 407, doi: 10.1093/mnras/stab037
+Pedregosa, F., Varoquaux, G., Gramfort, A., et al. 2011,
+Journal of Machine Learning Research, 12, 2825
+Radhakrishnan, V., & Manchester, R. N. 1969, Nature, 222,
+228, doi: 10.1038/222228a0
+Ransom, S. 2011, PRESTO: PulsaR Exploration and
+Search TOolkit, Astrophysics Source Code Library,
+record ascl:1107.017
+Shannon, R. M., Os lowski, S., Dai, S., et al. 2014, MNRAS,
+443, 1463, doi: 10.1093/mnras/stu1213
+Sosa Fiscella, V., del Palacio, S., Combi, L., et al. 2021,
+Astrophys. J., 908, 158, doi: 10.3847/1538-4357/abceb3
+Vivekanand, M., Ables, J. G., & McConnell, D. 1998, A&A,
+332, L1
+Weisberg, J. M., Johnston, S., Koribalski, B., &
+Stanimirovi´ c, S. 2005, Science, 309, 106,
+doi: 10.1126/science.1112413
+Zubieta, E., Garcia, F., del Palacio, S., et al. 2024, Astron.
+Astrophys., 689, A191,
+doi: 10.1051/0004-6361/202450441
+Zubieta, E., et al. 2023, Mon. Not. Roy. Astron. Soc., 521,
+4504, doi: 10.1093/mnras/stad723
+Zubieta, E., Missel, R., Furlan, S. B. A., et al. 2025, Astron.
+Astrophys., 698, A72, doi: 10.1051/0004-6361/202554098
+
+===== PAGE 14 =====
+14Lousto et al.
+APPENDIX
+A.TABLES OF THE SOM CLUSTERING FOR THE VELA PULSAR (PSR J0835−4510)
+In Tables 2 and 3 we describe in detail the six-cluster analysis of the R2 observations taken on 2024 April 17, 18,
+19, and 20 (before the glitch), and on 2024 May 1, 2, 3, and 4 (after the glitch).
+The columns are the quantities defined in Section 4: the number of pulses, and the location, height, width and
+skewness of the peak of the mean pulse, followed by the reconstruction RMSE. The peak width is the full width at
+half maximum obtained withscipy.signal.peak widths10 and the skewness is the Fisher–Pearson coefficient from
+scipy.stats.skew11. All metrics carry estimated 1σerrors and are computed over the 200-phase-bin window of
+Section 3.3, taken from the 545 bins into which the period is divided (163.84µs per bin). Cluster #0 is the mean
+over all pulses surviving outlier rejection; clusters #1 to #N are ordered by decreasing peak amplitude of their mean
+reconstructed pulse, as in Figure 5 and 6.
+We observe a systematic tendency for the pulse peaks to appear earlier in phase the higher the amplitude, together
+with a reduction of the width and an increase of the skewness, as also found in our previous analyses of the 2021
+observations (Lousto et al. 2021; Zubieta et al. 2023). Moreover, the peak of cluster #0 is centered at around bin 100.
+Figures 5 and 6 display all the days of observation used in the 4-, 6-, and 9-cluster SOM analyses.
+B.TABLES OF THE SOM CLUSTERING FOR PSR J1644−4559
+In Table 4 we list, for the three observations of 2026 March 3, 4, and 5, the six-cluster SOM decomposition of
+PSR J1644−4559. The columns have the same meaning as in Appendix A; here the metrics are computed over the
+200-phase-bin window taken from the 1388 bins per period (327.68µs per bin). Clusters #1 to #N are ordered by
+decreasing peak amplitude of their mean reconstructed pulse, as in Figure 3, and cluster #0 is the mean over all pulses
+surviving outlier rejection.
+C.TABLES OF THE SOM CLUSTERING FOR PSR J0437−4715
+In Table 5 we list, for the three observations of 2026 May 5, 18, and 21, the five-cluster SOM decomposition of
+PSR J0437−4715, with the addition of the median S/N per cluster defined in Section 4. The metrics are computed
+over the 200-phase-bin window taken from the 281 bins per period (20.48µs per bin). In contrast to the other
+two pulsars, clusters #1 to #N are here ordered by increasing peak location, since their peak amplitudes are nearly
+identical. With this convention cluster #3 is the central one in phase on each of the three days (peak locations 33, 77
+and 101 bins, against 33, 79 and 99 for cluster #0), which is why it is the reference adopted for the timing discussion
+of Section 4.3; cluster #0 is the mean over the filtered pulses surviving outlier rejection, and cluster #-1 the mean
+over all raw pulses of the observation. No RMSE is quoted for cluster #-1, since no VAE reconstruction is produced
+for the unfiltered data set.
+10 https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.peak widths.html
+11 https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.skew.html
+
+===== PAGE 15 =====
+Single pulses of Vela, PSR J0437−4715, and PSR J1644−455915
+T able 2.SOM clustering of PSR J0835−4510 (Vela) with antenna R2 on the four days preceding the 2024 glitch.
+Cluster # # Pulses Peak Loc Peak Height Peak Width Peak Skew RMSE
+2024 April 17
+0 145741 100.00±1.91 22.27±16.67 9.04±2.23 3.93±0.59 0.04
+1 521 97.00±0.67 159.30±46.06 4.18±0.50 5.96±0.44 0.50
+2 3152 98.00±0.80 73.15±17.68 5.40±1.12 5.07±0.52 0.17
+3 9538 98.00±1.03 43.04±9.86 6.93±1.68 4.48±0.49 0.07
+4 30483 100.00±1.07 33.51±7.41 7.23±1.64 4.37±0.45 0.06
+5 52202 101.00±1.38 21.80±4.33 8.50±1.79 4.03±0.42 0.06
+6 49845 102.00±1.44 14.17±3.65 9.01±1.72 3.80±0.38 0.04
+2024 April 18
+0 144945 100.00±1.98 18.87±14.88 9.25±2.20 3.90±0.57 0.02
+1 189 97.00±0.68 193.09±42.00 4.12±0.39 6.16±0.37 0.59
+2 1831 98.00±0.78 82.20±24.24 4.90±0.87 5.40±0.54 0.20
+3 9254 98.00±0.89 40.82±10.63 6.41±1.56 4.59±0.50 0.08
+4 27966 100.00±0.91 30.39±6.51 7.07±1.49 4.41±0.43 0.04
+5 59058 101.00±1.38 18.56±3.67 8.81±1.75 3.97±0.39 0.04
+6 46647 102.00±1.36 11.89±2.71 9.16±1.49 3.77±0.31 0.03
+2024 April 19
+0 145624 100.00±1.89 18.66±14.30 9.22±2.14 3.90±0.55 0.03
+1 426 97.00±0.63 151.27±47.55 4.18±0.35 5.99±0.37 0.58
+2 2894 98.00±0.76 63.96±16.93 5.25±1.01 5.13±0.55 0.23
+3 10448 99.00±1.02 38.74±7.72 6.65±1.47 4.54±0.46 0.10
+4 29563 100.00±1.09 27.35±4.96 7.49±1.53 4.29±0.41 0.05
+5 42615 101.00±1.35 18.79±3.48 8.72±1.72 3.98±0.38 0.04
+6 59678 102.00±1.33 12.79±3.25 9.07±1.50 3.82±0.33 0.05
+2024 April 20
+0 145644 100.00±1.85 18.85±14.51 9.24±2.16 3.89±0.56 0.05
+1 360 97.00±0.79 155.80±50.10 4.29±0.47 6.02±0.40 0.92
+2 2526 97.00±0.76 69.21±18.47 5.18±1.02 5.16±0.50 0.24
+3 10790 98.00±1.00 39.36±8.61 6.78±1.53 4.52±0.47 0.11
+4 31468 100.00±1.23 26.45±5.84 7.73±1.68 4.25±0.43 0.07
+5 57034 101.00±1.21 18.52±3.83 8.50±1.63 4.03±0.37 0.07
+6 43466 102.00±1.40 11.66±2.48 9.26±1.53 3.73±0.31 0.03
+
+===== PAGE 16 =====
+16Lousto et al.
+T able 3.SOM clustering of PSR J0835−4510 (Vela) with antenna R2 on the four days following the 2024 glitch.
+Cluster # # Pulses Peak Loc Peak Height Peak Width Peak Skew RMSE
+2024 May 1
+0 143132 100.00±1.98 20.01±15.30 9.19±2.22 3.90±0.57 0.08
+1 388 97.00±0.68 158.21±43.41 4.18±0.46 5.99±0.45 0.76
+2 2037 98.00±0.75 76.30±17.80 5.11±1.01 5.22±0.52 0.23
+3 8980 98.00±0.93 43.13±9.98 6.55±1.59 4.57±0.49 0.10
+4 24888 100.00±0.95 32.31±6.46 7.14±1.52 4.39±0.43 0.10
+5 56750 101.00±1.37 20.28±4.05 8.61±1.76 4.00±0.41 0.09
+6 50089 102.00±1.41 12.90±3.04 9.07±1.59 3.78±0.33 0.06
+2024 May 2
+0 144918 100.00±1.89 20.43±17.05 9.28±2.31 3.87±0.60 0.05
+1 267 96.00±0.61 202.06±44.52 4.05±0.35 6.20±0.36 0.57
+2 1939 97.00±0.68 90.48±26.69 4.73±0.94 5.43±0.56 0.24
+3 10636 98.00±0.95 47.69±11.45 6.24±1.45 4.67±0.51 0.08
+4 32062 99.00±1.26 28.74±6.83 7.91±1.90 4.17±0.48 0.07
+5 52189 100.00±1.36 20.54±4.56 8.41±1.71 4.06±0.41 0.07
+6 47825 102.00±1.46 12.61±2.95 9.21±1.66 3.74±0.34 0.04
+2024 May 3
+0 145742 100.00±1.86 22.11±16.06 8.98±2.18 3.93±0.58 0.06
+1 406 96.00±0.84 154.11±44.82 4.30±0.56 5.96±0.47 1.46
+2 2815 98.00±0.94 72.55±20.97 5.50±1.23 5.08±0.57 0.41
+3 13520 99.00±1.22 42.14±10.25 7.04±1.71 4.47±0.50 0.13
+4 32230 100.00±1.07 30.82±6.32 7.32±1.58 4.35±0.43 0.06
+5 53162 101.00±1.37 20.99±4.26 8.54±1.75 4.02±0.41 0.06
+6 43609 102.00±1.52 13.29±3.23 9.21±1.74 3.74±0.36 0.04
+2024 May 4
+0 140437 100.00±1.84 21.95±16.35 9.13±2.21 3.90±0.58 0.07
+1 288 96.00±0.72 180.59±45.91 4.22±0.44 6.08±0.39 0.53
+2 2056 97.00±0.80 84.10±23.22 5.07±0.95 5.27±0.53 0.27
+3 8799 98.00±0.87 45.16±10.83 6.54±1.59 4.53±0.48 0.12
+4 18944 99.00±0.91 37.53±7.42 6.81±1.40 4.52±0.42 0.15
+5 51169 100.00±1.44 23.35±4.52 8.77±1.86 3.99±0.43 0.08
+6 59181 101.00±1.58 14.54±3.90 9.17±1.79 3.78±0.38 0.05
+
+===== PAGE 17 =====
+Single pulses of Vela, PSR J0437−4715, and PSR J1644−455917
+Figure 5.Mean cluster reconstructions for the observations of Vela (PSR J0835−4510) with R2 before the glitch, on 2024
+April 17, 18, 19, and 20 (top to bottom), using 4 (left column), 6 (middle column), and 9 (right column) SOM clusters. The
+legends give the number of pulses in each cluster. A window of 200 (out of 545) phase bins around the mean peak of each day
+is used for the single-pulse analysis, and a zoomed-in version with 50 phase bins is shown in the plots.
+
+===== PAGE 18 =====
+18Lousto et al.
+Figure 6.Same as Figure 5, but after the glitch, on 2024 May 1, 2, 3, and 4 (top to bottom).
+
+===== PAGE 19 =====
+Single pulses of Vela, PSR J0437−4715, and PSR J1644−455919
+T able 4.SOM clustering of PSR J1644−4559 with antenna R2 on 2026 March 3, 4, and 5.
+Cluster # # Pulses Peak Loc Peak Height Peak Width Peak Skew RMSE
+2026 March 3
+0 27569 100.00±1.91 2.50±0.57 26.67±3.97 1.91±0.06 0.01
+1 166 101.00±1.80 4.66±0.72 26.17±3.73 1.89±0.05 0.21
+2 1621 102.00±1.82 3.65±0.36 26.77±3.56 1.89±0.05 0.07
+3 4232 102.00±1.97 3.07±0.26 26.65±3.31 1.90±0.05 0.03
+4 8141 100.00±1.83 2.61±0.25 26.48±3.22 1.91±0.05 0.02
+5 8408 100.00±1.84 2.26±0.21 26.10±3.54 1.92±0.06 0.02
+6 5001 101.00±1.85 1.93±0.20 26.76±5.36 1.89±0.08 0.04
+2026 March 4
+0 27498 100.00±1.82 2.48±0.52 26.57±3.86 1.90±0.06 0.02
+1 217 101.00±2.13 4.17±0.60 26.16±3.76 1.87±0.05 0.19
+2 1365 101.00±2.03 3.46±0.36 26.54±3.46 1.89±0.05 0.07
+3 3661 101.00±2.04 2.98±0.30 26.94±3.64 1.90±0.05 0.04
+4 6773 99.00±1.89 2.64±0.25 26.69±3.51 1.91±0.05 0.02
+5 8261 100.00±1.77 2.34±0.21 26.32±3.47 1.92±0.05 0.02
+6 7221 100.00±1.99 2.03±0.20 26.28±4.45 1.89±0.07 0.04
+2026 March 5
+0 23249 100.00±2.01 2.51±0.58 27.22±5.09 1.88±0.06 0.02
+1 539 101.00±2.13 4.04±0.56 26.22±4.01 1.87±0.05 0.15
+2 2221 101.00±2.06 3.29±0.37 27.54±4.62 1.88±0.05 0.05
+3 4190 101.00±2.13 2.86±0.31 27.37±4.37 1.89±0.05 0.03
+4 5353 100.00±1.86 2.56±0.25 26.93±4.04 1.89±0.05 0.03
+5 7103 100.00±1.98 2.24±0.25 26.72±4.77 1.89±0.06 0.03
+6 3843 100.00±2.39 1.94±0.22 26.29±6.14 1.85±0.08 0.04
+
+===== PAGE 20 =====
+20Lousto et al.
+T able 5.SOM clustering of PSR J0437−4715 with antenna R2 on 2026 May 5, 18, and 21.
+Cluster # # Pulses Peak Loc Peak Height Peak Width Peak Skew RMSE SNR
+2026 May 5
+-1 1243800 33.00±87.49 0.40±16.07 6.94±4.00 3.73±3.72 - 36.63
+0 124306 33.00±2.02 3.37±7.95 7.02±4.81 4.99±2.00 0.03 74.15
+1 20256 30.00±0.81 10.90±2.46 1.87±0.59 9.38±3.68 0.05 67.69
+2 25356 32.00±0.71 9.37±2.87 2.44±0.68 8.50±2.96 0.07 71.62
+3 27630 33.00±0.72 9.92±2.38 2.49±0.82 8.26±3.01 0.05 71.04
+4 23208 34.00±1.18 8.53±3.09 2.36±0.70 8.25±3.06 0.05 67.89
+5 27856 36.00±1.81 10.28±2.45 1.91±0.66 9.05±3.69 0.05 66.13
+2026 May 18
+-1 1238800 77.00±61.63 0.42±16.13 7.57±4.55 3.79±3.77 - 40.31
+0 123797 79.00±3.16 3.04±9.57 8.69±6.67 4.44±3.20 0.04 75.96
+1 20736 73.00±3.21 10.06±3.05 1.87±0.53 8.91±2.75 0.07 66.01
+2 25864 75.00±1.88 9.69±3.42 2.29±0.77 8.68±2.49 0.05 72.67
+3 26779 77.00±1.04 9.03±4.05 2.50±0.97 8.51±2.36 0.06 72.90
+4 26342 78.00±1.11 9.43±3.94 2.36±0.89 8.74±2.39 0.05 72.12
+5 24076 80.00±0.95 9.44±4.06 2.46±0.84 8.51±2.38 0.05 74.55
+2026 May 21
+-1 1239300 100.00±57.31 0.49±16.02 7.74±4.69 3.79±3.77 - 40.85
+0 123871 99.00±3.15 2.97±9.42 8.89±6.85 4.36±3.19 0.04 72.74
+1 19706 97.00±1.40 10.58±3.25 2.04±0.72 9.34±2.97 0.06 70.37
+2 26396 99.00±1.06 10.40±3.07 2.33±0.76 8.78±2.46 0.05 74.46
+3 27058 101.00±0.89 9.83±3.32 2.51±1.00 8.32±2.09 0.05 74.87
+4 28218 103.00±1.96 9.10±3.31 2.44±0.87 8.25±2.38 0.07 72.74
+5 22493 105.00±2.34 9.91±3.22 2.06±0.64 9.19±3.11 0.05 70.86

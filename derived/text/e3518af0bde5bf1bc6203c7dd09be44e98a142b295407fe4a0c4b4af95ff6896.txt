@@ -1,0 +1,593 @@
+===== PAGE 1 =====
+Draft version June 5, 2026
+Typeset using LATEXtwocolumnstyle in AASTeX631
+Sensitivity Limits and Operational Threshold Calibration for DINOv2-based Gravitational-Wave
+Glitch Characterization: A Strain-Domain Mock Data Challenge on LIGO O4a
+Luca Cirfeta 1
+1Independent Researcher, Rome, Italy
+ABSTRACT
+We present a systematic Mock Data Challenge (MDC) designed to characterize the sensitivity limits
+of thegravi-signal-mlpipeline (Cirfeta 2026) for unsupervised gravitational-wave glitch detection.
+Strain-domain synthetic injections of eight morphological families into public LIGO O4a L1 data
+reveal two distinct sensitivity regimes determined entirely by the choice of detection threshold. When a
+session-adaptive dynamic threshold (τdyn =µ bg−2.5σbg) is employed, the pipeline successfully recovers
+visually anisotropic morphologies (Butterfly,ZSweep) at matched-filter SNR (Allen et al. 2012)≳70,
+reaching Recall = 1.0. However, this threshold yields a False Positive Rate that is not strictly controlled
+and may vary substantially across sessions. Characterization of the full O4a embedding distribution
+(N= 188,142 segments) reveals extreme non-Gaussianity (skewness =−4.12, excess kurtosis = 15.38;
+Shapiro-Wilkp= 1.13×10 −86; best tail fit: Generalized Extreme Value). Under the statistically
+rigorous operational thresholdτ op = 0.874 calibrated at the empirical 5×10−5 quantile (FPR<0.01%),
+the MDC yields Recall = 0 for all eight morphologies at all tested SNR levels — including narrowband
+structures (HarmonicComb,NarrowChirp) and impulsive transients (AsymBlip) at SNR up to 430. We
+trace this fundamental insensitivity to the global average pooling of the DINOv2[CLS]token, which
+dilutes any signal occupying a small fraction of the spectrogram’s 37×37 patch grid, whether localized
+in time or frequency. The null result of Cirfeta (2026) is conditionally reinterpreted: it is valid within
+the sensitivity regime defined by this architectural constraint, and does not exclude morphologies
+detectable only atτ > τ op without FPR control. These findings provide a quantitative roadmap for
+next-generation ViT-based pipelines based on patch-level scoring and multi-scale windowing.
+Keywords:gravitational waves — detector characterization — machine learning — mock data challenge
+— threshold calibration — LIGO O4a — DINOv2 — signal dilution
+1.INTRODUCTION
+Transient noise artifacts (glitches) in LIGO
+gravitational-wave detectors remain a primary obsta-
+cle to maximizing detection sensitivity (Davis et al.
+2021; Nuttall et al. 2018). Unsupervised characteriza-
+tion of glitch morphology is essential for data quality
+monitoring, particularly for identifying novel, previously
+uncatalogued glitch classes in new observing runs.
+Cirfeta (2026) introducedgravi-signal-ml, an un-
+supervised anomaly detection pipeline applying frozen
+DINOv2 (Oquab et al. 2024) features to Q-transform
+spectrograms of LIGO O4a strain data. Evaluated on
+N= 188,142 segments across four sessions from H1
+luca.cirfeta@gmail.com
+and L1 detectors, the pipeline found no morphologically
+novel glitch candidates outside the known Gravity Spy
+O3b reference set (Glanzer et al. 2023). While this null
+result is a legitimate scientific outcome, its interpreta-
+tion requires qualification: any claim of absence must
+be grounded in a characterization of the instrument’s,
+or algorithm’s, detection floor.
+The present work provides this quantitative founda-
+tion through five contributions:
+1. The first empirical characterization of the DINOv2
+maximum cosine similarity (s max) distribution on
+N= 188,142 real GW O4a segments, including
+its statistical moments, tail behavior, and best-fit
+distributional family.
+2. A formal demonstration that Gaussiank-σthresh-
+olding is statistically inappropriate for this do-
+arXiv:2606.06237v1  [astro-ph.IM]  4 Jun 2026
+
+===== PAGE 2 =====
+2
+main, with a rigorous empirical alternative based
+on GEV tail modeling.
+3. A systematic MDC with eight synthetic morpho-
+logical families spanning two injection runs, reveal-
+ing a threshold-dependent bifurcation in pipeline
+sensitivity.
+4. Identification of thesignal dilution effectas the
+primary architectural bottleneck, a bi-dimensional
+pooling limitation of the DINOv2[CLS]token in
+both time and frequency.
+5. A conditional reinterpretation of the Cirfeta
+(2026) null result within the precisely character-
+ized sensitivity regime.
+2.PIPELINE AND EXPERIMENTAL SETUP
+We employ thegravi-signal-mlpipeline as fully de-
+scribed in Cirfeta (2026). The core architecture encodes
+32-second Q-transform spectrograms (256×256 pixels,
+colormapcividis) with frozendinov2 vits14 reg
+(Darcet et al. 2024), producing 384-dimensional L2-
+normalized[CLS]embeddings. Novelty is assessed as
+smax, the maximum cosine similarity between the query
+embedding and the in-domain Gravity Spy O3b refer-
+ence index (2,878 samples, 19 classes; Glanzer et al.
+2023).
+The present study introduces two components not
+present in Cirfeta (2026): (1) an MDC injection module
+performing strain-domain synthetic glitch injection, and
+(2) an empirical threshold calibration module, replacing
+the static global threshold (τ= 0.85) of Cirfeta (2026).
+All MDC runs were performed on session20260524
+L1 — the session with the largest background standard
+deviation (σ bg = 0.0073), representing the hardest de-
+tection condition. The background distribution is char-
+acterized overN= 188,142 segments from four O4a
+sessions, both H1 and L1.
+3.O4A DISTRIBUTION CHARACTERIZATION
+3.1.Empirical Distribution of Maximum Cosine
+Similarity
+Table 1 summarizes the statistical properties of the
+smax distribution across all 188,142 O4a segments. The
+distribution has mean 0.9953 and standard deviation
+0.0031 but exhibits a pronounced heavy left tail, result-
+ing in a skewness of−4.12 and excess kurtosis of 15.38.
+A Shapiro-Wilk test on a random subsample ofn= 5000
+(seed = 42) yieldsW= 0.328,p= 1.13×10 −86, deci-
+sively rejecting normality.
+Fitting distributional families to the left tail (s max <
+0.95,n≈9400 segments), we find that a General-
+0.86 0.88 0.90 0.92 0.94 0.96 0.98 1.00
+Maximum Cosine Similarity (smax)
+10 4
+10 3
+10 2
+10 1
+100
+101
+102
+103
+Probability Density (log scale)
+Left-T ail Distribution of DINOv2 Similarity in O4a
+O4a Data (N = 188, 142)
+GEV Fit (Best)
+Beta Fit
+Gaussian Fit
+op = 0.874 (FPR < 0.01%)
+1.0 1.2 1.4 1.6 1.8 2.0 2.2 2.4
+1.00
+1.02
+1.04
+1.06
+1.08
+GEV Q-Q Plot
+Figure 1.Empirical distribution ofs max for 188,142 O4a
+segments (left tail). The Generalized Extreme Value (GEV)
+distribution provides a significantly better fit than a Beta or
+Gaussian distribution, demonstrating the heavy-tailed na-
+ture of the baseline background.
+ized Extreme Value (GEV) distribution (Fisher & Tip-
+pett 1928; Gumbel 1958) provides a significantly better
+fit than a Beta distribution: LL GEV = 32,413.6 ver-
+sus LL Beta = 31,768.9, a log-likelihood improvement of
+∆LL = 644.7 in favor of GEV. The mathematical superi-
+ority of the GEV framework over the Beta distribution
+is not merely empirical, but fundamentally rooted in
+asymptotic extreme value theory. Sinces max is explicitly
+defined as the supremum of cosine similarities against a
+large reference set, the Fisher-Tippett-Gnedenko theo-
+rem dictates that the distribution of such block max-
+ima must asymptotically converge to one of the three
+extreme value families encompassed by the GEV dis-
+tribution. This theoretical anchor provides a rigorous,
+physics-based justification for using GEV quantiles to
+define operational thresholds, moving away from arbi-
+trary Gaussian assumptions.
+T able 1.Statistical properties of the O4as max distribution
+(N= 188,142 segments).
+Metric V alue
+Mean (µ) 0.9953
+Std (σ) 0.0031
+Min 0.867
+Skewness−4.12
+Excess kurtosis 15.38
+Shapiro-WilkW(n= 5000, seed 42) 0.328
+Shapiro-Wilkp-value 1.13×10 −86
+Best tail fit GEV
+GEV log-likelihood (tail) 32,413.6
+Beta log-likelihood (tail) 31,768.9
+
+===== PAGE 3 =====
+3
+3.2.Failure of Gaussian Thresholding
+The extreme left-tail non-Gaussianity has critical op-
+erational implications. The minimum observeds max
+across 188,142 segments is 0.867. Under a Gaussian as-
+sumption with the observedµ= 0.9953 andσ= 0.0031,
+this corresponds toz= (0.867−0.9953)/0.0031 =
+−41.4σ, a value that would be predicted with proba-
+bility<10 −373 — many orders of magnitude beyond
+the inverse of the number of segments. In practice, to
+achieve FPR<0.01% via a Gaussiank-σrule on the
+actualdistribution, the requiredkwould bek≈23.9 —
+an entirely unphysical operating point.
+This demonstrates that GW embedding distributions
+with heavy GEV tails cannot be thresholded usingk-σ
+rules without severe FPR inflation. Operational thresh-
+olds must be derived directly from empirical quantiles
+of the observed distribution.
+3.3.Empirical Operating Points
+Table 2 lists the operating points derived from the
+empirical distribution. We selectτ op = 0.874 (the
+5×10 −5 quantile) as the operational threshold, which
+produces at most 9 false positives per 188,142 segments
+(FPR≈0.005%), and corresponds to approximately
+2 false positives on the 21,985 L1 segments of session
+20260524.
+T able 2.Empirically calibrated operating points from the
+full O4as max distribution.
+τop FPR N novel (188k)
+0.874 0.005% 9
+0.930 0.046% 87
+0.950 0.096% 181
+0.970 0.496% 934
+3.4.Inter-session Non-stationarity
+The O4a background is highly non-stationary. Ta-
+ble 3 shows the baseline statistics for four sessions and
+both detectors (per-session background characterization
+performed in this work). The standard deviation varies
+by almost an order of magnitude (0.0010–0.0073), and
+the dynamic thresholdτ dyn =µ−2.5σcorrespondingly
+spans from 0.9748 to 0.9944. This confirms that a fixed
+global threshold is never simultaneously optimal for all
+sessions. The empirical percentile approach used here
+decouples the threshold from session parameters, ensur-
+ing consistent FPR guarantees.
+4.MOCK DATA CHALLENGE
+T able 3.Per-session baseline statistics for the O4a L1 and
+H1 detectors (per-session background characterization per-
+formed in this work).
+Session Detµ bg σbg τdyn
+20260520 H1 0.9962 0.0021 0.9909
+20260520 L1 0.9969 0.0010 0.9944
+20260522 H1 0.9959 0.0014 0.9924
+20260522 L1 0.9959 0.0012 0.9928
+20260523 H1 0.9944 0.0040 0.9844
+20260523 L1 0.9952 0.0025 0.9889
+20260524 H1 0.9946 0.0038 0.9851
+20260524 L1 0.9932 0.0073 0.9748
+4.1.Experimental Design
+Synthetic glitches are injected into raw L1 O4a strain
+data at the center of randomly selected 32-second seg-
+ments,priorto whitening and Q-transform processing,
+ensuring physical fidelity to the operational pipeline. We
+target a log-uniform amplitude grid from 10−22 to 10−21
+in 10 steps, with 15–40 trials per (type, amplitude) com-
+bination using session20260524L1 data. For each in-
+jection, the synthetic glitch waveform (in strain units)
+is added to the raw L1 strain data at a random start
+time, ensuring the glitch center falls within the central
+50% of the 32-second segment to avoid windowing arti-
+facts. The whitening and Q-transform are then applied
+to the combined data exactly as in the original pipeline.
+The matched-filter SNR is computed as the peak am-
+plitude of the injected strain waveform divided by the
+root-mean-square noise amplitude in the same frequency
+band, following standard LIGO practices (Abbott et al.
+2020). The SNR ranges reported in the subsequent ta-
+bles represent the minimum and maximum values re-
+covered across the discrete amplitude grid steps. To
+characterize sensitivity transitions, we compute SNR 50
+— the SNR at which Recall reaches 0.5 — via logistic
+regression interpolation of the discrete recall measure-
+ments.
+Eight synthetic morphologies are organized in two
+groups:
+Group A — Visually anisotropic broadbands::
+Butterfly(sinusoidal chirp,≲4s duration),
+ZSweep(frequency sweep,≲4s),SpiralBurst
+(brief broadband burst),StepLadder(step-wise
+harmonic sequence),NoiseBlob(unstructured
+broadband noise blob).
+Group B — Physically motivated narrow-bands::
+NarrowChirp(150→300 Hz sweep, 0.5s),Harmon-
+
+===== PAGE 4 =====
+4
+icComb(7 harmonics of 100 Hz, full duration),
+AsymBlip(τ rise = 10ms,τ decay = 300ms).
+The MDC is executed at two threshold settings to
+disentangle architectural from threshold-calibration ef-
+fects: (1) session-adaptive dynamic thresholdτ dyn =
+µbg−2.5σ bg = 0.9811; and (2) empirically calibrated
+operational thresholdτ op = 0.874.
+4.2.Run A: Dynamic Threshold Results (Group A)
+Table 4 reports MDC results atτ dyn = 0.9811 for
+Group A morphologies (five broadband types, 363 to-
+tal valid injections per session). The results reveal a
+fundamental morphology-dependent bifurcation.
+T able 4.MDC Run A results at dynamic thresholdτ dyn =
+0.9811.
+Type SNR range SNR 50 Max RecallN
+Butterfly 17–345 80 1.000 366
+ZSweep 25–496 109 1.000 373
+SpiralBurst 13–269>2600 0.000 352
+StepLadder 20–403>4200 0.000 359
+NoiseBlob 23–484>3300 0.000 363
+ButterflyandZSweepreach Recall = 1.0 at SNR
+≳250 and SNR≳130, respectively, demonstrating
+that the DINOv2 feature spacecandifferentiate cer-
+tain highly anisotropic chirp-like shapes from the Grav-
+ity Spy reference manifold. Conversely,SpiralBurst,
+StepLadder, andNoiseBlobremain at Recall = 0.00
+across the full amplitude range, confirming their em-
+beddings project within the convex hull of the reference
+index regardless of SNR. This dichotomy — perfect re-
+call at high SNR for some morphologies versus complete
+blindness for others — is a strong result indicating that
+the projection is strictly morphology-dependent, likely
+reflecting whether the synthetic morphology is spanned
+by the Gravity Spy reference index.
+4.3.Run B: Calibrated Threshold Results (All Types)
+Table 5 reports results atτop = 0.874 for all five Group
+A morphologies (Runmdc 32s calibrated,n NULL =
+78, local baseline:µ= 0.9940,σ= 0.0035,τ dyn =
+0.9852). All morphologies yield Recall = 0.00 at all
+amplitude steps. Note that Run B used a reduced am-
+plitude grid (10 −22–5×10 −22) compared to Run A, ac-
+counting for the lower SNR ceiling in Table 5 relative to
+Table 4.
+This result arises from a geometric argument: the min-
+imum observeds max across all 188,142 O4a background
+T able 5.MDC Run B results at empirical thresholdτ op =
+0.874. All recalls are identically zero. Amplitude grid limited
+to 10−22–5×10 −22 (SNR ceiling lower than in Run A).
+Type SNR range Max RecallN
+Butterfly 17–175 0.000 160
+ZSweep 25–251 0.000 177
+SpiralBurst 14–138 0.000 181
+StepLadder 21–207 0.000 177
+NoiseBlob 23–231 0.000 187
+All 14–251 0.000 882
+segments is min(s max) = 0.867, a value belowτ op only
+for 9 segments in the full background. Even injections
+at SNR∼175 (Butterfly) do not suppress the[CLS]
+embedding below 0.874 in any of the tested trials.
+Table 6 extends this to the Group B narrow-band mor-
+phologies (Runmdc narrowband calibrated,n NULL =
+85, local baseline:µ= 0.9939,σ= 0.0051,τ dyn =
+0.9811).
+T able 6.MDC Run C results atτ op = 0.874 for narrow-
+band and impulsive morphologies.
+Type SNR range Max RecallN
+AsymBlip 38–430 0.000 167
+NarrowChirp 20–208 0.000 168
+HarmonicComb 12–214 0.000 200
+All 12–430 0.000 535
+Combined, the three MDC runs cover 1,417 valid in-
+jection trials across 8 morphologies and confirm Recall
+= 0.000 for all cases at the operationally calibrated
+threshold.
+4.4.The Signal Dilution Effect
+The MDC results are fully explained by the geometry
+of the DINOv2 feature extraction. The frozen ViT-S/14
+backbone processes the input spectrogram via a 37×37
+grid of non-overlapping patches. Given the 32-second
+analysis window, each patch column spans an absolute
+physical duration of ∆t patch = 32/37≈0.86 seconds.
+Similarly, across the analyzed spectral bandwidth (10–
+2000 Hz), each patch row covers a frequency bin of
+∆fpatch≈53.8 Hz. The[CLS]token in ViT-S/14 rep-
+resents a global average pooling over all 37×37 = 1369
+patches of the input spectrogram. An injected glitch
+perturbs only a localized subset of patches; its contri-
+bution to the[CLS]token is weighted proportionally to
+the spatial fraction it occupies.
+
+===== PAGE 5 =====
+5
+101 102
+Matched-Filter SNR
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Recall
+MDC Sensitivity Curves by Threshold Regime
+Butterfly (Dynamic 0.98)
+ZSweep (Dynamic 0.98)
+SpiralBurst / NoiseBlob (Dynamic)
+All Morphologies (Calibrated op = 0.874)
+Figure 2.MDC Sensitivity curves demonstrating the
+threshold bifurcation. At the dynamic thresholdτ dyn =
+0.9811 (Run A), visually anisotropic morphologies likeBut-
+terflyandZSweepare recovered at high SNR. At the oper-
+ationally calibrated thresholdτ op = 0.874 (Runs B and C),
+Recall is identically zero for all morphologies across all tested
+SNRs.
+For short-duration transients at the center of a 32-
+second window: a 0.5-secondAsymBlipoccupies≈
+0.5/32≈1.6% of the temporal axis, corresponding to
+≲1 column of the 37-patch temporal grid. For spec-
+trally narrow signals: aHarmonicCombwith 7 harmon-
+ics of 100 Hz spans only 7×∆f patch of the spectral
+axis, covering≲5% of the spectral patch grid. In both
+cases, the anomalous patches constitute<5% of the to-
+tal 1369 patches. Global average pooling suppresses the
+anomaly signal to<0.05×∆e glitch, where ∆eglitch is the
+per-patch embedding perturbation.
+Global Average Pooling
+suppresses anomaly signal
+Signal Dilution in 37 × 37 Patch Grid
+Signal occupies 1.5% of tokens
+Figure 3.Schematic representation of the signal dilution
+effect. A transient occupying a small fraction (<5%) of
+the 37×37 spectrogram patch grid is severely attenuated
+by the global average pooling of the DINOv2[CLS]token,
+failing to suppress the global similarity below the operational
+detection threshold.
+Although the non-linear projection layers and MLP
+heads of the ViT introduce non-linear coupling terms,
+the global embedding perturbation can be modeled to a
+first-order linear approximation. If an anomalous tran-
+sient occupies a localized spatial fractionfof the total
+patch grid, the global similaritys global scales approxi-
+mately as:
+sglobal≈(1−f)s bg +fs anomaly (1)
+wheres bg≈0.995 is the baseline background similar-
+ity. Forf <0.05 and a maximally orthogonal anomaly
+(sanomaly≈0),s global ≳0.95×0.995≈0.945. This theo-
+retical lower bound lies significantly aboveτ op = 0.874,
+mathematically precluding detection regardless of the
+injection amplitude. The resulting change ins max is
+therefore insufficient to push any trial below the oper-
+ational threshold. EvenButterflyandZSweep, which
+doproduce detectable changes atτ dyn≈0.985, fail at
+τop = 0.874 because the GEV-distributed background
+floor (min = 0.867) lies only 7 units below the threshold
+in units of 10 −3.
+We emphasize that this is an architectural constraint
+ofglobalpooling, not a limitation of DINOv2 representa-
+tions per se: the patch-level tokens contain the relevant
+spatial information, but the CLS aggregation destroys
+it.
+4.5.FPR Validation on O4a
+Running the pipeline atτ op = 0.874 on the 21,985 seg-
+ments of session 20260524 L1, two candidate segments
+were flagged (FPR obs = 0.009%). Visual inspection
+and cross-checking with the LIGO logbooks revealed
+the exact physical nature of the two flagged false pos-
+itives atτ op = 0.874. Segment GPS 1386816320 cor-
+responds to a well-known non-stochastic anthropogenic
+non-stationarity, specifically an intense low-frequency
+ground vibration episode near the endstation. Segment
+GPS 1386824608 captures a digital data-dropout arti-
+fact (DAQ overflow) that introduces a sharp visual edge
+in the Q-transform plane. The fact that only two deter-
+ministic, non-gravitational instrumental anomalies by-
+passed the strictτ op threshold over 21,985 segments con-
+firms the robustness of the GEV calibration framework
+in rejecting clean stationary background noise.
+5.DISCUSSION
+5.1.Conditional Reinterpretation of Cirfeta (2026)
+The null result of Cirfeta (2026) is therefore reinter-
+preted not as a failure of detection, but as a structural
+boundary condition: it rigorously confirms the com-
+plete absence of morphologically novel macro-structures
+or uncatalogued broadband anomalies sweeping across
+
+===== PAGE 6 =====
+6
+large areas of the time-frequency plane during O4a.
+Concurrently, this MDC delineates the exact opera-
+tional boundaries of zero-shot Foundation Models in
+gravitational-wave physics, showing that highly local-
+ized micro-structures (<5% patch area) require local-
+ized, patch-level scoring metrics to break the signal di-
+lution barrier.
+Morphologies thatcouldbe detectable under an ap-
+propriate architecture (e.g., patch-level scoring) might
+exist in O4a data undetected by the[CLS]-based
+pipeline. The null result therefore cannot exclude novel
+morphologies that are visually localized in the spectro-
+gram plane and occupy<5% of the analysis window.
+5.2.Threshold Bifurcation and the Role of the
+Dynamic Threshold
+The original pipeline in Cirfeta (2026) utilized a static
+global threshold (τ= 0.85) for morphological novelty
+detection. During this MDC, we explored a session-
+adaptive dynamic threshold (τ dyn≈0.98–0.99), signifi-
+cantly aboveτ op. Run A demonstrates that at this el-
+evated level, visually anisotropic broadband morpholo-
+gies (Butterfly,ZSweep) are indeed detectable, but the
+FPR is uncontrolled. A fluctuating baseline withσ bg
+varying by 7×across sessions producesτ dyn values rang-
+ing over [0.9748,0.9944], implying that the same true-
+positive sensitivity level is never guaranteed across ses-
+sions. An empirical percentile threshold decouples sen-
+sitivity from baseline noise fluctuations. Whileτ op =
+0.874 guarantees a strict FPR, it results in complete
+blindness to the tested injections. A compromise inter-
+mediate threshold (e.g.,τ≈0.93–0.95) could be consid-
+ered to recover some events, but this would inevitably
+inflate the FPR to∼0.05–0.1% (Table 2), generating
+hundreds of false positives per run and requiring down-
+stream vetoes. ForButterflyatτ= 0.93, recall reaches
+0.5 at SNR≈150 (not shown), but this comes at the
+cost of∼87 false positives per 188k segments.
+5.3.Roadmap for Next-Generation Architectures
+Two architectural modifications can break the signal
+dilution barrier:
+1.Patch-level scoring:Replacing the[CLS]token
+with a maximum ork-th order statistic over in-
+dividual patch token similarities. This preserves
+local spatial structure and prevents the averag-
+ing penalty. Implementable with existing DINOv2
+weights, no retraining required.
+2.Multi-scale windowing:Parallel processing at
+1s, 4s, and 32s windows with a logical OR combi-
+nation. This resolves temporal dilution for short
+transients but does not address spectral dilution
+for spectrally narrow signals likeHarmonicComb.
+5.4.Transferability of the Calibration Framework
+The GEV-based empirical percentile calibration ap-
+plies to any anomaly detection pipeline operating in a
+bounded cosine similarity space. The critical prerequi-
+site isN >50,000 background segments to resolve the
+heavy tail with sufficient statistical precision. We rec-
+ommend publishing the fulls max distribution as a public
+dataset to enable reproducible calibration by indepen-
+dent groups.
+5.5.Limitations
+(1) The MDC was performed exclusively on session
+20260524L1. Cross-session generalization of the ex-
+act Recall curves requires validation. (2) The Gravity
+Spy O3b reference index may not cover all O4a glitch
+classes, creating potential false negative risks for known-
+but-unrepresented morphologies. (3) Larger ViT back-
+bones (e.g., ViT-B/14, 768-dim[CLS]) may exhibit dif-
+ferent background distributions; the GEV characteriza-
+tion should be re-derived for any backbone change.
+6.CONCLUSION
+We have characterized the sensitivity limits of the
+gravi-signal-mlpipeline through a systematic, two-
+threshold, three-run Mock Data Challenge on LIGO O4a
+L1 data (Run A: dynamic threshold, Group A morpholo-
+gies; Run B: operational threshold, Group A morpholo-
+gies; Run C: operational threshold, Group B morpholo-
+gies), covering 1,417 valid injection trials across 8 syn-
+thetic morphologies. Our principal findings are:
+1.Two-regime sensitivity:The pipeline de-
+tects visually anisotropic broadband morphologies
+(Butterfly,ZSweep) at matched-filter SNR≳109
+under a dynamic threshold (see Table 4), but fails
+for all 8 morphologies (including narrow-band and
+impulsive types at SNR up to 430) under the op-
+erationally calibrated thresholdτ op = 0.874.
+2.Non-Gaussian background:Thes max dis-
+tribution over 188,142 O4a segments follows a
+GEV-tailed distribution (skewness−4.12, kurto-
+sis 15.38), invalidating Gaussiank-σthresholding.
+3.Signal dilution effect:The[CLS]global aver-
+age pooling systematically dilutes signals occupy-
+ing<5% of the spectrogram patch grid, whether
+localized in time (AsymBlip) or frequency (Har-
+monicComb). This is a structural architectural
+limit.
+
+===== PAGE 7 =====
+7
+4.Conditional null result:The null result of Cir-
+feta (2026) is valid within the sensitivity regime
+characterized here; it does not exclude novel sig-
+nals detectable atτ >τ op or by patch-level archi-
+tectures.
+A null result paired with a fully characterized sen-
+sitivity limit constitutes a substantially stronger scien-
+tific statement than an unqualified negative. This MDC
+framework establishes a reproducible standard for sen-
+sitivity characterization of ViT-based GW anomaly de-
+tection pipelines.
+Software and Data Availability.The
+gravi-signal-mlpipeline, MDC injection module,
+and threshold calibration tools are open-source: https:
+//github.com/lucacirfeta/dante-gravi-signal-ml (DOI:
+10.5281/zenodo.20121860). LIGO strain data from O4a
+are publicly available via GWOSC (GWOSC 2023).
+REFERENCES
+Abbott, R., Abbott, T. D., Abraham, S., et al. 2020,
+Classical and Quantum Gravity, 37, 055002
+Cirfeta, L. 2026, arXiv:2605.28572
+Allen, B., Anderson, W. G., Brady, P. R., et al. 2012,
+Physical Review D, 85, 122006,
+https://doi.org/10.1103/PhysRevD.85.122006
+Darcet, T., Oquab, M., Doup´ e, E., et al. 2024, ICLR 2024,
+arXiv:2309.16588
+Davis, D., Areeda, J. S., Berger, B. K., et al. 2021, Classical
+and Quantum Gravity, 38, 135014
+Fisher, R. A., & Tippett, L. H. C. 1928, Mathematical
+Proceedings of the Cambridge Philosophical Society, 24,
+180
+Glanzer, J., Saravanan, S., Coughlin, S., et al. 2023,
+Classical and Quantum Gravity, 40, 065006
+Gravitational Wave Open Science Center 2023, GWOSC
+O4a Dataset, https://gwosc.org/
+Gumbel, E. J. 1958, Statistics of Extremes, Columbia
+University Press
+Nuttall, L. K. 2018, Philosophical Transactions of the Royal
+Society A, 376, 20170286
+Oquab, M., Darcet, T., Moutakanni, T., et al. 2024,
+Transactions on Machine Learning Research (TMLR)

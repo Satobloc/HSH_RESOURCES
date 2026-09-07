@@ -1,0 +1,525 @@
+===== PAGE 1 =====
+Draft version June 10, 2026
+Typeset using LATEXtwocolumnstyle in AASTeX631
+Patch-Level DINOv2 Scoring for Gravitational-Wave Glitch Detection: Breaking the Signal Dilution
+Barrier via Vector-Quantized Local Feature Indexing
+Luca Cirfeta 1
+1Independent Researcher, Rome, Italy
+ABSTRACT
+We present a patch-level scoring architecture for unsupervised gravitational-wave glitch detection
+that mitigates the signal dilution limitation identified in Cirfeta (2026b). The[CLS]token of frozen
+DINOv2 (ViT-S/14) performs global average pooling over 37×37 = 1369 patches, systematically
+suppressing signals occupying less than 5% of the spectrogram grid. We replace the global[CLS]
+similarity metric with a top-korder statistic over individual patch token similarities against a Vector-
+Quantized reference index (K= 64 centroids per class, 19 Gravity Spy O3b morphologies, 1216
+total centroids). Applied to strain-domain injections in LIGO O4a L1 data (session 20260524), we
+demonstrate a statistically significant distributional separation (KS = 0.963 at optimalk= 68) for
+spatially extended morphologies (SpiralBurst), while confirming the patch-size temporal resolution
+limit for ultra-short transients (AsymBlip). A topological saliency map constructed from spatial patch
+similarity against a background matrix (78 null segments) correctly localizes glitch signatures for
+Scattered Lightand injectedSpiralBurst. The Max/Mean ratio analysis demonstrates that patch-
+level saliency functions as a topological visualizer rather than a binary detector, consistent with the
+non-isotropic geometry of DINOv2 embedding space on GW spectrograms.
+Keywords:gravitational waves — detector characterization — machine learning — DINOv2 — patch
+tokens — vector quantization — signal dilution — mock data challenge — LIGO O4a —
+saliency map
+1.INTRODUCTION
+The characterization of non-Gaussian transient noise
+(glitches) in gravitational-wave interferometers is critical
+for maximizing the astrophysical reach of the Advanced
+LIGO and Virgo network (Soni et al. 2025). While su-
+pervised frameworks like Gravity Spy (Zevin et al. 2017;
+Glanzer et al. 2023) excel at classifying known mor-
+phological classes, they are structurally blind to novel
+anomaly populations. Traditional unsupervised base-
+lines operating on raw pixels or Principal Component
+Analysis (PCA) fail in this regime due to their lack of
+translational invariance and extreme fragility to local-
+ized variations in the detector’s Power Spectral Den-
+sity (PSD). To overcome this, in Cirfeta (2026a), we
+introduced a completely unsupervised pipeline utilizing
+the robust self-attention embedding space of DINOv2
+(Oquab et al. 2024; Darcet et al. 2024) coupled with
+luca.cirfeta@gmail.com
+Dirichlet Process Mixture Models (DPMM) to dynam-
+ically cluster and discover morphologies in LIGO O4a
+data.
+Despite its robust clustering capabilities (ARI>0.90),
+a rigorous Mock Data Challenge (MDC) conducted in
+Cirfeta (2026b) revealed a critical limitation: the mor-
+phological anomaly detector achieved a Boolean Recall
+of 0.00 for short-duration synthetic injections (e.g.,Spi-
+ralBurst,AsymBlip) even at extreme signal-to-noise ra-
+tios (SNR>400). The failure was isolated to a struc-
+tural limitation inherent to Vision Transformers (ViT)
+applied to high-resolution time-frequency data: theSig-
+nal Dilution Effect.
+When analyzing Q-transform spectrograms, brief
+transient signals occupy a minuscule fraction of the
+pixel grid. DINOv2 extracts features by processing
+37×37 = 1369 spatial patches, aggregating them into
+a single 384-dimensional global[CLS]token via average
+pooling. The anomaly signal from the glitch footprint is
+thus mathematically diluted into the background noise
+covering the rest of the temporal window.
+arXiv:2606.09933v1  [astro-ph.IM]  7 Jun 2026
+
+===== PAGE 2 =====
+2
+In this work, we propose an architectural resolution
+to the signal dilution barrier. We abandon the global
+[CLS]token and operate directly on the dense spatial
+grid of 1369 patch tokens. We introduce:
+1. AVector-Quantized (VQ) Reference Index
+at the patch-level (K= 64, 19 classes), solving the
+dimensionality explosion problem.
+2. ATop-kOrder Statistics Scoringalgorithm
+(k= 68), which isolates and evaluates only the
+most anomalous structural components of the
+data.
+3. The first patch-level MDC on real LIGO O4a
+strain, demonstrating statistically significant sep-
+aration (KS>0.90) where the global approach
+was completely blind.
+4. ATopological Saliency Map, providing a ro-
+bust, non-discriminative tool for post-hoc visual
+interpretability.
+2.ARCHITECTURE
+2.1.From Global to Patch Tokens
+The standard DINOv2 ViT-S/14 architecture splits an
+input image (resized to 518×518 pixels) into a 37×37
+grid, producing 1369 patch tokens plus one global[CLS]
+token. While the[CLS]token serves as a holistic sum-
+mary, the local geometry of the strain features resides
+purely within the patch tokens.
+We extract the patch tokens directly from the final
+transformer block via theforward features()method.
+LetP i∈R 384 denote thei-th patch token, wherei∈
+{1,...,1369}. Because cosine similarity requires points
+on the unit hypersphere, and raw DINOv2 patches ex-
+hibit anL 2-norm of approximately 27, explicit strictL 2-
+normalization is enforced:
+ˆPi = Pi
+∥Pi∥2
+(1)
+The structural variance of the background is significant,
+with a mean off-diagonal spatial cosine similarity be-
+tween intra-spectrogram patches of 0.6227. This indi-
+cates that moving from 1 global vector to 1369 localized
+vectors provides a vastly richer geometric manifold for
+anomaly detection.
+2.2.Vector-Quantized Reference Index
+Transitioning to patch-level embeddings increases the
+spatial dimensionality by a factor of 1369, making tra-
+ditional K-Nearest Neighbors (KNN) searches computa-
+tionally intractable for streaming applications. We ad-
+dress this via Spherical Vector Quantization.
+Using the exact same Gravity Spy O3b spectrograms
+defining the in-domain reference in Cirfeta (2026a),
+we extract patch tokens for all samples across 19
+known morphological classes. For each class, we ap-
+ply aMiniBatchKMeansclustering algorithm (K= 64,
+random state=42) (Sculley 2010) directly to theL 2-
+normalized patch manifold.
+This compression results in a spatially-invariant,
+highly compact dictionary of 1216 prototypical cen-
+troids (19 classes×64 centroids), mapping the en-
+tirety of the O3b known structural space. The reference
+index ensures perfect reproducibility: across indepen-
+dent build iterations on different hardware, the maxi-
+mum Euclidean distance divergence between the gener-
+ated centroid matrices is exactly 0.0 (MD5 checksum:
+1080afa809964011e398c44fb24b73c6).
+2.3.The Signal Dilution Effect and Top-kScoring
+The mathematical driver behind the[CLS]failure lies
+in its implicit attention-pooling mechanism. To a first-
+order approximation, the global similarity metricS CLS
+can be approximated as a weighted sum of patch-level
+similaritiesS i:
+SCLS≈ 1
+N
+NX
+i=1
+Si (2)
+For a short duration transient (e.g.,AsymBlip) on a
+37×37 grid (N= 1369), the anomaly footprint occupies
+K≪Npatches with anomaly scoreα. The remaining
+N−Kbackground patches exhibit a baseline anomaly
+ϵ≈0. The global anomaly score scales as:
+SCLS∼α K
+N (3)
+ForK/N <0.02, the deviationα K
+N becomes smaller
+than the natural variance of the background distribu-
+tion, causing the transient to disappear entirely.
+To break this barrier, we implement aTop-kNovelty
+Scoringmechanism. For an incoming spectrogram, we
+compute the local anomaly score for each patchiagainst
+the VQ dictionaryD:
+ai = 1−max
+c∈D
+
+ˆPi· ˆPc
+
+(4)
+We sort the arrayain descending order and define the
+global spectrogram novelty score as the mean of the top-
+kvalues:
+Novelty = 1
+k
+kX
+j=1
+a(j) (5)
+For our target morphology (SpiralBurst), the non-
+linear Q-transform scaling maps its chirping frequency
+sweep across an integrated topological footprint covering
+
+===== PAGE 3 =====
+3
+roughly 5% of the spectrogram grid (≈74 patches). An
+empirical sweep determinedk= 68 as the optimal order
+statistic for evaluating this specific transient geometry.
+The operational threshold is defined using a General-
+ized Extreme Value (GEV) fit set strictly at the 99th
+percentile (FPR<1%) of the empirical background dis-
+tribution (n= 500 null segments from the local session).
+DINOv2 Architectural Shift for Gravitational-Wave Glitch Detection
+Q-Transform Spectrogram
+(256 x 256 pixels)
+Frozen DINOv2 (ViT-S/14)
+Baseline Paradigm
+Global [CLS] T oken
+(1 x 384-dim)
+Global Similarity vs
+Global Reference Index
+Average Pooling
+Signal Dilution Effect
+Result: Blind to short transients
+(Recall = 0.0)
+Proposed Paradigm
+Dense Patch T okens
+(1369 x 384-dim)
+Patch-Level Similarity vs
+VQ Reference Index
+(1216 centroids)
+Top-k (k=68) Pooling
+Topological Isolation
+Result: Significant Separation
+(KS > 0.90)
+Figure 1.Architectural schematic comparing the global
+[CLS]token baseline against the proposed Patch-Level Top-
+kNovelty Scoring framework. The 37×37 spatial grid illus-
+trates the isolation of the Top-68 most anomalous patches
+relative to the Vector-Quantized Reference Index.
+2.4.Topological Saliency Map
+While the VQ index successfully classifies global nov-
+elty, it introduces severe false positives if used for spa-
+tial localization. The Q-Transform is not shift-invariant;
+the high-frequency and low-frequency bins possess vastly
+different noise floors, and the temporal boundaries suf-
+fer from ringing artifacts. Because the VQ index is
+spatially invariant (patch positions are lost during K-
+Means), mapping an edge patch to the VQ index artifi-
+cially inflates its anomaly score.
+We architecturally decouple theTopological
+Saliency Mapfrom the VQ index. The saliency map
+evaluates spatial anomalyexclusivelyagainst a localized
+Background Median Matrix:
+Mbg(x,y) = median s∈Null ˆPs(x,y) (6)
+calculated over 78 pure noise segments. The spatial
+anomaly for visualization is defined strictly coordinate-
+by-coordinate:
+Saliency(x,y) = 1−
+
+ˆPtest(x,y)·M bg(x,y)
+
+(7)
+This (37,37) topology is then bilinearly upsampled to
+the original (256,256) pixel grid. We emphasize that
+the Saliency Map serves purely as an interpretability
+tool, not as an independent classifier.
+3.EXPERIMENTS
+3.1.Cross-Session Global CLS Baseline
+To quantify the starting baseline, we evaluate the
+[CLS]token’s capacity for threshold-based anomaly de-
+tection across 4 runs of O4a L1 data from Cirfeta
+(2026b). As formally demonstrated in that analysis, the
+[CLS]global average pooling operates over the entire
+37×37 grid. Because a short-duration transient occu-
+pies less than 5% of this grid, its topological anomaly
+is mathematically averaged out against the stochastic
+background noise. As demonstrated in Cirfeta (2026b),
+the maximum cosine similarity shift induced by strain-
+domain injection at SNR = 138 is ∆s max ≈0.003,
+compared to a massive gap of 0.121 between the back-
+ground mean (µ= 0.9953) and the operational thresh-
+old (τop = 0.874), yielding a signal-to-threshold ratio of
+≈40×. This structural blindness physically guarantees
+a Recall = 0.00 for localized transient signals under a
+strict False Positive Rate threshold. Consequently, we
+shift the detection paradigm entirely to patch-level top-
+kmetrics.
+3.2.Micro-MDC Design
+We conduct a patch-level Mock Data Challenge
+(Micro-MDC) injecting three morphologically distinct
+waveforms across variable patch footprint sizes:Asym-
+Blip(small area,∼15 patches),SpiralBurst(medium
+area,∼74 patches), andHarmonicComb(extended
+area, hundreds of patches). Crucially, all injections
+are performed directly into the raw strain domain prior
+to whitening, simulating the true physical interaction
+with the detector’s Power Spectral Density (PSD). The
+baseline data consists of L1 O4a strain from session
+20260524, selected for its challenging background noise
+variance (σbg = 0.0073). We injected 30 waveforms per
+amplitude level across an 8-point logarithmic grid span-
+ning [1×10 −22,1×10 −21] (corresponding to a max-
+imum matched-filter SNR (Allen et al. 2012) ranging
+from approximately 138 forSpiralBurstto over 400 for
+AsymBlip, depending on the waveform’s spectral over-
+lap with the detector’s PSD). To demonstrate that the
+parameterkmathematically maps the topological ex-
+tension of the anomaly, we perform ak-sweep across
+k∈{15,37,68,100}.
+3.3.MDC Results
+The empirical KS matrix provides immediate, quan-
+tifiable evidence of the Patch-Level resolution capabili-
+ties and its physical limits:
+1.The Spatial Diffraction Limit (AsymBlip):
+As anticipated by the physical constraints of the
+
+===== PAGE 4 =====
+4
+T able 1.Kolmogorov-Smirnov (KS) Statistic separation across morphologies and Top-kpooling operators at SNR≈138.
+Morphology T opology / Span KS (k=15) KS (k=37) KS (k=68) KS (k=100)
+AsymBlip Ultra-Short (∼15 patches) 0.000 (p= 1.00) 0.098 (p= 0.66)0.117(p= 0.56) 0.043 (p= 0.90)
+SpiralBurst Mid-Band (∼74 patches) 0.807 (p<0.01) 0.927 (p<0.01)0.963(p<0.01) 0.935 (p<0.01)
+HarmonicComb Broadband (>300 patches) 0.987 (p<0.01) 0.976 (p<0.01)0.993(p<0.01) 0.983 (p<0.01)
+14×14 ViT convolutions, ultra-short transients
+like theAsymBlipfail to significantly deviate from
+the noise GEV distribution acrossanykconfigura-
+tion. Even at the highest amplitude (SNR≈403),
+the KS test fails to reject the null hypothesis,
+yieldingp-values consistently above the signifi-
+cance threshold (p∈[0.569,1.000]). The signal
+footprint is simply too small to dominate even a
+single patch, resulting in unavoidable intra-patch
+dilution and confirming mathematical blindness to
+sub-patch events.
+2.Topological Mapping (SpiralBurst):For
+mid-band transient signals, the KS statistic ex-
+hibits a clear maximization curve. The separabil-
+ity peaks precisely atk= 68 (KS = 0.963), before
+degrading atk= 100 (KS = 0.935). This empiri-
+cal drop-off strictly validates that increasingkbe-
+yond the signal’s topological area re-introduces the
+Signal Dilution Effect by incorporating surround-
+ing null-noise patches into the pooling operation.
+3.Broadband Saturation (HarmonicComb):
+Contrary to concerns that spectral lines might
+be entirely suppressed by the whitening high-pass
+filter, theHarmonicCombdemonstrates extreme
+separability (KS>0.97) across the entirek-sweep.
+While Cirfeta (2026b) reported Recall = 0.00 for
+HarmonicCombunder[CLS]-based global scoring,
+patch-level Top-kscoring yields KS = 0.993 for the
+same morphology. Because its morphological foot-
+print is massive (spanning horizontally across the
+entire spectrogram), it provides a sufficient num-
+ber of highly anomalous patches to saturate the
+novelty metric even at lowkpooling, slightly peak-
+ing atk= 68.
+Due to the severity of the Generalized Extreme Value
+(GEV) threshold required to maintain an FPR<1%
+in the presence of extreme heavy-tailed non-Gaussian
+noise, the Boolean detection metric (Recall) is unstable
+and physically limited. Therefore, we evaluate the ar-
+chitectural sensitivity exclusively via distributional sep-
+aration (Kolmogorov-Smirnov statistic) (Smirnov 1948;
+Kolmogorov 1933).
+102
+Matched-Filter SNR
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0KS Statistic
+Distributional Separation (KS) vs SNR at optimal k = 68
+SpiralBurst
+AsymBlip
+HarmonicComb
+KS Significance Threshold ( = 0.05)
+Figure 2.Kolmogorov-Smirnov (KS) statistic vs. Matched-
+Filter SNR forAsymBlip,SpiralBurst, andHarmonicComb
+at optimalk= 68. The dashed line indicates the threshold
+for statistical significance (α= 0.05). TheSpiralBurstexpe-
+riences a transition to high separation at SNR≈37, whereas
+AsymBlipremains strictly non-significant across the entire
+domain, mathematically confirming the ViT spatial diffrac-
+tion limit.
+3.4.Saliency Map Validation
+We validated the purely spatial Topological Saliency
+Map on isolated samples.
+T able 2.Saliency validation metrics on isolated samples.
+Sample Hotspot Max/Mean T est Outcome
+Scattered Light (22, 11) 8.54 PASS
+SpiralBurst (SNR 135) (17, 23) 5.11 PASS
+No Glitch (Noise) (8, 9) 5.54 N/A (Visualizer)
+The decoupling strategy proved mathematically ro-
+bust: edge artifacts were entirely ignored. The
+Scattered Lighthotspot mapped perfectly to row =
+22, corresponding to the low-frequency scattering arch
+physically expected in the 50-200 Hz band. The injected
+SpiralBurstwas correctly located at the center (17,23).
+Notably, theNo Glitchbackground noise sample
+yielded a Max/Mean ratio of 5.54, slightly higher than
+the massiveSpiralBurst(5.11).
+
+===== PAGE 5 =====
+5
+/uni00000013/uni00000014/uni00000013/uni00000013/uni00000015/uni00000013/uni00000013/uni00000016/uni00000013/uni00000013/uni00000017/uni00000013/uni00000013
+/uni00000037/uni0000004c/uni00000050/uni00000048/uni00000003/uni00000056/uni00000044/uni00000050/uni00000053/uni0000004f/uni00000048/uni00000056
+/uni00000013
+/uni00000018/uni00000013
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000018/uni00000013
+/uni00000015/uni00000013/uni00000013
+/uni00000015/uni00000018/uni00000013
+/uni00000016/uni00000013/uni00000013
+/uni00000016/uni00000018/uni00000013
+/uni00000017/uni00000013/uni00000013
+/uni00000029/uni00000055/uni00000048/uni00000054/uni00000058/uni00000048/uni00000051/uni00000046/uni0000005c/uni00000003/uni0000000b/uni0000002b/uni0000005d/uni0000000c
+/uni00000032/uni00000055/uni0000004c/uni0000004a/uni0000004c/uni00000051/uni00000044/uni0000004f/uni00000003/uni00000034/uni00000010/uni00000037/uni00000055/uni00000044/uni00000051/uni00000056/uni00000049/uni00000052/uni00000055/uni00000050
+/uni00000033/uni00000044/uni00000057/uni00000046/uni0000004b/uni00000003/uni00000036/uni00000044/uni0000004f/uni0000004c/uni00000048/uni00000051/uni00000046/uni0000005c/uni00000003/uni0000000b/uni00000036/uni00000053/uni00000044/uni00000057/uni0000004c/uni00000044/uni0000004f/uni00000003/uni00000025/uni00000044/uni00000046/uni0000004e/uni0000004a/uni00000055/uni00000052/uni00000058/uni00000051/uni00000047/uni0000000c
+/uni00000024/uni00000051/uni00000052/uni00000050/uni00000044/uni0000004f/uni0000005c/uni00000003/uni00000036/uni00000044/uni0000004f/uni0000004c/uni00000048/uni00000051/uni00000046/uni0000005c/uni00000003/uni00000032/uni00000059/uni00000048/uni00000055/uni0000004f/uni00000044/uni0000005c
+/uni00000013/uni00000011/uni00000013
+/uni00000013/uni00000011/uni00000015
+/uni00000013/uni00000011/uni00000017
+/uni00000013/uni00000011/uni00000019
+/uni00000013/uni00000011/uni0000001b
+/uni00000014/uni00000011/uni00000013
+/uni00000024/uni00000051/uni00000052/uni00000050/uni00000044/uni0000004f/uni0000005c/uni00000003/uni00000036/uni00000046/uni00000052/uni00000055/uni00000048
+Figure 3.Topological Saliency Map applied to an injected
+SpiralBurst(SNR≈138). The spatial mapping isolates the
+morphological footprint of the transient, entirely ignoring
+Q-Transform boundary artifacts via purely spatial distance
+evaluations against the null median matrix.
+4.DISCUSSION
+4.1.Mitigating the Signal Dilution Barrier
+The results of the Micro-MDC confirm that extract-
+ing features at the 14×14 patch level mitigates the
+Signal Dilution Effect for transient durations>0.5s.
+The Kolmogorov-Smirnov test proves that the embed-
+ding shift is highly significant (p≪0.05) exactly where
+the[CLS]token was statistically blind. Thek-sweep
+directly correlates the optimal detection statistic with
+the physical area of the anomaly, transitioningkfrom
+an arbitrary hyperparameter to a physically motivated
+mapping operator.
+4.2.The Nature of DINOv2 Embedding Space
+The analysis of the Max/Mean ratio (Table 2) yields a
+critical insight into the latent geometry of Vision Trans-
+formers. The observation that pure strain background
+noise produces localized similarity spikes (×5.54) com-
+parable to extreme (SNR = 135) injections proves that
+the cosine similarity hypersphere of DINOv2 is severely
+non-isotropic. In high-dimensional embedding spaces,
+extreme order statistics (the tails of the background dis-
+tribution) manifest as highly localized variance in indi-
+vidual patch tokens. Coherent morphological signals,
+conversely, exhibit correlated spatial variance across
+contiguous patches. The comparable Max/Mean ratios
+betweenNo Glitch(5.54) andSpiralBurst(5.11) indi-
+cate that the DINOv2 patch embedding space does not
+preferentially concentrate anomaly energy for physical
+signals versus stochastic noise fluctuations at the single-
+frame level. This confirms that the saliency map func-
+tions as a topological visualizer, not a binary classifier.
+Consequently, Topological Saliency Maps must never be
+utilized as single-frame binary detectors; their purpose
+is strictly limited to post-hoc morphological visualiza-
+tion of frames already validated by the global VQ-index
+GEV trigger.
+4.3.Limitations and Roadmap
+We acknowledge three primary limitations:
+1.Patch-Size Temporal Resolution Limit:
+Transients vastly shorter than the ViT patch size
+(e.g.,AsymBlip,<0.1s) remain statistically un-
+resolved (KS≤0.117) regardless of patch-level
+scoring. They exist beneath the spatial resolution
+limit of the 37×37 grid.
+2. While the Micro-MDC maps the optimal sepa-
+ration to a specifick(e.g.,k= 68 forSpiral-
+Burst), a production pipeline will require adaptive
+k-sweeping or an ensemble aggregation approach
+to simultaneously capture highly variable morpho-
+logical footprints without incurringk-miss-match
+dilution.
+3. The strain-domain whitening barrier suppresses
+morphological continuity even before the trans-
+former encoding phase. Multi-scale temporal win-
+dowing is necessary for full pipeline integration.
+In Phase 4 (Production Scan), we will deployMul-
+tiple Instance Learning (MIL) via Mean Pool-
+ing. The Top-kanomalous patches identified by the VQ
+index will be aggregated into a single 384-dimensional
+representation. This avoids the dimensional collapse
+of DPMM clustering while retaining the undiluted
+anomaly signal of the transient.
+5.CONCLUSION
+The application of frozen Vision Transformers to
+gravitational-wave time series requires careful treatment
+of non-stationary spatial geometries. Global average
+pooling natively implemented by the[CLS]token in-
+duces a Signal Dilution Effect that effectively blinds the
+model to short transients. By pivoting to a Vector-
+Quantized Reference Index and implementing a Top-
+kpatch-level scoring algorithm, we have demonstrated
+a statistically robust resolution to this barrier. Patch-
+level scoring produces statistically significant separation
+(KS = 0.963,p≪0.05 for optimalk) where[CLS]
+global pooling was completely blind, demonstrating par-
+tial resolution of the signal dilution effect at the archi-
+tectural level. This framework provides the topological
+extraction necessary for DPMM to discover unmodeled
+transient populations in LIGO O4a.
+Data and Code Availability
+The strain data used in this study are publicly avail-
+able via the Gravitational Wave Open Science Center
+(GWOSC). The complete source code, vector-quantized
+index matrices, and reproduction scripts for the Micro-
+MDC are available on GitHub: https://github.com/
+
+===== PAGE 6 =====
+6
+lucacirfeta/dante-gravi-signal-ml (DOI: 10.5281/zen-
+odo.20121860).
+Acknowledgments
+This research has made use of data or software ob-
+tained from the Gravitational Wave Open Science Cen-
+ter (gwosc.org), a service of LIGO Laboratory, the LIGO
+Scientific Collaboration, the Virgo Collaboration, and
+KAGRA.
+REFERENCES
+Allen, B., Anderson, W.G., Brady, P.R., et al. 2012,
+Physical Review D, 85, 122006,
+https://doi.org/10.1103/PhysRevD.85.122006
+Cirfeta, L. 2026a, arXiv preprint arXiv:2605.28572
+Cirfeta, L. 2026b, arXiv preprint arXiv:2606.06237
+Darcet, T., Oquab, M., Doup´ e, E., & Bourdoukan, R. 2024,
+ICLR 2024, arXiv:2309.16588
+Glanzer, J., Banagiri, S., Coughlin, S. B., et al. 2023,
+Classical and Quantum Gravity, 40, 065004
+Kolmogorov, A. N. 1933, Giornale dell’Istituto Italiano
+degli Attuari, 4, 83–91
+Li, X., et al. 2024, Machine Learning: Science and
+Technology
+Oquab, M., Darcet, T., Moutakanni, T., et al. 2024,
+Transactions on Machine Learning Research
+Sculley, D. 2010, Proceedings of the 19th international
+conference on World wide web (WWW ’10)
+Smirnov, N. 1948, Annals of Mathematical Statistics, 19(2),
+279–281
+Soni, S., et al. 2025, arXiv preprint arXiv:2409.02831
+Zevin, M., et al. 2017, Classical and Quantum Gravity

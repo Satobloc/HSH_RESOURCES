@@ -1,0 +1,1932 @@
+===== PAGE 1 =====
+TIF-UNIMI-2026-5
+Interpreting Parton Distributions with Shapley Values
+Raphaël Bonnet-Guerrini1,3, Stefano Carrazza2,3, Stefano Forte2,3,
+Eva Groenendijk2,3, Vincenzo Piuri1, Ramon Winterhalder2,3
+1Dipartimento di Informatica, Università di Milano, Via Celoria 18, I-20133 Milano, Italy
+2TIF Lab, Dipartimento di Fisica, Università di Milano, and
+3INFN, Sezione di Milano, Via Celoria 16, I-20133 Milano, Italy
+Abstract
+We show that Shapley values can be used to trace how individual parton distributions (PDFs)
+shape the theory predictions for high-energy observables computed from them. This provides
+a tool for assessing the impact of data on PDFs when determining them, and the impact of
+PDF uncertainties when using the PDFs to compute collider observables. The Shapley value
+is computed by treating the regression of PDFs from data as a cooperative game. The PDFs
+are the players, and the reward is the likelihood (χ2) that characterizes the agreement between
+data and the predictions obtained from a given PDF, with theory and methodology held fixed.
+The method is agnostic to the way PDFs have been determined in the first place: for PDFs
+determined with a black-box AI model it may be used in order to explain the behavior of the
+model, and for PDFs determined using a fixed parametrization it may be used in order to expose
+the features and potential limitations of the parametrization. We find that the method recovers
+known expectations about which data constrain which PDFs in a global fit, while placing them
+on a more quantitative footing. We demonstrate its effectiveness in two ways. We uncover an
+unexpected loss of sensitivity of the gluon PDF at intermediatex, with potential implications
+for BSM searches and the gluon fusion Higgs cross section. We also show that the method can
+be used to improve the hyperparameter optimization procedure currently used by the NNPDF
+collaboration.
+1
+arXiv:2607.02647v2  [hep-ph]  7 Jul 2026
+
+===== PAGE 2 =====
+Contents
+1 Introduction 3
+2 From PDFs to observables and vice-versa 4
+2.1 Factorization and evolution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+2.2 PDF parametrization and determination . . . . . . . . . . . . . . . . . . . . . . . 6
+2.3 The black-box problem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+3 Shapley values for PDFs 8
+3.1 The Shapley value in game theory and XAI . . . . . . . . . . . . . . . . . . . . . 8
+3.2 Shapley implementation for PDFs . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+4 Analyzing the NNPDF4.0 PDF set 12
+4.1 The Shapley value for the full dataset . . . . . . . . . . . . . . . . . . . . . . . . 13
+4.2 Dataset impact . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+4.3 Diagnostics and optimization . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+5 Conclusion and outlook 24
+A Dataset tables 26
+B Dataset regularization. 31
+2
+
+===== PAGE 3 =====
+1 Introduction
+Parton distribution functions (PDFs) enter the computation of every process at a hadron collider,
+and how precisely they are known directly shapes the reliability of theory predictions. This is
+a central challenge for precision particle phenomenology, with two distinct facets. On the one
+hand, PDF uncertainties can hamper the search for new physics by masking the signal [1]. On
+the other hand, since PDFs are themselves determined from data, understanding how the data
+constrain them is essential to optimize their extraction. This is nontrivial because PDFs are only
+indirectly related to the data, through perturbative QCD evolution and then convolution with a
+partonic cross section.
+Several tools have been developed to study the sensitivity of PDFs to the data used to deter-
+mine them [2–4]. All of them assume that PDFs are found by maximum-likelihood determination
+of the parameters of a fixed functional form, and study the dependence of the likelihood on the
+parameters in the vicinity of its stationary point. This setup has the disadvantage of only testing
+PDF sensitivity in the subspace of PDF shapes allowed by the given functional form. Also, it does
+not apply when PDFs are determined using a machine learning model such as neural networks,
+in which case they are no longer determined by maximum likelihood. The latter approach to
+PDF determination was proposed long ago [5] and is central to the NNPDF methodology, which
+produces state-of-the-art sets of parton distributions [6]. In this case, the impact of the data on
+the PDFs is also obscured by the intrinsic opacity of the neural network, whose high-dimensional,
+non-linear structure makes it difficult to interpret directly [7].
+Explainable AI (XAI) methods have been suggested in this context as a way to classify PDFs
+by their sensitivity to individual data points [8]. However, many standard XAI techniques that
+relate features to the behavior of the underlying model [9–11] are not straightforwardly applicable
+here: the input is a one-dimensional momentum fractionxrather than a high-dimensional feature
+vector with clear semantic interpretation, and the quality of the output can only be assessed after
+propagating the PDFs through the full theory pipeline.
+In this work, we address this problem by adapting a specific XAI technique: Shapley val-
+ues [12], a cooperative game-theoretic concept that assigns each player their average marginal
+contribution across all possible coalitions. While Shapley values are often used to elucidate the
+behavior of a machine-learning (ML) model, such as a neural network, here we use them in a
+model-agnostic way. We take a previously determined set of PDFs as given, without using any
+information on how it was constructed. We then use the Shapley value to quantify the sensitivity
+of these PDFs to data, and conversely, the sensitivity of predictions obtained from them to the
+underlying PDFs. This holds regardless of whether the data and predictions considered here
+were used in the original PDF determination. Our method thus allows us to answer questions
+about the mutual sensitivity of data and PDFs, irrespective of the particular technique used to
+determine the PDFs.
+In ML applications, a common implementation of the Shapley value is the additive SHAP
+framework [13]. However, this has been shown to be problematic in high-energy physics applica-
+tions when correlations are important [14], which is specifically the case for PDFs. The reason
+is that SHAP relies on an additivity assumption, namely that features are approximately inde-
+pendent. We tackle this issue by setting up the problem in such a way that the space of features
+is low-dimensional, which allows us to compute the Shapley values exactly while accounting for
+correlations using the sum rules.
+Our implementation of the Shapley value views individual PDF flavors as the players of a
+game. The reward of the game is the likelihood (χ2), computed as follows: starting from a set
+of PDFs determined with the NNPDF4.0 neural-network model [6], we introduce a controlled
+Gaussian perturbation in a localized range of the momentum fractionx, applied to one PDF
+flavor at a time, for various choices of PDF basis. Evaluating the Shapley value on different
+subsets of the global dataset used to determine the PDFs then allows us to disentangle the
+3
+
+===== PAGE 4 =====
+impact of each subset on each PDF andxrange.
+We find that the results for the Shapley value largely reproduce standard lore on the impact
+of data on PDFs, as discussed in references such as [15,16]. However, we also find that they
+reveal some less obvious aspects of the connection between PDF features and data, with the
+possible implications for the possibility that PDFs may reabsorb signals of new physics [17].
+As applications, we discuss a case of diagnostics of lack of sensitivity of PDFs to data that is
+not revealed by standard methods, and the optimization of the fold design used by NNPDF for
+K-fold cross-validation in their hyperparameter optimization procedure.
+The paper is structured as follows. In Sec. 2, we review the PDF-to-observable pipeline in
+the NNPDF ML approach, and discuss its black-box nature. In Sec. 3, we introduce Shapley
+values, discuss the limitations of existing frameworks, and describe our exact implementation
+in PDF space, including the perturbation design and uncertainty quantification. In Sec. 4, we
+demonstrate the method on NNPDF4.0, scanning overxregions and individual dataset families,
+and then discuss examples of applications. We conclude with a summary and outlook in Sec. 5.
+2 From PDFs to observables and vice-versa
+To make our treatment self-contained, we provide a brief overview of the NNPDF approach for
+PDF determination, focusing specifically on the implementation and methodology used for the
+construction of the published NNPDF4.0 PDF set. As mentioned before, our technique and
+results do not depend on the particular methodology used to determine the PDFs that we con-
+sider. However, in addition to helping establish notation and making the paper accessible to
+readers who are not necessarily familiar with PDF determination, this survey of the NNPDF
+methodology also partly motivates the development of our technique. We refer the reader to the
+NNPDF4.0 paper [6] and its associated code and documentation [18] for a more detailed treat-
+ment. We first discuss how predictions for physical observables are computed from input PDFs,
+and then how PDFs are determined from data by solving the corresponding inverse problem
+in the NNPDF methodology. Because we use the published NNPDF4.0 PDF set, we describe
+settings and assumptions used in that determination, ignoring subsequent improvements and
+changes in methodology that may have intervened.
+2.1 Factorization and evolution
+PDFs are determined by performing a regression of theory predictions to experimental measure-
+ments of physical observables. The factorization theorem expresses these predictions as convolu-
+tions of PDFs with perturbatively calculable partonic cross sections. The PDFs characterize the
+quark and gluon content of the incoming hadrons, while the partonic cross sections describe the
+scattering of the corresponding initial-state quarks and gluons, collectively denoted as partons.
+For processes with two incoming hadrons, this takes the form
+O(Q2) =
+X
+i,j
+Z
+dx1 dx2fi(x1,µ 2
+F)fj(x2,µ 2
+F) ˆσij
+
+x1,x 2,Q2
+µ2
+F
+
+,(1)
+whereO(Q 2)is a physical observable, here the inclusive cross section, depending on a hard scale
+Q2,f i(x,µ 2
+F)is the PDF for flavoriat momentum fractionxand factorization scaleµ F, and
+ˆσij is the perturbatively calculable partonic cross section. The observable does not depend on
+the factorization scaleµ F, since this dependence cancels between the PDF and the hard cross
+section, up to perturbatively subleading terms. To improve perturbative convergence, the scale
+µF is chosen of the order of the physical scaleQ, so that no large scale ratios arise. After imposing
+momentum conservation, the integral overxi takes the form of a convolution of the momentum
+fraction with some dimensionless ratio of physical scales on which both the observable and the
+4
+
+===== PAGE 5 =====
+partonic cross section depend. For lepton–hadron scattering, only one PDF is present, and the
+double convolution reduces to a single one.
+The scale dependence of the PDF is fixed by evolution equations of the form
+∂fi(x,µ 2)
+∂lnµ 2 =
+2Nf +1X
+j=1
+Z 1
+x
+dz
+z Pij
+
+αs(µ2),x
+z
+
+fj(z,µ 2),(2)
+where the sum runs over the gluon and theNf quark and antiquark flavors with massm2
+i ≲µ 2,
+and suitable matching conditions are imposed when passing through the production threshold
+for heavy quarks. The evolution kernels (splitting functions) in Eq. (2) admit a perturbative
+expansion in powers of the strong coupling
+Pij
+ 
+αs(µ2),x
+
+= αs(µ2)
+2π P (0)
+ij (x) +
+αs(µ2)
+2π
+2
+P (1)
+ij (x) +...,(3)
+and give the probability of partonjto emit a partonithat carries a fractionxof its momentum.
+Equation (2) implies that Mellin moments
+¯fi(N,µ 2) =
+Z 1
+0
+dxx N−1fi(x,µ 2)(4)
+of the PDFs satisfy ordinary differential evolution equations driven by anomalous dimensions
+γij(N)related by Mellin transformation to the splitting functions:
+∂ ¯fi(N,µ 2)
+∂lnµ 2 =
+2Nf +1X
+j=1
+γij
+ 
+αs(µ2),N
+ ¯fj(N,µ 2),(5)
+where
+γij
+ 
+αs(µ2),N
+
+=
+Z 1
+0
+dxx N−1Pij
+ 
+αs(µ2),x
+
+,(6)
+It follows that, even if PDFs must be evaluated at a variety of different scalesµto obtain
+accurate theory predictions, they can all be expressed in terms of a set of basis PDFs evaluated at
+a reference scaleµ=Q 0. By choosing a suitable (scale-independent) basis of linear combinations
+of PDFs, the evolution equations decouple into a pair of coupled equations, and2Nf−1decoupled
+equations. We refer to this basis as the evolution basis. The two coupled equations couple the
+gluon and the singlet combination, defined as
+Σ(x,µ 2) =
+NfX
+i=1
+q+
+i (x,µ 2),(7)
+where
+q±
+i =q i±¯qi,(8)
+andq i and¯qi are the quark and antiquark PDFs, respectively. The other decoupled equations
+evolve specific linear combinations of quark and antiquark distributions, and have at most three
+independent evolution kernels – only one at leading order (LO) and two at next-to-leading order
+(NLO) – so several equivalent choices of evolution basis are possible.
+At all scales, PDFs satisfy a set of integral constraints, namely the momentum sum rule
+Z 1
+0
+dxx
+ 
+g(x,µ 2) + Σ(x,µ2)
+
+= 1,(9)
+and the valence sum rules
+Z 1
+0
+dxu−(x,µ 2) = 2
+Z 1
+0
+dxd−(x,µ 2) = 2,
+Z 1
+0
+dxs−(x,µ 2) =
+Z 1
+0
+dxc−(x,µ 2) = 0,(10)
+whereu,d,sandcdenote the up, down, strange and charm quark PDFs, respectively.
+5
+
+===== PAGE 6 =====
+2.2 PDF parametrization and determination
+In the NNPDF approach of Ref. [6] the PDFs, viewed as a function ofxbut at a fixed scaleQ0,
+are parametrized by a preprocessed neural network
+xfi(x,Q 2
+0) =A ix1−αi(1−x) βi NNi(x),(11)
+whereα i andβ i are preprocessing exponents, andAi are normalization constants that may be
+fixed to enforce the sum rules Eqs. (9-10). PDFs at all scales are obtained by solving the evolution
+equations (2), and then convoluting the PDF at the scale of the data with the appropriate
+partonic cross sections according to Eq. (1). This provides a map from PDF space to data
+space, which in the NNPDF methodology is implemented through a suitable discretization and
+optimization pipeline [19].
+The neural network is then trained to minimize a loss function, which takes the form of a
+negative log-likelihood describing the agreement between theory and data,
+LNNPDF =χ 2(f,D) =
+NdatX
+n,m
+[On(f)−d n] Σ−1
+nm [Om(f)−d m],(12)
+whereO n(f)denotes the theoretical prediction for data pointncomputed using a given PDF
+setf,d n is the corresponding experimental measurement of the full datasetD={d1,...,d Ndat},
+andΣ nm is a covariance matrix that encodes both statistical and systematic experimental uncer-
+tainties as well as theory uncertainties originating from approximations in the theory predictions.
+The loss minimization is stopped via cross-validation: the data are divided into training and
+validation samples, the network is trained by minimizing the loss on the training sample, and
+training is halted once the loss evaluated on the validation sample has failed to improve for a
+specified number of iterations (the patience). PDF uncertainties are determined in two steps.
+First, a Gaussian distribution of pseudodata replicasDk is generated, whose mean and covariance
+over the replica sample reproduce the original data and their correlated uncertainties. Then, a
+best-fit PDFf k is determined for each pseudodata replica, leading to a distribution of best-
+fit neural networks whose mean and covariance represent the final PDF determination and its
+associated correlated uncertainties. The training and validation partition is determined randomly
+for each replica, and the preprocessing exponents are varied randomly in a self-consistently
+determined interval that ensures that their choice does not bias the final result.
+Both the architecture and other features of the neural network (such as the initialization or
+the activation function) and the minimization algorithm and its features (such as the maximum
+gradient or the stopping patience) are determined through aK-fold hyperparameter optimiza-
+tion procedure, performed by dividing the data into four folds, excluding one fold at a time from
+the training process, and optimizing the agreement with the excluded fold. Note that whereas
+in the NNPDF approach PDF uncertainties are natively represented through Monte Carlo repli-
+cas, commonly available tools [20] enable the conversion of PDF uncertainties represented as
+a multivariate Gaussian in parameter space into the Monte Carlo replica representation. The
+Monte Carlo representation is accordingly commonly used to compare and combine different
+PDF sets [4].
+While any set of basis PDFs can be chosen, the basis of the gluon and individual quark and
+antiquark flavors (flavor basis) as well as the aforementioned evolution basis are of particular
+interest. In the NNPDF4.0 determination the basis includes eight independently determined
+PDFs: the charm and anticharm PDFs are assumed to coincide (so the charm valence sum rule
+in Eq. (10) is automatically satisfied), and heavier flavors (bottom and top) are not independently
+parametrized but rather determined perturbatively. The basis PDFs then are, in the flavor basis,
+Bflav ={u,¯u,d, ¯d,s,¯s,c= ¯c,g},(13)
+6
+
+===== PAGE 7 =====
+and in the evolution basis
+Bev ={V,V 3,V 8,T 3,T 8,T 15,Σ,g},(14)
+whereΣis defined in Eq. (7), the total valence distribution is
+V=
+NfX
+i=1
+q−
+i ,(15)
+and the non-singlet combinations are
+T3 =u +−d +, T 8 =u + +d +−2s +, T 15 =u + +d + +s +−3c +,(16)
+V3 =u−−d−, V 8 =u− +d−−2s−.(17)
+2.3 The black-box problem
+We can view the set of experimental data (about 4000 for NNPDF4.0) as a probability distri-
+bution over a high-dimensional data space, typically a multivariate Gaussian about the central
+data points, with width determined by the eigenvalues of the total covariance matrix along its
+eigenvectors. The regression from data to PDFs is an inverse problem that maps the probability
+distribution in data space onto a probability distribution in PDF space. Because of the way
+predictions are obtained from PDFs (discussed in Sec. 2.1), this inverse problem has strong non-
+localities and correlations, and makes the inference chain behave like a black box as described
+below.
+Discrete data coverage.Data provide information at a discrete set of points, moreover in
+a limited kinematic region. The neural net interpolates and extrapolates this discrete
+information, so that distinct PDF shapes can yield the same value of the loss function. The
+space of acceptable shapes, and their likelihood, are determined by the hyperparameters
+of the neural network and its minimization in such a way that the most likely PDF shapes
+in the final distribution are generally not those leading to the lowest loss, which usually
+correspond to overfitted results.
+Convolutional structure.Each observable is sensitive to PDFs that are evaluated not at a
+singlexvalue, but rather in the whole regionx 0 < x <1, for somex0 depending on the
+process kinematics, through the convolution in Eq. (1). The convolution becomes a local
+ordinary product upon Mellin transformation. Hence the interpolation and extrapolation
+mentioned above actually happen in a conjugate Mellin space.
+Scale dependence.PDFs are determined at a reference scaleQ0, but the PDFs that enter the
+physical prediction Eq. (1) are evaluated at the factorization scaleµF, in turn chosen of
+order of a physical scale for each data point. The two are related through convolution
+with an evolution kernel that solves the evolution Eq. (2), thereby further modifying in a
+scale-dependent way the relation between thexvalue of the PDF and the kinematics of
+the data.
+Scaling violations.Because data are available for several values of scale, and the scale de-
+pendence (scaling violation) of the PDF must satisfy the evolution Eq. (2), the PDFs are
+determined not only by the data directly, but also by the scale dependence of the data
+which is related to the PDF by convolution with the splitting function. Hence the PDF is
+effectively determined by the mutual relation of data at different scales.
+Flavor mixing.Individual quark flavors are a linear combination of different evolution eigen-
+states, hence they mix with each other as the scale varies, and consequently the linear
+7
+
+===== PAGE 8 =====
+combinations that appear in a given physical observable are related through this scale-
+dependent mixing to the flavor basis PDFs. Even if one chooses the evolution basis, ob-
+servables cannot be fully expressed in terms of scale-independent evolution eigenstates
+because the singlet and gluon satisfy coupled equations with scale-dependent coefficients.
+Non-local correlations.Both data and PDFs that enter different individual predictions of the
+form of Eq. (1) are correlated with each other in a highly non-local way. The PDFs are
+correlated because of sum rules Eqs. (9-10) that relate PDFs at allxvalues. The data
+are correlated through the covariance matrixΣ−1
+nm that enters the definition of the loss
+Eq. (12), which may correlate data coming from independent experiments, but sharing a
+common source of uncertainty.
+Taken together, these effects make it difficult to answer the simple question, which PDF
+flavor, and in whichxregion, is responsible for the theory prediction to be compared to a
+specific data point. These effects are intrinsic to the PDF-to-observable pipeline itself, and are
+present regardless of the way the PDFs are determined. The use of ML adds a further layer
+of opacity on top of this. Because the regression is performed by a neural network rather than
+a fixed functional form, the map between data and PDFs has no analytic form to begin with,
+compounding the difficulty just described. Indeed, an alternative possibility, adopted by several
+groups [4], is to determine the PDFs by assuming a fixed functional form whose parameters
+are determined by maximum likelihood. In such a case, the mapping between the probability
+distribution in data space and that in PDF space is known analytically, as it is fixed by the
+maximum-likelihood condition combined with error propagation, and its behavior in the vicinity
+of the maximum. The price to pay is that only the space of functions allowed by the chosen
+model is accessible. In the NNPDF approach the neural network model does not restrict the
+space of allowed functional forms, but the set of more likely functional forms is effectively chosen
+by the ML model through the hyperoptimization of its architecture and training parameters and
+is consequently opaque.
+3 Shapley values for PDFs
+Motivated by the black-box structure discussed in Sec. 2.3, we approach the problem using
+the Shapley value, a game-theoretic concept [12] that has more recently been adopted as an
+XAI technique to probe the behavior of ML models. We use it here in its original, broader
+sense. In conventional XAI applications, the players are the input features of a model, such
+as a neural network, and the Shapley value explains how that model maps those inputs to its
+output. Here, instead, the players are the PDFs themselves, already determined by a previous,
+possibly opaque fitting procedure. We use the Shapley value to relate these PDFs to the theory
+predictions obtained from them, without ever examining the model that produced the PDFs in
+the first place. While the black-box nature of the NNPDF methodology motivates our approach
+to understanding the relation between data and PDFs, our solution to the problem is completely
+independent of the methodology used to determine the PDFs.
+Our main idea is to treat the PDF-to-observable pipeline as a cooperative game, where the
+players are the individual PDFs and the payoff is the loss. We first briefly review the game-
+theoretic foundations of Shapley values and its use as an XAI tool, and then we present our
+specific implementation in the context of PDF determination. Our procedure is schematically
+summarized in Fig. 1.
+3.1 The Shapley value in game theory and XAI
+Ingametheory, theShapleyvalueistheaveragemarginalcontributionϕ i ofaplayeri, determined
+by comparing the outcomes of a cooperative game with and withouti:v(S∪{i})versusv(S),
+8
+
+===== PAGE 9 =====
+wherevis a value function that maps a coalition, i.e. a subset of the total set ofNplayers
+S⊆N, to a real number that gives the payoff achieved by that coalition [12]. Note that for
+brevity we denote withSandNboth the sets, and the number of elements in the respective
+sets. The Shapley value is then given by
+ϕi =
+X
+S⊆N\{i}
+w(S) [v(S∪{i})−v(S)],(18)
+where the sum runs over all possible coalitions ofN−1players not including thei-th player,
+and the weightw(S)ensures that coalitions are weighted accounting for the combinatorial factor
+that provides the number of different coalitions, namely the reciprocal of the number of different
+coalitions withSmembers. Indeed, the weightw(S)is given by the number of different (non-
+ordered) subsets ofSout ofN−1elements, which is the binomial coefficient times the number
+Nof possible choices of thei-th element,
+w(S) =
+
+N
+ N−1
+S
+−1
+= S! (N−S−1)!
+N! .(19)
+In ML applications, the Shapley value is used to determine the contribution of individual
+features to the loss function: the features are the players, and the loss is the value function. In
+this context, the exact computation of Shapley values is usually intractable, since the typical
+numberNof features is of order of 50 or more, hence the sum over2N−1 coalitions is unfeasible.
+A common way out is the use of the SHAP framework [13] (SHapley Additive exPlanations), that
+addresses this by unifying a class of additive feature attribution methods – including LIME [9],
+DeepLIFT [10], and LRP [11] – and approximating the Shapley values by assuming feature
+independence, which then allows for a linear expansion, such that the number of coalitions
+only grows linearly, rather than exponentially withN. In high-energy physics applications,
+where input features are typically strongly correlated, this leads to distorted results, as explicitly
+demonstrated for jet substructure variables in top tagging in Ref. [14]. As discussed in Sec. 2.3,
+in our case PDFs and their features are also strongly correlated, thereby suggesting that this
+approximation would be equally problematic. As we shall see, we will consider a setup in which
+the players are theN flav = 8PDF flavorsB flav orB ev Eqs. (13-14). Hence, even though we
+will consider a large number of different games, in which one flavor is perturbed in a specific
+region, for each of them we will only have to consider27 = 128coalitions, thereby enabling the
+computation of the exact Shapley value Eq. (18).
+x
+n3fitfit
+PDF parametrization
+fit beforehand
+no retraining
+10□5 10□4 10□3 10□2 10□1
+x
+0.2
+0.4
+0.6
+0.8
+NNPDF4.0 (NNLO), x f(x,Q2
+0)
+u
+d
+s
+c+
+g/10
+¯u
+¯d
+¯s
+Shapley input
+loaded baseline PDFs
+Shapley valuesϕ j
+flavorj, fixedx,D
+V alue function
+v(S) =χ 2 
+O(f (S));D
+
+Coalitionf (S)
+fixedxregion
+Black box
+Theory pipeline
+Predictions
+O(f (S))
+coalition score
+players = flavors
+Figure 1.Schematic overview of the Shapley value analysis. A previously determined PDF set is loaded
+as input. For a fixedxregion and coalitionS, perturbed PDFsf (S) are propagated through the theory
+pipeline to obtain predictions that are compared to some datasetDthrough a suitableχ2 log-likelihood.
+Shapley valuesϕj quantify the contribution of each flavor for a chosenxregion and datasetD.
+9
+
+===== PAGE 10 =====
+3.2 Shapley implementation for PDFs
+The idea of our approach is to take as a basic feature the behavior of each PDF in a certainx
+region. We start with a pre-existing PDF set, and we consider as a player a perturbed PDF,
+namely a PDF from this set whose behavior in a givenxregion has been modified. We then
+assess the effect of the perturbation by computing the Shapley value for the perturbed PDF in
+coalition with all other possible coalitions of perturbed PDFs, using as a value function the loss
+Eq. (12) used for PDF determination.
+The players are theN flav = 8flavors inB flav orB ev, see Eqs. (13)–(14). For any subset
+S⊆B flav/ev, a coalition configuration is obtained by perturbing only the flavors inS,
+f (S)
+j =
+(
+fpert
+j , j∈S,
+f (0)
+j , j /∈S,
+(20)
+wheref (0) denotes the unperturbed baseline PDF set. The value function is obtained from the
+lossEq.(12), evaluatedusing, ineachinstanceinthesumovercoalitions, thePDFscorresponding
+to coalitionSas defined in Eq. (20). The perturbation is designed in such a way as to single out
+the features that we want to study, namely the behavior of each PDF flavor in a givenxregion.
+We now discuss the perturbation and corresponding value function in turn. In order to select
+the behavior in a givenxregion, we apply a localized perturbation, chosen to be a Gaussian
+bump, thereby ensuring that the smoothness of the unperturbed PDFs as a function of their
+argument is preserved. Because we want to single out the effect of modifying the PDF about its
+central value in either direction, the perturbation is applied with either a positive or a negative
+sign. The bump is centered at somex=x µ and has a widthwon a logarithmic scale, such
+that the PDF is probed on a fixed-width interval on a log scale. The height of the bump is
+calibrated to the PDF uncertainty at the center of the perturbation, so that the perturbation
+is physically meaningful and comparable across flavors. Specifically, the height of the positive
+(negative) perturbation is set equal to the upper (lower) 68% confidence interval of the replica
+ensemble evaluated atxµ. We thus have
+xfpert±
+j (x,Q 2
+0) =xf j(x,Q 2
+0) +δ±
+j (x),(21)
+δ±
+j (x) =±∆±
+j (xµ) exp
+"
+−
+ 
+log10(x)−log 10(xµ)
+2
+2w2
+#
+,(22)
+where∆ +
+j (xµ)and∆ −
+j (xµ)are the upper and lower 68% confidence interval bounds relative to
+the central value of theNrep replicas. A representative example of this calibrated perturbation
+is shown in Fig. 2.
+The value function is then constructed out of the loss in the following way. First, either the
+perturbationδ + orδ− Eq. (22) is applied to all PDFs in coalitionSEq. (20). Next, the sum rules
+Eqs. (9-10) are enforced in the perturbed PDF set: this means that if the coalitionSincludes
+some but not all of the PDFs that enter one of the sum rules, then only the PDFs in the coalition
+are perturbed according to Eq. (21), but all the other PDFs entering the sum rule are adjusted
+by modifying their normalization constantsAi in Eq. (11) in such a way that the sum rule still
+holds. This then produces for each coalition two perturbed PDFsf(S+) andf (S−), in which the
+PDFs in the coalitions are perturbed, and the sum rules always hold. Finally, the value function
+is evaluated by taking the average of the loss Eq. (12) evaluated for these perturbed PDF sets
+v(S) = 1
+2
+h
+χ2
+
+f (S+);D
+
++χ 2
+
+f (S−);D
+i
+,(23)
+The Shapley value is finally computed using this value function in its expression Eq. (18),
+thereby leading to a valueϕj(xµ), depending on the perturbed flavorjand the centerx µ of
+10
+
+===== PAGE 11 =====
+0.0
+0.2
+0.4
+0.6x f(x,Q2
+0)
+Reference ¯s
+Perturbed ¯s
+0.0
+0.2
+0.4
+0.6 Reference ¯u
+Perturbed ¯u
+0.0
+0.2
+0.4
+0.6 Reference ¯d
+Perturbed ¯d
+0.0
+0.1
+0.2
+0.3x f(x,Q2
+0)
+Reference g/10
+Perturbed g/10
+0.0
+0.2
+0.4
+0.6 Reference d
+Perturbed d
+0.0
+0.2
+0.4
+0.6
+Reference u
+Perturbed u
+10□5 10□4 10□3 10□2 10□1 100
+x
+0.0
+0.2
+0.4
+0.6x f(x,Q2
+0)
+Reference s
+Perturbed s
+10□5 10□4 10□3 10□2 10□1 100
+x
+0.00
+0.05
+0.10
+Reference c+
+Perturbed c+
+Figure 2.Calibrated perturbation Eq. (21) centered atx µ = 10−3 in the flavor basis, with amplitude
+normalized to1σatQ 0 = 1.65 GeVandw= 0.3.
+the perturbation. As mentioned, a common way of representing PDF uncertainties, specifically
+used by NNPDF, is to deliver PDF sets as sets of replicasfk such that the central expected
+PDF is the ensemble mean and the uncertainty and correlation are found from the ensemble
+covariance over the replica sample. Accordingly, we can determine both the PDF Shapley value
+and its uncertainty for a given PDF set by evaluating the Shapley valueϕ(k)
+i =ϕ i(fk)for each
+PDF replicaf k, i.e. evaluating the value function Eq. (23) with fixed dataDand thek-th PDF
+replicaf k. The Shapley valueϕi and its uncertaintyσϕi are then determined as the mean and
+1σstandard deviation ofϕ i across the PDF replica ensemble,
+ϕi≡ ¯ϕi = 1
+Nrep
+NrepX
+k=1
+ϕ(k)
+i , σ 2
+ϕi = 1
+Nrep−1
+NrepX
+k=1
+ 
+ϕ(k)
+i − ¯ϕi
+2.(24)
+For a quicker evaluation of the Shapley value, without an evaluation of its uncertainty, we will
+also compute it directly for the central expected PDF, obtained by averaging over the PDF
+replica sample.
+With our definition, the Shapley value is effectively the marginal change of the value function
+Eq. (23) when flavorjis added to an existing coalitionS, with a baseline given byv(∅) =
+χ2(f (0);D), which is just the value of the loss which is found when comparing the unperturbed
+PDF setfj under investigation to the dataD. Accordingly, the Shapley value can be computed
+for a given PDF set using any dataset: it then measures the sensitivity of the PDF set to the
+data, which are not necessarily the ones used to determine the PDFs in the first place. As such,
+it can be used to assess the impact of adding new data to an existing PDF determination. On
+the other hand, because it is defined as the impact of a deviation of the given PDF set from its
+11
+
+===== PAGE 12 =====
+reference best fit, if computed over a subset of the data used to determine the given PDF set, it
+assesses how much of the information on the given PDF set came from that data.
+Evaluating the value may lead to three possible situations:
+•ϕ j(xµ)>0: the perturbation of flavorjincreasesχ 2 on average, indicating that the dataset
+Dis sensitive to and constrains that flavor in the givenxregion.
+•ϕ j(xµ)≈0: the dataset is insensitive to flavorjin the givenxregion, either because the
+flavor does not contribute meaningfully to the relevant predictions or because its effect
+cancels across coalitions.
+•ϕ j(xµ)<0: the perturbation improvesχ 2 on average, suggesting that the baseline PDF is
+locally suboptimal for this dataset, which might happen for instance if there are tensions
+between the data.
+As a final comment, we note that what allows us to take into account all correlations between
+features is the small number of coalitions that enables an exact computation of the Shapley index.
+However, this is only possible because we have defined the coalition of perturbed PDFs according
+to Eq. (20), in which the same perturbation is applied to all the PDFs in the coalition, so the
+numberofplayersisequaltoN flav, andmoreoverweareonlyconsideringsymmetricperturbations
+according to Eq. (23).
+These are somewhat restrictive assumptions, because, in principle, the set of features under
+investigation is the behavior of each PDF in a certainxregion, so in a full analysis, players
+should be taken as the set of all possible perturbed PDFs, in anyxrange, and possibly including
+up and down perturbations. Even if the full physically relevantxrange10−4 ≲x≲0.7was only
+subdivided into, say, four bins for each PDF, this would lead to4Nflav players, or twice as many
+if up and down perturbations are included separately, which corresponds to232∼10 9 coalitions,
+thereby making an exact treatment unmanageable. However, we shall show in the next section
+that even within our simplified setting, the Shapley value performs adequately as a means to
+probe the impact of data on PDFs.
+4 Analyzing the NNPDF4.0 PDF set
+We now apply the technique discussed in the previous section to the NNPDF4.0 PDF set, with
+the dual goal of checking the viability of our method and exploring its potentialities. We use
+the default published NNLO baseline PDF setNNPDF40_nnlo_as_01180, with 100 PDF replicas,
+and we adopt the same global dataset used for the determination of these PDFs, as described in
+Ref. [6]. Individual datasets and experiments included in this global dataset are listed in Table 1
+of Appendix A. The kinematic coverage of this dataset in the(x,Q2)plane is shown in Fig. 2 of
+Ref. [6].
+In the NNPDF4.0 determination (unlike in later NNPDF studies) no theory uncertainty
+contribution associated with missing perturbative higher orders was included. We consequently
+adopt as a covariance matrix in the value function Eqs. (23,12) the (full) experimental covariance
+matrix. NotethatthisdiffersfromthelossusedforthetrainingoftheneuralnetsinRef.[6]intwo
+respects: first, it does not include a contribution introduced to account for nuclear uncertainties
+in datasets involving nuclear targets, and second, it uses the experimental covariance matrix also
+for the treatment of multiplicative uncertainties, for which a separate uncertainty treatment is
+necessary to avoid biased results. Consequently, our value function measures the PDF impact
+on experimental data calibrated to the purely experimental uncertainty.
+We will first evaluate the Shapley value for the full dataset, thus assessing the impact of
+individual PDFs on the description of the global dataset, thereby providing a first check on the
+viability of the method. We then turn to individual subsets of data, studying how different
+12
+
+===== PAGE 13 =====
+PDFs are correlated to different processes in specific kinematic regions. Results generally follow
+textbook [21,22] expectations, but we find a few mildly surprising results, and one specific case in
+which the Shapley index analysis reveals an unexpected feature of the gluon PDF determination.
+Finally, we provide two studies testing the potentialities of our methodology. In the first, we
+show that the unexpected results found in the dataset analysis reveal a potentially dangerous
+behavior of the gluon PDF uncertainty. Next, we provide a proof-of-concept application to the
+design of folds used in the NNPDF hyperparameter optimization procedure.
+4.1 The Shapley value for the full dataset
+We compute the Shapley value for each PDF in turn, using the full global dataset: this provides
+an estimate of the global impact of PDFs on theory prediction for the NNPDF4.0 dataset. Before
+doing this by means of the localized perturbation discussed in Sec. 3.2, we perform a first check
+of the method, in which instead of using Eq. (21), we simply set
+xfpert
+j (x,Q 2
+0) = 0.(25)
+This cannot be done for the full NNPDF4.0 dataset, as setting some PDFs to zero leads to the
+vanishing of some theory predictions, thereby producing ill-defined values for some observables,
+typically cross-section ratios. We have consequently excluded datasets for which this happens,
+which are listed in Table 2.
+The Shapley values are shown in Fig. 3 for each PDF in the flavor (top) or evolution (bottom)
+bases, Eqs. (13), (14), respectively. Comparing the values gives an indication of which PDF has
+the biggest impact on the theory predictions for the NNPDF4.0 dataset, and conversely, which
+PDF is most constrained by the NNPDF4.0 data. Note that the loss function used in the
+computation of the Shapley value is normalized by the experimental uncertainty in the basis of
+eigenvectors of the experimental covariance matrix, but the perturbation applied to the PDFs
+is normalized to the PDF uncertainty. So what the Shapley value is telling us is the marginal
+contribution of that PDF to the theory prediction in units of the data uncertainty. We find that
+the flavor-basis Shapley values are ordered according to
+ϕu>ϕ d>ϕ g >ϕ ¯u>ϕ ¯d>ϕ s>ϕ ¯s>ϕ c+,(26)
+in agreement with physical expectations: the up and down quarks, whose valence distributions
+u− andd− carry the proton baryon number (see Eq. (10)), have the largest impact; the gluon,
+though carrying the largest fraction of the proton momentum, has a lower impact because its
+contribution to the majority of processes in the NNPDF4.0 dataset starts only at NLO; and
+heavier quarks have an impact that scales as their reciprocal mass.
+After this initial test, we turn to the perturbation Eq. (21). We perform a scan across50
+logarithmically spacedxµ values in the interval[10−4,0.9], withw= log10(0.9)−log10(10−4)
+50 . We first
+compute the Shapley index using the central PDF set: results are shown as heat maps in Fig. 4 for
+all values of the perturbation center, both in the flavor and evolution basis. We then compute
+the values and uncertainties now using Eq. (24), as a mean and standard deviation over the
+replica sample. In this case, it turns out that some coalitions lead to pathological values, related
+again to the vanishing or near-vanishing of some cross sections, which distort the probability
+distribution, and are discarded using a regularization procedure discussed in Appendix B. This
+procedure will henceforth be applied to all computations of the Shapley value performed using
+Eq. (24). Results for six different values of the perturbation center (offset to improve readability)
+are shown in Fig. 5.
+In order to understand the observed behavior, it is useful to keep in mind that the data
+are concentrated in the10 −3 ≲x≲0.5region, with the vast majority of data at a scale
+Q2 ≳100GeV 2 rather higher than the parametrization scaleQ 0, and that the form of the
+13
+
+===== PAGE 14 =====
+¯s ¯u ¯d g d u s c+0.0
+2.5
+5.0
+7.5
+10.0
+12.5
+15.0
+17.5
+20.0φi
+Mean contribution
+Σ g V V3 V8 T3 T8 T15
+0
+5
+10
+15
+20
+25
+30φi
+Figure 3.Shapley value obtained setting each PDF to zero in turn according to Eq. (25) in the flavor
+basis (top) and evolution basis (bottom). The dashed horizontal line corresponds to the average over
+flavors.
+evolution kernels in Eq. (2) is such that the behavior of the initial conditionfi(x,Q 2
+0)in some
+x∼x 0 region mostly affects the behavior of the evolved PDFsfi(x,Q 2)forx < x 0 when the
+evolved scale is greater than the starting scaleQ>Q0. Finally, it should be kept in mind that
+PDFs are constrained to vanish at the endpointx= 1, and must satisfy the sum rules Eqs. (9-10).
+Based on these considerations, the overall pattern that emerges from Figs. 4-5 is that Shapley
+value differs from zero in the data region, and it vanishes forx≲10−4 where there are no data,
+as it should be. Several more detailed features are less obvious, but can be understood based on
+the known dependence on PDFs of the partonic cross sections that enter the specific processes
+in the dataset considered here:
+•While at very smallxthe Shapley value fluctuates about zero, one may naively expect a
+rapid drop at the edge of the data region, rather than the slow decrease observed. Indeed,
+the perturbation is calibrated to the PDF uncertainty, hence as the data become more
+sparse at smallx, the PDF uncertainty increases, the perturbation grows stronger, and one
+may consequently expect the Shapley value to remain approximately constant. However, at
+smallxthe effect of perturbative evolution according to Eq. (2) leads to a rise of the PDF
+asxdecreases andQ 2 increases, which is at LO independent of the boundary condition,
+and thus largely washes out the dependence of evolved PDFs on the boundary condition for
+x≲10 −2 in the region where data are available [23]. This explains the gradual reduction
+of sensitivity signaled by the decrease of the Shapley value.
+14
+
+===== PAGE 15 =====
+•The Shapley value is maximum atxµ = 0.5, despite the fact that the majority of the data is
+at smallerxvalues. This is driven by the gluon and singlet, and thus it can be understood
+as a consequence of two effects. First, a large bump in this region then propagates into
+smallerxregions at higher scales, where data are abundant and precise. Second, because
+the momentum sum rule is a constraint on the second moment of the PDF, a bump at
+largexhas an enhanced effect on it, and thus leads to sizable deviations in the wholex
+range when the normalization is readjusted to maintain the sum rule.
+•The Shapley value remains substantial even forxµ = 0.8, despite the fact that there are
+almost no data there. This can be understood as a combination of various effects. First, the
+bump atx∼0.8at the starting scale will propagate into PDFs at lowerxvalues at the data
+scale. Furthermore, as mentioned, the perturbation is calibrated so it will become large at
+largexas the PDF uncertainty grows, and also, the vanishing constraint atx= 1forces
+the PDF uncertainty to shrink to a point asx→1. Finally, the impact of the momentum
+sum rule is now even larger than atxµ = 0.5. These observations are interesting in view of
+searches for heavy resonances that probe PDFs at largex, and thus one may be interested
+in understanding to what extent a signal may or may not be hidden in the PDFs [17].
+This analysis suggests that, despite the lack of direct experimental constraints, the largex
+PDF uncertainty is reliable enough that a signal of new physics, such as a heavy resonance,
+would not be easily reabsorbed in it.
+10□4 4×10□4 10□3 5×10□3 2×10□2 7×10□2 2×10□1 9×10□1
+xµ
+〈|φ|〉j
+¯s
+¯u
+¯d
+g
+d
+u
+s
+c+
+ □100
+□10□1
+□10□2
+□10□30
+10□3
+10□2
+10□1
+100
+φi
+10□4 4×10□4 10□3 5×10□3 2×10□2 7×10□2 2×10□1 9×10□1
+xµ
+〈|φ|〉j
+Σ
+g
+V
+V3
+V8
+T3
+T8
+T15
+□10□2
+□10□3
+□10□40
+10□4
+10□3
+10□2
+φi
+Figure 4.Scan of flavor-basis (top) and evolution-basis (bottom) Shapley values as a function of
+perturbation centerxµ for NNPDF4.0, computed for the central PDF set. The valueϕj(xµ)is shown for
+all PDF flavorsjand for 50 values ofxµ, equally spaced on a logarithmic scale in the range10−4≤x µ≤
+0.9. Each column corresponds to one value ofxµ, each row to a parton flavor, and the color encodes the
+signed contribution magnitude on a symlog scale (green: positive, red: negative). The top row shows the
+mean absolute contribution across flavors, highlighting the overall sensitivity trend withxµ.
+15
+
+===== PAGE 16 =====
+10□4 10□3 10□2 10□1 0.5 0.8
+xµ
+□10□1
+□10□2
+□10□3
+0
+10□3
+10□2
+10□1
+100
+φi
+NNPDF4.0 datasets (ﬂavor basis)
+¯s
+¯u
+¯d
+g
+d
+u
+s
+c+
+10□4 10□3 10□2 10□1 0.5 0.8
+xµ
+NNPDF4.0 datasets (evolution basis)
+Σ
+g
+V
+V3
+V8
+T3
+T8
+T15
+Figure 5.The median Shapley value ˜ϕj(xµ)over replicas, with an uncertainty band given by the central
+68% interval[ϕ16
+j ,ϕ 84
+j ](16th–84th percentiles) of the replica distribution, plotted with a symlog scale on
+theyaxis for six different values of the perturbation centerx µ for all PDF flavors in the flavor basis
+(left) and evolution basis (right). The values corresponding to eachxµ are offset for readability, and are
+all evaluated at the center of the displayedxbin. The distribution of values over replicas forxµ = 0.5is
+displayed in Fig. 6.
+•While the flavor non-singlet valenceV 3 andV 8 combinations are well constrained at large
+x∼0.3, the correspondingq + combinationsT 3 andT 8 are not, and become well constrained
+only for smallerx≲0.2. This can be understood as a consequence of the fact that flavor
+non-singletq −
+i combinations are mostly probed in charged-current interactions, such as
+Wproduction and neutrino deep-inelastic scattering, covering the wholexrange. On the
+other hand, the flavor non-singletq+ combinationsT 3 andT 8 are mostly probed by neutral-
+current deep-inelastic and fixed-target Drell–Yan data for production on nuclear targets,
+which are mostly concentrated at smallerx.
+•The flavor singlet valence combinationVis largely unconstrained at largex. This mildly
+surprising result can be explained by noting that there is in fact no individual data that
+specifically probes this combination. Specifically, at the LHC, because of the proton–
+proton initial state, quarks and antiquarks contribute symmetrically to physical observables
+whose partonic cross section involves a quark–antiquark initial state. As it is clear from a
+comparison of the flavor-basis and evolution-basis plots in Fig. 4, this lack of sensitivity to
+the total valence combination is only visible when considering evolution-basis PDFs, and
+not when looking at individual quark flavors, each of which is a combination of singlet, non-
+singlet and various valence components. This is again relevant for new-physics searches, as
+it reveals a potential loss of sensitivity to signals that couple to this specific combination
+and would be masked by the PDF uncertainty.
+•The distributions over replicas shown in Fig. 6 display clear deviations from Gaussian
+behavior, with an asymmetric shape, a large number of outliers, concentrated in the upper
+direction, and possibly even a double-peak shape in the case of the gluon. A similar
+(though somewhat less pronounced) behavior is observed for the other largexvalues of the
+perturbation center,x µ = 0.1,0.8, but is completely absent for smaller values ofxµ (not
+shown here). This can be understood by noting that in the largexregion the momentum
+sum rule constraint has a large impact because of thexweight in Eq. (9), though less so at
+16
+
+===== PAGE 17 =====
+¯s ¯u ¯d g d u s c+
+0
+1
+2
+3
+4φi
+Replicas at xµ= 0.5
+Figure 6.The Shapley valuesϕ j(0.5)in the flavor basis (same as shown in Fig. 5), now shown for all
+replicas. The width of the colored band corresponds to the density of the replica distribution, while each
+gray dot corresponds to a single replica, randomly offset for readability. The three solid horizontal lines
+correspond to the mean, maximum, and minimum over the replica sample. Note that in this plot the
+scale on theyaxis is linear.
+x= 0.8where the PDF is very small. The momentum sum rule is a non-local constraint,
+hence the effect of the perturbation may affect the prediction for a large number of precisely
+measured data points, along some direction in data space. The data replicas to which PDF
+replicas are fitted are generated as multivariate Gaussian along directions of eigenvectors of
+the experimental covariance matrix, but, because of the non-linear relation between data
+and observables, the shifts are non-linearly related to a shift along the direction of the
+perturbation. Consequently, the effect of the perturbation on individual PDF replicas can
+be related in a highly non-linear way to their shifts, thereby leading to a non-Gaussian
+distribution of Shapley values.
+One particular feature is unexpected: while the Shapley value generally peaks somewhere in
+the data region and vanishes at very large or very smallx, where data are absent, the gluon Shap-
+ley value instead has a localized dip between10−2 and10−1, essentially vanishing atxµ∼0.07.
+We discuss this behavior, its likely explanation, and its implications for new-physics searches in
+Sec. 4.3 below.
+4.2 Dataset impact
+After testing the behavior of the Shapley value over the full dataset, we now turn to studying the
+impact of individual datasets on PDF determination and, conversely, the impact of individual
+PDFs on theoretical predictions for specific datasets. To this purpose, we compute the Shapley
+value for specific subsets of the full NNPDF4.0 dataset. A complementary exercise would be
+to compute the Shapley value for data not included in the NNPDF4.0 dataset, but this will be
+left for future studies. We specifically study deep-inelastic scattering (DIS) data, Drell–Yan, i.e.
+gauge boson production data, and the combination of jet and top pair production data. In each
+case, we compute the Shapley value for all PDF flavors and for eight values ofxµ and look at
+17
+
+===== PAGE 18 =====
+10□4 10□3 10□2 10□1 0.5 0.8
+xµ
+□10□3
+0
+10□3
+10□2
+φi
+DIS HERA datasets
+10□4 10□3 10□2 10□1 0.5 0.8
+xµ
+DIS ﬁxed-target datasets
+Σ
+g
+V
+V3
+V8
+T3
+T8
+T15
+Figure 7.Same as Fig. 5 in the evolution basis, for deep-inelastic scattering data only, from the HERA
+collider (left) and fixed-target experiments (right). Note that the scale on theyaxis differs from that of
+Fig. 5.
+their profile, analogous to Fig. 5, but with a coarser graining inx. When comparing Shapley
+values across datasets, it must be kept in mind that the value is computed using a perturbation
+calibrated to the PDF uncertainty, but normalized to the data uncertainty. Consequently, when
+many different datasets contribute to the determination of an individual PDF, the Shapley values
+from each dataset will be lower than those found when computing the value for a dataset that
+entirely or almost entirely determines a PDF. We now discuss each case in turn, by selecting
+flavor-basis or evolution-basis plots that highlight the most relevant physics features.
+Deep-inelastic scatteringDeep-inelastic scattering (DIS) data, in principle, allow a full de-
+termination of all PDFs if both charged-current (neutrino) and neutral-current (charged lepton)
+data are available. However, they are only available in a restricted kinematic region. The Shapley
+value computed from DIS data for each PDF in the evolution basis is shown in Fig. 7, where we
+separate data from the HERA electron–proton collider from data for DIS with electron, muon,
+and neutrino beams from a variety of fixed-target experiments, and in Fig. 8, where we instead
+compare charged current (neutrino) DIS to neutral current (charged lepton) DIS. The HERA
+data included in this analysis are listed in Table 3, and the fixed-target data, separated into
+charged and neutral current, are listed in Table 4.
+The HERA data are at higher energy, hence largerQ2 and smallerxcompared to fixed-target
+data, and their Shapley values are thus peaked at smallerx. At smallx≲0.001the singlet and
+gluon are larger than any other PDF combination. The values ofQ 2 reached at HERA are
+large enough that the contributions from photon andZexchange are comparable in the large
+Q2 bins, which cover the medium-largex≳10−2 region. Consequently the LO DIS cross section
+depends on three different linear combinations of quark PDFs, so there is also sensitivity to the
+non-singletT 3 andT 8 combinations, which depend on the asymmetry between up, down, and
+strangeq +
+i combinations.
+HERA data are available both in a neutral-current and charged-current channel, hence in
+principle they are also sensitive to valenceq−
+i PDF combinations, that depend on the quark–
+antiquark difference. However, valence PDFs are largely determined by fixed-target neutrino DIS
+data and Drell–Yan data, and thus the contribution to the Shapley value from HERA data only
+is very small. Fixed-target datasets are only available for largerx≳10−2 and indeed the index
+correspondingly vanishes at smallerx. Because of the lower energy they are quite insensitive to
+the gluon. Fixed-target DIS data are available both on proton and deuteron targets, thereby
+accessing the up–down quark difference, and indeed they display very large sensitivity to the
+18
+
+===== PAGE 19 =====
+10□4 10□3 10□2 10□1 0.5 0.8
+xµ
+□10□3
+0
+10□3
+10□2
+φi
+DIS FT CC datasets
+10□4 10□3 10□2 10□1 0.5 0.8
+xµ
+DIS FT NC datasets
+¯s
+¯u
+¯d
+g
+d
+u
+s
+c+
+Figure 8.Same as Fig. 7, but now for fixed-target charged-current (i.e. neutrino) DIS data (left) and
+neutral-current fixed-target (i.e. charged lepton) DIS data (right). Note that the scale on theyaxis differs
+from that of previous plots.
+triplet combinationT 3, as well as sensitivity to the independent linear combinationT 8 that
+includes strangeness. As they include neutrino DIS data, that couple asymmetrically to quarks
+and antiquarks of different flavors, they display some sensitivity to the valence combinations.
+Because valence PDFs are determined by a combination of neutrino and HERA charged-
+current data and Drell–Yan data, the Shapley value for fixed-target data only remains small.
+When separating off charged-current from neutral-current data, the smaller Shapley values of
+charged-current data become visible (see Fig. 8) and the sensitivity of the charged-current data to
+the valence combinations becomes apparent, along with a sensitivity to the non-singlet combina-
+tionsT 3 andT 8, while the sensitivity to the singlet, which is always dominant for neutral-current
+data, is absent for charged current.
+Gauge boson (Drell–Yan) productionWe now turn to the Drell–Yan process. We consider
+both transverse momentum and rapidity distributions, with results shown in Fig. 9. The datasets
+included in either case are listed in Table 5 and Table 6, respectively. Data onWandZrapidity
+distributions from the LHC are extremely precise and abundant over a wide kinematic range,
+and provide the bulk of the information on flavor separation, especially at very largex, as it is
+clear from the large Shapley values seen in Fig. 9 (right) for all quark and antiquark flavors. For
+smallerx≲0.1values, fixed-target DIS also plays a significant role, and the Shapley value from
+Drell–Yan data drops by more than one order of magnitude, becoming comparable to the values
+seen in Fig. 8 for fixed-target DIS.
+The Drell–Yan transverse momentum distributions constrain the gluon, that contributes to
+it at LO, while it only enters the rapidity distribution at NLO. Nevertheless, the gluon Shapley
+value is comparable for both observables, and in fact even larger for the rapidity distribution
+forx∼10 −3, for which it is as large as for HERA data, and larger than the Shapley value for
+quarks. The fact that Drell–Yan rapidity distributions may have a significant impact on the
+gluon distribution, which is perhaps unexpected, was already observed in Ref. [24].
+Top and jetsWhile the gluon PDF at smallxis constrained mostly by DIS data, at large
+x >0.1it is constrained mostly by jet and top pair production data. The Shapley value,
+computed for the jet and top data respectively listed in Table 7 and Table 8, shown in Fig. 10,
+confirms this, by displaying a value for the gluon that greatly exceeds that of any other PDF, and
+moreover a large numerical value, characteristic of the fact that no other data impact the gluon
+in this region. In the case of top, the LO process comes only from gluon–gluon interactions, and
+19
+
+===== PAGE 20 =====
+10□4 10□3 10□2 10□1 0.5 0.8
+xµ
+□100
+□10□1
+□10□2
+□10□30
+10□3
+10□2
+10□1
+100
+101
+φi
+DY PT datasets
+10□4 10□3 10□2 10□1 0.5 0.8
+xµ
+DY y datasets
+¯s
+¯u
+¯d
+g
+d
+u
+s
+c+
+Figure 9.Same as Fig. 7, but now in the flavor basis, for Drell–Yan transverse momentum (left) and
+rapidity (right) distributions. Note that the scale on theyaxis differs from that of previous plots.
+10□4 10□3 10□2 10□1 0.5 0.8
+xµ
+□100
+□10□1
+□10□2
+□10□30
+10□3
+10□2
+10□1
+100
+101
+φi
+Jet datasets
+10□4 10□3 10□2 10□1 0.5 0.8
+xµ
+t¯t datasets
+¯s
+¯u
+¯d
+g
+d
+u
+s
+c+
+Figure 10.Same as Fig. 9, but now for jet (left) and top pair (right) production. Note that the scale
+on theyaxis differs from that of previous plots.
+the Shapley index is accordingly negligible for all other PDFs. In the case of jets all PDF flavors
+contribute on an equal footing, so the Shapley value is significant also for quark PDFs, though
+in this case many more data, including DIS and Drell–Yan, have a large impact so the value of
+the index is accordingly smaller.
+4.3 Diagnostics and optimization
+The Shapley value analysis has two main use cases: diagnosing the potentialities and limitations
+of a given PDF determination, i.e. identifying which PDF flavors andxregions are more or less
+constrained by the data, and optimizing the PDF determination procedure itself. We present
+one example of each.
+The gluon at intermediatex.In Sec. 4.1, we have seen that the gluon Shapley value for
+the full NNPDF4.0 dataset exhibits a pronounced localized dip in the range0.05≲xµ ≲0.2,
+see Fig. 4. This behavior is unexpected: for all other PDF flavors, the Shapley value peaks
+somewhere in the data region and then decreases gradually towards both small and largex. The
+gluon, by contrast, is sizable both below and above this range but drops sharply within it. To
+understand this, we recall that the gluon PDF is largely determined by scaling violations, i.e.
+by theQ 2-dependence of the data. Indeed, for deep-inelastic scattering the gluon only enters
+20
+
+===== PAGE 21 =====
+1.50 1.75 2.00 2.25 2.50 2.75 3.00
+N0
+10□1
+3×10□2
+4×10□2
+6×10□2
+2×10□1
+x(N0)
+Saddle point of gluon PDF
+Q= 1.65 GeV
+Figure 11.The momentum fractionxcorresponding to the valueN 0 of the saddle point of the Mellin
+inversion integral for the gluon distribution, evaluated using NNPDF4.0 PDFs.
+the partonic cross section at NLO, while it already drives the scale dependence at LO through
+the coupled singlet–gluon evolution equations, which in Mellin moment space take the form of
+Eq. (5), unlike the quark, on which the LO cross section depends.
+The key observation is that the momentum sum rule Eq. (9) implies that a specific linear
+combination of the second Mellin moments (N= 2) of the quark singlet and the gluon is
+scale-independent. As a consequence, the anomalous dimension matrixγij(N)in Eq. (5) has a
+vanishing eigenvalue atN= 2: there is an exact flat direction in the space of Mellin-space PDFs,
+and the corresponding eigenvector – which is almost aligned with the gluon forN≲2[21] –
+cannot be constrained by scaling violations. By continuity, the eigenvalue remains close to zero
+in a neighborhood ofN= 2, so the gluon is poorly determined by the data for a finite range of
+Mellin moments aroundN= 2.
+The question is then how to relate the behavior of the gluon PDF inN- andx-space. This
+can be done easily [25], thanks to the fact that the Mellin inversion
+f(x,Q 2) = 1
+2πi
+Z c+i∞
+c−i∞
+dNx−N ¯f(N,Q 2).(27)
+thatexpressesthex-spacePDFf(x,Q 2)intermsoftheN-spacePDF ¯f(N,Q 2)canbeaccurately
+evaluated by saddle point. Writing
+f(x,Q 2) = 1
+2πi
+Z c+i∞
+c−i∞
+dNe E(x,N,Q 2), E(x,N,Q 2)≡−Nlnx+ ln ¯f(N,Q 2),(28)
+the saddle-point conditiondE/dN= 0gives
+lnx= d ln ¯f(N)
+dN
+
+N=N 0
+,(29)
+which maps each value ofN0 to a correspondingxvalue at which the PDFf(x)is dominated
+by ¯f(N 0). In Fig. 11 we show thisx–N0 correspondence for the NNPDF4.0 gluon evaluated at
+the reference scaleQ0. It is visible thatN0 = 2maps tox≈7×10 −2, which coincides with the
+center of the dip observed in Fig. 4. This provides a direct and quantitative explanation: the
+gluon PDF inx-space aroundx∼0.07is dominated by its Mellin transform nearN= 2, which
+is the very moment that scaling violations cannot constrain.
+21
+
+===== PAGE 22 =====
+One might then expect an inflated gluon uncertainty in thisxrange. However, this does not
+happen in practice. For physically motivated functional forms, smoothness of admissible PDF
+shapes is built in by construction, and it excludes a localized bump. For the neural network
+parametrization used in NNPDF, a bump is in principle possible, and could be obtained by a
+targeted training, but it is disfavored by the hyperoptimization of the methodology [26], and
+only appears in low-probability tails of the PDF distribution. In either case, the uncertainty
+band therefore smoothly interpolates between the neighboring regions without revealing the local
+loss of sensitivity. This has a potentially important phenomenological consequence: a genuine
+localized enhancement of the gluon PDF in this region – for instance from new physics – could
+be absorbed into the fit without producing any visible distortion of the uncertainty band, and
+would therefore remain hidden from standard PDF diagnostics. The Shapley value, by contrast,
+reveals the insensitivity directly.
+Because this explanation is based on universal properties of QCD evolution, if correct it
+should hold for any PDF set. In order to test this, we repeat the analysis using two other global
+PDF sets, namely CT18 [27] and MSHT20 [28], that were compared to NNPDF4.0 in Ref. [6]:
+we apply the same perturbation Eq. (21), calibrated in each case to the uncertainty band of the
+corresponding set. We then compute for the gluon of these PDF sets the Shapley values that were
+shown for all PDFs of the NNPDF4.0 set in Fig. 4, namely the value obtained using the central
+PDF and applying the perturbation on a finely spaced grid. Also for other PDF sets it turns out
+that some datasets must be discarded because they lead to pathological behavior; they are also
+listed in Appendix B. Results are shown in Fig. 12: the dip atxµ≈7×10−2 is present for all three
+sets. While the position of the dip is universal, the overall normalization of the gluon Shapley
+value varies across sets, as a direct consequence of the perturbation amplitude being set by each
+set’s own uncertainty band. In particular, the CT18 gluon Shapley value lies somewhat above
+the NNPDF4.0 and MSHT20 results. Rescaling the CT18 perturbation amplitude brings it into
+close agreement with the other two sets at roughly0.5δpert, demonstrating that the uncertainty
+estimate for the CT18 PDF set is more conservative than for the MSHT20 and NNPDF4.0 PDF
+sets, whose uncertainties instead are in broad agreement.
+Interestingly, Fig. 12 also shows a somewhat broader dip for a smaller valuexµ ≈10 −2,
+which for CT18 is in fact even deeper and extending to negative values. While we see no simple
+explanationforthisdip, itisinterestingtoobservethatitcorrespondstothegluonregionrelevant
+forgg→Hproductionat theLHC. Indeed, the possibility of constructing gluonshapesout ofthe
+NNPDF4.0 replicas with a bump in this region, but a very similarχ2 as the central NNPDF4.0
+PDF, was pointed out in Ref. [29]. Our analysis shows that a similar behavior would also be
+observed for MSHT20 and even more for CT18 PDFs by allowing for a PDF parametrization
+that allows for such a bump.
+Fold designAs discussed in Sec. 2.2, the hyperparameters that control the NNPDF4.0 PDF
+determination methodology have been selected through a hyperoptimization procedure, whereby
+the data are divided into four folds. The data contained in each fold should be representative of
+the full dataset. The folds actually used in Ref. [6] were constructed trying to achieve this goal,
+based on physical intuition and knowledge of the properties of the datasets and physical processes
+involved. The Shapley value analysis might provide a better way of verifying the properties of
+the folds and optimizing their construction.
+As a first test of the viability of this idea we have computed the Shapley values as a function
+ofx µ for the central NNPDF4.0 PDF for each of the four folds actually used in the NNPDF4.0
+hyperoptimization (see Table 8 of Ref. [6]). Results are shown in Fig. 13, where we compare the
+Shapley values for the gluon, singletΣ, tripletT3 and octetT 8 PDFs (see Eqs. (7,16)) computed
+for each fold to that of the full dataset. Note that, because the values are computed for the
+central PDF (which is what the NNPDF4.0 hyperoptimization was based on), these values do
+22
+
+===== PAGE 23 =====
+10□4 10□3 10□2 10□1 100
+xµ
+□10□2
+□10□30
+10□3
+10□2
+10□1
+100
+101
+φg
+g NNPDF4.0
+MSHT20
+CT18
+10□4 10□3 10□2 10□1 100
+xµ
+g NNPDF4.0
+CT18δpert
+CT18 0.8δpert
+CT18 0.5δpert
+Figure 12.Left: the gluon Shapley value computed from the central NNPDF4.0 PDF (same as shown
+in Fig. 4), compared to the results obtained using the MSHT20 and CT18 PDFs. Right: the CT18 gluon
+Shapley value for various rescalings of the perturbation amplitude, compared to NNPDF4.0.
+0
+10□2
+10□1
+100
+101
+φi
+g
+□10□1
+□10□2
+□10□3
+□10□4
+0
+10□4
+10□3
+10□2
+ T3
+10□4 10□3 10□2 10□1 100
+xµ
+0
+10□3
+10□2
+10□1
+100
+φi
+Σ
+10□4 10□3 10□2 10□1 100
+xµ
+□10□2
+□10□3
+□10□40
+10□4
+10□3
+10□2
+ T8
+NNPDF4.0 fold 1 fold 2 fold 3 fold 4
+Figure 13.The Shapley value computed using central PDFs (same as in Fig. 4) now using the full
+NNPDF4.0 dataset, as well as the datasets corresponding to the four folds used for NNPDF4.0 hyper-
+parameter optimization. Results are shown for the gluon, singletΣ, tripletT3 and octetT 8 PDFs (see
+Eqs. (7,16)).
+not include the PDF uncertainty. By and large, the four folds appear to be adequately designed in
+that the Shapley profiles are quite similar, showing that the fold design of Ref. [6] was adequate.
+An interesting observation is that at very largex, for some PDF combinations, such as the triplet
+T3 and octetT 8, the behavior of the full dataset differs from that of all four folds, with Shapley
+values becoming negative. This is not contradictory, because the total dataset includes some
+data that were not included in any of the four folds, as they only became available after the
+hyperoptimization was performed. The negative Shapley value thus suggests a possible tension
+between these data and the rest of the dataset.
+23
+
+===== PAGE 24 =====
+This first analysis suggests that the Shapley value could be a valuable tool for fold optimiza-
+tion. A quantitative way of doing this could be to select the partition of data into folds that
+minimizes the distance between the Shapley profiles for each PDF in each fold, as measured for
+instance by the Kullback–Leibler divergence. This could be especially effective given that the
+more recent NNPDF hyperoptimization methodology [30,31], unlike that of Ref. [6], now allows
+for inclusion of the PDF uncertainty.
+5 Conclusion and outlook
+We have introduced a novel, model-agnostic method to interpret global PDF determinations
+using exact Shapley values. Treating the individual PDF flavors as the players of a cooperative
+game, and the fit likelihoodχ2 as the value function, the Shapley value quantifies the marginal
+contribution of each flavor, in a givenxregion, to the agreement between a PDF set and a chosen
+dataset. Because the procedure acts on a previously determined PDF set without reference to
+how it was obtained, it can be equally applied to ML-based PDF determinations discussed in
+Sec. 2.3, as well as to PDFs determined from fixed functional forms. The small number of players
+– eight flavors, hence27 = 128coalitions per game – allows the Shapley value to be computed
+exactly, retaining all correlations between flavors and avoiding the feature-independence approx-
+imation that underlies SHAP and is known to distort results in correlated high-energy-physics
+settings [14].
+Applied to the NNPDF4.0 set, the method reproduces the expected ordering of flavor impact
+and, scanning over the perturbation centerxµ, it recovers the known map between data and
+PDFs: sensitivity is concentrated in the data region, washes out at smallxwhere evolution drives
+the PDF largely independently of its boundary condition, and persists at largexthrough the
+combinedeffectofevolution, theendpointconstraint, andthemomentumsumrule. Decomposing
+the dataset into DIS, Drell–Yan, and jet/top families reproduces the standard lore on which
+processes constrain which flavors – HERA fixing the small-xsinglet and gluon, fixed-target and
+charged-current data the large-xnon-singlet and valence combinations, Drell–Yan the flavor
+separation, and jets and top pairs the large-xgluon – while placing these statements on a
+quantitative footing.
+Beyond confirming expectations, the analysis exposes features that standard diagnostics do
+not reveal. The flavor-singlet valence combinationVis found to be essentially unconstrained
+at largex, reflecting the absence of any single measurement that probes it directly; this is of
+direct relevance to searches for new physics whose quantum numbers might couple to the valence
+sector. Most strikingly, the gluon Shapley value displays a pronounced dip aroundx∼0.07,
+which we trace to the vanishing eigenvalue of the singlet–gluon anomalous-dimension matrix at
+N= 2enforced by momentum conservation, mapped tox-space through the saddle point of the
+Mellin inversion integral. This is a genuine local loss of sensitivity that the smoothness of the
+parametrization hides inside an otherwise unremarkable uncertainty band, so that a localized
+enhancement of the gluon in this region could be absorbed by a fit without distorting its errors
+and would escape standard PDF diagnostics. The Shapley value makes this blind spot explicit.
+Also, it suggests a potential lack of sensitivity in the region of the gluon PDF which is relevant
+for Higgs production in gluon fusion at the LHC.
+The applications discussed here provide a first proof of concept, and several future appli-
+cations to actual PDF determination and assessment can be envisaged, keeping in mind that,
+because the construction takes the PDFs as input and is blind to the way they were determined, it
+applies unchanged to PDF sets obtained with different methodologies. Accordingly, the method
+can be used for various kinds of PDF diagnostics. Specifically, the method enables PDF bench-
+marking – such as comparing different PDFs used for precision phenomenology, or constructing
+combined PDF sets [4] – by providing a direct, methodology-independent measure of where and
+24
+
+===== PAGE 25 =====
+which PDFs in each set are genuinely constrained by data, as opposed to parametrization or
+fitting choices. A related application is diagnosing the PDF’s sensitivity to possible signals of
+new physics.
+On the other hand, it can be used for the assessment of the potential sensitivity of PDFs
+to new data, flagging redundant or strongly constraining measurements before they are added
+to a global determination. More generally, for fit diagnostics it can be used to identify under-
+constrained regions and localized tensions between datasets. Finally, it can be used for the
+optimization of specific aspects of the PDF determination methodology, such as theK-fold
+hyperparameter optimization used by NNPDF, where the Shapley index can be used in order to
+optimize the partition of data between folds, as discussed in Sec. 4.3.
+More broadly, the construction is not tied to neural networks or to PDFs at all: because
+the Shapley value is computed directly on the mapping from data to predictions, without ever
+inspecting the internal structure of the model that produced that mapping, the same approach
+applies to any black-box system for which a likelihood or other suitable reward can be defined.
+In this respect, our results show how the Shapley value can be used not only in order to explain
+the behavior of a machine learning model, as it is customary in XAI applications, but also to
+relate the input and output of a regression procedure in a model-agnostic way.
+An interesting possible line of development is investigating the applicability of our method
+to more complex sets of features, while retaining the full exact computation of the Shapley value
+without resorting to the additive approximation. Indeed, we have considered onexregion at
+a time for all PDFs, with a symmetric perturbation, even though in principle allxregions of
+all PDFs are correlated with each other. A more extensive treatment would therefore require
+enlarging the feature space to include severalxbins for all PDFs simultaneously, together with
+the sign of the perturbation as an independent feature. While this would most likely require
+some approximation in order to treat the very large number of coalitions, it would be interesting
+to investigate controlled approximations that nonetheless respect the strong correlations among
+PDFs. We leave this to future work.
+Acknowledgements
+We thank Felix Hekhorn and especially Juan Cruz Martinez for useful comments on a preliminary
+version of this paper. Part of this work was supported by the European Union’s Horizon Europe
+research and innovation programme under the Marie Skłodowska-Curie grant agreement No
+101168829, Challenging AI with Challenges from Physics: How to solve fundamental problems
+in Physics by AI and vice versa (AIPHY). Computing resources were provided by the CINECA
+Leonardo HPC cluster through the INFN grant PML4HEP.
+25
+
+===== PAGE 26 =====
+A Dataset tables
+We provide the list of datasets used in the analyses presented in Sec. 4.
+Experiment Dataset Reference
+NMCNMC_NC_NOTFIXED_EM-F2[32]
+NMCNMC_NC_NOTFIXED_P_EM-SIGMARED[33]
+SLACSLAC_NC_NOTFIXED_P_EM-F2[34]
+SLACSLAC_NC_NOTFIXED_D_EM-F2[34]
+BCDMSBCDMS_NC_NOTFIXED_P_EM-F2[35]
+BCDMSBCDMS_NC_NOTFIXED_D_EM-F2[36]
+CHORUSCHORUS_CC_NOTFIXED_PB_NU-SIGMARED[37]
+CHORUSCHORUS_CC_NOTFIXED_PB_NB-SIGMARED[37]
+NUTEVNUTEV_CC_NOTFIXED_FE_NU-SIGMARED[38]
+NUTEVNUTEV_CC_NOTFIXED_FE_NB-SIGMARED[38]
+HERAHERA_NC_318GEV_EM-SIGMARED[39]
+HERAHERA_NC_225GEV_EP-SIGMARED[39]
+HERAHERA_NC_251GEV_EP-SIGMARED[39]
+HERAHERA_NC_300GEV_EP-SIGMARED[39]
+HERAHERA_NC_318GEV_EP-SIGMARED[39]
+HERAHERA_CC_318GEV_EM-SIGMARED[39]
+HERAHERA_CC_318GEV_EP-SIGMARED[39]
+HERAHERA_NC_318GEV_EAVG_CHARM-SIGMARED[40]
+HERAHERA_NC_318GEV_EAVG_BOTTOM-SIGMARED[40]
+DYE866DYE866_Z0_800GEV_DW_RATIO_PDXSECRATIO[41]
+DYE866DYE866_Z0_800GEV_PXSEC[42]
+DYE605DYE605_Z0_38P8GEV_DW_PXSEC[43]
+DYE906DYE906_Z0_120GEV_DW_PDXSECRATIO[44]
+CDFCDF_Z0_1P96TEV_ZRAP[45]
+D0D0_Z0_1P96TEV_ZRAP[46]
+D0D0_WPWM_1P96TEV_ASY[47]
+ATLASATLAS_WPWM_7TEV_36PB_ETA[48]
+ATLASATLAS_Z0_7TEV_36PB_ETA[48]
+ATLASATLAS_Z0_7TEV_49FB_HIMASS[49]
+ATLASATLAS_Z0_7TEV_LOMASS_M[50]
+ATLASATLAS_WPWM_7TEV_46FB_CC-ETA[51]
+ATLASATLAS_Z0_7TEV_46FB_CC-Y[51]
+ATLASATLAS_Z0_7TEV_46FB_CF-Y[51]
+ATLASATLAS_Z0_8TEV_HIMASS_M-Y[52]
+ATLASATLAS_Z0_8TEV_LOWMASS_M-Y[53]
+ATLASATLAS_Z0_13TEV_TOT[54]
+ATLASATLAS_WPWM_13TEV_TOT[54]
+ATLASATLAS_WJ_8TEV_WP-PT[55]
+ATLASATLAS_WJ_8TEV_WM-PT[55]
+ATLASATLAS_Z0J_8TEV_PT-M[56]
+ATLASATLAS_Z0J_8TEV_PT-Y[56]
+ATLASATLAS_TTBAR_7TEV_TOT_X-SEC[57]
+ATLASATLAS_TTBAR_8TEV_TOT_X-SEC[57]
+ATLASATLAS_TTBAR_13TEV_TOT_X-SEC[58]
+ATLASATLAS_TTBAR_8TEV_LJ_DIF_YT-NORM[59]
+ATLASATLAS_TTBAR_8TEV_LJ_DIF_YTTBAR-NORM[59]
+ATLASATLAS_TTBAR_8TEV_2L_DIF_YTTBAR-NORM[60]
+ATLASATLAS_1JET_8TEV_R06_PTY[61]
+ATLASATLAS_2JET_7TEV_R06_M12Y[62]
+ATLASATLAS_PH_13TEV_XSEC[63]
+(continues on next page)
+26
+
+===== PAGE 27 =====
+Experiment Dataset Reference
+ATLASATLAS_SINGLETOP_7TEV_TCHANNEL-XSEC[64]
+ATLASATLAS_SINGLETOP_13TEV_TCHANNEL-XSEC[65]
+ATLASATLAS_SINGLETOP_7TEV_T-Y-NORM[64]
+ATLASATLAS_SINGLETOP_7TEV_TBAR-Y-NORM[64]
+ATLASATLAS_SINGLETOP_8TEV_T-RAP-NORM[66]
+ATLASATLAS_SINGLETOP_8TEV_TBAR-RAP-NORM[66]
+CMSCMS_WPWM_7TEV_ELECTRON_ASY[67]
+CMSCMS_WPWM_7TEV_MUON_ASY[68]
+CMSCMS_Z0_7TEV_DIMUON_2D[69]
+CMSCMS_WPWM_8TEV_MUON_Y[70]
+CMSCMS_Z0J_8TEV_PT-Y[71]
+CMSCMS_2JET_7TEV_M12-Y[72]
+CMSCMS_1JET_8TEV_PTY[73]
+CMSCMS_TTBAR_7TEV_TOT_X-SEC[74]
+CMSCMS_TTBAR_8TEV_TOT_X-SEC[74]
+CMSCMS_TTBAR_13TEV_TOT_X-SEC[75]
+CMSCMS_TTBAR_8TEV_LJ_DIF_YTTBAR-NORM[76]
+CMSCMS_TTBAR_5TEV_TOT_X-SEC[77]
+CMSCMS_TTBAR_8TEV_2L_DIF_MTTBAR-YT-NORM[78]
+CMSCMS_TTBAR_13TEV_2L_DIF_YT[79]
+CMSCMS_TTBAR_13TEV_LJ_2016_DIF_YT[79]
+CMSCMS_SINGLETOP_7TEV_TCHANNEL-XSEC[80]
+CMSCMS_SINGLETOP_8TEV_TCHANNEL-XSEC[81]
+CMSCMS_SINGLETOP_13TEV_TCHANNEL-XSEC[82]
+LHCBLHCB_Z0_7TEV_DIELECTRON_Y[83]
+LHCBLHCB_Z0_8TEV_DIELECTRON_Y[84]
+LHCBLHCB_WPWM_7TEV_MUON_Y[85]
+LHCBLHCB_Z0_7TEV_MUON_Y[85]
+LHCBLHCB_WPWM_8TEV_MUON_Y[86]
+LHCBLHCB_Z0_8TEV_MUON_Y[86]
+LHCBLHCB_Z0_13TEV_DIMUON-Y[87]
+LHCBLHCB_Z0_13TEV_DIELECTRON-Y[87]
+T able 1.The NNPDF4.0 dataset. For each dataset we indicate the experiment, the name with which
+it will be referred to in following tables and the original reference. More details, such as the kinematic
+coverage and the number of data points, are provided in Tables 1–5 of Ref. [6].
+27
+
+===== PAGE 28 =====
+Dataset
+NMC_NC_NOTFIXED_EM-F2
+DYE866_Z0_800GEV_DW_RATIO_PDXSECRATIO
+D0_Z0_1P96TEV_ZRAP
+ATLAS_TTBAR_8TEV_LJ_DIF_YT-NORM
+ATLAS_TTBAR_8TEV_LJ_DIF_YTTBAR-NORM
+ATLAS_TTBAR_8TEV_2L_DIF_YTTBAR-NORM
+CMS_TTBAR_8TEV_LJ_DIF_YTTBAR-NORM
+CMS_TTBAR_8TEV_2L_DIF_MTTBAR-YT-NORM
+ATLAS_SINGLETOP_7TEV_TCHANNEL-XSEC
+ATLAS_SINGLETOP_13TEV_TCHANNEL-XSEC
+ATLAS_SINGLETOP_7TEV_T-Y-NORM
+ATLAS_SINGLETOP_7TEV_TBAR-Y-NORM
+ATLAS_SINGLETOP_8TEV_T-RAP-NORM
+ATLAS_SINGLETOP_8TEV_TBAR-RAP-NORM
+CMS_SINGLETOP_8TEV_TCHANNEL-XSEC
+CMS_SINGLETOP_13TEV_TCHANNEL-XSEC
+D0_WPWM_1P96TEV_ASY
+CMS_WPWM_7TEV_ELECTRON_ASY
+CMS_WPWM_7TEV_MUON_ASY
+DYE906_Z0_120GEV_DW_PDXSECRATIO
+T able 2.Datasets excluded from the Shapley value computation of Fig. 3.
+Dataset Observable
+HERA_NC_318GEV_EM-SIGMAREDNC DIS
+HERA_NC_225GEV_EP-SIGMAREDNC DIS
+HERA_NC_251GEV_EP-SIGMAREDNC DIS
+HERA_NC_300GEV_EP-SIGMAREDNC DIS
+HERA_NC_318GEV_EP-SIGMAREDNC DIS
+HERA_CC_318GEV_EP-SIGMAREDCC DIS
+HERA_CC_318GEV_EM-SIGMAREDCC DIS
+HERA_NC_318GEV_EAVG_CHARM-SIGMAREDcharm DIS
+HERA_NC_318GEV_EAVG_BOTTOM-SIGMAREDbottom DIS
+T able 3.The HERA DIS data.
+Dataset Observable
+NMC_NC_NOTFIXED_EM-F2NC DIS
+NMC_NC_NOTFIXED_P_EM-SIGMAREDNC DIS
+SLAC_NC_NOTFIXED_P_EM-F2NC DIS
+SLAC_NC_NOTFIXED_D_EM-F2NC DIS
+BCDMS_NC_NOTFIXED_P_EM-F2NC DIS
+BCDMS_NC_NOTFIXED_D_EM-F2NC DIS
+CHORUS_CC_NOTFIXED_PB_NU-SIGMAREDCC DIS
+CHORUS_CC_NOTFIXED_PB_NB-SIGMAREDCC DIS
+NUTEV_CC_NOTFIXED_FE_NU-SIGMAREDCC DIS
+NUTEV_CC_NOTFIXED_FE_NB-SIGMAREDCC DIS
+T able 4.The fixed-target DIS data.
+28
+
+===== PAGE 29 =====
+Dataset Observable
+ATLAS_WJ_8TEV_WP-PTW + transverse momentum
+ATLAS_WJ_8TEV_WM-PTW − transverse momentum
+ATLAS_Z0J_8TEV_PT-MZ p T vs invariant mass
+ATLAS_Z0J_8TEV_PT-YZ p T vs rapidity
+CMS_Z0J_8TEV_PT-YZ p T vs rapidity
+T able 5.Drell–Yan transverse momentum distribution datasets.
+Dataset Observable
+CDF_Z0_1P96TEV_ZRAPZrapidity
+D0_Z0_1P96TEV_ZRAPZrapidity
+ATLAS_WPWM_7TEV_36PB_ETAW ± pseudorapidity
+ATLAS_Z0_7TEV_36PB_ETAZpseudorapidity
+ATLAS_WPWM_7TEV_46FB_CC-ETAW ± pseudorapidity (central)
+ATLAS_Z0_7TEV_46FB_CC-YZrapidity (central-central)
+ATLAS_Z0_7TEV_46FB_CF-YZrapidity (central-forward)
+ATLAS_Z0_8TEV_HIMASS_M-YZrapidity (high mass)
+ATLAS_Z0_8TEV_LOWMASS_M-YZrapidity (low mass)
+CMS_WPWM_8TEV_MUON_YW ± rapidity
+LHCB_Z0_7TEV_DIELECTRON_YZrapidity (e +e−)
+LHCB_Z0_8TEV_DIELECTRON_YZrapidity (e +e−)
+LHCB_WPWM_7TEV_MUON_YW ± rapidity (µ)
+LHCB_Z0_7TEV_MUON_YZrapidity (µ +µ−)
+LHCB_WPWM_8TEV_MUON_YW ± rapidity (µ)
+LHCB_Z0_8TEV_MUON_YZrapidity (µ +µ−)
+LHCB_Z0_13TEV_DIMUON-YZrapidity (µ +µ−)
+LHCB_Z0_13TEV_DIELECTRON-YZrapidity (e +e−)
+T able 6.Drell–Yan rapidity (y) and pseudorapidity (η) distribution datasets.
+Dataset Observable
+ATLAS_1JET_8TEV_R06_PTYinclusive jets
+ATLAS_2JET_7TEV_R06_M12Ydijets
+CMS_2JET_7TEV_M12-Ydijets
+CMS_1JET_8TEV_PTYinclusive jets
+T able 7.Single-inclusive jet and dijet datasets.
+29
+
+===== PAGE 30 =====
+Dataset Observable
+ATLAS_TTBAR_7TEV_TOT_X-SECtotalt ¯t
+ATLAS_TTBAR_8TEV_TOT_X-SECtotalt ¯t
+ATLAS_TTBAR_13TEV_TOT_X-SECtotalt ¯t
+CMS_TTBAR_5TEV_TOT_X-SECtotalt ¯t
+CMS_TTBAR_7TEV_TOT_X-SECtotalt ¯t
+CMS_TTBAR_8TEV_TOT_X-SECtotalt ¯t
+CMS_TTBAR_13TEV_TOT_X-SECtotalt ¯t
+ATLAS_TTBAR_8TEV_LJ_DIF_YT-NORMdσ/dy t
+ATLAS_TTBAR_8TEV_LJ_DIF_YTTBAR-NORMdσ/dy t¯t
+ATLAS_TTBAR_8TEV_2L_DIF_YTTBAR-NORMdσ/dy t¯t
+CMS_TTBAR_8TEV_LJ_DIF_YTTBAR-NORMdσ/dy t¯t
+CMS_TTBAR_8TEV_2L_DIF_MTTBAR-YT-NORMdσ/dm t¯t
+CMS_TTBAR_13TEV_2L_DIF_YTdσ/dy t
+CMS_TTBAR_13TEV_LJ_2016_DIF_YTdσ/dy t
+T able 8.Top pair production datasets.
+30
+
+===== PAGE 31 =====
+B Dataset regularization.
+For some Shapley value computations, the calibrated perturbation of Eq. (21) may lead to
+unphysical vanishing or near-vanishing of some cross sections, which in turn leads to diverging
+values for observables that correspond to cross-section ratios. This behavior biases the entire
+Shapley game, leading to unreliable values of the Shapley central value and uncertainty. To
+prevent this, we iteratively remove any dataset wherevDi(S)>10 5, whereD i⊂Dis thei-th
+subset ofD, and re-evaluate until no dataset is flagged by this condition. Across all analyses
+performed for this work, this only happens for the two fixed-target Drell–Yan deuteron/proton
+ratios of Refs. [41,44], for particular values of the perturbation centerxµ. The discarded datasets
+are listed in Table 9, along with the PDF sets and values of the perturbation center for which
+this regularization procedure is necessary.
+Figure PDF set Basis Discarded dataset and centersx µ
+Fig. 4 NNPDF4.0 evolutionDYE906:0.30,0.36,0.43,0.52,0.62,0.75
+Fig. 5 NNPDF4.0 flavorDYE906:10 −3,10 −2,0.5
+Fig. 5 NNPDF4.0 evolutionDYE906:0.1,0.5,0.8
+Fig. 12 CT18 flavorDYE906:28x µ,10 −4−2.2×10 −2;DYE866:
+15x µ,10 −4−3.4×10 −3
+Fig. 12 CT18 (0.8δ pert) flavorDYE906:26x µ,10 −4−1.3×10 −2;DYE866:9
+xµ,1.5×10 −4−1.6×10 −3
+Fig. 12 CT18 (0.5δ pert) flavorDYE906:17x µ,10 −4−4.1×10 −3;DYE866:
+1.5×10 −4
+Fig. 12 MSHT20 flavorDYE906:15x µ,10 −4−2.4×10 −3;DYE866:
+1.8,2.1,3.7×10 −4
+T able 9.Datasets discarded by the iterative stabilization procedure. In each case we list the figure
+displaying the results of the corresponding Shapley value computation, the PDF set, the PDF basis,
+and dataset and perturbation center. HereDYE906denotes theDYE906_Z0_120GEV_DW_PDXSECRATIOset
+andDYE866theDYE866_Z0_800GEV_DW_RATIO_PDXSECRATIOset of Table 1. For CT18 and MSHT20 we
+provide the number of discardedxµ values and the range.
+31
+
+===== PAGE 32 =====
+References
+[1] E. Cole, M. N. Costantini, E. Hammou, L. Mantani, F. Merlotti, M. Morales-Alvarado,
+and M. Ubiali, “Tailored PDFs for New Physics searches,”arXiv:2602.20235 [hep-ph].
+[2] B.-T. Wang, T. J. Hobbs, S. Doyle, J. Gao, T.-J. Hou, P. M. Nadolsky, and F. I. Olness,
+“Mapping the sensitivity of hadronic experiments to nucleon structure,”Phys. Rev. D98
+no. 9, (2018) 094030,arXiv:1803.02777 [hep-ph].
+[3] X. Jinget al., “Quantifying the interplay of experimental constraints in analyses of parton
+distributions,”Phys. Rev. D108no. 3, (2023) 034029,arXiv:2306.03918 [hep-ph].
+[4]PDF4LHC Working GroupCollaboration, R. D. Ballet al., “The PDF4LHC21
+combination of global PDF fits for the LHC Run III,”J. Phys. G49no. 8, (2022) 080501,
+arXiv:2203.05506 [hep-ph].
+[5] S. Forte, L. Garrido, J. I. Latorre, and A. Piccione, “Neural network parametrization of
+deep inelastic structure functions,”JHEP05(2002) 062,arXiv:hep-ph/0204232.
+[6]NNPDFCollaboration, R. D. Ballet al., “The path to proton structure at 1% accuracy,”
+Eur. Phys. J. C82no. 5, (2022) 428,arXiv:2109.02653 [hep-ph].
+[7] Z. C. Lipton, “The mythos of model interpretability,”arXiv:1606.03490 [cs.LG].
+[8] B. Kriesten, J. Gomprecht, and T. J. Hobbs, “Explainable AI classification for parton
+density theory,”JHEP11(2024) 007,arXiv:2407.03411 [hep-ph].
+[9] M. T. Ribeiro, S. Singh, and C. Guestrin, “"why should i trust you?": Explaining the
+predictions of any classifier,”arXiv:1602.04938 [cs.LG].
+https://arxiv.org/abs/1602.04938.
+[10] A. Shrikumar, P. Greenside, and A. Kundaje, “Learning important features through
+propagating activation differences,”arXiv:1704.02685 [cs.CV].
+[11] A. Binder, G. Montavon, S. Bach, K.-R. Müller, and W. Samek, “Layer-wise relevance
+propagation for neural networks with local renormalization layers,”arXiv:1604.00825
+[cs.CV].
+[12] L. S. Shapley, “A value for n-person games,” inContributions to the Theory of Games II,
+H. W. Kuhn and A. W. Tucker, eds., vol. 28 ofAnnals of Mathematics Studies,
+pp. 307–317. Princeton University Press, Princeton, NJ, 1953.
+[13] S. Lundberg and S.-I. Lee, “A unified approach to interpreting model predictions,”
+arXiv:1705.07874 [cs.AI].
+[14] S. Vent, R. Winterhalder, and T. Plehn, “How to Deep-Learn the Theory behind
+Quark-Gluon Tagging,”SciPost Phys.20(2026) 084,arXiv:2507.21214 [hep-ph].
+[15] S. Forte, “Parton distributions at the dawn of the LHC,”Acta Phys. Polon. B41(2010)
+2859–2920,arXiv:1011.5247 [hep-ph].
+[16] J. Gao, L. Harland-Lang, and J. Rojo, “The Structure of the Proton in the LHC Precision
+Era,”Phys. Rept.742(2018) 1–121,arXiv:1709.04922 [hep-ph].
+[17] S. Carrazza, C. Degrande, S. Iranipour, J. Rojo, and M. Ubiali, “Can New Physics hide
+inside the proton?,”Phys. Rev. Lett.123no. 13, (2019) 132001,arXiv:1905.05215
+[hep-ph].
+32
+
+===== PAGE 33 =====
+[18]NNPDFCollaboration, R. D. Ballet al., “An open-source machine learning framework
+for global analyses of parton distributions,”Eur. Phys. J. C81no. 10, (2021) 958,
+arXiv:2109.02671 [hep-ph].
+[19] A. Barontini, A. Candido, J. M. Cruz-Martinez, F. Hekhorn, and C. Schwan, “Pineline:
+Industrialization of high-energy theory predictions,”Comput. Phys. Commun.297(2024)
+109061,arXiv:2302.12124 [hep-ph].
+[20] G. Watt and R. S. Thorne, “Study of Monte Carlo approach to experimental uncertainty
+propagation with MSTW 2008 PDFs,”JHEP08(2012) 052,arXiv:1205.4024 [hep-ph].
+[21] R. K. Ellis, W. J. Stirling, and B. R. Webber,QCD and collider physics. Cambridge
+monographs on particle physics, nuclear physics, and cosmology. Cambridge University
+Press, Cambridge, 2003.https://cds.cern.ch/record/318585. Photography by S.
+Vascotto.
+[22] S. Forte and G. Watt, “Progress in the Determination of the Partonic Structure of the
+Proton,”Ann. Rev. Nucl. Part. Sci.63(2013) 291–328,arXiv:1301.6754 [hep-ph].
+[23] R. D. Ball and S. Forte, “Double asymptotic scaling at HERA,”Phys. Lett. B335(1994)
+77–86,arXiv:hep-ph/9405320.
+[24] M. Fusi, “HTowards an explainable machine learning model of proton structure,” 2024.
+https:
+//nnpdf.mi.infn.it/wp-content/uploads/2025/06/2024_Magistrale_Fusi.pdf.
+[25] M. Bonvini, S. Forte, and G. Ridolfi, “Soft gluon resummation of Drell-Yan rapidity
+distributions: Theory and phenomenology,”Nucl. Phys. B847(2011) 93–159,
+arXiv:1009.5691 [hep-ph].
+[26]NNPDFCollaboration, R. D. Ball, J. Cruz-Martinez, L. Del Debbio, S. Forte,
+Z. Kassabov, E. R. Nocera, J. Rojo, R. Stegeman, and M. Ubiali, “Response to ”Parton
+distributions need representative sampling”,”arXiv:2211.12961 [hep-ph].
+[27] T.-J. Houet al., “New CTEQ global analysis of quantum chromodynamics with
+high-precision data from the LHC,”Phys. Rev. D103no. 1, (2021) 014013,
+arXiv:1912.10053 [hep-ph].
+[28] S. Bailey, T. Cridge, L. A. Harland-Lang, A. D. Martin, and R. S. Thorne, “Parton
+distributions from LHC, HERA, Tevatron and fixed target data: MSHT20 PDFs,”Eur.
+Phys. J. C81no. 4, (2021) 341,arXiv:2012.04684 [hep-ph].
+[29] A. Courtoy, J. Huston, P. Nadolsky, K. Xie, M. Yan, and C. P. Yuan, “Parton
+distributions need representative sampling,”Phys. Rev. D107no. 3, (2023) 034008,
+arXiv:2205.10444 [hep-ph].
+[30] J. Cruz-Martinez, A. Jansen, G. van Oord, T. R. Rabemananjara, C. M. R. Rocha,
+J. Rojo, and R. Stegeman, “Hyperparameter optimisation in deep learning from ensemble
+methods: applications to proton structure,”Mach. Learn. Sci. Tech.6no. 2, (2025)
+025027,arXiv:2410.16248 [hep-ph].
+[31] J. M. Cruz-Martinez, T. Giani, and T. R. Rabemananjara, “Hyperoptimisation algorithm
+for the next generation of PDF determinations: ensemble regression with an unbiased
+selection model,”arXiv:2605.31482 [hep-ph].
+33
+
+===== PAGE 34 =====
+[32]New MuonCollaboration, M. Arneodoet al., “Accurate measurement of F2(d) / F2(p)
+and R**d - R**p,”Nucl. Phys. B487(1997) 3–26,arXiv:hep-ex/9611022.
+[33]New MuonCollaboration, M. Arneodoet al., “Measurement of the proton and deuteron
+structure functions, F2(p) and F2(d), and of the ratio sigma-L / sigma-T,”Nucl. Phys. B
+483(1997) 3–43,arXiv:hep-ph/9610231.
+[34] L. W. Whitlow, E. M. Riordan, S. Dasu, S. Rock, and A. Bodek, “Precise measurements of
+the proton and deuteron structure functions from a global analysis of the SLAC deep
+inelastic electron scattering cross-sections,”Phys. Lett. B282(1992) 475–482.
+[35]BCDMSCollaboration, A. C. Benvenutiet al., “A High Statistics Measurement of the
+Proton Structure Functions F(2) (x, Q**2) and R from Deep Inelastic Muon Scattering at
+High Q**2,”Phys. Lett. B223(1989) 485–489.
+[36]BCDMSCollaboration, A. C. Benvenutiet al., “A High Statistics Measurement of the
+Deuteron Structure Functions F2 (X,Q2) and R From Deep Inelastic Muon Scattering at
+HighQ 2,”Phys. Lett. B237(1990) 592–598.
+[37]CHORUSCollaboration, G. Onengutet al., “Measurement of nucleon structure functions
+in neutrino scattering,”Phys. Lett. B632(2006) 65–75.
+[38] D. A. Mason,Measurement of the strange - antistrange asymmetry at NLO in QCD from
+NuTeV dimuon data. PhD thesis, Oregon U., 2006.
+[39]H1, ZEUSCollaboration, H. Abramowiczet al., “Combination of measurements of
+inclusive deep inelastice±pscattering cross sections and QCD analysis of HERA data,”
+Eur. Phys. J. C75no. 12, (2015) 580,arXiv:1506.06042 [hep-ex].
+[40]H1, ZEUSCollaboration, H. Abramowiczet al., “Combination and QCD analysis of
+charm and beauty production cross-section measurements in deep inelasticepscattering at
+HERA,”Eur. Phys. J. C78no. 6, (2018) 473,arXiv:1804.01019 [hep-ex].
+[41]NuSeaCollaboration, R. S. Towellet al., “Improved measurement of the anti-d / anti-u
+asymmetry in the nucleon sea,”Phys. Rev. D64(2001) 052002,arXiv:hep-ex/0103030.
+[42]NuSeaCollaboration, J. C. Webbet al., “Absolute Drell-Yan Dimuon Cross Sections in
+800 GeV/cppandpdCollisions,”arXiv:hep-ex/0302019.
+[43] G. Morenoet al., “Dimuon Production in Proton - Copper Collisions at√s= 38.8-GeV,”
+Phys. Rev. D43(1991) 2815–2836.
+[44]SeaQuestCollaboration, J. Doveet al., “The asymmetry of antimatter in the proton,”
+Nature590no. 7847, (2021) 561–565,arXiv:2103.04024 [hep-ph]. [Erratum: Nature
+604, E26 (2022)].
+[45]CDFCollaboration, T. A. Aaltonenet al., “Measurement ofdσ/dyof Drell-Yane +e−
+pairs in theZMass Region fromp¯pCollisions at√s= 1.96TeV,”Phys. Lett. B692
+(2010) 232–239,arXiv:0908.3914 [hep-ex].
+[46]D0Collaboration, V. M. Abazovet al., “Measurement of the Shape of the Boson Rapidity
+Distribution forp¯p→Z/γ∗→e +e− +XEvents Produced at √sof 1.96-TeV,”Phys. Rev.
+D76(2007) 012003,arXiv:hep-ex/0702025.
+[47]D0Collaboration, V. M. Abazovet al., “Measurement of the Muon Charge Asymmetry in
+p¯p→W+X→µν+ X Events at √s=1.96 TeV,”Phys. Rev. D88(2013) 091102,
+arXiv:1309.2591 [hep-ex].
+34
+
+===== PAGE 35 =====
+[48]ATLASCollaboration, G. Aadet al., “Measurement of the inclusiveW ± and Z/gamma
+cross sections in the electron and muon decay channels inppcollisions at√s= 7TeV with
+the ATLAS detector,”Phys. Rev. D85(2012) 072004,arXiv:1109.5141 [hep-ex].
+[49]ATLASCollaboration, G. Aadet al., “Measurement of the high-mass Drell–Yan
+differential cross-section in pp collisions at sqrt(s)=7 TeV with the ATLAS detector,”
+Phys. Lett. B725(2013) 223–242,arXiv:1305.4192 [hep-ex].
+[50]ATLASCollaboration, G. Aadet al., “Measurement of the low-mass Drell-Yan
+differential cross section at√s= 7 TeV using the ATLAS detector,”JHEP06(2014) 112,
+arXiv:1404.1212 [hep-ex].
+[51]ATLASCollaboration, M. Aaboudet al., “Precision measurement and interpretation of
+inclusiveW + ,W − andZ/γ ∗ production cross sections with the ATLAS detector,”Eur.
+Phys. J. C77no. 6, (2017) 367,arXiv:1612.03016 [hep-ex].
+[52]ATLASCollaboration, G. Aadet al., “Measurement of the double-differential high-mass
+Drell-Yan cross section in pp collisions at√s= 8TeV with the ATLAS detector,”JHEP
+08(2016) 009,arXiv:1606.01736 [hep-ex].
+[53]ATLASCollaboration, M. Aaboudet al., “Measurement of the Drell-Yan
+triple-differential cross section inppcollisions at√s= 8TeV,”JHEP12(2017) 059,
+arXiv:1710.05167 [hep-ex].
+[54]ATLASCollaboration, G. Aadet al., “Measurement ofW ± andZ-boson production cross
+sections inppcollisions at √s= 13TeV with the ATLAS detector,”Phys. Lett. B759
+(2016) 601–621,arXiv:1603.09222 [hep-ex].
+[55]ATLASCollaboration, M. Aaboudet al., “Measurement of differential cross sections and
+W +/W− cross-section ratios forWboson production in association with jets at√s= 8
+TeV with the ATLAS detector,”JHEP05(2018) 077,arXiv:1711.03296 [hep-ex].
+[Erratum: JHEP 10, 048 (2020)].
+[56]ATLASCollaboration, G. Aadet al., “Measurement of the transverse momentum andϕ∗
+η
+distributions of Drell–Yan lepton pairs in proton–proton collisions at√s= 8TeV with the
+ATLAS detector,”Eur. Phys. J. C76no. 5, (2016) 291,arXiv:1512.02192 [hep-ex].
+[57]ATLASCollaboration, G. Aadet al., “Measurement of thet ¯tproduction cross-section
+usingeµevents with b-tagged jets in pp collisions at√s= 7 and 8TeVwith the ATLAS
+detector,”Eur. Phys. J. C74no. 10, (2014) 3109,arXiv:1406.5375 [hep-ex].
+[Addendum: Eur.Phys.J.C 76, 642 (2016)].
+[58]ATLASCollaboration, G. Aadet al., “Measurement of thet ¯tproduction cross-section in
+the lepton+jets channel at√s= 13TeV with the ATLAS experiment,”Phys. Lett. B810
+(2020) 135797,arXiv:2006.13076 [hep-ex].
+[59]ATLASCollaboration, G. Aadet al., “Measurements of top-quark pair differential
+cross-sections in the lepton+jets channel inppcollisions at√s= 8TeV using the ATLAS
+detector,”Eur. Phys. J. C76no. 10, (2016) 538,arXiv:1511.04716 [hep-ex].
+[60]ATLASCollaboration, M. Aaboudet al., “Measurement of top quark pair differential
+cross-sections in the dilepton channel inppcollisions at√s= 7 and 8 TeV with ATLAS,”
+Phys. Rev. D94no. 9, (2016) 092003,arXiv:1607.07281 [hep-ex]. [Addendum:
+Phys.Rev.D 101, 119901 (2020)].
+35
+
+===== PAGE 36 =====
+[61]ATLASCollaboration, M. Aaboudet al., “Measurement of the inclusive jet cross-sections
+in proton-proton collisions at√s= 8TeV with the ATLAS detector,”JHEP09(2017)
+020,arXiv:1706.03192 [hep-ex].
+[62]ATLASCollaboration, G. Aadet al., “Measurement of dijet cross sections inppcollisions
+at 7 TeV centre-of-mass energy using the ATLAS detector,”JHEP05(2014) 059,
+arXiv:1312.3524 [hep-ex].
+[63]ATLASCollaboration, M. Aaboudet al., “Measurement of the cross section for inclusive
+isolated-photon production inppcollisions at √s= 13TeV using the ATLAS detector,”
+Phys. Lett. B770(2017) 473–493,arXiv:1701.06882 [hep-ex].
+[64]ATLASCollaboration, G. Aadet al., “Comprehensive measurements oft-channel single
+top-quark production cross sections at√s= 7TeV with the ATLAS detector,”Phys. Rev.
+D90no. 11, (2014) 112006,arXiv:1406.7844 [hep-ex].
+[65]ATLASCollaboration, M. Aaboudet al., “Measurement of the inclusive cross-sections of
+single top-quark and top-antiquarkt-channel production inppcollisions at√s= 13 TeV
+with the ATLAS detector,”JHEP04(2017) 086,arXiv:1609.03920 [hep-ex].
+[66]ATLASCollaboration, M. Aaboudet al., “Fiducial, total and differential cross-section
+measurements oft-channel single top-quark production inppcollisions at 8 TeV using data
+collected by the ATLAS detector,”Eur. Phys. J. C77no. 8, (2017) 531,
+arXiv:1702.02859 [hep-ex].
+[67]CMSCollaboration, S. Chatrchyanet al., “Measurement of the Electron Charge
+Asymmetry in InclusiveWProduction inppCollisions at √s= 7TeV,”Phys. Rev. Lett.
+109(2012) 111806,arXiv:1206.2598 [hep-ex].
+[68]CMSCollaboration, S. Chatrchyanet al., “Measurement of the Muon Charge Asymmetry
+in Inclusivepp→W+XProduction at √s=7 TeV and an Improved Determination of
+Light Parton Distribution Functions,”Phys. Rev. D90no. 3, (2014) 032004,
+arXiv:1312.6283 [hep-ex].
+[69]CMSCollaboration, S. Chatrchyanet al., “Measurement of the Differential and
+Double-Differential Drell-Yan Cross Sections in Proton-Proton Collisions at√s=7 TeV,”
+JHEP12(2013) 030,arXiv:1310.7291 [hep-ex].
+[70]CMSCollaboration, V. Khachatryanet al., “Measurement of the differential cross section
+and charge asymmetry for inclusivepp→W± +Xproduction at √s= 8TeV,”Eur. Phys.
+J. C76no. 8, (2016) 469,arXiv:1603.01803 [hep-ex].
+[71]CMSCollaboration, V. Khachatryanet al., “Measurement of the Z boson differential
+cross section in transverse momentum and rapidity in proton–proton collisions at 8 TeV,”
+Phys. Lett. B749(2015) 187–209,arXiv:1504.03511 [hep-ex].
+[72]CMSCollaboration, S. Chatrchyanet al., “Measurements of Differential Jet Cross
+Sections in Proton-Proton Collisions at√s= 7TeV with the CMS Detector,”Phys. Rev.
+D87no. 11, (2013) 112002,arXiv:1212.6660 [hep-ex]. [Erratum: Phys.Rev.D 87,
+119902 (2013)].
+[73]CMSCollaboration, V. Khachatryanet al., “Measurement and QCD analysis of
+double-differential inclusive jet cross sections in pp collisions at√s= 8TeV and cross
+section ratios to 2.76 and 7 TeV,”JHEP03(2017) 156,arXiv:1609.05331 [hep-ex].
+36
+
+===== PAGE 37 =====
+[74]CMSCollaboration, V. Khachatryanet al., “Measurement of the t-tbar production cross
+section in the e-mu channel in proton-proton collisions at sqrt(s) = 7 and 8 TeV,”JHEP
+08(2016) 029,arXiv:1603.02303 [hep-ex].
+[75]CMSCollaboration, V. Khachatryanet al., “Measurement of the top quark pair
+production cross section in proton-proton collisions at√s=13 TeV,”Phys. Rev. Lett.116
+no. 5, (2016) 052002,arXiv:1510.05302 [hep-ex].
+[76]CMSCollaboration, V. Khachatryanet al., “Measurement of the differential cross section
+for top quark pair production in pp collisions at√s= 8TeV,”Eur. Phys. J. C75no. 11,
+(2015) 542,arXiv:1505.04480 [hep-ex].
+[77]CMSCollaboration, A. M. Sirunyanet al., “Measurement of the inclusivet tcross section
+in pp collisions at√s= 5.02TeV using final states with at least one charged lepton,”
+JHEP03(2018) 115,arXiv:1711.03143 [hep-ex].
+[78]CMSCollaboration, A. M. Sirunyanet al., “Measurement of double-differential cross
+sections for top quark pair production in pp collisions at√s= 8TeV and impact on
+parton distribution functions,”Eur. Phys. J. C77no. 7, (2017) 459,arXiv:1703.01630
+[hep-ex].
+[79]CMSCollaboration, A. M. Sirunyanet al., “Measurements oft tdifferential cross sections
+in proton-proton collisions at√s=13 TeV using events containing two leptons,”JHEP02
+(2019) 149,arXiv:1811.06625 [hep-ex].
+[80]CMSCollaboration, S. Chatrchyanet al., “Measurement of the Single-Top-Quark
+t-Channel Cross Section inppCollisions at√s= 7TeV,”JHEP12(2012) 035,
+arXiv:1209.4533 [hep-ex].
+[81]CMSCollaboration, V. Khachatryanet al., “Measurement of the t-channel
+single-top-quark production cross section and of the|Vtb|CKM matrix element in pp
+collisions at√s= 8 TeV,”JHEP06(2014) 090,arXiv:1403.7366 [hep-ex].
+[82]CMSCollaboration, A. M. Sirunyanet al., “Cross section measurement oft-channel single
+top quark production in pp collisions at√s=13 TeV,”Phys. Lett. B772(2017) 752–776,
+arXiv:1610.00678 [hep-ex].
+[83]LHCbCollaboration, R. Aaijet al., “Measurement of the cross-section forZ→e +e−
+production inppcollisions at √s= 7TeV,”JHEP02(2013) 106,arXiv:1212.4620
+[hep-ex].
+[84]LHCbCollaboration, R. Aaijet al., “Measurement of forwardZ→e +e− production at√s= 8TeV,”JHEP05(2015) 109,arXiv:1503.00963 [hep-ex].
+[85]LHCbCollaboration, R. Aaijet al., “Measurement of the forwardZboson production
+cross-section inppcollisions at √s= 7TeV,”JHEP08(2015) 039,arXiv:1505.07024
+[hep-ex].
+[86]LHCbCollaboration, R. Aaijet al., “Measurement of forward W and Z boson production
+inppcollisions at √s= 8TeV,”JHEP01(2016) 155,arXiv:1511.08039 [hep-ex].
+[87]LHCbCollaboration, R. Aaijet al., “Measurement of the forward Z boson production
+cross-section in pp collisions at√s= 13TeV,”JHEP09(2016) 136,arXiv:1607.06495
+[hep-ex].
+37

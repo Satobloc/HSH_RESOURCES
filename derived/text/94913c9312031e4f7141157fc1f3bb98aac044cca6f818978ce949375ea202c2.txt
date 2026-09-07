@@ -1,0 +1,1452 @@
+===== PAGE 1 =====
+OpenPcc: Open and Confidential LLM Serving on
+Commodity TEEs
+Haoling (Henry) Zhou
+The Ohio State University
+zhou.3890@buckeyemail.osu.edu
+Shixuan Zhao
+The Ohio State University
+zhao.3289@buckeyemail.osu.edu
+Chao Wang
+The Ohio State University
+wang.15147@osu.edu
+Zhiqiang Lin
+The Ohio State University
+zlin@cse.ohio-state.edu
+Abstract
+Generative AI applications such as personal AI agents, image
+generators, and chat assistants offer advanced capabilities
+to improve user experience. Behind the scenes, Large Lan-
+guage Models (LLMs) that power these services require a
+massive amount of computation and are usually deployed in
+the cloud, available as APIs, meaning that a user’s request
+has to be sent to a Cloud Inference Service (CIS) for process-
+ing. However, the strong capabilities of LLM also mean that
+user’s requests now contain much more personal sensitive
+or enterprise confidential information, demanding equally
+strong protection in CIS. While early industry efforts such as
+Apple Private Cloud Compute (PCC) and Google Private AI
+Compute have emerged to show the potential of secure CIS,
+they are not adoptable for deployment by others due to their
+reliance on proprietary hardware and closed ecosystem. In
+addition, they all suffer from their own design glitches that
+can undermine the ambitious goal of bringing in true privacy
+protection to end users. In this paper, we present our anal-
+ysis of the fundamental requirements of building a secure
+yet open CIS. We then presentOpenPcc, a Confidential CIS
+framework that does not rely on proprietary hardware but
+instead uses commercially available TEEs. We implement an
+open-source prototype and characterize it end-to-end on a
+Llama-3 8B vLLM workload, separatingOpenPcc’s own cost
+from the underlying TEE hardware. Our analysis and evalua-
+tion demonstrated the feasibility and security of the system.
+1 Introduction
+AI privacy has become critical as modern generative AI appli-
+cations are driven by Large Language Models (LLMs) that in
+many cases [2, 6, 34] process rich yet private context and sen-
+sitive user information. However, due to the heavy demand
+of computing, LLMs are usually deployed in the cloud [20, 37]
+as Cloud Inference Service (CIS), which makes data security
+and confidentiality inherently challenging. Moreover, ad-
+vanced autonomous systems like AI agents with access to
+substantial sensitive user data can accidentally send it to the
+cloud due to its unpredictable nature [ 10, 12, 15], causing
+severe privacy concerns.
+A long line of work has attempted to make CIS confidential
+through cryptographic means, but the resulting overheads
+have so far kept these techniques impractical for LLM-scale
+workloads.THOR[ 27], for instance, performs GPU inference
+under Homomorphic Encryption (HE) but generates only
+about 0.2 tokens per second.SPRINT[ 8] combines Differ-
+ential Privacy (DP) with Multi-Party Computation (MPC)
+for transformer inference, but requires the model to be fine-
+tuned before it can be served.
+Trusted Execution Environments (TEEs), built specifically
+to protect data in use on cloud infrastructure, offer a far
+more practical path to a secure CIS. Steiakakis, et al. [ 38]
+presented a Python-based inference runtime that executes
+inside Intel SGX enclaves. Industry-wise, Google, Anthropic
+and Apple tackled this problem with their own TEE-based
+designs. However, the security and privacy assurances of
+Google’s Private AI Compute [13] are difficult to verify due
+to its closed-source implementation with no binary available
+for inspection, while Anthropic’s white paper merely pre-
+sented a high-level overview of the enclave approach without
+a deployable implementation. As the current state-of-the-
+art, Apple provided a promising design called Private Cloud
+Compute (PCC) [36] that has been deployed and served as
+the inference service backbone infrastructure of its gener-
+ative AI service named Apple Intelligence. In essence, the
+design employs a similar security model as iOS and runs the
+inference service inside an attestable environment where
+security policies are strictly enforced. However, the data
+security and confidentiality of CIS are root inside Apple’s
+chip and therefore these guarantees are questionable as the
+operator and the root of trust are essentially the same party.
+Besides, the PCC systems are designed using proprietary
+software and hardware, making it practically impossible to
+use on commodity hardware for a wider adoption.
+These limitations point to three properties an ideal secure
+CIS should hold simultaneously: strong, end-to-end privacy
+for user data; a root of trust the user can verifyindependently
+of the service operator; and a deployment that runs on com-
+mercially available hardware. Motivated by these limitations,
+we first present our detailed analysis of the security and
+privacy claims in the current designs to distill a baseline for
+1
+arXiv:2606.11145v1  [cs.CR]  9 Jun 2026
+
+===== PAGE 2 =====
+Zhou et al.
+building secure CIS applications to mitigate vulnerabilities.
+Then, we presentOpenPcc, our confidential CIS framework
+that achieves strong privacy guarantees with separately ver-
+ifiable roots of trust on commercially available hardware.
+OpenPccprovides an integrated remote attestation on CPU
+and GPU TEEs, a secure client-server communication chan-
+nel, tamper-proof and verifiable software logs, and can be
+deployed on commercially available confidential computing
+hardware.
+We implementedOpenPccas an open-source prototype
+on Intel TDX and NVIDIA H100 and evaluated it end-to-end
+on a Llama-3 8B vLLM [ 21] serving workload. Our evalu-
+ation deliberately separates the costOpenPccitself adds
+from the underlying TEE hardware floor: a microbenchmark
+breaks down every stage of the trust pipeline, and an end-to-
+end characterization shows that the per-request overhead
+OpenPccadds on the inference critical path is a single-digit
+percentage of the GPU forward pass, with the dominant at-
+testation cost amortized to a few milliseconds per request at
+production-reasonable cache lifetimes.
+Contributions.We make the following contributions:
+• We systematically analyze existing confidential inference
+solutions and distill the goals and requirements for a se-
+cure, open, and deployable CIS.
+• We presentOpenPcc, the first open, end-to-end confiden-
+tial LLM inference system built entirely on commodity
+CPU and GPU TEEs, whose composite attestation moves
+the root of trust from a single vertically integrated provider
+to parties the user can verify independently..
+• We release an open-source prototype on Intel TDX and
+NVIDIA H100 and characterize its overhead on a real LLM
+serving workload, cleanly separatingOpenPcc’s added
+cost from the TEE hardware floor.
+2 Background
+2.1 Cloud Inference Service
+Cloud Inference Service (CIS) is a type of LLM serving where
+user prompts are processed remotely by the service provider
+for advanced features and performance. A typical inference
+application comprises many components distributed in mul-
+tiple machines: (1) One or more inference nodes that process
+user data in plaintext and output generated tokens. (2) A gate-
+way node that reads request metadata and routes it to the
+available inference nodes for computation. (3) A user client
+that initiates an inference request and performs requested
+operation upon completion.
+While cloud deployment enhanced service capabilities
+and performance, the strategy exhibits two fundamental
+privacy risks. First, in a private cloud environment where
+the service provider controls the serving infrastructure, the
+provider basically can read all inference data in plaintext,
+bypassing all security mechanisms because it controls both
+the hardware and software stack. Second, in a public cloud
+environment where the service provider hosts its service
+in a virtual machine (VM) operated by a third-party cloud
+provider, the host can violate privacy claims by examining
+the VM memory or analyzing the network traffic between
+the user client and VM.
+To thoroughly solve these issues, Anthropic published
+a high-level design that bounds inference data inside a se-
+cure enclave with an out-of-enclave loader program over
+a secure channel [ 4]; Google developed Private Cloud AI
+using AMD SEV-SNP and TPU which provides proprietary
+attestation [13]; Apple’s Private Cloud Compute [ 36] pro-
+vides a promising solution which has been deployed at con-
+sumer scale. Moreover,THOR[ 27] proposed a new Homo-
+morphic Encryption algorithm for secure transformer infer-
+ence;SPRINT[ 8] combined Differential Privacy (DP) and
+Multi-Party Computation (MPC) to enable confidential infer-
+ence by injecting crafted noise into gradients and allowing
+multiple non-colluding inference node to jointly compute
+on a piece of secretly shared data.
+2.2 Confidential Computing
+Trusted Execution Environment (TEE) serves as the core of
+confidential computing, protecting data in use by performing
+computation in a hardware-based, isolated, and attestable
+memory region.
+VM-Based CPU TEEs.In a VM-based CPU TEE, this iso-
+lation is created by encrypting the entire VM memory with
+private keys directly managed by the processor. Such isolated
+region is called a Confidential VM (CVM). When data leaves
+the processor or the CVM, they are encrypted. Therefore, a
+malicious hypervisor would only view the data in ciphertext
+if it attempts to dump the memory or read the register state
+of the VM. Moreover, the TEE hardware and the state of VM
+such as its firmware, OS, and user application can be attested
+through vendor’s trust authority, allowing the user to vali-
+date VM’s integrity. Current available commodity VM-based
+TEEs include Intel TDX [17], which is used inOpenPcc, and
+AMD SEV [1].
+GPU TEEs.Recently, this security feature was extended to
+specialized hardware like GPUs, targeting data-intensive and
+compute-intensive AI workloads. Specifically, NVIDIA al-
+lows users to enable Confidential Computing (CC) mode [30]
+on the H100 hardware. On a host that has CPU TEE and H100
+CC enabled, a CVM can be launched with GPU attached to
+it through vfio passthrough configuration [28]. In this pro-
+cess, Security Protocols and Data Models (SPDM) is used
+to establish a secure session between the CPU and GPU so
+future data transfers through the PCIe bus into the GPU’s
+vRAM remain encrypted [31].
+2
+
+===== PAGE 3 =====
+OpenPcc: Open and Confidential LLM Serving on Commodity TEEs
+3 Overview
+3.1 Problem Statement
+Today’s confidential inference services ask users to trust the
+very operator they were designed to protect against. The
+operator’s hypervisor, host kernel, telemetry pipeline, and
+administrative interfaces all sit between the prompt and the
+model, and any of them is sufficient on its own to compro-
+mise the user’s data. Recent attack work confirms this gap is
+not theoretical: token-theft against Apple Intelligence [45]
+and prompt leakage through shared KV caches [ 42] both
+exploit the trusted-by-default surface that production CIS
+deployments expose. A deployable CIS therefore must let
+the user verify, before disclosing the prompt, that no party
+other than the model running on attested hardware can read
+the request or its response.
+Although academic and industry CIS designs and imple-
+mentations each address a subset of this requirement, no
+design satisfies it end-to-end while being open sourced for a
+wide adoption. The paper’s first contribution is a property-
+by-property analysis of these designs that distills the require-
+ments a deployable CIS must meet, followed by the second
+contribution–our system that meets all of them on commod-
+ity confidential hardware.
+3.2 Analysis of Existing CIS Designs
+We surveyed state-of-art designs from articles, technical
+blogs, and academic publications: Apple Private Cloud Com-
+pute (PCC) [36], Google Private AI Compute (PAC) [13], An-
+thropic Confidential Inference Service (CIS) [4], THOR [27],
+SPRINT [8], and the SGX-based runtime by Steiakakis et
+al. [38]. For each existing design, we extracted the security
+claims it makes, the mechanism it uses to enforce each claim,
+and the evidence (source code, attestation reports, deployed
+binaries, third-party audits) by which an outside party can
+confirm the claim holds.
+This survey produced a structured comparison along seven
+properties (subsection 3.3, with the full grading shown in
+Table 1). Three observations from the survey shaped both
+the property set andOpenPcc’s design.
+Hardware layer trust separation is needed to enforce
+software layer guarantees.PCC and PAC satisfy most of
+the software-layer properties (end-to-end encryption, data
+non-retention, user anonymity), but in both designs the op-
+erator of the inference service is also the operator of the
+hardware root of trust: Apple’s custom hardware and Apple’s
+Data Center Attestation CA in PCC [7, 35], and Google’s TPU
+stack and CA in PAC. A hardware vulnerability or insider
+compromise at the operator therefore has no externally veri-
+fiable mitigation, and the trust chain falls back onto the same
+operator the system was meant to protect against. Therefore,
+software-layer guarantees alone are not sufficient.
+Table 1.Comparison ofOpenPccagainst six public confiden-
+tial CIS designs along the seven properties of subsection 3.3.
+ : claim with a public mechanism and externally veriable
+evidence;G #: design-level claim or partial evidence;#: not
+claimed.
+Claims P1: End-to-end encryptionP2: Data non-retentionP3: Reproducible buildsP4: User anonymityP5: Remote attestationP6: Separation of trustP7: Non-proprietary
+Google PAC [13]  #    G #
+Anthropic CIS [4]G # G # # # #  G #
+Apple PCC [36]  G #   # #
+THOR [27] G #  # # # G #
+SPRINT [8] #  # # # #
+Steiakakis et al. [38]G # #  #    
+OpenPcc       
+Privacy-preserving technologies alone do not offer a
+deployable confidential CIS.THOR [ 27] and SPRINT [8]
+replace the operator-trust assumption with cryptographic
+primitives (homomorphic encryption, multi-party computa-
+tion), removing the hardware-rooted trust separation prob-
+lem entirely. They pay for it in two places: data non-retention
+and anonymity become afterthoughts (the protocols protect
+prompt content but not metadata or per-request state outside
+the cryptographic core), and the performance overhead [3]
+keeps them off production deployment paths. As a result, the
+cryptographic approaches sidestep the separation of trust
+problem but cannot meet the cost or the broader confiden-
+tiality guarantees a deployable CIS needs.
+No existing design is end-to-end open and reproducible.
+Beyond the two structural failures above, none of the six de-
+signs lets a deployer rebuild the running binary from source
+and verify its measurement bit-for-bit. PCC publishes its
+serving images to a transparency log so the deployed binary
+isavailablefor inspection, but the build pipeline and a sub-
+stantial fraction of the surrounding code are not, so a third
+party can confirm what is running but cannot independently
+reproduce it. PAC and Anthropic publish neither binaries
+nor code. THOR, SPRINT, and the Steiakakis et al. [38] SGX
+runtime are open-source academic prototypes, but each ad-
+dresses only a slice of the CIS surface and none ships an
+end-to-end serving stack a deployer can adopt. As a result,
+an outside operator cannot today take any existing design,
+rebuild it from source, attest it on commodity confidential
+hardware, and run it as a production CIS. Closing that gap
+is whatOpenPcctargets.
+3
+
+===== PAGE 4 =====
+Zhou et al.
+3.3 Properties of a Confidential CIS
+To understand what a deployable confidential CIS must pro-
+vide, we surveyed six existing CIS designs, sourcing them
+from articles and technical blogs [ 4, 8, 13, 27, 36, 38], and
+distilled seven properties along which they can be compared.
+The properties separate into a software layer (P1–P4) cov-
+ering how the inference service handles user data, and a
+hardware layer (P5–P7) covering the infrastructure the ser-
+vice runs on. Table 1 shows where each design lands and
+whereOpenPcctargets. We grade only the evidence available
+in public materials, not internal properties the approaches
+may implement but do not document.
+P1: End-to-end encryption.Plaintext user data must ex-
+ist only inside the inference node. The encrypted channel
+therefore must terminate at the node itself rather than at
+any intermediary so that no other component, not even the
+service provider’s gateway, can observe the request, and the
+compromise of any single node exposes only the subset of
+requests routed to it.
+P2: Data non-retention.User data must not survive the
+request that produced it. CIS exposes data paths that tradi-
+tional cloud services do not, the most consequential of which
+is the KV-cache: prior works [23, 43] have shown that the
+intermediate attention states LLM serving systems cache in
+plaintext are sufficient to reconstruct user prompts. A CIS
+must therefore wipe per-request state, including KV-cache
+entries and decrypted prompts, before the response leaves
+the node.
+P3: Reproducible builds.P1 and P2 are policy claims unless
+an outside party can rebuild the running binary from source
+and confirm its measurement. Therefore, a confidential CIS
+must publish both the source and the build configuration
+for every binary inside the trust boundary, so that the mea-
+surements pinned by attestation are reproducible from open
+source. PCC publishes its serving image to a transparency log
+so the binary is available for inspection, but the surrounding
+source and build pipeline are only partially public, which is
+enough to verify what runs but not enough to rebuild it. PAC
+and Anthropic publish neither binaries nor source. THOR,
+SPRINT, and Steiakakis et al. are open-source academic pro-
+totypes whose builds are reproducible by construction.
+P4: User anonymity.Inference traffic must not carry iden-
+tifiers that link a request to a specific user. PCC, for example,
+tunnels traffic through a third-party Oblivious HTTP re-
+lay [39] so that an attacker who compromises the inference
+node alone still cannot link a query to a user’s IP. Combined
+with P1, an attacker has to compromise both the relay and
+the node to make this attack work.
+P5: Remote attestation.The user must be able to check the
+inference node before trusting it with a prompt. Therefore,
+the CIS must produce hardware-rooted evidence that the
+execution environment is genuine and runs the expected
+binaries, which all three industry designs (PCC, PAC, An-
+thropic CIS) deliver by relying on TEEs to encrypt and isolate
+memory from the infrastructure operator and to produce a
+measurement, signed by private keys rooted in the confiden-
+tial hardware, and that users can check against a published
+reference value.
+P6: Separation of trust.The party that runs the service
+must not also be the party that vouches for it. Therefore,
+the hardware root of trust must be anchored in a party dis-
+tinct from the service provider, which commodity TEE ven-
+dors [19, 32, 33] make natural to satisfy because they operate
+attestation services as third parties to the inference provider.
+P7: Non-proprietary hardware.Anyone with a budget
+should be able to run their own confidential CIS. Therefore,
+the confidential CIS must be deployable on commercially
+available hardware, not on a single vendor’s custom hard-
+ware. Without this, a design serves only its inventor’s deploy-
+ment and cannot be adopted by other providers, audited by
+independent researchers, or replicated in academic settings.
+3.4 Threat Model & Assumptions
+We designedOpenPccto prevent attacks for CIS in a produc-
+tion cloud environment. It defends against malicious cloud
+provider and service admin who attempt to read, export, or
+log sensitive user information contained inside inference
+data such as LLM prompt and completion during or after
+an inference request. We assume attackers have privileged
+access to the entire infrastructure where CIS is hosted, allow-
+ing them to inspect the virtual machine memory or bypass
+security mechanism through internal interfaces. Therefore,
+inference applications vulnerable to prompt injection, jail-
+breaking, or data poisoning fall outside our scope. More-
+over, components such as TLS-termination load balancer,
+IP-blinding relay proxy, pre-computation inference pipeline,
+and workload distribution node are considered outside of
+OpenPcctrust boundary that is only bound to an inference
+node. Any user data leak outside of this trust boundary is
+considered as a violation of the security and privacy claims
+we listed in subsection 3.3.
+3.5 System Overview
+OpenPcc’s design realizes all seven properties of subsec-
+tion 3.3 on commodity hardware through three logical com-
+ponents: the confidential inference node, the confidential
+gateway, and the inference client. Figure 1 shows how they
+work together. The hardware root of trust is anchored in the
+CPU and GPU vendors, who are distinct from the service
+provider that operates the nodes, satisfying P6 and P7.
+Confidential inference node.The confidential inference
+node runs the LLM forward pass inside a CVM whose mem-
+ory is encrypted by the CPU TEE and whose GPU memory
+is encrypted with CC-GPU. At startup the node generates an
+ECDH key pair that lives for the node’s lifetime. The private
+4
+
+===== PAGE 5 =====
+OpenPcc: Open and Confidential LLM Serving on Commodity TEEs
+Anonymous 
+Proxy
+Composite V erifier
+Load Balancer
+Attestation Report
+Gateway Node Inference Node
+Keys
+vLLM
+cGPU
+Model
+Prompt
+Client ECDH keypair
+Attestation V erifier
+Artifact Log 
+Server
+Userland
+Public/Auditor
+TEE Vendors TEE-protected VM
+Service Provider
+Figure 1.OpenPcccomponents and the trust boundary
+around the inference node.
+key stays in the CVM, while the public key is committed into
+a composite attestation token that covers both TEEs, a tech-
+nique which we discuss later in subsection 4.1. User prompts
+and completions are decrypted only inside this boundary,
+addressing P1, and the per-request user data, including KV-
+cache entries, is wiped before the response leaves the node,
+addressing P2.
+Confidential gateway.The gateway is a cache-and-router
+that holds no session keys and never observes plaintext. It
+routes encrypted inference traffic to the appropriate compute
+node, forwards attestation requests on the client’s behalf,
+and caches signed attestation tokens so that evidence collec-
+tion and attestation authority verification are paid once per
+session rather than once per request. Because the gateway
+holds no plaintext and acts only as a performance role, it
+does not need to run in a TEE.
+Inference client.The user client generates its own public
+key pair, performs three verification checks described in sub-
+section 4.2 which include signature, claims, and committed
+node’s public key against the composite token returned by
+the gateway. Only after a successful verification, the client
+derives a session key and encrypts the request, enforcing
+the remote attestation claim in P5. P4 is provided by rout-
+ing client traffic through a third-party privacy relay before
+it reaches the gateway, in the same way as PCC’s iCloud
+Private Relay deployment [5, 39].
+4 Design
+Figure 1 groups the entities in aOpenPccdeployment into
+one of four trust parties. Each party corresponds to a distinct
+trust assumption, and the placement of each component
+into a specific party is what realizes the seven properties of
+subsection 3.3.
+TheService Providerruns two types of attested CVMs: the
+Gateway Node, which performs load balancing and caches
+signed attestation reports, and theInference Node, which
+runs vLLM and the model, and has the confidential GPU and
+CPU. Both CVMs are protected by TEEs, which encrypts
+their memory. TheUserparty holds the User Client, which
+carries the user’s prompt and an attestation verifier which
+runs locally. TheTEE Vendorsparty holds the Composite
+Verifier, a third party that signs attestation evidence from
+the cCPU and the cGPU. ThePublic/Auditorparty realizes the
+design’s artifact availability claim by allowing the provider
+to publish their software artifacts whose measurements can
+be verified by users, similar to Apple PCC’s transparency
+log.
+The remainder of this section specifies how a session is
+bound to a specific attested inference node and how the
+per-request workflow works.
+4.1 Attestation Bound Secure Session
+The core design problem is binding the encrypted session
+to a specific attested node because attestation alone is insuf-
+ficient. While client receives a signed report that proves a
+node’s integrity and a public key for encrypting the inference
+requests, nothing in the report tells the client whether that
+public key actually belongs to the attested node. A man-in-
+the-middle that swaps the public key can easily intercept the
+session without providing a new report. The conventional
+fix is to issue an X.509 certificate for the public key from a
+trusted CA, but this introduces a new component which is
+controlled by the service provider that the user must trust
+independently of the confidential hardware, undermining
+P6.
+OpenPccuses the attestation report itself as the binding.
+CPU TEE quote reserves a user-definable field that the CVM
+fills before the verifier signs the quote. The inference node
+generates a public key pair at startup, holds the private key
+in the CVM, and supplies the public key as user data when
+it requests a quote. The composite verifier appends the sup-
+plied user data to its freshness nonce, hashes the entire data
+structure, and copies the hash digest into the report’s user
+data claim before signing. Therefore, the signed attestation
+report/token commits to the public key the node advertises.
+Finally, the client recomputes the same hash and rejects the
+session unless the recomputed value matches the claim in
+the signed report. As a result, no additional CA nor commu-
+nication channel is required.
+4.2 Workflow
+Figure 2 shows how the components interact across the four
+stages of an inference session.
+Pre-Session Stage.Before sending an inference request to
+the server, both the client and the compute nodes that are
+ready to receive workloads will generate their own public
+key pairs.
+Node Validation Stage.The first request in a session trig-
+gers a hardware verification. The gateway either returns a
+5
+
+===== PAGE 6 =====
+Zhou et al.
+cached attestation token whose lifetime has not expired or
+initiates a fresh attestation request against a selected infer-
+ence node. Upon receiving this request, the inference node
+collects evidence from both the CPU TEE and the GPU TEE
+through the SDKs supplied by the vendors, forwards both
+pieces of evidence to a third-party composite verifier (usu-
+ally the TEE vendors), and receives a single signed token
+covering both attestation reports. Finally, the token, together
+with the node’s public key, is returned to the client through
+the confidential gateway.
+The client then runs three checks. First, asignaturecheck:
+the client fetches the verifier’s certificate over a CA end-
+point embedded in the token header and verifies the token’s
+signature. Second, aclaim policycheck: the client validates
+each claim in the token against a pre-defined verification pol-
+icy that contains TCB status, debuggability flags, the public
+OpenPccmeasurement values, and the GPU integrity claims.
+Note that public measurement value is published on the Ar-
+tifact Log Server mentioned in Figure 1. Third, akey-binding
+check: the client recomputes the hash of the concatenation
+of the verifier nonce and the node’s public key as described
+in subsection 4.1 and compares it against the user-data claim
+in the token. The session proceeds only if all three checks
+pass.
+Inference Stage.The client derives the session key against
+the validated public key, computes the shared secret, and
+encrypts the inference payload. The inference request is then
+sent to the confidential gateway node, carrying the encrypted
+payload and the client’s public key. The gateway routes the
+request to the destined inference node without inspecting
+the inference payload since the it never has ability to derive
+a session key. The inference node derives the same key from
+the client’s public key and its own private key, decrypts
+the payload, runs the inference under GPU-CC mode, and
+encrypts the response under the same key.
+Data Wiping Stage.The inference node wipes per-request
+information, including the decrypted prompt, the KV-cache
+entries produced for the request, and any per-request keys,
+before the response leaves the node. However, the session
+itself persists longer than a single request because theOpen-
+Pccclient reuses the validated public key and the derived
+session key for as long as the cached attestation token has
+not expired. Once the attestation token expires, the next
+request triggers a fresh node validation stage.
+5 Implementation
+5.1 Confidential Inference Node
+The confidential inference node runs inside a TDX VM with
+a single H100 GPU attached through vfio passthrough and
+CC mode enabled. At process startup, the node generates
+a P-384 ECDH key pair using the Python cryptography
+package. Note the private key never leaves the CVM, and the
+User Device
+ OpenPCCGateway
+Attestation request
+Signed report
+Public key 
+generate
+OpenPCCNode
+Node VerificationPayload Encryption
+Quote collect
+Attestation Verifier
+Quote
+Verify 
+report
+Pre-session
+Public key 
+generate
+Shared key 
+derive
+Inference 
+request encrypt
+Inference payload + Client public key
+Payload decrypt 
+and inference
+Encrypted response
+Response 
+decrypt
+Post-session User data and 
+per-request 
+keys wipe
+Quote verify
+Shared key 
+derive
+Signed report + 
+Node public key
+Figure 2.OpenPccworkflow, showing how the parties in-
+teract in an inference session.
+public key is the only credential the node advertises. Llama-3
+8B [25] is served by vLLM 0.8.5+ [41] inside the same VM.
+The inference node does not implement attestation logic
+itself. Instead, on every attestation request it invokes Intel’s
+Trust Authority Client [18], which collects the TDX quote
+through ConfigFS-TSM, collects the H100 attestation report
+through the NVIDIA Attestation SDK, and forwards both
+pieces of evidence to ITA over HTTPS using the composite
+tdx+nvgpu command line option. ITA returns a single signed
+JSON Web Token (JWT) that covers the CPU TEE and the
+GPU TEE together. To realize the attestation-bound session
+of subsection 4.1, the node passes the base64-encoded DER of
+its public key as the client’s user-data input. ITA then hashes
+the concatenation of its verifier nonce and this user input and
+puts the hash digest into the JWT’s tdx.tdx_report_data
+claim. The node returns the token together with the public
+key through the gateway to the user client.
+5.2 Confidential Gateway
+The gateway sits between the client and one or more infer-
+ence nodes and acts as a blind relay. It holds two pieces of
+information for each registered node: the node’s address and
+the most recent composite attestation token it has retrieved.
+Note that the gateway never decrypts inference traffic, never
+holds session keys, and never speaks to ITA on behalf of
+6
+
+===== PAGE 7 =====
+OpenPcc: Open and Confidential LLM Serving on Commodity TEEs
+an inference node. When a client requests an attestation
+for verification, the gateway just forwards the request to an
+available inference node. When it receives the JWT, it reads
+its exp claim and caches it for at most the configured TTL,
+and returns the raw token together with the node’s public
+key to the user. Verification stays on the client side because
+the token’s value can be verified anywhere with only Intel’s
+public JWKS (JSON Web Key Set). If this process is moved
+into the gateway, it would violate the attestation guarantee
+we discussed in P5.
+The gateway also produces an attestation token for itself
+even though it does not participate in the inference process.
+The gateway CVM does not own a GPU, so it attests under
+the TDX-only option rather than the composite option. The
+client verifies the resulting JWT under a TDX-only verifica-
+tion process that checks the TCB status, gateway’s MRTD,
+and the REPORTDATA binding to the gateway’s public key.
+The TTL on cached tokens has a minimum value of 300 s,
+matching the JWT lifetime issued by ITA and the JWT’s own
+exp claim. We do not extend a token lifetime past this value
+as a client can always initiate a fresh attestation by sending a
+request to the gateway, which in turn returns a valid token.
+5.3 User Client
+The client implements the verifier role for the composite
+attestation token. After receiving the JWT and the public
+key from the gateway, the client performs the three checks
+introduced in subsection 4.2:
+• Signature.The client downloads ITA’s JSON Web Key
+Set (JWKS) from the URL embedded in the JWT header,
+selects the key whose identifier matches the header, and
+verifies the PS384 signature over the JWT.
+• Claim policy.The client validates the JWT’s claim set
+against the verification policy. Lifetime claims such as
+nbf, exp are checked against the local wall clock. For
+an inference node the client checks if the TCB status is
+either OK, OutOfDate, or SWHardeningNeeded and the TD
+to be not debuggable. Moreover, the client checks the GPU
+information: GPU model, in our case, to be GH100, secure
+boot to be enabled, debug interface to be disabled, and
+the measurement comparison to be successful. The MRTD
+field, which stores the firmware digest (inOpenPccwe
+used OVMF), is also checked.
+• Key binding.The client recomputes SHA-512 over the
+concatenation of the verifier nonce and the received public
+key DER, and compares the result totdx_report_data.
+Only after all three checks pass, the client encrypts the
+inference payload. The encryption/session key is derived
+using the Elliptic-curve Diffie–Hellman algorithm with the
+attested public key and followed by HKDF-SHA384. The de-
+rived 256-bit key feeds AES-256-GCM with a 96-bit random
+nonce per request. Finally, the client’s ECDH public key and
+an AES-GCM nonce are appended to the encrypted inference
+payload, leaving routing metadata (target node identifier)
+in plaintext so that the gateway can forward the request
+without decrypting it.
+6 Evaluation
+This section answers two questions. First, what does the
+OpenPcctrust pipeline cost on the inference critical path?
+Second, what does Llama-3 8B serving cost to run a real LLM
+workload end-to-end through the fullOpenPccdeployment,
+compared to a baseline that matchesOpenPcc’s serving ar-
+chitecture?
+The results illustrate a promising real-world deployment
+ofOpenPcc. We compareOpenPccagainst two baselines, all
+running on the same hardware.Plain (in-process)runs vLLM
+inside an inference node with TDX off and H100 CC mode
+off but without otherOpenPcccomponents, characterizing
+the unprotected and raw hardware floor.Plain servedruns
+vLLM behind a gRPC server that is hosted in aOpenPcc
+gateway, also with TDX and H100 CC off. It adds the gRPC,
+JSON marshalling, and gateway routing costs that any pro-
+duction confidential inference service creates regardless of
+confidentiality. Finally,OpenPccruns inference service in a
+TDX guest with H100 CC enabled, adding TEE computation,
+composite attestation, client verification, key negotiation,
+and prompt encryption/decryption overhead on top of that
+of thePlain servedconfiguration. Therefore, the data confi-
+dentiality overhead is isolated to better show the practicality
+of our design.
+6.1 Experimental setup
+Hardware.A single TDX-capable host with a 5th-generation
+Intel Xeon (Emerald Rapids, Xeon Silver 4516Y+, 96 cores at
+2.2 GHz), 256 GiB RAM, and one NVIDIA H100 80 GB PCIe
+with Confidential Computing capability. The inference node
+is a TDX guest with the H100 passed through. The gateway
+node runs as a non-TDX guest. The user client runs from a
+third VM on the same host.
+Software.All VMs use Debian 13 with kernel 6.12. In par-
+ticular, the inference node also has the tdx_guest module,
+NVIDIA driver 595.71.05, CUDA 13.2, NVIDIA Attestation
+SDK 2.7.3, and Intel Trust Authority’s Python attestation
+client 1.2.0. Llama-3 8B runs on the inference VM with bf16
+format and under vLLM 0.8.5 with paged attention. The
+inference CVM attests under the composite tdx+nvgpu at-
+testation option. On the other hand, the gateway inOpenPcc
+holds no session keys, never sees plaintext, and only caches
+attestation reports. Therefore, we run it on a non-TDX VM
+as an untrusted cache and router as it forwards encrypted re-
+quests to the attested inference node and caches the reports.
+Finally, the user client attests the inference node directly, so
+end-to-end confidentiality is preserved.
+7
+
+===== PAGE 8 =====
+Zhou et al.
+0.0 0.5 1.0 1.5 2.0 2.5
+Time (ms)
+1.32 ms 385 µs  1.92 ms
+(a) Per-request cost (paid every inference)
+0 500 1000 1500 2000 2500
+Time (ms)
+2032 ms  2032 ms
+(b) Session setup cost (paid once per cache TTL)
+JWT PS384 verify
+Claim policy (27 µs)
+SHA-512 key binding (178 µs)
+ECDH SECP384R1
+HKDF-SHA384 (10 µs)
+AES-256-GCM (1 KiB) (2 µs)
+ITA composite attest (CLI)
+Figure 3.OpenPcctrust pipeline microbenchmark. (a) Per-request operations paid on every inference. (b) Session setup paid
+once per attestation report cache TTL.
+Methodology.For the end-to-end Llama-3 8B workload
+shown in subsection 6.3, every data point is the median
+over 50 measurement requests after a 10-request warm-up.
+We report both p50 (the typical case) and p99 (the slow tail
+case) wherever a tail matters. The microbenchmark in sub-
+section 6.2 runs 100 warm-path attestations and 1,000 trials
+per cryptographic primitive instead. The user client caches
+both the gateway gRPC channel and the verified attestation
+result (attested public key + derived AES session key) for the
+lifetime of the JWT attestation report. Therefore, a real chat
+session pays the attestation overhead once per token refresh
+rather than once per request.
+6.2 Microbenchmarks
+Composite attestation breakdown.Figure 3 reports each
+visible stage of one inference request. The Intel Trust Au-
+thority CLI wrapper covers the full attestation workflow,
+including calls to the Quote Generation Service, NVIDIA at-
+testation SDK, ITA verifier, and NVIDIA Remote Attestation
+Service. Its cost dominates everything else by three orders
+of magnitude (2,032 ms warm, 3,305 ms cold), compared to
+microseconds for the per-request checks; we therefore show
+it in a separate plot. The threeOpenPccverification stages
+(PS384 JWT verify against a JWKS-cached signing key, claim
+policy enforcement, and the SHA-512 key-binding check)
+together total 1.53 ms at the median. The data path cryp-
+tography (ECDH SECP384R1 at 378 𝜇s, HKDF-SHA384 at
+7𝜇s, AES-256-GCM at 1.2–11.1𝜇s for 1 KiB to 64 KiB, SHA-
+512 at 3.0𝜇s) totals tens-of-microseconds per request and is
+invisible at the wall-clock time scale of a GPU forward pass.
+Finding 1.The confidentiality enforcement’s bottle-
+neck is a black box.The trust pipeline is dominated by the
+per-session ITA CLI wrapper call. Every other per-request
+cryptographic check is sub-millisecond, and the warm path
+total of all of them combined (1.92 ms median, including
+ECDH and AES-GCM) is three orders of magnitude smaller
+than the wrapper itself.
+Amortizing the wrapper cost.The 2.03 s wrapper cost is
+paid once per gateway cache TTL, not once per inference
+request. Let𝑅 be the number of inference requests served
+between successive ITA token refreshes. The per-request
+attestation cost is(𝐶wrap+𝐶 verify·𝑅)/𝑅 , where𝐶wrap is the
+warm-CLI wrapper (2,032ms warm) and 𝐶verify is the 1.53
+ms warm-path residual. At𝑅= 1every request pays the full
+wrapper cost. At𝑅= 100the per-request attestation cost is
+already 21.9 ms, at𝑅= 1000it falls to 3.6 ms, and at 𝑅≥ 2000
+it sits below 2.6 ms. The asymptote at 𝑅→∞ is the 1.53
+ms residual. A one-minute gateway TTL with our measured
+single stream throughput of ∼88 tokens/s and 128-token
+completions sustains𝑅≈ 41inference requests per refresh.
+Raising the TTL to five minutes lifts𝑅 above 200 and pushes
+the per-request cost under 11 ms. Moreover, theOpenPcc
+client caches the verified attestation report and the derived
+AES key for the lifetime of the JWT, so within a session the
+attestation chain runs exactly once.
+Finding 2.The bottleneck is amortizable, not funda-
+mental.Caching the composite attestation token at the
+gateway and the client amortizes the wrapper cost across
+the cache TTL window. At production reasonable TTLs the
+per-request attestation cost reduced by three orders of mag-
+nitude, from 2.03 s at 𝑅= 1to under 11 ms at 𝑅≥ 200and
+under 4 ms at 𝑅≥ 1000, without weakening the freshness
+argument because the same composite token covers every
+request inside the TTL.
+6.3 Real-world workload: Llama-3 8B end-to-end
+This is the headline experiment. We sweep the prompt size
+∈{ 32, 128, 512, 1024} tokens and the batch size∈{ 1, 4, 16, 64}
+at completion size 128 tokens, giving 16 matrix cells per
+configuration. We report two metrics adopted from prior
+characterization work [9]:
+• TTFT(time-to-first-token, ms): wall time from the client
+sending the request to the first decrypted output token.
+8
+
+===== PAGE 9 =====
+OpenPcc: Open and Confidential LLM Serving on Commodity TEEs
+32 128 512 1024
+Prompt length (tokens)
+1
+4
+16
+64
+Batch size
+31.1 ms 31.9 ms 40.9 ms 55.3 ms
+33.2 ms 41.4 ms 99.1 ms 181 ms
+43.1 ms 102 ms 348 ms 680 ms
+119 ms 357 ms 1347 ms 2700 ms
+(a) Plain served, gen=128
+32 128 512 1024
+Prompt length (tokens)
+1
+4
+16
+64
+Batch size
+67.6 ms
+(+117.09%)
+65.6 ms
+(+105.77%)
+68.7 ms
+(+68.04%)
+72.9 ms
+(+31.78%)
+66.1 ms
+(+98.93%)
+71.2 ms
+(+72.15%)
+118 ms
+(+18.93%)
+202 ms
+(+11.34%)
+76.5 ms
+(+77.63%)
+124 ms
+(+21.16%)
+381 ms
+(+9.44%)
+719 ms
+(+5.65%)
+145 ms
+(+22.15%)
+395 ms
+(+10.66%)
+1406 ms
+(+4.34%)
+2787 ms
+(+3.21%)
+(b) OpenPCC full, gen=128
+500
+1000
+1500
+2000
+2500
+Figure 4.p50 TTFT across the 4×4 prompt×batch matrix at
+128-token completions. (a) Plain served with gRPC, gateway,
+and no TEEs. (b) FullOpenPccstack. A cell in (b) shows both
+the absolute TTFT and the percentage increase relative to
+the plain served configuration.
+Includes the gateway hop, AES-GCM round-trip, GPU
+prefill, and the first decode step.
+• Decode throughput(tokens/s): steady-state throughput
+of the remaining decode steps after the first token has
+been delivered. It should remain comfortably above the
+human reading speed of∼5 tokens/s (≈200ms/token).
+Matrix coverage.Figure 4 illustrates the full prompt size
+sweep ofOpenPccagainst the baseline. The system’s p50
+TTFT ranges from 35.6 ms (prompt=32, batch=4) to 2,722 ms
+(prompt=1024, batch=64), while plain served on the same
+matrix ranges from 31.1 ms to 2,700 ms. As shown in (b),
+the largest relative change sits in the smallest cell (+28.9%
+at prompt=32, batch=1) where the GPU prefill is shortest
+and the attestation wrapper call on the first request domi-
+nates; the smallest change is at the largest cells (+0.44% at
+prompt=1024, batch=4;+0.80% at the largest cell), where
+the GPU forward pass dominates everythingOpenPccadds.
+Across the matrix, the medianOpenPcc-vs-Plain-served
+TTFT overhead is 6.73%, and 11 of the 16 cells fall below
+10%.
+Decode throughput.Figure 5 illustrates per-stream decode
+throughput across the full matrix, one panel per prompt size,
+with a shared y-axis so cross-panel bar heights are directly
+comparable. Two patterns dominate. First, the decode floor
+falls steeply with prompt at large batch: at batch=64 Plain
+in-process holds 73–63 tokens/s across prompts 32–1024,
+while Plain served (andOpenPccon top of it) drops from 65
+tokens/s at prompt=32 down to 26 tokens/s at prompt=1024
+in the same column. That gap is the gRPC marshalling and
+gateway-hop overhead growing with prompt length, not any-
+thingOpenPcc’s confidentiality enforcement adds. Second,
+OpenPcc’s overhead vs Plain served is small and bounded
+across every panel: between−4.32% and+11.53% across the
+full matrix, with a median of 3.78%. Note that in two cases
+OpenPcc’s throughput is slightly higher than Plain served
+due to uncontrolled noise. AggregateOpenPccthroughput
+peaks at batch=64, prompt=32 with67.8× 64≈ 4,340token-
+s/s, and floors at25 .3× 64≈ 1,620tokens/s at the largest
+cell, which is still more than 320× the∼5 tokens/s human
+reading speed.
+Finding 3.The end-to-end overhead is small in pro-
+duction terms.End-to-end Llama-3 8B p50 TTFT under
+the fullOpenPccis within0 .4%–28.9%of a Plain-served
+baseline (median 6.73%), and decode throughput is within
+−4.3%–+11.5%(median 3.8%). Most of the visual gap to
+Plain in-process is the gRPC + gateway transport overhead
+(median +153% TTFT vs in-process,) which any production
+confidential inference service pays regardless of confiden-
+tiality.
+Where TTFT goes.The gap betweenOpenPccand Plain-
+served has two important characteristics, both visible in
+the matrix figure. The first is afixedper-session attestation
+budget including the attestation verification and the key-
+binding chain of Figure 3(a) totals 1.53 ms at the median, and
+runs once per token refresh on the client. Per-request AES-
+GCM encrypt and decrypt add microseconds and are invisible
+at the millisecond scale. The second characteristic is that
+TTFT is heavily dependent on the batch and prompt sizes.
+At small cells the fixed crypto term is larger than the GPU
+computation, while at large cells the GPU work dominates
+the absolute time and the relativeOpenPccoverhead drops
+below 1%, as shown in Figure 4.
+Finding 4.The shape of the overhead is bounded and
+predictable.TheOpenPccoverhead on TTFT is dominated
+by a fixed per-session crypto budget (1.53 ms attestation
+verify, 380𝜇s ECDH-derived shared secret, microseconds of
+AES-GCM per request). This budget is constant in absolute
+terms; its relative share shrinks as the GPU prefill grows,
+which is whyOpenPcc’s overhead vs Plain served is largest
+in the smallest cells (∼29%) and below 1% in the largest cells
+of Figure 4.
+7 Security Analysis
+We organize the discussion around the three adversary classes
+defined in subsection 3.4: a malicious service provider, a ma-
+licious platform operator, and a malicious user targeting
+9
+
+===== PAGE 10 =====
+Zhou et al.
+1 4 16 64
+Batch size
+0
+20
+40
+60
+80
+100
+120
+140
+Decode throughput
+(tokens/s), p50
+-9.02%
+-2.32%
+-9.95%
+-5.27%
+(a) prompt=32, gen=128
+1 4 16 64
+Batch size
+-6.37%
+-6.26%
+-9.74%
++2.55%
+(b) prompt=128, gen=128
+1 4 16 64
+Batch size
+-2.33%
+-11.05%
+-7.43%
+-2.65%
+(c) prompt=512, gen=128
+1 4 16 64
+Batch size
+-8.03%
+-6.18%
+-0.83%
+-1.06%
+(d) prompt=1024, gen=128
+Plain (in-process) Plain served OpenPCC full
+Figure 5.Llama-3 8B p50 decode throughput across all three configurations.
+the gateway. Service-provider/platform-operator collusion
+is folded into the platform-operator case because it does not
+give the attacker any capability that the silicon roots do not
+already mediate. Side channels and denial of service are out
+of scope per subsection 3.4.
+7.1 Malicious Service Provider
+P1 and P2 mentioned in subsection 3.3 require prompts and
+completions to stay confined to the attested compute node,
+and P3 and P5 require the data owner to verify this without
+trusting the service provider. The service provider’s attack
+surface is the software it ships into the CVMs and the net-
+work or debug interface it exposes.
+Tampered Compute Node Image.A service provider could
+ship an image that logs sensitive prompts. CPU and GPU mea-
+surements cover the firmware, kernel, and application code,
+ITA combines both into a composite tdx+nvgpu token, and
+the client’s measurement verification checks each measure-
+ment against a publishedOpenPccvalue. A tampered image
+produces a different measurement and the measurement ver-
+ification fails before any prompt is sent. P3’s published image
+makes this externally auditable.
+Runtime Inspection.A service provider could try to log
+into a running CVM. The image strips every administrative
+interface, no SSH, no shell, no privileged account, no package
+manager, and exposes only the gRPC inference and attesta-
+tion port. The CPU TEE denies the host access to CVM CPU
+state and encrypted guest memory, so reaching in through
+the host fails as well.
+Data Retention After Inference.The Data Wiping Stage
+(subsection 4.2) wipes user data and per-request keys before
+the response leaves, the worker process is recycled periodi-
+cally, and there is no on-disk state. GPU memory is overwrit-
+ten by the next request because CC mode rejects external
+DMA into GPU memory.
+Substitution of a Non-Attested Node.A service provider
+could attest one node and serve traffic from another. The
+compute node’s ECDH public key is bound into the attes-
+tation token’s user-data field, so the client’s key-binding
+check anchors ciphertext to the attested node’s private key.
+A different node cannot decrypt without that key.
+7.2 Malicious Cloud Operator
+The cloud operator runs the host OS, the hypervisor, and
+the physical hardware, and can intercept or redirect traffic
+and manipulate the host environment around the CVM. We
+consider four attacks. The last folds in service-provider col-
+lusion, since the question there is whether silicon roots still
+suffice.
+Memory Inspection.The CPU TEE encrypts CVM mem-
+ory under a key the hypervisor cannot read and integrity-
+protects each cache line, so hypervisor reads return cipher-
+text. CC mode encrypts GPU memory under a per-power-
+cycle key, encrypts PCIe transfers, and rejects DMA into
+GPU memory from outside the bound CVM. Cross-VM reads
+are blocked by the CPU TEE’s isolation.
+Firmware and Kernel Tampering.Swapping virtual firmware,
+loader, or kernel alters a CPU TEE measurement that the
+composite token carries and the client’s policy pins. GPU
+firmware tampering shows up in the GPU measurement-
+comparison claim. Either rejects the token before any prompt
+is sent.
+Network Interception.ECDH and AES-GCM introduced in
+subsection 5.1 implement the secure session design described
+10
+
+===== PAGE 11 =====
+OpenPcc: Open and Confidential LLM Serving on Commodity TEEs
+in subsection 4.1, which encrypts inference traffic to cipher-
+text and authenticated metadata. A man-in-the-middle that
+swaps the compute node’s public key fails the key-binding
+check because the substituted key is not committed to by
+the composite token.
+Replay, Forgery, and Key Capture under Collusion.A
+service-provider/platform-operator collusion owns every
+component outside the silicon. (i) Replay of a prior token fails
+because the token’s nbf/exp window and per-attestation ver-
+ifier nonce bound the window to a few minutes. (ii) Forging a
+token requires a JWKS signing key the colluders do not hold
+or a CPU quote whose user-data commits to an attacker key,
+both of which chain to silicon roots out of reach. (iii) Cap-
+turing the node’s ECDH private key from a running CVM
+bounds the attacker to the CVM’s uptime, since a restart
+yields a fresh key and a fresh token. Memory disclosure in-
+side the attested module is a hardware-vendor responsibility.
+The colluding case raises the bar on side channels (e.g., Ci-
+pherleaks [22]); these channels are out of scope and rely on
+vendor mitigations.
+7.3 Malicious User Request
+The third adversary class targets the gateway routing layer.
+The gateway runs in its own CPU-only attested CVM, so
+image-tampering, runtime-inspection, and key-binding de-
+fenses from subsection 7.1 apply. The gateway never holds
+session keys, so a redirected request still observes only ci-
+phertext.
+The residual concern is routing influence. A compromised
+gateway could steer traffic to a non-attested node. The client’s
+per-session three-check sequence (signature, claim policy,
+key-binding from subsection 4.1) runs against the specific
+node that will serve the request, so a misroute fails veri-
+fication before any plaintext is sent. Prompt injection and
+model-inversion against the public API are out of scope.
+8 Related Works
+OpenPccdraws on two lines of prior work: industry and
+research confidential inference systems, and confidential
+machine learning systems on TEE hardware.
+Confidential Inference Systems.The closest deployed
+systems toOpenPccare the industry CIS designs analyzed
+in subsection 3.2: Apple PCC [ 36], Google PAC [ 13], and
+Anthropic CIS [4]. They converge on a property set similar
+to the oneOpenPcctargets but each ties the deployment
+to a specific operator and does not publish a build pipeline
+that a third-party operator can rebuild.OpenPccmatches
+their property set on commodity confidential hardware while
+making the entire image, including the attestation and key-
+exchange logic, reproducible from public source so that a
+research group, regional cloud, or enterprise can build an
+equivalent service of its own.
+Another line of work chases the same confidentiality goal
+in pure software, replacing the trusted hardware with cryp-
+tographic technologies. Surveys of privacy-preserving LLM
+inference [3] categorize this design space into Fully Homo-
+morphic Encryption (FHE), Multi-Party Computation (MPC),
+and Local Differential Privacy (LDP).THOR[ 27] proposes
+a transformer-tailored FHE scheme that delivers private in-
+ference under the polynomial evaluation model but at a
+throughput of roughly 0.2 tokens/s, which is four orders of
+magnitude below the rateOpenPccsustains on the same
+model size.SPRINT[ 8] pairs differential privacy with secret
+sharing across non-colluding nodes and requires the model to
+be fine-tuned for the protocol before serving, which restricts
+the deployment to operators that own both the training and
+inference services. The Steiakakis et al. SGX runtime [ 38]
+keeps the inference engine inside an SGX enclave and is open
+source. However, the runtime inherits SGX’s enclave-page-
+cache memory ceiling that makes it impractical for modern
+LLMs.OpenPcctargets the TEE branch of the same design
+space but, unlike the SGX runtime, runs on a CPU TEE plus
+CC-GPU combination, and unlike the cryptographic systems,
+delivers production-grade decoder serving without changing
+the model.
+Confidential ML SystemsPutting an ML serving stack
+inside a TEE is not a new idea. Chiron [ 16] was an early
+demonstration, placing it inside an SGX enclave. Chiron pre-
+dates the emergence of GPU TEEs and confines computation
+to the CPU enclave, which limits both the model sizes it can
+serve and the achievable throughput. On the other hand,
+OpenPccextends the same idea across a CPU TEE and a
+CC-GPU so that the GPU forward pass, rather than the CPU
+enclave, is the throughput bottleneck. Truong et al. [40] ad-
+dress the memory pressure of running deep neural networks
+inside SGX’s Enclave Page Cache (EPC) through quantization
+and partitioning. Their techniques target a CPU-only enclave
+where the EPC ceiling is the binding constraint, whereas in
+OpenPccthe model resides inside CC-GPU memory and the
+CPU TEE only meets the prefill and tokenization workload,
+so the EPC question does not arise.
+A more recent line of work asks whether the CPU and GPU
+TEEs pairing, whichOpenPccbuilds on, is fast enough to
+actually serve LLMs in production. Chrapek et al. [9] answer
+in the affirmative, with the first end-to-end performance and
+cost study of confidential LLM inference across modern CPU
+and GPU TEEs. Their study uses the same hardware stack as
+OpenPccand the overhead floor they report matches what
+we measure end-to-end throughOpenPcc. The two works
+are complementary: Chrapek et al. establish the performance
+floor of the underlying TEE hardware, andOpenPccbuilds
+the attestation and key-exchange layers needed to turn that
+floor into a deployable open service. Zhu et al. [46] present
+a microarchitectural benchmark of CC mode on the H100,
+11
+
+===== PAGE 12 =====
+Zhou et al.
+quantifying the bandwidth penalty on encrypted PCIe trans-
+fers and the small overhead on resident kernels. Their mea-
+surements inform the inference overhead expectations for
+OpenPcc. Gu et al. [14] demystify the security architecture
+of NVIDIA’s CC-GPU mode and describe how the GPU boot-
+straps its trust through firmware level attestation and the
+CPU-TEE/GPU-TEE handshake, providing the architectural
+foundation thatOpenPcc’s attestation workflow sits on top
+of.
+The same CPU and GPU TEE pairing has also been pushed
+in the training direction. GPU Travelling [44] keeps each data
+holder’s dataset local and instead reassigns the confidential
+GPU among them at runtime, an orthogonal problem to the
+inference pathOpenPcctargets.OpenPcctargets inference
+rather than training, does not rotate the GPU between CVMs,
+and contributes the attestation and key-exchange mecha-
+nism that GPU Travelling does not concern. On the other
+hand, GPU Travelling’s PCIe MUX and context-travelling
+mechanisms are not suitable for a single-tenant inference
+deployment. The two systems are complementary, and an
+integrated design that placesOpenPcc’s attested inference
+path on top of GPU Travelling’s data holder reassignment is
+a natural extension we leave to future work.
+9 Future Works
+OpenPccis a working prototype, not a finished product. We
+outline the directions in which the design most naturally
+extends, and the open problems each one raises.
+Privacy Relay and Network Layer Anonymity.The cur-
+rent prototype encrypts the prompt but still leaks the user’s
+IP to the gateway, which leaves P4 unenforced at the network
+layer even when the payload is bound to an attested node.
+A completeOpenPccdeployment needs a privacy relay im-
+plemented that terminates the user’s TLS connection inside
+its own trust boundary, forwards the request to the gateway
+over an internal channel, and returns the response. The re-
+lay architecture follows the same design Apple’s PCC takes
+through its iCloud Private Relay deployment [ 5, 39]. User
+anonymity, which is discussed as P4 in Table 1, is satisfied
+only after this component is in place.
+Reproducible Image and Transparency Log.The proto-
+type boots from a Debian image, which is enough to measure
+the data path but stops short of the reproducibility P3 de-
+mands. A production deployment requires a reproducible
+build of the entire CVM image so that the resulting CVM
+measurement is a stable and identical hash of a publicly au-
+ditable release tagged in a public source repository. Tooling
+exists for each layer of the stack (Nix, Bazel, and Buildroot
+for the userland; OVMF reproducible firmware builds for the
+TDX module boundary), but composing them into a single
+end-to-end build whose final TDX measurement matches
+across independent rebuilds is itself a research and engineer-
+ing problem that the confidential-computing community has
+not yet solved at production scale. The accompanying trans-
+parency log requires a mirror of every measurement the ser-
+vice provider has ever advertised, signed by an independent
+log operator, so that a client’s verification policy can refuse
+a measurement that is not present in the log even if it passes
+a TEE attestation report verification. PCC’s transparency
+log [36] is the closest existing reference and is, by design,
+restricted to Apple-build images.OpenPcc’s similar work
+must accept measurements from any third-party operator
+and tolerate concurrent active measurements for different
+model and runtime versions, which raises questions about
+log design and revocation that we leave to future work.
+Larger Models and Multi-GPU Inference.Today’s pro-
+totype fits a single H100. Frontier LLMs do not. Llama-3
+70B [24], DeepSeek-V3 [11], and Mistral Large [26] require
+weight quantization or model sharding across multiple GPUs,
+whileOpenPcccurrently serves Llama-3 8B [ 25] in bf16 on
+one CC-mode H100. Therefore, this raises new questions
+about cross-GPU attestation: the composite attestation to-
+kenOpenPcccurrently uses binds one CPU TEE quote to
+one GPU report, and it is not yet specified how the report
+should describe a multi-node inference platform whose for-
+ward pass crosses several attested GPUs over an intercon-
+nect. NVIDIA’s emerging Hopper multi-GPU (PPCIE) attes-
+tation technology can verify the integrity of both GPUs and
+NVSwitch devices in a multi-GPU system [29]. However, this
+restricts all GPUs in the group to be from a single vendor.
+Note that how GPUs from different vendors can be attested
+is an open question and we leave this for future work.
+10 Conclusion
+OpenPccis a confidential inference framework for data-
+private LLM serving on commodity CPU TEE plus CC-GPU
+hardware. It resolves two engineering problems that block
+practical deployment of this posture today: composite CPU
+and GPU attestation with the compute node’s ECDH pub-
+lic key committed into the quote, and a CVM image whose
+trusted computing base is small enough to audit and mea-
+sure. The prototype runs end to end against a live composite
+verifier on a Llama-3 8B (bf16, vLLM) workload, composite
+attestation amortizes into a per-request overhead below a
+few milliseconds at production-reasonable cache TTLs, and
+theOpenPcc-attributable share of TTFT is a single-digit-
+percent of the GPU forward pass at every prompt and batch
+we measure. We release the prototype and the evaluation
+harness as a reference for future open implementations of
+attested LLM serving.
+12
+
+===== PAGE 13 =====
+OpenPcc: Open and Confidential LLM Serving on Commodity TEEs
+References
+[1] AMD. AMD Memory Encryption.https://docs.amd.com/api/khub/
+documents/ZcsCCmeL80dbtuf_VlGpvw/content.
+[2] Shengnan An, Zexiong Ma, Zeqi Lin, Nanning Zheng, Jian-Guang
+Lou, and Weizhu Chen. Make your llm fully utilize the context.
+In A. Globerson, L. Mackey, D. Belgrave, A. Fan, U. Paquet, J. Tom-
+czak, and C. Zhang, editors,Advances in Neural Information Process-
+ing Systems, volume 37, pages 62160–62188. Curran Associates, Inc.,
+2024. URL:https://proceedings.neurips.cc/paper_files/paper/2024/
+file/71c3451f6cd6a4f82bb822db25cea4fd-Paper-Conference.pdf, doi:
+10.52202/079017-1986.
+[3] Davide Andreoletti, Alessandro Rudi, Emanuele Carpanzano,
+Francesco Lelli, and Tiziano Leidi. Privacy-preserving llm infer-
+ence in practice: A comparative survey of techniques, trade-offs, and
+deployability, 2026. URL:https://api.semanticscholar.org/CorpusID:
+285144126.
+[4] Anthropic. Confidential Inference Systems.https://assets.anthropic.
+com/m/c52125297b85a42/original/Confidential_Inference_Paper.
+pdf, 2025.
+[5] Apple. iCloud Private Relay Overview.https://www.apple.com/
+privacy/docs/iCloud_Private_Relay_Overview_Dec2021.PDF, 2021.
+[6] Yushi Bai, Xin Lv, Jiajie Zhang, Hongchang Lyu, Jiankai Tang, Zhidian
+Huang, Zhengxiao Du, Xiao Liu, Aohan Zeng, Lei Hou, Yuxiao Dong,
+Jie Tang, and Juanzi Li. Longbench: A bilingual, multitask benchmark
+for long context understanding, 2024. URL:https://arxiv.org/abs/2308.
+14508,arXiv:2308.14508.
+[7] CPA Canada. WEBTRUST FOR CERTIFICATION AUTHORITIES
+PRINCIPLES AND CRITERIA.https://www.cpacanada.ca/business-
+and-accounting-resources/audit-and-assurance/overview-of-
+webtrust-services/principles-and-criteria, 2023.
+[8] Francesco Capano, Jonas Böhler, and Benjamin Weggenmann. Sprint:
+Scalable secure & differentially private inference for transformers.
+Proceedings on Privacy Enhancing Technologies, 2026.
+[9] Marcin Chrapek, Marcin Copik, Etienne Mettaz, and Torsten Hoefler.
+Confidential llm inference: Performance and cost across cpu and gpu
+tees, 2025.doi:10.1109/IISWC66894.2025.00017.
+[10] Christian Schroeder de Witt, Klaudia Krawiecka, Igor Krawczuk, Ben
+Hagag, William L Anderson, Peter Belcak, Ben Bucknall, Xiaohong
+Cai, Ayush Chopra, Doron Cohen, et al. Open challenges in multi-
+agent security: Towards secure systems of interacting ai agents.arXiv
+preprint arXiv:2505.02077, 2025.
+[11] Deepseek. DeepSeek-V3.https://huggingface.co/deepseek-ai/
+DeepSeek-V3.
+[12] Zehang Deng, Yongjian Guo, Changzhou Han, Wanlun Ma, Junwu
+Xiong, Sheng Wen, and Yang Xiang. Ai agents under threat: A survey
+of key security challenges and future pathways.ACM Computing
+Surveys, 57(7):1–36, 2025.
+[13] Google. Google Private AI Compute.https://services.google.com/fh/
+files/misc/private_ai_compute_technical_brief.pdf, 2025.
+[14] Zhongshu Gu, Enriquillo Valdez, Salman Ahmed, Julian James Stephen,
+Michael V. Le, Hani Jamjoom, Shixuan Zhao, and Zhiqiang Lin. Blue-
+print, bootstrap, and bridge: A security look at nvidia gpu confiden-
+tial computing, 2025. URL:https://api.semanticscholar.org/CorpusID:
+280150420.
+[15] Yifeng He, Ethan Wang, Yuyang Rong, Zifei Cheng, and Hao Chen.
+Security of ai agents. In2025 IEEE/ACM International Workshop on
+Responsible AI Engineering (RAIE), pages 45–52. IEEE, 2025.
+[16] Tyler Hunt, Congzheng Song, R. Shokri, Vitaly Shmatikov, and Emmett
+Witchel. Chiron: Privacy-preserving machine learning as a service,
+2018. URL:https://api.semanticscholar.org/CorpusID:3970945.
+[17] Intel. Intel Trust Domain Execution.https://www.intel.com/content/
+www/us/en/products/docs/accelerator-engines/trust-domain-
+extensions.html.
+[18] Intel. Intel Trust Authority Client for Python.https://github.
+com/intel/trustauthority-client-for-python, 2025. Includes the
+trustauthority-pycli CLI for the TDX + NVIDIA H100 composite
+attestation profile.
+[19] Intel. GPU remote attestation with Intel Trust Authority.https:
+//docs.trustauthority.intel.com/main/articles/articles/ita/concept-
+gpu-attestation.html, 2026.
+[20] Je Chiao Ku and Shang Liang Chen. The deployment and implemen-
+tation of cloud platform for remote automatic correction of artifi-
+cial intelligence models.IEEE Transactions on Industrial Informatics,
+21(4):3466–3474, 2025.doi:10.1109/TII.2025.3528563.
+[21] Woosuk Kwon, Zhuohan Li, Siyuan Zhuang, Ying Sheng, Lianmin
+Zheng, Cody Hao Yu, Joseph E. Gonzalez, Hao Zhang, and Ion Sto-
+ica. Efficient memory management for large language model serving
+with pagedattention. InProceedings of the 29th ACM Symposium on
+Operating Systems Principles (SOSP), 2023.
+[22] Mengyuan Li, Yinqian Zhang, Huibo Wang, Kang Li, and Yueqiang
+Cheng. Cipherleaks: Breaking constant-time cryptography on amd sev
+via the ciphertext side channel, 2021. URL:https://api.semanticscholar.
+org/CorpusID:237522096.
+[23] Zhifan Luo, Shuo Shao, Su Zhang, Lijing Zhou, Yuke Hu, Chenxu
+Zhao, Zhihao Liu, and Zhan Qin. Shadow in the cache: Unveiling
+and mitigating privacy risks of kv-cache in llm inference. 08 2025.
+doi:10.48550/arXiv.2508.09442.
+[24] Meta. Meta-Llama-3-70B.https://huggingface.co/meta-llama/Meta-
+Llama-3-70B.
+[25] Meta. Meta-Llama-3-8B.https://huggingface.co/meta-llama/Meta-
+Llama-3-8B.
+[26] Mistral. Mistral-Large-Instruct-2407.https://huggingface.co/mistralai/
+Mistral-Large-Instruct-2407.
+[27] Jungho Moon, Dongwoo Yoo, Xiaoqian Jiang, and Miran Kim. Thor:
+Secure transformer inference with homomorphic encryption. InPro-
+ceedings of the 2025 ACM SIGSAC Conference on Computer and Com-
+munications Security, CCS ’25, page 3765–3779, New York, NY, USA,
+2025. Association for Computing Machinery. doi:10.1145/3719027.
+3765150.
+[28] NVIDIA. Deployment Guide for Confidential Computing.https:
+//docs.nvidia.com/cc-deployment-guide-tdx.pdf.
+[29] NVIDIA. Hopper Multi-GPU (PPCIE) Attestation Ex-
+ample.https://docs.nvidia.com/attestation/quick-start-
+guide/latest/attestation-examples/hopper_ppcie.html.
+[30] NVIDIA. NVIDIA Confidential Computing.https://www.nvidia.com/
+en-us/data-center/solutions/confidential-computing/.
+[31] NVIDIA. SPDM.https://docs.nvidia.com/networking/display/
+nvidianvosusermanualfornvlinkswitchesv25022141/spdm.
+[32] NVIDIA. Attestation using NRAS.https://docs.nvidia.com/attestation/
+poc-to-production/latest/integration-options/remote_verifier.html,
+2026.
+[33] Jeremy Powell. AMD SEV-SNP Attestation: Establishing Trust in
+Guests.https://www.amd.com/content/dam/amd/en/documents/
+developer/lss-snp-attestation.pdf, 2022.
+[34] Sumedh Rasal. A multi-llm orchestration engine for personalized,
+context-rich assistance, 2024. URL:https://arxiv.org/abs/2410.10039,
+arXiv:2410.10039.
+[35] Apple Security Research. PCC Hardware Design.https:
+//security.apple.com/documentation/private-cloud-compute/
+hardwareintegrity#Hardware-design, 2024.
+[36] Apple Security Research. Private Cloud Compute: A new frontier for
+AI privacy in the cloud - Apple Security Research.https://security.
+apple.com/blog/private-cloud-compute/, 2024.
+[37] I Sakthidevi, G Vinoth Rajkumar, R Sunitha, A Sangeetha, R San-
+thana Krishnan, and S Sundararajan. Machine learning orchestration
+in cloud environments: Automating the training and deployment of
+13
+
+===== PAGE 14 =====
+Zhou et al.
+distributed machine learning ai model. In2023 7th International Con-
+ference on I-SMAC (IoT in Social, Mobile, Analytics and Cloud)(I-SMAC),
+pages 376–384. IEEE, 2023.
+[38] Nikolaos-Achilleas Steiakakis and Giorgos Vasiliadis. Trusted yet
+flexible: High-level runtimes for secure ml inference in tees.Journal
+of Cybersecurity and Privacy, 6(1), 2026. URL:https://www.mdpi.com/
+2624-800X/6/1/23,doi:10.3390/jcp6010023.
+[39] Martin Thomson and Christopher A. Wood. RFC 9458: Oblivious
+HTTP.https://www.rfc-editor.org/rfc/rfc9458.html.
+[40] Jean-Baptiste Truong, William Gallagher, Tian Guo, and Robert J.
+Walls. Memory-efficient deep learning inference in trusted execution
+environments, 2021.doi:10.1109/IC2E52221.2021.00031.
+[41] vllm.ai. vLLM.https://pypi.org/project/vllm/.
+[42] Guanlong Wu, Zheng Zhang, Yao Zhang, Weili Wang, Jianyu Niu,
+Ye Wu, and Yinqian Zhang. I know what you asked: Prompt leakage
+via kv-cache sharing in multi-tenant LLM serving, 2025. URL:
+https://www.ndss-symposium.org/ndss-paper/i-know-what-you-
+asked-prompt-leakage-via-kv-cache-sharing-in-multi-tenant-llm-
+serving/.
+[43] Guanlong Wu, Zheng Zhang, Yao Zhang, Weili Wang, Jianyu Niu,
+Ye Wu, and Yinqian Zhang. I know what you asked: Prompt leakage
+via kv-cache sharing in multi-tenant llm serving.Proceedings 2025
+Network and Distributed System Security Symposium, 2025. URL:https:
+//api.semanticscholar.org/CorpusID:276842968.
+[44] Shixuan Zhao, Zhongshu Gu, Salman Ahmed, Enriquillo Valdez, Hani
+Jamjoom, and Zhiqiang Lin. Gpu travelling: Efficient confidential
+collaborative training with tee-enabled gpus, 2025. doi:10.1145/
+3719027.3765029.
+[45] Haoling Zhou, Shixuan Zhao, Chao Wang, and Zhiqiang Lin. Too
+private to tell: Practical token theft attacks on apple intelligence, 2026.
+URL:https://arxiv.org/abs/2604.15637,arXiv:2604.15637.
+[46] Jianwei Zhu, Hang Yin, Peng Deng, Aline Almeida, and Shunfan
+Zhou. Confidential Computing on NVIDIA Hopper GPUs: A Per-
+formance Benchmark Study, September 2024. arXiv:2409.03992,
+doi:10.48550/arXiv.2409.03992.
+14
