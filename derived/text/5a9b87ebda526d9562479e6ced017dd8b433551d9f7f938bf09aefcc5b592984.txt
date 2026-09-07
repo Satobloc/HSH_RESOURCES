@@ -1,0 +1,360 @@
+===== PAGE 1 =====
+Exclusive Self Attention
+Shuangfei Zhai
+Apple
+szhai@apple.com
+Abstract
+We introduce exclusive self attention (XSA), a simple modification of self attention
+(SA) that improves Transformer’s sequence modeling performance. The key idea
+is to constrain attention to capture only information orthogonal to the token’s
+own value vector (thus excluding information of self position), encouraging bet-
+ter context modeling. Evaluated on the standard language modeling task, XSA
+consistently outperforms SA across model sizes up to 2.7B parameters and shows
+increasingly larger gains as sequence length grows.
+1 Introduction
+Transformers [Vaswani et al., 2017] consist of interleaved self attention (SA) and feed forward (FFN)
+layers, where SA aggregates information from the context, and FFN performs position wise feature
+updates. This SA/FFN design has remarkably stood the test of time and is continuing to serve as the
+building block for modern Transformer variants.
+In this work, we hypothesize that it is beneficial to further promote the division of labor between SA
+and FFN. We first expose a peculiar behavior of Transformers, where the output of attention tends to
+have a high cosine similarity with the self value vector – and we call it theattention similarity bias.
+The prevalence of theattention similarity biassuggests that SA spends a significant portion of its
+capacity modeling the point wise feature transformation. This is on the one hand unnecessary, because
+the information of the current position has a direction residual path to the following FFN layer; and
+on the other hand harmful, because it creates a competition between modeling the contextual vs
+point-wise feature. This reasoning directly motivates our solution: exclusive self attention (XSA),
+which explicitly excludes directions from the attention’s output along that of the self value vector.
+We evaluate XSA against standard Transformers on the language modeling task, and we show that
+XSA 1) introduces minimal computational overhead; 2) achieves better training/validation loss across
+three model sizes; 3) achieves better downstream evaluation results; 4) maintains consistent gains
+across different learning rates; 5) shows larger gains as sequence length increases; and 6) is robust
+w.r.t. the use of attention sinks.
+2 Motivation
+We first define a standard (causal) self attention (SA) asy=f(x):
+qi =W qxi, k j =W kxj, v j =W vxj, a i,j = exp(qT
+i kj)Pi
+j′=1 exp(qT
+i kj′)
+, y i =
+iX
+j=1
+ai,jvj, (1)
+whereW q, Wk, Wv are the query, key and value projections, respectively.
+We next demonstrate theattention similarity biasphenomenon, which exposes a hidden problem of
+SA. To see this, we take a trained language model (which has 1.3B parameters and 2048 sequence
+Technical report.
+arXiv:2603.09078v1  [cs.LG]  10 Mar 2026
+
+===== PAGE 2 =====
+Figure 1: Visualization of theattention similarity biasof a 1.3B parameter language model of
+sequence length 2048 trained for 100B tokens, aggregated on 1024 random training sequences.Left:
+the average cosine similarity of value vectors vi, vj within a sequence;middle: the average diagonal
+attention value ai,j;right: the average cosine similarity of attention output yi and the self value
+vectorv i. See Eq. 1 for notations.
+length, see Sect. 4 for details) and analyze each of its attention layers in Figure 1. Specifically, we plot
+three quantities: 1) the average cosine similarity of value vectors < v i, vj > within the same head
+and sequence; 2) the average diagonal values of the attention ai,i; and 3) the average cosine similarity
+of the aggregated values yi with the corresponding value vi. All quantities are then averaged across
+attention heads and 1024 random training sequences and plotted for each layer. We can see that
+1) value vectors tend to be positively correlated and 2) attention scores to the current position are
+relatively high. As a direct consequence, there is a high average < y i, vi >, with an increasing trend
+w.r.t. the layer index. This suggests that standard SA tends to aggregate value vectors similar to
+what the self value vi already encodes, which implicitly overlaps with role of FFN and consequently
+diminishes SA’s goal of context modeling.
+3 Method
+We define exclusive self attention (XSA) asz=f(x):
+qi =W qxi, k j =W kxj, v j =W vxj, a i,j = exp(qT
+i kj)Pi
+j′=1 exp(qT
+i kj′)
+, y i =
+iX
+j=1
+ai,jvj,
+zi =y i−(y T
+i vi) vi
+∥vi∥2
+2
+.
+(2)
+Note that the first line of Equation 2 corresponds to standard SA in Equation 1; XSA introduces
+an additional step to remove the projection of SA’s outputyi on self value vector vi. Consequently,
+XSA’s outputzi no longer contains vi itself, nor components from that context that’s correlated with
+vi. Therefore, XSA completely removes theattention similarity bias.
+Our core hypothesis is that, in the presence of residual connections and the FFN block, XSA 1)
+maintains the expressiveness of standard SA and 2) promotes modeling efficiency by allowing the
+attention layer to exclusively focus on contextual information. While it is also possible to provide
+theoretical groundings for it, in this work we defer to empirical evaluations as the main justification.
+XSA can be implemented with two lines of code change on top of SA, as demonstrated in Algorithm 1.
+4 Experiments
+4.1 Setup
+CodebaseWe conduct all experiments with the NanoGPT 1 codebase due to its ease of reproducibil-
+ity. A few changes are made to the Transformer implementation: we replaced the learned position
+embeddings with RoPE [Su et al., 2023] whish is a common practice in modern language models; we
+1https://github.com/karpathy/nanoGPT
+2
+
+===== PAGE 3 =====
+Algorithm 1PyTorch-style pseudocode for multi-head causal XSA
+# x: (B,T,D)
+# Wq, Wk, Wv, Wo: (D,D)
+# H: number of heads
+def exclusive_self_attention(x, Wq, Wk, Wv, Wo, H):
+B, T, D = x.shape
+# linear projections
+Q = (x @ Wq).reshape(B, T, H, D // H).transpose(1, 2)
+K = (x @ Wk).reshape(B, T, H, D // H).transpose(1, 2)
+V = (x @ Wv).reshape(B, T, H, D // H).transpose(1, 2)
+# standard multi-head attention
+Y = torch.nn.functional.scaled_dot_product_attention(Q, K, V, is_causal=True)
+# XSA mode
+Vn = torch.nn.functional.normalize(V, dim=-1)
+Z = Y - (Y * Vn).sum(dim=-1, keepdim=True) * Vn
+# output projection
+out = Z.transpose(1, 2).reshape(B, T, D) @ Wo
+return out
+Table 1: Architectures and learning rates. All models are trained with a batch size of 0.5M tokens,
+for a total of 200K iterations.
+Model Sizen layers dmodel nheads dhead Learning Rate
+0.7B 24 1536 6 2565.0×10 −4
+1.4B 24 2048 24 1284.0×10 −4
+2.7B 32 2560 24 1283.0×10 −4
+insert an additional LayerNorm [Ba et al., 2016] right after the token embeddings which is found
+to improve training stability; we allow the number of attention heads and the head dimension to be
+configured independently to allow for more flexible model sizes.
+DatasetWe use the FineWeb-100BT [Penedo et al., 2024] 2 dataset which contains∼100 billion
+tokens. We preprocess the dataset following the NanoGPT protocol: namely tokenizing it with the
+GPT2 [Radford et al., 2019] tokenizer and randomly splitting 0.05% of the tokens as the validation
+set.
+Training detailsWe closely follow the default training settings of NanoGPT, with a few modifi-
+cations detailed below. We adopt a default context length of 2048, a global batch size of 256, and
+a training duration of 200K iterations. This amounts to 100B training tokens which is roughly one
+epoch over the training set. AdamW [Loshchilov and Hutter, 2017] is used with a linear learning
+rate warmup of 2K steps, followed by a cosine decay schedule to 1
+10x of the max learning rate.
+We perform a grid search of learning rate for each baseline model configuration and use it for the
+XSA variants. We experiment with 3 model sizes, ranging in 0.7B, 1.4B and 2.7B non-embedding
+parameters. The model configurations are specified in Table 1.
+4.2 Results
+Computational overheadWe first benchmark XSA in terms of its speed and memory efficiency.
+We run evaluations of an attention block (attention + FFN) on varied sequence lengths and model
+2https://huggingface.co/datasets/HuggingFaceFW/fineweb
+3
+
+===== PAGE 4 =====
+Figure 2: Time and memory efficiency of XSA compared to standard attention. XSA introduces
+minimal computational overhead across various sequence lengths and model sizesd model.
+0 25 50 75 100 125 150 175 200
+Training iteration (K)
+2.4
+2.5
+2.6
+2.7
+2.8
+2.9
+3.0
+3.1
+3.2Training loss
+0.7b_baseline 
+0.7b_xsa 
+1.3b_baseline 
+1.3b_xsa 
+2.7b_baseline 
+2.7b_xsa 
+0 25 50 75 100 125 150 175 200
+Training iteration (K)
+2.4
+2.5
+2.6
+2.7
+2.8
+2.9
+3.0
+3.1
+3.2Validation loss
+0.7b_baseline 
+0.7b_xsa 
+1.3b_baseline 
+1.3b_xsa 
+2.7b_baseline 
+2.7b_xsa 
+Figure 3: Training and validation loss curves of XSA against the baseline Transformer for three
+model sizes.
+Table 2: Downstream evaluation results of XSA vs baseline Transformer.
+Model ARC-E BoolQ HSwag LAMBADA OBQA PIQA SocIQA WinoGr A vg∆A vg
+0.7B
+Baseline 51.26 61.07 55.68 52.8235.00 74.0540.02 55.88 53.22 +0.26XSA52.69 61.19 56.29 54.0732.20 73.7841.45 56.20 53.48
+1.3B
+Baseline 56.1965.4760.69 56.24 34.60 75.90 41.40 58.80 56.16 +1.03XSA58.8462.2962.41 58.57 36.00 76.61 42.84 59.98 57.19
+2.7B
+Baseline 58.59 60.98 66.20 60.18 37.00 76.6142.9461.96 58.06 +1.36XSA60.65 64.86 67.40 62.04 38.40 77.8041.4562.75 59.42
+sizes, while switching XSA on and off. The experiments are ran on a B200 GPU with a batch size
+4
+
+===== PAGE 5 =====
+32 and numerical precision of bfloat16. The results are shown in Figure 2. We see that, as expected,
+XSA introduces minimal overhead in terms of both speed and memory.
+Model sizeWe next show the training and validation loss curves for the three model sizes in Figure 3.
+We observe that through the course of training XSA maintains a clear margin over the baseline in
+all three model sizes, across both training and validation. Furthermore, we conduct evaluations of
+the final checkpoints on 8 downstream tasks: ARC-Easy [Clark et al., 2018], BoolQ [Clark et al.,
+2018], HellaSwag [Zellers et al., 2019], LAMBADA [Paperno et al., 2016], OpenBookQA [Mihaylov
+et al., 2018], PIQA [Ba et al., 2016], SocialIQA [Sap et al., 2019] and WinoGrande [Sakaguchi
+et al., 2021], which cover language, knowledge and reasoning aspects of the models. We run all
+evaluations with the Language Model Evaluation Harness [Gao et al., 2024], and report the results
+w.r.t. accuracy (for BoolQ, LAMBADA, SocialIQA and WinoGrande) or length normalized accuracy
+(for ARC-Easy, HellaSwag, OpenBookQA and PIQA) in Table 2. We see that across three model
+sizes, XSA consistently outperforms the baseline Transformer in terms of the average accuracy, with
+a larger margin as the model size increases. Based on these observations, we speculate that XSA will
+remain advantageous in even larger scale training settings, both in terms of model size and training
+data size.
+Learning rateIt is also important to make sure that the performance gain of XSA holds across
+different learning rates. In order to test it, we select the 1.3B model and compare XSA with the
+baseline with four different learning rates. The comparison is shown in Figure 4. Again, we see that
+there is a near constant margin across all learning rates, demonstrating the robustness of the XSA
+architecture.
+1e-4 2e-4 4e-4 6e-4
+Learning rate
+2.50
+2.52
+2.54
+2.56
+2.58
+2.60
+2.62Training loss
+baseline
+xsa
+1e-4 2e-4 4e-4 6e-4
+Learning rate
+2.50
+2.52
+2.54
+2.56
+2.58
+2.60
+2.62Validation loss
+baseline
+xsa
+Figure 4: Training and validation loss of XSA against the baseline Transformer for various learning
+rates evaluated with the 1.3B model.
+512 1024 2048 4096 8192 16384
+Seq length
+2.45
+2.50
+2.55
+2.60
+2.65
+2.70Training loss
+baseline
+xsa
+512 1024 2048 4096 8192 16384
+Seq length
+2.45
+2.50
+2.55
+2.60
+2.65
+2.70Validation loss
+baseline
+xsa
+Figure 5: Training and validation loss of XSA against the baseline Transformer for various sequence
+lengths evaluated with the 1.3B model.
+5
+
+===== PAGE 6 =====
+0 1 4
+Num attn sinks
+2.52
+2.53
+2.54
+2.55
+2.56
+2.57
+2.58Training loss
+baseline
+xsa
+0 1 4
+Num attn sinks
+2.52
+2.53
+2.54
+2.55
+2.56
+2.57
+2.58Validation loss
+baseline
+xsa
+Figure 6: Training and validation loss of XSA against the baseline Transformer for various number
+of Attention Sinks evaluated with the 1.3B model.
+Sequence lengthNext, we evaluate XSA’s compatibility with long contexts. We again use the 1.3B
+model and train on six different sequence lengths, ranging in{512,1024,2048,4096,8192,16384} .
+We use the same learning rate for all settings, and adjust the batch size such that the number of
+tokens per batch remains constant (0.5M). The result is shown in Figure 5. Interestingly, XSA claims
+larger gains as sequence length increases. We suspect that this is due to the increasing tension on
+context modeling for longer sequences, which makes the benefit of XSA more pronounced. This also
+suggests that XSA is a promising technique for long context modeling, one of the critical problems
+of scaling Transformers.
+Comparison to Attention SinkIncidentally, XSA is also related to Attention Sink [Xiao et al.,
+2023]. Instead of explicitly prepending to the sequence a set of learned sink tokens, XSA is able to
+allocate undesired attention scores to ai,i. Therefore, XSA can be viewed as an implicit attention
+sink, and it would be interesting to compare it with standard Attention Sinks. We ran additional
+experiments by including learned attention sinks for both the baseline and XSA models, and report
+the results in Figure 6. We see that XSA maintains the loss margin in the existence of attention sinks.
+5 Discussions
+We have shown the exclusive self attention (XSA) demonstrates promising performance on standard
+language modeling tasks. However, many questions remain: How does it work at even larger scale
+w.r.t. model and data? Is it compatible with other optimizers such as Muon [Jordan et al., 2024]?
+Does it work for other tasks/modalities besides language modeling? We hope that this study inspires
+future works that can properly answer these questions.
+References
+Jimmy Lei Ba, Jamie Ryan Kiros, and Geoffrey E Hinton. Layer normalization.arXiv preprint
+arXiv:1607.06450, 2016.
+Peter Clark, Isaac Cowhey, Oren Etzioni, Tushar Khot, Ashish Sabharwal, Carissa Schoenick, and
+Oyvind Tafjord. Think you have solved question answering? try arc, the ai2 reasoning challenge.
+arXiv preprint arXiv:1803.05457, 2018.
+Leo Gao, Jonathan Tow, Baber Abbasi, Stella Biderman, Sid Black, Anthony DiPofi, Charles Foster,
+Laurence Golding, Jeffrey Hsu, Alain Le Noac’h, Haonan Li, Kyle McDonell, Niklas Muennighoff,
+Chris Ociepa, Jason Phang, Laria Reynolds, Hailey Schoelkopf, Aviya Skowron, Lintang Sutawika,
+Eric Tang, Anish Thite, Ben Wang, Kevin Wang, and Andy Zou. The language model evaluation
+harness, 07 2024. URLhttps://zenodo.org/records/12608602.
+Keller Jordan, Yuchen Jin, Vlado Boza, Jiacheng You, Franz Cesista, Laker Newhouse, and Jeremy
+Bernstein. Muon: An optimizer for hidden layers in neural networks, 2024. URL https:
+//kellerjordan.github.io/posts/muon/.
+6
+
+===== PAGE 7 =====
+Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization.arXiv preprint
+arXiv:1711.05101, 2017.
+Todor Mihaylov, Peter Clark, Tushar Khot, and Ashish Sabharwal. Can a suit of armor conduct
+electricity? a new dataset for open book question answering. InProceedings of the 2018 conference
+on empirical methods in natural language processing, pages 2381–2391, 2018.
+Denis Paperno, Germán Kruszewski, Angeliki Lazaridou, Ngoc-Quan Pham, Raffaella Bernardi,
+Sandro Pezzelle, Marco Baroni, Gemma Boleda, and Raquel Fernández. The lambada dataset:
+Word prediction requiring a broad discourse context. InProceedings of the 54th annual meeting of
+the association for computational linguistics (volume 1: Long papers), pages 1525–1534, 2016.
+Guilherme Penedo, Hynek Kydlíˇcek, Loubna Ben allal, Anton Lozhkov, Margaret Mitchell, Colin
+Raffel, Leandro V on Werra, and Thomas Wolf. The fineweb datasets: Decanting the web for
+the finest text data at scale. InThe Thirty-eight Conference on Neural Information Processing
+Systems Datasets and Benchmarks Track, 2024. URL https://openreview.net/forum?id=
+n6SCkn2QaG.
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever, et al. Language
+models are unsupervised multitask learners.OpenAI blog, 1(8):9, 2019.
+Keisuke Sakaguchi, Ronan Le Bras, Chandra Bhagavatula, and Yejin Choi. Winogrande: An
+adversarial winograd schema challenge at scale.Communications of the ACM, 64(9):99–106,
+2021.
+Maarten Sap, Hannah Rashkin, Derek Chen, Ronan Le Bras, and Yejin Choi. Social iqa: Common-
+sense reasoning about social interactions. InProceedings of the 2019 conference on empirical
+methods in natural language processing and the 9th international joint conference on natural
+language processing (EMNLP-IJCNLP), pages 4463–4473, 2019.
+J Su, Y Lu, S Pan, A Murtadha, B Wen, and Y Liu Roformer. Enhanced transformer with rotary
+position embedding., 2021.DOI: https://doi. org/10.1016/j. neucom, 2023.
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz
+Kaiser, and Illia Polosukhin. Attention is all you need.Advances in neural information processing
+systems, 30, 2017.
+Guangxuan Xiao, Yuandong Tian, Beidi Chen, Song Han, and Mike Lewis. Efficient streaming
+language models with attention sinks.arXiv preprint arXiv:2309.17453, 2023.
+Rowan Zellers, Ari Holtzman, Yonatan Bisk, Ali Farhadi, and Yejin Choi. Hellaswag: Can a machine
+really finish your sentence? InProceedings of the 57th annual meeting of the association for
+computational linguistics, pages 4791–4800, 2019.
+7

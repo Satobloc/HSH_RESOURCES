@@ -1,0 +1,1376 @@
+===== PAGE 1 =====
+Peer Review File
+A multi-agent system for automating scientific discovery
+Corresponding Author: Dr Samuel Rodriques
+Any redactions in this file are there to maintain patient confidentiality, the confidentiality of unpublished data, or to remove
+third-party material. 
+This file contains all reviewer reports in order by version, followed by all author rebuttals in order by version.
+ 
+Version 0: 
+Reviewer comments: 
+Referee #1 
+(Remarks to the Author) 
+The manuscript by Ghareeb et al. presents Robin, a multi-agent system designed to automate the scientific discovery
+process by integrating literature synthesis with experimental data analysis. The system architecture consists of several
+specialized agents: Crow and Falcon for literature review and Finch for autonomous analysis of experimental data, such as
+flow cytometry and RNA-seq. The core workflow involves Robin identifying a therapeutic strategy for a given disease,
+proposing testable drug candidates, delegating experiments to human scientists, and then analyzing the resulting data to
+refine its hypotheses in an iterative "lab-in-the-loop" framework. 
+The system's capabilities are demonstrated through a real-world use case: identifying a novel treatment for dry age-related
+macular degeneration (dAMD). Starting from the broad disease prompt, Robin identified impaired retinal pigment epithelium
+(RPE) phagocytosis as a key mechanism. After reviewing approximately 400 publications, it nominated 30 repurposable
+drugs. Experimental validation of the top candidates confirmed that the ROCK inhibitor Y-27632 enhanced phagocytosis. In
+a subsequent iteration informed by these results, Robin proposed ripasudil—a 
+ROCK inhibitor approved in Japan —which
+was then experimentally shown to be even more effective. Finch, the data analysis agent, autonomously analyzed the raw
+flow cytometry and RNA-seq data, identifying the upregulation of ABCA1 as a potential underlying mechanism. 
+Overall, this work represents one of the first published examples of an AI system driving a complete discovery cycle, from
+hypothesis to an experimentally validated therapeutic candidate. 
+Strengths 
+1. The system's end-to-end architecture moves beyond "idea generators" by creating a closed-loop system where the data
+analysis agent, Finch, writes and executes Jupyter notebooks to inform the next round of hypothesis generation. 
+2. A successful lab-in-the-loop demonstration validates the approach by closing the loop with original flow cytometry and
+RNA-seq data and showing that both autonomous and human analyses reach the same qualitative conclusion. 
+3. The system's focus on drug repurposing demonstrates a pragmatic approach. Identifying ripasudil, a drug with an
+established clinical safety profile, highlights how this method could accelerate development timelines and address the clear
+unmet need for dAMD treatments. 
+4. The workflow is presented with sufficient detail, as the authors provide information on the prompts, agent architecture, and
+ranking schemes used, which is crucial for allowing others to replicate or critique the pipeline. 
+5. The use of LLM-based judging to infer a global ranking from many individual pairwise contests is a useful mechanism for
+automating decision-making. Its implementation here is strengthened by benchmarking against human experts, which
+shows strong concordance. 
+Weaknesses and opportunities for improvement: 
+1. The claim of being the "first system to fully automate..." is overstated. Several sophisticated multi-agent frameworks have
+been described recently, including Google's "AI Co-Scientist," Boiko et al.'s "Coscientist" (Nature, 2023), and "TxGemma"
+(Wang et al., 2025, arXiv). Robin's specific contribution is its focus on biological discovery and its integration of an
+autonomous data analysis agent (Finch). The claim of primacy should be narrowed to this specific achievement 
+2. The novelty of ROCK inhibition is clinically actionable but mechanistically incremental. While repurposing an existing
+
+===== PAGE 2 =====
+drug is a valuable outcome, the paper would benefit from framing its contribution carefully. The core finding is not the
+discovery of a new mechanism but rather the identification of a new therapeutic application for a known pathway, given that
+Y-27632 was previously shown to restore phagocytic efficiency (Mao & Finnemann, 2021). 
+3. The reported magnitude of the ripasudil effect requires reconciliation. The manuscript should address the discrepancy
+between the AI's reported 7.5-fold increase in MFI and the human analysis showing a 1.75-fold increase, as this points to
+potential instability in the autonomous analysis pipeline. 
+4. The paper lacks benchmarking and ablation studies, which are needed to rigorously validate the architecture. The authors
+should provide: (a) A comparison against a single-agent baseline (e.g., a state-of-the-art model like o3/Gemini 2.5
+pro/Claude 4 given the same high-level prompt) (b) Ablation studies that quantify the marginal contribution of each agent
+(Crow, Falcon, Finch). (c) A head-to-head comparison on an open benchmark eg GPQA to contextualize Robin's
+performance against other systems. (d) A runtime and cost analysis (e.g., GPU hours or dollar cost per iteration) to assess
+scalability. 
+5. The biological validation would benefit from more translationally relevant models. The work relies solely on immortalized
+ARPE-19 cells. Because dry-AMD pathogenesis is still poorly understood, the proposed mechanism may ultimately fall short
+in a clinical setting. Including validation in primary RPE cells, retinal organoids, or an in-vivo model would strengthen the
+findings. 
+6. The generalization claims are illustrative rather than validated. The paper lists 10 further diseases with candidate tables,
+but provides no experimental follow-up, making them unproven examples of the system's ideation capability. 
+7. The statistical reporting should be more detailed. To clarify the experimental findings, the authors should report the
+number of biological and technical replicates for each assay, include raw effect sizes, and provide adjusted P-values. 
+8. The reproducibility of the Finch agent is a concern, and its stochastic nature would benefit from further characterization
+with run-to-run variance metrics. 
+9. The human effort involved is not quantified. To substantiate claims of automation, the authors should provide a time-on-
+task table detailing the minutes of scientist involvement required for each stage of the discovery loop. 
+10. The data hand-off between agents is opaque. The manuscript does not provide the precise, machine-readable artifact
+that passes Finch’s analysis to Crow/Falcon. Providing a concrete example of that prompt or data structure is necessary to
+assess the degree of automation versus hidden human curation. 
+11. A literature quality-control filter is needed. To mitigate the "garbage-in, garbage-out" risk, the system would be improved
+by having the Crow agent assign a confidence score to sources (e.g., based on citation count or journal impact) before they
+are consumed by other agents. 
+12. The manuscript should ideally nclude a discussion of ethics and safety, noting that automated discovery pipelines
+should incorporate guardrails to address potential dual-use concerns or off-target effects. 
+Reviewer: Olivier Elemento 
+(Remarks on code availability) 
+The authors provide a GitHub repository for the Robin system. After getting a FutureHouse API key, resolving several
+Python version and package dependency issues (including for the aviary framework), I was able to run the demonstration
+notebook. The system successfully executed the initial literature search and assay generation steps. However, the workflow
+failed during the subsequent detailed investigation step due to a 429 Too Many Requests API rate-limiting error from the
+backend service. This suggests that while the code is available, successfully reproducing the full discovery loop may require
+direct support from the authors or modifications to handle API limits. I also note that the Finch agent is not available via
+github and is only accessible upon request to FutureHouse. 
+Referee #2 
+(Remarks to the Author) 
+The authors have developed Robin, an AI system to develop and test hypotheses with the goal of accelerating drug
+development. Designed to emulate the iterative scientific method, it integrates hypothesis generation, literature synthesis,
+and data analysis into a single workflow. 
+In this manuscript they demonstrate Robin’s capability by analyzing existing data
+and nominating a candidate for dry AMD, Ripasudil a ROCK inhibitor. The authors claim novelty, but how novel is
+questionable. 
+It is known that phagocytosis is decreased in AMD, it is known that ROCK inhibitors increase RPE
+phagocytosis, it is known that Ripasudil can stimulate phagocytosis, albeit in a different cell type. Stimulating RPE
+phagocytosis has been contemplated for AMD (although not as a promising approach). Ripasudil has been tested in RPE
+models to see if it inhibits RPE inflammation that can contribute to AMD. ROCK inhibitors including Ripasudil are used in
+ophthalmology practice. Hence, for any expert in the field, 
+these ideas are not particularly novel. Furthermore, the wet lab
+validation experiments are poorly designed and the data are not robust. In addition, it is most disconcerting that several
+references were mis-cited or misquoted in an effort to bolster their viewpoints. This undermines trust in the entire MS. 
+1. Novelty claim: Abstract: -Statement that “we were able to identify a novel treatment for dry age-related macular
+degeneration (dAMD), the major cause of blindness in the developed world.” This is far overstated. They have not
+discovered a treatment for dry AMD and should be edited. Similarly, the statement 
+“Ripasudil is a clinically-used rho kinase
+(ROCK) inhibitor that has never previously been proposed for treating dAMD.”
+
+===== PAGE 3 =====
+While this may be the case for this specific ROCK inhibitor, the concept that ROCK inhibition might benefit dry AMD is in the
+literature, as examples: 
+PMID: 40250716 “Inflammatory processes within the choriocapillaris and retinal pigment epithelium (RPE) cell death are
+also thought to be early features of AMD, which ROCK inhibitors have the potential to combat.” 
+PMID: 27917311 Croze, et al 2016 “A closer examination of ROCK inhibition in wound healing could prompt a novel
+therapeutic for GA, a devastating progression of AMD.” 
+PMID: 39594655 “Consequently, AMD, a neurodegenerative disease characterized by the accumulation of lipofuscin, may
+benefit from the upregulation of autophagy through ROCK inhibition.” 
+PMID: 32252692 – Ripasudil was tested to see if it reduced RPE inflammation which can contribute to AMD, with positive
+results. 
+2. Novelty claim “Notably, while ROCK inhibitors have been previously suggested for treatment of wet AMD and other retinal
+diseases of neovascularization, Robin is the first to propose their application in dry AMD for their effect on phagocytosis [35].
+This approach is supported by several lines of evidence, as RPE phagocytic dysfunction is observed not only with normal
+aging but is pronounced in AMD patients [41, 42, 43].” 
+35) ROCK inhibitors in ophthalmology: A critical review of the existing clinical evidence 
+42) PMID: 37371481. 
+This paper considers stimulating RPE phagocytosis and autophagy in dry AMD treatments and
+explains why targeting phagocytosis is likely not the best route. This demonstrates that increasing phagocytosis as an AMD
+treatment has been considered in the literature. 
+PMID: 33024620. Ripadusil increased phagocytosis in trabecular meshwork cells in pig eyes. 
+Authors state “Preclinical models have demonstrated that Y-27632 can restore phagocytic efficiency in RPE cells [33],
+confirming Robin’s literature-based rationale for suggesting this candidate. 
+I checked reference 33, there is no mention of Y-27632. 
+3. Novelty claim: “In investigating the basis for Robin’s initial identification of Y-27632, we found that the literature search
+included a single paper demonstrating Y-27632’s ability to enhance phagocytic efficiency in “low-phagocytic” RPE cells
+from human donors by promoting actin polymerization [42]. “ 
+42 – I looked at that citation and could not find any reference to Y-27632. 
+Hence, again, this is a mis-cited reference. 
+However this is described in PMID: 34440696, and ROCK inhibition stimulating RPE phagocytosis is also described in
+PMID: 29456184 and PMID: 40389756. Hence, there are at least 3 relevant papers that the authors should have cited.
+Therefore the authors claim the novelty of their findings by not fully describing the literature. 
+4. Validation using RPE cells. The authors should also have followed Robin’s direction to use PSC-RPE as well as
+ARPE19 cells. Instead, they just used ARPE19 cells, which are not a good model of authentic RPE, having a different
+transcriptome, morphology, and phagocytosis. Moreover, there is considerable variation in the line, depending on the source
+and how it is grown. 
+This paper provides guidance on what should be provided in publications using 
+ARPE19 cells: PMID: 35314139. 
+They should submit the information requested in that publication. For example, they claim that the cells show signs of
+differentiation and cobblestone morphology, please provide images and immunostaining for the canonical RPE markers
+BEST1, RPE65, OTX2, MITF, and for comparison use iPSC-RPE. 
+5. Phagocytosis assay. 
+The phagocytosis assay used beads which do not accurately predict POS phagocytosis – they should have followed the
+recommendation of Robin, which stated this correctly. 
+Phagocytosis assay measurements by flow - Their assay is not adequate to evaluate RPE phagocytosis. They should follow
+the method in the publication they mis-cited (33). 
+Issues of data selection: In Figure 4, the authors present flow cytometry data indicating that Ripasudil “significantly enhances
+phagocytosis in RPE cells, inducing an even greater effect than Y-27632.” 
+There appear to be no error bars on the figure, how many times was it repeated? 
+The authors need to show the concentration curves for both drugs, as the improvement of Ripasudil over Y-27832 may just
+be due to the chosen concentration – as they note. Given that, it is not appropriate to show this graph as it is biased to show
+findings that fit with their hypothesis. 
+6. Relevance of ABCA1/4. The authors find a difference in ABCA1 expression. They state “Notably, ABCA1 belongs to the
+same transporter family as ABCA4, which has been previously identified as a therapeutic target in macular degeneration
+pathogenesis [39].” 
+This sentence exhibits some sleight of hand – mutated ABCA4 is a well-known driver of Stargardts disease. 
+ABCA4
+expressed in photoreceptor cells flips N-retinylidene phosphatidylethanolamine from the luminal to the cytoplasmic side of
+the membranes of the photoreceptor disc. This is essential for the visual cycle. If ABCA4 is mutated, photoreceptor
+degeneration can occur. Mutated ABCA4 in the RPE may contribute, but it is the role of ABCA4 in photoreceptors, and
+particularly in cones, that leads to macular degeneration. This is unlike the mechanism of AMD. It appears the 
+authors are
+trying to persuade the reader about similarities, which may not be relevant. 
+ABCA1 stimulates efferocytosis, however in this study it doesn’t do this by promoting phagocytosis, it does this by regulating
+the release of find-me ligands. PMID: 33741356
+
+===== PAGE 4 =====
+Misrepresentation of the literature. “Further connecting these findings to dAMD pathology, Apo-E, a lipid acceptor for
+ABCA1, has also been identified as a potential therapeutic target for dAMD [40]. 
+I read reference 40 and was unable to find any mention that proposed Apoe as a potential therapeutic target for dry AMD.
+The authors should provide the quote from the paper that shows their statement is accurate. 
+10. 
+Given that there is substantial in vitro evidence from multiple publications that ROCK inhibitors can promote RPE
+phagocytosis, done for example with appropriate RPE and technique compared to their data, in order to move the needle
+they should test it in the eye in an in vivo model of AMD. 
+It is important to do this in vivo test because, as mentioned, enhancement of phagocytosis does not entirely make sense.
+RPE cells uptake POS and poor digestion of POS leads to build up of debris and drusen. If phagocytosis is enhanced
+without concomitant increased autophagy, this buildup of undigested POS and drusen could get worse. Hence, they need to
+show improvements from the treatment in a suitable AMD model in vivo. 
+11. Reliance on existing literature: The range and potential of Robin’s hypotheses are 
+constrained by the existing literature.
+This naturally limits the ability of Robin to generate truly novel insights. In addition, its reliance on existing literature presents
+a risk of overfitting analysis to accommodate existing biases and gaps in the current literature. Finch suffers from similar
+weaknesses in being constrained by established bioinformatic workflows and standardized knowledge and data filtering.
+This reliance on standardized pipelines may limit its applicability in emerging contexts that are driven by novel analytical
+strategies used to uncover previously unrecognized biological insights. The authors should clarify the extent to which their
+current application can address these concerns. 
+12. Opaque reasoning in pairwise comparison to rank hypotheses: 
+The inherent complexity of LLMs makes it difficult to interpret or understand the underlying logic used in generating ranked
+hypotheses from pairwise comparisons. The authors must clarify to what degree end users have flexibility in understanding
+or adjusting the hypothesis ranking criteria provided by Robin. 
+In addition, the authors should clarify how their pairwise comparison methodology addresses potential systemic biases,
+given the limited description of the underlying statistical framework. In particular, prior studies have shown that pairwise
+comparisons using LLMs may inadvertently favor publications with a more assertive or authoritative tone over those
+grounded in greater scientific rigor. The authors should explain how the current approach mitigates such biases, or consider
+alternative comparison methods (i.e. would pointwise comparison make more sense?). 
+13. Robin’s reliance on LLMs introduces sensitivity to prompt phrasing. This renders its candidate ranking system potentially
+variable and limits the reproducibility of hypothesis prioritization, reducing user confidence in the consistency and
+robustness of the system’s output. For example, the experimental assays recommended by the robin_full.ipynb and
+robin_demo.ipynb scripts for dry AMD vary significantly due to changes in search criteria. The authors should provide user
+guidelines on recommended settings that effectively mitigate the influence of prompt sensitivity on generated results. 
+14. Bias towards larger effect sizes: The DGE analysis performed by Finch focuses on the identification of a novel risk gene
+with a 3-fold upregulation. However, it remains unclear whether its standardized bioinformatic pipelines can effectively
+analyze more complex, multifactorial diseases involving several genes with small individual effect sizes. As an example,
+demonstrating Finch’s accuracy in polygenic risk score analysis could help address this concern. 
+Minor points 
+1. Use of the present tense through much of the MS makes it difficult to understand what was done and what could be done. 
+a. Be clear about what was done by Robin and what was done by experimenters. 
+2. Although Robin is described as a multi-agent system capable of fully automating key steps of the scientific process, it is
+better described as a semi-autonomous process. 
+(Remarks on code availability) 
+Difficulty in software implementation and virtual environment set-up: While the proposed use of a virtual environment is
+effective for managing Python-specific dependencies, it may still be susceptible to compatibility issues arising from version
+mismatches—particularly as newer versions of Python and its associated packages are released. These conflicts can
+introduce challenges in maintaining reproducibility and long-term stability of the computational environment. 
+In the course of this review, multiple installation attempts using both PC and Mac systems were attempted, and different
+bugs/installation issues using one or the other were encountered. This may or may not be due to residual dependencies or
+interactions between the local host’s operating system and the virtual environment. To address this, the authors should
+consider a more fully self-contained solution such as Docker, which can provide a uniform runtime environment irrespective
+of the underlying operating system. 
+Additionally, when setting api keys, a consistent error message was encountered when running the Robin configuration
+command. It was unable to successfully utilize the pai key added to a local .env file. Again, this may or may not be due to the
+local machine setup, but a more self-contained installation program would make installation smoother. 
+Version 1: 
+Reviewer comments:
+
+===== PAGE 5 =====
+Referee #1 
+(Remarks to the Author) 
+The authors have made a substantial effort to address the concerns raised in the first round of review. The addition of
+primary RPE-SC validation, ablation studies, time-on-task analysis, and agent comparisons represent meaningful
+improvements. I acknowledge the quality and quantity of new experimental work. However, several significant issues remain
+that require attention before this manuscript can be recommended for publication. 
+1. The Finch comparison undermines, rather than supports, the claim that a specialized data analysis agent is necessary. 
+The manuscript states that Finch demonstrated "equivocal performance" compared to Claude Code and Biomni on both
+tasks (Section 2.3), and Supplementary Figure S18 visually confirms that Finch and Claude Code achieved near-identical
+scores on both the RNA-seq and flow cytometry rubrics. The rebuttal reports Finch scores of 85.7% (RNA-seq) and 100%
+(flow cytometry), but the manuscript does not discuss what "equivocal performance" implies for the system architecture. This
+is the most important result in the ablation section. If a general-purpose coding agent already matches a purpose-built,
+containerized bioinformatics agent on the authors' own rubrics — designed by the authors themselves — the justification for
+Finch as a distinct architectural component is substantially weakened. Furthermore, the comparison is based on only two
+tasks (RNA-seq differential expression and flow cytometry gating), each with three replicate runs — an evaluation too narrow
+to draw architectural conclusions. Critically, the flow cytometry task shows a ceiling effect: all three agents achieved 100%
+on the rubric, meaning the task is too simple to discriminate between a specialized and a general-purpose agent. When
+benchmark tasks are solved perfectly by all contestants, they cannot inform architectural decisions. The RNA-seq task does
+not reach a ceiling but presents a separate problem: overlapping standard deviations across agents (Figure S18) make the
+results statistically indistinguishable. Together, these two issues — one task too easy, the other too noisy to differentiate —
+mean that neither benchmark supports the claim that Finch offers an advantage. A convincing case for a specialized agent
+would require evaluation across a broader range of bioinformatics tasks of varying complexity (e.g., single-cell analysis,
+proteomics, imaging quantification, variant calling) — tasks difficult enough to avoid ceiling effects yet well-defined enough
+to yield discriminative comparisons. The authors should expand the evaluation to additional task types and directly address
+what value Finch adds over simply using a general-purpose coding agent within the Robin pipeline. 
+2. The model comparisons are obsolete for a 2026 submission and must be updated. 
+The paper uses OpenAI o4-mini as Robin's backbone, Claude Sonnet 3.7 as the LLM judge, and compares against Claude
+Code (model version unspecified) and OpenAI Deep Research (June 2025). As of the date of this review, the frontier has
+advanced considerably (Claude Opus 4.5/4.6, GPT-5 class models, Gemini 3.1 Pro). Given that Claude Code already
+matched Finch with a mid-2025 model (point 1 above), it is reasonable to expect that current-generation general-purpose
+agents would equal or exceed Finch's performance. Of course, the Robin backbone itself (o4-mini) is now several
+generations behind — the system's own performance would likely improve substantially with updated models. 
+For a paper submitted in 2026 to Nature, I consider it essential that the authors update the Finch comparison to include at
+least one current-generation coding agent (e.g., Claude Code with Opus 4.5 or later). The step-change in coding and
+analytical capabilities introduced by models such as Claude Opus 4.5 and GPT-5 class systems is well documented and
+represents a qualitative, not merely incremental, advance over the mid-2025 models used in this study. Given that Claude
+Code already matched Finch with a weaker model (Figure S18), the outcome with current-generation models bears directly
+on whether the specialized-agent architecture remains justified. This comparison is straightforward to execute — it requires
+only providing the same dataset and prompt to an updated agent — and should not be deferred to a Discussion caveat. 
+3. The biological validation is convincing as a proof-of-concept but should be framed accordingly. 
+The RPE-SC experiments are a strong addition. The use of primary cells from an aged donor, fluorescently labeled rod outer
+segments (replacing beads), dose-response curves for both Y-27632 and ripasudil, immunocytochemistry validation of RPE
+markers, and the identification of KL001 as an additional hit collectively make a compelling in vitro case. The ABCA1
+upregulation finding and its connection to AMD genetics via ApoE is an interesting mechanistic lead. 
+However, the authors should be careful not to overstate these findings. This remains a single in vitro assay system
+(phagocytosis in cultured RPE cells), and as Reviewer 2 correctly noted, enhanced phagocytosis without concomitant
+increases in autophagy could theoretically worsen debris accumulation. The Discussion now appropriately mentions the
+need for in vivo validation, and I appreciate this addition. 
+4. The time-on-task analysis (Table 1) is a useful addition but contains estimates that should be clearly flagged. 
+Several entries in Table 1 are derived from published surveys (von Hippel et al. 2015 for hypothesis ideation; Sboner et al.
+2011 and the Anaconda Data Science Report for bioinformatics setup) rather than measured directly in the context of this
+study. While these are reasonable estimates, they should be more prominently acknowledged as approximations to avoid
+giving the impression that the 200-fold speedup was empirically measured end-to-end. 
+Overall, the paper presents a genuinely interesting system and the RPE-SC biological validation is solid work. The core
+architectural idea — connecting literature-grounded hypothesis generation with autonomous experimental data analysis in
+an iterative loop — is sound and timely. However, the paper's own data (Figure S18) shows no performance advantage of
+the specialized Finch agent over general-purpose Claude Code, and all model comparisons predate the current generation
+
+===== PAGE 6 =====
+of foundation models by a significant margin. These issues bear directly on the claimed contribution of the system
+architecture and should be addressed in the next revision. 
+(Remarks on code availability) 
+My code review findings from the first round — specifically the rate-limiting errors that prevented full reproduction and Finch's
+restricted availability (not publicly released, accessible only upon request to FutureHouse) — do not appear to have been
+addressed in this revision. 
+Referee #2 
+(Remarks to the Author) 
+In their responses and revisions, the authors have addressed several key points raised in the initial review, including
+reframing Robin as a semi-autonomous tool and more clearly acknowledging the role of human input in iterative literature-
+based discovery. The addition of validation experiments using RPE-SC cells further strengthens the practical utility of the
+approach. However, several methodological aspects would benefit from additional clarification: 
+Reviewer pt 9. Opaque reasoning in pairwise comparison to rank hypotheses: The inherent complexity of LLMs makes it
+difficult to interpret or understand the underlying logic used in generating ranked hypotheses from pairwise comparisons.
+The authors must clarify to what degree end users have flexibility in understanding or adjusting the hypothesis ranking
+criteria provided by Robin. In addition, the authors should clarify how their pairwise comparison methodology addresses
+potential systemic biases, given the limited description of the underlying statistical framework. In particular, prior studies
+have shown that pairwise comparisons using LLMs may inadvertently favor publications with a more assertive or
+authoritative tone over those grounded in greater scientific rigor. The authors should explain how the current approach
+mitigates such biases, or consider alternative comparison methods (i.e. would pointwise comparison make more sense?). 
+Authors Response to point 9: We thank the reviewer for highlighting the importance of bias mitigation in LLM-based
+rankings. We are aware of the ’verbosity’ and ’tone’ biases established in recent literature (e.g., Zheng et al., 2023; Wang et
+al., 2023), where LLM judges may favor assertive or longer text over factually rigorous content. To mitigate this, our pairwise
+comparison prompts do not simply ask ’which is better?’ but instead utilize a structured rubric that explicitly instructs the
+model to evaluate specific criteria (e.g., ’Proposed Mechanism Plausibility,’ ’Experimental Feasibility’) and to penalize
+vague or purely rhetorical assertiveness. Furthermore, by using our agents (Crow/Falcon) to retrieve the underlying
+evidence before the ranking step, we ground the comparison in retrieved facts rather than the linguistic style of the
+hypothesis itself. Importantly, our agents utilize PaperQA2 (Skarlinski et al. 2024), a retrieval augmented generation (RAG)
+approach which ensures that the claims used to build assay and drug candidate hypotheses are strictly lined to evidence
+based sources. 
+Regarding the use of pointwise (single answer) scoring, the same literature (Zheng et al.) shows that pairwise comparisons
+are generally more robust than pointwise scoring because LLMs lack a stable internal rubric for absolute grading (e.g., a
+”7/10” means different things in different contexts), whereas they are quite good at relative ranking (”A is better than B”). In
+general, while pointwise scores are advantageous when criterion-level interpretability or calibrated absolute scores are
+needed, the literature favors pairwise comparisons for relative ranking of long-form responses under non-adversarial
+conditions4. 
+Regarding the transparency of the LLM judgments, the LLM judge’s reasoning is presented to the user in the “reasoning”
+column of the CSV files (experimental_assay_ranking_results.csv and therapeutic_candidate_ranking_results.csv).
+Transparency is noted as one of the advantages of LLM judges in the Zheng et al. paper: 
+“LLM-as-a-judge offers two key benefits: scalability and explainability. It reduces the need for human involvement, enabling
+scalable benchmarks and fast iterations. Additionally, LLM judges provide not only scores but also explanations, making
+their outputs interpretable...” 
+Furthermore, the user can read and adjust the rubric used by the LLM judge in prompts.py. The rubrics used in our
+manuscript are presented in Supplementary Figures S5 and S11. 
+Reviewer reply to the authors response to point 9: 
+It remains unclear whether alternative approaches for hypothesis ranking were considered. This is important to clarify as
+there is no clear consensus in the literature regarding optimal strategies for LLM-based relative rankings. Of particular
+concern is position bias within pairwise comparison frameworks, and multiple variants exist that incorporate aspects of
+pointwise comparison to improve robustness (e.g., Choo et al., 2025; Bouchard et al., 2025). Further detail on the authors’
+choice of methodology would therefore be valuable. Therefore changes should be made to the text. 
+10. Robin’s reliance on LLMs introduces sensitivity to prompt phrasing. This renders its candidate ranking system potentially
+variable and limits the reproducibility of hypothesis prioritization, reducing user confidence in the consistency and
+robustness of the system’s output. For example, the experimental assays recommended by the robin full.ipynb and robin
+demo.ipynb scripts for dry AMD vary significantly due to changes in search criteria. The authors should provide user
+guidelines on recommended settings that effectively mitigate the influence of prompt sensitivity on generated results. 
+Authors Response to point 10: We agree that stochasticity is a inherent to LLM based agents. In the context of scientific
+discovery, we believe that some degree of stochasticity is beneficial, as it allows the system to explore a broader solution
+space across multiple runs rather than deterministically converging on the most obvious answers. Additionally, as we argue
+
+===== PAGE 7 =====
+in the case of Finch (see point 14 below) it allows the agent to flexibly adapt to a new problem space. We view Robin as a
+generator of high-quality possibilities that requires expert adjudication, rather than a deterministic, predictable system. It is
+also worth noting that variability is not unique to AI systems. Human scientific analysis is subject to significant inter- and
+intra-rater variability; different experts (or the same expert at different times) frequently prioritize different hypotheses when
+synthesizing vast bodies of literature. We see Robin’s variability as a parallel to the diversity of thought found in human
+collaboration. 
+We have provided all of the system and user prompts used in this manuscript (Supplementary Figures S2-S11).
+Furthermore, these are the default prompts used in robin full.ipynb and robin demo.ipynb and do not contain any instructions
+specific to dry AMD or the phagocytosis assay. 
+Reviewer Reply to the authors response to point 10: 
+While stochasticity is an inherent feature of LLMs, the explanation of whether this variability meaningfully parallels human
+reasoning within the Robin framework remains inadequate. Further prompt-based analyses that distinguishes variability
+driven by underlying evidence from that arising due to semantic sensitivity would improve user confidence in recommended
+experiments and hypotheses. Therefore changes should be made to the text. 
+Remarks on code availability 
+Reviewers comments: Difficulty in software implementation and virtual environment set-up: While the proposed use of a
+virtual environment is effective for managing Python-specific dependencies, it may still be susceptible to compatibility issues
+arising from version mismatches—particularly as newer versions of Python and its associated packages are released.
+These conflicts can introduce challenges in maintaining reproducibility and long-term stability of the computational
+environment. 
+In the course of this review, multiple installation attempts using both PC and Mac systems were attempted, and different
+bugs/installation issues using one or the other were encountered. This may or may not be due to residual dependencies or
+interactions between the local host’s operating system and the virtual environment. To address this, the authors should
+consider a more fully self-contained solution such as Docker, which can provide a uniform runtime environment irrespective
+of the underlying operating system. 
+Additionally, when setting api keys, a consistent error message was encountered when running the Robin configuration
+command. It was unable to successfully utilize the pai key added to a local .env file. Again, this may or may not be due to the
+local machine setup, but a more self-contained installation program would make installation smoother. 
+Reviewer reply to the authors response: 
+The authors do not appear to have addressed this issue. 
+Our prior comments regarding code reproducibility and
+implementation variability were not directly addressed, and the associated github repository does not appear to have been
+updated since the initial review. Clarification on plans for improving reproducibility, such as through containerization of the
+demo code, would be helpful. Therefore changes should be made to address these comments. 
+(Remarks on code availability) 
+please see notes added to the end of the first review. the authors didnt respond to our prior comments so its not clear that
+they received them. 
+Version 2: 
+Reviewer comments: 
+Referee #1 
+(Remarks to the Author) 
+The authors have made a substantial revision within the scope defined by the editorial team. The new BixBench evaluation
+broadens the Finch assessment beyond the prior two-task comparison and avoids the ceiling effects that weakened the
+earlier flow-cytometry benchmark. However, the comparison now tests Finch against its base LLM without the same data
+access or execution environment: Finch receives the capsule data and can execute code in a Jupyter notebook, while
+Sonnet 3.7 is evaluated as a no-harness text-only baseline. The 22.8% versus 1.6% result therefore supports the general
+need for a tool-using data-analysis agent, but does not establish that Finch's specialized harness outperforms a general-
+purpose coding agent operating under matched data-access and execution conditions. I also note in passing that BixBench
+was developed by the same group (Mitchener et al., FutureHouse — Mitchener is also first author on the present manuscript)
+and that Finch trajectories execute inside the BixBench-env Docker container, so the benchmark and the system being
+benchmarked share authorship and infrastructure. The manuscript currently presents BixBench as an external benchmark
+via reference #29 and does not disclose this overlap. This is not disqualifying — BixBench is publicly released and has
+been used by external groups, including OpenAI — but the shared provenance should be stated explicitly in the Methods or
+in a brief note where the benchmark is introduced, so readers can weigh the result accordingly. I note the editorial
+determination that comparisons against post-submission frontier models and agents are out of scope and I defer to the
+editors on this point, but the manuscript text should describe the BixBench result more narrowly and avoid implying that it
+settles the broader architectural question. The added Discussion language acknowledging that general-purpose coding
+agents may achieve parity with specialized harnesses is appropriate. 
+Several claim-calibration and consistency issues remain in the manuscript that should be addressed before publication.
+
+===== PAGE 8 =====
+First, the abstract continues to overstate what the data support. "First multi-agent system capable of fully automating both
+hypothesis generation and data analysis," "first AI system to autonomously discover and validate a novel therapeutic
+candidate," and "promising therapeutic candidate" are all stronger than the proof-of-concept framing the authors adopted
+elsewhere in the revision. The abstract sentence stating that "all hypotheses, experimental directions, data analyses, and
+data figures in the main text of this report were produced by Robin" is also inconsistent with the manuscript itself: the Figure
+2 and Figure 3 legends explicitly state that the figures were "formatted for readability in publication by a human," the
+Methods section states that "Read demultiplexing and alignment was performed by a human" prior to Finch's differential
+expression analysis, and the Results compare Finch's analyses to parallel human analyses (e.g., the 1.89-fold versus 1.75-
+fold MFI comparison for ripasudil in ARPE-19, and the human flow-cytometry gating shown alongside Finch's for the RPE-
+SC experiments). This sentence should be removed or narrowed to accurately reflect the distribution of labor between Robin
+and the human team. 
+Second, the ABCA1 finding in the RPE-SC validation contains internal inconsistencies that need to be resolved. The
+Results text and the Supplementary Figure S26 caption both describe ABCA1 as upregulated in ripasudil-treated cells, and
+on inspection the green ABCA1 marker in the volcano plot does sit at positive log2 fold change, consistent with the
+upregulation claim. However, the caption reports log2 fold changes of "-0.55 and -0.74" — both negative — which
+contradicts the positions plotted in the figure and the direction stated in the text. The most likely explanation is a sign error in
+the reported numerics (the values should presumably read +0.55 and +0.74), but as written the caption is internally
+contradictory and should be corrected. Separately, even taking the values as positive, |log2FC| of 0.55–0.74 sits below the
+|log2FC| > 1 significance threshold the manuscript applies elsewhere, including the dashed reference lines visible at ±1 in
+Supplementary Figure S26 itself. The qualifier "modestly upregulated" is therefore generous: the effect does not meet the
+manuscript's own significance criterion, and the very small p-values reflect low within-experiment variance at n=4 rather than
+a biologically meaningful magnitude. This matters because the Results explicitly state that the RPE-SC RNA-seq
+experiment was performed "to further validate the ABCA1 finding" from the ARPE-19 cells, and a sub-threshold effect of
+roughly 1.4–1.7 fold is directionally consistent but is not a clean replication of the original 3-fold change (log2FC ≈ 1.6). The
+text should be revised to (1) correct the sign error in the caption, and (2) describe the RPE-SC result as directionally
+consistent with the ARPE-19 finding but substantially smaller in magnitude and below the manuscript's own significance
+threshold, rather than as an unqualified validation. Reading the manuscript as currently written, the average reader would
+not realize that the validation experiment produced a sub-threshold effect. 
+Third, the RPE-SC experiments appear to rely on primary cells from a single aged donor with technical replicates (n=4). This
+is appropriate as an in vitro proof-of-concept, consistent with the revised framing, but the Results and figure captions should
+explicitly state "one donor, n=X technical replicates" so that readers do not interpret these experiments as donor-level
+biological validation. 
+Fourth, the time-on-task analysis contains numbers that are difficult to reconcile at first reading. The Introduction states that
+Robin analyses "551 papers in 30 minutes compared to an estimated time of 540 hours" for a human; Table 1 reports 551
+papers and 359–424 hours for the literature-search line item; and a later Results paragraph reports an end-to-end discovery
+cycle of "872–937 human hours" and "approximately 825 references." If these represent different workflow scopes (per-run
+literature search alone versus end-to-end case-study totals, with 825 references being the cumulative count across all
+rounds rather than the 551-per-run figure), that distinction should be stated explicitly so that the 200-fold speedup claim is
+not read as internally inconsistent. The 540-hour figure and the 359–424-hour Table 1 figure for what appears to be the
+same workflow step are particularly hard to reconcile as currently written. 
+Fifth, the new Methods text on the Bradley–Terry–Luce pairwise comparison framework is a welcome addition, but it asserts
+that position bias is mitigated "by utilizing a highly distributed tournament paired with the BTL model." BTL aggregates
+pairwise outcomes and estimates latent strength parameters, but it does not by itself remove systematic positional bias if the
+LLM judge consistently prefers the first- or second-listed option. The authors should state whether the order of items within
+each pairwise comparison was randomized or counterbalanced across comparisons; if it was, a single sentence
+documenting this would resolve the concern. 
+The remaining points from the prior round have been adequately addressed. The biological framing is appropriately
+softened: the autophagy claim now requires further validation, ABCA1 is described as having potential implications for
+dAMD, and references to expediting therapeutic discovery have been removed. The Table 1 caption and accompanying
+Results text clearly flag the human time-on-task values as estimates derived from published surveys. The open-source
+release of Finch with a containerized Docker implementation appears to substantially address the earlier reproducibility and
+installation issues raised in both my first-round review and Reviewer 2's concerns, pending editorial confirmation that the
+end-to-end loop runs as described. A final copyedit pass is also warranted — the manuscript in its current state contains
+small errors that are distracting for a Nature submission, including a missing period between the autophagy caveat and the
+following sentence ("Further work is necessary to validate any effects on autophagy The human version..."), "Figure4E" and
+"Figure4F" without spaces, doubled punctuation ("(Figure4E)..", "(Figure4F).)"), the spelling "phagoytosis" in a figure
+caption, and "dose dependant" in the Results. 
+(Remarks on code availability) 
+Referee #2 
+(Remarks to the Author)
+
+===== PAGE 9 =====
+Our concerns re code availability have been addressed, thank you. 
+(Remarks on code availability) 
+Open Access
+ This Peer Review File is licensed under a Creative Commons Attribution 4.0 International License, which
+permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate
+credit to the original author(s) and the source, provide a link to the Creative Commons license, and indicate if changes were
+made.
+In cases where reviewers are anonymous, credit should be given to 'Anonymous Referee' and the source.
+The images or other third party material in this Peer Review File are included in the article’s Creative Commons license,
+unless indicated otherwise in a credit line to the material. If material is not included in the article’s Creative Commons
+license and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain
+permission directly from the copyright holder.
+To view a copy of this license, visit 
+https://creativecommons.org/licenses/by/4.0/
+
+===== PAGE 10 =====
+Response to Reviewers for Manuscript “Robin: A Multi-Agent1
+System for Automating Scientific Discovery”2
+3
+Thank you for taking the time to review our manuscript. We have carefully considered each com-4
+ment and suggestion and have revised the manuscript accordingly. Below, we detail our responses5
+to each reviewer’s comments point-by-point, referencing the specific edits made in the revised6
+manuscript.7
+Reviewer 1 Response8
+1. The claim of being the ”first system to fully automate...” is overstated. Several9
+sophisticated multi-agent frameworks have been described recently, including Google’s10
+”AI Co-Scientist,” Boiko et al.’s ”Coscientist” (Nature, 2023), and ”TxGemma” (Wang11
+et al., 2025, arXiv). Robin’s specific contribution is its focus on biological discovery12
+and its integration of an autonomous data analysis agent (Finch). The claim of primacy13
+should be narrowed to this specific achievement14
+Response:We have amended our claims to emphasize Robin’s use of an autonomous15
+data analysis agent and its utility in experimental biology which sets it apart from16
+other AI scientists. We have amended the quoted claim to state that Robin is the17
+first multi-agent system to automate “both hypothesis generation and data analysis for18
+experimental biology”. In the introduction we emphasize the unique value of Robin as19
+combining literature-based hypothesis generation and autonomous data analysis in one20
+semi-autonomous system.21
+Changes:Abstract (Page 1, line 5); Introduction (Page 2, lines 51; 61-64).22
+2. The novelty of ROCK inhibition is clinically actionable but mechanistically incre-23
+mental. While repurposing an existing drug is a valuable outcome, the paper would24
+benefit from framing its contribution carefully. The core finding is not the discovery25
+of a new mechanism but rather the identification of a new therapeutic application26
+for a known pathway, given that Y-27632 was previously shown to restore phagocytic27
+efficiency (Mao & Finnemann, 2021).28
+Response:We agree that ROCK inhibition is a known mechanism of phagocytosis29
+enhancement. While the original manuscript did cite the existing work, we have revised30
+the manuscript to state more clearly that while the mechanism is known, the specific31
+application of ROCK inhibitors fordry AMDvia the mechanism ofphagocytosis32
+enhancementis the primary contribution. We explicitly acknowledge previous work33
+on Y-27632 restoring phagocytic efficiency but highlight the gap in applying this to dry34
+AMD pathology.35
+Changes:Discussion (Page 9, lines 230-236).36
+1
+
+===== PAGE 11 =====
+3. The reported magnitude of the ripasudil effect requires reconciliation. The manuscript37
+should address the discrepancy between the AI’s reported 7.5-fold increase in MFI and38
+the human analysis showing a 1.75-fold increase, as this points to potential instability39
+in the autonomous analysis pipeline.40
+Response:The discrepancy was due to Finch reporting the absolute MFI rather than41
+the fold-change. The prompt (made by a human) incorrectly asked it to report the42
+absolute MFI and not the fold-change, so this was a human error and not a Finch error43
+or pipeline instability. To correct this we re-ran Finch with an amended prompt and it44
+correctly reported the fold-change in MFI rather than the absolute MFI. The text now45
+reports a 1.89-fold increase, which aligns with the human analysis (1.75-fold).46
+Changes:Results Section 2.2.3 (Page 7, Line 174); Figure 4B; Supplementary Figure47
+S10.48
+4. The paper lacks benchmarking and ablation studies, which are needed to rigorously49
+validate the architecture. The authors should provide: (a) A comparison against a50
+single-agent baseline (e.g., a state-of-the-art model like o3/Gemini 2.5 pro/Claude 451
+given the same high-level prompt) (b) Ablation studies that quantify the marginal52
+contribution of each agent (Crow, Falcon, Finch). (c) A head-to-head comparison53
+on an open benchmark eg GPQA to contextualize Robin’s performance against other54
+systems. (d) A runtime and cost analysis (e.g., GPU hours or dollar cost per iteration)55
+to assess scalability.56
+Response:We have added a new section, “2.3 Ablation studies and validation of the57
+Robin architecture,” to address these points.58
+(a) We conducted a head-to-head comparison of Robin with OpenAI’s Deep Research59
+agent. We show that Deep Research failed to identify ROCK inhibition or any60
+other hits in the phagocytosis assay (Supplementary Figure 20).61
+(b) We performed ablation studies by replacing Crow and Falcon agents with Ope-62
+nAI’s o4-mini. We found that ablating these agents led to a dramatic increase in63
+hallucinated references and a significant reduction in proposal quality (Section 2.364
+and Supplementary Figure S18).65
+(c) LLMs are not able to directly execute code like Finch, so instead of ablating Finch66
+like we did for Crow and Falcon, we conducted head-to-head comparisons of Finch67
+agent against Claude Code and Biomni which demonstrated SOTA performance68
+of Finch on RNA-seq and Flow cytometry data analysis (S19).69
+(d) We performed a cost analysis of Robin which is detailed in the results section 2.2.70
+Robin is specifically designed for iterative biological research and at the time of writ-71
+ing there is no widely accepted benchmark for iterative scientific discovery (GPQA is72
+question-answer style benchmark for general scientific knowledge and reasoning). We73
+believe this real-world assessment and the above ablation and comparison studies pro-74
+vide a more relevant assessment of the system’s validity. For benchmarking of the75
+PaperQA2 language agent on which Crow and Falcon are built, see Skarlinski et al.76
+2025.77
+Changes:Results Section 2.3; Methods Section 3.3; Supplementary Figures S18, S1978
+and S20.79
+2
+
+===== PAGE 12 =====
+5. The biological validation would benefit from more translationally relevant models.80
+The work relies solely on immortalized ARPE-19 cells. Because dry-AMD pathogen-81
+esis is still poorly understood, the proposed mechanism may ultimately fall short in82
+a clinical setting. Including validation in primary RPE cells, retinal organoids, or an83
+in-vivo model would strengthen the findings.84
+Response:We have included new experimental validation usingprimary Retinal85
+Pigment Epithelium Stem Cells (RPE-SC)derived from an aged donor and ex-86
+panded for no more than 2 passagesin vitro. We validated the RPE phenotype of87
+these cells by immunocytochemistry, functional VEGF polarization and morphology88
+(Supplementary Figures S24 and S25).89
+All of the drugs screened in ARPE-19 cells were again screened in RPE-SC in addition90
+to drugs chosen by OpenAI’s Deep Research for comparison. The results in RPE-91
+SC confirmed the hits from the ARPE-19 screen. Furthermore, Ripasudil showing92
+greater potency than Y-27632 in a dose response experiment conducted in both ARPE-93
+19 and RPE-SC. Of note, the RPE-SC drug screen found an additional hit not seen94
+in the ARPE-19 screen (KL001, a cryptochrome stabilizer suggested by Robin. To our95
+knowledge, this is a completely novel finding).96
+Changes:Results Section 2.2.4 (Page 9, Lines 178-200); Figure 4D-E; Supplementary97
+Figures S20, S24, S25, S26.98
+6. The generalization claims are illustrative rather than validated. The paper lists99
+10 further diseases with candidate tables, but provides no experimental follow-up,100
+making them unproven examples of the system’s ideation capability.101
+Response:Agreed. We have removed the supplementary figures which contain illus-102
+trative candidate drugs for ten diseases.103
+Changes:Supplementary material.104
+7. The statistical reporting should be more detailed. To clarify the experimental105
+findings, the authors should report the number of biological and technical replicates106
+for each assay, include raw effect sizes, and provide adjusted P-values.107
+Response:We have updated the figure captions to include the number of technical108
+replicates, p-values and statistical tests performed and been more clear about statisti-109
+cal methods in the methods section. We have added the raw MFI measurements and110
+the plotted fold-changes for the ARPE-19 and RPE-SC screening experiments as sup-111
+plementary tables. Additionally, the dose response experiments in Figure 4C and 4E112
+display the MFI. Note that the raw mean fluorescence intensity (MFI) values from flow113
+cytometry data are a function of how the user (or agent) plots the gates and are not114
+directly comparable between experiments.115
+Changes:Figures 2, 3, 4 Captions; Supplementary Figure S21 and S22 Captions.116
+8. The reproducibility of the Finch agent is a concern, and its stochastic nature would117
+benefit from further characterization with run-to-run variance metrics.118
+Response:We show in Figure 3C that Finch identified the same differentially expressed119
+genes in over 50% of trajectories. Additionally, we performed a comparison of Finch’s120
+performance with a leading AI science agent and a coding agent (Biomni and Claude121
+3
+
+===== PAGE 13 =====
+Code, respectively). In the comparison with Biomni and Claude Code, (Supplementary122
+Figure 19), Finch consistently achieved scores of 85.7% and 100% on the rubrics for123
+RNA-seq analysis and flow cytometry analysis, respectively (see Supplementary Figures124
+12, 13 and 19).125
+Changes:Results Section 2.3 (Page 9, Lines 216-219); Methods Section 3.2.2 (page126
+11, lines 313 - 316); Supplementary Figures 12, 13 and 19.127
+9. The human effort involved is not quantified. To substantiate claims of automation,128
+the authors should provide a time-on-task table detailing the minutes of scientist129
+involvement required for each stage of the discovery loop.130
+Response:We appreciate the reviewer’s suggestion to quantify the human involvement131
+required by the Robin framework. We have added a “time-on-task” analysis (Table 1)132
+to substantiate our claims of automation. This analysis estimates the manual effort133
+required to replicate Robin’s literature synthesis and data analysis steps. Notably, in a134
+typical discovery run, Robin’s agents (Crow and Falcon) synthesize an average of 551135
+unique references—a volume of scholarly work that would require a human researcher136
+approximately 540 hours of manual reading and synthesis. By automating these cogni-137
+tive bottlenecks, Robin could reduce the total “cognitive time” of the discovery loop from138
+hundreds of hours to less than two hours of high-level supervision. We have updated139
+the manuscript to consistently describe Robin as a “semi-autonomous” and “lab-in-the-140
+loop” system, emphasizing that human effort is redirected from manual data processing141
+toward experimental validation.142
+Changes:Results Section 2.1 (Lines 79-81); Table 1.143
+10. The data hand-off between agents is opaque. The manuscript does not provide144
+the precise, machine-readable artifact that passes Finch’s analysis to Crow/Falcon.145
+Providing a concrete example of that prompt or data structure is necessary to assess146
+the degree of automation versus hidden human curation.147
+Response:We have updated Figure 4A to include a more detailed workflow illustrating148
+the hand-off between Finch and Crow and added additional explanation in the Methods149
+section. In summary, Finch hands-off the results of its analysis to an LLM (o4-mini) as150
+a CSV file along with a prompt. The prompt is a JSON template which tells the LLM to151
+create a structured output from the Finch results including what experiments have been152
+conducted, a summary of the results, insights from the results and important questions153
+that have been raised. This prompt can be found in prompts.py in the Robin GitHub154
+repository as the variable ‘EXPERIMENTAL INSIGHTS APPENDAGE’. This struc-155
+tured output is used by Robin to generate new candidate ideas and query generation156
+prompts (for background literature search).157
+Changes:Figure 4A and Caption.158
+11. A literature quality-control filter is needed. To mitigate the ”garbage-in, garbage-159
+out” risk, the system would be improved by having the Crow agent assign a confidence160
+score to sources (e.g., based on citation count or journal impact) before they are161
+consumed by other agents.162
+Response:The agents Crow and Falcon are based on the PaperQA2 literature agent163
+developed at FutureHouse (Skarlinski et al. 2024). Metadata (citation count and journal164
+4
+
+===== PAGE 14 =====
+title) is used by PaperQA2 during the Reranking and Contextual Summarization (RCS)165
+step. This metadata is provided to the underlying LLM to help it weigh the authority166
+and impact of evidence when formulating a response. Additional measures (citation167
+traversal and relevance scoring) are used to prioritize sources by relevance (Skarlinski168
+et al. 2024). Additionally, in our new ablation study (Section 2.3), we demonstrate169
+that the Crow and Falcon literature search agents produce almost no ”hallucinated”170
+references compared to a frontier LLM (o4-mini).171
+12. The manuscript should ideally include a discussion of ethics and safety, noting172
+that automated discovery pipelines should incorporate guardrails to address potential173
+dual-use concerns or off-target effects.174
+Response:We agree that safety guardrails are essential for automated discovery sys-175
+tems. We interpret “dual-use” as the risk of a system being repurposed to design harm-176
+ful biological agents, and “off-target effects” as the risk of proposing toxic therapeutic177
+candidates.178
+To address off-target risks, we explicitly incorporated safety constraints into Robin’s179
+ranking criteria (Supplementary Figure S11); the system is instructed to prioritize can-180
+didates with known safety profiles and flag potential toxicity as a negative criterion.181
+Furthermore, as a “lab-in-the-loop” framework, Robin generates therapeutic candidates182
+that are subject to traditional pre-clinical safety filters. Any toxicity or off-target ef-183
+fects would be identified through the standard progression of cell assays and animal184
+experiments that are required before any human exposure occurs.185
+Regarding dual-use concerns, Robin utilizes foundation models (e.g., GPT-4o, Gemini)186
+that have undergone extensive safety alignment (RLHF) to prevent the generation of187
+malicious biological protocols. Additionally, all queries to the FutureHouse/Edison188
+Scientific platform are run through an LLM classifier that checks against unsafe topics.189
+Repeat violaters are banned from using the platform. Furthermore, the system’s current190
+architecture is focused on synthesizing existing literature and specific datasets, which191
+limits its utility for thede novodesign of hazardous materials.192
+We have added a paragraph in the discussion section to address concerns regarding193
+dual-use and off-target effects.194
+Changes:Discussion (Page 9, Lines 247-254)195
+5
+
+===== PAGE 15 =====
+Reviewer 2 Response196
+1. Novelty claim: Abstract:197
+“Statement that we were able to identify a novel treatment for dry age-related macular198
+degeneration (dAMD), the major cause of blindness in the developed world. This is199
+far overstated. They have not discovered a treatment for dry AMD and should be200
+edited. Similarly, the statement Ripasudil is a clinically-used rho kinase (ROCK)201
+inhibitor that has never previously been proposed for treating dAMD.”202
+While this may be the case for this specific ROCK inhibitor, the concept that ROCK203
+inhibition might benefit dry AMD is in the literature, as examples...204
+Response:Thank you for your comments, which have improved the quality of our205
+manuscript. We have revised the abstract to state that we identified a “promising206
+therapeutic candidate” rather than a “treatment.” Additionally, we have updated the207
+Discussion to explicitly acknowledge that while ROCK inhibitors have been suggested208
+for wet AMD and other retinal diseases, Robin’s contribution is proposing them for dry209
+AMD specifically via the mechanism ofphagocytosis enhancement. We have cited210
+relevant literature to support the distinction.211
+While others have proposed ROCK inhibition for several ocular disease including wet212
+and dry macular degeneration, no one to date (including the example studies you pre-213
+sented) has proposed ROCK inhibition as a treatment for dry AMD via a mechanism of214
+phagocytosis enhancement. From the examples you kindly shared the proposed mech-215
+anism are:216
+•PMID: 40250716 – ROCK inhibition for dAMD via anti-inflammatory effects,217
+•PMID: 27917311 – promotion of wound healing,218
+•PMID: 39594655 – autophagic vacuole formation,219
+•PMID: 32252692 – inflammation via the miR-136-5p/ROCK/NLRP3 pathway.220
+The distinct proposed mechanism of action is essential as it provides a route for labo-221
+ratory validation, informs safety and toxicity of the drug, informs clinical trial design222
+and improved the patentability of the idea. As we expand on below (see point 11) and223
+in the manuscript (see Discussion, lines 230-241), LLM agents are ideal for recombining224
+established ideas into novel and testable hypotheses.225
+Changes:Abstract (Page 1, Line 8); Discussion (Page 9, Lines 230 - 232)226
+2. Novelty claim: “Notably, while ROCK inhibitors have been previously suggested227
+for treatment of wet AMD and other retinal diseases of neovascularization, Robin is228
+the first to propose their application in dry AMD for their effect on phagocytosis [35].229
+This approach is supported by several lines of evidence, as RPE phagocytic dysfunction230
+is observed not only with normal aging but is pronounced in AMD patients [41, 42,231
+43].”232
+35) ROCK inhibitors in ophthalmology: A critical review of the existing clinical233
+evidence234
+42) PMID: 37371481. This paper considers stimulating RPE phagocytosis and au-235
+tophagy in dry AMD treatments and explains why targeting phagocytosis is likely not236
+the best route. This demonstrates that increasing phagocytosis as an AMD treatment237
+has been considered in the literature.238
+6
+
+===== PAGE 16 =====
+PMID: 33024620. Ripadusil increased phagocytosis in trabecular meshwork cells239
+in pig eyes.240
+Authors state: “Preclinical models have demonstrated that Y-27632 can restore241
+phagocytic efficiency in RPE cells [33], confirming Robin’s literature-based rationale242
+for suggesting this candidate.”243
+I checked reference 33, there is no mention of Y-27632.244
+Response:We have considered the three papers shared:245
+PMID: 37037790This review does not discuss treating dAMD by enhancing RPE246
+phagocytosis via ROCK inhibition.247
+PMID: 37371481While this review article considers phagocytosis enhancement in248
+AMD, it does not identify rho-kinase as a target or mention ROCK inhibition as a249
+potential mechanism of action. Instead, CD36 is identified as a target for phagocytosis250
+enhancement. This review claims that phagocytosis has been previously considered as a251
+target in AMD but provides no supporting literature to evidence this claim. The claims252
+this review article makes about autophagy being a preferable target over phagocytosis253
+are not either supported or directly contradicted by the literature cited in the paper.254
+For example:255
+”First, the autophagy pathway can avoid injuring healthy cells through its self-256
+regulation mechanisms, thereby reducing the risks of adverse side effects and257
+toxicity. Second, the clearance efficiency of the autophagy pathway is higher258
+than that of phagocytosis, allowing for rapid removal of waste materials and259
+maintenance of cellular homeostasis and normal metabolic function. Third,260
+phagocytosis can lead to the production of many inflammatory cells, while261
+the autophagy process is relatively stable and does not cause the release of262
+large amounts of cytokines, thereby avoiding the occurrence of inflammatory263
+reactions [151,152].”264
+None of the three claims this review (PMID: 37371481) makes about the relative merits265
+of autophagy over phagocytosis as a drug target are supported by the cited references266
+(references 151 and 152). In fact, the third claim is directly contradicted by reference267
+151 which explains that secretory autophagy is involved in the secretion of leaderless268
+cytosolic proteins, including pro-inflammatory cytokines like IL1B and IL18. Further-269
+more, the wider literature does not support these claims. For example, there is no270
+evidence that phagocytic bursts, which occur diurnally in human RPE, lead to the271
+recruitment of many inflammatory cells to the retina.272
+Looking at each claim individually:273
+Claim 1. The literature does not demonstrate that autophagy generally “avoids harming274
+healthy cells” or reduces systemic toxicity across contexts; effects are context dependent275
+and autophagy can, in certain settings (e.g., secretory autophagy), facilitate release of276
+inflammatory mediators 1.277
+1Deretic, V. Autophagy in inflammation, infection, and immunometabolism. Immunity 54, 437–453 (2021).
+7
+
+===== PAGE 17 =====
+Claim 2. Autophagy and phagocytosis have different scopes and substrates: autophagy278
+degrades intracellular cargo via autophagosome–lysosome fusion, whereas phagocyto-279
+sis/efferocytosis removes extracellular targets (apoptotic corpses, microbes) and, in280
+professional phagocytes, operates with very high engulfment capacity. The literature281
+provides no head-to-head quantitative evidence that autophagy is faster or more efficient282
+than phagocytosis 2.283
+Claim 3. This is an oversimplified and incorrect blanket statement. Autophagy of-284
+ten dampens inflammation by removing DAMPs and directly targeting inflammasome285
+components. Yet autophagy can also participate in secretory pathways that export286
+IL-1β/HMGB1. Phagocytosis can be anti-inflammatory in the context of efferocytosis,287
+thus promoting resolution, but can be pro-inflammatory when PRR signaling recog-288
+nizes pathogens. LC3-associated processes (e.g., LAP/LANDO) bridge autophagy and289
+phagocytosis and can be anti-inflammatory. Thus, effects on inflammation depend on290
+cargo, receptors, and cell type; a categorical dichotomy is not supported 3.291
+PMID: 33024620This study investigates the utility of Ripasudil in pigmentary glau-292
+coma, not age related macular degeneration. The cell types studied (trabecular mesh-293
+work cells) while being in the eye, are not present in the retina and are not known to294
+be directly involved in macular degeneration.295
+Reference [33]Regarding reference [33] in the original Robin manuscript: we mis-296
+takenly cited Mao and Finneman 2012 instead of Mao and Finnemann 2021. This error297
+has been corrected.298
+3. Novelty claim: ‘In investigating the basis for Robin’s initial identification of Y-299
+27632, we found that the literature search included a single paper demonstrating300
+Y-27632’s ability to enhance phagocytic efficiency in ‘low-phagocytic’ RPE cells from301
+human donors by promoting actin polymerization [42].’ 42 – I looked at that citation302
+and could not find any reference to Y-27632. Hence, again, this is a mis-cited reference.303
+However this is described in PMID: 34440696, and ROCK inhibition stimulating RPE304
+phagocytosis is also described in PMID: 29456184 and PMID: 40389756. Hence, there305
+are at least 3 relevant papers that the authors should have cited. Therefore the authors306
+claim the novelty of their findings by not fully describing the literature.307
+Response:Reference [42] was mistakenly cited in the original manuscript and should308
+have cited Mao and Finnemann 2021, as with the previous reference error. There was no309
+attempt to misrepresent the novelty of our findings. For example, in section 2.2.2 of the310
+original manuscript we reference Mao and Finnemann 2021 with regards to Y-27632’s311
+effect on phagocytosis:312
+”While previous studies have shown that Y-27632 enhances phagocytic cup313
+formation through post-translational regulation of F-actin dynamics [34, 35,314
+36, 37, 38...”315
+2Khandia, R.et al.A Comprehensive Review of Autophagy and Its Various Roles in Infectious, Non-Infectious,
+and Lifestyle Diseases: Current Knowledge and Prospects for Disease Prevention, Novel Drug Design, and Therapy.
+Cells8, (2019).
+3Deretic, V. Autophagy in inflammation, infection, and immunometabolism. Immunity 54, 437–453 (2021).
+8
+
+===== PAGE 18 =====
+We have corrected the citation error in the original manuscript by replacing the original316
+reference [42] with references which demonstrate Y-27632’s effect on phagocytosis.317
+Changes:Discussion (Page 9, Lines 233-234).318
+4. Validation using RPE cells. The authors should also have followed Robin’s direction319
+to use PSC-RPE as well as ARPE19 cells. Instead, they just used ARPE19 cells, which320
+are not a good model of authentic RPE, having a different transcriptome, morphology,321
+and phagocytosis. Moreover, there is considerable variation in the line, depending on322
+the source and how it is grown. This paper provides guidance on what should be323
+provided in publications using ARPE19 cells: PMID: 35314139. They should submit324
+the information requested in that publication. For example, they claim that the cells325
+show signs of differentiation and cobblestone morphology, please provide images and326
+immunostaining for the canonical RPE markers BEST1, RPE65, OTX2, MITF, and327
+for comparison use iPSC-RPE.328
+Response:We have addressed this by performing validation experiments inprimary329
+human RPE-SCcells, derived from an aged donor. We also provide immunocytochem-330
+istry data confirming the expression of canonical RPE markers (BEST1, RPE65, OTX2,331
+MITF), phagocytic signaling proteins (Integrinα vβ5 and the MER proto-oncogene) and332
+morphological characterization in the supplementary material to validate the model. As333
+expected, the morphology of RPE-SC cells is closer to the native form than the ARPE-334
+19 cell line.335
+Changes:Results Section 2.2.4 (Page 9); Figure 4D-E (Page 7); Supplementary Figures336
+S23 and S24 (Pages 39, 40).337
+5. The phagocytosis assay used beads which do not accurately predict POS phago-338
+cytosis – they should have followed the recommendation of Robin, which stated this339
+correctly. Phagocytosis assay measurements by flow - Their assay is not adequate to340
+evaluate RPE phagocytosis. They should follow the method in the publication they341
+mis-cited (33).342
+Issues of data selection: In Figure 4, the authors present flow cytometry data343
+indicating that ripasudil “significantly enhances phagocytosis in RPE cells, inducing344
+an even greater effect than Y-27632.” There appear to be no error bars on the figure,345
+how many times was it repeated? The authors need to show the concentration curves346
+for both drugs, as the improvement of ripasudil over Y-27832 may just be due to the347
+chosen concentration – as they note. Given that, it is not appropriate to show this348
+graph as it is biased to show findings that fit with their hypothesis.349
+Response:We agree with the reviewer regarding the limitations of beads. In the350
+validation experiments with RPE-SC (Section 2.2.4), we replaced pHrodo beads with351
+fluorescently labeled bovine rod outer segments (ROS), as suggested by Robin352
+and the reviewer, to provide a more physiologically relevant assay. We repeated the353
+drug screen (all drugs screened in round 1 and round 2) in RPE-SC cells with ROS and354
+found that ripasudil has the highest effect on phagocytosis of the drugs screened. This355
+effect was dose-dependent in both ARPE-19 cells and RPE-SC.356
+Changes:Results Section 2.2.4 (Page 9); Methods Section 3.5.3 (Page 13).357
+6. Relevance of ABCA1/4. The authors find a difference in ABCA1 expression.358
+They state “Notably, ABCA1 belongs to the same transporter family as ABCA4,359
+9
+
+===== PAGE 19 =====
+which has been previously identified as a therapeutic target in macular degeneration360
+pathogenesis [39].” This sentence exhibits some sleight of hand – mutated ABCA4 is a361
+well-known driver of Stargardts disease. ABCA4 expressed in photoreceptor cells flips362
+N-retinylidene phosphatidylethanolamine from the luminal to the cytoplasmic side of363
+the membranes of the photoreceptor disc. This is essential for the visual cycle. If364
+ABCA4 is mutated, photoreceptor degeneration can occur. Mutated ABCA4 in the365
+RPE may contribute, but it is the role of ABCA4 in photoreceptors, and particularly366
+in cones, that leads to macular degeneration. This is unlike the mechanism of AMD. It367
+appears the authors are trying to persuade the reader about similarities, which may368
+not be relevant. ABCA1 stimulates efferocytosis, however in this study it doesn’t369
+do this by promoting phagocytosis, it does this by regulating the release of find-me370
+ligands. PMID: 33741356371
+Misrepresentation of the literature. “Further connecting these findings to dAMD372
+pathology, Apo-E, a lipid acceptor for ABCA1, has also been identified as a potential373
+therapeutic target for dAMD [40]. I read reference 40 and was unable to find any men-374
+tion that proposed Apoe as a potential therapeutic target for dry AMD. The authors375
+should provide the quote from the paper that shows their statement is accurate.376
+Response:We have corrected the text regarding Apo-E and ABCA1. The revised377
+manuscript states that Apo-E has been identified as a “genetic susceptibility allele”378
+rather than a “therapeutic target,” citing references [42, 43, 44]. This removes the379
+implication that we are claiming it as a direct drug target for dAMD in this context.380
+Changes:Results Section 2.2.2 (Page 7, Lines 167-169).381
+7. Given that there is substantial in vitro evidence from multiple publications that382
+ROCK inhibitors can promote RPE phagocytosis, done for example with appropriate383
+RPE and technique compared to their data, in order to move the needle they should384
+test it in the eye in an in vivo model of AMD. It is important to do this in vivo test385
+because, as mentioned, enhancement of phagocytosis does not entirely make sense.386
+RPE cells uptake POS and poor digestion of POS leads to build up of debris and387
+drusen. If phagocytosis is enhanced without concomitant increased autophagy, this388
+buildup of undigested POS and drusen could get worse. Hence, they need to show389
+improvements from the treatment in a suitable AMD model in vivo.390
+Response:We acknowledge the necessity of in vivo validation. We have added text391
+to the Results and Discussion stating that these hypotheses “would of course require392
+validation in a suitable disease model and ultimately in a randomized, placebo-controlled393
+trial.”394
+Changes:Results Section 2.2.4 (Page 9, Lines 205-206); Discussion (Page 10, Lines395
+246-248).396
+8. Reliance on existing literature: The range and potential of Robin’s hypotheses are397
+constrained by the existing literature. This naturally limits the ability of Robin to398
+generate truly novel insights. In addition, its reliance on existing literature presents399
+a risk of overfitting analysis to accommodate existing biases and gaps in the current400
+literature. Finch suffers from similar weaknesses in being constrained by established401
+bioinformatic workflows and standardized knowledge and data filtering. This reliance402
+on standardized pipelines may limit its applicability in emerging contexts that are403
+driven by novel analytical strategies used to uncover previously unrecognized biological404
+10
+
+===== PAGE 20 =====
+insights. The authors should clarify the extent to which their current application can405
+address these concerns.406
+Response:We appreciate the reviewer’s comment regarding the boundaries of AI-407
+driven discovery. We agree that Robin and Finch operate primarily within the bounds408
+of existing knowledge and established methodologies. However, we argue that this409
+constraint is also the system’s primary strength in the context of findinglow-hanging410
+fruit drug repurposingopportunities:411
+While Robin only primarily knowledge from the existing literature, it excels at com-412
+binatorial synthesis; identifying non-obvious connections between disparate fields that413
+human experts may overlook due to the sheer volume of publications and compartmen-414
+talization of knowledge. The proposal of ripasudil for dAMD is a prime example: the415
+drug existed and its effect on phagocytosis was known, but it had not been proposed as a416
+treatment for dAMD by a mechanism of phagocytosis enhancement. We posit that a sig-417
+nificant portion of ”low-hanging fruit” in therapeutics discovery lies in these unmapped418
+intersections of existing knowledge (i.e., drug repurposing), which LLM-based agents419
+are uniquely positioned to uncover. We give more examples of novelty by synthesis in420
+the introduction.421
+Regarding Finch, the reliance on standardized bioinformatic workflows (e.g., standard422
+differential expression pipelines) is an advantage as it prioritizes reproducibility and ro-423
+bustness. In an autonomous setting, the risk of ”p-hacking” or analytical hallucination424
+is higher if the agent is given complete freedom to invent novel statistical approaches.425
+Additionally, novel statistical approaches require validation. For a system designed to426
+find low-hanging fruit drug opportunities, it is not advantageous to spend time validat-427
+ing novel statistical approaches.428
+Similarly, Crow is designed to retrieve and propose established, off-the-shelf assays429
+(e.g., the pHrodo phagocytosis assay) rather than novel experimental protocols. This430
+ensures that the ”lab-in-the-loop” resources are focused on validating the therapeutic431
+hypothesis, rather than spending time validating an unproven assay.432
+Finally, by grounding the candidate search in existing literature, the system naturally433
+prioritizes compounds with established safety and efficacy data (drug repurposing).434
+This constraint effectively de-risks the discovery process: it favors candidates like ripa-435
+sudil that have a clearer path to clinical application, avoiding the high attrition rates436
+associated with characterizing completely novel chemical entities. One could imagine437
+this utility extending to fields such as materials science (generating polymers that have438
+a desired set of properties) or agrochemicals (identifying existing, safe compounds that439
+have antifungal or pesticidal properties).440
+We have updated the discussion to more clearly explain the merits and constraints of441
+Robin, and to frame the Ripasudil hypothesis in the context of the existing literature.442
+Changes:Discussion (Page 9, Lines 230-241).443
+9. Opaque reasoning in pairwise comparison to rank hypotheses: The inherent com-444
+plexity of LLMs makes it difficult to interpret or understand the underlying logic used445
+in generating ranked hypotheses from pairwise comparisons. The authors must clarify446
+to what degree end users have flexibility in understanding or adjusting the hypothesis447
+ranking criteria provided by Robin. In addition, the authors should clarify how their448
+11
+
+===== PAGE 21 =====
+pairwise comparison methodology addresses potential systemic biases, given the lim-449
+ited description of the underlying statistical framework. In particular, prior studies450
+have shown that pairwise comparisons using LLMs may inadvertently favor publi-451
+cations with a more assertive or authoritative tone over those grounded in greater452
+scientific rigor. The authors should explain how the current approach mitigates such453
+biases, or consider alternative comparison methods (i.e. would pointwise comparison454
+make more sense?).455
+Response:We thank the reviewer for highlighting the importance of bias mitigation456
+in LLM-based rankings. We are aware of the ’verbosity’ and ’tone’ biases established in457
+recent literature (e.g.,Zheng et al., 2023;Wang et al., 2023), where LLM judges458
+may favor assertive or longer text over factually rigorous content.459
+To mitigate this, our pairwise comparison prompts do not simply ask ’which is better?’460
+but instead utilize a structured rubric that explicitly instructs the model to evaluate461
+specific criteria (e.g., ’Proposed Mechanism Plausibility,’ ’Experimental Feasibility’) and462
+to penalize vague or purely rhetorical assertiveness. Furthermore, by using our agents463
+(Crow/Falcon) to retrieve the underlying evidencebeforethe ranking step, we ground464
+the comparison in retrieved facts rather than the linguistic style of the hypothesis itself.465
+Importantly, our agents utilize PaperQA2 (Skarlinski et al. 2024), a retrieval augmented466
+generation (RAG) approach which ensures that the claims used to build assay and drug467
+candidate hypotheses are strictly lined to evidence based sources.468
+Regarding the use of pointwise (single answer) scoring, the same literature (Zheng et469
+al.) shows that pairwise comparisons are generally more robust than pointwise scor-470
+ing because LLMs lack a stable internal rubric for absolute grading (e.g., a ”7/10”471
+means different things in different contexts), whereas they are quite good at relative472
+ranking (”A is better than B”). In general, while pointwise scores are advantageous473
+when criterion-level interpretability or calibrated absolute scores are needed, the lit-474
+erature favors pairwise comparisons for relative ranking of long-form responses under475
+non-adversarial conditions 4.476
+Regarding the transparency of the LLM judgments, the LLM judge’s reasoning is pre-477
+sented to the user in the ”reasoning” column of the CSV files (experimental_assay_478
+ranking_results.csvandtherapeutic_candidate_ranking_results.csv). Trans-479
+parency is noted as one of the advantages of LLM judges in the Zheng et al. paper:480
+”LLM-as-a-judge offers two key benefits: scalability and explainability. It481
+reduces the need for human involvement, enabling scalable benchmarks and482
+fast iterations. Additionally, LLM judges provide not only scores but also483
+explanations, making their outputs interpretable...”484
+Furthermore, the user can read and adjust the rubric used by the LLM judge in485
+prompts.py. The rubrics used in our manuscript are presented in Supplementary Fig-486
+ures S5 and S11.487
+4Liu, Y.et al.Aligning with Human Judgement: The Role of Pairwise Preference in Large Language Model
+Evaluators. Preprint at https://doi.org/10.48550/arXiv.2403.16950 (2025); Wang et al. Improving LLM-as-a-Judge
+Inference with the Judgment Distribution. Preprint at https://doi.org/10.48550/arXiv.2503.03064 (2025); Liusie,
+A et al. LLM Comparative Assessment: Zero-shot NLG Evaluation through Pairwise Comparisons using Large
+Language Models. inProceedings of the 18th Conference of the European Chapter of the Association for Computational
+Linguistics (Volume 1: Long Papers)(eds Graham, Y. & Purver, M.) 139–151 (Association for Computational
+Linguistics, St. Julian’s, Malta, 2024). doi:10.18653/v1/2024.eacl-long.8.
+12
+
+===== PAGE 22 =====
+10. Robin’s reliance on LLMs introduces sensitivity to prompt phrasing. This ren-488
+ders its candidate ranking system potentially variable and limits the reproducibility489
+of hypothesis prioritization, reducing user confidence in the consistency and robust-490
+ness of the system’s output. For example, the experimental assays recommended by491
+the robin full.ipynb and robin demo.ipynb scripts for dry AMD vary significantly due492
+to changes in search criteria. The authors should provide user guidelines on rec-493
+ommended settings that effectively mitigate the influence of prompt sensitivity on494
+generated results.495
+Response:We agree that stochasticity is a inherent to LLM based agents. In the496
+context of scientific discovery, we believe that some degree of stochasticity is beneficial,497
+as it allows the system to explore a broader solution space across multiple runs rather498
+than deterministically converging on the most obvious answers. Additionally, as we499
+argue in the case of Finch (see point 14 below) it allows the agent to flexibly adapt to500
+a new problem space. We view Robin as a generator of high-quality possibilities that501
+requires expert adjudication, rather than a deterministic, predictable system. It is also502
+worth noting that variability is not unique to AI systems. Human scientific analysis is503
+subject to significant inter- and intra-rater variability; different experts (or the same504
+expert at different times) frequently prioritize different hypotheses when synthesizing505
+vast bodies of literature. We see Robin’s variability as a parallel to the diversity of506
+thought found in human collaboration.507
+We have provided all of the system and user prompts used in this manuscript (Supple-508
+mentary Figures S2-S11). Furthermore, these are the default prompts used in robinfull.ipynb509
+and robin demo.ipynb and do not contain any instructions specific to dry AMD or the510
+phagocytosis assay.511
+11. Bias towards larger effect sizes: The DGE analysis performed by Finch focuses on512
+the identification of a novel risk gene with a 3-fold upregulation. However, it remains513
+unclear whether its standardized bioinformatic pipelines can effectively analyze more514
+complex, multifactorial diseases involving several genes with small individual effect515
+sizes. As an example, demonstrating Finch’s accuracy in polygenic risk score analysis516
+could help address this concern.517
+Response:We appreciate the reviewer’s concern regarding the potential bias towards518
+large effect sizes in our demonstration. We would like to clarify that the ABCA1519
+upregulation discussed in our manuscript was an emergent result of that specific dataset520
+and the agent’s initial findings, rather than a hard-coded constraint of the system.521
+We can address this concern by highlighting the fundamental difference between Finch522
+and standard “hard-coded” bioinformatic pipelines:523
+1.Finch is a coding agent, not a static pipeline:Unlike traditional auto-524
+mated pipelines that rely on pre-set thresholds (e.g.,log2FC > 1.5), Finch oper-525
+ates as a language-model-based agent thatgenerates and executes arbitrary526
+Python/R codein a Jupyter environment 5 . It is not restricted to a single527
+workflow. If a user asks for a Polygenic Risk Score (PRS) analysis or if the data528
+5Mitchener et al., “BixBench: a Comprehensive Benchmark for LLM-based Agents in Computational Biology,”
+arXiv preprint arXiv:2503.00096(2025).
+13
+
+===== PAGE 23 =====
+suggests weak individual effect sizes, Finch can draft and execute the appropri-529
+ate code to handle those statistical requirements (e.g., usingscikit-learnfor530
+complex modeling or specific GWAS packages).531
+2.Iterative reasoning & statistical flexibility:Finch’s architecture is designed532
+foriterative reasoning. It observes the output of its code and refines its ap-533
+proach.Scenario:In a multifactorial disease context where a simple Differential534
+Gene Expression (DGE) analysis yields no significant hits due to small effect sizes,535
+Finch can be prompted (or self-prompt) to pivot to pathway enrichment analysis536
+(GSEA) or PRS calculation to capture aggregate effects, just as a human bioinfor-537
+matician would.538
+Evidence of this capability is already documented in the recent deployment of Finch539
+within the Kosmos framework6. Specifically, in Discovery 4, the agent successfully540
+utilized Mendelian Randomization on GWAS summary statistics—an analysis that541
+inherently relies on aggregating small genetic effect sizes rather than large fold-542
+changes—to identify SOD2 as a causal driver of myocardial fibrosis. Similarly, in543
+Discovery 6, the agent autonomously constructed a segmented regression model to544
+detect subtle temporal breakpoints in Alzheimer’s disease progression, confirming545
+its ability to move beyond standard differential expression pipelines. Direct hyper-546
+links the Finch analysis trajectories are available in Tables 1 and 2 of the Kosmos547
+preprint.548
+We have clarified the nature of Finch more clearly in the Methods section and added a549
+reference to the Aviary framework 7 preprint which Finch utilizes.550
+Changes:Methods Section 3.2 (Page 10, Lines 291-293).551
+Minor points552
+Response:553
+1. We have rectified the use of the present tense throughout the manuscript to clarify554
+what Robin actually did in this manuscript.555
+2. We have clarified the distinction between Robin’s actions and human actions556
+throughout the text and figure captions.557
+3. We have updated the manuscript to use the term “semi-autonomous” to accurately558
+reflect the human-in-the-loop nature of the system.559
+Changes:Abstract (Page 1, Line 53); Introduction (Page 2, Lines 51-62); Results560
+(lines 72-129); all figure captions.561
+6Mitchener et al., ”Kosmos: An AI Scientist for Scientific Discovery,” arXiv preprint arxiv.org/pdf/2511.02824
+2025.
+7Narayanan et al., “AVIARY: Training Language Agents on Challenging Scientific Tasks,”arXiv preprint
+arXiv:2412.21154(2024).
+14
+
+===== PAGE 24 =====
+Second Response to Reviewers for Manuscript “Robin: A1
+Multi-Agent System for Automating Scientific Discovery”2
+3
+Thank you for taking the time to review our revised manuscript. Below, we detail our responses4
+to the remaining concerns point-by-point, referencing the specific edits made in the newly revised5
+manuscript.6
+Reviewer 1 Response7
+1. The Finch comparison undermines, rather than supports, the claim that a special-8
+ized data analysis agent is necessary. The manuscript states that Finch demonstrated9
+”equivocal performance” compared to Claude Code and Biomni on both tasks (Section10
+2.3), and Supplementary Figure S18 visually confirms that Finch and Claude Code11
+achieved near-identical scores on both the RNA-seq and flow cytometry rubrics. The12
+rebuttal reports Finch scores of 85.7% (RNA-seq) and 100% (flow cytometry), but13
+the manuscript does not discuss what ”equivocal performance” implies for the system14
+architecture. This is the most important result in the ablation section. If a general-15
+purpose coding agent already matches a purpose-built, containerized bioinformatics16
+agent on the authors’ own rubrics — designed by the authors themselves — the jus-17
+tification for Finch as a distinct architectural component is substantially weakened.18
+Furthermore, the comparison is based on only two tasks (RNA-seq differential expres-19
+sion and flow cytometry gating), each with three replicate runs — an evaluation too20
+narrow to draw architectural conclusions. Critically, the flow cytometry task shows21
+a ceiling effect: all three agents achieved 100% on the rubric, meaning the task is22
+too simple to discriminate between a specialized and a general-purpose agent. When23
+benchmark tasks are solved perfectly by all contestants, they cannot inform architec-24
+tural decisions. The RNA-seq task does not reach a ceiling but presents a separate25
+problem: overlapping standard deviations across agents (Figure S18) make the results26
+statistically indistinguishable. Together, these two issues — one task too easy, the27
+other too noisy to differentiate — mean that neither benchmark supports the claim28
+that Finch offers an advantage. A convincing case for a specialized agent would re-29
+quire evaluation across a broader range of bioinformatics tasks of varying complexity30
+(e.g., single-cell analysis, proteomics, imaging quantification, variant calling) — tasks31
+difficult enough to avoid ceiling effects yet well-defined enough to yield discriminative32
+comparisons. The authors should expand the evaluation to additional task types and33
+directly address what value Finch adds over simply using a general-purpose coding34
+agent within the Robin pipeline.35
+Response:We appreciate the reviewer’s critical evaluation of the Finch comparisons,36
+and we agree that measuring Finch’s performance only on the tasks required for the37
+1
+
+===== PAGE 25 =====
+biological work in the manuscript does not accurately characterize the overall capabil-38
+ities of Finch. To address this, we updated the manuscript to include Finch’s perfor-39
+mance on 170 tasks related to human biology and drug discovery from the BixBench40
+bioinformatics benchmark, which is widely used to assess the performance of LLMs41
+on bioinformatics tasks (see this OpenAI press release for a recent example of its use:42
+https://openai.com/index/introducing-gpt-rosalind/). Of note, this benchmark43
+was also available at the time of our initial manuscript submission. We compared Finch’s44
+performance to Claude Sonnet 3.7, the LLM used in Finch at the time this manuscript45
+was submitted. This comparison demonstrates the utility of the Finch agentic coding46
+harness, as Finch achieves an overall score of 23% correct while Claude Sonnet 3.747
+receives a score of 1%. This also points to a clear need for improvement in Finch’s48
+performance, with 85% of bioinformatics tasks incorrect, and 52% of statistics tasks49
+incorrect. The bioinformatics tasks required precise execution of multi-step pipelines to50
+arrive at the correct answer. The statistics tasks typically involved single-step compu-51
+tations on clean tabular data. This indicates that at the time of submission, Finch was52
+more likely to struggle on tasks that required execution of numerous steps in a row.53
+We agree with the reviewers that there have been substantial improvements in publicly54
+available coding agents since the submission of Robin (as evidenced by the recent GPT-55
+Rosalind model, linked above). However, the Nature editorial team has decided that56
+it is not within scope to compare Robin to models or agents released after the original57
+submission date of this manuscript, and has waived the requirement for us to do so.58
+Therefore, we removed the comparisons to Claude Code and Biomni, both of which59
+were released publicly after our manuscript was submitted. We hope that the included60
+comparisons between Finch and its original underlying LLM Claude Sonnet 3.7 help to61
+illustrate why a custom coding agent harness was necessary to include an autonomous62
+data analysis component within the full Robin architecture at the time of submission.63
+Changes:Added new Finch evaluation to Results Section ”Ablation studies and vali-64
+dation of the Robin architecture” (lines 224-237); Updated Supplementary Figure S18.65
+Methods section ”Finch evaluation” added. Added all question-answer pairs and eval-66
+uations to Supplementary Table S8.67
+2. The model comparisons are obsolete for a 2026 submission and must be updated.68
+The paper uses OpenAI o4-mini as Robin’s backbone, Claude Sonnet 3.7 as the LLM69
+judge, and compares against Claude Code (model version unspecified) and OpenAI70
+Deep Research (June 2025). As of the date of this review, the frontier has advanced71
+considerably (Claude Opus 4.5/4.6, GPT-5 class models, Gemini 3.1 Pro). Given that72
+Claude Code already matched Finch with a mid-2025 model (point 1 above), it is73
+reasonable to expect that current-generation general-purpose agents would equal or74
+exceed Finch’s performance. Of course, the Robin backbone itself (o4-mini) is now75
+several generations behind — the system’s own performance would likely improve76
+substantially with updated models. For a paper submitted in 2026 to Nature, I con-77
+sider it essential that the authors update the Finch comparison to include at least78
+one current-generation coding agent (e.g., Claude Code with Opus 4.5 or later). The79
+step-change in coding and analytical capabilities introduced by models such as Claude80
+Opus 4.5 and GPT-5 class systems is well documented and represents a qualitative,81
+not merely incremental, advance over the mid-2025 models used in this study. Given82
+that Claude Code already matched Finch with a weaker model (Figure S18), the out-83
+come with current-generation models bears directly on whether the specialized-agent84
+2
+
+===== PAGE 26 =====
+architecture remains justified. This comparison is straightforward to execute — it85
+requires only providing the same dataset and prompt to an updated agent — and86
+should not be deferred to a Discussion caveat.87
+Response:We appreciate the reviewer’s observation regarding the rapid advancement88
+of frontier models (e.g., Claude Opus 4.5, GPT-5 class). We agree that the baseline89
+capabilities of general-purpose agents have improved significantly since our mid-202590
+submission. However, the editorial team has decided that it is not within scope to91
+compare Robin to models released after the original submission date of this manuscript,92
+and has waived the requirement to do so.93
+To address the reviewer’s valid point regarding the evolving landscape, we have added94
+a discussion (line 281) of how current-generation frontier models interact with, and95
+benefit from, specialized biological harnesses like Robin.96
+Changes:Discussion (Lines 281-285).97
+3. The biological validation is convincing as a proof-of-concept but should be framed98
+accordingly. The RPE-SC experiments are a strong addition. The use of primary cells99
+from an aged donor, fluorescently labeled rod outer segments (replacing beads), dose-100
+response curves for both Y-27632 and ripasudil, immunocytochemistry validation of101
+RPE markers, and the identification of KL001 as an additional hit collectively make a102
+compelling in vitro case. The ABCA1 upregulation finding and its connection to AMD103
+genetics via ApoE is an interesting mechanistic lead. However, the authors should be104
+careful not to overstate these findings. This remains a single in vitro assay system105
+(phagocytosis in cultured RPE cells), and as Reviewer 2 correctly noted, enhanced106
+phagocytosis without concomitant increases in autophagy could theoretically worsen107
+debris accumulation. The Discussion now appropriately mentions the need for in vivo108
+validation, and I appreciate this addition.109
+Response:We thank the reviewer for this important nuance. We have gone through110
+the manuscript and softened the claims of experimental findings (for example that111
+Y-27632 may also enhance autophagy). We have also framed the identification of Y-112
+27632, Ripasudil and KL001 as strongin vitroproof-of-concept rather than as promising113
+therapeutics. We frame Robin as expediting the generation of in vitro data for candidate114
+therapeutics molecules, rather than discovering novel therapeutics.115
+Changes:Abstract (lines 10-11) - removed reference to ”validating” Ripasudil. Results116
+(lines 159-162) - state that effect on autophagy of ROCKi requires further validation.117
+Results (line 164) - changed ABCA1 to having a ”potential” effect in dAMD. Amended118
+Results to remove reference to expediting discovery of therapeutics (lines 169-171)119
+4. The time-on-task analysis (Table 1) is a useful addition but contains estimates that120
+should be clearly flagged. Several entries in Table 1 are derived from published surveys121
+(von Hippel et al. 2015 for hypothesis ideation; Sboner et al. 2011 and the Anaconda122
+Data Science Report for bioinformatics setup) rather than measured directly in the123
+context of this study. While these are reasonable estimates, they should be more124
+prominently acknowledged as approximations to avoid giving the impression that the125
+200-fold speedup was empirically measured end-to-end.126
+Response:We have amended the Table 1 caption to more clearly state the the ”Robin”127
+estimates are directly measured while the human estimates are ”derived from published128
+3
+
+===== PAGE 27 =====
+surveys”. The publications are cited in the Table caption with symbols linking the129
+references to the cited time-on-task estimates. Additionally, we amended the results130
+section to state ”using estimates from published surveys...”.131
+Changes:Table 1 caption; Results (line 80).132
+Referee #1 (Remarks on code availability): My code review findings from the first133
+round — specifically the rate-limiting errors that prevented full reproduction and134
+Finch’s restricted availability (not publicly released, accessible only upon request to135
+FutureHouse) — do not appear to have been addressed in this revision.136
+Response:We apologize that the open-source version of Finch was not communicated137
+in the previous letter or manuscript. The code for the version of Finch used in this138
+manuscript is available here:https://github.com/Future-House/finch. This link139
+has been added to the manuscript’s Data and Code Availability section. This version of140
+Finch can be installed in a Docker environment, and results from its data analysis can141
+be manually returned to the Robin workflow (as the variableexperimental insights)142
+for iterative therapeutic candidate generation. The user will not be subject to Future-143
+House/Edison Scientific rate limits when using this open source version of Finch.144
+Changes:Code Availability statement updated145
+4
+
+===== PAGE 28 =====
+Reviewer 2 Response146
+Reviewer pt 9. Opaque reasoning in pairwise comparison to rank hypotheses: The in-147
+herent complexity of LLMs makes it difficult to interpret or understand the underlying148
+logic used in generating ranked hypotheses from pairwise comparisons. The authors149
+must clarify to what degree end users have flexibility in understanding or adjusting the150
+hypothesis ranking criteria provided by Robin. In addition, the authors should clar-151
+ify how their pairwise comparison methodology addresses potential systemic biases,152
+given the limited description of the underlying statistical framework. In particular,153
+prior studies have shown that pairwise comparisons using LLMs may inadvertently154
+favor publications with a more assertive or authoritative tone over those grounded in155
+greater scientific rigor. The authors should explain how the current approach miti-156
+gates such biases, or consider alternative comparison methods (i.e. would pointwise157
+comparison make more sense?).158
+Reviewer reply to the authors response to point 9: It remains unclear whether al-159
+ternative approaches for hypothesis ranking were considered. This is important to160
+clarify as there is no clear consensus in the literature regarding optimal strategies161
+for LLM-based relative rankings. Of particular concern is position bias within pair-162
+wise comparison frameworks, and multiple variants exist that incorporate aspects of163
+pointwise comparison to improve robustness (e.g., Choo et al., 2025; Bouchard et164
+al., 2025). Further detail on the authors’ choice of methodology would therefore be165
+valuable. Therefore changes should be made to the text.166
+Response:We appreciate the push for greater transparency regarding our methodolog-167
+ical choices. We have added a new subsection to the Methods detailing our rationale for168
+selecting the pairwise comparison framework over alternative strategies. Specifically,169
+we discuss how we addressed position bias by utilizing a highly distributed tournament-170
+style methodology paired with the Bradley-Terry-Luce (BTL) statistical model. Hy-171
+pothesis ranking was calculated via LLM-adjudicated pairwise comparisons: either a172
+complete round-robin tournament for sets of 25 or fewer hypotheses, or 300 randomly173
+selected pairings for larger sets. Crucially, we did not rely on simple win/loss tallies,174
+which are highly susceptible to positional bias. Instead, the BTL model aggregates175
+this large volume of randomized pairwise outcomes to estimate global strength param-176
+eters. By mathematically diluting the influence of individual LLM comparison errors,177
+this approach yields a robust relative ranking while forcing the model to make direct,178
+biologically reasoned trade-offs.179
+Changes:Added detailed methodological justification to Methods Section (lines 304-180
+308)181
+10. Robin’s reliance on LLMs introduces sensitivity to prompt phrasing. This renders182
+its candidate ranking system potentially variable and limits the reproducibility of hy-183
+pothesis prioritization, reducing user confidence in the consistency and robustness of184
+the system’s output. For example, the experimental assays recommended by the robin185
+full.ipynb and robin demo.ipynb scripts for dry AMD vary significantly due to changes186
+in search criteria. The authors should provide user guidelines on recommended set-187
+tings that effectively mitigate the influence of prompt sensitivity on generated results.188
+Reviewer Reply to the authors response to point 10: While stochasticity is an inherent189
+feature of LLMs, the explanation of whether this variability meaningfully parallels190
+5
+
+===== PAGE 29 =====
+human reasoning within the Robin framework remains inadequate. Further prompt-191
+based analyses that distinguishes variability driven by underlying evidence from that192
+arising due to semantic sensitivity would improve user confidence in recommended193
+experiments and hypotheses. Therefore changes should be made to the text.194
+Response: Response:We thank the reviewer for highlighting the need for additional195
+clarification on how to prompt Robin to yield consistent results. We have updated196
+the GitHub README.md (line 89) to include further prompting guidance. We note197
+that Robin is designed to reduce prompt-based variability in the hypothesis generation198
+steps by taking only the name of a disease as input from a user, without additional199
+context or qualifiers. With respect to the variability of the hypothesis ranking system200
+after the initial set of hypotheses have been generated, we find that the LLM judge201
+exhibits an 88% intra-rater consistency on identical pairwise comparisons, significantly202
+outperforming human experts (61%; see lines 313-318 and Figure S14B).203
+Changes:Added recommended user guidelines to the GitHub README.204
+Remarks on code availability205
+Reviewers comments: Difficulty in software implementation and virtual environment206
+set-up: While the proposed use of a virtual environment is effective for managing207
+Python-specific dependencies, it may still be susceptible to compatibility issues arising208
+from version mismatches—particularly as newer versions of Python and its associated209
+packages are released. These conflicts can introduce challenges in maintaining repro-210
+ducibility and long-term stability of the computational environment. In the course211
+of this review, multiple installation attempts using both PC and Mac systems were212
+attempted, and different bugs/installation issues using one or the other were encoun-213
+tered. This may or may not be due to residual dependencies or interactions between214
+the local host’s operating system and the virtual environment. To address this, the215
+authors should consider a more fully self-contained solution such as Docker, which216
+can provide a uniform runtime environment irrespective of the underlying operating217
+system. Additionally, when setting api keys, a consistent error message was encoun-218
+tered when running the Robin configuration command. It was unable to successfully219
+utilize the pai key added to a local .env file. Again, this may or may not be due to220
+the local machine setup, but a more self-contained installation program would make221
+installation smoother.222
+Reviewer reply to the authors response: The authors do not appear to have addressed223
+this issue. Our prior comments regarding code reproducibility and implementation224
+variability were not directly addressed, and the associated github repository does225
+not appear to have been updated since the initial review. Clarification on plans for226
+improving reproducibility, such as through containerization of the demo code, would227
+be helpful. Therefore changes should be made to address these comments.228
+Referee #2 (Remarks on code availability): please see notes added to the end of the229
+first review. the authors didnt respond to our prior comments so its not clear that230
+they received them.231
+Response:We apologize for the installation difficulties and for missing this critical232
+feedback in the previous round. We have overhauled the repository to include a fully233
+containerized Docker implementation. This resolves the OS-specific dependency con-234
+flicts and provides a uniform runtime environment. We have also patched the API key235
+configuration bug that was preventing the ‘.env‘ file from loading properly.236
+6
+
+===== PAGE 30 =====
+Changes:GitHub repository updated with a comprehensive ‘Dockerfile‘ and ‘docker-237
+compose.yml‘; API key loading logic fixed; ‘README.md‘ updated with containerized238
+installation instructions.239
+7

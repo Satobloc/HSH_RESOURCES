@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T18:36:49Z`
-- Tree/content state: `a22ac1b7e489a1b93099e8c864de3d89b4b133d17b49c6a614af9247fecc447c`
+- Scanned: `2026-09-07T18:42:42Z`
+- Tree/content state: `be155296d3885d351a26966624a038f422705e96906e88f3858a0fcce47938d3`
 - Coverage: complete structural traversal
-- Files: 933
-- Uploaded source files: 926
-- PDF papers: 887
+- Files: 994
+- Uploaded source files: 987
+- PDF papers: 907
 - Repository machinery files: 7
-- Byte-identical duplicate groups: 36
+- Byte-identical duplicate groups: 43
 
 ## Top-level coverage
 
@@ -20,6 +20,7 @@
 | `ARXIV PAPER - 2503.14745v2.pdf` | 1 |
 | `BIG PAPERS` | 3 |
 | `DATA` | 12 |
+| `EXPOSURE_STATS` | 53 |
 | `H(s)H_Toolkit` | 311 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -35,7 +36,7 @@
 | `HAUL 9` | 4 |
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 8 |
-| `OUTSIDE RESEARCH LIBRARY` | 310 |
+| `OUTSIDE RESEARCH LIBRARY` | 318 |
 | `README.md` | 1 |
 | `derived` | 1 |
 | `info` | 1 |
@@ -51,6 +52,9 @@
 - `154e61da81d0b80377886702947225817da1acfee7435eff4cc16283afccc2fb`
   - `HAUL 3/PhysRevA.52.4381 (1).pdf`
   - `HAUL 3/PhysRevA.52.4381.pdf`
+- `158d07522cd6dfa1cd648bf3b9e55b551ae6977c97ad46966e5b54dda59eaeec`
+  - `EXPOSURE_STATS/MISC_PAPERS/Grand Unification Theories And Supersymmetry  Physics  Research Starters  EBS.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Grand Unification Theories And Supersymmetry  Physics  Research Starters  EBS.pdf`
 - `165a78a97cb22cc7fccd31b3784bb2ca35dc6ee41567c0c4afd5ff2982511bb4`
   - `HAUL 4/1704.04648v2 (1).pdf`
   - `HAUL 4/1704.04648v2.pdf`
@@ -64,9 +68,15 @@
   - `HAUL 8/RPP1978_Bell (1).pdf`
   - `HAUL 8/RPP1978_Bell (2).pdf`
   - `HAUL 8/RPP1978_Bell.pdf`
+- `313b0d3ab3470848f203ba1333537ab08805a40322d93fabfc19a562e2485cbc`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Commits over time.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Satobloc's Commits.csv`
 - `483983ea4c464f1f6df3029c049e63cedf68b960746741b01427157d298c1a3a`
   - `HAUL 2/ssrn-6972282 (1).pdf`
   - `HAUL 2/ssrn-6972282.pdf`
+- `49d8f82bcf193f907ff5a25d05ed0de69734bc52df8384337c230e4cbbb87f1a`
+  - `EXPOSURE_STATS/MISC_PAPERS/2605.22912v1.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - 2605.22912v1.pdf`
 - `4b805b013b0a1fafc90ae9452423d0f438a5eceac454ec916549db0731c7cca2`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1.pdf`
@@ -76,6 +86,9 @@
 - `5b862fda843c7de1a99af463264b746765064ce75049d02fbe6c4a260e5ff686`
   - `HAUL 1/ssrn-7228958 (1).pdf`
   - `HAUL 1/ssrn-7228958.pdf`
+- `61bb52495a9a54e6230c5404152fac61487b6851a212a6120876aed6d11778d1`
+  - `EXPOSURE_STATS/SAT_IMPACT/SAT RECON — Gg3.txt`
+  - `EXPOSURE_STATS/SAT_IMPACT/SAT RECON — Goog.txt`
 - `62b66317da58231100f02164b8d0a17d0acaf91bd481474d531dd889cd4daedc`
   - `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.24002v1.pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.24002v1.pdf`
@@ -118,6 +131,9 @@
 - `b521569545fe74776b6eafd2707b90710e3b06260d32cd94776f4a02c07f21ac`
   - `HAUL 2/ssrn-7352038 (1).pdf`
   - `HAUL 2/ssrn-7352038.pdf`
+- `b69fe7ab0267a553f6e1a180b0bbb98b5dafc6ec1176e623bcc1d276f50c53a3`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating  LISTENERSHIP.txt`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating  Listeners 2.txt`
 - `b91414873efb096ba4982e96de429816ac853c60617b68024d5009bacd582989`
   - `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2608.31163v1 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/STRINGS+/2608.31163v1.pdf`
@@ -154,6 +170,12 @@
 - `eeaca47f4c1b046b98f25575bbc85d1f7be87c4bd54fa1c85828b6d17f865d1a`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2.pdf`
+- `f80612ec39a4da59b70064e3140235e91d89ed83c1642f647f58612afac71952`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Total views in last 14 days 2.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Total views in last 14 days.csv`
+- `fbcebed5b0ac33642d6d10255ec69871c63890046204a0abd4cbd5ba1798331d`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI Podcast Stats.txt`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI Podcast.txt`
 
 ## PDF inventory
 
@@ -169,6 +191,21 @@
 | `DATA/DATA REL - notebooks-latest03_ScienceExamplesEmLineGalaxies02_EmLineGalaxies_Outliers.ipynb at master · astro-datalabnotebooks-latest.pdf` | 990887 |  |
 | `DATA/DATA REL - notebooks-latest04_HowTosSPARCLPlot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalabnotebooks-latest.pdf` | 211459 |  |
 | `DATA/DATA REL - SPARCL Notebooks.pdf` | 509725 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/2025 Scientific Triumph- Unifying the Laws of Physics through Mathematical Geniu.pdf` | 1057840 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/2503.01800v1.pdf` | 1127581 | arxiv:2503.01800v1 |
+| `EXPOSURE_STATS/MISC_PAPERS/2601.07382v1.pdf` | 773206 | arxiv:2601.07382v1 |
+| `EXPOSURE_STATS/MISC_PAPERS/2603.09078v1.pdf` | 849347 | arxiv:2603.09078v1 |
+| `EXPOSURE_STATS/MISC_PAPERS/2605.22912v1.pdf` | 1174134 | arxiv:2605.22912v1 |
+| `EXPOSURE_STATS/MISC_PAPERS/41586_2026_10652_MOESM4_ESM.pdf` | 481607 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/[2605.19117] Quantum Magic Reveals CP Phases Invisible to Entanglement in Spin-0.pdf` | 160924 | arxiv:2605.19117 |
+| `EXPOSURE_STATS/MISC_PAPERS/A Unified SU(4) Qudit Gauge Lattice Framework for Emergent Geometry and Interaction Bryan E. W. Van Zandt KILOWADS Studios LLC Averill Park NY USA Dated May 21 2026.pdf` | 350075 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/a-l3-2l-l-css-code-from-the-fcc.pdf` | 365991 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Best Time to Post on r-redditpolicedept — Subreddit Analysis  Postpone.pdf` | 767175 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/dark-matter-as-a-trapped.pdf` | 657722 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/emergent-quantum-gravity.pdf` | 451207 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/flag-assisted-error-correction-on-fcc-lattice.pdf` | 441898 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/geometric-evaporation-primordial-black-hole-constraint.pdf` | 417394 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Grand Unification Theories And Supersymmetry  Physics  Research Starters  EBS.pdf` | 212049 |  |
 | `H(s)H_Toolkit/0105040v2.pdf` | 232815 | unresolved-seven-digit-id:0105040v2 |
 | `H(s)H_Toolkit/0112148v1.pdf` | 388150 | unresolved-seven-digit-id:0112148v1 |
 | `H(s)H_Toolkit/0112205v1.pdf` | 157916 | unresolved-seven-digit-id:0112205v1 |
@@ -1013,6 +1050,11 @@
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Chemical physicists quantitatively model electron interactions in real quantum materials.pdf` | 403955 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/In-orbit test of the weak equivalence principle with atom interferometry _ Science Advances.pdf` | 7154984 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Long-predicted gravitational effect seen in a quantum object for the very first time – Einstein’s theory passes another crucial test.pdf` | 1384921 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - APOD 2016 February 11 - LIGO Detects Gravitational Waves from Merging Black Holes.pdf` | 1093379 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Grand Unification Theories And Supersymmetry  Physics  Research Starters  EBS.pdf` | 212049 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - October News - Polish Gangs Hunt PUAs after Tom Torero Killer Strikes Again - Th.pdf` | 7825811 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Taking dark energy out of the equation Mathematicians challenge the standard cosmological model of the universe.pdf` | 188943 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Ten windows on the future of particle physics – CERN Courier.pdf` | 1532190 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault.pdf` | 2197799 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Science says some spiders can launch into the sky using silk and electricity to fly and the physics is wild.pdf` | 1101043 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists just overturned a century-old physics assumption _ ScienceDaily.pdf` | 5368654 |  |
