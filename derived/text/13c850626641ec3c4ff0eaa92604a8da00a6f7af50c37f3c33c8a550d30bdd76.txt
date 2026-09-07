@@ -1,0 +1,1337 @@
+===== PAGE 1 =====
+Wavelet-Based Extraction of Transient Noise in Gravitational-Wave Interferometers
+using a Saliency-Guided Learning Architecture
+Christopher All´ en´ e,1, 2 Dhruv Kumar ,3 Yusuke Sakai ,1, 2
+Marco Meyer-Conde ,1, 2,∗ and Hirotaka Takahashi 1, 2, 4
+1Research Center for Space Science, Advanced Research Laboratories,
+Tokyo City University, 1-28-1 Tamazutsumi, Setagaya-ku, Tokyo 158-8557, Japan
+2Graduate School of Information and Data Science and Department of Design and Data Science,
+Tokyo City University, 3-3-1 Ushikubo-Nishi, Tsuzuki-ku, Yokohama, Kanagawa 224-8551, Japan
+3Department of Physics, National Institute of Technology Agartala, Tripura 799046, India
+4Earthquake Research Institute, The University of Tokyo,
+1-1-1 Yayoi, Bunkyo-ku, Tokyo 113-0032, Japan
+Gravitational-wave interferometers exhibit a wide variety of short-duration non-Gaussian tran-
+sients, commonly referred to as glitches, that complicate the detection of astrophysical signals, bias
+parameter estimation, and detector characterisation. Existing machine-learning approaches classify
+glitch morphologies but do not provide a complete mechanism to segment and extract these dis-
+turbances from the strain data. We introduce a wavelet-based, saliency-guided framework for the
+supervised extraction of transient noise. Candidates are first pre-tagged using Uniform Manifold
+Approximation and Projection, which is also used as a diagnostic of the learned representations. A
+traditional learning model operating on Continuous Wavelet Transform spectrograms then identifies
+relevant time-frequency regions through saliency maps. These saliency patterns are transferred to
+an invertible multiresolution representation via the Discrete Wavelet Transform, where adaptive
+coefficient masking enables exact reconstruction of both glitch-only and glitch-suppressed wave-
+forms. We demonstrate effective extraction across several representative glitch families, including
+“Whistle” and “Scattered-Light” transients, and show robustness in challenging regimes such as low
+signal-to-noise events and partially overlapping structures, where classical thresholding or band-
+limited filtering methods typically fail or introduce leakage. The proposed framework offers an
+interpretable and computationally efficient approach to transient-noise extraction, establishing a
+foundation for scalable applications to larger glitch catalogs and future observing runs.
+I. INTRODUCTION
+Gravitational-wave interferometers such as LIGO [1],
+Virgo [2], and KAGRA [3] operate at extraordinary low
+sensitivity, continuously probing strain variations smaller
+than a proton radius. As detector performance improves,
+the data increasingly reveal a rich and complex land-
+scape of short-lived non-Gaussian transients, commonly
+referred to asglitches. These disturbances arise from
+diverse physical mechanisms, including mechanical reso-
+nances, scattered light, control-loop saturations, and en-
+vironmental couplings.
+The impact of glitches is manifold. In low-latency
+pipelines, they can produce false triggers, distort search
+statistics, or mask weaker signals that arrive in tem-
+poral proximity, such as GW170817 [4]. In parameter
+estimation, unmodeled transient features can bias in-
+ferred source parameters or broaden posterior distribu-
+tions. Even in the absence of a candidate event, glitches
+occurring in several repeating patterns may contribute to
+the non-stationary noise background, affecting detector
+sensitivity curves and background estimation for com-
+pact binary coalescence searches. Although often lasting
+only milliseconds to seconds, glitches can mimic or pre-
+vent astrophysical waveform detection, disrupt the esti-
+∗ marco@tcu.ac.jp
+mation of detector noise, and bias both real-time searches
+and offline parameter inference. The presence of such
+transients therefore remains a central challenge for de-
+tector characterisation and robust astrophysical analysis.
+Consequently, identifying, characterizing, and mitigating
+transient noise is essential in the GW science community.
+A substantial effort has been dedicated to classifying
+glitches using machine-learning techniques [5, 6]. In
+particular, the Gravity Spy project [7] demonstrated
+that convolutional neural networks (CNNs) trained
+on volunteer-labeled spectrograms can recognize a
+large variety of glitch morphologies. However, most
+existing methods provide labels, embeddings, or clus-
+ter assignments [8, 9], but they do not produce a
+reconstructed signal containing only the disturbance.
+Such reconstruction capability would be invaluable for
+generative modeling, glitch injection studies, transient
+noise simulations, robust waveform forecasting, and for
+validating the behavior of astrophysical pipelines under
+specific, well-controlled perturbations.
+From a signal-processing perspective, this extraction
+limitation is closely tied to the time-frequency represen-
+tations traditionally used for glitch identification, such as
+the Q-transform [10] or the continuous wavelet transform
+(CWT) [11]. These transforms provide precise and visu-
+ally interpretable spectrograms, but are not necessarily
+invertible in the form typically employed in gravitational-
+arXiv:2606.11595v1  [astro-ph.IM]  10 Jun 2026
+
+===== PAGE 2 =====
+2
+wave data analysis [12]. As a result, salient struc-
+tures identified in these representations cannot be cleanly
+mapped back to the time domain.
+The Discrete Wavelet Transform (DWT [13]) offers a
+performant invertible multiresolution representation
+in which each decomposition level corresponds to a
+well-defined frequency band with localized temporal
+support. Unlike conventional spectrograms, DWT
+coefficients can be selectively manipulated at each scale
+and then exactly inverted to reconstruct a modified
+time series. This property makes the DWT particularly
+well-suited for reconstructive tasks such as isolating
+transients, suppressing narrowband disturbances, or
+removing localized noise bursts. While time-frequency
+analysis methods, including wavelet representations,
+have been used extensively in the GW community for
+non-stationary signal characterisation and gravitational
+waveform reconstruction [14, 15], as well as in traditional
+signal and image-processing domains [16], their full in-
+tegration with a scalable machine-learning workflows for
+the purpose of glitch segmentation and extraction has
+not been previously demonstrated.
+In this work, we introduce a wavelet-based extraction
+framework designed to isolate short-duration transient
+noise directly from gravitational-wave strain data, us-
+ing publicly available data from the GW Open Science
+Center (GWOSC) spanning the O1, O2, and O3 ob-
+serving runs [17–20]. The identification of salient time-
+frequency regions is performed using a supervised neu-
+ral network augmented with class-activation map (CAM)
+techniques [21, 22].
+The resulting saliency maps highlight the time-
+frequency structures that the model identifies as anoma-
+lous or distinctive. To enable signal reconstruction, this
+saliency information is transferred to the discrete wavelet
+domain by mapping the selected time-frequency bins onto
+the corresponding wavelet decomposition levels. A mask
+is then constructed to modulate the associated DWT
+coefficients, either preserving them to reconstruct the
+glitch signal alone or suppressing them to obtain glitch-
+mitigated data. The final output is obtained via the in-
+verse DWT, yielding an exact reconstruction of both the
+transient disturbance and the background signal in the
+time domain.
+We validate this framework on a limited set of the most
+common glitch families. On this dataset, the method
+yields extractions that preserve the complex tempo-
+ral and spectral structure of the glitch, while inducing
+only minimal bias in the surrounding data. We further
+investigate challenging scenarios involving overlapping
+glitch events, including sequences with closely neighbor-
+ing glitches, sibling transients exhibiting repeating pat-
+terns, and low-amplitude structures that are difficult to
+isolate using classical thresholding techniques.
+Beyond providing a practical approach to glitch seg-
+mentation and extraction, this work introduces an
+interpretable and computationally efficient framework
+for transient-noise analysis. The combination of saliency
+maps and wavelet-domain manipulation offers an intu-
+itive link between machine-learning features and physical
+signal structures. The resulting glitch reconstructions
+can serve as controlled inputs for generative studies,
+for evaluating detector behavior under simulated dis-
+turbances, and for improving glitch catalogs that may
+be used in detector characterisation in a systematic
+approach.
+The remainder of this paper is organized as follows.
+The Methods section details the workflow with the data
+preprocessing, time-frequency representations, the com-
+plete learning architecture, wavelet-based masking pro-
+cedure, and reconstructed metrics. The Results section
+presents the wavelet-based specifications underlying the
+extraction capability of the framework across different
+glitch morphologies and evaluates its performance un-
+der complex conditions. The Discussion elaborates the
+broader implications for GW data analysis and outlines
+future applications to O3GK [23] and O4 datasets, as well
+as integration with scalable architectures such as YOLO
+[24], enabling more efficient data segmentation in its lat-
+est version, including a transformer architecture [25, 26].
+II. METHOD
+In this article, we present a multi-step workflow de-
+signed to remove glitches from time-series data. The
+whole workflow is schematically represented in Fig. 1.
+The method takes as input a time series containing
+a glitch and outputs a cleaned time series in which
+the glitch has been subtracted. First, the signal
+is preprocessed and undergo a transformation into a
+time–frequency representation, enabling the glitch and
+its characteristic features to be clearly identified. A
+machine-learning classifier is then applied to the resulting
+spectrogram. By analyzing the model through a Class
+Activation Map (CAM), we identify the regions of the
+spectrogram that contribute most strongly to the classi-
+fication and correspond to the glitch features. The re-
+sulting saliency map is subsequently used to construct a
+mask in the Discrete Wavelet Transform (DWT) domain,
+allowing the glitch contribution to be removed. Finally,
+the inverse transformation is applied to reconstruct the
+cleaned time series. In the present section, each step of
+this workflow is described.
+A. Time-frequency representation
+1. Q-Transform representation
+The primary representation used by Omicron is the
+Q-transform, evaluated around trigger times and imple-
+mented inGWpy. For a strain time seriesx(t), the Q-
+
+===== PAGE 3 =====
+3
+Dataset Golden Dataset Preprocess Pretagging
+(a) Training
+- Clipping augmentation
+- Dilation augmentation
+- Validation & Test
+Preprocess
+(b) Classification
+-Inference, CAM, Bounding
+Box, Contouring
+Mask
+TimeSeries (c) Glitch Substraction
+- DWT, Masking, DWT −1 Glitch TimeSeries
+FIG. 1: Workflow overview for transient-noise analysis using preprocessed gravitational-wave strain data.(a)Pre-
+processing: After applying appropriate preconditioning on a golden set (whitening and state vector checks being
+applied), Omicron-triggered strain segments are converted into CWT spectrograms, which serve as inputs to the
+learning model;(b)Learning & Segmentation: a ResNet-based classifier, produces GradCAM++[22] saliency maps
+that localize transient features under the targeted augmentation strategy;(c)Extraction: saliency information is
+transferred to the wavelet domain, enabling selective coefficient masking for glitch segmentation and reconstruction.
+transform is defined as
+X(τ,f,Q) =
+Z +∞
+−∞
+x(t)w(t−τ,f,Q)e −2πift dt,(1)
+whereτandfdenote the central time and frequency of
+each time-frequency tile,Qis the quality factor control-
+ling the time-frequency resolution, andwis a Gaussian
+window chosen such that higher frequencies are analyzed
+with shorter windows and lower frequencies with longer
+windows, ensuring a constant-Qmulti-resolution decom-
+position. The parameter space (τ,f,Q) is discretized us-
+ing a mismatch-controlled tiling strategy, yielding loga-
+rithmically spaced frequency bins and uniformly spaced
+time samples.
+The Q-transform coefficients are reweighted by an
+estimate of the local noise power, resulting in SNR-
+normalized spectrograms that emphasize localized excess
+power relative to the stationary background. A bounded
+quality-factor rangeQ∈[0,25] is used, chosen to cap-
+ture the dominant transient morphologies observed in the
+data.
+For fixed-size spectrogram construction over wide
+time-frequency ranges, certain regions of the (τ,f,Q) pa-
+rameter space cannot be evaluated uniformly.
+2. Continuous Wavelet Transform representation
+Wavelet-based representations provide a complemen-
+tary description of transient structures through localized
+decompositions across multiple scales. The CWT of a
+signalx(t) is defined as
+Wx(a,b) = 1
+|a|
+1
+p
+Z +∞
+−∞
+x(t)ψ∗
+t−b
+a
+
+dt,(2)
+whereaandbdenote the scale and time shift, respec-
+tively, andψis the chosen mother wavelet. The scale pa-
+rameterais inversely related to frequency, enabling flex-
+ible time-frequency localisation. Here, the|a| −1/p factor
+corresponds to the Lp normalisation. The L2 normalisa-
+tion (|a|− 1
+2 ) favoring the lower frequencies by reducing
+the higher ones keeping signal energy constant, where a
+|a|−1 factor would correspond to a L1 norm which nor-
+malize all frequencies the same way enlightening the sig-
+nal amplitudes [27, 28]. In the following the L2-norm is
+used, allowing the glitches to be more visible across the
+large considered bandwidth.
+Exact reconstruction from a wavelet representation re-
+quires satisfaction of the admissibility condition
+Cψ =
+Z ∞
+0
+| ˆψ(f)| 2
+f df <∞.(3)
+Although the CWT is admissible in principle, it
+represents the signal using a highly redundant set of co-
+efficients and is therefore primarily used for visualisation
+and diagnostic analysis rather than exact reconstruction.
+In addition, it is computationally demanding, as coeffi-
+cients must be evaluated over a densely sampled range
+of scales and time shifts. In contrast, DWT constructed
+from orthonormal or bi-orthogonal bases satisfy the
+admissibility condition exactly and admit an explicit in-
+verse transform. Their dyadic multi-resolution structure
+
+===== PAGE 4 =====
+4
+allows efficient implementations with computational
+complexity scaling asO(N) orO(NlogN).
+Among the many possible wavelet families, the com-
+plex Morlet is the one that optimizes the time and fre-
+quency resolutions minimizing the Gabor-Heisenberg in-
+equality:
+σtσf≥ 1
+4π,(4)
+withσ t the time resolution andσ f the frequency resolu-
+tion. The complex Morlet is defined as follow:
+ψ(t) = 1√
+πB
+e− t2
+B e2iπCt,(5)
+withBthe bandwidth that defines the resolution andC
+the central frequency withσ f = 1
+2π
+√
+2B andσ t =
+p
+B/2.
+In order to minimize the aliasing and according to the
+frequency analyzed (from 1 Hz to 8192 Hz) the parameter
+Cis set to 8. TheBparameter is set to 0.25 such that
+the signal once transformed is well localized in time and
+frequency allowing a better classification by the model
+and more precise masks construction. The selection of
+this two values for the parameters get the CWT spectrum
+closer to the Q-Transform spectrum.
+The Q-transform can be interpreted as a specific win-
+dowed Fourier representation related to wavelet trans-
+forms but does not satisfy an admissibility condition and
+therefore does not admit a practical inverse without ad-
+ditional regularisation.
+In this work, the CWT is used by to classify the glitch
+by the model, to build the mask and to inspect recon-
+structed signals and verify the preservation of transient
+morphology and bandwidth, particularly when comput-
+ing UMAP representations. Exact reconstruction is in-
+stead performed using the DWT, which provides an or-
+thogonal multi-resolution decomposition into approxima-
+tion and detail coefficients at dyadic scales. For applica-
+tions requiring explicit phase coherence across subbands,
+extensions such as the dual-tree complex wavelet trans-
+form (DTCWT) [29] may be employed; however, the
+standard orthogonal DWT is sufficient for the present
+analysis.
+B. Machine Learning algorithm and glitch
+classification
+1. Learning architecture and Pre-tagging.
+The model used in this study is based on aResNet-50
+architecture[30] withImageNet-pretrained weights[31],
+imposing a fixed input size of 224×224 pixels. The
+network begins with an initial convolutional block con-
+sisting of a 7×7 convolution, batch normalisation, ReLU
+activation, and a 3×3 max-pooling layer. It is followed
+by four residual stages containing (3, 4, 6, and 3) bot-
+tleneck blocks, producing feature maps with (256, 512,
+1024, and 2048) channels, respectively. After the final
+residual stage, a 2D adaptive average-pooling layer re-
+duces each feature map to a single spatial value, yielding
+a 2048-dimensional representation independent of input
+size. This representation is processed by a fully con-
+nected module composed of a linear transformation from
+2048 to 128 units with ReLU activation, and a final fully
+connected linear layer projecting from 128 toNoutput
+classes.
+The input time series has a sampling frequency of
+16,384 Hz. The CWT spans the frequency range from
+1 Hz to 8,192 Hz, and the resulting spectrograms are
+rescaled in logarithmic on the frequency axis. All spec-
+trograms are resized accordingly and replicated across
+three channels to match the expected RGB input format.
+2. Training
+The training dataset consists of a balanced sample
+of 4,500 Gravity Spy glitches drawn from three rep-
+resentative morphologies:Whistle,Blip, andScattered
+LightThe dataset is split into training, validation, and
+test subsets with proportions of 70%, 20%, and 10%,
+respectively.
+During training, we vary the clipping threshold of the
+spectrogram amplitudes by a value randomly drawn from
+a uniform distribution over the interval [3,23]. The same
+sampling strategy is used during validation after each
+epoch. Varying the clipping threshold in this way in-
+creases the model’s sensitivity to faint glitches. To re-
+duce confusion between morphologically similar classes
+(e.g., short-duration whistles and blips), we apply data
+augmentation based on random temporal dilation before
+resizing the inputs to a normalized resolution of 224×224
+pixels (see Fig. 2). Specifically, we randomly rescale the
+temporal dimension so that the resulting signal duration
+is uniformly distributed between 0.5 and 4 seconds ap-
+plying a dilation factor in [1, 8]. Both augmentations —
+(1) temporal dilation and (2) energy clipping — are ap-
+plied before normalizing the data to the range [0, 1], as
+illustrated in Fig. 2. The training and validation phases
+follow the same augmentation; the test phase however
+follows the inference process described below.
+3. Inference for glitch denoising
+Two distinct inference procedures are employed. The
+way the data augmentation apply during the inference
+phase is describe on Fig. 2b. In the first stage, the ob-
+jective is to localize the glitch within the input. A single
+clipping threshold, fixed at 13, is used while all four pre-
+defined durations (0.5, 1, 2, and 4 s) are evaluated. These
+augmentations are corresponding to the upper path of
+Fig. 2b. For each duration, the model outputs a con-
+fidence score, and the final confidence level is obtained
+
+===== PAGE 5 =====
+5
+(a) Training vs Validation/Test
+Spectrogram Random Clipping
+E∼U(5,25)
+Random Dilation
+z∼U(1,8)
+Normalisation
+[0,1]
+Transformed
+Spectrogram
+(b) Inferences
+Spectrogram
+Fixed Clippings
+E=E avg
+4 Fixed Dilations
+z= 1,2,4,8
+Normalisation
+[0,1]
+4 Transformed
+Spectrograms
+Fixed Clippings
+E= 3,8,13,18,23
+Fixed Dilation
+z=z opti
+Normalisation
+[0,1]
+5 Transformed
+Spectrograms
+FIG. 2: Schematic representation of the data-augmentation strategy applied during training.(a)Random energy scale
+for both the training and the validation then random or multiple fixed time-axis scaling for respectively the training
+and the validation data are introduced as controlled perturbations to enhance robustness to temporal dilation or
+contraction, and C-value for variability in fainted glitch events.(b)Two path for the first or second inference: 1-
+One fixed energy scale and four time-axis scaling are used resulting in as many transformed spectrogram and the
+inference; 2- Five fixed energy scale and one optimal dilation factor are applied to the input spectrogram resulting in
+5 spectrograms.
+by averaging the scores over all durations. Glitch lo-
+calization is then performed using the Class Activation
+Map (CAM; see below) associated with the prediction
+exhibiting the highest confidence level. Once an approx-
+imate glitch location has been identified, an optimal du-
+ration can be selected. A second inference step is sub-
+sequently carried out using multiple clipping thresholds
+(3, 8, 13, 18, and 23). These augmentations are the ones
+of the lower path on Fig. 2b. For each clipping thresh-
+old, the model produces a confidence score. The clipping
+value yielding the highest overall confidence level across
+all classes is retained. The final classification is then de-
+termined from this selected prediction. The correspond-
+ing CAM is finally used to extract the bounding box and
+construct the associated mask.
+C. Saliency map extraction
+1. CAM selection and combination
+Beyond classification, this architecture is ex-
+tended to localize transient structures by coupling
+GradCAM++[22] to generate two-dimensional saliency
+maps that highlight the regions contributing most
+strongly to the classification decision. The Grad-
+CAM++ using higher order derivative may fail to
+compute a map, as a fallback we choose to use
+XGradCAM[32], the map generated by XGradCAM
+being the most similar to the ones from GradCAM++.
+This fallback provided less precise CAM but is more
+stable and won’t fail providing the map. Saliency maps
+were extracted from the last convolutional layer of the
+first, second, and fourth (final) bottleneck blocks. These
+maps were subsequently combined according to :
+cCAM = CAM4×(CAM 1 + CAM2) (6)
+where the subscripts denote the corresponding bottle-
+neck level. This combination strategy provides a trade-
+off between spatial resolution and robustness to noise.
+In particular, the saliency map from the first bottleneck
+preserves fine spatial details, while the multiplication by
+the fourth bottleneck saliency map enhances robustness
+against noise. Furthermore, combining the first and sec-
+ond bottleneck saliency maps enables the detection of
+glitch features with lower intensity, reducing the risk that
+these faint structures are suppressed during the multipli-
+cation with the fourth bottleneck saliency map. In the
+following the CAM will refer to this combined CAM.
+2. CAM-based glitch localization
+The CAM obtained is flatten along frequency axis tak-
+ing the maximum values to estimate an effective glitch
+duration, which is used to define a refined temporal crop
+∆tof the spectrogram. After the flattening, to select
+the crop, we search for the excesses of signal above the
+average value. Ranking the excesses by there maximum
+value, the strongest one is selected as the expected glitch
+time region on the input image. However, in the case
+of very large glitches like some Scattered Lights the sig-
+nal enlightened by the CAM is broad as well and do not
+shows an excess of signal after the flattening. Such be-
+havior are characterized by an average value of the flat-
+tened CAM lower than the median value of it. In such
+cases, the temporal crop is applied on the part of the in-
+put image having an flattened cam higher than a given
+
+===== PAGE 6 =====
+6
+threshold. The value of this threshold being set to 0.05
+which corresponds to 5% of the maximum value of a nor-
+malized CAM.
+The second inference is then performed on the zoomed
+representation among the four possibles that fits the most
+to the temporal crop, yielding an updated CAM. Flatten-
+ing this refined CAM over time provides a corresponding
+frequency bandwidth, denoted ∆f. The same procedure
+as the one for the time crop is applied for this frequency
+crop. The resulting bounding box (∆t,∆f), centered
+around Omicron GPS time, is subsequently used to gen-
+erate more precise saliency-derived masks for denoising
+and glitch extraction.
+Additionally, spurious CAM artifacts near image
+boundaries are mitigated by applying mirror padding
+prior to inference. The padding width is chosen such that
+the effective region of interest is reduced from 224×224 to
+an effective 192×192 pixels, corresponding to the typical
+spatial extent of edge-related artifacts observed during
+the early stages of the analysis. This padding strategy
+suppresses boundary-induced activations without alter-
+ing the central content of the spectrogram. After infer-
+ence, the padding is removed, and the resulting CAM is
+mapped back consistently onto the corresponding CWT
+scale distributions.
+3. Mask construction
+The cCAM is used to reweight the input spectrogram
+in order to enhance regions relevant to the glitch while
+suppressing unrelated high-amplitude features. The
+weighted spectrogram is defined as:
+wpx,ij =
+q
+inputij×CAMij.(7)
+wherew px,ij denotes the weighted pixel value at posi-
+tion (i,j), input ij is the original spectrogram intensity,
+and CAMij is the corresponding CAM value. Prior to
+this operation, the CAM is smoothed using a Gaussian
+blur to reduce high-frequency artifacts. The weighted
+spectrogram is subsequently normalized to the interval
+[0,1]. Isocontours are then computed for threshold val-
+ues ranging from 0.05 to 0.5 in increments of 0.05. For
+each threshold, a binary mask is constructed such that
+pixels inside the contour are assigned a value of 1, and
+those outside are assigned 0.
+To determine the optimal threshold, a combined rank-
+ing statistic is defined based on a comparison between
+the normalized distributions of CAM values inside and
+outside the mask. Letmask ij denote the binary mask.
+The CAM values inside and outside the mask are defined
+as:
+(
+camin,ij = CAMij·maskij,
+camout,ij = 1−CAM ij·(1−mask ij). (8)
+Normalized distributions of these two sets of values are
+constructed and denoted byp in andp out, respectively
+(left panel of Fig. 5c).
+A single ranking statistic is then formulated to simul-
+taneously account for two complementary objectives: (i)
+maximizing the part of features inside the mask which
+minimizes the interesting features outside the mask, and
+(ii) minimizing the irrelevant signal inside the mask
+which maximizes the irrelevant signal outside the mask.
+Both aspects are captured through the following quanti-
+ties:
+(
+ηmin =PNbins
+k=1 min(pin,k,p out,k),
+ηdiff =PNbins
+k=1 |pin,k−p out,k|. (9)
+The termη min measures the degree of overlap betweenpin
+andp out: large values indicate that the CAM activations
+inside is larger than outside, which is desired. Conversely,
+ηdiff quantifies the overall separation between the two dis-
+tributions: larger values correspond to stronger contrast
+between relevant and non-relevant regions.
+These two contributions are combined into a single
+ranking statistic defined as:
+η=η min−ηdiff.(10)
+Maximizingηtherefore favors masks that simultaneously
+reduce the overlap between the inside and outside CAM
+distributions and enhance their statistical separation.
+The optimal threshold is selected as the one that maxi-
+mizes this combined ranking statistic, yielding the mask
+that best isolates glitch-related structures in the spectro-
+gram.
+Once selected, a quick treatment is applied to the bi-
+nary mask to remove too small components (less than
+10 pixels) or small holes in the mask (less than 10 pixels
+as well). Subsequently, to smooth mask boundaries of
+the binary mask, a distance-based exponential decay is
+applied,
+pij←max
+
+pij,e−d2
+ij/σ2
+,(11)
+withσ= 3, followed by a Gaussian blur. The resulting
+masks are used to reconstruct either glitch-only or glitch-
+suppressed waveforms via the inverse DWT. Masks are
+made available in the supplementary section in units of
+224×224.
+D. Wavelet Masking
+In this work, the discrete wavelet transform (DWT)
+provides the reconstruction domain in which saliency-
+derived masks are applied to selectively preserve or sup-
+press transient contributions. Given a discrete time se-
+riesh(t) sampled at frequencyf s, the DWT decomposes
+the signal into a hierarchy of approximation and de-
+tail coefficients across multiple resolution levels. At the
+coarsest levelL, the approximation coefficients capture
+
+===== PAGE 7 =====
+7
+1
+8
+64
+512
+4096
+Original Signal
+ Masking
+1
+8
+64
+512
+4096
+BayesShrink
+ VisuShrink
+1
+8
+64
+512
+4096
+STD
+ CDF
+0.3 0.4 0.5 0.6 0.7
++1.244958109 × 109
+1
+8
+64
+512
+4096
+SURE
+0.3 0.4 0.5 0.6 0.7
++1.244958109 × 109
+NeighShrink
+0
+1
+2
+3
+4
+5
+Energy Normalized (L2)
+Time [s]
+Frequency [Hz]
+FIG. 3: Example of Scattered Light glitch (LeoGt1PRzA) subtract by diverse denoising methods applied on DWT.
+The CWT spectrogram from the denoised TimeSeries are shown and can be compared to the original TimeSeries
+spectrogram (top left). The Masking plot (top right) follow the method describe in this article. The six other
+denoising method are originally describe in [33] for BayesShrink thresholding, [34] for VisuShrink thresholding, [35]
+for the standard deviation (STD) and Cumulative Distribution Function (CDF) thresholdings, [36] for the SURE
+thresholding and [37] for the NeighShrink thresholding. The masking method appear here to be the only one able to
+isolate the scattered light without the surrounding noise and whistles.
+
+===== PAGE 8 =====
+8
+the low-frequency content of the signal, while the detail
+coefficients at each leveljencode progressively higher-
+frequency structures with increasing temporal localisa-
+tion. This discrete wavelet transform formula can be
+written as
+h(t) =
+X
+k
+c(L)
+A [k]ϕL,k(t) +
+LX
+j=1
+X
+k
+c(j)
+D [k]ψj,k(t),(12)
+wherec (L)
+A [k] denote the approximation coefficients at the
+deepest levelL,c (j)
+D [k] are the detail coefficients at scale
+j, andϕ L,k(t) andψ j,k(t) are the corresponding scaling
+and wavelet basis functions. Each detail leveljis as-
+sociated with a dyadic frequency band [f s/2j+1, fs/2j]
+with an effective temporal sampling determined by the
+downsampling inherent to the transform.
+The decomposition depthLis chosen such that the full
+analysis band from 1 Hz to 8,192 Hz is covered. Through-
+out this work, we employ a Daubechies wavelet of order
+8, denoteddb8[11], which provides a suitable compro-
+mise between time localisation, frequency selectivity, and
+smoothness for transient glitch reconstruction.
+Saliency-based mask obtained in the time-frequency
+plane is transferred to the DWT domain by constructing
+a set of one-dimensional windows, one per wavelet band.
+For each decomposition level, the mask is cropped
+to the frequency limits. The maximum values of
+the mask, indicating to silence (value at one) or not
+(value at zero) a part of a signal, serve to construct
+the one-dimensional windows. These windows are
+then resampled to match the temporal resolution of
+the wavelet coefficients. These windows are resam-
+pled to match the temporal resolution of the wavelet
+coefficients then applied multiplicatively to the detail
+coefficients prior to DWT inversion recovering timeseries.
+This approach contrasts with classical wavelet denois-
+ing methods based on fixed or universal thresholds [38],
+which often produce fragmented reconstructions and
+spectral leakage in low–SNR glitch events, as illustrated
+in Fig. 3. In this figure, the thresholding methods either
+don’t extract the targeted glitch like with BayesShrink
+or VisuShrink, either extract a lot of surrounding noise
+and partially the targeted glitch like for the other pre-
+sented methods. By contrast, saliency-guided masking
+selectively preserves wavelet coefficients associated with
+the glitch morphology while suppressing unrelated noise,
+especially other glitches nearby.
+III. RESULTS
+A. Training of the model
+We first evaluate the training performance and classi-
+fication efficiency of the model. The network was trained
+for 200 epochs using a dataset of 4500 glitches equally
+split among classes. The corresponding learning curves
+are shown in Fig. 4a. The ground-truth labels were ob-
+tained from GravitySpy classifications. To minimize the
+impact of mislabeled samples and reduce entropy in the
+training set, only glitches with a GravitySpy confidence
+level above 95% were retained. It happens that multi-
+ple glitches occurs in a thin time windows. This kind of
+behavior would impact the training, especially when the
+multiple glitches have belong to different classes. Based
+on the omicron trigger time, such multi-glitches event are
+excluded from the dataset. This selected dataset used in
+the training is referred as ”golden dataset” in Fig. 1.
+The lower panels of Fig. 4b and Fig. 4c present the
+confusion matrices obtained, respectively, from the val-
+idation dataset at the 190 th epoch and from a test set
+independent from the 4500 previous events containing
+450 glitches. Although the classification accuracy dur-
+ing training reached 97.6%, the complete inference phase
+must be evaluated independently, since the method relies
+on two successive evaluations, including a saliency-guided
+localization of the glitch using the CAM. The resulting
+confusion matrices demonstrate classification accuracies
+ranging from 98.7% to 99.3% across the three classes,
+corresponding to an overall accuracy of 99.1%. These
+results confirm the robustness and reliability of the pro-
+posed classification framework under realistic inference
+conditions.
+Since the second classification stage is performed on a
+cropped spectrogram centered on the glitch and whose
+optimal time window is determined from the CAM local-
+ization, the resulting accuracy reflects not only the clas-
+sifier performance itself, but also the ability of the CAM
+to preserve the characteristic glitch features required for
+reliable classification. These results therefore provide a
+first indication that the CAM successfully identifies the
+relevant time–frequency structures that will subsequently
+be used for mask construction in the subtraction proce-
+dure.
+B. Extraction of a typical Whistle
+Accurate glitch classification and localization consti-
+tute the first step toward signal subtraction. Figure 5
+illustrates the complete reconstruction pipeline on a rep-
+resentative example. Starting from the original CWT
+spectrogram (Fig. 5a), the combined CAM highlights
+the time–frequency region associated with the glitch
+(Fig. 5b). The saliency-guided localization refinement
+further restricts this region, yielding a more precise esti-
+mate of the glitch extent in both time and frequency.
+The resulting mask, derived from the CAM distribu-
+tion analysis shown in Fig. 5c, is transferred into the
+DWT domain. Applying this mask selectively preserves
+the wavelet coefficients associated with the localized tran-
+sient while suppressing the surrounding background. The
+reconstructed signal, shown in red in Fig. 5d, therefore
+contains primarily the glitch contribution.
+
+===== PAGE 9 =====
+9
+0 25 50 75 100 125 150 175 200
+Epoch
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Loss
+(a) Learning Curves
+Training Loss
+Validation Loss
+Validation Accuracy
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Accuracy
+Blip
+(312)
+Scattered
+Light
+(297) Whistle(264)
+Predicted label
+Blip
+(313)
+Scattered
+Light
+(298)
+Whistle
+(262)
+True label
+98.1 1.3 0.6
+1.0 97.6 1.3
+1.5 1.5 97.0
+(b) TrainingConfusion Matrix
+0
+20
+40
+60
+80
+Blip
+(149)
+Scattered
+Light
+(150) Whistle(151)
+Predicted label
+Blip
+(150)
+Scattered
+Light
+(150)
+Whistle
+(150)
+True label
+98.7 0.0 1.3
+0.7 99.3 0.0
+0.0 0.7 99.3
+(c) Test Confusion Matrix
+0.0
+0.2
+0.4
+0.6
+0.8
+FIG. 4:(a)Training and validation learning curves of ResNet based architecture, shown with the time axis (shift
+and dilation) and energy scale (clipping) augmentation. Augmentation improves convergence stability and enhances
+sensitivity to low-SNR transient features;(b)Confusion matrix computed on the validation set, introducing the
+principal glitch morphologies used in this study and illustrating the encoder’s ability to separate them prior to
+saliency extraction.(c)Confusion matrix computed on a test set, following the full inference process with a second
+saliency-guided inference.
+The effectiveness of the procedure is confirmed by
+the CWT of the reconstructed time series displayed in
+Fig. 5e. The transient structure remains clearly visible,
+whereas a large fraction of the surrounding noise has been
+removed. This example demonstrates that the proposed
+approach can successfully transfer saliency information
+from the CWT representation to an invertible multires-
+olution wavelet domain, enabling the extraction of a lo-
+calized glitch signal in the time domain.
+C. Performance across glitch morphologies
+The previous subsection illustrated the performance of
+the subtraction procedure on an individual event. To
+assess its overall effectiveness, the analysis must be ex-
+tended to a larger population of glitches and evaluated
+using aggregate statistical measures.
+In Fig. 6, we evaluated the original signal and the
+reconstructed representations using CWT spectrogram
+via Uniform Manifold Approximation and Projection
+(UMAP)[8]. The embedding takes the 4 seconds CWT
+spectrograms without clipping, which are normalized be-
+
+===== PAGE 10 =====
+10
+−0.4 −0.2 0.0 0.2 0.4
+Time [s]
++1.26018378 × 109
+1
+4
+16
+64
+256
+1024
+4096Frequency [Hz]
+0
+2
+4
+6
+8
+10
+DWT DWT−1
+−0.4 −0.2 0.0 0.2 0.4
+Time [s]
++1.26018378 × 109
+1
+4
+16
+64
+256
+1024
+4096Frequency [Hz]
+0
+2
+4
+6
+8
+10
+Inferences
+−0.4 −0.2 0.0 0.2 0.4
+GPS Time [s]
++1.26018378 × 109
+1
+4
+16
+64
+256
+1024
+4096
+Masking
+0.0 0.2 0.4 0.6 0.8 1.0
+Values
+1
+10
+100
+Density
+inside_cam
+outside_cam
+-2.0 -1.6 -1.2 -0.8 -0.4 0.0 0.4 0.8 1.2 1.6 2.0
+Time (s) since GPS = 1260183780.0350952
+D7
+D6
+D5
+D4
+D3
+D2
+D1Wavelet Coefficients
+OUld48KYCO
+Wavelet coefficients
+(a)
+(b)
+(c)
+(d)
+(e)
+FIG. 5: This example illustrates the ability of the method to transfer time-frequency saliency into an invertible multi-
+resolution scale domain.(a)The input CWT image. In order to highlight the glitch the spectrogram is clipped at
+10. The mother wavelet used is a complex Morlet with the parameter 0.25 and 8 with a L2-norm.(b)The CAM
+corresponding to the inference on the input image. The red dashed box is the coarse saliency bounding box of width
+∆tand height ∆f.(c)The computation of the mask. The two plots included show an example of distributions of
+CAM pixel’s inside (red) or outside (blue) use to select the threshold of the binarisation required to build the mask
+shown on the left plot.(d)The wavelet coefficients in the DWT space. In black the transformed input signal and in
+red the signal after application of the mask.(e)The CWT spectrogram of the output signal. The same parameters
+and treatment are applied to the output than the input.
+tween 0 and 1, and arbitrary parameters. This com-
+parison confirms that the extracted glitch preserves its
+morphology, bandwidth, and temporal evolution. The
+CWT representation is particularly effective for visualiz-
+ing such isolated glitches, in contrast to the Q-transform,
+for which the removal of the noise background leads to
+an ill-defined signal-to-noise ratio and therefore precludes
+its use as a simple quantitative metric.
+In these UMAP projections shown in Fig. 6, we pro-
+duced embeddings for the noisy configuration and the
+denoised configuration. Both of the embedding share the
+same events, 500 glitch event for each one of the three
+classes. In the noisy configuration shown in Fig. 6a, the
+embedding tends to organize into three families of glitch
+without a clear separation of the clusters and a consid-
+erable confusion especially betweenwhistlesandblips.
+
+===== PAGE 11 =====
+11
+4 6 8 10
+UMAP-1
+4
+5
+6
+7
+8UMAP-2
+UMAP Embedding - CWT
+Blip
+Scattered_Light
+Whistle
+(a) UMAP Embedding - CWT
+−4 −2 0 2 4 6 8 10 12
+UMAP-1
+−2
+0
+2
+4
+6
+8
+10
+UMAP-2
+UMAP Embedding - CWT -denoised
+Blip
+Scattered_Light
+Whistle (b) UMAP Embedding - CWT denoised
+FIG. 6: UMAP latent-space representations in two dimensions based on the learned feature embeddings. The dot
+colors are associated to the classification of the model used. On(a), embedding obtained from CWT event spectro-
+grams before applying the denoising. On(b), embedding obtained form CWT event spectrograms after the denoising
+to keep the glitch and remove the surrounding gaussian noise. The red circle allows to show the displacement of an
+event.
+On the other hand, in the denoised configuration shown
+in Fig. 6b, the embedding gives a clear separation of the
+three clusters. Nevertheless, a residual confusion remains
+in the denoised projection. The two possible sources of
+confusion are either a misclassified event by the model
+but correctly embedded by UMAP, or the other way
+around, a good classification by the model but misplaced
+by UMAP. Looking down to the CWT spectra of the con-
+fused event, it appears the labels match with the glitch
+classes which indicate the UMAP embedding role in the
+confusion.
+D. Fainted and multi-glitches cases
+As discussed during the training analysis, multiple
+glitches may occur within a short time interval. The
+time windows considered in this study (ranging from 0.5
+to 4,s) generally allow unrelated glitches to be excluded
+from the analysis. This time-axis augmentation therefore
+provides an effective solution in most cases. However,
+when two glitches occur in close temporal proximity, iso-
+lating a single glitch within the selected time window
+becomes impossible.
+To address this issue, the input CWT spectrum is pro-
+cessed twice, each pass targeting a different glitch sub-
+traction. During the first pass, theDFA1Lgmi5zglitch is
+subtracted ; owing to its higher SNR, this glitch domi-
+nates the model attention. The resulting subtraction is
+then used to mask this glitch before applying a second
+pass to subtract theLeoGt1PRzAglitch. For both glitches
+shown in Fig. 7, the white dashed vertical lines indi-
+cate the times derived from the CAM-localized bounding
+boxes. In configurations where multiple glitches cannot
+be isolated through time-window selection, this iterative
+subtraction procedure is performed automatically.
+This example demonstrates the ability of the method
+to isolate and subtract nearby glitches independently. In
+particular, the subtraction of theLeoGt1PRzAglitch also
+illustrates the sensitivity of the method to low-amplitude
+glitches with amplitudes close to the noise level.
+IV. DISCUSSIONS
+The results presented in this work demonstrate that
+time-frequency saliency, when combined with an in-
+vertible multiresolution representation and appropriate
+training augmentation, provides an effective mechanism
+for isolating a wide variety of transient noises. This
+capability is highly relevant for GW detector charac-
+terisation, where the ability to extract, suppress, or
+reconstruct specific glitch families is essential for data-
+quality assessment and for the stability of astrophysical
+
+===== PAGE 12 =====
+12
+8.75 9.00 9.25 9.50 9.75 10.00 10.25 10.50
++1.2449581 × 109
+8.0
+32.0
+128.0
+512.0
+2048.0
+8192.0
+ LeoGt1PRzA
+ DFA1Lgmi5z
+ 0
+2
+4
+6
+8
+10
+12
+14
+Frequency [Hz]
+GPS Times [s]
+FIG. 7:(a)Low-SNR Whistle-type transientLeoGt1PRzA(left Whistle), exhibiting multiple neighbouring sibling
+components (e.g.,DFA1Lgmi5z(right Whistle),6GooD7MdgA,jTITTOjjn4) occurring in close temporal and frequency
+proximity. The two glitchesLeoGt1PRzAandDFA1Lgmi5zare shown in surounded by the white dashed vertical lines
+from the saliency-guided time location. The red lines are contours of the mask respectively at value 0.9 and 0.5 for
+the dashed and the dotted lines.
+searches. The proposed framework introduces a prac-
+tical bridge between non-invertible saliency techniques,
+traditionally use as explainability rationale[39] for clas-
+sification, and a fully invertible wavelet reconstruction
+pipeline. This combination enables the production of
+glitch-only and glitch-cleaned strain time series without
+relying on surrogate modeling.
+The effectiveness of the proposed approach is the in-
+terpretability and localisation provided by the saliency
+maps. By identifying compact regions in the time-
+frequency plane to which the model assigns the high-
+est discriminative relevance, the saliency maps highlight
+structures that often correspond to physically meaningful
+components of the glitch. When mapped to the discrete
+wavelet transform (DWT) domain, this information is
+translated into a sparse set of coefficients at specific scales
+and temporal locations. Because the DWT is exactly
+invertible, the selected coefficients can be recombined
+to yield a faithful reconstruction of the transient—an
+outcome that is not achievable with traditional SNR-
+weighted Q-transform or CWT representations. This ca-
+pability extends beyond purely supervised classification
+strategies, which provide labels or embeddings but do not
+enable waveform extraction or the automated generation
+of glitch-free data.
+From the perspective of detector characterisation,
+the ability to selectively retain or suppress specific
+components of the strain has several direct implications.
+First, the extracted glitches provide isolated instances of
+well-defined morphology that can serve as inputs for gen-
+erative modeling. Second, the glitch-free reconstructions
+provide an alternative representation of the underlying
+strain that can be used to improve background estimates
+in matched-filter and excess-power analyses. Finally, the
+masking procedure allows for controlled examination of
+localized features, making it applicable to data-quality
+investigations, calibration assessments, and validation
+of low-latency and offline search pipelines, particularly
+in cases where transient noise may influence trigger
+conditions or parameter estimation.
+Despite these advantages, our method has certain
+limitations that may naturally suggest directions for
+future work. First, the framework is not designed
+to recover or disentangle transient noise when it is
+temporally or morphologically correlated with an actual
+gravitational-wave signal. In such cases as GW170817[4],
+glitches overlapping with events, accurate separation
+would require a dedicated Bayesian inference framework
+capable of jointly modeling both the astrophysical
+waveform and the noise transient. Second, the spatial
+resolution of the reconstruction is constrained by the
+properties of the chosen wavelet family and by the
+Gabor-Heisenberg uncertainty principle, which impose
+fixed relationships between temporal and frequency
+
+===== PAGE 13 =====
+13
+resolution across scales. Finally, the method mainly
+relies on the refinement of the saliency mask through
+postprocessing: although the raw saliency can be diffuse
+or imperfect, the postprocessing step stabilizes the
+localisation and ensures that only the relevant structures
+are projected onto the wavelet domain.
+Looking ahead about future research work, several di-
+rections appear promising. Applying the framework to
+full O1-O3 datasets, O3GK, and O4 datasets will en-
+able a systematic assessment of its utility in large-scale
+detector-characterisation studies, with potentially useful
+implications for the design of future gravitational-wave
+interferometers. Integration with more performant and
+scalable detection architectures, such as YOLO-based
+real-time segmentation, could extend the method to con-
+tinuous, low-latency monitoring while simplifying the
+computation of saliency maps. Some works on glitch
+segmentation with YOLO have already been performed
+by [40]. In this context, the contours produced by our
+current framework could directly serve as ground truth
+during the initial training of YOLO models. Taken to-
+gether, these developments could establish a new class of
+hybrid models that combine interpretability, invertibility,
+and high detection performance for the next generation
+of gravitational-wave data analysis.
+V. CONCLUSION
+In this work, we introduced a saliency-guided frame-
+work for the identification and subtraction of transient
+glitches in gravitational-wave strain data. By combin-
+ing Class Activation Map (CAM) localisation with an
+invertible discrete wavelet transform representation, the
+proposed method enables the extraction and subtraction
+of transient noise components directly in the time domain
+while preserving the strain data.
+The results demonstrate that saliency information
+derived from a supervised classifier can be effectively
+translated into sparse wavelet-domain masks that re-
+tain the characteristic time–frequency morphology of sev-
+eral glitch families. Unlike conventional non-invertible
+time–frequency representations, the proposed approach
+provides direct access to reconstructed glitch-only and
+glitch-cleaned strain time series, thereby extending the
+role of saliency methods beyond interpretability alone.
+Beyond classification, this framework provides a
+practical tool for detector-characterisation studies, data-
+quality investigations, and future low-latency analysis
+strategies. Its compatibility with scalable segmentation
+architectures and large observational datasets suggests
+that invertible saliency-based approaches could become
+valuable components of next-generation gravitational-
+wave data-analysis pipelines.
+ACKNOWLEDGMENTS
+This research was supported in part by the Japan
+Society for the Promotion of Science (JSPS) Grant-in-
+Aid for Fellows [No. P21726 (M. Meyer-Conde)], the
+JSPS Postdoctoral Fellowships for Research in Japan
+[No. P25701 (C. All´ en´ e)] and the JSPS Grant-in-Aid
+for Scientific Research [Nos. 23H01176, 23K25872 and
+23K22499] (H. Takahashi)]. This research was supported
+by the Joint Research Program of the Institute for Cos-
+mic Ray Research, University of Tokyo, and Tokyo City
+University Prioritized Studies and Research Equipment
+Program.
+This research has also made use of data or software ob-
+tained from the Gravitational Wave Open Science Center
+(gwosc.org), a service of the LIGO Scientific Collabora-
+tion, the Virgo Collaboration, and KAGRA. This ma-
+terial is based upon work supported by NSF’s LIGO
+Laboratory which is a major facility fully funded by
+the National Science Foundation, as well as the Sci-
+ence and Technology Facilities Council (STFC) of the
+United Kingdom, the Max-Planck-Society (MPS), and
+the State of Niedersachsen/Germany for support of the
+construction of Advanced LIGO and construction and
+operation of the GEO600 detector. Additional support
+for Advanced LIGO was provided by the Australian Re-
+search Council. Virgo is funded, through the European
+Gravitational Observatory (EGO), by the French Cen-
+tre National de Recherche Scientifique (CNRS), the Ital-
+ian Istituto Nazionale di Fisica Nucleare (INFN) and the
+Dutch Nikhef, with contributions by institutions from
+Belgium, Germany, Greece, Hungary, Ireland, Japan,
+Monaco, Poland, Portugal, Spain. KAGRA is supported
+by Ministry of Education, Culture, Sports, Science and
+Technology (MEXT), Japan Society for the Promotion
+of Science (JSPS) in Japan; National Research Founda-
+tion (NRF) and Ministry of Science and ICT (MSIT) in
+Korea; Academia Sinica (AS) and National Science and
+Technology Council (NSTC) in Taiwan.
+[1] T. L. S. Collaboration, Classical and Quantum Gravity
+32, 074001 (2015).
+[2] F. Acernese and other, Classical and Quantum Gravity
+32, 024001 (2014).
+[3] KAGRA Collaboration, Progress of Theoretical and Ex-
+perimental Physics2021, 05A101 (2020).
+[4] B. P. Abbott and other (LIGO Scientific Collaboration
+and Virgo Collaboration), Phys. Rev. Lett.119, 161101
+(2017).
+[5] S. Bahaadini, V. Noroozi, N. Rohani, S. Coughlin,
+M. Zevin, J. Smith, V. Kalogera, and A. Katsaggelos,
+Information Sciences444, 172 (2018).
+[6] Y. Sakai, Y. Itoh, P. Jung, K. Kokeyama, C. Kozakai,
+K. T. Nakahira, S. Oshino, Y. Shikano, H. Takahashi,
+
+===== PAGE 14 =====
+14
+T. Uchiyama, G. Ueshima, T. Washimi, T. Yamamoto,
+and T. Yokozawa, Scientific Reports12, 9935 (2022).
+[7] M. Zevin, S. Coughlin, S. Bahaadini, E. Besler, N. Ro-
+hani, S. Allen, M. Cabero, K. Crowston, A. K. Katsagge-
+los, S. L. Larson, T. K. Lee, C. Lintott, T. B. Littenberg,
+A. Lundgren, C. Østerlund, J. R. Smith, L. Trouille, and
+V. Kalogera, Classical and Quantum Gravity34, 064003
+(2017).
+[8] L. McInnes, J. Healy, and J. Melville, Umap: Uniform
+manifold approximation and projection for dimension re-
+duction (2020), arXiv:1802.03426 [stat.ML].
+[9] S. Oshino, Y. Sakai, M. Meyer-Conde, T. Uchiyama,
+Y. Itoh, Y. Shikano, Y. Terada, and H. Takahashi,
+Physics Letters B870, 139938 (2025).
+[10] F. Robinet, N. Arnaud, N. Leroy, A. Lundgren,
+D. Macleod, and J. McIver, SoftwareX12, 100620 (2020).
+[11] I. Daubechies, IEEE Transactions on Information Theory
+36, 961 (1990).
+[12] A. Virtuoso and E. Milotti, Phys. Rev. D109, 102010
+(2024).
+[13] Y. Pati and P. Krishnaprasad, inAdvances in Neural In-
+formation Processing Systems, Vol. 3, edited by R. Lipp-
+mann, J. Moody, and D. Touretzky (Morgan-Kaufmann,
+1990).
+[14] N. J. Cornish, Phys. Rev. D102, 124038 (2020).
+[15] N. J. Cornish, T. B. Littenberg, B. B´ ecsy, K. Chatziioan-
+nou, J. A. Clark, S. Ghonge, and M. Millhouse, Physical
+Review D103, 10.1103/physrevd.103.044006 (2021).
+[16] P. Parida and N. Bhoi, Future Computing and Informat-
+ics Journal2, 65 (2017).
+[17] B. P. Abbott and other (LIGO Scientific Collaboration
+and Virgo Collaboration), Phys. Rev. X9, 031040 (2019).
+[18] R. Abbott and other (LIGO Scientific Collaboration and
+Virgo Collaboration), Phys. Rev. X11, 021053 (2021).
+[19] T. L. S. Collaboration and the Virgo Collaboration,
+Gwtc-2.1: Deep extended catalog of compact binary coa-
+lescences observed by ligo and virgo during the first half
+of the third observing run (2022), arXiv:2108.01045 [gr-
+qc].
+[20] R. Abbott and other (LIGO Scientific Collaboration,
+Virgo Collaboration, and KAGRA Collaboration), Phys.
+Rev. X13, 041039 (2023).
+[21] B. Zhou, A. Khosla, A. Lapedriza, A. Oliva, and A. Tor-
+ralba, Learning deep features for discriminative localiza-
+tion (2015), arXiv:1512.04150 [cs.CV].
+[22] A. Chattopadhay, A. Sarkar, P. Howlader, and V. N. Bal-
+asubramanian, in2018 IEEE Winter Conference on Ap-
+plications of Computer Vision (WACV)(2018) pp. 839–
+847.
+[23] KAGRA Collaboration, Progress of Theoretical and Ex-
+perimental Physics2023, 10A101 (2022).
+[24] J. Redmon, S. K. Divvala, R. B. Girshick, and
+A. Farhadi, CoRRabs/1506.02640(2015), 1506.02640.
+[25] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit,
+L. Jones, A. N. Gomez, L. Kaiser, and I. Polosukhin, At-
+tention is all you need (2023), arXiv:1706.03762 [cs.CL].
+[26] Z. Zhang, X. Lu, G. Cao, Y. Yang, L. Jiao, and F. Liu, in
+2021 IEEE/CVF International Conference on Computer
+Vision Workshops (ICCVW)(2021) pp. 2799–2808.
+[27] J. Lilly and S. Olhede, IEEE Transactions on Signal Pro-
+cessing57, 146–160 (2009).
+[28] J. M. Lilly, Proceedings of the Royal Society A:
+Mathematical, Physical and Engineering Sciences473,
+20160776 (2017).
+[29] N. Kingsbury, Applied and Computational Harmonic
+Analysis10, 234 (2001).
+[30] K. He, X. Zhang, S. Ren, and J. Sun, Deep residual
+learning for image recognition (2015), arXiv:1512.03385
+[cs.CV].
+[31] J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-
+Fei, in2009 IEEE Conference on Computer Vision and
+Pattern Recognition(2009) pp. 248–255.
+[32] R. Fu, Q. Hu, X. Dong, Y. Guo, Y. Gao, and B. Li,
+Axiom-based grad-cam: Towards accurate visualiza-
+tion and explanation of cnns (2020), arXiv:2008.02312
+[cs.CV].
+[33] S. G. Chang, C. SG, B. Yu, Y. B, M. Vetterli, and V. M,
+IEEE transactions on image processing : a publication of
+the IEEE Signal Processing Society9, 1532 (2000).
+[34] D. L. Donoho and I. M. Johnstone, Biometrika81, 425
+(1994).
+[35] N. Bajaj, inWavelet Theory, edited by S. Mohammady
+(IntechOpen, London, 2020) Chap. 5.
+[36] M. Mazumder, M. Assaduzzaman, M. Islam, and M. S.
+Hossain, Current Journal of Applied Science and Tech-
+nology28, 1 (2018).
+[37] J. K M and K. S., Journal of Applied Research and Tech-
+nology16, 103 (2018).
+[38] D. Donoho, IEEE Transactions on Information Theory
+41, 613 (1995).
+[39] N. Koyama, Y. Sakai, S. Sasaoka, D. Dominguez,
+K. Somiya, Y. Omae, Y. Terada, M. Meyer-Conde, and
+H. Takahashi, Machine Learning: Science and Technol-
+ogy5, 035028 (2024).
+[40] S. Soni, N. Mukund, and E. Katsavounidis, Gw-yolo:
+Multi-transient segmentation in ligo using computer vi-
+sion (2025), arXiv:2508.17399 [astro-ph.IM].

@@ -1,0 +1,914 @@
+===== PAGE 1 =====
+Fisher Information Velocity: A New Geometric Channel for Precision Glitch
+Identification in Gravitational-Wave Detectors
+James Kennington1, 2,∗ and Zach Yarbrough3
+1Department of Physics, The Pennsylvania State University, University Park, Pennsylvania 16802, USA
+2Institute for Gravitation and the Cosmos, The Pennsylvania State University, University Park, Pennsylvania 16802, USA
+3Department of Physics & Astronomy, Louisiana State University, Baton Rouge, Louisiana 70803, USA
+(Dated: May 22, 2026)
+Gravitational-wave detectors operate in inherently non-stationary environments, requiring robust
+detector characterization (DetChar) to distinguish instrumental transients from astrophysical sig-
+nals. Traditional DetChar frameworks typically rely on morphological classifiers or energy-based
+projections, such as band-limited root-mean-square (BLRMS) metrics, which can conflate global
+amplitude scaling with physical reconfigurations of the spectrum. In this work, we introduce Fisher
+information velocity, a novel geometric channel that models the detector’s power spectral density
+(PSD) as a point on a Riemannian manifold. By tracking the kinematic drift of the noise floor
+and utilizing exterior algebra to calculate tangent divergence (sinθ), we mathematically decouple
+simple energy surges from spectral warps, or differential redistributions of power across frequency
+bands. Applying this framework via thesgn-driftstreaming pipeline to∼40hours of high-cadence
+Advanced LIGO O4a data, we evaluateN= 282,080independent manifold velocity samples. High-
+resolution phase space mapping reveals a bimodal taxonomy of severe instrumental non-stationarity,
+classifying events into structural pivots (87.2%) and isotropic surges (12.8%). Among co-detected
+events, the geometric channel achieves higher significance than standard BLRMS monitors in74%of
+cases with a median sensitivity ratio ofΓ = 1.65. The two channels detect largely non-overlapping
+populations, increasing the total anomaly catalog by87%over BLRMS alone. Systematic validation
+on 10 confirmed GWTC-4.0 events and∼5,000simulated injections demonstrates robust insensitiv-
+ity to astrophysical signals, establishing this geometric channel as a sensitive, complementary, and
+veto-safe diagnostic for current and next-generation detector networks.
+I. INTRODUCTION
+The detection of gravitational waves relies fundamen-
+tally on the principle of matched filtering [1–3], which
+assumes a stationary Gaussian noise background to con-
+struct optimal detection statistics [4, 5]. In the opera-
+tional regime of terrestrial interferometers, such as Ad-
+vanced LIGO [6], Virgo [7], and KAGRA [8], this sta-
+tionary assumption is routinely violated [9–11]. The in-
+strumental noise floor evolves continuously over time due
+to a complex interplay of physical factors [12–14]. Envi-
+ronmental coupling, microseismic variations [15], thermal
+drifts in the suspension systems [16], and scattered light
+transients [17] cause the PSD to fluctuate dynamically.
+This non-stationarity introduces severe systemic im-
+pacts on both online and offline search pipelines [18–20].
+First, static whitening models rapidly lose their optimal-
+ity as the true noise floor drifts away from the reference
+state, directly reducing the recovered signal-to-noise ra-
+tio of astrophysical sources [9, 21, 22]. Second, rapid
+localized shifts in the spectrum manifest as transient
+noise artifacts, commonly known as glitches. These non-
+Gaussian excursions mimic the morphology of compact
+binary coalescences and unmodeled bursts, artificially in-
+flating the false alarm rate and degrading the statistical
+confidence of true detections [23, 24].
+∗ jwkennington@psu.edu
+To mitigate these effects, detector characterization
+frameworks actively track the evolution of the detector’s
+spectral density to generate data quality flags and ve-
+toes [25–29]. However, the efficacy of existing methods
+is fundamentally limited by how they project and inter-
+pret this high-dimensional spectral data [26]. Morpho-
+logical projections, such as those utilized by GravitySpy
+[30] and pipeline-informed noise characterization tools
+[31], flattenthetime-frequencydataintotwo-dimensional
+spectrograms [26]. While these image-based methods
+are highly effective for visual categorization and pattern
+recognition, theyoftenover-splitorunder-splitcategories
+based on transient visual shape rather than the underly-
+ing physical origin of the instrumental disturbance [23].
+Conversely, energy-based projections, such as band-
+limited root-mean-square (BLRMS) monitors [32] and
+excess-power trigger generators such as Omicron [33],
+track absolute acoustic power across discrete frequency
+binsortime-frequencytiles. Becauseeachbinortilemea-
+sures power magnitude independently, these methods can
+conflate global amplitude scaling with structural recon-
+figurations of the spectrum, as both phenomena produce
+identical increases in band-limited power [23, 26].
+To resolve this physical degeneracy, the core analytical
+objective of this work is to mathematically distinguish
+broad magnitude scaling from spectral warps, events
+in which power is differentially redistributed across fre-
+quency bands, altering the ratios between them. We pro-
+poseanovelgeometricchannelthattracksthecontinuous
+relative evolution of the detector state by modeling the
+arXiv:2605.21531v1  [astro-ph.IM]  19 May 2026
+
+===== PAGE 2 =====
+2
+space of all admissible PSDs as a Riemannian manifold
+[9–11, 34]. As the physical environment of the interfer-
+ometer fluctuates, its spectral state traces a continuous
+trajectory across this geometric space [12, 13].
+By equipping this statistical manifold with the Fisher
+information metric [35, 36], we assign a formal geomet-
+ric distance to spectral fluctuations (Eq. 2) [37]. This
+geometric framework allows us to calculate the Fisher
+information velocity of the noise floor, mathematically
+decoupling true physical regime shifts from simple ampli-
+tude fluctuations (Eq. 3) [9–11]. In this work, we demon-
+strate how continuous kinematic tracking provides the
+physical depth required to unmask severe instrumental
+anomalies that are poorly resolved by standard scalar
+metrics [26, 32]. Furthermore, we translate this theo-
+retical formalism into an operational streaming archi-
+tecture, revealing a bimodal taxonomy of instrumental
+non-stationarity that physically separates simple energy
+surges, or proportional amplitude scalings that preserve
+the spectral shape, from pivots, or events with significant
+spectral warp.
+II. BACKGROUND
+To quantify the distance between distinct operational
+states, we model the space of all admissible PSDs as
+a Riemannian manifold,M[10, 34, 38]. As the phys-
+ical environment of the interferometer fluctuates, its in-
+strumental state traces a continuous kinematic trajec-
+tory,γ(t), across this high-dimensional geometric mani-
+fold [12, 13, 39]. We equip this statistical manifold with
+the Fisher information metric (Eq. 2) [35, 36, 40]. Be-
+cause the metric evaluates squared fractional deviations
+(δS/S) 2, equal absolute perturbations carry greater geo-
+metric weight in quiet spectral regions than in loud ones
+[4, 37, 41–43]. For a stationary Gaussian processn(t)
+[44–46], the power spectral density (PSD),S(f), is de-
+fined via the expectation value of the Fourier transform
+[3]:
+⟨˜n(f)˜n∗(f′)⟩= 1
+2S(f)δ(f−f ′).(1)
+For infinitesimal spectral perturbationsδS1 andδS 2, the
+Fisher metric on the one-sided PSD is expressed as:
+gS(δS1,δS 2) = 1
+2
+Z ∞
+0
+δS1(f)
+S(f)
+δS2(f)
+S(f)
+
+df.(2)
+The intrinsic instability of the detector, which we define
+as the geometric driftD(t), is the Fisher information ve-
+locity along the spectral trajectory˙S(t)[10]:
+D(t) = 1
+2
+q
+gS( ˙S, ˙S).(3)
+A rigorous derivation of the underlying gauge-theoretic
+foundations and the principal bundle formalism govern-
+ing this manifold is provided in Ref. [10].
+III. METHODS
+A. Dimensional Reduction and Basis Projection
+To render the infinite-dimensional statistical manifold
+[47, 48] computationally tractable for real-time analy-
+sis, we project the continuous Fisher information metric
+into a discrete frequency basis. We establish a three-
+dimensional basis for operational deployment. This spe-
+cific projection maps the geometric vector directly onto
+the dominant physical noise mechanisms of the interfer-
+ometer. The low-frequency band, spanning 10 to 50 Hz,
+captures seismic up-conversion and control system noise
+below the interferometer’s seismic wall [15, 49]. The mid-
+frequency band, spanning 50 to 500 Hz, encompasses the
+primary astrophysical detection bandwidth where ther-
+mal and suspension noise dominate [12, 16]. The high-
+frequency band, spanning 500 to 2000 Hz, monitors vari-
+ations in the quantum shot noise floor [50, 51]. These
+boundaries were chosen to align with the dominant physi-
+cal noise mechanisms of the Advanced LIGO interferome-
+ters, though the framework supports arbitrary frequency
+partitioning. By restricting the local logarithmic deriva-
+tive of the PSD to these specific frequency intervals, we
+generate a discrete kinematic vector:
+⃗V(t) = [V low,V mid,V high].(4)
+The global scalar drift of the detector state,D(t), is sub-
+sequently computed as theL 2 norm of this kinematic
+vector,|| ⃗V(t)||[10].
+B. V ector Kinematics and Angular Evolution
+While the scalar drift norm measures the overall speed
+of the detector state evolution, the associated vector
+structure explicitly encodes the kinematics of the state
+change across the chosen basis. To distinguish be-
+tween proportional amplitude scaling and fundamental
+structural reconfigurations, we evaluate the tangent di-
+vergence of the tracking vector [34, 38]. We define
+the spectral warp indicator (Eq. 5) by calculating the
+angular divergence between successive tangent vectors.
+To ensure this calculation remains dimensionally ag-
+nostic and mathematically valid for any arbitraryN-
+dimensional frequency partitioning, we utilize exterior
+algebra [39, 52]. The sine of the divergence angleθis
+computed via the magnitude of the wedge product be-
+tween successive states, normalized by their respective
+scalar lengths:
+sinθ≡ ||⃗Vt∧⃗Vt+dt||
+||⃗Vt||·|| ⃗Vt+dt||
+.(5)
+In the deployed three-dimensional basis, this reduces
+to the familiar cross product magnitude|| ⃗Vt× ⃗Vt+dt||,
+though the exterior algebra formulation generalizes nat-
+urally to arbitraryN-dimensional frequency partitions.
+
+===== PAGE 3 =====
+3
+This continuous angular measurement establishes a rig-
+orous physical logic for anomaly classification. Asurge
+event, characterized bysinθ≈0, represents a propor-
+tional scaling of the manifold where the spectral shape
+remains constant despite a broad amplitude fluctuation.
+Conversely, apivotevent, characterized bysinθ≫0, in-
+dicates a spectral warp, or differential redistribution of
+power across frequency bands, driven by a shifting phys-
+ical noise mechanism.
+C. Software Implementation
+For operational deployment, we implemented this
+framework natively within thesgnstream-processing
+ecosystem [53]. Standard block-based spectral estima-
+tion methods, such as Welch estimation [54] or static
+median-geometric-mean algorithms [55], require accumu-
+lating overlapping time-domain buffers, limiting the tem-
+poral resolution at which spectral evolution can be re-
+solved. To track manifold kinematics at the cadence re-
+quired to resolve individual transients, our implementa-
+tion utilizes a recursive streaming estimator [10, 11, 56]
+rather than the median-geometric-mean algorithm used
+by thesgnlsearch pipeline [53], which requires accu-
+mulating longer data buffers. The primary state esti-
+mation utilizes a recursive exponential moving average
+with a smoothing coefficientα= 0.1, applied to over-
+lapping 1.0-second Fourier transforms with 50% overlap,
+yielding an output cadence of 0.5 seconds. At this ca-
+dence, the effective memory timescale of the estimator
+is approximately 5 seconds, providing sensitivity to both
+individual transients and slower instrumental drifts. The
+sgn-driftpackage also provides a streaming median-
+geometric-mean implementation [55]. This more robust
+estimator is not used in the analyses presented here, but
+served to verify the accuracy of the recursive approach.
+The spectral estimator feeds directly into the kinematic
+metric calculators. The complete pipeline is published
+as thesgn-driftpackage 1, which continuously ingests
+strain data, executes the band-limited integrations, com-
+putes the exterior algebra for the spectral warp indicator,
+and outputs the geometric state vector in real time.
+D. Data Selection
+To validate the geometric framework across represen-
+tative detector conditions, we selected eight segments of
+LIGO Livingston (L1) public strain data [6, 14, 57] from
+the O4a observing run, totaling 39.3 hours of science-
+quality strain data. The segments were chosen to span
+three qualitatively distinct noise regimes: three quiet pe-
+riods with a stable noise floor, two transition periods ex-
+hibiting intermittent glitch activity [23, 26, 27], and three
+1 Source:https://git.ligo.org/james.kennington/sgn-drift
+scattering-active periods with elevated non-stationarity
+[17]. At the 0.5-second output cadence of thesgn-drift
+pipeline, these segments yieldN= 282,080indepen-
+dent manifold velocity samples spanning the full range
+of operational conditions encountered in practice. This
+deliberate stratification ensures that the method is not
+evaluated on a single homogeneous dataset, but rather
+across the diversity of noise environments characteris-
+tic of the Advanced LIGO observing runs [12, 13]. To
+validate veto safety, we additionally evaluated the geo-
+metric channel on 10 confirmed GWTC-4.0 astrophysical
+events with available L1 data [58] and performed a sys-
+tematic injection campaign of4,852simulated compact
+binary coalescence signals. Injected waveforms were gen-
+erated usingIMRPhenomD[59] viaLALSimulation[60],
+with component masses drawn randomly from1–100M⊙
+and optimal signal-to-noise ratios drawn log-uniformly
+from5to1,000. Injections were placed at randomized
+times within real O4a strain data spanning all three noise
+regimes. We emphasize that the present analysis serves
+as a methodological demonstration on a single detector;
+a comprehensive multi-detector study spanning the full
+O4a dataset, including systematic comparison with es-
+tablished transient classification tools [28, 29, 33], is in
+preparation.
+IV. RESUL TS
+A. Sensitivity Comparison with Standard Energy
+Monitors
+To quantify the sensitivity of the geometric channel
+relative to standard energy monitors, we compare the
+significance of anomalies detected by the Fisher veloc-
+ity against those detected by BLRMS [26, 32]. For each
+channel, we define the significance of an event as the
+MAD-normalized z-scorez= (x−˜x)/σ MAD, where˜xis
+the per-segment median andσMAD is the median abso-
+lute deviation. This normalization ensures a fair com-
+parison by calibrating each channel against its own noise
+floor. Among theN= 2,127top one-percentile mani-
+fold velocity events (with 10-second isolation) for which
+we computed paired BLRMS significance from coincident
+strain data, we evaluate two complementary results.
+First, for events co-detected by both channels at1σ
+significance (N= 183), we compute the sensitivity ratio
+Γ≡ zD
+zE
+,(6)
+wherez D andz E are the geometric and energy signif-
+icances, respectively. The geometric channel achieves
+higher significance in74%of co-detected events (95% CI
+via bootstrap resampling [61]:[68%,80%]), with a me-
+dian sensitivity ratio ofΓ = 1.65(95% CI:[1.49,1.77]).
+This advantage strengthens at higher significance thresh-
+olds, reaching92%with medianΓ = 4.5at3σ(Fig-
+ure 1A).
+
+===== PAGE 4 =====
+4
+Second, the two channels detect largely non-
+overlapping populations of anomalies. At1σsignificance,
+the geometric channel identifies 466 unique events not
+flagged by BLRMS, while BLRMS identifies 355 unique
+events not flagged by the geometric channel, with only
+183 events co-detected. Adding the geometric channel to
+a BLRMS-only monitor increases the total anomaly cata-
+log by87%(95% CI:[75%,96%]). This complementarity
+increases with significance: at3σ, the geometric chan-
+nel contributes 254 unique detections compared to 77 for
+BLRMS, with only 39 co-detected (Figure 1B). The over-
+alldetectionrateof54severeeventsperhourisconsistent
+with theO(10–100)triggers per hour typically produced
+by established transient classification tools [28, 33].
+B. Statistical T axonomy of Non-Stationarity
+To classify the physical nature of instrumental non-
+stationarity, we identified severe events by selecting all
+samples in the top one percent of the instantaneous man-
+ifold speed|| ⃗V(t)||[23], yielding2,686samples. Gaus-
+sian mixture model selection via the Bayesian informa-
+tioncriterion[62]providesverystrongevidence[63]forat
+least two distinct kinematic populations (∆BIC= 178.5
+favoringk= 2overk= 1), with only marginal evi-
+dence for additional sub-structure (∆BIC= 5.9favoring
+k= 3overk= 2). The data resolves into two princi-
+pal kinematic sub-populations (Figure 2). Among events
+detected by the geometric channel, the dominant pop-
+ulation consists of structural pivots, representing87.2%
+(95% CI:[85.9%,88.4%]) with a mean tangent divergence
+ofµ= 0.362±0.003. These pivots correspond to spec-
+tral warps, in which the distribution of power across fre-
+quency bands is differentially restructured [26, 64]. The
+secondary population consists of isotropic surges, mak-
+ing up the remaining12.8%(95% CI:[11.6%,14.1%]) of
+the events with a mean divergence ofµ= 0.119±0.006.
+These surges represent simple proportional intensity fluc-
+tuationsthatscalethespectralstatewithoutsignificantly
+altering its underlying structure.
+C. Kinematic Orthogonality and Phase Space
+Mapping
+To test the statistical independence of the kinematic
+variables, we map the tangent divergence against the ab-
+solute manifold speed in high resolution (Figure 4). At
+low manifold speeds, the detector state wanders stochas-
+tically, forming a dense and unresolved core of back-
+ground non-stationarity [26]. However, at extreme veloc-
+ities, the distribution does not follow a single continuum.
+The population extends into distinct tail structures. The
+vertical tail identifies events with high angular diver-
+genceatmoderatespeed, whilethediagonaltailidentifies
+events with both extreme velocity and significant spec-
+tral warp. This separation confirms that manifold speed
+and tangent divergence encode independent physical in-
+formation, validating their joint use as complementary
+diagnostics for automated data quality assessment [25].
+In practice, this independence means that a single scalar
+threshold on manifold speed alone would conflate surges
+and pivots, whereas the two-dimensional phase space en-
+ables targeted classification of the kinematic nature of
+each event.
+D. V eto Safety: The Astrophysical Null Result
+A viable detector characterization metric must re-
+main insensitive to true astrophysical strain to avoid self-
+vetoing valid signals [25, 65]. We validate this property
+through two complementary analyses.
+First, we evaluated the manifold drift during the tran-
+sit of 10 confirmed O4a astrophysical events from the
+GWTC-4.0 catalog [58] for which L1 public strain data
+was available [57]. In all 10 cases, the geometric chan-
+nel registered a null result, with peak manifold veloci-
+ties indistinguishable from the background median (max-
+imumz D = 1.26, consistent with background fluctua-
+tions). The response during GW230627 is shown in the
+final panel of Figure 3.
+Second, weperformedasystematicinjectioncampaign,
+generatingN= 4,852simulated compact binary coales-
+cence signals spanning the full parameter space of bi-
+nary neutron star, neutron star–black hole, and binary
+black hole systems (component masses1–100M ⊙, op-
+timal signal-to-noise ratios5–1,000) and injecting them
+into real O4a noise across quiet, transition, and scatter-
+ing regimes. In all4,852injections, the Fisher velocity
+registered a null response, with a mean deviation from
+the no-injection baseline of|∆|= 10 −4, well below the
+detectionthresholdof0.5usedforanomalyidentification.
+Even the single largest deviation (|∆|= 0.21) remained
+below this threshold.
+This null response is expected: although a transient
+gravitational-wave signal contributes power to the strain,
+its contribution to the estimated PSD is negligible rel-
+ative to the instrumental noise floor [45, 46], and the
+Fisher velocity tracks only fractional changes inS(f).
+The geometric channel therefore preferentially tracks in-
+strumental state changes rather than astrophysical tran-
+sients.
+V. DISCUSSION
+A. Physical Interpretation of the T axonomy
+The bimodal segregation of the noise manifold provides
+physicalinsightintothemechanismsofinstrumentalnon-
+stationarity. Anisotropicsurgerepresentsabroadenergy
+injection where the proportional distribution of noise
+across frequency bands remains stable. Conversely, a
+
+===== PAGE 5 =====
+5
+FIG. 1. Sensitivity comparison between the geometric channel and BLRMS. (A) Paired MAD-normalized significance (z-score)
+forN= 183co-detected events at1σ, sorted by geometric significance. The geometric channel achieves higher significance
+in74%of cases with a median sensitivity ratio ofΓ = 1.65. (B) Detection yield at matched significance thresholds, showing
+geometric-only (red), co-detected (grey), and BLRMS-only (blue) events. The geometric channel consistently identifies a larger
+unique population across all thresholds.
+FIG. 2. Statistical taxonomy of O4a non-stationarity, re-
+vealing a bimodal distribution of tangent divergence (sinθ)
+at peak intensity. The low-divergence population (blue)
+corresponds to isotropic surges, while the dominant high-
+divergence population (red) corresponds to structural pivots.
+structural pivot indicates a rapid alteration of the spec-
+tral composition, signifying that the physical mechanism
+has fundamentally warped the spectrum, driving the de-
+tector’s trajectory on the noise manifold away from its
+prior course. Our taxonomy analysis reveals that the
+vast majority (87.2%) of severe events detected by the
+geometric channel involve spectral warping, while only
+approximately one in eight (12.8%) are simple isotropic
+surges. This distinction cannot be made by traditional
+scalar metrics, which collapse both phenomena into a sin-
+gle degenerate magnitude [25, 26].
+The two transients shown in the middle rows of Fig-
+ure 3 illustrate this degeneracy concretely. Despite pro-
+ducing qualitatively similar broadband, sub-second ex-
+cursions in the Q-transform spectrogram, the structural
+pivot and the isotropic surge are kinematically orthog-
+onal: the former exhibits a sharp elevation in tangent
+divergence (sinθ≈0.7), indicating a differential redistri-
+bution of power across frequency bands, while the latter
+maintainssinθ≈0, consistent with a near-uniform am-
+plitude scaling of the prior spectral state. Submitted to
+the GravitySpy classifier [30], both events are returned
+with the identical labelExtremely Loudat 100% confi-
+dence, confirming that their distinction is not accessible
+from the spectrogram morphology alone. This compari-
+son illustrates the additional discriminatory information
+provided by the Fisher-geometric channel. While the two
+events appear sufficiently similar in their spectrogram
+morphology to be assigned the same GravitySpy label,
+the geometric representation distinguishes them through
+their markedly different spectral evolution.
+B. Complementarity with Energy-Based Monitors
+The sensitivity comparison reveals that the geometric
+channel and standard BLRMS monitors detect largely
+non-overlapping populations of anomalies, with a Jac-
+card overlap of only0.18at1σsignificance. This comple-
+mentarity is a direct consequence of the different phys-
+ical quantities each channel measures: BLRMS tracks
+absolute acoustic power [32], while the geometric chan-
+nel tracks fractional spectral evolution. Events that pro-
+duce large absolute power fluctuations without altering
+the spectral shape are preferentially flagged by BLRMS,
+
+===== PAGE 6 =====
+6
+FIG. 3. Kinematic examples of the bimodal taxonomy. Each row shows (left) the spectrogram, (center) the instability budget
+decomposed by frequency band, and (right) the spectral warp indicator (sinθ). From top to bottom: a laminar baseline with
+low velocity and no warp, a structural pivot (scattering onset) with band-selective velocity increase and elevatedsinθ, an
+isotropic surge (global shock) with high velocity but near-zerosinθ, and a confirmed astrophysical event (GW230627) showing
+no geometric channel response.
+while events that restructure the noise floor without a
+large energy signature are preferentially flagged by the
+geometric channel. The practical implication is that
+deploying both channels in parallel increases the total
+anomaly catalog by87%relative to BLRMS alone, sub-
+stantially improving the completeness of detector char-
+acterization. This low overlap also suggests that many
+spectral warps detected by the geometric channel would
+go entirely unnoticed by energy-based monitors, repre-
+senting a previously uncharacterized class of instrumen-
+tal non-stationarity.
+C. Operationalizing the Data
+Standard amplitude thresholding blindly vetoes all
+loud data, which needlessly reduces the operational duty
+cycle of the observatory [12, 13]. The geometric chan-
+nel enables targeted veto strategies based on the spe-
+cific kinematic nature of the transient anomaly. Because
+surges preserve the spectral shape, they are in princi-
+ple more amenable to post-hoc correction strategies, such
+as dynamic amplitude rescaling, that could preserve the
+underlying data segment for search pipelines; however,
+the practical efficacy of such corrections remains to be
+demonstrated. Conversely, severe spectral warps identi-
+fied as pivots fundamentally corrupt the template inner
+product [2, 4], necessitating strict data quality vetoes.
+By selectively vetoing only true manifold pivots, search
+pipelines can safely recover operational duty cycle and
+maximize astrophysical yield [18, 19].
+
+===== PAGE 7 =====
+7
+FIG. 4. High-resolution phase space map of tangent diver-
+gence (sinθ) versus manifold speed (||⃗V||), colored by point
+density on a logarithmic scale. The dense core at low speed
+represents background non-stationarity. At extreme veloci-
+ties, the population bifurcates into distinct tail structures,
+confirming that speed and divergence encode independent
+physical information.
+D. V eto Safety and Operational Deployment
+The comprehensive veto safety validation, encompass-
+ing 10 confirmed GWTC-4.0 events and4,852simulated
+compact binary injections spanning the full parameter
+space, confirms that the geometric channel is intrinsically
+insensitive to astrophysical transients. Combined with
+the demonstrated sensitivity advantage over BLRMS for
+co-detected events (Γ = 1.65) and the complementary
+detection of anomalies invisible to energy monitors, the
+geometric drift vector and tangent divergence angle rep-
+resent strong candidates for automated data quality ve-
+toes [25, 27]. Because the channel responds to fractional
+spectral changes rather than absolute power, it is natu-
+rally insensitive to the class of signals that matched-filter
+pipelines are designed to detect, reducing the risk of in-
+advertent signal loss from overly aggressive vetoing.
+Utilizing the recursive estimation architecture of the
+sgn-driftpackage, this geometric channel is fully pre-
+pared for deployment as an online, low-latency control
+room monitor [66]. We note that the Fisher metric arises
+as the rigorous infinitesimal limit of the Bhattacharyya
+coefficient used in macroscopic pipelines such as PiNCh
+[31] (see Appendix A). A comprehensive follow-up analy-
+sis, currently in preparation, will extend this framework
+across the full O4a observing run and all active detec-
+tors, including systematic cross-correlation with estab-
+lished transient classification tools such as Omicron [33]
+triggers, iDQ [28] scores, and hveto [29] rounds, as well
+as characterization of the false positive rate under op-
+erational conditions. Augmenting existing morphologi-
+cal and energy-based projections with continuous kine-
+matic tracking provides the complementary precision re-
+quired to more completely characterize current and next-
+generation detector networks [67, 68].
+VI. CONCLUSION
+This work establishes Fisher information velocity as
+a new geometric channel for precision glitch identifica-
+tion in gravitational-wave detectors [23, 26]. By mod-
+eling the PSD as a point on a Riemannian manifold
+[34, 36], this framework decouples simple acoustic scal-
+ing from physical reconfigurations of the instrumental
+noise floor, a distinction inaccessible to traditional scalar
+metrics. The resulting geometric channel is not a re-
+placement for existing energy monitors but a fundamen-
+tally complementary tool: it detects a largely indepen-
+dent population of anomalies and provides a physically
+motivated surge/pivot taxonomy that enables targeted
+veto strategies. Its demonstrated insensitivity to as-
+trophysical transients makes it a safe candidate for au-
+tomated deployment alongside existing data quality in-
+frastructure [25]. Future work will focus on scaling the
+sgn-driftstreaming pipeline to process the complete
+O4a observing run across all active detectors, generat-
+ing a comprehensive anomaly catalog with systematic
+cross-correlation against established transient classifica-
+tion tools [28, 29, 33]. Continuous geometric tracking of
+the spectral manifold offers a new operational dimension
+for stabilizing detection pipelines and maximizing astro-
+physical yield in current and next-generation observatory
+networks [67, 68].
+ACKNOWLEDGMENTS
+This material is based upon work supported by NSF’s
+LIGO Laboratory which is a major facility fully funded
+by the National Science Foundation. This research
+has made use of data, software and/or web tools ob-
+tained from the Gravitational Wave Open Science Center
+(https://www.gw-openscience.org/), a service of LIGO
+Laboratory, the LIGO Scientific Collaboration, and the
+Virgo Collaboration. The authors acknowledge sup-
+port from the National Science Foundation under awards
+OAC-2103662, PHY-2308881, PHY-2011865, OAC-
+2201445, OAC-2018299, PHY-0757058, PHY-0823459,
+PHY-2207728, PHY-2513124, PHY-2110594, and PHY-
+2513358. The authors are grateful for computational
+resources provided by the Pennsylvania State Univer-
+sity’s Institute for Computational and Data Sciences
+gravitational-wave cluster, and the LIGO Lab cluster at
+the LIGO Laboratory.
+
+===== PAGE 8 =====
+8
+Appendix A: Connection to Macroscopic Pipelines
+The continuous geometric formulation presented in
+thisworkisdirectlyconnectedtoestablishedmacroscopic
+anomaly detection pipelines, such as PiNCh (Pipeline-
+Informed Noise Characterization) [31]. Such pipelines
+evaluate non-stationarity over time by utilizing the Bhat-
+tacharyya coefficient [69] to calculate the overlap be-
+tweendiscreteprobabilitydistributionsofsearchtriggers.
+These discrete distributions are typically separated by
+macroscopic observational chunks, denoted by∆t.
+MacroscopicView(PINCH)
+DiscreteChunks(∆t)
+P(x|t1) P(x|t2)
+Overlap
+BhattacharyyaCoeﬃcient
+BC(P1,P2)=󰁓
+x
+󰁳
+P1(x)P2(x)
+lim∆t→0
+Inﬁnitesimal
+Limit
+KinematicDrift(GTSP)
+ContinuousTangent(dt)
+FisherMetric(gij)
+S(t)
+󰂓VF
+FisherInformationVelocity
+||󰂓VF||2=gij˙θi˙θj
+FIG. 5. The mathematical bridge demonstrating the continu-
+ous Fisher information metric as the infinitesimal limit of the
+macroscopic Bhattacharyya coefficient.
+If we shrink the observation window from macroscopic
+chunks down to a continuous infinitesimal stream as
+∆t→0, the statistical overlap converges exactly into
+a geometric derivative [36, 40]. Expanding the Bhat-
+tacharyyacoefficienttosecondorderinthefractionalper-
+turbationδS/Srecovers the Fisher metric (Eq. 2) as the
+leading-order term [36, 40], establishing it as the rigorous
+infinitesimal limit of the Bhattacharyya distance. There-
+fore, while macroscopic tools measure the discrete secant
+of spectral divergence, our geometric framework tracks
+the instantaneous tangent of that exact same physical
+evolution.
+[1] L. A. Wainstein and V. D. Zubakov,Extraction of sig-
+nals from noise, republ ed., Dover books on physics and
+mathematical physics (Dover Publ, 1970).
+[2] L. S. Finn, Detection, measurement, and gravitational
+radiation, Physical Review D46, 5236 (1992).
+[3] B. Allen, W. G. Anderson, P. R. Brady, D. A. Brown,
+and J. D. E. Creighton, FINDCHIRP: an algorithm for
+detection of gravitational waves from inspiraling com-
+pact binaries, Physical Review D85, 122006 (2012), gr-
+qc/0509116.
+[4] C. Cutler and E. Flanagan, Gravitational waves from
+merging compact binaries: How accurately can one
+extract the binary’s parameters from the inspiral
+waveform?, Physical Review D49, 2658 (1994), gr-
+qc/9402014.
+[5] E. Thrane and C. Talbot, An introduction to bayesian in-
+ference in gravitational-wave astronomy: parameter esti-
+mation, model selection, and hierarchical models, Publi-
+cations of the Astronomical Society of Australia36, e010
+(2019), 1809.02293 [astro-ph].
+[6] The LIGO Scientific Collaboration, Advanced LIGO,
+Classical and Quantum Gravity32, 074001 (2015).
+[7] F. Acernese and others, Advanced virgo: a second-
+generation interferometric gravitational wave detector,
+Classical and Quantum Gravity32, 024001 (2015).
+[8] T. Akutsu and others, Overview of KAGRA: Detector
+design and construction history, Progress of Theoretical
+and Experimental Physics2021, 05A101 (2021).
+[9] J. Kennington, Dual Cutler-Vallisneri corrections: Mit-
+igating PSD drift in zero-latency gravitational-wave
+searches (2026), arXiv:2603.09132 [gr-qc].
+[10] J. Kennington and J. Black, Gauge theoretic signal pro-
+cessing I: The commutative formalism for single-detector
+adaptive whitening (2026), arXiv:2604.06432 [gr-qc].
+[11] J. Kennington, J. Black, Z. Yarbrough, Y.-J. Huang,
+C. Hanna, L. Tsukada, A. Baylor, O. Godwin, P. Joshi,
+C. Messick, S. Sachdev, and R. Tapia, Gauge theoretic
+signal processing II: Zero-latency whitening for early
+warning pipelines (2026), arXiv:2604.25116 [gr-qc].
+[12] D. V. Martynov and others, Sensitivity of the advanced
+LIGO detectors at the beginning of gravitational wave
+astronomy, Physical Review D93, 112004 (2016).
+[13] A. Buikema et al., Sensitivity and performance of the ad-
+vanced LIGO detectors in the third observing run, Phys-
+ical Review D102, 062003 (2020).
+[14] E. Capote, W. Jia, N. Aritomi, M. Nakano, V. Xu,et al.,
+Advanced LIGO detector performance in the fourth ob-
+serving run, Physical Review D111, 062002 (2025),
+arXiv:2411.14607.
+[15] F. Matichard, B. Lantz, R. Mittleman, K. Mason,
+J.Kissel,andothers,SeismicisolationofadvancedLIGO:
+Review of strategy, instrumentation and performance,
+Classical and Quantum Gravity32, 185003 (2015).
+[16] P. R. Saulson, Thermal noise in mechanical experiments,
+Physical Review D42, 2437 (1990).
+[17] S. Soni, C. Austin, A. Effler, R. M. S. Schofield,
+G. González, V. V. Frolov, J. C. Driggers, K. Kawabe,
+N. McCuller, A. Lazzarini, and L. Barsotti, Reducing
+
+===== PAGE 9 =====
+9
+scattered light in LIGO’s third observing run, Classical
+and Quantum Gravity38, 025016 (2021).
+[18] S. Sachdev, S. Caudill, H. Fong, R. K. L. Lo, C. Mes-
+sick, D. Mukherjee, R. Magee, L. Tsukada, K. Black-
+burn, P. Brady, P. Brockill, K. Cannon, S. J. Cham-
+berlin, D. Chatterjee, J. D. E. Creighton, P. Godwin,
+A. Gupta, C. Hanna, S. Kapadia, R. N. Lang, T. G. F.
+Li, D. Meacher, A. Pace, S. Privitera, L. Sadeghian,
+L. Wade, M. Wade, A. Weinstein, and S. L. Xiao, The
+GstLAL search analysis methods for compact binary
+mergers in advanced LIGO’s second and advanced virgo’s
+first observing runs (2019), 1901.08580 [gr-qc].
+[19] A. H. Nitz, T. D. Canton, D. Davis, and S. Reyes, Py-
+CBC live: Rapid detection of gravitational waves from
+compact binary mergers, Physical Review D98, 024050
+(2018), 1805.11174 [gr-qc].
+[20] B. Ewing et al., Performance of the low-latency Gst-
+LAL inspiral search towards LIGO, virgo, and KAGRA’s
+fourth observing run, Physical Review D109, 042008
+(2024).
+[21] S. Biscoveanu, C.-J. Haster, S. Vitale, and J. Davies,
+Quantifying the effect of power spectral density uncer-
+tainty on gravitational-wave parameter estimation for
+compact binary sources, Physical Review D102, 023008
+(2020), 2004.05149 [astro-ph].
+[22] J. C. Driggers et al., Improving astrophysical parame-
+ter estimation via offline noise subtraction for advanced
+LIGO, Physical Review D99, 042001 (2019), 1806.00532
+[astro-ph].
+[23] The LIGO Scientific Collaboration, Characterization of
+transient noise in advanced LIGO relevant to gravita-
+tional wave signal GW150914, Classical and Quantum
+Gravity33, 134001 (2016).
+[24] T. B. Littenberg and N. J. Cornish, Separating gravita-
+tional wave signals from instrument artifacts, Physical
+Review D82, 103007 (2010), 1008.1577 [gr-qc].
+[25] B. P. Abbott and others, A guide to LIGO–virgo de-
+tector noise and extraction of transient gravitational-
+wave signals, Classical and Quantum Gravity37, 055002
+(2020), tex.collaboration: LIGO Scientific Collaboration
+and Virgo Collaboration.
+[26] D. Davis and others, LIGO detector characterization in
+the second and third observing runs, Classical and Quan-
+tum Gravity38, 135014 (2021).
+[27] S. Soni, B. K. Berger, D. Davis, F. Di Renzo, A. Effler,
+et al., LIGO detector characterization in the first half of
+the fourth observing run, Classical and Quantum Gravity
+42, 085016 (2025), arXiv:2409.02831.
+[28] R. Essick, P. Godwin, C. Hanna, L. Blackburn, and
+E. Katsavounidis, iDQ: Statistical inference of non-
+Gaussian noise with auxiliary degrees of freedom in
+gravitational-wave detectors, Machine Learning: Science
+and Technology2, 015004 (2021).
+[29] J. R. Smith, T. Abbott, E. Hirose, N. Leroy, D. Macleod,
+J. McIver, P. Saulson, and P. Shawhan, A hierarchical
+method for vetoing noise transients in gravitational-wave
+detectors, Classical and Quantum Gravity28, 235005
+(2011).
+[30] M. Zevin, S. Coughlin, S. Bahaadini, E. Besler, N. Ro-
+hber, S. Allen, M. Cabero, K. Crowston, A. K. Katsagge-
+los, S. L. Larson, T. K. Lee, C. Lintott, T. B. Littenberg,
+A. Lundgren, C. Österlund, J. R. Smith, L. Trouille, and
+V. Kalogera, Gravity Spy: integrating Advanced LIGO
+detector characterization, machine learning, and citi-
+zen science, Classical and Quantum Gravity34, 064003
+(2017).
+[31] Z. Yarbrough, A. Guimaraes, P. Joshi, G. González, and
+A. Valentini, PINCH: Pipeline-informed noise charac-
+terization in LIGO’s third observing run, Classical and
+Quantum Gravity42, 165014 (2025), 2505.14949 [gr-qc].
+[32] D.Davis, T.J.Massinger, A.P.Lundgren, J.C.Driggers,
+A. L. Urban, and L. K. Nuttall, Improving the sensitivity
+of advanced LIGO using noise subtraction, Classical and
+Quantum Gravity36, 055011 (2019), 1809.05348 [astro-
+ph].
+[33] F. Robinet, N. Arnaud, N. Leroy, A. Lundgren,
+D. Macleod, and J. McIver, Omicron: a tool to char-
+acterize transient noise in gravitational-wave detectors,
+SoftwareX12, 100620 (2020).
+[34] J. M. Lee,Riemannian manifolds: An introduction to
+curvature, Graduate texts in mathematics (Springer,
+1997).
+[35] C. R. Rao, Information and the accuracy attainable in
+the estimation of statistical parameters, Bulletin of the
+Calcutta Mathematical Society37, 81 (1945).
+[36] S.-i. Amari and H. Nagaoka,Methods of information ge-
+ometry, Translations of mathematical monographs, Vol.
+191 (American Mathematical Society, 2000).
+[37] T. T. Georgiou, Distances between power spectral den-
+sities, IEEE Transactions on Signal Processing54, 2204
+(2006).
+[38] M. P. do Carmo,Riemannian geometry(Birkhäuser,
+1992).
+[39] M. Nakahara,Geometry, topology, and physics, 2nd ed.,
+Graduate student series in physics (Inst. of Physics Pub-
+lishing, 2005).
+[40] T. M. Cover and J. A. Thomas,Elements of information
+theory, 2nd ed. (Wiley-Interscience, 2006).
+[41] X. Jiang, N. Li, and T. T. Georgiou, Geodesic curves on
+the manifold of power spectral densities, IEEE Transac-
+tions on Signal Processing60, 2163 (2012).
+[42] F. Barbaresco, Information geometry of covariance ma-
+trix: Cartan-siegel homogeneous bounded domains,
+mostow/berger fibration and fréchet median, Matrix In-
+formation Geometry , 199 (2013).
+[43] C. W. Helstrom,Statistical theory of signal detection, 2nd
+ed., International series of monographs in electronics and
+instrumentation No. v. 9 (Pergamon Press, 1968).
+[44] A. Papoulis,Probability, random variables, and stochas-
+tic processes, 3rd ed. (McGraw-Hill, 1991).
+[45] J. D. E. Creighton and W. G. Anderson,Gravitational-
+wave physics and astronomy: An introduction to theory,
+experiment and data analysis(Wiley-VCH, 2011).
+[46] M. Maggiore,Gravitational waves. Vol. 1: Theory and
+experiments(Oxford University Press, 2007).
+[47] G. Pistone and C. Sempi, An infinite-dimensional geo-
+metric structure on the space of probability measures,
+The Annals of Statistics23, 1543 (1995).
+[48] A. Lindquist and G. Picci,Linear stochastic systems: a
+geometric approach, Series in contemporary mathematics
+(Springer, 2015).
+[49] J. Aasiet al., Advanced LIGO, Classical and Quantum
+Gravity32, 074001 (2015).
+[50] C. M. Caves, Quantum-mechanical noise in an interfer-
+ometer, Physical Review D23, 1693 (1981).
+[51] M. Tse, H. Yu, N. Kijbunchoo, A. Fernandez-Galiana,
+L. Barsotti, C. D. Blair, D. D. Brown, S. E. Dwyer,
+A. Effler, M. Evans,et al., Quantum-enhanced advanced
+
+===== PAGE 10 =====
+10
+LIGO detectors in the era of gravitational-wave astron-
+omy, Physical Review Letters123, 231107 (2019).
+[52] M. Spivak,A comprehensive introduction to differential
+geometry, vol. 2, 3rd ed. (Publish or Perish, 1999).
+[53] Y.-J. Huang, C. Hanna, B. Ewing, P. Godwin,
+J. Gonsalves, R. Magee, C. Messick, L. Tsukada,
+Z. Yarbrough,et al., Scalable matched-filtering pipeline
+for gravitational-wave searches of compact binary
+mergers, Physical Review D112, 082002 (2025),
+arXiv:2511.04730 [astro-ph.IM].
+[54] P. Welch, The use of fast Fourier transform for the esti-
+mation of power spectra: a method based on time aver-
+aging over short, modified periodograms, IEEE Transac-
+tions on Audio and Electroacoustics15, 70 (1967).
+[55] T. B. Littenberg and N. J. Cornish, BayesLine: Bayesian
+inference for spectral estimation of gravitational wave
+detector noise, Physical Review D91, 084034 (2015),
+1410.3852 [gr-qc].
+[56] S. Haykin,Adaptive filter theory, 4th ed. (Prentice Hall,
+2002).
+[57] The LIGO Scientific Collaboration, the Virgo Collabo-
+ration, and the KAGRA Collaboration, Open data from
+LIGO, virgo, and KAGRA through the first part of the
+fourth observing run (2025), number: arXiv:2508.18079,
+2508.18079 [gr-qc].
+[58] The LIGO Scientific Collaboration, the Virgo Col-
+laboration, and the KAGRA Collaboration, GWTC-
+4.0: Updating the gravitational-wave transient cata-
+log with observations from the first part of the fourth
+LIGO-virgo-KAGRA observing run (2025), number:
+arXiv:2508.18082, 2508.18082 [gr-qc].
+[59] S. Khan, S. Husa, M. Hannam, F. Ohme, M. Pürrer,
+X. Jiménez Forteza, and A. Bohé, Frequency-domain
+gravitational waves from nonprecessing black-hole bina-
+ries. II. A phenomenological model for the advanced de-
+tector era, Physical Review D93, 044007 (2016).
+[60] LIGO Scientific Collaboration, LALSuite: LIGO scien-
+tific collaboration algorithm library suite,https://git.
+ligo.org/lscsoft/lalsuite(2018).
+[61] B. Efron, Bootstrap methods: another look at the jack-
+knife, The Annals of Statistics7, 1 (1979).
+[62] G. Schwarz, Estimating the dimension of a model, The
+Annals of Statistics6, 461 (1978).
+[63] R. E. Kass and A. E. Raftery, Bayes factors, Journal of
+the American Statistical Association90, 773 (1995).
+[64] N. J. Cornish and T. B. Littenberg, BayesWave:
+Bayesian inference for gravitational wave bursts and in-
+strument glitches, Classical and Quantum Gravity32,
+135012 (2015), 1410.3835 [gr-qc].
+[65] J. Veitch, V. Raymond, B. Farr, W. M. Farr, P. Graff,
+S. Vitale, B. Aylott, K. Blackburn, N. Christensen,
+M. Coughlin, W. D. Pozzo, F. Feroz, J. Gair, C.-
+J. Haster, V. Kalogera, T. Littenberg, I. Mandel,
+R. O’Shaughnessy, M. Pitkin, C. Rodriguez, C. Röver,
+T.Sidery, R.Smith, M.V.D.Sluys, A.Vecchio, W.Vous-
+den, and L. Wade, Robust parameter estimation for com-
+pact binaries with ground-based gravitational-wave ob-
+servations using the LALInference software library, Phys-
+ical Review D91, 042003 (2015), 1409.7215 [gr-qc].
+[66] R. Magee, D. Chatterjee, L. P. Singer, S. Sachdev,
+M. Kovalam, G. Mo, S. Anderson, P. Brady, P. Brockill,
+K. Cannon, T. D. Canton, Q. Chu, P. Clearwa-
+ter, A. Codoreanu, M. Drago, P. Godwin, S. Ghosh,
+G. Greco, C. Hanna, S. J. Kapadia, E. Katsavounidis,
+V. Oloworaran, A. E. Pace, F. Panther, A. Patwary,
+R. D. Pietri, B. Piotrzkowski, T. Prestegard, L. Rei,
+A. K. Sreekumar, M. J. Szczepańczyk, V. Valsan, A. Vi-
+ets, M. Wade, L. Wen, and J. Zweizig, First demonstra-
+tion of early warning gravitational wave alerts, The As-
+trophysical Journal Letters910, L21 (2021), 2102.04555
+[astro-ph].
+[67] M.Punturo, M.Abernathy, F.Acernese, B.Allen, N.An-
+dersson, K. Arun, F. Barone, B. Barr, M. Barsuglia,
+M. Beker, and others, The einstein telescope: a third-
+generation gravitational wave observatory, Classical and
+Quantum Gravity27, 194002 (2010).
+[68] D. Reitze, R. X. Adhikari, S. Ballmer, B. Barish, L. Bar-
+sotti, G. Billingsley, D. A. Brown, Y. Chen, D. Coyne,
+R. Eisenstein, and others, Cosmic explorer: The US con-
+tributiontogravitational-waveastronomy,Bulletinofthe
+American Astronomical Society51, 35 (2019).
+[69] A. Bhattacharyya, On a measure of divergence between
+two statistical populations defined by their probability
+distributions, Bulletin of the Calcutta Mathematical So-
+ciety35, 99 (1943).

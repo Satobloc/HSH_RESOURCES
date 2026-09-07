@@ -1,0 +1,1022 @@
+===== PAGE 1 =====
+MNRAS000, 1–12 (2026) Preprint 26 August 2026 Compiled using MNRAS L ATEX style file v3.2
+Unsupervised Deep Learning Method for Clustering KAGRA O3GK
+Transient Noise Data
+Yubin Kim,1,4 Kihyun Jung,2★ and Kyujin Kwak2,3†
+1Department of Physics, Ewha Womans University, Seoul, 03760, Republic of Korea
+2Department of Physics, Ulsan National Institute of Science and Technology (UNIST), Ulsan, 44919, Republic of Korea
+3Graduate School of Artificial Intelligence, Ulsan National Institute of Science and Technology (UNIST), Ulsan, 44919, Republic of Korea
+4National Institute for Mathematical Sciences, Daejeon, 34047, Republic of Korea
+Accepted XXX. Received YYY; in original form ZZZ
+ABSTRACT
+The advent of ground-based gravitational wave detectors has significantly improved the detection of faint gravitational wave
+signals. However, these detectors are affected by various types of transient noise, known as glitches, which can mimic true
+gravitationalwavesignalsandlimitdetectorsensitivity.Classifyingglitchesaccordingtotheirtime-frequencycharacteristicsnot
+onlyfacilitatesadeeperunderstandingoftheirorigins,butalsosupportstheirmitigationondatatomaintaindataquality.While
+supervised machine learning methods are commonly employed for glitch classification, they require the labelling of training
+datasetsobtainedthroughmanualannotation,aprocesswhichiscostlyandnotscalableforevolvingdetectors.Inordertoaddress
+this challenge, the present study investigates unsupervised deep learning methods for dimensionality reduction and clustering
+of glitch spectrogram images. In this study, three distinct approaches are applied and compared using data from the KAGRA
+detector’s O3GK run. The findings of this study demonstrate that deep learning-based feature extraction significantly enhances
+the clustering performance compared to traditional machine learning methods. This study presents an initial analysis of the
+KAGRA glitch dataset using unsupervised deep learning, highlighting the potential of this approach for efficient and scalable
+glitch classification in future observation runs.
+Key words:gravitational waves — methods: data analysis — software: machine learning
+1 INTRODUCTION
+The first observation of a gravitational wave signal in 2015 (Ab-
+bott et al. 2016) ushered in the era of gravitational wave astronomy.
+Gravitationalwavedetectorsconsistofhighlysensitivelaserinterfer-
+ometersandthousandsofmonitoringsensors,enablingthedetection
+of extremely faint signals buried in noises. Improvements in detec-
+torsensitivityhaveincreasedthedetectionrateofgravitationalwave
+signals.However,ground-baseddetectorsarechallengedbytransient
+noise, which limits their sensitivity. Transient non-Gaussian noises,
+known as glitches, can lead to false alarms and affect the param-
+eter estimation (Abbott et al. 2018; Macas et al. 2022). Therefore,
+identifyingandremovingthemiscrucialforensuringdataqualityin
+the gravitational wave detection pipeline (Covas et al. 2018). Tran-
+sientnoiseexhibitsavarietyoftime-frequencypatternsrelatedtoits
+source within the detector or in the environment. Classifying these
+glitchesbasedontheirtime-frequencycharacteristics(i.e.,thevisual
+morphologyobservedinspectrograms)canprovideinsightintotheir
+origins and support efforts to improve detector sensitivity.
+Machine learning provides an efficient tool for classifying a large
+number of glitches. While initial studies primarily utilised feature
+vectors computed from time series data (Mukund et al. 2017; Pow-
+★ E-mail: khjung@unist.ac.kr
+†E-mail: kkwak@unist.ac.kr
+ell et al. 2017), the development of convolutional neural networks
+(CNNs) has shifted the focus towards image-based classification. In
+this approach, glitches are converted into two-dimensional spectro-
+gram images using the Q-transform, enabling multi-class classifica-
+tion based on their distinct morphological features. However, most
+existing machine learning approaches rely on supervised learning,
+which necessitates the extensive manual annotation of training data.
+The Gravity Spy project (Zevin et al. 2017), a pioneering effort in
+glitchclassification,combinedmachinelearningwithcitizenscience
+to identify 22 classes of transient noise. The spectrogram images la-
+belled by each class were used to train supervised machine learning
+models (Bahaadini et al. 2018b). However, as detector sensitivity
+improves, glitches become more numerous and diverse, making an-
+notation increasingly costly. Furthermore, since glitches are depen-
+dent on the environment, new detector-specific training datasets are
+required for each new detector or upgrade, which limits scalability.
+Supervised algorithms also struggle to generalise beyond the fixed
+classes used in training, making it difficult to identify new glitches
+from detector upgrades (Soni et al. 2021).
+Inordertomitigatetherelianceonannotateddatasetsinsupervised
+learning, semi-supervised approaches have been proposed. Semi-
+supervised learning methods exploit unlabelled data together with a
+small set of labelled examples, alleviating annotation scarcity. For
+instance, Bahaadini et al. (2022) has reported on the training of a
+virtual adversarial model using a combination of labelled and un-
+©2026 The Authors
+arXiv:2608.24690v1  [gr-qc]  25 Aug 2026
+
+===== PAGE 2 =====
+2Y. Kim et al.
+labelled data. Another strategy is transfer learning, in which pre-
+trained CNNs are adapted for glitch classification. Bahaadini et al.
+(2018a) introduced a feature extraction function based on a pre-
+trained VGG16 network to cluster glitches not belonging to any
+known Gravity Spy class, while George et al. (2018) showed that
+fine-tuned ImageNet models achieved high classification accuracy
+forglitchdata.Thesestudiesfurtherdemonstratedthatunsupervised
+clusteringinthelearnedfeaturespacescanrevealnovelglitchclasses
+beyond existing categories.
+In contrast to these approaches which still rely on some form of
+labelled data or prior knowledge, unsupervised learning does not
+require pre-assigned labels. Thus, it reduces annotation effort and
+enables the identification of novel glitch types. Recent studies have
+demonstratedthepotentialofunsupervisedlearningforLIGOglitch
+analysis.Forinstance,Sakaietal.(2022)proposedaframeworkcom-
+bining a variational autoencoder (VAE) with invariant information
+clusteringforGravitySpyO1data,whileLietal.(2024)presentedan
+autoencoder-based architecture integrating CNNs and vision trans-
+formers to reduce dimensionality and cluster Gravity Spy O3 data.
+However, most existing glitch classification studies have focused on
+theLIGO,whiletheglitchpropertiesofotherdetectors,suchasVirgo
+and KAGRA, have received comparatively little attention. As KA-
+GRAhasjoinedrecentobservingruns,theaccuratecharacterisation
+of the detectors has become increasingly significant. Nevertheless,
+only a few studies have used deep learning techniques to analyse
+KAGRAglitches.Oshinoetal.(2025)performedunsupervisedclus-
+tering and proposed the optimal number of clusters in the KAGRA
+glitch data during the O3GK run period by combining a VAE and
+spectral clustering.
+Thisstudyadvancestheunsupervisedanalysisofglitchcharacter-
+istics by focusing on a subset of total glitch events whose correla-
+tions with auxiliary channels have been identified. Unlike previous
+studies, a systematic comparison of multiple unsupervised learning
+approaches is conducted to evaluate their validity and performance.
+In particular, deep learning models are incorporated into the dimen-
+sionality reduction stage to capture the intrinsic features of spectro-
+gram images more effectively, thereby improving the performance
+of the clustering process. The objective of this comparative analysis
+is to identify unsupervised methods that achieve robust and optimal
+clusteringperformancefortheKAGRAglitchdata.Asfutureobser-
+vatories integrate into the global network, unsupervised clustering
+methods will play a crucial role in identifying novel glitch classes
+without prior labelled data. Therefore, this work aims to address the
+existing gap in glitch analysis by presenting the unsupervised anal-
+ysis of KAGRA O3GK data. It also demonstrates the potential of
+deeplearning-basedclusteringmethodsasscalabletoolsfordetector
+characterisation.
+2 DATASET
+This section details the acquisition, pre-processing, and structural
+frameworkoftheKAGRAO3GKdataset.Italsodescribesthecom-
+position and distribution of the glitch samples used as the input for
+our proposed model.
+2.1 KAGRA O3GK Dataset
+KAGRA(Akutsuetal.2019),thegravitationalwavedetectorlocated
+in the Kamioka mine in Japan, is uniquely operated underground
+with cryogenic mirrors to reduce thermal noise. Although KAGRA
+didnotfullyparticipateinthethirdobservingrun(O3)ofLIGOand
+Virgo, it conducted its first joint observing run, named O3GK, in
+collaboration withthe German–British detectorGEO600 (Abeet al.
+2022). This run lasted for approximately two weeks, from April 7,
+2020,08:00UTC(GPStime:1270281618)toApril21,2020,00:00
+UTC (GPS time: 1271462418).
+Inthisstudy,weuseglitchesintheKAGRAO3GKdatathatwere
+identified in Akutsu et al. (2025). Here we briefly summarise the
+process used in Akutsu et al. (2025). First, we generate triggers for
+both main channel (strain data) and auxiliary channels (data from
+noise-monitoring systems) by using Omicron (Robinet et al. 2020).
+Omicron detects excess power in the time-frequency representation
+usingQ-transform.Eachdetectionisassignedasignal-to-noiseratio
+(SNR)andrecordedasatrigger.Thehierarchicalveto(Hveto;Smith
+et al. (2011)) is subsequently applied to statistically evaluate the
+temporal coincidence between the triggers in the main channel and
+thoseintheauxiliarychannels.WhiletheprimaryfunctionofHveto
+istopreventlow-qualitydatafrombeingutilisedintheanalysisandto
+enhancethesensitivityofgravitationalwavesearches,theprocessin
+Akutsu et al. (2025) utilised its output to specifically isolate glitches
+with high probability of instrumental origin based upon statistical
+timecorrelation.ThisapproachdiffersfromthestudybyOshinoetal.
+(2025),whichanalysedthesameO3GKmainchanneldatabutdidnot
+account for auxiliary channel correlations via Hveto. Consequently,
+the filtered subset of high-confidence instrumental glitches used in
+this work (2,531 events) is lower than the total number of glitches in
+Oshino et al. (2025) (45,345 events).
+This study utilised a dataset of two-dimensional spectrogram im-
+ages of glitches observed in the main channel of KAGRA during
+the O3GK run, from 7 to 21 April 2020. Although we used auxil-
+iarychanneldatawhenapplyingHveto,adatasetoftwo-dimensional
+spectrogramimagesofglitchesforthisstudyareproducedonlyfrom
+the main channel (strain data). We note that the main channel was
+K1:DAC-STRAIN_C20, while auxiliary channels belonged to eight
+subsystems: AOS, CAL, IMC, LAS, LSC, PEM, PSL, and VIS. By
+applying an SNR threshold of 8 to the main channel, Hveto identi-
+fied 2,531 vetoed events across 28 auxiliary channels. Spectrogram
+images of these vetoed events, corresponding to glitches in the main
+channel,weregeneratedusingtheQ-transformmoduleimplemented
+in GWpy (Macleod et al. 2021).
+In Akutsu et al. (2025), the resulting 2,531 glitch events were
+manually grouped into six classes based on the morphological char-
+acteristics of excess power area in the spectrograms: blip, dot, helix,
+line,scatteredlight,andscratchy.Blip,helix,scratchy,andscattered
+light glitches are similar in morphology to existing classes in LIGO
+datasets,whiledotandlineglitcheswerenewlydefinedforKAGRA,
+as they are not included in the Gravity Spy taxonomy (Zevin et al.
+2017). During the labelling process, events that did not fit into these
+six categories were assigned to a “Not Classified" category. These
+particular events show no apparent transient noise structure in the
+mainchannelspectrogram,eventhoughHvetoidentifiedastatistical
+correlation with the auxiliary channels. These glitches might be vis-
+ibly shrunk to the point that they blend into the background because
+ofthelogarithmicfrequencyscale.Inpreviousstudiesofglitchclas-
+sification based on Gravity Spy taxonomy, such spectrograms have
+typically been categorised as “No Glitch" (Bahaadini et al. 2018b;
+Glanzer et al. 2023). Rather than excluding these “Not Classified"
+events from the dataset, we retained them as a distinct category to
+evaluate the capability of our unsupervised model in distinguishing
+this lack of clear morphological patterns from other glitch classes.
+As a result, the 2,531 vetoed event spectrograms were categorised
+into the following seven classes: blip, dot, helix, line, not classified,
+MNRAS000, 1–12 (2026)
+
+===== PAGE 3 =====
+Unsupervised Clustering of KAGRA O3GK Data3
+Figure 1.Examplespectrogramimagesofglitchesusedinthisstudy,shownforeachglitchclass.AllimagescorrespondtoglitcheventsidentifiedbyHvetoand
+annotated by human experts. More detailed descriptions of each glitch class can be found in Akutsu et al. (2025).
+scattered light, and scratchy. Representative examples of each glitch
+morphology,alongwiththeirassignedlabels,areshowninFigure1.
+2.2 Input Data Pre-processing
+Theinputdatautilisedinthisstudyconsistoftheglitchspectrogram
+images identified in the KAGRA main channel during the O3GK
+run, as outlined in the preceding section. These spectrograms were
+subjectedtoaseriesofpre-processingstepspriortobeingenteredas
+inputs into the unsupervised clustering models. For each confirmed
+glitch event from the Hveto result, spectrogram images correspond-
+ing tofour different time-scales(0.5, 1.0, 2.0,and 4.0seconds) were
+generated, centred on the event time. During this process, the events
+locatedattheboundariesofdataqualityflagswereexcludedfromthe
+inputdataset.Suchsegmentsaresubjecttoedgeeffectsorprocessing
+artefacts,renderingthemunsuitableforscientificanalysis.Outofthe
+initial2,531glitchevents,316sucheventswerevisuallyidentifiedon
+the spectrograms and removed; the four time-scale spectrograms for
+theremaining2,215selectedeventswerethensubjectedtoadditional
+pre-processing steps.
+TheoriginalspectrogramimageswereinitiallyrepresentedasRGB
+imageswitharesolutionof900×800pixels.Eachimagewasfirstcon-
+verted into a single-channel greyscale representation. Subsequently,
+theimageswerecroppedtoremovethetitlesandaxislabels,leaving
+only the spectrogram content. The resulting cropped region com-
+prised540×624pixelsandwasthenresizedtoastandardisedsquare
+format of224×224pixels. Through this pre-processing steps, we
+can reduce the computational cost by decreasing the dimensional-
+ity of the input data while preserving the essential morphological
+features required for unsupervised feature extraction and clustering.
+Convertingtogreyscaleandresizingmayslightlyalterthemorphol-
+ogy or energy scaling of the original spectrograms, but its effect
+on our current study is not significant because this transformation
+is applied consistently across all samples. We note that the primary
+objective of our study is not to precisely reconstruct physical pa-
+rameters from these images but rather to automate the grouping of
+morphologicallysimilarglitches.Foreachglitchevent,spectrogram
+Class Train Val Test
+Blip 816 117 233
+Dot 33 5 9
+Helix 200 28 57
+Line 304 44 87
+NotClassified 62 9 18
+ScatteredLight 37 5 11
+Scratchy 98 14 28
+Total 1550 222 443
+Table 1.Distribution of input samples across the seven glitch classes in the
+training, validation, and test sets.
+images corresponding to four different time durations were stacked
+togethertoformthefinalinputrepresentation.Thismulti-scaletensor
+(4×224×224)enablesourunsupervisedmachinelearningmodelsto
+capturefeaturesacrossdifferenttime-frequencyresolutionssimulta-
+neously.Whilethephysicaltimestepperpixelvariesacrosschannels,
+all spectrograms are strictly centre-aligned with respect to the exact
+glitch event time. An overview of the pre-processing workflow is
+shown in Figure 2.
+After pre-processing, a total of 2,215 four-channel stacked image
+samples were obtained for the experiments. The dataset was split
+into three sets: a training set comprising 70% of the total data, a
+validation set consisting of 10%, and a test set containing the re-
+maining20%.Inconsiderationofthehighlyimbalanceddistribution
+of glitch samples across the defined morphological classes, we em-
+ployed a stratified split for data partitioning. This method ensures
+that the original class proportions are strictly preserved within both
+the training and validation subsets. By preventing minority glitch
+classes from being under-represented or omitted during the training
+phase,thestratifiedpartitionenablesthemodeltoeffectivelycapture
+theintrinsicstructuralandmorphologicalfeaturesofallglitchtypes.
+The pre-assigned labels from the manual classification were solely
+used as ground truth for post-hoc performance evaluation and were
+not involved in model training process. The distribution of samples
+across glitch classes for each subset is summarised in Table 1.
+MNRAS000, 1–12 (2026)
+
+===== PAGE 4 =====
+4Y. Kim et al.
+Figure 2.Overview of the input data pre-processing. For each glitch event, spectrogram images in four different time-scales were cropped to retain only the
+spectrogram region and resized into square greyscale images. These four images were then stacked to form a single four-channel input sample.
+3 METHODS
+Inthissection,wepresentadescriptionoftheapproachesusedinour
+study to perform unsupervised clustering on KAGRA O3GK glitch
+data, the experimental design, and the evaluation metrics used to
+compare experimental results obtained with different methods.
+3.1 Unsupervised Machine Learning Method
+The direct application of clustering algorithms to the raw pixels
+of spectrogram images is impractical. In high-dimensional feature
+spaces, data points become extremely sparse, and the distance met-
+rics used for clustering lose their discriminative power; this ulti-
+mately degrades model performance and increases computational
+costs. Therefore, dimensionality reduction is a crucial step in unsu-
+pervised clustering, as it maps high-dimensional spectrogram data
+into a compact latent space while preserving the most informative
+features. This process suppresses noise and emphasizes meaningful
+structures prior to clustering, enabling more accurate and compu-
+tationally efficient grouping of glitch events. Principal component
+analysis (PCA) (Pearson 1901) is a well-established method for lin-
+eardimensionalityreduction.PCAeliminatesredundantdimensions
+byprojectingdataontoasetoforthogonalcomponentsthatpreserve
+dominantvariance.Forexample,animageofsize900×800contains
+720,000dimensions,whichcanbereducedtoalow-dimensionalrep-
+resentation(e.g.,20–50components)usingPCA.Inthisstudy,PCA-
+reduced feature vectors combined withk-means clustering (Mac-
+Queen 1967) are adopted as a baseline method.
+In order to capture more complex and non-linear structures in
+glitch spectrograms, we employ deep learning-based dimensional-
+ity reduction methods involving a convolutional autoencoder (Con-
+vAE) (Masci et al. 2011). The resulting latent representations are
+subsequently clustered usingk-means clustering or deep embedded
+clustering (DEC) (Xie et al. 2016). Deep learning-based approaches
+enhance our understanding of the intrinsic structure of the high-
+dimensional data, ultimately leading to improved glitch classifica-
+tion. The following subsections describe the detailed algorithms of
+the machine learning methods employed in the experiment.
+3.1.1 Convolutional Autoencoder
+An autoencoder (Hinton & Salakhutdinov 2006) is an unsupervised
+neural network designed to learn a compressed, low-dimensional
+representation of input data. It consists of two main components: an
+encoder which maps high-dimensional input to a lower-dimensional
+latent space; and a decoder which reconstructs the original data
+from this latent representation. A ConvAE is specifically designed
+autoencoderforimagedatawithspatialstructure(Mascietal.2011).
+Instead of using fully connected layers, the ConvAE uses CNNs in
+both the encoder and decoder. This architecture allows the model
+to effectively capture and preserve the spatial hierarchies and local
+features of the input images, making it highly efficient for image-
+based tasks and non-linear mapping of the data.
+Figure 3 illustrates the architecture of a ConvAE. The encoder
+maps the input𝑦∈R 𝐻×𝑊×𝐶 into a low-dimensional latent repre-
+sentation𝑧, while the decoder reconstructs the input from this latent
+MNRAS000, 1–12 (2026)
+
+===== PAGE 5 =====
+Unsupervised Clustering of KAGRA O3GK Data5
+Figure 3.Schematic illustration of the ConvAE architecture.
+code:
+𝑧=𝑓 𝜙(𝑦),ˆ𝑦=𝑔 𝜓(𝑧).
+Here,𝑓 𝜙 and𝑔 𝜓 denote the encoder and decoder functions, respec-
+tively, with learnable parameters𝜙and𝜓. The encoder is composed
+of successive convolutional and down-sampling operations that pro-
+gressively reduce the spatial resolution while extracting higher-level
+features. The latent representation𝑧serves as a compressed embed-
+ding that captures the most salient information of the input. The
+decodermirrorsthisstructure,employingup-samplingandconvolu-
+tional operations to reconstruct the input from𝑧.
+TrainingoftheConvAEisperformedbyminimizingthedifference
+between the input𝑦and its reconstructionˆ𝑦. In this work, the mean
+squared error (MSE) is employed as the reconstruction loss:
+LMSE = 1
+𝑁
+𝑁∑︁
+𝑖=1
+∥𝑦𝑖−ˆ𝑦𝑖∥2,(1)
+where𝑁isthenumberoftrainingsamples.Thisprocessencourages
+the autoencoder to learn latent features that preserve the essential
+structure of the data while discarding noise and redundancy. The
+detailedtrainingprocessandhyperparametersusedinthisstudywill
+be descried in subsection 4.1.
+3.1.2 k-means Clustering
+k-means clustering is one of the most widely used clustering algo-
+rithms that partitions unlabelled data into𝐾distinct clusters. The
+algorithm begins by initialising𝐾centroids, after which each data
+point is assigned to the nearest centroid. The cluster centroids are
+then updated by computing the mean of all the points assigned to
+each cluster. These assignment and update steps are repeated itera-
+tively until the centroids no longer change. Due to its computational
+simplicity and efficiency,k-means clustering is widely applied in
+practice. However, the method is sensitive to centroid initialisation
+and requires the number of clusters𝐾to be specified in advance,
+which can limit its flexibility.
+LetX={𝑥 𝑖}𝑁
+𝑖=1⊂R 𝑑 denote the dataset, where𝑁is the number
+ofdatapointsand𝑑isthefeaturedimension.Let𝐾bethenumberof
+clusters,𝜇 𝑗∈R 𝑑 the centroid of cluster𝑗, and𝑐𝑖∈{1,...,𝐾}the
+cluster index assigned to𝑥𝑖. The objective ofk-means is to partition
+theobservationsinto𝐾setssoastominimizethewithin-clustersum
+ofsquares,whichisthetotalsumofthesquaredEuclideandistances
+betweeneachdatapointandthecentroidofitsassignedclustergiven
+as:
+𝐽 {𝜇𝑗},{𝑐 𝑖} =
+𝑁∑︁
+𝑖=1
+
+
+𝑥𝑖−𝜇 𝑐𝑖
+
+
+2.(2)
+Giventhecurrentcentroids,eachdatapointisassignedtothenearest
+centroid:
+𝑐𝑖 =arg min
+𝑗∈{1,...,𝐾}
+
+
+𝑥𝑖−𝜇 𝑗
+
+
+2.(3)
+Giventhecurrentassignments,eachcentroidisupdatedbythemean
+of its cluster:
+𝐶𝑗 ={𝑥 𝑖∈X|𝑐 𝑖 =𝑗},(4)
+𝜇𝑗 = 1
+|𝐶𝑗|
+∑︁
+𝑥𝑖∈𝐶𝑗
+𝑥𝑖,(5)
+where|𝐶 𝑗|denotes the cardinality of the set𝐶 𝑗, representing the
+number of data points assigned to cluster𝑗. The assignment step (3)
+andtheupdatestep(5)areiterateduntilconvergence,i.e.,nochange
+in{𝑐 𝑖}.
+3.1.3 Deep Embedded Clustering
+DEC is an unsupervised clustering algorithm that integrates the fea-
+ture extraction with clustering, enabling the joint optimisation of
+latent representations and cluster assignments. Initially, a deep au-
+toencoder with multiple hidden layers is trained to map input data
+into a low-dimensional latent space. The initial cluster centroids are
+obtainedbyapplyingk-meansclusteringtothelatentfeatures,which
+arelow-dimensionalvectorsembeddedinlatentspace.Followingini-
+tialisation, the encoder is subsequently fine-tuned to sharpen cluster
+assignmentsbyenhancingintra-clustercompactnessandinter-cluster
+separation.
+ThedetailedoptimisationprocessofDECisdescribedasfollows.
+First, the model computes the soft assignments, which represent
+the probability that each sample belongs to a given cluster. The
+similarity between an embedded point𝑧𝑖 and a cluster centroid𝜇𝑗
+is measured using Student’s t-distribution. The resulting probability
+MNRAS000, 1–12 (2026)
+
+===== PAGE 6 =====
+6Y. Kim et al.
+(softassignment)ofassigningsample𝑖tocluster𝑗isdenotedby𝑞 𝑖𝑗,
+which is formally defined as:
+𝑞𝑖𝑗 =
+ 1+∥𝑧 𝑖−𝜇 𝑗∥2/𝛼−𝛼+1
+2
+˝
+𝑗′
+ 1+∥𝑧 𝑖−𝜇 𝑗′∥2/𝛼−𝛼+1
+2
+,(6)
+where𝑧 𝑖 =𝑓 𝜃(𝑥𝑖) ∈𝑍corresponds to the embedded representa-
+tion of𝑥 𝑖 ∈𝑋, and𝛼is the degree of freedom of the Student’s
+𝑡-distributionwhichdeterminesthekurtosisofthedistribution.Sec-
+ond, a target distribution𝑝𝑖𝑗 is then constructed by squaring and
+normalising the soft assignments𝑞𝑖𝑗,
+𝑝𝑖𝑗 =
+𝑞2
+𝑖𝑗/𝑓 𝑗
+˝
+𝑗′𝑞2
+𝑖𝑗′/𝑓 𝑗′
+,(7)
+where𝑓 𝑗 = ˝
+𝑖𝑞𝑖𝑗 represents the soft cluster frequencies, which
+act as normalisation factors that scale the loss contribution of each
+cluster based on its total current size. Finally, the model is trained
+by minimizing the Kullback–Leibler (KL) divergence between the
+target distribution𝑃and the soft assignment distribution𝑄,
+𝐾𝐿(𝑃||𝑄)=
+∑︁
+𝑖
+∑︁
+𝑗
+𝑝𝑖𝑗 log 𝑝𝑖𝑗
+𝑞𝑖𝑗
+.(8)
+Through this process, the parameters of the deep neural network
+and the set ofkcluster centroids in the latent space𝑧are updated
+jointly. Owing to its ability to capture non-linear structures, DEC is
+well-suitedforcomplex,high-dimensionaldataandhasdemonstrated
+superior performance compared to conventional clustering methods
+acrossmultiplebenchmarkdatasets(Xieetal.2016;Guoetal.2021).
+3.2 Experiment Design
+Inthisstudy,threeunsupervisedclusteringapproachesarepresented
+and compared. Figure 4 shows the schematic workflow of our study.
+The first four steps relevant to data preparation and pre-processing
+were explained in section 2. The subsequent steps are roughly di-
+vided into two stages (dimensionality reduction and clustering) and
+three different unsupervised clustering approaches are adopted and
+compared. In approaches (A) and (B), PCA and ConvAE are em-
+ployed to perform dimensionality reduction, followed by a separate
+clustering stage using thek-means algorithm. In contrast, approach
+(C)employsDEC,wheredimensionalityreductionandclusteringare
+jointlyoptimisedwithinaunifiedframework.Inordertofacilitatevi-
+sualinterpretationandcomparisonoftheclusteringoutcomesacross
+the three approaches, t-distributed stochastic neighbour embedding
+(t-SNE)(vanderMaaten&Hinton2008)isemployed.Thistechnique
+projects high-dimensional data into two dimensions while preserv-
+ing local structural relationships, enabling the intuitive visualisation
+of the clustering results. The subsequent paragraphs describe each
+approach in detail.
+(A) PCA+k-means:UsingPCAfordimensionalityreductionfollowed
+byk-means clustering is a common approach in unsupervised clus-
+tering.Inthisstudy,thiscommonapproachisadoptedasthebaseline
+method.Initially,eachfour-channelinputimagewasstandardisedand
+reduced to a 50-dimensional vector via PCA. Subsequently, the𝑘-
+means algorithm was applied to the reduced 50-dimensional feature
+vectors to partition the dataset into a predefined number of clusters
+(𝐾=7), which was chosen from the seven glitch classes identified
+in our dataset (Table 1).
+(B) ConvAE + PCA +k-means: While PCA provides a simple linear
+Figure 4.Workflow of data pre-processing and unsupervised clustering ex-
+periments applied to KAGRA O3GK glitch dataset. After spectrogram pre-
+processing,threedistinctmethodsareapplied:(A)PCAfollowedbyk-means
+clustering; (B) ConvAE-based feature extraction combined with PCA and
+k-means clustering; and (C) DEC algorithm, which jointly optimises feature
+embedding and cluster assignments. The resulting clusters are visualised us-
+ing t-SNE for comparison.
+baseline, it may not fully capture the intrinsic structure of high-
+dimensional spectrogram data. To address this limitation, the Con-
+vAE maps input images into 64-dimensional latent vectors prior to
+theapplicationofPCA.Consistentwiththebaselineapproach,these
+latentvectorsfromencoderwerestandardisedbeforeapplyingPCA.
+The latent vectors compressed by the encoder were further reduced
+to 50 dimensions using PCA and subsequently clustered into seven
+clustersusingthek-meansalgorithm,asinthebaselinemethod.The
+architectureanddetailsoftheConvAEmodelemployedinthisstudy
+are summarised in Appendix.
+(C) DEC:DECalgorithminvolvestheparameterinitialisationandjoint
+optimisation of the latent representation and cluster assignments.
+The same ConvAE architecture as in (B) is used to map the input
+spectrogramimagesintoa64-dimensionallatentspace,providingan
+initiallow-dimensionalrepresentationofthedata.Initialclustercen-
+troidsarethenobtainedinthislatentspaceusingk-meansclustering.
+During subsequent training, DEC updates the encoder parameters
+byrefiningthelatentrepresentationstoimprovetheresultingcluster
+assignments.
+3.3 Evaluation Metric
+3.3.1 Clustering Quality Evaluation
+The separation of the clusters in the experimental results was quan-
+titatively assessed by computing the silhouette value. The silhou-
+MNRAS000, 1–12 (2026)
+
+===== PAGE 7 =====
+Unsupervised Clustering of KAGRA O3GK Data7
+ette value is a widely used internal clustering validation metric that
+simultaneously measures cluster cohesion (intra-cluster similarity)
+and separation (inter-cluster distance) based on pairwise distances
+between data points. Unlike external metrics, it evaluates clustering
+quality independently of ground-truth labels.
+For a given data point𝑖, let𝑑(𝑖,𝑗)denote the distance between𝑖
+andthe otherpoint𝑗.Then theaveragedistance betweendatapoints
+𝑖and𝑗belonging to the same cluster𝐶𝐼 is given by
+𝑎(𝑖)= 1
+|𝐶𝐼|−1
+∑︁
+𝑖,𝑗∈𝐶 𝐼,𝑗≠𝑖
+𝑑(𝑖,𝑗),(9)
+where|𝐶 𝐼|isthenumberofdatabelongingtocluster𝐶 𝐼.Theaverage
+distance between data point𝑖belonging to cluster𝐶𝐼 and other data
+points𝑗belonging to the nearest other cluster𝐶𝐽 is given by
+𝑏(𝑖)=min
+𝐽≠𝐼
+1
+|𝐶𝐽|
+∑︁
+𝑖∈𝐶𝐼,𝑗∈𝐶 𝐽
+𝑑(𝑖,𝑗).(10)
+Using𝑎(𝑖)and𝑏(𝑖),wecancalculatesimilaritybetweentwonearest
+clusters. The silhouette value𝑠(𝑖)for data point𝑖is defined as
+𝑠(𝑖)= 𝑏(𝑖)−𝑎(𝑖)
+max{𝑎(𝑖),𝑏(𝑖)} .(11)
+The silhouette value ranges from−1 to 1. Positive values indicate
+appropriate cluster assignment, while values close to zero suggest
+that a data point lies near the boundary between clusters. Negative
+values imply that the sample may have been incorrectly assigned
+to a cluster. The mean silhouette value across all data points in the
+dataset, referred to as the silhouette score, is used as an overall mea-
+sure of clustering quality. Clustering quality such that the silhouette
+scorebeingcloseto1indicatesdistinctiveseparationamongdifferent
+clusters.
+3.3.2 Clustering Performance Evaluation
+Toevaluatetheperformanceoftheclusteringalgorithms,twowidely
+utilised external validation metrics were employed: normalised mu-
+tualinformation(NMI)andadjustedrandindex(ARI).Bothmetrics
+areexternalindicesthatrequireground-truthlabelsandquantifythe
+degree to which the predicted clusters align with the true class dis-
+tribution (Vinh et al. 2010). NMI and ARI are considered robust
+metrics for unsupervised learning, as they remain applicable and re-
+liableevenwhenthenumberofpredictedclustersdoesnotalignwith
+the number of ground-truth classes.
+In this study, we calculate the NMI value with the default imple-
+mentation in thescikit-learnlibrary1given as
+NMI(𝑍; ˆ𝑍)= 2𝐼(𝑍; ˆ𝑍)
+𝐻(𝑍)+𝐻( ˆ𝑍)
+,(12)
+wherethearithmeticmeanisusedforthenormalizationfactor.Inthe
+above equation,𝑍and ˆ𝑍are the ground-truth and predicted cluster,
+respectively, and𝐻(𝑈)is the entropy of a given cluster𝑈which is
+calculated based upon fundamental concepts in the information the-
+ory (Cover & Thomas 2005). In the context of unsupervised learn-
+ing, high (low) valueof H(U) implies that U containsa large (small)
+number of different classes into which data are classified.𝐼(𝑈,𝑉)
+is mutual information (MI) between two clusters U and V, given as
+𝐼(𝑈,𝑉)=𝐻(𝑉)−𝐻(𝑉|𝑈)where𝐻(𝑉|𝑈)is conditional entropy
+which is the weighted average of the entropies of V for each specific
+1 https://scikit-learn.org/stable/modules/generated/sklearn.metrics.
+normalized_mutual_info_score.html
+Hyperparameter Value
+Training of ConvAE Learning rate 0.001
+Mini-batch size 32
+Latent vector dimension 64
+Epoch number 50
+Training of DEC Cluster number 7
+Convergence tolerance 0.001
+Alpha 1.0
+Table 2.Hyperparameters for training ConvAE and DEC.
+value that U can take. MI measures the amount of information that
+U and V share and indicates the reduction in uncertainty of U due
+to the knowledge of V. We note that NMI value ranges from 0 (no
+mutual information) to 1 (perfect agreement).
+ARI evaluates clustering similarity by considering all pairs of
+samplesandcountingpairsthatarecorrectlyassignedtothesameor
+different clusters in both the predicted and ground-truth labels. ARI
+is a chance-adjusted version of the Rand Index (RI) which measures
+the proportion of correctly grouped pairs. The RI is defined as
+RI= 𝐶1+𝐶 2 𝑛
+2
+ ,(13)
+where𝑛is the total number of samples,𝐶 1 is the number of pairs
+correctly placed in the same cluster in both ground truth and predic-
+tion, and𝐶2 is the number of pairs correctly separated into different
+clusters by both. Unlike RI, ARI accounts for random agreement,
+and its value may take negative values when the clustering result is
+worse than random assignment. ARI is defined as
+ARI= RI−𝐸[RI]
+max(RI)−𝐸[RI] ,(14)
+where𝐸[RI]andmax(RI)are the expected value and maximum
+value of RI, respectively. The ARI ranges from−1to1:1indicates
+perfectagreementbetweentheclusteringassignmentswhile0corre-
+sponds to random distribution. Negative values indicate agreement
+worse than random.
+4 RESULTS
+This section presents the clustering outcomes obtained through
+the three independent unsupervised approaches detailed in subsec-
+tion 3.2. We first outline the training progress and hyperparameters
+of the deep learning models, followed by a comparative analysis of
+their respective feature extraction and clustering performances.
+4.1 Training Process of Deep Learning Model
+Table 2 summarises the parameters utilised for training the ConvAE
+andDECmodels.AdetaileddescriptionoftheConvAEarchitecture
+is provided in Appendix. The dataset was partitioned into mini-
+batches of size 32 to update the weights of the neural network, with
+thenetworkparametersupdateduponcompletionofeachindividual
+batch. We employed the Adam optimiser (Kingma & Ba 2015) with
+an initial learning rate of0.001, an algorithm that adaptively adjusts
+the learning rate for each parameter. The ConvAE was trained over
+50 epochs, a duration found to be sufficient for the reconstruction
+loss to stabilise without overfitting. Additionally, batch normalisa-
+tion was applied after each convolutional layer to rescale the feature
+maps and stabilise the learning process. The effectiveness of this
+training is qualitatively demonstrated in Figure 5, which illustrates
+MNRAS000, 1–12 (2026)
+
+===== PAGE 8 =====
+8Y. Kim et al.
+Figure 5.Example input and output of the ConvAE model. The left column
+shows input spectrogram images at the 0.5-second time-scale for represen-
+tative glitch classes, while the right column shows the corresponding recon-
+structionsproducedbytheConvAEdecoder.Thesimilarityindexisreported
+for each reconstructed image to quantify similarity to the input.
+a series of input image samples and their corresponding reconstruc-
+tions produced by the decoder. Higher similarity between the input
+images and the reconstructed images indicates that the latent vec-
+tors effectively preserve the essential features of the original images
+during compression. To quantitatively assess the similarity between
+theoriginalandreconstructedimages,thestructuralsimilarityindex
+measure(SSIM)wascomputedforeachimagepair.TheSSIMscores
+(Wang et al. 2004) displayed below the reconstructed images in Fig-
+ure 5 are designed to evaluate similarity in a manner consistent with
+human visual perception, where values closer to 1 indicate greater
+similarity between two images.
+Inapproach(C),thesameConvAEwasfirstpretrainedforparam-
+eterinitialisationintheDECmethod.Thesamenetworkarchitecture
+and training parameters as in approach (B) were adopted for this
+pretraining stage. Following pretraining, cluster centroids were ini-
+tialisedinthelatentspaceusingk-meansclustering,withthenumber
+of clusters specified as 7. The convergence tolerance, set at0.001,
+was defined as the threshold for stopping training during the param-
+eter optimisation. Training was terminated when the proportion of
+samples exhibiting a change in cluster membership fell below this
+threshold. The parameter𝛼denotes the degree of freedom in Stu-
+dent’st-distributionusedtocalculatethesoftassignmentdistribution
+ofsamples.Itcontrolsthedispersionofthesoftlabels.Theoretically,
+𝛼cantakeanypositivevalue.Largervalues(typically𝛼>10)cause
+thedistributiontoconvergetowardsaGaussianshape,whilesmaller
+values lead to sharper cluster boundaries. At𝛼=1.0, the Student’s
+t-distribution becomes equivalent to a Cauchy distribution, provid-
+ing heavier tails than a Gaussian distribution. In this study, we set
+𝛼=1.0following the original DEC framework established by Xie
+et al. (2016). During the clustering optimisation process, the target
+distribution was updated every 10 epochs to ensure the stability of
+theclusterassignments.TheDECtrainingconvergedatepoch100,at
+whichpointthechangeinclustermembershipreachedthepredefined
+tolerance threshold.
+4.2 Performance Evaluation and Discussion
+Figure 6 illustrates the clustering results obtained by using ap-
+proaches (A), (B), and (C) on the test set. Since t-SNE is designed
+to preserve local neighborhood relationships in high-dimensional
+data, clusters that appear as compact and well-separated groups in
+the low-dimensional projection indicate that the embedded feature
+representations effectively capture group structures in the data. In
+contrast, more diffuse or overlapping distributions suggest that the
+embeddedvectorsfailtocapturethediscriminativefeaturesofthein-
+put data, resulting in poor clustering performance. The compressed
+feature vectors were grouped into seven clusters, with each sam-
+ple coloured according to its predicted cluster assignment. Due to
+the unsupervised nature of the task, however, the cluster labels or
+colours have no intrinsic semantic meaning. Therefore, it should be
+notedthattheorderingoftheclusterlabelsisarbitrary,andidentical
+colours in panels (A), (B), and (C) in Figure 6 do not correspond to
+thesameclusters;theyonlyindicateclustermembershipwithineach
+visualisation.
+A comparative analysis of the three visualisations reveals that
+approach (A) manifests clusters that are relatively sparse and in-
+termingled, indicating limited separation in the PCA-based feature
+space.TheincorporationofConvAEfeaturesinapproach(B)results
+in more compact groupings within the same clusters, suggesting
+that non-linear feature extraction enhances the latent representation.
+Approach(C)yieldsthemostdistinctlyseparatedandcompactclus-
+ters. To provide a quantitative comparison of the cluster separation
+and cohesion among different methods, we computed the silhouette
+score, with the results summarised in Table 3. The silhouette score,
+defined as the average of the silhouette values across all samples,
+is an internal evaluation metric for the predicted labels generated
+by each clustering method. The results indicate that approach (A),
+PCA +k-means, yielded the lowest clustering quality, followed by
+approach (B), ConvAE + PCA +k-means. In contrast, approach
+(C),DEC,obtainedthenotablehighestclusteringquality,indicating
+that its clusters are more compact and distinctly separated, which
+MNRAS000, 1–12 (2026)
+
+===== PAGE 9 =====
+Unsupervised Clustering of KAGRA O3GK Data9
+Figure 6.t-SNE visualisation of unsupervised clustering results obtained through three different approaches: (A) PCA +k-means; (B) ConvAE + PCA +
+k-means; (C) DEC. Cluster colours in each panel are assigned arbitrarily; therefore, the same colour across different panels does not signify the same glitch
+morphology.
+Method Silhouette Score
+PCA +k-means 0.0097
+Conv AE + PCA +k-means 0.0503
+DEC0.3042
+Table 3.Clustering quality comparison among the three unsupervised ap-
+proaches, with the best results highlighted in bold.
+is consistent with the visualisation of (C) in Figure 6. This supe-
+riority can be attributed to the fact that, unlike other approaches
+that directly applyk-means clustering to reduced vectors, the DEC
+framework jointly optimises the latent space representation and the
+clustering assignments, thereby refining the cluster structure during
+training. This quantitative advantage is consistently reflected in the
+two-dimensional𝑡-SNE visualisations, where the glitch categories
+are isolated into well-defined, easily identifiable clusters.
+The clustering performance of the three methods compared with
+respecttoground-truthlabelsissummarisedinTable4.Thebaseline
+method(A),whichcombinesPCAwithk-meansclustering,achieved
+the lowest NMI and ARI scores among the three approaches. This
+resultreflectsthelimitationoflinearPCAembeddingsinsufficiently
+capturing the intrinsic characteristics of spectrogram images. This
+limitation can be explained with the cumulative explained variance
+ratio (CEVR) which represents the proportion of total variance cap-
+tured by the first𝑛principal components during PCA embeddings.
+Large values of CEVR indicate that the essential morphological
+features of the input images are preserved well within the lower-
+dimensional subspace. In this study, CEVR of the 50-dimensional
+PCA vectors was found to be only 31.29%, supporting the observed
+degradation in clustering performance. In contrast, approaches that
+incorporate deep learning-based feature extraction demonstrate sub-
+stantial performance improvements. Approach (B), which combines
+ConvAE with the baseline method, achieved the highest agreement
+with the ground-truth label distributions, as indicated by the ARI
+score. This suggests that the non-linear embeddings learned by the
+ConvAEprovidemorediscriminativelatentrepresentationsforclus-
+tering. Approach (C), which adopts the DEC algorithm, also out-
+performed the baseline method by a large margin. In particular,
+approach (C) achieved superior performance in terms of the NMI
+metric, meaning DEC conserves the intrinsic structure in glitch dis-
+tributions well. These findings emphasize the limitations of PCA
+embeddings for glitch data analysis and highlight the importance
+Method NMI ARI
+PCA +k-means 0.2181 0.1711
+Conv AE + PCA +k-means 0.33950.4361
+DEC0.36730.2981
+Table 4.Clustering performance comparison with the ground-truth labels
+amongthethreeapproaches,withthebestresultsforeachmetrichighlighted
+in bold.
+of deep learning-based approaches for effective feature extraction
+during dimensionality reduction.
+Figure 7 presents a t-SNE visualisation of the human-annotated
+ground-truth labels of the original data, showing how the glitch
+classes are distributed in 2D space. To examine the separation of
+thedifferentglitchclassesquantitativelyinthisvisualisation,silhou-
+ette values were computed for each sample in the embedded latent
+spaceandpresentedintherightpanel.Notethatthesilhouettevalues
+on Figure 7 serve only as a reference for examining the distribution
+of the input data in the embedded latent space and do not directly
+represent the clustering capability of the models. The average sil-
+houette values of all glitch samples in the three methods (A), (B)
+and (C) are close to zero, indicating that the boundaries between
+ground-truth classes are ambiguous or not clearly separated in the
+latentspace.ThisreflectstheinherentcharacteristicsoftheKAGRA
+O3GK glitch dataset and reveals that the input data itself exhibits a
+deficiencyinintra-clustercohesion.Asaresult,lowsilhouettevalues
+can still be observed even when clustering results show good agree-
+mentwiththeground-truthlabels.Consistentwiththecomparisonof
+silhouette scores between predicted labels (shown on Table 3), cal-
+culatingthesilhouettescoreoftheground-truthlabelsalsorevealsa
+slightimprovementinmethod(B)comparedtothebaseline(A),fol-
+lowed by a more pronounced increase in method (C). Consequently,
+DEC produced the most distinctly separated clusters in the latent
+space, leading to clearer group structures in the low-dimensional
+representation. This enhanced inter-class separation facilitates qual-
+itative interpretation of glitch distribution on t-SNE visualisation,
+highlighting the advantage of DEC as a potential tool for future data
+clustering.
+Across all three investigated approaches that mapped our dataset
+into the low-dimensional latent space, the line and scratchy classes
+demonstratedatendencytodisperseratherthantoformwell-defined
+isolated clusters on the t-SNE projections. This structural scatter
+indicates substantial intra-class variability, suggesting that samples
+MNRAS000, 1–12 (2026)
+
+===== PAGE 10 =====
+10Y. Kim et al.
+Figure 7.(Left) t-SNE visualisation of samples for each approach, where colours represent the seven glitch classes shown below. (Right) Silhouette values
+for ground-truth labels; the x- and y-axes denote individual sample silhouette values and data indices, respectively. The red dashed line indicates the global
+silhouette score, and the black numeric labels indicates the mean silhouette value across each class. (A) PCA +k-means; (B) ConvAE + PCA +k-means; (C)
+DEC.
+MNRAS000, 1–12 (2026)
+
+===== PAGE 11 =====
+Unsupervised Clustering of KAGRA O3GK Data11
+withidenticalground-truthlabelscanpossessnotablemorphological
+variations that hinder the model from extracting a highly consistent
+feature representation.
+Crucially, regarding the newly introduced "Not Classified" cate-
+gory, characterised by a lack of distinct transient structures, the data
+pointsexhibitedthehighestsilhouettescoresforallthreeapproaches,
+implyingarelativelystrongintra-clustercohesioninthelatentspace.
+However,cross-referencingthismappingwiththepredictedlabeldis-
+tributions in Figure 6 reveals that the unsupervised models did not
+isolate these samples into a dedicated independent cluster. Instead,
+thepredictedlabelsforthesefeatureswereseparatedacrossmultiple
+clusters or combined into another cluster. This finding highlights a
+key area for future architectural refinement in unsupervised glitch
+clustering.
+5 CONCLUSION
+This study conducts an unsupervised clustering analysis of glitch
+spectrograms obtained from gravitational wave detectors by ap-
+plying three different machine learning methods. Specifically, deep
+learning-basedfeatureextractionisintroducedtoenhancethecluster-
+ingofglitcheventswithoutrelyingonextensivemanualannotations.
+These glitch events identified through Hveto during the O3GK run
+of the KAGRA detector were transformed into spectrograms, and
+thepre-processedspectrogramimageswereusedastrainingdatafor
+unsupervisedlearning.Threeunsupervisedapproachesweresystem-
+atically compared: a baseline method combining PCA andk-means
+clustering;aConvAE+PCA+k-meansmethodusingdeeplearning-
+based feature extraction followed by PCA andk-means clustering;
+andaDECalgorithmthatoptimisesdeeplearning-basedfeatureem-
+beddingandclusteringsimultaneously.Thesubsequentcomparative
+analysisrevealedthelimitationsofPCA-basedlineardimensionality
+reduction in capturing meaningful features, while deep learning-
+based approaches provided more representative feature embeddings
+for clustering. Notably, the ConvAE + PCA +k-means framework
+achieved the highest structural pairwise agreement with the ground-
+truthdistribution,yieldingapeakARIof0.4361.TheDECalgorithm
+maximized shared mutual information, achieving the highest NMI
+scoreof0.3673.AlthoughtheDECalgorithmachievedalowerARI
+compared to the ConvAE + PCA +k-means, it yielded more dis-
+tinct and compact clusters within the latent space, demonstrating its
+advantage for visual interpretation.
+While a subset of annotated data was used in this study to eval-
+uate the model’s validity, label information was strictly excluded
+from the training phase and was only used for quantitative evalu-
+ation. The findings demonstrate the efficacy of deep unsupervised
+frameworks in bridging the gap between raw instrumental data and
+meaningful categorisation. Future work should further enhance the
+discriminative power of the unsupervised clustering. This could be
+achieved by incorporating advanced algorithms to refine the latent
+spaceembedding,ensuringthatevenmorphologicallysimilarorsub-
+tle glitch variations are captured with higher precision. Subsequent
+researchwillextendthisstudytoincludeclusteringframeworksthat
+donotrequireapredefinednumberofclusters,enablingthefullyau-
+tomated clustering of unlabelled glitch populations without human
+intervention. These adaptive deep learning methods will facilitate
+the discovery of unknown glitch morphologies, providing the scal-
+able and annotation-free glitch classification pipelines required for
+next-generation gravitational wave observatories.
+APPENDIX
+Table 5 summarises the architecture of the ConvAE used to map
+each input spectrogram to a low-dimensional latent representation.
+The same encoder–decoder architecture, without modification, was
+reusedtoconstructtheDECmodel,withthedecoderdiscardedafter
+pretraining and the encoder fine-tuned jointly with the clustering
+objective (see subsection 3.1). This appendix describes the notation
+used in Table 5 and each process in detail.
+The encoder consists of three convolution–max-pooling blocks
+that progressively reduce the spatial resolution of the input from
+224×224to28×28while increasing the number of channels from
+4 to 128, followed by a fully-connected layer that compresses this
+feature map into a 64-dimensional latent vector. The decoder mir-
+rors this structure in reverse, using a fully-connected layer and three
+upsampling–convolutionblockstoreconstructa(4,224,224)tensor
+matchingtheshapeoftheoriginalinput.Asingleinputspectrogram
+is represented as a 3-dimensional tensor of shape(𝐶,𝐻,𝑊), where
+𝐶is the number of feature channels (four in this work), and𝐻and
+𝑊denote the spatial height and width (224×224), respectively.
+InTable5,theoutputentryisexpressedasa4-dimensionaltensor
+ofshape(𝑀,𝐶,𝐻,𝑊),toaccountforthemini-batchsize,𝑀.During
+training, rather than updating the network weights after processing
+every single spectrogram, the optimiser processes a small batch of
+𝑀spectrograms simultaneously. The optimiser then averages the
+resulting gradients over the batch before updating the weights. This
+mini-batch strategy reduces the variance of the gradient estimate
+relative to using a single sample, while remaining computationally
+far cheaper than using the entire training set at once.𝑀is a user-
+defined hyperparametersummarised in Table2. Layersmarked with
+the superscript𝐵are followed by a batch normalisation operation.
+For each feature channel, batch normalisation rescales the layer’s
+activations, computed across the current mini-batch of𝑀samples,
+to have approximately zero mean and unit variance. This has two
+practical effects: it mitigates the tendency of activation statistics to
+drift as the weights of earlier layers are updated during training,
+and it empirically allows the use of larger learning rates and faster,
+more stable convergence during optimisation. Batch normalisation
+is applied only during the convolutional feature-extraction stages of
+the network.
+ACKNOWLEDGEMENTS
+Kwak K. was also supported by Institute of Information & com-
+municationsTechnologyPlanning&Evaluation(IITP)grantfunded
+by the Korea government (MSIT) (No.RS-2020-II201336, Artificial
+Intelligence Graduate School Program (UNIST))
+DATA A V AILABILITY
+The data used in this study are publicly available from the Grav-
+itaional Wave Open Science Center athttps://gwosc.org/O3/
+O3GK/. Strain data can be accessed and downloaded from this site.
+Auxiliary channel data used in the Hveto analysis are not publicly
+available.
+REFERENCES
+Abbott B. P., et al., 2016, Phys. Rev. Lett., 116, 061102
+Abbott B. P., et al., 2018, Classical and Quantum Gravity, 35, 065010
+MNRAS000, 1–12 (2026)
+
+===== PAGE 12 =====
+12Y. Kim et al.
+Encode Layer Output Activation
+Input (M, 4, 224, 224)
+Convolution (M, 32, 224, 224) B ReLU
+Max-Pooling (M, 32, 112, 112)
+Convolution (M, 64, 112, 112) B ReLU
+Max-Pooling (M, 64, 56, 56)
+Convolution (M, 128, 56, 56) B ReLU
+Max-Pooling (M, 128, 28, 28)
+Fully-Connected (M, 64)
+Decode Layer Output Activation
+Input (M, 64)
+Fully-Connected (M,128×28×28)
+Upsampling (M, 128, 56, 56)
+Convolution (M, 64, 56, 56) B ReLU
+Upsampling (M, 64, 112, 112)
+Convolution (M, 32, 112, 112) B ReLU
+Upsampling (M, 32, 224, 224)
+Convolution (M, 4, 224, 224) Sigmoid
+Table 5.Proposed architecture of the ConvAE model used for mapping
+inputspectrogramstolow-dimensionallatentvectors.𝐵and𝑀denotebatch
+normalisation and the mini-batch size, respectively.
+AbeH.,etal.,2022,ProgressofTheoreticalandExperimentalPhysics,2023
+Akutsu T., et al., 2019, Nature Astronomy, 3, 35–40
+Akutsu T., et al., 2025, Progress of Theoretical and Experimental Physics,
+2025, 083F01
+BahaadiniS.,RohaniN.,KatsaggelosA.,NorooziV.,CoughlinS.,ZevinM.,
+2018a,in201825thIEEEInternationalConferenceonImageProcessing
+(ICIP). pp 748–752, doi:10.1109/ICIP.2018.8451708
+Bahaadini S., Noroozi V., Rohani N., Coughlin S., Zevin M., Smith J.,
+Kalogera V., Katsaggelos A., 2018b, Inf. Sci., 444, 172
+Bahaadini S., Wu Y., Coughlin S., Zevin M., Katsaggelos. A. K., 2022,
+preprint (arXiv:2205.13672)
+Covas P. B., et al., 2018, Phys. Rev. D, 97, 082002
+Cover T. M., Thomas J. A., 2005, Elements of Information Theory. John
+Wiley & Sons, Ltd, pp 13–55, doi:10.1002/047174882X.ch2
+George D., Shen H., Huerta E. A., 2018, Phys. Rev. D, 97, 101501
+Glanzer J., et al., 2023, Classical and Quantum Gravity, 40
+Guo W., Lin K., Ye W., 2021, in 2021 International Conference on Data
+Mining Workshops (ICDMW). IEEE Computer Society, Los Alamitos,
+CA, USA, pp 686–694, doi:10.1109/ICDMW53433.2021.00090
+Hinton G. E., Salakhutdinov R. R., 2006, Science, 313, 504
+Kingma D. P., Ba J., 2015, in International Conference on Learning Repre-
+sentations (ICLR).https://arxiv.org/abs/1412.6980
+Li Y., Wu Y., Katsaggelos A. K., 2024, 2024 IEEE/CVF Conference on
+Computer Vision and Pattern Recognition Workshops (CVPRW), pp
+6837–6846
+MacQueen J., 1967, in Proceedings ofthe 5th Berkeley symposium on math-
+ematical statisticsand probability. pp 281–297
+Macas R., et al., 2022, Phys. Rev. D, 105, 103021
+Macleod D. M., Areeda J. S., Coughlin S. B., Massinger T. J., Urban A. L.,
+2021, SoftwareX, 13, 100657
+Masci J., Meier U., Cireşan D., Schmidhuber J., 2011, in Proceedings of the
+21th International Conference on Artificial Neural Networks - Volume
+Part I. ICANN’11. p. 52–59
+MukundN.,AbrahamS.,KandhasamyS.,MitraS.,PhilipN.S.,2017,Phys.
+Rev. D, 95, 104059
+Oshino S., Sakai Y., Meyer-Conde M., Uchiyama T., Itoh Y., Shikano Y.,
+Terada Y., Takahashi H., 2025, Physics Letters B, 870, 139938
+Pearson K., 1901, The London, Edinburgh, and Dublin Philosophical Maga-
+zine and Journal of Science, 2, 559
+PowellJ.,Torres-FornéA.,LynchR.,TrifiròD.,CuocoE.,CavagliàM.,Heng
+I. S., Font J. A., 2017, Classical and Quantum Gravity, 34, 034002
+RobinetF.,ArnaudN.,LeroyN.,LundgrenA.,MacleodD.,McIverJ.,2020,
+SoftwareX, 12, 100620
+Sakai Y., et al., 2022, Scientific Reports volume, 12, 9935
+Smith J. R., Abbott T., Hirose E., Leroy N., MacLeod D., McIver J., Saulson
+P., Shawhan P., 2011, Classical and Quantum Gravity, 28, 235005
+Soni S., et al., 2021, Class Quantum Gravity, 38, 195016
+Vinh N. X., Epps J., Bailey J., 2010, Journal of Machine Learning Research,
+11, 2837
+Wang Z., Bovik A., Sheikh H., Simoncelli E., 2004, IEEE Transactions on
+Image Processing, 13, 600
+XieJ.,GirshickR.,FarhadiA.,2016,inBalcanM.F.,WeinbergerK.Q.,eds,
+ProceedingsofThe33rdInternationalConferenceonMachineLearning.
+pp478–487,https://proceedings.mlr.press/v48/xieb16.html
+Zevin M., et al., 2017, Classical and Quantum Gravity, 34, 064003
+van der Maaten L., Hinton G., 2008, Journal of Machine Learning Research,
+9, 2579
+This paper has been typeset from a TEX/LATEX file prepared by the author.
+MNRAS000, 1–12 (2026)

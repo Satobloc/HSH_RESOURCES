@@ -1,0 +1,1546 @@
+===== PAGE 1 =====
+Joint inference for gravitational-wave signal and noise glitch: Method and application
+Shun Yin Cheung ,1, 2,∗ Rhiannon Udall ,3 Derek Davis ,4 Paul D. Lasky ,1, 2 and Eric Thrane 1, 2
+1School of Physics and Astronomy, Monash University, Clayton VIC 3800, Australia
+2OzGrav: The ARC Centre of Excellence for Gravitational Wave Discovery, Clayton VIC 3800, Australia
+3Department of Physics and Astronomy, University of British Columbia, Vancouver, British Columbia, V6T1Z4, Canada
+4Department of Physics, University of Rhode Island, Kingston, RI 02881, USA
+(Dated: July 13, 2026)
+Non-Gaussian noise transients (“glitches”) in gravitational-wave observatories degrade our ability to
+accurately perform astrophysical inference. We present the analysis pipelinebilby glitch, which
+allows for simultaneous Bayesian inference of gravitational-wave signals and glitches. Our frame-
+work is modular and built on top of the popularbilbyframework, facilitating future extensions
+with additional glitch and signal models. We integrate transdimensionalbilbyinto our framework
+and discuss three glitch models: a physically-motivated slow scattering model, and flexible sine-
+Gaussian and chirplet models. Using a combination of simulated and real data, we demonstrate
+thatbilby glitchproduces reliable results. We then reanalyse two gravitational-wave events—
+GW191109 and GW200129—which show signs of interesting black-hole spins, but which may also
+be affected by data-quality issues. Our results for GW191109 are consistent with previous analy-
+sis. For GW200129, we recover results consistent with Payneet al., where the evidence of spin-
+precession is much weaker when using the waveform approximantNRSur7dq4in combination with
+wavelet-based glitch modeling. Furthermore, we show the astrophysical conclusion of this event is
+dependent on the interplay between the waveform approximant and glitch model, since in contrast
+toNRSur7dq4we find that inference with the waveform approximantIMRPhenomXPHMshows
+strong evidence of spin-precession when used in combination with wavelet-based glitch modeling.
+I. INTRODUCTION
+In the decade since the detection of the first
+gravitational-wave (GW) signals, the field has seen myr-
+iad advances in our understanding of the mergers of black
+holes and neutron stars. These include precise character-
+isation of hundreds of individual events [1–8], inferences
+of population properties [9–11], and physics beyond gen-
+eral relativity [12–17]. All of these studies rely upon
+the machinery of Bayesian inference [18–22], which in
+turn rely on assumptions about the behavior of the un-
+derlying noise processes. These assumptions are broken
+by the presence of non-stationary, non-Gaussian noise
+transients called “glitches” [23–25] which occur approx-
+imately once per minute [26]. Glitches can confound
+search pipelines [24, 27, 28] and bias parameter estima-
+tion when they overlap with true GW events [2, 29–36].
+The astrophysical interpretation of GW events can be
+altered by the presence of glitches if they are not prop-
+erly mitigated. Famously, the binary neutron star merger
+GW170817 featured a loud glitch approximately 1.1 s be-
+fore the merger which complicated coincident detection
+and accurate sky localisation [2, 37]. The binary black
+hole merger GW191109 010717 (hereafter GW191109)
+[26] may, in the worst-case scenario, have the completely
+wrong effective aligned spin measurement due to the pres-
+ence of an unmitigated glitch, although the balance of
+evidence suggests a less dire outcome [31]. The evi-
+dence of spin-precession in GW200129 065458 (hereafter
+GW200129; Abbottet al.[26]) has also been shown to
+∗ shun.cheung@monash.edu
+depend on the glitch model used with some studies sug-
+gesting that the black holes exhibit from maximal in-
+plane spin [38] and other studies finding no evidence for
+precession [30]. Evidence for other effects such as eccen-
+tricity [33] and GW memory [39] can also be significantly
+complicated by the effect of low-frequency glitches.
+Three broad approaches exist to mitigate the impact
+of glitches: removing the affected data, subtracting the
+glitch from the strain data, or incorporating the modeling
+of the glitch into the inference algorithm itself. The first
+of these approaches, cutting out affected data in either
+time or frequency domain [29–31, 37], reliably removes
+the effects of the glitch, but in doing so sacrifices astro-
+physical information. The second approach consists of
+modeling the glitch with some algorithm [e.g., 34, 40, 41],
+often itself a Bayesian inference algorithm, then subtract-
+ing the resulting modeled reconstruction of the glitch
+from the original strain data, before proceeding with in-
+ference as usual. An implementation of this method [40]
+in thebayeswavecode [22] is the approach currently
+adopted by LIGO-Virgo-KAGRA (LVK)[42–44] collabo-
+ration analyses [6, 8, 11, 29]. However, it has been shown
+that in a number of cases analyses which use the sub-
+traction method may still be impacted by residual glitch
+power [30–33, 45].
+A more robust method for glitch mitigation is to per-
+form inference with a signal and glitch model simul-
+taneously [31, 46–48]. This approach is implemented
+inbayeswave[46, 47], which allows for joint signal
+and glitch inference as well as glitch subtraction using
+a transdimensional Morlet-Gabor wavelet model. Udall
+et al.[31] demonstrated joint inference with a signal and
+glitch with a scattered light model, using the precursor
+arXiv:2607.09111v1  [gr-qc]  10 Jul 2026
+
+===== PAGE 2 =====
+2
+to thebilby glitchimplementation discussed in this
+work. Joint inference has been successfully applied to
+GW170817 [46], GW200129 [30], GW191109 [31], and ap-
+proximated for GW190701 203306, GW231114 043211,
+and GW231223 032836 [33].
+Another option which has seen increasing interest is to
+modify the likelihood function, or forego the use of a like-
+lihood function at all. For example, Ashton [49] models
+noise with a Gaussian process to capture the behavior
+of both the glitch and the Gaussian noise . Yet another
+approach is to use machine learning to model the full
+noise distribution—including any transient artifacts—
+and hence allow simultaneous inference of the true un-
+derlying signal [50–52].
+Despite the robustness of joint signal and glitch infer-
+ence, such approaches are not routinely incorporated in
+standard GW parameter estimation pipelines. Instead,
+glitch mitigation is applied on a case-by-case basis, only
+after a transient noise artifact is identified. This is largely
+due to the added computational cost and the complex-
+ity of its application. Nevertheless, incorporating glitch
+mitigation directly into standard parameter estimation
+pipelines will lead to more robust GW inference.
+In this paper, we presentbilby glitch1, a code pack-
+age which performs joint inference between a GW signal
+and a glitch that we make publicly available. It is an
+extension to the widely used Bayesian inference library
+bilby[18]. By building on the existingbilbyinfrastruc-
+ture, we enablebilbyusers to perform glitch mitiga-
+tion within the standard GW inference workflows with-
+out the need to adopt a separate analysis framework.
+bilby glitchis modular, allowing additional glitch
+models to be incorporated over time to study and miti-
+gate different types of glitches. The current implementa-
+tion includes a slow scattered light model, the more flexi-
+ble Sine-Gaussian wavelet model used bybayeswave[22]
+and the chirplet model introduced by Millhouseet al.
+[53]. The analysis pipeline supports flexible glitch mod-
+eling by incorporating transdimensional sampling using
+tBilby[54], allowing the number of components in the
+glitch model to be inferred directly from the data.
+The method implemented in our code is described in
+Section II, with the glitch models described in Section III.
+We validate pipeline performance in IV and apply the
+pipeline to GW events GW191109 and GW200129 in Sec-
+tion V. We present concluding remarks and direction for
+future work in Section VI.
+II. METHODOLOGY
+The objective of GW inference is to construct a poste-
+rior distribution of the parameters of the binaryθ. For
+1 The code can be found on thegitrepository
+https://git.ligo.org/rhiannon.udall/bilbyparametricglitch
+given datad, the posterior can be calculated using Bayes
+theorem,
+p(θ|d) =L(d|θ)π(θ)
+Z(d) ,(1)
+whereL(d|θ) is the likelihood,π(θ) is the prior andZ(d)
+is the Bayesian evidence.
+The standard likelihood used in GW inference [19] as-
+sumes noise to be stationary and Gaussian
+lnL(d|θ) =− 1
+2⟨d−h(θ),d−h(θ)⟩+ const,(2)
+wherehis the signal waveform, and we define the noise-
+weighted inner product as
+⟨x,y⟩≡4∆f
+X
+i
+Re
+ ˜x∗
+i ˜yi
+Pi
+
+,(3)
+where ∆fis the frequency resolution, ˜xrepresents the
+Fourier-domain representation ofx, andPis the noise
+power-spectral density [55].
+In order to model the glitch and signal waveform si-
+multaneously, we assume that the datad(t) consists of
+the linear sum of these two models along with stationary
+Gaussian noisen(t), such that
+d=n+g(γ) +h(θ),(4)
+whereg(γ) andh(θ) represent the glitch and signal wave-
+form parameterised byγandθ, respectively. The stan-
+dard Whittle likelihood is then modified to replaceh(θ)
+withh(θ) +g(γ).
+The inference can be computationally expensive given
+the combined dimensionality of both signal and glitch
+parameters. Therefore, we reduce the dimensionality of
+the problem by analytically marginalising over the the
+luminosity distance, extending the method already im-
+plemented inbilbyto the joint likelihood case (see Ap-
+pendix A).
+In the next Section we introduce a number of dif-
+ferent glitch modelsg(γ) that are implemented in
+bilby glitch. For each of these models, the number of
+glitch parametersγis not knowna priori, suggesting the
+need for transdimensional inference where the number of
+model componentsNis treated as a discrete parameter
+to be sampled. We use thetBilbycode package [54],
+which approaches transdimensional sampling usingghost
+parameters[see Ref. 54, for details].
+III. GLITCH MODELS
+We implement three different transdimensional glitch
+models inbilby glitch, allowing the choice of model
+to suit the glitch morphology. The first is a physically
+motivated slow scattering model for common slow scat-
+tering glitches. The second is a sine-Gaussian wavelet
+that, similarly tobayeswave, can fit a broad range of
+
+===== PAGE 3 =====
+3
+morphologies. The third is a chirplet model that closely
+resembles a GW signal. Chirplets are useful for modeling
+the components of glitches that most resemble GW sig-
+nals. (For this study, we do not care about the quality of
+the glitch fit for its own sake; our only goal is to achieve
+unbiased inference of the binary parameters.)
+A. Slow scattering
+The induced strain due to scattering of light off of a
+surface may be written as [56, 57]
+g(t) =Asin
+4π
+λ
+
+δx(t) +x 0
+
+,(5)
+whereAis an amplitude term that depends on various
+factors,λ= 1064 nm is the wavelength of the carrier
+beam, andδx(t) +x 0 is the difference in the path length
+between the light scattering off the surface and the main
+beam, split into time varying and constant components.
+Differences in the motion of the scatterer generate dif-
+ferent types of glitches. Slow scattering is produced by
+motion in the microseism band (f≈0.1−0.5 Hz), and
+is often characterised by scattered light which bounces
+multiple times, increasing the path length such that
+x0 +δx(t)→n(x 0 +δx(t)) (6)
+for thenth arch.
+To model slow scattering, we assume that the motion
+δx(t) is well described as a simple sinusoid [58, 59], such
+that
+δx(t) =δx 0 sin (2πfmod(t−t c)),(7)
+wheref mod is the modulation frequency andtc is the time
+of the glitch. Under the stationary phase approximation,
+the frequency of thenth scattering arch is
+f(t) =
+
+4πnfmodδx0
+λ cos(2πfmod(t−t c))
+.(8)
+Denoting the peak frequency of then th arch asf h,n, we
+write the induced strain for then th arch as
+gn(t) =A n sin
+fh,n
+fmod
+sin(2πfmod(t−t c)) +ϕn
+
+.(9)
+The total strain is
+g(t) =
+NX
+n=0
+gn(t).(10)
+Here we assumeA n andϕ n are uncorrelated, while
+fh,n =nδf+f h,0. The variableδfrepresents the spac-
+ing in peak frequencies between adjacent arches. Follow-
+ing the notation of Udall and Davis [58], we index scat-
+tering arches from the lowest observable arch (usually
+16⪅f harm/Hz⪅24), designating this arch ask= 0.
+The top panel of of Fig. 1 shows an spectrogram of a
+slow scattering glitch from our model. The lower panel
+shows the same glitch in the time domain.
+0.5 1.0 1.5 2.0 2.5 3.0 3.5
+Time [s]
+100
+50
+500Frequency [Hz]
+1.8 1.9 2.0 2.1 2.2
+Time [s]
+−5.0
+−2.5
+0.0
+2.5
+Whitened strain Data
+Simulated glitch
+0
+5
+10
+15
+20
+25
+Normalized Energy
+FIG. 1: A simulated example of a slow scattering glitch,
+with five slow scattering arches simulated into coloured
+Gaussian noise. Top: spectrogram of a slow scattering
+glitch. Bottom: whitened time-domain reconstruction of
+the data (grey) and simulated glitch model (blue).
+B. W avelets
+GW detector noise features many glitches for which we
+do not have physical models. Following Ref. [22], we use
+a superposition of sine-Gaussian wavelets as a flexible
+model for unmodeled glitches. A single sine-Gaussian
+wavelet can be written as
+g(t) =Aexp
+
+−(t−t 0)2
+τ 2
+
+cos [2πf0(t−t 0) +ϕ],(11)
+whereAis the amplitude,f 0 is the central frequency,
+t0 is the central time,τis the damping time, andϕis
+the phase. The damping time can be written asτ=
+Q/(2πf0) with quality factorQ.
+When it comes time to fit the data with multiple
+wavelets, it can be challenging to assign labels to two
+wavelets with similar properties. Ref. [54] pointed out
+that it can be useful to useful to label component func-
+tions according to their signal-to-noise ratio (SNR). For
+this purpose, we note that the SNR of a wavelet can be
+approximated as
+SNR≈ A√Q
+(8π)1/4f0P(f 0).(12)
+We use a superposition ofNwavelets to model a glitch
+g(t|N,γw) =
+NX
+n=0
+g(t|γw,n),(13)
+
+===== PAGE 4 =====
+4
+whereγ w,n ={A n,f 0,n,t 0,n,τn,ϕn}. Fig. 2 shows an
+example of a wavelet glitch from our model in a spec-
+trogram (top plot) and the time domain reconstruction
+(bottom plot).
+0.5 1.0 1.5 2.0 2.5 3.0 3.5
+Time [s]
+100
+50
+500Frequency [Hz]
+1.8 1.9 2.0 2.1 2.2
+Time [s]
+−4
+−2
+0
+2
+4
+Whitened strain
+Data
+Simulated glitch
+0
+5
+10
+15
+20
+25
+Normalized Energy
+FIG. 2: As Fig. 1 for a simulated wavelet glitch with a
+superposition of three wavelets simulated into coloured
+Gaussian noise at 50 Hz, 100 Hz and 200 Hz.
+C. Chirplets
+A chirplet is a generalisation of a wavelet with an ad-
+ditional sixth parameter, the chirp rateβ, which allows
+the frequency to evolve over time. Millhouseet al.[53]
+and Chatziioannouet al.[60] studied the use of chirplets
+for GW inference, including both joint glitch-GW infer-
+ence and neutron star post-merger signals, finding that
+while they can provide improved matches of glitches
+and of GW signals, the increased dimensionality actu-
+ally degrades the overall signal reconstruction, penalising
+their use in practical glitch mitigation. However, since
+chirplets are good matches for CBC signals, an artificial
+“glitch” composed of chirplets can reliably bias GW in-
+ference, and hence be used as an effective test case for
+our mitigation methods. We define the chirplet model to
+be [61]
+g(t|β,γw,0) =Ae − (t−t0 )2
+τ 2 e2πif0(t−t0)e
+iβ(t−t0 )2
+2 eiϕ,(14)
+and hence our transdimensional model becomes
+g(t|N,γc) =
+NX
+n=0
+g(t|βn,γw,n).(15)
+0.5 1.0 1.5 2.0 2.5 3.0 3.5
+Time [s]
+100
+50
+500Frequency [Hz]
+1.8 1.9 2.0 2.1 2.2
+Time [s]
+−4
+−2
+0
+2
+4
+Whitened strain
+Data
+Simulated glitch
+0
+5
+10
+15
+20
+25
+Normalized Energy
+FIG. 3: As Fig. 1 for a simulated chirplet glitch, with
+one chirplet simulated into coloured Gaussian noise.
+Fig. 3 shows an example of chirplet glitch in a spectro-
+gram and as a time domain reconstruction. There is not
+a simple approximation for the SNR of a chirplet, and so
+we calculate this manually for labelling purposes.
+IV. SIMULA TIONS
+In this Section, we test and validate our
+bilby glitchpipeline for our different models us-
+ing simulations. In all our simulations, we use 4 s of
+data, a sampling frequency of 2048 Hz and the frequency
+band of our data is 16 - 896 Hz. We marginalise the
+luminosity distance in all our joint inference to reduce
+the dimensionality and decrease the computational cost.
+A. V alidation test for slow scattering
+We validate the slow scattering model by performing
+145 binary black hole and and slow scattering simulations
+into coloured Gaussian noise in both LIGO Hanford and
+Livingston observatories. We recover the simulated pa-
+rameters using simultaneous inference. Configurations
+for the signal model and slow scattering simulations are
+drawn from their respective priors, listed in Table II and
+Table III, respectively. For both simulation and recovery
+of the signal model we use the waveform approximant
+IMRPhenomXPHM[62], which includes precession ef-
+fects and higher order modes. Sampling is performed
+
+===== PAGE 5 =====
+5
+withdynesty[63] using 2000 live points. A joint in-
+ference run with slow scattering typically increases run
+times by 50% or less with respect to comparable signal-
+only analysis.
+In Fig. 4 we show the probability-probability (P-P)
+plot for our signal-model (top panel) and for our glitch
+(bottom panel) parameters. These plots show that
+bilby glitchproduces well-behaved credible intervals. 2
+We see that for all signal-model parameters (top
+panel), the results are consistent with the expected di-
+agonal. For the slow scattering parameters, almost all
+parameters fall within the 90% credible interval, except
+forA g,1 which has a p-value of 0.01. However, as noted
+above, our priority is the inference of the signal parame-
+ters, and so the convergence of our sampling is adequate
+for our goal.
+We show an example of a typical signal+glitch simu-
+lation and recovery in Fig. 5 and 6. The right panel of
+Fig. 5 shows theNposterior is consistent with the simu-
+latedN= 2 glitch. The left panel shows the posterior of
+four signal parameters chirp massM, mass ratioq, right
+ascensionαand declinationδ, which are consistent the
+simulated value. The bottom panel of Fig. 6 shows the
+time domain reconstruction of the signal+glitch matches
+the simulated signal+glitch within 90% credible interval.
+B. Unbiasing astrophysical parameters with
+chirplets
+It is computationally intensive to sample both the
+signal and wavelet parameters with uninformative pri-
+ors and theIMRPhenomXPHMwaveform, taking up
+to five days with 16 CPU cores. Running a sufficient
+number of simulations required to do a comprehensive
+validation test would be too computationally expensive
+for a conventional sampler such asdynesty. Hence,
+we instead show a case in which the glitch configura-
+tion is engineered to bias the astrophysical inference,
+and demonstrate that the marginalisation method with
+wavelet/chirplet can reduce these biases. However, one
+can perform the validation test for the wavelet model
+with uninformative priors given enough computational
+resources.
+We simulate the signal from a non-spinning binary
+black hole and coloured Gaussian noise in both the Han-
+ford and Livingston detectors, and additionally simulate
+an overlapping chirplet glitch in the Livingston detec-
+tor. Table I shows the parameters used to simulate both
+the signal and the glitch. We perform joint inference
+usingdynestywith 3000 live points. To simplify the
+problem and reduce computational cost, we assume a
+2 The transdimensional sampler employs ghost parameters, which
+recover the prior when deactivated. Since these uniform priors
+contribute as noise and thus follow the diagonal of the P-P plot,
+we include all glitch parameters, both active and ghost.
+0.0 0.2 0.4 0.6 0.8 1.0
+C.I.
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Fraction of events in C.I
+N=145, p-value=0.18
+a1 (0.31)
+a2 (0.04)
+M (0.16)
+q (0.67)
+θJN (0.11)
+θ1 (0.29)
+θ2 (0.19)
+RA (0.50)
+DEC (0.17)
+tc (0.66)
+ψ (0.78)
+φ (0.85)
+∆ φ (0.43)
+φJL (0.20)
+0.0 0.2 0.4 0.6 0.8 1.0
+C.I.
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+Fraction of events in C.I
+N=145, p-value=0.53
+Ag 0 (0.83)
+Ag 1 (0.01)
+Ag 2 (0.81)
+Ag 3 (0.90)
+Ag 4 (0.78)
+φg 0 (0.09)
+φg 1 (0.89)
+φg 2 (0.56)
+φg 3 (0.22)
+φg 4 (0.73)
+geocent time (0.97)
+fh 0 (0.60)
+fmod (0.30)
+FIG. 4: Results for 145 simulations drawn from the
+priors in Table II and III. The gray region covers the
+cumulative 90% confidence interval. Each color curve
+tracks the cumulative fraction of events within the
+confidence interval on the horizontal axis for each
+parameter. The top plot shows the result for the binary
+black hole parameters and the bottom plot shows the
+result for the glitch parameters. The combined p-value
+for the signal-model and glitch parameters is 0.18 and
+0.53, respectively, representing the probability that the
+inferred distribution is consistent with the expected
+distribution. The numbers in the legends are the
+individual p-values for each parameter. The luminosity
+distance parameter is not included as we marginalise
+over this parameter.
+
+===== PAGE 6 =====
+6
+0.6
+0.8
+q
+0.0
+0.2
+χeﬀ
+110.0 120.0 130.0M [M⊙]
+0.3
+0.6
+χp
+0.6 0.8
+q
+0.0 0.2
+χeﬀ
+0.3 0.6
+χp
+0.0 0.5 1.0
+Probability Density
+0
+1
+2
+3
+4
+5
+N
+FIG. 5: An example of signal+glitch simulation and recovery for a sample slow scattering glitch withN= 2 arches.
+The right shows the posterior of the number of slow scattering arches, for which we recover the simulated value of
+N= 2. The left shows posteriors of four signal parameters — chirp massM, mass ratioq, effective inspiral spin
+parameterχ eff and effective spin-precession parameterχ p — which recover the simulated value (black) within 2-σ.
+non-spinning system, choosing not to sample the spin
+parameters{a 1,a 2,ϕ 12,ϕjl,θ 1,θ 2}, and adopt the com-
+putationally fastIMRPhenomPv2waveform [64, 65].
+Table IV lists the signal-model and glitch priors used
+in the run. Following Ref. [54], we order component func-
+tions according to their SNR. The results are shown in
+Fig. 7 and 8. The right of Fig. 7 shows that we recover the
+simulated number of chirpletsN= 1. The left of Fig. 7
+compares the posteriors for chirp mass, mass ratio, right
+ascension and declination for analyses with and without
+glitch mitigation in blue and orange, respectively. The
+posteriors from both cases are noticeably different, show-
+ing that the misspecified noise model is inadequate for
+reliable inference. In Fig. 8, we plot the reconstructed
+time series for four cases: the signal+glitch, signal-only
+and glitch-only from our joint inference, and the signal
+where the glitch was not mitigated. The signal+glitch re-
+construction obtained with the glitch model better agrees
+with the data, especially aftert= 0 s compared to the
+reconstruction obtained where the glitch was not miti-
+gated.
+V. APPLICA TIONS TO REAL EVENTS
+In this section we revisit two GW events in the cat-
+alogue which have suspected data-quality issues. The
+first event is GW191109 [26], which has a scattered light
+glitch overlapping with the signal in LIGO Livingston,
+potentially biasing the effective spin inspiral parameter
+χeff [31]. The second event is GW200129, which has a
+glitch in LIGO Livingston [26], potentially biasing the
+
+===== PAGE 7 =====
+7
+−4
+−2
+0
+2
+4
+Signal
+Data
+Signal
+Simulated Signal
+−4
+−2
+0
+2
+4
+Glitch
+Data
+Glitch
+Simulated Glitch
+−0.15 −0.10 −0.05 0.00 0.05 0.10
+Time from -0.09 s (s)
+−4
+−2
+0
+2
+4
+Signal+Glitch
+Data
+Signal+Glitch
+Simulated Signal+Glitch
+Whitened strain (L1)
+FIG. 6: The time domain reconstruction of an example signal+glitch simulation withN= 2 slow scattering arches,
+showing the signal (top), glitch (middle), and signal+glitch (bottom) from joint inference. The reconstruction for all
+three cases agree with their simulations within 90% credible interval.
+effective spin-precession parameterχ p [30].
+A. Slow scattering - GW191109
+The event GW191109 contains scattered light glitches
+in both LIGO Hanford and LIGO Livingston detectors
+[26]. However, the glitch in LIGO Hanford did not over-
+lap with the GW signal, so its impact on parameter es-
+timation is likely negligible [36]. However, the glitch in
+LIGO Livingston overlapped in time and frequency with
+the signal, which can lead to biased inference if the glitch
+modeling is not treated carefully [31].
+We perform joint inference with the transdimensional
+slow scattered light model usingdynestywith 500 live
+points. We model the GW signal using theIMRPhe-
+nomXPHMwaveform approximant. For our glitch pri-
+ors, our prior onNis discrete uniform between 1 to 9,
+all amplitude priors are uniform between 1×10 −24 and
+1×10 −21, the base harmonic frequency prior is uniform
+between 18 Hz and 20 Hz, the modulation frequency prior
+is uniform between 0.05 Hz and 0.15 Hz, andδhis uni-
+form between 5 Hz and 8 Hz.
+We show the posterior of the number of scattering
+archesNin the right panel of Fig. 9, which has large
+support forN= 2. We find no support forN >2, in-
+consistent with the theN= 5 case used in Udallet al.
+[31]. In the left panel, we compare our posteriors for the
+
+===== PAGE 8 =====
+8
+0.50
+0.75
+1.00
+q
+1
+2
+3
+α
+56 60 64
+M [M⊙]
+−1.2
+−0.6
+0.0
+δ
+0.50 0.75 1.00
+q
+1 2 3
+α −1.2
+−0.6 0.0
+δ
+0.0 0.5
+Probability Density
+0
+1
+2
+3
+4
+5
+N
+Signal + glitch
+Glitch not mitigated
+FIG. 7: Results from an example of signal+glitch simulation and recovery for a non-spinning BBH and a chirplet
+model withN= 1. The corner plots shows posteriors for chirp massM, mass ratioq, right ascensionαand
+declinationδwith the simulated values shown in black (left). The posterior of the number of chirplets peaks at the
+simulated value (right).
+intrinsic parameters to theN= 5 case from Udallet al.
+[31]. The posteriors show marginal change compared to
+the results in Udallet al.[31]. Our posterior forχ eff
+shows marginally more support for negative values. We
+show the time domain reconstruction of the recovered sig-
+nal and glitch in the bottom panel of Fig. 10 and find the
+data is within 90% credible interval of the reconstruction.
+B. W avelets - GW200129
+The binary black hole merger GW200129 is an inter-
+esting event with potential evidence of spin-precession,
+but with data-quality issues in both LIGO Livingston
+and Virgo detectors [26]. The LVK collaboration mit-
+igated transient noise in the LIGO Livingston detec-
+tor by usinggwsubtract[66] to model correlations
+between auxiliary channels and the main strain chan-
+nel, then subtracting the resulting correlated noise. In
+GWTC-3 [26] these glitch-subtracted data were used
+for parameter estimation with theIMRPhenomXPHM
+andSEOBNR v4PHMwaveform approximants, which
+found strong evidence for spin-precession and no evidence
+for spin-precession respectively, indicating that waveform
+systematics play a significant role in interpretation of
+this event. Hannamet al.[38] and Islamet al.[67]
+then used these same glitch-subtracted data in parame-
+ter estimation with theNRSur7dq4waveform approx-
+imant, finding strong evidence for spin-precession. Sub-
+sequently, Payneet al.[30] considered the impacts of dif-
+fering glitch mitigation strategies on astrophysical infer-
+ences, usingbayeswaveinference — including simulta-
+
+===== PAGE 9 =====
+9
+−5.0
+−2.5
+0.0
+2.5
+Signal (Glitch not mitigated)
+Data
+Signal
+Simulated Signal
+−5.0
+−2.5
+0.0
+2.5
+Signal (Joint inference)
+Data
+Signal
+Simulated Signal
+−5.0
+−2.5
+0.0
+2.5
+Glitch (Joint inference)
+Data
+Glitch
+Simulated Glitch
+−0.100 −0.075 −0.050 −0.025 0.000 0.025 0.050 0.075 0.100
+Time from 0.00 s (s)
+−5.0
+−2.5
+0.0
+2.5
+Signal+Glitch (Joint inference)
+Data
+Signal+Glitch
+Simulated Signal+Glitch
+Whitened strain (L1)
+FIG. 8: Results from an example of signal+glitch simulation and recovery for a non-spinning BBH and a chirplet
+model withN= 1, showing time domain reconstructions for (top to bottom) the signal where the glitch is not
+mitigated, the individual signal and glitch components from joint inference respectively, and the signal+glitch from
+joint inference. The signal+glitch reconstruction (pink) is in better agreement with the data (grey) than the signal
+where the glitch was not mitigated (blue)
+
+===== PAGE 10 =====
+10
+0.5
+0.8
+1.0
+q
+-0.8
+-0.4
+0.0
+χeﬀ
+50.0 60.0 70.0
+M [M⊙]
+0.4
+0.8
+χp
+0.5 0.8 1.0
+q
+-0.8 -0.4 0.0
+χeﬀ
+0.0 0.4 0.8
+χp
+0.0 0.5
+Probability Density
+0
+1
+2
+3
+4
+5
+N
+Transdimensional
+Udall et al.
+FIG. 9: Results from the analysis of GW191109 with a transdimensional slow scattering model compared with Udall
+et al.[31] which assumedN= 5. The right panel shows the posterior of the number of scattering arches for our
+analysis; notably, there is large posterior support forN= 2 and no posterior support forN >2. The left panel shows
+the posteriors for chirp massM, mass ratioq, effective inspiral spin parameterχ eff and effective spin-precession
+parameterχ p. Our posterior (blue) is compared with the posteriors from [31] (orange), showing marginal change.
+neous inference with an aligned-spin model and wavelet-
+based glitch mitigation — to show that different possi-
+ble glitch realisations produced dramatically different ev-
+idence for spin-precession. Payneet al.[30] also showed
+that data in Virgo were inconsistent with data in the
+other two detectors, contraindicating the use of Virgo
+data in any analysis. Finally, Macaset al.[68] used ma-
+chine learning methods informed by auxiliary models to
+produce new glitch-subtracted data and perform param-
+eter estimation withNRSur7dq4, finding results similar
+to Hannamet al.[38].
+We seek to extend the approach of Payneet al.[30]
+by performing simultaneous inference of the BBH sig-
+nal withNRSur7dq4and the glitch using a wavelet
+model. We perform this analysis usingdynestywith
+3000 live points, and restrict ourselves to the data from
+LIGO Livingston and LIGO Hanford in accordance with
+the findings of Payneet al.[30]. As GW200129 is
+strongly affected by waveform systematics, we use both
+waveformsIMRPhenomXPHMandNRSur7dq4. A
+joint inference run withIMRPhenomXPHMand a
+wavelet/chirplet model typically takes 1-5 days with 16
+CPU cores. However, the computational cost can be re-
+duced by constraining the prior. Using the constrained
+priors shown in Table V, the inference takes only 1-2 days.
+Payneet al.[30] found that the spin-precession evidence
+is concentrated in the 20-50 Hz band, coinciding with
+the 30-60 Hz glitch found in Daviset al.[29]. Although
+the glitch is known to exist between 30-60 Hz, we choose
+to focus on the frequency range that contains the spin-
+
+===== PAGE 11 =====
+11
+−5.0
+−2.5
+0.0
+2.5
+Signal
+−5.0
+−2.5
+0.0
+2.5
+Glitch
+Data
+Transdimensional
+Udall et al.
+−0.15 −0.10 −0.05 0.00 0.05 0.10
+Time from 1257296855.22 s (s)
+−5.0
+−2.5
+0.0
+2.5
+Signal+Glitch
+Whitened strain (L1)
+FIG. 10: Whitened time domain reconstructions of GW191109 with transdimensional slow scattering model, showing
+the signal (top), glitch (middle), and signal+glitch (bottom) from joint inference. The reconstruction for our results
+(blue), the results in [31] (orange) and the data (grey) all agree with each other within statistical uncertainties.
+precession evidence, and thus set the central frequency-
+wavelet priors to be 20-50 Hz.NRSur7dq4has a valid
+total mass range ofM >60M ⊙, hence we add this addi-
+tional constraint in ourNRSur7dq4run [69].
+We compare the results fromIMRPhenomX-
+PHMandNRSur7dq4in Fig. 11 and 12. In the right
+of Fig. 11, we see that the glitch in GW200129 strongly
+prefers one wavelet for both waveforms. In the left of
+Fig. 11, we compare the intrinsic parameter posteriors
+betweenIMRPhenomXPHMandNRSur7dq4, and
+found significant difference inqandχ p. The two wave-
+forms prefer different astrophysical conclusions: where
+NRSur7dq4prefers a system with equal mass and
+weaker evidence of spin-precession withχ p = 0.52+0.29
+−0.26,
+IMRPhenomXPHMinstead prefers a more unequal
+mass system and stronger evidence spin-precession with
+χp = 0.67 +0.28
+−0.30. This large difference in posteriors sug-
+gest that this event is significantly affected by waveform
+systematics. We find negligible change in the wavelet
+posteriors between the two waveforms, apart from the
+quality factorQ 0 (included in Fig 11) and find thatQ 0
+is correlated withqandχ p. In Fig. 12, we show that
+the time domain reconstruction of the signal+glitch for
+NRSur7dq4(blue),IMRPhenomXPHM(orange) and
+data (grey) agree with each other within 90% credible
+interval.
+
+===== PAGE 12 =====
+12
+0.50
+0.75
+1.00q
+−0.2
+0.0
+0.2
+χeﬀ
+0.4
+0.8
+χp
+30 33
+M [M⊙]
+15
+30Q0
+0.50 0.75 1.00
+q
+ −0.2 0.0 0.2
+χeﬀ
+0.4 0.8
+χp
+0 15 30
+Q0
+0.0 0.5 1.0
+Probability Density
+0
+1
+2
+3
+4
+5
+N
+NRSur7dq4
+IMRPhenomXPHM
+FIG. 11: Posterior for chirp massM, mass ratioq, effective inspiral spin parameterχ eff, effective spin-precession
+parameterχ p and the wavelet quality factorQ 0 for the GW200129 joint inference (left). We overlay theχ p prior in
+grey in theχ p histogram for reference. The two waveformsNRSur7dq4(blue) andIMRPhenomXPHM(orange)
+show substantial difference in theqandχ p posteriors, withNRSur7dq4having prior-like spin-precession and
+IMRPhenomXPHMsupporting a maximally precessing system. Despite significant differences, the posteriors of
+both waveforms are not entirely disjoint. We find thatQ 0 substantially different between the two waveforms and is
+correlated withqandχ p. Posterior for number of wavelets for the GW200219 joint inference for both waveforms
+(right). We find strong posterior support for one wavelet.
+VI. CONCLUSION
+We presentbilby glitch, a pipeline that allows for
+joint inference between a GW signal and a glitch. We val-
+idatebilby glitchresults with a slow scattering model,
+and then use a chirplet model to simulate a biased GW
+waveform and demonstrate that joint inference can re-
+construct the glitch and show that modeling the glitch
+in conjunction with the signal model is needed to pro-
+duce unbiased estimates of the astrophysical parameters.
+We then applybilby glitchto two real events. We
+first reanalyse the event GW191109 which is affected by
+a slow scattering glitch in the LIGO Livingston detec-
+tor. We find that the posteriors are mostly similar, with
+the transdimensional model preferring a marginally more
+negativeχ eff than a non-transdimensional slow scattering
+model. Next, we reanalyse the event GW200129, which
+is affected by a glitch in the LIGO Livingston detec-
+tor, using joint inference with a transdimensional sine-
+Gaussian wavelet model, We find thatNRSur7dq4and
+IMRPhenomXPHMdiverge in astrophysical interpre-
+tation, with the joint inference weakening the evidence
+of spin-precession in the former, and leaving strong evi-
+dence in the latter. The astrophysical conclusions of our
+
+===== PAGE 13 =====
+13
+−5
+0
+5
+Signal
+−5
+0
+5
+Glitch
+Data
+NRSur7dq4
+IMRPhenomXPHM
+−0.15 −0.10 −0.05 0.00 0.05 0.10
+Time from 1264316116.43 s (s)
+−5
+0
+5
+Signal+Glitch
+Whitened strain (L1)
+FIG. 12: The time domain reconstruction of the GW200129 signal (top), glitch (middle), and signal+glitch
+(bottom) from joint inference usingNRSur7dq4(blue) andIMRPhenomXPHM(orange). The signal+glitch
+reconstructions for both waveforms agree with the data within 90% credible interval.
+NRSur7dq4result are consistent with Payneet al.[30],
+which performedNRSur7dq4analysis in conjunction
+with wavelet subtraction, but inconsistent with Hannam
+et al.[38], which performed analysis with the same wave-
+form but usedgwsubtractsubtraction.
+We view this paper as an important milestone in fa-
+cilitating joint inference between signal and noise glitch
+in an easily usable Bilby-based pipeline. Accordingly, we
+highlight potential future steps to further improve and
+expandbilby glitch. First, whilebilby glitchcur-
+rently only supports three glitch models, the number of
+glitch models can be greatly expanded. We envision that
+researchers can easily write their own glitch model and
+include it into the pipeline to suit their own glitch mitiga-
+tion needs. Existing glitch models in the literature that
+can be integrated into joint inference include Bondarescu
+et al.[41], Malz and Veitch [48], Merrittet al.[70].
+Second, joint inference is computationally expensive.
+Asbilby glitchis built on top ofbilby, it currently
+uses off-the-shelf samplers such asdynestyandemcee
+included inbilby, which either do poorly with multi-
+modality or high-dimensional parameter space (or both).
+We recommend that a sampler should be developed that
+supports transdimensional sampling and can handle the
+mulitmodality and scales well at high number of dimen-
+sions.
+In the process of finalising the paper, we became aware
+of the paper released in the LVK collaboration review
+
+===== PAGE 14 =====
+14
+TABLE I: simulated values for both signal-model and
+glitch-chirplet parameters. The simulated values of
+parameters
+a1 =a 2 =ψ= Ψ =ϕ 12 =ϕ JL =θ 1 =θ 2 = 0.
+Parameter simulated Value
+M60 M ⊙
+q 0.8
+dL 4000 Mpc
+tc 0 s
+α2.1
+δ-1.3
+θJ N 0.3
+N1
+SNR0 12
+Q0 12.7
+tglitch,0 0.02 s
+f0 105 Hz
+ϕ0 4.7
+β0 8000 Hz/s
+by Hoyet al.[71], which similarly performs joint infer-
+ence using theantiglitchmodel [41]. Hoyet al.[71]
+reanalysed GW200129 and find strong evidence for spin-
+precession when usingNRSur7dq4waveform and their
+ownantiglitchmodel. Although these results are op-
+posite to our ownNRSur7dq4results, this disagreement
+is unsurprising, since different glitch models are employed
+and, as this work and Payneet al.[30] have shown, the
+inference of spin-precession in this event is highly sensi-
+tive to both glitch and waveform systematics.
+ACKNOWLEDGMENTS
+We thank Nir Guttman and Hui Tong for helpful
+discussions in usingtBilby. We thank Colm Talbot
+for helpful discussions on how to implement distance
+marginalisation with the joint likelihood. We thank Ka-
+terina Chatziioannou for helpful discussion about the in-
+terpretation of GW200129. We thank Sophie Bini for
+their feedback during LVK collaboration internal review.
+We acknowledge support from the Australian Research
+Council (ARC) Centres of Excellence CE170100004 and
+CE230100016, as well as ARC LE210100002, and ARC
+DP230103088. S.Y.C receives support from the Aus-
+tralian Government Research Training Program. RU was
+supported by the NSERC Alliance program. This work
+was supported by a grant from the Simons Foundation In-
+ternational [SFI-MPS-SSRFA-00023625, DD]. This ma-
+terial is based upon work supported by NSF’s LIGO
+Laboratory which is a major facility fully funded by the
+National Science Foundation. The authors are grateful
+for computational resources provided by the LIGO Lab-
+oratory and supported by National Science Foundation
+Grants PHY-0757058 and PHY-0823459.
+This research has made use of data or software ob-
+tained from the Gravitational Wave Open Science Cen-
+ter (gw-openscience.org), a service of LIGO Laboratory,
+the LIGO Scientific Collaboration, the Virgo Collabo-
+ration, and KAGRA. LIGO Laboratory and Advanced
+LIGO are funded by the United States National Sci-
+ence Foundation (NSF) as well as the Science and Tech-
+nology Facilities Council (STFC) of the United King-
+dom, the Max-Planck-Society (MPS), and the State of
+Niedersachsen/Germany for support of the construction
+of Advanced LIGO and construction and operation of
+the GEO600 detector. Additional support for Advanced
+LIGO was provided by the Australian Research Coun-
+cil. Virgo is funded, through the European Gravita-
+tional Observatory (EGO), by the French Centre Na-
+tional de Recherche Scientifique (CNRS), the Italian Isti-
+tuto Nazionale di Fisica Nucleare (INFN) and the Dutch
+Nikhef, with contributions by institutions from Belgium,
+Germany, Greece, Hungary, Ireland, Japan, Monaco,
+Poland, Portugal, Spain. The construction and opera-
+tion of KAGRA are funded by Ministry of Education,
+Culture, Sports, Science and Technology (MEXT), and
+Japan Society for the Promotion of Science (JSPS), Na-
+tional Research Foundation (NRF) and Ministry of Sci-
+ence and ICT (MSIT) in Korea, Academia Sinica (AS)
+and the Ministry of Science and Technology (MoST) in
+Taiwan.
+Appendix A: Distance marginalisation for joint
+likelihoods
+To accelerate parameter inference, it is beneficial to
+analytically marginalise over parameters when possible.
+One such parameter is luminosity distance, which may
+be marginalised over by use of a precomputed coefficients
+table [18, 55, 72, 73]. This marginalisation uses the in-
+sight that gravitational waveforms scale inversely with
+distance, such that
+h(θ,DL) =h(θ,D 0)
+D0
+DL
+
+.(A1)
+Adopting the notation of Thrane and Talbot [55] one sees
+that the likelihood may be marginalised over distance
+LD(κ2,ρopt) =
+Z
+dDL exp
+D0
+DL
+
+κ2(D0)
+− 1
+2
+D0
+DL
+2
+ρopt(D0)2
+
+π(DL),(A2)
+where
+κ2(DL) =⟨d,h(θ,D L)⟩,(A3)
+and
+ρ2
+opt(DL) =⟨h(θ,D L),h(θ,D L)⟩,(A4)
+such that
+lnL marg = lnZN + lnLD(κ2,ρ opt).(A5)
+
+===== PAGE 15 =====
+15
+SinceL D(κ2,ρopt) is only a function of these two vari-
+ables, a lookup table may be numerically computed for
+a given luminosity distance prior.
+To extend this procedure to joint likelihoods, observe
+that the expansion of the joint likelihood only introduces
+one new set of inner products which depend on the grav-
+itational waveform (and hence the luminosity distance):
+κ2
+g =−
+D0
+DL
+
+⟨g(γ)|h(θ,D 0)⟩.(A6)
+Since this term has the same luminosity distance depen-
+dence asκ 2 from before, Equation A3 expands to the
+total factor
+κ2
+T =κ 2 +κ 2
+g =⟨d,h(θ,D L)⟩−⟨g(γ),h(θ,D L)⟩.(A7)
+The full likelihood then has the expression
+lnLmarg = lnZN + lnLD(κ2
+g,ρopt)
+− 1
+2⟨g(γ),g(γ)⟩+⟨g(γ),d⟩.(A8)
+The same distance marginalisation tables work in this
+case, since the dependence onκ 2
+g is identical to the de-
+pendence onκ 2 in the signal-only case.
+Appendix B: Priors for joint inference
+In this section, we list all the signal and glitch priors
+used in all the joint inference runs in this paper. The
+signal and glitch priors for slow scattering validation test
+is listed in Table II and III, respectively. The signal and
+glitch priors for the chirplet simulation is listed in Ta-
+ble IV. The signal and glitch priors for GW200129 joint
+inference is listed in Table V.
+TABLE II: Priors for the binary black hole parameters
+in our validation test of the slow scattering model.
+Priors for parametersα,δ,ϕ, Ψ,ϕ 12,θ 1,θ 2 ,ϕJL and
+θJN are the same as [74] and are not included in the
+table for brevity. The geocentric timet c prior is [-0.1 s,
+0.1 s] around the simulated value.
+UniformInComponentsrefers to priors uniform in the
+component massesm 1 andm 2.
+Parameter Shape Limits Boundary
+a1 Uniform [0,0.88] -
+a2 Uniform [0,0.88] -
+MUniformInComponents [12.3, 175 ]M ⊙ -
+q UniformInComponents [0.125,1] -
+dL(Mpc) PowerLaw (alpha = 2) [100, 2000 ]Mpc -
+TABLE III: Priors for slow scattering parameters in the
+validation of the slow scattering model.
+Parameter Shape Limits Boundary
+NDiscreteUniform [0,5] -
+An Uniform [1×10 −24,1×10 −21] -
+ϕn Uniform [0,2π] Periodic
+fh,0 Uniform [18, 22 ]Hz -
+δfUniform [10, 15 ]Hz -
+fmod Uniform [0.1, 0.3 ]Hz -
+TABLE IV: Priors for both chirplet and signal-model
+parameters. Priors for parametersα,δ,ψ, Ψ andθ JN
+are the same as [74] and are not included in the table
+for brevity.DescendingOrderare conditional priors that
+enforce the SNR parameters to be in descending order.
+Parameter Shape Limits Boundary
+MUniformInComponent [55, 65 ]M ⊙ -
+qUniformInComponent [0.125,1] -
+tc,GW Uniform [-0.1, 0.1 ]s -
+dL PowerLaw (alpha=0.2) [3500, 4500 ]Mpc -
+NDiscreteUniform [0, 5] -
+SNRn DescendingOrder [0, 20] -
+Qn Uniform [1, 20] -
+tglitch,n Uniform [-0.1, 0.1 ]s -
+fn Uniform [16, 200 ]Hz -
+ϕn Uniform [0, 2π] Periodic
+βn Uniform [0, 10000 ]Hz/s -
+TABLE V: Priors for both wavelet and binary black
+hole parameters used for GW200129. Priors for
+parametersα,δ,ψ, Ψ andθ JN are the same as Ref.
+[74] and are not included in the table for brevity. The
+time priors are relative to GPS time 1264316116.4 s.
+Parameter Shape Limits Boundary
+MUniformInComponent [26, 38 ]M ⊙ -
+qUniformInComponent [0.167,1] -
+a1,a 2 Uniform [0, 0.99] -
+tc,GW Uniform [-0.1, 0.1 ]s -
+dL PowerLaw (alpha=0.2) [500, 1500 ]Mpc -
+NDiscreteUniform [0, 5] -
+SNRn DescendingOrder [0, 20] -
+Qn Uniform [1, 40] -
+tglitch,n Uniform [-0.2, 0.2 ]s -
+fn Uniform [20, 50 ]Hz -
+ϕn Uniform [0, 2π] Periodic
+
+===== PAGE 16 =====
+16
+[1] B. P. Abbottet al.(LIGO Scientific Collaboration and
+Virgo Collaboration), Properties of the binary black hole
+merger gw150914, Phys. Rev. Lett.116, 241102 (2016).
+[2] B. P. Abbottet al.(LIGO Scientific Collaboration and
+Virgo Collaboration), Gw170817: Observation of gravi-
+tational waves from a binary neutron star inspiral, Phys.
+Rev. Lett.119, 161101 (2017).
+[3] A. G. Abacet al.(The LIGO Scientific Collaboration,
+The Virgo Collaboration, and The KAGRA Collabora-
+tion), Black hole spectroscopy and tests of general relativ-
+ity with gw250114, Phys. Rev. Lett.136, 041403 (2026).
+[4] A. G. Abacet al.(LIGO Scientific, Virgo, KAGRA),
+Gw230814: Investigation of a loud gravitational-wave sig-
+nal observed with a single detector, The Astrophysical
+Journal Letters1004, L23 (2026).
+[5] A. G. Abacet al.(LIGO Scientific, Virgo, KAGRA),
+GW241011 and GW241110: Exploring Binary Forma-
+tion and Fundamental Physics with Asymmetric, High-
+spin Black Hole Coalescences, Astrophys. J. Lett.993,
+L21 (2025), arXiv:2510.26931 [astro-ph.HE].
+[6] A. G. Abacet al., Gwtc-4.0: Updating the gravitational-
+wave transient catalog with observations from the first
+part of the fourth ligo–virgo–kagra observing run, The
+Astrophysical Journal Letters1004, L22 (2026).
+[7] R. Abbottet al.(KAGRA, VIRGO, LIGO Scien-
+tific), GWTC-3: Compact Binary Coalescences Observed
+by LIGO and Virgo during the Second Part of the
+Third Observing Run, Phys. Rev. X13, 041039 (2023),
+arXiv:2111.03606 [gr-qc].
+[8] R. Abbottet al.(LIGO Scientific, VIRGO), GWTC-2.1:
+Deep extended catalog of compact binary coalescences
+observed by LIGO and Virgo during the first half of the
+third observing run, Phys. Rev. D109, 022001 (2024),
+arXiv:2108.01045 [gr-qc].
+[9] R. Abbottet al., Population properties of compact ob-
+jects from the second ligo–virgo gravitational-wave tran-
+sient catalog, The Astrophysical Journal Letters913, L7
+(2021).
+[10] A. G. Abacet al.(LIGO Scientific, VIRGO, KAGRA),
+GWTC-4.0: Population Properties of Merging Compact
+Binaries, (2025), arXiv:2508.18083 [astro-ph.HE].
+[11] R. Abbottet al.(KAGRA, VIRGO, LIGO Scientific),
+Population of Merging Compact Binaries Inferred Using
+Gravitational Waves through GWTC-3, Phys. Rev. X13,
+011048 (2023), arXiv:2111.03634 [astro-ph.HE].
+[12] B. P. Abbottet al.(The LIGO Scientific Collaboration
+and the Virgo Collaboration), Tests of general relativity
+with the binary black hole signals from the ligo-virgo
+catalog gwtc-1, Phys. Rev. D100, 104036 (2019).
+[13] R. Abbottet al.(LIGO Scientific Collaboration and
+Virgo Collaboration), Tests of general relativity with bi-
+nary black holes from the second ligo-virgo gravitational-
+wave transient catalog, Phys. Rev. D103, 122002 (2021).
+[14] R. Abbottet al.(The LIGO Scientific Collaboration, the
+Virgo Collaboration, and the KAGRA Collaboration),
+Tests of general relativity with gwtc-3, Phys. Rev. D112,
+084080 (2025).
+[15] A. G. Abacet al.(LIGO Scientific, VIRGO, KAGRA),
+GWTC-4.0: Tests of General Relativity. II. Parameter-
+ized Tests, (2026), arXiv:2603.19020 [gr-qc].
+[16] A. G. Abacet al.(LIGO Scientific, VIRGO, KAGRA),
+GWTC-4.0: Tests of General Relativity. I. Overview and
+General Tests, (2026), arXiv:2603.19019 [gr-qc].
+[17] A. G. Abacet al.(LIGO Scientific, VIRGO, KAGRA),
+GWTC-4.0: Tests of General Relativity. III. Tests of the
+Remnants, (2026), arXiv:2603.19021 [gr-qc].
+[18] G. Ashtonet al., BILBY: A user-friendly Bayesian infer-
+ence library for gravitational-wave astronomy, Astrophys.
+J. Suppl.241, 27 (2019), arXiv:1811.02042 [astro-ph.IM].
+[19] J. Veitchet al., Parameter estimation for compact bina-
+ries with ground-based gravitational-wave observations
+using the LALInference software library, Phys. Rev. D
+91, 042003 (2015), arXiv:1409.7215 [gr-qc].
+[20] A. B. Yelikar, V. Delfavero, and R. O’Shaughnessy, Low-
+latency parameter inference enabled by a Gaussian likeli-
+hood approximation for RIFT (2023), arXiv:2301.01337
+[gr-qc].
+[21] M. Dax, S. R. Green, J. Gair, J. H. Macke, A. Buonanno,
+and B. Sch¨ olkopf, Real-Time Gravitational Wave Science
+with Neural Posterior Estimation, Phys. Rev. Lett.127,
+241103 (2021), arXiv:2106.12594 [gr-qc].
+[22] N. J. Cornish and T. B. Littenberg, BayesWave:
+Bayesian Inference for Gravitational Wave Bursts and
+Instrument Glitches, Class. Quant. Grav.32, 135012
+(2015), arXiv:1410.3835 [gr-qc].
+[23] D. Davis and M. Walker, Detector Characterization and
+Mitigation of Noise in Ground-Based Gravitational-Wave
+Interferometers, Galaxies10, 12 (2022).
+[24] S. Soniet al.(LIGO), LIGO Detector Characterization in
+the first half of the fourth Observing run, Class. Quant.
+Grav.42, 085016 (2025), arXiv:2409.02831 [astro-ph.IM].
+[25] F. Acerneseet al.(Virgo), Virgo detector characteriza-
+tion and data quality: results from the O3 run, Class.
+Quant. Grav.40, 185006 (2023), arXiv:2210.15633 [gr-
+qc].
+[26] R. Abbottet al.(LIGO Scientific Collaboration, Virgo
+Collaboration, and KAGRA Collaboration), Gwtc-3:
+Compact binary coalescences observed by ligo and virgo
+during the second part of the third observing run, Phys.
+Rev. X13, 041039 (2023).
+[27] S. A. Usmanet al., The PyCBC search for gravitational
+waves from compact binary coalescence, Class. Quant.
+Grav.33, 215004 (2016), arXiv:1508.02357 [gr-qc].
+[28] S. Sachdevet al., The GstLAL Search Analysis Methods
+for Compact Binary Mergers in Advanced LIGO’s Sec-
+ond and Advanced Virgo’s First Observing Runs, (2019),
+arXiv:1901.08580 [gr-qc].
+[29] D. Davis, T. B. Littenberg, I. M. Romero-Shaw, M. Mill-
+house, J. McIver, F. Di Renzo, and G. Ashton, Subtract-
+ing glitches from gravitational-wave detector data during
+the third LIGO-Virgo observing run, Class. Quant. Grav.
+39, 245013 (2022), arXiv:2207.03429 [astro-ph.IM].
+[30] E. Payne, S. Hourihane, J. Golomb, R. Udall, D. Davis,
+and K. Chatziioannou, Curious case of GW200129:
+Interplay between spin-precession inference and data-
+quality issues, Phys. Rev. D106, 104017 (2022),
+arXiv:2206.11932 [gr-qc].
+[31] R. Udall, S. Hourihane, S. Miller, D. Davis, K. Chatzi-
+ioannou, M. Isi, and H. Deshong, Antialigned spin of
+gw191109: Glitch mitigation and its implications, Phys.
+Rev. D111, 024046 (2025).
+
+===== PAGE 17 =====
+17
+[32] R. Udall, S. Bini, K. Chatziioannou, D. Davis, S. Houri-
+hane, Y. Lecoeuche, J. McIver, and S. Miller, Infer-
+ring the spins of merging black holes in the presence of
+data-quality issues, Phys. Rev. D113, 042005 (2026),
+arXiv:2510.05029 [gr-qc].
+[33] N. Gupteet al., Eccentricity constraints disfavor single-
+single capture in nuclear star clusters as the origin of
+all LIGO-Virgo-KAGRA binary black holes, (2026),
+arXiv:2603.29019 [astro-ph.HE].
+[34] S. Ghonge, J. Brandt, J. M. Sullivan, M. Millhouse,
+K. Chatziioannou, J. A. Clark, T. Littenberg, N. Cornish,
+S. Hourihane, and L. Cadonati, Assessing and mitigating
+the impact of glitches on gravitational-wave parameter
+estimation: A model agnostic approach, Physical Review
+D110, 10.1103/physrevd.110.122002 (2024).
+[35] Y. Lecoeuche, J. McIver, A. M. Knee, R. Udall,
+K. Rink, S. Hourihane, S. J. Miller, K. Chatziioannou,
+T. Massinger, and D. Davis, Coalescing Compact Bi-
+nary Parameter Estimation with Gravitational Waves in
+the Presence of non-Gaussian Transient Noise, (2026),
+arXiv:2604.07668 [gr-qc].
+[36] S. Hourihane and K. Chatziioannou, Glitches far from
+transient gravitational-wave events do not bias inference,
+Phys. Rev. D112, 084006 (2025), arXiv:2506.21869 [gr-
+qc].
+[37] C. Pankowet al., Mitigation of the instrumental
+noise transient in gravitational-wave data surround-
+ing GW170817, Phys. Rev. D98, 084016 (2018),
+arXiv:1808.03619 [gr-qc].
+[38] M. Hannamet al., General-relativistic precession
+in a black-hole binary, Nature610, 652 (2022),
+arXiv:2112.11300 [gr-qc].
+[39] S. Y. Cheung, P. D. Lasky, and E. Thrane, Does space-
+time have memories? searching for gravitational-wave
+memory in the third ligo-virgo-kagra gravitational-wave
+transient catalogue, Classical and Quantum Gravity41,
+115010 (2024).
+[40] N. J. Cornish, T. B. Littenberg, B. B´ ecsy, K. Chatzi-
+ioannou, J. A. Clark, S. Ghonge, and M. Millhouse,
+BayesWave analysis pipeline in the era of gravitational
+wave observations, Phys. Rev. D103, 044006 (2021),
+arXiv:2011.09494 [gr-qc].
+[41] R. Bondarescu, A. Lundgren, and R. Macas, Antiglitch:
+a quasi-physical model for removing short glitches from
+ligo and virgo data (2023), arXiv:2309.06594 [gr-qc].
+[42] B. P. Abbott, R. Abbott, R. Adhikari, P. Ajith, B. Allen,
+G. Allen, R. S. Amin, S. B. Anderson, W. G. Ander-
+son, and M. A. Arain, Ligo: the laser interferometer
+gravitational-wave observatory, Reports on Progress in
+Physics72, 076901 (2009).
+[43] J. Aasi, J. Abadie, B. P. Abbott, R. Abbott, T. D. Ab-
+bott, M. Abernathy, T. Accadia, F. Acernese, C. Adams,
+and T. Adams, The characterization of virgo data and
+its impact on gravitational-wave searches, Classical and
+Quantum Gravity29, 155002 (2012).
+[44] Y. Aso, Y. Michimura, K. Somiya, M. Ando,
+O. Miyakawa, T. Sekiguchi, D. Tatsumi, and H. Ya-
+mamoto (The KAGRA Collaboration), Interferometer
+design of the kagra gravitational wave detector, Phys.
+Rev. D88, 043007 (2013).
+[45] N. Gupte, A. Ramos-Buades, A. Buonanno, J. Gair,
+M. Coleman Miller, M. Dax, S. R. Green, M. P¨ urrer,
+J. Wildberger, J. Macke, I. M. Romero-Shaw, and
+B. Sch¨ olkopf, Evidence for eccentricity in the population
+of binary black holes observed by ligo-virgo-kagra, Phys.
+Rev. D112, 104045 (2025).
+[46] K. Chatziioannou, N. Cornish, M. Wijngaarden, and
+T. B. Littenberg, Modeling compact binary signals and
+instrumental glitches in gravitational wave data, Phys.
+Rev. D103, 044013 (2021), arXiv:2101.01200 [gr-qc].
+[47] S. Hourihane, K. Chatziioannou, M. Wijngaarden,
+D. Davis, T. Littenberg, and N. Cornish, Accurate mod-
+eling and mitigation of overlapping signals and glitches
+in gravitational-wave data, Phys. Rev. D106, 042006
+(2022), arXiv:2205.13580 [gr-qc].
+[48] A.-K. Malz and J. Veitch, Joint inference for gravitational
+wave signals and glitches using a data-informed glitch
+model, Phys. Rev. D112, 024071 (2025).
+[49] G. Ashton, Gaussian processes for glitch-robust
+gravitational-wave astronomy, Mon. Not. Roy. Astron.
+Soc.520, 2983 (2023), arXiv:2209.15547 [gr-qc].
+[50] R. Legin, M. Isi, K. W. K. Wong, Y. Hezaveh, and
+L. Perreault-Levasseur, Gravitational-wave parameter es-
+timation in non-gaussian noise using score-based likeli-
+hood characterization, The Astrophysical Journal Letters
+985, L46 (2025).
+[51] M. Emma and G. Ashton, Rnle: Residual neural likeli-
+hood estimation and its application to gravitational-wave
+astronomy (2026), arXiv:2601.13857 [gr-qc].
+[52] C. Chatterjee and K. Jani, Navigating unknowns: Deep
+learning robustness for gravitational-wave signal recon-
+struction, The Astrophysical Journal973, 112 (2024).
+[53] M. Millhouse, N. J. Cornish, and T. Littenberg,
+Bayesian reconstruction of gravitational wave bursts
+using chirplets, Phys. Rev. D97, 104057 (2018),
+arXiv:1804.03239 [gr-qc].
+[54] H. Tong, N. Guttman, T. A. Clarke, P. D. Lasky,
+E. Thrane, E. Payne, R. Nathan, B. Farr, M. Fishbach,
+G. Ashton, and V. D. Marco, Transdimensional inference
+for gravitational-wave astronomy with bilby, The Astro-
+physical Journal Supplement Series276, 50 (2025).
+[55] E. Thrane and C. Talbot, An introduction to Bayesian
+inference in gravitational-wave astronomy: parame-
+ter estimation, model selection, and hierarchical mod-
+els, Publ. Astron. Soc. Austral.36, e010 (2019),
+[Erratum: Publ.Astron.Soc.Austral. 37, e036 (2020)],
+arXiv:1809.02293 [astro-ph.IM].
+[56] T. Accadiaet al., Noise from scattered light in Virgo’s
+second science run data, Class. Quant. Grav.27, 194011
+(2010).
+[57] S. Soni, J. Glanzer, A. Effler, V. Frolov, G. Gonz´ alez,
+A. Pele, and R. Schofield, Modeling and reduction of
+high frequency scatter noise at LIGO Livingston, Class.
+Quant. Grav.41, 135015 (2024), arXiv:2311.05730 [astro-
+ph.IM].
+[58] R. Udall and D. Davis, Bayesian modeling of scattered
+light in the LIGO interferometers, Appl. Phys. Lett.122,
+094103 (2023), arXiv:2211.15867 [astro-ph.IM].
+[59] A. E. Tolley, G. S. Cabourn Davies, I. W. Harry, and
+A. P. Lundgren, ArchEnemy: removing scattered-light
+glitches from gravitational wave data, Class. Quant.
+Grav.40, 165005 (2023), arXiv:2301.10491 [gr-qc].
+[60] K. Chatziioannou, J. A. Clark, A. Bauswein, M. Mill-
+house, T. B. Littenberg, and N. Cornish, Inferring the
+post-merger gravitational wave emission from binary
+neutron star coalescences, Phys. Rev. D96, 124035
+(2017), arXiv:1711.00040 [gr-qc].
+
+===== PAGE 18 =====
+18
+[61] S. Mann and S. Haykin, The chirplet transform: physical
+considerations, Trans. Sig. Proc.43, 2745–2761 (1995).
+[62] G. Pratten, C. Garc´ ıa-Quir´ os, M. Colleoni, A. Ramos-
+Buades, H. Estell´ es, M. Mateu-Lucena, R. Jaume,
+M. Haney, D. Keitel, J. E. Thompson, and S. Husa,
+Computationally efficient models for the dominant and
+subdominant harmonic modes of precessing binary black
+holes, Phys. Rev. D103, 104056 (2021).
+[63] J. S. Speagle, dynesty: a dynamic nested sampling
+package for estimating Bayesian posteriors and evi-
+dences, Mon. Not. Roy. Astron. Soc.493, 3132 (2020),
+arXiv:1904.02180 [astro-ph.IM].
+[64] M. Hannam, P. Schmidt, A. Boh´ e, L. Haegel, S. Husa,
+F. Ohme, G. Pratten, and M. P¨ urrer, Simple Model
+of Complete Precessing Black-Hole-Binary Gravitational
+Waveforms, Phys. Rev. Lett.113, 151101 (2014),
+arXiv:1308.3271 [gr-qc].
+[65] P. Schmidt, F. Ohme, and M. Hannam, Towards mod-
+els of gravitational waveforms from generic binaries II:
+Modelling precession effects with a single effective pre-
+cession parameter, Phys. Rev. D91, 024043 (2015),
+arXiv:1408.1810 [gr-qc].
+[66] D. Davis, T. J. Massinger, A. P. Lundgren, J. C. Driggers,
+A. L. Urban, and L. K. Nuttall, Improving the Sensitiv-
+ity of Advanced LIGO Using Noise Subtraction, Class.
+Quant. Grav.36, 055011 (2019), arXiv:1809.05348 [astro-
+ph.IM].
+[67] T. Islam, A. Vajpeyi, F. H. Shaik, C.-J. Haster,
+V. Varma, S. E. Field, J. Lange, R. O’Shaughnessy, and
+R. Smith, Analysis of gwtc-3 with fully precessing nu-
+merical relativity surrogate models, Phys. Rev. D112,
+044001 (2025).
+[68] R. Macas, A. Lundgren, and G. Ashton, Revisiting the
+evidence for precession in GW200129 with machine learn-
+ing noise mitigation, Phys. Rev. D109, 062006 (2024),
+arXiv:2311.09921 [gr-qc].
+[69] V. Varma, S. E. Field, M. A. Scheel, J. Blackman,
+D. Gerosa, L. C. Stein, L. E. Kidder, and H. P. Pfeif-
+fer, Surrogate models for precessing binary black hole
+simulations with unequal masses, Phys. Rev. Research.
+1, 033015 (2019), arXiv:1905.09300 [gr-qc].
+[70] J. D. Merritt, B. Farr, R. Hur, B. Edelman, and Z. Doc-
+tor, Transient glitch mitigation in advanced ligo data,
+Phys. Rev. D104, 102004 (2021).
+[71] C. Hoy, R. Bondarescu, A. Lundgren, and L. Nuttall,
+A parametric signal plus noise inference framework for
+short duration non-Gaussian noise transients, (2026), in
+preparation.
+[72] L. P. Singer and L. R. Price, Rapid Bayesian position
+reconstruction for gravitational-wave transients, Phys.
+Rev. D93, 024013 (2016), arXiv:1508.03634 [gr-qc].
+[73] R. P. Udall,Robust Gravitational Wave Analysis at the
+Catalog Scale, Ph.D. thesis, Caltech (2025).
+[74] I. M. Romero-Shawet al., Bayesian inference for compact
+binary coalescences with bilby: validation and applica-
+tion to the first LIGO–Virgo gravitational-wave transient
+catalogue, Mon. Not. Roy. Astron. Soc.499, 3295 (2020),
+arXiv:2006.00714 [astro-ph.IM].

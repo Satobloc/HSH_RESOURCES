@@ -1,0 +1,1368 @@
+===== PAGE 1 =====
+MaxWave Signal: Rapid, coherent maximum likelihood
+wavelet reconstruction of transient signals in gravitational wave data
+Sudhi Mathur and Neil J. Cornish
+eXtreme Gravity Institute, Department of Physics,
+Montana State University, Bozeman, Montana 59717 USA
+(Dated: June 22, 2026)
+Advances in gravitational-wave detector sensitivity have increased the rate of transient signal de-
+tections, demanding faster automated analysis. We extend MaxWave, a fast maximum likelihood
+waveletreconstructionalgorithm, toperformcoherentmulti-detectorsignalreconstructionandglitch
+rejection. We coherently search for a common set of wavelets modeling the signal in all detectors.
+Multi-detector data are aligned using z-statistic time and phase offsets and amplitude scalings rela-
+tivetothedominantreconstruction, aswellasadaptivenoiseweightingsderivedfromageometrically
+averaged noise spectrum. By aligning and weighting individual detectors, we form a synthetic de-
+tector that amplifies non-Gaussian features, down-weights noisy detectors, and preserves Gaussian
+noise statistics. We extract the coherent signal using this synthetic detector, improving sensitivity
+to weak events while rejecting coincident glitches that lack consistent phase and amplitude evo-
+lution. Our algorithm provides real-time, low-latency, model-independent signal reconstructions,
+safely denoises gravitational wave data without removing transient signals, and can complement
+existing burst search and reconstruction frameworks through a fundamentally distinct approach,
+strengthening detection confidence and improving sensitivity to diverse signal morphologies.
+I. INTRODUCTION
+Advances [1–4] in gravitational-wave detector [1, 5–
+7] sensitivity have increased the rate of transient sig-
+nal detections, demanding faster automated reconstruc-
+tions that are robust against non-Gaussian noise artifacts
+called "glitches". Although well-modeled transients such
+as compact binary coalescences (CBCs) with low mass
+ratios and spins are optimally detected and character-
+ized using matched-filtered searches, a broad range of
+sources, including extreme-mass-ratio or highly precess-
+ing binaries, core-collapse supernovae, post-merger rem-
+nants, and other unexpected astrophysical phenomena,
+can produce signals with unknown morphology. For such
+signals, model-independent multi-detector coherent burst
+analyses are crucial.
+We extend MaxWave [8], a fast maximum likelihood
+model-independent wavelet reconstruction algorithm, to
+perform coherent multi-detector transient signal recon-
+struction and glitch rejection. Our model, MaxWave sig-
+nal, is designed to complement existing coherent burst
+search frameworks such as X-Pipeline [9] and Coher-
+ent Waveburst (cWB) [10, 11], which has been devel-
+oped over the last 20 years. Burst searches that em-
+ploy distinct time-frequency representations, likelihood
+functions, and reconstruction bases extract complemen-
+tary signal information and exhibit varying sensitivities
+to glitch morphologies. Thus, a diverse ecosystem of
+burst search pipelines is essential to strengthen detection
+confidence and flag discrepancies indicative of data qual-
+ity issues or source complexity. While cWB constructs
+coherence through detector antenna pattern projections,
+phase-transformed polarization response, and ellipticity-
+polarization constraints [10, 11], X-Pipeline through co-
+herent and incoherent energy channels projected in the
+dominant polarization frame [9], and DeepExtractor [12]
+and AWaRe [13, 14] through learned single-detector noise
+and signal reconstructions respectively, we adopt a con-
+ceptually distinct reconstruction-based approach.
+MaxWave signal uses z-statistic time and phase off-
+sets and amplitude scalings [15, 16], computed against
+the highest signal-to-noise ratio (SNR) reconstruction, as
+well as adaptive noise weightings derived from a geometri-
+cally averaged noise spectrum, to weight and align multi-
+detector data. This creates a single coherent synthetic de-
+tectorthatamplifiesnon-Gaussianfeatures, down-weights
+noisy detectors, and preserves Gaussian noise statistics.
+We reconstruct the coherent signal using this synthetic
+detector, improving sensitivity to weak events while re-
+jecting coincident glitches that lack consistent phase and
+amplitude evolution. Using a combined detector stream
+approach and approximate likelihood maximization on
+a coherent detector, MaxWave signal implicitly encodes
+network diagnostics and provides a novel framework for
+low-latency signal and glitch analysis. Although beyond
+the scope of this work, our model can be extended to a
+complete, stand-alone detection pipeline by further quan-
+tifying the detection statistics and comparing it against
+the performance of existing burst search algorithms.
+Through the coherent multi-detector reconstruction,
+arXiv:2606.23035v1  [gr-qc]  22 Jun 2026
+
+===== PAGE 2 =====
+2
+MaxWave signal can accelerate the convergence time for
+theBayesWavesignal model [17] by starting the sam-
+pler’s reversible jump Markov Chain Monte Carlo (RJM-
+CMC) chains near a good initial solution. Currently,
+theBayesWavesignal model’s chains are initialized by
+crudely drawing the wavelet intrinsic and extrinsic pa-
+rameters from broad flat prior distributions. While the
+BayesWavenoisemodel[18]benefitsfromanapproximate
+maximum likelihood initialization [8, 17], this solution is
+not suitable for initializing the signal model. The noise
+model’s glitch wavelets are constructed independently in
+each detector’s reference frame, whereas the signal model
+builds a single geocentric waveform projected coherently
+onto the detector network. It employs a fundamentally
+different parameterization that requires additional extrin-
+sic parameters, including sky location, polarization angle,
+and ellipticity. MaxWave signal’s coherent multi-detector
+reconstruction directly provides this geocentric starting
+point, and seeds the RJMCMC chains near a good initial
+solution in the hard to sample, coupled, multimodal pa-
+rameter space where sky location and wavelet time shifts
+are jointly constrained across detectors. Our model can
+also safely denoise gravitational wave data without re-
+moving transient signals.
+In the following sections, we present the formulation,
+implementation, and performance of the MaxWave signal
+model. Sec. II describes our methodology. We construct
+a coherent synthetic detector and outline glitch rejection
+tests. Sec. III presents our results. We demonstrate
+improvements in multi-detector signal reconstructions,
+residuals, and injected signal recovery using the coherent
+detector. We compare MaxWave signal toBayesWave
+[17] in terms of reconstruction accuracy across various
+SNRs and binary mass ratios. We present glitch rejec-
+tion statistics, calculate operations cost and runtime, and
+analyze 14 hours of real LIGO data for a two-detector
+network. We also apply our model to two binary black
+hole events GW191109_010717 and GW200129_065458
+(subsequently referred to as GW191109 and GW200129)
+from the third observing run (O3) [19, 20] where the pa-
+rameter estimation of the gravitational wave signals is
+affected by glitches [21–23]. Sec. IV summarizes our con-
+clusions. Sec. V discusses broader applications such as
+extending our model to a stand-alone low-latency burst
+search pipeline.
+II. METHODS
+For coherent multi-detector reconstruction, our algo-
+rithm (Fig. 1) searches for a common wavelet represen-
+tation of the signal across the detector network. After
+running the MaxWave glitch model [8] independently on
+data from allndetectors and rendering individual detec-
+tor reconstructions, we identify the detectorn max with
+the highest SNR reconstruction ˜h(f). Using ˜h(f)as a
+reference, we compute z-statistic [15, 16] time and phase
+shifts (∆tn and∆ϕ n), and amplitude scalingsan with re-
+spect to the detector strain from the other(n−1)detec-
+MaxWave Glitch
+Z-statistic ∆tn,∆ϕ n,a n for
+(n−1) detector data and ˜h(f)
+Is ∆tn ≤light travel time? Glitch only
+Shift and weight (n−1)
+detector data to create
+synthetic coherent detector
+with ˜deff(f),S eff(f),S w
+eff(f)
+Whiten ˜deff(f) usingS w
+eff(f)
+Shift ˜hcoh(f) back to
+individual detectors
+using ∆tn,∆ϕ n,a n
+Compute coherent residuals
+˜rn
+coh(f) = ˜dn(f)− ˜hn
+coh(f)
+Residual ˜hn
+resid(f) exists with
+more than one wavelet?
+Coincident Flag
+Signal Flag
+˜dn(f),S n(f)
+max SNR ˜h(f)
+no
+yes
+˜dw
+eff(f),
+Seff(f),
+Sw
+eff(f)
+˜hcoh(f)
+˜rn
+coh(f)
+˜hn
+resid(f)
+yes
+no
+Figure 1. Model for the coherent multi-detector MaxWave
+signal reconstruction. MaxWave glitch model is run indepen-
+dently on allndetectors and highest-SNR reconstruction˜h(f)
+is selected as a reference. Z-statistic time and phase shifts,
+and amplitude scalings(∆t n,∆ϕ n,a n)are computed for the
+remaining(n−1)detectors and if∆t n is consistent with the
+inter-detector light-travel time, the individual detectors are
+coherently aligned, scaled and combined into a synthetic de-
+tector. MaxWave is re-run on this synthetic detector to obtain
+a coherent reconstruction ˜hcoh(f). The coherent reconstruc-
+tion is shifted and scaled back to individual detectors˜hn
+coh(f)
+and used to compute residuals˜r n
+coh(f) = ˜dn(f)− ˜hn
+coh(f).
+MaxWave is re-run on these residuals, and any reconstruction
+˜hn
+resid(f)with a significant number of wavelets is indicative
+of incoherent residuals and receives a "coincident event non-
+removal" flag instead of a "signal non-removal" flag.
+
+===== PAGE 3 =====
+3
+tors. The z-statistic defines the complex cross-correlation
+between ˜h(f)and ˜dn(f)as a function of time delay∆t,
+zn(∆t) = 4
+Z ∞
+0
+˜dn(f) ˜h∗(f)
+Sn(f) e2πif∆t (1)
+where the peaks of|z n(∆t)|, the phasesarg[z n(∆tn)],
+and the ratios of|zn(∆tn)|to the wavelet inner product
+(h|h)1/2 giveusthez-statistictimeshifts∆t n, phaseshifts
+∆ϕn, and amplitude scalingsan, respectively [15]. If the
+z-statistic time shift between˜h(f)and any of the(n−1)
+detector strains is less than the inter-detector light travel
+time, and at least one of the(n−1)detectors within the
+light travel time has SNR≥5, we proceed to coherently
+align them. This approach allows us to dig deeper and
+extract additional signal information even from detectors
+with weak signals and no initial reconstruction.
+We weight and align individual detectors that pass the
+z-statistic light travel time test to construct a coher-
+ent synthetic detector that amplifies non-Gaussian fea-
+tures and preserves Gaussian noise statistics (further de-
+scribed in Sec. IIA). We re-run MaxWave glitch model
+on this synthetic detector and produce a coherent signal
+reconstruction ˜hcoh(f)that captures the common set of
+wavelets across our multi-detector network.
+Unlike signals, false alarms such as coincident glitches
+are characterized by independent non-Gaussian structure
+in each detector and produce incoherent multi-detector
+reconstructions. Even if glitches occur within the light
+travel time, their distinct time–frequency morphology is
+reflected in the synthetic detector response and in the
+resulting reconstruction ˜hcoh(f). To catch false alarms
+and cases such as coincident glitches, or glitch-signal over-
+laps that might produce z-statistic time-shifts within the
+inter-detector light travel time, we shift and scale the
+coherent reconstruction back to the individual detectors
+˜hn
+coh(f)and compute the coherent reconstruction residu-
+als˜rn
+coh(f) = ˜dn(f)− ˜hn
+coh(f). We re-run the MaxWave
+glitch model on these residuals to capture any signifi-
+cant incoherent power. For signals, the reconstruction
+˜hresid(f)extracted from the coherent residuals should ei-
+ther not exist or have occasional low-SNR single wavelets
+for cases where the initial reconstruction was noisy and
+the coherent reconstruction removed the noise-induced
+wavelet. Thus, any reconstruction ˜hresid(f)with more
+than one wavelet is flagged as a "coincident event non-
+removal" instead of a "signal non-removal", where "non-
+removal" signifies that the event passed the z-statistic
+light travel time test and should not be removed when
+denoising the gravitational wave data. We note that the
+classification of non-removals as coincident events or sig-
+nals based on the coherent residuals is not conclusive, but
+provisional (indicated by the dotted border in Fig. 1).
+A. Constructing the synthetic coherent detector
+We construct a synthetic coherent detector by time-
+shifting, phase-rotating, and amplitude-scaling the strain
+data from individual detectors if an event passes the z-
+statistic light travel time consistency test, and illustrate
+its statistical properties, including preserved Gaussian
+noise background and amplified coherent non-Gaussian
+features.
+1. Two Detector Case
+The standard inner product [24] forKdetectors has
+the form
+(d|h) =
+KX
+k=1
+2
+Z
+df
+dkh∗
+k +d∗
+khk
+Sk
+
+(2)
+where the frequency dependence of the detector strain
+datadk(f), waveform reconstruction templateshk(f)and
+power spectral densitiesSk(f)is omitted for clarity.
+In a standard template based analysis, the projection
+of the geocentric reference templatehto each individual
+detectorh k depends on the sky location of the source,
+detectorantennapatterns, andthetwogeneralrelativistic
+gravitational wave polarization modesh+(f)andh ×(f)
+[17].
+Currently, we restrict the MaxWave signal model to
+elliptical polarizations
+h+ =
+X
+n
+Ψ(f;t n
+0,f n
+0,τ n,An,ϕn
+0 )
+h× =iϵh +
+(3)
+whereAn arethewaveletamplitudes,t n
+0 thecentraltimes,
+fn
+0 the central frequencies,ϕn
+0 the phases att=t n
+0,τ n
+the time extent related to the quality factors asτ n =
+Qn/2πfn
+0 , andϵis the ellipticity ranging fromϵ= 0lin-
+early polarized toϵ= 1circularly polarized signals.
+Thisellipticalpolarizationassumptiondoesnotholdfor
+CBCs with spin-precession or strong higher-order modes
+as their polarization content changes with time. For
+highly precessing CBC signals, relaxing the elliptical po-
+larization assumption to generic polarizations modestly
+improves the 90% credible signal reconstruction intervals
+(Fig. 1 in [17]). Generic gravitational wave bursts are also
+not expected to have any special polarization relation be-
+tween the two modes, and the polarization restriction is
+suboptimalfordetectingunpolarizedsignalssuchaswhite
+
+===== PAGE 4 =====
+4
+noisebursts[17]. However, theassumptionstillworkswell
+for our low-latency model. It allows us to safely denoise
+GW data, and provide a good initial, coherent, multi-
+detector solution that speeds up convergence of computa-
+tionally intensive algorithms such as theBayesWavesig-
+nalmodel, whichcanthenextendtogenericpolarizations.
+We estimate theh k by running the MaxWave glitch
+model on individual detectors. Consider a two-detector
+network and suppose thath 1 is the higher SNR recon-
+struction. We use z-statistic [15, 16] time and phase dif-
+ferences betweenh 1 and thed 2 detector data to shift the
+data in the lower SNR detector in time and in overall
+phase. Assuming elliptical polarization, after this align-
+ment, theh’s only differ by an overall amplitude scaling,
+such thath=h 1 =αh 2 and
+(d|h) = 2
+Z
+df
+d1h∗ +d∗
+1h
+S1
++ 1
+α
+d′
+2h∗ +d′∗
+2h
+S2
+
+(4)
+whered′
+2(f)is the time and phase shifted data in lower
+SNR detector. We can re-write this as
+(d|h) = 2
+Z
+df
+deffh∗ +d∗
+effh
+Seff
+
+(5)
+where the detector strain of the synthetic coherent detec-
+tord eff(f)is given as
+deff =
+r
+S2
+S1
+d1 + 1
+α
+r
+S1
+S2
+d′
+2 (6)
+and the effective power spectral densitySeff(f)used to
+weight the standard inner product is
+Seff =
+p
+S1S2 (7)
+The relative amplitude scaling inferred from z-statistic for
+the high SNR templateh1 and lower SNR detector data
+d2 impacts the rescaling of data in the shifted detector
+d′
+2. In the limit that one detector is much more sensitive
+than the other, the inner product in Eq. 5 reduces to
+that for the single detector case. The generalization toK
+detectors is direct.
+Note thatSeff(f)does not whiten the data, but is used
+solely for calculating inner products. To whiten the data,
+we computeSw
+eff =E[(d eff)2]with no cross terms to get
+Sw
+eff = S2
+S1
+E[(d1)2] + 1
+α2
+S1
+S2
+E[(d′
+2)2](8)
+Thus the power spectral density that whitens the effective
+data is given by
+Sw
+eff =S 2 + 1
+α2S1 (9)
+which is a Gaussian random variable. Thus, whitening
+withS w
+eff(f)preserves Gaussian noise statistics in the ef-
+fective whitened datadw
+eff(f)of the synthetic coherent de-
+tector.
+2. Generalizing for multiple detectors
+Leth=a 1h1 be the highest SNR reconstruction among
+nsingle detector reconstructionshn such thata1≈1. We
+use the time and phase shifts betweenhandd n and to
+align the data in all subsequent detectors to the detector
+with highest SNR reconstruction. After this, assuming
+elliptical polarization,hn only differ by an overall ampli-
+tude scaling such that
+h=a 1h1 =a 2h2 =...=a nhn (10)
+Substitutingh n =h/a n in the standard inner product
+equation
+(d|h) = 2
+Z
+df
+X
+n
+dnh∗
+n +d∗
+nhn
+Sn
+(11)
+we get
+(d|h) = 2
+Z
+df
+X
+n
+1
+an
+d′
+nh∗ +d′∗
+nh
+Sn
+(12)
+whered′
+n(f)is the time and phase shifted data in detector
+n. Expanding this further
+(d|h) = 2
+Z
+df
+"
+1
+a1
+d1h∗ +d∗
+1h
+S1
++ 1
+a2
+d′
+2h∗ +d∗
+2h
+S2
++...
++ 1
+an
+d′
+nh∗ +d′∗
+nh
+Sn
+#
+(13)
+we can define the strain datadeff for our synthetic coher-
+ent detector
+deff =
+ 1
+a1
+d1
+S1
++ 1
+a2
+d′
+2
+S2
++...+ 1
+an
+d′
+n
+Sn
+
+Seff (14)
+or concisely
+deff =S eff
+X
+n
+1
+an
+d′
+n
+Sn
+(15)
+where the power spectral density used to weight inner
+products is given as
+Seff =
+n
+p
+S1S2...Sn Sn
+eff =
+Y
+n
+Sn (16)
+
+===== PAGE 5 =====
+5
+Now using E[(dn)2] =S n(f)and no cross terms as before,
+wederivethepowerspectraldensityusedtowhitend eff(f)
+Sw
+eff(f) =E[(d eff)2]
+=
+"
+1
+a2
+1
+E[(d1)2]
+S2
+1
++ 1
+a2
+2
+E[(d′
+2)2]
+S2
+2
++...
++ 1
+a2n
+E[(d′
+n)2]
+S2n
+#
+S2
+eff
+=
+ 1
+a2
+1S1
++ 1
+a2
+2S2
++...+ 1
+a2nSn
+
+S2
+eff (17)
+Thus,
+Sw
+eff =S 2
+eff
+X
+n
+1
+a2nSn
+(18)
+which is a Gaussian random variable and whitening
+deff(f)withS w
+eff(f)preserves Gaussian noise statistics in
+the synthetic coherent detector.
+B. Glitch Rejection T ests
+Our coherent reconstruction algorithm enforces glitch
+rejection as two different tests by exploiting the
+geographic separation of detectors, incoherent time-
+frequency evolution of glitches, and the preservation of
+overall Gaussian noise statistics.
+According to the Gravity Spy [25] analyses of Advanced
+LIGO data for O3 [19], there were≈233,981 glitches at
+Hanford (H1) and≈379,805 at Livingston (L1), span-
+ning about 20 distinct glitch morphologies [26]. Exclud-
+ingthedetectordowntimes, andgenerouslyassumingthat
+glitches occur at the same rate in every detector, gives us
+about 1 glitch per minute, or an approximate per detector
+glitch rateRg≈0.017Hz. The rate for a pair of inciden-
+tally simultaneous glitches in a network ofndetectors for
+a maximum inter-detector light travel time∆tmax≈20
+ms is given byλgg =nR 2
+g∆tmax which corresponds to ob-
+serving about 1, 1.4, and 2.4 glitches in 24 hours for a
+network of 2, 3, and 5 detectors, respectively. Thus, more
+than99.93%noise transients in the LIGO data are not
+even incidentally simultaneous and only less than0.07%
+need further scrutiny.
+1. Light travel time test
+The first level of glitch rejection is imposed by the light
+travel time requirement. Only detectors whose z-statistic
+time shifts are smaller than the inter-detector light travel
+time contribute to the coherent synthetic detector.
+Although incidentally simultaneous glitches occur on a
+daily basis in multi-detector networks, most glitches orig-
+inate from independent local noise processes, are mor-
+phologically distinct, and do not align well using the z-
+statistic, which measures the cross-correlation between
+detectors as a function of time shift. Thus, incidentally
+simultaneous glitches that are morphologically uncorre-
+lated rarely survive this coherence requirement.
+For simultaneous glitches that are sufficiently morpho-
+logically similar and survive the z-statistic informed light
+travel time test, we use an additional residual test to flag
+these "coincident" false alarms.
+2. Coherent Residuals Test
+To catch false alarms and cases such as coincident
+glitches, or glitch-signal overlaps, we shift and scale the
+coherent reconstruction back to the individual detectors
+˜hn
+coh(f)and compute the coherent reconstruction residu-
+als˜rn
+coh(f) = ˜dn(f)− ˜hn
+coh(f). We re-run the MaxWave
+glitch model on these residuals to capture any signifi-
+cant incoherent power. As false alarms such as coincident
+glitches are characterized by independent non-Gaussian
+structure in each detector, they produce incoherent multi-
+detector reconstructions. Even if their z-statistic time
+shift is within the inter-detector light travel time, their
+distinct time–frequency evolution is reflected in the syn-
+thetic detector response, in the resulting coherent recon-
+struction, and in the residual power after removing the
+coherent reconstruction.
+For signals,˜hresid(f)should either not exist or have oc-
+casional low-SNR single wavelets for cases where the ini-
+tial reconstruction was noisy and the coherent reconstruc-
+tion removed the noise-induced wavelet. Thus, we flag
+any ˜hresid(f)with more than one wavelet as a "coincident
+eventnon-removal"insteadofa"signalnon-removal". We
+note that our classification of coincident events or signals
+is not conclusive, but provisional.
+III. RESUL TS
+We demonstrate improvements in multi-detector signal
+reconstructions, residuals (Sec. IIIA) and injected signal
+recovery (Sec. IIIB) using MaxWave’s coherent detec-
+tor reconstruction. We compare MaxWave signal model
+to theBayesWaveRJMCMC [17] in terms of reconstruc-
+tion accuracy across various SNRs and binary mass ratios
+(Sec. IIIC). In Sec. IIID, we evaluate the performance of
+our glitch rejection tests against artificially simultaneous
+glitches. We calculate the operations cost and runtime of
+
+===== PAGE 6 =====
+6
+Figure 2. Qscans of the GW150914 event [20, 27, 28] atQ=
+8in the individual LIGO detectors H1 (top), L1 (middle),
+and in our coherent detector (bottom). The coherent detector
+amplifies the signal while preserving Gaussian noise statistics.
+the signal model (Sec. IIIE) and run it on 14 hours of
+LIGO data for a two-detector network and estimate our
+false alarm rate (FAR) using the time-slide method (Sec.
+IIIF). To further test our model on cases where glitches
+overlap with signals and affect source parameter inference
+[21–23], we run MaxWave signal on gravitational wave
+events GW191109 and GW200129 [19, 20] (Sec. IIIG).
+A. Improvement in signal reconstruction
+Wepresentacasestudyforthegravitationalwaveevent
+GW150914 [20, 27, 28] to demonstrate improved coherent
+detector signal power, feature extraction, and residuals.
+In Fig. 2, we plot Qscans of the event with quality factor
+Q= 8for the individual LIGO detectors H1 (top), L1
+(middle), and for our synthetic coherent detector (bot-
+tom). Although MaxWave operates entirely in the time-
+frequency-time extent (TFτ) regime, Qscans provide bet-
+ter visualizations. The Qscan of the synthetic coherent
+detector captures the coherent power present in both de-
+tectors, amplifying the signal while preserving Gaussian
+noise statistics.
+Fig. 3 shows the individual H1 (red waveform, top) and
+L1 (blue waveform, bottom) time-domain unwhitened re-
+constructions of the event. The error envelopes around
+the reconstructions are computed from the wavelet pa-
+rameter Fisher information matrixΓkl = (∂kh|∂lh)as de-
+Figure 3. MaxWave’s individual and coherent detector time-
+domain unwhitened reconstructions of the gravitational wave
+signal GW150914 [20, 27, 28]. The initial higher-SNR re-
+construction for detector H1 (red waveform, top) is aligned
+with the L1 detector data using z-statistic time and phase
+shifts, and amplitude scaling to construct the coherent de-
+tector as described in Sec. IIA. After running MaxWave on
+the coherent detector, the resulting reconstruction is shifted
+back to the individual detectors. The shifted coherent recon-
+structions (black waveforms) render more signal information
+as compared to the individual H1 (red waveform, top) and L1
+(blue waveform, bottom) reconstructions. MaxWave’s error
+envelopes are computed from the Fisher information matrix
+of the wavelet parameters as described in Sec. II F of [8].
+scribed in Sec. II F of [8], where detector noise and the
+finite, approximate parametrization of the model perturb
+the maximum likelihood solution such that the variance
+Var[∆λk∆λl]≃(Γ −1)kl. This gives a per-sample wave-
+form varianceVar[h′(t)] =∂ kh(t)∂lh(t)(Γ−1)kl evaluated
+in the time domain, so that uncertainties in the wavelet
+parameters and the inverse Fourier transform are both re-
+flected in the envelope. We create the coherent detector
+as described in Sec. IIA by aligning the initial higher-
+SNR H1 detector reconstruction (red waveform, top) with
+L1 detector data using z-statistic time and phase shifts,
+
+===== PAGE 7 =====
+7
+Figure 4. Residuals of the individual (left) and shifted coherent (right) MaxWave reconstructions of the GW150914 event
+[20, 27, 28] for H1 (top) and L1 (bottom) detectors. The coherent reconstruction extracts more signal information and produces
+cleaner residuals.
+Figure 5. QuickCBC [16] skymap for gravitational wave sig-
+nal GW150914 [20, 27, 28] using MaxWave’s coherent signal
+reconstruction as the geocentric template.
+and amplitude scalings. After running MaxWave on the
+coherent detector, the resulting reconstruction ˜hcoh(f)
+is shifted back to each detector (black waveforms). We
+observe that the shifted coherent reconstruction extracts
+more signal by combining multi-detector information, es-
+pecially in the low frequency regime. The match of the
+reconstructions with the GW150914 numerical relativity
+waveform template [27, 28] improves from 93% for the
+H1-only reconstruction and 81% for L1-only reconstruc-
+tion to 94% for the shifted coherent reconstructions.
+We compare the residuals of the individual (left) and
+shifted coherent (right) reconstructions for the H1 (top)
+and L1 (bottom) detectors in Fig. 4 and, as expected,
+the shifted coherent reconstructions render better residu-
+als in each detector. In Fig. 5 we produce a skymap for
+the event using QuickCBC [16] with the coherent recon-
+struction as the geocentric template.
+B. Injected Signal Recovery
+We compare the matches of individual and coherent
+MaxWave reconstructions with injected binary black hole
+waveforms at various SNRs and mass ratios. We in-
+ject network SNR 10 and 20 IMRPhenomD binary black
+hole signals withm 1 ∈[20,100]M ⊙ and mass ratios
+m2/m1 = 1and2in real LIGO noise for a two-detector
+network of H1 and L1 (Fig. 6). The left (right) col-
+umn plots matches for network SNR 10 (SNR 20) injec-
+tions. The first (second) row plots matches for mass ratio
+m2/m1 = 1 (m2/m1 = 2). For real LIGO noise, we use 16
+pairs of 8 s strain data selected from quiet periods free of
+gravitational-wave events in the H1 and L1 detectors at
+various GPS times during the O3 observing runs [19, 20].
+Segments are cross-assigned between detectors, pairing
+H1 data from one timestamp with L1 data from another,
+and remapped to a common time axis. This prevents the
+two detectors from sharing a GPS epoch, eliminating any
+accidental low-SNR signal from contaminating the noise.
+For low SNR, MaxWave does not always recover a
+wavelet. The colorbar indicates an average over the num-
+ber of times — out of the injections in 16 different LIGO
+noise realizations — that MaxWave found a wavelet. The
+blue circles (red circles) indicate averaged match for H1
+(L1) single detector recoveries, while the corresponding
+blue dots (red dots) indicate averaged match for the
+
+===== PAGE 8 =====
+8
+Figure 6. Averaged matches of MaxWave individual and coherent detector recoveries for network SNR 10 (left) and network
+SNR 20 (right) IMRPhenomD binary black hole injections withm1∈[20,100]M ⊙ and mass ratiosm 2/m1 = 1(top) and 2
+(bottom). The signals are injected in 16 pairs of 8 s long real LIGO noise realizations from the O3 run [19, 20], cross-assigned
+between detectors and remapped to a common time axis. For low SNR, MaxWave does not always recover a wavelet. The
+colorbar indicates an average over the number of times — out of the injections in 16 different LIGO noise realizations —
+that MaxWave found a wavelet. The blue circles (red circles) indicate averaged match for H1 (L1) single detector recoveries,
+while the corresponding blue dots (red dots) indicate averaged match for the shifted coherent detector H1 (L1) recoveries.
+The corresponding error bars give the asymmetrical positive and negative standard deviation around the averaged match. We
+observe a6.3 +3.3
+−1.7%improvement in the match for network SNR 10 injections and a3.2+1.2
+−0.7%improvement in the match for
+network SNR 20 injections between the single and coherent detector recoveries.
+shifted coherent detector H1 (L1) recoveries. The cor-
+responding error bars give the asymmetrical positive and
+negative standard deviation around the averaged match.
+For coherent detector recoveries, we observe a6.3+3.3
+−1.7%
+improvement in the match for network SNR 10 injections
+and a3.2 +1.2
+−0.7%improvement in the match for network
+SNR 20 injections as compared to the single detector re-
+coveries.
+We can further maximize the log likelihood of the
+shifted coherent reconstructions in each detector through
+the refined MaxWave glitch model, which perturbs the
+wavelet parameterst,f,andτbeyond their fixed grid
+(described in Sec. IIG of [8]). Maximizing log L can
+lead us to fit more noise and does not always improve the
+matches of the recovered waveforms with the correspond-
+ing injected templates, especially for low SNR signals.
+Refining the coherent detector reconstruction in each de-
+tector only marginally further improves the matches by
+0.6+0.5
+−0.9%for network SNR 10 and0.4 +0.2
+−0.4%for network
+SNR 20 injections.
+C. MaxW ave versusBayesWaveRJMCMC
+In Fig. 7, we compare the match between the in-
+jected and recovered waveforms for theBayesWave[17]
+two detector (crosses) and the MaxWave coherent signal
+model (dots) reconstructions. We inject network SNR
+10 and 20 IMRPhenomD binary black hole signals with
+m1∈[20,100]M ⊙ and mass ratiosm 2/m1 = 1and2in
+8 s of real LIGO noise at GPS trigger times 1264213223
+for detector H1 and 1266238142 for detector L1 [19, 20].
+Strain from both detectors is remapped to a common
+time axis before injecting signals. The left (right) col-
+umn plots matches for network SNR 10 (SNR 20) injec-
+tions. The first (second) row plots matches for mass ra-
+tiom 2/m1 = 1 (m 2/m1 = 2). We expect the matches
+between the injected and recovered waveforms for the
+MaxWave signal model (dots) to be lower than those
+forBayesWave(crosses). WhileBayesWavereconstructs
+
+===== PAGE 9 =====
+9
+Figure 7. Comparing matches ofBayesWavetwo detector [17] (crosses) and MaxWave signal model (dots) recoveries for network
+SNR 10 (left) and network SNR 20 (right) IMRPhenomD binary black hole injections withm1∈[20,100]M ⊙ and mass ratios
+m2/m1 = 1(top) and 2 (bottom) in 8 s of real LIGO noise at GPS trigger times 1264213223 for detector H1 and 1266238142
+for detector L1 [19, 20]. Strain from both detectors is remapped to a common time axis before injecting signals. Compared
+to the robust but computationally intensiveBayesWave, MaxWave may trade reconstruction accuracy to provide a real-time,
+low-latency, approximate maximum likelihood solution. However, as we increase SNR and individual binary masses, recovered
+waveforms matches for the MaxWave signal model converge towards theBayesWaverecovery. The dips in the match with
+increasingm 1 show us that bothBayesWaveand MaxWave are sensitive to how the injected waveform aligns with specific
+features of the noise segment [8, 17]. These fluctuations disappeared when we averaged over MaxWave matches for signals
+injected in 16 real LIGO noise realizations in Fig. 6. Similar toBayesWave, MaxWave performs better for higher-mass binaries
+as they occupy smaller time–frequency volumes and localize power within a few higher-SNR wavelets [8, 17].
+signals through a computationally intensive RJMCMC
+with trans-dimensional sampling and requires hours to
+run, MaxWave provides a real-time, low-latency, approx-
+imate maximum likelihood signal model. Consequently,
+MaxWave may trade reconstruction accuracy for substan-
+tial computational efficiency. However, as we increase
+SNR and individual binary masses, recovered waveforms
+matches for the MaxWave coherent signal model converge
+towards theBayesWaverecovery. The dips in the match
+with increasingm 1 in Fig. 7 are incidental. These vari-
+ations show us that bothBayesWaveand MaxWave are
+sensitive to how the injected waveform aligns with specific
+features of the noise segment. Small changes in wave-
+form morphology can interact differently with the noise,
+leading to fluctuations in the recovered match [8, 17].
+These fluctuations disappeared when we averaged over
+MaxWave matches for signals injected in the 16 pairs of
+real LIGO noise realizations (Fig. 6).
+At fixed SNR, bothBayesWave(crosses in Fig. 7)
+and the MaxWave signal model (dots in Fig. 6)
+perform better for higher-mass binaries, which occupy
+smaller time–frequency volumes, localize power within
+a few higher-SNR wavelets and are more efficiently re-
+constructed. On the other hand, lower mass binaries
+span many cycles across a wide frequency range, dis-
+tribute SNR over a large time–frequency volume, increase
+the number of low-SNR wavelets needed to reconstruct
+the signal, and reduce reconstruction fidelity [8]. This
+behavior is consistent with the known performance of
+BayesWave[17]. Any improvement in recovery with in-
+creasing total mass is limited by the detector noise spec-
+trum, as extremely massive systems below the sensitive
+frequency band are less recoverable.
+
+===== PAGE 10 =====
+10
+D. Glitch rejection
+As incidentally simultaneous glitches are rare, we ar-
+tificially construct cases where glitches occur within the
+light travel time to further test our flagging and rejec-
+tion criteria. Any event that passes the z-statistic based
+light travel time test with sufficient SNR in at least two
+detectors is marked as a "non-removal". The coherent
+residuals test then only provisionally flags these cases as
+"signal non-removal" or "coincident event non-removal".
+We demonstrate the coherent residual test for a blip
+glitch in the H1 detector with SNR = 23.9 originally
+at GPS time 1168989748.12647 and a whistle glitch in
+the L1 detector with SNR = 77.5 originally at GPS time
+1253426470.4976 [19, 20, 29] by remapping the glitches to
+a common time axis and artificially placing them within
+the inter-detector light travel time window. Fig. 8 shows
+the Qscans for the individual detectors and the coher-
+ent detector, where H1 contains the blip (top) and L1
+the whistle (middle). The coherent detector aligns these
+glitches using the z-statistic time and phase shifts and
+amplitude scalings, amplifying any coherent power (bot-
+tom). However, as the glitches are morphologically dis-
+tinct in time-frequency space, they are inherently inco-
+herent and leave behind residual power after subtracting
+Figure 8. Blip in H1 at GPS time 1168989748.12647 (top)
+and Whistle in L1 (middle) at GPS time 1253426470.4976
+[19, 20, 29] remapped to a common time axis and artificially
+placed within the inter-detector light travel time window. The
+coherent detector (bottom) aligns the glitches using z-statistic
+time and phase shifts, and amplitude scalings, amplifying any
+coherent power while maintaining Gaussian noise statistics.
+the coherent reconstruction. We can see this remnant
+power in the residuals for the coherent H1 (right, top)
+and coherent L1 (right, bottom) reconstructions in Fig.
+9, which are significantly more contaminated than the
+residuals for the individual H1 (left, top) and L1 (left,
+bottom) detector reconstructions. Re-running MaxWave
+on the coherent residuals reconstructs˜hn
+resid(f)for both
+the H1 and L1 with two wavelets and SNRs 11.0 and 7.1
+respectively, failing our clean residuals test for the "signal
+non-removal" flag. Instead, this case is accurately flagged
+as "coincident event non-removal".
+To further quantify simultaneous glitch rejection, we
+construct simultaneous glitches using 10 categories of
+99.99% confident Gravity Spy [25] glitches, including
+60 glitches per category for blips, low-frequency blips,
+whistle, koi fish, tomte, fast scattering, scattered light,
+scratchy, and low-frequency bursts, and 56 extremely loud
+glitches. These glitches are randomly sampled across the
+LIGO O3 run [19, 20] from H1 and L1 detectors, mapped
+to a common time axis, and artificially placed within
+the inter-detector light travel time. MaxWave signal’s
+z-statistic light travel time test alone rejects74.4%of
+the 2,960 simultaneous glitches analyzed, and the coher-
+ent residuals test increases the rejection rate to94.0%.
+Thus, the probability of incorrectly flagging coincident
+glitches as signals is about6.0%. As expected, cross-type
+glitch coincidences have a much higher rejection rate of
+95.9% than that of same-type glitches at 76.0%. The z-
+statistic test alone struggles to reject simultaneous blips,
+low-frequency blips, tomte, koi fish, and extremely loud
+pairs as glitches in these categories can be morphologi-
+cally similar. The coherent residual test also particularly
+struggles for simultaneous blip, low-frequency blip, and
+tomte pairs.
+For our initial estimate of observing about 1 inciden-
+tally simultaneous glitch in 24 hours for a network of 2
+detectors, our false alarm rate for simultaneous glitches
+incorrectly flagged as signals is less than about 1 in 16
+days or6.9×10 −7 Hz. For the H1-L1 network specifi-
+cally, simultaneous glitches occur about once in four days,
+and this false alarm rate further drops to about 1 in two
+months or1.7×10 −7 Hz.
+E. Operations Cost and Runtime
+The z-statistic alignment and additional MaxWave
+runs contribute to the operations cost and runtime in-
+crease between the MaxWave glitch [8] and signal mod-
+els. The z-statistic alignment computes the phase-blind
+cross-correlationbetweenuptonfrequency-domainwave-
+forms via two IFFTs of length2N, whereNis the
+number of time domain samples and the factor of two
+
+===== PAGE 11 =====
+11
+Figure 9. Individual (left) and coherent (right) reconstruction residuals for Blip in H1 (top) and Whistle in L1 (bottom). Glitches
+are morphologically distinct and their coherent residuals contain remnant power. Re-running MaxWave on the coherent residuals
+produces ˜hn
+resid(f)with NW>1, fails the clean residuals test and correctly flags the case as "coincident event non-removal".
+arises from zero-padding. Thus, the additional compu-
+tational cost from the multi-detector alignment is up to
+(n−1)O(2Nlog 2N)≈2(n−1)O(NlogN). For the cases
+that pass the z-statistic light travel time test, MaxWave
+glitch is run2n+ 1times in total, including theninitial
+runs per individual detector, a run on the coherent detec-
+tor, andnresidual runs for the individual detectors af-
+ter subtracting the shifted coherent reconstructions. The
+noise spectrum is estimated once per detector in the ini-
+tialnruns.
+ForT obs = 4s andN τ = 6time extent layers in the
+glitch model’s wavelet transform (Table 1. in [8]), the
+MaxWave signal model runs in about0.8to1.32s for two
+detectors,1.16to1.94s for three detectors, and1.88to
+3.18s for five detectors, depending on whether the shifted
+coherent reconstructions are refined50times or not (Sec.
+II G in [8]). Even withN τ = 8, the signal model runs
+in about0.86to1.4s for two detectors,1.25to2.06s
+for three detectors, and2.03to3.38s for five detectors,
+where all CPU runtimes are measured on a single core In-
+tel i7-7820HQ (2.9 GHz) processor. Thus, MaxWave sig-
+nal model, with up to 50 perturbative refinements to the
+shifted coherent reconstructions in each detector, main-
+tains real time performance for a five-detector network.
+F. Real LIGO data analysis
+WeruntheMaxWavesignalmodelon14hoursofLIGO
+data on May 21, 2019 for a two detector network with H1
+and L1 detectors [19]. The top panel of Fig. 10 shows
+the "signal non-removals" (purple triangles), H1 glitches
+(gray circles, solid border) and L1 glitches (gray circles,
+dotted border) that MaxWave reconstructs. The signal
+non-removals flagged by MaxWave are consistent with
+the gravitational wave events GW190521_030229 at GPS
+time 1242442967.4 and GW190521_074359 at GPS time
+1242459857.4 recorded in the Gravitational Wave Open
+Science Center (GWOSC) catalog (dashed vertical lines)
+[20]. MaxWave signal model SNRs for these events are
+14.8 and 25.1 respectively, which are comparable to the
+SNRs14.3 +0.5
+−0.4 and25.9 +0.1
+−0.2 in the GWOSC catalog.
+To compute the FAR of our model, we use the time-
+slide method and shift the 14 hour L1 data by 1 s with
+respect to the H1 data, de-correlating true gravitational
+wavesignalsacrossthenetwork. ThebottompanelofFig.
+10 highlights that MaxWave only reconstructs glitches in
+the time-slid case and produces no false alarms for the
+14 hour time-slid data. Thus, MaxWave signal model’s
+FAR≤1.99×10 −5 Hz, which corresponds to less than
+two false alarms in 24 hours.
+We plot histograms of the reconstructed SNR∈[5,100]
+glitches in the 14 hour H1 and L1 data in Fig. 11 and
+present a gallery of H1 (red, first and second row) and L1
+(blue, third and fourth row) glitch reconstructions with
+various SNRs and morphologies at a few different GPS
+times across the 14 hours in Fig. 12.
+G. Special Case: Glitches overlapping signals
+We further test our model on gravitational wave events
+GW191109 and GW200129 in the LIGO O3 data [19, 20]
+where overlapping or nearby glitches affect source param-
+eter inference for the signals. The GW191109 candidate
+is a high mass binary whose inferred anti-aligned spin
+
+===== PAGE 12 =====
+12
+Figure 10. MaxWave signal model run on 14 hours of LIGO data on May 21, 2019 for a two-detector network with H1 and L1
+detectors (top panel) [19] and on time-slid data with L1 detector strain shifted by 1 s relative to the H1 strain (bottom panel).
+The signal non-removals (purple triangles) recovered by the model with SNRs 14.8 and 25.1 in the top panel are consistent
+with gravitational wave events GW190521_030229 with SNR= 14.3+0.5
+−0.4 at GPS time 1242442967.4 and GW190521_074359
+with SNR= 25.9 +0.1
+−0.2 at GPS time 1242459857.4 in the GWOSC event catalog [20]. The 14 hour time-slid run (bottom panel)
+produces no false alarms. Thus, MaxWave signal model’s FAR≤1.99×10 −5 Hz, which corresponds to less than two false
+alarms in 24 hours.
+Figure 11. Histograms of the H1 and L1 detector glitches
+with SNR∈[5,100]reconstructed by the MaxWave signal
+model run on 14 hours of LIGO data from May 21, 2019 [19].
+MaxWave signal reconstructs glitches at lower SNRs than the
+SNR 7.5 Gravity Spy threshold [25].
+[19] favors a dynamical formation channel [30] and the
+GW200129 candidate shows evidence for spin-induced or-
+bital precession [31, 32]. However, both these inferences
+stronglydependonhowtheoverlappingornearbyglitches
+are modeled. For GW191109, when the overlapping glitch
+in the L1 detector is modeled as slow scattered light, the
+inference favors anti-aligned spins, while a more flexible
+glitch model based on sine-Gaussian wavelets yields a bi-
+modal solution with both aligned and anti-aligned spins
+[21]. For GW200129, an instrument glitch in L1 coincides
+with the frequencies constraining precession [23] and the
+precession evidence is localized to the 20 to 50 Hz L1 data
+[22] and depends on the applied glitch mitigation method
+[22, 33].
+We plot the Qscans of the GW191109 and GW200129
+events (Figs. 13 and 14 respectively) in the individual
+LIGO detectors H1 (top), L1 (middle) and in our syn-
+thetic coherent detector (bottom). In the GW200129 Qs-
+cans, we can visually see that the coherent detector re-
+duces the glitch power while amplifying the signal.
+We compare the individual and coherent reconstruc-
+tions (rows 2 and 4) and their corresponding residuals
+
+===== PAGE 13 =====
+13
+Figure 12. Gallery of a few glitches reconstructed by MaxWave in the H1 (red, first and second row) and L1 (blue, third and
+fourth row) detectors with various SNRs, morphologies, and GPS times for the 14 hour LIGO data run on May 21, 2019 [19].
+(rows 3 and 5) for the H1 (left column) and L1 (right
+column) detectors for both the events in Figs. 15 and
+16 respectively, where the H1 and L1 data Qscans are
+also re-plotted for better visualization (row 1). In both
+cases, the shifted coherent reconstructions (row 4) suc-
+cessfully isolate the glitches and model the signals better
+than the corresponding individual reconstructions (row
+2). By combining multi-detector data, our synthetic de-
+tector captures the coherent signal power while the over-
+lapping glitch, which is incoherent across the network,
+remains in the residual. For GW191109 (Fig. 15), the
+coherent reconstruction residuals show no remnant sig-
+nal power for H1 and isolate the scattered light glitch for
+L1 (row 5). By contrast, the individual H1 reconstruc-
+tion leaves signal power in its residual, and the individual
+L1 reconstruction absorbs the glitch into the recovered
+signal, leaving a clean residual but contaminating the re-
+constructed waveform (rows 2 and 3). For GW200129
+(Fig. 16), the coherent residuals show no remnant sig-
+nal power for H1 or L1 and isolate the instrument glitch
+in L1 (row 5). The individual H1 reconstruction is less
+clean and leaves signal power in its residual (rows 2 and
+3). These events have also been studied by the deep learn-
+ing model AWaRe [13, 14], which reconstructs them us-
+ing an attention-boosted neural network without explic-
+itly training on glitches, but leaves some signal in the L1
+residual for GW200129 [34]. The MaxWave signal model
+offers a complementary approach based on multi-detector
+coherence, rather than a learned single detector recon-
+struction, and isolates the glitch without leaving remnant
+signal power for either event.
+Note that our signal model does not reliably flag the
+overlapping glitch and signal cases as signals or coincident
+events, as such cases are beyond the scope of the clean
+
+===== PAGE 14 =====
+14
+Figure 13. Qscans of the GW191109 event [19, 20] atQ= 8
+in the individual LIGO detectors H1 (top), L1 (middle), and
+in our synthetic coherent detector (bottom). The L1 detector
+contains a scattered light glitch overlapping with the signal
+in the low frequency range [21]. The coherent detector, by
+construction, amplifies the signal, reduces incoherent glitch
+power, and preserves Gaussian noise statistics.
+coherent residuals test. Whether an overlapping glitch
+and signal case passes or fails the clean coherent residuals
+test depends on the power and the time-frequency spread
+of the glitch left behind in the residual, which determines
+whether ˜hn
+resid(f)crossestheNW>1threshold. Forthese
+two events, GW191109 fails the test and is flagged as a
+coincident event, while GW200129 passes and is flagged
+as a signal. Both flags are non-removals, so neither event
+is removed during cleaning. The strength of the model in
+this regime is the reconstruction, which isolates the sig-
+nal while mitigating the overlapping glitch. Regardless of
+the coincident event or signal non-removal flag, the co-
+herent reconstruction remains informative and provides a
+good initial glitch-mitigated solution for computationally
+expensive algorithms such asBayesWave[17], which can
+then perform comprehensive CBC+Glitch analysis [35].
+IV. CONCLUSION
+We extend MaxWave, a fast maximum likelihood
+wavelet reconstruction algorithm, to perform coherent
+multi-detector signal reconstruction and glitch rejection.
+By aligning individual detector data using z-statistic time
+and phase shifts, and amplitude scalings, we construct
+Figure 14. Qscans of the GW200129 event [19, 20] atQ= 8
+in the individual LIGO detectors H1 (top), L1 (middle), and
+in our synthetic coherent detector (bottom). The L1 detec-
+tor contains an instrument glitch below 70 Hz that coincides
+with the frequencies constraining spin-induced orbital preces-
+sion [22, 23, 33]. The coherent detector visibly reduces the
+glitch power while amplifying the signal.
+a synthetic coherent detector with preserved Gaussian
+noise statistics and extract signal information inaccessi-
+ble to single-detector analyses. Applied to GW150914,
+the coherent detector amplifies signal power and produces
+cleaner residuals in both detectors. For shifted coherent
+detectorrecoveriesofIMRPhenomDbinaryblackholesig-
+nals injected in real LIGO noise for H1 and L1 detectors,
+we observe a6.3+3.3
+−1.7%improvement in the match with the
+injected template at network SNR 10 and3.2+1.2
+−0.7%im-
+provement at network SNR 20 as compared to the single-
+detector recoveries. The coherent signal model converges
+towardsBayesWavetwo detector reconstruction accura-
+ciesathigherSNRsandindividualbinarymasses, indicat-
+ing that the coherent reconstruction is a good initial so-
+lution for theBayesWavesignal model’s RJMCMC sam-
+pler. The z-statistic light travel time test alone rejects
+74.4% of artificially simultaneous glitches across 10 glitch
+categories and the coherent residuals test raises the rejec-
+tion rate to 94.0%, with cross-type coincidences rejected
+at 95.9%.
+When run on 14 hours of real LIGO O3 data [19],
+MaxWave signal correctly identifies the gravitational
+wave events GW190521_030229 and GW190521_074359
+with SNRs of 14.8 and 25.1, consistent with the GWOSC
+
+===== PAGE 15 =====
+15
+Figure 15. Qscans of the GW191109 event [19, 20] atQ= 8(top row) in the LIGO H1 (left column) and L1 (right column)
+detectors, along with the respective individual detector reconstructions (row 2) and residuals (row 3), and shifted coherent
+reconstructions (row 4) and residuals (row 5). The coherent residuals (row 5/ bottom row) remove the signal power much more
+effectively as compared to the individual detector residuals (row 3), while retaining the scattered light glitch [21] power in the
+L1 coherent residual (bottom right).
+catalog values [20], and achieves a time-slide test FAR of
+≤1.99×10 −5 Hz, which corresponds to less than two
+false alarms in a day. The signal model also maintains
+real-time performance for networks of up to five detectors,
+with 50 perturbative refinements of the shifted coherent
+reconstruction, by running in less than 3.4 s forTobs = 4s
+andN τ = 8layers. Our model’s real-time coherent signal
+reconstruction, promising glitch rejection, and low FAR
+motivate its future development into a complete, stand-
+alone burst search pipeline.
+We further apply the model to the overlapping glitch
+and signal events GW191109 and GW200129, where the
+coherent residuals remove the signal power far more ef-
+fectively than the individual detector residuals, while re-
+taining the glitch power. Although the coherent residuals
+test is not designed for such overlapping cases, the glitch-
+mitigated coherent reconstruction can provide a good ini-
+tialsolutionforcomputationallyexpensivealgorithmslike
+theBayesWavesignal [17] and CBC+Glitch model [35]
+and speed the convergence times of their comprehensive
+analysis.
+
+===== PAGE 16 =====
+16
+Figure 16. Qscans of the GW200129 event [19, 20] atQ= 8(row 1) in the LIGO H1 (left column) and L1 (right column)
+detectors, along with the respective individual detector reconstructions (row 2) and residuals (row 3), and shifted coherent
+reconstructions (row 4) and residuals (row 5). The coherent residuals (row 5/ bottom row) remove the signal power much more
+effectively as compared to the individual detector reconstruction residuals (row 3) and retain the instrument glitch [23] power
+in the L1 coherent residual (bottom right).
+V. FUTURE DIRECTIONS AND SCOPE
+We can apply and extend our algorithm for the rapid,
+low-latency reconstruction of transient signals in multiple
+directions. This includes safely denoising gravitational
+wave data without removing transient signals.
+MaxWave signal’s coherent multi-detector reconstruc-
+tion can also provide an approximate maximum likeli-
+hood initialization and accelerate convergence times for
+theBayesWavesignal model [17], which currently draws
+all wavelet and extrinsic parameters from broad flat prior
+distributions. Unlike theBayesWavenoise model [8, 18],
+no fast initialization exists for the signal model, as it re-
+quires a geocentric waveform coherently projected across
+the detector network with jointly constrained sky loca-
+tion, polarization, and ellipticity. Our model directly
+provides this geocentric starting point, seeding the RJM-
+CMC chains near a good solution in an otherwise hard-to-
+sample, multimodal parameter space. The central time,
+central frequency, and time extent of the wavelets identi-
+fied by our coherent reconstruction can be used as a pro-
+posal to theBayesWavesignal model [17], encouraging
+it to put down a wavelet where there is coherent power.
+To make our proposal legal, it must have a finite proposal
+
+===== PAGE 17 =====
+17
+density. We can accomplish this by constructing the prior
+on the amplitude and phase of the proposed wavelets to
+be a Gaussian blob around the approximate maximum
+likelihood solution.
+Our model currently assumes elliptical polarization,
+which is suboptimal for unpolarized signals such as white
+noise bursts and for highly precessing CBCs with time-
+varying polarization content. We intend on relaxing our
+assumption to incorporate generic polarizations. Similar
+to theBayesWavegeneric polarization model [17], we can
+construct the polarization modesh + andh × with inde-
+pendent sets of wavelets that differ inAn,ϕn
+0 but share
+thet n
+0,f n
+0,andτ n parameters.
+MaxWave signal diversifies burst search and recon-
+struction algorithms like cWB [10, 11], X-Pipeline [9],
+DeepExtractor [12], and AWaRe [13, 14] by offering
+a conceptually distinct framework, strengthening detec-
+tion confidence and improving sensitivity to diverse sig-
+nal morphologies. It also complements astrophysical
+model-based and computationally expensive algorithms
+likeBayesWave[17], CBC+Glitch [35] and QuickCBC
+[16], and can provide real-time, model-independent signal
+reconstruction and glitch rejection. By further quantify-
+ing the MaxWave signal’s detection statistics across the
+signal parameter space, and comparing its performance
+to that of the existing burst search algorithms, our model
+can be extended to a complete, stand-alone low-latency
+burst search pipeline capable of processing entire LIGO-
+Virgo-KAGRA observation runs [1] in real time.
+ACKNOWLEDGMENTS
+This work was supported by NSF Award Numbers
+PHY-2207970 and PHY-2513363. The authors thank
+Shobhit Ranjan for help with setting up theBayesWave
+runs, and Dr. Sophie Bini and Dr. Chayan Chatterjee
+for their insightful comments. The authors are grateful
+for computational resources provided by the LIGO Lab-
+oratory and supported by National Science Foundation
+Grants No. PHY-0757058 and No. PHY-0823459. The
+data used in our study is based upon work supported by
+NSF’s LIGO Laboratory which is a major facility fully
+funded by the National Science Foundation.
+[1] B. P. Abbott, R. Abbott, T. D. Abbott,et al.(LIGO Sci-
+entific Collaboration, Virgo Collaboration, and KAGRA
+Collaboration), Living Reviews in Relativity23, 3 (2020).
+[2] E. Capote, W. Jia, N. Aritomi, M. Nakano, V. Xu,
+et al.(LIGO Scientific Collaboration, Virgo Collabora-
+tion, and KAGRA Collaboration), Phys. Rev. D111,
+062002 (2025).
+[3] S.Soni, B.K.Berger, D.Davis,et al.,ClassicalandQuan-
+tum Gravity42, 085016 (2025).
+[4] S. Di Pace (Virgo Collaboration), Physica Scripta96,
+124054 (2021).
+[5] J. Aasi, B. P. Abbott, R. Abbott, T. Abbott,et al.(LIGO
+Scientific Collaboration), Classical and Quantum Gravity
+32, 074001 (2015).
+[6] B. P. Abbott, R. Abbott, R. Adhikari,et al.(LIGO Sci-
+entific Collaboration), Reports on Progress in Physics72,
+076901 (2009).
+[7] F. Acernese, M. Alshourbagy, P. Amico,et al.(Virgo Col-
+laboration), Classical and Quantum Gravity25, 114045
+(2008).
+[8] S. Mathur and N. J. Cornish, Phys. Rev. D112, 104075
+(2025).
+[9] P. J. Sutton, G. Jones, S. Chatterji, P. Kalmus, I. Leonor,
+S. Poprocki, J. Rollins, A. Searle, L. Stein, M. Tinto, and
+M. Was, New Journal of Physics12, 053034 (2010).
+[10] S. Klimenko, S. Mohanty, M. Rakhmanov, and G. Mit-
+selmakher, Phys. Rev. D72, 122002 (2005).
+[11] S. Klimenko, G. Vedovato, M. Drago, F. Salemi, V. Ti-
+wari, G. A. Prodi, C. Lazzaro, K. Ackley, S. Tiwari, C. F.
+Da Silva, and G. Mitselmakher, Phys. Rev. D93, 042004
+(2016).
+[12] T. Dooney, H. Narola, S. Bromuri, R. L. Curier, C. Van
+Den Broeck, S. Caudill, and D. S. Tan, Phys. Rev. D
+112, 044022 (2025).
+[13] C. Chatterjee and K. Jani, The Astrophysical Journal
+969, 25 (2024).
+[14] C. Chatterjee and K. Jani, The Astrophysical Journal
+973, 112 (2024).
+[15] B. Allen, W. G. Anderson, P. R. Brady, D. A. Brown,
+and J. D. E. Creighton, Phys. Rev. D85, 122006 (2012).
+[16] N. J. Cornish, Phys. Rev. D103, 104057 (2021).
+[17] N. J. Cornish, T. B. Littenberg, B. Bécsy, K. Chatziioan-
+nou, J. A. Clark, S. Ghonge, and M. Millhouse, Phys.
+Rev. D103, 044006 (2021).
+[18] N. J. Cornish and T. B. Littenberg, Classical and Quan-
+tum Gravity32, 135012 (2015).
+[19] R. Abbottet al.(LIGO Scientific Collaboration, Virgo
+Collaboration, and KAGRA Collaboration), Phys. Rev.
+X13, 041039 (2023).
+[20] LIGO Scientific Collaboration, Virgo Collaboration, and
+KAGRA Collaboration, GWTC data release (2018–2021)
+Gravitational Wave Open Science Center,https://www.
+gw-openscience.org/.
+[21] R. Udall, S. Hourihane, S. Miller, D. Davis, K. Chatzi-
+ioannou, M. Isi, and H. Deshong, Phys. Rev. D111,
+
+===== PAGE 18 =====
+18
+024046 (2025).
+[22] E. Payne, S. Hourihane, J. Golomb, R. Udall, D. Davis,
+and K. Chatziioannou, Phys. Rev. D106, 104017 (2022).
+[23] D. Davis, T. B. Littenberg, I. M. Romero-Shaw, M. Mill-
+house, J. McIver, F. Di Renzo, and G. Ashton, Classical
+and Quantum Gravity39, 245013 (2022).
+[24] L. S. Finn, Phys. Rev. D46, 5236 (1992).
+[25] M. Zevin, S. Coughlin, S. Bahaadini, E. Besler, N. Ro-
+hani, S. Allen, M. Cabero, K. Crowston, A. K. Katsagge-
+los, S. L. Larson, T. K. Lee, C. Lintott, T. B. Littenberg,
+A. Lundgren, C. Østerlund, J. R. Smith, L. Trouille, and
+V. Kalogera, Classical and Quantum Gravity34, 064003
+(2017).
+[26] J. Glanzer, S. Banagiri, S. B. Coughlin, S. Soni, M. Zevin,
+C. P. L. Berry, O. Patane, S. Bahaadini, N. Rohani,
+K. Crowston, V. Kalogera, C. Østerlund, L. Trouille,
+and A. Katsaggelos, Classical and Quantum Gravity40,
+065004 (2023).
+[27] B. P. Abbottet al.(LIGO Scientific Collaboration and
+Virgo Collaboration), Phys. Rev. Lett.116, 061102
+(2016).
+[28] B. P. Abbottet al.(LIGO Scientific Collaboration and
+Virgo Collaboration), Phys. Rev. X9, 031040 (2019).
+[29] R. Abbottet al.(LIGO Scientific Collaboration and Virgo
+Collaboration), Phys. Rev. X11, 021053 (2021).
+[30] R. C. Zhang, G. Fragione, C. Kimball, and V. Kalogera,
+The Astrophysical Journal954, 23 (2023).
+[31] M. Hannam, C. Hoy, J. E. Thompson, S. Fairhurst,
+V. Raymond, M. Colleoni, D. Davis, H. Estellés, C.-J.
+Haster, A. Helmling-Cornell, S. Husa, D. Keitel, T. J.
+Massinger, A. Menéndez-Vázquez, K. Mogushi, S. Os-
+sokine, E. Payne, G. Pratten, I. Romero-Shaw, J. Sadiq,
+P. Schmidt, R. Tenorio, R. Udall, J. Veitch, D. Williams,
+A. B. Yelikar, and A. Zimmerman, Nature610, 652
+(2022).
+[32] V. Varma, S. Biscoveanu, T. Islam, F. H. Shaik, C.-J.
+Haster, M. Isi, W. M. Farr, S. E. Field, and S. Vitale,
+Phys. Rev. Lett.128, 191102 (2022).
+[33] R. Macas, A. Lundgren, and G. Ashton, Phys. Rev. D
+109, 062006 (2024).
+[34] C. Chatterjee and K. Jani, The Astrophysical Journal
+982, 102 (2025).
+[35] S. Hourihane, K. Chatziioannou, M. Wijngaarden,
+D. Davis, T. Littenberg, and N. Cornish, Phys. Rev. D
+106, 042006 (2022).

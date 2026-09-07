@@ -1,0 +1,1433 @@
+===== PAGE 1 =====
+Draft version August 31, 2026
+Typeset using LATEXdefaultstyle in AASTeX7.0.1
+Distinct Modes of Pulsar Glitch Activity Revealed by the W aiting-Time–Amplitude Morphology
+Wen-Tong Liu
+ ,1, 2 Wei-hua W ang
+ ,3 Xia Zhou
+ ,1, 4 and Fei-fei KOU
+ 1, 4
+1State Key Laboratory of Radio Astronomy and Technology, Xinjiang Astronomical Observatory, CAS, 150 Science 1-Street, Urumqi,
+Xinjiang, 830011, P. R. China
+2University of Chinese Academy of Sciences, 19A Yuquan Road, Beijing 100049, P. R. China.
+3College of Mathematics and Physics, Wenzhou University, Wenzhou 325035, P. R. China.
+4Xinjiang Key Laboratory of Radio Astrophysics, 150 Science 1-Street, Urumqi 830011, P. R. China.
+ABSTRACT
+Pulsar glitches display a wide variety of behaviors. They are commonly labeled as “Vela-like” or
+“Crab-like,” yet these qualitative categories do not provide reproducible quantitative boundaries. In
+this work, we constructed an objective classification scheme based on the joint distribution of backward
+waiting time ∆t − and fractional glitch amplitude ∆ν/ν. A consolidated sample of 349 glitches from
+22 pulsars was compiled by cross-matching the Jodrell Bank and ATNF glitch databases. For each
+source, we applied two-dimensional kernel density estimation (KDE) together with highest-density
+regions (HDRs) to derive geometric descriptors, including the HDR area, anisotropy ratio, and out-of-
+HDR fraction. Hierarchical clustering of the KDE–HDR descriptors revealed two morphology classes
+independent of visual inspection. In this convention, the Compact class is associated with small HDR
+areas, elevated anisotropy, and limited peripheral occupancy. The Extended class is associated with
+broader HDR occupancy and stronger low-density extensions. We found that bootstrap resampling
+and hyperparameter sensitivity tests confirmed this partition for most sources. Nevertheless, two
+prolific pulsars (PSR J0537−6910 and PSR J1341−6220) were found to occupy intermediate positions.
+Logistic regression identified the mean backward waiting time⟨∆t −⟩as the strongest class predictor
+(in-sample AUC = 0.88; leave-one-out AUCCV = 0.59, reflecting the limited sample size). Additionally,
+a parallel analysis using ∆t + recovered the same two-class structure but with reduced stability. The
+data suggest that the Compact class is consistent with near-complete reservoir depletion, whereas the
+Extended class reflects partial, avalanche-like releases. As a result, short-term measurements ofGin
+Extended-class pulsars may underestimate the true crustal superfluid fraction.
+Keywords:Neutron stars (1108) — Pulsars (1306) — Astrostatistics (1882) — Stellar interiors (1606)
+1.INTRODUCTION
+Pulsars were first recognized as rapidly rotating, magnetized neutron stars through early radio observations (A.
+Hewish et al. 1968; T. Gold 1968). The way these objects spin down over long timescales offers a direct window into
+the internal dynamics of neutron stars (B. Haskell & A. Melatos 2015; D. Antonopoulou et al. 2022). The physical
+implications are broad, ranging from nuclear microphysics all the way to gravitational-wave science (I. C. Nit ¸u et al.
+2024; X. Zhou et al. 2017; B. Haskell & D. Jones 2024; The LIGO Scientific Collaboration et al. 2025).
+When pulse times of arrival are measured with high precision, two main forms of rotational irregularity become
+apparent. One is timing noise—essentially a stochastic red-noise process that sits on top of measurement white noise.
+The other is glitches. These are sudden spin-up events, and they are usually followed by some degree of relaxation (G.
+Hobbs et al. 2010; M. E. Lower et al. 2020). Since the first glitches were detected in the Vela and Crab pulsars (P. E.
+Reichley & G. S. Downs 1969; V. Radhakrishnan & R. N. Manchester 1969), the number of reported events has grown
+considerably. To date, more than seven hundred glitches have been documented in over two hundred sources (A. Basu
+Corresponding author: Xia Zhou
+Email: liuwentong@xao.ac.cn, wang-wh@wzu.edu.cn, zhouxia@xao.ac.cn, koufeifei@xao.ac.cn
+arXiv:2608.28523v1  [astro-ph.HE]  28 Aug 2026
+
+===== PAGE 2 =====
+2
+et al. 2022; R. N. Manchester et al. 2005; E. Zubieta et al. 2024; P. Liu et al. 2025; E. Zubieta et al. 2026). This
+rich observational diversity carries information about neutron-star interiors. In particular, how angular momentum
+is stored, redistributed, and eventually lost can be traced through differences in glitch size, recurrence interval, and
+post-glitch recovery behavior.
+From an observational standpoint, two broad categories are commonly recognized. Vela-like pulsars tend to undergo
+large glitches (∆ν/ν∼10 −7–10−6) at quasi-periodic intervals of several years. The relaxation that follows is slow and
+generally incomplete (C. S. Flanagan 1990; R. G. Dodson et al. 2002; C. M. Espinoza et al. 2021; A. Montoli et al.
+2020a). Crab-like sources, on the other hand, produce smaller events (∆ν/ν∼10 −9–10−8) that occur at irregular
+intervals and are followed by rapid, multi-stage recovery (C. M. Espinoza et al. 2011; M. A. Alpar et al. 1993; X.-P.
+Zheng et al. 2025; C. Huang & X.-p. Zheng 2025). Although these labels do capture meaningful empirical differences,
+they fail to establish quantitative boundaries. This makes systematic comparison across sources difficult. It also
+complicates efforts to connect observed glitch behavior with the physics that drives it.
+As the available samples have grown, additional structure at the population level has become visible. Glitch-size
+distributions appear consistent with bimodal or mixture forms. Waiting times, meanwhile, split between Poisson-like
+behavior in some objects and quasi-periodic patterns in others (C. M. Espinoza et al. 2011; A. Melatos et al. 2008;
+J. R. Fuentes et al. 2019; S. Arumugam & S. Desai 2023; I. O. Eya & E. U. Iyida 2024; P.-X. Zhu & X.-P. Zheng
+2025). To interpret this structure, one needs predictive trigger models—specifically, models that can account for the
+joint distribution of glitch sizes and waiting times. Two main classes of models have been put forward.
+In starquake models, stress gradually accumulates in the solid crust until brittle failure occurs (M. Ruderman 1969;
+G. Baym & D. Pines 1971; M. A. Alpar & A. Baykal 1994; J. A. Rencoret et al. 2021; A. I. Chugunov & C. J. Horowitz
+2010). The elastic energy available is limited, so these models tend to favor smaller events. They also predict a fairly
+narrow range of amplitudes, with only weak coupling to waiting-time statistics. Superfluid models take a different
+approach. Here, glitches arise from the collective unpinning of quantized vortices that are pinned within the inner
+crust (G. Baym et al. 1969; P. W. Anderson & N. Itoh 1975; D. Pines & M. A. Alpar 1985; D. Pines et al. 1980; M. A.
+Alpar et al. 1984; K. Glampedakis & N. Andersson 2009; J. Piekarewicz et al. 2014; B. Haskell & A. Melatos 2015;?; G.
+Marmorini et al. 2024; G. Howitt et al. 2018; B. Layek et al. 2023). Because the angular-momentum transfer depends
+on the lag that builds up between the superfluid and the crust before each event, the glitch amplitude becomes linked
+to the pre-event waiting time. A wider range of sizes and recurrence behaviors is therefore possible. To distinguish
+between these two mechanisms, observables that jointly encode information on both glitch size and waiting time are
+needed.
+The traditional Vela-like/Crab-like taxonomy, however, remains qualitative. It is also source-specific, and it does
+not provide a reproducible quantitative criterion that would allow systematic comparison across the pulsar population.
+Without such a criterion, the physical origin of the observed diversity stays uncertain. It could reflect genuinely
+distinct physical regimes, or it might instead represent a continuum shaped by varying stellar parameters. What is
+needed, then, is a data-driven framework that operates in the joint space of glitch size and recurrence time, so that
+the observational diversity can be translated into meaningful constraints on trigger mechanisms.
+In the present work, we take a geometric approach in the backward-waiting-time–fractional-size plane (∆t−,∆ν/ν).
+Here ∆t − denotes the time elapsed since the preceding glitch. We also define the forward waiting time as ∆t +,i =
+ti+1−t i, that is, the interval from glitchito the subsequent event. We chose the backward interval as our primary
+variable because it conditions each glitch on the pre-event state of the system, thereby connecting the observed
+amplitude to the angular-momentum reservoir (A. Melatos et al. 2008; J. B. Carlin & A. Melatos 2019; G. Howitt
+et al. 2018). The forward interval ∆t +, by contrast, is more sensitive to post-glitch recovery dynamics. A comparative
+analysis using ∆t + can be found in Appendix B.
+For every source with enough recorded glitches, we constructed a two-dimensional kernel density estimate (KDE)
+on this plane and extracted the highest-density region (HDR) that encloses a fixed probability mass. From the HDR,
+a compact set of morphological descriptors was then derived. These descriptors quantify the extent, shape, and
+concentration of the glitch distribution, along with the prominence of low-density excursions outside the core. Because
+no predefined functional form is assumed, direct comparisons across sources become possible. By applying hierarchical
+clustering in this descriptor space and combining it with logistic regression against spin-down properties, we identified a
+robust two-class morphological structure within the pulsar population. We also found that the mean backward waiting
+time⟨∆t −⟩serves as the strongest single predictor of morphological class. This finding establishes a quantitative link
+between the pre-glitch accumulation timescale and the overall character of the glitch distribution.
+
+===== PAGE 3 =====
+3
+T able 1.Glitch counts for the 22 pulsars included in the final analysis (N g≥6). Data are
+derived from the JBO glitch catalog (A. Basu et al. 2022) and ATNF pulsar catalog (R. N.
+Manchester et al. 2005).
+PulsarN g PulsarN g PulsarN g
+Pulsars withN g >10
+PSR J0835−4510 (Vela) 26 PSR J0534+2200 (Crab) 32 PSR J0537−6910 68
+PSR J1801−2304 15 PSR J1341−6220 35 PSR J0631+1036 17
+PSR J1048−5832 13 PSR J1413−6141 14 PSR J1740−3015 40
+PSR J1825−0935 14
+Pulsars with 6≤N g≤10
+PSR J0205+6449 9 PSR J0742−2822 9 PSR J1023−5746 7
+PSR J1420−6048 8 PSR J1645−0317 7 PSR J1731−4744 8
+PSR J1737−3137 10 PSR J1801−2451 9 PSR J1814−1744 8
+PSR J1826−1334 8 PSR J1841−0524 8 PSR J2229+6114 9
+Note—Ng is the total number of glitches before data cleaning. Only pulsars with retained
+Ng≥6 after data cleaning (Section 2.1) are included. The first glitch lacks ∆t − and is
+excluded from waiting-time analyses; further event-level removals (Section 2.1) reduce the
+effective KDE sample sizes listed in Table 2. The high-Ng subset contains 274 glitches from
+10 pulsars; the lower subset contains 100 glitches from 12 pulsars, yielding a total of 374
+glitches from 22 pulsars.
+This paper is organized as follows. In Section 2, we describe the data selection procedure, the kernel density estima-
+tion framework, and the clustering methodology. Section 3 presents results on per-source morphology, population-level
+classification, and the statistical associations with physical drivers. We discuss the physical interpretation of the
+morphological classes, their implications for the superfluid reservoir, and certain limitations in Section 4. Section 5
+summarizes our main conclusions.
+2.DATA AND METHODOLOGY
+2.1.Data Selection and Preparation
+A consolidated glitch catalog was constructed by cross-matching the Jodrell Bank Observatory (JBO) pulsar glitch
+catalog5 (A. Basu et al. 2022) against the ATNF glitch table 6 (R. N. Manchester et al. 2005). Pulsar parameters were
+taken from the ATNF pulsar catalog 7 (R. N. Manchester et al. 2005). For several key sources, we also incorporated
+glitches that were reported recently in the literature, so as to ensure that the waiting-time statistics are as complete
+as possible (W. C. G. Ho et al. 2026). All glitches reported through March 2026 are included in the dataset. The
+JBO catalog records, for each published glitch and for regularly updated Lovell telescope detections, the glitch epoch
+in Modified Julian Date together with the fractional steps in spin frequency and its derivative (e.g., C. M. Espinoza
+et al. 2011). Throughout this work, we adopt the glitch definition given by C. M. Espinoza et al. (2011).
+Two glitch parameters form the basis of our analysis: the relative glitch amplitude (∆ν/ν) and the backward waiting
+time (∆t−). We define the backward waiting time as the interval from the immediately preceding glitch to the current
+one, ∆t −,i =t i−t i−1 fori≥2. The first recorded glitch for each pulsar has no predecessor, and such entries are
+therefore excluded. From a physical standpoint, ∆t − represents the time that is available for the system to reload
+between consecutive glitches.
+5 http://www.jb.man.ac.uk/pulsar/glitches.html
+6 https://www.atnf.csiro.au/research/pulsar/psrcat/glitchTbl.html
+7 https://www.atnf.csiro.au/research/pulsar/psrcat/
+
+===== PAGE 4 =====
+4
+Uniform data cleaning procedures were applied to ensure statistical reliability. We removed duplicate entries, events
+for which ∆ν/νwas missing, and outliers that could be attributed to extended observational gaps or obvious cataloguing
+errors. The specific exclusions are listed below; the integer in parentheses refers to the sequential glitch number in the
+JBO catalog. J2225+6535(1) and J1902+0615(1) were excluded because long gaps inflated the apparent ∆t −. After
+this filtering step, these two sources were removed from the analysis entirely. J0537−6910(1) was also excluded, as it is
+distorted by incomplete observational coverage. Additionally, J1341−6220(2) was dropped because it lacks ∆ν/ν. We
+restricted the morphological analysis to pulsars withN g≥6 recorded events. This particular threshold was chosen on
+the basis of a bootstrap stability analysis of the inferred density distributions (Section 2.2). In the retained sample,
+values of ∆ν/νcover three orders of magnitude, from 10 −9 to 10−6, and ∆t − ranges from a few days up to≳4×10 3
+days. Figure 1 shows how these parameters are distributed, and it illustrates the broad dynamic range of the dataset.
+Before cleaning, the dataset contained 374 glitches from 22 pulsars (Table 1). After cleaning, 349 glitches from the
+same 22 pulsars remained for analysis (Table 2).
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000017
+/uni00000014/uni00000013/uni00000018
+t /uni00000003/uni0000000b/uni00000047/uni00000044/uni0000005c/uni00000056/uni0000000c
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000017
+/uni00000014/uni00000013/uni00000018
+/ /uni00000003/uni0000000b×10 9/uni0000000c
+/uni00000013/uni00000018/uni00000016/uni0000001a/uni00000010/uni00000019/uni0000001c/uni00000014/uni00000013
+/uni00000013/uni00000019/uni00000016/uni00000014/uni0000000e/uni00000014/uni00000013/uni00000016/uni00000019
+/uni00000014/uni00000013/uni00000017/uni0000001b/uni00000010/uni00000018/uni0000001b/uni00000016/uni00000015
+/uni00000014/uni00000016/uni00000017/uni00000014/uni00000010/uni00000019/uni00000015/uni00000015/uni00000013
+/uni00000014/uni00000017/uni00000014/uni00000016/uni00000010/uni00000019/uni00000014/uni00000017/uni00000014
+/uni00000014/uni0000001a/uni00000017/uni00000013/uni00000010/uni00000016/uni00000013/uni00000014/uni00000018
+/uni00000014/uni0000001b/uni00000013/uni00000014/uni00000010/uni00000015/uni00000016/uni00000013/uni00000017
+/uni00000014/uni0000001b/uni00000015/uni00000018/uni00000010/uni00000013/uni0000001c/uni00000016/uni00000018
+/uni00000026/uni00000055/uni00000044/uni00000045
+/uni00000039/uni00000048/uni0000004f/uni00000044
+/uni00000028/uni0000005b/uni00000057/uni00000048/uni00000051/uni00000047/uni00000048/uni00000047/uni00000003/uni00000056/uni00000052/uni00000058/uni00000055/uni00000046/uni00000048/uni00000056
+/uni00000013
+/uni00000015/uni00000013
+/uni00000017/uni00000013/uni00000026/uni00000052/uni00000058/uni00000051/uni00000057
+/uni00000013/uni00000015/uni00000018
+/uni00000026/uni00000052/uni00000058/uni00000051/uni00000057
+Figure 1.Global distribution of the cleaned sample (349 glitches from 22 pulsars) in the backward waiting time versus relative
+amplitude plane. Each point represents a single glitch. Colored symbols highlight the 10 frequent glitchers, while gray circles
+denote the remaining sources. The top and right panels show the marginal number distributions of ∆t− and ∆ν/ν, respectively.
+2.2.Kernel Density Estimation
+For individual pulsars, the glitch data in the (∆t −,∆ν/ν) plane tend to be sparse and irregularly distributed.
+Parametric approaches to modeling the joint distribution—bivariate Gaussian models or finite-mixture models, for
+instance—require assumptions about the functional form that are difficult to justify given the small sample sizes
+involved. Standard binning techniques such as two-dimensional histograms are also problematic. They are sensitive
+to bin placement, and for sources with onlyN g∼6–10 events, they can easily introduce artificial structure into the
+
+===== PAGE 5 =====
+5
+estimated distribution. For these reasons, we turned to kernel density estimation (KDE). This is a nonparametric
+method that reconstructs the underlying probability distribution directly from the observed data, without requiring
+any particular functional form to be specified in advance. By converting discrete glitch events into a smooth, continuous
+density field, KDE makes it possible to extract geometric descriptors in a consistent way across all sources. These
+descriptors—including the highest-density region (HDR) areaA HDR, the anisotropy ratio AR, and the out-of-HDR
+fractionf out—capture the topology of glitch occupancy even when the underlying records are heterogeneous.
+We begin by defining the data matrix for a pulsar withnglitches asX={x i}n
+i=1, wherex i = (∆t−,i,(∆ν/ν) i)T .
+The sample mean vector isµ=n −1P
+i xi. From these data, the sample covariance matrixSwas computed. A
+small ridge term was then added to giveS reg =S+ϵI, whereϵ= 10 −10, and a Cholesky decompositionS reg =LL T
+was performed. Each data point was subsequently mapped into whitened coordinates through the transformation
+zi =L −1(xi−µ).
+The KDE was fitted in the whitened space with a Gaussian kernel,K(u) = (2π) −1 exp
+ 
+− 1
+2 uTu
+
+. The resulting
+density estimator takes the form
+ˆf(z) = 1
+nh2
+nX
+i=1
+K
+ z−z i
+h
+
+,(1)
+in whichhis a scalar bandwidth. We sethaccording to the Silverman scaling rule with a small-sample correction:h=
+[max(n−1,2)] −1/6. It should be noted that the Silverman rule implicitly assumes a unimodal reference distribution.
+In sources whose glitch populations are genuinely multimodal—Vela being one example (see Section 4.1)—this choice
+may over-smooth secondary peaks. Nevertheless, the hyperparameter sensitivity tests presented in Section 3.2 show
+that reducing the bandwidth by half (h mult = 0.5) does not qualitatively change the two-class classification for most
+sources, even though boundary objects may shift. Adopting an adaptive-bandwidth KDE that locally adjusts the
+smoothing to match the data density would be a natural extension for future work. The density field was evaluated
+on a regular grid in the original (∆t −,∆ν/ν) plane by applying the whitening transformz=L −1(x−µ) at each grid
+pointx.
+To describe the main concentration of each pulsar’s glitch distribution, we used the highest-density region (HDR).
+The adopted probability mass wasq= 0.68, which corresponds to the 1σenclosed probability for a two-dimensional
+Gaussian. This value was chosen because it captures the primary core of each source’s glitch activity while leaving out
+peripheral events that may represent rare or extreme excursions. Formally, the HDR is defined as
+Rq =
+n
+(x,y)
+ ˆf(x,y)≥λ q
+o
+,(2)
+where the density thresholdλ q is determined by the condition
+ZZ
+Rq
+ˆf(x,y) dxdy=q.(3)
+Several morphological parameters were then derived from the HDR. First, the HDR area quantifies how large the
+main density concentration is:
+AHDR =N cell ∆x∆y,(4)
+whereN cell is the number of grid cells that fall inside the HDR.
+Second, we defined an out-of-HDR fraction to measure how many events lie outside the core:
+fout = 1
+n
+nX
+i=1
+1
+h
+ˆf(x i)<λ 0.68
+i
+,(5)
+where1[·] is the indicator function. Third, the shape of the glitch distribution was characterized using an anisotropy
+ratio (AR) derived from the eigenvalues of the sample covariance matrixS. Ifℓ 1 andℓ 2 are the eigenvalues with
+ℓ1≥ℓ 2, then
+AR =
+r
+ℓ1
+ℓ2
+.(6)
+Finally, the mode of the KDE was identified as the grid point at which the density reaches its maximum:
+(xmode, ymode) = arg max(x,y) ˆf(x,y).
+
+===== PAGE 6 =====
+6
+/uni00000014/uni00000013/uni00000015/uni00000013/uni00000016/uni00000013/uni00000017/uni00000013/uni00000018/uni00000013/uni00000019/uni00000013
+/uni00000036/uni00000044/uni00000050/uni00000053/uni0000004f/uni00000048/uni00000003/uni00000056/uni0000004c/uni0000005d/uni00000048/uni00000003Ng/uni00000003/uni0000000b/uni00000053/uni00000048/uni00000055/uni00000003/uni00000053/uni00000058/uni0000004f/uni00000056/uni00000044/uni00000055/uni0000000c
+/uni00000013/uni00000011/uni00000013/uni00000013
+/uni00000013/uni00000011/uni00000013/uni00000015
+/uni00000013/uni00000011/uni00000013/uni00000017
+/uni00000013/uni00000011/uni00000013/uni00000019
+/uni00000013/uni00000011/uni00000013/uni0000001b
+/uni00000013/uni00000011/uni00000014/uni00000013
+/uni00000013/uni00000011/uni00000014/uni00000015
+/uni00000013/uni00000011/uni00000014/uni00000017/uni00000025/uni00000052/uni00000052/uni00000057/uni00000056/uni00000057/uni00000055/uni00000044/uni00000053/uni00000003/uni00000049/uni00000044/uni0000004c/uni0000004f/uni00000058/uni00000055/uni00000048/uni00000003/uni00000055/uni00000044/uni00000057/uni00000048
+/uni00000033/uni00000048/uni00000055/uni00000010/uni00000056/uni00000052/uni00000058/uni00000055/uni00000046/uni00000048
+/uni00000030/uni00000048/uni00000044/uni00000051/uni00000003±1 /uni00000003/uni00000053/uni00000048/uni00000055/uni00000003Ng
+Figure 2.Bootstrap failure rate of KDE–HDR reconstruction as a function of per-pulsar sample sizeN g. Each point represents
+one source; error bars denote the mean and±1σdispersion at fixedN g. The failure rate drops significantly forN g ≥6,
+motivating the adoption of this threshold for robust morphological classification.
+Taken together, these HDR-based quantities—λ q,A HDR,f out, AR, and the mode location—provide a compact yet
+informative description of the scale, concentration, and geometry of the glitch distribution for each pulsar.
+We carried out bootstrap resampling for each source to assess the statistical reliability of the HDR-derived param-
+eters. As shown in Figure 2, the bootstrap failure rate decreases sharply asN g increases. A clear break is visible
+betweenN g = 5 andN g = 6. Sources withN g ≥6 consistently produce stable KDE–HDR parameters, and this
+finding justifies the sample-selection threshold that was introduced in Section 2.1.
+2.3.Clustering and Stability Analysis
+For each pulsari, we constructed a morphological feature vectorx i = (log 10AHDR,i,log 10 ARi, fout,i). All three
+features were standardized to have zero mean and unit variance before the clustering step.
+The Hopkins statistic was first computed to check whether the data display a genuine clustering tendency. After
+confirming this, we applied agglomerative hierarchical clustering using Ward linkage. This method works by succes-
+sively merging the pair of clusters whose merger causes the smallest increase in total within-cluster variance. The
+dendrogram was cut atk= 2, thereby defining two morphological classes.
+To evaluate the stability of the resulting partition, we took several complementary steps. In each bootstrap realiza-
+tion, the scatter in log10AHDR, log10 AR, andf out was recorded, along with the bootstrap failure rate (f fail). Partition
+quality was assessed through the silhouette score. We further tested whether the classification depends critically on
+any single feature by repeating the clustering after removing each feature in turn. A bootstrap consensus matrix was
+also built to assign an object-level stability score to each pulsar. In addition, we repeated the entire feature-extraction
+and clustering procedure across a grid of hyperparameters, varying both the bandwidth multiplier and the HDR prob-
+ability levelq. The agreement between the resulting labeling was measured using the adjusted Rand index (ARI) and
+the normalized mutual information (NMI).
+To probe the physical basis of the morphological classes, we fitted a logistic regression model that links the binary
+class labels to a set of pulsar physical parameters. Denoting the class label of pulsaribyy i∈{0,1}and the vector of
+
+===== PAGE 7 =====
+7
+standardized physical parameters byp i, the model is written as
+P(y i = 1|p i) = 1
+1 + exp
+h
+−
+
+β0 +β Tpi
+i,(7)
+whereβ 0 is the intercept andβis the coefficient vector. In-sample performance was evaluated using the receiver
+operating characteristic curve and its area under the curve (ROC–AUC). Because the sample is small (N src = 22, with
+six predictors), overfitting is a concern. We therefore also report the leave-one-out cross-validated AUC (AUC CV) as
+a more cautious estimate of predictive performance.
+3.RESULTS
+When applied to the full pulsar sample, the two-dimensional KDE–HDR framework reveals distinct morphological
+patterns.
+3.1.Per-Source Distribution Characteristics
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/ /uni00000003/uni0000000b10 9/uni0000000c
+/uni0000002d/uni00000013/uni00000018/uni00000016/uni00000017/uni0000000e/uni00000015/uni00000015/uni00000013/uni00000013/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000016/uni00000014
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000014/uni0000001b/uni00000014/uni00000017/uni00000014/uni0000001a/uni00000017/uni00000017/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni0000001a
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000014/uni00000019/uni00000017/uni00000018/uni00000013/uni00000016/uni00000014/uni0000001a/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000019
+/uni00000019/uni0000001b/uni00000008
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+t /uni00000003/uni0000000b/uni00000047/uni00000044/uni0000005c/uni00000056/uni0000000c
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/ /uni00000003/uni0000000b10 9/uni0000000c
+/uni0000002d/uni00000014/uni0000001b/uni00000015/uni00000018/uni00000013/uni0000001c/uni00000016/uni00000018/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000014/uni00000016
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+t /uni00000003/uni0000000b/uni00000047/uni00000044/uni0000005c/uni00000056/uni0000000c
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000013/uni00000018/uni00000016/uni0000001a/uni00000019/uni0000001c/uni00000014/uni00000013/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000019/uni00000019
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+t /uni00000003/uni0000000b/uni00000047/uni00000044/uni0000005c/uni00000056/uni0000000c
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000014/uni00000016/uni00000017/uni00000014/uni00000019/uni00000015/uni00000015/uni00000013/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000016/uni00000015
+/uni00000019/uni0000001b/uni00000008
+/uni00000026/uni00000052/uni00000050/uni00000053/uni00000044/uni00000046/uni00000057/uni00000003/uni00000012/uni00000003/uni00000026/uni00000052/uni00000050/uni00000053/uni0000004f/uni00000048/uni0000005b/uni00000003/uni00000046/uni0000004f/uni00000044/uni00000056/uni00000056/uni00000003/uni0000000b/uni00000026/uni0000004f/uni00000058/uni00000056/uni00000057/uni00000048/uni00000055/uni00000003/uni00000014/uni0000000c
+Figure 3.KDE–HDR maps for the six pulsars assigned to Cluster 1. Color shading shows the relative KDE density, white
+circles mark individual glitches, and red contours enclose theq= 0.68 HDR.
+Figures 3 and 4 provide an overview of the per-source KDE–HDR maps. To make their connection with the
+population-level analysis clearer, the panels are arranged according to the two hierarchical-clustering branches discussed
+below rather than by the number of recorded glitches.
+The maps exhibit substantial diversity even within a given branch. The class assignments are therefore not based on
+visual resemblance between individual panels. They are obtained from Ward clustering of the standardized descriptor
+vectors (logA HDR,log AR,f out).
+The KDE maps can be described in terms of three directly observable features: the extent of the 68% HDR, the
+directional elongation of that region, and the presence of events or secondary density concentrations outside the main
+HDR. These visual features correspond, respectively, toA HDR, AR, andf out, although the numerical values used in
+the clustering are calculated from the KDE–HDR analysis rather than assigned by visual inspection.
+The Crab pulsar illustrates why these features need to be distinguished. Its 68% HDR is concentrated at small
+amplitudes (∆ν/ν≲10 −8), but it still spans short-to-moderate backward waiting times (∆t − ∼10 2–103 d). Its
+relatively smallA HDR therefore arises primarily from confinement in the amplitude direction, rather than from an
+equally narrow distribution along both axes. Vela instead has its main density concentration near ∆t −∼10 3 d and
+∆ν/ν∼10 −6, together with a lower-density extension toward shorter waiting times. PSR J0537−6910 contains
+several local density maxima and the largest out-of-HDR fraction in the sample, whereas PSR J1801−2304 and
+PSR J1048−5832 also show secondary density concentrations within broader occupancy fields.
+
+===== PAGE 8 =====
+8
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/ /uni00000003/uni0000000b10 9/uni0000000c
+/uni0000002d/uni00000013/uni0000001b/uni00000016/uni00000018/uni00000017/uni00000018/uni00000014/uni00000013/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000015/uni00000018
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000014/uni0000001a/uni00000017/uni00000013/uni00000016/uni00000013/uni00000014/uni00000018/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000016/uni0000001c
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000013/uni00000019/uni00000016/uni00000014/uni0000000e/uni00000014/uni00000013/uni00000016/uni00000019/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000014/uni00000019
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000014/uni00000013/uni00000017/uni0000001b/uni00000018/uni0000001b/uni00000016/uni00000015/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000014/uni00000015
+/uni00000019/uni0000001b/uni00000008/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/ /uni00000003/uni0000000b10 9/uni0000000c
+/uni0000002d/uni00000014/uni0000001b/uni00000013/uni00000014/uni00000015/uni00000016/uni00000013/uni00000017/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000014/uni00000017
+/uni00000019/uni0000001b/uni00000008
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000014/uni00000017/uni00000014/uni00000016/uni00000019/uni00000014/uni00000017/uni00000014/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000014/uni00000016
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000014/uni00000017/uni00000015/uni00000013/uni00000019/uni00000013/uni00000017/uni0000001b/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni0000001a
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000014/uni00000013/uni00000015/uni00000016/uni00000018/uni0000001a/uni00000017/uni00000019/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni00000019
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/ /uni00000003/uni0000000b10 9/uni0000000c
+/uni0000002d/uni00000014/uni0000001b/uni00000013/uni00000014/uni00000015/uni00000017/uni00000018/uni00000014/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni0000001a
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000014/uni0000001a/uni00000016/uni00000014/uni00000017/uni0000001a/uni00000017/uni00000017/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni0000001a
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000013/uni0000001a/uni00000017/uni00000015/uni00000015/uni0000001b/uni00000015/uni00000015/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni0000001b
+/uni00000019/uni0000001b/uni00000008/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000013/uni00000015/uni00000013/uni00000018/uni0000000e/uni00000019/uni00000017/uni00000017/uni0000001c/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni0000001b
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+t /uni00000003/uni0000000b/uni00000047/uni00000044/uni0000005c/uni00000056/uni0000000c
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/ /uni00000003/uni0000000b10 9/uni0000000c
+/uni0000002d/uni00000014/uni0000001b/uni00000015/uni00000019/uni00000014/uni00000016/uni00000016/uni00000017/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni0000001a
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+t /uni00000003/uni0000000b/uni00000047/uni00000044/uni0000005c/uni00000056/uni0000000c
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000015/uni00000015/uni00000015/uni0000001c/uni0000000e/uni00000019/uni00000014/uni00000014/uni00000017/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni0000001b
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+t /uni00000003/uni0000000b/uni00000047/uni00000044/uni0000005c/uni00000056/uni0000000c
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000014/uni0000001b/uni00000017/uni00000014/uni00000013/uni00000018/uni00000015/uni00000017/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni0000001a
+/uni00000019/uni0000001b/uni00000008
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+t /uni00000003/uni0000000b/uni00000047/uni00000044/uni0000005c/uni00000056/uni0000000c
+/uni00000014/uni00000013/uni00000013
+/uni00000014/uni00000013/uni00000014
+/uni00000014/uni00000013/uni00000015
+/uni00000014/uni00000013/uni00000016
+/uni0000002d/uni00000014/uni0000001a/uni00000016/uni0000001a/uni00000016/uni00000014/uni00000016/uni0000001a/uni00000003/uni0000005f/uni00000003/uni00000031/uni00000020/uni0000001c
+/uni00000019/uni0000001b/uni00000008
+/uni00000028/uni0000005b/uni00000057/uni00000048/uni00000051/uni00000047/uni00000048/uni00000047/uni00000003/uni00000046/uni0000004f/uni00000044/uni00000056/uni00000056/uni00000003/uni0000000b/uni00000026/uni0000004f/uni00000058/uni00000056/uni00000057/uni00000048/uni00000055/uni00000003/uni00000015/uni0000000c
+Figure 4.KDE–HDR maps for the 16 pulsars assigned to Cluster 2, the Extended class. Symbols, density shading, and HDR
+contours follow Figure 3.
+Some sources can appear visually similar while differing in their numerical descriptors. For example, PSR J1341−6220
+and PSR J1413−6141 both show a dominant region elongated approximately along the diagonal of the ∆t −–∆ν/ν
+plane, yet they are assigned to different clustering branches. Conversely, sources within the same branch need not have
+identical KDE maps. The population-level classes introduced in Section 3.2 consequently reflect the joint standardized
+descriptor vector (logA HDR,log AR,f out), rather than any single visual feature.
+Before moving on to population-level clustering, we examined whether any individual pulsar contains discrete sub-
+populations of glitch events. The Hopkins statisticH(Appendix A; Table 6) was used to test for intrinsic intra-source
+clustering. For most sources, we obtainedH≈0.5, which is consistent with a single continuous distribution—one that
+may contain smooth gradients or extended tails, but not distinct sub-clusters. Vela stands out as a notable exception.
+Its Hopkins statistic ofH= 0.66 provides evidence for genuine bimodal substructure within the glitch population, a
+finding that deserves further investigation in the context of multi-component superfluid models. On the whole, these
+diagnostics confirm that global geometric descriptors (A HDR, AR,f out) offer an appropriate summary of per-source
+morphology for the great majority of objects. The apparent substructures visible in several of the KDE maps are
+better understood as smooth density gradients rather than as discrete sub-clusters.
+The KDE–HDR morphological parameters for all pulsars in our sample are summarized in Table 2. For each source,
+we list the number of glitchesN g, the KDE bandwidth in whitened space, and the derived HDR descriptors: the HDR
+areaA HDR, the anisotropy ratio AR, the out-of-HDR fractionf out, and the density-mode location in the ∆t −–∆ν/ν
+plane. The HDR areas span more than two orders of magnitude, from 5.3×10 4 to 1.2×10 7. Anisotropy ratios range
+from values close to unity all the way up to AR≈44. This wide spread confirms the diversity of morphologies present
+
+===== PAGE 9 =====
+9
+T able 2.KDE–HDR morphological parameters for the analyzed pulsars.
+SourceN g h λ q AHDR fout xmode ymode AR
+(d) (10 −9)
+J0537−6910 66 0.498 0.056 7.6×10 4 0.288 156 194 2.8
+J1740−3015 39 0.545 0.034 9.2×10 5 0.179 156 65 1.8
+J1341−6220 32 0.561 0.053 7.3×10 5 0.156 234 194 4.9
+Crab 31 0.567 0.082 1.9×10 5 0.161 312 0 8.9
+Vela 25 0.589 0.052 3.1×10 6 0.120 896 2393 2.6
+J0631+1036 16 0.637 0.034 1.6×10 6 0.188 273 0 1.4
+J1801−2304 14 0.652 0.052 8.0×10 5 0.214 507 65 2.5
+J1413−6141 13 0.661 0.041 1.5×10 6 0.154 351 323 2.1
+J1825−0935 13 0.661 0.051 1.1×10 5 0.154 390 0 31.0
+J1048−5832 12 0.671 0.057 8.3×10 6 0.182 468 65 1.8
+Pulsars with 6≤N g <10
+J1737−3137 9 0.707 0.047 7.9×10 6 0.111 779 259 2.2
+J0205+6449 8 0.723 0.048 5.0×10 6 0.125 662 259 2.7
+J0742−2822 8 0.723 0.032 7.6×10 6 0.000 896 0 1.9
+J2229+6114 8 0.723 0.041 1.4×10 6 0.125 779 194 1.3
+J1801−2451 8 0.742 0.045 6.4×10 6 0.143 1637 2587 1.9
+J1420−6048 7 0.742 0.042 8.1×10 5 0.000 974 1293 5.2
+J1731−4744 7 0.742 0.034 3.7×10 6 0.000 1052 0 2.1
+J1814−1744 7 0.742 0.037 5.3×10 4 0.000 1169 0 43.5
+J1826−1334 7 0.742 0.051 1.2×10 7 0.286 2260 2716 1.2
+J1841−0524 7 0.742 0.054 1.5×10 6 0.143 623 970 1.3
+J1023−5746 6 0.765 0.044 2.0×10 6 0.000 546 3040 7.9
+J1645−0317 6 0.765 0.000 9.6×10 4 0.000 1676 0 30.4
+Note— Columns:N g, sample size after cleaning;h, geometric-mean bandwidth in whitened space;λ q, HDR density threshold;
+AHDR, HDR area in physical coordinates;f out, fraction of events outside the HDR; (xmode,y mode), density-mode location; AR,
+anisotropy ratio defined as the square root of the eigenvalue ratio of the sample covariance matrix.
+in the sample—from compact and nearly isotropic HDRs to highly elongated structures with substantial low-density
+extensions.
+What these per-source results show is that the glitch occupancy of individual pulsars can generally be described by
+smooth, predominantly unimodal density fields. The global geometry of these fields, however, varies considerably from
+one source to another. A natural question then arises: do these geometric differences organize into a small number
+of population-level classes? We address this question in the following subsection, where the per-source KDE–HDR
+descriptors are used as input to a clustering analysis.
+3.2.Population-Level Morphological Classes
+Hierarchical clustering with Ward linkage (Section 2.3) was applied to the KDE–HDR feature vectors
+(logA HDR,log AR,f out). The resulting dendrogram is shown in Fig. 5. A clear primary bifurcation separates the
+pulsars into two groups. This dominant split is driven by a joint variation in core spread and tail contribution: one
+group occupies a region of the feature space defined by compact, coherent cores, while the other is shifted toward
+larger effective core extent and more prominent peripheral occupancy.
+Cluster 1 contains six sources (Figure 3). Four are robust Compact members, while PSR J0537−6910 and
+PSR J1341−6220 retain the baseline Cluster 1 assignment but are flagged as Complex because of their lower bootstrap
+
+===== PAGE 10 =====
+10
+T able 3.Robustness of classification under single-feature ablation.
+Source HC nof out no log AR no logA HDR Stability Status
+J0537−6910 1 2 1 1 0.344 Complex †
+J1341−6220 1 2 1 1 0.401 Complex †
+J1420−6048 2 2 2 2 0.849 Robust
+J1023−5746 2 2 1 2 0.850 Robust
+J1801−2451 2 1 1 2 0.855 Robust
+J1801−2304 2 1 1 1 0.870 Robust
+J1731−4744 2 1 2 2 0.880 Robust
+J0742−2822 2 1 2 2 0.881 Robust
+Crab 1 2 1 1 0.886 Robust
+J1413−6141 2 1 1 1 0.895 Robust
+J1841−0524 2 1 1 1 0.895 Robust
+Vela 2 1 2 1 0.896 Robust
+J0205+6449 2 1 2 1 0.898 Robust
+J1826−1334 2 1 1 1 0.898 Robust
+J0631+1036 2 1 1 1 0.899 Robust
+J2229+6114 2 1 1 1 0.900 Robust
+J1814−1744 1 2 2 2 0.901 Robust
+J1048−5832 2 1 2 1 0.901 Robust
+J1825−0935 1 2 1 2 0.917 Robust
+J1737−3137 2 1 2 1 0.917 Robust
+J1740−3015 2 1 1 1 0.921 Robust
+J1645−0317 1 2 1 2 0.923 Robust
+Note— HC denotes the baseline cluster label using all three features. Subsequent columns show the label assigned when the
+specified feature is excluded. The Stability column gives the fraction of bootstrap realizations in which the source retains its
+baseline cluster assignment. Sources with stability<0.8 are flagged as Complex.
+T able 4.Sensitivity of the two-class
+partition to KDE bandwidth (h mult)
+and HDR threshold (q).
+hmult qARI NMIf flip
+0.5 0.50 0.176 0.135 0.273
+1.0 0.50 1.000 1.000 0.000
+2.0 0.50 1.000 1.000 0.000
+0.5 0.68 0.152 0.208 0.727
+1.0 0.68 1.000 1.000 0.000
+2.0 0.68 1.000 1.000 0.000
+0.5 0.90 0.541 0.459 0.909
+1.0 0.90 0.404 0.361 0.136
+2.0 0.90 0.540 0.459 0.909
+Note— Agreement with the baseline classification (h mult = 1.0,q= 0.68) is quantified by the adjusted Rand index (ARI) and
+normalized mutual information (NMI).f flip denotes the fraction of sources that change class labels relative to the baseline.
+All tests useN src = 22 sources.
+
+===== PAGE 11 =====
+11
+/uni00000014/uni0000001b/uni00000015/uni00000018/uni00000010/uni00000013/uni0000001c/uni00000016/uni00000018
+/uni00000014/uni0000001b/uni00000014/uni00000017/uni00000010/uni00000014/uni0000001a/uni00000017/uni00000017
+/uni00000013/uni00000018/uni00000016/uni0000001a/uni00000010/uni00000019/uni0000001c/uni00000014/uni00000013
+/uni00000014/uni00000019/uni00000017/uni00000018/uni00000010/uni00000013/uni00000016/uni00000014/uni0000001a
+/uni00000014/uni00000016/uni00000017/uni00000014/uni00000010/uni00000019/uni00000015/uni00000015/uni00000013
+/uni00000026/uni00000055/uni00000044/uni00000045
+/uni00000013/uni0000001a/uni00000017/uni00000015/uni00000010/uni00000015/uni0000001b/uni00000015/uni00000015
+/uni00000014/uni0000001a/uni00000016/uni00000014/uni00000010/uni00000017/uni0000001a/uni00000017/uni00000017
+/uni00000014/uni00000017/uni00000015/uni00000013/uni00000010/uni00000019/uni00000013/uni00000017/uni0000001b
+/uni00000014/uni00000013/uni00000015/uni00000016/uni00000010/uni00000018/uni0000001a/uni00000017/uni00000019
+/uni00000015/uni00000015/uni00000015/uni0000001c/uni0000000e/uni00000019/uni00000014/uni00000014/uni00000017
+/uni00000014/uni0000001b/uni00000017/uni00000014/uni00000010/uni00000013/uni00000018/uni00000015/uni00000017
+/uni00000014/uni0000001b/uni00000013/uni00000014/uni00000010/uni00000015/uni00000016/uni00000013/uni00000017
+/uni00000014/uni00000017/uni00000014/uni00000016/uni00000010/uni00000019/uni00000014/uni00000017/uni00000014
+/uni00000014/uni0000001a/uni00000017/uni00000013/uni00000010/uni00000016/uni00000013/uni00000014/uni00000018
+/uni00000013/uni00000019/uni00000016/uni00000014/uni0000000e/uni00000014/uni00000013/uni00000016/uni00000019
+/uni00000014/uni0000001b/uni00000015/uni00000019/uni00000010/uni00000014/uni00000016/uni00000016/uni00000017
+/uni00000014/uni00000013/uni00000017/uni0000001b/uni00000010/uni00000018/uni0000001b/uni00000016/uni00000015
+/uni00000039 /uni00000048/uni0000004f/uni00000044
+/uni00000013/uni00000015/uni00000013/uni00000018/uni0000000e/uni00000019/uni00000017/uni00000017/uni0000001c
+/uni00000014/uni0000001a/uni00000016/uni0000001a/uni00000010/uni00000016/uni00000014/uni00000016/uni0000001a
+/uni00000014/uni0000001b/uni00000013/uni00000014/uni00000010/uni00000015/uni00000017/uni00000018/uni00000014
+/uni00000013
+/uni00000014
+/uni00000015
+/uni00000016
+/uni00000017
+/uni00000018
+/uni00000019
+/uni0000001a/uni0000003a/uni00000044/uni00000055/uni00000047/uni00000003/uni00000047/uni0000004c/uni00000056/uni00000057/uni00000044/uni00000051/uni00000046/uni00000048
+/uni00000014/uni00000011/uni00000018
+/uni00000013/uni00000011/uni00000013/uni00000014/uni00000011/uni00000018/uni00000016/uni00000011/uni00000013
+/uni00000033/uni00000026/uni00000014
+/uni00000014/uni00000011/uni00000018
+/uni00000013/uni00000011/uni00000013
+/uni00000014/uni00000011/uni00000018
+/uni00000033/uni00000026/uni00000015
+/uni00000013/uni00000018/uni00000016/uni0000001a/uni00000010/uni00000019/uni0000001c/uni00000014/uni00000013
+/uni00000014/uni0000001a/uni00000017/uni00000013/uni00000010/uni00000016/uni00000013/uni00000014/uni00000018
+/uni00000014/uni00000016/uni00000017/uni00000014/uni00000010/uni00000019/uni00000015/uni00000015/uni00000013
+/uni00000026/uni00000055/uni00000044/uni00000045
+/uni00000039 /uni00000048/uni0000004f/uni00000044
+/uni00000013/uni00000019/uni00000016/uni00000014/uni0000000e/uni00000014/uni00000013/uni00000016/uni00000019
+/uni00000014/uni0000001b/uni00000013/uni00000014/uni00000010/uni00000015/uni00000016/uni00000013/uni00000017
+/uni00000014/uni00000017/uni00000014/uni00000016/uni00000010/uni00000019/uni00000014/uni00000017/uni00000014
+/uni00000014/uni0000001b/uni00000015/uni00000018/uni00000010/uni00000013/uni0000001c/uni00000016/uni00000018
+/uni00000014/uni00000013/uni00000017/uni0000001b/uni00000010/uni00000018/uni0000001b/uni00000016/uni00000015
+/uni00000014/uni0000001a/uni00000016/uni0000001a/uni00000010/uni00000016/uni00000014/uni00000016/uni0000001a
+/uni00000013/uni00000015/uni00000013/uni00000018/uni0000000e/uni00000019/uni00000017/uni00000017/uni0000001c
+/uni00000013/uni0000001a/uni00000017/uni00000015/uni00000010/uni00000015/uni0000001b/uni00000015/uni00000015
+/uni00000015/uni00000015/uni00000015/uni0000001c/uni0000000e/uni00000019/uni00000014/uni00000014/uni00000017
+/uni00000014/uni00000017/uni00000015/uni00000013/uni00000010/uni00000019/uni00000013/uni00000017/uni0000001b
+/uni00000014/uni0000001a/uni00000016/uni00000014/uni00000010/uni00000017/uni0000001a/uni00000017/uni00000017
+/uni00000014/uni0000001b/uni00000013/uni00000014/uni00000010/uni00000015/uni00000017/uni00000018/uni00000014
+/uni00000014/uni0000001b/uni00000014/uni00000017/uni00000010/uni00000014/uni0000001a/uni00000017/uni00000017
+/uni00000014/uni0000001b/uni00000015/uni00000019/uni00000010/uni00000014/uni00000016/uni00000016/uni00000017
+/uni00000014/uni0000001b/uni00000017/uni00000014/uni00000010/uni00000013/uni00000018/uni00000015/uni00000017
+/uni00000014/uni00000013/uni00000015/uni00000016/uni00000010/uni00000018/uni0000001a/uni00000017/uni00000019
+/uni00000014/uni00000019/uni00000017/uni00000018/uni00000010/uni00000013/uni00000016/uni00000014/uni0000001a
+/uni00000026/uni0000004f/uni00000058/uni00000056/uni00000057/uni00000048/uni00000055/uni00000003/uni00000014
+/uni00000026/uni0000004f/uni00000058/uni00000056/uni00000057/uni00000048/uni00000055/uni00000003/uni00000015
+Figure 5.Hierarchical clustering and principal component analysis (PCA) of the pulsar sample based on KDE–HDR features
+(AHDR, AR,f out).Left:Dendrogram using Ward linkage, showing a primary bifurcation into two classes.Right:Projection
+of sources onto the first two principal components (PC1, PC2). Colors and symbols correspond to the clusters identified in
+the dendrogram. The two “Complex” sources (PSR J0537−6910 and PSR J1341−6220, marked with open circles) occupy
+intermediate positions in the PCA plane, consistent with their lower stability scores.
+stability. Cluster 2 contains the remaining 16 sources (Figure 4) and is referred to as the Extended class. Relative
+to the robust Compact members, this branch is shifted toward larger HDR areas, lower anisotropy, and/or stronger
+out-of-HDR occupancy. These labels refer to positions in the three-dimensional descriptor space rather than to visual
+judgments based on individual KDE panels.
+A principal component analysis was performed on the KDE–HDR feature vectors. The first two components account
+for most of the variance in the three-dimensional feature space. PC1 alone explains 72.4%, and PC2 adds another 19.1%,
+bringing the cumulative variance to 91.5%. Because the sign of a PCA axis is arbitrary, we interpret the components
+using the sign convention plotted in Figure 5. In this convention, larger positive PC1 values correspond to smaller
+AHDR and larger AR, whereas negative PC1 values correspond to broader HDR occupancy. PC1 therefore separates
+compact, anisotropic high-density regions from broader and more diffuse occupancy fields. PC2 captures the remaining
+morphological contrast: it mainly traces increasingf out, with a secondary negative contribution from logA HDR and
+negligible contribution from log AR. We therefore treat PC1 and PC2 as summary axes of the standardized KDE–HDR
+descriptor space rather than as one-to-one proxies for individual observables.
+To examine whether the inferred morphology is primarily driven by the characteristic glitch amplitude, we defined
+the typical amplitude of each source as the median of log10(∆ν/ν). We calculated its Spearman rank correlations with
+logA HDR and PC1. Uncertainties were estimated using nonparametric bootstrap confidence intervals.
+The typical glitch amplitude shows a moderate positive correlation with logA HDR, withρ s = 0.414 andp= 0.0555.
+However, the bootstrap 95% confidence interval, [−0.034,0.772], includes zero. Its correlation with PC1 is weaker
+and also statistically inconclusive:ρ s = 0.335,p= 0.128, with a bootstrap 95% confidence interval of [−0.152,0.713]
+under the PC1 sign convention adopted in Figure 5.
+The robustness of the two-class classification was assessed in three complementary ways. First, label stability was
+quantified under bootstrap resampling by computing a per-source stability score. Most sources retain their baseline
+cluster assignment in more than 85% of realizations. This indicates that the classification is not driven by sampling
+noise.
+Second, a one-feature ablation test was conducted. The hierarchical clustering was repeated after removing each
+KDE–HDR feature in turn. Table 3 shows that most sources preserve their original labels regardless of which feature
+is dropped. When label changes do occur, they tend to involve sources with low stability scores, which suggests that
+sensitivity to feature choice reflects intrinsic classification uncertainty rather than dependence on a single parameter.
+Third, the two key methodological choices—the KDE bandwidth and the HDR probability threshold—were system-
+atically varied. We rescaled the Silverman bandwidth by a factorh mult∈{0.5,1.0,2.0}and tested HDR probability
+massesq∈{0.50,0.68,0.90}. This grid spans a broad but physically reasonable range. For each combination, the
+KDE–HDR features were recomputed and the clustering was repeated for all 22 sources. The resulting classifications
+were compared to the baseline (h mult = 1.0,q= 0.68) using the adjusted Rand index (ARI) and normalized mutual
+information (NMI), both of which are invariant to label permutation. The results are summarized in Table 4.
+
+===== PAGE 12 =====
+12
+At the fiducial HDR massq= 0.68, the Compact/Extended assignments are exactly reproduced whenh mult = 1.0
+or 2.0 (ARI = NMI = 1.0). This demonstrates that the two-class structure is robust to moderate changes in the
+smoothing. Reducing the bandwidth toh mult = 0.5, however, leads to a sharp drop in agreement (ARI≃0.15, NMI
+≃0.21). Overly local density estimates evidently introduce instability into the classification.
+When the more restrictive thresholdq= 0.50 is used, perfect agreement with the baseline is again obtained for
+hmult = 1.0 and 2.0 (ARI = NMI = 1.0). This means that the core structure by itself is sufficient to recover the two
+classes. Ath mult = 0.5, agreement drops substantially once more (ARI≃0.18, NMI≃0.14), consistent with the
+sensitivity to undersmoothing noted above.
+For the more inclusive thresholdq= 0.90, agreement decreases across all bandwidths (ARI≃0.40–0.54; NMI
+≃0.36–0.46). Large flip fractions accompany the results ath mult = 0.5 and 2.0. Including the low-density tails
+evidently reduces the contrast between Compact and Extended morphologies, making the classification more sensitive
+to boundary fluctuations.
+Taken together, these tests indicate that the two-class structure is robust within a well-defined region of parameter
+space—particularly forq= 0.68 and moderate bandwidths. When the parameters are pushed outside this regime,
+either through excessive localization or through inclusion of diffuse tails, the stability of the inferred classification
+degrades.
+One final point deserves mention. The raw flip fractionf flip (Table 4) is by design a stringent per-source measure.
+It can appear large even when ARI and NMI point to substantial partition similarity. This is because ARI and NMI
+capture global agreement of the partition structure, whereasf flip counts every per-source label change equally. In sum,
+the Compact/Extended split does not appear to be an artifact of finely tuned bandwidth or HDR threshold choices.
+Rather, it reflects a genuine separation in the KDE–HDR feature space, with sensitivity limited to a small number of
+borderline sources under extreme parameter settings.
+3.3.Physical Drivers of Glitch Morphology
+We next investigated the physical drivers behind the Compact/Extended morphological classification by examining
+how the KDE–HDR features relate to pulsar physical parameters. Spearman rank correlation coefficients were com-
+puted separately for the two morphological classes, which allows class-dependent trends to be identified that might
+otherwise be masked in a pooled analysis. We found thatf out and log AR show strong sign reversals in their correla-
+tions with characteristic timescales (log⟨∆t⟩and log(⟨∆t⟩|˙ν|)). The differences ∆ρbetween the two classes are large.
+This means that the same physical variable can play qualitatively different roles in shaping glitch occupancy geometry,
+depending on which morphological regime the pulsar belongs to.
+These class-dependent correlations motivated us to build a logistic regression model. The goal was to quantify how
+well physical parameters can discriminate between the Compact and Extended morphologies. Six predictors were
+used: log⟨∆t⟩(mean waiting time), logν(spin frequency), log|˙ν|(spin-down rate), log(⟨∆t⟩|˙ν|) (accumulated spin-
+down scale), logτ c (characteristic age), and logB(surface magnetic field). The resulting model achieves an area under
+the receiver operating characteristic curve of AUC = 0.88, indicating a statistically significant association between
+spin-down properties and glitch distribution geometry.
+To evaluate the robustness of this result, we performed leave-one-out cross-validation (LOO-CV). In each fold,
+the classifier was trained on 21 sources and tested on the remaining one. The cross-validated performance is
+AUCCV = 0.59—substantially lower than the in-sample value. This gap indicates that the logistic model is sus-
+ceptible to overfitting, which is not surprising given the small sample (N src = 22 with six predictors). With only six
+members in the Compact class, removing a single source can shift the decision boundary appreciably. The regression
+coefficients listed in Table 5 should therefore be read as indicating therelative importance hierarchyamong predictors,
+with log⟨∆t⟩clearly dominant, rather than as precise discriminative boundaries. Despite the limited generalization, it
+is worth noting that the qualitative ordering of predictor importance is stable: log⟨∆t⟩retains the largest coefficient
+magnitude in all 22 LOO-CV folds.
+The fitted coefficients (Table 5) confirm that timescale-related parameters dominate the discrimination. The mean
+waiting time log⟨∆t⟩carries the largest positive coefficient, followed by log(⟨∆t⟩|˙ν|) and log|˙ν|. The parameters
+logBand logτ c enter with smaller negative weights. This hierarchy suggests that it is the temporal organization
+of glitch activity, and the associated stress accumulation timescale, that primarily regulates the Compact/Extended
+dichotomy—rather than magnetic field strength or instantaneous spin frequency.
+
+===== PAGE 13 =====
+13
+T able 5.Correlations between pulsar physical properties and KDE–HDR morphological
+features.
+Physical parameter KDE–HDR featureρ C ρE ∆ρLogistic coef
+logB f out −0.900 0.151−1.051−0.237
+logA−0.100−0.262 0.162···
+log AR 0.700 0.056 0.644···
+log|˙ν|f out 0.900−0.093 0.993 0.145
+logA0.500−0.035 0.535···
+log AR−0.700 0.229−0.929···
+logτ c fout −0.800 0.148−0.948−0.070
+logA−0.300 0.153−0.453···
+log AR 0.600−0.300 0.900···
+log⟨∆t⟩f out −0.500−0.156−0.344 1.531
+logA0.100 0.576−0.476···
+log AR 0.700−0.115 0.815···
+log(⟨∆t⟩|˙ν|)f out −1.000 0.079−1.079 0.224
+logA−0.300 0.129−0.429···
+log AR 0.900−0.279 1.179···
+logν f out 1.000−0.119 1.119 0.202
+logA0.300 0.079 0.221···
+log AR−0.900 0.129−1.029···
+Note— Columns 3–5 show Spearman rank correlation coefficients (ρ) calculated separately for the Compact (C) and Extended
+(E) classes, along with the difference ∆ρ=ρ C−ρ E. The final column lists the coefficients from the logistic regression model;
+positive values indicate a higher probability of belonging to the Extended class.
+4.DISCUSSION
+4.1.Physical Interpretation of the Two Morphological Classes
+The two-class separation seen in Figure 5 can be interpreted naturally within the superfluid angular-momentum
+transfer framework (P. W. Anderson & N. Itoh 1975; M. A. Alpar et al. 1984; B. Haskell & A. Melatos 2015; D.
+Antonopoulou et al. 2022). In the standard vortex-unpinning picture, angular momentum builds up in the crustal
+superfluid at a rate set by the spin-down torque. When the velocity lag between the superfluid and the crust grows
+large enough to cross a critical threshold, vortices unpin collectively and transfer angular momentum to the crust,
+producing the observed glitch. The morphological signature that a glitch leaves in the (∆t −,∆ν/ν) plane depends on
+how thoroughly the reservoir is drained in each event.
+Consider first the case in which glitches are triggered by a deterministic critical-lag threshold and the reservoir is
+nearly emptied each time. Under these conditions, the waiting time and the resulting amplitude should be tightly
+coupled. In the (∆t −,∆ν/ν) plane, this would appear as a linear ridge or a concentrated core (e.g., Figure 3). Our
+Compact class displays exactly this kind of behavior—tightly confined along a preferred direction. On the other
+hand, stochastic avalanche models predict that only a fraction of the reservoir is tapped during any single event. The
+resulting distribution of sizes and intervals is broader and less correlated. This is what we observe in the Extended
+class, which shows a largerA HDR and a more isotropic occupation of parameter space. If the Extended class does
+indeed reflect partial depletion, then the observed glitch coupling constantGwill underestimate the total superfluid
+moment of inertia that is actually available.
+Two sources deserve special attention. PSR J0537−6910 and PSR J1341−6220 were both flagged as “Complex” in
+Table 3. They are prolific glitchers (N g = 66 and 32, respectively) and they sit at intermediate positions in the PCA
+plane (Figure 5, right panel). Their bootstrap stability scores fall well below the 0.8 threshold, at 0.34 and 0.40.
+
+===== PAGE 14 =====
+14
+The KDE morphologies of these two sources show features of both classes. PSR J0537−6910, for instance, has the
+second smallest HDR area in the sample (7.6×10 4) and a moderate anisotropy (AR = 2.8). On these grounds it
+would belong to the Compact class. Yet its out-of-HDR fraction (f out = 0.29) is the highest among all 22 pulsars—
+a trait that is much more characteristic of the Extended class. This tension has a natural physical reading. The
+well-known strong correlation between glitch size and forward waiting time in this source (J. Middleditch et al. 2006;
+D. Antonopoulou et al. 2018; E. G¨ ugercino˘ glu et al. 2026) points to near-complete reservoir depletion in each cycle,
+which is a Compact-class signature. The elevatedf out, however, may reflect occasional partial-depletion events that
+are superposed on the dominant deterministic sequence.
+PSR J1341−6220 presents a similar hybrid character. It has a single dominant density core, but this core is stretched
+along the diagonal direction, and the peripheral occupancy is moderate (f out = 0.16). P.-X. Zhu & X.-P. Zheng (2025)
+found phase-dependent variations inGfor this pulsar, consistent with a reservoir that alternates between near-complete
+and partial depletion.
+As glitch catalogs continue to grow, it will be important to track whether these Complex sources drift toward one
+class or the other, or whether they instead stabilize as a genuine intermediate category. This would provide a direct
+observational test of whether the Compact/Extended dichotomy is truly discrete or whether it reflects the endpoints
+of a continuum.
+That⟨∆t −⟩emerges as the strongest logistic-regression predictor of class membership (Section 3.3) is consistent with
+the result of M. Millhouse et al. (2022), who showed that the glitch rate scales primarily with characteristic age rather
+than with spin frequency or magnetic-field strength. Together, these findings reinforce the view that timescale-related
+quantities—not instantaneous rotational parameters—are the main regulators of glitch-activity morphology.
+4.2.Comparison with Previous Classification Schemes
+For many years, the community has relied on the qualitative “Vela-like” versus “Crab-like” dichotomy to distinguish
+large, quasi-periodic glitchers from small, irregular ones (C. S. Flanagan 1990; C. M. Espinoza et al. 2011). Our
+Compact/Extended classes overlap partially with this traditional division, but the two are not equivalent. Vela itself
+falls into the Extended class, whereas the Crab is assigned to the Compact class (Figure 5). This assignment reflects
+the joint waiting-time–amplitude morphology, not amplitude alone.
+A four-class taxonomy was recently proposed by P.-X. Zhu & X.-P. Zheng (2025), based on the visual appearance of
+glitch-size bar charts and the cumulative angular-momentum evolution. Their scheme identifies a linear relationship
+between the glitch cluster periodP c and characteristic age, which provides a useful physical timescale for glitch
+recurrence. In our framework, the mean backward waiting time⟨∆t −⟩serves as the physical analog of their cluster
+period. Their classes 2–4 are distributed across both of our morphological classes, which highlights a key difference
+in approach: our method extracts the Compact/Extended boundary from a reproducible numerical criterion applied
+to the full joint two-dimensional distribution, rather than from one-dimensional sequences. Establishing a direct
+numerical correspondence between our geometric features and their cluster periodP c would be a valuable direction
+for future work, and could help to unify these two complementary approaches.
+J. R. Fuentes et al. (2019) carried out a systematic analysis of glitch-size and waiting-time distributions for eight
+prolific pulsars. They identified characteristic scales in the large-glitch populations of Vela and PSR J0537−6910,
+while finding Poisson-like behavior in other sources. Our KDE–HDR framework goes further by operating in the full
+two-dimensional (∆t−,∆ν/ν) plane. This allows joint morphological features—core anisotropy, peripheral occupancy,
+and so on—to be captured in a way that is not possible from separate one-dimensional analyses.
+An interesting related result was reported by I. O. Eya et al. (2019), who showed that the inter-glitch time intervals
+for small-size (∆ν/ν <10 −7) and large-size (∆ν/ν≥10 −7) glitches are drawn from statistically indistinguishable
+distributions. This observation fits well with our finding that the Compact/Extended separation is not driven by
+whether a pulsar produces large or small glitches per se. What matters instead is how thejointdistribution of sizes
+and intervals concentrates or spreads in the occupancy plane. That the waiting-time structure contributes independent
+discriminative information is confirmed by the logistic regression (Section 3.3), where log⟨∆t −⟩stands out as the
+strongest single predictor of class membership.
+4.3.The Role of the Backward Waiting Time
+The logistic regression analysis (Table 5) identifies⟨∆t −⟩as the strongest single predictor of morphological class.
+Its coefficient is 1.531, which is substantially larger than those of logν(0.202) and logB(−0.237). This result is
+
+===== PAGE 15 =====
+15
+physically reasonable, as the pre-glitch accumulation timescale directly governs how much angular momentum can be
+stored in the superfluid reservoir before the next event (A. Melatos et al. 2008; G. Howitt et al. 2018).
+The class-dependent Spearman correlations (Table 5) add further detail. In the Compact class, log⟨∆t −⟩and AR
+are correlated (ρ C = 0.700). This means that pulsars with longer average accumulation times tend to develop more
+elongated and structured HDR cores. If a pulsar systematically depletes its reservoir at each glitch, the interpretation
+is clear: a longer accumulation time allows a larger critical lag to develop. This enforces a tighter deterministic coupling
+between the pre-glitch waiting time and the resulting amplitude, stretching the occupancy core along a preferred axis.
+In the Extended class, by contrast, we found that this correlation essentially vanishes (ρE =−0.115). The sign reversal
+(∆ρ= 0.815) implies that when glitches are driven by partial, avalanche-like releases, the accumulation timescale sets
+the overall glitch rate but does not impose a preferred directional coupling between size and waiting time.
+It is worth noting that our analysis relies on the backward waiting time ∆t −, which conditions each event on the
+pre-glitch state. The forward waiting time ∆t +, however, also carries important physical information. To evaluate the
+effect of this choice, we repeated the full KDE–HDR analysis using ∆t + (see Appendix B).
+The same pipeline applied to ∆t + does produce a two-class separation. The classification stability, however, is
+noticeably reduced. The stability metrics show a broader distribution than in the backward-interval case. Moreover,
+the logistic regression coefficients exhibit a weaker hierarchical structure: log ∆tremains an important predictor, but
+it no longer dominates the regression as clearly as it does in the backward analysis.
+This difference can be understood in terms of the distinct physical roles played by the two intervals. The backward
+interval traces the pre-glitch accumulation of stress and is therefore directly tied to the angular-momentum reservoir.
+The forward interval, on the other hand, is shaped by post-glitch recovery processes as well as stochastic triggering,
+both of which introduce additional variability. As a consequence, the correlations observed with ∆t + are less coherent.
+The case of PSR J0537−6910 illustrates the point well (J. Middleditch et al. 2006; D. Antonopoulou et al. 2018;
+R. D. Ferdman et al. 2018). The strong correlation between glitch size and waiting time that characterizes this
+source is known to depend on whether the backward or forward interval is used. In our analysis, the forward-interval
+classification yields significantly lower stability for this pulsar. This observation supports the interpretation that
+the morphological structure uncovered in this work is primarily shaped by pre-glitch accumulation rather than by
+post-glitch evolution.
+4.4.Implications for the Angular-Momentum Reservoir
+The glitch coupling constantGis defined as the ratio of cumulative glitch spin-up to the secular spin-down measured
+over the same time span. It provides a macroscopic estimate of the fractional stellar moment of inertia that participates
+in glitches (B. Link et al. 1999; A. G. Lyne et al. 2000). Through long-term pulsar timing, empirical values ofGhave
+been established for a number of prolific sources. For Vela, roughly 1.6% of the spin-down is reversed on average
+by glitches (G≈0.016; C. M. Espinoza et al. 2011; J. R. Fuentes et al. 2019; W. C. G. Ho et al. 2015). This is
+a fairly typical value; many rotation-powered pulsars haveGin the range 0.01–0.02 (A. G. Lyne et al. 2000; C. M.
+Espinoza et al. 2011). Recent observations have also shown that Vela glitches can be accompanied by magnetospheric
+perturbations (J. Palfreyman et al. 2018; G. Ashton et al. 2020), and theoretical modeling suggests that crustal
+failure—a starquake—can act as the trigger for vortex unpinning (A. Bransgrove et al. 2020). If this is the case, the
+angular-momentum release can occur before the critical lag is reached globally, leading to only partial depletion of the
+reservoir.
+The Crab pulsar, by contrast, has glitch activity that is orders of magnitude lower, withG∼10 −5 (C. M. Espinoza
+et al. 2011; W. H. Wang et al. 2021). Our morphological classification provides a structural framework within which
+these phenomenological differences can be understood.
+For the Compact class, of which the Crab is the clearest example, the glitch distribution is tightly concentrated in
+the (∆t−,∆ν/ν) plane. This concentration points to a highly coherent coupling between the pre-glitch accumulation
+process and the resulting glitch amplitude. The system appears to operate in a relatively deterministic regime, with
+each event tapping a well-defined fraction of the available reservoir.
+It is important to emphasize, however, that the Crab’s low glitch activity does not necessarily mean that its total
+superfluid reservoir is small. Analysis of the 2017 largest Crab glitch within the vortex creep model indicates that
+the crustal superfluid fraction participating in the event reachesI creep/I≈6×10 −3 (E. G¨ ugercinoˇ glu & M. A. Alpar
+2019). Furthermore, P.-X. Zhu et al. (2026) demonstrated that the long-term quasi-periodicity of Crab glitches and the
+correlations between cluster size and waiting time are consistent with a partial-release mechanism, in which each event
+
+===== PAGE 16 =====
+16
+taps only a fraction of the stored superfluid angular momentum. This picture aligns naturally with our Compact-class
+interpretation: the coupling to the observable glitch channel is coherent, but the reservoir itself may be substantially
+larger than what the long-termGalone would suggest.
+In the Extended class, with Vela as the prototype, the dispersed occupancy indicates that the reservoir is only
+partially tapped at each event. The long-term observedGtherefore underestimates the true superfluid participation.
+This conclusion receives independent support from the phase-dependentGvariations found in PSR J1341−6220 by
+P.-X. Zhu & X.-P. Zheng (2025).
+Even before partial depletion is taken into account, microphysical entrainment corrections already push the required
+superfluid fraction upward. N. Andersson et al. (2012) and N. Chamel (2013) showed that nondissipative entrainment
+coupling increases the effective mass of the superfluid neutrons in the crust. To explain Vela’s apparentG≈0.016,
+the actual superfluid moment-of-inertia fractionI res/Ic must reach at least∼7% once entrainment is included. This
+requires the participation of superfluid that extends into the stellar outer core (W. C. G. Ho et al. 2015; A. Montoli
+et al. 2020b).
+If the avalanche-like, partial-depletion mechanism inferred from the Extended morphology operates on top of the
+entrainment correction, then the trueI res/Ic must be strictly greater than even the entrainment-corrected bound.
+Event-wise comparisons of the fractional moment of inertia required by individual glitches confirm that a non-negligible
+fraction of observed events cannot be explained by the crustal superfluid alone (A. Basu et al. 2018). The inferred ratio
+should therefore be treated as a strict lower limit. Population-level comparisons ofG, and the consequent constraints on
+the equation of state of dense matter, should account for morphological class membership. The quantitative framework
+introduced here makes such a correction feasible.
+4.5.Limitations and Future Directions
+The present analysis has several limitations that naturally point to avenues for future work. The most important
+is sample size. With only 22 pulsars, the statistical power of both the classification and the logistic regression is
+limited. For sources near the minimum event threshold (N g = 6), the KDE resolution inherently suppresses subtle
+out-of-core features—this is why many of these sources havef out ≈0 (Table 2). The low ratio of sample size to
+number of predictors in the regression also means that the exact coefficient magnitudes should be viewed as indicative
+trends, not definitive bounds. As larger glitch catalogs become available through long-term monitoring campaigns and
+next-generation facilities such as FAST and the SKA, it will be essential to expand the sample. Expanding the sample
+will sharpen the morphological class boundaries and allow more robust discriminative models to be trained.
+PSR J0742−2822 warrants additional caution when its individual KDE morphology is interpreted. This pulsar
+exhibits rapid changes in both pulse-profile shape and spin-down rate, which have been associated with magnetospheric
+state switching and can contribute substantial timing noise (A. Lyne et al. 2010; M. J. Keith et al. 2013; P. R. Brook
+et al. 2016; M. E. Lower et al. 2025). Consequently, some of the lowest-amplitude catalogued events may be more
+difficult to distinguish from state-dependent rotational irregularities than the larger glitches. At the same time,
+high-cadence timing has confirmed at least one small glitch in this source despite its strong timing noise (A. Basu
+et al. 2020); it would therefore be inappropriate to reject all of its small events solely on the basis of amplitude.
+Our leave-one-source-out stability analysis indicates that the global two-class partition is not controlled by any single
+pulsar, thus this source-specific ambiguity does not determine the population-level result. Nevertheless, the KDE–HDR
+parameters and class assignment of PSR J0742−2822 should be interpreted with greater caution than those of sources
+whose glitch records are less affected by state switching. Future high-cadence timing and a homogeneous re-evaluation
+of its low-amplitude events will be needed to refine its individual morphology.
+A second limitation is that the KDE–HDR parameters, while providing a reproducible phenomenological summary
+of glitch occupancy, do not by themselves establish a causal connection to specific internal mechanisms. One promising
+way forward is through forward modeling. If synthetic glitch catalogs generated from physically motivated models (L.
+Warszawski & A. Melatos 2011; A. Melatos et al. 2018) can reproduce the observed morphological classes, that would
+considerably strengthen the physical interpretation. In addition, extending the framework to include the forward
+waiting time (∆t +) and tracking how morphology evolves over decades would help to clarify whether the two-class
+structure captures post-glitch relaxation dynamics as well, and whether morphologically “complex” pulsars transition
+between different activity regimes as they age and spin down.
+
+===== PAGE 17 =====
+17
+5.CONCLUSION
+In this work, we have developed a quantitative framework for classifying pulsar glitch behavior on the basis of
+morphology in the joint space of backward waiting time and relative glitch amplitude. Qualitative taxonomies are
+replaced by probabilistic descriptors derived from two-dimensional kernel density estimation and highest-density regions
+(KDE–HDR), which together provide a reproducible summary of glitch occupancy. We applied hierarchical clustering
+to the geometric parameters (A HDR, AR,f out) extracted from 349 glitches across 22 pulsars. The analysis reveals
+a robust two-class structure. One class is characterized by compact, coherent cores with limited anisotropy. The
+other exhibits broader distributions with substantial out-of-core contributions. Robustness tests—including bootstrap
+resampling, feature ablation, and hyperparameter variation—confirm that this separation reflects genuine differences
+in glitch-occupancy morphology rather than artifacts of sampling or methodological choices.
+To explore the physical drivers of these morphological classes, we constructed a logistic regression model using spin
+and waiting-time parameters as predictors. The model achieves an in-sample classification performance of AUC = 0.88.
+The leave-one-out cross-validated value, AUC CV = 0.59, is considerably lower, reflecting the limited sample size.
+Nevertheless, the predictor-importance hierarchy remains stable across all folds. Among the predictors examined,
+the mean backward waiting time⟨∆t −⟩stands out as the most informative, suggesting that the pre-glitch stress-
+accumulation timescale plays a central role in shaping glitch occupancy. From a physical standpoint, the Compact
+class appears consistent with near-complete depletion of the angular-momentum reservoir in each glitch cycle, while
+the Extended class points to partial, avalanche-like releases. As a consequence, short-term measurements of the glitch
+coupling constantGin Extended-class pulsars may underestimate the true fraction of the crustal superfluid that
+participates in glitch activity.
+ACKNOWLEDGMENTS
+We would like to thank the anonymous referee for helpful suggestions that led to a significant improvement of our work.
+This work is supported by the Natural Science Foundation of Xinjiang Uygur Autonomous Region (No. 2023D01E20),
+the Xinjiang Talent Development Fund (No. XJRC-2025-KJ-PY-KJLJ-106), the National Key R&D Program of China
+(No. 2022YFA1603104), the Tianshan talents program (No. 2023TSYCTD0013), the National Natural Science Foun-
+dation of China (No. 12288102). Weihua Wang is supported by the Zhejiang Provincial Natural Science Foundation
+of China under grant No. LQ24A030002. Feifei Kou is supported by the Major Science and Technology Program of
+Xinjiang Uygur Autonomous Region (2022A03013-2).
+AUTHOR CONTRIBUTIONS
+W.-T.L. developed the methodology, performed the analysis, and drafted the manuscript. W.-H.W. contributed to
+the interpretation. X.Z. conceived the project, supervised the work and edited the manuscript. F.-F.K. contributed
+to the interpretation.
+Software:Python, NumPy (C. R. Harris et al. 2020), SciPy (P. Virtanen et al. 2020), pandas ( Wes McKinney
+2010), Matplotlib (J. D. Hunter 2007), scikit-learn (F. Pedregosa et al. 2011)
+APPENDIX
+A.CLUSTERING TENDENCY DIAGNOSTICS
+The Hopkins statistic (H) is used here to test whether the glitch occupancy of an individual pulsar shows statistically
+significant intrinsic clustering. It is a standard diagnostic for clustering tendency in multivariate point sets, and it is
+particularly useful for distinguishing genuine clustering from a single continuous distribution that happens to contain
+smooth gradients.
+The procedure is as follows. For a given pulsar withNobserved glitches in the logarithmic (∆t −,∆ν/ν) plane,
+denoted{x i}N
+i=1, we generate a set ofmsynthetic points{u j}m
+j=1 uniformly at random within the axis-aligned bounding
+box of the data. Separately,mobserved points{x (s)
+j }m
+j=1 are drawn uniformly at random from the original sample.
+
+===== PAGE 18 =====
+18
+Two sets of nearest-neighbor distances are then computed. The first set,u j, gives the distance from thej-th random
+point to its nearest neighbor among the observed data. The second set,w j, gives the distance from thej-th sampled
+real point to its nearest neighbor in the observed set. The Hopkins statistic is then
+H=
+Pm
+j=1uj
+Pm
+j=1uj +Pm
+j=1wj
+.(A1)
+Data that are consistent with complete spatial randomness (CSR) produceH≃0.5. Values approaching 1 indicate
+a strong clustering tendency—the synthetic points land in gaps between clusters and therefore have largeu j relative
+to thew j of the real points. Values near 0, conversely, suggest a regularly spaced or inhibited point pattern.
+We emphasize that the Hopkins statistic is used here strictly as a diagnostic tool. Its role is to test for discrete
+internal substructure, such as distinct islands of glitch activity. It isnotused to define the Compact and Extended
+morphology classes, which are based instead on the global geometric descriptorsA HDR, AR, andf out. Table 6 lists
+the Hopkins statistics for all sources that pass our minimum-sample criterion. We interpret these values qualitatively.
+Sources withH≈0.5 are consistent with continuous distributions. Those with substantially higher values—Vela being
+a prominent example—provide evidence for intrinsic multi-modal clustering.
+T able 6.Hopkins statistic (H) for clustering tendency assessment.
+SourceN g HSourceN g HSourceN g H
+J0205+6449 8 0.234 J0742−2822 8 0.371 J1413−6141 13 0.532
+J0537−6910 66 0.446 J1023−5746 6 0.282 J1420−6048 7 0.532
+J0631+1036 16 0.436 J1048−5832 12 0.318 J1645−0317 6 0.485
+J1341−6220 32 0.641 J1731−4744 7 0.435 J1737−3137 9 0.441
+J1740−3015 39 0.494 J1801−2304 14 0.612 J1801−2451 7 0.382
+J1814−1744 7 0.898 J1825−0935 13 0.281 J1826−1334 7 0.563
+J1841−0524 7 0.124 J2229+6114 8 0.208 Crab 31 0.743
+Vela 25 0.658··· ··· ··· ··· ··· ···
+Note—His calculated according to Eq. (A1). Values near 0.5 imply a continuous
+distribution, while values approaching 1.0 suggest strong intrinsic clustering.
+B.FORWARD WAITING-TIME CLASSIFICATION
+As a check on the robustness of our morphological classification, we repeated the full KDE–HDR analysis using the
+forward interval ∆t+ instead of the backward interval. The forward waiting time is defined as the time from a given
+glitch to the next event. Every other aspect of the analysis pipeline—KDE construction, HDR extraction at fixed
+probability mass, feature derivation, and hierarchical clustering in the (logA,log AR,f out) space—was kept identical
+to what is described in Section 2.2.
+When the KDE–HDR framework is applied to the forward interval, a two-class structure emerges that is broadly
+analogous to the one obtained with the backward interval. The clustering algorithm again splits the sample into two
+groups, which confirms that the bimodal morphological behavior is not simply an artifact of the choice of temporal
+direction.
+That said, the separation between the two classes is less clean in the forward-interval representation. The KDE–HDR
+feature distributions show more overlap, and the cluster boundaries are less sharply defined. This can also be seen
+in the dendrogram (Figure 6), where the linkage distances between clusters are smaller than in the backward-interval
+case.
+We evaluated the stability of the forward-interval classification using the same bootstrap procedure described in
+Section 2.3. The results are summarized in Table 7. Across the board, the forward-interval classification is less stable
+than its backward-interval counterpart. The HDR extraction failure rate is higher, and key features like logAandf out
+show greater dispersion across bootstrap realizations. For several sources, the effective number of successful realizations
+
+===== PAGE 19 =====
+19
+T able 7.Stability scores for forward waiting-time classification.
+SourceN g Stability score SourceN g Stability score SourceN g Stability score
+J1825−0935 13 0.368 J1814−1744 7 0.369 J0742−2822 8 0.392
+Crab 31 0.535 J1341−6220 32 0.638 J0631+1036 16 0.639
+J1801−2451 7 0.644 J1826−1334 7 0.655 J0205+6449 8 0.657
+J0537−6910 66 0.658 J1841−0524 7 0.659 J1413−6141 13 0.660
+J1420−6048 7 0.662 J1801−2304 14 0.662 J1023−5746 6 0.665
+J1740−3015 39 0.666 J1731−4744 7 0.667 J2229+6114 8 0.669
+J1737−3137 9 0.679 J1048−5832 12 0.679 Vela 25 0.723
+J1645−0317 6 0.793··· ··· ··· ··· ··· ···
+Note— Stability score measures the robustness of the forward waiting-time classification under bootstrap resam-
+pling. Lower and more dispersed values indicate reduced stability compared to the backward-interval case.
+Beff is noticeably reduced. These findings indicate that the KDE–HDR features derived from ∆t + are more sensitive
+to sampling fluctuations, which results in a less reliable characterization of glitch morphology.
+We also examined how pulsar physical parameters relate to the forward-interval morphological classes through logistic
+regression. The outcome differs from the backward-interval case in an instructive way. With the backward interval,
+log⟨∆t−⟩clearly dominates the regression. In the forward-interval analysis, by contrast, the coefficients are more
+evenly distributed. The parameter log⟨∆t +⟩is still among the leading predictors, but its coefficient is no longer much
+larger than those of the other physical parameters. This reduced hierarchy suggests that the forward interval does not
+serve as a primary organizing variable for morphological class. Instead, it appears to contribute in combination with
+other parameters, pointing to a more complex and less deterministic relationship.
+In summary, these results show that the two-class morphological structure does persist when the forward interval is
+used, but its statistical robustness and physical interpretability are both reduced. The backward interval yields a more
+stable feature space, a clearer predictor hierarchy, and a more direct connection to the underlying angular-momentum
+reservoir. This comparison provides additional justification for adopting ∆t − as the primary temporal variable in the
+main analysis.
+/uni00000014/uni00000013/uni00000015/uni00000016/uni00000010/uni00000018/uni0000001a/uni00000017/uni00000019
+/uni00000014/uni0000001a/uni00000016/uni00000014/uni00000010/uni00000017/uni0000001a/uni00000017/uni00000017
+/uni00000013/uni00000015/uni00000013/uni00000018/uni0000000e/uni00000019/uni00000017/uni00000017/uni0000001c
+/uni00000014/uni0000001b/uni00000017/uni00000014/uni00000010/uni00000013/uni00000018/uni00000015/uni00000017
+/uni00000014/uni00000017/uni00000015/uni00000013/uni00000010/uni00000019/uni00000013/uni00000017/uni0000001b
+/uni00000015/uni00000015/uni00000015/uni0000001c/uni0000000e/uni00000019/uni00000014/uni00000014/uni00000017
+/uni00000014/uni0000001b/uni00000013/uni00000014/uni00000010/uni00000015/uni00000017/uni00000018/uni00000014
+/uni00000014/uni0000001b/uni00000015/uni00000019/uni00000010/uni00000014/uni00000016/uni00000016/uni00000017
+/uni00000039/uni00000048/uni0000004f/uni00000044
+/uni00000014/uni00000013/uni00000017/uni0000001b/uni00000010/uni00000018/uni0000001b/uni00000016/uni00000015
+/uni00000014/uni0000001a/uni00000016/uni0000001a/uni00000010/uni00000016/uni00000014/uni00000016/uni0000001a
+/uni00000014/uni00000019/uni00000017/uni00000018/uni00000010/uni00000013/uni00000016/uni00000014/uni0000001a
+/uni00000013/uni0000001a/uni00000017/uni00000015/uni00000010/uni00000015/uni0000001b/uni00000015/uni00000015
+/uni00000014/uni0000001b/uni00000014/uni00000017/uni00000010/uni00000014/uni0000001a/uni00000017/uni00000017
+/uni00000014/uni0000001b/uni00000015/uni00000018/uni00000010/uni00000013/uni0000001c/uni00000016/uni00000018
+/uni00000026/uni00000055/uni00000044/uni00000045
+/uni00000013/uni00000019/uni00000016/uni00000014/uni0000000e/uni00000014/uni00000013/uni00000016/uni00000019
+/uni00000014/uni00000016/uni00000017/uni00000014/uni00000010/uni00000019/uni00000015/uni00000015/uni00000013
+/uni00000014/uni00000017/uni00000014/uni00000016/uni00000010/uni00000019/uni00000014/uni00000017/uni00000014
+/uni00000014/uni0000001b/uni00000013/uni00000014/uni00000010/uni00000015/uni00000016/uni00000013/uni00000017
+/uni00000013/uni00000018/uni00000016/uni0000001a/uni00000010/uni00000019/uni0000001c/uni00000014/uni00000013
+/uni00000014/uni0000001a/uni00000017/uni00000013/uni00000010/uni00000016/uni00000013/uni00000014/uni00000018
+/uni00000013
+/uni00000014
+/uni00000015
+/uni00000016
+/uni00000017
+/uni00000018
+/uni00000019
+/uni0000001a/uni0000003a/uni00000044/uni00000055/uni00000047/uni00000003/uni00000047/uni0000004c/uni00000056/uni00000057/uni00000044/uni00000051/uni00000046/uni00000048
+/uni00000027/uni00000048/uni00000051/uni00000047/uni00000055/uni00000052/uni0000004a/uni00000055/uni00000044/uni00000050/uni00000003/uni0000000b/uni0000002e/uni00000027/uni00000028/uni00000010/uni0000002b/uni00000027/uni00000035/uni00000003/uni0000005a/uni0000004c/uni00000057/uni0000004b/uni00000003/uni00000047/uni00000057/uni00000042/uni00000051/uni00000048/uni0000005b/uni00000057/uni0000000c
+Figure 6.Dendrogram of pulsars in the KDE–HDR feature space constructed using the forward waiting time ∆t +. The same
+analysis pipeline as in the backward-interval case was applied. Although a two-class structure is recovered, the separation is
+weaker and less stable, indicating reduced robustness of the forward-interval representation.
+
+===== PAGE 20 =====
+20
+REFERENCES
+Alpar, M. A., & Baykal, A. 1994, Monthly Notices of the
+Royal Astronomical Society, 269, 849,
+doi: 10.1093/mnras/269.4.849
+Alpar, M. A., Chau, H. F., Cheng, K. S., & Pines, D. 1993,
+The Astrophysical Journal, 409, 345, doi: 10.1086/172668
+Alpar, M. A., Pines, D., Anderson, P. W., & Shaham, J.
+1984, The Astrophysical Journal, 276, 325,
+doi: 10.1086/161616
+Anderson, P. W., & Itoh, N. 1975, Nature, 256, 25,
+doi: 10.1038/256025a0
+Andersson, N., Glampedakis, K., Ho, W. C. G., &
+Espinoza, C. M. 2012, PhRvL, 109, 241103,
+doi: 10.1103/PhysRevLett.109.241103
+Antonopoulou, D., Espinoza, C. M., Kuiper, L., &
+Andersson, N. 2018, MNRAS, 473, 1644,
+doi: 10.1093/mnras/stx2429
+Antonopoulou, D., Haskell, B., & Espinoza, C. M. 2022,
+Reports on Progress in Physics, 85, 126901,
+doi: 10.1088/1361-6633/ac9ced
+Arumugam, S., & Desai, S. 2023, Journal of High Energy
+Astrophysics, 37, 46, doi: 10.1016/j.jheap.2022.12.003
+Ashton, G., Lasky, P. D., Nathan, R., & Palfreyman, J.
+2020, Flickering of the Vela pulsar during its 2016 glitch,
+arXiv, doi: 10.48550/ARXIV.2011.07927
+Basu, A., Char, P., Nandi, R., Joshi, B. C., &
+Bandyopadhyay, D. 2018, ApJ, 866, 94,
+doi: 10.3847/1538-4357/aaddf4
+Basu, A., Joshi, B. C., Krishnakumar, M. A., et al. 2020,
+Monthly Notices of the Royal Astronomical Society, 491,
+3182, doi: 10.1093/mnras/stz3230
+Basu, A., Shaw, B., Antonopoulou, D., et al. 2022, Monthly
+Notices of the Royal Astronomical Society, 510, 4049,
+doi: 10.1093/mnras/stab3336
+Baym, G., Pethick, C., & Pines, D. 1969, Nature, 224, 673,
+doi: 10.1038/224673a0
+Baym, G., & Pines, D. 1971, Annals of Physics, 66, 816,
+doi: 10.1016/0003-4916(71)90084-4
+Bransgrove, A., Beloborodov, A. M., & Levin, Y. 2020,
+ApJ, 897, 173, doi: 10.3847/1538-4357/ab93b7
+Brook, P. R., Karastergiou, A., Johnston, S., et al. 2016,
+Monthly Notices of the Royal Astronomical Society, 456,
+1374, doi: 10.1093/mnras/stv2715
+Carlin, J. B., & Melatos, A. 2019, MNRAS, 483, 4742,
+doi: 10.1093/mnras/sty3433
+Chamel, N. 2013, PhRvL, 110, 011101,
+doi: 10.1103/PhysRevLett.110.011101
+Chugunov, A. I., & Horowitz, C. J. 2010, Monthly Notices
+of the Royal Astronomical Society: Letters, 407, L54,
+doi: 10.1111/j.1745-3933.2010.00903.x
+Dodson, R. G., McCulloch, P. M., & Lewis, D. R. 2002,
+ApJL, 564, L85, doi: 10.1086/339068
+Espinoza, C. M., Antonopoulou, D., Dodson, R., Stepanova,
+M., & Scherer, A. 2021, Astronomy & Astrophysics, 647,
+A25, doi: 10.1051/0004-6361/202039044
+Espinoza, C. M., Lyne, A. G., Stappers, B. W., & Kramer,
+M. 2011, Monthly Notices of the Royal Astronomical
+Society, 414, 1679, doi: 10.1111/j.1365-2966.2011.18503.x
+Eya, I. O., & Iyida, E. U. 2024, Research in Astronomy and
+Astrophysics, 24, 065028, doi: 10.1088/1674-4527/ad4104
+Eya, I. O., Urama, J. O., & Chukwude, A. E. 2019,
+Research in Astronomy and Astrophysics, 19, 089,
+doi: 10.1088/1674-4527/19/6/89
+Ferdman, R. D., Archibald, R. F., Gourgouliatos, K. N., &
+Kaspi, V. M. 2018, ApJ, 852, 123,
+doi: 10.3847/1538-4357/aaa198
+Flanagan, C. S. 1990, Nature, 345, 416,
+doi: 10.1038/345416a0
+Fuentes, J. R., Espinoza, C. M., & Reisenegger, A. 2019,
+A&A, 630, A115, doi: 10.1051/0004-6361/201935939
+Glampedakis, K., & Andersson, N. 2009, Physical Review
+Letters, 102, 141101,
+doi: 10.1103/PhysRevLett.102.141101
+Gold, T. 1968, Nature, 218, 731, doi: 10.1038/218731a0
+G¨ ugercino˘ glu, E., Akbal, O., Ali Alpar, M., Antonopoulou,
+D., & Espinoza, C. M. 2026, A&A, 706, A216,
+doi: 10.1051/0004-6361/202556157
+G¨ ugercinoˇ glu, E., & Alpar, M. A. 2019, MNRAS, 488,
+2275, doi: 10.1093/mnras/stz1831
+Harris, C. R., Millman, K. J., van der Walt, S. J., et al.
+2020, Nature, 585, 357, doi: 10.1038/s41586-020-2649-2
+Haskell, B., & Jones, D. 2024, Astroparticle Physics, 157,
+102921, doi: 10.1016/j.astropartphys.2023.102921
+Haskell, B., & Melatos, A. 2015, International Journal of
+Modern Physics D, 24, 1530008,
+doi: 10.1142/S0218271815300086
+Hewish, A., Bell, S. J., Pilkington, J. D. H., Scott, P. F., &
+Collins, R. A. 1968, Nature, 217, 709,
+doi: 10.1038/217709a0
+Ho, W. C. G., Espinoza, C. M., Antonopoulou, D., &
+Andersson, N. 2015, Science Advances, 1,
+doi: 10.1126/sciadv.1500578
+Ho, W. C. G., Kuiper, L., Espinoza, C. M., et al. 2026,
+Monthly Notices of the Royal Astronomical Society, 546,
+staf2264, doi: 10.1093/mnras/staf2264
+Hobbs, G., Lyne, A. G., & Kramer, M. 2010, MNRAS, 402,
+1027, doi: 10.1111/j.1365-2966.2009.15938.x
+
+===== PAGE 21 =====
+21
+Howitt, G., Melatos, A., & Delaigle, A. 2018, The
+Astrophysical Journal, 867, 60,
+doi: 10.3847/1538-4357/aae20a
+Huang, C., & Zheng, X.-p. 2025, MNRAS, 542, 3198,
+doi: 10.1093/mnras/staf1415
+Hunter, J. D. 2007, Computing In Science & Engineering,
+9, 90, doi: 10.1109/MCSE.2007.55
+Keith, M. J., Shannon, R. M., & Johnston, S. 2013,
+Monthly Notices of the Royal Astronomical Society, 432,
+3080, doi: 10.1093/mnras/stt660
+Layek, B., Godaba Venkata, D., & Yadav, P. 2023, Physical
+Review D, 107, 023004,
+doi: 10.1103/PhysRevD.107.023004
+Link, B., Epstein, R. I., & Lattimer, J. M. 1999, PhRvL,
+83, 3362, doi: 10.1103/PhysRevLett.83.3362
+Liu, P., Yuan, J.-P., Ge, M.-Y., et al. 2025, MNRAS, 537,
+1720, doi: 10.1093/mnras/staf101
+Lower, M. E., Bailes, M., Shannon, R. M., et al. 2020,
+Monthly Notices of the Royal Astronomical Society, 494,
+228, doi: 10.1093/mnras/staa615
+Lower, M. E., Karastergiou, A., Johnston, S., et al. 2025,
+Monthly Notices of the Royal Astronomical Society, 538,
+3104, doi: 10.1093/mnras/staf427
+Lyne, A., Hobbs, G., Kramer, M., Stairs, I., & Stappers, B.
+2010, Science, 329, 408, doi: 10.1126/science.1186683
+Lyne, A. G., Shemar, S. L., & Graham Smith, F. 2000,
+Monthly Notices of the Royal Astronomical Society, 315,
+534, doi: 10.1046/j.1365-8711.2000.03415.x
+Manchester, R. N., Hobbs, G. B., Teoh, A., & Hobbs, M.
+2005, The Astronomical Journal, 129, 1993,
+doi: 10.1086/428488
+Marmorini, G., Yasui, S., & Nitta, M. 2024, Scientific
+Reports, 14, 7857, doi: 10.1038/s41598-024-56383-w
+Melatos, A., Howitt, G., & Fulgenzi, W. 2018, The
+Astrophysical Journal, 863, 196,
+doi: 10.3847/1538-4357/aad228
+Melatos, A., Peralta, C., & Wyithe, J. S. B. 2008, The
+Astrophysical Journal, 672, 1103, doi: 10.1086/523349
+Middleditch, J., Marshall, F. E., Wang, Q. D., Gotthelf,
+E. V., & Zhang, W. 2006, The Astrophysical Journal,
+652, 1531, doi: 10.1086/508736
+Millhouse, M., Melatos, A., Howitt, G., et al. 2022,
+MNRAS, 511, 3304, doi: 10.1093/mnras/stac194
+Montoli, A., Antonelli, M., Magistrelli, F., & Pizzochero, P.
+2020a, Astronomy & Astrophysics, 642, A223,
+doi: 10.1051/0004-6361/202038340
+Montoli, A., Antonelli, M., & Pizzochero, P. M. 2020b,
+Monthly Notices of the Royal Astronomical Society, 492,
+4837, doi: 10.1093/mnras/staa149
+Nit ¸u, I. C., Keith, M. J., Champion, D. J., et al. 2024,
+Monthly Notices of the Royal Astronomical Society, 534,
+1753, doi: 10.1093/mnras/stae2162
+Palfreyman, J., Dickey, J. M., Hotan, A., Ellingsen, S., &
+Van Straten, W. 2018, Nature, 556, 219,
+doi: 10.1038/s41586-018-0001-x
+Pedregosa, F., Varoquaux, G., Gramfort, A., et al. 2011,
+Journal of Machine Learning Research, 12, 2825
+Piekarewicz, J., Fattoyev, F. J., & Horowitz, C. J. 2014,
+Physical Review C, 90, 015803,
+doi: 10.1103/PhysRevC.90.015803
+Pines, D., & Alpar, M. A. 1985, Nature, 316, 27,
+doi: 10.1038/316027a0
+Pines, D., Shaham, J., Alpar, M. A., & Anderson, P. W.
+1980, Progress of Theoretical Physics Supplement, 69,
+376, doi: 10.1143/PTPS.69.376
+Radhakrishnan, V., & Manchester, R. N. 1969, Nature, 222,
+228, doi: 10.1038/222228a0
+Reichley, P. E., & Downs, G. S. 1969, Nature, 222, 229,
+doi: 10.1038/222229a0
+Rencoret, J. A., Aguilera-G´ omez, C., & Reisenegger, A.
+2021, Astronomy & Astrophysics, 654, A47,
+doi: 10.1051/0004-6361/202141499
+Ruderman, M. 1969, Nature, 223, 597,
+doi: 10.1038/223597b0
+The LIGO Scientific Collaboration, the Virgo
+Collaboration, the KAGRA Collaboration, et al. 2025,
+arXiv e-prints, arXiv:2512.17990,
+doi: 10.48550/arXiv.2512.17990
+Virtanen, P., Gommers, R., Oliphant, T. E., et al. 2020,
+Nature Methods, 17, 261, doi: 10.1038/s41592-019-0686-2
+Wang, W. H., Lai, X. Y., Zhou, E. P., et al. 2021, MNRAS,
+500, 5336, doi: 10.1093/mnras/staa3520
+Warszawski, L., & Melatos, A. 2011, Monthly Notices of
+the Royal Astronomical Society, 415, 1611,
+doi: 10.1111/j.1365-2966.2011.18803.x
+Wes McKinney. 2010, in Proceedings of the 9th Python in
+Science Conference, ed. St´ efan van der Walt & Jarrod
+Millman, 56 – 61, doi: 10.25080/Majora-92bf1922-00a
+Zheng, X.-P., Wang, W.-H., Huang, C., Yuan, J.-P., &
+Yuan, S.-J. 2025, The Astrophysical Journal, 982, 181,
+doi: 10.3847/1538-4357/adbca6
+Zhou, X., Tong, H., Zhu, C., & Wang, N. 2017, Monthly
+Notices of the Royal Astronomical Society, 472, 2403,
+doi: 10.1093/mnras/stx2114
+Zhu, P.-X., & Zheng, X.-P. 2025, The Astrophysical
+Journal, 978, 49, doi: 10.3847/1538-4357/ad93c9
+Zhu, P.-X., Zheng, X.-P., Cheng, Q., Niu, C., &
+G¨ ugercino˘ glu, E. 2026, arXiv e-prints, arXiv:2601.12130,
+doi: 10.48550/arXiv.2601.12130
+
+===== PAGE 22 =====
+22
+Zubieta, E., Espinoza, C. M., Antonopoulou, D., et al.
+2026, A&A, 706, A61, doi: 10.1051/0004-6361/202557555
+Zubieta, E., Garc´ ıa, F., del Palacio, S., et al. 2024, A&A,
+689, A191, doi: 10.1051/0004-6361/202450441

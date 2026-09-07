@@ -1,0 +1,748 @@
+===== PAGE 1 =====
+TempGlitch: Evaluating Vision-Language Models for
+Temporal Glitch Detection in Gameplay Videos
+Yakun Yu1 Ashley Wiens1 Adrián Barahona-Ríos2 Benedict Wilkins2
+Saman Zadtootaghaj2 Nabajeet Barman2 Cor-Paul Bezemer1
+{yakun,bezemer}@ualberta.ca,
+{Saman.Zadtootaghaj,Nabajeet.Barman}@sony.com
+1 University of Alberta 2 Sony Interactive Entertainment
+Abstract
+Vision-language models (VLMs) are increasingly being explored for video game
+quality assurance, especially gameplay glitch detection. Most existing evaluations,
+however, treat glitches as static visual anomalies, asking models to detect failures
+from a single frame. We argue that this framing misses a key distinction: some
+glitches arespatialand visible in an isolated frame, whereas others aretemporal
+and become evident only through changes across ordered frames. A preliminary
+study confirms this gap, showing that temporal glitches are substantially harder
+for VLMs to detect than spatial ones. To enable systematic evaluation of this
+underexplored setting, we introduceTempGlitch, a controlled gameplay video
+benchmark for temporal glitch detection.TempGlitchcovers five temporal glitch
+types with balanced per-category samples, together with paired glitch-free videos
+that enable reliable binary evaluation. We evaluate 12 proprietary and open-weight
+VLMs across multiple frame-sampling settings. Our results show that current
+VLMs remain near chance onTempGlitch, often collapsing into either overly
+conservative behavior that misses most glitches or overly sensitive behavior that
+flags clean videos as glitchy. Moreover, denser frame sampling and larger model
+size do not reliably resolve these failures.TempGlitchprovides a focused testbed
+for temporal reasoning, robust gameplay understanding, and automated glitch
+detection with VLMs. Code and data are available at the project website.
+1 Introduction
+The video game industry has expanded rapidly over the past decade and now represents one of the
+largest and most commercially significant sectors of interactive entertainment [27, 35]. At the same
+time, modern game development has become increasingly complex, requiring the coordinated design
+of large-scale visual assets, physics systems, interaction logic, and platform-specific optimizations [22,
+12, 6]. As production pipelines grow in scale and sophistication, maintaining quality throughout
+development becomes correspondingly more challenging.
+A central challenge in this process is quality assurance (QA), in particular, glitch detection. Visual
+glitches can degrade player experience, reduce perceived product quality, and delay deployment if
+they are discovered late in the development cycle [2, 15, 19]. Traditionally, glitch detection relies
+heavily on manual review by QA teams, who inspect gameplay footage or interact with builds to
+identify anomalous behavior. Although effective in some cases, this process is expensive, time-
+consuming, and difficult to scale, especially for modern titles that generate large volumes of gameplay
+data across diverse scenes, devices, and settings [5, 28, 29, 21, 20].
+Recent advances in vision-language models (VLMs) [ 11, 13, 7, 34, 8] have created promising
+opportunities for automating gameplay glitch detection [ 27, 25, 4, 35]. Their strong multimodal
+Preprint.
+arXiv:2605.21443v1  [cs.CV]  20 May 2026
+
+===== PAGE 2 =====
+Table 1: GPT-5 glitch detection performance under different frame sampling settings. “Glitchy” is
+treated as the positive class. Spatial and temporal recall are computed on 50 spatial-glitch and 50
+temporal-glitch videos from PhysGame [4], respectively. Specificity is computed on 100 glitch-free
+videos from VideoGameQA-Bench [27]. Higher values indicate better performance.
+Glitchy videos Glitch-free videos Overall
+Sampling
+strategy
+Spatial
+Recall
+Temporal
+Recall Gap (S−T) Specificity Precision F1 Accuracy
+I-frames 0.72 0.48 +0.24 0.89 0.84 0.70 0.74
+1 FPS 0.74 0.68 +0.06 0.81 0.79 0.75 0.76
+2 FPS 0.80 0.68 +0.12 0.80 0.80 0.76 0.77
+reasoning capabilities suggest that they could assist QA pipelines by interpreting complex visual
+evidence and identifying abnormal events directly from gameplay data. However, current performance
+remains limited [4, 35]. A key issue is that prior work often treats gameplay glitch detection as a
+single, uniform problem, ignoring that different types of glitches vary substantially in how difficult
+they are for VLMs to detect. In particular, glitches that unfold over time pose fundamentally different
+challenges than those identifiable from a single frame. A second issue is the absence of datasets
+designed to capture and isolate these more challenging cases, especially those that require temporal
+reasoning rather than static visual recognition.
+In this paper, we argue that there are two major groups of gameplay glitches:spatial glitchesand
+temporal glitches, as shown in Figure 1. Spatial glitches can be identified from a single frame, because
+the anomaly is visually apparent in an isolated image. Examples include clipping, missing objects, or
+corrupted textures. Temporal glitches, in contrast, can only be identified from a temporally ordered
+sequence of frames, because the abnormality lies in how the scene changes over time. Examples
+include intermittent disappearance, flickering, or other unstable temporal behaviors. We hypothesize
+that temporal glitches are substantially more difficult for current VLMs to detect than spatial glitches.
+To test this hypothesis, we perform a preliminary study using GPT-5 [24], one of the strongest VLMs.
+Because no existing dataset is explicitly organized around the distinction between spatial and temporal
+glitches, we derive a curated evaluation subset from the PhysGame [4] dataset. We first use GPT-5 to
+classify the ground-truth bug descriptions of all PhysGame videos as spatial or temporal, together
+with a confidence score. We then retain high-confidence samples and manually filter misclassified
+cases, resulting in a curated subset of 50 spatial and 50 temporal glitch videos. We further include
+100 glitch-free videos from VideoGameQA-Bench [27] to measure if the model is biased toward
+predicting every video as glitchy. We evaluate GPT-5 under multiple frame-sampling strategies
+chosen to ensure that glitchy moments are covered. Table 1 shows that GPT-5 is consistently better at
+detecting spatial glitches than temporal glitches across all sampling strategies. High specificity on
+glitch-free videos indicates that this gap reflects a systematic difference rather than random variation.
+These observations motivate our focus on temporal glitch detection. Temporal glitches constitute a
+distinct and systematically harder challenge for current VLMs, yet no benchmark enables their direct
+study. To fill this gap, we introduceTempGlitch, a benchmark tailored to temporal glitch detection
+in gameplay videos.TempGlitchenables systematic evaluation of VLMs on glitches that require
+temporal reasoning, providing a foundation for understanding model failures and informing future
+improvements. Our paper makes the following contributions:
+1. A spatial–temporal formulation of gameplay glitches.We formalize the distinction
+between spatial glitches, which can be detected from isolated frames, and temporal glitches,
+which require reasoning over ordered visual evidence.
+2. A dedicated temporal glitch benchmark.We introduceTempGlitch, a controlled gameplay
+video benchmark of 750 temporal glitch videos across 5 glitch types, paired with 750
+glitch-free videos for reliable binary evaluation.
+3. An evaluation of 12 VLMs onTempGlitch.We evaluate 12 proprietary and open-weight
+VLMs onTempGlitch, providing a systematic snapshot of current model capabilities on
+temporal gameplay glitch detection.
+4. New diagnostic findings about VLM failure modes.Our results show that current VLMs
+remain near chance accuracy onTempGlitch, often collapsing toward either overly conserva-
+2
+
+===== PAGE 3 =====
+Shooting Glitch
+Velocity Glitch
+Blinking
+Frozen Animation
+Stuck in Place
+Missing ObjectClipping Corrupted Texture
+Spatial
+Temporal
+Figure 1:Spatial versus temporal glitches.The top part shows temporal glitches represented
+by several frames from one video:Blinkingglitch refers to an object intermittently appearing and
+disappearing across frames;Shooting glitchindicates an artefact when the firing effect occurs at
+an incorrect position relative to the weapon and target;V elocity glitchare implausible changes
+in character motion velocity, with displacement varying abruptly across adjacent frames;Frozen
+animationindicates that the character is translating through the scene but its pose remains unnaturally
+fixed; andStuck in placeshows the character repeatedly attempting to move while remaining pinned
+to essentially the same location. The bottom row shows a few examples of spatial glitches [35], which
+can be identified from a single frame. Best viewed when zoomed.
+tive or overly sensitive predictions. We further find that model scale alone does not reliably
+solve temporal glitch detection.
+2 Related Work
+Existing resources for gameplay glitch detection can be broadly grouped into image-level and
+video-level benchmarks. On the image side, GlitchBench [ 26] introduces 330 glitch-free and 593
+3
+
+===== PAGE 4 =====
+Table 2: A summary of existing game glitch detection benchmarks.
+Benchmarks Image-Based Video-Based # Videos # Glitchy videos # Glitch-free videos Temporal glitch only
+GlitchBench [26]✓ ✗0 0 0✗
+VideoGameBunny [25]✓ ✗0 0 0✗
+GameBugDescriptions [30]✗ ✓167 167 0✗
+VideoGameQA-Bench [27]✓ ✓1,000 500 500✗
+PhysGame [4]✗ ✓880 880 0✗
+TempGlitch(ours)✗ ✓1,500 750 750✓
+glitchy screenshots taken from 205 games to test whether large multimodal models can detect and
+interpret visual anomalies. VideoGameBunny [25] substantially expands this direction by releasing
+a large-scale dataset with 185,259 images from 413 titles and 389,565 image–instruction pairs,
+aimed at improving game-image understanding. These datasets have played an important role
+in establishing gameplay glitch detection as a multimodal reasoning problem, but they primarily
+emphasize glitches that can be identified from isolated frames. Video-level benchmarks are relatively
+limited. GameBugDescriptions [30] formulates glitch detection as question answering over textual
+descriptions of gameplay events, with 167 glitchy gameplay videos and 334 QA pairs across 8 games.
+VideoGameQA-Bench [27] is a broad QA benchmark covering 2,236 image-based samples and 1,200
+video-based samples from more than 800 games and 9 synthetic game scenes. PhysGame [4] focuses
+specifically on physical commonsense violations in gameplay videos and contains 880 glitchy videos
+spanning four physical domains and 12 categories. Together, these datasets have advanced the study
+of gameplay video glitch detection, but none is designed specifically to isolate temporal glitches as a
+first-class benchmark target. Table 2 lists the differences between our dataset and the existing datasets
+for video game glitch detection.
+VLMs have recently shown matching or exceeding human performance on various computer vision
+tasks [17, 18, 33, 14, 9, 23]. However, current evidence suggests that VLM performance on gameplay
+glitch detection remains far from satisfactory, especially in video settings [4, 27]. VideoGameQA-
+Bench [27] reports that frontier VLMs perform noticeably worse on video glitch detection than on
+many simpler game-image tasks. PhysGame [ 4] likewise shows that even state-of-the-art VLMs
+have substantial difficulty on gameplay videos with physical commonsense violations, with open
+models lagging proprietary ones by a wide margin. Our empirical findings suggest one likely
+reason for this broader weakness: temporal glitches are systematically harder to detect than spatial
+glitches, yet existing benchmarks do not explicitly isolate this axis of difficulty. As a result, poor
+performance on video glitch detection may partly reflect the fact that temporally grounded glitches
+are underrepresented, entangled with other factors, or not analyzed separately. Therefore, the central
+contribution ofTempGlitchis not only a new dataset, but also a new evaluation perspective: by
+treating temporal glitches as a distinct benchmark problem,TempGlitchenables systematic analysis
+of the temporally grounded failures that current VLMs handle poorly.
+3 TheTempGlitchBenchmark
+3.1 Task Formulation
+We useglitchas an umbrella term for unintended, user-visible anomalies that occur during gameplay.
+In this work, we focus on glitches that are visually evidenced in gameplay videos. We group such
+glitches into two broad families based on how they manifest over time:spatial glitchesandtemporal
+glitches, see Figure 1.
+Spatial glitches.Spatial glitches are anomalies that can be identified from a single still frame of a
+video. Examples include, but are not limited to:
+• Clipping: a character or object visibly intersects or passes through a solid surface, or
+geometry overlaps in a way that would not occur under correct depth or occlusion.
+•Missing Object: parts of the character or object are unexpectedly missing.
+•Corrupted texture: a surface exhibits clearly broken, missing, or incorrect texturing.
+4
+
+===== PAGE 5 =====
+Temporal glitches.Temporal glitches cannot be reliably identified from a single frame, instead
+requiring the analysis of multiple temporally ordered frames. Examples of glitches that fall into this
+category include the following:
+• Blinking: an object intermittently appears and disappears across successive frames. Impor-
+tantly, the scene should remain visually plausible both when the object is visible and when
+it is absent; otherwise, the glitch may be detectable from a single frame. For example, if an
+entire floor disappears, the glitch is effectively spatial rather than temporal.
+• Shooting glitch: firing or projectile behavior unfolds incorrectly over time, violating the
+expected temporal progression of aiming, shooting, and projectile motion. Without multiple
+frames, the same effect could be believably achieved by firing then turning rapidly.
+• Velocity glitch: an object or character exhibits abnormal motion dynamics over time, such
+as implausible speed changes, sudden displacement, or inconsistent movement. Individual
+frames should remain visually plausible: the character animation and surrounding environ-
+ment should appear normal, while the glitch becomes evident only from the motion pattern
+across frames.
+• Frozen animation: a character or object remains locked in the same pose or animation
+frame while the game state continues to evolve. The key signal is an animation-state failure:
+the entity may still translate, rotate, or interact with the scene, but its pose does not update
+naturally over time. Thus, any single frame may look plausible, while the ordered sequence
+reveals that the animation is unnaturally fixed.
+• Stuck in place: a character or object fails to change position despite gameplay context
+indicating that it should move. The key signal is a displacement failure: the entity may
+continue playing a walking or running animation or receive movement input, but its world
+position remains fixed. Thus, the sequence reveals persistent lack of movement, often
+distinguishable from normal obstruction only by observing the surrounding context and
+repeated motion attempts.
+Existing gameplay glitch benchmarks span many games, rendering styles, and camera behaviors, but
+they are not designed to isolate temporal glitches. As a result, temporally grounded failure modes are
+often entangled with cross-environment variation, making systematic analysis difficult. Moreover,
+existing datasets typically provide only limited samples for any individual temporal glitch type,
+which makes category-level evaluation underpowered. To address this gap, we introduceTempGlitch,
+a controlled synthetic benchmark specifically designed for temporal glitch detection in gameplay
+videos. Its main advantages are: (i) controlled rendering, camera, and scene conditions within a
+small set of game environments, and (ii) substantial per-category coverage for temporally grounded
+glitches, enabling reliable benchmarking and fine-grained analysis.
+3.2 Data Collection
+We builtTempGlitchusing the open-source Godot engine 1, using the Third Person Shooter (TPS)
+demo asset2 and the Platformer 3D Demo asset3 as base environments. For additional visual diversity,
+we modified the Platformer asset to use an alternative character model4. We modified the source code
+to inject temporal glitches through flexible in-engine mechanisms, allowing the same environments,
+assets, and gameplay setups to exhibit both normal and temporally glitchy behavior. For each glitch
+category, we also designed glitch-free behaviors that closely resemble the glitchy cases, so that models
+should be expected to distinguish temporal failures rather than rely on unrelated scene differences.
+We generated data across five temporal glitch categories and matched normal behaviors:
+1. Blinking: created by toggling the visibility of objects during gameplay. We attached a script
+to selected objects to alternate their visibility at a fixed interval when the glitch is enabled.
+This produces a temporal flickering effect while leaving movement and interaction logic
+unchanged. The corresponding normal videos keep one or two specific objects visible for
+most of the clip, matching the camera style and object layout of the glitchy videos.
+1https://godotengine.org
+2https://godotengine.org/asset-library/asset/2710
+3https://godotengine.org/asset-library/asset/2748
+4https://quaternius.com/packs/ultimatemodularwomen.html
+5
+
+===== PAGE 6 =====
+2. Shooting glitch: based on a glitch already present in the TPS asset, requiring no additional
+modification. The glitch occurs when shooting within a very small temporal window after
+aiming, causing the bullet trajectory to fire behind the player rather than toward the crosshair.
+The corresponding normal videos also contain shooting events, unlike other categories that
+focus primarily on movement. Some normal clips include quick rotations to capture non-
+glitchy situations in which a bullet may visually appear behind the player due to legitimate
+camera or body motion.
+3. Velocity glitch: created by altering the player’s movement velocity during otherwise normal
+navigation. We added a modifier that can be toggled to the character movement script that
+increases the player speed to an extreme value, often causing the traversal to complete
+within a single frame and visually resemble teleportation. The corresponding normal videos
+contain long straight-line walking segments with similar start and end positions, matching
+the intended traversal path without abnormal velocity.
+4. Frozen animation: implemented by interrupting character animation playback while pre-
+serving the rest of the game logic. We attached a script that can be toggled to the player
+animation controller that pauses the current animation state, causing the character model
+to remain visually frozen even as the underlying gameplay state continues to update. The
+corresponding normal videos contain natural-looking movement and occasional moments of
+stillness, reflecting legitimate cases where animation may pause briefly.
+5. Stuck in place: implemented by temporarily constraining the player’s position despite
+continued input and animation updates. We attached a script to the character that temporarily
+disables physics processing, preventing displacement while the rest of the gameplay scene
+remains active. This glitch spans both base environments, with glitchy and normal videos
+split evenly between them. The corresponding normal videos include cases where the
+character repeatedly runs into walls during otherwise standard movement. This is particularly
+useful in the TPS environment, where the running animation continues to play, visually
+resembling the glitchy behavior except that the normal case contains a visible obstacle
+causing the lack of movement.
+We recorded both glitchy and glitch-free gameplay clips of 5–32 seconds using Open Broadcaster
+Software (OBS) 5. Each glitchy clip follows a consistent temporal protocol: it begins with normal
+behavior; roughly one-third into the video, the temporal glitch is triggered and remains active for
+several seconds; and normal behavior resumes shortly before the end. This protocol ensures that
+each glitchy video contains both normal and anomalous temporal segments, which is important for
+evaluating whether a model can detect temporally localized failures rather than merely memorize
+scene content. It also better reflects realistic gameplay footage, where glitches typically occur during
+only part of a clip rather than throughout the entire video. In total,TempGlitchcontains 750 glitchy
+videos (150 per category) and 750 glitch-free videos, with 150 clean clips paired to each category.
+Section C shows more data examples per category ofTempGlitch.
+4 Experiments
+VLMs.We evaluate a total of 12 VLMs onTempGlitch, including 6 proprietary models and 6
+open-weight models. The proprietary models are drawn from three leading model families: GPT [24],
+Gemini [31], and Claude [ 1]. The open-weight models cover the Qwen [ 3], Gemma [ 32], and
+Ministral [16] families. For proprietary models, we use the official APIs. For open-weight VLMs,
+we use the public Unsloth framework 6. See Section A for VLM details. All experiments with
+open-weight models are run on 4 NVIDIA L40S GPUs.
+Video prompting protocol.All models process videos as sequences of sampled frames except the
+Gemini family as Gemini models are the only ones to support direct video input. To study the effect
+of temporal sampling, we extract frames using FFmpeg [10] under multiple strategies, including 1
+frame per second (1 FPS) and 5 frames per second (5 FPS). Due to VLM input limits, we cap each
+video at a maximum of 50 extracted frames. For each video, we ask the VLM to predict whether the
+video is glitchy or glitch-free based only on the provided visual evidence. The model also returns
+5https://obsproject.com
+6https://unsloth.ai
+6
+
+===== PAGE 7 =====
+Table 3: Performance of various VLMs onTempGlitch. All values are percentages. A dash indicates
+that the corresponding input type was not evaluated for that model.
+Video 1 FPS 5 FPS
+Model Acc. Prec. Rec. F1 Acc. Prec. Rec. F1 Acc. Prec. Rec. F1
+Gemini 3.1 Pro 49.7 49.8 57.6 53.4 – – – – – – – –
+Gemini 3 Flash 50.3 50.2 87.2 63.7 – – – – – – – –
+Claude Opus – – – – 51.0 53.0 17.5 26.3 50.2 50.6 16.7 25.1
+Claude Haiku – – – – 49.7 43.9 2.4 4.6 51.3 67.2 5.2 9.7
+GPT 5.5 – – – – 50.5 58.0 3.9 7.2 51.1 68.1 4.3 8.0
+GPT 5.4 Mini – – – –52.457.4 18.5 28.054.160.7 23.1 33.4
+Qwen3.6 27B – – – – 50.5 50.5 54.3 52.3 50.5 50.4 54.5 52.4
+Qwen3VL 8B – – – – 50.769.22.4 4.6 50.1100.00.3 0.5
+Gemma4 31B – – – – 52.3 53.1 39.7 45.5 53.0 53.7 43.5 48.0
+Gemma4 4B – – – – 50.0 0.0 0.0 0.0 50.0 0.0 0.0 0.0
+Ministral3 14B – – – – 51.9 68.8 7.1 12.8 52.6 67.9 9.9 17.2
+Ministral3 3B – – – – 50.2 50.196.9 66.153.0 52.856.9 54.8
+a confidence score and a short reasoning explanation for its decision. We require all responses to
+follow a valid JSON schema. If a response is invalid or contains malformed fields, we retry the query
+until a valid JSON output is obtained. Detailed prompt templates are provided in Section B.
+Evaluation metrics.We evaluate glitch detection as a binary classification task, where each input
+is labeled as glitchy or glitch-free. We report standard classification metrics: accuracy, F1, precision,
+and recall. We use accuracy and F1 as the primary headline metrics for comparing models. Precision
+and recall are reported as diagnostic metrics rather than standalone optimization targets, helping us
+interpret whether performance differences are driven by false positives or false negatives.
+5 Results
+Table 3 summarizes results across 12 VLMs onTempGlitch. We highlight key findings and examine
+VLM strengths and limitations in the remainder of this section.
+5.1 Current VLMs achieve near chance performance onTempGlitch
+Table 3 shows that current VLMs struggle substantially onTempGlitch. Because the benchmark
+is balanced between glitchy and glitch-free videos, an accuracy near 50% indicates near-random
+discrimination. Across all evaluated settings, the best accuracy is only 54.1%, achieved by GPT 5.4
+Mini under 5 FPS input. Most models remain between 49% and 53% accuracy, regardless of whether
+they are proprietary or open-weight models. This indicates that temporal glitch detection remains
+challenging even for strong recent VLMs.
+The low accuracy is especially notable because the task is binary: models only need to decide whether
+a gameplay video is glitchy or glitch-free. Unlike spatial glitches, which may be visible in a single
+frame, temporal glitches require reasoning about how the scene evolves over time. The near-chance
+performance therefore suggests that current VLMs still lack robust temporal grounding.
+5.2 High recall often comes from over-predicting glitches
+Several models achieve high recall, but this often reflects a strong bias toward predicting videos as
+glitchy rather than reliable temporal understanding. For example, Gemini 3 Flash with raw-video
+input achieves 87.2% recall and 63.7% F1, but its precision is only 50.2% and its accuracy is only
+50.3%. Similarly, Ministral3 3B under 1 FPS input reaches the highest recall of 96.9% and the
+highest F1 of 66.1%, but its precision is only 50.1% and its accuracy is 50.2%. These results indicate
+that high F1 can be misleading onTempGlitch. A model can obtain high recall by labeling nearly all
+videos as glitchy, but such behavior is not useful for practical QA because it would generate many
+7
+
+===== PAGE 8 =====
+false alarms. Thus,TempGlitchexposes not only whether models can detect temporal glitches, but
+also whether they can do so without confusing normal gameplay variation with glitchy behavior.
+5.3 Many models miss almost all temporal glitches
+Other models fail in the opposite direction by predicting most videos as glitch-free. For example,
+GPT 5.5 achieves relatively high precision under both 1 FPS and 5 FPS input (58.0% and 68.1%), but
+its recall remains extremely low (3.9% and 4.3%). Claude Haiku also has very low recall under both
+1 FPS and 5 FPS (2.4% and 5.2%). Qwen3VL 8B becomes even more conservative under 5 FPS,
+reaching 100.0% precision but only 0.3% recall and 0.5% F1. Gemma4 4B collapses completely to
+the clean class, with 0.0% recall and 0.0% F1 under both frame-sampling settings.
+Together with the high-recall models, these results reveal two dominant failure modes: some VLMs
+over-predict glitches, while others miss nearly all temporal glitches (despite being relatively good at
+game glitch detection that has a mix of spatial and temporal glitches [27]).
+5.4 Denser frame sampling provides limited and inconsistent gains
+Increasing the sampling rate from 1 FPS to 5 FPS can make short-lived glitches more visible in
+the sampled frames, see Figure 9. However, this increased visibility does not translate into reliable
+performance gains across models. GPT 5.4 Mini improves from 52.4% to 54.1% accuracy and from
+28.0% to 33.4% F1. Gemma4 31B improves from 52.3% to 53.0% accuracy and from 45.5% to
+48.0% F1. Ministral3 14B also improves from 12.8% to 17.2% F1.
+However, denser sampling does not reliably improve all models. Claude Opus slightly decreases
+from 26.3% to 25.1% F1, and Qwen3VL 8B drops sharply from 4.6% to 0.5% F1. Qwen3.6 27B
+remains almost unchanged, with F1 changing only from 52.3% to 52.4%. These results suggest
+that simply providing more frames is insufficient, even when denser sampling captures the glitchy
+moment. Temporal glitch detection requires models to integrate ordered visual evidence, not merely
+observe more isolated frames.
+5.5 Even raw-video input does not solve temporal glitch detection
+We additionally evaluate direct raw-video input (which is supported only by Gemini models). The
+results show that raw-video input does not eliminate the difficulty of temporal glitch detection.
+Gemini 3.1 Pro obtains 49.7% accuracy and 53.4% F1, while Gemini 3 Flash obtains 50.3% accuracy
+and 63.7% F1. Although Gemini 3 Flash achieves high recall (87.2%), its precision remains near
+chance (50.2%), indicating strong over-prediction of the glitchy class.
+This result is important because it separates input format from temporal reasoning capability. Even
+when a model can directly process video input, it may still fail to distinguish true temporal glitches
+from normal gameplay dynamics. Thus, accepting raw video as input does not necessarily imply
+robust video-level anomaly reasoning.
+5.6 Model scale alone does not explain performance
+The results do not show a simple relationship between model size and temporal glitch detection
+performance. Within some families, larger models perform better. For example, Gemma4 31B
+substantially outperforms Gemma4 4B, which predicts no glitches and obtains 0.0% F1. Qwen3.6
+27B is also much more balanced than Qwen3VL 8B, achieving approximately 52% F1 under both 1
+FPS and 5 FPS settings.
+However, larger models are not consistently better. GPT 5.4 Mini outperforms GPT 5.5 under both 1
+FPS and 5 FPS. Ministral3 3B obtains much higher F1 than Ministral3 14B, although largely because
+it over-predicts glitches. These patterns suggest that temporal glitch detection depends strongly on
+model family, prompting behavior, and calibration, rather than parameter scale alone.
+5.7TempGlitchexposes distinct VLM failure modes
+Overall,TempGlitchreveals several distinct weaknesses in current VLMs. Some models are overly
+conservative and miss most temporal glitches, as seen in GPT 5.5, Qwen3VL 8B, and Gemma4 4B.
+8
+
+===== PAGE 9 =====
+Other models are overly sensitive and classify many clean videos as glitchy, as seen in Gemini 3
+Flash and Ministral3 3B. A third group, including Qwen3.6 27B and Gemma4 31B, achieves more
+balanced behavior but still remains close to chance accuracy.
+These results show thatTempGlitchis not merely a difficult leaderboard benchmark. It is diagnostic:
+models with similar accuracy can fail in very different ways. The benchmark therefore provides a
+useful testbed for studying temporal reasoning and robust gameplay understanding in VLMs.
+In summary, the results onTempGlitchshow that temporal glitch detection remains an open challenge
+for current VLMs. Most models remain near chance accuracy, and higher F1 scores often reflect
+prediction bias rather than reliable detection. Denser frame sampling and raw-video input provide
+limited gains, and model scale alone does not solve the task. Together, these findings demonstrate the
+value ofTempGlitchas a benchmark for temporally grounded gameplay glitch detection.
+6 Implications for Practical QA
+These failure modes have direct implications for how VLMs should be integrated into practical QA
+workflows. A model that over-predicts glitches may appear useful under recall-oriented metrics, but
+it would require human testers to inspect a large number of false alarms. Conversely, a model that is
+highly conservative may reduce review burden but would fail to surface many temporal glitches that
+are costly to reproduce later. More importantly, glitch detection systems should not treat all glitches
+as a uniform detection problem. Instead, they should process spatial and temporal glitches separately,
+using detection mechanisms that are specialized for the type of glitch being evaluated.
+Our results also indicate that simply feeding sampled frames or raw videos into a VLM is insufficient
+for reliable temporal glitch detection. Current VLMs appear to lack task-specific knowledge about
+temporal gameplay glitches and often fail to identify whether a sequence of frames reflects normal
+game dynamics or an actual temporal error. Future systems may therefore need to fine-tune VLMs
+on temporal glitch data or integrate explicit temporal reasoning components with VLMs. Such
+components could help models track object states across frames and provide explanations grounded
+in the temporal evidence that supports a predicted glitch.TempGlitchsupports this type of analysis
+because each glitch category is paired with visually similar clean gameplay, making it difficult for a
+model to succeed by relying only on superficial scene cues.
+7 Limitations
+The current dataset is built using the Godot engine and two base game environments. Although this
+design enables controlled evaluation and balanced coverage across temporal glitch types, it does not
+capture the full diversity of commercial games, rendering pipelines, camera systems, and gameplay
+mechanics. Future versions of the benchmark should extend to more games, engines, assets, and
+visual styles to evaluate whether model behavior generalizes beyond the current controlled setting.
+8 Conclusion
+In this paper, we introducedTempGlitch, the first benchmark for evaluating temporal glitch detection
+in gameplay videos. The design ofTempGlitchis motivated by the distinction between spatial
+glitches, which can often be detected from a single frame, and temporal glitches, which require
+reasoning over ordered visual evidence.TempGlitchcovers five temporal glitch types and pairs
+glitchy videos with matched glitch-free videos, enabling reliable binary evaluation and category-
+level analysis. Our evaluation of 12 proprietary and open-weight VLMs shows that temporal glitch
+detection remains a major challenge. All studied models perform close to chance accuracy, and their
+failures often reflect strong prediction bias: some models miss most glitches, while others over-predict
+glitches on clean gameplay. Denser frame sampling, raw-video input, and model scale do not help
+improve performance. These findings highlight the need for dedicated methods that explicitly target
+temporal reasoning, calibration, and robust video-level understanding. In summary,TempGlitchfills
+an important gap in the evaluation of VLMs for video game QA by providing a dedicated benchmark
+for temporally grounded visual glitch detection.
+9
+
+===== PAGE 10 =====
+References
+[1] AI Anthropic. The claude 3 model family: Opus, sonnet, haiku.Claude-3 Model Card, 1(1):4, 2024.
+[2] Jessica Backus. Players’ perception of bugs and glitches in video games: An exploratory study.arXiv
+preprint arXiv:2504.15408, 2025.
+[3] Jinze Bai, Shuai Bai, Shusheng Yang, Shijie Wang, Sinan Tan, Peng Wang, Junyang Lin, Chang Zhou, and
+Jingren Zhou. Qwen-vl: A versatile vision-language model for understanding, localization, text reading,
+and beyond.eprint arXiv: 2308.12966, 2023.
+[4] Meng Cao, Haoran Tang, Haoze Zhao, Hangyu Guo, Jiaheng Liu, Ge Zhang, Ruyang Liu, Qiang Sun, Ian
+Reid, and Xiaodan Liang. Physgame: Uncovering physical commonsense violations in gameplay videos.
+arXiv preprint arXiv:2412.01800, 2024.
+[5] Kenneth Chang, Batu Aytemiz, and Adam M Smith. Reveal-more: Amplifying human effort in quality
+assurance testing using automated exploration. In2019 IEEE Conference on Games (CoG), pages 1–8.
+IEEE, 2019.
+[6] Jorge Chueca, Javier Verón, Jaime Font, Francisca Pérez, and Carlos Cetina. The consolidation of game
+software engineering: A systematic literature review of software engineering for industry-scale computer
+games.Information and Software Technology, 165:107330, 2024.
+[7] Wenliang Dai, Junnan Li, Dongxu Li, Anthony Tiong, Junqi Zhao, Weisheng Wang, Boyang Li, Pascale N
+Fung, and Steven Hoi. Instructblip: Towards general-purpose vision-language models with instruction
+tuning.Advances in neural information processing systems, 36:49250–49267, 2023.
+[8] Sufyan Danish, Abolghasem Sadeghi-Niaraki, Samee Ullah Khan, L Minh Dang, Lilia Tightiz, and
+Hyeonjoon Moon. A comprehensive survey of vision-language models: Pretrained models, fine-tuning,
+prompt engineering, adapters, and benchmark datasets.Information Fusion, page 103623, 2025.
+[9] Matt Deitke, Christopher Clark, Sangho Lee, Rohun Tripathi, Yue Yang, Jae Sung Park, Mohammadreza
+Salehi, Niklas Muennighoff, Kyle Lo, Luca Soldaini, Jiasen Lu, Taira Anderson, Erin Bransom, Kiana
+Ehsani, Huong Ngo, YenSung Chen, Ajay Patel, Mark Yatskar, Chris Callison-Burch, Andrew Head,
+Rose Hendrix, Favyen Bastani, Eli VanderBilt, Nathan Lambert, Yvonne Chou, Arnavi Chheda, Jenna
+Sparks, Sam Skjonsberg, Michael Schmitz, Aaron Sarnat, Byron Bischoff, Pete Walsh, Chris Newell, Piper
+Wolters, Tanmay Gupta, Kuo-Hao Zeng, Jon Borchardt, Dirk Groeneveld, Crystal Nam, Sophie Lebrecht,
+Caitlin Wittlif, Carissa Schoenick, Oscar Michel, Ranjay Krishna, Luca Weihs, Noah A. Smith, Hannaneh
+Hajishirzi, Ross Girshick, Ali Farhadi, and Aniruddha Kembhavi. Molmo and pixmo: Open weights and
+open data for state-of-the-art vision-language models. In2025 IEEE/CVF Conference on Computer Vision
+and Pattern Recognition (CVPR), pages 91–104, 2025.
+[10] FFmpeg Developers. FFmpeg. https://ffmpeg.org/, 2026.
+[11] Zhe Gan, Linjie Li, Chunyuan Li, Lijuan Wang, Zicheng Liu, and Jianfeng Gao. Vision-language pre-
+training: Basics, recent advances, and future trends.F oundations and Trends® in Computer Graphics and
+Vision, 14(3–4):163–352, 2022.
+[12] James Lear, Simon Scarle, and Richard McClatchey. Asset pipeline patterns: patterns in interactive
+real-time visualization workflow. InProceedings of the 24th European Conference on Pattern Languages
+of Programs, pages 1–11, 2019.
+[13] Zongxia Li, Xiyang Wu, Hongyang Du, Fuxiao Liu, Huy Nghiem, and Guangyao Shi. A survey of state
+of the art large vision language models: Benchmark evaluations and challenges. InProceedings of the
+Computer Vision and Pattern Recognition Conference, pages 1587–1606, 2025.
+[14] Bin Lin, Yang Ye, Bin Zhu, Jiaxi Cui, Munan Ning, Peng Jin, and Li Yuan. Video-llava: Learning united
+visual representation by alignment before projection. InProceedings of the 2024 conference on empirical
+methods in natural language processing, pages 5971–5984, 2024.
+[15] Dayi Lin, Cor-Paul Bezemer, Ying Zou, and Ahmed E Hassan. An empirical study of game reviews on the
+steam platform.Empirical Software Engineering, 24(1):170–207, 2019.
+[16] Alexander H Liu, Kartik Khandelwal, Sandeep Subramanian, Victor Jouault, Abhinav Rastogi, Adrien
+Sadé, Alan Jeffares, Albert Jiang, Alexandre Cahill, Alexandre Gavaudan, et al. Ministral 3.arXiv preprint
+arXiv:2601.08584, 2026.
+[17] Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong Jae Lee. Visual instruction tuning.Advances in neural
+information processing systems, 36:34892–34916, 2023.
+10
+
+===== PAGE 11 =====
+[18] Yuan Liu, Haodong Duan, Yuanhan Zhang, Bo Li, Songyang Zhang, Wangbo Zhao, Yike Yuan, Jiaqi
+Wang, Conghui He, Ziwei Liu, et al. Mmbench: Is your multi-modal model an all-around player? In
+European conference on computer vision, pages 216–233. Springer, 2024.
+[19] Wentao Lu, Alexander Senchenko, Abram Hindle, and Cor-Paul Bezemer. Automated bug frame retrieval
+from gameplay videos using vision-language models.arXiv preprint arXiv:2508.04895, 2025.
+[20] Cristiano Politowski, Yann-Gaël Guéhéneuc, and Fabio Petrillo. Towards automated video game testing:
+still a long way to go. InProceedings of the 6th international ICSE workshop on games and software
+engineering: engineering fun, inspiration, and motivation, pages 37–43, 2022.
+[21] Cristiano Politowski, Fabio Petrillo, and Yann-Gaël Guéhéneuc. A survey of video game testing. In2021
+IEEE/ACM International Conference on Automation of Software Test (AST), pages 90–99. IEEE, 2021.
+[22] Cristiano Politowski, Fabio Petrillo, João Eduardo Montandon, Marco Tulio Valente, and Yann-Gaël
+Guéhéneuc. Are game engines software frameworks? a three-perspective study.Journal of Systems and
+Software, 171:110846, 2021.
+[23] Rohit Saxena, Alessandro Suglia, and Pasquale Minervini. Vlm-robustbench: A comprehensive benchmark
+for robustness of vision-language models.arXiv preprint arXiv:2603.06148, 2026.
+[24] Aaditya Singh, Adam Fry, Adam Perelman, Adam Tart, Adi Ganesh, Ahmed El-Kishky, Aidan McLaugh-
+lin, Aiden Low, AJ Ostrow, Akhila Ananthram, et al. Openai gpt-5 system card.arXiv preprint
+arXiv:2601.03267, 2025.
+[25] Mohammad Reza Taesiri and Cor-Paul Bezemer. Videogamebunny: Towards vision assistants for video
+games. In2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV), pages
+1403–1413. IEEE, 2025.
+[26] Mohammad Reza Taesiri, Tianjun Feng, Cor-Paul Bezemer, and Anh Nguyen. Glitchbench: Can large
+multimodal models detect video game glitches? InProceedings of the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, pages 22444–22455, 2024.
+[27] Mohammad Reza Taesiri, Abhijay Ghildyal, Saman Zadtootaghaj, Nabajeet Barman, and Cor-Paul Bezemer.
+Videogameqa-bench: Evaluating vision-language models for video game quality assurance. InThe Thirty-
+ninth Annual Conference on Neural Information Processing Systems Datasets and Benchmarks Track.
+[28] Mohammad Reza Taesiri, Finlay Macklon, and Cor-Paul Bezemer. Clip meets gamephysics: Towards bug
+identification in gameplay videos using zero-shot transfer learning. InProceedings of the 19th International
+Conference on Mining Software Repositories, pages 270–281, 2022.
+[29] Mohammad Reza Taesiri, Finlay Macklon, Sarra Habchi, and Cor-Paul Bezemer. Searching bug instances
+in gameplay video repositories.IEEE Transactions on Games, 16(3):697–710, 2024.
+[30] Mohammad Reza Taesiri, Finlay Macklon, Yihe Wang, Hengshuo Shen, and Cor-Paul Bezemer. Large
+language models are pretty good zero-shot video game bug detectors.arXiv preprint arXiv:2210.02506,
+2022.
+[31] Gemini Team, Rohan Anil, Sebastian Borgeaud, Jean-Baptiste Alayrac, Jiahui Yu, Radu Soricut, Johan
+Schalkwyk, Andrew M Dai, Anja Hauth, Katie Millican, et al. Gemini: a family of highly capable
+multimodal models.arXiv preprint arXiv:2312.11805, 2023.
+[32] Gemma Team, Aishwarya Kamath, Johan Ferret, Shreya Pathak, Nino Vieillard, Ramona Merhej, Sarah
+Perrin, Tatiana Matejovicova, Alexandre Ramé, Morgane Rivière, Louis Rouillard, Thomas Mesnard,
+Geoffrey Cideron, Jean bastien Grill, Sabela Ramos, Edouard Yvinec, Michelle Casbon, Etienne Pot,
+Ivo Penchev, Gaël Liu, Francesco Visin, Kathleen Kenealy, Lucas Beyer, Xiaohai Zhai, Anton Tsitsulin,
+Robert Busa-Fekete, Alex Feng, Noveen Sachdeva, Benjamin Coleman, Yi Gao, Basil Mustafa, Iain Barr,
+Emilio Parisotto, David Tian, Matan Eyal, Colin Cherry, Jan-Thorsten Peter, Danila Sinopalnikov, Surya
+Bhupatiraju, Rishabh Agarwal, Mehran Kazemi, Dan Malkin, Ravin Kumar, David Vilar, Idan Brusilovsky,
+Jiaming Luo, Andreas Steiner, Abe Friesen, Abhanshu Sharma, Abheesht Sharma, Adi Mayrav Gilady,
+Adrian Goedeckemeyer, Alaa Saade, Alex Feng, Alexander Kolesnikov, Alexei Bendebury, Alvin Abdagic,
+Amit Vadi, András György, André Susano Pinto, Anil Das, Ankur Bapna, Antoine Miech, Antoine Yang,
+Antonia Paterson, Ashish Shenoy, Ayan Chakrabarti, Bilal Piot, Bo Wu, Bobak Shahriari, Bryce Petrini,
+Charlie Chen, Charline Le Lan, Christopher A. Choquette-Choo, CJ Carey, Cormac Brick, Daniel Deutsch,
+Danielle Eisenbud, Dee Cattle, Derek Cheng, Dimitris Paparas, Divyashree Shivakumar Sreepathihalli,
+Doug Reid, Dustin Tran, Dustin Zelle, Eric Noland, Erwin Huizenga, Eugene Kharitonov, Frederick
+Liu, Gagik Amirkhanyan, Glenn Cameron, Hadi Hashemi, Hanna Klimczak-Pluci´nska, Harman Singh,
+Harsh Mehta, Harshal Tushar Lehri, Hussein Hazimeh, Ian Ballantyne, Idan Szpektor, Ivan Nardini, Jean
+11
+
+===== PAGE 12 =====
+Pouget-Abadie, Jetha Chan, Joe Stanton, John Wieting, Jonathan Lai, Jordi Orbay, Joseph Fernandez, Josh
+Newlan, Ju yeong Ji, Jyotinder Singh, Kat Black, Kathy Yu, Kevin Hui, Kiran V odrahalli, Klaus Greff,
+Linhai Qiu, Marcella Valentine, Marina Coelho, Marvin Ritter, Matt Hoffman, Matthew Watson, Mayank
+Chaturvedi, Michael Moynihan, Min Ma, Nabila Babar, Natasha Noy, Nathan Byrd, Nick Roy, Nikola
+Momchev, Nilay Chauhan, Noveen Sachdeva, Oskar Bunyan, Pankil Botarda, Paul Caron, Paul Kishan
+Rubenstein, Phil Culliton, Philipp Schmid, Pier Giuseppe Sessa, Pingmei Xu, Piotr Stanczyk, Pouya Tafti,
+Rakesh Shivanna, Renjie Wu, Renke Pan, Reza Rokni, Rob Willoughby, Rohith Vallu, Ryan Mullins,
+Sammy Jerome, Sara Smoot, Sertan Girgin, Shariq Iqbal, Shashir Reddy, Shruti Sheth, Siim Põder, Sijal
+Bhatnagar, Sindhu Raghuram Panyam, Sivan Eiger, Susan Zhang, Tianqi Liu, Trevor Yacovone, Tyler
+Liechty, Uday Kalra, Utku Evci, Vedant Misra, Vincent Roseberry, Vlad Feinberg, Vlad Kolesnikov,
+Woohyun Han, Woosuk Kwon, Xi Chen, Yinlam Chow, Yuvein Zhu, Zichuan Wei, Zoltan Egyed, Victor
+Cotruta, Minh Giang, Phoebe Kirk, Anand Rao, Kat Black, Nabila Babar, Jessica Lo, Erica Moreira,
+Luiz Gustavo Martins, Omar Sanseviero, Lucas Gonzalez, Zach Gleicher, Tris Warkentin, Vahab Mirrokni,
+Evan Senter, Eli Collins, Joelle Barral, Zoubin Ghahramani, Raia Hadsell, Yossi Matias, D. Sculley, Slav
+Petrov, Noah Fiedel, Noam Shazeer, Oriol Vinyals, Jeff Dean, Demis Hassabis, Koray Kavukcuoglu,
+Clement Farabet, Elena Buchatskaya, Jean-Baptiste Alayrac, Rohan Anil, Dmitry, Lepikhin, Sebastian
+Borgeaud, Olivier Bachem, Armand Joulin, Alek Andreev, Cassidy Hardin, Robert Dadashi, and Léonard
+Hussenot. Gemma 3 technical report, 2025.
+[33] Weihan Wang, Qingsong Lv, Wenmeng Yu, Wenyi Hong, Ji Qi, Yan Wang, Junhui Ji, Zhuoyi Yang, Lei
+Zhao, Song XiXuan, Jiazheng Xu, Keqin Chen, Bin Xu, Juanzi Li, Yuxiao Dong, Ming Ding, and Jie
+Tang. CogVLM: Visual expert for pretrained language models. InThe Thirty-eighth Annual Conference
+on Neural Information Processing Systems, 2024.
+[34] Wenhai Wang, Zhe Chen, Yangzhou Liu, Yue Cao, Weiyun Wang, Xizhou Zhu, Lewei Lu, Tong Lu,
+Yu Qiao, and Jifeng Dai. Internvl: Scaling up vision foundation models and aligning for generic visual-
+linguistic tasks. InLarge Vision-Language Models: Pre-training, Prompting, and Applications, pages
+23–57. Springer, 2025.
+[35] Yakun Yu, Ashley Wiens, Adrián Barahona-Ríos, Benedict Wilkins, Saman Zadtootaghaj, Nabajeet
+Barman, and Cor-Paul Bezemer. Resp: Reference-guided sequential prompting for visual glitch detection
+in video games.arXiv preprint arXiv:2604.11082, 2026.
+12
+
+===== PAGE 13 =====
+A VLM Inference Details
+This section describes the inference providers and model-specific inference settings used in our
+benchmark.
+Table 4: Inference model providers and versions.
+Model Name Provider Version
+Claude Opus 4.7 Claude claude-opus-4-7
+Claude Haiku 4.5 Claude claude-haiku-4-5-20251001
+GPT 5.5 OpenAI gpt-5.5-2026-04-23
+GPT-5.4 Mini OpenAI gpt-5.4-mini-2026-03-17
+Gemini 3.1 Pro Gemini gemini-3.1-pro-preview-02-26
+Gemini 3 Flash Gemini gemini-3-flash-preview-12-25
+Qwen3.6 27B Unsloth Qwen3.6-27B
+Qwen3VL 8B Unsloth Qwen3-VL-8B-Instruct-unsloth-bnb-4bit
+Gemma4 31B Unsloth gemma-4-31B-it
+Gemma4 E4B Unsloth gemma-4-E4B-it
+Ministral3 14B Unsloth Ministral-3-14B-Instruct-2512
+Ministral3 3B Unsloth Ministral-3-3B-Instruct-2512
+B VLM Prompting Details
+This section summarizes the prompts used for constructing the spatial–temporal glitch split in
+Section 1 and for evaluating VLMs onTempGlitch.
+To separate existing samples from the PhysGame dataset into spatial and temporal glitches, we use
+the prompt shown in Figure 2. The prompt asks the VLM to produce a glitch/non-glitchy prediction,
+assign a glitch type, provide a confidence score, and give a short explanation grounded in the visual
+evidence. Using these responses, we first select candidate spatial and temporal glitch samples with
+high confidence scores. We then manually inspect the selected candidates and remove false positives,
+yielding the final 50-sample subsets for both spatial and temporal glitches. These subsets are used to
+evaluate which type of glitch is easier for VLMs to detect.
+For evaluation on ourTempGlitchdataset, we use the binary prompt shown in Figure 3. This prompt
+asks the model to determine whether a gameplay video contains a glitch, allowing us to assess the
+ability of VLMs to detect temporal glitches.
+C Samples for Different Temporal Glitch Types
+Figures 4–8 show representative samples from the five temporal glitch categories. Figure 4 shows
+blinking glitches, where an object or character intermittently appears and disappears across consecu-
+tive frames. Figure 5 shows shooting-error glitches, where the firing effect or projectile trajectory is
+temporally misaligned with the weapon or expected target direction. Figure 6 shows velocity glitches,
+where the character exhibits abnormal motion dynamics, such as abrupt displacement. Figure 7 shows
+frozen-animation glitches, where the character continues to move through the scene while its pose
+remains unnaturally fixed. Figure 8 shows stuck-in-place glitches, where the character repeatedly
+attempts to move but remains constrained to nearly the same location. Together, these examples
+illustrate temporal failures that cannot be reliably diagnosed from a single frame and instead require
+reasoning over frame-to-frame changes.
+D Effect of Frame Sampling Rate
+Frame sampling rate directly affects whether short-lived temporal glitches are visible in the sampled
+frames. Figure 9 illustrates this effect with a blinking glitch that occurs as the character runs and
+turns its head. The object highlighted by the red box briefly flickers, but this moment is missed
+when the video is sampled at 1 FPS. In contrast, sampling at 5 FPS captures intermediate frames in
+13
+
+===== PAGE 14 =====
+Prompt Template for Spatial–Temporal Glitch Classification
+SYSTEM_PROMPT
+You are evaluating keyframes from one gameplay video.
+Decide whether the video shows a real gameplay bug/glitch based only on
+the frames.
+Definitions:
+- spatial bug: a bug that is mainly visible in one or more still frames,
+such as clipping, floating, geometry overlap, missing or distorted
+textures, broken shadows, or static abnormal lighting/rendering.
+- temporal bug: a bug that cannot be reliably determined from a single
+frame and mainly depends on changes over time, such as flickering,
+blinking, repeated popping, abnormal acceleration across frames. - none:
+no visible bug in the frames.
+If the frames are not sufficient to support a confident bug-type decision,
+use "unsure". Do not use any outside knowledge. Use only visible
+evidence from the provided frames.
+USER_PROMPT
+These images are keyframes from a single gameplay video, in chronological
+order.
+Return a JSON object with:
+- is_buggy: boolean
+- bug_type: one of ["spatial", "temporal", "none", "unsure"]
+- confidence: number from 0 to 1
+- explanation: short explanation grounded in the frames.
+Figure 2: Prompt template used for constructing the spatial–temporal glitch subsets.
+Prompt Template for Glitch Detection
+SYSTEM_PROMPT
+You are evaluating keyframes from one gameplay video. Decide whether the
+video shows a real gameplay bug/glitch based only on the frames. Do not
+use any outside knowledge. Use only visible evidence from the provided
+frames.
+USER_PROMPT
+These images are keyframes from a single gameplay video, in chronological
+order.
+Return a JSON object with:
+- is_buggy: boolean
+- confidence: number from 0 to 1
+- explanation: short explanation grounded in the frames
+Figure 3: Prompt template for video-based glitch detection.
+which the glitch is visible. However, despite exposing the glitch, denser frame sampling does not
+substantially improve VLM-based bug detection, with performance remaining close to chance. This
+suggests that simply increasing the number of sampled frames, even when the glitch itself is included,
+is insufficient for reliable temporal glitch understanding.
+14
+
+===== PAGE 15 =====
+Case 1
+Case 2
+Case 3
+Case 4
+Figure 4: Examples of Blinking glitches.
+E Additional Performance Metrics
+Table 5 reports the confusion-matrix counts for each VLM and input setting. These results complement
+the aggregate metrics in Table 3 by showing whether performance differences are driven by true
+glitch detections, correct clean-video rejections, false alarms, or missed glitches. This is particularly
+important forTempGlitch, since a model can obtain high recall by over-predicting the glitchy class
+while still producing many false positives on glitch-free videos.
+15
+
+===== PAGE 16 =====
+Case 1
+Case 2
+Case 3
+Case 4
+Figure 5: Examples of Shooting glitches.
+Table 5: Confusion-matrix counts of various VLMs onTempGlitch. A dash indicates that the
+corresponding input type was not evaluated for that model.
+Video 1 FPS 5 FPS
+Model TP TN FP FN TP TN FP FN TP TN FP FN
+Gemini 3.1 Pro 432 314 436 318 – – – – – – – –
+Gemini 3 Flash 654 100 650 96 – – – – – – – –
+Claude Opus – – – – 131 634 116 619 125 628 122 625
+Claude Haiku – – – – 18 727 23 732 39 731 19 711
+GPT 5.5 – – – – 29 729 21 721 32 735 15 718
+GPT 5.4 Mini – – – – 139 647 103 611 173 638 112 577
+Qwen3.6 27B – – – – 407 351 399 343 409 348 402 341
+Qwen3VL 8B – – – – 18 742 8 732 2 750 0 748
+Gemma4 31B – – – – 298 487 263 452 326 469 281 424
+Gemma4 4B – – – – 0 750 0 750 0 750 0 750
+Ministral3 14B – – – – 53 726 24 697 74 715 35 676
+Ministral3 3B – – – – 727 26 724 23 427 368 382 323
+16
+
+===== PAGE 17 =====
+Case 1
+Case 2
+Case 3
+Case 4
+Figure 6: Examples of velocity glitches.
+Case 1
+Case 2
+Case 3
+Case 4
+Figure 7: Examples of frozen glitches.
+17
+
+===== PAGE 18 =====
+Case 1
+Case 2
+Case 3
+Case 4
+Figure 8: Examples of stuck-in-place glitches.
+1 FPS
+5 FPS
+Figure 9: Frame sampling rate affects the visibility of blinking. A brief blinking glitch occurs as the
+character runs and turns its head. The red boxes highlight the affected object. Sampling at 1 FPS
+misses the glitch, whereas 5 FPS captures intermediate frames in which the blinking becomes visible.
+18
