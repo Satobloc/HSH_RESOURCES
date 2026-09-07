@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T17:50:54Z`
-- Tree/content state: `f886f42c1766cfb91647c1eda1fcb861e9fd94c6d90cc111af2fcffc195e669d`
+- Scanned: `2026-09-07T18:06:10Z`
+- Tree/content state: `608deab6461132693ec3f602ca9ab591aea1f89c5089308e9c6dc2112712d19d`
 - Coverage: complete structural traversal
-- Files: 580
-- Uploaded source files: 573
-- PDF papers: 563
+- Files: 611
+- Uploaded source files: 604
+- PDF papers: 592
 - Repository machinery files: 7
 - Byte-identical duplicate groups: 31
 
@@ -19,6 +19,7 @@
 | `.gitignore` | 1 |
 | `BIG PAPERS` | 3 |
 | `DATA` | 1 |
+| `H(s)H_Toolkit` | 31 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
 | `HAUL 11` | 6 |
@@ -145,6 +146,35 @@
 | `BIG PAPERS/qt2f18n5nk.pdf` | 14358136 |  |
 | `BIG PAPERS/ssrn-7385521.pdf` | 10277174 | ssrn:7385521 |
 | `BIG PAPERS/ssrn-7394178.pdf` | 15622060 | ssrn:7394178 |
+| `H(s)H_Toolkit/0105040v2.pdf` | 232815 | unresolved-seven-digit-id:0105040v2 |
+| `H(s)H_Toolkit/10.3934_cpaa.2026045.pdf` | 329789 |  |
+| `H(s)H_Toolkit/1305.5181v2.pdf` | 235192 | arxiv:1305.5181v2 |
+| `H(s)H_Toolkit/2012Morrison.pdf` | 238369 |  |
+| `H(s)H_Toolkit/2210.00372v2.pdf` | 291796 | arxiv:2210.00372v2 |
+| `H(s)H_Toolkit/2607.01264v1.pdf` | 267024 | arxiv:2607.01264v1 |
+| `H(s)H_Toolkit/30021CalcVarLec.pdf` | 105302 |  |
+| `H(s)H_Toolkit/59_On_the_Expressive_Power_of_.pdf` | 210480 |  |
+| `H(s)H_Toolkit/Adkisson.pdf` | 182956 |  |
+| `H(s)H_Toolkit/am72.pdf` | 186559 |  |
+| `H(s)H_Toolkit/anna-symplectic.pdf` | 301941 |  |
+| `H(s)H_Toolkit/calculus-of-variations.pdf` | 156790 |  |
+| `H(s)H_Toolkit/cristancho.pdf` | 210682 |  |
+| `H(s)H_Toolkit/disgrad.pdf` | 99143 |  |
+| `H(s)H_Toolkit/GriroievTrieste2018slides.pdf` | 156683 |  |
+| `H(s)H_Toolkit/hypersph.pdf` | 31614 |  |
+| `H(s)H_Toolkit/hyperspherical.pdf` | 220933 |  |
+| `H(s)H_Toolkit/JHU_Talk_Slide.pdf` | 247814 |  |
+| `H(s)H_Toolkit/l11.pdf` | 255197 |  |
+| `H(s)H_Toolkit/laplacehypersphere1108.3679v1.pdf` | 187457 |  |
+| `H(s)H_Toolkit/math0309175.pdf` | 227134 |  |
+| `H(s)H_Toolkit/proj6.pdf` | 162641 |  |
+| `H(s)H_Toolkit/Purple.pdf` | 230986 |  |
+| `H(s)H_Toolkit/S0002-9939-2017-13699-5.pdf` | 249866 |  |
+| `H(s)H_Toolkit/S0002-9939-99-05088-1.pdf` | 208269 |  |
+| `H(s)H_Toolkit/S186630Lec1.pdf` | 202635 |  |
+| `H(s)H_Toolkit/s40574-023-00359-7.pdf` | 235563 |  |
+| `H(s)H_Toolkit/Spectral_Graph_Theory.pdf` | 283163 |  |
+| `H(s)H_Toolkit/vol39pp675-689.pdf` | 221078 |  |
 | `HAUL 1/ssrn-6999018.pdf` | 255755 | ssrn:6999018 |
 | `HAUL 1/ssrn-7016601.pdf` | 265210 | ssrn:7016601 |
 | `HAUL 1/ssrn-7028858.pdf` | 146965 | ssrn:7028858 |
