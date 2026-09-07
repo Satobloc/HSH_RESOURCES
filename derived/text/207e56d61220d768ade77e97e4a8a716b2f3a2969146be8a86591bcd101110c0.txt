@@ -1,0 +1,2138 @@
+===== PAGE 1 =====
+DANTE: A Reference-Guided Unsupervised Pipeline for Extended-Transient
+Anomaly Characterization in LIGO O4a
+Luca Cirfeta 1,∗
+1Independent Researcher, Rome, Italy
+The analysis of gravitational-wave detector data during the fourth observing run (O4) requires
+methods for ranking and characterizing non-stationary strain morphologies. In this work, we present
+DANTE (Domain-Adaptive Network for Transient Evaluation), an offline, label-free pipeline that
+uses local DINOv2 patch embeddings from time-frequency spectrograms. Controlled injection tests
+illustrate the scale sensitivity of Multiple Instance Learning (MIL) Top-kpooling, including poor
+recovery for the tested sub-second morphologies, while an adaptive Dirichlet Process Mixture Model
+(DPMM) addresses numerical instability in small-sample taxonomy. Version 2 reports a boundary-
+context preprocessing defect affecting 169 of 10,429 later-audited detector–time windows; a con-
+trolled replay changes 120 class assignments and 97 routing decisions. Catalogue results in the
+original body are retained as historical version-1 outputs rather than corrected-catalogue or physi-
+cal claims.
+Keywords: Gravitational waves, Machine learning, Vision Transformers, Unsupervised clustering, Detec-
+tor characterization, LIGO O4a, DINOv2, Dirichlet Process Mixture Model, Multiple Instance Learning,
+Anomaly detection
+REVISION NOTE (V2; 3 SEPTEMBER 2026)
+A post-publication, identity-preserving replay audit
+identified a preprocessing defect in the published HDF5
+whitening path. The intended contract whitens each 32-s
+analysis window using 4 s of strain context on both sides
+(40 s in total) before cropping. For 169 of 10,429 frozen
+detector–GPS windows in a later catalogue produced by
+the published path (1.62%), the required interval crossed
+an HDF5 file boundary and the historical implementa-
+tion supplied only 36 s: 4 s of left context and no right
+context. The other 10,260 windows reproduce their his-
+torical native scores within the frozen absolute tolerance
+of 2×10 −7, whereas all 169 boundary windows change
+beyond that tolerance when complete symmetric context
+is restored.
+Applying the original detector-specific thresholds and
+routing rules, with no retuning, changes 120 of 10,429
+DSD class assignments (1.15%) and reverses 97 of 10,429
+routing decisions (0.93%); all 97 transitions are from
+ESCALATEtoROUTINE. These values isolate the direct ef-
+fect of restoring the missing context while preserving the
+historical representation and thresholds.
+The provenance-locked end-to-end reconstruction is
+also complete. Relative to the historical catalogue, it
+contains 10,022 matched detector–GPS identities, 407
+historical-only identities, and 920 corrected-only identi-
+ties. Among the matched identities, 1,626 class assign-
+ments differ: 39 in the matched historical edge cohort
+and 1,587 outside it. This broader churn is descrip-
+tive, not a causal estimate of the padding defect, because
+both the detector-aware reference representation and the
+detector-specific calibration were rebuilt; every matched
+∗ luca.cirfeta@gmail.com
+score changes beyond 2×10−7, and cross-applying thresh-
+olds between representations would be invalid. Of the 920
+corrected-only identities, 12 have historical right-edge ge-
+ometry, but padding causality is not established for them.
+Two of the nine primary pooled-null PEM follow-up tar-
+gets are corrected-only; neither has right-edge geometry
+and both receive aNO CORRELATIONPEM verdict. The
+pooled-null shortlist is diagnostic and is not a globally
+trial-corrected significance claim.
+Accordingly, the quantitative catalogue, family, coin-
+cidence, and singleton results retained below document
+the historical version-1 workflow; they are not presented
+in version 2 as corrected-catalogue or discovery claims.
+The historical artefacts remain immutable. The cor-
+rected workflow enforces cross-file context stitching and
+content-addressed provenance; its full architecture and
+population analysis will be reported separately.
+I. INTRODUCTION
+The international network of ground-based interfer-
+ometric gravitational-wave (GW) detectors—Advanced
+LIGO [1], Advanced Virgo [4], and KAGRA [5]—has en-
+tered an era of continuous, high-cadence astrophysical
+discoveries during the fourth observing run (O4). The
+detection of cosmic strains at the level ofh∼10 −23,
+corresponding to spacetime distortions smaller than one-
+thousandth of a proton diameter, demands extraordi-
+nary instrumental sensitivity. This sensitivity, how-
+ever, renders the detectors acutely susceptible to non-
+Gaussian, transient noise artifacts—commonly referred
+to asglitches—that originate from a broad spectrum of
+environmental, mechanical, and electronic sources [16,
+33]. Glitches overlap in time-frequency morphology with
+genuine astrophysical signals, including compact binary
+coalescences (CBCs), unmodeled burst sources, and con-
+arXiv:2606.25702v2  [astro-ph.IM]  3 Sep 2026
+
+===== PAGE 2 =====
+2
+tinuous wave candidates, directly degrading the perfor-
+mance of matched-filter search pipelines and Bayesian
+parameter estimation frameworks [35, 36].
+A. The Detector Characterization Challenge for O4
+Transient noise characterization—DetChar—is a cor-
+nerstone of data quality assurance for gravitational-wave
+observatories. The O4 run introduced significant in-
+strumental upgrades relative to O3, including squeezed-
+light injection and increased laser power levels, which
+have historically generated new and previously undocu-
+mented glitch populations [8, 43]. The canonical super-
+vised approach, exemplified by the Gravity Spy frame-
+work [20, 45], employs convolutional neural networks
+trained on curated labeled datasets from earlier observ-
+ing runs. While this approach achieves high classifi-
+cation accuracy on known glitch types, it faces chal-
+lenges when instrumental upgrades introduce previously
+undocumented glitch populations. Reference-guided nov-
+elty detection—classifying samples as anomalous without
+prior labels—offers a complementary approach. Our pri-
+mary goal is to establish an unsupervised methodologi-
+cal framework on O4a data to identify unmodeled tran-
+sient morphologies while controlling for the domain shift
+arising from instrumental upgrades between O3b and
+O4a. DANTE is designed to provide candidate topolog-
+ical anomalies to downstream offline DetChar protocols
+for formal multi-channel physical classification, operating
+alongside human-in-the-loop and supervised vetting.
+B. Limitations of Standard Vision Transformer
+Approaches
+Contemporary unsupervised GW anomaly detection
+has increasingly leveraged self-supervised representation
+learning, particularly Vision Transformers (ViTs) [17]
+pre-trained on large-scale natural image corpora. The
+DINOv2framework [15, 34] is particularly attractive: its
+training via distillation with no labels produces patch-
+level feature representations with strong emergent se-
+mantic properties and spatial locality, which trans-
+fer non-trivially to the time-frequency geometry of Q-
+transform spectrograms.
+However, standard ViT deployments introduce a
+methodological obstacle: thesignal dilution effect. Be-
+cause the global[CLS]token aggregates information from
+all 1,369 spatial patches via an implicit attention-pooling
+mechanism, the localized anomaly signal is heavily di-
+luted by the overwhelming majority of stationary back-
+ground patches. This architectural constraint severely
+limits the sensitivity to sub-second morphologies (e.g.,
+Blips). We formally characterize this barrier and its
+mathematical bounds via the Mock Data Challenge de-
+tailed in Section V A.
+C. The Curse of Dimensionality in Small-Sample
+Anomaly Taxonomy
+A second, orthogonal challenge arises in the taxon-
+omy stage, where detected anomalies must be grouped
+into morphologically coherent families. The principal
+mathematical challenge is that fitting an unrestricted
+Gaussian Mixture Model inR 384 withn <100 sam-
+ples is algebraically ill-posed. The condition number of
+the sample covariance matrix ˆΣ∈R 384×384 scales as
+O(d/n), inducing numerical instability: full covariance
+matrix estimation requiresd(d+ 1)/2 = 73,920 param-
+eters ford= 384, far exceeding the sample size. This
+produces rank-deficient covariance matrices, singular fac-
+torization errors, and severe overfitting of the mixture
+boundaries [6].
+Non-linear dimensionality reduction approaches such
+as UMAP [30] can project embeddings into a low-
+dimensional manifold. However, to preserve global den-
+sity fields required for DPMM stability, we favor a linear
+projection approach.
+D. Contributions of This Work
+In this paper, we present DANTE (Domain-Adaptive
+Network forTransientEvaluation) Pipeline V2, a ro-
+bust processing pipeline that addresses both limitations
+simultaneously. Our principal contributions are:
+1.Mitigating the Signal Dilution Effect via
+Patch-Level MIL:We provide a baseline demon-
+stration of the patch-level Multiple Instance Learn-
+ing (MIL) mechanism to mitigate the signal dilu-
+tion effect common in global-pooling ViT architec-
+tures. By focusing on the Top-kmost anomalous
+patches, the pipeline biases detection toward ex-
+tended mid-band transients (e.g.,>1 second). We
+explicitly delegate the implementation of an adap-
+tive multi-scalek-sweep to future iterations (V3).
+2.Adaptive Taxonomy under Small-Sample
+Constraints:We formulate an adaptive PCA
+dimensionality floor combined with a conditional
+DPMM covariance framework, dynamically select-
+ingfull,tied, ordiagcovariance structure as a
+deterministic function of sample sizen, eliminating
+matrix singularity and density distortion without
+requiring any non-linear manifold embedding.
+3.Cross-Session Connectivity:We introduce a
+hierarchical cosine similarity clustering framework
+operating on archived 384-dimensional MIL feature
+vectors, enabling automated linkage of morphologi-
+cally related transients across independent sessions
+without requiring human-in-the-loop validation.
+4.Production Infrastructure for O4a Continu-
+ous Streams:We describe the complete engineer-
+
+===== PAGE 3 =====
+3
+ing architecture—state-aware resumption, SWMR-
+enabled HDF5 archival, batched GPU inference,
+and structured provenance logging—enabling un-
+interrupted deployment on raw LIGO strain data
+acquired via the Gravitational Wave Open Science
+Center (GWOSC) [22].
+It is critical to note that DANTE is explicitly designed
+as an extended-duration transient detector (targeting
+anomalies>1 second). As demonstrated in our Mock
+Data Challenge, sub-second glitches (e.g., Blips) suffer
+from extreme signal dilution in the 32-second global spa-
+tial pooling mechanism, yielding a near-zero recall. Con-
+sequently, DANTE does not replace supervised, short-
+window classifiers like Gravity Spy, but rather operates
+as a complementary offline archival system for uncovering
+extended, unmodeled morphological families.
+The remainder of this paper is organized as fol-
+lows. Section II reviews related work in ViT-based GW
+anomaly detection and unsupervised clustering methods.
+Section III presents the full two-layer architecture of
+DANTE Pipeline V2 in mathematical detail. Section IV
+describes the experimental setup, data provenance, and
+engineering infrastructure. Section V reports detection
+and taxonomy results on LIGO O4a data. Section VI
+discusses the astrophysical implications, operational lim-
+its, and roadmap. Section VII concludes.
+II. RELATED WORK
+A. Supervised Glitch Classification
+The Gravity Spy framework [45] established the
+paradigm of convolutional neural network (CNN) classi-
+fication of Q-transform spectrograms using a multi-view,
+multi-resolution input representation. Subsequent itera-
+tions [20] have refined the taxonomy to 22 morphological
+classes in the O3 era, achieving classification accuracy
+exceeding 97% on known glitch types. Parallel efforts
+by L´ opez et al. [27] and Colgan et al. [13] applied trans-
+fer learning and ensemble methods to further improve
+robustness to spectrogram normalization variations. Re-
+cently, Wu et al. [2] introduced multi-view fusion with
+attention-based machine learning directly targeting the
+advanced O4 observing run, significantly advancing su-
+pervised classification boundaries. However, all super-
+vised approaches share a fundamental limitation: they
+are bounded by the topology of their labeled training
+set.
+B. Unsupervised and Self-Supervised Approaches
+For a comprehensive review of machine learning ap-
+plications in gravitational-wave research, see Cuoco et
+al. [29]. Early unsupervised GW transient character-
+ization relied on hand-crafted features extracted from
+the Omega (Q-transform) pipeline, followed byk-means
+or hierarchical clustering [11]. Raikman et al. [38] ap-
+plied variational autoencoders (VAEs) to compress spec-
+trogram pixels into a latent space, achieving limited
+clustering coherence due to pixel-level reconstruction
+objectives that are insensitive to morphological struc-
+ture. Convolutional encoder approaches combined with
+UMAP and HDBSCAN have been explored in Soni et
+al. [41], revealing a strong density concentration arti-
+fact when HDBSCAN operates on UMAP-compressed
+spaces. Foundation model representations—particularly
+DINOv2 [34] and CLIP [37]—have revolutionized unsu-
+pervised anomaly detection in medical imaging and in-
+dustrial defect inspection by capturing hierarchical lo-
+calized features without task-specific fine-tuning. These
+representations have recently been applied to GW spec-
+trograms [20], demonstrating substantial improvements
+in capturing the complex morphological variance of in-
+strumental artifacts compared to VAE baselines. This
+is attributed to the richer emergent geometry of self-
+supervised patch attention over pixel reconstruction.
+The limitation of global[CLS]pooling was characterized
+by our MDC injection campaign, and mitigated at the ar-
+chitectural level through patch-level Top-kscoring. The
+present work constitutes the complete production inte-
+gration of these architectural advances into a continuous
+O4a analysis pipeline.
+C. Non-Parametric Mixture Models in
+High-Dimensional Spaces
+Dirichlet Process Mixture Models [18, 31] provide a
+natural Bayesian non-parametric framework for cluster-
+ing with an unknown number of components. The infi-
+nite mixture prior avoids the model selection problem
+inherent in finite GMMs. However, DPMM stability
+in high-dimensional regimes (d≫n) is a known chal-
+lenge [6]. Strategies including low-rank covariance ap-
+proximations [42], regularized covariance estimation [26],
+and PCA preprocessing have been proposed. Our con-
+tribution extends this literature to the specific regime of
+GW transient taxonomy, whered= 384,nvaries dynam-
+ically from<10 to several hundred, and density preser-
+vation is a strict scientific requirement.
+III. ARCHITECTURE: DANTE PIPELINE V2
+The architecture and numerical results in the remain-
+der of this article document the historical version-1 ex-
+ecution and are retained for provenance; the revision
+note above defines which catalogue claims are super-
+seded. The DANTE Pipeline V2 architecture consists
+of two decoupled, sequentially executed functional lay-
+ers: aDetection Layerresponsible for segment-level
+anomaly scoring and flagging, and aTaxonomy Layer
+responsible for morphological grouping of flagged candi-
+
+===== PAGE 4 =====
+4
+dates. The architecture ensures computational efficiency
+by confining the heavy ViT extraction step exclusively to
+isolated candidate segments rather than the continuous
+datastream.
+A. Layer 1: Patch-Level Detection via MIL Top-k
+Scoring
+1. Data Ingestion and Spectrogram Computation
+Raw gravitational-wave strain data is retrieved from
+the GWOSC public archive in HDF5 format for the
+LIGO Hanford (H1) and Livingston (L1) interferom-
+eters during the O4a cdata release (GPS interval
+[1,368,973,312,1,384,525,312], corresponding to a≈180-
+day subset of the 237-day O4a run, bounded by data
+availability at campaign commencement). Strain frames
+are segmented into non-overlapping 32-second analysis
+windows. The intended preprocessing contract fetches
+4 s of strain context on each side, band-limits the padded
+40-s interval to [10,2048] Hz, whitens it using an adaptive
+median power spectral density (PSD) estimated via the
+Welch method [44] with a 4-second FFT stride, and only
+then crops back to 32 s. As quantified in the version-
+2 revision note, the historical HDF5 path omitted the
+required right context for 169 later-audited windows at
+file boundaries. Each cropped segment is transformed
+into a two-dimensional time-frequency representation via
+the normalized Q-transform (constant-Qtransform) [7],
+rendered onto a 256×256 pixel grid with the perceptu-
+ally uniformcividiscolormap [32]. Data quality gating
+is applied using theL1 CBC CAT1flag to exclude known
+hardware injection intervals and instrumental locklosses.
+2. Patch Token Extraction via Frozen DINOv2
+Spectrogram images are resized to 518×518 pix-
+els and encoded by a frozendinov2 vits14 regback-
+bone—the ViT-S/14 variant with register tokens [15],
+which suppress the high-frequency artifact patterns gen-
+erated by standard ViT patch positional embeddings in
+the absence of dense semantic content. The choice to
+keep the foundation model completely frozen (bypass-
+ing self-supervised fine-tuning via SimCLR or BYOL)
+is an explicit architectural prior: it is designed to pre-
+vent the embedding manifold from overfitting to the
+stale historical GW noise topologies, while simultane-
+ously eliminating the prohibitive HPC cost of retrain-
+ing on continuous datastreams. The model is evalu-
+ated intorch.inference mode()withcuDNNauto-tuner
+enabled for CUDA deployments (PyTorch 2.1.1+cu118,
+CUDA 11.8, cuDNN 8.7.0, Python 3.10; NVIDIA A100:
+SM 80, V100: SM 70).
+The 518×518 input is tiled into a 37×37 = 1,369 grid
+of non-overlapping 14×14 pixel patches. For each input
+segment, the backbone extracts the dense patch token
+matrix:
+V={v 1,v 2,...,v M},v i∈R 384, M= 1,369,(1)
+discarding the[CLS]token entirely. All tokens are
+strictlyL 2-normalized prior to downstream computation:
+ˆvi = vi
+∥vi∥2
+, ˆvi∈S 383,(2)
+ensuring all subsequent similarity computations operate
+on the unit hypersphereS 383. Memory management is
+enforced via explicit CPU offloading of all token ten-
+sors after inference and mandatory garbage collection
+(gc.collect(),torch.cuda.empty cache()) at the end
+of each batch processing loop.
+3. Vector-Quantized Reference Index
+To enable computationally tractable nearest-neighbor
+scoring over theM= 1,369 patch manifold, a static in-
+domain reference index is constructed from the Gravity
+Spy O3b labeled catalog [20], comprisingC= 23 canoni-
+cal morphological classes (including theNo Glitchbase-
+line). We deliberately utilize this historical O3b cata-
+log as an initial baseline to formally establish and quan-
+tify the Domain Shift Vulnerability (see Section 6.4),
+before demonstrating the pipeline’s capacity for native
+O4a recalibration. For each classc, patch tokens are
+extracted from all available spectrogram samples, and
+Kc representative centroids{w c,j}Kc
+j=1 are computed via
+MiniBatchKMeans[39] withrandom state=42andL 2-
+normalized embeddings (to ensure morphological bound-
+aries are robust against initialization artifacts, future it-
+erations should execute an ensemble of clustering passes
+across multiple random seeds), utilizing an adaptiveK c
+scaling to prevent overfitting sparse classes (detailed in
+Section IV). The complete concatenated reference in-
+dex comprisesK total = 281 centroids. This compact
+dictionary size naturally emerges from the severe class
+imbalance in the O3b dataset, where many rare tran-
+sient classes are represented by fewer than 24 images,
+inherently constraining their allocated centroids under
+the max(8,⌊n img/2⌋) rule. This must be explicitly dis-
+tinguished from the massive continuous O4a unlabeled
+background index (Section 5.1.1), which utilizes a generic
+K= 1,216 mapping.
+W∈R Ktotal×384 =R 281×384, ˆwj∈S 383.(3)
+Index integrity is validated at pipeline
+startup via SHA-256 checksum of the stored
+patch compressed index.npzfile, preventing silent
+corruption across distributed deployment environments.
+4. MIL Top-kAnomaly Scoring
+For each incoming segment, the per-patch maximum
+cosine similarity against the VQ reference index is com-
+
+===== PAGE 5 =====
+5
+puted:
+si = max
+c∈[C],j∈[K]
+ ˆvi· ˆwc,j
+
+, i= 1,...,M,(4)
+producing a spatial similarity maps∈R M. The
+segment-level anomaly score is derived from a Top-k
+Multiple Instance Learning aggregation, isolating thek
+patches with thelowestmaximum similarity to any ref-
+erence centroid (i.e., the most anomalous local regions):
+Ak ={i:s i is among theksmallest},(5)
+S(k)
+MIL = 1
+k
+X
+i∈Ak
+(1−s i).(6)
+This formulation increases the contribution of localized
+high-novelty patches relative to global pooling, but it
+does not guarantee detection for an arbitrary transient.
+To define the receptive field of the spatial aggregator,
+we setk= 68 (corresponding to≈5% of the 1,369
+total patch tokens). Rather than representing an opti-
+mized hyperparameter derived from a formal validation
+sweep, this fixed value constitutes an empirical architec-
+tural prior setting the ’topological focal length’ of the
+pipeline, heuristically chosen to bias detection toward
+O3b-like extended transients. By fixingk= 68, the
+pipeline is inherently biased towards mid-band extended
+transients and has poor demonstrated sensitivity to ex-
+tremely short transients (e.g., Blips<1.6s in a 32s win-
+dow). Thus, the pipeline is not scale-agnostic, and the
+fixed choice can alter both missed-detection and selec-
+tion behavior. Future work may evaluate a prospectively
+calibrated multi-scaleksweep.
+5. Empirical Threshold Calibration
+The background anomaly score distribution{S (k)
+MIL}is
+empirically estimated on a massive, highly-curated null
+population ofN null = 150,000 vetted non-anomalous seg-
+ments (representing approximately 50 days of coincident
+observing time). The background distribution exhibits
+strongly non-Gaussian asymmetry (skewness|γ 1| ≫0,
+excess kurtosis≫0), confirmed by Shapiro-Wilk testing
+(p≪10 −30).
+Version 1 defined the detector-specific operational
+thresholdτ Det
+op non-parametrically as the empirical 99 th
+percentile (P 99) of the calibration scores. This avoids
+imposing a parametric tail model on overlapping ViT-
+patch scores. A segment was flagged as anomalous if
+S(k)
+MIL >τ Det
+op , where:
+τ Det
+op =P 0.99
+
+{S(k)
+MIL}null
+
+(7)
+This construction fixes a one-percent exceedance fraction
+on the calibration sample. It does not by itself establish
+independence, an out-of-sample FPR, an FDR, or global
+trial control; the downstream gates reduce the retained
+count but are not a formal multiple-testing correction.
+6. MIL Feature Vector for Taxonomy
+Every flagged segment passes a 384-dimensional MIL
+feature vector to the Taxonomy Layer, constructed as the
+L2-normalized mean of the Top-kmost anomalous patch
+tokens:
+z= 1
+k
+X
+i∈Ak
+ˆvi, ˆz= z
+∥z∥2
+∈S 383.(8)
+Vectors are persistently archived into per-session SWMR-
+enabled HDF5 files (novelties.h5) with GPS times-
+tamp indexing to prevent duplicate ingestion across re-
+sumed sessions.
+B. Layer 2: Adaptive Morphological Taxonomy via
+DPMM
+1. Problem Statement
+Specifically, we analyze anN×d PCA session-level batch
+ofnanomalous patch-embeddingsX S. The goal is to
+partition this population intoK ∗
+sess morphologically co-
+herent clusters, whereK ∗
+sess is determined automatically
+from the data structure without prior specification. The
+generative DPMM assumes that eachx i∈X S is drawn
+from a mixture ofK∗
+sess Gaussians, determined automati-
+cally from the data, without imposing a pre-defined num-
+ber of components.
+The principal mathematical challenge is that fitting
+an unrestricted Gaussian Mixture Model inR 384 with
+n<100 samples is algebraically ill-posed. The condition
+number of the sample covariance matrix ˆΣ∈R 384×384
+scales asO(d/n), inducing numerical instability [6, 26].
+We resolve this through a two-step adaptive framework:
+linear dimensionality reduction followed by conditional
+covariance parametrization of the DPMM.
+2. Adaptive PCA Projection
+A Principal Component Analysis (PCA) projection
+is applied to the session batch to reduce the effective
+dimensionality while preserving the global topology of
+the cosine similarity manifold. Unlike UMAP, PCA is
+an orthogonal linear projection that preserves the maxi-
+mum sample variance in the projected subspace and pro-
+vides deterministic execution under fixed hardware archi-
+tectures andrandom state. The target dimensionality
+dPCA is determined adaptively:
+dPCA =
+(
+bypass (no PCA/DPMM) ifn<100
+max(d90%,20) ifn≥100 (9)
+whered 90% is the number of principal components re-
+quired to cumulatively explain≥90% of the sample
+
+===== PAGE 6 =====
+6
+variance. To prevent pathological covariance matrix col-
+lapse in high-dimensional density estimation, sessions
+withn <100 candidates bypass the PCA and DPMM
+entirely; their elements are classifieda priorias isolated
+singletons. For batchesn≥100, the variance-driven
+termd 90% dominates, with the floor of 20 guaranteeing
+sufficient dimensionality for stable DPMM covariance es-
+timation.
+While the PCA projection removes the strictL 2-
+normalized hyperspherical constraint, the induced Eu-
+clidean reconstruction error (Frobenius norm) is formally
+bounded by the Eckart-Young-Mirsky theorem. Because
+the adaptive PCA dynamically retains>98% of the sam-
+ple variance, the Frobenius reconstruction error is strictly
+bounded to<2%. This provides a deterministic reg-
+ularized approximation of the latent topology without
+incorrectly bounding the raw cosine distances. This rig-
+orously quantified trade-off is employed as a determinis-
+tic regularization technique to prevent covariance matrix
+singularity in the small-sample regime (n≪d). While
+density-based alternatives like HDBSCAN were evalu-
+ated, the generative structural constraints of the DPMM
+were found to provide more robust partitioning for this
+specific ViT latent manifold.
+3. Conditional DPMM Covariance Framework
+A Bayesian Gaussian Mixture Model with a Dirichlet
+Process prior (DPMM) is fitted to the PCA-projected
+feature matrixZ PCA ∈R n×dPCA. The stick-breaking
+prior concentration parameterα= 0.01 enforces high
+sparsity, activating a new component only when a can-
+didate sample is highly distinct from all existing clus-
+ter densities. The covariance parametrizationΣ type is
+selected conditionally based on the available degrees of
+freedom:
+Σtype =
+
+
+
+fulln≥200,
+tied50≤n<200,
+diagn<50,
+(10)
+wherefullallows unconstrained cluster-specific covari-
+ance ellipsoids (requiringO(K·d 2
+PCA) parameters),tied
+enforces a common covariance matrix across all active
+components (reducing the free parameter count byK-
+fold), anddiagrestricts to diagonal matrices, reducing
+the parameter count toO(K·d PCA) and eliminating sin-
+gular matrix inversion entirely. The EM regularization
+factorϵ reg and initialization countn init are co-selected:
+(ϵreg, ninit) =
+(
+(10−3,5) ifn<100
+(10−4,3) ifn≥100 (11)
+The scaling ofϵ reg provides stronger covariance regu-
+larization for small batches (n <50) to prevent singu-
+lar matrices in degenerate feature subspaces, whilen init
+guarantees EM convergence stability. Sensitivity anal-
+ysis confirmed that scaling these parameters within an
+order of magnitude does not significantly alter the final
+macroscopic taxonomy. This ensures that the EM op-
+timization convergence is numerically stable across the
+full dynamic range of session sample sizes encountered in
+O4a continuous data analysis. A cluster is classified as
+morphologically novelif fewer than 50% of its member
+samples are assigned a maximum VQ cosine similarity
+exceeding the empiricalp 99 threshold against any known
+Gravity Spy O3b class, implementing a final semantic
+gating step.
+C. Layer 3: Cross-Session Connectivity
+A critical operational challenge in multi-session unsu-
+pervised pipelines is label ambiguity across independent
+runs: a cluster designatedCluster-Ain sessiont 1 bears
+no automatic structural relationship toCluster-Ain ses-
+siont 2. We resolve this by establishing cross-session con-
+nectivity directly in the continuous 384-dimensional MIL
+feature space, bypassing discrete cluster label alignment
+entirely.
+LetA={(a i, ˆzi)}N
+i=1 denote the complete cross-session
+archive of validated anomaly candidates with their MIL
+feature vectors, partitioned into:
+1. Cross-Detector Coincidence Veto and Targeted
+Sub-Threshold Search
+Because strain is evaluated separately for H1 and
+L1, version 1 included aCross-Detector Coincidence
+Checkbefore its final taxonomy assignment. This was
+a diagnostic routing rule, not a physical veto.
+For every version-1 primary-detector record, the work-
+flow loaded partner-detector strain at the same analysis
+interval, extracted a MIL vector without requiring the
+partner to pass its own anomaly threshold, and evaluated
+a historical similarity rule within a±2 s search window.
+The widened window accommodated patch-grid timing
+uncertainty but also admitted chance matches; the sim-
+ple Poisson estimate used in version 1 did not model
+temporal clustering or global trials. A match aboveτ coh
+therefore triggered diagnostic follow-up only and did not
+identify an astrophysical, magnetic, or instrumental ori-
+gin.
+The historical software partitioned records into three
+routing categories:
+•Table 3a (No partner-threshold exceedance):
+The partner interferometer was observing, but the
+targeted search yieldedS≤τ coh.
+•Table 3b (Unverifiable Unilateral Detec-
+tions):The partner interferometer was offline or
+not in science mode. Physical origin cannot be ver-
+ified.
+
+===== PAGE 7 =====
+7
+•Table 3c (Partner-threshold exceedance):
+The record satisfied the historical spatial-temporal
+rule (S >τcoh) and was routed to offline follow-up.
+The cross-session pairwise cosine similarity matrixS∈
+RN×N is computed as:
+Sij = ˆzi· ˆzj,(12)
+exploitingL 2-normalization to reduce the inner product
+to a bounded scalar in [−1,1]. LetD ij = 1−S ij be
+the cosine distance field betweenL 2-normalized feature
+vectors. Because the vectors lie on the unit hypersphere
+S383, the cosine distance is strictly proportional to the
+squared Euclidean chordal distance (∥ ˆzi− ˆzj∥2 = 2Dij),
+ensuring that standard metric clustering theorems apply.
+Morphological transitivity is fundamentally agraph
+connectivity problem: if candidateAis morphologically
+similar toB, andBtoC, thenA,B, andCmust be-
+long to the same physical family, regardless of the global
+compactness of the group. Therefore, we explicitly re-
+ject variance-minimizing linkage criteria (e.g., Ward’s
+method), which artificially fragment elongated or drift-
+ing topological manifolds into isotropic sub-clusters. In-
+stead, we employsingle-linkagehierarchical agglomer-
+ative clustering, which computes the transitive closure of
+the similarity graph.
+We construct a graphG= (A,{(i,j) :S ij > ρtrans})
+where edges exist between candidates ifS ij > ρtrans
+(equivalently,D ij <1−ρ trans). Single-linkage cluster-
+ing truncated at this threshold exactly recovers the con-
+nected components of this graph. Unlike the Extreme
+Value Theory (EVT) parametric boundsτ Det
+op andτ coh
+which strictly govern the statistical validity of the detec-
+tion and physical coincidence,ρ trans = 0.75 is explicitly
+an empirical visualization and macroscopic connectivity
+parameter. It does not alter detection significance, but
+defines the macroscopic granularity of the resulting tax-
+onomy graph.
+Mitigation of the Chaining Effect.Single-linkage
+is susceptible to the “chaining effect,” in which sparse
+bridges merge structures that need not be mutually sim-
+ilar. Version 1 usedρ trans = 0.75 to aggregate the 140
+selected candidates and interpreted diffuse chains de-
+scriptively. The procedure does not ensure that spuri-
+ous chaining between distinct populations is negligible;
+the resulting families are retained as historical software
+outputs rather than physical populations.
+The similarity matrix is reordered according to the
+HAC leaf permutation, grouping morphologically corre-
+lated transients contiguously along the main diagonal.
+Morphological transitivity is operationally declared when
+a Table 3b candidatea i satisfies:
+∃aj∈Table 3a :S ij >ρ trans, ρ trans = 0.75,(13)
+providing a deterministic, geometry-based classification
+of unverifiable events by association with confirmed local
+glitches, without requiring human visual inspection.
+IV. EXPERIMENTAL SETUP AND DATA
+PROVENANCE
+A. Dataset
+All raw strain data are retrieved via the GWOSC
+public archive [1,368,973,312,1,384,525,312]. For the
+O4a production scan, an initial corpus of≈180 days
+of data is ingested (this subset of the full 237-day O4a
+run was strictly bounded by GWOSC data availability at
+the commencement of our analytical campaign). During
+the initial GWOSC fetch and spectrogram generation,
+approximately 3.4% of segments were permanently dis-
+carded due to NaN entries, missing strain data, or macro-
+scopic sensor dropouts. After strict data quality filtering
+on the remaining corpus, 32-second segments are pro-
+cessed across 72 valid sessions. These 72 sessions (yield-
+ing an effective duty cycle of≈20%) were intentionally
+selected by requiring long, contiguous periods of stable
+lock to ensure robust 32-second Power Spectral Density
+(PSD) estimation without fragmentation. Asessionis
+operationally defined as a contiguous GPS-tagged data
+acquisition block, bounded by lock-losses or scheduled
+maintenance interruptions; each session corresponds to
+a unique 10-digit GPS start timestamp in the produc-
+tion archive and may span from minutes to several hours
+of continuous observation. Data quality gating with the
+L1 CBC CAT1/H1 CBC CAT1flags excludes hardware in-
+jection intervals and locklosses. No data from the partner
+Virgo (V1) detector is included, as V1 did not participate
+in O4a due to commissioning constraints.
+B. O3b Reference Index Construction
+The baseline VQ reference index is constructed
+from the publicly available Gravity Spy O3b labeled
+catalog [20], downloaded from Zenodo. The index covers
+C= 23 canonical morphological classes (including the
+No Glitchbaseline), encoded intoM≈13,000 tokens,
+which are clustered intoKc = min(64,max(8,⌊n img/2⌋))
+centroids viaMiniBatchKMeanswithrandom state=42,
+yielding 281 reference centroids across all classes
+(a direct mathematical consequence of the heav-
+ily imbalanced O3b populations). The final in-
+dex file (patch compressed index.npz, SHA-256:
+1080afa8...) is version-controlled by checksum logged
+at pipeline initialization.
+C. Native O4a Background Index Construction
+Because the Domain Shift Resolution (Section V D)
+requires rescoring all candidates against anativeO4a
+background dictionary, an independent O4a VQ index
+was constructed with strict methodological symmetry to
+the O3b baseline. The construction protocol is as follows:
+
+===== PAGE 8 =====
+8
+1.Segment Curation:In the historical version-
+1 construction, 150,000 non-overlapping 32-second
+segments were sampled across the O4a observing
+interval (≈180 days), with a 32-second separation
+between consecutive samples. All segments sat-
+isfied theCBC CAT1data-quality flag, and H1/L1
+anti-coincidence was used to reduce the proba-
+bility of including a contemporaneous event in
+the partner detector. These gates reduce spe-
+cific contamination modes but do not prove sta-
+tistical independence or a pure stationary-noise
+population. The corrected reconstruction there-
+fore replaces the historical calibration population
+with a fresh outcome-blind, detector-aware cohort
+guarded against both corrected candidates and
+native-index windows; the resulting thresholds are
+not obtained from the historical population. The
+historicalMiniBatchKMeansalgorithm (K= 1,216)
+compressed 205,350,000 patch tokens into centroids
+representing dense regions of that sampled distribu-
+tion.
+A historical synthetic K-Means poisoning sensitiv-
+ity test was also executed (Table I): a dense syn-
+thetic morphological cluster was injected into the
+sampled manifold at progressively larger fractions.
+No dedicated centroid was observed in that partic-
+ular setup, including at 5.0% contamination. This
+bounded experiment did not establish zero con-
+tamination of the real cohort, general immunity
+to poisoning, or a physical classification of any
+morphology absorbed by the index. Absorption
+only means that the representation treats the mor-
+phology as part of its sampled reference manifold;
+distinguishing benign stationary noise from a per-
+vasive pathological coupling requires independent
+detector-characterization evidence.
+2.Vector Quantization:All 150,000×1,369 =
+205,350,000 patch tokens (extracted via the
+identical frozen DINOv2 encoder) are com-
+pressed intoK= 1,216 global centroids via a
+singleMiniBatchKMeansrun (random state=42,
+batch size=2048). The centroid countK= 1,216
+was empirically selected to provide sufficient ca-
+pacity to represent the highly complex, continuous
+background noise manifold of the 180-day observ-
+ing run, while maintaining a strict dimensionality
+reduction for fast nearest-neighbor retrieval. This
+capacity (1,216≫281) is intentionally larger than
+the isolated-class O3b dictionary to capture the
+rich morphological diversity of the steady-state O4a
+background. All centroids areL 2-re-normalized
+post-quantization.
+3.Threshold Calibration:In version 1 the native
+operational thresholdτ Det
+op was defined as the em-
+pirical 99th percentile (P99) of the 150,000 segment-
+level MIL Top-kscores. This fixes a one-percent ex-
+ceedance fraction on the calibration pool; by itself
+it does not guarantee a one-percent out-of-sample
+false-positive rate or control global trials.
+The resulting native index
+(patch compressed index o4a ex.npz, shape
+1,216×384, SHA-256:a9b6db25...) is the iden-
+tical dictionary used for both the Tail QQ-plot
+validation (Section V D) and the Stationarity Resolution
+(Section VI).
+D. Infrastructure and Reproducibility
+DANTE Pipeline V2 executes as a state-aware, re-
+sumable continuous workflow orchestrated via a uni-
+fied command-line interface (main.py). All cluster-
+ing, dimensionality reduction, and background valida-
+tion phases are rigorously version-controlled (scikit-learn
+1.3.2, Python 3.10) to ensure mathematical reproducibil-
+ity. Key engineering design decisions include:
+•SWMR HDF5 Archival:Anomaly feature vec-
+tors are written to session-isolatednovelties.h5
+archives using the Single-Writer Multiple-Reader
+(SWMR) protocol, enabling concurrent read access
+for monitoring without blocking inference.
+•State-Aware Resume:The pipeline maintains
+a persistent GPS index of processed segments; in-
+terrupted sessions resume from the last validated
+checkpoint without reprocessing.
+•Batched GPU Inference:DINOv2 inference is
+executed in batches of 32 (CUDA) or 16 (CPU)
+spectrograms, with the Producer-Consumer mul-
+tiprocessing pattern decoupling CPU-bound Q-
+transform computation from GPU-bound forward
+passes.
+•Structured Provenance Logging:
+Every session produces machine-
+readablecluster report.jsonand
+aggregate summary.jsonfiles, including MD5
+hashes of all input reference files, software ver-
+sions, GPS ranges, and random seeds, ensuring
+end-to-end scientific reproducibility.
+Hardware: NVIDIA GPU (CUDA) withcuDNNauto-
+tuner enabled. All random seeds were fixed at
+random state=42across the stochastic operations listed
+in the historical workflow, including Vector Quan-
+tization (MiniBatchKMeans), dimensionality reduction
+(PCA,UMAP), clustering (BayesianGaussianMixture),
+and background sampling. Fixed seeds improve rerun
+consistency but do not alone guarantee bitwise repro-
+ducibility across software, hardware, or numerical-library
+environments.
+
+===== PAGE 9 =====
+9
+TABLE I. K-Means Poisoning Sensitivity Test (K= 1,216,N= 150,000). Maximum centroid cosine similarity to the injected
+dense anomaly at varying contamination levels. The threshold for spatial absorption (dedicated centroid) is≥0.85. At all
+realistic and adversarial levels, the anomaly fails to poison the Vector Quantized background. Note: The slight non-monotonicity
+in maximum similarity arises from the stochastic initialization ofMiniBatchKMeanson a single random seed, reflecting expected
+variance rather than a structural effect.
+Contamination Segments (n) Max Similarity Poisoned?
+0.010% 15 0.681 No
+0.050% 75 0.714 No
+0.100% 150 0.709 No
+0.200% 300 0.732 No
+0.500% 750 0.764 No
+1.000% 1,500 0.751 No
+5.000% 7,500 0.765 No
+E. Unified Nomenclature of Operational
+Thresholds
+To resolve potential mathematical ambiguity across
+different validation stages, Table II provides a unified
+nomenclature of the thresholds utilized throughout this
+study. We strictly distinguish between parameters op-
+erating on the bounded global cosine similarity domain
+(Scos) and those derived from the patch-level topological
+novelty distance metric (S MIL).
+V. RESULTS AND DETECTOR NOISE
+TAXONOMY
+Unless explicitly stated otherwise in the version-2 revi-
+sion note, the numerical results in this section are histori-
+cal version-1 outputs. They are retained to make the cor-
+rection auditable and are not corrected-catalogue claims.
+A. Mock Data Challenge: Signal Dilution and MIL
+Validation
+In Q-transform representations of 32-second data seg-
+ments, the spectrogram is discretized into a 37×37 =
+1,369 patch grid, each patch spanning ∆t patch≈0.86 s
+in time and ∆f patch≈54 Hz in frequency. The global
+[CLS]context token aggregates information from all
+1,369 patches via an implicit attention-pooling mecha-
+nism While the multi-head softmax attention mechanism
+is inherently non-linear, we assume an additive approxi-
+mation to first order to conceptually illustrate the dilu-
+tion effect. For a transient occupying a localized fraction
+fof the grid, the global anomaly score scales as:
+sglobal≈(1−f)s bg +fs anomaly,(14)
+wheres bg≈0.995 is the baseline cosine similarity of the
+stationary background against the reference index. For
+short-duration transients,f <0.05, and even a maxi-
+mally orthogonal anomaly (s anomaly≈0) yieldss global ≳
+0.945—a value that lies within the nominal background
+distribution. This architectural constraint was observed
+via a systematic Mock Data Challenge (MDC) covering
+1,417 strain-domain synthetic injection trials across eight
+morphological families, yielding low recall for tested mor-
+phologies at the operationally calibrated[CLS]thresh-
+old. Importantly, this MDC Phase 1 explicitly serves as
+our baseline comparison against standard global-pooling
+anomaly detection (e.g., kNN on the global token), for-
+mally justifying the necessity of our custom patch-level
+MIL architecture over generic Autoencoders or global Iso-
+lation Forests. To resolve scale confusion between the
+MDC analysis and the production results (Section V), we
+differentiate their mathematical domains:τ CLS evaluates
+global cosine similarityS cos∈[0,1] (detecting anomalies
+ifS cos < τCLS), whereas the 140 production candidates
+were discovered by the Patch-Level MIL architecture op-
+erating on a topological novelty distance scale (detecting
+anomalies ifS MIL > τDet
+op , with e.g.τ Det
+op = 0.3359 for
+L1). To rigorously validate the architectural evolution
+of the pipeline, we formalize the Mock Data Challenge
+(MDC) into a strict two-phase protocol (Table III). This
+decouples the mathematical demonstration of the[CLS]
+failure (Phase 1) from the operational mapping of the
+new Patch-Level MIL architecture (Phase 2).
+Phase 1 (Baseline Falsification):As intro-
+duced in Section I, evaluating the legacy[CLS]to-
+ken over an extensive historical campaign (detailed
+originally in our prior work) of 1,417 synthetic trials
+across 8 generic morphological families (Blip, KoiFish,
+Scratchy, Tomte, Low Frequency Burst, Power Line,
+Scattered Light, Whistle) yielded a flat recall of 0.00
+at the operationally calibrated thresholdτ CLS = 0.874.
+This demonstrated the severe Signal Dilution barrier,
+motivating the architectural shift to localized spatial to-
+kens.
+Phase 2 (MIL Production Validation):Unlike
+the legacy Phase 1 (which evaluated the aforementioned
+8 generic families), Phase 2 is a targeted campaign de-
+signed specifically for the MIL architecture. To quantify
+the sensitivity limits of the new Patch-Level MIL frame-
+work, we injected seven synthetic transient morphologies
+spanning the full durational spectrum (Blip, AsymBlip,
+SpiralBurst, ScatteredLight, HarmonicComb, KoiFish,
+
+===== PAGE 10 =====
+10
+TABLE II. Unified Nomenclature of Thresholds and Mathematical Domains
+Symbol Mathematical Domain Anomaly Condi-
+tion
+Empirical
+Value
+Context / Function
+τCLS Global Cosine SimilarityS cos <τ CLS 0.874 (O3b)MDC Validation:
+Proves Signal Dilution
+limit.
+τ Det
+op Patch-Level MIL DistanceS MIL >τ Det
+op 0.3359 (L1),
+0.3859 (H1)
+O4a Production:De-
+tects novel transients.
+Scoh Mean Pairwise SimilarityS coh >τ coh 0.9750 (P 99.9
+GPD)
+Morphology Taxon-
+omy:Validates cluster
+cohesion.
+TABLE III. Unified Mock Data Challenge (MDC) Protocol resolving the structural asymmetry between Phase 1 and Phase
+2. Both phases are aligned at a strict mathematically matched False Positive Rate (FPR = 1%) using their respective EVT
+thresholds. Phase 1 demonstrates the Signal Dilution failure of global pooling. Phase 2 validates the MIL architecture.
+Phase Architecture Metric
+Space
+Morphology Threshold Matched SNR Recall
+Phase 1 Global ([CLS])S cos∈[0,1] 8 generic families FPR 1%
+(τCLS)
+ρpeak∼2500.00%
+Phase 2 MIL (Top-k) Topo. Nov-
+elty
+Harmonic Comb FPR 1%
+(P99 empir-
+ical)
+ρpeak∼214>98%
+Phase 2 MIL (Top-k) Topo. Nov-
+elty
+Scattered Light FPR 1%
+(P99 empir-
+ical)
+ρpeak∼20058%
+Phase 2 MIL (Top-k) Topo. Nov-
+elty
+Blip / AsymBlip FPR 1%
+(P99 empir-
+ical)
+ρpeak∼4300.00%
+Whistle) into empirical O4a strain. Blip and AsymBlip
+morphologies were injected using Sine-Gaussian wave-
+forms, with central frequencies and Q-values drawn from
+the stated test ranges (fc∈[30,80] Hz,Q∼[5,15], dura-
+tion∼0.1s). Performance was evaluated at the historical
+empiricalτ Det
+op threshold, corresponding to a one-percent
+exceedance fraction on its calibration sample rather than
+a guaranteed prospective FPR. For comparison across
+tested durations, the injected signal energy was parame-
+terized using the detector’s local PSD.
+It is crucial to clarify that the injected SNRs eval-
+uated in this MDC (ρ∼200−430) do not represent
+expected astrophysical targets, which typically reside in
+theρ∼10−30 regime. Rather, these injections function
+strictly asarchitectural stress tests. Because the ViT
+processes a massive 32-second receptive field, the energy
+of a sub-second transient is heavily diluted by over 31
+seconds of stationary background noise. Consequently,
+breaching the rigorous empiricalP 99 background thresh-
+old empirically requires extremely large injected SNRs
+under the present 32-second configuration to sufficiently
+perturb the patch-level anomaly score. This exposes a
+fundamental limitation of large-context single-scale ViT
+architectures when applied to short-duration transients.
+As demonstrated overN inj = 100 independent tri-
+als per bin (yielding 95% binomial confidence intervals),
+the MIL pipeline’s detection capability strictly correlates
+with the temporal footprint of the anomaly (Figure 1).
+Extended morphological signatures such as theHar-
+monic Combachieve near-perfect asymptotic peak recall
+(>98% at optimal SNR), andScattered Lightreaches
+a peak recall of 58% (Wilson 95% CI: 48%−67% at
+ρ>200). Furthermore, intermediate-duration topologies
+with complex time-frequency evolution, such asKoiFish
+andWhistle, demonstrate robust absolute recoverabil-
+ity (>50% and 100% respectively at high SNR). Con-
+versely, sub-second transients such asBlipsandAsym-
+Blipssuffer from extreme topological dilution within the
+32-second spatial grid. Even at very high physical signal
+strengths (Matched-Filter SNRρ≈380), these short-
+duration anomalies yield a recall of precisely 0.00. We
+explicitly declare this as a critical operational limitation
+and a fundamental detection failure of the current ar-
+chitecture. The pipeline is strictly applicable only to
+extended-duration transients.
+While a naive ”Multi-Scale” workaround—such as
+extracting 2-second sub-windows, resizing them to
+the 518x518 ViT input resolution, and fusing the
+maximum anomaly score—might superficially recover
+short transients, it introduces a severeScale Do-
+main Shift. The background reference index
+(patch compressed index.npz) is intrinsically popu-
+lated by spatial features derived from 32-second contin-
+uous manifolds. Passing a 2-second window (dilated by
+1600% relative to the reference) to the ViT violates the
+scale-invariance limits of the frozen DINOv2 encoder,
+drastically degrading the Cosine Similarity against the
+32-second background and causing a significant inflation
+
+===== PAGE 11 =====
+11
+of the False Positive Rate (FPR). Furthermore, spanning
+a continuous scan with overlapping 2s, 4s, and 32s win-
+dows inflates the GPU inference load by a factor of 25x,
+violating the HPC efficiency requirements of an archival
+anomaly detector.
+Consequently, resolving this blindness to short tran-
+sients strictly requires the construction ofMulti-
+Scale Reference Dictionaries—generating inde-
+pendent, natively-calibrated background indices and
+non-parametricP 99 bounds for each temporal scale
+([2s,4s,32s]). This scale-isolated architecture prevents
+topological data leakage and remains the primary objec-
+tive for the Version 3 (V3) pipeline implementation.
+B. Signal Dilution and Top-KAblation
+To empirically validate the Signal Dilution hypothe-
+sis formalised in Equation 14, an ablation study on the
+topological pooling scaleKwas executed across repre-
+sentative anomalies. Because signal dilution is a funda-
+mentally localized effect bounded by the temporal dura-
+tion of the transient within the 32-second spectrogram,
+a bulk aggregated metric obscures the physical mechan-
+ics. Therefore, we evaluate the Top-KMIL novelty score
+dynamically as a function of the spatial receptive field
+K∈{16,32,68,128,256,512,1369}.
+As demonstrated in Figure 2, which tracks the anomaly
+score of a cohesive transient as the pooling field artifi-
+cially expands, the topological severity of the anomaly
+undergoes a steep geometric decay. AtK= 68 (our ex-
+plicit architectural prior, representing≈5% of the grid),
+the transient is cleanly isolated from the macroscopic
+noise floor, generating a novelty score that easily sur-
+passes the empirical detection threshold. However, as
+K→1369 (approximating the global average pooling
+of the standard ViT[CLS]token), the dense anomalous
+patches are systematically averaged with the overwhelm-
+ingly large stationary background manifold. This spatial
+homogenization drags the final anomaly score deep into
+the null background distribution, completely blinding the
+detection architecture to the presence of the transient.
+This ablation rigorously demonstrates that extending
+the spatial token receptive field beyond the topological
+scale of the underlying morphology mathematically guar-
+antees a false negative, justifying the necessity of the
+restricted Patch-Level MIL architecture for discovering
+localized transients.
+C. Detection Layer Performance
+1. Background Distribution Characterization
+The historical production scan was executed over the
+fullN= 214,092 O4a segment corpus for both H1 and
+L1 detectors. Version 1 used one empiricalP 99 thresh-
+old per detector, computed from 150,000 H1 segments
+and 150,000 L1 segments. This construction fixed the
+calibration-pool exceedance fraction but did not, with-
+out an independent prospective null, guarantee a stable
+one-percent out-of-sample FPR. It must be distinguished
+from the native O4a Vector Quantization index, which
+was constructed once from 150,000×1,369 = 205.3 M
+patch tokens (Section IV C) and served as the historical
+morphological dictionary. The corrected reconstruction
+uses a new guarded detector-aware calibration and does
+not reuse these thresholds.
+2. Anomaly Detection Summary
+The version-1 software retained 140 unique records
+after empirical-threshold selection, morphological cross-
+matching, and chronological deduplication. The label
+TRUE NOVEL CANDIDATEdenoted failure to match the con-
+figured historical references; it did not establish physical
+novelty. The 140-record count and its detector compo-
+sition are historical workflow outputs and are not the
+corrected catalogue.
+Following the Detection Layer, all 140 historical can-
+didates were subjected to the version-1 sub-threshold
+cross-detector check (Section III C 1) by extracting part-
+ner strain at the±2s trigger window. Of these, 110 did
+not exceed the historical partner criterion, 30 lacked ob-
+serving partner data, and none exceeded that criterion.
+This absence of a threshold exceedance was useful for pri-
+oritizing follow-up, but it did not definitively localize the
+events or establish a physical origin.
+For the 140 historical records, global[CLS]pooling
+yielded a mean cosine similarity of 0.996±0.002 and a
+reported Kolmogorov–Smirnov separation ofD= 0.04
+(p>0.5) relative to the selected null sample. This com-
+parison illustrates reduced separation under global pool-
+ing for that experiment; it does not establish that stan-
+dard ViT pooling is universally blind to O4a anomalies.
+D. Robustness of the Background Tail to Domain
+Shift
+A fundamental concern for any reference-based frame-
+work is the temporal stability of the background man-
+ifold across observing runs. Instrumental upgrades be-
+tween O3b and O4a—including squeezed-light injection
+and modified laser power levels—could in principle alter
+the geometric distribution of pure noise patches in the
+DINOv2 embedding space, thereby compromising the va-
+lidity of a static O3b-based vector-quantized (VQ) index.
+To quantify this risk rigorously, we eschew bulk distri-
+butional metrics such as the Kolmogorov-Smirnov test.
+In gravitational-wave detector characterization, mean
+shifts in the bulk distribution are operationally irrele-
+vant; the False Alarm Rate (FAR) is governed exclu-
+sively by the geometry of the extreme right tail of the
+non-Gaussian noise. An inflation in the tail can cause an
+
+===== PAGE 12 =====
+12
+FIG. 1. Mock Data Challenge (MDC) recall curves evaluated on seven synthetic glitch morphologies injected into empirical O4a
+noise. The X-axis reports the Matched-Filter Signal-to-Noise Ratio (SNR,ρ). The high SNR values (ρ>200) do not represent
+astrophysical expectations but serve as architectural stress tests to overcome the signal dilution effect. The Y-axis indicates the
+True Positive Rate (Recall) at the operational empiricalP 99 threshold. Error bars denote 95% binomial confidence intervals
+(Wilson score). Extended and intermediate morphological signatures achieve high detectability, whereas short transients (e.g.,
+Blips and AsymBlips) suffer from extreme signal dilution in the 32-second field of view, remaining strictly invisible even at
+extreme signal strengths (ρ>300).
+explosion in the False Positive Rate (FPR) at the opera-
+tional thresholdτ op, even if the mean remains stable.
+To assess the true impact of domain shift on the FAR,
+we compute the empirical tail of the patch cosine similar-
+ities using two independent datasets: 500 null segments
+from O3b (extracted from a historically verified macro-
+scopically quiet period starting at GPS 1242500000) and
+500 from native O4a. Because the Top-kscoring operates
+on the dense spatial grid (1,369 patches per segment),
+these 500 segments yield an extreme-tail evaluation pool
+of 684,500 independent spatial scores per run, ensuring
+the empiricalp 99.8 quantiles are statistically robust. His-
+torically, segments were selected with Data Quality (DQ)
+vetoes (no NaNs or macro-dropouts), a 32-second sepa-
+ration, and H1/L1 anti-coincidence. These criteria re-
+duce dependence and obvious contamination but do not
+guarantee statistical independence or absolute purity of
+the native reference index. To preclude systemic biases
+between runs, all segments were individually whitened
+using the exact identical configuration of the production
+pipeline (a 4-second Welch PSD stride) computed locally
+per 32s block, ensuring identically matched noise statis-
+tics without macroscopic spectral drifts.
+Figure 3 presents the Tail QQ-plot, comparing the ex-
+treme quantiles (fromp 50 top 99.8) of the O3b and O4a
+similarity distributions on a logarithmic scale. To dis-
+tinguish genuine geometric shifts from sampling noise,
+we compute exact 95% binomial confidence intervals for
+each empirical quantile. In these historical samples, the
+evaluated O4a tail did not inflate relative to O3b. At the
+historical baseline thresholdτ O3b = 0.889 (corresponding
+to theP 99 of the O3b sample), the observed exceedance
+fractions were 1.00% for O3b and 0.0% for O4a; the latter
+is a finite-sample observation, not a zero-FPR bound.
+Within the sampled historical cohorts, this result did
+not show inflation of the evaluated O4a tail relative to
+O3b at the quoted threshold. It is not a prospective
+guarantee that the false-alarm rate remains bounded on
+nominal O4a data.
+The historical production data and the sampled tail co-
+hort are different populations. The observed O3b-to-O4a
+reference sensitivity can elevate scores for O4a morpholo-
+gies absent from the O3b dictionary, so a native detector-
+aware representation and calibration are required before
+
+===== PAGE 13 =====
+13
+FIG. 2. Historical Top-Kpooling ablation for one selected H1 segment (session 1368973312). The score decreases as the
+aggregation approaches global pooling, illustrating scale sensitivity in this example; it does not establish universal detection or
+a physical classification of the segment.
+interpreting those scores. The version-1 count of 140 can-
+didates is retained as a workflow output, not as evidence
+that the selected morphologies were newly discovered or
+stationary.
+E. Taxonomy Layer Results
+1. Topological Stability Analysis
+Version 1 assessed rerun stability using 20 bootstrap
+re-clusterings and the Adjusted Rand Index (ARI). Of
+72 detector-sessions, 44 hadn≥100 and entered the
+reported Spearman analysis. For L1 (27 sessions),nand
+ARI hadρ= 0.531 (p= 0.0044); for H1 (17 sessions),
+ρ= 0.245 (p= 0.343). These associations do not by
+themselves identify sample size as the cause of instability,
+and the excluded small-session regime remains weakly
+characterized.
+2. Physical Characterization and Environmental Vetting
+The taxonomy pipeline successfully groups candidate
+events via single-linkage clustering. Applying a correla-
+tion distance thresholdρ trans = 0.75, this historical pro-
+cess joined the 76 constituent clusters intoK glob = 6
+global families. Three of these are macroscopic aggre-
+gates (Family 01, Family 02, Family 03), accounting for
+120 of the 140 candidates. The remaining three struc-
+tures (Kglob∈{4,5,6}) are isolated singletons represent-
+ing extreme, non-repeating transients.
+We emphasize that the following ”Screening Criteria”
+act exclusively as a qualitative descriptive heuristic for
+prioritizing candidates for human inspection, and does
+not provide formal statistical evidence for validation. It
+does not constitute a formal statistical test. The pri-
+mary quantitative validation metric for cluster stability
+remains the bootstrapped Adjusted Rand Index (ARI)
+detailed in Section 5.3.1. To operationally screen the
+
+===== PAGE 14 =====
+14
+FIG. 3. Historical Tail QQ-plot of maximum patch cosine similarity for the sampled O3b and O4a cohorts. Points show
+quantiles fromp 50 top 99.8 with the reported 95% binomial intervals. Atτ O3b = 0.889, the observed O4a exceedance fraction
+was 0.0% in this finite sample; this is not a prospective zero-FPR bound or a global domain-shift guarantee.
+morphological cohesion and instrumental origin of the
+identified clusters, we established this heuristic triangle:
+1.Statistical Anomaly: Candidates must strictly
+exceed the native O4a empirical threshold.
+2.Morphological Cohesion: The cluster must ex-
+hibit extreme internal spatial density in the latent
+feature space.
+3.Temporal Independence from Instrumental
+Transitions: The events must not be strictly con-
+fined to the immediate vicinity of hardware injec-
+tions, lock-losses, or maintenance transitions, en-
+suring they represent steady-state noise artifacts
+rather than transient DAQ or control-loop artifacts.
+Evaluating our macroscopic aggregates against these
+criteria, we isolateFamily 01(n= 11),Family 02
+(n= 3), andFamily 03(n= 123) as identified by the
+cross-session single-linkage HAC (Layer 3, Section III C)
+on the initial O3b-calibrated embedding space. Fam-
+ily 01 initially exhibited an extraordinary mean inter-
+nal similarity of 0.9216, presenting as a highly cohe-
+sive, structurally intact morphology (0 NaNs) across an
+unbroken 4-month period in Livingston (L1). The 4-
+month temporal persistence of Family 01, rather than
+indicating a genuine astrophysical population, is con-
+sistent with three distinct physical hypotheses: (a)
+Family 01 is benign stationary noise; (b) it represents
+a pervasive pathological instrumental coupling (e.g.,
+microseismically-modulated scattered light) that has be-
+come ubiquitous; or (c) it is a structural boundary arti-
+fact of the DINOv2 feature space acting on Q-transforms.
+The time-frequency Q-transform revealed an abrupt tem-
+poral transition featuring a low-frequency bubbly texture
+followed by a high-frequency wall of horizontal spectral
+lines, strictly deviating from known Gravity Spy classes.
+However, a physical interpretation requires confirming
+that this morphological deviation is not merely an ar-
+tifact of macroscopic instrument drift between observ-
+ing runs. Version 1 rescored all 140 candidates against
+a native O4a background index assembled with H1/L1
+anti-coincidence and Data Quality gating. Those gates
+reduced known contamination modes but did not guar-
+antee a statistically independent or anomaly-free cohort;
+the corrected reconstruction therefore replaces that cali-
+bration population.
+Under that historical native index,Family 01 pro-
+duced 0 survivors. This records equivalence to the
+sampled version-1 reference under its scoring rule; it does
+not establish that the reference was pure stationary noise
+or determine the family’s physical origin.
+Conversely, Family 02 and Family 03 partially survive
+the numeric thresholding, accounting for 50 of the 53
+surviving candidates (the remaining 3 being isolated sin-
+gletons). It is crucial to note that this survival rate
+(53/140 = 37.8%) is conditional on the candidates hav-
+ing been pre-selected by the stale O3b index. Since these
+candidates were explicitly chosen for being extreme out-
+liers in the O3b manifold, a significant fraction will nat-
+urally exceed the O4a threshold even if they are merely
+unstructured background noise. The critical metric is not
+the survival count, but the collapse of internal morpho-
+logical cohesion.
+The historical morphological-cohesion scoreScoh quan-
+tified cross-detector similarity between candidate events
+observed in L1 and H1. Version 1 usedS coh > τcoh as
+a follow-up rule, withτ coh derived from the historical
+cross-detector null described in Appendix A. Exceeding
+
+===== PAGE 15 =====
+15
+or failing this rule does not by itself distinguish an astro-
+physical signal from an instrumental glitch.
+The noise distribution exhibits a heavily truncated
+right tail, well-modeled by a Generalized Pareto Dis-
+tribution (GPD) with shape parameterξ=−0.4785.
+Setting the false positive rate atα= 0.001, we ob-
+tainτ coh = 0.9750 (95% CI [0.9738,0.9759] via block-
+bootstrap). The surviving candidates exhibit a mean
+intra-family similarity ofS intra = 0.757 and 0.776 re-
+spectively (we note thatS intra metrics are strictly mono-
+detector measurements, structurally distinct from the
+cross-detector thresholdτ coh, and thus not directly com-
+parable). Lacking the high cohesion typical of dis-
+crete transient morphologies, they present as diffuse
+aggregations—unstructured topological artifacts of the
+domain shift.
+These results show that the historical family assign-
+ments were reference-sensitive. Native recalibration
+is necessary before interpreting morphological novelty,
+while independent validation remains necessary before
+making physical or discovery claims.
+3. Falsifiability and Selectivity: Controlled Recovery Test
+To evaluate one possible circularity failure mode—
+that the native O4a index might absorb every tested
+anomaly—we executed a historical Controlled Recov-
+ery Test. This bounded experiment cannot establish
+general immunity to slowly evolving, quasi-periodic, or
+unrepresented contamination. We injected five dis-
+crete synthetic transient morphologies (HarmonicComb,
+ScatteredLight, sparseWallOfLines,KoiFish, and
+Whistle) into empirical O4a strain across six amplitude
+bins (Ninj = 100 per bin) and rescored them against the
+historical native index.
+In the historical Controlled Recovery Test, selected in-
+jected morphologies reached high recovery at the largest
+tested SNRs:Whistleapproached 100%,KoiFishex-
+ceeded 50%, and the tested sparseWallOfLinesexceeded
+98% forρ SNR >150. These results constrain one syn-
+thetic failure mode within the tested amplitude and mor-
+phology ranges. They do not establish the temporal or
+physical nature of Family 01, nor general selectivity of
+the native index.
+4. Isolated Extreme Transients (Singletons)
+While Family 01 demonstrates high morphological re-
+currence, the pipeline also isolated 3 extreme, non-
+recurring anomalies (Singletons). Notably, Single-
+ton 1371073984 exhibits full structural integrity (0 NaNs,
+no clipping) but possesses a highly chaotic, unstructured
+time-frequency morphology. Specifically, its spectral den-
+sity exhibits a highly unusual ”mottled” texture: the
+noise pattern is dense on the early-time boundary, but be-
+comes progressively stretched and structurally distorted
+toward the later-time boundary, resembling a warped
+macroscopic mesh. This highly asymmetric morpholog-
+ical evolution lacks the geometric periodicity typical of
+continuous mechanical resonances and lacks any char-
+acteristic scattering arch curvature. This suggests a
+complex, evolving non-stationary instrumental coupling
+rather than a simple environmental impulse. Its novelty
+score (S (k)
+MIL = 0.47) is among the highest in the entire
+O4a census, far exceeding the empirical threshold. Cru-
+cially, the DPMM’s sparsity prior (α= 0.01) correctly
+refused to absorb this event into Family 01 or the back-
+ground noise manifold. This highlights the architecture’s
+capacity to flag one-off, extreme instrumental transients
+without forcing them into a false morphological cluster.
+We cross-referenced the GPS timestamps of the three
+historical singletons against public O4a event triggers
+and known Hardware Injection logs within±2 s; no cor-
+responding catalog entry was found. This negative cat-
+alog lookup does not rule out an astrophysical, instru-
+mental, environmental, or calibration origin. The rows
+are retained only as historical feature-space outliers, and
+physical characterization would require auxiliary-channel
+analysis and a corrected-catalogue match. The third row
+(GPS 1386091456) remained unverifiable because its his-
+torical GWOSC fetch failed.
+F. Cross-Session Connectivity
+We applied the single-linkage HAC framework de-
+scribed in Section III C to the 140 anomaly candidates
+using a cosine distance heuristic threshold ofD cut = 0.25
+(ρtrans = 0.75). To rigorously validate the diffuse na-
+ture of these macro-families (such as Family 03) with-
+out relying on degenerate single-linkage chaining heuris-
+tics, we extract the distribution of their pairwise intra-
+cluster cosine distances and directly compare it against
+the pairwise distances of random stationary background
+noise. The distribution overlap confirms that Family 03
+represents a continuously drifting domain-shift manifold
+rather than a compact morphological cluster. By plotting
+the intra-cluster distances against the background, we
+demonstrate the morphological diffusivity of the domain-
+shift artifact without invoking a 50% FPR chaining logic.
+Qualitatively, 27 of the 30 originally unverifiable Ta-
+ble 3b candidates showed topological association with
+Table 3a confirmed glitches. Remarkably, 3 candidates
+remained completely unresolved as isolated singletons
+(which strictly correspond to the 3 singletons surviving
+the native O4a threshold in Section V E). Visual inspec-
+tion reveals these events to be highly chaotic and unstruc-
+tured, lacking any cohesive morphology. The pipeline’s
+refusal to link these singletons even under this extremely
+permissive global transitivity threshold highlights their
+extreme topological divergence.
+
+===== PAGE 16 =====
+16
+FIG. 4. Historical DINOv2 patch activations for the first two occurrences assigned to Family 01. Left: strain spectrograms.
+Right: ViT[PATCH]maps. Similar highlighted geometry and subsequent native rescoring document reference sensitivity; they
+do not establish ubiquity or physical origin.
+TABLE IV. Validation metrics for the identified macroscopic families after the native O4a recalibration. Note thatS intra
+represents mono-detector intra-family cohesion, which operates in a different topological domain than the cross-detector baseline
+τcoh, precluding direct numerical comparison. No family maintains both a survival countn>1 and sufficient internal cohesion
+against the native index.
+Familyn O3b Survivors (O4a) O4a Intra-Family Sim. (S intra) Classification
+Family 01 11 0 N/A Stationary Feature
+Family 02 3 3 0.757 Diffuse Artifact
+Family 03 123 47 0.776 Diffuse Artifact
+1. Domain Shift Bias and Supervised Validation
+A historical protocol for anomaly validation is cross-
+matching against the supervisedGravity Spymodel.
+The Gravity Spy classifier assignedgs label = Unknown
+with confidence<0.3 to all 11 Family 01 members. How-
+ever, we explicitly reject using this ”Unknown” label as
+evidence of physical novelty. Gravity Spy is predomi-
+nantly trained on O2 and O3b datasets. In O4a, the in-
+strumental noise manifold has shifted drastically due to
+new squeezing levels and optical configurations. The clas-
+sifier returns ”Unknown” simply because the feature dis-
+tribution falls outside its O3b decision boundaries. The
+Gravity Spy cross-match does not provide exclusion evi-
+dence; it merely serves as a secondary illustration of the
+severe latency introduced by supervised Concept Drift.
+2. Environmental Vetting and Limitations
+A complete environmental vetting of Family01 and the
+singleton events requires coherence analysis with auxil-
+
+===== PAGE 17 =====
+17
+FIG. 5. Historical rescoring of 11 records assigned to Family 01 against O3b and native O4a references. All 11 exceeded the
+former threshold and fell below the latter. The comparison documents reference sensitivity; it does not establish falsehood,
+stationarity, or physical origin.
+TABLE V. Summary of O4a Anomaly Triage
+Metric Hanford (H1) Livingston (L1) Total
+Initial Candidates (O3b Index) 4 136 140
+Confirmed Local Glitches (Table 3a eq.) 3 107 110
+Unverifiable Detections (Table 3b eq.) 1 29 30
+Candidates Surviving Native O4a Recalibration 1 52 53
+Cohesive Macroscopic Families Surviving 0 0 0
+Unresolved Singletons Surviving 1 2 3
+iary Physical Environmental Monitoring (PEM) channels
+(e.g., seismometers, magnetometers, and control loops).
+A subset of O4 auxiliary channels is available through
+GWOSC [3], but the historical analysis was strain-only.
+Its Gravity Spy and event-catalog cross-checks cannot
+substitute for direct physical vetting. All Family 01 oc-
+currences carried the nominal Data Quality flags used by
+the historical workflow; such flags do not guarantee sta-
+tionary or environmentally clean strain. The observed
+L1/H1 asymmetry and the absence of a listed GWOSC
+event within±10 s were therefore diagnostic observa-
+tions, not proof of a local instrumental origin or absence
+of software bias. Full auxiliary-channel vetting remains
+necessary.
+VI. DISCUSSION
+A. Comparison with Contemporary O4-Era
+Approaches
+While historical paradigms have proven invaluable, po-
+sitioning DANTE within the modern O4a literature clari-
+fies its specific architectural niche. Compared to state-of-
+the-art supervised frameworks like modern Gravity Spy
+iterations, DANTE targets a fundamentally different di-
+agnostic layer. Supervised models excel at rapid, high-
+confidence classification of known morphologies. How-
+ever, when confronted with previously unseen O4a tran-
+sients, their outputs are constrained by the label space
+on which they were trained, which can lead to low-
+
+===== PAGE 18 =====
+18
+FIG. 6. Example of Cross-Session Connectivity for the identified high-similarity aggregates. For each macroscopic family,
+the left panels show the Table 3a medoid, while the right panels show the Table 3b unverifiable candidate that exhibits the
+maximum cosine similarity to the medoid. Although the DINOv2 architecture successfully associated these pairs geometrically;
+the native rescoring showed reference sensitivity but did not establish them as physical domain-shift artifacts.
+confidence predictions or assignment to generic out-of-
+distribution categories. DANTE does not compete in
+classification speed; instead, it provides a dedicated un-
+supervised framework to autonomously cluster and struc-
+ture that exact pool of unclassified events, exposing can-
+didate recurrent morphologies and isolating extreme sin-
+gleton events without requiring prior labels.
+Furthermore, while contemporary community ef-
+forts address the domain-shift problem through Active
+Learning—relying on human-in-the-loop campaigns to
+manually label emerging O4a glitches and retrain the
+CNNs—DANTE mitigates the impact of domain shift
+through native recalibration. By executing a direct
+mathematical recalibration of the background index (as
+demonstrated in Section V E), the pipeline structurally
+reduces domain-shift-induced false discoveries at the em-
+bedding level, operating as a complementary tool to
+active-learning approaches without requiring iterative
+human labeling cycles.
+Finally, compared to recent self-supervised GW efforts
+utilizing standard Autoencoders or global-pooling Vision
+Transformers, DANTE is designed to address two in-
+dependent methodological challenges frequently encoun-
+tered in GW anomaly detection, though it deliberately
+accepts a narrowed operational regime. First, as demon-
+strated by the Baseline Falsification MDC (Section V A),
+global representation learning inherently suffers from the
+Signal Dilution Effect. DANTE bypasses this via its
+Top-kMultiple Instance Learning architecture, which
+achieves extreme topological depth for extended tran-
+sients but incurs an explicitly declared trade-off: it is
+structurally blind to sub-second, blip-like morphologies.
+Second, and independently, the adaptive PCA-DPMM
+framework improves numerical stability during sparse-
+session taxonomy (n<20) through an adaptive regular-
+ization strategy, mitigating covariance singularity issues
+that frequently plague standard non-parametric density
+estimators in the small-sample regime.
+B. Threats to Validity: Model Blindness and
+Stationary Absorption
+Reference-guided background subtraction can absorb
+morphologies represented densely in its construction co-
+hort. The historical collapse of Family 01 under one na-
+tive O4a index therefore indicates reference sensitivity,
+not ubiquity or benign physical origin. This is a struc-
+tural limitation: the algorithm cannot distinguish a be-
+nign continuous noise floor from a pervasive pathological
+
+===== PAGE 19 =====
+19
+FIG. 7. Historical Controlled Recovery Test for selected synthetic morphologies and amplitude bins, with Wilson 95% confidence
+intervals. High-SNR recovery in this bounded test does not prove general immunity to absorption or contamination.
+FIG. 8. Historical Q-transform (left) and broadband PSD (right) for the record Singleton 1371073984. The row was isolated by
+the version-1 clustering output; this visualization does not establish physical extremeness or corrected-catalogue membership.
+coupling without independent detector-characterization
+evidence. A future morphology close to the reference
+centroids may receive a reduced novelty score by design.
+1. Robustness to Hyperparameter Perturbation
+Version 1 evaluated whether the Family 01 rescoring
+result changed acrossk∈{8,34,68,136,272}, recalibrat-
+ing the empirical threshold at each scale. The histori-
+cal embeddings produced zero survivors at every tested
+value. This bounded sweep shows stability to those five
+pooling choices within the historical representation; it
+does not establish immunity to other pipeline choices or
+confirm that the morphology is a pervasive physical fea-
+ture.
+The historical workflow reported mean bootstrapped
+ARI>0.96 for L1 and grayscale/inversion perturba-
+tion ARI>0.93. These measurements describe sta-
+bility under the tested reruns and image perturbations;
+they do not eliminate single-linkage chaining, untested
+hyperparameter dependence, or the later corrected-
+representation changes.
+
+===== PAGE 20 =====
+20
+FIG. 9. Historical pairwise-distance comparison between version-1 macro-family assignments and the sampled background.
+Distributional overlap is descriptive and does not validate a physical domain-shift origin.
+FIG. 10. Hierarchically reordered cross-session cosine similarity matrixS∈R N×N computed on the archival 384D MIL feature
+vectors of all O4a candidate anomalies. Row and column ordering follows the single-linkage HAC leaf permutation. Diagonal
+blocks (highS ij >ρ trans) identify recurrent morphological families spanning multiple observing sessions. Table 3b events linked
+to Table 3a confirmed glitches viaS ij >0.75 are marked by dashed rectangles.
+C. Physical Asymmetry and Domain Shift
+Artifacts
+The historical scan reported a strong detector asym-
+metry: 136 of 140 candidates were in L1 and 4 in H1.
+A binomial calculation under an idealizedp= 0.5 allo-
+cation givesp <10 −20, but that null does not incorpo-
+rate detector-specific selection functions, threshold un-
+certainty, temporal dependence, or the later correction.
+Accordingly, version 2 preserves the ratio as a histori-
+cal pipeline output and does not attribute it quantita-
+tively to Livingston environmental degradation or use it
+to exclude algorithmic bias. Establishing any physical
+coupling requires auxiliary-channel analysis and an ex-
+plicitly calibrated detector-aware null.
+However, the distribution of novelty scores reveals the
+impact of a macroscopic domain shift between the O3b
+and O4a observing runs. As demonstrated by Family 02
+and Family 03, applying a single, joint O3b reference in-
+dex can lead to diffuse aggregations of background noise
+being falsely flagged as anomalies. The pipeline identified
+these macro-clusters as highly cohesive and temporally
+persistent against the historical reference. However, a ro-
+bust physical interpretation requires confirming that this
+morphological deviation is not merely an artifact of the
+macroscopic instrument drift between observing runs. To
+resolve this, we implemented a native recalibration pro-
+tocol: rescoring all anomaly candidates against a purely
+native background dictionary.
+Version 1 constructed a native O4a reference index di-
+rectly from raw strain with the same broad representation
+procedure used for the O3b index and selected windows
+carrying nominal Data Quality flags. Evaluated against
+that historical baseline, all three structured families pro-
+
+===== PAGE 21 =====
+21
+TABLE VI. Historical sensitivity of retained-record counts to pooling fractionk. The observed detector counts and family
+assignments are version-1 outputs under each tested setting; they do not establish physical environmental asymmetry or
+corrected-catalogue taxonomic stability.
+Pooling Fraction (k) Total Candidates L1 H1
+8 (≈0.5%) 34 33 1
+34 (≈2.5%) 92 89 3
+68 (≈5.0%) 140 136 4
+136 (≈10.0%) 131 127 4
+272 (≈20.0%) 87 84 3
+duced zero cohesive survivors. This result showed that
+those version-1 scores were reference-dependent; it did
+not prove a pure stationary reference, establish that Fam-
+ily 01 was stationary, or determine whether any morphol-
+ogy was a transient or a pervasive instrumental coupling.
+The contrast demonstrates that the historical novelty
+ranking was highly sensitive to the reference index. Na-
+tive recalibration is therefore necessary to reduce domain-
+shift bias, but it cannot by itself dismiss a family as an
+artifact or establish its physical origin.
+D. Stationary Features and Limitations
+Supervised O4 catalogs are constrained by their
+trained label spaces, while the historical DANTE work-
+flow explored an offline unsupervised route for structur-
+ing unclassified strain morphologies. The O3b-to-O4a
+comparison illustrates reference sensitivity and motivates
+native recalibration; it is not a complete census of O4a
+transients and does not establish prospective day-one
+performance.
+A physical classification of why the O3b and O4a refer-
+ence indices treated Family 01 differently requires offline
+coherence analysis with O4 auxiliary Physical Environ-
+mental Monitoring (PEM) channels [3]. Strain morphol-
+ogy alone cannot establish whether the observed high-
+frequency structure arose from a particular instrumental
+upgrade or environmental coupling.
+Because DANTE evaluates strain-domain morphology,
+it cannot determine the physical origin of these historical
+structures. Neither equivalence to a sampled reference
+nor failure of a cross-detector threshold is a global sig-
+nificance test or a physical veto. Instrumental character-
+ization remains contingent on auxiliary-channel analysis
+[3].
+E. Physical Interpretation of the MIL Feature
+Space
+The 384-dimensional MIL vector ˆzencodes the mean
+structural pattern of thekmost anomalous patches in
+the spectrogram. Because the DINOv2 backbone was
+trained on natural images via self-supervised DINO dis-
+tillation [10], its feature representations are sensitive to
+structural boundaries, texture transitions, and local fre-
+quency patterns—properties that transfer naturally to
+the edge and ridge geometry of Q-transform spectro-
+grams. The emergent cosine similarity geometry of the
+patch token manifold is, however, severely non-isotropic
+on GW spectrograms: stochastic noise realizations can
+produce localized patch similarity extremes comparable
+to those generated by coherent transients. This non-
+isotropy is the fundamental reason why the saliency map
+functions as a post-hoc topological visualizer rather than
+a standalone binary detector: single-frame patch simi-
+larity spikes are not sufficient for detection without the
+global statistical context provided by the MIL Top-kor-
+der statistic and the empirical threshold.
+F. Limitations
+The proposed architecture operates under several ex-
+plicit constraints:
+1.Strain-Only Inference:DANTE evaluates
+anomalies strictly within the strain-domain mor-
+phological feature space. Definitive physical clas-
+sification requires cross-correlation with auxiliary
+sensors (PEM).
+2.Calibration Contamination Risk:The na-
+tive O4a background is constructed from periods
+with nominal Data Quality flags. However, if un-
+flagged astrophysical signals or pervasive instru-
+mental anomalies contaminate these periods, they
+risk being absorbed into the reference dictionary,
+potentially reducing sensitivity to similar true sig-
+nals.
+3.Scale Bias:The fixedk= 68 Top-kpooling
+fraction structurally optimizes the pipeline for ex-
+tended transients (duration>1s). Sub-second
+transients (e.g., Blips) are subject to signal dilu-
+tion and exhibit low recall in this configuration.
+4.Taxonomy Instability in Small Samples:
+While the conditional DPMM framework mitigates
+singular matrix errors, sample sizesn<20 still by-
+pass covariance estimation entirely, limiting robust
+hierarchical clustering in extremely sparse anomaly
+regimes.
+
+===== PAGE 22 =====
+22
+5.Real-Time Latency Limits:DANTE V2 is
+strictly designed as an offline diagnostic tool for
+Detector Characterization. To rigorously iso-
+late transient anomalies from non-stationary noise,
+the pipeline requires constructing a massive back-
+ground index from 150,000 null segments (≈
+50 days of observation) to extract stable non-
+parametric quantiles. Consequently, DANTE V2 is
+structurally incapable of operating as a low-latency
+early warning trigger. Transforming this architec-
+ture into a real-time streaming trigger would re-
+quire an entirely different continuous-recalibration
+paradigm, which will be the subject of a future par-
+allel pipeline.
+G. Roadmap and Future Work
+1.Adaptivek-Sweep:Implementing an ensemble
+of MIL aggregators acrossk∈{15,37,68,100}with
+a max-pool combination to simultaneously capture
+morphologies of highly variable spatial footprints.
+2.Auxiliary Channel Integration:Multi-modal
+feature fusion of strain patch tokens with environ-
+mental channel representations for physical origin
+discrimination.
+3.O4b Deployment:Extension of DANTE
+Pipeline V2 to the O4b data stream, including
+Virgo V1 data and the updated KAGRA K1 con-
+figurations.
+VII. CONCLUSIONS
+We have presented DANTE Pipeline V2, an offline
+methodological prototype for reference-guided unsuper-
+vised gravitational-wave transient detection and morpho-
+logical taxonomy applied to the LIGO O4a dataset. The
+architecture natively resolves the signal dilution barrier
+via the Top-kMIL order statistic, and stabilizes high-
+dimensional density estimation via an adaptive PCA-
+DPMM framework.
+The historical version-1 deployment on≈180 days of
+O4a H1 and L1 data (72 valid sessions) reported 140
+morphologically unclassified candidates, three family as-
+signments, 53 numerical survivors after native rescoring,
+and three singleton events. Those counts, family assign-
+ments, and physical interpretations are preserved here as
+outputs of the published workflow; they are not carried
+forward as corrected-catalogue claims in version 2. The
+completed reconstruction uses a rebuilt detector-aware
+representation and a new detector-specific calibration, so
+its population cannot be obtained by substituting cor-
+rected thresholds into the historical scores. The bounded
+cross-catalogue results and causal-attribution limits are
+given in the revision note.
+This framework remains a methodological proof-of-
+concept for unsupervised machine-learning analysis in
+HPC astronomy. Version 2 does not retain the historical
+claims that the reported singleton set constitutes empir-
+ical proof of rare-event recovery or that the historical
+workflow produced a purified, high-confidence physical
+candidate set. Such claims require a prospectively frozen
+pipeline, a global trials-calibrated null, and independent
+physical or auxiliary-channel corroboration.
+DATA AND SOFTWARE AVAILABILITY
+The complete DANTE Pipeline V2 source code,
+the VQ reference index (patch compressed index.npz),
+MDC injection modules, and reproduction scripts are
+publicly available at:
+https://github.com/lucacirfeta/
+dante-gravi-signal-ml
+DOI: 10.5281/zenodo.20820846
+Raw LIGO O4a strain data are publicly accessible via the
+Gravitational Wave Open Science Center (GWOSC) [22]
+athttps://gwosc.org.
+ACKNOWLEDGMENTS
+This research has made use of data, software, and web
+tools obtained from the Gravitational Wave Open Sci-
+ence Center (https://gwosc.org), a service of LIGO
+Laboratory, the LIGO Scientific Collaboration, the Virgo
+Collaboration, and KAGRA. LIGO Laboratory and Ad-
+vanced LIGO are funded by the United States Na-
+tional Science Foundation (NSF) as well as the Science
+and Technology Facilities Council (STFC) of the United
+Kingdom, the Max-Planck-Society (MPS), and the State
+of Niedersachsen/Germany. Advanced Virgo is a project
+of the EGO consortium.
+The authors acknowledge the use of Large Language
+Models for linguistic polishing and code debugging dur-
+ing the preparation of this manuscript. All scientific con-
+cepts, data analysis, physical interpretations, and final
+conclusions were performed entirely by the authors.
+Appendix A: Empirical Derivation of the Cohesion
+Thresholdτ coh
+To address the non-Gaussian nature of the cross-
+detector similarity distribution, we derive the cohe-
+sion thresholdτ coh using Extreme Value Theory (EVT)
+within the Peak-Over-Threshold (POT) framework [12].
+
+===== PAGE 23 =====
+23
+TABLE VII. Historical version-1 morphological characterization of three O4a singleton events. The rows are retained for
+provenance and are not asserted in version 2 to be members of the corrected catalogue or to establish a physical origin.
+Event (GPS Time) DetectorS MIL τ Det
+op Morphological Description
+1371073984 L1 0.47 0.3359 Asymmetric “mottled/warped mesh”
+spectral texture; non-stationary com-
+plex coupling.
+1386091456a H1 N/A 0.3859 Unverifiable candidate: fetch failed due
+to GWOSC boundary limits preventing
+morphological assessment.
+1375492110 L1 0.42 0.3359 Diffuse broadband scatter lacking
+structural periodicity; localized me-
+chanical friction.
+a This event is strictly classified asUnverifiabledue to missing metric (S MIL = N/A) resulting from upstream data availability bounds.
+1. Null Hypothesis Construction
+We construct the null distribution fromN L1 = 608
+andN H1 = 608 confirmed noise-only segments from the
+O4a observing run, selected according to the criteria in
+Section V D. These segments are anti-coincident (no tem-
+poral overlap) and pass all data quality flags.
+2. Cross-Detector Similarity Distribution
+For each pair (s(i)
+L1,s (j)
+H1) of noise segments, we compute
+the cosine similarity:
+Sij = z(i)
+L1·z (j)
+H1
+∥z(i)
+L1∥∥z(j)
+H1∥
+(A1)
+wherez∈R 384 is the MIL-pooled DINOv2 feature vec-
+tor. Version 1 formedM= 369,664 pairs from the
+Cartesian product of 608 L1 and 608 H1 background seg-
+ments. These pairs share underlying segments and are
+not independent. The reported ESS≈608 and block-
+bootstrap intervals were historical approximations; they
+do not make the POT parameter estimates exact or guar-
+antee complete uncertainty coverage.
+The empirical distribution of{S ij}M
+k=1 exhibits signifi-
+cant departures from normality (skewness =−0.3857, ex-
+cess kurtosis =−0.1808), with a heavily truncated right
+tail (Figure 11).
+3. GPD Fit and Threshold Selection
+The cross-detector similarityS coh used MIL vectors
+from H1 and L1 anti-coincident segments. Although local
+noise sources often differ, the detectors and their analy-
+sis products cannot be assumed physically or statistically
+independent for every disturbance. The Cartesian prod-
+uct also reuses each segment many times. The version-1
+POT/GPD fit and ESS≈608 block-bootstrap therefore
+constitute a model-dependent historical calibration, not
+a proof that residual dependence is fully captured.
+We apply the POT method by selecting a threshold
+u= ˆP90 = 0.8739 and fitting a Generalized Pareto
+Distribution (GPD) to theN exc = 36941 exceedances
+{Sij−u|S ij >u}.
+The GPD cumulative distribution function is:
+G(x) = 1−
+
+1 +ξx
+σ
+−1/ξ
+, ξ̸= 0 (A2)
+whereξis the shape parameter andσis the scale param-
+eter.
+Maximum likelihood estimation yields the following
+parameters. Note that the standard errors reported
+below derive from the standard MLE Fisher informa-
+tion and do not account for the effective sample size
+(ESS≈608); therefore, they represent a strict lower
+bound on the true statistical uncertainty. The proper
+uncertainty on the final threshold is quantified correctly
+via the block-bootstrap in the subsequent section.
+ξ=−0.4785±0.0044 (standard MLE SE, uncorrected for ESS)
+(A3)
+σ= 0.0544±0.0004 (standard MLE SE, uncorrected for ESS)
+(A4)
+The negative shape parameterξ <0 indicates a
+Weibull-type tail with finite upper boundx max =u−
+σ/ξ= 0.9876.
+The mean residual life plot (Figure 12) confirms the
+linearity assumption aboveu= 0.8739, validating the
+GPD model.
+4. Quantile Estimation and Confidence Intervals
+The cohesion threshold at false positive rateα= 0.001
+is obtained by inverting the GPD quantile function:
+τcoh =u+ σ
+ξ
+" α
+P(S >u)
+−ξ
+−1
+#
+(A5)
+This yieldsτ coh = 0.9750 (analytical).
+
+===== PAGE 24 =====
+24
+FIG. 11. Empirical distribution of the cross-detector cosine similarityS coh showing significant deviation from normality and a
+truncated right tail. The red dashed line marks the POT thresholdu= 0.8739.
+FIG. 12. Mean Residual Life plot for the empirical excesses. The stable, approximately linear trend aboveu= 0.8739 confirms
+the validity of the chosen POT threshold for the GPD fit.
+To quantify estimation uncertainty, we perform block
+bootstrap resampling (2000 iterations) at the segment
+level to preserve temporal correlations. The 95% confi-
+dence interval is:
+τcoh∈[0.9738,0.9759] (95% CI) (A6)
+5. Model Validation
+Figure 13 shows the QQ-plot of empirical exceedances
+versus the fitted GPD. The alignment along the diagonal
+confirms the adequacy of the GPD model for the tail
+behavior.
+
+===== PAGE 25 =====
+25
+FIG. 13. QQ-plot of empirical exceedances versus the fitted Generalized Pareto Distribution. The red line indicates perfect
+agreement.
+6. Impact on Candidate Classification
+We note that the revised thresholdτ coh = 0.9750 is
+more stringent than the previous heuristic value of 0.85.
+However, this change has no impact on the candidate
+classification reported in Section V, as no candidate ex-
+hibitsS coh∈(0.85,0.9750]. This empirical observation
+strengthens the robustness of our results: the scientific
+conclusions are insensitive to the exact threshold value,
+provided it is derived rigorously from the noise distribu-
+tion. However, shiftingτ coh specifically to the extreme
+upper bound of the confidence interval (τ coh = 0.9759)
+would enforce an even stricter cohesion threshold, po-
+tentially isolating up to 2 additional marginal candi-
+dates from loosely cohesive families (e.g., Family 02) into
+the “Unverifiable/Singleton” class. Conversely, the lower
+bound (τ coh = 0.9738) leaves the taxonomy entirely un-
+changed.
+Appendix B: Ablation Study on Parameter
+Sensitivity
+To rigorously assess the stability of DANTE’s unsu-
+pervised clustering architecture against its core hyper-
+parameters, we performed an offline ablation study on a
+statistically sufficient subset of the O4a dataset, specifi-
+cally evaluating the 140 isolated candidates.
+1. HAC Linkage Threshold (ρ trans)
+The global taxonomy relies on Hierarchical Agglomer-
+ative Clustering (HAC) using single linkage and a cosine
+distance threshold 1−ρ trans. We evaluated the sensitiv-
+ity of the macro-family recovery (clusters withn >1)
+acrossρ trans∈{0.60,0.75,0.90}. While the total number
+of microscopic singletons decoupled from the main struc-
+tures naturally increases with a stricter threshold (from 2
+total clusters atρ trans = 0.60 to 18 atρ trans = 0.90), the
+number of macroscopic families remained remarkably sta-
+ble at 3 families for bothρ trans = 0.75 andρ trans = 0.90.
+This confirms that the morphological structures (e.g., the
+dense spectral wall of Family 01) are internally highly co-
+hesive and not artifacts of a specific linkage distance.
+2. DPMM Concentration Parameter (α)
+The Dirichlet Process Mixture Model (DPMM) is em-
+ployed to cluster intra-session vectors without specify-
+ingka priori. The concentration priorαcontrols the
+algorithm’s propensity to instantiate new components.
+We sweptα∈ {0.001,0.01,0.1,1.0}. On average, the
+DPMM instantiated a high number of components (typ-
+ically 10−15 for a session ofn≈50), aggressively iso-
+lating extreme local outliers into singleton clusters. This
+behavior validates our architectural choice: the DPMM is
+inherently conservative for anomaly detection, preferring
+to spawn a new cluster rather than merge two distinct
+
+===== PAGE 26 =====
+26
+physical transients. This prevents anomalous singleton
+events (Table VII) from being statistically masked by
+highly populated stationary noise families. Consequently,
+the heavy lifting of grouping macroscopic morphological
+families is explicitly delegated to Layer 3 (cross-session
+single-linkage clustering).
+STATEMENTS AND DECLARATIONS
+Funding:The author did not receive support from
+any organization for the submitted work.
+Competing Interests:The author has no relevant
+financial or non-financial interests to disclose.
+Data Availability:All original and modified
+datasets (including the parsed Gravity Spy O3b base-
+line, the O4a production dataset, and the generated
+VQ reference indices) are publicly available on Zenodo
+(DOI: 10.5281/zenodo.10657991). Raw gravitational-
+wave strain data were obtained from the Gravitational
+Wave Open Science Center (GWOSC), accessible at
+https://gwosc.org.
+Code Availability:The complete source code,
+trained DINOv2 adapters, MDC injection modules, and
+reproduction scripts for the DANTE Pipeline V2 are
+publicly available on GitHub athttps://github.com/
+lucacirfeta/dante-gravi-signal-ml.
+Author Contributions:L.C. conceived the method-
+ology, designed the computational architecture, devel-
+oped the software, conducted the primary data analysis,
+generated the Visual Quantization index, and wrote the
+manuscript.
+[1] Abbott, B. P., Abbott, R., Abbott, T. D., et al. 2015
+(LIGO Scientific Collaboration), Classical and Quantum
+Gravity, 32, 074001
+[2] Wu, J., et al. (2025). Advancing Glitch Classification in
+Gravity Spy: Multi-view Fusion with Attention-based
+Machine Learning for Advanced LIGO’s Fourth Observ-
+ing Run.Classical and Quantum Gravity, 42(16), 165015.
+[3] GWOSC. (2025). O4 Auxiliary Channel Data Release,
+https://gwosc.org/auxiliary/
+[4] Acernese, F., Agathos, M., Agatsuma, K., et al. 2015
+(Virgo Collaboration), Classical and Quantum Gravity,
+32, 024001
+[5] Akutsu, T., Ando, M., Arai, K., et al. 2021 (KAGRA
+Collaboration), Progress of Theoretical and Experimen-
+tal Physics, 2021, 05A101
+[6] Bishop, C. M. 2006, Pattern Recognition and Machine
+Learning, Springer, New York
+[7] Brown, J. C. 1991, Journal of the Acoustical Society of
+America, 89, 425
+[8] Capote, E., Ballmer, S., Barsotti, L., et al. 2021,
+arXiv:2108.01080
+[9] Capote, E., et al. 2025,Advanced LIGO detector perfor-
+mance in the fourth observing run
+[10] Caron, M., Touvron, H., Misra, I., et al. 2021, Proceed-
+ings of the IEEE/CVF ICCV, 9650
+[11] Cavagli` a, M., Staats, K., Gill, K. 2018, Communications
+in Computational Physics, 25, 963, doi:10.4208/cicp.OA-
+2018-0075
+[12] Coles, S. 2001, An Introduction to Statistical Modeling
+of Extreme Values, Springer, London
+[13] Colgan, R. E., Corley, K. R., Gabbard, H., et
+al. 2020, Physical Review D, 101, 102003, doi:
+10.1103/PhysRevD.101.102003
+[14] Damrich, S., Hamprecht, F. A. 2021, Advances in Neural
+Information Processing Systems, 34, 1
+[15] Darcet, T., Oquab, M., Doup´ e, E., Bourdoukan, R. 2024,
+International Conference on Learning Representations
+(ICLR), arXiv:2309.16588
+[16] Davis, D., Areeda, J. S., Berger, B. K., et al. 2021, Classi-
+cal and Quantum Gravity, 38, 135014, doi:10.1088/1361-
+6382/abfd85
+[17] Dosovitskiy, A., Beyer, L., Kolesnikov, A., et al. 2021,
+International Conference on Learning Representations
+(ICLR), arXiv:2010.11929
+[18] Ferguson, T. S. 1973, The Annals of Statistics, 1, 209,
+doi:10.1214/aos/1176342360
+[19] Fisher, R. A., Tippett, L. H. C. 1928, Mathematical Pro-
+ceedings of the Cambridge Philosophical Society, 24, 180
+[20] Glanzer, J., Banagiri, S., Coughlin, S. B., et al.
+2023, Classical and Quantum Gravity, 40, 065004, doi:
+10.1088/1361-6382/acb633
+[21] Gnedenko, B. 1943, Annals of Mathematics, 44, 423
+[22] Gravitational Wave Open Science Center 2023, GWOSC
+O4a Dataset,https://gwosc.org/
+[23] Gumbel, E. J. 1958, Statistics of Extremes, Columbia
+University Press, New York
+[24] Hubert, L., Arabie, P. 1985, Journal of Classification, 2,
+193
+[25] Kolmogorov, A. N. 1933, Giornale dell’Istituto Italiano
+degli Attuari, 4, 83
+[26] Ledoit, O., Wolf, M. 2004, Journal of Multivariate Anal-
+ysis, 88, 365
+[27] L´ opez, M., Martinez, C., Ota, I., et al. 2022, Machine
+Learning: Science and Technology, 3, 025022
+[28] Lopez, M., et al. 2025,Unsupervised transient analysis
+in Advanced LIGO O4a, (in preparation)
+[29] Cuoco, E., Cavagli` a, M., Messenger, C., et al. 2025, Liv-
+ing Reviews in Relativity, 28, 2, doi:10.1007/s41114-024-
+00055-8
+[30] McInnes, L., Healy, J., Melville, J. 2018,
+arXiv:1802.03426
+[31] Neal, R. M. 2000, Journal of Computational and Graph-
+ical Statistics, 9, 249
+[32] Nu˜ nez, J. R., Anderton, C. R., Renslow, R. S. 2018,
+PLOS ONE, 13, e0199239
+[33] Nuttall, L. K. 2018, Philosophical Transactions
+of the Royal Society A, 376, 20170286, doi:
+10.1098/rsta.2017.0286
+[34] Oquab, M., Darcet, T., Moutakanni, T., et al. 2024,
+Transactions on Machine Learning Research (TMLR),
+arXiv:2304.07193
+[35] Pankow, C., Chatziioannou, K., Chase, E. A., et
+al. 2018, Physical Review D, 98, 084016, doi:
+10.1103/PhysRevD.98.084016
+
+===== PAGE 27 =====
+27
+[36] Powell, J., Trifir` o, D., Cuoco, E., et al. 2015, Classical
+and Quantum Gravity, 32, 215012
+[37] Radford, A., Kim, J., Hallacy, C., et al. 2021, Interna-
+tional Conference on Machine Learning (ICML), 8748
+[38] Raikman, R., Skliris, V., Sherrill, N., et al. 2022,
+arXiv:2209.02102
+[39] Sculley, D. 2010, Proceedings of the 19th international
+conference on World wide web (WWW ’10), 1177
+[40] Smirnov, N. 1948, Annals of Mathematical Statistics, 19,
+279
+[41] Soni, S., Berry, C. P. L., Coughlin, S. B., et al. 2025,
+arXiv:2409.02831
+[42] Tipping, M. E., Bishop, C. M. 1999, Journal of the Royal
+Statistical Society B, 61, 611
+[43] Tse, M., Yu, H., Kijbunchoo, N., et al. 2019,
+Physical Review Letters, 123, 231107, doi:
+10.1103/PhysRevLett.123.231107
+[44] Welch, P. D. 1967, IEEE Transactions on Audio and Elec-
+troacoustics, 15, 70
+[45] Zevin, M., Coughlin, S., Bahaadini, S., et al. 2017, Classi-
+cal and Quantum Gravity, 34, 064003, doi:10.1088/1361-
+6382/aa5cea

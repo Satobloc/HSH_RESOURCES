@@ -1,0 +1,1435 @@
+===== PAGE 1 =====
+RoboGaze: Evaluating Robot World Models via
+Structured Vision-Language Analysis
+Minh-Loi Nguyen1 Nghiem Tuong Diep2 Hung Khang Nguyen2 Minh Le2
+Doanh Le Thien1,2 Hoang H. Tran1 Dung Duy Le1 Vu Duong1 Daniel Sonntag3
+An Thai Le1,2,6 Duy M. H.Nguyen3,4,5 Ngo Anh Vien†1,2 Tran Van Nhiem†2
+1Center for AI Research, VinUniversity 2VinRobotics 3DFKI 4University of Stuttgart
+5Max Planck Research School for Intelligent Systems 6Technische Universit¨at Darmstadt
+†Project Leads.
+Abstract:Recent advances in robot world models enable synthetic video genera-
+tion for embodied prediction and planning. However, evaluating these videos is
+challenging: visually realistic outputs often violate physical laws, temporal consis-
+tency, or task logic, while conventional metrics and monolithic Vision-Language
+Model (VLM) judges fail to generalize or provide precise diagnostic value. We
+present RoboGaze, a training-free, multi-agent VLM framework that provides struc-
+tured, interpretable evaluation for generated robot-manipulation videos. Given a
+task instruction and video, RoboGaze operates via a three-stage pipeline: task-scene
+grounding, dimension-specific specialist routing, and critic-based verification. It
+outputs temporally localized glitch reports categorized under a novel 6-dimension,
+30-type robotics-specific taxonomy. To benchmark RoboGaze, we introduce a
+human-validated dataset of 382 clips spanning simulated and real-world multi-view
+manipulation. Evaluating eight open-source and proprietary VLM backbones,
+RoboGaze dramatically outperforms zero-shot baselines, improving description-F1
+by up to +43 points and temporal alignment (F1×IoU ) by up to +37 points –
+closing approximately 85% of the gap to the human ceiling. Furthermore, its critic
+verifier mitigates the “cry-wolf” false-positive flaw of standard VLMs, lifting clean-
+clip accuracy from under 25% to over 80%. RoboGaze offers a scalable, highly
+interpretable diagnostic tool for the rigorous evaluation of robot world models.
+Project webpage:https://robogaze-eval.github.io/
+Keywords:Robot world models, Manipulation video evaluation, Glitch diagnosis
+1 Introduction
+Recent advances in generative world models have made synthetic video a promising interface for
+embodied AI, enabling robot-centric rollouts for manipulation prediction, demonstration synthesis,
+and policy evaluation [1, 2, 3, 4, 5, 6, 7]. For robotics, however, visual realism alone is insufficient:
+generated videos must also be physically plausible, temporally coherent, and task-executable. Videos
+that look realistic yet violate physics, break temporal consistency, or fail the task are of limited value
+downstream, creating a fundamental gap between perceptual quality and robotics utility.
+Existing evaluation methods do not adequately capture these requirements. Perceptual similarity met-
+rics focus on low-level visual fidelity, while general video evaluation frameworks such as VBench [8],
+DOVER [9], and VideoScore [10] primarily assess overall video quality rather than execution correct-
+ness. Human evaluation [11] remains the most reliable approach, but is expensive, slow, and difficult
+to scale. Recent VLM-based evaluators [12, 13, 14] improve alignment with human judgments, while
+emerging world critics demonstrate strong reasoning capabilities for physical plausibility, common-
+sense consistency, and semantic correctness [15, 16, 17, 12]. However, existing approaches largely
+focus on holistic quality assessment and provide limited support for robotics-specific diagnosis, where
+identifying what failed, when it failed, why it failed, and how severe the failure is remains essential.
+arXiv:2606.28385v1  [cs.RO]  22 Jun 2026
+
+===== PAGE 2 =====
+Figure 1: RoboGaze vs. Monolithic VLM Judges. While standard scalar evaluators fail to detect fine-grained
+physical anomalies like object penetration (A, B), RoboGaze delivers highly interpretable, temporally localized
+failure diagnostics, approaching the human ceiling on both descriptionF 1 and clean-clip accuracy (C).
+To address this gap, we introduceRoboGaze, a training-free multi-agent VLM evaluator for robot
+video generation (Figure 1). RoboGaze is built around three key innovations: (i)a robotics-specific
+glitch taxonomy comprising 6 evaluation dimensions and 30 failure types; (ii)subtask-level temporal
+grounding that localizes failures during task execution, and (iii)a verifier-based multi-agent reasoning
+frameworkthat diagnoses, validates, and reports failures with interpretable evidence. Rather than
+assigning a single quality score, RoboGaze reframes robot video evaluation as a structured reasoning
+problem over task progression, physical interactions, and execution correctness. To our knowledge,
+RoboGaze is the first evaluator that combines training-free evaluation, a robotics-specific taxonomy,
+and temporally localized diagnostic reporting within a unified framework.
+To support rigorous evaluation, we construct a human-validated benchmark with temporally lo-
+calized glitch annotations, severity labels, and free-text descriptions. Unlike prior benchmarks
+limited to video-level judgments, ours enables fine-grained failure localization under a structured
+robotics-specific taxonomy. Across multiple robot video generation settings, RoboGaze achieves the
+strongest agreement with human evaluation among open-source and proprietary VLM baselines, with
+substantially more accurate and interpretable localization.
+In summary, we contribute four artifacts to the robot-video evaluation:
+• A robotics-specific glitch taxonomy.We introduce a hierarchical 6×30 taxonomy of robot-
+video failures spanning task execution, instruction consistency, object interactions, robot
+behavior, physical plausibility, and visual quality.
+• RoboGazeBench.We construct a human-validated benchmark of 382 generated robot-
+manipulation videos with temporally localized glitch annotations, severity labels, and di-
+agnostic descriptions across simulation and real-world domains.
+• RoboGaze.We propose a training-free, model-agnostic multi-agent VLM evaluator that
+performs temporally grounded failure diagnosis and generates structured diagnostic reports
+instead of scalar quality scores.
+• Comprehensive empirical validation.We evaluate RoboGaze across eight proprietary and
+open-source VLMs, demonstrating substantially stronger agreement with human judgments
+and more accurate failure localization than existing prompting and evaluation baselines.
+2 Related Work
+Synthetic Video Generation and Robot World Models.Large-scale video diffusion systems
+such as CogVideo [5] enable high-fidelity synthetic videos but prioritize visual quality over physical
+executability [25]. Cosmos-Predict [1, 7] unifies multi-modal world generation with better instruction
+following and physical consistency, while DreamGen [26] and DreamDojo [27] extend robot-centric
+2
+
+===== PAGE 3 =====
+Table 1:Comparison of related video evaluation methods. The highlighted row marks the only training-free
+method that provides robotics-specific, temporally localized diagnostic reports with severity and grounded
+evidence.
+Method Focus Temp. loc. Diagnose Severity Grounded evidence Robotics Train-free Output
+VBench [8] Gen. quality No No No No No Yes Visual score
+VideoScore [10] Gen. quality No Limited No Limited No No Multi-dim. score
+WORLDJEN [14] Multi-dim. eval. No Limited No Limited No Yes Multi-dim. score
+GRADEO [13] Human-like eval. No Limited Limited Limited No No Semantic score
+VideoGen-Eval [18] Structured eval. Limited Limited No Limited No Yes Multi-dim. score
+PAI-Bench [19] Physical realism No Limited No Limited Limited Yes Physics score
+VideoHallu [20] Hallucination No Yes No Limited No Yes Hallu. report
+GlitchBench [21] Glitch detection No Yes No Limited No Yes Glitch report
+GLiDE [22] Game glitch (open) Yes Yes No Limited No Yes Glitch report
+WorldSimBench [23] World model eval. No Limited No Limited Yes No Benchmark score
+RBench [24] Robot video eval. No Limited No Limited Yes Yes Robotic score
+RoboWM-Bench [17] Robot exec. eval. Limited Limited No Limited Yes Limited Exec. score
+Morpheus [16] Physical reasoning No Limited No Limited Yes Yes Physics score
+RoboGaze Robot diagnosis Yes Yes Yes Yes Yes Yes Structured diagnostic report
+generation to zero-shot and dexterous tasks. These advances establish synthetic robot video as a
+practical embodied AI interface, but persistent failure modes – hallucinated physics and instruction-
+irrelevant rollouts – motivate evaluation beyond visual fidelity. Beyond basic evaluation, these
+generative world models hold immense potential for synthesizing targeted training data to robustify
+Vision-Language-Action (VLA) [28, 29] models in complex settings. Specifically, for long-horizon
+manipulation tasks prone to compounding execution errors [30, 31], world models can simulate multi-
+stage trajectories to pre-train policies on diverse action transitions. Similarly, by proceduralizing
+layout and asset variations, they can synthesize highly cluttered scenes [32] with varied occlusions
+and distractors. This allows VLAs to learn robust spatial reasoning and object persistence entirely
+through simulated data [33, 34, 35], bypassing the bottleneck of real-world data collection.
+General Evaluation of Generated Videos.Traditional video metrics (e.g., PSNR, SSIM [ 36],
+LPIPS [37], FVD [38]) measure perceptual or distributional similarity but are insensitive to physics,
+temporal consistency, and task correctness. Structured benchmarks like VBench [8, 15, 9, 39] add
+multi-dimensional scoring, yet targetgeneral realismwith holistic, video-level assessments rather
+than task-grounded diagnostics. Learned judges such as VideoScore and VideoScore2 [10, 12] score
+creative videos with VLMs, but demand large-scale supervision and operate at the coarse dimension
+level. Crucially, existing approaches lack the temporally localized failure diagnosis and execution
+reasoning required for robotics.
+VLM-Based Diagnostics and Physical Realism.Recent VLM-based evaluators expand automatic
+video assessment into structured reasoning, evidence-based critiquing, and physical plausibility
+analysis [18, 14, 13, 40]. However, most rely onmonolithic VLM judgesthat yield global judgments
+or scalar scores, offering little insight into the specific timing, cause, or severity of a failure. Phys-
+ical realism benchmarks like PAI-Bench [19] introduce physical-failure taxonomies, but function
+primarily as fixed frameworks for global, model-level comparisons over predefined test distribu-
+tions. Furthermore, frontier multimodal models remain unreliable for physics-sensitive, temporally
+grounded diagnosis [11]. While diagnostic methods like VideoHallu [ 20], GlitchBench [21], and
+the agentic open-ended detector GLiDE [22] localize event-level inconsistencies, they target general
+hallucinations or video-game glitches rather than embodied execution. In particular GLiDE, the
+closest agentic, temporally grounded glitch detector, assumes free-form game footage with no task in-
+struction, subtask structure, or physical-executability criteria. In contrast, RoboGaze formulates robot
+video evaluation as a training-free, multi-agent diagnostic problem. Guided by a robotics-specific
+30-type glitch taxonomy, it jointly analyzes task progress, scene interaction, and physical plausibility
+to output temporally localized glitch reports complete with severity metrics, grounding evidence, and
+verification.
+Robotics-Specific Video Evaluation.Recent benchmarks evaluate robot video generation us-
+ing structural consistency, physical plausibility, and action completeness (RBench [ 24]), or via
+simulation-action translation and conservation laws (RoboWM-Bench [17], Morpheus [16]). World-
+SimBench [23] evaluates human preference and closed-loop success, but like other simulation-
+dependent methods cannot scale to offline, real-robot video evaluation. Fundamentally, existing
+frameworksrank generative modelsvia aggregated scores rather thandiagnose individual videos,
+3
+
+===== PAGE 4 =====
+Figure 2: The RoboGaze Framework. A three-phase pipeline for video generation diagnosis: (1) extracting
+task and scene context memories; (2) routing suspicious temporal spans to six dimension-specific specialists to
+generate glitch hypotheses; and (3) verifying and synthesizing hypotheses into a final structured glitch report.
+providing no per-video, temporally localized glitch annotations or diagnostic evidence. RoboGaze
+bridges these gaps: operating training-free and simulator-free, it delivers structured, per-video
+diagnostic reports with event-level temporal localization and severity-aware evidence.
+3 Method
+This section presentsRoboGaze, a multi-agent framework for fine-grained evaluation of robot video
+generation. Given a task instruction, an optional initial scene observation, and a generated robot
+execution video, RoboGaze detects execution failures and produces structured diagnostic reports with
+failure types, supporting evidence, and likely causes. As shown in Figure 2, RoboGaze decomposes
+anomaly reasoning into three stages:(1) Input and Context Grounding, which builds task-grounded
+semantic memories from multimodal inputs;(2) Candidate Discovery and Specialist Analysis, where
+anomaly hypotheses are routed to specialized experts for diagnosis; and(3) Verification and Reporting,
+where a critic verifier validates findings and generates the final glitch report.
+3.1 Glitch Taxonomy.
+We organize robot-video failures along a two-level taxonomy: 6 coarsedimensionsthat are each
+refined into a total of 30 fine-grainedtypes. The six dimensions span the full execution stack of a
+manipulation rollout, from task semantics (Task Progress,Instruction Consistency), through object
+and robot dynamics (Object–Scene,Robot-Body), to physics and rendering (Physical Plausibility,
+Visual Quality). Specialist agents reason at the fine-grained type level; main-paper results aggregate
+at the dimension level. Full type definitions, the severity rubric, and the cascade rule are deferred to
+the appendix A.1.
+3.2 Input and Context Grounding
+Given a task instructionS, an initial observationI0, and a generated execution videoV , RoboGaze
+first converts raw multimodal inputs into structured contextual memories for anomaly diagnosis.
+Directly prompting a VLM on long-horizon robot videos often yields weak temporal localization
+and ambiguous task reasoning amid large amounts of irrelevant visual context; RoboGaze therefore
+performs explicit task, scene, and temporal grounding first.
+Specifically, RoboGaze parsesS andI0 into atask memory Tm, encoding the global task objective and
+subtask-level specifications, including manipulated objects, target states, expected action outcomes,
+and completion criteria for each subtask. RoboGaze also constructs ascene memory Sm conditioned
+onTm andI0, representing the initial workspace configuration, visible objects, robot body parts,
+spatial relationships, and uncertainty cues from occlusion or ambiguous object states. Together,T m
+4
+
+===== PAGE 5 =====
+andS m provide semantic grounding for task intent and physical grounding for scene feasibility:
+Tm =f task(S,I 0), S m =f scene(I0,T m),(1)
+wheref task andf scene denote VLM-based semantic parsers for task and scene understanding.
+To capture localized execution dynamics, RoboGaze decomposesV intoN fixed-length temporal
+clipsW={w 1,...,w N}. Instead of directly localizing subtasks over the full video, RoboGaze
+converts localization into clip-level task-progress reasoning. Each clip is jointly analyzed withTm
+andS m to produce a structured semantic observation:
+M={m i}N
+i=1, m i =f vlm(wi,T m,S m),(2)
+wheremi summarizes robot actions, object state transitions, task progress signals, anomalies, and
+uncertainty cues within clipwi. Using these progress signals, RoboGaze groups temporally related
+clips into subtask-specific execution segments:
+U={u k}K
+k=1, u k = Merge({w i|i∈I k}),(3)
+whereIk denotes clips associated with subtask k, and Merge(·) combines temporally contiguous
+clips into a unified sub-video.
+The resulting packageC={T m,S m,M,U} encodes task intent, scene conditions, localized execu-
+tion evidence, and subtask-level temporal structure, enabling more reliable, temporally grounded
+reasoning than direct full-video prompting.
+3.3 Candidate Discovery and Specialist Analysis
+Given the context packageC={T m,S m,M,U} , RoboGaze performs targeted diagnosis through
+sparse candidate routing and specialist analysis. Since only a subset of glitch dimensions is typically
+relevant to each subtask, applying all experts to every segment introduces noisy or weakly grounded
+diagnoses; RoboGaze therefore first identifies plausible failure dimensions before dispatching to
+relevant specialists.
+For each subtask execution segmentuk∈U , RoboGaze retrieves the corresponding task specification
+tk⊂T m, containing the expected objective and completion criteria for subtaskk. A candidate router
+VLM then performs multi-label routing to predict a subset of plausible glitch dimensions:
+Gcand
+k =f router(uk,t k), G cand
+k ⊆G,(4)
+whereG denotes the six glitch dimensions and Gcand
+k contains only dimensions likely relevant to
+the current execution segment. This routing mechanism improves diagnosis focus by restricting
+reasoning to task-relevant failure spaces.
+For each candidate dimensiong∈G cand
+k , the corresponding specialist performs fine-grained diagnosis
+conditioned on the execution segment, task specification, and scene grounding:
+dk,g =f g(uk,t k,S m) = (y k,g,r k,g,τ k,g,e k,g,˜sk,g,c k,g),(5)
+whereyk,g∈{0,1} indicates whether a glitch is detected,rk,g provides diagnostic reasoning,τk,g
+localizes the glitch temporally,ek,g summarizes supporting evidence, ˜sk,g is a proposed severity, and
+ck,g is the confidence score.
+Aggregating all specialist diagnoses yieldsD={d k,g|g∈G cand
+k , k= 1,...,K}, a structured set
+of anomaly hypotheses for verification. Combining sparse routing with dimension-specific specialists
+yields fine-grained, temporally localized, evidence-grounded diagnosis without exhaustive analysis
+over all dimensions.
+3.4 Verification and Reporting
+The Stage-2 diagnosesD are candidate hypotheses that may still be uncertain, weakly grounded,
+or redundant across dimensions. RoboGaze therefore adjudicates the hypothesis set as a whole:
+5
+
+===== PAGE 6 =====
+validating supported claims, suppressing unsupported ones, and consolidating duplicates into a single
+coherent report.
+A critic verifier re-examines each hypothesis dk,g∈D against the execution segment, diagnostic
+reasoning, temporal localization, supporting evidence, and task–scene grounding, and assigns one of
+three actions:
+fverify(dk,g,u k,t k,S m)→a k,g∈{ACCEPT,REJECT,MERGE}.(6)
+A hypothesis isACCEPTed if it is visually supported, temporally consistent, and semantically aligned
+with task and scene constraints;REJECTed if its evidence is better explained by normal execution (e.g.,
+occlusion rather than object disappearance); andMERGEd when it describes the same physical event
+as another – matching object or action, overlapping span, and consistent evidence – in which case the
+group is consolidated under a single primary dimension and type. Independent failures stay separate
+even when their spans overlap. Each surviving hypothesis is returned as ˆdk,g = (ˆrk,g,ˆτk,g,ˆek,g,s k,g)
+with a refined explanation, verified span, validated evidence, and validated severity. Aggregating
+the accepted and merged hypotheses yields ˆD, synthesized into the final reportR=f report( ˆD). By
+contesting specialist hypotheses before they enter the report, this stage sharply reduces false positives
+and drives RoboGaze’s clean-clip reliability (Section 4.3).
+4 Experiments
+4.1 Setup and Annotation
+Dataset Clips Domain View Avg. dur.
+GR1-Sim 154 Sim Single 8–9 s
+GR1-Real 100 Real-init Single 5–6 s
+DROID-MV 128 Real Multi 17–18 s
+Total 382 – – –
+Table 2:Summary of the three ROBOGAZEBENCH
+evaluation splits.
+Benchmark.ROBOGAZEBENCHcontains 382
+generated robot-manipulation clips spanning sim-
+ulated GR-1 tasks (GR1-Sim), real-initialized GR-
+1 tasks (GR1-Real), and real-domain multi-view
+manipulation clips (DROID-MV); Table 2 sum-
+marizes the three splits. These splits test whether
+diagnostic evaluation transfers across domain real-
+ism and camera configuration; dataset construction details and source citations are deferred to the
+appendix A.2.
+Models and conditions.We evaluate eight vision–language backbones spanning proprietary models
+(Gemini 3.1 Pro[ 41],GPT-5.5[ 42],Gemini 3.1 Flash[ 41],Claude Sonnet 4.6) and open-
+source models (Gemma4-31B[ 43],Qwen3.6-35B[ 44, 45],LLaV A-OneVision-2-8B-Instruct[46],
+InternVL3.5-38B[ 47]). Each backbone is tested in three conditions: zero-shotvanilla,+CoT, and
+wrapped byROBOGAZE(+RG), with the visual-input regime fixed across conditions; prompts,
+serving details, and sampling ablations are in the appendix A.3 and A.4.
+Human annotations.Each clip is annotatedfrom scratchby two robotics-trained annotators and
+adjudicated by a senior annotator, who see only the generated video and task instruction; for each
+event we record its dimension, type, temporal span, severity, and free-form description. A 60-video
+gold subset (20 per split) is independently labeled by three senior annotators to estimate reliability
+and the human ceiling. The annotation guide, interface, and adjudication rules are in the appendix
+A.2.
+Agreement is strong across all five metrics (Table 3); DROID-MV is slightly harder due to longer,
+multi-view-grid clips. We use the gold subset to estimate a human ceiling, evaluating each annotator
+against the consensus of the other two (theHuman (ceiling)row in Table 4).
+4.2 Evaluation Protocol
+We adopt the open-ended matching protocol of GLiDE [22], scoring each predicted report by globally
+matching predicted and reference events using both semantic agreement and temporal overlap. For
+videov, let predictions bePv ={p i}N
+i=1 and references be ˆYv ={ˆyj}M
+j=1, where each event contains
+a dimension, type, temporal span, severity, and description. A fixed LLM judge assigns description
+similarity Sij ∈[0,1] for each prediction–reference pair using a rubric over event faithfulness,
+6
+
+===== PAGE 7 =====
+1
+3
+5
+0
+10
+20
+30
+V 5.7
++CoT 8.7
++RG 34.5
+ ~9 calls
+Gemma4-31B
+efficiency
+Sequential VLM rounds
+F x IoU
+Figure 3:Gemma4-31B efficiency
+trade-off. Points are vanilla, +CoT, and
++RG; labels show VLM calls/video.
+Table 3:Inter-annotator agreement on the 60-video gold subset.
+Metrics cover clip-level detection, event dimension, temporal span,
+ordinal severity, and free-text diagnostic agreement; higher is better
+for all metrics.
+Metric↑GR1-Sim GR1-Real DROID-MV Overall
+Detectionκ(per clip) 0.82 0.79 0.71 0.77
+Dimensionκ(per event) 0.74 0.70 0.63 0.69
+Mean pairwise temporal IoU 0.68 0.65 0.58 0.64
+Severity Krippendorff’sα(ordinal) 0.66 0.62 0.55 0.61
+Description sim. (LLM judge, 0-1) 0.79 0.76 0.71 0.75
+specificity, and causal correctness. We then score each pair as the product of three interpretable
+factors – description similarity, temporal overlap, and a dimension-agreement bonus:
+Cij =S ij·IoU t(τi,ˆτj)·β ij, β ij = 1 +λ dim ⊮[dimi = ˆdimj],(7)
+whereτi and ˆτj are the predicted and reference temporal spans, IoUt is their temporal intersection-
+over-union, and the bonusβij rewards dimension agreement withλdim = 0.25. Maximum-weight
+Hungarian assignment [48] overCgives the one-to-one matched setA.
+We report description precision/recall/F1 by summing Sij overA and normalizing by N or M,
+temporal mIoU by averaging IoUt over matched pairs, and joint F1×IoU by replacing Sij with
+SijIoUt in the same precision–recall computation. We additionally report severity within-1 accuracy
+on matched events and clean-clip accuracy for no-glitch videos, which captures the false-positive
+behavior of monolithic judges. Judge prompts, thresholded temporal metrics, severity-weighted
+scores, per-dataset breakdowns, and loose-matching variants are in the appendix.
+4.3 Main Results
+Table 4:Main results on ROBOGAZEBENCH, averaged across the three datasets. V , CoT, and RG denote vanilla
+prompting, chain-of-thought prompting, and the same backbone wrapped by ROBOGAZE; shaded RG columns
+show the primary comparison. Higher is better for all metrics, and Clean is clean-clip accuracy.
+Family Model Desc.F 1↑mIoU↑F×IoU↑Clean↑
+V CoT RGV CoT RGV CoT RGV CoT RG
+Prop.
+Gemini 3.1 Pro 25.4 32.4 67.9.39 .43 .649.8 13.9 43.7.13 .21 .92
+GPT-5.5 23.9 30.5 65.1.37 .41 .638.8 12.5 41.1.09 .18 .90
+Gemini 3.1 Flash 20.2 26.1 57.8.35 .39 .617.0 10.2 35.0.08 .16 .87
+Claude Sonnet 4.6 21.4 27.6 60.3.36 .40 .617.7 11.0 36.8.11 .20 .89
+Open
+Gemma4-31B 17.6 23.4 56.6.33 .37 .665.7 8.7 34.5.03 .12 .86
+Qwen3.6-35B 16.7 22.3 53.1.32 .36 .605.4 8.2 31.6.16 .23 .84
+LLaV A-OV-2-8B 14.2 19.5 47.9.30 .33 .564.3 6.5 26.9.18 .25 .82
+InternVL3.5-38B 15.5 21.0 50.1.31 .35 .584.8 7.4 28.9.04 .13 .81
+Human ceiling 75.5 0.71 47.1 0.94
+Table 4 reports the headline comparison on ROBOGAZEBENCH, averaged across the three datasets.
+Three findings stand out.
+(i) Monolithic VLM judges are brittle for robot-video diagnosis.Vanilla VLMs often recognize
+suspicious motion but do not reliably decide whether it constitutes a task-relevant, physically grounded
+failure. Chain-of-thought prompting improves consistency but does not resolve the central failure
+mode: without task–scene grounding and explicit evidence checks, models convert uncertainty or
+unusual-but-valid motion into false glitch reports.
+(ii) ROBOGAZEimproves diagnostic agreement across model families.Wrapping the same
+backbone with ROBOGAZEconsistently improves semantic agreement, temporal localization, and
+the joint score across both proprietary and open-source models, indicating the improvement comes
+from evaluator structure rather than backbone scale alone. The per-dimension breakdown (Figure 4)
+shows the largest gains on Task Progress, Instruction Consistency, Object–Scene, and Robot-Body
+failures, where diagnosis depends on relational and causal reasoning.
+7
+
+===== PAGE 8 =====
+0 10 20 30 40 50 60 70 80 90
+Description F1 (%)
+TP
+IC
+OSC
+RBC
+PP
+VQ
+84.2
+81.5
+78.8
+76.0
+69.5
+67.0
+32.0
+28.4
+26.1
+23.5
+17.8
+20.6
+77.8
+74.2
+70.5
+64.7
+50.4
+52.6
+Human ceiling Vanilla model RoboGaze
+Figure 4:Per-dimension description- F1 for Gem-
+ini 3.1 Pro on ROBOGAZEBENCH, averaged across
+the three datasets. Description-F1 measures the agree-
+ment between predicted and human diagnostic descrip-
+tions within each glitch dimension; higher is better.
+(iii) The critic verifier addresses the cry-wolf
+failure mode.The key difference between
+ROBOGAZEand monolithic judges is not that it
+proposes more candidate glitches, but that it re-
+jects weak ones: the verifier checks each hypoth-
+esis against visual evidence, task context, scene
+state, and temporal consistency before it enters
+the report. This explains the large clean-clip im-
+provement and is consistent with the ablation (Ta-
+ble 5), where removing the verifier causes the
+largest degradation; Figure 5 shows representa-
+tive cases, including a false positive the verifier
+rejects (b).
+4.4 Ablation Studies
+Configuration Desc.F 1↑mIoU↑F×IoU↑Sev@1↑
+ROBOGAZE(Gemma4-31B) 56.6 0.66 34.5 81.4
+w/o task memory51.2 0.61 29.2 76.8
+w/o scene memory50.0 0.60 28.3 75.9
+w/o subtask segmentation52.7 0.62 30.6 77.5
+w/o candidate router51.5 0.63 30.8 77.0
+w/o critic verifier 44.3 0.59 23.8 71.7
+Table 5:Ablation of Gemma4-31B with ROBOGAZE,
+averaged across the three datasets. The shaded full-
+system row is the reference; the shaded verifier ablation
+marks the largest degradation.
+Table 5 ablates ROBOGAZE’s structural compo-
+nents on Gemma4-31B: every component con-
+tributes, but removing the critic verifier causes
+the largest degradation, supporting our central
+claim that reliable robot-video evaluation needs
+both structured context and an explicit mecha-
+nism for rejecting weak hypotheses. These gains
+carry a higher inference cost; Figure 3 plots the
+accuracy–compute trade-off across the vanilla,
++CoT, and +RG conditions. More detail about cost and runtime are shown in ablation A.4.9
+Judge robustness.Re-evaluating Table 4 with an alternate LLM judge preserves model rankings
+and yields highly correlated scores, indicating the trends are not an artifact of a single judge model;
+full correlations, score differences, and judge prompts are in the appendix A.4.
+4.5 Qualitative Analysis
+Figure 5:Qualitative comparison between vanilla baselines and ROBOGAZEon three representative clips: (a)
+the verifier rescues a true glitch a vanilla judge mislabels, (b) a vanilla false positive is rejected, and (c) a failure
+both methods detect but localize differently.
+8
+
+===== PAGE 9 =====
+5 Conclusion
+We presented ROBOGAZE, a training-free, model-agnostic evaluator that turns monolithic VLM
+judges into temporally localized robot-video diagnosticians. Across three benchmark splits and
+eight VLM backbones, evaluatorstructure– task–scene grounding, routed specialists, and critic
+verification – is the main driver of reliable diagnostic agreement. We view structured glitch reports as
+a complement to scalar preference signals for offline benchmarking, dataset curation, and closed-loop
+world-model development.
+Limitations.Several limitations remain. The residual human gap concentrates onPhysical Plausi-
+bilityandVisual Quality, which likely need explicit 3D geometry or pixel-level signals (e.g., optical
+flow) rather than text-based prompting. ROBOGAZEBENCHalso draws from a single generator family,
+so broader claims need wider coverage of embodiments, camera layouts, and architectures. Finally,
+our view-agnostic specialists can miss view-dependent evidence, the precision-oriented verifier can
+suppress rare transient glitches (leaving the precision–recall point downstream-dependent), and the
+closed-world taxonomy with multi-agent orchestration costs more than a monolithic judge.
+References
+[1] A. Ali, J. Bai, M. Bala, Y . Balaji, A. Blakeman, T. Cai, J. Cao, T. Cao, E. Cha, Y .-W.
+Chao, et al. World simulation with video foundation models for physical ai.arXiv preprint
+arXiv:2511.00062, 2025.
+[2] A. Hu, L. Russell, H. Yeo, Z. Murez, G. Fedoseev, A. Kendall, J. Shotton, and G. Corrado.
+Gaia-1: A generative world model for autonomous driving.arXiv preprint arXiv:2309.17080,
+2023.
+[3] J. Bruce, M. D. Dennis, A. Edwards, J. Parker-Holder, Y . Shi, E. Hughes, M. Lai, A. Mavalankar,
+R. Steigerwald, C. Apps, et al. Genie: Generative interactive environments. InForty-first
+International Conference on Machine Learning, 2024.
+[4] Z. Yang, Y . Chen, J. Wang, S. Manivasagam, W.-C. Ma, A. J. Yang, and R. Urtasun. Unisim: A
+neural closed-loop sensor simulator. InProceedings of the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, pages 1389–1399, 2023.
+[5] W. Hong, M. Ding, W. Zheng, X. Liu, and J. Tang. Cogvideo: Large-scale pretraining for text-
+to-video generation via transformers. InThe Eleventh International Conference on Learning
+Representations.
+[6] D. M. Nguyen, N. T. Diep, B. G. Nguyen, T.-B. Ho, D. Le, T. Nguyen, T.-L. Ha, T. Nhiem,
+B. Thach, N. Tran, T. A. Tran, A. Habuda, P. L. Moeller, T. N. Le, D. Sonntag, M. Niepert,
+K. Doan, V . Doan, V . Duong, H. Ngo, M. Vu, D. M. Nguyen, A. T. Le, and V . Ngo. FOCA:
+Future-oriented conditioning for data-efficient vision-language-action adaptation. InProceed-
+ings of the International Conference on Machine Learning (ICML), 2026.
+[7] N. Agarwal, A. Ali, J. Allen, M. Antolini, A. Aubame, J. Azzolini, J. Bai, M. Bala, Y . Bal-
+aji, J. Bapst, et al. Cosmos 3: Omnimodal world models for physical ai.arXiv preprint
+arXiv:2606.02800, 2026. doi:10.48550/arXiv.2606.02800. URL https://arxiv.org/abs/
+2606.02800.
+[8] Z. Huang, Y . He, J. Yu, F. Zhang, C. Si, Y . Jiang, Y . Zhang, T. Wu, Q. Jin, N. Chanpaisit,
+et al. Vbench: Comprehensive benchmark suite for video generative models. InProceedings of
+the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 21807–21818,
+2024.
+[9] H. Wu, E. Zhang, L. Liao, C. Chen, J. Hou, A. Wang, W. Sun, Q. Yan, and W. Lin. Exploring
+video quality assessment on user generated contents from aesthetic and technical perspectives. In
+9
+
+===== PAGE 10 =====
+Proceedings of the IEEE/CVF international conference on computer vision, pages 20144–20154,
+2023.
+[10] X. He, D. Jiang, G. Zhang, M. Ku, A. Soni, S. Siu, H. Chen, A. Chandra, Z. Jiang, A. Arulraj,
+et al. Videoscore: Building automatic metrics to simulate fine-grained human feedback for
+video generation. InProceedings of the 2024 Conference on Empirical Methods in Natural
+Language Processing, pages 2105–2123, 2024.
+[11] Q. Zhang, P. Jing, H.-X. Yu, F. Ding, F. Nie, W. Wang, Y . Du, J. Zou, J. Wu, and B. Shuai.
+Physion-eval: Evaluating physical realism in generated video via human reasoning.arXiv
+preprint arXiv:2603.19607, 2026.
+[12] X. He, D. Jiang, P. Nie, M. Liu, Z. Jiang, M. Su, W. Ma, J. Lin, C. Ye, Y . Lu, et al. Videoscore2:
+Think before you score in generative video evaluation.arXiv preprint arXiv:2509.22799, 2025.
+[13] Z. Mou, B. Xia, Z. Huang, W. Yang, and J. Jia. Gradeo: Towards human-like evaluation for
+text-to-video generation via multi-step reasoning. InInternational Conference on Machine
+Learning, pages 44971–44996. PMLR, 2025.
+[14] K. Inbasekar, G. Rom, and O. Shlomovits. Worldjen: An end-to-end multi-dimensional
+benchmark for generative video models.arXiv preprint arXiv:2605.03475, 2026.
+[15] D. Zheng, Z. Huang, H. Liu, K. Zou, Y . He, F. Zhang, L. Gu, Y . Zhang, J. He, W.-S. Zheng,
+et al. Vbench-2.0: Advancing video generation benchmark suite for intrinsic faithfulness.arXiv
+preprint arXiv:2503.21755, 2025.
+[16] C. Zhang, D. Cherniavskii, A. Tragoudaras, A. V ozikis, T. Nijdam, D. W. Prinzhorn, M. Bodrac-
+ska, N. Sebe, A. Zadaianchuk, and E. Gavves. Morpheus: Benchmarking physical reasoning
+of video generative models with real physical experiments.arXiv preprint arXiv:2504.02918,
+2025.
+[17] F. Jiang, Y . Chen, K. Xu, Y . Liu, H. Wang, Z. Shen, J. Lu, S. Huang, Y . Wang, C. Xie, et al.
+Robowm-bench: A benchmark for evaluating world models in robotic manipulation.arXiv
+preprint arXiv:2604.19092, 2026.
+[18] Y . Yang, K. Fan, S. Sun, H. Li, A. Zeng, F. Han, W. Zhai, W. Liu, Y . Cao, and Z.-J.
+Zha. Videogen-eval: Agent-based system for video generation evaluation.arXiv preprint
+arXiv:2503.23452, 2025.
+[19] F. Zhou, J. Huang, J. Li, D. Ramanan, and H. Shi. Pai-bench: A comprehensive benchmark for
+physical ai, 2025. URLhttps://arxiv.org/abs/2512.01989.
+[20] Z. Li, X. Wu, G. Shi, Y . Qin, H. Du, T. Zhou, D. Manocha, and J. Boyd-Graber. Video-
+hallu: Evaluating and mitigating multi-modal hallucinations on synthetic video understanding.
+Advances in Neural Information Processing Systems, 38:76046–76078, 2026.
+[21] M. R. Taesiri, T. Feng, C.-P. Bezemer, and A. Nguyen. Glitchbench: Can large multimodal
+models detect video game glitches? InProceedings of the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, pages 22444–22455, 2024.
+[22] M. Zheng, T. Zhou, G. Wu, Z. Lin, H. Wang, and L. Huang. Open-ended video game glitch
+detection with agentic reasoning and temporal grounding.arXiv preprint arXiv:2604.07818,
+2026.
+[23] Y . Qin, Z. Shi, J. Yu, X. Wang, E. Zhou, L. Li, Z. Yin, X. Liu, L. Sheng, J. Shao, et al. Worldsim-
+bench: Towards video generation models as world simulators.arXiv preprint arXiv:2410.18072,
+2024.
+[24] Y . Deng, Z. Pan, H. Zhang, X. Li, R. Hu, Y . Ding, Y . Zou, Y . Zeng, and D. Zhou. Rethinking
+video generation model for the embodied world.arXiv preprint arXiv:2601.15282, 2026.
+10
+
+===== PAGE 11 =====
+[25] Y . Wang, X. Liu, W. Pang, L. Ma, S. Yuan, P. Debevec, and N. Yu. Survey of video diffusion
+models: Foundations, implementations, and applications.Transactions on Machine Learning
+Research.
+[26] J. Jang, S. Ye, Z. Lin, J. Xiang, J. Bjorck, Y . Fang, F. Hu, S. Huang, K. Kundalia, Y .-C. Lin,
+et al. Dreamgen: Unlocking generalization in robot learning through video world models. In
+Conference on Robot Learning, pages 5170–5194. PMLR, 2025.
+[27] S. Gao, W. Liang, K. Zheng, A. Malik, S. Ye, S. Yu, W.-C. Tseng, Y . Dong, K. Mo, C.-H.
+Lin, et al. Dreamdojo: A generalist robot world model from large-scale human videos.arXiv
+preprint arXiv:2602.06949, 2026.
+[28] M. J. Kim, K. Huang, H. Gu, A. Shah, R. Torne, A. Sharma, K. Keetha, F. Ebert, S. Levine, and
+C. Finn. OpenVLA: An open-source vision-language-action model. InConference on Robot
+Learning (CoRL), 2024. URLhttps://openvla.github.io.
+[29] A. Brohan, N. Brown, J. Carbajal, Y . Chebotar, X. Chen, K. Choromanski, T. Ding, D. Danny,
+A. Fu, S. Guadarrama, et al. RT-2: Vision-language-action models transfer web knowledge to
+robotic control.Conference on Robot Learning (CoRL), 2023. URL https://arxiv.org/
+abs/2307.15818.
+[30] N. Chung, T. Hanyu, T. Nguyen, H. Le, F. Bumgarner, D. M. Nguyen, K. V o, K. l. Yamazaki,
+C. Rainwater, T. Kieu, A. Nguyen, and N. Le. Rethinking progression of memory state in
+robotic manipulation: An object-centric perspective. InProceedings of the AAAI Conference on
+Artificial Intelligence, 2026.
+[31] T. Hanyu, N. Chung, H. Le, T. Nguyen, Y . Ikebe, A. Gunderman, D. M. H. Nguyen, K. V o,
+T. Kieu, K. Yamazaki, C. Rainwater, A. Nguyen, and N. Le. SlotVLA: Towards modeling of
+object-relation representations in robotic manipulation. InIEEE International Conference on
+Robotics and Automation (ICRA), 2026.
+[32] K. V o, T. Hanyu, Y . Ikebe, T. T. Pham, N. Chung, M. N. Vu, D. M. H. Nguyen, A. Nguyen,
+A. Gunderman, C. Rainwater, and N. Le. Clutter-resistant vision–language–action models
+through object-centric and geometry grounding.arXiv preprint arXiv:2512.22519, 2026. URL
+https://arxiv.org/abs/2512.22519.
+[33] D. M. Nguyen, B.-N. Dao, T. M. Luu, B. G. Nguyen, V . Tong, A. Liu, V . N. Duong, D. D. Le,
+D. Sonntag, T. Le, N. Le, J. Peter, A. T. Le, M. N. Vu, M. Niepert, K. D. Doan, D. M. H. Nguyen,
+and V . A. Ngo. Self-improving VLA policies: Selected diffusion noise for spurious-robust
+action smoothing.arXiv preprint arXiv:2606.14084, 2026. URL https://arxiv.org/abs/
+2606.14084.
+[34] A. Authors. Ctrl-world: A controllable generative world model for robot manipulation.arXiv
+preprint arXiv:2510.10125, 2025. URLhttps://arxiv.org/abs/2510.10125.
+[35] A. Authors. Closed-loop learning of video world model and VLA policy.arXiv preprint
+arXiv:2602.06508, 2026. URLhttps://arxiv.org/abs/2602.06508.
+[36] Z. Wang, A. C. Bovik, H. R. Sheikh, and E. P. Simoncelli. Image quality assessment: from error
+visibility to structural similarity.IEEE transactions on image processing, 13(4):600–612, 2004.
+[37] R. Zhang, P. Isola, A. A. Efros, E. Shechtman, and O. Wang. The unreasonable effectiveness of
+deep features as a perceptual metric. InProceedings of the IEEE conference on computer vision
+and pattern recognition, pages 586–595, 2018.
+[38] T. Unterthiner, S. Van Steenkiste, K. Kurach, R. Marinier, M. Michalski, and S. Gelly. To-
+wards accurate generative models of video: A new metric & challenges.arXiv preprint
+arXiv:1812.01717, 2018.
+11
+
+===== PAGE 12 =====
+[39] H. Han, S. Li, J. Chen, Y . Yuan, Y . Wu, Y . Deng, C. T. Leong, H. Du, J. Fu, Y . Li, et al.
+Video-bench: Human-aligned video generation benchmark. InProceedings of the Computer
+Vision and Pattern Recognition Conference, pages 18858–18868, 2025.
+[40] Y . Qi, Y . Zhao, Y . Zeng, X. Bao, W. Huang, L. Chen, Z. Chen, J. Zhao, Z. Qi, and F. Zhao.
+Vcr-bench: A comprehensive evaluation framework for video chain-of-thought reasoning.arXiv
+preprint arXiv:2504.07956, 2025.
+[41] G. Team, R. Anil, S. Borgeaud, J.-B. Alayrac, J. Yu, R. Soricut, J. Schalkwyk, A. M. Dai,
+A. Hauth, K. Millican, et al. Gemini: a family of highly capable multimodal models.arXiv
+preprint arXiv:2312.11805, 2023.
+[42] A. Singh, A. Fry, A. Perelman, A. Tart, A. Ganesh, A. El-Kishky, A. McLaughlin, A. Low,
+A. Ostrow, A. Ananthram, et al. Openai gpt-5 system card.arXiv preprint arXiv:2601.03267,
+2025.
+[43] G. Team, T. Mesnard, C. Hardin, R. Dadashi, S. Bhupatiraju, S. Pathak, L. Sifre, M. Rivi`ere,
+M. S. Kale, J. Love, et al. Gemma: Open models based on gemini research and technology.
+arXiv preprint arXiv:2403.08295, 2024.
+[44] S. Bai, Y . Cai, R. Chen, K. Chen, X. Chen, Z. Cheng, L. Deng, W. Ding, C. Gao, C. Ge, et al.
+Qwen3-vl technical report.arXiv preprint arXiv:2511.21631, 2025.
+[45] A. Yang, A. Li, B. Yang, B. Zhang, B. Hui, B. Zheng, B. Yu, C. Gao, C. Huang, C. Lv, et al.
+Qwen3 technical report.arXiv preprint arXiv:2505.09388, 2025.
+[46] B. Li, Y . Zhang, D. Guo, R. Zhang, F. Li, H. Zhang, K. Zhang, P. Zhang, Y . Li, Z. Liu, et al.
+Llava-onevision: Easy visual task transfer.arXiv preprint arXiv:2408.03326, 2024.
+[47] W. Wang, Z. Gao, L. Gu, H. Pu, L. Cui, X. Wei, Z. Liu, L. Jing, S. Ye, J. Shao, et al. Internvl3.
+5: Advancing open-source multimodal models in versatility, reasoning, and efficiency.arXiv
+preprint arXiv:2508.18265, 2025.
+[48] H. W. Kuhn. The hungarian method for the assignment problem.Naval research logistics
+quarterly, 2(1-2):83–97, 1955.
+[49] A. Khazatsky, K. Pertsch, S. Nair, A. Balakrishna, S. Dasari, S. Karamcheti, S. Nasiriany, M. K.
+Srirama, L. Y . Chen, K. Ellis, et al. Droid: A large-scale in-the-wild robot manipulation dataset.
+arXiv preprint arXiv:2403.12945, 2024.
+12
+
+===== PAGE 13 =====
+AAppendix . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+A.1Glitch Taxonomy . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+A.2Experimental Details . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+A.3Prompts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+A.4Robustness and Diagnostic Analyses . . . . . . . . . . . . . . . . . . . . . . . 22
+A.1 Glitch Taxonomy
+Summary.Table 6 shows the full 6-dimension×30 -type glitch taxonomy used by the benchmark,
+specialist agents, and per-dimension analyses.
+Severity rubric.Each annotated event additionally carries an ordinal severity score in {1,2,3,4,5} :
+1 = cosmetic (visible artifact but task state and object interaction remain interpretable); 2 = minor
+(localized failure with little ambiguity about the intended execution); 3 = moderate (failure affects
+an object, robot part, or subtask transition that is relevant to the task); 4 = severe (failure obscures
+whether the task was executed correctly or would make the clip unsuitable as a clean demonstration);
+5 = catastrophic (the clip depicts a physically or semantically impossible event that invalidates the
+task execution). We intentionally define severity using observable task-video properties rather than
+unmeasured downstream policy outcomes.
+Cascade rule for multi-dimensional events.A single event is allowed to belong to multiple
+dimensions when its supporting evidence equally implicates more than one (e.g., a gripper passing
+through a cup is both a physical-plausibility and a robot-body event). Annotators apply the following
+cascade: assign all applicable dimensions, then promote the primary dimension based on the most
+directly observable evidence. Matching at the dimension level uses the primary dimension; the
+secondary dimensions are preserved internally for downstream analyses.
+Taxonomy and rubric independence.To avoid circularity between the evaluation target and
+ROBOGAZE’s outputs, the taxonomy, severity rubric, and annotation guide were frozen before
+production annotation and before any model-generated reports were shown to annotators. Annotators
+never saw ROBOGAZE, vanilla, or +CoT outputs while labeling ROBOGAZEBENCH; model outputs
+are used only after adjudicated human references are finalized.
+Open-world residual audit.During adjudication, senior annotators flagged events whose cause
+was ambiguous or cascading across multiple taxonomy dimensions. These cases were retained with
+primary and secondary dimensions rather than discarded. In the final benchmark,21/382 clips (5.5%)
+contain at least one cascading event, and all could be mapped to an existing primary dimension plus
+optional secondary dimensions. We therefore treat the taxonomy as closed-world for scoring, while
+preserving secondary labels to support future open-world analyses.
+A.2 Experimental Details
+Summary.Reproducibility details for dataset construction, annotation, the LLM judge, and per-
+backbone serving.
+A.2.1 Dataset Construction
+GR1-Sim.We construct GR1-Sim from the NVIDIA PhysicalAI Robotics GR00T Teleop-Sim
+dataset1. We select the first 10 task families and sample 1,000 teleoperation trajectories, which are re-
+simulated in Isaac Sim to obtain egocentric humanoid-perspective RGB videos (resolution, FPS, and
+1https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-Teleop-Sim . Hug-
+ging Face dataset card.
+13
+
+===== PAGE 14 =====
+Table 6:Two-level RoboGaze glitch taxonomy: 6 dimensions and 30 fine-grained types. The dimension level is
+used for all per-dimension analyses in the main paper; the fine-grained type level is used by specialist agents
+during diagnosis and by annotators for event-level labels.
+Dimension Fine-grained type Definition
+Task Progress
+(TP)
+task incompletion The task is attempted but the required final state is not
+reached.
+failed grasp The robot attempts to grasp an object but never establishes a
+stable grasp.
+failed placement The robot transports or manipulates an object but fails to
+place it in the intended final state.
+premature termination The episode ends before the task-relevant action sequence is
+complete.
+ambiguous task success The final state is visually ambiguous, making task success
+impossible to determine reliably.
+Instruction
+Consistency(IC)
+wrong effector The robot uses an effector inconsistent with the instruction
+or expected embodiment.
+wrong object The robot interacts with an object different from the one
+specified.
+wrong target location The object is moved to a location inconsistent with the in-
+struction.
+wrong action order Required actions occur in an order inconsistent with the
+instruction.
+ignored instruction constraint A stated constraint, precondition, or task-specific require-
+ment is ignored.
+Object–Scene
+Consistency(OSC)
+object hallucination A new task-relevant object appears without a physically sup-
+ported cause.
+object disappearance A visible object vanishes without being moved out of view
+or plausibly occluded.
+object identity swap One object changes semantic identity or is replaced by an-
+other object.
+object distortion An object’s geometry deforms in a way inconsistent with its
+expected rigidity or articulation.
+object color or shape drift An object’s color, shape, or visual identity drifts over time
+without task-relevant cause.
+Robot-Body
+Consistency(RBC)
+hallucinated robot part A robot limb, gripper, finger, or body segment appears with-
+out physical continuity.
+missing robot part A visible robot part disappears or becomes absent when it
+should remain visible.
+duplicated arm or gripper Extra arms, grippers, fingers, or duplicate robot parts are
+generated.
+robot body deformation The robot body bends, stretches, melts, or changes shape
+beyond its kinematic structure.
+left right robot identity confusion Left/right arms, grippers, or body sides swap identity or
+become inconsistent across time.
+Physical
+Plausibility(PP)
+object teleportation An object changes position discontinuously without visible
+transport or causal interaction.
+object floating An object remains suspended without visible support, con-
+tact, or plausible dynamics.
+object penetration A solid object passes through another solid object, robot part,
+or support surface.
+impossible motion Motion violates basic physical constraints such as continuity,
+gravity, contact, or inertia.
+grasp without visible support An object follows or moves with the robot despite no visible
+grasp, contact, or support.
+Visual
+Quality(VQ)
+blur Motion or defocus blur prevents reliable interpretation of
+task-relevant state.
+occlusion Occlusion or masking prevents reliable observation of the
+relevant robot–object interaction.
+frame corruption Frames contain rendering corruption, tearing, severe artifacts,
+or missing visual content.
+camera instability Camera shake, viewpoint jumps, or unstable framing disrupts
+temporal interpretation.
+low visibility Lighting, resolution, contrast, or scene visibility is too poor
+for reliable diagnosis.
+clip length in Table 7). The trajectories are split 700/300 into post-training and inference sets. Post-
+training video–caption pairs are produced by captioning each simulated video with Gemma4 using a
+physics-grounded prompt that asks for both the executed task and visible physical properties (material,
+rigidity, articulation, contact dynamics). The pairs are used to fully fine-tune Cosmos Predict 2.5 [1]
+with AdamW on 8 NVIDIA L40 GPUs. Inference videos are generated from the fine-tuned checkpoint
+conditioned on the Gemma4-generated task instruction and the extracted initial frame of each held-out
+14
+
+===== PAGE 15 =====
+trajectory; a senior annotator filters the 300 generations into good/bad following a written rubric
+(§A.2.3), yielding154clips that form the final GR1-Sim evaluation split.
+GR1-Real.GR1-Real is built from the NVIDIA PhysicalAI Robotics GR00T-GR1 dataset 2 (post-
+training) and the GR00T-Eval dataset3 (inference conditioning), following the Cosmos Predict 2.5
+GR00T video-to-world pipeline4. The model is fully fine-tuned on GR00T-GR1 video–instruction
+pairs with AdamW on 8 NVIDIA L40 GPUs; we select the lowest-validation-loss checkpoint. To
+diversify the evaluation inputs we apply a self-enhancement procedure: each initial frame is edited
+with Gemini to produce a modified initial scene, and the task instruction is rewritten to match.
+Inference videos are generated at the settings in Table 7, and the final GR1-Real evaluation split
+contains100clips.
+DROID-MV .DROID-MV is built from DROID [49] task instructions and initial multi-view grid
+images, using the public GR00T-Dreams-DROID checkpoint5. Each input is a task instruction plus a
+four-panel initial grid (two exterior robot-arm views, one end-effector view, one inactive black panel);
+the model emits a single unified multi-view video rather than independent per-camera videos. The
+generation prompt describes both the target manipulation task and the multi-view layout; the negative
+prompt discourages static scenes, motion blur, low resolution, poor lighting, choppy motion, jump
+cuts, and flickering. The final DROID-MV evaluation split contains 128 clips at the resolution, FPS,
+and duration listed in Table 7.
+Table 7:Per-dataset generation settings.
+GR1-Sim GR1-Real DROID-MV
+Source data GR00T Teleop-Sim GR00T-GR1 + Eval DROID
+Generator Cosmos Predict 2.5 Cosmos Predict 2.5 GR00T-Dreams-DROID
+Resolution1280×800 1280×800 768×432
+FPS16 16 16
+Frames per clip139 93 277
+Duration per clip8.69s5.8s17.31s
+Guidance scale7 7 7
+Sampling steps35 35 35
+Seed42 0 0
+Generated pool300 175 192
+Filter pass-rate51% 57% 67%
+Final eval count154 100 128
+2https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-GR1 . Hugging Face
+dataset card.
+3https://huggingface.co/datasets/nvidia/PhysicalAI-Robotics-GR00T-Eval . Hugging
+Face dataset card.
+4https://huggingface.co/nvidia/Cosmos-Predict2.5-14B. Hugging Face model card.
+5https://huggingface.co/nvidia/Cosmos-Predict2-14B-Sample-GR00T-Dreams-DROID . Hug-
+ging Face model card.
+15
+
+===== PAGE 16 =====
+GR1-Sim
+GR1-Real
+DROID-MV
+Figure 6:Representative data examples from the GR1-Sim, GR1-Real, and DROID-MV datasets.
+A.2.2 Visual-Input Protocol (per backbone)
+The per-backbone visual-input regime in Table 8 is held fixed across the vanilla, +CoT, and +RG
+conditions, so the only variable between conditions is the prompting strategy. We use the published
+video-understanding guidance for each backbone:
+16
+
+===== PAGE 17 =====
+Table 8:Per-backbone visual-input regime, held fixed across all conditions. Ablation in §A.4.1 shows that the
+reported +RG gains are robust to the choice of regime.
+Backbone Mode Effective rate Tokens / clip
+Gemini 3.1 Pro 16 uniformly sampled∼1.8 FPS 16 frames
+Gemini 3.1 Flash 16 uniformly sampled∼1.8 FPS 16 frames
+GPT-5.5 16 uniformly sampled∼1.8 FPS 16 frames
+Claude Sonnet 4.6 16 uniformly sampled∼1.8 FPS 16 frames
+Gemma4-31B full video @ 4 FPS 4 FPS 32 frames cap
+Qwen3.6-35B full video @ 4 FPS 4 FPS 32 frames cap
+LLaV A-OV-2-8B full video @ 4 FPS 4 FPS 32 frames cap
+InternVL3.5-38B full video @ 4 FPS 4 FPS 32 frames cap
+A.2.3 Annotation Protocol
+Annotators.We recruited 7 annotators with bachelor-level robotics, computer-vision, or
+mechanical-engineering backgrounds. All annotators completed a 4-hour written-rubric training
+session, a 30-clip calibration pass, and a final review by a senior annotator before being assigned
+production clips. Three of the seven annotators were designated asseniorbased on calibration
+agreement aboveκ= 0.78 on the training set; senior annotators adjudicate disagreements and review
+all multi-event clips.
+Workflow.Each clip is independently annotated from scratch by two annotators (no model-
+generated proposals are shown). The two annotations are then merged by a senior annotator, who
+resolves disagreements according to a written adjudication rubric (see below). Annotators see only the
+generated video and the original task instruction; they do not see the dataset identifier, the generator
+checkpoint, or any model-generated candidates. The written guide instructs annotators to first decide
+whether an event is visually observable, then assign all applicable taxonomy dimensions, choose a
+primary dimension via the cascade rule, mark start/end times at the smallest visually supported span,
+assign severity using the observable rubric in §A.1, and write a free-form description that names the
+affected entity, failure behavior, and task phase.
+Compensation and ethics.Annotators were paid above local hourly research-assistant rates for
+training, calibration, production labeling, and adjudication time. The study uses generated robot
+videos and task instructions only, contains no human-subject video or personally identifying informa-
+tion, and was reviewed internally as non-human-subject annotation work.
+Per-clip annotation fields.For each event the annotator records: primary dimension, fine-grained
+type, temporal span (in frames, converted to seconds), severity on the1–5 ordinal scale, and a free-text
+description. The annotation interface (Figure 7) supports slow-motion playback, 0.1-s boundary
+precision, and a multi-event timeline.
+Gold subset.We construct a gold subset of 60 clips (20 per dataset, stratified to balance task
+families) that are independently labeled by all three senior annotators without adjudication. The gold
+subset is used (i) to compute the inter-annotator agreement reported in the main paper and (ii) to
+estimate the leave-one-annotator-out human ceiling used in the main result table.
+Adjudication.When two annotators disagree, the senior adjudicator applies in order: detection
+disagreements are re-watched and resolved either by confirming or rejecting the event; dimension
+disagreements default to the cascade rule (§A.1); span disagreements with pairwise IoU≥0.6 are
+merged by union, otherwise treated as separate events; severity disagreements within±1 are averaged,
+otherwise re-rated from scratch.
+A.2.4 Model Snapshots and Serving Configurations
+Table 9 summarizes the proprietary API snapshots and open-source checkpoints used in our experi-
+ments. Because VLM performance can vary across model revisions and deployments, we report the
+17
+
+===== PAGE 18 =====
+Figure 7:The annotation interface used for all 382 clips. Annotators see the generated video and the task
+instruction only; no model-generated proposals are shown.
+exact model versions evaluated to facilitate reproducibility and future comparisons. We additionally
+provide the available context length for each backbone, as ROBOGAZErequires jointly processing
+task instructions, scene observations, execution trajectories, and diagnostic reasoning within a shared
+context window. All results reported in the paper were obtained using these configurations.
+Table 9:API snapshot dates and checkpoint identifiers for the eight evaluated backbones. Open-source
+checkpoints were served using vLLM 0.20.2 on 4×NVIDIA L40 (48 GB) with tensor parallelism = 4, batch
+size1, and BF16 weights unless otherwise noted.
+Backbone Family Snapshot / checkpoint Context length
+Gemini 3.1 Pro closed API endpoint,2026-04-15snapshot1M tokens
+GPT-5.5 closed API endpoint,2026-04-15snapshot1M tokens
+Gemini 3.1 Flash closed API endpoint,2026-04-15snapshot1M tokens
+Claude Sonnet 4.6 closed API endpoint,2026-04-15snapshot200 k tokens (API
+default)
+Gemma4-31B opengoogle/gemma-4-31b-it256k tokens
+Qwen3.6-35B openQwen/Qwen3.6-35B-A3B262k tokens
+LLaV A-OV-2-8B openlmms-lab/llava-ov-2-8b-it32 k tokens (veri-
+fied)
+InternVL3.5-38B openOpenGVLab/InternVL3.5-38B32k tokens
+Evaluation protocol details.Pairwise temporal IoU is computed at the frame level. The joint cost
+Cij is built withλdim = 0.25 by default; pairs with IoUt = 0 haveCij = 0 and are removed from
+the matching. Hungarian assignment is performed in maximization mode, after which any zero-cost
+pairs are dropped, enforcing the “matched only ifCij >0 ” rule. Description-F1, mIoU (on matched
+pairs only),F1×IoU, within-1 severity, and severity-weightedF1 (missing severity-k ground-truth
+contributes weightk to the recall denominator) are computed per clip and aggregated with a macro
+mean over clips. Bootstrap CIs are estimated by resampling clips ( 1,000 resamples) within each
+dataset and recomputing the macro mean. We use a multiplicative score rather than an additive score
+because a valid match must satisfy both semantic and temporal agreement: a correct diagnosis at
+the wrong time and a temporally overlapping but semantically unrelated event should both receive
+18
+
+===== PAGE 19 =====
+low matching weight. Appendix A.4.11 reports a loose variant that explicitly counts unmatched
+predictions and references as false positives and false negatives.
+A.3 Prompts
+Summary.This section records the output contracts and decision rules used by the LLM judge,
+the vanilla and +CoT baselines, and the ROBOGAZEmodules. All calls use temperature 0.0 unless
+noted; JSON outputs are parsed with up to 3 retries on malformed responses. We keep the contracts
+compact here because the important reproducibility point is what information each module may use
+and what structured fields it must return.
+A.3.1 LLM-judge Description Prompt
+The judge sees the predicted event description and the ground-truth event description (text-only; no
+frames) and rates the pair on three independent axes. We use Gemini 3.1 Pro (snapshot 2026-04-15)
+as the primary judge with temperature 0.0, top-p1.0 , and a 3-retry parse-failure handler. GPT-5.5
+(same snapshot date) is used as the robustness judge in §A.4.6. The final similarity score Sij∈[0,1]
+is the mean of the three axes normalised by5.
+SYSTEM: You are an evaluator scoring a predicted robot-video glitch
+description against a ground-truth description. You will rate the
+pair on three axes, each in [0, 5]. Output JSON only.
+USER:{"task instruction": "...", "ground truth description":
+"...", "predicted description": "..."}
+Rate the pair on:
+(1) event faithfulness [0..5]: Do the two descriptions refer to the
+same underlying event? 0 = unrelated event; 5 = same event.
+(2) specificity [0..5]: Does the prediction correctly name the
+entities (object, effector, phase) referenced by the ground truth?
+0 = no entity overlap; 5 = exact entity overlap.
+(3) causal correctness [0..5]: Does the prediction correctly
+attribute the underlying cause? 0 = wrong cause; 5 = matching
+cause.
+Output JSON:{"event faithfulness": int, "specificity": int,
+"causal correctness": int, "rationale": "..."}
+Be conservative; do not score on label name alone --- the
+descriptions must match in substance, not just in vocabulary.
+A.3.2 Vanilla Baseline Prompt
+The vanilla baseline receives the task instruction and generated video once, without intermediate
+memories, specialists, or verification. It is required to return the same event-level schema used for
+scoring.
+SYSTEM: You are a robotics video evaluator. Given a task
+instruction and a generated robot video, identify observable
+execution glitches. Use only visible evidence from the video and
+the provided instruction.
+Allowed dimensions: instruction consistency, task progress,
+object scene consistency, robot body consistency,
+physical plausibility, visual quality.
+Allowed types are exactly those in Table 6.
+USER:{"instruction": "...", "video": <video>}
+Output JSON:{"events": [{"dimension": str, "type": str, "span s":
+[float, float], "severity": int, "description": str, "evidence":
+str}]}
+Use severity in [1, 5]. Output an empty events list if no visually
+supported glitch is present. Do not report uncertainty, normal
+occlusion, or unusual but valid motion as a glitch.
+19
+
+===== PAGE 20 =====
+A.3.3 +CoT Prompt
+The +CoT prompt is identical to vanilla except for an additional reasoning instruction. We strip the
+chain-of-thought trace before scoring so the judge sees only the final structured output.
+SYSTEM: You are a robotics video evaluator. Given a task
+instruction and a generated robot video, identify observable
+execution glitches.
+Step 1. Think step by step about whether the video correctly
+executes the task. Consider: task progress, instruction
+consistency, object--scene consistency, robot-body consistency,
+physical plausibility, visual quality.
+Step 2. After your reasoning, output a JSON glitch report:
+{"events": [{"dimension": str, "type": str, "span s": [float,
+float], "severity": int, "description": str, "evidence": str}]}
+Wrap the reasoning between <think>...</think> so the final JSON is
+unambiguous. Output an empty events list if no glitch is present.
+A.3.4 RoboGaze Module Prompts
+Task-memory prompt (ftask).
+SYSTEM: Extract the task structure from the instruction and the
+initial frame. Do not judge the generated execution yet. Output
+JSON.
+USER:{"instruction": "...", "initial frame": <image>}
+Output schema:{"goal": str, "objects": [str], "target locations":
+[str], "expected effectors": [str], "subtasks": [{"name": str,
+"expected outcome": str, "completion criterion": str}]}.
+Scene-memory prompt (fscene).
+SYSTEM: Describe the initial workspace state relevant to the task.
+Output JSON.
+USER:{"task memory":{...}, "initial frame": <image>}
+Output schema:{"visible objects": [str], "robot parts":
+[str], "spatial relations": [str], "support relations": [str],
+"occlusions": [str], "uncertainty": [str]}.
+Each "uncertainty" entry names a region that is occluded or
+otherwise ambiguous in the initial frame.
+Window-analysis prompt (fvlm).
+SYSTEM: For the given temporal clip, describe the observed execution.
+Separate observations from possible glitches. Output JSON.
+USER:{"clip": <video window>, "task memory":{...}, "scene memory":
+{...}}
+Output schema:{"observed actions": [str], "object state changes":
+[str], "robot state changes": [str], "task progress": str,
+"candidate anomalies": [str], "normal occlusion or ambiguity":
+[str], "uncertainty cues": [str]}.
+Subtask-segmentation prompt.
+SYSTEM: Given per-window observations and the subtask list from
+task memory, partition the windows into contiguous subtask segments.
+Output JSON.
+USER:{"per window observations": [{...}], "subtasks": [...]}
+Output schema:{"segments": [{"subtask": str, "window ids":
+[int]}]}.
+20
+
+===== PAGE 21 =====
+Candidate-router prompt (frouter).
+SYSTEM: For the given subtask segment, identify which
+dimensions of the glitch taxonomy are plausibly relevant.
+Output JSON with a SUBSET of{instruction consistency,
+task progress, object scene consistency, robot body consistency,
+physical plausibility, visual quality}.
+USER:{"subtask segment":{...}, "task specification":{...},
+"scene memory":{...}}
+Output schema:{"candidate dimensions": [str], "rationale": str}.
+Be conservative: only include a dimension if there is at least
+one specific observation in the segment that warrants specialist
+analysis. Empty list is allowed.
+Specialist prompts (fg, one per dimension).The six specialists share a common template; only
+the dimension-specific checklist differs. The template is:
+SYSTEM: You are the <Dimension> specialist for robot-video
+evaluation. Examine the subtask segment for failures of type
+<Dimension> using the following checklist:
+<DIMENSION-SPECIFIC CHECKLIST -- see Table 6>
+For each detected failure, output a structured hypothesis. Output
+JSON.
+USER:{"segment": <video segment>, "task specification":{...},
+"scene memory":{...}}
+Output schema:{"hypotheses": [{"dimension": str, "type": str,
+"span s": [float, float], "severity proposal": int, "description":
+str, "evidence": str, "confidence": float}]}
+Use only type identifiers from Table 6. Confidence is in [0, 1]; do
+not report hypotheses with confidence < 0.30.
+The dimension-specific checklists are the fine-grained type lists in Table 6 (5 types per dimension).
+Critic-verifier prompt (fverify).
+SYSTEM: You are the critic verifier. For each specialist hypothesis,
+decide ACCEPT, REJECT, or MERGE. Refine the temporal span and
+severity when the hypothesis is accepted. Output JSON.
+USER:{"hypothesis":{...}, "segment": <video segment>,
+"task specification":{...}, "scene memory":{...},
+"other accepted hypotheses": [{...}]}
+Decision rules: - ACCEPT only if the hypothesis is supported by
+visual evidence visible in the segment. - ACCEPT only if the
+temporal span is consistent with the trajectory. - REJECT if
+confidence < 0.50, OR if no specific frame can be cited as evidence,
+OR if the hypothesis contradicts the task specification. - MERGE
+if this hypothesis describes the same physical event as an already
+accepted hypothesis, with overlapping span and compatible evidence.
+Output schema:{"decision": "ACCEPT"|"REJECT"|"MERGE",
+"merge with": str|null, "primary dimension": str|null, "type":
+str|null, "refined span s": [float, float]|null, "severity":
+int|null, "verified evidence": str, "rationale": str}
+Report-synthesis prompt (freport).
+SYSTEM: Convert verified hypotheses into the final robot-video
+glitch report. Merge duplicate hypotheses that describe the same
+event; keep independent events separate even if their spans overlap.
+Output JSON only.
+USER:{"verified hypotheses": [{...}]}
+21
+
+===== PAGE 22 =====
+Output schema:{"events": [{"dimension": str, "type": str,
+"span s": [float, float], "severity": int, "description": str,
+"evidence": str}]}
+If no hypotheses are accepted, output{"events": []}.
+Hyper-parameters.Temporal window length = 2.0 s; window stride = 1.0 s (50% overlap); frame
+sampling within a window matches the backbone’s visual-input regime (§A.2.2). Maximum verifier
+rounds= 3(early-stop on consecutive ACCEPT). Event-merge IoU threshold= 0.5.
+A.4 Robustness and Diagnostic Analyses
+Summary.These analyses are grouped around the main alternative explanations for the headline
+result. First, we test measurement choices: frame sampling, clip-level detection, severity scoring,
+annotator agreement, per-dimension behavior, judge choice, and metric weights. Second, we test
+pipeline-specific confounds: learned-evaluator compatibility, runtime, strict-vs.-loose matching,
+repeated monolithic sampling, taxonomy-only prompting, and verifier thresholds. Third, we report
+small-slice generalization checks across generator, task family, and embodiment/domain. The goal is
+not to make every slice a new claim, but to show which parts of the main conclusion are stable and
+which remain limited.
+Benchmark and measurement checks.The first group supports the reliability of the bench-
+mark and metric: visual-input choices, clean/glitchy clip detection, severity scoring, per-dimension
+agreement, per-dimension backbone behavior, judge choice, and metric weights.
+A.4.1 Sampling-Protocol Ablation
+To check that the result is not driven by different frame-access regimes, we swap the visual-input
+protocol for the strongest proprietary backbone (Gemini 3.1 Pro) and the strongest open-source
+backbone (Gemma4-31B), as shown in Table 10. Gemini is rerun with full video at 4 FPS, while
+Gemma4-31B is rerun with 16 uniformly sampled frames. All prompts, scoring rules, and model
+settings are held fixed.
+Table 10:Sampling-protocol ablation. Averages across the three datasets. Switching either backbone to the
+opposite visual-input regime changes absoluteF1 by≤2.0 points and leaves the +RG ranking intact, showing
+that the reported gains are not an artifact of the visual input choice.
+Backbone Regime vanillaF1 desc +RGF1 desc
+Gemini 3.1 Pro 16 frames (default) 25.4 67.9
+Gemini 3.1 Pro 4 FPS full video 26.1 68.7
+Gemma4-31B 4 FPS full (default) 17.6 56.6
+Gemma4-31B 16 frames 16.3 54.7
+A.4.2 Clip-level Binary Detection
+Table 11 isolates clip-level failure detection by collapsing all event annotations within a video into
+a binary glitch/no-glitch decision. This evaluation probes whether a model can reliably distinguish
+flawed executions from successful ones before localization or diagnostic reasoning is considered.
+Across all backbones, vanilla and CoT prompting exhibit near-saturated recall on glitchy clips but
+frequently hallucinate failures on clean executions, resulting in low clean-clip accuracy. ROBOGAZE
+largely removes this failure mode through verification, improving precision and clean-clip accuracy
+while preserving recall.
+A.4.3 Severity Results
+Severity estimation matters because not all execution failures are equally consequential: minor visual
+inconsistencies may be tolerable, while severe failures can make a generated trajectory physically
+implausible or task-invalid. Table 12 evaluates severity prediction on the five-level ordinal scale
+22
+
+===== PAGE 23 =====
+Table 11:Clip-level binary detection averaged across the three datasets. Subset sizes: 268 glitchy and 114 clean
+clips total. Clean-acc is the fraction of clean clips on which the model reports no events. Vanilla and +CoT
+VLMs cry wolf on clean clips; the critic verifier almost entirely eliminates this failure mode without sacrificing
+glitchy recall. The verifier’s Clean-acc stays at or below the human ceiling of0.94.
+Backbone Condition Precision Recall (glitchy)F 1 Clean-acc
+Gemini 3.1 Pro
+vanilla 0.71 0.96 0.82 0.13
++CoT 0.74 0.95 0.83 0.21
++RG0.930.950.94 0.92
+Gemma4-31B
+vanilla 0.69 0.97 0.81 0.03
++CoT 0.72 0.96 0.82 0.12
++RG 0.90 0.96 0.93 0.86
+LLaV A-OV-2-8B
+vanilla 0.71 0.93 0.81 0.18
++CoT 0.73 0.94 0.82 0.25
++RG 0.88 0.95 0.91 0.82
+Human (ceiling)—0.94 0.96 0.95 0.94
+defined in Appendix A.1, using only events that are successfully matched to a ground-truth annotation.
+Across both backbones, vanilla and CoT prompting produce poorly calibrated severity judgments,
+while ROBOGAZEsubstantially improves exact accuracy, within- 1 accuracy, and severity-weighted
+F1.
+Table 12:Severity results averaged across datasets. Within- 1 accuracy counts a severity prediction as correct if
+it differs from the ground-truth severity by at most 1 on the 1–5 ordinal scale. Severity-weightedF1 penalises
+missing high-severity events more.
+Backbone Condition Exact acc. Within-1acc. Sev-weightedF 1
+Gemini 3.1 Pro
+vanilla 0.18 0.42 18.7
++CoT 0.24 0.51 24.1
++RG0.58 0.86 55.4
+Gemma4-31B
+vanilla 0.12 0.31 14.8
++CoT 0.16 0.38 18.4
++RG 0.49 0.81 46.2
+A.4.4 Per-dimension Inter-annotator Agreement
+Table 13 provides a per-dimension breakdown of annotation agreement on the gold-60 subset. TP and
+IC achieve the highest agreement, suggesting that temporal violations and instruction mismatches are
+consistently identifiable by human annotators. Agreement decreases modestly for OSC and PP, where
+interacting objects and physical dynamics introduce ambiguity in event boundaries and categorization.
+RBC and VQ have the fewest examples and wider confidence intervals, so we interpret those slices
+descriptively.
+Table 13:Per-dimension agreement on the gold- 60 subset. VQ and RBC have small event counts (n≤12 ), so
+their confidence intervals are wider and their per-dimension results should be interpreted descriptively. 95% CIs
+are estimated by bootstrap over annotator pairs.
+Dimension TP IC OSC RBC PP VQ
+Events in gold-60 58 44 39 12 31 7
+Detectionκ0.84 0.81 0.77 0.69 0.74 0.61
+Dimensionκ0.78 0.74 0.71 0.65 0.68 0.54
+Mean pairwise temporal IoU0.71 0.69 0.66 0.61 0.63 0.55
+Severity Krippendorffα0.68 0.66 0.64 0.57 0.60 0.51
+Description sim. (LLM)0.82 0.79 0.77 0.71 0.73 0.68
+DetectionκCI half-width±0.06±0.07±0.08±0.14±0.09±0.18
+SeverityαCI half-width±0.07±0.08±0.09±0.15±0.10±0.19
+23
+
+===== PAGE 24 =====
+A.4.5 Per-dimension Description-F 1 for All Backbones
+Table 14 reports per-dimension description-F1 for every backbone under +ROBOGAZE; Table 15
+reports the same breakdown under the +CoT condition for reference, showing that CoT prompting
+alone leaves the per-dimension structure of failures essentially unchanged.
+Table 14:Per-dimension description-F1 for all eight backbones under +ROBOGAZE, averaged across the three
+datasets.
+Backbone TP IC OSC RBC PP VQ
+Gemini 3.1 Pro77.8 74.2 70.5 64.7 50.4 52.6
+GPT-5.575.1 71.4 67.7 61.9 47.8 50.0
+Gemini 3.1 Flash68.3 64.8 61.1 55.6 42.0 44.4
+Claude Sonnet 4.670.6 67.0 63.3 57.5 44.4 46.8
+Gemma4-31B66.8 63.2 59.4 53.7 40.8 42.9
+Qwen3.6-35B63.1 59.6 55.8 50.4 37.7 40.0
+LLaV A-OV-2-8B58.1 54.6 50.7 45.6 33.2 35.5
+InternVL3.5-38B60.5 56.9 53.0 47.8 35.1 37.4
+Human (ceiling)84.2 81.5 78.8 76.0 69.5 67.0
+Table 15:Per-dimension description-F1 for all eight backbones under the+CoTcondition, averaged across the
+three datasets. CoT prompting yields modest dimension-uniform gains over vanilla but leaves a substantial gap
+to both ROBOGAZE(Table 14) and the human ceiling, particularly on PP and VQ.
+Backbone (+CoT) TP IC OSC RBC PP VQ
+Gemini 3.1 Pro40.5 37.8 34.6 29.5 22.4 25.3
+GPT-5.538.4 35.9 32.7 28.0 21.0 23.7
+Gemini 3.1 Flash32.8 30.5 27.6 23.7 17.6 20.1
+Claude Sonnet 4.634.5 32.1 29.0 24.8 18.5 21.2
+Gemma4-31B29.7 27.4 24.5 20.9 15.4 17.6
+Qwen3.6-35B28.2 26.0 23.2 19.6 14.4 16.5
+LLaV A-OV-2-8B24.6 22.5 19.9 16.7 11.8 13.9
+InternVL3.5-38B26.7 24.4 21.6 18.2 13.0 15.0
+A.4.6 Judge Robustness
+We re-evaluate every main-result cell with an alternate LLM judge (GPT-5.5 instead of the primary
+Gemini 3.1 Pro). Across all 8×3×3 = 72 configurations, per-modelF1 desc values correlate at
+Spearmanρ= 0.96 , with absolute differences within±1.4 points for vanilla,±1.5 points for +CoT,
+and±1.6 points for +RG configurations. The ranking of all backbones under +RG is preserved
+exactly. The text-only judge attains correlation r= 0.81 with human consensus on description
+similarity, within 0.03 of an alternative video-grounded judge (r= 0.84 ), justifying the text-only
+judging protocol used in the main paper.
+A.4.7 Metric Sensitivity
+To verify that benchmark conclusions are not sensitive to event-matching hyperparameters, we
+vary the dimension-agreement weight λdim used in the joint event-matching cost. As expected,
+increasingλdim raises absolute scores by rewarding correct taxonomy assignments more strongly
+during matching. The increases are nearly uniform across backbones, preserving the relative ranking
+throughout the tested range.
+Comparison scope and runtime.The next short block clarifies which learned-evaluator compar-
+isons are well-posed under the event-level report schema and records the VLM-call budget for the
+structured pipeline.
+A.4.8 Scope of Learned-Evaluator Comparisons
+Learned video evaluators such as VideoScore-style and GRADEO-style models are important base-
+lines for global video scoring, but their public interfaces are not event-reporting systems: they produce
+24
+
+===== PAGE 25 =====
+Table 16:Sensitivity of the headline ranking to the dimension-agreement weightλdim in the joint event-matching
+cost. The relative ranking of all backbones under +RG is preserved for everyλ dim∈{0,0.1,0.25,0.5}.
+Backbone (+RG)λ=0λ=0.1λ=0.25λ=0.5
+Gemini 3.1 Pro64.9 66.2 67.9 70.4
+GPT-5.562.4 63.6 65.1 67.7
+Gemini 3.1 Flash54.7 56.0 57.8 60.5
+Claude Sonnet 4.657.1 58.4 60.3 63.0
+Gemma4-31B53.6 54.9 56.6 59.0
+Qwen3.6-35B50.4 51.6 53.1 55.6
+LLaV A-OV-2-8B45.0 46.3 47.9 50.4
+InternVL3.5-38B47.1 48.4 50.1 52.6
+scalar or dimension-level quality judgments rather than temporally localized robot-failure descriptions
+with severity. They therefore cannot be scored directly by the event-level protocol without adding a
+separate event-generation layer, which would test the adapter as much as the learned evaluator. For
+the controlled comparisons in this paper, we therefore evaluate systems that receive the same video
+inputs and return the same event-level report schema. This does not diminish learned evaluators as
+a comparison class; rather, it clarifies that the appropriate future baseline is a trained event-level
+robot-video judge on ROBOGAZEBENCH, not a scalar quality model forced into an incompatible
+output format.
+A.4.9 Cost and Runtime
+Compute accounting.Table 17 shows that, under the optimized schedule, ROBOGAZEuses
+approximately 9.0 VLM invocations per video on average, or about9× the invocation count of vanilla
+and +CoT prompting. Because many calls within a stage are parallelizable – and window observation
+and verification are batched – wall-clock latency is closer to the five sequential VLM rounds shown
+below than to 9× vanilla latency. The self-consistency control in Appendix A.4.12 should therefore be
+read as an additional-sampling baseline, not as a full invocation-matched substitute for the structured
+pipeline.
+Table 17:Method-derived inference budget for Gemma4-31B under the optimized pipeline schedule. Sequential
+VLM rounds approximate latency when independent calls are parallelized; total VLM invocations approximate
+compute budget. Counts use the ROBOGAZEBENCHaverage duration, 2.0 s windows with 1.0 s stride, routed
+specialist execution, and batched window observation and verification. GPU operating cost is not priced.
+vanilla +CoT +RG
+Sequential VLM rounds1 1 5
+Total VLM invocations / video1.0 1.0∼9.0
+– task+scene grounding− −1.0
+– window observations (batched)− −2.0
+– subtask segmentation− −1.0
+– candidate routing− −1.0
+– specialists (routed)− −2.5
+– verification + reporting− −1.5
+Stress tests and scope.The final group describes where the current evidence is statistically stable
+and where it remains limited: statistical separability, loose matching, compute controls, taxonomy-
+only prompting, verifier thresholds, cross-generator transfer, and task/embodiment slices.
+A.4.10 Bootstrap Confidence Intervals and Paired Separability
+We separate two questions: (i) marginal CI widths on each backbone’s +RGF1 desc (Table 18);
+and (ii) paired-bootstrap separability between adjacent rows (Table 19). The marginal CIs are wide
+enough that several adjacent rows have overlapping intervals; the paired bootstrap, which resamples
+clips identically for both backbones, removes the across-backbone variance and is the correct test for
+adjacent-pair separability.
+25
+
+===== PAGE 26 =====
+Table 18: 95% marginal bootstrap confidence intervals (1,000 resamples over clips) on dataset-averagedF1 desc
+for the eight backbones under the +ROBOGAZE condition. Marginal CIs overlap for several adjacent rows; see
+Table 19 for paired-bootstrap separability.
+Backbone (+RG) dataset-avgF1 desc [CI]
+Gemini 3.1 Pro67.9 [65.4,70.2]
+GPT-5.565.1 [62.6,67.5]
+Claude Sonnet 4.660.3 [57.7,62.8]
+Gemini 3.1 Flash57.8 [55.1,60.4]
+Gemma4-31B56.6 [53.8,59.1]
+Qwen3.6-35B53.1 [50.3,55.6]
+InternVL3.5-38B50.1 [47.3,52.8]
+LLaV A-OV-2-8B47.9 [45.0,50.6]
+Table 19:Paired-bootstrap separability between adjacent rows of Table 18 under the +ROBOGAZE condition
+(1,000 resamples; clips resampled identically for both backbones). The mean difference ∆, its 95% paired-CI,
+and a two-sidedp-value are reported. Seven of eight adjacent pairs are separable atα=0.05; Gemini 3.1 Flash
+vs. Gemma4-31B forms a tied band.
+Adjacent pair∆F1 desc 95%paired-CIp
+Gemini 3.1 Pro−GPT-5.52.8 [1.1,4.5]<0.001
+GPT-5.5−Claude Sonnet 4.64.8 [2.6,7.0]<0.001
+Claude Sonnet 4.6−Gemini 3.1 Flash2.5 [0.4,4.5] 0.018
+Gemini 3.1 Flash−Gemma4-31B1.2 [−0.9,3.3] 0.27(n.s.)
+Gemma4-31B−Qwen3.6-35B3.5 [1.4,5.6] 0.001
+Qwen3.6-35B−InternVL3.5-38B3.0 [1.0,5.0] 0.004
+InternVL3.5-38B−LLaV A-OV-2-8B2.2 [0.1,4.3] 0.040
+The paired bootstrap shows that the top two and the bottom four backbones form strictly separable
+rankings, while the middle tier (Gemini 3.1 Flash and Gemma4-31B) forms a single tied band. The
+grouped narrative – “proprietary frontier models (Gemini Pro, GPT-5.5) lead, open-source large
+models close to mid-tier proprietary, smaller open-source models trail” – is preserved.
+A.4.11 Metric Definition Robustness: Strict vs. Loose Matching
+Summary.We re-evaluate the main results under aloosevariant of the event-matching cost, as
+shown in Table 20. In this variant, (i) unmatched predictions are counted as false positives inPdesc
+and (ii) unmatched ground-truth events are counted as false negatives in Rdesc. This rules out the
+possibility that the strict variant’s “drop pairs with IoUt=0” rule masks hallucinated, temporally
+mis-localized predictions and inflates precision in vanilla configurations.
+Table 20:Strict vs. loose precision, recall, and F1 on ROBOGAZEBENCH, averaged across the three datasets, for
+three representative backbones. “Strict” is the matching defined in the event-level protocol; “loose” additionally
+penalizes unmatched predictions as false positives and unmatched ground truth as false negatives. The relative
++RG gain over vanilla is preserved (and slightly widens) under the loose variant.
+Strict Loose
+Backbone ConditionP R F 1 ∆P R F 1 ∆
+Gemini 3.1 Pro vanilla33.1 20.6 25.4–22.1 17.9 19.8–
++RG69.5 66.3 67.9 +42.5 66.8 64.6 65.7 +45.9
+Gemma4-31B vanilla25.3 13.5 17.6–15.4 10.2 12.4–
++RG58.4 54.9 56.6 +39.0 55.7 52.4 54.0 +41.6
+LLaV A-OV-2-8B vanilla20.6 10.8 14.2–11.7 8.1 9.6–
++RG49.3 46.6 47.9 +33.7 46.8 44.1 45.4 +35.8
+Discussion.Under the strict variant, vanilla VLMs achieve precision 20–33% on matched pairs;
+under the loose variant, precision drops by 7–11 points because the strict variant was silently filtering
+temporally-misplaced predictions. +RG loses only 2–3 points under the loose variant, because the
+critic verifier already drops most weakly grounded predictions before they reach the matching stage.
+26
+
+===== PAGE 27 =====
+The relative +RG gain therefore widens by 2.0–3.4 points under the stricter (loose) accounting,
+supporting that the headline lift is not a precision-counting artifact.
+A.4.12 Additional-Sampling Vanilla Baseline (Self-Consistency atN=3)
+Summary.Since +RG uses many more VLM invocations than vanilla (Table 17), we test whether
+repeated monolithic sampling alone can explain the gain in Table 21. We run vanilla prompting with
+self-consistency atN=3 samples, deduplicate events by type+ temporal-IoU≥0.5, and majority-vote
+events that appear in at least 2/3 samples (using the union span). This is an additional-sampling
+control rather than a full 9-call match to ROBOGAZE; it isolates whether simple repeated sampling
+reduces the gap before any task–scene grounding, routing, specialist analysis, or verification is
+introduced.
+Table 21:Additional-sampling self-consistency baseline (vanilla at N=3, “V@3”) versus single-sample vanilla
+and +RG, averaged across the three datasets. The fourth column (“% gap closed”) is the fraction of the
+vanilla→+RG gap recovered by self-consistency. Self-consistency closes 13–22% of the gap, leaving≥30
+description-F1 points unexplained by additional sampling.
+Backbone Vanilla V@3 (SC)+RG V→V@3 % gap closed
+Gemini 3.1 Pro25.4 31.1 67.9 +5.7 13.4%
+GPT-5.523.9 29.2 65.1 +5.3 12.9%
+Gemma4-31B17.6 22.0 56.6 +4.4 11.3%
+LLaV A-OV-2-8B14.2 19.6 47.9 +5.4 16.0%
+Clean-clip acc. (Gemini Pro)0.13 0.18 0.92– –
+Discussion.Self-consistency lifts every backbone by 4–6 points but never closes more than∼22%
+of the vanilla→+RG gap. Crucially, the cry-wolf failure mode persists under self-consistency:
+clean-clip accuracy for Gemini 3.1 Pro V@3 is0.18, far below +RG’s 0.92, because all three samples
+tend to hallucinate similarly on clean clips, so majority voting does not reject them. Thus, additional
+monolithic samples alone explain only a small fraction of the lift; the remaining gap is consistent with
+the structural property that specialist hypotheses are explicitlycontestableby an independent critic.
+A.4.13 Single-Call Vanilla with Taxonomy in Prompt
+Summary.To isolate the contribution of the taxonomy itself from that of the agentic decomposition,
+we re-run vanilla prompting with the full taxonomy (dimension names, fine-grained type definitions,
+and the severity rubric) included verbatim in the system prompt; the model still produces a single
+JSON glitch report in one API call.
+Table 22:Vanilla with the full 6×30 taxonomy in the system prompt (“V+Tax”), versus vanilla and +RG,
+averaged across the three datasets. Adding the taxonomy alone closes 20–28% of the vanilla→+RG gap,
+indicating that the agentic decomposition contributes more than the taxonomy.
+Backbone Vanilla V+Tax+RG V→V+Tax % gap closed
+Gemini 3.1 Pro25.4 36.2 67.9 +10.8 25.4%
+GPT-5.523.9 34.1 65.1 +10.2 24.8%
+Gemma4-31B17.6 26.4 56.6 +8.8 22.6%
+LLaV A-OV-2-8B14.2 20.8 47.9 +6.6 19.6%
+Discussion.Table 22 shows that the taxonomy alone is helpful ( +7–11 pts ) but explains<28% of
+the lift. Together with the self-consistency control in Appendix A.4.12, these results show that neither
+taxonomy vocabulary nor repeated monolithic sampling is sufficient to recover the ROBOGAZEgains.
+A.4.14 Verifier Confidence-Threshold Sweep
+Summary.The critic verifier is intentionally precision-oriented: it accepts a specialist hypothesis
+only when the returned evidence is judged sufficient. We sweep the verifier acceptance threshold to
+27
+
+===== PAGE 28 =====
+trace the resulting precision–recall trade-off and expose when single-frame true-positive suppression
+becomes costly, as shown in Table 23.
+Table 23:Verifier confidence-threshold sweep on the Gemma4-31B +ROBOGAZE configuration, averaged
+across the three datasets. Lower thresholds preserve more single-frame true positives (higher recall) at the cost
+of more cry-wolf events; higher thresholds maximize precision and clean-clip accuracy but begin to lose recall
+on glitchy clips. The default operating point (conf=0.5) lies near the recall-side elbow.
+Threshold Desc.PDesc.R F 1 F×IoU Clean acc. Glitchy recall
+0.30 0.50 0.63 0.558 33.0 0.74 0.96
+0.40 0.55 0.61 0.578 34.1 0.80 0.95
+0.50(default)0.585 0.5480.566 34.5 0.860.94
+0.60 0.61 0.50 0.549 33.6 0.91 0.89
+0.70 0.64 0.43 0.515 31.2 0.95 0.81
+Discussion.The F1 landscape is unimodal with a flat plateau between conf=0.4 and conf=0.5.
+Above 0.6, precision continues to climb but glitchy-clip recall falls below 0.9, which we judged
+too costly for safety-relevant downstream uses (e.g., catastrophic-failure screening). At conf=0.5,
++RG already operates close to the human ceiling on clean-clip accuracy (0.86 vs. 0.94) while losing
+<2pts of recall on glitchy clips relative to the no-verifier ablation.
+A.4.15 Cross-Generator Pilot
+Summary.ROBOGAZEBENCHis built from one generator family (Cosmos-Predict 2.5 and GR00T-
+Dreams-DROID). To test whether the result is generator-specific, we construct a 40-clip held-out
+pilot from a non-Cosmos generator, Open-Sora 2.0, and rescore +RG on it. We treat this as a pilot
+stress test rather than a standalone OOD benchmark.
+Pilot construction.We sample 40 task instructions from DROID and generate one video per
+instruction using Open-Sora 2.0 (an alternative video-diffusion generator outside the Cosmos/GR00T
+family). We condition the generator on the DROID task instruction plus the initial multi-view grid
+serialized as an image prompt, generate at 16 FPS for 17 seconds, and then apply the same temporal
+sampling and scoring pipeline as DROID-MV . Each generated clip is annotated by two annotators
+following the frozen ROBOGAZEBENCHrubric; disagreements are adjudicated by a senior annotator.
+The pilot contains31clips with at least one annotated glitch and9clean clips.
+Table 24:Cross-generator pilot ( 40 clips, Open-Sora 2.0 as the held-out generator). +RG retains∼93% of the
+main-benchmark gain; the cry-wolf reduction also transfers.
+Condition Desc.F 1 mIoUF×IoU Clean acc.
+Vanilla (Gemini 3.1 Pro)22.7 0.36 8.2 0.17
++CoT (Gemini 3.1 Pro)28.9 0.40 11.6 0.24
++RG (Gemini 3.1 Pro)62.3 0.61 38.0 0.88
+Gap (Vanilla→+RG, main bench)+42.5– –+0.79
+Gap (Vanilla→+RG, cross-gen)+39.6– –+0.71
+Retention93.2%– –89.9%
+Discussion.Table 24 shows that, on the held-out non-Cosmos generator, the +RG lift over vanilla
+is 39.6 description-F1 points, retaining 93% of the main-benchmark gap. The cry-wolf reduction also
+transfers (clean-clip accuracy 0.17→0.88 ). The failure-mode mix shifts toward visual-quality and
+physical-plausibility events (the two dimensions where specialists already have the largest residual
+gap to humans on the main benchmark), so absolute scores are lower than on ROBOGAZEBENCH;
+the structural advantage of +RG over monolithic prompting is nevertheless preserved in this small
+held-out-generator sample.
+28
+
+===== PAGE 29 =====
+A.4.16 Per-Task-Family and Per-Embodiment Breakdown
+Summary.Per-task-family (Table 25) and per-embodiment (Table 26) description- F1 for Gem-
+ini 3.1 Pro and Gemma4-31B under +RG, showing that the gain is not concentrated in a single task
+family or embodiment/domain in ROBOGAZEBENCH. We report these slices descriptively because
+several families are small.
+Table 25:Per-task-family description-F1 on the union of GR1-Sim, GR1-Real, and DROID-MV , restricted to
+clips whose primary task family matches the column header. Counts are: pick/place (n=183), pour (n=48),
+push (n=81), and articulated-object manipulation (n=70).
+Backbone (+RG) Pick/place Pour Push Articulated
+Gemini 3.1 Pro69.4 66.1 67.0 63.8
+Gemma4-31B58.0 54.2 56.5 53.1
+∆vs. vanilla (Gemini Pro)+42.3 +40.6 +42.1 +39.4
+∆vs. vanilla (Gemma4-31B)+38.6 +37.1 +39.0 +36.7
+Table 26:Per-embodiment/domain description-F1 under +ROBOGAZE . GR1 combines GR1-Sim and GR1-
+Real humanoid manipulation clips; DROID-MV uses the Franka-style multi-view manipulation setting.
+Backbone (+RG) GR1 humanoid (n=254) DROID-MV arm (n=128)
+Gemini 3.1 Pro68.5 66.7
+Gemma4-31B57.2 55.1
+∆vs. vanilla (Gemini Pro)+42.2 +41.0
+∆vs. vanilla (Gemma4-31B)+39.1 +37.3
+Discussion.The per-task-family +RG gain is within±3 points of the overall mean for every task
+family represented in the benchmark, indicating that the framework is not narrowly specialized to
+a single task family. The per-embodiment/domain breakdown shows the same qualitative pattern
+across GR1 and DROID-MV , although DROID-MV remains slightly harder due to longer clips and
+multi-view grid inputs. The gain is smallest on articulated-object tasks, consistent with the larger
+residual gap on Physical-Plausibility and Object-Scene Consistency dimensions (Table 14).
+29
