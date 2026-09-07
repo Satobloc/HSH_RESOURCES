@@ -1,0 +1,1371 @@
+===== PAGE 1 =====
+KEK-TH-2837
+Spectral reconstruction from Euclidean lattice correlators
+through singular value decomposition
+Ryutaro Tsuji 1,∗ and Shoji Hashimoto 1, 2
+1High Energy Accelerator Research Organization (KEK), Ibaraki 305-0801, Japan
+2School of High Energy Accelerator Science,
+The Graduate University for Advanced Studies,
+SOKENDAI, Ibaraki 305-0801, Japan
+(Dated: May 18, 2026)
+Abstract
+Reconstructing spectral densities from Euclidean lattice correlators requires an inverse Laplace
+transform, which is inherently ill-conditioned when applied to numerical data with statistical un-
+certainties. The maximum amount of information that can be extracted from the imaginary-time
+dependence of correlators can be characterized by the singular value decomposition (SVD) of the
+kernel function exp(−ωt) defined on discrete sets of imaginary timestand energiesω. The SVD
+provides orthogonal basis functions in both thet- andω-spaces, while the singular values determine
+the magnitude of their contributions to the correlators. By retaining only the components associ-
+ated with the largest singular values, for which the correlator data remain statistically significant,
+one can reconstruct smeared spectral functions with controlled uncertainties. The systematic error
+arising from the truncation can also be bounded under reasonable assumptions. In the limit where
+the ranges oftandωbecome infinitely large and continuous, the SVD basis approaches the Mellin
+transform, allowing a representation of the smeared spectrum that is independent of the details of
+the lattice parameters.
+1
+arXiv:2605.15674v1  [hep-lat]  15 May 2026
+
+===== PAGE 2 =====
+I. INTRODUCTION
+In lattice Quantum Chromodynamics (QCD) calculations, the properties of hadrons are
+studied from correlation functions of local operators. By the K¨ all´ en–Lehmann spectral
+representation, the Euclidean lattice correlatorC(t) as a function of Euclidean timetis
+related to the spectral densityρ(ω) in the form of a Laplace transform
+C(t) =
+Z ∞
+0
+dωρ(ω)e−ωt.(1)
+To be concrete, we consider a zero-momentum projected two-point correlation function
+C(t) =
+X
+x
+⟨Ω|Oχ(t,x)Oχ(0,0)|Ω⟩,(2)
+where an interpolating operatorO χ(t,x) specifies the quantum number of states that con-
+tribute to the correlator. The extraction ofρ(ω) from (1) requires an inverse Laplace trans-
+form, which poses a notoriously difficult problem [1, 2], since the condition number of e −ωt
+when viewed as a matrix with discrete indices oftandωis huge. In other words, the inverse
+problem admits infinitely many solutions forρ(ω), that satisfy (1) within the statistical error.
+In order to circumvent this ill-posedness of the inverse problem, two approaches have been
+attempted. Reconstruction using the maximum entropy method [3, 4], the sparse modeling
+method [5, 6], the Baysian reconstruction [7, 8], the Nevanlinna-Pick interpolation [9, 10],
+or the neural network and related [11–14] is one class of such approaches, where additional
+assumptions are imposed when solving (1). They are subject to systematic bias depending
+on the assumptions.
+Another approach is to redefine the problem so that one extracts some smeared spectral
+densities
+ρσsmr(ω) =
+Z ∞
+0
+dω′Sσsmr(ω,ω′)ρ(ω′) (3)
+with a kernelS σsmr(ω,ω′) that typically has a peak aroundωwith shoulders of some width
+σsmr. Sufficiently smooth kernels transform the problem to a better conditioned one, as
+we will discuss in this paper in detail. To obtain the smeared spectrum, one tries to find
+an approximation of the formS σsmr(ω,ω′)≃c σsmr
+0 (ω) +c σsmr
+1 (ω)e−ω′
++···+c σsmr
+N (ω)e−Nω ′
+truncated atN; the coefficientsc σsmr
+l (ω) are given for each value ofωusing methods such as
+the modified Backs-Gilbert (or HLT) approach [15] or the Chebyshev approximation [16].
+2
+
+===== PAGE 3 =====
+The smeared spectrumρ σsmr(ω) can then be determined as
+ρσsmr(ω)≃
+NX
+l=0
+cσsmr
+l (ω)⟨Pl( ˆH)⟩,(4)
+where⟨P l( ˆH)⟩is a matrix element of a polynomial ofe − ˆH sandwiched by⟨Ω|O χ and ¯Oχ|Ω⟩.
+Here, ˆHrepresents a Hamiltonian whose explicit form is not necessary in the following
+discussion. The polynomial is given asP l( ˆH) =e −l ˆH for the HLT method andP l( ˆH) =
+T∗
+l (e− ˆH) for the shifted Chebyshev polynomialsT ∗
+l (x). The matrix element of each term
+⟨e−t ˆH⟩is nothing but the correlatorC(t), and the smeared spectral function is obtained as
+long as the polynomial approximation is sufficiently precise. The idea has been applied to
+theR-ratio using the HLT method [17].
+The convergence of the approximation is the key issue; it is controlled by the coefficients
+cσsmr
+l and the matrix elements⟨P l( ˆH)⟩. Typically, the coefficients decrease rapidly for large
+lwhenσ smr is large, so the method works. But higher order terms are not necessarily
+suppressed in general, especially when the smearing widthσ smr is small. In addition, the
+matrix elements⟨P l( ˆH)⟩involve statistical errors, and the number of termsNthat can
+be included depends on the numerical precision ofC(t) att=N. Systematic errors due
+to ignored higher order terms need to be carefully examined. The relation between the
+Chebyshev approximation and the HLT approach is discussed in [18].
+Either of these approaches, the inverse problem with some assumptions or the approxi-
+mation of the smeared spectrum, has its own merits and problems. In order to clarify the
+limitation of these approaches, it is useful to step back and consider how much information
+is contained in the lattice correlator itself. The spectral representation (1) is based on the
+kernele−ωt integrated overω, with a weightρ(ω), which means a sum over an indefinite num-
+ber of states. However, we do not know how many independent and numerically significant
+degrees of freedom are contained in the correlator itself.
+To this end, we consider a singular value decomposition (SVD) of the kernele −ωt taking
+a discrete set of values oftandωas indices:
+e−ωt =
+X
+l
+Ul(t)σlVl(ω),(5)
+whereσ l represents singular values labeled by an integerl. TheU l(t) andV l(ω) are vectors
+associated with the singular valuel, and they form orthonormal vectors,i.e.
+R
+tUl(t)Ul′(t) =
+3
+
+===== PAGE 4 =====
+δl,l′ and
+R
+ωVl(ω)Vl′(ω) =δ l,l′. (The integral overtorωis understood as a sum for the
+set of values oftorω.) More precise definitions are presented in the next section.) When
+listed in descending order, the singular values, which are defined to be real and positive,
+decrease exponentially. In realistic lattice calculations, the correlators have statistical error
+and the contributions of too smallσ l terms can hardly be disentangled. Typically, only the
+terms of the largestO(10) singular values are numerically significant, and that represents
+the information that the lattice correlator data actually carry.
+Using (5) and the orthogonality relations, the correlatorC(t) can be decomposed into
+the basis ofU l(t) as
+C(t) =
+X
+l
+Ul(t)σlρl,whereρ l =
+Z
+ω
+ρ(ω)Vl(ω).(6)
+This construction makes it explicit that thel-th component contributes to the correlator
+with a weight ofσ l. Conversely, the spectral density is reconstructed from the correlator as
+ρ(ω) =
+X
+l
+Vl(ω)Cl/σl,whereC l =
+Z
+t
+Ul(t)C(t).(7)
+The contribution of the individuallis enhanced by the factor of 1/σ l whenσ l is small, so
+that the statistical error inC l is amplified. This is precisely the source of the problem about
+the difficulty of the inverse Laplace transform. As we shall see in more detail in the following
+sections, the basis functionsVl(ω) oscillate more rapidly for largerl, so that fine details of the
+spectral function can only be reconstructed including largelterms. The smeared spectrum
+ρσsmr(ω) can be obtained more easily as
+ρσsmr(ω) =
+X
+l
+Sl(ω)Cl/σl,whereS l(ω) =
+Z
+dω′Sσsmr(ω,ω′)Vl(ω′).(8)
+When the smearing kernelS σsmr(ω,ω′) does not contain a rapidly changing component
+probed by largel’s,S l(ω) is suppressed and the enhanced error by the factor 1/σ l is com-
+pensated.
+This observation leads to a systematic strategy to represent the lattice correlator and the
+smearing kernel on the SVD basis. Reliable extraction of the smeared spectrum is limited to
+the cases where the statistical error ofC l is sufficiently small when multiplied byS l(ω)/σl.
+This gives an explicit condition on what can be extracted from the lattice correlators.
+The use of the SVD basis for the analysis of imaginary-time correlator has been introduced
+in condensed matter physics [19–21] for the finite-temperature kernele −ωt/(1±e −βt). (See
+4
+
+===== PAGE 5 =====
+also an even earlier work [22].) In this work, we focus on the zero-temperature kernele−ωt and
+enjoy a simplification as the range oftandωincreases. That is, the SVD in our formulation
+approaches the Mellin transform recently introduced in [23]. Thus, we can define a set of
+basis functions independent of the lattice details, such as the Euclidean time extent and
+discretization.
+This paper is organized as follows. In Section II, we formulate the SVD basis to approxi-
+mate the spectral observables. Section III discusses a relation between the Mellin transform
+and the SVD on a discrete lattice with finite time extent. It turns out that the SVD is iden-
+tical to the Mellin transform in the limit of continuous and infinitely large time extent. In
+Section IV we test our approach using a set of mock data, and Section V discusses how the
+truncation error is suppressed for the smeared spectral density. A summary and perspective
+are given in Section VI.
+II. SINGULAR V ALUE DECOMPOSITION OF LAPLACE KERNEL
+Consider a lattice correlatorC(t) int∈[t min,t max], and assume that the spectrumρ(ω) is
+limited in the rangeω∈[ω min,ω max]. For a discrete set oftandωdefined ast i =t min +i∆t
+withi= 1,...,N t andω j =ω min +j∆ ω withj= 1,...,N ω, the spectral representation of
+correlator (1) can be viewed as a matrix equation:
+˜C(ti) =
+NωX
+j=1
+˜Lij ˜ρ(ωj),(9)
+where each quantity is normalized as ˜C(ti)≡ √∆tC(ti), ˜ρ(ωj)≡ √∆ωρ(ωj), and ˜Lij =
+√∆te−tiωj
+√∆ω. Here, ˜Lis aN t×N ω rectangular matrix, which represents the Laplace
+kernel on a discrete grid.
+The SVD of ˜Lis written as
+˜Lij =
+rank(˜L)−1X
+l=0
+˜Ul(ti)σl ˜Vl(ωj) (10)
+with orthonormal vectors ˜Ul(ti) and ˜Vl(ωj), each of which is associated with a singular
+valueσ l. To recover the Laplace kernel without the extra normalization one should use
+Ul = ∆−1/2
+t ˜Ul andV l = ∆−1/2
+ω ˜Vl, thusL ij =Prank(L)−1
+l=0 Ul(ti)σlVl(ωj). The orthonormality
+5
+
+===== PAGE 6 =====
+of ˜Ul and ˜Vl,
+NtX
+i=1
+˜Ul(ti) ˜Ul′(ti) =δ l,l′ and
+NωX
+j=1
+˜Vl(ωj) ˜Vl′(ωj) =δ l,l′,(11)
+holds with this normalization. We assume that the (real and positive) singular values are
+sorted in descending order (σ 0≥σ 1≥...). The vectors ˜Ul(ti) and ˜Vl(ωj) represent oscil-
+lating functions oftandω, respectively, and the number of nodes is given byl, as we shall
+see below.
+We can write (9) in the form
+˜C(ti) =
+rank(˜L)−1X
+l=0
+˜Ul(ti)σlρl,(12)
+whereρ l represents thel-th mode ofρ(ω) in the SVD basis, that is
+ρl =
+NωX
+j=1
+˜Vl(ωj)˜ρ(ωj).(13)
+When the correlator is given instead,ρ l is determined as
+ρl = 1
+σl
+NtX
+i=1
+˜Ul(ti) ˜C(ti).(14)
+Since the singular value appears in the denominator, relatively small components of ˜Cin
+the basis of ˜Ul are enhanced together with their noise.
+In Fig. 1, we plot the singular valuesσ l of ˜Lwith ∆ t = ∆ω = 0.05,t min =ω min = 0.1
+andt max =ω max = 50.1 We observe an exponential decrease ofσ l withl. Aroundl∼
+40–50, it flattens reaching the limit of double precision; even before, smallσ l’s are results of
+substantial cancellations. Some of the corresponding vectors ˜Ul(t) and ˜Vl(ω) are plotted in
+Figs. 17, 18, 19 in Appendix A. They show oscillations with frequency determined byl.
+We apply SVD to construct an approximation ofρ(ω) by truncating the series
+˜ρ(approx)(ωj) =
+rank(˜L)−1X
+l=0
+˜Vl(ωj)ρl (15)
+at some order ofl. Even in the best case scenario, we must truncate atl=N tr, whereσ l
+reaches the limit of double precision, because the value ofρ l beyond that is not reliable.
+6
+
+===== PAGE 7 =====
+0 10 20 30 40 50 60
+l
+10 16
+10 14
+10 12
+10 10
+10 8
+10 6
+10 4
+10 2
+100
+l
+FIG. 1. The singular valuesσ l of a square ˜Lwith ∆ t = ∆ω = 0.05,t min =ω min = 0.1 and
+tmax =ω max = 50.1. They are plotted in decreasing order of singular values.
+In practice, we truncate where the statistical noise ofC(t) disrupts the signal ofρ l. The
+truncation error can be bound as
+δ˜ρ(Ntr)(ωk) =|˜ρ(ωk)−˜ρ(Ntr)(ωk)|=
+
+rank(˜L)−1X
+l=Ntr
+˜Vl(ωk)ρl
+
+≤
+rank(˜L)−1X
+l=Ntr
+| ˜Vl(ωk)|·|ρ l|(16)
+using the triangle inequality. Since the basis ˜Vl(ω) represents a function ofωthat oscillates
+at a frequency ofO(l −1), the scaling ofρ l for largelis given by the most rapid transition
+region ofρ(ω). For example, for a Breit-Wigner-type spectrum with a width Γ the scaling
+would be likeρ l∼e−Γl. For aδ-function spectrum, on the other hand,ρ l remains constant
+for largel. The estimate (16) gives the upper limit of the error according to the expected
+shape of the spectrum. Obviously, for the constantρ l corresponding to theδ-function-like
+spectrum, the error bound would be too loose to be useful.
+There are physical observables that are written as an integral ofρ(ω) in some energy
+range. Consider a quantityXin general,
+X=
+Z ωmax
+ωmin
+dωK(ω)ρ(ω),(17)
+7
+
+===== PAGE 8 =====
+whereK(ω) is a known kernel to defineX. Using SVD, we can approximateXas
+X≈
+Ntr−1X
+l=0
+ρl
+"NωX
+j=1
+˜K(ωj) ˜Vl(ωj)
+#
+=
+Ntr−1X
+l=0
+ρl ˜Kl,(18)
+where the series is truncated atl=N tr−1, and the coefficients are constructed as ˜Kl =
+PNω
+j=1
+˜K(ωj) ˜Vl(ωj) and ˜K(ωj) =√∆ωK(ωj). The component of the spectrumρ l is obtained
+from the correlator, while ˜Kl is calculated simply once the SVD ofe −ωt is given. It cor-
+responds to an approximation of the kernel functionK(ω) in terms of the basis functions
+˜Vl(ω),i.e.K(ω)≃ PN
+l=0
+˜Kl ˜Vl(ω). The truncation induces systematic uncertainty, which is
+estimated by
+δX (Ntr)≤
+rank(˜L)−1X
+l=Ntr
+| ˜Kl||ρl|.(19)
+This is suppressed more whenK(ω) is a slowly varying function, because then| ˜Kl|decreases
+exponentially.
+This construction is common for any choice of kernel functionK(ω). The lattice correlator
+providesρ l, while the kernel part ˜Kl is built independently of the lattice data. Therefore, for
+example, the smeared spectral function around any value ofωwith any choice of smearing
+is constructed from the same set ofρ l’s. The precision that can be obtained is determined
+by the rate of exponential decrease of|K l|for that particular choice, as well as that of|ρ l|.
+This observation implies an inherent limitation in the reconstruction ofρ(ω) (or its
+smeared version) fromC(t). The SVD ofe −ωt extracts the relevant modes ofC(t) on a
+certain orthogonal basis. Since its singular value decreases exponentially for largel, typi-
+cally only 10-20 modes are numerically significant due to the noise in the data. The recon-
+struction ofXdiscussed above is possible only when the kernelK(ω) is well approximated
+within this limited space. Extrapolation to vanishing smearing width,e.g.to obtain the
+unsmeared spectrum, necessarily involves the uncertainty from the smaller singular-value
+modes, since the number of available modes is unchanged. This limitation must be reflected
+in the systematic error for the smeared spectrum or other quantities obtained by the energy
+integral.
+8
+
+===== PAGE 9 =====
+III. CONNECTION BETWEEN SVD AND THE MELLIN TRANSFORM
+For continuous and infinitely large time duration,i.e.t∈[0,∞) andω∈[0,∞), the
+decomposition of the Laplace kernele −ωt is given using the Mellin transform [23], which is
+based on mathematical literature [24–26]. Here, we briefly review this formalism and then
+discuss the relation to the SVD introduced in the previous section.
+Introducing a new variables∈R, the Laplace kernel is decomposed as
+e−ωt =
+Z ∞
+−∞
+dsus(ω)λ∗
+sus(t),(20)
+where the eigenvalues are given asλs = Γ( 1
+2 +is) using the Euler Gamma function Γ(z). The
+Mellin basis function isu s(t) =e isln(t)/
+√
+2πt. Althoughλ s,u s(ω) andu s(t) are complex-
+valued functions, the integral (20) is real; we can write an equivariant formula with real
+eigenvalues and basis functions as
+e−ωt =
+Z ∞
+0
+ds|λs|
+ 
+u+(θ)
+s (ω)u+(θ)
+s (t)−u −(θ)
+s (ω)u−(θ)
+s (t)
+
+(21)
+with
+|λs|=
+r π
+cosh(πs).(22)
+Absorbing the complex phase ofλ s, the even (+) and odd (−) basis functions are defined as
+u+(θ)
+s (x) =
+cos
+
+sln(x)− θ(s)
+2
+
+√πx , u−(θ)
+s (x) =
+sin
+
+sln(x)− θ(s)
+2
+
+√πx ,(23)
+wherex=ωort, andθ(s) = arg(λ s). In terms of a logarithmic variableX= lnx,
+the Mellin basis essentially corresponds to{cos(sX),sin(sX)}, which is analogous to the
+Fourier-transform.
+In order to establish the connection with the SVD discussed in the previous section,
+we consider the decomposition (21) in a finite interval defined byt min =ω min≡x min and
+tmax =ω max≡x max. First, the finite interval would quantizes, which should correspond to
+the indexlin the SVD ofe −ωt. In analogy to the Fourier transform, one expects a sequence
+ofsto bes l∼l∆swith a spacing ∆s∼π/ln(x max/xmin). Then, it leads to an ansatz
+|λsl|≈σ l, whereσ l is the sigular value obtained by the SVD ofe −ωt. For largex max/xmin,
+9
+
+===== PAGE 10 =====
+sl would fill their gap continuously as ∆s→0. We approximateu ±(θ)
+s (x) in the interval as
+u+(θ)
+sl (x)≈
+s
+2
+xln(x max/xmin) cos
+
+sln x√xmaxxmin
+− θ(sl)
+2 +lπ
+
+,(24)
+u−(θ)
+sl (x)≈−
+s
+2
+xln(x max/xmin) cos
+
+sln x√xmaxxmin
+− θ(sl)
+2 +lπ+ π
+2
+
+(25)
+in analogy to the Fourier-transform. It has the form (A l/√x) cos (Bl ln(x) +Cl). With the
+numerical data ofU l∝
+p
+1/xcos(Bl ln(x) +Cl), we evaluateB l andC l, which correspond
+to|λ s|andθ(s) as
+Bl =s l, Cl =
+
+
+
+−θ(sl)
+2 ,evenl
+−θ(sl)
+2 + π
+2,oddl
+(26)
+modulo 2πand a constant shift of the phase.
+Assuming thatU l is approximated by (24) and (25), we evaluates l andθ(s l) by nu-
+merically fittingU l. (Here, we are referring the unrenormalizedU l, not ˜Ul.) Then,|λ sl|is
+evaluated using (22), so that we obtainλ sl =|λ sl|eiθ(sl) fromU l for a givenl. Thus, we can
+compare|λ s|with the corresponding singular valueσ l to confirm the correspondence.
+Let us first investigate how wellU l from the SVD is approximated by (24) and (25). We
+taket min =ω min = 0.1,t max =ω max = 100.1, ∆t = ∆ω≡∆ = 0.05, andN t =N ω. Fig. 2
+shows the rescaled basis functions
+p
+tln(t max/tmin)/2×U l(t) (blue) and the fit results with
+(Al/
+√
+t) cos (Bl ln(t) +Cl) (green) for severall’s. We take−1.2≤ln(t)≤+2.3 to fit the
+data. Similarly to the Fourier transform, thel-th basis function haslnodes. We observe
+that the rescaled basis function in the bulk can be well described by the cosine functions
+(24) or (25), while finding slight deviation for the edges due to boundary effects.
+We reconstruct|λsl|fromB l =s l as previously described and compare it withσl in Fig. 3.
+We observe thatσ l given by the SVD numerically reproduces|λ sl|(see Fig. 3 (left)). In the
+right panel, we plot the ratioσ l/|λsl|, with which we confirm that the agreement is within
+10% forl∈[1,15] for the choice of parameters given above.
+Fig. 4 presents the phaseθ(s l) (mod 2π) evaluated by (26) forl∈[1,15]. Each data point
+numerically reproduces the relation arg(λs) = arg[Γ( 1
+2 +is)] given by the Mellin transform.
+Even and oddl’s behave differently as indicated by (24) and (25). Recall thatλ s in (20)
+has a complex phase, which is absorbed into the phase shift of the basis functions in (21).
+10
+
+===== PAGE 11 =====
+2
+ 1
+ 0 1 2 3 4
+lnt
+1.0
+0.5
+0.0
+0.5
+1.0
+tln(tmax/tmin)
+2 U1(t)
+Alcos(Bllnt + Cl)
+2
+ 1
+ 0 1 2 3 4
+lnt
+1.0
+0.5
+0.0
+0.5
+1.0
+tln(tmax/tmin)
+2 U2(t)
+Alcos(Bllnt + Cl)
+2
+ 1
+ 0 1 2 3 4
+lnt
+1.0
+0.5
+0.0
+0.5
+1.0
+tln(tmax/tmin)
+2 U4(t)
+Alcos(Bllnt + Cl)
+2
+ 1
+ 0 1 2 3 4
+lnt
+1.0
+0.5
+0.0
+0.5
+1.0
+tln(tmax/tmin)
+2 U7(t)
+Alcos(Bllnt + Cl)
+2
+ 1
+ 0 1 2 3 4
+lnt
+1.0
+0.5
+0.0
+0.5
+1.0
+tln(tmax/tmin)
+2 U10(t)
+Alcos(Bllnt + Cl)
+2
+ 1
+ 0 1 2 3 4
+lnt
+1.0
+0.5
+0.0
+0.5
+1.0
+tln(tmax/tmin)
+2 U13(t)
+Alcos(Bllnt + Cl)
+FIG. 2. Rescaled basis functions ofU l(t) from the SVD (blue) and the fit results (green). Each
+plot is obtained froml= 1 (upper left), 2 (upper right), 4 (middle left), 7 (middle right), 10 (lower
+left), and 13 (lower right).
+Overall, we confirm that the singular values and the orthogonal basis generated by the
+SVD reproduce the corresponding objects in the Mellin transform. Now, we investigate how
+the limit to the continuous and infinite interval is approached.
+11
+
+===== PAGE 12 =====
+0 5 10 15 20 25 30
+l
+10 8
+10 7
+10 6
+10 5
+10 4
+10 3
+10 2
+10 1
+100
+ l
+sl
+0 2 4 6 8
+sl
+0.80
+0.85
+0.90
+0.95
+1.00
+1.05
+1.10
+1.15
+1.20l/| sl|
+FIG. 3. Left:σ l obtained from SVD ofe−ωt (blue circle) and|λ sl|(green square) evaluated by (22)
+withB l forl∈[1,15]. Right: their ratioσ l/|λsl|.
+0 1 2 3 4 5 6 7 8
+sl
+0
+1
+2
+3
+4
+5
+6(s) (mod 2 )
+Even
+Odd
+FIG. 4.θ(s l) (mod 2π) fromC l. Theθ(s l) with even (odd)lis denoted by filled (open) symbols.
+The dashed line presents arg[Γ(1
+2+is)] (mod 2π), while the dotted shows arg[Γ(1
+2+is)]+π(mod 2π).
+We first consider the scaling ofλ sl with respect to varioust max =ω max. We chosetand
+ωsymmetrically; different choices are discussed later. The singular values (Fig. 16) and
+the basis functions (Figs. 17, 18, 19) are plotted fort max =ω max = 50.1, 75.1, 100.1 in
+Appendix A. Here, Fig. 5 shows the ratioσ l/|λsl|in the left panel, whileθ(s l) is shown in
+the right panel. The value ofs l for eachl, which is the horizontal axis, is nearly unchanged
+for differentt max =ω max for the low-lying modes plotted here. This is consistent with the
+observation that the low-lying eigenmodes plotted in Fig. 17 coincide for differentt max =
+ωmax and nearly vanish fort∼50. More detailed comparison of the eigenmodes with different
+12
+
+===== PAGE 13 =====
+0 2 4 6 8
+sl
+0.85
+0.90
+0.95
+1.00
+1.05
+1.10
+1.15l/| (sl)|
+tmax = max = 100.1
+tmax = max = 75.1
+tmax = max = 50.1
+0 1 2 3 4 5 6 7 8
+sl
+0
+1
+2
+3
+4
+5
+6
+7
+8(s) (mod 2 )
+tmax = max = 100.1
+tmax = max = 75.1
+tmax = max = 50.1
+FIG. 5. Left:σ l/|λsl|witht max =ω max = 100.1 (blue), 75.1 (green), and 50.1 (gray) forl∈[1,15].
+Right:θ(s l) (mod 2π). Even (odd)l’s are denoted by filled (open) symbols. We taket min =ω min =
+0.1, and ∆t = ∆ω≡∆ = 0.05.
+0 2 4 6 8
+sl
+0.85
+0.90
+0.95
+1.00
+1.05
+1.10
+1.15l/| (sl)|
+= 0.01
+= 0.05
+= 0.1
+0 2 4 6 8
+sl
+0
+1
+2
+3
+4
+5
+6
+7
+8(s) (mod 2 )
+= 0.01
+= 0.05
+= 0.1
+FIG. 6. Left:σ l/|λsl|obtained from ∆ = 0.01 (blue), 0.05 (green), and 0.1 (gray) forl∈[1,15].
+Right:θ(s l) (mod 2π). Even (odd)l’s are plotted by filled (open) symbols. We taket min =ω min =
+0.1, andt max =ω max = 100.1.
+tmax =ω max is found in Appendix A (Fig. 17), where one can see that the low-modes are
+rarely affected by the largetregion probably because the kernele −ωt is highly suppressed.
+In Fig. 5 we observe a good agreement with the Mellin transform for bothσ l/|λsl|and
+θ(sl). Some deviation of a few % is found forσ l/|λsl|, but this is attributed to the range of
+tmin =ω min as discussed below.
+Next, we examine the dependence on ∆≡∆ t = ∆ω. We fixt max =ω max = 100.1. In
+13
+
+===== PAGE 14 =====
+0 2 4 6 8
+sl
+0.85
+0.90
+0.95
+1.00
+1.05
+1.10
+1.15l/| (sl)|
+tmin = min = 0.01
+tmin = min = 0.05
+tmin = min = 0.1
+0 1 2 3 4 5 6 7 8
+sl
+0
+1
+2
+3
+4
+5
+6
+7
+8(s) (mod 2 )
+tmin = min = 0.01
+tmin = min = 0.05
+tmin = min = 0.1
+FIG. 7. Left:σ l/|λsl|obtained fromt min = 0.01 (blue), 0.05 (green), and 0.1 (gray) forl∈[1,15].
+Right:θ(s l) (mod 2π). Even (odd)l’s are denoted by filled (open) symbols. We taket max =
+ωmax = 100.1, and ∆t = ∆ω≡∆ = 0.05.
+Fig. 6, we plotσ l/|λsl|(l∈[1,15]) for ∆ = 0.01 (blue), 0.05 (green) and 0.1 (gray) on the
+left panel, whileθ(s l) is shown on the right panel. The agreement with the expectation from
+the Mellin transform is confirmed.
+Finally, Fig. 7 shows a similar comparison witht min =ω min = 0.01, 0.05 and 0.1. The
+tmax =ω max is set to 100.1. Again, the expectation from the Mellin transform is well
+reproduced. With smallert min =ω min one can access the smaller values ofsand the
+separation between neighboringl’s becomes narrower. It would eventually reproduce the
+continuoussast min =ω min →0. Remarkably, we observe that the smallt min =ω min
+improves the agreement ofσ l/|λ(sl)|with the Mellin transform. Witht min =ω min = 0.01,
+the deviation is much smaller than 1% for low-lying modess l ≲2.
+Through these observations, we have confirmed thatσ l,U l(ti) andV l(ωj) approach the
+formula (21) in the limits of ∆→0 andt min =ω min →0,t max =ω max → ∞. With
+finite but smallt min =ω min ≲0.01, low modes belows l ≲2 reproduce the relationσ=
+λs =
+p
+π/cosh(πs) rather precisely. This suffices in practical analysis becauseρ l can be
+determined well only for low modes due to the statistical noise ofC(t).
+When applying for the lattice data ofC(t), we would set ∆ t = 1 in the unit of lattice
+spacing, while ∆ ω should be kept small. Such asymmetric cases can be related to the
+symmetric one by a rescaling. Starting from the symmetric choice, ¯tmin = ¯ωmin = ¯∆≪1, we
+apply a scale transformationt=λ ¯t,ω=λ −1¯ωwithλ= 1/ ¯∆, so that ∆t = 1 and ∆ω = ∆2.
+14
+
+===== PAGE 15 =====
+With this transformation, ˜Ul(t) = 1√
+λ
+˜Ul(λ¯t) and ˜Vl(ω) =
+√
+λ ˜Vl(λ−1¯ω), where the prefactor
+√
+λ
+(−1)
+is assigned to adjust the normalization of the integral overtorω. By construction,
+to reach small energy scalesω≪1, one needs a correlator at long distancest≫1. One
+can even apply SVD for a rectangular matrixN t̸=N ω. In either case,σ l,U l(ti) andV l(ωj)
+should numerically reproduce the Mellin transform as long as ∆t∆ω is sufficiently small and
+(tmax/tmin)(ωmax/ωmin) is large enough.
+IV. SVD MODE DECOMPOSITION OF SPECTRAL DENSITY
+The properties of the singular values and associated basis vectors described in the previous
+section suggest a new strategy to approximate smeared spectral functions as outlined in the
+Introduction. Since it has a definite limit for the continuous and infinite range oftandω, it
+can be defined independently of the lattice spacing and the temporal extent of the lattice.
+In the limit of infinite range, it goes back to the Mellin transform proposed in [23].
+We test the method using mock data derived from a givenρ(ω) in [0.1,5.1] with ∆ ω =
+0.0005. We define a Breit-Wigner-type true function
+ρ(true)(ω;ω 0) = 1
+π
+2Γ
+(ω−ω 0)2 + Γ2,(27)
+A mock Euclidean correlatorC(t) is obtained by (1).
+Fig. 8 presentsρ l constructed directly fromρ(ω) using the basis vectors of SVD as (13)
+or throughC(t) as (14). We takeω 0 = 1.0, and the plots are for Γ = 0.1 (left) and 0.5
+(right). We observe that the SVD mode componentsρ l from two approaches agree precisely
+tol∼40. Recall thatσ l of ˜Lreaches the limit of double precision forl≥40, and the
+significant deviation beyondl∼40 is attributed to the limitation of numerical precision.
+When the width Γ is large, Γ = 0.5,ρ l rapidly decreases and nearly vanishes aroundl∼20,
+while the corresponding plot for Γ = 0.1 does not show the saturation atl∼40.
+The decrease in|ρ l|is typically exponential, as shown in Fig. 9, which plots a scaling of
+|ρl|for Γ = 0.5 (left) and 0.1 (right). Due to the limitation of double precision, the numbers
+beyondl≳39 are unreliable. However, with the resultsl≲38 one can draw an envelope
+such that|ρ l|≤A ρe−Bρl. The exponential slopeB ρ is steeper for larger Γ. Assuming that
+the exponential decrease observed in these plots continues beyondl= 39, we can estimate
+the truncation error by (16).
+15
+
+===== PAGE 16 =====
+0 10 20 30 40 50 60
+l
+0.6
+0.4
+0.2
+0.0
+0.2
+0.4
+0.6
+l
+=0.1
+( )
+C(t)
+0 10 20 30 40 50 60
+l
+0.6
+0.4
+0.2
+0.0
+0.2
+0.4
+l
+=0.5
+( )
+C(t)
+FIG. 8. SVD componentsρ l obtained fromρ(ω) (blue circle) and theC(t) (green square) for
+Γ = 0.1 (left) and 0.5 (right).
+0 10 20 30 40 50 60
+l
+10 5
+10 4
+10 3
+10 2
+10 1
+100
+| l|
+=0.1
+Positive
+Negative
+0 10 20 30 40 50 60
+l
+10 5
+10 4
+10 3
+10 2
+10 1
+100
+| l|
+=0.5
+Positive
+Negative
+FIG. 9.|ρ l|reconstructed fromC(t) for Γ = 0.1 (left) and 0.5 (right). The sign ofρ l >0 is
+indicated by the symbols,i.e.positive (negetive) by filled (open) symbols.
+Fig. 10 shows a comparison betweenρ (true)(ω) (blue line) andρ (approx)(ω) with (15) (green
+dot) using up tol= 39. We confirm thatρ (true)(ω) for Γ = 0.5 is precisely approximated,
+while an oscillation is observed for Γ = 0.1. This indicates that ˜Vl(ωj) in (15) up tol= 39
+does not have enough resolution to precisely trace the peak structure.
+With the assumed scaling of|ρ l|, the truncation error inρ (approx)(ω) can be estimated by
+(16). We evaluate the constantsA ρ andB ρ that satisfy|ρ l|≲A ρe−Bρl using the data for
+l∈[20,40]. Fig. 11 shows plots ofρ (approx)(ω) together with an estimate of the truncation
+error. The truncation error for Γ = 0.5 is not significant;ρ (approx)(ω) approximatesρ (true)(ω)
+16
+
+===== PAGE 17 =====
+0 1 2 3 4 5
+0.0
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+( )
+Up to l = 39
+True
+Approx
+FIG. 10. A comparison between the trueρ(ω) (blue line) and the approximated one with (15)
+(green dot) using up tol= 39. Each plots is obtained with Γ = 0.1 (left) and 0.5 (right).
+FIG. 11.ρ(ω) (green dot) with an estimate of truncation error using up tol= 39, compared with
+the true function (blue line). The data with Γ = 0.1 (left) and 0.5 (right).
+within a few percent. On the other hand, a large error band appears for Γ = 0.1. The
+unphysical oscillation seen in Fig. 10 is masked by the truncation error, and the error
+explodes towardω→0.
+Note that our approach to estimate the systematic error assumes only the scaling of|ρ l|
+and the triangle inequality. Therefore, it provides an upper bound of the truncation error.
+A more realistic error estimate may be obtained by further assuming a flat distribution
+ofρ l between±A ρe−Bρl. A similar approach has been taken in the analysis of inclusive
+semileptonic decays for the amplitude of Chebyshev polynomials [27, 28].
+17
+
+===== PAGE 18 =====
+0 1 2 3 4 5
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+( )
+Up to l = 9
+True
+Approx
+FIG. 12.ρ(ω) (green square) with Γ = 0.5 using up tol= 9, compared with the true one (blue
+circle).
+In practice, due to statistical noise, the SVD componentsρ l would not be obtained up
+to the limit of double precision. If instead determined only up tol= 9, the error bound
+becomes much looser even for Γ = 0.5 as shown in Fig. 12. That is a motivation to consider
+the smeared spectrum, which is the subject of the following section.
+V. SMEARED SPECTRUM
+We consider the smeared spectrum defined as a convolution integral with some kernel
+functionS σsmr(ω,ω′), which includes a parameterσ smr that controls the size of the smearing.
+It can be expanded using the SVD basis as
+ρσsmr(ω) =
+Z ∞
+0
+dω′Sσsmr(ω,ω′)ρ(ω)
+≈
+Ntr−1X
+l=0
+ρl
+"NωX
+j=1
+∆ωSσsmr(ω,ωj)Vl(ωj)
+#
+=
+Ntr−1X
+l=0
+ρlSσsmr,l(ω).(28)
+The SVD componentsS σsmr,l(ω) are defined by the expression in the square bracket, whileρ l
+is given by the physical spectrum as discussed in the previous section. Therefore, this formula
+provides a separation of contributions: those of the physical spectrumρ l and those of the
+smearing kernelS σsmr,l(ω). Although the form ofS σsmr(ω,ω′) is arbitrary, for demonstration
+purposes, let us assume a specific form
+Sσsmr(ω,ω′) = 1
+N
+ 1
+π
+2σsmr
+(ω−ω ′)2 +σ 2
+smr
+.
+
+(29)
+18
+
+===== PAGE 19 =====
+0.0 0.2 0.4 0.6 0.8 1.0
+smr
+0.0
+0.1
+0.2
+0.3
+0.4BS
+FIG. 13. ExponentB S of the exponential falloff of|S σsmr,l(ω)|≤A Se−BSl.
+with a normalization factorN.
+The truncation error of (28) is controlled by how|ρ l|and|S σsmr,l(ω)|decrease for largel.
+As discussed in the previous section, the exponential falloff of|ρ l|depends on the functional
+form of the physical spectrumρ(ω). On the other hand, the exponential falloff of|S σsmr,l(ω)|
+is controlled byσ smr. In Fig. 13 we plot the exponentB S that characterizes the exponential
+form as|S σsmr,l(ω)|≤A Se−Bsl. As an example, we takeω= 1.0 but the result is similar for
+otherω’s.
+From Fig. 13 we observe thatB S increases linearly withσ smr. Combined with the scaling
+of|ρ l|, the truncation error of (28) is controlled by the exponential forme −(Bρ+BS)l, and the
+sum tol→∞givesA ρASe−(Bρ+BS)Ntr/(1−e −(Bρ+BS)). This explains how smearing sup-
+presses the truncation error. When suppression by the spectrum itselfe −Bρl is not sufficient,
+one can add an extra source of suppression by introducinge −BSl at the cost of modifying
+the problem.
+For illustration, we consider the physical spectrumρ(ω) obeying the Breit-Wigner dis-
+tribution (27) withω 0 = 1.0 and Γ = 0.5. We constructρ l fromC(t) with (1) and (14)
+using SVD. With a truncation atN tr = 9, we obtain the original estimate of the physical
+spectrum shown in Fig. 12 together with the error bound. The scaling of|ρ l|givesB ρ =
+0.21.
+Fig. 14 shows the smeared spectrumρ σsmr(ω) withσ smr = 0.1 (top), 0.5 (middle), and
+1.0 (bottom). The relative error to the true function is shown in the right panels. As
+anticipated, the error is significantly reduced with smearing.
+19
+
+===== PAGE 20 =====
+0 1 2 3 4 5
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0smr( )
+Up to l = 9
+True
+Approx
+FIG. 14.ρ (approx)(ω) (green square) with truncation error, and the true function (blue circle).
+Each plot is obtained withσ smr = 0.1 (top), 0.5 (middle) and 1.0 (bottom). Their relative error is
+shown in the right panels.
+20
+
+===== PAGE 21 =====
+0 1 2 3 4 5
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0smr( )
+True
+Ntr = 10
+Ntr = 15
+Ntr = 20
+0 1 2 3 4 5
+1.00
+0.75
+0.50
+0.25
+0.00
+0.25
+0.50
+0.75
+1.00
+rel( )
+Ntr = 10
+Ntr = 15
+Ntr = 20
+FIG. 15.ρ (approx)(ω) forσ smr = 0.5 obtained withN tr = 10 (green), 15 (violet), 20 (orange), and
+the true one (blue circle).
+The approximation improves with largerN tr. Fig. 15 showsρ (approx)
+σsmr (ω) forσ smr = 0.5
+obtained withN tr = 10 (green), 15 (violet), 20 (orange). With this smearing width, the
+truncation error is suppressed to a few % level if one can includeN tr = 20 terms.
+VI. SUMMAR Y
+Reconstruction of spectral function from Euclidean lattice correlators remains a difficult
+problem. As a linear system, it corresponds to the inversion of a matrix made ofe −ωt for
+a discrete set oftandω. The inversion is numerically ill-defined when the matrix has
+extremely small eigenvalues. In order to regulate the problem, we introduce the SVD of the
+kernele−ωt as a mathematical tool.
+The SVD defines singular values and associated basis vectors. Smaller singular values
+have more oscillatory basis vectors, corresponding to more detailed structure of the spectral
+function. For inversion, only terms that have relatively large singular values can be kept,
+while terms with too small singular values suffer from enhanced noise. By truncating the
+SVD basis, one can obtain a numerically stable estimate of the spectral function, albeit with
+sometimes significant truncation errors.
+The truncation error can be estimated transparently within the SVD approach, under
+the assumption that the SVD components of the spectral function decrease exponentially
+for smaller singular values. A large error is expected when the resulting spectral function
+21
+
+===== PAGE 22 =====
+contains narrow peaks and the SVD components does not decay rapidly. The smeared
+spectral function could be considered to tame the large truncation error; the remaining error
+can be rigorously estimated again using the exponential suppression of the SVD components
+of the smearing kernel. A similar but slightly different error estimate is available with the
+Chebyshev approximation approach [27].
+The SVD basis is smoothly connected to the Mellin basis discussed in [23] in the limit
+of vanishing temporal lattice spacing and infinite temporal separation. Therefore, SVD
+provides a natural means for implementing the Mellin transform for the lattice data obtained
+at finite temporal extent. It would be interesting to define smeared physical quantities that
+can be accessed by experiments using this setup so that direct comparison with the lattice
+calculation is possible.
+Overall, the SVD approach provides a transparent basis for understanding the problem
+in the reconstruction of the spectral function and for estimating systematic errors. The
+core of the problem lies in the fact that the amount of information carried by the Euclidean
+correlator is inherently limited, and it cannot be circumvented by any clever method without
+introducing extra assumptions.
+The SVD basis can be used to evaluate the smeared spectrum or any weighted integrals
+of the spectral function, such as the inclusive decay rate of heavy hadrons [29]. It would
+provide equally effective methods as alternatives,e.g.HLT or Chebyshev polynomials.
+The advantage of the SVD approach is that it allows a rigorous estimate of the truncation
+error. In this respect, a comparison to other approaches would be interesting. The limit of
+vanishing smearing width is hard to reach unless some additional assumption is introduced.
+There would be a number of other numerical applications of the method. In addition to
+inclusive decay rates and associated moments, the filtering of Euclidean correlators may open
+up a variety of new applications [30]. Reconstruction of Minkowski transition amplitudes is
+another area of interesting new possibilities [31, 32].
+With finite temperature, the kernel function must be modified, but the same strategy can
+be applied. An interesting application would be the QCD transport coefficients, including
+the shear viscosity that characterizes the property of quark-gluon plasma [33–35]. The
+problem of taking the limit of vanishing smearing width remains also in this case.
+22
+
+===== PAGE 23 =====
+ACKNOWLEDGMENTS
+R.T. is supported in part by JSPS KAKENHI Grant Number JP25KJ0404. The works
+of S.H. are supported in part by JSPS KAKENHI Grant Numbers 22H00138.
+23
+
+===== PAGE 24 =====
+0 10 20 30 40 50 60
+l
+10 16
+10 14
+10 12
+10 10
+10 8
+10 6
+10 4
+10 2
+100
+l
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+FIG. 16. Singular valuesσ l fort max =ω max = 10.1 (blue), 50.1 (orange), and 100.1 (green). The
+other parameters aret min =ω min = 0.1 and ∆ = 0.05.
+Appendix A: Singular values and basis vectors
+Singular valuesσl and basis vector ˜Ul and ˜Vl defined for ˜Lwitht min =ω min, ∆t = ∆ω≡∆
+andN t =N ω are summarized. Here, we taket min =ω min = 0.1 and ∆ = 0.05. Fig. 16 shows
+σl fort max =ω max = 50.1, 75.1, 100.1. The dependence ont max =ω max is insignificant; a
+slight difference is found for the smallestt max =ω max = 50.1.
+Figs. 17 and 18 show the basis functionsU l(ti) = ( ˜U)li/
+√
+∆ andV l(ωj) = ( ˜Vt)lj/
+√
+∆ for
+l= 0, 1, 2 andl= 8, 9, 10, respectively. We do not observe any significant dependence on
+tmax =ω max. Similar plots forl= 19, 20, 21 are shown in Fig. 19.
+∗ E-mail: rtsuji@post.kek.jp
+[1] M. Bertero, C. D. Mol, and E. R. Pike, Inverse Problems1, 301 (1985), URLhttps://doi.
+org/10.1088/0266-5611/1/4/004.
+[2] M. Bertero, C. D. Mol, and E. R. Pike, Inverse Problems4, 573 (1988), URLhttps://doi.
+org/10.1088/0266-5611/4/3/004.
+[3] Y. Nakahara, M. Asakawa, and T. Hatsuda, Phys. Rev. D60, 091503 (1999), hep-lat/9905034.
+[4] M. Asakawa, T. Hatsuda, and Y. Nakahara, Prog. Part. Nucl. Phys.46, 459 (2001), hep-
+lat/0011040.
+[5] J. Otsuki, M. Ohzeki, H. Shinaoka, and K. Yoshimi, Journal of the Physical Society of Japan
+24
+
+===== PAGE 25 =====
+10 1
+ 100 101 102
+t
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+1.4U0(t)
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+1.4V0( )
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+t
+2.0
+1.5
+1.0
+0.5
+0.0
+U1(t)
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+0.0
+0.5
+1.0
+1.5
+2.0V1( )
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+t
+0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+U2(t)
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+0.5
+0.0
+0.5
+1.0
+1.5
+2.0
+V2( )
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+FIG. 17.U l(ti) (left) andV l(ωj) (right) forl= 0, 1, 2. Plots are witht max =ω max = 50.1 (blue),
+75.1 (orange), and 100.1 (green), whilet min =ω min = 0.1 and ∆ = 0.05 are fixed.
+89, 012001 (2020), 1911.04116, and relevant references therein.
+[6] E. Itou and Y. Nagai, JHEP07, 007 (2020), 2004.02426.
+[7] Y. Burnier and A. Rothkopf, Phys. Rev. Lett.111, 182003 (2013), 1307.6106.
+[8] L. Del Debbio, A. Lupo, M. Panero, and N. Tantalo, Eur. Phys. J. C85, 185 (2025),
+25
+
+===== PAGE 26 =====
+10 1
+ 100 101 102
+t
+1.5
+1.0
+0.5
+0.0
+0.5
+1.0
+U8(t)
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+1.5
+1.0
+0.5
+0.0
+0.5
+1.0
+V8( )
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+t
+1.0
+0.5
+0.0
+0.5
+1.0
+1.5
+U9(t)
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+1.5
+1.0
+0.5
+0.0
+0.5
+1.0
+V9( )
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+t
+1.0
+0.5
+0.0
+0.5
+1.0
+U10(t)
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+1.0
+0.5
+0.0
+0.5
+1.0
+V10( )
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+FIG. 18. Same as Fig. 17 but forl= 8, 9, 10.
+2409.04413.
+[9] T. Bergamaschi, W. I. Jay, and P. R. Oare, Phys. Rev. D108, 074516 (2023), 2305.16190.
+[10] S. Fields and N. Christ, Phys. Rev. D113, 054502 (2026), 2510.12136.
+[11] L. Kades, J. M. Pawlowski, A. Rothkopf, M. Scherzer, J. M. Urban, S. J. Wetzel, N. Wink,
+and F. P. G. Ziegler, Phys. Rev. D102, 096001 (2020), 1905.04305.
+26
+
+===== PAGE 27 =====
+10 1
+ 100 101 102
+t
+1.0
+0.5
+0.0
+0.5
+1.0
+U19(t)
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+1.0
+0.5
+0.0
+0.5
+1.0
+V19( )
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+t
+1.0
+0.5
+0.0
+0.5
+1.0
+U20(t)
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+1.0
+0.5
+0.0
+0.5
+1.0
+V20( )
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+t
+1.0
+0.5
+0.0
+0.5
+1.0
+U21(t)
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+10 1
+ 100 101 102
+1.0
+0.5
+0.0
+0.5
+1.0
+V21( )
+tmax = max = 50.1
+tmax = max = 75.1
+tmax = max = 100.1
+FIG. 19. Same as Fig. 17 but forl= 19, 20, 21.
+[12] J. Horak, J. M. Pawlowski, J. Rodr´ ıguez-Quintero, J. Turnwald, J. M. Urban, N. Wink, and
+S. Zafeiropoulos, Phys. Rev. D105, 036014 (2022), 2107.13464.
+[13] M. Buzzicotti, A. De Santis, and N. Tantalo, Eur. Phys. J. C84, 32 (2024), 2307.00808.
+[14] G. Aarts, K. Fukushima, T. Hatsuda, A. Ipp, S. Shi, L. Wang, and K. Zhou, Nature Rev.
+Phys.7, 154 (2025), 2501.05580.
+27
+
+===== PAGE 28 =====
+[15] M. Hansen, A. Lupo, and N. Tantalo, Phys. Rev. D99, 094508 (2019), 1903.06476.
+[16] G. Bailas, S. Hashimoto, and T. Ishikawa, PTEP2020, 043B07 (2020), 2001.11779.
+[17] C. Alexandrou et al. (Extended Twisted Mass Collaboration (ETMC)), Phys. Rev. Lett.130,
+241901 (2023), 2212.08467.
+[18] A. Barone, S. Hashimoto, A. J¨ uttner, T. Kaneko, and R. Kellermann, JHEP07, 145 (2023),
+2305.14092.
+[19] C. E. Creffield, E. G. Klepfish, E. R. Pike, and S. Sarkar, Phys. Rev. Lett.75, 517 (1995),
+URLhttps://link.aps.org/doi/10.1103/PhysRevLett.75.517.
+[20] H. Shinaoka, J. Otsuki, M. Ohzeki, and K. Yoshimi, Phys. Rev. B96, 035147 (2017), URL
+https://link.aps.org/doi/10.1103/PhysRevB.96.035147.
+[21] N. Chikano, J. Otsuki, and H. Shinaoka, Phys. Rev. B98, 035104 (2018), URLhttps:
+//link.aps.org/doi/10.1103/PhysRevB.98.035104.
+[22] S. Tominaga, Nuclear Instruments and Methods in Physics Research Section A: Accelerators,
+Spectrometers, Detectors and Associated Equipment243, 530 (1986), ISSN 0168-9002, URL
+https://www.sciencedirect.com/science/article/pii/0168900286909927.
+[23] M. Bruno, L. Giusti, and M. Saccardi, Phys. Rev. D111, 094515 (2025), 2407.04141.
+[24] R. Bellman and R. Roth, The Laplace Transform, Modern Applied Mathematics Series
+(World Scientific, 1984), ISBN 9789971966737, URLhttps://books.google.co.jp/books?
+id=roFjH53691wC.
+[25] J. G. McWhirter and E. R. Pike, Journal of Physics A: Mathematical and General11, 1729
+(1978), URLhttps://doi.org/10.1088/0305-4470/11/9/007.
+[26] C. L. Epstein and J. Schotland, SIAM Review50, 504 (2008),
+https://doi.org/10.1137/060657273, URLhttps://doi.org/10.1137/060657273.
+[27] R. Kellermann, Z. Hu, A. Barone, A. Elgaziari, S. Hashimoto, T. Kaneko, and A. J¨ uttner,
+Phys. Rev. D112, 014501 (2025), 2504.03358.
+[28] R. Kellermann, A. Barone, A. Elgaziari, S. Hashimoto, Z. Hu, A. J¨ uttner, and T. Kaneko
+(2026), 2604.22201.
+[29] P. Gambino and S. Hashimoto, Phys. Rev. Lett.125, 032001 (2020), 2005.13730.
+[30] M. Bruno and M. T. Hansen, JHEP06, 043 (2021), 2012.11488.
+[31] J. Bulava and M. T. Hansen, Phys. Rev. D100, 034521 (2019), 1903.11735.
+[32] R. Frezzotti, N. Tantalo, G. Gagliardi, F. Sanfilippo, S. Simula, and V. Lubicz, Phys. Rev. D
+28
+
+===== PAGE 29 =====
+108, 074510 (2023), 2306.07228.
+[33] A. Hosoya, M.-a. Sakagami, and M. Takao, Annals Phys.154, 229 (1984).
+[34] E.-k. Wang, U. W. Heinz, and X.-f. Zhang, Phys. Rev. D53, 5978 (1996), hep-ph/9509331.
+[35] H. B. Meyer, Phys. Rev. D76, 101701 (2007), 0704.1801.
+29

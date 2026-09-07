@@ -1,0 +1,937 @@
+===== PAGE 1 =====
+1 Main thread of the algorithm
+The full cutting algorithm is quite complicated. However, it contains a main thread that is much simpler,
+and many of the complications actually come from the additional structures and conditions that have to
+be added to this main thread. In this section, we present the proof in a much simplified scenario, which
+basically isolates this main thread. The additions needed in full generality, and the reduction to this
+simplified case, will be discussed in Section 1.5.
+It is useful to keep in mind the following facts and conventions about molecules:
+• We often refer to M′⊆ M as a (sub-)molecule by regarding any bond between M′ and M\M′ as a
+free end in M′. Also, once we cut out any elementary component S, we will ignore it for the rest
+of the cutting algorithm and consider the molecule M\S only.
+• An atom m is a parent (resp. child) of another atom n if m is connected to n by a bond with m
+being above (resp. below) n. We say m is a descendant (resp. ancestor) of n if m is obtained by
+iteratively taking children (resp. parents) starting from n. Note that this is a monotonic process,
+i.e. one cannot get back to the start by iteratively taking parents or iteratively taking children.
+• If we cut any atom n as free, then this introduces a bottom fixed end at each parent of n (if exists),
+and a top fixed end at each child of n (if exists). Recall also that each atom has at most 2 parents
+and at most 2 children.
+We start by defining the simplified scenario to be studied in this section.
+Definition 1.1. We say M is a simplified 2-layer model, if
+(1) M has no O-atoms, and we ignore all the degeneracies;
+(2) M is a 2-layer molecule M = MU∪ MD with an “up layer” MU and a “down layer” MD, and no
+atom in MD is parent of an atom in MU;
+(3) Each of MU and MD is a tree, has no fixed end, and the number of bonds connecting an atom in
+MU to an atom in MD, is at least ρ (where ρ is a fixed parameter; in the main nontrivial case we
+haveρ≫ 1).
+The goal is to cut M into elementary molecules (i.e. {3},{4} and{33} molecules, and{2} molecules
+with 2 top or 2 bottom fixed ends), such that
+#{33}− 10d· #{4}≥c·ρ, (1.1)
+where #{33} is the number of{33} molecules etc., and c is a positive constant.
+The proof of (1.1) for simplified 2-layer models, which exhibits the main thread of the full proof,
+is further divided into 3 cases, corresponding to toy models I–III defined below (for the purpose of
+presentation, we will consider both toy model I and toy model I plus, which is a natural extension of the
+former). This classification is based on the following two considerations:
+(1) Consider the set of atoms in MU that are connected to two atoms in MD by two bonds. Is this set
+big or small relative to ρ?
+(2) Consider all the atoms in MU that are connected to at least one atom in MD by at least one bond.
+Are they all connected to each other (among themselves, without using the other atoms in MU)?
+Or are they separated by other atoms in MU?
+1
+
+===== PAGE 2 =====
+The reason for considering these two questions will be clear later. For convenience, throughout this note
+we will refer to the atoms in (1) (those in MU that are connected to two atoms in MD) as 2-connections,
+and denote their number by # 2conn. We also define the set in (2) (the atoms in MU that are connected
+to some atom in MD) by X (note that|X| ≳ρ), and define the number of components of X (as defined
+in (2) above) by # comp(X).
+The four examples in Figure 1, which are examples of toy models I–III below, exactly correspond
+to different cases of two-layer molecules depending on different answers to the above questions. More
+precisely, we define a two-layer molecule to be:
+• Toy model I : if # 2conn = 0 and X = MU;
+• Toy model I plus : if # 2conn = 0 and # comp(X) < (100d)−1·|X| (no 2-connections, X has few
+components);
+• Toy model II : if # 2conn = 0 and # comp(X) ≥ (100d)−1·| X| (no 2-connections, X has many
+components);
+• Toy model III : if # 2conn≥ (100d)−1·|X| (many 2-connections).
+We split the first toy model case into Toy model I and I plus just to simplify the exposition. Note
+also that, the case when 0 < #2conn < (100d)−1·|X| is treated similarly to toy models I–II but with an
+extra step of removing 2-connections, see Section 1.5.5. As such, in later subsections, we will focus on
+how to treat each toy model by itself.
+The plan for this section is as follows. In Section 1.1 we consider the toy model I, whose proof
+(Proposition 1.6) involves the core arguments in our algorithm in its simplest form. In Section 1.2 we
+consider the toy model I plus, which is an extension of the toy model I, and can be treated in similar
+manners. However, here we need to introduce the idea of UP algorithm, which will play an important
+role in the later proofs. In Section 1.3 we consider the toy model II; this requires a different argument,
+which involves making a clever choice in the UP algorithm introduced above. In Section 1.4 we consider
+the toy model III, where we relies on a simpler argument, which again involves making suitable choices in
+the UP algorithm. Finally, in Section 1.5 we discuss the simplifications made in Definition 1.1 compared
+to the full generality case, as well as the additions needed to treat the full generality setting.
+In Table 1 below we list the different toy models, their defining properties, and the places in the
+note where they occur. In Table 2 we list the simplifications made in Definition 1.1 compared to the full
+generality case, as well as the additions needed to treat the full generality setting, and the places in the
+note where these additions are discussed.
+Case Property Location Algorithm name
+(1) Toy model I No 2-connections
+and X = MU
+Section 1.1 (Special case)
+(2) Toy model I plus No 2-connections
+X has few components Section 1.2 MAINUD
+(3) Toy model II No 2-connections
+X has many components Section 1.3 3COMPUP
+(4) Toy model III Many 2-connections Section 1.4 2CONNUP/DN
+Table 1: The different toy models and their definitions, the places where they occur and the corresponding
+names of algorithms.
+2
+
+===== PAGE 3 =====
+Simplification Addition Discussion
+(1) Ignore O-atoms General cutting, ov-segments etc. Section 1.5.1
+(2) Ignore degeneracies Strong and weak degeneracies Section 1.5.4
+(3) Each layer is a tree/forest Layer refining Section 1.5.3
+(4) Have only two layers Layer selection Section 1.5.2
+Table 2: Simplifications in Definition 1.1 and corresponding additions which will be needed in real
+problem. See Section 1.5 for more details.
+We remark that this note is presented with 24 figures to help explain the concepts and constructions.
+We opted to place those figures at the end of the notes in order not to disturb the continuity of the text.
+1.1 Toy model I
+In this subsection we consider the following (first) toy model:
+Definition 1.2. We say M is a toy model I , if it is a simplified 2-layer model as in Definition 1.1, and
+that each atom in MU has exactly one bond connected to an atom in MD (i.e. # 2conn = 0 andX = MU).
+Definition 1.3. Let MD be part of the simplified 2-layer model as in Definition 1.1 (or any resulting
+molecule after a cutting sequence). We define MD to be proper, if it does not contain deg 1 or 2 atoms,
+does not contain two adjacent deg 3 atoms, and does not contain two deg 3 atoms which are both adjacent
+to the same deg 4 atom, see Figure 2.
+If M is a toy model I, we define the following algorithm applied to it:
+Definition 1.4 (algorithm for toy model I) . Let M be a toy model I. We define the following cutting
+sequence. For an example see Figure 3:
+(1) If not all atom in MU have been cut, then choose a lowest atom n∈ MU that has not been cut (i.e.
+either n has not child in MU or all its children in MU have been cut).
+(2) If n is adjacent to an atom m∈ MD which has deg 3, then cut{n, m} as free and cut m as free from
+{n, m} if n has deg 4; otherwise just cut n as free.
+(3) If MD contains two adjacent deg 3 atoms (say r and r′), then cut {r, r′} as free; repeat until MD
+has no adjacent deg 3 atoms.
+(4) If MD contains two degree 3 atoms (say r and r′′) both adjacent to the same deg 4 atom (say r′),
+then cut{r, r′, r′′} as free and cut r as free from{r, r′, r′′}; then go to (3)–(4) and repeat, until MD
+becomes proper (Definition 1.3).
+(5) Go to (1) and choose the next lowest atom n∈ MU that has not been cut, and so on.
+(6) Suppose all atoms in MU have been cut. If MD is proper, then cut any deg 3 atom; if not, then go
+to (3)–(4) and repeat to remove them, and next cut any deg 3 atom, and so on.
+Remark 1.5. In Definition 1.4, we are essentially applying a “naive” algorithm in MU where we simply
+cut a lowest atom each time, and a “greedy” algorithm in MD where we exploit a {33} molecule (or a
+so-called{343} molecule1 where two deg 3 atoms are adjacent to the same deg 4 atom). As mentioned
+above, this is the core idea of our proof, in its bare simplest form. It is a simple special case of the
+MAINUD algorithm, which corresponds to the toy model I plus in Section 1.2, see Definition 1.12.
+1The reason to include this{343} molecule is technical: removing only{33} cannot exclude all bad scenarios, i.e. Lemma
+1.7 would not be true if we did this.
+3
+
+===== PAGE 4 =====
+Proposition 1.6. Let M be a toy model I, and we apply the algorithm defined in Definition 1.4. Then
+in this process we only obtain elementary molecules, and we have
+#{4} = 1, #{33}≥ (|MU|− 1)/5. (1.2)
+Since|MU| =|X| ≳ρ≫ 1, this clearly implies (1.1).
+Proof. Recall the steps (1)–(6) in Definition 1.4. We divide the proof into 4 parts.
+Proof part 1. We first prove that each atom in MU is contained in an elementary component (after
+it is cut). By the choices we make in (1) and (5), we know that for each n∈ MU, at the time this n is cut,
+it must be a lowest atom that still remains in MU; thus no child of it still remains in MU, hence cutting
+n will not introduce any top fixed end in MU (and neither does cutting anything in MD). This means
+that MU will not contain any top fixed end throughout the process. Since each n∈ MU either forms a
+component by itself (when we cut {n} as free in (2)) or belongs to a {33} molecule (when we cut{n, m}
+as free in (2)), it is clear by definition of elementary components that n always belongs to an elementary
+component.
+Proof part 2. We next prove that each atom in MD is contained in an elementary component. Note
+that MD initially is a tree, and will remain a forest in the whole cutting process (cutting an atom will
+not create any cycle, but may cause a tree to become a disconnected forest). Now consider each step in
+(2) involving n∈ MU, at which time MD must be proper by the construction of our algorithm. Consider
+the possible effect of this step on MD (we may assume that n is connected to one atom m∈ MD by a
+bond, otherwise cutting n will have no effect on MD), see Figure 4:
+(a) If we cut n as free (which means m has deg 4), then when viewed in MD, this step simply turns one
+and only one free end at m∈ MD into a fixed end, turning m from deg 4 to deg 3.
+(b) If we cut {n, m} as free (which means m has deg 3), then when viewed in MD, this step simply cuts
+m, which has deg 3, as free from MD.
+Here in (a), we note that m must have deg 4 before cutting n (otherwise m must have deg 3 because MD
+is proper, in which case we will cut {n, m} by (2)); also when viewed in MD, the bond between n and m
+is initially viewed as a free end at m, and is then turned into a fixed end after cutting n as free, turning
+m from deg 4 to deg 3. Likewise m must have deg 3 in (b), and when viewed in MD, cutting{n, m} as
+free is equivalent to cutting{m} as free because n has no other bonds connecting to other atoms in MD.
+Now, regarding the effects described in (a)–(b), we have the following lemma:
+Lemma 1.7. Suppose MD is proper at some point of the algorithm, and becomes non-proper after either
+(a) or (b). Then, MD will once more become proper after applying (3)–(4), via cuttings of {33} and
+{343} molecules only (with each{343} molecule further cut into a{3} and a{33} molecule), and without
+seeing any deg 2 atom . See Figure 5 for an illustration.
+Proof. Note that MD is always a forest. We then have the following fact, see Figure 6:
+(♡) Suppose we cut S⊆ MD as free, whereS is a connected subset of MD (for example, whenS contains
+a single atom, or 2 atoms connected by a bond, or 3 atoms connected by 2 bonds). Then, for each
+atom q∈ MD\S that is connected to an atom in S by a (pre-cutting) bond e, the post-cutting
+molecule MD\S has exactly one componentXq∋ q, which is in bijection with q (and q is the unique
+atom in Xq that is connected to S pre-cutting, via the bond e). When viewed in Xq, the bond e is
+viewed as a free end at q before cutting, and is turned into a fixed end after cutting.
+4
+
+===== PAGE 5 =====
+The proof of (♡) easily follows from the property of forests. In fact, any q1 and q2 (with corresponding
+edges e1 and e2) must belong to different components of MD after cutting S; if not, then (pre-cutting)
+they can be connected by a path involving atoms in MD\S, but they can also be connected by a path
+with all intermediate atoms being in S (using the bonds e1 and e2 and the connectivity of S by itself),
+which then produces a cycle and contradicts the forest assumption. As such, for each q we get a unique
+post-cutting component Xq, such that e is the only pre-cutting bond between Xq and S. Clearly, when
+viewed in Xq, the effect of cutting S as free is equivalent to turning one and only one free end at q (the
+one corresponding to e) into a fixed end.
+Now, using (♡), we can prove Lemma 1.7. Note that right before performing (b) at a deg 3 atom m,
+any atom in MD adjacent to m must have deg 4 (because MD is proper). Then by (♡), MD will break
+into at most 2 components after performing (b), and the effect of (b) when viewed in each component is
+equivalent to (a). Therefore, we only need to prove Lemma 1.7 for (a).
+Assume now MD becomes non-proper, say a {33} molecule forms, after (a). Let this component be
+{r, r′}, where r′ has deg 3 before (a), while r has deg 4 before (a) and is turned into deg 3 after (a).
+Then, before (a), any atom in MD adjacent to r or r′ must have deg 4 (see Figure 7) because otherwise
+we either have two adjacent deg 3 atoms before (a), or have two deg 3 atoms adjacent to the same deg
+4 atom before (a), contradicting properness. Therefore, by ( ♡), we see that cutting the {33} molecule
+breaks MD into at most 4 components, and the effect of this cutting when viewed in each component is
+again equivalent to (a). We then induct on the size of MD and apply induction hypothesis to each of
+these components, to conclude the proof.
+Finally, assume MD becomes non-proper, but with no {33} molecule forming, after (a). In this case
+there must be a {343} molecule forming, say {r, r′, r′′}, where r′ and r′′ respectively have deg 4 and 3
+before (a), and r has deg 4 before (a) and is turned into deg 3 after (a). Then, before (a), any atom
+adjacent to r′ or r′′ must have deg 4 (see Figure 7) for the same reason as above thanks to properness.
+Moreover, before (a), any atom adjacent to r must also have deg 4, because otherwise we would get
+a{33} molecule after (a), contradicting our assumption. Therefore, by ( ♡), we see that cutting the
+{343} molecule breaks MD into at most 6 components, and the effect of this cutting when viewed in each
+component is again equivalent to (a). We then conclude the proof by the same induction as above. This
+completes the proof of Lemma 1.7.
+Now, with Lemma 1.7, we can finish part 2 of the proof, i.e. each atom in MD is contained in an
+elementary component. In fact, those cut in (2) clearly belong to {33} molecule. Those cut in (3)–(4)
+also belong to {33} or{343} (and subsequently{3} or{33}) components by Lemma 1.7. Finally, those
+cut in (6) either belong to {3} molecule, or are cut in the process of applying (3)–(4) and thus belong to
+{3} or{33} molecules by Lemma 1.7.
+Proof part 3. With parts 1 and 2 of the proof, we now know that every component is elementary;
+it suffices to calculate #{4} and #{33}. We first show that #{4} = 1. Since the first atom cut in (2) must
+have deg 4, it suffices to show that # {4}≤ 1. In fact, for each n∈ MU, at the time n is cut, it must be
+the lowest remaining atom in MU, which means any possible child of n in MU must have been cut before,
+creating a fixed end at n. Therefore, if n has any child in MU at all before any cutting, then it cannot
+have deg 4 when it is cut.
+On the other hand, before any cutting, MU can have at most one atom without child in MU (see
+Figure 8); if not, say there exist two such atoms n and n′, then consider a path ( n = n0,··· , nj = n′)
+between n and n′ within MU (since MU is a tree). Then n1 must be parent of n as n has no child in MU,
+and then n2 must be parent of n1 as n1 has a child n∈ MU and another child in MD by Definition 1.2,
+and so on. In the end n′ = nj must be parent of nj−1∈ MU, which contradicts the assumption on n′.
+This proves #{4} = 1.
+5
+
+===== PAGE 6 =====
+Proof part 4. Finally we show that #{33}≥ (|MU|− 1)/5. Consider the bahevior of the quantity
+λ := #deg3− #comp,
+where #deg3 and #comp represent the number of (remaining) deg 3 atoms and components in MD respec-
+tively, so that initially λ =−1 and finally λ = 0. Note that when viewed from MD, each step in (1)–(6)
+is one of the followings:
+• Operation (a) or (b) defined above (which occur in (2));
+• Cutting{33} or{343} molecule as free (which occur in (3)–(4) and (6));
+• Cutting{3} molecule as free (which occur in (6)).
+Define the number of these operations to be # (a), #(b) and #cut{33} etc., then we have
+#{33} = #(b) + #cut{33} + #cut{343}. (1.3)
+Moreover, using (♡) in the proof of Lemma 1.7 (and the fact that MD is proper right before each (a)
+or (b) or cutting of {3}), it is easy to see that
+• Operation (a) increased λ by 1, and operation (b) does not change λ;
+• Cutting{33} or{343} decreases λ by 1, and cutting{3} does not change λ.
+Using the initial and final values of λ we deduce that
+#(a)− (#cut{33} + #cut{343}) = 1. (1.4)
+Finally, consider the bonds between MU and MD (there are|MU| of them). Each such bond is broken
+either in one step (2) (which corresponds to exactly one operation (a) or (b)), or in cutting one of{33} or
+{343} molecules; moreover each (a) / each (b) / each cutting of{33} / each cutting of{343} can break at
+most 1, 2, 3 and 4 such bonds respectively. This implies that #(a)+2#(b)+3#cut{33}+4#cut{343}≥| MU|.
+Combining this with (1.3) and (1.4), we deduce that # {33}≥ (|MU|− 1)/5, as desired.
+1.2 Toy model I plus
+In this subsection we extend the toy model I to allow more general connections between MU and MD.
+Definition 1.8. We say M is a toy model I plus , if it is a simplified 2-layer model as in Definition 1.1,
+and each atom n∈ MU has at most one bond connected to an atom in MD (i.e. # 2conn = 0), and the
+number of connected components of X satisfies
+#comp(X)≤ (100d)−1·|X|, (1.5)
+where X is defined at the beginning of this note. Here, if two atoms in X can only be connected via
+atoms in MU\X, then they belong to different components of X.
+Let us explain the intuition behind Definition 1.8, in particular the role of (1.5). In the case of toy
+model I, we have X = MU which is connected, hence # comp(X) = 1. Moreover, as in part 3 of the proof
+of Proposition 1.6, we see that MU has at most one lowest atom (i.e. atom without child in MU; in fact
+it is not hard to see that MU must have an “upside down binary tree” shape). This latter fact allows us
+to apply a “naive” strategy in MU where we always cut the lowest remaining atom, without producing
+too many bad{4} atoms.
+6
+
+===== PAGE 7 =====
+In the current case, MU may have many lowest atoms, so we cannot always choose and cut a lowest
+remaining atom. Instead, we improve the strategy by choosing a lowest remaining deg 3 atom n, and
+cutting it and all its descendants (which all have deg 4 when n is chosen). Here we do not consider deg 2
+atoms, as they will always be lowest in MU and always have to be cut at top priority. This leads to the
+idea of the UP algorithm, see Definition 1.9 below, which is another basic component in our proof.
+Note, however, that this UP algorithm cannot be simply combined with the “greedy” algorithm in
+MD as in Definition 1.4, because now n may have deg 4 descendants in MU, and this naive attempt
+may break the key monotonicity property (see part 1 of the proof of Proposition 1.13) and lead to non-
+elementary components. As such, we need to be careful and only apply UP at places in MU which will
+not affect MD, i.e. in MU\X. Within X we still need to apply the naive strategy, which may lead to bad
+{4} molecules due to X.
+We can then see the role of (1.5) and the dichotomy concerning #comp(X); in fact, same as in part 3
+of the proof of Proposition 1.6, each component of X can have at most one lowest atom . In the naive
+strategy, this leads to bad{4} molecules whose number is comparable to #comp(X). Under the assumption
+(1.5), this is negeligible compared to the number of good {33} molecules, which will be comparable to
+|X| (i.e. the number of bonds between MU and MD).
+With the above intuition, we start by defining the UP algorithm in the toy model case.
+Definition 1.9 (The UP algorithm, toy model case) . Let M be any molecule which does not have top
+fixed end. Define the following cutting sequence. For an example see Figure 9:
+(1) If M has a deg 2 atom, then cut it as free. Repeat until M does not have deg 2 atoms.
+(2) Choose a lowest deg 3 atom n that has not bee cut (or a lowest atom if M has no deg 3 atoms).
+Let Sn be the set of descendants of n. This n and Sn is fixed until all atoms in Sn have been cut.
+(3) Starting from n, each time choose a highest atom m in Sn that has not been cut. If m has deg 3
+and has a parent m+ or child m− that also has deg 3, then cut {m, m±} as free; otherwise cut m as
+free. Repeat until all atoms in Sn have been cut, then go to (1)–(2) and choose the next n, and so
+on.
+Remark 1.10. The UP algorithm is a combination of a “global low-to-high” (where each time we select
+the lowest remaining deg 3 atom in (2)) and “local high-to-low” procedure (where each time we cut the
+highest remaining atom in Sn in (3)). This leads to a key monotonicity property, see Proposition 1.11.
+The step (3) in the UP algorithm may seem complicated, we explain it as follows: let m be the highest
+remaining atom in Sn, the simple option is to just cut m as free. However, in the case described in (3),
+the m± will become deg 2 once m is cut as free; moreover m−∈Sn will be a highest remaining atom in
+Sn, and m+̸∈ Sn will occur as a deg 2 atom in (1) once all atoms in Sn have been cut. As such, this
+deg 2 atom m± have to be cut at top priority, so instead of cutting {m} we can combine this with the
+cutting of m±, which also forms a good {33} molecule{m, m±}. This then leads to the step (3) in the
+UP algorithm.
+We next prove a key monotonicity property of the UP algorithm and a sufficient condition for it to
+produce at least one {33} molecule.
+Proposition 1.11. The UP algorithm preserves the following monotonicity property: at any time, any
+atom in (M\Sn)∪{n} has no top fixed end, and any atom inSn\{n} has no bottom fixed end. In particular,
+applying UP only produces elementary components, and with #{4}≤ 1 if M is connected.
+Moreover, assume M is connected and has no deg 2 atom. Then applying UP produces only{4} and
+{3} molecules, if and only if M is a tree and has at most one deg 3 atom. Otherwise, applying UP will
+produce at least one {33} molecule.
+7
+
+===== PAGE 8 =====
+Proof. We divide the proof into 4 parts.
+Proof part 1. We first prove the monotonicity property, which implies all components are elementary
+(since each atom either forms a component by itself or belongs to a {33} molecule, due to (1)–(3) in
+Definition 1.9). Note that initially there is no Sn and M has no top fixed end by assumption, so it suffices
+to prove that the monotonicity property is perserved. First, any deg 2 atom n cut in (1) must have two
+bottom fixed ends by monotonicity, so it has no child remaining when it is cut, thus cutting it will not
+introduce any top fixed end .
+Now let n and Sn be as in (2), and m be a highest remaining atom in Sn as in (3). When n is
+chosen in (2), all atoms in Sn\{n} must have deg 4 by construction, and thus have no bottom fixed end.
+Consider the operation of cutting m as free in (3). We then know that that this cutting does not create
+any bottom fixed end inSn\{n} (as m is highest), and does not create any top fixed end in (M\Sn)∪{ n}
+(as any child of m must belong to Sn\{n}), see Figure 10. The same holds for the operation of cutting
+{m, m±}, because this is equivalent to cutting {m} and then cutting a deg 2 atom (either m+̸∈Sn with
+two bottom fixed ends or m−∈ Sn\{n} with two top fixed ends). This proves that the monotonicity
+property is perserved, as desired.
+Proof part 2. We prove #{4}≤ 1 when M is connected. For this, just note that after the first
+cutting, M will always contain an atom that is not deg 4. By construction, this means that the n chosen
+in (2) will always be deg 3; moreover, any m∈Sn\{n} that is cut in (3) also cannot be deg 4, because m
+has a parent inSn which must have been cut before m thanks to the highest assumption of m. Therefore,
+only the first atom can produce a possible {4} molecule, and thus #{4}≤ 1.
+Proof part 3. Suppose M is connected and has no deg 2 atom, we prove that either # {33}≥ 1, or
+all components are{4} and{3} (with #{4}≤ 1). If not, then we must have a {2} component. Consider
+the first atom m that has deg 2 when we cut it, and consider the cutting operation that turns m into deg
+2, which must be cutting some deg 3 atom p as free (this p cannot have deg 4, because a degree 4 atom is
+cut only when no degree 3 atoms are present, and in this case cutting a degree 4 atom cannot produce a
+degree 2 atom). This cutting creates a fixed end at m, so this p must be a parent or child of m; moreover
+this m and this p must both be deg 3 at the time of cutting p, but this violates Definition 1.9 (3).
+Proof part 4. Finally we prove #{33} = 0 if and only if M is a tree and has at most one deg 3 atom.
+For this, consider the increment of the quantity σ := # bo/fr− 3#atom, where # bo/fr is the number of
+bonds and free ends (not counting fixed ends) and # atom is the number of remaining atoms. It is easy
+to see that cutting each {2} /{3} /{33} /{4} molecule increases σ by 1, 0, 1 and −1 respectively. Since
+finally σ = 0, we see that #{4}− (#{2} + #{33}) =σinit (initial value of σ).
+Note that initially # bo/fr = #deg− #bond where # deg is the total degree of all atoms (not counting
+fixed ends) and # bond is the number of bonds (because each bond contributes twice to the degrees),
+so σinit = (|M|− #bond)−| M3| where|M3| is the number of (initially) deg 3 atoms in M. Moreover
+by connectedness we have # bond ≥ |M|− 1 with equality if and only if M is a tree, and note also
+#{4}∈{ 0, 1} (and #{4} = 1 if and only if |M3| = 0 by the same proof in part 2), it is then easy to see
+that #{2} + #{33} = 0 if and only if M is a tree and |M3|≤ 1. This completes the proof.
+Now we can define the algorithm for toy model I plus. As described in the above heuristics, this
+features a naive algorithm (always cutting the lowest) in X, an UP algorithm in MU\X, and a greedy
+algorithm in MD. Up to some simplifications, this is just the MAINUD algorithm, which is the main
+algorithm in the 2-layer proof. Note also that the part of Definition 1.12 involving MD is exactly the
+same as Definition 1.4; the only difference occurs in MU (in fact in MU\X).
+Definition 1.12 (Algorithm for toy model I plus) . Let M be a toy model I plus with X be defined in
+the beginning of this note (this X is fixed throughout the algorithm). We define the following cutting
+sequence. For an example see Figures 11–12:
+8
+
+===== PAGE 9 =====
+(1) If MU has a deg 2 atom, then cut it as free. Repeat until MU does not have deg 2 atoms.
+(2) If not all atom in MU have been cut, then choose an atom n which is a lowest remaining atom in
+MU that either has deg 3 or belongs to X, i.e. n∈ MU either has deg 3 or belongs to X, and no
+other descendant of n in MU has the same property. Let Sn be the set of descendants of n in MU.
+This n and Sn is fixed until the end of (4).
+(3) Starting from n, each time choose a highest atom p inSn that has not been cut. If p is adjacent to
+an atom q∈ MD which has deg 3, then cut {p, q} as free and cut q as free from{p, q} if p has deg
+4; otherwise just cut p as free.
+(4) If MD becomes non-proper, then perform the same steps (3)–(4) in Definition 1.4 until it becomes
+proper again. Then go to (3) and repeat, until all atoms in Sn have been cut.
+(5) When all atoms in Sn have been cut, go to (1)–(2) and choose the next n, and so on.
+(6) When all atoms in MU have been cut, then perform the same step (6) in Definition 1.4 to finish off
+cutting MD.
+Proposition 1.13. Let M be a toy model I plus, and we apply the algorithm defined in Definition 1.12.
+Then in this process we only obtain elementary molecules, and we have
+#{4}≤ #comp(X), #{33}≥ (|X|− 1)/5− #comp(X). (1.6)
+Since|X| ≳ρ≫ 1 and using (1.5), this clearly implies (1.1).
+Proof. We divide the proof into 4 parts just as Proposition 1.6.
+Proof part 1. We show that each atom in MU is contained in an elementary component. As in part
+1 of the proof of Proposition 1.11, this follows from the same monotonicity property but for MU only:
+any atom in ( MU\Sn)∪{ n} has no top fixed end , and any atom in Sn\{n} has no bottom fixed end.
+To prove the monotonicity property, we first note that, for any n chosen in (2) and at the time it is
+chosen, each atom in Sn\{n} has deg 4 and thus has no bottom fixed end. Then consider the process of
+cutting in (3) and below, see Figure 13. Following exactly part 1 of the proof of Proposition 1.11, we see
+that the cutting of any atom in MU in this process does not create any top fixed end in ( MU\Sn)∪{ n} or
+any bottom fixed end inSn\{n}; moreover, for the cutting of any atom in MD in this process (such as the
+one in (4)), it only creates bottom fixed ends in MU, and only at atoms in (MU\Sn)∪{ n}. This is because
+Sn\{n} contains no atom in X by construction, and thus has no bond connected to MD, hence no fixed
+end can be created at any atom in this set when cutting anything in MD. This proves the monotonicity
+property.
+Proof part 2. We show that each atom in MD is contained in an elementary component. Since the
+part of Definition 1.12 involving MD is exactly the same as Definition 1.4, this part is also exactly the
+same as part 2 of the proof of Proposition 1.6.
+Proof part 3. We show that #{4}≤ #comp(X). Same as part 2 of the proof of Proposition 1.11, we
+see that any p∈Sn\{n} in (3) cannot have deg 4 when it is cut. Therefore, the only possible {4} atoms
+must come from those n chosen in (2). By our choice in (2), such n must belong to X and must be lowest
+atoms in X, i.e. it belongs to X but does not have any child in X before any cutting.
+Now we claim that any two lowest atoms in X must belong to different components of X (see Figure
+8). If not, say n and n′ are connected by a path ( n = n0,··· , nj = n′) in X, then arguing as part 3 of the
+proof of Proposition 1.6 and noticing that each atom in X has a child in MD, we deduce that each ni
+must be parent of ni−1 which then leads to contradiction with properties of nj = n′. We then conclude
+that the number of lowest atoms in X does not exceed # comp(X), hence #{4}≤ #comp(X).
+9
+
+===== PAGE 10 =====
+Proof part 4. Finally we show that #{33}≥ (|X|− 1)/5− #comp(X). Since the part of Definition
+1.12 involving MD is exactly the same as Definition 1.4, this part is essentially the same as part 4 of the
+proof of Proposition 1.6. There is only one difference: in the current case, each step of cutting {p, q} as
+free in (3) (which corresponds to the operation (b) in part 4 of the proof of Proposition 1.6 when viewed
+in MD) may produce two{3} molecules instead of one{33} molecule, but this only happens when 2 p has
+deg 4, and the number of such exceptions is bounded by # comp(X) following part 3 above. Therefore,
+instead of (1.3) we have
+#{33}≥ #(b) + #cut{33} + #cut{343}− #comp(X), (1.7)
+and the same proof then yields that, instead of # {33}≥ (|X|− 1)/5 as in (1.2), we now have # {33}≥
+(|X|− 1)/5− #comp(X). This completes the proof.
+1.3 Toy model II
+In this subsection we introduce the toy model II, which is opposite to toy model I plus via the dichotomy,
+where we assume # comp(X) ≳|X| instead of # comp(X)≪|X| in Definition 1.8.
+Definition 1.14. We say M is a toy model II, if it satisfies all the assumptions in Definition 1.8 for toy
+model I plus with the same notations, except that (1.5) is replaced by |X|≥ 2 and
+#comp(X) > (100d)−1·|X|. (1.8)
+Let us explain the strategy for toy model II, which will be completely different from toy models I
+and I plus. Here we will not gain from the greedy algorithm in MD; instead we first cut all of MD as
+free without exploiting any gain, and then gain from MU under the assumption (1.8). Note that, after
+cutting MD as free, there will not be any deg 2 atoms in MU, and the deg 3 atoms in MU are exactly
+those in X.
+The intuition is that, due to the lower bound of the number of components ifX given by (1.8), the deg
+3 atoms in MU are now separated by deg 4 atoms . Essentially, we expect that for such molecules, we can
+design a cutting algorithm with minimal loss caused {4} molecules, such that each connected component
+of the set of deg 3 atoms provides a good{33} molecule. In fact, this can be achieved by a clever choice
+in the UP algorithm. We next introduce the main algorithm in this case (together with an auxiliary
+lemma needed in this algorithm). Up to simplifications, this is just the 3COMPUP algorithm.
+Lemma 1.15. Suppose M is a molecule that is a tree, contains only deg 3 and 4 atoms and has no top
+fixed end. Let the set of deg 3 atoms in M be M3 with|M3|≥ 2. Define a set A⊆ M to be no-bottom
+if any child of any atom in A must also be in A (see Figure 14). Then, there always exists a connected,
+no-bottom subset A⊆ M with|A∩ M3| = 2.
+Proof. For any n∈ M, letSn be the set of descendants of n (including n itself), then it is always connected
+and no-bottom. If there exists n such that|Sn∩ M3|≥ 2, then choose a lowest such n. Since n has no top
+fixed end, we know that either (i) n has one child n1, or (ii) n has deg 4 and has two children n1, n2. In
+either case, by assumption we have |Snj∩ M3|≤ 1 for each j, which then implies|Sn∩ M3|≤ 2 because
+Sn = (∪jSnj)∪{ n}. This implies |Sn∩ M3| = 2, as desired.
+Now assume|Sn∩ M3|≤ 1 for each n∈ M. If |Sn∩ M3| = 1, there is a unique p = p(n)∈Sn∩ M3;
+now consider all atom pairs ( n, n′) such that p(n) and p(n′) both exist and are different (which exist
+because|M3|≥ 2), and one such pair (n, n′) that are connected by a shortest path in M. Let this path be
+2This cannot happen for toy model I, because there p can have deg 4 only when it is the first atom cut, in which case q
+cannot have deg 3.
+10
+
+===== PAGE 11 =====
+(n0, n,··· , nj = n′), then for each 0<i<j we must have eitherSni∩ M3 = ∅ or p(ni ) = p(n) (otherwise
+the pair ( n, ni) corresponds to a shorter path, contradiction). Now let A =∪j
+i=0Sni, it is clear that A is
+connected, no-bottom and A∩ M3 ={p(n), p(n′)}, as desired.
+Definition 1.16 (The 3COMPUP algorithm, toy model case) . Let M be a molecule that is a tree,
+contains only deg 3 and 4 atoms and has no top fixed end. Let the set of deg 3 atoms in M be M3 with
+|M3|≥ 2. Define the following cutting sequence. For an example see Figure 15:
+(1) Apply Lemma 1.15 to M and select a connected no-bottom subset A. This set is fixed until the end
+of (5).
+(2) Choose a lowest deg 3 atom n in A that has not been cut. Let Sn be the set of descendants of n.
+This n and Sn are fixed until the end of (3).
+(3) Starting from n, each time choose a highest atom m in Sn that has not been cut. If m has deg 3
+and has a parent m+ or child m− that also has deg 3, then cut {m, m±} as free; otherwise cut m as
+free. Repeat until all atoms in Sn have been cut.
+(4) If M has deg 2 atom, then cut it; repeat until M has no deg 2 atoms. Then go to (2) and choose
+the next n, and so on.
+(5) When all atoms in A have been cut, we subsequently cut all deg 2 atoms as in (4), and then cut
+all components of M with only one deg 3 atom using UP.
+(6) Go to (1) and select the next A from one of the remaining components of M, and so on.
+Remark 1.17. Let us explain the ideas in Lemma 1.15 and Definition 1.16. Note that steps (2)–(4) are
+exactly the same as UP but applied to a particular setA, so we can view 3COMPUP as a clever way of
+carrying out UP. The role of the set A is explained as follows: first it needs to be connected (otherwise
+we can cut each of its components separately); it should also be no-bottom, because when cutting any
+atom we should also cut its descendants to aguarantee the monotonicity property. Finally we need it to
+contain two deg 3 atoms so that this sequence of cutting will produce at least one {33} molecule, and
+we need exactly two deg 3 atoms so that we do not mess up with too many components of deg 3 atoms
+(which are the key objects leading to the gain).
+Proposition 1.18. Let M be a toy model II. We first cut MD as free and cut it into elementary
+components by DOWN (i.e. the dual of UP with all directions reversed), then apply 3COMPUP
+(Definition 1.16) to MU. Then all resulting components are elementary, and we have
+#{4} = 1, #{33}≥ #comp(X)/10. (1.9)
+Since|X| ≳ρ≫ 1 and using (1.8), this clearly implies (1.1).
+Proof. Note that steps (2)–(4) in Definition 1.16 are exactly the same as UP, so the proof that all
+components are elementary (as well as #{4} = 1 which comes only from MD) follows in the same way as
+Proposition 1.11. We now focus on the proof that # {33}≥ #comp(X)/10.
+For any molecule M, define #comp(M) to be the number of components of M, and #3comp(M) to be the
+number of components of the set of deg 3 atoms in M, and
+λ(M) := 1
+5#comp(M) + 1
+10#3comp(M). (1.10)
+In Definition 1.16 (applied to MU), the whole algorithm consists of finitely many loops where one loop is
+formed by steps (1)–(5). Consider each such loop which reduces M to M′, we shall prove the following:
+11
+
+===== PAGE 12 =====
+(♣) If M is a tree, has no top fixed end and contains only deg 3 and 4 atoms with at least two deg 3
+atoms, then each component of M′ satisfies the same property. Moreover for this loop we have
+#{33}≥λ(M)−λ(M′). (1.11)
+Note that adding up (1.11) leads to the desired lower bound of # {33} (initially MU has no deg 2 atoms
+nor top fixed end, and # 3comp(MU ) = #comp(X)), thus it suffices to prove (♣) for a given loop. We divide
+the proof into 4 parts.
+Proof part 1. We prove that each component of M′ satisfies the desired properties. This is obvious,
+as the lack of top fixed ends follows from the same proof as Proposition 1.11, and the lack of deg 2 atoms
+and components with only one deg 3 atom follows from the cuttings done in (5).
+Proof part 2. Now we need to prove (1.11). We start by making some preparations. Note that A
+is a connected subset of M; by (♡) in the proof of Lemma 1.7, each atom m∈ M\A that is connected to
+an atom n = n(m) in A by a pre-loop bond e corresponds to a unique component Xm after cutting the
+atoms in A as free, see Figure 16 (the loop will in fact cut as free more atoms). Note also that m must
+be a parent of n due to the no-bottom property of A.
+Let M3 be the set of deg 3 atoms in M (before executing the loop), and consider all components of M3
+that intersect A or are connected to A by a bond. We know A has exactly two atoms in M3; apart from
+the one or two components that contain these two atoms, each component under consideration must be
+a subset of a unique Xm where m has deg 3 and n = n(m) has deg 4 (call it Ym). Let B be the union of
+these components with A (Figure 16). We claim that after steps (1)–(4) and cutting the deg 2 atoms in
+(5), exactly those atoms in B have been cut as free.
+In fact, the atoms A must have been cut by definition. For any atom in the M3 components forming
+B, by definition it is connected to an atom in A by a chain of deg 3 atoms; once the atom in A has
+been cut, the atoms on this chain will successively become deg 2, so they must have been cut (either in
+(4)–(5), or as part of{33} molecule in (3)). On the other hand, each atom in M\B has at most one bond
+connected toB (asB is connected and M is a tree), and must be deg 4 if it has one such bond (otherwise
+it would belong to one of the M3 components forming B), so each atom in M\B will have deg 3 or 4
+after cutting B as free, thus it will not be cut in steps (1)–(4) or in cutting the deg 2 atoms in (5).
+Proof part 3. Next we obtain a lower bound on # {33}. Note that A contains two deg 3 atoms, we
+can show that #{33}≥ 1 in the same way as in part 3 of the proof of Proposition 1.11. Moreover, since A
+contains exactly two deg 3 atoms, by arguing as in part 4 of the proof of Proposition 1.11 and calculating
+the quantity σ defined there but within A, we can show that, apart from at most two exceptions, each
+deg 4 atom in A will have deg 3 when it is cut.
+Now let λ be the number of M3 components forming B. With at most two exceptions, each such
+component corresponds to a deg 3 atom m∈Xm together with its deg 4 child n = n(m)∈A as in part
+2 above. With at most two more exceptions, this n will have deg 3 when it is cut, at which time m also
+has deg 3 (see Figure 17); then by (3), we know that n must belong to a {33} molecule (which may or
+may not be{n, m}). Note that each {33} molecule can be so obtained by at most one n, and each n can
+be obtained by at most two m (hence at most two components), we conclude that
+#{33}≥ max
+
+1,λ− 2
+2 − 2
+
+. (1.12)
+Proof part 4. Now we consider the components of M′ and M′
+3 (set of deg 3 atoms in M′). Note that
+M′ is formed from M by cutting B as free and then removing all components with only one deg 3 atom.
+SinceB is connected, by applying (♡) in the proof of Lemma 1.7 again, we see that each component Xq
+of M′ corresponds to a unique atom q∈ M\B that is connected to an atom in B, see Figure 18. Let µ
+12
+
+===== PAGE 13 =====
+be the number of such bonds (i.e. corresponding to those new components with at least two deg 3 atoms
+after cutting B), then we have
+#comp(M)− #comp(M′) = 1−µ. (1.13)
+Finally, consider the set of deg 3 atoms, i.e. M3 and M′
+3, and their components. The components of
+M3 includes thoseλ components formingB as in part 2 (which have been cut when forming M′), and the
+other components which are contained in some Xq defined above. Note that for each new component Y
+formed after cutting B that contains only one deg 3 atom, it will be removed and will not occur in M′;
+however, all atoms in Y originally have deg 4 before any cutting, so initially Y also has no contribution
+to #3comp(M), and thus we can ignore such Y .
+By (♡), when viewed in each Xq, the effect of cutting B exactly turns one free end into fixed end
+(turning one deg 4 atom into deg 3). Therefore the part of M′
+3 within Xq is formed by adding one
+deg 3 atom into the existing part of M3 within Xq (see Figure 18). This new deg 3 atom may decrease
+#3comp(Xq) (i.e. the number of components of the set of deg 3 atoms inXq) by joining existing components
+together, but this decrease is at most 2 because this new deg 3 atom can join at most 3 components into
+1. From this, and accounting for the λ components removed when cutting B, we deduce that
+#3comp(M)− #3comp(M′)≤λ + 2µ. (1.14)
+Putting together (1.10) and (1.12)–(1.14), we deduce that
+λ(M)−λ(M′) = 1
+5
+ 
+#comp(M)− #comp(M′)
+
++ 1
+10
+ 
+#3comp(M)− #3comp(M′)
+
+≤ 1
+5 + λ
+10≤ max
+
+1,λ− 6
+2
+
+≤ #{33}.
+(1.15)
+This proves (1.11) and completes the proof of Proposition 1.18.
+1.4 Toy model III
+In this subsection we introduce the toy model III. Note that in both toy models I plus and II, we are
+assuming the absence of 2-connections, i.e. # 2conn = 0. Now we define the toy models III, which are
+(essentially) opposite to toy models I plus and II via the dichotomy, where we assume 3 #2conn ≳|X|
+instead of # 2conn = 0.
+Definition 1.19. We say M is a toy model III, if it is a simplified 2-layer model in Definition 1.1, and
+#2conn≥ (100d)−1·|X|, (1.16)
+where #2conn and X are defined at the beginning of this note.
+The strategy for toy models III is simple: we work in MD as if MU were absent, and apply the
+DOWN algorithm (the dual of UP) to it. Now consider any 2-connection n∈ MU, which will become
+deg 2 when all atoms in MD have been cut. Assume n is connected to two atoms m1, m2∈ MD, and
+assume m1 is cut before M2 in the DOWN algorithm applied to MD. Then, right before m2 is cut,
+this m2 will have deg 3 (say) by Proposition 1.11; also since m1 has been cut at this time, now n must
+also have deg 3, which leads to a {33} molecule, so we simply cut it and enjoy the gain. This way we
+guarantee that each 2-connection belongs to a {33} molecule, which is sufficient under the assumption
+(1.16). We shall refer to this as the 2CONNDN algorithm (and the dual version 2CONNUP).
+3There is also the case 0 < #2conn≪| X|; in this case we will first cut all such 2-connections, which generates an error
+which is eventually negligible but still requires some extra care; see Section 1.5.5 for more discussions.
+13
+
+===== PAGE 14 =====
+Definition 1.20 (Algorithm for toy model III). Let M be toy model III. We define the following cutting
+sequence. For an example see Figure 19:
+(1) If MD has a deg 2 atom, then cut it as free. Repeat until MD does not have deg 2 atoms.
+(2) Choose a highest deg 3 atom n in MD that has not bee cut (or a highest atom if MD has no deg
+3 atoms). Let Zn be the set of ancestors of n in MD. This n and Zn is fixed until all atoms in Zn
+have been cut.
+(3) Starting from n, each time choose a lowest atom m inZn that has not been cut. If m has deg 3 and
+has a parent p∈ MU that also has deg 3, then cut {m, p} as free; otherwise cut m as free. Repeat
+until all atoms in Zn have been cut, then go to (1)–(2) and choose the next n, and so on.
+(4) When all atoms in MD have been cut, finish off MU by applying the UP algorithm.
+Note that steps (1)–(3) are essentially just DOWN (i.e. the dual of UP) applied to MD, except we
+propritize the{33} molecules formed by an atom in MD with an atom in MU.
+Proposition 1.21. Let M be toy model III. Then, after applying the cutting sequence defined in Defi-
+nition 1.20, all components we get are elementary, and we have
+#{4} = 1, #{33}≥ 1
+2· #2conn. (1.17)
+Proof. Since steps (1)–(3) are essentially the same as in DOWN, it is easy to prove all components we
+get are elementary and #{4} = 1, in the same way as the proof of Proposition 1.11. Now we only need
+to prove thaty #{33}≥ #2conn/2.
+Let n∈ MU be any 2-connection, which is connected to two atoms m1, m2 ∈ MD by two bonds.
+Assume m1 is cut before m2 in Definition 1.20 (they cannot be cut at the same time, as Definition 1.20
+(3) does not provide an option to cut a {33} molecule with both atoms in MD). Arguing in the same
+way as in part 2 of the proof of Proposition 1.11, we know that m2 cannot have deg 4 when it is cut. On
+the other hand, note that MD is a tree initially without deg 3 atoms; by arguing in the same way as in
+part 4 of the proof of Proposition 1.11 and calculating the quantity σ defined there but within MD, we
+conclude that m2 also cannot have deg 2 when it is cut.
+Therefore, M2 must have deg 3 when it is cut; at this time n must also have deg 3 because m1 has
+been cut, m2 has not, and n also has two top edges (not fixed ends) that are not affected, see Figure 20).
+By (3) we conclude that m2 must belong to a{33} molecule, which means that n must be adjacent with
+an MD atom in some{33} molecule. Since this is true for each 2-connection, and each{33} molecule may
+correspond to at most two 2-connections in this way (i.e. given the {33} molecule there can be at most
+two n that are adjacent with the MD atom in this {33} molecule), we conclude that #{33}≥ #2conn/2,
+as desired.
+1.5 Additions and reduction to toy models
+In this subsection, we discuss the changes and additions that are necessary to address the general case,
+without the simplifications made in the various toy models in this section. These should be viewed as
+branches that are attached to the main thread of proof, which are less essential but necessary. They
+include the additions listed in Table 2, which will be discussed in Sections 1.5.1–1.5.4, as well as a few
+other ingredients which will be discussed in Section 1.5.5.
+14
+
+===== PAGE 15 =====
+1.5.1 O-atoms and ov-segments
+First, in the real problem, the molecule M may contain O-atoms. This leads to the more involved
+definition of cutting operations: now cutting an atom n as free introduces fixed ends not only at adjacent
+atoms, but also at atoms which are connected to n by an ov-segment, which is part of a particle line with
+all interior atoms being O-atoms. In particular each bond in this ov-segment is broken after cutting n
+as free, and a simple pair (formed by a free end and a fixed end) is introduced at each O-atom in this
+ov-segment, see Figure 21.
+The notion of ov-segments is important in the analysis of O-atoms, and should be viewed as a gener-
+alization of edgs/bonds. Using this, we can define the associated notions of being ov-adjacent (connected
+by an ov-segment), ov-parents and ov-children, and ov-components (connected components under the
+relation of being ov-adjacent), etc. Fortunately, in almost all cases, this generalization does not cause
+any essential change to the proof; we simply translate every sentence in the proofs in Sections 1.1–1.4
+into the language of ov-segments, with “adjacent” replaced by “ov-adjacent” and “components” replaced
+by “ov-components”, etc. As an example, the fact (♡) in the proof of Lemma 1.7 now reads (Figure 22):
+(♡♡) Suppose we cut S⊆ M as free, where S is an ov-connected subset of M and M is a tree. Then,
+for each atom q∈ M\S that is connected to an atom in S by a (pre-cutting) ov-segment e, the
+post-cutting molecule MD has exactly one component Xq corresponding to q. Moreover, when
+viewed in Xq, the operation of cutting S turns exactly one free end at q into a fixed end.
+There are only two places where extra arguments are needed in addition to this translation, i.e. the
+2CONNUP algorithm and the definition of primitivity, which will be explained in the actual proof.
+1.5.2 Reducing to two layers: layer selection
+In Definition 1.1 we have assumed that M consists of only two layers: MU and MD. In fact, this two-
+layer case already captures most of the essential difficulties in the multi-layer case, and a relatively simple
+process allows us to reduce the general L-layer case (where L is any large constant) to the 2-layer case.
+This is refered to as layer selection, which we discuss as follows.
+Recall the setr(Mℓ) of particle lines “crossing” into layerℓ from higher layers. We will rely on the key
+property of molecules M, which asserts that each particle line in r(Mℓ) is connected to another particle
+line in r(Mℓ) via layers ℓ and below. We shall assume each layer Mℓ is a forest (when Mℓ contains cycles
+we would need another process called layer refining, see Section 1.5.3 below). The layer selection process
+is defined as follows, see Figure 23:
+(1) Let sℓ =|r(Mℓ)| be the number of particle lines “crossing” into layer ℓ from higher layers. Then
+choose ℓU such that
+ρ′ :=sℓU−1∼ max
+ℓ′
+sℓ′∼ρ, ρ ′≫ max
+ℓ′≥ℓU
+sℓ′. (1.18)
+Here the first condition in (1.18) states that the majority of crossings happen between layersℓU and
+ℓU− 1, and the second condition states that the crossings in layers above ℓU are negligible (which
+is useful in controling the number of components of MℓU ; eventually this is used to guarantee that
+all bonds between MU and MD do lead to cycles).
+(2) Consider each of the sℓU−1 particle lines in r(MℓU ). For ℓD < ℓU, define λℓU ;ℓD to be the number
+of these particle lines that are connected to another such particle line (or to a cycle) within layers
+betweenℓU and ℓD; in other words, we start from layer ℓU and move down, keeping track of the
+number of particle lines that are connected to other particle lines or to a cycle at each time . Note
+that λℓU ;1 =sℓU−1 by the property in (1); now as in (1), we choose ℓD such that
+ρ′′ :=λℓU ;ℓD∼sℓU−1 =ρ′, ρ ′′≫ max
+ℓ′>ℓD
+λℓU ;ℓ′. (1.19)
+15
+
+===== PAGE 16 =====
+(3) Now we focus on the layers M[ℓD:ℓU ] :=∪ℓD≤ℓ′≤ℓU Mℓ′, and ignore all other layers. Consider each
+component Z of the set M(ℓD:ℓU ) :=∪ℓD<ℓ′<ℓU Mℓ′. If Z intersects at least two particle lines in
+r(MℓU−1) or contains a cycle , then by the choice of ℓD in (2), the number of such exceptional
+components is≤λℓU ;ℓD+1≪ρ′′ which is negligible. We will assume this number is zero (otherwise
+we need an additional cutting andpre-processingstep, see Section 1.5.5 below), then each component
+of M(ℓD:ℓU ) intersects exactly one particle line in r(MℓU−1) and contains no cycle. Since MℓU is a
+forest by itself, we then see that M(ℓD:ℓU ] := MℓU∪ M(ℓD:ℓU ) is also a forest.
+(4) We now define MU := M(ℓD:ℓU ] and MD := MℓD, which are both forests. Since we will have
+good control on their number of components, we may assume they are in fact trees; moreover, the
+definition of ρ′′ :=λℓU ;ℓD implies that the exist≥ρ′′ bonds between MU and MD (in fact they are
+connected to each other in MD), which reduces us to the 2-layer model as in Definition 1.1.
+We remark that in practice, the layer selection process is complicated by the need of layer refining
+(Section 1.5.3) and cutting the exceptional components in (3) (Section 1.5.5).
+1.5.3 Reducing each layer to a tree: layer refining
+In both the toy models in Sections 1.1–1.4 and the layer selection process in Section 1.5.2 above, it is
+crucial that each layer of M is a forest. In reality, to deal with the case where M contains cycles within
+a single layer, we need to define the layer refining process as follows.
+Recall each single layer Mℓ of M contains finitely many C-molecules (i.e. molecules with only C-
+atoms) joined by O-atoms, that each C-molecule contains at most Γ = O(1) independent cycles , and
+joining these C-molecules by O-atoms does not add any cycle. We have a simple and intuitive lemma,
+which states that (see Figure 24):
+• For each molecule M with at most Γ independent cycles, we can always divide it into at most Γ + 1
+subsets Mj (0≤j≤ Γ), such that each subset is a tree, and no atom in Mi can be parent of atom
+in Mj for i<j .
+Now, to complete the layer refining process, we simply apply the above lemma to each of the C-molecules
+in each layer of M to get, for each 0≤j≤ Γ, a label j subset of each such C-molecule in each layer. We
+then combine the label j subsets for all these C-molecules, and distribute the O-atoms appropriately, to
+divide each layer Mj into at most Γ + 1 thin layers, such that each thin layer is now a forest. This then
+allows us to repeat the layer selection process in Section 1.5.2; the use of thin layers instead of layers
+leads to one extra step in layer selection, but this is easily adjusted.
+We remark that the above layer refining process does require the total number of independent cycles
+in these single-layer C-molecules to be negligible (compared to ρ). When this total number of cycles
+is large, we can perform an alternative cutting sequence that exploits these cycles. This requires layer
+refining of a subset of layers and also leads to a minor auxiliary notion of primitivity, which we omit here.
+1.5.4 Strong and weak degeneracies
+In Definition 1.1 we have ignored any degeneracies and assumed that all{33} molecules lead to power gain.
+In reality there may be exceptions to this (when the ( xe,ve) for fixed ends e at this{33} molecule takes
+some highly specific values), where we cannot gain enough powers of ε from the integration associated
+with this{33} molecule. One example is when
+|xe1−xe7|≤ ε1−κ, |ve1−ve7|≤ ε1−κ (1.20)
+for some small constant κ, where e1 and e7 are the two fixed ends of the {33} molecule.
+16
+
+===== PAGE 17 =====
+As such, we define a strong degeneracy to be an instance where (1.20) happens at two edges that
+would become the two fixed ends if we cut the two atoms as a {33} molecule (in fact a so-called {33A}
+molecule, but we ignore this minor point). Similarly we can define the notion of weak degeneracy, which
+involves one or two atoms and some conditions similar to (1.20). Note that these definitions only involve
+certain edges and atoms in M, and is not a priori associated with any concrete cutting sequence.
+Our strategy is such that, when there are many degeneracies, we shall perform an alternative cutting
+sequence, where we do not gain from {33} components but instead gain from the extra degeneracy
+assumptions such as (1.20). Compared to the sophisticated algorithms exploiting {33} molecules, this
+alternative cutting sequence essentially follows the simple procedure where we cut every atom by itself,
+so that most of them are cut as {3} molecules. Usually integrating a {3} molecule does not gain any
+power, but if this {3} molecule contains an edge or atom that is involved in some degeneracy condition
+like (1.20), then it is clear that this{3} molecule integration should gain some power, which effectively
+turn this{3} molecule into a good one.
+In practice, there will be two places in the overall algorithm where we need to consider degeneracies:
+the first time for strong degeneracies, and the second time for weak degeneracies. If there are many (strong
+or weak) degeneracies, then we can apply the alternative cutting sequence (with some complications as
+described above) to conclude; if there are few (strong and weak) degeneracies, then their effect will be
+negligible and we can get rid of them and proceed with the main thread of our algorithm.
+1.5.5 Additional ingredients and pre-processing
+Finally, we discuss a few minor ingredients that are needed in the full case, that are not discussed in
+Sections 1.5.1–1.5.4 above.
+Cutting exceptional components. Recall the notion of exceptional components in step (3) in the layer
+selection process in Section 1.5.2. When there are no exceptional components, we know that MU =
+MℓU∪ M(ℓD:ℓU ) is a forest; however, when there are a (positive) negligible number of such exceptional
+components, we need to cut them first, before defining MU which can be a forest. It is easy to show that
+this cutting process leads to a negligible number of bad {4} components.
+Pre-processing. In Definition 1.1, we have assumed that the 2-layer moleculeM has no fixed ends. This
+is the case if the are no exceptional components in layer selection, but if there are exceptional components
+that are cut as above, then this will create fixed ends (and thus deg 3 atoms after we subsequently cut
+all deg 2 atoms) in both MU and MD. Here, depending on the number of components of deg 3 atoms
+in MD (similar to the dichotomy in Sections 1.2–1.3), we either apply the dual of 3COMPUP in MD
+similar to Section 1.3, or apply an extra pre-processing step to turn MD into a proper molecule. This
+then allows us to execute the main thread algorithm, just as the case of no fixed ends.
+Handeling 2-connections. Recall that in the toy models, there is a case when the number of 2-
+connections satisfies 0 < #2conn≪|X| (see Section 1.4), which is not covered in any toy model. In this
+case we will need to first cut all these 2-connections, so no more 2-connections remain in the resulting
+molecule, and then proceed as in either toy models I and I plus or toy model II, depending on the
+dichotomy. There will be fixed ends, but they can be handled by pre-processing as above. Finally, this
+also leads to some complications as the set X involved in the dichotomy needs to be replaced by some
+natural modifications, which will be explained in details in the algorithm MAINUD in the actual proof.
+17
+
+===== PAGE 18 =====
+Figure 1: Examples of toy models. Upper left: toy model I ( X = MU). Upper right: toy model I plus
+(where # comp(X) = 2). Lower left: toy model II (where # comp(X) =|X|). Lower right: toy model III
+(where # 2conn∼| X|/2). The blue bonds connect MU and MD. The orange and pink atoms indicate
+those in X and 2-connections respectively. The pink dots represent patterns that can be repeated.
+Figure 2: Examples of {33} and{343} molecules (left), and proper molecules (right, see Definition 1.3).
+Note thse notions are applied to MD, in which the top/bottom distinction is less important, hence we
+draw an equivalent simplified picture below, with no distinction of top/bottom, and with the deg (i.e.
+degree) of each atom indicated. Similar simplified illustrations will occur a few times below.
+18
+
+===== PAGE 19 =====
+Figure 3: Algorithm for toy model I, applied to the example in Figure 1. Following the rule of the
+algorithm (Definition 1.4), each time we cut the atom(s) in the red box, creating fixed ends. The type of
+the elementary molecules to be cut is listed at the upper right corner.
+19
+
+===== PAGE 20 =====
+Figure 4: Operations (a) and (b) defined in the proof of Proposition 1.6. In either case an atom mj∈ MD
+is connected to an atom nj∈ MU by a blue bond. In case (a) m1 has deg 4, and we cut {n1} as free,
+creating a fixed end at m1∈ MD and turning it into deg 3; in case (b) m2 has deg 3, and we cut{n2, m2}
+as free, which when viewed in MD just corresponds to cutting {m2} as free, creating fixed ends at its
+adjacent atoms.
+Figure 5: The greedy algorithm in Definition 1.4. Starting from upper left graph (which is proper), we
+apply operation (a), which creates a {343} molecule (in red box). We cut it, which subsequently creates
+a{33} molecule. We cut it, and the graph becomes proper again.
+20
+
+===== PAGE 21 =====
+Figure 6: Property (♡) in the proof of Lemma 1.7. Here S is a connected subset, and there are bijections
+between q andXq, where q∈ MD\S is connected to S by a bond e, and Xq is the component containing
+q after cutting S as free. When viewed in Xq, the operation of cutting S as free creates exactly one fixed
+end in Xq. All these crucially depend on the fact that MU and MD have no cycles.
+Figure 7: Proof of Lemma 1.7. After applying (a) to a proper MD, a deg 4 atom is turned into deg 3,
+thus creating a{33} (top) or{343} molecule (bottom). Crucially, all the atoms with “?” must be deg 4,
+because MD is proper before applying (a), and because applying (a) does not create {33} molecule in the
+bottom case. Then, after cutting the {33} or{343} molecule, when viewed in each resulting component
+(which contains one “?” atom), we create only one fixed end and turn the “?” atom from deg 4 to deg 3,
+and so on.
+21
+
+===== PAGE 22 =====
+Figure 8: Illustration of each component of X (or MU ifX = MU in toy model I). It has a unique lowest
+atom (in red). The other atoms can only be constructed from the red one by taking parents, as they
+must have a bond connecting to MD (in blue) and cannot have a third child.
+Figure 9: The UP algorithm. As in the above figures, the red box indicates the atom(s) to be cut next,
+the green box indicates the atom(s) in Sn (see Step (2) in the UP algorithm), which will be cut after
+cutting n. Note also when n and its parent n+ (or child n−) form a {33} molecule, we should cut them
+together; see Step (3) of the UP algorithm.
+22
+
+===== PAGE 23 =====
+Figure 10: Illustration of the monotonicity property of the UP algorithm. Left: when we choose n in
+Step (2), there is no top fixed end outsideSn\{n} and no fixed end at all inSn\{n} (i.e. all deg 4). Right:
+when we cut a highest remaining atom m in Sn, this only creates top fixed end on Sn and bottom fixed
+end outside Sn.
+23
+
+===== PAGE 24 =====
+Figure 11: Algorithm for toy model I plus (first half) in Definition 1.12, applied to the example in Figure
+1. In addition to Figure 3, we use green box to indicate atom(s) in Sn (see Step (2) in the toy model I
+plus algorithm) which will be cut after cutting n.
+24
+
+===== PAGE 25 =====
+Figure 12: Algorithm for toy model I plus (second half). Here, the next atom n we choose is not the
+unique deg 3 atom in MU, but rather the atom in X below it, see Step (2) in the toy model I plus
+algorithm. This leads to another {4} loss, but the total loss is bounded by # comp(X) = 2. In the end, we
+subsequently cut two deg 2 atoms in MU, and two deg 3 atoms in MD, to conclude.
+25
+
+===== PAGE 26 =====
+Figure 13: Part 1 of the proof of Proposition 1.13: the preservation of the monotonicity property (just
+as for UP) in MU. This is essentially the same as the right half of Figure 10, except the green bonds
+connecting MD to atoms in MU (those atoms must be in X). By our choice, Sn\{n} is disjoint with
+X, so none of these bonds involve any atom in Sn (once n has been cut). As such, if we do any cutting
+in MD (as in Definition 1.12 (4)), this will only create bottom ends outside Sn\{n}, hence preserving the
+monotonicity property in MU.
+Figure 14: An example of connected, no-bottom sets in Lemma 1.15; this one is a union of two intersecting
+descendant sets Sm and Sn. In general each such set is a union of descendant sets Sn with n forming a
+connected set; see the proof of Lemma 1.15.
+26
+
+===== PAGE 27 =====
+Figure 15: Algorithm for toy model II, applied to the example in Figure 1. Here we first cut all of MD
+as free. Then, each time we choose a connected, no-bottom subset A that contains exactly two deg 3
+atoms, see Step (1) in the toy model II algorithm. We then apply UP to cut all atoms in A (cf. Figure
+9 for the application of UP) and repeat. Note that each application of UP guarantees at least one{33}
+molecule.
+27
+
+===== PAGE 28 =====
+Figure 16: Part 2 of the proof of Proposition 1.18. Here A is the connected, no-bottom set as in Lemma
+1.15; various atoms m (together with the corresponding component Xm as in (♡)) are drawn, each of
+which connected to its child n∈A by a bond. Apart from 2 exceptions, this n will have deg 4. If m has
+deg 4 we do nothing; if m has deg 3, we take all the cubsequently connected deg 3 atoms in Xm and call
+them Ym (i.e. the blue circle within the green circle Xm). The B is defined as the union of A and
+all blue circles. Within one loop (1)–(5) in Definition 1.16, we cut everything in A, and subsequently
+everything in the blue circles as deg 2 (or as part of {33} molecule). That is, we cut everything in B and
+nothing else (as cutting B only turns deg 4 atoms into deg 3 but does not produce further deg 2 atom).
+Figure 17: Part 3 of the proof of Proposition 1.18: here n∈A is connected to m∈Xm which has deg 3,
+as in Figure 16. With at most 2 more exceptions, this n will also have deg 3 when it is cut (as we are
+essentially doing UP within A, see Proposition 1.11), which leads to a {33} molecule formed by n and
+m.
+28
+
+===== PAGE 29 =====
+Figure 18: Part 4 of the proof of Proposition 1.18. Left: suppose we cut B and are the left with all
+the components as in (♡). Within each such component, a fixed end is created, turning a deg 4 atom
+into deg 3. Right: for each component, turning one deg 4 atom into deg 3 may decrease the number of
+components of the set of deg 3 atoms by 2 (by joining 3 such components into 1 with the new deg
+3 atom), but no more. Note that the blue circles here are unrelated to the blue circles in Figures 16–17
+and represent different things.
+29
+
+===== PAGE 30 =====
+Figure 19: Algorithm for toy model III, applied to the example in Figure 1. Here we perform DOWN
+which is the dual of UP in MD, so in Step (2) in UP algorithm we choose the highest deg 3 atom
+instead of the lowest, and in Step (3) in UP algorithm we choose the lowest remaining atom instead of
+the highest, etc. Here green box indicates atoms in Zn (the set of ancestors of n), and when an atom
+n∈ MD forms a {33} molecule with an atom m∈ MU we always cut it. In the end we see that each
+2-connection (pink atom) belongs to one {33} molecule, as desired. As the gain is already enough, the
+rest can be cut into elementary molecules using UP in MU and DOWN in MD.
+30
+
+===== PAGE 31 =====
+Figure 20: The proof of Proposition 1.21. Here n∈ MU is a 2-connection connected to m1,2∈ MD;
+assume m1 is cut before m2 when applying DOWN in MD. Then at the time m2 is cut, this m2 has deg
+3 due to properties of DOWN (Proposition 1.11), and n also has deg 3 because m1 has been cut.
+Figure 21: Notions associated with O-atoms (Section 1.5.1): ov-segments and associated cutting rules
+(which break every bond in this ov-segment), and ov-components (the 3 blue atoms in the bottom picture,
+which are not connected by themselves, but are so-called ov-connected.) Recall that hollow and solid dots
+represent C- and O-atoms respectively.
+Figure 22: The property (♡♡), i.e. the analog of (♡♡) with O-atoms, see Section 1.5.1. Here, compared
+to (♡♡), each bond in each ov-segment connecting S to Sc is broken (cf. Figure 21), so each atom q on
+this ov-segment will correspond to a separate component Xq (in which a new fixed end is created) after
+cuttingS; see for example the C-atom q and O-atom q′, and the corresponding components Xq andXq′.
+31
+
+===== PAGE 32 =====
+Figure 23: Layer selection (Section 1.5.2). The blue edges in layer MℓU−1 belong to particle lines in
+r(MℓU−1), whose size satisfies sℓU−1 ≳ ρ. Each of them is connected to a red edge crossing ℓUτ (they
+belong to the particle lines in r(MℓU ), and their number sℓU ≪ sℓU−1, i.e. these particle lines are
+essentially connected to each other (basically, this condition is used to guarantee that all the bonds
+between MU and MD do lead to cycles). in layer MℓU . On the other hand, these particle lines are
+connected to pink edges below, but are not connected to each other until reaching layer MℓD (by
+yellow edges in MℓD). This corresponds to the case λℓU ;ℓD+1 = 0 and λℓU ;ℓD ≳ sℓU (the general case
+0<λ ℓU ;ℓD+1≪sℓU requires a little more work). We then set MU to contain layers M[ℓD+1:ℓU ] (which is
+a forest in our case; in general case we need to cut some exceptional components to make it a forest), and
+MD to contain layer MℓD, to reduce to the 2-layer case, where each of MU and MD contains no cycle,
+and the number of bonds between MU and MD being ≳ρ.
+Figure 24: An illustration of layer refining (Section 1.5.3). Namely, if a single layer contains cycles, then
+we can break it into thin layers such that each thin layer contains no cycle. Note that here we are dealing
+with C-atoms only, i.e. within a C-molecule in a single layer; in practice we will so this for all C-molecules,
+combine the thin layers coming from different C-molecules, and distribute the O-atoms appropriately.
+32

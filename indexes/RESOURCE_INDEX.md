@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T18:42:42Z`
-- Tree/content state: `be155296d3885d351a26966624a038f422705e96906e88f3858a0fcce47938d3`
+- Scanned: `2026-09-07T18:47:50Z`
+- Tree/content state: `5ea44c1b3da0072e8420e56ad7604a7b9d3697062cc6f20c0be1a068c5a67f6b`
 - Coverage: complete structural traversal
-- Files: 994
-- Uploaded source files: 987
-- PDF papers: 907
+- Files: 1023
+- Uploaded source files: 1016
+- PDF papers: 936
 - Repository machinery files: 7
-- Byte-identical duplicate groups: 43
+- Byte-identical duplicate groups: 47
 
 ## Top-level coverage
 
@@ -20,7 +20,7 @@
 | `ARXIV PAPER - 2503.14745v2.pdf` | 1 |
 | `BIG PAPERS` | 3 |
 | `DATA` | 12 |
-| `EXPOSURE_STATS` | 53 |
+| `EXPOSURE_STATS` | 82 |
 | `H(s)H_Toolkit` | 311 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -140,6 +140,12 @@
 - `c5f441626fcae53d8bf7530a65b7790837f3db84a1ff031e42e4eed16e808875`
   - `HAUL 4/7258242.pdf`
   - `HAUL 7/ssrn-7258242.pdf`
+- `c7145c5b45df7a3da496b742777ecb2a35e597fb91d1513273eada0aab1d1cb2`
+  - `EXPOSURE_STATS/MISC_PAPERS/Notes_Boltzmann.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - Notes_Boltzmann.pdf`
+- `cb8afdccaf6239938dc8a41946052a3e41df8859cd86cc94b75392ea44ffd4be`
+  - `EXPOSURE_STATS/MISC_PAPERS/light (5) 2.pdf`
+  - `EXPOSURE_STATS/MISC_PAPERS/light (5).pdf`
 - `d1ee8716b2ffd59bf030f1e6ea7bb21e0b6437657a099c9435a7fa0b463ece81`
   - `HAUL 2/ssrn-6962403 (1).pdf`
   - `HAUL 2/ssrn-6962403.pdf`
@@ -167,12 +173,19 @@
 - `e997c865a586381c9c8ab575f95a1bc09ff0283a18ba6d39e658649e95688df4`
   - `HAUL 7/ssrn-7242985 (1).pdf`
   - `HAUL 7/ssrn-7242985.pdf`
+- `eb36dbcf07c92e092cee28044b74d6d0f613e7ac6c2c60305ea4b68592f9960e`
+  - `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code 2.pdf`
+  - `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code 3.pdf`
+  - `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code.pdf`
 - `eeaca47f4c1b046b98f25575bbc85d1f7be87c4bd54fa1c85828b6d17f865d1a`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2.pdf`
 - `f80612ec39a4da59b70064e3140235e91d89ed83c1642f647f58612afac71952`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Total views in last 14 days 2.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Total views in last 14 days.csv`
+- `f9139507c03a4a58d03a5f43d82a02d8db1bd64b21fb4eaebd648121be8422cd`
+  - `EXPOSURE_STATS/MISC_PAPERS/w1sd-v69d.pdf`
+  - `LIVE_RESEARCH_UPDATES/w1sd-v69d.pdf`
 - `fbcebed5b0ac33642d6d10255ec69871c63890046204a0abd4cbd5ba1798331d`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI Podcast Stats.txt`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI Podcast.txt`
@@ -192,9 +205,13 @@
 | `DATA/DATA REL - notebooks-latest04_HowTosSPARCLPlot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalabnotebooks-latest.pdf` | 211459 |  |
 | `DATA/DATA REL - SPARCL Notebooks.pdf` | 509725 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/2025 Scientific Triumph- Unifying the Laws of Physics through Mathematical Geniu.pdf` | 1057840 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/2408.07818v3.pdf` | 7682019 | arxiv:2408.07818v3 |
 | `EXPOSURE_STATS/MISC_PAPERS/2503.01800v1.pdf` | 1127581 | arxiv:2503.01800v1 |
+| `EXPOSURE_STATS/MISC_PAPERS/2505.11881v5.pdf` | 6703406 | arxiv:2505.11881v5 |
 | `EXPOSURE_STATS/MISC_PAPERS/2601.07382v1.pdf` | 773206 | arxiv:2601.07382v1 |
 | `EXPOSURE_STATS/MISC_PAPERS/2603.09078v1.pdf` | 849347 | arxiv:2603.09078v1 |
+| `EXPOSURE_STATS/MISC_PAPERS/2605.15674v1.pdf` | 2101682 | arxiv:2605.15674v1 |
+| `EXPOSURE_STATS/MISC_PAPERS/2605.16977v1.pdf` | 5333615 | arxiv:2605.16977v1 |
 | `EXPOSURE_STATS/MISC_PAPERS/2605.22912v1.pdf` | 1174134 | arxiv:2605.22912v1 |
 | `EXPOSURE_STATS/MISC_PAPERS/41586_2026_10652_MOESM4_ESM.pdf` | 481607 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/[2605.19117] Quantum Magic Reveals CP Phases Invisible to Entanglement in Spin-0.pdf` | 160924 | arxiv:2605.19117 |
@@ -206,6 +223,31 @@
 | `EXPOSURE_STATS/MISC_PAPERS/flag-assisted-error-correction-on-fcc-lattice.pdf` | 441898 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/geometric-evaporation-primordial-black-hole-constraint.pdf` | 417394 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Grand Unification Theories And Supersymmetry  Physics  Research Starters  EBS.pdf` | 212049 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code 2.pdf` | 647522 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code 3.pdf` | 647522 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code.pdf` | 647522 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_Mass_Energy_Equivalence.pdf` | 885500 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_Matter_as_Incomplete_Crystallization.pdf` | 1770107 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Lehew-2026-Pascal-Anti-Diagonal Alpha-Letter.pdf` | 947911 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/light (5) 2.pdf` | 209687 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/light (5).pdf` | 209687 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/LIGHT_IS_GEM_v12.pdf` | 429601 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/limit (1).pdf` | 219493 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Matter as incomplete crystallization- Quark charges, color confinement, and the .pdf` | 5255092 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Notes_Boltzmann.pdf` | 3853151 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/physical-spacetime.pdf` | 590747 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Relaxation-Driven Cyclic Cosmology (RDCC) v21.0 - solves the near-adiabaticity p.pdf` | 464986 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/s41586-026-10652-y_reference.pdf` | 22985980 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/ssrn-6469929.pdf` | 1469295 | ssrn:6469929 |
+| `EXPOSURE_STATS/MISC_PAPERS/ssrn-6469931.pdf` | 1354869 | ssrn:6469931 |
+| `EXPOSURE_STATS/MISC_PAPERS/ssrn-6708182.pdf` | 963004 | ssrn:6708182 |
+| `EXPOSURE_STATS/MISC_PAPERS/The Neutrinoverse Hypothesis- Naming the Immutable Holographic Medium for Genuin.pdf` | 379016 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/THE UNIFIED COMPRESSION-BASED FIELD THEORY- THE FINAL EDITION  by Corybrent  M.pdf` | 139062 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/The Universe Has a Resolution Limit- New Theory Derives the Exact Mass Where Qua.pdf` | 106217 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Toy_model_algorithm.pdf` | 4253446 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/trapped-tetrahedral-defect.pdf` | 360133 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/uniphics_explained_simply.pdf` | 81957 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/w1sd-v69d.pdf` | 764891 |  |
 | `H(s)H_Toolkit/0105040v2.pdf` | 232815 | unresolved-seven-digit-id:0105040v2 |
 | `H(s)H_Toolkit/0112148v1.pdf` | 388150 | unresolved-seven-digit-id:0112148v1 |
 | `H(s)H_Toolkit/0112205v1.pdf` | 157916 | unresolved-seven-digit-id:0112205v1 |
