@@ -1,0 +1,2435 @@
+===== PAGE 1 =====
+DRAFT VERSION SEPTEMBER 5, 2024
+Typeset using LATEX twocolumn style in AASTeX631
+Inferring Cosmological Parameters on SDSS via Domain-Generalized Neural Networks and Lightcone Simulations
+JUN-YOUNG LEE
+ ,1, 2 JI-HOON KIM
+ ,1, 2, 3 MINYONG JUNG
+ ,2 BOON KIAT OH
+ ,4 YONGSEOK JO
+ ,5, 6 SONGYOUN PARK ,2
+JAEHYUN LEE
+ ,7 YUAN-S EN TING
+ ,8, 9, 10, 11 AND HO SEONG HWANG
+ 3, 12
+1Institute for Data Innovation in Science, Seoul National University, Seoul 08826, Korea
+2Center for Theoretical Physics, Department of Physics and Astronomy, Seoul National University, Seoul 08826, Korea
+3Seoul National University Astronomy Research Center, Seoul 08826, Korea
+4Department of Physics, University of Connecticut, Storrs, CT 06269, USA
+5Columbia Astrophysics Laboratory, Columbia University, New York, NY 10027, USA
+6Center for Computational Astrophysics, Flatiron Institute, New York, NY 10010, USA
+7Korea Astronomy and Space Science Institute, Daejeon 34055, Republic of Korea
+8Research School of Astronomy & Astrophysics, Australian National University, Canberra, ACT 2611, Australia
+9School of Computing, Australian National University, Acton ACT 2601, Australia
+10Department of Astronomy, The Ohio State University, Columbus, OH 43210, USA
+11Center for Cosmology and AstroParticle Physics (CCAPP), The Ohio State University, Columbus, OH 43210, USA
+12Astronomy Program, Department of Physics and Astronomy, Seoul National University, Seoul 08826, Korea
+(Received July XX, 2024; Revised July XX, 2024; Accepted August XX, 2024)
+ABSTRACT
+We present a proof-of-concept simulation-based inference on Ωm and σ8 from the SDSS BOSS LOWZ NGC
+catalog using neural networks and domain generalization techniques without the need of summary statistics. Us-
+ing rapid lightcone simulations, L-PICOLA, mock galaxy catalogs are produced that fully incorporate the observa-
+tional effects. The collection of galaxies is fed as input to a point cloud-based network,Minkowski-PointNet.
+We also add relatively more accurate G ADGET mocks to obtain robust and generalizable neural networks. By
+explicitly learning the representations which reduces the discrepancies between the two different datasets via
+the semantic alignment loss term, we show that the latent space configuration aligns into a single plane in which
+the two cosmological parameters form clear axes. Consequently, during inference, the SDSS BOSS LOWZ
+NGC catalog maps onto the plane, demonstrating effective generalization and improving prediction accuracy
+compared to non-generalized models. Results from the ensemble of 25 independently trained machines find
+Ωm=0.339±0.056 and σ8=0.801±0.061, inferred only from the distribution of galaxies in the lightcone slices
+without relying on any indirect summary statistics. A single machine that best adapts to the G ADGET mocks
+yields a tighter prediction of Ωm=0.282±0.014 and σ8=0.786±0.036. We emphasize that adaptation across
+multiple domains can enhance the robustness of the neural networks in observational data.
+Keywords: N-body simulations (1083), Cosmological parameters from large-scale structure (340), Redshift
+surveys (1378), Neural networks (1933)
+1. INTRODUCTION
+Following its success in explaining the clustering of mat-
+ter over a wide range of scales, the ΛCDM model has now
+ushered in the era of precision cosmology. The small pertur-
+bations imprinted in the cosmic microwave background grow
+Corresponding author: Ji-hoon Kim
+mornkr@snu.ac.kr
+as cold dark matter falls into and deepens potential wells.
+Small structures gravitationally evolve to create the charac-
+teristic cosmic webs and voids referred to as the large scale
+structures (LSS; Peebles 1981; Davis et al. 1985; Bond et al.
+1996), which are observable in galaxy surveys (de Lappar-
+ent et al. 1986; Geller & Huchra 1989). The LSS serves as a
+widely used probe for constraining the cosmological param-
+eters constituting the ΛCDM model, as it maps the distribu-
+tion and motion of matter throughout the universe over time.
+Over the past few decades, a series of galaxy redshift surveys
+arXiv:2409.02256v1  [astro-ph.CO]  3 Sep 2024
+
+===== PAGE 2 =====
+2
+have been conducted extensively to trace the distribution of
+galaxies and the growth history of LSS across a large spa-
+tial extent and depth (Huchra et al. 1983; York et al. 2000;
+Colless et al. 2001; Sohn et al. 2023).
+Considering the galaxy distribution as a (biased) proxy for
+the total matter content of the universe, power spectrum mul-
+tipoles and n-point correlation functions ( n-pCF) can be de-
+rived to express matter clustering at different scales. These
+summary statistics serve as essential components in the de-
+velopment of mock catalogs and in the inference of cos-
+mological parameters. The construction of survey-specific
+mocks, which mimic similar summary statistics and the ge-
+ometry of the survey, imposes constraints on certain cosmo-
+logical parameters (Kitaura et al. 2016; White et al. 2014a;
+Saito et al. 2016). Through high-resolution simulations in
+large volumes and by assigning adequate band magnitudes
+and spectroscopic information, generic catalogs applicable to
+various observational surveys can also be generated (Fosalba
+et al. 2015a; Crocce et al. 2015; Fosalba et al. 2015b; Dong-
+P´aez et al. 2022). Other than producing the mocks that best
+match the observational catalog, derived summary statistics
+from realizations simulated with varying cosmology can be
+compared with the observational counterpart to make infer-
+ence on the cosmological parameters, an approach referred
+to as simulation-based inference (Villaescusa-Navarro et al.
+2020; Hahn & Villaescusa-Navarro 2021). While these cited
+works rely on predefined summary statistics, the simulation-
+based inference framework allows for the potential use of raw
+inputs together with the neural networks’ flexible featuriza-
+tions, which permits the exploration beyond summary statis-
+tics.
+With the advent of artificial intelligence and machine
+learning, simulation-based inference of cosmological param-
+eters has been accelerated. This involves inferring cosmo-
+logical parameters from simulations by matching summary
+statistics or features, with neural networks serving as an op-
+tion alongside more traditional measures of statistical infer-
+ence such as Markov chain Monte Carlo (MCMC; Alsing
+et al. 2019; Jeffrey & Wandelt 2020). In particular, clas-
+sic summary statistics such as the n-pCF and power spectra,
+which convey limited information about the matter distribu-
+tion of the universe, can be replaced with features extracted
+by neural networks that capture much more complex infor-
+mation engraved inside (Shao et al. 2023). Attributed to this
+capability of extracting rich information not hinted at in the
+summary statistics, simulation-based inference with neural
+networks has shown the possibility of producing tight pre-
+dictions on the cosmological parameters (Lemos et al. 2023).
+Therefore, the importance of simulation-based inference is
+being recognized as it can serve as an alternative for verifying
+and possibly resolving tensions in the cosmological parame-
+ters predicted from CMB observations and galaxy surveys,
+especially concerning H0 and S8≡ σ8
+p
+Ωm/0.3 (Anchordo-
+qui et al. 2021).
+In this context, AI-driven projects have been launched
+to perform diverse tasks, including parameter estimation
+(Villaescusa-Navarro et al. 2022; Ni et al. 2023; Kreisch et al.
+2022). Especially in the estimation of cosmological param-
+eters, 21-cm tomography light cones (Neutsch et al. 2022),
+weak lensing (WL) convergence and shear maps (Fluri et al.
+2018; Fluri et al. 2019; Fluri et al. 2022; Kacprzak & Fluri
+2022; Lu et al. 2023), dark matter density fields (Pan et al.
+2020; Lazanu 2021; Giri et al. 2023; Hort ´ua et al. 2023),
+and halo catalogs (Ravanbakhsh et al. 2016; Mathuriya et al.
+2019; Ntampaka et al. 2020; Hwang et al. 2023; Shao et al.
+2023) were utilized as inputs for various neural network
+architectures, typically in a traditional supervised learning
+setup. In contrast to the direct input of mocks, derived sum-
+mary statistics such as the n-pCF, count-in-cell, void prob-
+ability function, star formation rate density, and stellar mass
+functions (SMF) were also used as inputs (Boruah et al. 2023;
+Veronesi et al. 2023; Hahn et al. 2023a; Perez et al. 2022;
+Jo et al. 2023). In addition, individual galaxy properties
+(Villaescusa-Navarro et al. 2022), galaxy cluster properties
+(Qiu et al. 2023), or snapshots of galaxy catalogs (de Santi
+et al. 2023) were shown to be useful as inputs for neural net-
+works.
+Among the listed works, most tested their pipeline on sim-
+ulated data sets, and only a few successfully generalized their
+neural networks to the actual observational data. Hahn et al.
+(2023a) and Hahn et al. (2023b) created a mask autoregres-
+sive flow using the power spectrum and bispectrum as sum-
+mary statistics to provide constraints on cosmological pa-
+rameters, based on the SDSS BOSS CMASS catalog (Reid
+et al. 2016). In contrast, Veronesi et al. (2023) leveraged 2-
+pCF from lognormal mocks as input to fully connected lay-
+ers (FCL). Jo et al. (2023) used FCL emulators to perform
+implicit likelihood inference on observed SMF (Leja et al.
+2020) and SFRD (Leja et al. 2022). Parameter inferences
+using WL convergence maps as probes, including the Kilo
+Degree Survey (Hildebrandt et al. 2017; Asgari et al. 2021)
+and Subaru Hyper Suprime-Cam first-year surveys (HSC-
+Y1; Hikage et al. 2019) were also performed with Convo-
+lutional Neural Networks (CNNs) or Graph CNNs (GCNNs;
+Fluri et al. 2019; Fluri et al. 2022; Lu et al. 2023). Notably,
+recent studies regard neural networks’ outputs of predicted
+parameters as summary statistics due to their centrally bi-
+ased nature (Gupta et al. 2018; Ribli et al. 2019; Fluri et al.
+2019; Lemos et al. 2023), and perform additional Bayesian
+inferences.
+In line with efforts to use deep learning for constraining
+cosmological parameters, this paper aims to perform a proof-
+of-concept test of conducting cosmological inference using
+the galaxy redshift survey, without relying on any indirect
+
+===== PAGE 3 =====
+3
+L-PICOLA Gadget-4
+Galaxy-Halo Connection
+Observational Effects
+L-PICOLA 
+Mocks Gadget Mocks
+SDSS
+BOSS 
+LOWZ NGC
+MD-PATCHY 
+MOCKS
+Minkowski-
+PointNet
+Training Strategy
+Predictions
+Source Domain
+Target Domain
+Unseen Domain
+Figure 1. Diagram that exhibits the overall structure of this study with simulation and deep learning pipelines. We aim to infer cosmological
+parameters from the observation-driven catalog, SDSS BOSS LOWZ NGC. We produce two lightcone mock suites, L -PICOLA and GADGET
+mocks, combining N-body simulations (sections 2.2 and 2.3) and galaxy-halo connection models (Section 2.5) while fully accounting for
+observational effects (Section 2.6). We then utilize a point-cloud-based network, Minkowski-PointNet, which takes individual galaxies as
+inputs to predict Ωm and σ8, and their errors (Section 3). The L -PICOLA mocks (source domain) are trained together with the G ADGET mocks
+(target domain) using the training strategy for the domain adaptation and generalization techniques (see Section 4.3). In this process, we use
+training strategies to align the representation of each mock (Section 4). The adapted machines are then applied to unseen domains including the
+fine-tuned MD-PATCHYmocks and the SDSS BOSS LOWZ NGC sample. The main results including the predictions for the actual observation
+are shown in Section 5.
+summary statistics, but rather utilizing the total raw distribu-
+tion of galaxies as input to the neural network. For this test,
+we focus mainly on Ωm and σ8, which are directly related to
+the S8≡ σ8
+p
+Ωm/0.3 tension as mentioned above. As men-
+tioned in Hahn et al. (2023a), this choice is due to the fact
+that Ωm and σ8 are the parameters that are sensitive to the
+cosmological information of the clustering galaxies, while
+others are less constrained. In order to reduce any artificial
+priors arising from survey-specific observational biases, we
+rapidly generate a large mock suite that fully includes ob-
+servational effects such as redshift space distortion, survey
+footprint, stellar mass incompleteness, radial selection, and
+fiber collision in the SDSS BOSS LOWZ Northern Galactic
+Cap (NGC) catalog. Then, using the position and mass in-
+formation of individual and neighboring galaxies, we make
+inference on Ωm and σ8, again without relying on any indi-
+rect summary statistics.
+The biggest difficulty in using the whole galaxy catalog as
+input instead of the summary statistics is that the selection of
+codes begets overall differences in the resultant realizations.
+The differences are easily discernible and distinguishable by
+complex neural networks. Consequently, naively merging
+the different sets of mocks or domains limits the machines
+to merely learning fragmented domain-specific knowledge.
+Recent studies have tried to address such issues, as machines
+failing to attain robustness exhibit poor performances and
+lack predictability on unseen domains (Ni et al. 2023; Shao
+et al. 2023; Roncoli et al. 2023). Moreover, as simulated cat-
+alogs do not perfectly portray the actual universe, such dis-
+crepancies may significantly aggravate the performance of
+machines onto unseen observed data. Especially, the rapid
+generation of mocks trades off with the inaccuracies com-
+pared to the relatively time-consuming simulations, leading
+to a clear deviation. In order to make effective inferences on
+different types of simulation or domains, the neural network
+must achieve generalizability. This study focuses mainly
+on extracting and learning unified representations originat-
+
+===== PAGE 4 =====
+4
+ing from distinct domains and exploiting generalized and in-
+tegrated knowledge on the observational data.
+This paper is organized as follows. In Section 2, we il-
+lustrate the creation of our mock data that thoroughly in-
+tegrate the observational effects. We produce two suites of
+mocks using two distinct simulations, L -PICOLA and GADGET.
+The footprint and lightcone slices are shown together with
+the observational target, the SDSS BOSS LOWZ NGC cat-
+alog, and its specific set of mock catalogs, MD- PATCHY, for
+comparison. In Section 3, input features and the neural net-
+work architecture are introduced together with the training
+strategies in Section 4, to align the latent space representa-
+tions of different mocks and achieve domain generalization
+or robustness. In Section 5, implicit likelihood estimates in
+Ωm and σ8 using the SDSS BOSS LOWZ NGC catalog are
+shown. We also discuss the impact of fine-tuned MD-PATCHY
+mocks on the predictability and generalizability of the ma-
+chine. Finally, the results and the following conclusions are
+summarized in Section 7. The overall approach taken by the
+paper is schematically shown in Figure 1.
+2. GALAXY CATALOG: OBSERV ATION AND
+SIMULATION
+2.1. The Reference SDSS Catalog
+In this study, we utilize the Baryon Oscillation Spectro-
+scopic Survey (BOSS; Dawson et al. 2013), part of SDSS-III
+(Eisenstein et al. 2011), which extends the previously stud-
+ied distribution of luminous red galaxies (LRGs; Eisenstein
+et al. 2001) from SDSS I/II, adding fainter galaxies and thus
+larger number densities, for the purpose of measuring baryon
+acoustic oscillations. The survey consists of the LOWZ (To-
+jeiro et al. 2014) and CMASS (Reid et al. 2016) catalogs,
+which have different color and magnitude cuts. The LOWZ
+catalog targets galaxies at a low redshift of z ≲ 0.4, while
+CMASS targets a higher redshift range of 0.4 ≲ z ≲ 0.7. The
+LOWZ samples are roughly considered as volume-limited,
+whereas the CMASS samples, representing ‘constant mass’,
+are considered volume-limited within the mass and redshift
+ranges of M⋆ > 1011.3M⊙ and z ≲ 0.6 (Reid et al. 2016;
+Maraston et al. 2013). Using the MKSAMPLE code, the LSS
+catalogs for both LOWZ and CMASS were created for BOSS
+DR12, fully equipped with survey masks and random sam-
+ples. These samples include completeness and weights cal-
+culated for the analysis of large-scale structure (Reid et al.
+2016).
+To account for the stellar mass incompleteness of the sur-
+vey and to incorporate cosmological information from the
+stellar masses of galaxies later on, we obtain stellar mass data
+from the value-added Portsmouth SED-fits catalog (Maras-
+ton et al. 2013), assuming a passive evolution model with the
+Kroupa IMF (Kroupa 2001). Since the Portsmouth SED-fits
+catalog includes both BOSS and LEGACY targets, we need
+to select those that are included in the LSS catalog. Follow-
+ing Rodr´ıguez-Torres et al. (2016), we match galaxies using
+the unique combination of tags MJD, PLATEID, and FIBERID, and
+then assign the stellar masses from the matched galaxies in
+the Portsmouth catalog to the corresponding entries in the
+LSS catalog.
+In this work, we use the Northern Galactic Cap (NGC)
+of the LOWZ samples with RA=150 ◦–240◦ and DEC >0◦.
+The selection of the LOWZ samples and the cropped regions
+is due to the limited volume of the lightcone simulations
+that will be used to generate mocks. Using this catalog as
+a benchmark, we generate mocks that incorporate the same
+observational effects: redshift space distortions, survey foot-
+print geometry, stellar mass incompleteness, radial selection
+matching, and fiber collision (see Section 2.6 for more infor-
+mation).
+2.2. Rapidly Generated Lightcone Mocks, L- PICOLA
+L-PICOLA is a rapid dark matter simulation that employs the
+COmoving Lagrangian Acceleration method (C OLA; Tassev
+et al. 2013) and supports on-the-fly generation of lightcones.
+At the expense of minute errors—2% in the power spectrum
+and 5% in the bispectrum—the code allows for the rapid
+generation of dark matter distributions in large box sizes
+(Howlett et al. 2015a). Numerous studies have leveraged
+on this computational efficiency to produce a vast amount of
+mock catalogs aimed for diverse observations (Howlett et al.
+2015b; Howlett et al. 2022; Ishikawa et al. 2023).
+In a box volume of (1.2 h−1Gpc)3 we simulate the evo-
+lution of 1200 3 dark matter particles on 1200 3 meshes.
+Each particle has a mass of approximately Mp≈ 8.3×
+1010  Ωm
+0.3
+
+h−1M⊙. The simulation starts with a 2LPT ini-
+tial condition generated with 2LPT IC (Scoccimarro et al.
+2012) at zinitial=9 and progresses in 10 steps to z=0.45, as
+Howlett et al. (2015a) suggests for sufficient precision in
+the resolution adopted here, with 10 lightcone slices gen-
+erated from z=0.45 to z=0. A total of 1500 simulations
+are produced, incorporating cosmic variance across vary-
+ing Ωm and σ8. Each of the two parameters is randomly
+sampled from a uniform distribution of Ωm∈[0.1,0.5] and
+σ8∈[0.6,1.0]. We assume H0=100h km s−1 Mpc−1 with
+h=0.674, ns=0.96 following the results from Planck Collab-
+oration et al. (2020). We select a realization from one pair
+of cosmological parameters most similar to the fiducial cos-
+mology of MD- PATCHY with Ωm = 0.3067, σ8 = 0.8238 and
+name it L-PICOLA fiducial . We obtain the halos using
+the ROCKSTAR halo finder (Behroozi et al. 2013b) in lightcone
+mode, considering a minimum number of 10 particles as a
+seed halo (most detailed layer of subgroup hierarchy deter-
+mined by the friends-of-friends algorithm). Thus, we impose
+a cut in the halo mass of log (Mh/h−1M⊙)=11.45. Subse-
+quently, the 1500 catalogs are rotated and reflected in six
+
+===== PAGE 5 =====
+5
+directions following Ravanbakhsh et al. (2016), generating
+a total of 9000 realizations referred to as L -PICOLA mocks.
+These mocks will be further cropped and masked separately
+according to the observational effects. From this we estab-
+lish a one-to-one correspondence between the subhalos and
+galaxies.
+2.3. Adaptation: Gravitational N-body Simulation Mocks,
+GADGET
+The L-PICOLA mocks described in Section 2.2 lack accuracy
+in the clustering statistics on small scales compared to full
+N-body simulations (see Section 4.1). Therefore, we simi-
+larly generate mocks using G ADGET-4 (Springel et al. 2021)
+in lightcone mode, which we refer to as G ADGET mocks. Al-
+though they require more computational time and resources
+to generate than L -PICOLA mocks, GADGET mocks, are gener-
+ally considered to offer higher fidelity at smaller scales (see
+Howlett et al. 2015a). Consequently, we use G ADGET mocks
+as adaptation standards of the neural networks, to refine the
+code-specific knowledge from L -PICOLA mocks, implement-
+ing a training strategy that aligns the neural networks’ ex-
+tracted representations. For additional details, refer to Sec-
+tion 4.
+The simulation resolution is the same as that of mock suites
+generated with L -PICOLA: a box volume of (1.2 h−1Gpc)3
+and 1200 3 dark matter particles with a softening length of
+10h−1kpc. The simulation initiates with a 2LPT initial con-
+dition generated with N- GenIC (Springel 2015) at z initial =10,
+similar to L-PICOLA, and ends at z=0.1 The cosmological pa-
+rameters of the fiducial run, GADGET fiducial , are set to
+be identical to those of MD- PATCHY mocks in Section 2.4:
+Ωm=0.307115, σ8=0.8288, and h=0.6777, with other pa-
+rameters fixed to the previously stated values. Furthermore,
+in order to test the machine’s predictability for non-fiducial
+mocks, we produce GADGET low with Ωm=0.2, σ8=0.7 and
+GADGET high with Ωm=0.4, σ8=0.8. We generate 6 sam-
+ples each by rotating and reflecting the three GADGET simula-
+tions, totalling 18 samples.
+2.4. Adaptation: Fine-Tuned Mocks, MD- PATCHY
+MULTIDARK PATCHY Mocks (hereafter MD- PATCHY) are
+mock galaxy catalogs designed to match the SDSS-III BOSS
+survey (Kitaura et al. 2016; Rodr ´ıguez-Torres et al. 2016).
+They referenced the BIGMULTIDARK simulation (Klypin et al.
+2016), a N-body simulation run on G ADGET-2 (Springel
+2005). The halos from the B IGMULTIDARK are populated us-
+ing the stochastic halo abundance matching technique and
+1 We acknowledge that starting a full N-body simulation, G ADGET, at low
+redshifts may lead to inaccuracies, unlike L-PICOLA, despite the reduction
+of computational resources. The choice of the initial redshift was based
+on the comparative analyses presented in Howlett et al. (2015a). We leave
+such improvements to be addressed in our future work.
+0.2 0.3 0.4
+redshift
+2000
+4000
+6000
+8000galaxy count
+SDSS BOSS LOWZ NGC
+MD-PATCHY
+L-PICOLA (FIDUCIAL)
+GADGET (FIDUCIAL)
+Figure 2. Count of galaxies per radial bins for SDSS BOSS LOWZ
+NGC (red solid line), L-PICOLA fiducial (orange dashed line),
+GADGET fiducial (green dashed line), and averaged count for all
+2048 MD-PATCHY(blue dashed line). The radial bins from redshift
+0.15 to 0.4 are defined to evenly divide the redshift space volume.
+All lightcone mocks with fiducial cosmological parameters exhibit a
+consistent number of galaxies across different radial bins compared
+to the SDSS BOSS LOWZ NGC catalog. See Section 2.6 for more
+information.
+the observational effects including redshift space distortion,
+survey footprint, stellar mass incompleteness, radial selec-
+tion, and fiber collision are considered using the SUGAR code
+(Rodr´ıguez-Torres et al. 2016). The reference catalog is used
+to calibrate PATCHY(Kitaura et al. 2013), which employs aug-
+mented Lagrangian Perturbation Theory (ALPT; Kitaura &
+Heß 2013) to generate dark matter fields. These fields are bi-
+ased and the halo masses are identified using theHADRON code
+(Zhao et al. 2015), which takes the halos’ environmental in-
+formation into account. The halo catalog is further processed
+into galaxy mocks using the halo abundance matching proce-
+dure in the SUGAR code. Specifically, the clustering statistics
+are fitted by fine-tuning a single parameter–the scatter in the
+HAM procedure (σHAM(Vpeak|M⋆)), where M⋆ represents the
+stellar mass and Vpeak the peak velocity observed throughout
+the history of the halo. In total, 10240 MD-PATCHYmocks that
+mimic the clustering statistics, stellar mass functions, and ob-
+servational effects are produced. The cosmological param-
+eters used are Ωm=0.307115, σ8=0.8288, and h=0.6777.
+In this work, we focus on the 2048 mocks of the Northern
+Galactic Cap (NGC) of the LOWZ samples. Similarly to the
+GADGET mocks in Section 2.3, the MD-PATCHYmocks are used
+as reference mocks for adaptation of the neural networks dur-
+ing the training phase (see Section 4 for more information).
+2.5. Galaxy-Halo Connection
+The galaxy-halo connection is a crucial statistical relation
+that summarizes the interplay between gravitational evolu-
+tion and baryonic physics in galaxies and halos, widely stud-
+
+===== PAGE 6 =====
+6
+Figure 3. The footprints of a single realization fromL-PICOLA fiducial (top left), GADGET fiducial (top right), MD-PATCHY(bottom left),
+and SDSS BOSS LOWZ NGC catalog ( bottom right). The same acceptance and veto masks are employed to reproduce the overall topology.
+We further cut the region into RA=150◦–240◦ and DEC>0◦. See Section 2.6 for more information.
+ied in the fields of galaxy formation and cosmology (see
+Wechsler & Tinker 2018, for review). Numerous approaches
+in modeling are available, including the halo occupation dis-
+tribution (HOD; Peacock & Smith 2000; Berlind et al. 2003),
+subhalo abundance matching (SHAM; Kravtsov et al. 2004;
+Conroy et al. 2006), and also the combined models such as
+subhalo clustering and abundance matching (SCAM; Guo
+et al. 2016; Ronconi et al. 2020). In the following, we in-
+troduce the two galaxy-halo connection methods: the fixed
+stellar-to-halo-mass relation and the SHAM.2
+2.5.1. Fixed Stellar-to-Halo-Mass Relation
+Here, we adopt the minimal model that connects N-body
+simulations to galaxy catalogs. Assuming a one-to-one
+2 The galaxy-halo connection models introduced here are indeed simplis-
+tic. To account for the detailed connection relation, it may be necessary
+to track the halo assembly history or apply varying population models by
+introducing few additional parameters. Here, we focus on proof-of-concept
+objective, rather than investigating deeply into this complex relation. Such
+limitations are left for future work.
+
+===== PAGE 7 =====
+7
+Figure 4. Lightcone slices of Figure 3 from 0◦<DEC<6◦. See Section 2.6 for more information.
+galaxy-subhalo correspondence as employed in the previous
+works (e.g., Kim et al. 2008; Hwang et al. 2016), we impose
+a fixed stellar-to-halo-mass relation (SHMR) across different
+realizations. In other words, we assume that the star forma-
+tion efficiency of galaxies in halos is equivalent across differ-
+ent cosmologies, within the redshift range of this study.3
+We use the SHMR obtained by Girelli et al. (2020), which
+compares the DUSTGRAIN- pathfinder simulation (Giocoli
+et al. 2018) with the SMF determined in (Ilbert et al. 2013)
+3 This is a strong assumption made to derive the stellar masses of each sub-
+halo identified from a dark matter-only simulation, and where cosmology-
+dependent information intervenes. This is due to the impracticality of per-
+forming full hydrodynamic simulations of such a spatial and temporal ex-
+tent across varying cosmologies. Despite introducing weak dependency,
+we emphasize that this assumption is made for a proof-of-concept test. For
+a model free of cosmological priors, refer to the SHAM model in Section
+2.5.2.
+
+===== PAGE 8 =====
+8
+from the Cosmological Evolution Survey (COSMOS) (Scov-
+ille et al. 2007). The SHMR is analyzed per different redshift
+bins to account for the temporal variability of the efficiency,
+parameterized as
+M⋆
+Mh
+(z)=2A(z)
+" M⋆
+MA(z)
+−β (z)
++
+ Mh
+MA(z)
+−γ(z)#−1
+(1)
+where Mh is the halo mass and A(z) is the normalization fac-
+tor at MA, at which the double power-law breaks. Since our
+mock galaxies are selected within 0 .15<z<0.40, we utilize
+the SHMR parameters estimated for 0 .2<z<0.5. The best-
+fit parameters are A(z)=0.0429, MA=11.87, β =0.99, and
+γ=0.669 when scatter of σr=0.2 dex is introduced. We will
+use these parameters, including the 0.2 dex scatter, for this
+work.
+2.5.2. Subhalo Abundance Matching
+In Section 2.5.1, the Fixed SHMR establishes cosmologi-
+cal priors as it selects the specific relation of connecting the
+halo mass properties to the baryonic physics. To tackle this
+issue, we alternatively utilize the non-parametric version of
+SHAM—a well-known basic galaxy-halo connection, as previ-
+ously discussed, which is also used for constraining cosmo-
+logical parameters (Simha & Cole 2013). The halo catalogs
+are painted with stellar masses using a monotonic relation be-
+tween the simulated halo masses and the stellar masses iden-
+tified from the observed SDSS BOSS LOWZ NGC catalog.
+Therefore, the difference between mocks with different cos-
+mologies arises from the clustering of the galaxies instead of
+stellar mass itself as compared to the Fixed SHMR model.
+We acknowledge that the prescription in our SHAM model
+is simplistic and may not fully describe the galaxy-halo con-
+nection. Numerous studies on SHAM have employed the
+historical peak mass or circular velocity of the halo (Red-
+dick et al. 2013; Behroozi et al. 2013a). However, the na-
+ture of the on-the-fly generation of lightcones precludes the
+possibility of utilizing historical information. In order to by-
+pass such limitations, Ishikawa et al. (2023) use snapshots
+instead of generating lightcones on-the-fly and employs post-
+processing to generate lightcones. However, since our focus
+here is on the proof-of-concept test of inferring cosmological
+parameters without summary statistics and using neural net-
+works, we accept the inherent crudeness in the galaxy-halo
+connection model.
+2.6. Observational Effects
+We include the following observational effects of the SDSS
+BOSS LOWZ NGC catalog into the L -PICOLA simulations:
+redshift space distortions, survey footprint geometry, stel-
+lar mass incompleteness, radial selection matching, and fiber
+collision. By fully accounting for these observational effects,
+we can assess how observables from realizations endowed
+with different sets of cosmological parameters would have
+deviated from the actual observation.
+Firstly, the positions of the model galaxies are shifted using
+their peculiar velocities to account for the redshift space dis-
+tortion (RSD; Kaiser 1987). In order to match the footprint
+geometry of our mocks to that of the SDSS BOSS LOWZ
+NGC, we apply acceptance and veto masks. Galaxies are
+filtered out by applying the M ANGLE masks (Swanson et al.
+2008) using the M AKE SURVEY code (White et al. 2014b).
+Next, for both Fixed SHMR and SHAM models, we restrict
+the area of interest to RA=150◦–240◦ and DEC>0◦.4
+For the Fixed SHMR model, we further apply the incom-
+pleteness in the galaxy stellar mass function of the SDSS
+BOSS LOWZ NGC catalog, a statistical bias due to the ob-
+servational constraints of the survey. Here, we apply the
+incompleteness of the LOWZ NGC sample, which is mod-
+eled by Leauthaud et al. (2016), using the Stripe 82 Mas-
+sive Galaxy Catalog to measure the SMF. The incomplete-
+ness function is shown in Equation 2, where f , σ, and M1 are
+free parameters for fitting. We calculate the interpolated in-
+completeness using the stellar mass and redshift of the galax-
+ies, and decide whether to use or discard a galaxy based on
+the result.
+c = f
+2
+
+1 + erf
+logM⋆/M1
+σ
+
+(2)
+After identifying the galaxies that are not observable due to
+stellar mass incompleteness and survey geometry, we ran-
+domly downsample the galaxies to match the radial selection.
+This is achieved by finely dividing the redshift range into 260
+radial bins with equal redshift space volume spacing.
+For the SHAM model we perform massive downsampling.
+Unlike the Fixed SHMR model, the SHAM model inher-
+ently includes stellar mass incompleteness because we use
+the observed galaxy catalog, which already has inherent in-
+completeness, as our reference. Also, we perform massive
+sampling instead of random sampling in order to match the
+monotonicity of the SHAM process. Similarly to the Fixed
+SHMR model, the sampled galaxies are filtered once more
+through the fiber collision algorithm, and then finally as-
+signed with the appropriate stellar masses.
+Furthermore, we mimic the fiber collision in the SDSS
+BOSS LOWZ NGC catalog. The SDSS galaxy spectra were
+obtained from fibers inserted into perforated plates. Since the
+fibers have a finite size with a collision radius of 62′′, a por-
+tion of fiber-collided galaxies has not been assigned with any
+4 The trimming of the footprint was necessary to accommodate the gener-
+ation of lightcones in octants of the sphere. This adjustment results in a
+slight deviation in the data used compared to earlier studies, such as those
+of Ivanov et al. (2020) and Hahn et al. (2023a). Nonetheless, we expect
+these differences to be minimal, given the modest nature of the change.
+
+===== PAGE 9 =====
+9
+Figure 5. Architecture of the Minkowski-PointNet in this work. Each input is transformed into a sparse tensor with N galaxies, each with
+features F, and passed through five consecutive linear layers for feature extraction. Global sum, average and max pooling are done to extract a
+1536-dimensional feature vector. Then it passes through the regressor consisting of four linear and dropout layers to predict Ωm, σ8 and their
+standard deviations. See Section 3.1 for more information.
+fibers. Using NBODYKIT (Hand et al. 2018), we classify the
+galaxies into two populations: decollided galaxies (D 1) and
+potentially collided galaxies (D2) (Guo et al. 2012) using the
+angular friends-of-friends algorithm as in Rodr ´ıguez-Torres
+et al. (2016). The actual abundance matching of the SHAM
+model is performed after accounting for the fiber collisions
+in order to fully preserve the number of galaxies. However,
+for the Fixed SHMR model, the stellar mass incompleteness
+already includes the incompleteness due to fiber collisions.
+Nevertheless, this reduction should be applied since fiber col-
+lisions are an important systematic biases in the small-scale
+geometry of the survey. We consider the potential double-
+counting of fiber collisions within the stellar mass incom-
+pleteness to have a negligible impact on our final results.
+Figure 2 compares the galaxy count per radial bins
+for SDSS BOSS LOWZ NGC, MD- PATCHY, L-PICOLA
+fiducial, and GADGET fiducial mocks generated with
+the Fixed SHMR model. The similarity in the distributions
+verify the consistency across all three mocks and the observa-
+tional catalog. In realizations with low Ωm and σ8 generated
+with the Fixed SHMR model, the absolute number of galax-
+ies is relatively small, and thus the total number of galax-
+ies may be less than that of the fiducial cosmology. Such a
+deficit can provide critical information to inform the neural
+network that the real universe is unlikely to have such cos-
+mological parameters. However, the mocks produced by the
+SHAM model does not have difference in the total number of
+galaxies, as it directly matches the observed galaxy mass to
+the halo catalog.
+Finally, for both Fixed SHMR and SHAM models, we re-
+strict the area of interest to RA=150 ◦–240◦ and DEC >0◦.
+The four panels of Figure 3 show the footprint of the
+L-PICOLA fiducial , GADGET fiducial , MD-PATCHY, and
+the SDSS BOSS LOWZ NGC catalog. Notice that the masks
+are equally applied, showing the same apparent streaks and
+holes. Figure 4 shows the lightcone slices from 0◦<DEC<6◦
+for each of the four mocks, with the observational effects
+fully taken into account.
+3. NEURAL NETWORK ARCHITECTURE
+3.1. Backbone: Minkowski-PointNet
+A large portion of the universe is empty, as galaxies are
+predominantly clustered along the filaments of the LSS.
+Therefore, depositing galaxies into uniform voxels can be
+highly inefficient, resulting in many voxels with few or even
+no galaxies assigned. To mitigate this problem, galaxies are
+represented as point clouds, with each galaxy depicted as a
+single point characterized by distinct positions and proper-
+ties. This representation is then processed through a deep
+neural network called Minkowski-PointNet, which is a
+PointNet (Qi et al. 2016) implementation in the Minkowski
+Engine (Choy et al. 2019).
+PointNet is a neural network architecture that captures
+the structure of point clouds, a simplified graph with no
+edges. PointNet is an architecture that can be generalized
+as DeepSets (Zaheer et al. 2017), which captures the permu-
+tation invariance and equivariance of point clouds (Bronstein
+et al. 2021). Such geometric priors are captured from the
+1D convolution layers and the global pooling layers. De-
+
+===== PAGE 10 =====
+10
+spite PointNet’s use of rotation and translation invariance to
+handle point clouds, such procedures are omitted in our ap-
+proach because of the redshift dependence of features and
+clustering, as well as the (RA,DEC) dependence of masking.
+Moreover, to explicitly introduce local properties, we apply
+the k-nearest-neighbor (kNN) algorithm to survey the char-
+acteristics of neighboring galaxies and explicitly add them to
+the feature vector. Such a step is inevitable since we are not
+able to perform message-passing between the nodes or the
+points, as the computational costs involving calculation on
+the edges are extremely demanding for the mocks compris-
+ing more than 150,000 galaxies. Therefore, we add the local
+information to the feature vector, to enrich the information
+fed to the machine.5
+The Minkowski Engine is a library that efficiently han-
+dles sparse tensors, including operations such as auto-
+differentiation and convolution. Galaxies are grouped and
+quantized into sparse tensors based on their (RA, DEC, z)
+positions using the engine, where z denotes the redshift. The
+main advantage of this implementation lies in its ability to
+handle a variable number of points as inputs to the machine,
+whereas the original implementation of PointNet operates on
+fixed sizes. Additionally, it efficiently utilizes memory by
+grouping galaxies into sparse tensors. This approach results
+in approximately 25% of the quantized cells containing more
+than one galaxy, and around 5% containing more than two
+galaxies. This strategy effectively preserves the local struc-
+ture while ensuring better memory consumption and perfor-
+mance.
+The specific network layout is illustrated in Figure 5. The
+Minkowski-PointNet is capable of receiving point clouds
+of arbitrary size. The input catalog is transformed into a
+sparse tensor and passes through a total of five linear lay-
+ers. Each linear layer is followed by a batch normalization
+layer (Ioffe & Szegedy 2015) and a leaky ReLU activation
+function. The tensor is then passed through the global sum,
+average, and max-pooling layers and concatenated to a 1536-
+dimensional vector. Global aggregators are crucial to reflect-
+ing the permutation invariance of the neural network. Un-
+like the original implementation of PointNet, solely using the
+global max-pooling as the aggregator, we add other aggrega-
+tors to better capture the embedded information as suggested
+in Corso et al. (2020). After four consecutive linear layers,
+the machine predicts the Ωm, σ8, and their standard devia-
+tions, which will be used for implicit likelihood inference.
+During the training process, we use the ADAM optimizer
+(Kingma & Ba 2014) with a learning rate of 10−7 and a Re-
+5 In contrast to PointNet ++ (Qi et al. 2017), which uses kNN for grouping
+and non-uniform sampling of points, we do not adopt such set abstraction
+layers since the absolute number of galaxies comprising each realization
+needs to be informed to the machine.
+duceLRonPlateau scheduler, which reduces the learning rate
+when the validation loss is not decreased, for a total of 20
+epochs. We make use of 80% of the samples as a training
+data set and 10% each as validation and test data sets. We
+adopt the loss function for implicit likelihood inference as
+described in Jeffrey & Wandelt (2020), which is the sum of
+the following two loss functions, where y is the label and σ 2
+the variance.
+L1 = ln
+"
+∑
+i∈batch
+(yi,pred− yi,true )2
+#
+(3)
+L2 = ln
+"
+∑
+i∈batch
+((yi,pred− yi,true )2− σ 2
+i )2
+#
+(4)
+By minimizing the combined loss function Lvanilla=L1+L2,
+we optimize both prediction accuracy and enable the repre-
+sentation of the second moment, which corresponds to the
+standard deviation. Such approaches have recently been
+utilized in many machine learning projects to estimate the
+model’s error in the absence of likelihoods (Villaescusa-
+Navarro et al. 2022; Villanueva-Domingo et al. 2022).
+3.2. Input Features
+The input features of galaxies should align with those
+derivable from observational data. Thus, we utilize the po-
+sition and stellar mass of each galaxy, as well as infor-
+mation from its neighbors, to extract details about the lo-
+cal environment, following the methodology presented in
+Jo & Kim (2019). Moreover, it is important to note that
+we do not provide the machine with physical or comov-
+ing distances since they already imply a certain cosmology
+when converted from observed redshifts. Instead, we intro-
+duce a transformed position of each galaxy by (X,Y,Z) =
+(zsin(DEC)cos(RA),zsin(DEC)sin(RA),zcos(DEC)). The
+redshift will be re-introduced as one feature, allowing the ma-
+chine to infer the redshift dependence of features.
+Additionally, we explicitly incorporate information from
+neighboring galaxies. This addresses the limitations of
+Minkowski-PointNet, which does not support message-
+passing between edges due to computational constraints aris-
+ing from the large number of inputs. By introducing neigh-
+boring information, we expect these features to serve as prox-
+ies for relational local information. From the nine nearest
+neighbors, four local features are selected: mean distance,
+maximum distance, mean stellar mass, and maximum stellar
+mass. Again, since we apply a metric in the redshift space,
+the distances become unitless. The redshift and stellar mass
+of each galaxy are used as point-specific features. In total,
+the six features are aggregated per galaxy, combining both
+local and point-specific characteristics. Figure 6 displays a
+pair plot of features with contours for 1000 randomly sam-
+pled galaxies for the mocks generated with the Fixed SHMR
+
+===== PAGE 11 =====
+11
+11
+12
+Max Mass
+11.0
+11.5
+Mean Mass
+0.00
+0.01
+Max Dist
+10 12
+Stellar Mass
+0.00
+0.01
+Mean Dist 11 12
+Max Mass
+11.0 11.5
+Mean Mass
+0.00 0.01
+Max Dist
+0.00 0.01
+Mean Dist
+Observation and Mocks
+SDSS BOSS LOWZ NGC
+MD-PATCHY
+L-PICOLA (Fiducial)
+GADGET (Fiducial)
+Figure 6. Pair plot of five features of a galaxy randomly sampled from each mock generated with the Fixed SHMR model: stellar mass
+of itself, maximum and mean neighbor masses, and maximum and mean neighbor distances, for a single realization of SDSS BOSS LOWZ
+NGC (red), MD-PATCHY(blue), L-PICOLA fiducial (orange), and GADGET fiducial (green). The plot shows for 1000 randomly sampled
+galaxies for each mocks. Masses are in units of log (M⋆/h−1M⊙) and distances are expressed in terms of the newly assumed metric in redshift
+space. The distribution exhibits fair consistency across the three mocks and the SDSS BOSS LOWZ NGC catalog. See sections 3.1 and 3.2 for
+more information.
+model. The distribution exhibits fair consistency across the
+three mocks and the SDSS BOSS LOWZ NGC catalog. An-
+other comparison between different cosmologies is available
+in Appendix A. Although not displayed for brevity, theSHAM
+models exhibit similar levels of consistency in the mocks.
+4. TRAINING STRATEGIES
+4.1. Why is Domain Shift Critical?
+The small-scale clustering statistic and the low mass end of
+a halo mass function may have distortion because of its ap-
+proximate nature in the L-PICOLA code. This is due to the dis-
+persive behavior of dark matter particles that leads to an im-
+precise subhalo determination (Howlett et al. 2015b). More-
+over, the on-the-fly lightcone simulation restricts us from ex-
+ploiting the historical information of individual halos. The
+evolution of individual subhalos can be tracked using merger
+trees derived from simulation snapshots. From this, accu-
+rate modeling of the galaxy-halo connection through SHAM
+is feasible using Vpeak or Vmax, even for dark matter fields
+generated with COLA simulations as opposed to the lightcone
+simulation (Ding et al. 2023). In an attempt to mitigate the in-
+trinsic limitation of the rapid lightcone simulation, L -PICOLA,
+Howlett et al. (2022) introduce two free parameters to rep-
+resent the subhalo number and mass ratio. These values are
+tuned by fitting the power spectrum monopole of the obser-
+vational catalog. However, since we aim at performing in-
+ference rather than fine-tuning simulations to match observa-
+tional data, such an adaptation step is inapplicable. We can
+enhance the flexibility of the models by incorporating extra
+free parameters and marginalizing over them during infer-
+ence, particularly with the HOD framework. However, this
+approach restricts the use of stellar mass information used in
+modeling the stellar mass incompleteness and as features in
+the neural networks. We plan to address such issues in future
+work.
+Minkowski-PointNet demonstrates strengths in its lack
+of specific limits on clustering scale, allowing for analysis
+across a wide range of scales, unlike most studies that impose
+an upper bound kmax (Hahn et al. 2023a,b; Ivanov et al. 2020;
+Philcox & Ivanov 2022). Even CNNs inherently impose an
+effective clustering scale through voxelization (Lemos et al.
+2023). However, our approach is sensitive to small scales, of-
+fering rich clustering information while also being suscepti-
+ble to small-scale distortions specific to each domain’s codes.
+Therefore, it is critical to regularize the training of neural net-
+works to acquire domain-agnostic knowledge.
+
+===== PAGE 12 =====
+12
+Addressing the domain shift is crucial to ensuring the ro-
+bustness of machines and their applicability to real-world ob-
+servations. We adapt the machines using prepared suites of
+mocks: 9000 L-PICOLA mocks as the source, along with either
+18 GADGET mocks or 2048 MD-PATCHY mocks as targets. By
+training them with specific strategies aimed at achieving do-
+main adaptation and generalization, we expect the machines
+to learn domain-agnostic information. Consequently, they
+will be capable of extracting representations that can be gen-
+eralized to multiple domains, particularly observational data.
+4.2. Training Objective: Domain Generalization
+The primary goal of this research is to conduct simulation-
+based inference on actual observational data using machines
+robust across different codes for generating mocks. A crit-
+ical question arises: Can we establish a unified approach to
+forward modeling our universe and making fair inferences on
+the cosmological parameters? Unfortunately, current neural
+networks show apparent discrepancies when applied to other
+domains (Ni et al. 2023; Shao et al. 2023). However, recent
+trials in generating domain-adaptive graph neural networks
+to incorporate various sources have shown the possibility of
+achieving a more robust inference (Roncoli et al. 2023).
+In the context of transfer learning, which involves the
+transfer of knowledge from a set of task to relevant tasks,
+each of the mock suites can be viewed as n mocks sampled
+from individual domains Di, or Si =
+n
+(xi
+j,yi
+j)
+on
+j=1
+∼ (Di)n,
+where x∈ X ,y∈ Y . X is the feature space and Y is
+the space for labels (cosmological parameters), while Di⊂
+PX Y is a joint distribution onX and Y (Ganin et al. 2016;
+Wang et al. 2023). Our aim is to develop a machine that gen-
+eralizes across multiple domains, even those unseen during
+the training phase, particularly the observational catalog. At-
+tempts to test the generalizability of a machine trained on a
+single domain have been initiated by various projects in as-
+tronomy using machine learning and deep learning, referred
+to as “robustness tests” (Ni et al. 2023; Shao et al. 2023).
+In the language of transfer learning, testing on uninvolved
+domains in the training phase can be viewed as domain gen-
+eralization (DG; Wang et al. 2023).
+To achieve effective domain generalization, it is crucial
+that the distributions of the target (unseen domains) and
+source domains (domains involved in the training phase)
+are similar, which can be achieved through accurate model-
+ing of mocks and training strategies to extract common fea-
+tures. Due to limitations in the accuracy of L -PICOLA mocks,
+non-negligible discrepancies exist compared to G ADGET or
+MD-PATCHY mocks. Such domain shift (expressed by H -
+divergence, dH (·,·)) is crucial in setting the upper bound on
+the empirical risk of any hypothesis (Ben-David et al. 2006,
+2010; Albuquerque et al. 2019). Thus, achieving single-
+domain generalization solely through training on L -PICOLA
+mocks can be challenging.
+To enhance the machine’s generalization capabilities, we
+utilize GADGET or MD-PATCHY mocks, which enable the ma-
+chine to acquire common knowledge. Unlike domain gen-
+eralization, G ADGET or MD- PATCHY mocks are incorporated
+during the training phase, hence, this approach is termed do-
+main adaptation. By employing a training strategy to learn
+from the relatively accurate mocks, the neural networks learn
+consistent semantics from the two domains, and finally gen-
+eralize on the observational data, unseen at training phase.
+A method includes utilizing the domain-adversarial neu-
+ral network (DANN; Ganin et al. 2016), which seeks to de-
+rive domain-invariant features through the use of a domain
+classifier as a regularizer. This technique has recently been
+adopted for performing classification tasks in the field of as-
+tronomy (Huertas-Company et al. 2023; ´Ciprijanovi´c et al.
+2020). However, multiple trials show that DANN still suffers
+from overfitting and there are discrepancies between domains
+(see Appendix C for more information). We find that such is-
+sues can be effectively mitigated by an alternative training
+strategy, which will be explained in Section 4.3.
+4.3. Training Strategy: Semantic Alignment
+Our strategy explicitly aligns representations from differ-
+ent domains with similar labels. In other words, given that
+the samples have similar cosmological parameters, regard-
+less of the selection of simulations, the neural networks ex-
+tract features that are similar to each other. Aligning the rep-
+resentations can explicitly bring about consistency in terms
+of their semantics across domains and be effective in domain
+generalization (Motiian et al. 2017). We adapt the semantic
+alignment loss in Motiian et al. (2017) to a regression task
+setup by adding the following loss term:
+LSA= ∑
+i∈BS
+∑
+j∈BT
+1
+
+
+yS
+i−yT
+j
+
+
+
+
+
+g(xS
+i )−g(xT
+j )
+
+
+ (5)
+Here, BS and BT represent batches from domains S (source)
+and T (target), respectively, with g(·) denoting the function
+that maps input to the representation vector. We apply the se-
+mantic alignment loss to the 16-dimensional representation,
+which can be obtained just before the terminal layer of the
+
+===== PAGE 13 =====
+13
+0.1
+0.2
+0.3
+0.4
+0.5
+Ω m (Prediction)
+R2=0.991
+ϵ=2.9%
+RMSE=0.011
+L-PICOLA
+GADGET
+ 0.6
+0.7
+0.8
+0.9
+1.0
+σ8 (Prediction)
+R2=0.988
+ϵ=1.17%
+RMSE=0.013
+−0.1
+0.0
+0.1
+∆Ω m (Residual)
+ −0.1
+0.0
+0.1
+∆ σ8 (Residual)
+0.1
+0.2
+0.3
+0.4
+0.5
+Ω m (Prediction)
+R2=0.988
+ϵ=3.2%
+RMSE=0.013
+0.6
+0.7
+0.8
+0.9
+1.0
+σ8 (Prediction)
+R2=0.983
+ϵ=1.33%
+RMSE=0.015
+0.1 0.3 0.5
+Ω m (Ground truth)
+−0.1
+0.0
+0.1
+∆Ω m (Residual)
+0.6 0.8 1.0
+σ8 (Ground truth)
+−0.1
+0.0
+0.1
+∆ σ8 (Residual)
+0.1
+0.2
+0.3
+0.4
+0.5
+Ω m (Prediction)
+R2=0.99
+ϵ=3.2%
+RMSE=0.012
+0.6
+0.7
+0.8
+0.9
+1.0
+σ8 (Prediction)
+R2=0.986
+ϵ=1.28%
+RMSE=0.014
+−0.1
+0.0
+0.1
+∆Ω m (Residual)
+−0.2
+0.0
+0.2
+∆ σ8 (Residual)
+0.1
+0.2
+0.3
+0.4
+0.5
+Ω m (Prediction)
+R2=0.992
+ϵ=2.65%
+RMSE=0.011
+0.6
+0.7
+0.8
+0.9
+1.0
+σ8 (Prediction)
+R2=0.985
+ϵ=1.34%
+RMSE=0.014
+0.1 0.3 0.5
+Ω m (Ground truth)
+−0.1
+0.0
+0.1
+∆Ω m (Residual)
+0.6 0.8 1.0
+σ8 (Ground truth)
+−0.2
+0.0
+0.2
+∆ σ8 (Residual)
+10−4
+10−3
+10−2
+L-PICOLA
+10−2
+5×10−2
+GADGET
+Figure 7. Comparison of the ground truth and the predicted values of Ωm and σ8 on the test set. Predictions are made by
+Minkowski-PointNet machines with L -PICOLA (red) and G ADGET (blue) mocks, trained with the semantic alignment strategy. The top two
+panels display the results from theSHAM model and the bottom two panels display the results from theFixed SHMR model. The left two columns
+show the results of a single arbitrarily selected machine, whilethe right two show the results for the 25 independently trained machines, with the
+normalized count expressed in logarithmic color bars. R2, relative error (ε) and root-mean-squared-error (RMSE) metrics calculated altogether
+are shown. Residuals ∆y=ytrue−ypred are depicted in thebottom panels. The machine is trained, validated and tested on the two suites of mocks:
+L-PICOLA mocks and GADGET mocks. Error bars of the two left columns indicate the 1σ values derived from the implicit likelihood inference.
+Black dotted lines depicts the complete match with null residual. The results from the ensemble of 25 machines for Ωm and σ8 show a relative
+error of 3.20% and 1.28% for the SHAM model. The Fixed SHMR model yields 2.65% and 1.34%. See Section 5.1 for more information.
+neural network, as depicted in Figure 5. 6 The generaliza-
+tion strength can be modified by adjusting the weight αp in
+Ltotal=Lvanilla+αpLSA. Here, we slightly modify the adapta-
+tion parameter setup proposed by Ganin et al. (2016),
+αp = α0
+ 2
+1 + exp(−γ p)− 1
+
+(6)
+where p linearly increases from 0 to 1 as training epochs in-
+crease, with γ=5 and α0=5. This gradual increase in the
+strength of the adaptation term allows the machine to first
+gain predictability on the labels before aligning the repre-
+sentations’ semantics. Hyperparameters are chosen based on
+6 In this study, we opted for a reduced representation of 16 dimensions in-
+stead of the comprehensive 1536-dimensional representation due to chal-
+lenges in balancing accuracy and adaptability within our machine learning
+model. The use of the penultimate layer of linear networks as the represen-
+tation vector was also used in Lin et al. (2022). Modifying the architecture
+of the neural network and performing detailed fine-tuning of hyperparame-
+ters are strategies that could enhance adaptability, which we aim to explore
+in future research.
+multiple trials to balance the trade-off between prediction ac-
+curacy and the strength of domain adaptation. To observe the
+effectiveness of the alignment process, or domain adaptation,
+we do not include the samples from the target domain in cal-
+culating the vanilla loss (see Equations 3 and 4). Therefore,
+the labels of targets are only implied to the machine through
+the semantic alignment loss. When incorporating G ADGET
+mocks, we reserve 2/3 of the mocks for training and 1/3 for
+testing. For MD- PATCHY mocks, we use 80% as a training
+data set and 10% each for validation and test data sets, same
+as L-PICOLA mocks.
+5. PREDICTION OF Minkowski-PointNet
+In this section, we conduct a series of performance tests of
+Minkowski-PointNet and make predictions on the cosmo-
+logical parameters of the observational catalog. Given the
+stochastic nature of the training outcome arising from the
+existing trade-off between domain adaptability and the ac-
+curacy of individual predictions, we train 25 different ma-
+chines, whose model parameters are randomly initialized.
+
+===== PAGE 14 =====
+14
+Table 1. Summary of Predictions on the Cosmological Parameters
+Models Training Strategy Ωm σ8 εΩm(%) εσ8(%)
+SHAM Semantic Alignment 0.339±0.056 0 .801±0.061 7 .6 1 .2
+SHAM Vanilla 0 .357±0.044 0 .858±0.045 13 .3 5 .8
+Fixed SHMR Semantic Alignment 0 .227±0.035 0 .743±0.039 27 .9 8 .4
+Fixed SHMR Vanilla 0 .196±0.021 0 .705±0.019 37 .8 13 .1
+Planck Collaboration et al. (2020) - 0 .315±0.007 0 .811±0.006 - -
+Ivanov et al. (2020) - 0 .295±0.010 0 .721±0.043 - -
+NOTE—Summary of cosmological parameter predictions from different models trained with L-PICOLA as source and GADGET mocks as target.
+For this work, we refer to the galaxy-halo connection model as the model names, together with the two training strategies: Semantic Alignment
+(with domain adaptation ) and Vanilla ( without domain adaptation ). The predicted values for each models are given with their respective
+uncertainties, which include both the uncertainty of individual machine and all 25 independently trained machines combined. Together
+with our main results, we also display the results from the CMB measurements (Planck Collaboration et al. 2020) and the full-shape power
+spectrum analyses of BOSS (Ivanov et al. 2020) for reference. Relative differences εΩm and εσ8, calculated with respect to the results of
+Planck Collaboration et al. (2020), are displayed for the models studied in this work. See Section 5.2 for more information on the results, and
+Section 6.1 for the discussion on the comparison between the two training strategies.
+Before predicting on the actual SDSS BOSS LOWZ NGC
+data, we perform the same feature sampling by identifying
+their neighbors, as explained in Section 3.2. The designated
+local and global features are then fed to the trained machines.
+We compare and discuss the results from a set of machines
+adapted to different domains, as summarized in Table 1.
+5.1. Performance Tests ofMinkowski-PointNet
+Following the training procedures discussed in the previ-
+ous sections 3 and 4, machines are trained to predict Ωm,
+σ8 and their standard deviations. Figure 7 displays test re-
+sults of machines trained with the semantic alignment strat-
+egy on the L -PICOLA and GADGET mocks. We present results
+for an arbitrarily selected single machine and for all 25 in-
+dividually trained machines. The top two panels show the
+results of the SHAM model, and the bottom two panels show
+the results of theFixed SHMR model. In each case, the upper
+panels show the comparison between the true and predicted
+values, while the bottom shows the residual. The test results
+are promising for both Ωm and σ8, regardless of the galaxy-
+halo connection model. The results from the ensemble of 25
+machines for Ωm and σ8 show a relative error of 3.20% and
+1.28% for the SHAM model and ε=2.65% and 1.34% for the
+Fixed SHMR model, respectively. A single machine shows a
+relative error of 2 .90% and 1 .17% for the SHAM model, and
+ε=3.20% and 1 .33% for the Fixed SHMR model. The dif-
+ficulty in trying to accurately predict σ8 seen in recent stud-
+ies (Villaescusa-Navarro et al. 2022; Villanueva-Domingo &
+Villaescusa-Navarro 2022; de Santi et al. 2023) is not appar-
+ent.
+The blue markers and bins in Figure 7 show the domain
+adaptation results in G ADGET mocks. Due to semantic loss,
+we are able to marginalize the selection of domains, which
+leads to the degradation of accuracy in each simulation set
+(for more information on the error analysis, see Section 6.1).
+Since the machine only implicitly infers the cosmological pa-
+rameters of the G ADGET mocks through semantic alignment
+loss during the training phase, a noticeable bias is observed in
+the predictions when comparing G ADGET mocks to L -PICOLA
+mocks. However, the fact that the machine can make predic-
+tions solely by aligning the semantics of the source and target
+domains is encouraging.
+Moreover, considering that the parameter space of input
+labels is constrained within a range of Ωm∈ [0.1,0.5] and
+σ8∈ [0.6,1.0], samples like GADGET low and high may en-
+counter asymmetry when calculating the semantic alignment
+loss. In an extreme scenario, if a sample is characterized
+by the cosmological parameters Ωm = 0.6 and σ8 = 1.0, it
+may suffer from bias due to the lack of samples with larger
+values of the cosmological parameters. This could lead to
+center-biased predictions as their representations may expe-
+rience excessive center-ward pull. Overall, the adaptation re-
+sults remain quite promising, indicating effective alignment
+of representations from the two domains by the machine.
+5.2. Predictions on the SDSS BOSS LOWZ NGC Catalog
+In this section, we present predictions on the SDSS BOSS
+LOWZ NGC Catalog made by the Minkowski-PointNet
+machines trained with different galaxy-halo connection mod-
+els and training strategies. Table 1 summarizes the results of
+the machines trained with L-PICOLA and GADGET mocks. Fig-
+ure 8 illustrates the aggregated outcomes of 25 distinct ma-
+chines, each trained using semantic alignment with L -PICOLA
+and GADGET mocks, alongside benchmark values from Planck
+
+===== PAGE 15 =====
+15
+0.1 0.2 0.3 0.4 0.5
+Ω m
+0.60
+0.65
+0.70
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+σ8
+SHAM (L-PICOLA+GADGET; SA)
+0.1 0.2 0.3 0.4 0.5
+Ω m
+0.60
+0.65
+0.70
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+σ8
+Fixed SHMR (L-PICOLA+GADGET; SA)
+Planck2018
+Ivanov2020
+3σ
+2σ
+1σ
+Prediction
+Figure 8. Prediction on the actual SDSS BOSS LOWZ NGC catalog from the ensemble of 25 independently trained Minkowski-PointNet
+machines. The left figure displays our results when using the SHAM model, and the right figure displays the results when using the Fixed
+SHMR model. The machines are trained with L -PICOLA and GADGET mocks with the semantic alignment (SA) strategy, a domain adaptation
+and generalization technique that enables the machines to extract consistent features regardless of their simulation domains (see Section 4.3).
+Predictions are shown with error bars. A red star shows the result from the Planck 2018 (Planck Collaboration et al. 2020) measurements and a
+blue star from Ivanov et al. (2020). Elliptic contours show the bounds of 1σ, 2σ, and 3σ bounds, calculated from the Gaussian Mixture Model
+(GMM) to incorporate the individual errors. Our results yield Ωm=0.339±0.056, σ8=0.801±0.061 ( left, SHAM ), and Ωm=0.227±0.035,
+σ8=0.743±0.039 (right, Fixed SHMR ). See Section 5.2 for more information.
+Collaboration et al. (2020) and Ivanov et al. (2020). 7 Even
+within a single training scheme, the predicted results vary
+significantly between machines, illustrating the stochastic
+nature of the training process. This suggests that there is de-
+generacy in the final state of the machine, with multiple con-
+figurations exhibiting similar, suboptimal performance. In
+other words, although different machines demonstrate con-
+sistent accuracy and precision on the test set, their predictions
+on the observational catalog unseen during training phase
+shows notable variability. This justifies our approach of train-
+ing multiple machines instead of selecting only those with the
+best performance.
+Next, we compare how the machine predicts on
+the observational data when trained with the domain-
+adaptive training strategy (semantic alignment) and
+when trained without it (vanilla). For the Fixed SHMR
+model, the prediction of the ensemble of 25 machines
+yield Ωm=0.196±0.021 and σ8=0.705±0.019 in vanilla
+scheme, while after applying the semantic alignment
+7 The main result from Ivanov et al. (2020), which we cite in Table 1 and fig-
+ures 8, 11, 13, and 14, combines the likelihoods from the Northern Galac-
+tic Cap (NGC) and the Southern Galactic Cap (SGC) across two redshift
+ranges: low-z (zeff = 0.38) and high-z (zeff = 0.61). Although our LOWZ
+NGC mocks differ from the low-z definition, having a lower effective red-
+shift of zeff = 0.29, the results from the low-z NGC used in Ivanov et al.
+(2020) yield Ωm = 0.290±0.017 and σ8 = 0.808±0.073 (see sections 5.2
+and 6.2 for more information).
+loss, Ωm=0.227±0.035 and σ8=0.743±0.039. The SHAM
+model yields Ωm=0.357±0.044 and σ8=0.858±0.045
+in the vanilla scheme, and Ωm=0.339±0.056 and
+σ8=0.801±0.061 with semantic alignment. The seman-
+tic alignment worsens the precision compared to when not
+applied, despite increasing the accuracy of prediction, as-
+suming Planck 2018 cosmology as the ground truth. Thus,
+although the same data sets are being used, the differences in
+how they are employed to train the machines severely affect
+the accuracy and precision of prediction on unseen domains.
+The predictions vary significantly depending on the
+galaxy-halo connection model used to generate the mock
+catalogs. Especially, Fixed SHMR models exhibit con-
+siderable divergence from the Planck 2018 cosmology
+(Ωm=0.315±0.007 and σ8=0.811±0.006), while SHAM
+models are largely in agreement, within the 1 σ error. More-
+over, the Ωm predicted by the SHAM models show consistent
+values with the most recent dark energy survey, DES Col-
+laboration et al. (2024), which yields Ωm=0.352±0.017 for
+the flat ΛCDM model, a higher value than the Planck 2018
+cosmology. Although SHAM is the most favorable in terms of
+both accuracy and the absence of any cosmological priors in-
+volved in the forward modeling processes, Fixed SHMR ex-
+hibits better precision. This discrepancy likely stems from
+the additional cosmological priors incorporated via stellar
+masses in Fixed SHMR models, as opposed to SHAM models,
+which rely solely on clustering information.
+
+===== PAGE 16 =====
+16
+This discrepancy can be due to several factors, although
+the precise cause of this bias in the Fixed SHMR model re-
+mains unclear. One potential reason is that, for the Fixed
+SHMR model, regardless of cosmology, any halo with a sim-
+ilar mass will be assigned a similar stellar mass following
+the SHMR. As discussed in Section 2.5.1, the SHMR from
+Girelli et al. (2020) was obtained from a different survey,
+COSMOS, which could also explain the variations. Addi-
+tionally, the stellar masses of the galaxies in the observa-
+tional catalog are determined on the basis of the Kroupa IMF
+(Kroupa 2001) with passive evolution from Maraston et al.
+(2013), whereas the SHMR we utilized is based on the SMF
+adjusted for the Chabrier IMF (Chabrier 2003) and the stellar
+population synthesis models from Bruzual & Charlot (2003),
+which can result in such differences. The exact cause of this
+discrepancy still being unclear, we stress the limitations of
+our naive assumption in the Fixed SHMR model, and that
+results may vary depending on the galaxy-halo-connection
+models. Here, we aim to demonstrate the feasibility of in-
+ferring without using summary statistics and leave further in-
+vestigation into the impact of galaxy-halo connection models
+for future studies.
+As mentioned above, when calculating the uncertainty of
+the inferred parameters, we adopt the most conservative ap-
+proach. We consider both the error of individual predictions
+and the 25 independently trained machines, without cherry-
+picking. However, selecting a single machine that best adapts
+to and predicts on GADGET mocks, characterized by the small-
+est distance measured by
+q
+∆Ω2m + ∆σ 2
+8 , yields results of
+Ωm=0.267±0.020 and σ8=0.775±0.0003 for Fixed SHMR
+and Ωm=0.282±0.014 and σ8=0.786±0.036 for SHAM. This
+suggests further potential for performing more precise infer-
+ence on the cosmological parameters, achieved through the
+convergence of individual machines and enhanced robustness
+(see Section 6.3 for a discussion).
+6. DISCUSSION
+6.1. Effect of Aligning Representations
+The improvement in generalizability can be attributed to
+the distribution of different domains aligned in the feature
+space. To compare the extracted features from machines
+trained by the vanilla scheme and the semantic alignment
+strategy, we visually inspect the distributions of their repre-
+sentations in a lower dimension (Jo et al. in prep). Figure
+9 exhibits the latent space configuration of the targeted 16-
+dimensional vector reduced to two dimensions, deduced by
+the t-distributed Stochastic Neighbor Embedding algorithm
+(t-SNE; van der Maaten & Hinton 2008). In the seman-
+tic alignment strategy, the samples are evenly distributed in
+the reduced dimensions and the parameters gradually change
+along one direction, while being almost independent in the
+other direction 8. This behavior naturally suggests that the
+machine is extracting features and representing them ef-
+fectively in a way that removes degeneracy and gains pre-
+dictability in the two parameters.
+The vanilla scheme fails to achieve an adaptation of the
+GADGET mocks to the L -PICOLA mocks, resulting in a clear
+separation between the distributions. The proximity of the
+observation target to the GADGET mocks in comparison to the
+L-PICOLA mocks demonstrates that the GADGET mocks provide
+a more precise representation of our real universe for the
+SHAM model. On the other hand, when the semantic align-
+ment strategy is employed, the two distinct domains blend
+into a single distribution. Consequently, this supports the
+claim that the machine is extracting common features from
+the two domains and less weighting on the domain-specific
+information, which improves prediction accuracy on the ob-
+servational data.
+However, there exists a clear trade-off as the semantic
+alignment loss degrades precision although showing better
+accuracy. To analyze the effect of semantic alignment on
+precision, we can first decompose the error into two sources:
+the aleatoric (statistical) error and the epistemic (model or
+systematic) error. The two distinct sources of errors can eas-
+ily be seen in Figure 8—the aleatoric error estimated from
+the individual error bars of the machines and the epistemic
+error from the variance in the prediction from the ensemble
+of machines.
+Figure 10 shows the two sources of error for the test sets of
+GADGET and L-PICOLA mocks, which are the domains seen dur-
+ing training phase, and MD-PATCHYand SDSS BOSS LOWZ
+NGC samples, unseen during training phase, for the SHAM
+model. As we have applied the trained machines to the SDSS
+BOSS LOWZ NGC catalog, we make inferences on the MD-
+PATCHY mocks for further analysis (See Section 6.3 for more
+information on the results). The epistemic errors are calcu-
+lated by the standard deviation of the predictions on a single
+input data from the ensemble of 25 machines. On the other
+hand, the aleatoric errors are calculated by the root mean
+square of the predicted errors (see Equation 4) of the indi-
+vidual machines. Largely, the aleatoric and epistemic errors
+have comparable values for both the L-PICOLA test set and the
+SDSS BOSS LOWZ NGC catalog. However, the errors for
+the GADGET test set show a larger epistemic error compared to
+8 The gaps in the latent space can arise for several reasons. Firstly, the ran-
+domness in sampling the parameter space disrupts the dataset’s uniformity.
+Secondly, the dimension reduction technique relies on the distribution’s lo-
+cal structure and is inherently nonlinear. Furthermore, because of the dis-
+criminative nature of our neural networks, the distribution is not required
+to be uniform. Generative models such as normalizing flows and varia-
+tional autoencoders are better suited for accurately modeling the distribu-
+tions within specific probability distribution functions.
+
+===== PAGE 17 =====
+17
+SHAM, Vanilla
+L-PICOLA
+GADGET
+SDSS
+SHAM, Vanilla
+SHAM, Semantic Alignment
+ SHAM, Semantic Alignment
+0.10
+0.15
+0.20
+0.25
+0.30
+0.35
+0.40
+0.45
+0.50
+Ωm
+0.60
+0.65
+0.70
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+σ8
+0.10
+0.15
+0.20
+0.25
+0.30
+0.35
+0.40
+0.45
+0.50
+Ωm
+0.60
+0.65
+0.70
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+σ8
+Figure 9. A visualization of the latent space configuration from a typical neural network trained with SHAM L-PICOLA and GADGET mocks
+with the vanilla scheme ( upper panels) and the semantic alignment strategy ( lower panels). The 16-dimensional vectors are reduced to two
+dimensions using the t-SNE algorithm (van der Maaten & Hinton 2008). L-PICOLA (circle) and GADGET (triangle) samples are colored according
+to their cosmological parameters: Ωm (left) and σ8 (right), alongside with SDSS BOSS LOWZ NGC ( red star). In the lower panels, where
+the semantic alignment strategy is applied, two distinct axes are evident. Along one axis, the parameters gradually change in one direction,
+while remaining almost independent along the other. This pattern indicates that the two cosmological parameters are effectively represented.
+Moreover, the GADGET samples are effectively integrated and generalized in these two panels, in stark contrast to theupper panels of the vanilla
+scheme which show apparent distinction in the distribution. See Section 6.1 for more information.
+the aleatoric error for the semantic alignment training strat-
+egy.
+The alignment scheme has a positive effect in reducing
+errors when predicting in L -PICOLA samples. In particular,
+the epistemic and aleatoric errors in Ωm show improvements
+by 23% and 4% each, respectively, and 17% and 33% for
+σ8. Conversely for G ADGET samples, epistemic and aleatoric
+errors on Ωm show degradation by 92% and 38% each re-
+spectively, and 86% and 34% for σ8. Thus, we can inter-
+pret that the domain-adapted machines exhibit weaker con-
+straints, mostly due to the model-wise uncertainty on the tar-
+get domain. In other words, the alignment scheme is unsta-
+ble and can lead to significant variability in the machine’s
+end-of-training state. This considerable variability in model
+performance on the target domain after domain adaptation
+can be attributed to the implicit provision of cosmological
+parameters to the models via the semantic alignment loss, in
+contrast to the vanilla models. However, the prediction on
+the unseen observational target shows no significant inclina-
+tion towards either of the two sources of error. Specifically,
+the ratio of epistemic to aleatoric error increases by 21% for
+Ωm and decreases by 23% for σ8 after adaptation. Likewise,
+for the MD-PATCHY mocks, which are also unseen during the
+training phase, both epistemic and aleatoric errors arise, but
+the focus is on the aleatoric error, thus reducing the ratio of
+epistemic to aleatoric error.
+Seen from the analyses above, domain adaptation with se-
+mantic alignment improves the overall generalizability on the
+unseen domains and precision in the source domain while
+sacrificing precision in target and unseen domains. Although
+its detailed impact on the precisions are indeed complex,
+the improvement on generalizability can be mathematically
+modeled by the domain generalization error bound (Albu-
+querque et al. 2019; Wang et al. 2023). The upper bound
+of the domain generalization error can also be decomposed
+into a few sources. Firstly, the machines have to perform
+well in each of the source domains individually and jointly.
+Moreover, the source domains should well depict the un-
+
+===== PAGE 18 =====
+18
+10−2 10−1
+10−2
+10−1
+Aleatoric Error
+Vanilla, Ω m
+10−2 10−1
+10−2
+10−1
+Vanilla, σ8
+Test Set (L-PICOLA)
+MD-PATCHY
+Test Set (GADGET)
+SDSS BOSS LOWZ NGC
+y = x
+10−2 10−1
+Epistemic Error
+10−2
+10−1
+Aleatoric Error
+Semantic Alignment, Ω m
+10−2 10−1
+Epistemic Error
+10−2
+10−1
+Semantic Alignment, σ8
+Figure 10. Comparison of epistemic and aleatoric error in logarithmic scale, from the ensemble prediction of 25 machines, trained with the
+vanilla scheme (upper panels) and the semantic alignment strategy (lower panels). The machines are trained in the two mock suites, L -PICOLA
++GADGET, with the SHAM model. The left two columns are the results for Ωm and the the right two are the results for σ8. Blue contours
+represent the test set samples of L -PICOLA, red contours the MD-PATCHY mocks, dark purple circles the test set samples of G ADGET, and red
+stars the SDSS BOSS LOWZ NGC catalog. Black dotted lines depict the complete match between the two types of errors. The epistemic errors
+are calculated by the standard deviation of the predictions on a single input data from the ensemble of 25 machines. The aleatoric errors are
+calculated by the root mean square of the predicted errors from individual machines. See Section 6.1 for more information.
+seen domain while reducing the discrepancy between the
+source domains. The discrepancy between the source do-
+mains can be explicitly reduced by the semantic alignment as
+seen from Figure 9, while the discrepancy between the source
+and the unseen domain can be reduced with the addition of
+accurate mocks.9 The vanilla scheme has increased perfor-
+mance on the target sources by distinguishing between the
+domains, while semantic alignment aligns the distribution at
+the expense of degraded performance on the target domains.
+Thus, while domain adaptation shows a significant advan-
+tage in that it enables generalization through the alignment
+of domains, it still suffers from other trade-offs resulting in
+variability in the machines’ end-of-training state, leading to
+weaker constraints on the cosmological parameters.
+9 Precisely, given multiple sources Di
+S, we define a convex hull ΛS =
+{ ¯D| ¯D= ∑N
+i=1 πiDi
+S, π∈ ∆N−1} with ∆N−1 being a N−1 dimensional sim-
+plex. We can then find an optimal distribution D∗= ∑N
+i=1 π∗
+i Di
+S where π∗
+minimizes the distance between the optimal distribution D∗ and the tar-
+get unseen distribution DU . Therefore, the domain discrepancy between
+the optimal distribution D∗ and the unseen domain DU measured by the
+H -divergence term (dH (D∗, DU )), and the discrepancy between the two
+domains inside the convex hull (supD′,D′′∈ΛS dH (D′, D′′)) are the two ma-
+jor sources of error. Refer to Albuquerque et al. (2019) and Wang et al.
+(2023) for more information.
+6.2. Comparison with Previous Studies Using the SDSS
+BOSS Catalog
+Our simulation-based inference with neural networks,
+which replaces the use of summary statistics, yields results
+that can be compared with several notable studies utiliz-
+ing the SDSS BOSS catalog. This comparison provides a
+broader context for evaluating the constraints on cosmolog-
+ical parameters. In the following, we compare our results
+with previous studies that used summary statistics from the
+full-shape power spectrum and bispectrum, as well as neural
+network-based approaches.
+Compared to the full-shape power spectrum analyses that
+yield Ωm = 0.295±0.010 and σ8 = 0.721±0.043 (Ivanov
+et al. 2020) and the bispectrum analyses yielding Ωm =
+0.338+0.016
+−0.017 and σ8 = 0.692+0.035
+−0.041 (Philcox & Ivanov 2022),
+our main results from SHAM show weaker constraints of
+Ωm=0.339±0.056 and σ8=0.801±0.061. However a direct
+comparison is not possible as our analyses are limited to
+the BOSS LOWZ NGC sample. In contrast, Ivanov et al.
+(2020) utilizes the likelihoods combining from the Northern
+Galactic Cap (NGC) and the Southern Galactic Cap (SGC)
+across two redshift ranges: low-z (zeff = 0.38) and high-z
+(zeff = 0.61), and Philcox & Ivanov (2022) both NGC and
+SGC samples from CMASSLOWZTOT, which combine the
+LOWZ, LOWZE2, LOWZE3 and CMASS catalogs. Al-
+
+===== PAGE 19 =====
+19
+0.1 0.2 0.3 0.4 0.5
+Ω m
+0.60
+0.65
+0.70
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+σ8
+SHAM (L-PICOLA+GADGET; SA)
+0.1 0.2 0.3 0.4 0.5
+Ω m
+0.60
+0.65
+0.70
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+σ8
+Fixed SHMR (L-PICOLA+GADGET; SA)
+Planck2018
+Ivanov2020
+MD-PATCHY Truth
+3σ
+2σ
+1σ
+Prediction
+Figure 11. Prediction on the 2048 MD-PATCHYmocks from 25 independently trainedMinkowski-PointNet machines. The left figure displays
+our results when using the SHAM model, and the right figure displays the results when using the Fixed SHMR model. The machines are trained
+with L-PICOLA and GADGET mocks with the semantic alignment strategy, a domain adaptation and generalization technique that enables the
+machines to extract consistent features regardless of their simulation domains (see Section 4.3). Predictions are shown with error bars. A red
+star shows the result from the Planck 2018 (Planck Collaboration et al. 2020) measurements, a blue star from Ivanov et al. (2020), and a green
+star the ground truth values of MD- PATCHY mocks. Individual error bars include the statistical error attributed to the cosmic variance of the
+2048 MD-PATCHY mocks, which are calculated from the Gaussian Mixture Model (GMM). Individual errors are once again combined by the
+GMM for the elliptic contours, showing the 1σ, 2σ, and 3σ bounds. Our results yield Ωm=0.327±0.070, σ8=0.822±0.071 (left, SHAM ), and
+Ωm=0.236±0.046, σ8=0.784±0.038 (right, Fixed SHMR ). See Section 6.3 for more information.
+though our LOWZ NGC mocks differ from the low-z defi-
+nition, having a lower effective redshift of zeff = 0.29, the
+results from the low-z NGC used in Ivanov et al. (2020) yield
+Ωm = 0.290±0.017 and σ8 = 0.808±0.073.
+Next, we compare our results with the recently developed
+simulation-based inference framework, S IMBIG, which uses
+BOSS CMASS samples (Hahn et al. 2023a,b; Lemos et al.
+2023). Hahn et al. (2023a) used the power spectrum informa-
+tion up to kmax=0.5h/Mpc together with normalizing flows,
+resulting in Ωm=0.292+0.055
+−0.040 and σ8=0.812+0.067
+−0.068. Com-
+pared to these results, we obtain a slightly better constraint
+on σ8. On the other hand, Hahn et al. (2023b) analyzed
+the bispectrum monopole up to kmax = 0.5h/Mpc conducted
+by using normalizing flows, yielding Ωm=0.293+0.027
+−0.027 and
+σ8=0.783+0.040
+−0.038. Therefore, (Hahn et al. 2023a) and (Hahn
+et al. 2023b) explicitly input the cosmological information
+derived from the clustering statistics at various scales into
+the machine. In contrast, Lemos et al. (2023) employ
+a 3D CNN applied to voxelized galaxy positions in real
+space, effectively capturing clustering characteristics up to
+kmax = 0.28h/Mpc. CNN predictions serve as an intermedi-
+ate summary statistic, which is then used to generate the fi-
+nal predictions through a flow-based neural network, yielding
+Ωm=0.267+0.033
+−0.029 and σ8=0.762+0.036
+−0.035. Our analysis suggests
+a weaker constraining power compared to previous results.
+However, our study implements a more direct form of
+simulation-based inference using the embedding extracted by
+Minkowski-PointNet. As Lemos et al. (2023) point out,
+such direct inference from neural network embeddings shows
+weaker constraints. Thus, recent studies consider the predic-
+tions of neural networks as summary statistics and perform
+additional Bayesian inferences (Gupta et al. 2018; Ribli et al.
+2019; Fluri et al. 2019; Lemos et al. 2023). Moreover, the
+major difference in our approach is that we adopt the most
+conservative form of setting constraints, presenting the en-
+semble results of 25 individually trained machines instead of
+a single machine. This highlights the degeneracy of the ma-
+chines, which show similar performances on known datasets
+but produce varying predictions on unseen datasets. As men-
+tioned above, using a single machine that is best adapted to
+the target GADGET samples, we obtain comparably tight con-
+straints of Ωm=0.282±0.014 and σ8=0.786±0.036.
+6.3. Towards Improved Robustness
+The ultimate goal of replacing summary statistics with raw
+input from the mock catalogs for the inference of cosmo-
+logical parameters would be to give tight and accurate con-
+straints. However, since the neural networks capture the
+complexities engraved in the input data regardless of the
+physical importance, such methodology involves advantages
+and disadvantages at the same time. To maximize the advan-
+tage, one must consider building machines robust against the
+choice of domains.
+
+===== PAGE 20 =====
+20
+An example of robustness is shown in Figure 11,
+where our domain-adapted machines are applied to
+the 2048 MD- PATCHY samples. The results show
+Ωm=0.327±0.070 and σ8=0.822±0.071 for the SHAM
+model, and Ωm=0.236±0.046 and σ8=0.784±0.038 for the
+Fixed SHMR model. The uncertainties are increased com-
+pared to the prediction results on SDSS BOSS LOWZ NGC
+catalog, partly due to the cosmic variance of the samples.
+In particular, the predicted values show differences from the
+SDSS BOSS LOWZ NGC catalog, despite the high degree
+of similarity of the MD-PATCHYmocks in the summary statis-
+tics. Especially, for the SHAM model, the machines cor-
+rectly predict the lower value of Ωm and the higher value
+of σ8 for MD- PATCHY compared to the observational coun-
+terpart assuming Planck 2018 as the ground truth. In con-
+trast to the domain-adapted machines, the vanilla machines
+yield Ωm=0.365±0.055 and σ8=0.875±0.054 for the SHAM
+model, and Ωm=0.199±0.024 and σ8=0.715±0.016 for the
+Fixed SHMR model. Again, as we have seen from the predic-
+tion results on the SDSS BOSS LOWZ NGC catalog, domain
+adaptation effectively boosts generalizability at the expense
+of precision.
+To enhance the robustness of neural networks across di-
+verse simulation and observation domains with varying cos-
+mological parameters, we need more samples from the target
+domains. Currently, insufficient target domain data affects
+our ability to adapt and generalize effectively, resulting in
+increased epistemic or model uncertainties, as discussed in
+Section 6.1. This in turn leads to degraded precision in the
+final predictions, as shown in figures 7 and 10. Moreover,
+biases may arise from the discriminative nature of our cur-
+rent neural network model as seen for the GADGET samples in
+Figure 7. Generative models such as normalizing flows and
+its variants can be helpful in mitigating such biases and bet-
+ter approximate posterior distributions (Tang & Ting 2022).
+Addressing these biases is crucial to making reliable infer-
+ences in data-driven approaches, as emphasized by Lin et al.
+(2022).
+To accommodate a broader range of cosmological param-
+eters while retaining robustness, not only do we require
+more sophisticated neural network architectures, but also a
+focus on the accuracy and correctness of input data. In
+such data-driven approaches using highly sophisticated neu-
+ral networks, unreliable input data will distort the extracted
+domain-agnostic representation. Furthermore, as demon-
+strated in Section 5.2, achieving both precision and accuracy
+in individual predictions is critical. By improving domain
+adaptation strategies and utilizing augmented target data, we
+can potentially enhance the precise inference of cosmologi-
+cal parameters, especially by focusing on reducing the model
+uncertainties. We plan to explore this potential further in fu-
+ture work.
+6.4. Limatations and Considerations
+We have demonstrated a proof-of-concept test of inferring
+cosmological parameters without relying on summary statis-
+tics, yet there are several limitations and considerations that
+merit discussion. L-PICOLA mocks, which are our main source
+domain, show inaccuracies, especially in modeling the halo
+mass function and small-scale clustering. These inaccuracies
+are worsened by the simplified assumptions in our galaxy-
+halo connection models, SHAM and Fixed SHMR . Our ma-
+chine learning models, particularly Minkowski-PointNet,
+do not enforce explicit cut-offs, making them sensitive to
+such inaccuracies. Although we introduced G ADGET mocks
+and performed domain adaptation to address these issues and
+improved the models’ generalizability, this method involves
+trade-offs in precision.
+To tackle these challenges, we suggest several strategies.
+To begin with, enhancing the flexibility of our galaxy-halo
+connection models by incorporating additional modeling pa-
+rameters may improve both accuracy and robustness. Sec-
+ondly, our target domain samples currently lack diversity in
+the domains and cosmologies, which might limit the general-
+izability of our models. Addressing this issue involves con-
+sidering the inclusion of more mock samples from diverse
+codes, despite the higher computational costs. Additionally,
+exploring alternative techniques for domain adaptation and
+generalization could foster improvements in model perfor-
+mance across various datasets.
+Additionally, it is essential to explore the application of
+our new methodology to a range of galaxy redshift surveys,
+which vary in observational effects such as color magnitude
+cuts, survey depths, completeness, and footprints. Given that
+our mocks are explicitly modeled to include observational
+effects unique to the SDSS BOSS LOWZ NGC catalog, our
+present neural network cannot be applied to other observa-
+tional surveys. In order to enhance the neural network’s ro-
+bustness against varying observations, we could augment our
+mock dataset with random cuts and masks, along with mod-
+ifying radial selection functions. We plan to explore these
+strategies in our upcoming research.
+7. SUMMARY & CONCLUSION
+We propose a novel approach to rapidly model vast quan-
+tities of galaxy catalogs through lightcone simulations, while
+fully incorporating the observational effects of the SDSS
+BOSS LOWZ NGC catalog and inferringΩm and σ8 from the
+actual observations using trained neural networks. This ad-
+dresses the question of whether performing simulation-based
+inference on observed galaxy redshift surveys using neural
+networks is feasible in the absence of summary statistics,
+but only with the position and mass information of individ-
+ual galaxies. Our method extends previous works that per-
+form “robust field-level inference” on different codes without
+
+===== PAGE 21 =====
+21
+adopting summary statistics (Shao et al. 2023; de Santi et al.
+2023), and works that use summary statistics to infer values
+from the actual galaxy redshift surveys (Hahn et al. 2023a).
+Using lightcone simulation L -PICOLA, we generate 9000
+galaxy catalogs with varying cosmological parameters in
+a volume of (1.2 h−1Gpc)3. Subhalos are identified using
+ROCKSTAR, with each subhalo assumed to host a single galaxy.
+We propose two models of galaxy-halo connection, Fixed
+SHMR and SHAM. The Fixed SHMR model assumes a constant
+star formation efficiency is assumed within a certain halo
+mass range across different cosmologies, allowing us to iden-
+tify stellar masses with varying values across different red-
+shift bins. However, the Fixed SHMR model suffers from the
+inclusion of cosmological priors, since they are determined
+from simulations assuming fiducial cosmology. Therefore,
+we introduce the SHAM model, free of cosmological priors,
+which paints the halo catalog by assuming a monotonic rela-
+tion with the observed catalog. The catalogs undergo further
+processing to mimic the observational effects of the SDSS
+BOSS LOWZ NGC catalog, including RSD, survey footprint
+using the M ANGLE masks, stellar mass incompleteness (for
+Fixed SHMR ), radial selection, and fiber collision (Section
+2).
+The results and key takeaways are summarized below.
+Without employing summary statistics and using galaxies as
+point cloud inputs (Section 3), we perform implicit likeli-
+hood inference (Jeffrey & Wandelt 2020) and derive con-
+straints on Ωm and σ8 from the SDSS BOSS LOWZ NGC
+sample. Rapidly generated L -PICOLA mock representations
+can be aligned with the more accurate G ADGET mocks to
+achieve effective domain generalization using the semantic
+alignment loss (Section 4). Machines trained and adapted
+independently with L-PICOLA and GADGET mocks infer values
+of Ωm=0.227±0.035 and σ8=0.743±0.039 for the Fixed
+SHMR model and Ωm=0.339±0.056 and σ8=0.801±0.061
+for the SHAM model, when applied to the SDSS BOSS LOWZ
+NGC catalog. Despite the divergence in the prediction results
+from the Fixed SHMR model, the SHAM model, which is free
+of cosmological priors, agrees with the Planck Collaboration
+et al. (2020) results within 1σ (Section 5.2 and Figure 8).
+Although the constraints highlighted in Section 6.4 ex-
+ist, we have demonstrated advancements in performing
+simulation-based inference on observations without the use
+of any summary statistics. This was primarily achieved by
+adapting across two different code domains, to extract a uni-
+fied knowledge applicable to real-world observations. Mov-
+ing forward, we aim to incorporate precise data from various
+fields and utilize more advanced models to enhance the ro-
+bustness of our models. This could potentially establish the
+new method as a competitive approach in precisely constrain-
+ing cosmological parameters.
+Jun-Young Lee would like to thank Aleksandra
+´Ciprijanovi´c, Francisco Villaescusa-Navarro, Yong-uk Cho,
+Cullan Howlett, Hyeonyong Kim, Seungjae Lee, Jubee
+Sohn, Jun Yong Park, and Eun-jin Shin for insightful dis-
+cussions. He would also like to thank Francisco-Shu Kitaura
+and Cheng Zhao for providing the MD- PATCHY mocks. Jun-
+Young Lee’s work was supported by Korea Institute for
+Advancement of Technology (KIAT) grant funded by the
+Korean Government (Ministry of Education) (P0025681-
+G02P22450002201-10054408, Semiconductor–Specialized
+University). Ji-hoon Kim’s work was supported by the
+Global-LAMP Program of the National Research Foundation
+of Korea (NRF) grant funded by the Ministry of Education
+(No. RS-2023-00301976). His work was also supported
+by the NRF grant funded by the Korea government (MSIT)
+(No. 2022M3K3A1093827 and No. 2023R1A2C1003244).
+His work was also supported by the National Institute of
+Supercomputing and Network/Korea Institute of Science
+and Technology Information with supercomputing resources
+including technical support, grants KSC-2020-CRE-0219,
+KSC-2021-CRE-0442 and KSC-2022-CRE-0355. Jaehyun
+Lee is supported by the National Research Foundation of
+Korea (NRF-2021R1C1C2011626). HSH acknowledges the
+support by Samsung Electronic Co., Ltd. (Project Number
+IO220811-01945-01) and by the National Research Founda-
+tion of Korea (NRF) grant funded by the Korea government
+(MSIT), NRF-2021R1A2C1094577.
+Funding for SDSS-III has been provided by the Alfred
+P. Sloan Foundation, the Participating Institutions, the Na-
+tional Science Foundation, and the U.S. Department of
+Energy Office of Science. The SDSS-III web site is
+http://www.sdss3.org/. SDSS-III is managed by the Astro-
+physical Research Consortium for the Participating Institu-
+tions of the SDSS-III Collaboration including the University
+of Arizona, the Brazilian Participation Group, Brookhaven
+National Laboratory, Carnegie Mellon University, Univer-
+sity of Florida, the French Participation Group, the German
+Participation Group, Harvard University, the Instituto de As-
+trofisica de Canarias, the Michigan State/Notre Dame/JINA
+Participation Group, Johns Hopkins University, Lawrence
+Berkeley National Laboratory, Max Planck Institute for As-
+trophysics, Max Planck Institute for Extraterrestrial Physics,
+New Mexico State University, New York University, Ohio
+State University, Pennsylvania State University, University of
+Portsmouth, Princeton University, the Spanish Participation
+Group, University of Tokyo, University of Utah, Vanderbilt
+University, University of Virginia, University of Washington,
+and Yale University.
+
+===== PAGE 22 =====
+22
+REFERENCES
+Albuquerque, I., Monteiro, J., Darvishi, M., Falk, T. H., &
+Mitliagkas, I. 2019, arXiv e-prints, arXiv:1911.00804,
+doi: 10.48550/arXiv.1911.00804
+Alsing, J., Charnock, T., Feeney, S., & Wandelt, B. 2019, MNRAS,
+488, 4440, doi: 10.1093/mnras/stz1960
+Anchordoqui, L. A., Di Valentino, E., Pan, S., & Yang, W. 2021,
+Journal of High Energy Astrophysics, 32, 28,
+doi: 10.1016/j.jheap.2021.08.001
+Asgari, M., Lin, C.-A., Joachimi, B., et al. 2021, A&A, 645, A104,
+doi: 10.1051/0004-6361/202039070
+Behroozi, P. S., Wechsler, R. H., & Conroy, C. 2013a, ApJ, 770,
+57, doi: 10.1088/0004-637X/770/1/57
+Behroozi, P. S., Wechsler, R. H., & Wu, H.-Y . 2013b, ApJ, 762,
+109, doi: 10.1088/0004-637X/762/2/109
+Ben-David, S., Blitzer, J., Crammer, K., et al. 2010, Machine
+Learning, 79, 151, doi: 10.1007/s10994-009-5152-4
+Ben-David, S., Blitzer, J., Crammer, K., & Pereira, F. 2006, in
+Advances in Neural Information Processing Systems, ed.
+B. Sch¨olkopf, J. Platt, & T. Hoffman, V ol. 19 (MIT Press).
+https://proceedings.neurips.cc/paper files/paper/2006/file/
+b1b0432ceafb0ce714426e9114852ac7-Paper.pdf
+Berlind, A. A., Weinberg, D. H., Benson, A. J., et al. 2003, ApJ,
+593, 1, doi: 10.1086/376517
+Bond, J. R., Kofman, L., & Pogosyan, D. 1996, Nature, 380, 603,
+doi: 10.1038/380603a0
+Boruah, S. S., Eifler, T., Miranda, V ., & Krishanth, P. M. S. 2023,
+MNRAS, 518, 4818, doi: 10.1093/mnras/stac3417
+Bronstein, M. M., Bruna, J., Cohen, T., & Veliˇckovi´c, P. 2021,
+arXiv e-prints, arXiv:2104.13478,
+doi: 10.48550/arXiv.2104.13478
+Bruzual, G., & Charlot, S. 2003, MNRAS, 344, 1000,
+doi: 10.1046/j.1365-8711.2003.06897.x
+Chabrier, G. 2003, PASP, 115, 763, doi: 10.1086/376392
+Choy, C., Gwak, J., & Savarese, S. 2019, in Proceedings of the
+IEEE Conference on Computer Vision and Pattern Recognition,
+3075–3084
+´Ciprijanovi´c, A., Kafkes, D., Jenkins, S., et al. 2020, in 34th
+Conference on Neural Information Processing Systems.
+https://arxiv.org/abs/2011.03591
+Colless, M., Dalton, G., Maddox, S., et al. 2001, MNRAS, 328,
+1039, doi: 10.1046/j.1365-8711.2001.04902.x
+Conroy, C., Wechsler, R. H., & Kravtsov, A. V . 2006, ApJ, 647,
+201, doi: 10.1086/503602
+Corso, G., Cavalleri, L., Beaini, D., Li`o, P., & Veliˇckovi´c, P. 2020,
+arXiv e-prints, arXiv:2004.05718,
+doi: 10.48550/arXiv.2004.05718
+Crocce, M., Castander, F. J., Gazta˜naga, E., Fosalba, P., &
+Carretero, J. 2015, MNRAS, 453, 1513,
+doi: 10.1093/mnras/stv1708
+Davis, M., Efstathiou, G., Frenk, C. S., & White, S. D. M. 1985,
+ApJ, 292, 371, doi: 10.1086/163168
+Dawson, K. S., Schlegel, D. J., Ahn, C. P., et al. 2013, AJ, 145, 10,
+doi: 10.1088/0004-6256/145/1/10
+de Lapparent, V ., Geller, M. J., & Huchra, J. P. 1986, ApJL, 302,
+L1, doi: 10.1086/184625
+de Santi, N. S. M., Shao, H., Villaescusa-Navarro, F., et al. 2023,
+ApJ, 952, 69, doi: 10.3847/1538-4357/acd1e2
+DES Collaboration, Abbott, T. M. C., Acevedo, M., et al. 2024,
+arXiv e-prints, arXiv:2401.02929,
+doi: 10.48550/arXiv.2401.02929
+Ding, J., Li, S., Zheng, Y ., et al. 2023, arXiv e-prints,
+arXiv:2311.00981, doi: 10.48550/arXiv.2311.00981
+Dong-P´aez, C. A., Smith, A., Szewciw, A. O., et al. 2022, arXiv
+e-prints, arXiv:2208.00540, doi: 10.48550/arXiv.2208.00540
+Eisenstein, D. J., Annis, J., Gunn, J. E., et al. 2001, AJ, 122, 2267,
+doi: 10.1086/323717
+Eisenstein, D. J., Weinberg, D. H., Agol, E., et al. 2011, AJ, 142,
+72, doi: 10.1088/0004-6256/142/3/72
+Fluri, J., Kacprzak, T., Lucchi, A., et al. 2019, PhRvD, 100,
+063514, doi: 10.1103/PhysRevD.100.063514
+Fluri, J., Kacprzak, T., Lucchi, A., et al. 2022, Phys. Rev. D, 105,
+083518, doi: 10.1103/PhysRevD.105.083518
+Fluri, J., Kacprzak, T., Refregier, A., et al. 2018, Phys. Rev. D, 98,
+123518, doi: 10.1103/PhysRevD.98.123518
+Fosalba, P., Crocce, M., Gazta˜naga, E., & Castander, F. J. 2015a,
+MNRAS, 448, 2987, doi: 10.1093/mnras/stv138
+Fosalba, P., Gazta˜naga, E., Castander, F. J., & Crocce, M. 2015b,
+MNRAS, 447, 1319, doi: 10.1093/mnras/stu2464
+Ganin, Y ., Ustinova, E., Ajakan, H., et al. 2016, Journal of
+Machine Learning Research, 17, 1.
+http://jmlr.org/papers/v17/15-239.html
+Geller, M. J., & Huchra, J. P. 1989, Science, 246, 897,
+doi: 10.1126/science.246.4932.897
+Giocoli, C., Baldi, M., & Moscardini, L. 2018, Monthly Notices of
+the Royal Astronomical Society, 481, 2813,
+doi: 10.1093/mnras/sty2465
+Girelli, G., Pozzetti, L., Bolzonella, M., et al. 2020, A&A, 634,
+A135, doi: 10.1051/0004-6361/201936329
+Giri, U., M¨unchmeyer, M., & Smith, K. M. 2023, Phys. Rev. D,
+107, L061301, doi: 10.1103/PhysRevD.107.L061301
+Guo, H., Zehavi, I., & Zheng, Z. 2012, ApJ, 756, 127,
+doi: 10.1088/0004-637X/756/2/127
+Guo, H., Zheng, Z., Behroozi, P. S., et al. 2016, Monthly Notices
+of the Royal Astronomical Society, 459, 3040,
+doi: 10.1093/mnras/stw845
+Gupta, A., Matilla, J. M. Z., Hsu, D., & Haiman, Z. 2018, Phys.
+Rev. D, 97, 103515, doi: 10.1103/PhysRevD.97.103515
+
+===== PAGE 23 =====
+23
+Hahn, C., & Villaescusa-Navarro, F. 2021, JCAP, 2021, 029,
+doi: 10.1088/1475-7516/2021/04/029
+Hahn, C., Eickenberg, M., Ho, S., et al. 2023a, JCAP, 2023, 010,
+doi: 10.1088/1475-7516/2023/04/010
+Hahn, C., Lemos, P., Parker, L., et al. 2023b, arXiv e-prints,
+arXiv:2310.15246, doi: 10.48550/arXiv.2310.15246
+Hand, N., Feng, Y ., Beutler, F., et al. 2018, AJ, 156, 160,
+doi: 10.3847/1538-3881/aadae0
+Hikage, C., Oguri, M., Hamana, T., et al. 2019, Publications of the
+Astronomical Society of Japan, 71, 43, doi: 10.1093/pasj/psz010
+Hildebrandt, H., Viola, M., Heymans, C., et al. 2017, MNRAS,
+465, 1454, doi: 10.1093/mnras/stw2805
+Hort´ua, H. J., Garc´ıa, L. ´A., & Casta˜neda C., L. 2023, Frontiers in
+Astronomy and Space Sciences, 10, 1139120,
+doi: 10.3389/fspas.2023.1139120
+Howlett, C., Manera, M., & Percival, W. J. 2015a, Astronomy and
+Computing, 12, 109, doi: 10.1016/j.ascom.2015.07.003
+Howlett, C., Ross, A. J., Samushia, L., Percival, W. J., & Manera,
+M. 2015b, MNRAS, 449, 848, doi: 10.1093/mnras/stu2693
+Howlett, C., Said, K., Lucey, J. R., et al. 2022, Monthly Notices of
+the Royal Astronomical Society, 515, 953,
+doi: 10.1093/mnras/stac1681
+Huchra, J., Davis, M., Latham, D., & Tonry, J. 1983, ApJS, 52, 89,
+doi: 10.1086/190860
+Huertas-Company, M., Iyer, K. G., Angeloudi, E., et al. 2023,
+arXiv e-prints, arXiv:2305.02478,
+doi: 10.48550/arXiv.2305.02478
+Hwang, H. S., Geller, M. J., Park, C., et al. 2016, ApJ, 818, 173,
+doi: 10.3847/0004-637X/818/2/173
+Hwang, S. Y ., Sabiu, C. G., Park, I., & Hong, S. E. 2023, The
+Universe is worth 643 pixels: Convolution Neural Network and
+Vision Transformers for Cosmology.
+https://arxiv.org/abs/2304.08192
+Ilbert, O., McCracken, H. J., Le F`evre, O., et al. 2013, A&A, 556,
+A55, doi: 10.1051/0004-6361/201321100
+Ioffe, S., & Szegedy, C. 2015, in Proceedings of the 32nd
+International Conference on International Conference on
+Machine Learning - V olume 37, ICML’15 (JMLR.org), 448–456
+Ishikawa, S., Okumura, T., & Nishimichi, T. 2023, arXiv e-prints,
+arXiv:2308.03871, doi: 10.48550/arXiv.2308.03871
+Ivanov, M. M., Simonovi´c, M., & Zaldarriaga, M. 2020, Journal of
+Cosmology and Astroparticle Physics, 2020, 042,
+doi: 10.1088/1475-7516/2020/05/042
+Jeffrey, N., & Wandelt, B. D. 2020, in 34th Conference on Neural
+Information Processing Systems.
+https://arxiv.org/abs/2011.05991
+Jo, Y ., & Kim, J.-h. 2019, Monthly Notices of the Royal
+Astronomical Society, 489, 3565, doi: 10.1093/mnras/stz2304
+Jo, Y ., Genel, S., Wandelt, B., et al. 2023, ApJ, 944, 67,
+doi: 10.3847/1538-4357/aca8fe
+Kacprzak, T., & Fluri, J. 2022, Physical Review X, 12, 031029,
+doi: 10.1103/PhysRevX.12.031029
+Kaiser, N. 1987, MNRAS, 227, 1, doi: 10.1093/mnras/227.1.1
+Kim, J., Park, C., & Choi, Y .-Y . 2008, ApJ, 683, 123,
+doi: 10.1086/589566
+Kingma, D., & Ba, J. 2014, International Conference on Learning
+Representations
+Kitaura, F.-S., & Heß, S. 2013, Monthly Notices of the Royal
+Astronomical Society: Letters, 435, L78,
+doi: 10.1093/mnrasl/slt101
+Kitaura, F.-S., Yepes, G., & Prada, F. 2013, Monthly Notices of the
+Royal Astronomical Society: Letters, 439, L21,
+doi: 10.1093/mnrasl/slt172
+Kitaura, F.-S., Rodr´ıguez-Torres, S., Chuang, C.-H., et al. 2016,
+MNRAS, 456, 4156, doi: 10.1093/mnras/stv2826
+Klypin, A., Yepes, G., Gottl¨ober, S., Prada, F., & Heß, S. 2016,
+MNRAS, 457, 4340, doi: 10.1093/mnras/stw248
+Kravtsov, A. V ., Berlind, A. A., Wechsler, R. H., et al. 2004, ApJ,
+609, 35, doi: 10.1086/420959
+Kreisch, C. D., Pisani, A., Villaescusa-Navarro, F., et al. 2022,
+ApJ, 935, 100, doi: 10.3847/1538-4357/ac7d4b
+Kroupa, P. 2001, MNRAS, 322, 231,
+doi: 10.1046/j.1365-8711.2001.04022.x
+Lazanu, A. 2021, Journal of Cosmology and Astroparticle Physics,
+09, 039, doi: 10.1088/1475-7516/2021/09/039
+Leauthaud, A., Bundy, K., Saito, S., et al. 2016, Monthly Notices
+of the Royal Astronomical Society, 457, 4021,
+doi: 10.1093/mnras/stw117
+Leja, J., Speagle, J. S., Johnson, B. D., et al. 2020, ApJ, 893, 111,
+doi: 10.3847/1538-4357/ab7e27
+Leja, J., Speagle, J. S., Ting, Y .-S., et al. 2022, ApJ, 936, 165,
+doi: 10.3847/1538-4357/ac887d
+Lemos, P., Parker, L. H., Hahn, C., et al. 2023, in Machine
+Learning for Astrophysics, 18, doi: 10.48550/arXiv.2310.15256
+Lin, Q., Fouchez, D., Pasquet, J., et al. 2022, A&A, 662, A36,
+doi: 10.1051/0004-6361/202142751
+Lu, T., Haiman, Z., & Li, X. 2023, Monthly Notices of the Royal
+Astronomical Society, 521, 2050, doi: 10.1093/mnras/stad686
+Maraston, C., Pforr, J., Henriques, B. M., et al. 2013, MNRAS,
+435, 2764, doi: 10.1093/mnras/stt1424
+Mathuriya, A., Bard, D., Mendygral, P., et al. 2019, in Proceedings
+of the International Conference for High Performance
+Computing, Networking, Storage, and Analysis, SC ’18 (IEEE
+Press), doi: 10.1109/SC.2018.00068
+Motiian, S., Piccirilli, M., Adjeroh, D. A., & Doretto, G. 2017, in
+Proceedings of the IEEE International Conference on Computer
+Vision (ICCV)
+Neutsch, S., Heneka, C., & Br¨uggen, M. 2022, MNRAS, 511,
+3446, doi: 10.1093/mnras/stac218
+
+===== PAGE 24 =====
+24
+Ni, Y ., Genel, S., Angl´es-Alc´azar, D., et al. 2023, arXiv e-prints,
+arXiv:2304.02096, doi: 10.48550/arXiv.2304.02096
+Ntampaka, M., Eisenstein, D. J., Yuan, S., & Garrison, L. H. 2020,
+ApJ, 889, 151, doi: 10.3847/1538-4357/ab5f5e
+Pan, S., Liu, M., Forero-Romero, J., et al. 2020, Science China
+Physics, Mechanics & Astronomy, 63,
+doi: 10.1007/s11433-020-1586-3
+Peacock, J. A., & Smith, R. E. 2000, MNRAS, 318, 1144,
+doi: 10.1046/j.1365-8711.2000.03779.x
+Peebles, P. J. E. 1981, The Large-Scale Structure of the Universe
+(Princeton: Princeton University Press),
+doi: doi:10.1515/9780691206714
+Perez, L. A., Genel, S., Villaescusa-Navarro, F., et al. 2022, arXiv
+e-prints, arXiv:2204.02408, doi: 10.48550/arXiv.2204.02408
+Philcox, O. H. E., & Ivanov, M. M. 2022, Phys. Rev. D, 105,
+043517, doi: 10.1103/PhysRevD.105.043517
+Planck Collaboration, Aghanim, N., Akrami, Y ., et al. 2020, A&A,
+641, A6, doi: 10.1051/0004-6361/201833910
+Qi, C. R., Su, H., Mo, K., & Guibas, L. J. 2016, arXiv preprint
+arXiv:1612.00593
+Qi, C. R., Yi, L., Su, H., & Guibas, L. J. 2017, in Proceedings of
+the 31st International Conference on Neural Information
+Processing Systems, NIPS’17 (Red Hook, NY , USA: Curran
+Associates Inc.), 5105–5114
+Qiu, L., Napolitano, N. R., Borgani, S., et al. 2023, Cosmology
+with Galaxy Cluster Properties using Machine Learning.
+https://arxiv.org/abs/2304.09142
+Ravanbakhsh, S., Oliva, J. B., Fromenteau, S., et al. 2016, in
+International Conference on Machine Learning.
+https://api.semanticscholar.org/CorpusID:2360303
+Reddick, R. M., Wechsler, R. H., Tinker, J. L., & Behroozi, P. S.
+2013, ApJ, 771, 30, doi: 10.1088/0004-637X/771/1/30
+Reid, B., Ho, S., Padmanabhan, N., et al. 2016, MNRAS, 455,
+1553, doi: 10.1093/mnras/stv2382
+Ribli, D., Pataki, B. A., Zorrilla Matilla, J. M., et al. 2019, Monthly
+Notices of the Royal Astronomical Society, 490, 1843,
+doi: 10.1093/mnras/stz2610
+Rodr´ıguez-Torres, S. A., Chuang, C.-H., Prada, F., et al. 2016,
+MNRAS, 460, 1173, doi: 10.1093/mnras/stw1014
+Roncoli, A., ´Ciprijanovi´c, A., V oetberg, M., Villaescusa-Navarro,
+F., & Nord, B. 2023, arXiv e-prints, arXiv:2311.01588,
+doi: 10.48550/arXiv.2311.01588
+Ronconi, T., Lapi, A., Viel, M., & Sartori, A. 2020, Monthly
+Notices of the Royal Astronomical Society, 498, 2095,
+doi: 10.1093/mnras/staa2201
+Saito, S., Leauthaud, A., Hearin, A. P., et al. 2016, Monthly
+Notices of the Royal Astronomical Society, 460, 1457,
+doi: 10.1093/mnras/stw1080
+Scoccimarro, R., Hui, L., Manera, M., & Chan, K. C. 2012,
+PhRvD, 85, 083002, doi: 10.1103/PhysRevD.85.083002
+Scoville, N., Aussel, H., Brusa, M., et al. 2007, ApJS, 172, 1,
+doi: 10.1086/516585
+Shao, H., Villaescusa-Navarro, F., Villanueva-Domingo, P., et al.
+2023, ApJ, 944, 27, doi: 10.3847/1538-4357/acac7a
+Simha, V ., & Cole, S. 2013, Mon. Not. Roy. Astron. Soc., 436,
+1142, doi: 10.1093/mnras/stt1643
+Sohn, J., Geller, M. J., Hwang, H. S., et al. 2023, ApJ, 945, 94,
+doi: 10.3847/1538-4357/acb925
+Springel, V . 2005, MNRAS, 364, 1105,
+doi: 10.1111/j.1365-2966.2005.09655.x
+—. 2015, N-GenIC: Cosmological structure initial conditions,
+Astrophysics Source Code Library, record ascl:1502.003
+Springel, V ., Pakmor, R., Zier, O., & Reinecke, M. 2021, Monthly
+Notices of the Royal Astronomical Society, 506, 2871,
+doi: 10.1093/mnras/stab1855
+Swanson, M. E. C., Tegmark, M., Hamilton, A. J. S., & Hill, J. C.
+2008, Monthly Notices of the Royal Astronomical Society, 387,
+1391, doi: 10.1111/j.1365-2966.2008.13296.x
+Tang, K. S., & Ting, Y .-S. 2022, in Machine Learning for
+Astrophysics, 13, doi: 10.48550/arXiv.2207.02786
+Tassev, S., Zaldarriaga, M., & Eisenstein, D. J. 2013, JCAP, 2013,
+036, doi: 10.1088/1475-7516/2013/06/036
+Tojeiro, R., Ross, A. J., Burden, A., et al. 2014, MNRAS, 440,
+2222, doi: 10.1093/mnras/stu371
+van der Maaten, L., & Hinton, G. 2008, Journal of Machine
+Learning Research, 9, 2579.
+http://jmlr.org/papers/v9/vandermaaten08a.html
+Veronesi, N., Marulli, F., Veropalumbo, A., & Moscardini, L. 2023,
+Astronomy and Computing, 42, 100692,
+doi: 10.1016/j.ascom.2023.100692
+Villaescusa-Navarro, F., Hahn, C., Massara, E., et al. 2020, ApJS,
+250, 2, doi: 10.3847/1538-4365/ab9d82
+Villaescusa-Navarro, F., Genel, S., Angl´es-Alc´azar, D., et al. 2022,
+arXiv e-prints, arXiv:2201.01300.
+https://arxiv.org/abs/2201.01300
+Villaescusa-Navarro, F., Ding, J., Genel, S., et al. 2022, The
+Astrophysical Journal, 929, 132, doi: 10.3847/1538-4357/ac5d3f
+Villanueva-Domingo, P., & Villaescusa-Navarro, F. 2022, ApJ,
+937, 115, doi: 10.3847/1538-4357/ac8930
+Villanueva-Domingo, P., Villaescusa-Navarro, F., Angl´es-Alc´azar,
+D., et al. 2022, The Astrophysical Journal, 935, 30,
+doi: 10.3847/1538-4357/ac7aa3
+Wang, J., Lan, C., Liu, C., et al. 2023, IEEE Transactions on
+Knowledge & Data Engineering, 35, 8052,
+doi: 10.1109/TKDE.2022.3178128
+Wechsler, R. H., & Tinker, J. L. 2018, Annual Review of
+Astronomy and Astrophysics, 56, 435,
+doi: 10.1146/annurev-astro-081817-051756
+White, M., Tinker, J. L., & McBride, C. K. 2014a, MNRAS, 437,
+2594, doi: 10.1093/mnras/stt2071
+
+===== PAGE 25 =====
+25
+—. 2014b, MNRAS, 437, 2594, doi: 10.1093/mnras/stt2071
+York, D. G., Adelman, J., Anderson, John E., J., et al. 2000, AJ,
+120, 1579, doi: 10.1086/301513
+Zaheer, M., Kottur, S., Ravanbakhsh, S., et al. 2017, in Advances
+in Neural Information Processing Systems, ed. I. Guyon, U. V .
+Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, &
+R. Garnett, V ol. 30 (Curran Associates, Inc.).
+https://proceedings.neurips.cc/paper files/paper/2017/file/
+f22e4747da1aa27e363d86d40ff442fe-Paper.pdf
+Zhao, C., Kitaura, F.-S., Chuang, C.-H., et al. 2015, Monthly
+Notices of the Royal Astronomical Society, 451, 4266,
+doi: 10.1093/mnras/stv1262
+
+===== PAGE 26 =====
+26
+APPENDIX
+A. FEATURES OF REALIZATIONS WITH DIFFERENT COSMOLOGICAL PARAMETERS
+Features of individual and neighboring galaxies differ across realizations with varying cosmological parameters. In Figure 12,
+we provide the same pair plot as Figure 6 but for the Fixed SHMR model of the L-PICOLA mock suite with different cosmologies:
+high (Ωm=0.4772, σ8=0.9639), low (Ωm=0.1185, σ8=0.6163), and fiducial (Ωm=0.3067, σ8=0.8238). Notice that low
+deviates the most from fiducial, while high shows a better agreement in all features. This tendency becomes most extreme
+for distances to neighboring galaxies. This is due to the deficit of the total number of galaxies for low, which severely affects
+the separation between the galaxies. Although not displayed for brevity, the SHAM models exhibit consistency despite differences
+in the cosmological parameters. Such behavior arises from the fact that, in contrast to the Fixed SHMR model, the SHAM model
+matches the total galaxy count of the mocks to the SDSS BOSS LOWZ NGC catalog.
+11
+12
+Max Mass
+11.0
+11.5
+Mean Mass
+0.00
+0.02
+Max Dist
+11 12
+Stellar Mass
+0.00
+0.02
+Mean Dist
+11 12
+Max Mass
+11.0 11.5
+Mean Mass
+0.000 0.025
+Max Dist
+0.00 0.02
+Mean Dist
+L-PICOLA Mocks
+ﬁducial
+low
+high
+Figure 12. Pair plot of five features of a galaxy randomly sampled from each mock generated with the Fixed SHMR model, simi-
+lar to Figure 6, but this time for three realizations of different cosmologies named high (red; Ωm=0.4772, σ8=0.9639), low (green;
+Ωm=0.1185, σ8=0.6163) and fiducial (blue; Ωm=0.3067, σ8=0.8238). The plot shows for 1000 randomly sampled galaxies for each
+mocks. Masses are in units of log (M⋆/h−1M⊙) and distances are expressed in terms of the newly assumed metric in redshift space
+(X,Y,Z) = (zsin(DEC)cos(RA),zsin(DEC)sin(RA),zcos(DEC)). See Appendix A for more information.
+B. EFFECT OF FINE-TUNED MOCKS MD- PATCHY
+We further investigate the possibility of increasing the accuracy and precision via the incorporation of fine-tuned MD- PATCHY
+mock samples. Similarly to machines trained with L -PICOLA and GADGET mocks, we train 25 different machines using L -PICOLA
+and MD- PATCHY with the semantic alignment loss applied. As shown in Figure 13, the results yield Ωm=0.307±0.035 and
+σ8=0.767±0.035 for the Fixed SHMR model, and Ωm=0.343±0.053 and σ8=0.796±0.051 for the SHAM model. Compared to
+
+===== PAGE 27 =====
+27
+0.1 0.2 0.3 0.4 0.5
+Ω m
+0.60
+0.65
+0.70
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+σ8
+SHAM (L-PICOLA+PATCHY; SA)
+0.1 0.2 0.3 0.4 0.5
+Ω m
+0.60
+0.65
+0.70
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+σ8
+Fixed SHMR (L-PICOLA+PATCHY; SA)
+Planck2018
+Ivanov2020
+3σ
+2σ
+1σ
+Prediction
+Figure 13. Prediction on the actual SDSS BOSS LOWZ NGC catalog from the ensemble of 25 independently trained Minkowski-PointNet
+machines. The left figure displays our results when using the SHAM model, and the right figure displays the results when using the Fixed SHMR
+model. The machines are trained with L -PICOLA and MD-PATCHY mocks without domain adaptation strategy (Vanilla), a domain adaptation
+and generalization technique that enables the machines to extract consistent features regardless of their simulation domains (see Section 4.3).
+Predictions are shown with error bars. A red star shows the result from the Planck 2018 (Planck Collaboration et al. 2020) measurements
+and a blue star from Ivanov et al. (2020). Elliptic contours show the 1σ, 2σ, and 3 σ bounds, calculated from the Gaussian Mixture Model
+(GMM) to incorporate the individual errors. Our results yield Ωm=0.343±0.053, σ8=0.796±0.051 ( left, SHAM ), and Ωm=0.307±0.035,
+σ8=0.767±0.035 (left, Fixed SHMR ). See Section 6.1 for more information.
+when applying the G ADGET mocks, better precision is achieved for both galaxy-halo connection models. Moreover, especially
+for the Fixed SHMR model, the accuracy drastically increases. Indeed, such behavior is well expected, as the machine can learn
+from the fine-tuned mocks, which better depict the observational sample.
+Semantic alignment loss plays an explicit role in reducing the divergence of representations originating from different domains.
+For example, aligning the representations of DL−PICOLA and DMD−PATCHY to be close enough, adding MD-PATCHYmock samples
+will have a small impact on increasing the diameter of the convex hull of the domains. Moreover, assuming that the marginal
+distribution of MD-PATCHYis relatively similar to the SDSS BOSS LOWZ NGC catalog, the optimal domain,D∗, will be weighted
+towards DMD−PATCHY and will effectively reduce the generalization risk. Therefore, this confirms not only the importance of
+aligning the representations from different domains but also the inclusion of accurate mocks involved in the training phase. This
+effect is maximized for the Fixed SHMR model, where the initially biased prediction, when trained with the L-PICOLA and GADGET
+domains, significantly alters to produce more accurate results assuming the Planck 2018 cosmology as the ground truth.
+However, since MD- PATCHY mocks are based on a single cosmology, generalization is only effective locally. To train the
+machines to be globally robust, it is necessary that a multitude of high-fidelity mocks with diverse cosmologies are included as
+in Section 6.1. Such inclusion must be made across varying cosmological parameters, unlike the fine-tuned mocks with a single
+targeted value, as generalization is only performed locally in this case. We leave these aspects of improvement for future work.
+C. ALTERNATIVE TRAINING STRATEGY: DOMAIN ADVERSARIAL TRAINING
+An alternative training strategy for domain adaptation and generalization is to extract domain-invariant features through adver-
+sarial training. The essence of such a training strategy is to prevent the machine from learning domain-specific information. Here,
+we employ domain adversarial neural networks (DANN; Ganin et al. 2016), which adds a domain classifier to the backbone of
+the machine illustrated in Figure 5. The domain classifier is trained to classify whether the input originates from L-PICOLA mocks
+or MD-PATCHYmocks. Moreover, the preceding gradient reversal layer (GRL) enables forward propagation of the domain loss to
+the feature extractor. Consequently, the feature extractor weights are updated to produce domain-invariant features sufficient to
+deceive the domain classifier.
+
+===== PAGE 28 =====
+28
+0.1 0.2 0.3 0.4 0.5
+Ω m
+0.60
+0.65
+0.70
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00
+σ8
+1σ
+2σ
+3σ
+Planck2018
+Ivanov2020
+Prediction
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+P (DL−PICOLA|xSDSS)
+Figure 14. Prediction on the actual SDSS BOSS LOWZ NGC catalog from 25 independently trained Minkowski-PointNet machines,
+similar to Figure 8, but this time with the domain adversarial neural networks (DANN; Ganin et al. 2016) instead of the semantic alignment
+strategy. Predictions with error bars are shown and in different colors indicating the probability that the domain classifier classifies as L-PICOLA,
+P(DL−PICOLA|xSDSS). A red star shows the result from the Planck 2018 (Planck Collaboration et al. 2020) measurements and ablue star from
+Ivanov et al. (2020). Elliptic contours show the bounds of 1σ, 2σ, and 3σ bounds. The results yield Ωm=0.304±0.033 and σ8=0.795±0.057.
+See Appendix C for more information.
+In this approach, we leverage the DANN strategy to perform regression tasks in a supervised domain adaptation setup using
+L-PICOLA and MD-PATCHYmocks. The loss function of the supervised DANN setup can be mathematically expressed as follows:
+L(θ f , θr, θd; x)=Lvanilla(Gr(θr; (G f (θ f ; x))), y)
++αLdomain(Gd(θd; R((G f (θ f ; x)))),d) (C1)
+where θ f , θr, θd denote the parameters and G f (θ f ,·), Gr(θr,·), Gd(θd,·) represent the function of the feature extractor, regressor,
+and domain classifier. Here, x represents the input, y represents the cosmological parameters, and d represents the domain. The
+GRL R(x) is a pseudo-function with properties R(x)=x and R′(x)=− I. Introducing GRL reduces the DANN setup to a single
+minimization problem.
+The terminal layer of the domain classifier passes through a sigmoid activation function, classifying input as L-PICOLA (“1”) or
+MD-PATCHY(“0”) based on a threshold of 0.5. The domain confusion lossLdomain is calculated using the binary cross-entropy loss
+with logits, accounting for the imbalance in the size of the data set between each domain. After training, we further train new
+domain classifiers, each with two trainable layers, for every machine while keeping the weights of the feature extractor frozen.
+This process allows us to evaluate the classifiability of the extracted features.
+Figure 14 displays the results of the 25 independently trained DANN machines. Individual predictions are colored based
+on their probabilities as classified by the domain classifier, indicating whether they originated from L -PICOLA, denoted as
+P(DL−PICOLA|xSDSS). The results show Ωm=0.304±0.033 and σ8=0.795±0.057. However, we observe that compared to the
+semantic alignment strategy, the distribution between the two domains is not effectively reduced, making it susceptible to over-
+fitting. Consequently, the adequacy of the training scheme can vary depending on the characteristics of the sources and targets
+and must be used judiciously.
