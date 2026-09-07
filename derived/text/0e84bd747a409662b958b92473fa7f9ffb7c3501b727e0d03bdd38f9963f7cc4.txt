@@ -1,0 +1,276 @@
+===== PAGE 1 =====
+Lecture #15 Lecture Notes 
+ 
+ The
+ ocean water column is very much a 3-D spatial entity, and we need to 
+represent that structure in an economical way to deal with it in calculations. We will 
+discuss one way to do so, empirical orthogonal functions, in what follows. 
+ 
+A.1.  EOF’s 
+ 
+ Let us assume a representation of the 3D soundspeed field (though it can actually 
+be ANY ocean field) by 
+ 
+) , , ( ) ( ) , , (z y x c z c z y x c 
+ 
+ 
+As we have been doing with our other linear inverse problems, let’s think of this in 
+matrix form. In particular, let’s consider a real world case where we have done six CTD 
+profiles to get the ocean sourdspeed profile at six different (x,y) points. Let’s also 
+consider 4 vertical points of each profile as giving a fair sampling of the vertical 
+structure. (We could always use more if the vertical profile has a lot of structure – we just 
+pick f
+our here as an example.) Then the six CTD’s and four levels let us form a 4x6 
+matrix, as you can see in my beautiful handwriting below: 
+ 
+1
+
+===== PAGE 2 =====
+Subtracting the mean soundspeed at each depth level (seen in equation above) from each 
+measurement, we get the 4x6 soundspeed variance matrix seen above, i.e. the  
+A c   
+matrix. This is OK, but we really want to work with square matrices. No problem – we 
+just
+ multiply the A matrix by its transpose, which is a 6x4 matrix, i.e. 
+ 
+2
+
+===== PAGE 3 =====
+This is nice, because the dimension of the matrix is just the number of  vertical levels we 
+want to use, generally of order ~10. Often we have many CTD casts, or vertical profiles 
+from towed CTD’s like Scanfish, to deal with, so that M>>N in general. The big gain 
+here is that 
+ 
+  TAA
+ 
+ 
+is a standard eigenvalue problem!  The 
+i  (column vectors) belonging to each 
+i  (the 
+eigenvalues which represent the energy in each mode) are called the “Empirical 
+Orthogon
+al Functions” and will be seen to be very useful. Let’s discuss their properties 
+for a second. 
+ 
+ First, they are the modes of the covariance matrix – they express the variability o f 
+c
+(x,y,z) about the mean profile in a modal representation. Second, they are empirical 
+because they are data based – no theory or model involved. And they are orthogonal 
+be
+cause the relation 
+ij
+T
+j i     holds. There are also two other properties of the EOF’s 
+that turn out to be very useful. First, they put the most energy possible into the lowest 
+modes, i.e. they produce the “reddest” modal spectrum possible. This is useful because 
+the ocean dynamical modes also have a red spectrum, so that the EOF’s provide a good 
+match to the ocean dynamics. And second, due to this red property, one can often 
+truncate the modal sum with little or no harm to the results – a nice computational saving. 
+ 
+L
+et’s look closer at the EOF modal representation, which is: 
+ 
+
+
+ 
+N
+i
+ii z y x a z c z y x c
+1
+) ( ) , ( ) ( ) , , (
+ 
+ 
+This expression is nice, but have we done anything better than write c(x,y,z) in a different 
+way? Um,yeah. We had c(x,y,z) only at our measurement sites, and now with this 
+representation, we can find c(x,y,z) everywhere in a way that is consistent with the ocean 
+dynamics. To see this, let’s first get the 
+) , (y x ai  at the measurement sites.  
+ 
+
+
+ 
+N
+i
+ii z y x a z y x c
+1
+) ( ) , ( ) , , (
+ 
+ 
+3
+
+===== PAGE 4 =====
+Following standard procedure, we use the orthogonality of the EOF’s to project out the 
+) (zi
+on the RHS, i.e. we multiply the equation above by 
+) (zj and integrate over z.  So 
+we have
+  
+ 
+dzz z y x adzz y x c z
+N
+i
+i jij  
+
+  
+1
+) ( ) ( ) , ( ) , , ( ) (
+ 
+or 
+ 
+   dzz z y x c y x ajj ) ( ) , , ( ) , (
+ 
+ 
+We now have the EOF coefficients at the (x,y) coordinates of our measurements. This is 
+what we need, as we can interpolate the 
+) , (y x ai  in the x-y plane on a mode by mode 
+basis, as seen below! 
+ 
+ 
+In the little cartoon above, we want the 3D oceanography along the source to receiver 
+acoustic line for some acoustics purpose or at the “want” spot. But we  just have the 
+) , (y x ai
+at the measurement points in the region. But, if we interpolate those coefficients 
+in 2D (an easy enough exercise, as we will see) on a mode by mode basis, we can get the 
+field anywhere we want, e.g. the “want” spot on the picture, or along the S/R track. And 
+not only can we do this – this is perhaps the best, most consistent interpolation we can do, 
+a
+s we will
+ see in the next section. 
+ 
+A.2. Gauss Markov interpolation - theory 
+ 
+ W
+e can interpolate the EOF coefficients in (x,y) via canned routine 2D 
+interpolators to get a 3D ocean field, and there is no law to stop us. But there are better 
+and worse ways to do the interpolation. In saying this, we’re not talking about efficiency, 
+but rather
+ respecting the dynamic scales of the medium so that we don’t interpolate 
+entirely uncorrelated points! We will look here at the so-called “Gauss Markov” 
+4
+
+===== PAGE 5 =====
+interpolator, which is both efficient, and also takes into account the scales of the ocean 
+medium. 
+ 
+ Assume that a measurement    (e.g. the 
+) , (y x ai that constitute our 
+“measurement” at each r=(x,y) position) consists of a true value   plus some noise    
+(which can be computed from the error/noise in our c(x,y,z) measurements). So 
+ 
+         
+ 
+If the error is spatially uncorrelated, and also not correlated to the true value, i.e. 
+ 
+ [    ]                 where    is the error variance 
+ 
+  [    ]    
+ 
+Then (without showing the proof) the least squares optimal estimator of   at any point t is 
+given by 
+ 
+  ̂  ∑    
+ 
+   
+[∑    
+  
+ 
+   
+  ] 
+ 
+In the above, n is the number of measurements (data points) one uses in framing the 
+esti
+mate and the A,B matrices are given by: 
+ 
+     [    ]   (  ⃗⃗⃗     )        
+ 
+     (  ⃗⃗⃗     ) 
+ 
+where C is the spatial correlation function. We see that this formalism explicitly injects 
+the spatial scale(s) of the ocean medium into the problem, so that the estimate for the 
+soundspeed (or temperature or whatever) field has both reasonable modal structure (the 
+EOF modes and ocean modes are similar) and also the correct correlation scales for the 
+ocean modes. Moreover, in doing the sums above, one only has to consider the n data 
+points that are within a correlation length of the point we are trying to interpolate to. This 
+makes the sc
+heme more numerically efficient as well. 
+ 
+ Often, f
+or ocean work, we can use a simple radial form for the correlation 
+function, e.g. a Gaussian, where the width of the Gaussian is the radial spatial correlation 
+length. In considering ocean eddies (as an example), we can take this correlation length to 
+be the “Rossby radius” of deformation, which describes how the Coriolis effect moves 
+the water in a circular path given the latitude and speed of the feature. Specifically, 
+ 
+          | | 
+ 
+       (        )  
+5
+
+===== PAGE 6 =====
+phase velocity of the feature of interest 
+ 
+As an example, we can use         ~ 50 km at 45 degrees for deep ocean eddies, and set 
+the correlation length to this number.  
+ Another w
+ay to get the correlation function, if one has lots of data, is the data-data 
+correlation function, which we define via 
+ 
+ ( )   ( |   ̿    ⃗⃗⃗ |) 
+ 
+   
+ (   )  ̅
+ (  ̅)⃗⃗⃗⃗⃗ 
+|  
+ (   )|  
+ 
+ 
+We will generally get a more irregularly shaped correlation function from the real data, 
+but it will be a correct one. We also not in passing that for the EOF’s (and any other such 
+modal representation), each mode has its own correlation length, i.e.      
+ .  
+ 
+A.3. Gauss Markov interpolation – some examples 
+ 
+ 
+Let me post some old calculated examples of using the Gauss Markov interpolator 
+in various circumstances. The first example is a Harvard Open Ocean model section of 
+the Gulf Stream. We look at the soundspeed contours at some depth (which doesn’t so 
+much matter for now), and get the solid line result from the model. Now, if we remove all 
+the grid points of the model except for the ones with asterisks (a drastic decimation of the 
+data), we want to retrieve an “interpolated” version of the Gulf Stream SSP using a Gauss 
+Markov interpolation. Using the data-data correlation function, we were able to get the 
+dashed line result – a very good match to the original 3D field! 
+ 
+6
+
+===== PAGE 7 =====
+Another useful example to show is how one can “interpolate through bathymetric 
+change” using the Gauss Markov interpolator.  By looking at the average soundspeed at 
+each depth level, which can have a different number of points, and assigning the water 
+soundpeed in the sediment to be the average of the water column points at that level, we 
+get r
+easonable answers, e.g. 
+ 
+7
+
+===== PAGE 8 =====
+An example of this is interpolating in the vicinity of a seamount. This is a crude old 
+MATLAB result, but shows quite well that the interpolation with and without bathymetry 
+is consistent. The only difference in the results is inside the seamount, where the result is 
+meaningl
+ess anyway! 
+ 
+8
+
+===== PAGE 9 =====
+9
+
+===== PAGE 10 =====
+MIT OpenCourseWare
+http://ocw.mit.edu
+2.682 Acoustical Oceanography
+Spring 2012
+ 
+ 
+ 
+For information about citing these materials or our Terms of Use, visit: http://ocw.mit.edu/terms.

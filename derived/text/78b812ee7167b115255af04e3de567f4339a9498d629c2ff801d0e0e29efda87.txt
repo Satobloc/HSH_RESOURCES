@@ -1,0 +1,128 @@
+===== PAGE 1 =====
+Lecture 9 
+ 
+ Ultimately, one wants to describe acoustic propagation through a realistic ocean/seabed 
+waveguide, and the simple models discussed, even with perturbations, won’t suffice.  At that 
+point, one turns to numerical methods.  Luckily for those wishing to use such methods, COA is a 
+veritable bible of such methods, written by four leading practitioners.  Also, one of the authors 
+(Mike Porter) has, under ONR sponsorship, installed a free library of ocean acoustics codes 
+(OALIB) which are easy to obtain online and use, and are well documented.  So, armed with 
+COA and OALIB, one can proceed rather quickly to being a “user” (see the movie “TRON” for 
+more context of that word) of advanced codes.  However, being a naïve user of a black-box code 
+is not a good thing (thus the disdain the “programs” on the grid in TRON had for “users”!).  So, 
+in order to become savvy users (and perhaps even developers) of numerical codes, it is useful to 
+take a look at their basic workings. 
+ 
+ I would state again that the reason we look at numerics in this course was that Prof. 
+Schmidt couldn’t teach his COA course last semester, so we “ad libbed” a section into this one as 
+a temporary help to the students.  His course provides the full treatment of COA, and is highly 
+recommended. 
+ 
+ Since we are looking to solve the modal eigenvalue problem, we first look for the 
+eigenvalues, from which we can construct eigenvectors.  There are a number of ways to do this. 
+ 
+ One of the most popular numerical methods is finite differences.  In this method, we first 
+need to put the (continuous variable) mode equation into “finite difference” (discrete) form, as 
+well as the boundary conditions.  This is done by using simple forward, backward, and central 
+difference schemes, as shown quite explicitly in COA section 5.7.1.  This results in a tri-diagonal 
+matrix form which can be input simply to standard MATLAB (or other) eigenvalue/eigenvector 
+routines.  In a past version of this class, one student noted that the form in COA needed some 
+light recasting to input it to the standard routine, and thus I added some additional notes to do 
+this.  The additional notes use “slowness” instead of sound speed, but are otherwise the same as 
+COA. 
+ 
+ Another method of finding model eigenvalues is the so called “shooting” method (COA 
+section 5.7.3), which is actually kind of fun, in that it does just what the name implies!  One uses 
+a “trial eigenvalue” (a guess), and then numerical shoots a mode function from the surface to the 
+bottom using this guess.  If the mode function at the bottom satisfies the boundary condition, 
+then “you have chosen wisely,” and your guess is one of the eigenvalues.  Of course, one has to 
+have a systematic way of guessing to make this efficient, and to find all the eigenvalues, but that 
+is not so hard. 
+ 
+ If we go back to characteristic equations, we can use traditional root finders, such as the 
+secant method or Newton’s method.  The Pekeris waveguide is a rather good system to try this 
+on, in that the       for the transcendental equation is simple, so the algebra is minimal.  
+Differ
+ent versions of root finders and their “peculiarities” (features, not bugs) are discussed in 
+sectin 5.7.4 of COA. 
+ 
+1
+
+===== PAGE 2 =====
+We note that in the above, where we have found the modes and their eigenvalues, 
+constructing the pressure field for the range independent or adiabatic mode case is 
+straightforward.  But what about coupled modes?  We treat that next. 
+ 
+ Though many ways have been tried (successfully) to solve the coupled mode equations, 
+the most useful way to obtain a solution has been Richard Evan’s “stepwise coupled modes,” 
+which is discussed in detail in section 5.11 of COA.  In this scheme, the range dependent 
+waveguide is divided into a number of constant depth segments in range, so that a slope becomes 
+a staircase. We already know how to solve for the modes in each segment, so that the only 
+remaining task is joining the segments together in range.  For our fluid, acoustic case, this is 
+done simply by invoking the continuity of pressure and normal particle velocity across the 
+interface.  This solution, though it has been largely supplanted by the PE, does have the attractive 
+feature that one can turn the backscatter “on and off,” i.e., look at both 2-way (forward and 
+backscatter) solutions or 1-way (forward) solutions easily, and use the comparison to understand 
+reverberation. 
+ 
+ The development of the 2-way solution is presented in COA.  This development, while a 
+few pages long, is detailed and straightforward, and should present no trouble to the reader to 
+follow. 
+ 
+ When all is done, the 2-way solution presented appears as a large, block matrix system 
+which needs to be solved.  Global matrix methods, used successfully by Schmidt for 
+wavenumber integration problems, can cure instability problems (due to exponentials) in such 
+systems and as computation capabilities have increased, even strong range dependent problems 
+are within calculation range. 
+ 
+ The full 2-way coupled modes actually allow for a complete “multiple scattering solution 
+between segments, and makes the problem a large, global matrix one.  If one still wants 
+backscatter, but can ignore multiple scattering (a good physics question to think on is “where?”), 
+one can go to a much simpler 1-way solution that includes a single-scattering in it as well.  This 
+allows fast “marching solutions” to be implemented, and is discussed in section 5.11.2 of COA. 
+ 
+ 
+The next (numerical) topic we come to is wavenumber integration, which we saw 
+analytically before, and now look at numerically, following COA section 4.5 through 4.5.4. 
+ 
+ While wavenumber integration using the Hankel transform is limited to plane stratified 
+media, it can work easily with elastic media as well as fluid, and so finds use in seismics as well 
+as ocean acoustics. 
+ 
+ Two problems that arise in doing the numerical evaluation of the HT integral are:  1) 
+truncation of the infinite integral (we can’t get either pressure or wave-number out to infinity!) 
+and 2) aliasing due to discretization. 
+ 
+ One other small problem (for me at least) was COA’s use of g(r,z) to stand for p(r,z) in 
+the HT equation, Eq. 4.93.  (Any other letter than g, grrr!!).  Oh well, it’s just gnotation,  
+right?! 
+2
+
+===== PAGE 3 =====
+To kick off the HT discussion, COA section 4.5.1 quickly shows the “Fast Field 
+Program” (FFP) approximation to the HT, which (as previously mentioned in Frisk) makes the 
+HT look li
+ke a 1-D Fourier transform, seen in Eq. (4.96).  Truncation of the integral to      is 
+discussed in section COA 4.5.2, and it is found that using a      is viable, but the choice of 
+      is not trivial, especially for elastic media, where evanescent interface  waves like Scholte 
+waves c
+an push       much higher than one uses in fluid media. 
+ 
+ The other bugbear for the FFP evaluation of the HT is aliasing, discussed in COA section 
+4.5.3.  This discussion is simple mathematically, but a bit subtle physically, and might take a re-
+reading or two. 
+ 
+ Finally, in section 4.5.4 of COA, one example of the FFP being used in practice for a 
+Pekeris waveguide is presented, and the solution contrasted to the “exact” HT evaluation. 
+  
+3
+
+===== PAGE 4 =====
+MIT OpenCourseWare
+http://ocw.mit.edu
+2.682 Acoustical Oceanography
+Spring 2012
+ 
+ 
+ 
+For information about citing these materials or our Terms of Use, visit: http://ocw.mit.edu/terms.

@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T18:18:05Z`
-- Tree/content state: `02a0255d40b8dfb78d2708823906a4655d5514bd2f76a8ff00a3210403b3a923`
+- Scanned: `2026-09-07T18:26:52Z`
+- Tree/content state: `ff27c1011c2d3b0ccf645597784b1e552d8d2dc549909a550d8555a28b7fe171`
 - Coverage: complete structural traversal
-- Files: 711
-- Uploaded source files: 704
-- PDF papers: 689
+- Files: 888
+- Uploaded source files: 881
+- PDF papers: 861
 - Repository machinery files: 7
-- Byte-identical duplicate groups: 34
+- Byte-identical duplicate groups: 36
 
 ## Top-level coverage
 
@@ -19,7 +19,7 @@
 | `.gitignore` | 1 |
 | `BIG PAPERS` | 3 |
 | `DATA` | 1 |
-| `H(s)H_Toolkit` | 131 |
+| `H(s)H_Toolkit` | 308 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
 | `HAUL 11` | 6 |
@@ -87,6 +87,9 @@
 - `76413659ed85e3a44a27b59eee6cc46a78063d3ee9bbfc4180c80887e8d3df17`
   - `HAUL 4/7075779.pdf`
   - `HAUL 5/ssrn-7075779.pdf`
+- `788bc34e1fc0ce72ab2f643efaab1b0650b92a2359f5141818c2a2e5b69df9a6`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/pdfer.py`
+  - `H(s)H_Toolkit/pdfer.py`
 - `818b15a4ad3f99274aa4686d639afa984e5ff7eac79aedcb2a2def907b0dc806`
   - `HAUL 2/ssrn-6993036 (1).pdf`
   - `HAUL 2/ssrn-6993036.pdf`
@@ -102,6 +105,9 @@
 - `91c21c000c80c84d50af58df471aebda7db00ebd7c47f03a27050fabc010b334`
   - `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2605.05114v2 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2605.05114v2.pdf`
+- `98b86e6f8d2312c91c2c96ceb29891dd3c44d201598ba96dbf6460a6c07c685f`
+  - `H(s)H_Toolkit/HsHtoolkit2_1.pdf`
+  - `H(s)H_Toolkit/HsHtoolkit_1.pdf`
 - `a1c28719e18532951800b35b33f55afae3c903491cdbeca2b20d6c51e18d6bfc`
   - `HAUL 2/ssrn-6887518 (1).pdf`
   - `HAUL 2/ssrn-6887518.pdf`
@@ -156,29 +162,50 @@
 | `BIG PAPERS/ssrn-7385521.pdf` | 10277174 | ssrn:7385521 |
 | `BIG PAPERS/ssrn-7394178.pdf` | 15622060 | ssrn:7394178 |
 | `H(s)H_Toolkit/0105040v2.pdf` | 232815 | unresolved-seven-digit-id:0105040v2 |
+| `H(s)H_Toolkit/0112148v1.pdf` | 388150 | unresolved-seven-digit-id:0112148v1 |
+| `H(s)H_Toolkit/0112205v1.pdf` | 157916 | unresolved-seven-digit-id:0112205v1 |
+| `H(s)H_Toolkit/02e4289db5d222757e3927a24cdcc141_MIT2_682S12_bglec11.pdf` | 555146 |  |
+| `H(s)H_Toolkit/0609081v1.pdf` | 175149 | unresolved-seven-digit-id:0609081v1 |
+| `H(s)H_Toolkit/0609768v1.pdf` | 90646 | unresolved-seven-digit-id:0609768v1 |
+| `H(s)H_Toolkit/061e1f35aad94b88fee585e928db8f61_lec2.pdf` | 261050 |  |
 | `H(s)H_Toolkit/0712.0108.pdf` | 705756 | arxiv:0712.0108 |
+| `H(s)H_Toolkit/0b0d0496b0cfbbba1d88858ca8362e98_lecture11.pdf` | 213637 |  |
+| `H(s)H_Toolkit/0c21782e7e67803613176d7fb8eef3d8_MIT2_682S12_termproject_02.pdf` | 333884 |  |
+| `H(s)H_Toolkit/0cca13a5a5fa624cb90d0b457692b8d6_lec5.pdf` | 205915 |  |
 | `H(s)H_Toolkit/1-2-Nathan-Brian-Daniel.pdf` | 707065 |  |
 | `H(s)H_Toolkit/10.3934_cpaa.2026045.pdf` | 329789 |  |
+| `H(s)H_Toolkit/1008.4884v3.pdf` | 270411 | arxiv:1008.4884v3 |
 | `H(s)H_Toolkit/10633590.pdf` | 339559 |  |
 | `H(s)H_Toolkit/1204.3714v6.pdf` | 831880 | arxiv:1204.3714v6 |
 | `H(s)H_Toolkit/123_Clifford_Algebraic_Rotor_E.pdf` | 384360 |  |
 | `H(s)H_Toolkit/1305.5181v2.pdf` | 235192 | arxiv:1305.5181v2 |
+| `H(s)H_Toolkit/1508.02168v2.pdf` | 120613 | arxiv:1508.02168v2 |
+| `H(s)H_Toolkit/1510.04407v1.pdf` | 750800 | arxiv:1510.04407v1 |
 | `H(s)H_Toolkit/1609.08072v1.pdf` | 785377 | arxiv:1609.08072v1 |
 | `H(s)H_Toolkit/1707.08096v1.pdf` | 2052287 | arxiv:1707.08096v1 |
 | `H(s)H_Toolkit/1802.01423v3.pdf` | 377191 | arxiv:1802.01423v3 |
+| `H(s)H_Toolkit/1ac27d48fa5413f423aa295168f5af15_final_07.pdf` | 208582 |  |
+| `H(s)H_Toolkit/1c9e44c6a1b94e7c371c307a93779ffb_lecture25.pdf` | 278953 |  |
+| `H(s)H_Toolkit/1da781ae192c694ae6b5d71258358aee_MIT2_682S12_lec16.pdf` | 763679 |  |
+| `H(s)H_Toolkit/1ddc25b18ac33a1a86d16f4b05726f44_MIT2_682S12_lec08.pdf` | 270311 |  |
 | `H(s)H_Toolkit/2012Morrison.pdf` | 238369 |  |
+| `H(s)H_Toolkit/2108.07786v2.pdf` | 431988 | arxiv:2108.07786v2 |
 | `H(s)H_Toolkit/2202.13795v2.pdf` | 1138761 | arxiv:2202.13795v2 |
 | `H(s)H_Toolkit/2203.16837v1.pdf` | 485953 | arxiv:2203.16837v1 |
 | `H(s)H_Toolkit/2210.00372v2.pdf` | 291796 | arxiv:2210.00372v2 |
+| `H(s)H_Toolkit/229b6f773f451e4391fb21c20a981b13_MIT2_682S12_bglec14.pdf` | 547674 |  |
 | `H(s)H_Toolkit/2404.05222v1.pdf` | 431708 | arxiv:2404.05222v1 |
 | `H(s)H_Toolkit/2407.08854v3.pdf` | 410993 | arxiv:2407.08854v3 |
 | `H(s)H_Toolkit/2409.08995v2.pdf` | 456206 | arxiv:2409.08995v2 |
 | `H(s)H_Toolkit/2504.21744v1.pdf` | 1390409 | arxiv:2504.21744v1 |
 | `H(s)H_Toolkit/2505.14724v3.pdf` | 396592 | arxiv:2505.14724v3 |
+| `H(s)H_Toolkit/25058a02940443d8cae6dde3271fdbb6_MIT2_682S12_bglec06.pdf` | 799162 |  |
 | `H(s)H_Toolkit/2507.06279v1.pdf` | 706369 | arxiv:2507.06279v1 |
 | `H(s)H_Toolkit/2509.16868v1.pdf` | 664505 | arxiv:2509.16868v1 |
 | `H(s)H_Toolkit/2510.21301v1.pdf` | 353783 | arxiv:2510.21301v1 |
+| `H(s)H_Toolkit/2511.10115v3.pdf` | 1214759 | arxiv:2511.10115v3 |
 | `H(s)H_Toolkit/2601.02124v1.pdf` | 728941 | arxiv:2601.02124v1 |
+| `H(s)H_Toolkit/2601.10387v1.pdf` | 4449274 | arxiv:2601.10387v1 |
 | `H(s)H_Toolkit/2601.16785v1.pdf` | 655156 | arxiv:2601.16785v1 |
 | `H(s)H_Toolkit/2602.14064v3.pdf` | 363872 | arxiv:2602.14064v3 |
 | `H(s)H_Toolkit/2603.03135v1.pdf` | 1295835 | arxiv:2603.03135v1 |
@@ -211,58 +238,141 @@
 | `H(s)H_Toolkit/2607.07028v1.pdf` | 632729 | arxiv:2607.07028v1 |
 | `H(s)H_Toolkit/2607.07088v1.pdf` | 425754 | arxiv:2607.07088v1 |
 | `H(s)H_Toolkit/2607.07149v1.pdf` | 393923 | arxiv:2607.07149v1 |
+| `H(s)H_Toolkit/27f301ca1e1e09e0479ec9cdc85b9da0_MIT2_682S12_bglec13.pdf` | 671547 |  |
+| `H(s)H_Toolkit/2831-t3jk.pdf` | 578267 |  |
+| `H(s)H_Toolkit/294e57cf766a434b579e328ba55152e7_MIT2_682S12_bglec15.pdf` | 669421 |  |
+| `H(s)H_Toolkit/2d0696f1323d19be278f3cd1db85d91e_soln05.pdf` | 233309 |  |
+| `H(s)H_Toolkit/2f8805397ee8506926404a60d8d677d2_lecture16.pdf` | 277203 |  |
 | `H(s)H_Toolkit/30021CalcVarLec.pdf` | 105302 |  |
+| `H(s)H_Toolkit/358719320647b5a5c15d038acc7c22ed_soln03.pdf` | 251526 |  |
+| `H(s)H_Toolkit/3719d6726de02bbc57b61939f0cd14c5_MIT2_682S12_lec01.pdf` | 560620 |  |
+| `H(s)H_Toolkit/3eac34a102df34d001b9e721b2302922_soln04.pdf` | 273453 |  |
 | `H(s)H_Toolkit/4.2 Spike response model (SRM).pdf` | 792511 |  |
+| `H(s)H_Toolkit/520494b38732649598f85bf5bc722d9e_MIT2_682S12_lec11.pdf` | 892079 |  |
+| `H(s)H_Toolkit/58540cfbbdd42be15697f7a1523f343b_MIT2_682S12_bglec02.pdf` | 680308 |  |
+| `H(s)H_Toolkit/58aeef5d8bd077782924c431bad2f2db_MIT2_682S12_bglec01.pdf` | 677622 |  |
 | `H(s)H_Toolkit/59_On_the_Expressive_Power_of_.pdf` | 210480 |  |
+| `H(s)H_Toolkit/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf` | 206490 |  |
+| `H(s)H_Toolkit/6e89ec211a53149e0f87d350191c4f63_lecture12.pdf` | 213353 |  |
+| `H(s)H_Toolkit/70c4c4bbfedb587f8bb55d1848986d94_MIT2_682S12_termproject_01.pdf` | 844647 |  |
+| `H(s)H_Toolkit/7906d22db4488e1baa7bb15196595bcc_MIT2_682S12_Homework1.pdf` | 449867 |  |
+| `H(s)H_Toolkit/7e7dd3994f88a5d72db832da090358b3_soln01.pdf` | 210320 |  |
+| `H(s)H_Toolkit/8.3. Quantum Electrodynamics (QED) — Theoretical Physics Reference 0.5 documentation.pdf` | 905654 |  |
+| `H(s)H_Toolkit/829a382e2a755917efbfc190507e51df_lecture01.pdf` | 249941 |  |
+| `H(s)H_Toolkit/842efb3f10cb24ec5ac67c17b2f5cd4f_MIT2_682S12_lec02.pdf` | 767096 |  |
+| `H(s)H_Toolkit/886ead78325762a83434c151f70b0ee6_MIT2_682S12_bglec10.pdf` | 670647 |  |
+| `H(s)H_Toolkit/8bcc5630863d39204a0dcc8e3c6a1eba_8251test2review.pdf` | 382810 |  |
+| `H(s)H_Toolkit/912f81a910bbd70f22a2be6e25113d09_MIT2_682S12_lec04.pdf` | 885259 |  |
+| `H(s)H_Toolkit/946c81955784aacd7e6565e81c7f6b1f_soln02.pdf` | 279335 |  |
+| `H(s)H_Toolkit/9702402v1.pdf` | 158713 | unresolved-seven-digit-id:9702402v1 |
+| `H(s)H_Toolkit/a13b3444c1e2926aca5f25bdda522bc6_lecture07.pdf` | 203669 |  |
+| `H(s)H_Toolkit/a2a2318a3203d55393f3859712d2039c_MIT2_682S12_bglec09.pdf` | 206795 |  |
+| `H(s)H_Toolkit/a40eeb973ec6eb7693120fa59852ee17_lec21.pdf` | 447197 |  |
+| `H(s)H_Toolkit/a5676c7cf00e100493ae9ba3b7341f58_midterm04_prac.pdf` | 309985 |  |
 | `H(s)H_Toolkit/abacus_winter2020.pdf` | 462544 |  |
 | `H(s)H_Toolkit/Adkisson.pdf` | 182956 |  |
+| `H(s)H_Toolkit/af966809bba8f11cacf5f4e88d75ed1d_lecture06.pdf` | 212298 |  |
 | `H(s)H_Toolkit/am72.pdf` | 186559 |  |
 | `H(s)H_Toolkit/anna-symplectic.pdf` | 301941 |  |
 | `H(s)H_Toolkit/annals-v162-n2-p01.pdf` | 1096037 |  |
+| `H(s)H_Toolkit/ASPStandardModelSmall.pdf` | 1314589 |  |
 | `H(s)H_Toolkit/Assembly theory_ formalizing assembly spaces, discovering patterns and bounds _ Royal Society Open Science _ The Royal Society.pdf` | 3222594 |  |
 | `H(s)H_Toolkit/AssemblyTheory.pdf` | 3298161 |  |
 | `H(s)H_Toolkit/AssemblyTheoryinlife-originmodels_Acriticalreview.pdf` | 698490 |  |
 | `H(s)H_Toolkit/axioms-15-00365.pdf` | 2312139 |  |
+| `H(s)H_Toolkit/b446bd5f862e6e4f966d83bb96dd8d8b_lec11.pdf` | 255279 |  |
 | `H(s)H_Toolkit/Bouman-Computer_aided_Design-1995-Geometric_Constraint_Solver.pdf` | 1149055 |  |
 | `H(s)H_Toolkit/Brian-Nathan-Daniel-Final.pdf` | 4119608 |  |
 | `H(s)H_Toolkit/Brunner.pdf` | 1072572 |  |
+| `H(s)H_Toolkit/c46cef6df0457b15a773c0c5f99c2cec_MIT2_682S12_bglec03.pdf` | 681502 |  |
+| `H(s)H_Toolkit/c47d14e3e0f4151bc0f6f9266aa7838d_MIT2_682S12_termproject_03.pdf` | 215813 |  |
+| `H(s)H_Toolkit/c6686ce9b18cabf5353456da3faea559_MIT2_682S12_lec10.pdf` | 969323 |  |
+| `H(s)H_Toolkit/c7378c3bda798753a7defaa02f4c121d_midterm_05_sols.pdf` | 870860 |  |
 | `H(s)H_Toolkit/calculus-of-variations.pdf` | 156790 |  |
 | `H(s)H_Toolkit/CalcVar.pdf` | 966175 |  |
+| `H(s)H_Toolkit/ce6d1a2e7555af32ad9b1ed9b48b7b7e_MIT2_682S12_bglec0405.pdf` | 934028 |  |
+| `H(s)H_Toolkit/chap6.pdf` | 7296116 |  |
+| `H(s)H_Toolkit/Chapter04.pdf` | 277645 |  |
+| `H(s)H_Toolkit/chapter9.pdf` | 321239 |  |
+| `H(s)H_Toolkit/Chapter_03.pdf` | 1783856 |  |
+| `H(s)H_Toolkit/classical mechanics - D-brane Lagrangian_ - Physics Stack Exchange.pdf` | 301113 |  |
 | `H(s)H_Toolkit/cobordism.pdf` | 600777 |  |
 | `H(s)H_Toolkit/cofv.pdf` | 1557450 |  |
 | `H(s)H_Toolkit/cristancho.pdf` | 210682 |  |
+| `H(s)H_Toolkit/CST2_Reutter.pdf` | 522137 |  |
+| `H(s)H_Toolkit/d8e6732f545f465583e990b5ae07964c_MIT2_682S12_lec09.pdf` | 588689 |  |
+| `H(s)H_Toolkit/dd5767e2b0bb489badbe5211c1ef7cf7_MIT2_682S12_bglec08.pdf` | 669446 |  |
+| `H(s)H_Toolkit/deb6ad4ba42bb173e8e403f4b8acb73f_lecture18.pdf` | 210777 |  |
+| `H(s)H_Toolkit/DeGiuli.pdf` | 127402 |  |
 | `H(s)H_Toolkit/disgrad.pdf` | 99143 |  |
 | `H(s)H_Toolkit/drae037.pdf` | 1105540 |  |
+| `H(s)H_Toolkit/e8982711372f0d28ab1a86726089ed77_MIT2_682S12_bglec07.pdf` | 325930 |  |
+| `H(s)H_Toolkit/e9b53ba811f84183e7c3236239f93b3b_MIT2_682S12_lec15.pdf` | 995132 |  |
+| `H(s)H_Toolkit/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf` | 238548 |  |
+| `H(s)H_Toolkit/Einsteins Equations Lagrangians for General Relativity and ADM.pdf` | 444753 |  |
 | `H(s)H_Toolkit/Elements_Ensample_Theory.pdf` | 443625 |  |
 | `H(s)H_Toolkit/ensemble-kalman-methods-a-mean-field-perspective.pdf` | 3594737 |  |
 | `H(s)H_Toolkit/Ensembles.pdf` | 373771 |  |
 | `H(s)H_Toolkit/ensembletheory.pdf` | 840044 |  |
+| `H(s)H_Toolkit/f02cdd1956836166ccaee966d679a4e5_lec23.pdf` | 801339 |  |
+| `H(s)H_Toolkit/f704cfed444c1740427310905d04042d_lecture17.pdf` | 248245 |  |
+| `H(s)H_Toolkit/fc090da737f1091dd983337ab9494383_MIT2_682S12_Homework5.pdf` | 305247 |  |
+| `H(s)H_Toolkit/ffe5d9df0936a18e21aeebf80fb24a8e_MIT2_682S12_bglec12.pdf` | 671356 |  |
+| `H(s)H_Toolkit/fluids2.pdf` | 4812397 |  |
 | `H(s)H_Toolkit/frac_hardy_visibility_ILTV_rev.pdf` | 484279 |  |
+| `H(s)H_Toolkit/Fundamental equation(s) of string theory_ - Physics Stack Exchange.pdf` | 282011 |  |
+| `H(s)H_Toolkit/general-relativity-lagrangian.pdf` | 265616 |  |
 | `H(s)H_Toolkit/gradientimproREVISED.pdf` | 2627626 |  |
 | `H(s)H_Toolkit/GriroievTrieste2018slides.pdf` | 156683 |  |
+| `H(s)H_Toolkit/Hologrammata - A simple and rigorous proof of 26_10 dimensions in string theory.pdf` | 2056837 |  |
+| `H(s)H_Toolkit/holonomy (1).pdf` | 125907 |  |
+| `H(s)H_Toolkit/Holonomy.pdf` | 168900 |  |
+| `H(s)H_Toolkit/HOLONOMYs41567-022-01807-5.pdf` | 2612334 |  |
+| `H(s)H_Toolkit/HsHtoolkit2_1.pdf` | 26091781 |  |
 | `H(s)H_Toolkit/HsHtoolkit2_4.pdf` | 18099964 |  |
 | `H(s)H_Toolkit/HsHtoolkit2_5.pdf` | 7845794 |  |
 | `H(s)H_Toolkit/HsHtoolkit3_2.pdf` | 5837860 |  |
+| `H(s)H_Toolkit/HsHtoolkit_1.pdf` | 26091781 |  |
 | `H(s)H_Toolkit/HsHtoolkit_4.pdf` | 18099964 |  |
 | `H(s)H_Toolkit/HsHtoolkit_5.pdf` | 7845794 |  |
+| `H(s)H_Toolkit/HsHtoolkit_Addendum.pdf` | 21335249 |  |
 | `H(s)H_Toolkit/hypersph.pdf` | 31614 |  |
 | `H(s)H_Toolkit/hyperspherical.pdf` | 220933 |  |
 | `H(s)H_Toolkit/Interior C2 estimates for a class of sum Hessian equations - ScienceDirect.pdf` | 718838 |  |
 | `H(s)H_Toolkit/JHU_Talk_Slide.pdf` | 247814 |  |
 | `H(s)H_Toolkit/l11.pdf` | 255197 |  |
+| `H(s)H_Toolkit/Lagrangian (field theory) - Wikipedia.pdf` | 1066340 |  |
 | `H(s)H_Toolkit/laplacehypersphere1108.3679v1.pdf` | 187457 |  |
+| `H(s)H_Toolkit/Lecture11-QED-Lagrangian.pdf` | 44210 |  |
 | `H(s)H_Toolkit/lecture24.pdf` | 390615 |  |
 | `H(s)H_Toolkit/Lecture_Notes_on_Calculus_of_Variations_2025-2026.pdf` | 1005643 |  |
 | `H(s)H_Toolkit/Lectures_on_AKSZ_Sigma_Models_for_Physicists.pdf` | 807040 |  |
+| `H(s)H_Toolkit/LHC_school_2016.pdf` | 1927583 |  |
 | `H(s)H_Toolkit/liegroups.pdf` | 1059536 |  |
 | `H(s)H_Toolkit/lsg.pdf` | 1127912 |  |
 | `H(s)H_Toolkit/math0309175.pdf` | 227134 |  |
+| `H(s)H_Toolkit/Mathematical formulation of the Standard Model - Wikipedia.pdf` | 2095456 |  |
 | `H(s)H_Toolkit/Meinrenken.pdf` | 703528 |  |
+| `H(s)H_Toolkit/mit8_01scs22_chapter30.pdf` | 2189668 |  |
 | `H(s)H_Toolkit/mnev_h.pdf` | 3246595 |  |
+| `H(s)H_Toolkit/Nambu–Goto action - Wikipedia.pdf` | 348149 |  |
+| `H(s)H_Toolkit/navier_stokes.pdf` | 3544166 |  |
 | `H(s)H_Toolkit/Order_theory_for_discrete_gradient_methods.pdf` | 926196 |  |
+| `H(s)H_Toolkit/p94.pdf` | 1023828 |  |
+| `H(s)H_Toolkit/PDEs_Project____GPE_derivation-1.pdf` | 172858 |  |
 | `H(s)H_Toolkit/PhysRevResearch.3.013211.pdf` | 717175 |  |
 | `H(s)H_Toolkit/proj6.pdf` | 162641 |  |
 | `H(s)H_Toolkit/Purple.pdf` | 230986 |  |
+| `H(s)H_Toolkit/qcdrpp.pdf` | 208711 |  |
+| `H(s)H_Toolkit/qft.pdf` | 1336423 |  |
+| `H(s)H_Toolkit/qft6.pdf` | 703825 |  |
+| `H(s)H_Toolkit/qftch21.pdf` | 123043 |  |
+| `H(s)H_Toolkit/Quantum chromodynamics - Wikipedia.pdf` | 950165 |  |
+| `H(s)H_Toolkit/quantum electrodynamics - What is the full QED Lagrangian with physics units written out_ - Physics Stack Exchange.pdf` | 730450 |  |
+| `H(s)H_Toolkit/Quantum electrodynamics - Wikipedia.pdf` | 1440150 |  |
+| `H(s)H_Toolkit/Relativistic Lagrangian mechanics - Wikipedia.pdf` | 942764 |  |
+| `H(s)H_Toolkit/Research Notes - Anthropic's Global Workspace _ J-Space in LLMs _ The Unfinishable Map.pdf` | 3386177 |  |
+| `H(s)H_Toolkit/rnoti-p795.pdf` | 611959 |  |
 | `H(s)H_Toolkit/S0002-9939-2017-13699-5.pdf` | 249866 |  |
 | `H(s)H_Toolkit/S0002-9939-99-05088-1.pdf` | 208269 |  |
 | `H(s)H_Toolkit/s00208-026-03327-6.pdf` | 590668 |  |
@@ -273,13 +383,81 @@
 | `H(s)H_Toolkit/s41586-023-06600-9.pdf` | 3298161 |  |
 | `H(s)H_Toolkit/s41598-020-68619-6.pdf` | 2000450 |  |
 | `H(s)H_Toolkit/s44260-025-00049-9.pdf` | 788708 |  |
+| `H(s)H_Toolkit/slac-pub-4429.pdf` | 1101122 |  |
 | `H(s)H_Toolkit/Spectral_Graph_Theory.pdf` | 283163 |  |
 | `H(s)H_Toolkit/stml-74-prev.pdf` | 485860 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/078974bf19381340cab50a86fc8cc89f_lecture19.pdf` | 173070 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/0d1bda106dfd2af510daf14b261c56fb_lecture10.pdf` | 171587 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/0e66221f4e5a6e9fe2dcc3412f4436e1_hwk1.pdf` | 45945 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/13ecf4aed160f37d6ad214bae026ee81_lec20.pdf` | 141675 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/184b1fe03c3d32c9ac0a860af62b877c_lec3.pdf` | 157224 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/19d1c9300ec6807a0a7a46c1db9141e9_lec12.pdf` | 152191 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/1b4fc542f15f94af295ce319f443719a_lec13.pdf` | 155706 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/1e3eddd432bf1a79cea26708b94bab52_hwk2.pdf` | 48998 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/21859d0b896e986df437b278d0038053_pset04.pdf` | 114239 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/21fb40c092d4a767e7de03bc6df5435d_lec18.pdf` | 132464 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/22f010a84df39d4448ec5ff59382413d_lecture04.pdf` | 160094 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/246e2f7b317207759e175215abcb8112_MIT2_682S12_Homework4.pdf` | 177799 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/248fc0b9051e55a11af8a2aa13a55065_pset06.pdf` | 94410 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/24e02a58e06196a8e6ef368374d4cfd1_lec22.pdf` | 136883 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/2ed11482f84c747194ee6a8bf3a226ce_lec7.pdf` | 139580 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/33bf0bfc449e34da9d348797df3f4c5d_hwk6.pdf` | 75387 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/347f8e896c34f40e57d77ded14a52b6f_endtrm_fin.pdf` | 81677 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/36358312d9746554a60109324c58bebf_lec26.pdf` | 122569 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/3dc562d082f837011570ff565a84bef0_pset01.pdf` | 104423 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/41a308ec52b976cf888d61dd5a9826d2_lec24.pdf` | 169791 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/51949ae14435789a2c06c879235d22ae_hwk7.pdf` | 19645 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/60fd9c56a57f87f2a1dff7df6ebc0cb5_lec25.pdf` | 184524 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/72638bd04f1aa94b59d9d1feb745ac91_pset03.pdf` | 90674 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/74a1f200767f0e321a50d878f7dc41e0_lecture02.pdf` | 166007 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/753a675859981eb273241e98ecb56536_hwk11.pdf` | 45203 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/75bbca72c08586caeb343f4691c19ce7_midterm_05.pdf` | 68837 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/8111d4941a1acd97825409d83011d27d_hwk3.pdf` | 42263 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/83dc0482e297f2ec6f03932553411230_lecture20.pdf` | 162872 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/8678cfa45f1c62427167f87bca6bae57_MIT2_682S12_Homework3.pdf` | 161107 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/8caef2b2fd460cd03dde5d4700041ee0_lecture14.pdf` | 185054 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/8d9107e932e369c18a113953f77e6b34_hwk10.pdf` | 34540 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/8eb3080396f00109ea631e4bd45223a0_lec1.pdf` | 102895 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/992574ecdb4b83911e7514b8c4a2e507_lecture05.pdf` | 184476 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/9a6b440592b2c873675e1f70bbd9c46e_lec17.pdf` | 137102 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/9b8e3b2a6f153963ac0b16cd0acbf603_hwk4.pdf` | 74892 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/9df3140e29275c1d64f2b74318d1a0e0_lec19.pdf` | 157213 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/9ecdcfceddc533f3d72c197fa2c7deb9_practice.pdf` | 19371 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/9fc34e5bccf7fac1489f660600f4df16_MIT2_682S12_Homework2.pdf` | 153449 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/a1005e3538578985183f9c5e183e6e87_lecture21.pdf` | 179793 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/a3e418ff0049144b2a70f4c8bdd5d8d1_lecture24.pdf` | 199018 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/a7c18070db260c88a6fe9080afabc659_lecture13.pdf` | 132821 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/a9489a562dc17c13491aab189b92f012_lecture09.pdf` | 186981 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/b01fc57a0482e5679b8fa522fd175165_test2_07p.pdf` | 136136 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/b12e9dac037667bc6c898ecece0c51b9_hwk9.pdf` | 49137 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/b22cc820187b199bed8ffcfa2fc60a1e_midterm_07.pdf` | 84443 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/b898cda715396a0d9ce9f4c2931a5c12_pset05.pdf` | 116679 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/c0a5a2c2790f048ab228ddcdf6441bb8_lec16.pdf` | 113381 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/c274eeae40ff1caf3cefc003b7d243bc_lec9.pdf` | 158781 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/c9cb6d23481b7450aaa996bbf2ebc16d_lecture23.pdf` | 115003 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/ce66f56d85495be4ef425a592bbe9238_hwk8.pdf` | 59507 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/df880a05b61f15367954da065f22373c_lec14.pdf` | 160590 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/e309cde65505b6eb3b1133a1a70c9d98_lec15.pdf` | 135600 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/e338d09d623b05f00e2c0f7c43cbd736_lec10.pdf` | 98205 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/e396b9a7aa6e59371bb55f00ad5d53c5_lec4.pdf` | 174300 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/e5b834fb595f307dd99fcf6913971a4c_lecture03.pdf` | 164593 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/e614374c0a1313d85c95e7034454c563_hwk5.pdf` | 42695 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/e653d0e73146e6ba97242ad399e99366_lec8.pdf` | 74815 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/ea42d2182b4a78c0501b2577a5478572_lecture22.pdf` | 188361 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/fb813f7f8eb1c6c5fbc0682b3ebc6ddf_pset02.pdf` | 96570 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/ff2f84174d08a88ac0732145f00b3b7f_lec6.pdf` | 130023 |  |
+| `H(s)H_Toolkit/string theory FAQ in nLab.pdf` | 1440081 |  |
+| `H(s)H_Toolkit/string.pdf` | 1366542 |  |
+| `H(s)H_Toolkit/string1.pdf` | 478145 |  |
+| `H(s)H_Toolkit/string_theory.pdf` | 1949418 |  |
 | `H(s)H_Toolkit/symp_geo.pdf` | 772759 |  |
 | `H(s)H_Toolkit/Symplectic.pdf` | 1153031 |  |
+| `H(s)H_Toolkit/talk-patna19b.pdf` | 967885 |  |
 | `H(s)H_Toolkit/TFG.pdf` | 5367916 |  |
+| `H(s)H_Toolkit/The deconstructed Standard Model equation _ symmetry magazine.pdf` | 3907119 |  |
 | `H(s)H_Toolkit/v-conj-karlstad.pdf` | 367596 |  |
 | `H(s)H_Toolkit/vol39pp675-689.pdf` | 221078 |  |
+| `H(s)H_Toolkit/Whole World Holonomy _ Galileo Unbound.pdf` | 1371492 |  |
 | `H(s)H_Toolkit/Ye_2018_J._Phys.__Conf._Ser._1053_012010.pdf` | 703861 |  |
 | `HAUL 1/ssrn-6999018.pdf` | 255755 | ssrn:6999018 |
 | `HAUL 1/ssrn-7016601.pdf` | 265210 | ssrn:7016601 |

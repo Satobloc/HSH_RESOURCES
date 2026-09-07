@@ -1,0 +1,493 @@
+===== PAGE 1 =====
+Lecture #10 Instructor Notes (Parabolic Equation or PE) 
+A. Derivation of basic PE 
+Let’s look at a very clever and popular way to solve the acoustic wave equation, called 
+the “parabolic equation (PE)” method. This is an “old method” now (transcribed for 
+underwater acoustics from Russian electromagnetics work by Fred Tappert in 1977), but 
+it is still being improved upon today, and is the workhorse for most lower frequency 
+acoustics calculations. 
+We start out with “standard forms” for a second order differential equation in (x,y) or 
+(r,z) as we will get to soon. 
+GFu EuDuCuBu Au y xyyxyxx      
+ 
+Depending on whether the discriminant 
+ACB 42   is greater than, less than, or equal to 
+zero, the equation is Hyperbolic, Elliptic, or Parabolic.  
+The acoustic wave equation is elliptic by nature, which in a practical vein means it is 
+laborious to solve. However, a parabolic equation can be solved quickly and easily by 
+Fourier Transform methods, and so we would like to see if we can reasonably 
+approximate our elliptic equation with a parabolic one. (Obviously we can, or I wouldn’t 
+be writing this lecture!) Let’s look at the details! 
+We start with our (elliptic) Helmholtz equation (for the velocity potential here) 
+02 2   k
+ 
+Using an index of refraction form, we write this as 
+02 2
+0
+2    n k
+ 
+where  
+c k/
+, 
+00 / c k , and 
+c c n/0 . 
+Let’s again look at a cylindrically symmetric geometry, and put the wave equation in 
+cylindrical coordinates. 
+01 2 2
+02
+2
+2
+2
+ 
+
+
+
+
+ n k
+zr rr
+  
+ 
+ 
+1
+
+===== PAGE 2 =====
+As we did with range dependent normal modes, we assume a “partially separable” 
+solution, i.e. 
+) ( ) , (r S z r 
+ 
+where the 
+) , (z r term varies slowly, but 
+) (r S varies quickly. Inserting this solution ibnto 
+our DE, we get 
+0)2 1(1 2 2
+02
+2
+2
+2
+2
+2
+
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+   n kr r
+S
+S rz rSr
+S
+rr
+S
+ 
+We use the 
+2
+0k as a separation constant to get two equations, one purely is S and the other 
+mixed (but not for long!): 
+01 2
+02
+2
+ 
+
+
+ S kr
+S
+rr
+S
+ 
+0)2 1( 2
+0
+2 2
+02
+2
+2
+2
+  
+
+
+ 
+
+
+
+    k n kr r
+S
+S rz r
+ 
+The first equation is just the familiar Bessel’s equation, with solution 
+) ( ) (0 0 r S r k J . We 
+can use the asymptotic form for this, i.e. 
+])4 / [ exp(2) ( 0
+0
+  r k ir kr S
+ 
+We now explicitly plunk this solution for 
+) (r S into the second wave equation to get rid of 
+the “mixed” form. We get 
+0 ) 1 (2 2 2
+002
+2
+2
+2
+  
+
+
+
+
+   n krik
+z r
+ 
+We are almost there. We now make the paraxial (small angle) approximation, which 
+mathematically is  
+rk
+r 
+
+
+ 
+02
+2
+2
+ 
+ 
+to get the “old school” parabolic equation 
+2
+
+===== PAGE 3 =====
+0 ) 1 (2 2 2
+002
+2
+  
+
+
+   n krik
+z
+ 
+This equation is amenable to FFT “marching solutions” that are fast and efficient. Let’s 
+next look at that. BTW, setting up this marching solution is one of the term projects, and 
+is also well described in COA. 
+B. “Marching Solution” to the PE 
+Let’s start by Fourier transforming the PE 
+0 ) exp( ) 1 (2 2 2
+002
+2
+ 
+
+
+
+
+
+  
+
+
+
+
+ 
+dziszn krikz  
+ 
+Let’s define the transform pair as: 
+   dzisz z rs r ) exp( ) , (2
+1) , ( 
+ 
+  dss r z r) , ( ) , (
+ 
+where the limits of the integral are understood to  be minus infinity to infinity unless 
+otherwise stated. 
+We can rewrite this equation as 
+  0 ) exp( ) 1 ( ) exp(2 ) exp( 2 2
+002
+2
+   
+ 
+
+
+  dziszn kdziszrikdzisz
+z
+
+ 
+To get the first integral in usable form,we integrate by parts: 
+ 
+ 
+since 
+  and its derivative vanish at infinity. (Apologies for the limits symbol! Old version of 
+Word!) 
+ 
+This lets us write the transformed DE as  
+       
+ 
+
+ 
+ 
+
+ 
+22
+2
+2
+) exp() exp() exp() exp( sdziszs iszisiszzdzisz
+z
+ 
+3
+
+===== PAGE 4 =====
+0 ) 1 (2 2 2
+00
+2    
+    n kriks
+ 
+We can rearrange this as a linear, first order homogeneous DE for 
+) , (s r ,i.e. 
+02
+) 1 (
+0
+22 2
+0   
+ 
+ik
+s n k
+r
+ 
+This has the simple solution 
+
+
+
+
+
+     ) (2
+] ) 1 ( [exp ) , ( ) , ( 0
+0
+22 2
+0
+0 r rik
+s n ks r s r
+ 
+Now, all we have to do is inverse transform to get 
+) , ( ) , (z r s r   
+Defining 
+) (0r r r    and taking appropriate terms outside the integral, we get 
+dsiszk
+riss r r nikz r ) exp( )2exp( ) , ( ) 2 / ) 1 ( exp( ) , (
+0
+2
+0
+2
+0 
+  
+ 
+We can put this in a compact form using F as the symbol for the Fourier transform: 
+ 
+
+
+
+
+
+      ) , ( )2exp( ) 2 / ) 1 ( exp( ) , (
+0
+2
+12
+0 z r Fk
+risF r nikz r r 
+ 
+This is the marching solution. If we know the solution at 
+0r , we can quickly get it via FFT’s at 
+r r 0
+. You then repeat the process going out in range. The “starter field” for the PE is an 
+interesting problem that is discussed in COA. 
+One little “gotcha” that you probably noticed is the limits on the FFT. We usually go from 0 to 
+minus infinity if the ocean half-space problem. But we can fix this. If you remember that the BC 
+at the sea surface is 
+0 ) , (z r  at z=0, then it makes sense to make 
+) , (z r antisymmetric in z, 
+i.e. the original solution is reflected about z=0 and phase shifted by 180 degrees. This gives the 
+picture we see below. We also reflect the soundpeed profile (with no phase shift) about the 
+origin. To insure we get 
+0 ) , (z r  at 
+  , we add a small imaginary component to the 
+soundspeed at very large depths, which attenuates the signal and prevents spurious reflections.  
+ 
+ 
+ 
+4
+
+===== PAGE 5 =====
+C. Discussion of error in the PE 
+ In order to use the index of refraction n(r,z) in the PE marching scheme, we have to use 
+an appropriately small range step 
+r . The larger the index of refraction gradient, the smaller 
+the range step one can take. Let’s see how this works. 
+ If we put our PE marching solution back into the original PE with n=n(r,z), we will no 
+longer have an exact solution. Terms NOT satisfying the PE have derivatives of n with respect to 
+r or z.  They are: 
+) , (0 z rr
+nr nikr error
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+
+ 
+
+
+
+
+
+
+ 2
+2
+2
+2
+2
+2
+) () (2 z
+n
+z
+nrikz
+nr kz z
+nrikz error
+ 
+where we have assumed n~1. The total error per range step is: 
+  (
+   
+   )
+     
+     (
+  
+  )
+     
+  
+or 
+       
+  
+  
+  
+         
+  
+   +[   (
+  
+  )
+ 
+  (
+  
+  )
+ 
+  
+   
+   ]      
+The last two terms in parentheses are small, so we get: 
+       
+  
+  
+  
+   (
+  
+  
+ 
+  
+ 
+(
+  
+  
+)
+ 
+)         
+If we put in some numbers for the gradients in deep and shallow water, we can use the 
+above for estimates of error and for step size determination 
+DEEP WATER 
+     (
+  
+  )
+   
+         and  
+  
+        
+SHALLOW WATER 
+     (
+  
+  )
+   
+        and    
+  
+                 where  we used     units 
+ 
+5
+
+===== PAGE 6 =====
+Both the vertical and horizontal gradients are much larger in shallow water, which is 
+why the PE was originally used as a deep water computational tool, and much later 
+(after a lot of development) became useful for shallow water. 
+D. Comparison of the PE solution with the normal mode solution 
+ As this is right out of Brekhovskikh and Lysanov’s book, just some comments are 
+needed here. 
+ The major point of the section is to compare a simple modal form with a simple 
+PE solution. For modes, we get: 
+        
+   ( )    (    ) 
+whereas for PE we get 
+        
+   ( )   ( 
+(  
+    
+ )
+   
+ ) 
+If we define  
+(       )
+   
+   
+  , we clearly see that the PE replaces the modal wavenumber 
+with a perturbed form of it that is weighted toward the “water wavenumber”   , which 
+corresponds to the low, small grazing angle modes. Thus the PE is expected to work best 
+at small grazing angles, i.e. it is paraxial. 
+The next simple, but useful, thing that we can do is replace the modal wavenumber in 
+the PE form above with that of an ideal hard bottom waveguide (a nice analytic form) 
+and see what we can see. We get for the hard bottom eigenvalue                                                                                 
+  
+    
+  (  
+ )
+ 
+(   
+ )  
+If we now look at the error in the modal phase that the PE causes in this case, we see: 
+   (  
+    )   
+          
+where χ is the horizontal grazing angle. Thus the error grows linearly with frequency and 
+range, but as       with grazing angle! That is a very strong dependence, and indeed 
+the “old school” PE could only handle angles up to around     , which was fine for the 
+deep ocean, but not for shallow water. The current generation of PE, however, is vastly 
+more capable in terms of angle, frequency and range. 
+  
+6
+
+===== PAGE 7 =====
+MIT OpenCourseWare
+http://ocw.mit.edu
+2.682 Acoustical Oceanography
+Spring 2012
+ 
+ 
+ 
+For information about citing these materials or our Terms of Use, visit: http://ocw.mit.edu/terms.
