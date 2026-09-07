@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T01:56:00Z`
-- Tree/content state: `eeb6545287beae0f2cea67bce792f0b12b076a13`
+- Scanned: `2026-09-07T02:37:37Z`
+- Tree/content state: `59e6de8f1b4a9c144e645050294f4da09b3f6451`
 - Coverage: complete structural traversal
-- Files: 285
-- Uploaded source files: 279
-- PDF papers: 273
+- Files: 288
+- Uploaded source files: 282
+- PDF papers: 276
 - Repository machinery files: 6
 - Byte-identical duplicate groups: 25
 
@@ -16,6 +16,7 @@
 | Path | Files |
 |---|---:|
 | `.gitignore` | 1 |
+| `BIG PAPERS` | 3 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
 | `HAUL 11` | 6 |
@@ -117,6 +118,9 @@
 
 | Path | Bytes | Identifier hint |
 |---|---:|---|
+| `BIG PAPERS/qt2f18n5nk.pdf` | 14358136 |  |
+| `BIG PAPERS/ssrn-7385521.pdf` | 10277174 | ssrn:7385521 |
+| `BIG PAPERS/ssrn-7394178.pdf` | 15622060 | ssrn:7394178 |
 | `HAUL 1/ssrn-6999018.pdf` | 255755 | ssrn:6999018 |
 | `HAUL 1/ssrn-7016601.pdf` | 265210 | ssrn:7016601 |
 | `HAUL 1/ssrn-7028858.pdf` | 146965 | ssrn:7028858 |
