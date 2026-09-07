@@ -1,0 +1,3099 @@
+===== PAGE 1 =====
+98 | Nature | Vol 657 | 3 September 2026
+Article
+Observation of conformal field theory 
+spectra in a quantum simulator
+Xiangkai Sun (孙向恺)1,5, Yuan Le (乐媛)1,5, Stephen Naus1,5, Richard Bing-Shiun Tsai1,5, 
+Lewis R. B. Picard1, Sara Murciano2, Michael Knap3,4, Jason Alicea1 & Manuel Endres1 ✉
+Conformal field theories (CFTs) feature prominently in high-energy physics1,2, 
+statistical mechanics3 and condensed matter4–6. For example, CFTs govern 
+emergent universal properties of systems tuned to quantum phase transitions4,7, 
+including their entanglement, correlations and low-energy excitation spectra.  
+Much of the rich structure predicted by CFTs nevertheless remains unobserved  
+in experiment. Here we directly observe the energy excitation spectra of  
+emergent CFTs at quantum phase transitions—recovering universal energy ratios 
+characteristic of the underlying field theories8,9. Specifically, we develop and 
+implement a modulation technique to resolve the finite-size spectra of a Rydberg 
+chain, variably tuned to quantum phase transitions described by either Ising or 
+tricritical Ising CFTs. We also use local control to distinguish parities of excitations 
+under reflection and, in the tricritical Ising chain, to induce transitions between 
+distinct CFT spectra associated with changing boundary conditions. By using a 
+variant of the modulation technique, we furthermore study the dynamical structure 
+factor of the critical system, which is closely related to the correlation of an 
+underlying Ising conformal field. Our work not only probes the emergence of  
+CFT features in a quantum simulator but also provides a technique for diagnosing 
+a priori unknown universality classes in future experiments.
+Conformal field theories (CFTs) are quantum field theories preserving 
+conformal transformations that tightly constrain physical observables. 
+Although conformal symmetry generally does not manifest microscopi-
+cally, it can emerge over appropriate length scales. In the high-energy 
+context, the correspondence between anti-de Sitter (AdS) space and 
+CFT posits a duality between a CFT and quantum gravity in AdS space1. 
+In many-body systems, CFTs commonly describe universal phenomena 
+at quantum phase transitions (QPTs)—zero-temperature critical points 
+separating distinct phases of matter, at which conformal symmetry 
+emerges at long distances and low energies4.
+A CFT is specified by data that determine universal features such as 
+quantum entanglement structure and critical exponents governing 
+space–time correlations. These features manifest in finite-size scaling, 
+a powerful diagnostic in systems governed by two-dimensional CFTs: 
+Cardy showed in the 1980s (ref. 8) that the pattern of low-energy levels 
+in a finite system directly reveals the CFT operator content—which fields 
+are present and their scaling dimensions. Moreover, toggling boundary 
+conditions acts as a control knob that filters the allowed operators, and 
+hence alters the observable low-energy spectrum.
+In quantum materials, platforms for probing CFTs include magnetic 
+insulators and quantum Hall systems by inelastic neutron scattering10–16 
+and electrical and thermal transport 17–20 that can reveal select CFT 
+properties. Recent advances in programmable analog and digital quan-
+tum simulators21–29 have enabled probing QPTs with complementary 
+manipulation and readout techniques that offer a pathway to refined 
+experimental characterization of CFTs. In this context, experiments 
+showed power-law correlations while accounting for open-system 
+effects suppressing long-range signatures of critical ground states30. 
+Furthermore, dynamical properties—for example, Kibble–Zurek scal-
+ing and late-time quantum coarsening—were probed when ramping 
+through QPTs31–34. However, a direct measurement of the rich excitation 
+spectra of CFTs remains outstanding, in either solid-state systems or 
+quantum simulators, despite its fundamental relevance.
+Here we use a programmable neutral atom quantum simulator 
+to measure the finite-size many-body excitation spectrum at one-  
+dimensional QPTs, which are governed by two-dimensional (1 + 1D 
+space–time) Ising and tricritical Ising (TCI) CFTs. T o this end, we develop 
+a modulation spectroscopy technique implementing coherent control 
+between many-body states in targeted symmetry sectors. In the Ising 
+case, we experimentally resolve excitation energies whose ratios and 
+system-size scaling agree well with universal predictions of the Ising 
+CFT in open chains. At the TCI point, we probe the dependence of the 
+spectrum on boundary conditions by applying local detunings at the 
+edges of the chain—revealing signatures consistent with three distinct 
+TCI CFT fixed-point boundary conditions. T o overcome the difficulty 
+of identifying individual excitation energies in large systems due to 
+the large density of states, we use a variant of the technique to meas-
+ure the dynamical structure factor at Ising criticality, accessing the 
+https://doi.org/10.1038/s41586-026-10904-x
+Received: 2 February 2026
+Accepted: 13 July 2026
+Published online: 19 August 2026
+Open access
+ Check for updates
+1California Institute of Technology, Pasadena, CA, USA. 2Université Paris-Saclay, CNRS, LPTMS, Orsay, France. 3Technical University of Munich, TUM School of Natural Sciences, Physics 
+Department, Garching, Germany. 4Munich Center for Quantum Science and Technology (MCQST), Munich, Germany. 5These authors contributed equally: Xiangkai Sun, Yuan Le, Stephen Naus, 
+Richard Bing-Shiun Tsai. ✉e-mail: mendres@caltech.edu
+
+===== PAGE 2 =====
+Nature | Vol 657 | 3 September 2026 | 99
+universal scaling function of the underlying field correlation 4. This 
+work establishes modulation spectroscopy in quantum simulators as 
+a powerful tool to study general QPTs, including in regimes in which 
+classical simulations are challenging and the critical properties may 
+be unknown a priori.
+Our experiments are performed with a one-dimensional lattice of L 
+interacting Rydberg atoms35. Each qubit is encoded in a ground state 
+|0⟩ and a Rydberg state |1⟩, coupled with a global Rabi frequency Ω and 
+detuning Δ. When two atoms at positions ri, rj are both in |1⟩, they inter-
+act by a van der Waals potential Vij ∝ |ri − rj|−6. We work in the Rydberg 
+blockade regime, V1 ≡ Vi,i+1 ≫ Ω, Δ, effectively forbidding neighbouring 
+atoms from simultaneously occupying |1⟩. Moreover, we can apply 
+site-dependent detunings δΔi
+33,36,37 (Methods). The effective Hamil-
+tonian is 
+
+
+
+∑∑HP XP δn Vn nH^ = Ω
+2
+^^ ^ −( Δ+ Δ) ^ + ^^ + ^ , (1)
+i
+ii ii i
+ji
+ij ij−1 +1
+−≥ 2
+2
+where P^ =0 ⟩⟨ 0ii i , X^ =1 ⟩⟨ 0+ 0⟩ ⟨1ii ii i , n^ =| 1⟩ ⟨1|ii i  with i = 1, 2,…, L, and  
+H^
+2 contains higher-order corrections due to finite V1 (equation (8)). 
+Hereafter, we take δΔi = 0 until specified otherwise.
+The above Hamiltonian reduces to the Fendley–Sengupta–Sachdev38 
+(FSS) model on taking V1 → ∞, retaining finite next-nearest-neighbour 
+interaction V2 ≡ Vi,i+2, and neglecting farther-neighbour interactions. 
+In this simplified limit, the corresponding phase diagram features a 
+disordered phase and a 2-ordered charge density wave (CDW) phase 
+(Fig. 1a). These phases are separated by an extended second-order 
+transition line, described by the Ising CFT, that at some V2 < 0 terminates 
+at a tricritical point, described by the TCI CFT, before becoming first 
+order (Fig. 1a, dashed line). Using quasi-adiabatic sweeps25, we prepare 
+our system close to the ground state near the phase transition. The 
+native van der Waals interaction gives access to the repulsive regime 
+with V2 > 0. We reach effective attractive V2 < 0, necessary for probing 
+the TCI point, with an inverted sweep protocol that targets the highest 
+excited state in the Rydberg-blockaded sector (Methods).
+Many-body modulation spectroscopy
+T o probe the excitation spectrum close to the critical point, we develop 
+a modulation spectroscopy technique (the modulation–ramp–probe 
+sequence). In short, we prepare the ground state close to a critical 
+c
+Global
+detuning
+modulation
+Initialization
+Adiabatic preparation
+Modulation
+Ramping
+Readout
+Local
+detuning
+modulation
+AOD + AOD
+AOM + AOD
+a
+Disorder
+Z2 order
+–3 –2 –1 0 1 2 3
+–3
+–2
+–1
+0
+1
+TCI CFT
+Ising CFT
+c  (V2)/uni0394
+b
+Disorder Z2 order
+0
+Energy
+e
+U
+U/uni2032
+1
+2
+3
+4
+5
+1 2 3
+4
+5
+Modulation frequency f (MHz)
+0
+2
+4
+6
+0.2 0.7
+Ising CFT
+spectrum
+0 0.6
+Transition strength
+/uni03B4n
+Ising CFT energies (a.u.)
+0
+2
+4
+6
+8
+fd
+–2.71 0
+Modulation frequency f (MHz)
+0
+1
+2
+3
+4
+5
+6
+0.7
+0.6
+0.5
+0.4
+0.3
+0.2
+/uni03B4n
+L = 19
+|c/uni232A
+/| |/uni0394/uni03A9
+V2/|   |/uni03A9
+ [2/uni03C0 × MHz]– c/uni0394/uni0394– c/uni0394/uni0394
+c/uni0394
+Fig. 1 | Many-body spectroscopy and the Ising CFT spectrum. a, Phase diagram 
+of the FSS Hamiltonian, reproduced from ref. 40 . The arrows represent the 
+adiabatic sweep trajectory, ending at critical points probed in this work.  
+b, Modulation spectroscopy protocol (top) and corresponding schematic 
+spectral evolution (bottom). We adiabatically evolve an initial disordered state 
+to Ising criticality and then apply modulation to target a low-lying excited state; 
+the readout of the change of the number of atoms in |0⟩, δn, is performed 
+following a subsequent detuning sweep to the 2 -ordered or disordered phase. 
+c, Modulation spectroscopy implementation setup. We use acousto-optic 
+deflectors (AODs) and an acousto-optic modulator (AOM) to control the global 
+and the local detuning modulation with the Rydberg laser frequency and the 
+tweezer-induced light shift. d , Spectroscopy of the many-body Hamiltonian  
+on a 19-atom array with modulation applied at various detunings Δ with Rabi 
+frequency Ω = 2π × 7.5 MHz. The red solid lines are numerical calculations of  
+the excited state energies of equation ( 1), with the opacity indicating the 
+transition strength between the ground state and each excited state. The 
+dashed line represents the numerically determined critical detuning Δ c 
+(Methods). e, Spectroscopy at the critical detuning Δ c for a 19-atom chain with 
+Rabi frequency Ω = 2π × 6.0 MHz. We observe an increase in the number of 
+excitations after the sweep ( δn) (blue, top axis) at frequencies coinciding with 
+excited state energies. The solid line is a fit with a sum of four Gaussians and 
+indicates the fit range. The dashed lines indicate the CFT-predicted energy 
+ratio. The red circles are numerical calculations of transition strength gK e|⟨ | ^|⟩ |2 
+(bottom axis). The colour code represents clusters of states with close 
+eigenenergies, which will become degenerate in the thermodynamic limit as 
+predicted by the Ising CFT. f, The predicted even-parity Ising CFT spectrum 
+from exact analytical calculations. The Ising CFT energy levels have the 
+universal ratio 2:4:6:8. a.u., arbitrary units.
+Table 1 | Lowest many-body energies E for Ising critical 
+Rydberg chains with odd and even L
+Odd L Even L
+Occupied n E × L/ 
+(πħv)
+Rx parity Occupied n E × L/ 
+(πħv)
+Rx parity
+∅ (ground state) 0 Even {0} (ground state) 1/2 Even
+{0, 1} 2 Even {1} 3/2 Odd
+{0, 2} 3 Odd {2} 5/2 Even
+{0, 3}, {1, 2} 4 Even {3} 7/2 Odd
+{0, 4}, {1, 3} 5 Odd {0, 1, 2}, {4} 9/2 Even
+These eigenstates correspond to even and odd fermion-parity sectors, respectively.  
+‘Occupied n’ lists the set of occupied single-particle fermionic modes. The ground-state 
+reflection parities are verified using exact diagonalization; the excited-state reflection parities 
+are then determined from equation (31).
+
+===== PAGE 3 =====
+100 | Nature | Vol 657 | 3 September 2026
+Article
+detuning, Δc, apply a modulation to couple to excited states, ramp into 
+either the 2-ordered or disordered phase, and then probe the popula-
+tion transferred into excited states (Fig. 1b).
+We perform two types of modulations: the global detuning Δ and 
+local detunings δΔi (Fig. 1c and Methods). Global detuning modulation 
+perturbs the Hamiltonian using
+∑δH tA ft φn^ () =c os(2π+ )e ^ , (2)
+t
+w
+i
+iglobal
+−
+2
+2
+where A is the modulation amplitude, f is the modulation frequency, φ is 
+the initial phase of the modulation, and w is the Gaussian envelope width.
+We read out the population transfer by measuring the number  
+of atoms in |0⟩, n^ =∑ |0⟩⟨ 0|gi ii , after ramping to either the 2 -ordered 
+phase or the disordered phase. Excitation appears as a change δn in 
+n⟨ ^ ⟩g  relative to the many-body ground state. For a small system with 
+L = 7, we observe temporal oscillation of δn, indicating coherent oscil-
+lation between the ground state and a chosen excited state (Methods 
+and Extended Data Fig. 1).
+T o probe larger systems, we apply a weak drive for less than half a 
+many-body Rabi oscillation cycle, in which regime δn is approximately 
+a sum of Gaussians centred at ground-to-excited-state energy differ-
+ences, weighted by transition matrix elements (Methods): 
+∑δn Aw gK e∝e |⟨ | ^ |⟩ |, (3)
+eg
+w
+EE
+h f22
+≠
+−2π
+−
+− 2
+eg22
+2
+
+
+
+
+
+where h is Planck’s constant, Kn^ ≡∑ ^ii  is the modulation operator, |g⟩ is 
+the many-body ground state with energy Eg, and |e⟩ runs over many-body 
+excited states with energy Ee.
+Equation (3) shows that population transfer is resonant at each 
+ground-to-excited-state energy gap, with a rate proportional to the 
+squared transition matrix element—constrained, importantly, by reflec-
+tion symmetry. In particular, under spatial reflection, all Hamiltonian 
+eigenstates either remain invariant (even parity) or acquire a (−1) fac-
+tor (odd parity). As both the ground state and the global modulation 
+have even parity, the transition matrix element to odd-parity excited 
+states vanishes. Local detuning modulation detailed below additionally 
+accesses the odd-parity sector.
+Observation of the Ising CFT spectrum
+Using this global modulation technique, we first probe the even-parity 
+excitation spectrum close to the Ising-CFT critical point with positive 
+interaction strength V2/Ω = 0.51 in a chain of length L = 19 (Fig. 1d,e). 
+We quasi-adiabatically prepare the system close to its ground state at 
+various Δ, including the numerically determined critical detuning Δc 
+in the thermodynamic limit (Methods and Extended Data Fig. 2). For 
+each Δ, we scan the global modulation frequency f. We find increased 
+population transfer δn (Fig. 1d, blue shading) at modulation frequen-
+cies that coincide with numerically calculated excited-state ener-
+gies (Fig. 1d, red lines). Moreover, the population transfer correlates  
+with the numerically determined transition strength gK e|⟨| ^ |⟩ |2 (Fig. 1d, 
+opacity of red lines), confirming ground-state preparation and resolu-
+tion of individual excited-state energies, in line with exact numerical  
+predictions.
+T o study the CFT spectrum, hereafter we focus on the excitation 
+energies measured at the critical point, Δ = Δc. We resolve four peaks 
+whose centre frequencies match the four eigenstates with the strongest 
+transition strengths (Fig. 1e). These peaks correspond to four energy 
+Ising CFT spectrum
+b c
+0 2 4 6 8
+0 40 80 120
+f /uni2219 L (MHz)
+7
+19
+23
+27
+35
+0.6
+1.2
+0.4
+0.8
+0.5
+0
+0.2
+0.7
+0.2
+0.7
+/uni03B4n
+0 40 80 120
+f /uni2219 L (MHz)
+0 2 4 6 8
+Ising CFT energies (a.u.)
+L
+a
+L
+L1
+L2
+f
+f /uni2219 L
+× L
+L
+L1
+L2
+0 2 4 6 8
+Ising CFT
+spectrum
+L = 7
+L = 19
+L = 23
+L = 27
+L = 35
+Fig. 2 | Scaling of the finite-size spectrum. a, Sketch of scaling modulation 
+frequency with system size. When multiplying the frequency with the system 
+size, the eigenvalues for different system sizes collapse and yield a universal 
+ratio predicted by the CFT. b, Spectroscopy at the critical detuning Δ c at various 
+system sizes. In the horizontal axis, the modulation frequency f is scaled  
+by system size L. Dashed lines are numerically extrapolated eigenvalues, 
+corresponding to the even-parity Ising CFT spectrum with the universal ratio 
+2:4:6:8. The solid lines are multi-Gaussian fits to the data and indicate fit ranges. 
+c, First four spectral peak positions f , rescaled by L, for each system size. The 
+solid lines are the numerically calculated rescaled even-parity state energies 
+with the same colours as in Fig. 1e. The dashed lines are the extrapolated 
+rescaled energies.
+
+===== PAGE 4 =====
+Nature | Vol 657 | 3 September 2026 | 101
+levels of the even-parity Ising CFT spectrum with universal energy ratio 
+2:4:6:8 (refs. 9,39) (Fig. 1f, Table 1 and Methods). Despite the degeneracy 
+in the Ising CFT spectrum, it is lifted in a finite-size system by irrelevant 
+perturbations. In each ideally degenerate manifold, only one state 
+strongly couples to the ground state under global modulation (Fig. 1e).
+CFT spectrum energies are predicted to scale inversely with the 
+system size L, so peak positions plotted as f ⋅ L should collapse across 
+system sizes (Fig. 2a). We probe this scaling behaviour experimen-
+tally by repeating the global modulation spectroscopy at Δc for chain 
+lengths L = 7–35 and plotting spectra as a function of f ⋅ L (Fig. 2b). Given 
+equation (3), we fit these spectra to a sum of Gaussian functions and 
+extract the peak positions—for L ≥ 19 again obtaining consistency with 
+the universal 2:4:6:8 Ising CFT ratio for the first four even-parity levels 
+(Fig. 2c). The L = 7 spectrum does not, however, collapse to the universal 
+ratio. The leading low-energy CFT description we are using assumes 
+excitation energies well below the microscopic scale of the Rydberg 
+Hamiltonian, (Ee − E0)/ħ ≪ Ω. At such small system sizes, the energy 
+spacings are sufficiently large for even the second even-parity excited 
+state energy to be comparable to the Rabi frequency and therefore 
+non-universal corrections, including non-linearity of the dispersion 
+and irrelevant interaction terms, are expected to become appreciable.
+T o additionally probe the odd-parity spectrum, we combine global 
+and local detuning modulations into a reflection-antisymmetric pat-
+tern (Fig. 3a). Specifically, we realize (Methods) 
+
+
+
+
+
+
+
+
+∑δH tA ft φ i
+L n^ () =[ 1+ cos(2π +) ]e cos π( −1 )
+−1
+^ .( 4)
+t
+w
+i
+i
+−
+2
+2
+Under this odd-parity modulation, spectral peaks emerge between 
+the even-parity peaks (Fig. 3b), consistent with the odd-parity Ising CFT 
+spectrum with universal ratio 3:5:7 (Table 1 and Methods).
+The observed universal energy ratios arise from massless, linearly 
+dispersing Majorana fermion excitations that emerge at the Ising phase 
+transition (Methods). In particular, the Ising CFT predicts emergent 
+fermions carrying excitation energy En = ħvkn with n ∈ ; here v is a 
+non-universal velocity and kn=( +1 /2)n L
+π  is a finite-size-quantized 
+momentum for an open length-L chain. Physical states arise from apply-
+ing an even number of Majorana fermion operators to the ground 
+state—yielding the levels, degeneracy and reflection properties shown 
+for L = 19 in Fig. 3b (bottom). A similar pattern of energy levels emerges 
+for even-L chains, whose energy ratio we also detect experimentally 
+(Methods and Extended Data Fig. 3). Linear dispersion and fermion 
+filling constraints together underlie the universal ratios, and our 
+experiment constitutes strong evidence for both features of the Ising 
+CFT. Further numerical evidence for linear dispersion comes from 
+finite-wavevector modulation, in which a strong response appears only 
+when f exceeds a threshold fth linear in k (Methods and Extended Data 
+Fig.  4). From measurements at different k , we can extract the 
+non-universal light-cone velocity v = 2π∣dfth/dk∣. When interpreted as 
+the onset of linear dispersion, our parity-resolved spectrum in Fig. 3b 
+agrees well with the numerically calculated velocity (Fig. 3c).
+Next, we deploy similar methods to probe an inherently strongly 
+interacting CFT that defies a free-particle description.
+Approach to the tricritical point
+The TCI CFT, which emerges at the termination of the second-order 
+phase boundary in Fig. 1a, carries distinct fields and scaling dimen -
+sions compared with the Ising CFT. Accordingly, the finite-size energy 
+spectrum at the TCI point admits different universal ratios, which are 
+intimately tied to boundary conditions. In our setting, the Ising CFT 
+exhibits a single stable boundary condition—conventionally denoted 
+by ‘fixed’—at which the edges strongly catalyse CDW order that bleeds 
+into the bulk. The TCI CFT, by contrast, admits both stable fixed and 
+stable ‘free’ boundary conditions, the latter of which sharply sup -
+presses edge-nucleated CDW order. We can diagnose which boundary 
+condition appears by measuring the CDW order parameter and, more 
+directly, by spectroscopically resolving their characteristic universal 
+energy ratios.
+We experimentally probe the evolution from the Ising to TCI CFT by 
+measuring chains at critical detunings with attractive next-nearest- 
+neighbour interactions V2/Ω = −0.51 and −1.63 (configurations 2 and 3 
+in Fig. 4a, inset). The latter is predicted to realize the TCI point by 
+numerical simulations identifying the V 2 at which low-lying energy 
+ratios match TCI CFT predictions (Methods). First, we assess edge CDW 
+order in L  = 26, 27 chains at the critical detuning Δ c (Methods and 
+Extended Data Fig. 2), directly after quasi-adiabatic state preparation 
+without modulating. The operator σ nn^ =( −1 )( ^ − ^ )i
+i
+ii+1 /2
++1
++1  defines  
+a local CDW order parameter, which we measure at the boundaries  
+to obtain σ σσ≡( |⟨^ ⟩| +| ⟨ ^ ⟩|)/2Ledge 3/2− 1/2  at configurations 1, 2 and 3 in  
+Fig. 4a. On tiptoeing towards the TCI point, we observe a reduction 
+and eventual nearly complete collapse of σedge (Fig. 4a), which is sug-
+gestive of a qualitative change in boundary physics, consistent with 
+the emergence of a stable ‘free’ boundary condition characteristic of 
+the TCI CFT.
+For further evidence, we perform global modulation spectroscopy on 
+an L = 19 chain. With attractive V2/Ω = −0.51, the even-parity spectrum 
+remains consistent with the Ising CFT prediction (Fig. 4b, left). As a 
+metric, the experimentally extracted ratio between the second and 
+first even-parity excited-state energies is E2/E1 = 2.08(4), in agreement 
+with the expected universal Ising CFT ratio of 2. At the TCI point, by 
+contrast, we observe only one skewed spectral feature. Motivated by the 
+theoretically predicted spectrum, we fit the feature with a sum of two 
+Gaussians whose centres we associate with even-parity energies E1 and 
+E2 (Fig. 4b, right). The resulting ratio E2/E1 = 1.45(25) agrees with both our 
+simulations (Fig. 4b,c, red data points) and the free-boundary-condition 
+TCI CFT prediction E2/E1 = 4/3 (Fig. 4c, Table 2 and Methods).
+Emergence of a TCI CFT with free boundary conditions indicates 
+that explicit translation symmetry breaking from the edges by itself 
+is ineffective at injecting CDW order at the TCI point. As we show next, 
+a
+1 19Tweezer index
+0.3
+0.5
+0.7
+/uni03B4nOddEven
+0 /uni03C0/18
+0
+1
+2
+3
+4
+5
+6
+k
+f (MHz)
+c
+0 2 4 6 83 5 7 9
+b
+0 1 2 3 4 5 6
+0.5
+0.7
+0.3
+f (MHz)
+EvenL = 19
+Ising CFT spectrum
+0.5
+0.7
+0.3
+Odd
+/uni03B4n
+0
+/uni03B4i
+/uni0394
+Fig. 3 | Parity-resolved Ising CFT spectrum with local control. a, The applied 
+odd-parity local detuning modulation profile with a wavevector of k = π/18.  
+b, Even- and odd-parity spectra of a 19-atom array tuned to Ising criticality. The 
+measured spectra are consistent with the universal energy ratio, 2:3:4:5:6:7:8, 
+predicted by the Ising CFT. The solid lines are Gaussian fits to the data and 
+indicate fit ranges. The dashed lines are rescaled Ising CFT predictions.  
+c, Momentum-resolved spectrum. The previous measurements can be 
+interpreted as the even sector at k = 0 and the odd sector at k = π/18. The slope 
+of the dashed line represents the numerically determined light-cone velocity.
+
+===== PAGE 5 =====
+102 | Nature | Vol 657 | 3 September 2026
+Article
+we can nevertheless control the boundary conditions by modifying the 
+Hamiltonian to further promote CDW order at the edges of the chain.
+Boundary tuning of TCI CFT
+Here we demonstrate that controlling boundary detunings on the 
+Rydberg array reveals additional universal features of the TCI CFT. 
+Maximal edge CDW order can be induced by appending the chain with 
+two ancillary atoms on each end 40—pinning the outermost ancillas 
+to |1⟩ and, by Rydberg blockade, the adjacent ancillas to |0⟩ (Fig. 5a, 
+top). Although ancillary atoms are frozen, the pinned |1⟩ sites influence 
+the ‘active’ degrees of freedom in the remainder of the chain through 
+van der Waals interactions. These interactions are exactly emulated in a 
+chain without ancillary atoms by applying a spatially varying detuning 
+δV iL iΔ= −6 4[ (+ 1) +( +2 −) ] (5)i 2
+−6 −6
+for site i (Fig. 5a, bottom, and Extended Data Fig. 5).
+We experimentally assess how the free-boundary-condition TCI CFT 
+evolves as δΔi is turned on. Thus, we prepare the system close to the 
+ground state of the Hamiltonian 
+∑HH ηδ n^ = ^ −Δ ^ , (6)η
+i
+iiTCI
+where H^
+TCI corresponds to equation (1) evaluated at the TCI point and 
+η ∈ [0, 1] parametrizes the strength of the boundary detuning profile. 
+First, we consider the limit η = 1, which corresponds to maximally ‘on’ 
+boundary detuning. Measurements of σ edge for L = 26 and 27 chains 
+yield a value close to 1 (Fig. 5b), strongly suggesting that this detuning 
+induces fixed boundary conditions. Modulation spectroscopy target-
+ing even-parity excited states on an L = 19 array further corroborates 
+this. The extracted E2/E1 = 1.98(6) is consistent with a ratio of 2 predicted 
+by the fixed-boundary-condition TCI CFT (Fig. 5c, right, d).
+The stable free and fixed TCI boundary conditions, respectively dem-
+onstrated experimentally at η = 0 and η = 1, are separated by an unstable 
+fixed point boundary condition that admits yet another characteristic 
+L = 26
+L = 27
+0.51 –0.51 –1.630
+0.5
+1.0
+edge
+b
+c
+0
+2
+4
+6
+8
+Ising
+spectrum
+TCI
+spectrum
+0
+3/2
+2
+7/2
+4
+TCISecond order First order
+1
+4/3
+2
+L = 19
+E2/E1
+0.51 –0.51 –1.63
+a
+1
+2
+3
+3
+2
+1
+–3 –2 –1 0 1 2 3
+–3
+–2
+–1
+0
+1
+Disorder
+Z2 order
+1
+2
+3 TCI
+0 2.5 5.0 7.5
+0.2
+0.6
+1.0
+f (MHz)
+0
+2.4
+4.8
+2
+0.3
+0.6
+0.9
+0 2.3 4.6 6.9
+f (MHz)
+0
+4.2
+8.4
+3
+. . .
+1 2 L – 1 L
+V2//uni03A9
+
+L – 1
+2
+3
+2
+V2/|   |/uni03A9
+/| |/uni0394/uni03A9
+V2//uni03A9
+/uni03B4n
+Transition strength
+/uni03B4n
+Transition strength
+ˆˆ
+Fig. 4 | Approach to the TCI point. a, Boundary field σ edge as a function of 
+interaction strength. The boundary σ edge diminishes towards the TCI point, 
+showing the transition from the Ising CFT to the TCI CFT. The right inset (same 
+as Fig. 1a) shows three phase transition configurations and their positions on 
+the phase boundary, and the left inset is a sketch of the site- and bond-labelling 
+of the chain. b, Even-parity spectra at V 2/Ω < 0 of a 19-atom array. We fit the 
+spectra (blue, left axis) with a sum of Gaussians (solid lines). For the tricritical 
+spectrum, centres of Gaussians are indicated by dashed lines. The red circles 
+are numerical calculations of transition strength gK e|⟨ | ^|⟩ |2 (right axis). c, Energy 
+ratio E2/E1 between the second and the first even-parity excited states. The grey 
+circles are extracted from experimental spectroscopy data. The red squares 
+are extracted from numerical calculations of the first two strong transitions. 
+The Ising CFT spectrum with ‘fixed’ boundary condition (left) and the  
+TCI spectrum with ‘free’ boundary condition (right) yield E 2/E1 = 2 and 4/3, 
+respectively.
+
+===== PAGE 6 =====
+Nature | Vol 657 | 3 September 2026 | 103
+universal energy spectrum. We locate the unstable fixed point by track-
+ing E2/E1 as a function of η numerically on an L = 19 array (Fig. 5d, solid 
+line). At η ≡ ηc ≈ 0.39, we find best agreement with the analytical predic-
+tion E2/E1 = 10/3 for the unstable TCI CFT boundary condition. We then 
+experimentally measure the spectrum at ηc (Fig. 5c, left) and extract the 
+energy ratio E2/E1 = 2.5(4)—significantly exceeding the value for both 
+the free and the fixed boundary conditions (Fig. 5d). The discrepancy 
+between the simulated and measured ratios stems primarily from the 
+V2 uncertainty (1.7%) arising from the close atomic spacing; incorpo-
+rating this into the simulation shows our measurement is consistent 
+(Fig. 5d, shaded area).
+The TCI CFT also predicts universal ratios among the energy gaps E1 
+obtained with free, intermediate and fixed boundary conditions: 
+EE /= 2/51
+intermediate
+1
+free  and EE /= 4/31
+fixed
+1
+free  (Table  2 and Methods).  
+Our spectroscopically measured gaps yield EE /= 0.57(15)1
+intermediate
+1
+free  
+(close to the CFT prediction) and EE /= 0.91(15)1
+fixed
+1
+free  (further, but 
+within the range accounting for V2 uncertainty) (Extended Data Fig. 6). 
+Complementary gap measurements following a quench to the TCI 
+point further support the spectroscopy gap trends (Methods and 
+Extended Data Fig. 6).
+At the Ising transition with fixed boundary conditions, we accessed 
+only bosonic excitations arising from the action of an even number of 
+emergent fermion operators on the ground state. Although the TCI 
+fixed-boundary spectrum similarly arises from even numbers of (inter-
+acting) fermions, the free and intermediate boundary conditions show 
+richer field content associated with both bosonic and non-bosonic 
+operators. The fractional E2/E1 and energy gap ratios backed out experi-
+mentally descend from scaling dimensions for non-bosonic TCI fields 
+(Methods)—exemplifying the nontrivial CFT data accessible using 
+modulation spectroscopy.
+Universal dynamical response in large systems
+Although we have successfully used the modulation–ramp–probe 
+sequence to extract universal finite-size CFT spectra, resolving indi-
+vidual levels becomes harder in larger systems: energy spacings between 
+excited states decrease as L−1, requiring proportionally longer modu-
+lation times T. Alternatively, keeping T shorter than the inverse level 
+spacing blurs excited states into an energy continuum. In this regime, 
+experiments can nevertheless access the dynamical structure factor, 
+which encodes universal correlations of primary CFT fields at criticality4.
+In this continuum limit (‘large-L, short-T’ limit), the response meas-
+ured by the modulation–ramp–probe sequence is proportional to the 
+dynamical structure factor, but only at zero temperature and in the 
+low-energy limit. More precisely, the modulation frequency f must  
+be within the energy range of the first O (L2) excited states because  
+we ramp to product states at the end of the sequence to probe the 
+transferred population, giving ≲fO LL2π/ Ω( log/ )
+2  for the Ising CFT  
+(Methods). We now introduce a sequence that measures the dynami-
+cal structure factor without these restrictions, applicable to any  
+Hamiltonian.
+T o this end, we develop and show proof-of-principle of an alternative 
+modulation scheme—the modulation–probe sequence (Methods)—to 
+measure the frequency-dependent response of the system immedi -
+ately after modulating at the critical point, without an intervening 
+ramp (Fig. 6a, top). Then, when modulating and measuring the same 
+operator Kk jo^ =∑ cos( ) ^jj  (k is the wavevector of the operator K^  and o^j 
+is a local operator), the change δK KT K⟨ ^ ⟩= ⟨ ^ () ⟩− ⟨ ^ (0)⟩ is proportional 
+to the dynamical structure factor S (k,  ω) at frequency ω   =  2πf  
+(Methods). In the experiment, we apply the global modulation 
+Kn ε^ =∑ ^ ≈∑ ^ii ii
+1
+2 , where ε nn^ = ^ + ^ii i++ 11
+2
+ is the lattice counterpart of the 
+CFT primary field40 ε with scaling dimension Δε = 1. After modulation, 
+we measure δnδ K≡⟨ ^ ⟩.
+In the peak-resolved limit, the response exhibits peaks at the cor-
+responding excitation energies. Using the global modulation, we meas-
+ure the spectrum of an L = 19 array at zero wavevector, k = 0, and observe 
+distinct spectral peaks that signify excited states (Fig. 6a, bottom). 
+However, at a comparable number of projective measurement of  
+K^ , the modulation–probe sequence has a lower signal-to-noise ratio 
+than the modulation–ramp–probe sequence. This reduction arises 
+because the ground state is no longer an eigenstate of the observable 
+K^ , leading to increased quantum projection noise. Consequently, the 
+modulation–ramp–probe sequence is preferable for resolving indi-
+vidual excitation energies, whereas the modulation–probe sequence 
+is better suited for the dynamical structure factor, despite requiring 
+two modulation phases to suppress higher-order response (Methods) 
+and aforementioned lower signal-to-noise ratio.
+In the continuum limit, the sequence measures the dynamical struc-
+ture factor of the ε operator of the CFT. The Ising CFT predicts that, at 
+zero temperature, this dynamical structure factor 
+Sk ωω ω(= 0, )~ = (7)ε
+2(Δ− 1) 0ε
+is a constant at low frequencies, ω ≪ Ω (Methods). Applying this tech-
+nique to an L = 35 system tuned to Ising criticality (configuration 1 
+in the Fig. 4a, inset), we find an almost-constant response at low fre-
+quencies (ω ≲ Ω) (Fig. 6b), providing an encouraging first indication of 
+access to the dynamical scaling regime. The observed nearly-constant 
+Table 2 | Lowest many-body energies E and reflection parities Rx for odd- and even-L TCI critical Rydberg chains realizing the 
+free, intermediate and fixed boundary conditions
+Odd L
+Free Intermediate Fixed
+Primary E × L/(πħv) Rx parity Primary E × L/(πħv) Rx parity Primary E × L/(πħv) Rx parity
+ 0 Even  0 Even  0 Even
+ε″ 3/2 Even ε′ 3/5 Even  2 Even
+ 2 Even ε′ 1 + 3/5 Odd  3 Odd
+ε″ 5/2 Odd  2 Even  4 Even
+Even L
+Free Intermediate Fixed
+Primary E × L/(πħv) Rx parity Primary E × L/(πħv) Rx parity Primary E × L/(πħv) Rx parity
+ 0 Even ε 1/10 Even ε″ 3/2 Even
+ε″ 3/2 Odd ε 1 + 1/10 Odd ε″ 5/2 Odd
+ 2 Even ε″ 3/2 Even ε″ 7/2 Even
+ε″ 5/2 Even ε 2 + 1/10 Even ε″ 9/2 Odd
+
+===== PAGE 7 =====
+104 | Nature | Vol 657 | 3 September 2026
+Article
+response is also supported by our tensor network simulations with the 
+time-dependent variational principle (TDVP) method41 (Fig. 6b, solid 
+line). T o show that the frequency dependence conforms to a univer-
+sal scaling function, we numerically simulate the post-modulation 
+responses for L = 35–85 (Fig. 6c). After rescaling by (AL)−1, where A is the 
+modulation amplitude, responses for different system sizes collapse to 
+a universal scaling function, roughly constant at ω/Ω ≲ 0.3—consistent 
+with the CFT prediction (Fig. 6c, inset).
+Consistency among our experiment, numerics and analytical CFT 
+predictions demonstrates that the scaling function of the underly -
+ing CFT field is accessible via the frequency-dependent response to 
+modulation at the critical point. Our numerical simulations also suggest 
+that the modulation–probe sequence is promising for larger systems, 
+which points to future applications, including combining with the 
+local modulation abilities to measure the universal σ-field correlation 
+(Methods) and extension to higher-dimensional many-body systems.
+Discussion and outlook
+Our experiment harnessed modulation spectroscopy to directly probe 
+excitation spectra of critical Rydberg chains governed by both Ising and 
+TCI universality classes, subject to various tunable fixed-point bound-
+ary conditions. By experimentally implementing finite-size scaling, we 
+recovered the universal dependence of the energy spectrum on system 
+size at criticality. As a nontrivial consistency check with CFT predic-
+tions, we also extracted universal energy ratios among low-energy 
+excited states—which encode linear dispersion, constraints on the 
+admissible operators, as well as scaling dimensions. Furthermore, 
+we carried out a careful theoretical study and directly measured the 
+response of the system at the critical point, allowing us to extract the 
+frequency dependence of the dynamical structure factor governed by 
+CFT field correlations.
+The programmability and site-resolved measurement ability of 
+Rydberg atom arrays allow one to probe additional aspects of CFTs 
+as well. A natural next step is to measure one- and two-point corre -
+lators at the fixed points studied here, compare with universal CFT 
+predictions and quantify discrepancies resulting, for example, from 
+imperfect ground-state preparation and/or tuning to criticality. By 
+measuring energy- and momentum-resolved correlation functions, the 
+regime of validity of emergent CFTs can be determined. Recent theory 
+works propose that, with minimal additional experimental overhead, 
+our setup further enables exploring ‘measurement-altered quantum 
+a
+. . .
+V2 V2
+V3 V3
+. . .
+–V2
+–V3
+–V2
+–V3
+c
+0 1 2 3 4 5 0 2 4 6 8
+f (MHz) f (MHz)
+ = 0.39  = 1.00
+0.4
+0.7
+1.0
+d
+1
+4/3
+2
+3
+10/3
+4
+0 0.39 1
+
+0
+2
+4
+0
+3/2
+2
+0
+3/5
+2
+E2/E1
+0
+0.5
+1.0
+0 1
+
+b
+/uni03B4n
+0.4
+0.7
+1.0/uni03B4n
+/uni0394
+c/uni0394
+|1/uni232A |1/uni232A
+edge
+L = 26
+L = 27
+Fig. 5 | Probing different fixed-point boundary conditions for TCI.   
+a, Controlling the boundary condition with local detunings. We apply local 
+detunings to each atom to mimic the effect of ancillary spins on the boundary. 
+The overall detuning strength is rescaled by a dimensionless parameter η .  
+b, Boundary field σ edge as a function of the boundary detuning strength η.  
+A nontrivial σedge emerges in the presence of boundary detuning η = 1, suggesting 
+that the boundary detuning has generated the fixed boundary condition.  
+c, Spectra at η = 0.39 and η = 1.00 of an L = 19 array. The solid lines are a fit to the 
+theory model (Methods) used to extract excited-state energies. d , The excited- 
+state energy ratio of an L = 19 array under different boundary detunings. The 
+insets are corresponding spectra of the TCI CFT with three different boundary 
+conditions (free, intermediate and fixed). These three boundary conditions 
+give 4/3, 10/3 and 2, respectively. We experimentally extract the ratio from the 
+spectrum shown in c . The solid line is the result of the numerical calculation, 
+with the shaded area indicating the uncertainty due to V 2.
+
+===== PAGE 8 =====
+Nature | Vol 657 | 3 September 2026 | 105
+criticality’42–48—in which non-unitary perturbations from measure -
+ments qualitatively alter universal CFT predictions49,50. Beyond the 
+Ising and TCI universality classes explored in this study, similar Rydberg 
+setups could be used to probe other (1 + 1)D CFTs, such as the c = 4/5 
+three-state Potts and the c = 1 Ashkin–T eller CFT51–54. It is also of great 
+theoretical interest to study the preparation of Gibbs states and their 
+properties at quantum phase transitions55,56. Moreover, these modu-
+lation techniques can be extended to probe dynamical properties of 
+quantum critical points in higher dimensions that are difficult to study 
+numerically, such as the dynamical conductivity at the critical point of 
+the two-dimensional ferromagnetic XY model, which admits an AdS/
+CFT description57–59.
+Online content
+Any methods, additional references, Nature Portfolio reporting summa-
+ries, source data, extended data, supplementary information, acknowl-
+edgements, peer review information; details of author contributions 
+and competing interests; and statements of data and code availability 
+are available at https://doi.org/10.1038/s41586-026-10904-x.
+1. Maldacena, J. The large-N limit of superconformal field theories and supergravity. Int. J. 
+Theor. Phys. 38, 1113–1133 (1999).
+2. Friedan, D., Martinec, E. J. & Shenker, S. H. Conformal invariance, supersymmetry and 
+string theory. Nucl. Phys. B 271, 93–165 (1986).
+3. Belavin, A. A., Polyakov, A. M. & Zamolodchikov, A. B. Infinite conformal symmetry in 
+two-dimensional quantum field theory. Nucl. Phys. B 241, 333–380 (1984).
+4. Sachdev, S. Quantum Phase Transitions 2nd edn (Cambridge Univ. Press, 2011).
+5. Nayak, C., Simon, S. H., Stern, A., Freedman, M. & Das Sarma, S. Non-Abelian anyons and 
+topological quantum computation. Rev. Mod. Phys. 80, 1083–1159 (2008).
+6. Kitaev, A. Hidden correlations in the hawking radiation and thermal noise. https://online.
+kitp.ucsb.edu/online/joint98/kitaev/ (2014).
+7. Holzhey, C., Larsen, F. & Wilczek, F. Geometric and renormalized entropy in conformal 
+field theory. Nucl. Phys. B 424, 443–467 (1994).
+8. Cardy, J. L. Conformal invariance and surface critical behavior. Nucl. Phys. B 240, 514–532 
+(1984).
+9. Cardy, J. L. Boundary conditions, fusion rules and the Verlinde formula. Nucl. Phys. B 324, 
+581–596 (1989).
+10. Tennant, D. A., Perring, T. G., Cowley, R. A. & Nagler, S. E. Unbound spinons in the S = 1/2 
+antiferromagnetic chain KCuF3. Phys. Rev. Lett. 70, 4003–4006 (1993).
+11. Werner, R. & Klümper, A. Lineshapes of dynamical correlation functions in Heisenberg 
+chains. Phys. Rev. B 64, 174414 (2001).
+12. Lake, B., Tennant, D. A., Frost, C. D. & Nagler, S. E. Quantum criticality and universal 
+scaling of a quantum antiferromagnet. Nat. Mater. 4, 329–334 (2005).
+13. Hirtenlechner, E. E. Neutron Scattering Studies of Excitations in Spin Chains (ETH No. 
+22303). PhD thesis, ETH Zürich (2014).
+14. Povarov, K. Y., Schmidiger, D., Reynolds, N., Bewley, R. & Zheludev, A. Scaling of temporal 
+correlations in an attractive Tomonaga-Luttinger spin liquid. Phys. Rev. B 91, 020406(R) 
+(2015).
+15. Lake, B. et al. Multispinon continua at zero and finite temperature in a near-ideal 
+Heisenberg chain. Phys. Rev. Lett. 111, 137205 (2013).
+16. Mourigal, M. et al. Fractional spinon excitations in the quantum Heisenberg 
+antiferromagnetic chain. Nat. Phys. 9, 435–441 (2013).
+17. Grayson, M., Tsui, D. C., Pfeiffer, L. N., West, K. W. & Chang, A. M. Continuum of chiral 
+Luttinger liquids at the fractional quantum Hall edge. Phys. Rev. Lett. 80, 1062–1065 (1998).
+18. Chang, A. M., Pfeiffer, L. N. & West, K. W. Observation of chiral Luttinger behavior in 
+electron tunneling into fractional quantum Hall edges. Phys. Rev. Lett. 77, 2538–2541 
+(1996).
+19. Banerjee, M. et al. Observation of half-integer thermal Hall conductance. Nature 559, 
+205–210 (2018).
+20. Cohen, L. A. et al. Universal chiral Luttinger liquid behavior in a graphene fractional 
+quantum Hall point contact. Science 382, 542–547 (2023).
+21. Greiner, M., Mandel, O., Esslinger, T., Hänsch, T. W. & Bloch, I. Quantum phase transition 
+from a superfluid to a Mott insulator in a gas of ultracold atoms. Nature 415, 39–44 (2002).
+22. Hofferberth, S. et al. Probing quantum and thermal noise in an interacting many-body 
+system. Nat. Phys. 4, 489–495 (2008).
+23. Bakr, W. S. et al. Probing the superfluid-to-Mott insulator transition at the single-atom 
+level. Science 329, 547–550 (2010).
+24. Endres, M. et al. The ‘Higgs’ amplitude mode at the two-dimensional superfluid/Mott 
+insulator transition. Nature 487, 454–458 (2012).
+25. Bernien, H. et al. Probing many-body dynamics on a 51-atom quantum simulator. Nature 
+551, 579–584 (2017).
+26. Zhang, J. et al. Observation of a many-body dynamical phase transition with a 53-qubit 
+quantum simulator. Nature 551, 601–604 (2017).
+27. Borish, V., Marković, O., Hines, J. A., Rajagopal, S. V. & Schleier-Smith, M. Transverse-field 
+Ising dynamics in a Rydberg-dressed atomic gas. Phys. Rev. Lett. 124, 063601 (2020).
+28. Periwal, A. et al. Programmable interactions and emergent geometry in an array of atom 
+clouds. Nature 600, 630–635 (2021).
+29. Evered, S. J. et al. Probing the Kitaev honeycomb model on a neutral-atom quantum 
+computer. Nature 645, 341–347 (2025).
+30. Fang, F. et al. Probing critical phenomena in open quantum systems using atom arrays. 
+Science 390, 601–605 (2025).
+31. Keesling, A. et al. Quantum Kibble-Zurek mechanism and critical dynamics on a 
+programmable Rydberg simulator. Nature 568, 207–211 (2019).
+32. Ebadi, S. et al. Quantum phases of matter on a 256-atom programmable quantum 
+simulator. Nature 595, 227–232 (2021).
+33. Manovitz, T. et al. Quantum coarsening and collective dynamics on a programmable 
+simulator. Nature 638, 86–92 (2025).
+34. Andersen, T. I. et al. Thermalization and criticality on an analogue-digital quantum 
+simulator. Nature 638, 79–85 (2025).
+35. Madjarov, I. S. et al. High-fidelity entanglement and detection of alkaline-earth Rydberg 
+atoms. Nat. Phys. 16, 857–861 (2020).
+36. Chen, C. et al. Continuous symmetry breaking in a two-dimensional Rydberg array. Nature 
+616, 691–695 (2023).
+37. de Oliveira, A. G. et al. Demonstration of weighted-graph optimization on a Rydberg-atom 
+array using local light shifts. PRX Quantum 6, 010301 (2025).
+0 2 4
+t (/uni03BCs)
+a b
+Modulation frequency (MHz)
+0 4 8 12
+0
+0.5
+1.0
+1.5
+0
+0.125
+0.250
+0 1.5 3.0 4.5
+Modulation frequency (MHz)
+0
+6
+0 2 3
+t (/uni03BCs)
+–20
+0
+/uni03B4n
+/uni03B4n
+c
+0 0.5 1.0 1.5 2.0
+0
+0.5
+1.0
+0.500
+0.050
+0.005
+0.1 1
+35
+51
+61
+71
+85
+L
+(AL)–1 /uni03B4n
+L = 19 L = 35
+ (2/uni03C0 × MHz)
+/uni03A9
+c (2/uni03C0 × MHz)–
+/uni0394
+/uni0394
+0
+6
+ (2/uni03C0 × MHz)
+/uni03A9
+–30
+0
+c (2/uni03C0 × MHz)–
+/uni0394
+/uni0394
+/
+Fig. 6 | Linear response and universal scaling of the dynamical structure 
+factor. a, Peak-resolved response δn under a Gaussian-envelope modulation  
+on an L = 19 array. Top, experimental sweep. The experiment consists of an 
+adiabatic sweep from the disordered phase to the critical point, followed by a 
+Gaussian envelope modulation. Bottom, the measured response. The solid line is 
+a tensor network simulation of the response of the FSS model, with peak energies 
+rescaled to match the measured eigenenergies of the Rydberg Hamiltonian.  
+b, Response in the continuum limit under a square-pulse modulation on an 
+L = 35 array. Top, experimental sweep. The modulation applied at the critical 
+point has a square pulse envelope. Bottom, the measured response. We 
+observe a finite, almost-constant response of δn at low modulation frequencies. 
+The solid line represents the numerical simulation of the FSS model using tensor 
+networks. c, Numerical demonstration of scaling collapse of the response under 
+a square pulse modulation. By rescaling the response with ( AL)−1, low-energy 
+responses of different system sizes collapse and are nearly constant at low 
+frequencies (inset).
+
+===== PAGE 9 =====
+106 | Nature | Vol 657 | 3 September 2026
+Article
+38. Fendley, P., Sengupta, K. & Sachdev, S. Competing density-wave orders in a one- 
+dimensional hard-boson model. Phys. Rev. B 69, 075106 (2004).
+39. Iino, S., Morita, S. & Kawashima, N. Boundary conformal spectrum and surface critical 
+behavior of classical spin systems: a tensor network renormalization study. Phys. Rev. B 
+101, 155418 (2020).
+40. Slagle, K. et al. Microscopic characterization of Ising conformal field theory in Rydberg 
+chains. Phys. Rev. B 104, 235109 (2021).
+41. Hauschild, J. & Pollmann, F. Efficient numerical simulations with Tensor Networks:  
+Tensor Network Python (TeNPy). SciPost Phys. Lect. Notes https://doi.org/10.21468/
+scipostphyslectnotes.5 (2018)
+42. Jian, C.-M., You, Y.-Z., Vasseur, R. & Ludwig, A. W. W. Measurement-induced criticality in 
+random quantum circuits. Phys. Rev. B 101, 104302 (2020).
+43. Garratt, S. J., Weinstein, Z. & Altman, E. Measurements conspire nonlocally to restructure 
+critical quantum states. Phys. Rev. X 13, 021026 (2023).
+44. Yang, Z., Mao, D. & Jian, C.-M. Entanglement in a one-dimensional critical state after 
+measurements. Phys. Rev. B 108, 165120 (2023).
+45. Murciano, S., Sala, P., Liu, Y., Mong, R. S. K. & Alicea, J. Measurement-altered Ising quantum 
+criticality. Phys. Rev. X 13, 041042 (2023).
+46. Weinstein, Z., Sajih, R., Altman, E. & Garratt, S. J. Nonlocality and entanglement in measured 
+critical quantum Ising chains. Phys. Rev. B 107, 245132 (2023).
+47. Patil, R. A. & Ludwig, A. W. Highly complex novel critical behavior from the intrinsic 
+randomness of quantum mechanical measurements on critical ground states – a 
+controlled renormalization group analysis. Preprint at arxiv.org/abs/2409.02107 (2024).
+48. Liu, Y., Murciano, S., Mross, D. F. & Alicea, J. Boundary transitions from a single round of 
+measurements on gapless quantum states. Phys. Rev. Res. 7, 023293 (2025).
+49. Naus, S. et al. Practical roadmap to measurement-altered criticality in Rydberg arrays. 
+Preprint at arxiv.org/abs/2506.21963 (2025).
+50. Sarma, A. et al. Probing defects with quantum simulator snapshots. Phys. Rev. Lett. 136, 
+020603 (2026).
+51. Chepiga, N. & Mila, F. Kibble-Zurek exponent and chiral transition of the period-4 phase of 
+Rydberg chains. Nat. Commun. 12, 414 (2021).
+52. Maceira, I. A., Chepiga, N. & Mila, F. Conformal and chiral phase transitions in Rydberg 
+chains. Phys. Rev. Res. 4, 043102 (2022).
+53. Chepiga, N. Tunable quantum criticality in multicomponent Rydberg arrays. Phys. Rev. 
+Lett. 132, 076505 (2024).
+54. Zhang, J. et al. Probing quantum floating phases in Rydberg atom arrays. Nat. Commun. 
+16, 712 (2025).
+55. Lloyd, J. & Abanin, D. A. Quantum thermal state preparation for near-term quantum 
+processors. Phys. Rev. X https://link.aps.org/doi/10.1103/cbrd-ssnm (2026).
+56. Zhang, K. L. & Song, Z. Quantum phase transition in a quantum Ising chain at nonzero 
+temperatures. Phys. Rev. Lett. 126, 116401 (2021).
+57. Witczak-Krempa, W., Sørensen, E. S. & Sachdev, S. The dynamics of quantum criticality 
+revealed by quantum Monte Carlo and holography. Nat. Phys. 10, 361–366 (2014).
+58. Myers, R. C., Sachdev, S. & Singh, A. Holographic quantum critical transport without 
+self-duality. Phys. Rev. D 83, 066017 (2011).
+59. Chen, K., Liu, L., Deng, Y., Pollet, L. & Prokof’ev, N. Universal conductivity in a two- 
+dimensional superfluid-to-insulator quantum critical system. Phys. Rev. Lett. 112, 030402 
+(2014).
+Publisher’s note Springer Nature remains neutral with regard to jurisdictional claims in 
+published maps and institutional affiliations.
+Open Access This article is licensed under a Creative Commons 
+Attribution-NonCommercial-NoDerivatives 4.0 International License, which 
+permits any non-commercial use, sharing, distribution and reproduction in 
+any medium or format, as long as you give appropriate credit to the original author(s) and the 
+source, provide a link to the Creative Commons licence, and indicate if you modified the 
+licensed material. You do not have permission under this licence to share adapted material 
+derived from this article or parts of it. The images or other third party material in this article are 
+included in the article’s Creative Commons licence, unless indicated otherwise in a credit line 
+to the material. If material is not included in the article’s Creative Commons licence and your 
+intended use is not permitted by statutory regulation or exceeds the permitted use, you will 
+need to obtain permission directly from the copyright holder. To view a copy of this licence, 
+visit http://creativecommons.org/licenses/by-nc-nd/4.0/.
+© The Author(s) 2026
+
+===== PAGE 10 =====
+Methods
+Experimental setup
+A detailed description of our experimental setup has been given in 
+previous works35,60,61. In short, we trap individual 88Sr atoms in a pro-
+grammable one-dimensional array of optical tweezers (813 nm) gener-
+ated by acousto-optic deflectors (AODs). The atoms are initialized in 
+the 5s 2 1S0 state and cooled on the narrow-line red transition 5s 2 
+1S0 ↔ 5s5p 3P1 (689 nm) to near their motional ground state. After rear-
+rangement to a defect-free array with the desired atom number, all 
+atoms are driven to the 5s5p 3P0 clock state with a combination of direct 
+π pulse (698 nm) and incoherent optical pumping60. Limited by the 
+total number of available tweezers (laser power), we use up to two 
+rounds of dark-state enhanced loading for system sizes of L = 26, 27, 35 
+to ensure high defect-free state preparation fidelity62. In our quantum 
+simulator, the metastable clock state 5s5p 3P0 is defined as the ground 
+state |0⟩, which is coupled to the Rydberg state ss S56 1≡ |1⟩3
+1  with a 
+single-photon transition (317 nm). After evolution under the Hamilto-
+nian in equation (1), an auto-ionization beam (408 nm) is applied to 
+push out the atoms in the Rydberg state35. Finally, the remaining atoms 
+are optically pumped out of the clock state and imaged through the 
+5s2 1S0 ↔ 5s5p 1P1 (461 nm) transition63.
+Data for both Ising CFT configurations (configurations (1) and (2) 
+in Fig. 4; data shown in Figs. 1–3 and 4b) are taken with a Rydberg Rabi 
+frequency Ω = 2π × 6.0 MHz (with the exception of data presented in 
+Fig. 1d, where Ω = 2π × 7.5 MHz) and a next-nearest-neighbour interac-
+tion V2 = 2π × 3.06(1) MHz at a lattice spacing of a = 3.3 μm for the Ising 
+transition. For the TCI point (configuration (3)), data are taken with 
+Ω = 2π × 5.5 MHz, V2 = 2π × 8.96(15) MHz at a spacing of a = 2.8 μm for 
+the TCI point. We also experimentally measure the nearest-neighbour 
+interaction V1 = 2π × 164.6(9) MHz at a spacing of a = 3.3 μm for the 
+Ising case. The critical detunings for configuration (1), (2) and (3) are 
+Δc = 2π × 10.2 MHz, −0.9 MHz and −8.3 MHz, respectively.
+For analysis of the experimental data, we apply a post-selection 
+protocol based on four aspects. First, we post-select on rearrangement 
+success, keeping experimental shots that contain a defect-free array 
+of the correct system size. Second, we post-select based on erasure 
+detection. In the experimental sequence, we perform erasure detection 
+twice: first, immediately after the initial state preparation, and second, 
+after the Rydberg pulse60. If there are atoms detected in the erasure 
+images, they indicate leakage into the 5s 2 1S0 state, which is outside 
+the qubit subspace. These shots are discarded in the post-selection 
+process. Third, we discard measurement runs in which double Rydberg 
+excitations might have occurred. As we work in the Rydberg blockade 
+regime (V1 ≫ V2, Ω, Δ), it is unlikely that two nearest-neighbouring 
+atoms are both excited to the Rydberg state. We discard all the shots 
+in which no atom is detected in consecutive sites after the Rydberg 
+pulse. Note that we do not distinguish the Rydberg occupation from 
+atom loss due to the readout scheme, so this step also filters out shots 
+with loss outside of 5s2 1S0. Last, we post-select based on whether the 
+Rydberg pulse is successfully delivered. The pulse is monitored by a 
+photodiode and recorded on an oscilloscope during the experiment; 
+about 0.6% of the shots show no detectable Rydberg pulse because 
+of the arbitrary waveform generator board failing to output the pro -
+grammed radiofrequency waveform, and are thus discarded 61. For 
+the data shown in the main text, 20−70% of experimental runs are 
+post-selected for analysis.
+For the adiabatic sweep, we modulate the Rabi frequency and detun-
+ing of the global Rydberg laser beam with AODs. The Rydberg interac-
+tion in the system is repulsive (Vij > 0) at the operating magnetic field 
+B = 70 G. In this case, the global detuning is shaped to start from a large 
+negative value and evolve to the critical point under a tangent function 
+in time, which ensures that the detuning sweep rate is slower when 
+getting closer to the critical point. Starting from all atoms in state |0⟩, 
+we prepare the ground state at the critical point in this way. T o realize 
+an effective attractive interaction (Vij < 0 for |i − j| ≥ 2) sector of equa-
+tion (1) in the same system, we can flip the sign of all the terms in the 
+Hamiltonian, which means reversing the sign of detuning relative to 
+the critical point in the ramp (Δ − Δc). As the nearest-neighbour interac-
+tion V1 is much greater than any other energies in the Hamiltonian, the 
+eigenenergies of the Hamiltonian are clustered into sectors separated 
+by about V 1. Then we prepare the highest-energy state within the 
+blockade-violation-free sector of the full native Hamiltonian, which is 
+the ground state of the blockade-enforced Hamiltonian equation (1) 
+with the sign of interaction and detuning reversed. We call this proce-
+dure a backward sweep. Depending on the experiment, the global 
+detuning is then set to either hold at the critical point (for σ measure-
+ment), or ramp to the 2 or disordered phase in a symmetric way after 
+modulation (for spectroscopy). These choices, together with the sweep 
+parameters, are optimized such that the system has a minimal number 
+of excitations after the sweep.
+For experiments that require specific local detuning terms (δΔi in 
+the Hamiltonian) during the Rydberg pulse, we apply the same set of 
+tweezers (813 nm) as for trapping. As a reference, for experiments that 
+do not require local detuning terms, the tweezer light is turned off with a 
+fast acousto-optic modulator (AOM)64 before the Rydberg pulse for two 
+reasons: first, intensity noise in the tweezer translates into unwanted 
+detuning noise on the Rydberg-qubit manifold; second, the Rydberg 
+state is anti-trapped in 813-nm light. The tweezer light induces a light 
+shift on the 5s5p 3P0 ↔ 5s61s 3S1 transition that is tunable with control 
+of the local light intensity. We experimentally measure the light shift 
+to be −3.545(54) MHz for tweezers with 1.4(2) mW power per spot and 
+a waist of 0.75(5) μm. The time constant of the atom loss due to the 
+anti-trapping of the Rydberg state at this tweezer trap intensity is meas-
+ured to be 63(12) μs. We calibrate the local detuning for each tweezer 
+pattern with a Ramsey sequence before taking the data. Extended Data 
+Fig. 5 shows an example of the calibration in the case of L = 26 at the 
+tricritical point with the fixed boundary condition.
+Determining the critical point
+T o determine the parameters required to prepare our experimen-
+tal setup along the Ising critical line, we use exact diagonalization of  
+the effective Hamiltonian in equation (1). Specifically, we consider  
+the second-order PXP Hamiltonian, first derived in ref. 65 , using a  
+Schrieffer–Wolf transformation. The resulting Hamiltonian corre -
+sponds to equation (1) with δΔi = 0:
+V
+Vi j
+V
+ij ij=
+−= 1
+64
+−| −≥ 2ij
+1
+2
+6
+
+
+
+and 
+
+
+
+ 
+ 
+
+
+
+
+
+
+
+
+
+∑H V nn nP bb P^ =− Ω
+4 2 ^ − 3
+2
+^^ + ^ ^^ ^ +h .c., (8)
+i
+ii ii ii i2
+2
+1
+−1 +1 −1
+†
++1 +2
+where b^
+i is the hard-core boson operator defined as b^ =| 0⟩ ⟨1|ii i.
+Following the curve-crossing procedure introduced in ref. 40 ,  
+we compute the expectation value of σ⟨ ^ ⟩L/2  in the middle of the  
+chain of the ground state for various detunings Δ while keeping  
+all other Hamiltonian parameters fixed. By performing a finite-  
+size scaling analysis of the crossover point of the rescaled observa-
+ble σ σL=⟨ ^ ⟩⋅ sin(π/(+ 2))LRS /2
+−1/8  at different values of L, we are able to  
+identify the critical point in the thermodynamic limit. Extended Data 
+Fig. 2a shows the result of this finite-size scaling analysis for two sets 
+of experimental parameters, V2/Ω = ±0.51.
+Locating the TCI point requires a more costly sweep of two inde-
+pendent Hamiltonian parameters. We thus use a more direct approach 
+to identifying this multicritical point by numerically determining 
+parameters (V2 and Δc) that yield a spectrum consistent with TCI CFT
+
+===== PAGE 11 =====
+Article
+predictions. For a fixed interaction strength V2, we calculate the ratio 
+between the energy of excited state i and the energy of the first excited 
+state (relative to the ground state), E i/E1, for various detunings. As 
+an example, Extended Data Fig. 2b shows the energy ratio between 
+the second and the first excited state at V2/Ω = −1.63 for L = 15–27. We 
+determine the values of both ΔX and Ei/E1 from where the curves for 
+each pair of system sizes L − 1 and L + 1 intersect and then extrapolate 
+these values to the thermodynamic limit 1/L → 0. We then vary V2 to 
+compare the extrapolated energy ratio with the free-boundary TCI 
+spectrum 3:4:5:6:7:8:… and determine the critical interaction strength 
+V2 (Extended Data Fig. 2c). At V2/Ω = − 1.63, E2/E1 and E3/E1 best fit the 
+predicted ratios of 4/3 and 5/3, respectively. Under this interaction 
+strength, the detunings ΔX for different energy levels also converge to 
+the same value in the thermodynamic limit, where we find Δc/Ω = −1.51 
+(Extended Data Fig. 2d).
+Coherent control of many-body states
+In the main text, we use modulation techniques to measure the excited 
+state spectrum. When the system is prepared in the ground state and 
+the modulation is resonant with the energy difference between the 
+ground state and a chosen excited state, the population is transferred 
+to that excited state. As we will show, the population transfer is a coher-
+ent oscillation (Rabi oscillation) between the ground state and the 
+excited state. Here, we isolate the ground state and the first excited 
+state for a Hamiltonian slightly away from the critical point and apply 
+modulation to observe the Rabi oscillation. Furthermore, we prepare 
+an equal superposition between the ground state and the first excited 
+state and measure the coherence time using Ramsey interferometry.
+We first outline the scheme of driving a coherent oscillation between 
+two many-body states. Suppose that the system is initialized in the 
+ground state |g⟩ of the Hamiltonian H^ , which can be written in its diag-
+onal form: 
+HE gg EE ee^ =| ⟩⟨ |+ (+ )| ⟩⟨ |+ ,( 9)gg 11 1 ⋯
+where the ellipsis contains matrix elements among all other states 
+orthogonal to both |g⟩ and the first excited state |e1⟩. Now we pertur-
+batively modulate the system with δHA Et φK^ =c os(+ ) ^
+1 . Now we change 
+into a rotating frame with Ue e^ =∑ e| ⟩⟨ |j
+Et
+jj
+−i j , in this frame, the effective 
+Hamiltonian is 
+⋯HU Hδ HU E A gK ee ge^′ = ^ ( ^ + ^ ) ^ =+ 2 (⟨ | ^ |⟩ |⟩ ⟨| +h.c.) +. (10)g
+iφ†
+1
+−
+1
+When the first excited state is non-degenerate and there is not a state 
+whose energy is E1 higher than the first excited state, the ellipsis only 
+contains irrelevant fast-oscillating terms that can be dropped out. 
+Then, the dynamics is restricted to a two-level system with a many-body 
+Rabi frequency Ag KeΩ =| ⟨| ^ |⟩ |MB 1 .
+Here we describe the experimental sequence to measure the Rabi 
+oscillation on a 7-atom array. Experiments begin with all atoms initial-
+ized in the electronic ground state |0⟩, which is approximately the 
+many-body ground state in the disordered phase. Then, we adiabatically 
+ramp the detuning to Δ = 2π × 8.8 MHz to prepare the many-body 
+ground state at this detuning. This is slightly away from the critical 
+point, because at the critical point, the transition from the first excited 
+state to a higher excited state is nearly resonant with E1. Then, we apply 
+a global detuning modulation with frequency ω = 2π × 2.83 MHz (meas-
+ured by the modulation spectroscopy) for a variable time t. Finally, we 
+adiabatically ramp into the 2 ordered phase and read out the total 
+number of atoms in the ground state O n^′ =∑ (1 − ^ )ii . The ground state 
+and the first excited state are adiabatically transferred to |1010101⟩ and 
+|1001001⟩, respectively. Hence, we define δnO≡⟨ ^′⟩− 3. When the final 
+state is the ground state, δn = 0, and when the final state is the first 
+excited state, δn = 1. We observe an oscillation of δn when we vary the 
+modulation time t (Extended Data Fig. 1a). We fit the data to a Gaussian 
+decaying oscillation and find an oscillation frequency of 0.506(5) MHz, 
+an initial contrast of 0.83(3), and an 1/e coherence time of 5.5(5) μs.
+Next, we perform an accurate measurement of the first excited 
+energy E1 and characterize the many-body phase coherence with the 
+Ramsey interferometry sequence. After preparing the ground state, 
+we apply a π/2 pulse by driving a quarter cycle of Rabi oscillation. This 
+prepares the system in ge(| ⟩+ |⟩ )/ 21 . Then, we turn off the modulation 
+and let the system evolve under H^  for time t. The state after evolving 
+under H^  for time t is ψt ge| () ⟩= (| ⟩+ e| ⟩)/2Et−i
+1
+1 . We subsequently apply 
+another π/2 pulse with a fixed initial phase. In the absence of any deco-
+herence, the population in the excited state is Pt Et() =[ 1+ cos( )]/2e1 . In 
+the experiment, we observe a decaying oscillation with an initial con-
+trast of 0.58(2) and an oscillation frequency 2.81(3) MHz (Extended 
+Data Fig. 1b), which is consistent with the first excited state energy 
+E1 = h × 2.83(4) MHz obtained from the modulation spectroscopy. We 
+fit the decay to a Gaussian function and find a coherence time of 
+0.75(4) μs. We postulate that the dominant factors limiting the contrast 
+decay of both the Rabi and Ramsey oscillations are the intensity noise 
+and frequency noise of the Rydberg laser, which also limit the single-
+atom Rabi and Ramsey coherence times to 8 μs and 4 μs, respectively. 
+In the many-body case, both noise sources couple nontrivially to the 
+Rabi and Ramsey coherent oscillations.
+Modulation spectroscopy
+In the main text, we implemented two types of modulation spectros-
+copy sequences: the modulation–ramp–probe sequence, which we 
+primarily use to measure the excited state energies of the Hamiltonian, 
+and the modulation–probe sequence, which we primarily use to meas-
+ure the dynamical structure factor of the Hamiltonian. As the names 
+suggest, the former sequence measures the Rydberg occupation num-
+bers only after ramping to the CDW or trivial phase, whereas the latter 
+sequence performs the measurements directly on the modulated state. 
+Both sequences can also operate in two different regimes: when prob-
+ing the state-resolved spectrum, the modulation time T is long enough 
+to resolve the individual energy levels (peak-resolved regime, TE≫ Δ
+−1, 
+where EΔ is the energy gap that is a characteristic energy scale), whereas 
+when measuring the dynamical structure factor, we use a short modu-
+lation time such that excited states will be effectively blurred into a 
+continuum in energy (continuum regime, TE≪ Δ
+−1 ). Although either 
+sequence can measure both the excitation spectra and the dynamical 
+structure factor, depending on the task, one of the sequences tends to 
+be preferable over the other for reasons that we will explain in this 
+section.
+In what follows, we first use perturbation theory to derive signals 
+of both modulation spectroscopy sequences, and then discuss the 
+relation of these signals to the dynamical structure factor introduced 
+later in this section.
+Modulation–ramp–probe sequence
+The modulation–ramp–probe sequence shows the energy differences 
+between the excited states and the ground state of a many-body Ham-
+iltonian H^  along with the transition strengths between these states. 
+The key idea behind this sequence is to apply a sinusoidal modulation 
+and measure the quadratic response of an observable O^ that is diagonal 
+in the eigenbasis of H^ . There will be a significant change in O^ when the 
+modulation frequency equals the energy difference of an excited state 
+and the ground state. In the experiment, we measure only the local 
+Rydberg excitations n{ ^ }i . However, linear combinations of these oper-
+ators are generally not simultaneously diagonalizable with H^  that we 
+want to probe. Hence, we adiabatically ramp to a Hamiltonian H^′, where 
+n{ ^ }i  is simultaneously diagonalizable with H^′  and perform measure-
+ments. In the experiment, we choose to measure the total number of 
+atoms in the ground state, O n^′ =∑ (1 − ^ )ii , that is simultaneously  
+diagonalizable with the Hamiltonian H^′  describing the system deep in
+
+===== PAGE 12 =====
+the trivial phase or deep in the CDW phase. As we will show later in this 
+section, this is equivalent to measuring an observable O^, that is diago-
+nalized in the eigenbasis of H^ .
+We first calculate the post-modulation signal δ O⟨ ^⟩, which is the dif-
+ference between O⟨ ^⟩ with and without modulation. Suppose that we 
+prepare the ground state |g⟩ of H^  and apply a modulation δHA tK^ =( ) ^ . 
+Here, we choose the modulation profile A(t) to be a sinusoidal pulse 
+superimposed by a Gaussian envelope: 
+At Aω tφ tT() =e cos( +) ,∈ [0,] , (11)tT
+w− −/ 2 2
+ 
+
+where A is the modulation amplitude and φ is a random phase. Impor-
+tantly, as O^ is diagonalized in the eigenbasis of H^ , the change δ O⟨ ^⟩ is 
+proportional to the population in excited states. Therefore, the leading-
+order term of δ O⟨ ^⟩ is quadratic in A. We use second-order time-depend-
+ent perturbation theory to calculate δ O⟨ ^⟩: 
+
+
+
+
+∑δO wA OO K
+φ
+⟨ ^⟩= π
+4 (− )| |
+e+ e+ 2e cos(2) ,
+(12)
+e
+ee gg ge
+w ωE w ωE w ωE
+22
+2
+− 2 (+ Δ) − 2 (− Δ) − 2 (+ Δ)eg eg eg
+2 2 2 2 2 22
+where ΔE eg =  Ee −  Eg is the energy difference between the excited  
+state and the ground state, O eO e≡⟨ | ^|⟩ee  and O gO g≡⟨ | ^|⟩gg  are diagonal 
+matrix elements of O^, and Kg Ke| |≡ |⟨ | ^ |⟩ |ge
+22  is the off-diagonal transi-
+tion matrix element between these two states.
+T o resolve the energy of each individual state, we work in the peak- 
+resolved regime, where the frequency width of each excited-state 
+response ( ωwΔ= 2l n2 −1 ) is narrower than the spacing between  
+energy levels. In this regime, the first and the third terms of equa -
+tion (12) are exponentially small; hence, we can neglect them. The 
+change δ O⟨ ^⟩ then reduces to a sum of Gaussian functions, each of  
+which is peaked at Ee − Eg: 
+∑δO wA OO K⟨ ^⟩= π
+4 (− )| |e .( 13)
+e
+ee gg ge
+w ωE
+22
+2− 2 (− Δ) eg
+2 2
+T o measure the excited state spectrum, we should choose O^  
+such that Ogg is distinct from Oee of all excited states. Although measur-
+ing the ground-state infidelity would satisfy this criterion for all exci-
+ted states, we choose O n^′ =∑ (1 − ^ )ii  for its robustness against noise,  
+including common-mode atom loss.
+We now describe the experimental sequence that aligns with the 
+formalism outlined above. Experiments begin with preparing the many-
+body ground state of the Hamiltonian H^  using adiabatic state prepara-
+tion, as described in the previous section. The sweep profile is shown 
+in Extended Data Fig. 3a. Next, we apply a modulation, also as described 
+before. Eventually, to perform the measurement, we adiabatically ramp 
+the detuning into the disordered or 2  phase and measure the number 
+of atoms in the Rydberg state or ground state, O n^′ =∑ ^ii  or n∑( 1− ^ )ii , 
+respectively. We will show that this is effectively measuring an observ-
+able O^ that is diagonal in the eigenbasis of the critical Hamiltonian and 
+that Ogg is distinct from all Oee. The change in O^′, comparing with the 
+expectation value of the ground state, is defined as δn. Assuming this 
+fact, peaks in the measured signal indicate population transferred from 
+the ground state to excited states. This allows us to fit the experimen-
+tal data and extract the peak centres, which we determine as excited 
+state energies.
+We now show that the measurement protocol is equivalent to meas-
+uring an operator O^ immediately after the modulation. T o this end, we 
+first identify the structure of the operator O^′. Deep in the disordered 
+phase or in the 2 -ordered phase (∣Δ∣ ≫ ∣V2∣, ∣Ω∣), the Hamiltonian can 
+be approximated as 
+≃ ∑Hn OE^′ −Δ ^ =| Δ| ^′ +, (14)
+i
+i 0
+where E0 is a constant energy. In this regime, O^′ is diagonal in the eigen-
+basis of H^′ . In the disordered phase, the ground state is unique, |0⟩ L⊗ , 
+whereas the first excited manifold consists of single-excitation states 
+|0…010…0⟩ with degeneracy L. Restricting to the low-energy subspace 
+spanned by the ground state |g′⟩ and the single-excitation states |e′⟩, 
+the operator O^′ takes the form O Ce e^′ ≡+ ∑| ′⟩⟨′ |eg′≠ ′ , where C gO g=⟨ ′| ^′|′ ⟩ 
+is a constant depending only on the system size L and on the phase 
+reached by the ramp. It follows that, in the low-energy limit, measuring 
+O^′ is equivalent to measuring O Ce e^ ≡+ ∑| ⟩⟨ |eg≠ , where |e⟩ denotes the 
+excited states of the Hamiltonian H^ .
+We model the adiabatic ramp after the detuning as a unitary U^ . By 
+the adiabatic theorem, U^  maps the ground state |g⟩ of H^  to the ground 
+state |g′⟩ of H^′  and maps a low-energy excited state |e⟩ to a state |e′⟩ in 
+the first degenerate excited subspace. Therefore, the observable O^, in 
+the Heisenberg picture, becomes 
+∑∑OU OU CU ee UC ee O^ = ^ ^ ^ =+ |⟩ ⟨| =+ |′ ⟩⟨ ′| = ^′ . (15)H
+ee
+† †
+′
+This further implies that measuring O^′ after ramping into the disor-
+dered phase is equivalent to measuring O^ right after the modulation: 
+ψO ψψ UU OU Uψ ψO ψ⟨′ | ^′|′ ⟩= ⟨| ^ ( ^ ^ ^ ) ^ |⟩ =⟨ | ^|⟩ . (16)
+††
+In the disordered phase, Ogg is distinct from all Oee of excited states 
+because the ground state of the disordered phase is unique.
+In practice, ramping to the 2 phase for measurement on an odd 
+chain (Extended Data Fig. 3a) is more preferable for two reasons. First, 
+the ground state of the 2 phase for an odd chain is still unique 
+( ⋯|1010 0101⟩), and the first excited energy level contains all states with 
+the creation of a pair of domain walls, with a degeneracy of (L  + 3)
+(L + 1)/8, higher than the degeneracy with ramping into the disordered 
+phase. This increases the energy range in which equation (3) holds. 
+Second, when probing the critical spectra, because the energy gap 
+reaches its minimum in the disordered phase for a finite system size, 
+ramping into the 2 phase afterwards avoids passing through the small 
+gap twice; this reduces the number of excitations created by the 
+non-adiabaticity of the ramp and hence enhances the contrast of the 
+signal. Moreover, as Oee − Ogg = 1, independent of the phase we ramp to, 
+we can drop the O-dependent factor in equation (13), which reduces 
+to equation (3). Hence, we can interpret the height of a spectral peak 
+as the transition strength |Kge|2.
+For an even chain, as the ground state of 2  phase is degenerate, we 
+have to ramp back into the disordered phase to probe the excited states 
+(Extended Data Fig. 3a). The result for an L = 20 chain is presented in 
+Extended Data Fig. 3b. After multiplying the modulation frequency 
+ω = 2πf by the system size L, we find the even-parity peak positions of 
+an odd chain L = 19 and the even chain L = 20 collapse to a same set of 
+values. This is due to CFT predictions of odd chains and even chains 
+being the same, except for an additional odd-parity state with normal-
+ized energy of 1 that arises only for a chain with an even number of sites 
+(Extended Data Fig. 3c).
+Modulation–probe sequence
+The modulation–probe sequence also uses the modulation technique 
+that reveals the structure of the Hamiltonian H^ . The idea is to measure 
+the linear response of an operator Q^, not diagonalized in the eigenbasis 
+of H^  but directly measurable at H^ , under a modulation K^ . In the peak-
+resolved regime, it also shows the spectrum of H^; in the continuum limit, 
+the measurement signal is related to the dynamical structure factor.
+Similar to the previous section, we calculate the post-modulation 
+signal δ Q⟨ ^⟩. We choose to modulate the system with δHA tK^ =( ) ^, where
+
+===== PAGE 13 =====
+Article
+the modulation profile A(t) is a product of a normalized envelope func-
+tion f(t) (for example, a Gaussian function or a square pulse) and a 
+sinusoidal oscillation, scaled by an overall amplitude A: 
+At Af tω tφ tT() =( )cos(+ ), ∈[ 0, ]. (17)
+Assuming we prepare the ground state, the modulation creates an 
+O(A) admixture of excited states. As Q^ is not diagonal in the eigenbasis 
+of H^ , the change δ Q⟨ ^⟩ receives contributions from the off-diagonal 
+matrix elements KgeQeg already at first order in A—in contrast to the 
+modulation–ramp–probe sequence, in which the diagonal observable 
+O^ yields a response that is quadratic in A. More generally, if we assume 
+that the initial state is a Gibbs state with inverse temperature β ,  
+the change in Q⟨ ^⟩, to the linear order in A, is 
+∑δQ ω A
+Z
+QK Fω EE
+⟨ ^⟩( )= 2π (e −e )
+Im[( −( − ))e e] ,
+(18)mn
+βE βE
+mn nm nm
+EE Tφ
+,
+−−
+i( −) −i
+mn
+mn
+where the sum is performed over all pairs of eigenstates (|m⟩, |n⟩) of H^ , 
+and F(ω) is the Fourier transform of the temporal envelope function 
+f(t). For common envelope functions (for example, square pulse, Gauss-
+ian function), |F(ω)| peaks at ω = 0. Hence, this also results in strong 
+responses when the modulation frequency ω is resonant with the energy 
+difference En − Em between a pair of states in the peak-resolved regime.
+Although the modulation–probe sequence can also measure the 
+excitation energies, the observable Q^ is not simultaneously diago -
+nalizable with H^ , resulting in larger projection noise because the 
+initial state is not an eigenstate of Q^ (Fig. 6a). By contrast, the observ-
+able in the modulation–ramp–probe sequence is, by construction, 
+diagonalized in the eigenbasis of H^ . Consequently, it is preferable to 
+use the modulation–ramp–probe sequence to measure the excitation 
+energies.
+When the modulation time is fixed while the system size becomes 
+larger, energy spacings between excited states become smaller com-
+pared with the width of F(ω). Here, we consider the other extreme in 
+which there are many states within the width of F(ω), that is, the con-
+tinuum limit. In this limit, at frequency ω , we need to sum over the 
+contribution from a continuum of states. The response of Q⟨ ^⟩ is then 
+∑ (19)
+δQ ω
+Af T
+Z QK δω EE
+⟨ ^⟩( )
+= π( ) (1 −e )e Im [e ]( −( −) ),βω
+mn
+βE
+mn nm
+ωT φ
+nm
+cont.
+−
+−
+,
+−− i( +)m
+where f(T −) is the left limit of the temporal envelope function at  
+time T. The response δ Q⟨ ^⟩cont. is now written explicitly in the form of 
+Fermi’s golden rule and can be related to the dynamical structure  
+factor of the system.
+Now we describe an experimental protocol to measure the linear 
+response as in equations (18) and (19). As in the modulation–ramp–
+probe sequence, we start with preparing the ground state in the disor-
+dered phase and adiabatically ramp the system to the critical point, 
+which ideally initializes the system in the ground state of the critical 
+Hamiltonian. Then, we perform a modulation δH^ , followed by a meas-
+urement of Q^, which is a function of local n^i, immediately after the 
+modulation. The linear response depends on the final phase of the 
+modulation φ + ωT, so in principle we would need to vary φ to obtain 
+both the amplitude and the phase information (or real and imaginary 
+part) of QmnKnm.
+T o obtain the linear response of δ Q⟨ ^⟩, we need to choose a small A 
+such that higher-order responses (which we did not include in equa-
+tions (18) and (19)) are smaller than the linear-order term. However, 
+such an A could be too small for the experiment to acquire a sizable 
+signal of the linear response. Here, we use the following protocol to 
+eliminate all even-order responses (dominated by the second-order 
+response). Notice that in equations (18) and (19), when we change the 
+phase φ to φ + π, the responses will acquire a minus sign. Yet, the 
+φ-dependence of the second-order response is a polynomial of ei2φ, 
+such that changing φ to φ + π does not affect the second-order response 
+(and all even-order responses). Therefore, when we subtract the two 
+measured signals with φ and φ + π, all even-order responses cancel, 
+and the linear response survives. When Q K^ = ^ , which is relevant for the 
+experiment, φ is chosen to be ±π/2 − ωT to maximize the response.
+Dynamical structure factor
+The dynamical structure factor is the Fourier transform of the spatial 
+and temporal correlation in a system, which encodes the momentum 
+and frequency information of excitations in the system. Here, we first 
+define the momentum- and frequency-dependent dynamical structure 
+factor of a local field operator o^i: 
+∫∑
+∑∑
+Sk ω LZ to to
+LZ oo δω EE
+(, )= 1 de Tr[e ^ () ^ (0)]
+= 1 ee () () (− (− )).
+(20)
+jl
+kj lω tβ H
+jl
+mn jl
+βE kj l
+jm nl nm nm
+, −∞
+∞ −i (− )+ i−
+,,
+−− i( −)m
+We can relate equations (19) and (20) by plugging in Q o^ =∑ e ^j
+kj
+j
+−i   
+and KQ^ = ^†
+. Furthermore, we choose the modulation final phase 
+ωT + φ = −π/2 to maximize the linear response. Then, we find 
+∑Sk ω LZ QK δω EE
+fT AL
+δQ ω
+(, )= 1 e( −( −) )
+= 1
+π ()( 1− e)
+⟨ ^⟩( ),
+(21)
+mn
+βE
+mn nm nm
+βω
+,
+−
+−−
+cont.
+m
+suggesting that in the continuum limit, the measured linear response 
+from the modulation–probe sequence is proportional to the dynami-
+cal structure factor.
+Finally, we demonstrate that not only the modulation–probe but 
+also the modulation–ramp–probe sequence measures the universal 
+dynamical structure factor at low frequencies in the continuum limit, 
+under certain conditions. Noting that as the first excited state after 
+ramping is highly degenerate, if we take the low-energy limit of equa-
+tion (13), in which we perform only the sum over excited states in the 
+first excited degenerate state manifold, then we can replace Oee − Ogg 
+with 1, and the formula is reduced to, in the continuum limit, 
+∑δO wA Kδ ωE E⟨ ^⟩= 2π
+4 || (− (− )).( 22)
+e
+ge eg
+cont.
+32
+2
+When we choose Ke o^ =∑ ^j
+kj
+j
+−i , then δ OS kω⟨ ^⟩∝ (, )cont.  of zero tempe-
+rature.
+These results imply that when we approach larger system sizes, in 
+which states occupy an approximate continuum of energies and resolv-
+ing individual excited state energies becomes less practical, we can 
+migrate both modulation techniques into measuring the physically 
+relevant dynamical structure factor, which we will show conforms to 
+a universal CFT prediction at the critical point. The modulation–ramp–
+probe sequence, however, reproduces only S  at zero temperature 
+(which is in general difficult to access with an analog quantum simula-
+tor) and in the low-energy limit. Specifically, in the Ising CFT case, the 
+response is proportional to the dynamical structure factor only at ω/Ω ≲ 
+O LL(log /)2 . Therefore, we will implement the modulation–probe 
+sequence to measure the dynamical structure factor, as it has less 
+restrictions.
+Analysis of measured spectra
+We use the modulation–ramp–probe sequence to extract the excited 
+state energies, relative to the ground state energy. T o this end, we fit
+
+===== PAGE 14 =====
+the measured spectra to some trial function. In the data presented in 
+Figs. 1–4, we fit the data to a sum of Gaussian functions, 
+
+
+
+
+
+
+∑δn fa a() =+ e (23)
+i
+i
+fE h
+w
+0
+− −/ i
+i
+2
+and refer to the centres Ei > 0 as excited state energies. In Fig. 5c, we 
+choose a shorter modulation time and fit the spectra to 
+∑ (24)δn fa aφ() =+ e+ e+ 2e cos(2) ,
+i
+i
+fE h
+w
+fE h
+w
+fE h
+w
+f0
+−
+−/
+−
++/ −
++( /)i
+i
+i
+i
+i
+i
+22 2 2
+2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+where φf is the phase that we choose during the modulation.
+We find optimal fitting parameters by minimizing χ =2
+ 
+δn fδ nf σ∑[ () −( )] /j jj jexp model
+22 , where σ j is the experimental statis-
+tical uncertainty for data taken at fj. For the extraction of the fitting 
+uncertainties, we perform a bootstrap method on the data: we resam-
+ple the data with a normal distribution  δn fσ(( ), )j jexp
+2  and fit the  
+generated dataset with the model. The uncertainty of the fit parameter 
+is quoted as the standard deviation of the optimal fit parameters of 
+resampled data sets.
+With this fitting method, we test the hypothesis that the critical 
+spectrum, as presented in Fig. 2c, is described by the Ising CFT spect-
+rum. We calculate the chi-square, χ ff σ=∑ (− )/ ()j jj j
+2 fit model 2f it 2, for the 
+fit frequencies, with a model prediction without free parameters. When 
+we include all data with L ≥ 19, we find all data agree with the model 
+prediction within 3σ with a reduced chi-square of χ2/ν = 0.98. This shows 
+that critical spectra for system sizes L ≥ 19 are consistent with the Ising 
+CFT spectrum, indicating that our system is described by an Ising CFT.
+Low-energy Ising and TCI excitation spectra
+Along the second-order Ising phase boundary, low-energy excitations 
+are created by emergent right- and left-moving Majorana fermions 
+γR/L(x), where x is a coarse-grained position. Microscopically, the fer-
+mions arise from a product of the CDW order parameter and a ‘disorder 
+parameter’ corresponding to a non-local string operator that creates a 
+CDW domain wall40. The effective low-energy Hamiltonian for an open 
+length-L Rydberg chain is given by 
+ ∫ xħ vγ γħ vγ γ=d (− i∂ +i ∂) , (25)
+L
+L
+xxIsing −/ 2
+/2
+RR LL
+where v is the non-universal velocity. The microscopic Rydberg chain 
+Hamiltonian would additionally yield higher-derivative and interaction 
+terms that we did not include in Ising, but they are irrelevant and can 
+thus be neglected when discussing low-energy excitations. For con-
+venience in addressing reflection symmetry below, we defined the 
+chain to live on the interval from x = −L/2 to +L/2. When a right-mover 
+hits the boundary, it must backscatter into a left-mover (and vice versa); 
+hence γR/L satisfies certain relations at ±L/2 that are tightly constrained 
+by Hermiticity of γR/L and the need for a countable Hilbert space. We 
+adopt a convention such that 
+γL γL γL γL(− /2)= (− /2), (/ 2) =− (/ 2). (26)RL RL
+The minus sign in the last equation is crucial: Had we taken γR = γL at 
+both endpoints, the spectrum would feature a single Majorana zero 
+mode—which does not yield a sensible Hilbert space because Majorana 
+zero modes invariably come in pairs.
+Diagonalizing equation (25) yields (up to a constant) 
+ ∑ ħvk=Γ Γ, (27)
+k
+nk kIsing
+>0
+†
+n
+nn
+where Γk
+†
+n creates an excitation with momentum 
+k L nn= π (+ 1/2),∈ (28)n 
+and energy ħvkn. The momentum quantization condition above can be 
+efficiently recovered by combining the right- and left-movers into a sin-
+gle chiral fermion living on a perimeter of length 2L with anti-periodic 
+boundary conditions by virtue of equation (26).
+T o assess reflection properties of the energy eigenstates, we decom-
+pose Γkn in terms of γR/Lusing
+∫L xγ γΓ= 1
+2 d[ e− i(−1 )e ]. (29)k L
+L kx nk x
+−/ 2
+/2 −i
+R
++1 i
+Ln
+nn
+Reflection—which swaps right- and left-movers—sends 
+Rγ xγ xG
+γx γx G
+:( )→−i (− 1) (− )
+() →i (− 1) (− ).
+(30)
+x R
+L
+L
+L
+L
+R
++1
++1
+The relative sign difference in the top and bottom transformation 
+is necessary to maintain invariance of equation (26) under reflection. 
+We use numerically calculated reflection eigenvalues to fix the con-
+vention so the top transformation possesses the additional minus 
+sign. The (−1)L+1 factors arise because reflections are bond-centred 
+for even L but site-centred for odd L. Under the appropriate reflec-
+tion, the coarse-grained CDW order parameter transforms as40 σ(x) →  
+(−1)L+1σ(− x). Fermions—which are again products of order and disorder 
+parameters—inherit the sign above as incorporated in equation (30). 
+The operators G account for the fact that reflection switches the ori-
+entation of the non-local string operator in the microscopic definition 
+of the fermions; G, which counts the global fermion parity, switches 
+the orientation back. Finally, G and γR,L anticommute, and hence the 
+factors of i are required to maintain Hermiticity of the Majorana opera-
+tors. It follows that 
+RG:Γ →− (− 1) (− 1) Γ, (31)xk
+nL
+k
++1
+nn
+from which we can infer the reflection properties of many-body states 
+featuring arbitrary numbers of fermion excitations, at least relative to 
+the ground state.
+Crucially, which fermion fillings define physical states descends 
+from boundary conditions of the CFT—not to be confused with the 
+non-negotiable fermion boundary conditions in equation (26). In our 
+chains, the Ising CFT exhibits a unique stable (fixed) boundary condi-
+tion at which the CDW order parameter is pinned at each edge. Moreo-
+ver, the relative sign of the order parameter on the two edges depends 
+on whether the number of sites L is even or odd. This even–odd effect 
+also originates from the slightly different reflection symmetry pre-
+served by chains with even L (bond-centred) compared with odd L 
+(site-centred). Consequently, symmetry dictates that the edge CDW 
+order parameter obeys σσ iL⟨ ^ ⟩= ⟨ ^ ⟩( ∈{ 1, ,} )iL i+1 /2 +1 /2− ⋯  for odd L but 
+σσ⟨ ^ ⟩= −⟨ ^ ⟩iL i+1 /2 +1 /2−  for even L.
+For chains with odd L , equality of the non-zero order parameter 
+expectation values on the two ends implies that the bulk of the chain 
+can support only an even number of domain walls. Recalling that each 
+fermion creates one domain wall, the physical states in this case there-
+fore host an even number of fermion excitations. Consider, as a concrete 
+example, starting from the ground state and then acting with a single 
+fermion operator. The disorder-parameter string operator carried 
+by that fermion would flip the sign of CDW order parameter at one 
+end, in turn yielding a configuration incompatible with the bound -
+ary conditions imposed on the low-energy spectrum. Therefore, 
+these states are excluded. For even L, opposite-sign order-parameter 
+expectation values at the two edges necessitate an odd number of
+
+===== PAGE 15 =====
+Article
+domain walls. Here, physical states accordingly host an odd number 
+of fermion excitations. With fine-tuning, we can, in principle, locate 
+an unstable (free) Ising boundary condition at which translation 
+symmetry breaking at the edges does not generate appreciable CDW 
+order. Domain-wall numbers are then unconstrained at low energies, 
+and the physical spectrum contains both even and odd numbers of  
+fermion excitations.
+Applying CFT rules provides an alternative path to derive the energy 
+spectrum of the finite-size Ising critical Rydberg chain. The Ising CFT 
+is characterized by a central charge c = 1/2 and three primary fields 
+ σε,,AA A (A = R, L denotes their chirality) with respective chiral scaling 
+dimensions of 0, 1/16 and 1/2. In this language, the chiral fermion fields 
+γR,L defined earlier correspond to εR and εL (spin-1/2 and dimension 1/2). 
+We can also combine the chiral primaries to obtain the CDW order 
+parameter field σ ~ σRσL (dimension 1/8) and a symmetric field ε ~ εRεL 
+(dimension 1) that moves the chain off of the second-order Ising phase 
+boundary.
+Each primary operator generates a conformal tower with energy 
+levels 
+E ħv
+L hJ c J~ π +− 24 ,∈ , (32)αJ α,≥ 0
+
+
+
+where hα denotes the chiral dimension of the primary, α. Hereafter, we 
+neglect the central charge contribution, which provides an overall 
+energy shift that our experiment does not resolve. Boundary conditions 
+determine the allowed primaries and thus the operators that manifest 
+in the spectrum. The operator content of a given boundary fixed point 
+can be derived from the fusion rules of the primary fields correspond-
+ing to ‘boundary states’ . Consider first fixed boundary conditions, and 
+let ∼+⟩ ≡⟩  and ε|−⟩ ≡| ⟩∼  represent two Cardy states corresponding to 
+the primary fields  and ε, respectively. Physically, |+⟩ and |−⟩ represent 
+CDW order parameter pinnings with + and − signs at a particular edge. 
+The allowed primaries α in equation (32) follow from the possible out-
+comes of fusing the fields associated with the Cardy states for each 
+end of the chain. When the CDW order parameter takes the same sign 
+at each edge (representing boundary conditions typically labelled 
+(+, +) and (−, −)), the fusion rules ×=  and ε ε×=  indicate that  
+only α =  with h =0  appears. The spectrum correspondingly reads 
+EJ ~J
+ħv
+L,
+π . Modulo the energy offset from the central charge, this spec-
+trum almost agrees with the low-lying levels specified for odd L  in 
+Table 1, that is, the J = 1 level is missing from the latter. The J = 1 level 
+disappears because the corresponding state created by acting with 
+the generators of the conformal transformations—Virasoro genera-
+tors—has zero norm. (The irreducible representations of the Virasoro 
+algebra are obtained by identifying only the states with non-zero norm). 
+When the order parameter carries an opposite sign on the two edges 
+(boundary conditions (+, −) and (−, +)), the fusion rule  εε×=  dictates 
+that only α = ε with hε = 1/2 appears. The energy spectrum follows as 
+EJ ~( 1/2+ )εJ
+ħv
+L,
+π  in harmony with the even-L , odd-fermion-number 
+spectrum from Table 1. Finally, for unstable free boundary conditions, 
+the relevant Cardy state is ∼σ|0⟩ ≡| ⟩. The fusion rule σ σε×= +  implies 
+that α =  and α = ε appear; the spectrum predicted by equation (32) 
+then consists of the two conformal towers E J,  and Eε,J.
+The CFT framework also allows us to predict the spatial parity of the 
+excited (descendant) states. Each descendant at level J is obtained by 
+acting with the Virasoro raising operators (L−n) in all possible combina-
+tions such that the total level satisfies ∑ini = J. Using the operator-state 
+correspondence, the action of these operators corresponds to taking J 
+spatial derivatives of the primary field, with each additional derivative 
+changing the parity under reflection. Using this rule, incorporating the 
+parity properties of the primary itself, and remembering the different 
+meaning of reflection for even- and odd-L chains allow us to deduce 
+reflection eigenvalues for energy eigenstates. This logic reproduces 
+the reflection properties reported in Table 1.
+Whereas HIsing admits a free-fermion description, the TCI point is 
+governed by a strongly interacting CFT. We can, nevertheless, again 
+use equation (32) and CFT rules to characterize the low-energy TCI 
+levels. The TCI CFT exhibits central charge c = 7/10 and hosts six primary 
+fields of chiral dimensions 0, 3/80, 1/10, 7/16, 3/5 and 3/2, which we 
+denote by  σε σε ε{ ,, ,′ ,′ ,″ }AA A AAA . Combining left and right movers leads 
+to various fields of interest40. The leading CDW order parameter field 
+is σ ~ σRσL now with dimension 3/40. The σ σσ′~ ′′RL  field shares the same 
+symmetries but is less relevant, with dimension 7/8. Fully symmetric 
+fields ε ~ εRεL (dimension 1/5) and ε εε′~ ′′RL  (dimension 6/5) correspond 
+to the two allowed relevant perturbations that can drive the system 
+away from the TCI point in Fig. 1a. Chiral fermion fields are given by 
+ε ε′RL  and ε ε′LR  (spin-1/2, dimension 7/10) as well as ε ″R/L (spin-3/2, dimen-
+sion 3/2). More broadly, proposals to realize and probe TCI phenom-
+enology across diverse quantum-simulation platforms have been put 
+forward in refs. 66–68.
+The TCI CFT in our setup hosts free and fixed boundary conditions 
+that both realize stable fixed points. The fixed-boundary-condition 
+Cardy states ∼|+⟩ ≡| ⟩ and ∼ε|−⟩ ≡| ″⟩ here correspond to the primary  
+fields  and ε″, respectively; as for the Ising CFT, they correspond to + 
+and − CDW order parameter pinnings. For (+, +) or (−, −) boundary 
+conditions relevant for odd-L  chains, the fusion rules ×=  and 
+ε ε″× ″=  imply that only α =  appears, and hence EJ ~J
+ħv
+L,
+π
+ . The J = 1 
+level does not appear for the same reason explained for the Ising case. 
+For (+, −) and (−, +) boundary conditions relevant for even L, the spec-
+trum instead follows from the fusion rule εε×″ =″ ; only α = ε″ then 
+appears, so using h =3 /2ε″  the energy spectrum reads EJ ~( 3/2+ )εJ
+v
+L″,
+π . 
+As ε″ corre sponds to a fermionic operator, this sector is compatible 
+with the constraint noted earlier that even-L physical states host an 
+odd number of fermionic excitation with opposite-sign fixed boundary 
+conditions. For the stable free boundary conditions, the Cardy state 
+σ|0⟩ ≡| ⟩
+′∼ , together with the fusion rule σ σε′× ′= +″ , implies that α =  
+and α = ε″ contribute to the spectrum—yielding the two conformal 
+towers E J,  and EεJ″, .
+Finally, we consider the unstable fixed point intervening between 
+the stable fixed and free boundary conditions. In this case, the Cardy 
+states are ε|0+⟩≡ |⟩  and ε|0−⟩≡ |′ ⟩. Yet again, + and − correspond to the 
+sign of the CDW order parameter at a particular edge, whereas the 
+appended ‘0’ indicates that the edge can also accommodate con -
+figurations with vanishing CDW order parameter. As an example, the 
+intermediate fixed point admits edge configurations 10… (‘large’-edge 
+CDW order parameter) and 00… (zero-edge CDW order parameter) 
+with appreciable weights. The number of domain walls—and hence 
+the number of fermionic excitations—is then no longer constrained 
+contrary to the situation with fixed boundary conditions. For (0+, 0+) 
+and (0−, 0−) appropriate for odd L, the fusion rules ε εε εε×= ′× ′= +′  
+yield a spectrum consisting of two conformal towers, E J,  and 
+EJ =( 3/5+ )εJ
+ħv
+L′,
+π . For (0+, 0−) and (0−, 0+) appropriate for even L ,  
+the fusion rule ε εε ε×′ =+ ″  yields two different conformal towers, 
+EJ =( 1/10 +)εJ
+ħv
+L,
+π  and EεJ″, . Table 2 summarizes the low-energy level 
+structure and reflection eigenvalues (obtained as for the Ising case) 
+for the TCI CFT.
+Dependence of spectroscopy signal on modulation wavevector
+In the main text, we discussed spectroscopy with homogeneous 
+global modulation and with a spatially varying modulation pat -
+tern at wavevector k  = π/( L − 1), respectively, capturing even- and 
+odd-reflection-parity Ising CFT levels (Fig. 3). More broadly, one can 
+ask which energy levels our spectroscopy technique reveals when 
+modulating at a general wavevector k. As momentum is not a good 
+quantum number for open chains, in which translation symmetry is 
+broken, one might naively anticipate that only the reflection properties 
+of the modulation matter qualitatively, rather than the precise spatial 
+profile. In this section, we theoretically analyse momentum-dependent 
+modulation spectroscopy and show that, on the contrary, it directly
+
+===== PAGE 16 =====
+shows a linear dispersion relation by characteristic k dependence of  
+the signal.
+Consider the k-dependent modulation Hamiltonian 
+∑
+δH tA tK
+Kk jα n
+^ () =( ) ^ ,
+^ ≡c os(+ ) ^ .
+(33)
+kk
+k
+j L
+L
+j
+=− −1
+2
+−1
+2
+
+
+
+
+
+
+
+
+where A(t) is a temporal sinusoidal modulation profile (for example, 
+equation (11)). Note that the modulation pattern is even under reflec-
+tion when α = 0, π but odd under reflection when α = ± π/2. Ultimately, 
+we are interested in understanding the response, δ K⟨ ^ ⟩k , after applying 
+the δHt^ ()k  modulation, so we focus on the transition matrix elements 
+Kg Ke|| =| ⟨| ^ |⟩ |( 34)ge k
+22
+that govern the modulation spectroscopy signal strength; see also 
+equation (3).
+First, we evaluate equation (34) analytically at small k, where we can 
+expand K^k in terms of slowly varying fermion fields and, as in the previ-
+ous section, express |e⟩ in terms of fermion operators acting on the 
+ground state |g⟩. T o accomplish the former, we expand n^j in terms of 
+Ising CFT fields using40
+⋯nc σc ε^ ~( −1)+ +; (35)j
+j
+σε
+cσ, cε are non-universal constants, and the ellipsis denotes subleading 
+contributions that we henceforth drop. Neglecting the fast-oscillating 
+(−1)j term, using ε = iγRγL, and taking the continuum limit yields 
+∫Kx kx αγ xγ x^ ~i dc os(+ )( )( ). (36)k L
+L
+−/ 2
+/2
+RL
+As excited states are naturally expressed in terms of the Γkn operators 
+defined in equation (29), we further rewrite K^k using the transformation 
+∑γx L() = 1
+2 (e Γ+ eΓ ), (37)
+k
+kx
+k
+kx
+kR
+>0
+i− i†
+n
+n
+n
+n
+n
+∑γx L() = i
+2 (− 1) (e Γ− eΓ ). (38)L
+k
+nk x
+k
+kx
+k
+>0
++1 −i i†
+n
+n
+n
+n
+n
+We thereby obtain 
+∫
+∑
+K L xk xα^ ~ 1 dc os(+ )
+(− 1) [e ΓΓ− eΓ Γ+ h.c.].
+(39)
+k L
+L
+kk
+nk kx
+kk
+kk x
+kk
+−/ 2
+/2
+,
++1 i( −) i( +) †
+mn
+mn
+mn
+mn
+mn
+Focusing for now on odd-length chains, |g⟩ is the vacuum with no 
+finite-energy Γkn fermions populated; excited states |e⟩ arise from add-
+ing even numbers of fermion excitations (Table 1). As equation (39)  
+is quadratic in fermion operators, only excited states with exactly  
+two populated fermions can possibly contribute nontrivially to  
+equation (34). We therefore specialize to eg| ⟩= ΓΓ |⟩kk
+††
+ab  with occupied 
+levels labelled by momenta ka and kb. The corresponding transition 
+matrix elements evaluate to 
+∫
+gK eg Kg
+L xk xα
+kk k L ab
+⟨| ^ |⟩ =⟨ | ^ ΓΓ |⟩
+~ 1 dc os(+ )[(− 1) e− (− 1) e]
+= 1
+2 (− 1) e− (− 1) es inc( −( −) ) 2 −( ↔) .
+(40)
+kk kk
+L
+L
+ak kx bk kx
+aα bα
+ab
+††
+−/ 2
+/2
+i( −) i( −)
+i− i
+ab
+ba ab
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+For α = 0 or π (reflection-symmetric modulation profile), the quantity  
+(−1)aeiα − (−1)be−iα is only non-zero when a b−≡ 1( mod2 ). For α = ±π/2 
+(reflection-antisymmetric profile), instead (−1)aeiα − (−1)be−iα is only 
+non-zero when a b−≡ 0( mod2 ). Any of these nontrivial cases yield 
+gK ek kk L Pa b|⟨ | ^ |⟩ |~ sinc (− (− )) 2 +(↔) (41)ka b
+2
+2
+
+
+
+
+
+
+
+
+with P = +1 for the reflection-symmetric case and P  = −1 for the 
+reflection-antisymmetric case.
+Equation (41) generally predicts maximal transition amplitudes to 
+excited states with energy E = ħv(ka + kb) when the modulation wavevec-
+tor satisfies |k| = |ka − kb| = |a − b|π/L. However, a special case arises for 
+uniform, reflection-symmetric modulations with k = 0: there the tran-
+sition amplitudes peak for |ka − kb| = π/L. Even-length chains are ame-
+nable to a very similar analysis. We simply need to recall that the ground 
+state then has the k0 level occupied, and excitations arise from acting 
+an even number of fermion operators (for example, Γ Γkk
+††
+ab  or Γ Γkk
+†
+b0 ) on 
+that one-fermion state.
+Now we can explain the energy levels experimentally observed  
+in our reflection-symmetric k = 0 global modulation and our reflection- 
+antisymmetric k = π/18 modulation in Fig. 3c. Under the k = 0 global 
+modulation, the ground state predominantly couples to excited states 
+with |ka − kb| = π/L. More explicitly, these states have kb = (b + 1/2)π/L, 
+ka = (b + 3/2)π/L and E = 2(b + 1)πħv/L, where b ∈ . These energies form 
+a ladder with ratios 2: 4: 6: 8: …   and (within our level of approximation) 
+exhibit identical transition strengths |Kge|2 (equation (41)). In our k = π/18 
+modulation, we chose α = π/2 to target only reflection-antisymmetric 
+excited states. In this case, the ground state predominantly couples  
+to excited states with |k a −  kb| = 2π/L , that is, k b = ( b + 1/2)π/L , ka =  
+(b + 5/2)π/L, and E = (2b + 3)πħv/L, where again b ∈ . The resulting 
+ladder ratios read 3: 5: 7: …; all transition matrix elements are identical 
+here too. The uniform spacing of excited state energies, together with 
+identical transition matrix elements, leads to a constant response when 
+we modulate the system with different frequencies. This feature relates 
+to universal scaling of the dynamical structure factor, which we will 
+discuss later.
+Although we did not study other wavevectors experimentally, it is 
+interesting to theoretically explore larger k. Equation (41) predicts that 
+modulation spectroscopy should detect a ‘light-cone’ dispersion as k 
+increases. When we modulate at k = mπ/L (m ∈ * ), we expect strong 
+response from states with |ka − kb| = mπ/L. The lowest-energy state that 
+we can efficiently probe then has energy E   =  ħv(m + (−1) L+1)
+π/L =  ħvk +  O(L−1). Extended Data Fig. 4a,b shows the analytically  
+predicted excited state energies E that our method can resolve with 
+modulation wavevectors k = mπ/L. We also calculate the response 
+∑wA Kπ
+4 || e( 42)
+e
+ge
+w ωE
+22
+2− 2 (− Δ) eg
+2 2
+as a function of ω and k directly from the microscopic Rydberg Ham-
+iltonian in equation (1) for 25-atom and 20-atom arrays at V2/|Ω| = 0.51 
+(Extended Data Fig. 4c,d). The anticipated light-cone structure 
+near k = 0 clearly manifests. Moreover, magnifying into the small-k, 
+low-energy part of the response, we find peak positions that are con-
+sistent with analytic predictions (Extended Data Fig. 4e,f).
+The small-k peak structure in Extended Data Fig. 4b–e also reveals 
+degeneracies in the Ising CFT spectrum. Although distinct two-fermion 
+states with the same ka + kb are degenerate in energy, their transition 
+strengths under K^k  depend on |k a −  kb|. Scanning the modulation 
+wavevector therefore provides a way to distinguish states within a 
+degenerate manifold.
+Our analytical treatment leading to equation (41) assumed small k, 
+allowing us to neglect the fast-oscillating (−1)jσ term in equation (35). 
+Near k = π, the situation flips: the ε  contribution in equation ( 35)
+
+===== PAGE 17 =====
+Article
+becomes unimportant and K^k in equation (36) instead involves the 
+lower-scaling-dimension σ field. Our numerical calculation of the 
+response to modulation (Extended Data Fig. 4c,d) nevertheless shows 
+that the resolved energy levels are very similar near k = 0 and k = π. 
+Interestingly, the latter offers a potential advantage that would be 
+worth exploring experimentally in future work: the signal for the 
+lowest-energy states is significantly stronger near k = π, but diminishes 
+as the energy increases.
+Relation between the dynamical structure factor and the CFT 
+correlation functions
+The connection to field theory follows from the standard correspond-
+ence between the temporal response of a one-dimensional quantum 
+Ising model and correlation functions of the associated two-dimensional 
+classical Ising model4. The imaginary-time two-point correlation func-
+tion of some field ϕ^ reads 
+Cx τϕ xτ ϕ(, )= Tr[e ^(, ) ^(0,0 )], (43)βH−1 −
+where τ > 0 and ϕ xτ ϕx^(, )= e ^() eHτ Hτ− . Fourier transforming C(x, τ) in 
+both space and imaginary time recovers the momentum- and 
+frequency-dependent correlation function 
+∫∫χk ωx τC xτ(, i) =d de (, ), (44)n
+β
+ωτ kx
+0
+i( −)n
+with ω nβ n=2 π/ (∈ )n  being Matsubara frequencies whose discreti-
+zation follows from the Euclidean space–time construction enforcing 
+C(x, τ) = C(x, τ + β). Taking β → ∞ and assuming that ϕ^ maps to some 
+scalar primary field ϕ with scaling dimension Δ ϕ, in the thermody -
+namic limit we can use the universal scaling law C xτ xv τ(, )~ (+ )22 2− Δ ϕ 
+to obtain 
+()χk ωv kω(, i) ~+ . (45)nn
+2 2 2
+2Δ −2ϕ
+(We neglect here boundary effects for an open chain but restore them 
+below).
+T o relate the imaginary-time correlator with the real-time properties, 
+which are experimentally accessible, we compute the Fourier transform 
+of the real-time correlator ∼C xt(, ), yielding the dynamical structure 
+factor 
+∼∫∫Sk ωx tC xt(, )= dd (, )e .( 46)dk xω t
+0
+∞
+−i +i
+By performing an analytic continuation on χ (iωn →  ω + i0 +), the 
+dynamical structure factor is then related to χ  by the fluctuation–  
+dissipation relation 
+Sk ωχ kω
+β ωv kθ ωv k
+(, )∝ (1 −e )I m( (, ))
+∝→+ ∞ (− )( || −| |),
+(47)
+βω−− 1
+22 2 Δ− 1ϕ
+where θ(x) denotes the Heaviside step function. For the two nontrivial 
+Ising CFT primary fields, ε and σ, their scaling dimensions are Δε = 1 and 
+Δσ = 1/8, respectively. Therefore, we expect 
+Sk ωθ ωv k(, )∝ (− ), (48)ε
+Sk ωω vk θω vk(, )∝ (− )( −) . (49)σ
+22 2 − 7
+8
+Here, we find Sε(k = 0, ω) to be a constant, which is consistent with 
+the constant response at k = 0 shown in Extended Data Fig. 4c. Further-
+more, Sσ(k = 0, ω) decays as ω− 7
+4 . This corresponds to the response at 
+k = π in Extended Data Fig. 4c, in which the decaying response towards 
+larger ω qualitatively reflects this power-law scaling.
+In principle, to analytically calculate the universal scaling function 
+of the dynamical structure factor of a chain with open boundaries, we 
+should use results for CFT field correlators in the presence of fixed ++ 
+boundary conditions, which we will show in detail later. Alternatively, 
+we analytically calculate the dynamical structure factor of ε field using 
+equation (20). By definition, the total response of the system is the 
+product of the response contributions from a single energy level, mul-
+tiplied by the number of energy levels per unit energy g(ω) = L/(2πv). T o 
+calculate the contributions from a single level, we can use equation (41) 
+and notice that in the thermodynamic limit (L → ∞), 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+∑
+∑
+{}
+gK e
+kk k L Pa b
+k
+kk ω
+v
+k ω
+v
+|⟨ | ^ |⟩ |
+~s inc( −( −) ) 2 +(↔)
+=
+2, =0 ,
+1, || >0 and| |< ,
+0, || >,
+(50)
+eE ω
+k
+kk kk ω
+v
+ab
+{| ⟩: =}
+2
+,:+=
+2
+e
+ab ab
+converges to a constant and is independent of L . Hence, the zero-  
+temperature ε-field dynamical structure factor is 
+Sk ωC θω vk(, )= ⋅( −) ,( 51)
+where C is a constant, independent of ω or L. This verifies the expecta-
+tion that S(k, ω) is constant as long as the modulation frequency creates 
+an excitation above the light-cone dispersion.
+Alternatively, we will show from a direct field-theoretic derivation of 
+the ε dynamical structure factor that in this specific critical system, the 
+boundary does not significantly alter the scaling arising from the bulk 
+contribution to the dynamical structure factor. When the boundary 
+effect is negligible and the bulk contribution dominates, we can experi-
+mentally determine the scaling dimension from dynamical structure 
+factor measurements (equation (47)).
+Dynamical structure factor of an open chain
+Here we calculate the dynamical structure factor of an open chain and 
+show that its leading order behaviour is the same as a chain with peri-
+odic boundary condition, which is further proven to have the same scal-
+ing as the bulk correlator. For an open chain of length L, the two-point 
+imaginary time correlator of the ε field is40
+() ()
+() (( )) () (( ))
+(52)
+Cx xτ
+L
+xx
+τx xτ xx
+(, ,)
+= π sins in
+cosh −c os −c osh− cos+
+,
+LL
+v
+LL
+v
+LL
+12
+2 π
+1
+π
+2
+ππ
+12
+ππ
+12
+
+
+
+ 
+
+
+
+
+
+
+
+where v is the non-universal velocity as in equation (25). The above 
+correlator holds at sufficiently long distances, where ∣x1 − x2∣ ≳ a for 
+some microscopic scale a below which short-distance physics not cap-
+tured by the CFT kicks in. As an initial step of calculating the dynamical 
+structure factor at k = 0, we evaluate the imaginary frequency Fourier 
+transform of C: 
+() ()∫∫ ∫ (53)χω L
+v τu y τy τu(i )= 2
+π de dd
+sins in
+(cosh− cos )(cosh− cos) ,ωτ
+λ
+u uy uy
+0
+∞
+i
+0
+π +
+2
+−
+2∼ ∼∼
+∼∼
+where ∼τv τL=π /  is the normalized time, ∼ω ωv L=/ (π /)  is the nor-
+malized frequency, u  = π(x 1 +  x2)/L represents the distance of the 
+(52)
+
+===== PAGE 18 =====
+centre-of-mass position to the boundary, and y = π(x1 − x2)/L represents 
+the distance between two sites. Here λ  = π a/L is a short-distance  
+cutoff that regulates the divergence of the correlator, at which the field 
+theory description breaks down. First, we show that the integral over 
+u will not lead to divergence, that is, the boundary contribution  
+does not alter the scaling of χ. As the u-dependent integral is always 
+bounded by 
+() () ()
+τu u
+sins in
+cosh −c os <
+sin
+1− cos = 1
+2 , (54)
+uy uy u+
+2
+−
+2
+2
+2
+∼
+the integral can then be rewritten as 
+∼ ∼ ∼∼∼
+∫∫χω L
+v τy τy fτ(i )= π de d 1
+cosh −c os () , (55)ωτ
+λ0
+∞
+i
+π
+where ∼fτ()  is a continuous and bounded function, given by the follow-
+ing integral: 
+∼ ∼
+∼
+∼
+∼
+∫
+(56)
+fτ θ τθ
+τθ
+τθ
+τθ
+() = 1
+π da rctan 1− cosh() cos( )
+sinh() sin( )
+−arctan −1 −c osh( )cos()
+sinh() sin( ) .
+0
+π 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Despite that this function could be expressed using series expansion, 
+we notice that this function roughly scales as ∼ ∼
+fτ() ≈π e τ− . As the scaling 
+of χ is dominated by the divergence behaviour of the integrand, fτ()∼  
+as a bounded function will not alter the frequency scaling significantly. 
+Therefore, we ignore its contribution from now on. More systemati-
+cally, as the integrand is dominated by ∼τ near zero, we can approximate 
+fτ f() ≈( 0) =π∼ . With this approximation, we notice that the remaining 
+integral is a Fourier transform of the periodic chain correlator 
+Cy τ τy(, )= 1
+cosh −c os . (57)PBC
+∼ ∼
+We now show that in the physically relevant range of ω, the imaginary 
+frequency dynamic susceptibility scales the same way as the bulk CFT 
+correlator. As πv/L is the characteristic energy scale of the energy gap, 
+in the continuum limit, the modulation frequency ω should be large 
+compared with this energy scale. Hence, we assume ω ≫1∼  in the follow-
+ing calculation. Furthermore, we define ωUV = v/a as the highest energy 
+scale, above which the field theory no longer applies. Therefore, we 
+further assume ω ≪ ωUV, or equivalently ∼ωλ≪1 . In these limits, when 
+∼τ ≳1 , the integral over τ is highly oscillating and can be bounded by a 
+constant. For ∼τ ≱1 , the denominator of the integrand can be Taylor- 
+expanded, and the difference from the exact integral is again bounded 
+by a constant. We thereby obtain 
+∫∫χω L
+v τy
+yτ
+(i )~ 2 de d 1
++
+, (58)
+ωτ
+λ0
+∞
+i
+∞
+2 2
+∼
+∼
+∼∼
+which is the Fourier transform of the bulk correlator 
+∼∼Cy τy τ(, )= (+ ). (59)bulk
+2 2 −1
+This integral evaluates to 
+
+
+
+
+
+
+
+
+
+
+
+
+
+∼∼ ∼χω L
+v ωλ OO ωλ ωλ(i )= [−πlog() +( 1)]+ i π
+2 +( log( )) .( 60)
+2
+Finally, we perform analytic continuation to obtain the real-frequency 
+correlation function 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(61)χω η L
+v ωη λO Oω λω λ(+ i) =[ −πlog(−i (+ i) )+ (1)] +i π
+2 +( log( )) .
+2
+∼∼∼ ∼
+The dynamical structure factor is the imaginary component of the 
+real-frequency χ(ω). Therefore, the leading-order term of S(k = 0, ω) is 
+Sk ω L χω η v(= 0, )= 1 limI m[ (+ i) ]= π , (62)
+η→0
+2
++
+which is independent of L and frequency-independent.
+The above analysis shows that the frequency scaling of the ε-field 
+correlator in an open-boundary critical chain is the same as for a (1 + 1)
+D bulk Ising CFT under frequency coarse-graining. The dynamical 
+structure factor of an open chain can be analytically calculated if we 
+admit the approximate scaling fτ() ≈π e τ−∼ ∼
+. First, we calculate the 
+imaginary-frequency periodic chain correlator by performing the 
+Fourier transform of the periodic boundary correlator 
+∼ ∼
+∼
+∼∼
+∼∼
+()
+∫∫χω L
+v τy τλ y
+L
+v
+F
+ω
+(i )= de d 1
+cosh(+ )− cos
+= 2π e1 ,, ;e
+i+ ,
+(63)
+ωτ
+λ ωω λ
+0
+∞ i
+0
+π
+−
+21
+1− i
+2
+3− i
+2
+−2
+where λ → 0+ is a cutoff to regulate the divergence and 2F1 is a hyper-
+geometric function. Taking its analytic continuation naturally yields 
+∼∑Sk ω χω
+Lv δω m(= 0, )= Im[( )] = 2π (− (2 +1 )).( 64)
+m
+PBC
+2
+=0
+∞
+This is a sum of equally spaced δ-functions with the same amplitude, 
+independent of the system size L . If we perform frequency coarse-  
+graining, then this function becomes a constant.
+Now we evaluate the dynamical structure factor for an open chain. 
+Using ∼ ∼
+fτ() ∝e τ− , the open-boundary dynamic structure factor is related 
+to the periodic-boundary case with 
+∑
+Sk ωS kω v
+L
+v δω m
+(= 0, )= =0 ,− π
+= 2π (− 2( +1 )),
+(65)
+m
+OBC PBC
+2
+=0
+∞
+
+
+
+
+∼
+ which has the same coarse-graining frequency dependence. The centre 
+of these δ-functions corresponds to the predicted eigenenergies of 
+the boundary CFT. This formula can thus be interpreted as a sum of 
+equal contributions from quantized energy levels with energy ratio  
+2: 4: 6: … .
+Numerical simulation of linear response
+T o measure the correlations of CFT fields in the experiment with the 
+modulation–probe sequence, we need to choose the modulation K^  
+and the observable Q^ that are a sum of local field operators. T o this end, 
+we first identify the lattice counterparts of the primary field ε (ref. 40): 
+ε nn^ = ^ + ^ii i++ 11
+2
+ (we will drop the 1
+2  in subscripts hereafter). Hence, the 
+global detuning modulation is a k = 0 ε-modulation 
+∑∑Kn ε^ = ^ = 1
+2
+^ . (66)
+i
+i
+i
+i
+After the global modulation, we measure all n^i to reconstruct the 
+k = 0 ε-field operator Q K^ = ^ . Specifically, in the continuum regime,  
+the response of K^  is proportional to the dynamical structure factor of 
+the ε field at k = 0.
+We compare our experimental results with tensor-network-based 
+numerical simulations of the modulation dynamics 41. We adopt a
+
+===== PAGE 19 =====
+Article
+matrix product state representation of the critical state and find 
+the ground state with the density matrix renormalization group 
+method. For an efficient simulation, here we study the dynamics of the  
+FSS Hamiltonian 
+∑∑ ∑HP XP nV nn^ = Ω
+2
+^^ ^ −Δ ^ + ^^ . (67)
+i
+ii i
+i
+i
+i
+ii−1 +1 2+ 2
+(Truncation to interactions with distance |i − j| ≤ 2 leads to faster numer-
+ics). We use the TDVP method to calculate the evolution of the state 
+under a time-dependent Hamiltonian HA tK^ +( ) ^0 . In the end, we calcu-
+late the expectation value of the observable K⟨ ^ ⟩.
+Applying the numerical simulation to a 19-atom array, we compare 
+the numerically simulated response with the experiment (Fig. 6a). As 
+the simulated Hamiltonian is different from the system Hamiltonian, 
+we rescale the frequency of the simulated response to match the first 
+spectral peak centre with the experiment and find qualitative agree-
+ment on the peak heights of the ε∑ ^ii  response.
+For the experiment performed in the continuum limit, to show that 
+the nearly constant response at low frequencies in Fig. 6b is a feature 
+even in the thermodynamic limit, we numerically simulate the dynamics 
+for system sizes from L = 35 to L = 85. We rescale the responses by (AL)−1 
+to retrieve the zero-temperature dynamical structure factor and find 
+that the response functions collapse to a universal function (Fig. 6c). 
+The remaining oscillation observed in the response is a result of the 
+finite modulation time and is not a physical feature of the dynamical 
+structure factor.
+Local detuning modulation
+The local detuning control is an essential component in measuring 
+the wavevector-dependent spectrum and dynamical structure factor, 
+and the σ-field correlation. In this section, we outline our protocol 
+of synchronizing the trapping tweezer light and the global Rydberg 
+laser detuning modulation to measure the k-dependent spectrum. 
+Furthermore, we will explain additional experimental ability needed 
+to measure the σ-field dynamical structure factor.
+T o target the k-dependent spectrum, we modulate the system with 
+δ kj αΔ∝ cos( +)j . T o achieve this, we use an AOD to generate a fixed 
+spatial pattern of tweezer intensities and an AOM to control and modu-
+late the overall intensity of the tweezers. The local detuning applied by 
+the individual tweezer beam, which is proportional to the intensity, is 
+δA tc kj αΔ= () (+ cos( +) ), (68)j, tw
+where A(t) is always negative and c ≥ 1 due to the sign of the relative 
+light shift between the ground state and the Rydberg state at the trap-
+ping wavelength, 813 nm. We then synchronize the Rydberg beam to 
+apply a global detuning 
+δc AtΔ= −( ). (69)gl
+Therefore, the overall local detuning is 
+δδ δA tk jαΔ= Δ+ Δ= () cos( +) . (70)jj , tw gl
+When acquiring the data presented in Fig. 3 , the global intensity 
+modulation is chosen to be 
+At Af tω tφ() =( )(1 +c os(+ )), (71)0
+where A0 is negative and f(t) is the Gaussian envelope function.
+T o target the σ-field dynamical structure factor, the required modu-
+lation pattern is 
+δA ft ωt φj αΔ= () cos( +) cos(π+ ), (72)j 0
+where f(t) is an envelope function. The temporal part of this modula-
+tion must be chosen to be both positive and negative. Hence, we plan 
+to combine two sets of tweezers and the global detuning modulation 
+δA ft ωt φc jα
+δA ft cj α
+δc cA ft ωt φ
+Δ= ( )(1 +c os(+ ))( +c os(π +) ),
+Δ= −( )( +c os(π +) ),
+Δ= (− )( )cos(+ ).
+(73)
+j
+j
+,t w.10 1
+,t w.20 2
+gl 21 0
+In the future, we plan to combine two sets of tweezers at 515 nm 
+(ref. 69) and 813 nm, respectively, to measure the σ-field dynamical 
+structure factor.
+Quench dynamics at the TCI point
+Apart from the equilibrium spectrum, interest in investigating the 
+non-equilibrium dynamics in a quantum system at criticality motivates 
+the observation of quench dynamics70. In particular, as TCI CFT spec-
+tra have a set of rational fractions, the system will return to its initial 
+state periodically, and physical observables should exhibit oscillations. 
+For a low-energy initial state, the dominant frequency component of 
+these oscillations should reflect the excitation gap, which provides a 
+complementary approach to measure the first excited state energy33. 
+Here we prepare a non-equilibrium low-energy TCI state by adiabati-
+cally ramping our system close to the TCI point and then quenching 
+the detuning to Δc (Extended Data Fig. 6a). T o understand the expected 
+dynamics, we first numerically simulate the quench for different local 
+detuning strengths η. For all η ∈ [0, 1], we observe long-lived oscillations 
+(Extended Data Fig. 6c), with the fitted frequencies consistent with the 
+first excited state energy E1 (Extended Data Fig. 6d, yellow data points), 
+suggesting an oscillation between the ground state and the first excited 
+state of the TCI CFT. Experimentally, after holding at the TCI point for 
+varying durations, we measure the sum of local fields, ∑iσi, and observe 
+damped oscillations (Extended Data Fig. 6b). We record the oscillations 
+at boundary detunings η = 0.5, 0.75 and fit the data to a trial function 
+a bω tϕ+c os(+ )e− t
+τ ; the fit frequencies ω = 2πf (Extended Data Fig. 6d, 
+green data points) are compared with the numerically obtained E 1, 
+where we see qualitative agreement, up to the uncertainty in V2. Owing 
+to the fast decay of the experimental oscillations, we regard the 
+observed oscillation as a proof-of-principle qualitative demonstration 
+of quench dynamics near the TCI point.
+Despite the fact that we experimentally observed a damped oscil-
+lation, mainly due to noise-induced decoherence and potentially the 
+shot-to-shot variation of V2, we suspect that the coherence time can be 
+improved by suppressing laser noise and improving calibration of V2. 
+T ogether with the modulation spectroscopy (Extended Data Fig. 6d, 
+orange data points), all measured E 1 values are consistent with the 
+numerical calculation, up to experimental uncertainties. This agree-
+ment further provides supporting evidence that we tune the boundary 
+conditions by applying local detunings at the TCI point.
+Data availability
+The data supporting the findings of this study are available from the 
+corresponding author upon request.
+Code availability
+The codes supporting the findings of this study are available from the 
+corresponding author upon request.
+ 
+60. Scholl, P. et al. Erasure conversion in a high-fidelity Rydberg quantum simulator. Nature 
+622, 273–278 (2023).
+61. Shaw, A. L. et al. Benchmarking highly entangled states on a 60-atom analogue quantum 
+simulator. Nature 628, 71–77 (2024).
+62. Shaw, A. L. et al. Dark-state enhanced loading of an optical tweezer array. Phys. Rev. Lett. 
+130, 193402 (2023).
+
+===== PAGE 20 =====
+63. Covey, J. P., Madjarov, I. S., Cooper, A. & Endres, M. 2000-times repeated imaging of 
+strontium atoms in clock-magic tweezer arrays. Phys. Rev. Lett. 122, 173201 (2019).
+64. Finkelstein, R. et al. Universal quantum operations and ancilla-based read-out for tweezer 
+clocks. Nature 634, 321–327 (2024).
+65. Lesanovsky, I. & Katsura, H. Interacting Fibonacci anyons in a Rydberg gas. Phys. Rev. A 
+86, 041601(R) (2012).
+66. Li, C. et al. Uncovering emergent spacetime supersymmetry with Rydberg atom arrays. 
+Phys. Rev. Lett. 133, 223401 (2024).
+67. Maffi, L., Tausendpfund, N., Rizzi, M. & Burrello, M. Quantum simulation of the  
+tricritical Ising model in tunable Josephson junction ladders. Phys. Rev. Lett. 132, 226502 
+(2024).
+68. Wang, H., Li, X. & Li, C. Tricritical Kibble-Zurek scaling in Rydberg atom ladders. Nat. 
+Commun. 16, 10584 (2025).
+69. Cooper, A. et al. Alkaline-earth atoms in optical tweezers. Phys. Rev. X 8, 041055 (2018).
+70. Calabrese, P. & Cardy, J. Quantum quenches in 1 + 1 dimensional conformal field theories. 
+J. Stat. Mech. 2016, 064003 (2016).
+Acknowledgements We thank J. Choi, S. Choi, R. Farrell, P. Fendley, R. Finkelstein, Y. Liu,  
+N. Manoj, D. Mark, P. Sala, T. Schuster, A. Shaw, N. Su, F. Surace, and C. Xu for their discussions,  
+as well as E. Bataille, K. Leung, H. Manetsch, and G. Nomura for technical support of the 
+experimental setup. We also thank E. Burkett and D. Soni for feedback to the manuscript.
+Author contributions X.S., S.N., M.K., J.A. and M.E. conceived the idea and experiment. X.S., 
+Y.L. and R.B.-S.T. performed the experiments. X.S., Y.L. and S.N. performed data analysis. X.S., 
+S.N., S.M., M.K., J.A. and M.E. contributed to the underlying theory and associated numerics. 
+X.S., Y.L., R.B.-S.T., L.R.B.P. contributed to building the experimental setup. All authors contributed 
+to the manuscript. M.K., J.A. and M.E. supervised this project.
+Funding statement M.E. discloses support for the research of this work from the US Department 
+of Energy, Office of Science, National Quantum Information Science Research Centers, 
+Quantum Systems Accelerator. Additional support is acknowledged from the Heising-Simons 
+Foundation (2024-4852), AFOSR (FA9550-23-1-0625), NSF QLCI program (2016245), Institute 
+for Quantum Information and Matter, an NSF Physics Frontiers Center (NSF Grant PHY-2317110), 
+DOE (DE-SC0021951), Army Research Office MURI program (W911NF2010136), NSF QLCI 
+program (OMA-2016245), and the Technology Innovation Institute (TII). J.A. discloses support 
+for the theoretical analysis of this work from the US Department of Energy, Office of Science, 
+National Quantum Information Science Research Centers, Quantum Science Center. S.M. 
+acknowledges the Walter Burke Institute for Theoretical Physics at Caltech. Y.L. acknowledges 
+support from AWS Quantum Postdoctoral Fellowship. R.B.-S.T. acknowledges support  
+from the Taiwan-Caltech Fellowship. L.R.B.P. acknowledges support from the David and  
+Ellen Lee Postdoctoral Prize Fellowship. M.K. acknowledges support from the Deutsche 
+Forschungsgemeinschaft (DFG, German Research Foundation) under Excellence Strategy-EXC- 
+2111-390814868 of Germany, the European Union (grant agreement no. 101169765), as well as 
+the Munich Quantum Valley, which is supported by the Bavarian state government with funds 
+from the Hightech Agenda Bayern Plus.
+Competing interests M.E. is a co-founder and shareholder of Oratomic, and L.R.B.P. is an 
+employee of Oratomic.
+Additional information
+Supplementary information The online version contains supplementary material available at 
+https://doi.org/10.1038/s41586-026-10904-x.
+Correspondence and requests for materials should be addressed to Manuel Endres.
+Peer review information Nature thanks the anonymous reviewers for their contribution to the 
+peer review of this work. Peer reviewer reports are available.
+Reprints and permissions information is available at http://www.nature.com/reprints.
+
+===== PAGE 21 =====
+Article
+Extended Data Fig. 1 | Many-body Rabi oscillation and coherence  
+on a 7-atom array. (a) Rabi oscillation between the ground and the first  
+excited state. We modulate the system with the frequency being the energy 
+difference between the two states and measure the final change of ground 
+state population, δ n, after ramping into the 2 phase. When δn = 0 or 1, it 
+indicates that the system is in its ground or excited state. The solid line is a fit to 
+a decaying sinusoidal oscillation. (b)  Ramsey interrogation of the energy gap. 
+Using the many-body Rabi frequency determined from (a) , we apply two π/2 
+rotations, separated by a time t . After the Ramsey sequence, the system is 
+ramped into 2 phase for readout. We observe a damped oscillation, whose 
+oscillation frequency is consistent with the energy gap. The solid line is a fit to a 
+decaying sinusoidal oscillation.
+
+===== PAGE 22 =====
+Extended Data Fig. 2 | Numerically locating the Ising and the tricritical Ising 
+critical point.  (a) Locating the Ising critical point via the finite-size scaling  
+of the curve crossing of σR S for (top) V2/Ω = + 0.51 and (bottom) V2/Ω = − 0.51. 
+Each data point is the location of Δ/Ω where σ R S has the same value for chains  
+of length L − 2 and L + 2. Using a quadratic fit, we estimate the critical point  
+in the thermodynamic limit at 1/ L → 0, Δc(L → ∞)/Ω. For V2/Ω = + 0.51, − 0.51, 
+Δc(L → ∞)/Ω ≈ 1.6975(4), − 0.142(2), respectively. (b) Curve crossing of the energy 
+ratio between the second and the first excited state close to the tricritical 
+point. We plot the energy ratio as a function of detuning Δ for Ω = 2π × 5.5 MHz 
+and V2 = 2π × (−9.0) MHz (V2/Ω =−1.63) for various system sizes L. We find the 
+intersection (Δ X, E2/E1) for two adjacent odd-system sizes L − 1 and L + 1 and  
+plot them in (c) and (d). (c) System-size dependence of the energy ratio. We plot 
+the intersecting E i/E1 for i ∈ [2, 6] and linearly extrapolate to L → ∞. At this V2, we 
+find best agreements of the first two energy ratio with the TCI spectrum with 
+free boundary condition, 4/3 and 5/3, respectively. (d) System-size dependence 
+of the intersecting detunings Δ X. We plot the intersecting Δ X for the low-lying 
+energies and quadratically extrapolate to L → ∞. We find them collapse to Δc = 2π ×  
+(−8.3) MHz, which we determine to be the critical detuning.
+
+===== PAGE 23 =====
+Article
+Extended Data Fig. 3 | Spectra of odd-length and even-length arrays at Ising 
+criticality.  (a) Exemplary Rabi frequency and detuning profiles of modulation- 
+ramp-probe sequences for odd- and even-length chains. (b) Experimental 
+measurement of spectrum of L = 20 array, compared with the spectrum of an 
+L = 19 array. The x-axis is rescaled with the system size L . After the rescaling, the 
+peak positions collapse to the same non-universal values, with a universal ratio 
+of 2:4:6:8. Solid lines are multi-Gaussian fits to the data and indicate fit ranges. 
+(c) Numerical calculation of excited state energies. We numerically calculate the 
+eigenenergies of an L = 19 and L = 20 array, tuned to Ising criticality. Numerically 
+calculated spectra (blue and purple circles) are normalized by the energy 
+difference between the first excited and the ground state and are compared 
+against Ising CFT spectra (red open circles). There is one additional state with 
+normalized energy of 1 for an even array, and the rest of the spectra remain the 
+same.
+
+===== PAGE 24 =====
+Extended Data Fig. 4 | Dispersion relation of excited states of a finite-length 
+array. (a) Excited states energies E  and their generating momenta (ka, kb) for  
+an odd-L array. The x-axis k = ∣ka − kb∣ represents the expected peak positions.  
+(b) Excited states energies E  and momenta k for an even-L array. (c),(d) The 
+calculated k-dependent response (equation ( 42)) for (c) an L = 25 and (d) an 
+L = 20 array at the critical point with V2/Ω = 0.51. We observe a linear dispersion 
+close to k = 0 and k = π. At k = 0, the response is approximately constant for 
+low-energy excited states. (e),(f ) The low-energy, small-momentum region of 
+the response for (e) L = 25 and (f ) L = 20. The x-axis is expressed in unit of π/L and 
+the y-axis is expressed in unit of πv/L, where we choose v to match the first 
+excited state energy. We observe the peak responses appear at positions where 
+we expect excited states (from (a) and (b)).
+
+===== PAGE 25 =====
+Article
+Extended Data Fig. 5 | Calibration of local detunings of an L = 26 array.   
+(a) Normalized local detuning modulation applied to realize (++) boundary 
+condition at TCI. (b)-(d)  Ramsey oscillation measured at the boundary ( i = 1, 26), 
+next-to-boundary ( i = 2, 25), and in the bulk (i = 5, 11, 17, 23). The experimental 
+data is averaged over the sites being measured. Solid lines are fits to a sinusoid 
+with a Gaussian envelope. We extract the local detuning from the oscillation 
+frequency from the fit.
+
+===== PAGE 26 =====
+Extended Data Fig. 6 | Quench dynamics at the tricritical point and the  
+first excited state energy.  (a) The experimental sweep. We adiabatically ramp 
+the detuning close to the critical point and then quench it to Δ c. After waiting  
+for time t, we measure the local observables n^i. (b) The oscillation of σ∑ ^ii   
+after quenching to the tricritical point of a L = 19 array. The solid line is a fit  
+to a bω tφ e+c os(+ ) tτ−/ . The fit frequency ω is interpreted as the first excited 
+state energy E 1. (c) Numerical simulation of σ∑ ^ii  after quenching for different 
+detuning strengths η  ∈ [0, 1]. (d) Energies of the first excited state of L = 19  
+array under different boundary detunings. Orange and green data points are 
+extracted from modulation and quench data, respectively. Yellow data points 
+are fits of the numerical simulation of the quench dynamics. The solid line is the 
+result of exact diagonalization, with the shaded area indicating the uncertainty 
+due to V2. (e) Ratio between the first excited state energy at different η and η = 0 
+(free boundary condition). When η increases from 0, the measured first excited 
+state energy first decrease to 0.57(15) at η = 0.39 and increase to 0.91(15) at  
+η = 1, which agree with the numerical simulation taking uncertainty of V 2 into 
+account (shaded area). The solid line is the result of exact diagonalization, 
+where we observe the universal ratio at η = 0.39 and η = 1.

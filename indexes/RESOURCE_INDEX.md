@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T17:23:32Z`
-- Tree/content state: `75352ef530f22911f841ea45ef4c27640d3e25e00d0d0e73ae7053674d1fdfb5`
+- Scanned: `2026-09-07T17:41:15Z`
+- Tree/content state: `50bb077b2f6bc3988383609b8892ffdd2a6d009f42655ca7250fd85d78049c87`
 - Coverage: complete structural traversal
-- Files: 570
-- Uploaded source files: 563
-- PDF papers: 555
+- Files: 576
+- Uploaded source files: 569
+- PDF papers: 560
 - Repository machinery files: 7
 - Byte-identical duplicate groups: 31
 
@@ -32,7 +32,8 @@
 | `HAUL 8` | 14 |
 | `HAUL 9` | 4 |
 | `KERR` | 16 |
-| `OUTSIDE RESEARCH LIBRARY` | 279 |
+| `LIVE_RESEARCH_UPDATES` | 5 |
+| `OUTSIDE RESEARCH LIBRARY` | 280 |
 | `README.md` | 1 |
 | `derived` | 1 |
 | `requirements-tools.txt` | 1 |
@@ -416,6 +417,11 @@
 | `KERR/s10052-020-8138-9.pdf` | 1676422 |  |
 | `KERR/StijnJvanTongeren_bh_talk2.pdf` | 1262700 |  |
 | `KERR/zp85-xym1.pdf` | 264844 |  |
+| `LIVE_RESEARCH_UPDATES/6dt2-sq44.pdf` | 1193735 |  |
+| `LIVE_RESEARCH_UPDATES/Can AI find physics beyond the standard model_.pdf` | 4006830 |  |
+| `LIVE_RESEARCH_UPDATES/k41k-2pnc.pdf` | 1654459 |  |
+| `LIVE_RESEARCH_UPDATES/s41586-026-10904-x.pdf` | 10478424 |  |
+| `LIVE_RESEARCH_UPDATES/w1sd-v69d.pdf` | 764891 |  |
 | `OUTSIDE RESEARCH LIBRARY/2608.28736v1.pdf` | 18835329 | arxiv:2608.28736v1 |
 | `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2005.09332v1.pdf` | 7402735 | arxiv:2005.09332v1 |
 | `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2005.11624v2.pdf` | 2250309 | arxiv:2005.11624v2 |

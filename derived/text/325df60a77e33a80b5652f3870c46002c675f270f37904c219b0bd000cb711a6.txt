@@ -1,0 +1,940 @@
+===== PAGE 1 =====
+Machine-Learned Renormalization-Group-Improved Gauge Actions
+and Classically Perfect Gradient Flows
+Kieran Holland , 1,* Andreas Ipp , 2,† David I. Müller , 2,‡ and Urs Wenger 3,§
+1University of the Pacific , 3601 Pacific Avenue, Stockton, California 95211, USA
+2Institute for Theoretical Physics, TU Wien , Wiedner Hauptstraße 8-10/136, A-1040 Vienna, Austria
+3Albert Einstein Center for Fundamental Physics, Institute for Theoretical Physics, University of Bern ,
+Sidlerstraße 5, CH-3012 Bern, Switzerland
+(Received 12 May 2025; accepted 18 December 2025; published 21 January 2026)
+Extracting continuum properties of quantum field theories from discretized spacetime is challenging
+due to lattice artifacts. Renormalization-group (RG)-improved lattice actions can preserve continuum
+properties, but are in general difficult to parameterize. Machine learning (ML) with gauge-equivariant
+convolutional neural networks provides a way to efficiently describe such actions. We test a machine-
+learned RG-improved lattice gauge action, the classically perfect fixed-point (FP) action, for four-
+dimensional SU(3) gauge theory through Monte Carlo simulations. We establish that the gradient flow
+of the FP action is free of tree-level discretization effects to all orders in the lattice spacing, making it
+classically perfect. This allows us to test the quality of improvement of the FP action, without introducing
+additional artifacts. We find that discretization effects in gradient-flow observables are highly suppressed
+and less than 1% up to lattice spacings of 0.14 fm, allowing continuum physics to be extracted from coarse
+lattices. The quality of improvement achieved motivates the use of the FP action in future gauge theory
+studies. The advantages of ML-based parameterizations also highlight the possibility of realizing quantum
+perfect actions in lattice gauge theory.
+DOI: 10.1103/k41k-2pnc
+Introduction— The standard model of particle physics
+gives excellent agreement between experimental measure-
+ments and theoretical predictions to very high precision.
+A central element is quantum chromodynamics (QCD),
+the quantum field theory of quark-gluon interactions, where
+Monte Carlo (MC) simulations play a crucial role in testing
+nonperturbative dynamics [1]. A necessary step in lattice
+simulations is spacetime discretization, which ultimately
+must be removed to obtain physical continuum predictions.
+However, the extrapolation to the continuum limit is often
+the dominant source of uncertainty in lattice studies and
+remains a serious challenge: reducing the lattice spacing
+a → 0, simulations become less efficient [2], requiring
+longer Markov chains for high statistical accuracy ( critical
+slowing down ) and to fully explore the phase space
+(topological freezing). These systematic effects are a barrier
+to increasing the precision of lattice predictions for the
+standard model. To overcome this hurdle, one can use
+improved lattice actions [3–5], designed to remove the
+leading lattice artifacts, often through a perturbative
+expansion in a. The efficacy of the improvement must
+be empirically tested via MC simulations. The problem has
+also stimulated the study of various alternatives, such as
+normalizing flows, which use machine learning (ML) to
+transform random samples to target distributions [6–14].
+However, normalizing flows face significant challenges,
+such as achieving high efficiency in four-dimensional
+quantum field theories — measured by effective sample
+size— and ensuring that models trained at one lattice
+spacing can generalize effectively to generate ensembles
+at other lattice spacings. Combined with the persistent
+difficulties of extrapolating to the continuum limit, these
+challenges underscore the urgent need for new methods that
+can achieve accurate results with small lattice artifacts
+already on coarse lattices, thus evading critical slowing
+down and topological freezing.
+In this Letter, we employ an alternative approach, based
+on fixed-point (FP) lattice actions [15] which are implicitly
+and nonperturbatively defined using the properties of
+Wilson’s renormalization group (RG) for asymptotically
+free theories [16–18]. It is used to extract continuum
+quantities from coarse lattices with significantly reduced
+lattice artifacts. We demonstrate the effectiveness of the
+*Contact author: kholland@pacific.edu
+†Contact author: ipp@hep.itp.tuwien.ac.at
+‡Contact author: dmueller@hep.itp.tuwien.ac.at
+§Contact author: wenger@itp.unibe.ch
+Published by the American Physical Society under the terms of
+the Creative Commons Attribution 4.0 International license.
+Further distribution of this work must maintain attribution to
+the author(s) and the published article ’s title, journal citation,
+and DOI. Funded by SCOAP 3.
+PHYSICAL REVIEW LETTERS 136, 031901 (2026)
+0031-9007=26=136(3)=031901(11) 031901-1 Published by the American Physical Society
+
+===== PAGE 2 =====
+FP action in MC simulations of four-dimensional SU(3)
+gauge-field theory, parametrized using a convolutional
+neural network with exact gauge invariance [19]. This
+result is made possible by our new theoretical insight,
+presented here, that FP actions yield a classically perfect
+gradient flow, i.e., without tree-level lattice artifacts to all
+orders in the lattice spacing. This result also builds on the
+success of our recent work [20–22], where we demon-
+strated that ML-based parametrizations can accurately
+capture the FP action across a wide range of gauge-field
+fluctuations— from very fine to very coarse lattice spacings.
+The resulting parametrization achieves an average relative
+error in the action value of less than 0.2%, representing an
+improvement by over an order of magnitude compared to
+previous approaches developed earlier [23–25]. The ML
+framework also enables accurate parameterization of the
+derivatives of the FP action with respect to the gauge fields,
+which are crucial for both efficient network training and the
+practical implementations of MC algorithms. It is the first
+successful application of a machine-learning technique to
+the simulation of a four-dimensional gauge-field theory
+which scales to sufficiently large lattice volumes and small
+lattice spacings to allow for controlled continuum limits
+of physically relevant quantities. As such it is of general
+interest both for the broad physics community as well as for
+the machine-learning community. The machine-learned FP
+action can be generally used in any lattice-QCD study and
+provides a new way to reduce discretization artifacts on
+coarse lattices, making it broadly useful.
+Apart from the machine-learning aspect, the classically
+perfect properties of the FP gradient flow (GF) are of
+general interest, because it finds applications in many
+physical fields, e.g., statistical mechanics, fluid dynamics,
+diffusion processes, optimization problems, and image
+reconstruction.
+Renormalization group and fixed-point actions — For
+SUðNÞ gauge theories, an RG transformation of a lattice
+action A from a fine to a coarse lattice can be defined
+through
+expð−β0A0½V/C138Þ ¼
+Z
+DU expð−βfA½U/C138þ T ½U;V /C138gÞ ; ð1Þ
+where β ¼ 2N=g2 and the fine lattice configuration U is
+connected to the coarse configuration V through the RG
+blocking kernel
+T ½U; V/C138¼ −κ
+X
+nB;μ
+/C8
+ReTrðVnB;μQ†
+nB;μ½U/C138Þ − N ∞μ
+/C9
+: ð2Þ
+The variables QnB;μ are blocked links constructed from
+the fine links Un;μ and the normalization constant N ∞μ ¼
+maxW ∈ SUðNÞ½ReTrðWQ†
+nB;μÞ/C138 guarantees the invariance of
+the partition function after an RG blocking step. The
+blocking details and parameter κ can be freely chosen to
+maximize the compactness of the FP action [24] and in this
+Letter we follow the RG blocking therein.
+In the limit 1=g2 → ∞ of asymptotically free quantum
+field theories, the FP of the RG is scale invariant and
+defines the continuum limit of the gauge theory. Moreover,
+the path integral on the RHS of Eq. (1) reduces to a saddle
+point problem yielding the classical FP equation [15]
+AFP½V/C138¼ min
+fUg
+/C2
+AFP½U/C138þ T ½U; V/C138
+/C3
+: ð3Þ
+The resulting FP action AFP is classically perfect; i.e., it has
+no lattice artifacts at tree level and exactly reproduces
+continuum classical properties at finite lattice spacing, e.g.,
+dispersion relation [15], topology [23,26], or index theorem
+[27], chirality [28,29] when fermions are included. A key
+theoretical result of this Letter is the derivation that the
+gradient flow of the FP action is also classically perfect.
+Classically perfect gradient flow — To rigorously test the
+quality of improvement in any lattice action, it is essential
+to use precisely measurable observables that avoid intro-
+ducing significant cutoff effects. Observables based on the
+gradient flow (GF) of gauge fields [30] are a natural choice,
+given their small systematics and high statistical accuracy.
+In addition, due to the renormalization properties of the
+GF [31], these observables are widely used for the setting of
+physical scales and the measurement of the β function of
+the gauge coupling. We show here that the GF based on the
+FP action has the additional desirable property of being
+classically perfect: it has no tree-level discretization effects
+to any order in the lattice spacing a.
+In continuum language, for an action A the GF evolves
+the non-Abelian gauge field AμðtÞ along a fictitious flow
+time t according to [30–33]
+dAμðtÞ
+dt ¼ − δA
+δAμðtÞ ; ð4Þ
+where the starting valueAμðt ¼ 0Þ is the original gauge field
+and the action is A ¼ð 1=g2Þ R d4xð− 1
+2 TrFμνFμνÞ, with
+field strength Fμν ¼ ∂μAν − ∂νAμ þ½ Aμ;A ν/C138 and gauge
+coupling g. The action density EðtÞ¼ − 1
+2 TrFμνFμν at flow
+time t is a renormalized quantity, and for SU ðNÞ gauge
+theory it can be connected perturbatively to a renormalized
+coupling g in a given scheme, e.g., the MS scheme, as [31]
+t2hEðtÞi ¼ 3ðN2 − 1Þg2
+128π2 ð1 þ Oðg2ÞÞ; ð5Þ
+where h·i denotes the gauge-field average.
+On the lattice, the perturbative expansion is in the bare
+coupling g0 with [34]
+t2hEðtÞi ¼ 3ðN2 − 1Þg2
+0
+128π2 ðCða2=tÞþ Oðg2
+0ÞÞ; ð6Þ
+PHYSICAL REVIEW LETTERS 136, 031901 (2026)
+031901-2
+
+===== PAGE 3 =====
+where
+Cða2=tÞ
+¼ 64π2t2
+3
+Z π=a
+−π=a
+d4p
+ð2πÞ4 Tr
+/C2
+e−tðSf þGÞðSg þ GÞ−1e−tðSf þGÞSe/C3
+ð7Þ
+contains the tree-level lattice artifacts as deviations from 1.
+Here, the action density S is in momentum space to
+quadratic order in the fields, and Se, Sf , Sg correspond
+to the (possibly different) choices of the discretized action
+for the action-density observable E, for the GF, and for the
+MC simulation, respectively, whileG is a gauge fixing term.
+For any choice of action discretizations, the value of
+Cða2=tÞ can be calculated and used to define a tree-level
+improved coupling at finite lattice spacing [34] (see also
+Ref. [35]). Using the same lattice action for all three gives
+Cða2=tÞ¼ 64π2t2
+3
+Z π=a
+−π=a
+d4p
+ð2πÞ4 Tr
+/C2
+e−2tðSþGÞ/C3
+; ð8Þ
+since the various factors under the trace commute with
+each other.
+For the exact FP action AFP, the gluon propagator has
+poles 1=ðp þ 2πlÞ2 for momenta −π=a ≤ pμ ≤ π=a and all
+possible integers l [23], since the iterative RG connection to
+finer and finer lattices extends the momentum integration
+range to the full interval /C6 ∞ even at finite lattice spacing,
+producing precisely the continuum dispersion relation.
+Hence, for SFP one obtains
+Cða2=tÞ¼ 64π2t2
+3 × 3
+/C18 Z þ∞
+−∞
+dp
+2π e−2tp2
+/C19 4
+¼ 64π2t2
+ð
+ﬃﬃﬃﬃﬃﬃﬃ
+8πt
+p
+Þ4 ¼ 1:
+That is, the exact FP action has no tree-level cutoff
+dependence in t2hEðtÞi; lattice artifacts appear in loop
+corrections, i.e., as quantum effects, at Oða2g2
+0Þ. This is a
+new example of FP actions keeping continuum classical
+properties intact at finite lattice spacing.
+Machine learning architecture — The practical limita-
+tions in using the FP action in MC simulations arise from
+two factors: the size of quantum lattice artifacts, and the
+inherent imperfections in the fixed-point parameterization
+for four-dimensional SU(3) gauge theory. The latter is
+addressed here using a gauge-equivariant convolutional
+neural network [19] and ML techniques. The ML archi-
+tecture designed for the FP action is described in detail
+in [21]. In brief, the main building block of the neural
+network is a bilinear convolution which computes various
+products of Wilson loops, starting from 1 × 1 plaquettes
+and the links Un;μ of a gauge-field configuration as input.
+Gauge covariance is exactly maintained throughout by
+accounting for parallel transport in the convolution. As the
+network depth increases, larger and more complex closed
+loops are generated. The final layer is a trace giving the
+action value as output. The network respects translational
+symmetry and is (ultra-)local, which allows it to be used on
+any lattice size. Additionally, our architecture is set up to
+reproduce the Yang-Mills action in the naive continuum
+limit and approximates a perturbatively defined FP action
+on smooth fields [24]; see Ref. [21] for further details.
+The goal of training a model is to approximate the
+action values according to the FP equation in Eq. (3).A
+crucial element is that the exact derivatives of AFP with
+respect to gauge links Un;μ can be easily obtained from
+the FP equation, with each gauge configuration giving
+8 × 4× (volume) data for learning. In the network, the
+derivatives can be calculated exactly via back propagation.
+The loss function for training hence contains both action
+values and derivatives. The best architecture has been
+obtained from a hyperparameter scan and consists of three
+gauge-covariant convolutional layers. It has been trained on
+equilibrated configurations for a variety of lattice sizes and
+a large range of coupling parameters from very smooth to
+coarse gauge-field fluctuations, and has further been
+improved by fine-tuning on instanton configurations.
+Our best model reaches an average relative error in the
+action value of less than 0.2% with the exact derivatives
+more accurately reproduced than in previous parametriza-
+tions [25] across all lattice spacings. The fidelity of the
+model for very smooth configurations is particularly
+important for the GF because the gauge-field fluctuations
+become very smooth at large flow time.
+Fixed-point action simulations — The availability of
+accurate gauge-field derivatives from our ML parametriza-
+tion model makes the Hybrid Monte Carlo (HMC) algo-
+rithm a suitable choice for simulations, where artificial
+conjugate momenta are introduced to update the gauge
+links through molecular dynamics [36,37]. The simulations
+can be accelerated with a coarser choice of time step when
+solving the equations of motion [38], using in particular the
+4MN4FP variant of Omelyan integration scheme [39]. The
+GF for gauge links dUμ=dt ¼ −iðδAFP=δUμÞUμ is solved
+using the third-order Runge-Kutta integrator [30]. The ML
+network is memory intensive, but the memory usage only
+scales linearly with the lattice volume; the largest lattice
+volumes we simulate are 184, for which we can generate a
+new HMC trajectory in ∼4 minutes on one NVidia A100
+SXM6 64 GB GPU. With the FP action, a smaller lattice
+volume is compensated by coarser lattice spacing to yield
+near-continuum-physics results in large enough physical
+volume. As a consistency check of continuum predictions
+with the FP action, we also simulate four-dimensional SU(3)
+gauge theory with the publicly available OPENQCD package
+[40] using either Wilson or tree-level Symanzik improved
+gauge actions and measuring with Wilson GF [41].
+Scaling tests — The GF provides several physically rel-
+evant quantities that can be extracted. For example, a
+PHYSICAL REVIEW LETTERS 136, 031901 (2026)
+031901-3
+
+===== PAGE 4 =====
+reference scale tc=a2 can be set through the condition
+t2chEðtcÞi ¼ c, where a common choice is c ¼ 0.3 [30].
+An alternative scale wd=a is set through the derivative
+condition
+t d
+dt ½t2hEðtÞi/C138 t¼td ¼ d; w d ¼ ﬃﬃﬃﬃtd
+p ; ð9Þ
+where d ¼ 0.3 is also frequently used [42]. These scales
+essentially probe the gauge-field fluctuations at specific
+distances parameterized by the parameters c and d. At finite
+lattice spacing, the values of tc=a2 and wd=a are determined
+by the choice of bare coupling 6=g2
+0 at which MC
+simulations are performed, as well as the action discretiza-
+tion used in the GF and the action density. Ratios of scales,
+e.g., tc=w2
+d or td=tc, are physical properties, which have a
+well-defined value in the continuum limit independent of
+the discretizations employed. The necessary consistency
+in the continuum limit is a consequence of universality and
+provides a stringent test of the FP simulation results.
+In addition, the renormalizability of the GF action
+density EðtÞ allows one to define a scheme for a renor-
+malized coupling. For SU(3) gauge theory the GF scheme
+is defined by
+t2hEðtÞi ≐ 3g2
+GFðtÞ
+16π2 ; ð10Þ
+where the GF renormalized coupling g2
+GFðtÞ runs with the
+RG scale μ ¼ 1=
+ﬃﬃﬃﬃ
+8t
+p
+. The β function of the gauge coupling
+μ2 · dg2
+GF=dðμ2Þ¼ −t · dg2
+GF=dt can be measured directly
+from the GF at the desired value of the coupling [43,44].
+For example, the choice c ¼ 0.3 corresponds to strong
+coupling g2
+GF ≈ 15.79. In the perturbative regime, it can be
+compared with the known three-loop calculation [45].
+Repeating the procedure for a set of gauge ensembles at
+different bare couplings, the continuum limit is taken as
+a2=tc → 0. We present in Figs. 1 and 2 results for the ratios
+t0.3=w2
+0.3 and t0.5=t0.3, and the β function tdg2
+GF=dt at fixed
+g2
+GF ≈ 15.79, using FP , Wilson and Symanzik action sim-
+ulations. Further examples can be found in the End Matter.
+The leading lattice artifacts are expected to be Oða2Þ for the
+Wilson data, Oða4Þ for the Symanzik data, and Oðg2a2Þ for
+the FP data, and we show various possible fits (polynomial
+in a2=t0.3) describing the continuum-limit extrapolations
+[46]. The fit curves are shaded according to their Akaike
+Information Criterion (AIC) weight [47]; cf. End Matter.
+The FP data for t0.3=w2
+0.3 and the β function show mild
+variation with lattice spacing, with artifacts smaller than 1%
+at a ≃ 0.14 fm, using ﬃﬃﬃﬃﬃﬃt0.3
+p ¼ 0.1679 fm [48] to convert
+FIG. 1. Continuum-limit extrapolations for the ratios t0.3=w2
+0.3
+and t0.5=t0.3. Results from Wilson and Symanzik MC simulations
+are shown using plaquette and clover discretizations of the action
+density.
+FIG. 2. The β function of the GF renormalized coupling at
+g2
+GF ¼ 15.79 with highly suppressed lattice artifacts in the results
+for the FP compared to the Wilson and Symanzik gauge actions.
+PHYSICAL REVIEW LETTERS 136, 031901 (2026)
+031901-4
+
+===== PAGE 5 =====
+from lattice to physical scales. The ratio t0.5=t0.3 has essen-
+tially no lattice-spacing dependence below a ≲ 0.14 fm
+using the FP action. By comparison, when discretization
+errors are larger, finer lattice spacings and larger lattice
+volumes are necessary to reach a scaling window of Oða2Þ
+behavior while simultaneously keeping finite-volume effects
+small [49].
+To estimate systematic effects in the continuum extrapo-
+lation, such as choosing the lattice-spacing range over
+which to fit or the order of the fit polynomial in a2=t0.3,
+we use a procedure based on the AIC; cf. End Matter.
+The advantageous features of the FP action are visible
+in other choices of c and d; cf. End Matter for further
+examples. In each case, FP lattice artifacts are small, and in
+absolute value the FP continuum predictions are accurate
+to per mille level. We summarize a comparison of our
+continuum results using the FP , Wilson or Symanzik action
+in Fig. 3, for values of c and d employed by other groups
+[50–57]. There is clear consistency between FP , Wilson and
+Symanzik results. Simulating on smaller coarser lattices,
+one can measure precisely the continuum properties of the
+gauge theory with the FP approach.
+Conclusions and outlook— The explicit form of the exact
+RG-improved FP action is unknown and must be para-
+metrized as a solution of the nonperturbative FP equation.
+Our previous study [21] demonstrated that ML networks
+can describe the FP action for four-dimensional SU(3)
+gauge theory to much higher accuracy than previously
+possible [24,25,58]. In this Letter, we show that the FP
+action defines a classically perfect gradient flow , i.e.,
+without tree-level lattice artifacts to all orders in the lattice
+spacing. As a consequence, the FP action successfully
+reduces lattice artifacts in gradient-flow observables,
+paving the way for various future applications. As an
+RG-improved lattice action, it can be used in any lattice-
+QCD study. One application is a new measurement of the Λ
+parameter of SU(3) pure gauge theory, as a consistency
+check of recent results [54,55,59] which differ from the
+older literature average [1], and as quantitative input for
+the determination of the strong coupling αSðMZÞ through
+the decoupling of quarks [60]. Another possibility is using
+ML to parameterize the FP Dirac operator [28,61,62]
+and reduce cutoff effects in lattice-QCD simulations with
+dynamical quarks. A third is using ML to construct
+quantum perfect actions [15], where all lattice artifacts
+are removed. As a general lesson, our Letter shows a new
+way in which ML can enhance particle physics simulations.
+Acknowledgments— K. H. wishes to thank the AEC and
+ITP at the University of Bern for their support. U. W.
+acknowledges funding from the Swiss National Science
+Foundation (SNSF) Project No. 200020_208222. A. I. and
+D. I. M. acknowledge funding from the Austrian Science
+Fund (FWF) Projects No. P 32446, No. P 34455, No. P
+34764, and No. PA T3667424. K. H. acknowledges funding
+from the U.S. National Science Foundation under Grants
+No. 2014150 and No. 2412320. The computational results
+presented have been achieved in part using the Vienna
+Scientific Cluster (VSC) and LEONARDO at CINECA,
+Italy, via an AURELEO (Austrian Users at LEONARDO
+supercomputer) project, and UBELIX, the HPC cluster at
+the University of Bern.
+Data availability — The data supporting this study ’s
+findings are available within the article.
+[1] Y . Aoki et al. (Flavour Lattice Averaging Group (FLAG)),
+FLAG review 2021, Eur. Phys. J. C 82, 869 (2022) .
+[2] S. Schaefer, R. Sommer, and F. Virotta (ALPHA Collabo-
+ration), Critical slowing down and error analysis in lattice
+QCD simulations, Nucl. Phys. B845, 93 (2011) .
+[3] K. Symanzik, Continuum limit and improved action in
+lattice theories. 1. Principles and φ4 theory, Nucl. Phys.
+B226, 187 (1983) .
+[4] K. Symanzik, Continuum limit and improved action in
+lattice theories. (II). O(N) nonlinear sigma model in per-
+turbation theory, Nucl. Phys. B226, 205 (1983) .
+[5] M. Lüscher and P . Weisz, On-shell improved lattice gauge
+theories, Commun. Math. Phys. 97, 59 (1985) ; 98, 433(E)
+(1985).
+[6] G. Kanwar, M. S. Albergo, D. Boyda, K. Cranmer, D. C.
+Hackett, S. Racani`ere, D. J. Rezende, and P . E. Shanahan,
+Equivariant flow-based sampling for lattice gauge theory,
+Phys. Rev. Lett. 125, 121601 (2020) .
+[7] R. Abbott et al. , Gauge-equivariant flow models for sam-
+pling in lattice field theories with pseudofermions, Phys.
+Rev. D 106, 074506 (2022) .
+[8] R. Abbott, A. Botev, D. Boyda, D. C. Hackett, G. Kanwar,
+S. Racani` ere, D. J. Rezende, F. Romero-López, P . E.
+Shanahan, and J. M. Urban, Applications of flow models
+FIG. 3. The comparison of continuum predictions for four-
+dimensional SU(3) gauge theory from MC simulations using
+either the FP , Wilson or tree-level Symanzik improved lattice
+action shows very good consistency. The β-function results are
+rescaled by a factor of 50 for visibility.
+PHYSICAL REVIEW LETTERS 136, 031901 (2026)
+031901-5
+
+===== PAGE 6 =====
+to the generation of correlated lattice QCD ensembles, Phys.
+Rev. D 109, 094514 (2024) .
+[9] L. Del Debbio, J. M. Rossney, and M. Wilson, Efficient
+modeling of trivializing maps for lattice ϕ4 theory using
+normalizing flows: A first look at scalability, Phys. Rev. D
+104, 094507 (2021) .
+[10] D. Albandea, L. Del Debbio, P . Hernández, R. Kenway, J.
+Marsh Rossney, and A. Ramos, Learning trivializing flows,
+Eur. Phys. J. C 83, 676 (2023) .
+[11] S. Bacchio, P . Kessel, S. Schaefer, and L. V aitl, Learning
+trivializing gradient flows for lattice gauge theories, Phys.
+Rev. D 107, L051504 (2023) .
+[12] M. Gerdes, P . de Haan, C. Rainone, R. Bondesan, and
+M. C. N. Cheng, Learning lattice quantum field theories
+with equivariant continuous flows, SciPost Phys. 15, 238
+(2023).
+[13] M. Gerdes, P . de Haan, R. Bondesan, and M. C. N. Cheng,
+Non-perturbative trivializing flows for lattice gauge theo-
+ries, Phys. Rev. D 112, 094516 (2025) .
+[14] K. A. Nicoli, C. J. Anders, T. Hartung, K. Jansen, P . Kessel,
+and S. Nakajima, Detecting and mitigating mode-collapse
+for flow-based sampling of lattice field theories, Phys. Rev.
+D 108, 114501 (2023) .
+[15] P . Hasenfratz and F. Niedermayer, Perfect lattice action for
+asymptotically free theories, Nucl. Phys. B414, 785 (1994) .
+[16] K. G. Wilson and J. B. Kogut, The renormalization group
+and the epsilon expansion, Phys. Rep. 12, 75 (1974) .
+[17] K. G. Wilson, The renormalization group: Critical phenom-
+ena and the Kondo problem,Rev. Mod. Phys.47, 773 (1975).
+[18] K. G. Wilson, The renormalization group and critical
+phenomena, Rev. Mod. Phys. 55, 583 (1983) .
+[19] M. Favoni, A. Ipp, D. I. Müller, and D. Schuh, Lattice gauge
+equivariant convolutional neural networks, Phys. Rev. Lett.
+128, 032003 (2022) .
+[20] U. Wenger, K. Holland, A. Ipp, and D. I. Müller, HMC and
+gradient flow with machine-learned classically perfect fixed
+point actions, Proc. Sci. LA TTICE2024 (2025) 466 [arXiv:
+2502.03315].
+[21] K. Holland, A. Ipp, D. I. Müller, and U. Wenger, Machine
+learning a fixed point action for SU(3) gauge theory with a
+gauge equivariant convolutional neural network, Phys. Rev.
+D 110, 074502 (2024) .
+[22] K. Holland, A. Ipp, D. I. Müller, and U. Wenger, Fixed point
+actions from convolutional neural networks, Proc. Sci.
+LA TTICE2023 (2024) 038 [arXiv:2311.17816].
+[23] T. A. DeGrand, A. Hasenfratz, P . Hasenfratz, and F.
+Niedermayer, The Classically perfect fixed point action
+for SU(3) gauge theory, Nucl. Phys. B454, 587 (1995) .
+[24] M. Blatter and F. Niedermayer, New fixed point action for
+SU(3) lattice gauge theory, Nucl. Phys. B482, 286 (1996) .
+[25] F. Niedermayer, P . Rufenacht, and U. Wenger, Fixed point
+gauge actions with fat links: Scaling and glueballs, Nucl.
+Phys. B597, 413 (2001) .
+[26] M. Blatter, R. Burkhalter, P . Hasenfratz, and F.
+Niedermayer, Instantons and the fixed point topological
+charge in the two-dimensional O(3) σ model, Phys. Rev. D
+53, 923 (1996) .
+[27] P . Hasenfratz, V . Laliena, and F. Niedermayer, The index
+theorem in QCD with a finite cutoff, Phys. Lett. B 427, 125
+(1998).
+[28] P . Hasenfratz, Lattice QCD without tuning, mixing and
+current renormalization, Nucl. Phys. B525, 401 (1998) .
+[29] F. Niedermayer, Exact chiral symmetry, topological charge
+and related topics, Nucl. Phys. B, Proc. Suppl. 73, 105
+(1999).
+[30] M. Lüscher, Properties and uses of the Wilson flow in
+lattice QCD, J. High Energy Phys. 08 (2010) 071; 03
+(2014) 92(E).
+[31] M. Lüscher and P . Weisz, Perturbative analysis of the
+gradient flow in non-Abelian gauge theories, J. High Energy
+Phys. 02 (2011) 051.
+[32] R. Narayanan and H. Neuberger, Infinite N phase transitions
+in continuum Wilson loop operators, J. High Energy Phys.
+03 (2006) 064.
+[33] R. Lohmayer and H. Neuberger, Continuous smearing of
+Wilson Loops, Proc. Sci. LA TTICE2011 (2011) 249 [arXiv:
+1110.3522].
+[34] Z. Fodor, K. Holland, J. Kuti, S. Mondal, D. Nogradi, and
+C. H. Wong, The lattice gradient flow at tree-level and its
+improvement, J. High Energy Phys. 09 (2014) 018.
+[35] A. Ramos and S. Sint, Symanzik improvement of the
+gradient flow in lattice gauge theories, Eur. Phys. J. C
+76, 15 (2016) .
+[36] S. Duane, A. D. Kennedy, B. J. Pendleton, and D. Roweth,
+Hybrid Monte Carlo, Phys. Lett. B 195, 216 (1987) .
+[37] S. A. Gottlieb, W. Liu, D. Toussaint, R. L. Renken, and R. L.
+Sugar, Hybrid molecular dynamics algorithms for the
+numerical simulation of quantum chromodynamics, Phys.
+Rev. D 35, 2531 (1987) .
+[38] I. P . Omelyan, I. M. Mryglod, and R. Folk, Symplectic
+analytically integrable decomposition algorithms: Classifi-
+cation, derivation, and application to molecular dynamics,
+quantum and celestial mechanics simulations, Comput.
+Phys. Commun. 151, 272 (2003) .
+[39] T. Takaishi and P . de Forcrand, Testing and tuning new
+symplectic integrators for hybrid Monte Carlo algorithm in
+lattice QCD, Phys. Rev. E 73, 036706 (2006) .
+[40] M. Lüscher, https://luscher.web.cern.ch/luscher/openQCD/.
+[41] This generic choice, instead of the alternative schemes in
+Refs. [34,35], is justified by the fact that we are first of all
+interested in the continuum values which are universal and
+independent of the choice. Moreover, when comparing
+lattice artifacts, the improvement schemes are highly prob-
+lem specific, while the FP approach is general and applies to
+other observables.
+[42] S. Borsányi, S. Dürr, Z. Fodor, C. Hoelbling, S. D. Katz, S.
+Krieg, T. Kurth, L. Lellouch, T. Lippert, and C. McNeile
+(BMW Collaboration), High-precision scale setting in
+lattice QCD, J. High Energy Phys. 09 (2012) 010.
+[43] Z. Fodor, K. Holland, J. Kuti, D. Nogradi, and C. H. Wong,
+A new method for the beta function in the chiral symmetry
+broken phase, EPJ Web Conf. 175, 08027 (2018) .
+[44] A. Hasenfratz and O. Witzel, Continuous renormalization
+group β function from lattice simulations, Phys. Rev. D 101,
+034514 (2020) .
+[45] R. V . Harlander and T. Neumann, The perturbative
+QCD gradient flow to three loops, J. High Energy Phys.
+06 (2016) 161.
+[46] We note that the leading Oða4Þ behavior of the Symanzik
+data is masked by the Oða2Þ discretization effects from the
+PHYSICAL REVIEW LETTERS 136, 031901 (2026)
+031901-6
+
+===== PAGE 7 =====
+flow action (Wilson) and the action density (plaquette and
+clover).
+[47] H. Akaike, A new look at the statistical model identification,
+IEEE Trans. Autom. Control 19, 716 (1974) .
+[48] L. Giusti and M. Lüscher, Topological susceptibility at
+T>T c from master-field simulations of the SU(3) gauge
+theory, Eur. Phys. J. C 79, 207 (2019) .
+[49] We note that a more meaningful discussion of the relative
+cost of simulations using standard and FP actions is a
+delicate and difficult task as it depends heavily on the
+chosen benchmarks and targets for comparison — e.g., ob-
+servables, level of lattice artifacts, architecture-specific code
+optimization, etc. — and is hence not attempted here.
+[50] M. Asakawa, T. Hatsuda, T. Iritani, E. Itou, M. Kitazawa,
+and H. Suzuki, Determination of reference scales for Wilson
+gauge action from Yang –Mills gradient flow, arXiv:1503
+.06516.
+[51] R. Sommer, Scale setting in lattice QCD, Proc. Sci.
+LA TTICE2013 (2014) 015 [arXiv:1401.3270].
+[52] F. Knechtli, T. Korzec, B. Leder, and G. Moir (ALPHA
+Collaboration), Power corrections from decoupling of the
+charm quark, Phys. Lett. B 774, 649 (2017) .
+[53] A. Ramos Martinez and G. Catumba, Testing universality of
+gauge theories, Proc. Sci. LA TTICE2022 ( 2023) 383.
+[54] C. H. Wong, S. Borsanyi, Z. Fodor, K. Holland, and J. Kuti,
+Toward a novel determination of the strong QCD coupling
+at the Z-pole, Proc. Sci. LA TTICE2022 (2023) 043 [arXiv:
+2301.06611].
+[55] A. Hasenfratz, C. T. Peterson, J. van Sickle, and O. Witzel,
+Λ parameter of the SU(3) Yang-Mills theory from the
+continuous β function, Phys. Rev. D 108, 014502 (2023) .
+[56] N. Brambilla, V . Leino, J. Mayer-Steudte, and A. V airo,
+Static force from generalized Wilson loops on the lattice
+using the gradient flow, Phys. Rev. D 109, 114517 (2024) .
+[57] S. Spiegel and C. Lehner, A high-precision continuum limit
+study of the HVP short-distance window, Phys. Rev. D 111,
+114517 (2025) .
+[58] T. A. DeGrand, A. Hasenfratz, P . Hasenfratz, and F.
+Niedermayer, Nonperturbative tests of the fixed point action
+for SU(3) gauge theory, Nucl. Phys. B454, 615 (1995) .
+[59] M. Dalla Brida and A. Ramos, The gradient flow coupling
+at high-energy and the scale of SU(3) Yang –Mills theory,
+Eur. Phys. J. C 79, 720 (2019) .
+[60] M. Dalla Brida, R. Höllwieser, F. Knechtli, T. Korzec, A.
+Nada, A. Ramos, S. Sint, and R. Sommer (ALPHA
+Collaboration), Determination of αsðmZ Þ by the non-
+perturbative decoupling method, Eur. Phys. J. C 82, 1092
+(2022).
+[61] P . Hasenfratz, S. Hauswirth, K. Holland, T. Jörg, F.
+Niedermayer, and U. Wenger, The construction of gener-
+alized Dirac operators on the lattice, Int. J. Mod. Phys. C 12,
+691 (2001) .
+[62] P . Hasenfratz, S. Hauswirth, T. Jorg, F. Niedermayer, and K.
+Holland, Testing the fixed point QCD action and the
+construction of chiral currents,Nucl. Phys. B643, 280 (2002).
+[63] M. Favoni, A. Ipp, D. I. Müller, and D. Schuh, https://gitlab
+.com/openpixi/lge-cnn/.
+[64] We note that the different number of chains Nchains and
+minimal chain lengths N/C3s are simply due to practical
+constraints, such as available computing time on various
+GPU architectures, and have no relevance for the autocorre-
+lation times quoted in TableIII or the results in TablesI and II.
+End Matter
+Simulation details and gradient-flow measurements —
+Here we provide information on the ensembles generated
+using MC simulations of the FP action. The HMC
+integrator evolves up to trajectory length τ ¼ 3.0 using
+Nτ ¼ 32 steps for all ensembles. We use the 4MN4FP
+variant of Omelyan integration scheme as described in
+[39], generating Ntraj trajectories. The simulation code
+including the L-CNN for the FP action employed in this
+Letter is publicly available [63].
+In Table I we provide for each ensemble the linear lattice
+size Nlatt, the FP action β value, and the number of
+thermalized trajectories Ntraj. We use symmetric lattice
+volumes N4
+latt throughout. In addition, we list the measured
+gradient-flow observables t0.3, t0.4, t0.5, and w0.3 in lattice
+units. For the gradient flow we use the third-order Runge-
+Kutta scheme [30] with time step Δtf ¼ 0.01 on all
+ensembles. We also list in Table I the lattice volume L
+and lattice spacing a in physical units, computed usingﬃﬃﬃﬃﬃﬃt0.3
+p ¼ 0.1679 fm [48].
+In Table II we compile the FP measurements of flow-
+time ratios tc=t0.3 and tc=w2c for c ¼ 0.3, 0.4, 0.5 and the β
+function at renormalized coupling g2
+GF ¼ 15.79 which
+corresponds to a flow time of t0.3.
+Autocorrelation times τc of the action density
+for c ¼ 0.3, 0.4, 0.5 are estimated through single
+exponential fits of the autocorrelation function
+of t2cEðtcÞ, combining Nchains independent runs of
+unequal length, the shortest of which has length N/C3s ,
+cf. Table III [64] .
+Gradient-flow measurements are made every Nskip ¼ 32
+trajectories, except for the ensemble marked a with more
+frequent measurements at Nskip ¼ 4. The measurements in
+ensembles at β ¼ 2.80, 2.75, 2.65 show no significant
+autocorrelations, which is why the corresponding entries
+are missing from the Table. Finally, the autocorrelation
+times, as tabulated in Table III, are reexpressed in units of
+HMC trajectories.
+The autocorrelation times are in general short, growing
+somewhat towards finer lattice spacing, but are signifi-
+cantly less than 32 trajectories. In the statistical analysis,
+gradient-flow measurements are further blocked with
+Nblock ¼ 8 to suppress any remnant autocorrelation effects
+PHYSICAL REVIEW LETTERS 136, 031901 (2026)
+031901-7
+
+===== PAGE 8 =====
+in the data, and we use Nresample ¼ 2000 in the bootstrap
+determination of statistical errors.
+Continuum limits and AIC averaging procedure — We
+perform the continuum limit for each dimensionless
+quantity z by fitting the results from the simulations
+with polynomials of order n in a2=t0.3. For the FP
+results we use n ¼ 0, 1, and 2, while for the results
+from the Wilson and tree-level Symanzik improved
+action we use n ¼ 1, 2, and 3. The results obtained with
+the plaquette and clover discretization of the action
+density E are treated as independent and we do not
+perform combined continuum limits.
+The continuum limits are illustrated in Figs. 1, 2, and 4,
+where we show the results of the simulations together with
+a selection of (bootstrapped) polynomial fits indicating the
+included data points by the extent of the lines and shaded
+according to their Akaike Information Criterion (AIC)
+weight [47] calculated as follows. For each possible fit i
+given ntot data of which n are fitted using k parameters, the
+weight ωi for the continuum limit zi is given by
+AICi ¼ χ2
+i þ 2k þ 2ðntot − nÞ; ðB1Þ
+ωi ¼ expð−AICi=2Þ: ðB2Þ
+The AIC weights are also used to estimate systematic
+effects in the continuum extrapolation as follows. The
+probability distribution function (PDF) of z is built from a
+TABLE II. FP results for gradient-flow observables. The β function in the last column is given at the renormalized coupling g2
+GF ¼
+15.79 which corresponds to a flow time of t0.3.
+Nlatt β t0.3=w2
+0.3 t0.4=w2
+0.4 t0.5=w2
+0.5 t0.4=t0.3 t0.5=t0.3 β − fn
+10 2.65 0.93909(81) 1.02812(89) 1.07663(97) 1.34137(46) 1.6511(10) 14.401(15)
+10 2.75 0.9518(11) 1.0319(12) 1.0769(12) 1.33682(59) 1.6451(12) 14.740(21)
+16 2.75 0.95177(35) 1.03223(38) 1.07802(43) 1.33672(19) 1.64455(43) 14.7399(69)
+14 2.80 0.95372(56) 1.03181(61) 1.07686(66) 1.33635(30) 1.64453(66) 14.798(11)
+14 2.85 0.95556(66) 1.03158(68) 1.07618(72) 1.33592(34) 1.64428(75) 14.847(13)
+14 2.90 0.95706(70) 1.03175(75) 1.07602(76) 1.33550(38) 1.64385(79) 14.885(14)
+16 2.90 0.95696(54) 1.03216(59) 1.07645(60) 1.33542(30) 1.64354(64) 14.882(11)
+14 2.95 0.95640(79) 1.03112(84) 1.07544(89) 1.33586(41) 1.64458(91) 14.875(15)
+16 2.95 0.95615(65) 1.03066(69) 1.07436(74) 1.33601(34) 1.64522(77) 14.870(13)
+16 3.00 0.95784(76) 1.03229(83) 1.07644(82) 1.33520(41) 1.64330(88) 14.907(15)
+16 3.05 0.95780(82) 1.03129(86) 1.07502(95) 1.33550(43) 1.64425(94) 14.911(16)
+18 3.05 0.95749(67) 1.03108(69) 1.07495(73) 1.33562(34) 1.64446(75) 14.904(13)
+18 3.10 0.95747(75) 1.03109(80) 1.07496(81) 1.33559(40) 1.64445(88) 14.904(15)
+18 3.15 0.95750(92) 1.0303(10) 1.0739(10) 1.33581(49) 1.6451(11) 14.909(18)
+18 3.20 0.95841(99) 1.0316(11) 1.0755(12) 1.33519(53) 1.6437(12) 14.927(19)
+TABLE I. Overview of parameters for the FP ensembles used in this Letter together with a selection of gradient-flow scales in lattice
+units. The linear lattice extent L and the lattice spacing a are obtained using ﬃﬃﬃﬃﬃﬃ ﬃt0.3
+p ¼ 0.1679 fm [48].
+Nlatt β Ntraj t0.3=a2 w0.3=a t 0.4=a2 t0.5=a2 L=fm a=fm
+10 2.65 51232 1.2321(27) 1.1455(15) 1.6526(37) 2.0342(49) 1.5126(16) 0.15126(16)
+10 2.75 76128 1.5709(35) 1.2848(19) 2.1000(50) 2.5843(68) 1.3396(15) 0.13396(15)
+16 2.75 68256 1.5702(13) 1.28442(67) 2.0989(18) 2.5822(24) 2.1438(9) 0.13399(6)
+14 2.80 79392 1.7655(19) 1.3606(10) 2.3594(30) 2.9034(39) 1.7690(10) 0.12636(7)
+14 2.85 74400 1.9798(26) 1.4394(13) 2.6448(39) 3.2553(51) 1.6706(11) 0.11933(8)
+14 2.90 82368 2.2028(31) 1.5171(14) 2.9417(46) 3.6211(62) 1.5837(11) 0.11312(8)
+16 2.90 81600 2.2085(25) 1.5192(12) 2.9493(37) 3.6299(48) 1.8077(10) 0.11298(6)
+14 2.95 81312 2.4687(44) 1.6067(19) 3.2980(65) 4.0604(87) 1.4960(14) 0.10686(10)
+16 2.95 70336 2.4667(33) 1.6062(15) 3.2954(51) 4.0579(65) 1.7104(11) 0.10690(7)
+16 3.00 69696 2.7433(43) 1.6923(19) 3.6631(67) 4.5082(87) 1.6219(13) 0.10137(8)
+16 3.05 69600 3.0379(48) 1.7809(19) 4.0571(76) 4.995(10) 1.5413(13) 0.09633(8)
+18 3.05 76896 3.0435(38) 1.7828(16) 4.0651(59) 5.0050(81) 1.7323(11) 0.09624(6)
+18 3.10 79808 3.3840(52) 1.8799(20) 4.5197(80) 5.565(11) 1.6429(13) 0.09127(7)
+18 3.15 66688 3.7456(76) 1.9777(28) 5.003(11) 6.162(16) 1.5615(16) 0.08675(9)
+18 3.20 68608 4.1508(83) 2.0811(30) 5.542(13) 6.823(18) 1.4834(14) 0.08241(8)
+PHYSICAL REVIEW LETTERS 136, 031901 (2026)
+031901-8
+
+===== PAGE 9 =====
+weighted combination of each distribution of zi parame-
+terized as a normal distribution N ðzi; σiÞ. The median of
+the resulting PDF is taken as the final result, and the 16th
+and 84th percentiles of the cumulative distribution function
+as (possibly asymmetric) uncertainty ranges. This pro-
+cedure combines both statistical and systematic errors in
+the extrapolation. In Figs. 5 and 6 we show the PDFs for
+each continuum limit and quantity.
+The multipeak structures seen in the PDFs reflect
+the fact that at the given high statistical accuracy the
+continuum extrapolations in general depend on the order
+of the fitted polynomial. As a c onsequence, the total error
+is dominated by the systematics of the continuum
+extrapolation as pointed out in the introduction. The
+final results from the continuum extrapolations are
+collected in Table IV.
+In comparing the results, we calculate the weighted
+average PDF avg from the individual PDFs using
+PDFavg ¼
+P
+kωkPDFkP
+kωk
+; ðB3Þ
+where the index k runs over the five cases: FP , Wilson
+(plaquette), Wilson (clover), Symanzik (plaquette), and
+Symanzik (clover). PDF k denotes the respective individual
+PDF. Since the data from the plaquette and the clover
+definition of the action density for either the Wilson or
+the Symanzik action are highly correlated, we follow a
+TABLE III. Statistics and autocorrelation times τc of t2cEðtcÞ
+in units of HMC trajectories for the FP ensembles with
+a< 0.12 fm. The ensembles are assembled from Nchains inde-
+pendent chains of unequal length, the shortest of which has length
+N/C3s . Gradient-flow measurements are done every Nskip ¼ 32
+trajectories, except for the ensemble marked † with Nskip ¼ 4.
+Autocorrelation times for ensembles with β ≤ 2.800 are too short
+to be measured accurately.
+β Nlatt Nchains N/C3s τ0.3 τ0.4 τ0.5
+2.650 10 2 25536 /C1/C1/C1 /C1/C1/C1 /C1/C1/C1
+2.750 10 3 25280 /C1/C1/C1 /C1/C1/C1 /C1/C1/C1
+2.750 16 24 2656 /C1/C1/C1 /C1/C1/C1 /C1/C1/C1
+2.800 14 8 9408 /C1/C1/C1 /C1/C1/C1 /C1/C1/C1
+2.850† 14 1 10844 7.1 7.6 7.8
+2.850 14 8 2496 6.9 6.4 6.2
+2.900 14 8 10176 9.3 9.7 9.9
+2.900 16 16 3776 8.8 9.3 9.4
+2.950 14 8 9888 12.8 13.3 13.4
+2.950 16 16 2496 9.4 9.9 10.2
+3.000 16 16 3520 14.7 15.2 15.5
+3.050 16 16 3168 11.3 12.0 12.5
+3.050 18 28 2688 14.2 15.1 15.6
+3.100 18 29 2720 16.4 17.0 17.6
+3.150 18 32 1632 19.8 20.7 21.3
+3.200 18 32 2112 17.3 19.2 20.7
+FIG. 4. Continuum-limit extrapolations of FP , Wilson and
+Symanzik action measurements, for the ratios t0.4=t0.3 (top),
+t0.4=w2
+0.4 (middle), and t0.5=w2
+0.5 (bottom). Lattice artifacts are
+small with the FP action and gradient flow (below 1% at
+a ≃ 0.14 fm). A variety of polynomial fits with different ranges
+and highest power ða2=t0Þn are shown, shaded according to their
+respective AIC weight.
+PHYSICAL REVIEW LETTERS 136, 031901 (2026)
+031901-9
+
+===== PAGE 10 =====
+FIG. 5. Comparison of various PDFs for the quantity βðg2 ¼
+15.79 (top), t0.5=t0.3 (middle), t0.4=t0.3 (bottom). Below the plot,
+the median 16th and 84th percentiles are marked.
+FIG. 6. Comparison of various PDFs for the quantity t0.5=w2
+0.5
+(top), t0.4=w2
+0.4 (middle), t0.3=w2
+0.3 (bottom). Below the plot, the
+median 16th and 84th percentiles are marked.
+PHYSICAL REVIEW LETTERS 136, 031901 (2026)
+031901-10
+
+===== PAGE 11 =====
+conservative approach and suppress these contributions by a factor of ωk ¼ 1=2, while ωFP ¼ 1. Finally, Fig. 3 shows the
+deviation zk − zavg, where zavg is the median of PDF avg, for all five cases, together with their respective errors.
+TABLE IV . Continuum values of gradient-flow observables using AIC model averaging with fits up to a6 terms (Wilson and
+Symanzik) and up to a4 terms (FP).
+Observable FP Wilson clover Wilson plaquette Symanzik clover Symanzik plaquette Weighted average
+t0.3=w2
+0.3 0.9553ðþ46
+−32 Þ 0.9567ðþ13
+−7 Þ 0.9582ðþ12
+−13 Þ 0.9594ðþ21
+−12 Þ 0.9595ðþ18
+−22 Þ 0.9579ðþ24
+−35 Þ
+t0.4=w2
+0.4 1.0305ðþ11
+−9 Þ 1.0277ðþ19
+−11 Þ 1.0274ðþ20
+−10 Þ 1.0293ðþ29
+−15 Þ 1.0302ðþ36
+−17 Þ 1.0297ðþ19
+−25 Þ
+t0.5=w2
+0.5 1.0726ðþ25
+−11 Þ 1.0715ðþ20
+−21 Þ 1.0700ðþ24
+−11 Þ 1.0718ðþ30
+−15 Þ 1.0718ðþ40
+−17 Þ 1.0719ðþ28
+−21 Þ
+t0.4=t0.3 1.3356ðþ15
+−12 Þ 1.3352ðþ10
+−12 Þ 1.3360ðþ7
+−11Þ 1.3345ðþ16
+−8 Þ 1.3358ðþ12
+−23 Þ 1.3356ðþ12
+−15 Þ
+t0.5=t0.3 1.6443ðþ3
+−3 Þ 1.6456ðþ20
+−30 Þ 1.6464ðþ10
+−20 Þ 1.6440ðþ26
+−21 Þ 1.6457ðþ19
+−46 Þ 1.6445ðþ25
+−18 Þ
+βðg2 ¼ 15.79Þ 14.853ðþ130
+−71 Þ 14.906ðþ26
+−12 Þ 14.928ðþ20
+−22 Þ 14.960ðþ40
+−21 Þ 14.972ðþ20
+−26 Þ 14.933ðþ48
+−92 Þ
+PHYSICAL REVIEW LETTERS 136, 031901 (2026)
+031901-11
