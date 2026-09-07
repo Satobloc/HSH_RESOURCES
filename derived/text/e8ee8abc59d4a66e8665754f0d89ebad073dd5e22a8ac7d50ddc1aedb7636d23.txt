@@ -1,0 +1,695 @@
+===== PAGE 1 =====
+arXiv:2506.14836v1  [cs.SI]  14 Jun 2025
+DETECTING NARRATIVE SHIFTS THROUGH PERSISTENT
+STRUCTURES : A T OPOLOGICAL ANALYSIS OF MEDIA
+DISCOURSE
+A PREPRINT
+Mark M. Bailey∗
+Department of Cyber Intelligence and Data Science
+Director, Biological and Computational Intelligence Center
+National Intelligence University
+Bethesda, MD. USA
+mark.m.bailey@ni-u.edu
+Mark I. Heiligman
+Faculty Emeritus
+Department of Cyber Intelligence and Data Science
+National Intelligence University
+Bethesda, MD. USA
+mark.heiligman@gmail.com
+ABSTRACT
+How can we better detect when global events fundamentally reshape public discourse? In this
+study, we introduce a topological framework for tracking structural change in media narratives using
+persistent homology. Drawing on a corpus of international news articles spanning multiple globally
+significant events—including the Russian invasion of Ukraine (February 2022), the murder of George
+Floyd (May 2020), the U.S. Capitol insurrection (January 2021), and the Hamas-led invasion of
+Israel (October 2023)—we construct daily co-occurrence graphs of noun phrases to represent the
+evolving shape of discourse. Each graph is embedded and transformed into a persistence diagram via
+a Vietoris–Rips filtration. We then compute Wasserstein distances and measure persistence entropies
+across homological dimensions to measure semantic disruption and structural volatility over time.
+Our findings reveal that major geopolitical and social events correspond to sharp spikes in bothH0
+(connected components) andH1 (loops), suggesting sudden reorganization in narrative coherence
+and framing. Cross-correlation analyses show a characteristic lag structure in which disruptions to
+component-level structure typically precede changes in higher-order motifs, suggesting a bottom-up
+cascade of semantic reconfiguration. However, we also identify a notable exception: during the
+Russian invasion of Ukraine, this causal direction was reversed, withH1 entropy leadingH0, which
+may suggest a top-down imposition of narrative framing before local discourse adjusted. Persistence
+entropy further distinguishes focused from diffuse narrative regimes. These results demonstrate
+that persistent homology offers a mathematically grounded, unsupervised method for detecting
+inflection points and directional shifts in public attention, without requiring prior event annotation.
+This approach provides new tools for computational social science, enabling real-time detection and
+interpretation of semantic restructuring during crises, protests, and information shocks in global
+discourse.
+Keywords Persistent Homology· Topological Data Analysis (TDA)· Narrative Structure· Unsupervised Event
+Detection· Semantic Graphs· Topology of Language· Media Discourse· Computational Social Science
+1 Introduction
+In the wake of globally significant events—wars, invasions, pandemics, social movements—the structure of public
+discourse undergoes rapid and often radical transformation. News media, as both sensor and amplifier of collective
+attention, does not merely report events but actively reorganizes the social understanding of what matters, who matters,
+and how narratives interrelate. These shifts are not always visible in individual headlines, but can manifest as deeper
+structural changes in the way language coalesces around people, ideas, and events.
+∗Corresponding author
+
+===== PAGE 2 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Computational social scientists have long sought to detect such inflection points using a variety of techniques: keyword
+frequency [Church and Gale, 2008, Pennebaker et al., 2015], sentiment analysis [Pang and Lee, 2008, Liu, 2012], topic
+modeling [Blei et al., 2003, Roberts et al., 2014], and vector-based representations of meaning [Mikolov et al., 2013a,
+Pennington et al., 2014]. While these methods have yielded important insights, they tend to focus on lexical content in
+isolation—emphasizing what is being discussed over how discourse is structured. In particular, they often struggle to
+capture higher-order dependencies, thematic loops, or shifts in the underlying geometry of discourse networks.
+Recent advances in topological data analysis (TDA) offer a compelling alternative. Persistent homology, in particular, has
+emerged as a powerful method for characterizing multiscale structure in complex systems [Carlsson, 2009, Wasserman,
+2018]. In network neuroscience, persistent homology has revealed non-trivial loop structures critical for understanding
+functional connectivity [Sizemore et al., 2019], while in dynamic networks, it has been used to detect temporal structural
+shifts [Stolz et al., 2017, Myers et al., 2023]. Foundational work has also established the mathematical stability of
+persistence diagrams and entropy metrics [Cohen-Steiner et al., 2007, Chazal et al., 2016, Atienza et al., 2020, 2016].
+In natural language processing, persistent homology has been used to represent the structural features of text [Zhu,
+2013], to differentiate literary styles [Gholizadeh et al., 2018], and to capture attention patterns in transformer models
+[Kushnareva et al., 2021]. Other work has applied TDA to document summarization [Haghighatkhah et al., 2022] and
+discourse semantics [Savle et al., 2019], while broader NLP applications of TDA include narrative shift detection and
+media structure analysis [Rocha, 2024, Arun et al., 2025, Nguyen et al., 2020].
+In this study, we propose a new approach: to detect global narrative change by measuring the topological structure
+of media discourse as it evolves over time. Drawing on tools from algebraic topology—specifically, persistent
+homology—we analyze graphs constructed from co-occurring noun phrases in news coverage. Each graph represents a
+snapshot of discourse for a particular day, with edges reflecting contextual proximity between key terms. By embedding
+these graphs in geometric space using Word2Vec [Mikolov et al., 2013a], reducing dimensionality using UMAP
+[McInnes et al., 2018], and applying a Vietoris–Rips filtration [Zomorodian and Carlsson, 2005, Maria et al., 2014],
+we extract persistence diagrams that encode the birth and death of connected components and cycles—topological
+proxies for the cohesion and framing of public narratives. Our method offers a general framework for event detection
+that does not rely on predefined keywords, topics, or training data, but instead captures the geometry of collective
+meaning-making as it unfolds.
+Our motivation is rooted in the belief that events of global salience—those that reorder geopolitical realities—will also
+reorder the structure of discourse itself. To test this, we examine news coverage surrounding four major crises: the
+Russian invasion of Ukraine on February 24th, 2022, the Hamas-led invasion of Israel on October 7th, 2023, the murder
+of George Floyd on May 25th, 2020, and the U.S. Capitol insurrection on January 6th, 2021. We retrieve articles using
+NewsAPI [NewsAPI, 2024] and analyze the resulting daily co-occurrence networks to track changes in topological
+structure.
+We build on prior research that has modeled narrative dynamics through temporal semantic graphs [Opdahl et al., 2023,
+Yan and Tang, 2023, Radicioni et al., 2021] and unsupervised event detection techniques [Zhao et al., 2023, Hajij et al.,
+2018, Aktas et al., 2019]. Our use of persistent homology aligns with recent efforts to detect political controversy and
+network anomalies through topological signatures [Rocha, 2024, Arun et al., 2025, Nguyen et al., 2020].
+This work contributes to computational social science by introducing a new class of topological metrics for understanding
+narrative evolution. It complements existing linguistic and network-based methods with a structural, scale-invariant tool
+set for detecting rupture, drift, and reorganization in the public sphere. As computational models of society increasingly
+incorporate complexity and emergence [May et al., 2008, Guilbeault and Centola, 2021], persistent homology offers a
+powerful lens for studying how large-scale meaning structures form, dissolve, and reassemble in response to the shocks
+of history.
+2 Theoretical Foundations
+2.1 Filtrations and Persistence
+LetX⊆ Rd be a finite point cloud. To analyze the topology ofX, we construct a Vietoris–Rips filtration{Rϵ(X)}ϵ≥0,
+where each complexRϵ(X) includes ak-simplex whenever all pairwise distances between itsk + 1 vertices are within
+distanceϵ:
+Rϵ(X) ={σ⊆X|∥xi−xj∥≤ ϵ,∀xi,xj∈σ}. (1)
+2
+
+===== PAGE 3 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Asϵ increases, new topological features (connected components, loops, voids) are born and others disappear, forming a
+topological fingerprint of the data’s multiscale structure. These features are recorded in persistence diagrams as points
+(bi,di)∈ R2, wherebi anddi represent the birth and death scale of a feature in homology groupHk:
+Dk(X) ={(bi,di)| featurei in homology groupHk}, withdi >b i. (2)
+We illustrate the filtration process and the resulting diagrammatic representation in Figure 1:
+x1
+x2
+x3
+x4
+ϵ
+Example of Vietoris–Rips filtration
+Figure 1: Schematic of a Vietoris–Rips filtration on a point cloud. As the scale parameterϵ increases, points become
+connected into edges, triangles, and higher-dimensional simplices. Persistent homology tracks the birth and death of
+topological features across this growing sequence of simplicial complexes.
+2.2 Normalized Wasserstein Distance
+To quantify how topological structures evolve over time, we compute the Wasserstein distance (a.k.a. "earth mover’s
+distance") between persistence diagrams of successive graph windows. The p-Wasserstein distance between two
+persistence diagramsD1 andD2 is defined as:
+Wp(D1,D 2) =
+ 
+inf
+γ:D1→D2
+X
+x∈D1
+∥x−γ(x)∥p
+q
+!1/p
+, (3)
+whereγ ranges over all bijections between the two diagrams,∥·∥ q is theℓq-norm, andp is typically 1 or 2.
+To ensure comparability across time, we used the normalized Wasserstein distance:
+fWp(D1,D 2) = Wp(D1,D 2)
+|D1| +|D2|, (4)
+This accounts for differences in the number of points in each diagram.
+2.3 Normalized Persistence Entropy
+We also computed persistence entropy to examine the distributional complexity. For a given persistence diagramD, let
+ℓi =di−bi be the lifetime of thei-th feature born atbi and dying atdi. The normalized persistence entropy is defined
+as:
+3
+
+===== PAGE 4 =====
+A Topological Analysis of Media Discourse A PREPRINT
+eH(D) =− 1
+logn
+nX
+i=1
+ℓiP
+jℓj
+log
+ 
+ℓiP
+jℓj
+!
+, (5)
+where the sum runs over all points withℓi > 0. This provides a measure of the distributional complexity of lifetimes in
+the topological signature.
+3 Methodology
+3.1 Data Collection and Pre-processing
+To analyze structural changes in global news discourse over time, we began by collecting a corpus of daily news
+articles using the NewsAPI for a date range bracketing the event of interest.[NewsAPI, 2024] Articles were drawn from
+several national and international media outlets spanning the political spectrum (see Table 1) and text was aggregated
+by publication date. Using standard natural language processing (NLP) techniques, we lemmatized the text and
+extracted noun phrases from each article.[Loper and Bird, 2002] For every dayt, we constructed an undirected graph
+Gt = (Vt,Et), where nodesVt represent unique nouns or adjectives and edgesEt encode co-occurrence within the
+same extracted phrase.
+Table 1: News Sources Queried via NewsAPI
+Sources
+ABC News Al Jazeera English Associated Press
+Axios Bloomberg Business Insider
+CBS News CNN ESPN
+Fox News Google News Hacker News
+IGN MSNBC National Geographic
+National Review NBC News New Scientist
+Newsweek New York Magazine Next Big Future
+Politico Recode Reddit /r/all
+Reuters TechCrunch TechRadar
+The American Conservative The Hill The Huffington Post
+The Next Web The Wall Street Journal The Washington Post
+The Washington Times Time Magazine USA Today
+Vice News Wired
+3.2 Graph Construction and Embedding Generation
+To embed each graph in a semantic vector space while preserving its local neighborhoods and meso-scale community
+structure, we created a time series of daily co-occurrence graphs {G1,G 2,...,G T}, which were aggregated into
+overlapping windows of sizew and strides to induce temporally smoothed subgraphs. We define thek-th windowed
+graphGk as the union ofw consecutive graphs starting at index (k− 1)s + 1:
+Gk =
+(k−1)s+w[
+t=(k−1)s+1
+Gt (6)
+This formulation yields a temporally smoothed representation of discourse structure, where eachGk subgraph encodes
+the latent topological features present across a contiguous window of days. The strides controls the overlap between
+successive windows: whens<w , the windows overlap; whens =w, the windows are disjoint. To reduce noise, we
+removed all nodes of degree one. The resulting graphs capture the structural backbone of daily discourse—highlighting
+the most contextually significant and interconnected concepts. For a visual representation of the embedding process,
+see Figure 2
+A flattened graph across the entire time series, Gflat = ST
+t=1Gt, was also constructed and used to train a global
+Word2Vec embedding model.[Mikolov et al., 2013b] Random walks throughGflat were treated as pseudo-sentences
+to train the model, and embeddings were then used to compute edge vectors for each windowed graph. This method
+4
+
+===== PAGE 5 =====
+A Topological Analysis of Media Discourse A PREPRINT
+mirrors the logic of the Node2Vec algorithm but provides greater control and interpretability by decoupling walk
+generation from embedding.[Grover and Leskovec, 2016]
+The Word2Vec model trained using the following hyperparameters:
+• Number of walks (training): 100,000
+• Number of walks (inference): 4,000
+• Dimensions: 64
+• Window size: 3
+• Stride: 1
+• Walk length: 40
+• Epochs: 10
+• Skip-gram model (sg = 1)
+A
+B
+C
+D
+E
+Random Walk Path: A → B → C → D → E
+Word2Vec training window
+(e.g., center = C, context = B and D)
+Embedding Space (2D projection)
+A
+B
+C D
+E
+Figure 2: Word2Vec maps graph paths to continuous embeddings by learning node co-occurrence within sampled walks.
+Paths like A–B–C–D–E are treated as sentences, and Word2Vec learns that nodes like B, C, and D tend to appear in
+similar contexts. The result is a spatial representation in which proximity reflects semantic and structural similarity.
+Edge embeddings were then derived from node embeddings by averaging the Word2Vec vectors of each edge’s
+endpoints:
+eij = 1
+2 (vi + vj) (7)
+where vi and vj are the Word2Vec embeddings for nodesi andj, respectively. The resulting point cloud eij forms a
+geometric representation of the latent structure of daily discourse.
+Unlike frequency-based co-occurrence matrices, Word2Vec embeddings learn distributed representations that capture
+nuanced relationships across local and global graph neighborhoods. By training Word2Vec on random walks through
+noun phrase co-occurrence graphs, we embed nodes in a continuous space where semantic and structural similarity are
+encoded in geometric proximity. This embedding serves as a soft projection of the discourse topology, with edge vectors
+encoding both lexical co-dependence and relational structure. Crucially, this continuous representation facilitates
+persistent homology by transforming the graph into a metric space suitable for Rips filtration.
+3.3 Dimensionality Reduction
+We reduced the high-dimensional edge embeddings to two dimensions using Uniform Manifold Approximation and
+Projection (UMAP), chosen for its ability to preserve local topological structure.[McInnes et al., 2018] This 2D
+embedding of edges serves as a geometric point cloud capturing the structure of daily discourse.
+3.4 Persistent Homology and Topological Feature Extraction
+Persistent homology is a foundational method in topological data analysis (TDA) used to extract and quantify the shape
+of data across multiple scales. Rather than fixing a single neighborhood or connectivity threshold, persistent homology
+5
+
+===== PAGE 6 =====
+A Topological Analysis of Media Discourse A PREPRINT
+operates over a filtration: a growing sequence of simplicial complexes that gradually “connect” the data. This multiscale
+approach reveals features such as connected components, loops, and voids that persist across a range of proximity
+values.
+In this analysis, we applied a Rips filtration using the Python Gudhi library, constructing simplicial complexes over the
+embedded edge points and computing persistence diagrams for homology dimensions 0 and 1.[The GUDHI Project,
+2021, Maria et al., 2014] This allowed us to extract topological features, specifically connected components (inH0) and
+loops (inH1).
+Persistent homology enjoys a critical stability theorem: small perturbations in the input data (such as minor differences
+in edge embeddings due to random walk sampling) produce only small changes in the persistence diagrams, under both
+bottleneck and Wasserstein distances. [Carlsson, 2009, Chazal et al., 2016] This makes the method robust to noise
+and highly suitable for extracting meaningful patterns from high-dimensional, real-world data such as language. In
+this study, we interpret long-lived topological features as persistent semantic or narrative structures, while short-lived
+features are treated as noise. Shifts in these diagrams correspond to inflection points in discourse topology - moments
+when the structure of news coverage reorganizes in response to real-world events.
+3.5 Wasserstein Distance and Persistence Entropy Analysis
+We then computed Wasserstein distances between the persistence diagrams of successive windows to measure the
+magnitude of topological change between time steps. This yielded a time series of distances for bothH0 andH1, where
+spikes correspond to abrupt reorganizations in the structure of daily discourse. The distance traces were smoothed
+and first and second derivatives calculated. We also computed persistence entropy for each window, providing a
+scalar summary of the distribution of topological feature lifetimes. High entropy indicates many short-lived features
+(suggesting noise or narrative diffusion), while low entropy reflects dominant, persistent structures (suggesting focused
+narrative framing). Entropy traces were smoothed and first and second derivatives calculated.
+3.6 Interpreting Topological Signals
+Persistence Entropy. Persistence entropy quantifies the informational complexity of a persistence diagram by
+summarizing the distribution of feature lifetimes (i.e., the differences between birth and death times of topological
+features). A high entropy value indicates a relatively uniform distribution of lifetimes, suggesting a fragmented or
+diffuse topological structure in the underlying semantic graph. This may correspond to a multipolar discourse in which
+many competing themes coexist. Conversely, low entropy reflects the dominance of a few long-lived features, implying
+a more coherent or thematically unified narrative structure.
+First Derivative of Persistence Entropy. The first temporal derivative of persistence entropy captures the rate at
+which structural complexity in the discourse is changing. Positive spikes in this derivative indicate moments of narrative
+disruption or diversification—typically associated with the onset of new, competing topics or conceptual instability.
+Negative spikes, in contrast, suggest narrative convergence, simplification, or the formation of dominant thematic
+structures.
+Second Derivative of Persistence Entropy. The second derivative measures the acceleration or deceleration in the
+rate of topological change. Sustained positive values indicate growing volatility in discourse structure—potentially
+corresponding to escalating uncertainty or the rapid proliferation of competing framings. Sustained negative values
+suggest a deceleration of change, marking a transition toward stabilization or the emergence of a new semantic regime.
+Inflection points in this signal are often interpretable as phase transitions in public discourse.
+Wasserstein Distance Between Persistence Diagrams. The Wasserstein distance measures the dissimilarity between
+two successive persistence diagrams, providing a direct quantification of topological drift over time. A large Wasserstein
+distance between dayst andt + 1 indicates a significant reorganization in the topology of the discourse graph—implying
+a structural shift in how concepts relate or cluster. This measure is sensitive to the emergence, disappearance, and
+transformation of semantic motifs (e.g., communities, loops). Periods with elevated Wasserstein distances often coincide
+with major inflection points in the narrative system, such as the immediate aftermath of a global event or a critical
+change in media framing.
+Combined Interpretation. Taken together, these topological signals form a multiscale diagnostic framework. Persis-
+tence entropy describes the current complexity of narrative structure, its derivatives signal transitions or volatility, and
+Wasserstein distance quantifies structural change between states. Synchronizing these signals with known events or
+6
+
+===== PAGE 7 =====
+A Topological Analysis of Media Discourse A PREPRINT
+anomalous dates provides insight into how global discourse evolves—revealing both immediate ruptures and delayed
+cascades in narrative organization.
+4 Results
+This topological framework combining graph-based NLP, Word2Vec embeddings, persistent homology, and time-series
+analysis offers a scalable and interpretable method for detecting structural transitions in complex semantic data streams
+such as news discourse.
+4.1 October 7th, 2023
+Topological Signal Analysis of the October 7th Dataset. The topological signatures derived from the October 7th
+dataset reveal subtle but interpretable changes in the evolving semantic structure of global news discourse. In the
+persistence entropy traces, a clear divergence emerges between theH0 (connected components) andH1 (loops) signals
+around the annotated event time (Figure 3). This divergence is mirrored in the first and second derivatives, where a
+spike in magnitude suggests a moment of rapid topological reorganization. In the corresponding Wasserstein distance
+traces, although the smoothed distance values show only minor fluctuations, the derivative plots reveal a suppression
+of volatility at the event marker, potentially indicating a transient stabilization in both component and cycle structure
+(Figure 4). Cross-correlation analysis further supports these interpretations: the entropy signals peak at lag 0, suggesting
+synchronous reconfiguration of component- and cycle-level entropy (Figure 5). In contrast, the Wasserstein signals
+exhibit a peak correlation at a negative lag, implying that shifts in H0 structure anticipate those in H1 (Figure 6).
+Taken together, these results indicate that the semantic network encoded in news narratives underwent a coordinated
+topological shift at the time of the event, with subtle precursors in component connectivity preceding more global
+reorganization in loop structure.
+4.2 January 6th, 2023
+Topological Signal Analysis of the January 6 th Dataset. Analysis of topological traces around the January 6 th
+event revealed a clear divergence betweenH0 andH1 entropy, withH0 exhibiting a sharp increase andH1 remaining
+relatively stable (Figure 7). Derivative analysis further revealed transient spikes in both the first and second derivatives of
+H0 entropy, suggesting a phase of topological acceleration preceding the event. Corresponding patterns in Wasserstein
+distances showed decreased volatility in the first derivative immediately before the event, indicating a period of structural
+consolidation (Figure 8). Cross-correlation analysis confirmed that changes inH0 consistently led those inH1, with
+peak lag values of−41 for entropy and−14 for Wasserstein distance, suggesting a causal hierarchy wherein shifts in
+component connectivity precede the reorganization of higher-order cycles (Figures 9 and 10). Together, these findings
+support the use of persistent homology as a sensitive tool for detecting early signs of semantic structural reconfiguration
+in text-derived networks.
+4.3 February 24th, 2022
+Topological Signal Analysis of the February 24 th Dataset. In the February 24 th data set, the entropy analysis
+revealed a marked decline inH0 entropy just prior to the event, followed by increased volatility and elevated derivative
+magnitudes—signaling a disruption in narrative cohesion and a transition to a more disordered semantic regime (Figure
+11). In contrast,H1 entropy remained relatively stable in magnitude but exhibited structural complexity that appeared
+to precede changes inH0. Interestingly, cross-correlation analysis revealed that changes inH0 entropy lagged those in
+H1 by approximately 30 time steps—reversing the typical pattern seen in other event-aligned datasets (Figure 13). This
+suggests that disruptions in higher-order thematic or framing structures (represented byH1) preceded the breakdown
+and reorganization of local semantic clusters (represented byH0). Such a top-down shift implies that abstract, global
+frames of interpretation—e.g., “invasion,” “sovereignty,” “war”—entered the discourse before fine-grained topics such
+as locations, actors, or tactical narratives were semantically assimilated. This temporal inversion may reflect the rapid
+imposition of interpretive narratives by global media and political actors, producing a cascading reconfiguration from
+macro-level themes down to micro-level content. The Wasserstein distance derivatives showed a sharp spike inH0
+immediately after the event, further confirming a reorganization in the discourse structure at the component level (Figure
+12). In contrast to the entropy lag, the Wasserstein cross-correlation showed a more modest lead of−3 forH1 overH0,
+indicating a partially consistent temporal ordering across metrics (Figire 14). These findings demonstrate the sensitivity
+of topological methods not only to structural disruptions but also to shifts in causal hierarchy—capturing how narrative
+power can propagate through different levels of semantic representation in response to major geopolitical events.
+7
+
+===== PAGE 8 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 3: October 7th Dataset: Persistence Entropies. Smoothed persistence entropies (top panel) and their first and
+second derivatives (bottom panel) for homology dimensions 0 (H0) and 1 (H1). A sharp rise in H0 entropy occurs
+immediately preceding the marked event (dashed line – October 7th, 2023), whileH1 entropy remains relatively stable
+or declines. The derivative traces reveal pronounced first- and second-order changes inH0, identifying the transition
+point as a dynamic regime shift in the graph’s connected component structure. This suggests an abrupt increase in the
+disorder or complexity of the system’s zero-dimensional topology, followed by stabilization. The contrast in behavior
+betweenH0 andH1 suggests different roles for component and loop features in driving structural change.
+4.4 May 25th, 2020
+Topological Signal Analysis of the May 25th Dataset. In the May 25th dataset,H0 entropy rose significantly after
+the event and exhibited sustained volatility, reflecting a disruption in semantic cohesion and the emergence of many
+short-lived components (Figure 15). In contrast,H1 entropy and distances indicated a delayed response, suggesting
+slower reorganization of relational framing structures (Figure 16). Cross-correlation analysis confirmed this temporal
+ordering: both entropy and Wasserstein distances peaked at large negative lags (-40 and -38, respectively), withH0
+leadingH1 (Figures 17 and 18). These results suggest a bottom-up semantic disruption, where foundational narrative
+elements were destabilized first, precipitating more gradual shifts in complex thematic cycles. Persistent homology thus
+captures a clear, multi-timescale reconfiguration of discourse in the wake of a socially catalytic event.
+8
+
+===== PAGE 9 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 4: October 7th Dataset: Wasserstein Distance. Smoothed, normalized Wasserstein distances over time (top
+panel) and their first and second temporal derivatives (bottom panel), for persistence diagrams in homology dimensions
+0 (H0, connected components) and 1 ( H1, loops). The vertical dashed line denotes a known event (October 7 th,
+2023). While raw distance values change gradually, the derivative panel suggests a marked transition: both first- and
+second-order derivatives converge around zero post-event, suggesting a phase of topological stabilization following the
+disruption. This indicates that dynamic variability in persistence diagrams decreases significantly after the event, even
+if the absolute topological distances remain subtle.
+9
+
+===== PAGE 10 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 5: October 7th Dataset: Persistence Entropy Cross Correlation. Cross-correlation between H0 andH1
+persistence entropies. The peak correlation occurs at lag 0, indicating that changes in entropy for connected components
+(H0) and loops ( H1) are temporally synchronized. This suggests that topological complexity across homology
+dimensions tends to evolve concurrently, reflecting simultaneous shifts in both macro- and micro-level structure in the
+underlying noun-phrase co-occurrence graphs.
+Figure 6: October 7th Dataset: Wasserstein Distance Cross Correlation. The peak correlation is observed at lag
+−15, indicating that changes inH0 (connected components) precede changes inH1 (loops) by approximately 15 time
+steps. This temporal offset implies a cascading dynamic, where large-scale structural reorganization occurs before local
+cyclic features are affected, potentially reflecting a sequential response to systemic perturbations or shifts in narrative
+focus within the corpus.
+10
+
+===== PAGE 11 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 7: January 6th Dataset: Persistence Entropy. Smoothed persistence entropy traces over time forH0 (connected
+components) andH1 (loops), computed from daily semantic graphs derived from global news sources. The top panel
+shows normalized entropy values, while the bottom panel displays first and second derivatives. A sharp rise in H0
+entropy and increased derivative magnitude is observed near the event time, suggesting a topological phase transition in
+component structure.
+11
+
+===== PAGE 12 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 8: January 6th Dataset: Wasserstein Distance. Smoothed Wasserstein distance traces over time forH0 andH1
+persistence diagrams. The top panel shows normalized inter-diagram distances, and the bottom panel presents first and
+second derivatives. Prior to the event, a noticeable drop in derivative volatility suggests structural stabilization across
+both homology dimensions.
+12
+
+===== PAGE 13 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 9: January 6th Dataset: Persistence Entropy Cross Correlation. Cross-correlation between H0 andH1
+persistence entropy traces. The peak correlation occurs at a lag of−41, indicating that changes in component-level
+entropy (H0) precede changes in cycle-level entropy (H1). This lag suggests temporal causal ordering in topological
+reconfiguration.
+Figure 10: January 6th Dataset: Wasserstein Distance Cross Correlation. Cross-correlation betweenH0 andH1
+Wasserstein distance traces. The strongest correlation appears at a lag of−14, implying that shifts in the structure of
+connected components anticipate changes in loop structure. This behavior is consistent with a bottom-up reorganization
+of semantic topology.
+13
+
+===== PAGE 14 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 11: February 24th Dataset: Persistence Entropy. Normalized persistence entropy traces (top panel) and
+their first and second derivatives (bottom panel) for homology dimensionsH0 andH1. TheH0 entropy trace shows a
+sharp decline preceding the event date, followed by increased volatility and derivative acceleration—signaling a loss of
+structural cohesion and a shift into a more fragmented narrative state.H1 entropy remains relatively steady, indicating
+that loop complexity was less affected. Together, these dynamics point to a breakdown and subsequent reorganization
+of foundational narrative elements in the lead-up to the invasion.
+14
+
+===== PAGE 15 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 12: February 24th Dataset: Wasserstein Distance. Smoothed, normalized Wasserstein distances over time (top
+panel) and their first and second temporal derivatives (bottom panel), computed from persistence diagrams in homology
+dimensions 0 (H0, connected components) and 1 (H1, loops). A clear spike inH0 distance derivatives emerges just after
+the marked event (February 24th, 2022), suggesting rapid topological change in the component structure of discourse.
+In contrast,H1 distances remain comparatively stable, with only modest derivative fluctuations. This indicates that
+the semantic reorganization driven by the invasion was more pronounced at the level of narrative connectivity than in
+cyclical structure.
+15
+
+===== PAGE 16 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 13: February 24th Dataset: Persistence Entropy Cross Correlation. Cross-correlation betweenH0 andH1
+persistence entropy time series. The peak correlation occurs at a lag of +30, indicating that changes in component-level
+entropy follow changes in loop-level entropy by approximately 30 time steps. This suggests that disruptions in larger
+thematic or cyclical structures (H1) may precede and influence the reorganization of more localized conceptual clusters
+(H0), implying a top-down dynamic in narrative restructuring.
+Figure 14: February 24th Dataset: Wasserstein Distance Cross Correlation. Cross-correlation betweenH0 and
+H1 Wasserstein distances. The peak occurs at a lag of -3, indicating that shifts in connected component structure
+slightly precede those in loop structure. The small but negative lag supports a bottom-up interpretation of semantic
+reconfiguration, in which early disruptions to basic narrative connectivity eventually affect more complex relational
+motifs.
+16
+
+===== PAGE 17 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 15: May 25th Dataset: Persistence Entropy. Normalized persistence entropy traces (top panel) and their first
+and second derivatives (bottom panel) forH0 andH1. Following the event, both homology dimensions show increased
+volatility, butH0 entropy rises more sharply and sustains elevated levels, suggesting an expansion in the number of
+short-lived narrative clusters. Derivative traces indicate abrupt topological acceleration in both dimensions, especially
+H0, reflecting widespread narrative fragmentation and the emergence of new, unstable components in media discourse.
+17
+
+===== PAGE 18 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 16: May 25th Dataset: Wasserstein Distance. Smoothed, normalized Wasserstein distances (top panel) and
+their first and second derivatives (bottom panel) for persistence diagrams in H0 (connected components) and H1
+(loops). A notable divergence emerges shortly after the event marker, whereH0 distances display a transient decrease
+in volatility, whileH1 shows relatively greater dynamism. This suggests a brief phase of semantic stabilization in
+component structure, followed by elevated cyclic variability—perhaps indicating a shift from structural consensus to a
+proliferation of contested narrative framings.
+18
+
+===== PAGE 19 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Figure 17: May 25th Dataset: Persistence Entropy Cross Correlation. Cross-correlation between H0 and H1
+persistence entropy time series. The peak occurs at lag−40, indicating that changes in component-level entropy precede
+those in loop-level entropy by approximately 40 time steps. This points to a sequential unfolding in narrative structure,
+where a breakdown in conceptual cohesion initiates longer-term disruptions in thematic framing and cyclic motifs.
+Figure 18: May 25th Dataset: Wasserstein Distance Cross Correlation. Cross-correlation between H0 andH1
+Wasserstein distances. The peak lag occurs at−38, supporting the same temporal hierarchy observed in the entropy
+traces. This suggests that reconfiguration in the global structure of semantic connectivity leads, rather than follows,
+changes in the cyclic organization of discourse. The substantial lag indicates a prolonged semantic cascade following
+the initial rupture.
+19
+
+===== PAGE 20 =====
+A Topological Analysis of Media Discourse A PREPRINT
+5 Discussion
+Our analysis demonstrates that persistent homology provides a robust and interpretable framework for detecting
+structural transitions in public discourse. By tracing the evolution of topological features in daily semantic graphs,
+we identified sharp reorganizations in narrative structure that coincide with globally significant events, including the
+Russian invasion of Ukraine, the murder of George Floyd, the U.S. Capitol insurrection, and the Hamas-led invasion of
+Israel. Across all datasets, we observed characteristic patterns in both H0 (connected components) andH1 (loops),
+reflecting distinct phases of disruption, reorganization, and stabilization in the semantic topology of news narratives.
+5.1 Bottom-Up Reorganization
+A consistent finding across most events was the temporal precedence of changes inH0 overH1—both in persistence
+entropy and in Wasserstein distances. This lag structure suggests a bottom-up dynamic of semantic reconfiguration:
+ruptures in narrative cohesion (reflected inH0) tend to precede shifts in higher-order relational motifs (captured by
+H1). For example, in the aftermath of George Floyd’s murder, entropy cross-correlation peaked at a lag of−40, while
+Wasserstein distance peaked at−38, indicating that structural fragmentation in the basic units of discourse initiated
+a delayed cascade into more complex, thematic reorganization. A similar temporal pattern emerged in the Capitol
+insurrection and October 7th datasets, reinforcing the notion that large-scale events propagate their semantic impact
+gradually—from the disintegration of shared referents to the restructuring of collective meaning.
+5.2 Event-Specific Dynamics and Inverted Causal Order
+Despite these shared dynamics, certain events exhibited striking deviations from the bottom-up pattern. Most notably,
+in the February 24 th dataset corresponding to the Russian invasion of Ukraine, cross-correlation analysis revealed
+that changes inH0 entropy lagged those inH1 by approximately +30 time steps. This reversed ordering suggests a
+top-down semantic dynamic, wherein disruptions in abstract thematic or framing structures (captured byH1) preceded
+the reconfiguration of local narrative clusters (captured by H0). Such a pattern may reflect the rapid imposition of
+global interpretive frames—e.g., “invasion,” “war,” “sovereignty”—before granular, fact-level reporting and narrative
+alignment occurred. This inversion stands in contrast to the other datasets and underscores the potential of topological
+methods to uncover variation in the causal hierarchy of semantic change.
+Other events, such as May 25th, showed more protracted entropy lags and sustained volatility, consistent with ongoing
+contestation and fragmented public narratives. These differences may reflect the nature of the events themselves
+(e.g., rapid rupture versus prolonged unrest), the pace of media coverage, or differences in audience segmentation and
+epistemic coherence.
+5.3 Stability and Volatility
+Derivative analysis of both entropy and Wasserstein distances revealed key turning points in the topological evolution
+of discourse. Spikes in first-order derivatives typically marked the onset of structural change, while inflection points
+in second-order derivatives signaled transitions into new regimes—often interpreted as stabilization or plateauing
+following the event. This pattern was especially clear in the February 24 th dataset, where post-invasion volatility
+gradually resolved into a new, persistent discourse structure. Conversely, the May 25 th dataset showed prolonged
+topological instability, consistent with a sustained period of social unrest and competing narrative framings.
+5.4 Implications for Event Detection and Discourse Analysis
+These findings suggest that topological signals offer a sensitive and temporally nuanced tool for event detection, capable
+of identifying not only the onset but also the unfolding and aftershocks of semantic reconfiguration. Importantly,
+our approach is entirely unsupervised: it requires no prior knowledge of the event, no keyword dictionaries, and no
+labeled training data. This enables the detection of emergent or unanticipated phenomena that may be missed by
+conventional methods focused solely on lexical salience or sentiment. Furthermore, the use of persistent homology
+enables a scale-invariant view of structure, capturing both localized disruptions and systemic transitions across time.
+6 Conclusions and Future Work
+This study presents a novel application of topological data analysis to the evolving structure of media discourse,
+offering a mathematically grounded method for detecting systemic shifts in public narratives. By embedding daily co-
+occurrence graphs of noun phrases and computing their persistent homology, we identified moments of sharp semantic
+20
+
+===== PAGE 21 =====
+A Topological Analysis of Media Discourse A PREPRINT
+reorganization that coincided with high-salience geopolitical and social events. The combined use of Wasserstein
+distance, persistence entropy, and cross-correlation analysis enabled us to detect both immediate disruptions and delayed
+narrative cascades across different homological dimensions.
+Our results generally show that H0 features—representing the emergence and dissolution of narrative compo-
+nents—respond first to external shocks, whileH1 features—capturing higher-order semantic loops—often shift more
+gradually. This temporal structure suggests that foundational narrative elements destabilize prior to the reorganization
+of complex thematic framings. However, the exception observed on February 24th—in whichH1 entropy led changes
+in H0—demonstrates that this ordering is not universal. In cases of rapid global framing, high-level interpretive
+schemas may precede factual narrative realignment, reversing the usual semantic cascade. This underscores the value of
+persistent homology not only as a detector of disruption but also as a probe into the semantic directionality of narrative
+change.
+6.1 Future Work
+Several avenues for future research remain. First, we aim to extend this framework to a broader class of events, including
+financial crises, natural disasters, and political transitions, to test its applicability across different domains of collective
+sense-making. Second, integrating multilingual corpora could reveal whether structural shifts propagate differently
+across cultural or linguistic boundaries. Third, coupling persistent homology with sentiment trajectories or topic models
+could enrich our understanding of how affective and thematic content evolve in tandem with discourse topology.
+We also envision applications of this method to real-time event detection and monitoring. By continuously updating
+topological indicators on incoming media streams, it may be possible to develop early-warning systems that flag
+semantic discontinuities before they manifest in conventional reporting. In addition, further exploration of higher-
+dimensional homological features (H2 and above) may provide insight into even more intricate patterns of discourse
+entanglement.
+Ultimately, this work contributes to the growing toolkit of computational social science, demonstrating how topological
+methods can illuminate the shape of public thought as it is formed, fractured, and reassembled in response to the shocks
+of history.
+References
+Kenneth W. Church and William A. Gale. Poisson mixtures. In Natural Language Engineering, volume 1, pages
+163–190. Cambridge University Press, 2008.
+James W. Pennebaker, Ryan L. Boyd, Kayla Jordan, and Kate Blackburn.The development and psychometric properties
+of LIWC2015. University of Texas at Austin, 2015.
+Bo Pang and Lillian Lee. Opinion mining and sentiment analysis. In Foundations and Trends in Information Retrieval,
+volume 2, pages 1–135. Now Foundations and Trends, 2008.
+Bing Liu. Sentiment analysis and opinion mining. Synthesis Lectures on Human Language Technologies. Springer
+Nature Switzerland AG, 2012. doi:10.1007/978-3-031-02145-9.
+David M. Blei, Andrew Y . Ng, and Michael I. Jordan. Latent dirichlet allocation. Journal of Machine Learning
+Research, 3:993–1022, 2003.
+Margaret E. Roberts, Brandon M. Stewart, Dustin Tingley, Christopher Lucas, Jetson Leder-Luis, Shana Kushner Gadar-
+ian, Bethany Albertson, and David G. Rand. Structural topic models for open-ended survey responses. American
+Journal of Political Science, 58(4):1064–1082, 2014. doi:doi.org/10.1111/ajps.12103.
+Tomas Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean. Efficient estimation of word representations in vector
+space. arXiv preprint arXiv:1301.3781, 2013a.
+Jeffrey Pennington, Richard Socher, and Christopher D. Manning. Glove: Global vectors for word representation.
+In Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP), pages
+1532–1543. Association for Computational Linguistics, 2014. doi:10.3115/v1/D14-1162.
+Gunnar Carlsson. Topology and data. Bulletin of the American Mathematical Society , 46(2):255–308, 2009.
+doi:10.1090/S0273-0979-09-01249-X.
+Larry Wasserman. Topological data analysis. Annual Review of Statistics and Its Application , 5:501–532, 2018.
+doi:doi.org/10.1146/annurev-statistics-031017-100045.
+21
+
+===== PAGE 22 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Ann E. Sizemore, Jennifer E. Phillips-Cremins, Robert Ghrist, and Danielle S. Bassett. The importance of the
+whole: Topological data analysis for the network neuroscientist. Network Neuroscience, 3(3):656–673, 2019.
+doi:doi.org/10.1162/netn_a_00073.
+Bernadeta J. Stolz, Heather A. Harrington, and Mason A. Porter. Persistent homology of time-dependent functional
+networks constructed from coupled time series. Chaos: An Interdisciplinary Journal of Nonlinear Science, 27(4):
+047410, 2017. doi:doi.org/10.1063/1.4978997.
+Audun Myers, David E. Muñoz, Firas A. Khasawneh, and Elizabeth Munch. Temporal network analysis using zigzag
+persistence. EPJ Data Science, 12(1):6, 2023. doi:10.1140/epjds/s13688-023-00379-5.
+David Cohen-Steiner, Herbert Edelsbrunner, and John Harer. Stability of persistence diagrams. Discrete & Computa-
+tional Geometry, 37(1):103–120, 2007. doi:doi.org/10.1007/s00454-006-1276-5.
+Frédéric Chazal, Vin de Silva, Marc Glisse, and Steve Oudot. The Structure and Stability of Persistence Modules .
+SpringerBriefs in Mathematics. Springer, 2016. doi:10.1007/978-3-319-42545-0.
+Natalia Atienza, Rocio González-Díaz, and María Soriano-Trigueros. On the stability of persistent entropy and
+new summary functions for topological data analysis. Pattern Recognition, 107:107509, 2020. ISSN 0031-
+3203. doi:10.1016/j.patcog.2020.107509. URL https://www.sciencedirect.com/science/article/pii/
+S0031320320303125.
+Natalia Atienza, Rocio González-Díaz, and Matteo Rucco. Separating topological noise from features us-
+ing persistent entropy. In Lecture Notes in Computer Science , volume 9958, pages 3–12. Springer, 2016.
+doi:https://doi.org/10.1007/978-3-319-50230-4_1.
+Xiaojin Zhu. Persistent homology: An introduction and a new text representation for natural language processing. In
+Proceedings of the 23rd International Joint Conference on Artificial Intelligence (IJCAI 2013), pages 1953–1959,
+2013.
+Sara Gholizadeh, Amir Hossein Seyeditabari, and Wlodek Zadrozny. Topological signature of 19th cen-
+tury novelists: Persistent homology in text mining. Big Data and Cognitive Computing , 2(4):33, 2018.
+doi:doi.org/10.3390/bdcc2040033.
+Laida Kushnareva, Daniil Cherniavskii, Vladislav Mikhailov, Ekaterina Artemova, Sergei Barannikov, Alexander
+Bernstein, Irina Piontkovskaya, Dmitri Piontkovski, and Evgeny Burnaev. Artificial text detection via examining the
+topology of attention maps. In Proceedings of the 2021 Conference on Empirical Methods in Natural Language
+Processing (EMNLP), pages 635–649. Association for Computational Linguistics, 2021. doi:0.18653/v1/2021.emnlp-
+main.50.
+Pantea Haghighatkhah, Antske Fokkens, Pia Sommerauer, Bettina Speckmann, and Kevin Verbeek. Story trees:
+Representing documents using topological persistence. In Proceedings of the 13th Conference on Language
+Resources and Evaluation (LREC 2022), pages 2413–2429. European Language Resources Association, 2022.
+Ketki Savle, Wlodek Zadrozny, and Minwoo Lee. Topological data analysis for discourse semantics? In Proceedings of
+the 13th International Conference on Computational Semantics (IWCS 2019) – Student Papers, pages 34–43, 2019.
+doi:10.18653/v1/W19-0605.
+Isabela Rocha. Persistent homology generalizations for social media network analysis. arXiv:2404.19257 [cs.CY],
+2024.
+Arvindh Arun, Karuna K. Chandra, Akshit Sinha, Balakumar Velayutham, Jashn Arora, Manish Jain, and Ponnurangam
+Kumaraguru. Topo goes political: Tda-based controversy detection in imbalanced reddit political data. In Companion
+Proceedings of the Web Conference 2025 (WWW ’25 Companion). ACM, 2025. doi:10.1145/3701716.3717535.
+Minh Nguyen, Mehmet E. Aktas, and Esra Akbas. Bot detection on social networks using persistent homology.
+Mathematical and Computational Applications, 25(3):58, 2020. doi:10.3390/mca25030058.
+Leland McInnes, John Healy, and James Melville. Umap: Uniform manifold approximation and projection for
+dimension reduction. arXiv preprint, 2018. URL https://arxiv.org/abs/1802.03426. Preprint.
+Afra Zomorodian and Gunnar Carlsson. Computing persistent homology. Discrete & Computational Geometry, 33(2):
+249–274, 2005. doi:10.1007/s00454-004-1146-y.
+Clément Maria, Jean-Daniel Boissonnat, Marc Glisse, and Mariette Yvinec. Gudhi: Geometry understanding in higher
+dimensions. International Congress on Mathematical Software , pages 167–174, 2014. doi:10.1007/978-3-662-
+44199-2_28.
+NewsAPI. NewsAPI: A json-based rest api for live and historical news content, 2024. URL https://newsapi.org/.
+Accessed via REST interface for data collection.
+22
+
+===== PAGE 23 =====
+A Topological Analysis of Media Discourse A PREPRINT
+Andreas L. Opdahl, Tareq Al-Moslmi, Duc-Tien Dang-Nguyen, Marc Gallofré Ocaña, Bjørnar Tessem, and Csaba
+Veres. Semantic knowledge graphs for the news: A review. ACM Computing Surveys, 55(7):140:1–140:38, 2023.
+doi:10.1145/3543508.
+Zhihua Yan and Xijin Tang. Narrative graph: Telling evolving stories based on event-centric temporal knowledge graph.
+Journal of Systems Science and Systems Engineering, 32(2):206–221, 2023. doi:10.1007/s11518-023-5561-0.
+Tommaso Radicioni, Fabio Saracco, Elena Pavan, and Tiziano Squartini. Analysing twitter semantic networks: the case
+of 2018 italian elections. Scientific Reports, 11:13207, 2021. doi:10.1038/s41598-021-92337-2.
+Wanying Zhao, Siyi Guo, Kristina Lerman, and Yong-Yeol Ahn. Discovering collective narratives shifts in online
+discussions. arXiv:2307.08541 [cs.CL], 2023.
+Mustafa Hajij, Bei Wang, Carlos E. Scheidegger, and Paul Rosen. Visual detection of structural changes in time-varying
+graphs using persistent homology. In Proceedings of the IEEE Pacific Visualization Symposium (PacificVis), pages
+125–134, Kobe, Japan, 2018. doi:10.1109/PacificVis.2018.00024.
+Mehmet E. Aktas, Esra Akbas, and Abdoulaye El Fatmaoui. Persistent homology of networks: methods and applications.
+Applied Network Science, 4(1):61, 2019. doi:10.1007/s41109-019-0169-9.
+Robert M. May, Simon A. Levin, and George Sugihara. Ecology for bankers. Nature, 451(7181):893–895, 2008.
+doi:10.1038/451893a. URL https://www.nature.com/articles/451893a.
+Douglas Guilbeault and Damon Centola. Topological measures for identifying and predicting the spread of complex
+contagions. Nature Communications, 12(1):4430, 2021. doi:10.1038/s41467-021-24704-6. URL https://www.
+nature.com/articles/s41467-021-24704-6 .
+Edward Loper and Steven Bird. Nltk: The natural language toolkit. In Proceedings of the ACL-02 Workshop
+on Effective Tools and Methodologies for Teaching Natural Language Processing and Computational Linguis-
+tics, pages 63–70, Philadelphia, Pennsylvania, USA, July 2002. Association for Computational Linguistics.
+doi:10.3115/1118108.1118117. URL https://aclanthology.org/W02-0109/.
+Tomas Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean. Efficient estimation of word representations in vector
+space, 2013b. URL https://arxiv.org/abs/1301.3781. Preprint.
+Aditya Grover and Jure Leskovec. node2vec: Scalable feature learning for networks. In Proceedings of the 22nd
+ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, pages 855–864. ACM, 2016.
+doi:10.1145/2939672.2939754. URL https://snap.stanford.edu/node2vec/.
+The GUDHI Project. GUDHI User and Reference Manual. GUDHI Project, 2021. URL http://gudhi.gforge.
+inria.fr. http://gudhi.gforge.inria.fr.
+23

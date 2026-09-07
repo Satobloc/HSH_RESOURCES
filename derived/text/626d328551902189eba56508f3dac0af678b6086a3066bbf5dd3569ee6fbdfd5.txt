@@ -1,0 +1,1921 @@
+===== PAGE 1 =====
+Topology-Aware Differentiable Triangle-Soup Reconstruction
+via Persistent Homology
+Viritphon Chongpermwattanapol∗ Nattapat Damnernyut Pizzanu Kanongchaiyos
+Department of Computer Engineering, Faculty of Engineering,
+Chulalongkorn University, Bangkok, Thailand
+viritphon.1234@gmail.com starter2157@gmail.com pizzanu.k@chula.ac.th
+∗Corresponding author. Preprint: main paper (§1–§9) plus the supplementary material as Appendices A–H.
+Figure 1. Geometry alone cannot distinguish topology; measurement can. Final reconstructions (seed 0), identical budgets: ground truth;
+baseline (C0); the norm-matchednon-topologicalrepulsion control (C2); the persistence loss (C1, ours) — equal-or-better Chamfer on
+every row (§5.2). A topological error need not be visible, so each cell is badged with itsmeasuredsignificant-feature count (blue outline
+= correct, filled orange = wrong; identical across seeds): the control erases both voids — and collapses a loop on bob (suppl. Fig. S8) —
+while the loss reads correct everywhere, cutting tail error up to10.4×(group means1.5×/4.9×; Tables 1–2).
+Abstract
+Differentiable triangle-soup reconstruction inherits a limi-
+tation from its objective: photometric and geometric losses
+cannot measure topology, so a reconstruction with a col-
+lapsed loop or a punctured enclosed void can score exactly
+as well as a correct one (on Chamfer-equal probes the di-
+agrams differ35–40×in bottleneck distance). The stan-
+dard implicit remedy — steerwherethe resampler spends
+its budget — does not repair this: in a controlled alloca-
+tion study, a topology-informed prior is largely matched by
+an equally wide random one, and no prior shape repairs
+loops. We therefore move topology into the objective: a
+differentiable persistence term compares the evolving sur-
+face’s diagram, measured on live surface samples, to a
+fixed target; gradients flow through a pair-frozen backward
+re-expressing matched birth/death simplices as closed-form
+circumradii (exact for Gabriel simplices, verified per pair-
+ing), plus a recruitment term restoring the gradient opti-
+mal matching provably lacks when a target feature is miss-
+ing; one ratio knob calibrates the loss against the photo-
+metric gradient, no curriculum needed. Every claim passes
+a channel-controlled verdict: the loss must beat a norm-
+matchednon-topologicalcontrol through the identical gra-
+dient channel, at Chamfer parity. Under that rule the loss is
+topology-specific for enclosed voids (4.0–7.9×lower error)
+and — the class every allocation prior failed — for loops
+(2.3×, zero phantom handles, while the control collapses
+one); loss and prior compose; component counts (H0) are
+a null result, matched by the generic control. The ver-
+dicts replicate without per-shape tuning on eight external
+genus-known meshes in two observable-class groups (pre-
+registered group means: loops1.52×, voids4.87×; one a
+raw artist mesh, ingested andcertified; the one non-pass
+is a no-headroom null, its already-correct baseline left un-
+harmed), degrading gracefully under sensor noise. Scope:
+all evidence is synthetic and single-machine — closed sur-
+faces plus a first open-surface probe — with the target dia-
+gram known in advance, the regime where correction can be
+measured exactly; real scans and blind capture are future
+work. Prescription: correct topology in the loss, allocate
+1
+arXiv:2608.16848v1  [cs.GR]  17 Aug 2026
+
+===== PAGE 2 =====
+wide, combine.
+1. Introduction
+Differentiable rasterization reconstructs a triangle soup
+from images by following photometric gradients [91], pe-
+riodically resampling under a fixed budget. Photometric
+losses are topologically blind: reconstructions differing in
+genus, connectivity, or enclosed voids can be indistinguish-
+able to Chamfer and Hausdorff while persistence diagrams
+separate them35–40×in bottleneck distance on Chamfer-
+equal probes (§2; suppl. Table S1). Fig. 1 previews the
+consequence: identical budgets, equal-or-better Chamfer,
+topology standing or falling with the objective.
+A decade of connectivity-free reconstruction — point
+splats, Gaussians, and lately a return to triangle soups for
+their native graphics-pipeline fit [11, 40, 91] — has treated
+topology errors as symptoms of geometric under-provision:
+represent the surface better, or allocate the budget more
+wisely, and topology should follow. We tested the allocation
+half first (suppl. §A). It fails: a topological prior helps en-
+closed voids, but any equally-widenon-topologicalprior re-
+produces most of the gain, and no prior shape repairs loops
+— concentrating manufactures phantom handles, spreading
+never beats a random control.
+The null result relocates the root cause: notwheretrian-
+gles are spent, butwhat the objective measures— a photo-
+metric loss is a local, pixel-space signal; a loop or an en-
+closed void is a global, categorical property of the surface.
+This paper therefore moves topology into theobjective: a
+differentiable persistence term whose gradients act directly
+on features’ birth/death values rather than on where trian-
+gles respawn.
+Three research hypotheses structure the study, each
+tested by a pre-designed condition:
+1.RH1 (diagnosis): topology errors originate in the train-
+ing objective, not in primitive allocation — tested by the
+allocation study above.
+2.RH2 (specificity): a persistence term improves topol-
+ogy in ways no norm-matched non-topological regular-
+izer through the identical channel can reproduce — the
+control C2 (§3.5).
+3.RH3 (complementarity): objective and allocation are
+complementary channels, not substitutes — the compo-
+sition C5.
+Concretely, we contributea matched persistence loss with
+a pair-frozen backward(§3): exact persistence forward
+(GUDHI alpha complex), backward through closed-form
+circumradii — Gabriel-exact for 100% of significant pairs
+in practice;a recruitment term for missing features: op-
+timal matching yields zero gradient when a target feature
+has no live counterpart; recruitment attaches the nearest live
+bar, and removing it collapses the loop-class win to baseline
+(§5);one calibrated knob:λset by a gradient-norm ratioρ,
+flat over a10×range, no curriculum needed — an ablation,
+not an assumption; andchannel-controlled evaluation: ev-
+ery claim must beat a norm-matchednon-topologicalcon-
+trol through the identical channel (§3.5).
+The loss proves topology-specific on the class no prior
+ever won — loops, zero phantom handles — confirming
+RH2; the channels compose (RH3); the H0 class is matched
+by the generic control, sharpening RH1: topological guid-
+ance earns its keep where geometry and topology decouple.
+2. Related work
+A decade of gradient-based reconstruction: four posi-
+tions on connectivity.OpenDR [65], neural mesh ren-
+dering [54], SoftRas [64], DIB-R [17] and nvdiffrast [60]
+established gradient flow from pixels to geometry; recon-
+struction work since splits on what that geometry should
+be. (i)Implicit fields— learned occupancy and signed dis-
+tance [68, 76], volume-rendered from NeRF [69] through
+NeuS [94] to Neuralangelo [63] — are watertight and topo-
+logically consistentby construction(the strongest counter-
+position), at field-evaluation and extraction cost. (ii)Fixed-
+connectivity templatesdeformed per input [38, 93] keep
+manifoldness but freeze topology at the template’s genus.
+(iii)Differentiable iso-surfacingre-extracts the mesh from
+a volumetric scaffold at every step [72, 86, 87] (Shape-
+as-Points bridges point soups to watertight implicits [78])
+— topological freedom at grid cost. (iv)Connectivity-free
+primitive soups— point splatting [101], patch atlases [34],
+Gaussians [58] and their surface-accurate variants [35, 47],
+and a 2025–26 return to native triangles (splatted [40], soft-
+connected [11], rasterized by DiffSoup [91]) — are the
+fastest and the easiest to budget, but even their surface-
+minded members regularizegeometry(alignment, flatness,
+connectivity forces), never a measured topology. Mesh-
+Splatting, conversely, rendersalready-connectedopaque
+meshes differentiably [39]: connectivity as input; ours
+a free soup with measured topology. (i) and (iii) solve
+topology representationally; (iv) had not addressed it. Cut
+byoptimization philosophyrather than representation, the
+decade holdsgeometry-orientedobjectives (every method
+above),sampling-orientedsteering of where a fixed objec-
+tive spends primitives (below), and an empty third family —
+topology-orientedobjectives that measure the property and
+differentiate through it (suppl. Table S6). Prior work occu-
+pies every pairwise intersection of the section’s axes — ex-
+plicit triangles, differentiable optimization, topology in the
+objective; this paper takes the three-way one, at the soup’s
+budget and speed. We build on DiffSoup, whose in-loop
+prune/respawn resampler is the very mechanism our allo-
+cation study (suppl. §A) steered; here the resampler stays
+untouched and only the objective changes. Vertex-domain
+preconditioning [73] is complementary: it changeshowver-
+2
+
+===== PAGE 3 =====
+tices move, we changewhy.
+The allocation channel: why priors alone fail.Three
+findings of our allocation-channel study set this paper’s
+problem. (1) Geometric metrics are topology-blind: on
+bisection-matched probes with Chamfer equalby construc-
+tion(0.916/0.628/0.977%per pair), the discriminating-
+dimension bottleneck separates correct from broken topol-
+ogy by35–40×— thin handle≈0vs.0302, bridged merge
+.0014vs.0574, punctured void.0040vs.1385— and
+Hausdorff95 evenprefersthe wrong candidate in two of
+three cases (suppl. Table S1). (2) For voids, a spread topo-
+logical prior cuts the bottleneck33–53%below baseline —
+but a width-matchedrandomcontrol recovers most of that
+gain, leaving a small, shape-dependent residual: the prior’s
+value is carried largely by its width. (3) No prior shape re-
+pairs loops: the best torus arm is thenon-topologicalwide
+control (.0267vs the spread prior’s.0316), and the concen-
+trated field manufactures phantom handles (4.4significant
+loops vs the true2); C5 below reuses the study’s strongest
+field (B4; suppl. §A).
+Persistence in learning objectives.Persistent homol-
+ogy [25] with its stability guarantees [21] has been used
+as a trainable signal via differentiable sorting of filtra-
+tion values [9], for topology-preserving image segmenta-
+tion [20, 45], point-cloud and shape optimization and 3D
+volume prediction [8, 79, 92], and diagram-metric opti-
+mization with convergence analysis [13]; barcode-valued
+maps have since been given a general differential frame-
+work [62], and the per-step cost of persistence-guided de-
+scent attacked directly [74] — yet never as the objective
+of anexplicit triangle-basedreconstruction. Nearest our
+setting, concurrent work brings persistence to reconstruc-
+tion at other, complementary entry points: an image-space
+barcode term for Gaussian splatting [88], homology-guided
+camera placement [30] or a genus-matched template [29]
+in mesh inverse rendering, and a connected-component
+constraint on implicits fitted to point clouds [51]. Parti-
+tion our setting’s three requirements — (i) a topological
+quantity of the evolvingsurfacemeasured differentiably
+in the objective, (ii) image-based training through a ren-
+derer, (iii) a fixed primitive budget — and each neighbour
+satisfies at most one (suppl. §D.7): the image-space bar-
+code term never measures the surface (i); the point-cloud
+pipeline forgoes renderer and budget (ii, iii); the template
+lineassumesthe genus we measure (i). A head-to-head
+benchmark is therefore ill-posed (inputs, outputs, and cost
+regimes differ); our evaluation instead pits the loss against
+norm-matched controls through its own channel (§4). The
+nearest soup-side neighbour regularizes coherence withsoft
+connectivity forces[11] — local continuity pressure, no
+measured topology; we replace that heuristic with the mea-
+surement. Our backward pass is in the persistence fam-
+ily — unlike work that back-propagates through filtration-
+value sorting or barcode coordinates in general position, we
+re-express each paired simplex’s birth/death as a closed-
+form circumradius — with three pipeline-specific ingre-
+dients. (i)Alpha-complex pairing overα×area surface
+samplesof a live triangle soup — not image grids or raw
+clouds — couples the diagram to the geometry actually be-
+ing trained. (ii) AGabriel-exactness gate: the circumradius
+re-expression equals the filtration value only for Gabriel
+simplices, so we verify it per pairing (relative10−6) — cer-
+tifying the frozen gradient rather than assuming it. (iii)Re-
+cruitment for missing features: optimal partial matching has
+zero gradient exactly when a target feature is entirely ab-
+sent, so we trade metric fidelity for a restored descent direc-
+tion (§3), quantifying both its pathology and its necessity
+(§5).
+Topology-aware geometry processing.Topology-aware
+reconstruction and repair predate differentiable pipelines [4,
+52, 85], and budgeted remeshing has a long lineage [3, 7,
+23, 31, 43]; our contribution is orthogonal — the budget me-
+chanics stay DiffSoup’s, only the training signal becomes
+topology-aware.
+3. Method: a matched persistence loss for
+triangle soups
+3.1. Objective
+DiffSoup trains with a photometric objectiveL photo (opac-
+ity auxiliary +0.8L 1 + 0.2 SSIM) [91], which we adoptun-
+changed: every ablation below isolates the topology chan-
+nel, never photometric tuning. We add
+L=L photo +λ(t)L topo(V),(1)
+whereVare the soup’s vertex positions andL topo compares
+the persistence diagram of the live surface to a fixedtar-
+get bundleT: the significant finite bars of the ground-truth
+shape’s diagram, computed once at the densityMthe loss
+will see (alpha values shift with spacing: density match-
+ing is a correctness requirement), diagonal-normalized,
+and locked for all live evaluations. Throughout, a bar is
+significantiff its lifetime exceeds the measurement floor
+6r med(M)(r med = median nearest-neighbour sample spac-
+ing; derived and validated in §6).
+3.2. Live diagram and pair-frozen backward
+At each refresh we drawMsurface samples (M=2048
+unless the measurement-floor rule of §4 dictates a denser
+bundle)X j = P
+iwijV[F(f j),i]with facesf j drawn
+σ(α)×area-weighted and barycentric weightsw ij frozen;
+Xis recomputed from liveVevery step, so gradients reach
+3
+
+===== PAGE 4 =====
+vertices while the combinatorics stay fixed. The alpha com-
+plex ofX[24], computed exactly with GUDHI [67], yields
+persistence pairs (birth simplex, death simplex) per dimen-
+sion (suppl. Fig. S9). For a Gabriel simplex the alpha filtra-
+tion value is its squared circumradius, so each paired bar’s
+coordinates are closed-form functions of a few sample po-
+sitions, all exactly differentiable:
+Redge = 1
+2∥p1−p0∥, R tri =∥u∥∥v∥∥u−v∥
+2∥u×v∥ ,
+Rtet =∥y∥withAy= 1
+2 diag
+ 
+AA⊤
+,
+(2)
+wherep 0,...,p k are thek-simplex’s sample positions,u=
+p1−p0,v=p 2−p0, andAstacks the rowsp i−p0 (the
+circumcenter isp 0+y). Edges carry H0 deaths and H1
+births, triangles H1 deaths and H2 births, tetrahedra H2
+deaths. We verify, per pairing, that the re-expressed value
+matches the filtration value (relative10 −6); a pair failing
+this Gabriel test isdetached— it keeps its (correct) value
+in the loss but propagates no gradient, so an exactness fail-
+ure can never inject a wrong one. In practice the gate never
+fires: 100% of significant pairs are Gabriel-exact on all six
+shapes’ clean clouds, and the per-refresh failure count is
+zero at every one of the5,500+logged refreshes (all2,400
+noisy ones included, §5) — a constant pass rate, not an ag-
+gregate. Stronger fallbacks (dropping pairs, subgradients,
+locally raisingM) remain available. The pairing is treated
+as locally constant — the standard pair-frozen device [9, 13]
+— refreshed everyK=10steps and, necessarily, after ev-
+ery resampling event (which replaces the primitive tensors
+wholesale);K=10is an amortization choice, not a tuned
+knob — it bounds refresh cost (174ms each; the fixed≈46s
+of §5) while the pairing stays local.
+3.3. Matching, diagonal pressure, and recruitment
+LetDbe the live significant bars andTthe target bars of
+one dimension. An optimal partial matching (Hungarian on
+the standard augmented cost; equivalentlyW 2) splits bars
+into matched pairs, unmatched live, and unmatched target:
+Ltopo =
+X
+(i,j) matched
+
+(bi−b∗
+j )2 + (di−d∗
+j )2
++
+X
+iunmatched
+
+di−bi
+2
+2
++L recruit.
+(3)
+The first term pulls matched features to their targets; the
+second pushes spurious features to the diagonal; the third
+exists because optimal matching has a provable failure
+mode:
+Lemma 1If a target bart∈ Tis unmatched under the
+optimal partial matching, thenL topo withoutL recruit is lo-
+cally independent oft: no component of its gradient inV
+acts to create the missing feature.
+Proof sketch.The unmatched target’s augmented cost is its
+diagonal penalty
+ 
+(d∗
+t−b∗
+t )/2
+2
+, constant in the live co-
+ordinates; everyV-dependent term of Eq. 3 references live
+bars only, and the matching is locally constant inV(the
+pair-frozen regime) — no gradient term is directed att.□
+Recruitment restores a descent direction. LetT miss be
+the unmatched target bars, processed in decreasing persis-
+tence order, and let the candidate poolAhold every live bar
+not claimed by the matching — unmatched significant bars
+and, crucially,sub-thresholdbars, which matching never
+sees. Each missing target greedily claims its nearest pool
+bar, without replacement, under the same squared birth–
+death metric as the matched term:
+Lrecruit =
+X
+j∈Tmiss
+
+(bk(j)−b∗
+j )2 + (dk(j)−d∗
+j )2
+,
+k(j) = arg min
+k∈A j
+
+(bk−b∗
+j )2 + (dk−d∗
+j )2
+,
+(4)
+whereA j is the pool remaining after earlier recruitments;
+recruited bars are excluded from the diagonal term and
+back-propagate through the same circumradius machin-
+ery. This deliberately departs from metric-faithfulW 2; §5
+probes its location-blindness pathology directly, and C6
+shows the term is load-bearing. Greedy rather than opti-
+mal assignment is deliberate: in every logged regime the
+missing-target set is a single bar (torus: one unreached
+target at every refresh, every seed; §5), where the two
+coincide; when they diverge, decreasing-persistence order
+spends the pool on the most significant features first.
+3.4. Calibration instead of curriculum
+λ(t)ramps linearly from 20% to 50% of training, with
+peak set once by a gradient-norm ratio at the first active
+step:λ peak =ρ∥∇ VLphoto∥/∥∇VLtopo∥. The single
+knobρis dimensionless (ρ=0.1throughout); the tail er-
+ror is flat acrossρ∈{0.03,0.1,0.3}, a constant-λablation
+matches the ramped version, and alternative ramp windows
+land within seed noise (suppl. Table S8) — calibration, not
+scheduling, makes the knob safe.
+3.5. Conditions
+C0: baseline (photometric only). C1:+L topo. C2:+
+a short-range repulsion on thesamefrozen samples, cali-
+brated with thesameρ— the norm-matched control, the
+RH2 test (C2g: a gentler radius). C3: C1 without the ramp.
+(C4, curvature-weighted, is deferred; the numbering gap
+keeps condition tags comparable across studies.) C5: C1
++the best prior of our allocation study (the spread topolog-
+ical field B4; suppl. §A) — the RH3 test. C6: C1 without
+recruitment (pure matching+diagonal) — does the term
+matter in-loop, or only for cold-start repair?
+4
+
+===== PAGE 5 =====
+4. Experimental setup
+Scenes and budgets.Synthetic COLMAP scenes with
+analytically known topology, rendered from 24–72
+Fibonacci-sphere viewpoints at 200–256 px (every-8th test
+holdout⇒21–63 training views): sphere and cube (void
+class H2,β=(1,0,1), budgetN=1200), torus (loop class
+H1,(1,2,1),N=700), two spheres (component class H0,
+(2,0,2),N=700), and genus-2 double torus as a stretch
+case ((1,4,1),N=2000). Budgets are the allocation study’s
+headroom points (suppl. §A) — tight enough that baseline
+topology is imperfect. Eight external, genus-known meshes
+probe generality beyond the analytic family, organized as
+the study’s two observable classes (§5.2): aloop group—
+bob(genus 1),rocker-arm(1), the CGALeight(2) — and
+avoid group—spot,fandisk,armadillo,horse(all genus
+0), thetom-yum pot(3, below); sources, licenses and cer-
+tificates: suppl. §G. Seven pass the mesh certificate be-
+low as-is; five further candidates failed it (open boundaries,
+non-manifold junctions) and were excluded, never repaired.
+Membership, observable class and density were fixed by
+the pre-registered staircase rulebeforeany training (rocker-
+arm: torus precedent, H1-restricted atM=2048; eight: the
+pot’s, full(1,4,1)bundle atM=8192). Scenes: the same
+pipeline (48 views, 200 px), unchanged class budgets (trio
+pilot: tails.043–.054, in the analytic band). The fourth,
+thetom-yum pot(Fig. 1, bottom row; aluminium show-
+case: suppl. Fig. S7), probes the step every real deploy-
+ment needs: a raw artist-authored mesh rather than a clean
+benchmark. As exported from Blender it is textbook tri-
+angle soup (9 overlapping open shells, 232 non-manifold
+junction edges) with no trustworthy ground-truth topology
+— the same defect that excluded ShapeNet. An ingest-
+and-certify pass (exact weld, offset-solidification into a thin
+closed shell, thencertification by measurement: exact sim-
+plicial homology cross-checked against per-component Eu-
+ler characteristics, both independent of the loss’s sampled
+alpha complex; watertightness; bit-identical rebuilds) yields
+one body of genus 3,β=(1,6,1)exact, rendered and bud-
+geted as a void-class shape (N=1200). This ingest pipeline
+is a test fixture here, not a claimed contribution. Where the
+other externals arrive clean enough to certify as-is, the pot’s
+topology exists onlyafteringest — a controlled real-world
+proxy, not a blind test: what real scans will need (mechan-
+ics and challenge inventory: suppl. §B, Table S4). The pot
+also exercises the floor rule of §6 prospectively: every H1
+loop of the certified shell sits below the6r med floor at ev-
+ery workingM, while the narrow flue mouth caps at small
+α— an H2 void on the pot axis, first clearing the floor at
+M=8192(margin1.20–1.23×, five sampling seeds). The
+pre-registered rule builds the bundle there (a floor-rule den-
+sity deviation later repeated by eight; the loss samples at
+the same density): exactly one significant bar, stable to re-
+sampling (∼10−5).
+Protocol.All conditions share one implementation: C0 is
+the unmodified DiffSoup trainer; the loss enters as one ad-
+ditive term, and disabled it executes none of the added code
+(no renderer or resampler edits). 2,500 steps; resampling
+every 100 steps (untouched);ρ=0.1, ramp0.2:0.5, refresh
+K=10,M=2048; decisive shapes (sphere, torus) and the
+double torus run 5 seeds (the former with the full condi-
+tion set incl. C6), replication shapes (cube, two spheres) 3
+seeds (C0/C1/C2). (C7/C7h=C1+noise; decisive shapes,
+3 seeds) perturbs the cloud the lossplansees with i.i.d.
+Gaussian noise at every refresh: the plan decides on the
+noisy observation, the pulls apply to the true live positions.
+The torus restricts the loss to H1 (its own void bar is sub-
+threshold atM=2048— a loss must not act on features it
+cannot reliably measure); the double torus likewise targets
+its two measurable loops of four. The generality wave runs
+C0/C1/C2, three seeds, each shape at its staircase-fixed bun-
+dle (bob: full loops+void; rocker-arm: H1 only; eight and
+the pot:M=8192).
+Metrics and verdict.Primary: bottleneck to the target di-
+agram in the discriminating dimension, tail-averaged (last
+three dumps, steps2,300–2,500), seed-averaged (20k eval
+samples, target-normalized). Secondary: significant-feature
+counts (phantom check) and Chamfer parity. Reporting pol-
+icy: mean±sd over seeds; Welchσonly where both arms
+ran five seeds; three-seed verdicts rest on disjoint per-seed
+ranges (suppl. Table S7).Verdict rule: C1 must beat C0and
+every norm-matched control at Chamfer parity — a topo-
+logical win a dumb regularizer can match is not one.Cham-
+fer parity, formally: the passing arm’s seed-mean Chamfer
+must satisfyCh(C1)≤1.15 Ch(C0); the15%headroom
+absorbs seed variance and nondeterminism (§7) and never
+did any work — every passing arm’s Chamfer was at or be-
+low baseline.
+5. Results
+A gate first: the loss alone (no photometric term, Adam
+on points) repairs all four controlled probes — a punctured
+void closes (8.8×), a spurious handle dies at the diagonal,
+mis-spaced components separate (1229×), a bridged merge
+withnosignificant live H0 bar (Lemma 1’s case) is sev-
+ered (450×,β 0 1→2); the predicted location-blindness did
+not materialize (suppl. §C, Fig. S5). Raw-cloud sanity toys;
+multipliers not comparable to training.
+5.1. Controlled comparison: analytic shapes
+Table 1 (theC-matrix: every condition against every ana-
+lytic shape) reports tail bottleneck (mean±sd over seeds) in
+each shape’s discriminating dimension; Chamfer in the text
+where it matters; the full training trajectories for the two de-
+cisive shapes are in suppl. Fig. S6 (line = seed mean, band
+= seed min–max).
+5
+
+===== PAGE 6 =====
+Table 1. Tail bottleneck to target (mean±sd; lower is better);×= vs C0; verdict: C1<C0 and<every control at Chamfer parity. Seeds:
+5 (sphere, torus, double torus — saturated identically), 3 (cube, two spheres). C6 = no recruitment.
+shape (dim) C0 C1 loss C2 control C3 no-ramp C5 loss+prior C6 no-recruit
+sphere (H2) .0623±.0063.0156±.0013(4.0×) .1372 (worse) .0151±.0004.0082±.0007(7.6×) .0166±.0005
+cube (H2) .0582±.0046.0074±.0011(7.9×) .1346 (β 2 1→0) — — —
+torus (H1) .0424±.0031.0180±.0016(2.3×) .0457 (β 1 2→1) .0155±.0015.0133±.0004(3.2×) .0411±.0038
+two spheres (H0) .0065±.0008 .0007±.0002 (9.5×) .0008 (ties C1) — — —
+double torus (H1) .0264±.0000 .0264±.0000 (saturated) .0264±.0000 — — —
+Voids (H2): topology-specific, large.Sphere4.0×
+(16.2σWelch vs C0, five seeds), cube7.9×(three seeds:
+ranges disjoint, C1.0064–.0086vs C0.0551–.0636), both
+at equal-or-better Chamfer (sphere0.46vs0.50; cube0.92
+vs1.05). The norm-matched control isdestructive, not
+merely weaker: it pins the void’s death at its repulsion equi-
+librium (2.2×worse, seed-identical) and erases the cube’s
+void outright; no tested strength reproduces any gain — C1
+<C0<C2g<C2 (§7; spread: suppl. Fig. S3; mechanism:
+§6).
+Loops (H1): the channel’s distinguishing result.No
+prior shape won this class (suppl. §A). The loss cuts torus
+H1 error2.3×withzero phantom handles in all five seeds
+(count trajectories flat at the trueβ 1=2, suppl. Fig. S4),
+while the control collapses one loop by step∼800and never
+recovers it. Metric pressure on birth/death values suits 1-D
+features in a way budget allocation does not (mechanism:
+§6).
+Components (H0): not topological — third channel,
+same answer.C1 reduces the (already small) baseline
+error9.5×, but the generic control matches it (.0008 vs
+.0007); the increment appears only in Chamfer (0.54vs
+1.94). Three channels agree:β 0 is carried by shell count
+and separation.
+Composition (C5).Loss+spread prior is best every-
+where tested — sphere.0082(7.6×vs C0,≈2×vs C1
+alone,≈4.4×below the prior alone), torus.0133— with
+the best sphere Chamfer (torus.502, trailing only C3’s
+.495). Allocation and value-tuning are complementary, not
+substitutes.
+Stretch case (genus 2): saturated, honestly.Every
+double-torus arm returns exactly.0264: the two tube loops
+are unexpressable at feasible budgets — therepresenta-
+tion’sceiling, not the channel’s (suppl. §B; floors: §6).
+Ablations.Theρ-response is flat over a10×range (suppl.
+Table S8); C3 (no curriculum)≈C1 on both decisive shapes
+andoff the analytic family (bob: C3.0171±.0026vs C1
+.0208±.0008). Overhead, honestly: the loss adds afixed
+≈46s per 2,500-step run (refresh174ms atM=2048ev-
+ery 10 steps) — more than the33–41s photometric base-
+line on these deliberately tiny scenes, but the cost scales
+O(MlogM)per refresh, not with scene or image com-
+plexity, so its share of a run whose photometric cost isT
+is46/(T+46)— an arithmetic projection,≈7%of a ten-
+minute run — independent of image count and resolution;
+no parameters are added.
+Recruitment is load-bearing for loops (C6).Removing
+the recruitment term (pure matching+diagonal) collapses
+the torus win entirely:.0411±.0038, statistically baseline
+(0.6σfrom C0,12.4σworse than C1) at baseline Cham-
+fer, though both loops stillexist(#sig H1= 2every seed;
+suppl. Fig. S6). The logs locate the mechanism: one torus
+loop is significant at every refresh, the other chronicallybe-
+lowthreshold (all five seeds, all 200 refreshes) — recruit-
+ment is the second loop’s sole gradient path; on this class
+itisthe mechanism, not a cold-start device. On the sphere
+it never fires (0 of 200, all seeds): C6 is loss-identical to
+C1, and the1.5σtail gap (.0166vs.0156) measures pure
+run-to-run noise (§7).
+Sensor-noise stress (C7/C7h).With the plan’s cloud per-
+turbed at every refresh (σ= 0.5%/1%of the diag-
+onal≈0.5/1.0spacings, §4), the loss degrades gradu-
+ally and never harms: torus.0210±.0018/.0259±.0022
+(2.0×/1.6×below baseline, vs C1’s2.3×), sphere
+.0235±.0009/.0328±.0013(2.7×/1.9×, vs4.0×), at
+equal-or-better Chamfer, correct counts in every run (suppl.
+Fig. S6), zero Gabriel failures in all2,400noisy refreshes
+(internals: suppl. §B).
+5.2. Generality: external genus-known meshes
+Everything above is on one analytic family, so we repeat the
+verdict protocol — C0/C1/C2, three seeds, class budgets,ρ
+and ramp unchanged, density fixed by the floor rule — on
+the eight external genus-known meshes of §4’s two groups,
+with no per-shape tuning. Seven of eightpassthe verdict
+rule at equal-or-betterChamfer (Table 2; original-wave tra-
+jectories in suppl. Fig. S2); the eighth, rocker-arm, is ano-
+headroom null, not a counterexample (obs. 5). The control
+6
+
+===== PAGE 7 =====
+Table 2. Generality wave, two observable-class groups (mean±sd,
+3 seeds;×= vs C0;group mean±sd over member shapes, pre-
+registered). Seven of eightpassTable 1’s verdict rule; rocker-arm
+is a no-headroom null (counts intact in every arm). *seed-exact
+unmatched-target pins (§6). Per-seed values: Table S7; prove-
+nance, certificates, staircases: suppl. §G.
+shape C0 C1 loss C2 control
+bob .0426±.0012.0208±.0008(2.1×) .0437 (β 1 2→1)
+rocker-arm .0083±.0004 .0087±.0015 (0.96×) .0113 (counts intact)
+eight (genus 2) .0249±.0000*.0162±.0017(1.5×) .0249 (2 of 4 loops)
+loop group mean (H1, 3)1.52×±0.55
+spot .0521±.0081.0237±.0000(2.2×) .0652 (β 2 1→0)
+fandisk .0538±.0022.0052±.0008(10.4×) .0571 (β 2 1→0)
+tom-yum pot .0221±.0003.0057±.0002(3.9×) .0223 (β 2 1→0)
+armadillo .0511±.0000*.0124±.0001(4.1×) .0511 (β 2 1→0)
+horse .0408±.0000*.0109±.0022(3.8×) .0408 (β 2 1→0)
+void group mean (H2, 5)4.87×±3.17
+replicates its failure modes: all five voids erased (β 2 1→0,
+every seed; the pot at1.36×worse Chamfer), a bob loop
+collapsed (β1 2→1), eight’s missing pair left missing.
+Observations. (1)The H1 claim survives the family
+change: bob halves loop error, zero phantom handles ev-
+ery seed (suppl. Fig. S8), replicating torus. (2)The genus-
+2 ceiling was representational, not topological: on the
+fat CGAL eight, baseline and control read only two of
+the four certified loops (value pinned at the unmatched
+bound, seed-exact); the lossrestores the missing pair(#sig
+4/3/4) and cuts value error1.5×at0.89×Chamfer —
+the double torus’s saturation (§5.1) was the representation’s
+ceiling, not genus-2’s. (3)Sharp-featured CAD benefits
+most: fandisk’s10.4×exceeds every analytic-family ef-
+fect. (4)Baselines can pin like controls: armadillo and
+horse read the correct void count but pin its value at the
+same bound (.0511/.0408, seed-exact); the loss unpins both
+(4.1×/3.8×) at better Chamfer. (5)No headroom, no effect
+— and no harm: rocker-arm’s one measurable loop is al-
+ready baseline-correct (.0083vs the.04–.05band): §4’s im-
+perfection criterion is unmet and the loss stays inert (0.96×,
+parity1.00, counts intact everywhere) — the method’s hon-
+est boundary. (6)Count-level limits persist on sub-budget
+organic detail: spot’sbaselinemakes a phantom void in
+two of three seeds (#sig= 2,1,2); the loss clears two, re-
+tains one (1,2,1) — value repair reliable, count repair not
+guaranteed; its C1 tail pins at.0237(sd0), a milder floor of
+the double-torus kind.And the pipeline reaches raw artist
+content: the tom-yum pot (Fig. 1; suppl. Fig. S7), a raw
+Blender export certified rather than constructed and bun-
+dled atM=8192by the same pre-registered rule (§4), cuts
+the void’s value error3.9×at Chamfer parity (0.99×), the
+study’s tightest seed spread (C1.0056–.0059vs C0.0218–
+.0223); the control destroys the void (β 2 1→0, all seeds),
+pinned at the unmatched bound (.0223) — count, not value,
+is the verdict. Two caveats transfer: its baseline already
+reads the correct count (a value-accuracy win, like bob),
+and ground truth is certified, not constructed. Group statis-
+tic (pre-registered): loops1.52×±0.55(2/3 pass), voids
+4.87×±3.17(5/5); the passing wave spans1.5–10.4×
+(suppl. §G).
+6. Mechanism and discussion
+A local signal cannot carry a global property — sparse
+tugs can.A pixel’s photometric gradient reaches a few
+vertices; topology is global and categorical — a wrong
+genus is not approached smoothly; the blindness probes
+quantify the gap (§2) — no geometric proxy stands in. The
+persistence term supplies the measurement with a usable
+gradient: each significant pair back-propagates through the
+3–7sample positions of its birth and death simplices —pre-
+cise but sparsepulls, iterated by re-pairing; the resampling
+prior is the opposite — broad, indirect, budget-limited. The
+results sort along this axis: loops respond to value pressure
+(H1 win), wide shells to both channels (composition best),
+components to neither (H0 null) — and nothing responds
+where nothing is broken (rocker-arm’s no-headroom null,
+§5.2).
+Why the control damages topology.The norm-matched
+repulsion imposes a length-scale floor on the sampled
+surface: the void’s death pins at that equilibrium (seed-
+identical) and drags while near-diagonal phantom bars ac-
+cumulate (suppl. Fig. S1) and thin structures collapse (cube
+β2, torusβ 1); the loss has no length scale — it pulls the
+death coordinate itself. The same gradient budget through
+the same channelwithouttopological information is ac-
+tively harmful: C1’s wins cannot be extra-regularization ar-
+tifacts.
+Measurability at the loss’s density.A persistence loss
+can only enforce features that clear the significance floor at
+its densityM: the torus void and two of the double torus’s
+four loops do not, atM=2048. We treat this as a principle,
+not a nuisance: the bundle is built and audited at the same
+M, sub-floor features are excluded, and the double torus is
+evaluated against its two measurable loops — all the soup
+can express at feasible budgets.
+The floor is quantifiable: significance means lifetime>
+6r med(M), andr med follows the uniform-sampling law∝
+M−1/2 (measured.0090→.0028overM=2048→20000;
+ratio3.16vs
+√
+9.77=3.13; suppl. Fig. S10). The double
+torus’s tube loops live at lifetime.045–.046on the clean
+surface: atM=2048that is0.83–0.85×the floor — invis-
+ible by a15%margin, clearing it only fromM≈3×10 3
+— while at the evaluation density (M=20000, floor.0171)
+they clear it3.1×; the binding constraint is therepresenta-
+tion(the soup never expresses the tubes): themeasurement
+floor recedes asM −1/2, therepresentationfloor is set by
+7
+
+===== PAGE 8 =====
+Nand noMlowers it — the double torus sits on the sec-
+ond. The torus quantifies the noise interaction: its second
+loop clears the clean floor by only1.33×— a margin live-
+cloud noise consumes, leaving recruitment as its only gradi-
+ent path (C6), the loss reaching below its own floor (suppl.
+§C). Suppl. Table S3 tabulates counts acrossM; the pot and
+the group wave ran the ruleprospectively(§4; suppl. §G),
+validated in-loop (Table 2); adaptive density is the natural
+extension.
+Prescription.Correct topology in theloss; allocatewide;
+combine — no schedule needed once the loss is calibrated
+against the photometric gradient.
+7. Limitations
+Synthetic, single-machine.All quantitative claims are
+on synthetic renders with known topology: an analytic
+family plus eight external genus-known meshes in two
+groups (§5.2; one a certified raw artist mesh, the intended
+scan path), drawn from public repositories, not a curated
+benchmark suite. All surfaces are closed except a first
+open-surfaceprobe, pre-registered and passed: two bowls
+cut from the sphere (openings0.14R/0.50R, certified disk
+topology) still read one significant void (the designed rim’s
+H1 never clears the floor); the loss cuts its error4.2×/4.1×
+at better-than-baseline Chamfer (ranges disjoint); the con-
+trol erases the wide bowl’s void in 2/3 seeds (suppl. §F).
+C7’s Gaussian probe bounds noise response, not scan re-
+alism (outliers, missing regions, registration error). Real
+scans remain future work: their boundaries addnoise-born
+H1 bars (unlike a designed rim); bar-filtering is the near-
+term step.
+Density floor.The loss cannot resolve features below
+the significance floor at its density (torus void; two of four
+double-torus loops atM=2048) — audited, but a real ceil-
+ing. Count-level repair of sub-budget detail is likewise out
+of scope (spot, §5.2).
+Fixed target diagram.The target bundle presumes
+known ground-truth topology (a prior scan or template —
+not blind capture); template-free designs (total-persistence
+minimization, a target-genuspenalty, class-level diagram
+priors) are untested.
+Control strength.The repulsion control is aggressive
+(it destroys topology at calibrated magnitude); a half-radius
+variant is still1.6×worse (sphere.0972vs.0623): verdicts
+do not hinge on control tuning.
+Nondeterminism.CUDA training is not bit-
+reproducible (borderline prune/split decisions flip under
+float drift at resampling); tail CVs run7–10%for baseline
+and loss arms alike, a loss-identical re-run pair (sphere C6
+≡C1) landed6%apart — pure noise; statements follow
+§4’s reporting policy.
+Recruitment guarantees.The zero-gradient pathology
+it repairs is provable (Lemma 1); its own self-correction
+premise is empirical (suppl. §C) — pathological geometries
+could defeat it; a failure-case study is future work.
+8. Conclusion
+We moved topology from the allocation channel into the ob-
+jective: a matched persistence loss with a Gabriel-certified
+backward and a load-bearing recruitment term, every gain
+beating a norm-matched control at Chamfer parity. The hy-
+potheses hold (RH1 objective root cause; RH2 topology-
+specific; RH3 channels compose); verdicts replicate across
+two external groups and degrade gracefully under noise.
+Prescription: topology in theloss, allocatewide, combine;
+next: real scans.Reproducibility: code, scenes, bundles,
+logs and seeds ship on acceptance (nondeterminism: §7).
+References
+[1] Henry Adams, Tegan Emerson, Michael Kirby, Rachel
+Neville, Chris Peterson, Patrick Shipman, Sofya Chepush-
+tanova, Eric Hanson, Francis Motta, and Lori Ziegelmeier.
+Persistence images: A stable vector representation of per-
+sistent homology.Journal of Machine Learning Research,
+18(8):1–35, 2017. 17
+[2] Kara-Ali Aliev, Artem Sevastopolsky, Maria Kolos, Dmitry
+Ulyanov, and Victor Lempitsky. Neural point-based graph-
+ics. InEuropean Conference on Computer Vision (ECCV),
+pages 696–712, 2020. 17
+[3] Pierre Alliez, David Cohen-Steiner, Olivier Devillers,
+Bruno L ´evy, and Mathieu Desbrun. Anisotropic polygo-
+nal remeshing.ACM Transactions on Graphics, 22(3):485–
+493, 2003. 3
+[4] Marco Attene. A lightweight approach to repairing digi-
+tized polygon meshes.The Visual Computer, 26(11):1393–
+1406, 2010. 3, 17
+[5] Marco Attene, Marcel Campen, and Leif Kobbelt. Polygon
+mesh repairing: An application perspective.ACM Comput-
+ing Surveys, 45(2), 2013. 17
+[6] Ulrich Bauer. Ripser: Efficient computation of Vietoris–
+Rips persistence barcodes.Journal of Applied and Compu-
+tational Topology, 5:391–423, 2021. 17
+[7] Mario Botsch and Leif Kobbelt. A remeshing approach
+to multiresolution modeling. InEurographics/ACM SIG-
+GRAPH Symposium on Geometry Processing (SGP), 2004.
+3
+[8] Rickard Br ¨uel-Gabrielsson, Vignesh Ganapathi-
+Subramanian, Primoz Skraba, and Leonidas J. Guibas.
+Topology-aware surface reconstruction for point clouds.
+Computer Graphics Forum, 39(5):197–207, 2020. 3, 17
+[9] Rickard Br ¨uel Gabrielsson, Bradley J. Nelson, Anjan
+Dwaraknath, and Primoz Skraba. A topology layer for ma-
+chine learning. InInternational Conference on Artificial
+Intelligence and Statistics (AISTATS), pages 1553–1563,
+2020. 3, 4
+8
+
+===== PAGE 9 =====
+[10] Peter Bubenik. Statistical topological data analysis using
+persistence landscapes.Journal of Machine Learning Re-
+search, 16(3):77–102, 2015. 17
+[11] Nathaniel Burgdorfer and Philippos Mordohai. Radiant tri-
+angle soup with soft connectivity forces for 3D reconstruc-
+tion and novel view synthesis. arXiv:2505.23642, 2025. 2,
+3, 16, 17
+[12] Mathieu Carri `ere, Fr ´ed´eric Chazal, Yuichi Ike, Th ´eo La-
+combe, Martin Royer, and Yuhei Umeda. PersLay: A neu-
+ral network layer for persistence diagrams and new graph
+topological signatures. InInternational Conference on Ar-
+tificial Intelligence and Statistics (AISTATS), pages 2786–
+2796, 2020. 17
+[13] Mathieu Carri `ere, Fr´ed´eric Chazal, Marc Glisse, Yuichi Ike,
+Hariprasad Kannan, and Yuhei Umeda. Optimizing persis-
+tent homology based functions. InInternational Confer-
+ence on Machine Learning (ICML), 2021. 3, 4, 17
+[14] Mathieu Carri `ere, Yuichi Ike, Th ´eo Lacombe, and Naoki
+Nishikawa. Persistence-based topological optimization: A
+survey. arXiv:2603.24613, 2026. 17
+[15] Fr ´ed´eric Chazal and Bertrand Michel. An introduction to
+topological data analysis: Fundamental and practical as-
+pects for data scientists.Frontiers in Artificial Intelligence,
+4:667963, 2021. 17
+[16] Danpeng Chen, Hai Li, Weicai Ye, Yifan Wang, Weijian
+Xie, Shangjin Zhai, Nan Wang, Haomin Liu, Hujun Bao,
+and Guofeng Zhang. PGSR: Planar-based Gaussian splat-
+ting for efficient and high-fidelity surface reconstruction.
+IEEE Transactions on Visualization and Computer Graph-
+ics, 2024. 17
+[17] Wenzheng Chen, Jun Gao, Huan Ling, Edward J. Smith,
+Jaakko Lehtinen, Alec Jacobson, and Sanja Fidler. Learn-
+ing to predict 3D objects with an interpolation-based differ-
+entiable renderer. InAdvances in Neural Information Pro-
+cessing Systems (NeurIPS), 2019. 2
+[18] Zhiqin Chen and Hao Zhang. Neural marching cubes.ACM
+Transactions on Graphics, 40(6), 2021. 16
+[19] Zhiqin Chen, Andrea Tagliasacchi, and Hao Zhang. BSP-
+Net: Generating compact meshes via binary space parti-
+tioning. InIEEE/CVF Conference on Computer Vision and
+Pattern Recognition (CVPR), 2020. 16
+[20] James R. Clough, Nicholas Byrne, Ilkay Oksuz,
+Veronika A. Zimmer, Julia A. Schnabel, and Andrew P.
+King. A topological loss function for deep-learning
+based image segmentation using persistent homology.
+IEEE Transactions on Pattern Analysis and Machine
+Intelligence, 44(12):8766–8778, 2022. 3, 17
+[21] David Cohen-Steiner, Herbert Edelsbrunner, and John
+Harer. Stability of persistence diagrams.Discrete & Com-
+putational Geometry, 37(1):103–120, 2007. 3, 17
+[22] Pinxuan Dai, Jiamin Xu, Wenxiang Xie, Xinguo Liu,
+Huamin Wang, and Weiwei Xu. High-quality surface re-
+construction using Gaussian surfels. InACM SIGGRAPH
+2024 Conference Papers, 2024. 17
+[23] Marion Dunyach, David Vanderhaeghe, Lo ¨ıc Barthe, and
+Mario Botsch. Adaptive remeshing for real-time mesh de-
+formation. InEurographics 2013 — Short Papers, 2013.
+3
+[24] Herbert Edelsbrunner and Ernst P. M ¨ucke. Three-
+dimensional alpha shapes.ACM Transactions on Graphics,
+13(1):43–72, 1994. 4
+[25] Herbert Edelsbrunner, David Letscher, and Afra Zomoro-
+dian. Topological persistence and simplification.Discrete
+& Computational Geometry, 28(4):511–533, 2002. 3
+[26] Guangchi Fang and Bing Wang. Mini-splatting: Represent-
+ing scenes with a constrained number of Gaussians. InEu-
+ropean Conference on Computer Vision (ECCV), 2024. 16,
+17
+[27] Yasutaka Furukawa and Jean Ponce. Accurate, dense, and
+robust multiview stereopsis.IEEE Transactions on Pat-
+tern Analysis and Machine Intelligence, 32(8):1362–1376,
+2010. 17
+[28] Jun Gao, Wenzheng Chen, Tommy Xiang, Clement Fuji
+Tsang, Alec Jacobson, Morgan McGuire, and Sanja Fidler.
+Learning deformable tetrahedral meshes for 3D reconstruc-
+tion. InAdvances in Neural Information Processing Sys-
+tems (NeurIPS), 2020. 16
+[29] Xiang Gao, Xinmu Wang, Xiaolong Wu, Jiazhi Li, Jingyu
+Shi, Yu Guo, Yuanpeng Liu, Xiyun Song, Heather Yu,
+Zongfang Lin, and Xianfeng David Gu. Inverse render-
+ing for high-genus surface meshes from multi-view images.
+arXiv:2511.18680, 2025. 3DV 2026. 3, 16, 17
+[30] Xiang Gao, Xinmu Wang, Yuanpeng Liu, Yue Wang, Junqi
+Huang, Wei Chen, and Xianfeng Gu. Inverse rendering
+for high-genus 3D surface meshes from multi-view images
+with persistent homology priors. arXiv:2601.12155, 2026.
+ICASSP 2026. 3, 16, 17
+[31] Michael Garland and Paul S. Heckbert. Surface simplifi-
+cation using quadric error metrics. InProceedings of SIG-
+GRAPH 97, pages 209–216, 1997. 3
+[32] Georgia Gkioxari, Jitendra Malik, and Justin Johnson.
+Mesh R-CNN. InIEEE/CVF International Conference on
+Computer Vision (ICCV), pages 9784–9794, 2019. 16
+[33] Amos Gropp, Lior Yariv, Niv Haim, Matan Atzmon, and
+Yaron Lipman. Implicit geometric regularization for learn-
+ing shapes. InInternational Conference on Machine Learn-
+ing (ICML), 2020. 16
+[34] Thibault Groueix, Matthew Fisher, Vladimir G. Kim,
+Bryan C. Russell, and Mathieu Aubry. AtlasNet: A papier-
+mˆach´e approach to learning 3D surface generation. In
+IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR), 2018. 2, 16
+[35] Antoine Gu ´edon and Vincent Lepetit. SuGaR: Surface-
+aligned Gaussian splatting for efficient 3D mesh recon-
+struction and high-quality mesh rendering. InIEEE/CVF
+Conference on Computer Vision and Pattern Recognition
+(CVPR), pages 5354–5363, 2024. 2, 16, 17
+[36] Antoine Gu ´edon, Diego Gomez, Nissim Maruani,
+Bingchen Gong, George Drettakis, and Maks Ovsjanikov.
+MILo: Mesh-in-the-loop Gaussian splatting for detailed
+and efficient surface reconstruction.ACM Transactions on
+Graphics, 44(6), 2025. 16, 17
+[37] Igor Guskov and Zo ¨e Wood. Topological noise removal. In
+Proceedings of Graphics Interface, pages 19–26, 2001. 17
+[38] Rana Hanocka, Gal Metzer, Raja Giryes, and Daniel
+Cohen-Or. Point2Mesh: A self-prior for deformable
+9
+
+===== PAGE 10 =====
+meshes.ACM Transactions on Graphics, 39(4), 2020. 2,
+16
+[39] Jan Held, Sanghyun Son, Renaud Vandeghen, Daniel Re-
+bain, Matheus Gadelha, Yi Zhou, Anthony Cioppa, Ming C.
+Lin, Marc Van Droogenbroeck, and Andrea Tagliasac-
+chi. MeshSplatting: Differentiable rendering with opaque
+meshes. InIEEE/CVF Conference on Computer Vision and
+Pattern Recognition (CVPR), 2026. arXiv:2512.06818. 2
+[40] Jan Held, Renaud Vandeghen, Adrien Deli `ege, Abdullah
+Hamdi, Silvio Giancola, Daniel Rebain, Anthony Cioppa,
+Bernard Ghanem, Andrea Vedaldi, Andrea Tagliasacchi,
+and Marc Van Droogenbroeck. Triangle splatting for real-
+time radiance field rendering. InProceedings of the In-
+ternational Conference on 3D Vision (3DV), pages 1248–
+1257, 2026. arXiv:2505.19175. 2, 16, 17
+[41] Christoph Hofer, Roland Kwitt, Marc Niethammer, and
+Andreas Uhl. Deep learning with topological signatures.
+InAdvances in Neural Information Processing Systems
+(NIPS), 2017. 17
+[42] Christoph Hofer, Florian Graf, Bastian Rieck, Marc Ni-
+ethammer, and Roland Kwitt. Graph filtration learning.
+InInternational Conference on Machine Learning (ICML),
+pages 4314–4323, 2020. 17
+[43] Hugues Hoppe. Progressive meshes. InProceedings of
+SIGGRAPH 96, pages 99–108, 1996. 3
+[44] Jiangbei Hu, Ben Fei, Baixin Xu, Fei Hou, Weidong
+Yang, Shengfa Wang, Na Lei, Chen Qian, and Ying He.
+Topology-aware latent diffusion for 3D shape generation.
+arXiv:2401.17603, 2024. 17
+[45] Xiaoling Hu, Fuxin Li, Dimitris Samaras, and Chao
+Chen. Topology-preserving deep image segmentation. In
+Advances in Neural Information Processing Systems 32
+(NeurIPS), 2019. 3, 17
+[46] Yixin Hu, Qingnan Zhou, Xifeng Gao, Alec Jacobson, De-
+nis Zorin, and Daniele Panozzo. Tetrahedral meshing in the
+wild.ACM Transactions on Graphics, 37(4), 2018. 16, 17
+[47] Binbin Huang, Zehao Yu, Anpei Chen, Andreas Geiger, and
+Shenghua Gao. 2D Gaussian splatting for geometrically ac-
+curate radiance fields. InACM SIGGRAPH 2024 Confer-
+ence Papers, 2024. 2, 16, 17
+[48] Jingwei Huang, Yichao Zhou, and Leonidas Guibas. Mani-
+foldPlus: A robust and scalable watertight manifold surface
+generation method for triangle soups. arXiv:2005.11621,
+2020. 17
+[49] Jiahui Huang, Zan Gojcic, Matan Atzmon, Or Litany, Sanja
+Fidler, and Francis Williams. Neural kernel surface recon-
+struction. InIEEE/CVF Conference on Computer Vision
+and Pattern Recognition (CVPR), 2023. 16
+[50] Rasmus Jensen, Anders Dahl, George V ogiatzis, Engin
+Tola, and Henrik Aanæs. Large scale multi-view stereopsis
+evaluation. InIEEE Conference on Computer Vision and
+Pattern Recognition (CVPR), pages 406–413, 2014. 17
+[51] Anushrut Jignasu, Ethan Herron, Zhanhong Jiang, Soumik
+Sarkar, Chinmay Hegde, Baskar Ganapathysubramanian,
+Aditya Balu, and Adarsh Krishnamurthy. STITCH:
+Surface reconstruction using implicit neural representa-
+tions with topology constraints and persistent homology.
+arXiv:2412.18696, 2024. 3, 16, 17
+[52] Tao Ju. Robust repair of polygonal models.ACM Transac-
+tions on Graphics, 23(3):888–895, 2004. 3, 17
+[53] Tao Ju, Frank Losasso, Scott Schaefer, and Joe Warren.
+Dual contouring of Hermite data. InProceedings of the
+29th Annual Conference on Computer Graphics and Inter-
+active Techniques (SIGGRAPH), pages 339–346, 2002. 16
+[54] Hiroharu Kato, Yoshitaka Ushiku, and Tatsuya Harada.
+Neural 3D mesh renderer. InIEEE/CVF Conference on
+Computer Vision and Pattern Recognition (CVPR), pages
+3907–3916, 2018. 2
+[55] Michael Kazhdan and Hugues Hoppe. Screened Poisson
+surface reconstruction.ACM Transactions on Graphics, 32
+(3), 2013. 16
+[56] Michael Kazhdan, Matthew Bolitho, and Hugues Hoppe.
+Poisson surface reconstruction. InProceedings of the
+Fourth Eurographics Symposium on Geometry Processing
+(SGP), pages 61–70, 2006. 16
+[57] Michael Kerber, Dmitriy Morozov, and Arnur Nigmetov.
+Geometry helps to compare persistence diagrams.ACM
+Journal of Experimental Algorithmics, 22, 2017. 17
+[58] Bernhard Kerbl, Georgios Kopanas, Thomas Leimk ¨uhler,
+and George Drettakis. 3D Gaussian splatting for real-time
+radiance field rendering.ACM Transactions on Graphics,
+42(4):139:1–139:14, 2023. 2, 16, 17
+[59] Arno Knapitsch, Jaesik Park, Qian-Yi Zhou, and Vladlen
+Koltun. Tanks and temples: Benchmarking large-scale
+scene reconstruction.ACM Transactions on Graphics, 36
+(4), 2017. 17
+[60] Samuli Laine, Janne Hellsten, Tero Karras, Yeongho Seol,
+Jaakko Lehtinen, and Timo Aila. Modular primitives for
+high-performance differentiable rendering.ACM Transac-
+tions on Graphics, 39(6):194:1–194:14, 2020. 2
+[61] Christoph Lassner and Michael Zollh ¨ofer. Pulsar: Effi-
+cient sphere-based neural rendering. InIEEE/CVF Confer-
+ence on Computer Vision and Pattern Recognition (CVPR),
+pages 1440–1449, 2021. 17
+[62] Jacob Leygonie, Steve Oudot, and Ulrike Tillmann. A
+framework for differential calculus on persistence bar-
+codes.Foundations of Computational Mathematics, 22:
+1069–1131, 2022. 3, 17
+[63] Zhaoshuo Li, Thomas M ¨uller, Alex Evans, Russell H. Tay-
+lor, Mathias Unberath, Ming-Yu Liu, and Chen-Hsuan Lin.
+Neuralangelo: High-fidelity neural surface reconstruction.
+InIEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR), 2023. 2, 16
+[64] Shichen Liu, Tianye Li, Weikai Chen, and Hao Li. Soft ras-
+terizer: A differentiable renderer for image-based 3D rea-
+soning. InIEEE/CVF International Conference on Com-
+puter Vision (ICCV), pages 7707–7716, 2019. 2
+[65] Matthew M. Loper and Michael J. Black. OpenDR: An ap-
+proximate differentiable renderer. InEuropean Conference
+on Computer Vision (ECCV), pages 154–169, 2014. 2
+[66] William E. Lorensen and Harvey E. Cline. Marching cubes:
+A high resolution 3D surface construction algorithm. In
+Proceedings of the 14th Annual Conference on Computer
+Graphics and Interactive Techniques (SIGGRAPH), pages
+163–169, 1987. 16
+10
+
+===== PAGE 11 =====
+[67] Cl ´ement Maria, Jean-Daniel Boissonnat, Marc Glisse, and
+Mariette Yvinec. The Gudhi library: Simplicial complexes
+and persistent homology. InInternational Congress on
+Mathematical Software (ICMS), pages 167–174, 2014. 4,
+17
+[68] Lars Mescheder, Michael Oechsle, Michael Niemeyer, Se-
+bastian Nowozin, and Andreas Geiger. Occupancy net-
+works: Learning 3D reconstruction in function space. In
+IEEE/CVF Conference on Computer Vision and Pattern
+Recognition (CVPR), 2019. 2, 16
+[69] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik,
+Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng.
+NeRF: Representing scenes as neural radiance fields for
+view synthesis. InEuropean Conference on Computer Vi-
+sion (ECCV), 2020. 2, 16
+[70] Michael Moor, Max Horn, Bastian Rieck, and Karsten
+Borgwardt. Topological autoencoders. InInternational
+Conference on Machine Learning (ICML), pages 7045–
+7054, 2020. 17
+[71] Thomas M ¨uller, Alex Evans, Christoph Schied, and
+Alexander Keller. Instant neural graphics primitives with
+a multiresolution hash encoding.ACM Transactions on
+Graphics, 41(4), 2022. 16
+[72] Jacob Munkberg, Jon Hasselgren, Tianchang Shen, Jun
+Gao, Wenzheng Chen, Alex Evans, Thomas M ¨uller, and
+Sanja Fidler. Extracting triangular 3D models, materials,
+and lighting from images. InIEEE/CVF Conference on
+Computer Vision and Pattern Recognition (CVPR), pages
+8280–8290, 2022. 2, 16
+[73] Baptiste Nicolet, Alec Jacobson, and Wenzel Jakob. Large
+steps in inverse rendering of geometry.ACM Transactions
+on Graphics, 40(6), 2021. 2
+[74] Arnur Nigmetov and Dmitriy Morozov. Topological opti-
+mization with big steps.Discrete & Computational Geom-
+etry, 2024. 3, 17
+[75] Michael Oechsle, Songyou Peng, and Andreas Geiger.
+UNISURF: Unifying neural implicit surfaces and radiance
+fields for multi-view reconstruction. InIEEE/CVF Interna-
+tional Conference on Computer Vision (ICCV), 2021. 16
+[76] Jeong Joon Park, Peter Florence, Julian Straub, Richard
+Newcombe, and Steven Lovegrove. DeepSDF: Learning
+continuous signed distance functions for shape representa-
+tion. InIEEE/CVF Conference on Computer Vision and
+Pattern Recognition (CVPR), pages 165–174, 2019. 2, 16
+[77] Songyou Peng, Michael Niemeyer, Lars Mescheder, Marc
+Pollefeys, and Andreas Geiger. Convolutional occupancy
+networks. InEuropean Conference on Computer Vision
+(ECCV), 2020. 16
+[78] Songyou Peng, Chiyu Jiang, Yiyi Liao, Michael Niemeyer,
+Marc Pollefeys, and Andreas Geiger. Shape as points: A
+differentiable Poisson solver. InAdvances in Neural Infor-
+mation Processing Systems (NeurIPS), 2021. 2, 16
+[79] Adrien Poulenard, Primoz Skraba, and Maks Ovsjanikov.
+Topological function optimization for continuous shape
+matching.Computer Graphics Forum, 37(5):13–25, 2018.
+3, 17
+[80] Edoardo Remelli, Artem Lukoianov, Stephan R. Richter,
+Benoˆıt Guillard, Timur Bagautdinov, Pierre Baque, and
+Pascal Fua. MeshSDF: Differentiable iso-surface extrac-
+tion. InAdvances in Neural Information Processing Sys-
+tems (NeurIPS), 2020. 16
+[81] Ernst Roell and Bastian Rieck. Differentiable euler charac-
+teristic transforms for shape classification. InInternational
+Conference on Learning Representations (ICLR), 2024. 17
+[82] Darius R ¨uckert, Linus Franke, and Marc Stamminger.
+ADOP: Approximate differentiable one-pixel point render-
+ing.ACM Transactions on Graphics, 41(4), 2022. 17
+[83] Johannes L. Sch ¨onberger and Jan-Michael Frahm.
+Structure-from-motion revisited. InIEEE Conference on
+Computer Vision and Pattern Recognition (CVPR), pages
+4104–4113, 2016. 17
+[84] Johannes L. Sch ¨onberger, Enliang Zheng, Jan-Michael
+Frahm, and Marc Pollefeys. Pixelwise view selection for
+unstructured multi-view stereo. InEuropean Conference
+on Computer Vision (ECCV), pages 501–518, 2016. 17
+[85] Andrei Sharf, Thomas Lewiner, Gil Shklarski, Sivan
+Toledo, and Daniel Cohen-Or. Interactive topology-aware
+surface reconstruction.ACM Transactions on Graphics, 26
+(3), 2007. 3, 17
+[86] Tianchang Shen, Jun Gao, Kangxue Yin, Ming-Yu Liu,
+and Sanja Fidler. Deep marching tetrahedra: a hy-
+brid representation for high-resolution 3D shape synthe-
+sis. InAdvances in Neural Information Processing Systems
+(NeurIPS), 2021. 2, 16
+[87] Tianchang Shen, Jacob Munkberg, Jon Hasselgren,
+Kangxue Yin, Zian Wang, Wenzheng Chen, Zan Gojcic,
+Sanja Fidler, Nicholas Sharp, and Jun Gao. Flexible isosur-
+face extraction for gradient-based mesh optimization.ACM
+Transactions on Graphics, 42(4), 2023. 2, 16
+[88] Tianqi Shen, Shaohua Liu, Jiaqi Feng, Ziye Ma, and Ning
+An. Topology-aware 3D Gaussian splatting: Leveraging
+persistent homology for optimized structural integrity. In
+Proceedings of the AAAI Conference on Artificial Intelli-
+gence, pages 6823–6832, 2025. 3, 16, 17
+[89] Suprosanna Shit, Johannes C. Paetzold, Anjany Sekuboy-
+ina, Ivan Ezhov, Alexander Unger, Andrey Zhylka, Josien
+P. W. Pluim, Ulrich Bauer, and Bjoern H. Menze. clDice –
+a novel topology-preserving loss function for tubular struc-
+ture segmentation. InIEEE/CVF Conference on Computer
+Vision and Pattern Recognition (CVPR), 2021. 17
+[90] Nico Stucki, Johannes C. Paetzold, Suprosanna Shit, Bjo-
+ern Menze, and Ulrich Bauer. Topologically faithful im-
+age segmentation via induced matching of persistence bar-
+codes. InInternational Conference on Machine Learning
+(ICML), pages 32698–32727, 2023. 17
+[91] Kenji Tojo, Bernd Bickel, and Nobuyuki Umetani. Diff-
+Soup: Direct differentiable rasterization of triangle soup for
+extreme radiance field simplification. InIEEE/CVF Confer-
+ence on Computer Vision and Pattern Recognition (CVPR),
+2026. arXiv:2603.27151. 2, 3, 16, 17
+[92] Dominik J. E. Waibel, Scott Atwell, Matthias Meier,
+Carsten Marr, and Bastian Rieck. Capturing shape infor-
+mation with multi-scale topological loss terms for 3D re-
+construction. InMedical Image Computing and Computer
+Assisted Intervention (MICCAI), pages 150–159, 2022. 3,
+17
+11
+
+===== PAGE 12 =====
+[93] Nanyang Wang, Yinda Zhang, Zhuwen Li, Yanwei Fu, Wei
+Liu, and Yu-Gang Jiang. Pixel2Mesh: Generating 3D mesh
+models from single RGB images. InEuropean Conference
+on Computer Vision (ECCV), 2018. 2, 16
+[94] Peng Wang, Lingjie Liu, Yuan Liu, Christian Theobalt,
+Taku Komura, and Wenping Wang. NeuS: Learning neural
+implicit surfaces by volume rendering for multi-view recon-
+struction. InAdvances in Neural Information Processing
+Systems (NeurIPS), 2021. 2, 16
+[95] Yiming Wang, Qin Han, Marc Habermann, Kostas Dani-
+ilidis, Christian Theobalt, and Lingjie Liu. NeuS2: Fast
+learning of neural implicit surfaces for multi-view recon-
+struction. InIEEE/CVF International Conference on Com-
+puter Vision (ICCV), 2023. 16
+[96] Zo ¨e Wood, Hugues Hoppe, Mathieu Desbrun, and Peter
+Schr¨oder. Removing excess topology from isosurfaces.
+ACM Transactions on Graphics, 23(2):190–208, 2004. 17
+[97] Qiangeng Xu, Zexiang Xu, Julien Philip, Sai Bi, Zhixin
+Shu, Kalyan Sunkavalli, and Ulrich Neumann. Point-
+NeRF: Point-based neural radiance fields. InIEEE/CVF
+Conference on Computer Vision and Pattern Recognition
+(CVPR), pages 5438–5448, 2022. 17
+[98] Lior Yariv, Yoni Kasten, Dror Moran, Meirav Galun, Matan
+Atzmon, Ronen Basri, and Yaron Lipman. Multiview neu-
+ral surface reconstruction by disentangling geometry and
+appearance. InAdvances in Neural Information Processing
+Systems (NeurIPS), 2020. 16
+[99] Lior Yariv, Jiatao Gu, Yoni Kasten, and Yaron Lipman. V ol-
+ume rendering of neural implicit surfaces. InAdvances in
+Neural Information Processing Systems (NeurIPS), 2021.
+16
+[100] Lior Yariv, Peter Hedman, Christian Reiser, Dor Verbin,
+Pratul P. Srinivasan, Richard Szeliski, Jonathan T. Barron,
+and Ben Mildenhall. BakedSDF: Meshing neural SDFs for
+real-time view synthesis. InACM SIGGRAPH 2023 Con-
+ference Proceedings, 2023. 16
+[101] Wang Yifan, Felice Serena, Shihao Wu, Cengiz ¨Oztireli,
+and Olga Sorkine-Hornung. Differentiable surface splatting
+for point-based geometry processing.ACM Transactions on
+Graphics, 38(6), 2019. 2, 16
+[102] Zehao Yu, Songyou Peng, Michael Niemeyer, Torsten Sat-
+tler, and Andreas Geiger. MonoSDF: Exploring monocu-
+lar geometric cues for neural implicit surface reconstruc-
+tion. InAdvances in Neural Information Processing Sys-
+tems (NeurIPS), 2022. 16
+[103] Zehao Yu, Anpei Chen, Binbin Huang, Torsten Sattler, and
+Andreas Geiger. Mip-splatting: Alias-free 3D Gaussian
+splatting. InIEEE/CVF Conference on Computer Vision
+and Pattern Recognition (CVPR), 2024. 17
+[104] Zehao Yu, Torsten Sattler, and Andreas Geiger. Gaussian
+opacity fields: Efficient adaptive surface reconstruction in
+unbounded scenes.ACM Transactions on Graphics, 43(6),
+2024. 17
+[105] Qingnan Zhou and Alec Jacobson. Thingi10K: A dataset of
+10,000 3D-printing models. arXiv:1605.04797, 2016. 17
+[106] Afra Zomorodian and Gunnar Carlsson. Computing persis-
+tent homology.Discrete & Computational Geometry, 33:
+249–274, 2005. 17
+[107] Matthias Zwicker, Hanspeter Pfister, Jeroen van Baar, and
+Markus Gross. Surface splatting. InProceedings of the 28th
+Annual Conference on Computer Graphics and Interactive
+Techniques (SIGGRAPH), pages 371–378, 2001. 17
+12
+
+===== PAGE 13 =====
+Supplementary Material
+Appendices A–H. The main text refers to these sections as “suppl. §A” – “suppl. §H” and to their floats as “Table S1”,
+“Fig. S1”, and so on.
+A. The allocation-channel study, in brief
+This appendix reports, with their numbers, the three
+findings of our allocation-channel study — controlled
+resampling-prior experiments on the same pipeline, scenes,
+and budgets, conducted before moving topology into the ob-
+jective — that this paper builds on.
+(1) Geometric metrics are topology-blind.Three con-
+structed cases each pit a topologically correct candidate
+A against a wrong one B whose geometry is bisection-
+matched, making Chamferequal by construction(40k sam-
+ples, metrics normalized by the ground-truth bounding di-
+agonal; Table S1). The discriminating-dimension bottle-
+neck separates every pair — by35–40×in the H0/H2 cases
+— while in the first two cases Hausdorff 95 actuallyprefers
+the topologically wrong candidate. Chamfer cannot tell a
+benign bump from a destroyed void; the persistence metric
+can.
+(2) The prior arms, and why voids are “width-primary”.
+The study biases DiffSoup’s own resampler with a precom-
+puted importance field built from the target’s significant fea-
+tures. Each significant featuref(lifetimep f above the
+significance threshold) contributes Gaussian kernels at the
+coordinatesC f of its birth/death-simplex vertices — the
+loop-filling triangle, void-filling tetrahedron, or component-
+merging edge — sized by the feature’s own death scale:
+ϕd(q) =
+X
+f: dimf=d
+X
+c∈Cf
+wfe−∥q−c∥2/(2σ2
+f ), w f =p f/s2,
+σf =sclip
+ √
+deathf,3r med, 1
+2 diag
+
+,
+(5)
+evaluated on a dense target-surface sample, normalized per
+dimension to[0,1](99.5th percentile), combined by max; a
+query takes its nearest surface sample’s value. The spread
+knobswidens each kernel while preserving its injected
+surface mass (σ→sσ,w→w/s 2, sowσ 2 iss-invariant):
+s=1is the concentrated prior (B2),s=3the spread prior
+(B4) — the field C5 reuses. The field enters resampling
+at strict budget parity through two levers: prune protection
+— faces drop in order ofvis +λQ 0.9(vis)·imp, remov-
+ing exactly the required count — and respawn bias — top-
+importance visible faces subdivide first, then the protective
+order re-prunes to the cap. Remaining arms: B0 baseline;
+B1 = B2 applied at initialization only; B3/B5 random-center
+non-topological controls width-matched to B2/B4 respec-
+tively. On the void class (Table S2;N=1200, five paired
+seeds) B4 cuts the bottleneck33–53%below baseline —
+but the width-matched random control B5 recovers most of
+that gain, leaving only a small, shape-dependent topologi-
+cal residual (cylinder4.6σ, sphere2.2σ, cube tie); one-shot
+placement washes out entirely (B1≈B0,.0546vs.0535on
+the sphere). Hence the verdict quoted in the main paper’s
+introduction: the prior’s topological value is carried largely
+by its spatialwidth.
+(3) No prior shape repairs loops.On the torus (N=700,
+five paired seeds, trueβ 1=2) every arm fails the topology-
+specificity test: the best condition is thenon-topological
+wide control B5 (.0267), ahead of spread-topological B4
+(.0316), baseline (.0409), and narrow random B3 (.0397);
+the concentrated topological field B2 is worst (.0425)
+andmanufactures phantom handles — final significant-H1
+count4.4against the true2.0, with the worst Chamfer (1.32
+vs baseline1.01). Spreading merely stops the harm; it
+never beats the random control. That failure is the opening
+premise of the main paper, and the class the loss channel
+wins there (main paper §5.1, Table 1).
+B. Diagnostics: density sensitivity and diagram
+trajectories
+Sampling density vs. measurability.Table S3 counts the
+significant bars of the clean target surfaces across sampling
+densities under the self-calibrating floor6r med(M)of the
+main paper’s §6. It confirms the three density claims made
+in the paper: the sphere’s void clears the floor at every tested
+density; the torus needsM=2048before itssecondloop is
+measurable, and its own void becomes measurable only at
+M=4096(hence the H1 restriction atM=2048); and the
+double torus’s tube loops cross the floor betweenM=2048
+andM=4096— consistent with theM≳3×10 3 estimate
+there — so all four loops are measurable atM=4096.
+Diagram trajectories: the pinning mechanism, visual-
+ized.Fig. S1 shows the live H2 diagrams of one sphere
+seed under C0/C1/C2 at four training steps. All three arms
+start with the void essentially on target (initialization sam-
+ples the SfM point cloud), and photometric training alone
+drags it away (the baseline settles≈.06below). The loss
+arm dips identically while the ramp is inactive, then pulls
+the void back to within≈.016of target — matching its
+measured tail. The control arm is qualitatively different:
+the void’s death is dragged progressively down (≈.23→
+.15→.13) while a carpet of phantom mid-persistence bars
+13
+
+===== PAGE 14 =====
+Table S1. Blindness probes: A topologically correct, B wrong, geometry bisection-matched so Chamfer is equal by construction. Bottle-
+neck to ground truth in the discriminating dimension.
+case (disc. dim) Cham.% A=B bott. A bott. B ratio
+thin handle, genus0→1(H1) 0.916≈0.0302 —
+bridge merges two components (H0) 0.628 .0014 .057440×
+punctured enclosed void (H2) 0.977 .0040 .138535×
+Table S2. Allocation study, void class (H2),N=1200, five paired
+seeds: tail bottleneck to target (lower is better). Spread beats con-
+centrated; the width-matched random control (B5) recovers most
+of the spread gain.
+B2 B3 B4 B5
+shape B0 conc. narrow rand. spread wide rand.
+sphere .0535 .0438 .0440.0357.0374
+cube .0579 .0409 .0403 .0273.0270
+cylinder .0545 .0440 .0477.0360.0402
+Table S3. Significant bars (H1 / H2) on the clean target surfaces
+vs. sampling densityM; floor= 6r med(M), seed 0.
+M=512M=1024M=2048M=4096
+sphere 0 / 1 0 / 1 0 / 1 0 / 1
+torus 1 / 0 1 / 0 2 / 0 2 / 1
+double torus 0 / 0 2 / 0 2 / 0 4 / 0
+Figure S1. Live H2 persistence diagrams over training (one sphere
+seed; 20k samples, target-normalized; star=target void bar, circle
+=most persistent live bar).Top, baseline: the void drifts off target.
+Middle, loss: the void returns to the target once the ramp activates.
+Bottom, repulsion control: the void is pinned and dragged away
+while near-diagonal phantom bars accumulate.
+accumulates near the diagonal — the repulsion-equilibrium
+signature discussed in the main paper’s §6.
+The genus-2 stretch case, in full.On the double torus
+every arm — baseline, loss, control — returns a bottleneck
+of exactly.0264(sd0over five seeds; raised from two in
+revision, identical values throughout), and Wasserstein is
+equally pinned (.0527–.0528): the two tube loops are un-
+expressable at feasible budgets (replicating the allocation
+study’s floor, §A) and dominate both diagram metrics re-
+gardless of guidance. The loss adds no phantoms (#sigβ 1
+= 2every run) at marginally best Chamfer.
+Sensor-noise internals (C7/C7h).Recruitment absorbs
+the injected noise: atσ=1%the torus’s second loop is sub-
+threshold at every refresh, with zero unreached targets. Cal-
+ibration is the noisiest stage (λ peak spreads≈3×across
+seeds), yet tails stay tight — consistent with the flatρre-
+sponse reported in the main paper.
+The tom-yum pot: challenge inventory and prospective
+floor protocol.The generality wave’s artist mesh (main
+paper §4, §5.2) compounds the failure modes real scans will
+bring. Table S4 inventories them with the measured conse-
+quence of each — every row is backed by the ingest cer-
+tificate or by a measurement in this study, none is asserted.
+Table S5 records the staircase behind the flue row: the cer-
+tified shell’s significant-bar signature across sampling den-
+sity, which fixed the observable class (H2) and the bundle
+density (M=8192)beforeany training run.
+C. Additional result figures and the repair gate
+Fig. S2 shows the generality-wave training trajectories
+(main paper §5.2, Table 2); Fig. S3 the per-seed tail spread
+behind the sphere row of main-paper Table 1; Fig. S4 the
+torus significant-count check behind §5.1’s zero-phantom-
+handles claim.
+The stage-3a gate (main paper §5).Fig. S5 shows three
+of the four repair probes run before integration: the loss
+alone (no photometric term, Adam directly on point posi-
+tions) must repair defective clouds. The predicted location-
+blind pathology of recruitment did not materialize, for a
+mechanism reason worth stating: tearing a 2-manifold shell
+cannot grow a component bar past the local detour scale
+(the tug is abandoned), while cutting the 1-D bridge raises
+14
+
+===== PAGE 15 =====
+Figure S2. Generality trajectories (line = seed mean, band = seed min–max).Left: bob (genus 1) — the H1 result off the analytic family:
+the loss halves the loop error with#sig H1= 2in every seed, while the control rides the baseline after collapsing a loop.Right: fandisk
+(CAD) — the largest effect measured in this study (10.4×).
+Table S4. Tom-yum pot challenge inventory: what makes the
+shape hard, and the measured consequence in this study.
+challenge measured consequence
+raw artist export
+(6,318vertices): 9
+open shells, mixed
+quad/12-gon faces,
+50 boundary edges
+after exact weld, 232
+non-manifold junction
+edges
+no trustworthy ground-truth topology as ex-
+ported; ingest-and-certify required (weld,
+offset-solidify into a thin shell via an exact
+unsigned distance field+marching cubes at
+isoε, drop 804 enclosed pocket shells)
+certified shell: one
+body, genus 3,
+β=(1,6,1)exact,
+190,990vertices
+ground truth known bycertificate(exact sim-
+plicial homology; watertightness cross-check;
+bit-identical rebuilds), not by construction
+six thin handle/vent
+loops
+every H1 loop sits below the significance floor
+at every working density — H1 is unusable as
+the loss observable
+narrow flue mouth,
+capping at smallα
+the flue interior reads as an enclosed on-axis
+chamber — an H2 void, first measurable at
+M=8192(margin1.20–1.23×, five sam-
+pling seeds); the floor rule picks class and
+density prospectively (Table S5)
+in-loop outcome C1 cuts the void’s error3.9×at Chamfer par-
+ity; the repulsion controldestroysit (β 2 1→0,
+all seeds,1.36×worse Chamfer) — main pa-
+per Table 2
+the recruited bar’s death monotonically toward target — the
+runaway concentrates on the only profitable direction.
+D. A decade of reconstruction, cut by optimiza-
+tion philosophy
+The main paper’s related work argues one sentence that this
+appendix substantiates in breadth: reconstruction methods
+of the differentiable decade, whatever their representation,
+optimizegeometricobjectives (photometric fidelity plus ge-
+Table S5. Tom-yum pot staircase (seed 0; theM=8192margin
+spans seeds 0–4): significant-bar signature(β 0,β 1,β 2)of the cer-
+tified shell vs. sampling densityM, floor= 6r med(M). The
+bundle is built at the first density where the discriminating fea-
+ture clears (M=8192: exactly one significant bar, H2, stable to
+re-sampling at∼10 −5).
+M=2048M=4096M=8192M=20000
+sig. bars(1,0,0) (1,0,0) (1,0,1) (1,0,1)
+Figure S3. Sphere, per-seed tail bottlenecks (dots) with arm means
+(bars). Every loss arm sits far below baseline with tight seed
+spread; the two control strengths bracket baseline fromabove; the
+ρablation arms are indistinguishable fromρ=0.1.
+ometric regularizers) or steersamplingunder such an ob-
+jective — topology, when correct, is correct by construc-
+tion, by extraction, or by accident, never because the train-
+ing objective measured it. Table S6 tabulates representa-
+tive methods under this cut, including the nearest concurrent
+topology-aware entries; the subsections survey each family
+and the adjacent literatures this paper draws machinery or
+discipline from.
+15
+
+===== PAGE 16 =====
+Table S6. Representative reconstruction methods by optimization philosophy. “Topology in objective?” asks whether thetraining objective
+measures a topological quantity of the reconstructedsurface(not whether the representation constrains topology, and not image-space
+summaries). Bottom block: the nearest topology-aware concurrent work (§D.7).
+method repr. philosophy topology in objective? topology from
+NeRF [69] density field geometry no emergent
+OccNet [68] occupancy geometry no construction (closed iso)
+DeepSDF [76] SDF geometry no construction (closed iso)
+NeuS [94] SDF geometry no construction (closed iso)
+Neuralangelo [63] SDF geometry no construction (closed iso)
+Pixel2Mesh [93] template mesh geometry no frozen at template genus
+Point2Mesh [38] template mesh geometry no frozen at template genus
+Mesh R-CNN [32] voxels→mesh geometry no fixed by voxelization
+DMTet [86] grid+marching geometry no extraction over the grid
+nvdiffrec [72] grid+marching geometry no extraction over the grid
+FlexiCubes [87] grid+marching geometry no extraction over the grid
+Shape-as-Points [78] points→implicit geometry no construction (closed iso)
+AtlasNet [34] patch soup geometry no unmeasured
+DSS [101] point soup geometry no unmeasured
+3DGS [58] Gaussian soup geometry no unmeasured
+2DGS [47] surfel soup geometry no unmeasured
+SuGaR [35] Gaussians→mesh geometry no post-hoc extraction
+MILo [36] Gaussians+mesh geometry no in-loop extraction, unmeasured
+Triangle Splatting [40] triangle soup geometry no unmeasured
+Radiant Tri. Soup [11] triangle soup geometry no unmeasured (proximity forces)
+Mini-Splatting [26] Gaussian soup sampling no unmeasured (budgeted resample)
+DiffSoup [91] triangle soup geometry no unmeasured
+DiffSoup+prior (§A) triangle soup sampling no (steers only) unmeasured; fails on loops
+Topology-GS [88] Gaussian soup topology (image) rendered images only surface unmeasured
+Gao et al. [29, 30] watertight mesh geometry no (topology a prior) template genus / camera prior
+STITCH [51] implicit (points) topology yes (β 0, live surface) construction+constraint
+this worktriangle souptopology yes(live-surface persistence) measured, optimized, budgeted
+Figure S4. Torus phantom check (main paper §5.1): significant-
+H1 count over training (seed means; dashed line: trueβ 1=2). Af-
+ter the brief resampling transient near step 100, every loss arm sits
+exactly on two significant loops — zero phantom handles — while
+the repulsion control (C2) collapses a loop by step∼800and never
+recovers it.
+D.1. Geometry-oriented: implicit fields
+Occupancy and signed-distance learning deliver closed sur-
+faces by construction [68, 76, 77], and a fitting stack ma-
+tured around the level set: Eikonal regularization [33], sur-
+face rendering [75, 98], SDF-based volume rendering [94,
+99], geometric priors [102], high-resolution and accelerated
+variants [63, 71, 95], meshing for deployment [100], and
+kernel-based point-cloud fitting [49]. Across all of them the
+training objective is photometric or geometric; the guaran-
+tee of consistent topology comes from the representation, its
+correctness(the right genus for the scene) is emergent, and
+the price is dense field evaluation plus post-hoc extraction
+— the cost regime the soup family exists to avoid.
+D.2. Geometry-oriented: extraction, grids, and
+templates
+Where the surface is explicit, its topology is decided by
+an extraction algorithm or frozen by a template. March-
+ing Cubes and Dual Contouring fix per-cell connectivity by
+convention [53, 66]; Poisson reconstruction extracts an in-
+dicator iso-surface, watertight but with emergent genus [55,
+56]; differentiable iso-surfacing makes extraction trainable
+without making topology a target [28, 72, 80, 86, 87];
+learned tessellations move the per-cell decision into a net-
+work [18, 19]; and template or voxel-staged pipelines fix
+topology before refinement [32, 38, 93]. Robust meshing
+gives the same guarantee-by-construction for simulation in-
+puts [46]. In every case topology is an input or an artifact
+of the algorithm — measured nowhere, optimized never.
+16
+
+===== PAGE 17 =====
+Figure S5. The stage-3a gate: the loss alone (Adam on raw points,
+no photometric term) repairs defective clouds; each row shows
+initial cloud, final cloud, and bottleneck-to-target trajectory.Top
+(T1): punctured sphere — the matched birth term closes the void
+(8.8×).Middle(T2): spurious handle — the diagonal term kills
+the extra H1 bar.Bottom(T4): bridged merge with no signifi-
+cant live H0 bar — recruitment severs the bridge (450×,β0 1→2),
+the case where plain optimal matching provably has zero gradient.
+(T3, mis-spaced components,1229×: omitted for space.)
+D.3. Geometry-oriented: point splatting and Gaus-
+sian soups
+The connectivity-free line runs from EW A surface splat-
+ting [107] through neural point rendering [2, 82, 97] to the
+Gaussian-splatting era [58, 103] — Pulsar’s abstract adver-
+tises the family’s freedom from mesh “topology problems”
+explicitly [61]. Its surface-minded members regularize ge-
+ometry ever harder — flattened surfels [22, 47], planar com-
+pression [16], opacity-field extraction [104], alignment-
+driven meshing [35] — and MILo now extracts a mesh dif-
+ferentiably ateverytraining iteration [36]; triangle soups
+follow the same pattern [11, 40, 91]. Yet even with con-
+nectivity in the loop, no member of the family measures a
+topological quantity of what it builds: the objectives remain
+photometric fidelity plus geometric regularity.
+D.4. Sampling-oriented: steering where a fixed ob-
+jective spends
+The second occupied family changeswhereprimitives go,
+not what the objective asks of them: split-and-prune den-
+sification in 3DGS [58], budget-constrained Gaussian re-
+sampling [26], importance-driven respawn in DiffSoup [91]
+— and the topology-inspired allocation priors of our own
+study (§A), which put the family’s implicit hypothesis to a
+controlled test and returned the null result the main paper
+builds on. Steering allocation is a real lever forgeometric
+coverage; the study shows it is structurally the wrong lever
+for one-dimensional topology.
+D.5. Topology as machinery: persistence in and
+around learning
+The ingredients for topology-aware objectives have been
+maturing for two decades: persistence computation at
+scale [6, 67, 106], practical diagram metrics [57], stabil-
+ity theory [21], and vectorized representations [1, 10] on
+the computational side; trainable diagram layers [12, 41],
+filtration learning [42], and general differentiability frame-
+works [13, 62, 74] on the gradient side (surveyed in [14,
+15]). In-loop topological losses already win in adjacent
+domains — representation learning [70], tubular and topo-
+logically faithful segmentation [20, 45, 89, 90], microscopy
+volume prediction [92], point-cloud repair and shape opti-
+mization [8, 79] — and differentiable non-persistence sig-
+nals exist too [81]. What had not happened is the transfer of
+this machinery into image-based surface reconstruction.
+D.6. Topology outside the loop: repair and bench-
+marks
+Before differentiable pipelines, topology was corrected af-
+ter the fact: spurious-handle removal [37, 96], general mesh
+repair [4, 52, 85] (surveyed in [5]), and soup-to-manifold
+conversion [46, 48]; Thingi10K quantifies how pervasive
+soup-like defects are in the wild [105] — our tom-yum
+pot’s raw export is a typical specimen. The evaluation
+culture matches: standard pipelines and benchmarks —
+COLMAP [83, 84], PMVS [27], DTU [50], Tanks and Tem-
+ples [59] — score accuracy and completeness by point dis-
+tances; none carries a topological-correctness metric, the
+blindness our Table S1 quantifies on controlled probes.
+D.7. The empty cell, and its nearest neighbours
+Concurrent work has begun to press on the gap from several
+directions, and the distinctions matter. Topology-GS [88]
+puts a persistence terminsideGaussian-splatting training
+— but on barcodes ofrendered images, a topological-
+perceptual loss; the surface’s diagram is never measured,
+and densification adds primitives rather than budgeting
+them. The high-genus inverse-rendering line [29, 30] re-
+constructs meshes whose genus is guaranteed by a Gauss–
+Bonnet-matched template or guides camera placement with
+homology computed once on a reference shape — topology
+as aprior, assumed rather than measured, with ground-truth
+genus required up front. STITCH [51] does measure a dif-
+ferentiable persistence quantity on a live implicit surface —
+enforcing a single connected component — but from point-
+cloud input: no images, no primitives, no budget. Topology
+also enters generation as conditioning features [44], again
+17
+
+===== PAGE 18 =====
+Figure S6. Topology error over training: bottleneck to target in the discriminating dimension (line = seed mean, band = seed min–max).
+Left, sphere (H2): every loss arm (C1, C3, C5, C6, bothρvariants, noise pair C7/C7h) converges to a fraction of baseline; the norm-
+matched repulsion control C2 isdestructive, and its gentle variant C2g still ends worse than baseline.Right, torus (H1), the class no prior
+won: same ordering, C5 best; noise arms descend shallower but never approach baseline; the no-recruitment ablation C6 rides it.
+Figure S7. Thetom-yum pot: an artist-authored Blender model
+(raw export: 9 open shells, 232 non-manifold junction edges) in-
+gested and certified to a single genus-3 shell,β=(1,6,1)exact
+(main paper §4).Right: cutaway — the narrow flue mouth caps
+at smallα, so the flue interior reads as an enclosed chamber: the
+on-axis H2 void the floor rule selects atM=8192(all H1 loops sit
+below the floor).
+outside the reconstruction objective. Partition the three re-
+quirements — (i) a topological quantity of the evolvingsur-
+facemeasured differentiably in the objective, (ii) image-
+based reconstruction through a renderer, (iii) a fixed primi-
+tive budget — and each neighbour holds at most one; none
+holds all three. That cell — the bottom row of Table S6 —
+is what the main paper fills.
+E. Per-seed values and calibration sweeps
+The main paper’s reporting policy (§4) quotes Welchσsep-
+arations only where both arms ran five seeds; every three-
+seed verdict instead rests on disjoint per-seed ranges. Ta-
+ble S7 lists the underlying per-seed tail bottlenecks for the
+generality wave and the three-seed analytic shapes. In ev-
+ery row except rocker-arm’s (the no-headroom null, main
+§5.2) the largest C1 seed is well below the smallest C0 seed;
+identical values across seeds — C2’s, and the group wave’s
+pinned C0s — are genuine (the unmatched-target bound,
+main paper §§5.2, 6; suppl. §G), not rounding.
+Table S8 tabulates the two calibration-knob sweeps
+whose verdicts the main paper states in §3.4 and §5.1: theρ
+response is flat over a10×range, and the ramp window is
+immaterial — all alternatives land within seed noise of the
+default.
+F. The open-surface probe
+Two open bowls are cut from the analytic sphere’s ground-
+truth mesh by removing a polar cap (measured openings
+0.14Rand0.50R), then certified by measurement as disk
+topology: one shell, exactly one boundary loop, edge-
+manifold, consistently oriented, Euler characteristic1. The
+pre-registered bundle rule (the pot’s) applies unchanged: the
+density staircase decides the observable and density — and
+it overruled our own expectation. We predicted the wide
+bowl would lose its enclosed void to the rim; insteadboth
+bowls read exactly one significant H2 bar at every tested
+density (the mouth caps at smallα, so the interior reads
+as a chamber — the pot’s mechanism on an open surface),
+while thedesignedrim’s H1 bar never clears the floor (Ta-
+ble S9). The rule therefore sets H2 atM=2048for both,
+budgetN=1200, loss restricted to H2 (the torus precedent
+for sub-floor features). A designed rim is arealfeature of
+the open target, distinct from the noise-born boundary bars
+real scans will add — the bar-filtering step named in main
+§7 concerns the latter.
+The C-matrix (C0/C1/C2, three seeds, protocol other-
+wise unchanged) passes the verdict rule on both bowls at
+better-than-baseline Chamfer (Table S10): the loss cuts the
+void’s error4.2×(narrow) and4.1×(wide) with disjoint
+per-seed ranges, inside the study’s1.5–10.4×span. The
+control replicates its closed-surface failure modes: on the
+narrow bowl it pins the void at its repulsion equilibrium
+18
+
+===== PAGE 19 =====
+Figure S8. The loop-class row of the main paper’s Fig. 1 matrix: bob (genus 1, H1). The repulsion control’s reconstruction reads one
+significant loop against the true two (β1 2→1, all seeds) at2×worse Chamfer, while baseline and loss both read two — the loss at half the
+baseline’s tail error (main Table 2).
+Figure S9. The system, schematically. DiffSoup’s photometric path (gray) is untouched; the topological branch (orange) samples the
+live soup (M=2048, frozen barycentric weights), computes exact alpha-complex persistence, matches and recruits against the fixed target
+bundle (refresh everyK=10steps and after every resample), and back-propagates through the pair-frozen circumradius re-expressions into
+the same vertices (main §3).Inset(schematic): an absent target bar (star) receives no gradient under optimal matching (main Lemma 1);
+recruitment attaches the nearest unclaimed live bar — the sparse tug.
+(2.1×worse than baseline, identical across seeds) at3.5×
+worse Chamfer; on the wide bowl iterasesthe void in two
+of three seeds (β 2 1→0) at3.1×worse Chamfer. Every
+C0/C1 seed reads the correct count.
+G. The group wave: expanding the external set
+to two groups
+The generality wave of main §5.2 grew from four ex-
+ternal meshes to eight, organized as the study’s two ob-
+servable classes — theloop group(H1: bob, rocker-arm,
+eight) and thevoid group(H2: spot, fandisk, the tom-
+yum pot, armadillo, horse) — under a pre-registered plan
+(GROUP WAVE PLAN.md, shipped with the release bun-
+dle) that fixed the candidate pool, the selection rule, the
+run protocol, and the group statistic before any training run.
+Per-seed tails for the new shapes join suppl. Table S7; this
+section records where the shapes came from and how they
+were selected, and Fig. S11 renders all four under the front-
+page convention.
+Pool, certificates, honest exclusions (Table S12).Can-
+didates were drawn from a standard test-model collection
+(alecjacobson/common-3d-test-models,
+pinned commit) plus the CGAL repository’s genus-2eight;
+the release bundle ships fetch scripts with pinned commits
+and the certificates, not the meshes — redistribution
+terms remain the original repositories’. Every candidate
+passed or failed the pot’s mesh certificate (main §4: exact
+simplicial homology cross-checked against per-component
+19
+
+===== PAGE 20 =====
+Table S7. Per-seed tail bottlenecks (seeds 0/1/2, run order) behind the three-seed verdicts. Spot’s C1 value repeats across seeds at this
+precision; the pot rows are the quicklook values behind main Table 2.
+shape (dim) C0 C1 loss C2 control
+spot (H2) .0429 / .0584 / .0550 .0237 / .0237 / .0237 .0652×3
+bob (H1) .0429 / .0413 / .0437 .0200 / .0207 / .0216 .0437×3
+fandisk (H2) .0540 / .0515 / .0559 .0058 / .0055 / .0042 .0571×3
+tom-yum pot (H2) .0218 / .0223 / .0223 .0059 / .0056 / .0056 .0223×3
+rocker-arm (H1) .0088 / .0082 / .0079 .0090 / .0070 / .0100 .0112 / .0112 / .0115
+eight (H1) .0249×3 .0169 / .0175 / .0142 .0249×3
+armadillo (H2) .0511×3 .0124 / .0125 / .0123 .0511×3
+horse (H2) .0408×3 .0124 / .0083 / .0118 .0408×3
+cube (H2) .0560 / .0551 / .0636 .0071 / .0064 / .0086 .1346×3
+two spheres (H0) .0060 / .0074 / .0062 .0007 / .0009 / .0005 .0009 / .0009 / .0006
+Figure S10. The measurement floor, visualized (all values from the
+recorded density sweep behind Table S3 and main §6). The floor
+6r med(M)falls asM −1/2 (dotted: the law anchored at the torus
+M=2048point, reaching theM=20000evaluation floor.0171),
+while a feature’s lifetime is fixed — a feature becomes measur-
+able where the falling floor crosses it. The double torus’s tube
+loops (.045–.046band) sit below the floor atM=2048and clear
+it byM=4096, matching Table S3’s counts; the torus’s second
+loop clears by only1.33×atM=2048(lifetime marked at1.33×
+the.0623floor) — the thin margin that live-cloud noise consumes
+(main §6, C6).
+Table S8. Calibration-knob sweeps (sphere, tail bottleneck).Top:
+ρresponse, matched seed-0 sweep — the five-seedρ=0.1arm is
+main Table 1’s C1 (.0156±.0013).Bottom: ramp-window pilot,
+three seeds each.
+ρ(seed 0)0.03 0.1 0.3
+tail .0181 .0172 .0177
+ramp window10–40% 20–50%(default)30–60%
+tail .0154±.0017 .0156±.0013 .0179±.0019
+Euler characteristics, watertightness, orientation) as-is
+— failures were excluded, never repaired, keeping the
+wave’s class ”watertight benchmark” (the pot remains the
+Table S9. Probe staircase (seed 0): top bar lifetime over the floor,
+per dimension. Both bowls read exactly(0,0,1)significant bars
+at every density — one H2 void, no significant H1 — so the table
+gives the margins.
+top bar / floorM=2048M=4096M=8192
+narrow: H2 / H13.79×/0.47×5.50×/0.57×7.82×/0.45×
+wide: H2 / H12.34×/0.42×3.50×/0.51×4.94×/0.46×
+Table S10. Open-surface probe C-matrix: tail bottleneck
+(mean±sd, 3 seeds; per-seed values in run order beneath);×=
+reduction vs C0. Both shapespassthe verdict rule; no Welchσat
+n=3(main §4).
+shape C0 C1 loss C2 control
+bowlnarrow .0588±.0035.0138±.0013(4.2×) .1249 (pinned)
+per-seed .0619/.0550/.0593 .0137/.0126/.0151 .1249×3
+bowlwide .0560±.0098.0137±.0003(4.1×) .0770 (β 2 1→0, 2/3)
+per-seed .0448/.0602/.0630 .0141/.0136/.0135 .0770×3
+study’s one ingest-and-solidify story). Five of eleven failed:
+open boundaries or non-manifold junctions in beast, cow,
+max-planck, ogre, and the Utah teapot.
+Staircase selection, before training (Table S11).The
+density staircase (the pot’s pre-registered rule, unchanged)
+fixed each certified shape’s observable class and working
+density:rocker-arm(genus 1) enters the loop group on the
+torus precedent — one of its two loops clears theM=2048
+floor (0.0929vs0.0613), the second (0.0204) reaches only
+1.15×the floor even atM=20,000, and the void is sub-
+floor at 2048, so the loss is H1-restricted;eight(genus 2)
+enters on the pot’s precedent — the full exact(1,4,1)is sig-
+nificant fromM=4096, and the bundle is built atM=8192
+where the fourth loop clears1.69×and the void2.6×;ar-
+madilloandhorse(genus 0) read the exact(1,0,1)at ev-
+ery tested density (voids1.68×/1.42×over the 2048 floor).
+Two certified candidates were set aside at this stage, before
+any training:cheburashkaqualifies at 2048 but grows a sec-
+ond significant capping H2 bar fromM=8192(0.0300vs
+20
+
+===== PAGE 21 =====
+Figure S11. The group wave, rendered (ground truth / C0 / C2 / C1; seed-0 final soups; material, per-row camera and badge convention
+of main Fig. 1).rocker-arm: the no-headroom null — every arm reads the one measurable loop correctly (all badges blue; the control’s
+damage here is value-only).eight: baseline and control read only two of the four certified loops while the loss restores all four (per-seed
+C1 counts4/3/4; seed 0 shown) — and the missing pair is invisible in the render, both holes being open in every cell: the deficit is a
+sub-floor diagram reading, exactly the blindness the paper measures.armadillo/horse: correct-count baselines whose voidvaluepins at
+the unmatched bound (main Table 2); the control erases both voids (reads 0) with no visible geometric collapse.
+floor0.0271;0.0312vs0.0171at 20k) — a pot-flue-type
+concavity reading that would make the evaluation-density
+phantom check ambiguous — and a denser retessellation of
+eight (license unstated at its source) whose staircase inde-
+21
+
+===== PAGE 22 =====
+Table S11. Group-wave staircases (seed 0): significant Betti
+counts vs sampling density for the four selected shapes; bold =
+the pre-registered working density. rocker-arm’s second loop and
+2048-density void never clear the floor (loss H1-restricted, torus
+precedent); eight’s full(1,4,1)holds from 4096 (bundle at 8192,
+pot precedent).
+sig(β 0,β 1,β 2)M=2048 4096 8192 20000
+rocker-arm(1,1,0)(1,1,1) (1,1,2) (1,2,2)
+eight (1,2,1) (1,4,1)(1,4,1)(1,4,1)
+armadillo(1,0,1)(1,0,1) (1,0,1) (1,0,1)
+horse(1,0,1)(1,0,1) (1,0,1) (1,0,1)
+Table S12. Candidate disposition (selection fixed before training;
+plan file in the release bundle). Certificate failures are excluded,
+never repaired; the two staircase-stage set-asides are motivated in
+the text.
+candidate origin certificate decision
+rocker-arm INRIA / AIM@SHAPE pass (g1) loop group
+eight CGAL data (CC0-class) pass (g2) loop group
+armadillo Stanford scan rep. pass (g0) void group
+horse CyberWare / GaTech pass (g0) void group
+cheburashka I. Baran (Pinocchio) pass (g0) set aside
+eight (dense) Directional (lib.) pass (g2) set aside
+beast Autodeskfail: non-manifold —
+cow Viewpoint/Sunfail: oddχ—
+max-planck MPIfail: 161 open edges —
+ogre K. Ritchiefail: 200 open edges —
+teapot M. Newellfail: 160 open edges —
+pendently corroborates the(1,4,1)observable atM=8192.
+Outcome identities behind the pins.The three seed-
+exact baseline values of main Table 2 are unmatched-target
+bounds, not coincidences: eight’s C0/C2 pin0.0249≈half
+the third loop’s ground-truth lifetime at the evaluation den-
+sity (0.0498/2), armadillo’s0.0511 = 0.1022/2, horse’s
+0.0408≈0.0817/2— the bottleneck cost of leaving that
+target bar unmatched (main §6’s pin mechanism, previously
+seen in the pot’s control arm).
+H. Robustness of the reporting choices
+The floor multiplier is not load-bearing.The signifi-
+cance floorkr med(M)usesk=6throughout. Recomput-
+ing every documented bundle decision from the recorded
+ground-truth clouds (protocol densities, bundle seed) gives
+each feature’s flip point — thekat which an included fea-
+ture would leave the bundle or an excluded one would en-
+ter — andevery decision in the study is unchanged for
+k∈(5.12,6.77)(Table S13). The two binding features
+are exactly the ones the paper already flags as marginal: the
+double torus’s sub-floor tube loops (0.85×thek=6floor)
+bound it below, bob’s fat-tube void (1.13×) bounds it above.
+The verdict metric itself (bottleneck to the target diagram)
+contains no threshold;konly gates which bars enter bundles
+Table S13. Floor-multiplier windows per shape (recorded GT
+clouds at the protocol bundle density): the tightest included mar-
+gin and, where the protocol excludes sub-floor features, the largest
+excluded margin — each decision holds whilekstays below/above
+6×that margin. Global window:k∈(5.12,6.77).
+shape tightest IN (×floor) largest OUT (×floor)
+sphere / cube 3.86 / 2.71 —
+torus 1.33 (loop 2) 0.83 (void)
+two spheres 2.61 —
+double torus 2.23 0.85 (tube loops)
+spot / fandisk 1.87 / 1.50 —
+bob 1.13 (void) —
+tom-yum pot 1.22 0.46 (loops)
+rocker-arm 1.52 0.74 (void)
+eight 1.69 (loop 4) —
+armadillo / horse 1.68 / 1.42 —
+bowls (narrow/wide) 3.79 / 2.34 0.47 / 0.42 (rims)
+and counts.
+The pair-frozen plan is stable across refreshes (Fig. S12).
+Every run since the refresh-log schema records the plan’s
+composition (matched / diagonal / recruited / target-
+unreached, per dimension) at each of its∼200refreshes.
+Three regimes cover the study: the torus without recruit-
+ment (C6) shows the chronic gap the ablation collapses on
+— one matched loop and one unreached target atevery
+refresh; on the genus-2 eight, recruitment claims the two
+sub-threshold loops from the first active refresh andhands
+them overto the matched set as training makes them sig-
+nificant (matched2→3–4late, recruited2→1–0, unreached
+0throughout); the tom-yum pot settles to a stable one-bar
+matched plan within the first∼250active steps. No plan os-
+cillation beyond single-bar hand-overs is observed, and the
+per-refresh Gabriel-failure count is zero in all three runs, as
+everywhere (main §3.2).
+Cost scaling, measured.The persistence step — the re-
+fresh’s dominant cost — measured on the torus cloud:
+174ms atM=2048(reproducing §3.2’s recorded refresh
+figure),388ms at4096,740ms at8192,1.92s at20,000
+— an11.0×cost for9.8×the points, consistent with the
+near-linearO(MlogM)scaling. GPU memory: a single-
+seed probe (torus,2,500steps, whole-GPU used memory
+sampled at400ms) peaks at3,649MiB for the baseline and
+4,035MiB with the loss (+386MiB); the persistence com-
+putation itself runs on the CPU (GUDHI), off the GPU bud-
+get.
+22
+
+===== PAGE 23 =====
+Figure S12. Per-refresh plan composition from the recorded refresh logs (seed 0;∼200refreshes each; no new runs).Left: torus without
+recruitment (C6) — one loop matched, one target unreached at every refresh: the chronic gap behind the C6 collapse (main §5.1).Middle:
+eight (C1) — recruitment claims the two sub-threshold loops early and hands them to the matched set as training makes them significant.
+Right: the tom-yum pot (C1) — a stable one-bar matched plan after the first∼250active steps. Dashed gray = target count; in the right
+panel it coincides with the matched line.
+23

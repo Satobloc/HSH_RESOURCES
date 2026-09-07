@@ -1,0 +1,889 @@
+===== PAGE 1 =====
+DEVELOPMENT AND PERFORMANCE OF NPD FOR THE
+EVALUATION OF MODELS WITH ORDINAL DATA
+A PREPRINT
+Marc Cerou
+Univ Rennes, Inserm, EHESP,
+Irset (UMR S_1085)
+F-35000 Rennes
+& Institut de Recherches Internationales Servier
+F-92150 Suresnes
+France
+Marylore Chenel
+Institut de Recherches Internationales Servier
+F-92150 Suresnes, France
+& Pharmatheus AB
+Uppsala, Sweden
+Emmanuelle Comets∗
+Univ Rennes, Inserm, EHESP,
+Irset (UMR S_1085)
+F-35000 Rennes
+& Université Paris Cité &
+Université Sorbonne Paris Nord
+Inserm, IAME, F-75018 Paris, France
+emmanuelle.comets@inserm.fr
+May 4th, 2026
+Corresponding author:Emmanuelle Comets
+INSERM - UMR1137
+UFR de Médecine Site Bichat
+16 rue Henri Huchard
+75018 Paris, France
+Tel: (33) 6 25 82 49 50
+emmanuelle.comets@inserm.fr
+∗Corresponding author
+arXiv:2605.02403v1  [stat.ME]  4 May 2026
+
+===== PAGE 2 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+ABSTRACT
+Purpose:Normalised prediction distribution errors (npde) are used to graphically and statistically
+evaluate continuous responses in non-linear mixed effect models. Here, our aim was to extend
+npde for categorical data and to evaluate their performance. We applied our approach to a real
+case-study describing the evolution of severe onychomycosis (toenail infection) in a trial comparing
+two treatment groups.
+Methods:Let V denote a dataset with categorical observations. The null hypothesis H0 is that
+observations in V can be described by a model M. Residuals called npde can be adapted to categorical
+observations using jittering techniques. Their theoretical standard normal distribution can be evaluated
+through the Kolmogorov-Smirnov test. We evaluated the performance in terms of power through a
+simulation and compared it to a Chi-square. We illustrated the test and graphs on a real case-study.
+Results:npd were able to detect misspecifications in the structural model and model parameter’s
+value. As expected, the power to detect model misspecifications increased both with the difference in
+the shape of the probability, and with the sample size. Chi-square test performed better but npd could
+be readily applied in all type of design. Based on the toe-nail data, graphs reveal a huge discrepancy
+of the base model, and a good adequation for the best model we found.
+Conclusions:npde can be extended to categorical data, particularly in clinical settings with unbal-
+anced design and graphs can be useful to evaluate the model as well as the covariate effect.
+KeywordsNon-linear mixed effect models, Model evaluation, npd, Residuals, Toe-nail infection, longitudinal data,
+ordinal data, count data, binary data
+2
+
+===== PAGE 3 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+1 Introduction
+Clinical trials typically follow several outcomes of interest over a period of time, providing information on the
+evolution of a disease leading to the primary endpoint used for the statistical decision. These outcomes may be
+continuous, such as biomarkers or drug concentrations, but are often ordered categorical variables, such as the pain
+scores measuring the quality of analgesia [Sheiner, 1994], questionnaire-based depression scales, or scores used to
+assess cognitive abilities in Alzheimer’s disease [Ito et al., 2008].Moreover, some continuous biomarkers may be
+discretised for clinical interpretation and reported as ordered categorical variables (e.g. in oncology, where neutrophile
+count are categorised in grades 1 to 4).
+Since the 1970s, non-linear mixed-effect models have been increasingly used, mainly with continuous data. Following
+the evolution of disease over time maximises the information and allows a better characterisation of treatment effect.
+This is especially important for chronic disease or with a long-term effect where the loss to follow-up may impact
+standard statistical inferences as shown by Ibrahim et al. [2010]. In recent years with the emergence of item response
+theory (IRT) within the pharmacometrics world thanks to the work of Ueckert et al. [2014], mixed effects models with
+discrete data have been used extensively to improve disease information and decision making even with complex data
+such as scores combining different questionnaires. It allows the analysis of multifactorial discrete data and aimed at
+describing disease dimension, which can be unique (HAMD scale used to measure depression in Cerou et al. [2019])
+or multiple (UPDRS scale in Parkinson in Buatois et al. [2017]). This prompted the development and evaluation of new
+estimation algorithms and many innovative approaches to model jointly disease progression and treatment effect both in
+short and long-term studies, such as the work of Gottipati et al. [2017]. The evaluation of these models has not however
+been studied as extensively, in part because analyses often use simple models to focus instead on selecting covariate
+effects through statistical criteria, and in part because of the more limited information available in discrete observations
+to produce meaningful diagnostic graphs.
+Model evaluation is an important step in pharmacometrics and consists in checking whether a given model can describe
+the data and in evaluating the underlying model assumptions. As recommended in Nguyen et al. [2017], model
+evaluation is required both in the model building, which is the process of model development to achieve defined
+objectives, and for model qualification, which is the assessment of the model performance with respect to the objectives
+of the analysis. Model evaluation is therefore recommended by regulatory agencies (FDA [2003], EMA [2007]) and
+Model-Informed drug development (MIDD) is an integral part of the drug development process with its regulatory
+guidelines and its own good practices as describes in Marshall et al. [2016]. For continuous data, numerous tools for
+model evaluation have been developed, and a white paper by Nguyen et al. [2017] described the different numerical and
+graphical diagnostics and when we need to use them. Recommended methods include Visual Predictive Check (VPC)
+as described by Holford [2005], normalised prediction distribution (npd) presented by Mentré and Escolano [2006] for
+graphical evaluation and normalised prediction distribution error (npde) showed by Brendel et al. [2006] for numerical
+evaluation as a gold standard.
+For ordinal data however, some effort has been done to develop residuals for regression using ordinal variables like
+in Liu and Zhang [2018]. However, these residuals are adapted to more classical regression ordinal models and do
+not extend readily to repeated data modelled with random effects. To date, for ordinal data, only simulation-based
+diagnostics based on VPC can be carried out easily. For this type of response, less traditional VPC are created, which
+characterise the proportion of each category over time and compare it to the predicted median and prediction interval of
+their probability. This quickly becomes difficult to synthetise when the data has many categories, or when the VPC
+need to be stratified according to covariates of interest. By contrast, npd and npde provide global metrics to evaluate
+the model, and Brendel et al. [2010] proposed to stratified them in groups of interest . It would therefore be interesting
+to extent these metrics to models with ordinal responses.
+In this work, we propose to define and evaluate npd for categorical data and adjust the associated test by simulation to
+account on correlation. In Section 2, we describe the construction of the npd and how we propose to correct the test
+statistic. We then describe a simulation study which was performed to evaluate the performance of this test in terms
+of type I error and power to detect different types of model misspecifications. We use the setting proposed by Seurat
+3
+
+===== PAGE 4 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+et al. [2019] in their work on optimal design for studies with binary outcomes. We also apply our approach to a real
+case-study describing the evolution of severe onychomycosis (toenail infection) in a trial comparing two treatment
+groups. The results from the simulation study and the application to real data are given in Section 3. Finally in the
+Discussion, Section 4, we summarise the main findings and discuss practical implementation.
+2 Models and methods
+2.1 Statistical model for categorical data
+Let Y denote the response and assume its values are in a fixed and finite set of categories c1,...,c K. Let
+Yij,(1≤i≤N,1≤j≤n i)be the observations of the outcome in subjectiat timest ij.
+We denote πij(ck|θi,tij) the individual probability for category k at time tij in subject i, which depends on the
+individual parametersθi. Binary outcomes can be viewed as a special case of ordinal response with two categories.
+Ordinal data assume that the categories are ordered (c1 <c 2 <···<c K), for instance as increasing levels of toxicity.
+It is natural to interpret models based on the cumulative response probabilities:
+γij(ck|θi,tij) =Pr(Y ij≤c k|θi,tij) =
+kX
+l=1
+πij(cl|θi,tij)for k=1,. . . ,(K-1) (1)
+Classical models to describe ordinal data involve setting a parametric shapef for a transformation of the probabilityγij
+using a link function.
+Commonly used link function are the logit, probit, log-log link and also the complementary log-log and cauchit link. f
+is often modelled as a linear regression involving a time trend and potentially covariate predictors. The most popular
+model for ordinal data is the proportional odds model as presented in Molenberghs [2004] with a logit model for the
+link function and a linear function off, yielding the following form:
+logit(γij(ck|θi,tij)) =
+KX
+k=1
+αik +βi·x(tij)(2)
+wherex(tij)is a vector of regression variables andβ i a vector of coefficients.
+2.2 npd for ordinal data
+2.2.1 Model evaluation for continuous responses
+Prediction discrepancies are defined as the quantile of each observation in its marginal predictive distribution by
+Mentré and Escolano [2006]. In NLMEM, we know how to write the probability of an observation conditionally to
+the individual parametersθi only, so the predictive distribution is obtained by integrating over the distribution of the
+random effects:
+pi(Yij|ψ,tij) =
+Z
+p(Yij|θi,tij,ψ)p(θi|ψ,tij)dθi (3)
+When the structural model is nonlinear, there is no analytical solution for the integral in (3).Fij denotes the cumulative
+predictive distribution function ofYij under the tested model. The prediction discrepancypdij forYij is defined as the
+value ofFij at the observationYij:
+pdij =F ij(Yij|ψ) =
+Z Yij
+pi(y|ψ,tij)dy=
+Z Yij Z
+p(y|θi,tij,ψ)p(θi|ψ,tij)dθidy(4)
+By construction, the distribution of the pd are expected to follow a uniform distribution underH0, however, their joint
+distribution in an individual needs to take into account their correlation.
+4
+
+===== PAGE 5 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+2.2.2 Extension ofnpdfor categorical responses
+By considering thel th modality (lin1,...,K),F ij(cl)is defined by:
+Fij(cl|ψ) =
+lX
+k=1
+πij(ck|ψ,tij) =
+lX
+k=1
+Z
+πij(ck|θi,tij,ψ)p(θi|ψ,tij)dθi (5)
+If all the subjects had the same design and covariates, we could consider the joint distribution of their discrete pd as
+defined by equation 5 and compare it to the expected distribution under the model. However, in practice the design
+variables and the number of observations may vary across subjects, so we propose to transform pd into a uniform
+variable that is easier to aggregate across the population. We consider the discrete values as interval-censored data
+from a uniform distribution, and we sample pd as previously proposed in Cerou et al. [2018], Nguyen et al. [2012] for
+censored data as:
+
+
+
+pdij ∼ U(Fij (cl−1),F ij (cl)), ifl>1
+pdij ∼ U(0,Fij (cl)), ifl= 1
+pdij ∼ U(Fij (cl−1),1), ifl=K
+(6)
+If the model is correct (underH0), i.e. the different valuesFij(cl) are well defined, then by construction pd follows a
+uniform distributionU(0,1) . Otherwise, some interval would be over/under-represented and the uniformity assumption
+violated.
+Finally, we can also take the inverse function of the cumulative distribution functionϕofN(0,1)to transform thepd
+to a normal distribution as many residual graphs use normally distributed variables.:
+2.2.3 Correction of the test statistic
+Under the assumption of independence, we can test the overall distribution of the npd. Brendel et al. [2010] suggest
+to use a combined test combining a normality, variance and mean test, or we can use an omnibus test such as the
+Kolmogorov-Smirnov test. To account for the correlation between observations within individuals, which increases
+the type I error of that test, we propose to estimate the distribution of the test statistic for the Kolmogorov-Smirnov
+test between the distribution of the npd and aN(0,1) distribution by using B simulations under H0. A threshold
+corresponding to the 95th percentile of the distribution of this test statistics is computed and is used to correct the power.
+2.3 Chi-square test
+An alternative test can be used when all subjects are followed at the exact same times (tj(1≤j≤n) ) and no covariate
+enters the model. In this case, all subjects have the same predictive distributions at each time, and we can test for model
+adequacy using a Chi-square test. We use the asymptotic approximation and compare the value ofχ2
+j toχ2
+K−1, aχ2
+distribution withK−1degrees of freedom.
+For longitudinal data, we test then×p statistics for each level of stratification (n visits and across all other possiblep
+combination of covariates), and we correct αj using a Bonferroni correction to ensure an overall level of α= 0.05
+(αj = α
+n×p). To do so, we approximate by simulation the Chi-square statistics on each level of stratification and
+estimate for each one theαj threshold. Then we compute the Chi-square statistic when comparing the model and the
+data and the model is rejected if at least one of the Chi-square statisticχ2
+j is lower than their associated approximated
+threshold.
+5
+
+===== PAGE 6 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+2.4 Evaluatingnpdperformance for binary data in a simulation study
+2.4.1 Simulation model
+We evaluated the performance of the test based on the npd in the context of binary data. This example is inspired from
+the work of Seurat et al. [2019], who proposed optimal designs to estimate the parameters of a linear logistic model
+describing a binomial response, in the presence of a treatment effecttrt(trt= 1under treatment, 0 otherwise):
+logit(P(Y= 1)) =θ 1 + (θ2 +β×trt)t(7)
+whereθ1 represents the intercept, θ2 the slope and β the treatment effect. Parameters θx were assumed to follow
+a normal distribution: θx =µ x +b x wherebx∼N(0,ω 2
+x) forx={1,2} . We assumed 4 measurement times at
+t={0,2,11,12}months.
+2.4.2 Simulations scenarios
+We define one scenario as one combination of a true modelMB and a tested modelMV . A model is defined by the
+parameter’s value and the structural shape of the model. In each scenario,B= 200 datasets are generated under the
+modelMB, andV= 1000 simulations are generated under the modelMV . In each scenario, datasets were successively
+generated with three sample sizes (N={50,100,274} ) subjects with the same design (50% in each treatment group).
+The base definition of the modelMB is parameter estimates defined in Table 1, with eq 7 describing the structural shape
+of the model.
+We considered two sets of simulations, a first set with the same structural model changing the value of one parameter,
+and a second set evaluating different model shapes.
+Misspecification of parameter valuesData were generated according to the base scenario but with different values
+of parameters:µ 1 ={−4,3,−2,1,0},µ 2 ={−0.3,−0.09,
+0,0.09,0.3},β={0,0.3,0.45,0.7,1},ω 1 ={0.17,0.3,0.5,0.7,1}andω 2 ={0.1,0.17,0.3,
+0.5,0.7} . Since we considered one parameter change at a time, this resulted in 25 combinations of parameters used to
+generate the data. For each parameter of interest and for each change, the 5 parameter values used to generate the data
+were used in the model to evaluate (MV ). This resulted in 125 scenarios (25modelsM B and for each 5 modelsMV ),
+including 25 models where the tested model was the true model (MV =M B).
+Misspecification of the structural modelWe used the same design and settings as in the first scenarios, but considered
+4 different models: linear model (M1) described in eq. 7, loglinear model (M2), quadratic model (M3) and exponential
+model (M4), represented by the equations:
+M2 :logit(P(Y≥k)) =θ 1 + (θ2 +β×trt) log(t+ 1)(8)
+M3 :logit(P(Y≥k)) =θ 1 + (θ2 +β×trt)t 2 (9)
+M4 :logit(P(Y≥k)) =θ 1 + (θ2 +β×trt) (exp(θ 3t)−1)(10)
+Parameter values for M2 to M4 were chosen in order to have the same mean value of the logit of the probability as in
+M1 at baseline (t=0 month) and at the end (t=12 month) of the study in the two treatment groups. Parameter values are
+presented in Table 2.
+As previously, for each scenario, one model was used inMB and the 4 models are successively used asMV , and for
+each 4 models. This resulted in 16 scenarios, including 4 whereM V =M B.
+6
+
+===== PAGE 7 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+2.4.3 Evaluation
+The scenarios where the same model was used to simulate the data and compute thenpd were used to build the reference
+distribution for the test based on the npd (simulations underH0) and compute the threshold to ensure a p-value of
+5%. This threshold was then used to correct the power for the test in the 4 scenarios with different parameter values
+(simulations underH1). The power was computed as the fraction of simulations where the test based on npd rejected
+the null hypothesis.
+We compared the test based on npd to the Chi-square test described above, by accounting on two levels of stratification,
+visit and treatment group, with the Bonferroni correction applied to account on the 8 tests (4 recording time and 2
+treatments).
+We used the statistical software R Core Team [2018] version 3.5.1 for all the simulations, computations and graphs in
+this study.
+2.5 Application to toenail data
+To illustrate the use of npd applied to real data, we considered binary data from a randomised clinical trial
+comparing two treatments for fungal toenail infection, and available inRas thetoenaildataset in theRpackage
+"prLogistic".
+Data are from De Backer et al. [1998], a multi-center randomised comparison of two oral treatments (A and B) for
+toenail infection. 294 patients are measured at seven visits, i.e. at baseline (week 0), and at weeks 4, 8, 12, 24, 36, and
+48 thereafter, comprising a total of 1908 measurements. The primary end point was the absence of toenail infection and
+the outcome of interest is the binary variable "onycholysis" which indicates the degree of separation of the nail plate
+from the nail-bed (none or mild versus moderate or severe).
+Several analyses have been made, like in Lesaffre and Spiessens [2001], Lin and Chen [2011] and the logistic random
+effect model developed by Hedeker and Gibbons [1994] is considered in this work. This model includes a random
+intercept (β1 andω1), time (β2) and treatment (A or B) (β3) as covariate. We considered the interaction term between
+time and treatment but no treatment effect alone as it would impact the intercept which shouldn’t be different between
+arms due to the randomisation process.
+The logistic random effect model is fitted using Monolix [2019] software, which uses SAEM algorithm for population
+parameter estimation and importance sampling to compute the log likelihood estimation. We performed 1000 Monte-
+Carlo simulations through the associated R package "mlxR", in order to compute thenpdand its associated test.
+3 Results
+3.1 Evaluating npd performance
+We first present the results of the simulation study with binary data. In the following, we present directly the corrected
+power in all scenarios, using the threshold for each test statistic computed under H0. Note that the resulting type I error
+equals exactly 0.05 with the npd test, while there was an inherent variability for the Chi-square test. Indeed, for the
+Chi-square test a Bonferroni correction is applied to each of the 8 tests (one for each visit and treatment group) using
+the threshold computed for the overall test statistic, which induces variability especially in the datasets with a small
+sample size.
+3.1.1 Misspecification on parameter values
+In the first set of simulations, we studied the effect of misspecification on the parameter values by moving the value
+of one parameter away from the simulated values. and we show the results in Fig. 1 for fixed effects and Fig. 2 for
+random effects. In each figure, the different parameters investigated are shown on a separate row of plots, and the lines
+represent the corrected power of the test based on npd (solid line and circles) and of the Chi-square test of proportion
+7
+
+===== PAGE 8 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+(dashed lines and triangles), with different colours identifying the sample size. Simulations were performed also for
+N=100 but were omitted from the plots for more clarity, as the results were always intermediate between the N=50 and
+N=200 groups, as expected.
+Fig. 1 shows the corrected power for the intercept µ1 (top row) time effectµ2 (middle row) and treatment effect β
+(bottom row). The change in power has the expected pattern in each plot, with an increase according to the rise in the
+size of the population and an increased difference from the true value, used to generate the data. In all the scenarios,
+the power is systematically slightly higher for the Chi-square test. The power to detect a model misspecification was
+generally high.
+Fig. 2 shows the corrected power to detect a misspecification on the between subject variability of intercept and time
+effect parameter (respectivelyω1 andω2). As previously, the power increases with a rise in the sample size and an
+increased difference from the true value. However, the power is overall quite small, especially when the value ofω2
+used to generate the data is 0.3 (less than 30%). The power is even smaller with a misspecification onω1 where both
+tests failed to detect of model misspecification 70% to 95% of the time, even with a large number of subjects.
+3.1.2 Misspecification on the structural model
+In a second series of simulations, we investigated misspecifications in the structural model. The results are shown in
+Fig. 3 for four models. In each cell, we simulate under one model and compare to four alternatives including the true
+one. Compared to the previous results, we do not expect an increased power as model differs in the "x-axis", as there is
+no order in those models. Instead, the difference between those models should be evaluated in term of difference in the
+shape of the response. Fig. 4 represents the patterns of predicted logit-probabilities over time for the same models, to
+illustrate their evolution with time and the impact of the expected treatment effect.
+As previously, the power increases with sample size. According to those settings, the power to detect a difference
+between the quadratic (M3) and the exponential model (M4) is small with the Chi-square test. With the test based on
+npd, it is not possible to detect a difference as the power did not differ from 5%. The log-logistic model (M2) is very
+different in this context to the others. Indeed there is a high power to detect that this model is not used to generate
+the data (M={M 1,M 3,M 4}) or to detect that other models are not used to generate the data (M=M 2). In some
+settings (eg comparing M1 to M4), the increase in power for the Chi-square test was up to 70% compared to that of the
+corrected test based onnpd, while it was closer to 10% when comparing M1 and M3. The bottom plots show that the
+power increases as the shapes of the model differ, and the Chi-square test may be more sensitive to a large difference at
+one visit or between the two treatment groups.
+3.2 Stratifying the npd test over visits and treatment
+In all the scenarios presented above (misspecifications on parameter values and structural model), we also computed
+the npd test based on each level of stratification (visits:treatment) and a Bonferroni correction to ensure an overall
+threshold of 5%. Figures in supplementary material S1, S2, and S3 shows that stratifying on visits and treatment results
+in a power increase, without however reaching the power level of the Chi-square test in all scenarios, excepted for the
+scenarios with parameter misspecifications onµ 1 andµ 2 where there is a power decrease.
+3.3 Application to toenail data
+One of the clinical outcome of interest in this study was the clearance of infection, so in this analysis we model the
+outcome "none or mild degree of separation of the nail plate from the nail-bed", with values of 1 for subjects presenting
+mild or no infection, and 0 for subjects with moderate of severe infection. Fig. 5 shows that the probability of being
+infection-free increases over time in both treatment groups, with a slight difference between the two treatments A and B.
+8
+
+===== PAGE 9 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+3.3.1 Model building
+We tested several models to describe the probability of no infection (P(Y= 1) ), representing different assumptions on
+time trends and treatment effect:
+Mconstant,no trt :logit(P(Y= 1)) =θ 1 (11)
+Mlinear,no trt :logit(P(Y= 1)) =θ 1 +θ 2t(12)
+Mlinear,trt:θ1 :logit(P(Y= 1)) = (θ 1 +β×trt) +θ 2t(13)
+Mlinear,trt:θ2 :logit(P(Y= 1)) =θ 1 + (θ2 +β×trt)t(14)
+The parameters of these models areθ1, the intercept of the linear model on the logit of the probability,θ2, the linear
+coefficient describing the time effect, andβ, the treatment effect for treatment B (treatment A is taken as the reference
+in the model), which could be applied to eitherθ1 orθ2. Other models to describe the effect of time such as loglinear or
+quadratic models were also tested but the parameters could not be estimated satisfactorily and we did not investigate
+them further.
+Table 3 shows the estimated statistical criterion (equal to minus twice the log-likelihood) for each of the tested models.
+As they are all nested within another, the p-value of the Likelihood ratio test is given relative to the simpler model
+to which they are compared, and we chose a significance threshold of 5% to select models. As shown in the table,
+introducing a time parameter led to a very significant drop in the likelihood. We then tested the effect of treatment
+on the baseline probability of no infection (Mlinear,trt:θ1), which was not significant, consistent with the randomisation
+process. On the other hand, there was a slightly significant decrease in the likelihood when assuming different slopes
+according to the treatment group, with treatment B slightly more effective than treatment A. The final model was
+thereforeM linear,trt:θ2.
+The parameter estimates of the best model are given in Table 4. All parameters were well estimated with low relative
+standard error (RSE). The Wald test associated to the treatment effect on slope parameter was significant (p<0.003).
+The probability of being infection-free at baseline was estimated to be 0.65, with no difference between the two groups.
+At the end of the study, this probability had increased to 0.92 in treatment A and 0.97 in treatment B.
+3.3.2 Model evaluation using npd
+Fig. 6 shows diagnostic graphs using npd for base modelMconstant,no trt (left) and final modelMlinear,trt:θ2 (right). As for
+continuous data (see e.g. Comets et al. [2010], Nguyen et al. [2017]), these graphs compare observed percentiles of
+the npd (the median, as a solid line, and the 5th and 95th percentiles, in dashed lines) at each time point to prediction
+intervals, in pink for the median and in blue for the extreme percentiles. These prediction intervals are obtained by
+simulating from the theoretical normal distribution at each time point and computing the 95% prediction interval of
+each observed percentile. With continuous data we usually overlay the observed npd, but with the jittering involved in
+creating them for categorical data the individual npd do not have the usual interpretation as quantiles and we prefer
+summarising them using the observed percentiles for clarity. We show the diagnostic graphs stratified by treatment
+group, but the same trends are seen in the overall plots (not shown).
+On the left, a clear trend can be seen for both the median and the 95th percentile of the observed npd, when compared
+to the corresponding prediction intervals, in both treatment groups, with npd decreasing from mostly positive to mostly
+negative values over time. This corresponds to an overprediction of the probability of no infection at the beginning
+of the study, evolving in a compensatory underprediction at late times. It suggests that the change in risk over time
+should therefore be included in the model. A linear (on the logit-scale) time effect has been included in the model
+on the right, as well as a treatment effect, and we see that now the observed percentiles of the npd remain in their
+respective prediction intervals, suggesting no further model misspecification. Of note, similar diagnostic graphs as those
+on the right of Fig. 6 were obtained with the second best model (Mlinear,no trt), indicating these diagnostic graphs could
+not distinguish between the models with or without treatment effect. This is consistent with the small difference in
+likelihood seen in Table 3, which suggests only a small statistical advantage in adding the treatment effect to the slope.
+9
+
+===== PAGE 10 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+In parallel to these graphs, we can compute the p-value for the test based on npd. Fig. 7 illustrates the distribution
+of the test statistic under the null hypothesis as a histogram: the red vertical line indicates the 95 th percentile of the
+distribution under the null, while the black vertical line indicates the value computed under model Mlinear,trt:θ2. The
+graph indicates that the observed value is compatible with the distribution under the null, so that we do not reject the
+hypothesis that this model adequately describes the data. In line with the previous result, the corresponding statistic for
+the model without treatment effect (Mlinear,no trt) was also not significant.
+4 Discussion
+In the present manuscript, we present an extension of npd to mixed effect models involving discrete data models
+with categorical data. We assess their performance in a simulation study, and illustrate their use through an analysis of
+binary repeated data in the presence of a treatment effect. Nguyen et al. [2017] stated that npd and npde are part of the
+tools recommended to evaluate non-linear mixed effect models describing continuous data, and Cerou et al. [2018]
+have recently proposed extensions to these diagnostics for survival data.
+As summarised by Lavielle [2014], models for repeated discrete data are defined in terms of probability, through
+the likelihood of observing a given outcome, in contrast to continuous data which are directly observed. A natural
+evaluation criterion with continuous data is to consider the difference between the observed value and the prediction
+of the model, called a residual, but this doesn’t readily translate to categorical data as the observations and the model
+predictions are not in the same scale. Attempts have been made to define residuals in logistic regression for ordinal
+data, such as the Pearson, cumulative Pearson and deviance residuals in the work of McCullagh and Nelder [1989].
+Pearson residuals aggregate data from the same category to compare the observed proportion of events to the expectation
+predicted by the model. Deviance residuals measure the contribution to the log-likelihood and indicates poorly fitted
+values. These residuals however are difficult to assess, because while their asymptotic distribution is aχ2, they have no
+known distribution in small samples, with a mean that can be different from 0. As synthesised in Liu and Zhang [2018],
+residuals based on the sum of cumulative residuals were developed but implicitly assume an equal distance between
+ordinal categoriesSign-based statistic (SBS) residuals were proposed but rely mainly on the zero mean under the null
+hypothesis property.They recently proposed surrogate residuals, the idea being to define a continuous variable S as a
+“surrogate” of Y and then obtain residuals based on S. They proposed a specific computation for general models which
+rely on a jittering method, either on the outcome scale, either on the probability scale. They showed that those surrogate
+residuals have good properties with respect to mean structures, link functions, heteroscedasticity, proportionality.
+However, their properties and extension to non-linear mixed effect models have not been studied.
+Defining residuals as quantiles from the cumulative prediction distribution was proposed for logistic and linear regression
+by Dunn and Smyth [1996]. Our npd can be viewed as an extension of this approach for mixed effect models, and
+we derive the distribution of the test statistic by simulations to account for the correlation between observations. We
+evaluated the performance of this test in a simple scenario with a homogeneous design composed of two treatment
+groups observed at the same four times. We found that npd showed good power to detect different types of model
+misspecification including different model shapes for the evolution of the probability of outcome with time, or changes
+in the fixed effect parameters, but had low power to detect misspecification in the random effect parameters.
+In this simple setting, we could compare the performance of the test based on the npd with the performance of the
+Chi-square test, testing whether the proportion of events observed in the simulated dataset corresponded to the expected
+proportion. The Chi-square test is only valid when all the variables have the same distribution, so we needed to perform
+separate tests for different visits and different treatment groups, and combine the separate tests, here with a Bonferroni
+correction to ensure the global test remains at the 5% threshold. The Chi-square test was generally more powerful
+than the npd over a range of alternatives, but we observed similar trends in power across the different simulation
+scenarios with both tests. Here, the Chi-square test could be considered here as a gold standard given the large number
+of observations and the fact that only 2 categories were simulated. Its good performance in our simulation study is
+in part due to large differences in some combinations of visit/treatment where the Chi-square test was very powerful
+even after a Bonferroni correction which led to an overall rejection of the null hypothesis. The Chi-square test can
+10
+
+===== PAGE 11 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+be generalised to more than two categories through a Chi-square test, and we expect that the power for thenpd will
+become closer to that of the Chi-square test as the number of categories increase. However, the Chi-square test crucially
+depends on being able to define a single proportion of events at each time point for each treatment group, while the npd
+adjust to the circumstances of each observation through its predictive distribution, and can thus be applied regardless of
+the design and model without stratification. Another advantage of the npd is that it can be used to assess the model
+graphically, as we illustrated in the analysis of the toenail data, while the Chi-square test only assesses aggregate data.
+Finally, the figures in supplementary material shows an increase in the power of the test stratified on the covariates.
+This can be explained by the balancing of the npd distributions between the different levels of stratification when the
+test is global, which could lead to a non-rejection of the test. The stratified test thus allows to highlight the differences
+in distribution but as the power is not systematically higher, we suggest to evaluate the stratified npd distribution to
+evaluate covariate effects graphically, as recommended by Brendel et al. [2010] for continuous data.
+For the toenail data, the Chi-square test could not be applied as the number of observations was different at the various
+visits, illustrating the difficulty of applying a Chi-square test in the presence of unbalanced design or many covariates.
+The toenail dataset was chosen to illustrate the npd on a real case study because it is freely available on the R package
+"prLogistic", and it has been extensively modelled in the literature with reasonably simple models used to characterise
+the data. This data has been widely used to showcase analyses and algorithms for generalised mixed effect models.
+When the repeated data aspect was investigated, they have been most often described by a logistic random-effect models
+including a random intercept representing patient variability at baseline. Several models have been presented to describe
+the drug effect and [Lin and Chen, 2011] presented this effect either on slope, either both the intercept and the slope.
+We found that the model which best describe this data is a model with a treatment effect on slope. The treatment
+effect was only slightly significant, however, which, along with the fact that some authors preferred to test a treatment
+effect on the intercept, may explain the different models found in the literature. Our results are consistent with Lin and
+Chen [2011] with similar parameter estimates and parameter precision. Although we could show the importance of
+taking into account the evolution of infection probability with time, models with or without treatment effect had similar
+diagnostic plots, in line with values of the log-likelihood remaining in close range for these models.
+In the analysis of the toenail data, we ignored missing data, implicitly assuming that the missing data was missing at
+random or completely at random. In our analysis, we consider models similar to those used in the analyses reported
+in Verbeke [1997], which did not consider dropout, as our focus was more on model evaluation. It is worth noting
+however that only 76% of the subjects in the toenail study completed the seven scheduled visits, and one question is
+whether this is an acceptable assumption. Verbeke and Molenberghs [2000] considered this issue in their analysis of the
+continuous data associated to the toenail data, combining a marginal model with a quadratic evolution for the unaffected
+nail length at each visit with a logistic regression model for dropout. They find some evidence that dropout from the
+study is not completely random. We could therefore consider jointly modelling the dropout from the study along with
+the probability of response.
+In this example, the npd proved very versatile as a model evaluation tool, providing compelling diagnostic graphs
+across a variety of models with a similar interpretation as the diagnostic plots obtained for continuous data. One of the
+major strengths of npd is that they can be visualised despite complex design, through the quantile-quantile plot, over
+time, continuous variable, and stratified by the covariates.
+Of course, the test based on npd has limits. It proved generally less powerful than a stratified Chi-square test in our
+simulations, suggesting the transformation of the discrete quantile distribution to a continuous distribution by the
+jittering of the quantiles within uniform intervals incurs a loss of power which may be quite severe in some scenarios.
+It should be noted however that the simulation study involved a binary variable, so that the informativeness of the
+data was very limited, and only 4 visits, so that the Bonferroni correction applied to the Chi-square test was not too
+severe. We surmise that the gap should narrow when applied to variables with more categories, such as score data from
+cognitive decline studies, or count data. Another point to note is that, as with all simulation-based metrics, simulations
+must be feasible which may be problematic (or even impossible), for example in the context of adaptive dose regimens,
+or patients who switch between treatments because of recorded/not recorded outcome. Another limit is the need to
+11
+
+===== PAGE 12 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+compute the distribution of the test statistics by simulation to correct for the inflation due to repeated observations
+within a subject. A practical issue is the number of replicates used to build this distribution, which needs to be large
+enough to correctly approximate the p-value. In this work, the number of replicates used to estimate the distribution of
+the test statistic was 200 replicates. This provided a good performance of the corrected test but it could of interest to
+evaluate the performance of the test by increasing the number of replicates to build the distribution of the test statistic.
+A better alternative to building the distribution under the null hypothesis would be to transform the vector of pd or
+npd to ensure independence, as was proposed for continuous data in Brendel et al. [2006]. For discrete data, we
+could consider copulas to describe the dependence between random variables. Although they have been widely used in
+quantitative finance or in joint model with longitudinal measurements and survival times such as in the work of Ganjali
+and Baghfalaki [2015], their application to vectors of quantiles of unequal size with varying dependency structure
+appears at the moment challenging.
+5 Conclusion
+In this article, we formally extendnpd to discrete data, by transforming discrete quantiles to normal variables to produce
+diagnostic graphs. We showed the good performance of the test based these npd in a simulation study modelling
+the probability of no infection as a function of treatment and visits, complementing their use as visual diagnostics.
+The extension to nominal data is straightforward by assigning an artificial "order" between categories. For graphical
+evaluation, specific adjustments should be implemented for meaningful diagnostics. Finally, a natural extension would
+be to apply the same idea to count data, which has a similar nature but a potentially infinite number of categories. It
+could be interesting to verify the npd properties in this context, and further evaluations will focus on models for count
+data and score data with multiple categories.
+Acknowledgements
+Funding:Marc Cerou received funding from Institut de Recherches Internationales Servier for this work, as part of
+a PhD research fellowship programme. Code implementing the npde for models with binary or categorical data is
+available on request.
+12
+
+===== PAGE 13 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+References
+Karl Brendel, Emmanuelle Comets, Céline Laffont, Christian Laveille, and France Mentré. Metrics for external model
+evaluation with an application to the population pharmacokinetics of gliclazide.Pharmaceutical Research, 23(9):
+2036–2049, 2006.
+Karl Brendel, Emmanuelle Comets, Céline Laffont, and France Mentré. Evaluation of different tests based on observa-
+tions for external model evaluation of population analyses.Journal of Pharmacokinetics and Pharmacodynamics, 37
+(1):49–65, 2010.
+Simon Buatois, Sylvie Retout, Nicolas Frey, and Sebastian Ueckert. Item response theory as an efficient tool to describe
+a heterogeneous clinical rating scale in de novo idiopathic Parkinson’s disease patients.Pharmaceutical Research,
+34(10):2109–2118, 2017.
+M. Cerou, M. Lavielle, K. Brendel, M. Chenel, and E. Comets. Development and performance of npde for the evaluation
+of time-to-event models.Pharmaceutical Research, 35(2):30, 2018.
+M. Cerou, S Peigné, M. Chenel, and E. Comets. Application of item response theory to model disease progression
+and agomelatine effect in patients with major depressive disorder.The American Association of Pharmaceutical
+Scientists Journal, 2019.
+Emmanuelle Comets, Karl Brendel, and France Mentré. Model evaluation in nonlinear mixed effect models, with
+applications to pharmacokinetics.Journal de la société française de statistique, 151(1):22, 2010.
+M De Backer, C De Vroey, Emmanuel Lesaffre, I Scheys, and P De Keyser. Twelve weeks of continuous oral therapy
+for toenail onychomycosis caused by dermatophytes: a double-blind comparative trial of terbinafine 250 mg/day
+versus itraconazole 200 mg/day.Journal of the American Academy of Dermatology, 38(5):S57–S63, 1998.
+Peter K Dunn and Gordon K Smyth. Randomized quantile residuals.Journal of Computational and Graphical Statistics,
+5(3):236–244, 1996.
+EMA. Guideline on reporting the results of population pharmacokinetic analysis CHMP.European Medicines Agency,
+2007.
+FDA. Guidance for Industry Exposure-Response Relationships– Study Design, Data Analysis, and Regulatory
+Applications:Center for Drug Evaluation and Research (CDER) & Center for Biologics Evaluation and Research
+(CBER).F ood and Drug Administration, 2003.
+M Ganjali and T Baghfalaki. A copula approach to joint modeling of longitudinal measurements and survival times
+using monte carlo expectation-maximization with application to aids studies.Journal of biopharmaceutical statistics,
+25(5):1077–1099, 2015.
+Gopichand Gottipati, Mats O Karlsson, and Elodie L Plan. Modeling a Composite Score in Parkinson’s Disease Using
+Item Response Theory.The American Association of Pharmaceutical Scientists Journal, 19(3):837–845, 2017.
+Donald Hedeker and Robert D Gibbons. A random-effects ordinal regression model for multilevel analysis.Biometrics,
+pages 933–944, 1994.
+Nick Holford. The visual predictive check—superiority to standard diagnostic (Rorschach) plots. InAbstr, volume 738,
+page 14, 2005.
+J Ibrahim, H Chu, and LM Chen. Basic Concepts and Methods for Joint Models of Longitudinal and Survival Data.
+Journal of Clinical Oncology, 28:2796–2801, 2010.
+K. Ito, Mm Hutmacher, J. Liu, R. Qiu, B. Frame, and R. Miller. Exposure-response analysis for spontaneously reported
+dizziness in pregabalin-treated patient with generalized anxiety disorder.Clinical Pharmacology & Therapeutics, 84
+(1):127–135, 2008.
+Marc Lavielle.Mixed effects models for the population approach: models, tasks, methods and tools. Chapman &
+Hall/CRC Biostatistics Series, 2014.
+13
+
+===== PAGE 14 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+Emmanuel Lesaffre and Bart Spiessens. On the effect of the number of quadrature points in a logistic random effects
+model: an example.Journal of the Royal Statistical Society: Series C (Applied Statistics), 50(3):325–335, 2001.
+Kuo-Chin Lin and Yi-Ju Chen. A goodness-of-fit test for logistic-normal models using nonparametric smoothing
+method.Journal of statistical planning and inference, 141(2):1069–1076, 2011.
+Dungang Liu and Heping Zhang. Residuals and Diagnostics for Ordinal Regression Models: A Surrogate Approach.
+Journal of the American Statistical Association, 113(522):845–854, 2018.
+SF Marshall, R Burghaus, V Cosson, SY A Cheung, M Chenel, O DellaPasqua, N Frey, B Hamrén, L Harnisch, F Ivanow,
+et al. Good practices in model-informed drug discovery and development: practice, application, and documentation.
+CPT: pharmacometrics & systems pharmacology, 5(3):93–122, 2016.
+Peter McCullagh and John Ashworth Nelder.Generalized Linear Models. London: Chapman & Hall, 1989.
+France Mentré and Sylvie Escolano. Prediction Discrepancies for the Evaluation of Nonlinear Mixed-Effects Models.
+Journal of Pharmacokinetics and Pharmacodynamics, 33(3):345–367, 2006.
+G. Molenberghs. Analyzing incomplete longitudinal clinical trial data.Biostatistics, 5(3):445–464, 2004.
+Monolix.MONOLIX 2019R2 (MOdèles NOn LInéaires à effets miXtes). Lixoft SAS, 2019.
+T. H. T. Nguyen, M-S Mouksassi, N Holford, N Al-Huniti, I Freedman, A. C. Hooker, J. John, M. O. Karlsson, D. R.
+Mould, J. J. Pérez Ruixo, E. L. Plan, R Savic, J. G. C. van Hasselt, B Weber, C Zhou, E Comets, F Mentré, and
+for the Model Evaluation Group of the International Society of Pharmacometrics (ISoP) Best Practice Committee.
+Model Evaluation of Continuous Data Pharmacometric Models: Metrics and Graphics.CPT: pharmacometrics &
+systems pharmacology, 6(2):87–109, 2017.
+Thi Huyen Tram Nguyen, Emmanuelle Comets, and France Mentré. Extension of NPDE for evaluation of nonlinear
+mixed effect models in presence of data below the quantification limit with applications to HIV dynamic model.
+Journal of Pharmacokinetics and Pharmacodynamics, 39(5):499–518, 2012.
+R Core Team.R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing,
+2018.
+Jérémy Seurat, Thu Thuy Nguyen, and France Mentré. Robust designs accounting for model uncertainty in longitudinal
+studies with binary outcomes.Statistical Methods in Medical Research, page 096228021985058, 2019.
+L. B. Sheiner. A new approach to the analysis of analgesic drug trials, illustrated with bromfenac data.Clinical
+Pharmacology & Therapeutics, 56(3):309–322, 1994.
+Sebastian Ueckert, Elodie L Plan, Kaori Ito, Mats O Karlsson, Brian Corrigan, Andrew C Hooker, Alzheimer’s
+Disease Neuroimaging Initiative, and others. Improved utilization of ADAS-cog assessment data through item
+response theory based pharmacometric modeling.Pharmaceutical Research, 31(8):2152–2165, 2014.
+Geert Verbeke. Linear mixed models for longitudinal data. InLinear mixed models in practice, pages 63–153. Springer,
+1997.
+Geert Verbeke and Geert Molenberghs. A model for longitudinal data.Linear mixed models for longitudinal data,
+pages 19–29, 2000.
+14
+
+===== PAGE 15 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+Figures & Tables
+method ● npd chisq Sample size ● ●50 200
+●
+●
+●
+● ●
+●
+●
+● ● ●
+●
+●
+●
+●
+●● ●
+●
+● ●
+μ1 = −4 μ1 = −2
+−4 −3 −2 −1 0 −4 −3 −2 −1 0
+0.00
+0.25
+0.50
+0.75
+1.00
+Value of μ1 in M
+Proportion of rejected datasets
+●
+●
+●
+●
+●●
+●
+●
+●
+● ●
+●
+●
+●
+●
+● ●
+●
+●
+●
+μ2 = 0 μ2 = 0.09
+−0.30 −0.09 0.00 0.09 0.30 −0.30 −0.09 0.00 0.09 0.30
+0.00
+0.25
+0.50
+0.75
+1.00
+Value of μ2 in M
+Proportion of rejected datasets
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+β = 0.45 β = 0.7
+0.00 0.30 0.45 0.70 1.00 0.00 0.30 0.45 0.70 1.00
+0.00
+0.25
+0.50
+0.75
+1.00
+Value of β in M
+Proportion of rejected datasets
+Figure 1: Power of the npd compared to a Chi-square test in case of parameter’s misspecification on the fixed effect
+level, depending on three sample size
+15
+
+===== PAGE 16 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+method ● npd chisq Sample size ● ●50 200
+● ● ● ● ●
+● ● ● ● ● ● ● ● ● ●
+● ● ● ● ●
+ω1 = 0.7 ω1 = 1
+0.17 0.30 0.50 0.70 1.00 0.17 0.30 0.50 0.70 1.00
+0.00
+0.25
+0.50
+0.75
+1.00
+Value of ω1 in M
+Proportion of rejected datasets
+● ● ●
+● ●
+● ●
+●
+●
+●
+●
+●
+● ● ●
+●
+●
+●
+●
+●
+ω2 = 0.17 ω2 = 0.7
+0.10 0.17 0.30 0.50 0.70 0.10 0.17 0.30 0.50 0.70
+0.00
+0.25
+0.50
+0.75
+1.00
+Value of ω2 in M
+Proportion of rejected datasets
+Figure 2: Power of the npd compared to a Chi-square test in case of parameter’s misspecification, on the between
+subject variability level, depending on three sample size
+16
+
+===== PAGE 17 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+method ● npd chisq Sample size ● ●50 200
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+● ●
+●
+●
+● ●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+M = M1 M = M2 M = M3 M = M4
+M1 M2 M3 M4 M1 M2 M3 M4 M1 M2 M3 M4 M1 M2 M3 M4
+0.00
+0.25
+0.50
+0.75
+1.00
+Different structural models of M
+Proportion of rejected datasets
+Figure 3: Power of the npd compared to a Chi-square test in case of misspecification on the structural model, for three
+sample sizes.
+17
+
+===== PAGE 18 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+method ● npd chisq Sample size ● ●50 200
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+● ●
+●
+●
+● ●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+●
+M = M1 M = M2 M = M3 M = M4
+M1 M2 M3 M4 M1 M2 M3 M4 M1 M2 M3 M4 M1 M2 M3 M4
+0.00
+0.25
+0.50
+0.75
+1.00
+Different structural models of M
+Proportion of rejected datasets
+Figure 4: Prediction from the four models of the logit probability of response over time, for both the control and treated
+group.
+18
+
+===== PAGE 19 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+0.00
+0.25
+0.50
+0.75
+1.00
+0 4 8 12 24 36 48
+Time (weeks)
+Probability of no infection (none−mild)
+Treatment A B
+Figure 5: Probability of being non infected over time (Y=0 if moderate or severe infection, Y=1 if mild or absent
+infection), stratified by treatment arm.
+Figure 6: Scatter plot of the npd versus time, stratified by treatment group (left: base model modelMconstant,no trt; right:
+final modelM linear,trt:θ2).
+19
+
+===== PAGE 20 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+0
+5
+10
+15
+20
+0.01 0.02 0.03 0.04
+Distribution of the test statistic
+count
+Figure 7: Distribution of the test statistic under the null hypothesis, with the threshold associated with the 95th percentile
+(red), compared to the statistics based on the data.
+20
+
+===== PAGE 21 =====
+arXivpreprintNPDE TO EVALUATE JOINT MODELS INNLMEM
+Table 1: Parameter values for the logistic regression model on binomial data in Seurat et al. [2019].
+Parameter Fixed-effect Transformation Between subject standard deviation
+µ1 -2 Normal 0.7
+µ2 0.09 Normal 0.17
+β0.45 - -
+Table 2: Parameter values for each structural model. M1 is the linear model, M2 the loglinear model, M3 the quadratic
+model, M4 the exponential model.
+Parameter M1 M2 M3 M4
+µ1 -2 -2 -2 -2
+µ2 0.09 0.427.50×10 −3 2.01×10 −2
+µ3 - - - 0.33
+β0.4500 2.100 0.0375 0.1005
+ω1 0.7 0.7 0.7 0.7
+ω2 0.17 0.791.41×10 −2 3.79×10 −2
+Table 3: Model selection process for the toenail data. The p-value from the log-likelihood ratio test is given in the last
+column, with the parent model for the test.
+Model -2LL Model compared p-value
+Mconstant,no trt 2737.7 - -
+Mlinear,no trt 1257.0M constant,no trt p<0.001
+Mlinear,trt:θ1 1255.3M linear,no trt NS
+Mlinear,trt:θ2 1251.9M linear,no trt p=0.041
+Table 4: Parameter estimates for the best model (Mlinear,trt:θ2) adjusted to the toenail data, along with their standard error
+of estimation (SE) and relative SE (RSE).
+Parameter Value SE RSE (%)
+θ1 1.76 0.330 19
+θ2 0.36 0.039 11
+β0.19 0.064 33
+ω1 4.05 0.370 9
+21

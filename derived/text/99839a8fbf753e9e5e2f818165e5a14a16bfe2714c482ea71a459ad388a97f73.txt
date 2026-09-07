@@ -1,0 +1,2108 @@
+===== PAGE 1 =====
+SPACE: Sample-cloud Predictive Adaptive Conformal
+Ellipsoids for Multivariate Time-Series Forecasting
+Baishi Li1 Kelvin J.L. Koa2 Ke-Wei Huang1,2
+1Department of Information Systems and Analytics, National University of Singapore
+2Asian Institute of Digital Finance, National University of Singapore
+baishili@u.nus.edu, kelvin.koa@u.nus.edu, dishkw@nus.edu.sg
+Abstract
+Modern probabilistic time-series forecasters often express uncertainty through
+forecast samples. While typically converted into nominal prediction regions using
+empirical quantiles, these model-implied sets lack formal coverage guarantees and
+frequently deviate from nominal targets under distribution shift. Existing multi-
+variate conformal methods can calibrate these regions online, but they typically
+estimate geometry from historical residuals using fixed or accumulating look-back
+windows. This reliance on the past limits their ability to exploit the instantaneous
+dependence structure of current predictions and leaves them vulnerable to stale-
+regime contamination. To address this, we propose SPACE, a conformal wrapper
+for sample-generating multivariate forecasters. SPACEconstructs ellipsoidal joint
+prediction regions by estimating time-local covariance geometry directly from the
+current forecast sample cloud, calibrating the region’s radius via a dynamic back-
+ward window-selection scheme. Across diverse multivariate datasets, probabilistic
+forecasters, and conformal baselines, SPACEconsistently brings realized joint and
+rolling coverage closer to the nominal target, achieving superior coverage-efficiency
+tradeoffs relative to competing wrappers.
+1 Introduction
+While modern deep forecasting architectures—spanning diffusion [27, 19, 43], autoregressive [31, 26],
+copula [3, 30], and flow-based models [ 28, 14]—excel at generating multivariate sample clouds,
+converting these rich representations into statistically calibrated joint prediction regions under non-
+stationarity remains an open challenge. Building on foundational conformal prediction work [36, 18,
+2], recent methods have made major strides in sequential coverage calibration [40, 11, 1], often by
+using historical residual covariance to shape multivariate prediction sets [41, 24]. This approach is
+natural and effective, but it can adapt slowly when the instantaneous uncertainty geometry changes
+abruptly. In this paper, we build on these foundations by showing that robustness to sudden shifts
+can be improved by separating two roles that are often coupled: geometry estimation and conformal
+radius calibration. Our method shapes joint regions using the forecaster’s current predictive sample
+covariance, while calibrating the radius using an adaptively selected, same-regime historical window.
+The practical consequences of delayed geometric adaptation become visible under non-stationary
+dynamics. As illustrated in Figure 1(a), raw sample-based regions from modern forecasters can be
+substantially miscalibrated at the joint level across diverse datasets, often deviating due to model
+misspecification and finite-sample error [29, 20]. Furthermore, as shown in Figure 1(b), this realized
+coverage often drifts away from the nominal 90% target over time. Many multivariate conformal
+baselines correct this coverage gap by relying on past residuals to estimate both region geometry
+and calibration thresholds. After abrupt regime changes, this coupling creates a difficult trade-off:
+expanding the radius may recover coverage but sacrifice efficiency, while maintaining a tight region
+Preprint.
+arXiv:2608.17333v1  [stat.ML]  18 Aug 2026
+
+===== PAGE 2 =====
+(a)
+ (b)
+Figure 1: Joint coverage at the 90% target. Panel (a) shows the distribution of empirical joint coverage.
+The x-axis evaluates different constructions:Raw Forecaster denotes native sample-based regions
+without conformal calibration, SPACEis our method, and the rest are competing conformal baselines.
+The y-axis shows empirical joint coverage, with the dotted line marking the 90% target; better
+methods concentrate near this line. Panel (b) shows rolling joint coverage on theweather dataset
+across forecasters. Raw rolling coverage (gray) is unstable and systematically off-target, whereas
+SPACE(red) stays much closer to the desired level over time.
+with outdated geometry preserves efficiency at the cost of local coverage. Even online adaptive
+methods, such as Adaptive Conformal Inference (ACI) [11, 34], adjust only the scalar miscoverage
+rate, leaving the geometric shape inherited from historical residuals unchanged. The closest prior
+work, MultiDimSPCI [41], constructs ellipsoidal regions from historical residual covariance within
+a fixed-length sequential window. We address this limitation by ensuring that both the region’s
+geometry and its calibration window are chosen adaptively in response to the current forecast state.
+To address these limitations, we introduce SPACE(Sample-cloud Predictive Adaptive Conformal
+Ellipsoids), a post-hoc conformal wrapper that directly exploits the probabilistic capabilities of the
+underlying forecaster. Our primary contributions are summarized as follows:
+• Decoupling geometry from calibration.We formalize a principle for multivariate confor-
+mal forecasting under non-stationarity: the forecaster’s predictive samples should determine
+the localshapeof the joint region, while conformal calibration scores should determine its
+radius. Based on this principle, we introduce SPACE, a post-hoc wrapper that constructs
+ellipsoidal regions using the time-local covariance of the current predictive sample cloud,
+reducing the adaptation delay associated with residual-based conformal geometries.
+• Regime-local adaptive calibration.We propose a backward same-regime testing procedure
+for calibrating the radius of the forecast-conditioned ellipsoid. By adaptively selecting the
+longest recent calibration window whose conformity scores remain statistically compatible
+with the current regime, the method reduces the influence of outdated dynamics while
+balancing local coverage and statistical efficiency in sequential prediction.
+• Theoretical guarantees and error decomposition.We establish finite-sample joint cover-
+age under an idealized same-regime assumption and derive a sequential local coverage-gap
+bound that separates the effects of sample-based geometry estimation, adaptive window
+selection, and finite calibration sample size. This analysis clarifies how predictive sample
+size and calibration-window quality influence local coverage error.
+• Extensive empirical validation.We evaluate SPACEacross 7 multivariate datasets spanning
+energy, finance, weather, and traffic domains, 8 diverse probabilistic forecasters (including
+diffusion, flow, and autoregressive architectures), and 5 competing conformal baselines
+(MultiDimSPCI, local ellipsoidal CP, and copula-based CP). Across these diverse benchmark
+pairs, SPACEachieves a median realized joint coverage gap of just 0.2 percentage points
+from the nominal target. Furthermore, it reduces the overall mean coverage gap by over
+80% relative to the strongest baseline (MultiDimSPCI) while consistently improving local
+calibration stability under distribution shift.
+2
+
+===== PAGE 3 =====
+Table 1: Positioning of SPACErelative to representative conformal approaches for multivariate and
+sequential prediction.
+Method Sequential TS Joint multivariate set Geometry source Requires auxiliary CP model Adaptive calibration window
+Adaptive TS CP [40, 11, 1]✓ ✗Scalar / marginal residuals✗ ✗ ∗
+MultiDimSPCI [41]✓ ✓Historical residual covariance✗ ✗
+Copula-based CP [23, 32] Mixed✓Fitted copula dependence✓ ✗
+FCP [17]✓ ✓Learned residual flow✓ ✗
+SPACE(ours)✓ ✓Current predictive samples✗ ✓
+∗These methods perform adaptive online scalar updates, but do not adaptively select contiguous historical calibration windows.
+2 Related Work
+Sample-generating probabilistic forecasters.Modern forecasters—including autoregressive [ 31],
+diffusion [27, 33, 19, 43], copula [30, 3], and flow-based models [14]—encode joint dependencies
+through predictive sample clouds. However, these native sample regions remain model-implied rather
+than coverage-calibrated. We treat these models as black boxes, converting their raw predictive
+samples into formally calibrated joint prediction regions without altering the underlying architecture.
+Sequential, localized, and online conformal prediction.A growing literature studies conformal
+prediction beyond the exchangeable setting. Methods such as EnbPI [ 40], Adaptive Conformal
+Inference (ACI) [11], and Conformal PID [1] robustly adapt calibration thresholds or miscoverage
+levels online. Recent extensions have improved online tracking [6], rolling risk control [1], covariate
+shift and localized conformal prediction [ 34, 4, 12]. However, these methods do not specify a
+forecast-conditioned geometry forconformalized multivariate joint regions.
+Multivariate and ellipsoidal conformal prediction.Prior work has developed conformal pre-
+diction for cross-sectional multivariate regression using structured dependence via copulas [23, 32]
+and ellipsoidal sets [ 24, 13, 10]. For multivariate time series, MultiDimSPCI [ 41] is the closest
+benchmark to our work. It constructs sequential ellipsoidal regions by using historical residual
+covariance and handles temporal dependence through sequential calibration within a fixed-length
+window. SPACEdiffers by extracting the ellipsoidal geometry from the current predictive sample
+cloud—rather than from a historical surrogate—and by adaptively selecting the calibration window
+via same-regime testing. Another approach, FCP [17], targets multivariate time series by learning a
+context-conditioned residual flow, whereas SPACErequires no auxiliary generative model fitting.
+Positioning of SPACE.SPACEis a conformal wrapper that simultaneously (i) operates on sample-
+generating multivariate forecasters without auxiliary model fitting, (ii) derives its multivariate ge-
+ometry from the current predictive sample cloud rather than historical residuals, and (iii) adapts its
+calibration window to the current regime. Table 1 summarizes these structural differences.
+3 Method: SPACE
+We consider a probabilistic multivariate forecaster that outputs a set ofM predictive samples (e.g.,
+generated trajectories from a conditional generative model) for a target yt∈R d, where d spans
+multiple variables, forecast horizons, or both. We denote this predictive sample cloud by
+bYt ={ˆy(m)
+t }M
+m=1,ˆy (m)
+t ∈R d.(1)
+Given a target miscoverage levelα∈(0,1), our goal is to construct a joint prediction set
+Ct(α)⊆R d such thatPr
+ 
+yt∈C t(α)
+
+≈1−α,(2)
+while maximizing statistical efficiency.
+Operating strictly causally over a chronological stream {(bYt,yt)}T
+t=1, SPACEconstructs this set
+sequentially. At prediction time t, it uses only the current sample cloud bYt and realized past data
+(s<t ). The method consists of two core components: First, SPACEextracts a time-local multivariate
+geometry directly frombYt to shape the region (Section 3.1). Second, it calibrates the ellipsoid’s radius
+via a sequential same-regime procedure that dynamically selects the optimal historical calibration
+window (Section 3.2).
+3
+
+===== PAGE 4 =====
+3.1 Sample-derived local geometry
+For each time stept, we first construct a median-based centerµt from bYt ={ˆy(m)
+t }M
+m=1, and form
+predictive residual samplesr(m)
+t = ˆy(m)
+t −µt. To account for varying marginal scales, we compute
+the empirical covariance of the standardized residuals:
+bCt = Cov
+ 
+˜r(1)
+t ,...,˜r (M)
+t
+
+,(3)
+where ˜r(m)
+t =D −1r(m)
+t andD= diag(s 1,...,s d) withsj >0 being the coordinate-wise scale
+estimate fitted from the wrapper-training segment. Mapping this covariance back to the original scale
+gives the local multivariate geometry at timet:
+bΣt =D bCtD.(4)
+Crucially, as we establish in Proposition 1, this sample-derived covariance acts as a statistically
+consistent proxy that robustly concentrates around the forecaster’s true conditional geometry.
+We define the radial Mahalanobis-type nonconformity score at timetas
+et =
+q
+(yt−µt)⊤bΣ+
+t (yt−µt).(5)
+Here, bΣ+
+t denotes the stabilized pseudo-inverse of the local covariance matrix bΣt. Since bΣt is
+symmetric positive semidefinite, it admits a spectral decomposition bΣt =U tΛtU⊤
+t , where Λt =
+diag(λt,1,...,λ t,d) contains the nonnegative eigenvalues. The stabilized pseudo-inverse is formed
+by inverting only eigenvalues above an adaptive toleranceρt:
+bΣ+
+t =U t diag
+ 1{λt,i >ρ t}
+λt,i
+
+U⊤
+t .(6)
+The score in (5) therefore measures how far the realized target lies from the center of the forecast
+cloud relative to its implied local covariance geometry.
+3.2 Dynamic same-regime calibration window selection
+At forecast time t, letPt ={t−p,...,t−1} denote the recent probe block of length p. SPACE
+searches backward over candidate calibration lengths
+L∈{L min, Lmin +h, Lmin + 2h,...,L max},(7)
+whereh is the backward extension step size. For each candidate lengthL, define the full candidate
+blockCwhole
+t (L) ={t−p−L,...,t−p−1} and the newly added incrementBinc
+t (L) ={t−p−
+L,...,t−p−L+h−1}.
+While the radial scoreet captures overall ellipsoidal distance, it may miss regime shifts that manifest
+purely through coordinate-wise extremes or directional changes. Therefore, for the conformal
+uniformity test, we deploy a bundle of three complementary scalar diagnostics. For any observed
+times, let˜rs =D−1(ys−µs)denote the realized standardized residual:
+ss,1 =e s, s s,2 =∥˜rs∥∞, s s,3 =|v⊤
+1 ˜rs|,(8)
+wherev1 is the top eigenvector of the training residual covariance in standardized space. Thus,ss,1
+captures radial size,ss,2 captures extremeness, andss,3 captures variation along a dominant direction.
+Conformal same-regime uniformity test.For each diagnostic j∈{1,2,3} and candidate block
+A∈{C whole
+t (L),B inc
+t (L)}, SPACEcompares the probe scores {su,j :u∈P t} with the calibration
+scores{sv,j :v∈A}using randomized conformal p-values:
+Uu,j(A) = 1 + #{v∈A:s v,j >s u,j}+ξ u,j #{v∈A:s v,j =s u,j}
+|A|+ 1 , ξ u,j∼Unif(0,1).
+(9)
+The finite-sample validity of this test is formalized in Assumption (A2): clean same-regime blocks
+have controlled false-rejection probability, while contaminated extensions have controlled false-
+acceptance probability. Proposition 2 shows that these local test guarantees imply recovery of
+4
+
+===== PAGE 5 =====
+Figure 2: Illustration of local prediction geometry over time on theWeather–CSDI stream, shown on
+randomly selected target dimensions (d11 andd12) and time indices. Each ellipse is the 2D projection
+of SPACE’s ellipsoidal prediction region, while the gray points denote the forecast sample cloud.
+the oracle same-regime window with high probability. Accordingly,A passes the test if, for each
+diagnosticj:
+KSA
+t,L,j = sup
+x∈[0,1]
+bFA
+t,L,j(x)−x
+<τ A
+t,L,j, j= 1,2,3,(10)
+where bFA
+t,L,j(x) is the empirical CDF of the probe p-values, KSA
+t,L,j is the Kolmogorov–Smirnov
+discrepancy, andτ A
+t,L,j is the familywise-corrected Dvoretzky–Kiefer–Wolfowitz (DKW) threshold.
+Sequential extension rule.Starting from Lmin, SPACEextends the calibration window from L to
+L+h only if bothCwhole
+t (L) andBinc
+t (L) pass (10). This dual-check guards against dilution, since a
+stale older increment could be masked by the previously accepted history if only the full block were
+tested. The selected calibration lengthL t is the last accepted length before the first rejection.
+3.3 Prediction Set
+GivenLt, SPACEcalibrates the radius using the same-regime score history and the probe block. Let
+Ht(Lt) ={e s :s∈C whole
+t (Lt)∪P t}(11)
+denote the final calibration score set available at timet. The radius is defined as
+rt =Q 1−αt
+ 
+Ht(Lt)
+
+,(12)
+whereQ1−αt(·) is the empirical quantile at level 1−α t, andαt is updated online using adaptive
+conformal inference (ACI) [11]. The final prediction set at timetis the ellipsoid
+Ct(α) =
+n
+y∈R d : (y−µ t)⊤bΣ+
+t (y−µ t)≤r 2
+t
+o
+.(13)
+Figure 2 visualizes the local prediction geometry used by our method. The ellipses are not fixed in
+either orientation or aspect ratio: instead, they rotate, elongate, or contract over time to match the
+local structure of the forecast sample cloud. This behavior is a direct consequence of our time-local
+covariance estimated from the contemporaneous generative sample cloud.
+By rigorously decoupling the sample-based shape estimation from the same-regime scale calibration,
+SPACEtranscends empirical heuristics to achieve the formal finite-sample coverage guarantees and
+theoretical error decomposition presented next in Section 4.
+Computational Efficiency.Despite performing a dynamic backward search at every time step,
+SPACEintroduces minimal operational overhead. The backward search relies strictly on one-
+dimensional empirical CDF comparisons (KS test) over the pre-computed scalarst,j, thereby bypass-
+ing repeated matrix inversions. Algorithm 1 in Appendix B summarizes the full execution.
+5
+
+===== PAGE 6 =====
+4 Theoretical Analysis
+We analyze through: (i) finite-sample concentration of the sample-cloud covariance, (ii) recovery
+of a same-regime calibration window, and most importantly — (iii) a sequential coverage-error
+decomposition. The four sets of formal assumptions and other proofs are deferred to Appendix A.
+Assumptions (informal).Let Ft be the filtration generated by realized targets, forecast clouds,
+and auxiliary randomness up to timet. We define Pt(·) =P(·|F t−1) as the probability conditional
+on the immediate past. For same-regime properties, we use Qt(·) =P(·|F τt), conditioning only
+on information prior to the most recent change point τt. Our per-time coverage bounds are thus
+conditional; unconditional variants follow by integrating over the past.
+(A1) Sample-cloud regularity and stable score geometry:conditional on the past, the M forecast
+samples are i.i.d. sub-Gaussian draws from the forecaster-implied law, their standardized population
+covariance is well defined, and the resulting Mahalanobis conformal set is locally stable under small
+perturbations of the sample-cloud covariance [37, 41]. This assumption provides the regularity needed
+for theLΣ term below and rules out discontinuities caused by atoms in the ideal score distribution or
+eigenvalues crossing the pseudo-inverse threshold.1 (A2) Same-regime test calibration and shift
+detectability:clean candidate blocks are rejected by the same-regime test with probability at most
+δuni, while every contaminated extension has at least one diagnostic/block comparison whose false-
+acceptance probability is at mostβdet [39, 6]. For the KS-style version used by SPACE, a sufficient
+DKW-type form isβdet = 2 exp(−2|Pt|∆2
+sep) under a population separation margin ∆sep >0 .(A3)
+Piecewise augmented exchangeability:within each stationary regime, the augmented forecast–
+target objectsZt = (Yt,bYt) are conditionally exchangeable, and the ideal conformal scores used
+for coverage inherit this same-regime exchangeability [4, 11].(A4) Adaptive-level validity:the
+adaptive miscoverage levelαt is causal and does not use the oracle test score. Formally, its effect is
+controlled by a tracking termεACI
+t together with a rank-validity condition for the oracle same-regime
+conformal predictor usingαt, up to the usual finite calibration-sample error [11, 1].
+Step 1: Geometry Concentration.First, we establish that the empirical sample-cloud covariance
+bCt reliably estimates the forecaster-implied conditional geometry.
+Proposition 1(Sample-cloud covariance concentration).Under (A1), for any fixed prediction time t
+and anyδ∈(0,1), there exists a universal constantc 0 >0such that, conditional onF t−1,
+Pt
+
+
+
+bCt−C ⋆
+t
+
+
+
+op
+≤η M,δ
+
+≥1−δ, η M,δ =c 0K2
+ r
+d+ log(1/δ)
+M + d+ log(1/δ)
+M
+!
+.
+(14)
+Proof intuition:This follows from the standard operator-norm concentration bound for sample
+covariance matrices of sub-Gaussian vectors (see [35]).
+Remark on Statistical Rate and Generative Capacity.The convergence rate ηM,δ matches
+the standard dimension dependence for unstructured sub-Gaussian covariance estimation. Unlike
+classical settings constrained by historical data, the generative sample sizeM is fully controllable
+and can theoretically be arbitrarily large, driving the geometry estimation error to zero. Practically,
+M need not be large: onceM≳d , the leading
+p
+d/M term decays rapidly. Faster estimation rates
+would require structural assumptions onC ⋆
+t , such as sparsity or low rank.
+Step 2: Window Recovery. ρwin
+t =Q t(bLt̸=L ⋆
+t ) denotes the window-selection error probability,
+whereL⋆
+t is the largest candidate length whose calibration and probe blocks lie in the current regime.
+Proposition 2(Same-regime window recovery).Under (A2), if the same-regime tests have false-
+rejection probability at mostδ uni and false-acceptance probability at mostβ det, then
+ρwin
+t ≤6|G|δ uni +|G|β det.(15)
+1Assumption A1 is natural for generative architectures whose output samples are obtained by passing light-tailed latent
+variables through sufficiently regular maps. For example, if a standard Gaussian latent variable is transformed by an L-
+Lipschitz generator fθ, Gaussian concentration implies sub-Gaussian output behavior up to the Lipschitz scale [35]. Spectral
+normalization is one common way to encourage such Lipschitz control in neural generators [25].
+6
+
+===== PAGE 7 =====
+In the DKW-style separation case,β det = 2 exp{−2|Pt|∆2
+sep}.2
+Proof intuition.Because the window extends sequentially, a false rejection at any clean length
+prematurely halts the search before reaching the oracle lengthL⋆
+t . A union bound over the 6|G| clean
+tests (2 block types× 3 diagnostics) controls this premature stopping. Conversely, Assumption (A2)
+ensures that any invalid lengthL>L ⋆
+t is detected and rejected with probability at least 1−β det. A
+combined union bound over these candidate lengths yields the final recovery probability [39, 6].
+Step 3: Coverage Gap Decomposition.Let H⋆
+t =C whole
+t (L⋆
+t )∪P t,n⋆
+t =|H ⋆
+t|, andCACI
+t (α)
+denote the final prediction set when the nominal target level isα, allowing the algorithm to use the
+adaptive internal levelαt. The per-time coverage error can be decomposed into window-selection
+error, adaptive-level error, finite calibration-sample error, and sample-geometry perturbation error.
+Theorem 1.Assume (A1)–(A4). For any fixed prediction time t and any δt ∈(0,1) , suppose
+ηM,δt/(n⋆
+t +1)≤η 0. Then
+Qt
+ 
+Yt∈C ACI
+t (α)
+
+−(1−α)
+≤ρ win
+t +ε ACI
+t + 1
+n⋆
+t + 1 +L ΣηM,δt/(n⋆
+t +1) +δt,(16)
+whereLΣ is the score-geometry stability constant from (A1), andηM,δ is the covariance concentration
+rate from Proposition 1. The window-selection termρ win
+t satisfies Proposition 2.
+Proof intuition.The proof compares the empirical prediction set with an oracle same-regime set.
+The coverage gap decomposes into additive penalties for window-selection failure, ACI tracking,
+finite calibration size, covariance estimation, and the concentration failure probability. The term
+ρwin
+t accounts for selecting the wrong window without conditioning on data-dependent search paths
+[36, 18]. Corollary 1 follows by averaging overtand applying the tower property.
+Corollary 1(Expected empirical average coverage).Under the conditions of Theorem 1, as-
+sume the per-time right-hand-side terms are deterministic or hold almost surely under the outer
+expectation. Let dCovT =T −1PT
+t=1 1{Yt ∈ CACI
+t (α)}, and define ¯ρwin
+T =T −1PT
+t=1ρwin
+t ,
+¯εACI
+T =T −1PT
+t=1εACI
+t ,¯ηT =T −1PT
+t=1ηM,δt/(n⋆
+t +1), and ¯δT =T −1PT
+t=1δt. Then
+E[dCovT ]−(1−α)
+≤¯ρwin
+T + ¯εACI
+T + 1
+T
+TX
+t=1
+1
+n⋆
+t + 1 +L Σ¯ηT + ¯δT.(17)
+If these terms are random, interpret the averaged right-hand-side terms as their outer expectations.
+5 Experiments
+5.1 Experimental setup and metrics
+We evaluate SPACEon multivariate forecasting streams produced by eight heterogeneous probabilistic
+forecasters (TimeGrad [27], CSDI [33], TSFlow [14], DeepAR [31], GP-Copula [30], NsDiff [43],
+TMDM [19], and TACTiS-2 [3]) across seven real-world datasets summarized in Table 8. We then
+compare the performance of SPACEagainst five conformal baselines (MultiDimSPCI [ 41], Local
+Ellipsoid [24], CopulaCPTS [32], Empirical Copula and Gaussian Copula [23]). The probabilistic
+forecasters are trained with a 7:1:2 train/validation/test split on the original dataset. Each conformal
+wrapper is evaluated with a 6:2:2 train/calibration/test split on the sample streams.
+In downstream decision settings, predictive uncertainty should be close to the nominal target, rather
+than merely exceed it [44, 15, 8]. We therefore report both the coverage gap and the rolling coverage
+gap. The coverage gap is the absolute deviation between empirical joint coverage and the target level
+1−α , and therefore penalizes both under- and over-coverage. To evaluate efficiency, we report the
+mean log-volume of the prediction regions, denoted LOGVOL, following prior multivariate conformal
+work that measures sharpness through region size or volume [41, 17, 42]. This section focuses on
+the target coverage level 1−α= 0.90 . The full results at different target coverage levels and other
+implementation details are deferred to Appendix C and F.
+2The Dvoretzky–Kiefer–Wolfowitz inequality, refined by Massart [9, 21], guarantees that the chance of missing a regime
+shift drops exponentially fast as we collect more recent data (|Pt|) or as the shift becomes more severe (∆sep).
+7
+
+===== PAGE 8 =====
+Table 2: Aggregated comparison over all dataset–forecaster pairs. Mean Gap and Median Gap
+summarize the pair-level absolute coverage gap from the target. Std. LogV ol denotes the pair-
+level log-volume after standardization within each dataset and target level, so it measures size on
+a comparable scale across datasets. For Mean Gap and Mean Std. LogV ol, the reported standard
+deviation is the across-pair standard deviation within each wrapper. Mean Std. LogV ol and Median
+Std. LogV ol are computed only over pairs whose coverage gap is at most0.05. Valid Ratio reports
+the fraction of dataset–forecaster pairs satisfying this coverage-gap threshold.
+Wrapper Mean Gap↓Median Gap↓Mean Std. LogV ol↓Median Std. LogV ol↓Valid Ratio
+SPACE0.003±0.0040.002-0.111±1.043-0.3341.000
+MultiDimSPCI 0.032±0.0410.013 -0.435±1.024-0.8040.759
+Local Ellipsoid 0.083±0.1110.054-0.580±0.878-0.753 0.463
+Empirical Copula 0.165±0.2050.053 0.031±0.6300.012 0.481
+Gaussian Copula 0.130±0.1840.042 0.003±0.618-0.037 0.593
+CopulaCPTS 0.057±0.1120.034 1.021±0.7891.037 0.593
+5.2 Aggregate comparison against conformal wrappers
+We first compare SPACEwith five strong conformal wrappers from prior work. Table 2 provides the
+wrapper-level comparison. The full dataset-forecaster level comparison is in Appendix C.
+SPACEachieves the best Mean Gap and Median Gap among all compared wrappers, with the smallest
+standard deviation. This is the main wrapper-level result: the mean coverage gap of SPACEis 0.3
+percentage points from the nominal target. The efficiency results are more nuanced. SPACEdoes
+not attain the smallest LogV ol overall; MultiDimSPCI has the lowest median volume. However, this
+smaller volume comes with noticeably worse calibration and a lower validity ratio. In particular, the
+mean coverage gap of SPACEis only about one tenth of that of the strongest baseline, MultiDimSPCI,
+and SPACEis the only method with a validity ratio of 1.00. This indicates that SPACEis the most
+consistent wrapper for bringing realized coverage close to the nominal target across diverse datasets
+and forecasters.
+The key point is therefore coverage–efficiency trade-off at the target level. SPACEachieves much
+better calibration while remaining competitive in median log-volume, which is the more relevant
+comparison for a conformal wrapper whose purpose is to deliver regions that are both reliable and
+usable.
+5.3 Rolling coverage under drift and regime change
+Rolling metrics show whether a wrapper stays close to the nominal target locally over time. This is a
+pattern that could be overlooked by aggregated mean or median measures. We use a rolling window
+lengthw= 30 in all evaluations. Figure 3 reports boxplots for Mean Rolling Gap, P90 Rolling Gap,
+and Frac. Bad Windows, where lower values indicate better local calibration stability. Mean Rolling
+Gap averages the absolute deviation between rolling joint coverage and the target level 1−α over all
+valid sliding windows. P90 Rolling Gap reports the 90th percentile of these deviations, capturing
+severe local miscalibration. Frac. Bad Windows is the proportion of windows whose rolling coverage
+gap exceedsδ= 0.10. Table 3 complements the figure by providing the dataset-level breakdown.
+Across datasets, SPACEshows its clear advantage over the best baseline in mean rolling gap, especially
+on the higher-dimensional, more nonstationary settings, where maintaining stable coverage over
+time is most difficult. In particular, the separation between SPACEand the best competing method is
+largest on datasets such aselectricity andtraffic, which have richer joint dependence structure
+and stronger temporal instability; this suggests that SPACEis especially effective when the calibration
+problem is genuinely multivariate and the underlying coverage behavior drifts over time. By contrast,
+on smaller and more stationary datasets, the gap between methods narrows substantially. Inettm1,
+SPACEand the best baseline perform similarly. A more detailed analysis in Appendix D shows that
+SPACE’s gains are more pronounced in datasets with stronger covariance drift and more challenging
+rolling coverage behavior.
+8
+
+===== PAGE 9 =====
+Figure 3: Distributional boxplots of rolling coverage diagnostics across wrapper benchmark pairs.
+The center line denotes the median. The three panels report Mean Rolling Gap, P90 Rolling Gap,
+and Frac. Bad Windows, respectively, with lower values indicating better local calibration stability.
+Table 3 gives the corresponding dataset-level breakdown.
+Table 3: Dataset-level rolling coverage diagnostics for conformal wrappers at the 90% target. Lower
+is better for all metrics. These metrics evaluate local calibration stability under drift and regime
+change. SPACEperforms best or near-best on all datasets.
+Dataset Metric SPACE MultiDimSPCI Local Ell. Emp. Copula Gauss. Copula CopulaCPTS
+electricity
+Mean Rolling Gap↓0.0410.109 0.278 0.326 0.125 0.082
+P90 Rolling Gap↓0.0860.214 0.557 0.556 0.257 0.100
+Frac. Bad Windows↓0.021 0.360 0.584 0.689 0.2980.010
+etth1
+Mean Rolling Gap↓0.0320.044 0.074 0.048 0.049 0.072
+P90 Rolling Gap↓0.0670.092 0.133 0.096 0.096 0.112
+Frac. Bad Windows↓0.0060.014 0.074 0.020 0.010 0.041
+ettm1
+Mean Rolling Gap↓0.0540.0510.083 0.062 0.063 0.107
+P90 Rolling Gap↓0.1080.1000.146 0.112 0.108 0.204
+Frac. Bad Windows↓0.065 0.047 0.067 0.0540.0380.185
+ettm2
+Mean Rolling Gap↓0.0450.055 0.070 0.067 0.066 0.065
+P90 Rolling Gap↓0.0960.100 0.146 0.112 0.108 0.117
+Frac. Bad Windows↓0.0290.061 0.118 0.091 0.072 0.077
+exchange
+Mean Rolling Gap↓0.0500.067 0.156 0.257 0.250 0.211
+P90 Rolling Gap↓0.1000.163 0.263 0.444 0.436 0.313
+Frac. Bad Windows↓0.0660.162 0.225 0.460 0.435 0.296
+traffic
+Mean Rolling Gap↓0.0550.069 0.103 0.467 0.467 0.072
+P90 Rolling Gap↓0.1000.157 0.205 0.676 0.676 0.105
+Frac. Bad Windows↓0.039 0.174 0.281 0.950 0.9500.038
+weather
+Mean Rolling Gap↓0.0520.073 0.121 0.198 0.167 0.111
+P90 Rolling Gap↓0.0960.142 0.288 0.488 0.408 0.204
+Frac. Bad Windows↓0.0510.136 0.173 0.441 0.344 0.166
+6 Conclusion
+In this paper, we introduced SPACE, a post-hoc conformal wrapper that bridges the gap between the
+rich uncertainty representations of modern probabilistic forecasters and the rigorous calibration guar-
+antees of conformal prediction. By decoupling the estimation of multivariate geometry—extracted
+directly from the predictive sample cloud—from the sequential calibration of the region’s radius,
+SPACEovercomes the adaptation delays inherent in historical residual-based methods. Our theoretical
+analysis establishes formal finite-sample coverage guarantees under stated assumptions, and extensive
+experiments demonstrate that SPACEconsistently tightens realized coverage toward the nominal
+target across diverse forecasting architectures (e.g., diffusion, flow, and autoregressive models) under
+non-stationarity. Ultimately, this work demonstrates that predictive sample clouds contain valuable
+geometric signals that can be exploited for calibrated predictive inference. Natural extensions of this
+framework include generalizing the set geometry beyond ellipsoids to capture non-convex predictive
+topologies.
+7 Limitations
+This work has two main limitations. First, SPACEdepends on the quality of the predictive sample
+cloud produced by the generative forecasters. The conformal calibration can correct the overall scale
+of the prediction region, but the local covariance geometry is still estimated from generated samples.
+9
+
+===== PAGE 10 =====
+Therefore, if the forecaster produces biased or insufficiently diverse samples, the calibrated regions
+may remain valid only at the cost of reduced efficiency. The second limitation concerns adaptation
+under difficult regime dynamics. When changes are gradual, recent scores may not show a sharp
+enough diagnostic signal; when changes are frequent, little same-regime history may be available. In
+either case, SPACEmay select a window that is not fully representative of the current regime, leading
+to coverage deviations. This challenge is shared by time-series uncertainty calibration methods
+without external change indicators, where adaptation must be inferred from observed errors.
+10
+
+===== PAGE 11 =====
+References
+[1] A. Angelopoulos, E. Candes, and R. J. Tibshirani. Conformal PID control for time series prediction.
+Advances in Neural Information Processing Systems, 36:23047–23074, 2023.
+[2] A. N. Angelopoulos and S. Bates. A gentle introduction to conformal prediction and distribution-free
+uncertainty quantification.arXiv preprint arXiv:2107.07511, 2021.
+[3] A. Ashok, É. Marcotte, V . Zantedeschi, N. Chapados, and A. Drouin. TACTis-2: Better, faster, simpler
+attentional copulas for multivariate time series. InThe Twelfth International Conference on Learning
+Representations, 2024.
+[4] R. F. Barber, E. J. Candes, A. Ramdas, and R. J. Tibshirani. Conformal prediction beyond exchangeability.
+The Annals of Statistics, 51(2):816–845, 2023.
+[5] M. Basseville, I. V . Nikiforov, et al.Detection of abrupt changes: theory and application, volume 104.
+Prentice Hall, Englewood Cliffs, 1993.
+[6] A. Bhatnagar, H. Wang, C. Xiong, and Y . Bai. Improved online conformal prediction via strongly adaptive
+online learning. InInternational Conference on Machine Learning, pages 2337–2363. PMLR, 2023.
+[7] T. T. Cai, C.-H. Zhang, and H. H. Zhou. Optimal rates of convergence for covariance matrix estimation.
+The Annals of Statistics, 38(4):2118–2144, 2010.
+[8] L. Deng, H. Xiong, F. Wu, S. Kapoor, S. Gosh, Z. Shahn, and L.-w. Lehman. Uncertainty quantification
+for conditional treatment effect estimation under dynamic treatment regimes. InProceedings of the 4th
+Machine Learning for Health Symposium, volume 259, pages 248–266. PMLR, 2025.
+[9] A. Dvoretzky, J. Kiefer, and J. Wolfowitz. Asymptotic minimax character of the sample distribution
+function and of the classical multinomial estimator.The Annals of Mathematical Statistics, pages 642–669,
+1956.
+[10] S. Feldman, S. Bates, and Y . Romano. Calibrated multiple-output quantile regression with representation
+learning.Journal of Machine Learning Research, 24(24):1–48, 2023.
+[11] I. Gibbs and E. Candes. Adaptive conformal inference under distribution shift.Advances in Neural
+Information Processing Systems, 34:1660–1672, 2021.
+[12] L. Guan. Localized conformal prediction: A generalized inference framework for conformal prediction.
+Biometrika, 110(1):33–50, 2023.
+[13] C. Johnstone and E. Ndiaye. Exact and approximate conformal inference for multi-output regression. In
+Proceedings of the Fourteenth Symposium on Conformal and Probabilistic Prediction with Applications,
+volume 266, pages 153–172. PMLR, 2025.
+[14] M. Kollovieh, M. Lienen, D. Lüdke, L. Schwinn, and S. Günnemann. Flow matching with gaussian process
+priors for probabilistic time series forecasting. InThe Thirteenth International Conference on Learning
+Representations, 2025.
+[15] V . Kuleshov and S. Deshpande. Calibrated and sharp uncertainties in deep learning via density estimation.
+InInternational Conference on Machine Learning, pages 11683–11693. PMLR, 2022.
+[16] G. Lai, W.-C. Chang, Y . Yang, and H. Liu. Modeling long- and short-term temporal patterns with
+deep neural networks. InThe 41st international ACM SIGIR conference on research & development in
+information retrieval, pages 95–104, 2018.
+[17] J. Lee, C. Xu, and Y . Xie. Flow-based conformal prediction for multi-dimensional time series. InThe
+Fourteenth International Conference on Learning Representations, 2026.
+[18] J. Lei, M. G’Sell, A. Rinaldo, R. J. Tibshirani, and L. Wasserman. Distribution-free predictive inference
+for regression.Journal of the American Statistical Association, 113(523):1094–1111, 2018.
+[19] Y . Li, W. Chen, X. Hu, B. Chen, B. Sun, and M. Zhou. Transformer-modulated diffusion models for
+probabilistic multivariate time series forecasting. InThe Twelfth International Conference on Learning
+Representations, 2024.
+[20] C. Marx, S. Zalouk, and S. Ermon. Calibration by distribution matching: Trainable kernel calibration
+metrics. InAdvances in Neural Information Processing Systems, volume 36, pages 25910–25928, 2023.
+11
+
+===== PAGE 12 =====
+[21] P. Massart. The tight constant in the dvoretzky-kiefer-wolfowitz inequality.The Annals of Probability,
+pages 1269–1283, 1990.
+[22] D. S. Matteson and N. A. James. A nonparametric approach for multiple change point analysis of
+multivariate data.Journal of the American Statistical Association, 109(505):334–345, 2014.
+[23] S. Messoudi, S. Destercke, and S. Rousseau. Copula-based conformal prediction for multi-target regression.
+Pattern Recognition, 120:108101, 2021.
+[24] S. Messoudi, S. Destercke, and S. Rousseau. Ellipsoidal conformal inference for multi-target regression.
+InConformal and Probabilistic Prediction with Applications, pages 294–306. PMLR, 2022.
+[25] T. Miyato, T. Kataoka, M. Koyama, and Y . Yoshida. Spectral normalization for generative adversarial
+networks. InInternational Conference on Learning Representations, 2018.
+[26] S. S. Rangapuram, M. W. Seeger, J. Gasthaus, L. Stella, Y . Wang, and T. Januschowski. Deep state space
+models for time series forecasting.Advances in Neural Information Processing Systems, 31, 2018.
+[27] K. Rasul, C. Seward, I. Schuster, and R. V ollgraf. Autoregressive denoising diffusion models for mul-
+tivariate probabilistic time series forecasting. InInternational Conference on Machine Learning, pages
+8857–8868. PMLR, 2021.
+[28] K. Rasul, A.-S. Sheikh, I. Schuster, U. M. Bergmann, and R. V ollgraf. Multivariate probabilistic time series
+forecasting via conditioned normalizing flows. InInternational Conference on Learning Representations,
+2021.
+[29] Y . Romano, E. Patterson, and E. Candes. Conformalized quantile regression.Advances in Neural
+Information Processing Systems, 32, 2019.
+[30] D. Salinas, M. Bohlke-Schneider, L. Callot, R. Medico, and J. Gasthaus. High-dimensional multivariate
+forecasting with low-rank gaussian copula processes.Advances in Neural Information Processing Systems,
+32, 2019.
+[31] D. Salinas, V . Flunkert, J. Gasthaus, and T. Januschowski. DeepAR: Probabilistic forecasting with
+autoregressive recurrent networks.International journal of forecasting, 36(3):1181–1191, 2020.
+[32] S. H. Sun and R. Yu. Copula conformal prediction for multi-step time series prediction. InThe Twelfth
+International Conference on Learning Representations, 2024.
+[33] Y . Tashiro, J. Song, Y . Song, and S. Ermon. CSDI: Conditional score-based diffusion models for prob-
+abilistic time series imputation.Advances in Neural Information Processing Systems, 34:24804–24816,
+2021.
+[34] R. J. Tibshirani, R. Foygel Barber, E. Candes, and A. Ramdas. Conformal prediction under covariate shift.
+Advances in Neural Information Processing Systems, 32, 2019.
+[35] R. Vershynin.High-dimensional probability: An introduction with applications in data science, volume 47.
+Cambridge University Press, 2018.
+[36] V . V ovk, A. Gammerman, and G. Shafer.Algorithmic learning in a random world. Springer, 2005.
+[37] M. J. Wainwright.High-dimensional statistics: A non-asymptotic viewpoint, volume 48. Cambridge
+University Press, 2019.
+[38] H. Wu, J. Xu, J. Wang, and M. Long. Autoformer: Decomposition transformers with auto-correlation for
+long-term series forecasting.Advances in Neural Information Processing Systems, 34:22419–22430, 2021.
+[39] Y . Xie, J. Huang, and R. Willett. Change-point detection for high-dimensional time series with missing
+data.IEEE Journal of Selected Topics in Signal Processing, 7(1):12–27, 2013.
+[40] C. Xu and Y . Xie. Conformal prediction interval for dynamic time-series. InProceedings of the 38th
+International Conference on Machine Learning, volume 139, pages 11559–11569. PMLR, 18–24 Jul 2021.
+[41] C. Xu, H. Jiang, and Y . Xie. Conformal prediction for multi-dimensional time series by ellipsoidal sets. In
+Proceedings of the 41st International Conference on Machine Learning, volume 235, pages 55076–55099.
+PMLR, 21–27 Jul 2024.
+[42] Q. Yang, Q. J. Zhu, J. Giezendanner, Y . Marzouk, S. Bates, and S. Wang. Conformal prediction for
+generative models via adaptive cluster-based density estimation.arXiv preprint arXiv:2601.22298, 2026.
+12
+
+===== PAGE 13 =====
+[43] W. Ye, Z. Xu, and N. Gui. Non-stationary diffusion for probabilistic time series forecasting. InProceedings
+of the 42nd International Conference on Machine Learning, volume 267, pages 72112–72130. PMLR,
+2025.
+[44] S. Zhao, M. Kim, R. Sahoo, T. Ma, and S. Ermon. Calibrating predictions to decisions: A novel approach
+to multi-class calibration.Advances in Neural Information Processing Systems, 34:22313–22324, 2021.
+[45] H. Zhou, S. Zhang, J. Peng, S. Zhang, J. Li, H. Xiong, and W. Zhang. Informer: Beyond efficient
+transformer for long sequence time-series forecasting. InProceedings of the AAAI conference on artificial
+intelligence, volume 35, pages 11106–11115, 2021.
+13
+
+===== PAGE 14 =====
+A Proofs for Section 4
+A.1 Assumptions.
+We work under the following four assumptions. They are stated in the same order and with the
+same meaning as in Section 4. LetFt be the natural filtration generated by realized targets, forecast
+sample clouds, and all auxiliary randomization up to timet. Letτt <t denote the last change point
+before prediction time t. Let Qt(·) denote the probability measure conditional on the pre-regime
+informationFτt and the deterministic window-design parameters, but marginal over the realized
+augmented objects inside the current regime. LetE Qt[·]be the corresponding expectation.
+(A1) Conditional sample-cloud regularity and stable score geometry.We assume that, at each
+prediction time t, the forecast sample cloud is conditionally i.i.d. and sufficiently light-
+tailed after standardization. We also assume that the Mahalanobis conformal set is locally
+stable with respect to covariance-estimation error, in a pathwise sense conditional on the
+realized covariance estimates. These regularity conditions are standard in high-dimensional
+probability and are adapted from the foundational framework established by Vershynin [35].
+More formally:
+(A1a) Conditional sample-cloud law.Conditional onF t−1,
+ˆy(1)
+t ,...,ˆy (M)
+t
+i.i.d.
+∼ bPt(·|F t−1).(18)
+LetD= diag(s 1,...,s d)be fixed before timet, with
+0<s min≤s j≤s max <∞.
+For anFt−1-measurable centerµ⋆
+t , define
+ξ(m)
+t =D−1 
+ˆy(m)
+t −µ⋆
+t
+
+, m= 1,...,M.
+(A1b) Sub-Gaussian residuals and covariance estimation target.Conditional onFt−1, the
+vectorsξ (1)
+t ,...,ξ (M)
+t are mean-zero,K-sub-Gaussian, and have conditional covariance
+C⋆
+t = Cov
+
+ξ(m)
+t |F t−1
+
+.(19)
+The empirical covariance bCt in (3) is the centered empirical covariance of the standardized
+sample cloud. Hence it is unchanged by replacing the ideal centerµ⋆
+t with the median-based
+centerµt used in the method.
+(A1c) Pathwise stability of the conformal set under covariance perturbation.For any
+deterministic or previsible same-regime calibration index setHt, and in particular for the
+oracle setH⋆
+t , letC⋆
+t (αt) denote the conformal set constructed from ideal scores, and let
+Ct(αt)denote the conformal set constructed from empirical scores.
+For such a setHt, define the conditional law
+eQt,Ht(·) =P
+
+·|F τt,(bCs)s∈Ht∪{t}
+
+.
+There exist constantsη 0 >0andL Σ <∞such that, on the event
+max
+s∈Ht∪{t}
+∥bCs−C ⋆
+s∥op≤η≤η 0,
+we have eQt,Ht(Yt∈C t(αt))− eQt,Ht(Yt∈C ⋆
+t (αt))
+≤L Ση.(20)
+This condition is implied, for example, by local stability of the stabilized pseudo-inverse
+map together with an anti-concentration condition for the ideal radial score distribution.
+(A2) Same-regime test calibration and contaminated-window detectability.A2 is a finite-
+sample version of two standard requirements in change-point and sequential goodness-of-fit
+testing: size control under homogeneous samples and power under separated alternatives.
+Fix a prediction timet, and letτt denote the most recent regime change before timet. Thus,
+the current regime contains the observations indexed by
+{τt + 1,...,t−1}.
+14
+
+===== PAGE 15 =====
+Let Qt denote the probability law, or the relevant conditional probability law, governing
+the data and random test statistics at time t. This assumption states that same-regime
+candidate blocks are not rejected too often, while any candidate window that crosses a
+regime boundary is detected with high probability. The assumption is stated directly at
+the level of the finite-sample test errors used by the window-selection algorithm. This
+calibration-versus-detectability form is standard in change-point analysis: homogeneous
+samples require size control, while contaminated samples require a separation condition
+large enough to overcome sampling noise [5, 39].
+More formally:
+(A2a) Oracle same-regime window.Let
+G={L min,L min +h,...,L max}
+be the finite grid of candidate window lengths, where Lmin andLmax are the minimum
+and maximum candidate lengths, respectively, and h is the grid step size. Let Pt denote
+the probe block at timet, namely the recent block used as the reference block for testing
+whether a candidate block belongs to the same regime. Assume thatPt lies inside the current
+regime and that there exists at least one same-regime candidate length. For eachL∈G , let
+Cwhole
+t (L) denote the whole candidate block of lengthL used by the algorithm. Define the
+oracle same-regime lengthL⋆
+t as the largest candidate length whose whole candidate block
+and probe block are both contained in the current regime:
+L⋆
+t = max
+n
+L∈G:C whole
+t (L)∪P t⊆{τ t + 1,...,t−1}
+o
+.(21)
+For each candidate block
+A∈{C whole
+t (L),B inc
+t (L)},
+whereBinc
+t (L) denotes the incremental block associated with candidate lengthL, and for
+each diagnosticj∈{1,2,3} , let KSA
+t,L,j denote the empirical KS-type discrepancy in (10).
+Herej indexes the diagnostic being tested,L indexes the candidate length, andA indexes
+the tested candidate block. LetτA
+t,L,j denote the corresponding rejection threshold for this
+KS-type test. The thresholds are deterministic functions of the window-design parameters,
+sample sizes, and nominal test levels, or are measurable with respect to information outside
+the realized test statistics. For the KS-type diagnostics used here, such thresholds can be
+justified by the Dvoretzky–Kiefer–Wolfowitz inequality and Massart’s sharp constant, which
+give finite-sample uniform bounds for empirical distribution functions [9, 21].
+(A2b) Clean-block calibration.For every clean tested block, meaning every tested blockA
+whose union with the probe blockPt lies entirely inside the current regime,
+A∪P t⊆{τ t + 1,...,t−1},
+the probability of false rejection is controlled:
+Qt
+ 
+KSA
+t,L,j >τA
+t,L,j
+
+≤δ uni.(22)
+Hereδuni is the per-test, or union-adjusted, upper bound on the false rejection probability.
+This is the finite-sample size-control requirement for the same-regime test. WhenA and
+Pt are drawn from the same regime, the population discrepancy is zero, and the empirical
+discrepancy is controlled by standard empirical-process concentration; the constantδuni can
+also absorb a union bound over the finite set of candidate lengths, blocks, and diagnostics
+[9, 21].
+(A2c) Contaminated-window detectability.For every L > L⋆
+t , the candidate length L
+is longer than the oracle same-regime length and hence its associated candidate window
+necessarily crosses a regime boundary. The assumption requires that at least one tested pair
+(A,j),A∈{C whole
+t (L),B inc
+t (L)}, j∈{1,2,3},
+detects this contamination. Specifically, the probability that this contaminated tested pair
+fails to reject is bounded byβ det:
+Qt
+ 
+KSA
+t,L,j≤τA
+t,L,j
+
+≤β det.(23)
+Hereβdet is the upper bound on the missed-detection probability. This is the corresponding
+finite-sample power requirement. It is a local identifiability condition: if a candidate window
+15
+
+===== PAGE 16 =====
+crosses a regime boundary, then at least one of the diagnostics must see a population
+distributional shift large enough to be detected with probability at least 1−β det, as in
+standard abrupt-change and high-dimensional change-point formulations [5, 39].
+A sufficient, but not necessary, condition for (23) is the following. For some tested pair
+(A,j) , let HA
+t,L,j denote the population distribution function, or population probability-
+integral-transform target, of the diagnostic values comparing the candidate blockA with
+the probe blockPt. Let Id(x) =x denote the identity distribution function on [0,1] , which
+corresponds to the ideal same-regime case after probability-integral transformation. Let
+bFA
+t,L,j denote the empirical distribution function estimated from the probe block, and let
+∆sep >0 denote the separation margin between the population discrepancy and the test
+threshold. Suppose
+∥HA
+t,L,j−Id∥∞≥τA
+t,L,j + ∆sep,
+where∥·∥ ∞ denotes the uniform sup-norm distance, and suppose that the empirical
+distribution function satisfies the concentration bound
+Qt
+
+∥bFA
+t,L,j−HA
+t,L,j∥∞ >∆ sep
+
+≤2 exp{−2|Pt|∆2
+sep}.
+Here|Pt|is the number of observations in the probe block. Then (23) holds with
+βdet = 2 exp{−2|Pt|∆2
+sep}.
+Indeed, the population separation margin∆sep ensures that the empirical KS statistic can fall
+below the threshold only if the empirical process deviates from its population target by more
+than ∆sep. The displayed exponential bound is therefore exactly the DKW/Massart-type tail
+probability for this failure event [9, 21].
+(A3) Piecewise augmented exchangeability.This assumption imposes the standard exchange-
+ability condition used in conformal prediction, but only locally within the current regime.
+Specifically, conditional on the pre-regime informationFτt, where τt is the most recent
+regime change before time t, the observations inside the current regime are treated as
+exchangeable. This is the classical condition under which conformal methods obtain finite-
+sample rank validity and distribution-free coverage [36, 18, 2]. Here the condition is imposed
+piecewise, after conditioning on the regime start, which is natural in nonstationary settings
+where exchangeability is expected to hold only locally rather than over the entire time series.
+More formally, for eachs=τ t + 1,...,t, define the augmented forecast-target object
+Zs = (Ys,bYs),
+where Ys is the realized target and bYs is the corresponding forecast object, such as a
+predictive distribution, trajectory forecast, or prediction set. The augmented objects
+Zτt+1,...,Z t
+are conditionally exchangeable givenFτt. That is, for any finite permutation π of{τt +
+1,...,t},
+(Zτt+1,...,Z t)|F τt
+d
+= (Zπ(τt+1),...,Z π(t))|F τt.
+This is the regime-local analogue of the exchangeability assumption commonly used in split
+conformal prediction and related finite-sample conformal procedures [36, 18, 29].
+The diagnostics and ideal conformity scores are assumed to be generated from these aug-
+mented objects by common measurable permutation-equivariant maps, possibly together
+with auxiliary tie-breaking random variables that are independent of the augmented objects
+conditional onFτt. Permutation equivariance means that if the augmented objects are
+permuted, the resulting diagnostics or scores are permuted in the same way, rather than
+changing their joint distribution. Therefore, by the standard closure property of exchange-
+ability under common measurable equivariant transformations, the ideal score collection for
+any same-regime index setHt,
+{e⋆
+s :s∈H t}∪{e ⋆
+t},
+is conditionally exchangeable under Qt. This is the exact property needed in the conformal
+coverage proof: the test score e⋆
+t has a uniform rank among the same-regime calibration
+scores, up to the usual tie-breaking convention [36, 2].
+16
+
+===== PAGE 17 =====
+(A4) ACI adaptation error and rank validity.Let C⋆
+t,or(αt) denote the oracle same-regime
+conformal set constructed from the ideal scores onH⋆
+t using the adaptive miscoverage level
+αt∈[0,1] , and let n⋆
+t =|H ⋆
+t| be the number of oracle same-regime calibration scores.
+This assumption separates the effect of adaptive level selection from the usual conformal
+rank-validity argument. Such a separation is standard in adaptive conformal inference:
+the adaptive procedure controls or tracks the target miscoverage level over time, while the
+conformal coverage argument relies on the rank of the test score among the calibration
+scores [11, 1, 6].
+(A4a) Mean tracking error.The adaptive level remains close to the nominal level in expecta-
+tion:
+EQt[|αt−α|]≤ε ACI
+t .(24)
+Hereα is the target miscoverage level, αt is the data-adaptive level selected by the ACI
+update rule at timet, andεACI
+t summarizes the finite-sample adaptation or tracking error
+of this update. This type of condition is the standard way to abstract the performance
+of an adaptive conformal update under distribution shift: rather than requiring αt =α
+exactly at every time point, one allows the online update to deviate from the target level by a
+controlled amount [11, 1]. Strongly adaptive online-learning formulations provide one route
+for bounding such tracking errors over nonstationary sequences [6].
+(A4b) Rank validity under adaptivity.Conditional on αt, the rank of the test ideal score
+among then⋆
+t + 1oracle ideal scores
+{e⋆
+s :s∈H ⋆
+t}∪{e ⋆
+t}
+is uniformly distributed. Equivalently, the oracle ideal conformal predictor satisfies the
+finite-sample rank bound
+Qt
+ 
+Yt∈C ⋆
+t,or(αt)
+
+−(1−E Qt[αt])
+≤ 1
+n⋆
+t + 1.(25)
+This is the usual finite-sample conformal rank argument, applied after conditioning on
+the adaptive level. It is satisfied, for example, when αt is predictable with respect to the
+score-ranking step, meaning that it is determined by past information, previous coverage
+errors, or other external randomness, but not by the relative rank of e⋆
+t among the same-
+regime calibration scores at timet. Under this previsible-level condition, conditioning on
+αt does not destroy the exchangeability of the oracle ideal scores, so the test score keeps
+the usual uniform-rank property [36, 18, 2]. The additional 1/(n⋆
+t + 1) term is the standard
+finite-sample discretization error from usingn⋆
+t calibration scores in conformal prediction.
+Combining (24) and (25), we have
+Qt
+ 
+Yt∈C ⋆
+t,or(αt)
+
+−(1−α)
+≤ε ACI
+t + 1
+n⋆
+t + 1.(26)
+Thus, A4 is not an additional distributional assumption beyond the local exchangeability
+condition in A3. Rather, it records two standard ingredients needed when conformal
+prediction is combined with an adaptive level: a bounded ACI tracking error and the
+preservation of the conformal rank argument under a previsible adaptive level.
+A.2 Proof of Proposition 1
+Our goal is to establish the concentration of the empirical sample-cloud covariance. While this is a
+foundational step for our method, the proof relies on well-established techniques rather than novel
+probabilistic machinery. Specifically, we follow the standard high-dimensional probability pipeline
+detailed in Vershynin [35].
+Proof. Fix a prediction timet and condition onFt−1. Write Pt(·) =P(·|F t−1) and Et[·] =E[·|
+Ft−1]. For brevity, drop the time subscript and write
+ξm =D−1 
+ˆy(m)
+t −µ⋆
+t
+
+, m= 1,...,M.
+By Assumption (A1), conditional onFt−1, the vectorsξ1,...,ξ M are independent, mean-zero, and
+sub-Gaussian with sub-Gaussian parameter at mostK, and
+C⋆
+t =E t[ξ1ξ⊤
+1 ].
+17
+
+===== PAGE 18 =====
+Let
+¯ξ= 1
+M
+MX
+m=1
+ξm, bCt = 1
+M
+MX
+m=1
+(ξm− ¯ξ)(ξm− ¯ξ)⊤.
+Then
+bCt = 1
+M
+MX
+m=1
+ξmξ⊤
+m− ¯ξ ¯ξ⊤.
+Therefore,
+∥bCt−C ⋆
+t∥op≤
+
+
+
+
+
+1
+M
+MX
+m=1
+ξmξ⊤
+m−C ⋆
+t
+
+
+
+
+
+op
++∥ ¯ξ∥2
+2.(27)
+We first bound the uncentered empirical second-moment term. For any symmetric matrixA, ifN is a
+1/4-net ofS d−1, then
+∥A∥op≤2 max
+v∈N
+|v⊤Av|.
+Choose such a net with cardinality|N|≤9 d. Applying this to
+A= 1
+M
+MX
+m=1
+ξmξ⊤
+m−C ⋆
+t,
+we obtain 
+
+
+
+
+1
+M
+MX
+m=1
+ξmξ⊤
+m−C ⋆
+t
+
+
+
+
+
+op
+≤2 max
+v∈N
+
+1
+M
+MX
+m=1
+⟨ξm,v⟩ 2−Et[⟨ξ1,v⟩ 2]
+.(28)
+Fixv∈N . Since ξm is conditionallyK-sub-Gaussian,⟨ξm,v⟩ is conditionallyK-sub-Gaussian.
+Hence
+Zm,v =⟨ξ m,v⟩ 2−Et[⟨ξm,v⟩ 2]
+is conditionally centered sub-exponential with sub-exponential norm bounded by c1K2, for an
+absolute constantc1 >0 . Bernstein’s inequality for independent centered sub-exponential random
+variables gives, for everyu>0,
+Pt
+ 
+1
+M
+MX
+m=1
+Zm,v
+≥u
+!
+≤2 exp
+
+−c2Mmin
+u2
+K4, u
+K2
+
+,
+wherec 2 >0is an absolute constant.
+Taking a union bound overv∈Nyields
+Pt
+ 
+max
+v∈N
+
+1
+M
+MX
+m=1
+Zm,v
+≥u
+!
+≤2 exp
+
+dlog 9−c 2Mmin
+u2
+K4, u
+K2
+
+.
+Thus, for a sufficiently large absolute constantc 3 >0, withP t-probability at least1−δ/2,
+
+
+
+
+1
+M
+MX
+m=1
+ξmξ⊤
+m−C ⋆
+t
+
+
+
+
+
+op
+≤c 3K2
+ r
+d+ log(1/δ)
+M + d+ log(1/δ)
+M
+!
+.(29)
+It remains to bound the centering term∥¯ξ∥2
+2. For any fixed v∈S d−1, the scalar random variable
+⟨¯ξ,v⟩ is conditionally sub-Gaussian with parameter at most K/
+√
+M. Applying the same 1/4-net
+argument and a union bound gives that, withPt-probability at least1−δ/2,
+∥¯ξ∥2
+2≤c 4K2d+ log(1/δ)
+M ,(30)
+for an absolute constantc 4 >0.
+Combining (27), (29), and (30), and absorbing constants into a universal constantc0 >0 , we obtain
+that, with conditional probability at least1−δ,
+∥bCt−C ⋆
+t∥op≤c 0K2
+ r
+d+ log(1/δ)
+M + d+ log(1/δ)
+M
+!
+.
+Since the argument holds conditionally on Ft−1, the same high-probability bound also holds
+marginally. This completes the proof.
+18
+
+===== PAGE 19 =====
+Discussion on the Tightness of the Covariance Bound.The high-probability bound established
+in Proposition 1 is statistically tight and cannot be substantially improved without imposing strong
+structural assumptions on the generative model’s output [7].
+Specifically, estimating an arbitraryd×d covariance matrix in the operator norm requiresΩ(
+p
+d/M)
+error, as established by standard minimax lower bounds via Fano’s inequality [7]. In the standard
+operational regime of SPACE, where the number of generated samples M is reasonably large relative
+to the feature dimensiond (i.e.,M≥d ), the linear dimension termO(d/M) is negligible, and our
+estimator achieves the optimalO(
+p
+d/M)minimax rate.
+This bound would only be considered loose if the true conditional covarianceC⋆
+t possessed known,
+exploitable structure—such as high sparsity or strict low-rank constraints. In such cases, thresholded
+or PCA-based estimators could replace bCt to achieve rates depending on the effective intrinsic
+dimension rather than the ambient dimension d. However, because SPACEoperates on black-box
+generative models where the latent geometry of the predictive sample cloud is not knowna priori,
+the unstructured minimax optimal rate achieved here represents the fundamental statistical limit of
+the local geometry estimation step.
+A.3 Proof of Proposition 2
+Proof. Fix a prediction timet. We work under the conditional probability measure Qt specified in
+Assumption (A2). LetJ=|G|.
+Define the collection of clean tests
+Tclean =
+
+(L,A,j) :L≤L ⋆
+t,A∈{C whole
+t (L),B inc
+t (L)}, j∈{1,2,3}
+	
+.
+By the definition ofL⋆
+t and the nesting of the backward candidate windows, for everyL≤L ⋆
+t ,
+Cwhole
+t (L)∪B inc
+t (L)∪P t⊆{τ t + 1,...,t−1}.
+Therefore every test inTclean is a clean-block test. By the clean-block calibration part of Assump-
+tion (A2),
+Qt
+ 
+KSA
+t,L,j >τA
+t,L,j
+
+≤δ uni
+for every(L,A,j)∈T clean. Since|T clean|≤6J, the union bound gives
+Qt
+ 
+∃(L,A,j)∈T clean : KSA
+t,L,j >τA
+t,L,j
+
+≤6Jδ uni.
+Next consider any candidate length L > L⋆
+t . By the contaminated-window detectability part of
+Assumption (A2), there exists a tested pair
+(AL,jL),A L∈{C whole
+t (L),B inc
+t (L)}, j L∈{1,2,3},
+such that
+Qt
+
+KSAL
+t,L,jL≤τAL
+t,L,jL
+
+≤β det.
+The selector accepts candidate lengthL only if all block-diagnostic checks for that length pass. Hence
+acceptance ofLimplies that the detectably contaminated test(A L,jL)passes. Therefore,
+Qt (SPACEaccepts candidate lengthL)≤β det.
+Taking a union bound over all invalid candidate lengthsL>L ⋆
+t , of which there are at mostJ, yields
+Qt (∃L>L ⋆
+t :SPACEaccepts candidate lengthL)≤Jβ det.
+LetEt be the event that no clean test is falsely rejected and no invalid candidate length is accepted.
+Combining the two union bounds,
+Qt(Ec
+t )≤6Jδ uni +Jβ det.
+OnEt, every candidate length L≤L ⋆
+t passes all required checks, while every candidate length
+L>L ⋆
+t is not accepted. Since the selector returns the longest accepted candidate length,
+bLt =L ⋆
+t onEt.
+19
+
+===== PAGE 20 =====
+Therefore,
+Qt(bLt =L ⋆
+t )≥1−6|G|δ uni−|G|β det.
+If the sufficient empirical-process condition in Assumption (A2) holds with
+βdet = 2 exp{−2|Pt|∆2
+sep},
+then
+Qt(bLt =L ⋆
+t )≥1−6|G|δ uni−2|G|exp{−2|P t|∆2
+sep}.
+This completes the proof.
+A.4 Proof of Theorem 1
+Lemma 1(Exchangeability of oracle ideal radial scores).Let H⋆
+t be the oracle same-regime calibra-
+tion set associated withL⋆
+t . Under Assumption (A3), the ideal score collection
+{e⋆
+s :s∈H ⋆
+t}∪{e ⋆
+t}
+is conditionally exchangeable underQt.
+Proof. By the definition ofL⋆
+t , the indicesH⋆
+t∪{t} lie in the same regime. Assumption (A3) directly
+gives conditional exchangeability of the ideal score collection for any same-regime index set. Taking
+Ht =H ⋆
+t proves the claim.
+Proof of Theorem 1. Fix a prediction timet, and letn⋆
+t =|H ⋆
+t|. LetC⋆
+t,or(αt) denote the oracle same-
+regime conformal set constructed from ideal scores onH⋆
+t , and letCt,or(αt) denote the corresponding
+oracle set constructed from empirical scores. Let CACI
+t (α) denote the actual set returned by the
+algorithm when the nominal target isα, internally usingα t.
+Step 1: Oracle ideal conformal coverage.By Lemma 1 and Assumption (A4b), conditional on
+αt, the rank ofe⋆
+t among then⋆
+t + 1 oracle ideal scores is uniform. Hence the split-conformal rank
+argument gives
+Qt
+ 
+Yt∈C ⋆
+t,or(αt)
+
+−(1−E Qt[αt])
+≤ 1
+n⋆
+t + 1.
+Step 2: Covariance perturbation.Define
+Gcov
+t =
+
+max
+s∈H⋆
+t∪{t}
+∥bCs−C ⋆
+s∥op≤η M,δt/(n⋆
+t +1)
+
+.
+By Proposition 1, iterated expectation, and a union bound over then⋆
+t + 1time points,
+Qt((Gcov
+t )c)≤δ t.
+Since ηM,δt/(n⋆
+t +1) ≤η 0, Assumption (A1c) applies on Gcov
+t . Thus replacing ideal scores by
+empirical scores changes the oracle conformal coverage probability by at most LΣηM,δt/(n⋆
+t +1).
+Accounting for(G cov
+t )c,
+Qt(Yt∈C t,or(αt))−Q t
+ 
+Yt∈C ⋆
+t,or(αt)
+≤L ΣηM,δt/(n⋆
+t +1) +δt.
+Step 3: Window-selection error.LetE t ={bLt =L ⋆
+t}. By Proposition 2,
+Qt(Ec
+t )≤ρ win
+t .
+OnEt, the selected empirical calibration window equals the oracle empirical calibration window, so
+CACI
+t (α) =C t,or(αt).
+Therefore, Qt
+ 
+Yt∈C ACI
+t (α)
+
+−Qt(Yt∈C t,or(αt))
+≤Q t(Ec
+t )≤ρ win
+t .
+20
+
+===== PAGE 21 =====
+Step 4: ACI tracking.Combining Steps 1–3,
+Qt
+ 
+Yt∈C ACI
+t (α)
+
+−(1−E Qt[αt])
+≤ρ win
+t + 1
+n⋆
+t + 1
++L ΣηM,δt/(n⋆
+t +1) +δt.
+By Assumption (A4a),
+|(1−E Qt[αt])−(1−α)|≤E Qt[|αt−α|]≤ε ACI
+t .
+The triangle inequality yields
+Qt
+ 
+Yt∈C ACI
+t (α)
+
+−(1−α)
+≤ρ win
+t +ε ACI
+t + 1
+n⋆
+t + 1 +L ΣηM,δt/(n⋆
+t +1) +δt.
+This completes the proof.
+A.5 Proof of Corollary 1
+Proof.The empirical average coverage is
+dCovT = 1
+T
+TX
+t=1
+1{Yt∈C ACI
+t (α)}.
+By the tower property,
+E[dCovT ] = 1
+T
+TX
+t=1
+E
+
+Qt
+ 
+Yt∈C ACI
+t (α)
+
+.
+Hence
+E[dCovT ]−(1−α)
+≤ 1
+T
+TX
+t=1
+E
+Qt
+ 
+Yt∈C ACI
+t (α)
+
+−(1−α)
+
+.
+Applying Theorem 1 for eachtgives
+E[dCovT ]−(1−α)
+≤ 1
+T
+TX
+t=1
+
+ρwin
+t +ε ACI
+t + 1
+n⋆
+t + 1 +L ΣηM,δt/(n⋆
+t +1) +δt
+
+,
+provided these per-time terms are deterministic or hold almost surely under the outer expectation. If
+they are random, the same display holds with outer expectations applied to each right-hand-side term.
+Defining
+¯ρwin
+T = 1
+T
+TX
+t=1
+ρwin
+t ,¯ε ACI
+T = 1
+T
+TX
+t=1
+εACI
+t ,
+¯ηT = 1
+T
+TX
+t=1
+ηM,δt/(n⋆
+t +1), ¯δT = 1
+T
+TX
+t=1
+δt,
+we obtain
+E[dCovT ]−(1−α)
+≤¯ρwin
+T + ¯εACI
+T + 1
+T
+TX
+t=1
+1
+n⋆
+t + 1 +L Σ¯ηT + ¯δT.
+This completes the proof.
+21
+
+===== PAGE 22 =====
+B Algorithm
+Algorithm 1Sequential SPACEwrapper
+Require: Predictive sample stream{bYt}T
+t=1, observations revealed sequentially, target miscoverage
+α, training scalesD, probe lengthp, window range[L min,L max], step sizeh
+1:Initialize internal levelα t←α
+2:Initialize score and diagnostic histories
+3:fort=t cal,...,Tdo
+4:Compute centerµ t from bYt
+5:Form predictive residual samplesr (m)
+t = ˆy(m)
+t −µt
+6:Standardize˜r (m)
+t =D−1r(m)
+t
+7:Compute bCt = Cov(˜r(1)
+t ,...,˜r (M)
+t )and set bΣt =D bCtD
+8:Form the regularized inverse bΣ+
+t
+9:ConstructP t ={t−p,...,t−1}from stored past diagnostics
+10:SelectL t by backward same-regime search overL∈{L min,L min +h,...,L max}
+Accept the extension fromL−h toL only if bothCwhole
+t (L) andBinc
+t (L) pass the same-
+regime test. Stop at the first rejected extension and setL t to the last accepted length
+11:FormH t(Lt) ={e s :s∈C whole
+t (Lt)∪P t}
+12:Computer t =Q 1−αt(Ht(Lt))
+13:Output
+Ct(α) =
+n
+y∈R d : (y−µ t)⊤bΣ+
+t (y−µ t)≤r 2
+t
+o
+14:Observey t and compute
+et =
+q
+(yt−µt)⊤bΣ+
+t (yt−µt)
+15:Compute˜r t =D−1(yt−µt)and diagnostics
+st,1 =e t, s t,2 =∥˜rt∥∞, s t,3 =|v⊤
+1 ˜rt|
+16:Storee t and(st,1,st,2,st,3)
+17:Updateα t using ACI
+18:end for
+C Result Tables
+C.1 Performance across forecasters
+In this subsection, we evaluate SPACEacross heterogeneous probabilistic forecasters. Table 4 averages
+results over datasets for each forecaster, so it should be read as a robustness check on the intended
+application of the wrapper.
+SPACEimproves calibration across a wide range of forecasters with very different raw uncertainty
+behavior. It substantially reduces the gap for clearly under-covered forecasters such as GP-Copula,
+TACTiS-2, and TimeGrad while also improving on raw forecasters that are already producing
+competitive results, such as NsDiff. This is consistent with the role of the wrapper: it is designed to
+pull realized coverage toward the nominal target regardless of whether the raw samples under- or
+over-cover.
+C.2 Full result tables
+We report the complete numerical results for all evaluated methods at the three target coverage levels
+in this subsection. These tables complement the aggregate summaries in the main text by providing
+the full dataset–forecaster level comparisons, including empirical joint coverage gap, and efficiency
+metrics for each conformal wrapper.
+22
+
+===== PAGE 23 =====
+Table 4: Forecaster summary under SPACEat the 90% target. Forecasters are GP-Copula [ 30],
+TimeGrad [27], CSDI [33], TSFlow [14], DeepAR [31], NsDiff [43], TMDM [19], and TACTiS-2 [3].
+Coverage columns report average empirical coverage, while Gap columns report the average absolute
+coverage gaps. Gap reduction is reported as the relative percentage reduction 100×(RAWGAP−
+SPACEGAP)/RAWGAP.
+Backbone Raw Cov Raw Gap↓SPACE Cov SPACE Gap↓Gap Red.
+CSDI 0.787 0.125 0.902 0.004 96.8%
+DeepAR 0.636 0.274 0.897 0.003 99.0%
+GP-Copula 0.400 0.500 0.898 0.003 99.4%
+NsDiff 0.824 0.189 0.899 0.003 98.4%
+TACTiS-2 0.376 0.524 0.903 0.004 99.3%
+TimeGrad 0.371 0.529 0.897 0.005 99.0%
+TMDM 0.644 0.308 0.899 0.002 99.4%
+TSFlow 0.509 0.403 0.901 0.002 99.4%
+Table 5: Detailed conformal wrapper comparison at the90%target. The table reports coverage gap
+and log-volume for each dataset–backbone pair across all conformal wrappers. Lower is better for
+both metrics.
+Coverage gap↓LogV ol↓
+Dataset Backbone SPACE
+MultiDim
+SPCI
+Local
+Ell.
+Emp.
+Cop. CopulaCPTS
+Gauss.
+Cop. SPACE
+MultiDim
+SPCI
+Local
+Ell.
+Emp.
+Cop. CopulaCPTS
+Gauss.
+Cop.
+electricity
+DeepAR 0.004 0.139 0.139 0.121 0.0830.002 1797.941743.91 1751.16 2072.63 2816.26 2166.29
+GP-Copula0.0020.142 0.151 0.254 0.072 0.030 1827.451851.09 1842.54 2082.68 2970.49 2186.00
+NsDiff0.0000.079 0.426 0.585 0.099 0.124 3436.611916.57 1879.74 2046.48 3047.53 2201.14
+TACTiS-20.0020.134 0.183 0.080 0.081 0.028 1867.361790.10 1791.68 2134.99 2848.78 2187.38
+TimeGrad0.0030.073 0.384 0.580 0.075 0.299 3955.572066.06 2034.33 2126.94 3086.63 2236.49
+TMDM0.0020.065 0.390 0.477 0.043 0.109 3446.151986.95 1956.58 2102.96 3140.46 2221.45
+TSFlow 0.003 0.117 0.121 0.142 0.0770.002 2787.87 1758.87 1756.52 2051.49 2803.152191.19
+etth1
+CSDI0.0030.007 0.054 0.024 0.099 0.027 10.527.537.51 11.49 20.79 11.69
+DeepAR0.0020.015 0.041 0.028 0.058 0.041 9.797.767.86 11.13 15.68 11.56
+GP-Copula0.0050.011 0.058 0.047 0.037 0.053 10.268.709.17 12.08 16.50 12.40
+NsDiff0.0050.014 0.063 0.023 0.034 0.023 11.909.059.49 11.81 16.47 11.81
+TACTiS-20.0020.005 0.064 0.027 0.034 0.034 10.307.668.18 11.49 15.11 11.67
+TimeGrad0.0080.025 0.165 0.033 0.058 0.009 16.19 11.96 13.22 14.35 19.4914.55
+TMDM0.0000.002 0.057 0.031 0.060 0.043 11.467.678.13 11.81 16.61 12.16
+TSFlow0.0030.012 0.063 0.030 0.100 0.037 10.377.878.14 11.19 20.87 11.63
+ettm1
+CSDI0.0000.017 0.054 0.030 0.009 0.042 6.594.605.27 9.06 11.78 9.46
+DeepAR0.0010.009 0.059 0.028 0.019 0.038 6.744.825.74 8.80 11.99 9.19
+GP-Copula0.0000.005 0.049 0.021 0.006 0.038 5.535.95 6.59 9.74 12.44 10.21
+NsDiff 0.0050.0020.046 0.016 0.009 0.029 9.047.287.57 9.68 13.78 10.00
+TACTiS-20.0010.004 0.054 0.0270.0010.037 6.554.915.47 9.14 11.84 9.55
+TimeGrad 0.011 0.021 0.117 0.015 0.0760.007 13.51 9.18 10.3012.4018.36 12.55
+TMDM0.0010.005 0.053 0.026 0.003 0.038 7.264.705.33 8.94 11.50 9.31
+TSFlow0.0000.018 0.057 0.025 0.011 0.037 7.225.445.94 9.16 11.69 9.53
+ettm2
+CSDI0.0000.009 0.019 0.004 0.004 0.019 10.59 6.826.3310.02 12.37 10.33
+DeepAR0.0000.006 0.036 0.004 0.007 0.010 11.177.507.68 10.43 12.61 10.64
+GP-Copula0.0000.007 0.054 0.019 0.019 0.008 9.728.267.73 10.87 12.22 11.09
+NsDiff0.001 0.0010.009 0.010 0.009 0.012 12.61 10.5010.4012.30 13.55 12.66
+TACTiS-20.0000.010 0.0090.0000.009 0.017 10.84 6.656.339.57 12.52 9.85
+TimeGrad0.0000.010 0.039 0.011 0.074 0.019 14.2413.9714.12 15.15 18.35 15.25
+TMDM0.0000.004 0.012 0.004 0.005 0.015 10.76 7.236.9110.04 12.24 10.28
+TSFlow0.0000.005 0.009 0.001 0.026 0.007 19.0215.5716.04 16.59 19.81 16.55
+exchange
+CSDI 0.014 0.0180.0010.041 0.044 0.041 -36.70-23.14 -35.28 -36.88 -29.04 -36.88
+DeepAR0.0090.055 0.018 0.140 0.024 0.094 -29.75-18.29 -28.40 -30.11 -22.54 -29.78
+GP-Copula 0.012 0.0250.0020.055 0.014 0.055 -34.64-20.83 -31.97 -32.78 -27.08 -32.78
+NsDiff0.0050.048 0.044 0.134 0.051 0.134 -29.63-21.82 -26.09 -29.38 -21.91 -29.38
+TACTiS-20.0140.018 0.024 0.048 0.064 0.048 -36.41-23.43 -34.81 -36.66 -28.35 -36.66
+TimeGrad0.0090.045 0.551 0.818 0.821 0.818 -11.24-9.03 -12.69 -17.86 -6.30 -17.86
+TMDM0.0090.012 0.047 0.439 0.196 0.439 -13.05-9.87 -15.25 -18.56 -9.52 -18.56
+TSFlow0.0050.028 0.166 0.117 0.101 0.084 -33.11-20.75 -33.39 -35.09 -27.04 -34.92
+traffic
+DeepAR0.0010.070 0.034 0.367 0.069 0.367 -2004.30-1655.92 -1917.09 -1110.90 -1444.22 -1110.90
+GP-Copula0.0030.060 0.018 0.417 0.057 0.417 -2043.70-1485.45 -1843.90 -1047.90 -1498.27 -1047.90
+NsDiff0.0040.007 0.058 0.503 0.027 0.503 -1666.08-1049.60 -1774.45 -1090.52 -1513.42 -1090.52
+TACTiS-20.0060.054 0.023 0.419 0.057 0.419 -1947.96-1612.59 -1837.45 -1075.69 -1471.75 -1075.69
+TimeGrad0.0060.070 0.078 0.659 0.039 0.659 -1419.68-1282.09 -1501.35 -955.67 -1165.37 -955.67
+TMDM0.0000.020 0.035 0.436 0.015 0.436 -1524.18-704.16 -1708.73 -1086.10 -1484.19 -1086.10
+TSFlow0.0050.041 0.055 0.421 0.059 0.421 -2008.51-1600.29 -1888.35 -1111.23 -1576.92 -1111.23
+weather
+CSDI0.0020.007 0.059 0.115 0.021 0.045 41.875.262.86 25.90 100.70 28.92
+DeepAR0.0030.004 0.036 0.157 0.027 0.125 54.9635.4539.73 49.29 113.17 50.42
+GP-Copula0.0010.009 0.057 0.107 0.005 0.049 43.2522.6321.91 41.69 102.62 44.55
+NsDiff0.0010.003 0.020 0.096 0.024 0.058 61.5953.7255.02 59.86 108.53 61.17
+TACTiS-2 0.0010.0000.020 0.051 0.020 0.045 43.828.224.96 28.99 100.33 29.32
+TimeGrad0.0010.001 0.085 0.271 0.010 0.229 57.0941.1442.66 46.96 106.63 48.13
+TMDM0.0010.0040.0010.127 0.022 0.068 50.3235.1036.39 43.23 102.61 45.18
+TSFlow0.0000.170 0.034 0.264 0.026 0.221 60.5267.85 79.83 43.48 104.69 44.51
+23
+
+===== PAGE 24 =====
+Table 6: Detailed conformal wrapper comparison at the50%target. The table reports coverage gap
+and log-volume for each dataset–backbone pair across all conformal wrappers. Lower is better for
+both metrics.
+Coverage gap↓LogV ol↓
+Dataset Backbone SPACE
+MultiDim
+SPCI
+Local
+Ell.
+Emp.
+Cop. CopulaCPTS
+Gauss.
+Cop. SPACE
+MultiDim
+SPCI
+Local
+Ell.
+Emp.
+Cop. CopulaCPTS
+Gauss.
+Cop.
+electricity
+DeepAR0.0040.111 0.122 0.197 0.458 0.121 1716.611696.69 1684.79 1884.26 2702.49 1914.07
+GP-Copula0.0010.100 0.158 0.158 0.226 0.088 1765.491802.28 1766.75 1990.40 2564.03 2017.31
+NsDiff0.0020.115 0.305 0.385 0.378 0.287 2694.551876.96 1834.83 1972.64 2799.25 2010.21
+TACTiS-20.0050.106 0.179 0.140 0.159 0.007 1776.441743.45 1725.51 1964.06 2500.17 1993.67
+TimeGrad0.0010.108 0.232 0.373 0.175 0.337 3304.032042.12 1995.94 2076.98 2819.30 2088.17
+TMDM0.0020.106 0.262 0.331 0.095 0.195 2759.851960.32 1928.50 2040.14 2900.43 2071.59
+TSFlow0.0010.105 0.103 0.193 0.424 0.098 2351.841714.78 1695.45 1907.09 2643.04 1933.06
+etth1
+CSDI0.0010.012 0.160 0.065 0.499 0.105 4.634.163.79 5.78 20.79 6.30
+DeepAR0.0050.038 0.216 0.081 0.458 0.147 4.394.33 4.43 5.69 15.68 6.43
+GP-Copula0.0080.027 0.189 0.095 0.047 0.144 5.335.58 5.54 7.15 8.72 7.77
+NsDiff0.0040.011 0.174 0.077 0.199 0.115 6.186.026.06 6.95 12.25 7.45
+TACTiS-2 0.0050.0010.183 0.113 0.094 0.156 4.684.184.18 6.26 8.28 6.72
+TimeGrad0.0020.038 0.196 0.110 0.160 0.027 13.3510.41 10.36 10.60 16.19 11.24
+TMDM 0.0080.0060.128 0.060 0.065 0.115 6.054.854.77 6.77 9.49 7.26
+TSFlow 0.0060.0010.183 0.081 0.500 0.140 4.704.444.33 5.98 20.87 6.58
+ettm1
+CSDI0.0010.018 0.152 0.078 0.037 0.116 1.371.051.07 2.25 3.66 2.64
+DeepAR0.0010.015 0.175 0.100 0.057 0.135 1.481.091.49 2.42 3.67 2.82
+GP-Copula0.0010.020 0.152 0.061 0.047 0.091 1.042.51 2.22 3.26 4.51 3.64
+NsDiff0.0000.004 0.110 0.016 0.004 0.074 4.414.71 4.35 4.85 7.80 5.30
+TACTiS-2 0.0000.0000.150 0.062 0.040 0.119 1.311.311.30 2.26 3.78 2.82
+TimeGrad0.0030.063 0.204 0.113 0.240 0.043 10.587.31 6.70 8.15 14.17 8.80
+TMDM0.0000.019 0.188 0.074 0.022 0.129 1.871.291.65 2.45 3.68 3.01
+TSFlow0.0010.033 0.145 0.067 0.050 0.107 2.181.91 2.11 2.89 4.18 3.27
+ettm2
+CSDI0.0010.002 0.010 0.027 0.049 0.069 5.15 4.032.895.45 6.89 5.98
+DeepAR0.0020.008 0.0620.0020.023 0.039 6.075.624.46 6.61 7.16 7.03
+GP-Copula 0.004 0.009 0.042 0.0030.0000.039 4.975.18 3.86 6.71 7.17 7.21
+NsDiff0.0000.004 0.055 0.029 0.006 0.025 8.958.847.66 8.99 9.82 9.34
+TACTiS-2 0.0010.0010.007 0.013 0.047 0.069 4.64 4.192.624.16 6.81 5.09
+TimeGrad0.0030.020 0.120 0.062 0.201 0.081 12.1012.54 12.20 12.41 14.85 12.55
+TMDM0.0020.005 0.015 0.019 0.028 0.047 6.09 5.134.016.17 6.92 6.41
+TSFlow 0.002 0.003 0.0410.0010.024 0.016 13.64 14.05 13.3813.6316.48 13.75
+exchange
+CSDI0.0000.026 0.036 0.128 0.326 0.102 -41.58-25.69 -39.72 -42.43 -31.77 -42.04
+DeepAR 0.016 0.023 0.082 0.049 0.4110.003 -33.27-19.66 -32.02 -33.12 -23.03 -32.77
+GP-Copula 0.010 0.010 0.1220.0030.345 0.023 -39.91-23.05 -36.72 -38.24 -29.11 -37.83
+NsDiff0.0100.026 0.013 0.086 0.434 0.013 -32.50-23.40 -30.04 -32.25 -23.10 -31.88
+TACTiS-20.0160.046 0.118 0.086 0.464 0.056 -42.47-25.88 -39.44 -42.62 -28.35 -42.14
+TimeGrad0.0030.066 0.490 0.500 0.480 0.500 -12.22-9.98 -14.18 -19.46 -6.49 -19.43
+TMDM0.023 0.0230.046 0.230 0.204 0.227 -13.76 -10.77 -16.31 -19.98 -9.52 -19.94
+TSFlow0.0070.049 0.283 0.266 0.214 0.161 -36.90-22.61 -37.73 -39.89 -27.48 -38.94
+traffic
+DeepAR0.0010.078 0.094 0.205 0.111 0.174 -2751.54-2041.51 -2780.99 -1496.57 -2275.99 -1413.46
+GP-Copula0.0010.090 0.094 0.226 0.209 0.188 -2763.05-1871.26 -2697.83 -1431.22 -2037.54 -1349.32
+NsDiff0.0010.053 0.117 0.359 0.117 0.103 -2252.30-1306.73 -2347.17 -1488.17 -2020.75 -1090.52
+TACTiS-20.0030.090 0.110 0.232 0.115 0.187 -2633.07-2013.00 -2766.84 -1456.24 -2197.27 -1373.58
+TimeGrad0.0060.093 0.127 0.369 0.323 0.356 -1977.18-1547.09 -2157.70 -1253.83 -1439.78 -1193.78
+TMDM0.0000.001 0.075 0.315 0.321 0.036 -2036.92-905.44 -2123.10 -1467.98 -1649.90 -1086.10
+TSFlow0.0110.067 0.103 0.271 0.125 0.238 -2693.86-1980.92 -2595.17 -1519.05 -2249.78 -1434.20
+weather
+CSDI0.0040.021 0.178 0.144 0.074 0.044 24.26-2.85 -10.86 -3.75 53.21 5.73
+DeepAR0.0040.014 0.086 0.179 0.045 0.114 37.5430.1530.30 32.18 67.44 35.49
+GP-Copula0.0040.004 0.114 0.139 0.074 0.052 26.7413.037.31 -34.41 58.39 0.05
+NsDiff0.0040.009 0.039 0.081 0.367 0.015 49.9049.4448.36 50.91 104.03 52.31
+TACTiS-2 0.0020.0010.155 0.158 0.070 0.074 23.38-0.54-8.53 0.08 53.40 6.62
+TimeGrad0.0040.019 0.016 0.143 0.035 0.103 41.73 37.4835.2935.94 81.61 37.35
+TMDM0.0020.040 0.014 0.133 0.072 0.057 34.83 30.2630.2132.24 77.09 34.27
+TSFlow0.0010.090 0.031 0.284 0.055 0.225 47.8966.87 76.82 25.99 71.28 29.01
+Table 7: Detailed conformal wrapper comparison at the95%target. The table reports coverage gap
+and log-volume for each dataset–backbone pair across all conformal wrappers. Lower is better for
+both metrics.
+Coverage gap↓LogV ol↓
+Dataset Backbone SPACE
+MultiDim
+SPCI
+Local
+Ell.
+Emp.
+Cop. CopulaCPTS
+Gauss.
+Cop. SPACE
+MultiDim
+SPCI
+Local
+Ell.
+Emp.
+Cop. CopulaCPTS
+Gauss.
+Cop.
+electricity
+DeepAR0.0040.111 0.068 0.171 0.042 0.052 1823.071759.72 1790.24 2072.63 2949.63 2166.29
+GP-Copula0.0000.116 0.098 0.304 0.040 0.080 1854.071866.89 1864.68 2082.68 3051.98 2186.00
+NsDiff0.0000.057 0.369 0.635 0.050 0.174 3683.001928.18 1895.89 2046.48 3144.25 2201.14
+TACTiS-20.0030.121 0.110 0.130 0.042 0.078 1903.581805.75 1821.25 2134.99 2957.35 2187.38
+TimeGrad0.0030.067 0.402 0.630 0.044 0.349 4202.562073.73 2041.09 2126.94 3188.55 2236.49
+TMDM0.0020.065 0.376 0.527 0.037 0.159 3757.881997.86 1963.54 2102.96 3220.00 2221.45
+TSFlow0.0010.110 0.085 0.192 0.040 0.052 2967.571777.25 1781.26 2051.49 2915.85 2191.19
+etth1
+CSDI 0.0030.0000.034 0.011 0.049 0.021 12.968.259.33 12.86 20.79 13.36
+DeepAR0.0000.008 0.024 0.011 0.030 0.024 11.978.609.25 12.45 17.49 13.10
+GP-Copula 0.0050.0000.030 0.026 0.024 0.031 12.319.4510.60 13.08 18.69 13.46
+NsDiff0.0000.010 0.027 0.014 0.030 0.024 13.539.9510.56 12.99 18.42 13.68
+TACTiS-20.0000.003 0.033 0.018 0.028 0.026 12.758.589.64 12.75 17.76 13.28
+TimeGrad0.0030.010 0.109 0.038 0.010 0.029 16.8112.4213.86 14.95 20.49 15.13
+TMDM 0.0020.0010.028 0.013 0.028 0.018 13.728.439.43 12.84 18.38 13.45
+TSFlow0.000 0.0000.030 0.020 0.050 0.024 13.298.779.61 12.57 20.87 12.97
+Continued on next page
+24
+
+===== PAGE 25 =====
+Table 7 continued from previous page
+Coverage gap↓LogV ol↓
+Dataset Backbone SPACE
+MultiDim
+SPCI
+Local
+Ell.
+Emp.
+Cop. CopulaCPTS
+Gauss.
+Cop. SPACE
+MultiDim
+SPCI
+Local
+Ell.
+Emp.
+Cop. CopulaCPTS
+Gauss.
+Cop.
+ettm1
+CSDI0.0000.002 0.027 0.013 0.007 0.024 9.325.916.57 10.49 14.63 11.21
+DeepAR0.0000.002 0.028 0.009 0.002 0.022 9.185.927.19 10.18 14.06 10.97
+GP-Copula0.0010.003 0.028 0.024 0.005 0.024 7.557.008.26 11.77 14.89 11.77
+NsDiff 0.0070.0030.023 0.009 0.006 0.013 11.448.338.43 11.27 15.32 11.47
+TACTiS-20.0000.006 0.026 0.009 0.001 0.019 9.456.187.07 10.58 14.39 11.32
+TimeGrad 0.0190.0040.067 0.026 0.038 0.016 14.269.8910.95 13.45 19.58 13.76
+TMDM0.0000.003 0.025 0.008 0.002 0.023 9.515.736.72 10.31 14.23 11.10
+TSFlow 0.000 0.004 0.032 0.0130.0000.025 9.556.537.45 10.49 14.21 11.31
+ettm2
+CSDI0.0010.005 0.016 0.007 0.003 0.008 11.95 7.657.3610.87 13.51 11.34
+DeepAR0.0000.001 0.027 0.011 0.003 0.003 12.648.168.62 11.33 13.79 11.75
+GP-Copula0.0000.002 0.029 0.016 0.011 0.006 11.368.838.88 11.97 13.67 12.87
+NsDiff 0.002 0.005 0.0050.0020.011 0.004 13.8111.1311.17 13.53 14.49 13.59
+TACTiS-20.0010.009 0.020 0.004 0.011 0.009 12.34 7.397.2610.87 13.79 11.27
+TimeGrad 0.0020.0010.024 0.013 0.037 0.015 14.9514.3814.84 16.01 19.11 16.09
+TMDM0.0000.002 0.011 0.009 0.002 0.004 12.25 7.967.7210.89 13.42 11.29
+TSFlow0.0010.002 0.002 0.008 0.004 0.005 20.4716.1816.64 17.26 20.82 17.31
+exchange
+CSDI 0.004 0.026 0.0040.0030.0270.003 -34.50 -22.56 -33.74-35.03-26.83-35.03
+DeepAR 0.012 0.0650.0060.114 0.009 0.114 -28.47-17.98 -27.50 -29.07 -21.76 -29.07
+GP-Copula0.0040.042 0.016 0.088 0.026 0.088 -32.85-20.47 -30.81 -32.31 -26.16 -32.31
+NsDiff0.0040.042 0.011 0.128 0.011 0.091 -28.63-21.37 -25.40 -28.80 -21.38 -28.37
+TACTiS-20.0040.036 0.020 0.006 0.024 0.006 -34.39 -22.68 -33.41-34.39-27.13-34.39
+TimeGrad0.0090.026 0.473 0.845 0.838 0.845 -10.88-8.83 -12.23 -17.64 -6.17 -17.64
+TMDM0.0090.026 0.034 0.374 0.246 0.364 -12.82-9.70 -14.77 -18.17 -9.52 -18.01
+TSFlow0.0030.039 0.101 0.118 0.095 0.078 -31.84-20.47 -32.35 -34.26 -26.32 -33.38
+traffic
+DeepAR0.0030.067 0.027 0.417 0.049 0.417 -1857.94-1533.90 -1786.11 -1110.90 -1279.82 -1110.90
+GP-Copula0.0020.0570.0020.467 0.047 0.467 -1920.81-1373.97 -1677.17 -1047.90 -1245.06 -1047.90
+NsDiff0.0060.028 0.034 0.553 0.026 0.553 -1537.94-968.88 -1653.99 -1090.52 -1389.24 -1090.52
+TACTiS-20.0040.054 0.018 0.469 0.040 0.469 -1766.47-1485.68 -1695.04 -1075.69 -1308.90 -1075.69
+TimeGrad0.0010.050 0.033 0.709 0.031 0.709 -1292.86-1205.61 -1273.84 -955.67 -929.23 -955.67
+TMDM0.0030.043 0.027 0.486 0.026 0.486 -1414.25-629.93 -1600.10 -1086.10 -1365.39 -1086.10
+TSFlow0.0020.035 0.031 0.471 0.039 0.471 -1866.32-1488.75 -1755.73 -1111.23 -1445.21 -1111.23
+weather
+CSDI0.0010.015 0.022 0.065 0.007 0.035 49.058.058.75 31.59 111.77 33.00
+DeepAR 0.0080.0070.020 0.137 0.029 0.078 60.5937.3642.74 51.66 121.18 54.18
+GP-Copula0.0000.001 0.007 0.071 0.005 0.040 49.4125.5127.73 46.84 112.24 49.05
+NsDiff0.0010.007 0.002 0.094 0.002 0.068 66.0155.4757.71 61.58 113.15 62.93
+TACTiS-20.0010.003 0.011 0.060 0.011 0.036 50.75 10.759.6331.75 112.39 33.28
+TimeGrad 0.0070.0040.105 0.273 0.023 0.241 61.4342.8446.47 48.32 114.37 50.19
+TMDM0.0010.004 0.003 0.107 0.005 0.057 55.3437.2938.28 45.55 109.12 47.81
+TSFlow0.0010.178 0.021 0.211 0.006 0.165 64.5568.04 80.36 45.53 114.72 46.73
+D Non-stationarity and Performance Gains Analysis
+In this appendix, we examine whether the performance gains of SPACEare associated with the
+severity of time-varying multivariate dependence structure. Our goal is to test whether datasets with
+stronger and more rapidly changing joint covariance geometry are precisely the settings in which
+modeling multivariate uncertainty structure is most beneficial.
+Local covariance drift index.For each dataset, let Yt∈R d denote the standardized multivariate
+target at timet. We quantify local covariance instability by comparing adjacent rolling windows. For
+a window sizew, define
+WL
+t ={Y t−w,...,Y t−1}, W R
+t ={Y t,...,Y t+w−1},(31)
+with empirical covariance matrices ΣL
+t and ΣR
+t . Let Σfull denote the covariance matrix of the full
+standardized series, and define a whitening operator
+A= (Σ full +λI)−1/2,(32)
+whereλ >0 is a small ridge term used only for numerical stability. We then compute the local
+covariance-drift score
+δt =
+
+
+A(ΣL
+t −ΣR
+t )A
+
+
+F√
+d
+.(33)
+This quantity is dimension-normalized and measures how much the local covariance structure changes
+from one temporal regime to the next, relative to the dataset’s own global covariance geometry. To
+obtain a single dataset-level summary, we aggregate the largest drift episodes using the mean of the
+top decile of{δt}t:
+LCI = Top10Mean
+ 
+{δt}t
+
+,(34)
+where larger values indicate stronger local covariance drift. In the plots below, datasets are ordered
+from left to right by decreasingLCI.
+25
+
+===== PAGE 26 =====
+Interpretation.The local covariance drift index is intended to capture a specific form of nonstation-
+arity: instability in the joint second-order geometry of the target. This is directly relevant for SPACE,
+whose construction relies on adaptive multivariate covariance structure when forming calibrated
+uncertainty sets. If joint covariance geometry is both meaningful and time-varying, then methods that
+explicitly account for such geometry should benefit most.
+Results and ranking.Using the local covariance drift index defined above, the datasets are ranked
+as follows: traffic (4.939), weather (3.326), electricity (3.108), etth1 (1.738), exchange
+(1.487), ettm2 (1.075), and ettm1 (0.867). Thus, the left-hand side of Figure 4 corresponds to
+datasets with substantially stronger local covariance deformation over time, while the right-hand
+side contains the smaller and more stationary regimes. In particular, ettm1 has the smallest local
+covariance drift index, consistent with its comparatively stable dependence structure.
+Association with coverage-gap improvement.This ranking is informative for understanding
+where SPACEhelps most. At the pair level, the local covariance drift index is positively associated
+with coverage-gap improvement, with Pearson correlationr= 0.357 (p= 0.0080 ) and Spearman
+correlationρ= 0.281 (p= 0.0396 ). At the dataset level, where the sample size is necessarily small
+(n= 7 ), the association remains positive but is less statistically stable, with Pearson r= 0.596
+(p= 0.158 ) and Spearman ρ= 0.679 (p= 0.0938 ). Looking directly at the dataset means, the
+strongest gains appear in more difficult regimes such aselectricity, whose local covariance drift
+index is 3.108 and whose mean coverage-gap improvement is 0.0344, and traffic, whose local
+covariance drift index is 4.939 with mean improvement 0.0217. By contrast, smaller and more
+stationary datasets exhibit much smaller gains; for example,ettm1 has the lowest local covariance
+drift index (0.867) and also one of the smallest mean improvements ( 0.0035). Overall, the figure
+supports the interpretation that SPACEis most beneficial when the target exhibits stronger time-
+varying multivariate dependence geometry, while performance becomes much closer to the baselines
+in lower-drift settings.
+SPACE versus all baselines.To make this trend visible at a dataset level, Figure 4 compares
+SPACEagainst the mean performance of all baseline methods, with datasets ordered by decreasing
+local covariance drift. The top panel reports mean coverage gap, and the bottom panel reports mean
+rolling gap. In both panels, points correspond to dataset means across dataset–forecaster pairs, and
+error bars show mean±2 standard errors. The raw points in the background show the individual
+dataset–forecaster pairs. The same qualitative pattern appears in both panels: SPACEoffers the
+clearest advantage in the high-drift regime, while performance differences narrow substantially in the
+low-drift regime.
+Overall, this appendix analysis is consistent with the view that SPACEis especially effective in
+datasets whose multivariate dependence geometry is both strong and temporally unstable. In contrast,
+when the target is lower-dimensional and closer to stationary covariance structure, SPACEremains
+competitive but its advantage over simpler baselines naturally becomes smaller.
+E Dynamic Window-Length Diagnostics
+In this appendix, we provide a visual diagnostic for the dynamic window length selected by SPACE,
+denoted byLt. The goal is to illustrate the intended mechanism behind the dynamic rule. When
+the underlying target process changes regime, the selected memory length is designed to contract so
+that stale calibration history is downweighted or discarded. When the process becomes more stable
+again, the selected memory length can recover, allowing the method to reuse longer and more stable
+calibration windows.
+To avoid circularity, we detect regime changes directly from the original multivariate target stream
+yt, rather than from the selectedLt path or from SPACEdiagnostics. Specifically, for each dataset–
+forecaster pair at the 90% target level, we align the valid test times, standardize the multivariate target
+stream, reduce it by PCA to a low-dimensional representation, and then apply the energy-divisive
+nonparametric multivariate change-point method of Matteson and James [22]. This provides a
+target-side notion of regime change that is external to the dynamic window-selection rule itself.
+Figure 5 is constructed to visualize three aspects of the dynamic rule:
+26
+
+===== PAGE 27 =====
+Figure 4: Performance of SPACEversus the mean over all baselines, with datasets ordered from left
+to right by decreasing local covariance drift index. Top: mean coverage gap. Bottom: mean rolling
+gap. Error bars are constructed based on two standard errors of the mean across the dataset–forecaster
+pairs. The left side of the figure corresponds to higher-dimensional and more nonstationary datasets
+with stronger local covariance drift, where the advantage of SPACEis largest; the gap narrows for
+smaller and more stationary datasets such asettm1.
+1. Contraction:whether the selected window length becomes smaller around a detected
+change point;
+2. Recovery:whether the selected window length increases again after the immediate post-
+change region;
+3. Long-term behavior:whether the selected window length tends to grow as the detected
+regime becomes older and more stable.
+Each panel in Figure 5 contains three aligned subplots. The top subplot shows the selected dynamic
+window lengthLt over valid test times. The middle subplot showsTarget PC1, the first principal
+component of the standardized multivariate target stream, which provides a one-dimensional summary
+of the dominant variation in the target process. The bottom subplot shows target-side change points
+detected by the energy-divisive procedure.
+The intended visual pattern is as follows. Around a vertical change-point marker, a local downward
+reset inLt indicates that the dynamic rule shortens its calibration memory when the target process
+changes. Over a more stable segment,Lt may increase again, indicating that the method can use a
+longer historical window when the local regime persists.
+Taken together, these illustrative plots are consistent with the intended interpretation of the dynamic
+window-selection mechanism. The selected memory length is not static; rather, it changes over time,
+contracts around detected target-side disturbances, and in the clearer examples rebuilds during more
+stable segments. This behavior reflects the design motivation for dynamicLt: SPACEuses shorter
+memory when the recent past becomes unreliable and longer memory when the local regime appears
+stable enough to benefit from a broader calibration history.
+27
+
+===== PAGE 28 =====
+(a)ettm2/gpcopula
+ (b)weather/tactis2
+Figure 5: Illustrative dynamic-L overlays at the 90% target level using energy-divisive target-side
+change-point detection [22]. In each plot, the top panel shows the selected window length Lt, the
+middle panel shows the first principal component of the standardized valid-test target stream (Target
+PC1), and the bottom panel shows detected target-side change points. Across these examples, the
+selected dynamic memory length exhibits active interior adaptation and contraction-and-rebuilding
+behavior around detected target-side regime changes.
+F Implementation details of SPACE
+F.1 Metric definitions
+For a fixed target miscoverage levelα, empirical joint coverage is defined as
+dCov = 1
+N
+NX
+t=1
+I{yt∈C t(α)}.(35)
+The global coverage gap is the absolute deviation from the target coverage level,
+Gap =
+dCov−(1−α)
+.(36)
+For rolling diagnostics, let w denote the sliding-window length and let T denote the set of valid
+rolling-window endpoints. The rolling joint coverage at endpointt∈Tis
+cRCt = 1
+w
+tX
+s=t−w+1
+I{ys∈C s(α)}.(37)
+The corresponding rolling coverage gap is
+gt =
+cRCt−(1−α)
+.(38)
+We summarize these local deviations using three rolling metrics. The mean rolling gap is
+Mean Rolling Gap = 1
+|T|
+X
+t∈T
+gt = 1
+|T|
+X
+t∈T
+cRCt−(1−α)
+.(39)
+The P90 rolling gap is the90th percentile of the rolling coverage gaps,
+P90 Rolling Gap =Q 0.9({gt :t∈T}).(40)
+The fraction of bad windows is the proportion of rolling windows whose gap exceeds a tolerance
+thresholdδ,
+Frac.Bad Windows = 1
+|T|
+X
+t∈T
+I{gt >δ}.(41)
+In all main experiments, we usew= 30andδ= 0.10.
+28
+
+===== PAGE 29 =====
+For efficiency, we report the mean log-volume of the prediction regions,
+LOGVOL= 1
+N
+NX
+t=1
+log Vol(Ct(α)).(42)
+Lower values are better for coverage gap, rolling diagnostics, and LOGVOL. The size metric should
+be interpreted together with calibration, since small sets are meaningful only when coverage is close
+to the target.
+F.2 Compute resources
+All wrapper experiments were run on a single local workstation equipped with a 13th Gen Intel(R)
+Core(TM) i9-13980HX CPU, an NVIDIA GeForce RTX 4080 Laptop GPU and 32GB system
+memory. The reported benchmark evaluates all dataset–forecaster pairs and all target levels included
+in the full result table in Section C.2. Since SPACEis a post-hoc wrapper, the reported time refers
+to wrapper execution and evaluation on saved predictive sample streams, excluding the original
+training of the forecasting backbones. The complete SPACErun took 1h19m38s. MultiDimSPCI
+was the most computationally intensive among the baselines, requiring 14h58m33s under the same
+benchmark scope. The remaining conformal baselines were substantially lighter and completed in
+comparatively small additional time. Additional exploratory runs and preliminary tuning experiments
+were performed during development, but the above times describe the compute required to reproduce
+the reported final benchmark from the saved sample streams.
+F.3 Experimental configuration
+Unless stated otherwise, all forecasters use context window 96, and one-step-ahead prediction
+(pred_len= 1) to simulate one-step-ahead forecasting. The saved predictive sample streams have
+M= 100 forecast samples per time point. Note that, in principle, increasing the number of forecast
+samples reduces sample-geometry error. In the main benchmark, SPACEis evaluated under a single
+fixed configuration. Specifically, the candidate calibration lengths are
+L∈{20,30,...,300},(43)
+so thatLmin = 20,Lmax = 300, and the backward extension step size ish= 10 . The probe-block
+length is set top= 20, and the adaptive conformal inference update uses step sizeη= 0.01.
+For numerical robustness, the benchmark implementation uses a shrinkage-stabilized version of
+the sample-derived covariance estimator, with identity shrinkage parameterλshrinkage = 0.30. This
+shrinkage choice is an empirical implementation device introduced to improve stability of the local
+covariance estimate in practice, especially when the effective sample size is limited or the sample
+cloud is ill-conditioned. It is not a separate conceptual component of SPACE, and it is not required
+by the theoretical results in Section 4. Our theory is stated at the level of the sample-derived local
+geometry and its estimation error, so the guarantees do not rely on this particular shrinkage form or
+on the specific value ofρ.
+For dynamic same-regime calibration window selection, SPACEuses a DKW-style KS acceptance
+threshold to instantiate the same-regime test described in Section 3.2. At timet, the threshold is
+τt(cτ) =c τ
+vuutlog
+
+2KtJ
+δτ
+
+2p ,(44)
+wherecτ = 2.0 is a multiplicative tuning constant,Kt is the number of feasible candidate window
+lengths at timet,J= 3 is the number of diagnostics in the test bundle,δτ = 0.05, andp= 20 is the
+probe-block length. The factor 2KtJ accounts for the two block comparisons, the feasible candidate
+lengths, and the diagnostic bundle. This threshold is the empirical implementation of the KS-style
+same-regime test; the theoretical analysis abstracts its behavior through Assumption (A2), which
+controls false rejection on clean blocks and false acceptance on contaminated extensions.
+G Dataset Details
+We use the following seven publicly available datasets for academic research and evaluation purposes.
+The details of the datasets are listed in Table 8.
+29
+
+===== PAGE 30 =====
+Table 8: Dataset summary for the saved predictive sample streams used in wrapper evaluation. Here
+d is the target dimension,T is the saved stream length, and Test denotes the SPACE/baseline wrapper
+test split.
+Dataset Freq.d TTest
+electricity H 321 5261 1053
+ETTh1 H 7 3484 697
+ETTm{1,2} 15 min 7 13936 2788
+exchange D 8 1518 304
+traffic H 862 3509 702
+weather 10 min 21 10539 2108
+1.Electricity . The dataset records electricity consumption for 321 customers and is used as
+a standard multivariate forecasting benchmark. URL: https://archive.ics.uci.edu/
+dataset/321/electricityloaddiagrams20112014.
+2.ETTh1, ETTm1, and ETTm2 . The datasets contain electricity transformer variables, in-
+cluding load and oil temperature, recorded at hourly or 15-minute resolution [ 45]. URL:
+https://github.com/zhouhaoyi/ETDataset.
+3.Exchange . The dataset records daily exchange rates of eight countries and is commonly
+used in multivariate time-series forecasting benchmarks [ 16]. URL: https://github.
+com/laiguokun/multivariate-time-series-data.
+4.Traffic . The dataset contains hourly road occupancy rates measured by sensors on
+San Francisco Bay Area freeways and is commonly distributed through multivariate
+time-series benchmark collections [ 16]. Raw data are associated with the Caltrans Per-
+formance Measurement System (PeMS), which requires an account for access. URL:
+https://pems.dot.ca.gov/; benchmark mirror: https://github.com/laiguokun/
+multivariate-time-series-data.
+5.Weather . The dataset is commonly distributed through the Autoformer/Time-Series-Library
+benchmark collection [38]. URL:https://github.com/thuml/Autoformer.
+30
