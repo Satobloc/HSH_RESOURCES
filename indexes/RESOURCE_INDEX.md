@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T18:26:52Z`
-- Tree/content state: `ff27c1011c2d3b0ccf645597784b1e552d8d2dc549909a550d8555a28b7fe171`
+- Scanned: `2026-09-07T18:32:15Z`
+- Tree/content state: `c2558e06dbefd07374e6077d2fb67cbb847b08ca97c43e77cf33789f295286f3`
 - Coverage: complete structural traversal
-- Files: 888
-- Uploaded source files: 881
-- PDF papers: 861
+- Files: 902
+- Uploaded source files: 895
+- PDF papers: 870
 - Repository machinery files: 7
 - Byte-identical duplicate groups: 36
 
@@ -18,8 +18,8 @@
 | `.github` | 1 |
 | `.gitignore` | 1 |
 | `BIG PAPERS` | 3 |
-| `DATA` | 1 |
-| `H(s)H_Toolkit` | 308 |
+| `DATA` | 12 |
+| `H(s)H_Toolkit` | 311 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
 | `HAUL 11` | 6 |
@@ -161,6 +161,12 @@
 | `BIG PAPERS/qt2f18n5nk.pdf` | 14358136 |  |
 | `BIG PAPERS/ssrn-7385521.pdf` | 10277174 | ssrn:7385521 |
 | `BIG PAPERS/ssrn-7394178.pdf` | 15622060 | ssrn:7394178 |
+| `DATA/DATA REL - DESI spectral viewer.pdf` | 229413 |  |
+| `DATA/DATA REL - DESI spectral viewer2.pdf` | 237397 |  |
+| `DATA/DATA REL - DESI spectral viewer3.pdf` | 230747 |  |
+| `DATA/DATA REL - notebooks-latest03_ScienceExamplesEmLineGalaxies02_EmLineGalaxies_Outliers.ipynb at master · astro-datalabnotebooks-latest.pdf` | 990887 |  |
+| `DATA/DATA REL - notebooks-latest04_HowTosSPARCLPlot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalabnotebooks-latest.pdf` | 211459 |  |
+| `DATA/DATA REL - SPARCL Notebooks.pdf` | 509725 |  |
 | `H(s)H_Toolkit/0105040v2.pdf` | 232815 | unresolved-seven-digit-id:0105040v2 |
 | `H(s)H_Toolkit/0112148v1.pdf` | 388150 | unresolved-seven-digit-id:0112148v1 |
 | `H(s)H_Toolkit/0112205v1.pdf` | 157916 | unresolved-seven-digit-id:0112205v1 |
@@ -258,6 +264,7 @@
 | `H(s)H_Toolkit/7906d22db4488e1baa7bb15196595bcc_MIT2_682S12_Homework1.pdf` | 449867 |  |
 | `H(s)H_Toolkit/7e7dd3994f88a5d72db832da090358b3_soln01.pdf` | 210320 |  |
 | `H(s)H_Toolkit/8.3. Quantum Electrodynamics (QED) — Theoretical Physics Reference 0.5 documentation.pdf` | 905654 |  |
+| `H(s)H_Toolkit/81abfa54a934a8892501ef16dd126ede_MIT2_682S12_lec12.pdf` | 1653848 |  |
 | `H(s)H_Toolkit/829a382e2a755917efbfc190507e51df_lecture01.pdf` | 249941 |  |
 | `H(s)H_Toolkit/842efb3f10cb24ec5ac67c17b2f5cd4f_MIT2_682S12_lec02.pdf` | 767096 |  |
 | `H(s)H_Toolkit/886ead78325762a83434c151f70b0ee6_MIT2_682S12_bglec10.pdf` | 670647 |  |
@@ -306,9 +313,11 @@
 | `H(s)H_Toolkit/DeGiuli.pdf` | 127402 |  |
 | `H(s)H_Toolkit/disgrad.pdf` | 99143 |  |
 | `H(s)H_Toolkit/drae037.pdf` | 1105540 |  |
+| `H(s)H_Toolkit/e663e0865ce7ec44cabfe9532963cd29_MIT2_682S12_lec13.pdf` | 3353712 |  |
 | `H(s)H_Toolkit/e8982711372f0d28ab1a86726089ed77_MIT2_682S12_bglec07.pdf` | 325930 |  |
 | `H(s)H_Toolkit/e9b53ba811f84183e7c3236239f93b3b_MIT2_682S12_lec15.pdf` | 995132 |  |
 | `H(s)H_Toolkit/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf` | 238548 |  |
+| `H(s)H_Toolkit/eabd55bfae8f6afcfa447284123667a9_MIT2_682S12_lec07.pdf` | 1097872 |  |
 | `H(s)H_Toolkit/Einsteins Equations Lagrangians for General Relativity and ADM.pdf` | 444753 |  |
 | `H(s)H_Toolkit/Elements_Ensample_Theory.pdf` | 443625 |  |
 | `H(s)H_Toolkit/ensemble-kalman-methods-a-mean-field-perspective.pdf` | 3594737 |  |
