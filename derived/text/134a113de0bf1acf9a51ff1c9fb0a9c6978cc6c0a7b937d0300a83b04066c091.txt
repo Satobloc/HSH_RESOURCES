@@ -1,0 +1,1860 @@
+===== PAGE 1 =====
+Spectral Graph Theory
+Max Hopkins
+nmhopkin@eng.ucsd.edu
+Dani¨ el Kroes
+dkroes@ucsd.edu
+Jiaxi Nie
+jin019@ucsd.edu
+Jason O’Neill
+jmoneill@ucsd.edu
+Andr´ es Rodr´ ıguez Rey
+a3rodrig@ucsd.edu
+Nicholas Sieger
+nsieger@ucsd.edu
+Sam Sprio
+sspiro@ucsd.edu
+Winter 2020 Quarter
+Abstract
+Spectral graph theory is a vast and expanding area of combinatorics. We start these notes
+by introducing and motivating classical matrices associated with a graph, and then show how
+to derive combinatorial properties of a graph from the eigenvalues of these matrices. We then
+examine more modern results such as polynomial interlacing and high dimensional expanders.
+1 Introduction
+These notes are comprised from a lecture series for graduate students in combinatorics at UCSD
+during the Winter 2020 Quarter. The organization of these expository notes is as follows. Each
+section corresponds to a ﬁfty minute lecture given as part of the seminar. The ﬁrst set of sections
+loosely deals with associating some speciﬁc matrix to a graph and then deriving combinatorial
+properties from its spectrum, and the second half focus on expanders.
+Throughout we use standard graph theory notation. In particular, given a graph G, we let V (G)
+denote its vertex set and E(G) its edge set. We write e(G) = |E(G)|, and for (possibly non-
+disjoint) sets A and B we write e(A,B ) =|{uv∈E(G) :u∈A, v∈B}|. We let N(v) denote the
+neighborhood of the vertex v and let dv denote its degree. We write u∼v when uv∈E(G).
+For a matrix M, we let σ(M) denote the multi-set of eigenvalues of M, and we will often write
+this as{λ(a1)
+1 ,... } to indicate that the eigenvalue λi appears with multiplicity ai. We let 1 denote
+the all 1’s vector. Whenever we say that λ is the eigenvalue of some graph, we mean that λ is an
+eigenvalue ofMG where MG is the relevant matrix associated to G for that section.
+1
+
+===== PAGE 2 =====
+Contents
+1 Introduction 1
+2 Spectral Graph Theory and the Adjacency Matrix 3
+2.1 Combinatorial Information from Eigenvalues . . . . . . . . . . . . . . . . . . . . . . . 3
+2.2 Computing Eigenvalues of Graphs . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+3 The Laplacian Matrix of a Graph 7
+3.1 The Matrix Tree Theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+4 Towards a Theoretical Foundation for Laplacian-Based Manifold Methods 9
+4.1 Diﬀerential Geometry . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+5 The Normalized Laplacian 12
+6 Strongly Regular Graphs 15
+7 (n,d,λ ) Graphs and Ramsey numbers 19
+7.1 Ramsey numbers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+8 Ramanujan Graphs 22
+8.1 Lifts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+8.2 Interlacing Families . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+8.3 Interlacing and Real Stable Polynomials . . . . . . . . . . . . . . . . . . . . . . . . . 26
+8.4 Further Directions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+9 High Dimensional Expanders 28
+9.1 Weighted Expansion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+9.2 Weighted Simplicial Complexes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+9.3 Spectral Link Expansion and the Trickle Down Theorem . . . . . . . . . . . . . . . . 33
+9.4 The Trickling Down Theorem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+2
+
+===== PAGE 3 =====
+2 Spectral Graph Theory and the Adjacency Matrix
+2.1 Combinatorial Information from Eigenvalues
+Given ann-vertex graphG, we deﬁne its adjacency matrixA =AG with rows and columns indexed
+by V (G) by Auv = 1 if uv∈ E(G) and Auv = 0 otherwise. In addition to being a compact way
+to deﬁne the graph G, it turns out that the adjacency matrix encodes combinatorial information
+about G through its eigenvalues. We ﬁrst recall the following fact from linear algebra.
+Theorem 2.1. LetM be a Hermitian matrix. Then M has real eigenvaluesλ1(M)≥···≥ λn(M).
+Moreover,
+λ1(M) = max
+x⁄=0
+x∗Mx
+x∗x ,
+and any x achieving equality is an eigenvector corresponding to λ1(M). Moreover, if the entries of
+M are non-negative, then this x can be chosen to have non-negative entries.
+Because A is a real symmetric matrix, the theorem applies. For the rest of the section we deﬁne
+λi(G) := λi(AG), and we simply write λi whenever G is understood. With this we can deduce a
+number of results relating the eigenvalues of A to combinatorial properties of G.
+Theorem 2.2. LetG be a graph with maximum degree ∆ and minimum degree δ. Then
+δ≤λ1≤ ∆.
+Proof. For the lower bound, let 1 be the all 1’s vector. Then
+λ1 = max
+y⁄=0
+y∗Ay
+y∗y ≥ 1∗A1
+1∗1 =
+∑dv
+n ≥δ.
+For the upper bound, let x be an eigenvector of A corresponding to λ1 and let v∈V (G) be such
+that|xv| is maximized. Then we have
+|λ1xv| =|(Ax)v| =|
+∑
+u
+Av,uxu|≤
+∑
+u∼v
+|xu|≤ dv|xv|≤ ∆|xv|.
+Thus|λ1|≤ ∆. Because all the eigenvalues of A are real and Tr(A) = 0, we must have λ1≥ 0,
+giving the desired result.
+The above proof easily generalizes to the following.
+Theorem 2.3. LetG be ann-vertex graph andM a hermitian matrix such that|Mu,v| = 1 whenever
+u∼v and Mu,v = 0 otherwise. Then
+λ1(M)≤ ∆.
+We note that this theorem is not just generalization for generalization’s sake. Indeed, a special case
+of Theorem 2.3 was used by Hao Huang to prove the sensitivity conjecture [14]. This illustrates
+the general principle of spectral graph theory that choosing diﬀerent matrices to associate to your
+graph G leads to diﬀerent information being captured by your eigenvalues.
+We continue our exploration of combinatorial properties implied by the eigenvalues of A.
+Lemma 2.4. LetG′ be a subgraph of G and λ′
+i =λi(AG′). Then λ′
+1≤λ1.
+3
+
+===== PAGE 4 =====
+Proof. Let x be a unit eigenvector for λ′
+1 with non-negative entries. Then
+λ′
+1 =x∗AG′x≤x∗Ax≤λ1.
+Theorem 2.5. χ(G)≤λ1 + 1.
+Proof. This holds when n = 1. Inductively assume the result holds up to n. Let v be a vertex of
+minimum degree δ and G′ = G−x. If λ′
+1 = λ1(AG′), then by induction and the previous lemma
+we have χ(G−x)≤ λ′
+1 + 1≤ λ1 + 1. Thus we can color G−x in at most λ1 + 1 colors, and as
+δ≤λ1 by Theorem 2.2, we can give x a color that is not used by any of its neighbors.
+Note that this bound is often stronger than Brook’s Theoremχ(G)≤ ∆. We also have the following
+lower bound on χ(G), whose proof we omit.
+Theorem 2.6. [23]
+χ(G)≥ 1− λ1
+λn
+.
+Recall that a walk of length k is a sequence of (not necessarily distinct) vertices x1,...,x k+1 such
+that xi∼xi+1 for all 1≤i≤k. A walk is said to be closed if xk+1 =x1.
+Lemma 2.7. The number of walks of length k fromu to v is Ak
+u,v.
+Proof. By deﬁnition of matrix multiplication, we have
+Ak
+u,v =
+∑
+Auw1··· Awk−1v,
+where the sum ranges over all sequences w1,...,w k−1. The term will be 1 if this sequence deﬁnes
+a walk and will be 0 otherwise.
+Corollary 2.8. The number of closed walks of length k is Tr(Ak) =∑λk
+i .
+Corollary 2.9. e(G) =∑λ2
+i .
+Corollary 2.10. A graph G is bipartite iﬀ σ(A) is symmetric about 0.
+Proof. IfG is bipartite with bipartition U∪V andx is such that Ax =λx, then deﬁne y such that
+yu =xu if u∈U and yu =−xu if u∈V . Then for u∈U we have
+(Ay)u =
+∑
+v∼u
+Au,vyv =−
+∑
+v∼u
+Au,vxv =−λxu =−λyu.
+The same conclusion holds if u ∈ V , so Ay = −λy. We conclude that the spectrum of A is
+symmetric about 0. Conversely, if the spectrum of A is symmetric about 0, then G has 0 closed
+walks of length 2k + 1 for all k. In particular, G contains no odd cycles.
+Proposition 2.11. The number of distinct eigenvalues of A is larger than the diameter D of G.
+Proof. By Lemma 2.7, if k≤D, then Ak will contain some non-zero entry which is 0 for all A𝓁 and
+𝓁<k . Thus the minimum polynomial of A must have degree at least D + 1.
+Theorem 2.12. If G is d-regular then α(G)≤ −nλn
+d−λn ).
+4
+
+===== PAGE 5 =====
+Proof. Let S be an independent set and let s =|S|/n. Let x be the vector which has xv =−s if
+v /∈S and xv = 1−s otherwise. Because the graph is d-regular and S is an independent set,
+xtAx =−d|S|(1−s)s + (dn/2−d|S|)s2 =−dns2(1−s) +dn(.5−s)s2 =−dns2/2.
+Also
+xtx =|S|(1−s)2 + (n−|S|)s2 =ns(1−s),
+so by the Raleigh quotient we have λn≤ −ds
+2(1−s), which implies s≤ −λn
+d−λn .
+We note that there exists a generalization of this result with a somewhat clearer proof using the
+Laplacian matrix. This is the speciﬁc case of a general phenomenon: for regular graphs, many
+reasonable choices for MG all have “equivalent” spectrums so one can deduce information using
+any of these matrices. Moreover, the answer you get at the end may suggest which MG you should
+use for general graphs (e.g. d−λn is an eigenvalue of the Laplacian of a d-regular graph, so one
+might suspect that this is the right way to approach the problem).
+We’ve now seen a couple of combinatorial properties that follow from the eigenvalues of A, but
+what about its limitations? To this end we say that two graphs G1,G 2 are cospectral (with respect
+to A) if λi(G1) =λi(G2) for all i.
+Example 2.13. LetG1 =K2,2⊔K1 andG2 =K4,1. Then the eigenvalues for both of these graphs
+are{−2, 0, 0, 0, 2}, so G1 and G2 are cospectral.
+Corollary 2.14. From the eigenvalues ofA it is impossible to determine if G is connected, contains
+a C4, etc.
+In general, when studying some matrix M associated to a graph, looking for cospectral graphs is a
+good way to understand the limitations of a spectral theory using M. There are a number of tools
+that can be used to construct cospectral graphs, or simply to verify that two graphs are cospectral.
+Theorem 2.15. [19] Let T be a forest with n vertices and let ak be the number of k-element
+matchings in T . Then the characteristic polynomial p(x) of AT satisﬁes
+xn−a1xn−2 +··· + (−1)⌊n/2⌋a⌊n/2⌋xn−2⌊n/2⌋.
+In particular, two forests T1 and T2 are cospectral iﬀ they have the same number of k-matchings
+for all k.
+2.2 Computing Eigenvalues of Graphs
+We close by showing oﬀ various techniques one can use to actually compute the spectrum of various
+graphs. The simplest is to just use linear algebra.
+Proposition 2.16. If Kn is the complete graph on n vertices, then σ(A) ={n− 1, (−1)(n−1)}.
+Proof. Indeed, it is not diﬃcult to see that 1 is an eigenvector corresponding to n− 1. Further,
+the vectors which have a 1 in position 1, a −1 in some other position, and 0’s everywhere else are
+linearly independent and correspond to an eigenvalue of −1.
+In principle this method always works, but guessing the eigenvectors may not be obvious in general.
+We can compute eigenvalues in a more combinatorial way by using a converse of Corollary 2.8.
+5
+
+===== PAGE 6 =====
+Proposition 2.17. If G is a graph and there exist real numbers {αi}n
+i=1 such that G has ∑αk
+i
+closed walks for all k, then the {αi} are a permutation of the eigenvalues of A.
+One proof of this uses generating functions [24]. Here we present a more direct argument.
+Proof. Let the αi be as stated, and without loss of generality assume that α1≥···≥ αn. By
+assumption and Corollary 2.8, we have ∑αk
+i =∑λk
+i for all k. Let 𝓁 be the number of i such that
+α1 =|αi| and ϵ = max|αi|⁄=α1|αi|/α1. Then, for all k,
+∑
+(λi/α1)k =
+∑
+(αi/α1)k≤𝓁 +ϵkn,
+and similarly for even k we ﬁnd ∑(λi/α1)k≥ 𝓁. From these inequalities it is not too diﬃcult to
+see that we must have|λi|≤ α1 for all i, and further that equality must hold for exactly 𝓁 choices
+of i. Further, if 𝓁+ is the number of i such that α1 =αi and 𝓁− =𝓁−𝓁+, then for odd k one can
+argue that
+𝓁+−𝓁−−ϵkn≤
+∑
+(λi/αi)k≤𝓁+−𝓁− +ϵkn.
+From this we conclude that there are exactly 𝓁+ choices of i with λi = α1 and 𝓁− choices with
+λi =−α1. The result follows by iterating this argument.
+Corollary 2.18. IfKm,n is the complete bipartite graph, then we haveσ(A) ={√mn,−√mn, 0(m+n−2)}.
+Proof. It is not diﬃcult to prove that the number of closed walks of length k of Km,n is 0 if k is
+odd and 2(mn)k/2 otherwise, and the result follows from Proposition 2.17.
+Representation theory gives another way of giving us eigenvalues of graphs.
+Theorem 2.19. Let Γ be an abelian group and S⊆ Γ a set closed under inverses. Deﬁne the
+Cayley graph G =G(Γ,S ) by V (G) = Γ and uv∈E(G) iﬀ u−v∈S.
+If χ : Γ → C is a character of Γ, then the vector with xa = χ(a) is an eigenvector of A with
+eigenvalue 1
+|S|
+∑
+s∈Sχ(s)
+We omit the proof of this result, see [25].
+Corollary 2.20. If Cn is the cycle of length n, then its eigenvalues are cos(2πr/n) for all 0≤r≤
+n− 1.
+Proof. Cn is a Cayley graph with Γ = Z/nZ and S ={−1, +1} and has the characters χ(x) =
+e2πirx/n for 0≤r≤n− 1. Thus its eigenvalues are
+1
+2e2πir/n + 1
+2e−2πir/n = cos(2πr/n).
+Corollary 2.21. If Qn is the n-dimensional cube, then its eigenvalues are
+(n
+i
+)
+with multiplicity
+n− 2i for all 0≤i≤n.
+Proof. Qn is a Cayley graph with Γ = ( Z/2Z)n and S ={e1,...,e n}, where ei has a 1 in position
+i and 0’s everywhere else. For each r∈{ 0, 1}n we have the character χ(x) = (−1)
+∑rixi. If we let
+|r| =∑ri, then we have the eigenvalues
+1
+n
+∑
+χ(ei) = 1
+n
+∑
+(−1)ri = 1
+n(−|r| + (n−|r|)) = 1− 2|r|
+n .
+6
+
+===== PAGE 7 =====
+Finally, we demonstrate how eigenvalues of larger graphs can be used to ﬁnd eigenvalues of smaller
+graphs.
+Proposition 2.22. IfPn is the path graph on n vertices, then its eigenvalues are 2 cos(πr/(n + 1))
+for all 1≤r≤n.
+Proof. ConsiderC2n+2 and its eigenvector x(r) = (ω,ω 2,...,ω 2n+2) with ω =eπir/(n+1), which has
+eigenvalue 2 cos(πr/(n + 1)). Note that x(−r) has the same corresponding eigenvalue, and hence so
+does the vector y(r) :=x(r)−x(−r). Note that y(r)
+n+1 =y(r)
+2n+2 = 0. Upon deleting these two vertices,
+we are left with the disjoint union of two Pn’s and y(r) restricted to this graph is an eigenvector
+with the same corresponding eigenvalue.
+For more on this, and the idea of an “equitable partition,” see [10].
+3 The Laplacian Matrix of a Graph
+In this section, we will introduce another commonly studied matrix related to a graph known as
+its Laplacian matrix L(G). Although it is directly related to the adjacency matrix A(G) and the
+degree matrix ∆(G), we will give a more round about deﬁnition to motivate its deﬁnition. To this
+end, we ﬁrst examine the incidence matrix of a graph:
+Deﬁnition 3.1. Let G = (V,E ) be a graph. Then let B(G)∈{ 0, 1}V×E be deﬁned by
+(B(G))v,e = 1 ⇐⇒ v∈e.
+For example, if V (G) = {1, 2, 3, 4} and E(G) = {13, 34, 12, 23}, then the incidence matrix is as
+follows:
+B(G) =
+
+
+1 1 0 0
+1 0 1 0
+0 1 1 1
+0 0 0 1
+
+
+This is actually a particular case of the incidence matrices we saw last quarter in the proof of
+Frankl-Wilson. We will now consider an arbitrarily orientation σ of the edges. It turns out that
+what we will do will be independent of our choice of orientation.
+Deﬁnition 3.2. Let G = (V,E ) be a graph. Then let Dσ(G)∈{− 1, 0, 1}V×E be deﬁned by
+(Dσ(G))v,e = 1 ⇐⇒ e = (u→v)
+(Dσ(G))v,e =−1 ⇐⇒ e = (v→u).
+For example, if V (G) ={1, 2, 3, 4} and Eσ(G) ={1→ 3, 4→ 3, 1→ 2, 2→ 3}, then the incidence
+matrix is as follows:
+Dσ(G) =
+
+
+−1 −1 0 0
+1 0 −1 0
+0 1 1 1
+0 0 0 −1
+
+
+We will considerDσ(G)Dσ(G)T∈ RV×V where all of the entries will be integer-valued, but we will
+think of them as real-valued for spectral reasons.
+7
+
+===== PAGE 8 =====
+Our above example then yields that
+Dσ(G)Dσ(G)T =
+
+
+2 −1 −1 0
+−1 2 −1 0
+−1 −1 3 −1
+0 0 −1 1
+
+ =
+
+
+2 0 0 0
+0 2 0 0
+0 0 3 0
+0 0 0 1
+
+−
+
+
+0 1 1 0
+1 0 1 0
+1 1 0 1
+0 0 1 0
+
+ and
+Dσ(G)Dσ(G)T = ∆(G)−A(G).
+It is not too diﬃcult to see that this holds regardless of our orientation σ of the edges. This is most
+easily seen by example and trying to understand each entry of Dσ(G)Dσ(G)T . As a result of this
+invarience, we make the following deﬁnition.
+Deﬁnition 3.3. Let G = (V,E ) be a graph. Then, the Laplacian of G is deﬁned as
+L(G) := ∆(G)−A(G).
+Lemma 3.4. LetG = (V,E ) be an n-vertex graph. Then, for any x∈ Rn,
+xTL(G)x =
+∑
+uv∈E
+(xu−xv)2
+wherexu is the u∈V coordinate of the vector x.
+Proof. Take some arbitrary orientation σ and consider Dσ(G). Then
+xTDσ(G)DT
+σ (G)x =⟨DT
+σx,DT
+σx⟩ =
+∑
+uv∈E
+(xu−xv)2
+as the only terms which remain in the inner product correspond to edges in the graph G.
+Lemma 3.4 is in some sense anl2 type result and gives many useful corollaries. We list a few below.
+Corollary 3.5. L(G) is positive semi-deﬁnite. In particular, all of its eigenvalues are non-negative.
+Corollary 3.6. The vector 1 is an eigenvector with eigenvalue 0.
+Corollary 3.7. Letc(G) be the number of connected components in the graph G. Then
+rank(L(G)) =n−c(G).
+Corollary 3.8. The eigenvalues of the Laplacian λ1≤···≤ λn are monotone in the the sense
+that if G⊂G′, then λi(G)≤λi(G′).
+Deﬁnition 3.9. LetG = (V,E ) be a graph. Then κ(G) is the minimum r≥ 0 so that there exists
+a set S of r-vertices such that G[V\S] is not connected.
+Corollary 3.10. λ2(L(G))≤κ(G)
+The second smallest eigenvalue λ2 is often referred to as the spectral gap.
+8
+
+===== PAGE 9 =====
+3.1 The Matrix Tree Theorem
+In this subsection, we will consider the problem of determining the number of spanning tree’s that
+a graph has. To this end, given a graph G = (V,E ), let τ(G) denote the number of spanning trees
+of G. Given a vertex u∈V , we let L(G)[u] denote the Laplacian matrix of G where we delete the
+row and column which correspond to the vertex u.
+Theorem 3.11. LetG = (V,E ) be an n vertex graph with Laplacian L(G) which has eigenvalues
+0 =λ1≤λ2≤···≤ λn. Then for any vertex u∈V ,
+τ(G) = det(L(G)[u]) = 1
+n
+n∏
+i=2
+λi
+The proof of Theorem 3.11 is by induction and by using deletion and contraction. Given a graph
+G = (V,E ) and an edge e∈E, we deﬁne deletion of an edge by G\e = (V,E \e) to be the graph
+obtained by simply deleting the edge e. Given a graph G and an edge e∈ E, we deﬁne G/e to
+be the graph obtained by identifying the vertices u and v where e =uv into one vertex u which is
+adjacent to any vertex adjacent to u or v in G. Then, as any spanning tree of G either contains e
+or does not contain e,
+τ(G) =τ(G\e) +τ(G/e).
+As we have that L(G) = ∆(G)−A(G), in the case where G is k-regular (and hence ∆(G) = kI)
+and the adjacency matrix has eigenvalues λ1,...,λ n, then the Laplacian matrix has eigenvalues
+k−λ1,...,k −λn. This allows us to use many of the calculations from Section 2 to compute
+eigenvalues for the Laplacian.
+For the complete graph, a n− 1-regular graph, the spectrum of the Laplacian is {0, (n− 1)n−1}
+and hence Theorem 3.11 yields
+τ(Kn) =nn−2.
+For the cube, which is n-regular, the spectrum of the Laplacian consists of the eigenvalues 2 i with
+multiplicity
+(n
+i
+)
+.
+4 Towards a Theoretical Foundation for Laplacian-Based Mani-
+fold Methods
+Most of the classical techniques in supervised learning consist of approximation of our data with
+linear spaces(for example principal component analysis). As you can imagine, approximating data
+linearly is not always a good approach. There is a trend in the area where instead of assuming our
+data is close to a plane, it is assumed to lie on a Riemannian manifold. At ﬁrst it is not entirely
+obvious what the advantages of doing this are. Sure, we can all agree that our manifold might
+be a more accurate description of the solution to the problem, but how does such a complicated
+structure will allow us to get a concrete and easily computable solution.
+It turns out that in a Riemannian manifold the heat equation allows us to see how a function
+evolves locally around a point. Technically speaking, the values of the function around our point
+diﬀuse respecting the solution to the heat equation. This means that a good understanding of
+the solutions of the heat equation on our manifold, might be the key to understand evolution of
+our function around a point. Now, our heat equation on a Riemannian manifold is deﬁned in
+terms of the Laplace-Beltrami operator. Then, if we want to have a discrete description of the
+9
+
+===== PAGE 10 =====
+solutions, these have to come from a discrete description of the heat equation and, particularly, of
+the Laplace-Beltrami operator.
+In order to approximate our manifold from our data cloud we build a graph G, where the edges
+correspond to some weights that mimic our notion of distance in the manifold. It turns out that
+for our Laplace-Beltrami operator we pick the normalized Laplacian of G. Finally, the analogue
+to our diﬀusion process on the manifold is the approximations given by our diﬀusion maps. In [ ?],
+Belkin and Niyogi show why our choice of the Laplacian of G as our Laplace-Beltrami operator is
+correct: the graph Laplacian converges 1 to the Laplace-Beltrami operator.
+4.1 Diﬀerential Geometry
+We will begin by giving the basic deﬁnitions related to diﬀerential geometry. A smooth manifold
+M of dimension d is a topological space with ﬁve properties:
+4.1. For every two points x,y I can separate them with two open sets; in other words, I can ﬁnd
+disjoint open sets Ux and Uy so that x∈Ux and Uy.
+4.2. It is second countable, which only means that your open sets can be built from a countable
+collection of them.
+4.3. It can be covered by open sets {Uα}α such that for each α there is a homeomorphism φα
+betweenUα and some open subset of Rd.
+4.4. For each α⁄=β the map φα◦φ−1
+β is smooth.
+4.5. The collection of ( Uα,φα) is maximal with respect to the latter two requirements.
+What all this is saying is that locally, up to a homeomorphism, a manifold looks like euclidean
+space. More explicitly, for every p∈ M one can deﬁne its tangent space at p, TpM, by Rd (the
+tangent space can be thought of as the local approximation of the manifold by a ﬂat space). It was
+showed by Nash that every smooth manifold can be embedded into a euclidean space. For the rest
+of this talk we will assume our manifold M is embedded on some euclidean space RN and think of
+its tangent space as an aﬃne subspace of RN.
+A Riemannian manifold is a smooth manifold together with a metric distM which gives us a notion
+of distance, and fortunately that of geodesics. It is of great interest to us to study the relationship
+between lines on the tangent space that go through the origin and geodesics on M, fortunately the
+exponential map expp : TpM→ M allows us to do so. Here we will not be explicit on what the
+exponential map is and rely only on the property aforementioned.
+Finally, since our manifold was embedded on RN we can compare the two metrics, in the case where
+M is compact we have the following
+distM(x,y ) =‖x−y‖ +O(‖x−y‖3).
+In RN we can deﬁne the Laplace operator as
+∆f(x) =
+∑∂2f
+∂x2
+i
+(x).
+1It will become clear what we mean by convergence.
+10
+
+===== PAGE 11 =====
+We say that a function u(x,t ) satisﬁes the heat equation if
+∂
+∂tu(x,t )− ∆u(x,t ) = 0.
+The latter, describes a diﬀusion of heat with initial distributionu. The solution to the heat equation
+is given by a semi-group of heat operators Ht. Given an initial heat distribution f, Ht(f) is the
+heat distribution at time t. The explicit formulation of Ht(f) is given by
+Htf(x) =
+∫
+RN
+f(y)Ht(x, y)dy
+Ht(x, y) = 1
+(4πt)
+N
+2
+e
+−‖x−y‖2
+4t .
+Which has as a consequence that
+f(x) = lim
+t→0
+Htf(x).
+In the case of a Riemannian manifold a similar formulation is achieved with the second order
+diﬀerential operator ∆M, the Laplace-Beltrami operator. As before, we have the heat equation
+∆MHt
+M(f) = ∂
+∂t Ht
+M(f)
+and the approximation
+f = lim
+t→0
+Htf.
+We should remark that computing an exact form of the solution to the heat equation in a manifold
+is really diﬃcult.
+Now, after being able to clarify the intuition on manifolds, we are ready to set up the setting for
+the problem in question. Let S ={x1,··· , xn}⊂ RN, we construct a graph G whose vertices are
+data points. Let Wt
+n(i,j ) =e
+−‖xi−xj‖2
+4t be the entries of the matrix Wt
+n, the adjacency matrix of G.
+The corresponding Laplacian of G is given byLt
+n =Dt
+n−Wt
+n whereDt
+n(i,i ) =∑Wt
+n(i,j ). Here we
+should think of the Laplacian as an operator on functions deﬁned on our data set where for each
+f :V → R,
+Lt
+nf(xi) =f(xi)
+∑
+j
+e
+−‖xi−xj‖2
+4t −
+∑
+j
+f(xj)e
+−‖xi−xj‖2
+4t .
+This operator can be naturally extended to an integral operator Lt
+n on functions in RN with respect
+to the empirical measure of the data set, where for f : RN→ R we have
+Lt
+nf(x) =f(x)
+∑
+j
+e
+−‖x−xj‖2
+4t −
+∑
+j
+f(xj)e
+−‖x−xj‖2
+4t .
+Therefore, by construction,
+Lt
+nf(xi) =Lt
+nf(xi).
+We call Lt
+n the Laplacian operator associated to the point cloud Sn.
+Notice that by our construction of Lt
+n, we get that we can approximate ∆(f) by
+ˆ∆(f) = (4πt)−k+2
+2
+n Lt
+nf(x).
+11
+
+===== PAGE 12 =====
+This tells us that we can approximate numerically the value of the Laplace operator on RN with
+the graph Laplacian of a big enough data set.
+Finally I present the main result in [2], where the authors are able to give an accurate approximation
+of the Laplace-Beltrami operator of any manifold through Laplacians of graphs:
+Theorem 4.1. [2] Let data points x1,..., x1 be sampled from a uniform distribution on a manifold
+M⊂ RN. Put tn =n− 1
+k+2+α , where α> 0 and let f∈C∞(M). Then there is a constant C, such
+that in probability,
+lim
+n→∞
+C (4πtn)−k+2
+2
+n Lt
+nf(x) = ∆Mf(x).
+5 The Normalized Laplacian
+Last week we saw that the Raleigh quotient for the Laplacian matrix was essentially
+∑
+u∼v(xu−xv)2
+∑x2u
+and that this was a useful tool in determining the eigenvalues of the Laplacian. Observe that the
+denominator of this quotient has each xu appearing exactly once, while the numerator has each
+appearing du times. To balance things out, consider a matrix which gives the quotient
+∑
+u∼v(xu−xv)2
+∑dux2u
+,
+so now each vertex is given weight according to its degree.
+To achieve this quotient, let G be a graph without isolated vertices 2, D its diagonal matrix of
+degrees, and L its Laplacian matrix. Deﬁne the normalized Laplacian
+L :=D−1/2LD−1/2 =I−D−1/2AD−1/2.
+EquivalentlyLu,u = 1, Lu,v = 1/√dudv if u ∼ v andLu,v = 0 otherwise. Becuase L is real
+symmetric, it has real eigenvaluesλ1≤···≤ λn. Moreover, we have the following Raleigh quotient
+to work with.
+Lemma 5.1. Lety be a real vector and x =D1/2y. Then
+yTLy
+yTy =
+∑
+u∼v(xu−xv)2
+∑dux2u
+.
+Proof. The numerator is simply xTLx, so that follows from the equation we worked out last week,
+and the denominator is easy to work out.
+Because of this formulation, we often ﬁnd it easiest to work with the normalized x vectors. Thus
+whenevery is an eigenvector, we say that x :=D1/2y is a corresponding harmonic eigenvector.
+Corollary 5.2. It follows that λ1 = 0 and the all 1’s vector 1 is a corresponding harmonic eigen-
+vector and λn≤ 2 with equality iﬀ G contains a bipartite component. Lastly,
+λ2 = max
+x:∑duxu=0
+∑
+uv∈E(G)(xu−xv)2
+∑dux2u
+,
+and this is positive iﬀ G is connected.
+2This is done so that D−1 is well deﬁned. One can easily modify deﬁnitions to allow for isolated vertices if desired.
+12
+
+===== PAGE 13 =====
+Proof. It’s easy to see that
+∑
+uv∈E(G)(xu−xv)2
+∑dux2u
+is minimized by the all 1’s vector, so this is a harmoic
+eigenvector corresponding to λ1 = 0.
+The second bit follows by trying to maximize the Raleigh quotient and using (xu−xv)2≤ 2(x2
+u+x2
+v)
+with equality holding iﬀ xu =−xv for all u∼v, which deﬁnes a bipartition of the component.
+For the last part, note that D1/21 is an eigenvector corresponding to λ1, so we can choose an
+eigenvector D1/2x corresponding to λ2 such that ⟨D1/2x,D 1/21⟩ = 0. Further, if λ2 = 0 and
+xu⁄= 0, then for the Raleigh quotient to be 0 we must have xv = xu for every v in a component
+containingu, and this will not satisfy ∑duxu = 0 if G is connected.
+So this is all well and good, but maybe deﬁning a matrix with that Raleigh quotient wasn’t moti-
+vating for you, or at the very least you might be asking what this matrix is good for. The answer
+to both of these quandries lie within random walks.
+Again let G be an n-vertex graph without isolated vertices and x∈ Rn be a non-negative vector
+with∑xi = 1. We deﬁne the simple random walk on G with initial distribution x as follows. For
+the 0th step of the walk, start at vertex u with probability xu. Given that you are at vertex u
+at step k, uniformly at random choose a neighbor of u and walk to that vertex. That is, move to
+vertex v with probability 1/du if u∼v. We let x(k)
+u denote the probability that you are at vertex
+u after the kth step of the walk.
+We wish to understand when and how quickly the x(k) vectors converge. It is not too diﬃcult to
+see that x(k+1) = AD−1x(k) where A is the adjacency matrix of G and D is the diagonal matrix
+of degrees. We let P := AD−1 be this probability transition matrix. If P had n orthogonal
+eigenvectors, then we could study how x converges by expanding it in a basis of eigenvectors. This
+turns out to be true, and an easy way to see this is with the normalized Laplacian.
+Lemma 5.3. Let x1,...,x n be a set of harmonic eigenvectors of L corresponding to λi. Then
+Dx1,...,Dx n are eigenvectors of P corresponding to the eigenvalues 1−λi.
+Proof. The key idea is that P is similar to the matrix
+M =D−1/2PD 1/2 =D−1/2AD−1/2 =I−L.
+Thus if xi is a harmonic eigenvector corresponding to λi, we have
+PDxi =D1/2(I−L )D1/2x =D1/2(1−λi)D1/2xi = (1−λi)Dxi.
+We note that one could just as well study M and recover all the properties that the normalized
+Laplacian controls. However, the normalized Laplacian is somewhat more standard, has the beneﬁt
+of the Raleigh quotient, and some statements are clener using the eigenvalues of L.
+Corollary 5.4. Letπ := (d1/∑di,··· ) and D1/2x1,...,D 1/2xn an orthogonal set of eigenvectors
+ofL. Given a distribution x, let ci = ⟨x,xi⟩
+⟨D1/2xi,D1/2xi⟩. Then x(k) =Pkx =π +∑
+i⁄=1ci(1−λi)kDxi.
+Further,x(k)→π for all x iﬀ G is connected and not bipartite.
+Proof. Because the D1/2xi vectors are orthogonal, we have D−1/2x =∑ciD1/2xi, and thus x =∑ciDxi. As each Dxi vector is an eigenvector of P corresponding to eigenvalue (1−λi), we have
+x(k) = Pkx = ∑ci(1−λi)kDxi. In particular, for i = 1 we can take x1 = 1 correponding to
+1−λ1 = 1. In this case we have ⟨x,xi⟩ =∑xu = 1 and⟨x1,x 1⟩ =∑du, and putting this together
+givesc1Dx1 =π. Finally, we have|1−λi|< 1 for all i> 1 iﬀ G is connected and not bipartite by
+the corollary.
+13
+
+===== PAGE 14 =====
+Here one might argue that the better eignenvalues to use would be for M to get rid of the 1 −λi
+terms. However, using (1 −λi)k≈e−kλi lets us state the following result concerning the speed of
+convergence.
+Corollary 5.5. Let λ′ = λ2 if|1−λ2|≥| 1−λn| and λ′ = 2−λn otherwise. Then for any
+distribution x, we have
+‖‖x(k)−π
+‖‖
+2≤e−kλ′ max√dv
+min√du
+, i.e. the walk converges to π in the L2 norm in
+roughlyk = log(∆1/2/δ1/2)/λ′ steps.
+One can also consider convergence in various other norms, and basically all of these are controlled
+by λ′. The deﬁnition for λ′ is somewhat annoying, and one can get around this by using a lazy
+random walk. This is deﬁned by performing a simple random walk where at each step you have a
+ﬁfty percent probability of staying in place. Equivalently one can add du loops to each vertex.
+Morally speaking this walk behaves in the same way as the original random walk but is twice as
+slow. If ˜L is the appropriate analog of the Laplacian matrix for this non-simple graphs, then it
+turns out ˜L = 1
+2L so all its eigenvalues are halved. In particular, ˜λn ≤ 1, which means (1) it
+won’t be the most inﬂuential eigenvalue and (2) we no longer have a periodicity issue with bipartite
+graphs.
+If you’ve talked to Fan for more than ﬁve minutes, you’re probably very aware of the existence of
+something called “the Cheeger inequality,” which is an isopermietric inequality that is intimately
+related to the normalized Laplacian.
+Recall that for S,T ⊆V (G) we let e(S,T ) denote the number of edges uv with u∈S and v∈T .
+We letS =V (G)\S and deﬁne the volume of a set volS =∑
+u∈Sdu, which one can think of as the
+size of a set weighted by the degrees of its vertices. We deﬁne hG(S) = e(S,S)
+min{volS,volS . That is, this
+measures how many edges you have to delete in order to separate S from its complement, where
+you normalize by the total number of edges involving S (typically we think of choosing S so that
+volS≤ volS). We deﬁne the Cheeger ratio by hG = minS⁄=∅,V (G)hG(S). Thus roughly hG measures
+the fewest number of edges you need to delete to separate the graph into two components.
+Theorem 5.6 (Cheeger Inequality).
+h2
+G
+2 λ1≤ 2hG.
+Proof. For the upper bound, let S be a set and consider the vector xu = 1/volS if u∈ S and
+xv =−1/volS otherwise. Note that ∑duxu = 1− 1 = 0, so λ1 ≤ ∑
+u∼v(xu−xv)2/∑dux2
+u.
+Each term in the numerator will be 0 unless u∈ S and v∈ S or the other way around. Further,∑
+u∈Sdux2
+u = 1/volS and∑
+v∈Sdvx2
+v = 1/volS. Deﬁne volV = volV (G) = volS + volS. Thus the
+Raleigh quotient will be
+e(S,S)(1/volS− 1/volS)2
+1/volS + 1/volS = e(S,S)(volS− volS)2
+volSvolS(volS + volS) = e(S,S)(volV− 2volS)2
+volSvolSvolV .
+If volS = min{volS,S}≤ 1
+2volV , then S≥ 1
+2volV and this inequality is at most e(S,S)(volV )2
+1
+2 volS(volV )2 =
+2hG(S). Taking S so that hG =hG(S) gives the result.
+The lower bound is signiﬁcantly more involved and we omit its proof in full. The rough idea is
+to let x be a harmonic eigenvector corresponding to λ2 and then partition your vertices into those
+with xu large and those with xu small. Because x minimizes the Raleigh quotient, we should have
+few of the (xu−xv)2 terms with u,v being in opposite sets (as this would make the term large),
+which is precisely the number of edges in a cut.
+14
+
+===== PAGE 15 =====
+6 Strongly Regular Graphs
+Among all graphs, regular graphs are often a topic of interest, and are both fairly well studied, and
+make various situations easier. A special class of regular graphs are the strongly regular graphs.
+In some sense they are extremal examples of regular graphs, since their spectrum has only three
+values.
+Deﬁnition 6.1. Let (n,k,λ,µ ) be nonnegative integers. A graph G is a strongly regular graph
+with parameters (n,k,λ,µ ) if G is a k-regular graph on n vertices such that
+• Every pair of adjacent vertices has λ common neighbours.
+• Every pair of non-adjacent vertices has µ common neighbours.
+Note that this is a very strong condition, hence one should expect to be able to say a lot more
+about such graphs. However, in order for this to be useful, there should be a fairly large number
+of graphs satisfying this. So let us give some examples.
+• The complete graphKm is a strongly regular graph with n =m,k =m−1,λ =m−2. (And
+µ really can be anything)
+• The complete bipartite graph Km,m works with n = 2m, k =m, λ = 0 and µ =m.
+• The line graphs of Km and Km,m satisfy with (n,k,λ,µ ) = (
+(m
+2
+)
+, 2(m− 2),m− 2, 4) and
+(n,k,λ,µ ) = (m2, 2(m− 1),m− 2, 2) respectively.
+• The Petersen graph is a strongly regular graph with n = 10, k = 3, λ = 0 and µ = 1.
+• The complement of any strongly regular graph is strongly regular with parameters ( n,n−
+k− 1,n− 2− 2k +µ,n− 2k +λ).
+Strongly regular graphs do not exist for any set of parameters. In particular, we have the relation
+(n−k− 1)µ =k(k−λ− 1).
+To see this relation, pick any vertex v and let S = V (G)\(N(u)∪{u}). We count the number of
+edges between N(v) and S.
+• On the one hand, let u∈S. Since u andv are not adjacent, they haveµ common neighbours,
+that all belong to N(v). Therefore, every u∈S contributesµ edges betweenN(v) and S, for
+a total of (n−k− 1)µ.
+• On the other hand, letw∈N(v). Since w andv are adjacent, they haveλ common neighbours
+inN(v). Therefore, w contributesk−λ−1 edges betweenN(v) andS, for a total ofk(k−λ−1).
+Let A be the adjacency matrix of a strongly regular graph and let J be the all ones matrix. As
+usual, the all ones vector is an eigenvector of A with eigenvalue k. We claim that we have the
+relation
+A2 =kI +λA +µ(J−I−A).
+Indeed, let u,v be vertices of G, then A2
+uv is the number of length 2 paths from u to v.
+15
+
+===== PAGE 16 =====
+• When u =v, this equals d(u) =k explaining the kI term.
+• Whenu∼v this equals the number of common neighbours of u andv, which is λ, explaining
+the λA term.
+• When u⁄∼v this again equals the common neighbours of u and v, which is µ, explaining the
+µ(J−I−A) term.
+Now, we know that (1, 1,..., 1) is an eigenvector of A with eigenvaluek. Let x be any eigenvector
+with eigenvalueθ⁄=k, then x⊥ (1, 1,..., 1), hence Jx = 0. Therefore,
+θ2x =A2x = (kI +λA +µ(J−I−A))x = (k +λθ−µ(1 +θ))x,
+so
+θ2 = (λ−µ)θ + (k−µ),
+showing thatθ can take only one of two values,ρ = λ−µ+
+√
+(λ−µ)2+4(k−µ)
+2 orσ = λ−µ−
+√
+(λ−µ)2+4(k−µ)
+2 .
+In fact, this is an equivalence; the connected k-regular graphs with only 3 eigenvalues (say k,ρ,σ )
+are all strongly regular graphs. Indeed, for any such graph, if x⊥ (1, 1,..., 1) we have
+(A−ρI)(A−σI)x = 0,
+hence (A−ρI)(A−σI) = τJ , which expands as A2 = (τ−ρσ)I + (ρ +σ +τ)A +τ(J−I−A),
+and we can run the inverse argument as above.
+One example of a strongly regular graph is the Clebsch graph, which for one appears in the proof
+of R(3, 3, 3) = 17.
+Deﬁnition 6.2. The Clebsch graph is the graph formed by taking the 4 dimensional hypercube
+and adding edges between pairs of opposite vertices (that is, pairs of vertices of Hamming distance
+4). This graph is a strongly regular graph with parameters (16 , 5, 0, 2). It is in fact the only one.
+Theorem 6.3. The Clebsch graph is the only strongly regular graph with parameters (16, 5, 0, 2).
+The proof of this theorem uses a concept called “local eigenvalues”. To introduce those, letu∈V (G)
+and note that we can write
+A =
+
+
+0 1T 0
+1 A1 BT
+0 B A 2
+
+
+Using the equation A2− (λ−µ)A− (k−µ)I =µJ and the fact that
+A2 =
+
+
+k 1TA1 1TBT
+A11 J +A2
+1 +BTB A 1BT +BTA2
+B1 BA1 +A2B A 2
+2 +BBT
+
+
+Therefore,
+A2
+1− (λ−µ)A1− (k−µ)I +BTB = (µ− 1)J;
+A2
+2− (λ−µ)A2− (k−µ)I +BBT =cJ;
+BA1 +A2B = (λ−µ)B +cJ.
+16
+
+===== PAGE 17 =====
+Deﬁnition 6.4. An eigenvalue θ of Ai is local if θ⁄=k,ρ,σ , and θ has an eigenvector orthogonal
+to 1.
+Local eigenvalues satisfy the following property.
+Lemma 6.5. LetG be a strongly regular graph with eigenvalues k >ρ>σ . Suppose that x is an
+eigenvector of A1 with eigenvalue θ and⟨x, 1⟩ = 0. If Bx = 0 then θ∈{ ρ,σ} and else we have
+ρ>θ>σ .
+Proof. Since Jx = 0 we see that
+(θ−ρ)(θ−σ)x = (θ2− (λ−µ)θ− (k−µ))x =
+(
+A2
+1− (λ−µ)A1− (k−µ)I
+)
+x =−BTBx.
+If Bx = 0 it is clear that θ∈{ ρ,σ}. Else, ( θ−ρ)(θ−σ) is a nonzero eigenvalue of the negative
+semi-deﬁnite matrix−BTB, hence (θ−ρ)(θ−σ)< 0, proving ρ>θ>σ .
+Of course a similar result holds for the eigenvalues of A2. It turns out that we can actually relate
+the eigenvalues of A1 and A2.
+Lemma 6.6. LetG be a strongly regular graph with parameters (n,k,λ,µ ). Let θ be a local eigen-
+value of A1 or A2. Then (λ−µ)−θ is a local eigenvalue of the other, with the same multiplicity.
+Proof. Suppose θ is a local eigenvalue of A1 with eigenvector x. As 1Tx = 0 we have
+A2Bx = (λ−µ)Bx +cJx−BA1x = ((λ−µ)−θ)Bx.
+As 1TB = (k−1−λ)1T we have 1TBx = 0, hence (λ−µ)−θ is a local eigenvalue with eigenvector
+Bx. A similar argument holds for local eigenvalues of A2. As BTB and BBT are positive semi-
+deﬁnite, and we work with vectors such that Bx ⁄= 0 and BTy ⁄= 0, the maps B and BT are
+injections from one eigenspace to another, hence the multiplicities coincide.
+Proof of Theorem 6.3. A graph with these parameters must have eigenvalues 5 , 1,−3. Let u∈
+V (G) and let G2 the induced subgraph on V (G)\({u}∪ N(u)). As 0 is the only eigenvalue of
+G1 = G[N(u)] = 5K1, G2 can only have eigenvalues 3 (because G2 is cubic), 1,−3 (as those are
+eigenvalues of G) and −2 (as this is ( λ−µ)− 0. If G2 would be disconnected it would have a
+component isomorphic to K4 and hence an eigenvalue −1. Hence G2 is connected and as a result
+(asG2 is not complete) it must have three eigenvalues. This implies that the spectrum ofG2 cannot
+be symmetric around 0, hence G2 is not bipartite, and so−3 is not an eigenvalue of G2. So G2 has
+eigenvalues 3, 1 and−2, and hence must be strongly regular with parameters (10, 3, 0, 1). It is now
+easy to see that G2 is the Petersen graph. Now, each vertex in G1 is adjacent to an independent
+set of size 4 in G2 (never picking the same one twice). Since the Petersen graph has exactly 5 such
+independent sets we conclude that G is uniquely determined by the set of parameters.
+Strongly regular graphs are heavily intertwined with combinatorial geometry. One such example
+are the generalized quadrangles.
+Deﬁnition 6.7. A generalized quadrangle is a point-line incidence structure such that
+1. Any two points are on at most one line, or equivalently any two lines meet in at most one
+point.
+2. If P is a point not on a line 𝓁, then there is a unique point Q on 𝓁 such that there is a line
+through P and Q.
+17
+
+===== PAGE 18 =====
+It is clear that the second condition implies that the structure has no triangles. Besides the
+exceptional case of just two lines, this also implies that we have a lot of quadrangles. Indeed, let
+𝓁 and m be two lines intersecting in P1 and let P2 be a point on neither of those lines. Then
+there exist (unique) points Q1∈ 𝓁 and Q2∈ m such that P2 is collinear with these points. Then
+P1Q1P2Q2 is a quadrangle.
+A special type of generalized quadrangles are ones with some regularity. In particular, a generalized
+quadrangle has order (s,t ) if every line contains s + 1 points and every point belongs to t + 1 lines.
+The point graph of a generalized quadrangle is the graph whose vertices are the points and where
+two vertices are adjacent if the points are collinear.
+Lemma 6.8. Let G be the point graph of a generalized quadrangle of order (s,t ), then it is a
+strongly regular graph with parameters ((s + 1)(st + 1),s (t + 1),s− 1,t + 1).
+Proof. As every point lies on t + 1 lines, and each of these lines contains exactly s other points,
+G is s(t + 1)-regular. Additionally, if (u,v ) is an edge in G, then u and v correspond to collinear
+points P and Q, and there are exactly s− 1 other points on this line, and since the structure is
+triangle-free these are the only other points that are collinear with both P andQ. Also, if u andv
+are not adjacent, then they correspond to nonadjacent points P and Q. For each of the t + 1 lines
+throughP there is a unique point on it that is also collinear with Q, so u andv havet + 1 common
+neighbours.
+To count the number of vertices of G, consider a line 𝓁, which has s + 1 points on it. Through
+every point there are t other lines, each with s other points on it. Note that all these points are
+diﬀerent since the structure is triangle-free, giving st(s + 1) more points. Finally, we can have no
+more other points, since every point not on 𝓁 is collinear with some point on 𝓁. Therefore, we have
+(s + 1) +st(s + 1) = (st + 1)(s + 1) vertices.
+We can use the framework of regular graphs to impose some conditions on s and t.
+Lemma 6.9. LetG be a connected strongly regular graph with parameters (n,k,λ,µ ). Then G has
+eigenvalues k, ρ, σ with multiplicities 1 and
+mρ =−(n− 1)σ +k
+ρ−σ
+mσ = (n− 1)ρ +k
+ρ−σ .
+Proof. It is clear that k has multiplicity 1, hence mρ +mσ =n− 1. Using the fact that the sum of
+the eigenvalues equals the trace of A, which is 0, this implies that mρρ +mσσ +k = 0. Solving for
+mρ and mσ yields the result.
+Now, a generalized quadrangle of order (s,t ) has eigenvalues (s−t−2)±
+√
+∆
+2 where
+∆ = (s−t−2)2 +4(st+s−t−1) = (s−t)2−4(s−t)+4+4 st+4(s−t)−4 = (s−t)2 +4st = (s+t)2,
+so the eigenvalues are s− 1 and−t− 1, with multiplicities
+st(s + 1)(t + 1)
+s +t and s2(st + 1)
+s +t ,
+respectively. The fact that these numbers must be integers impose some conditions on {s,t}. For
+example, we can consider the situation where each line contains exactly 3 points.
+18
+
+===== PAGE 19 =====
+Lemma 6.10. If a generalized quadrangle of order (3,t ) exists, then t∈{ 1, 2, 4}. In particular,
+the total number of points is 9, 15 or 27.
+Proof. Note that −t− 1 has multiplicity 4(2t+1)
+t+2 , so t + 2| 8t + 4. Therefore, t + 2 also divides
+8t + 4− 8(t + 2) =−12, showing t∈{ 1, 2, 4, 10}. One can exclude t = 10 by doing some more
+general bounds on the eigenvalues and multiplicities of strongly regular graphs.
+7 (n,d,λ ) Graphs and Ramsey numbers
+Speaking very informally, a pseudo-random graph G = (V,E ) is a graph that behaves like the
+random graph G(|V|,p ) with p =|E|/
+(|V|
+2
+)
+. A frequently used approach to pseudo-randomness is
+to consider the eigenvalues of a graph, which leads us to a concept of ( n,d,λ )-graphs. For more
+detailed introduction on pseudo-random graphs, readers are referred to the survey by Krivelevich
+and Sudakov [17].
+Deﬁnition 7.1. An (n,d,λ )-graph is a d-regular graph on n vertices in which all eigenvalues, but
+the ﬁrst one, are at most λ in their absolute value.
+The following well known theorem provide a relation between eigenvalues and pseudo-randomness.
+Theorem 7.2. LetG = (V,E ) be an (n,d,λ )−graph, and B⊂V such that|B| =bn. Then,
+∑
+v∈V
+(|NB(v)|− bd)2≤λ2b(1−b)n,
+whereNB(v) denote the set of all neighbors of v in B.
+Proof. Let A be the adjacency matrix of G and deﬁne a vector fB such that fB(v) = 1−b when
+v∈B and fB(v) =−b otherwise. Note that fB· 1 = 0; that is, f is orthogonal to the all 1 vector,
+which is the eigenvector of the largest eigenvalue of A. Therefore,
+fTA2f≤λ2fTf.
+The left-hand side is
+‖Af‖2
+2 =
+∑
+v∈V
+(|NB(v)|(1−b)− (d−|NB(v)|)b)2 =
+∑
+v∈V
+(|NB(v)|− bd)2.
+And the right-hand side is λ2b(1−b). The desired result follows.
+Given a graph G = (V,E ). For two (not necessarily disjoint) subsets B and C of V , let e(B,C )
+denote the number of ordered pairs (u,v ) such that u∈B and v∈C and uv∈E.
+Corollary 7.3. LetG = (V,E ) be an (n,d,λ )-graph, then for every two subsets B and C of V ,
+|e(B,C )− (d/n)|B||C||≤ λ
+√
+|B||C|
+Proof. Let|B| =bn. Then
+|e(B,C )− (d/n)|B||C||≤
+∑
+v∈C
+||NB(v)|− bd|
+≤
+√
+|C|
+∑
+v∈C
+(|NB(v)|− bd)2 (Cauchy’s inequality)
+19
+
+===== PAGE 20 =====
+By Theorem 1,
+∑
+v∈C
+(|NB(v)|− bd)2≤
+∑
+v∈V
+(|NB(v)|− bd)2≤λ2b(1−b)n≤λ2|B|
+This completes the proof.
+Now consider the random graph G(n,p ), it is not hard to show by Chernoﬀ bound that a.a.s.
+|e(B,C )−p|B||C|| =O(
+√
+pn|B||C|)
+Comparing the preceding two bounds, we can see that whenλ is small, especially whenλ =O(
+√
+d),
+the (n,d,λ )−graphs behave like the random graph G(n,d/n ). In fact, this is the best possible λ
+we can obtain.
+Proposition 7.4. LetG be an (n,d,λ )−graph, and d≪n, then λ = Ω(
+√
+d).
+Hence, the (n,d,λ )−graphs with λ = Θ(
+√
+d) are known as optimally pseudo-random.
+7.1 Ramsey numbers
+The Ramsey number r(F,t ) is the minimum number n such that every n-vertex F -free graph has
+an independent set of size t. When F =Ks we simply writer(s,t ) instead of r(F,t ). For the upper
+bounds, Erd˝ os and Szekeres [12] (1935) show, by a nice inductive proof, that r(s,t )≤
+(s+t−2
+s−1
+)
+. In
+particular, if we ﬁx s, this gives r(s,t )≤csts−1. The best upper bound is not far away from this,
+which is shown by Ajtai, Koml´ os and Szemer´ edi (1980):
+r(s,t )≤cs
+ts−1
+(logt)s−2
+The best lower bound so far is shown by Bohman and Keevash [5] (2010) using a natural random
+Ks-free process:
+r(s,t )≥cs
+t(s+1)/2
+(logt)(s+1)/2−1/(s−2)
+A recent work by Mubayi and Vertraete [21] (2019) oﬀers a new way to improve this lower bound.
+Theorem 7.5. Let F be a graph, n,d,λ be positive numbers with d≥ 1 and λ > 1/2 and let
+t =⌈2n log2n/d⌉. If there exists an F -free (n,d,λ )−graph, then
+r(F,t )> n log2n
+20λ
+Remark 7.6. For Ks-free (n,d,λ )−graphs with λ = Θ(
+√
+d), it is knonw that d = O(n1− 1
+2s−3 ).
+If this upper bound is obtainable, that is, if there exist a ( n,dλ )−graph with λ = Θ(
+√
+d) and
+d = Θ(n1− 1
+2s−3 ), then by the theorem above, r(s,t ) = Ω(ts−1/ log2s−4t), which is tight up to log
+factors. The best construction of Ks-free pseudo-random graph so far is given by Bishnoi, Ihringer
+and Pepe [6] with d = Ω(n1−1/(s−1)).
+The key of the proof of Theorem 4, is the following Theorem by Alon and R¨ odl [1]:
+Theorem 7.7. Let G be an (n,d,λ )−graph with d ≥ 1 and λ > 1/2. Then for any integer
+t≥ 2n log2n/d, the number of independent sets of size t in G is at most (2e2λ/log2n)t.
+20
+
+===== PAGE 21 =====
+To prove Theorem 5, we use the following lemma:
+Lemma 7.8. LetG = (V,E ) be an (n,d,λ )−graph, and let B be a subset of V such that|B| =bn.
+Deﬁne C :={u∈V : |NB(u)|<bd/ 2}. Then
+|B∩C|≤ 2λn/d.
+Proof. By Theorem 1, we have
+∑
+v∈V
+(|NB(v)|− bd)2≤λ2b(1−b)n.
+Every vertex in C contribute at least b2d2/4 to the left-hand side, hence we have
+|C|b2d2
+4 ≤λ2b(1−b)n≤λ2bn,
+which is equivalent to
+|B||C|≤ 4λ2n2
+d2
+Note that|B∩C|≤ min{|B|,|C|}, the desired result follows.
+Proof of Theorem 5. Consider the following process of picking an independent set of size t: Begin
+with B0 = V , for each Bi ⊂ V such that 0 ≤ i≤ t− 1, pick a vertex v in Bi and then let
+Bi+1 =Bi\(v∪N(v)). Let Ci ={u∈V : |NBi(u)|<|Bi|d/2n}. Note that if in step i, the selected
+vertex v that is not in Ci, then we must have |Bi+1|≤ (1−d/2n)|Bi|. We call such a choice a
+bad pick, and otherwise a good pick. The number of bad picks cannot be more than 2 n logn/d,
+otherwise Bi will be empty before the process terminates. Let l = t/ logn, then we count the
+independent sets of size t as following: we ﬁrst choose an index set of size l where the picks can be
+either good or bad. Then for the remaining t−l picks, by Lemma 6 each of them have at most
+2λn/d choices. In this way, the number Z of independent set of size t is at most
+1
+t!
+(t
+l
+)
+nl
+(2λn
+d
+)t−l
+Using
+(t
+l
+)
+≤ 2t and t!≥ (t/e)t,
+Z≤
+(4eλn
+td
+)t( d
+2λ
+)l
+Since λ> 1/2, we have d/2λ<d<n and hence (d/2λ)l <n t/ logn =et. Using t≥ 2n(log2n)/d,
+Z≤
+(4e2λn
+dt
+)t
+≤
+( 2e2λ
+log2n
+)
+.
+This completes the proof.
+With Theorem 5, we are ready the prove Theorem 4. The idea is to randomly sampled vertices
+with some suitable probability and then remove a vertex from each independent set of size t.
+21
+
+===== PAGE 22 =====
+Proof of Theorem 1. Let G be an F -free (n,d,λ )−graph. Randomly sample a subset U of V with
+probability p = (logn)2/2e2λ. Let Z be the number of independent sets of size t in the subgraph
+of G induced by U. Then we can obtain an F -free graph with no independent set of size t by
+removing one vertex from each independent set of size t. By Theorem 5 and the choice of p, the
+expected number of remaining vertices is at least
+E[|U|−| Z|]≥pn−pt
+( 2e2λ
+log2n
+)t
+=pn− 1
+Therefore, we have
+r(F,t )≥pn> n log2n
+20λ .
+8 Ramanujan Graphs
+Given the numerous applications of expander graphs, one might wish to know what the ”best”
+expanders are; these graphs are called Ramanujan Graphs. In this section, we will present a proof
+of the existence of these graphs following the novel treatment of [18].
+Next, we consider a random walk on the vertices ofG, where we move fromv to one of its neighbors
+with probability 1/ deg(v) = 1/d. Then the transition matrix for this Markov chain is precisely
+1
+dA(G), and by the basic theory of Markov chains, the largest eigenvector of 1
+dA is the stationary
+distribution of the random walk. In our case, that stationary distribution assigns weight 1 /n to
+each vertex. If we start with a distribution with all its weight on one vertex, and run the Markov
+chain, how quickly does the distribution converge to the stationary distribution? As it turns out,
+the spectrum of a our graph determines this rate of convergence.
+Theorem 8.1. Given the random walk on G as above, let 1v be a starting distribution with weight
+only on the vertex v, and let 1
+n1 be the stationary distribution. Then, the distribution of the random
+walk after t steps is
+( 1
+dA
+)t 1v and
+‖d−tAt1v− 1
+n1‖2≤C
+(max{|λ2|,|λn|}
+d
+)t
+for some constant C depending on the graph.
+Proof. The ﬁrst claim can be seen from the deﬁnition of the transition matrix, so we do not prove
+it here. For the second claim, let 1,v 2,...,v n be the eigenvectors of A and let 1v =∑n
+i=1αivi.
+‖d−tAt1v− 1
+n1‖2 =‖d−tAt
+( n∑
+i=1
+αivi
+)
+− 1
+n1‖2 =‖
+n∑
+i=1
+(λi
+d
+)t
+αivi− 1
+n1‖2
+Noting that α1 =⟨1v, 1⟩ = 1
+n,
+‖
+n∑
+i=1
+(λi
+d
+)t
+αivi− 1
+n1‖2≤‖
+(maxi⁄=1λi
+d
+)t n∑
+i=2
+αivi‖2≤C
+(maxi⁄=1|λi|
+d
+)t
+22
+
+===== PAGE 23 =====
+Thus we deﬁne the following
+Deﬁnition 8.2. For a graph G, its spectral gap λ(G) is maxi⁄=1|λi| = max{|λ2|,|λn|}.
+Thus, the smaller the spectral gap, the quicker a random walk on G will converge to its limiting
+distribution.
+Now that we have isolated the spectral gap as an interesting graph property, it is natural to ask
+how small can the spectral gap can be relative to λ1. The complete graph on n vertices has λ = 1
+andd =n−1. But the degree of this example grows with the size of the graph, so a better question
+is how small can λ be for a ﬁxed value of λ1, i.e. for a family of d-regular graphs? Here we have a
+much more interesting result
+Theorem 8.3. [22] For an inﬁnite family of d-regular graphs,
+lim
+n→∞
+λ(G)≥ 2
+√
+d− 1−o(1)
+Deﬁnition 8.4. A d-regular graph is Ramanujan if
+λ(G) = 2
+√
+d− 1
+As always, we want to know if this bound is tight, or equivalently, if Ramanujan graphs exist.
+Thankfully, the answer is yes.
+Theorem 8.5. [16] For every prime p, there exists an inﬁnite family of p + 1-regular Ramanujan
+graphs.
+Unfortunately, the analysis of these constructions involve some rather non-trivial number theory
+results, and the degree restriction is unnatural for many applications in combinatorics and computer
+science.
+8.1 Lifts
+In the years of work following [16], one particular result from [3] proposed a novel construction for
+Ramanujan graphs. They considered random lifts of a graph, illustrated as follows.
+Start with a ﬁxed graph G Double every vertex, and re-
+place each edge with a match-
+ing
+Switch each matching at ran-
+dom
+More formally,
+Deﬁnition 8.6. Given a graph G, a signing of G is a map
+s :E(G)→{± 1}
+23
+
+===== PAGE 24 =====
+Deﬁnition 8.7. Given a graph G = (V,E ) and a signing s of G, the 2-lift of G corresponding to
+s is the graph G2 = (V2,E 2) where V2 =V×{± 1} and
+(v,sv)∼ (u,su) ⇐⇒ v∼u and sv =s((u,v ))∗su
+.
+How can these lifts give a Ramanujan graph? Bilu and Linial prove the following
+Theorem 8.8. [3] Given a d-regular graphG, there exists a 2-lift of G, G2 such that
+λ(G2)≤ 2
+√
+d− 1 +O(
+√
+d log3(d))
+and furthermore they conjectured
+Conjecture 8.9. [3] Given a d-regular graph G, there exists a 2-lift of G, G2 such that
+λ(G2) = 2
+√
+d− 1
+Finally, we get to the main result of today’s talk:
+Theorem 8.10. [18] Given a d-regular graphG, there exists a 2-lift of G, G2 such that
+λ2(G2)≤ 2
+√
+d− 1
+Note that this theorem gives no control over λn. However, by as bipartite graphs have symmetric
+spectrum, it follows that:
+Corollary 8.11. Given a d-regular bipartiteG, there is a 2-lift of G, G2 such that
+λ(G2)≤ 2
+√
+d− 1
+By iteratively applying Corollary 8.11, we achieve our desired result:
+Theorem 8.12. For any d≥ 3, there exists an inﬁnite family of d-regular bipartite Ramanujan
+graphs.
+8.2 Interlacing Families
+Recall our deﬁnitions of signings (8.6) and 2-lifts (8.7).
+Deﬁnition 8.13. Given a graph G and a signing s, the signed adjacency matrix As is deﬁned by
+(As)ij =
+{
+s((i,j )) i∼j
+0 i⁄∼j
+Lemma 8.14. [3] LetG2 be the 2-lift of a graph G deﬁned by the signing s. Then,
+σ(A(G2)) =σ(A)∪σ(As)
+where the union is taken with multiplicity.
+Thus, if G is a Ramanujan Graph, in order to analyze its 2-lifts, we simply have to analyze the
+eigenvalues ofAs for every signing s. To do so, we introduce the following polynomial.
+24
+
+===== PAGE 25 =====
+Deﬁnition 8.15. Given a graph G, its matching polynomial µG(x) is
+µG(x) =
+n/2∑
+i=0
+xn−2i(−1)imi(G)
+where mi(G) is the number of matchings with i edges.
+The matching polynomial is rather well-studied, and in particular we need these facts
+Theorem 8.16. [11] All the roots of µG(x) are real.
+Theorem 8.17. [11] If G is d-regular, the roots of µG lie in the interval
+[−2
+√
+d− 1, 2
+√
+d− 1]
+The 2
+√
+d− 1 is exactly the bound on the second largest root that we want to show! So it would be
+nice if we could relate the eigenvalues of As for some signing to the roots of µG. The next lemma
+shows that, in expectation, As and µG have exactly the relationship we might want.
+Lemma 8.18. LetG be a graph, and let s be a uniformly random signing. Then,
+Es [det(xI−As)] =µG(x)
+Proof. We expand the determinant as a sum over permutations and apply linearity of expectation:
+Es [det(xI−As)] =
+∑
+σ∈Sn
+(−1)sign(σ)Es
+[ n∏
+i=1
+(xI−As)i,σ(i)
+]
+As the signing on each edge is chosen independently
+=
+∑
+σ∈Sn
+(−1)sign(σ)
+n∏
+i=1
+Es
+[
+(xI−As)i,σ(i)
+]
+As the signing of each edge is 0 in expectation, the only permutations with a nonzero contribution
+are composed of cycles of length at most 2. These permutations thus correspond to matchings of
+size i. Finally, note that the sign such a permutation is precisely i
+=
+n∑
+i=0
+xn−2i(−1)imi(G)
+=µG(x)
+So all we have to do is show that some As has its largest root bounded by the largest root of
+Es[det(xI−As)]. However, there is no reason to expect such a relationship as the roots of polyno-
+mials do not behave nicely under addition.
+Example 8.19. Considerp(x) =x2−3x+1 and q(x) =x2 +3x+1, both of which are real-rooted.
+Their sum, 2x2 + 2 has only imaginary roots!
+Example 8.20. Considerr(x) =x3−2x2 +3x+3 and s(x) =x3−4x2−1 with roots−0.63, 1.31±
+1.171i and 4.066, 0.03± 0.49i respectively. Their sum has roots 2 , 1
+2±
+√
+3
+2 .
+25
+
+===== PAGE 26 =====
+To gain some control over the roots of sums of polynomials, we have the following key idea
+Deﬁnition 8.21. Given a degree n real-rooted polynomial f = (x−α1)(x−α2)... (x−αn) and
+a degree n− 1 real-rooted polynomial g = (x−β1)(x−β2)... (x−βn−1), we say that g interlaces
+f if
+α1≥β1≥α2≥β2≥···≥ βn−1≥αn
+The prototypical example to keep in mind that of the Cauchy Interlacing Theorem, which states
+that for any matrix A and any principal submatrix B of A, the characteristic polynomial of B
+interlaces the characteristic polynomial of A.
+Deﬁnition 8.22. Given a collection of degree n real-rooted polynomials {fi}, we say that they
+have a common interlacing if there is a degree n− 1 real-rooted polynomial g such thatg interlaces
+eachfi.
+The upshot of interlacing is the following lemma:
+Lemma 8.23. let{fi}i∈I be a collection of degree-n real-rooted polynomials with positive leading
+coeﬃcient and a common interlacer g. Then the following hold:
+• F := Ei∈I[fi] is real-rooted andg interlacesF .
+• There exists an i∈I such that the largest root of fi is at most the largest root of F
+Proof. We will only treat the case where g has no common roots with any of the fi. The general
+case follows by a limiting argument. Let the roots of g be β1,...,β n−1. As the fi all have the same
+degree and have positive leading coeﬃcients, for every i∈I, fi(βk)< 0 if k is odd and fi(βk)> 0
+if k is even. Thus, F (βk) > 0 if k is odd and F (βk) < 0 if k is even. Thus, by the intermediate
+value theorem, F must be real-rooted and g interlacesF .
+For the second assertion, let α be the largest root of F , and assume for contradiction that the
+largest root of any fi is strictly larger than α. As all the fi’s have positive leading coeﬃcients, if
+follows that fi(α)< 0 for every i∈I. Hence, F (α)< 0, a contradiction.
+To summarize, if we can show that {det(xI−As)}s:E(G)→{±1} has a common interlacer, then the
+lemma (8.23) allows us to conclude that there is a 2-lift of G which is Ramanujan.
+Question 8.24. Note that the above argument can easily generalize to show that there must be
+an fi whose k-largest root is at most the k-largest root of F . Can this be furthermore generalized
+to show that there is an fi such that its kth and lth largest roots are simultaneously at most the
+kth and lth largest roots of F ?
+8.3 Interlacing and Real Stable Polynomials
+How do we show that a collection of polynomials has a common interlacer? Thankfully, interlacing
+is a well-studied concept, and we have a nice characterization
+Lemma 8.25. [13] Let{fi}i∈I be a collection of degree n real-rooted polynomials. Then the follow-
+ing are equivalent
+• {fi}i∈I has a common interlacer.
+• For every choice of λi≥ 0 with∑
+i∈Iλi =i, the polynomial ∑
+i∈Iλifi is real-rooted.
+26
+
+===== PAGE 27 =====
+To apply this lemma in our setting, we will show the following
+Theorem 8.26. For every assignment of weights pe :E(G)→ [0, 1] to the edges of G, the following
+polynomial is real-rooted
+∑
+s:E(G)→{±1}
+∏
+e:s(e)=1
+pe
+∏
+e:s(e)=−1
+(1−pe) det(xI−As)
+By setting the pe appropriately, we can then recover any convex combination{λe}e∈E(G).
+The proof is based on the theory of Real-Stable Polynomials.
+Deﬁnition 8.27. A polynomial p(z1,...,z n)∈ R[z1,...,z n] is called real-stable if
+f(z1,...,z n)⁄= 0
+wheneverℑ(zi)> 0 for every i.
+Rather than dive into the deep theory of real-stable polynomials, we will instead point the interested
+reader to [4] for a proper treatment of the subject, and we will simply note the following facts
+without proof.
+8.1. A real-stable polynomial in one variable is real-rooted.
+8.2. If p,q are real-stable and α,β ≥ 0, then αp +βq is real-stable
+8.3. If p is real-stable, then ∂
+∂zi
+p is real-stable for any i.
+8.4. If p(z1,...,z n) is real stable and c∈ R, then p(z1,...,z i−1,c,z i+1,...,z n) is real-stable for
+anyi∈ [n].
+8.5. If A1,...,A n are positive semideﬁnite matrices, then det(z1A1 +...z nAn) is real-stable.
+All of the above facts (and much more) are proven in [4]. Our ﬁrst key takeaway is the following.
+Deﬁne Zi to be the operator which maps p(z1,...,z n)→p(z1,...,z i−1, 0,zi+1,...,z n)
+Claim 8.28. For variablesu,v andpu,v∈ [0, 1] the operatorTu,v :=ZuZv(1+pu,v∂u +(1−pu,v)∂v)
+preserves real stability.
+Lemma 8.29. LetA be an invertible n×n matrix, let u,v be variables, and let ⃗ x,⃗ y∈ Rn.Then,
+Tu,v det(A +u⃗ x⃗ x⊤ +v⃗ y⃗ y⊤) =pu,v det(A +⃗ x⃗ x⊤) + (1−pu,v) det(A +⃗ y⃗ y⊤)
+Proof. By the matrix determinant lemma, det(A+u⃗ x⃗ x⊤) = det(A)(1+u⃗ x⊤A−1⃗ x), Thus,∂u det(A+
+u⃗ x⃗ x⊤) = det(A)(⃗ x⊤A−1⃗ x). Finally, we note that Zv∂u =∂uZv. So, expanding and applying Zu,Zv
+wherever possible.
+Tu,v det(A +u⃗ x⃗ x⊤ +v⃗ y⃗ y⊤) = det(A) +pu,vZu∂u det(A +u⃗ x⃗ x⊤) + (1−pu,v)Zv∂v det(A +v⃗ y⃗ y⊤)
+By the above
+= det(A) +pu,v det(A)(⃗ x⊤A−1⃗ x) + (1−pu,v) det(A)(⃗ y⊤A−1⃗ y)
+=pu,v det(A)(1 +⃗ x⊤A−1⃗ x) + (1−pu,v) det(A)(1 +⃗ y⊤A−1⃗ y)
+By the matrix determinant lemma in reverse
+=pu,v det(A +⃗ x⃗ x⊤) + (1−pu,v) det(A +⃗ y⃗ y⊤)
+27
+
+===== PAGE 28 =====
+With this lemma in hand, we can ﬁnally prove the main theorem
+Proof. We wish to show that
+∑
+s:E(G)→{±1}
+∏
+e:s(e)=1
+pe
+∏
+e:s(e)=−1
+(1−pe) det(xI−As)
+is real-rooted for any assignment pe :E(G)→ [0, 1]. Clearly, this will follow if we show that
+∑
+s:E(G)→{±1}
+∏
+e:s(e)=1
+pe
+∏
+e:s(e)=−1
+(1−pe) det(xI +dI−As)
+is real-rooted whered is the degree ofG. To that end, we deﬁne for each edgee = (a,b ) the matrices
+L1
+e = (ea−eb)(ea−eb)⊤ and L−1
+e = (ea +eb)(ea +eb)⊤ where ea,eb are standard basis vectors.
+Note that L1
+e,L−1
+e are positive semideﬁnite. Furthermore, for any signing s :E(G)→{± 1},
+det(xI +D−As) = det(xI +
+∑
+e∈E(G)
+Ls(e)
+e )
+Finally, consider the polynomial Q in variables x,{ue}e∈E(G),{ve}e∈E(G) deﬁned by
+Q := det(xI +
+∑
+e∈E(G)
+ueL1
+e +veL−1
+e )
+By a fact above, Q is real-stable. By applying (8.29) for each edge in G, we see that
+(Te1...T em) (Q) =
+∑
+s:E(G)→{±1}
+∏
+e:s(e)=1
+pe
+∏
+e:s(e)=−1
+(1−pe) det(xI +
+∑
+e∈E(G)
+Ls(e)
+e )
+AsTe preserves real stability and our ﬁnal polynomial only depends on x, the theorem follows.
+8.4 Further Directions
+The proof given is probabilistic in nature, and for some applications, a polynomial-time construction
+is necessary. Thankfully, [7] gives a polynomial-time constructive proof of the existence of a 2-lift
+which is Ramanujan. Another relevant issue is that 2-lifts double of the number of vertices at
+each step, and so the size of our Ramanujan graphs grow exponentially. This issue will be rectiﬁed
+in Interlacing Families 4, the next talk in the ABACUS seminar. Finally, these graphs must be
+bipartite, and it is a major open problem ﬁnd nice constructions of non-bipartite Ramanujan graphs.
+9 High Dimensional Expanders
+In previous weeks, we have seen several diﬀerent (but morally equivalent) types of expansion on
+standard graphs, and seen numerous applications of these objects throughout combinatorics. It is
+natural then to wonder whether these deﬁnitions generalize to hypergraphs, the standard higher
+dimensional variant of graphs, and whether such objects might be equally useful. In these notes
+we will study one such natural combinatorial generalization: Spectral Link HDX’s. This version of
+high dimensional expansion has come onto the scene relatively recently, and has already shown a
+number of important applications in computer science and combinatorics (e.g. for counting matroid
+bases or independent sets, building locally testable codes) and seems like a promising direction to
+make advances on other important problems like the Unique Games Conjecture.
+28
+
+===== PAGE 29 =====
+In these notes we will review the deﬁnition of Spectral HDX’s, and cover Izhar Oppenheim’s Trickle
+Down Theorem. This structural theorem not only simpliﬁes analysis and understanding of spectral
+HDX, but also nicely exhibits their “local to global” behavior, a useful paradigm that shows how
+one can leverage local structure to prove global results.
+We will consider a special class of hypergraphs known as pure simplicial complexes as Misha Gro-
+mov’s seminal work on the topological overlapping property resulted in further studies of high
+dimensional expanders.
+Deﬁnition 9.1 (Pure Simplicial Complex) . A d-dimensional pure simplicial complex is a hyper-
+graph H(V,E ) satisfying three conditions:
+9.1. E is downward closed
+9.2. The largest edges (faces) in E are of size d + 1
+9.3. Every face e∈E is contained in at least one face of size d + 1.
+Equivalently, one can think of ad-dimensional pure simplicial complex as the result of the downward
+closure of some (d + 1)-uniform hypergraph. Let’s look at an example of 2-dimensional simplicial
+complex called the ﬁsh complex:
+c
+da
+b e
+f
+Figure 1: The Fish Complex
+It is common to write a simplicial complex X by partitioning it into its i-dimensional faces for
+−1≤i≤d, denoted X(i):
+X(i) ={S⊂V∪E : |S| =i + 1}.
+In this case we think of the entire complex as the union of these sets:
+X =
+d⋃
+i=−1
+X(i).
+Note that X(−1) is{∅}, a notational convenience that often is useful when working on simplicial
+complexes. Let’s write these sets for the ﬁsh complex as an example:
+The Fish Complex may be written as:
+X(−1) ={∅}
+X(0) ={a,b,c,d,e,f }
+X(1) ={(ab), (ac), (bc), (bd), (cd), (de), (df), (ef)}
+X(2) ={(abc), (bcd), (def)}
+29
+
+===== PAGE 30 =====
+Perhaps a more intuitive or visual way to draw a simplicial complex is through a Hasse diagram
+ordered by inclusion. In fact while we will not touch on this in these notes, there is a way to extend
+this material to graded posets such as the Grassmann poset. Let’s take a look at the ﬁsh complex
+from this viewpoint:
+X(−1):
+X(0):
+X(1):
+X(2):
+∅
+a b c d e f
+ab ac bc bd cd de df ef
+abc bcd def
+Figure 2: The Fish Complex as a Hasse Diagram.
+This viewpoint gives a nice visual overview of the global structure of our simplicial complex. How-
+ever, our deﬁnition of expansion is going to focus on local properties of the complex, so let’s take
+a look at breaking down X into local structures. In a graph, the most fundamental local structure
+at a vertex v is its neighborhood, the set of vertices it is connected to. In a simplicial complex, the
+corresponding structure is called a link. Links can be deﬁned for a face s of any dimension in the
+simplicial complex, and corresponds to higher dimensional faces which include s.
+Deﬁnition 9.2. The link of a face s∈X(i) is:
+Xs ={T : T∪{s}∈ X}
+c
+b e
+f
+Figure 3: Link Xd of the Fish Complex
+While not strictly necessary, it is convenient to lower the dimension of the link by removing s itself
+from each edge as we have done in the above deﬁnition. This allows us to talk about the underlying
+graph of the link, which is just G(V,E ) s.t. V =Xs(0) and E =Xs(1). At this point we’ve pretty
+much shown our cards: we would like to deﬁne global expansion through the spectral expansion of
+these local links across the complex.
+30
+
+===== PAGE 31 =====
+9.1 Weighted Expansion
+There is, however, an issue with applying this deﬁnition naively. Our simplicial complexes are not
+restricted to being regular–and at this point we have only deﬁned spectral expansion for regular
+graphs, as well as how to correctly weight simplicial complexes.
+A weighted graph is a graph G(V,E ) in which each edge is endowed with some positive real
+weight. These weights may be renormalized to give a distribution πE overE (this can be seen as a
+generalization of the non-weighted case, which would be endowed with the uniform distribution).
+We can deﬁne a random walk operator onG(V,E ) based onπE that is analogous to the normalized
+adjacency matrix of an unweighted graph.
+Deﬁnition 9.3 (Weighted Adjacency Matrix). The weighted adjacency matrix (from here on just
+adjacency matrix) of a weighted graph G(V,E ) with induced distribution πE is simply the natural
+random walk deﬁned by πE, that is:
+Av,w = πE((v,w ))∑
+(u,w)∈E
+πE((u,w ))
+We will sometimes refer to Av,w as P (v|w), the probability of picking w givenv.
+It’s clear that A has some of the same properties as our standard normalized adjacency matrix
+simply due to being stochastic. For instance we have:
+9.1. The all 1’s vector is an eigenvector with eigenvalue 1
+9.2. All eigenvalues λ satisfy−1≤λ≤ 1
+To deﬁne expansion analogously to the case of regular graphs, the only remaining property we need
+is that A is diagonalizable. As a low-dimensional warmup for Oppenheim’s theorem, we will prove
+this with a “local to global” method. The edge distribution πE induces a distribution over vertices
+πV in the following sense:
+πV (v) = 1
+2
+∑
+(w,v)∈E
+πE(w,v ).
+In other words, πV can be described as the process of picking a random edge from πE, and then
+choosing uniformly a vertex from that edge. To show that A is diagonalizable, we deﬁne an inner
+product space with respect to this distribution, and show that A is self-adjoint with respect to this
+inner product. In particular, for functions f,g :V → R, deﬁne their inner product by:
+⟨f,g⟩ =
+∑
+v∈V
+πV (v)f(v)g(v)
+The key to understanding why the adjacency matrix is self adjoint is noticing that picking an edge
+fromπE can be done locally. In particular, drawing a random edge from πE is the same as drawing
+a random vertex v from πV , and then drawing a random neighbor w based on P (v|w). Keeping
+31
+
+===== PAGE 32 =====
+this in mind, let’s expand ⟨f,Ag⟩:
+⟨f,Ag⟩ =
+∑
+v∈V
+πV (v)f(v)Ag(v) (Global view)
+=
+∑
+v∈V
+πV (v)f(v)
+∑
+(w,v)∈E
+Pr (w|v)g(w)
+= E
+v
+[f(v)] E
+w|v
+[g(w)] (Local view from node v)
+= E
+v,w
+[f(v)g(w)]
+=⟨Af,g⟩
+SinceA is self-adjoint, it is diagonalizable by the spectral theorem, and thus we have recovered all
+the properties of our standard spectral expansion for regular graphs. Thus we can safely deﬁne
+spectral expansion analogously to this case:
+Deﬁnition 9.4 (Weighted Spectral Expansion) . Let A be the adjacency matrix of a weighted
+graph G(V,E ), then A has eigenvalues:
+1 =λ1≥λ2≥... ≥λn≥− 1.
+We sayG(V,E ) is a λ spectral expander if:
+max(|λ2|,|λn|)≤λ.
+We sayG(V,E ) is a one-sided λ spectral expander if:
+λ≤λ2
+9.2 Weighted Simplicial Complexes
+We will endow each level of our simplicial complex with a distribution πi analogous to how we
+deﬁned the distributions πE and πV for a standard graph. Just as we chose a distribution for the
+top level faces (edges) of the standard graph and used it to induce a distribution over vertices,
+in a simplicial complex we pick an arbitrary distribution πd across the top level faces and induce
+distributions across all lower levels. If a simplicial complex X is endowed with such probabilistic
+structure, we call it a weighted simplicial complex.
+Deﬁnition 9.5 (Weighted Simplicial Complex). A Weighted Pure Simplicial Complex ( X, Π) is
+a Pure Simplicial Complex X endowed with a joint distribution Π = ( π−1,...,π d) over each level
+such that:
+9.1. πd is arbitrary
+9.2. For −1≤ i < d, πi is given by the following process: draw a d-face s from πd, and pick
+uniformly at random some i-face t⊂s
+Since our deﬁnition of spectral expansion will rely on the local link structure of the complex, we
+need to be careful as well about how we induce distributions over our links. To this end, we will
+deﬁne the weighted links associated to a weighted complex:
+32
+
+===== PAGE 33 =====
+Deﬁnition 9.6 (Weighted Link). Let X, Π be a d-dimensional weighted simplicial complex. The
+weighted link of a face s∈X(i) is the weighted complex:
+Xs ={T : T∪{s}∈ X},
+with distribution Πs induced from the distribution across top level faces πs
+d−i:
+πs
+d−i(t) = πd(t∪s)∑
+w∈Xs
+πd(w∪s).
+Notice that πs
+d−1 is not necessarily equivalent to the normalization of πd−i restricted to the link.
+The reason for our choice of distribution is that it will allow us to decompose X at any level into
+a convex combination of its links. This is a key technique when trying to connect local and global
+properties on an HDX. Going back to our initial example, let’s take a look at how these distributions
+play out if we endow the Fish Complex with a uniform π2.
+9.3 Spectral Link Expansion and the Trickle Down Theorem
+Now that we have developed background on weighted expansion and taken a look at some basic
+examples of our structures, we can deﬁne high dimensional expansion in a single sentence.
+Deﬁnition 9.7 (Spectral Link Expansion). A weighted simplicial complex (X, Π) is a (one-sided)
+λ Spectral Link Expander if the underlying graph of every link of co-dimension at least 2 is a
+(one-sided) λ spectral expander.
+We only consider links of co-dimension at least 2 since the underlying graphs of the highest two
+dimensions are respectively the emptyset, and a disjoint set of vertices. Note that the emptyset
+is always of co-dimension at least 2 (even in standard graphs), and so we always require that the
+underlying graph of X itself is a spectral expander. Indeed, this is the only requirement for a
+1-dimensional graph, which makes this deﬁnition a direct generalization of standard spectral ex-
+pansion.
+Now that we’ve managed to deﬁne our objects of interest, the next question to tackle is whether
+or not such objects even exist. Let’s examine the high dimensional analogue of a classic example
+from standard graphs, the complete graph.
+The d-dimensional Complete Complex (also known as the Johnson Complex) on n vertices is the
+complex made up of all
+( n
+[d+1]
+)
+subsets of [n]. The Complete Complex is a 1
+n−d spectral link expander.
+This follows from the fact that every link the complete complex is itself a lower dimensional complete
+complex, and thus the underlying graph of every link is the complete graph. Dense random graphs
+are also good spectral link expanders, but unlike standard expansion, this is no longer true in the
+sparse case, as it is likely some link won’t even be connected, much less an expander.
+To my knowledge, there are currently only a few known examples of constant degree spectral link
+expanders, and they come from algebraic constructions. Covering even one of these constructions
+would take more than a full lecture, so instead we will instead focus on a theorem that simpliﬁes
+the deﬁnition of spectral link expanders, and provides a nice intuition for their local-to-global
+phenomenon.
+33
+
+===== PAGE 34 =====
+9.4 The Trickling Down Theorem
+In particular, we will take a look at Izhar Oppenheim’s Trickling Down Theorem. In the standard
+deﬁnition of expansion, we need every link to be a spectral expander. Oppenheim’s theorem states
+that in fact we only need a much more local condition to be true: as long as the underlying graph
+of each link is connected and each link of co-dimension 2 is a good enough expander, then the entire
+complex is an expander:
+Theorem 9.8 (Trickling Down Theorem). Let (X, Π) be a d-dimensional weighted simplicial com-
+plex such that the underlying graph of every link of co-dimension at least two is connected, and
+every link of exactly co-dimension two is a λ expander. The entire complex (X, Π) is a λ
+1−(d−1)λ
+expander.
+We will sketch the easiest version of this theorem, for one-sided two dimensional expanders, focusing
+in particular on the local-to-global ﬂavor of the result. The higher dimensional argument follows
+immediately from repeated application, but two-sided expansion requires some additional work.
+Theorem 9.9 (Trickling Down Theorem (2-dim)). Let (X, Π) be a 2-dimensional weighted simpli-
+cial complex with an underlying connected graph such that the link of every vertex v∈X(0) is a λ
+one-sided spectral expander. Then (X, Π) is a λ
+1−λ expander.
+Proof. Let A be the adjacency matrix of the underlying graph of X, and f : X(0)→ R some
+unit norm eigenfunction perpendicular to the all 1’s vector 1. Our goal is to bound the eigenvalue
+corresponding to f, which we denote by γ. Our ﬁrst step will be to look at γ from a local view, in
+particular as an expectation over the links of X:
+γ =⟨f,Af⟩ (1)
+= E
+(v,w)
+[f(v)f(w)] (2)
+= E
+v∈X(0)
+[
+E
+(u,w)∈Xv
+[f(u)f(w)]
+]
+(3)
+Here, (2) follows by the same reasoning as in our previous analysis of a standard weighted graph.
+(3) follows from our deﬁnition of πv
+1, which ensures that picking an edge from π1 is equivalent
+to ﬁrst picking a vertex v from π0, and then picking an edge from πv
+1. This expression for γ is
+particularly useful since the information we are trying to leverage is local to the links themselves.
+Since we are focusing on links, let’s deﬁne the restriction of f to the link Xv as fv, and Av to
+be the weighted adjacency matrix corresponding to Xv. Notice that since our expectation is al-
+ready over links, we can re-write everything in terms of fv:
+γ = E
+v∈X(0)
+[
+E
+(u,w)∈Xv
+[f(u)f(w)]
+]
+= E
+v∈X(0)
+[
+E
+(u,w)∈Xv
+[fv(u)fv(w)]
+]
+= E
+v∈X(0)
+[⟨fv,Avfv⟩]
+Remember that each link Xv is an λ spectral expander. If fv were perpendiculuar to 1, we could
+immediately use this fact to bound γ given the above form. Unfortunately, while this is true for f
+itself, it is not necessarily true upon restricting to links. Instead, we deﬁne gv = fv−γf (v)1 to
+34
+
+===== PAGE 35 =====
+be the projection of fv onto the orthogonal component of 1. Since gv is orthogonal to 1, we can
+massage the above slightly to get our desired bound:
+γ = E
+v∈X(0)
+[⟨fv,Avfv⟩]
+= E
+v∈X(0)
+[⟨gv +γf (v)1,Avgv +γf (v)1⟩]
+= E
+v∈X(0)
+[⟨gv,Avgv⟩] +γ2 E
+v∈X(0)
+[f(v)]2
+= E
+v∈X(0)
+[⟨gv,Avgv⟩] +γ2
+Using the standard argument for the adjacency matrices of spectral expanders:
+γ−γ2 = E
+v∈X(0)
+[⟨gv,Avgv⟩]
+≤λ E
+v∈X(0)
+[⟨gv,gv⟩]
+=λ(1−γ2)
+Noting thatγ <1 due to our assumption that the underlying graph is connected ﬁnishes the proof.
+We have focussed mostly on ﬁnding and applying the local view in this proof sketch and brushed
+under the rug the analysis of the other terms.
+For a full explanation of this proof, see this lecture from Yotam Dikstein.
+References
+[1] N. Alon and V. R¨ odl, Sharp bounds for some multicolor Ramsey numbers, Combinatorica 25,
+125–141, 2005.
+[2] M. Belkin and P. Niyogi, Towards a theoretical foundation for laplacian-based manifold meth-
+ods, Journal of Computer and System Sciences, 74(8), 1289–1308, 2008.
+[3] Y. Bilu and N. Linial, Lifts, discrepancy and nearly optimal spectral gap. Combinatorica,
+26(5):495–519, 2006.
+[4] J. Borcea, and P. Br¨ and´ en, Multivariate Polya-Schur classiﬁcation problems in the Weyl alge-
+bra, 606–660, 2008.
+[5] Bohman, T., Keevash, P. The early evolution of the H-free process, Invent. math., 181,
+291–336, link, 2010.
+[6] Bishnoi, A., Ihringer, F., Pepe, V., A construction for clique-free pseudorandom graphs ,link,
+2019.
+[7] M. Cohen, Ramanujan Graphs in Polynomial Time, Proceed- ings, Annual IEEE Symposium
+on Foundations of Computer Science, FOCS, 276-–281, 2016.
+[8] F. Chung, Spectral graph theory, American Mathematical Soc., 92, 1997.
+[9] I. Dinur, Spectral High Dimensional Expanders (HDX), link, 2018.
+35
+
+===== PAGE 36 =====
+[10] C. Godsil, G. Royle. Algebraic graph theory. Vol. 207. Springer Science & Business Media,
+2013.
+[11] C. Godsil, I. Gutman. On the theory of the matching polynomial, Journal of Graph Theory,
+5(2), 137–144, 1981.
+[12] P. Erd˝ os, G. Szekeres, A combinatorial problem in geometry, Compositio Math, 2, 463–470,
+1935.
+[13] H. J. Fell. On the zeros of convex combinations of polynomials, Paciﬁc Journal of Mathematics,
+89(1), 43–50, 1980.
+[14] H. Huang, Induced subgraphs of hypercubes and a proof of the Sensitivity Conjecture, Annals
+of Mathematics 190.3, 949-955, 2019.
+[15] Z. Jiang, J. Tidor, Y. Yao, S. Zhang, Y. Zhao, Equiangular lines with a ﬁxed angle, link, 2019.
+[16] A. Lubotzky, R. Phillips, and P. Sarnak. Ramanujan graphs. Combinatorica, 8(3), 261–277,
+1988.
+[17] M. Krivelevich, B. Sudakov, Pseudo-random graphs: More sets, graphs and numbers, Springer,
+Berlin, Heidelberg, 199–262, 2006.
+[18] A. Marcus, D. Spielman, and N. Srivastava. Interlacing families I: Bipartite Ramanujan graphs
+of all degrees, Annals of Mathematics, 182(1), 307–325, 2015.
+[19] Lov´ asz, L´ aszl´ o. Combinatorial problems and exercises. Vol. 361. American Mathematical Soc.,
+2007.
+[20] A. Lubotzky, High dimensional expanders., link, 2017.
+[21] D. Mubayi, J. Verstraete, A note on Pseudorandom Ramsey graphs, link, 2019.
+[22] A. Nilli. On the second eigenvalue of a graph. Discrete Mathematics, 91(2), 207–210, 1991.
+[23] D. Spielman. Spectral and Algebraic Grpah Theory. link
+[24] R. Stanley, Algebraic combinatorics, Springer 20, 22, 2013.
+[25] L. Trevisan, Graph Partitioning and Expanders, Lecture Notes. link, 2011.
+36

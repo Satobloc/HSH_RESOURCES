@@ -1,0 +1,3302 @@
+===== PAGE 1 =====
+BIT Numerical Mathematics (2022) 62:1207–1255
+https://doi.org/10.1007/s10543-022-00909-z
+Order theory for discrete gradient methods
+Sølve Eidnes 1,2
+Received: 20 August 2021 / Accepted: 17 January 2022 / Published online: 7 February 2022
+© The Author(s) 2022
+Abstract
+The discrete gradient methods are integrators designed to preserve invariants of ordi-
+nary differential equations. From a formal series expansion of a subclass of these
+methods, we derive conditions for arbitrarily high order. We derive speciﬁc results for
+the average vector ﬁeld discrete gradient, from which we get P-series methods in the
+general case, and B-series methods for canonical Hamiltonian systems. Higher order
+schemes are presented, and their applications are demonstrated on the Hénon–Heiles
+system and a Lotka–V olterra system, and on both the training and integration of a
+pendulum system learned from data by a neural network.
+Keywords Geometric integration · Energy preservation · B-series · Neural networks ·
+Order of accuracy · High-order methods
+Mathematics Subject Classiﬁcation 65L05 · 65P10 · 37M15 · 05C05
+1 Energy preservation and discrete gradient methods
+For an ordinary differential equation (ODE)
+˙x = f (x), x ∈ Rd, f : Rd → Rd, (1)
+a ﬁrst integral, or invariant, is a function H : Rd → R such that H(x(t)) = H(x(t0))
+along the solution curves of ( 1). If we can write
+Communicated by Christian Lubich.
+The research was supported by the Research Council of Norway, through the projects SPIRIT (No.
+231632) and BigDataMine (No. 309691).
+B Sølve Eidnes
+solve.eidnes@sintef.no
+1 Department of Mathematical Sciences, NTNU, 7491 Trondheim, Norway
+2 Department of Mathematics and Cybernetics, SINTEF Digital, 0373 Oslo, Norway
+123
+
+===== PAGE 2 =====
+1208 S. Eidnes
+f (x) = S(x)∇ H(x), (2)
+where S(x) : Rd×d → Rd is a skew-symmetric matrix, then ( 1) preserves H :t h i s
+follows from the skew-symmetry of S(x), which yields
+d
+dt H(x) =∇ H(x)T ˙x =∇ H(x)T S(x)∇ H(x) = 0. (3)
+The converse is also true: McLachlan et al. showed in [ 30] that, whenever ( 1) has
+a ﬁrst integral H , there exists a skew-symmetric matrix S(x), bounded near every
+non-degenerate critical point of H , such that ( 1) can be written on what is called the
+skew-gradient form:
+˙x = S(x)∇ H(x). (4)
+The proof provided in [ 30] for this is based on presenting a general form of one such
+S(x), the so-called default formula
+S(x) = f (x)∇ H(x)T −∇ H(x) f (x)T
+∇ H(x)T ∇ H(x) . (5)
+Unless d = 2, this is generally not a unique choice of S(x),a se . g .
+S(x) = f (x)g(x)T − g(x) f (x)T
+g(x)T ∇ H(x)
+will satisfy ( 2) for any non-vanishing function g : Rd → Rd . Many ODEs with ﬁrst
+integrals have a well-known skew-gradient form ( 4). This includes Poisson systems,
+and the important class consisting of canonical Hamiltonian ODEs. For the latter, S
+will be constant, so that we may write
+˙x = S∇ H(x). (6)
+A numerical integrator preserving a ﬁrst integral H exactly is called an integral-
+preserving, or energy-preserving, method. Starting in the late 1970s, a few energy-
+preserving methods were proposed which relied on some discrete analogue of the
+property ( 3), see e.g. [ 9, 23, 25, 26]. Most prominent among these is the class of
+methods called discrete gradient methods, deﬁned formally by Gonzalez in [ 18] and
+given their current name in [ 30].
+Given the ﬁrst integral H , a discrete gradient ∇ H : Rd × Rd → Rd is a function
+satisfying the conditions
+∇ H(x, y)T(y − x) = H(y) − H(x), (7)
+∇ H(x, x) =∇ H(x), (8)
+for all x, y ∈ Rd . Introducing also the discrete approximation S(x, y, h) to S(x),
+skew-symmetric and satisfying S(x, x, 0) = S(x), the corresponding discrete gradient
+123
+
+===== PAGE 3 =====
+Order theory for discrete gradient methods 1209
+method is given by
+ˆx − x
+h = S(x, ˆx, h)∇ H(x, ˆx). (9)
+This scheme satisﬁes a discrete analogue to ( 3):
+H(ˆx) − H(x) = h∇ H(x, ˆx)T S(x, ˆx, h)∇ H(x, ˆx) = 0.
+We say that ( 9) is consistent to the skew-gradient system ( 4), since S(x, ˆx, h) is a
+consistent approximation of S(x) and ∇ H(x, ˆx) is a consistent approximation of
+∇ H(x).
+If d ≥ 2, there are in general inﬁnitely many functions satisfying ( 7)–(8). Many
+explicit deﬁnitions of concrete discrete gradients have been suggested, and we will
+discuss the most prominent among them in Sect.2.1. One of these is theaverage vector
+ﬁeld (A VF) discrete gradient, ﬁrst introduced in [ 22] and sometimes called the mean
+value discrete gradient [ 30]. For a given H , it is given by the average of ∇ H on the
+segment [x, y]:
+∇AV FH(x, y) =
+∫ 1
+0
+∇ H((1 − ξ) x + ξ y) dξ. (10)
+When applied to the constant S system ( 6), the discrete gradient method with
+S(x, y, h) = S and ∇ H = ∇AV FH coincides with the scheme
+ˆx − x
+h =
+∫ 1
+0
+f ((1 − ξ) x + ξ ˆx) dξ. (11)
+This is sometimes viewed as a method by itself, applicable to any system (1), in which
+case it is called the average vector ﬁeld (A VF) method [37]. This was shown in [ 6]t o
+be a B-series method.
+As pointed out in [ 30], the discrete gradient is restricted by its deﬁnition to be at
+best a second order approximation to point values of ∇ H . In much of the literature on
+discrete gradient methods, see e.g. [ 18, 21], the approximation S is deﬁned as being
+independent of h. In that case, the discrete gradient scheme ( 9) can at best guarantee
+second order convergence towards the exact solution. Over the last two decades, there
+have been published some notable papers on higher order discrete gradient methods.
+McLaren and Quispel were ﬁrst out with their bootstrapping technique derived in
+[31, 32]. Given any discrete gradient ∇ H and an approximation to S(x) given by
+S(x, y, h), they compare the Taylor expansion of the corresponding discrete gradient
+scheme to that of the exact solution, and thus ﬁnd a new approximation ˜S(x, y, h) to
+S(x) which yields higher order. This quickly becomes a very involved procedure, but
+by using a symmetric discrete gradient, they derive fourth order methods. A downside
+of this method is that the schemes of order higher than two require the calculation of
+tensors of order three or higher at every time step.
+A fourth order generalization of the A VF method is proposed by the same authors
+in [37]. This can be viewed as a fourth-order discrete gradient method for all skew-
+gradient systems where S is constant. Also worth mentioning in this setting is the
+collocation-like method introduced by Hairer [ 20] and then generalized to Poisson
+123
+
+===== PAGE 4 =====
+1210 S. Eidnes
+systems by Cohen and Hairer [10]. This is a multi-stage extension of the A VF discrete
+gradient method. To get higher than second order, more than one stage is required. In
+that case the method is not a discrete gradient method, although it is energy-preserving.
+Norton et al. show in [ 35] that linear projection methods can be viewed as a class
+of discrete gradient methods for skew-gradient systems with S(x) given by the default
+formula ( 5). In connection to this, Norton and Quispel suggest in [ 36] the class of
+approximations to ( 5) given by
+S(x, y, h) =
+˜f (x, y, h)˜g(x, y, h)T −˜g(x, y, h) ˜f (x, y, h)T
+ˆg(x, y, h)T ˘g(x, y, h) , (12)
+where ˜f (x, y, h) is a consistent approximation to f (x), and ˜g(x, y, h), ˆg(x, y, h) and
+˘g(x, y, h) are all consistent approximations to ∇ H(x). The corresponding discrete
+gradient method then inherits the order of the method ˆx = x + h ˜f (x, ˆx, h).
+The use of the discrete gradient method expands beyond the numerical integration of
+ODEs. It can be applied to the time-integration of partial differential equations (PDEs)
+which has constants of motion, guaranteeing preservation of a discrete approximation
+of an integral [ 5, 14, 16]. Higher-order methods have been studied in this context,
+but then only schemes that are expanding on the A VF method [ 3, 24]. Furthermore,
+building on the recently introduced Hamiltonian neural networks [8, 19], Matsubara et
+al. have shown how discrete gradients can be used to learn energy-preserving systems
+from data [27]. Since the energy is given by a neural network, none of the higher-order
+methods reviewed above are applicable in that case, and the authors suggest to use
+multi-step methods to get higher than second order.
+To the best of our knowledge, no one has so far suggested higher than fourth order
+discrete gradient methods for a general skew-gradient system ( 4). Furthermore, for
+this general case, all discrete gradient methods suggested of higher than second order
+involve tensors of order three or higher. In this paper we present general theory for
+achieving methods of arbitrary order, using any discrete gradient and not depending on
+tensors of order higher than two. Largely inspired by the above mentioned references,
+especially [31, 32, 37], we present here a general form giving a class of approximations
+S(x, y, h) to any S(x) in (4), with corresponding conditions for achieving an arbitrary
+order of the discrete gradient method ( 9). We do this step by step. In the next section,
+we derive some useful properties of a general discrete gradient and discuss the most
+common speciﬁc discrete gradients. Then we consider the A VF method and use order
+theory for B-series methods to obtain a generalization of this, with corresponding
+order conditions. In Sect. 4, we build on this to develop higher order discrete gradient
+methods for a general skew-gradient system, using the A VF discrete gradient. Then,
+in Sect. 5, we generalize this further to allow for a free choice of the discrete gradient,
+thus arriving at the general form S(x, y, h) mentioned above, and a formal series
+expansion of the corresponding discrete gradient methods. Throughout the paper,
+we present several examples of higher order schemes for the different cases. In the
+ﬁnal section, we apply some of these schemes to numerical examples: the Hénon–
+Heiles system with a constant S, a Lotka–V olterra system with a non-constant S, and
+a pendulum system learned by a neural network.
+123
+
+===== PAGE 5 =====
+Order theory for discrete gradient methods 1211
+2 A preliminary analysis of discrete gradients
+To simplify notation in the following derivations, we deﬁne g := ∇ H . Furthermore,
+we suppress the ﬁrst argument of ∇ H and deﬁne ¯g(y) := ∇ H(x, y). We use Einstein
+summation convention, with a comma in the subscript to differentiate between compo-
+nents of covectors and derivatives. That is, we write¯g(y)i
+, j := ∂ ¯g(y)i
+∂ y j , ¯g(y)i, j := ∂ ¯g(y)i
+∂ y j
+and so forth. Taylor expanding ¯g(y) around x, we get
+¯g(y)i =¯g(x)i +¯g(x)i
+, j(y j − x j) + 1
+2 ¯g(x)i
+, jk (y j − x j)(yk − xk)
++ 1
+6 ¯g(x)i
+, jkl (y j − x j)(yk − xk)(yl − xl) + O(|y − x|4),
+(13)
+or
+¯g(y) =
+∞∑
+κ=0
+1
+κ! ¯g(κ)(x)(y − x)κ. (14)
+By the consistency criterion ( 8), we have ¯g(x) = g(x). However, if we require the
+discrete gradient to be a differentiable function in its second argument, ( 8) follows
+directly from ( 7). To see this, we write ( 7)a s
+H(y) − H(x) =¯g(y)i(yi − xi). (15)
+Differentiating this with respect to y j , we get
+g(y) j = H(y), j =¯g(y)i, j (yi − xi) +¯g(y) j, (16)
+The case y = x immediately gives g(x) j =¯ g(x) j ,o r( 8). Assuming further that
+∇ H ∈ C2(Rd × Rd, Rd), we can differentiate once more to get
+g(y) j,k = H(y), jk =¯g(y)i, jk (yi − xi) +¯g(y) j,k +¯g(y)k, j, (17)
+which means that
+g(x) j,k = H(x), jk =¯g(x) j,k +¯g(x)k, j,
+or
+D2 H(x) = D2∇ H(x, x) + (D2∇ H(x, x))T, (18)
+where D2 H := D∇ H denotes the Hessian of H , and D2∇ H denotes the Jacobian of
+∇ H with respect to its second argument.
+Lemma 1 If the discrete gradient ∇ H is symmetric, i.e. ∇ H(x, y) = ∇ H(y, x) for
+all x, y ∈ Rd , then
+D2∇ H(x, x) = 1
+2 D2 H(x). (19)
+123
+
+===== PAGE 6 =====
+1212 S. Eidnes
+Proof Disclosing the suppressed argument x in (16), we have
+g(y) j = ∂
+∂ y j (¯g(x, y)i)(yi − xi) +¯g(x, y) j ,
+which we can differentiate by xk to get
+0 = ∂2
+∂ xk∂ y j (¯g(x, y)i)(yi − xi) − ∂
+∂ y j ¯g(x, y)k + ∂
+∂ xk ¯g(x, y) j .
+If ∇ H is symmetric,
+∂
+∂ xk ¯g(x, y) j = ∂
+∂ xk ¯g(y, x) j .
+Thus, for y = x we get ¯g(x)k, j =¯ g(x) j,k ,o r (D2∇ H(x, x))T = D2∇ H(x, x).
+Inserting that in ( 18), we obtain ( 19).
+Deﬁnition 1 Given a discrete gradient∇ H ∈ C1(Rd ×Rd, Rd), we deﬁne the function
+Q : Rd × Rd → Rd×d by
+Q(x, y) := 1
+2
+(
+(D2∇ H(x, y))T − D2∇ H(x, y)
+)
+. (20)
+Note that Q(x, y) is a skew-symmetric matrix. From ( 18), we see that Q(x, x) =
+1
+2 D2 H(x) − D2∇ H(x, x). The following result is crucial for the the main result of
+this paper: the development of a general theory for higher order discrete gradient
+methods.
+Lemma 2 F or a discrete gradient∇ H ∈ C p(Rd × Rd, R) and the corresponding Q
+given by (20),
+Dκ
+2 ∇ H(x, x)vκ = 1
+κ + 1 Dκ∇ H(x)vκ
+− 2κ
+κ + 1 Dκ−1
+2 Q(x, x)vκ for any κ ∈[ 1, p],v ∈ Rd.
+Proof Differentiating (17) κ − 1 times by y and setting y = x, we ﬁnd that the κth
+derivatives of g(x) can be expressed by theκth derivatives of ¯g(x) through the relation
+g(x) j,I =¯g(x) j,I +
+κ∑
+m=1
+¯g(x)im,{ j,Im}, for all j, I,κ, (21)
+where I = {i1, i2,..., iκ} is an ordered set of κ indices, and
+Im = I \ {im} = {i1, i2,... im−1, im+1,..., iκ} ,
+123
+
+===== PAGE 7 =====
+Order theory for discrete gradient methods 1213
+i.e. I with the mth element excluded. Similarly, by continued differentiation of ( 20),
+we obtain
+(Dκ−1
+2 Q(x, x)) j,I = 1
+2 ¯g(x)i1,{ j,I1} − 1
+2 ¯g(x) j,I .
+Thus
+(Dκ−1
+2 Q(x, x)vκ) j = (Dκ−1
+2 Q(x, x)) j,I vI = 1
+2 ¯g(x)i1,{ j,I1}v{ j,I1} − 1
+2 ¯g(x) j,I vI
+= 1
+2κ
+κ∑
+m=1
+¯g(x)im,{ j,Im}v{ j,Im} + 1
+2κ ¯g(x) j,I vI − 1
+2κ ¯g(x) j,I vI − 1
+2 ¯g(x) j,I vI
+= 1
+2κ g(x) j,I vI − ( 1
+2κ + 1
+2)¯g(x) j,I vI = 1
+2κ g(x) j,I vI − κ + 1
+2κ ¯g(x) j,I vI .
+2.1 Properties of different discrete gradients
+While introducing the discrete gradient methods in [18], Gonzalez also gave an exam-
+ple of a discrete gradient satisfying ( 7)–(8): the midpoint discrete gradient is given
+by
+∇M H(x, y) := ∇H
+( x + y
+2
+)
++ H(y) − H(x) −∇ H
+( x+y
+2
+)T
+(y − x)
+(y − x)T (y − x) (y − x) .
+Even when H is analytic, this discrete gradient is often not; the second order partial
+derivatives are in general singular iny = x. For that reason, it is not suited for achieving
+higher order methods by the techniques we consider in this paper.
+The Itoh–Abe discrete gradient method, introduced in [23], notably does not require
+evaluation of the gradient. The corresponding discrete gradient, which has also been
+called the coordinate increment discrete gradient [ 30], is deﬁned by
+∇IA H(x, y) :=
+d∑
+j=1
+α j e j, (22)
+where e j is the jth canonical unit vector and
+α j =
+⎧
+⎨
+⎩
+H(w j) − H(w j−1)
+y j − x j if y j ⁄= x j,
+∂ H
+∂ x j (w j−1) if y j = x j,
+w j =
+∑ j
+i=1 yi ei +
+∑ n
+i= j+1 xi ei.
+While the other discrete gradients we consider in this paper are symmetric and thus
+second order approximations to ∇ H , the Itoh–Abe discrete gradient is only of ﬁrst
+123
+
+===== PAGE 8 =====
+1214 S. Eidnes
+order. However, a second order discrete gradient, which we call thesymmetrized Itoh–
+Abe (SIA) discrete gradient, is given by
+∇SIA H(x, y) := 1
+2
+(
+∇IA H(x, y) + ∇IA H(y, x)
+)
+. (23)
+Furihata presented the discrete variational derivative method for a class of PDEs in
+[16], a method which has been developed further by Furihata, Matsuo and co-authors
+in a series of papers, e.g. [ 29, 38], as well as the monograph [ 17]. As shown in [ 14],
+these schemes can also be obtained by semi-discretizing the PDE in space and then
+applying a discrete gradient method on the resulting system of ODEs. We give here
+the deﬁnition of the speciﬁc discrete gradient that gives the schemes of Furihata and
+co-author, deﬁned for a class of invariants that includes all polynomial functions:
+Deﬁnition 2 Assume that we can write the ﬁrst integral as
+H(x) =
+∑
+l
+cl
+d∏
+j=1
+f l
+j (x j), (24)
+for functions f l
+j : R → R.T h e Furihata discrete gradient ∇F H(x, y) is deﬁned by
+∇F H(x, y) :=
+d∑
+j=1
+α j e j, (25)
+where e j is the jth canonical unit vector and
+α j =
+⎧
+⎪⎪⎪⎪⎨
+⎪⎪⎪⎪⎩
+∑
+l
+cl
+2
+f l
+j (y j )− f l
+j (x j )
+y j −x j
+(
+j−1∏
+k=1
+f l
+k (xk) +
+j−1∏
+k=1
+f l
+k (yk)
+)
+d∏
+k= j+1
+f l
+k (xk)+ f l
+k (yk)
+2 if y j ⁄= x j ,
+∑
+l
+cl
+2
+d f l
+j (x j )
+dx j
+(
+j−1∏
+k=1
+f l
+k (xk) +
+j−1∏
+k=1
+f l
+k (yk)
+)
+d∏
+k= j+1
+f l
+k (xk)+ f l
+k (yk)
+2 if y j = x j .
+The discrete gradient introduced by Matsubara and co-authors in [ 27] shares some
+relation to the Furihata discrete gradient, in that they are both relying on a discrete
+analogue to the product rule for derivatives. But the former discrete gradient, obtained
+by what the authors call the automatic discrete differentiation algorithm, more impor-
+tantly depends on an analogue to the chain rule. By using this algorithm instead of
+standard automatic differentiation in a neural network that learns a dynamical sys-
+tem from data, the discrete gradient is obtained together with the preserved energy.
+Thus the learned system can be integrated in an energy-preserving manner, which
+distinguishes the approach of Matsubara et al. from comparable studies [ 8, 19, 39].
+Lastly we consider the A VF discrete gradient ( 10), which has several noteworthy
+characteristics.
+Lemma 3 The Q(x, y) corresponding to the A VF discrete gradient is the zero matrix,
+since (D2∇AV FH(x, y))T = D2∇AV FH(x, y).
+123
+
+===== PAGE 9 =====
+Order theory for discrete gradient methods 1215
+Proof For ¯g(y) := ∇AV FH(x, y),w eh a v e
+¯g(y)i, j = ∂
+∂ y j
+∫ 1
+0
+g((1 − ξ) x + ξ y)i dξ =
+∫ 1
+0
+∂
+∂ y j g((1 − ξ) x + ξ y)i dξ
+=
+∫ 1
+0
+ξ g((1 − ξ) x + ξ y)i, j dξ =
+∫ 1
+0
+ξ g((1 − ξ) x + ξ y) j,i dξ =¯g(y) j,i.
+From the Integrability Lemma (see e.g. [21, Lemma VI.2.7]) and the above, we have
+that the A VF discrete gradient deﬁnes a gradient vector ﬁeld:
+Corollary 1 The A VF discrete gradient is the gradient with respect to the second argu-
+ment of a function ˜H(x, y). That is,
+∇AV FH(x, y) =∇ 2 ˜H(x, y),
+for some ˜H : Rd × Rd → R and all x , y ∈ Rd .
+Any other discrete gradient will have these properties only for functions H for
+which it coincides with the A VF discrete gradient:
+Proposition 1 The A VF discrete gradient is the unique discrete gradient satisfying
+(D2∇ H(x, y))T = D2∇ H(x, y) for all H , x and y, and it has the formal expansion
+∇AV FH(x, y) =
+∞∑
+κ=0
+1
+(κ + 1)! Dκ∇ H(x)(y − x)κ. (26)
+Proof Assume that ∇ H is an analytic function. As in the proof of Lemma 2,l e t
+I = {i1, i2,..., iκ} be an ordered set of κ indices, and let Im be I with the mth
+element excluded. If ¯g(y)i, j =¯g(y) j,i for all i, j, then also
+¯g(y)i,I =¯g(y)im,{i,Im} for all i, I, m. (27)
+Inserting (27)i n( 21) we get g(κ)(x) = (1+κ) ¯g(κ)(x). Then inserting this for ¯g(κ)(x)
+in (14), we get ( 26), which uniquely deﬁnes the A VF discrete gradient.
+A consequence of the above result is that the A VF discrete gradient is the unique
+discrete gradient for which the scheme ( 9) with S(x, ˆx, h) = S is a B-series method
+when applied to the system ( 6).
+As we see from the above deﬁnitions and discussion, each of the discrete gradients
+have their advantages and disadvantages. Gonzalez’ midpoint discrete gradient is eas-
+ily calculated from the energy H and the gradient ∇ H , but it is in general only once
+differentiable. The Itoh–Abe and Furihata discrete gradient methods do not require
+knowledge of the gradient, but the former is only a ﬁrst order method and the latter is
+only deﬁned for H of the form ( 24). The A VF discrete gradient is the unique discrete
+gradient whose series expansion is given by the differentials of the gradient. It does
+however require an integral to be calculated. The discrete gradient of Matsubara and
+123
+
+===== PAGE 10 =====
+1216 S. Eidnes
+co-authors has a different area of use than the others: it is only deﬁned when H is
+a neural network. In that case neither Gonzelez’ midpoint, the A VF or the Furihata
+discrete gradients can be obtained.
+In the next section we consider the speciﬁc case where the A VF discrete gradient
+is chosen and S is constant, so that we can build on established results for B-series
+methods to develop new theory.
+3 A generalization of the AVF method
+Let us recall the concept of B-series. Referring to the deﬁnitions in [ 21, Section III.1],
+we let T be the set of rooted trees, built recursively from starting withτ = and letting
+τ =[ τ1,...,τ m] be the tree obtained by grafting the roots of the trees τ1,...,τ m to
+a new root. Furthermore, F(τ) is the elementary differential associated with the tree
+τ , deﬁned by F( )(x) = f (x) and
+F(τ)( x) = f (m)(x)
+(
+F(τ1)(x), . . . ,F(τm)(x)
+)
+,
+and σ(τ) is the symmetry coefﬁcient for τ , deﬁned by σ( ) = 1 and
+σ(τ) = σ(τ 1)··· σ(τ m) · μ1! μ2!··· , (28)
+where the integers μ1,μ 2,... count equal trees among τ1,...,τ m . Then, if φ : T ∪
+{∅} → R is an arbitrary map, a B-series is a formal series
+B(φ, x) = φ(∅)x +
+∑
+τ∈T
+h|τ|
+σ(τ) φ(τ) F(τ)( x). (29)
+The exact solution of ( 1) can be written as the B-series B( 1
+γ , x), where the coefﬁcient
+γ satisﬁes γ(∅) = γ( ) = 1 and
+γ( τ) =| τ| γ( τ1)··· γ( τm) for τ =[ τ1,...,τ m], (30)
+where |τ| is the order, i.e. the number of nodes, of τ .
+Deﬁnition 3 The generalized A VF methodis given by
+ˆx − x
+h =
+(
+I +
+p−1∑
+n=2
+hn ∑
+j
+bnj
+( n∏
+k=1
+f ′(znjk ) + (−1)n
+n∏
+k=1
+f ′(znj (n−k+1))
+))
+·
+∫ 1
+0
+f ((1 − ξ) x + ξ ˆx) dξ, (31)
+where each znjk := znjk (x, ˆx, h) = B(φnjk , x) can be written as a B-series with
+φ(∅) = 1.
+123
+
+===== PAGE 11 =====
+Order theory for discrete gradient methods 1217
+Theorem 1 When applied to (1) with f (x) = S∇ H(x), where S is a constant skew-
+symmetric matrix, the scheme (31) preserves H , in that H (ˆx) = H(x).
+Proof With f (x) = S∇ H(x),( 31) becomes
+ˆx − x
+h = S(x, ˆx, h)∇AV FH(x, ˆx),
+with
+S(x, ˆx, h) = S +
+p−1∑
+n=2
+hn ∑
+j
+bnj
+( n∏
+k=1
+SD 2 H(znjk ) + (−1)n
+n∏
+k=1
+SD 2 H(znj (n−k+1))
+)
+S.
+We have
+( n∏
+k=1
+SD 2 H(znjk ) · S + (−1)n
+n∏
+k=1
+SD 2 H(znj (n−k+1)) · S
+) T
+= ST
+n∏
+k=1
+(
+D2 H(znj (n−k+1))T ST )
++ (−1)n ST
+n∏
+k=1
+(
+D2 H(znjk )T ST )
+= (−1)i+1 S
+n∏
+k=1
+D2 H(znj (n−k+1))S − S
+n∏
+k=1
+D2 H(znjk )S
+=−
+( n∏
+k=1
+SD 2 H(znjk ) · S + (−1)n
+n∏
+k=1
+SD 2 H(znj (n−k+1)) · S
+)
+,
+and thus S(x, ˆx, h) is a skew-symmetric matrix.
+Before considering the order conditions of the generalized A VF method, let us recall
+a couple of results from the literature on B-series.
+Lemma 4 ([21, Lemma III.1.9]) Let B (a, x) be a B-series with a (∅) = 1. Then
+hf (B(a, x)) = B(a′, x) is also a B-series, with a ′(∅) = 0,a ′( ) = 1 and other-
+wise
+a′(τ) = a(τ1)··· a(τm) for τ =[ τ1,...,τ m].
+Lemma 5 ([34, Theorem 2.2]) Let B (a, x) and B (b, x) be two B-series with a (∅) =
+1 and b (∅) = 0. Then h f ′(B(a, x))B(b, x) = B(a × b, x), i.e. a B-series, with
+(a × b)(∅) = (a × b)( ) = 0 and otherwise
+(a × b)(τ) =
+m∑
+i=1
+m∏
+j=1, j⁄=i
+a(τ j)b(τi) for τ =[ τ1,...,τ m].
+123
+
+===== PAGE 12 =====
+1218 S. Eidnes
+Proposition 1 in [ 6] states that the standard A VF method is a B-series method. We
+build on the proof of that proposition to prove the following result.
+Proposition 2 The generalized A VF method (31) is a B-series method.
+Proof First we deﬁne ˆe : T ∪{∅}→ R by ˆe(∅) = 1 and ˆe(τ) = 0 for all τ ⁄=∅ . Then,
+assuming that the solution ˆx of ( 31) can be written as the B-series ˆx = B(/Phi1,x),w e
+ﬁnd the B-series
+h
+∫ 1
+0
+f
+(
+(1 − ξ) x + ξ ˆx
+)
+dξ = h
+∫ 1
+0
+f
+(
+B((1 − ξ) ˆe + ξ/Phi1,x)
+)
+dξ
+=
+∫ 1
+0
+B
+(
+((1 − ξ) ˆe + ξ/Phi1)′, x
+)
+dξ
+= B
+( ∫ 1
+0
+((1 − ξ) ˆe + ξ/Phi1)′dξ, x
+)
+.
+Setting θ :=
+∫1
+0 ((1−ξ) ˆe+ξ/Phi1)′dξ =
+∫1
+0 ((1−ξ) ˆe)′dξ +
+∫1
+0 (ξ/Phi1)′dξ =
+∫1
+0 (ξ/Phi1)′dξ ,
+we get
+θ(∅) = 0,θ ( ) = 1,θ ( [τ1,...,τ m]) = 1
+m + 1/Phi1(τ1)··· /Phi1(τm). (32)
+Then we may rewrite ( 31)a s
+ˆx = x +
+⎛
+⎝I +
+p−1∑
+n=2
+hn ∑
+j
+bnj
+( n∏
+k=1
+f ′(B(φnjk , x)) + (−1)n
+n∏
+k=1
+f ′(B(φnj (n−k+1), x))
+) ⎞
+⎠ B(θ, x)
+= x + B(θ, x)
++
+p−1∑
+n=2
+∑
+j
+bnj
+(
+B(φnj 1 ×···× φnjn × θ, x) + (−1)n B(φnjn ×···× φnj 1 × θ, x)
+)
+= B(/Phi1,x),
+with
+/Phi1=ˆe + θ +
+p−1∑
+n=2
+∑
+j
+bnj
+(
+φnj 1 ×···× φnjn × θ + (−1)n φnjn ×···× φnj 1 × θ
+)
+.
+(33)
+Comparing the B-series of the exact solution and the B-series of the solution of
+(31), and noting that the elementary differentials are independent, we immediately get
+the following result.
+Theorem 2 The generalized A VF method (31) is of order p if and only if
+/Phi1(τ)= 1
+γ( τ) for |τ|≤ p, (34)
+123
+
+===== PAGE 13 =====
+Order theory for discrete gradient methods 1219
+Table 1 Elementary differentials and their coefﬁcients in the B-series of the solution of ( 31), up to fourth
+order
+|τ| F(τ) i τ σ(τ) γ (τ) /Phi1(τ)
+1 f i 111
+2 f i
+j f j 12 1
+2
+3 f i
+jk f j f k 23 1
+3
+f i
+j f j
+k f k 16 1
+4 + 2 ∑
+j b2 j
+4 f i
+jkl f j f k f l 64 1
+4
+f i
+jk f j f k
+l f l 18 1
+6 + ∑
+j,k b2 j φ2 jk ( )
+f i
+j f j
+kl f k f l 21 2 1
+6 + 2 ∑
+j,k b2 j φ2 jk ( )
+f i
+j f j
+k f k
+l f l 12 4 1
+8 + 2 ∑
+j b2 j
+where /Phi1is given by (33) and γ is given by (30).
+The terms /Phi1(τ)can be found from ( 33) by applying Lemma 5 recursively, as
+illustrated by the following example.
+Example 1 Consider τ = , and assume we have found /Phi1for all trees up to and
+including order four already, as given in Table 1.W eh a v e
+θ( ) = 1
+3/Phi1()/Phi1() = 1
+3( 1
+4 + 2
+∑
+j
+b2 j) = 1
+12 + 2
+3
+∑
+j
+b2 j.
+Then we calculate
+(φ2 j1 × φ2 j2 × θ)( ) = φ2 j1( )(φ2 j2 × θ)( ) + φ2 j1( )(φ2 j2 × θ)( )
+= φ2 j1( )(φ2 j2 × θ)( ) = φ2 j1( )φ2 j2(∅)θ( ) = 1
+2φ2 j1( ),
+where we have used in the second equality that (φ2 j2 × θ)( ) = φ2 j2(∅)θ(∅) = 0.
+Similarly we ﬁnd (φ2 j2 × φ2 j1 × θ)( ) = 1
+2φ2 j2( ). Furthermore,
+(φ3 j1 × φ3 j2 × φ3 j3 × θ)( ) = φ3 j1( )(φ3 j2 × φ3 j3 × θ)( )
+= φ3 j1( )φ3 j2(∅)(φ3 j3 × θ)( )
+= φ3 j1( )φ3 j3(∅)θ( ) = φ3 j1( ),
+123
+
+===== PAGE 14 =====
+1220 S. Eidnes
+and (φ3 j3 × φ3 j2 × φ3 j1 × θ)( ) = φ3 j3( ). Hence,
+/Phi1() = 1
+12 + 2
+3
+∑
+j
+b2 j + 1
+2
+∑
+j
+b2 j(φ2 j1( ) + φ2 j2( ))
++
+∑
+j
+b3 j(φ3 j1( ) − φ3 j3( )).
+Now, if we assume the order condition ( 34) to be satisﬁed for all trees up to and
+including order four, we can replace∑
+j b2 j =− 1
+24 and ∑
+j b2 j(φ2 j1( )+φ2 j2( )) =
+− 1
+24 in the above expression, use that γ( ) = 30, and get that ( 34) is satisﬁed for
+if and only if ∑
+j
+b3 j(φ3 j1( ) − φ3 j3( )) =− 1
+720. (35)
+3.1 Construction of higher order schemes
+As the size of the trees grows, ﬁnding/Phi1(τ)from (33) can become quite a cumbersome
+operation. Furthermore, we observe from Table 1 that there are some equivalent order
+conditions for different trees. Before presenting more convenient techniques for ﬁnding
+order conditions for the generalized A VF method, let us deﬁne some more concepts
+related to B-series and trees.
+First, recall that the Butcher product of two trees u =[ u1,..., um] and v =
+[v1,...,v n] is given by u ◦v =[ u1, u2,..., um,v ]. This operation is neither associa-
+tive nor commutative, and in contrast to the practice in [ 21], we here take the product
+of several factors without parentheses to mean evaluation from right to left:
+u1 ◦ u2 ◦···◦ uk := u ◦ (u2 ◦ (···◦ uk)).
+Given a forest μ = (τ1,...,τ m), the tree obtained by grafting the roots of every
+tree in μ to a new root is denoted by [μ]=[ τ1,...,τ m]. Moreover, μ−1(τ) denotes
+the forest such that [μ−1(τ)]= τ . We extend the maps φ : T ∪{ ∅ } → R and
+γ : T ∪{∅} → R to forests by the lettingφ(μ) = ∏ m
+i=1 φ(τi) and γ( μ )= ∏ m
+i=1 γ( τi)
+for μ = (τ1,...,τ m).
+Consider now a tree τ consisting of |τ| nodes. We may number every tree from 1
+to |τ|, starting at the root and going from left to right on the increasing levels above.
+For a given node i ∈{ 1,..., |τ|} on level n + 1, there exists a unique set of forests
+ˆτ i ={ μi
+1,...,μ i
+n+1} such that
+τ =[ μi
+1]◦[ μi
+2]◦···◦[ μi
+n+1].
+123
+
+===== PAGE 15 =====
+Order theory for discrete gradient methods 1221
+That is, labeling node i,
+τ = i
+μi
+n+1
+μi
+2
+μi
+1
+Proposition 3 The /Phi1of (34) can alternatively be found by
+/Phi1(τ)=ˆe(τ) + θ(τ) +
+∑
+is . t . n≥2
+/Lambda1(ˆτ i) (36)
+where ˆe(∅) = 1 and ˆe(τ) = 0 for all τ ⁄=∅ ,θ( ∅) = 0,θ( ) = 1,
+θ([τ1,...,τ m]) = 1
+m + 1/Phi1(τ1)··· /Phi1(τm),
+and
+/Lambda1(ˆτ i) = θ([μi
+n+1])
+∑
+j
+bnj
+(
+φnj 1(μi
+1)··· φnjn (μi
+n) + (−1)nφnjn (μi
+1)··· φnj 1(μi
+n)
+)
+.
+(37)
+Proof Deﬁne ni so that ni + 1 is the level of node i. Collect the children of node i in
+the set Ci .W eh a v e
+[μi
+ni +1]=[ μk
+nk ]◦[ μk
+nk+1] for all k ∈ Ci,
+and thus
+(a × b)([μi
+ni +1]) =
+∑
+k∈Ci
+a(μk
+nk )b([μk
+nk+1]).
+Note also that μi
+ni = μk
+ni = μk
+nk−1 if k ∈ Ci . Then we get
+(φnj 1 ×···× φnjn × θ)(τ) = (φnj 1 ×···× φnjn × θ)([μ1
+1])
+=
+∑
+i1∈C1
+φnj 1(μi1
+1 )(φnj 2 ×···× φnjn × θ)([μi1
+2 ])
+=
+∑
+i1∈C1
+φnj 1(μi1
+1 )
+∑
+i2∈Ci1
+φnj 2(μi2
+2 )(φnj 3 ×···× φnjn × θ)([μi2
+3 ])
+=
+∑
+i1∈C1
+∑
+i2∈Ci1
+φnj 1(μi2
+1 )φnj 2(μi2
+2 )(φnj 3 ×···× φnjn × θ)([μi2
+3 ])
+...
+=
+∑
+i1∈C1
+∑
+i2∈Ci1
+···
+∑
+in∈Cin−1
+φnj 1(μin
+1 ) ··· φnjn (μin
+n )θ([μin
+n+1])
+123
+
+===== PAGE 16 =====
+1222 S. Eidnes
+=
+∑
+i on level n+1
+φnj 1(μi
+1) ··· φnjn (μi
+n)θ([μi
+n+1]).
+Inserting this and the corresponding result for (φnjn ×···× φnj 1 × θ)(τ) in (33), we
+get (37).
+In [7, 15], conditions are derived for a B-series method to be energy preserving when
+applied to the system ( 6). In [37], while giving the A VF method as one such method,
+Quispel and McLaren present a general form of what they call energy-preserving linear
+combinations of rooted trees:
+ω =
+μn
+μ2
+μ1
++ (−1)n
+μ1
+μn−1
+μn
+Here we give their result as a lemma, which is proved later by the proof of the more
+general Theorem 5.
+Lemma 6 Let μ1,...,μ n be n arbitrary forests. Then, if f (x) = S∇ H(x) for some
+skew-symmetric constant matrix S, we have that F (ω)(x) ·∇ H(x) = 0 for
+ω =[ μ1]◦[ μ2]◦···[ μn]◦[ ∅ ]+ (−1)n [μn]◦[ μn−1]◦···[ μ1]◦[ ∅ ]. (38)
+There is a connection between ( 36) and Lemma 6 such that instead of order con-
+ditions for every tree, we can calculate order conditions for every energy-preserving
+linear combination. To see this we start by collecting the leaf nodes, i.e. nodes with
+no children, of the tree τ i nas e t Il and the other nodes in the set In . If node i ∈ In ,
+we may then use the relation
+/Lambda1({μi
+1,...,μ i
+n,μ i
+n+1}) = θ([μi
+n+1])/Lambda1({μi
+1,...,μ i
+n,∅})
+to ﬁnd /Lambda1(ˆτ i) from the previously calculated /Lambda1for a smaller tree. Then if lower order
+conditions are satisﬁed, we have numerical values for these /Lambda1. The leaf nodes on the
+other hand, with their correspondingˆτ i ={ μi
+1,...,μ i
+n,∅}, gives an energy-preserving
+linear combination ( 38) which τ belongs to. If i is on level two, this combination is
+simply τ − τ = 0, and accordingly /Lambda1is not calculated for these nodes in ( 36).
+Moreover, leaves on the same level have identical ˆτ i . Thus, a tree with leaves on m
+different levels above level two will belong to at most m non-zero energy-preserving
+linear combinations ( 38). For each of these combinations there is a corresponding
+order condition, with the left hand side given by ( 37). The right hand side can be
+found by considering the individual trees.
+If we assume the conditions for order < p to be satisﬁed, we may replace ( 34)b y
+∑
+i∈Il
+/Lambda1(ˆτ i) = 1
+γ( τ) −ˆe(τ) −
+∑
+i∈In
+/Lambda1({μi
+1,...,μ i
+n,∅})
+(|μi
+n+1|+ 1)γ (μi
+n+1), (39)
+123
+
+===== PAGE 17 =====
+Order theory for discrete gradient methods 1223
+where |μ| denotes the number of trees in the forest μ. Note that /Lambda1({∅}) = 1 and hence
+/Lambda1(ˆτ 1) = θ(τ) . Then we can calculate the numerical value for the right hand side and,
+if τ has leaves on only one level > 2, ﬁnd an order condition for both τ and the other
+tree in the combination ( 38). This warrants an example.
+Example 2 Consider again the tree τ = , which is part of the energy-preserving
+linear combination ω = − . Ignoring the two nodes on level 2, there are three
+nodes to calculate /Lambda1for: i = 1, i = 4 and i = 5. We ﬁnd
+/Lambda1(ˆτ 1) = 1
+(2 + 1)γ ()γ ()
+= 1
+3 · 1 · 6 = 1
+18
+/Lambda1(ˆτ 4) = 1
+(1 + 1)γ ()/Lambda1({ ,∅,∅})
+= 1
+2γ( )
+( 1
+γ( )
+− 1
+3γ( )γ ()
+)
+= 1
+2
+( 1
+8 − 1
+6
+)
+=− 1
+48,
+/Lambda1(ˆτ 5) = /Lambda1({ ,∅,∅,∅}) =
+∑
+j
+b3 j
+(
+φ3 j1( ) − φ3 j3( )
+)
+.
+The right hand side of ( 39) becomes
+1
+γ( τ) − 1
+18 − (− 1
+48) = 1
+30 − 1
+18 + 1
+48 =− 1
+720,
+and we have the order condition ( 35) for the linear combination − .
+If there are leaves onr > 1 different levels above level two, things get slightly more
+complicated. Then we get r different terms on the left hand side of ( 39) and we need
+to consider the order condition for τ and the r trees it forms energy-preserving linear
+combinations with, so that we get an equation for every energy-preserving combination
+of these trees, also those not including τ . This is illustrated by the following example.
+Example 3 The tree forms energy-preserving combinations with both and .
+Thus we have to calculate ( 39) for all three trees to ﬁnd order conditions for the
+corresponding linear combinations. Starting with τ = , which has three nodes
+above level two, two leaves and one non-leaf, we get
+/Lambda1(ˆτ 4) = /Lambda1({ , ,∅}) =
+∑
+j
+b2 j
+(
+φ2 j1( )φ2 j2( ) + φ2 j2( )φ2 j1( )
+)
+,
+/Lambda1(ˆτ 5) = 1
+(1 + 1)γ ()/Lambda1({ , ,∅}) = 1
+2γ( )
+1
+2
+( 1
+γ( )
+− 1
+3γ( )γ ( )
+)
+123
+
+===== PAGE 18 =====
+1224 S. Eidnes
+= 1
+2
+1
+2
+( 1
+15 − 1
+9
+)
+=− 1
+90,
+/Lambda1(ˆτ 6) = /Lambda1({ , ,∅,∅}) =
+∑
+j
+b3 j
+(
+φ3 j1( )φ3 j2( ) − φ3 j3( )φ3 j2( )
+)
+=
+∑
+j
+b3 jφ3 j2( )(φ3 j1 − φ3 j3)( ).
+For the right hand side of ( 39), we get
+1
+γ( τ) − 1
+(2 + 1)γ ()γ ( )
+− (− 1
+90) = 1
+48 − 1
+3 · 1 · 8 + 1
+90 =− 7
+720,
+and hence the order condition for is
+∑
+j
+b2 j
+(
+φ2 j1( )φ2 j2( ) + φ2 j2( )φ2 j1( )
+)
++
+∑
+j
+b3 jφ3 j2( )(φ3 j1 − φ3 j3)( ) =− 7
+720.
+(40)
+Similarly we calculate ( 39)f o r ,
+∑
+jk
+b2 jφ2 jk ( ) − 2
+∑
+j
+b3 jφ3 j2( )(φ3 j1 − φ3 j3)( ) =− 1
+120, (41)
+and for ,
+∑
+jk
+b2 jφ2 jk ( ) + 2
+∑
+j
+b2 j
+(
+φ2 j1( )φ2 j2( ) + φ2 j2( )φ2 j1( )
+)
+=− 1
+36. (42)
+Combining (40), (41) and ( 42), we get the equivalent system of equations
+∑
+j
+b3 jφ3 j2( )(φ3 j1( ) − φ3 j3( )) = 1
+240 + α, (43)
+∑
+j
+b2 j(φ2 j1( )φ2 j2( ) + φ2 j1( )φ2 j2( )) =− 1
+72 − α, (44)
+∑
+j,k
+b2 jφ2 jk ( ) = 2α, (45)
+where the choice ofα ∈ R is arbitrary. The order conditions (43)–(45) can be associated
+to the linear combinations − , + and + , respectively.
+123
+
+===== PAGE 19 =====
+Order theory for discrete gradient methods 1225
+Table 2 Energy-preserving linear combinations of elementary differentials, and their associated order
+conditions for the scheme ( 31), up to sixth order. The coefﬁcients α1,α 2 ∈ R are arbitrary
+|τ| ω Order condition
+1 –
+2– –
+3 ∑
+j b2 j =− 1
+24
+4 + ∑
+j,k b2 j φ2 jk ( ) =− 1
+24
+5 + ∑
+j,k b2 j φ2 jk ( )2 =− 1
+40
+∑
+j b2 j φ2 j1( )φ2 j2( ) =− 1
+90
+− ∑
+j b3 j (φ3 j1( ) − φ3 j3( )) =− 1
+720
++ ∑
+j,k b2 j φ2 jk ( ) =− 1
+60
+∑
+j b4 j = 1
+240
+6 + ∑
+j,k b2 j φ2 jk ( )3 =− 1
+60
++ ∑
+j b2 j (φ2 j1( )2φ2 j2( ) + φ2 j1( )φ2 j2( )2) =− 1
+72
+− ∑
+j b3 j (φ3 j1( )2 − φ3 j3( )2) =− 1
+720
++ ∑
+j,k b2 j φ2 jk ( )φ2 jk ( ) =− 1
+96
+− ∑
+j b3 j φ3 j2( )(φ3 j1( ) − φ3 j3( )) = 1
+240 + α1
++ ∑
+j b4 j (φ4 j1( ) + φ4 j4( )) = 1
+240
++ ∑
+j b2 j (φ2 j1( )φ2 j2( ) + φ2 j1( )φ2 j2( )) =− 1
+72 − α1
+− ∑
+j b3 j (φ3 j1( ) − φ3 j3( )) =− 1
+180 − α2
++ ∑
+j,k b2 j φ2 jk ( ) = 2α1
++ ∑
+j,k b2 j φ2 jk ( ) = α2
++ ∑
+j b4 j (φ4 j2( ) + φ4 j3( )) =− 1
+1440 − α2
+123
+
+===== PAGE 20 =====
+1226 S. Eidnes
+By considering the order conditions in Table 2, we ﬁnd a ﬁfth order scheme of the
+form (31) given by
+ˆx − x
+h =
+(
+I − 5
+136 h2(
+f ′(z2) f ′(z3) + f ′(z3) f ′(z2)
+)
+− 1
+102 h2 f ′(x) f ′(x)
++ 1
+288 h3(
+f ′(x) f ′(x) f ′(z1) + f ′(z1) f ′(x) f ′(x)
+)
++ 1
+120 h4 f ′(x) f ′(x) f ′(x) f ′(x)
+) ∫ 1
+0
+f ((1 − ξ) x + ξ ˆx) dξ, (46)
+where
+z1 = x + 2
+5 hf (x), z2 = x + 17 +
+√
+17
+30 hf (z1), z3 = x + 17 −
+√
+17
+30 hf (z1).
+A symmetric sixth order scheme is given by
+ˆx − x
+h =
+(
+I − 13
+360 h2 f ′(
+¯x +
+√
+13
+26 hf (¯x − 3
+√
+13
+26 hf (¯x))
+)
+f ′(
+¯x −
+√
+13
+26 hf (¯x + 3
+√
+13
+26 hf (¯x))
+)
+− 13
+360 h2 f ′(
+¯x −
+√
+13
+26 hf (¯x + 3
+√
+13
+26 hf (¯x))
+)
+f ′(
+¯x +
+√
+13
+26 hf (¯x − 3
+√
+13
+26 hf (¯x))
+)
+− 1
+180 h2 f ′(x) f ′(x) − 1
+180 h2 f ′(ˆx) f ′(ˆx)
++ 1
+720 h3 f ′(¯x − 1
+2 hf (¯x)) f ′(¯x) f ′(¯x + 1
+2 hf (¯x))
+− 1
+720 h3 f ′(¯x + 1
+2 hf (¯x)) f ′(¯x) f ′(¯x − 1
+2 hf (¯x))
++ 1
+120 h4 f ′(¯x) f ′(¯x) f ′(¯x) f ′(¯x)
+) ∫ 1
+0
+f ((1 − ξ) x + ξ ˆx) dξ, (47)
+where ¯x = x+ˆx
+2 . If we wish to calculate the matrix in front of the integral explicitly,
+we have a non-symmetric sixth order scheme given by
+ˆx − x
+h =
+(
+I − 13
+360 h2(
+f ′(z6) f ′(z7) + f ′(z7) f ′(z6)
+)
+− 1
+180 h2(
+f ′(x) f ′(x) + f ′(z1) f ′(z1)
+)
++ 1
+720 h3(
+f ′(x) f ′(z2) f ′(z3) − f ′(z3) f ′(z2) f ′(x)
+)
++ 1
+120 h4 f ′(z2) f ′(z2) f ′(z2) f ′(z2)
+) ∫ 1
+0
+f ((1 − ξ) x + ξ ˆx) dξ, (48)
+123
+
+===== PAGE 21 =====
+Order theory for discrete gradient methods 1227
+with
+z1 = x + 1
+4 hf (x) + 3
+4 hf
+(
+x + 2
+3 hf (x + 1
+3 hf (x))
+)
+, z2 = x + 1
+2 hf (x),
+z3 = x + hf (z2), z4 = 1
+2(x + z3) − 3
+√
+13
+26 hf (z2),
+z5 = 1
+2(x + z3) + 3
+√
+13
+26 hf (z2),
+z6 = 1
+2(x + z1) +
+√
+13
+26 hf (z4), z7 = 1
+2(x + z1) −
+√
+13
+26 hf (z5).
+4 AVF discrete gradient methods for general skew-gradient systems
+We will now build on the results of the previous section by generalizing the results to
+the situation where S(x) in the skew-gradient system ( 4) is not necessarily constant.
+Consider therefore now an ODE of the form ( 4), and set again g := ∇ H . By Taylor
+expansion of x around t = t0 we get
+x(t0 + h) = x + hSg + h2
+2 (S′gSg + Sg′Sg) + h3
+6 (S′′g(Sg, Sg) + 2S′g′(Sg, Sg)
++ Sg′′(Sg, Sg) + S′gS′gSg + S′gSg′Sg
++ Sg′S′gSg + Sg′Sg′Sg) + O(h4),
+where x := x(t0), and S, g and their derivatives are evaluated in x. Introducing the
+notation f ◦ := S′g and f • := Sg′, we can write this in the abbreviated form
+x(t0 + h) = x + hf + h2
+2 ( f ◦ f + f • f ) + h3
+6 ( f ◦◦( f , f ) + 2 f ◦•( f , f ) + f ••( f , f )
++ f ◦ f ◦ f + f ◦ f • f + f • f ◦ f + f • f • f ) + O(h4). (49)
+4.1 Skew-gradient systems and P-series
+A P-series is given by
+P(φ, (x, y)) =
+(
+φ(∅)x + ∑
+τ∈TP
+h|τ|
+σ(τ) φ(τ) F(τ)( x, y)
+φ(∅)y + ∑
+τ∈TP
+h|τ|
+σ(τ) φ(τ) F(τ)( x, y)
+)
+, (50)
+where TP is the set of rooted bi-colored trees and TP and TP are the subsets of TP
+whose roots are black and white, respectively [ 21, Section III.2]. The bi-colored trees
+are built recursively; starting with and ,w el e tτ =[ τ1,...,τ m] be the tree you get
+by grafting the roots of τ1,...,τ m to a black root and τ =[ τ1,...,τ m] the tree you
+get by grafting τ1,...,τ m to a white root. No subscript, i.e. τ =[ τ1,...,τ m], means
+grafting to a black root.
+123
+
+===== PAGE 22 =====
+1228 S. Eidnes
+The exact solution of a partitioned system
+˙x = f (x, y), x(t0) = x0,
+˙y = g(x, y), y(t0) = y0, (51)
+can be written as (x(t0 + h), y(t0 + h)) = P(1/γ, (x0, y0)), where the coefﬁ-
+cient γ is given by γ(∅) = γ( ) = γ( ) = 1 and ( 30). As noted in [ 10], setting
+f (x, y) := S(y)∇ H(x), the skew-gradient system ( 4) can be written as ( 51) with
+g = f . When g = f , all coefﬁcients and the elementary differentials F(τ) in ( 50)
+are given independently of the color of the root. Thus for the system ( 4), it sufﬁces to
+consider
+P(φ, x) = φ(∅)x +
+∑
+τ∈TP
+h|τ|
+σ(τ) φ(τ) F(τ)( x), (52)
+and we have that the exact solution of ( 4) can be written as x(t0 + h) = P(1/γ, x0).
+Breaking slightly with convention, we deﬁne a P-series to be the single row version
+(52) in the remainder of this paper. Denoting black-rooted subtrees by τi and white-
+rooted subtrees by ¯τi , the elementary differentials F(τ) for the skew-gradient system
+are given recursively by F( )(x) = F( )(x) = S(x)∇ H(x), and
+F(τ)( x) = S(l) Dm∇ H(F(τ1)(x) ,..., F(τm)(x), F(¯τ1)(x) ,..., F(¯τl)(x)) (53)
+for both τ =[ τ1,...,τ m, ¯τ1,..., ¯τl] and τ =[ τ1,...,τ m, ¯τ1,..., ¯τl] . The bi-
+colored trees in TP and their corresponding elementary differentials F are given up
+to order three in Table 3. The number of trees grows very quickly with the order; see
+https://oeis.org/A000151.
+The following lemma is Lemma III.2.2 in [ 21] amended to ﬁt our setting.
+Lemma 7 Let P (a, x) and P (b, x) be two P-series with a (∅) = b(∅) = 1. Then
+hS(P(a, x))∇ H(P(b, x)) = P(a ∨ b, x),
+where (a ∨ b)(∅) = 0,( a ∨ b)( ) = 1, and
+(a ∨ b)(τ) = a(τ1)··· a(τm)b(¯τ1)··· b(¯τl) for τ =[ τ1,...,τ m, ¯τ1,..., ¯τl] .
+Proposition 4 The A VF discrete gradient scheme
+ˆx − x
+h = S
+( x +ˆx
+2
+) ∫ 1
+0
+∇ H((1 − ξ) x + ξ ˆx) dξ (54)
+is a second order P-series method.
+123
+
+===== PAGE 23 =====
+Order theory for discrete gradient methods 1229
+Table 3 Bi-colored trees and their elementary differentials up to third order
+|τ| F(τ) i F(τ) τ α(τ) γ(τ) σ(τ)
+1 Si
+j g j f 111
+2 Si
+jk g j Sk
+l gl f ◦ f 121
+Si
+j g j
+k Sk
+l gl f • f 121
+3 Si
+jkm g j Sk
+l gl Smn gn f ◦◦( f , f ) 132
+Si
+jk g j
+m Sk
+l gl Smn gn f ◦•( f , f ) 231
+Si
+j g j
+km Sk
+l gl Smn gn f ••( f , f ) 132
+Si
+jk g j Sk
+lm gl Smn gn f ◦ f ◦ f 161
+Si
+j g j
+k Sk
+lm gl Smn gn f • f ◦ f 161
+Si
+jk g j Sk
+l glm Smn gn f ◦ f • f 161
+Si
+j g j
+k Sk
+l glm Smn gn f • f • f 161
+Proof As in the proof of Proposition 2, we deﬁne ˆe by ˆe(∅) = 1 and ˆe(τ) = 0f o r
+all τ ⁄=∅ . Now, assume that the solution ˆx of ( 54) can be written as the P-series
+ˆx = P(/Phi1,x). Then, using Lemma 7, we ﬁnd the P-series
+hS
+( x +ˆx
+2
+) ∫ 1
+0
+∇ H((1 − ξ) x + ξ ˆx) dξ
+= hS
+(
+P
+( 1
+2 ˆe + 1
+2/Phi1,x
+)) ∫ 1
+0
+∇ H
+(
+P((1 − ξ) ˆe + ξ/Phi1,x)
+)
+dξ
+=
+∫ 1
+0
+hS
+(
+P
+( 1
+2 ˆe + 1
+2/Phi1,x
+))
+∇ H
+(
+P((1 − ξ) ˆe + ξ/Phi1,x)
+)
+dξ
+= P
+( ∫ 1
+0
+(( 1
+2 ˆe + 1
+2/Phi1
+)
+∨
+(
+(1 − ξ) ˆe + ξ/Phi1
+))
+dξ, x
+)
+.
+Thus we get/Phi1=ˆe+
+∫1
+0
+(( 1
+2 ˆe+ 1
+2/Phi1
+)
+∨
+(
+(1−ξ) ˆe+ξ/Phi1
+))
+dξ =ˆe+
+∫1
+0
+(( 1
+2/Phi1
+)
+∨
+(
+ξ/Phi1
+))
+dξ .
+That is, /Phi1(∅) = 1,/Phi1() = 1, and
+/Phi1([τ1,...,τ m, ¯τ1,..., ¯τl]) = 1
+(m + 1)2l /Phi1(τ1)··· /Phi1(τm)/Phi1(¯τ1)··· /Phi1(¯τl).
+Writing out the ﬁrst few terms of the series, we have
+ˆx = x + hf + h2
+2 ( f ◦ f + f • f ) + h3( 1
+8 f ◦◦( f , f ) + 1
+4 f ◦•( f , f ) + 1
+6 f ••( f , f )
++ 1
+4 f ◦ f ◦ f + 1
+4 f ◦ f • f + 1
+4 f • f ◦ f + 1
+4 f • f • f ) + O(h4),
+which, after comparing with the expanded exact solution ( 49), we see is of order two.
+123
+
+===== PAGE 24 =====
+1230 S. Eidnes
+The following lemma is obtained in a manner similar to Lemma 5, i.e. Theorem
+2.2i n[ 34], and hence we present it without its proof.
+Lemma 8 Let P (a, x), P(b, x) and P (c, x) be three P-series with a (∅) = b(∅) = 1
+and c(∅) = 0. Then
+hS (P(a, x))D2 H(P(b, x))P(c, x) = P((a, b) × c, x)
+with ((a, b) × c)(∅) = ((a, b) × c)( ) = 0 and otherwise
+((a, b) × c)(τ) =
+m∑
+i=1
+m∏
+j=1, j⁄=i
+l∏
+k=1
+a(¯τk)b(τ j)c(τi) for τ =[ τ1,...,τ m, ¯τ1,..., ¯τl].
+(55)
+Note that {∅} counts as both a black-rooted and a white-rooted tree. Hence we have
+e.g.
+((a, b) × c)( ) = a( )b(∅)c( ) = a( )c( ),
+where we also use that a( ) = a( ).
+We now present a subclass of the A VF discrete gradient method, for which we
+will ﬁnd order conditions using Lemma 7 and Lemma 8. This subclass is every A VF
+discrete gradient method for which the approximation of S(x) can be written in the
+form
+S(x, ˆx, h) =
+p−1∑
+n=0
+hn ∑
+j
+bnj
+( n∏
+k=1
+S(¯znjk )D2 H(znjk ) · S(¯znj (n+1))
++ (−1)n S(¯znj (n+1))
+n∏
+k=1
+D2 H(znj (n−k+1))S(¯znj (n−k+1))
+)
+,
+(56)
+where, if ˆx is the solution of
+ˆx − x
+h = S(x, ˆx, h)∇AV FH(x, ˆx),
+each znjk := znjk (x, ˆx, h) = P(φnjk , x) and each ¯znjk := ¯znjk (x, ˆx, h) = P(ψnjk , x)
+can be written as a P-series with φnjk (∅) = ψnjk (∅) = 1 for all n, j, k. We require
+that ∑
+j b0 j = 1
+2 , which ensures that ( 56) is a consistent approximation of S(x).
+Theorem 3 The discrete gradient scheme (9) with the A VF discrete gradient(10) and
+the approximation of S (x) given by (56) is a P-series method.
+Proof Generalizing the argument in the proof of Proposition 4, we ﬁnd the P-series
+hS
+(
+P(a, x)
+) ∫ 1
+0
+∇ H((1 − ξ) x + ξ ˆx) dξ = P
+( ∫1
+0
+(
+a ∨
+(
+(1 − ξ) ˆe + ξ/Phi1
+))
+dξ, x
+)
+,
+123
+
+===== PAGE 25 =====
+Order theory for discrete gradient methods 1231
+where ¯θ(a) :=
+∫1
+0
+(
+a ∨
+(
+(1 − ξ) ˆe + ξ/Phi1
+))
+dξ =
+∫1
+0
+(
+a ∨ ξ/Phi1
+))
+dξ , so that ¯θ(a)(∅) =
+0, ¯θ(a)( ) = 1, and
+¯θ(a)([τ1,...,τ m, ¯τ1,..., ¯τl]) = 1
+m + 1/Phi1(τ1)··· /Phi1(τm)a(¯τ1)··· a(¯τl). (57)
+Thus we may write the solution ˆx found from applying the scheme ( 9) with the A VF
+discrete gradient ( 10) and S(x, ˆx, h) given by (56)a s
+ˆx = x +
+p−1∑
+n=0
+hn ∑
+j
+bnj
+( n∏
+k=1
+S(P(ψnjk , x))D2 H(P(φnjk , x)) · P(¯θ(ψ nj (n+1)), x)
++(−1)n
+n∏
+k=1
+S(P(ψnj (n−k+2), x))D2 H(P(φnj (n−k+1), x)) · P(¯θ(ψ nj 1), x)
+)
+= x +
+p−1∑
+n=0
+∑
+j
+bnj
+(
+P((ψnj 1,φ nj 1) × (ψnj 2,φ nj 2) ×···× (ψnjn ,φ njn ) × ¯θ(ψ nj (n+1)), x)
++(−1)n P((ψnj (n+1),φ njn ) × (ψnjn ,φ nj (n−1)) ×···× (ψnj 2,φ nj 1) × ¯θ(ψ nj 1), x)
+)
+= P(/Phi1,x),
+(58)
+with
+/Phi1=ˆe +
+p−1∑
+n=0
+∑
+j
+bnj
+(
+(ψnj 1,φ nj 1) ×···× (ψnjn ,φ njn ) × ¯θ(ψ nj (n+1))
++ (−1)n (ψnj (n+1),φ njn ) ×···× (ψnj 2,φ nj 1) × ¯θ(ψnj 1)
+)
+.
+(59)
+Theorem 4 The A VF discrete gradient method with S given by (56) is of order p if
+and only if
+/Phi1(τ)= 1
+γ( τ) for |τ|≤ p. (60)
+The values /Phi1(τ)can be found from ( 59)u s i n g(55) recursively and then ( 57).
+However, a more convenient approach is derived in the next subsection.
+4.2 Order conditions
+This subsection is devoted to generalizations of the results in Sect. 3.1 to the cases
+where S(x) is not necessarily constant. To that end, for a tree τ ∈ TP , we cut off all
+branches between black and white nodes and denote the mono-colored tree we are left
+with by τ b. We number the nodes in that tree as before, from 1 to |τ b|, and reattach
+the cut-off parts to the tree to get τ again. Let μ denote a forest of black-rooted trees
+and η a forest of white-rooted trees. Then, for a given node i ∈[ 1,..., |τ b|] on level
+n + 1, there exists a unique set of forests ˆτ i ={ (μi
+1,η i
+1), . . . , (μi
+n+1,η i
+n+1)} such that
+τ =[ (μi
+1,η i
+1)]◦[ (μi
+2,η i
+2)]◦···◦[ (μi
+n+1,η i
+n+1)].
+123
+
+===== PAGE 26 =====
+1232 S. Eidnes
+That is,
+τ = i
+ηi
+n+1μi
+n+1
+ηi
+2μi
+2
+ηi
+1μi
+1
+Now we can generalize Proposition 3 as follows.
+Proposition 5 The /Phi1of (59) can be found by
+/Phi1(τ)=ˆe(τ) +
+|τ b|∑
+i=1
+/Lambda1(ˆτ i) (61)
+where ˆe(∅) = 1 and ˆe(τ) = 0 for all τ ⁄=∅ , and
+/Lambda1(ˆτ i) = θ([μi
+n+1])
+∑
+j
+bnj
+(
+ψnj 1(ηi
+1)φnj 1(μi
+1)··· ψnjn (ηi
+n)φnjn (μi
+n)ψnj (n+1)(ηi
+n+1)
++ (−1)nψnj (n+1)(ηi
+1)φnjn (μi
+1)ψnjn (ηi
+2)··· φnj 1(μi
+n)ψnj 1(ηi
+n+1)
+)
+,
+(62)
+with
+θ([τ1,...,τ m]) = 1
+m + 1/Phi1(τ1)··· /Phi1(τm).
+Proof Deﬁning ni and Ci as in the proof of Proposition 3,w eh a v e
+[(μi
+ni +1,η i
+ni +1)]=[ (μk
+nk ,η k
+nk )]◦[ (μk
+nk+1,η k
+nk+1)] for all k ∈ Ci,
+((a, b) × c)([(μi
+ni +1,η i
+ni +1)]) =
+∑
+k∈Ci
+a(ηk
+nk )b(μk
+nk )c([μk
+nk+1,η k
+nk+1]).
+Observe that ¯θ(a)([μ,η ]) = a(η)θ([μ]).F o rn = 0w eh a v e
+¯θ(ψ0 j1)(τ) = ¯θ(ψ0 j1)([μ1
+1,η 1
+1]) = ψ0 j1(η1
+1)θ([μ1
+1]),
+and for n > 0 we get
+((ψnj 1,φ nj 1) ×···× (ψnjn ,φ njn ) × ¯θ(ψ nj (n+1)))(τ)
+= ((ψnj 1,φ nj 1) ×···× (ψnjn ,φ njn ) × ¯θ(ψ nj (n+1)))([μ1
+1,η 1
+1])
+=
+∑
+i1∈C1
+ψnj 1(ηi1
+1 )φnj 1(μi1
+1 )((ψnj 2,φ nj 2)
+×···× (ψnjn ,φ njn ) × ¯θ(ψ nj (n+1)))([μi1
+2 ,η i1
+2 ])
+...
+123
+
+===== PAGE 27 =====
+Order theory for discrete gradient methods 1233
+=
+∑
+i1∈C1
+···
+∑
+in∈Cin−1
+ψnj 1(ηin
+1 )φnj 1(μin
+1 ) ··· ψnjn (ηin
+n )φnjn (μin
+n )¯θ(ψ nj (n+1))([μin
+n+1,η in
+n+1])
+=
+∑
+i on level n+1
+ψnj 1(ηi
+1)φnj 1(μi
+1) ··· ψnjn (ηi
+n)φnjn (μi
+n)ψnj (n+1)(ηi
+n+1)θ([μi
+n+1]).
+Inserting this and the corresponding result for((ψnj (n+1),φ njn )×···× (ψnj 2,φ nj 1)×
+¯θ(ψnj 1))(τ) in (59), we get ( 62).
+Note that if τ only has black nodes, we have /Lambda1(ˆτ 1) = θ(τ) ∑
+j b0 j(ψ0 j1(∅) +
+ψ0 j1(∅)) = θ(τ) , and also /Lambda1(ˆτ i) = 0 for all nodes i on level 2. Thus ( 61) simpliﬁes
+to (36).
+Like for the constant S case, the order conditions can be given for energy-preserving
+linear combinations of elementary differentials instead for each elementary differen-
+tial. In the following generalization of Lemma 6, we state that the energy-preserving
+linear combinations of bi-colored rooted trees are given by
+ω =
+ηn+1
+ηnμn
+η2μ2
+η1μ1
++ (−1)n
+η1
+η2μ1
+ηnμn−1
+ηn+1μn
+Theorem 5 Let μ1,μ 2,...,μ n be arbitrary forests of black-rooted trees and η1,η 2,
+...,η n+1 arbitrary forests of white-rooted trees. Given f (x) = S(x)∇ H(x), where
+S(x) is a skew-symmetric matrix, and elementary differentials deﬁned by (53),t h e
+linear combinations of trees given by
+ω =[ (μ1,η 1)]◦···◦[ (μn,η n)]◦[ ηn+1]+ (−1)n [(μn,η n+1)]◦···◦[ (μ1,η 2)]◦[ η1]
+(63)
+are energy-preserving in the sense that F (ω)(x) ·∇ H(x) = 0.
+Proof For any forest of black-rooted trees μ j ,w eh a v e F([μ j]◦[ ∅ ]) = SB j S∇ H
+for some symmetric matrix B j , suppressing the argument x. Similarly, for a forest of
+white-rooted trees η j ,w eh a v eF([η j]) = W j∇ H for some skew-symmetric matrix
+W j . Note that the empty forest is considered both a black-rooted and a white-rooted
+forest, and accordingly we have F([∅] ◦ [∅]) = F( ) = S(D2 H)S∇ H and F([∅]) =
+F( ) = S∇ H . For these matrices B j and W j corresponding to the forests μ j and η j ,
+we get
+F
+(
+[(μ1,η 1)]◦···◦[ (μn,η n)]◦[ ηn+1]
+)
+= W1 B1W2 B2 ··· Bn Wn+1∇ H.
+We have
+(W1 B1W2 B2 ··· Bn Wn+1)T =
+{
+−Wn+1 Bn Wn Bn−1 ··· B1W1 if n even,
+Wn+1 Bn Wn Bn−1 ··· B1W1 if n odd.
+123
+
+===== PAGE 28 =====
+1234 S. Eidnes
+Thus F(ω)(x) is a skew-symmetric matrix times ∇ H(x), and the statement in the
+above theorem follows directly.
+For bi-colored trees, we deﬁne a node on the tree τ to be a leaf if it is a leaf on the
+corresponding cut tree τ b by the deﬁnition of leaves given in the previous section. We
+let Il be the set of leaves and In the set of non-leaf nodes which are also in τ b, so that
+Il ∪ In =[ 1,..., |τ b|]. In contrast to the case with mono-colored trees, a leafi on level
+one or two of a bi-colored tree may give rise to a non-zero energy-preserving linear
+combination; it does so if and only if ηi
+k ⁄=∅ for any k = 1, 2. Accordingly, /Lambda1(ˆτ i) is
+calculated in ( 61) also when n = 0, 1. Furthermore, two leaves i and j on the same
+level will belong to two different energy-preserving combinations if ηi
+n+1 ⁄= η j
+n+1.
+Therefore we now simply state that a tree with r leaves, also including the lower two
+levels, belong to at most r non-zero linear combinations. We thus get r terms on the
+left hand side of
+∑
+i∈Il
+/Lambda1(ˆτ i) = 1
+γ( τ) −ˆe(τ) −
+∑
+i∈In
+/Lambda1({(μi
+1,η i
+1) ,...,( μ i
+n,η i
+n), (∅,η i
+n+1)})
+(|μi
+n+1|+ 1)γ (μi
+n+1) , (64)
+which is equivalent to (60) if we assume the conditions for lower order to be satisﬁed.
+Example 4 Consider the tree τ = , which is part of the energy-preserving linear
+combination − . Assume that the order conditions up to and including order
+three are all satisﬁed. The cut tree τ b = has three nodes of which two are leaves.
+Node number 2 is a leaf on level 2 with η2
+1 = η2
+2 =∅ , and thus gives /Lambda1(ˆτ 2) = 0. We
+ﬁnd for the other two,
+/Lambda1(ˆτ 1) = /Lambda1({(( , ),∅)}) = 1
+(|μ1
+1|+ 1)γ (μ1
+1)/Lambda1
+(
+{(∅,∅)}
+)
+= 1
+(2 + 1)γ ()γ ()
+1
+γ( ) = 1
+6,
+/Lambda1(ˆτ 3) = /Lambda1({( ,∅), (∅, )}) =
+∑
+j
+b1 j (φ1 j1( )ψ1 j2( ) − ψ1 j1( )φ1 j1( ))
+=
+∑
+j
+b1 j φ1 j1( )(ψ1 j2 − ψ1 j1)( ).
+For the right hand side of ( 64) we get
+1
+γ( τ) − /Lambda1(ˆτ 1) = 1
+8 − 1
+6 =− 1
+24,
+and thus the order condition
+∑
+j
+b1 jφ1 j1( )(ψ1 j2 − ψ1 j1)( ) =− 1
+24
+for the energy-preserving linear combination − .
+123
+
+===== PAGE 29 =====
+Order theory for discrete gradient methods 1235
+Even though the number of black-rooted bi-colored trees grows very quickly, e.g.
+to 26 for |τ|= 4 and 107 for |τ|= 5, ﬁnding and satisfying the order conditions
+is not as daunting a task as it might ﬁrst appear. First of all, it sufﬁces to ﬁnd order
+conditions for the non-zero linear combinations given by (63). Moreover, a couple key
+observations simpliﬁes the process further:
+• The large number of trees τ for which τ b = , i.e. trees with no black nodes on
+level 2, are all energy-preserving. They can be written τ =[ η1
+1], and their order
+condition is given by
+2
+∑
+j
+b0 jψ0 j1(η1
+1) = 1
+γ( τ).
+• For trees that are identical except for the colors of the descendants of white nodes,
+it sufﬁces to calculate one order condition. E.g. for we have the order condition
+2b0 jψ0 j1( ) = 1
+12 , where each of the gray nodes may be black or white. To
+satisfy these conditions, it is natural to require that ¯z0 j1 in (56)i saB - s e r i e sup to
+order p − 1.
+From the order conditions displayed in Table4 we ﬁnd that one second order scheme
+is given by ( 9) using the A VF discrete gradient ( 10) and an explicit skew-symmetric
+approximation of S given by S(x,·, h) = S(x + 1
+2 hf (x)). A third order scheme is
+obtained if we instead use the skew-symmetric approximation of S explicitly given by
+S(x,·, h) = 1
+4 S(x) + 3
+4 S(z2) + 1
+4 h
+(
+S(z1)D2 H(x)S(x) − S(x)D2 H(x)S(z1)
+)
+− 1
+12 h2 S(x)D2 H(x)S(x)D2 H(x)S(x),
+(65)
+where z1 = x + 1
+3 hf (x), z2 = x + 2
+3 hf (z1).
+A symmetric fourth order scheme is given by ( 9) using the A VF discrete gradient
+(10) and the skew-symmetric approximation of S
+S(x, ˆx, h) = 1
+2 S
+(
+¯x − 1√
+12
+hf
+(
+¯x + 1√
+12
+hf (¯x)
+))
++ 1
+2 S
+(
+¯x + 1√
+12
+hf
+(
+¯x − 1√
+12
+hf (¯x)
+))
++ 1
+2 hS
+(
+¯x + 1
+12 hf (¯x)
+)
+D2 H(¯x)S
+(
+¯x − 1
+12 hf (¯x)
+)
+− 1
+2 hS
+(
+¯x − 1
+12 hf (¯x)
+)
+D2 H(¯x)S
+(
+¯x + 1
+12 hf (¯x)
+)
+− 1
+12 h2 S(¯x)D2 H(¯x)S(¯x)D2 H(¯x)S(¯x),
+(66)
+123
+
+===== PAGE 30 =====
+1236 S. Eidnes
+Table 4 Linear combinations ω
+of bi-colored black-rooted trees
+corresponding to
+energy-preserving elementary
+differentials of
+f (x) = S(x)∇ H(x),w h e r e
+S(x) is a skew-symmetric
+matrix, as well as their
+associated order conditions for
+the discrete gradient method ( 9)
+with the A VF discrete gradient
+(10)a n d S(x, ˆx, h) given by (56)
+|τ| ω Order condition
+1 2 ∑
+j b0 j = 1
+2 2 ∑
+j b0 j ψ0 j1( ) = 1
+2
+3 2 ∑
+j b0 j ψ0 j1( )2 = 1
+3
+∑
+j b2 j =− 1
+24
+2 ∑
+j b0 j ψ0 j1( ) = 1
+6
+2 ∑
+j b0 j ψ0 j1( ) = 1
+6
+− ∑
+j b1 j (ψ1 j2 − ψ1 j1)( ) =− 1
+12
+4 2 ∑
+j b0 j ψ0 j1( )3 = 1
+4
+2 ∑
+j b2 j ψ2 j2( ) =− 1
+24
+2 ∑
+j b0 j ψ0 j1( ) = 1
+12
+2 ∑
+j b0 j ψ0 j1( ) = 1
+12
+2 ∑
+j b0 j ψ0 j1( ) = 1
+12
+2 ∑
+j b0 j ψ0 j1( )ψ0 j1( ) = 1
+8
+2 ∑
+j b0 j ψ0 j1( )ψ0 j1( ) = 1
+8
++ ∑
+j b2 j (φ2 j1 + φ2 j2)( ) =− 1
+24
+− ∑
+j b1 j (ψ1 j2( )2 − ψ1 j1( )2) =− 1
+12
+− ∑
+j b1 j φ1 j1( )(ψ1 j1 − ψ1 j0)( ) =− 1
+24
+2 ∑
+j b0 j ψ0 j1( ) = 1
+24
+2 ∑
+j b0 j ψ0 j1( ) = 1
+24
+2 ∑
+j b0 j ψ0 j1( ) = 1
+24
+2 ∑
+j b0 j ψ0 j1( ) = 1
+24
++ ∑
+j b2 j (ψ2 j1 + ψ2 j3)( ) =− 1
+24
+− ∑
+j b1 j (ψ1 j2 − ψ1 j1)( ) =− 1
+24
+− ∑
+j b1 j (ψ1 j2 − ψ1 j1)( ) =− 1
+24
+123
+
+===== PAGE 31 =====
+Order theory for discrete gradient methods 1237
+where ¯x = x+ˆx
+2 . Another fourth order scheme is obtained if we instead use the explicit
+skew-symmetric approximation of S found by
+S(x,·, h) = 1
+2(S(z5 + z6) + S(z5 − z6))
++ 1
+12 h
+(
+S(z2)D2 H(z1)S(x) − S(x)D2 H(z1)S(z2)
+)
+− 1
+12 h2 S(z1)D2 H(z1)S(z1)D2 H(z1)S(z1),
+(67)
+where
+z1 = x + 1
+2 hf (x), z3 = x + hf (z2), z5 = 1
+3(x + z1 + z2) + 1
+12(−z3 + z4),
+z2 = x + hf (z1), z4 = x + hf (z3), z6 =
+√
+3
+36 (7x − 2z1 − 4z2 + z3 − 2z4).
+5 Order conditions for general discrete gradient methods
+We will now generalize the results of the two previous sections to discrete gradient
+methods with a general discrete gradient, as deﬁned by ( 7)–(8). To that end, we intro-
+duce two new series in the vein of B- and P-series, as well as related tree structures.
+5.1 The constant S case
+Consider mono-colored rooted trees whose nodes can have two different shapes: the
+circle shape of the nodes in trees of B-series, but also a triangle shape. Let TG be the
+set of such trees whose leaves are always circles. That is, from the ﬁrst tree ,e v e r y
+tree τ ∈ TG can be built recursively through
+[τ1,...,τ m] , [τ1,...,τ m] ,τ 1,...,τ m ∈ TG ,
+which denotes the grafting of the trees τ1,...,τ m to a root or , respectively. The
+elementary differentials F(τ) corresponding to a tree τ ∈ TG are likewise deﬁned
+recursively by F( )(x) = f (x) = S∇ H(x) and
+F(τ)( x) =
+{
+SD m∇ H(x)(F(τ1)(x) ,..., F(τm)(x)) for τ =[ τ1,...,τ m] ,
+SD m−1
+2 Q(x, x)(F(τ1)(x), . . . ,F(τm)(x)) for τ =[ τ1,...,τ m] .
+We can then deﬁne a generalization of B-series which includes these elementary
+differentials.
+Deﬁnition 4 A G-series is a formal series of the form
+G(φ, x) = φ(∅)x +
+∑
+τ∈TG
+h|τ|
+σ(τ) φ(τ) F(τ)( x), (68)
+123
+
+===== PAGE 32 =====
+1238 S. Eidnes
+where φ : TG ∪{ ∅ }→R is an arbitrary mapping, and the symmetry coefﬁcient σ is
+given by (28).
+The G-series of the exact solution is given by x(t0 + h) = G(ξ, x(t0)), with
+ξ(τ) =
+{ 1
+γ( τ) if τ ∈ T,
+0 otherwise . (69)
+For use in the remainder of this paper, we generalize the Butcher product by the
+deﬁnition
+u ◦ v =[ u1,..., um,v ] , for u =[ u1,..., um] , ∈{ , }.
+Furthermore, we let |τ| denote the total number of nodes in τ , and |τ| the number
+of nodes of type .L e t SG be the set of tall trees in TG ; that is, the set of trees with
+only one node on each level. For a tree τ ∈ TG , number every tree from 1 to |τ|,a s
+before. For any node i on level n + 1, we deﬁne the stem si ∈ SG to be the tall tree
+consisting of the nodes connecting the root to node i, including the root and node i.
+Denote the jth node of si by si
+j , so that si
+1 is the root and si
+n+1 = i. Then we have a
+unique set of forests ˆτ i ={ μi
+1,...,μ i
+n+1} such that
+τ =[ μi
+1]si
+1
+◦[ μi
+2]si
+2
+◦···◦[ μi
+n+1]si
+n+1
+.
+That is,
+τ =
+si
+1
+si
+2
+si
+n+1
+μi
+n+1
+μi
+2
+μi
+1
+The following lemma is a generalization of Lemma 5 to G-series. Its proof is very
+similar to the proof of [ 34, Theorem 2.2], and hence omitted.
+Lemma 9 Let G (a, x) and G (b, x) be two G-series with a (∅) = 1 and b(∅) = 0.
+Then the G-series h S D2 H(G(a, x))G(b, x) = G(a × b, x) is given by (a × b)(∅) =
+(a × b)( ) = 0 and otherwise
+(a × b)(τ) =
+{ ∑ m
+i=1
+∏ m
+j=1, j⁄=i a(τ j)b(τi) for τ =[ τ1,...,τ m] ,
+0 for τ =[ τ1,...,τ m] .
+Moreover , h S Q(x, G(a, x))G(b, x) = G(a⊗ b, x), with (a⊗ b)(∅) = (a⊗ b)( ) = 0
+and otherwise
+(a ⊗ b)(τ) =
+{
+0 for τ =[ τ1,...,τ m] ,∑ m
+i=1
+∏ m
+j=1, j⁄=i a(τ j)b(τi) for τ =[ τ1,...,τ m] .
+123
+
+===== PAGE 33 =====
+Order theory for discrete gradient methods 1239
+To every stem s ∈ SG of height n + 1 =| s|, we associate coefﬁcients bsj and φsjk .
+Letting sk be the kth node of s, we deﬁne the function
+R(φsjk , x) :=
+{
+D2 H(G(φsjk , x)) if sk = ,
+Q(x, G(φsjk , x)) if sk = .
+Then we havehSR (φsjk , x)G(b, x) = G(φsjk ⋄b), with(φsjk ⋄b)(∅) = (φsjk ⋄b)( ) =
+0 and
+(φsjk ⋄ b)(τ) =
+{ ∑ m
+i=1
+∏ m
+j=1, j⁄=i φsjk (τ j)b(τi) for τ =[ τ1,...,τ m]sk ,
+0 if root of τ ⁄= sk.
+Consider now the class of skew-symmetric and consistent approximations to S that
+can be written in the form
+S(x, ˆx, h) =
+∑
+s∈SG
+hn ∑
+j
+bsj
+( n∏
+k=1
+SR (φsjk , x) + (−1)|s| −1
+n∏
+k=1
+SR (φsj (n−k+1), x)
+)
+S
+(70)
+whenever ˆx is the solution of
+ˆx − x
+h = S(x, ˆx, h)∇ H(x, ˆx),
+with φsjk (∅) = 1 for every s, j, k, and with ∑
+j b j = 1
+2 .
+Lemma 10 The discrete gradient method (9) with S(x, ˆx, h) given by (70) and ∇ H ∈
+C∞(Rd × Rd, Rd) is a G-series method when applied to a constant S skew-gradient
+system (6).
+Proof Assume that the solution ˆx of ( 9) with S(x, ˆx, h) given by (70) can be written
+as the G-series ˆx = G(/Phi1,x). Then, using Lemma 2 and ∇ H(x, x) =∇ H(x),
+hS∇ H(x, ˆx) = hS
+∞∑
+m=0
+1
+m! Dm
+2 ∇ H(x, x)(G(/Phi1,x) − x)m
+= hS
+∞∑
+m=0
+1
+(m + 1)! Dm∇ H(x)(G(/Phi1,x) − x)m
+− hS
+∞∑
+m=1
+2m
+(m + 1)! Dm−1
+2 Q(x, x)(G(/Phi1,x) − x)m.
+123
+
+===== PAGE 34 =====
+1240 S. Eidnes
+Arguing as in the proof of Lemma III.1.9 in [ 21], we get hS ∇ H(x, ˆx) = G(θ, x),
+with θ(∅) = 0,θ( ) = 1, and
+θ([τ1,...,τ m] ) = 1
+m + 1/Phi1(τ1)··· /Phi1(τm),
+θ([τ1,...,τ m] ) = −2m
+m + 1/Phi1(τ1)··· /Phi1(τm).
+(71)
+Then we can write ( 9) with S(x, ˆx, h) given by (70)a s
+ˆx = x +
+∑
+s∈SG
+hn ∑
+j
+bsj
+( n∏
+k=1
+SR (φsjk , x) + (−1)|s| −1
+n∏
+k=1
+SR (φsj (n−k+1), x)
+)
+G(θ, x)
+= x + G(θ, x)
++
+∑
+s∈SG, n>0
+∑
+bs
+j
+(
+G(φsj 1 ⋄···⋄ φsjn ⋄θ, x)
++ (−1)|s| −1 G(φsjn ⋄···⋄ φsj 1 ⋄θ, x)
+)
+= G(/Phi1,x),
+with
+/Phi1=ˆe + θ +
+∑
+s∈SG, n>0
+∑
+j
+bsj
+(
+φsj 1 ⋄···⋄ φsjn ⋄θ + (−1)|s| −1φsjn ⋄···⋄ φsj 1 ⋄θ
+)
+.
+(72)
+Theorem 6 The discrete gradient method (9) with S(x, ˆx, h) given by (70) and ∇ H ∈
+C∞(Rd × Rd, Rd) is of order p if and only if
+/Phi1(τ)= ξ(τ) for |τ|≤ p, (73)
+where /Phi1is given by (72) and the ξ is given by (69).
+We remark that ∇ H ∈ C∞(Rd × Rd, Rd) is a necessary condition for the method to
+be a G-series method for all S and H , but not for its order;∇ H ∈ C p−1(Rd × Rd, Rd)
+is sufﬁcient for the scheme to be of order p. The following proposition is presented
+without its proof, which follows along the lines of the proof of Proposition 3.
+Proposition 6 The /Phi1of (73) satisﬁes
+/Phi1(τ)=ˆe(τ) + θ(τ) +
+∑
+is . t . n≥1
+/Lambda1(ˆτ i, si) (74)
+where ˆe(∅) = 1 and ˆe(τ) = 0 for all τ ⁄=∅ ,θ is given by (71), and
+/Lambda1(ˆτ i, si) = θ([μi
+n+1]si
+n+1
+)
+( ∑
+j
+bsi jφsi j1(μi
+1)··· φsi jn (μi
+n)
++ (−1)|si | −1 ∑
+j
+bˆsi jφˆsi jn (μi
+1)··· φˆsi j1(μi
+n)
+)
+,
+(75)
+123
+
+===== PAGE 35 =====
+Order theory for discrete gradient methods 1241
+with ˆsi given by ˆsi
+k = si
+n−k+1 for k = 1,..., n, and ˆsi
+n+1 = si
+n+1.
+As for the A VF method, one does not need to ﬁnd the order conditions for every tree;
+it sufﬁces to ﬁnd the order condition for each energy-preserving linear combination
+of the form
+ω =[ μ1]s1 ◦[ μ2]s2 ◦···[ μn]sn ◦[ ∅ ]+ (−1)n [μn]sn ◦[ μn−1]sn−1 ◦···[ μ1]s1 ◦[ ∅ ].
+(76)
+The above does not give every energy-preserving linear combination of the elementary
+differentials of G-series; it gives the combinations one gets in the scheme ( 9) with
+S(x, ˆx, h) given by ( 70). Now, let again Il and In denote the sets of leaf nodes and
+non-leaf nodes, respectively. If we assume the conditions for order< p to be satisﬁed,
+we have an equivalent order condition to ( 73)b y
+∑
+i∈Il
+/Lambda1(ˆτ i, si) = ξ(τ) −ˆe(τ) −
+∑
+i∈In
+/Lambda1(ˆτ i, si), (77)
+where we may use the relation
+/Lambda1({μi
+1,...,μ i
+n,μ i
+n+1}, si) = ˆθ([μi
+n+1]si
+n+1
+)/Lambda1({μi
+1,...,μ i
+n,∅}, ¯si)
+to calculate /Lambda1(ˆτ i) for i ∈ In .H e r e ¯si is si with si
+n+1 replaced by , and ˆθ(∅) =
+0, ˆθ( ) = 1, and
+ˆθ([τ1,...,τ m] ) = 1
+m + 1ξ(τ1)··· ξ(τm),
+ˆθ([τ1,...,τ m] ) = −2m
+m + 1ξ(τ1)··· ξ(τm).
+(78)
+Note that /Lambda1(ˆτ 1, s1) = ˆθ(τ) .
+From the order conditions in Table 5, we can ﬁnd an S(x, ˆx, h) so that (9) becomes
+a fourth order scheme for any ∇ H ∈ C3(Rd × Rd, Rd). For instance, the stem s =
+has the related order conditions ∑
+j bsj = 1
+2 and ∑
+j,k bsj φsjk ( ) = 2
+3 , which sets the
+requirements for the term
+h2 ∑
+j
+bsj (SQ (x, z1 j)SQ (x, z2 j ) + SQ (x, z2 j)SQ (x, z1 j))S.
+123
+
+===== PAGE 36 =====
+1242 S. Eidnes
+Table 5 Energy-preserving
+linear combinations of the form
+(76) and their associated order
+conditions for the discrete
+gradient method ( 9) with
+S(x, ˆx, h) given by (70)
+|τ| ω s Order condition
+1 ∑
+j bsj = 1
+2
+2 ∑
+j bsj = 1
+2
+3 ∑
+j bsj φsj 1( ) = 1
+3
+∑
+j bsj = 1
+2
+− ∑
+j bsj − ∑
+j b¯sj = 0
+∑
+j bsj =− 1
+24
+4 ∑
+j bsj φsj 1( )2 = 1
+4
+∑
+j bsj φsj 1( ) = 0
+∑
+j bsj φsj 1( ) = 1
+6
++ ∑
+j,k bsj φsjk ( ) = 2
+3
+− ∑
+j bsj φsj 2( ) − ∑
+j b¯sj φ¯sj 1( ) = 0
+− ∑
+j bsj φsj 2( ) − ∑
+j b¯sj φ¯sj 1( ) = 0
++ ∑
+j,k bsj φsjk ( ) =− 1
+24
+∑
+j bsj = 1
+2
+− ∑
+j bsj − ∑
+j b¯sj = 0
++ ∑
+j bsj − ∑
+j b¯sj = 0
+∑
+j bsj = 0
+Choosing bs1 = 1
+2 and z11 = z21 = x + 2
+3 hf (x), we have fulﬁlled these conditions.
+Likewise, ﬁnding terms that satisfy the other order conditions, we get e.g.
+S(x, h) = S + hS
+( 8
+9 Q(x, z3) + 1
+9 Q(x, x)
+)
+S
++ h2 S
+(
+Q(x, z2)SQ (x, z2) − 1
+12 D2 H(z1)SD 2 H(z1)
+)
+S
++ h3 S
+(
+Q(x, x)SQ (x, x)SQ (x, x)
+− 1
+12 D2 H(x)SD 2 H(x)SQ (x, x) − 1
+12 Q(x, x)SD 2 H(x)SD 2 H(x)
+)
+S,
+(79)
+123
+
+===== PAGE 37 =====
+Order theory for discrete gradient methods 1243
+where
+z1 = x + 1
+2 hf (x), z2 = x + 2
+3 hf (x), z3 = x + 3
+4 hf (z1).
+5.2 The general case
+Allowing for S to be a function of the solution, we deﬁne now the set TV of bi-
+colored trees whose nodes are either circles of triangles, and whose leaves on the cut
+tree τ b, deﬁned as the mono-colored tree left when all branches between black and
+white nodes are cut off, are always circles. Denoting as before black-rooted subtrees
+by τi and white-rooted subtrees by ¯τi , the elementary differentials of trees τ ∈ TV
+are given by F( )(x) = F( )(x) = f (x) = S∇ H(x) and
+F(τ)( x) =
+{
+S(l) Dm∇ H(x)(F(τ1)(x) ,..., F(¯τl)(x)) for τ =[ τ1,...,τ m, ¯τ1,..., ¯τl,] ,
+S(l) Dm−1
+2 Q(x, x)(F(τ1)(x) ,..., F(¯τl)(x)) for τ =[ τ1,...,τ m, ¯τ1,..., ¯τl,] ,
+where can be either or and can be either or .L e t TV denote the set of trees in
+TV with black roots, either of the shape or .
+Deﬁnition 5 A V -series is a formal series of the form
+V(φ, x) = φ(∅)x +
+∑
+τ∈TV
+h|τ|
+σ(τ) φ(τ) F(τ)( x), (80)
+where φ : TV ∪{ ∅ }→R is an arbitrary mapping, and the symmetry coefﬁcient σ is
+given by (28).
+Proofs of the theorems in this subsection can be obtained similarly to the proofs in
+Sects. 4 and 5.1, and are therefore omitted.
+We redeﬁne
+R(φsjk , x) :=
+{
+D2 H(G(φsjk , x)) if sk = ,
+Q(x, V,( φsjk , x)) if sk = .
+and consider now approximations of S(x) that can be written as
+S(x, ˆx, h) =
+∑
+s∈SG
+hn ∑
+j
+bsj
+( n∏
+k=1
+S(V(ψsjk , x))R(φsjk , x) · S(V(ψsj (n+1), x))
++ (−1)|s| −1 S(V(ψsj (n+1), x))
+n∏
+k=1
+R(φsj (n−k+1), x)S(V(ψsj (n−k+1), x))
+) (81)
+whenever ˆx is the solution of
+ˆx − x
+h = S(x, ˆx, h)∇ H(x, ˆx),
+123
+
+===== PAGE 38 =====
+1244 S. Eidnes
+with φsjk (∅) = ψsjk (∅) = 1 for every s, j, k, and with ∑
+j b j = 1
+2 .
+Theorem 7 The discrete gradient scheme (9) with the approximation of S(x) given by
+(81) and∇ H ∈ C∞(Rd×Rd, Rd) is a V-series method. It can be writtenˆx = V(/Phi1,x),
+with
+/Phi1=ˆe +
+∑
+s∈SG
+∑
+j
+bsj
+(
+(ψsj 1,φ sj 1) ⋄···⋄ (ψsjn ,φ sjn ) ⋄ ˆθ(ψ sj (n+1))
++ (−1)n (ψsj (n+1),φ sjn ) ⋄···⋄ (ψsj 2,φ sj 1) ⋄ ˆθ(ψsj 1)
+)
+.
+(82)
+where
+ˆθ(a)([τ1,...,τ m, ¯τ1,..., ¯τl] ) = 1
+m + 1/Phi1(τ1)··· /Phi1(τm)a(¯τ1)··· a(¯τl),
+ˆθ(a)([τ1,...,τ m, ¯τ1,..., ¯τl] ) = −2m
+m + 1/Phi1(τ1)··· /Phi1(τm)a(¯τ1)··· a(¯τl).
+(83)
+The scheme is of order p if and only if
+/Phi1(τ)= ξ(τ) for |τ|≤ p, (84)
+where
+ξ(τ) =
+{ 1
+γ( τ) if τ ∈ TP ,
+0 otherwise. (85)
+As in Sect. 4.2, we cut the branches between black and white nodes, regardless of
+the shape of the nodes, and denote this tree by τ b. Number the nodes and reattach the
+cut-off parts. For the node i and the corresponding stem si , there exists a unique set
+of forests ˆτ i ={ (μi
+1,η i
+1) ,...,( μ i
+n+1,η i
+n+1)} such that
+τ =[ (μi
+1,η i
+1)]si
+1
+◦···[ (μi
+n,η i
+n)]sin ◦[ (μi
+n+1,η i
+n+1)]si
+n+1
+Proposition 7 The /Phi1of (82) satisﬁes
+/Phi1(τ)=ˆe(τ) +
+|τ b|∑
+i=1
+/Lambda1(ˆτ i, si) (86)
+where ˆe(∅) = 1 and ˆe(τ) = 0 for all τ ⁄=∅ , and
+/Lambda1(ˆτ i, si) = θ([μi
+n+1]si
+n+1
+)
+( ∑
+j
+bsi jψsi j1(ηi
+1)φsi j1(μi
+1)··· φsi jn (μi
+n)ψsi j(n+1)(ηi
+n+1)
++ (−1)|si | −1 ∑
+j
+bˆsi jψˆsi j(n+1)(ηi
+1)φˆsi jn (μi
+1)··· φˆsi j1(μi
+n)ψˆsi j1(ηi
+n)
+)
+,
+(87)
+with θ given by (71) and ˆsi given by ˆsi
+k = si
+n−k+1 for k = 1,..., n, and ˆsi
+n+1 = si
+n+1.
+123
+
+===== PAGE 39 =====
+Order theory for discrete gradient methods 1245
+The number of trees in TV grows very quickly. However, in our task of ﬁnding
+higher order schemes we may use the lessons of the previous sections, and require that
+the arguments of S, D2 H and Q in (81) are B-series up to order p − 1. Then we only
+need to ﬁnd order conditions for energy-preserving linear combinations of the form
+ω =[ (μ1,η 1)]s1 ◦···◦[ (μn,η n)]sn ◦[ ηn+1]
++(−1)n [(μn,η n+1)]sn ◦···◦[ (μ1,η 2)]s1 ◦[ η1] , (88)
+where μi and ηi are forests of trees in TP and TP respectively, for i = 1,..., n + 1.
+Thus we can disregard any tree with in it. Furthermore, we may color all nodes
+of the trees in μi and ηi except the roots gray, and let the elementary differentials
+corresponding to these trees be the same as the elementary differentials of B-trees.
+We ﬁnd the order conditions
+∑
+i∈Il
+/Lambda1(ˆτ i, si) = ξ(τ) −ˆe(τ) −
+∑
+i∈In
+/Lambda1(ˆτ i, si),
+by using the relation
+/Lambda1({(μi
+1,η i
+1) ,...,( μ i
+n+1,η i
+n+1)}, si)
+= ˆθ([μi
+n+1]si
+n+1
+)/Lambda1({(μi
+1,η i
+1) ,...,( ∅,η i
+n+1)}, ¯si)
+to calculate /Lambda1(ˆτ i) for i ∈ In .T h e ˆθ is given by ( 78), and ¯si is si with si
+n+1 replaced
+by .
+Example 5 Consider , which is part of the energy-preserving linear combination
++ . We have two black nodes, and calculate
+/Lambda1(ˆτ 1, s1) = /Lambda1({( , )}, ) = ˆθ( )/Lambda1({(∅, )}, ) =− ξ( )ξ( ) =− 1
+6,
+/Lambda1(ˆτ 2, s2) = /Lambda1({(∅, ), (∅,∅)}, ) =
+∑
+j
+bs2 jψs2 j1( ) +
+∑
+j
+b¯s2 jψ¯s2 j2( )
+=
+∑
+j
+bs2 j(ψs2 j1 + ψs2 j2)( ).
+Hence the order condition associated to this linear combination is
+∑
+j
+bs2 j(ψs2 j1 + ψs2 j2)( ) = 1
+6.
+123
+
+===== PAGE 40 =====
+1246 S. Eidnes
+An approximation of S(x) satisfying all the order conditions in Tables 5 and 6 is
+given by
+S(x,·, h) = 1
+2(S(z11 + z12) + S(z11 − z12))
++ 1
+12 h
+(
+S(z6)D2 H(z2)S(x) − S(x)D2 H(z2)S(z6)
+)
++ 3
+7 h
+(
+S(z3)Q(x, z5)S(z4) + S(z4)Q(x, z5)S(x, z3)
+)
++ 8
+105 hS(x)Q(x, z7)S(x) + 1
+15 hS(x)Q(x, x)S(x)
++ h2 S(z2)Q(x, z5)S(z8)Q(x, z5)S(z2)
+− 1
+12 h2 S(z2)D2 H(z2)S(z2)D2 H(z2)S(z2)
++ 1
+6 h2(S(z2) − S(x))D2 H(x)S(x)Q(x, x)S(x)
+− 1
+6 h2 S(x)Q(x, x)S(x)D2 H(x)(S(z2) − S(x))
++ h3 S(x)Q(x, x)S(x)Q(x, x)S(x)Q(x, x)
+− 1
+12 h3 S(x)D2 H(x)S(x)D2 H(x)S(x)Q(x, x)S(x)
+− 1
+12 h3 S(x)Q(x, x)S(x)D2 H(x)S(x)D2 H(x)S(x),
+(89)
+with
+z1 = x + 1
+3 hf (x), z2 = x + 1
+2 hf (x), z3 = x + 7 −
+√
+7
+12 hf (z1),
+z4 = x + 7 +
+√
+7
+12 hf (z1), z5 = x + 2
+3 hf (z2), z6 = x + hf (z2),
+z7 = x + 5
+4 hf (z2), z8 = x + 4
+3 hf (z2), z9 = x + hf (z6), z10 = x + hf (z9),
+z11 = 1
+3(x + z2 + z6) + 1
+12(−z9 + z10), z12 =
+√
+3
+36 (7x − 2z2 − 4z6 + z9 − 2z10),
+and hence a discrete gradient scheme with thisS(x,·, h) and any∇∈ C3(Rd×Rd, Rd)
+will be of fourth order.
+One advantage of choosing the A VF discrete gradient is that the resulting scheme
+generally requires fewer computations at each time step. This is clearly evident in the
+above example: if∇= ∇AV F, then (89) collapses to (67). However, if the A VF discrete
+gradient is difﬁcult to calculate, there can also be much to gain in computational cost
+by choosing a symmetric discrete gradient, like the symmetrized Itoh–Abe discrete
+gradient ( 23) or the Furihata discrete gradient ( 25). Then one can ignore the order
+condition for any combination ( 88)f o rw h i c hs j = and μ j =∅ for some j ∈[ 1, n],
+123
+
+===== PAGE 41 =====
+Order theory for discrete gradient methods 1247
+Table 6 The energy-preserving
+linear combinations of the form
+(88) not given in Table 5,u pt o
+fourth order
+|τ| ω s Order condition
+2 2 ∑
+j bsj ψsj 1( ) = 1
+2
+3 2 ∑
+j bsj ψsj 1( )2 = 1
+3
+2 ∑
+j bsj ψsj 1( ) = 1
+6
++ ∑
+j bsj (ψsj 1 + ψsj 2)( ) = 1
+2
+− ∑
+j bsj (ψsj 2 − ψsj 1)( ) =− 1
+12
+4 2 ∑
+j bsj ψsj 1( )3 = 1
+4
+2 ∑
+j bsj ψsj 1( )ψ0 j1( ) = 1
+8
+2 ∑
+j bsj ψsj 1( ) = 1
+12
+2 ∑
+j bsj ψsj 1( ) = 1
+24
+∑
+j bsj φsj 1( ) = 1
+6
+∑
+j bsj ψsj 1( )ψsj 2( ) = 1
+8
++ ∑
+j bsj φsj 1( )(ψsj 1 + ψsj 2)( ) = 1
+3
++ ∑
+j bsj (ψsj 1( )2 + ψsj 2( )2) = 1
+3
++ ∑
+j bsj (ψsj 1 + ψsj 2)( ) = 1
+6
+− ∑
+j bsj φsj 1( )(ψsj 2 − ψsj 1)( ) =− 1
+24
+− ∑
+j bsj (ψsj 2( )2 − ψsj 1( )2) =− 1
+12
+− ∑
+j bsj (ψsj 2 − ψsj 1)( ) =− 1
+24
+∑
+j bsj ψsj 2( ) = 2
+3
++ ∑
+j bsj (ψsj 1 + ψsj 3)( ) = 1
+2
+− ∑
+j bsj (ψsj 1 − ψsj 3)( ) = 1
+12
+− ∑
+j bsj ψsj 3( ) − ∑
+j b¯sj ψ¯sj 1( ) = 0
+2 ∑
+j b2 j ψ2 j1( ) =− 1
+24
++ ∑
+j bsj (ψsj 1 + ψsj 3)( ) =− 1
+24
+123
+
+===== PAGE 42 =====
+1248 S. Eidnes
+since this corresponds to elementary differentials involving Q(x, x), which we recall
+is zero when the discrete gradient is symmetric. If we consider the conditions for
+fourth order presented in Tables 5 and 6, this eliminates 17 of the 22 conditions for
+trees with in the stem. By considering the remaining order conditions we get that, if
+∇ H ∈ C3(Rd × Rd, Rd) and ∇ H(x, y) = ∇ H(y, x), the discrete gradient scheme
+(9) is of fourth order if
+S(x,·, h) = 1
+2(S(z5 + z6) + S(z5 − z6))
++ 1
+12 h
+(
+S(z2)D2 H(z1)S(x) − S(x)D2 H(z1)S(z2)
+)
++ 8
+9 hS(z1)Q(x, z7)S(z1) − 1
+12 h2 S(z1)D2 H(z1)S(z1)D2 H(z1)S(z1),
+(90)
+with
+z1 = x + 1
+2 hf (x), z2 = x + hf (z1), z3 = x + hf (z2),
+z4 = x + hf (z3), z5 = 1
+3(x + z1 + z2) + 1
+12(−z3 + z4),
+z6 =
+√
+3
+36 (7x − 2z1 − 4z2 + z3 − 2z4), z7 = x + 3
+4 hf (z1).
+If S is constant, ( 90) simpliﬁes to
+S(x,·, h) = S + 8
+9 hSQ (x, z7)S − 1
+12 h2 SD 2 H(z1)SD 2 H(z1)S. (91)
+6 Numerical experiments
+For all the examples considered in the following, the resulting discrete gradient
+schemes are nonlinearly implicit systems, which we here solve using Newton’s
+method. Note that whenever S(x, ˆx, h) is independent of ˆx, the Jacobian of
+F(ˆx) =ˆx − x − h S(x, ˆx, h)∇ H(x, ˆx)
+is given by
+J(ˆx) = I − h S(x, ˆx, h)D2∇ H(x, ˆx), (92)
+where D2∇ H(x, ˆx) may also be used for the calculation of Q(x, ˆx). The extra com-
+putational cost of using a higher-order scheme with an explicit S thus only lies in
+the computation of this S once each time step. A scheme with an implicitly deﬁned
+S(x, ˆx, h) can give a much more complicated Jacobian, but a quasi-Newton method
+using the approximate Jacobian given by ( 92) may still be very efﬁcient.
+123
+
+===== PAGE 43 =====
+Order theory for discrete gradient methods 1249
+10-2 10-1
+Step size
+10-15
+10-10
+10-5
+Error at t=10
+AVFM2
+AVFM4
+FDGM4
+IADGM4
+AVFM5
+AVFM6
+0 1 02 03 04 05 0
+Time
+10-10
+10-5
+100
+Global error AVFM2
+AVFM4
+IADGM4
+RK4
+GL4
+AVFM5
+AVFM6
+Fig. 1 Error plots for the Hénon–Heiles system ( 93) solved by various discrete gradient methods:
+A VFM2/4/5/6 are A VF discrete gradient methods of different orders; FDGM4 is a fourth order Furihata
+discrete gradient method; IADGM4 is a fourth order Itoh–Abe discrete gradient method. RK4 is the classic
+Runge–Kutta method and GL4 is the fourth order Gauss–Legendre method, included for comparison. The
+black dashed lines in the order plot are reference lines of order two, four, ﬁve and six. The step size in the
+right plot is h = 0.1
+6.1 Hénon–Heiles system
+The Hénon–Heiles system can be written in the form ( 6) with
+S =
+( 0 I
+−I 0
+)
+, H(q, p) = 1
+2(q2
+1 + q2
+2 + p2
+1 + p2
+2) + q2
+1 q2 − 1
+3 q3
+2, (93)
+where I is the 2 × 2 identity matrix. We use here the same initial conditions used in
+[37]: q1 = 1
+10 , q2 =− 1
+2, p1 = p2 = 0. The order of some of the energy-preserving
+methods proposed in this paper are conﬁrmed by the left plot in Fig. 1. We compare
+the performance of the fourth order discrete gradient methods obtained by using the
+S given by (79) coupled with three different discrete gradients: the Itoh–Abe discrete
+gradient (22), the Furihata discrete gradient ( 25), and the A VF discrete gradient (10)
+(right plot of Fig. 1). The symmetrized Itoh–Abe discrete gradient ( 23) is for this H
+identical to the Furihata discrete gradient. The A VF and Furihata discrete gradient
+methods perform in this case very similarly, and thus the error from the Furihata
+discrete gradient method is excluded from the right plot in Fig. 1. We observe that,
+although it initially performs on par with the A VF method, the Itoh–Abe discrete
+gradient method gives a lower global error than the other fourth order methods as time
+goes on. Note however that this method requires the most computations at every time
+step.
+6.2 Lotka–Volterra
+The methods should also be tested on a skew-gradient system with non-constant S.
+We choose the Lotka–V olterra system also used for numerical experiments in [10]. It
+is given by
+123
+
+===== PAGE 44 =====
+1250 S. Eidnes
+Fig. 2 Order or discrete gradient
+methods applied to the
+Lotka–V olterra system (94),
+with different S:
+S(x, ˆx) = S( x+ˆx
+2 ) for DGM2,
+(65) for DGM3, ( 67)f o r
+DGM4-exp, (66)f o r
+DGM4-imp. The dashed lines
+are reference lines of order two,
+three and four
+10-3 10-2 10-1
+Time step
+10-10
+10-5
+100
+Error at t=10
+DGM2
+DGM3
+DGM4-exp
+DGM4-imp
+0 1 02 03 04 05 0
+Time
+10-6
+10-4
+10-2
+100
+Global error
+DGM2
+DGM3
+DGM4-exp
+DGM4-imp
+RK4
+GL4
+0 1 02 03 04 05 0
+Time
+10-15
+10-10
+10-5
+100
+Energy error
+DGM2
+DGM3
+DGM4-exp
+DGM4-imp
+RK4
+GL4
+Fig. 3 Error in the solution and in the energy for discrete gradient methods with S given by S(x, ˆx) =
+S( x+ˆx
+2 ) for DGM2, ( 65) for DGM3, ( 67) for DGM4-exp and ( 66) for DGM4-imp, applied to the Lotka–
+V olterra system, with step size h = 0.05. For comparison, errors from using the standard fourth order
+Runge–Kutta (RK4) and Gauss–Legendre (GL4) methods are also included
+S = 1
+2
+⎛
+⎝
+0 −x1 x2 x1 x3
+x1 x2 0 −2x2 x3
+−x1 x3 2x2 x3 0
+⎞
+⎠ , H(x) = 2x1 + x2 + 2x3 + ln(x2) − 2l n(x3),
+(94)
+and initial conditions x1 = 1, x2 = 19
+10, x3 = 1
+2 . For this H , the Itoh–Abe, Furihata and
+A VF discrete gradients are all equivalent. Order plots are given in Fig.2. We consider
+fourth order discrete gradient methods where ∇ S is given either dependent on or
+independent of ˆx; that is, ( 66)o r( 67). The implicitly given ( 67) yields a signiﬁcantly
+lower error in the solution of the corresponding discrete gradient method, as can be
+witnessed from the left plot in Fig. 3. In contrast to what we observed for the canonical
+Hamiltonian system studied above, none of the discrete gradient methods give a global
+error lower than that of the fourth order Gauss–Legendre method.
+123
+
+===== PAGE 45 =====
+Order theory for discrete gradient methods 1251
+6.3 Hamiltonian neural networks
+We present here results on the pendulum problem also considered in [19, 27]. Training
+data is ﬁrst generated by adding noise to solutions of the system ( 6) with
+S =
+( 01
+−10
+)
+, H(q, p) = 2mgl(1 − cos q) + l2
+2m p2,
+with l = m = 1 and g = 3, for various times t ∈ [0, 20] and 50 randomly sampled
+initial coordinates. Then a Hamiltonian neural network (HNN) is used to learn the
+Hamiltonian. If the automatic discrete differentiation algorithm is used for the training,
+the corresponding discrete gradient is learned simultaneously. To computeQ(x, y),w e
+require that the network also learns the Jacobian of the discrete gradient with respect
+to the second argument. This necessitates a modiﬁcation of the network developed by
+Matsubara et al [ 27], which we have done using the autograd class of PyTorch. The
+resulting Jacobian is in any case very useful for integrating the system by any discrete
+gradient method, since we then can employ a root-ﬁnding algorithm that use (92), e.g.
+Newton’s method.
+We have tested second, third and fourth order discrete gradient methods both for
+training the network and for integrating the obtained dynamical system. For the fourth
+order scheme, we have used the S given by ( 91) and for the third order scheme we
+have used
+S(x,·, h) = S + hSQ (x, z)S − 1
+12 h2 SD 2 H(x)SD 2 H(x)S, (95)
+where z = x + 2
+3 hS∇ H(x). Note that∇ H and D2 H can be obtained from the network
+through the relations ∇ H(x) = ∇ H(x, x) and D2 H(x) = 2D2∇ H(x, x).
+As is also noted in [ 27], energy preservation seems to be more important than high
+order for the method used to train the system. In Fig. 4 we see an example of this:
+the second order discrete gradient method outperforms the fourth order Runge–Kutta
+method. Whether or not higher-order discrete gradient methods give an improved
+performance that justiﬁes the extra computational cost is not clear on this example.
+A thorough investigation of this for more complex problems is a matter for future
+studies.
+For energy-preserving integration of the learned system, much can be gained in
+accuracy by using a higher-order discrete gradient method, at the expense of not much
+additional computational cost. The order plots in Fig. 5 are obtained by comparing to
+a solution found by the fourth order discrete gradient method with a smaller step size.
+Python code for the neural networks used to produce the plots in Figs. 4 and 5, and
+additional results on a mass-spring system, is available athttps://github.com/solveeid/
+dgnet4.
+123
+
+===== PAGE 46 =====
+1252 S. Eidnes
+Fig. 4 The trajectories that goes
+through (q, p) = (2, 0) for the
+dynamical systems learned by an
+HNN with the Euler method, the
+classic Runge–Kutta method and
+discrete gradient methods with S
+given by S (DGM2), (95)
+(DGM3) and ( 91) (DGM4). The
+plots for DGM2 and DGM3 are
+almost entirely hidden behind
+the plot for DGM4. The step size
+used in the training is h = 0.5
+Fig. 5 Comparison of different integrators for the pendulum system found using an HNN with the second
+order discrete gradient method. Left: Order plots for discrete gradient methods with S given by S (DGM2),
+(95) (DGM3) and ( 91) (DGM4). The dashed lines are reference lines of order two, three and four. Right:
+Energy errors for the same methods, and the fourth-order Runge–Kutta method. Step size h = 0.1
+7 Conclusions and future work
+The main purpose of this paper has been to develop order theory for discrete gradient
+methods. This was achieved through the introduction of the functionQ, Lemma 2 and a
+generalization of B- and P-series results. Propositions3, 5, 6 and 7 present results which
+simpliﬁes the derivation of the conditions from the general theory. The techniques
+introduced in this paper for building on B- and P-series methods can possibly be used
+on more methods than the discrete gradient methods. Future research may utilize this.
+We have proposed some higher order schemes satisfying the derived order condi-
+tions. The development of speciﬁc schemes has however not been the main focus of
+this paper; analysis to ﬁnd more optimal schemes is something we leave for the future.
+After such an analysis is performed, the methods could be tested on more advanced
+problems than those considered above, e.g. for the temporal discretization of Hamil-
+123
+
+===== PAGE 47 =====
+Order theory for discrete gradient methods 1253
+tonian partial differential equations, and their performance as measured by accuracy
+relative to computational cost could be compared to existing methods.
+The use of neural networks to train dynamical systems with preservation proper-
+ties is an emerging ﬁeld of study where new developments are coming with a high
+frequency. To our knowledge, the use of higher-order one-step energy-preserving inte-
+grators in this setting has not previously been studied, and may not even have been
+known to be possible until the novel results of this paper. The potential utility of the
+methods remain largely unexplored and will be considered in future work. This will
+include using methods of order higher than four and analysis of the methods com-
+pared to and in connection with other recent developments, both in the training of
+the network and for the integration of the resulting system. It would also be interest-
+ing to investigate how the methods perform on more advanced examples, including
+Hamiltonian PDEs, and for Lagrangian neural networks [ 1, 11].
+The order theory presented in this paper can also be developed further in several
+different directions. The schemes given with S independent of ˆx are linearly implicit
+when H is quadratic; if the order theory is extended to the polarized discrete gradient
+methods of [12, 13, 28], we could get higher order linearly implicit multi-step schemes
+for systems with polynomial ﬁrst integrals of any degree. Another avenue could be
+to consider order conditions for the discrete Riemannian gradient methods presented
+in [ 4]. Then the results in Sect. 5 are especially interesting, since the integral in the
+A VF discrete Riemannian gradient can be challenging to compute analytically. Lastly,
+building on [ 2], order conditions for the exponential A VF method is given in [ 33].
+This could be extended to exponential integrators using any discrete gradient by the
+theory presented in this paper.
+Acknowledgements The author is grateful to Brynjulf Owren for the invaluable suggestions he has provided
+during the writing of this paper. The author would like to thank the Isaac Newton Institute for Mathemat-
+ical Sciences, Cambridge, for support and hospitality during the programme Geometry, compatibility and
+structure preservation in computational differential equations , where work on this paper was undertaken.
+This work was supported by EPSRC Grant No. EP/R014604/1.
+Funding Open access funding provided by SINTEF AS
+Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which
+permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give
+appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence,
+and indicate if changes were made. The images or other third party material in this article are included
+in the article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If
+material is not included in the article’s Creative Commons licence and your intended use is not permitted
+by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the
+copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/ .
+References
+1. Aoshima, T., Matsubara, T., Y aguchi, T.: Deep discrete-time Lagrangian mechanics. ICLR2021 Work-
+shop on Deep Learning for Simulation (SimDL) (2021)
+2. Berland, H., Owren, B., Skaﬂestad, B.: B-series and order conditions for exponential integrators. SIAM
+J. Numer. Anal. 43(4), 1715–1727 (2005). https://doi.org/10.1137/040612683
+123
+
+===== PAGE 48 =====
+1254 S. Eidnes
+3. Cai, J., Hong, J., Wang, Y ., Gong, Y .: Two energy-conserved splitting methods for three-dimensional
+time-domain Maxwell’s equations and the convergence analysis. SIAM J. Numer. Anal. 53(4), 1918–
+1940 (2015). https://doi.org/10.1137/140971609
+4. Celledoni, E., Eidnes, S., Owren, B., Ringholm, T.: Energy-preserving methods on Riemannian man-
+ifolds. Math. Comp. 89(322), 699–716 (2020). https://doi.org/10.1090/mcom/3470
+5. Celledoni, E., Grimm, V ., McLachlan, R.I., McLaren, D.I., O’Neale, D., Owren, B., Quispel, G.R.W.:
+Preserving energy resp. dissipation in numerical PDEs using the “Average V ector Field” method. J.
+Comput. Phys. 231(20), 6770–6789 (2012). https://doi.org/10.1016/j.jcp.2012.06.022
+6. Celledoni, E., McLachlan, R.I., McLaren, D.I., Owren, B., Quispel, G.R.W., Wright, W.M.: Energy-
+preserving Runge–Kutta methods. M2AN Math. Model. Numer. Anal. 43(4), 645–649 (2009). https://
+doi.org/10.1051/m2an/2009020
+7. Chartier, P ., Faou, E., Murua, A.: An algebraic approach to invariant preserving integrators: the case of
+quadratic and Hamiltonian invariants. Numer. Math. 103(4), 575–590 (2006). https://doi.org/10.1007/
+s00211-006-0003-8
+8. Chen, Z., Zhang, J., Arjovsky, M., Bottou, L.: Symplectic recurrent neural networks. arXiv preprint,
+arXiv:1909.13334 (2019)
+9. Chorin, A.J., McCracken, M.F., Hughes, T.J.R., Marsden, J.E.: Product formulas and numerical algo-
+rithms. Comm. Pure Appl. Math. 31(2), 205–256 (1978). https://doi.org/10.1002/cpa.3160310205
+10. Cohen, D., Hairer, E.: Linear energy-preserving integrators for Poisson systems. BIT 51(1), 91–101
+(2011). https://doi.org/10.1007/s10543-011-0310-z
+11. Cranmer, M., Greydanus, S., Hoyer, S., Battaglia, P ., Spergel, D., Ho, S.: Lagrangian neural networks.
+arXiv preprint, arXiv:2003.04630 (2020)
+12. Dahlby, M., Owren, B.: A general framework for deriving integral preserving numerical methods for
+PDEs. SIAM J. Sci. Comput. 33(5), 2318–2340 (2011). https://doi.org/10.1137/100810174
+13. Eidnes, S., Li, L., Sato, S.: Linearly implicit structure-preserving schemes for Hamiltonian systems. J.
+Comput. Appl. Math. 387, 112489 (2021). https://doi.org/10.1016/j.cam.2019.112489
+14. Eidnes, S., Owren, B., Ringholm, T.: Adaptive energy preserving methods for partial differential
+equations. Adv. Comput. Math. 44(3), 815–839 (2018). https://doi.org/10.1007/s10444-017-9562-8
+15. Faou, E., Hairer, E., Pham, T.L.: Energy conservation with non-symplectic methods: examples and
+counter-examples. BIT 44(4), 699–709 (2004). https://doi.org/10.1007/s10543-004-5240-6
+16. Furihata, D.: Finite difference schemes for ∂u/∂t = (∂/∂ x)αδG/δu that inherit energy conservation
+or dissipation property. J. Comput. Phys. 156(1), 181–205 (1999). https://doi.org/10.1006/jcph.1999.
+6377
+17. Furihata, D., Matsuo, T.: DiscretE V ariational Derivative Method. Chapman & Hall/CRC Numerical
+Analysis and Scientiﬁc Computing. CRC Press, Boca Raton (2011). A Structure-Preserving Numerical
+Method for Partial Differential Equations
+18. Gonzalez, O.: Time integration and discrete Hamiltonian systems. J. Nonlinear Sci. 6(5), 449–467
+(1996). https://doi.org/10.1007/s003329900018
+19. Greydanus, S., Dzamba, M., Y osinski, J.: Hamiltonian neural networks. Advances in Neural Informa-
+tion Processing Systems 32, 15379–15389 (2019)
+20. Hairer, E.: Energy-preserving variant of collocation methods. JNAIAM. J. Numer. Anal. Ind. Appl.
+Math. 5(1–2), 73–84 (2010)
+21. Hairer, E., Lubich, C., Wanner, G.: Geometric Numerical Integration, Springer Series in Computational
+Mathematics, vol. 31, 2nd edn. Springer, Berlin (2006). Structure-Preserving Algorithms for Ordinary
+Differential Equations
+22. Harten, A., Lax, P .D., van Leer, B.: On upstream differencing and Godunov-type schemes for hyperbolic
+conservation laws. SIAM Rev. 25(1), 35–61 (1983). https://doi.org/10.1137/1025002
+23. Itoh, T., Abe, K.: Hamiltonian-conserving discrete canonical equations based on variational difference
+quotients. J. Comput. Phys. 76(1), 85–102 (1988). https://doi.org/10.1016/0021-9991(88)90132-5
+24. Jiang, C., Sun, J., Li, H., Wang, Y .: A fourth-order A VF method for the numerical integration of sine-
+Gordon equation. Appl. Math. Comput. 313, 144–158 (2017). https://doi.org/10.1016/j.amc.2017.05.
+055
+25. Kriksin, Y .A.: A conservative difference scheme for a system of Hamiltonian equations with external
+action. Zh. Vychisl. Mat. i Mat. Fiz. 33(2), 206–218 (1993)
+26. Marsden, J.E.: Lectures on Mechanics, London Mathematical Society Lecture Note Series, vol. 174.
+Cambridge University Press, Cambridge (1992)
+123
+
+===== PAGE 49 =====
+Order theory for discrete gradient methods 1255
+27. Matsubara, T., Ishikawa, A., Y aguchi, T.: Deep energy-based modeling of discrete-time physics. Adv.
+Neural Inf. Process. Syst. 33, 13100–13111 (2020)
+28. Matsuo, T., Furihata, D.: Dissipative or conservative ﬁnite-difference schemes for complex-valued
+nonlinear partial differential equations. J. Comput. Phys. 171(2), 425–447 (2001). https://doi.org/10.
+1006/jcph.2001.6775
+29. Matsuo, T., Sugihara, M., Furihata, D., Mori, M.: Spatially accurate dissipative or conservative ﬁnite
+difference schemes derived by the discrete variational method. Jpn. J. Ind. Appl. Math. 19(3), 311–330
+(2002). https://doi.org/10.1007/BF03167482
+30. McLachlan, R.I., Quispel, G.R.W., Robidoux, N.: Geometric integration using discrete gradients. R.
+Soc. Lond. Philos. Trans. Ser. A Math. Phys. Eng. Sci. 357(1754), 1021–1045 (1999). https://doi.org/
+10.1098/rsta.1999.0363
+31. McLaren, D.I., Quispel, G.R.W.: Integral-preserving integrators. J. Phys. A 37(39), L489–L495 (2004).
+https://doi.org/10.1088/0305-4470/37/39/L01
+32. McLaren, D.I., Quispel, G.R.W.: Bootstrapping discrete-gradient integral-preserving integrators to
+fourth order. In: Daniel, M., Rajasekar, S. (Eds.) Nonlinear Dynamics, pp. 157–171. Narosa Publishing
+House (2009)
+33. Mei, L., Huang, L., Wu, X.: Energy-preserving exponential integrators of arbitrarily high order for
+conservative or dissipative systems with highly oscillatory solutions. J. Comput. Phys. 442, Paper No.
+110429, 22 (2021). https://doi.org/10.1016/j.jcp.2021.110429
+34. Nørsett, S.P ., Wolfbrandt, A.: Order conditions for Rosenbrock type methods. Numer. Math. 32(1),
+1–15 (1979). https://doi.org/10.1007/BF01397646
+35. Norton, R.A., McLaren, D.I., Quispel, G.R.W., Stern, A., Zanna, A.: Projection methods and discrete
+gradient methods for preserving ﬁrst integrals of ODEs. Discrete Contin. Dyn. Syst. 35(5), 2079–2098
+(2015). https://doi.org/10.3934/dcds.2015.35.2079
+36. Norton, R.A., Quispel, G.R.W.: Discrete gradient methods for preserving a ﬁrst integral of an ordinary
+differential equation. Discrete Contin. Dyn. Syst. 34(3), 1147–1170 (2014). https://doi.org/10.3934/
+dcds.2014.34.1147
+37. Quispel, G.R.W., McLaren, D.I.: A new class of energy-preserving numerical integration methods. J.
+Phys. A 41(4), 045206, 7 (2008). https://doi.org/10.1088/1751-8113/41/4/045206
+38. Y aguchi, T., Matsuo, T., Sugihara, M.: The discrete variational derivative method based on discrete
+differential forms. J. Comput. Phys. 231(10), 3963–3986 (2012). https://doi.org/10.1016/j.jcp.2012.
+01.035
+39. Zhong, Y .D., Dey, B., Chakraborty, A.: Symplectic ODE-net: learning Hamiltonian dynamics with
+control. In: International Conference on Learning Representations (2019)
+Publisher’s Note Springer Nature remains neutral with regard to jurisdictional claims in published maps
+and institutional afﬁliations.
+123

@@ -1,0 +1,1356 @@
+===== PAGE 1 =====
+Mathematische Annalen (2026) 394:24
+https://doi.org/10.1007/s00208-026-03327-6 Mathematische Annalen
+Regular graphs with positive Ollivier–Ricci curvature
+Moritz Hehl 1
+Received: 5 November 2024 / Revised: 3 January 2026 / Accepted: 9 January 2026 /
+Published online: 11 February 2026
+© The Author(s) 2026
+Abstract
+We study the Ollivier–Ricci curvature and its modiﬁcation introduced by Lin, Lu,
+and Y au on regular graphs. We derive precise formulas for the Ollivier–Ricci curva-
+ture and the Lin–Lu–Y au curvature on regular graphs, expressed in terms of graph
+parameters and an optimal assignment between neighborhoods. Using these precise
+formulas, we provide an efﬁcient implementation for computing the Ollivier–Ricci
+curvature and the Lin–Lu–Y au curvature on regular graphs, enabling us to explore the
+distribution of regular graphs with positive Lin–Lu–Y au curvature. Our main contri-
+bution is establishing a lower bound on the degree of a regular graph that guarantees
+positive Lin–Lu–Y au curvature and non-negative Ollivier–Ricci curvature, along with
+an analysis of the sharpness of this bound. Additionally, we study the maximal number
+of vertices that an d-regular graph with positive Lin–Lu–Y au curvature can have.
+Mathematics Subject Classiﬁcation 53C21 · 05C81 · 05C30 · 68R10
+1 Introduction and statement of results
+Since Gauss and Riemann introduced the geometric notion of curvature over 150
+years ago, it played a central role in differential geometry. Among the various types of
+curvature, Ricci curvature is of particular importance, serving as a fundamental tool
+in the study of Riemannian manifolds. Given the important role of Ricci curvature
+in differential geometry, there is a natural interest in extending this concept to metric
+spaces more general than Riemannian manifolds. This has led to the proposal of
+various generalized notions of curvature for non-smooth or discrete structures (see,
+e.g., [1–4]). Each approach captures a different aspect of the Riemannian notion, and
+each is thus suited for a different purpose.
+V on Renesse and Sturm [5] established a connection between Ricci curvature and
+optimal transport on smooth Riemannian manifolds. Building on their results, Ollivier
+[6] introduced a discrete notion of Ricci curvature on metric spaces equipped with
+Markov chains or a measure. His approach leverages optimal transport theory, as his
+B Moritz Hehl
+moritz.hehl@uni-leipzig.de
+1 Institute of Mathematics, Universität Leipzig, 04109 Leipzig, Germany
+123
+
+===== PAGE 2 =====
+24 Page 2 of 28 M. Hehl
+deﬁnition of curvature is based on the Wasserstein distance. For a precise deﬁnition a
+detailed introduction is required, which is provided in Sect. 2.1.
+In the context of locally ﬁnite graphs, Ollivier’s notion of Ricci curvature has
+recently received considerable attention. In this setting, a modiﬁcation of Ollivier’s
+notion was introduced by Lin, Lu, and Y au in [7], the Lin–Lu–Yau curvature. The ﬁrst
+contribution of this work is the derivation of a precise formula for the Lin–Lu–Y au
+curvature on regular graphs using elementary means.
+Theorem 1.1 Let G = (V, E) be a locally ﬁnite graph. Let x , y ∈ V be of equal
+degree d with x ∼ y. Then the Lin–Lu–Yau curvature
+κ(x, y) = 1
+d
+(
+d + 1 − inf
+φ∈Axy
+∑
+z∈S1(x)\B1(y)
+d(z,φ( z))
+)
+,
+where Axy denotes the set of assignments between S 1(x)\B1(y) and S 1(y)\
+B1(x).
+Bonini et al. [8, Theorem 4.6] derived an exact formula for the Lin–Lu–Y au curva-
+ture on strongly regular graphs in terms of graph parameters and the size of a maximal
+matching in the core neighborhood. In [9], Münch et al. provided an exact formula for
+a modiﬁed curvature notion on combinatorial graphs. To the best of my knowledge,
+precise expressions for the Lin–Lu–Y au curvature on arbitrary regular graphs have not
+yet been established.
+We then use the exact formula for the Lin–Lu–Y au curvature to provide an efﬁcient
+implementation for computing the Lin–Lu–Y au curvature on regular graphs. This
+allows us to investigate the distribution of regular graphs with positive Lin–Lu–Y au
+curvature, leading to the main result of this work: The establishment of a lower bound
+on the degree of a regular graph that ensures positive Lin–Lu–Y au curvature.
+Theorem 1.2 Let G = (V, E) be a ﬁnite graph. If G is d-regular with
+d > 2|V|
+3 − 2,
+then κ(x, y)> 0 for every edge x ∼ y.
+A similar result holds true for the Ollivier–Ricci curvature.
+Theorem 1.3 Let G = (V, E) be a ﬁnite graph. If G is d-regular with
+d > 2|V|
+3 − 2,
+then κ0(x, y) ≥ 0 for every edge x ∼ y.
+After deriving this lower bound on the degree of regular graphs that guarantees
+positive Lin–Lu–Y au curvature and non-negative Ollivier–Ricci curvature, we proceed
+to discuss the sharpness of the bound.
+123
+
+===== PAGE 3 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 3 of 28 24
+Theorem 1.4 Let n ∈ N such that
+d = 2n − 8
+3 ∈ 2N
+and d ≥ 12. Then, there exists a d-regular graph on n vertices such that κ(x, y) = 0
+and κ0(x, y)< 0 for an edge x ∼ y.
+Finally, we study the maximal number of vertices that a d-regular graph G with
+positive Lin–Lu–Y au curvature can have,
+Md = max
+Gd -regular,
+Ric(G)>0
+|V(G)|.
+We prove thatMd is ﬁnite for every degree d and we obtain precise values for d equal
+to two and three.
+Theorem 1.5 Let G = (V, E) be a d-regular graph, satisfying Ric(G)> 0.I fd = 2,
+then |V|≤ 5.I fd = 3, then|V|≤ 10. Consequently, we haveM2 = 5 and M3 = 10.
+We conclude this introduction by providing an outline of the remainder of the paper.
+In Sect. 2 we review the relevant concepts of graph theory and optimal transport theory,
+and introduce the Ollivier–Ricci curvature, as well as its modiﬁcation by Lin, Lu, and
+Y au. In Sect. 3 we derive exact formulas for the different curvature notions. In Sect.
+4 we present our efﬁcient implementation for the computation of the Lin–Lu–Y au
+curvature and explore the distribution of regular graphs with positive Lin–Lu–Y au
+curvature. In Sect. 5, we establish our main result. Namely, we derive a lower bound
+on the degree of a regular graph that ensures positive Lin–Lu–Y au curvature. Finally,
+in Sect. 6, we investigate the maximal number of vertices that a d-regular graph with
+positive Lin–Lu–Y au curvature can have and present some open questions.
+2 Deﬁnitions and notations
+We begin by reviewing some fundamental concepts of graph theory and optimal trans-
+port theory. We then introduce Ollivier’s discrete notion of Ricci curvature on graphs,
+as well as its modiﬁcation by Lin, Lu, and Y au.
+2.1 Graph theory
+A simple graph G = (V, E) is an unweighted, undirected graph that contains no
+multiple edges or self-loops. For two vertices x, y ∈ V we denote the existence of an
+edge between x and y by x ∼ y. For any two vertices x, y ∈ V ,t h e shortest-path
+distance d(x, y) is the number of edges in a shortest path connecting x and y.I fn o
+such path exists, d(x, y) is deﬁned to be inﬁnity. For two nonempty sets A, B ⊆ V ,
+we deﬁne
+dist (A, B) = inf {d(x, y) : x ∈ A, y ∈ B} .
+123
+
+===== PAGE 4 =====
+24 Page 4 of 28 M. Hehl
+The diameter of G is denoted by diam (G) = maxx,y∈V d(x, y).F o rx ∈ V and r ∈ N
+we deﬁne the r-sphere centered at x as Sr (x) = {y ∈ V : d(x, y) = r} and the r-ball
+centered at x as Br(x) = {y ∈ V : d(x, y) ≤ r}. For an edge x ∼ y, we denote by
+/Delta1(x, y) = S1(x) ∩ S1(y) the set of common neighbors of x and y.
+The degree of a vertex x ∈ V is denoted by dx =| S1(x)|. The graph G is called
+locally ﬁnite if every vertex has ﬁnite degree. The graph is said to bed-regular if every
+vertex has the same degree d.
+The Moore bound provides an upper bound on the number of vertices a regular
+graph with given diameter can have.
+Theorem 2.1 (Moore bound) Let G = (V, E) be a d-regular graph with diameter k.
+Then
+|V|≤ 1 + d
+k−1∑
+i=0
+(d − 1)i.
+A simple graph G = (V, E) is called bipartite, if there is a partition of V into two
+disjoint sets V = A∪ B, such that every edge connects a vertex inA to a vertex in B.I f
+the partition V = A∪ B is speciﬁed, we denote the bipartite graph by G = (A, B, E).
+In what follows, the famous Hall’s marriage theorem [10] will be of importance.
+Before stating the theorem, we must ﬁrst introduce the concept of a perfect matching.
+For a simple graph G = (V, E), we call a subset of edges S ⊆ E a matching of
+G if no vertex in V is incident to more than one edge in S. For a bipartite graph
+G = (A, B, E), we call a matching S a perfect matching of A into B if every vertex
+in A is incident to exactly one edge in S.
+Theorem 2.2 (Hall’s marriage theorem ) Let G = (A, B, E) be a bipartite graph.
+Then there exists a perfect matching of A into B if and only if|N(X)|≥| X| for every
+X ⊆ A, where N(X) = ⋃
+x∈X S1(x).
+As a consequence of Hall’s marriage theorem, we obtain the following Corollary.
+Corollary 2.3 Let G = (A, B, E) be a bipartite graph. If G is regular, then there exists
+a perfect matching of A into B.
+In what follows, G = (V, E) is always assumed to be a locally ﬁnite, connected,
+and simple graph.
+2.2 Optimal transport theory
+A probability measure on the vertex set V is a function μ : V →[ 0, 1] that satisﬁes∑
+x∈V μ(x) = 1. We denote by P(V) the set of probability measures on V .T h e
+Wasserstein distance, a metric on the set P(V), is a fundamental concept in optimal
+transport theory.
+123
+
+===== PAGE 5 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 5 of 28 24
+Deﬁnition 2.4 (Wasserstein distance)L e t G = (V, E) be a locally ﬁnite graph. Let
+μ1,μ 2 be two probability measures on V .T h eWasserstein distance between μ1 and
+μ2 is deﬁned as
+W1(μ1,μ 2) = inf
+π∈/Pi1(μ1,μ2)
+∑
+x∈V
+∑
+y∈V
+d(x, y)π(x, y), (2.1)
+where
+/Pi1(μ1,μ 2) =
+⎧
+⎨
+⎩π : V × V →[ 0, 1]:
+∑
+y∈V
+π(x, y) = μ1(x),
+∑
+x∈V
+π(x, y) = μ2(y)
+⎫
+⎬
+⎭ .
+Intuitively, imagine two distributions given by μ1 and μ2 as piles of earth. The
+Wasserstein distance measures the minimal effort required to transform one pile of
+earth into another. We call π ∈ /Pi1(μ1,μ 2) a transport plan and if the inﬁmum in 2.1
+is attained, we call π an optimal transport plan transporting μ1 to μ2.
+The following Lemma allows us to impose some assumptions on an optimal trans-
+port plan. It states that it is not necessary to move any mass that is shared between the
+two probability measures.
+Lemma 2.5 Let G = (V, E) be a locally ﬁnite graph. Let μ1,μ 2 be two probability
+measures on V . Then there exists an optimal transport planπ transporting μ1 to μ2
+satisfying
+π(x, x) = min{μ1(x), μ2(x)}
+for all x ∈ V.
+The proof is an immediate consequence of the triangle inequality. For more details,
+we refer to [ 12, Lemma 4.1]
+In what follows, probability measures under which all points in their support carry
+equal mass will be of importance, i.e.,
+μ1 = 1
+n
+n∑
+i=1
+δxi ,μ 2 = 1
+n
+n∑
+j=1
+δyj .
+Here, δx denotes the Dirac measure centered on some ﬁxed vertex x ∈ V :
+δx(y) =
+{
+1, if x = y;
+0, otherwise.
+In this case, any transport plan π ∈ /Pi1(μ1,μ 2) can be represented as a bistochastic
+n × n matrix π = (πij )i, j=1,...,n . Here bistochasticity means that πij ≥ 0 and that
+n∑
+k=1
+πik =
+n∑
+k=1
+πkj = 1
+123
+
+===== PAGE 6 =====
+24 Page 6 of 28 M. Hehl
+for any i, j ∈{ 1,..., n}. We denote the set of all bistochastic n × n matrices by Bn .
+Thus, the Wasserstein distance reduces to
+W1(μ1,μ 2) = inf
+π∈Bn
+1
+n
+n∑
+i, j=1
+πij d(xi, yj ).
+Therefore, calculating the Wasserstein distance is a linear optimization problem
+on the bounded and convex set Bn . Choquet’s minimization theorem states that some
+extremal points of Bn are optimal. Birkhoff’s theorem states that these extremal points
+are permutation matrices, i.e.,
+πij = δσ(i), j =
+{
+1, if σ(i) = j;
+0, otherwise.
+for some permutation σ of {1,..., n}.H e r eδij is the Kronecker symbol. We denote
+by Sn the set of all permutations of {1,..., n}. Thus, we obtain the following Lemma
+[11].
+Lemma 2.6 Let G = (V, E) be a locally ﬁnite graph. Letμ1 = 1
+n
+∑ n
+i=1 δxi and μ2 =
+1
+n
+∑ n
+i=1 δyi , where {x1,..., xn}⊂ V and {y1,..., yn}⊂ V . Then the Wasserstein
+distance between μ1 and μ2 reduces to
+W1(μ1,μ 2) = inf
+σ∈Sn
+1
+n
+n∑
+i=1
+d(xi, yσ(i)).
+In other words, there exists an optimal transport plan that corresponds to a one-
+to-one assignment between the source vertices x1,..., xn and the target vertices
+y1,..., yn . We refer to such an optimal transport plan as an optimal assignment .
+In other words, the Kantorovich problem coincides with the Monge problem in this
+special case.
+2.3 Ollivier–Ricci curvature and its modification
+To introduce Ollivier’s notion of Ricci curvature on graphs, we deﬁne the probability
+measures μα
+x for x ∈ V and α ∈[ 0, 1] by
+μα
+x (y) =
+⎧
+⎪⎨
+⎪⎩
+α, if y = x;
+1−α
+dx , if y ∼ x;
+0, otherwise.
+Then, the Ollivier–Ricci curvature is deﬁned as follows.
+123
+
+===== PAGE 7 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 7 of 28 24
+Deﬁnition 2.7 (Ollivier–Ricci curvature). Let G = (V, E) be a locally ﬁnite graph.
+We deﬁne the α-Ollivier–Ricci curvature of an edge x ∼ y by
+κG
+α (x, y) = 1 − W G
+1 (μα
+x ,μα
+y ).
+The parameter α is called the idleness.
+Ollivier considered idleness parametersα = 0 andα = 1
+2 .I n[ 12], the authors study
+the Ollivier–Ricci curvature as a function of the idleness parameter. To this end, they
+introduced the Ollivier–Ricci idleness function α → κα(x, y). It was ﬁrst shown by
+Lin, Lu, and Y au in [7], that the idleness function is concave. Using that κ1(x, y) = 0,
+this implies that the functionh(α) = κα(x,y)
+1−α is increasing over the interval[0, 1).T h e y
+further showed that h(α) is bounded and thus, the limit lim α→1 h(α) exists. Lin, Lu,
+and Y au used this result to introduce a modiﬁcation of the Ollivier–Ricci curvature.
+Deﬁnition 2.8 (Lin–Lu–Yau curvature). Let G = (V, E) be a locally ﬁnite graph. The
+Lin–Lu–Yau curvature of an edge x ∼ y is deﬁned as
+κ(x, y) = lim
+α→1
+κα(x, y)
+1 − α .
+Remark 2.9 Observe that κ1(x, y) = 0 for any edge x ∼ y. Thus, κ(x, y) is the
+negative of the derivative of κα(x, y) with respect to the idleness parameter in α = 1.
+In what follows, we write Ric(G)> 0i f κ(x, y)> 0 for all edges x ∼ y in G.
+Bourne et al. [12] showed that the idleness function is piecewise linear with at most
+3 linear parts. They also derived the length of the last linear part.
+Theorem 2.10 [12, Theorem 4.4] . Let G = (V, E) be a locally ﬁnite graph and let
+x, y ∈ V with x ∼ y and dx ≥ dy. Then α → κα(x, y) is linear over
+[
+1
+dx +1, 1
+]
+.
+Thus, we obtain the following relation between the α-Ollivier–Ricci curvature and
+its modiﬁcation by Lin, Lu, and Y au as an immediate consequence of the mean value
+theorem.
+Theorem 2.11 Let G = (V, E) be a locally ﬁnite graph and let x, y ∈ V with x ∼ y
+and dx ≥ dy. Then
+κα(x, y) = (1 − α)κ( x, y)
+for α ∈
+[
+1
+dx +1, 1
+]
+.
+Hence, the Lin–Lu–Y au curvature coincides up to a scaling factor with the α-
+Ollivier–Ricci curvature for large values of α.
+3 Exact formulas for the Ollivier–Ricci curvature
+In this section, we shall derive precise formulas for the Lin–Lu–Y au curvature and the
+α-Ollivier–Ricci curvature of an edge x ∼ y with dx = dy .
+123
+
+===== PAGE 8 =====
+24 Page 8 of 28 M. Hehl
+3.1 Decomposing the neighborhood
+To derive our precise formulas, we decompose the 1-spheres centered at the vertices
+x and y into disjoint sets. We denote by /Delta1(x, y) the set of common neighbors of both
+x and y, namely,
+/Delta1(x, y) = S1(x) ∩ S1(y).
+Furthermore, we deﬁne Rx(x, y) = S1(x)\B1(y) and Ry(x, y) = S1(y)\B1(x),g i v -
+ing rise to the following disjoint decompositions of S1(x) and S1(y):
+S1(x) ={ y}∪ /Delta1(x, y) ∪ Rx(x, y) and S1(y) ={ x}∪ /Delta1(x, y) ∪ Ry(x, y).
+Using these decompositions, we show that the computation of the Wasserstein distance
+reduces to an assignment problem between Rx(x, y) and Ry(x, y). Therefore, we
+introduce the concept of optimal assignments.
+Deﬁnition 3.1 (Optimal assignment). Let G = (V, E) be a locally ﬁnite graph. Let
+U, W ⊆ V with |U|=| W| < ∞. We call a bijection φ : U → W an assignment
+between U and W . Denote by AUW the set of all assignments between U and W .W e
+call φ ∈ AUW an optimal assignment between U and W if
+∑
+z∈U
+d(z,φ( z)) = inf
+ψ∈AUW
+∑
+z∈U
+d(z,ψ( z)).
+Denote the set of all optimal assignments between U and W by OUW .
+Note that for an edge x ∼ y with dx = dy ,w eh a v e|Rx(x, y)|=| Ry(x, y)|.F o r
+the sake of simplicity, we will denote by Axy and Oxy the sets ARx (x,y)Ry(x,y) and
+ORx (x,y)Ry(x,y), respectively.
+3.2 Ollivier–Ricci curvature on the last linear part
+To derive our formula for the Lin–Lu–Y au curvature, we begin by deriving an expres-
+sion for the Ollivier–Ricci curvature on the last linear part. We then utilize the fact
+that on this segment, the Lin–Lu–Y au curvature coincides with the Ollivier–Ricci
+curvature, differing only by a scaling factor.
+We ﬁrst need the following Lemma about some of the assumptions we can impose
+on an optimal transport plan transporting μα
+x to μα
+y .
+Lemma 3.2 Let G = (V, E) be a locally ﬁnite graph. Let x, y ∈ V be of equal degree
+d with x ∼ y. Furthermore, let α ∈
+[
+1
+d+1, 1
+]
+. Then there exists an optimal transport
+plan π transporting μα
+x to μα
+y with the following properties:
+(i) ∀i ∈ /Delta1(x, y) : π(i, i) = μα
+x (i);
+(ii) π(x, x) = π( y, y) = μα
+y (x);
+(iii) π(x, y) = μα
+y (y) − μα
+y (x).
+123
+
+===== PAGE 9 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 9 of 28 24
+Remark 3.3 Observe that μα
+y (y) − μα
+y (x) ≥ 0 if and only if α ≥ 1
+d+1 . Hence, the
+subsequent discussion pertains only to the last linear part of κα .
+Proof Properties (i) and (ii) are immediate consequence of Lemma 2.5.
+For the proof of (iii), let π be an optimal transport plan transporting μα
+x to μα
+y while
+satisfying properties (i) and (ii). Since π satisﬁes property (ii), we must have
+π(x, y) = μα
+y (y) −
+∑
+j∈V\{x}
+π( j, y)
+≤ μα
+y (y) − π( y, y)
+= μα
+y (y) − μα
+y (x).
+Now, assume that π(x, y)<μ α
+y (y) − μα
+y (x). Thus, the sets
+I ={ z ∈ S1(x)\{y}: π(z, y)> 0} and O ={ z ∈ S1(y)\{x}: π(x, z)> 0}
+are non-empty. Due to property (i), we must haveI ∩ O =∅ . Sinceπ satisﬁes property
+(ii), we obtain:
+∑
+z∈I
+π(z, y) = μα
+y (y) − π( y, y) − π(x, y)
+= μα
+x (x) − π(x, x) − π(x, y)
+=
+∑
+z∈O
+π(x, z).
+In other words, the mass transported from I to y equals the mass transported from x
+to O under π . We denote this mass by m, namely m = ∑
+z∈I π(z, y).
+We now obtain a new transport plan π′from modifying π as follows:
+• Set π′(x, y) = μα
+y (y) − μα
+y (x), π′(x, z) = 0 ∀z ∈ O and π′(z, y) = 0 ∀z ∈ I
+• Move the mass m directly from I to O.
+See Fig. 1 for an illustration of this modiﬁcation.
+Due to property (i), we must have O ∩ /Delta1(x, y) = I ∩ /Delta1(x, y) =∅ . Therefore,
+d(i, y) = 2 for any i ∈ I and d(x, j) = 2 for any j ∈ O. Thus, π moves mass
+• m at distance two from I to y,
+• m at distance two from x to O,
+• π(x, y) = μα
+y (y) − μα
+y (x) − m at distance one from x to y,
+resulting in a cost of:
+3 · m + μα
+y (y) − μα
+y (x).
+On the other hand, observe that d(i, j) ≤ 3 for any i ∈ I and j ∈ O. Thus, π′moves
+the mass
+• μα
+y (y) − μα
+y (x) at distance one from x to y,
+• m from I to O at distance less than or equal to three,
+123
+
+===== PAGE 10 =====
+24 Page 10 of 28 M. Hehl
+Fig. 1 Illustration of the optimal transport plan π and its modiﬁcation π′for the proof of Lemma 3.2
+resulting in a cost less than or equal to:
+3 · m + μα
+y (y) − μα
+y (x).
+This is exactly the cost of moving this part of the mass under the optimal transport
+plan π .A s π′coincides with π everywhere else, π′is an optimal transport plan as
+well. Finally, observe that by construction,
+π′( j, j) = π( j, j) ∀ j ∈ /Delta1(x, y), π ′(x, x) = π(x, x) and π′(y, y) = π( y, y).
+Hence, we have constructed an optimal transport plan satisfying properties (i)–(iii). ⊓⊔
+We are now ready to derive a precise expression for the Ollivier–Ricci curvature
+on the last linear part.
+Theorem 3.4 Let G = (V, E) be a locally ﬁnite graph. Let x, y ∈ V be of equal degree
+d with x ∼ y. Furthermore, let α ∈
+[
+1
+d+1, 1
+]
+. Then the α-Ollivier–Ricci curvature
+κα(x, y) = 1 − α
+d
+(
+d + 1 − inf
+φ∈Axy
+∑
+z∈Rx (x,y)
+d(z,φ( z))
+)
+.
+Remark 3.5 This result can be derived from the linearity of the idleness function
+together with properties (i), (ii), and (iii) in the proof of Theorem 1.1 in [ 19]. For
+the reader’s convenience, we provide a full proof here.
+123
+
+===== PAGE 11 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 11 of 28 24
+Proof To demonstrate this, we proceed with a proof by cases.
+Case 1: Rx(x, y) =∅ . In this case, Axy only contains the empty function. Thus,
+1 − α
+d
+(
+d + 1 − inf
+φ∈Axy
+∑
+z∈Rx (x,y)
+d(z,φ( z))
+)
+= 1 − α
+d (d + 1).
+On the other hand, the transport plan π transporting μα
+x to μα
+y , deﬁned by
+π(i, j) =
+⎧
+⎪⎨
+⎪⎩
+1−α
+d , if i = j ∈{ x, y}∪ /Delta1(x, y);
+α − 1−α
+d , if i = x and j = y;
+0, otherwise.
+is optimal, according to Lemma 3.2. Therefore,
+W1(μα
+x ,μα
+y ) =
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+d(i, j)π(i, j) = α − 1 − α
+d ,
+and hence,
+κα(x, y) = 1 − α
+d (d + 1).
+Case 2: R x(x, y) ⁄=∅ .L e tφ ∈ Oxy be an optimal assignment between Rx(x, y)
+and Ry(x, y). Deﬁne the transport plan π transporting μα
+x to μα
+y by
+π(i, j) =
+⎧
+⎪⎪⎪⎨
+⎪⎪⎪⎩
+1−α
+d , if i = j ∈{ x, y}∪ /Delta1(x, y);
+1−α
+d , if i ∈ Rx(x, y) and j = φ(i);
+α − 1−α
+d , if i = x and j = y;
+0, otherwise.
+We claim that this transport plan is optimal. Assume on the contrary that is is not
+optimal. Then let π′be an optimal transport plan transporting μα
+x to μα
+y , satisfying
+properties (i)–(iii) stated in Lemma 3.2. Then,
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+π′(i, j)d(i, j) = α − 1 − α
+d +
+∑
+i∈Rx (x,y)
+∑
+j∈Rx (x,y)
+π′(i, j)d(i, j).
+(3.1)
+On the other hand, we obtain by construction of π
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+π(i, j)d(i, j) = α− 1 − α
+d +
+∑
+i∈Rx (x,y)
+∑
+j∈Rx (x,y)
+π(i, j)d(i, j). (3.2)
+123
+
+===== PAGE 12 =====
+24 Page 12 of 28 M. Hehl
+Due to the non-optimality of π , we must have:
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+π′(i, j)d(i, j)<
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+π(i, j)d(i, j). (3.3)
+Combining Eqs. 3.1, 3.2 and 3.3 leads to
+∑
+i∈Rx (x,y)
+∑
+j∈Rx (x,y)
+π′(i, j)d(i, j)<
+∑
+i∈Rx (x,y)
+∑
+j∈Rx (x,y)
+π(i, j)d(i, j). (3.4)
+Now, observe that π
+⏐⏐
+Rx (x,y)×Ry(x,y) and π′⏐⏐
+Rx (x,y)×Ry(x,y) are transport plans trans-
+porting μα
+x
+⏐⏐
+Rx (x,y) to μα
+y
+⏐⏐
+Ry(x,y). Furthermore, μα
+x
+⏐⏐
+Rx (x,y) and μα
+y
+⏐⏐
+Ry(x,y) are measures
+under which all points in their support carry equal mass 1−α
+d .
+Thus, we can apply Lemma 2.6 (after multiplication with a scaling factor) and
+conclude that π
+⏐⏐
+Rx (x,y)×Ry(x,y) is an optimal transport plan. This contradicts Eq. 3.4.
+Therefore, our assumption was incorrect and π is an optimal transport plan. The
+rest of the proof is just a straightforward calculation. Namely,
+W1(μα
+x ,μα
+y ) =
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+d(i, j)π(i, j)
+= α − 1 − α
+d + 1 − α
+d
+∑
+z∈Rx (x,y)
+d(z,φ( z)),
+which leads to
+κα(x, y) = 1 − α
+d
+(
+d + 1 −
+∑
+z∈Rx (x,y)
+d(z,φ( z))
+)
+.
+The fact that φ is an optimal assignment concludes the proof. ⊓⊔
+3.3 Lin–Lu–Yau curvature
+According to Theorem 2.11, the identity
+κ(x, y) = κα(x, y)
+1 − α
+holds true on the last linear part of the idleness function. Therefore, our formula for
+the Lin–Lu-Y au curvature is an immediate consequence of Theorem 3.4.
+Theorem 1.1 Let G = (V, E) be a locally ﬁnite graph. Let x , y ∈ V be of equal
+degree d with x ∼ y. Then the Lin–Lu–Yau curvature
+κ(x, y) = 1
+d
+(
+d + 1 − inf
+φ∈Axy
+∑
+z∈Rx (x,y)
+d(z,φ( z))
+)
+. (3.5)
+123
+
+===== PAGE 13 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 13 of 28 24
+Let us now state some consequence of our formula.
+Corollary 3.6 Let G = (V, E) be a locally ﬁnite graph. Let x , y ∈ V be of equal
+degree d with x ∼ y. Then κ(x, y) ∈ Z/d. Furthermore,
+−2 + 4
+d + 3|/Delta1(x, y)|
+d ≤ κ(x, y) ≤ 2 +| /Delta1(x, y)|
+d .
+Proof The fact that κ(x, y) ∈ Z/d follows directly from formula 3.5.
+Using that d(z,φ( z)) ≥ 1 for all z ∈ Rx(x, y) and any assignment φ ∈ Axy ,w e
+obtain
+κ(x, y) = 1
+d
+(
+d + 1 − inf
+φ∈Axy
+∑
+z∈Rx (x,y)
+d(z,φ( z))
+)
+≤ 1
+d
+(
+d + 1 −| Rx(x, y)|
+)
+= 1
+d
+(
+d + 1 − (d − 1 −| /Delta1(x, y)|)
+)
+= 2 +| /Delta1(x, y)|
+d .
+Similarly, using that d(z,φ( z)) ≤ 3, we obtain
+κ(x, y) = 1
+d
+(
+d + 1 − inf
+φ∈Axy
+∑
+z∈Rx (x,y)
+d(z,φ( z))
+)
+≥ 1
+d
+(
+d + 1 − 3|Rx(x, y)|
+)
+= 1
+d
+(
+−2d + 4 + 3 |/Delta1(x, y)|
+)
+.
+⊓⊔
+3.4 Ollivier–Ricci curvature for vanishing idleness
+This section aims to derive an exact formula for the α-Ollivier–Ricci curvature of an
+edge x ∼ y with dx = dy , in the case of vanishing idleness, i.e., α = 0.
+Recall that for α = 0, μα
+x simpliﬁes to
+μα
+x (y) =
+{ 1
+dx , if y ∈ S1(x);
+0, otherwise.
+123
+
+===== PAGE 14 =====
+24 Page 14 of 28 M. Hehl
+As per Lemma 2.6, the Kantorovich problem coincides with the Monge problem
+in this case. The following Lemma states some of the assumptions we can impose on
+an optimal assignment.
+Lemma 3.7 Let G = (V, E) be a locally ﬁnite graph. Let x, y ∈ V be of equal degree
+d with x ∼ y. Then there exists an optimal assignment φ between S1(x) and S1(y),
+such that φ(i) = i for all i ∈∆ (x, y).
+Using analogous reasoning as in the case of the Lin–Lu–Y au curvature, we obtain
+a precise expression for the 0-Ollivier–Ricci curvature.
+Theorem 3.8 Let G = (V, E) be a locally ﬁnite graph. Let x , y ∈ V be of equal
+degree d with x ∼ y. Then
+κ0(x, y) = 1
+d
+(
+d − inf
+φ
+∑
+z∈S1(x)\S1(y)
+d(z,φ( z))
+)
+,
+where the inﬁmum is taken over all assignments φ between S 1(x)\S1(y) and
+S1(y)\S1(x).
+4 Distribution of positive Lin–Lu–Yau curvature in regular graphs
+In this section, we wish to study the distribution of regular graphs G satisfying
+Ric(G)> 0. To do so, we are faced with the problem of generating exhaustive lists of
+all d-regular graphs with a given number of vertices, up to isomorphism. This is one
+of the oldest problems in the ﬁeld of constructive combinatorics [ 13]. Already deter-
+mining the number of d-regular graphs on n vertices, denoted by |Gn,d|, proves to be
+an exceedingly difﬁcult problem for which no closed formula is currently known. But
+there are some interesting asymptotic results. Wormald and McKay [ 14] conjectured
+that asymptotically
+|Gn,d(n)|∼
+√
+2
+( n − 1
+d(n)
+) n
+(λλ(1 − λ)(1−λ))(n
+2)e
+1
+4 ,
+where λ = d(n)
+n−1 and d(n) satisfying 1 ≤ d(n) ≤ n − 2 with nd(n) always an even
+integer. A complete proof of this conjecture was only presented in 2017 [ 15].
+For the asymptotic number of regular graphs up to isomorphism, the study of the
+automorphism groups of regular graphs is necessary. We refer the interested reader to
+the work by Wormald and McKay [ 16] for more details.
+While no closed formula is available, algorithms designed to generate all d-regular
+graphs on n vertices have determined the number of such graphs, up to isomorphism,
+for small values of n. In the following, we use the algorithm GENREG, proposed by
+Meringer in [13]. Refer to Table 1 for the total number of connected d-regular graphs
+on n vertices.
+123
+
+===== PAGE 15 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 15 of 28 24
+Table 1 Number of connected d-regular graphs with given number of vertices n, up to isomorphism; empty ﬁelds indicate values that are not yet known [ 13]
+d 34 5 6 7 8
+n
+41 0 0 0 0 0
+50 1 0 0 0 0
+62 1 1 0 0 0
+70 2 0 1 0 0
+85 6 3 1 1 0
+9 0 1 604 0 1
+10 19 59 60 21 5 1
+11 0 265 0 266 0 6
+12 85 1.544 7.848 7.849 1.547 94
+13 0 10.778 0 367.860 0 10.786
+14 509 88.168 3.458.383 21.609.300 21.609.301 3.459.386
+15 0 805.491 0 1.470.293.675 0 1.470.293.676
+16 4060 8.037.418 2.585.136.675 113.314.233.808 733.351.105.934 733.351.105.935
+17 0 86.221.634 0 0
+18 41301 985.870.522
+19 0 11.946.487.647 0 0
+20 510.489
+123
+
+===== PAGE 16 =====
+24 Page 16 of 28 M. Hehl
+Given the rapid growth in the number of regular graphs with speciﬁed degree
+and vertex count, an efﬁcient implementation for the computation of the Lin–Lu–
+Y au curvature is necessary to quantify the number of regular graphs G satisfying
+Ric(G)> 0. Current implementations do not provide sufﬁcient efﬁciency for this
+task at scale.
+Building on the precise formula derived in Theorem1.1, we provide a new, efﬁcient
+implementation for the computation of the Lin–Lu–Y au curvature on regular graphs.
+The source code is available in a public repository.1 See Appendix A for a comparative
+analysis between our implementation and the existing implementations by Ni et al.
+[17], and by Cushing et al. [ 20]. On smaller graphs ( n ≤ 20) our implementation
+achieves a speedup of 20–50 times, depending on the exact values of d and n.
+Using our efﬁcient implementation for the computation of the Lin–Lu–Y au cur-
+vature, we are able to calculate the number of d-regular graphs G on n vertices that
+satisfy Ric(G)> 0f o r n < 15. Due to the rapid growth in the number of regular
+graphs, it becomes computationally infeasible to determine the exact number of reg-
+ular graphs with positive Lin–Lu–Y au curvature for larger values of n. Instead, we
+approximate this by randomly generating one million d-regular graphs on n vertices
+and calculating their Lin–Lu–Y au curvature. For the generation of the random regular
+graphs, we use the algorithm proposed by Steger and Wormald in [ 18], generating the
+regular graphs approximately uniformly at random.
+The results of our analysis are shown in Table 2. If only a percentage (and not an
+exact count) is provided, the value was approximated by random sampling.
+One noteable observation is that regular graphs with relatively large degree always
+satisfy Ric(G)> 0. This observation will be discussed in the following section.
+Additionally, observe that for a ﬁxed degree d, there exists a threshold Md , such
+that no d-regular graph G = (V, E) satisﬁes |V| > Md and Ric(G)> 0. An
+investigation of this is conducted in Sect. 6.
+5 Condition for positive Lin–Lu–Yau curvature
+In this section, we present our main result: a condition on the degree of a regular graph
+G, ensuring that G satisﬁes Ric(G)> 0. We then discuss the sharpness of this lower
+bound.
+Theorem 1.2 Let G = (V, E) be a ﬁnite graph. If G is d -regular with
+d > 2|V|
+3 − 2,
+then Ric (G)> 0.
+To prove this, we need the following lemmata.
+Lemma 5.1 Let G = (V, E) be a ﬁnite graph. If G is d-regular with
+1 https://github.com/moritzmath/Regular-Graph-Curvature .
+123
+
+===== PAGE 17 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 17 of 28 24
+Table 2 Number of connected d-regular graphs on n vertices, up to isomorphism, that satisfy Ric(G)> 0, followed by the percentage of the total number of d-regular graphs
+on n vertices in parentheses
+d 3 4 5 678
+n
+4 1 (100%) – – – – –
+5 – 1 (100%) – – – –
+6 2 (100%) 1 (100%) 1 (100%) – – –
+7 – 2 (100%) – 1 (100%) – –
+8 2 (40%) 6 (100%) 3 (100%) 1 (100%) 1 (100%) –
+9 – 15 (93.8%) – 4 (100%) – 1 (100%)
+10 1 (5.3%) 32 (54%) 60 (100%) 21 (100%) 5 (100%) 1 (100%)
+11 – 68 (25.7%) – 266 (100%) – 6 (100%)
+12 0 (0%) 44 (2.9%) 6569 (83.7%) 7.849 (100%) 1.547 (100%) 94 (100%)
+13 – 23 (0.2%) – 366.804 (99.7%) – 10.786 (100%)
+14 0 (0%) 9 (0.01%) 719.285 (20.8%) 20.998.083 (97.2%) 21.609.251 (99.9%) 3.459.385 (100%)
+15 – 12 (0.0015%) – ≈ 86.5% – ≈ 100%
+16 0 (0%) 4 (0.00005%) ≈ 0.23 % ≈ 62.6 % ≈ 99.7 % ≈ 99.9 %
+17 – 3 (0.000004%) – ≈ 31.8 % – ≈ 99.9 %
+If no exact count is provided, the values are estimated by random sampling; a dash indicates that no d-regular graph on n vertices exists
+123
+
+===== PAGE 18 =====
+24 Page 18 of 28 M. Hehl
+d ≥ |V|− 1
+2 ,
+then diam (G) ≤ 2.
+Proof Assume that diam (G)> 2. Hence, there exist vertices x, y ∈ V such that
+d(x, y)> 2, and therefore S1(x) ∩ S1(y) =∅ .A s x, y /∈ S1(x) ∪ S1(y),w eh a v e
+|S1(x) ∪ S1(y)|≤| V|− 2.
+This contradicts
+|S1(x) ∪ S1(y)|= 2d ≥| V|− 1.
+Therefore, our assumption was incorrect, and it follows that diam (G) ≤ 2 must hold.
+⊓⊔
+Lemma 5.2 Let G = (V, E) be a ﬁnite graph. Assume that G is d-regular with
+d > 2|V|
+3 − 2.
+If an edge x ∼ y satisﬁes |/Delta1(x, y)| > 2d −| V|, then κ(x, y)> 0.
+Proof Using the integrality of d together with Lemma 5.1, we conclude that
+diam (G) ≤ 2. If |/Delta1(x, y)|≥ 2d −| V|+ 2, we obtain
+κ(x, y) ≥ 1
+d
+(
+d + 1 − 2|Rx(x, y)|
+)
+= 1
+d
+(
+d + 1 − 2(d − 1 −| /Delta1(x, y)|)
+)
+≥ 1
+d
+(
+3d + 7 − 2|V|
+)
+.
+Utilizing the lower bound on d, we conclude that κ(x, y)> 0.
+Now, assume |/Delta1(x, y)|= 2d −| V|+ 1 and κ(x, y) ≤ 0. As diam (G) ≤ 2, we
+have
+κ(x, y) ≥ 1
+d
+(
+d + 1 − 2|Rx(x, y)|
+)
+,
+and therefore we obtain
+d + 1 ≤ 2|Rx(x, y)|=| Rx(x, y)|+| Ry(x, y)|. (5.1)
+Let j ∈ /Delta1(x, y) be arbitrary. According to inequality 5.1, j cannot be adjacent to
+every vertex in Rx(x, y) ∪ Ry(x, y). Assume, without loss of generality, that there
+123
+
+===== PAGE 19 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 19 of 28 24
+exists an i ∈ Rx(x, y) such that i ≁ j. Thus, i has at most d − 3 neighbors in S1(x),
+as it is not adjacent to y, j and itself. Now, observe that
+|V \ (S1(x) ∪ S1(y))|=| V|− 2d +| /Delta1(x, y)|= 1
+by assumption. Therefore, there exist a k ∈ Ry(x, y) such that i ∼ k. Hence, an
+optimal assignment φ ∈ Oxy must satisfy |{z ∈ Rx(x, y) : d(z,φ( z)) = 1}| ≥ 1,
+leading to
+κ(x, y) = 1
+d
+(
+d + 1 − inf
+φ∈Axy
+∑
+z∈Rx (x,y)
+d(z,φ( z))
+)
+≥ 1
+d
+(
+d + 1 − 2(|Rx(x, y)|− 1) − 1
+)
+= 1
+d
+(
+3d + 6 − 2|V|
+)
+.
+Using the lower bound on d, we conclude that κ(x, y)> 0, contradicting our assump-
+tion. ⊓⊔
+Lemma 5.3 Let G = (V, E) be a ﬁnite graph. Assume that G is d-regular with
+d > 2|V|
+3 − 2.
+If an edge x ∼ y satisﬁes |/Delta1(x, y)|= 2d −| V|, then κ(x, y)> 0.
+Proof Using the integrality of d together with Lemma 5.1, we conclude that
+diam (G) ≤ 2. If Rx(x, y) =∅ , then κ(x, y) = d+1
+d > 0. Thus, we now assume
+Rx(x, y) ⁄=∅ .
+Let i ∈ Rx(x, y) be arbitrary. Since i ≁ y, it is adjacent to at most d − 2 vertices
+in S1(x). By assumption, we have V = S1(x) ∪ S1(y), so there must exist a vertex
+j ∈ Ry(x, y) such that i ∼ j. Similarly, every vertex in Ry(x, y) is adjacent to a
+vertex in Rx(x, y).
+Now, denote by H the bipartite subgraph with vertex set Rx(x, y) ∪ Ry(x, y)
+and containing all edges connecting a vertex in Rx(x, y) with a vertex in Ry(x, y).
+According to the preceding argument, every vertex in H is of degree greater than or
+equal to one in H . Denote by /Delta1(H) the maximal degree of H . We proceed with a
+proof by cases.
+Case 1: /Delta1(H) = 1. The induced bipartite subgraph is 1-regular. According to
+Corollary 2.3, there exists a perfect matching of Rx(x, y) into Ry(x, y). Hence, we
+obtain
+κ(x, y) = 1
+d
+(
+d + 1 − inf
+φ∈Axy
+∑
+z∈Rx (x,y)
+d(z,φ( z))
+)
+123
+
+===== PAGE 20 =====
+24 Page 20 of 28 M. Hehl
+= 1
+d
+(
+d + 1 −| Rx(x, y)|
+)
+> 0.
+Case 2: 1 </Delta1 (H) ≤| Rx(x, y)|− 2. Let z1 ∈ Rx(x, y) be, without loss of
+generality, a vertex of degree/Delta1(H) in H . There exist distinct vertices i, j ∈ Ry(x, y)
+such that z1 is not adjacent to both i and j. Choose z2 ∈ Rx(x, y) such that z2 ∼ i.
+If the degree of z2 in H is greater than one, choose z3 ∈ Rx(x, y)\{z1, z2} arbitrary.
+otherwise, choose z3 ∈ Rx(x, y) such that z3 ∼ j. By construction, every X ⊆
+{z1, z2, z3} satisﬁes |N(X)|≥| X| in H . Hall’s marriage theorem implies that an
+optimal assignment φ ∈ Oxy must satisfy |{z ∈ Rx(x, y) : d(z,φ( z)) = 1}| ≥ 3,
+leading to
+κ(x, y) = 1
+d
+(
+d + 1 − inf
+φ∈Axy
+∑
+z∈Rx (x,y)
+d(z,φ( z))
+)
+≥ 1
+d
+(
+d + 1 − 2(|Rx(x, y)|− 3) − 3
+)
+= 1
+d
+(
+3d + 6 − 2|V|
+)
+.
+Using the lower bound on d, we conclude that κ(x, y)> 0.
+Case 3: /Delta1(H) ≥| Ry(x, y)|− 1. Let z1 ∈ Rx(x, y) be, without loss of generality,
+av e r t e xo fd e g r e e/Delta1(H) in H . Recall that diam (G) ≤ 2 and that z1 can be matched
+with a vertex at distance one in Ry(x, y), since the degree of z1 is at least one in H .
+Therefore, we obtain
+κ(x, y) ≥ 1
+d
+(
+d + 2 − 2|Rx(x, y)|
+)
+.
+If |Rx(x, y)|+| Ry(x, y)|≤ d + 1, we conclude that κ(x, y)> 0. Thus, we now
+assume
+d < |Rx(x, y)|+| Ry(x, y)|− 1. (5.2)
+Note that this implies |Rx(x, y)|≥ 3, since d ≥| Rx(x, y)|+ 1. Since z1 is adjacent
+to x and to at least |Ry(x, y)|− 1 vertices in Ry(x, y), it cannot be adjacent to every
+vertex in Rx(x, y) according to inequality 5.2. Thus, we can choose z2 ∈ Rx(x, y)
+such that z1 ≁ z2 in G. Hence, z2 is adjacent to at most d − 3 vertices in S1(x).
+Recall that, by assumption, V = S1(x) ∪ S1(y), implying that the degree of z2 in
+H is greater than or equal to two. Choose z3 ∈ Rx(x, y)\{z1, z2} arbitrary. Then, by
+construction, every X ⊆{ z1, z2, z3} satisﬁes |N(X)|≥| X| in H . Hall’s marriage
+theorem implies that an optimal assignment φ ∈ Oxy between Rx(x, y) and Ry(x, y)
+satisﬁes |{z ∈ Rx(x, y) : d(z,φ( z)) = 1}| ≥ 3, leading to κ(x, y)> 0, as in Case 2.
+⊓⊔
+123
+
+===== PAGE 21 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 21 of 28 24
+Fig. 2 Illustration of a 4-regular
+graph G on 9 vertices that does
+not satisfy Ric(G)> 0
+Proof of Theorem 1.2 Since S1(x) ∪ S1(y) ⊆ V , the inequality
+2d −| V|≤| /Delta1(x, y)|
+always holds true. If 2 d −| V| < |/Delta1(x, y)|, the claim follows from Lemma 5.2.I f
+2d −| V|=| /Delta1(x, y)|, the claim follows from Lemma 5.3. This concludes the proof
+of Theorem 1.2. ⊓⊔
+Remark 5.4 For d = 2|V|
+3 − 2, it is possible for edges x ∼ y with κ(x, y) ≤ 0 to occur.
+An example is illustrated in Fig. 2.
+We can generalize Theorem1.2 to the 0-Ollivier–Ricci-curvature, using the follow-
+ing result by Cushing et al.
+Theorem 5.5 [19, Theorem 1.1] . Let G = (V, E) be a regular graph. Then we have
+the following implication for all edges x ∼ y:
+κ(x, y)> 0 /equal1⇒κ0(x, y) ≥ 0.
+Hence, we obtain the following result for the Ollivier–Ricci curvature.
+Theorem 1.3 Let G = (V, E) be a ﬁnite graph. If G is d-regular with
+d > 2|V|
+3 − 2,
+then κ0(x, y) ≥ 0 for every edge x ∼ y.
+Next, we discuss the asymptotic sharpness of the lower bound.
+Theorem 1.4 Let n ∈ N such that
+d = 2n − 8
+3 ∈ 2N.
+and d ≥ 12. Then there exists a d-regular graph on n vertices such that κ(x, y) = 0
+and κ0(x, y)< 0 for an edge x ∼ y.
+123
+
+===== PAGE 22 =====
+24 Page 22 of 28 M. Hehl
+Fig. 3 Illustration of the graph constructed in Theorem 1.4
+Proof Let the assumptions of Theorem 1.4 hold. We construct a d-regular graph on
+n vertices that contains an edge x ∼ y such that κ(x, y) = 0. To this end, deﬁne the
+vertex set
+V ={ x, y, z0,..., zl−3, x0,..., xl, y0,..., yl,v 1,v 2},
+where l = d
+2 . Next, we add the edges
+• x ∼ y,
+• x ∼ zi for i = 0,..., l − 3,
+• x ∼ xi for i = 0,..., l
+• y ∼ zi for i = 0,..., l − 3,
+• y ∼ yi for i = 0,..., l.
+to the set of edges E. Therefore, x and y are of degree d, and
+/Delta1(x, y) ={ z0,..., zl−3}, Rx(x, y) ={ x0,..., xl}, Ry(x, y) ={ y0,..., yl}.
+Next, we add for every zi ∈ /Delta1(x, y) the edges zi ∼ x j for j = 0,..., l − 1i f j ⁄= i
+as well as the edges zi ∼ yj for j = 0,..., l if
+j /∈{ 2i (mod l + 1), 2i + 1 (mod l + 1)}.
+Thus, every z j ∈ /Delta1(x, y) is of degree d,a si th a s d − 2 neighbors in Rx(x, y) ∪
+Ry(x, y) and is adjacent to both x and y.
+On the other hand, every xi is adjacent to |/Delta1(x, y)|− 1 vertices in /Delta1(x, y) if
+i ≤ l − 3, and to all vertices in /Delta1(x, y) if i ∈{ l − 2, l − 1}.E v e r yyi is adjacent to
+|/Delta1(x, y)|− 2 vertices in /Delta1(x, y) if i ≤ l − 6 and to |/Delta1(x, y)|− 1 otherwise.
+Next, we add the edges xi ∼ x j for i ⁄= j, except xl−2 ∼ xl−1. Analogously, we
+add the edges yi ∼ yj for i ⁄= j,a sw e l la sxl ∼ yj for j = 0,..., l − 2.
+Thus, every xi ∈ Rx(x, y)\{xl} has degree d − 2 and xl has degree d. On the other
+hand, yi has degree d − 1i f i ∈{ l − 5, l − 4, l − 3, l − 2} and d − 2 otherwise.
+123
+
+===== PAGE 23 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 23 of 28 24
+Finally, we add the edges
+• v1 ∼ xi and v2 ∼ xi for i = 0,..., l − 1.
+• v1 ∼ yi and v2 ∼ yi for i = 0,..., l − 6 and i = l − 1, l.
+• v1 ∼ yl−5,v 1 ∼ yl−4,v 2 ∼ yl−3,v 2 ∼ yl−2 and v1 ∼ v2.
+The constructed graph G = (V, E) is d-regular. Now, denote by H the bipartite
+subgraph with vertex set Rx(x, y) ∪ Ry(x, y) and containing all edges connecting a
+vertex iun Rx(x, y) with a vertex in Ry(x, y). By construction, every x j for 0 ≤ j ≤
+l − 1i so fd e g r e ez e r oi nH . Therefore, according to Hall’s marriage theorem, an
+optimal assignment φ ∈ Oxy must satisfy |{z ∈ Rx(x, y) : d(z,φ( z)) = 1}| = 1.
+Thus, we obtain
+κ(x, y) = 1
+d
+(
+d + 1 − inf
+φ∈Axy
+∑
+z∈Rx (x,y)
+d(z,φ( z))
+)
+= 1
+d
+(
+d + 1 − 2(|Rx(x, y)|− 1) − 1
+)
+= 0.
+Furthermore, every vertex in Rx(x, y) can be assigned to x at distance one and y can
+be assigned to every vertex in Ry(x, y) at distance one. Therefore, we obtain
+κ0(x, y) = 1
+d
+(
+d − inf
+φ
+∑
+z∈S1(x)\S1(y)
+d(z,φ( z))
+)
+= 1
+d
+(
+d − 2(|S1(x)\S1(y)|− 3) − 3
+)
+=− 1
+d .
+⊓⊔
+6 Maximal regular graphs with positive Ricci curvature
+We ﬁnish this article with an investigation of the maximal number of vertices that an
+d-regular graph G satisfying Ric(G)> 0 can have,
+Md = max
+Gd -regular,
+Ric(G)>0
+|V(G)|.
+The following Proposition shows that Md is always ﬁnite.
+123
+
+===== PAGE 24 =====
+24 Page 24 of 28 M. Hehl
+Fig. 4 The prism graph Yn
+Proposition 6.1 Let d ∈ N. Then
+Md ≤ 1 + d
+2d−1∑
+i=0
+(d − 1)i.
+For the proof of Proposition 6.1, we make use of the following Bonnet–Myers type
+theorem on graphs by Lin, Lu, and Y au.
+Theorem 6.2 (Discrete Bonnet–Myers Theorem [ 7]). Let G = (V, E) be a locally
+ﬁnite graph. If Ric(G) ≥ k > 0, then the diameter of graph G is bounded as follows:
+diam (G) ≤ 2
+k .
+Proof of Proposition 6.1 Let G be an arbitrary d-regular graph, satisfying Ric(G)> 0.
+According to Corollary 3.6,w eh a v eκ(x, y) ∈ Z/d for every edge x ∼ y. Therefore,
+Ric(G) ≥ 1
+d must hold. Using Theorem 6.2, we obtain
+diam (G) ≤ 2d.
+The proposition is now an immediate consequence of the Moore bound. ⊓⊔
+The following theorem quantiﬁes Md for d equal to two and three.
+Theorem 1.5 Let G = (V, E) be a d-regular graph, satisfying Ric (G)> 0. If
+d = 2, then |V|≤ 5. If d = 3, then |V|≤ 10. Consequently, we have M2 = 5 and
+M3 = 10.
+For the proof of Theorem1.5, we need the following classiﬁcation result by Cushing
+et al. [20].
+Theorem 6.3 Let G = (V, E) be a 3-regular graph. Then κ0(x, y) ≥ 0 for all edges
+x ∼ y if and only if G is a prism graph Yn for some n ≥ 3 or a Möbius ladder Mn for
+some n ≥ 2.
+123
+
+===== PAGE 25 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 25 of 28 24
+Fig. 5 The Möbius Ladder Mn
+Figure 4 illustrates the prism graph Yn , while Fig. 5 provides a visualization of the
+Möbius ladder Mn . With this classiﬁcation result established, we are now prepared to
+prove Theorem 1.5.
+Proof of Theorem 1.5 The only 2-regular, connected graphs are the cycle graphs Cn .
+It is straightforward to verify that Ric(Cn) = 0f o r n ≥ 6. Hence, if G = (V, E) is
+2-regular satisfying Ric(G)> 0, then G = Cn for some 2 ≤ n ≤ 5 and therefore
+|V|≤ 5 holds true.
+We now turn to the case where d = 3. Let x ∼ y be an arbitrary edge in G.B y
+assumption, we have κ(x, y)> 0. Since G is regular, it follows from Theorem 5.5
+that κ0(x, y) ≥ 0. Thus, according to Theorem 6.3, G is a prism graph Yn for some
+n ≥ 3 or a Möbius ladder Mn for some n ≥ 2. The prism graph Yn does not satisfy
+Ric(Yn)> 0f o rn ≥ 6 and the Möbius ladder Mn does not satisfy Ric(Mn)> 0f o r
+n ≥ 5. Therefore, G has at most 10 vertices. ⊓⊔
+The values Md for d ≥ 4 are still unknown. The Cartesian product of n 5-cycles
+(C5)□n is 2n-regular, has 5n vertices and satisﬁes
+Ric((C5)□n) = 1
+2n > 0.
+This is an immediate consequence of Ric(C5) = 1
+2 and Corollary 3.2 in [ 7]. Thus,
+Md exhibits exponential growth, satisfying
+Md ≥
+√
+5
+d
+for d even.
+Recall that κ(x, y) ∈ Z/d for every edge x ∼ y of an d-regular graph. Hence
+(C5)□n exhibits constant, minimal positive Lin–Lu–Y au curvature for an 2 n-regular
+graph. This led us to formulate the following conjecture.
+Conjecture 6.4 For d ∈ 2N,
+Md =
+√
+5
+d
+.
+Moreover, for oddd, Md also exhibits exponential growth, as e.g. then-dimensional
+hypercube Qn for odd n shows.
+123
+
+===== PAGE 26 =====
+24 Page 26 of 28 M. Hehl
+Appendix
+A Comparative analysis of implementations
+In this section, we present a comparative analysis of our implementation for computing
+the Lin–Lu–Y au curvature against existing implementations. We compare our program
+with those by Ni et al., presented in [ 17], and by Cushing et al., presented in [ 20]. For
+this comparison, we generate random d-regular graphs on n vertices, employing the
+algorithm proposed by Steger and Wormald in [18]. We then calculate the Lin–Lu–Y au
+curvature of these graphs using the different implementations. To ensure robustness,
+computation times are averaged over 100 graphs for each combination of parameters
+n and d. The computations are performed on an Apple M2 chip (8-core CPU at up to
+3.5 GHz) with 16 GB RAM. Due to the limited efﬁciency of the implementation by
+Cushing et al., we exclude it from the analysis on larger graphs, as the computation
+time is prohibitively high. For smaller graphs (n ≤ 20) our implementation achieves a
+speedup of 20–50 times over the other implementations. The results of our comparative
+analysis are presented in Fig. 6.
+Fig. 6 A comparative analysis of the different implementations for computing the Lin–Lu–Y au curvature
+on regular graphs. We display the average CPU time of each implementation for computing the Lin–Lu–Y au
+curvature of an d-regular graph on n vertices
+123
+
+===== PAGE 27 =====
+Regular graphs with positive Ollivier–Ricci curvature Page 27 of 28 24
+Acknowledgements I would like to express my deepest gratitude to Prof. Renesse and Dr. Münch for their
+invaluable support and insightful feedback throughout the course of this work.
+Funding Open Access funding enabled and organized by Projekt DEAL. Partial ﬁnancial support was
+received from the BMBF (Federal Ministry of Education and Research) in DAAD project 57616814 (SECAI,
+School of Embedded Composite AI).
+Data Availability The source code for the implementation presented in Sect.4 is publicly available athttps://
+github.com/moritzmath/Regular-Graph-Curvature .
+Declarations
+Conﬂict of interest The author certiﬁes that he has no afﬁliations with or involvement in any organization
+or entity with any ﬁnancial interest or non-ﬁnancial interest in the subject matter or materials discussed in
+this manuscript.
+Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which
+permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give
+appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence,
+and indicate if changes were made. The images or other third party material in this article are included
+in the article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If
+material is not included in the article’s Creative Commons licence and your intended use is not permitted
+by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the
+copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/ .
+References
+1. Bakry, D., Émery, M.: Diffusions hypercontractives. In: Séminaire de Probabilités XIX 1983/84, pp.
+177–206 (1985). https://doi.org/10.1007/BFb0075847
+2. Erbar, M., Maas, J.: Ricci curvature of ﬁnite Markov chains via convexity of the entropy. In: Archive
+for Rational Mechanics and Analysis, vol. 206, pp. 997–1038 (2012). https://doi.org/10.1007/s00205-
+012-0554-z
+3. Mielke, A.: Geodesic convexity of the relative entropy in reversible Markov chains. In: Calculus of
+V ariations and Partial Differential Equations, vol. 48, pp. 1–31 (2013).https://doi.org/10.1007/s00526-
+012-0538-8
+4. Forman, R.: Bochner’s method for cell complexes and combinatorial Ricci curvature. Discrete Comput.
+Geom. 29, 323–374 (2003). https://doi.org/10.1007/s00454-002-0743-x
+5. von Renesse, M.-K., Sturm, K.-T.: Transport inequalities, gradient estimates, entropy and Ricci cur-
+vature. Commun. Pure Appl. Math. 58(7), 923–940 (2005). https://doi.org/10.1002/cpa.20060
+6. Ollivier, Y .: Ricci curvature of Markov chains on metric spaces. J. Funct. Anal.256(3), 810–864 (2009)
+7. Lin, Y ., Linyuan, L., Y au, S.-T.: Ricci curvature of graphs. Tohoku Math. J. 63(4), 605–627 (2011).
+https://doi.org/10.2748/tmj/1325886283
+8. Bonini, V ., et al.: Condensed Ricci curvature of complete and strongly regular graphs. Involve J. Math.
+13(4), 559–576 (2020). https://doi.org/10.2140/involve.2020.13.559
+9. Münch, F., Wojciechowski, R.K.: Ollivier Ricci curvature for general graph Laplacians: heat equation,
+Laplacian comparison, non-explosion and diameter bounds. Adv. Math. 356, 106759 (2019). https://
+doi.org/10.1016/j.aim.2019.106759
+10. Hall, P .: On Representatives of Subsets. J. Lond. Math. Soc. 10(1), 26–30 (1935). https://doi.org/10.
+1112/jlms/s1-10.37.26
+11. Vilani, C.: Topics in Optimal Transportation, Graduate Studies in Mathematics. American Mathemat-
+ical Society, Providence (2003)
+12. Bourne, D.P ., et al.: Ollivier–Ricci idleness functions of graphs. SIAM J. Discrete Math. 32(2), 1408–
+1424 (2018). https://doi.org/10.1137/17M1134469
+13. Meringer, M.: Fast generation of regular graphs and construction of cages. J. Graph Theory30, 137–146
+(1999)
+123
+
+===== PAGE 28 =====
+24 Page 28 of 28 M. Hehl
+14. McKay, B.D., Wormald, N.C.: Asymptotic enumeration by degree sequence of graphs of high degree.
+Eur. J. Comb. 11(6), 565–580 (1990). https://doi.org/10.1016/S0195-6698(13)80042-X
+15. Liebenau, A., Wormald, N.C.: Asymptotic enumeration of graphs by degree sequence, and the degree
+sequence of a random graph. J. Eur. Math. Soc. 26, 1–40 (2024)
+16. McKay, B.D., Wormald, N.C.: Automotphisms of random graphs with speciﬁed vertices. Combina-
+torica 4, 325–338 (1984). https://doi.org/10.1007/BF02579144
+17. Ni, C.-C., et al.: Community detection on networks with Ricci ﬂow. Sci. Rep. 9(1), 1–12 (2019). https://
+doi.org/10.1038/s41598-019-46380-9
+18. Steger, A., Wormald, N.C.: Generating random regular graphs quickly. Comb. Probab. Comput. 8(4),
+377–396 (1999). https://doi.org/10.1017/S0963548399003867
+19. Cushing, D., et al.: Curvatures, graph products and Ricci ﬂatness. J. Graph Theory 96(4), 522–553
+(2021). https://doi.org/10.1002/jgt.22630
+20. Cushing, D., et al.: The graph curvature calculator and the curvatures of cubic graphs. Exp. Math.
+31(2), 583–595 (2022). https://doi.org/10.1080/10586458.2019.1660740
+Publisher’s Note Springer Nature remains neutral with regard to jurisdictional claims in published maps
+and institutional afﬁliations.
+123

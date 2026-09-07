@@ -1,0 +1,2544 @@
+===== PAGE 1 =====
+arXiv:2407.08854v3  [math.CO]  5 Dec 2024
+OLLIVIER-RICCI CUR V A TURE OF REGULAR GRAPHS
+MORITZ HEHL
+Abstract. We derive explicit formulas for the Lin-Lu-Yau curvature an d the α-Ollivier-
+Ricci curvature in terms of graph parameters and an optimal a ssignment. Utilizing these
+precise expressions, we examine the relationship between t he Lin-Lu-Yau curvature κ and
+the 0-Ollivier-Ricci curvature κ0, resulting in an equality condition on regular graphs.
+This condition allows us to characterize edges that are bone idle in regular graphs of
+girth four and to construct a family of bone idle graphs with t his girth. We then use
+our formulas to provide an eﬃcient implementation of the Oll ivier-Ricci curvature on
+regular graphs, enabling us to identify all bone idle, regul ar graphs with fewer than 15
+vertices. Moreover, we establish a rigidity theorem for coc ktail party graphs, proving
+that a regular graph is a cocktail party graph if and only if it s Lin-Lu-Yau curvature is
+equal to one. Furthermore, we present a condition on the degr ee of a regular graph that
+guarantees positive Ricci curvature. We conclude this work by discussing the maximal
+number of vertices that a d-regular graph with positive Lin-Lu-Yau curvature can have .
+Contents
+1. Introduction 2
+1.1. Outline 5
+2. Preliminaries 5
+2.1. Graph theory 5
+2.2. Optimal transport theory 6
+3. Ollivier-Ricci curvature on graphs 8
+3.1. Deﬁnitions 8
+3.2. Comparing the Ollivier-Ricci curvature and its modiﬁc ation 9
+3.3. The core neighborhood 9
+4. Exact expressions of Ollivier-Ricci curvature 11
+4.1. Decomposing the neighborhood 11
+4.2. Ollivier-Ricci curvature on the last linear part 12
+4.3. Lin-Lu-Yau curvature 16
+4.4. Strongly regular graphs 17
+4.5. Ollivier-Ricci curvature for vanishing idleness 18
+4.6. Ollivier-Ricci curvature on the ﬁrst linear part 22
+5. Relation between two important curvature notions 22
+5.1. Equality condition 23
+Date: December 6, 2024.
+1
+
+===== PAGE 2 =====
+5.2. Opposite signs 24
+5.3. Bone idleness 25
+6. Implementation 30
+6.1. Linear assignment problem 30
+6.2. Generation of regular graphs 31
+6.3. Results 32
+6.4. Maximal regular graphs with positive Ricci curvature 3 9
+1. Introduction
+Since F. Gauss and B. Riemann introduced the geometric notio n of curvature over 150
+years ago, it played a central role in diﬀerential geometry. T he curvature of a space refers
+to the degree to which it deviates from being ﬂat. Ricci curva ture is one of the various
+notions that are of importance. It is a fundamental concept i n diﬀerential geometry,
+particularly in the study of Riemannian manifolds. Broadly speaking, Ricci curvature
+measures the extent to which the geometry of a Riemannian man ifold deviates locally
+from that of a Euclidean space. It plays a crucial role in vari ous areas of mathematics
+and theoretical physics. In the general theory of relativit y, it appears in Einstein’s ﬁeld
+equations, where the Ricci curvature tensor is part of the Ei nstein tensor, which describes
+the curvature of spacetime. It is also a crucial ingredient f or the Ricci ﬂow, introduced in
+Richard Hamilton’s groundbreaking work from 1982 [17]. Rec ently, the Ricci ﬂow has led
+to the proof of the Poincar´ e conjecture and the more general Geometrization conjecture.
+Gromov’s work [16] demonstrates the important role of the Ri cci curvature tensor in
+Riemannian geometry.
+Given the importance of Ricci curvature in diﬀerential geome try, there is a clear interest
+in extending this concept to metric spaces more general than Riemannian manifolds. This
+motivation has led to the proposal of various generalized no tions of curvature for non-
+smooth or discrete structures. This contrasts with Riemann ian geometry, where we have
+a unique notion of Ricci curvature. Every approach captures a diﬀerent aspect of the
+Riemannian notion, and each is thus suited for a diﬀerent purp ose.
+In their 1985 paper [1], Bakry and ´Emery proposed a generalized notion within the broad
+framework of a Markov semigroup, the Bakry- ´Emery curvature . It is motivated by the
+curvature dimension inequality and the Bakry-´Emery Γ calculus. The Bakry-´Emery theory
+applied to graphs has received considerable interest (see, e.g., [23] and [24]).
+Another approach, taken by Erbar and Maas [13] and by Mielke [ 30], uses the convexity
+of the entropy to introduce a discrete Ricci curvature notio n.
+Forman’s work [15], introduces a discretization of the classical Ricci curvature on CW com-
+plexes, the Forman-Ricci curvature. This deﬁnition is based on the Bochner-Weitzenb¨ ock
+formula. Sreejith et al. [42] adapted Forman’s notion to the case of graphs.
+The Forman-Ricci curvature is highly correlated [38] with, and in certain cases even co-
+incides [18] with, the curvature notion we consider in this w ork, the Ollivier-Ricci curva-
+ture. In 2009, Ollivier [36] developed this discrete Ricci curva ture notion on metric spaces
+equipped with Markov chains or with a measure.
+2
+
+===== PAGE 3 =====
+x
+y
+Sx
+Sy
+>d (x,y )
+νx
+νy
+x
+y
+Sy
+Sx
+νx
+νy
+<d (x,y )
+Figure 1. Positive vs. negative sectional curvature.
+In the work by von Renesse and Sturm [37], it was shown that Riemannian manifolds with
+positive Ricci curvature are characterized by the property that small spheres are closer to
+one another than their centers are. Namely, let M be a Riemannian manifold. Consider a
+tangent vectorω = (xy). Let νx be another tangent vector at x and let νy be the tangent
+vector at y obtained by parallel transport of νx along ω from x to y. If the geodesic
+starting at x in direction νx and the geodesic starting at y in direction νy converge, then
+the sectional curvature is positive. If the geodesics are pa rallel, then sectional curvature
+is zero and if they diverge it is negative. The Ricci curvatur e at ω = (xy) is obtained by
+averaging over all directions νx at x. Now, a point on a small sphere Sx around x can be
+thought of as a direction νx. Thus, on average, Ricci curvature determines if a point on
+Sx and the corresponding point on Sy are closer than x and y or further away. Figure 1
+[36] illustrates this key observation.
+With this characterization in mind, we now turn to Ollivier’ s generalization to the frame-
+work of metric spaces. Instead of the sphere Sx centered at a point x, Ollivier uses
+probability measures mx supported in the neighborhood of x. More precisely, let ( X,d )
+be a Polish metric space, equipped with its Borel σ-algebra. A family of probability mea-
+suresm ={mx :x∈X} is called a random walk m onX if the two technical assumptions
+are satisﬁed [36]:
+(i) The measure mx depends measurably on x∈X.
+(ii) Each measure mx has ﬁnite ﬁrst moment, i.e., for some (hence any) z ∈ X and
+for any x ∈X:
+∫
+d(z,y )dmx(y)<∞.
+As an analogue for the average distance between correspondi ng points on Sx and Sy,
+Ollivier uses the Wasserstein distance W1 between the probability measures mx and my.
+Thus, optimal transport theory is an essential ingredient f or this notion of discrete Ricci
+curvature. In what follows, we introduce some basic concept s of the optimal transport
+theory and refer the interested reader to the very comprehen sive book by Villani [43].
+Following the case of Riemannian manifolds, the comparison of the distance ofmx andmy
+with the distance ofx andy determines the sign of the Ollivier Ricci curvature. Namely, in
+the case that the probability measuresmx andmy are closer thanx andy, Ricci curvature
+will be positive, otherwise negative. This leads to the foll owing deﬁnition.
+Deﬁnition 1.1 (Ollivier-Ricci curvature, [36]) . Let (X,d ) be a metric space with a col-
+lection of probability measures m ={mx :x∈X}. For two distinct points x,y ∈X, the
+3
+
+===== PAGE 4 =====
+Ollivier-Ricci curvature of (X,d,m ) along (x,y ) is deﬁned as
+κ(x,y ) = 1− W1(mx,my)
+d(x,y ) .
+Rather than thinking of mx as an analogue for the sphere centered at x, Ollivier proposes
+another, more probabilistic, way to think about it. That is, as deﬁning a Markov chain
+with n-step transition probability from x to y given by:
+p(n)
+xy =
+∫
+z∈X
+p(n−1)
+xz dmz(y)
+where p(1)
+xy =mx(y).
+In [36], Ollivier shows that up to some scaling factor, this deﬁnition captures the Riemann-
+ian Ricci curvature in the case of a Riemannian manifold equi pped with the Riemannian
+volume measure. This reﬁnes Theorem 1.5 in the paper by von Re nesse and Sturm [37].
+The Ollivier-Ricci curvature in the context of locally ﬁnit e graphs has recently garnered
+signiﬁcant attention. This has led to numerous compelling t heoretical results, extending
+various classical theorems from Riemannian geometry to the graph setting. These include
+spectral gap estimates, concentration of measure, and log- Sobolev inequalities [35].
+On the other hand, this discrete curvature notion was found to be beneﬁcial in the analysis
+of complex networks. In the realm of network science, graph c urvature holds general
+interest because numerous real-world networks exhibit various forms of geometry [4]. The
+Ollivier-Ricci curvature can oﬀer valuable insights into th e geometry of these networks.
+It has recently found applications in numerous practical co ntexts, e.g., in the analysis of
+the internet topology [34], as an economic indicator for mar ket fragility and systemic risk
+[40], to diﬀerentiate cancer networks [39] or in the study of b rain structural networks [14].
+Furthermore, Ollivier-Ricci curvature ﬁnds applications in machine learning. In [33] and
+[41], the authors propose Ollivier-Ricci curvature based a pproaches to community detec-
+tion. Regarding graph neural networks (GNNs), Ollivier-Ri cci curvature provides a uni-
+ﬁed framework for studying over-squashing and over-smoothing, two inherent problems of
+these models [32]. Recently, new GNN architectures, incorp orating graph curvature, were
+proposed [44, 20]. These curvature-based graph neural netw orks (CGNNs) outperform
+state-of-the-art methods on various synthetic and real-wo rld networks.
+On graphs, Ollivier’s notion of Ricci curvature κα takes values on edges and depends on
+an idleness parameterα∈ [0, 1]. Ollivier considered idleness parameters α = 0 andα = 1
+2.
+In 2011, Lin, Lu, and Yau [22] introduced a modiﬁcation of the Ollivier-Ricci curvature,
+by computing the derivative of the curvature with respect to the idleness parameter. We
+will refer to this modiﬁcation as Lin-Lu-Yau curvature . The relationship between the
+Lin-Lu-Yau curvature and the original α-Ollivier-Ricci curvature was studied by Bourne
+et al. in [6]. One of the main contributions of this work will b e to provide answers to
+open questions proposed in this paper. Namely, we will give a necessary and suﬃcient
+condition on regular graphs for κ0(x,y ) =κ(x,y ). Using this, we will provide a necessary
+and suﬃcient condition for an edge to be bone idle on a graph of girth four. That means
+κα(x,y ) = 0 for any α∈ [0, 1]. We furthermore construct an inﬁnite family of bone idle,
+regular graphs with a girth of four. Moreover, we prove thatκ(x,y )> 0 implies on regular
+graphs that κ0(x,y )≥ 0 and we construct non-regular graphs with edges x∼y satisfying
+κ(x,y )> 0 and κ0(x,y )< 0.
+To this end, we derive explicit Ricci curvature formulas for regular graphs. Bonini et al.
+[5, Theorem 4.6] derive an exact formula for the Lin-Lu-Yau curvature on strongly regular
+4
+
+===== PAGE 5 =====
+graphs in terms of graph parameters and the size of a maximal matching in the core neigh-
+borhood. M¨ unch et al. [31, Theorem 2.6] show an exact formula for a modiﬁed curvature
+notion on combinatorial graphs. There is an overlap between some of our methods and
+theirs.
+To my knowledge, precise expressions for the Lin-Lu-Yau cur vature and the α-Ollivier-
+Ricci curvature on arbitrary regular graphs have not yet bee n established. Using these
+precise expressions, we provide an eﬃcient implementation for the Ollivier-Ricci curvature
+on regular graphs. Additionally, we use these results to est ablish a rigidity theorem for
+cocktail party graphs and to give a condition on the degree ofa regular graph, guaranteeing
+that it is of positive Ricci curvature.
+1.1. Outline. In Chapter 2, we introduce the necessary concepts of graph th eory and
+optimal transport theory. In Chapter 3, the Ollivier-Ricci curvature on graphs, as well
+as the modiﬁcation by Lin, Lu, and Yau, will be presented. In C hapter 4, we derive our
+precise expressions for the diﬀerent curvature notions. Cha pter 5 is devoted to the study
+of the relationship between the Lin-Lu-Yau curvatureκ and the 0-Ollivier-Ricci curvature
+κ0. In Chapter 6, we present the implementation of the Ollivier-Ricci curvature on regular
+graphs and the results obtained by applying it to exhaustive lists of regular graphs with
+a given number of vertices and degree.
+2. Preliminaries
+We begin by reviewing some fundamental concepts of graph theory and optimal transport
+theory. Those seeking a thorough introduction to these area s are encouraged to consult
+the works of Diestel [11] for graph theory and Villani [43] fo r optimal transport theory.
+2.1. Graph theory. A simple graph G = (V,E ) is an unweighted, undirected graph that
+contains no multiple edges or self-loops. We call V the vertex set andE the edge set. For
+two verticesx,y∈V we denote the existence of an edge between x and y byx∼y.
+Denote byd(x,y ) the shortest path distance betweenx andy, i.e., the number of edges in
+a shortest path connecting them. If no such path exists, d(x,y ) is deﬁned to be inﬁnity.
+For two nonempty sets A,B⊂V , we deﬁne
+dist(A,B ) = inf{d(x,y ) :x∈A,y∈B}.
+The diameter of a graph G is deﬁned as the length of the longest shortest path, that is,
+diam(G) = max
+x,y∈V
+d(x,y ).
+The girth of a graph is the length of a shortest cycle contained in the gr aph. The girth is
+deﬁned to be inﬁnity if the graph does not contain any cycles.
+Givenx∈V , deﬁne
+Sr(x) :={y∈V :d(x,y ) =r}, B r(x) :={y∈V :d(x,y )≤r}.
+For an edgex∼y, we denote by△(x,y ) the set of common neighbors of x andy, that is,
+△(x,y ) =S1(x)∩S1(y).
+Denote by dx the degree of x, that is, dx =|S1(x)|. The graph G is called locally ﬁnite if
+every vertex has ﬁnite degree. The graph G is said to be d-regular if every vertex has the
+same degree d.
+5
+
+===== PAGE 6 =====
+A d-regular graph G with n vertices is called strongly regular with parameters (n,d,λ,µ )
+if every two adjacent vertices have λ≥ 0 common neighbors and every two nonadjacent
+vertices haveµ≥ 1 common neighbors.
+We end this section by introducing another important class o f graphs. A simple graph
+G = (V,E ) is called bipartite, if there is a partition ofV into two disjoint subsetsV =A∪B,
+such that every edge connects a vertex in A to a vertex in B. If the partition V =A∪B
+is speciﬁed, we denote the bipartite graph by G = (A,B,E ).
+In what follows,G = (V,E ) is always assumed to be a locally ﬁnite, connected and simpl e
+graph.
+2.2. Optimal transport theory. A probability measure on the vertex set V is a map
+µ : V → [0, 1] that satisﬁes ∑
+x∈V µ(x) = 1. Denote by P(V ) the set of probability
+measures on V . We now introduce a metric on P(V ), the 1-Wasserstein distance.
+Deﬁnition 2.1 (1-Wasserstein distance). Let G = (V,E ) be a locally ﬁnite graph. The
+1-Wasserstein distance between two probability measures µ1, µ2 on V is deﬁned as
+(2.1) WG
+1 (µ1,µ 2) = inf
+π∈Π(µ1,µ2)
+∑
+x∈V
+∑
+y∈V
+d(x,y )π(x,y ),
+where
+Π(µ1,µ 2) =
+
+
+π :V×V→ [0, 1] :
+∑
+y∈V
+π(x,y ) =µ1(x),
+∑
+x∈V
+π(x,y ) =µ2(y)
+
+
+.
+Intuitively, imagine two distributions as piles of earth. T he 1-Wasserstein distance mea-
+sures the minimal eﬀort needed to transform one pile into anot her. Due to this analogy,
+the metric is also called the earth mover’s distance . We call π∈ Π(µ1,µ 2) a transport
+plan and WG
+1 (µ1,µ 2) is the minimal eﬀort which is required for such a transport. I f the
+inﬁmum in 2.1 is attained, we call π an optimal transport plan transporting µ1 to µ2.
+Hereafter, we will omit the superscript from WG
+1 when the graph is evident from the
+context.
+The following Lemma, which is intuitively clear, allows us t o impose some assumptions
+on an optimal transport plan. It states that it is not necessa ry to move any mass that is
+shared between the probability measures.
+Lemma 2.1. LetG = (V,E ) be a locally ﬁnite graph and let µ1,µ 2 be two probability mea-
+sures on V. Then there exists an optimal transport plan π transportingµ1 to µ2 satisfying
+π(x,x ) = min{µ1(x),µ 2(x)}
+for all x∈V .
+This is an immediate consequence of the triangle inequality . For more details, we refer to
+[6, Lemma 4.1].
+The Kantorovich duality is a fundamental concept in optimal transport theory (see The-
+orem 1.3 in [43]). Here, we introduce it in our speciﬁc graph s etting. For that, we deﬁne
+the notion of 1-Lipschitz functions.
+Deﬁnition 2.2 (1-Lipschitz function). LetG = (V,E ) be a locally ﬁnite graph. A function
+f :V→ R is called 1-Lipschitz if
+|f(x)−f(y)|≤ d(x,y ), ∀x,y∈V.
+The set of all 1-Lipschitz functions on V is denoted by 1-Lip.
+6
+
+===== PAGE 7 =====
+Theorem 2.2 (Kantorovich duality). LetG = (V,E ) be a locally ﬁnite graph. Let µ1 and
+µ2 be two probability measures on V . Then
+(2.2) W1(µ1,µ 2) = sup
+f ∈1-Lip
+∑
+x∈V
+f(x)(µ1(x)−µ2(x)).
+We callf∈ 1-Lip an optimal Kantorovich potential transportingµ1 toµ2 if the supremum
+in 2.2 is attained.
+When dealing with 1-Lipschitz functions, the following extension theorem of McShane [28]
+proves to be useful. We state it here in the graph setting.
+Theorem 2.3 (McShane). LetG = (V,E ) be a locally ﬁnite graph. Suppose that U⊂V
+and that f :U→ R is a 1-Lipschitz function. Then there exists an extension of f , i.e., a
+function ¯f :V → R such that ¯f|U =f , which is 1-Lipschitz.
+In what follows, probability measures under which all point s in their support carry equal
+mass will be of importance, i.e.,
+µ1 = 1
+n
+n∑
+i=1
+δxi, µ 2 = 1
+n
+n∑
+j=1
+δyj.
+Here, δx denotes the Dirac measure centered on some ﬁxed vertex x∈V :
+δx(y) =
+{
+1, if x =y;
+0, otherwise.
+In this case, any transport plan π∈ Π(µ1,µ 2) can be represented as a bistochastic n×n
+matrix π = (πij)i,j=1,...,n. Namely, bistochasticity means that πij ≥ 0 for any i,j ∈
+{1,...,n }, and
+∀i :
+n∑
+j=1
+πij = 1; and ∀j :
+n∑
+i=1
+πij = 1.
+We denote byBn the set of all bistochasticn×n matrices. Thus, the Wasserstein distance
+reduces to
+W1(µ1,µ 2) = inf
+π∈Bn
+1
+n
+n∑
+i,j=1
+πijd(xi,yj).
+Therefore, calculating the Wasserstein distance is a linea r optimization problem on the
+bounded and convex set Bn. Choquet’s minimization theorem states that some extremal
+points ofBn are optimal. Birkhoﬀ ’s theorem states that these extremal points are permu-
+tation matrices, i.e.,
+πij =δσ(i),j =
+{
+1, if σ(i) =j;
+0, otherwise.
+for some permutation σ of{1,...,n }. Here δij is the Kronecker symbol. We denote by Sn
+the set of all permutations of {1,...,n }. Thus, we obtain the following Lemma.
+Lemma 2.4. Let G = (V,E ) be a locally ﬁnite graph. Let µ1 = 1
+n
+∑ n
+i=1δxi and µ2 =
+1
+n
+∑ n
+i=1δyi, where{x1,...,x n}⊂ V and{y1,...,y n}⊂ V . Then the Wasserstein distance
+betweenµ1 and µ2 reduces to
+W1(µ1,µ 2) = inf
+σ∈Sn
+1
+n
+n∑
+i=1
+d(xi,yσ(i)).
+7
+
+===== PAGE 8 =====
+That means that there exists an optimal transport plan that c orresponds to a one-to-one
+assignment between the source vertices xi and the target vertices yj. We refer to such
+an optimal transport plan as an optimal assignment . In other words, the Kantorovich
+problem coincides with the Monge problem in this special cas e.
+3. Ollivier-Ricci curvature on graphs
+In this chapter, we shall introduce Ollivier’s discrete not ion of Ricci curvature on graphs,
+as well as the modiﬁcation introduced by Lin, Lu, and Yau.
+3.1. Deﬁnitions. To introduce Ollivier’s notion of Ricci curvature on graphs , we deﬁne
+the probability measures µα
+x for x∈V and α∈ [0, 1] by:
+µα
+x(y) =
+
+
+
+α, if y =x;
+1−α
+dx , if y∼x;
+0, otherwise.
+Deﬁnition 3.1 (Ollivier-Ricci curvature). Let G = (V,E ) be a locally ﬁnite graph. For
+two distinct vertices x,y∈V , we deﬁne the α-Ollivier-Ricci curvature by
+κG
+α (x,y ) = 1− WG
+1 (µα
+x,µα
+y )
+d(x,y ) .
+The parameter α is called the idleness. If x∼ y we call κG
+α (x,y ) short scale , and long
+scale otherwise.
+Remark. Note thatW (µ1
+x,µ 1
+y) =d(x,y ) for anyx,y∈V . Therefore, we obtain κG
+1 (x,y ) =
+0 for any x,y∈V .
+Ollivier considered idleness parameters α = 0 and α = 1
+2. In [6], the authors study the
+short scale Ollivier-Ricci curvature as a function of the id leness parameter. In [7], this
+investigation is extended to the long scale Ollivier-Ricci curvature. To this end, they
+introduce the following function.
+Deﬁnition 3.2 (Ollivier-Rici idleness function). LetG = (V,E ) be a locally ﬁnite graph.
+For two distinct verticesx,y∈V , the functionα↦→κG
+α (x,y ) is called the idleness function.
+It was ﬁrst shown by Lin, Lu, and Yau in [22], that the idleness function is concave.
+Using that κG
+1 (x,y ) = 0, this implies that the function h(α) = κG
+α (x,y )/(1−α) is in-
+creasing over the interval [0, 1). They further showed, that h(α) is bounded and thus, the
+limit limα→1κG
+α (x,y )/(1−α) exists. Lin, Lu, and Yau used this result, to introduce a
+modiﬁcation of the Ollivier-Ricci curvature.
+Deﬁnition 3.3 (Lin-Lu-Yau curvature). Let G = (V,E ) be a locally ﬁnite graph. For
+two distinct vertices x,y∈V , the Lin-Lu-Yau curvature is deﬁned as
+κG(x,y ) = lim
+α→1
+κG
+α (x,y )
+1−α .
+Recall that κG
+1 (x,y ) = 0 for any x,y∈V . Thus, κG(x,y ) is the negative of the derivative
+of κG
+α (x,y ) with respect to the idleness parameter at α = 1.
+Hereafter, we will omit the superscripts from κG
+α and κG when the graph is evident from
+the context.
+8
+
+===== PAGE 9 =====
+We write Ric(G)≥ k if κ(x,y )≥k for all x,y ∈V . The subsequent Lemma states that
+provingκ(x,y )≥k for adjacent vertices x∼y is suﬃcient to show that Ric(G)≥k.
+Lemma 3.1 ([22], Lemma 2.3) . Let G = (V,E ) be a locally ﬁnite graph. If κ(x,y )≥ k
+for any edge (x,y )∈E, then κ(x,y )≥k for any two vertices x,y∈V .
+Therefore, in what follows, we will only consider κ(x,y ) for adjacent vertices x∼y. We
+write Ric(G) =k if κ(x,y ) =k for all edges x∼y.
+3.2. Comparing the Ollivier-Ricci curvature and its modiﬁcation. In [6], Bourne
+et al. studied the relationship between the α-Ollivier-Ricci curvature and its modiﬁcation
+by Lin, Lu, and Yau. The crucial element in establishing the r elation is the following
+theorem concerning the structure of the idleness function α↦→κα(x,y ).
+Theorem 3.2 ([6], Theorem 4.4). LetG = (V,E ) be a locally ﬁnite graph and let x,y∈V
+with x∼y. Then α↦→κα(x,y ) is linear over
+[
+1
+max{dx,dx}+1, 1
+]
+.
+Therefore, κα(x,y ) does not change its slope on the interval
+[
+1
+max{dx,dx}+1, 1
+]
+. Thus, the
+subsequent theorem is an immediate consequence of the mean v alue theorem, using that
+κ1 = 0 and that ∂
+∂ακα
+⏐⏐
+α=1 =−κ.
+Theorem 3.3. Let G = (V,E ) be a locally ﬁnite graph and let x,y ∈V with x∼y. Let
+α∈
+[
+1
+max{dx,dy}+1, 1
+]
+be arbitrary. Then
+κα(x,y ) = (1−α)κ(x,y ).
+Hence, the Lin-Lu-Yau curvature coincides up to a scaling factor with the α-Ollivier-Ricci
+curvature for α large enough.
+3.3. The core neighborhood. For two adjacent verticesx∼y, the Ollivier-Ricci curva-
+ture is fully determined by the 1-Wasserstein distance betw een the probability measures
+µα
+x and µα
+y . These measures have support B1(x) and B1(y), respectively. Observe that
+for every i∈ S1(x) and j∈ S1(y) we have d(i,j )≤ 3, as i∼ x∼ y∼ j. Thus, only
+vertices with a distance less than or equal to two from x and y are relevant for the opti-
+mal transport problem. Therefore, the Wasserstein distanc e, and hence the Ollivier-Ricci
+curvature, is a local property. We deﬁne the core neighborhood of an edge x∼y as
+Nxy =S1(x)∪S1(y)∪Pxy,
+where Pxy ={i∈ V : d(x,i ) = d(y,i ) = 2}. According to the above reasoning, the
+Ollivier-Ricci curvature should only depend on the core nei ghborhood of an edge. The
+following Lemma makes this statement precise.
+Lemma 3.4 (Reduction Lemma) . Let G = (V,E ) be a locally ﬁnite graph. Given two
+adjacent vertices x,y∈V , denote by Gxy the subgraph of G induced by Nxy. Let α∈ [0, 1]
+be arbitrary, then
+κG
+α (x,y ) =κGxy
+α (x,y ).
+Furthermore,
+κG(x,y ) =κGxy(x,y ).
+The illustration in ﬁgure 2 of the core neighborhood of an edg e x∼ y is due to Bhat-
+tacharya et al. [3].
+9
+
+===== PAGE 10 =====
+x
+y
+S1(x)\△(x, y)
+S1(y)\△(x, y)
+Pxy△(x, y)
+Gxy
+G\Gxy
+Figure 2. The core neighborhood of an edge x∼y.
+In their paper, they proved the reduction Lemma for α = 0. We extend this result to the
+case of an arbitrary α∈ [0, 1] and to the Lin-Lu-Yau curvature. To do so, we follow the
+same line of reasoning.
+Proof. Letα∈ [0, 1] be arbitrary. By the Kantorovich duality
+WG
+1 (µα
+x,µα
+y ) = sup
+f ∈1-Lip
+∑
+z∈V
+f(z)(µα
+x(z)−µα
+y (z)).
+Observe that dG(i,j )≤ dGxy(i,j ) for any i,j ∈ V (Gxy). Hence, any function which is
+1-Lipschitz with respect to dG is also 1-Lipschitz with respect to dGxy. Therefore,
+WGxy
+1 (µα
+x,µα
+y )≥WG
+1 (µα
+x,µα
+y ).
+To show the other inequality, letf :V (Gxy)→ R be an optimal Kantorovich potential on
+Gxy, namely
+WGxy
+1 (µα
+x,µα
+y ) =
+∑
+z∈V
+f(z)(µα
+x(z)−µα
+y (z)).
+We deﬁne a function g :V (G)→ R which is 1-Lipschitz with respect to dG and coincides
+withf on S1(x)∪S1(y). To this end, deﬁne g =f on S1(x)∪S1(y). By the construction
+of Gxy, we obtain dG(i,j ) = dGxy(i,j ), for any i,j ∈ S1(x)∪S1(y). As f is an optimal
+Kantorovich potential on Gxy, it is 1-Lipschitz with respect to dGxy. Therefore,
+|g(i)−g(j)| =|f(i)−f(j)|≤ dGxy(i,j ) =dG(i,j )
+for anyi,j∈S1(x)∪S1(y). According to Theorem 2.3,g can be extended to a 1-Lipschitz
+function ¯g on V . We conclude by
+WG
+1 (µα
+x,µα
+y )≥
+∑
+z∈V
+¯g(z)(µα
+x(z)−µα
+y (z))
+=
+∑
+z∈S1(x)∪S1(y)
+g(z)(µα
+x(z)−µα
+y (z))
+=
+∑
+z∈S1(x)∪S1(y)
+f(z)(µα
+x(z)−µα
+y (z))
+=WGxy
+1 (µα
+x,µα
+y ),
+10
+
+===== PAGE 11 =====
+where we use that supp(µα
+x)∪ supp(µα
+y ) =S1(x)∪S1(y). Therefore,
+κG
+α (x,y ) = 1−WG
+1 (µα
+x,µα
+y ) = 1−WGxy
+1 (µα
+x,µα
+y ) =κGxy
+α (x,y ).
+As this equality holds for any α∈ [0, 1], we obtain κG(x,y ) =κGxy(x,y ). □
+Focusing solely on the core neighborhood when calculating t he Ricci curvature of an edge
+considerably simpliﬁes the computation.
+4. Exact expressions of Ollivier-Ricci curvature
+The aim of this chapter is to derive precise expressions of th e Lin-Lu-Yau curvature and
+the α-Ollivier-Ricci curvature of an edge x∼ y with dx = dy. These expressions are
+formulated in terms of the graph parameters and an optimal as signment of vertices in the
+core neighborhood.
+Bourne et al. [6] showed that the idleness function α↦→κα(x,y ) is piecewise linear. If
+x and y are of equal degree d, κα(x,y ) has at most two linear parts. More precisely, the
+idleness function is linear on the intervals [0, 1/(d + 1)] and [1/(d + 1), 1]. We will provide
+exact formulas for κα on the two linear parts.
+4.1. Decomposing the neighborhood. In the previous chapter, we have already seen
+that the Ricci-curvature is a local property dependent sole ly on the core neighborhood of
+an edge.
+In what follows, we will see that the Ricci curvature of an edg e x∼ y with dx = dy can
+be further simpliﬁed. To this end, we decompose the 1-step ne ighborhood of the vertices
+x and y into disjoint sets. We denote by △(x,y ) the set of common neighbors of both x
+and y, namely,
+△(x,y ) =S1(x)∩S1(y).
+Thus,|△(x,y )| is the number of 3-cycles in G supported on the edge x∼y.
+Furthermore, we deﬁne
+Rx(x,y ) =S1(x)\ (△(x,y )∪{y}) and Ry(x,y ) =S1(y)\ (△(x,y )∪{x}),
+giving rise to the following disjoint decompositions of S1(x) and S1(y).
+S1(x) ={y}∪△ (x,y )∪Rx(x,y ) and S1(y) ={x}∪△ (x,y )∪Ry(x,y ).
+Using these decompositions, we argue that the computation o f the 1-Wasserstein distance
+reduces to an assignment problem betweenRx(x,y ) andRy(x,y ). Therefore, we introduce
+the concept of optimal assignments.
+Deﬁnition 4.1 (Optimal assignment) . Let G = (V,E ) be a locally ﬁnite graph. Let
+U,W ⊂V with|U| =|W|<∞. We call a bijection φ :U→W an assignment betweenU
+and W . Denote by AUW the set of all assignments between U and W . We call φ∈A UW
+an optimal assignment betweenU and W if
+∑
+z∈U
+d(z,φ (z)) = inf
+ψ∈AU W
+∑
+z∈U
+d(z,ψ (z)).
+Denote the set of all optimal assignments between U and W byOUW .
+Remark. Observe that forU =W =∅,AUW contains the empty function. Hence,AUW ⁄=
+∅ andOUW ⁄=∅ always holds true.
+11
+
+===== PAGE 12 =====
+Deﬁnition 4.2 (Perfect matching). Let G = (V,E ) be a locally ﬁnite graph. A perfect
+matching between two disjoint subsets U,W ⊂ V is a bijective map φ : U → W , with
+d(z,φ (z)) = 1 for all z∈U.
+Note that for an edge x∼ y with dx = dy, we have|Rx(x,y )| =|Ry(x,y )|. For the sake
+of simplicity, we will denote by Axy andOxy the setsARx(x,y)Ry(x,y) andORx(x,y)Ry(x,y),
+respectively.
+For an assignment φ∈A xy, we associate the following sets:
+• □(φ): The neighbors of x, forming a 4-cycle based at the edge x∼ y, with their
+image under φ. That is, □(φ) ={z∈Rx(x,y ) :d(z,φ (z)) = 1}.
+• (φ): The neighbors of x, forming a 5-cycle based at the edge x∼ y, with their
+image under φ. That is, (φ) ={z∈Rx(x,y ) :d(z,φ (z)) = 2}.
+4.2. Ollivier-Ricci curvature on the last linear part. The objective of this section is
+to establish our ﬁrst precise expression for the α-Ollivier-Ricci curvature. More precisely,
+we aim to give an exact formula forκα(x,y ), whereα∈
+[
+1
+d+1, 1
+]
+andx,y are two adjacent
+vertices of equal degree, denoted by d.
+To this end, we ﬁx an arbitrary α in this interval. For the convenience of the reader, we
+state again the deﬁnition of the probability measure µα
+x:
+µα
+x(y) =
+
+
+
+α, if y =x;
+1−α
+d , if y∼x;
+0, otherwise.
+The following Lemma states some of the assumptions we can imp ose on an optimal trans-
+port plan transporting µα
+x to µα
+y .
+Lemma 4.1. Letα∈
+[
+1
+d+1, 1
+]
+. Then there exists an optimal transport plan π transporting
+µα
+x to µα
+y with the following properties:
+(i)∀i∈△ (x,y ) :π(i,i ) =µα
+x(i) =µα
+y (i);
+(ii) π(x,x ) =π(y,y ) =µα
+y (x);
+(iii) π(x,y ) =µα
+y (y)−µα
+y (x).
+Remark. Observe that µα
+y (y)−µα
+y (x)≥ 0 if and only if α≥ 1
+d+1. Hence, the subsequent
+discussion pertains only to the last linear part of κα.
+Proof. Properties (i) and (ii) are immediate consequence of Lemma 2 .1.
+For the proof of ( iii), let π be an optimal transport plan transporting µα
+x to µα
+y while
+satisfying properties (i) and (ii). Since π satisﬁes property (ii), we must have
+π(x,y ) =µα
+y (y)−
+∑
+j∈V \{x}
+π(j,y )
+≤µα
+y (y)−π(y,y )
+=µα
+y (y)−µα
+y (x).
+Assume that π(x,y )<µ α
+y (y)−µα
+y (x). Thus, the sets
+I ={z∈S1(x)\{y} :π(z,y )> 0} and O ={z∈S1(y)\{x} :π(x,z )> 0}
+12
+
+===== PAGE 13 =====
+π(x,y )
+x y
+I O
+m
+m
+x y
+I O
+µα
+y (y) −µα
+y (x)
+m
+π :
+π′ :
+Figure 3. Illustration of the optimal transport planπ and its modiﬁcation
+π′ for the proof of Lemma 4.1.
+are not empty. Due to property ( i), we must have I∩O =∅. Since π satisﬁes property
+(ii), we obtain:
+∑
+z∈I
+π(z,y ) =µα
+y (y)−π(y,y )−π(x,y )
+=µα
+x(x)−π(x,x )−π(x,y )
+=
+∑
+z∈O
+π(x,z ).
+In other words, the mass transported from I to y equals the mass transported from x to
+O under π. We denote this mass by m, namely m =∑
+z∈Iπ(z,y ).
+We now obtain a new transport plan π′ from modifying π as follows:
+• Set π′(x,y ) =µα
+y (y)−µα
+y (x), π′(x,z ) = 0∀z∈O and π′(z,y ) = 0∀z∈I
+• Move the mass m directly from I to O.
+See Figure 3 for an illustration of this modiﬁcation.
+Due to property (i), we must have O∩△ (x,y ) = I∩△ (x,y ) =∅. Therefore, d(i,y ) = 2
+for any i∈I and d(x,j ) = 2 for any j∈O. Thus, π moves mass
+• m at distance two from I to y,
+• m at distance two from x to O,
+• π(x,y ) =µα
+y (y)−µα
+y (x)−m at distance one from x to y,
+resulting in a cost of:
+3·m +µα
+y (y)−µα
+y (x).
+On the other hand, observe that d(i,j )≤ 3 for any i∈I and j∈O. Thus, π′ moves the
+mass
+• µα
+y (y)−µα
+y (x) at distance one from x to y,
+• m fromI to O at distance less than or equal to three,
+13
+
+===== PAGE 14 =====
+resulting in a cost less than or equal to:
+3·m +µα
+y (y)−µα
+y (x).
+This is exactly the cost of moving this part of the mass under t he optimal transport plan
+π. As π′ coincides withπ everywhere else,π′ is an optimal transport plan as well. Finally,
+observe that by construction,
+π′(j,j ) =π(j,j )∀j∈△ (x,y ), π ′(x,x ) =π(x,x ) and π′(y,y ) =π(y,y ).
+Hence, we have constructed an optimal transport plan satisfying properties (i)− (iii). □
+We are now in a position to derive a precise expression for the α-Ollivier-Ricci curvature
+of an edge on the last linear part, in terms of graph parameters and an optimal assignment
+betweenRx(x,y ) and Ry(x,y ).
+Theorem 4.2. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. Furthermore, let α∈
+[
+1
+d+1, 1
+]
+. Then the α-Ollivier-Ricci curvature
+κα(x,y ) = 1−α
+d
+(
+d + 1− inf
+φ∈Axy
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+.
+Remark. For a similar curvature formula in the case of combinatorial graphs, refer to [31,
+Theorem 2.6].
+Proof. To demonstrate this theorem, we proceed with a proof by cases .
+Case 1: Rx(x,y ) =∅. In this case,Axy only contains the empty function. Thus,
+1−α
+d
+(
+d + 1− inf
+φ∈Axy
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+= 1−α
+d (d + 1).
+On the other hand, the transport plan π transporting µα
+x to µα
+y , deﬁned by
+π(i,j ) =
+
+
+
+1−α
+d , if i =j∈{x,y}∪△ (x,y );
+α− 1−α
+d , if i =x and j =y;
+0, otherwise.
+is optimal, according to Lemma 4.1. Therefore,
+W1(µα
+x,µα
+y ) =
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+d(i,j )π(i,j ) = α− 1−α
+d ,
+and hence,
+κα(x,y ) = 1−α
+d (d + 1).
+Case 2: Rx(x,y )⁄=∅. Let φ∈ Axy be an optimal assignment between Rx(x,y ) and
+Ry(x,y ). Deﬁne the transport plan π transporting µα
+x to µα
+y by
+π(i,j ) =
+
+
+
+1−α
+d , if i =j∈{x,y}∪△ (x,y );
+1−α
+d , if i∈Rx(x,y ) and j =φ(i);
+α− 1−α
+d , if i =x and j =y;
+0, otherwise.
+14
+
+===== PAGE 15 =====
+We claim that this transport plan is optimal. Assume this is n ot true. Then let π′ be an
+optimal transport plan transporting µα
+x to µα
+y , satisfying properties ( i)− (iii) stated in
+Lemma 4.1. Then,
+(4.1)
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+π′(i,j )d(i,j ) =α− 1−α
+d +
+∑
+i∈Rx(x,y)
+∑
+j∈Rx(x,y)
+π′(i,j )d(i,j ).
+On the other hand, we obtain by construction of π
+(4.2)
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+π(i,j )d(i,j ) =α− 1−α
+d +
+∑
+i∈Rx(x,y)
+∑
+j∈Rx(x,y)
+π(i,j )d(i,j ).
+Due to the non-optimality of π, we must have:
+(4.3)
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+π′(i,j )d(i,j ) <
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+π(i,j )d(i,j ).
+Combining equations 4.1, 4.2 and 4.3 leads to
+(4.4)
+∑
+i∈Rx(x,y)
+∑
+j∈Rx(x,y)
+π′(i,j )d(i,j ) <
+∑
+i∈Rx(x,y)
+∑
+j∈Rx(x,y)
+π(i,j )d(i,j ).
+Now, observe that π
+⏐⏐
+Rx(x,y)×Ry(x,y) andπ′⏐⏐
+Rx(x,y)×Ry(x,y) are transport plans transporting
+µα
+x
+⏐⏐
+Rx(x,y) toµα
+y
+⏐⏐
+Ry(x,y). Furthermore, µα
+x
+⏐⏐
+Rx(x,y) andµα
+y
+⏐⏐
+Ry(x,y) are measures under which
+all points in their support carry equal mass 1−α
+d .
+Thus, we can apply Lemma 2 .4 (after multiplication with a scaling factor) and conclude
+that π
+⏐⏐
+Rx(x,y)×Ry(x,y) is an optimal transport plan. This contradicts equation 4.4 .
+Therefore, π is an optimal transport plan. The rest of the proof is just a st raightforward
+calculation. Namely,
+W1(µα
+x,µα
+y ) =
+∑
+i∈B1(x)
+∑
+j∈B1(y)
+d(i,j )π(i,j )
+=α− 1−α
+d + 1−α
+d
+∑
+z∈Rx(x,y)
+d(z,φ (z)),
+which leads to
+κα(x,y ) = 1−α
+d
+(
+d + 1−
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+.
+The fact that φ is an optimal assignment concludes the proof. □
+We can modify the formula for κα(x,y ), given in the previous theorem, using that
+|Rx(x,y )| =d− 1−|△ (x,y )|.
+Namely,
+κα(x,y ) = 1−α
+d
+(
+d + 1− inf
+φ∈Axy
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+= 1−α
+d
+(
+d + 1− inf
+φ∈Axy
+3∑
+k=1
+k·
+⏐⏐⏐
+{
+z∈Rx(x,y ) :d(z,φ (z)) =k
+}⏐⏐⏐
+)
+= 1−α
+d
+(
+−2d + 4 + 3|△(x,y )| + sup
+φ∈Axy
+{
+2|□(φ)| +| (φ)|
+})
+.
+15
+
+===== PAGE 16 =====
+The advantage of this expression is, that it provides a nice intuition of theα-Ollivier-Ricci
+curvature.
+• Given an edgex∼y that satisﬁesdist(S1(x)\{y},S 1(y)\{x}) = 3, we have initial
+α-Ollivier-Ricci curvature
+κα(x,y ) = 1−α
+d (−2d + 4).
+• Now, assume x∼ y is contained in some 3-cycles. In this case, the mass at the
+common neighbors remains in place instead of being moved by a distance of three.
+Therefore increasing κα by 3·|△ (x,y )|· 1−α
+d .
+• Next, adding an edge between a vertex from Rx(x,y ) and a vertex from Ry(x,y )
+allows to move the mass (1−α)/d at distance one instead of distance three. There-
+fore increasing κα by 2· 1−α
+d .
+• Similarly, connecting a vertex in Rx(x,y ) with a vertex in Ry(x,y ) by a path of
+distance two allows to move the mass (1−α)/d at distance two instead of distance
+three. Therefore increasing κα by 1−α
+d .
+4.3. Lin-Lu-Y au curvature. In this section, we derive exact formulas for the Lin-Lu-
+Yau curvature of an edge x∼y with dx =dy. We then proceed to state some immediate
+consequences of our expression.
+According to Theorem 3.3, the identity
+κ(x,y ) = κα(x,y )
+1−α
+holds true for all idleness parameters α∈
+[
+1
+max{dx,dy}+1, 1
+)
+. Therefore, the formula for
+the Lin-Lu-Yau curvature is an immediate consequence of The orem 4.2.
+Theorem 4.3. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. Then the Lin-Lu-Yau curvature
+(4.5) κ(x,y ) = 1
+d
+(
+d + 1− inf
+φ∈Axy
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+.
+By employing the adjusted expression for the α-Ollivier-Ricci curvature, we deduce a
+second precise expression for the Lin-Lu-Yau curvature:
+(4.6) κ(x,y ) = 1
+d
+(
+−2d + 4 + 3|△(x,y )| + sup
+φ∈Axy
+{
+2|□(φ)| +| (φ)|
+})
+.
+We now state some immediate consequences of our formulas.
+Corollary 4.4. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. Then κ(x,y )∈ Z/d. Furthermore,
+−2 + 4
+d + 3|△(x,y )|
+d ≤κ(x,y )≤ 2 +|△(x,y )|
+d .
+Proof. The fact that κ(x,y )∈ Z/d follows directly from formula 4.5.
+16
+
+===== PAGE 17 =====
+Using that d(z,φ (z))≥ 1 for all z∈Rx(x,y ), we obtain
+κ(x,y ) = 1
+d
+(
+d + 1− inf
+φ∈Axy
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+≤ 1
+d
+(
+d + 1−|Rx(x,y )|
+)
+= 1
+d
+(
+d + 1− (d− 1−|△ (x,y )|)
+)
+= 2 +|△(x,y )|
+d .
+Similarly, using that d(z,φ (z))≤ 3, we obtain
+κ(x,y ) = 1
+d
+(
+d + 1− inf
+φ∈Axy
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+≥ 1
+d
+(
+d + 1− 3|Rx(x,y )|
+)
+= 1
+d
+(
+−2d + 4 + 3|△(x,y )|
+)
+.
+□
+Remark. Note that the upper bound is attained if and only if there exists a perfect match-
+ing between Rx(x,y ) and Ry(x,y ). On the other hand, the lower bound is an equality if
+and only if dist(Rx(x,y ),Ry(x,y )) = 3 or Rx(x,y ) =∅.
+Utilizing the lower bound derived in the previous corollary , we attain the following condi-
+tion for the Lin-Lu-Yau curvature to be positive.
+Corollary 4.5. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. If
+|△(x,y )|> 2d− 4
+3 ,
+then κ(x,y )> 0.
+4.4. Strongly regular graphs. Bonini et al. [5] derive an exact formula for the Lin-Lu-
+Yau curvature on strongly regular graphs. In this section, w e show that our formula for
+arbitrary regular graphs reduces to the formula provided by Bonini et al. in the case of
+strongly regular graphs.
+First, we recall the deﬁnition of a strongly regular graph.
+Deﬁnition 4.3 (Strongly regular graph) . A d-regular graph G = (V,E ) with n vertices
+is said to be strongly regular with parameters (n,d,λ,µ ), if every two adjacent vertices
+have λ≥ 0 common neighbors and every two nonadjacent vertices have µ≥ 1 common
+neighbors.
+Note that the diameter of a strongly regular graph is less tha n or equal to two. In
+particular, every node i ∈ Rx(x,y ) is at a distance less than or equal to two from a
+node j∈ Rx(x,y ). Using this property, we obtain the following precise form ula for the
+Lin-Lu-Yau curvature on strongly regular graphs.
+17
+
+===== PAGE 18 =====
+Corollary 4.6. Let G = (V,E ) be a strongly regular graph with parameters (n,d,λ,µ )
+and let x,y∈V with x∼y. Then, the Lin-Lu-Yau curvature
+κ(x,y ) = λ + 2
+d −|Rx(x,y )|−| □(φ)|
+d ,
+for an optimal assignment φ∈O xy.
+This formula coincides with the formula provided by Bonini e t al. in [5, Theorem 4.6].
+Proof. Let φ be an optimal assignment between Rx(x,y ) and Ry(x,y ). As d(i,j )≤ 2 for
+anyi∈Rx(x,y ) and j∈Ry(x,y ), we have
+| (φ)| =|Rx(x,y )|−| □(φ)|.
+Using that|Rx(x,y )| =d− 1−λ and the formula 4.6, we obtain
+κ(x,y ) = λ + 2
+d −|Rx(x,y )|−| □(φ)|
+d .
+□
+4.5. Ollivier-Ricci curvature for vanishing idleness. This section aims to derive an
+exact expression for the α-Ollivier-Ricci curvature of an edge x∼y with dx =dy, in the
+case of vanishing idleness, i.e., α = 0.
+Recall that for α = 0,µα
+x simpliﬁes to
+µα
+x(y) =
+{
+1
+dx, if y∈S1(x);
+0, otherwise.
+As per Lemma 2 .4, there exists an optimal transport plan transporting µα
+x to µα
+y corre-
+sponding to an optimal assignment betweenS1(x) andS1(y). The following Lemma states
+some of the assumptions we can impose on such an optimal assig nment.
+Lemma 4.7. Let G = (V,E ) be a locally ﬁnite graph. Let x,y ∈ V be of equal degree d
+with x∼ y. Then there exists an optimal assignment φ betweenS1(x) and S1(y), such
+that φ(i) =i for all i∈△ (x,y ).
+Furthermore, if |△(x,y )| < d− 1, there exists an optimal assignment φ, satisfying the
+aforementioned property and φ(y)⁄=x.
+Proof. Letφ be an optimal assignment between S1(x) and S1(y). Assume there exists an
+i∈△ (x,y ) with φ(i)⁄=i. As an optimal assignment, φ is a bijection from S1(x) to S1(y).
+Hence, there exists a unique j∈S1(y), such that φ(i) = j and a unique k∈S1(x), such
+that φ(k) =i. Deﬁne a new assignment φ′ betweenS1(x) and S1(y) by
+φ′(z) =
+
+
+
+i, if z =i;
+j, if z =k;
+φ(z), otherwise.
+By the triangle inequality, we have d(k,j )≤d(k,i ) +d(i,j ). Hence, the new assignment
+φ′ is still optimal. Note that φ′(z) = z for all z∈ S1(x) with φ(z) = z. Repeating this
+modiﬁcation at all other vertices that violate the lemma’s c ondition results in an optimal
+assignmentψ satisfying ψ(i) =i for all i∈△ (x,y ).
+18
+
+===== PAGE 19 =====
+For the second part of the proof, assume that|△(x,y )|<d−1 and assume that ψ(y) =x.
+Since|△(x,y )|<d − 1, there exists i∈S1(x)\ (△(x,y )∪{y}). Deﬁne a new assignment
+ψ′ betweenS1(x) and S1(y) by
+ψ′(z) =
+
+
+
+ψ(i), if z =y;
+x, if z =i;
+ψ(z), otherwise.
+Since i⁄∈△(x,y ), we have d(i,ψ (i))≥ 1, leading to
+d(y,ψ ′(y)) +d(i,ψ ′(i)) = 2≤d(y,ψ (y)) +d(i,ψ (i)).
+Hence, the new assignment ψ′ is still optimal. Finally, note that ψ′(i) = ψ(i) = i for all
+i∈△ (x,y ). This concludes the proof. □
+We are now in a position to derive a precise expression for κα(x,y ) for α = 0. The
+subsequent theorem, which is an immediate consequence of th e ﬁrst part of the previous
+lemma, states this expression.
+Theorem 4.8. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. Then
+κ0(x,y ) = 1
+d
+(
+d− inf
+φ
+∑
+z∈S1(x)\△(x,y)
+d(z,φ (z))
+)
+,
+where the inﬁmum is taken over all assignments φ betweenS1(x)\△ (x,y ) and S1(y)\
+△(x,y ).
+Proof. Let φ be an optimal assignment between S1(x) and S1(y). We may assume that
+φ(i) = i for all i∈△ (x,y ), according to Lemma 4 .7. As per Lemma 2 .4, the transport
+plan π transporting µ0
+x to µ0
+y deﬁned by
+π(i,j ) =
+{
+1
+d, if i∈S1(x) and j =φ(i);
+0, otherwise.
+is optimal. Therefore,
+W1(µ0
+x,µ 0
+y) = 1
+d
+∑
+z∈S1(x)\△(x,y)
+d(z,φ (z)),
+and hence
+κ0(x,y ) = 1
+d
+(
+d−
+∑
+z∈S1(x)\△(x,y)
+d(z,φ (z))
+)
+.
+Note that φ
+⏐⏐
+S1(x)\△(x,y) is an optimal assignment between S1(x)\△ (x,y ) and S1(y)\
+△(x,y ). This concludes the proof. □
+An immediate consequence of Theorem 4.8 is the following Corollary.
+Corollary 4.9. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. Then κ0(x,y )∈ Z/d. Furthermore, if |△(x,y )|<d − 1, then
+(4.7) −2 + 4
+d + 3|△(x,y )|
+d ≤κ0(x,y )≤|△(x,y )|
+d .
+If|△(x,y )| =d− 1, then κ0(x,y ) = |△(x,y)|
+d .
+19
+
+===== PAGE 20 =====
+Remark. Observe that the upper bound in 4.7 is attained if and only if t here exists a
+perfect matching between S1(x)\△ (x,y ) and S1(y)\△ (x,y ).
+Note that so far, we have only used the ﬁrst assumption of Lemm a 4.7. We now use the
+second assumption to study the relationship between κ0(x,y ) and κ(x,y ).
+Theorem 4.10. LetG = (V,E ) be a locally ﬁnite graph. Let x,y ∈V be of equal degree
+d with x∼y. If |△(x,y )|<d− 1, then
+κ0(x,y ) =κ(x,y )− 1
+d
+(
+3− sup
+φ∈Oxy
+sup
+z∈Rx(x,y)
+d(z,φ (z))
+)
+whereOxy denotes the set of all optimal assignments between Rx(x,y ) and Ry(x,y ). If
+|△(x,y )| =d− 1, then
+κ0(x,y ) =κ(x,y )− 2
+d.
+Proof. Case 1: |△(x,y )| = d− 1. Straightforward calculations show that κ(x,y ) = d+1
+d ,
+and κ0(x,y ) = d−1
+d . Hence,
+κ0(x,y ) =κ(x,y )− 2
+d.
+Case 2: |△(x,y )|<d − 1. First, observe that|Rx(x,y )|<∞ and hence|Oxy|<∞, as G
+is locally ﬁnite. Therefore, there exists φ∈O xy and j∈Rx(x,y ) such that
+d(j,φ (j)) = sup
+φ∈Oxy
+sup
+z∈Rx(x,y)
+d(z,φ (z)).
+Deﬁne an assignment ψ betweenS1(x)\△ (x,y ) and S1(y)\△ (x,y ) by
+ψ(z) =
+
+
+
+x, if z =j;
+φ(j), if z =y;
+φ(z), otherwise.
+We claim that ψ is an optimal assignment between S1(x)\△ (x,y ) and S1(y)\△ (x,y ).
+Assume this is not the case. Then letψ′ be an optimal assignment satisfying the conditions
+outlined in Lemma 4.7. As ψ is not optimal,
+(4.8)
+∑
+z∈S1(x)\△(x,y)
+d(z,ψ ′(z))<
+∑
+z∈S1(x)\△(x,y)
+d(z,ψ (z))
+must hold. Using d(j,ψ (j)) =d(y,ψ (y)) = 1, we obtain
+(4.9)
+∑
+z∈S1(x)\△(x,y)
+d(z,ψ (z)) =
+∑
+z∈Rx(x,y)\{j}
+d(z,φ (z)) + 2.
+On the other hand, we know ψ′(y)⁄=x. Denote by k the preimage of x under ψ′. Then
+(4.10)
+∑
+z∈S1(x)\△(x,y)
+d(z,ψ ′(z)) =
+∑
+z∈Rx(x,y)\{k}
+d(z,ψ ′(z)) + 2.
+Combining equations 4.8, 4.9 and 4.10 leads to
+(4.11)
+∑
+z∈Rx(x,y)\{k}
+d(z,ψ ′(z))<
+∑
+z∈Rx(x,y)\{j}
+d(z,φ (z)).
+20
+
+===== PAGE 21 =====
+As ψ′(y)∈Ry(x,y ) and k∈Rx(x,y ) and ψ′ is bijective, the map
+φ′ :Rx(x,y )→Ry(x,y ) deﬁned by
+φ′(z) =
+{
+ψ′(y), if z =k;
+ψ′(z), otherwise.
+is an assignment between Rx(x,y ) and Ry(x,y ). Due to the optimality of φ, we have
+∑
+z∈Rx(x,y)
+d(z,φ ′(z))≥
+∑
+z∈Rx(x,y)
+d(z,φ (z)).
+We now distinguish the following two cases:
+Case 1: ∑
+z∈Rx(x,y)d(z,φ ′(z)) = ∑
+z∈Rx(x,y)d(z,φ (z)). In this case, φ′ is an optimal
+assignment between Rx(x,y ) and Ry(x,y ) as well. By the choice of φ and j, we have
+d(k,φ ′(k))≤d(j,φ (j)),
+leading to ∑
+z∈Rx(x,y)\{k}
+d(z,ψ ′(z))≥
+∑
+z∈Rx(x,y)\{j}
+d(z,φ (z)),
+contradicting equation 4.11.
+Case 2: ∑
+z∈Rx(x,y)d(z,φ ′(z))>∑
+z∈Rx(x,y)d(z,φ (z)). Due to equation 4.11, we have
+2≤d(k,φ ′(k)))−d(j,φ (j)).
+As 3≥d(k,φ ′(k)) and 1≤d(j,φ (j)), we must have d(j,φ (j)) = 1 and therefore
+1 =d(j,φ (j))≥d(z,φ (z))≥ 1
+holds for any z∈Rx(x,y ), by the choice of j and φ. This contradicts equation 4.11, as
+d(z,ψ ′(z))≥ 1,∀z∈Rx(x,y ).
+Therefore our assumption was wrong and ψ is an optimal assignment between S1(x)\
+△(x,y ) and S1(y)\△ (x,y ). Using Theorem 4.8, we obtain
+κ0(x,y ) = 1
+d
+(
+d−
+∑
+z∈S1(x)\△(x,y)
+d(z,ψ (z))
+)
+= 1
+d
+(
+d−
+∑
+z∈Rx(x,y)\{j}
+d(z,φ (z))− 2
+)
+= 1
+d
+(
+d + 1−
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+− 1
+d
+(
+3−d(j,φ (j))
+)
+,
+where we used equation 4.9 for the second equality. Using the optimality of φ and Theo-
+rem 4.3, we obtain
+κ0(x,y ) =κ(x,y )− 1
+d
+(
+3−d(j,φ (j))
+)
+.
+The choice of φ and j conclude the proof. □
+We will employ this result in the subsequent chapter to exami ne the relation between
+κ(x,y ) andκ0(x,y ) further. However, before doing so, we will present an exact expression
+for the Ollivier-Ricci curvature on the ﬁrst linear part usi ng the formulas derived in this
+section.
+21
+
+===== PAGE 22 =====
+4.6. Ollivier-Ricci curvature on the ﬁrst linear part. The objective of this section
+is to establish a precise expression for the α-Ollivier-Ricci curvature on the ﬁrst linear
+part, that is, for α∈
+[
+0, 1
+d+1
+]
+.
+In [6], Bourne et al. provided a formula for κα(x,y ) in terms of κ0(x,y ) and κ(x,y ) for an
+edge x∼y where x and y have equal degree d. This formula is stated in the subsequent
+theorem.
+Theorem 4.11 ([6], Theorem 5.3). LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V
+be of equal degree d with x∼y. Let α∈
+[
+0, 1
+d+1
+]
+. Then the α-Ollivier-Ricci curvature
+κα(x,y ) = (1−α)κ0(x,y ) +α·d· (κ(x,y )−κ0(x,y )).
+Using Theorem 4.10, we obtain a precise expression for κ(x,y )−κ0(x,y ) in terms of an
+optimal assignment between Rx(x,y ) and Ry(x,y ). Furthermore, Theorem 4.8 provides a
+precise formula for κ0(x,y ). Combining these results leads to the following theorem.
+Theorem 4.12. LetG = (V,E ) be a locally ﬁnite graph. Let x,y ∈V be of equal degree
+d with x∼y. Let α∈
+[
+0, 1
+d+1
+]
+. Then, if |△(x,y )|<d− 1, the α-Ollivier-Ricci curvature
+κα(x,y ) = 1−α
+d
+(
+d− inf
+ψ
+∑
+z∈S1(x)\△(x,y)
+d(z,ψ (z))
+)
++α
+(
+3− sup
+φ∈Oxy
+sup
+z∈Rx(x,y)
+d(z,φ (z))
+)
+,
+where the inﬁmum is taken over all assignment ψ between S1(x)\△ (x,y ) and S1(y)\
+△(x,y ). Furthermore, if |△(x,y )| =d− 1, then
+κα(x,y ) = (1−α)d− 1
+d + 2α.
+A consequence of Theorem 4.12 is the following Corollary.
+Corollary 4.13. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree
+d with x∼y. Let α∈
+[
+0, 1
+d+1
+]
+. Then
+κα(x,y )− 2α≤ (1−α)κ0(x,y )≤κα(x,y ).
+Furthermore, Theorem 4.11 implies that the idleness function is globally linear, na mely
+κα(x,y ) = (1−α)κ(x,y ) ∀α∈ [0, 1]
+if κ(x,y ) = κ0(x,y ), The next chapter is devoted to a further investigation of t his case
+and, more generally, the relation between κ(x,y ) and κ0(x,y ).
+5. Relation between two important curvature notions
+In this chapter, we shall examine the relation between the Li n-Lu-Yau curvature and the
+α-Ollivier-Ricci curvature for vanishing idleness α = 0. By doing so, we will provide
+answers to open questions proposed by Bourne et al. in [6].
+The foundation for the subsequent discussion lies in Theore m 4.10 from the previous
+chapter. For ease of reading, we restate this important theo rem here.
+Theorem 4.10. LetG = (V,E ) be a locally ﬁnite graph. Let x,y ∈V be of equal degree
+d with x∼y. If |△(x,y )|<d− 1, then
+κ0(x,y ) =κ(x,y )− 1
+d
+(
+3− sup
+φ∈Oxy
+sup
+z∈Rx(x,y)
+d(z,φ (z))
+)
+.
+22
+
+===== PAGE 23 =====
+If|△(x,y )| =d− 1, then
+κ0(x,y ) =κ(x,y )− 2
+d.
+5.1. Equality condition. In this section, we present our initial observations regard ing
+the relationship between κ0(x,y ) and κ(x,y ) for an edge x∼y where dx =dy. The main
+result will be a suﬃcient and necessary condition for equali ty between the two curvature
+notions.
+Corollary 5.1. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. Then,
+κ0(x,y ) =κ(x,y )− c
+d,
+wherec∈{ 0, 1, 2}.
+Proof. We distinguish the following two cases:
+Case 1: |△(x,y )| =d− 1. According to Theorem 4.10, we have
+κ0(x,y ) =κ(x,y )− 2
+d.
+Case 2: |△(x,y )|<d− 1. This case is an immediate consequence of Theorem 4 .10, using
+1≤d(i,j )≤ 3 for any i∈Rx(x,y ) and any j∈Ry(x,y ). □
+The main result of this section is the following necessary an d suﬃcient condition for
+κ0(x,y ) =κ(x,y ) on regular graphs.
+Corollary 5.2. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. Then
+κ0(x,y ) =κ(x,y )
+if and only if there exists an optimal assignment φ∈O xy betweenRx(x,y ) and Ry(x,y )
+such that
+∃z∈Rx(x,y ) : d(z,φ (z)) = 3.
+The corollary is an immediate consequence of Theorem 4 .10.
+Remark. Recall that every strongly regular graph G = (V,E ) is of diameter less than or
+equal to two. Thus, according to the previous corollary, eve ry edge x∼y satisﬁes:
+κ(x,y )>κ 0(x,y ).
+The same holds for arbitrary regular graphsG = (V,E ) with a diameter less than or equal
+to two, e.g., for d-regular graphs with d≥ |V |−1
+2 .
+We now use Corollary 5 .2 to determine intervals where κ and κ0 always coincide and
+intervals where they are never equal.
+Corollary 5.3. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. If
+κ(x,y )<−1 + 3
+d + 2|△(x,y )|
+d ,
+then κ(x,y ) =κ0(x,y ).
+23
+
+===== PAGE 24 =====
+Proof. Assume κ(x,y )⁄=κ0(x,y ) and
+κ(x,y )<−1 + 3
+d + 2|△(x,y )|
+d .
+Let φ∈ Oxy be an optimal assignment between Rx(x,y ) and Ry(x,y ). According to
+Corollary 5.2, we have d(z,φ (z))≤ 2 for any z∈Rx(x,y ). Hence,
+κ(x,y ) = 1
+d
+(
+d + 1−
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+≥ 1
+d
+(
+d + 1− 2|Rx(x,y )|
+)
+= 1
+d
+(
+−d + 3 + 2|△(x,y )|
+)
+,
+contradicting our assumptions. □
+Corollary 5.4. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. If
+κ(x,y )>|△(x,y )|
+d ,
+then κ(x,y )⁄=κ0(x,y ).
+Proof. This is an immediate consequence of Corollary 4 .9. □
+Remark. Thus,κ(x,y ) and κ0(x,y ) coincide for small values but diﬀer for large values.
+5.2. Opposite signs. We have seen thatκ≥κ0 holds for regular graphs. In [6, Theorem
+5.5], the authors extend this result to arbitrary locally ﬁn ite graphs. It is known from the
+literature that graphs with κ(x,y ) = 0 and κ0(x,y ) < 0, for any edge x∼ y, exist. The
+Petersen graph is one example of a graph satisfying this prop erty. The objective of this
+section is to answer the question of whether there exists a gr aph G with an edge x∼ y
+satisfying κ(x,y )> 0 and κ0(x,y )< 0.
+According to the subsequent theorem, this cannot be the case for regular graphs. This
+result was ﬁrst obtained in [8]. Using our earlier results, w e can provide a signiﬁcantly
+simpliﬁed proof.
+Theorem 5.5. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. If κ(x,y )> 0, then κ0(x,y )≥ 0.
+Proof. LetG = (V,E ) be a locally ﬁnite graph and let x,y∈V be of equal degree d with
+x∼y. We argue by contradiction.
+Assume that κ(x,y )> 0 and κ0(x,y )< 0. Recall that κ(x,y )∈ Z/d and κ0(x,y )∈ Z/d.
+Using Corollary 5.1, we deduce that
+κ(x,y ) = 1
+d and κ0(x,y ) =−1
+d,
+as κ(x,y )−κ0(x,y )≤ 2
+d. Furthermore, observe that |△(x,y )| < d− 1, as κ0(x,y ) < 0.
+Hence, we can apply Theorem 4.10, leading to the existence of a φ∈Oxy such that
+sup
+z∈Rx(x,y)
+d(z,φ (z)) = 1.
+24
+
+===== PAGE 25 =====
+Using our precise expression for the Lin-Lu-Yau curvature, we obtain
+κ(x,y ) = 1
+d
+(
+d + 1−
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+= 1
+d
+(
+d + 1−|Rx(x,y )|
+)
+= 2 +|△(x,y )|
+d
+≥ 2
+d,
+contradictingκ(x,y ) = 1
+d. □
+The subsequent graphs show that the condition dx =dy is necessary. Namely, there exist
+non-regular graphs G with an edge x∼y satisfying
+κ(x,y )> 0>κ 0(x,y ).
+Example 1:
+x y
+The edge x∼y, with dx = 2< 3 =dy, satisﬁes
+κ0(x,y ) =−1
+6 < 0< 1
+6 =κ(x,y ).
+Example 2:
+x y
+The edge x∼y, with dx = 3< 4 =dy, satisﬁes
+κ0(x,y ) =−1
+6 < 0< 1
+12 =κ(x,y ).
+5.3. Bone idleness. We introduce the notion of bone idle, initially proposed by B ourne
+et al. in [6].
+Deﬁnition 5.1 (Bone idle) . Let G = (V,E ) be a locally ﬁnite graph. We say an edge
+x∼y is bone idle if κα(x,y ) = 0 for every α∈ [0, 1]. We say that G is bone idle if every
+edge is bone idle.
+25
+
+===== PAGE 26 =====
+The notion of Ricci-ﬂatness is weaker but strongly related t o bone idleness.
+Deﬁnition 5.2 (Ricci-ﬂat). LetG = (V,E ) be a locally ﬁnite graph. We call G Ricci-ﬂat
+if κ(x,y ) = 0 for every edge. We call G α-Ricci-ﬂat if κα(x,y ) = 0 for every edge.
+Lemma 5.6. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V with x∼y. Then the
+following are equivalent:
+(i) κα(x,y ) = 0 for all α∈ [0, 1].
+(ii) κ0(x,y ) =κ(x,y ) = 0.
+Proof. (ii) =⇒ (i). Let α∈ (0, 1) be arbitrary. Assume κ0(x,y ) = κ(x,y ) = 0. Recall
+that the idleness function is concave, and also note that κ1(x,y ) = 0. Hence,
+κα(x,y )≥ακ1(x,y ) + (1−α)κ0(x,y ) = 0.
+The other inequality follows from the fact that the graph of a concave function lies below
+its tangent line at each point and that κ′
+1 =−κ:
+κα(x,y )≤κ1(x,y ) +κ′
+1(x,y )· (α− 1) =κ(x,y )· (1−α) = 0.
+(i) =⇒ (ii). This is an immediate consequence of the deﬁnition of κ. □
+Therefore, a graph is bone idle if it is Ricci-ﬂat and 0-Ricci -ﬂat. Previous works have
+addressed the classiﬁcation of Ricci-ﬂat graphs. Bhattach arya et al. [3] classiﬁed all
+graphs that are 0-Ricci-ﬂat and have girth at least ﬁve.
+Theorem 5.7 ([3], Corollary 4.1) . Let G = (V,E ) be a locally ﬁnite graph with girth at
+least ﬁve. Suppose that G is 0-Ricci-ﬂat. Then G is isomorphic to one of the following
+graphs:
+(i) The inﬁnite path,
+(ii) the inﬁnite ray,
+(iii) the path Pn for n≥ 2,
+(iv) the cycle graph Cn for n≥ 5,
+(v) the star graph Tn for n≥ 3.
+On the other hand, Cushing et al. classiﬁed all Ricci-ﬂat gra phs with girth at least ﬁve
+[9].
+Theorem 5.8 ([9], Theorem 1). LetG = (V,E ) be a locally ﬁnite graph with girth at least
+ﬁve. Suppose that G is Ricci-ﬂat. Then G is isomorphic to one of the following graphs:
+(i) The inﬁnite path,
+(ii) the cycle graph Cn for n≥ 6,
+(iii) the dodecahedral graph,
+(iv) the Petersen graph,
+(v) the half-dodecahedral graph,
+(vi) the Triplex graph.
+Combining Theorem 5.7 and Theorem 5.8 yields the following result:
+Corollary 5.9. Let G = (V,E ) be a locally ﬁnite graph with girth at least ﬁve. Suppose
+that G is bone idle. Then G is isomorphic to one of the following graphs:
+(i) The inﬁnite path,
+(ii) the cycle graph Cn for n≥ 6.
+26
+
+===== PAGE 27 =====
+Remark. Hence, there are no bone idle graphs with girth equal to ﬁve.
+The full classiﬁcation of Ricci-ﬂat and bone idle graphs app ears to be a diﬃcult graph
+theory problem, which is still open. In what follows, we will give necessary and suﬃcient
+conditions on the structure of Ricci-ﬂat and bone idle regul ar graphs of girth 4.
+Theorem 5.10. LetG = (V,E ) be a locally ﬁnite graph. Let x,y ∈V be of equal degree
+d with x∼y. Furthermore, assume that △(x,y ) =∅. Then κ(x,y ) = 0 if and only if one
+of the following holds:
+(i) There exists an optimal assignment φ∈O xy such that □(φ) =d−2 and (φ) = 0.
+(ii) There exists an optimal assignment φ∈O xy such that □(φ) =d−3 and (φ) = 2.
+Proof. Assume κ(x,y ) = 0. Let φ∈O xy be an optimal assignment between Rx(x,y ) and
+Ry(x,y ). Then,
+κ(x,y ) = 1
+d
+(
+−2d + 4 + 2|□(φ)| +| (φ)|
+)
+= 0.
+Using that|□(φ)| +| (φ)|≤ d− 1, we conclude that one of the following cases must hold:
+(i) □(φ) =d− 2 and (φ) = 0, or
+(ii) □(φ) =d− 3 and (φ) = 2.
+Conversely, suppose that property (i) or (ii) is satisﬁed. Then
+2|□(φ)| +| (φ)| = 2d− 4,
+and hence
+κ(x,y ) = 1
+d
+(
+−2d + 4 + 2d− 4
+)
+= 0.
+□
+Next, we present a necessary and suﬃcient condition for an edgex∼y to haveκ0(x,y ) = 0.
+This condition was already established by Bhattacharya et a l. [3].
+Theorem 5.11. LetG = (V,E ) be a locally ﬁnite graph. Let x,y∈V be of equal degree d
+with x∼y. Furthermore, assume that △(x,y ) =∅. Then κ0(x,y ) = 0 if and only if there
+exists a perfect matching between S1(x) and S1(y).
+Proof. Assume κ0(x,y ) = 0. Let φ be an optimal assignment between S1(x) and S1(y).
+Using the formula for κ0(x,y ) derived in Theorem 4.8, we obtain
+(5.1)
+∑
+z∈S1(x)
+d(z,φ (z)) =d.
+Since S1(x)∩ S1(y) = △(x,y ) = ∅, we must have d(z,φ (z)) ≥ 1 for all z ∈ S1(x).
+Combining this with 5.1, we conclude that d(z,φ (z)) = 1 for all z∈S1(x). Hence, φ is a
+perfect matching.
+Conversely, suppose there exists a perfect matching φ. Since S1(x)∩S1(y) =△(x,y ) =∅,
+this is an optimal assignment. Then by Theorem 4 .8,
+κ0(x,y ) = 1
+d
+(
+d−
+∑
+z∈S1(x)
+d(z,φ (z))
+)
+= 0.
+This concludes the proof. □
+27
+
+===== PAGE 28 =====
+Therefore, a 0-Ricci-ﬂat, regular graph of girth four must have a perfect matching between
+the neighborhoods S1(x) and S1(y) of every edge x∼y. Examples are the n-dimensional
+hypercubeQn, then-dimensional integer lattice Zn and the complete bipartite graphKn,n.
+The subsequent theorem provides a necessary and suﬃcient co ndition for an edge in a
+graph of girth four to be bone idle.
+Theorem 5.12. LetG = (V,E ) be a locally ﬁnite graph. Let x,y ∈V be of equal degree
+d with x∼ y. Furthermore, assume that △(x,y ) =∅. Then the edge x∼ y is bone idle
+if and only if there exists an optimal assignment φ∈O xy such that |□(φ)| = d− 2 and
+| (φ)| = 0.
+Proof. Assume the edge x∼ y is bone idle, i.e., κ(x,y ) = κ0(x,y ) = 0. According to
+Corollary 5.2 there exists an optimal assignment φ∈O xy between Rx(x,y ) and Ry(x,y )
+and an z∈Rx(x,y ), such that d(z,φ (z)) = 3. Therefore,
+(5.2) |□(φ)| +| (φ)|≤ d− 2.
+Asκ(x,y ) = 0 we can apply Theorem 5.10. Using equation 5.2, we conclude that|□(φ)| =
+d− 2 and| (φ)| = 0 must hold.
+Conversely, assume that there exists an optimal assignmentφ∈O xy that satisﬁes|□(φ)| =
+d− 2 and| (φ)| = 0. Since
+|□(φ)| +| (φ)| =d− 2<|Rx(x,y )|,
+there exists a z∈ Rx(x,y ) such that d(z,φ (z)) = 3. Hence, according to Corollary 5 .2,
+we haveκ(x,y ) =κ0(x,y ). According to Theorem 5.10, we have κ(x,y ) = 0, which closes
+the proof. □
+Both the complete bipartite graph Kn,n and then-dimensional hypercubeQn are 0-Ricci-
+ﬂat, regular graphs of girth four. Note that there exists a pe rfect matching between
+Rx(x,y ) and Ry(x,y ) for any edge x∼ y in the complete bipartite graph Kn,n. The
+same holds for the n-dimensional hypercube Qn. Therefore, according to the previous
+theorem, neither of the graphs is bone idle. Using our precis e expression for the Lin-
+Lu-Yau curvature, we obtain that for both the complete bipar tite graph Kn,n and the
+n-dimensional hypercubeQn
+κ(x,y ) = 2
+n,
+for every edge x∼y. Thus, the graphs Kn,n andQn satisfy κ(x,y )> 0 and κ0(x,y ) = 0
+for all edges x∼y.
+A direct implication of Theorem 5.12 is that the n-dimensional integer lattice Zn is bone
+idle.
+Now, we shift our focus to constructing ﬁnite regular graphs of girth four that are bone
+idle. The following theorem demonstrates that this is not po ssible for 3-regular graphs.
+Theorem 5.13. Let G = (V,E ) be a locally ﬁnite graph. Suppose that G is bone idle,
+then G is not 3-regular.
+Proof. We argue by contradiction. Assume G is a 3-regular graph that is bone idle.
+According to Corollary 5 .9, the girth of G must be less than ﬁve. Furthermore, there
+exists no edge x∼y∈E with|△(x,y )|> 0, as otherwise, using Corollary 4.4,
+κ(x,y )≥− 2 + 4
+3 + 3|△(x,y )|
+3 > 0.
+28
+
+===== PAGE 29 =====
+x y
+x1 y1
+x2
+z
+κ> 0
+x y
+x1 y1
+x2 y2
+κ> 0
+Figure 4. Illustration of the two possible cases in Theorem 5 .13.
+Figure 5. The bone idle graphs BI6,BI 7 and BI8.
+Hence, the girth of G must be equal to four. Let x∼y be an edge contained in a 4-cycle.
+Denote byx1,x 2 andy1,y 2 the other two neighbors of x andy, respectively. Without loss
+of generality, we may assume thatx1∼y1, asx∼y is contained in a 4-cycle. Observe that
+x2∼y1 and y2∼x1 cannot hold true at the same time. Otherwise, there exists a p erfect
+matching between S1(x)\{y} and S1(y)\{x}, leading to κ(x,y ) = 2
+3 > 0. Therefore, we
+may assume without loss of generality that x2⁄∼y1.
+According to Theorem 5.12, there must be a 4-cycle based on the edge x∼x2. Using that
+x2⁄∼y1, one of the following cases must be true:
+Case 1: There is a z∈S1(x2)\{x} such that z∼x1. In this case we have κ(x,x 1)> 0,
+contradicting the bone idleness of G.
+Case 2: x2∼y2. In this case, we have κ(x,y )> 0, contradicting the bone idleness of G.
+This concludes the proof. □
+Hence, there are no bone idle graphs that are 3-regular. Howe ver, the subsequent con-
+struction demonstrates the existence of 4-regular, bone id le graphs.
+According to Theorem 5.12, a 4-regular graph is bone idle if, for every edge x∼y, there
+exists an optimal assignment φ∈O xy such that|□(φ)| = 2 and| (φ)| = 0.
+To construct a graph satisfying this property, we place an n-cycle containing the vertices
+x0,...,x n−1 inside another n-cycle containing the vertices y0,...,y n−1. We then add
+29
+
+===== PAGE 30 =====
+Figure 6. Bone idle, 4-regular graph with an inﬁnite number of vertice s.
+edges between the vertices yk and x(k−1) mod n as well as between yk and x(k+1) mod n.
+We denote these graphs by BIn. It is evident that the graph BIn is 4-regular and bone
+idle if n≥ 6. Refer to Figure 5 for an illustration of the graphs BI6,BI 7 and BI8.
+Finally, it is noteworthy that a similar construction yields a bone idle, 4-regular graph with
+a girth of 4 and an inﬁnite number of vertices. Please refer to Figure 6 for an illustration.
+Remark. In the subsequent chapter, we will see that the graph BI6 is the smallest bone
+idle, regular graph of girth less than ﬁve.
+6. Implementation
+In this chapter, we introduce an eﬃcient implementation of t he Ollivier-Ricci curvature
+on regular graphs. Additionally, we explore an interesting problem in graph theory: the
+enumeration of all regular graphs up to isomorphism. Leveraging these ﬁndings, we classify
+all regular, bone idle graphs with a small number of vertices and establish a rigidity
+theorem for cocktail party graphs. Finally, we present a con dition that ensures a regular
+graph G satisﬁes Ric(G)> 0.
+6.1. Linear assignment problem. As demonstrated in preceding chapters, the compu-
+tation of the Ollivier-Ricci curvature on regular graphs simpliﬁes to identifying an optimal
+assignment between two distinct sets of vertices of equal ca rdinality, denoted by n.
+This problem referred to as the linear assignment problem , stands as a fundamental task
+in linear optimization. With a rich history dating back to th e early 20th century, the
+linear assignment problem has garnered signiﬁcant attenti on in the literature. Thereby
+leading to the development of eﬃcient algorithms for its solution. The earliest algorithms,
+proposed in the 1940s, exhibited a complexity of O(2nn2). More recently, a wide range of
+algorithms with polynomial time complexity have been proposed. The most famous among
+these is the Hungarian algorithm , developed by Kuhn in 1955 [19]. The time complexity
+O(n4) of the original algorithm was later improved to O(n3) by Edmonds and Karp [12].
+In this work, we use the auction algorithm to solve the linear assignment problem. The
+algorithm was developed by Bertsekas in 1979 [2]. In our sett ing, it exhibits the same
+time complexity as the Hungarian algorithm, namely O(n3). It is parallelizable and often
+exhibits scalability, making it suitable for large-scale a ssignment problems. Furthermore,
+it oﬀers a unique perspective on the optimization problem by simulating a bidding process
+among the vertices to achieve an optimal assignment.
+Because of the analogy to the auction setting, we call the ver tices from one set bidders
+and the vertices from the other set items. Then, the naive auction algorithm operates in
+successive bidding rounds. We denote by U the set of all unassigned bidders and by pi
+the price of the item i, which is initialized to zero. The algorithm proceeds as fol lows:
+(i) Pick any unassigned bidder i∈U and choose an item ji with the lowest cost, that
+is,
+ji∈ arg min
+k=1,...,n
+{d(i,k ) +pk}.
+30
+
+===== PAGE 31 =====
+n
+d 3 4 5 6 7 8 9 10 11 12 13
+4 1 0 0 0 0 0 0 0 0 0 0
+5 0 1 0 0 0 0 0 0 0 0 0
+6 2 1 1 0 0 0 0 0 0 0 0
+7 0 2 0 1 0 0 0 0 0 0 0
+8 5 6 3 1 1 0 0 0 0 0 0
+9 0 16 0 4 0 1 0 0 0 0 0
+10 19 59 60 21 5 1 1 0 0 0 0
+11 0 256 0 266 0 6 0 1 0 0 0
+12 85 1544 7848 7849 1547 94 9 1 1 0 0
+13 0 10778 0 367860 0 10786 0 10 0 1 0
+14 509 88168 3459383 21609300 21609301 3459386 88193 540 13 1 1
+Table 1. Number of connected regular graphs with given number of ver-
+tices n and degree d.
+(ii) Assign bidder i to item ji. If item ji was previously assigned to another bidder k,
+add k back to U.
+(iii) Update the price of item ji to the level where bidderi is indiﬀerent betweenji and
+the second best item, that is,
+pji←pji +γi,
+where
+γi = min
+j⁄=ji
+{d(i,j ) +pj}− (d(i,ji) +pji).
+(iv) If U is empty, terminate; otherwise go back to step ( i).
+We called this process the naive auction algorithm as it is se riously ﬂawed. The bidding
+increment γi can be zero if more than one item minimizes the cost. In this ca se, it can
+happen that several bidders bid for a smaller number of items without raising their prices,
+thereby creating a never-ending cycle. To solve this, we int roduce a positive scalar ǫ> 0
+and change the updating rule of the prices to
+pji←pji +γi +ǫ.
+In other words, each bid must raise the price by a minimum posi tive increment ǫ. This
+guarantees the convergence of the algorithm. The cost of the ﬁnal assignment diﬀers from
+the optimal solution by no more than nǫ. For a formal proof of these two statements,
+we refer the reader to Bertsekas’s paper [2]. As the distance s d(i,j ) are all integers, we
+conclude that the assignment obtained upon termination is i ndeed optimal if
+ǫ< 1
+n.
+It is noteworthy that the ﬁnal prices lie within an nǫ range of the optimal solution of the
+dual problem. Therefore, the auction algorithm can be inter preted as a dual algorithm.
+Using the auction algorithm, we implemented a Python progra m calculating the Lin-Lu-
+Yau curvature and the 0-Ollivier-Ricci curvature of regula r graphs. The source code is
+available in a public repository 1.
+6.2. Generation of regular graphs. As we wish to study the distribution of the Ollivier-
+Ricci curvature on regular graphs, generating exhaustive l ists of all d-regular graphs with
+a given number of vertices, up to isomorphism, is of interest . This problem is one of the
+oldest in the ﬁeld of constructive combinatorics [29].
+1https://github.com/moritzmath/Regular-Graph-Curvature
+31
+
+===== PAGE 32 =====
+Already determining the number of d-regular, labeled graphs with n vertices, denoted
+by|Gn,d|, proves to be an exceedingly diﬃcult problem for which no clo sed formula is
+currently known. But there are some interesting asymptotic results. Wormald and McKay
+[25] conjectured that asymptotically
+|Gn,d(n)|∼
+√
+2
+(n− 1
+d(n)
+) n
+(λλ(1−λ)(1−λ))(n
+2)e
+1
+4,
+whereλ = d(n)
+n−1 andd(n) satisfying 1≤d(n)≤n− 2 withnd(n) always an even integer. A
+complete proof of this conjecture was only presented quite r ecently. McKay and Wormald
+proved the conjecture for d(n) between cn/ logn and n/2, for a constant c> 2/3 in 1990
+[25], and for d(n)∈o(√n) in 1991 [26]. The gap was closed by Liebenau and Wormald in
+2017 [21]. Note that the complementary cases for d(n) larger than n/2 follow trivially.
+For the asymptotic number of regular graphs up to isomorphis m, the study of the auto-
+morphism groups of regular graphs is necessary. We refer the interested reader to [27] for
+more details.
+Although no closed formula exists, the number ofd-regular graphs withn vertices for small
+values of n has been determined using algorithms designed to generate a ll regular graphs
+with a speciﬁed degree and number of vertices up to isomorphism. In the following, we use
+the algorithm GENREG, proposed by Meringer in [29]. It not only computes the numbe r
+of regular graphs for the chosen parameters but also constru cts the desired graphs. Refer
+to Table 1 for the number of connected regular graphs with a gi ven number of vertices n
+and degree d, up to isomorphism, for n≤ 14.
+6.3. Results. In this section, we present some of the results obtained by ap plying our
+implementation of the Ollivier-Ricci curvature to the exha ustive lists of regular graphs
+generated with GENREG.
+The ﬁrst result concerns bone idle graphs.
+Theorem 6.1. Let G = (V,E ) be a regular graph that satisﬁes |V| < 15. If G is bone
+idle, then G is isomorphic to one of the following graphs:
+(i) The cycle graph Cn for 6≤n< 15,
+(ii) the bone idle graphs BIn for n∈{ 6, 7} deﬁned in Section 5.3.
+We obtain this result by computing the Lin-Lu-Yau curvature and the 0-Ollivier-Ricci
+curvature of all regular graphs with fewer than 15 vertices. Due to the rapidly increasing
+number of regular graphs, this calculation becomes exceedingly complex for regular graphs
+with more vertices.
+The second result classiﬁes all regular graphs with Lin-Lu- Yau curvature equal to one.
+Theorem 6.2. Assume G = (V,E ) is a locally ﬁnite, regular graph. Then Ric (G) = 1 if
+and only if G is a cocktail party graph, meaning it is d-regular with d =|V|− 2.
+For the proof of the theorem, we need the following Bonnet-Myers type theorem on graphs
+by Lin, Lu, and Yau.
+Theorem 6.3 (Discrete Bonnet-Myers Theorem [22]) . Let G = (V,E ) be a locally ﬁnite
+graph. If κ(x,y )≥k >0 for any edge x∼y, then the diameter of graph G is bounded as
+follows:
+diam(G)≤ 2
+k.
+32
+
+===== PAGE 33 =====
+We are now able to prove Theorem 6.2.
+Proof. Assume G is d-regular with Ric(G) = 1. Let x∼ y be an arbitrary edge in G.
+Using Corollary 4.4, we obtain
+1 =κ(x,y )≤ 2 +|△(x,y )|
+d ,
+or equivalently
+d− 2≤|△ (x,y )|.
+If|△(x,y )| =d−1, then according to Corollary 4.4,κ(x,y ) = d+1
+d > 1. Hence,|△(x,y )| =
+d− 2 must hold. Furthermore, according to the Discrete Bonnet- Myers Theorem, we have
+diam(G)≤ 2.
+We now show that |V| = d + 2. To this end, let x be an arbitrary vertex in G. Denote
+byx1,...,x d the neighbors of x. We have seen|△(x,x 1)| =d− 2. Hence, without loss of
+generality, we assume that x1∼ xi for i = 2,...,d − 1. Furthermore, it exists an z∈ V
+such that x1∼z and x⁄∼z. As κ(x,x 1) = 1, there must be a perfect matching between
+Rx(x,x 1) ={xd} and Rx1(x,x 1) ={z}. Hence, xd∼z must hold.
+Using|△(x,xd)| =d−2 andx1⁄∼xd, we havexd∼xi fori = 2,...,d −1. Combining that
+with|△(z,xd)| =d− 2, z⁄∼x and xd⁄∼x1, we conclude that xi∼z for i = 2,...,d − 1.
+Now, assume there exists y ∈ V \{x,z,x 1,...,x d}. As diam(G)≤ 2 holds, we have
+d(x,y ) = 2. Hence, there exists an i∈{ 1,...,d } such thatx∼xi∼y. Using|△(x,xi)| =
+d− 2 and xi∼z, we conclude |S1(xi)|≥ d + 1, contradicting the regularity of G. Thus,
+V ={x,z,x 1,...,x d} and therefore
+|V| =d + 2.
+Conversely, supposeG isd-regular withd =|V |− 2. Let x∼y be an arbitrary edge in G.
+There is no z∈V such that z⁄∼x and z⁄∼y, as this would imply dz≤|V|− 3. Hence,
+|V| =|S1(x)∪S1(y)| =|S1(x)| +|S1(y)|−|△ (x,y )|,
+which implies
+|△(x,y )| =|V|− 4 =d− 2.
+Hence,|Rx(x,y )| =|Ry(x,y )| = 1. Denote by z1 the vertex in Rx(x,y ) and by z2 the
+vertex in Ry(x,y ). As dz1 =|V|− 2 and z1⁄∼y, we conclude z1∼ z2. Thus, using our
+precise formula for the Lin-Lu-Yau curvature, we obtain
+κ(x,y ) = 1.
+Since the edge x∼y was chosen arbitrarily, we conclude that
+Ric(G) = 1.
+□
+Theorem 6.2 can be seen as an extension of the following rigidity theore m, which was
+established by Bonini et al. in [5].
+Theorem 6.4 ([5], Theorem 3.3). LetG = (V,E ) be a locally ﬁnite graph. Then Ric (G)>
+1 if and only if G is complete.
+Next, we present a condition on the degree of a regular graph G, guaranteeing that it
+satisﬁes Ric(G)> 0. Using the exhaustive lists of regular graphs generated with GENREG
+and our implementation, we calculate the number of connected, regular graphs that satisfy
+Ric(G)> 0, up to isomorphism. Refer to Table 2 for the results.
+33
+
+===== PAGE 34 =====
+n
+d 3 4 5 6 7 8 9 10 11 12 13
+4 1 0 0 0 0 0 0 0 0 0 0
+5 0 1 0 0 0 0 0 0 0 0 0
+6 2 1 1 0 0 0 0 0 0 0 0
+7 0 2 0 1 0 0 0 0 0 0 0
+8 2 6 3 1 1 0 0 0 0 0 0
+9 0 15 0 4 0 1 0 0 0 0 0
+10 1 32 60 21 5 1 1 0 0 0 0
+11 0 68 0 266 0 6 0 1 0 0 0
+12 0 44 6569 7849 1547 94 9 1 1 0 0
+13 0 23 0 366804 0 10786 0 10 0 1 0
+14 0 9 719285 20998083 21609251 3459386 88193 540 13 1 1
+Table 2. Number of connected regular graphs with given number of ver-
+tices n and degree d, that satisfy Ric(G)> 0.
+A comparison with the total number of connected, regular gra phs in Table 1 leads to the
+conjecture that d-regular graphs, for suﬃciently large d, must satisfy Ric(G) > 0. The
+following lemma provides an initial lower bound, ensuring t hat this property holds.
+Lemma 6.5. LetG = (V,E ) be a ﬁnite graph. If G is d-regular with
+d> 2|V|
+3 − 1,
+then Ric(G) > 0.
+To prove this, we need the following lemma.
+Lemma 6.6. LetG = (V,E ) be a ﬁnite graph. If G is d-regular with
+d≥|V|− 1
+2 ,
+then diam(G)≤ 2.
+Proof. Assume thatdiam(G)> 2. Hence, there exist vertices x,y∈V such thatd(x,y )>
+2, and therefore S1(x)∩S1(y) =∅. As x,y /∈S1(x)∪S1(y), we have
+|S1(x)∪S1(y)|≤| V|− 2.
+This contradicts
+|S1(x)∪S1(y)| =|S1(x)| +|S1(y)| = 2d≥|V|− 1.
+Therefore, our assumption was incorrect, and it follows tha t diam(G)≤ 2 must hold. □
+We are now in a position to prove Lemma 6 .5.
+Proof. According to Lemma 6 .6, we have diam(G)≤ 2. Now let x∼ y be an arbitrary
+edge in G. Then,
+|V|≥| S1(x)∪S1(y)| = 2d−|△ (x,y )|,
+34
+
+===== PAGE 35 =====
+or equivalently,|△(x,y )|≥ 2d−|V|. Thus, we obtain
+κ(x,y ) = 1
+d
+(
+d + 1− inf
+φ∈Axy
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+≥ 1
+d
+(
+d + 1− 2|Rx(x,y )|
+)
+= 1
+d
+(
+d + 1− 2(d− 1−|△ (x,y )|)
+)
+≥ 1
+d
+(
+3d + 3− 2|V|
+)
+.
+Utilizing the lower bound on d, we conclude that κ(x,y )> 0. □
+This initial lower bound can be improved by further investigating the structure of optimal
+assignments. To this end, we need the following technical le mmata.
+Lemma 6.7. LetG = (V,E ) be a ﬁnite graph. Assume that G is d-regular with
+2|V|
+3 − 2<d ≤ 2|V|
+3 − 1.
+If an edge x∼y satisﬁes|△(x,y )|> 2d−|V|, then κ(x,y )> 0.
+Proof. According to Lemma 6 .6, we have diam(G)≤ 2. If |△(x,y )|≥ 2d−|V| + 2, we
+obtain
+κ(x,y )≥ 1
+d
+(
+d + 1− 2|Rx(x,y )|
+)
+≥ 1
+d
+(
+3d + 7− 2|V|
+)
+.
+Utilizing the lower bound on d, we conclude that κ(x,y )> 0.
+Now, assume|△(x,y )| = 2d−|V| + 1. If Rx(x,y ) =∅, then
+d = 1 +|Rx(x,y )| +|△(x,y )| =|V|− 2.
+Using Theorem 6.2, we conclude κ(x,y ) = 1> 0. If Rx(x,y )⁄=∅, we have
+(6.1) |V\ (S1(x)∪S1(y))| = 1,
+and
+|Rx(x,y )| +|Ry(x,y )| = 2(|V|− d− 2).
+Using our assumptions on d, we must have
+|Rx(x,y )| +|Ry(x,y )|>d − 2.
+Thus, without loss of generality, there exists an j∈△ (x,y ) and i∈ Rx(x,y ) such that
+i⁄∼j. The reason for this is that j has a degree of d and is adjacent to both x and y.
+Hence, i has at most d− 3 neighbors in S1(x), as it is not adjacent to y, j and i. Using
+35
+
+===== PAGE 36 =====
+equality 6.1, we conclude that there exists an k∈ Rx(x,y ) such that i∼ k. Thus, an
+optimal assignment must satisfy|□(φ)|≥ 1, leading to
+κ(x,y ) = 1
+d
+(
+d + 1− inf
+φ∈Axy
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+≥ 1
+d
+(
+d + 1−
+(
+2(|Rx(x,y )|− 1) + 1
+) )
+= 1
+d
+(
+3d + 6− 2|V|
+)
+.
+Utilizing the lower bound on d, we conclude that κ(x,y )> 0. □
+Lemma 6.8. LetG = (V,E ) be a ﬁnite graph. Assume that G is d-regular with
+2|V|
+3 − 2<d ≤ 2|V|
+3 − 1.
+If an edge x∼y satisﬁes|△(x,y )| = 2d−|V|, then κ(x,y )> 0.
+The proof of this result relies on the famous Hall’s marriage theorem.
+Theorem 6.9 (Hall’s marriage theorem) . Let G = (A,B,E ) be a bipartite graph. Then
+there exists a perfect matching between A and a subset of B if and only if |N(X)|≥| X|
+for every X⊆A, where N(X) =⋃
+x∈XS1(x).
+As a consequence of Hall’s marriage theorem, we obtain the fo llowing Corollary.
+Corollary 6.10. LetG = (A,B,E ) be a bipartite graph. If G is regular, then there exists
+a perfect matching between A and B.
+Utilizing these results, we present the following proof for Lemma 6.8.
+Proof. According to Lemma 6.6, we havediam(G)≤ 2. Same arguments as in the proof of
+Lemma 6.7 show thatκ(x,y )> 0 if|Rx(x,y )|< 2. Therefore, we now assume|Rx(x,y )|≥
+2.
+Leti∈Rx(x,y ) be arbitrary. Then i is adjacent to at mostd−2 vertices inS1(x), because
+i⁄∼y. As V = S1(x)∪S1(y), we conclude that there exists an j∈ Ry(x,y ) such that
+i∼j. Similarly, every vertex in Ry(x,y ) is adjacent to a vertex in Rx(x,y ).
+Now, denote by H the induced bipartite subgraph consisting of all edges conn ecting a
+vertex in Rx(x,y ) with a vertex in Ry(x,y ). According to the preceding argument, every
+vertex in H is of degree at least one in H. Denote by ∆( G) the maximal degree of the
+induced bipartite subgraph H. We proceed with a proof by cases.
+Case 1: ∆(G) = 1. The induced bipartite subgraph H is 1-regular. According to Corol-
+lary 6.10, there exists a perfect matching betweenRx(x,y ) andRy(x,y ). Hence, we obtain
+κ(x,y ) = 2 +|△(x,y )|
+d > 0.
+Case 2: 1 < ∆(G) <|Ry(x,y )|− 1. Let z1∈ Rx(x,y ) be, without loss of generality, a
+vertex of degree ∆(G) inH. There exist distinct vertices i,j ∈Ry(x,y ) such thatz1 is not
+adjacent to bothi andj. Choose z2∈Rx(x,y ) such thatz2∼i. If the degree of z2 inH is
+greater than one, choosez3∈Rx(x,y )\{z1,z 2} arbitrary. Otherwise, choose z3∈Rx(x,y )
+such that z3∼ j. By construction, every X⊆{ z1,z 2,z 3} satisﬁes|N(X)|≥| X| in H.
+36
+
+===== PAGE 37 =====
+x yκ = 0
+Figure 7. Illustration of a 4-regular graph G with 9 vertices that does
+not satisfy Ric(G)> 0.
+Hall’s marriage theorem implies that an optimal matching φ∈O xy betweenRx(x,y ) and
+Ry(x,y ) must satisfy|□(φ)|≥ 3 and thus
+κ(x,y ) = 1
+d
+(
+d + 1− inf
+φ∈Axy
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+≥ 1
+d
+(
+d + 1−
+(
+2(|Rx(x,y )|− 3) + 3
+) )
+= 1
+d
+(
+3d + 6− 2|V|
+)
+.
+Utilizing the lower bound on d, we conclude that κ(x,y )> 0.
+Case 3: ∆(G)≥|Ry(x,y )|− 1. Let z1∈Rx(x,y ) be, without loss of generality, a vertex
+of degree ∆(G). If d = (2|V|− 3)/3, straightforward calculations show that κ(x,y ) > 0.
+If d< (2|V|− 3)/3, we obtain
+(6.2) |Rx(x,y )| +|Ry(x,y )|− 1>d.
+Thus, there exists an z2∈Rx(x,y ) such that z1⁄∼z2. Otherwise, according to inequality
+6.2, the degree of z1 would be greater than d inG. Hence, the degree of z2 is greater than
+or equal to two in H. Choose z3∈ Rx(x,y )\{z1,z 2} arbitrary. Then, by construction,
+everyX⊆{z1,z 2,z 3} satisﬁes|N(X)|≥| X| in H. Hall’s marriage theorem implies that
+an optimal matching φ∈O xy betweenRx(x,y ) and Ry(x,y ) satisﬁes|□(φ)|≥ 3, leading
+to κ(x,y )> 0.
+This concludes the proof. □
+Utilizing these lemmata, we obtain the following main theor em.
+Theorem 6.11. LetG = (V,E ) be a ﬁnite graph. If G is d-regular with
+d> 2|V|
+3 − 2,
+then Ric(G) > 0.
+Proof. Since S1(x)∪S1(y)⊆V , the inequality
+2d−|V|≤|△ (x,y )|
+always holds true. If 2d−|V|<|△(x,y )|, the claim follows from Lemma 6.7. If 2d−|V| =
+|△(x,y )|, the claim follows from Lemma 6.8. This concludes the proof of Theorem 6.11. □
+37
+
+===== PAGE 38 =====
+△(x,y )
+x
+y
+Rx(x,y )\{xl}
+Ry(x,y )
+κ(x,y ) = 0
+xl
+v1
+v2
+Figure 8. Illustration of the graph constructed in Theorem 6 .13
+Remark. This property does not hold for d = 2|V |
+3 − 2, as the d-regular graph G = (V,E )
+with|V| = 9 and d = 4, illustrated in Figure 7, shows.
+The following corollary is an immediate consequence of Theo rem 5.5.
+Corollary 6.12. LetG = (V,E ) be a ﬁnite graph. If G is d-regular with
+d> 2|V|
+3 − 2,
+then κ0(x,y )≥ 0, for every edge x∼y.
+Next, we discuss the sharpness of the lower bound in Theorem 6 .11.
+Theorem 6.13. Letn∈ N such that
+d = 2n− 8
+3 ∈ 2N.
+and d≥ 12. Then, there exists a d-regular graph on n vertices such that κ(x,y ) = 0 and
+κ0(x,y )< 0 for an edge x∼y.
+Proof. Let the assumptions of Theorem 6 .13 hold. We construct a d-regular graph on n
+vertices that contains an edge x∼y such that κ(x,y ) = 0. To this end, deﬁne the vertex
+set
+V ={x,y,z 0,...,z l−3,x 0,...,x l,y 0,...,y l,v 1,v 2},
+where l = d
+2. Next, we add the edges
+• x∼y,
+• x∼zi for i = 0,...,l − 3,
+• x∼xi for i = 0,...,l
+• y∼zi for i = 0,...,l − 3,
+• y∼yi for i = 0,...,l .
+to the set of edges E. Therefore, x and y are of degree d, and
+△(x,y ) ={z0,...,z l−3}, R x(x,y ) ={x0,...,x l}, R y(x,y ) ={y0,...,y l}.
+Next, we add for every zi∈△ (x,y ) the edges zi∼xj for j = 0,...,l − 1 if j⁄=i as well
+as the edges zi∼yj for j = 0,...,l if
+j⁄∈{2i (mod l + 1), 2i + 1 (mod l + 1)}.
+38
+
+===== PAGE 39 =====
+Thus, every zj∈△ (x,y ) is of degree d, as it has d− 2 neighbors in Rx(x,y )∪Ry(x,y )
+and is adjacent to both x and y.
+On the other hand, every xi is adjacent to|△(x,y )|− 1 vertices in△(x,y ) ifi≤l− 3, and
+to all vertices in△(x,y ) if i∈{l− 2,l− 1}. Every yi is adjacent to|△(x,y )|− 2 vertices
+in△(x,y ) if i≤l− 6 and to|△(x,y )|− 1 otherwise.
+Next, we add the edges xi∼ xj for i⁄= j, except xl−2∼ xl−1. Analogously, we add the
+edges yi∼yj for i⁄=j, as well as xl∼yj for j = 0,...,l − 2.
+Thus, everyxi∈Rx(x,y )\{xl} has degree d− 2 and xl has degree d. On the other hand,
+yi has degree d− 1 if i∈{l− 5,l− 4,l− 3,l− 2} and d− 2 otherwise.
+Finally, we add the edges
+• v1∼xi and v2∼xi for i = 0,...,l − 1.
+• v1∼yi and v2∼yi for i = 0,...,l − 6 and i =l− 1,l .
+• v1∼yl−5,v 1∼yl−4,v 2∼yl−3,v 2∼yl−2 and v1∼v2.
+The constructed graph G = (V,E ) is d-regular. Now, denote by H the induced bipartite
+subgraph consisting of all edges connecting a vertex in Rx(x,y ) with a vertex in Ry(x,y ).
+By construction, every xj for 0≤j≤ l− 1 is of degree zero in H. Therefore, according
+to Hall’s marriage theorem, an optimal assignment φ∈O xy must satisfy|{z∈Rx(x,y ) :
+d(z,φ (z)) = 1}| = 1. Thus, we obtain
+κ(x,y ) = 1
+d
+(
+d + 1− inf
+φ∈Axy
+∑
+z∈Rx(x,y)
+d(z,φ (z))
+)
+= 1
+d
+(
+d + 1− 2(|Rx(x,y )|− 1)− 1
+)
+= 0.
+Furthermore, according to Theorem 4.10, we obtain
+κ0(x,y ) =κ(x,y )− 1
+d
+(
+3− sup
+φ∈Oxy
+sup
+z∈Rx(x,y)
+d(z,φ (z))
+)
+=−1
+d.
+□
+6.4. Maximal regular graphs with positive Ricci curvature. We ﬁnish this arti-
+cle with an investigation of the maximal number of vertices t hat an d-regular graph G
+satisfying Ric(G)> 0 can have,
+Md = max
+G d-regular,
+Ric(G)>0
+|V (G)|.
+The following Proposition shows that Md is always ﬁnite.
+Proposition 6.14. Letd∈ N. Then
+Md≤ 1 +d
+2d−1∑
+i=0
+(d− 1)i.
+39
+
+===== PAGE 40 =====
+x1 x2 x3 xn− 1 xn
+xn+1 xn+2 xn+3 x2n− 1 x2n
+Figure 9. The prism graph Yn
+x1 x2 x3 xn− 1 xn
+xn+1 xn+2 xn+3 x2n− 1 x2n
+Figure 10. The M¨ obius LadderMn
+The proof requires the following Moore Bound, which gives anupper bound on the number
+of vertices in a regular graph with a speciﬁed diameter.
+Theorem 6.15 (Moore Bound) . Let G = (V,E ) be a d-regular graph with diameter k.
+Then
+|V|≤ 1 +d
+k−1∑
+i=0
+(d− 1)i.
+Proof of Proposition 6.14. Let G be an arbitrary d-regular graph, satisfying Ric(G) > 0.
+According to Corollary 4 .4, we have κ(x,y ) ∈ Z/d for every edge x ∼ y. Therefore,
+Ric(G)≥ 1
+d must hold. Using Theorem 6.3, we obtain
+diam(G)≤ 2d.
+The proposition is now an immediate consequence of the Moore Bound. □
+The following theorem quantiﬁesMd for d equal to two and three.
+Theorem 6.16. Let G = (V,E ) be a d-regular graph, satisfying Ric(G) > 0. If d = 2,
+then|V|≤ 5. If d = 3, then |V|≤ 10. Consequently, we have M2 = 5 andM3 = 10.
+For the proof of Theorem 6 .16, we need the following classiﬁcation result by Cushing et
+al [10].
+Theorem 6.17. Let G = (V,E ) be a 3-regular graph. Then κ0(x,y )≥ 0 for all edges
+x∼ y if and only if G is a prism graph Yn for some n≥ 3 or a M¨ obius ladder Mn for
+some n≥ 2.
+Figure 9 illustrates the prism graph Yn, while Figure 10 provides a visualization of the
+M¨ obius ladderMn. With this classiﬁcation result established, we are now pre pared to
+prove Theorem 6.16.
+Proof of Theorem 6.16. The only 2-regular, connected graphs are the cycle graphs Cn. It
+is straightforward to verify that Ric(Cn) = 0 for n≥ 6. Hence, if G = (V,E ) is 2-regular
+satisfying Ric(G)> 0, then G =Cn for some 3≤n≤ 5 and therefore|V|≤ 5 holds true.
+40
+
+===== PAGE 41 =====
+We now turn to the case whered = 3. Let x∼y be an arbitrary edge inG. By assumption,
+we have κ(x,y ) > 0. Since G is regular, it follows from Theorem 5 .5 that κ0(x,y )≥ 0.
+Thus, according to Theorem 6 .17, G is a prism graph Yn for some n≥ 3 or a M¨ obius
+ladder Mn for some n≥ 2. The prism graph Yn does not satisfy Ric(Yn) > 0 for n≥ 6
+and the M¨ obius ladderMn does not satisfy Ric(Mn)> 0 for n≥ 5. Therefore, G has at
+most 10 vertices. □
+The valuesMd for d≥ 4 are still unknown. The Cartesian product of n 5-cycles (C5)□n
+is 2n-regular, has 5n vertices and satisﬁes
+Ric((C5)□n) = 1
+2n > 0.
+Thus,Md exhibits exponential growth, satisfying
+Md≥
+√
+5
+d
+for d even.
+Recall that κ(x,y )∈ Z/d for every edge x∼ y of an d-regular graph. Hence ( C5)□n
+exhibits constant, minimal positive Lin-Lu-Yau curvature for an 2n-regular graph. This
+led us to formulate the following conjecture.
+Conjecture 6.18. Ford∈ 2N,
+Md =
+√
+5
+d
+.
+Moreover, for odd d, Md also exhibits exponential growth, as e.g. the n-dimensional
+hypercubeQn for odd n shows.
+Acknowledgments. I would like to express my deepest gratitude to Prof. Renesse and
+Dr. M¨ unch for their invaluable support and insightful feedback throughout the course of
+this work. Their guidance and inspiration have been instrum ental in the completion of
+this work.
+References
+[1] Bakry et al. “Diﬀusions hypercontractives”. In: S´ eminaire de probabilit´ es de Stras-
+bourg 19 (1985), pp. 177–206.
+[2] Dimitri P. Bertsekas. “A Distributed Algorithm for the A ssignment Problem”. In:
+Lab. for Information and Decision Systems Working Paper (Mar. 1979).
+[3] Bhaswar B Bhattacharya and Sumit Mukherjee. “Exact and a symptotic results on
+coarse Ricci curvature of graphs”. In: Discrete Mathematics 338.1 (2015), pp. 23–42.
+[4] Marian Boguna et al. “Network geometry”. In: Nature Reviews Physics 3.2 (2021),
+pp. 114–135.
+[5] Vincent Bonini et al. “Condensed Ricci curvature of comp lete and strongly regular
+graphs”. In: Involve, a Journal of Mathematics 13.4 (2020), pp. 559–576.
+[6] David P Bourne et al. “Ollivier-Ricci Idleness Function s of Graphs”. In: SIAM Jour-
+nal on Discrete Mathematics 32.2 (2018), pp. 1408–1424.
+[7] David Cushing and Supanat Kamtue. “Long-scale Ollivier Ricci curvature of graphs”.
+In: Analysis and Geometry in Metric Spaces 7.1 (2019), pp. 22–44.
+[8] David Cushing et al. “Curvatures, graph products and Ric ci ﬂatness”. In: Journal
+of Graph Theory 96.4 (2021), pp. 522–553.
+[9] David Cushing et al. “Erratum for Ricci-ﬂat graphs with g irth at least ﬁve”. In:
+arXiv preprint arXiv:1802.02979 (2018).
+41
+
+===== PAGE 42 =====
+[10] David Cushing et al. “The Graph Curvature Calculator an d the curvatures of cubic
+graphs”. In: Experimental Mathematics 31.2 (2022), pp. 583–595.
+[11] R. Diestel. Graph Theory. Graduate Texts in Mathematics. Springer Berlin, Heidel-
+berg, 2017. isbn: 978-3-662-53621-6.
+[12] Jack Edmonds and Richard Karp. “Theoretical Improveme nt in Algorithmic Eﬃ-
+ciency for Network Flow Problems”. In:Journal of the ACM 19 (Apr. 1972), pp. 248–
+264.
+[13] Matthias Erbar and Jan Maas. “Ricci curvature of ﬁnite M arkov chains via convex-
+ity of the entropy”. In: Archive for Rational Mechanics and Analysis 206 (2012),
+pp. 997–1038.
+[14] Hamza Farooq et al. “Network curvature as a hallmark of b rain structural connec-
+tivity”. In: Nature Communications 10.1 (Oct. 2019).
+[15] Robin Forman. “Bochner’s Method for Cell Complexes and Combinatorial Ricci
+Curvature”. In: Discrete and Computational Geometry 29 (Jan. 2003), pp. 323–374.
+[16] M. Gromov, J. Lafontaine, and P. Pansu. Structures m´ etriques pour les vari´ et´ es
+riemanniennes. Textes math´ ematiques. Recherche. CEDIC/Fernand Nathan, 1981.
+isbn: 9782712407148.
+[17] Richard S Hamilton. “Three-manifolds with positive Ri cci curvature”. In: Journal
+of Diﬀerential geometry 17.2 (1982), pp. 255–306.
+[18] J¨ urgen Jost and Florentin M¨ unch. “Characterizations of Forman curvature”. In:
+arXiv preprint arXiv:2110.04554 (2021).
+[19] Harold W. Kuhn. “The Hungarian Method for the Assignmen t Problem”. In: Naval
+Research Logistics Quarterly 2.1–2 (Mar. 1955), pp. 83–97.
+[20] Haifeng Li et al. “Curvature graph neural network”. In: Information Sciences 592
+(2022), pp. 50–66.
+[21] Anita Liebenau and Nick Wormald. “Asymptotic enumerat ion of graphs by de-
+gree sequence, and the degree sequence of a random graph”. In : arXiv preprint
+arXiv:1702.08373 (2017).
+[22] Yong Lin, Linyuan Lu, and Shing-Tung Yau. “Ricci curvat ure of graphs”. In: Tohoku
+Mathematical Journal, Second Series 63.4 (2011), pp. 605–627.
+[23] Yong Lin and Shing-Tung Yau. “Ricci curvature and eigen value estimate on locally
+ﬁnite graphs”. In: Mathematical research letters 17 (Mar. 2010), pp. 343–356.
+[24] Shiping Liu, Florentin M¨ unch, and Norbert Peyerimhoﬀ. “Bakry-Emery curvature
+and diameter bounds on graphs”. In: Calculus of Variations and Partial Diﬀerential
+Equations 57 (Mar. 2018).
+[25] Brendan D. McKay and Nicholas C. Wormald. “Asymptotic E numeration by Degree
+Sequence of Graphs of High Degree”. In: European Journal of Combinatorics 11.6
+(1990), pp. 565–580.
+[26] Brendan D. McKay and Nicholas C. Wormald. “Asymptotic E numeration by Degree
+Sequence of Graphs with degrees o(n1/2)”. In: Combinatorica 11 (1991), pp. 369–
+382.
+[27] Brendan D. McKay and Nicholas C. Wormald. “Automorphis ms of random graphs
+with speciﬁed vertices.” In: Combinatorica 4 (1984), pp. 325–338.
+[28] BY E. J. McShane. “Extension of range of functions”. In: Bulletin of the American
+Mathematical Society 40 (1934), pp. 837–842.
+[29] Markus Meringer. “Fast Generation of Regular Graphs an d Construction of Cages”.
+In: Journal of Graph Theory 30 (1999), pp. 137–146.
+[30] Alexander Mielke. “Geodesic convexity of the relative entropy in reversible Markov
+chains”. In: Calculus of Variations and Partial Diﬀerential Equations 48 (2013),
+pp. 1–31.
+42
+
+===== PAGE 43 =====
+[31] Florentin M¨ unch and Rados/suppress law K Wojciechowski. “Ollivier Ricci curvature for gen-
+eral graph Laplacians: heat equation, Laplacian compariso n, non-explosion and di-
+ameter bounds”. In: Advances in Mathematics 356 (2019), p. 106759.
+[32] Khang Nguyen et al. “Revisiting over-smoothing and ove r-squashing using ollivier-
+ricci curvature”. In: International Conference on Machine Learning . PMLR. 2023,
+pp. 25956–25979.
+[33] Chien-Chun Ni et al. “Community detection on networks w ith Ricci ﬂow”. In: Sci-
+entiﬁc reports 9.1 (2019), p. 9984.
+[34] Chien-Chun Ni et al. “Ricci curvature of the internet to pology”. In: 2015 IEEE
+conference on computer communications (INFOCOM) . IEEE. 2015, pp. 2758–2766.
+[35] Yann Ollivier. “A survey of Ricci curvature for metric s paces and Markov chains”.
+In: Probabilistic approach to geometry. Vol. 57. Mathematical Society of Japan, 2010,
+pp. 343–382.
+[36] Yann Ollivier. “Ricci curvature of Markov chains on met ric spaces”. In: Journal of
+Functional Analysis 256.3 (2009), pp. 810–864.
+[37] Max-K. von Renesse and Karl-Theodor Sturm. “Transport inequalities, gradient
+estimates, entropy and Ricci curvature”. In: Communications on pure and applied
+mathematics 58.7 (2005), pp. 923–940.
+[38] Areejit Samal et al. “Comparative analysis of two discr etizations of Ricci curvature
+for complex networks”. In: Scientiﬁc reports 8.1 (2018).
+[39] Romeil Sandhu et al. “Graph Curvature for Diﬀerentiatin g Cancer Networks”. In:
+Scientiﬁc reports 5 (July 2015), p. 12323.
+[40] Romeil S. Sandhu, Tryphon T. Georgiou, and Allen R. Tann enbaum. “Ricci cur-
+vature: An economic indicator for market fragility and syst emic risk”. In: Science
+Advances 2.5 (2016), e1501495.
+[41] Jayson Sia, Edmond Jonckheere, and Paul Bogdan. “Olliv ier-Ricci Curvature-Based
+Method to Community Detection in Complex Networks”. In: Scientiﬁc Reports 9
+(July 2019).
+[42] RP Sreejith et al. “Forman curvature for complex networks”. In: Journal of Statistical
+Mechanics: Theory and Experiment 2016.6 (2016), p. 063206.
+[43] C. Villani. Topics in Optimal Transportation . Graduate studies in mathematics.
+American Mathematical Society, 2003. isbn: 9780821833124.
+[44] Ze Ye et al. “Curvature Graph Network”. In: International Conference on Learning
+Representations. 2020.
+Moritz Hehl,
+Department of Mathematics, University of Leipzig, Leipzig , Germany
+moritz.hehl@uni-leipzig.de
+43

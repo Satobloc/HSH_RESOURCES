@@ -1,0 +1,799 @@
+===== PAGE 1 =====
+t  
+  
+ i  
+ t t  
+ i dNext: 4.3 From Detailed Models Up: 4. Formal Spiking Neuron Previous: 4.1 Integrate-and-fire model
+Subsections
+4.2.1 Definition of the SRM
+4.2.1.1 Interpretation
+4.2.1.2 Total Postsynaptic Potential
+4.2.1.3 Refractoriness
+4.2.1.4 Removing the dynamic threshold
+4.2.1.5 Example: Impulse response of the FitzHugh-Nagumo model
+4.2.1.6 Example: A motoneuron model
+4.2.2 Mapping the Integrate-and-Fire Model to the SRM
+4.2.2.1 Example: Spike-time dependent time constant
+4.2.3 Simplified Model SRM0
+4.2.3.1 Relation to the SRM
+4.2.3.2 Dynamic threshold interpretation
+4.2.3.3 Relation to the integrate-and-fire model
+4.2.3.4 Example: Postsynaptic potential 
+4.2.3.5 Relation between the kernels 
+  and 
+  (*)
+4.2 Spike response model (SRM)
+The Spike Response Model (SRM) is - just like the nonlinear integrate-and-fire model - a generalization of the
+leaky integrate-and-fire model. The direction of the generalization is, however, somewhat different. In the
+nonlinear integrate-and-fire model, parameters are made voltage dependent whereas in the SRM they depend on
+the time since the last output spike. Another difference between integrate-and-fire models and the SRM concerns
+the formulation of the equations. While integrate-and-fire models are usually defined in terms of differential
+equations, the SRM expresses the membrane potential at time t as an integral over the past.
+The explicit dependence of the membrane potential upon the last output spike allows us to model refractoriness
+as a combination of three components, viz., (i) a reduced responsiveness after an output spike; (ii) an increase in
+threshold after firing; and (iii) a hyperpolarizing spike after-potential. In Section 4.2.1 the Spike Response Model
+is introduced and its properties illustrated. Its relation to the integrate-and-fire model is the topic of
+Section 4.2.2. An important special case of the Spike Response Model is the simplified model SRM0 that we
+have already encountered in Chapter 1.3.1. Section 4.2.3 will discuss it in more detail.
+4.2.1 Definition of the SRM
+In the framework of the Spike Response Model the state of a neuron i is described by a single variable ui. In the
+absence of spikes, the variable ui is at its resting value, urest = 0. Each incoming spike will perturb ui and it takes
+some time before ui returns to zero. The function 
+  describes the time course of the response to an incoming
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 1/16
+
+===== PAGE 2 =====
+spike. If, after the summation of the effects of several incoming spikes, ui reaches the threshold 
+  an output
+spike is triggered. The form of the action potential and the after-potential is described by a function 
+ . Let us
+suppose neuron i has fired its last spike at time 
+ . After firing the evolution of ui is given by
+ui(t) =
+ (t - 
+ ) + 
+ wij
+ (t - 
+ , t - tj(f))  
+  + 
+ (t - 
+ , s) Iext(t - s) ds (4.24)
+where tj(f) are spikes of presynaptic neurons j and wij is the synaptic efficacy. The last term accounts for an
+external driving current Iext. The two sums run over all presynaptic neurons j and all firing times tj(f) < t of
+neuron j. We emphasize that all terms depend on t - 
+ , i.e., the time since the last output spike.
+In contrast to the integrate-and-fire neuron discussed in Section (4.1) the threshold 
+  is not fixed but may also
+depend on t - 
+     
+      
+ (t - 
+ ) . (4.25)
+During an absolute refractory period 
+ , we may for example set 
+  to a large and positive value to avoid
+firing and let it relax back to its equilibrium value for t > 
+  + 
+ . Firing occurs whenever the membrane
+potential ui reaches the dynamic threshold 
+ (t - 
+ ) from below
+t = ti(f)     
+      ui(t) = 
+ (t - 
+ ) and 
+  > 0 . (4.26)
+As mentioned before 
+  is the last firing time,
+ = max
+ ti(f) < t
+  . (4.27)
+Dynamic thresholds are a standard feature of phenomenological neuron models (Fuortes and Mantegazzini,
+1962; Stein, 1967b; MacGregor and Oliver, 1974; Eckhorn et al., 1990; Abeles, 1991; Geisler and Goldberg,
+1966; Weiss, 1966; Horn and Usher, 1989). Models similar to Eqs. (4.24)-(4.26) can be traced back much
+further; see, e.g., Hill (1936).
+4.2.1.1 Interpretation
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 2/16
+
+===== PAGE 3 =====
+So far Eqs. (4.1) and (4.24) define a mathematical model. Can we give a biological interpretation of the terms?
+Let us identify the variable ui with the membrane potential of neuron i. The functions 
+ , 
+  and 
+  are response
+kernels that describe the effect of spike emission and spike reception on the variable ui. This interpretation has
+motivated the name `Spike Response Model', SRM for short (Gerstner, 1995; Kistler et al., 1997). Let us discuss
+the meaning of the response kernels.
+Figure 4.5: Schematic interpretation
+of the Spike Response Model. The
+figure shows the time course ui(t) of
+the membrane potential of neuron i as
+a function of time t. A spike of neuron
+i has been initiated at 
+ . The kernel
+(t - 
+ ) for t > 
+  describes the form
+of the action potential (positive pulse)
+and the (negative) spike after-
+potential that follows the pulse (thick
+solid line). If an input current pulse is
+applied at a time t'' a long time after
+the firing at 
+ , it evokes a standard
+response described by the function 
+(
+ , t - t'') and indicated by the
+dashed line starting at t'' (arrow). An
+input current pulse at t' (arrow) which
+arrives shortly after the postsynaptic
+spike at 
+  evokes, due to
+refractoriness of the neuron, a
+response of significantly shorter
+duration. Its time course is described
+by the response kernel 
+ (t - 
+ , t - t');
+see the dashed line after t'.
+Immediately after firing at 
+ , the
+threshold is increased (dot-dashed
+line).
+The kernel 
+  describes the standard form of an action potential of neuron i including the negative overshoot
+which typically follows a spike (after-potential). Graphically speaking, a contribution 
+  is `pasted in' each time
+the membrane potential reaches the threshold 
+ ; cf. Fig. 4.5. Since the form of the spike is always the same, the
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 3/16
+
+===== PAGE 4 =====
+exact time course of the action potential carries no information. What matters is whether there is the event `spike'
+or not. The event is fully characterized by the firing time ti(f). In a simplified model, the form of the action
+potential may therefore be neglected as long as we keep track of the firing times ti(f). The kernel 
+  describes
+then simply the `reset' of the membrane potential to a lower value after the spike at 
+  just like in the integrate-
+and-fire model. The leaky integrate-and-fire model is in fact a special case of the SRM as we will see below in
+Section 4.2.2.
+The kernel 
+ (t - 
+ , s) is the linear response of the membrane potential to an input current. It describes the time
+course of a deviation of the membrane potential from its resting value that is caused by a short current pulse
+(``impulse response''). We have already seen in Chapters 2.2 and 3 that the response depends, in general, on the
+time that has passed since the last output spike at 
+ . Immediately after 
+  many ion channels are open so that
+the resistance of the membrane is reduced. The voltage response to an input current pulse decays therefore more
+rapidly back to zero than in a neuron that has been inactive. A reduced or shorter response is one of the
+signatures of neuronal refractoriness. This form of refractory effect is taken care of by making the kernel 
+depend, via its first argument, on the time difference t - 
+ . We illustrate the idea in Fig. 4.5. The response to a
+first input pulse at t' is shorter and less pronounced than that to a second one at t'', an effect which is well-known
+experimentally (Fuortes and Mantegazzini, 1962; Stevens and Zador, 1998; Powers and Binder, 1996).
+The kernel 
+ (t - 
+ , s) as a function of s = t - tj(f) can be interpreted as the time course of a postsynaptic
+potential evoked by the firing of a presynaptic neuron j at time tj(f). Depending on the sign of the synapse from j,
+to i, 
+  models either an excitatory or inhibitory postsynaptic potential (EPSP or IPSP). Similarly as for the
+kernel 
+ , the exact shape of the postsynaptic potential depends on the time t - 
+  that has passed since the last
+spike of the postsynaptic neuron i. In particular, if neuron i has been active immediately before the arrival of a
+presynaptic action potential, the postsynaptic neuron is in a state of refractoriness. In this case, the response to an
+input spike is smaller than that of an `unprimed' neuron. The first argument of 
+ (t - 
+ , s) accounts for the
+dependence upon the last firing time of the postsynaptic neuron.
+4.2.1.2 Total Postsynaptic Potential
+In order to simplify the notation for later use, it is convenient to introduce the total postsynaptic potential,
+h(t|
+ ) = 
+ wij
+ (t - 
+ , t - tj(f)) + 
+ (t - 
+ , s) Iiext(t - s) ds . (4.28)
+Equation (4.24) can then be written in compact form,
+ui(t) = 
+ (t - 
+ ) + h(t|
+ ) . (4.29)
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 4/16
+
+===== PAGE 5 =====
+4.2.1.3 Refractoriness
+Refractoriness may be characterized experimentally by the observation that immediately after a first action
+potential it is impossible (absolute refractoriness) or more difficult (relative refractoriness) to excite a second
+spike (Fuortes and Mantegazzini, 1962).
+Absolute refractoriness can be incorporated in the SRM by setting the dynamic threshold during a time 
+  to
+an extremely high value that cannot be attained.
+Relative refractoriness can be mimicked in various ways; see Fig. 4.5. First, after the spike the membrane
+potential, and hence 
+ , passes through a regime of hyperpolarization (after-potential) where the voltage is below
+the resting potential. During this phase, more stimulation than usual is needed to drive the membrane potential
+above threshold. This is equivalent to a transient increase of the firing threshold (see below). Second, 
+  and 
+contribute to relative refractoriness because, immediately after an action potential, the response to incoming
+spikes is shorter and, possibly, of reduced amplitude (Fuortes and Mantegazzini, 1962). Thus more input spikes
+are needed to evoke the same depolarization of the membrane potential as in an `unprimed' neuron. The first
+argument of the 
+  function (or 
+  function) allows us to incorporate this effect.
+4.2.1.4 Removing the dynamic threshold
+From a formal point of view, there is no need to interpret the variable u as the membrane potential. It is, for
+example, often convenient to transform the variable u so as to remove the time-dependence of the threshold. In
+fact, a general Spike Response Model with arbitrary time-dependent threshold 
+ (t - 
+ ) = 
+  + 
+ (t - 
+ ), can
+always be transformed into a Spike Response Model with fixed threshold 
+  by a change of variables
+u(t) 
+  
+ (t) = u(t) - 
+ (t - 
+ ) . (4.30)
+The function 
+ (t - 
+ ) can easily be absorbed in the definition of the 
+  kernel.
+4.2.1.5 Example: Impulse response of the FitzHugh-Nagumo model
+In Chapter 3 we have studied the FitzHugh-Nagumo model as an example of a two-dimensional neuron model.
+Here we want to show that the response of the FitzHugh-Nagumo model to a short input current pulse depends
+on the time since the last spike. Let us trigger, in a simulation of the model, an action potential at t = 0. This can
+be done by applying a short, but strong current pulse. The result is a voltage trajectory of large amplitude which
+we identify with the kernel 
+ (t). Figure 4.6 shows the hyperpolarizing spike after-potential which decays slowly
+back to the resting level. To test the responsiveness of the FitzHugh-Nagumo model during the recovery phase
+after the action potential, we apply, at a time t(f) > 0, a second short input current pulse of low amplitude. The
+response to this test pulse is compared with the unperturbed trajectory. The difference between the two
+trajectories defines the kernel 
+ (t - 
+ , t - t(f)). In Fig. 4.6 several trajectories are overlayed showing the response
+to stimulation at t = 10, 15, 20, 30 or 40. The shape and duration of the response curve depends on the time that
+has passed since the initiation of the action potential. Note that the time constant of the response kernel 
+  is
+always shorter than that of the hyperpolarizing spike after-potential. Analogous results for the Hodgkin-Huxley
+model will be discussed below in Section 4.3.1.
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 5/16
+
+===== PAGE 6 =====
+Figure 4.6: FitzHugh-Nagumo model. An action potential has been triggered at t = 0.
+After the action potential additional pulse input occurs at t = 10, 15, 20, 30, or 40
+[arbitrary units]. In A the trajectories of all runs are plotted on top of each other. Part
+B shows a zoomed-in section of two trajectories. A pulse input at time t=10 after the
+onset of the action potential has a short lasting effect (top right) compared to a pulse at
+t=40 (bottom right). All parameters as in Fig. 3.5. There is no constant bias current.
+4.2.1.6 Example: A motoneuron model
+Figure 4.7: Effect of recovery time constant 
+ . Top: Input current
+consisting of a sequence of pulses superimposed on a constant bias. Bottom:
+The membrane potential response (thick line) to the input pulses clearly
+shows that the response amplitude increases as a function of the time since
+the last spike. Parameters: 
+  = 
+  = 100ms; 
+  = 4ms; taken from
+Herrmann and Gerstner (2001b).
+Motoneurons exhibit a rather slow return to the resting potential after an action potential (Powers and Binder,
+1996). The time constant of the decay of the hyperpolarizing spike after-potential can be in the range of 100ms
+or more and is therefore much slower than the membrane time constant that characterizes the response to a short
+current input. On the other hand, it is found that if motoneurons are stimulated by a constant super-threshold
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 6/16
+
+===== PAGE 7 =====
+current, their membrane potential has a roughly linear trajectory when approaching threshold. To qualitatively
+describe these observations, we can use a Spike Response Model with the following kernels:
+(t - 
+ ) = - 
+  e
+  
+ (t - 
+ ) (4.31)
+(t - 
+ , s) =
+  
+ 1 - e
+  e
+  
+ (s) 
+ (t - 
+  - s) (4.32)
+where 
+  is an effective passive membrane time constant, R is the input resistance, 
+  is the `refractory' time
+constant, 
+  is the `response recovery' time constant, 
+  is a scale factor for the refractory function. The
+passive membrane time constant 
+  and input resistance R characterize the membrane response to small current
+pulses. The refractory function 
+  describes the return of the membrane potential to baseline after an action
+potential. It is characterized by a slow time constant 
+ . For the 
+ -kernel we use a decaying exponential in s
+with time constant 
+ , modulated by the `recovery' factor {1 - exp[- (t - 
+ )/
+ ]}. This results in a spike-time
+dependent scaling of the amplitude of postsynaptic potentials. The recovery time 
+  is taken much longer than
+.
+The effect of the modulation of the input conductance as a function of t - 
+  is depicted in Fig. 4.7. An input
+current pulse shortly after the reset at time 
+  evokes a postsynaptic potential of much lower amplitude than an
+input current pulse that arrives much later. Fig. 4.7 qualitatively reproduces the membrane trajectory of
+motoneurons when stimulated by the same input pattern (Poliakov et al., 1996; Powers and Binder, 1996).
+4.2.2 Mapping the Integrate-and-Fire Model to the SRM
+In this section, we show that the leaky integrate-and-fire neuron defined in Section 4.1 is a special case of the
+Spike Response Model. We consider an integrate-and-fire neuron driven by external current Iext and postsynaptic
+current pulses 
+ (t - tj(f)). The potential ui is thus given by
+ 
+  = - ui(t) + R 
+ wij
+ (t - tj(f)) + R Iiext(t) . (4.33)
+In order to construct a mapping of the integrate-and-fire model to the Spike Response Model, we integrate
+Eq. (4.33) with u(
+ ) = ur as its initial condition. The result is in analogy to Eq. (4.10)
+u(t) = ur exp
+  - 
+ (4.34)
+      + 
+ wij
+ exp
+  - 
+  
+ (t - tj(f) - s) ds    
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 7/16
+
+===== PAGE 8 =====
++ 
+ exp
+  - 
+ Iiext(t - s) ds    
+ = 
+ (t - 
+ ) + 
+ wij
+ (t - 
+ , t - tj(f)) + 
+ (t - 
+ , s) Iiext(t - s) ds ,    
+with
+(s) = ur exp
+  - 
+  , (4.35)
+(s, t) = 
+ exp
+  - 
+  
+ (t - t') dt' , (4.36)
+(s, t) = 
+  exp
+  - 
+  
+ (s - t) 
+ (t) . (4.37)
+As usual, 
+ (x) denotes the Heaviside step function. The kernels (4.35)-(4.37) allow us to map the integrate-and-
+fire neuron exactly to the the Spike Response Model, as desired; cf. Eq. (4.24).
+In order obtain an explicit expression for the 
+  kernel (4.36) we have to specify the time course of the
+postsynaptic current 
+ (s). Here, we take 
+ (s) as defined in (4.21), viz.,
+(s) = 
+ exp
+  - s/
+  
+ (s) . (4.38)
+With q = C = 1, the integration of Eq. (4.36) yields
+(s, t) = 
+  
+ exp
+  - 
+  - exp
+  - 
+  
+ (s) 
+ (t) ; (4.39)
+cf. Fig. 4.8. If presynaptic spikes arrive before the last postsynaptic spike, then they have only a small effect on
+the actual value of the membrane potential because only that part of the postsynaptic current that arrives after 
+contributes to the postsynaptic potential. Spikes that arrive after 
+  produce a full postsynaptic potential. Note
+that causality implies that the 
+  kernel has to vanishes for negative arguments.
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 8/16
+
+===== PAGE 9 =====
+Figure 4.8: The kernel 
+ (t, t - tj(f))
+as a function of t for various
+presynaptic firing times tj(f) = - 2, -1,
+2, 5; cf. Eq. (4.39) with 
+  = 1 and
+ = 5. The last postsynaptic spike
+was at 
+  = 0. If presynaptic spikes
+arrive before the last postsynaptic
+spike, then they have only a small
+effect on the membrane potential; cf.
+the two small EPSPs that correspond
+to tj(f) = - 2 and tj(f) = - 1. If
+presynaptic spikes arrive after the
+last postsynaptic spike then they
+evoke a full-blown EPSP; cf. the two
+large EPSPs that correspond to tj(f) =
+2 and tj(f) = 5.
+4.2.2.1 Example: Spike-time dependent time constant
+We have seen above that the Spike Response Model contains the integrate-and-fire model as a special case. In
+this example, we show in addition that even a generalization of the integrate-and-fire model that has a time
+dependent membrane time constant can be described within the SRM framework.
+To be specific, we consider an integrate-and-fire model with spike-time dependent time constant, i.e., with a
+membrane time constant 
+  that is a function of the time since the last postsynaptic spike,
+ = - 
+  + 
+  Iext(t) ; (4.40)
+cf. Stevens and Zador (1998); Wehmeier et al. (1989). As usual, 
+  denotes the last firing time of the neuron. The
+neuron is insensitive to input during an absolute refractory period of duration 
+ . After the refractory period,
+the membrane potential is reset to a value ur. Starting the integration of Eq. (4.40) at u(
+  + 
+ ) = ur, we find
+for t > 
+  + 
+u(t) = ur exp
+  - 
+ (4.41)
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 9/16
+
+===== PAGE 10 =====
++ 
+  
+ (t - 
+  - 
+  - s) exp
+  - 
+  Iext(t - s) ds ,  
+which is a special case of Eq. (4.24). As we have seen above in Fig. 4.6, the effective membrane time constant of
+many standard neuron models is reduced immediately after a spike. The reason is that, after a spike, many ion
+channels are open so that conductance is increased. Since the time constant is inversely proportional to the
+conductance, the time constant is decreased. The relation between ion channels and spike-time dependent time
+constant will be discussed in more detail in Section 4.3.2.
+4.2.3 Simplified Model SRM0
+The phenomenological neuron model SRM0 introduced in Chapter 1.3.1 is a special case of the Spike Response
+Model. In this section we review its relation to the SRM and the integrate-and-fire model.
+4.2.3.1 Relation to the SRM
+A simplified version of the spike response model can be constructed by neglecting the dependence of 
+  and 
+upon the first argument. We set
+(s) =
+ (
+ , s)  
+(s) =
+ (
+ , s)  
+and use (4.24) in the form
+ui(t) = 
+ (t - 
+ ) + 
+ wij
+ (t - tj(f)) + 
+ (s) Iext(t - s) ds . (4.42)
+Each presynaptic spike thus evokes a postsynaptic potential with the same time course, independent of the index
+j of the presynaptic neuron and independent of the last firing time 
+  of the postsynaptic neuron. The amplitude
+of the response is scaled with the synaptic efficacy wij. The postsynaptic potentials are summed until the firing
+threshold 
+  is reached. In Fig. 4.9 we have assumed a constant threshold. Each output spike is approximated by
+a 
+  pulse, followed by a reset to a value below resting potential so as to account for a hyperpolarizing spike
+after-potential,
+(t - 
+ ) = 
+ (t - 
+ ) - 
+  exp
+  - 
+  , (4.43)
+with a parameter 
+  > 0. The spike after-potential decays back to zero with a recovery time constant 
+ . This
+simple version of the Spike Response Model (SRM0 for short) has been used in the analysis of the computational
+power of spiking neurons (Maass, 1996,1998), of network synchronization (Gerstner et al., 1996b), and
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 10/16
+
+===== PAGE 11 =====
+collective phenomena in locally coupled networks (Kistler et al., 1998; Kistler, 2000). The model defined in
+Eq. (4.42) can also be fitted to experimental data (Brillinger and Segundo, 1979; Brillinger, 1988,1992).
+Figure 4.9: Spike Response Model SRM0 with
+constant threshold (schematic). Each input pulse
+causes an excitatory postsynaptic potential (EPSP)
+(s). All EPSPs are added. If the threshold is
+reached an output spike is emitted (arrow) and a
+negative kernel 
+ (s) is added so that the voltage is
+reset.
+4.2.3.2 Dynamic threshold interpretation
+The simplified model SRM0 defined in (4.42) with the 
+  kernel defined in (4.43) can be reinterpreted as a model
+with a dynamic threshold,
+(t - 
+ ) = 
+  - 
+ (t - 
+ ) , (4.44)
+that is increased after each spike. Firing occurs if
+hi(t) = 
+ (t - 
+ ) , (4.45)
+where hi is the input potential,
+hi(t) = 
+ wij
+ (t - tj(f))  + 
+ (s) Iext(t - s) ds . (4.46)
+We emphasize that hi depends on the input only. In particular, there is no dependence upon 
+ . The next spike
+occurs if the input potential hi(t) reaches the dynamic threshold 
+ (t - 
+ ); cf. Fig. 4.10.
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 11/16
+
+===== PAGE 12 =====
+Figure 4.10: Dynamic threshold interpretation. The input potential h(t)
+(solid line) is generated by the superposition of the EPSPs (solid line)
+caused by presynaptic spikes. Each spike arrival is denoted by an
+arrow. An output spike occurs, if h hits the dynamic threshold 
+(dashed line). At the moment of spiking the value of the threshold is
+increased by one. After the spike, the threshold decays exponentially
+back to its resting value 
+  = 1.
+4.2.3.3 Relation to the integrate-and-fire model
+The basic equation of the leaky integrate-and-fire model, Eq. (4.3), is a linear differential equation. However,
+because of the reset of the membrane potential after firing, the integration is not completely trivial. In fact, there
+are two different ways of proceeding with the integration of Eq. (4.3). In Section 4.2.2 we have treated the reset
+as a new initital condition and thereby constructed an exact mapping of the integrate-and-fire model to the Spike
+Response Model. We now turn to the second method and describe the reset as a current pulse. As we will see, the
+result is an approximative mapping to the simplified model SRM0.
+Let us consider a short current pulse Iiout = - q 
+ (t) applied to the RC circuit of Fig. 4.1. It removes a charge q
+from the capacitor C and lowers the potential by an amount 
+ u = - q/C. Thus, a reset of the membrane potential
+from a value of u = 
+  to a new value u = ur corresponds to an `output' current pulse which removes a charge q =
+C (
+  - ur). The reset takes place every time when the neuron fires. The total reset current is therefore
+Iiout(t) = - C (
+ -ur) 
+ (t - ti(f)) , (4.47)
+where the sum runs over all firing times ti(f). We add the output current (4.47) on the right-hand side of (4.3),
+ 
+  = - ui(t) + R Ii(t) + R Iiout(t) . (4.48)
+Here, Ii is the total input current to neuron i, generated by presynaptic spike arrival and by external stimulation
+Iiext(t). Let us assume that each presynaptic pulse evokes a postsynaptic current with time course 
+ (t - tj(f)). The
+total input current is then
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 12/16
+
+===== PAGE 13 =====
+Ii(t) = 
+ wij
+ (t - tj(f)) + Iiext(t) . (4.49)
+Since (4.48) is a linear equation, we can integrate each term separately and superimpose the result at the end.
+The output pulse Iiout yields a refractory kernel 
+  while each postsynaptic current pulse 
+  generates a
+postsynaptic potential 
+ . More specifically, we have after integration with initial condition 
+ ui(t0) = 0
+ui(t) =
+ (t - ti(f)) + 
+ wij
+ (t - tj(f))  
+       + 
+ (s) Iiext(t - s) ds , (4.50)
+with kernels
+(s) = - (
+  - ur) exp
+  - 
+  
+ (s) , (4.51)
+(s) =
+ exp
+  - 
+  
+ (s - s') ds' 
+ (s) , (4.52)
+(s) =
+  exp
+  - 
+  
+ (s) . (4.53)
+The refractory kernel 
+ (s) and the postsynaptic potential 
+  are shown in Fig. 4.11.
+Figure 4.11: A. The refractory kernel 
+  of the integrate-and-fire model with membrane
+time constant 
+  = 10ms. B. The postsynaptic potential 
+ (t) generated by an
+exponential current pulse 
+ (t) 
+  exp(- t/
+ ).
+We note that, in contrast to Eq. (4.42), we still have on the right-hand side of Eq. (4.50) a sum over past spikes of
+neuron i. According to Eq. (4.51) the effect of the 
+ -kernel decays with a time constant 
+ . In realistic spike
+trains, the interval between two spikes is typically much longer than the membrane time constant 
+ . Hence the
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 13/16
+
+===== PAGE 14 =====
+sum over the 
+  terms is usually dominated by the most recent firing time ti(f) < t of neuron i. We therefore
+truncate the sum ofer f and neglect the effect of earlier spikes,
+(t - ti(f)) 
+  
+ (t - 
+ ) , (4.54)
+where 
+  = max{ti(f) < t} is the last firing time of neuron i. The approximation (4.54) is good if the mean firing
+rate of the neuron is low, i.e., if the intervals between two spikes are much longer than 
+ . Loosely speaking,
+the neuron remembers only its most recent firing. Equation (4.54) is therefore called `short-term memory
+approximation' (Gerstner et al., 1996b). The final equation is
+ui(t) = 
+ (t - 
+ ) + 
+ wij
+ (t - tj(f))  + 
+ (s) Iext(t - s) ds . (4.55)
+This is exactly the equation for the model SRM0, defined in (4.42). Note that we have kept, on the right-hand
+side of (4.55), the sum over all presynaptic firing times tj(f). Only the sum over the 
+ 's has been truncated.
+A careful comparison of Eq. (4.51) with Eq. (4.35) shows that the kernel 
+  is different from the kernel 
+derived previously for the exact mapping of the integrate-and-fire model to the full Spike Response Model. The
+difference is most easily seen if we set the reset potential to ur = 0. While the kernel 
+  in Eq. (4.35) vanishes in
+this case, the kernel 
+  is nonzero. In fact, whereas in the full SRM the reset is taken care of by the definition of
+(t - 
+ , s) and 
+ (t - 
+ , s), the reset in the simplified model SRM0 is included in the kernel 
+ . The relation
+between the kernels of the simplified model SRM0 to that of the full model are discussed below in more detail.
+4.2.3.4 Example: Postsynaptic potential 
+If 
+ (s) is given by (4.21), then the integral on the right-hand side of (4.52) can be done and yields
+(s) = 
+  
+ exp
+  - 
+  - exp
+  - 
+  
+ (s) , (4.56)
+where we have set q = C = 1. This is the postsynaptic potential 
+  illustrated in Fig. 4.11B. We note that 
+defined in Eq. (4.56) is closely related, but not identical to the kernel 
+  introduced in Eq. (4.39).
+4.2.3.5 Relation between the kernels 
+  and 
+  (*)
+What is the relation between the 
+  kernel derived in (4.36) and the 
+  introduced in (4.52)? We will show in this
+paragraph that
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 14/16
+
+===== PAGE 15 =====
+(s, t) = 
+ (t) - exp
+  - 
+  
+ (t - s) (4.57)
+holds. To this end we rewrite Eq. (4.36) as
+(s, t) = 
+ exp
+  - 
+  
+ (t - t') dt'  - 
+ exp
+  - 
+  
+ (t - t') dt'    
+ = 
+ exp
+  - 
+  
+ (t - t') dt'    
+          - exp
+  - 
+ exp
+  - 
+  
+ (t - t' - s) dt' . (4.58)
+Using the definition (4.52) of 
+  yields Eq. (4.57).
+By a completely analogous sequence of transformations it is possible to show that
+(x, s) = 
+ (s) - exp
+  - 
+  
+ (s - x) . (4.59)
+The total postsynaptic potential h(t|
+ ) defined in (4.28) can therefore be expressed via the input potential hi(t)
+(Gerstner, 2000b)
+h(t|
+ ) = hi(t) - exp
+  - 
+ hi(
+ ) (4.60)
+As expected, the reset at 
+  has an influence on the total postsynaptic potential. We emphasize that the
+expressions (4.58)-(4.60) hold only for the integrate-and-fire model.
+Similarly we can compare the 
+  kernel in (4.35) and the 
+  kernel defined in (4.51),
+(s) = 
+ (s) + 
+  exp
+  - 
+  . (4.61)
+We can thus write the potential in the form
+ui(t) = 
+ (t - 
+ ) + h(t|
+ )    
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 15/16
+
+===== PAGE 16 =====
+= 
+ (t - 
+ ) + h(t) - [h(
+ ) - 
+ ] exp
+  - 
+  . (4.62)
+The truncation in (4.54) is therefore equivalent to a neglection of the last term in (4.62).
+ t  
+  
+ i  
+ t t  
+ i dNext: 4.3 From Detailed Models Up: 4. Formal Spiking Neuron Previous: 4.1 Integrate-and-fire model
+Gerstner and Kistler
+Spiking Neuron Models. Single Neurons, Populations, Plasticity
+Cambridge University Press, 2002
+© Cambridge University Press
+This book is in copyright. No reproduction of any part of it may take place without the written permission of
+Cambridge University Press.
+7/10/26, 1:19 AM 4.2 Spike response model (SRM)
+https://lcnwww.epfl.ch/gerstner/SPNM/node27.html 16/16
