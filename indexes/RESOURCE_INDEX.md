@@ -2,18 +2,24 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T01:36:51Z`
-- Tree/content state: `a45dbaaa467f192c7667dc55cf12f16142134f20`
+- Scanned: `2026-09-07T01:56:00Z`
+- Tree/content state: `eeb6545287beae0f2cea67bce792f0b12b076a13`
 - Coverage: complete structural traversal
-- Files: 263
-- PDF papers: 256
-- Byte-identical duplicate groups: 24
+- Files: 285
+- Uploaded source files: 279
+- PDF papers: 273
+- Repository machinery files: 6
+- Byte-identical duplicate groups: 25
 
 ## Top-level coverage
 
 | Path | Files |
 |---|---:|
+| `.gitignore` | 1 |
 | `HAUL 1` | 70 |
+| `HAUL 10` | 3 |
+| `HAUL 11` | 6 |
+| `HAUL 12` | 4 |
 | `HAUL 2` | 69 |
 | `HAUL 3` | 41 |
 | `HAUL 4` | 14 |
@@ -21,8 +27,12 @@
 | `HAUL 6` | 16 |
 | `HAUL 7` | 12 |
 | `HAUL 8` | 14 |
+| `HAUL 9` | 4 |
 | `KERR` | 16 |
 | `README.md` | 1 |
+| `requirements-tools.txt` | 1 |
+| `tests` | 1 |
+| `tools` | 2 |
 
 ## Duplicate-content groups
 
@@ -93,6 +103,9 @@
 - `e4625ad6adebf6f1a30a5070003cd426f023b8f4`
   - `HAUL 2/ssrn-6972282 (1).pdf`
   - `HAUL 2/ssrn-6972282.pdf`
+- `e8f87728e8c3626e55c3b2a25979e45deb8c7beb`
+  - `HAUL 11/Bell (1).pdf`
+  - `HAUL 11/Bell.pdf`
 - `eb0b181e6e41a56d7a2b3ea3df068d7b361813f7`
   - `HAUL 4/1704.04648v2 (1).pdf`
   - `HAUL 4/1704.04648v2.pdf`
@@ -174,6 +187,19 @@
 | `HAUL 1/ssrn-7345718.pdf` | 589435 | ssrn:7345718 |
 | `HAUL 1/ssrn-7345799.pdf` | 314108 | ssrn:7345799 |
 | `HAUL 1/ssrn-7346462.pdf` | 328889 | ssrn:7346462 |
+| `HAUL 10/2402.13256v1.pdf` | 6931073 | arxiv:2402.13256v1 |
+| `HAUL 10/2603.23256v2.pdf` | 6687518 | arxiv:2603.23256v2 |
+| `HAUL 10/bjq3-py7l.pdf` | 9055345 |  |
+| `HAUL 11/2303.12055v3.pdf` | 5122825 | arxiv:2303.12055v3 |
+| `HAUL 11/2501.01268v2.pdf` | 5861504 | arxiv:2501.01268v2 |
+| `HAUL 11/Bell (1).pdf` | 5204922 |  |
+| `HAUL 11/Bell.pdf` | 5204922 |  |
+| `HAUL 11/ssrn-5240551.pdf` | 5455746 | ssrn:5240551 |
+| `HAUL 11/ssrn-6731179.pdf` | 5591729 | ssrn:6731179 |
+| `HAUL 12/Forstner_2025_J._Inst._20_P06013 (1).pdf` | 7611121 |  |
+| `HAUL 12/Forstner_2025_J._Inst._20_P06013.pdf` | 7611121 |  |
+| `HAUL 12/s41586-025-09739-9.pdf` | 8837830 |  |
+| `HAUL 12/ssrn-7347618.pdf` | 7961344 | ssrn:7347618 |
 | `HAUL 2/ssrn-6315940.pdf` | 893394 | ssrn:6315940 |
 | `HAUL 2/ssrn-6400621.pdf` | 952791 | ssrn:6400621 |
 | `HAUL 2/ssrn-6435063.pdf` | 231060 | ssrn:6435063 |
@@ -345,6 +371,10 @@
 | `HAUL 8/ssrn-5800644.pdf` | 1669692 | ssrn:5800644 |
 | `HAUL 8/ssrn-5914523.pdf` | 1375785 | ssrn:5914523 |
 | `HAUL 8/ssrn-6104466.pdf` | 4258034 | ssrn:6104466 |
+| `HAUL 9/2503.08807v1.pdf` | 6295687 | arxiv:2503.08807v1 |
+| `HAUL 9/ssrn-6093306.pdf` | 6092929 | ssrn:6093306 |
+| `HAUL 9/ssrn-7351441.pdf` | 6065772 | ssrn:7351441 |
+| `HAUL 9/ssrn-7366944.pdf` | 5969756 | ssrn:7366944 |
 | `KERR/0407064v3 (1).pdf` | 130247 |  |
 | `KERR/0407064v3.pdf` | 130247 | unresolved-seven-digit-id:0407064v3 |
 | `KERR/1365236_156-159.pdf` | 274664 |  |

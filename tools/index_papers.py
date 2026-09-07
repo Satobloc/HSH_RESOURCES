@@ -100,7 +100,16 @@ def enrich(entries: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
         row = dict(entry)
         suffix = Path(row["path"]).suffix.lower() or "[none]"
         row["extension"] = suffix
-        row["kind"] = "paper-pdf" if suffix == ".pdf" else "supporting-resource"
+        top = row["path"].split("/", 1)[0]
+        is_source = top not in {"tools", "tests", "indexes", "derived"} and row["path"] not in {
+            "README.md", ".gitignore", "requirements-tools.txt"
+        }
+        if is_source and suffix == ".pdf":
+            row["kind"] = "paper-pdf"
+        elif is_source:
+            row["kind"] = "supporting-resource"
+        else:
+            row["kind"] = "repository-machinery"
         row["identifier"] = identifier(row["path"])
         result.append(row)
     return sorted(result, key=lambda x: x["path"].casefold())
@@ -117,6 +126,7 @@ def make_state(entries: list[dict[str, Any]], tree_id: str, truncated: bool, sca
         if len(paths) > 1
     ]
     pdfs = [row for row in entries if row["kind"] == "paper-pdf"]
+    sources = [row for row in entries if row["kind"] in {"paper-pdf", "supporting-resource"}]
     return {
         "schema_version": 1,
         "tool_version": VERSION,
@@ -126,11 +136,14 @@ def make_state(entries: list[dict[str, Any]], tree_id: str, truncated: bool, sca
         "coverage": "complete structural traversal" if not truncated else "partial structural traversal",
         "counts": {
             "files": len(entries),
+            "source_files": len(sources),
             "papers_pdf": len(pdfs),
+            "repository_machinery_files": len(entries) - len(sources),
             "bytes_known": sum(row.get("bytes") or 0 for row in entries),
             "duplicate_content_groups": len(duplicates),
         },
         "counts_by_extension": dict(sorted(Counter(row["extension"] for row in entries).items())),
+        "counts_by_kind": dict(sorted(Counter(row["kind"] for row in entries).items())),
         "counts_by_top_level": dict(sorted(Counter(row["path"].split("/")[0] for row in entries).items())),
         "duplicates": duplicates,
         "items": entries,
@@ -154,7 +167,9 @@ def markdown(state: dict[str, Any]) -> str:
         f"- Tree/content state: `{state['tree_id']}`",
         f"- Coverage: {state['coverage']}",
         f"- Files: {counts['files']}",
+        f"- Uploaded source files: {counts['source_files']}",
         f"- PDF papers: {counts['papers_pdf']}",
+        f"- Repository machinery files: {counts['repository_machinery_files']}",
         f"- Byte-identical duplicate groups: {counts['duplicate_content_groups']}",
         "",
         "## Top-level coverage",
