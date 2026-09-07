@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T18:09:05Z`
-- Tree/content state: `0670a4280bb5d765727bca9185e2b4835574401ecef7b7e4cae4ef5277af9599`
+- Scanned: `2026-09-07T18:18:05Z`
+- Tree/content state: `02a0255d40b8dfb78d2708823906a4655d5514bd2f76a8ff00a3210403b3a923`
 - Coverage: complete structural traversal
-- Files: 673
-- Uploaded source files: 666
-- PDF papers: 654
+- Files: 711
+- Uploaded source files: 704
+- PDF papers: 689
 - Repository machinery files: 7
-- Byte-identical duplicate groups: 31
+- Byte-identical duplicate groups: 34
 
 ## Top-level coverage
 
@@ -19,7 +19,7 @@
 | `.gitignore` | 1 |
 | `BIG PAPERS` | 3 |
 | `DATA` | 1 |
-| `H(s)H_Toolkit` | 93 |
+| `H(s)H_Toolkit` | 131 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
 | `HAUL 11` | 6 |
@@ -69,6 +69,9 @@
 - `4b805b013b0a1fafc90ae9452423d0f438a5eceac454ec916549db0731c7cca2`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1.pdf`
+- `59c04099e11fcd24083ae7955d63993d2d1304633c605ad25994f509629ada6f`
+  - `H(s)H_Toolkit/AssemblyTheory.pdf`
+  - `H(s)H_Toolkit/s41586-023-06600-9.pdf`
 - `5b862fda843c7de1a99af463264b746765064ce75049d02fbe6c4a260e5ff686`
   - `HAUL 1/ssrn-7228958 (1).pdf`
   - `HAUL 1/ssrn-7228958.pdf`
@@ -117,12 +120,18 @@
 - `d1ee8716b2ffd59bf030f1e6ea7bb21e0b6437657a099c9435a7fa0b463ece81`
   - `HAUL 2/ssrn-6962403 (1).pdf`
   - `HAUL 2/ssrn-6962403.pdf`
+- `d3883c529cfe6a944d77e2899d53d17a35d0593f29f3199c7799c2f4979b69e2`
+  - `H(s)H_Toolkit/HsHtoolkit2_5.pdf`
+  - `H(s)H_Toolkit/HsHtoolkit_5.pdf`
 - `d7aabb1d64ca0acc5750bb4adf3c48c42ee22b5d6bf2c18b8c33ea49dc7fd4ca`
   - `HAUL 2/ssrn-6315940.pdf`
   - `HAUL 3/helic 6315940.pdf`
 - `d851868ccbe6bec2b43b0a79a4316e91d391c1bc9fd263a20e835d09d6971fc4`
   - `KERR/0407064v3 (1).pdf`
   - `KERR/0407064v3.pdf`
+- `df0543eceb0963bdb9019c3ca948ff8a15978cdaf075bd913468fce4d7cac4e6`
+  - `H(s)H_Toolkit/HsHtoolkit2_4.pdf`
+  - `H(s)H_Toolkit/HsHtoolkit_4.pdf`
 - `e005bf81920b785959e211713c3e300af2c38a2b2cc92a9acbd5dc91a6314f34`
   - `HAUL 1/ssrn-7055399 (1).pdf`
   - `HAUL 1/ssrn-7055399.pdf`
@@ -155,13 +164,16 @@
 | `H(s)H_Toolkit/123_Clifford_Algebraic_Rotor_E.pdf` | 384360 |  |
 | `H(s)H_Toolkit/1305.5181v2.pdf` | 235192 | arxiv:1305.5181v2 |
 | `H(s)H_Toolkit/1609.08072v1.pdf` | 785377 | arxiv:1609.08072v1 |
+| `H(s)H_Toolkit/1707.08096v1.pdf` | 2052287 | arxiv:1707.08096v1 |
 | `H(s)H_Toolkit/1802.01423v3.pdf` | 377191 | arxiv:1802.01423v3 |
 | `H(s)H_Toolkit/2012Morrison.pdf` | 238369 |  |
+| `H(s)H_Toolkit/2202.13795v2.pdf` | 1138761 | arxiv:2202.13795v2 |
 | `H(s)H_Toolkit/2203.16837v1.pdf` | 485953 | arxiv:2203.16837v1 |
 | `H(s)H_Toolkit/2210.00372v2.pdf` | 291796 | arxiv:2210.00372v2 |
 | `H(s)H_Toolkit/2404.05222v1.pdf` | 431708 | arxiv:2404.05222v1 |
 | `H(s)H_Toolkit/2407.08854v3.pdf` | 410993 | arxiv:2407.08854v3 |
 | `H(s)H_Toolkit/2409.08995v2.pdf` | 456206 | arxiv:2409.08995v2 |
+| `H(s)H_Toolkit/2504.21744v1.pdf` | 1390409 | arxiv:2504.21744v1 |
 | `H(s)H_Toolkit/2505.14724v3.pdf` | 396592 | arxiv:2505.14724v3 |
 | `H(s)H_Toolkit/2507.06279v1.pdf` | 706369 | arxiv:2507.06279v1 |
 | `H(s)H_Toolkit/2509.16868v1.pdf` | 664505 | arxiv:2509.16868v1 |
@@ -169,6 +181,8 @@
 | `H(s)H_Toolkit/2601.02124v1.pdf` | 728941 | arxiv:2601.02124v1 |
 | `H(s)H_Toolkit/2601.16785v1.pdf` | 655156 | arxiv:2601.16785v1 |
 | `H(s)H_Toolkit/2602.14064v3.pdf` | 363872 | arxiv:2602.14064v3 |
+| `H(s)H_Toolkit/2603.03135v1.pdf` | 1295835 | arxiv:2603.03135v1 |
+| `H(s)H_Toolkit/2604.03770v2.pdf` | 6310781 | arxiv:2604.03770v2 |
 | `H(s)H_Toolkit/2605.25145v1.pdf` | 456906 | arxiv:2605.25145v1 |
 | `H(s)H_Toolkit/2605.30827v1.pdf` | 694341 | arxiv:2605.30827v1 |
 | `H(s)H_Toolkit/2606.17607v1.pdf` | 679126 | arxiv:2606.17607v1 |
@@ -178,13 +192,19 @@
 | `H(s)H_Toolkit/2607.01482v2.pdf` | 847891 | arxiv:2607.01482v2 |
 | `H(s)H_Toolkit/2607.01732v1.pdf` | 423438 | arxiv:2607.01732v1 |
 | `H(s)H_Toolkit/2607.01991v1.pdf` | 330984 | arxiv:2607.01991v1 |
+| `H(s)H_Toolkit/2607.03019v1.pdf` | 5046383 | arxiv:2607.03019v1 |
 | `H(s)H_Toolkit/2607.03139v1.pdf` | 571212 | arxiv:2607.03139v1 |
 | `H(s)H_Toolkit/2607.03234v1.pdf` | 540962 | arxiv:2607.03234v1 |
 | `H(s)H_Toolkit/2607.03497v1.pdf` | 447794 | arxiv:2607.03497v1 |
+| `H(s)H_Toolkit/2607.03649v1.pdf` | 2172145 | arxiv:2607.03649v1 |
 | `H(s)H_Toolkit/2607.03843v1.pdf` | 636434 | arxiv:2607.03843v1 |
+| `H(s)H_Toolkit/2607.04015v1.pdf` | 4254371 | arxiv:2607.04015v1 |
 | `H(s)H_Toolkit/2607.04039v1.pdf` | 960394 | arxiv:2607.04039v1 |
+| `H(s)H_Toolkit/2607.04445v1.pdf` | 12337584 | arxiv:2607.04445v1 |
 | `H(s)H_Toolkit/2607.05211v1.pdf` | 603833 | arxiv:2607.05211v1 |
 | `H(s)H_Toolkit/2607.05231v1.pdf` | 698295 | arxiv:2607.05231v1 |
+| `H(s)H_Toolkit/2607.05360v1.pdf` | 2151217 | arxiv:2607.05360v1 |
+| `H(s)H_Toolkit/2607.05575v1.pdf` | 3445937 | arxiv:2607.05575v1 |
 | `H(s)H_Toolkit/2607.05918v1.pdf` | 430288 | arxiv:2607.05918v1 |
 | `H(s)H_Toolkit/2607.05986v1.pdf` | 725984 | arxiv:2607.05986v1 |
 | `H(s)H_Toolkit/2607.06345v1.pdf` | 604873 | arxiv:2607.06345v1 |
@@ -198,17 +218,33 @@
 | `H(s)H_Toolkit/Adkisson.pdf` | 182956 |  |
 | `H(s)H_Toolkit/am72.pdf` | 186559 |  |
 | `H(s)H_Toolkit/anna-symplectic.pdf` | 301941 |  |
+| `H(s)H_Toolkit/annals-v162-n2-p01.pdf` | 1096037 |  |
+| `H(s)H_Toolkit/Assembly theory_ formalizing assembly spaces, discovering patterns and bounds _ Royal Society Open Science _ The Royal Society.pdf` | 3222594 |  |
+| `H(s)H_Toolkit/AssemblyTheory.pdf` | 3298161 |  |
 | `H(s)H_Toolkit/AssemblyTheoryinlife-originmodels_Acriticalreview.pdf` | 698490 |  |
+| `H(s)H_Toolkit/axioms-15-00365.pdf` | 2312139 |  |
+| `H(s)H_Toolkit/Bouman-Computer_aided_Design-1995-Geometric_Constraint_Solver.pdf` | 1149055 |  |
+| `H(s)H_Toolkit/Brian-Nathan-Daniel-Final.pdf` | 4119608 |  |
+| `H(s)H_Toolkit/Brunner.pdf` | 1072572 |  |
 | `H(s)H_Toolkit/calculus-of-variations.pdf` | 156790 |  |
 | `H(s)H_Toolkit/CalcVar.pdf` | 966175 |  |
 | `H(s)H_Toolkit/cobordism.pdf` | 600777 |  |
+| `H(s)H_Toolkit/cofv.pdf` | 1557450 |  |
 | `H(s)H_Toolkit/cristancho.pdf` | 210682 |  |
 | `H(s)H_Toolkit/disgrad.pdf` | 99143 |  |
+| `H(s)H_Toolkit/drae037.pdf` | 1105540 |  |
 | `H(s)H_Toolkit/Elements_Ensample_Theory.pdf` | 443625 |  |
+| `H(s)H_Toolkit/ensemble-kalman-methods-a-mean-field-perspective.pdf` | 3594737 |  |
 | `H(s)H_Toolkit/Ensembles.pdf` | 373771 |  |
 | `H(s)H_Toolkit/ensembletheory.pdf` | 840044 |  |
 | `H(s)H_Toolkit/frac_hardy_visibility_ILTV_rev.pdf` | 484279 |  |
+| `H(s)H_Toolkit/gradientimproREVISED.pdf` | 2627626 |  |
 | `H(s)H_Toolkit/GriroievTrieste2018slides.pdf` | 156683 |  |
+| `H(s)H_Toolkit/HsHtoolkit2_4.pdf` | 18099964 |  |
+| `H(s)H_Toolkit/HsHtoolkit2_5.pdf` | 7845794 |  |
+| `H(s)H_Toolkit/HsHtoolkit3_2.pdf` | 5837860 |  |
+| `H(s)H_Toolkit/HsHtoolkit_4.pdf` | 18099964 |  |
+| `H(s)H_Toolkit/HsHtoolkit_5.pdf` | 7845794 |  |
 | `H(s)H_Toolkit/hypersph.pdf` | 31614 |  |
 | `H(s)H_Toolkit/hyperspherical.pdf` | 220933 |  |
 | `H(s)H_Toolkit/Interior C2 estimates for a class of sum Hessian equations - ScienceDirect.pdf` | 718838 |  |
@@ -218,8 +254,11 @@
 | `H(s)H_Toolkit/lecture24.pdf` | 390615 |  |
 | `H(s)H_Toolkit/Lecture_Notes_on_Calculus_of_Variations_2025-2026.pdf` | 1005643 |  |
 | `H(s)H_Toolkit/Lectures_on_AKSZ_Sigma_Models_for_Physicists.pdf` | 807040 |  |
+| `H(s)H_Toolkit/liegroups.pdf` | 1059536 |  |
+| `H(s)H_Toolkit/lsg.pdf` | 1127912 |  |
 | `H(s)H_Toolkit/math0309175.pdf` | 227134 |  |
 | `H(s)H_Toolkit/Meinrenken.pdf` | 703528 |  |
+| `H(s)H_Toolkit/mnev_h.pdf` | 3246595 |  |
 | `H(s)H_Toolkit/Order_theory_for_discrete_gradient_methods.pdf` | 926196 |  |
 | `H(s)H_Toolkit/PhysRevResearch.3.013211.pdf` | 717175 |  |
 | `H(s)H_Toolkit/proj6.pdf` | 162641 |  |
@@ -227,13 +266,18 @@
 | `H(s)H_Toolkit/S0002-9939-2017-13699-5.pdf` | 249866 |  |
 | `H(s)H_Toolkit/S0002-9939-99-05088-1.pdf` | 208269 |  |
 | `H(s)H_Toolkit/s00208-026-03327-6.pdf` | 590668 |  |
+| `H(s)H_Toolkit/s00239-024-10163-2.pdf` | 1037464 |  |
 | `H(s)H_Toolkit/s00526-021-01980-0.pdf` | 475343 |  |
 | `H(s)H_Toolkit/S186630Lec1.pdf` | 202635 |  |
 | `H(s)H_Toolkit/s40574-023-00359-7.pdf` | 235563 |  |
+| `H(s)H_Toolkit/s41586-023-06600-9.pdf` | 3298161 |  |
+| `H(s)H_Toolkit/s41598-020-68619-6.pdf` | 2000450 |  |
 | `H(s)H_Toolkit/s44260-025-00049-9.pdf` | 788708 |  |
 | `H(s)H_Toolkit/Spectral_Graph_Theory.pdf` | 283163 |  |
 | `H(s)H_Toolkit/stml-74-prev.pdf` | 485860 |  |
 | `H(s)H_Toolkit/symp_geo.pdf` | 772759 |  |
+| `H(s)H_Toolkit/Symplectic.pdf` | 1153031 |  |
+| `H(s)H_Toolkit/TFG.pdf` | 5367916 |  |
 | `H(s)H_Toolkit/v-conj-karlstad.pdf` | 367596 |  |
 | `H(s)H_Toolkit/vol39pp675-689.pdf` | 221078 |  |
 | `H(s)H_Toolkit/Ye_2018_J._Phys.__Conf._Ser._1053_012010.pdf` | 703861 |  |

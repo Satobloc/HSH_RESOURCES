@@ -1,0 +1,2172 @@
+===== PAGE 1 =====
+Keywords:
+Subjects:
+RESEARCH ARTICLES |  27 MAY 2026
+Assembly theory: formalizing assembly spaces,
+discovering patterns and bounds 
+ Author & article information
+R Soc Open Sci. (2026) 13 (5): 260082 .
+https://doi.org/10.1098/rsos.260082
+Related content
+Review history: https://www.webofscience.com/api/gateway/wos/peer-
+review/10.1098/rsos.260082 
+Abstract
+Assembly theory defines structural complexity as the minimum number of steps
+required to construct an object in an assembly space. We formalize the assembly
+space as an acyclic digraph of strings. Key results include analytical bounds on the
+minimum and maximum assembly indices (ASIs) as functions of the string length and
+alphabet size, as well as relations between the ASI, assembly depth, depth index,
+Shannon entropy and expected waiting times for strings drawn from uniform
+distributions. We identify patterns in minimum- and maximum-ASI strings and
+provide construction methods for the latter. While computing ASI is NP-complete, we
+develop efficient implementations that enable ASI computation of long strings. We
+establish a counterintuitive, inverse relationship between a string ASI and its
+expected waiting time. Ordered decimal representations of low ASI bitstrings of
+even length  naturally cluster on diagonals and oblique lines of the squares with
+sides equal to  . Comparison with dictionary-based (LZW) and grammar-based
+(Re-Pair) compression schemes shows that ASI provides superior compression by
+exploiting global combinatorial patterns. These findings advance the use of
+complexity measures in computational biology, graph theory and data compression.
+assembly theory, information theory, complexity measures, mathematical
+physics, assembly index, graph theory, compression algorithms, information entropy,
+computational biology
+mathematical physics
+Wawrzyniec Bieniawski; Piotr Masierak; Andrzej Tomski; Szymon Ł ukaszyk    ; Szymon Tworz
+Article history 
+N
+2N/2
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 1/48
+
+===== PAGE 2 =====
+1. Introduction
+Assembly theory (AT) quantifies the minimum number of constructive steps required
+to generate an object, providing a principled measure of its structural complexity. It
+is built around two fundamental concepts: an assembly pool (a predefined set of
+basic items and a set of hitherto assembled subitems) and an assembly step (joining
+a pair of items taken from the assembly pool in a predefined order and cloning [1]
+such an assembled subitem to the assembly pool if it is not there), which together
+define the assembly index (ASI) as the minimal number of steps necessary to
+construct the object. Since its original formulation in 2017 [2], AT has been
+generalized to a broad range of theoretical and practical settings. A considerable
+body of work on AT [3–13] showcased the scale invariance of AT: its
+implementations, whether based on graphs, building blocks, DNA nucleobases,
+bounded structures or more abstract units assembled in various spaces, share the
+same fundamental characteristics.
+Intrinsic purpose-driven mechanics implementing global combinatorics (heuristics) of
+AT provides a genuinely different perspective from classical notions of algorithmic or
+statistical complexity, despite the fact that AT appears to share many methodological
+features with classical dictionary-based [14–16] and grammar-based [17–32] data
+compression schemes. This resemblance stems from the fact that both AT and
+compression algorithms seek to capture redundancy, identify reusable
+substructures and derive concise generative descriptions of data. However, instead
+of quantifying randomness or compressibility, AT focuses on causal construction
+pathways and structural regularities encoded in minimal assembly pathways (i.e. in
+the ASI). This perspective naturally raises the question of how such regularities can
+be efficiently detected, represented and exploited by formal computational
+methods.
+In this study, we focus on the general string version of AT. The paper is organized as
+follows. Section 2 introduces definitions and basic theorems used in the paper.
+Section 3 concerns the minimum complexity strings of AT, showing certain relations
+between the minimum ASI, assembly depth (ASD), depth index (DPI) and the
+Shannon entropy. Section 4 concerns the maximum complexity strings of AT,
+provides certain bounds of the maximum ASI as a function of a string length and the
+number of basic symbols, as well as certain methods of constructing high ASI
+strings. Section 5 concerns results common to the minimum and maximum
+complexity strings of AT, including a correlation between the expected waiting time
+(EWT) for a string of outcomes obtainable from a uniform categorical distribution and
+the ASI of this string. Section 6 discusses the supremacy of ASI compression over all
+polynomial-time compression algorithms. Finally, §7 summarizes the findings of this
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 2/48
+
+===== PAGE 3 =====
+study. In general, the proofs of theorems and lemmas, as well as certain methods
+and tables, are given in the electronic supplementary material.
+2. General framework
+Consider a string  (we often write it simply as  ) of length  made of 
+distinct basic symbols (unit-length strings)  . We shall label the symbols  using
+decimal digits  and letters if  , where  . We can
+assume that all strings  belong to a set  and are vertices of a graph, where
+certain strings are connected via edges  from a set  .
+Definition 2.1. (Assembly Space). An assembly space  is an acyclic
+digraph of strings , where all  unit length strings (basic
+symbol(s)) are source vertices, and the remaining strings are 2-in-regular assembly
+step vertices, and  is a set of edges.
+Definition 2.2. (Assembly Step). An assembly step  is the formation of a new string
+ in an assembly space  from two, not necessarily different, strings  ,  by
+concatenating  which forms the edges
+ and  .
+Since all the  vertices are strings, any edge  is unambiguously
+defined. For example, the edge  unambiguously resolves to
+ yielding  and  .
+It is furthermore convenient to separate the set of strings into a set
+ of source vertices and a set
+ of 2-in-regular assembly steps vertices.
+Definitions 2.1 and 2.2 are consistent: all vertices are unique (in any standard graph,
+all vertices should be unique), and all are strings. Since an assembly step always
+consists of joining two parts only [2], this can be thought of as the left and right
+fragments of the newly formed string, and those strings that can be the result of the
+concatenation of two shorter strings are assembly step 2-in-regular vertices. The
+uniqueness of each vertex is a sufficient criterion to establish the admissibility of an
+assembly step and to introduce the notion of an assembly pool: vertices (strings)
+present in the assembly space cannot be assembled again as new vertices of  , as
+they would not be unique.
+Definition 2.3. (Assembly Plan). An assembly plan  of a string  is the assembly
+space 2.1 containing the vertex  and all the vertices leading to the string  .
+C (N,b)
+k Ck N b
+c c
+{0, 1, … ,b−1} b > 10 b−k :=b −k
+Ck C
+e E
+Ω = (C,E)
+C = {Ck},k ∈ N b ∈ N
+E
+s
+Cz Ω Cx Cy
+Cz = Cx ∘Cy = strcat(Cx,Cy)
+e = (Cx,Cz) e′ = (Cy,Cz)
+Ω e = (Cx,Cz)
+e = ([010], [0101])
+e = ([010], [010] ∘ [1]) e′ = ([1], [0101]) = ([1], [010] ∘ [1]) Cy = [1]
+B :=C ∖ {C (N,b)
+k ∈ C : N ≠ 1}
+S :=C ∖ {C (N,b)
+k ∈ C : N ≠ 1}
+Ω
+ΩCs Cs
+Cs Cs
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 3/48
+
+===== PAGE 4 =====
+There can be more than one assembly plan for a target string, reflecting different
+assembly pathways leading to it. However, the ASI  of a string  is
+the minimum cardinality  of the set of the assembly step vertices  of
+all assembly plans  of the string  .
+Strings in an assembly space 2.1 can form 2-grams, 3-grams, 4-grams, …, -grams, in
+general, wherein the following lemma [11] holds.
+Lemma 2.1.For all  , a 4-gram is the shortest string that allows for more than one
+ASI.
+ provides  available 2-grams with unit ASI.  provides  available 3-
+grams with ASI equal to two. Only  provides  4-grams that include  4-
+grams with ASI equal to two, that is  4-grams  and  4-
+grams  , while the ASI of the remaining  4-grams is three. For
+example, to assemble the 4-gram  , we need to assemble the 2-gram
+ and reuse it, while there is nothing available to reuse, in the case of the 4-gram
+ .
+Definition 2.4. (Clear/Mixed String). We call a string (an -gram) containing only one
+symbol a clear string (a clear -gram). We call a string (an -gram) that is not clear a
+mixed string (a mixed -gram).
+Theorem 2.1.Each   copies of an  -gram   contained in a string 
+ decrease its ASI at least by  . That is
+(2.1)
+where  is the total number of repeated -grams.
+For example, due to the presence of three copies of a -gram  , each with
+ , in a string
+(2.2)
+its ASI amounts to  . The relation (2.1)
+provides the upper bound on ASI as it does not describe a situation in which an -
+gram for  is assembled based on a -gram also present in the string
+, outside of this -gram. For example, the ASI
+ , while  .
+Consider the strings  and  , where  is  in reverse order. The string  can
+have a distribution of -grams leading to its ASI decrease (2.1). But the string  will
+a(N,b)(Cs) C (N,b)
+s
+|S(ΩCs)| S(ΩCs)
+ΩCs Cs
+n
+b
+N = 2 b2 N = 3 b3
+N = 4 b4 b2
+b C (4,b)
+k,min = [∗ ∗ ∗∗] b(b − 1)
+C (4,b)
+l,min = [∗ ⋆ ∗⋆] b4 −b2
+C (4,4)
+k,min = [0202]
+[02]
+C (4,4)
+l = [0123]
+n
+n n
+n
+kr nr C (nr,b)
+r C (N,b)
+m
+kr(nr − 1) −a(nr,b) (Cr)
+a(N,b)(Cm) ≤ N − 1 −
+R
+∑
+r=1
+[kr(nr − 1) −a(nr,b) (Cr)],
+R nr
+5 [01001]
+a(5,6)([01001]) = 3
+C
+(24,6)
+k = [12|01001|21|01001|235|01001|52],
+a(24,6)(Ck) = 24 − 1 − (3 ⋅ (5 − 1) − 3) = 14
+n
+n > 2 (n − 1)
+C (N,b)
+m n
+a(14,9)([56|101|78|101|43|01]) = 10 14 − 1 − (2(3 − 1) − 2) = 11
+Ck Cl Cl Ck Ck
+nr Cl
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 4/48
+
+===== PAGE 5 =====
+have the same distribution of -grams in reverse order. Consequently, the strings
+ and  have the same ASI.
+Definition 2.5. (AT String Equivalence). We consider two strings  and  to be AT-
+equivalent if they have the same ASI because  is  in reverse order and/or if 
+and  differ at most in symbol permutations.
+If it is not otherwise clear from the context, in this study, we consider equivalent
+strings (e.g.  ) as one string.
+Another measure of a string’s complexity is the ASD [33].
+Definition 2.6. (ASD). The ASD
+(2.3)
+where , and  and  are the ASDs of two
+substrings ,  of the string  that were joined in step  . For , and if there
+are more assembly pathways with different depths  leading to a string, which
+happens if at least two independent assembly steps are possible, the minimum
+pathway depth is the ASD of this string. Hence, the ASD captures the notion of an
+independent assembly step.
+The ASD naturally divides the lengths of strings into sections  (cf.
+figures 1 and 2).
+nr
+Ck Cl
+Ck Cl
+Cl Ck Cl
+Ck
+{[001222], [111200], …}
+d(Nk,b)
+s (Ck):= max (d(Nl,b)(Cl),d(Nm,b)(Cm)) + 1,
+d(l,b)
+0 (c) := 0 d(Nl,b)(Cl) d(Nm,b)(Cm)
+Cl Cm Ck s N > 3
+wj
+2d−1 < N ≤ 2d
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 5/48
+
+===== PAGE 6 =====
+Figure 1.
+The minimum ASD (  , blue), the ASD of the minimum ASI string
+(magenta), the minimum ASI (OEIS A003313, red;  , red, dash-dot), DPI
+(OEIS A014701, green) and  (black, dash-dot), where  is
+the Hamming weight of the binary representation of  (black) for  .
+Figure 2.
+The Shannon entropy of the most balanced bitstrings having the minimum ASI
+for  .
+Theorem 2.2.If an assembly space  contains strings having the same (non-zero)
+ASD, they were assembled in independent assembly steps.
+In other words, if two strings  ,  in  have the same ASD, their assembly
+pathways are unrelated to each other; by defining equation (2.3), neither of them
+could have been used in the assembly pathway of the other.
+⌈log2(N)⌉
+log2(N)
+⌊log2(N)⌋ +N1 − 2 N1
+N 1 < N ≤ 65
+1 < N ≤ 65
+Ω
+Cl Cm Ω
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 6/48
+
+===== PAGE 7 =====
+Corollary 2.1.If ASI and ASD of a string are equal to each other, an assembly plan of
+this string cannot contain independent assembly steps.
+Theorem 2.3.For all  , the maximum length  of any string that can be assembled
+with the ASD  (2.3) satisfies
+(2.4)
+Lemma 2.2.For all  , the minimum ASD (minASD), as a function of a string length  ,
+is given by
+(2.5)
+where  denotes the ceiling function.
+The ASD need not be a monotonically non-decreasing function of the assembly
+step. For example,
+(2.6)
+We cannot consider the ASD apart from the ASI. For example, the ASD of a string
+ is  , even though this string can be
+assembled in six steps with three larger pathway depths  as
+(2.7)
+Similarly, the ASD of a string  is  as
+(2.8)
+However, the non-maximum and non-minimum ASI string  has
+only two 2-grams that can be assembled in independent steps. Hence, its ASD
+cannot be decreased to 
+b N
+d(N)
+s
+N ≤ 2d(N)
+s .
+b N
+d(N)
+min = ⌈log2(N)⌉,
+⌈x⌉
+[11]d1 = 1; [110]d2 = 2; [01]d3 = 1; [00]d4 = 1; [0001]d5 = 2; [00
+C (7,2)
+max = [0001110] d(7,2)
+amax = ⌈log2(7)⌉ = 3
+w6 ∈ {4, 5, 6}
+[00] d1 = 1, [00] w1 = 1, [00] w1 = 1, [00] w1
+[01] d2 = 1, [01] w2 = 1, [01] w2 = 1, [000] w2
+[11] d3 = 1, [11] w3 = 1, [0001] w3 = 2, [0001] w
+[110] d4 = 2, [0001] w4 = 2, [00011] w4 = 3, [00011]
+[0001] d5 = 2, [000111] w5 = 3, [000111] w5 = 4, [000111]
+[0001110] d6 = 3, [0001110] w6 = 4, [0001110] w6 = 5, [0001110]
+C (8,2)
+max = [00011101] d(8,2)
+amax = ⌈log2(8)⌉ = 3
+[00] d1 = 1, [00] w1 = 1, [00] w1 = 1, [01]
+[01] d2 = 1, [01] w2 = 1, [01] w2 = 1, [001]
+[11] d3 = 1, [11] w3 = 1, [0001] w3 = 2, [0001
+[0001] d4 = 2, [0001] w4 = 2, [00011] w4 = 3, [0001
+[1101] d5 = 2, [000111] w5 = 3, [000111] w5 = 4, [0001
+[00011101] d6 = 3, [00011101] w6 = 4, [00011101] w6 = 5, [0001
+C (8,2)
+k = [01001011]
+⌈log2(8)⌉ = 3
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 7/48
+
+===== PAGE 8 =====
+(2.9)
+In general, the  that contains a -gram having the ASD  can also contain
+-grams having the ASD  and based on the
+shorter -grams of length  .
+Theorem 2.4.For all  , the ASD of any maximum ASI string  corresponds to
+the minASD (2.5) of lemma 2.2, that is
+(2.10)
+For example, as shown in figure 3c,d, the string  has
+the ASI  and the ASD  , whereas the string
+ has smaller ASI  but larger ASD  .
+On the other hand, the ASD of the maximum ASI string
+ and the minimum ASI string
+ , shown in figure 3a,b, is the same.
+Figure 3.
+Assembly plans of bitstrings  (a,c) and  (b,d) for  (a,b)
+and  (c,d), where the ASI is a number in a string (final string for (a,c))
+and the ASD corresponds to the level. For ,  . In
+general, for  , the ASD  .
+Here, we introduce the following definition, which—as we shall see—is also related
+to the independent assembly step.
+[01] d1 = 1, [01] w1 = 1,
+[11] d2 = 1, [010] w2 = 2,
+[010] d3 = 2, [010010] w3 = 3,
+[010010] d4 = 3, [0100101] w4 = 4,
+[01001011] d5 = 4, [01001011] w5 = 5.
+Ω 2d d
+{2d−1 + 1, 2d−1 + 2, … , 2d − 1} d
+n n < 2d−1 + 1
+b C
+(N,b)
+max
+d(N,b)
+amax = ⌈log2(N)⌉.
+C (15,2)
+max = [010101000011100]
+a(15,2)
+max = 10 d(15,2)
+amax = 4
+C (15,2)
+min = [010010100101001] a(15)
+min = 5 d(15,2)
+amin = 5
+C (16,2)
+(N−5) = [0101010000001110]
+C (16,2)
+min = [0101010101010101]
+C (N,2)
+max C (N,2)
+min N = 2s = 16
+N = 15 ≠ 2s
+N = 2s d(2s,b)
+amax = d(2s,b)
+amin = s
+N ≠ 2s d
+(N,b)
+amax < d
+(N,b)
+amin
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 8/48
+
+===== PAGE 9 =====
+Definition 2.7. (DPI). We call the number of steps  to reach 1 starting from
+ and assigning
+(2.11)
+the DPI.
+The relation (2.11) yields the same number of steps as the Chandah-sutra method
+(OEIS A014701) and, unlike the minimum ASI, is an analytical function of  . For
+example,  and  .
+Applying AT to evolutionary biology, we can assume that initially, a new string of
+length  is formed in an assembly space based on a basic symbol and a string of
+length  . Subsequently, this string assembly space evolves to reduce the
+cardinality  of the set of the assembly step vertices until it equals the ASI of
+this string, that is, until  . Hence, the assembly spaces evolve
+by reconfiguring the network of edges to decrease the ASD of newly assembled
+strings, possibly finding shorter pathways for these strings, and if only such a
+decrease would not result in ASI increase (length  shown in figure 3d is the
+shortest length, where  ).
+The concepts of assembly space, assembly plan, ASI and ASD, as well as the
+evolution of assembly spaces, are illustrated in figure 4. Although the alternative
+pathways shown in figure 4a demonstrate that the mixed 2-gram  is not required
+to construct all 3-grams in two steps, this 2-gram is necessary to achieve the ASI of
+longer strings (cf. a constrained AT* version shown in table 1 discussed in §6).
+^a(N)
+min
+N :=N(0)
+N(s+1) =
+⎧
+⎪
+⎨⎪
+⎩
+N(s) − 1 if N(s) is odd,
+N(s) − 2 if N(s) = 2s + 2,s ∈ N,
+N(s)/2 otherwise
+N
+^a(2s)
+min = s ^a(2s−1)
+min = 2(s − 1)
+N
+N − 1
+|S(ΩCs)|
+|S(ΩCs)| = a(N,b)(Cs)
+N = 15
+5 = d(15)
+amin > ⌈log2(15)⌉ = 4
+[01]
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 9/48
+
+===== PAGE 10 =====
+Figure 4.
+Assembly space, assembly plan, ASI and ASD. The assembly space of all eight
+binary 3-grams with all pathways (a). Blue edge provides the first string, red edge
+provides the second string in the assembly step and the order is irrelevant for
+two green edges or green edge provides the first or second string in
+dependence of the colour of the complementary edge. Dotted edges and
+question marks indicate alternative pathways. The optimal assembly plan of the
+bitstring  showing that its ASI  (b). The
+evolution of assembly spaces of strings  and  (c–e). Strings 
+and  are initially assembled from 3-grams and basic symbols, increasing
+the ASD (c). New pathways increasing the number of independent assembly
+steps are found (d), and the edges of  are reconfigured, decreasing the
+number of assembly steps of the string  from three to two steps and the
+ASD of both 4-grams from three to two. The assembly space comprises five
+optimal assembly plans of the bitstrings  ,  (two alternatives, one
+encircled),  and  (e).
+Table 1. Comparison of the ASI calculation, constrained ASI, Re-Pair and LZW compression
+plans.
+step ASI ASIa Re-Pairb LZWc
+1 [00] [00] [00]  A [00]  C
+2 [10] [001] [AA] [000]  D
+3 [0010] [0010] [AA1] [10]  F
+4 [000010] [000010] [AA1A] [AC]
+5 [0000100010] [0000100010] [AA1A0] [AC A]
+6     [AA1A01] [AC AB]
+7     [AA1 A010] [AC ABD]
+8       [AC ABDF]
+C (7,2)
+6 = [0001110] a(7,2)(C6) = 6
+[0101] [0110] [0101]
+[0110]
+Ω
+[0101]
+[0101] [010]
+[011] [0110]
+→ →
+→
+→
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 10/48
+
+===== PAGE 11 =====
+a No 2-gram [10] allowed.
+b Dictionary  Codeword  .
+c Dictionary  .
+Codeword [ACABDF] containing only three dictionary elements (C, D, F) other than the basic symbols
+d Dictionary 
+e Dictionary
+Codeword [BCABAGG] containing only two dictionary elements (C, G) other than the basic symbols.
+  val([0000100010]) = 34
+step ASI ASIa Re-Paird LZWe
+1 [00] [00] [00]  A [11]  C
+2 [10] [0000] [11]  B [00]  G
+3 [110] [00000] [B1] [BC]
+4 [1110] [100000] [B10] [BC A]
+5 [111010] [0100000] [B101] [BC AB]
+6 [11101000] [10100000] [B101 A] [BC ABA]
+7 [1110100000] [110100000] [B101 AA] [BC AB AG]
+8   [1110100000] [B101 AA0] [BC AB AGG]
+  val([1110100000]) = 928
+3. Minimum complexity strings of assembly theory
+In this section, we consider factors relevant to the minimum string complexity in the
+context of AT. Theorem 3.1 was already stated in our previous study [11]; we restate it
+here for clarity.
+Theorem 3.1.For all  , the minimum ASI (minASI)  as a function of 
+corresponds to the shortest addition chain for  (OEIS A003313).
+Any shortest addition chain for  starts with one, not zero, as zero is the neutral
+element of addition. For the same reason, two is considered the smallest prime, as
+one is the neutral element of multiplication. Hence, the fundamental theorem of
+arithmetic can be thought of as the shortest multiplication chain for  . It is
+conjectured that the largest prime factor must appear in some shortest addition
+chain for  [34].
+→ →
+→ →
+[00] × 5 → A. [AA1A010]
+[0] → A,  [1] → B,  [00] → C,  [000] → D,  [01] → E,  [10] → F  and [0001] → G
+|Steps| = |Codeword| − 1 + |Dictionary| = 6 − 1 + 3 = 8.
+[00] × 4 → A,  [11] × 2 → B.  Codeword [B101AA0].
+[0] → A,  [1] → B,  [11] → C,  [110] → D,  [01] → E,  [10] → F ,  [00] → G and [000] → H.
+|Steps| = |Codeword| − 1 + |Dictionary| = 7 − 1 + 2 = 8.
+b a(N)(Cmin) N
+N
+n
+N
+N
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 11/48
+
+===== PAGE 12 =====
+Theorem 3.2.The strings  can contain at most two distinct symbols if  .
+Other minASI strings of length  can contain at most three distinct symbols if
+ .
+Proof. Minimum ASI strings of length  are formed by joining the newly
+assembled string to itself, where a clear or mixed 2-gram is assembled in the first
+step. Minimum ASI strings of other lengths admit a 2-gram and a 3-gram containing
+this 2-gram and an additional basic symbol.
+To formally prove the first part, we can also use mathematical induction on the
+assembly step  . If  , then the minASI strings  are 2-grams of the form
+ , where  . If  , the string contains one distinct symbol, and
+if , the string contains two distinct symbols. In both cases, the number of
+distinct symbols does not exceed two. Now assume that for some  , all minASI
+strings  contain at most two distinct symbols. We must show that  also
+contains at most two distinct symbols. We construct  by joining two identical
+minASI strings  ,
+(3.1)
+with each other. By the inductive hypothesis, each  contains at most two
+distinct symbols. Therefore, their concatenation also contains at most two distinct
+symbols. By induction, for all  , the minASI string  contains at most two
+distinct symbols.
+We will now show that other minASI strings of length  can contain at most
+three distinct symbols if  . We provide the construction of minASI strings with
+three symbols. In the first step  , we assemble a 2-gram  , where
+ and  . Next, we join the existing 2-gram  with a new
+symbol  , where  . This forms a 3-gram  , introducing a
+third distinct symbol and further increasing the ASI by 1. We continue assembling by
+joining the longest string formed so far with itself or with previously formed strings,
+maintaining the minimal ASI increase.
+Assume a contrario that there exists a minASI string  of length  that
+contains four or more distinct symbols. But, incorporating such a fourth symbol is
+equivalent to assembling a maxASI 4-gram, which contradicts the minimality of
+ (only a 2-gram must be assembled from basic symbols, and a 3-gram must be
+assembled from a basic symbol and a 2-gram). Thus, theorem 3.2 is proven. ∎
+By theorem 2.1, the maximum ASI decrease is provided by minASI -grams and
+amounts to  . On the other hand, 1-symbol -grams are guaranteed to
+C (2s,b)
+min b > 1
+N ≠ 2s
+b > 2
+N = 2s
+s s = 1 C (2,b)
+min
+[c1c2] c1,c2 ∈ B(Ω) c1 = c2
+c1 ≠ c2
+k ∈ N
+C (2k,b)
+min C (2k+1,b)
+min
+C
+(2k+1,b)
+min
+C (2k,b)
+min
+C (2k,b)
+min ∘C (2k,b)
+min = C (2k+1,b)
+min ,
+C (2k,b)
+min
+s ∈ N C (2s,b)
+min
+N ≠ 2s
+b > 2
+s = 1 [c1c2]
+c1,c2 ∈ B(Ω) c1 ≠ c2 [c1c2]
+c3 ∈ B(Ω) c3 ∉ {c1,c2} [c1c2c3]
+C (N,b)
+min N ≠ 2s
+C (N,b)
+min
+2s
+k(2s − 1) −s n
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 12/48
+
+===== PAGE 13 =====
+have the minimum ASI for all  . Therefore, the maxASI string will tend to contain
+only one such long -gram for each  . We have found, for example, that the sum of
+the lengths of an -gram of zeros and an -gram of ones should preferably be
+greater than or equal to  of a maxASI string.
+The assembly plans of the minASI strings of length  are not unique [35]. For
+example, a string  can be assembled in three steps in four assembly
+plans with  ,  ,  or
+ .
+Strings with non-minASI can contain all symbols. For example, the string [36]
+(3.2)
+has ASI  and contains all five basic symbols
+ .
+The minASD as a function of the length of a string  (2.5), the ASD of a minASI
+string  (which we call here the minASI ASD), the minASI as a function of the
+length of a string  (OEIS A003313) and DPI  (OEIS A014701) define four
+distinct sets illustrated in figure 1, wherein  . We
+observed certain salient regularities among them.
+Theorem 3.3.If a minASI string has length  ,  , then the minimum ASD,
+minASI ASD, minASI and DPI are equal to  .
+Theorem 3.3 can be generalized as follows.
+Theorem 3.4.The minASD, minASI ASD, minASI and DPI of a minASI string are equal
+to  if and only if or, in other words
+(cf. figure 5a)
+n
+n b
+n0 n1
+N/2
+N ≠ 2s
+C (5,b)
+min = [01010]
+S(Ω) = {[01], [010]} S(Ω) = {[01], [0101]} S(Ω) = {[10], [010]}
+S(Ω) = {[10], [1010]}
+Ck = [01234012340123401234]
+a(20,5)(Ck) = 6 = a(20)
+min + 1
+B(Ω) := {0, 1, 2, 3, 4}
+d(N)
+min
+d(N)
+amin
+a(N)
+min ^a(N)
+min
+d(N)
+min ≤ d(N)
+amin ≤ a(N)
+min ≤ ^a(N)
+min
+N := 2s s ∈ N0
+s
+s ∈ N ^N1 := 2s−1 + 2l,  l = 0, 1, … ,s − 1,  s ≥ 1
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 13/48
+
+===== PAGE 14 =====
+Figure 5.
+Lengths of all strings having the property of 
+(a). Lengths  ,  ,  of certain strings having the property of
+ (b–d). Lengths  ,  of certain strings having the property
+of  (e,f).
+(3.3)
+The assembly plans of other minASI strings can contain independent assembly
+steps. The first such case occurs for  , where, for example, the 
+(3.4)
+results in a string having  and  , since both  and
+ were assembled from the 2-gram  in two independent assembly steps at
+the same depth  , which is congruent with theorem 2.2.
+Lemma 3.1.The minASI strings [11] (strings (15)) of lengths
+(3.5)
+have only one independent assembly step in their assembly plans; excluding this
+step, they are assembled by joining the longest string assembled so far to itself.
+Therefore, their ASI is one greater than the minASD (2.5) (cf.figure 5b).
+Lemma 3.2.The minASI strings of lengths
+d( ^N1)
+min = a( ^N1)
+min = d( ^N1)
+amin = ^a( ^N1)
+min = s
+~N3
+~N5
+~N9
+a( ~N∗)
+min = d( ~N∗)
+min + 1 ~N15
+~N27
+a( ~N∗)
+min = d( ~N∗)
+min + 2
+^N1 := 2s−1 + 2l, l = 0, 1, … ,s − 1, s ≥ 1 ⇔ d( ^N1)
+min = d( ^N1)
+amin = a( ^N1)
+min
+N = 7 S(Ω)
+[01] d1 = 1,
+[001], [0101] d2 = d3 = 2,
+[0010101] d4 = 3
+a
+(7)
+min = 4 d
+(7)
+amin = ⌈log2(7)⌉ = 3 [001]
+[0101] [01]
+d2 = d3 = 2
+~N3 := 2d−1 + 3 ⋅ 2l, l = 0, 1, … ,d − 3, d ≥ 3 ⇔ a( ~N3)
+min = d + 1 = ⌈
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 14/48
+
+===== PAGE 15 =====
+(3.6)
+have only one independent assembly step in their assembly plans; excluding this
+step, they are assembled by joining the longest string assembled so far to itself.
+Therefore, their ASI is one greater than the minASD (2.5) (cf.figure 5c).
+Lemma 3.3.The minASI strings of lengths
+(3.7)
+have only one independent assembly step in their assembly plans; excluding this
+step, they are assembled by joining the longest string assembled so far to itself.
+Therefore, their ASI is one greater than the minASD (2.5) (cf. figure 5d).
+Lemmas 3.1–3.3 allow for the following generalization.
+Theorem 3.5.The minASI strings of lengths
+(3.8)
+have only one independent assembly step in their assembly plans; excluding this
+step, they are assembled by joining the longest string assembled so far to itself.
+Therefore, their ASI is one greater than the minASD (2.5).
+The lengths of the strings (3.8) are listed in rows in table 2, starting after the length
+of the substring assembled in an independent assembly step marked green. Hence,
+the first row contains the lengths of strings of lemma 3.1 shown on the diagonal of
+figure 5b, and so on.
+Table 2. Certain lengths of minASI strings, which are defined by the ASI and the minASI ASD
+for  .
+minASI
+…
+2 2 4 3 7 14 28 56 112 224 …
+        15 30 60 120 240 480
+          23 46 92 184 368
+~N5 := 2d−1 + 5 ⋅ 2l, l = 0, 1, … ,d − 4, d ≥ 4 ⇔ a
+( ~N5)
+min = d + 1 = ⌈
+~N9 := 2d−1 + 9 ⋅ 2l, l = 0, 1, … ,d − 5, d ≥ 5 ⇔ a( ~N9)
+min = d + 1 = ⌈
+~N2n+1 := 2d−1 + (2k−4 + 1)2l, k ≥ 5,  d ≥ k − 2,  l = 0, 1, … ,d − (k − 2)
+⇔ a( ~N2n+1)
+min = d + 1 = ⌈log2( ~N2n+1)⌉ + 1
+2 ≤ s ≤ 7
+s 1 2 3 4 5 6 7 8 9 ~N2n+1
+~N3
+~N3,a
+~N3,b
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 15/48
+
+===== PAGE 16 =====
+3 2 4 8 3 11 22 44 88 176 …
+          27 54 108 216 432
+            43 86 172 344
+2 4 8 5 13 26 52 104 208 …
+          45 90 180 360 …
+4 2 4 8 16 3 19 38 76 152 …
+            51 102 204 408
+              83 166 332
+2 4 8 16 5 21 42 84 168 …
+            85 170 340 …
+2 4 8 16 9 25 50 100 200 …
+5 2 4 8 16 32 3 35 70 140 …
+              99 198 396
+                163 326
+2 4 8 16 32 5 37 74 148 …
+              165 330 …
+2 4 8 16 32 9 41 82 164 …
+2 4 8 16 32 17 49 98 196 …
+6 2 4 8 16 32 64 3 67 134 …
+                195 390
+                  323
+2 4 8 16 32 64 5 69 138 276
+                325 650
+2 4 8 16 32 64 9 73 146 …
+2 4 8 16 32 64 17 81 162 …
+2 4 8 16 32 64 33 97 194 …
+~N3
+~N3,a
+~N3,b
+~N5
+~N5,b
+~N3
+~N3,a
+~N3,b
+~N5
+~N5,b
+~N9
+~N3
+~N3,a
+~N3,b
+~N5
+~N5,b
+~N9
+~N17
+~N3
+~N3,a
+~N3,b
+~N5
+~N5,b
+~N9
+~N17
+~N33
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 16/48
+
+===== PAGE 17 =====
+7 2 4 8 16 32 64 128 3 131 …
+                  387
+2 4 8 16 32 64 128 5 133 266
+                  645
+2 4 8 16 32 64 128 9 137 …
+2 4 8 16 32 64 128 17 145 …
+2 4 8 16 32 64 128 33 161 …
+2 4 8 16 32 64 128 65 193 …
+Theorem 3.6.The minASI strings [11] of lengths
+(3.9)
+are assembled by joining the longest string assembled so far with itself. Their ASI
+and ASD are the same: one greater than the minASD (2.5) and one smaller than the
+DPI.
+Theorem 3.6 seems to allow for the following generalization, which we have
+validated numerically based on the shortest addition chain sequence for  .
+Conjecture 3.1. For ,  and  defined by the relation (3.8), the following holds:
+(3.10a)
+(3.10b)
+The lengths of the strings (3.10a) and (3.10b) are listed in rows in table 2.
+Furthermore, we have numerically validated the following conjecture.
+Conjecture 3.2. The minASI strings of lengths
+~N3
+~N3,a
+~N5
+~N5,b
+~N9
+~N17
+~N33
+~N65
+~N7 := 2d−1 + 7 ⋅ 2d−4 ∈ {15, 30, 60, …}, d ≥ 4 ⇔
+a( ~N7)
+min = d( ~N7)
+amin = d( ~N7)
+min + 1 = ^a( ^N1)
+min − 1 = ⌈log2( ~N7)⌉ + 1
+N ≤ 105
+d l ~N2n+1
+~N2n+1,a := ~N2n+1 + 2d = 3 ⋅ 2d−1 + (2k−4 + 1)2l ∧k = 5,
+⇔ a
+( ~N2n+1,a)
+min = d + 2 = ⌈log2( ~N2n+1,a)⌉ + 1,
+~N2n+1,b := ~N2n+1 + 2d+1 = 5 ⋅ 2d−1 + (2k−4 + 1)2l ∧k ∈ {5, 6},
+⇔ a( ~N2n+1,b)
+min = d + 3 = ⌈log2( ~N2n+1,b)⌉ + 1.
+~N15 := 2d−1 + 15 ⋅ 2l, l = 0, 1, … ,d − 5, d ≥ 5, (3.11a)
+~N27 := 2d−1 + 27 ⋅ 2l, l = 0, 1, … ,d − 6, d ≥ 6, (3.11b)
+~N50.9 := 50 ⋅ 2d−6 + 9 ⋅ 2l, l = 0, 1, … ,d − 6, d ≥ 6, (3.11c)
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 17/48
+
+===== PAGE 18 =====
+—
+—
+have the property of
+The shortest strings of length  (3.11a) can be assembled with the pathways
+(3.12)
+shown in figure 5e; the shortest strings of length  (3.11b) can be assembled with
+the pathways
+(3.13)
+shown in figure 5f; and for any  , the shortest strings of length  (3.11c) can be
+assembled as
+(3.14)
+The remaining strings of length  ,  and  (3.11) can be assembled by
+joining two strings made in a previous step  .
+Strings of lengths (3.3), (3.5) and (3.9), revealed in [11] based on the degree of
+causation, showed that there are certain regularities among the minASI strings.
+Here, we extended these results to new lengths (see relation (3.8) and the
+electronic supplementary material). In general, theorems 3.4–3.6 (in particular
+theorem 3.6) and conjectures 3.1 and 3.2 show a peculiar interdependence among
+the minASD (2.5), minASI ASD, minASI and DPI, as shown in figure 1. In particular,
+they show that
+the  of minASI strings having ASI equal to DPI cannot contain strings
+assembled in independent assembly steps,
+the s of other minASI strings can contain at least two such strings, and
+therefore
+a
+( ~N∗)
+min = d + 2 = ⌈log2( ~N∗)⌉ + 2. (3.11d)
+~N15
+{2, 4, (5, 8), 13, 26, 31},
+{… 39, 47},
+{… 78, 79},
+…
+~N27
+{2, (3, 4), 7, 14, 28, 31, 59},
+{… 14 28, 56, 84, 91},
+{… 11 18, 36, 72, 144, 155},
+…
+d ~N50.9
+{2, 4, 8, (9, 16), 25, 50, 59},
+{… 100, 109},
+{… 200, 209},
+…
+~N15
+~N27
+~N50.9
+d − 1
+Ω
+Ω
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 18/48
+
+===== PAGE 19 =====
+—
+the assembly plan of a maxASI string will tend to maximize the number of
+strings assembled in independent assembly steps in the  , taking into
+account the saturation of the  as it cannot contain more than  distinct
+-grams, and hence to minimize the possible ASD.
+We note that, in general, the difference between the DPI and minASI is larger than 1.
+Lemma 3.4.The minASI bitstrings assembled along the pathway given by the DPI
+2.7 and beginning with  are balanced bitstrings if  is even or nearly
+balanced bitstrings (  ) if  is odd.
+In other words, the DPI removes the imbalance propagation. For example, an
+imbalanced pathway  (  ) becomes a balanced pathway
+ (  ) and
+ . We have also examined the
+Shannon entropy
+(3.15)
+of the most balanced minASI bitstrings, where  and  are
+fractions of the respective symbols  within the string (  is the Hamming
+weight). Although by theorem 3.1, the minASI as a function of the length of a string
+does not depend on  , we have chosen the most balanced bitstrings, as they
+maximize the Shannon entropy (3.15). This choice is also supported by physics [37–
+39]. For the same reason, we preferred the pathway  (cf. figure 3d)
+over  , for example, as the string assembled using the former
+pathway is more balanced (  ) than the one assembled using the latter one ( 
+ ). Similarly, we preferred the pathway that provided a more balanced string
+over the one that provided independent assembly steps.  is the first
+exception.  assembled in five steps along the pathway  with
+the independent assembly steps 3 and 4 has the Hamming weight  as
+compared to  assembled in five steps along the pathway  with
+no independent assembly steps and the Hamming weight  . The
+resulting pathways of the minASI strings maximizing the number of independent
+assembly steps or the binary Shannon entropy (3.15) are listed in table 3 for 
+. As shown in figure 2, the Shannon entropy (3.15) of the most balanced minASI
+bitstrings rapidly converges to one with exceptions for lengths
+ substantially corresponding to lengths
+at which DPI is larger than the minASI (cf. figure 1), which highlights the
+interdependence between the minASI and DPI.
+Ω
+Ω bn
+n
+C (2)
+min = [∗⋆] N
+N0 = N1 + 1 N
+{2, 4, 5, 10, 20} N1 = 8
+{2, 4, 8, 10, 20} N1 = 10 = N/2
+2s + 2 → 2s−1 + 1 → 2s−1 ⇔ 2s + 2 → 2s → 2s−1
+H (C (N)
+min ) = −p0 log2(p0) −p1 log2(p1)
+p0 = N0/N p1 = N1/N
+{0, 1} N1
+b
+{2, 3, 5, 10, 15}
+{2, 3, 6, 12, 15}
+N1 = 6
+N1 = 5
+N = 14
+C (14)
+min {2, (3, 4), 7, 14}
+N1 = 6
+C (14)
+min {2, 4, 8, 12, 14}
+N1 = N/2 = 7
+N ≤ 65
+N ∈ {15, 23, 27, 39, 43, 45, 51, 59, 63, …}
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 19/48
+
+===== PAGE 20 =====
+Table 3. Pathways leading to minASI strings (maximizing the number of independent assembly
+steps—MIA, maximizing the binary Shannon entropy—MBL) for  .
+MIA pathway MBL pathway (N1) s
+2 1 1 1 1
+3 2 2 2 2
+4 2 2 2 2
+5 3 3 3 3
+6 3 3 3 3
+7 3 3 4 4
+8 3 3 3 3
+9 4 4 4 4
+10 4 4 4 4
+11 4 4 5 5
+12 4 4 4 4
+13 4 4 5 5
+14 4 4 5 5
+15 4 5 5 6
+16 4 4 4 4
+17 5 5 5 5
+18 5 5 5 5
+19 5 5 6 6
+20 5 5 5 5
+21 5 5 6 6
+22 5 5 6 6
+23 5 6 6 7
+24 5 5 5 5
+25 5 5 6 6
+26 5 5 6 6
+27 5 6 6 7
+2 ≤ N ≤ 65
+N d
+(N)
+min d(N)
+amin a
+(N)
+min ^a
+(N)
+min
+{2} (1) N
+{2, 3} (1) N
+{2, 4} (2) N
+{2, 4, 5} (2) N
+{2, 4, 6} (3) N
+{2, (3, 4), 7} {2, 4, 6, 7} (3) N
+{2, 4, 8} (4) N
+{2, 4, 8, 9} (4) N
+{2, 4, 8, 10} (5) N
+{2, (3, 4), 7, 11} {2, 4, 8, 10, 11} (5) N
+{2, 3, 6, 12} {2, 4, 8, 12} (6) N
+{2, 4, (5, 8), 13} {2, 4, 8, 12, 13} (6) N
+{2, (3, 4), 7, 14} {2, 4, 8, 12, 14} (7) N
+{2, 3, 5, 10, 15} (6) N
+{2, 4, 8, 16} (8) N
+{2, 4, 8, 16, 17} (8) N
+{2, 4, 8, 16, 18} (9) N
+{2, (3, 4), 8, 11, 19} {2, 4, 8, 10, 18, 19} (9) N
+{2, 3, 5, 10, 20} {2, 4, 8, 16, 20} (10) N
+{2, 4, (5, 8), 16, 21} {2, 4, 8, 16, 20, 21} (10) N
+{2, (3, 4), 7, 11, 22} {2, 4, 8, 16, 20, 22} (11) N
+{2, 3, 5, 10, 20, 23} (9) N
+{2, 4, 8, 12, 24} (12) N
+{2, 4, 8, (9, 16), 25} {2, 4, 8, 16, 24, 25} (12) N
+{2, 4, (5, 8), 13, 26} {2, 4, 8, 16, 24, 26} (13) N
+{2, 3, 6, 12, 24, 27} {2, 4, 5, 9, 18, 27}) (12) N
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 20/48
+
+===== PAGE 21 =====
+28 5 5 6 6
+29 5 6 7 7  
+30 5 6 6 7
+31 5 6 7 8
+32 5 5 5 5
+33 6 6 6 6
+34 6 6 6 6
+35 6 6 7 7
+36 6 6 6 6
+37 6 6 7 7
+38 6 6 7 7
+39 6 6 7 8  
+40 6 6 6 6
+41 6 6 7 7
+42 6 6 7 7
+43 6 7 7 8
+44 6 6 7 7
+45 6 7 7 8
+46 6 7 7 8
+47 6 7 8 9
+48 6 6 6 6
+49 6 7 7 7
+50 6 6 7 7
+51 6 7 7 8
+52 6 6 7 7
+53 6 7 8 8  
+54 6 7 7 8
+55 6 7 8 9  
+56 6 6 7 7
+{2, (3, 4), 7, 14, 28} {2, 4, 8, 16, 24, 28} (14) N
+{2, 4, 8, (9, 10), 20, 29} {2, 4, 8, 16, 24, 28, 29}(14)
+{2, 3, 5, 10, 15, 30} {2, 4, 6, 10, 20, 30} (15) N
+{2, 4, (5, 8), 13, 26, 31} {2, 4, 8, 10, 20, 30, 31} (15) N
+{2, 4, 8, 16, 32} (16) N
+{2, 4, 8, 16, 32, 33} (16) N
+{2, 4, 8, 16, 32, 34} (17) N
+{2, (3, 4), 7, 14, 28, 35} {2, 4, 8, 16, 32, 34, 35} (17) N
+{2, 4, 8, 16, 32, 36} (18) N
+{2, 4, (5, 8), 16, 32, 37} {2, 4, 8, 16, 32, 36, 37} (18) N
+{2, (3, 4), 8, 11, 19, 38} {2, 4, 8, 16, 32, 36, 38} (19) N
+{2, 4, (5, 8), 13, 26, 39} {2, 4, (5, 8), 13, 26, 39} (18)
+{2, 4, 8, 16, 32, 40} {2, 4, 8, 16, 32, 40} (20) N
+{2, 4, 8, (9, 16), 25, 41} {2, 4, 8, 16, 32, 40, 41} (20) N
+{2, (3, 4), 7, 14, 28, 42} {2, 4, 8, 16, 32, 40, 42} (21) N
+{2, 3, 5, 10, 20, 40, 43} (17) N
+{2, (3, 4), 7, 11, 22, 44} {2, 4, 8, 16, 32, 40, 44} (22) N
+{2, 3, 5, 10, 20, 40, 45} {2, 4, 5, 9, 18, 27, 45} (20) N
+{2, 3, 5, 10, 20, 23, 46} {2, 4, 6, 10, 20, 40, 46} (23) N
+{2, (3, 4), 7, 11, 22, 44, 47} {2, 4, 6, 10, 20, 40, 46, 47} (23) N
+{2, 4, 8, 12, 24, 48} (24) N
+{2, 4, 8, 12, 24, 48, 49} (24) N
+{2, 4, 8, (9, 16), 25, 50} {2, 4, 8, 16, 32, 40, 48, 50} (25) N
+{2, 4, 8, 16, 17, 34, 51} (24) N
+{2, 4, (5, 8), 13, 26, 52} {2, 4, 8, 16, 32, 40, 48, 52} (26) N
+{2, 4, (5, 8), 16, 32, 48, 53} {2, 4, 8, 16, 32, 40, 48, 52, 53} (26)
+{2, 3, 6, 12, 24, 27, 54} {2, 4, 6, 12, 24, 48, 54} (27) N
+{2, (3, 4), 7, 11, 22, 44, 55} {2, 4, 8, 16, 18, 36, 54, 55} (27)
+{2, (3, 4), 7, 14, 28, 56} {2, 4, 8, 16, 32, 48, 56} (28) N
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 21/48
+
+===== PAGE 22 =====
+57 6 7 8 8  
+58 6 7 8 8  
+59 6 7 8 9
+60 6 7 7 8
+61 6 8 8 9  
+62 6 7 8 9
+63 6 7 8 10  
+64 6 6 6 6
+65 7 7 7 7
+We demonstrated in this section that minimum complexity AT strings cannot be fully
+derived by any rule-based system. The same is true for the maxASI strings, as we
+shall show in a subsequent section.
+4. Maximum assembly index strings of assembly
+theory
+A seven-bit string is the longest string that can have the maxASI 
+. It contains two clear 3-grams
+(4.1)
+and its length cannot be increased without a repetition of a 2-gram, which keeps the
+ASI at the same level  . This led us to seek a general method to
+construct the longest possible string having the maxASI  , as
+a function of the radix  . We denote the length of this string by  , and we call
+this string a  string. We developed two methods of constructing a string
+ of the form
+(4.2)
+In both methods, we start with an initial balanced string of length  containing 
+clear 3-grams ordered as
+(4.3)
+The 2-grams that can be inserted into the initial string (4.3) can be arranged in a
+ matrix
+{2, (3, 4), 7, 14, 28, 56, 57} {2, 4, 8, 16, 32, 48, 56, 57} (28)
+{2, (3, 4), 7, 14, 28, 29, 58} {2, 4, 8, 16, 32, 48, 56, 58} (29)
+{2, (3, 4), 7, 14, 28, 56, 59} {2, 4, 5, 9, 18, 27, 54, 59} (26) N
+{2, 4, 8, 12, 24, 48, 60} {2, 4, 6, 10, 20, 30, 60} (30) N
+{2, 4, 8, 12, 24, 48, 60, 61} {2, 4, 8, 16, 20, 40, 60, 61} (30)
+{2, (3, 4), 7, 14, 28, 31, 62} {2, 4, 8, 16, 20, 40, 60, 62} (31) N
+{2, (3, 4), 7, 14, 21, 42, 63} {2, 4, 5, 9, 18, 27, 45, 63} (28)
+{2, 4, 8, 16, 32, 64} (32) N
+{2, 4, 8, 16, 32, 64, 65} (32) N
+a(7,2)
+max = N − 1 = 6
+C (7,2)
+(N−1) = [0001110],
+a(8,2)
+max = 8 − 2 = 6
+a(N,b)
+max (C(N−1)) = N − 1
+b N(N−1)
+C(N−1)
+C(N−1)
+C(N−1) = [0001112 …b−2b−1b−1b−1 … 0].
+3b b
+[0001112 …b−2b−1b−1b−1].
+b ×b
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 22/48
+
+===== PAGE 23 =====
+where the crossed-out entries on a diagonal cannot be reused, as they would form
+repetitions in this string. Due to the order of 3-grams in the string (4.3), we can also
+cross out the entries in the first superdiagonal of the matrix (4.4). By construction,
+the starting string (4.3) has length  and contains only  2-
+grams  and  , where  and  .
+In the first step of the first method, we begin by forming a string containing 2-grams
+on the first subdiagonal of the matrix (4.4), starting with 10:
+and we append it to the string (4.3). With this step, we also eliminate the 2-grams on
+the second superdiagonal starting with the 2-gram  , as well as the 2-gram  . In
+the second step, we form a string containing 2-grams on the third superdiagonal
+beginning with the 2-gram  :
+and append it to the string formed so far. With this step, we also remove the 2-gram
+ and the middle part of the second subdiagonal containing
+ . And so on. Finally, we append 0 if  is even. This process is
+illustrated in figure 6 and generates the following  strings:
+3b b + (b − 1) = 2b − 1
+[ll] [m(m + 1)] 0 ≤ l ≤ b−1 0 ≤ m ≤ b−2
+[102132 …b−2b−3b−1b−2], (4.5)
+02 b−11
+03
+[0314 …b−5b−2b−4b−1], (4.6)
+b−20
+{31, 42, … ,b−2b−4} b
+C (N,b)
+(N−1)
+C (3,1)
+(N−1) = [000],
+C (7,2)
+(N−1) = [000111|0],
+C (13,3)
+(N−1) = [000111222|10|20],
+C (21,4)
+(N−1) = [000111222333|102132|03|0],
+C (31,5)
+(N−1) = [000111222333444|10213243|0314|20|40],
+C
+(43,6)
+(N−1) = [000111222333444555|1021324354|031425|0415|2053|0],
+C
+(57,7)
+(N−1) = [000111222333444555666|102132435465|03142536|041526|206
+…
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 23/48
+
+===== PAGE 24 =====
+Figure 6.
+Two-gram matrices for  that illustrate the generation of  strings
+according to a method presented in this section. Coloured 2-grams are
+appended to the initial string of clear 3-grams in the order indicated by arrows
+starting from the first column or row. Finally, 0 is appended at the end if  is
+even.
+We discuss the second method in the electronic supplementary material.
+The longest length of a string that has the ASI of  (a  string) is given by
+(OEIS A353887), where  is the number of occurrences of all but one
+symbol within the string, so this string has odd length and is nearly balanced. To be
+the longest, a  string must contain all 2-grams from the matrix (4.4) and all
+clear 3-grams. A string that contains all -grams is a linear, minimal de Bruijn string
+(e.g.  for  ), which must start and end with the same
+symbol. Its length is given by  , and there are  such
+strings. We consider  and have to add  symbols to turn  clear 2-grams of a
+de Bruijn string into  clear 3-grams, which clearly does not introduce any disjoint
+occurrences [40]. This leads to the formula (4.8). For  , the upper and the lower
+bounds on the ASI are the same,  , and this is the only case where the
+maxASI is not a monotonically non-decreasing function of  . Otherwise, the maxASI
+must rise. If it were to become constant for  , then at some even larger 
+it would inevitably become lower than the minASI bound of theorem 3.1, which also
+rises, and this would be a contradiction.
+1 ≤ b ≤ 16 C(N−1)
+b
+N − 1 C(N−1)
+N(N−1) = 3b + (b − 1)2 = bNc + 1 = b2 +b + 1 (4.8)
+Nc = b + 1
+C(N−1)
+k
+{[00110], [01100], …} b = k = 2
+Nde Bruijn = bk +k − 1 (b!)bk−1
+k = 2 b b
+b
+b = 1
+a(N,1)
+max = a(N)
+min
+N
+N > ^Nmax N
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 24/48
+
+===== PAGE 25 =====
+Subsequently, we considered other strings with the maxASI. A  string
+contains all 2-grams. Hence, inserting any basic symbol into any position inevitably
+leads to a repetition of a 2-gram. Without loss of generality, we append it at the start
+of the  string, obtaining a string  . Another symbol can be
+introduced to this string without an additional 2-gram repetition, for example, as
+another prefix  leading to the repetition of the 2-gram  or  but
+not both of them (here we allow  ). Hence, both the length and the ASI of this
+string increase by one. Finally, 0 can be appended at the start of this string without
+an additional 2-gram repetition, provided that  and  . For  , there are
+only four1 bitstrings containing only two copies of a 2-gram having the ASI
+ :
+where the leftmost one is the only unbalanced string within this set (  ). Each
+10-bit string (4.9) has one clear 4-gram surrounded by the same symbol ( 
+ ) and one clear 3-gram (  ), which can be concatenated ( 
+ ) in eight bits or separated (  ) in nine bits.
+The first three strings (4.9) correspond to the former case, while the last one
+corresponds to the latter. Each of the strings (4.9) contains three pairs of mutually
+exclusive 2-grams, so that only one pair can be reused to decrease the maximum
+ ASI by one.
+We developed two methods of constructing generalized  strings (4.9) for
+ . They have  clear 4-grams (  ), one clear 3-gram and  of
+mutually exclusive 2-grams  overlapped in patterns
+ surrounding a clear 4-gram, so that only one pair from each
+pattern can be reused in  ways to reduce the maxASI to  . The first method
+is based on the balanced  string (4.9)  and generates the
+most balanced  strings. It starts with a string of length  containing all
+ clear 4-grams in the form
+to which the missing  symbols are appended using the patterns shown in
+figure 7, yielding the  strings of the form
+C(N−1)
+C(N−1) [∗000111 …]
+[⋆ ∗ 000111 …] ⋆∗ ∗0
+⋆ = ∗
+⋆ = 1 ∗ = 0 b = 2
+a(10,2)
+max = 8
+[01 ∣ 0000 ∣ 1110], [1 ∣ 0000 ∣ 11101], [101 ∣ 0000 ∣ 111], [1 ∣ 0000 ∣
+N0 ≠ N1
+[… 1|0000|1 …] [… 111 …]
+[… 1|0000|111 …] [… 1|0000|1 … 111 …]
+N − 1
+C(N−b)
+b > 2 b − 1 clclclcl (b − 1) × 3
+{ckcl,clcl,clcm}
+[…ck|clclclcl|ck …]
+3b−1 N −b
+C(N−2) [101|0000|111]
+C(N−b) 6b − 2
+b − 1
+[b−101 ∣ 0000 ∣ 12 ∣ 1111 ∣ 2 …b−1 ∣ b−2b−2b−2 ∣ b−1b−1b−1] (4.10)
+b2 − 2b
+C(N−b)
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 25/48
+
+===== PAGE 26 =====
+Figure 7.
+Two-gram matrices for  that illustrate the generation of the most
+balanced  strings (4.10). Coloured 2-grams are appended to the initial
+string of clear 4-grams in the order indicated by colours.
+We discuss the second method, generating non-balanced  strings, in the
+electronic supplementary material.
+The mutually exclusive 2-grams of any  string comprise  adjoining clear
+2-grams on the diagonal of the 2-grams matrix (4.4) and  2-grams on its sub-
+and superdiagonals, as shown in figure 7. Thus, because each clear 4-gram is
+surrounded by the same symbol, only one pair from each pattern can be reused. In
+particular,  strings can have a form (4.11) (see also the electronic
+supplementary material) with all clear 4-grams separated by 2-grams and forming 7-
+gram patterns in the form  . However, this is not necessary. For
+example, the string  does not follow this
+rule. The  strings are not the maximum length maxASI strings that have the
+property of maxASI incremented by one with every three symbols. For example, the
+string (4.11) for  can be suffixed with  , yielding a string with  ,
+which still is not the maxASI string with this property for  (cf. table 4).
+Table 4. Exemplary maxASI strings for  and  .
+13 [0002220111210] 12
+1 ≤ b ≤ 9
+C(N−b)
+C (3,1)
+(N−1) = [000],
+C (10,2)
+(N−2) = [101|0000|111],
+C (19,3)
+(N−3) = [201|0000|12|1111|222|102],
+C (30,4)
+(N−4) = [301|0000|12|1111|23|2222|333|103|202|13],
+C
+(43,5)
+(N−5) = [401|0000|12|1111|23|2222|34|3333|444|104|3031 3202|14
+C
+(58,6)
+(N−6) = [501|0000|12|1111|23|2222|34|3333|45|4444|555|105|4041
+⋯
+C
+(b2+4b−2,b)
+(N−b) = [b − 1 01|0000|1 …b − 1|b − 2b − 2b − 2|b − 1b − 1b −
+…
+C(N−b)
+C(N−b) b − 1
+2(b − 1)
+C(N−b)
+[…clckclclclclck …]
+C(N−3) = [1|0000|102|1111|21|222|01]
+C(N−b)
+b = 3 202 a(22,3) = 18
+b = 3
+b = 3 13 ≤ N ≤ 54
+N C (N,3)
+max a(N,3)
+max
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 26/48
+
+===== PAGE 27 =====
+14 [00022201112101] 12
+15 [000222011121012] 13
+16 [0002220111210120] 14
+17 [20011121002201021] 14
+18 [222111210100001202] 15
+19 [0221110100122200021] 16
+20 [02211101001222000211] 16
+21 [022111010012220002112] 17
+22 [0221110100122200002021] 18
+23 [02211101001222000211201] 18
+24 [101212200022210211100120] 19
+25 [0222212112002010001111021] 20
+26 [02222121120020100011110210] 20
+27 [012221211200201000111102202] 21
+28 [2120011120110222201000201210] 21
+29 [01222121120020100011110220210] 22
+30 [012221211200201000111102202102] 22
+31 [0122212112002010001111002202102] 23
+32 [01222121120020100011110220210200] 23
+33 [012221211200201000001111022021020] 24
+34 [0122212112002010001111022021020010] 24
+35 [01222121120020100011110220210200000] 24
+36 [012221211200201000111102202102000202] 25
+37 [0122212112002010001111022020111212021] 25
+38 [01222121120020100011110220210202000010] 26
+39 [012221211200201000111102202102020002210] 26
+40 [0122212112002010001111022021020010110000] 27
+41 [01222121120020100011110220210200101100002] 27
+42 [012221211200201000111102202102001011000002] 28
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 27/48
+
+===== PAGE 28 =====
+43 [0122212112002010001111022021020010110000222] 28
+44 [01222121120020100011110220210200101100000211] 28
+45 [012221211200201000111102202102001010211100002] 29
+46 [2111020110222211012201112212121010020000001202] 29
+47 [21110201102222110122011122121210100120210021200] 29
+48 [211102011022221101220111221212101002000000120210] 30
+49 [2111020110222211012201112212121010020000001202102] 30
+50 [21110201102222110122011122121210100200000012021021] 31
+51 [211102011022221101220111221212101002000000120211210] 31
+52 [2111020110222211012201112212121010020000001202112012] 32
+53 [21110201102222110122011122121210100200000012021120102] 32
+54 [211102011022221101220111221212101002000000120211200220] 33
+5. Results common to the minimum and maximum
+complexity strings
+The minASI and maxASI bounds are illustrated in figure 8 for  . For each
+ , maxASI initially equals  up to the first threshold (4.8). Then it flattens and
+decreases by one every 3 symbols: once for  and  times for  , as we
+conjecture based on the results for  .
+b = {2, 3, 4}
+b N − 1
+b = 2 2b b > 2
+b = 3
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 28/48
+
+===== PAGE 29 =====
+Figure 8.
+The minimum ASI (red;  , red, dash-dot) and the maximum ASI (green) for
+ .
+The ASI of a string is also related to the EWT of this string. The EWT is the expected
+number of trials until a specific string appears in a sequence of independent and
+identically distributed random variables taking values in a finite set of 
+equiprobable outcomes, called a uniform categorical distribution. The general
+formula for the EWT of a string, which can be determined using Markov chains, is
+[41]
+(5.1)
+where  is an indicator function that is 1 if the prefix of length  is also the suffix of
+the string  and 0 otherwise. Thus, the EWT is bounded from below and from
+above as
+(5.2)
+The upper EWT bound (5.2) is attained by clear strings, that is, also by the minASI
+strings, in which case  and the formula (5.1) simplifies to a geometric
+series  , which resolves to the upper EWT bound (5.2). The
+minASI strings containing two or three symbols do not satisfy this relation and hence
+have shorter EWTs. For example, the minASI alternating strings have the EWT given
+log2(N)
+b ∈ {2, 3, 4, 5}
+b > 1
+E [C (N,b)
+l ] =
+N
+∑
+k=1
+bk ⋅ Ik,
+Ik k
+C
+(N,b)
+l
+bN ≤ E [C
+(N,b)
+l ] ≤ b
+b − 1 (bN − 1).
+Ik = 1, ∀k
+E [C (N,b)
+l ] = ∑N
+k=1bk
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 29/48
+
+===== PAGE 30 =====
+by  if  is even and  if  is
+odd, that is,  given by 
+(OEIS A026644). The non-alternating minASI bitstrings can have the EWT even
+closer to the lower bound (5.2). For example,  (cf.
+figure 3d) lies firmly at the lower end of the spectrum, being positioned just 
+of the way through the total range. The lower EWT bound (5.2) is attained by the
+strings having no prefixes matching suffixes; in which case, for  , the whole
+string matches itself. The maxASI strings feature the EWT values equal to or close to
+this bound.
+Applying AT to evolutionary biology, the inverse proportionality between the EWT of
+a string and its ASI is anticipated, but also feels counterintuitive, as common sense
+would suggest that strings of low complexity should be provided earlier than more
+complex ones.
+We found a correlation between the maxASI and the decimal representation of a
+string, providing an intuitive geometric interpretation of the complexity landscape.
+For example, figure 9 shows the ASI of all bitstrings of even lengths
+ distributed in squares of sides equal to  , starting from
+the top-left corner (  ) and ending at the bottom-right corner ( 
+ ). The decimal value of each pixel is given by  ,
+where  are the row and column indices. The low ASI strings
+naturally occur on diagonals and oblique lines because of the internal symmetries
+they exhibit. For example, minASI strings naturally occur on the main diagonal, as
+ for  corresponds to a bitstring containing a prefix of length 
+equal to its suffix. Thus, the EWT (5.1) of a main diagonal bitstring  is bounded
+from below by  , and its ASI, taking into account the relation
+(2.1), is bounded by
+E [C (N,b)
+l ] = ∑N/2
+m=1b2m N E [C (N,b)
+l ] = ∑⌈N/2⌉
+m=1 b2m−1 N
+E[C (N,b)
+k ] ∈ {2, 4, 10, 20, 42, 84, …} {×2, ×2 + 2, ×2, …}
+E[010010100101001] = 33828
+3.24%
+k = N
+N ∈ {8, 10, 12, 14, 16} 2N/2
+val2[00 …] = 0
+val2[11 …] = 2N − 1 r2N/2 +c
+0 ≤ r,c ≤ 2N/2 − 1
+r(2N/2 + 1) r = c N/2
+Cd
+E [C
+(N,2)
+d ] ≥ 2N + 2N/2
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 30/48
+
+===== PAGE 31 =====
+Figure 9.
+The ASI of all bitstrings of lengths  (a),  (b),  (c),  (d)
+and  (e), as a function of their decimal representations, in squares with
+sides equal to  . Red dots indicate maxASI strings.
+(5.3)
+For example, for  , the ASI of all main diagonal strings  satisfy
+ , and they include the four minASI strings 
+corresponding to equidistributed decimals 0, 85, 170 and 255. For  , the
+depleted 16 maxASI strings correspond to {94, 122, 270, 286, 376, 450, 482, 488,
+535, 541, 573, 647, 737, 753, 901, 929} decimal values. For  , the 10 minASI
+strings  are equidistributed on
+the main square diagonal every 585 and every 1365. Finally, for  , the small
+ASI strings are aligned on diagonals and skewed lines with the four minASI strings
+again equidistributed on the main square diagonal, while the 506 maxASI strings
+tend to attain row-like and column-like arrangements.
+6. Assembly index compression versus polynomial-
+time compression algorithms
+Calculating the ASI of a string can be contrasted with compression algorithms that
+run in polynomial time, such as basic dictionary-based (LZ-type) schemes [42–44] or
+grammar-based algorithms, such as Re-Pair. Indeed, Turing’s universality and
+algorithmic complexity show that any computable transformation, including the ASI,
+can be simulated symbolically with no loss of information [42]. This naturally raised
+N = 8 N = 10 N = 12 N = 14
+N = 16
+√2N
+a(N,2)
+min ≤ a(N,2)(Cd) ≤ N − 1 − 2(N/2 − 1) +a(N/2,2)
+max = a(N/2,2)
+max + 1.
+N = 8 Cd
+3 ≤ a(8,2)(Cd) ≤ 4 {[00 …], [01 …]} × 2
+N = 10
+N = 12
+{[00 …], [001 …], [010 …], [01 …], [011 …]} × 2
+N = 16
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 31/48
+
+===== PAGE 32 =====
+doubts regarding the trivial computability of the ASI and its potential equivalence to
+popular lossless compression algorithms.
+Yet these doubts proved moot. As the length of a string increases, computing the
+ASI becomes a hyper-exponentially hard, exhaustive process over all possible
+combinations and repeated substrings due to the enormous combinatorial space of
+possible assembly plans and the need to globally evaluate which fragments are
+most efficient to create early versus later; such a pathway minimization cannot be
+resolved entirely through local heuristics; there is no local strategy of finding optimal
+substrings in AT. This problem is widely known in AT literature (see [13,45–47]). It
+was conjectured [11] that the ASI problem is NP-complete. A certificate-dependent
+(assembly-step) proof of this conjecture within predefined assembly plans [12,46]
+was found [47] by providing a Karp reduction from the vertex cover problem. A
+complete, self-contained proof of NP-completeness of the ASI problem for both
+decision and optimization variants was found [48] by establishing a correspondence
+between assembly plans and straight-line grammars. Since, for each ASI, there
+exists a naive algorithm (exhaustive search of all the assembly plans), the ASI is
+computable for all finite objects [7]. Thus, one can say that determining ASI is
+computable and algorithmically trivial. But it is also computationally non-trivial
+because the assembly tree grows exponentially with  . One can see this non-
+triviality by noting that integrating machine-learning-driven methods does not
+improve ASI computation, even for moderately sized molecules [49]. Interestingly,
+human intuition can often identify structural patterns or regularities [11], enabling
+rapid non-algorithmic qualitative estimation of the ASI that remains inaccessible to
+sequential algorithms.
+The computational non-triviality of the ASI raised a second question: whether a
+worse and slower algorithm [42] (such as NP-complete ASI exhaustive search) merits
+consideration if it provides the same explanatory power as known algorithms.
+However, the answer to this question is again negative, as we illustrate with the
+following simple examples. Without loss of generality, we compare:
+i. the ASI calculation;
+ii. a constrained ASI calculation version that prohibits the assembly of a 2-gram 
+in an assembly plan;
+iii. the grammar-based Re-Pair method, which counts all 2-grams in a string, selects
+the most frequent 2-gram that occurs at least twice, replaces all its occurrences
+with a new symbol and repeats these steps until no 2-gram occurs more than
+once, while forming a codeword containing the respective symbols; and
+N
+[10]
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 32/48
+
+===== PAGE 33 =====
+iv. the dictionary-based LZW method, which searches for a first prefix of a string
+that does not exist in the dictionary (initially containing single symbols), adds this
+first prefix as a new dictionary entry and adds this first prefix without its last
+symbol to the codeword, and repeats this search in a string, starting from the last
+symbol of this prefix until the string is exhausted,
+for all 2024 bitstrings of length  .
+To compare the ASI calculation with another compression algorithm, we can only
+compare the ASI with the number of steps achievable in the assembly plan
+generated by this algorithm. The distributions of steps illustrated in figure 10 (and
+elaborated in table 1 for two exemplary strings) show that ASI compression is
+superior to that provided by the Re-Pair or LZW algorithms. Furthermore, figure 10
+shows that if additional constraints are imposed on the ASI calculation, then it may
+yield the same, or even worse, results as compared to known compression
+algorithms, given the large number of the latter.
+N = 10
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 33/48
+
+===== PAGE 34 =====
+Figure 10.
+The ASI (a), constrained ASI (b), Re-Pair steps (c) and LZW steps (d) of all
+bitstrings of length  , as a function of their decimal representations ( 
+ ), in squares with sides equal to  pixels. Visible lack of perfect
+correlation between these compressions: the number of Re-Pair steps is higher
+than ASI for 100 strings (e.g. 7 = Re-Pair(34) > ASI(34) = 5 and 8 = Re-Pair(928) >
+ASI(928) = 7, respectively, for  and  ). Also visible is
+lack of horizontal symmetry for constrained ASI (e.g.
+ if 2-gram  is
+excluded from the assembly plans).
+We encourage the reader to conduct an independent comparison of the ASI (e.g. for
+the maxASI strings provided in tables 4–7) with the results produced by well-known
+compression algorithms.
+Table 5. Exemplary maxASI bitstrings for  .
+10 [1010000111] 8 25 [0000000101010110011111110] 15
+11 [00010111100] 8 26 [01001100000111111101010110] 16
+12 [101010000111] 9 27 [000000011111110101011001000] 16
+13 [1000001110101] 9 28 [0110101011111110000000110010] 17
+N = 10
+{0, 1, … , 1023} 32
+[0000100010] [1110100000]
+7 = a(10,2)
+cons ([0001011111] ≠ a(10,2)
+cons ([1110100000]) = 8 [10]
+10 ≤ N ≤ 39
+N C (N,2)
+max a(N,2)
+max N C (N,2)
+max a(N,2
+max
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 34/48
+
+===== PAGE 35 =====
+14 [10011000010111] 10 29 [01100000001010100111011111110] 17
+15 [000001010111110] 10 30 [100100000000110010101101111111] 17
+16 [1001100001010111] 11 31 [0101010010000000111111101101100] 18
+17 [00000010101111110] 11 32 [01001100000000101011011111111001] 18
+18 [100110100001010111] 12 33 [100000000010011111111011101101010] 18
+19 [0111110110000010100] 12 34 [1000000000100111111110111011010101] 18
+20 [10011010000101011111] 13 35 [10101000000010110010011111110001101] 19
+21 [000000010101100111110] 13 36 [101010000000101100100111111100011101] 19
+22 [0010111111101001100000] 14 37 [1011010101000000010010001111111001101] 19
+23 [00000001010101100111110] 14 38 [10111010101000000010010001111111001101] 20
+24 [011001111111010100000001] 15 39 [111001100100011010000001010101101101111] 20
+Table 6. Exemplary maxASI bitstrings for  .
+40 [0011001011111110101000000011011000101101] 20
+41 [00000111111001110101001011011011000100110] 21
+42 [001101111110101010110000000111100100100101] 21
+43 [0111100111110110010100000011100011000101101] 21
+44 [11101010101011111100100100011000000010110110] 22
+45 [111010101010111111001001000110000000111011010] 22
+46 [0111100111111010001110000000110010010101001101] 22
+47 [01111001111110100011100000001100100101010110110] 23
+48 [011110011111101000111000000011001001010101101100] 23
+49 [0111100111111010001110000000110010010101011011000] 23
+50 [10100111111100010001111010000001011011000011100110] 23
+51 [101001111111000100011110100000010110110010011010101] 24
+52 [1010011111110001000111101000000101101100100110001101] 24
+53 [10100111111100010001111010000001011011001001001101010] 24
+54 [101001111111000100011110100000010110110010011101111101] 24
+40 ≤ N ≤ 85
+N C (N,2)
+max a(N
+ma
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 35/48
+
+===== PAGE 36 =====
+55 [1010011111110001000111101000000101101100100110001110101] 25
+56 [10100111111100010001111010000001011011001001110111010101] 25
+57 [101001111111000100011110100000010110110010010011010101010] 25
+58 [1010011111110001000111101000000101101100100100110101011000] 26
+59 [10100111111100010001111010000001011011001001001101010110000] 26
+60 [101010111011110011111110100100001100100010001001010110000000] 26
+61 [1010101110111100111111101001000011001000100011011010000000001] 27
+62 [10101011101111001111111010010000110010001000100101100000001101] 27
+63 [101010111011110011111110100100001100100010001001010110110000000] 27
+64 [1010101110111100111111101001000011001000100010010101101100000001] 27
+65 [10101011101111001111111010010000110010001000100101011011000000001] 28
+66 [101010111011110011111110100100001100100010001001010110110000000011] 28
+67 [1010101010110010001111101101111100010000001100110011100110100100101] 28
+68 [10101010101100100011111011011111000100000011001100111001101001010001] 28
+69 [011010101011001010010010111001100000001111111011001001110111111010001] 29
+70 [1010101010110010001111101101111100010000001100110011100111000101001001] 29
+71 [10101010101100100011111011011111000100000011001100111001110100100101001] 29
+72 [101010101011001000111110110111110001000000110011001110010011101001100010] 29
+73 [1010101010110010001111101101111100010000001100110011100100111010010110001] 30
+74 [10101010101100100011111011011111000100000011001100111001001110101100010100] 30
+75 [101010101011001000111110110111110001000000110011001110011100010100100000001] 30
+76 [0110101010110010100100101110011000000011111110110010011100000100011000010111] 31
+77 [01101010101100101001001011100110000000111111101100100111000001000110000101111] 31
+78 [101010101011001000111110110111110001000000110011001110011100010100100000000001] 31
+79 [1001011101101011111110100110110010011101010110100101000110011110111100000001011] 31
+80 [10010111011010111111101001101100100111010101101001010001100111101111000000010101] 32
+81 [100101110110101111111010011011001001110101011010010100011001111011110000000101010] 32
+82 [1001011101101011111110100110110010011101010110100101000110011110111100000001010111] 32
+83 [10010111011010111111101001101100100111010101101001010001100111101111110100000000111] 32
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 36/48
+
+===== PAGE 37 =====
+84 [100101110110101111111010011011001001110101011010010100011001111011110000000101011100] 33
+85 [1001011101101011111110100110110010011101010110100101000110011110111100000001010111000] 33
+Table 7. Exemplary maxASI strings for  and  .
+21 [000111222333102132030] 20
+22 [0001112223331021320302] 20
+23 [00011122233310213203012] 21
+24 [010000111222333102132030] 22
+25 [0100001112223331021320302] 22
+26 [01000011122233310213203023] 23
+27 [010000111222333102132030221] 24
+28 [0001102013331121301222230323] 24
+29 [00011320133311121022232302030] 25
+30 [301000012111123222233310320213] 26
+31 [3010000121111232222333103202130] 26
+32 [30100001211112322223331032021303] 27
+33 [301000012111123222233310320200213] 28
+34 [3010000121111232222333203102133130] 28
+35 [30100001211112322223332031021331300] 29
+36 [301000012111123222233320310213313110] 30
+37 [3010000121111232222333203102133131101] 30
+38 [30100001211112322223332031021331311011] 31
+39 [301000012111123222233320310213313110221] 32
+40 [3010000121111232222333203102133131102210] 32
+41 [30100001211112322223332031021331311022101] 33
+42 [301000012111123222233320310213313110322011] 33
+43 [3010000121111232222333203102133131102210103] 34
+44 [30100001211112322223332031021331311022101030] 34
+b = 4 21 ≤ N ≤ 49
+N C (N,4)
+max a(N,4)
+max
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 37/48
+
+===== PAGE 38 =====
+45 [301000012111123222233320310213313110221201300] 35
+46 [3010000121111232222333203102133131102212013002] 36
+47 [30100001211112322223332031021331311022120130023] 36
+48 [301000012111123222233320310213313110221201300230] 37
+49 [3010000121111232222333203102133131102212013002303] 37
+7. Discussion
+The present study provides a general mathematical framework for the general AT
+string version and demonstrates how this formalization enables efficient
+computation of ASIs across various diverse structural sequences. Clarifying the
+theory’s conceptual structure provides suggestions for its computational
+implementation. This allowed us to formalize bounding and pruning processes (an
+approach also proposed in [13,45]) and to develop software capable of effectively
+computing the ASI of a string, significantly reducing the number of potential
+configurations to explore. This, in turn, allowed us to find the exemplary maxASI
+strings (cf. tables 4–7) and determine the maxASI bounds shown in figure 8,
+overcoming important limitations exhibited by all the other known implementations
+of the algorithms to compute the ASI of big objects [50].
+Fortunately, the non-triviality of computing the ASI does not close the field but rather
+delineates a structured landscape for algorithmic exploration. The framework
+developed here is equally applicable to symbolic representations of various real-
+world patterns within the context of AT, such as detecting biosignatures [6],
+describing the evolution of music [51], and, as we conjecture, natural language
+processing (artificial intelligence-generated text detection, authorship style analysis,
+plagiarism detection), time series analysis, financial data changes (distinction
+between random and predictable behaviour), sensor data anomaly analysis, medical
+signal analysis, etc.
+Furthermore, AT offers a unifying language for describing how information becomes
+structured. It can do so by showing how biological sequences are governed by
+foundational mathematical principles, for instance, for understanding the rules
+underlying the assembly of macromolecules such as proteins and DNA. Evolutionary
+biology explains the survival and prevalence of certain traits, but it does not address
+the mechanisms for generating novel phenotypic variants. We have shown, for
+example, that a DNA strand of length  containing four nucleobases cannot
+represent a minASI string without violating Chargaff’s rules and theorem 3.2.
+N
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 38/48
+
+===== PAGE 39 =====
+Theorem 3.2 establishes that a minASI string can contain at most three distinct
+symbols (if  , as otherwise it can contain at most two), while the first
+Chargaff’s rule (for double-stranded DNA) states that four nucleobases A, T, G and C
+should be pairwise balanced. On the other hand, biological systems tend to deviate
+from the equilibrium of maximum entropy [11,52] corresponding to balanced strings,
+For  , the information entropy (3.15) vanishes, as the bit (  ) is the smallest
+amount and the quantum of information. Yet AT explains the assembly of such
+minASI strings, extending beyond the minimal two-valued system necessary to
+convey any information. Traditional physics, while offering predictive power from
+past initial conditions to future states, lacks a functional perspective necessary to
+differentiate meaningful novelty from random fluctuations [53]. Our results clarify
+that AT is a formal system for describing the generative and causal structure of
+objects, positioning it as a theoretical extension of information theory, emphasizing
+not the description of information, but the effort required to construct it. Indeed, the
+better the compression, the more likely a model or theory is to capture a natural
+phenomenon, and the more accurately it may predict its behaviour [42].
+Glossary
+The following abbreviations are used in this paper:
+AT assembly theory
+N length of a string
+b number of basic symbols 
+a string (vertex)
+source vertices (base symbols)
+assembled strings (2-in-regular assembly step vertices)
+directed edges from strings  to  and  to  (possibly 
+assembly space
+assembly plan of a string 
+assembly index of a string  (minASI—minimum, maxASI—maximum
+assembly depth of a string  (minASD—minimum, minASI ASD—ASD
+DPI depth index (OEIS A014701)
+expected waiting time of a string 
+N ≠ 2s
+b = 1 b = 2
+c ∈ {0, 1, … ,b − 1}
+Cs,C (N,b)
+s ∈ C
+B :=C ∖ {C
+(N,b)
+k ∈ C : N ≠ 1}
+S :=C ∖ {C (N,b)
+k ∈ C : N = 1}
+e = (Cx,Cz), e′ = (Cy,Cz) ∈ E Cx Cz Cy Cz Cx = C
+Ω = (C,E)
+ΩCs Cs
+ASI,  a(N,b)(Cs) Cs
+ASD,  d(Nk,b)
+s (Cs) Cs
+EWT,  E[C (N,b)
+s ] Cs
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 39/48
+
+===== PAGE 40 =====
+The following OEIS sequences are referenced in this paper:
+A003313 length of the shortest addition chain for n (minASI)
+A014701 number of multiplications to compute nth power by the Chandah-sutr
+A026644 number of moves to solve the Chinese rings puzzle
+A048645 integers with one or two 1-bits in their binary expansion
+A173786 triangle read by rows: 
+Ethics
+This work did not require ethical approval from a human subject or animal welfare
+committee.
+Data accessibility
+Data and relevant code for this research work are stored in GitHub [54] and have
+been archived within the Zenodo repository [55].
+Supplementary material is available online [56].
+Declaration of AI use
+We have not used AI-assisted technologies in creating this article.
+Authors’ contributions
+W.B.: conceptualization, data curation, formal analysis, investigation, methodology;
+P.M.: conceptualization, formal analysis, investigation, methodology; A.T.: formal
+analysis, investigation, methodology, validation; S. Ł .: conceptualization, data
+curation, formal analysis, funding acquisition, investigation, methodology, project
+administration, resources, software, supervision, validation, visualization, writing—
+original draft, writing—review and editing; S.T.: conceptualization, investigation,
+software, visualization.
+All authors gave final approval for publication and agreed to be held accountable for
+the work performed therein.
+Conflict of interest declaration
+We declare we have no competing interests.
+T (n,k) = 2n + 2k, 0 ≤ k ≤ n
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 40/48
+
+===== PAGE 41 =====
+1 Sixteen if we relax the definition (2.5) (cf. figure 7b).
+Funding
+No funding has been received for this article.
+Supplement
+Supplementary material is available online at
+https://doi.org/10.6084/m9.figshare.c.8490332.
+Acknowledgements
+The authors thank Mariola Bala for her motivation, Rafa ł  Bobrowski for assessing the
+time required to calculate a maxASI of a string as a function of its length, Robert
+Dobosz for providing valuable hints on earlier research, Rafa ł  Winiarski for noting
+that the relation (2.1) is an inequality, an anonymous referee for pointing out the
+coincidence of the DPI with [log2(N)] + N1 −  2, shown in figure 1 and S. Ł .’s daughter
+Anna for her insight in finding the pattern of strings (equation (4.11)). We
+acknowledge Polish high-performance computing infrastructure PLGrid for awarding
+this project access to the LUMI supercomputer, owned by the EuroHPC Joint
+Undertaking, hosted by CSC (Finland) and the LUMI consortium through the
+pllatsl02 (19070) grant.
+Notes
+References
+1.  Wootters WK, Zurek WH. 1982 A single quantum cannot be cloned. Nature
+299, 802–803. ( doi:10.1038/299802a0)
+Google Scholar Crossref  Web of Science  
+2.  Marshall SM, Murray ARG, Cronin L. 2017 A probabilistic framework for
+identifying biosignatures using pathway complexity. Phil. Trans. R. Soc. A 375,
+20160342. ( doi:10.1098/rsta.2016.0342)
+Google Scholar Crossref  Web of Science  
+3.  Walker SI, Cronin L, Drew A, Domagal-Goldman S, Fisher T, Line M. 2019
+Probabilistic biosignature frameworks. In Planetary astrobiology (eds Meadows
+V, Arney G, Schmidt B, Marais DJ). Tucson, AZ: University of Arizona Press. ( doi:1
+0.2458/azu_uapress_9780816540068-ch018)
+Google Scholar  
+4.  Meadows VS, Arney GN, Schmidt BE, Marais DJ. 2020 Planetary
+astrobiology. Tucson, AZ: University of Arizona Press; Lunar and Planetary
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 41/48
+
+===== PAGE 42 =====
+Institute.
+Google Scholar  
+5.  Liu Y, Mathis C, Bajczyk MD, Marshall SM, Wilbraham L, Cronin L. 2021
+Exploring and mapping chemical space with molecular assembly trees. Sci. Adv.
+7, eabj2465. ( doi:10.1126/sciadv.abj2465)
+Google Scholar Crossref  PubMed Web of Science  
+6.  Marshall SMet al. 2021 Identifying molecules as biosignatures with assembly
+theory and mass spectrometry. Nat. Commun. 12, 3033. ( doi:10.1038/s41467-021-
+23258-x)
+Google Scholar Crossref  PubMed Web of Science  
+7.  Marshall SM, Moore DG, Murray ARG, Walker SI, Cronin L. 2022 Formalising
+the pathways to life using assembly spaces. Entropy 24, 1099–4300. ( 10.3390/e
+24070884)
+Google Scholar Crossref  PubMed Web of Science  
+8.  Sharma A, Czégel D, Lachmann M, Kempes CP, Walker SI, Cronin L. 2023
+Assembly theory explains and quantifies selection and evolution. Nature 622,
+321–328. ( doi:10.1038/s41586-023-06600-9)
+Google Scholar Crossref  PubMed Web of Science  
+9.  Jirasek Met al. 2024 Investigating and quantifying molecular complexity
+using assembly theory and spectroscopy. ACS Cent. Sci. 10, 1054–1064. ( doi:10.1
+021/acscentsci.4c00120)
+Google Scholar Crossref  PubMed Web of Science  
+10.  Raubitzek S, Schatten A, König P, Marica E, Eresheim S, Mallinger K. 2024
+Autocatalytic sets and assembly theory: a toy model perspective. Entropy 26,
+808. ( doi:10.3390/e26090808)
+Google Scholar Crossref  PubMed Web of Science  
+11.  Ł ukaszyk S, Bieniawski W. 2024 Assembly theory of binary messages.
+Mathematics 12, 1600. ( doi:10.3390/math12101600)
+Google Scholar Crossref  Web of Science  
+12.  Ł ukaszyk S. 2025 On the ‘Assembly Theory and its Relationship with
+Computational Complexity’. IPI Letters 3, 1–6. ( doi:10.59973/ipil.157)
+Google Scholar  
+13.  Patarroyo KY, Sharma A, Seet I, Packmore I, Walker SI, Cronin L. 2025
+Quantifying the complexity of materials with assembly theory. ( https://arxiv.org/a
+bs/2502.09750)
+Google Scholar  
+14.  Ziv J, Lempel A. 1978 Compression of individual sequences via variable-rate
+coding. IEEE Trans. Inf. Theory 24, 530–536. ( doi:10.1109/tit.1978.1055934)
+Google Scholar Crossref  Web of Science  
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 42/48
+
+===== PAGE 43 =====
+15.  Storer JA, Szymanski TG. 1982 Data compression via textual substitution. J.
+ACM 29, 928–951. ( doi:10.1145/322344.322346)
+Google Scholar Crossref  Web of Science  
+16.  Welch. 1984 Technique for high-performance data compression. Computer
+17, 8–19. ( doi:10.1109/MC.1984.1659158)
+Web of Science  
+17.  Charikar M, Lehman E, Liu D, Panigrahy R, Prabhakaran M, Sahai A, Shelat A.
+2005 The smallest grammar problem. IEEE Trans. Inf. Theory 51, 2554–2576. ( d
+oi:10.1109/TIT.2005.850116)
+Google Scholar Crossref  Web of Science  
+18.  Kieffer JC, En-Hui Y. 2000 Grammar-based codes: a new class of universal
+lossless source codes. IEEE Trans. Inf. Theory 46, 737–754. ( doi:10.1109/18.84116
+0)
+Google Scholar Crossref  Web of Science  
+19.  Kieffer J, En-hui Y, Park T, Yakowitz S. 1998 Complexity of preprocessor in
+MPM data compression system. In Proc. DCC ’98 Data Compression Conf.,
+Snowbird, UT, USA, 30 March–1 April 1998, p. 554. ( doi:10.1109/DCC.1998.67229
+2)
+20.  Lehman E. 2002 Algorithms for grammar-based data compression. PhD
+thesis, Massachusetts Institute of Technology (MIT), Cambridge, MA, USA. http
+s://api.semanticscholar.org/CorpusID:11252484.
+Google Scholar  
+21.  Nevill-Manning CG, Witten IH. 1997 Compression and explanation using
+hierarchical grammars. Comput. J. 40, 103–116. ( doi:10.1093/comjnl/40.2_and_3.1
+03)
+Google Scholar Crossref  Web of Science  
+22.  Kieffer J, En-Hui Yang GN, Cosman P. 2000 Universal lossless compression
+via multilevel pattern matching. IEEE Trans. Inf. Theory 46, 1227–1245. ( doi:10.110
+9/18.850665)
+Google Scholar Crossref  Web of Science  
+23.  Kieffer J, Flajolet P. 2011 Universal lossless data compression via binary
+decision diagrams. ( https://arxiv.org/abs/1111.1432)
+Google Scholar  
+24.  Nevill-Manning CG. 1997 Compression and explanation using hierarchical
+grammars. Comput. J. 40, 103–116. ( doi:10.1093/comjnl/40.2_and_3.103)
+Google Scholar Crossref   
+25.  Larsson N. 1999 Offline dictionary-based compression. In Proc. DCC ’99
+Data Compression Conf., Snowbird, UT, USA, 29–31 March 1999, pp. 296–305.
+( doi:10.1109/DCC.1999.755679)
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 43/48
+
+===== PAGE 44 =====
+26.  Larsson NJ, Moffat A. 2000 Off-line dictionary-based compression. Proc.
+IEEE 88, 1722–1732. ( doi:10.1109/5.892708)
+Google Scholar Crossref  Web of Science  
+27.  Nevill-Manning CG. 1999 Compression and explanation using hierarchical
+grammars. Comput. J. 40, 103–116. ( doi:10.1093/comjnl/40.2_and_3.103)
+Google Scholar Crossref   
+28.  Nevill-Manning CG, Witten IH. 1997 Identifying hierarchical structure in
+sequences: a linear-time algorithm. J. Artif. Intell. Res. 7, 67–82. ( doi:10.1613/jair.3
+74)
+Google Scholar Crossref  Web of Science  
+29.  Apostolico A, Lonardi S. 2000 Off-line compression by greedy textual
+substitution. Proc. IEEE 88, 1733–1744. ( doi:10.1109/5.892709)
+Google Scholar Crossref  Web of Science  
+30.  Apostolico A, Lonardi S. 2000 Compression of biological sequences by
+greedy off-line textual substitution. In Proc. DCC 2000: Data Compression Conf.,
+Snowbird, UT, USA, 28–30 March 2000, pp. 143–152. ( doi:10.1109/DCC.2000.83
+8154)
+31.  Sakamoto H, Maruyama S, Kida T, Shimozono S. 2009 A space-saving
+approximation algorithm for grammar-based compression. IEICE Trans. Inf. Syst.
+E92-D, 158–165. ( doi:10.1587/transinf.E92.D.158)
+Google Scholar Crossref  Web of Science  
+32.  Takabatake Y, I T, Sakamoto H. 2017 Space-optimal grammar compression.
+Leibniz Int. Proc. Inform. 87, 1–67. ( doi:10.4230/LIPICS.ESA.2017.67)
+Google Scholar  
+33.  Pagel S, Sharma A, Cronin L. 2024 Evolution of molecules across
+biochemistry with assembly theory. ( https://arxiv.org/abs/2409.05993)
+Google Scholar  
+34.  Knuth DE. 2021 The art of computer programming. In Seminumerical
+algorithms, vol. 2, 3rd edn (ed. Donald EK). Boston, MA: Addison-Wesley.
+Google Scholar  
+35.  Clift NM. 2011 Calculating optimal addition chains. Computing 91, 265–284.
+( doi:10.1007/s00607-010-0118-8)
+Google Scholar Crossref  Web of Science  
+36.  Cronin L. 2024 Exploring assembly index of strings is a good way to show
+why assembly & entropy are intrinsically different. See https://x.com/leecronin/st
+atus/1850289225935257665.
+Google Scholar  
+37.  Ł ukaszyk S. 2023 Black hole horizons as patternless binary messages and
+markers of dimensionality. In Future relativity, gravitation, cosmology, pp.
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 44/48
+
+===== PAGE 45 =====
+317–374. Hauppauge, NY: Nova Science Publishers. ( doi:10.52305/RLIT5885)
+Google Scholar  
+38.  Ł ukaszyk S. 2024 Life as the explanation of the measurement problem. J.
+Phys. Conf. Ser. 2701, 012124. ( doi:10.1088/1742-6596/2701/1/012124)
+Google Scholar Crossref   
+39.  Ł ukaszyk S. 2025 Black hole merger as an event converting two qubits into
+one. Front. Quantum Sci. Technol. 4, 1656200. ( doi:10.3389/frqst.2025.1656200)
+Google Scholar Crossref   
+40.  Gabric D, Shallit J, Zhong XF. 2021 Avoidance of split overlaps. Discret.
+Math. 344, 112176. ( doi:10.1016/j.disc.2020.112176)
+Google Scholar Crossref  Web of Science  
+41.  Guibas LJ, Odlyzko AM. 1981 String overlaps, pattern matching, and
+nontransitive games. J. Comb. Theory Ser. 30, 183–208. ( doi:10.1016/0097-3165
+(81)90005-4)
+Google Scholar Crossref  Web of Science  
+42.  Ozelim L, Uthamacumaran A, Abrahão FS, Hernández-Orozco S, Kiani NA,
+Tegnér J, Zenil H. 2025 Assembly Theory Reduced to Shannon Entropy and
+Rendered Redundant by Naive Statistical Algorithms. arXiv 2408.15108. https://ar
+xiv.org/abs/2408.15108
+Google Scholar  
+43.  Abrahão FS, Hernández-Orozco S, Kiani NA, Tegnér J, Zenil H. 2024
+Assembly theory is an approximation to algorithmic complexity based on LZ
+compression that does not explain selection or evolution. PLoS Complex Syst. 1,
+e0000014. ( doi:10.1371/journal.pcsy.0000014)
+Google Scholar Crossref   
+44.  Uthamacumaran A, Abrahão FS, Kiani NA, Zenil H. 2024 On the salient
+limitations of the methods of assembly theory and their classification of
+molecular biosignatures. NPJ Syst. Biol. Appl. 10, 82. ( doi:10.1038/s41540-024-00
+403-y)
+Google Scholar Crossref  PubMed Web of Science  
+45.  Vimal D, Parzych G, Smith OM, Parkar D, Bergen H, Daymude JJ, Mathis C.
+2026 Open, reproducible calculation of assembly indices. J. Open Source Softw.
+11, 9318. ( doi:10.21105/joss.09318)
+Google Scholar Crossref   
+46.  Flamm C, Merkle D, Stadler PF. 2025 Assembly in directed hypergraphs.
+Proc. R. Soc. A 481, 20250331. ( doi:10.1098/rspa.2025.0331)
+Google Scholar Crossref  Web of Science  
+47.  Kempes CP, Lachmann M, Iannaccone A, Matthew Fricke G, Redwan
+Chowdhury M, Walker SI, Cronin L. 2025 Assembly theory and its relationship
+with computational complexity. Npj Complex. 2, 27. ( doi:10.1038/s44260-025-00
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 45/48
+
+===== PAGE 46 =====
+049-9)
+Google Scholar Crossref  PubMed  
+48.  Masierak P. 2026 Computational complexity of determining the assembly
+index. IPI Letters 4. ( 10.59973/ipil.315)
+Google Scholar  
+49.  Gebhard TDet al. 2022 Inferring molecular complexity from mass
+spectrometry data using machine learning. In Machine Learning and the Physical
+Sciences Workshop, NeurIPS 2022, New Orleans, LA, USA. NeurIPS Foundation.
+50.  Cronin L, Parra JCM, Patarroyo KY. 2025 Assembly addition chains. ( http
+s://arxiv.org/abs/2512.18030)
+Google Scholar  
+51.  Krzy ż anowski W. 2025 Procesy ewolucji kulturowej muzyki w ś rodowisku
+technologii cyfrowych. Uniwersytet Adama Mickiewicza, Pozna ń , Poland. ( doi:10.
+31237/osf.io/wkc4z_v1)
+Google Scholar  
+52.  Vopson MM. 2023 The second law of infodynamics and its implications for
+the simulated universe hypothesis. AIP Adv. 13, 105308. ( doi:10.1063/5.0173278)
+Google Scholar Crossref  Web of Science  
+53.  Grassberger P. 2012 Randomness, information, and complexity. ( https://arxi
+v.org/abs/1208.3459)
+Google Scholar  
+54.  Bieniawski W, Masierak P, Tworz S, Tomski A, Ł ukaszyk S. 2026 Assembly
+theory—formalizing assembly spaces, discovering patterns and bounds. GitHub.
+See https://github.com/szluk/AssemblyTheory.
+55.  Bieniawski W, Masierak P, Tworz S, Tomski A, Ł ukaszyk S. 2026
+szluk/Assemblytheory: initial release v1_(30.03.2026). Zenodo. ( doi:10.5281/zeno
+do.19331598)
+Google Scholar  
+56.  Bieniawski W, Masierak P, Tomski A, Ł ukaszyk S, Tworz S. 2026
+Supplementary material from: Assembly Theory - Formalizing Assembly Spaces
+and Discovering Patterns and Bounds. Figshare. ( doi:10.6084/m9.figshare.c.849
+0332)
+Google Scholar  
+© 2026 The Authors.
+Published by the Royal Society under the terms of the Creative Commons
+Attribution License http://creativecommons.org/licenses/by/4.0/, which
+permits unrestricted use, provided the original author and source are credited.
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 46/48
+
+===== PAGE 47 =====
+Supplementary data
+sp1- zip file
+Supplementary Material from Assembly Theory - Formalizing
+Assembly Spaces and Discovering Patterns and Bounds
+42
+views
+0
+shares
+10
+downloads
+figshare  1 / 13
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 47/48
+
+===== PAGE 48 =====
+Share Best Newest Oldest
+0 Comments 1 Login
+LOG IN WITH OR SIGN UP WITH DISQUS
+Name
+Start the discussion…
+?
+Be the first to comment.
+Subscribe Privacy Do Not Sell My Data
+G
+3
+7/10/26, 1:15 AM Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+https://royalsocietypublishing.org/rsos/article/13/5/260082/481944/Assembly-theory-formalizing-assembly-spaces 48/48

@@ -1,0 +1,1620 @@
+===== PAGE 1 =====
+IMA Journal of Numerical Analysis (2025) 45, 1269–1299
+https://doi.org/10.1093/imanum/drae037
+Advance Access publication on 1 July 2024
+A geometric integration approach to smooth optimization: foundations of the
+discrete gradient method
+Matthias J. Ehrhardt
+Department of Mathematical Sciences, University of Bath, North Rd, Claverton Down,
+BA2 7AY, Bath, UK
+Erlend S. Riis∗
+Department of Applied Mathematics and Theoretical Physics, University of Cambridge,
+Wilberforce Rd, CB3 0WA, Cambridge, UK
+∗Corresponding author: erlendsriis@gmail.com
+Torbjørn Ringholm
+Department of Mathematical Sciences, Norwegian University of Science and Technology,
+Alfred Getz’ vei 1, 7034, Trondheim, Norway
+and
+Carola-Bibiane Schönlieb
+Department of Applied Mathematics and Theoretical Physics, University of Cambridge,
+Wilberforce Rd, CB3 0WA, Cambridge, UK
+[Received on 2 July 2022; revised on 25 November 2023]
+Discretegradientmethodsaregeometricintegrationtechniquesthatcanpreservethedissipativestructure
+of gradient flows. Due to the monotonic decay of the function values, they are well suited for general
+convex and nonconvex optimization problems. Both zero- and first-order algorithms can be derived from
+thediscretegradientmethodbyselectingdifferentdiscretegradients.Inthispaper,wepresentathorough
+analysis of the discrete gradient method for optimization that provides a solid theoretical foundation. We
+show that the discrete gradient method is well-posed by proving the existence of iterates for any positive
+timestep,aswellasuniquenessinsomecases,andproposeanefficientmethodforsolvingtheassociated
+discrete gradient equation. Moreover, we establish an O(1/k)convergence rate for convex objectives and
+prove linear convergence if instead the Polyak–Łojasiewicz inequality is satisfied. The analysis is carried
+out for three discrete gradients—the Gonzalez discrete gradient, the mean value discrete gradient, and
+theItoh–Abediscretegradient—aswellasforarandomisedItoh–Abemethod.Ourtheoreticalresultsare
+illustratedwithavarietyofnumericalexperiments,andwefurthermoredemonstratethatthemethodsare
+robust with respect to stiffness.
+Keywords: geometricintegration;smoothoptimization;nonconvexoptimization;stochasticoptimization;
+discrete gradient method.
+1. Introduction
+Discrete gradients are tools from geometric integration for numerically solving first-order systems
+of ordinary differential equations (ODEs), while ensuring that certain structures of the continuous
+system—specifically energy conservation and dissipation, and Lyapunov functions—are preserved in
+© The Author(s) 2024. Published by Oxford University Press on behalf of the Institute of Mathematics and its Applications.
+This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/4.
+0/), which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 2 =====
+1270 M. J. EHRHARDTET AL.
+the numerical solution. Energy dissipation refers to the monotonic decrease in value of the objective
+function over time.
+Theuseofdiscretegradientmethodstosolveoptimizationproblemshasgainedincreasingattention
+in recent years (Grimm et al., 2017; Celledoni et al., 2018; Ringholm et al., 2018; Riis et al., 2021),
+due to their preservation of dissipative structures of ODEs such as gradient flows. This means that the
+associatediterative schememonotonically decreases theobjective function forallpositive timesteps,at
+a rate analogous to that of gradient flow.
+In this paper, we consider the unconstrained optimization problem
+min
+x∈Rn
+V(x), (1.1)
+where the functionV : Rn → R is continuously differentiable. For an initial guessx0 ∈ Rn and k ∈ N,
+the discrete gradient method is of the form
+xk+1 = xk − τk∇V(xk, xk+1), (1.2)
+where τk > 0 is the time step, and∇V is the discrete gradient, defined as follows.
+Definition1.1 (Discretegradient).Let V beacontinuouslydifferentiablefunction.A discrete gradient
+is a continuous map∇V : Rn × Rn → Rn such that for allx, y ∈ Rn,
+⟨∇V(x, y), y − x⟩= V(y) − V(x) (Mean value property), (1.3)
+∇V(x, x) =∇ V(x) (Consistency property). (1.4)
+The background for discrete gradients and gradient flows for optimization is given in Section2.
+There are several aspects of discrete gradient methods that make them attractive for optimization.
+Their structure-preserving properties lead to schemes that are unconditionally stable, i.e. converging to
+a stationary point for arbitrary time steps. This may be particularly beneficial for stiff problems, where
+explicit schemes require prohibitively small time steps, due to local, rapid variations in the objective
+function gradient. We demonstrate this numerically in Section8.5. Furthermore, the Itoh–Abe discrete
+gradient (2.5) is derivative-free, enabling derivative-free optimization,1 e.g. for nonsmooth, nonconvex
+functionsand black-boxproblems(Riis et al.,2021),andforfunctionswhosegradientsareexpensiveto
+compute (Ringholm et al., 2018). Beyond Euclidean gradient flow, discrete gradients can also preserve
+the dissipative structure for inverse scale space and Bregman distances (Benning et al., 2020).
+1.1 Contributions and structure
+The aim of this paper is to give a comprehensive optimization analysis of discrete gradient methods.
+While having a solid theoretical foundation in geometric integration, the methods have only recently
+been explored as optimization schemes, leaving several gaps in our understanding of their properties.
+Tothisend,weaddressseveraltheoreticalquestions.Namely,weprovewell-posednessoftheimplicit
+update equation (1.2), propose efficient and stable methods for solving the update equation, and obtain
+1 Not to be confused with the derivative-free discrete gradient method proposed byBagirov et al. (2008) that uses a different
+notion of a discrete gradient.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 3 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1271
+convergence rates of the methods for different classes of objective functions. Furthermore, we provide
+various numerical examples to see how the methods perform in practice.
+InSection 2wedefinediscretegradientsandintroducethefourdiscretegradientmethodsconsidered
+inthispaper.InSection 3,weprovethatthediscretegradientequation(theupdateformula)( 1.2)iswell-
+posed,meaningthatforanytimestep τk > 0and xk ∈ Rn,asolution xk+1 exists,undermildassumptions
+on V. Using Brouwer’s fixed-point theorem, this is the first existence result for the discrete gradient
+equation without a bound on the time step. In Section4, we propose an efficient and stable method for
+solvingthediscretegradientequationandproveconvergenceguarantees,buildingontheideasof Norton
+& Quispel (2014).
+In Section 5, we analyse the dependence of the iterates on the choice of time step and obtain
+estimates for preferable time steps in the cases ofL-smoothness and strong convexity. In Section6,w e
+establish convergence rates for convex functions with Lipschitz continuous gradients and for functions
+thatsatisfythePolyak–Łojasiewicz(PŁ)inequality( Karimi et al.,2016).InSection 7,webrieflydiscuss
+preconditioned discrete gradient methods.
+In Section8, we present numerical results for several test problems, and a numerical comparison of
+different numerical solvers for the discrete gradient equation (1.2). We conclude and present an outlook
+for future work in Section9.
+We emphasise that the majority of these results hold for nonconvex functions. Our contributions to
+the foundations of the discrete gradient method opens the door for future applications and research on
+discrete gradient methods for optimization, with a deeper understanding of their numerical properties.
+1.2 Related work
+We list some applications of discrete gradient methods for optimization.Grimm et al. (2017) propose
+applyingthemtosolvevariationalproblemsinimageanalysisandproveconvergencetostationarypoints
+for continously differentiable functions.Ringholm et al. (2018) apply the Itoh–Abe discrete gradient
+method to nonconvex imaging problems regularised with Euler’s elastica.Miyatake et al. (2018) point
+outtheequivalencebetweentheItoh–Abediscretegradientmethodforquadraticproblemsandthewell-
+known Gauss–Seidel and successive-over-relaxation (SOR) methods.
+Several recent works look at discrete gradient methods in other optimization settings. Concerning
+nonsmooth, derivative-free optimization,Riis et al. (2021)study the Itoh–Abe discrete gradient method
+forsolvingnonconvex,nonsmoothfunctions,provingconvergetoasetofstationarypointsintheClarke
+subdifferential framework.Celledoni et al. (2018) extend the Itoh–Abe discrete gradient method for
+optimization on Riemannian manifolds.Hernández-Solano et al. (2015) combine a discrete gradient
+method with Hopfield networks to preserve a Lyapunov function for optimization problems.Benning
+et al. (2020)apply the discrete gradient method to inverse scale space flow for sparse optimization.
+More generally, there is a wide range of research that studies connections between optimization
+schemes and systems of ODEs.Weijie et al. (2016) and Wibisono et al. (2016) study second-order
+ODEs that can be seen as continuous-time limits of Nesterov acceleration schemes. In the former case,
+they shed light on the dynamics of these schemes, e.g. the oscillatory behaviour, by interpreting the
+ODEs as damping systems, while in the latter case, they present a family ofBregman Lagrangian
+functionals that generate the original and new acceleration schemes. Furthermore, they demonstrate
+that the choice of ODE discretisation method is central for whether the acceleration phenomena is
+retained in the iterative scheme.Attouch & Alvarez (2000)consider the second-order heavy ball with
+friction dynamical system for convex optimization problems in Hilbert spaces. Several works have
+contributed to the setting of numerical analysis of acceleration methods which bridges continous- and
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 4 =====
+1272 M. J. EHRHARDTET AL.
+discrete-time dynamics.Wilson et al. (2021) approach this from the perspective of Lyapunov theory,
+presenting Lyapunov functions that account for continuous- and discrete-time.Betancourt et al. (2018)
+present a framework ofsympletic optimization, considering perspectives of Hamiltonian dynamics and
+symplecticstructure-preservingmethods. Inasimilarvein, recent papersby Maddison et al. (2018)and
+França et al. (2020)study conformal Hamiltonian systems, with the former using information about the
+objective function’s convex conjugate to obtain stronger convergence rates, and the latter considering
+structure-preserving numerical methods and their relation to some iterative schemes.
+1.3 Notation and preliminaries
+Wedenoteby Sn−1 theunitsphere
+{
+x ∈ Rn : ‖x‖= 1
+}
+.Thelinesegmentbetweentwopointsisdefined
+as [x, y]: =
+{
+λx + (1 − λ)y : λ ∈ [0,1]
+}
+. The diameter of a setU ⊂ Rn is defined as diam(U) :=
+supx,y∈U ‖x − y‖.
+In this paper, we consider both deterministic schemes and stochastic schemes. For the stochastic
+schemes,thereisarandomdistribution Ξ on Sn−1 suchthateachiterate xk dependsonadescentdirection
+dk that is independently drawn fromΞ. We denote byξ k the joint distribution of(di)k
+i=1, and byVk the
+expectation ofV(xk) with respect toξ k,
+Vk := E[V(xk)]. (1.5)
+We also use the shorthand notationEd[V(x)]f o rEd∼Ξ[V(x)]. To unify notation for all the methods in
+this paper, we will writeVk instead ofV(xk)for the deterministic methods as well.
+Throughout the paper, we will consider two classes of functions,L-smooth and μ-convexfunctions.
+We here provide definitions and some basic properties.
+Definition 1.2 (L-smooth). A functionV : Rn → R is L-smooth for L > 0 if its gradient is Lipschitz
+continuous with Lipschitz constantL, i.e. if for allx, y ∈ Rn,
+‖∇V(x) −∇ V(y)‖≤ L‖x − y‖.
+We state some properties ofL-smooth functions.
+Proposition 1.3 IfV : Rn → Ris L-smooth, then for allx, y ∈ Rn, the following holds.
+1. V(y) − V(x) ≤⟨ ∇V(x), y − x⟩+ L
+2‖y − x‖2.
+2. V(λx + (1 − λ)y) ≥ λV(x) + (1 − λ)V(y) − λ(1 − λ)L
+2 ‖x − y‖2 for allλ ∈ [0,1].
+Proof. Property (i).(Bertsekas, 2003, Proposition A.24).
+Property (ii). It follows from property(i) that the functionx ↦→ L
+2 ‖x‖2 − V(x) is convex, which in
+turn yields the desired inequality. □
+Definition 1.4 (μ-convex). A functionV : Rn → R is μ-convexfor μ ≥ 0 if either of the following
+(equivalent) conditions hold.
+1. The functionV(·) − μ
+2 ‖·‖2 is convex.
+2. V
+(
+λx + (1 − λ)y
+)
+≤ λV(x) + (1 − λ)V(y) − μ
+2 λ(1 − λ)‖x − y‖2 for allx, yin Rn and λ ∈ [0,1].
+When μ> 0, we say thatV is strongly convex.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 5 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1273
+2. Discrete gradient methods
+2.1 The discrete gradient method and gradient flow
+We motivate the use of discrete gradients by considering the gradient flow ofV,
+˙x =− ∇V(x), x(0) = x0 ∈ Rn, (2.1)
+where ˙xdenotesthederivativeof xwithrespecttotime.Thissystemisfundamentaltooptimization,and
+underpins many gradient-based schemes. Applying the chain rule, we obtain
+d
+dt V(x(t)) =⟨ ∇V(x(t)), ˙x(t)⟩=− ‖ ∇V(x(t))‖2 =− ‖ ˙x(t)‖2 ≤ 0. (2.2)
+The gradient flow has an energy dissipative structure, since the function valueV(x(t)) decreases
+monotonically along any solutionx(t) to (2.1). Furthermore, the rate of dissipation is given in terms
+of the norm of∇V or equivalently the norm of˙x.
+Ingeometricintegration,onestudiesmethodsfornumericallysolvingODEswhilepreservingcertain
+structures of the continuous system—seeMcLachlan & Quispel (2001); Hairer et al. (2006) for an
+introduction.Discretegradientsaretoolsforsolvingfirst-orderODEsthatpreserveenergyconservation
+laws, dissipation laws, and Lyapunov functions (Itoh & Abe, 1988; Gonzalez, 1996; Quispel & Turner,
+1996; McLachlan et al., 1999).
+For a sequence of strictly positive time steps(τk)k∈N and a starting pointx0 ∈ Rn, the discrete
+gradient method applied to (2.1)i sg i v e nb y(1.2). This scheme preserves the dissipative structure of
+gradient flow, as we see by applying (1.3),
+V(xk+1) − V(xk) =⟨∇V(xk, xk+1), xk+1 − xk⟩=− τk‖∇V(xk, xk+1)‖2 =− 1
+τk
+‖xk+1 − xk‖2. (2.3)
+Similarly to the dissipation law (2.2) of gradient flow, the decrease of the objective function value is
+given in terms of the norm of both the stepxk+1 − xk and of the discrete gradient.
+Throughout the paper, we assume there are boundsτmax ≥ τmin > 0 such that
+(τk)k∈N ⊂ [τmin,τmax]. (2.4)
+No restrictions are required on these bounds.Grimm et al. (2017) prove that if V is continuously
+differentiable and coercive—the latter meaning that the level set
+{
+x ∈ Rn : V(x) ≤ M
+}
+is bounded for
+each M ∈ R—andif (τk)k∈N satisfy(2.4),thentheiterates (xk)k∈N of(1.2)convergetoasetofstationary
+points, i.e. pointsx∗ ∈ Rn such that∇V(x∗) = 0.
+We may compare the discrete gradient method to explicit gradient descent,xk+1 = xk − τk∇V(xk).
+Unlike discrete gradient methods, gradient descent only decreases the objective function value for
+sufficientlysmalltimesteps τk.Toensuredecreaseandconvergenceforthisscheme,thetimestepsmust
+be restricted based on estimates of the smoothness of the gradient ofV, which might be unavailable,
+or lead to prohibitively small time steps. Conversely, implicit gradient descent, or the proximal point
+method (Chambolle & Pock, 2016), is unconditionally stable with respect to the time step, but does not
+necessarily exhibit structure preservation (Grimm et al., 2017).
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 6 =====
+1274 M. J. EHRHARDTET AL.
+Onemayalsoconsiderothernumericalintegrationmethods,suchasimplicitRunge-Kuttamethods,
+where energy dissipation is ensured under mild time step restrictions (Hairer & Lubich, 2013), and
+explicit stabilised methods for solving strongly convex problems (Eftekhari et al., 2021).
+2.2 F our discrete gradient methods
+Wenowintroducethefourdiscretegradientsconsideredinthispaper.1. The Gonzalez discrete gradient
+(Gonzalez, 1996) is given by
+∇V(x, y) =∇ V
+(x + y
+2
+)
++ V(y) − V(x) −
+⟨
+∇V
+(x+y
+2
+)
+, y − x
+⟩
+‖x − y‖2 (y − x), x ⁄= y.
+2. The mean value discrete gradient (Harten et al., 1983), used for example in the average vector
+field method (Celledoni et al., 2012), is given by
+∇V(x, y) =
+∫1
+0
+∇V((1 − s)x + sy) ds.
+3. The Itoh–Abe discrete gradient (Itoh & Abe, 1988) (also known as the coordinate increment
+discrete gradient) is given by
+∇V(x, y) =
+⎛
+⎜⎜⎜⎜⎜⎝
+V(y1,x2,...,xn)−V(x)
+y1−x1
+V(y1,y2,x3,...,xn)−V(y1,x2,...,xn)
+y2−x2
+...
+V(y)−V(y1,...,yn−1,xn)
+yn−xn
+⎞
+⎟⎟⎟⎟⎟⎠
+, (2.5)
+where 0/0 is interpreted as∂iV(x).
+While the first two discrete gradients are gradient-based and can be seen as approximations to
+the midpoint gradient ∇V( x+y
+2 ), the Itoh–Abe discrete gradient is derivative-free, and is evaluated
+by computing successive coordinate-wise difference quotients. As a result, the corresponding implicit
+equation (1.2) uncouples, and can be treated as solving a series of scalar equations
+xk+1
+i = xk
+i − τk
+V
+(
+xk+1
+1 , xk+1
+2 ,... , xk+1
+i , xk
+i+1, ... , xk
+n
+)
+− V
+(
+xk+1
+1 , xk+1
+2 ,... , xk+1
+i−1 , xk
+i ,... , xk
+n
+)
+xk+1
+i − xk
+i
+,
+for k = 1,... , n. In an optimization setting, the Itoh–Abe discrete gradient is often preferable to the
+others, as it is relatively computationally inexpensive.
+4. The Randomised Itoh–Abe method (Riis et al., 2021) is an extension of the Itoh–Abe discrete
+gradient method, where the directions of descent are randomly chosen. Given a sequence of directions
+(dk)k∈N ⊂ Sn−1 drawn independently from a random distributionΞ,w es o l v e
+xk+1 ↦→ xk − τkαkdk+1, where αk ⁄= 0s o l v e sαk =− V
+(
+xk − τkαkdk+1)
+− V(xk)
+τkαk
+,
+where xk+1 = xk is considered a solution whenever⟨∇V(xk), dk+1⟩= 0.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 7 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1275
+This scheme generalises the Itoh–Abe discrete gradient method, in that the methods are equivalent
+if (dk)k∈N cycle through the standard coordinates with the ruledk = e[(k−1)mod n]+1, k = 1,2, ... .
+However,thecomputationaleffortofoneiterateoftheItoh–Abediscretegradientmethodequals nsteps
+of the randomised method, so their efficiency should be judged accordingly.
+While the randomised Itoh–Abe discrete gradient method does not retain the discrete gradient
+structure of the Itoh–Abe discrete gradient, it retains a dissipative structure akin to (2.2).
+V(xk+1) − V(xk) =− τk
+(
+V(xk+1) − V(xk)
+‖xk+1 − xk‖
+)2
+=− 1
+τk
+‖xk+1 − xk‖2. (2.6)
+We also define the constant
+ζ := min
+e∈Sn−1
+Ed[⟨d, e⟩2], (2.7)
+and assume thatΞ is such thatζ> 0. For example, for the uniform random distribution on bothSn−1
+and on the standard coordinates(ei)n
+i=1,w eh a v eζ = 1/n. See (Stich, 2014, Table 4.1) for estimates of
+(2.7) for these cases and others.
+The motivation for introducing this randomised extension of the Itoh–Abe method is, first, to tie
+in discrete gradient methods with other optimization methods such as stochastic coordinate descent
+(Fercoq&Richtárik,2015 ;Wright,2015;Zheng et al.,2015)andrandompursuit( Stich,2014;Nesterov
+& Spokoiny, 2017), and, second, because this method extends to the nonsmooth, nonconvex setting
+(Riis et al., 2021).
+3. Existence of solutions to the discrete gradient steps
+In this section, we prove that the discrete gradient equation
+y = x − τ∇V(x, y) (3.1)
+admits a solutiony, for allτ> 0 andx ∈ Rn, under mild assumptions onV and ∇V.
+Totheauthors’knowledge,thefollowingresultisthefirstwithoutarestrictionontimesteps. Norton
+& Quispel (2014)provide an existence and uniqueness result for small time steps for a large class of
+discrete gradients, via the Banach fixed-point theorem. Furthermore, the existence of a solution for
+the Gonzalez discrete gradient is established for sufficiently small time steps via the implicit function
+theorem in (Stuart & Humphries, 1996, Theorem 8.5.4).
+We use the following set notation. Forδ> 0, the closed ball of radiusδ about x is defined
+as Bδ(x) :=
+{
+y ∈ Rn : ‖y − x‖≤ δ
+}
+. For a set U ⊂ Rn, its δ-thickening is the set defined as
+Uδ :=
+{
+x ∈ Rn :d i s t(U, x) ≤ δ
+}
+. The convex hull ofU is given by co(U).
+Wemaketwoassumptionsforthediscretegradient,namelythatboundednessofthegradientimplies
+boundedness of the discrete gradient, and that if two functions coincide on an open set, their discrete
+gradients also coincide.
+Assumption 3.1 There is a constantCn that depends on the discrete gradient, but is independent of
+V, and a continuous, nondecreasing functionδ :[ 0 ,∞] → [0,∞], where δ(0) = 0 and δ(∞) :=
+limr→∞ δ(r), such that the following holds.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 8 =====
+1276 M. J. EHRHARDTET AL.
+For any V ∈ C1(Rn; R) and any convex setU ⊂ Rn with nonempty interior, the two following
+properties are satisfied.
+1. If ‖∇V(x)‖≤ K for allx ∈ Uδ(diam(U)), then‖∇V(x, y)‖≤ CnK for allx, y ∈ U.
+2. If W isanothercontinuouslydifferentiablefunctionsuchthat V(x) = W(x)forall x ∈ Uδ(diam(U)),
+then ∇V(x, y) = ∇W(x, y) for allx, y ∈ U.
+Remark 3.2 It is straightforward to verify that if a finite collection of discrete gradient constructions
+satisfy these assumptions, then their convex combinations satisfy them too.
+Thefollowingresult,whichisprovedinAppendix A.1,showsthatthediscretegradientsconsidered
+in this paper satisfy the above assumption.
+Lemma 3.3 The three discrete gradients satisfy Assumption3.1 as follows:
+1. For the Gonzalez discrete gradient,Cn =
+√
+2 andδ ≡ 0.
+2. For the mean value discrete gradient,Cn = 1 andδ ≡ 0.
+3. For the Itoh–Abe discrete gradient,Cn = √nand δ(r) = r.
+Remark 3.4 In practice, the Gonzalez, Itoh–Abe, and mean value discrete gradients account for the
+vast majority of applications and theoretical studies (Quispel & Turner, 1996; McLachlan et al., 1999;
+Dahlby et al.,2011;Grimm et al.,2017).Thus,whileAssumption 3.1maynotholdforallconstructions
+of discrete gradients, we consider them to be adequate for most purposes.
+The existence proof is based on the Brouwer fixed-point theorem (Brouwer, 1911).
+Proposition3.5 (Brouwerfixed-pointtheorem).Let U ⊂ Rn beaconvex,compactsetand g : U → U
+a continuous function. Thenghas a fixed point inU.
+We proceed to state the existence theorem.
+Theorem3.6 (Discretegradientexistencetheorem).Suppose V iscontinouslydifferentiableandthat ∇
+satisfies Assumption3.1. Then there exists a solutiony to (3.1) for anyτ> 0 andx ∈ Rn,i fV satisfies
+anyof the following properties:
+1. The gradient ofV is uniformly bounded.
+2. V is coercive.
+3. Both V and the gradient ofV are uniformly bounded on co({y : V(y) ≤ V(x)}) (the bounds may
+depend onx), andδ ≡ 0i nA s s u m p t i o n3.1.
+Proof. Part (i).Wewanttoshowthatthefunction g(y) = x−τ∇V(x, y)hasafixedpoint, y = g(y).There
+is K > 0 such that‖∇V(y)‖≤ K for ally ∈ Rn. Therefore, by Assumption3.1, ‖∇V(x, y)‖≤ CnK for
+all y ∈ Rn.Thisimpliesthat g(y) ∈ Bτ CnK(x)forall y ∈ Rn.Specifically, gmaps Bτ CnK(x)intoitself.As
+giscontinuous,itfollowsfromProposition 3.5thatthereexistsapoint y ∈ Bτ CnK(x)suchthat g(y) = y,
+and we are done.
+Part (ii).L e tσ> 0, U = co
+({
+y : V(y) ≤ V(x)
+})
+, and writeδ = δ(diam(U)). SinceV is coercive,
+Uδ and Uδ+σ are bounded. By standard arguments (Nestruev,2003, Corollary 2.5), there exists a cutoff
+function ϕ ∈ C∞
+c (Rn;[0,1] ) such thatϕ
+⏐⏐
+Uδ
+≡ 1 andϕ
+⏐⏐
+Rn\Uδ+σ
+≡ 0. Using this, we define the function
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 9 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1277
+W(y) := ϕ(y)
+(
+V(y) − V(x)
+)
++ V(x), which is continuously differentiable and supp(∇W) ⊂ Uδ+σ.
+Therefore, ∇W is uniformly bounded, so by part(i) there isysuch that
+y = x − τ∇W(x, y).
+By (2.3), W(y)< W(x), which, by construction ofW, implies thatV(y)< V(x) and hence thaty ∈ U.
+Lastly,since V and W coincideon Uδ,and xand ybothbelongto U,itfollowsfromAssumption 3.1 (ii)
+that ∇V(x, y) = ∇W(x, y). Hence, a solutiony = x − τ∇V(x, y) exists.
+Part (iii). Set U = co
+{
+y : V(y) ≤ V(x)
+}
+and M = supy∈U V(y). Furthermore, letη> 0 and set
+K = sup
+{
+‖∇V(y)‖ : V(y) ≤ M + η
+}
+and F =
+{
+y : V(y) ≥ M + η
+}
+. For anyz ∈ F and y ∈ U, there
+is z ∈ [z, y]suchthat V(z) = M+η.Themeanvaluetheorem(MVT)( Nocedal&Wright ,1999,Equation
+A.55) and the boundedness of∇V imply that there isλ ∈ (0,1) such that
+η ≤| V(y) − V(z)|=| ⟨ ∇V(λy + (1 − λ)z), y − z⟩| ≤K‖y − z‖≤ K‖y − z‖.
+Therefore,forall y ∈ U and z ∈ F,onehas ‖y − z‖≥ η/K.Asinthepreviouscase,thereexistsacutoff
+function ϕ ∈ C∞(Rn;[0,1] ) with uniformly bounded gradient, such thatϕ
+⏐⏐
+U ≡ 1 and ϕ
+⏐⏐
+F ≡ 0. To
+verify this, we may consider, e.g. (Leoni, 2017, Theorem C.20), withε = η/K and u(·) as the indicator
+function ofU, i.e. u|U ≡ 1 and u|Rn\U = 0.
+Consider W : Rn → R as defined in the previous case. The gradient ofW is uniformly bounded,
+so there is a fixed-pointy such that y = x − τ∇W(x, y). By the same arguments as in case(ii),
+∇V(x, y) = ∇W(x, y), which implies thatysolves y = x − τ∇V(x, y). □
+ThethirdcaseinTheorem 3.6coversproblemswhere Visnotcoercive,whichincludeslinearsystems
+with nonempty kernel and logistic regression problems (Lee et al., 2006) without regularisation.
+While the above theorem holds also for the Itoh–Abe methods, there is a much simpler existence
+resultinthiscase,givenin( Riis et al.,2021),forwhichcontinuityoftheobjectivefunctionissufficient.
+4. Solving the discrete gradient equation
+Intheprevioussection,weprovedthatthediscretegradientequation( 3.1)admitsasolutionfor yforall
+τ> 0and x ∈ Rn.Inwhatfollows,weproposearelaxedfixed-pointmethodforsolving( 3.1),andprove
+linear convergence rates of the method for the mean value discrete gradient equation. This analysis can
+trivially be extended to the Itoh–Abe discrete gradient equation, as solving this equation corresponds
+to solving a succession of mean value discrete gradient equations in one dimension (since all discrete
+gradients are the same in one dimension, being implicitly defined by the mean value property (1.3)).
+Remark 4.1 We were unable to prove linear convergence for the Gonzalez discrete gradient equation.
+However, in practice the scheme converged to a solution as quickly as for the mean value case.
+Norton & Quispel (2014)show that for sufficiently small time steps, there exists a unique solution
+to (3.1) that can be approximated by the fixed-point iterations
+yj+1 = Tτ (yj),f o r j ∈ N, where Tτ (y) := x − τ∇V(x, y), y0 ∈ Rn, (4.1)
+i.e. such that the iterates converge to a fixed-pointy∗ = Tτ (y∗), or, equivalently, a solution to (3.1). For
+this,itisassumedthat τ islessthan1 /(10LDG),where LDG istheLipschitzconstantforagiven xofthe
+mapping y ↦→ ∇V(x, y).
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 10 =====
+1278 M. J. EHRHARDTET AL.
+One is often interested in taking larger time steps, and particularly for the optimization ofL-smooth
+functions,optimaltimestepsmaybecloserto2 /L—seeSection 6.Furthermore,asTheorem 3.6ensures
+the existence of a solution for arbitrarily large time steps, we would like a constructive method for
+locatingsuchsolutions.Wethereforeproposetousetherelaxedfixed-pointmethod,whichfor θ ∈ (0,1]
+is given by
+yj+1 = Sθ,τ (yj), Sθ,τ (y) := (1 − θ) y + θ Tτ (y). (4.2)
+For θ = 1, this reduces to (4.1). In the remainder of this section, we will prove convergence guarantees
+of (4.2) for all time steps. In Section8, we demonstrate its numerical efficiency.
+In the following, we assume that the discrete gradient inherits smoothness and strong convexity
+properties from the gradient.
+Assumption 4.2 There are constantscL, cμ > 0 such that
+1. (Smoothness) If V is L-smooth, then for allx ∈ Rn, y ↦→ ∇V(x, y) is cLL-Lipschitz continuous.
+2. (Monotonicity) If V is μ-convex, then for allx, y, z ∈ Rn,w eh a v e
+⟨∇V(x, y) − ∇V(x, z), y − z⟩≥ cμμ‖y − z‖2.
+We writeLDG := cLL and μDG := cμμ.
+It is straightforward to verify these properties for the mean value discrete gradient.
+Proposition 4.3 The mean value discrete gradient satisfies Assumption4.2 with LDG = L/2 and
+μDG = μ/2.
+Proof. To show that the first property holds, we write
+‖∇V(x, y)−∇V(x, z)‖≤
+∫1
+0
+‖∇V(sy+(1−s)x)−∇V(sz +(1−s)x)‖ds ≤ L‖y−z‖
+∫1
+0
+sds = L
+2‖y − z‖.
+Similarly, to show the second property, we write
+⟨∇V(x, y) − ∇V(x, z), y − z⟩=
+∫1
+0
+1
+s
+⟨
+∇V(sy + (1 − s)x) −∇ V(sz + (1 − s)x), sy − sz
+⟩
+ds
+≥ μ‖y − z‖2
+∫1
+0
+sds = μ
+2 ‖y − z‖2.
+□
+To demonstrate that the scheme defined in (4.2) converges to a unique solution ofy∗ = Tτ (y∗),w e
+will use Banach’s Fixed-Point Theorem (see, e.g.,Granas & Dugundji, 2003, Theorem 1.1).
+Theorem 4.4 (Banach’s Fixed-Point Theorem). Let (X, d) be a nonempty complete metric space.
+Suppose T : X → X is a contraction mapping onX, i.e. there isq ∈ [0,1) such that
+d(T(x), T(y)) ≤ qd(x, y) for allx, y ∈ X.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 11 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1279
+Then T hasauniquefixed-point y∗ ∈ X,andforany y0 ∈ X,thesequence (yj)j∈N definedby yj+1 = T(yj)
+converges linearly toy∗.
+Thefollowingresultdemonstratesthatforconvexobjectivefunctions,thescheme( 4.2)convergesto
+a fixed-pointy∗ = Tτ (y∗) for arbitrary time stepsτ.
+Theorem 4.5 IfV is L-smooth and∇ satisfies Assumption4.2, then the mappingSθ,τ defined in (4.2)
+is a contraction mapping onRn if either of the following holds:
+1. τ< 1/LDG and θ ∈ [0,1].
+2. V is μ-convex andθ ∈
+(
+0,min
+{
+1, 2+2τμDG
+1+τ2L2
+DG+2τμDG
+})
+.
+Proof. Choose y, z ∈ Rn. Case (i). We write
+‖Sθ,τ (z) − Sθ,τ (y)‖=‖ (1 − θ)( z − y) + τθ( ∇V(x, y) − ∇V(x, z))‖≤
+(
+1 − (1 − τ LDG)θ
+)
+‖z − y‖.
+Thus Sθ,τ is a contraction provided thatτ< 1/LDG.
+Case (ii). In a similar fashion, we write
+‖Sθ,τ (z) − Sθ,τ (y)‖2 =‖(1 − θ)( z − y) + τθ
+(
+∇V(x, y) − ∇V(x, z)
+)
+‖2
+= (1 − θ)2‖z − y‖2 + τ2θ2‖∇V(x, y) −∇V(x, z)‖2 −2τ(1− θ)θ ⟨z −y,∇V(x, z) − ∇V(x, y)⟩
+≤
+(
+(1 − θ)2 + τ2θ2L2
+DG −2τ(1 − θ)θμDG
+)
+‖z − y‖2 = ω(θ) ‖z − y‖2.
+One can check that the coefficientω(θ) is less than 1 providedθ belongs to the interval stated in the
+theorem. This concludes the proof. □
+Remark 4.6 In the second case of Theorem4.5, the coefficientω(θ) is minimised for
+θ∗ = 1 + τμDG
+1 + τ2L2
+DG +2τμDG
+< 1, (4.3)
+which yields the linear convergence rate
+‖yj+1 − yj‖2 ≤ τ2(
+L2
+DG − μ2
+DG
+)
+(1 + τμDG)2 + τ2(
+L2
+DG − μ2
+DG
+)‖yj − yj−1‖2.
+We note from this that the scheme converges faster for smaller time steps and for objective functions
+with smaller condition numbersL/μ ≈ LDG/μDG =: κDG. Furthermore, ifτ = 1/(aLDG) for some
+a ≥ 1, where a typical choice isa = 1, then we obtain
+θ∗ =
+1 + 1
+aκDG
+1 + 1
+a2 + 2
+aκDG
+≥ a2
+1 + a2, ω(θ ∗) =
+1 − 1
+κ2
+DG
+a2 + 2a
+κDG
++1
+≤ 1
+a2 +1.
+This shows that the fixed-point scheme (4.2) is robust to ill-conditioned problems, both with regards to
+appropriate choices ofθ and the rate of convergence.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 12 =====
+1280 M. J. EHRHARDTET AL.
+In Section8.6, we compare the efficiency of the above scheme for differentθ and of the built-in
+solver scipy.optimize.fsolve in Python.
+5. Analysis of time steps for discrete gradient methods
+Inthissection,westudytheimplicitdependenceof xk+1(τ) onthechoiceoftimestep τ.Wefirstestablish
+auniquenessresultforthemeanvalueandItoh–Abediscretegradientmethods.Thenwerestrictourfocus
+to Itoh–Abe methods, where we ascertain bounds on optimal time steps with respect to the decrease in
+V,f o rL-smooth, convex functions as well as strongly convex functions.
+5.1 Uniqueness
+Lemma 5.1 IfV is μ-convex, thenthesolution ytothediscretegradient equation (3.1)isunique forthe
+mean value discrete gradient and the Itoh–Abe discrete gradient.
+Proof. We first consider the mean value discrete gradient. Supposey1, y2,s o l v eyi = x − τ∇V(x, yi),
+i = 1,2. Then it follows from Proposition4.3 that
+‖y1 − y2‖2 = τ
+⟨x − y2
+τ − x − y1
+τ , y1 − y2
+⟩
+= τ⟨∇V(x, y2) − ∇V(x, y1), y1 − y2⟩≤ 0.
+Furthermore, as the Itoh–Abe discrete gradient method is a succession of scalar updates, each
+corresponding to a 1D mean value discrete gradient update, uniqueness follows. □
+5.2 Implicit dependence on the time step for Itoh–Abe methods
+For the remainder of the section, we restrict our focus to Itoh–Abe methods. We fix a starting pointx,
+direction, d ∈ Sn−1 and time stepτ, and study the solutionyto
+y = x − αd, where α ⁄= 0s o l v e sα =− τ V(x − αd) − V(x)
+α . (5.1)
+By the analysis in Section3, there exists a solutiony for allτ> 0. For convenience and to exclude the
+case y = x, we assume⟨∇V(x), d⟩> 0. For notational brevity, we rewrite the optimization problem in
+terms of a scalar functionf, i.e. solve
+f(α)
+α2 =− 1
+τ, where f(α) := V(x − αd) − V(x). (5.2)
+Foroptimizationschemeswithatimestep τ,itiscommontoassumethatthedistancebetween xand
+yincreaseswiththetimestep.Forexplicitschemes,thisnaturallyholds.However,forimplicitschemes,
+such as the discrete gradient method, this is not always the case. We demonstrate this with a simple
+example in one dimension.
+Example 5.2 DefineV(x) :=− x3 and x = 0. For allτ> 0, (5.1)i ss o l v e db yy = 1
+τ . Then, asτ → 0,
+we havey →∞ , and asτ →∞ ,w eh a v ey → x.
+Theaboveexampleillustratesthatfornonconvex functions,decreasingthetimestepmightleadtoa
+larger stepy ←/mapsfromcharx and vice versa.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 13 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1281
+We now show that for convex functions, the distance‖y − x‖does increase withτ. Set
+R = sup
+{
+r : V(x − αd)< V(x) for allα ∈ (0, r)
+}
+.
+By the assumption that⟨∇V(x), d⟩> 0, we haveR > 0.
+Proposition5.3 If V isconvex,thenthereisawell-defined,continuous,andstrictlyincreasingmapping
+τ ↦→ α(τ),suchthat α(τ) solves(5.2)for τ.Furthermore,themappingisbijectivefrom (0,∞)to (0, R).
+Proof. We first establish continuity and strict monotonicity. We use the alternative characterisation of
+convex functions in one dimension, which states that
+α ↦→ f(α) − f(0)
+α = f(α)
+α
+is monotonically nondecreasing inα. Since f(α) < 0f o rα ∈ (0, R), it follows thatα ↦→ f(α)/α2 is
+strictly increasing on(0, R). We can thus apply, e.g. the implicit function theorem for strictly monotone
+functions (Dontchev & Rockafellar, 2014, Theorem 1H.3) to conclude that the mappingτ ↦→ α(τ) is
+continuous for allτ> 0.
+Furthermore, for anyτ2 >τ 1 > 0 and corresponding solutionsα1, α2,u s i n g(5.2), we get
+f(α2)
+α2
+2
+=− 1
+τ2
+> − 1
+τ1
+= f(α1)
+α2
+1
+.
+Since α ↦→ f(α)/α2 isstrictlyincreasing,itfollowsthat α2 >α 1.Hence, τ ↦→ α(τ) isstrictlyincreasing.
+Next, we show thatα(τ) → 0a sτ → 0. This can be seen by inspecting
+f(α(τ))
+α(τ) =− α(τ)
+τ .
+The left-hand side is bounded by the derivativef′(0) =− ⟨ ∇V(x), d⟩. Hence, asτ goes to zero,α(τ)
+must also go to zero to prevent the right-hand side from blowing up.
+Lastly, we show thatα(τ) → R as τ →∞ . By inspecting
+f(α(τ))
+α(τ)2 =− 1
+τ,
+we see that asτ →∞ , the right-hand side goes to zero, so eitherf(α(τ)) → 0o rα(τ)2 →∞ . There
+are two cases to consider forR.I fR < ∞, then by convexity off and the definition ofR, f(α) < 0f o r
+α ∈ (0, R)and f(α) > 0f o rα> R,so α(τ) → R.O t h e r w i s e ,i fR =∞ , then there exists anε> 0 such
+that f(α) < −ε for allα> 0, from which it follows thatα(τ)2 →∞= R. This concludes the proof.□
+Remark 5.4 The above proposition can also be shown to hold for nondifferentiable, convex functions,
+by replacing the derivative with a subgradient.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 14 =====
+1282 M. J. EHRHARDTET AL.
+5.3 Lipschitz continuous gradients
+The remainder of this section is devoted to deriving bounds on optimal time steps, with respect to the
+decreaseintheobjectivefunctionwhentheobjectivefunctionis L-smoothor μ-convex.Wefirstconsider
+L-smooth functions, and show that any time stepτ< 2/L is suboptimal. We recall the scalar function
+f(α) = V(x − αd) − V(x).
+Lemma 5.5 IfV is convex andL-smooth, thenτ ↦→ f(α(τ)) is decreasing forτ< 2/L.
+Proof. Suppose α solves (5.2)f o rτ< 2/L.L e tλ ∈ (τ L/2,1), and plug in 0 andα/λ for y and x,
+respectively, in Proposition1.3 (ii) to get, after rearranging,
+λf(α/λ) ≤ f(α) + (1 − λ)L
+2λ α2.
+Plugging in (5.2), we get
+f(α/λ) ≤
+(1
+λ − (1 − λ)τ L
+2λ2
+)
+f(α).
+We show thatf(α/λ) < f(α), i.e. thatλ − (1 − λ)τ L/2 >λ 2. By solving the quadratic expression,
+we find this holds whenλ ∈ (τ L/2,1). Thus, f(α/λ) < f(α), and, asf is convex, it follows thatf is
+decreasing on [α, α/λ]. By Proposition5.3, τ ↦→ f(α(τ)) is therefore decreasing on(0,2/L). □
+5.4 Strong convexity
+We now assumeμ> 0 and show that for strongly convex functions, any time stepτ> 2/μ yields a
+suboptimal decrease.
+Lemma 5.6 IfV is μ-convex, whereμ> 0, thenτ ↦→ f(α(τ)) is strictly increasing forτ> 2/μ.
+Proof. Let α solve(5.2)for τ> 2/μ.Fix λ ∈ (2/(τμ),1),andplugin0and α for yand x,respectively,
+in Definition1.4 (ii) to get, after rearranging,
+f(λα) ≤ λf(α) − μλ(1 − λ)
+2 α2.
+Plugging in (5.2) gives us
+f(λα) ≤
+(
+λ + τμλ(1 − λ)
+2
+)
+f(α).
+We want to show thatf(λα) < f(α), i.e. thatλ + τμλ(1 − λ)/2 > 1. By rearranging and solving the
+quadratic expression, we find that this is satisfied ifλ ∈ (2/(τμ),1). The result follows from convexity
+of f and Proposition5.3. □
+Remark 5.7 This result also holds for strongly convex, nondifferentiable functions.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 15 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1283
+6. Convergence rate analysis
+In this section we derive convergence rates forL-smooth functions,μ-convex functions, and functions
+thatsatisfythePolyak–Łojasiewicz(PŁ)inequality.Wefollowtheargumentsin( Nesterov,2012;Beck&
+Tetruashvili, 2013) on convergence rates of coordinate descent. We assume throughout that the iterates
+(xk)k∈N solve the discrete gradient equation exactly, and leave the impact of inexact updates on the
+convergence rates for future work.
+We recall the notation in (1.5), Vk := E[V(xk)], where Vk = V(xk) for deterministic methods.
+Estimates of the following form will be crucial to the analysis.
+β
+(
+V(xk) − Edk+1[V(xk+1)]
+)
+≥‖ ∇V(xk)‖2. (6.1)
+We first provide this estimate for each of the four methods. We assume throughout that the time steps
+(τk)k∈N satisfy arbitrary bounds (2.4).
+We consider coordinate-wise Lipschitz constants for the gradient ofV as well as a directional
+Lipschitz constant. For i = 1,... , n, we suppose ∂iV : Rn → Rn is Lipschitz continuous with
+Lipschitz constantLi ≤ L. We denote byLsum the 𝓁2-norm of the coordinate-wise Lipschitz constants,
+Lsum =
+√∑n
+i=1 L2
+i ∈ [L,√nL].
+Furthermore, for a directiond ∈ Sn−1, we consider the Lipschitz constantLd ≤ L, such that for all
+x ∈ Rn and α ∈ R,w eh a v e
+|⟨∇V(x + αd), d⟩−⟨ ∇V(x), d⟩| ≤Ld|α|.
+For the Itoh–Abe discrete gradient method or whenΞ only draws from the standard coordinates, we
+write Li instead ofLei. We defineLmax ≤ L to be the supremum ofLd over alld in the support of the
+probability density function ofΞ. That is,Lmax ≥ Ld for alld ∼ Ξ. In the case whenΞ draws from a
+restricted set, such as the standard coordinates,Lmax can be notably smaller thanL. Hereby, we refine
+the L-smoothness property in Proposition1.3 (i) to
+V(x + αd) − V(x) ≤ α⟨∇V(x), d⟩+ Ld
+2 α2 ≤ α⟨∇V(x), d⟩+ Lmax
+2 α2, (6.2)
+for allα ∈ Rand d in the support of the density ofΞ (Beck & Tetruashvili, 2013, Lemma 3.2).
+Lemma 6.1 If V is L-smooth, then the three discrete gradient methods and the randomised Itoh–Abe
+method satisfy (6.1) with values forβ given in Table1.
+AproofofthislemmaisgivenintheAppendix A.2.Notethattheseestimatesdonotrequireconvexity
+of V.
+6.1 Optimal time steps and estimates of β
+Lower values forβ in (6.1) correspond to better convergence rates, as can be seen in Theorems6.4
+and6.6.Inwhatfollows,webrieflydiscussthetimestepsthatyieldminimalvaluesof β,denotedby τ∗
+and β∗ in Table1.
+For the Gonzalez and mean value discrete gradient methods, it is natural to compare rates to those
+ofexplicitgradientdescent,whichhastheestimate β∗ = 2L(Nesterov,2004,Section2.1.5).Hence,the
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 16 =====
+1284 M. J. EHRHARDTET AL.
+Table 1 Estimates of β, as well as optimal time steps τ∗ and β∗, with ζ given in (2.7)
+Discrete gradient method β τ∗ β∗
+Gonzalez 2(1/τk + L2τk/2)
+√
+2/L 2
+√
+2L
+Mean value 2(1/τk + L2τk/4) 2/L 2L
+Itoh–Abe 2(1/τk + L2
+sumτk) 1/Lsum 4Lsum
+Randomised Itoh–Abe τk(1/τk + Lmax/2)2/ζ 2/Lmax 2Lmax/ζ
+mean value discrete gradient method recovers the optimal rates of gradient descent, while the estimate
+for the Gonzalez discrete gradient is worse by a factor of
+√
+2.
+In contrast, for the proximal point method, it can be shown thatβ = 2/τ and can thus be made
+arbitrarily small by taking larger time steps. This follows from the fact that the proximal point method
+with time stepτ applied toV is equivalent to explicit gradient descent with time stepτ applied to the
+Moreau–Yosida regularisation ofV with parameter τ, Vτ, which is 1/τ-smooth (Chambolle & Pock,
+2016, Section 4.2). It follows thatβ = 2/τ.
+For the Itoh–Abe discrete gradient method, we compare its rates to those obtained for cyclic
+coordinate descent (CD) schemes in (Beck & Tetruashvili, 2013, Lemma 3.3) and (Wright, 2015,
+Theorem3), β∗ = 8√nL,wherewehavesettheirparameters Lmax and Lmin to √nL.Hence,theestimate
+for the Itoh–Abe discrete gradient method is stronger, being at most half that of CD, even in the worst-
+case scenarioLsum = √nL.
+Remark 6.2 Note however that we can improve the estimate for the CD scheme to recover the same
+rate. See AppendixB.
+We give one motivating example for considering the parameterLsum.
+Example 6.3 LetV be a least squares problemV(x) =‖ Ax − f‖2/2. We then have
+Lsum ≤
+√
+rank(A)L. (6.3)
+Thus, for low-rank system where rank(A) ≪ n, the convergence speed of the Itoh–Abe discrete
+gradient method improves considerably.
+To derive (6.3), one can show thatL =‖ A∗A‖2 and Lsum =‖ A∗A‖F, where‖·‖2 and ‖·‖ F denote
+the operator norm and Frobenius norm. The bound follows from the properties‖B‖F ≤ √rank(B)‖B‖2
+(Higham, 2002, Table 6.2) and rank(A∗A) = rank(A) (Meyer, 2000, Statement 4.5.4).
+We compare the rates for the randomised Itoh–Abe methods to randomised coordinate descent
+(RCD). Recall that whenΞ is the uniform distribution on the coordinates(ei)n
+i=1 or on the unit sphere
+Sn−1,w eh a v eζ = 1/n. This gives usβ∗ = 2nLmax for the randomised Itoh–Abe methods, which is the
+optimal bound for randomised coordinate descent (Wright, 2015).
+6.2 Lipschitz continuous gradients
+For the next result, we use the notationR(x0) := diam{x ∈ Rn : V(x) ≤ V(x0)}. R(x0) is bounded,
+provided V is coercive.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 17 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1285
+Theorem 6.4 LetV be anL-smooth, convex, coercive function. Then for all four methods,β given in
+Table1, andV∗ := minx V(x),w eh a v e
+Vk − V∗ ≤ βR(x0)2
+k +2β
+L
+. (6.4)
+Proof. Let x∗ be a minimiser ofV. By respectively convexity, the Cauchy-Schwarz inequality, and
+Lemma6.1,w eh a v e
+(V(xk) − V∗)
+2
+≤
+⟨
+∇V(xk), xk − x∗⟩2 ≤‖ ∇V(xk)‖2‖xk − x∗‖2 ≤ βR(x0)
+2(
+V(xk) − Edk+1[V(xk+1)]
+)
+.
+Taking expectation on both sides with respect toξk, and applying Jensen’s inequality (Rudin, 1987,
+Theorem 3.3), we obtain
+(
+Vk − V∗)2 ≤ βR(x0)
+2
+(Vk − Vk+1).
+By monotonicity ofVk and following the steps in the proof of (Nesterov, 2012, Theorem 1), we obtain
+Vk − V∗ ≤ βR(x0)2
+k + β R(x0)2
+V(x0)−V∗
+.
+To eliminate dependence on the starting point, we deriveV(x0) − V∗ ≤ L
+2 R(x0)2 from Proposition1.3
+(i), which gives us the desired result (6.4). □
+6.3 The Polyak–Łojasiewicz inequality
+The next result states that forL-smooth functions that satisfy the PŁ inequality, we achieve a linear
+convergencerate.AfunctionissaidtosatisfythePŁinequalitywithparameter μ> 0if,forall x ∈ Rn,
+1
+2‖∇V(x)‖2 ≥ μ
+(
+V(x) − V∗)
+. (6.5)
+Originally formulated byPolyak (1963), it was recently shown that this inequality is weaker than other
+properties commonly used to prove linear convergence (Bolte et al., 2010, 2017; Karimi et al., 2016;
+Csiba & Richtárik, 2017; Necoara et al., 2018). This is useful for extending linear convergence rates to
+functions that are not strongly convex, including some nonconvex functions.
+Proposition 6.5 (Karimi et al. (2016)). Let V be μ-convex. ThenV satisfies the PŁ inequality (6.5)
+with parameterμ.
+We now proceed to the main result of this subsection.
+Theorem6.6 Let V be L-smoothandsatisfythePŁinequality( 6.5)withparameter μ.Then,for β given
+in Table1, the three discrete gradient methods and the randomised Itoh–Abe method obtain the linear
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 18 =====
+1286 M. J. EHRHARDTET AL.
+convergence rate
+Vk − V∗ ≤
+(
+1 − 2μ
+β
+)k (
+V(x0) − V∗)
+. (6.6)
+Proof. This is a standard argument; see, e.g. (Karimi et al., 2016). Combining the PŁ inequality (6.5)
+with the estimate in Lemma6.1, and taking expectation with respect toξ k on both sides, we get
+V(xk) − Edk+1[V(xk+1)] ≥ 2μ
+β (V(xk) − V∗) /equal1⇒Vk+1 − V∗ ≤
+(
+1 − 2μ
+β
+)(
+Vk − V∗)
+.
+□
+7. Preconditioned discrete gradient method
+We briefly discuss the generalisation of the discrete gradient method (1.2) to a preconditioned version
+xk+1 = xk − Ak∇V(xk, xk+1), (7.1)
+where (Ak)k∈N ⊂ Rn×n isasequenceofpositive-definitematrices.Denotingby σ1,k and σn,k thesmallest
+and largest singular values ofAk, respectively, we have, for allx,
+σ1,k‖x‖≤‖ Akx‖≤ σn,k‖x‖.
+It is straightforward to extend the results in Sections3 and 6 to this setting, under the assumption that
+there areσmax ≥ σmin > 0 such thatσmin ≤ σ1,k,σn,k ≤ σmax for allk ∈ N.
+Thereareseveral motivations toprecondition. Inthecontext ofgeometric integration, itistypical to
+group the gradient flow system (2.1) with the more general dissipative system
+˙x =− A(x)∇V(x),
+where A(x) ∈ Rn×n is positive-definite for allx ∈ Rn (Quispel & Turner, 1996). This yields numerical
+schemes of the form (7.1), where we absorbτk into Ak. There are optimization problems in which the
+time stepτk should vary for each coordinate. This is, for example, the case when one derives the SOR
+method from the Itoh–Abe discrete gradient method (Miyatake et al., 2018).
+More generally, if one has coordinate-wise Lipschitz constants for the gradient of the objective
+function, it may be beneficial to scale the coordinate-wise time steps accordingly.
+8. Numerical experiments
+Inthissection,weapplythediscretegradientmethodstovarioustestproblems.Thecodeforthefigures
+has been implemented in Python and MATLAB and is available athttps://github.com/riis-academic/
+discrete-gradient-method-smooth-optimisation/. For solving the discrete gradient equation (1.2) with
+theGonzalezandmeanvaluediscretegradients,weusethefixed-pointmethod( 4.2)detailedinSection 4
+andtestednumericallyinSection 8.6underthelabel‘ R’.Forsolving( 1.2)fortheItoh–Abemethod,we
+use the built-in solverscipy.optimize.fsolvein Python.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 19 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1287
+For these test problems, we generally assume knowledge of the Lipschitz constantL when setting
+time steps. However, in Section8.5we assess Itoh–Abe methods with a wider range of time steps.
+8.1 Setup
+Weusethefollowingtimestepsforthedifferentmethods,unlessotherwisespecified.Forthemeanvalue
+discrete gradient method, we useτMV = 2/L, for the Gonzalez discrete gradient method, we useτG =
+2/L, and for the Itoh–Abe methods, we use the coordinate-dependent time stepsτIA,i = τRIA,i = 2/Li.
+Note that the time steps for the Itoh–Abe discrete gradient method are not the optimal choice suggested
+inTable 1,butwereheuristicallyoptimalforthetestproblemsweconsidered.Ananalysisofcoordinate-
+dependent time step strategies is an open topic for future research.
+Infigurecaptionsandlegends,theabbreviations CIAand RIAreferrespectivelytothe(cyclic)Itoh–
+AbediscretegradientmethodandtherandomisedItoh–Abemethoddrawinguniformlyfromthestandard
+coordinates.Forthesakeofcomparison,wedefineoneiterateoftherandomisedItoh–Abemethodsas n
+scalar updates, so that the computational time is comparable to the standard Itoh–Abe discrete gradient
+method.
+Unless otherwise specified, matrices and vectors are constructed by standard Gaussian draws. To
+provide the matrix with a given condition number, we compute its singular value decomposition and
+linearly transform its eigenvalues accordingly.
+8.2 Linear systems
+We first solve linear systems of the form
+min
+x∈Rn
+V(x) = 1
+2‖Ax − b‖2, A ∈ Rn×n, b ∈ Rn. (8.1)
+For linear systems, the Gonzalez and the mean value discrete gradient are both given by∇V(x, y) =
+∇V( x+y
+2 ) = A∗(A x+y
+2 − b),soweconsiderthesejointly.Asdiscussedpreviously,theItoh–Abemethods
+reduce to SOR methods for linear systems and are therefore explicit.
+8.2.1 Effect of the condition number. We setn = 500 and consider two linear systems, respectively,
+with a low condition numberκ = L/μ = 10 and a high oneκ = 1,000. In both cases, we setx0 = 0.
+See Fig.1for the results for both cases.
+8.2.2 Sharpness of rates. Wetestthesharpnessoftheconvergencerate( 6.6)fortherandomisedItoh–
+Abemethod.Todoso,werun100instancesofthenumericalexperimentintheprevioussubsectionand
+plot the mean convergence rate and 90%-confidence intervals, and compare the results to the proven
+rate. We do this for two condition numbers,κ = 1.2 and 10. The results are presented in Fig.2.
+These plots suggest that the proven convergence rate estimate is sharp for the randomised Itoh–Abe
+method.
+8.2.3 Linear system with kernel. Next we consider linear systems where the operator A has a
+nontrivial kernel, meaning that the objective function is not strongly convex, but nevertheless satisfies
+the PŁ inequality. We letA ∈ Rm×n and b ∈ Rm, wheren = 800 andm = 400, meaning the kernel ofA
+has dimension 400. See Fig.3for results.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 20 =====
+1288 M. J. EHRHARDTET AL.
+Fig. 1. DG methods for linear systems with condition numberκ = 10 (left)a n dκ = 1,000 (right). Convergence rate plotted as
+relative objective [V(xk) − V∗]/[V(x0) − V∗]. Linear rate is observed for all methods and is sensitive to condition number.
+Fig.2. Comparisonofobservedconvergenceratewiththeoreticalconvergencerate( 6.6),forrandomisedItoh–Abemethodapplied
+to linear system with condition numbersκ = 1.2 (left)a n dκ = 10 (right). Average convergence rate and confidence intervals as
+estimated from 100 runs on the same system. The sharpness of the proven convergence rate is observed in both cases.
+Fig. 3. DG methods for linear systems with nontrivial kernel, and convergence rate plotted as relative objective. The function is
+not strongly convex, but satisfies the PŁ inequality, yielding linear convergence rates.
+8.2.4 A note of caution. Theperformanceofcoordinatedescentmethodsandtheiroptimaltimesteps
+varysignificantlywiththestructureoftheoptimizationproblem( Gürbüzbalaban et al.,2017;Wright&
+Lee, 2020; Sun & Ye, 2021). If the linear systems above were constructed using a random distribution
+whosemeanisnotzero,thentheresultswouldlookdifferent.Wedemonstratethiswithanumericaltest
+with results in Fig.4.
+We compare two time steps for the cyclic Itoh–Abe method,τi = 2/Li and τi = 2/(Li
+√n), denoted
+by the curves labelled ‘heuristic’ and ‘proven’, respectively. While the heuristic time step was superior
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 21 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1289
+Fig. 4. CIA and RIA methods applied to linear system, with matrix entries created from uniform distribution. CIA with the time
+step τ = 1/[√nL]( orange, circle) performs better than the same method with heuristic time stepτ = 2/L (blue, triangle), but
+worse than RIA. This is the reverse of what was observed in previous examples.
+Fig. 5. DG methods for l2-regularised logistic regression (8.2). Convergence rate plotted as relative objective. The rates of
+randomised and cyclic Itoh–Abe methods almost coincide, and so do the mean value and Gonzalez discrete gradient methods.
+formostofthetestproblemsconsideredinthissection,itperformssignificantlyworseforthisexample.
+Furthermore, in this case the randomised Itoh–Abe method converges faster than the cyclic one.
+8.3 Regularised logistic regression
+We consider a𝓁2-regularised logistic regression problem, with training data
+{
+xi, yi
+}m
+i=1, wherexi ∈ Rn
+is the data andyi ∈{ −1,1} is the class label. We wish to solve the optimization problem
+min
+w∈Rn
+V(w) = C
+m∑
+i=1
+log
+(
+1 + e−yi⟨w,xi⟩)
++ 1
+2‖w‖2, (8.2)
+where C > 0. We setn = 100, m = 200, C = 1, and the elements of(yi)m
+i=1 is drawn from{−1,1}with
+equal probability. See Fig.5 for the numerical results.
+8.4 Nonconvex function
+We solve the nonconvex problem
+min
+x∈Rn
+V(x) =‖ Ax‖2 +3sin2(⟨c, x⟩), (8.3)
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 22 =====
+1290 M. J. EHRHARDTET AL.
+Fig. 6. DG methods applied to nonconvex problem (8.3) that satisfies the PŁ inequality.Left: relative objective.Right: norm of
+gradient ‖∇V(xk)‖/ ‖∇V(x0)‖. Linear convergence rates are observed for the objective value and the gradient of the norm.
+where A ∈ Rn×n is a square, nonsingular matrix, andc ∈ Rn satisfies Ac = c and ‖c‖= 1. This is a
+higher-dimensional extension of the scalar functionx2 + 3sin2(x) considered byKarimi et al. (2016).
+This scalar function satisfies the PŁ inequality (6.5)f o rμ = 1/32, and it follows thatV satisfies it for
+μ = 1/(32κ), whereκ is the condition number ofA∗A. Furthermore, the nonconvexity ofV is observed
+byconsideringtherestrictionof V to x = λcfor λ ∈ R,whichhastheformoftheoriginalscalarfunction.
+The function has the unique minimiserx∗ = 0.
+We set n = 50 and choose x0 constructed by random, independent draws from a Gaussian
+distribution. See Fig.6for the numerical results.
+8.5 Comparison of Itoh–Abe and coordinate descent for stiff problems
+In image analysis and signal processing, variational optimization problems often feature nonsmooth
+regularisation terms to promote sparsity, e.g. in the gradient domain or a wavelet basis. While one may
+replace these terms with smooth approximations, this can lead to stiffness of the optimization problem,
+i.e. local, rapid variations in the gradient, requiring the use of severely small time steps for explicit
+numericalmethods.Insuchcases,thecostofsolvinganimplicitequationsuchas( 1.2)maybepreferable
+to explicit methods.
+We investigate this scenario, by comparing the Itoh–Abe discrete gradient method to cyclic coor-
+dinate descent (CD) (B.1) for solving (smoothed) total variation denoising problems. We denote by
+xtrue ∈ Rn a ground truth image,2 and by xδ = xtrue + δ a noisy image, whereδ is random Gaussian
+noise. The total variation regulariser is defined as TV(x) := ∑n
+i=1 ‖[∇x]i‖, with∇ : Rn → R2×n a
+discretised spatial gradient as defined in (Chambolle, 2004). As the nonsmoothness is induced by the
+𝓁2-norm,weapproximatetheregulariserbyTV ε(x) := ∑n
+i=1 ‖[∇x]i‖ε,where ‖x‖ε :=
+√
+‖x‖2 + ε.The
+optimization problem is thus given by
+argminx∈Rn
+1
+2‖x − xδ‖2 + λTVε(x). (8.4)
+Unless otherwise specified, the time step for CD isτCD = 1/(2λ√ε + 1) and for the Itoh–Abe
+discrete gradient method (DG)τDG = 1/10.
+2 We consider discretised images in two dimensions, but express them in vector form for simplicity.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 23 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1291
+Fig.7. ComparisonofCIAwithdifferenttimestepstoCDwithstandardtimestep1 /Lforsolvingthetotalvariationproblem( 8.4).
+Left: Relative objective. Middle: noisy image. Right: reconstructed image. For the larger time steps, the CIA method converges
+significantly faster than both the CD method and the CIA method with the usual time stepτi = 2/L.
+Fig. 8. Comparison of CD to CIA for the total variation problem (8.4) using three values ofε,( top left)1 0−2,( top right)1 0−4,
+and (bottom)1 0−8. The time steps are set toτCIA = √τCD where the latter time step is as usual. As the problem becomes more
+ill-conditioned—when εisreduced—theperformanceofCIAimprovesrelativetoCD,demonstratingtheCIAscheme’sresilience
+to nonsmooth features.
+In Fig.7, we compare the DG method for a range of time steps to CD. This demonstrates that the
+superior convergence rate of the DG method is stable with respect to a wide range of time steps. In
+Fig. 8, we compare the DG method to CD for different values ofε, demonstrating that the benefits of
+using the DG method increases asε gets smaller. In Fig.9, we compare different time steps for CD to
+theDGmethod,showingthatforlargetimesteps,theCDschemeisunstableandfailstodecreasewhile
+for small time steps, the iterates decrease too slowly. In Fig.10, we employ a simple backtracking line
+search (LS) method based on the Armijo-Goldstein condition, and compare this to the DG method.
+8.6 Comparison of methods for solving the discrete gradient equation
+We test the numerical performance of four methods for solving the discrete gradient equation (1.2),
+building on the fixed-point theory in Section4.
+The first method, denotedF, is the fixed-point updates (4.1) proposed byNorton & Quispel (2014)
+(θ = 1). The second method, denotedR, is the relaxed fixed-point method (4.2), whereθ is optimised
+according to (4.3)i fV is convex, and is otherwise set to 1/2. The third method, denotedF+R,i sa l s o
+the updates (4.2) withθ = 1 by default, but whenever the discrepancy‖T(yk+1) − yk+1‖is greater than
+‖T(yk) − yk‖,thentheupdateisrepeatedwith θ settohalfitspreviousvalue.Thisthirdoptionmightbe
+desirable in cases whereθ = 1 is expected to give faster convergence, but also be unstable. The fourth
+method is the built-in solverscipy.optimize.fsolvein Python.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 24 =====
+1292 M. J. EHRHARDTET AL.
+Fig. 9. Comparison CD using different time steps versus CIA using a fixed time step, for the total variation problem (8.4). For
+smaller time steps, the CD iterates decrease too slowly, and for larger steps, they become unstable and fail to decrease.
+Fig. 10. Comparison of CIA to backtracking line search for solving the total variation problem (8.4) in terms of coordinate
+evaluations.
+Table 2 Average CPU time (s) over 50 iterations of ( 1.2) with the mean value discrete gradient.
+Toleranceε = 10−6, 10−12
+Test problem F R F +R fsolve Tolerance
+Linear system (8.1) N/A 0.006 0.002 0.190 10−6
+Logistic regression (8.2) 0.001 0.016 0.001 N/A
+Nonconvex problem (8.3) N/A 0.003 N/A N/A
+Linear system (8.1) N/A 0.012 0.005 0.206 10−12
+Logistic regression (8.2) 0.055 0.037 0.019 N/A
+Nonconvex problem (8.3) N/A 0.005 N/A 0.513
+To test these methods, we performed 50 iterations of the discrete gradient method for different test
+problems, where at each iterate the discrete gradient solver would run until
+‖rk‖∞ <ε , where rk
+i := yk
+i − yk−1
+i
+yk−1
+i
+if yk−1
+i ⁄= 0, and rk
+i := yk
+i otherwise,
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 25 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1293
+for some toleranceε> 0, or untilk reaches a maximumKmax. We then compare the average CPU time
+(s) for each of these methods. If a method fails to converge for a significant number of the iterations
+(> 10%), we consider the method inapplicable for that test problem.
+We test the methods for the mean value discrete gradient applied to three of the previous test
+problems, for ε = 10−6 and 10−12. We have not included results for the Gonzalez discrete gradient
+and other tolerances, as the results were largely the same.
+The results are given in Table2, where the best result is highlighted in bold for each test problem.
+We see thatR is superior in stability, being the only method that locates the minimiser in every case. In
+all cases,Ror F+Rwere the most efficient or close to the most efficient method. However, the relative
+performances of the different methods vary notably for the different test problems.
+9. Conclusion
+Inthispaper,westudiedthediscretegradientmethodforoptimization,andprovidedseveralfundamental
+resultsonwell-posedness,convergenceratesandoptimaltimesteps.Wefocusedonfourmethods,using
+the Gonzalez discrete gradient, the mean value discrete gradient, the Itoh–Abe discrete gradient, and a
+randomisedversionoftheItoh–Abemethod.Severaloftheprovenconvergenceratesmatchtheoptimal
+rates of classical methods such as gradient descent and stochastic coordinate descent. For the Itoh–Abe
+discrete gradient method, the proven rates are better than previously established rates for comparable
+methods, i.e. cyclic coordinate descent methods (Wright, 2015).
+Thereareopenproblemstobeaddressedinfuturework.Similartoaccelerationforgradientdescent,
+proximal gradient descent (Chambolle & Pock, 2016) and coordinate descent (Nesterov, 1983, 2012;
+Beck & Tetruashvili, 2013; Wright, 2015), we will study acceleration of the discrete gradient method
+to improve the convergence rate from O(1/k) to O(1/k2). We would furthermore like to consider
+generalisationsofthediscretegradientmethodtodiscretisegradientflowswithrespecttoothermeasures
+of distance than the Euclidean inner product (Burger et al., 2009; Benning et al., 2013).
+Acknowledgements
+AllauthorsacknowledgesupportfromCHiPS(Horizon2020RISEprojectgrant).M.J.E.,E.S.R.andC.-
+B.S.acknowledge supportfromtheCantabCapitalInstitutefortheMathematicsofInformation.M.J.E.
+and C.-B.S. acknowledge support from the Leverhulme Trust project on ‘ Breaking the nonconvexity
+barrier’,EPSRCgrantNrEP/M00483X/1andtheEPSRCCentreNrEP/N014588/1.Moreover,C.-B.S.
+acknowledges support from the RISE project NoMADS and the Alan Turing Institute.
+References
+Attouch, H.& Alvarez, F.(2000) The heavy ball with friction dynamical system for convex constrained mini-
+mizationproblems. Optimization: Proceedings of the 9th Belgian-French-German Conference on Optimization
+Namur , September 7–11, 1998(V. H. Nguyen, J.-J. Strodiot & P. Tossings eds). Berlin, Heidelberg: Springer
+Berlin Heidelberg, pp. 25–35.
+Bagirov, A. M., Karasözen, B. & Sezer, M. (2008) Discrete gradient method: derivative-free method for
+nonsmooth optimization.J. Optim. Theory Appl., 137, 317–334.
+Beck,A. &Tetruashvili,L.(2013)Ontheconvergenceofblockcoordinatedescenttypemethods. SIAM J. Optim.,
+23, 2037–2060.
+Benning,M.,Calatroni,L.,Düring,B. &Schönlieb,C.-B. (2013)Aprimal-dualapproachforatotalvariation
+Wasserstein flow. Geometric Science of Information (F. Nielsen & F. Barbaresco eds). Berlin, Heidelberg:
+Springer, pp. 413–421.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 26 =====
+1294 M. J. EHRHARDTET AL.
+Benning,M.,Riis,E.S. &Schönlieb,C.-B. (2020)BregmanItoh–Abemethodsforsparseoptimization. J. Math.
+Imaging Vis., 62, 842–857.
+Bertsekas, D. P.(2003) Nonlinear Programming, 2nd edn. Belmont, MA, USA: Athena Scientific.
+Betancourt, M., Jordan, M. I.,& W i l s o n ,A .C .(2018) On symplectic optimization. arXiv preprint
+arXiv:1802.03653.
+Bolte, J.,Daniilidis, A.,Ley, O.&Mazet, L.(2010) Characterizations of Łojasiewicz inequalities: subgradient
+flows, talweg, convexity.Trans. Amer . Math. Soc., 362, 3319–3363.
+Bolte,J.,Nguyen,T .P .,Peypouquet,J. &Suter,B.W. (2017)Fromerrorboundstothecomplexityoffirst-order
+descent methods for convex functions.Math. Program., 165, 471–507.
+Brouwer, L. E. J.(1911) Über Abbildung von Mannigfaltigkeiten.Math. Ann., 71, 97–115.
+Burger,M.,He,L. &Schönlieb,C.-B. (2009)Cahn–Hilliardinpaintingandageneralizationforgrayvalueimages.
+SIAM J. Imaging Sci., 2, 1129–1167.
+Celledoni, E., Eidnes, S., Owren, B.& Ringholm, T.(2018) Dissipative numerical schemes on riemannian
+manifolds with applications to gradient flows.SIAM J. Sci Comput., 40, A3789–A3806.
+Celledoni, E., Grimm, V., McLachlan, R. I., McLaren, D. I., O’Neale, D., Owren, B.& Quispel, G. R. W.
+(2012) Preserving energy resp. dissipation in numerical PDEs using the ‘average vector field’ method.
+J. Comput. Phys., 231, 6770–6789.
+Chambolle, A.(2004) An algorithm for total variation minimization and applications.J. Math. Imaging Vision,
+20, 89–97.
+Chambolle, A. & Pock, T. (2016) An introduction to continuous optimization for imaging. Acta Numer .,
+25, 161–319.
+Conway, J. B.(1994) A Course in Functional Analysis. Graduate Texts in Mathematics . New York: Springer.
+Csiba, D. & Richtárik, P.(2017) Global Convergence of Arbitrary-Block Gradient Methods for Generalized
+Polyak–Łojasiewicz Functions. arXiv preprint arXiv:1709.03014.
+Dahlby,M.,Owren,B. &Yaguchi, T.(2011)Preservingmultiplefirstintegralsbydiscretegradients. J. Phys. A,
+44, 305205.
+Dontchev,A.L. &Rockafellar,R.T. (2014)Implicitfunctionsandsolutionmappings:aviewfromvariational
+analysis. Springer Series in Operations Research and Financial Engineering, 2nd edn. New York: Springer.
+Eftekhari, A., Vandereycken, B., Vilmart, G.& Zygalakis, K. C.(2021) Explicit stabilised gradient descent
+for faster strongly convex optimization.BIT Numer . Math, 61, 119–139.
+Fercoq, O. & Richtárik, P. (2015) Accelerated, parallel and proximal coordinate descent.SIAM J. Optim. ,
+25, 1997–2023.
+França, G., Sulam, J., Robinson, D. P.& Vidal, R.(2020) Conformal symplectic and relativistic optimization.
+J. Stat. Mech. Theory Exp., 2020, 124008.
+Gonzalez, O.(1996) Time integration and discrete Hamiltonian systems.J. Nonlinear Sci., 6, 449–467.
+Granas, A.&Dugundji, J.(2003) Fixed Point Theory. Monographs in Mathematics. New York: Springer.
+Grimm, V., McLachlan, R. I., McLaren, D. I., Quispel, G. R. W.& Schönlieb, C.-B.(2017) Discrete gradient
+methods for solving variational image regularisation models.J. Phys. A, 50, 295201.
+Gürbüzbalaban, M., Ozdaglar, A., Parrilo, P. A. & Vanli, N. (2017) When cyclic coordinate descent
+outperforms randomized coordinate descent.Advances in Neural Information Processing Systems 30 (NIPS
+2017) (U. Von Luxburg et al. eds). San Diego: Neural Information Processing Systems Foundation, Inc,
+pp. 6999–7007.
+Hairer, E. & Lubich, C. (2013) Energy-diminishing integration of gradient systems. IMA J. Numer . Anal. ,
+34, 452–461.
+Hairer,E.,Lubich,C. &Wanner,G. (2006) Geometric Numerical Integration: Structure-Preserving Algorithms
+for Ordinary Differential Equations, volume 31, 2nd edn. Berlin: Springer Science & Business Media.
+Harten,A.,Lax,P.D. &vanLeer,B. (1983)OnupstreamdifferencingandGodunov-typeschemesforhyperbolic
+conservation laws.SIAM Rev., 25, 35–61.
+Hernández-Solano, Y., Atencia, M., Joya, G.& Sandoval, F.(2015) A discrete gradient method to enhance
+the numerical behaviour of Hopfield networks.Neurocomputing, 164, 45.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 27 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1295
+Higham, N. J.(2002) Accuracy and Stability of Numerical Algorithms, 2nd edn. Philadelphia, USA: SIAM.
+Itoh, T.& Abe, K.(1988) Hamiltonian-conserving discrete canonical equations based on variational difference
+quotients. J. Comput. Phys., 76, 85–102.
+Karimi,H.,Nutini,J. &Schmidt,M. (2016)Linearconvergenceofgradientandproximal-gradientmethodsunder
+thePolyak–Łojasiewiczcondition. Joint European Conference on Machine Learning and Knowledge Discovery
+in Databases (P.Frasconi,N. Landwehr,G.Manco &J.Vreeken eds).Cham:Springer,SpringerInternational
+Publishing, pp. 795–811.
+Lee, S.-I., Lee, H., Abbeel, P.& Ng, A. Y.(2006) Efficient l1 regularized logistic regression.Proceedings of the
+Twenty-First National Conference on Artificial Intelligence (AAAI-06) (A. Chon ed). Menlo Park, California:
+AAAI Press, pp. 401–408.
+Leoni, G.(2017) A First Course in Sobolev Spaces.Graduate Studies in Mathematics , 2nd edn. Rhode Island:
+American Mathematical Society, Providence.
+Maddison, C., Paulin, D., Teh, Y. W., O’Donoghue, B.,& Doucet, A.(2018) Hamiltonian descent methods.
+arXiv preprint arXiv:1809.05042.
+McLachlan, R. I.&Quispel, G. R. W.(2001) Six lectures on the geometric integration of ODEs.F oundations of
+Computational Mathematics, London Mathematical Society Lecture Note Series (R.Devore,I.Arieh&E.Süli
+eds). Cambridge: Cambridge University Press, pp. 155–210.
+McLachlan, R. I., Quispel, G. R. W.& Robidoux, N.(1999) Geometric integration using discrete gradients.
+Philos. Trans. R. Soc. Lond. Ser . A Math. Phys. Eng. Sci, 357, 1021–1045.
+Meyer,C.D. (2000) Matrix Analysis and Applied Linear Algebra,vol.71,1stedn.Philadelphia,PA,USA:SIAM.
+Miyatake,Y.,Sogabe,T. &Zhang,S.-L. (2018)OntheequivalencebetweenSOR-typemethodsforlinearsystems
+and the discrete gradient methods for gradient systems.J. Comput. Appl. Math., 342, 58–69.
+Necoara,I.,Nesterov,Y. &Glineur,F. (2018)Linearconvergenceoffirstordermethodsfornonstronglyconvex
+optimization. Math. Program., 175, 69–107.
+Nesterov,Y. (1983)Amethodforsolvingtheconvexprogrammingproblemwithconvergencerate O
+(
+1/k2)
+. Dokl.
+akad. nauk Sssr, 269, 543–547.
+Nesterov,Y. (2004) Introductory Lectures on Convex Programming: A Basic Course,1stedn.NewYork:Springer.
+Nesterov, Y.(2012) Efficiency of coordinate descent methods on huge-scale optimization problems.SIAM J.
+Optim., 22, 341–362.
+Nesterov, Y.& Spokoiny, V.(2017) Random gradient-free minimization of convex functions.F ound. Comput.
+Math., 17, 527–566.
+Nestruev, J.(2003) Smooth Manifolds and Observables , vol. 220, 1st edn. Berlin: Springer Science & Business
+Media.
+Nocedal, J. & Wright, S. (1999) Numerical Optimization. Springer Series in Operations Research , 1st edn.
+New York: Springer-Verlag.
+Norton,R.A. &Quispel,G. R.W. (2014)Discretegradient methods forpreserving afirstintegral ofan ordinary
+differential equation.Discrete Contin. Dyn. Syst., 34, 1147–1170.
+Polyak, B. T.(1963) Gradient methods for minimizing functionals.Zh. Vychisl. Mat. Mat. Fiz., 3, 864–878.
+Quispel, G. R. W.& Turner, G. S.(1996) Discrete gradient methods for solving ODEs numerically while
+preserving a first integral.J. of Phys. A, 29, L341–L349.
+R i i s ,E .S ., Ehrhardt, M. J., Quispel, G. R. W.& Schönlieb, C.-B.(2021) A geometric integration approach to
+nonsmooth, nonconvex optimization.F ound. Comput. Math., 22, 1–44.
+Ringholm, T.,Lazic, J.&Schonlieb, C.-B.(2018) Variational image regularization with Euler’s elastica using a
+discrete gradient scheme.SIAM J. Imaging Sci., 11, 2665–2691.
+Rudin, W.(1987) Real and Complex Analysis. McGraw-Hill: Mathematics series.
+Stich, S. U.(2014) Convex optimization with random pursuit. PhD thesis. ETH Zurich.
+Stuart, A. & Humphries, A. R. (1996) Dynamical Systems and Numerical Analysis , 1st edn. Cambridge:
+Cambridge University Press.
+Sun,R. &Ye, Y.(2021)Worst-casecomplexityofcycliccoordinatedescent:o(n¡sup¿2¡/sup¿)gapwithrandomized
+version. Math. Program., 185, 487–520.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 28 =====
+1296 M. J. EHRHARDTET AL.
+Weijie, S., Boyd, S.& Candes, E. J.(2016) A differential equation for modeling Nesterov’s accelerated gradient
+method: theory and insights.J. Mach. Learn. Res., 17, 1–43.
+Wibisono, A., Wilson, A. C. & J o r d a n ,M .I .(2016) A variational perspective on accelerated methods in
+optimization. Proc. Natl. Acad. Sci., 113, E7351–E7358.
+Wilson, A. C., Recht, B.& Jordan, M. I.(2021) A Lyapunov analysis of accelerated methods in optimization.
+J. Mach. Learn. Res., 22, 111–113.
+W r i g h t ,S .J .(2015) Coordinate descent algorithms.Math. Program., 151, 3–34.
+Wright, S. J.& Lee, C.-p.(2020) Analyzing random permutations for cyclic coordinate descent.Math. Comp.,
+89, 2217–2248.
+Zheng, Q., Richtárik, P.& Zhang, T. (2015) Quartz: Randomized Dual Coordinate Ascent with Arbitrary
+Sampling. Advances in Neural Information Processing Systems(C.Cortes,N.Lawrence,D.Lee,M.Sugiyama
+& R. Garnett eds). New York: Curran Associates, Inc, pp. 865–873.
+Appendix A. Bounds on discrete gradients
+A.1 Proof of Lemma 3.3
+Part1.WefirstconsidertheGonzalezdiscretegradient,andassumethat x ⁄= yandwrite d := y− x.V ia
+the Gram–Schmidt process (see e.g. (Conway, 1994, Section 4.6)), there is a vectord⊥ which satisfies
+⟨d, d⊥⟩= 0, ‖d⊥‖= 1, and
+∇V(x, y) =
+⟨
+∇V
+(x + y
+2
+)
+, d⊥
+⟩
+d⊥ + V(y) − V(x)
+‖y − x‖ d.
+By MVT, there isz ∈ [x, y] such thatV(y) − V(x) =⟨ ∇V(z), y − x⟩. Therefore, we obtain
+∇V(x, y) =
+⟨
+∇V
+(x + y
+2
+)
+, d⊥
+⟩
+d⊥ +⟨ ∇V(z), d⟩d.( A . 1 )
+From this, we derive‖∇V(x, y)‖2 ≤‖ ∇V( x+y
+2 )‖2 +‖ ∇V(z)‖2. Thus property(i) holds withCn =
+√
+2
+and δ ≡ 0.Toshowproperty (ii),itissufficienttonotethatsince K isconvexandhasnonemptyinterior,
+then ∇W(x + y)/2 =∇ V(x + y)/2.
+Part 2. Next we consider the mean value discrete gradient. It is clear that property(i) holds with
+Cn = 1 andδ ≡ 0. Property(ii)is immediate from convexity ofK.
+Part 3. For the Itoh–Abe discrete gradient, we setδ(r) = r. By applying the mean value theorem
+(MVT) to
+(
+∇V(x, y)
+)
+i = V(y1,... , yi, xi+1,... , xn) − V(y1,... , yi−1, xi,... , xn)
+yi − xi
+,( A . 2 )
+we derive that(∇V(x, y))i = ∂iV(zi), wherezi = [y1,... , yi−1, ci, xi+1,... , xn]T for someci ∈ [xi, yi].
+Furthermore, we have‖zi − x‖≤‖ y − x‖,s o z ∈ Kdiam(K). This implies that property(i) holds with
+Cn = √n. Property(ii) is immediate.□
+A.2 Proof of Lemma 6.1
+Part 1. Givenz, d ∈ Rn as in (A.1), we denote byd⊥ a vector that satisfies
+⟨d, d⊥⟩= 0, ‖d⊥‖= 1, ∇V(xk) =⟨ ∇V(xk), d⟩d +⟨ ∇V(xk), d⊥⟩d⊥.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 29 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1297
+Note that by (1.2), it also holds that⟨∇V(xk, xk+1), d⊥⟩= 0. We compute
+‖∇V(xk)‖2 =⟨ ∇V(xk), d⟩2 +⟨ ∇V(xk), d⊥⟩2
+≤ 2
+(
+‖∇V(xk, xk+1)‖2 +⟨ ∇V(xk) −∇ V(z), d⟩2 + 1
+4 L2‖xk − xk+1‖2
+)
+.
+Since ⟨∇V(z), d⟩= (V(xk+1) − V(xk))/‖xk+1 − xk‖and d = xk+1−xk
+‖xk+1−xk‖,w eh a v e
+⟨∇V(xk) −∇ V(z), d⟩2 = 1
+‖xk − xk+1‖2
+(
+⟨∇V(xk), xk+1− xk⟩− V(xk+1) + V(xk)
+)2 ≤ 1
+4 L2‖xk+1 − xk‖2,
+where the inequality follows from Proposition1.3 (i). Applying (2.3), we conclude
+‖∇V(xk)‖2 ≤ 2
+(
+1
+τk
++ 1
+2 L2τk
+)
+(
+V(xk) − V(xk+1)
+)
+.
+Part 2. We compute
+‖∇V(xk)‖2 ≤ 2‖∇V(xk, xk+1)‖2 +2
+‖‖‖‖‖
+∫1
+0
+∇V(sxk + (1 − s)xk+1) −∇ V(xk) ds
+‖‖‖‖‖
+2
+≤ 2‖∇V(xk, xk+1)‖2 + L2
+2 ‖xk − xk+1‖2 = 2
+(
+1
+τk
++ 1
+4 L2τk
+)
+(
+V(xk) − V(xk+1)
+)
+.
+Part 3. We apply MVT like in (A.2) to obtain
+(
+∇V(xk, xk+1)
+)
+i
+= ∂iV(yi), where, forci ∈ [xk
+i , xk+1
+i ],
+yi = [xk+1
+1 , ... , xk+1
+i−1 , ci, xk
+i+1,... , xk
+n]
+T
+. This gives
+‖∇V(xk)‖2 =
+n∑
+i=1
+|∂iV(xk)|2 ≤ 2
+n∑
+i=1
+(
+|∂iV(yi)|2 +| ∂iV(yi) − ∂iV(xk)|2)
+≤ 2
+(
+‖∇V(xk, xk+1)‖2 + L2
+sum‖xk − xk+1‖2
+)
+≤ 2
+(
+1
+τk
++ L2
+sumτk
+)
+(
+V(xk) − V(xk+1)
+)
+.
+Part 4. By respectively (6.2) and (2.6), we have
+⟨∇V(xk), xk − xk+1⟩≤ V(xk) − V(xk+1) + Lmax
+2 ‖xk − xk+1‖2 =
+(
+1
+τk
++ Lmax
+2
+)
+‖xk − xk+1‖2.
+Furthermore, ⟨∇V(xk), xk − xk+1⟩=| ⟨ ∇V(xk), dk+1⟩|‖xk − xk+1‖. From this, we derive
+⟨∇V(xk), dk+1⟩2 ≤
+(
+1
+τk
++ Lmax
+2
+)2
+‖xk − xk+1‖2.( A . 3 )
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 30 =====
+1298 M. J. EHRHARDTET AL.
+By the definition ofζ,w eh a v e
+Edk+1 ⟨∇V(xk), dk+1⟩2 ≥ ζ‖∇V(xk)‖2.( A . 4 )
+Combining (A.3) and (A.4), we derive
+‖∇V(xk)‖2 ≤ τk
+ζ
+(
+1
+τk
++ Lmax
+2
+)2
+(
+V(xk) − Edk+1[V(xk+1)]
+)
+.
+This concludes the proof.□
+Appendix B. Convergence rate for cyclic coordinate descent
+We now sharpen the convergence rates for cyclic coordinate descent (CD) (Beck & Tetruashvili, 2013;
+Wright, 2015) to match those obtained for the Itoh–Abe discrete gradient method in Section6.T h eC D
+method, for a starting pointx0, time stepsτi > 0, i = 1,... , n, andk = 0,1,2, ... is given by
+xk,i+1 = xk,i − τi+1∂i+1V(xk,i) ei+1,f o r i = 0,... , n −1, (B.1)
+where xk,0 = xk and xk+1 = xk,n.RecallingSection 6,weareinterestedinestimatesfor β> 0thatsatisfy
+(6.1),wheresmaller β impliesbetterconvergence rate.In( Beck&Tetruashvili,2013 )(seeLemma3.3)
+and referenced byWright (2015), the estimate
+β = 4Lmax
+(
+1 + nL2/L2
+min
+)
+,
+is obtained, using the time stepτi = 1/Li. This rate is optimised with respect toLmin, Lmax when setting
+Lmin = Lmax = √nL, yieldingβ = 8√nL. However, we show in Section6.1 that the Itoh–Abe discrete
+gradient method achieves the stronger boundβ = 4Lsum ≤ 4√nL. We therefore include an analysis to
+show that the bound for CD can similarly be improved.
+By the coordinate-wise descent lemma (6.2), we have
+V(xk,i)−V(xk,i+1) ≥⟨ ∇V(xk,i), xk,i − xk,i+1⟩− Li
+2 ‖xk,i − xk,i+1‖2 =
+(
+τi − τ2
+i Li
+2
+)
+⏐⏐∂i+1V(xk,i)
+⏐⏐2.
+For someα ∈ (0,2), we chooseτi = α/Li, and substitute into the above inequality to get
+V(xk,i) − V(xk,i+1) ≥ α
+Li
+(
+1 − α
+2
+)⏐⏐∂i+1V(xk,i)
+⏐⏐2.( B . 2 )
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026
+
+===== PAGE 31 =====
+A GEOMETRIC INTEGRATION APPROACH TO SMOOTH OPTIMISATION 1299
+We then compute
+‖∇V(xk)‖2 =
+n∑
+i=1
+⏐⏐∂iV(xk)
+⏐⏐2 ≤ 2
+n∑
+i=1
+(⏐⏐∂iV(xk) − ∂iV(xk,i−1)
+⏐⏐2 +
+⏐⏐∂iV(xk,i−1)
+⏐⏐2)
+(B.2)
+≤ 2
+n∑
+i=1
+⎛
+⎝L2‖xk − xk,i‖2 + Li
+α − α2
+2
+(
+V(xk,i−1) − V(xk,i)
+)
+⎞
+⎠
+≤ 2
+n∑
+i=1
+⎛
+⎝L2
+i∑
+j=0
+‖xk,j − xk,j+1‖2 + Li
+α − α2
+2
+(
+V(xk,i−1) − V(xk,i)
+)
+⎞
+⎠
+≤ 2
+⎛
+⎝ nα2L2
+L2
+min
+n∑
+j=0
+⏐⏐∂j+1V(xk,j)
+⏐⏐2 + Lmax
+α − α2
+2
+(
+V(xk) − V(xk+1)
+)
+⎞
+⎠
+≤ 2Lmax
+(
+1 + nα2L2/L2
+min
+)
+α − α2
+2
+(
+V(xk) − V(xk+1)
+)
+.
+Setting α = 1/√nand Li = L, we obtain the new estimate forβ,
+β = 4L√n
+(
+2√n
+2√n −1
+)
+≈ 4√nL.
+This is approximately the same rate as that of the Itoh–Abe discrete gradient method.
+Coordinate descent methods are often extended toblock coordinate descent methods. The above
+analysis can be extended to this setting by replacingnwith the number of blocks.
+Downloaded from https://academic.oup.com/imajna/article/45/3/1269/7701998 by guest on 10 July 2026

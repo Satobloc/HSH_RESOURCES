@@ -1,0 +1,1536 @@
+===== PAGE 1 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY
+BRIAN PAN
+NATHAN NIE
+DANIEL WANG
+Abstract. Spectral graph theory bridges the world of linear algebra and
+graph theory by studying how a graph’s connectivity and organization are
+encoded in the eigenvalues and eigenvectors of its associated matrices. We
+begin with a concise overview of the fundamental concepts of graph theory
+and the basics of matrices in linear algebra. Then, we introduce the principal
+matrix representations of a graph: the adjacency matrix and incidence matrix.
+We highlight their definitions and properties. Next, we introduce the Laplacian
+operator and its graph analogue, the Laplacian matrix. Finally, we investigate
+the eigenvalues of the Laplacian matrix and how they reveal deep insights into
+the connectivity of the graph.
+Contents
+1. Background 2
+1.1. Introduction to Graphs 3
+1.2. Introduction to Matrices 5
+1.3. Eigenvalues and Eigenvectors 8
+2. Adjacency Matrices 10
+2.1. Definition of the Adjacency Matrix 10
+2.2. The Power of the Adjacency Matrix 11
+3. Incidence Matrices 12
+3.1. Definition of the Incidence Matrix 12
+4. The Laplacian Operator 12
+4.1. Intuition Behind the Laplacian 13
+4.2. Laplace’s Equation 14
+5. Laplacian Matrices 15
+5.1. Definition of the Laplacian Matrix 15
+5.2. Eigenvalues of the Laplacian Matrix 16
+5.3. Spectral Partitioning 21
+5.4. Trees in Graphs 25
+5.5. Counting Spanning Trees 27
+References 30
+Date: May 20, 2025.
+
+===== PAGE 2 =====
+2 BRIAN PAN NATHAN NIE DANIEL W ANG
+1. Background
+The first recorded discovery of graph theory was by Leonard Euler, a Swiss
+mathematician, who developed a theorem to solve the famous Seven Bridges of
+Königsberg problem in 1736 [5]. Euler wanted to find a way to cross all seven bridges
+in the city of Königsberg, shown in Figure 1, once and exactly once. In the map, the
+bridges are colored red, while the river is colored blue. Euler eventually found that
+this was an impossible task, and this discovery laid the foundation for graph theory.
+Figure 1. The city and bridges of Königsberg
+Since then, the field of graph theory has developed significantly with the work
+of mathematicians such as Georg Kirchhoff and Arthur Cayley, who have made
+meaningful contributions to graph theory. We will discuss some of these in this
+paper, including Kirchhoff’s matrix tree theorem [3] and Cayley’s tree formula [1].
+One unique field in graph theory is spectral graph theory, which combines linear
+algebra and graph theory. Spectral graph theory originated in the 1950s with the
+first few pieces of research on structural and spectral properties of graphs, as well as
+on quantum chemistry. However, this line connecting the two would not be drawn
+until much later. One of the first books that summarized all of the work in this
+field was published in 1980 by Cvetković, Doob, and Sachs, which was a monograph
+called Spectra of Graphs[7]. Today, spectral graph theory has developed greatly and
+is applied to a wide range of fields, including in machine learning, network analysis,
+autonomous systems, and chemistry.
+This paper explores the field of spectral graph theory, which studies the rela-
+tionships between the structure of a graph and the eigenvalues and eigenvectors of
+matrices associated with it− particularly the adjacency matrix, incidence matrix,
+and Laplacian matrix.
+We begin with the foundational concepts of graph theory, including the nomen-
+clature and properties of graphs. Shortly after, we introduce linear algebra with
+the properties of matrices, as well as the eigenvalues and eigenvectors of matrices.
+
+===== PAGE 3 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 3
+Next, we dive into the relationships between graphs and their matrix representa-
+tions. More specifically, we look at the properties of the adjacency matrix and the
+incidence matrix. Then, we introduce the Laplacian operator and its graph analog,
+the Laplacian matrix, which is a central object in spectral graph theory. Finally, we
+analyze the key properties of the Laplacian matrix with a focus on its eigenvalues,
+eigenvectors, and how they relate to the structure of the graph.
+1.1. Introduction to Graphs.The most basic definition needed in our investiga-
+tion is that of a graph.
+Definition 1.1. [1] Agraph is an ordered pairG = (V,E ) where V is thevertex
+set and E is theedge set. An edgee∈E is a pairuv of distinct verticesu,v∈V.
+Hence, there are no loops, meaning that no vertex can have an edge to itself.
+Moreover, we stipulate that a graph cannot have multiple edges that connect the
+same pair of vertices. When the edges are given direction, the graph is adigraph.
+Unless stated otherwise, the graphs in this paper are not directed, so we are free to
+assume uv =vu. We also say that|V| is theorder of the graph, or the number of
+vertices, ofG while|E| is thesize, or the number of edges, ofG.
+Two verticesu and v are adjacent or neighbors if u,v ∈ V (G) and the edge
+e =uv∈E(G). The vertexu and the edgee are said to beincident.
+Consider the following graph in Figure 2. The order|V| is 6, while the size|E| is
+6 as well. This graph shows thatv3 is adjacent tov1 and v4, while it is incident to
+e =v1v3.
+G:
+v1
+v2 v3
+v4
+v5
+v6
+e
+Figure 2. A graph
+A subgraph of a graphG = (V,E ) is a smaller graphG′ contained withinG,
+formed by taking subsets ofV and E. Intuitively,G′ is formed by removing vertices
+and edges fromG, but we cannot add vertices or edges.
+Definition 1.2. The degree deg v of a vertexv is the number of edges incident
+with v, equivalent to the number of vertices adjacent tov.
+An interesting result involving degrees in graph theory is thedegree sum formula
+which states that for any graph, one can relate the number of edges to the degrees
+of its vertices. This theorem is often referred to as theFirst Theorem of Graph
+Theory because many who start studying this subject would encounter this result as
+their first theorem.
+
+===== PAGE 4 =====
+4 BRIAN PAN NATHAN NIE DANIEL W ANG
+Theorem 1.3(First Theorem of Graph Theory). [1] If G is a graph of sizem, then
+∑
+v∈V (G)
+degv = 2m.
+Proof. Each edge inG represents a degree of two because it is incident with two
+vertices. Therefore, each edge is counted twice when summing the degrees of the
+vertices ofG. □
+As an example, consider the graph in Figure 2. The sum of the degrees of its
+vertices is3 + 2 + 2 + 4 + 1 + 0 = 12, while two times the number of edges is also
+2m = 6· 2 = 12.
+The particular reason why this theorem is also named thehandshaking lemmaby
+many is because it follows directly from the degree sum formula that there must be
+an even number of odd vertices in a graph. If there is a party of people who shake
+hands, the number of people who shake an odd number of other people’s hands
+must be even.
+Example 1.4. Consider a graph of order12 and size 31 in which the degree of
+each vertex is either4 or 6. To find the number of vertices of degree4, letx be the
+number of vertices of degree4. Then, there are12−x vertices of degree6.
+By the degree sum formula,4x + 6(12−x) = 2· 31, so there arex = 5 vertices of
+degree 4. Consequently, there are12− 5 = 7 vertices of degree6.
+In theory, a graph of order12 and size31 with 7 vertices of degree6 and 5 vertices
+of degree 4 is tedious to count by hand, so this theorem proves to be extremely
+beneficial.
+Many times, graphs are used to model connections between states in a process,
+so graph traversals are of great importance. In a graphG, we choose a vertexu
+to start. Then, we proceed fromu to a neighbor ofu, then to a neighbor of the
+neighbor ofu, and so on, until we stop at a vertexv. Such a sequence is called a
+walk. The number of edges traversed on a walk is thelength of that walk.
+Definition 1.5. A u−v walk W in a graphG is a sequence of vertices starting
+with u and ending withv where all pairs of consecutive vertices inW are adjacent.
+If we continue this walk (until we stop), there is essentially no restriction on what
+a walk can be. However, there will be instances where we want to place restrictions
+on walks. If a walk contains no repeated vertices or repeated edges, then it is called
+a path, denotedPn with n vertices. A path is shown in Figure 3.
+Moreover, acycle Cn is a walk withn vertices that starts and ends at the same
+vertex, but, like paths, cannot have any repeating vertices (except for the first and
+last) and cannot have any repeating edges. Ak-cycle is a cycle of lengthk. A graph
+is acyclic if it has no cycles. A cycle is shown in Figure 3.
+Speaking of graph traversals, it is helpful to know whether we can traverse a
+graph from any vertex to any other vertex.
+Definition 1.6. A graphG is connected if G contains au−v walk for allu,v∈G.
+
+===== PAGE 5 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 5
+P5: C5:
+Figure 3. A pathP5 and a cycleC5
+In other words, a graph is connected if there exists a walk that connects all pairs
+of vertices in that graph. If the entire graph is not connected, but rather a specific
+section, these sections are calledconnected components.
+As we continue to study graphs, we will encounter certain graphs with shared
+characteristics. It is useful to be familiar with some of them.
+Definition 1.7. The complete graphKn with n vertices is a graph in which every
+pair of vertices is adjacent.
+Therefore, Kn has the maximum possible size for a graph withn vertices. The
+complete graphK4 is shown in Figure 4.
+K4:
+v1
+v2v3
+v4
+Figure 4. A complete graphK4
+Definition 1.8. The star graphSn with n vertices is a graph in which one vertex
+has degreen− 1, while every other vertex has a degree of1.
+The star graph takes the shape of a star, hence why it is called a star graph. The
+star graphS5 is shown in Figure 5.
+1.2. Introduction to Matrices.Linear algebra is essential for the study of spectral
+graph theory, especially in analyzing the matrix representations of graphs, so it is
+crucial to grasp a solid understanding of the subject.
+A vector is a tuple of numbers arranged in a vertical fashion. Usually, they are
+used to represent coordinates inn−dimensional space; as such, each entry is well
+defined according to a single index. Amatrix is a rectangular array of numbers.
+An m×n matrix hasm rows andn columns. Each entry in the array is called an
+element of the matrix which can be directly referenced using rows and columns.
+This is done with the notationAij, which pinpoints the element in thei−th row
+and thej−th column.
+
+===== PAGE 6 =====
+6 BRIAN PAN NATHAN NIE DANIEL W ANG
+S5:
+v1
+v2v3
+v4
+v5
+Figure 5. A star graphS5
+Definition 1.9. The transpose of a matrixA is denotedAT. Theij−th element of
+A becomes theji−th element ofAT.
+Note that the transpose is also well-defined for a vector: instead of being a column
+of numbers, a transposed vector is a row. We will revisit the matrix transpose in
+our discussion of the adjacency matrix.
+A square matrixis a matrix in which the number of rows and columns are the
+same, sayn. Themain diagonalof a square matrixA is the set of elementsAii, and
+the trace is the sum of the entries on the main diagonal. For example, the identity
+matrix I, so named because it does not meaningfully transform space, is the square
+matrix with 1 on the main diagonal and0 otherwise.
+There is a useful way of representing and visualizing transformations inn−
+dimensional space. We do so by multiplying matrices and vectors. When a matrix
+is applied to a vector, the vector transforms by the matrixA.
+Example 1.10. Suppose we multiply the following matrixA and vectorv:
+A =
+[
+2 3
+4 1
+]
+, v =
+[
+5
+6
+]
+.
+Then, the resulting vector will take the form[k1,k 2]T. The value ofk1 is the sum of
+the multiplication of the corresponding elements in the first row ofA with v. Thus,
+we getk1 = 2· 5 + 3· 6 = 28.
+Similarly, the value ofk2 is the sum of the multiplication of the corresponding
+elements in the second row ofA with v, yieldingk2 = 4· 5 + 1· 6 = 26.
+Therefore, the resulting vector isAv = [28, 26]T.
+In summary, to transform space by multiplying a matrixA with a vectorv, the
+number of columns ofA must match the number of rows ofv. Furthermore, the
+resulting vector has the number of rows ofA, and the individual elements in the
+resulting vector can be found by multiplying the rows ofA with v.
+We can alsocompose or multiply matrices with matrices.
+Definition 1.11. Let A be am×n matrix andB a n×p matrix. Then
+(AB)ij =
+n∑
+k=1
+AikBkj.
+
+===== PAGE 7 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 7
+In other words, ifA[i, :] denotes thei−th row ofA and B[:,j ] is thej−th column,
+then theij-th entry ofAB is exactlyA[i, :]B[j, :].
+We visualize matrix multiplication with two arbitrary2× 2 matrices shown in
+Figure 6.
+[
+a b
+c d
+]
+·
+[
+e f
+g h
+]
+=
+[
+ae +bg af +bh
+ce +dg df +dh
+]
+.
+Figure 6. The multiplication of two2× 2 matrices
+Reversing the order of the two matrices multiplied in Figure 6 produces the result
+in Figure 7. It does not yield the same result, proving that matrix multiplication is
+not commutative.
+[
+e f
+g h
+]
+·
+[
+a b
+c d
+]
+=
+[
+ea +fc eb +fd
+ga +hc gb +hd
+]
+.
+Figure 7. The multiplication of two matrices in reverse order
+Next, we examine a crucial part of the matrix: the determinant. The determinant
+has many uses, including showing how much a matrix scales an area, calculating the
+inverse of a matrix, and providing useful information on graph structure. We will go
+back to the discussion of the determinant after the introduction of the eigenvalues
+of a matrix.
+Definition 1.12. The determinant of a square matrixA, denoteddet(A), is the
+product of every eigenvalue ofA counted with multiplicities.
+Moreover, thetrace of a square matrixtr(A), or the sum of the main diagonal, is
+also equal to the sum of the eigenvalues ofA [22].
+To visualize an example, we show the determinant for an arbitrary2× 2 and
+3× 3 matrix in Figure 8. The determinant and trace of a1× 1 matrix is equal to
+the only element in the matrix.
+det
+[
+a b
+c d
+]
+=ad−bc
+det
+
+
+a b c
+d e f
+g h i
+
+ =aei +bfh +cdh−ceg−bdi−afh
+Figure 8. The determinant for two arbitrary matrices
+
+===== PAGE 8 =====
+8 BRIAN PAN NATHAN NIE DANIEL W ANG
+1.3. Eigenvalues and Eigenvectors.One major backbone of spectral graph
+theory and linear algebra alike is the use of eigenvalues and eigenvectors. Thus, it is
+beneficial to introduce the eigenvalues and eigenvectors of matrices.Eigenvectors
+are special vectors such that when a transformation matrix is applied, the resulting
+vector is simply a scaled version of the original vector. The factor by which it is
+scaled is theeigenvalue.
+Definition 1.13. The vector⃗ vis aneigenvector of a matrixA with eigenvalue λ if
+A⃗ v=λ⃗ v.
+That is, multiplying the eigenvector⃗ vbyA yields the same result as scaling⃗ vby
+the eigenvalueλ.
+The eigenvectors and eigenvalues of a matrix can be found using thecharacteristic
+polynomial of the matrix. The characteristic polynomial is represented by the
+equation det(A−λI) = 0, which is derived by manipulating the equationA⃗ v=λ⃗ v.
+The roots of the characteristic polynomial are the eigenvalues. We look at an example
+to find the eigenvalues and eigenvectors of a matrix for a better understanding.
+Example 1.14. Find the eigenvalues and eigenvectors of the matrix
+A =
+[
+−6 3
+4 5
+]
+.
+We start with the equationA⃗ v=λ⃗ v. Here, the left side has a vector⃗ vthat is
+multiplied by a matrixA, while the right side has a vector⃗ vbeing multiplied by a
+scalar λ. To change the equation where both sides have a vector that is multiplied
+by a matrix, we multiply the right-hand side by the identity matrix,I =
+[
+1 0
+0 1
+]
+.
+Plugging inA and I yields
+[
+−6 3
+4 5
+]
+⃗ v=λ
+[
+1 0
+0 1
+]
+⃗ v.
+Then, subtracting the right side from the left side leads to the equation
+[
+−6 3
+4 5
+]
+⃗ v−λ
+[
+1 0
+0 1
+]
+⃗ v=⃗0.
+From here, we can factor out the eigenvector and multiply the scalarλ intoI. We
+get ([
+−6 3
+4 5
+]
+−
+[
+λ 0
+0 λ
+])
+⃗ v=⃗0.
+Next, we perform matrix subtraction to get
+[
+−6−λ 3
+4 5 −λ
+]
+⃗ v=⃗0.
+Because we want the eigenvector to be non-zero, the matrix must transform the
+eigenvector to become the zero vector. In other words, the matrix on the left must
+squish the eigenvector to the zero vector, and the determinant of the matrix must
+
+===== PAGE 9 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 9
+be zero. This yields the equation
+det
+[
+−6−λ 3
+4 5 −λ
+]
+= 0.
+Now, we apply the determinant formula for the2× 2 matrix to get:
+(−6−λ)(5−λ)− 3· 4 = 0.
+Moving forward, this simplifies into the quadratic:
+λ2 +λ− 42 = 0.
+Therefore, solving for the roots givesλ =−7, λ = 6.
+Now that we have the eigenvalues, we can solve for the eigenvectors. We start by
+plugging in the eigenvalue6 to A⃗ v=λ⃗ v. Since we are working in two dimensions,
+we can say that⃗ v= [x,y ]T.
+[
+−6 3
+4 5
+][
+x
+y
+]
+= 6·
+[
+x
+y
+]
+Multiplying this out and turning it into a system of linear equations yields
+
+
+
+−6x + 3y = 6x
+4x + 5y = 6y.
+From either linear equation (both equations will always represent the same line),
+solving fory leads to the equationy = 4x, which means thaty is always going to
+be equal to four times that ofx, implying the eigenvectors ofA is any non-zero
+scaler multiplier of[1, 4]T. For example, assumingx = 2, we get the eigenvector
+⃗ v= [2, 8]T.
+Similarly, forλ =−7, we can follow the process to obtain the following system of
+equations: 
+
+
+−6x + 3y =−7x
+4x + 5y =−7y.
+Forλ =−7, the eigenvector is⃗ v=k[−3, 1]T for some non-zero scalark.
+The graphical representation of the eigenvectors of the matrix in the above
+example is shown in Figure 9. The thick red vector represents the eigenvector
+⃗ v= [1, 4]T, and the thin red vector extending from that represents the result of
+A being applied, or multiplied, to⃗ v. In addition, we see that the thin red vector
+is simply the thick red vector scaled by a factor of6, which is the corresponding
+eigenvalue of the eigenvector. Similarly, the thick blue vector transforms into the
+thin blue vector with a transformation ofA, which equivalently scales the vector by
+its eigenvalue−7.
+Since the characteristic polynomial was used to find the eigenvectors and eigenval-
+ues of a matrix, it is possible to have no real eigenvalues and eigenvectors, one real
+eigenvalue and eigenvector, or multiple real eigenvalues and eigenvectors, depending
+on how many real roots the characteristic polynomial has, which stems from the
+matrix elements themselves.
+
+===== PAGE 10 =====
+10 BRIAN PAN NATHAN NIE DANIEL W ANG
+Figure 9. Eigenvectors of matrixA
+2. Adjacency Matrices
+One key matrix representation of graphs is the adjacency matrix. The adjacency
+matrix is a square matrix with its elements representing whether or not a pair of
+vertices is adjacent in a graph.
+The concept of the adjacency matrix developed back in the early 20th century,
+and built upon foundational work of mathematicians like Euler. It was in the
+mid-20th century that published works on the adjacency matrix developed and
+included the properties of adjacency matrices when they are raised to powers [18],
+which we look at below.
+2.1. Definition of the Adjacency Matrix.To start our investigation of the
+adjacency matrix, we first must be familiar with the definition.
+Definition 2.1. [1] Let G be a graph of ordern and size m, where V (G) =
+{v1,v 2,v 3,··· ,v n} andE(G) ={e1,e 2,e 3,··· ,e m} . Then, we define the adjacency
+matrix ofG as then×n matrix A = [Aij], where
+Aij =
+
+
+
+1 ifvivj∈E(G)
+0 otherwise.
+Thus, an adjacency matrix is symmetric. The graphG and its corresponding
+adjacency matrix are shown in Figure 10.
+For a directed graph, an elementAij = 1 if the edge begins atvi and ends atvj.
+Otherwise, it is0. Therefore, adjacency matrices of directed graphs will not always
+be symmetric.
+
+===== PAGE 11 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 11
+G:
+v1
+v2
+v4
+v3
+v5
+A =
+
+
+0 1 1 1 0
+1 0 0 1 0
+1 0 0 1 0
+1 1 1 0 1
+0 0 0 1 0
+
+
+Figure 10. The adjacency matrix of a graph
+2.2. The Power of the Adjacency Matrix.Another way to view the adjacency
+matrix is that it provides the number of walks of length1 from one vertex to another.
+That, of course, only leads to two possible values:1 or 0. However, when the
+adjacency matrix is raised to a higher power, a pattern arises. We investigate the
+unique transformations the adjacency matrix goes through when it is raised to a
+power.
+Theorem 2.2. [1] LetG be a graph with vertex setV (G) ={v1,v 2,··· ,v n} and
+adjacency matrixA. Then, the element (An)ij is the number of distinctvi−vj
+walks of lengthn in G.
+Proof. We proceed by induction. First, we set thebase case. Ifn = 1, then an entry
+Aij in A1 =A is 1 if vi and vj are adjacent, and0 otherwise. Therefore,Aij counts
+the number of walks of length1 from vi to vj.
+Next, we perform theinductive step. Assume for somek≥ 1 that (Ak)ab counts
+the number of walks of lengthk from va to vb. Consider a va−vb−vc walk of
+length k + 1. Every such walk must have ava−vb walk of lengthk, followed by a
+vb−vc walk of length1. By the definition of matrix multiplication,
+(AkA)ij =
+∑
+n
+(Ak)inAnj.
+By the inductive hypothesis,(Ak)ab counts the number ofva−vb walks of lengthk,
+while Abc is 1 if vb and vc are adjacent and0 otherwise. Hence, an entry(Aij)k+1
+provides the total number of distinctvi−vj walks of lengthk + 1 in G. □
+To visualize this change, raising the adjacency matrix introduced in Figure 10 to
+the second and third power gives the matrices in Figure 11.
+A2 =
+
+
+3 1 1 2 1
+1 2 2 1 1
+1 2 2 1 0
+2 1 1 4 0
+1 1 1 0 1
+
+
+A3 =
+
+
+4 5 5 6 2
+5 2 2 6 1
+5 2 2 6 1
+6 6 6 4 4
+2 1 1 4 0
+
+
+Figure 11. Powers of an adjacency matrix
+
+===== PAGE 12 =====
+12 BRIAN PAN NATHAN NIE DANIEL W ANG
+Additionally, note that(A2)ii = deg (vi) since the degree represents the number
+of walksi with length 2. This also implies that(A2)ii =∑
+kAik.
+An interesting property involving the trace also arises when the adjacency matrix
+is raised to a power.
+Proposition 2.3. The trace ofA2 is twice the number of edges in the graph.
+Proof. Let vi be some vertex ofG. Then, the entry(A2)ij is equal to the degree of
+vi. This means that
+tr(A2) =
+∑
+vi
+deg(vi) = 2|E(G)|.
+□
+3. Incidence Matrices
+Accompanying the adjacency matrix is its sibling, the incidence matrix. The
+incidence matrix has elements that represent whether or not a vertex and an edge
+are incident in a graph. The study of the incidence matrix dates back to the 19th
+century, with one of the first textbooks defining incidence matrices [19].
+3.1. Definition of the Incidence Matrix.The incidence matrix, like the adja-
+cency matrix, comes with a simple definition.
+Definition 3.1. [1] Let G be a graph of ordern and size m, where V (G) =
+{v1,v 2,v 3,··· ,v n} and E(G) ={e1,e 2,e 3,··· ,e m} . Then, the incidence matrix of
+G is then×m matrix B = [Bij], where
+Bij =
+
+
+
+1 ifviis incident withej
+0 otherwise.
+A graphG and its corresponding incidence matrix are shown in Figure 12.
+G:
+v1
+v2
+v3 v4
+v5
+e1 e2
+e3
+e4 B =
+
+
+1 1 1 0
+1 0 0 0
+0 1 0 1
+0 0 0 1
+0 0 1 0
+
+
+Figure 12. The incidence matrix of a graph
+The incidence matrix of a directed graph functions in a similar way. On a directed
+edge, the initial vertex in the incidence matrix is−1, while the ending vertex is1
+[6], with an example shown in Figure 13.
+4. The Laplacian Operator
+The Laplacian matrix ultimately stems from the Laplacian operator. Therefore,
+before introducing the Laplacian matrix, we must first become acquainted with the
+Laplacian operator.
+
+===== PAGE 13 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 13
+G:
+v1
+v2
+v3v4
+e1>
+e2
+>
+e3 >
+e4
+>
+e5
+> B =
+
+
+−1 0 −1 0 0
+0 1 0 1 0
+1 −1 0 0 −1
+0 0 1 −1 1
+
+
+Figure 13. The incidence matrix of a directed graph
+The Laplacian operator, named after the French mathematician Pierre-Simon
+Laplace, was first studied in 1786 in which Laplace applied this operator to the
+study of celestial mechanics. Today, it is encountered all throughout mathematics
+and physics: in the wave equation, Schrödinger’s equation, Poisson’s equation, and
+of course, Laplace’s equation.
+The Laplacian normally appears in a multivariable calculus or partial differentia-
+tion course, so the study of the Laplacian requires a strong calculus background. In
+simple terms, the Laplacian operator takes the difference between the value of a
+function at a point and the average of its values at nearby points. However, to gain
+a more solid understanding of the Laplacian, we first discuss the intuition behind
+this operator and then introduce the definition.
+4.1. Intuition Behind the Laplacian.Take the graph of a functionf(x,y ) that
+represents the elevation of an area of land. The function receives the specific position
+of the groundx,y as input and outputs the elevationz of the land at that point.
+After graphingf(x,y ) on a three-dimensional plane, we may notice that certain
+x,y points produce relatively largez while otherx,y points produce relatively small
+z. To represent these changes in the graph, thegradient of a functionDf(x,y ) is
+used [8].
+The gradient is a specific type ofvector fieldthat assigns a vector to every point
+in space. Every vector field consists ofvectors with a magnitude and direction. In
+the case of the gradient, these vectors point to areas with the fastest rate of increase
+[8]. They represent what and how much change there is between two points. As an
+example, the vectors in a vector field would point away from spots that are relatively
+small in value, while the vectors would point toward spots that are relatively large
+in value. An example of a three-dimensional function gradient is shown in Figure 14.
+The behavior of the gradient around a point is the idea ofdivergence, which
+measures how much the vectors point away from a point.High divergence at a point
+signals that the vectors surrounding that point have a net direction away from it.
+Similarly, low divergence at a point means that the vectors surrounding that point
+have a net direction towards it [8].
+The question arises: How much divergence does the gradient of a function have
+at a specific point? In other words, exactly how much of a "minimum point" would
+(x,y ) be in terms off(x,y )?
+The Laplacian operatoris used to solve this problem, which gives us a good idea
+of how functions change across space by describing the divergence of the gradient
+of a function at a particular point. In other words, it measures how "smooth" a
+
+===== PAGE 14 =====
+14 BRIAN PAN NATHAN NIE DANIEL W ANG
+Figure 14. The gradient and vector field off(x,y ) =−(cos2x + cos2y)2
+function is over its domain. This can be used to help find a local minimum of the
+function, also known asminimizing the function [8].
+The Laplacian is especially useful in modern-day machine learning. As stated
+previously, the Laplacian finds the difference between a point and the points in its
+vicinity. Now, researchers have applied this to machine learning models, where there
+are many use cases.
+One such use case is with the machine’scost function. The cost function describes
+the difference between the predictions of a model and the actual value of the element
+it is predicting. Using the Laplacian, the models can measure how "wrong" they are,
+hence allowing them to improve these models for a better outcome.
+4.2. Laplace’s Equation. Now that we have an intuitive sense of what the Lapla-
+cian does, we will briefly define it and discuss some of the more technical details.
+Definition 4.1. [9] TheLaplacian (or Laplace operator) of a multivariable function
+f(x1,x 2,··· ,x n), denoted ∆f =∇2f, is a differential operator that takes the
+divergence of the gradient of the functionf.
+A differential operatoris an operator that is a function of the differentiation
+operator. In other words, it uses derivatives. Thederivative in calculus is the slope
+of the tangent line of a curve. Thepartial derivativeessentially takes the derivative
+of a multivariable function with respect to one of its variables while keeping all
+other variables constant. It would be equivalent to finding the "slope" at a point
+in a multi-dimensional graph. The vector field discussed earlier uses these partial
+derivatives to map out the directions and magnitudes of each individual arrow at a
+point in space to create the gradient.
+Using the gradient, we’ve discussed how to find the direction and magnitude of
+the fastest increase. If we wanted to test whether or not the point we have is the
+lowest, we would use Laplace’s equation.
+
+===== PAGE 15 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 15
+Definition 4.2.[9] Laplace’s equationis a second-order partial differential equation,
+written as ∆f =∇2f = 0. It sums the second derivatives of each dimension with
+respect to one dimension, and sets the sum to0. Laplace’s equation in2 dimensions
+with respect tou is
+∇2u = ∂2u
+∂2x2 + ∂2u
+∂2y2 = 0,
+while a general form withn total dimensions with respect tou is
+∂2u
+∂x2
+1
++ ∂2u
+∂x2
+2
++··· + ∂2u
+∂x2n
+= 0.
+Laplace’s equation helps determine whether or not the output of a function is
+the lowest compared to its surroundings. In other words, it finds a minimum of the
+function. Referring back to Figure 14, using this equation, we would expect the
+input (x,y ) = (0, 0) to return a true statement because that point is a minimum of
+the function.
+5. Laplacian Matrices
+Now, we can dive into the meat and bones of spectral graph theory. TheLaplacian
+matrix, also called thegraph Laplacian, is used greatly across multiple fields of
+science. One of the first celebrated results with the Laplacian matrix was brought
+about by one of Kirchhoff’s papers on electrical networks in 1847 [16]. Later, the
+work of Fiedler in 1973 paved the way for more in-depth studies on the Laplacian
+matrix [16].
+Although seemingly arbitrary, this matrix representation of a graph provides us
+with a powerful way to observe and investigate connectedness in a graph. After
+discussing the definition and some properties of the Laplacian matrix, we investigate
+the eigenvalues of the Laplacian matrix and the properties that we can deduce
+from them, along with some applications of these properties, including spectral
+partitioning. Finally, we will discuss the famous spanning tree problem.
+5.1. Definition of the Laplacian Matrix.How does the Laplacian translate to
+graphs? The Laplacian matrix also examines the relationship between one vertex
+and the others around it, but in a slightly different manner. We will investigate how
+it does so. First, we define the Laplacian matrix.
+Definition 5.1. [4] The Laplacian matrix of a graphG is L =D−A, whereD is
+the degree matrix ofG and A is the adjacency matrix ofG.
+An elementDij of the degree matrixD is deg vi if i =j. Otherwise, Dij = 0.
+From this definition, we are able to derive another similar definition of the Laplacian
+matrix by examining the relationships between vertices.
+Definition 5.2.[4] LetG = (V,E ) be a graph withV (G) ={v1,v 2,··· ,v n}. Then,
+the Laplacian matrixL(G) is then×n matrix L = [Lij], where
+Lij =
+
+
+
+deg(vi) ifi =j
+−1 ifvivj∈E(G)
+0 otherwise.
+
+===== PAGE 16 =====
+16 BRIAN PAN NATHAN NIE DANIEL W ANG
+For a directed graph, the Laplacian can be generalized by assigningLij =−m
+for m directed edges fromvi to vj, whileLii is equal to the number of incoming
+edges tovi.
+We know that the Laplace operator measures the divergence of the gradient of a
+function f at a point. At the core, it analyzes the values surrounding that point.
+The Laplacian matrix functions in a similar way to the Laplacian in that each vertex
+plays the role of a point, or the output of a function, while the incident edges form
+the surroundings of the point. As an example, a graph and the Laplacian matrix of
+that graph are shown in Figure 15.
+G:
+v1
+v2
+v4
+v3
+v5
+L =
+
+
+3 −1 −1 −1 0
+−1 2 0 −1 0
+−1 0 2 −1 0
+−1 −1 −1 4 −1
+0 0 0 −1 1
+
+
+Figure 15. A graph and its Laplacian matrix
+In Figure 15, the vertexv1 may represent the valuef(1). Similarly,v2 represents
+the valuef(2), v3 represents f(3), and so on. Essentially, the function assigns a
+value to each vertex of a graph. By replacing the derivatives with differences and
+swapping the divergence with an average of the incident edges, we arrive at the
+Laplacian matrixL.
+Additionally, a third definition of the Laplacian matrix can be derived from the
+first two definitions, which may seem random, but is crucial to the further study of
+its properties.
+Lemma 5.3. [11][6] The Laplacian matrix is also defined asL =BB T whereB is
+the incidence matrix.
+Proof. Forvi,v j∈V (G), the corresponding element inBB T can be expressed as
+(BB T )ij =
+∑
+ek∈E(G)
+BikBjk.
+First, consider the casei =j. For each edge incident tovi,Bik will be either1 or
+−1 based on the direction. ThenBikBjk = (Bik)2 = 1 for each edge incident tovi.
+So (BB T )ij counts the total number of edges incident tovi, ordeg(vi), as claimed.
+Next, consider the second casei̸=j. If the two verticesvi and vj are adjacent,
+then one ofBik and Bjk must be 1, while the other must be−1. This is due to the
+direction of the edges. Thus,BikBjk =−1. Ifvi and vj are not adjacent, then the
+result is 0, as claimed. □
+5.2. Eigenvalues of the Laplacian Matrix.As previously mentioned, the eigen-
+values and eigenvectors of a matrix make up the backbone of spectral graph theory,
+and it does not disappoint for the Laplacian matrix. The eigenvalues of the Laplacian
+
+===== PAGE 17 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 17
+matrix are extremely interesting because they uncover many properties between a
+vertex and its neighboring vertices, including information about its connectivity and
+geometric properties. First, we examine an important property of the Laplacian
+matrix.
+Proposition 5.4. The Laplacian matrixL is a positive symmetric semi-definite
+matrix.
+Remark 5.5. [11] The Laplacian matrix is symmetric because both the adjacency
+matrix A and the degree matrixD are symmetric. The term xTLx, called the
+Dirichlet energyof a graph, measures the variation between pairs of adjacent vertices
+wherex is some real column vector whose elements represent the vertices in a graph.
+The expanded form is
+xTLx =
+∑
+ij∈E(G)
+(xi−xj)2.
+This meansxTLx≥ 0, so the Laplacian matrix is a positive symmetric semi-definite
+matrix.
+This result directly translates to the eigenvalues being nonnegative as well.
+Knowing that the Laplacian matrix has nonnegative eigenvalues says a lot about
+the properties of the matrix. If a matrix has nonnegative eigenvalues, then its main
+diagonal will be nonnegative, as well as its determinant.
+The eigenvalues of the Laplacian matrix is often used to solve abstract problems.
+For instance, it may not come as a shock that hitting the surface membrane
+of differently shaped drums will produce different sounds, seemingly at random.
+However, there is a way to determine the shape of the drum’s surface just by listening
+to it. When the surface of the drum is mapped to a graph, the eigenvalues of the
+Laplacian matrix of the graph is directly related to the frequency of sound that the
+drum produces [17]. Thus, the eigenvalues of the Laplacian matrix of a graph of
+a shape uncovers certain geometric properties of that shape. We will revisit the
+relation between sound frequencies and the eigenvalues of a matrix later.
+Now that we have introduced the eigenvalues of the Laplacian matrix, let us
+investigate a theorem that bounds the eigenvalues of a matrix to specific areas on a
+plane.
+Theorem 5.6(Gershgorin Disk Theorem). [15] LetA be a complexn×n matrix.
+In the complex plane, letBi be a ball with a center atAii and a radiusRi that is the
+sum of the absolute values of all other entries in thei−th row fori ={1, 2,...,n }.
+Each eigenvalue ofA is contained in some ballBi.
+Example 5.7.To visualize the Gershgorin Disk Theorem, let us find the eigenvalues
+of the matrix from Example 1.14,
+A =
+[
+−6 3
+4 5
+]
+.
+We proceed by finding the center and radii of the two circles. The center of
+the balls are located atB1 = (−6, 0i) and B2 = (5, 0i), and they have a radius of
+R1 = 3 and R2 = 4, respectively. Plotting the circles on the complex plane yields
+
+===== PAGE 18 =====
+18 BRIAN PAN NATHAN NIE DANIEL W ANG
+Figure 16. In this figure, we can see that the eigenvaluesλ = 6 and λ =−7 are
+clearly contained in the disks.
+Figure 16. Gershgorin Disk Theorem
+Thus, the Gershgorin Disk Theorem allows us to set a geometric boundary
+for what the eigenvalues of a matrix can be. This theorem, combined with the
+properties of these matrices, also brings a unique bound to the Laplacian matrix.
+The eigenvalues of the Laplacian matrix of a graph, apart from being bounded by
+the disks, are also bounded in the interval[0, 2∆] where ∆ is the maximum degree
+of G [23].
+To visualize this, consider the graph and Laplacian matrix in Figure 17. Its
+eigenvalues are0, 1, 3, 4. These eigenvalues are less than two times the maximum
+degree ofG, 6.
+G:
+v1
+v3
+v2
+v4
+L =
+
+
+2 −1 −1 0
+−1 2 −1 0
+−1 −1 3 −1
+0 0 −1 1
+
+
+Figure 17. A graph and its Laplacian matrix
+After examining some general bounds of the eigenvalues of the Laplacian matrix,
+let us look at some specific eigenvalues of the Laplacian matrix.
+First, letλi(L) be an eigenvalueλ of the Laplacian matrixL such thatλ1(L)≤
+λ2(L)≤···≤ λn(L) where n =|V (G)|.
+Lemma 5.8. The smallest eigenvalueλ1(L) is 0.
+Proof. Since L is symmetric and positive semi-definite, we already know that its
+eigenvalues are real and non-negative. Consider the sum across thei−th row ofL.
+This can be expanded as
+n∑
+j=1
+Lij = deg(vi) +
+∑
+j̸=i
+Lij
+= deg(vi) + deg(vi)(−1) + 0
+= 0.
+
+===== PAGE 19 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 19
+As such, the vector1 = (1,..., 1)∈ Rn satisfies L1 = 0. Thus, zero is an eigenvalue
+of L. □
+Theorem 5.9. The Laplacian matrixL has an eigenvalue0 with multiplicityk if
+and only if the graph hask connected components.
+Proof. Suppose G hask connected componentsG1,G 2,...,G k. There always exists
+an indexing of the vertices such that the firstn1 are associated toG1 and so on,
+with the lastnk associated toGk. Then the Laplacian matrixL(G) precisely takes
+the form
+L(G) =
+
+
+L(G1)
+...
+L(Gk)
+
+.
+This is called ablock diagonal matrix, where we have square matrices of various
+sizes along a diagonal with no overlap and otherwise zero.
+We can take for granted thatdet(L(G)) = det(L(G1))··· det(L(Gk)). The left
+size is zero by the lemma. Similarly, each factor of the right side is zero as well.
+Thus, zero has a multiplicity≥ k. That the multiplicity is preciselyk follows
+from constructing the zero-eigenvector for each component and showing that it is
+unique. □
+The special properties of the eigenvalues of the Laplacian matrix also extend to
+specific types of graphs.
+Theorem 5.10. [2] The Laplacian matrix of a complete graphKn has eigenvalue 0
+with multiplicity 1 and eigenvaluen with multiplicityn− 1.
+As an example, going back to the complete graphK4, by Theorem 5.9, the0
+eigenvalue must have a multiplicity of1 because the graph is connected. Shown in
+Figure 18 is the graph and the Laplacian matrixL ofK4. Solving for its eigenvalues
+yields 0, 4, 4, 4. The 4 eigenvalue has a multiplicity of3, supporting the theorem.
+K4:
+v1
+v2v3
+v4
+L =
+
+
+3 −1 −1 −1
+−1 3 −1 −1
+−1 −1 3 −1
+−1 −1 −1 3
+
+
+.
+Figure 18. The Laplacian matrix of the complete graphK4
+Theorem 5.11. [2] The Laplacian matrix of a star graphSn has eigenvalue 0 with
+multiplicity 1, eigenvalue 1 with multiplicityn−2, and eigenvaluen with multiplicity
+1.
+As an example, referring to the star graphS5 shown in Figure 5, the connected
+graph must have a0 eigenvalue with multiplicity1. The corresponding Laplacian
+matrix ofS5 is shown in Figure 19. Similarly, solving for the eigenvalues yields0, 1,
+
+===== PAGE 20 =====
+20 BRIAN PAN NATHAN NIE DANIEL W ANG
+S5:
+v1
+v2v3
+v4
+v5
+L =
+
+
+4 −1 −1 −1 −1
+−1 1 0 0 0
+−1 0 1 0 0
+−1 0 0 1 0
+−1 0 0 0 1
+
+
+.
+Figure 19. The Laplacian matrix of the star graphS5
+1, 1, 5. The eigenvalue0 has multiplicity1, the eigenvalue1 has multiplicity3, and
+the eigenvalue5 has multiplicity1.
+Now that we have gained some familiarity with the eigenvalues of the Laplacian
+matrix, let us introduce a unique relationship between the eigenvalues of a matrix
+and the edge count of a graph.
+Lemma 5.12.[21] LetG be a graph. Letα1,α 2,...,α n be the eigenvalues ofA, the
+adjacency matrix. Letλ1,λ 2,...,λ n be the eigenvalues ofL, the Laplacian matrix.
+Show that
+2|E(G)| =
+∑
+i
+α2
+i =
+∑
+i
+λi.
+Proof. First, let us show that∑
+iα2
+i = 2|E(G)|. LetA be the adjacency matrix of
+G with eigenvaluesα1,α 2,...,α n. Then, the eigenvalues ofA2 are α2
+1,α 2
+2,...,α 2
+n.
+Since the trace of a square matrix is equal to the sum of its eigenvalues,
+tr(A2) =
+∑
+i
+α2
+i.
+By matrix multiplication, we can rewrite the trace as
+tr(A2) =
+∑
+i,j
+AijAji.
+Then, sinceA is a symmetric matrix, we have
+tr(A2) =
+∑
+i,j
+(Aij)2.
+Furthermore, any elementAij is either 0 or 1, so we can simplify to get
+tr(A2) =
+∑
+i,j
+Aij.
+Finally, since the trace is also the sum of the degrees, by the degree sum formula,
+we know
+tr(A2) =
+∑
+i
+α2
+i = 2|E(G)|.
+Now, let us show that∑
+iλ2
+i = 2|E(G)|. Since the tracetr(L) of the Laplacian
+matrix is also equal to the sum of its eigenvalues,
+tr(L) =
+∑
+i
+λ2
+i.
+
+===== PAGE 21 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 21
+By definition,L =D−A, so it follows that
+tr(L) = tr(D)−tr(A) =
+∑
+i
+deg(vi)− 0 = 2|E(G)|.
+Therefore,
+tr(L) =
+∑
+i
+λ2
+i = 2|E(G)|.
+Thus, 2|E(G)| =∑
+iα2
+i =∑
+iλi as desired. □
+Example 5.13. As an example, consider the graph and its associated Laplacian
+matrix and adjacency matrix in Figure 20.
+G:
+v1
+v2
+v4
+v3
+v5
+L =
+
+
+3 −1 −1 −1 0
+−1 2 0 −1 0
+−1 0 2 −1 0
+−1 −1 −1 4 −1
+0 0 0 −1 1
+
+
+A =
+
+
+0 1 1 1 0
+1 0 0 1 0
+1 0 0 1 0
+1 1 1 0 1
+0 0 0 1 0
+
+
+Figure 20. The Laplacian and adjacency matrix of a graph
+From this graph and its associated matrices,2|E(G)| = 12, and we calculate the
+eigenvalues of the adjacency matrixαi and the eigenvalues of the Laplacian matrix
+λi to be
+{αi}≈{− 1.749,−1.271, 0, 0.335, 2.686},
+{λi} ={0, 1, 2, 4, 5}.
+Moreover, the sum of allαi and λi are
+∑
+i
+α2
+i = (−1.749)2 +··· + (2.686)2≈ 12,
+∑
+i
+λi = 0 + 1 + 2 + 4 + 5 = 12.
+This example demonstrates how2|E(G)| =∑
+iα2
+i =∑
+iλi.
+5.3. Spectral Partitioning. The eigenvalues of the Laplacian matrix also reveal
+how connected a graph is. TheFiedler Eigenvalue, named after Miroslav Fiedler, is
+the second-smallest eigenvalue of the Laplacian matrix of a graph and determines
+the algebraic connectivity of a graph.
+Lemma 5.14. [14] The Fiedler eigenvalue of a graphG is greater than0 if and
+only ifG is a connected graph.
+Proof. Since the Laplacian matrix is positive semi-definite, all of its eigenvalues are
+nonnegative. Moreover, a connected graph must have a0 eigenvalue with multiplicity
+1. Thus, the second-smallest eigenvalue cannot be0, nor can it be negative, so the
+second-smallest eigenvalue of the Laplacian matrix of a connected graph must be
+positive. □
+
+===== PAGE 22 =====
+22 BRIAN PAN NATHAN NIE DANIEL W ANG
+Typically, a graph with a greater Fiedler eigenvalue will have more edges and
+can therefore be thought of as "more connected" [20]. As an example, the Fiedler
+eigenvalue of the complete graphK100 is 100, while the Fiedler eigenvalue of the
+cycle graphC100 is about0.004, showing that the cycle graph contains a significantly
+lower number of edges in contrast to the complete graph, and is "less connected" in
+contrast to the complete graph.
+Likewise, alongside the Fiedler eigenvalue, theFiedler eigenvectoris the eigenvec-
+tor that corresponds to the Fiedler eigenvalue. The Fiedler eigenvector is especially
+useful inspectral partitioning, where the goal is to partition, or group, a graph into
+two subgraphs in such a way that the subgraphs have nearly the same number of
+vertices while also minimizing the number of edges between the two subgraphs [20].
+The theory proposed by Fiedler for performing spectral partitioning is based on
+a simple idea.
+Definition 5.15. [14][20] LetG = (V,E ) be a graph and order the eigenvalues
+λi of L(G) from least to greatest such thatλ1(L)≤ λ2(L)≤···≤ λn(L) where
+n =|V (G)|. Let the eigenvector corresponding toλ2 be the Fiedler eigenvectorµ2.
+The process ofspectral partitioningby Fiedler’s method is as follows: Each vertex
+vi∈G is partitioned intoG1 if the entry in thei−th row ofµ2 is positive. Otherwise,
+it is partitioned intoG2. A cut edgeis an edge that is incident to a vertex inG1
+and a vertex inG2.
+However, it is not clear why this specific eigenvalue would result in such a
+partition. Moreover, using the eigenvalues and eigenvectors of the matrix of a graph
+to partition the graph may be the least obvious thing to do.
+To understand the logic behind the Fiedler eigenvalue, we start by visualizing a
+vibrating string. When the string is plucked to a specific frequency, it will cause
+the string to appear frozen. This is called a standing wave. As it turns out, the
+frequency that causes the standing wave is directly related to the eigenvalues and
+eigenvectors of the matrix that represents the motion of the string at specific points
+[20]. Coincidentally, the Fiedler eigenvector of the Laplacian matrix of a graph
+represents the standing wave.
+Figure 21. A string vibrating at its standing wave frequency
+The section of the string that corresponds to the Fiedler eigenvalue and eigenvector
+is exactly one period, as shown in Figure 21. Each entry of the Fiedler eigenvector
+equates to one point on the string (usually equally spaced apart), and the heights of
+these points correspond to the values listed in the Fiedler eigenvector. This results
+in about half of the entries in the vector being positive (as indicated by the blue
+
+===== PAGE 23 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 23
+string), while the other half of the entries are negative (as indicated by the red
+string).
+Now that we have gained a solid understanding of Fiedler’s method and why it
+works, let us examine a graph with a bow-tie shape shown in Figure 22 to determine
+how the partition should be made.
+v1
+v2
+v3
+v4
+v5
+v6
+Figure 22. A graph shaped like a bow-tie
+The bow-tie shape does not necessarily tell us anything concrete, but it does point
+us to which edges may be chosen to create the partitions. Continuing, calculating
+the Laplacian matrix of this graph yields
+L =
+
+
+4 −1 −1 −1 −1 0
+−1 2 −1 0 0 0
+−1 −1 2 0 0 0
+−1 0 0 2 −1 0
+−1 0 −1 3 −1 0
+0 0 0 0 −1 −1
+
+
+.
+The eigenvalues, in order, are
+λi = (0, 0.6314, 1.4738, 3, 3.7877, 5.1071).
+The Fiedler eigenvalue isλ2 = 0.6314, and the corresponding Fiedler eigenvector is
+µ2 =
+
+
+−0.16
+−0.44
+−0.44
+0.07
+0.26
+0.71
+
+
+.
+This tells us thatv1,v 2,v 3 are all partitioned into one group, whilev4,v 5,v 6 are
+all partitioned into another group, as seen in Figure 23. Note that the sum of the
+entries in the Fiedler vector is0. This is true for the Fiedler vector of any graph [20].
+As shown, this method of spectral partitioning aims to balance an approximately
+equal vertex count with the minimum possible number of cut edges.
+v1
+v2
+v3
+v4
+v5
+v6
+Figure 23. A graph partitioned by Fiedler’s method
+
+===== PAGE 24 =====
+24 BRIAN PAN NATHAN NIE DANIEL W ANG
+As another example, the partition of another graph by Fiedler’s method is shown
+in Figure 24. Fiedler’s method says thatv1,v 2,v 3,v 4,v 5,v 6 should be in one group,
+while v7,v 8,v 9,v 10 should be in the other. Note that having a partition with only
+one cut edge is also possible, but there would be an imbalance of the vertices of
+each partition.
+Do note that another partition has a comparable result to Fiedler’s method, with
+v1,v 2,v 3,v 4,v 5 in one group andv6,v 7,v 8,v 9 in the other. This shows how Fiedler’s
+method may not be the only method to successfully partition a graph with these
+requirements.
+v1
+v2
+v3
+v5
+v6
+v7
+v4
+v8
+v9
+v10
+Figure 24. A graph and its partition
+Another important result Fiedler proved was regarding the connectivity of the
+two subgraphs formed after spectral partitioning.
+Theorem 5.16(Fiedler’s Theorem of Connectivity of Spectral Graph Partitions).
+[20] LetG be a connected graph. The two graphsG1 and G2 that are formed after
+the spectral partitioning ofG are connected.
+Referring back to Figure 23 and Figure 24, we note that the initial graphs are
+connected, and so is every partition.
+If we wanted to measure how well a graph can be partitioned, we refer to the
+Cheeger constant, also called theisoperimetric number.
+Intuitively, a large positive Cheeger constant says that the graph is well-connected,
+and there is no relatively small set of edges that can successfully partition the graph.
+In other words, every attempt to partition the graph will result in a relatively large
+number of cut edges. On the other hand, a small positive Cheeger constant points
+to a graph that has a bottleneck− a relatively small set of edges whose removal
+separates a relatively large portion of vertices from the graph [27]. The Cheeger
+constant is positive if and only if the graph is connected [28].
+Definition 5.17. [24] LetG = (V,E ) where S⊂V. Then, theCheeger constant
+h(G) is
+h(G) = min
+0<|S|≤|V|/2
+|∂S|
+|S|
+where|∂S| represents the number of edges with one endpoint inS and one endpoint
+in V that is not inS.
+In other words, the Cheeger constant is formed by calculating all possible parti-
+tions and taking the minimum of the ratio between the vertices in each partition
+that form cut edges and those that do not. In summary, for a graphG = (V,E ), we
+
+===== PAGE 25 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 25
+must first identify all subsetsS of V (G) such that 0<|S|≤ |V|
+2 . Then, for each
+subset S, we must calculate the ratio|∂S|
+|S| . Finally, we take the minimum ratio over
+all of these subsets to declare as the Cheeger constant of the graph.
+To demonstrate this with a simple example, let us visualize the cycle graphC4,
+shown in Figure 25. The complete list of possible subsets are listed in the figure,
+with its corresponding|∂S| and|S|, as well as its ratio. As a result, the Cheeger
+constant is the minimum of these ratios, which is1.
+C4:
+v1
+v2 v3
+v4
+S |∂S| |S| |∂S|
+|S|
+{1} 2 1 2
+{2} 2 1 2
+{3} 2 1 2
+{4} 2 1 2
+{1, 2} 2 2 1
+{2, 3} 2 2 1
+{3, 4} 2 2 1
+{1, 4} 2 2 1
+Figure 25. The cycle graphC4 and the calculation of its Cheeger constant
+As a more concrete example, consider the bow tie graph from Figure 22. The
+Cheeger constant of this graph is2
+3, achieved by the partitionG1 ={v1,v 2,v 3} and
+G2 ={v4,v 5,v 6}. This tells us that the bow tie graph can be partitioned in a better
+manner than the cycle graphC4. Note that while the bow tie graph still has two
+cut edges, it has more vertices than the cycle graph, causing the Cheeger constant
+to be lower.
+Furthermore, as a more extreme example, a graph with a relatively high Cheeger
+constant is the complete graphK8 with h(K8) = 4, while a graph with a relatively
+low Cheeger constant is the path graphP8 with h(P8) = 1
+4. This comparison
+presents us with a deeper understanding of the Cheeger constant.
+The idea of spectral partitioning is useful in many real-life applications. As
+an example, spectral partitioning can help identify communities based on certain
+criteria [25]. Each vertex may represent one person, while the edges represent the
+friendship between two people. Moreover, in biology, spectral partitioning is also
+helpful in identifying genes that are functionally related within gene regulatory
+networks [26].
+5.4. Trees in Graphs.A key type of graph in graph theory is a tree. Trees are
+an important type of graph because they represent the "least connected" graphs.
+The nomenclature is rather intuitive, as it represents two main ideas of trees seen in
+nature; trees are connected, and they are acyclic.
+Definition 5.18. A tree is an acyclic connected graph.
+A bridge of a connected graphG is an edgee inG such thatG−e is disconnected.
+Thus, bridges must not lie on any cycle ofG, and since trees contain no cycles, all
+edges of trees are bridges [1].
+There are also many properties that define what a tree can, and cannot, be.
+
+===== PAGE 26 =====
+26 BRIAN PAN NATHAN NIE DANIEL W ANG
+Lemma 5.19. [1] Every nontrivial tree has at least2 end-vertices, or vertices with
+a degree of1.
+Proof. LetT be a nontrivial tree containing au−v pathP = (u =u0,u 1,...,u k =v)
+of the greatest possible length. Neither u nor v can be adjacent to any vertex
+not onP. Otherwise, it would create a new path of greater length. Therefore,
+deg u = deg v = 1. □
+Lemma 5.20. Every tree of ordern has sizen− 1.
+Proof. We proceed by induction. First, thebase case. Every graph with1 vertex
+must have0 edges, so the base case is true.
+Next, the inductive step. We assume a tree withn vertices hasn− 1 edges.
+Now, letG be a tree withn + 1 vertices. Form the subgraphH by removing an
+end-vertex ofG, consequently removing the incident edge fromG as well. Now,H
+has (n + 1)− 1 =n vertices. SinceH is a tree, we knowH has n− 1 edges by our
+previous assumption. SinceG has exactly one more edge thanH, the edge count
+of G must be (n− 1) + 1 = n. Therefore, G has n + 1 vertices andn edges, as
+claimed. □
+Since a tree is considered the "least connected" of all connected graphs, we may
+come to the conclusion that the size of every connected graph of ordern is at least
+n− 1.
+Theorem 5.21. The size of every connected graph of ordern is at leastn− 1.
+Proof. In contrast, assume that there exists a connected graph of ordern with size
+m =n− 2. Thenn≥ 4, soG contains no isolated vertices.
+We claimG contains an end-vertex, so assume to the contrary that the degree
+of every vertex ofG is at least2. Then, the sum of the degrees of the vertices of
+G is 2m≥ 2n, som≥n≥m + 2, which is impossible. Thus,G must contain an
+end-vertex. □
+The intuitive nomenclature doesn’t just stop at trees. Aforest is a graph that
+contains trees.
+Corollary 5.22. [1] A forest of ordern with k components has sizen−k.
+Proof. Let a forestF have sizem withG1,G 2,...,G k be the connected components
+of F. LetGi have orderni and sizemi. Then,n is the sum of allni and m is the
+sum of allmi. Since each componentGi is a tree, we knowmi =ni− 1. Thus,
+m =
+∑
+i
+mi =
+∑
+i
+(ni− 1) =n−k.
+□
+Now, we can construct a theorem that classifies graphs into the tree category
+based on certain conditions.
+Theorem 5.23. [1] LetG be a graph of ordern and sizem. IfG satisfies any two
+of the properties:
+(1) G is connected, (2) G is acyclic, (3) m =n− 1,
+
+===== PAGE 27 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 27
+then G is a tree.
+Proof. By casework, we first assumeG satisfies (1) and (2). Then, by definition,
+G is a tree. Thus, we now consider the cases whereG satisfies (1) and (3) or G
+satisfies (2) and (3).
+Case 1.G satisfies (1) and (3). SinceG is connected, we only have to show that
+G is acyclic. Assume the opposite, thatG contains a cycle. Thene is not a bridge
+of G. Thus, G−e is a connected graph of ordern and sizen− 2, contradicting
+Lemma 5.20. Therefore,G must be acyclic, andG is a tree.
+Case 2.G satisfies (2) and (3). SinceG is acyclic, we only have to show thatG is
+connected. SinceG satisfies (2) and (3), it follows thatG is a forest of ordern and
+size m =n− 1. The size ofG is n−k for k components inG. Hencen− 1 =n−k
+so k = 1. Therefore,G is connected, andG is a tree. □
+A type of subgraph of tress is spanning trees, which takes on a similar definition
+to the subgraph of a tree, with one key limitation.
+Definition 5.24. A spanning treeof a graphG = (V,E ) is a treeT = (V,E ) such
+that V (T ) =V (G) and E(T )⊆E(G). In other words, the spanning tree contains
+the same vertex set and a subset of the edge set.
+As an example, there are a total of3 spanning trees of the complete graphK3,
+as shown in Figure 26.
+K3:
+v1
+v2 v3
+T1:
+v1
+v2 v3
+T2:
+v1
+v2 v3
+T3:
+v1
+v2 v3
+Figure 26. The spanning trees ofK3
+5.5. Counting Spanning Trees.How can we count the total number of spanning
+trees of a graph? Certainly, if a graph is connected, then it must have at least
+one spanning tree, but to continue counting them manually would prove to be a
+laborious and unenlightening task. Thankfully,Kirchhoff’s matrix tree theorem
+provides an elegant way to compute the number of spanning trees of a graph.
+Kirchhoff’s matrix tree theorem provides a formula to find the total number of
+spanning trees of a graph using the determinant of the Laplacian matrix of a graph.
+It is a beautiful result in graph theory connecting linear algebra and combinatorics.
+Theorem 5.25(Kirchhoff’s Matrix Tree Theorem). The number of spanning trees
+T (G) in a graphG is det(L0) whereL0 is the Laplacian matrix with thei−th row
+and i−th column removed for anyi.
+
+===== PAGE 28 =====
+28 BRIAN PAN NATHAN NIE DANIEL W ANG
+The termdet(L0) is also known as thecofactor of an elementi of the Laplacian
+matrix L.
+Definition 5.26. The contractionG/e of an edgee from a graphG removese and
+merges the two vertices incident toe to become one vertex.
+Sketch. [12][6] First, choose any edgee of the graphG. Then, we consider the two
+cases of the spanning treesT (G) that either containse as an edge, or does not.
+Case 1. IfT (G) includese, then contractinge will not remove or change the tree,
+so this case can be expressed asT (G/e).
+Case 2. If T (G) does not includee, then we can removee without removing or
+changing the tree, so this case can be expressed asT (G−e).
+Thus, we have the equation:
+T (G) =T (G−e) +T (G/e).
+This is the deletion-contraction property. Likewise, det(L0) also satisfies this
+property:
+det(L(G)0) = det(L(G−e)0) +det(L(G/e)0).
+By the definitionL = D−A, each row ofL must sum to 0. As a result, the
+expansion ofdet(L(G)0) will contain only the terms corresponding to edges that
+are connected and not part of a cycle. Any terms that correspond to cycles on the
+graph will be canceled out. Thus, we are left with the number of spanning trees.□
+Remark 5.27. [13] The theorem presented above only deals with undirected graphs.
+However, Kirchhoff’s theorem also generalizes to directed graphs. Oriented spanning
+trees of a directed graph would be counted in this case, called spanning arborescences.
+In this case,detL0 is equal to the number of arborescences that end atvi.
+We illustrate the Matrix Tree Theorem with a simple example. Figure 27 shows
+the graphG along with its three spanning trees, as well as its Laplacian matrix. By
+removing row3 and column 3 from L to formL0, we then take the determinant to
+obtain
+det
+
+
+2 −1 0
+−1 2 0
+0 0 1
+
+ = 0 det
+[
+−1 0
+2 0
+]
+− 0 det
+[
+2 0
+−1 0
+]
++ 1 det
+[
+2 −1
+−1 2
+]
+= 0· 0− 0· 0 + 1· 3
+= 3.
+Cayley’s tree formula follows from Kirchhoff’s theorem as a special case that
+deals with the complete graphKn.
+Corollary 5.28(Cayley’s Tree Formula). [1] The number of spanning trees in a
+complete graphKn with n vertices isnn−2.
+Cayley’s tree formula says that the number of spanning trees ofK3 is 33−2 = 3,
+which is confirmed by Figure 26. In general, applying Kirchhoff’s matrix tree
+theorem to the complete graphKn yields nn−2 spanning trees, which matches
+Cayley’s tree formula for the number of spanning trees.
+
+===== PAGE 29 =====
+AN INTRODUCTION TO SPECTRAL GRAPH THEORY 29
+G:
+v1
+v3
+v2
+v4
+L =
+
+
+2 −1 −1 0
+−1 2 −1 0
+−1 −1 3 −1
+0 0 −1 1
+
+
+T1:
+v1
+v3
+v2
+v4
+T2:
+v1
+v3
+v2
+v4
+T3:
+v1
+v3
+v2
+v4
+Figure 27. A graph, its Laplacian matrix, and its spanning trees
+
+===== PAGE 30 =====
+30 BRIAN PAN NATHAN NIE DANIEL W ANG
+References
+[1] G. Chartrand, P. Zhang, A First Course in Graph Theory. Dover Publications (2012).
+[2] J. Jiang, An Introduction to Spectral Graph Theory. University of Chicago (2012).
+[3] D. Spielman, Spectral Graph Theory. Chapman and Hall (2011).
+[4] D. Johnson, Graph Theory and Linear Algebra. The University of Utah (2017).
+[5] F. Harary, Independent Discoveries in Graph Theory. Blackwell Publishing (1979).
+[6] R. Stanley, The Matrix-Tree Theorem. MIT OpenCourseWare (2014).
+[7] D. Cvetković, M. Doob, H. Sachs,Spectra of Graphs. Academic Press (1980).
+[8] S. Khan, Laplacian Intuition. Khan Academy (2016).
+[9] S. Khan, Explicit Laplacian Formula. Khan Academy (2016).
+[10] S. Khan,Multiplying Matrices. Khan Academy (2014).
+[11] H. Li,Properties and Applications of Graph Laplacians. University of Chicago (2022).
+[12] O. Dmytruk,Kirchhoff’s Matrix-Tree Theorem. Nagoya University (2024).
+[13] J. Li,Arborescences: Directed Spanning Trees. Carnegie Mellon University (2024).
+[14] J. Wyss-Gallifent,Graph Theory. University of Maryland (2021).
+[15] S. Brakken-Thal,Gershgorin’s Theorem for Estimating Eigenvalues. University of Puget Sound
+(2007).
+[16] X. D. Zhang,The Laplacian Eigenvalues of Graphs: a Survey. Shanghai Jiao Tong University
+(2011).
+[17] M. Kac,Can One Hear The Shape of a Drum?The Rockefeller University (2012).
+[18] C. Berge,Graphs and Hypergraphs. University of Paris (1973).
+[19] N. Biggs, E. Lloyd, R. Wilson,Graph Theory 1736-1936. Clarendon Press (1976).
+[20] B. Slininger,Fiedler’s Theory of Spectral Graph Partitioning. University of California (2013).
+[21] P. Rombach,Spectral Graph Theory. University of Vermont (2022).
+[22] V. Reiner,Introduction to Combinatorics and Graph Theory. University of Minnesota (2010).
+[23] A. Banerjee, A. Char, B. Mondal,Spectra of General Hypergraphs. Indian Institute of Science
+Education and Research (2017).
+[24] K. Munagala,Graph Laplacian and Cheeger’s Inequality. Duke Trinity College of Arts &
+Sciences (2017).
+[25] M.E.J.Newman, SpectralMethodsforNetworkCommunityDetectionandGraphPartitioning .
+University of Michigan (2017).
+[26] S. Roy, S. Feizi,Regulatory Networks: Inference, Analysis, Application. Massachusetts Institute
+of Technology (2012).
+[27] P. Rombach,Cheeger Constant and Conductance. University of Vermont (2022).
+[28] R. Balan,The Cheeger Constant and the Spectral Gap. University of Maryland (2021).
+MIT, 77 Massachusetts A venue, Cambridge, MA 02139
+Malden High School, 77 Salem Street, Malden, MA 02148
+Email address: bpan01217@gmail.com
+Boston Latin School, 78 A venue Louis Pasteur, Boston, MA 02115
+Email address: nathannnie395@gmail.com
+Wellesley High School, 50 Rice Street, Wellesley, MA 02481
+Email address: danielninja222@gmail.com

@@ -1,0 +1,1788 @@
+===== PAGE 1 =====
+Heriot-W att University
+Final year project
+Discrete notions of curvature on graphs:
+Ollivier Ricci Curvature and
+non-convergence of the Ollivier Ricci Flow
+Maria Esteban Casadevall
+H00325269
+supervised by
+Dr.Alessandro Sisto
+March 22, 2024
+
+===== PAGE 2 =====
+2 CONTENTS
+Contents
+1 Introduction 5
+2 Ollivier Ricci Curvature 6
+2.1 Construction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+2.2 Connection to Ricci Curvature in a manifold . . . . . . . . . . . . . . . . . . . . 8
+2.3 Graphs with constant curvature . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+2.3.1 Regular Graphs of constant curvature . . . . . . . . . . . . . . . . . . . . 12
+3 Ollivier Ricci Flow 14
+3.1 Construction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+3.2 Convergence of Ricci Flow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+3.2.1 Non-Convergence of the Ollivier Ricci Flow . . . . . . . . . . . . . . . . . 19
+3.2.2 Experimental Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+3.2.3 Proof of Theorem 1 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+3.2.4 Interesting points and future work on the convergence of the Ricci Flow . 28
+4 Robustness of Ollivier Ricci Curvature and Ricci Flow 29
+5 Conclusion 31
+6 Appendix 33
+6.1 Appendix I: Regular graphs of constant curvature up to 11 vertices . . . . . . . . 33
+6.2 Appendix II: Random graphs with constant curvature . . . . . . . . . . . . . . . 35
+6.3 Appendix III: Experimental analysis of non-convergence . . . . . . . . . . . . . . 35
+6.4 Appendix IV: Robustness analysis . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+
+===== PAGE 3 =====
+CONTENTS 3
+Acknowledgements
+I would like to thank my supervisor, Alessandro Sisto, for all his support throughout this project
+and for encouraging me to follow my interest on the topic. I learnt a lot from his guidance and
+expertise, which has not only helped me enormously on this thesis but will undoubtedly help me
+in my future research experiences.
+
+===== PAGE 4 =====
+4 CONTENTS
+Abstract
+This dissertation focuses on the Ollivier Ricci curvature ion a graph. This is a discrete notion
+of edge-based curvature that can be formulated in terms of an optimal transport problem.
+The first part of the report introduces the definition and discusses some of its main properties.
+The second part of the report focuses on the Ollivier Ricci Flow, an iterative process which
+uses the values of the curvature to try to find a set of edge weights that make the curvature
+of the graph constant. We present a graph for which this algorithm doesn’t converge and
+explain experimentally and theoretically the reason why. Finally, we study the robustness of
+the Ollivier Ricci curvature and the Ollivier Ricci Flow to noisy data inputs using simulations
+in Python.
+
+===== PAGE 5 =====
+5
+1 Introduction
+Complex networks are now fundamental objects in many scientific fields. They can be found in
+everything from financial markets, roads and layout of cities, drug discovery, social networks and
+more. These types of datasets can be mathematically phrased as a set of nodes, items, connected
+together by edges. Significant effort has been put to develop novel and powerful techniques to
+analyse these objects. A prominent approach has been to use geometrical information of the
+network, such as curvature, to understand its underlying structure.
+Curvature is usually a notion found on the context of differential manifolds. There are several
+notions of curvature that can be defined at a point, some of them being more complex and
+sophisticated than others, but they all aim to quantify the deviation of an object from being
+flat. Typically the values are defined to be large when the object deviates strongly from its flat
+counterpart, and to be close to zero when it is nearly flat. In the image below there is an example
+of surfaces with positive, zero and negative Ricci curvature.
+Discrete spaces don’t have a differential structure, but recent research has shown that the concept
+of curvature can be transferred to the discrete setting by using analogies with the continuous
+case. There are multiple notions of discrete curvature that have been defined in the last few
+years, each of them revealing different properties of the network. This dissertation focuses on
+the Ollivier Ricci Curvature. This is an edge based curvature that can be formulated in terms
+of an optimal transportation problem. This curvature has received special attention due to
+its success in identifying community structures within a graph. Broadly speaking, edges with
+positive curvature tend to represent edges within a cluster, while negatively curved edge tend
+to be the bridges within communities. This property potentially allows to identify communities
+within a graph using intrinsic properties of the network only, without the need of any embedding
+techniques.
+The first part of this report focuses on the Ollivier Ricci Curvature. We provide its definition
+and explain its connection to the Ricci Curvature defined in manifolds. We then expose some
+experimental results obtained regarding regular graphs with constant curvature. On the second
+part we introduce the Ollivier Ricci Flow, an iterative process that aims to flatten the curvature
+of a graph. We explain the methodology behind the algorithm and show an example of the
+Ollivier Ricci Flow implemented in a real-world dataset. We then focus on the study of the
+convergence of this algorithm. We prove experimentally and theoretically that the algorithm
+applied to a graph consisting of two triangles glued together by and edge doesn’t converge. To
+conclude the dissertation, we provide some potential future lines of research.
+
+===== PAGE 6 =====
+6 2 OLLIVIER RICCI CUR V ATURE
+2 Ollivier Ricci Curvature
+2.1 Construction
+Definition 1: Let G(V,E) be a connected graph. A probability distributions µ on G can be
+understood as a function µ : V→ [0, 1] with
+X
+x∈V
+µ(x) = 1
+Let G = (V, E) be a finite undirected graph with vertex set V, edge set E, and with no mul-
+tiple edges or self loops. The Ollivier Ricci Curvature is an edge based curvature that can be
+formulated in terms of the optimal transport problem between probabilities distributions around
+adjacent nodes. The probability distribution centered at a node x is defined as:
+mα
+x(y) =
+
+
+
+α if y =x
+(1−α)ψ(ωxy)P
+z∈Nxψ(ωzx) if y∈ Nx
+0 Otherwise
+(1)
+where:
+• Nx (neighborhood of x) is the set of nodes that are adjacent to x.
+• ψ : R → R is a one-to-one function in terms of the edge weight. For an unweighted
+graph, this term can be disregarded (gets cancelled out with the normalization factor).
+For a weighted graph, ψ determines how much does the edge weight impact the mass
+distribution at node x. Intuitively, if we look at the edge weight as a measure of proximity
+between adjacent nodes, we would want to put less mass on the nodes that are more far
+away from x (connected with a high edge weight). Therefore, ψ needs to be a decreasing
+function for our purposes. This term will be of special importance when implementing the
+Ricci Flow described in Section 3.
+• The parameterα∈ [0, 1] is called the idleness as can be seen as the probability of a random
+walker to stay at x. As we would see in the upcoming sections, this parameter will play an
+important role on the convergence of the Ollivier Ricci Flow.
+We can look at the probability measure defined in (1) as a mass distribution, which needs to be
+transported to the mass distribution defined around the other adjacent node. We thus produce
+a transport plan ξ that satisfies the following conditions:
+X
+l∈Ny
+ξxy(k,l ) =mα
+x(k)
+X
+k∈Nx
+ξxy(k,l ) =mα
+y (l)
+The first condition ensures that the total amount send from node k to all of the nodes in the
+neighbor of y is equal to the amount initially at k. The second condition ensures that the total
+amount send from all the nodes neighboring x to a node l in the neighborhood of y, is be equal
+to the final amount at l. Let Π be the set of all transport plans from mα
+x(v) to mα
+y (v). The
+distance between the probability distribution can be defined as
+
+===== PAGE 7 =====
+2.1 Construction 7
+W [mα
+x,mα
+y ] = inf
+ξ∈Π
+X
+k∈Nx,l∈Ny
+d(k,l )ξxy(k,l ) (2)
+Where W is the Wasserstein distance (also known as the Earth-mover distance). Finally, the
+Ricci curvature of an edge xy is defined as [1]:
+kα
+xy = 1− W [mα
+x,mα
+y ]
+d(x,y ) (3)
+The Wasserstein distance can also be expressed as a linear programming problem, where ρij is
+the proportion of mass originally at xi transported to yj:
+min
+x
+nX
+j=1
+mX
+i=1
+d(xi,yj)ρijmα
+x(xi)
+s.t.
+nX
+j=1
+ρij = 1 ∀i
+mX
+i=1
+ρijmα
+x(xi) =mα
+y (xj) ∀j
+0≤ρij≤ 1
+(4)
+Note that (4) is bounded from below asW [mα
+x,mα
+y ]≥ 0 and is not an unfeasible as in a connected
+graph there always exist a path between two nodes xi and yj. Therefore, by the Fundamental
+Theorem of Linear Programming, there exists and optimal solution to (4) (but it doesn’t need to
+be unique). Solving this optimization problem can be very computationally expensive, especially
+for large graphs with high number of edges, as is the case of real-world social networks. Therefore,
+in practice different approximations are used to reduce the complexity of the calculations.
+Example: Let’s consider the following unweighted graph. We want to calculate the curvature
+along edge xy. The mass distributions around node x and y is represented in the diagram below
+(left and right diagram, respectively):
+As this is a simple graph, it’s quite easy to find the optimal transport plan ξ between mα
+x and
+mα
+y . This consists on moving all the mass from the nodes adjacent to x (apart from node y) to
+x and leaving 0.27 mass there. We then transport the rest of the mass, 0.53, along edge xy and
+leave 0.2 mass at node y. Finally, we equidistribute the remaining mass between the rest of the
+neighbours of node y.
+Therefore,
+W [m0.2
+x ,m 0.2
+y ] = 0.2· 3 + 0.53 + 0.27· 2 = 1.4
+k0.2
+xy = 1− 1.4 =−0.4
+
+===== PAGE 8 =====
+8 2 OLLIVIER RICCI CUR V ATURE
+2.2 Connection to Ricci Curvature in a manifold
+In this subsection, we provide an intuition on the connection between the Ollivier Ricci Curvature
+and the Ricci Curvature defined in Riemannian manifolds. We will not provide the formal
+definition of Ricci Curvature in a manifold, but we will introduce one of its main characterisations:
+Let x and y denote two close points in a manifoldM of dimension n, and let d(x,y) be the distance
+along a geodesic γ joining these two points. We can then take a vector v∈ TxM and parallel
+transport it along γ to a vector v’∈ TyM. Informally, to parallel transport a vector along
+a curve means to transport it without changing its magnitude and direction (We would need
+to introduce the concept of Levi-Civita connection for a formal definition). We then project
+x along v back to the manifold again to obtain x’ and project y along v’ to obtain y’, and
+calculate the distance between these two points along a geodesic. We repeat this procedure
+for every possible direction of v and v’, constructing an infinitesimal balls Bϵ(x) and Bϵ(y)
+centered at x and y respectively. It is well known that the average distance between x and y’ is
+d(x,y )(1−ϵ2 Ric(v,v)
+2n +O(ϵ3 +ϵ2d(x,y ))). [2]
+Figure 1: Ricci Curvature on a manifold
+In the Ollivier Ricci Curvature, we replace the the idea of infinitesimal balls Bϵ(x) and Bϵ(y)
+with the mass distributionsmα
+x andmα
+y . The distance between these masses distributions is then
+computed using the Wasserstein distance from optimal transport theory, and is compared to the
+distance between the centers of the ball, that is, d(x,y) in formula (3). Therefore, the connection
+between the Ricci curvature in a manifold and the Ollivier Ricci Curvature is that both notions
+reflect the fact that when the the curvature is positive, the average distance between respective
+points in small metric ball is smaller than the distance between its centers (and the opposite for
+negative curvature).
+
+===== PAGE 9 =====
+2.2 Connection to Ricci Curvature in a manifold 9
+Figure 2: Comparison between Ricci Curvature defined on manifolds (left) and Ricci Curvature
+defined on graphs (rigth)
+From this construction we can expect that graphs with a clique-like structure will have a positive
+curvature as the mass distribution around adjacent nodes will highly overlap, so W [mα
+x,mα
+y ] will
+be small and, hence, often less than 1. By contrast, graphs with a tree-like structure will have
+a negative curvature as we will have to transport large amounts of mass to go from mα
+x to mα
+y ,
+soW [mα
+x,mα
+y ] will tend to be larger than 1. On the figure below we can see a summary of these
+properties.
+Figure 3: Ricci Curvature on manifolds vs Ricci Curvature on graphs [3]
+
+===== PAGE 10 =====
+10 2 OLLIVIER RICCI CUR V ATURE
+2.3 Graphs with constant curvature
+In this subsection we study graphs of constant curvature, that is, graphs whose all edges have
+the same value of curvature. The study of these graphs is of special interest as their shape is
+unchanged under the Ricci Flow, as we will describe in the next section. In this dissertation, we
+have written down the proof for the case of edge-transitive graphs, cycles and complete graphs.
+The following definitions were used on the proofs:
+Definition 2: The girth of an undirected graph is the length of a shortest cycle contained in
+the graph.
+Definition 3: A graph G is edge-transitive if for all pairs ( e1, e2) there exists an element
+ψ∈Aut(G) such that ψ(e1) =e2.
+Proposition 1 Edge transitive graphs have constant curvature
+Proof: Let ϕ be an automorphism of G, ϕ :V (G)→V (G), such that xy ∈ E(G) if and only if
+ϕ(x)ϕ(y)∈ E(G).
+By definition, ϕ preserves node adjacency. That is, if s ∼ x if and only if ϕ(s)∼ ϕ(x). As
+a consequence, deg(x)=deg(ϕ(x)) and the mass distribution around node x, is the same as the
+mass distribution around ϕ(x). So mα
+x = mα
+ϕ(x). In addition, as the node adjacency is pre-
+served, the shortest path between x and y is the same as the shortest path between ϕ(x) and
+ϕ(y). As a consequence, d(x,y)=d(ϕ(x),ϕ (y)). Putting these statements together, it follows that
+W [mα
+x,mα
+y ] =W [mα
+ϕ(x),mα
+ϕ(y)].
+W [mα
+x,mα
+y ] = inf
+ξ∈Π
+X
+k∈Nx,l∈Ny
+d(k,l )ξxy(k,l ) =
+= inf
+ξ∈Π
+X
+k∈Nϕ(x),l∈Nϕ(y)
+d(ϕ(k),ϕ (l)) =ξϕ(x)ϕ(y)(ϕ(k),ϕ (l) =W [mα
+ϕ(x),mα
+ϕ(y)]
+As there exists an automorphism ϕ that maps any two pairs of adjacent nodes to each other, we
+then conclude that the curvature in every edge will be the same.
+Proposition 2 Complete graphs have positive constant curvature of kα
+xy = 1−
+α− 1−α
+N−1
+.
+Proof: Let G be a complete graph with N nodes. By definition, all the nodes in a complete
+graph are connected to each other. Hence, the mass distribution around two adjacent nodes will
+overlap. In particular,
+mα
+x(v) =
+(
+α if v =x
+1−α
+N−1 otherwise mα
+y (v) =
+(
+α if v =y
+1−α
+N−1 otherwise
+Hence, to go from mα
+x(y) tomα
+x(v) we just need to move
+α− 1−α
+N−1
+ along the edgexy. Therefore,
+
+===== PAGE 11 =====
+2.3 Graphs with constant curvature 11
+W [mα
+x,mα
+y ] =
+α− 1−α
+N− 1
+→kα
+xy = 1−
+α− 1−α
+N− 1
+> 0,∀α
+Proposition 3 Cycle graphs Cn of n vertices have constant curvature. In particular, for n< 6
+the curvature kα
+xy > 0∀xy∈ E(Cn), and for n≥ 6, kα
+xy = 0∀xy∈ E(Cn).
+Proof: Let’s first consider cycles Cn for n< 6. The mass distribution around node x and y for
+n=5 is represented in the diagram below, along with the optimal transport plan ξ. For n̸= 5,
+the mass distribution would be the same, but the optimal transport plan would move 1−α
+2 along
+n-3 edges.
+W [mα
+x,mα
+y ] =
+
+1− 3α
+2
+ + 1−α
+2 · (n− 3)> 0,∀α
+For Cn for n < 6, the mass distribution around node x and y is represented in the diagram
+below, along with the optimal transport plan ξ. As the girth of the graph is larger than 3, the
+optimal transport plan ξ just shifts every mass through one edge.
+W [mα
+x,mα
+y ] = 1−α
+2 +α + 1−α
+2 = 1
+kα
+xy = 1− 1 = 0
+All the edges xy ofCn will have the same transport plan ξ (as cycles are edge-transitive graphs),
+so the curvature will be the same in all the edges.
+
+===== PAGE 12 =====
+12 2 OLLIVIER RICCI CUR V ATURE
+2.3.1 Regular Graphs of constant curvature
+We have experimentally found regular connected graphs of constant curvature up to 11 vertices.
+We have used 2 different methodologies depending on the number of vertices and degree of the
+graph:
+• Graphs up to 10 vertices and degree 5: We have used a database that contains the
+full list of regular graphs with those characteristics [4]. We have extracted their adjacency
+list and uploaded it into Python. We have created a Python function that returns those
+graphs whose edges have the same curvature. The Python code can be found in Appendix
+II.
+• Graphs with 11 vertices and 10 vertices with degree larger than 5: The adja-
+cency list mentioned above is not available for graphs larger than 10 vertices and degree 5.
+Therefore, we generated the regular graphs using a uniformly random generator algorithm
+in Python [5] and extracted the ones with constant curvature. To do that, we first need to
+determine the minimum number of iterations needed to make sure we have generated most
+of the graphs in the sample space.
+Let X be the number of distinct graphs generated after n iterations. In particular,
+– Let Xi = 1 if a graph G is generated at least once
+– Let Xi = 0 otherwise
+The algorithm we used generates graphs asymptotically uniform, we can express the ex-
+pected value X as follows:
+E(X) = E(
+mX
+i=1
+Xi) =
+mX
+i=1
+P(Xi = 1) =
+mX
+i=1
+
+1−
+m− 1
+m
+n
+=m
+
+1−
+m− 1
+m
+n
+To get E(X) we then need to determine the size of the sample spacem. We know that there
+are 265 and 266 distinct graphs with 11 vertices and degree 4 and 6, respectively (from
+source [4]). Nevertheless, the sample space m is larger than that because the algorithm is
+generating isomorphic graphs as well. Therefore, to calculate the size of the sample space
+m, we have calculated the average number of isomorphic graphs that exist for every graph
+G. To do that, we have used the VF2 Algorithm in Python to calculate the size of the
+automorphism group of a random generated graph G, over 1000 iterations, to obtain the
+average size of|Aut(G)|. Therefore, the sample space m can be approximated as:
+m≈ Number of distinct graphs×
+1000X
+i=1
+|Aut(G)|
+1000
+Putting these results together, for E(x) ≥ 0.9 we need at least 1100 iterations. We now
+can check for the graphs of constant curvature over those generated.
+The results containing all regular graphs of constant curvature can be found in Appendix I.
+Notice that we have found a regular graph of constant curvature for every combination of possible
+vertex and degrees. As future work, it would be interesting to study if this is the case for larger
+regular graphs. The methodology used above using random graphs generators can also be used
+to find graphs of constant curvature for higher number of vertices. For the purpose of this
+dissertation, we have only analyzed up to 11 vertices due to the high computational cost of
+calculating the Ollivier Ricci Curvature, mainly computing the Wasserstein distance, for such
+big number of graphs.
+Throughout this analysis, we have also found the following interesting results:
+
+===== PAGE 13 =====
+2.3 Graphs with constant curvature 13
+1. Regular graph with negative constant curvature: All the graphs listed in Appendix I have
+positive constant curvature. This is because for small connected graphs, the amount of mass
+we need to transport from adjacent mass distribution is not enough to haveW [mα
+x,mα
+y ]> 1.
+The left graph in Figure 4 is one example of a graph with constant negative curvature. Our
+intuition is that as girth of the regular graph increases, more examples of constant negative
+curvature will appear.
+2. Regular graph with constant curvature but not edge transitive: All the graphs listed in
+Appendix I are edge transitive. We have only found one example of a regular graph with
+constant curvature which is not edge transitive. This is graph is shown in Figure 4 on the
+right.
+Figure 4: Graph with constant negative curvature (left) and graph with constant curvature
+which is not edge-transitive (right)
+
+===== PAGE 14 =====
+14 3 OLLIVIER RICCI FLOW
+3 Ollivier Ricci Flow
+The Ollivier Ricci Flow is an iterative process that modifies the edge weights to try to flatten
+the curvature of the graph. Broadly speaking, edges with positive curvature will shrink (the
+edge weight will decrease) and the edges with negative curvature will expand (the edge weight
+will increase). This property has found important applications in community detection, as nodes
+within the same community will get closer to each other, while moving away from nodes belonging
+to other communities. The Ollivier Ricci Flow has also been used in other contexts, such as
+to study the fragility of financial markets through the analysis of the correlation between the
+robustness of a graph and its curvature [6], to study information propagation on a graph and
+its applications to the over-squashing phenomenon of Graph Neural Networks [7], to study the
+internet topology [8], and many more.
+To give an intuitive example on the idea behind the algorithm, we have implemented the Ollivier
+Ricci Flow to the Zachary’s Karate Club dataset [9]. This is a famous social network used broadly
+in network analysis. It is well-known that this dataset contains two communities. In the image
+below the weights and curvature are analyzed before and after implementing the Ricci Flow. We
+are considering the unweighted version of the data, so before implementing the Ricci Flow, all
+the weights are 1 (lower left diagram) and there is a mixture of curvatures ranging from -2 to 1
+(upper left diagram). After the Ricci Flow, all the edge curvatures have converged to 0 (upper
+right diagram), while the weights now range from 0 to 7 (lower right diagram). Notice that the
+weight of the edges that initially had a negative curvature has increased after the Ricci Flow
+(expanded), while the others have decreased (shrinked). The two communities can be clearly
+identified after the Ricci Flow from the lower right diagram, and correspond to the true values
+of the data. This is just an intuitive example on some properties of the algorithm, a more in
+depth analysis will follow in the next sections.
+Figure 5: Implementation of the Ricci Flow to the Zachary’s Karate Club network. The value
+of the edge weights and curvature can be seen from the colour-bars before (left) and after
+(right) the Ricci Flow
+
+===== PAGE 15 =====
+3.1 Construction 15
+3.1 Construction
+There are different approaches used for implementing the Ricci Flow. In this thesis, we would
+follow the methodology described in the paper: Community detection on networks with Ricci
+flow [10]. In particular, we followed the Python code that they made available on Github and
+documented the steps of their computation. The key idea is that at every iteration of the Ricci
+Flow, the mass distribution is re-defined using the normalized weights from the previous iteration,
+and the curvature is re-calculated using formula 3. The new weights of every edge j are then
+updated using wt+1
+j = (1−kt
+j)·wt
+j. We then normalize the weights to add up to N and repeat
+the process. A more detailed explanation of the algorithm is provided below:
+Algorithm 1 Mass distribution around a node x
+Input: Node x, Edge weights w of G, idleness α, parameter p
+1: function Mass Distribution(x, w, α, p) ▷ Array of weights of all edges
+2: for each vertex y in V(G) do
+3: if y in Nx then
+4: if y=x then
+5: mα
+x(y) =α
+6: else if y̸= x then
+7: mα
+x(y) = (1−α)e−wp
+xy
+P
+z∈Nxe−wp
+zx
+8: end if
+9: else if then
+10: mα
+x(y) = 0
+11: end if
+12: end for
+13: return mα
+x
+Algorithm 2 Ricci Curvature single edge
+Input: Adjacent nodes x and y, Edge weights w of G, idleness α, parameter p
+1: function Ricci Curvature(x, y, w, α, p) ▷ Curvature of the edge xy
+2: mα
+x = Call Mass Distribution( x, w, α, p )
+3: mα
+y = Call Mass Distribution( y, w, α, p )
+4: kxy = 1−
+W [mα
+x,mα
+y ]
+w(x,y) ▷ The Wasserstein distance is calculated using the Sinkhorn library [11].
+5: return Ricci Curvature xy
+Algorithm 3 Ricci Flow
+Input: Undirected graph G, Number of Iterations I, idleness α, parameter p
+1: for t← 1 toI do
+2: for each j in E(G) do
+3: kt
+j = Call Ricci Curvature (x,y,w t,α, p) ▷ xy are the nodes adjacent to edge j
+4: wt+1
+j = (1−ϵ·kt
+j)·wt
+j ▷ ϵis the step size
+5: end for
+6: for each j in E(G) do
+7: wt+1
+j =
+wt
+j×|E(G)|
+PN
+j∈E(G)wt
+j
+▷ Normalize edge weights used for the next iteration
+8: end for
+9: end for
+10: return Final weights
+
+===== PAGE 16 =====
+16 3 OLLIVIER RICCI FLOW
+3.2 Convergence of Ricci Flow
+The convergence of the Ricci Flow is of great importance when applying the algorithm to real-
+world datasets. Even though a number of experimental analyses have been carried out, no
+theoretical guarantees about its convergence has been obtained yet. This is a particularly difficult
+task due to the following factors:
+1. In general, there is no explicit formula for the Wasserstein distance between masses distri-
+butions around adjacent edges and, hence, for the curvature of an edge.
+2. The normalization factor implemented at the end of every iteration of the Ricci Flow avoids
+expansion of the weights to infinity, but makes the analysis significantly more complicated.
+This is because even though the Wasserstein distance between masses distribution around
+adjacent nodes may decrease from one iteration to another, the weight of the edge can still
+increase if the sum of the total Wasserstein distance from all the edges of the graph has
+also decreased. Therefore, because of the normalization factor, the weight of an edge at
+the end of one iteration doesn’t depend only on the local neighborhood around the edge,
+but on the global structure of the graph.
+3. The shortest path between two nodes can change as the weight of the edges changes, making
+difficult (or impossible) to track what is the optimal path between two nodes at a given
+time.
+In this section, we will analyze the convergence of the Ricci Flow using a simplified version
+of the mass distribution around a node x described in Algorithm 1. We will explain how this
+simplification mitigates some of the difficulties in the analysis outlined above. As stated in
+Algorithm 1, the mass distribution is dependent of a parameter p which quantifies how much we
+want to disregard the neighbours that are far away (have a large edge weight). Mainly, the mass
+distribution has the following form:
+mα
+x(y) =
+
+
+
+α if y =x
+(1−α)e−wp
+xy
+P
+z∈Nxe−wp
+zx
+if y∈ Nx
+0 Otherwise
+(5)
+As the value of p grows,ψ(wxy) =e−wp
+xy becomes steeper around x=1. For our analysis, we will
+approximate this behaviour using the step function below:
+ϕ(wxy) =
+(
+1 if wxy≤ 1
+0 Otherwise (6)
+Therefore, the mass distribution around node x that we would be considering is:
+mα
+x(y) =
+
+
+
+α if y =x
+(1−α)ϕ(wxy)P
+z∈Nxϕ(wxz) if y∈Nx and P
+z∈Nxϕ(wxz)̸= 0
+(1−α)
+|Nx| if y∈Nx and P
+z∈Nxϕ(wxz) = 0
+0 Otherwise
+(7)
+That is, if the edges around node x all have weight smaller than 1 or all weight larger than 1,
+we equidistribute the mass. If some edges have weight larger than 1 and some smaller than one,
+then we equidistribute the mass between the edges with weight smaller than 1 only.
+
+===== PAGE 17 =====
+3.2 Convergence of Ricci Flow 17
+Conceptually, with mass distribution (7), we are completely disregarding the neighbours that
+have edge weight larger than 1. Thus, this may not be best choice in real-world applications,
+but is convenient for theoretical analysis.
+Let wt
+j be the weight of edge j at iteration t. From Algorithm 3,
+wt+1
+j = (1−ϵ·kt
+j)·wt
+j (8)
+and the curvature of edge j at iteration t, kt
+j, is
+kt
+j = 1− W [mα
+x,mα
+y ]
+wt
+j
+(9)
+where x and y are the nodes adjacent to edge j and ϵ is the step size, which we would set equal
+to 1. Combining expression 8 and 9 together, leads to
+wt+1
+j =W [mα
+x,mα
+y ] (10)
+Let wt be an n-dimensional vector, where a n= |E(G)|, containing the weights of all edges at
+iteration t. Now, for a fixed α, we can define a n×n matrix A whose entry Ajk is the mass
+transported around edge k when computing the optimal Wasserstein distance between the masses
+distributions adjacent to edge j. Note that we can define the matrix A because the mass dis-
+tribution described in expression (7) only depends on the edge weight of the neighboring edges
+being larger or smaller than 1, but not on the value of the weight itself. So the coefficients Ajk
+are not depend on w. Then, we can rewrite the non-normalized weights at iterations t+1 as
+wt+1 =Awt
+If sequential weights have the same optimal transport plan, they will share the same matrix A,
+so we can express the weights at iteration t as
+wt =Atw0
+where w0 are the initial weights associated with A. Realistically, this will only happen in small
+graphs. We have not proved that this formulation is possible for a general graph, but it certainly
+is for the small graph that we will be analyzing in the next section. In the case where this
+formulation is feasible, the step function in expression (7) we applied to the mass distribution
+has allowed us to write down this problem a system of picewise linear maps. This has made the
+problem significantly easier to tackle, as we can now use linear algebra techniques to investigate
+the convergence. As a future work, it would be interesting to prove if this formulation is correct
+for a general graph. Assuming the formulation above is feasible for a graph G, we can divide the
+parameter space into different regions following the below procedure.
+1. If the mass distribution around adjacent nodes changes, the optimal transportation plan
+will definitely change and, hence, the entries of the matrix A too. The mass distribution
+will change if and only if the weight of an edge changes from smaller than 1 to larger than
+1, or viceversa. Therefore, every matrix A has associated a set of conditions which specify
+if the weight of every edge should be smaller or larger than 1. These set of conditions can
+be written as the intersection of n half spaces, so every region associated with a matrix
+A can be viewed as a convex polytope. The sample space Ω will be the union of finitely
+many convex polytopes. In particular, for a graph with n edges there would be at most
+2n different combinations, so Ω will be the union of at most 2 n convex polytopes. In the
+diagram below there is a representation of such space.
+
+===== PAGE 18 =====
+18 3 OLLIVIER RICCI FLOW
+Figure 6: Representation of the sample space Ω, Every region Ai is a convex polytope that
+determine which edge weights are bigger or smaller than 1
+2. Given that wt lies inside one of the regions, let’s say A1, the coefficients of the matrix
+can still change if the optimal transport plan changes. This can happen, for example, if
+the shortest path between two nodes has changed with respect to the previous iteration.
+Hence, every polytope is subdivided by different regions determined by the set of optimal
+transport plans, as seen below:
+Figure 7: Every region in Ω is subdivided by the different determined by the set of optimal
+transportation plans
+With this construction in mind we are now ready to study how the weightswt change throughout
+the Ricci Flow. To do that, we need to find an answer to the following question: Does there exist
+a t such that wt =Atw0 (w0 being the initial weights associated with A) will remain in the same
+region A or wt will keep jumping between regions in Ω? We will try to find an answer to this
+question by looking at the direction along the largest eigenvector associated with A. Assuming
+that A is diagonalizable, we can compute the eigendecomposition of A as below, where D is an
+n×n diagonal matrix whose entries are the eigenvalues{λi}n
+i=0, and P is an n×n matrix whose
+columns are the eigenvectors.
+wt =PDtP−1w0
+LetB ={v1,..., v1} be the set of normalized eigenvectors. We can then express the weights w
+in the basis of B:
+[wt]B =Dt [w0]B
+where [w0]B =Pn
+i=0aivi, for some ai∈ C. Then,
+[wt]B =Dt [w0]B =a0λt
+0v0 +a1λt
+1v1 +... +anλt
+nvn
+Normalizing,
+[wt
+N]B = a0λt
+0v0 +a1λt
+1v1 +... +anλt
+nvnp
+a2
+0λ2t
+0 +a2
+1λ2t
+1 +... +a2nλ2tn
+
+===== PAGE 19 =====
+3.2 Convergence of Ricci Flow 19
+Let λk be the eigenvalues with the largest value in modulus and vk its associated eigenvector.
+Then, as t→∞
+[wt
+N]B→ vk
+If the largest eigenvalueλk has multiplicity 1< m < n, with associated eigenvectors{v1,..., vm},
+then as as t→∞ ,
+[wt
+N]B→ a1v1 +a2v2 +... +amvmp
+a2
+1 +a2
+2 +... +a2m
+(11)
+In summary, given wt in region A, as t→∞ the weights will convergence to the eigenvector
+with the biggest eigenvalue (or a combination of eigenvectors if the eigenvalue has multiplicity
+larger than 1). We then just need to change [ wt
+N]B to the canonical basis using the matrix of
+eigenvectors P and normalize to add up to n. If wt still belongs to the same region A, then there
+is a possibility that the algorithm has converged. This is still not sufficient to prove convergence
+because in equation (10) we are not normalizing the weights after every iteration. So even if the
+eigenvector vk lies inside the same polytope as w0, due to the normalization, some weights may
+swap from being smaller than 1 to larger than 1, or viceversa, moving to another polytope and
+changing the matrix A. Nevertheless, this approach is sufficient to prove non-convergence if we
+identify a bouncing between two regions, as we will describe in the following section.
+3.2.1 Non-Convergence of the Ollivier Ricci Flow
+So far, there are no examples in literature of non-convergence of the Ollivier Ricci Flow. We
+believe that there are two scenarios that can cause the weights to diverge; Firstly, the normaliza-
+tion factor can create a bouncing between edges being larger and smaller than 1 and, secondly,
+a bouncing can occur between different optimal paths joining two nodes. In this section, we
+provide an example of non-convergence due to the first reason stated.
+Theorem 1: Let G(V,E) be an undirected and unweighted graph consisting of two triangles
+glued together along an edge, as illustrated in Figure 8. The Ollivier Ricci flow with the mass
+distribution defined in (7) converges for 1
+3≤α< 1
+2 and doesn’t converge for α< 1
+3.
+Figure 8: Graph G from Theorem 1
+We will experimentally and theoretically prove Theorem 1 in the following sections. The labelling
+of the nodes and the edges of G illustrated in Figure 8 is the one we will refer to throughout the
+next sections.
+3.2.2 Experimental Analysis
+We have used the Python code provided in [10] to investigate the convergence of the Ricci Flow
+for graph G. The function I have coded to generate the following graphs can be found in Appendix
+III. The experimental analysis has been very important to get an intuition of how the algorithm
+
+===== PAGE 20 =====
+20 3 OLLIVIER RICCI FLOW
+behaves, which has been very useful when constructing the theoretical poof of Theorem 1 in the
+next section.
+In Figure 9, we observe that the Ricci Flow diverges for α = 1
+4 and converges for α = 1
+3 and
+α = 1
+2. In addition, for α = 1
+3 the weight of the exterior edges converges to 15
+13 and the weight of
+the interior edge converges to 5
+13 in just one iteration, and for α = 1
+2 the weight of the exterior
+edges converges to 5
+4 and the weight of the interior edge converges to 0. We would prove all these
+results theoretically in the next section.
+Figure 9: Graphs of the edge weights in every iteration of the Ricci Flow for
+α = 1
+4,α = 1
+3,α = 1
+2
+We have also plotted the change in the weights of the exterior edges along the Ricci Flow for
+different values of α in a 3D plot as seen in Figure 10 below. It can be clearly seen how the
+weights bounce for α< 1
+3 and converge otherwise.
+Figure 10: 3D plot of the weights of the exterior edge along iterations of the Ricci Flow for
+different values of α
+
+===== PAGE 21 =====
+3.2 Convergence of Ricci Flow 21
+3.2.3 Proof of Theorem 1
+We will proof Theorem 1 using the approach that we described in Section 3.2. This graph only
+has two types of edges: the exterior and the interior ones. Therefore, we can divide the sample
+space Ω on three convex polytopes A1, A2 and A3, defined as below:
+wt∈A1 if w1 = w2 = w3 = w4 = w5 = 1
+wt∈A2 if w5≤ 1 and w1, w2, w3, w4> 1
+wt∈A3 if w5> 1 and w1, w2, w3, w4≤ 1
+Each one of these regions is subdivided into smaller sub-regions determined by the set of optimal
+transport plans, as we explained in Section 3.2. In particular, for a fixed α, when wt∈A3 there
+are two possible optimal paths from node 1 to node 3: Through the diagonal (edge 5) or through
+the exterior edges (edge 1 and 2, or edge 3 and 4), as can be seen in Figure 11 below. We will
+this discuss these subregions in more detail in the next pages.
+Figure 11: Graph G with labelling of nodes and edges. There are two possible optimal paths
+joining node 1 and node 2: Path X and Path Y
+We call the first path Path X and the second one Path Y. Therefore, putting these together we
+get to the following representation of the sample space Ω for G:
+Figure 12: Representation of the sample space Ω for the graph G
+As G is an unweighted graph, w0 initially lies in region A1. The next step is to calculate the
+Wasserstein distance between adjacent nodes. For edges 1,2,3,4 (external edges), there are 3
+optimal transportation plans depending on the value of α. In particular, for α <1
+7, 1
+7 < α <1
+2
+and α > 1
+2. To avoid considering these cases separately, we will find a common lower bound
+for the Wasserstein distance and we will then prove that this bound is enough to make w1
+5 < 1
+and w1
+1 =w1
+2 =w1
+3 =w1
+4 > 1. The figure and table below outlines the steps used to obtain the
+lower bound in the Wasserstein distance for edges 1,2,3,4 and the step used to obtain the optimal
+transportation plan in edge 5.
+
+===== PAGE 22 =====
+22 3 OLLIVIER RICCI FLOW
+Optimal transport plan edges 1,2,3,4 Optimal transport plan edge 5
+1. As mα
+y does not contain any mass at
+node 4, we will have to move 1−α
+3 mass
+from node 4 in mα
+x. Depending on the
+value of α, the optimal transport plan
+will move the mass to node 1 or to node
+3.
+2. Regardless of the outcome of the last
+step, the optimal transport plan will
+have to move at least| 1−α
+3 −α| =| 1−4α
+3 |
+mass to node 2 (the difference between
+the two masses distributions at node 2).
+3. Then, W [mα
+x,mα
+y ]> 1−α
+3 +
+ 1−4α
+3
+
+1. We need to rearrange the remaining
+mass between node 1 and 3. As the
+weight of all the edges is the same, the
+optimal transport plan will move the
+mass along edge 5. Notice that the op-
+timal transport plan is the same for all
+values of α.
+2. Then, W [mα
+x,mα
+y ] =
+ 1−4α
+3
+
+To obtain the values of the weight after the first iteration, we need to normalize the Wasserstein
+distances obtained above. One can check that for edge 5,
+w1
+5 < 5
+ 1−4α
+3
+
+ 1−4α
+3
+ + 4
+  1−α
+3 +
+ 1−α
+3
+ = 5
+ 1−4α
+3
+
+5| 1−4α
+3
+ + 4
+  1−α
+3
+ < 1,∀α
+And, by consequence, we will have that the weight of all the other edges will be larger than
+1. Hence, we have moved to the A2 region. In the diagram below one can see the masses
+distributions for edge 1 and edge 5 respectively in A2. As a reminder, here we are using the mass
+distribution defined in expression (7), so we only put mass along the edges with weight smaller
+than 1 (or equidistribute if all the adjacent edges have weight larger than 1). That is the reason
+why in the masses distribution in Edge 5 we don’t put mass in node 2 or 4. We claim that for
+α < 1
+2 (the case that we are considering in Theorem 1), there is one optimal transport plan in
+A2. The table below outlines the reason behind it.
+
+===== PAGE 23 =====
+3.2 Convergence of Ricci Flow 23
+Optimal transport plan edges 1,2,3,4 Optimal transport plan edge 5
+1. For α < 1
+2, in mα
+x there is more mass
+in node 3 than in node 1, hence the
+optimal plan to obtain α mass in node
+2 is to transport α mass from node 3 to
+node 2.
+2. Then we just need to rearrange the re-
+maining mass between node 1 and 3.
+As the weight of the interior edge is
+smaller than the weight at the exterior
+edge, the optimal plan is to move the
+difference of masses along edge 5.
+1. We just need to rearrange the difference
+in masses between node 1 and 3. As
+the weight of the interior edge is smaller
+than the weight at the exterior edge,
+the optimal plan is to move the mass
+along edge 5.
+Using these optimal transports, we can construct the matrix A2 as follows:
+
+
+wt
+1
+wt
+2
+wt
+3
+wt
+4
+wt
+5
+
+
+=
+
+
+0 α 0 0
+ 1−3α
+2
+
+0 0 α 0
+ 1−3α
+2
+
+0 0 0 α
+ 1−3α
+2
+
+α 0 0 0
+ 1−3α
+2
+
+0 0 0 0
+1− 2α
+
+
+
+t
+
+w0
+1
+w0
+2
+w0
+3
+w0
+4
+w0
+5
+
+
+(12)
+The eigendecomposition of A2 is
+A2 =
+
+
+−1 1 i −i 1
+2
+1 1 −1 −1 1
+2
+−1 1 −i i 1
+2
+1 1 1 1 1
+2
+0 0 0 0 1
+
+
+−1
+
+−α 0 0 0 0
+0 α 0 0 0
+0 0 −iα 0 0
+0 0 0 iα 0
+0 0 0 0 1 − 2α
+
+
+
+
+−1 1 i −i 1
+2
+1 1 −1 −1 1
+2
+−1 1 −i i 1
+2
+1 1 1 1 1
+2
+0 0 0 0 1
+
+
+The biggest eigenvalue is 1 − 2α for α < 1
+3, α for α > 1
+3 and 1− 2α = α for α = 1
+3 . We will
+analyze these three cases separately.
+
+===== PAGE 24 =====
+24 3 OLLIVIER RICCI FLOW
+Case 1: α< 1
+3. The eigenvector associated with the largest eigenvalue is
+  1
+2, 1
+2, 1
+2, 1
+2, 1
+T. Chang-
+ing to the canonical basis using the matrix of eigenvectors above, we get that the weights converge
+to (0, 0, 0, 0, 1)T. This doesn’t belong to the region A2 anymore. As w5 > w1,w 2,w 3,w 4, it be-
+longs toA3. Nevertheless, we still need to determine if the weights will be in the A1
+3 orA2
+3 region.
+That is, whether the optimal path is Path X or Path Y from Figure 11.
+Lemma 2: Given that the weights of graph G are such that w5 <w 1,w 2,w 3,w 4, the resulting
+weights obtained by applying A2 are such that the Path X is always the optimal path between
+node 1 and 3.
+Proof: To prove that Path X is the optimal path between node 1 and 3, we need to prove that
+the resulting weights after applying A2 are such that wt
+5 < wt
+1 +wt
+2. Due to normalization we
+know that at the end of the previous iteration wt
+1 +wt
+2 +wt
+3 +wt
+4 +wt
+5 = 5 and due to the
+symmetry of the graph we have that wt
+1 = wt
+2 = wt
+3 = wt
+4. Putting these two results together,
+we get that w5 + 4w1 = 5. So, wt
+5 < wt
+1 +wt
+2 → wt
+5 < 2w1 → wt
+5 < 5
+3. Hence, to prove
+that wt
+5 < wt
+1 +wt
+2 we need to prove that wt
+5 < 5
+3. We don’t know the exact values of the
+weight from the previous iteration, so we would have to work with general values instead. Let
+wt−1 = (1 +δ, 1 +δ, 1 +δ, 1 +δ, 1− 4δ)T where 0 < δ <1
+4. (Note that as wt−1∈ A2,w 5 < 1
+and w1,w 2,w 3,w 4 > 1). We need to prove that for all 0 < δ <1
+4 and 0 < α <1
+3, the resulting
+weights after applying A2 to wt−1 are such that w5< 5
+3.
+
+
+0 α 0 0 1−3α
+2
+0 0 α 0 1−3α
+2
+0 0 0 α 1−3α
+2
+α 0 0 0 1−3α
+2
+0 0 0 0 1 − 2α
+
+
+
+
+1 +δ
+1 +δ
+1 +δ
+1 +δ
+1− 4δ
+
+
+=
+
+
+α(δ + 1) + 1−3α
+2 (1− 4δ)
+α(δ + 1) + 1−3α
+2 (1− 4δ)
+α(δ + 1) + 1−3α
+2 (1− 4δ)
+α(δ + 1) + 1−3α
+2 (1− 4δ)
+(1− 2α)(1− 4δ)
+
+
+Normalizing, we get that wt
+5 = 5 (1−2α)(1−4δ)
+α(9δ−4)−3(δ−1). Plotting this inequality on Python (Figure 18
+below), we indeed get that wt
+5 = 5 (1−2α)(1−4δ)
+α(9δ−4)−3(δ−1) < 5
+3,∀α∈ (0, 1
+3),∀δ∈ (0, 1
+4), as required.
+Figure 13: Region satisfying the inequality
+In conclusion, wt has moved from the polytope A2 to the polytope A1
+3. Therefore, we need
+to compute the new matrix A1
+3 following the same procedure as before. Now, w5 > 1 and
+w1,w 2,w 3,w 4< 1, so the mass distribution is as follows:
+
+===== PAGE 25 =====
+3.2 Convergence of Ricci Flow 25
+On the table below there is a justification of the optimal transport plan.
+Optimal transport plan edges 1,2,3,4 Optimal transport plan edge 5
+1. Starting at the distribution around x,
+we need to move all the mass from node
+4. As node 3 needs the same mass con-
+tained in node 4, the optimal transport
+plan is to move the mass from node 4
+to node 3 along edge 3.
+2. We then move the extra mass from
+node 2 to node 1 along edge 1.
+1. To move from mα
+x to mα
+y we only need
+to redistribute the mass in node 1 and
+3. As we have proved in Lemma 2 that
+Path X is the optimal path, we obtain
+that the optimal transportation plan is
+just to move α along edge 5.
+Using these transportation plans, we can construct the matrix A1
+3 as follows:
+
+
+wt
+1
+wt
+2
+wt
+3
+wt
+4
+wt
+5
+
+
+=
+
+
+1−3α
+2 0 1−α
+2 0 0
+0 1−3α
+2 0 1−α
+2 0
+1−α
+2 0 1−3α
+2 0 0
+0 1−α
+2 0 1−3α
+2 0
+0 0 0 0 α
+
+
+t
+
+w0
+1
+w0
+2
+w0
+3
+w0
+4
+w0
+5
+
+
+Its eigendecomposition is
+
+
+0 −1 0 1 0
+0 0 −1 0 1
+0 1 0 1 0
+0 0 1 0 1
+1 0 0 0 0
+
+
+−1
+
+α 0 0 0 0
+0 −α 0 0 0
+0 0 −α 0 0
+0 0 0 1 −α 0
+0 0 0 0 1 −α
+
+
+
+
+0 −1 0 1 0
+0 0 −1 0 1
+0 1 0 1 0
+0 0 1 0 1
+1 0 0 0 0
+
+
+
+===== PAGE 26 =====
+26 3 OLLIVIER RICCI FLOW
+As α < 1
+3, the biggest eigenvalue is 1 − α with associated eigenvectors
+(1, 0, 1, 0, 0,)T, (0, 1, 0, 1, 0)T
+
+. To find the weights where these eigenvectors converge
+to, we need to find the coefficients a1 and a2 from the expression 11. We don’t know the exact
+values of [w0]B (as we don’t the exact values of the weights after the 1st iteration), but due
+to the symmetry of the graph w0
+1 = w0
+2 = w0
+3 = w0
+4, hence a1 = a2, and [ w]B converges to
+(0, 0, 0, 1, 1)T. Changing to the canonical basis and normalizing, we get that weights converge to  5
+4, 5
+4, 5
+4, 5
+4, 0
+T. This doesn’t belong to the polytope A1
+3 anymore as clearly w5 <w 1,w 2,w 3,w 4.
+In fact, wt is on the region A2 again.
+In conclusion, for α< 1
+3, wt will keep bouncing between A2 and A1
+3 and the Ollivier Ricci Flow
+will not converge.
+Case 2: 1
+3 <α< 1
+2 The eigenvectors associated with the largest eigenvalue |α| are
+(−1, 1,−1, 1, 0)T, (1, 1, 1, 1, 0)T, (i,−1,−i, 1, 0)T, (−i,−1,i, 1, 0)T	
+. As before, we need to
+find the coefficients a1,a 2,a 3,a 4 respectively from expression 11. By the symmetry of the graph
+(wt
+1 =wt
+2 =wt
+3 =wt
+4), we get that a1,a 3,a 4 = 0, and a2 = 2w0
+1
+w0
+5
+, where w0
+i are the initial weights
+associated with polytope A2. Hence, the weights [wt]B will converge to
+
+0, 2w0
+1
+w0
+5
+, 0, 0, 0
+T
+. Chang-
+ing to the canonical basis and normalizing, we get that the weights converge to
+  5
+4, 5
+4, 5
+4, 5
+4, 0
+T.
+This is still in the A2 polytope, but this is not enough to prove convergence as we have to make
+sure that the contribution of the other eigenvectors on the first iterations is not enough to make
+the weight wt change polytope due to normalization. We will prove that this is not the case
+by manipulating the inequalities associated to the matrix A2. Assume that at iteration t the
+normalized weights wt satisfy that wt∈A2. This leads to the following set of inequalities:
+
+
+
+4wt
+5<w t
+1 +wt
+2 +wt
+3 +wt
+4 (13)
+4wt
+1>w t
+2 +wt
+3 +wt
+4 +wt
+5 (14)
+4wt
+2>w t
+1 +wt
+3 +wt
+4 +wt
+5 (15)
+4wt
+3>w t
+1 +wt
+2 +wt
+4 +wt
+5 (16)
+4wt
+4>w t
+1 +wt
+2 +wt
+3 +wt
+5 (17)
+We have to prove that those inequalities are still satisfied throughout the iterations. We will
+start by analyzing inequality 13. We want to prove that
+4wt+1
+5 <w t+1
+1 +wt+1
+2 +wt+1
+3 +wt+1
+4 (18)
+We can re-write the weights at the iterationt+1 in terms of the weights at iterationt by applying
+the matrix A2 to wt. Substituting the result into inequality 18 we get:
+4|1− 2α|wt
+5<α (wt
+1 +wt
+2 +wt
+3 +wt
+4) + 2|1− 3α|wt
+5
+Rearranging, we get that
+4
+
+|1− 2α|− |1− 3α|
+2
+
+wt
+5<α (wt
+1 +wt
+2 +wt
+3 +wt
+4)
+We can now multiply both sides of the first inequality from 13 by|1−2α|−|1−3α|
+2 . Noticing that
+|1− 2α|− |1−3α|
+2 <α for all α> 1
+3 we get that
+4
+
+|1−2α|−|1− 3α|
+2
+
+wt
+5<
+
+|1−2α|−|1− 3α|
+2
+
+(wt
+1+wt
+2+wt
+3+wt
+4)≤α(wt
+1+wt
+2+wt
+3+wt
+4), ∀α> 1
+3
+
+===== PAGE 27 =====
+3.2 Convergence of Ricci Flow 27
+Therefore, we have proved that inequality 18 is satisfied on every iteration. The other inequalities
+can be proven analogously, the procedure for inequality 14 is outlined below. We want to proof
+that:
+4wt+1
+1 >w t+1
+2 +wt+1
+3 +wt+1
+4 +wt+1
+5
+Applying the matrix A2 and substituting the result into the equation, we get that
+4
+
+α·wt
+2 +
+
+1− 3α
+2
+wt
+5
+
+>α (wt
+1 +wt
+3 +wt
+4) + 2|1− 3α|wt
+5 +|1− 2α|wt
+5
+Rearranging,
+α·wt
+1<α (4wt
+2−wt
+3−wt
+4)−| 1− 2α|wt
+5
+One can check that 1 − 2α < α∀α > 1
+3. Using the fact that wt
+1 = wt
+2 = wt
+3 = wt
+4 > wt
+5, we
+conclude that inequality 18 is satisfied in every iteration.
+In conclusion, for α> 1
+3, the weights after the Ricci Flow will converge to
+  5
+4, 5
+4, 5
+4, 5
+4, 0
+T. This
+value coincides with the one obtained experimentally in Section 3.2.2.
+Case 3: α = 1
+3 Whenα = 1
+3, all the eigenvalues have the same magnitude. Let [w0]B =Pn
+i=0aivi
+be the initial weights associated toA2 on the basis of eigenvectors. Ast→∞ , [w0]B will converge
+to:
+[wt
+N]B→ a1v1 +a2v2 +... +anvnp
+a2
+1 +a2
+2 +... +a2n
+= [w0]Bp
+a2
+1 +a2
+2 +... +a2n
+Which is just the normalized initial weights. Hence, the weights will remain constant through
+every iteration. The initial weights in A2, w0, are the weights after the first iteration in A1 (as
+the weights move fromA1 toA2 in just one iteration). So we just need to study the final weights
+in A1 to find the exact values where the weights converge to. We will not calculate this value
+in the dissertation because the procedure is long and analogous to the techniques already used
+throughout the proof. Broadly speaking, we will have to construct the 3 versions of the matrix
+A1 depending on the value ofα (asα< 1
+7, 1
+7 <α< 1
+2 andα> 1
+2 have different optimal transport
+plans). We then just need to apply A1 to the initial weights and normalize.
+In conclusion, for α = 1
+3 the edge weights will converge after 1 iteration. This is consistent with
+the experimental results, as in the middle graph of Figure 9 one can see that the weights remain
+constant after the first iteration.
+To summarize our analysis, we get that the weights after Ricci Flow the weights will converge/-
+diverge as follows:
+Figure 14: Summary of the convergence of the Ricci Flow for G
+These theoretical results are consistent with the experimental results obtained in section 3.2.2.
+
+===== PAGE 28 =====
+28 3 OLLIVIER RICCI FLOW
+3.2.4 Interesting points and future work on the convergence of the Ricci Flow
+Along the experimental and theoretical analysis we have come across some points that would be
+interesting to investigate in a future work.
+1. Throughout out the theoretical analysis we have noticed that the weights only have a
+direction towards eigenvectors associated with real and positive eigenvalues. Negative and
+complex eigenvalues could create another type of bouncing on the edge weights that could
+prevent convergence. We believe that the there is no feasible optimal transport plan that
+will give rise to this situation, but it would be interesting to understand theoretically the
+reason why.
+2. In this dissertation, we have only proved the non-convergence of the Ricci Flow for the
+specific graph G shown in Figure 8. Nevertheless, this is a behaviour that we have seen in
+other graphs containing a high number of triangles. In Figure 15 there are some examples
+of non-convergence of the Ricci Flow that we came across during the experimental analysis.
+An interesting future work will be to study if it is possible to construct an arbitrarily large
+graph exhibiting this phenomena.
+Figure 15: Other examples of non-convergence of Ollivier Ricci Flow
+3. We have only proved non-convergence when using the mass distribution defined in 7, which
+is not the one used for practical purposes as we discussed earlier. Experimentally, we were
+able to check that using the continuous mass distribution from Algorithm 1, the Ricci
+Flow applied to G doesn’t converge for p >5. This is because for large values of p, the
+continuous mass distribution defined in Algorithm 1 is similar enough to the step function
+we have been working on (7). It could be interesting to extend our proof for the continuous
+version of the mass distribution. Our proof could be adapted by adding a small portion of
+mass δ along the edges with negative curvature and analyzing the convergence using the
+same techniques. This approach will only work as long as we can express the problem as a
+system of picewise linear maps, which as we already discussed, we were not able to prove
+for the general case.
+
+===== PAGE 29 =====
+29
+4 Robustness of Ollivier Ricci Curvature and Ricci Flow
+In order to be able to use the Ollivier Ricci Curvature and Ollivier Ricci Flow in real-world
+applications it is essential for the algorithms to be robust to noise in the input data. To study the
+robustness of these algorithms we will apply Gaussian noise to the weights of an unweighted graph
+and study how sensible the algorithms are to those changes. We decided to use Gaussian noise
+as this represents small random fluctuations in the data that may arise in real-world datasets. In
+this case, we will use a truncated version of the normal distribution as we don’t want the weights
+to be negative, nor to be larger than the number of edges in the graph. In particular, the noise
+will follow the below normal distribution with mean 0 and standard deviation σ.
+Noise(σ)∼− 0.9≤ 1
+σ
+√
+2πe− 1
+2 (x
+σ )2
+≤|E(G)|
+In order to evaluate the robustness of the algorithms, we will express the problem in terms of a
+classification problem and look at the accuracy. That is, when working with the Ollivier Ricci
+Curvature, we will first compute the curvature of the edges without the noise. The edges with
+positive curvature will belong to one group (call it 0) and the edges with negative curvature will
+belong to the other group (call it 1). We will then apply the noise to the input weights of the
+graph and look how many edges have been classified correctly. We will repeat this procedure for
+different values of standard deviationσ. Our intuition is that as the standard deviation increases,
+the accuracy will decrease. For the Ollivier Ricci Flow, the methodology is the same, but we
+define one group as being the set of edges with weight smaller than 1 after the implementation
+of the Ricci Flow (call it 0) and the other group as the set of edges with weight larger or equal
+than 1 after the implementation of Ricci Flow (call it 1). Finally, the accuracy of the algorithm
+is defined as follows:
+Accuracy = Number of correct classifications
+Total number of classifications
+Notice that this is a simplification of the problem, as we are not considering how much has the
+weight of a noisy edge changed with the Ricci Flow compared to its non noisy counterpart. We
+are only analyzing if the general behaviour of the algorithms (positive/negative curvature and
+shrinked/expanded edges) is the same.
+The dataset that we have used to run our experiments is a random generated network from
+Python following a Watts–Strogatz model. This model generates graphs with small-world prop-
+erties. These are types of graphs with small clustering coefficients and that have been found to
+represent well the dynamics of social networks [12]. The graph we have used contains 200 nodes
+and 1000 edges. We are not working with larger graphs due to the computational costs of the
+Ricci Flow.
+In the diagram below illustrates the confusion matrix for the Ricci Curvtaure (right) and Ricci
+Flow (left) when a Gaussian noise with standard deviation 4 is applied to the initial weights.
+The algorithm classified most of the edges with initial positive curvature in the wrong group,
+indicating that these could be the more unstable edges. In the other hand, the Ricci Flow
+managed to classify most of the edges that initially shrinked (weight smaller than 1) correctly.
+Overall, the confusion matrices indicate that the Ricci Flow has managed to classify most of the
+edges in the correct group, while the Ricci Curvature seems to be more sensible to noisy data.
+
+===== PAGE 30 =====
+30 4 ROBUSTNESS OF OLLIVIER RICCI CUR V ATURE AND RICCI FLOW
+Figure 16: Accuracy in terms of the standard deviation for the Ricci Curvature and Ricci Flow
+We then studied how the accuracy of the classification changed as we increase the value of the
+standard deviation σ. For our experiments, we have used the code outlined in Section 3.1. We
+have set the parameters α = 0.2 and p = 1. The results can be seen in Figure 17.
+Figure 17: Accuracy in terms of the standard deviation for the Ricci Curvature and Ricci Flow
+The accuracy of the Ricci Curvature quickly decreased as the value of the standard deviation
+increases, while the accuracy of the Ricci Flow is maintained consistently very close to 1. Notice
+that the accuracy of the curvature tends to 0.5. This is because we are only working with two
+groups (positive/negative curved edges), so for large values of σ the algorithm is obtaining the
+same accuracy as if it was guessing the values at random. It is interesting that even though the
+Ricci Flow is working with noisy values of curvature, it still manages to recover high values of
+accuracy.
+In conclusion, the Ricci Flow seems to be a robust algorithm to noisy data, classifying most
+of the edges correctly even for large values of the standard deviation. In the other hand, the
+Ricci curvature appears to be a lot more sensible to changes in the input data. This should be
+considered when working with these notion of real-world applications.
+
+===== PAGE 31 =====
+31
+5 Conclusion
+In this report we studied the Ollivier Ricci Curvature and the Ollivier Ricci Flow.
+We first studied the definition and properties of the Ollivier Ricci Curvature, and its connection
+to the Ricci Curvature defined in a manifold. We were able to understand how this notion give
+us information about the structure of a graph and how can this be used in network analysis
+applications. We were able to experimentally find regular graphs with constant curvature up to
+and including 11 vertices using random generator models in Python.
+We then studied the Ollivier Ricci Flow. We were able to understand the algorithm used in
+the research paper Community detection on networks with Ricci flow [10] and explore potential
+applications to community detection. We then proved experimentally and theoretically that
+the Ollivier Ricci Flow doesn’t converge by giving a counterexample. Finally, we implemented
+Python simulations to understand how robust are those notions to noisy dataset, a fundamental
+property to be understood for real-world applications. Our results showed that the Ricci Flow
+appears to be a robust algorithm, even for large value of noise, while the curvature seems to me
+more sensible to changes in the input data. A more in depth analysis should be carried out with
+different types of network and different parameters of the Ricci Flow to understand better this
+behaviour.
+This project also gave rise to numerous future lines of research that we described in Section 3.2.4.
+
+===== PAGE 32 =====
+32 REFERENCES
+References
+[1] Shuliang Bai, Yong Lin, Linyuan Lu, Zhiyu Wang, and Shing-Tung Yau. Ollivier Ricci-flow
+on weighted graphs. October 2020.
+[2] Yann Ollivier. A visual introduction to riemannian curvatures and some discrete general-
+izations. 2012.
+[3] Adam Gosztolai and Alexis Arnaudon. Unfolding the multiscale structure of networks with
+dynamical ollivier-ricci curvature. 2021.
+[4] M. Meringer. Fast generation of regular graphs and construction of cages. Journal of Graph
+Theory 30, pages 137–146, 1999.
+[5] A. Steger and N. Wormald. Generating random regular graphs quickly. Probability and
+Computing, pages 377–396, 1999.
+[6] Allen Tannenbaum Romeil Sandhu, Tryphon Georgiou. Market fragility, systemic risk, and
+ricci curvature, 2015.
+[7] Vinh Nguyen Nhat Ho Stanley Osher Tan Nguyen Khang Nguyen, Hieu Nong. Revisiting
+over-smoothing and over-squashing using ollivier-ricci curvature, 2023.
+[8] Jie Gao Xianfeng David Gu Chien-Chun Ni, Yu-Yao Lin and Emil Saucan. Ricci curvature
+of the internet topology, 2015.
+[9] W. W. Zachary. An information flow model for conflict and fission in small groups. Journal
+of Anthropological Research 33, pages 452–473, year = 1977,.
+[10] Chien-Chun Ni, Yu-Yao Lin, Feng Luo, and Jie Gao. Community detection on networks
+with ricci flow. Scientific reports, 9(1):1–12, 2019.
+[11] R´ emi Flamary, Nicolas Courty, Alexandre Gramfort, Mokhtar Z. Alaya, Aur´ elie Boisbunon,
+Stanislas Chambon, Laetitia Chapel, Adrien Corenflos, Kilian Fatras, Nemo Fournier, L´ eo
+Gautheron, Nathalie T.H. Gayraud, Hicham Janati, Alain Rakotomamonjy, Ievgen Redko,
+Antoine Rolet, Antony Schutz, Vivien Seguy, Danica J. Sutherland, Romain Tavenard,
+Alexander Tong, and Titouan Vayer. Pot: Python optimal transport. Journal of Machine
+Learning Research, 2021.
+[12] Duncan J. Watts and Steven H. Strogatz. Collective dynamics of small-world networks.
+Nature, page 440–442, 1998.
+
+===== PAGE 33 =====
+33
+6 Appendix
+6.1 Appendix I: Regular graphs of constant curvature up to 11 vertices
+
+===== PAGE 34 =====
+34 6 APPENDIX
+
+===== PAGE 35 =====
+6.2 Appendix II: Random graphs with constant curvature 35
+6.2 Appendix II: Random graphs with constant curvature
+" Detect regular graphs with constant cu rv at ur e "
+# Clean file
+e = open ( " / content / drive / MyDrive / adj21 . txt " , " r + " )
+for line in e :
+if line [ 0 ] . isdigit () = = True :
+edge [ cont ] . append ( line )
+else :
+if line [ 0 ] = = ’G ’:
+print ( cont )
+else :
+cont = cont + 1
+# Compute cu rv at ur e
+for i in range (0 , size , 2 ) :
+sum = 0
+G = nx . p a r s e _ a d j l i s t ( edge [ i ] , nodetype = int ) # create graph with given edge list
+for n1 , n2 in list ( G . edges () ) :
+orc = O l l i v i e r R i c c i (G , alpha = 0 . 2 ) # compute ricci cu rv at ur e
+orc . c o m p u t e _ r i c c i _ c u r v a t u r e ()
+G_orc = orc . G . copy ()
+sum = sum + ( G_orc [ n1 ] [ n2 ] [ " r i c c i C u r v a t u r e " ] )
+x = [ e for e in G . edges ]
+dif1 = abs ( sum - G_orc [ x [ 0 ] [ 0 ] ] [ x [ 0 ] [ 1 ] ] [ " r i c c i C u r v a t u r e " ] * len ( x ) )
+# if the sum of the cu rv at ur e of the edges is the same as the cu rv at ur e of an
+edge times the number of edges then
+the graph is a po te nt ia l c a n d i d i a t e
+if (( dif1 < 0 . 01 ) = = True and ( dif2 < 0 . 01 ) = = True ) :
+print ( " Found = " ,i , len ( x ) , sum , G_orc [ x [ 0 ] [ 0 ] ] [ x [ 0 ] [ 1 ] ] [ " r i c c i C u r v a t u r e " ] )
+6.3 Appendix III: Experimental analysis of non-convergence
+" How the weight changes for every it er at io n of the Ricc Flow "
+# I n i t i a l i z e Ricci Flow
+G1 = G # make a copy of the original graph
+orf = O l l i v i e r R i c c i (G , weight = " weight " , alpha = 0 .1 , proc =4 , verbose = " INFO " )
+n u m b e r _ o f _ l i s t s = G . n u m b e r _ o f _ e d g e s ()
+flow = [ [ ] for i in range ( n u m b e r _ o f _ l i s t s ) ]
+iter = 20 # set number of i t e r a t i o n s
+num = [ ]
+for i in range ( iter ) :
+orf . s e t _ v e r b o s e ( " ERROR " )
+orf . c o m p u t e _ r i c c i _ f l o w ( i t e r a t i o n s = i )
+G_rf = orf . G . copy ()
+weights = nx . g e t _ e d g e _ a t t r i b u t e s ( G_rf , " weight " ) . values ()
+w e i g h t _ l i s t = list ( weights )
+weights = np . array ( w e i g h t _ l i s t )
+for j in range ( n u m b e r _ o f _ l i s t s ) :
+flow [ j ] . append ( weights [ j ] )
+num . append ( i )
+i = 0
+G = G1 # reset G to the original graaph
+# Plot results
+for n1 , n2 in list ( G . edges () ) :
+plt . plot ( num , flow [ i ] , label = ( n1 , n2 ) )
+i = i + 1
+plt . xlabel ( ’ It er at io n ’)
+
+===== PAGE 36 =====
+36 6 APPENDIX
+plt . ylabel ( ’ Weight ’)
+plt . legend ( loc = ’ lower right ’)
+" 3D Plot of the change in the weigths t h r o u g h o u t the Ricci Flow in function
+of the idleness "
+n u m b e r _ o f _ l i s t s = G . n u m b e r _ o f _ e d g e s ()
+flow = [ ]
+iter = 10 # Set number of i t e r a t i o n s
+p = 0 . 1 # set alpha
+num = [ ]
+para = [ ]
+G1 = G # copy of the original graph
+for j in range ( 14 ) :
+orf = O l l i v i e r R i c c i (G , alpha =p , proc =4 , verbose = " INFO " )
+for i in range ( iter ) :
+orf . s e t _ v e r b o s e ( " ERROR " )
+orf . c o m p u t e _ r i c c i _ f l o w ( i t e r a t i o n s = i )
+G_rf = orf . G . copy ()
+weights = nx . g e t _ e d g e _ a t t r i b u t e s ( G_rf , " weight " ) . values ()
+w e i g h t _ l i s t = list ( weights )
+weights = np . array ( w e i g h t _ l i s t )
+flow . append ( weights [ 3 ] ) # choose to plot a specific edge ( i . e edge 3 )
+para . append ( p )
+num . append ( i )
+G = G1 # reset to original graph
+p = p + 1 / 20
+# plot results
+plt . rcParams [ " figure . figsize " ] = [7 , 7 ]
+fig = plt . figure ()
+ax = fig . a d d _ s u b p l o t ( 111 , p r o j e c t i o n = ’ 3d ’)
+ax . p l o t _ t r i s u r f ( para , num , flow , cmap = ’ viridis ’ , e dg ec ol or = ’ none ’) ;
+ax . s e t _ y l a b e l ( ’ I te ra ti on ’ , fontsize = 10 )
+ax . s e t _ x l a b e l ( ’ I de le ne ss : p ’ , fontsize = 10 )
+ax . s e t _ z l a b e l ( ’ Weight ’ , fontsize = 10 )
+ax . v ie w_ in it ( elev = 35 . , azim = - 45 , roll = 0 )
+plt . show ()
+6.4 Appendix IV: Robustness analysis
+" R o b u s t n e s s analysis using normal d i s t r i b u t i o n tr un ca te d "
+# I n i t i a l i z e graph using Watts Strogatz model
+G = nx . w a t t s _ s t r o g a t z _ g r a p h ( 200 , 10 , 0 .2 , seed = None )
+Gcc = sorted ( nx . c o n n e c t e d _ c o m p o n e n t s ( G ) , key = len , reverse = True )
+G = G . subgraph ( Gcc [ 0 ] )
+pos = nx . s p r i n g _ l a y o u t ( G )
+nx . d r a w _ n e t w o r k x (G , pos , n o d e _ c o l o r = ’ green ’ , alpha = 0 .5 , f on t_ si ze =0 , n od e_ si ze =
+20 )
+G0 = G
+iter = 10
+desv = 0
+value = [ ] # value of standard d e r v i a t i o n
+acuracy1 = [ ]
+for k in range (0 , 1 ) :
+G1 = G0
+i = 0
+x = [ ]
+
+===== PAGE 37 =====
+6.4 Appendix IV: Robustness analysis 37
+desv = desv + 0 . 1
+value . append ( desv )
+X = g e t _ t r u n c a t e d _ n o r m a l ( mean =0 , sd = desv , low = - 0 .9 , upp = n u m b e r _ o f _ l i s t s ) # get
+tr un ca te d normal
+n u m b e r _ o f _ l i s t s = G1 . n u m b e r _ o f _ e d g e s ()
+x . append ( X . rvs ( n u m b e r _ o f _ l i s t s ) )
+weight = np . full (( 1 , n u m b e r _ o f _ l i s t s ) , 1 )
+weight = np . ones ( n u m b e r _ o f _ l i s t s )# all the weights are set up to 1 as u n w e i g h t e d
+graph
+weight = x [ 0 ] + weight # weights with noise
+flow = [ [ ] for i in range ( n u m b e r _ o f _ l i s t s ) ]
+num = [ ]
+for n1 , n2 in list ( G1 . edges () ) : # update weights with the noise on the grapg
+G1 . edges [ ( n1 , n2 ) ] [ ’ weight ’] = weight [ 0 ] [ i ]
+i = i + 1
+orf = O l l i v i e r R i c c i ( G1 , weight = " weight " , alpha = 0 .2 , base = math .e , ex p_ po we r =1 ,
+proc =4 , verbose = " INFO " ) # i n i t i a l i z e
+Ricci Flow
+for i in range ( iter ) :
+G1 = G0
+orf . s e t _ v e r b o s e ( " ERROR " )
+orf . c o m p u t e _ r i c c i _ f l o w ( i t e r a t i o n s = i )
+G_rf = orf . G . copy ()
+weights = nx . g e t _ e d g e _ a t t r i b u t e s ( G_rf , " weight " ) . values ()
+w e i g h t _ l i s t = list ( weights )
+weights = np . array ( w e i g h t _ l i s t )
+for j in range ( n u m b e r _ o f _ l i s t s ) :
+flow [ j ] . append ( weights [ j ] )
+num . append ( i )
+pr ed ic te d = [ ]
+for i in range (0 , n u m b e r _ o f _ l i s t s ) : # classify in groups 0 or 1
+if flow [ i ] [ iter - 1 ] < = 1 :
+p re dic te d . append ( 0 )
+else :
+p re dic te d . append ( 1 )
+acuracy1 . append ( metrics . a c c u r a c y _ s c o r e ( actuals , p re di ct ed ) )
+# Plot Results
+plt . scatter ( value , acuracy1 , label = " Step Function " , c = ’ purple ’)
+plt . title ( " Acuracy Score of the weight c a l s s i f i c a t i o n after Ricci Flow " )
+plt . xlabel ( ’ Standard De vi at io n ’)
+plt . ylabel ( ’ Acuracy ’)
+plt . ylim ( 0 . 95 , 1 . 05 )
+plt . legend ( loc = ’ lower right ’)

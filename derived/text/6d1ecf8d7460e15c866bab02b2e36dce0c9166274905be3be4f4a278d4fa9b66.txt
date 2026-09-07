@@ -1,0 +1,1524 @@
+===== PAGE 1 =====
+Torus Embeddings
+Dan Stowell
+Tilburg University
+Tilburg
+The Netherlands
+Naturalis Biodiversity Centre
+Leiden
+The Netherlands
+Abstract
+Many data representations are vectors of continuous values. In particular, deep learning em-
+beddings are data-driven representations, typically either unconstrained in Euclidean space, or
+constrained to a hypersphere. These may also be translated into integer representations (quan-
+tised) for efficient large-scale use. However, the fundamental (and most efficient) numeric rep-
+resentation in the overwhelming majority of existing computers is integerswith overflow—and
+vectors of these integers do not correspond to either of these spaces, but instead to the topol-
+ogy of a (hyper)torus. This mismatch can lead to wasted representation capacity. Here we show
+that common deep learning frameworks can be adapted, quite simply, to create representations
+with inherent toroidal topology. We investigate two alternative strategies, demonstrating that a
+normalisation-based strategy leads to training with desirable stability and performance prop-
+erties, comparable to a standard hyperspherical L2 normalisation. We also demonstrate that a
+torus embedding maintains desirable quantisation properties. The torus embedding does not
+outperform hypersphere embeddings in general, but is comparable, and opens the possibility
+to train deep embeddings which have an extremely simple pathway to efficient ‘TinyML ’ em-
+bedded implementation.
+Keywords:representation learning, deep embeddings,
+1 Introduction
+Data representations are designed once, and reused many times. This remains true of the data-
+driven representations now widespread in the era of deep learning (DL) foundation models:
+training such a model establishes the parameters for a function that may be invoked many mil-
+lions of times to project new data points. A common use-case for such high-dimensional rep-
+resentations is distance-based search, and for large-scale use this search must be as efficient as
+possible. In deep learning, the combination of “standard” large-scale DL training (e.g. for su-
+pervised classification), followed by distance-based inference in the representation space that
+has been created, is a powerful and increasingly popular paradigm (Oquab et al., 2023)(Luo
+et al., 2023). For example it has recently been shown that for few-shot learning, distance-based
+search (kNN) can a strongly competitive and efficient query method, compared against algo-
+rithms more specialised for the task, even when applied to embedding spaces that have been
+trained for other types of query (Luo et al., 2023).
+This increases the importance of high-dimensional distance-based search in vector spaces.
+Even if the training of a representation is computationally heavy, the overarching need is for the
+produced representation to be very efficient in use, and suitable for purposes such as similar-
+1
+arXiv:2603.03135v1  [cs.LG]  3 Mar 2026
+
+===== PAGE 2 =====
+TORUS EMBEDDINGS
+ity search or range-based retrieval (Jégou et al., 2011). The efficiency is affected by algorithmic
+choices, but also by their implementation in hardware. Even the implementation of number
+formats matters; hence the investigation of floating-point and fixed-point representations for
+deep learning implementations (Burgess et al., 2019; Dettmers et al., 2023; Rouhani et al., 2023).
+While novel number formats can be supported by novel processor tooling, an alternative route
+is for data representations that make the best use of the most lo-fi and fundamental representa-
+tions that general-purpose computers can offer. It is highly desirable to obtain deep represen-
+tations (embeddings) that can be implemented efficiently across all common computing plat-
+forms. While IEEE floating-point is widespread, and is the starting point for most deep learn-
+ing, integer processing can be even more efficient and even more widespread—which motivates
+much work on discrete encodings, and quantised neural networks (Jacob et al., 2018; Menghani,
+2023). Further: while GPUs, TPUs and NPUs can perform high-dimensional calculations effi-
+ciently, their global availability is dwarfed by traditional CPUs by many orders of magnitude.
+There is a tradeoff between two different strategies for large-scale deployment of embeddings:
+the efficiency of using novel hardware, versus the resource-saving circularity and the inherent
+scalability of reusing existing widespread platforms (Knowles et al., 2022).
+In the field of DL, recent work highlights that hyperspherical spaces have useful properties
+for data representation, compared against unbounded Euclidean space (Wang and Isola, 2020;
+Trosten et al., 2023; Lin et al., 2020; Wang et al., 2017), and in particular that they can be trained
+well by deep neural networks (Wang et al., 2017; Wang and Isola, 2020). However, points on
+a hypersphere are not a natural fit to low-bitrate integer representations, since there is no di-
+rect coordinate mapping for the hypersphere. Note that vectors constrained to a hypersphere
+give coordinate values whose distributions are distinctly different from both uniform and nor-
+mal distributions—raising the question of how best to quantise such a representation. Instead,
+coding-decoding schemes are used (Sablayrolles et al., 2018). There may be good reasons to
+choose something unorthodox.
+In the present work, instead of changing the numeric representation we “flip the problem”
+and choose a topological space that naturally transfers to the most basic number representation
+on computers. We ask how to bring the high- and low-resolution representation spaces into
+closer aligment, via a different choice of topological space. We argue for the (hyper)torus as the
+natural choice for representations in this domain. We explore toroidal representations through
+a simple deep learning experiment.
+Following the principles of permacomputing, we target representations that can be used on
+a wide range of hardware including both modern and old CPU architectures (Mansoux et al.,
+2023; Jacob et al., 2018). For this, the most common and most efficient data representation is 8-
+bit integers with overflow arithmetic. We demonstrate that these correspond to a torus topology
+and show how a modern training pipeline can produce toroidal representations directly. Torus
+embeddings are easy to integrate into many deep learning pipelines, and perform well at low
+bitrate.
+Contributions:
+• We describe two methods for training embeddings with hypertoroidal geometry, both of
+which are implemented as simple modifications in a standard deep learning pipeline. We
+demonstrate that one method is more stable to train.
+2
+
+===== PAGE 3 =====
+Original space Transform Space Extrinsic dimension Intrinsic dimension
+L2
+− →
+ HypersphereD D−1
+mod
+− − − − →
+ Flat torusD D
+[sin,cos]
+− − − − − →
+ Clifford torus 2D
+arctan2
+− − − − − →
+ Flat torusD/2 D/2
+L2p
+− − →
+ Clifford torusD
+Table 1: Normalisation projections for deep learning embeddings. Starting from a ‘raw’ uncon-
+strained representation of dimensionD,L 2 normalisation is just one possible projec-
+tion. We consider two approaches to normalisation that create hypertoroidal represen-
+tations: each has two projections, one leading to the ‘flat square’ torus and one leading
+to the unit-norm ‘Clifford’ torus. See text for further explanation.
+• We show that KoLeo regularisation (Sablayrolles et al., 2018) is beneficial to train hyper-
+toroidal representations in some circumstances.
+• We investigate the quantisation properties of toroidal and hyperspherical deep represen-
+tations. We argue that toroidal representations are a good match for quantised represen-
+tations. Our results show that while our full-resolution results do not outperform a hy-
+perspherical embedding, our torus representation retains the strongest fidelity in some
+settings under extremely low-bitrate quantisation. However we also observe that product
+quantisation (PQ) yields good compression results for both the hypertorus and the stan-
+dard hypersphere, for all except the absolute lowest bit rates. This exposition also yields
+some observations on why hyperspherical embeddings are generally stable to train.
+In this paper, we work in the paradigm of training a deep neural network using floating-point
+values, and then translating the system to a low-power integer platform. We do not consider the
+quantisation of the network parameters, which has been extensively covered elsewhere(Jacob
+et al., 2018; Menghani, 2023). Instead we focus on the topology of the final representation. We
+consider how best to create a multidimensional embedding space, to be used for distance-based
+retrieval.
+Before describing the specifics of our method, we first consider the relevant topological is-
+sues and terminology.
+2 Topologies of Deep Embedding Spaces
+In machine learning and especially representation learning, good embedding spaces are com-
+pact, bounded, metric, and homogeneous (all points are equivalent), the latter implying they
+3
+
+===== PAGE 4 =====
+TORUS EMBEDDINGS
+must be borderless. In many works, embeddings are inR D. However, this is neither compact
+nor bounded. This can lead to problems in training, such as divergence, commonly addressed
+by regularisation (Goodfellow et al., 2016). For around 10 years (since papers such as Wang et al.
+(2017)), a popular alternative is L2-normalised embeddings, whose points thus lie on a hyper-
+sphere. The hypersphere has desirable properties and good performance in practice (Wang and
+Isola, 2020; Trosten et al., 2023; Lin et al., 2020; Wang et al., 2017).
+Hypersphere normalisation should not be considered as merely an engineering tweak for
+stability/efficiency: it is a change of topology for the representation space, and thus determines
+characteristics of representations. The hypersphere is a common embedding space, but others
+advocate forR D, and the latter is common in Transformers (but see Loshchilov et al. (2024)). The
+choice of embedding space is often unexamined. There are good arguments in the literature, but
+not all univocal.
+The hypersphere, and also unconstrainedR D, are inefficient in terms of their numeric repre-
+sentation in computers, in the sense that a representation would ideally tend to distribute data
+uniformly across all representable vectors—indeed many optimisation schemes set this as an
+explicit goal (Sablayrolles et al., 2018; Wang and Isola, 2020). The hypersphere especially is not
+well-matched to the underlying representation—neither integers nor floating-points—since all
+data is confined to the spherical submanifold, not the entire space. Workarounds such as spher-
+ical quantisation schemes acheve data compression at the cost of extra computation.
+On the vast majority of CPU designs, unsigned integer bytes (“uint8”) are the simplest rep-
+resentation. This is true for older as well as current instruction set architectures (ISAs) such as
+RISC-V (Intel, 1979; Waterman and Asanovi´ c, 2019). Other bit widths are often supported too,
+such as uint16 and uint32. Note also that on many platforms, the fundamental integer addition
+operation is non-sturating with a wrap-around behaviour that corresponds directly to the mod-
+ulo operation (Waterman and Asanovi´ c, 2019, section 2.4). Modulo addition of two integers is
+then performed with two atomic instructions: the add itself, plus “clear carry” or equivalent to
+discard the carry bit. Non-modulo addition is in general slower, since overflow must be checked
+and then handled. By contrast, modulo addition invokes no program branches and so will not
+stall a CPU pipeline. This is reflected for example in C/C++, where unsigned integers are defined
+with modulo wrapping as the intended behavior. A scalar integer space with modulo behaviour
+corresponds to a ring or circular topology.
+Combining these considerations: a vector of atomic integers, plus arithmetic operations hav-
+ing overflow (modulo) behaviour, naturally define a space with the topology of a torus or hyper-
+torus. (Henceforth, we will use the term ‘torus’ generally to include any higher-dimensional
+hypertorus; cf. Table 2.) Specifically it correponds to aflat, squaretorus, in which each dimen-
+sion has the same size and zero curvature (Courbe, 2024). The set of all possible vectors is a set
+distributed as a regular grid covering all parts of the torus with equal density. Representations
+which use this topology should therefore provide opportunities to translate well to low-level rep-
+resentations, e.g. by quantisation. This suggests that a very wide range of hardware devices can
+support efficient operations in toroidal spaces—and thus, that it is desirable to be able to pro-
+duce toroidal data embeddings.
+Happily, hypertoroidal spaces also have many desirable properties for deep learning rep-
+resentations: they are compact, bounded, metric and homogenous. High-dimensional torus
+spaces exhibit the same general curse-of-dimensionality characteristics as do high-dimensional
+spherical spaces (Figure 6).
+4
+
+===== PAGE 5 =====
+Table 2: Terminology used in this paper.
+In the remainder of this paper, we consider how to perform training and inference of toroidal
+representations within deep learning frameworks. Sections 3 and 4 respectively cover training
+and inference. Experiments (Section 5) illustrate the method in practice, and compare the char-
+acteristics of torus embeddings against standard hyperspherical representations.
+3 Training Torus Representations
+We first consider how toroidal spaces can be used within the straining of deep learning, using
+gradient descent and well-known loss functions.
+We immediately note that using a toroidal space may constrain some choices of method. For
+example, the cyclical topology means we cannot in general define a hyperplane in the flat torus
+space that partitions the data in two. For this and analogous reasons, it is not meaningful to apply
+sigmoid or softmax nonlinearities in the space. However, distance-based algorithms can be ap-
+plied straightforwardly, such as triplet or contrastive learning. Contrastive learning has recently
+been shown to be a powerful method, both for self-supervised and supervised learning (Chen
+et al., 2020; Khosla et al., 2020). In our experiments, we will follow this line, using supervised
+contrastive learning (‘SupCon’) for distance-based training.
+Yet there remains one further barrier. In training a distance-based representation, a common
+requirement is to calculate all-pairs distances (or similarities) within a single batch. Distance in
+a flat torus is a simple concept, but there are in fact many straight lines between any given pair of
+points, since each dimension can be traversed in one of two directions. To find the shortest (the
+geodesic) an algorithm must check each of these, and this must be done for each pair of points in
+a batch. For all-pairs calculations in high-dimensional deep learning this would be prohibitively
+expensive.
+The Clifford projection offers a solution to this dilemma. TheClifford torusis an embedding
+of the two-dimensional flat torus created by the mapping
+(x,y)→
+r
+1
+2 (sinx,cosx,siny, cosy) (1)
+for the case thatxandyrepresent coordinates in a flat square torus of size 2π. This is adistortion-
+freemapping of the original torus space. In the Clifford embedding of the torus, all points lie at
+the same fixed distance from the origin. Then cosine distance is a natural and efficient distance
+measure, just as it is in hyperspherical representations, and sidesteps the combinatorial issue.
+(Trigonometric functions are only needed at training time, as will be explained.) We will ap-
+ply projections of this type during training, albeit our input spaces will usually be of dimension
+higher than 2.
+We consider two different approaches to create Clifford hypertori, each having a correspond-
+ing projection to the flat square torus (Table 1). First, the Clifford projection (1) extended for
+input spaces of dimensionD:
+(x1,...x D)→
+r
+1
+D (sinx 1,cosx 1, ...siny D, cosy D) (2)
+5
+
+===== PAGE 6 =====
+TORUS EMBEDDINGS
+Second, we note an alternative strategy. The Clifford hypertorus is a subspace of a hyper-
+sphere, as is clear from the fact that all points have a fixed L2 norm. Points on the Clifford
+hypertorus are further constrained such that eachpairof dimensions (each two-dimensional
+subspace) also has a fixed L2 norm. Thus we can define a projection similar to the well-known
+L2 normalisation, but applied pairwise to dimensions, which will map data into the Clifford hy-
+pertorus:
+(x1,x 2, ...xD−1,x D)→
+r
+2
+D
+µ x1
+||(x1,x 2)||2
+, x2
+||(x1,x 2)||2
+,... xD−1
+||(xD−1,x D)||2
+, xD
+||(xD−1,x D)||2
+¶
+(3)
+We will refer to this as pairwise L2 projection, or L2p for short.
+Both of the above projections map arbitrary data onto the Clifford torus. Note that we use
+the terms “Clifford torus” or “Clifford space” for any space having this geometry (i.e. with each
+pair of dimensions having constant L2 norm), even if not produced by the Clifford projection (2)
+(cf. Table 2). For any such space, (3) is an identity mapping. However, the projections (2) and (3)
+are quite different mappings (Figure 2) and this may have important consequences in practice,
+not least for gradient-based backpropagation of errors when training a representation.
+There are also differences in the handling of dimensionality. The extrinsic and intrinsic di-
+mension of a representation can change as a result of the projections here described (Table
+1). Standard hypersphere normalisation does not alter the extrinsic dimension (of the ambient
+space), but reduces the intrinsic dimension (the degrees of freedom) toD−1. The L2p projection
+(3) is closely related: it does not affect the extrinsic dimension, but halves the intrinsic dimension
+toD/2. By contrast, the Clifford projection (2) doubles the extrinsic dimensionality of our space,
+but the intrinsic dimension remains the same. In the present work we useDto represent the di-
+mension of the input data before projection. These differences in the resulting dimensionalities
+should be borne in mind.
+In the Clifford space, cosine distance is a natural distance function and efficient to imple-
+ment. It is not directly equivalent to anyL p-norm in the corresponding flat torus, but has very
+similar behaviour toL 1 andL 2
+2 norms (Appendix A).
+Projection onto a Clifford torus can be implemented as a nonlinearity in almost any modern
+deep learning network architecture, simply by using the projections described above in place of
+standard L2 normalisationx←x/||X|| 2. In particular, the L2p pariwse normalisation of (3) can
+be applied very efficiently in frameworks such as PyTorch and TensorFlow, by creating a ‘view’ of
+the tensor with an altered ‘shape’ but without having to duplicate the tensor data in memory.
+The Clifford hypertorus is a subspace of a hypersphere, and thus shares many properties with
+the hypersphere. This includes the relevance of cosine distance as a distance between any pair
+of points in the space. However, the Clifford torus is not trivially the same as the hypersphere.
+One salient aspect is that the Clifford torus maps directly and distortion-free back onto the flat
+square torus, whereas the hypersphere does not.
+3.1 Additional Training Considerations
+In order to ensure successful training in practice, some interactions between the representation
+geometry and the process of gradient descent must be noted.
+Firstly, it may be advisable to ensure that training leads to a representation that efficiently
+uses the full bit range. This maximises the representational capacity of the chosen numeric pre-
+6
+
+===== PAGE 7 =====
+Figure 1: Extremely large gradient updates have different effects in the Clifford torus, depend-
+ing on whether produced by L2 normalisation or Clifford projection. This illustration
+shows a single update in a figurative Clifford torus (upper, circle) and a ‘view’ of the
+same as a flat torus (lower, square). Under L2-normalisation (left), a gradient update is
+applied in the extrinsic space (solid arrow) before normalisation (dashed arrow), with
+the side-effect that gradient updates of unbounded size will have a stable impact—in
+fact, asymptotically limited to a 90 degree angle. In the Clifford-projected space (right),
+very large gradient updates simply ‘wrap around’ , which means that very small devia-
+tions in large steps (e.g. floating point rounding errors) may lead to unstable updates.
+cision, and also ensures that the geometry of the data takes on the geometry of the space. For
+this purpose, we follow recent work in the use of “KoLeo” regularisation (Sablayrolles et al., 2018).
+Inspired by the Kozachenko–Leonenko differential entropy estimator, this regulariser creates a
+repulsive force between near neighbour data points, promoting uniformity of data distribution
+(Figure 8).
+Second, we find that gradient clipping is advisable, since in piloting we observed that some
+configurations exhibited a tendency to diverge. In an L2-normalisation approach, large gradi-
+ents are limited in their effect, because any very large gradient update in the unconstrained
+space is then projected back onto the hypersphere, with constrained effect (Figure 1, left). In
+fact, when L2-normalisation is included in the procedure, the outcome is that a gradient up-
+date step is replaced by an angular step whose magnitude follows thetan()of the step size in
+the unconstrained space. This is a beneficial side-effect of the topological compromise used in
+L2-normalisation-based training, where gradient updates are applied in the extrinsic space and
+do not align perfectly with the intrinsic geometry. Conversely, under the Clifford projection (2) a
+very large gradient update may “wrap around” the space multiple times, leading to unstable pa-
+rameter updates (Figure 1, right). Small floating-point differences in a large step size could lead
+to quite different outcomes when this happens. It is by far preferable that update steps should
+usually be smaller than the diameter of the space.
+We also encountered a second motivation for gradient clipping. We have found during initial
+studies with CIFAR data that KoLeo regularisation can create instabilities at the beginning of
+training, especially when the dimensionality is low. The gradient of the KoLeo loss scales as the
+inverse of nearest-neighbour distances, and when these distances are very small there is a strong
+influence of 1/ϵon the gradient, which would be very large values. The KoLeo loss function could
+be modified to reduce this effect, but we consider it preferable to maintain the form of the loss
+(and thus the direction of the gradients) while clipping the gradient values.
+7
+
+===== PAGE 8 =====
+TORUS EMBEDDINGS
+As a further minor issue, we note that many of the projections considered here involve con-
+stant scaling factors such as 2πor
+p
+D. These can often be omitted as code optimisations, since
+these fixed multipliers do not change the shape of the loss landscape.
+4 Inference in Torus Embeddings
+Inference in torus embeddings can use the Clifford space, i.e. the same unit-norm representa-
+tions as we have discussed for training (indeed we use this in our main experiment). However, a
+specific benefit of torus topology is that our representations have a 1-to-1 correspondence with
+the flat square hypertorus, which can enable distance queries to be implemented with an ex-
+tremely small number of processor instructions.
+Consider the case in which hypertoroidal data has already been calculated by some process,
+and we wish to perform efficient distance calculations such as for similarity search. For any
+data represented in Clifford fashion, the conversion to flat torus representation is with the use of
+arctan2(). The flat torus representation, further mapped on to the integers, is a desirable repre-
+sentation e.g. to create compact lookup tables. This is the format we would advocate for general
+use. High-entropy integers are a compact way to store information on disk and in RAM.
+In such a representation, distance search can be extremely efficient: a one-dimensional
+shortest distance is calculated as min(a−b,b−a), allowing the subtraction operations to over-
+flow (wrap around), which will happen in many systems using uint8 or similar when the repre-
+sentation uses the full number range. One-dimensional distances can then be accumulated in
+the usual fashion to find theD-dimensionalL p-distance.
+Calculation efficiency at inference time is also affected by any preprocessing and lookup op-
+erations needed. if data have been compressed by a scheme such as PQ, for example, then a
+comparison requires a lookup operation, with a lookup table (LUT) in memory of sizek∗Dfloats
+(wherek ∗ is the number of PQ centroids per subspace) (Jégou et al., 2011). The equivalent in a
+torus projection would simply be the linear scaling parameters to map the input into the space,
+i.e. 2.D, thus smaller in memory, with fewer operations needed, and lower implementation com-
+plexity. Table 3 illustrates these tradeoffs for the configurations we use in our study.
+5 Experiments
+We explore the characteristics of torus embeddings through simple experiments using standard
+deep learning practices: in particular, contrastive learning with distance-based loss functions
+(Khosla et al., 2020). We conducted three experimental tests:
+1. We first trained networks with the CIFAR datasets for image classification (Krizhevsky et al.,
+2009), exploring various aspects of training torus embeddings, in particular the two differ-
+ent torus mappings.
+2. We then explored the effects of post-training quantisation on the performance of these
+networks, using CIFAR100.
+3. We followed this with a study on few-shot classification of acoustic birdsong data, to evalu-
+ate the method in a different context, with a large audio dataset (‘BIRB’) designed to probe
+generalisation.
+8
+
+===== PAGE 9 =====
+Our Python implementation is available online, separately for the image experiments 1 and
+the audio experiment.2
+Experiment 1: CIFAR training
+We first train via CIFAR image classification (Krizhevsky et al., 2009). We evaluate our learnt rep-
+resentations in the paradigm of information retrieval, using Precision-at-1 as our main measure
+of retrieval performance. To train each representation we use a fixed budget of 100 epochs per
+run, with the Adam optimiser, gradient clipping, and early stopping. For brevity, in the follow-
+ing we refer to torus embeddings as follows:torusCfor an embedding produced by the Clifford
+projection, andtorusNfor an embedding produced by the L2p normalisation projection.
+Experimental runs that used the torusC projection did not always converge: some diverged,
+and some failed to learn. This came despite the use of gradient clipping: although gradient clip-
+ping helped to stabilise torusC, the gradient clipping would have needed to be unhelpfully strong
+to ensure convergence in all cases. In our experiments the addition of KoLeo regularisation fur-
+ther helped to prevent divergence in torusC. However, strong KoLeo regularisation at low di-
+mension sometimes had a counterproductive effect of its own: extremely large gradients often
+occurred due to the influence of very close near neighbours, which could lead to divergence.
+This can also be ameliorated by gradient clipping. Having observed these effects in pilot runs,
+we then chose a fixed gradient clipping threshold (100) to use throughout the main experiment,
+and we evaluated multiple KoLeo weights.
+When comparing hypertorus against hypersphere training runs, we maintained the same
+dimensionality in the pre-projection representation, for maximum comparability. As noted, the
+embedding projections variously affect the extrinsic and intrinsic dimensionality, which we keep
+in mind when comparing outcomes.
+We evaluated embeddings primarily via retrieval performance. We also explored whether our
+training is effective at spreading data points throughout the representation space. As mentioned,
+KoLeo regularisation is intended to help with this; the geometry and dimensionality of the space
+may also have a significant influence. To measure the spread of data we choose thecircular
+variancecommon in directional statistics. GivenZ, a set ofnvectors of unit L2 norm, the circular
+variance is calculated as
+1−
+ﬂﬂﬂﬂﬂ
+ﬂﬂﬂﬂﬂ
+1
+n
+nX
+i=1
+Zi
+ﬂﬂﬂﬂﬂ
+ﬂﬂﬂﬂﬂ
+2
+(4)
+To evaluate the circular variance (4) for a given representation, we calculate it across all the CIFAR
+data (training and validation) in order to give the best estimate of the resultant data spread. Since
+the statistic is calculated on unit-norm vectors, for torus representations we use the data in their
+Clifford representation.
+Experiment 2: quantisation
+After evaluating the floating-point representations, we also apply the same analysis to discrete
+representations produced by post-training quantisation. The goal of this is to explore how well
+toroidal representations perform under quantisation and compression, and how this compares
+1.https://github.com/danstowell/SupCon-Framework/tree/torus
+2.https://github.com/danstowell/ProtoCLR/tree/torus
+9
+
+===== PAGE 10 =====
+TORUS EMBEDDINGS
+1.0
+ 0.5
+ 0.0 0.5 1.0
+1.0
+0.5
+0.0
+0.5
+1.0
+1.0
+ 0.5
+ 0.0 0.5 1.0
+1.0
+0.5
+0.0
+0.5
+1.0
+1.0
+ 0.5
+ 0.0 0.5 1.0
+1.0
+0.5
+0.0
+0.5
+1.0
+Figure 2: The two methods for mapping data onto a hypertorus use very different mappings, as
+in these 2D illustrations. Left panel:L 2p normalisation maps 2D points to their angle
+with respect to the origin. Centre and right panels: the Clifford projection transforms
+each dimension separately into a cyclical version of itself.
+against their equivalent hyperspherical representations. We evaluate a simple ‘n-bit’ grid quan-
+tisation, as well as a more advanced product quantisation (PQ) method.
+Grid quantisation is selected for simple implementation with minimal code and memory re-
+quirements. Our aim with n-bit grid quantisation is to select a quantisation that maps directly
+onto the fundamental n-bit integer representation (with overflow) in processors. Hence we in-
+vestigate the viability of using grid-quantised values directly, using 8 bits or 1 bit per vector. Note
+that 1-bit quantisation is an extreme case, in which allL p distance measures become equivalent
+to Hamming distance. Although binary vector spaces can be interpreted as having hypertorus
+structure, toroidal distance measures would not be distinct from others. Thus the only role of
+1-bit quantisation in the present work is to explore extreme compression of our trained repre-
+sentations.
+As an alternative to grid quantisation, for modern high-compression quantisation we select
+product quantisation (PQ), implemented in the ‘faiss’ software library. It achieves a very high
+compression rate for high-dimensional vectors, with efficient querying (Jégou et al., 2011). PQ
+requires training (which we perform after the main training phase, and apply to the 8-bit quan-
+tised values). Once trained, searching or decoding is efficient to implement, given the lookup
+table stored in memory (whose size can be configured at training time). A toroidal space is a
+product space, and so in principle should be a good match for product quantisation.
+Torus embeddings offer us a further choice regarding quantisation, that is not available in
+other geometries: we can quantise either in the flat torus space or in the Clifford representation.
+For grid quantisation, this amounts to quantising on a grid of either the scalar values or the an-
+gles, with quite different implications (cf. Figure 2). The geometry of the flat torus is preferred
+since the data can ‘fill’ this space directly in its extrinsic representation, and it is more likely that
+the axes of this flat geometry can be treated independently for quantisation. Thus for 8-bit quan-
+tisation and for PQ, we use the flat torus representation. The traditional hypersphere cannot be
+mapped into a flat geometry without distortion, so we apply quantisation to the embedded hy-
+persphere directly.
+Regarding the bit-rate of the resulting encodings: n-bit grid encoding results inn.Dbits for
+a vector. To quantise the torusN embedding, we convert it from a Clifford space to a flat torus
+10
+
+===== PAGE 11 =====
+Quantisation method Codebook size Bits per vector Num possible values
+8-bit 2D8D* 256 D
+1-bit 2D D2 D
+PQ(8,16) 256D128 3.4×10 38
+PQ(8,4) 256D32 4.2×10 9
+PQ(8,2) 256D16 65536
+PQ(8,1) 256D8 256
+PQ(4,4) 16D16 65536
+PQ(4,2) 16D8 256
+Table 3: Quantisation methods applied. PQ(m,n) represents product quantisation withmsub-
+spaces andnbits used for indexing within each subspace.Drepresents the extrinsic
+dimension of the input data. Codebook size is the number of full-precision scalar val-
+ues needed in memory. *Note that for 8-bit quantisation in the case of method torusN,
+the bits-per-vector is half that implied here, because we convert data from Clifford into
+the flat torus representation before quantisation, which halves the extrinsic dimension
+D.
+(using arctan2) which halves the dimensionality, and thus the total bits-per-vector in the torusN
+case isn.D/2.
+The resulting set of quantisations covers a range of codebook sizes and compressed vector
+sizes, focussed on low bitrates (Table 3). The lowest rates use 8 bits per vector—i.e. only 256
+possible values, an extreme case for a 100-class classification task (i.e. CIFAR100).
+Experiment 3: prototypical learning with birdsong audio
+To explore whether the same characteristics of toroidal embedding spaces are evident in a differ-
+ent setting, we performed a separate experiment on few-shot classification of acoustic birdsong
+data, using the prototypical contrastive learning (ProtoCLR) method of Moummad et al. (2024).
+We also used their software framework, adding torusN as a representation mode and comparing
+it against the default hyperspherical representation. Since this experiment uses more data and
+takes longer for each run, we did not evaluate all the aforementioned options, rather the core
+comparison of hypersphere versus torusN.
+In common with the CIFAR experiments, here we used supervised training with a distance-
+based contrastive loss function, but this time for audio data. The audio data are converted to
+spectrograms, as is common in the field, and the task is multi-class classification of bird species.
+For this experiment we use the BIRB benchmark, which is designed to evaluate generalisation
+in bird sound recognition (Hamer et al., 2023). The training data come from the crowdsourced
+Xeno-canto library (Vellinga and Planqué, 2015). The test data comprise six separate birdsong
+datasets, each representing different recording conditions and localities, as well as different sets
+of birds to classify. Whereas the CIFAR datasets have 50,000 items for training and 10,000 for
+test, BIRB has 684,000 items in its core training set, and six test sets of between 7,000 and 60,000
+items.
+11
+
+===== PAGE 12 =====
+TORUS EMBEDDINGS
+Further, instead of ordinary supervised classification, in this experiment the evaluation is by
+few-shot classification. We evaluate the trained systems for their accuracy in 1-shot and 5-shot
+scenarios, following Moummad et al. (2024). For more detail on the experimental setup we refer
+the reader to that work. Specific configuration choices we highlight are: Each few-shot perfor-
+mance metric is calculated using ten times using different seeds, reporting the mean accuracy
+to generalise over the variability due to few-shot sampling. KoLeo regularisation is not imple-
+mented in this case, in particular since we did not pursue the torusC variant. The optimiser was
+stochastic gradient descent. We do not perform hyperparameter tuning, but use the same hy-
+perparameters selected in prior work across all runs. The reported outcomes are thus internally
+comparable, even though higher performance may be possible.
+Results using CIFAR
+We trained our network using SupCon on CIFAR10 and CIFAR100, varying the nature of the em-
+bedding space: hyperspherical, torusC, or torusN, each at various dimensionalities (Figure 3).
+Most configurations performed equally well, and very strongly, on CIFAR10. We thus focus our
+discussion on CIFAR100. The hyperspherical representation generally performed most strongly,
+with torusN producing competitive results. The torusC mapping proved to be unstable at low di-
+mensionality. The first general finding is that torusN is strongly preferred over torusC for stability
+and good performance, especially at lower dimensionality.
+Koleo regularisation had a dimensionality-dependent effect on the results: there appears
+to be a “sweet spot” for the Koleo weight, and this varies across method and dimensionality.
+The Koleo regularisation appears to have a slightly stronger influence on the performance of
+torus representations than the equivalent hyperspherical representation. The reasons for this
+are unclear, though potentially influenced by the difference in the intrinsic dimensionality.
+Concerning the spread of vectors in the representation spaces, the circular variance shows a
+consistent pattern across hyperspherical and toroidal spaces, with KoLeo weight having a strong
+influence (Appendix, Figure 8 and Figure 9). At the strongest KoLeo weight, data points are very
+evenly spread through the space—although this objective competes with classification perfor-
+mance.
+Results after quantisation
+The representations created in this study generally cope very well with quantisation (Figure 4).
+8-bit quantisation has very little effect on the performance on CIFAR100, as judged against the
+floating-point representations. Taking this to an extreme, 1-bit quantisation generally applies
+sufficient compression to degrade the classification performance, as do the high-compression
+PQ settings take that even further. In low data-rate and low dimension settings, torusN often
+outperforms hyprs, though not always.
+While retrieval in 8-bit quantised space performed very well, the data compression ratio is
+not dramatic, since grid quantisation still requiresn.Dbits for each vector. Using PQ we com-
+pressed to even lower bit-rates, often even lower than the 1-bit grid. As has been observed by
+others, PQ provides a representation that is very resilient for low bit-rate. Compressing to 8 or
+16 bits per vector, but allowing a large codebook size, PQ(8,2) and PQ(8,1) yielded very good per-
+formance for hyperspherical representations. Imposing stronger restrictions on the codebook
+size, PQ(4,4) and PQ(4,2) incurred performance penalties across all configurations. In these ex-
+12
+
+===== PAGE 13 =====
+-
+ -3 -1 0
+16D
+0
+20
+40
+60
+80
+100Precision@1 (%)
+        cifar10, quant none
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+-
+ -3 -1 0
+16D
+0
+20
+40
+60
+80
+100Precision@1 (%)
+        cifar100, quant none
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+Figure 3: Classification performance (precision at 1) on the CIFAR10 and CIFAR100 data sets,
+using nearest-neighbour classification, comparing embedding spaces that are hyper-
+spherical versus hypertoroidal. The x-axis shows variation in the embedding dimen-
+sionality, and (nested inside) variation in the strength of the KoLeo regularisation (the
+number is the log10 of the regularisation strength).
+treme conditions, both hyperspherical and torusN performed equally well, outperforming each
+other equally often. We note also that these extreme conditions favoured a low-dimensional
+representation as input, better than a high-dimensional one. This is the reverse of the results
+on the uncompressed representations, and indicates that there may be a bottleneck interaction
+between the data representation and its downstream quantisation.
+Despite our expectations, the quantised hypersphere did not underperform the quantised
+torus in general. This is notable given that PQ is based on a high-dimensional ‘grid’ of centroids,
+as a side-effect of its factorisation of the data space. A representation such as the flat square torus
+should be well adapted to grid quantisation, due to its rectangular shape, while a hypersphere
+is not intrinsically a good match. Despite this, hyperspherical representations can be quantised
+well by PQ even at high compression.
+Results of prototypical learning with birdsong audio
+Using the BIRB benchmark of bird audio data, with prototypical contrastive learning, both hy-
+perspeherical and toroidal representations trained well and achieved similar levels of perfor-
+mance (Figure 5). There was large variation in performance between the six test datasets, as
+expected due to their varying complexities (Hamer et al., 2023). We saw a consistent pattern of
+lower-dimensional representations yielding better generalisation performance in this few-shot
+setting. Averaging across the datasets, the hypersphere representation gave better performance
+in 128D (+1.6%/+2.7% for 1-shot/5-shot respectively), there was little difference in 64D, and the
+13
+
+===== PAGE 14 =====
+TORUS EMBEDDINGS
+-
+ -3 -1 0
+16D
+0
+20
+40
+60
+80
+100Precision@1 (%)
+        cifar100, quant 8bit
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+-
+ -3 -1 0
+16D
+0
+20
+40
+60
+80
+100Precision@1 (%)
+        cifar100, quant 1bit
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+-
+ -3 -1 0
+16D
+0
+20
+40
+60
+80
+100Precision@1 (%)
+        cifar100, quant pq8_2
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+-
+ -3 -1 0
+16D
+0
+20
+40
+60
+80
+100Precision@1 (%)
+        cifar100, quant pq8_1
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+-
+ -3 -1 0
+16D
+0
+20
+40
+60
+80
+100Precision@1 (%)
+        cifar100, quant pq4_4
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+-
+ -3 -1 0
+16D
+0
+20
+40
+60
+80
+100Precision@1 (%)
+        cifar100, quant pq4_2
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+Figure 4: Classification performance as in Figure 3 (CIFAR100 data set), after quantisation by
+various methods. The 8-bit quantisation has only a mild impact on performance, but
+other methods degrade the classifier precision to varying extents.
+torus representation gave better performance for 32D ((+0.3%/+2.9%) and 16D (+0.2%/+2.5%).
+The overall best configuration in this test was the 16D torus, for both 1- and 5-shot retrieval.
+6 Discussion
+The goal of this investigation was to explore torus embeddings—a variation in method inspired
+by hyperspherical embeddings—and evaluate them within a DL framework.
+A potential benefit is the direct mapping to a “flat square” space that quantises trivially to or-
+dinary integer representations. Potential drawbacks are the reduced intrinsic dimensionality (for
+torusN) or instabilities in training (for torusC). We established that the torusN method achieves
+performance results very similar to a hyperspherical representation, and trains well, with no ap-
+parent inhibition in quality despite the lower intrinsic dimension. On both images and audio
+data, the L2p-normalised torus representation (3) led to performance similar to that of hyper-
+spherical embeddings and with potential benefits at low dimension and high compression. This
+was verified in a challenging generalisation benchmark for birdsong audio.
+We note that the performance differences between hyperspherical and toroidal representa-
+tions are small compared to the impacts of other configuration choices. For consistent perfor-
+14
+
+===== PAGE 15 =====
+16 32 64 128
+Dimensionality
+0
+10
+20
+30
+40
+50
+601-shot accuracy (%)
+dataset = PER
+16 32 64 128
+Dimensionality
+dataset = NES
+16 32 64 128
+Dimensionality
+dataset = UHH
+16 32 64 128
+Dimensionality
+dataset = HSN
+16 32 64 128
+Dimensionality
+dataset = SSW
+16 32 64 128
+Dimensionality
+dataset = SNE
+projection
+sphere
+torusN
+16 32 64 128
+Dimensionality
+0
+10
+20
+30
+40
+50
+60Accuracy (%)
+        1-shot
+projection
+sphere
+torusN
+16 32 64 128
+Dimensionality
+0
+10
+20
+30
+40
+50
+605-shot accuracy (%)
+dataset = PER
+16 32 64 128
+Dimensionality
+dataset = NES
+16 32 64 128
+Dimensionality
+dataset = UHH
+16 32 64 128
+Dimensionality
+dataset = HSN
+16 32 64 128
+Dimensionality
+dataset = SSW
+16 32 64 128
+Dimensionality
+dataset = SNE
+projection
+sphere
+torusN
+16 32 64 128
+Dimensionality
+0
+10
+20
+30
+40
+50
+60Accuracy (%)
+        5-shot
+projection
+sphere
+torusN
+Figure 5: Birdsong audio classification performance (accuracy) in a few-shot setting, comparing
+embedding spaces that are hyperspherical versus hypertoroidal. Scores shown are for
+each of six birdsong datasets provided by BIRB (left to right), with the overall average
+summarised in the rightmost panel. A dark gray line indicates chance performance
+for each dataset. The x-axis shows variation in the embedding dimensionality. Upper:
+1-shot. Lower: 5-shot.
+mance on a small dataset such as CIFAR, a hypertorus model benefits from KoLeo regularisation
+(and gradient clipping for torusC) to ensure training progresses smoothly. These observations
+also provide insight into the functioning of the popular hyperspherical embedding: L2 normal-
+isation is a projection which inherently mitigates the impact of extreme gradient updates, by
+limiting the possible step size. This benefit carries over to one of our torus projections but not
+the other.
+An additional hypothesis was that the flat torus space being well-matched to lattice grid
+quantisation, it might show especially robust performance after quantisation. This was not ob-
+served: a well-trained model in either toroidal or spherical space performed very well under lat-
+tice quantisation, including extreme 1-bit quantisation. Further, product quantisation showed
+very strong performance in all our model configurations, despite the overhead of the added com-
+plexity in implementation.
+We have investigated 1-bit quantisation of our vector dimensions. 1-bit representations can
+also be the output from binary neural networks (BNNs), which have been widely investigated
+(Rastegari et al., 2016)(Menghani, 2023). To our knowledge, however, it has rarely been remarked
+that binary representations can be interpreted as having toroidal geometry: Integer “modulo 2”
+data can take only values 0 and 1. In modulo 2, adding two numbers has the same result as
+binary XOR, while multiplying them has the same result as binary AND (these are operations
+commonly used to build BNNs). We do not consider that toroidal geometry should be used
+15
+
+===== PAGE 16 =====
+TORUS EMBEDDINGS
+directly within BNNs. However, if torus and binary representations have matching topologies,
+this may be fruitful in future e.g. to distil toroidal representations onto BNNs.
+7 Conclusions
+The popularity of foundation models suggests a paradigm for the future of applied AI which
+is different from that previously envisaged: a small number of extremely large deep learning
+algorithms might be trained; algorithms for AI applications might then be derived from these,
+with further optimisation (such as fine-tuning or distillation) or even without (e.g. through few-
+shot learning, or in-context learning). The carbon footprint of this paradigm is a matter of choice
+and regulation: the prohibitively high environmental impact of (pre)training a massive model
+may be offset by the fact that very, very few such training runs might be needed by society. The
+priority, then, is to ensure that these representations are highly suited to low-power distillation
+that can be used across common processors.
+We have demonstrated that hypertorus representations can be trained in much the same way
+as hyperspherical representations. Of the two methods we describe, the normalisation-based
+torus mapping yields the best results in terms of both stability and performance, while being very
+similar to the standard process used for hypersphere mapping. Toroidal representations have a
+specific advantage: they are a very suitable match for common CPU integer representations. We
+have demonstrated that they can produce quantised representations which perform well even at
+low dimensionality.
+Acknowledgments and Disclosure of Funding
+DS acknowledges support from the MSCA grantBioacoustic AI(101116715) and Horizon Europe
+grantMAMBO(101060639).
+References
+Neil Burgess, Jelena Milanovic, Nigel Stephens, Konstantinos Monachopoulos, and David
+Mansell. Bfloat16 processing for neural networks. In2019 IEEE 26th Symposium on Computer
+Arithmetic (ARITH), pages 88–91. IEEE, 2019. doi: 10.1109/ARITH.2019.00022.
+Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey Hinton. A simple framework for
+contrastive learning of visual representations. InProceedings of the International conference
+on machine learning (ICML), pages 1597–1607. PMLR, 2020.
+Leo Courbe. Topology, geometry, and dynamical system of torus. Technical report, University
+of Chicago, 2024. URLhttp://math.uchicago.edu/~may/REU2024/REUPapers/
+Courbe.pdf.
+Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer. Qlora: Efficient finetun-
+ing of quantized LLMs.Advances in neural information processing systems, 36:10088–10115,
+2023.
+16
+
+===== PAGE 17 =====
+Ian Goodfellow, Yoshua Bengio, and Aaron Courville.Deep learning. MIT press, 2016. URL
+https://www.deeplearningbook.org/.
+Jenny Hamer, Eleni Triantafillou, Bart van Merriënboer, Stefan Kahl, Holger Klinck, Tom Den-
+ton, and Vincent Dumoulin. BIRB: A generalization benchmark for information retrieval in
+bioacoustics, 2023.
+Intel.The 8086 Family User’s Manual. Intel, October 1979. URLhttp://bitsavers.org/
+components/intel/8086/9800722-03_The_8086_Family_Users_Manual_
+Oct79.pdf.
+Benoit Jacob, Skirmantas Kligys, Bo Chen, Menglong Zhu, Matthew Tang, Andrew Howard,
+Hartwig Adam, and Dmitry Kalenichenko. Quantization and training of neural networks for
+efficient integer-arithmetic-only inference. InProceedings of the IEEE conference on computer
+vision and pattern recognition, pages 2704–2713, 2018.
+Hervé Jégou, Matthijs Douze, and Cordelia Schmid. Product quantization for nearest neighbor
+search.IEEE Transactions on Pattern Analysis and Machine Intelligence, 33(1):117–128, Jan-
+uary 2011. ISSN 0162-8828. doi: 10.1109/tpami.2010.57.
+Prannay Khosla, Piotr Teterwak, Chen Wang, Aaron Sarna, Yonglong Tian, Phillip Isola, Aaron
+Maschinot, Ce Liu, and Dilip Krishnan. Supervised contrastive learning.Advances in neural
+information processing systems, 33:18661–18673, 2020.
+Bran Knowles, Kelly Widdicks, Gordon Blair, Mike Berners-Lee, and Adrian Friday. Our house is
+on fire.Communications of the ACM, 65(6):38–40, jun 2022. doi: 10.1145/3503916.
+Alex Krizhevsky, Geoffrey Hinton, et al. Learning multiple layers of features from tiny images.
+Technical report, University of Toronto, 2009. URLhttps://www.cs.toronto.edu/
+~kriz/learning-features-2009-TR.pdf.
+Rongmei Lin, Weiyang Liu, Zhen Liu, Chen Feng, Zhiding Yu, James M Rehg, Li Xiong, and
+Le Song. Regularizing neural networks via minimizing hyperspherical energy. InProceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), 2020.
+Ilya Loshchilov, Cheng-Ping Hsieh, Simeng Sun, and Boris Ginsburg. nGPT: Normalized trans-
+former with representation learning on the hypersphere.arXiv preprint arXiv:2410.01131,
+2024.
+Xu Luo, Hao Wu, Ji Zhang, Lianli Gao, Jing Xu, and Jingkuan Song. A closer look at few-shot
+classification again.arXiv preprint arXiv:2301.12246, 2023.
+Aymeric Mansoux, Brendan Howell, Dušan Barok, and Ville-Matias Heikkilä. Permacomputing
+aesthetics: Potential and limits of constraints in computational art, design and culture. In
+Ninth Computing within Limits 2023. LIMITS, 2023.
+Gaurav Menghani. Efficient deep learning: A survey on making deep learning models smaller,
+faster, and better.ACM Computing Surveys, 55(12):1–37, 2023. doi: 10.1145/3578938.
+17
+
+===== PAGE 18 =====
+TORUS EMBEDDINGS
+Ilyass Moummad, Romain Serizel, Emmanouil Benetos, and Nicolas Farrugia. Domain-invariant
+representation learning of bird sounds.arXiv preprint arXiv:2409.08589, 2024.
+Maxime Oquab, Timothée Darcet, Théo Moutakanni, Huy Vo, Marc Szafraniec, Vasil Khalidov,
+Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaaeldin El-Nouby, et al. DINOv2: Learn-
+ing robust visual features without supervision.arXiv preprint arXiv:2304.07193, 2023.
+Mohammad Rastegari, Vicente Ordonez, Joseph Redmon, and Ali Farhadi. XNOR-net: Imagenet
+classification using binary convolutional neural networks. InEuropean conference on com-
+puter vision, pages 525–542. Springer, 2016. doi: 10.1007/978-3-319-46493-0_32.
+Bita Darvish Rouhani, Ritchie Zhao, Ankit More, Mathew Hall, Alireza Khodamoradi, Summer
+Deng, Dhruv Choudhary, Marius Cornea, Eric Dellinger, Kristof Denolf, et al. Microscaling
+data formats for deep learning.arXiv preprint arXiv:2310.10537, 2023.
+Alexandre Sablayrolles, Matthijs Douze, Cordelia Schmid, and Hervé Jégou. Spreading vectors
+for similarity search. InProceedings of ICLR 2019, 2018.
+Daniel J Trosten, Rwiddhi Chakraborty, Sigurd Løkse, Kristoffer Knutsen Wickstrøm, Robert
+Jenssen, and Michael C Kampffmeyer. Hubs and hyperspheres: Reducing hubness and im-
+proving transductive few-shot learning with hyperspherical embeddings. InProceedings of
+the IEEE/CVF conference on computer vision and pattern recognition, pages 7527–7536, 2023.
+Willem-Pier Vellinga and Robert Planqué. The Xeno-canto collection and its relation to sound
+recognition and classification. InWorking Notes of CLEF 2015 - Conference and Labs of the
+Evaluation forum, 2015. URLhttps://ceur-ws.org/Vol-1391/166-CR.pdf.
+Feng Wang, Xiang Xiang, Jian Cheng, and Alan Loddon Yuille. Normface: L2 hypersphere em-
+bedding for face verification. InProceedings of the 25th ACM international conference on Mul-
+timedia, pages 1041–1049, 2017.
+Tongzhou Wang and Phillip Isola. Understanding contrastive representation learning through
+alignment and uniformity on the hypersphere. InProceedings of the International conference
+on machine learning (ICML), pages 9929–9939. PMLR, 2020.
+Andrew Waterman and Krste Asanovi´ c. The RISC-V instruction set manual volume I: Un-
+privileged ISA, document version 20191213. Technical report, RISC-V Foundation, De-
+cember 2019. URLhttps://github.com/riscv/riscv-isa-manual/releases/
+download/Ratified-IMAFDQC/riscv-spec-20191213.pdf.
+18
+
+===== PAGE 19 =====
+A Distances in hyperspheres and hypertori
+We illustrate some properties of the cosine distance in torus representations, compared against
+Lp distances.
+First, the effect of dimension, and the curse of dimensionality (Figure 6). For each plot, 10,000
+uniformly-distributed pairs of points were sampled in the appropriate space, and the distribtion
+of their distances calculated. From left to right we increase the dimensionality; from top to bot-
+tom we vary the geometry of the space and the choice of distance measure. In toroidal spaces,
+the L1 and L2 distances (calculated in the flat torus) or the cosine distance (calculated in the
+Clifford torus) each exhibit similar behaviour as the cosine distance applied to hyperspherical
+representations.
+0.0
+0.5
+1.0
+Sphere+cosine
+0.0
+0.5
+1.0
+T orus+Linf
+0.0
+0.5
+1.0
+T orus+L1
+0.0
+0.5
+1.0
+T orus+L2
+2
+0.0
+0.5
+1.0
+T orus+CCos
+3 4 8 16 128 1024 4096
+Figure 6: Simulation to illustrate the effect of the curse of dimensionality in hyperspherical and
+hypertoroidal spaces. Distances are normalised against the largest possible in the
+space (the diameter of the space).
+Next we consider the relation between cosine distance in a Clifford torus, and norms in the
+corresponding flat torus.
+Consider the norm for a pointa=(a 0,a 1,...) whose coordinates are given in the flat torus
+space, relative to an origin. Combining the Clifford projection with the cosine distance calcula-
+tion, the distance ofafrom the origin is:
+|a|cc =D−(cos2πa 0 +cos2πa 1 +...)
+19
+
+===== PAGE 20 =====
+TORUS EMBEDDINGS
+Taylor expansion of this function illustrates the behaviour, also visible in Figure 7. The Taylor
+expansion around the origin:
+D−1X
+d=0
+ˆ
+a2
+d
+2! −
+a4
+d
+4! +
+a6
+d
+6! −...
+!
+is dominated by a quadratic term, which implies the distance behaves likeL 2
+2 at small values.
+The Taylor expansion around the midpoint (any point where the dot products sum to zero so
+that|a| cc =D) is:
+D−1X
+d=0
+ˆ
+ad −
+a3
+d
+3! +
+a5
+d
+5! −...
+!
+and is dominated by a linear term, so at this point it behaves more likeL 1.
+3
+ 2
+ 1
+ 0 1 2 3
+3
+2
+1
+0
+1
+2
+3
+L1
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2
+1.4
+1.6
+1.82.0
+2.2
+2.4
+2.6
+2.8
+3.0
+3.2
+3.2
+3.4
+3.4
+3.4
+3.4
+3.6
+3.6
+3.6
+3.6
+3.8
+3.8
+3.8
+3.8
+4.0
+4.0
+4.0
+4.0
+4.2
+4.2
+4.2
+4.2
+4.4
+4.4
+4.4
+4.4
+4.6 4.6
+4.6
+4.6
+4.8
+4.8
+4.8 4.8
+5.0
+5.0
+5.0
+5.0
+5.2
+5.2
+5.2
+5.2
+5.4
+5.4
+5.4
+5.4
+5.6
+5.6
+5.6
+5.6
+5.8
+5.8
+5.8
+5.8
+6.0
+6.0
+6.0 6.0
+3
+ 2
+ 1
+ 0 1 2 3
+3
+2
+1
+0
+1
+2
+3
+L2^2
+0.5
+1.0
+1.5
+2.0
+2.5
+3.0
+3.5
+4.0
+4.55.0
+5.5
+6.0
+6.5
+7.0
+7.58.0
+8.5
+9.0
+9.5
+10.0
+10.5 10.5
+10.5
+10.5
+11.0
+11.0
+11.0
+11.0
+11.5
+11.5
+11.5
+11.5
+12.0
+12.0
+12.0
+12.0
+12.5
+12.5
+12.5
+12.5
+13.0
+13.0
+13.0
+13.0
+13.5
+13.5
+13.5 13.5
+14.0
+14.0
+14.0
+14.0
+14.5
+14.5
+14.5
+14.5
+15.0
+15.0
+15.0 15.0
+15.5 15.5
+15.5 15.5
+16.0
+16.0
+16.0 16.0
+16.5
+16.5
+16.5
+16.5
+17.0
+17.0
+17.0
+17.0
+17.5 17.5
+17.5
+17.5
+3
+ 2
+ 1
+ 0 1 2 3
+3
+2
+1
+0
+1
+2
+3
+Cosine (Clifford)
+0.1
+0.2
+0.30.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1.0
+1.11.2
+1.3
+1.4
+1.5
+1.6
+1.7
+1.8
+1.9
+2.0
+2.0
+2.0 2.0
+2.1
+2.1
+2.1
+2.1
+2.2
+2.2
+2.2
+2.2
+2.3 2.3
+2.3
+2.3
+2.4
+2.4
+2.4
+2.4
+2.5
+2.5
+2.5
+2.5
+2.6
+2.6
+2.6
+2.6
+2.7
+2.7
+2.7
+2.7
+2.8
+2.8
+2.8
+2.8
+2.9 2.9
+2.9 2.9
+3.0 3.0
+3.0
+3.0
+3.1
+3.1
+3.1
+3.1
+3.2
+3.2
+3.2
+3.2
+3.3
+3.3
+3.3
+3.3
+3.4
+3.4
+3.4
+3.4
+3.5 3.5
+3.5
+3.5
+3.6
+3.6
+3.6
+3.6
+3.7 3.7
+3.7
+3.7
+3.8
+3.8
+3.8 3.8
+3.9 3.9
+3.9 3.9
+Figure 7: Contour plot illustrating the characteristics of distance measures in a 2-dimensional
+torus. We focus on the quadrant closest to the origin: in the full torus all distance
+measures ‘reflect’ at the boundaries shown here.
+20
+
+===== PAGE 21 =====
+B Spreading vectors: KoLeo regularisation and circular variance
+Figure 8: Effect of KoLeo regularisation. Here we visualise two arbitrary dimensions of the CI-
+FAR100 validation set in a 128D trained hypertorus embedding (torusN), at various
+values of the KoLeo regularisation strength (cf. (Sablayrolles et al., 2018)). At the high-
+est regularisation strength, data are spread more uniformly through the space, as is
+also reflected by the circular variance measurements below.
+-
+ -3 -1 0
+16D
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Circular variance
+        cifar100, quant none
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+-
+ -3 -1 0
+16D
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Circular variance
+        cifar100, quant 8bit
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+-
+ -3 -1 0
+16D
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Circular variance
+        cifar100, quant 1bit
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+-
+ -3 -1 0
+16D
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Circular variance
+        cifar100, quant pq8_1
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+-
+ -3 -1 0
+16D
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Circular variance
+        cifar100, quant pq4_4
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+-
+ -3 -1 0
+16D
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Circular variance
+        cifar100, quant pq4_2
+-
+ -3 -1 0
+32D
+-
+ -3 -1 0
+64D
+-
+ -3 -1 0
+128D
+projection
+sphere
+torusC
+torusN
+Figure 9: The circular variance of the representations evaluated in Figures 3 and 4 (CIFAR100
+data set).
+21

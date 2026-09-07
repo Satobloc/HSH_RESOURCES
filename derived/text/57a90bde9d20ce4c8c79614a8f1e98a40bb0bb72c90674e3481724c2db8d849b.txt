@@ -1,0 +1,1650 @@
+===== PAGE 1 =====
+XXXXX, 202X, X(X), X-X
+doi: xxxxxxx
+Journal homepage: XXXXX
+Advance Access Publication Date: Day Month Year
+R E V I E W A R T I C L E
+A review on geometric constraint solving
+Qiang Zou1,*, Zhihong Tang1, Hsi-Yung Feng2, Shuming Gao1, Chenchu Zhou3
+and Yusheng Liu1
+1State Key Laboratory of CAD&CG, Zhejiang University, Hangzhou, 310027, China and 2Department of Mechanical
+Engineering, The University of British Columbia, Vancouver, BC V6T 1Z4, Canada and 3Xi’an Aerospace Propulsion
+Institute, Xi’an, 710100, China
+*Corresponding author. E-mail: john.qiangzou@gmail.com
+Abstract
+This paper presents a comprehensive review of geometric constraint solving in parametric computer-aided design (CAD), with
+the major focus on its advances in the last 15 years. Geometric constraint solving can date back to the very first CAD prototype,
+Sketchpad, in the 1960s, but serious research studies were carried out only after parametric CAD was introduced in the late
+1980s. In the following 30-year history of GCS research, two development stages may be identified: (1) the first 15 years (late
+1980s - mid 2000s) were primarily devoted to geometric constraint decomposition for well-constrained systems or those with
+only structural constraint dependencies; and (2) the second 15 years (late 2000s - now) have seen research efforts shifted
+towards classification criteria and decomposition algorithms for general constraint systems (with and without non-structural
+constraint dependencies). Most existing reviews focused on the first 15 years. The problem researched in the second 15 years is,
+however, equally important, considering that a manually specified constraint system usually contains under- and
+over-constrained parts, and that such parts must be correctly detected and resolved before numerical solving can work. In this
+regard, this review paper covers both stages and will discusses what has already been made possible for handling general
+constraint systems, what developments can be expected in the near future, and which areas remain problematic.
+Keywords: Computer-aided design; Parametric modeling; Geometric constraint solving; GCS classification criteria; GCS detec-
+tion/decomposition algorithms
+1. Introduction
+Computer-aided design (CAD) has been an indispensable tool in
+engineering modeling (Liu et al., 2021), analysis (Cottrell et al.,
+2009), optimization (Rao, 2019), manufacturing (Zou et al., 2014)
+and maintenance (Su et al., 2020). The notion of CAD may date
+back to the 1960s (Coons, 1963; Coons & Mann, 1960). Neverthe-
+less, it was not until the introduction of parametric CAD model-
+ers in the late 1980s (Shah, 1998) that CAD was extensively rec-
+ognized by the user/engineer community. The main practical
+benefit of parametric CAD lies in geometry reuse, which allows
+users to attain a family of geometry variants through tuning pa-
+rameters embedded in the model. Parametric CAD is not a sin-
+gle technique but a set of techniques, and common to all para-
+metric techniques is associativity that allows local parametric
+changes to propagate automatically. The associativity is often im-
+plemented as a system of geometric constraints relating geomet-
+ric entities in the model. By changing parameter values and then
+re-evaluating this system, automatic change propagation can be
+attained. This evaluation process is often referred to as geometric
+constraint solving.
+A geometric constraint system (GCS) involves a set of geomet-
+ric entities such point, line, plane, and cylinder, as well as a set
+of geometric constraints between these entities such as distance
+and angle. These constraints can usually be translated to alge-
+braic equations whose variables are the coordinates of the partic-
+ipating geometric entities. Solving GCS refers to the process of
+attaining a solution (or solutions) of the GCS. Since the solving
+is understood in the context of geometry, a solution corresponds
+Received: a; Revised: b; Accepted: c
+1
+arXiv:2202.13795v2  [cs.CG]  12 Aug 2022
+
+===== PAGE 2 =====
+2 | Geometric Constraint Solving Review
+ill-constrained
+well-constrained
+GCS Detector
+Resolver
+Decomposer Solver Solutions
+Figure 1: Illustration of critical tasks in geometric constraint solving
+to a valid instantiation of the geometric entities such that all the
+constraints are satisfied.
+Solving GCS is more than just applying numerical solvers such
+as the Newton’s method. The GCS given through the user’s spec-
+ification could contain under- and over-constrained parts (Hoff-
+mann et al., 2004; Hu et al., 2021; Zou & Feng, 2020). Such parts
+must be correctly detected and then resolved before numerical
+solvers can work, as shown in Fig. 1. This gives rise to the need
+of generic criteria to characterize constraint states (under-, well-,
+and over-constrained), as well as robust detection and resolution
+algorithms to correct under-constrained and over-constrained
+parts in the given GCS. Another equally important issue is that di-
+rectly solving GCS is computationally challenging. In view of this,
+many prefer decomposing a (well-constrained) GCS into small
+subsystems, whose solutions can then be assembled to attain the
+overall solution (Bettig & M Hoffmann, 2011).
+All in all, there are three fundamental problems in geometric
+constraint solving:
+(i) GCS characterization: effective criteria for characterizing
+under-, well-, and over-constraint states;
+(ii) GCS detection: extraction of ill-constrained parts in a given
+GCS. The essence is to extract the maximal well-constrained
+parts such that all under- and over-constrained parts emerge
+as isolated, decoupled constraint groups (Zou & Feng, 2020);
+and
+(iii) GCS decomposition: extraction of well-constrained parts in
+a given well-constrained GCS. Because the overall solving effi-
+ciency is governed by the largest subsystems, the essence here
+is to minimize the size of the well-constrained parts (Hoffman
+et al., 2001b).
+The above topics have been studied for decades, and there
+are several surveys made available, e.g., Bettig and M Hoffmann,
+2011; Hoffman et al., 2001a, 2001b; Hoffmann and Joan-Arinyo,
+2005; Jermann et al., 2006. Nevertheless, they primarily focused
+on decomposition methods for well-constrained GCS or those
+with only structural constraint dependencies, which was the re-
+search focus from the late 1980s through the mid 2000s. Since
+the mid 2000s, there have been research efforts devoted to effec-
+tive/robust GCS classification criteria, detection, and decomposi-
+tion algorithms for general constraint systems (with and without
+non-structural constraint dependencies). This work gives a com-
+prehensive review on geometric constraint solving, covering both
+periods and for general GCS (with a hybrid state of under-, well-,
+and over-constraint). The current progresses and remaining is-
+sues will be emphasized, particularly for the recently developed
+witness configuration method (WCM) (Michelucci & Foufou, 2006;
+Thierry et al., 2011), a very promising method that can overcome
+limitations conventional methods suffer from.
+The rest of this paper is organized as follows. Section 2
+presents the fundamentals of GCS and GCS solving. Sections
+3-6 presents several branches of solving approaches classified
+by different representation schemes of GCS; for each branch
+of approaches, the representation scheme, criteria for charac-
+terizing constraint states, detection, and decomposition are pre-
+sented. Section 7 introduces the witness configuration method
+and presents the discussions on its limitations. The last section
+concludes this paper.
+2. Geometric constraint systems
+2.1 GCS definitions
+In 2D and 3D parametric modeling, a geometric constraint system
+generally declares the geometric objects that must be included in
+the design model, and the geometric constraints that must be sat-
+isfied by these geometric objects.
+Specifically, the geometric objects are the basic geometric ele-
+ments embedded at 2D or 3D Euclidean space, e.g. points, lines,
+and conics in 2D, and points, lines, planes, and surfaces in 3D.
+The geometric constraints describes the shape of geometric ob-
+jects or the relationships among several geometric objects. The
+geometric constraint can be further classified into three cate-
+gories: parametric constraints, non-parametric constraints, and
+algebraic constraints that relate the parameters from different
+parametric constraints. The parametric constraints (e.g. distance
+and angle) use parameters to define the dimensions of the model;
+the parameter values need assignments for creating the model,
+and need editing for modifying the shape of the model. The non-
+parametric constraints (e.g. perpendicular and parallel) define
+the structural relationships between two geometric objects; the
+non-parametric constraints can be regarded as the parametric
+constraints with parameters fixed at specific values. Algebraic
+constraints describe relationships among the parameters from
+different parametric constraints, e.g. d1 = 2 d2 where d1 and d2
+are the parameters from two distance constraints.
+To define the shape of the model, the values of the parameters
+need to be assigned. The problem of geometric constraint solving
+is to find the solutions to the geometric constraint system, which
+are the coordinates of the geometric objects satisfying all the geo-
+metric constraints. Through examining the solution(s) of the GCS,
+notions of under-, well-, and over-constraint can be formally de-
+fined as follows, which is the base of the discussion in this work.
+Definition 1. Given a GCS and let S be its solution space. The
+GCS is consistently constrained if S⁄=∅, and inconsistently con-
+strained otherwise.
+Definition 2. Given a GCS and let S be its solution space. The
+GCS is under-constrained if the cardinality |S| is infinite.
+Definition 3. Given a GCS and let S be its solution space. The
+GCS is consistently over-constrained if there exists a subset of
+the GCS such that the corresponding reduced equations have the
+same solution space as S.
+Definition 4. A GCS is over-constrained if it is inconsistently
+constrained or consistently over-constrained.
+Definition 5. A GCS is well-constrained if it is neither under-
+constrained nor over-constrained.
+The relationship among the listed constraint states are pre-
+sented in Figure 2. Generally, in a GCS problem, a well-
+constrained system or a consistently over-constrained system is
+preferred, since there are finite number of solutions to be found.
+For an under-constrained geometric constraint system, the in-
+finite number of solutions cannot be obtained in a polynomial
+time; and for an inconsistently over-constrained geometric con-
+straint system, no solution can be obtained, which makes the sys-
+tem meaningless. Therefore, it is a crucial step in the geometric
+constraint solving to determine the constraint state of the system,
+which is discussed in detail in Section 3.
+
+===== PAGE 3 =====
+XXXXX, 202X, X(X) X-X | 3
+Under-constrained
+Constraint states
+Well-constrained Over-constrained
+Consistently 
+over-constrained
+Inconsistently 
+over-constrained
+Figure 2: The illustration of the constraint states
+2.2 Solving process
+The process of geometric constraint solving is illustrated in Fig-
+ure 1. Basically, the main components of the geometric constraint
+solver include:
+(i) A detector. The detector determines whether the GCS in the
+current form is solvable or not.
+(ii) A resolver. When the GCS is ill-constrained, the resolver pro-
+vides guidance to the user for resolving the ill-constraints, or
+fix the GCS automatically.
+(iii) A decomposer. For well-constrained GCS, the decomposer
+splits it into a set of subsystems for efficient solving.
+(iv) A solver. It sequentially solves the subsystems, recombines
+them, and outputs the final solution(s) of the GCS.
+On this basis, the main steps of the geometric constraint solv-
+ing are presented as follows:
+Step 1: sketching. The user gives a sketch that declares the ge-
+ometric objects and their topological relationships, and then adds
+geometric constraints.
+Step 2: constraint state characterization. The detector
+determines the constraint state of the GCS. If the GCS is ill-
+conditioned (generally under-constrained or inconsistently over-
+constrained), go to Step 3; else, go to Step 4.
+Step 3: repairing. The GCS is repaired automatically or by the
+user.
+Step 4: decomposition. The GCS is decomposed into a set of
+subsystems. Also, a sequence of solving subsystems is generated,
+as well as a construction plan to recombine them.
+Step 5: subsystem solving. The subsystems are solved accord-
+ing to the sequence, and the results are recombined as the final
+solution(s).
+The critical issues of the geometric constraint solving are con-
+straint state characterization and the decomposition. For this, lit-
+erature on addressing these two issues are reviewed in Section 2
+and Section 3.
+3. Algebraic approaches
+3.1 Representation scheme
+The algebraic approaches basically translate the geometric con-
+straints into a system of equations. The equations can be either
+linear or non-linear. It takes the coordinates of the geometric
+objects as variables; and its roots correspond to the solutions of
+the GCS. An example of the translation is given in Figure 3(a). It
+shows a 2D geometric constraint system constructing a triangle.
+The geometric objects include 3 points P1, P2, P3 and 2 lines L1, L2;
+the geometric constraints include 3 distances with the parame-
+ters d1, d2, an angle with the parameter α, and 4 point-on-line
+constraints. Note that the line P1P3 is not included for simplic-
+ity, since it can be directly defined once the positions ofP1 and P3
+d1
+P1 P2
+P3
+α 
+C1: Distance (P1, P2) = d1
+C2: Distance (P2, P3) = d2
+C3: Angle (L1, L2) = α
+C4: PointOnLine(P1, L1)
+C5: PointOnLine(P2, L1)
+C6: PointOnLine(P2, L2)
+C7: PointOnLine(P3, L2)
+L1
+L2
+Figure 3: A 2D geometric constraint system
+are determined. The equation-based representation of the GCS in
+Figure 3(a) is given as follows:
+
+
+
+E1: (x2 – x1)2 + (y2 – y1)2 = d2
+1 ,
+E2: (x3 – x2)2 + (y3 – y2)2 = d2
+2,
+E3: (ϕ1 –ϕ2)2 = (π –α)2,
+E4: x1 cosϕ1 – y1 cosϕ1 –ρ1 = 0,
+E5: x2 cosϕ1 – y2 cosϕ1 –ρ1 = 0,
+E6: x2 cosϕ2 – y2 cosϕ2 –ρ2 = 0,
+E7: x3 cosϕ2 – y3 cosϕ2 –ρ2 = 0,
+(1)
+where the geometric objects and their coordinates are defined as
+P1(x1, y1), P2(x2, y2), P3(x3, y3), L1(ϕ1,ρ1), L2(ϕ2,ρ2). The values
+of the parametersd1, d2,α need to be assigned before solving, e.g.
+d1 = 10, d2 = 10, and α = π
+4 . Moreover, additional equations
+need to be added to fix the Cartesian coordinate system with the
+geometric constraint system. For example, the following fixing
+equations can be added:
+
+
+
+x1 = 0,
+y1 = 0,
+y2 – y1 = 0,
+(2)
+where the first two equations set P1 as the origin, and the third
+equation takes the vector from P1 to P2 as the direction of X-axis.
+Given a system of equations with parameters assigned, alge-
+braic solving approaches need to be employed to attain the root
+(or roots). Generally, the approaches can be classified into two
+branches, numerical approaches and symbolic approaches.
+3.2 Numerical approaches
+The numerical approaches solve equation systems in a iterative
+manner, and yield approximations of the solutions in numerical
+schemes. The numerical approaches are practical in computa-
+tion.
+3.2.1 Constraint state characterization
+The numerical approaches determine the constraint states of GCS
+by analyzing Jacobian matrix of the equation system. Generally,
+the Jacobian matrix expresses the variation of the geometries’
+coordinates under a slight change of constraint parameters (as-
+sume that the parameters are at the right side of equations). The
+Jacobian matrix, denoted as J, is an (m× n) matrix that contains
+partial derivatives of each constraint equation:
+
+===== PAGE 4 =====
+4 | Geometric Constraint Solving Review
+d1
+P1 P2
+P3
+(a)
+P1 P2P3 (b)
+Figure 4: A 2D geometric constraint system and a configuration with singular
+Jacobian: (a) the geometric constraint system, and (b) the configuration with sin-
+gular Jacobian.
+J =
+
+
+f11 f12 ... f1n
+f21 f22 ... f2n
+...
+...
+. . .
+...
+fm1 fm2 ... fmn
+
+
+m×n
+where fij = ∂F
+∂xij
+.
+A necessary and sufficient condition of a well-constrained
+GCS proposed by Light and Gossard (Light & Gossard, 1982) is that
+the the Jacobian has full rank at the solutions. On this basis, the
+constraint state criterion is carried out as follows:
+Criterion Given the equation system of a GCS:
+(1) If the number of equations is less than the number of vari-
+ables, the GCS is under-constrained;
+(2) If the Jacobian at the solutions is non-singular, and the
+number of equations is equal to the number of variables, the GCS
+is well-constrained;
+(3) If the Jacobian at the solutions is non-singular, and the GCS
+is not under-constrained, the GCS is over-constrained.
+However, since the solutions are unknown beforehand, the cri-
+terion can hardly be applied directly. For this, several alternatives
+are proposed, which are introduced in the next subsection.
+3.2.2 Constraint state detection
+An alternative is to valuate and analyze Jacobian at random con-
+figurations instead, but singular configurations may be encoun-
+tered where rank deficiency happens to the Jacobian.
+For example, Figure 4(a) presents a geometric constraint sys-
+tem with 3 points P1(x1, y1), P2(x2, y2), P3(x3, y3) and 3 distances
+d1 = 10, d2 = 10, d3 = 10 between the points. The equation system
+can be obtained as follows:
+
+
+
+x1 = 0,
+y1 = 0,
+y2 – y1 = 0,
+(x2 – x1)2 + (y2 – y1)2 = 102,
+(x3 – x2)2 + (y3 – y2)2 = 102,
+(x1 – x3)2 + (y1 – y3)2 = 102.
+(3)
+The Jacobian is presented in Table 1. A root of the equation
+system is given as P1(0, 0), P2(20, 0), P3(10, 0). The Jacobian evalu-
+ated at the root is given in Table 2 with full rank; However, when
+evaluating the Jacobian at the configuration in Figure 4(b), the
+result becomes singular, presented in Table 3.
+Therefore, the difficulty lies in finding the non-singular con-
+figurations where the Jacobian has the same structures as that at
+solutions. To achieve this, several methods has been proposed.
+1. Sampling-based method
+The basic idea of sampling-based method is to increase the
+probability of finding non-singular configurations by increasing
+the number of sampling configurations. Since most of configura-
+tions are non-singular except for some certain points within the
+variable space, this method performs well practically. If a non-
+singular sampling configuration is find, then the GCS is deter-
+mined as well-constrained.
+Haug et al. (Haug, 1989) presented a perturbation method to
+deal with singular configurations. It obtains more configurations
+for valuation of Jacobian matrix.
+Foufou et al. (Foufou et al., 2005) extended the numerical prob-
+abilistic method (NPM) which valuates the Jacobian matrix at a set
+of random configurations in the variable space. Such methods
+are useful piratically, but theoretically they cannot guarantee to
+avoid singular configurations.
+2. Witness configuration method
+Instead of selecting configurations randomly, Michelucci et al.
+(Michelucci & Foufou, 2006, 2009) suggested to valuate the Jaco-
+bian at the witness configurations that has the same structure
+of Jacobian as that of solutions. To guarantee the same structure
+of Jacobian between witness configurations and solutions, all the
+singular constraints, e.g. point/line/plane incidences, needs to
+be satisfied in witness configurations. The aim is to avoid degen-
+erate cases between geometric entities which may change the Ja-
+cobian structure.
+When all the singular constraints are stated by the user, a wit-
+ness configuration can be computed as a solution to a GCS con-
+taining only these singular constraints. This GCS is generally
+highly under-constrained, and can be solved easily.
+Li et al. (Li et al., 2001) presented a method to detect numeri-
+cal redundancies. It gives a perturbation to the parameter value
+of each constraint, and then tests the solvability of the new GCS
+by optimization method (Ge et al., 1999). This method can only
+handle consistent over-constrained GCS.
+3.2.3 Solving
+The earliest proposed methods and prototypes (Borning, 1981;
+Hillyard & Braid, 1978; Sutherland, 1964) employed the relaxation
+method, which starts with a initial guess of the solution, and iter-
+atively gives perturbations to the variable values until some mea-
+sure is minimized. The convergence of the relaxation method is
+generally slow.
+Later on, Newton-Raphson iteration was widely used in the
+subsequent work (Light & Gossard, 1982; Lin et al., 1981; Nelson,
+1985). It converges faster but heavily relies on an appropriate
+initial guess. It can hardly handle consistently over-constrained
+GCSs, since a square Jacobian is required within the iteration pro-
+cess. Generally, the relaxation method and Newton-Raphson iter-
+ation can only find one root.
+For exhaustive searching of multiple solutions, homotopy con-
+tinuation was applied (Allgower & Georg, 1993; Durand & Hoff-
+mann, 2000; Imbach et al., 2017; Lamure & Michelucci, 1996). It
+theoretically guarantees to find all solutions to an equation sys-
+tem. However, as there is always a trade-off between efficiency
+and exhaustive searching, its computational load is heavier.
+Nearly 2000, numerical optimization was introduced to geo-
+metric constraint solving (Cao et al., 2006; Ge et al., 1999; Yuan
+et al., 2006). It is stable and less sensitive to the initial guess. The
+main advantage is that consistently over-constrained and under-
+constrained can be effectively handled.
+
+===== PAGE 5 =====
+XXXXX, 202X, X(X) X-X | 5
+Table 1: Jacobian of F(X) in Equation (3)
+˙x1 ˙y1 ˙x2 ˙y2 ˙x3 ˙y3
+F1 1 0 0 0 0 0
+F2 0 1 0 0 0 0
+F3 0 -1 0 1 0 0
+F4 –2(x2 – x1) –2( y2 – y1) 2( x2 – x1) 2( y2 – y1) 0 0
+F5 0 0 –2( x3 – x2) –2( y3 – y2) 2( x3 – x2) 2( y3 – y2)
+F6 2(x1 – x3) 2( y1 – y3) 0 0 –2( x1 – x3) –2( y1 – y3)
+Table 2: Non-singular Jacobian at the solution in Figure 4(a)
+˙x1 ˙y1 ˙x2 ˙y2 ˙x3 ˙y3
+F1 1 0 0 0 0 0
+F2 0 1 0 0 0 0
+F3 0 -1 0 1 0 0
+F4 -20 0 20 0 0 0
+F5 0 0 10 -17.32 -10 17.32
+F6 -10 -17.32 0 0 10 17.32
+Table 3: Singular Jacobian at the configuration in Figure 4(b)
+˙x1 ˙y1 ˙x2 ˙y2 ˙x3 ˙y3
+F1 1 0 0 0 0 0
+F2 0 1 0 0 0 0
+F3 0 -1 0 1 0 0
+F4 –20 0 20 0 0 0
+F5 0 0 –20 0 20 0
+F6 –20 0 0 0 20 0
+The numerical approaches are general, but they are time-
+consuming without involving constraint decomposition, espe-
+cially for large-scale systems. Actually, the numerical ap-
+proaches are commonly included in other decomposition ap-
+proaches to solve subproblems, or are chosen as the last choice
+when other approaches do not work well.
+3.3 Symbolic approaches
+The symbolic approaches employ symbolic techniques to convert
+an equation system into a triangular form. The conversion, in
+some sense, is a decomposition of the GCS, where the equations
+in the triangular form can be solved sequentially. Representative
+methods include Gröbner bases (Bose, 1995; Buchanan & de Pen-
+nington, 1993; Kondo, 1992) and Wu-Ritt decomposition (Chou,
+1988a, 1988b).
+3.3.1 Constraint state characterization
+Basically, the symbolic approaches characterize the constraint
+states of the GCS by the triangular form of equations.
+Criterion Given a GCS S, let P1 and P2 be two points in S. Fix-
+ing the position ofP1 and the directionP1P2, S is well-constrained
+iff the triangular set contains (2 n – 4) polynomials; S is under-
+constrained iff the triangular set contains less than (2n – 4) poly-
+nomials; S is consistently over-constrained iff the triangular set
+contains more than (2n – 4) polynomials; S is inconsistently over-
+constrained iff there is no triangular set.
+3.3.2 Constraint state detection and solving
+In symbolic approaches, the solving process is generally mingled
+with the constraint state detection process. Gröbner basis method
+(Bose, 1995; Buchberger, 1985) and Wu-Ritt method (Chou, 1988a;
+Gao & Chou, 1998; Wu, 2012) are respectively introduced as fol-
+lows.
+Gröbner basis method computes the Gröbner basis for a sys-
+tem of equations. The criterion of determining the constraint
+state of a GCS is presented as follows:
+Criterion Assume a set of polynomials f0, f1,... , fs ∈
+C[x1, x2,... , xn]. The reduced Gröbner basis rgb0 of the ideal
+< f1, f2,... , fs > satisfies rgb0 ⁄= 1 and rgb0 ⁄= 0 with respect
+to any ordering. The new reduced Gröbner basis of the ideal <
+f0, f1, f2,... , fs > is rgbnew. If rgbnew = 1, the new added f0 = 0
+is a conflicting equation; if rgbnew ≡ 0, f0 = 0 is a redundant
+equation, rgb0⊂ rgbnew, f0 = 0 is an independent equation.
+The algorithm of generating Gröbner basis is first proposed
+by (Buchberger, 1985). Kondo (Kondo, 1992) introduced Gröbner
+basis into geometric constraint solving and constraint manage-
+ment. Solving GCS problem using Wu-Ritt method is firstly intro-
+duced by Gao and Chou (Gao & Chou, 1998). Given a set of poly-
+nomials P, it decomposes a system of polynomial equations into a
+triangular set, and The zero set of the polynomials can be denoted
+as:
+Zero(P) =∪1≤i≤kZero(TSi/I[i]), (4)
+where TSi is a polynomial set in triangular form,I[i] is the produc-
+tion of initials of the polynomials in TSi, and k denotes the zero
+sets.The symbolic approaches are capable of finding all roots, but
+are rarely employed in practical GCS problems due to their high
+computational load.
+4. Geometric approach
+4.1 Representation scheme
+The geometric approaches analyze and solve GCS in a geometri-
+cal way. These approaches directly operate with the original rep-
+resentation scheme of GCS, i.e. the full geometric descriptions
+of the geometric objects and the geometric constraints. Faced
+with these, the supporting theories and techniques include ele-
+mentary geometry and 2D ruler-and-compass drawing. For ex-
+ample, the GCS in Figure 3 can be trivially solved geometrically by
+ruler-and-compass drawing, and the construction steps are given
+as follows:
+(i) FixOrigin( P1);
+(ii) FixX-Axis( L1);
+(iii) P2 = CreatePoint(P1, L1, d1);
+(iv) L2 = CreateLine(P2, L2,α);
+(v) P3 = CreatePoint(P2, L2, d2).
+However, the supporting theories and techniques could have
+little effects when handling more complicated situations, e.g. 3D
+geometric constraint solving and complex 2D problems.
+4.2 Constraint state characterization
+The strategy of the geometric approaches is to decompose the
+whole GCS into a set of subsystems that can be trivially analyzed
+
+===== PAGE 6 =====
+6 | Geometric Constraint Solving Review
+and solved. Generally, the decomposition process is executed
+first, and the detection is then operated on the decomposition
+results. The constraint states of GCS is characterized by the un-
+matched parts as follows:
+Criterion Given a GCS and a repertoire of well-constrained
+patterns or construction rules to be matched with, when the
+matching terminates:
+(i) the system is well-constrained if all its components are
+matched;
+(ii) the system is under-constrained if there are geometric objects
+left;
+(iii) the system is over-constrained if there are geometric con-
+straints left.
+4.3 Constraint state deterction
+4.4 Decomposition algorithms
+Basically, the constraint state of a geometric constraint system is
+determined by iteratively matching it with the repertoire of pre-
+defined well-constrained patterns or construction rules. These
+well-constrained patterns, as well as the construction rules, are
+the abstractions of the existing geometric knowledge. The pro-
+cess terminates when no patterns or rules are applicable.
+The rule-based method employs geometric assertions and ax-
+ioms to identify rigid patterns in the geometric constraint sys-
+tem.
+Sunde (Sunde, 1987) proposed a method to handle 2D geomet-
+ric constraint problems with points constrained by distances and
+angles. First, basic patterns in the geometric constraint system
+are created, e.g. a pair of points with a distance constraint (called
+a CD) and two pair of points with an angle constraint (called a CA).
+Then, several rules are used to iteratively merge the existing pat-
+terns, e.g. three CDs pairwise sharing one point or two CAs shar-
+ing one segment can be combined into a bigger rigid subsystem.
+The method terminates when all the points belong to a CD set.
+Essentially, the rules are abstracted from the geometric knowl-
+edge of triangles. The subsequent literatures further extended
+the types of geometric entities and geometric constraints, and
+the repertoire of rigid patterns (Joan-Arinyo & Soto, 1997a; Joan-
+Arinyo & Soto, 1997b; Verroust et al., 1992). Particularly, Joan-
+Arinyo and Soto-Riera (Joan-Arinyo & Soto, 1997a; Joan-Arinyo &
+Soto, 1997b) introduced the point-line distance constraint (called
+a CH).
+Another set of methods (Aldefeld, 1988; Bruderlin, 1989;
+Brüderlin et al., 1990; Sohrt & Brüderlin, 1991; Yamaguchi &
+Kimura, 1990) develop an axiomatic description of elementary
+geometry for ruler-and-compass construction. These axioms are
+expressed as rewrite-rules for replacing constraints which are
+stored in a database by equivalent ones. Essentially, these meth-
+ods realize the automatic process of ruler-and-compass drawing.
+As the rule-and-compass drawing generates the geometric loci
+of elements, an important issue is to handle the loci intersection
+problem. For this, Gao et al. (Gao et al., 2004) proposed a method
+to calculate the locus intersection in 2D by discretization.
+The decomposition process is essentially an automatic geo-
+metric reasoning process, thus it directly works at the original
+representation scheme. The reliability of the methods mainly de-
+pends on the completeness of the repertoire, i.e. whether all well-
+constrained patterns can be enumerated, or whether there are a
+set of basic rules to construct all kinds of well-constrained sys-
+tems.
+x1 y1 x2 y2 x3 y3 φ1 ρ1 φ2 ρ2
+E1 E2 E3 E4 E5 E6 E7
+(a)
+P1 P2 P3 L1 L2
+C1 C2 C3 C4 C5 C6 C7
+(b)
+P1 P2 P3
+L1 L2
+C1 C2
+C3
+C4
+C5 C6
+C7
+(c)
+Figure 5: The graph representations of the geometric constraint system in Figure
+3(a): (a) the equation graph, (b) the constraint graph where constraints are defined
+as nodes, and (c) the constraint graph where the constraints are defined as edges.
+5. Topological approach
+5.1 Representation scheme
+The other set of approaches choose to translate the geometric con-
+straint system into a graph, so that graph theories and algorithms
+are available to further analyze the structural properties and de-
+compose the system. Specifically, the graph-based representa-
+tion of the geometric constraint system can be further classified
+into two categories: the equation graph and the constraint graph.
+The equation graph is derived from the equation-based repre-
+sentation. A node denotes either a variable or an equation; and
+an edge linking a variable node and an equation node denotes
+that the variable is constrained by the equation. Since the nodes
+can be divided into two groups linked by the edges, the equation
+graph can also be represented as a bipartite graph. For example,
+the equation graph derived from Equation 1 is presented in Fig-
+ure 5(a).
+The constraint graph is directly derived from the original
+scheme of the geometric constraint system. It abstracts geomet-
+ric objects by their degree of freedom (DOF), and abstracts geo-
+metric constraints by thier degree of constraints (DOC). The DOF
+of a geometric object is the number of independent coordinates
+used to define it; and the DOC of a geometric constraint is the
+number of equations needed to defined it. For example, a 2D point
+and a 2D line both have 2 DOFs, and a 2D circle has 3 DOFs; a dis-
+tance constraint with non-zero parameter value has 1 DOC. Gener-
+ally, the constraint graph has two representation schemes. One is
+the general constraint graph where the nodes only represent geo-
+metric objects and the edges are the constraints; and the other is
+the bipartite graph where a node denotes either a geometric ob-
+ject and a geometric constraint, and an edge links a geometric
+constraint and a geometric object it constraints. Figure 5(b-c) re-
+spectively presents the two schemes of the constraint graph.
+
+===== PAGE 7 =====
+XXXXX, 202X, X(X) X-X | 7
+d1
+P1 P2
+P3
+P4 d3
+(a)
+d1
+P1 P2
+P3
+P4 d3 (b)
+d1
+P1 P2
+P3
+P4 d3
+(c)
+Figure 6: Examples of structural constraint states: (a) a structurally over-
+constrained system, (b) a structurally well-constrained system, and (c) a struc-
+turally under-constrained system.
+5.2 Constraint state characterization
+5.2.1 Criteria for constraint graph
+Laman’s theorem (Laman, 1970) characterizes the rigidity of 2D
+bar frameworks, i.e. geometric constraint systems composed of
+points and distance constraints between the points.
+Theorem 1. A 2D GCS composed of n points constrained by m
+distances is rigid iff 2×n–m = 3, and for any subsystem composed
+of n′ points and m′ distances, 2× n′ – m′≥ 3.
+However, the theorem is restricted in 2D points and distance
+constraints, thus cannot be applied in more complicated systems.
+To extend the theorem, Podgorelec et al. (Podgorelec et al., 2008)
+proposed the concept of structural rigidity in the geometric con-
+straint problems.
+Definition (Structural constraint states) Let S = (C, X, A) be a
+constraint system.
+1) The system S is structurally over-constrained iff there exist
+a subsystem S′ = (C′, X′, A′) of S such that DOF(X′) – DOC(C′) < D.
+2) The system S is structurally well-constrained iff it is not
+structurally over-constrained and DOF(X) – DOC(C) = D.
+3) The system S is structurally under-constrained iff it is not
+structurally over-constrained and DOF(X) – DOC(C) > D.
+Definition (Structurally over-constrained)A constrainte is a
+structural over-constraint if a structurally over-constrained sub-
+system G′ = ( V′, E′) of G with e ∈ E′, can be derived such that
+G" = (V′, E′ – e) is structurally well-constrained.
+Examples are presented in Figure 6 to illustrate the definition.
+The 2D geometric constraint system in the figure is composed of 4
+points. Since each point has 2 DOFs, the whole system has 8 DOFs
+totally. As shown in Figure 6(a), the system is structurally under-
+constrained. 4 distance constraints are set; as each constraint
+gives 1 DOC, the whole system satisfies 2×4–1×4 > 3. As shown in
+Figure 6(b), the system is structurally well-constrained, because
+the whole system satisfies 2× 4 – 1× 5 = 3, and the two subgraphs
+P1P2P4 and P2P3P4 both satisfy 2× 3 – 1× 3 = 3. As shown in Fig-
+ure 6(c), the system is structurally over-constrained, because the
+whole system satisfies 2× 4 – 1× 6 < 3.
+Note that a structural well-constrained system can be geomet-
+rically over-constrained. An example is presented in Figure 7.
+The geometric constraint system in Figure 7(a) is composed of 3
+lines L1, L2, and L3 constrained by 3 anglesα,β, andγ; the con-
+straint graph illustrated in Figure 7(b) shows that the system is
+α β
+γ
+L1
+L2L3
+(a)
+L1 L2
+L3
+α
+β
+γ (b)
+Figure 7: A structurally well-constrained but geometrically over-constrained ge-
+ometric constraint system: (a) the geometric constraint system, and (b) the con-
+straint graph.
+(a)
+ (b)
+(c)
+ (d)
+Figure 8: Counter examples of 3D extension of Laman’s theorem: (a) Double-
+Banana, and (b-d) Ortuzar’s configurations.
+structurally well-constrained. However, there is a implicit con-
+straintα +β +γ = 180◦, making the system geometrically over-
+constrained.
+As for 3D extension of Laman’s theorem, the term 2v–3 should
+be replaced with 3v–6, since each 3D point has 3 coordinates and a
+displacement of a 3D body is characterized by 6 parameters, i.e. 3
+translation parameters and 3 rotation parameters. However, the
+condition is necessary but not sufficient. Counter examples are
+Double-Banana and Ortuzar’s configurations, presented in Fig-
+ure 8. The system is structurally well-constrained by our defini-
+tion but is actually under-constrained. So far, no combinatorial
+characterizations have been found yet.
+Sitharam and Zhou (Sitharam & Zhou, 2004) proposed an ap-
+proximate characterization of 3D rigidity, which effectively han-
+dles some geometry (e.g. Double-Banana) misjudged by Laman’s
+theorem.
+Definition (Structural constraint states) Let S = (C, X, A) be a
+constraint system.
+1) The system S is structurally over-constrained iff there exist
+a subsystem S = (C, X, A) of S such that DOF(X) – DOC(C) < D.
+2) The system S is structurally well-constrained iff DOF(X) –
+DOC(C) = D and all subgraphs satisfy DOF(X) – DOC(C)≥ D.
+
+===== PAGE 8 =====
+8 | Geometric Constraint Solving Review
+3) The system S is structurally under-constrained iff DOF(X) –
+DOC(C) > D.
+Another problem arises that whether all rigid bodies need D
+(D = 3 in 2D and D = 6 in 3D) parameters for displacements.
+Counter examples are 2 points binding with a distance constraint
+in 3D, or a 3D cylindrical surface. The former needs only 5 inde-
+pendent displacements since the body cannot rotate around the
+axis crossing the 2 points; the latter also needs only 5 independent
+displacements as it cannot rotate around its axis. That is to say,
+the number of independent displacements are determined by the
+system itself rather than the dimensions. To address this, degree
+of rigidity (DOR) (Jermann et al., 2003) is proposed to replace the
+original D. The updated definitions are as follows:
+Definition (Structural constraint states) Let S = (C, X, A) be a
+constraint system.
+1) The system S is structurally over-constrained iff there exist
+a subsystem S = (C, X, A) of S such that DOF(X) – DOC(C) < DOR(X).
+2) The system S is structurally well-constrained iff DOF(X) –
+DOC(C) = DOR(X) and all subgraphs satisfy DOF(X) – DOC(C) ≥
+DOR(X).
+3) The system S is structurally under-constrained iff DOF(X) –
+DOC(C) > DOR(X).
+For example, the DOR of 3 collinear 2D points is 2, but the DOR
+of 3 non-collinear 2D points is 3. This indicates that the value of
+DOR depends on the relative positions between the geometric ob-
+jects in the rigid bodies. However, the relative positions cannot be
+directly obtained from the pure graph representation.
+The main limitation of the criteria mentioned above is that
+they are restricted in specific geometries (e.g. point, lines, planes)
+and constraints (e.g. distances). Thus, extensions on types of ge-
+ometries and constraints are needed for applications in practical
+CAD problems.
+5.2.2 Criteria for equation graph
+For an equation graph, a variable has only one DOF, and an equa-
+tion has only one DOC. The criterion of constraint states determi-
+nation for an equation graph is presented as follows:
+Criterion If there are only unsaturated constraints, the GCS
+is over-constrained; if there are only unsaturated variables, the
+GCS is under-constrained; if all variables and constraints are sat-
+urated, the GCS is well-constrained.
+As the criterion works on the equation level, it is not limited
+to any specific types of geometries. However, it can hardly be ap-
+plied to GCS with so called black box constraints, which cannot be
+converted to equations.
+5.3 Constraint state detection
+For a equation graph, it is also converted into a bipartite graph,
+where maximal matching algorithms can be used. Such method
+is pioneered by Serrano (Serrano, 1987). In (Ait-Aoudia et al.,
+2014), the Dulmage & Mendelsohn (D& M) algorithm was used to
+divide the equation graph into a well-constrained part, an under-
+constrained part, and an over-constrained part. A maximal
+matching of an equation graph can be further decomposed into
+well-constrained subsystems by decomposing it into strongly con-
+nected components. An effective approach is a linear depth first
+search algorithm by Tarjan (Tarjan, 1972).
+For a constraint graph, it is first converted into a bipartite
+graph. Then, the problem is translated into a maximal flow prob-
+lem where a number of methods is applicable. Such translation
+was first discussed by Hoffman et al. (Hoffmann et al., 1997), and
+was extended in (Hoffman et al., 2001a). The applied maximal
+flow methods are mainly based on greedy algorithms.
+5.4 Decomposition
+5.4.1 Matching-based decomposition
+The matching-based approach employs matching algorithms to
+decompose the geometric constraint system. It directly acts on
+the graph representation.
+At first, the matching-based approach operates on the equa-
+tion graph representation. This was pioneered by Serrano (Ser-
+rano, 1987), which consists of the following steps:
+(1) Find a maximum matching of the equation graph.
+(2) Transfer the equation graph into a digraph. Specifically,
+orient each edge in the maximum matching from the variable
+node to the equation node; and orient each unmatched edge from
+the equation node to the variable node.
+(3) Identify strong connected components from the digraph
+and collapse them into super nodes.
+(4) Obtain the solution plan by topological sorting.
+This work was followed by Ait-Aoudia et al. (Ait-Aoudia et
+al., 2014). Dulmage-Mendelsohn (D-M) decomposition was in-
+troduced that divided the whole equation graph into three sub-
+parts: the well-constrained sub-part, the over-constrained sub-
+part, and the under-constrained sub-part. With D-M decompo-
+sition, the ill-conditions of the geometric constraint system is
+made explicit to the user or the CAD system and specific treat-
+ment can be provided for repairing. Moreover, the maximum
+matching of the well-constrained sub-part is guaranteed to be a
+perfect matching.
+Further, the matching-based approach was extended to con-
+straint graph. Lamure and Middleditch (Lamure & Michelucci,
+1996) proposed a weighted maximal matching to the system de-
+composition. The method no longer works at equation level, but
+directly works on the constraint graph which is weighted by DOFs
+of geometric entities and DOCs of geometric constraints. The
+method converts the constraint graph into a directed one by max-
+imal weighting. The directions of edges are set by the following
+rules: a edge is set bidirectional if its weight is non-zero, and is
+directed from geometric entity to constraint if its weight is zero.
+Hoffmann et al. (Hoffmann et al., 1997) introduced the flow-
+based algorithm. The method first computes the maximum flow
+in the constraint graph and identifies the minimal dense subsys-
+tem. The minimal dense subsystem is then extended iteratively
+to include the neighboring nodes. Two extension algorithms are
+proposed, which are called condensing algorithm (CA) (Hoffman
+et al., 2001b) and the frontier algorithm (FA) (Hoffman et al.,
+2001a). Both the algorithms collapse the subsystem, but differ in
+the schemes. Specifically, the CA simply collapse the identified
+subsystem into a super node, while the FA preserves the frontier
+vertices of the subsystem. Both the algorithms yield a cluster tree,
+which indicates a solving sequence. Moreover, work (Hoffmann
+et al., 2004) has been proposed to develop the ability of FA in han-
+dling over-constrained systems.
+5.4.2 Bottom-up decomposition
+The bottom-up approach iteratively aggregates components into
+bigger ones. It was pioneered by Bouma et al. (Bouma et al., 1995).
+In this method, triangles in the constraint graph are identified
+and combined. An example of the decomposition process is il-
+lustrated in Figure 9. Compared with top-down approach, the
+bottom-up approach behaves better in handling over-constrained
+problems.
+One of the critical issues to be addressed is extending the
+repertoire of rigid patterns. Subsequent work include handling
+variable-radius circles (Chiang & Joan-Arinyo, 2004; Hoffmann
+& Chiang, 2002; Owen, 1996), Bezier curves (Hoffmann & Peters,
+
+===== PAGE 9 =====
+XXXXX, 202X, X(X) X-X | 9
+(a)
+L P
+P
+PL
+P
+L
+L
+P
+P
+C P
+L
+L
+(b)
+Figure 9: An example of bottom-up decomposition.
+1995), conics (Fudos & Hoffmann, 1996). Hoffmann and Joan-
+Arinyo (Hoffmann & Joan-Arinyo, 1997) proposed a method to
+handle the geometric constraint systems involving algebraic con-
+straints that relates parameters (e.g. two distance constraints d1
+and d2 satisfy d1 = 2d2).
+Bouma et al (Bouma et al., 1995) proposed a DOF-based method
+to make the bottom-up decomposition. The method operates on
+the constraint graph. The rigid subsystem is called a cluster. The
+main rule used in the method is "three clusters pairwise sharing
+an geometric element can be merged into a bigger cluster". How-
+ever, this rule sometimes yield non-rigid subsystems, i.e. the sub-
+system formed by three lines with three angle constraints are not
+rigid.
+Apparently, triangle is only one of the rigid patterns, and
+the main difficulty of the rule-based approach lies in a complete
+repertoire of patterns. Gao and Zhang (Gao & Zhang, 2003) pre-
+sented a classification of basic merge patterns between two rigid
+bodies in 2D. For all the eleven cases presented, the symbolic so-
+lution of each case is given, and whether it can be constructed by
+ruler-and-compass method is analyzed.
+Later on, non-rigid patterns are also taken into consideration.
+Shreck et al. (Schreck & Mathis, 2006; Schreck & Schramm, 2006)
+extended the types of 2D patterns with invariant properties, e.g.
+similarity. van der Meiden and Bronsvoort (Van der Meiden &
+Bronsvoort, 2010) considered 3D geometric constraint solving,
+and presented two non-rigid patterns: scalable clusters and redial
+clusters. Also, a mapping method was presented from 3D geomet-
+ric constraint system with several kinds of primitives to the one
+with only 3D points.
+Considered that not all geometric constraint systems are
+ruler-and-compass constructible (Gao & Zhang, 2003), Mathis et
+al. (Mathis et al., 2012) and Barki et al. (Barki et al., 2016) proposed
+a re-parameterization method to make the ruler-and-compass
+technique available. It is achieved by removing a constraint and
+adding a new constraint with driving parameter. With the driv-
+ing parameter changing, a geometric locus is generated, from
+which the positions that satisfying the removed constraint are
+taken as solutions. The method essentially converts the well-
+constrained geometric constraint system into the 1-DOF one. The
+limitation is that only one removable constraint is considered at
+(a)
+(b)
+Figure 10: An example of h-graph: (a) The GCS, and (b) the corresponding h-graph.
+current stage; the situation becomes more complex when more
+than one constraint are removed.
+The decomposition generates a ternary tree where each node
+captures a construction of a pattern (e.g. a triangle) and the
+leaves capture the set of geometric objects. The tree representa-
+tion shows the construction sequence of the GCS. However, the
+representation doesn’t explicitly show the dependencies between
+the construction steps. For this, Hidalgo and Joan-Arinyo (Hi-
+dalgo & Joan-Arinyo, 2015) introduced h-graph, which is obtained
+from the tree representation and captures the dependency rela-
+tionships between construction steps. An example is given in
+Figure 10. In Figure 10(b), the undirected edges represent co-
+dependencies, and the directed edges represent indirect depen-
+dencies.
+The bottom-up decomposition has a better performance in
+handling over-constrained GCSs, but can hardly handle under-
+constrained problems.
+5.4.3 Top-down decomposition
+Top-down decomposition methods work by iteratively splitting
+the whole geometric constraint system into smaller components.
+Apparently, the critical issue to be addressed lies in finding the
+splitting position.
+The top-down decomposition was pioneered by Owen (Owen,
+1991). The method handles 2D geometric constraint systems with
+points and lines constrained by distance and angle constraints.
+During each iteration, this method decomposes the constraint
+graph at an articulation pair. The articulation pair is a pair of
+nodes that their removal results in two disconnected subgraphs.
+After splitting, the pair of nodes is duplicated in both subgraphs,
+and a virtual bond, i.e. a edge, is added between them. The virtual
+bonds constraints the relative position between the two vertices.
+The splitting terminates when no more articulation pairs can be
+found. After the splitting, the geometric constraint system is de-
+composed into triangles. The triangles can be solved according to
+the reverse order of the decomposition. An example is illustrated
+in Figure11.
+Joan-Arinyo et al. (Joan-Arinyo et al., 2004) presented s-tree
+to formalize the top-down decomposition. Fudos and Hoffmann
+(Fudos & Hoffmann, 1997) presented a similar decomposition
+method that combined bottom-up techniques to handle over- and
+under-constrained problems. Zhang and Gao (Zhang & Gao, 2004)
+proposed a method to decompose a GCS into a d-tree in a top-
+
+===== PAGE 10 =====
+10 | Geometric Constraint Solving Review
+L P
+P
+PL
+P
+L
+L
+L P
+P
+PL
+P
+P
+P
+L
+L
+L P
+P
+L
+P
+PL
+L
+P
+L
+P
+PL
+P
+P
+P
+L
+P
+P
+L
+P
+P
+P
+P
+P
+L
+Figure 11: An example of top-down decomposition.
+down manner. It extends the connection types to 3D.
+Generally, the top-down decomposition can better decompose
+the under-constrained GCS, because the under-constrained GCS
+only has more articulation pairs. However, the top-down decom-
+position can hardly handle over-constrained GCSs.
+5.4.4 Propagation-based decomposition
+The propagation-based approach aims at converting the con-
+straint graph into a directional one where the incident edges of
+each vertex are all incoming edges except for one. More specifi-
+cally, the approach includes DOF propagation and variable prop-
+agation.
+Freeman-Benson et al. (Freeman-Benson et al., 1990) proposed
+the DeltaBlue algorithm to incrementally solve the GCS by local
+propagation. Sannella et al. (Sannella, 1993) presented the Sky-
+Blue algorithm as a successor to the DeltaBlue algorithm. It can
+detect loops, but cannot entirely break them. Veltkamp et al.
+(Veltkamp, 1995) proposed a method to break loops. Borning et
+al. (Borning et al., 1996) proposed a local propagation method to
+deal with GCSs with inequalities.
+The main drawback of this approach is that loops are often
+generated during the propagation. Veltkamp el al. (Veltkamp,
+1995) proposed a method to break loops. Borning et al. (Borning
+et al., 1996) proposed a local propagation method to handle geo-
+metric constraint system with inequality constraints.
+6. Introduction and limitations of VCM
+6.1 A brief introduction
+The above review suggests that conventional methods have inher-
+ent limitations and are often used beyond their validity. By con-
+trast, the very recent WCM is likely the most promising method to
+bypass those limitations. Successful applications of this method
+have been reported, including mechanism design, freeform sur-
+face design, (Hu et al., 2017; Mathis & Schreck, 2014; Zou & Feng,
+2019b), to name a few.
+VCM is essentially a bunch of criteria to characterize con-
+straint states. It attains these criteria by examining how the con-
+straint equations behave under infinitesimal perturbations made
+to the equation variables. That is, VCM applies a small perturba-
+tion∆X to X and examines the response ∆F = F(X +∆X) – F(X)
+of the constraint equations, which are related by (the first order
+approximation):
+∆F = J(X)·∆X + O(‖∆X‖2), (5)
+where J(X) is the Jacobian matrix evaluated at point X. The main
+result of VCM is that if J is evaluated at a carefully selected point
+called witness configuration, the constraint dependencies (i.e.,
+over-constraint) between the equations are described by the lin-
+early dependent rows of the Jacobian matrix, i.e., the vectors in
+the kernel (or null space) ofJT . Under-constraint is closely related
+to the free perturbations that do not violate existing constraints,
+i.e.,∆F = J·∆X = 0; that is, under-constraint is described by the
+vectors in the kernel ofJ. A configuration is deemed a witness con-
+figuration if certain types of constraints in the given model has
+already been satisfied by the configuration under perturbation,
+i.e., X, see (Kubicki et al., 2014) for generation of such configura-
+tions. A detailed discussion of witness configurations and the ne-
+cessity of them for VCM to work well can be found in (Michelucci
+& Foufou, 2009; Thierry et al., 2011).
+The formal criteria of under-, well- and over-constraint given
+by VCM are as follows (Thierry et al., 2011). A model is over-
+constrained if Kernel(JT )⁄=∅, where Kernel(·) denotes the kernel
+of a matrix: Kernel(A) = x|Ax = 0. This criterion can be rewritten
+as:
+Rank(J) – RowSize(J) < 0. (6)
+A model is under-constrained if Dim(Kernel(J)) > 6, where
+Dim(·) is to get the dimension of a linear space and the number
+6 represents the 6 rigid-body transformations. This criterion can
+be rewritten as:
+Dim(Kernel(J)) = ColumnSize(J) – Rank(J) > 6. (7)
+Using the rank-nullity theorem (Strang, 2003). Following imme-
+diately, the criterion for a well-constrained GCS is given as:
+
+
+
+(Rank(J) – RowSize(J) = 0,
+ColumnSize(J) – Rank(J) = 6.
+(8)
+These criteria were accepted once, but were later proven
+wrong. The failure is due to the assumption that a well-
+constrained GCS admits exactly 6 DOFs, which is seen to be not
+true in many real cases (Jermann et al., 2002). Figure 12 shows
+such a failure example1. To address this issue, the recent VCM re-
+place the fixed number 6 with a variable called degree of rigidity
+(DOR) (Michelucci & Foufou, 2009). The DOR notion may be first
+presented in (Jermann et al., 2002), and then was directly applied
+to VCM in (Michelucci & Foufou, 2009). This notion essentially
+translates the 6 rigid-body transformations (3 axial translations
+and 3 axial rotations) to changes made to the parameters of the
+participating geometric entities, where these changes are stored
+as 6 vectors; then DOR of a GCS is given by the number of inde-
+1 In this example, a plane is described with the tuple ( a, b, c, d) and the addi-
+tional constraint a2 + b2 + c2 = 1 (the plane equation is ax + by + cz + d = 0).
+The equations of the involved constraints are as follows: (1) collinearity of
+two normal or direction vectorsv1, v2 is represented withv1 +tv2 = 0 where
+t is a scalar unknown; and (2) point-to-point distance and vector angle are
+represented with dot products.
+
+===== PAGE 11 =====
+XXXXX, 202X, X(X) X-X | 11
+Figure 12: A failure example: a well-constrained model but incorrectly character-
+ized by VCM.
+pendent vectors among the 6 vectors, see Section 3 of (Michelucci
+& Foufou, 2009) for details. Consider, again, the example in Fig-
+ure 12. Its DOR is 5; then the numbersColumnSize(J) – Rank(J) and
+DOR are matched. This means that the constraint state of this ex-
+ample is characterized correctly with the help of the DOR notion.
+6.2 Limitation 0
+The most important limitation of the witness configuration
+method is that the subsystem constituting the witness configu-
+ration may not be well-constrained, and thus cannot be satisfied
+(Zou & Feng, 2019a).
+6.3 Limitation I
+The first limitation to be discussed in this subsection concerns
+with the ineffectiveness of VCM’s criteria for characterizing con-
+straint states. Although enhanced with the DOR notion, there
+is still no rigorous proof for VCM. The introduction of the DOR
+notion is more like a patch for fixing the bugs encountered in
+the application of VCM than a systematic treatment of VCM’s
+limitations. In fact, none of the key publications on VCM, say
+(Michelucci & Foufou, 2006, 2009; Thierry et al., 2011), come
+with guarantees or with clearly stated limitations. Effective-
+ness in terms of constraint state characterization was often over-
+claimed in previous publications but was negated in later publi-
+cations, which is the case for the introduction of the DOR notion
+to VCM.
+One limitation encountered by the authors in applying VCM is
+that the representation scheme used to describe the participating
+geometric entities has a significant effect on VCM’s effectiveness.
+Consider, for example, the four-plane configuration in Figure 12,
+and change the original representation scheme to the following
+one: a plane is described with a point p∈ R3 on the plane and the
+normal n∈ S2 of the plane. The expressionColumnSize(J)–Rank(J)
+becomes 24 – 13 = 11, and DOR of this example becomes 6, which
+leads to a mismatch and a failed constraint state characteriza-
+tion. From this example, we can conclude that different repre-
+sentation schemes could result in different numbers of the terms
+ColumnSize(J), Rank(J), and DOR, and consequently could lead to
+opposite characterization results for a same GCS. Figure 13 gives
+one more example about such a situation, and Table 4 summaries
+the characterization results for this example and the one in Fig-
+ure 12. Representation #1 refers to the original representation
+scheme; Representation #2 refers to the scheme we just men-
+tioned above; and the representation scheme used to describe the
+lines of the example in Figure 13 is: a line is represented by a point
+p∈ R3 on the line and the direction d∈ S2 of the line. Based on
+the results in Table 4, it is safe to say that the current VCM (with
+the DOR notion) is not as effective as we thought.
+The above limitation only represents one limitation found dur-
+ing the authors’ application of VCM. Are there other hidden lim-
+itations? At present, the authors do not have a good answer to
+Figure 13: Another failure example: a well-constrained model but incorrectly
+characterized by VCM.
+this question. There are good reasons that it may be better for
+us to take the negative side: existing work has over-claimed the
+effectiveness of VCM twice, of which one is before the introduc-
+tion of DOR, and the other before this work. Despite of these lim-
+itations (found ones and future ones), VCM is still a promising
+(maybe the most promising) method for handling the task of con-
+straint state characterization (other known methods are less ef-
+fective than VCM and have inherent limitations). Further devel-
+opment of VCM is necessary to prefect VCM (for constraint state
+characterization). Two improvement directions maybe taken to
+achieve the goal: (1) have a comprehensive analysis of VCM’s ca-
+pabilities and limitations, and then device new (add-on) methods
+to specifically handle the limitations; and (2) propose a variant of
+VCM for which a rigorous proof is achievable. The authors have
+presented a systematic method in (Zou & Feng, 2019c) to address
+Limitation I, following the latter direction.
+6.4 Limitation II
+This subsection and the next discuss the limitations of VCM for
+dealing with the second issue in geometric constraint solving. To
+repeat, the issue concerns with the optimal decomposition of a
+non-well-constrained constraint system into the minimal over-
+constrained parts and the maximal well-constrained parts. The
+limitation this subsection focuses on is the ineffectiveness of the
+current methods on minimal over-constrained part detection.
+Over-constrained parts in a non-well-constrained GCS could
+take the form of a group of dependent constraints, or the form
+of a group of geometric entities whose associated constraints are
+more than needed. These two forms are equivalent; and this work
+defines an over-constrained part as a group of dependent con-
+straints. The task of minimal over-constrained part detection is
+to minimize the size of each over-constrained part in the GCS.
+Existing methods to accomplish the task share the same idea
+of using greedy methods (Hu et al., 2017; Michelucci & Foufou,
+2009; Moinet et al., 2014; Thierry et al., 2011). Conceptually, they
+first find a maximal subset of independent constraints in the
+given GCS, then decide the dependencies of the rest constraints
+on these independent constraints in a one-by-one manner, which
+can be understood using the simple example in Equation (9). To
+simplify the indexing of these equations, they are numbered E1-
+E5 sequentially. The existing methods start from a seed equa-
+tion, e.g., E1, then iterate through all equations to greedily find
+a maximal subset of independent equations; for this case, it will
+be {E1, E2, E3}. Subsequently, the dependencies of the rest con-
+straints with the constraints already presented in the subset will
+be checked. For example, equation E4 is dependent with all the
+three constraints in the subset, and the same for equation E5. Ac-
+cording to these dependencies, the methods will output two min-
+
+===== PAGE 12 =====
+12 | Geometric Constraint Solving Review
+Table 4: Characterization results for the plane and line examples.
+VCM without DOR notion VCM with DOR notion
+ColumnSize(J) Rank(J) DOR Matched? ColumnSize(J) Rank(J) DOR Matched?
+The plane example
+(Representation #1) 16 11 6 $ 16 11 5 "
+The plane example
+(Representation #2) 24 13 6 $ 24 13 6 $
+The line example 12 5 6 $ 12 5 6 $
+imal dependency groups: {E1, E2, E3, E4} and {E1, E2, E3, E5}.
+
+
+
+x + y + z = 0,
+2x + y + x = 1,
+3x + 2y + z = 1,
+x + 2y + 3z = 1,
+2x + 4y + 3z = 2.
+(9)
+The above strategy may fail to detect the minimal over-
+constrained parts in a GCS because the maximal independent
+subset of a constraint system is not unique; this non-uniqueness
+could lead to wrong detection results. Consider the example
+in Equation (10) (a slight modification of Equation (9)). The
+existing methods will give two “minimal” dependency groups:
+{E1, E2, E3, E4} and { E1, E2, E3, E5}. However, it is easy to see that
+there is another dependency group with smaller size: {E4, E5}.
+
+
+
+x + y + z = 0,
+2x + y + x = 1,
+3x + 2y + z = 1,
+x + 2y + 3z = 1,
+2x + 4y + 6z = 2.
+(10)
+From the above discussion, it is safe to say that the develop-
+ment of current methods for minimal over-constraint detection
+is far from being sufficient. The insufficiency has its origins in
+the inherent limitations of greedy methods. Again, two direc-
+tions may be taken to solve the limitation or insufficiency. It can
+be seen from the examples that greedy methods gave the wrong
+detection results due to the wrong choice of the seed equation. For
+example, if the seed equations is set to equations E4, the greedy
+methods may give the right detection results. Therefore, one im-
+provement direction is to have a preprocessing that finds that op-
+timal seed equation. This problem is however a challenging is-
+sue for its own sake and remains an open issue. The other im-
+provement direction, which is more desirable, is to put effort into
+the insights of the detection problem and to attain a solid math-
+ematical modeling of this problem. The authors have presented
+a new, precise formulation of the minimal over-constraint detec-
+tion problem in (Zou & Feng, 2020) to address Limitation II, follow-
+ing the latter direction.
+6.5 Limitation III
+The limitation this subsection discusses is the ineffectiveness of
+the current methods on maximal well-constrained part detec-
+tion. Maximizing sizes of well-constrained parts is equivalent to
+minimizing under-constrained parts because under-constraint
+is described by DOFs between well-constrained parts. A well-
+constrained part of a GCS refers to a subset of the participating
+geometric entities whose induced constraint subsystem is well-
+constrained. An induced subsystem of a part is the subset of
+the constraints that are defined merely over the part. A well-
+constrained part P is deemed as maximal if there is no another
+subset P′ of the participating geometric entities such that P⊂ P′
+and P′ is well-constrained.
+Existing methods to solve the problem of maximal well-
+constrained part detection also use greedy methods (Michelucci
+& Foufou, 2009; Thierry et al., 2011), which leads to the limitation
+similar to Limitation II. The work flow of these methods is as fol-
+lows. First, a geometric entity set S is initialized with a seed ge-
+ometric entity (randomly chosen); then, iterate through all the
+other geometric entities to check if the geometric entity form a
+well-constrained part with the geometric entities in S, and, if so,
+add the geometric entity to S; the resulting S gives a maximal well-
+constrained part. Repeat above procedures on the left geometric
+entities until no geometric entity is left. Similar to Limitation II,
+the initialization of the methods — the choice of seed geometric
+entities — has a significant effect on their effectiveness, and they
+may fail to detect the maximal well-constrained parts in a GCS.
+An example of this limitation is given in Figure 14 and Figure
+15. A crank model with two DOFs is shown in Figure 14, and the
+two DOFs are a rotation of plane F2 about cylinder F4’s axis and
+a rotation of plane F3 about cylinder F4’s axis. Figure 15a shows
+one detection result of using the greedy method, where the seed
+geometric entity for part I is plane F3, the seed geometric entity
+for part II is cylinder F7, and that for part III is plane F2. How-
+ever, Figure 15b shows another solution to the problem of maxi-
+mal well-constrained part detection, with a larger size on the well-
+constrained part I.
+This limitation, again, has its origins in the inherent limita-
+tions of greedy methods. In fact, the use of greedy algorithms
+does not give a formulation of the detection problem but repre-
+sents an incomplete technical tool. To address the issue, we need
+to develop a mathematical modeling of the maximal requirement
+on sizes of well-constrained parts. The authors have presented a
+new, precise formulation of the maximal well-constraint detec-
+tion problem in (Zou & Feng, 2020) to address Limitation III.
+6.6 Limitation IV
+This limitation is related to the third issue in geometric constraint
+solving — the optimal decomposition of a well-constrained GCS
+into the minimal well-constrained parts. It is not strictly
+necessary to have a VCM-based method to decompose a well-
+constrained GCS into the minimal well-constrained parts. The
+major advantage of VCM over the previous graph-based methods
+(Hoffman et al., 2001b) is the ability to handle constraint depen-
+dency, but the setting of the third issue excludes such dependen-
+cies as the given GCS is well-constrained. There have been ef-
+fective methods to accomplish the task of decomposing a well-
+constrained GCS into the minimal well-constrained parts, such
+as the graph-based methods (Hoffman et al., 2001b).
+For VCM to be self-contained and systematic, we want to have
+a VCM-based method to decompose a well-constrained GCS into
+
+===== PAGE 13 =====
+XXXXX, 202X, X(X) X-X | 13
+Figure 14: An under-constrained GCS example.
+Figure 15: Results of maximal well-constrained part detection.
+the minimal well-constrained parts (although this may not have
+a practical value). To our knowledge, there is no existing work on
+this topic. This issue, as already noted, is secondary.
+7. Conclusions
+Limitations of VCM have been discussed in this work, under the
+context of geometric constraint solving. To have a systematic dis-
+cussion of these limitations, we first outlined the three essential
+tasks/issues in geometric constraint solving, then introduced the
+basic idea of VCM in a brief fashion, and finally showed the ca-
+pabilities and limitations of VCM using examples. The history of
+geometric constraint solving has also been briefly reviewed. With
+the limitations stated above, we expect that VCM can be perfected,
+starting from solving these limitations.
+Acknowledgements
+This work is a byproduct of the authors developing a new CAD
+modeling approach: variational direct modeling (Zou, 2019; Zou
+et al., 2022). The associated project was in part funded by the
+Natural Sciences and Engineering Research Council of Canada
+(NSERC). This financial support is greatly appreciated.
+Conflict of interest statement
+The authors declared no potential conflicts of interest with re-
+spect to the research, authorship, and/or publication of this ar-
+ticle.
+References
+Ait-Aoudia, S., Jegou, R., & Michelucci, D. (2014). Reduction of con-
+straint systems. arXiv preprint arXiv:1405.6131.
+Aldefeld, B. (1988). Variation of geometries based on a geometric-
+reasoning method. Computer-Aided Design, 20(3), 117–126.
+Allgower, E. L., & Georg, K. (1993). Continuation and path follow-
+ing. Acta Numerica, 2(1), 1–64.
+Barki, H., Fang, L., Michelucci, D., & Foufou, S. (2016). Re-
+parameterization reduces irreducible geometric constraint
+systems. Computer-Aided Design, 70, 182–192.
+Bettig, B., & M Hoffmann, C. (2011). Geometric constraint solving
+in parametric computer-aided design. Journal of computing
+and information science in engineering, 11(2).
+Borning, A. (1981). The programming language aspects of
+thinglab, a constraint-oriented simulation laboratory. ACM
+Transactions on Programming Languages and Systems
+(TOPLAS), 3(4), 353–387.
+Borning, A., Anderson, R., & Freeman-Benson, B. (1996). Indigo:
+A local propagation algorithm for inequality constraints. Pro-
+ceedings of the 9th annual ACM symposium on User interface
+software and technology, 129–136.
+Bose, N. (1995). Gröbner bases: An algorithmic method in polyno-
+mial ideal theory.Multidimensional systems theory and appli-
+cations (pp. 89–127). Springer.
+Bouma, W., Fudos, I., Hoffmann, C., Cai, J., & Paige, R. (1995). Ge-
+ometric constraint solver. Computer-Aided Design, 27(6), 487–
+501.
+Bruderlin, B. (1989). Rule-based geometric modelling.
+Brüderlin, B. et al. (1990). Symbolic computer geometry for com-
+puter aided geometric design. Advances in Design and Manu-
+facturing Systems, Tempe, AZ.
+Buchanan, S. A., & de Pennington, A. (1993). Constraint defi-
+nition system: A computer-algebra based approach to solv-
+ing geometric-constraint problems. Computer-Aided Design ,
+25(12), 741–750.
+Buchberger, B. (1985). Gröbner bases: An algorithmic method in
+polynomial ideal theory . Multidimensional Systems Theory –
+Progress, Directions; Open Problems in Multidimensional Sys-
+tems.
+Cao, C., Zhang, B., Wang, L., & Li, W. (2006). The parametric design
+based on organizational evolutionary algorithm. Pacific Rim
+International Conference on Artificial Intelligence.
+Chiang, C.-S., & Joan-Arinyo, R. (2004). Revisiting variable radius
+circles in constructive geometric constraint solving.Computer
+aided geometric design, 21(4), 371–399.
+Chou, S.-C. (1988a). An introduction to wu’s method for mechan-
+ical theorem proving in geometry. Journal of Automated Rea-
+soning, 4(3), 237–267.
+Chou, S.-C. (1988b). Mechanical geometry theorem proving
+(Vol. 41). Springer Science & Business Media.
+Coons, S. A. (1963). An outline of the requirements for a computer-
+aided design system. Proceedings of the May 21-23, 1963,
+spring joint computer conference, 299–304.
+
+===== PAGE 14 =====
+14 | Geometric Constraint Solving Review
+Coons, S. A., & Mann, R. W. (1960). Computer-aided design related
+to the engineering design process. MIT Electronic Systems Lab-
+oratory.
+Cottrell, J. A., Hughes, T. J., & Bazilevs, Y. (2009).Isogeometric anal-
+ysis: Toward integration of cad and fea. John Wiley & Sons.
+Durand, C., & Hoffmann, C. M. (2000). A systematic framework
+for solving geometric constraints analytically.Journal of Sym-
+bolic Computation, 30(5), 493–519.
+Foufou, S., Michelucci, D., & Jurzak, J.-P. (2005). Numerical de-
+composition of geometric constraints.Proceedings of the 2005
+ACM symposium on Solid and physical modeling, 143–151.
+Freeman-Benson, B. N., Maloney, J., & Borning, A. (1990). An incre-
+mental constraint solver. Commun. ACM , 33(1), 54–63. https :
+//doi.org/10.1145/76372.77531
+Fudos, I., & Hoffmann, C. M. (1996). Constraint-based parametric
+conics for cad. Computer-Aided Design , 28(2), 91–100. https :
+//doi.org/https://doi.org/10.1016/0010-4485(95)00037-2
+Fudos, I., & Hoffmann, C. M. (1997). A graph-constructive ap-
+proach to solving systems of geometric constraints. ACM
+Transactions on Graphics (TOG), 16(2), 179–216.
+Gao, X.-S., & Chou, S.-C. (1998). Solving geometric con-
+straint systems. ii. a symbolic approach and decision of
+rc-constructibility. Computer-Aided Design, 30(2), 115–122.
+Gao, X.-S., Hoffmann, C. M., & Yang, W.-Q. (2004). Solving spatial
+basic geometric constraint configurations with locus intersec-
+tion. Computer-Aided Design, 36(2), 111–122.
+Gao, X.-S., & Zhang, G.-F. (2003). Classification and solving of
+merge patterns in geometric constraint solving. 2003 Shape
+Modeling International., 89–98.
+Ge, J.-X., Chou, S.-C., & Gao, X.-S. (1999). Geometric constraint
+satisfaction using optimization methods.Computer-Aided De-
+sign, 31(14), 867–879.
+Haug, E. J. (1989).Computer aided kinematics and dynamics of me-
+chanical systems. vol. 1: Basic methods. Allyn & Bacon, Inc.
+Hidalgo, M., & Joan-Arinyo, R. (2015). H-graphs: A new represen-
+tation for tree decompositions of graphs. Computer-Aided De-
+sign, 67-68, 38–47. https://doi.org/https://doi.org/10.1016/j.
+cad.2015.05.003
+Hillyard, R. C., & Braid, I. C. (1978). Characterizing non-ideal
+shapes in terms of dimensions and tolerances. SIGGRAPH
+Comput. Graph., 12(3), 234–238.
+Hoffman, C. M., Lomonosov, A., & Sitharam, M. (2001a). Decom-
+position plans for geometric constraint problems, part ii: New
+algorithms. Journal of Symbolic Computation, 31(4), 409–427.
+Hoffman, C. M., Lomonosov, A., & Sitharam, M. (2001b). Decom-
+position plans for geometric constraint systems, part i: Per-
+formance measures for cad.Journal of Symbolic Computation,
+31(4), 367–408.
+Hoffmann, C. M., Sitharam, M., & Bo, Y. (2004). Making constraint
+solvers more usable: Overconstraint problem. Computer-
+Aided Design, 36(4), 377–399.
+Hoffmann, C. M., & Chiang, C.-S. (2002). Variable-radius circles of
+cluster merging in geometric constraints: I. translational clus-
+ters. Computer-aided design, 34(11), 787–797.
+Hoffmann, C. M., & Joan-Arinyo, R. (1997). Symbolic constraints
+in constructive geometric constraint solving. Journal of Sym-
+bolic Computation, 23(2-3), 287–299.
+Hoffmann, C. M., & Joan-Arinyo, R. (2005). A brief on constraint
+solving. Computer-Aided Design and Applications , 2(5), 655–
+663.
+Hoffmann, C. M., Lomonosov, A., & Sitharam, M. (1997). Finding
+solvable subsets of constraint graphs. International Confer-
+ence on Principles and Practice of Constraint Programming ,
+463–477.
+Hoffmann, C. M., & Peters, J. (1995). Geometric constraints for
+cagd. In Proceedings of the 3rd International Conference on
+Mathematical Methods for CAGD, Ulvic, 237–254.
+Hu, H., Kleiner, M., & Pernot, J.-P. (2017). Over-constraints detec-
+tion and resolution in geometric equation systems.Computer-
+Aided Design, 90, 84–94.
+Hu, H., Zhang, C., Huang, Y., Zhao, Q., & Yeung, S. (2021). Geomet-
+ric over-constraints detection: A survey.Archives of Computa-
+tional Methods in Engineering, 1–25.
+Imbach, R., Mathis, P., & Schreck, P. (2017). A robust and effi-
+cient method for solving point distance problems by homo-
+topy. Mathematical Programming, 163(1-2), 115–144.
+Jermann, C., Neveu, B., & Trombettoni, G. (2002). A new structural
+rigidity for geometric constraint systems.International Work-
+shop on Automated Deduction in Geometry.
+Jermann, C., Neveu, B., & Trombettoni, G. (2003). Algorithms for
+identifying rigid subsystems in geometric constraint systems,
+233–238.
+Jermann, C., Trombettoni, G., Neveu, B., & Mathis, P. (2006). De-
+composition of geometric constraint systems: A survey. Inter-
+national Journal of Computational Geometry & Applications ,
+16(05n06), 379–414.
+Joan-Arinyo, R., & Soto, A. (1997a). A ruler-and-compass geomet-
+ric constraint solver. In M. J. Pratt, R. D. Sriram, & M. J. Wozny
+(Eds.), Product modeling for computer integrated design and
+manufacture: Tc5/wg5.2 international workshop on geometric
+modeling in computer aided design 19–23 may 1996, airlie, vir-
+ginia, usa(pp. 384–393). Springer US. https://doi.org/10.1007/
+978-0-387-35187-2_33
+Joan-Arinyo, R., & Soto, A. (1997b). A correct rule-based geometric
+constraint solver. Computers & Graphics, 21(5), 599–609.
+Joan-Arinyo, R., Soto-Riera, A., Vila-Marta, S., & Vilaplana-Pasto,
+J. (2004). Revisiting decomposition analysis of geometric con-
+straint graphs. Computer-Aided Design, 36(2), 123–140.
+Kondo, K. (1992). Algebraic method for manipulation of dimen-
+sional relationships in geometric models.Computer-Aided De-
+sign, 24(3), 141–147.
+Kubicki, A., Michelucci, D., & Foufou, S. (2014). Witness compu-
+tation for solving geometric constraint systems. 2014 Science
+and Information Conference, 759–770.
+Laman, G. (1970). On graphs and rigidity of plane skeletal struc-
+tures. Journal of Engineering mathematics, 4(4), 331–340.
+Lamure, H., & Michelucci, D. (1996). Solving geometric constraints
+by homotopy. IEEE Transactions on visualization and com-
+puter graphics, 2(1), 28–34.
+Li, Y.-T., Hu, S.-M., & Sun, R.-G. (2001). On the numerical redun-
+dancies of geometric constraint systems. Proceedings Ninth
+Pacific Conference on Computer Graphics and Applications. Pa-
+cific Graphics 2001, 118–123.
+Light, R., & Gossard, D. (1982). Modification of geometric models
+through variational geometry. Computer-Aided Design, 14(4),
+209–214.
+Lin, V. C., Gossard, D. C., & Light, R. A. (1981). Variational geometry
+in computer-aided design. ACM SIGGRAPH Computer Graph-
+ics, 15(3), 171–177.
+Liu, S., Liu, T., Zou, Q., Wang, W., Doubrovski, E. L., & Wang, C. C.
+(2021). Memory-efficient modeling and slicing of large-scale
+adaptive lattice structures. Journal of Computing and Infor-
+mation Science in Engineering, 21(6).
+Mathis, P., & Schreck, P. (2014). Coordinate-free geometry and
+decomposition in geometrical constraint solving. Computer-
+Aided Design, 50, 51–60.
+Mathis, P., Schreck, P., & Imbach, R. (2012). Decomposition of ge-
+ometrical constraint systems with reparameterization. Pro-
+
+===== PAGE 15 =====
+XXXXX, 202X, X(X) X-X | 15
+ceedings of the 27th Annual ACM Symposium on Applied Com-
+puting, 102–108.
+Michelucci, D., & Foufou, S. (2006). Geometric constraint solving:
+The witness configuration method. Computer-Aided Design ,
+38(4), 284–299.
+Michelucci, D., & Foufou, S. (2009). Interrogating witnesses for ge-
+ometric constraint solving. 2009 SIAM/ACM Joint Conference
+on Geometric and Physical Modeling, 343–348.
+Moinet, M., Mandil, G., & Serré, P. (2014). Defining tools to address
+over-constrained geometric problems in computer aided de-
+sign. Computer-Aided Design, 48, 42–52.
+Nelson, G. (1985). Juno, a constraint-based graphics system. Pro-
+ceedings of the 12th annual conference on Computer Graphics
+and Interactive Techniques, 235–243.
+Owen, J. C. (1991). Algebraic solution for geometry from dimen-
+sional constraints.Proceedings of the first ACM symposium on
+Solid modeling foundations and CAD/CAM applications , 397–
+407.
+Owen, J. C. (1996). Constraints on simple geometry in two and
+three dimensions. International Journal of Computational Ge-
+ometry & Applications, 6(04), 421–434.
+Podgorelec, D., Žalik, B., & Domiter, V. (2008). Dealing with re-
+dundancy and inconsistency in constructive geometric con-
+straint solving. Advances in Engineering Software, 39(9), 770–
+786. https://doi.org/https://doi.org/10.1016/j.advengsoft.
+2007.10.003
+Rao, S. S. (2019). Engineering optimization: Theory and practice .
+John Wiley & Sons.
+Sannella, M. (1993). The skyblue constraint solver. Citeseer.
+Schreck, P., & Mathis, P. (2006). Geometrical constraint system de-
+composition: A multi-group approach. International Journal
+of Computational Geometry & Applications , 16(05n06), 431–
+442.
+Schreck, P., & Schramm, É. (2006). Using invariance under
+the similarity group to solve geometric constraint systems.
+Computer-Aided Design, 38(5), 475–484.
+Serrano, D. (1987). Constraint management in conceptual de-
+sign (Doctoral dissertation). Massachusetts Institute of Tech-
+nology.
+Shah, J. J. (1998). Designing with parametric cad: Classification
+and comparison of construction techniques. International
+Workshop on Geometric Modelling, 53–68.
+Sitharam, M., & Zhou, Y. (2004). A tractable, approximate, combi-
+natorial 3d rigidity characterization. Fifth Automated Deduc-
+tion in Geometry (ADG.
+Sohrt, W., & Brüderlin, B. D. (1991). Interaction with constraints in
+3d modeling. Proceedings of the first ACM symposium on Solid
+modeling foundations and CAD/CAM applications, 387–396.
+Strang, G. (2003). Introduction to linear algebra . Introduction to
+Linear Algebra.
+Su, C., Jiang, X., Huo, G., Zou, Q., Zheng, Z., & Feng, H.-Y. (2020).
+Accurate model construction of deformed aero-engine blades
+for remanufacturing. The International Journal of Advanced
+Manufacturing Technology, 106(7), 3239–3251.
+Sunde, G. (1987). A cad system with declarative specification of
+shape. Intelligent cad systems i (pp. 90–104). Springer.
+Sutherland, I. E. (1964). Sketchpad a man-machine graphical com-
+munication system. Simulation, 2(5), R–3.
+Tarjan, R. (1972). Depth-first search and linear graph algorithms.
+SIAM J. Comput., 1, 146–160.
+Thierry, S. E., Schreck, P., Michelucci, D., Fünfzig, C., & Génevaux,
+J.-D. (2011). Extensions of the witness method to characterize
+under-, over-and well-constrained geometric constraint sys-
+tems. Computer-Aided Design, 43(10), 1234–1249.
+Van der Meiden, H. A., & Bronsvoort, W. F. (2010). A non-rigid clus-
+ter rewriting approach to solve systems of 3d geometric con-
+straints. Computer-Aided Design, 42(1), 36–49.
+Veltkamp, R. C. (1995). A quantum approach to geometric con-
+straint satisfaction. In C. Laffra, E. H. Blake, V. de Mey, & X. Pin-
+tado (Eds.), Object-oriented programming for graphics (pp. 54–
+70). Springer Berlin Heidelberg. https://doi.org/10.1007/978-
+3-642-79192-5_6
+Verroust, A., Schonek, F., & Roller, D. (1992). Rule-oriented method
+for parameterized computer-aided design. Computer-Aided
+Design, 24(10), 531–540.
+Wu, W.-t. (2012).Mechanical theorem proving in geometries: Basic
+principles. Springer Science & Business Media.
+Yamaguchi, Y., & Kimura, F. (1990). A constraint modeling system
+for variational geometry. Geometric Modeling for Product En-
+gineering, 221–233.
+Yuan, H., Li, W., Yi, R., & Zhao, K. (2006). The tpso algorithm
+to solve geometric constraint problems. Journal of Computa-
+tional Information Systems, 2(4), 1311–1316.
+Zhang, G.-F., & Gao, X.-S. (2004). Geometric constraint solving
+based on connectivity of graph. Computer-Aided Design and
+Applications, 1(4), 469–476.
+Zou, Q. (2019).Variational direct modeling for computer-aided de-
+sign (Doctoral dissertation). University of British Columbia.
+Zou, Q., & Feng, H.-Y. (2019a). On limitations of the witness config-
+uration method for geometric constraint solving in cad mod-
+eling. arXiv preprint arXiv:1904.00526.
+Zou, Q., & Feng, H.-Y. (2019b). Push-pull direct modeling of solid
+cad models. Advances in Engineering Software, 127, 59–69.
+Zou, Q., & Feng, H.-Y. (2019c). Variational b-rep model analysis
+for direct modeling using geometric perturbation. Journal of
+Computational Design and Engineering , 6(4), 606–616. https :
+//doi.org/https://doi.org/10.1016/j.jcde.2019.03.002
+Zou, Q., & Feng, H.-Y. (2020). A decision-support method for in-
+formation inconsistency resolution in direct modeling of cad
+models. Advanced Engineering Informatics, 44, 101087. https:
+//doi.org/https://doi.org/10.1016/j.aei.2020.101087
+Zou, Q., Zhang, J., Deng, B., & Zhao, J. (2014). Iso-level tool path
+planning for free-form surfaces. Computer-Aided Design, 53,
+117–125.
+Zou, Q., Zheng, Q., Tang, Z., & Gao, S. (2022). Variational de-
+sign for a structural family of cad models. arXiv preprint
+arXiv:2201.02926.
