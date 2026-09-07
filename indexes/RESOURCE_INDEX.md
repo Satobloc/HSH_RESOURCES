@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T18:47:50Z`
-- Tree/content state: `5ea44c1b3da0072e8420e56ad7604a7b9d3697062cc6f20c0be1a068c5a67f6b`
+- Scanned: `2026-09-07T18:52:32Z`
+- Tree/content state: `ba65145b2389772b8de9f6179c2ef217f980215f8ae8f5423948074df395ff96`
 - Coverage: complete structural traversal
-- Files: 1023
-- Uploaded source files: 1016
-- PDF papers: 936
+- Files: 1041
+- Uploaded source files: 1034
+- PDF papers: 952
 - Repository machinery files: 7
-- Byte-identical duplicate groups: 47
+- Byte-identical duplicate groups: 59
 
 ## Top-level coverage
 
@@ -20,8 +20,8 @@
 | `ARXIV PAPER - 2503.14745v2.pdf` | 1 |
 | `BIG PAPERS` | 3 |
 | `DATA` | 12 |
-| `EXPOSURE_STATS` | 82 |
-| `H(s)H_Toolkit` | 311 |
+| `EXPOSURE_STATS` | 87 |
+| `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
 | `HAUL 11` | 6 |
@@ -46,9 +46,15 @@
 
 ## Duplicate-content groups
 
+- `064069f9073580c36f12711012d0e52f2e6b2167a80f677908c6ed9d23a7fe24`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf`
+  - `H(s)H_Toolkit/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf`
 - `08254264acd8cdef806b25880378f470a3c04998d89cf76e93688ab12af17ff7`
   - `HAUL 11/Bell (1).pdf`
   - `HAUL 11/Bell.pdf`
+- `110a8973d4e507b7378ea8371ba769579b88a8a509a7db7a3784e5b7f9f8179c`
+  - `H(s)H_Toolkit/2f8805397ee8506926404a60d8d677d2_lecture16.pdf`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/2f8805397ee8506926404a60d8d677d2_lecture16.pdf`
 - `154e61da81d0b80377886702947225817da1acfee7435eff4cc16283afccc2fb`
   - `HAUL 3/PhysRevA.52.4381 (1).pdf`
   - `HAUL 3/PhysRevA.52.4381.pdf`
@@ -64,6 +70,9 @@
 - `2a066e046105cc5a5b488ba052854d38ddc2223b0add3912216017e2efefd6ee`
   - `HAUL 2/ssrn-6956780 (1).pdf`
   - `HAUL 2/ssrn-6956780.pdf`
+- `2ac120b755e53e489de64da1e8285c0b308eb64f63bc0db075e67cfbfac9f999`
+  - `H(s)H_Toolkit/0b0d0496b0cfbbba1d88858ca8362e98_lecture11.pdf`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/0b0d0496b0cfbbba1d88858ca8362e98_lecture11.pdf`
 - `2b7c308566f7416a893aa3e0101484d453bee6f955387293cec47827f926442f`
   - `HAUL 8/RPP1978_Bell (1).pdf`
   - `HAUL 8/RPP1978_Bell (2).pdf`
@@ -83,6 +92,9 @@
 - `59c04099e11fcd24083ae7955d63993d2d1304633c605ad25994f509629ada6f`
   - `H(s)H_Toolkit/AssemblyTheory.pdf`
   - `H(s)H_Toolkit/s41586-023-06600-9.pdf`
+- `5a03c3a3dd646b4e682535ac14b3e569265c310a0322957d3ecdf483af092c67`
+  - `H(s)H_Toolkit/1c9e44c6a1b94e7c371c307a93779ffb_lecture25.pdf`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/1c9e44c6a1b94e7c371c307a93779ffb_lecture25.pdf`
 - `5b862fda843c7de1a99af463264b746765064ce75049d02fbe6c4a260e5ff686`
   - `HAUL 1/ssrn-7228958 (1).pdf`
   - `HAUL 1/ssrn-7228958.pdf`
@@ -95,9 +107,15 @@
 - `66b5deb150c49484cfb031b8b56bdc97e0a72a65bba0b699cf82a7214ba85fee`
   - `HAUL 3/EPR (1).pdf`
   - `HAUL 3/EPR.pdf`
+- `69bafd656f9f09a6d6248f926e65bd8bd090336fb46587487ef96169cd9c4626`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/a13b3444c1e2926aca5f25bdda522bc6_lecture07.pdf`
+  - `H(s)H_Toolkit/a13b3444c1e2926aca5f25bdda522bc6_lecture07.pdf`
 - `6e70f9b7e04989238e08c647f314411e642b2c6bcf787b21335ccdd28df10d9e`
   - `HAUL 3/0010047v2 (1).pdf`
   - `HAUL 3/0010047v2.pdf`
+- `743828e4368cce7613822b02440094fc3deb980da2fbec6fd805b3b9db8071ff`
+  - `H(s)H_Toolkit/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`
 - `76413659ed85e3a44a27b59eee6cc46a78063d3ee9bbfc4180c80887e8d3df17`
   - `HAUL 4/7075779.pdf`
   - `HAUL 5/ssrn-7075779.pdf`
@@ -119,6 +137,12 @@
 - `91c21c000c80c84d50af58df471aebda7db00ebd7c47f03a27050fabc010b334`
   - `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2605.05114v2 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2605.05114v2.pdf`
+- `9547c986b9dab96fc8d0dab7f25edb9b8080cb838bf07f7decf8688ff0ec65a5`
+  - `H(s)H_Toolkit/829a382e2a755917efbfc190507e51df_lecture01.pdf`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/829a382e2a755917efbfc190507e51df_lecture01.pdf`
+- `984a23f3cf547585a154e9e80303f1e4c49143a9883651148e806c2fbe1f0410`
+  - `EXPOSURE_STATS/MISC_PAPERS/Ten windows on the future of particle physics – CERN Courier.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Ten windows on the future of particle physics – CERN Courier.pdf`
 - `98b86e6f8d2312c91c2c96ceb29891dd3c44d201598ba96dbf6460a6c07c685f`
   - `H(s)H_Toolkit/HsHtoolkit2_1.pdf`
   - `H(s)H_Toolkit/HsHtoolkit_1.pdf`
@@ -128,6 +152,9 @@
 - `a1fa3d81877b2cb1c49429ca22737d114ffb6eca95f319062c26407c39f77272`
   - `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.03001v1.pdf`
   - `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03001v1.pdf`
+- `aa8f6caebb76d33df6366596262dacb5514d368d56c40cd92f5bdb4d2ecda329`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/f704cfed444c1740427310905d04042d_lecture17.pdf`
+  - `H(s)H_Toolkit/f704cfed444c1740427310905d04042d_lecture17.pdf`
 - `b521569545fe74776b6eafd2707b90710e3b06260d32cd94776f4a02c07f21ac`
   - `HAUL 2/ssrn-7352038 (1).pdf`
   - `HAUL 2/ssrn-7352038.pdf`
@@ -137,6 +164,9 @@
 - `b91414873efb096ba4982e96de429816ac853c60617b68024d5009bacd582989`
   - `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2608.31163v1 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/STRINGS+/2608.31163v1.pdf`
+- `bb0ba4c81d8eb85d37f835d66d2d2eced6a12063824c8ecb0da2dc70a29f8903`
+  - `H(s)H_Toolkit/6e89ec211a53149e0f87d350191c4f63_lecture12.pdf`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/6e89ec211a53149e0f87d350191c4f63_lecture12.pdf`
 - `c5f441626fcae53d8bf7530a65b7790837f3db84a1ff031e42e4eed16e808875`
   - `HAUL 4/7258242.pdf`
   - `HAUL 7/ssrn-7258242.pdf`
@@ -161,6 +191,9 @@
 - `df0543eceb0963bdb9019c3ca948ff8a15978cdaf075bd913468fce4d7cac4e6`
   - `H(s)H_Toolkit/HsHtoolkit2_4.pdf`
   - `H(s)H_Toolkit/HsHtoolkit_4.pdf`
+- `dfffae212782a4f8cc680b2542cc7d0c777943a6d514f68b5b0509f238955fb5`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/af966809bba8f11cacf5f4e88d75ed1d_lecture06.pdf`
+  - `H(s)H_Toolkit/af966809bba8f11cacf5f4e88d75ed1d_lecture06.pdf`
 - `e005bf81920b785959e211713c3e300af2c38a2b2cc92a9acbd5dc91a6314f34`
   - `HAUL 1/ssrn-7055399 (1).pdf`
   - `HAUL 1/ssrn-7055399.pdf`
@@ -170,6 +203,9 @@
 - `e6a4964452167426e8d694c84bf80070b9c1a3e2a0795dd64faecd8843ff024e`
   - `HAUL 1/ssrn-7133961 (1).pdf`
   - `HAUL 1/ssrn-7133961.pdf`
+- `e83ebde07da4fad53eea52b8afb0f19dca5fe904f82598bfb9c18250d2dcdd26`
+  - `H(s)H_Toolkit/STRING THEORY (MIT)/deb6ad4ba42bb173e8e403f4b8acb73f_lecture18.pdf`
+  - `H(s)H_Toolkit/deb6ad4ba42bb173e8e403f4b8acb73f_lecture18.pdf`
 - `e997c865a586381c9c8ab575f95a1bc09ff0283a18ba6d39e658649e95688df4`
   - `HAUL 7/ssrn-7242985 (1).pdf`
   - `HAUL 7/ssrn-7242985.pdf`
@@ -235,12 +271,14 @@
 | `EXPOSURE_STATS/MISC_PAPERS/limit (1).pdf` | 219493 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Matter as incomplete crystallization- Quark charges, color confinement, and the .pdf` | 5255092 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Notes_Boltzmann.pdf` | 3853151 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/OTHER - (99+) Heraclitean Extended Relational Field Dynamics Filament Ontology, Emergent Curvature, Bridge Maps to Effective Ge.pdf` | 596617 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/physical-spacetime.pdf` | 590747 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Relaxation-Driven Cyclic Cosmology (RDCC) v21.0 - solves the near-adiabaticity p.pdf` | 464986 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/s41586-026-10652-y_reference.pdf` | 22985980 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/ssrn-6469929.pdf` | 1469295 | ssrn:6469929 |
 | `EXPOSURE_STATS/MISC_PAPERS/ssrn-6469931.pdf` | 1354869 | ssrn:6469931 |
 | `EXPOSURE_STATS/MISC_PAPERS/ssrn-6708182.pdf` | 963004 | ssrn:6708182 |
+| `EXPOSURE_STATS/MISC_PAPERS/Ten windows on the future of particle physics – CERN Courier.pdf` | 1532190 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/The Neutrinoverse Hypothesis- Naming the Immutable Holographic Medium for Genuin.pdf` | 379016 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/THE UNIFIED COMPRESSION-BASED FIELD THEORY- THE FINAL EDITION  by Corybrent  M.pdf` | 139062 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/The Universe Has a Resolution Limit- New Theory Derives the Exact Mass Where Qua.pdf` | 106217 |  |
@@ -248,6 +286,7 @@
 | `EXPOSURE_STATS/MISC_PAPERS/trapped-tetrahedral-defect.pdf` | 360133 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/uniphics_explained_simply.pdf` | 81957 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/w1sd-v69d.pdf` | 764891 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/What to Expect from Physics in 2026 - by Samreet Dhillon.pdf` | 11464382 |  |
 | `H(s)H_Toolkit/0105040v2.pdf` | 232815 | unresolved-seven-digit-id:0105040v2 |
 | `H(s)H_Toolkit/0112148v1.pdf` | 388150 | unresolved-seven-digit-id:0112148v1 |
 | `H(s)H_Toolkit/0112205v1.pdf` | 157916 | unresolved-seven-digit-id:0112205v1 |
@@ -460,6 +499,8 @@
 | `H(s)H_Toolkit/Quantum chromodynamics - Wikipedia.pdf` | 950165 |  |
 | `H(s)H_Toolkit/quantum electrodynamics - What is the full QED Lagrangian with physics units written out_ - Physics Stack Exchange.pdf` | 730450 |  |
 | `H(s)H_Toolkit/Quantum electrodynamics - Wikipedia.pdf` | 1440150 |  |
+| `H(s)H_Toolkit/REFERENCE — GR/9712019v1.pdf` | 1583209 | unresolved-seven-digit-id:9712019v1 |
+| `H(s)H_Toolkit/REFERENCE — GR/genrel_2010.pdf` | 412543 |  |
 | `H(s)H_Toolkit/Relativistic Lagrangian mechanics - Wikipedia.pdf` | 942764 |  |
 | `H(s)H_Toolkit/Research Notes - Anthropic's Global Workspace _ J-Space in LLMs _ The Unfinishable Map.pdf` | 3386177 |  |
 | `H(s)H_Toolkit/rnoti-p795.pdf` | 611959 |  |
@@ -477,12 +518,14 @@
 | `H(s)H_Toolkit/Spectral_Graph_Theory.pdf` | 283163 |  |
 | `H(s)H_Toolkit/stml-74-prev.pdf` | 485860 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/078974bf19381340cab50a86fc8cc89f_lecture19.pdf` | 173070 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/0b0d0496b0cfbbba1d88858ca8362e98_lecture11.pdf` | 213637 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/0d1bda106dfd2af510daf14b261c56fb_lecture10.pdf` | 171587 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/0e66221f4e5a6e9fe2dcc3412f4436e1_hwk1.pdf` | 45945 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/13ecf4aed160f37d6ad214bae026ee81_lec20.pdf` | 141675 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/184b1fe03c3d32c9ac0a860af62b877c_lec3.pdf` | 157224 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/19d1c9300ec6807a0a7a46c1db9141e9_lec12.pdf` | 152191 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/1b4fc542f15f94af295ce319f443719a_lec13.pdf` | 155706 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/1c9e44c6a1b94e7c371c307a93779ffb_lecture25.pdf` | 278953 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/1e3eddd432bf1a79cea26708b94bab52_hwk2.pdf` | 48998 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/21859d0b896e986df437b278d0038053_pset04.pdf` | 114239 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/21fb40c092d4a767e7de03bc6df5435d_lec18.pdf` | 132464 |  |
@@ -491,6 +534,7 @@
 | `H(s)H_Toolkit/STRING THEORY (MIT)/248fc0b9051e55a11af8a2aa13a55065_pset06.pdf` | 94410 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/24e02a58e06196a8e6ef368374d4cfd1_lec22.pdf` | 136883 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/2ed11482f84c747194ee6a8bf3a226ce_lec7.pdf` | 139580 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/2f8805397ee8506926404a60d8d677d2_lecture16.pdf` | 277203 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/33bf0bfc449e34da9d348797df3f4c5d_hwk6.pdf` | 75387 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/347f8e896c34f40e57d77ded14a52b6f_endtrm_fin.pdf` | 81677 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/36358312d9746554a60109324c58bebf_lec26.pdf` | 122569 |  |
@@ -498,11 +542,14 @@
 | `H(s)H_Toolkit/STRING THEORY (MIT)/41a308ec52b976cf888d61dd5a9826d2_lec24.pdf` | 169791 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/51949ae14435789a2c06c879235d22ae_hwk7.pdf` | 19645 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/60fd9c56a57f87f2a1dff7df6ebc0cb5_lec25.pdf` | 184524 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf` | 206490 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/6e89ec211a53149e0f87d350191c4f63_lecture12.pdf` | 213353 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/72638bd04f1aa94b59d9d1feb745ac91_pset03.pdf` | 90674 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/74a1f200767f0e321a50d878f7dc41e0_lecture02.pdf` | 166007 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/753a675859981eb273241e98ecb56536_hwk11.pdf` | 45203 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/75bbca72c08586caeb343f4691c19ce7_midterm_05.pdf` | 68837 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/8111d4941a1acd97825409d83011d27d_hwk3.pdf` | 42263 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/829a382e2a755917efbfc190507e51df_lecture01.pdf` | 249941 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/83dc0482e297f2ec6f03932553411230_lecture20.pdf` | 162872 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/8678cfa45f1c62427167f87bca6bae57_MIT2_682S12_Homework3.pdf` | 161107 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/8caef2b2fd460cd03dde5d4700041ee0_lecture14.pdf` | 185054 |  |
@@ -515,9 +562,11 @@
 | `H(s)H_Toolkit/STRING THEORY (MIT)/9ecdcfceddc533f3d72c197fa2c7deb9_practice.pdf` | 19371 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/9fc34e5bccf7fac1489f660600f4df16_MIT2_682S12_Homework2.pdf` | 153449 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/a1005e3538578985183f9c5e183e6e87_lecture21.pdf` | 179793 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/a13b3444c1e2926aca5f25bdda522bc6_lecture07.pdf` | 203669 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/a3e418ff0049144b2a70f4c8bdd5d8d1_lecture24.pdf` | 199018 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/a7c18070db260c88a6fe9080afabc659_lecture13.pdf` | 132821 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/a9489a562dc17c13491aab189b92f012_lecture09.pdf` | 186981 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/af966809bba8f11cacf5f4e88d75ed1d_lecture06.pdf` | 212298 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/b01fc57a0482e5679b8fa522fd175165_test2_07p.pdf` | 136136 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/b12e9dac037667bc6c898ecece0c51b9_hwk9.pdf` | 49137 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/b22cc820187b199bed8ffcfa2fc60a1e_midterm_07.pdf` | 84443 |  |
@@ -526,6 +575,7 @@
 | `H(s)H_Toolkit/STRING THEORY (MIT)/c274eeae40ff1caf3cefc003b7d243bc_lec9.pdf` | 158781 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/c9cb6d23481b7450aaa996bbf2ebc16d_lecture23.pdf` | 115003 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/ce66f56d85495be4ef425a592bbe9238_hwk8.pdf` | 59507 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/deb6ad4ba42bb173e8e403f4b8acb73f_lecture18.pdf` | 210777 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/df880a05b61f15367954da065f22373c_lec14.pdf` | 160590 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/e309cde65505b6eb3b1133a1a70c9d98_lec15.pdf` | 135600 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/e338d09d623b05f00e2c0f7c43cbd736_lec10.pdf` | 98205 |  |
@@ -533,7 +583,9 @@
 | `H(s)H_Toolkit/STRING THEORY (MIT)/e5b834fb595f307dd99fcf6913971a4c_lecture03.pdf` | 164593 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/e614374c0a1313d85c95e7034454c563_hwk5.pdf` | 42695 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/e653d0e73146e6ba97242ad399e99366_lec8.pdf` | 74815 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf` | 238548 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/ea42d2182b4a78c0501b2577a5478572_lecture22.pdf` | 188361 |  |
+| `H(s)H_Toolkit/STRING THEORY (MIT)/f704cfed444c1740427310905d04042d_lecture17.pdf` | 248245 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/fb813f7f8eb1c6c5fbc0682b3ebc6ddf_pset02.pdf` | 96570 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/ff2f84174d08a88ac0732145f00b3b7f_lec6.pdf` | 130023 |  |
 | `H(s)H_Toolkit/string theory FAQ in nLab.pdf` | 1440081 |  |
