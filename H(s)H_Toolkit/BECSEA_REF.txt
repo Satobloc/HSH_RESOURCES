@@ -1,0 +1,7788 @@
+
+
+Gross–Pitaevskii 
+Navier–Stokes
+Vortex Parity and Shear Mechanics
+Acoustic Metric Induction
+
+
+DFTK.jl logo
+DFTK.jl
+Search docs (Ctrl + /)
+
+v0.7.25
+GitHub
+
+Gross-Pitaevskii equation in one dimension
+In this example we will use DFTK to solve the Gross-Pitaevskii equation, and use this opportunity to explore a few internals.
+
+The model
+The Gross-Pitaevskii equation (GPE) is a simple non-linear equation used to model bosonic systems in a mean-field approach. Denoting by 
+ the effective one-particle bosonic wave function, the time-independent GPE reads in atomic units:
+
+
+where 
+ provides the strength of the boson-boson coupling. It's in particular a favorite model of applied mathematicians because it has a structure simpler than but similar to that of DFT, and displays interesting behavior (especially in higher dimensions with magnetic fields, see Gross-Pitaevskii equation with external magnetic field).
+
+We wish to model this equation in 1D using DFTK. First we set up the lattice. For a 1D case we supply two zero lattice vectors,
+
+a = 10
+lattice = a .* [[1 0 0.]; [0 0 0]; [0 0 0]];
+
+which is special cased in DFTK to support 1D models.
+
+For the potential term V we pick a harmonic potential. We use the function ExternalFromReal which uses Cartesian coordinates ( see Lattices and lattice vectors).
+
+pot(x) = (x - a/2)^2;
+
+We setup each energy term in sequence: kinetic, potential and nonlinear term. For the non-linearity we use the LocalNonlinearity(f) term of DFTK, with f(ρ) = C ρ^α. This object introduces an energy term 
+ to the total energy functional, thus a potential term 
+. In our case we thus need the parameters
+
+C = 1.0
+α = 2;
+
+… and with this build the model
+
+using DFTK
+using LinearAlgebra
+
+n_electrons = 1  # Increase this for fun
+terms = [Kinetic(),
+         ExternalFromReal(r -> pot(r[1])),
+         LocalNonlinearity(ρ -> C * ρ^α),
+]
+model = Model(lattice; n_electrons, terms, spin_polarization=:spinless);  # spinless electrons
+
+We discretize using a moderate Ecut (For 1D values up to 5000 are completely fine) and run a direct minimization algorithm:
+
+basis = PlaneWaveBasis(model, Ecut=500, kgrid=(1, 1, 1))
+scfres = direct_minimization(basis; tol=1e-8) # This is a constrained preconditioned LBFGS
+scfres.energies
+
+Energy breakdown (in Ha):
+    Kinetic             0.2682057 
+    ExternalFromReal    0.4707475 
+    LocalNonlinearity   0.4050836 
+
+    total               1.144036852755 
+
+Internals
+We use the opportunity to explore some of DFTK internals.
+
+Extract the converged density and the obtained wave function:
+
+ρ = real(scfres.ρ)[:, 1, 1, 1]  # converged density, first spin component
+ψ_fourier = scfres.ψ[1][:, 1];    # first k-point, all G components, first eigenvector
+
+Transform the wave function to real space and fix the phase:
+
+ψ = ifft(basis, basis.kpoints[1], ψ_fourier)[:, 1, 1]
+ψ /= (ψ[div(end, 2)] / abs(ψ[div(end, 2)]));
+
+Check whether 
+ is normalised:
+
+x = a * vec(first.(DFTK.r_vectors(basis)))
+N = length(x)
+dx = a / N  # real-space grid spacing
+@assert sum(abs2.(ψ)) * dx ≈ 1.0
+
+The density is simply built from ψ:
+
+norm(scfres.ρ - abs2.(ψ))
+
+8.497799705271204e-16
+
+We summarize the ground state in a nice plot:
+
+using Plots
+
+p = plot(x, real.(ψ), label="real(ψ)")
+plot!(p, x, imag.(ψ), label="imag(ψ)")
+plot!(p, x, ρ, label="ρ")
+
+
+The energy_hamiltonian function can be used to get the energy and effective Hamiltonian (derivative of the energy with respect to the density matrix) of a particular state (ψ, occupation). The density ρ associated to this state is precomputed and passed to the routine as an optimization.
+
+E, ham = energy_hamiltonian(basis, scfres.ψ, scfres.occupation; ρ=scfres.ρ)
+@assert E.total == scfres.energies.total
+
+Now the Hamiltonian contains all the blocks corresponding to 
+-points. Here, we just have one 
+-point:
+
+H = ham.blocks[1];
+
+H can be used as a linear operator (efficiently using FFTs), or converted to a dense matrix:
+
+ψ11 = scfres.ψ[1][:, 1] # first k-point, first eigenvector
+Hmat = Array(H)  # This is now just a plain Julia matrix,
+#                  which we can compute and store in this simple 1D example
+@assert norm(Hmat * ψ11 - H * ψ11) < 1e-10
+
+Let's check that ψ11 is indeed an eigenstate:
+
+norm(H * ψ11 - dot(ψ11, H * ψ11) * ψ11)
+
+1.833549716745219e-7
+
+Build a finite-differences version of the GPE operator 
+, as a sanity check:
+
+A = Array(Tridiagonal(-ones(N - 1), 2ones(N), -ones(N - 1)))
+A[1, end] = A[end, 1] = -1
+K = A / dx^2 / 2
+V = Diagonal(pot.(x) + C .* α .* (ρ.^(α-1)))
+H_findiff = K + V;
+maximum(abs.(H_findiff*ψ - (dot(ψ, H_findiff*ψ) / dot(ψ, ψ)) * ψ))
+
+0.00022343008574615399
+
+« Analysing SCF convergence
+Gross-Pitaevskii equation with external magnetic field »
+Powered by Documenter.jl and the Julia Programming Language.
+
+
+
+Skip to main content
+NASA logoGlenn
+Research Center
+About Education 
+Facilities
+ 
+Aeronautics
+ 
+Space
+ 
+Research
+On this page:
+
+3D form of Navier-Stokes Equation
+Computation Fluid Dynamics
+Deriving the Equations
+Convection and Diffusion Terms
+Note
+Home > Beginners Guide to Aeronautics
+Navier-Stokes Equation
+The Navier-Stokes equations of fluid dynamics in three-dimensional, unsteady form.
+
+3D form of Navier-Stokes Equation
+On this page we show the three-dimensional unsteady form of the Navier-Stokes Equations. These equations describe how the velocity, pressure, temperature, and density of a moving fluid are related. In the early 1800’s, the equations were derived independently by G.G. Stokes in England and M. Navier in France. The equations are extensions of the Euler Equations and include the effects of viscosity on the flow. These equations are very complex, yet undergraduate engineering students are taught how to derive them in a process very similar to the derivation that we present on the conservation of momentum web page.
+
+Computation Fluid Dynamics
+The equations are a set of coupled differential equations and could, in theory, be solved for a given flow problem by using methods from calculus. But, in practice, these equations are too difficult to solve analytically. In the past, engineers made further approximations and simplifications to the equation set until they had a group of equations that they could solve. Recently, high speed computers have been used to solve approximations to the equations using a variety of techniques like finite difference, finite volume, finite element, and spectral methods. This area of study is called Computational Fluid Dynamics or CFD.
+
+Deriving the Equations
+The Navier-Stokes equations consist of a time-dependent continuity equation for conservation of mass, three time-dependent conservation of momentum equations and a time-dependent conservation of energy equation. There are four independent variables in the problem, the x, y, and z spatial coordinates of some domain, and the time t. There are six dependent variables; the pressure p, density rho (ρ
+), and temperature T (which is contained in the energy equation through the total energy Et) and three components of the velocity vector; the u component is in the x direction, the v component is in the y direction, and the w component is in the z direction. All of the dependent variables are functions of all four independent variables. The differential equations are therefore partial differential equations and not the ordinary differential equations that you study in a beginning calculus class. The partial derivative indicates that we are to hold all of the independent variables fixed, except the variable next to symbol, when computing a derivative. The set of equations are:
+
+Continuity: ∂p∂t+∂(ρu)∂x+∂(ρw)∂z=0
+
+X-Momentum: ∂(ρu)∂t+∂(ρu2)∂x+∂(ρuv)∂y+∂(ρuw)∂z=−∂ρ∂x+1Rer[∂τxx∂x+∂τxy∂y+∂τxz∂z]
+
+Y-Momentum: ∂(ρv)∂t+∂(ρuv)∂x+∂(ρv2)∂y+∂(ρuw)∂z=−∂ρ∂y+1Rer[∂τxy∂x+∂τyy∂y+∂τyz∂z]
+
+Z-Momentum: ∂(ρw)∂t+∂(ρuw)∂x+∂(ρuw)∂y+∂(ρw2)∂z=−∂ρ∂z+1Rer[∂τxz∂x+∂τyz∂y+∂τzz∂z]
+
+Energy: ∂(Et)∂t+∂(uEt)∂x+∂(vEt)∂y+∂(wEt)∂z=−∂(up)∂x−∂(vp)∂y−∂(wp)∂z−1RerPrr[∂qx∂x+∂qy∂y+∂qz∂z]+1Rer[∂∂x(uτxx+vτxy+wτxz)+∂∂y(uτxy+vτyy+wτyz)+∂∂z(uτxz+vτyz+wτzz)]
+
+where Re is the Reynolds number which is a similarity parameter that is the ratio of the scaling of the inertia of the flow to the viscous forces in the flow. The q variables are the heat flux components and Pr is the Prandtl number which is a similarity parameter that is the ratio of the viscous stresses to the thermal stresses. The tau (τ
+) variables are components of the stress tensor. A tensor is generated when you multiply two vectors in a certain way. Our velocity vector has three components; the stress tensor has nine components. Each component of the stress tensor is itself a second derivative of the velocity components.
+
+Convection and Diffusion Terms
+The terms on the left-hand side of the momentum equations are called the convection terms of the equations. Convection is a physical process that occurs in a flow of gas in which some property is transported by the ordered motion of the flow. The terms on the right-hand side of the momentum equations that are multiplied by the inverse Reynolds number are called the diffusion terms. Diffusion is a physical process that occurs in a flow of gas in which some property is transported by the random motion of the molecules of the gas. Diffusion is related to the stress tensor and to the viscosity of the gas. Turbulence, and the generation of boundary layers, are the result of diffusion in the flow. The Euler equations contain only the convection terms of the Navier-Stokes equations and cannot, therefore, model boundary layers. There is a special simplification of the Navier-Stokes equations that describe boundary layer flows.
+
+Note
+Notice that all of the dependent variables appear in each equation. To solve a flow problem, you have to solve all five equations simultaneously. That is why we call this a coupled system of equations. There are actually some other equations that are required to solve this system. We only show five equations for six unknowns. An equation of state relates the pressure, temperature, and density of the gas. And we need to specify all of the terms of the stress tensor. In CFD the stress tensor terms are often approximated by a turbulence model.
+
+Return to top
+NASA logoNational Aeronautics and Space Administration
+NASA Official: Nancy Hall
+Page Editor: Nancy Hall
+Page Last Updated: July 19, 2024
+
+Privacy Policy  |  No Fear Act  |  Accessibility   |  FOIA
+
+    
+Glenn Research Center
+
+21000 Brookpark Road
+Cleveland, OH 44135
+(216) 433-4000
+
+nasa.gov/glenn
+
+Provide feedback
+
+
+We value your privacy
+
+We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.
+
+Customize
+Reject All
+Accept All
+
+
+
+
+
+
+
+Skip to content
+
+Turn2Engineering
+Civil
+Mechanical
+Electrical
+Home
+▸
+Equation
+▸
+Navier-Stokes Equation
+Navier-Stokes Equation
+A formula-first engineering guide to the Navier-Stokes equation, including the main forms, variables, assumptions, simplified use cases, and checks engineers use before trusting a fluid-flow result.
+
+By Turn2Engineering Editorial Team
+Updated April 24, 2026
+9 min read
+
+Key Takeaways
+Definition: The Navier-Stokes equation is the momentum balance for real fluids, accounting for acceleration, pressure, viscosity, and body forces.
+Main use: Engineers use it to analyze velocity and pressure fields in pipes, ducts, channels, aerodynamics, hydraulics, and computational fluid dynamics.
+Watch for: The equation is not usually solved by simple algebra; boundary conditions, flow regime, viscosity, and turbulence modeling often control the answer.
+Outcome: After reading, you should understand what each term means, when simplified forms apply, and how to sanity-check a Navier-Stokes setup.
+Velocity, pressure, and viscous forces in fluid motion
+The Navier-Stokes equation relates fluid acceleration to pressure gradients, viscous stresses, and body forces in moving fluids.
+
+Navier-Stokes equation infographic showing how velocity, pressure, viscosity, and body forces interact in fluid-flow analysis
+The diagram summarizes the main physical ingredients in the Navier-Stokes equation: fluid motion, pressure variation, viscous resistance, and external forces such as gravity.
+The first thing to notice is that the equation is a force balance per unit volume, not just a pipe-flow shortcut. It tracks how a small fluid element accelerates because pressure, viscosity, and body forces are not perfectly balanced.
+
+What is the Navier-Stokes equation?
+The Navier-Stokes equation is the governing momentum equation for viscous fluid flow. In plain engineering language, it says that a fluid accelerates when pressure forces, viscous forces, gravity, or other body forces create a net imbalance.
+
+The equation is central to fluid mechanics because it connects velocity and pressure fields rather than treating flow as a single number. That makes it the foundation behind pipe-flow analysis, aerodynamics, hydraulics, pump and turbine modeling, weather simulation, blood-flow modeling, and computational fluid dynamics.
+
+The practical problem for most readers is usually not “Can I solve the full equation by hand?” It is more specific: which terms matter, what assumptions simplify the equation, and when should a simplified equation like the Bernoulli equation or the continuity equation be used alongside it?
+
+The Navier-Stokes equation formula
+A common vector form for an incompressible Newtonian fluid with constant density and viscosity is:
+
+𝜌⁢(
+𝜕𝐮
+𝜕𝑡
+ 
++𝐮⋅∇𝐮)=−∇𝑝+𝜇∇2𝐮+𝜌⁢𝐠
+This form is often the best starting point because it clearly separates the major physical effects. The left side is fluid inertia: local acceleration plus convective acceleration. The right side contains pressure-gradient force, viscous diffusion of momentum, and body force such as gravity.
+
+For incompressible flow, the momentum equation is paired with mass conservation:
+
+∇⋅𝐮=0
+That companion equation is not optional in most incompressible-flow problems. It says the velocity field must be divergence-free, meaning fluid volume is not locally created or destroyed.
+
+Senior engineer check
+Do not treat Navier-Stokes as one standalone algebraic formula. A usable problem also needs geometry, boundary conditions, fluid properties, initial conditions if unsteady, and a compatible continuity equation.
+
+Variables and units in the Navier-Stokes equation
+The variables in the Navier-Stokes equation represent field quantities. That means velocity and pressure vary with location, and in unsteady problems they also vary with time.
+
+Key variables
+𝜌
+Fluid density, usually in kg/m3 or slug/ft3. Density controls the magnitude of inertial effects.
+𝐮
+Velocity vector field, commonly in m/s or ft/s. Components may be written as 𝑢, 𝑣, and 𝑤.
+𝑡
+Time, usually in seconds. The partial derivative with respect to time captures local unsteady acceleration.
+𝑝
+Pressure field, usually in pascals or psi. The pressure-gradient term drives acceleration from high pressure toward low pressure.
+𝜇
+Dynamic viscosity, usually in Pa·s or lb·s/ft2. Viscosity controls momentum diffusion and wall-shear effects.
+𝐠
+Body acceleration vector, commonly gravity in m/s2 or ft/s2.
+Unit tip
+In SI units, each term in the incompressible momentum equation has units of force per unit volume, N/m3. Checking that common unit is one of the fastest ways to catch a missing density, pressure-gradient, or viscosity term.
+
+Term	Physical meaning	SI unit check	Common interpretation
+𝜌⁢
+𝜕𝐮
+𝜕𝑡
+ 
+Local acceleration	N/m3	Velocity changing with time at a fixed point
+𝜌⁡(𝐮 ⋅∇)⁢𝐮	Convective acceleration	N/m3	Velocity changing because fluid moves through a spatial velocity gradient
+−∇𝑝	Pressure-gradient force	N/m3	Driving or resisting force caused by pressure variation
+𝜇∇2𝐮	Viscous diffusion	N/m3	Momentum transfer caused by viscosity and velocity curvature
+𝜌⁢𝐠	Body force	N/m3	Gravity or another force acting throughout the fluid volume
+Where the Navier-Stokes equation comes from
+The Navier-Stokes equation comes from applying Newton’s Second Law to a moving fluid element or control volume. In other words, it is a momentum balance written for a material that can deform continuously instead of moving like a rigid body.
+
+The acceleration term uses the material derivative because a fluid particle can experience two kinds of acceleration. It can speed up or slow down at a fixed point as time changes, and it can also accelerate by moving into a different part of the velocity field.
+
+𝐷⁢𝐮
+𝐷⁢𝑡
+ 
+=
+𝜕𝐮
+𝜕𝑡
+ 
++𝐮⋅∇𝐮
+The pressure-gradient term comes from normal stresses acting on the fluid element. The viscous term comes from shear stresses generated when nearby fluid layers move at different speeds. For a Newtonian fluid with constant viscosity, those viscous stresses reduce to the compact 𝜇∇2𝐮 term in the incompressible form.
+
+Where engineers use the Navier-Stokes equation
+Engineers rarely write the full equation just to perform hand arithmetic. Instead, they use it as the governing model behind simplified equations, analytical solutions, numerical simulations, and design checks.
+
+Pipe and duct flow: estimating pressure drop, velocity profile, wall shear, and flow regime before using pipe-friction methods.
+Aerodynamics: modeling lift, drag, boundary layers, separation, and wake behavior around vehicles, aircraft, blades, and structures.
+Hydraulics: studying water movement in channels, outlets, spillways, valves, pumps, and pressurized systems.
+CFD analysis: solving discretized momentum and continuity equations over a computational mesh.
+Thermal-fluid systems: coupling fluid motion with heat transfer when velocity fields control convection.
+Decision logic
+Use the full Navier-Stokes framework when velocity and pressure vary spatially, viscous forces matter, boundary layers matter, or the flow cannot be captured by a one-dimensional energy equation alone.
+
+Use a simplified equation when the assumptions are clear: continuity for mass conservation, Bernoulli for idealized mechanical energy, Darcy-Weisbach or Hazen-Williams for pipe head loss, and Reynolds number to judge the relative importance of inertia and viscosity.
+
+Worked example: simplified flow between parallel plates
+Example problem
+A viscous incompressible fluid flows steadily between two large, stationary, parallel plates separated by a gap ℎ. The pressure decreases in the 𝑥-direction, and the flow is fully developed, so the velocity only varies with 𝑦. Find the simplified governing equation for the velocity profile.
+
+Start with the 𝑥-momentum form of Navier-Stokes. For steady, fully developed, one-directional flow, the acceleration terms drop out because velocity does not change with time or along the flow direction.
+
+0=−
+𝑑⁢𝑝
+𝑑⁢𝑥
+ 
++𝜇⁢
+𝑑2⁢𝑢
+𝑑⁢𝑦2
+ 
+Rearranging shows that velocity curvature is controlled by the pressure gradient and viscosity:
+
+𝑑2⁢𝑢
+𝑑⁢𝑦2
+ 
+=
+1
+𝜇
+ 
+⁢
+𝑑⁢𝑝
+𝑑⁢𝑥
+ 
+If the plates are stationary, the no-slip boundary conditions are 𝑢⁡(0) =0 and 𝑢⁡(ℎ) =0. Integrating twice gives the classic parabolic velocity profile for pressure-driven laminar flow between plates:
+
+𝑢⁡(𝑦)=
+1
+2⁢𝜇
+ 
+⁢(−
+𝑑⁢𝑝
+𝑑⁢𝑥
+ 
+)⁢𝑦⁢(ℎ−𝑦)
+Interpretation tip
+The maximum velocity occurs near the center of the gap, and the velocity is zero at both walls because of the no-slip condition. Higher pressure gradient increases speed, while higher viscosity resists motion.
+
+Assumptions behind the common incompressible form
+The compact form shown near the top of this page is powerful, but it is not the only version of Navier-Stokes. It relies on several assumptions that should be checked before using it as the governing equation.
+
+Assumptions checklist
+1
+The fluid is treated as a continuum, so molecular-scale effects are not controlling the flow.
+2
+Density is constant or nearly constant, making the incompressible continuity condition reasonable.
+3
+The fluid is Newtonian, meaning shear stress is proportional to rate of strain.
+4
+Dynamic viscosity is constant enough that the viscous term can be written as 𝜇∇2𝐮.
+5
+Boundary conditions such as no-slip walls, inlets, outlets, and symmetry planes are defined correctly.
+Neglected or simplified factors
+In real projects, the simplified incompressible form may neglect compressibility, non-Newtonian rheology, temperature-dependent viscosity, multiphase behavior, cavitation, chemical reaction, turbulence modeling details, or moving/deforming boundaries.
+
+Breakdown warning
+Do not use the constant-density incompressible form blindly for high-speed gas flow, strong heating, shock waves, slurries, foams, blood-like non-Newtonian fluids, or flows where phase change affects momentum.
+
+Engineering judgment and field reality
+The Navier-Stokes equation is exact for many continuum Newtonian-fluid assumptions, but real engineering decisions depend on how well the model represents geometry, boundary conditions, fluid properties, and flow regime.
+
+Field reality
+In a real pipe, duct, valve, pump, or channel, small details can dominate the result: roughness, bends, entrance effects, partial blockage, vibration, temperature gradients, and imperfect boundary-condition data can matter more than the neat equation form.
+
+Rule of thumb
+Before trusting a detailed Navier-Stokes or CFD result, estimate the Reynolds number, check continuity, compare expected pressure drop against a simpler method, and verify that wall and inlet conditions match the actual system.
+
+This is why experienced engineers often use the Navier-Stokes equation as the physics foundation, then validate against simpler equations, test data, field measurements, or known benchmark solutions.
+
+Common mistakes and engineering checks
+Forgetting continuity: a velocity field that violates mass conservation is not physically valid for incompressible flow.
+Dropping terms too early: removing acceleration, viscosity, gravity, or pressure terms without checking scale can lead to the wrong model.
+Confusing pressure with pressure gradient: fluid acceleration is driven by spatial pressure change, not absolute pressure alone.
+Ignoring Reynolds number: laminar, transitional, and turbulent flows require different levels of modeling judgment.
+Using CFD as a black box: mesh quality, turbulence model, wall treatment, convergence, and boundary conditions can control the result.
+Sanity check
+If your solution predicts nonzero velocity at a stationary solid wall, violates expected symmetry, creates flow from nowhere, or gives pressure changes wildly different from a back-of-envelope estimate, stop and recheck the setup.
+
+Check item	What to verify	Why it matters
+Continuity	Confirm ∇ ⋅𝐮 =0 for incompressible flow	Prevents nonphysical mass creation or loss
+Boundary conditions	Check no-slip walls, inlet profiles, outlets, and symmetry assumptions	Boundary conditions often control the solution more than the equation form
+Flow regime	Estimate Reynolds number before choosing laminar or turbulent modeling	Determines whether a simple analytical solution is realistic
+Units	Confirm every term has units of force per unit volume	Catches missing density, viscosity, or length-scale factors
+Navier-Stokes equation vs. related fluid equations
+The Navier-Stokes equation sits near the center of fluid mechanics, but engineers often use related equations for faster checks or narrower problem types.
+
+Equation / method	Best used for	Key assumption	Main limitation
+Continuity equation	Mass conservation and flow-rate relationships	Mass is conserved in the control volume	Does not by itself determine pressure or viscous forces
+Bernoulli’s equation	Idealized pressure, velocity, and elevation energy checks	Often steady, inviscid, incompressible flow along a streamline	Cannot directly capture wall friction, separation, or viscous diffusion
+Reynolds number	Comparing inertial and viscous effects	Characteristic velocity and length scale are chosen appropriately	It classifies flow tendency but does not solve the flow field
+Hazen-Williams equation	Water pipe head-loss estimates	Empirical water-flow conditions in pressurized pipes	Not a general momentum equation for all fluids or regimes
+Prerequisite
+Continuity Equation
+Start here for conservation of mass, the companion idea needed for incompressible Navier-Stokes problems.
+Related
+Bernoulli’s Equation
+Compare the ideal energy approach with the fuller viscous momentum balance.
+Advanced check
+Reynolds Number
+Estimate whether viscous or inertial forces dominate before choosing a flow model.
+Frequently asked questions
+
+What does the Navier-Stokes equation describe?
+▾
+The Navier-Stokes equation describes conservation of momentum in a fluid. It balances fluid acceleration with pressure-gradient forces, viscous forces, body forces, and unsteady flow effects.
+
+
+What is the incompressible Navier-Stokes equation?
+▾
+
+Why is the Navier-Stokes equation difficult to solve?
+▾
+
+How is the Navier-Stokes equation related to Bernoulli’s equation?
+▾
+Summary and next steps
+The Navier-Stokes equation is the core momentum equation for viscous fluid flow. It explains how velocity and pressure fields develop when inertia, pressure gradients, viscosity, and body forces interact.
+
+The most important engineering judgment is deciding which terms matter. For simple hand checks, you may use simplified forms or related equations. For complex separated, turbulent, three-dimensional, or unsteady flow, the full Navier-Stokes framework usually requires numerical methods and careful validation.
+
+Where to go next
+Continue your learning path with these curated next steps.
+
+Prerequisite: Continuity Equation
+Build the conservation-of-mass foundation needed for incompressible Navier-Stokes problems.
+
+Current topic: Navier-Stokes Equation
+Use this page as your reference for the main equation, term meanings, assumptions, and engineering checks.
+
+Advanced check: Reynolds Number
+Learn how engineers compare inertial and viscous effects before selecting a laminar, turbulent, or simplified flow model.
+
+
+On this page
+▾
+Velocity, pressure, and viscous forces in fluid motion
+What is the Navier-Stokes equation?
+The Navier-Stokes equation formula
+Variables and units in the Navier-Stokes equation
+Where the Navier-Stokes equation comes from
+Where engineers use the Navier-Stokes equation
+Worked example: simplified flow between parallel plates
+Assumptions behind the common incompressible form
+Engineering judgment and field reality
+Common mistakes and engineering checks
+Navier-Stokes equation vs. related fluid equations
+Frequently asked questions
+Summary and next steps
+
+Author
+▾
+
+Fact check & standards
+▾
+
+Related tools
+▾
+About
+Privacy Policy
+Terms and Conditions
+Copyright © 2026 Turn2DigitalMedia LLC
+
+Scroll to Top
+Anonymous
+HandWiki
+Search
+Search HandWiki
+Physics:Navier–Stokes equations
+From HandWikibookmark
+NamespacesPhysicsDiscussionPage actionsReadView source
+Short description: Equations describing the motion of viscous fluid substances
+
+
+Continuum mechanics
+Laws
+Solid mechanics
+Fluid mechanics
+Fluids
+Statics · Dynamics
+Archimedes' principle · Bernoulli's principle
+Navier–Stokes equations
+Poiseuille equation · Pascal's law
+Viscosity
+(Newtonian · non-Newtonian)
+Buoyancy · Mixing · Pressure
+Liquids
+Surface tensionCapillary action
+Gases
+AtmosphereBoyle's lawCharles's lawGay-Lussac's lawCombined gas law
+Plasma
+Rheology
+Scientists
+vte
+The Navier–Stokes equations (/nævˈjeɪ ˈstoʊks/ nav-YAY STOHKS) are partial differential equations which describe the motion of viscous fluid substances. They were named after French engineer and physicist Claude-Louis Navier and the Irish physicist and mathematician George Gabriel Stokes. They were developed over several decades of progressively building the theories, from 1822 (Navier) to 1842–1850 (Stokes).
+
+The Navier–Stokes equations mathematically express momentum balance for Newtonian fluids and make use of conservation of mass. They are sometimes accompanied by an equation of state relating pressure, temperature and density.[1] They arise from applying Isaac Newton's second law to fluid motion, together with the assumption that the stress in the fluid is the sum of a diffusing viscous term (proportional to the gradient of velocity) and a pressure term—hence describing viscous flow. The difference between them and the closely related Euler equations is that Navier–Stokes equations take viscosity into account while the Euler equations model only inviscid flow. As a result, the Navier–Stokes are an elliptic equation and therefore have better analytic properties, at the expense of having less mathematical structure (e.g. they are never completely integrable).
+
+The Navier–Stokes equations are useful because they describe the physics of many phenomena of scientific and engineering interest. They may be used to model the weather, ocean currents, water flow in a pipe and air flow around a wing. The Navier–Stokes equations, in their full and simplified forms, help with the design of aircraft and cars, the study of blood flow, the design of power stations, the analysis of pollution, and many other problems. Coupled with Maxwell's equations, they can be used to model and study magnetohydrodynamics.
+
+The Navier–Stokes equations are also of great interest in a purely mathematical sense. Despite their wide range of practical uses, it has not yet been proven whether smooth solutions always exist in three dimensions—i.e., whether they are infinitely differentiable (or even just bounded) at all points in the domain. This is called the Navier–Stokes existence and smoothness problem. The Clay Mathematics Institute has called this one of the seven most important open problems in mathematics and has offered a US$1 million prize for a solution or a counterexample.[2][3]
+
+
+Contents
+1	Flow velocity
+2	General continuum equations
+2.1	Convective acceleration
+3	Compressible flow
+4	Incompressible flow
+4.1	Weak form of the incompressible Navier–Stokes equations
+4.1.1	Strong form
+4.1.2	Weak form
+4.2	Discrete velocity
+4.3	Pressure recovery
+5	Non-inertial frame of reference
+6	Other equations
+6.1	Continuity equation for incompressible fluid
+7	Stream function for incompressible 2D fluid
+8	Properties
+8.1	Nonlinearity
+8.2	Turbulence
+8.3	Applicability
+9	Application to specific problems
+9.1	Parallel flow
+9.2	Radial flow
+9.3	Convection
+10	Exact solutions of the Navier–Stokes equations
+10.1	A three-dimensional steady-state vortex solution
+10.2	Viscous three-dimensional periodic solutions
+11	Wyld diagrams
+12	Representations in 3D
+12.1	Cartesian coordinates
+12.2	Cylindrical coordinates
+12.3	Spherical coordinates
+13	See also
+14	Citations
+15	General references
+16	External links
+Flow velocity
+The solution of the equations is a flow velocity. It is a vector field—to every point in a fluid, at any moment in a time interval, it gives a vector whose direction and magnitude are those of the velocity of the fluid at that point in space and at that moment in time. It is studied in three spatial dimensions and one time dimension, and higher-dimensional analogues are studied in both pure and applied mathematics. Once the velocity field is calculated, other quantities of interest such as pressure or temperature may be found using dynamical equations and relations. This is different from what one normally sees in classical mechanics, where solutions are typically trajectories of position of a particle or deflection of a continuum. Studying velocity instead of position makes more sense for a fluid, although for visualization purposes one can compute various trajectories. In particular, the streamlines of a vector field, interpreted as flow velocity, are the paths along which a massless fluid particle would travel. These paths are the integral curves whose derivative at each point is equal to the vector field, and they can represent visually the behavior of the vector field at a point in time.
+
+General continuum equations
+Main article: Derivation of the Navier–Stokes equations
+The Navier–Stokes momentum equation can be derived as a particular form of the Cauchy momentum equation, whose general convective form is:
+D
+𝐮
+D
+t
+=
+1
+ρ
+∇
+⋅
+σ
++
+𝐟
+.
+By setting the Cauchy stress tensor 
+σ
+ to be the sum of a viscosity term 
+τ
+ (the deviatoric stress) and a pressure term 
+−
+p
+𝐈
+ (volumetric stress), we arrive at:
+
+Cauchy momentum equation  (convective form)
+ρ
+D
+𝐮
+D
+t
+=
+−
+∇
+p
++
+∇
+⋅
+τ
++
+ρ
+𝐚
+
+where
+
+D
+D
+t
+ is the material derivative, defined as 
+∂
+∂
+t
++
+𝐮
+⋅
+∇
+,
+ρ
+ is the (mass) density,
+𝐮
+ is the flow velocity,
+∇
+⋅
+ is the divergence,
+p
+ is the pressure,
+t
+ is time,
+τ
+ is the deviatoric stress tensor, which has order 2,
+𝐚
+ represents body accelerations acting on the continuum, for example gravity, inertial accelerations, electrostatic accelerations, and so on.
+In this form, it is apparent that in the assumption of an inviscid fluid – no deviatoric stress – Cauchy equations reduce to the Euler equations.
+
+Assuming conservation of mass, with the known properties of divergence and gradient we can use the mass continuity equation, which represents the mass per unit volume of a homogenous fluid with respect to space and time (i.e., material derivative 
+𝐃
+𝐃
+𝐭
+) of any finite volume (V) to represent the change of velocity in fluid media:
+𝐃
+m
+𝐃
+𝐭
+=
+∭
+V
+(
+𝐃
+ρ
+𝐃
+𝐭
++
+ρ
+(
+∇
+⋅
+𝐮
+)
+)
+d
+V
+𝐃
+ρ
+𝐃
+𝐭
++
+ρ
+(
+∇
+⋅
+𝐮
+)
+=
+∂
+ρ
+∂
+t
++
+(
+∇
+ρ
+)
+⋅
+𝐮
++
+ρ
+(
+∇
+⋅
+𝐮
+)
+=
+∂
+ρ
+∂
+t
++
+∇
+⋅
+(
+ρ
+𝐮
+)
+=
+0
+where
+
+D
+m
+D
+t
+ is the material derivative of mass per unit volume (density, 
+ρ
+),
+∭
+V
+(
+F
+(
+x
+1
+,
+x
+2
+,
+x
+3
+,
+t
+)
+)
+d
+V
+ is the mathematical operation for the integration throughout the volume (V),
+∂
+∂
+t
+ is the partial derivative mathematical operator,
+∇
+⋅
+𝐮
+ is the divergence of the flow velocity (
+𝐮
+), which is a scalar field, Note 1
+∇
+ρ
+ is the gradient of density (
+ρ
+), which is the vector derivative of a scalar field, Note 1
+Note 1 – Refer to the mathematical operator del represented by the nabla (
+∇
+) symbol.
+
+to arrive at the conservation form of the equations of motion. This is often written:[4]
+
+Cauchy momentum equation(conservation form)
+∂
+∂
+t
+(
+ρ
+𝐮
+)
++
+∇
+⋅
+(
+ρ
+𝐮
+⊗
+𝐮
+)
+=
+−
+∇
+p
++
+∇
+⋅
+τ
++
+ρ
+𝐚
+
+where 
+⊗
+ is the outer product of the flow velocity (
+𝐮
+):
+𝐮
+⊗
+𝐮
+=
+𝐮
+𝐮
+T
+
+The left side of the equation describes acceleration, and may be composed of time-dependent and convective components (also the effects of non-inertial coordinates if present). The right side of the equation is in effect a summation of hydrostatic effects, the divergence of deviatoric stress and body forces (such as gravity).
+
+All non-relativistic balance equations, such as the Navier–Stokes equations, can be derived by beginning with the Cauchy equations and specifying the stress tensor through a constitutive relation. By expressing the deviatoric (shear) stress tensor in terms of viscosity and the fluid velocity gradient, and assuming constant viscosity, the above Cauchy equations will lead to the Navier–Stokes equations below.
+
+Convective acceleration
+
+An example of convection. Though the flow may be steady (time-independent), the fluid decelerates as it moves down the diverging duct (assuming incompressible or subsonic compressible flow), hence there is an acceleration happening over position.
+A significant feature of the Cauchy equation and consequently all other continuum equations (including Euler and Navier–Stokes) is the presence of convective acceleration: the effect of acceleration of a flow with respect to space. While individual fluid particles indeed experience time-dependent acceleration, the convective acceleration of the flow field is a spatial effect, one example being fluid speeding up in a nozzle.
+
+Compressible flow
+Remark: here, the deviatoric stress tensor is denoted 
+τ
+ as it was in the general continuum equations and in the incompressible flow section.
+
+The compressible momentum Navier–Stokes equation results from the following assumptions on the Cauchy stress tensor:[5]
+
+the stress is Galilean invariant: it does not depend directly on the flow velocity, but only on spatial derivatives of the flow velocity. So the stress variable is the tensor gradient 
+∇
+𝐮
+, or more simply the rate-of-strain tensor: 
+ε
+(
+∇
+𝐮
+)
+≡
+1
+2
+∇
+𝐮
++
+1
+2
+(
+∇
+𝐮
+)
+T
+the deviatoric stress is linear in this variable: 
+σ
+(
+ε
+)
+=
+−
+p
+𝐈
++
+𝐂
+:
+ε
+, where 
+p
+ is independent on the strain rate tensor, 
+𝐂
+ is the fourth-order tensor representing the constant of proportionality, called the viscosity or elasticity tensor, and : is the double-dot product.
+the fluid is assumed to be isotropic, as with gases and simple liquids, and consequently 
+𝐂
+ is an isotropic tensor; furthermore, since the deviatoric stress tensor is symmetric, by Helmholtz decomposition it can be expressed in terms of two scalar Lamé parameters, the second viscosity 
+λ
+ and the dynamic viscosity 
+μ
+, as it is usual in linear elasticity:
+Linear stress constitutive equation(expression similar to the one for elastic solid)
+σ
+(
+ε
+)
+=
+−
+p
+𝐈
++
+λ
+tr
+⁡
+(
+ε
+)
+𝐈
++
+2
+μ
+ε
+
+where 
+𝐈
+ is the identity tensor, and 
+tr
+⁡
+(
+ε
+)
+ is the trace of the rate-of-strain tensor. So this decomposition can be explicitly defined as:
+σ
+=
+−
+p
+𝐈
++
+λ
+(
+∇
+⋅
+𝐮
+)
+𝐈
++
+μ
+(
+∇
+𝐮
++
+(
+∇
+𝐮
+)
+T
+)
+.
+
+Since the trace of the rate-of-strain tensor in three dimensions is the divergence (i.e. rate of expansion) of the flow:
+tr
+⁡
+(
+ε
+)
+=
+∇
+⋅
+𝐮
+.
+
+Given this relation, and since the trace of the identity tensor in three dimensions is three:
+tr
+⁡
+(
+I
+)
+=
+3
+.
+
+the trace of the stress tensor in three dimensions becomes:
+tr
+⁡
+(
+σ
+)
+=
+−
+3
+p
++
+(
+3
+λ
++
+2
+μ
+)
+∇
+⋅
+𝐮
+.
+
+So by alternatively decomposing the stress tensor into isotropic and deviatoric parts, as usual in fluid dynamics:[6]
+σ
+=
+−
+[
+p
+−
+(
+λ
++
+2
+3
+μ
+)
+(
+∇
+⋅
+𝐮
+)
+]
+𝐈
++
+μ
+(
+∇
+𝐮
++
+(
+∇
+𝐮
+)
+T
+−
+2
+3
+(
+∇
+⋅
+𝐮
+)
+𝐈
+)
+
+Introducing the bulk viscosity 
+ζ
+,
+ζ
+≡
+λ
++
+2
+3
+μ
+,
+
+we arrive to the linear constitutive equation in the form usually employed in thermal hydraulics:[5]
+
+Linear stress constitutive equation(expression used for fluids)
+σ
+=
+−
+[
+p
+−
+ζ
+(
+∇
+⋅
+𝐮
+)
+]
+𝐈
++
+μ
+[
+∇
+𝐮
++
+(
+∇
+𝐮
+)
+T
+−
+2
+3
+(
+∇
+⋅
+𝐮
+)
+𝐈
+]
+
+which can also be arranged in the other usual form:[7]
+σ
+=
+−
+p
+𝐈
++
+μ
+(
+∇
+𝐮
++
+(
+∇
+𝐮
+)
+T
+)
++
+(
+ζ
+−
+2
+3
+μ
+)
+(
+∇
+⋅
+𝐮
+)
+𝐈
+.
+
+Note that in the compressible case the pressure is no more proportional to the isotropic stress term, since there is the additional bulk viscosity term: 
+p
+=
+−
+1
+3
+tr
+⁡
+(
+σ
+)
++
+ζ
+(
+∇
+⋅
+𝐮
+)
+
+and the deviatoric stress tensor 
+σ
+′
+ is still coincident with the shear stress tensor 
+τ
+ (i.e. the deviatoric stress in a Newtonian fluid has no normal stress components), and it has a compressibility term in addition to the incompressible case, which is proportional to the shear viscosity:
+
+σ
+′
+=
+τ
+=
+μ
+[
+∇
+𝐮
++
+(
+∇
+𝐮
+)
+T
+−
+2
+3
+(
+∇
+⋅
+𝐮
+)
+𝐈
+]
+
+Both bulk viscosity 
+ζ
+ and dynamic viscosity 
+μ
+ need not be constant – in general, they depend on two thermodynamics variables if the fluid contains a single chemical species, say for example, pressure and temperature. Any equation that makes explicit one of these transport coefficient in the conservation variables is called an equation of state.[8]
+
+The most general of the Navier–Stokes equations become
+
+Navier–Stokes momentum equation (convective form)
+ρ
+D
+𝐮
+D
+t
+=
+ρ
+(
+∂
+𝐮
+∂
+t
++
+(
+𝐮
+⋅
+∇
+)
+𝐮
+)
+=
+−
+∇
+p
++
+∇
+⋅
+{
+μ
+[
+∇
+𝐮
++
+(
+∇
+𝐮
+)
+T
+−
+2
+3
+(
+∇
+⋅
+𝐮
+)
+𝐈
+]
+}
++
+∇
+[
+ζ
+(
+∇
+⋅
+𝐮
+)
+]
++
+ρ
+𝐚
+.
+
+in index notation, the equation can be written as[9]
+
+Navier–Stokes momentum equation (index notation)
+ρ
+(
+∂
+u
+i
+∂
+t
++
+u
+k
+∂
+u
+i
+∂
+x
+k
+)
+=
+−
+∂
+p
+∂
+x
+i
++
+∂
+∂
+x
+k
+[
+μ
+(
+∂
+u
+i
+∂
+x
+k
++
+∂
+u
+k
+∂
+x
+i
+−
+2
+3
+δ
+i
+k
+∂
+u
+l
+∂
+x
+l
+)
+]
++
+∂
+∂
+x
+i
+(
+ζ
+∂
+u
+ℓ
+∂
+x
+ℓ
+)
++
+ρ
+a
+i
+.
+
+The corresponding equation in conservation form can be obtained by considering that, given the mass continuity equation, the left side is equivalent to:
+
+ρ
+D
+𝐮
+D
+t
+=
+∂
+∂
+t
+(
+ρ
+𝐮
+)
++
+∇
+⋅
+(
+ρ
+𝐮
+⊗
+𝐮
+)
+to give finally:
+
+Navier–Stokes momentum equation (conservative form)
+∂
+∂
+t
+(
+ρ
+𝐮
+)
++
+∇
+⋅
+(
+ρ
+𝐮
+⊗
+𝐮
++
+[
+p
+−
+ζ
+(
+∇
+⋅
+𝐮
+)
+]
+𝐈
+−
+μ
+[
+∇
+𝐮
++
+(
+∇
+𝐮
+)
+T
+−
+2
+3
+(
+∇
+⋅
+𝐮
+)
+𝐈
+]
+)
+=
+ρ
+𝐚
+.
+
+Apart from its dependence of pressure and temperature, the second viscosity coefficient also depends on the process, that is to say, the second viscosity coefficient is not just a material property. Example: in the case of a sound wave with a definitive frequency that alternatively compresses and expands a fluid element, the second viscosity coefficient depends on the frequency of the wave. This dependence is called the dispersion. In some cases, the second viscosity 
+ζ
+ can be assumed to be constant in which case, the effect of the volume viscosity 
+ζ
+ is that the mechanical pressure is not equivalent to the thermodynamic pressure:[10] as demonstrated below.
+∇
+⋅
+(
+∇
+⋅
+𝐮
+)
+𝐈
+=
+∇
+(
+∇
+⋅
+𝐮
+)
+,
+p
+¯
+≡
+p
+−
+ζ
+∇
+⋅
+𝐮
+,
+However, this difference is usually neglected most of the time (that is whenever we are not dealing with processes such as sound absorption and attenuation of shock waves,[11] where second viscosity coefficient becomes important) by explicitly assuming 
+ζ
+=
+0
+. The assumption of setting 
+ζ
+=
+0
+ is called as the Stokes hypothesis.[12] The validity of Stokes hypothesis can be demonstrated for monoatomic gas both experimentally and from the kinetic theory;[13] for other gases and liquids, Stokes hypothesis is generally incorrect. With the Stokes hypothesis, the Navier–Stokes equations become
+
+Navier–Stokes momentum equation (convective form, Stokes hypothesis)
+ρ
+D
+𝐮
+D
+t
+=
+ρ
+(
+∂
+𝐮
+∂
+t
++
+(
+𝐮
+⋅
+∇
+)
+𝐮
+)
+=
+−
+∇
+p
++
+∇
+⋅
+{
+μ
+[
+∇
+𝐮
++
+(
+∇
+𝐮
+)
+T
+−
+2
+3
+(
+∇
+⋅
+𝐮
+)
+𝐈
+]
+}
++
+ρ
+𝐚
+.
+
+If the dynamic μ and bulk 
+ζ
+ viscosities are assumed to be uniform in space, the equations in convective form can be simplified further. By computing the divergence of the stress tensor, since the divergence of tensor 
+∇
+𝐮
+ is 
+∇
+2
+𝐮
+ and the divergence of tensor 
+(
+∇
+𝐮
+)
+T
+ is 
+∇
+(
+∇
+⋅
+𝐮
+)
+, one finally arrives to the compressible Navier–Stokes momentum equation:[14]
+
+Navier–Stokes momentum equation with uniform shear and bulk viscosities (convective form)
+D
+𝐮
+D
+t
+=
+−
+1
+ρ
+∇
+p
++
+ν
+∇
+2
+𝐮
++
+(
+1
+3
+ν
++
+ξ
+)
+∇
+(
+∇
+⋅
+𝐮
+)
++
+𝐚
+.
+
+where 
+D
+D
+t
+ is the material derivative. 
+ν
+=
+μ
+ρ
+ is the shear kinematic viscosity and 
+ξ
+=
+ζ
+ρ
+ is the bulk kinematic viscosity. The left-hand side changes in the conservation form of the Navier–Stokes momentum equation. By bringing the operator on the flow velocity on the left side, one also has:
+
+Navier–Stokes momentum equation with uniform shear and bulk viscosities (convective form)
+(
+∂
+∂
+t
++
+𝐮
+⋅
+∇
+−
+ν
+∇
+2
+−
+(
+1
+3
+ν
++
+ξ
+)
+∇
+(
+∇
+⋅
+)
+)
+𝐮
+=
+−
+1
+ρ
+∇
+p
++
+𝐚
+.
+
+The convective acceleration term can also be written as
+𝐮
+⋅
+∇
+𝐮
+=
+(
+∇
+×
+𝐮
+)
+×
+𝐮
++
+1
+2
+∇
+𝐮
+2
+,
+where the vector 
+(
+∇
+×
+𝐮
+)
+×
+𝐮
+ is known as the Lamb vector.
+
+For the special case of an incompressible flow, the pressure constrains the flow so that the volume of fluid elements is constant: isochoric flow resulting in a solenoidal velocity field with 
+∇
+⋅
+𝐮
+=
+0
+.[15]
+
+Incompressible flow
+The incompressible momentum Navier–Stokes equation results from the following assumptions on the Cauchy stress tensor:[5]
+
+the stress is Galilean invariant: it does not depend directly on the flow velocity, but only on spatial derivatives of the flow velocity. So the stress variable is the tensor gradient 
+∇
+𝐮
+.
+the fluid is assumed to be isotropic, as with gases and simple liquids, and consequently 
+τ
+ is an isotropic tensor; furthermore, since the deviatoric stress tensor can be expressed in terms of the dynamic viscosity 
+μ
+:
+Stokes' stress constitutive equation(expression used for incompressible elastic solids)
+τ
+=
+2
+μ
+ε
+where
+ε
+=
+1
+2
+(
+∇
+𝐮
++
+∇
+𝐮
+T
+)
+is the rate-of-strain tensor. So this decomposition can be made explicit as:[5]
+
+Stokes's stress constitutive equation(expression used for incompressible viscous fluids)
+τ
+=
+μ
+[
+∇
+𝐮
++
+(
+∇
+𝐮
+)
+T
+]
+This is constitutive equation is also called the Newtonian law of viscosity. Dynamic viscosity μ need not be constant – in incompressible flows it can depend on density and on pressure. Any equation that makes explicit one of these transport coefficient in the conservative variables is called an equation of state.[8]
+
+The divergence of the deviatoric stress in case of uniform viscosity is given by:
+∇
+⋅
+τ
+=
+2
+μ
+∇
+⋅
+ε
+=
+μ
+∇
+⋅
+(
+∇
+𝐮
++
+∇
+𝐮
+T
+)
+=
+μ
+∇
+2
+𝐮
+because 
+∇
+⋅
+𝐮
+=
+0
+ for an incompressible fluid.
+
+Incompressibility rules out density and pressure waves like sound or shock waves, so this simplification is not useful if these phenomena are of interest. The incompressible flow assumption typically holds well with all fluids at low Mach numbers (say up to about Mach 0.3), such as for modelling air winds at normal temperatures.[16] the incompressible Navier–Stokes equations are best visualized by dividing for the density:[17]
+
+Incompressible Navier–Stokes equations with uniform viscosity (convective form)
+D
+𝐮
+D
+t
+=
+∂
+𝐮
+∂
+t
++
+(
+𝐮
+⋅
+∇
+)
+𝐮
+=
+ν
+∇
+2
+𝐮
+−
+1
+ρ
+∇
+p
++
+1
+ρ
+𝐟
+
+where 
+ν
+=
+μ
+ρ
+ is called the kinematic viscosity. By isolating the fluid velocity, one can also state:
+
+Incompressible Navier–Stokes equations with constant viscosity (alternative convective form)
+(
+∂
+∂
+t
++
+𝐮
+⋅
+∇
+−
+ν
+∇
+2
+)
+𝐮
+=
+−
+1
+ρ
+∇
+p
++
+1
+ρ
+𝐟
+.
+
+If the density is constant throughout the fluid domain, or, in other words, if all fluid elements have the same density, 
+ρ
+, then we have
+
+Incompressible Navier–Stokes equations with constant density and viscosity (convective form)
+D
+𝐮
+D
+t
+=
+ν
+∇
+2
+𝐮
+−
+∇
+p
+ρ
++
+1
+ρ
+𝐟
+,
+
+where 
+p
+/
+ρ
+ is called the unit pressure head.
+
+In incompressible flows, the pressure field satisfies the Poisson equation,[9]
+
+∇
+2
+p
+=
+−
+ρ
+∂
+u
+i
+∂
+x
+k
+∂
+u
+k
+∂
+x
+i
+=
+−
+ρ
+∂
+2
+u
+i
+u
+k
+∂
+x
+k
+x
+i
+,
+which is obtained by taking the divergence of the momentum equations.
+
+A laminar flow example
+It is well worth observing the meaning of each term (compare to the Cauchy momentum equation):
+
+∂
+𝐮
+∂
+t
+⏟
+Variation
++
+(
+𝐮
+⋅
+∇
+)
+𝐮
+⏟
+Convective
+acceleration
+⏞
+Inertia (per volume)
+=
+−
+∇
+w
+⏟
+Internal
+source
++
+ν
+∇
+2
+𝐮
+⏟
+Diffusion
+⏞
+Divergence of stress
++
+𝐠
+⏟
+External
+source
+.
+
+The higher-order term, namely the shear stress divergence 
+∇
+⋅
+τ
+, has simply reduced to the vector Laplacian term 
+μ
+∇
+2
+𝐮
+.[18] This Laplacian term can be interpreted as the difference between the velocity at a point and the mean velocity in a small surrounding volume. This implies that – for a Newtonian fluid – viscosity operates as a diffusion of momentum, in much the same way as the heat conduction. In fact neglecting the convection term, incompressible Navier–Stokes equations lead to a vector diffusion equation (namely Stokes equations), but in general the convection term is present, so incompressible Navier–Stokes equations belong to the class of convection–diffusion equations.
+
+In the usual case of an external field being a conservative field:
+𝐠
+=
+−
+∇
+φ
+by defining the hydraulic head:
+h
+≡
+w
++
+φ
+
+one can finally condense the whole source in one term, arriving to the incompressible Navier–Stokes equation with conservative external field:
+∂
+𝐮
+∂
+t
++
+(
+𝐮
+⋅
+∇
+)
+𝐮
+−
+ν
+∇
+2
+𝐮
+=
+−
+∇
+h
+.
+
+The incompressible Navier–Stokes equations with uniform density and viscosity and conservative external field is the fundamental equation of hydraulics. The domain for these equations is commonly a 3 or fewer dimensional Euclidean space, for which an orthogonal coordinate reference frame is usually set to explicit the system of scalar partial differential equations to be solved. In 3-dimensional orthogonal coordinate systems are 3: Cartesian, cylindrical, and spherical. Expressing the Navier–Stokes vector equation in Cartesian coordinates is quite straightforward and not much influenced by the number of dimensions of the euclidean space employed, and this is the case also for the first-order terms (like the variation and convection ones) also in non-cartesian orthogonal coordinate systems. But for the higher order terms (the two coming from the divergence of the deviatoric stress that distinguish Navier–Stokes equations from Euler equations) some tensor calculus is required for deducing an expression in non-cartesian orthogonal coordinate systems. A special case of the fundamental equation of hydraulics is the Bernoulli's equation.
+
+The incompressible Navier–Stokes equation is composite, the sum of two orthogonal equations,
+∂
+𝐮
+∂
+t
+=
+Π
+S
+(
+−
+(
+𝐮
+⋅
+∇
+)
+𝐮
++
+ν
+∇
+2
+𝐮
+)
++
+𝐟
+S
+ρ
+−
+1
+∇
+p
+=
+Π
+I
+(
+−
+(
+𝐮
+⋅
+∇
+)
+𝐮
++
+ν
+∇
+2
+𝐮
+)
++
+𝐟
+I
+where 
+Π
+S
+ and 
+Π
+I
+ are solenoidal and irrotational projection operators satisfying 
+Π
+S
++
+Π
+I
+=
+1
+, and 
+𝐟
+S
+ and 
+𝐟
+I
+ are the non-conservative and conservative parts of the body force. This result follows from the Helmholtz theorem (also known as the fundamental theorem of vector calculus). The first equation is a pressureless governing equation for the velocity, while the second equation for the pressure is a functional of the velocity and is related to the pressure Poisson equation.
+
+The explicit functional form of the projection operator in 3D is found from the Helmholtz Theorem:
+Π
+S
+𝐅
+(
+𝐫
+)
+=
+1
+4
+π
+∇
+×
+∫
+∇
+′
+×
+𝐅
+(
+𝐫
+′
+)
+|
+𝐫
+−
+𝐫
+′
+|
+d
+V
+′
+,
+Π
+I
+=
+1
+−
+Π
+S
+with a similar structure in 2D. Thus the governing equation is an integro-differential equation similar to Coulomb's and Biot–Savart's law, not convenient for numerical computation.
+
+An equivalent weak or variational form of the equation, proved to produce the same velocity solution as the Navier–Stokes equation,[19] is given by,
+(
+𝐰
+,
+∂
+𝐮
+∂
+t
+)
+=
+−
+(
+𝐰
+,
+(
+𝐮
+⋅
+∇
+)
+𝐮
+)
+−
+ν
+(
+∇
+𝐰
+:
+∇
+𝐮
+)
++
+(
+𝐰
+,
+𝐟
+S
+)
+
+for divergence-free test functions 
+𝐰
+ satisfying appropriate boundary conditions. Here, the projections are accomplished by the orthogonality of the solenoidal and irrotational function spaces. The discrete form of this is eminently suited to finite element computation of divergence-free flow, as we shall see in the next section. There, one will be able to address the question, "How does one specify pressure-driven (Poiseuille) problems with a pressureless governing equation?".
+
+The absence of pressure forces from the governing velocity equation demonstrates that the equation is not a dynamic one, but rather a kinematic equation where the divergence-free condition serves the role of a conservation equation. This would seem to refute the frequent statements that the incompressible pressure enforces the divergence-free condition.
+
+Weak form of the incompressible Navier–Stokes equations
+Strong form
+Consider the incompressible Navier–Stokes equations for a Newtonian fluid of constant density 
+ρ
+ in a domain
+Ω
+⊂
+ℝ
+d
+(
+d
+=
+2
+,
+3
+)
+with boundary
+∂
+Ω
+=
+Γ
+D
+∪
+Γ
+N
+,
+being 
+Γ
+D
+ and 
+Γ
+N
+ portions of the boundary where respectively a Dirichlet and a Neumann boundary condition is applied (
+Γ
+D
+∩
+Γ
+N
+=
+∅
+):[20]
+{
+ρ
+∂
+𝐮
+∂
+t
++
+ρ
+(
+𝐮
+⋅
+∇
+)
+𝐮
+−
+∇
+⋅
+σ
+(
+𝐮
+,
+p
+)
+=
+𝐟
+ in 
+Ω
+×
+(
+0
+,
+T
+)
+∇
+⋅
+𝐮
+=
+0
+ in 
+Ω
+×
+(
+0
+,
+T
+)
+𝐮
+=
+𝐠
+ on 
+Γ
+D
+×
+(
+0
+,
+T
+)
+σ
+(
+𝐮
+,
+p
+)
+𝐧
+^
+=
+𝐡
+ on 
+Γ
+N
+×
+(
+0
+,
+T
+)
+𝐮
+(
+0
+)
+=
+𝐮
+0
+ in 
+Ω
+×
+{
+0
+}
+𝐮
+ is the fluid velocity, 
+p
+ the fluid pressure, 
+𝐟
+ a given forcing term, 
+𝐧
+^
+ the outward directed unit normal vector to 
+Γ
+N
+, and 
+σ
+(
+𝐮
+,
+p
+)
+ the viscous stress tensor defined as:[20]
+σ
+(
+𝐮
+,
+p
+)
+=
+−
+p
+𝐈
++
+2
+μ
+ε
+(
+𝐮
+)
+.
+Let 
+μ
+ be the dynamic viscosity of the fluid, 
+𝐈
+ the second-order identity tensor and 
+ε
+(
+𝐮
+)
+ the strain-rate tensor defined as:[20]
+ε
+(
+𝐮
+)
+=
+1
+2
+(
+(
+∇
+𝐮
+)
++
+(
+∇
+𝐮
+)
+T
+)
+.
+The functions 
+𝐠
+ and 
+𝐡
+ are given Dirichlet and Neumann boundary data, while 
+𝐮
+0
+ is the initial condition. The first equation is the momentum balance equation, while the second represents the mass conservation, namely the continuity equation. Assuming constant dynamic viscosity, using the vectorial identity
+∇
+⋅
+(
+∇
+𝐟
+)
+T
+=
+∇
+(
+∇
+⋅
+𝐟
+)
+and exploiting mass conservation, the divergence of the total stress tensor in the momentum equation can also be expressed as:[20]
+∇
+⋅
+σ
+(
+𝐮
+,
+p
+)
+=
+∇
+⋅
+(
+−
+p
+𝐈
++
+2
+μ
+ε
+(
+𝐮
+)
+)
+=
+−
+∇
+p
++
+2
+μ
+∇
+⋅
+ε
+(
+𝐮
+)
+=
+−
+∇
+p
++
+2
+μ
+∇
+⋅
+[
+1
+2
+(
+(
+∇
+𝐮
+)
++
+(
+∇
+𝐮
+)
+T
+)
+]
+=
+−
+∇
+p
++
+μ
+(
+Δ
+𝐮
++
+∇
+⋅
+(
+∇
+𝐮
+)
+T
+)
+=
+−
+∇
+p
++
+μ
+(
+Δ
+𝐮
++
+∇
+(
+∇
+⋅
+𝐮
+)
+⏟
+=
+0
+)
+=
+−
+∇
+p
++
+μ
+Δ
+𝐮
+.
+Moreover, note that the Neumann boundary conditions can be rearranged as:[20]
+σ
+(
+𝐮
+,
+p
+)
+𝐧
+^
+=
+(
+−
+p
+𝐈
++
+2
+μ
+ε
+(
+𝐮
+)
+)
+𝐧
+^
+=
+−
+p
+𝐧
+^
++
+μ
+∂
+u
+∂
+𝐧
+^
+.
+
+Weak form
+In order to find the weak form of the Navier–Stokes equations, firstly, consider the momentum equation[20]
+ρ
+∂
+𝐮
+∂
+t
+−
+μ
+Δ
+𝐮
++
+ρ
+(
+𝐮
+⋅
+∇
+)
+𝐮
++
+∇
+p
+=
+𝐟
+multiply it for a test function 
+𝐯
+, defined in a suitable space 
+V
+, and integrate both members with respect to the domain 
+Ω
+:[20]
+∫
+Ω
+ρ
+∂
+𝐮
+∂
+t
+⋅
+𝐯
+−
+∫
+Ω
+μ
+Δ
+𝐮
+⋅
+𝐯
++
+∫
+Ω
+ρ
+(
+𝐮
+⋅
+∇
+)
+𝐮
+⋅
+𝐯
++
+∫
+Ω
+∇
+p
+⋅
+𝐯
+=
+∫
+Ω
+𝐟
+⋅
+𝐯
+Counter-integrating by parts the diffusive and the pressure terms and by using the Gauss' theorem:[20]
+−
+∫
+Ω
+μ
+Δ
+𝐮
+⋅
+𝐯
+=
+∫
+Ω
+μ
+∇
+𝐮
+⋅
+∇
+𝐯
+−
+∫
+∂
+Ω
+μ
+∂
+𝐮
+∂
+𝐧
+^
+⋅
+𝐯
+∫
+Ω
+∇
+p
+⋅
+𝐯
+=
+−
+∫
+Ω
+p
+∇
+⋅
+𝐯
++
+∫
+∂
+Ω
+p
+𝐯
+⋅
+𝐧
+^
+
+Using these relations, one gets:[20]
+∫
+Ω
+ρ
+∂
+𝐮
+∂
+t
+⋅
+𝐯
++
+∫
+Ω
+μ
+∇
+𝐮
+⋅
+∇
+𝐯
++
+∫
+Ω
+ρ
+(
+𝐮
+⋅
+∇
+)
+𝐮
+⋅
+𝐯
+−
+∫
+Ω
+p
+∇
+⋅
+𝐯
+=
+∫
+Ω
+𝐟
+⋅
+𝐯
++
+∫
+∂
+Ω
+(
+μ
+∂
+𝐮
+∂
+𝐧
+^
+−
+p
+𝐧
+^
+)
+⋅
+𝐯
+∀
+𝐯
+∈
+V
+.
+In the same fashion, the continuity equation is multiplied for a test function q belonging to a space 
+Q
+ and integrated in the domain 
+Ω
+:[20]
+∫
+Ω
+q
+∇
+⋅
+𝐮
+=
+0
+.
+∀
+q
+∈
+Q
+.
+The space functions are chosen as follows:
+V
+=
+[
+H
+0
+1
+(
+Ω
+)
+]
+d
+=
+{
+𝐯
+∈
+[
+H
+1
+(
+Ω
+)
+]
+d
+:
+𝐯
+=
+𝟎
+ on 
+Γ
+D
+}
+,
+Q
+=
+L
+2
+(
+Ω
+)
+Considering that the test function v vanishes on the Dirichlet boundary and considering the Neumann condition, the integral on the boundary can be rearranged as:[20]
+∫
+∂
+Ω
+(
+μ
+∂
+𝐮
+∂
+𝐧
+^
+−
+p
+𝐧
+^
+)
+⋅
+𝐯
+=
+∫
+Γ
+D
+(
+μ
+∂
+𝐮
+∂
+𝐧
+^
+−
+p
+𝐧
+^
+)
+⋅
+𝐯
+⏟
+𝐯
+=
+𝟎
+ on 
+Γ
+D
+ 
++
+∫
+Γ
+N
+(
+μ
+∂
+𝐮
+∂
+𝐧
+^
+−
+p
+𝐧
+^
+)
+⏟
+=
+𝐡
+ on 
+Γ
+N
+⋅
+𝐯
+=
+∫
+Γ
+N
+𝐡
+⋅
+𝐯
+.
+Having this in mind, the weak formulation of the Navier–Stokes equations is expressed as:[20]
+find 
+𝐮
+∈
+L
+2
+(
+ℝ
++
+[
+H
+1
+(
+Ω
+)
+]
+d
+)
+∩
+C
+0
+(
+ℝ
++
+[
+L
+2
+(
+Ω
+)
+]
+d
+)
+ such that: 
+{
+∫
+Ω
+ρ
+∂
+𝐮
+∂
+t
+⋅
+𝐯
++
+∫
+Ω
+μ
+∇
+𝐮
+⋅
+∇
+𝐯
++
+∫
+Ω
+ρ
+(
+𝐮
+⋅
+∇
+)
+𝐮
+⋅
+𝐯
+−
+∫
+Ω
+p
+∇
+⋅
+𝐯
+=
+∫
+Ω
+𝐟
+⋅
+𝐯
++
+∫
+Γ
+N
+𝐡
+⋅
+𝐯
+∀
+𝐯
+∈
+V
+,
+∫
+Ω
+q
+∇
+⋅
+𝐮
+=
+0
+∀
+q
+∈
+Q
+.
+
+Discrete velocity
+With partitioning of the problem domain and defining basis functions on the partitioned domain, the discrete form of the governing equation is
+(
+𝐰
+i
+,
+∂
+𝐮
+j
+∂
+t
+)
+=
+−
+(
+𝐰
+i
+,
+(
+𝐮
+⋅
+∇
+)
+𝐮
+j
+)
+−
+ν
+(
+∇
+𝐰
+i
+:
+∇
+𝐮
+j
+)
++
+(
+𝐰
+i
+,
+𝐟
+S
+)
+.
+
+It is desirable to choose basis functions that reflect the essential feature of incompressible flow – the elements must be divergence-free. While the velocity is the variable of interest, the existence of the stream function or vector potential is necessary by the Helmholtz theorem. Further, to determine fluid flow in the absence of a pressure gradient, one can specify the difference of stream function values across a 2D channel, or the line integral of the tangential component of the vector potential around the channel in 3D, the flow being given by Stokes' theorem. Discussion will be restricted to 2D in the following.
+
+We further restrict discussion to continuous Hermite finite elements which have at least first-derivative degrees-of-freedom. With this, one can draw a large number of candidate triangular and rectangular elements from the plate-bending literature. These elements have derivatives as components of the gradient. In 2D, the gradient and curl of a scalar are clearly orthogonal, given by the expressions,
+∇
+φ
+=
+(
+∂
+φ
+∂
+x
+,
+∂
+φ
+∂
+y
+)
+T
+,
+∇
+×
+φ
+=
+(
+∂
+φ
+∂
+y
+,
+−
+∂
+φ
+∂
+x
+)
+T
+.
+
+Adopting continuous plate-bending elements, interchanging the derivative degrees-of-freedom and changing the sign of the appropriate one gives many families of stream function elements.
+
+Taking the curl of the scalar stream function elements gives divergence-free velocity elements.[21][22] The requirement that the stream function elements be continuous assures that the normal component of the velocity is continuous across element interfaces, all that is necessary for vanishing divergence on these interfaces.
+
+Boundary conditions are simple to apply. The stream function is constant on no-flow surfaces, with no-slip velocity conditions on surfaces. Stream function differences across open channels determine the flow. No boundary conditions are necessary on open boundaries, though consistent values may be used with some problems. These are all Dirichlet conditions.
+
+The algebraic equations to be solved are simple to set up, but of course are non-linear, requiring iteration of the linearized equations.
+
+Similar considerations apply to three-dimensions, but extension from 2D is not immediate because of the vector nature of the potential, and there exists no simple relation between the gradient and the curl as was the case in 2D.
+
+Pressure recovery
+Recovering pressure from the velocity field is easy. The discrete weak equation for the pressure gradient is,
+(
+𝐠
+i
+,
+∇
+p
+)
+=
+−
+(
+𝐠
+i
+,
+(
+𝐮
+⋅
+∇
+)
+𝐮
+j
+)
+−
+ν
+(
+∇
+𝐠
+i
+:
+∇
+𝐮
+j
+)
++
+(
+𝐠
+i
+,
+𝐟
+I
+)
+
+where the test/weight functions are irrotational. Any conforming scalar finite element may be used. However, the pressure gradient field may also be of interest. In this case, one can use scalar Hermite elements for the pressure. For the test/weight functions 
+𝐠
+i
+ one would choose the irrotational vector elements obtained from the gradient of the pressure element.
+
+Non-inertial frame of reference
+The rotating frame of reference introduces some interesting pseudo-forces into the equations through the material derivative term. Consider a stationary inertial frame of reference 
+K
+ , and a non-inertial frame of reference 
+K
+′
+, which is translating with velocity 
+𝐔
+(
+t
+)
+ and rotating with angular velocity 
+Ω
+(
+t
+)
+ with respect to the stationary frame. The Navier–Stokes equation observed from the non-inertial frame then becomes
+
+Navier–Stokes momentum equation in non-inertial frame
+ρ
+(
+∂
+𝐮
+∂
+t
++
+(
+𝐮
+⋅
+∇
+)
+𝐮
+)
+=
+−
+∇
+p
++
+∇
+⋅
+{
+μ
+[
+∇
+𝐮
++
+(
+∇
+𝐮
+)
+T
+−
+2
+3
+(
+∇
+⋅
+𝐮
+)
+𝐈
+]
+}
++
+∇
+[
+ζ
+(
+∇
+⋅
+𝐮
+)
+]
++
+ρ
+𝐟
+−
+ρ
+[
+2
+Ω
+×
+𝐮
++
+Ω
+×
+(
+Ω
+×
+𝐱
+)
++
+d
+𝐔
+d
+t
++
+d
+Ω
+d
+t
+×
+𝐱
+]
+.
+
+Here 
+𝐱
+ and 
+𝐮
+ are measured in the non-inertial frame. The first term in the parenthesis represents Coriolis acceleration, the second term is due to centrifugal acceleration, the third is due to the linear acceleration of 
+K
+′
+ with respect to 
+K
+ and the fourth term is due to the angular acceleration of 
+K
+′
+ with respect to 
+K
+.
+
+Other equations
+The Navier–Stokes equations are strictly a statement of the balance of momentum. To fully describe fluid flow, more information is needed, how much depending on the assumptions made. This additional information may include boundary data (no-slip, capillary surface, etc.), conservation of mass, balance of energy, and/or an equation of state.
+
+Continuity equation for incompressible fluid
+Main article: Continuity equation
+Regardless of the flow assumptions, a statement of the conservation of mass is generally necessary. This is achieved through the mass continuity equation, as discussed above in the "General continuum equations" within this article, as follows:
+𝐃
+m
+𝐃
+𝐭
+=
+∭
+V
+(
+𝐃
+ρ
+𝐃
+𝐭
++
+ρ
+(
+∇
+⋅
+𝐮
+)
+)
+d
+V
+𝐃
+ρ
+𝐃
+𝐭
++
+ρ
+(
+∇
+⋅
+𝐮
+)
+=
+∂
+ρ
+∂
+t
++
+(
+∇
+ρ
+)
+⋅
+𝐮
++
+ρ
+(
+∇
+⋅
+𝐮
+)
+=
+∂
+ρ
+∂
+t
++
+∇
+⋅
+(
+ρ
+𝐮
+)
+=
+0
+A fluid media for which the density (
+ρ
+) is constant is called incompressible. Therefore, the rate of change of density (
+ρ
+) with respect to time 
+(
+∂
+ρ
+∂
+t
+)
+ and the gradient of density 
+(
+∇
+ρ
+)
+ are equal to zero 
+(
+0
+)
+. In this case the general equation of continuity, 
+∂
+ρ
+∂
+t
++
+∇
+⋅
+(
+ρ
+𝐮
+)
+=
+0
+, reduces to: 
+ρ
+(
+∇
+⋅
+𝐮
+)
+=
+0
+. Furthermore, assuming that density (
+ρ
+) is a non-zero constant 
+(
+ρ
+≠
+0
+)
+ means that the right-hand side of the equation 
+(
+0
+)
+ is divisible by density (
+ρ
+). Therefore, the continuity equation for an incompressible fluid reduces further to:
+(
+∇
+⋅
+𝐮
+)
+=
+0
+This relationship, 
+(
+∇
+⋅
+𝐮
+)
+=
+0
+, identifies that the divergence of the flow velocity vector (
+𝐮
+) is equal to zero 
+(
+0
+)
+, which means that for an incompressible fluid the flow velocity field is a solenoidal vector field or a divergence-free vector field. Note that this relationship can be expanded upon due to its uniqueness with the vector Laplace operator 
+(
+∇
+2
+𝐮
+=
+∇
+(
+∇
+⋅
+𝐮
+)
+−
+∇
+×
+(
+∇
+×
+𝐮
+)
+)
+, and vorticity 
+(
+ω
+→
+=
+∇
+×
+𝐮
+)
+ which is now expressed like so, for an incompressible fluid:
+∇
+2
+𝐮
+=
+−
+(
+∇
+×
+(
+∇
+×
+𝐮
+)
+)
+=
+−
+(
+∇
+×
+ω
+→
+)
+
+Stream function for incompressible 2D fluid
+Taking the curl of the incompressible Navier–Stokes equation results in the elimination of pressure. This is especially easy to see if 2D Cartesian flow is assumed (like in the degenerate 3D case with 
+u
+z
+=
+0
+ and no dependence of anything on 
+z
+), where the equations reduce to:
+ρ
+(
+∂
+u
+x
+∂
+t
++
+u
+x
+∂
+u
+x
+∂
+x
++
+u
+y
+∂
+u
+x
+∂
+y
+)
+=
+−
+∂
+p
+∂
+x
++
+μ
+(
+∂
+2
+u
+x
+∂
+x
+2
++
+∂
+2
+u
+x
+∂
+y
+2
+)
++
+ρ
+g
+x
+ρ
+(
+∂
+u
+y
+∂
+t
++
+u
+x
+∂
+u
+y
+∂
+x
++
+u
+y
+∂
+u
+y
+∂
+y
+)
+=
+−
+∂
+p
+∂
+y
++
+μ
+(
+∂
+2
+u
+y
+∂
+x
+2
++
+∂
+2
+u
+y
+∂
+y
+2
+)
++
+ρ
+g
+y
+.
+
+Differentiating the first with respect to 
+y
+, the second with respect to 
+x
+ and subtracting the resulting equations will eliminate pressure and any conservative force. For incompressible flow, defining the stream function 
+ψ
+ through
+u
+x
+=
+∂
+ψ
+∂
+y
+;
+u
+y
+=
+−
+∂
+ψ
+∂
+x
+results in mass continuity being unconditionally satisfied (given the stream function is continuous), and then incompressible Newtonian 2D momentum and mass conservation condense into one equation:
+∂
+∂
+t
+(
+∇
+2
+ψ
+)
++
+∂
+ψ
+∂
+y
+∂
+∂
+x
+(
+∇
+2
+ψ
+)
+−
+∂
+ψ
+∂
+x
+∂
+∂
+y
+(
+∇
+2
+ψ
+)
+=
+ν
+∇
+4
+ψ
+
+where 
+∇
+4
+ is the 2D biharmonic operator and 
+ν
+ is the kinematic viscosity, 
+ν
+=
+μ
+ρ
+. We can also express this compactly using the Jacobian determinant:
+∂
+∂
+t
+(
+∇
+2
+ψ
+)
++
+∂
+(
+ψ
+,
+∇
+2
+ψ
+)
+∂
+(
+y
+,
+x
+)
+=
+ν
+∇
+4
+ψ
+.
+
+This single equation together with appropriate boundary conditions describes 2D fluid flow, taking only kinematic viscosity as a parameter. Note that the equation for creeping flow results when the left side is assumed zero.
+
+In axisymmetric flow another stream function formulation, called the Stokes stream function, can be used to describe the velocity components of an incompressible flow with one scalar function.
+
+The incompressible Navier–Stokes equation is a differential algebraic equation, having the inconvenient feature that there is no explicit mechanism for advancing the pressure in time. Consequently, much effort has been expended to eliminate the pressure from all or part of the computational process. The stream function formulation eliminates the pressure but only in two dimensions and at the expense of introducing higher derivatives and elimination of the velocity, which is the primary variable of interest.
+
+Properties
+Nonlinearity
+The Navier–Stokes equations are nonlinear partial differential equations in the general case and so remain in almost every real situation.[23][24] In some cases, such as one-dimensional flow and Stokes flow (or creeping flow), the equations can be simplified to linear equations. The nonlinearity makes most problems difficult or impossible to solve and is the main contributor to the turbulence that the equations model.
+
+The nonlinearity is due to convective acceleration, which is an acceleration associated with the change in velocity over position. Hence, any convective flow, whether turbulent or not, will involve nonlinearity. An example of convective but laminar (nonturbulent) flow would be the passage of a viscous fluid (for example, oil) through a small converging nozzle. Such flows, whether exactly solvable or not, can often be thoroughly studied and understood.[25]
+
+Turbulence
+Turbulence is the time-dependent chaotic behaviour seen in many fluid flows. It is generally believed that it is due to the inertia of the fluid as a whole: the culmination of time-dependent and convective acceleration; hence flows where inertial effects are small tend to be laminar (the Reynolds number quantifies how much the flow is affected by inertia). It is believed, though not known with certainty, that the Navier–Stokes equations describe turbulence properly.[26]
+
+The numerical solution of the Navier–Stokes equations for turbulent flow is extremely difficult, and due to the significantly different mixing-length scales that are involved in turbulent flow, the stable solution of this requires such a fine mesh resolution that the computational time becomes significantly infeasible for calculation or direct numerical simulation. Attempts to solve turbulent flow using a laminar solver typically result in a time-unsteady solution, which fails to converge appropriately. To counter this, time-averaged equations such as the Reynolds-averaged Navier–Stokes equations (RANS), supplemented with turbulence models, are used in practical computational fluid dynamics (CFD) applications when modeling turbulent flows. Some models include the Spalart–Allmaras, k–ω, k–ε, and SST models, which add a variety of additional equations to bring closure to the RANS equations. Large eddy simulation (LES) can also be used to solve these equations numerically. This approach is computationally more expensive—in time and in computer memory—than RANS, but produces better results because it explicitly resolves the larger turbulent scales.
+
+Applicability
+Together with supplemental equations (for example, conservation of mass) and well-formulated boundary conditions, the Navier–Stokes equations seem to model fluid motion accurately; even turbulent flows seem (on average) to agree with real world observations.
+The Navier–Stokes equations assume that the fluid being studied is a continuum (it is infinitely divisible and not composed of particles such as atoms or molecules), and is not moving at relativistic velocities. At very small scales or under extreme conditions, real fluids made out of discrete molecules will produce results different from the continuous fluids modeled by the Navier–Stokes equations. For example, capillarity of internal layers in fluids appears for flow with high gradients.[27] For large Knudsen number of the problem, the Boltzmann equation may be a suitable replacement.[28] Failing that, one may have to resort to molecular dynamics or various hybrid methods.[29]
+
+Another limitation is simply the complicated nature of the equations. Time-tested formulations exist for common fluid families, but the application of the Navier–Stokes equations to less common families tends to result in very complicated formulations and often to open research problems. For this reason, these equations are usually written for Newtonian fluids where the viscosity model is linear; truly general models for the flow of other kinds of fluids (such as blood) do not exist.[30]
+
+Application to specific problems
+The Navier–Stokes equations, even when written explicitly for specific fluids, are rather generic in nature and their proper application to specific problems can be very diverse. This is partly because there is an enormous variety of problems that may be modeled, ranging from as simple as the distribution of static pressure to as complicated as multiphase flow driven by surface tension.
+
+Generally, application to specific problems begins with some flow assumptions and initial/boundary condition formulation, this may be followed by scale analysis to further simplify the problem.
+
+
+Visualization of (a) parallel flow and (b) radial flow
+Parallel flow
+Assume steady, parallel, one-dimensional, non-convective pressure-driven flow between parallel plates, the resulting scaled (dimensionless) boundary value problem is:
+d
+2
+u
+d
+y
+2
+=
+−
+1
+;
+u
+(
+0
+)
+=
+u
+(
+1
+)
+=
+0
+.
+
+The boundary condition is the no slip condition. This problem is easily solved for the flow field:
+u
+(
+y
+)
+=
+y
+−
+y
+2
+2
+.
+
+From this point onward, more quantities of interest can be easily obtained, such as viscous drag force or net flow rate.
+
+Radial flow
+Difficulties may arise when the problem becomes slightly more complicated. A seemingly modest twist on the parallel flow above would be the radial flow between parallel plates; this involves convection and thus non-linearity. The velocity field may be represented by a function f(z) that must satisfy:
+d
+2
+f
+d
+z
+2
++
+R
+f
+2
+=
+−
+1
+;
+f
+(
+−
+1
+)
+=
+f
+(
+1
+)
+=
+0
+.
+
+This ordinary differential equation is what is obtained when the Navier–Stokes equations are written and the flow assumptions applied (additionally, the pressure gradient is solved for). The nonlinear term makes this a very difficult problem to solve analytically (a lengthy implicit solution may be found which involves elliptic integrals and roots of cubic polynomials). Issues with the actual existence of solutions arise for 
+R
+>
+1
+.
+4
+1
+ (approximately; this is not √2), the parameter 
+R
+ being the Reynolds number with appropriately chosen scales.[31] This is an example of flow assumptions losing their applicability, and an example of the difficulty in "high" Reynolds number flows.[31]
+
+Convection
+A type of natural convection that can be described by the Navier–Stokes equation is the Rayleigh–Bénard convection. It is one of the most commonly studied convection phenomena because of its analytical and experimental accessibility.
+
+Exact solutions of the Navier–Stokes equations
+Some exact solutions to the Navier–Stokes equations exist. Examples of degenerate cases—with the non-linear terms in the Navier–Stokes equations equal to zero—are Poiseuille flow, Couette flow and the oscillatory Stokes boundary layer. But also, more interesting examples, solutions to the full non-linear equations, exist, such as Jeffery–Hamel flow, Von Kármán swirling flow, stagnation point flow, Landau–Squire jet, and Taylor–Green vortex.[32][33][34] Time-dependent self-similar solutions of the three-dimensional non-compressible Navier–Stokes equations in Cartesian coordinate can be given with the help of the Kummer's functions with quadratic arguments.[35] For the compressible Navier–Stokes equations the time-dependent self-similar solutions are however the Whittaker functions again with quadratic arguments when the polytropic equation of state is used as a closing condition.[36] Note that the existence of these exact solutions does not imply they are stable: turbulence may develop at higher Reynolds numbers.
+
+Under additional assumptions, the component parts can be separated.[37]
+
+A two-dimensional example
+A three-dimensional example
+A three-dimensional steady-state vortex solution
+
+Wire model of flow lines along a Hopf fibration
+A steady-state example with no singularities comes from considering the flow along the lines of a Hopf fibration. Let 
+r
+ be a constant radius of the inner coil. One set of solutions is given by:[39]
+ρ
+(
+x
+,
+y
+,
+z
+)
+=
+3
+B
+r
+2
++
+x
+2
++
+y
+2
++
+z
+2
+p
+(
+x
+,
+y
+,
+z
+)
+=
+−
+A
+2
+B
+(
+r
+2
++
+x
+2
++
+y
+2
++
+z
+2
+)
+3
+𝐮
+(
+x
+,
+y
+,
+z
+)
+=
+A
+(
+r
+2
++
+x
+2
++
+y
+2
++
+z
+2
+)
+2
+(
+2
+(
+−
+r
+y
++
+x
+z
+)
+2
+(
+r
+x
++
+y
+z
+)
+r
+2
+−
+x
+2
+−
+y
+2
++
+z
+2
+)
+g
+=
+0
+μ
+=
+0
+
+for arbitrary constants 
+A
+ and 
+B
+. This is a solution in a non-viscous gas (compressible fluid) whose density, velocities and pressure goes to zero far from the origin. (Note this is not a solution to the Clay Millennium problem because that refers to incompressible fluids where 
+ρ
+ is a constant, and neither does it deal with the uniqueness of the Navier–Stokes equations with respect to any turbulence properties.) It is also worth pointing out that the components of the velocity vector are exactly those from the Pythagorean quadruple parametrization. Other choices of density and pressure are possible with the same velocity field:
+
+Other choices of density and pressure
+Viscous three-dimensional periodic solutions
+Two examples of periodic fully-three-dimensional viscous solutions are described in.[40] These solutions are defined on a three-dimensional torus 
+𝕋
+3
+=
+[
+0
+,
+L
+]
+3
+ and are characterized by positive and negative helicity respectively. The solution with positive helicity is given by:
+u
+x
+=
+4
+2
+3
+3
+U
+0
+[
+sin
+⁡
+(
+k
+x
+−
+π
+/
+3
+)
+cos
+⁡
+(
+k
+y
++
+π
+/
+3
+)
+sin
+⁡
+(
+k
+z
++
+π
+/
+2
+)
+−
+cos
+⁡
+(
+k
+z
+−
+π
+/
+3
+)
+sin
+⁡
+(
+k
+x
++
+π
+/
+3
+)
+sin
+⁡
+(
+k
+y
++
+π
+/
+2
+)
+]
+e
+−
+3
+ν
+k
+2
+t
+u
+y
+=
+4
+2
+3
+3
+U
+0
+[
+sin
+⁡
+(
+k
+y
+−
+π
+/
+3
+)
+cos
+⁡
+(
+k
+z
++
+π
+/
+3
+)
+sin
+⁡
+(
+k
+x
++
+π
+/
+2
+)
+−
+cos
+⁡
+(
+k
+x
+−
+π
+/
+3
+)
+sin
+⁡
+(
+k
+y
++
+π
+/
+3
+)
+sin
+⁡
+(
+k
+z
++
+π
+/
+2
+)
+]
+e
+−
+3
+ν
+k
+2
+t
+u
+z
+=
+4
+2
+3
+3
+U
+0
+[
+sin
+⁡
+(
+k
+z
+−
+π
+/
+3
+)
+cos
+⁡
+(
+k
+x
++
+π
+/
+3
+)
+sin
+⁡
+(
+k
+y
++
+π
+/
+2
+)
+−
+cos
+⁡
+(
+k
+y
+−
+π
+/
+3
+)
+sin
+⁡
+(
+k
+z
++
+π
+/
+3
+)
+sin
+⁡
+(
+k
+x
++
+π
+/
+2
+)
+]
+e
+−
+3
+ν
+k
+2
+t
+where 
+k
+=
+2
+π
+/
+L
+ is the wave number and the velocity components are normalized so that the average kinetic energy per unit of mass is 
+U
+0
+2
+/
+2
+ at 
+t
+=
+0
+. The pressure field is obtained from the velocity field as 
+p
+=
+p
+0
+−
+ρ
+0
+‖
+u
+‖
+2
+/
+2
+ (where 
+p
+0
+ and 
+ρ
+0
+ are reference values for the pressure and density fields respectively). Since both the solutions belong to the class of Beltrami flow, the vorticity field is parallel to the velocity and, for the case with positive helicity, is given by 
+ω
+=
+3
+k
+u
+. These solutions can be regarded as a generalization in three dimensions of the classic two-dimensional Taylor-Green Taylor–Green vortex.
+
+Wyld diagrams
+Wyld diagrams are bookkeeping graphs that correspond to the Navier–Stokes equations via a perturbation expansion of the fundamental continuum mechanics. Similar to the Feynman diagrams in quantum field theory, these diagrams are an extension of Mstislav Keldysh's technique for nonequilibrium processes in fluid dynamics.[citation needed] In other words, these diagrams assign graphs to the (often) turbulent phenomena in turbulent fluids by allowing correlated and interacting fluid particles to obey stochastic processes associated to pseudo-random functions in probability distributions.[41]
+
+Representations in 3D
+Note that the formulas in this section make use of the single-line notation for partial derivatives, where, e.g. 
+∂
+x
+u
+ means the partial derivative of 
+u
+ with respect to 
+x
+, and 
+∂
+y
+2
+f
+θ
+ means the second-order partial derivative of 
+f
+θ
+ with respect to 
+y
+.
+
+A 2022 paper provides a less costly, dynamical and recurrent solution of the Navier-Stokes equation for 3D turbulent fluid flows. On suitably short time scales, the dynamics of turbulence is deterministic.[42]
+
+Cartesian coordinates
+From the general form of the Navier–Stokes, with the velocity vector expanded as 
+𝐮
+=
+(
+u
+x
+,
+u
+y
+,
+u
+z
+)
+, sometimes respectively named 
+u
+, 
+v
+, 
+w
+, we may write the vector equation explicitly,
+x
+:
+ 
+ρ
+(
+∂
+t
+u
+x
++
+u
+x
+∂
+x
+u
+x
++
+u
+y
+∂
+y
+u
+x
++
+u
+z
+∂
+z
+u
+x
+)
+=
+−
+∂
+x
+p
++
+μ
+(
+∂
+x
+2
+u
+x
++
+∂
+y
+2
+u
+x
++
+∂
+z
+2
+u
+x
+)
++
+1
+3
+μ
+ 
+∂
+x
+(
+∂
+x
+u
+x
++
+∂
+y
+u
+y
++
+∂
+z
+u
+z
+)
++
+ρ
+g
+x
+y
+:
+ 
+ρ
+(
+∂
+t
+u
+y
++
+u
+x
+∂
+x
+u
+y
++
+u
+y
+∂
+y
+u
+y
++
+u
+z
+∂
+z
+u
+y
+)
+=
+−
+∂
+y
+p
++
+μ
+(
+∂
+x
+2
+u
+y
++
+∂
+y
+2
+u
+y
++
+∂
+z
+2
+u
+y
+)
++
+1
+3
+μ
+ 
+∂
+y
+(
+∂
+x
+u
+x
++
+∂
+y
+u
+y
++
+∂
+z
+u
+z
+)
++
+ρ
+g
+y
+z
+:
+ 
+ρ
+(
+∂
+t
+u
+z
++
+u
+x
+∂
+x
+u
+z
++
+u
+y
+∂
+y
+u
+z
++
+u
+z
+∂
+z
+u
+z
+)
+=
+−
+∂
+z
+p
++
+μ
+(
+∂
+x
+2
+u
+z
++
+∂
+y
+2
+u
+z
++
+∂
+z
+2
+u
+z
+)
++
+1
+3
+μ
+ 
+∂
+z
+(
+∂
+x
+u
+x
++
+∂
+y
+u
+y
++
+∂
+z
+u
+z
+)
++
+ρ
+g
+z
+.
+
+Note that gravity has been accounted for as a body force, and the values of 
+g
+x
+, 
+g
+y
+, 
+g
+z
+ will depend on the orientation of gravity with respect to the chosen set of coordinates.
+
+The continuity equation reads:
+∂
+t
+ρ
++
+∂
+x
+(
+ρ
+u
+x
+)
++
+∂
+y
+(
+ρ
+u
+y
+)
++
+∂
+z
+(
+ρ
+u
+z
+)
+=
+0
+.
+
+When the flow is incompressible, 
+ρ
+ does not change for any fluid particle, and its material derivative vanishes: 
+D
+ρ
+D
+t
+=
+0
+. The continuity equation is reduced to:
+∂
+x
+u
+x
++
+∂
+y
+u
+y
++
+∂
+z
+u
+z
+=
+0
+.
+
+Thus, for the incompressible version of the Navier–Stokes equation the second part of the viscous terms fall away (see Incompressible flow).
+
+This system of four equations comprises the most commonly used and studied form. Though comparatively more compact than other representations, this is still a nonlinear system of partial differential equations for which solutions are difficult to obtain.
+
+Cylindrical coordinates
+A change of variables on the Cartesian equations will yield[16] the following momentum equations for 
+r
+, 
+ϕ
+, and 
+z
+[43]
+r
+:
+ 
+ρ
+(
+∂
+t
+u
+r
++
+u
+r
+∂
+r
+u
+r
++
+u
+φ
+r
+∂
+φ
+u
+r
++
+u
+z
+∂
+z
+u
+r
+−
+u
+φ
+2
+r
+)
+=
+−
+∂
+r
+p
++
+μ
+(
+1
+r
+∂
+r
+(
+r
+∂
+r
+u
+r
+)
++
+1
+r
+2
+∂
+φ
+2
+u
+r
++
+∂
+z
+2
+u
+r
+−
+u
+r
+r
+2
+−
+2
+r
+2
+∂
+φ
+u
+φ
+)
++
+1
+3
+μ
+∂
+r
+(
+1
+r
+∂
+r
+(
+r
+u
+r
+)
++
+1
+r
+∂
+φ
+u
+φ
++
+∂
+z
+u
+z
+)
++
+ρ
+g
+r
+[
+8
+p
+x
+]
+φ
+:
+ 
+ρ
+(
+∂
+t
+u
+φ
++
+u
+r
+∂
+r
+u
+φ
++
+u
+φ
+r
+∂
+φ
+u
+φ
++
+u
+z
+∂
+z
+u
+φ
++
+u
+r
+u
+φ
+r
+)
+=
+−
+1
+r
+∂
+φ
+p
++
+μ
+(
+1
+r
+ 
+∂
+r
+(
+r
+∂
+r
+u
+φ
+)
++
+1
+r
+2
+∂
+φ
+2
+u
+φ
++
+∂
+z
+2
+u
+φ
+−
+u
+φ
+r
+2
++
+2
+r
+2
+∂
+φ
+u
+r
+)
++
+1
+3
+μ
+1
+r
+∂
+φ
+(
+1
+r
+∂
+r
+(
+r
+u
+r
+)
++
+1
+r
+∂
+φ
+u
+φ
++
+∂
+z
+u
+z
+)
++
+ρ
+g
+φ
+[
+8
+p
+x
+]
+z
+:
+ 
+ρ
+(
+∂
+t
+u
+z
++
+u
+r
+∂
+r
+u
+z
++
+u
+φ
+r
+∂
+φ
+u
+z
++
+u
+z
+∂
+z
+u
+z
+)
+=
+−
+∂
+z
+p
++
+μ
+(
+1
+r
+∂
+r
+(
+r
+∂
+r
+u
+z
+)
++
+1
+r
+2
+∂
+φ
+2
+u
+z
++
+∂
+z
+2
+u
+z
+)
++
+1
+3
+μ
+∂
+z
+(
+1
+r
+∂
+r
+(
+r
+u
+r
+)
++
+1
+r
+∂
+φ
+u
+φ
++
+∂
+z
+u
+z
+)
++
+ρ
+g
+z
+.
+
+The gravity components will generally not be constants, however for most applications either the coordinates are chosen so that the gravity components are constant or else it is assumed that gravity is counteracted by a pressure field (for example, flow in horizontal pipe is treated normally without gravity and without a vertical pressure gradient). The continuity equation is:
+∂
+t
+ρ
++
+1
+r
+∂
+r
+(
+ρ
+r
+u
+r
+)
++
+1
+r
+∂
+φ
+(
+ρ
+u
+φ
+)
++
+∂
+z
+(
+ρ
+u
+z
+)
+=
+0
+.
+
+This cylindrical representation of the incompressible Navier–Stokes equations is the second most commonly seen (the first being Cartesian above). Cylindrical coordinates are chosen to take advantage of symmetry, so that a velocity component can disappear. A very common case is axisymmetric flow with the assumption of no tangential velocity (
+u
+ϕ
+=
+0
+), and the remaining quantities are independent of 
+ϕ
+:
+ρ
+(
+∂
+t
+u
+r
++
+u
+r
+∂
+r
+u
+r
++
+u
+z
+∂
+z
+u
+r
+)
+=
+−
+∂
+r
+p
++
+μ
+(
+1
+r
+∂
+r
+(
+r
+∂
+r
+u
+r
+)
++
+∂
+z
+2
+u
+r
+−
+u
+r
+r
+2
+)
++
+ρ
+g
+r
+ρ
+(
+∂
+t
+u
+z
++
+u
+r
+∂
+r
+u
+z
++
+u
+z
+∂
+z
+u
+z
+)
+=
+−
+∂
+z
+p
++
+μ
+(
+1
+r
+∂
+r
+(
+r
+∂
+r
+u
+z
+)
++
+∂
+z
+2
+u
+z
+)
++
+ρ
+g
+z
+1
+r
+∂
+r
+(
+r
+u
+r
+)
++
+∂
+z
+u
+z
+=
+0
+.
+
+Spherical coordinates
+In spherical coordinates, the 
+r
+, 
+ϕ
+, and 
+θ
+ momentum equations are[16] (note the convention used: 
+θ
+ is polar angle, or colatitude,[44] 
+0
+≤
+θ
+≤
+π
+):
+r
+:
+ 
+ρ
+(
+∂
+t
+u
+r
++
+u
+r
+∂
+r
+u
+r
++
+u
+φ
+r
+sin
+⁡
+θ
+∂
+φ
+u
+r
++
+u
+θ
+r
+∂
+θ
+u
+r
+−
+u
+φ
+2
++
+u
+θ
+2
+r
+)
+=
+−
+∂
+r
+p
++
+μ
+(
+1
+r
+2
+∂
+r
+(
+r
+2
+∂
+r
+u
+r
+)
++
+1
+r
+2
+sin
+2
+θ
+∂
+φ
+2
+u
+r
++
+1
+r
+2
+sin
+⁡
+θ
+∂
+θ
+(
+sin
+⁡
+θ
+∂
+θ
+u
+r
+)
+−
+2
+u
+r
++
+∂
+θ
+u
+θ
++
+u
+θ
+cot
+⁡
+θ
+r
+2
+−
+2
+r
+2
+sin
+⁡
+θ
+∂
+φ
+u
+φ
+)
++
+1
+3
+μ
+∂
+r
+(
+1
+r
+2
+∂
+r
+(
+r
+2
+u
+r
+)
++
+1
+r
+sin
+⁡
+θ
+∂
+θ
+(
+u
+θ
+sin
+⁡
+θ
+)
++
+1
+r
+sin
+⁡
+θ
+∂
+φ
+u
+φ
+)
++
+ρ
+g
+r
+[
+8
+p
+x
+]
+φ
+:
+ 
+ρ
+(
+∂
+t
+u
+φ
++
+u
+r
+∂
+r
+u
+φ
++
+u
+φ
+r
+sin
+⁡
+θ
+∂
+φ
+u
+φ
++
+u
+θ
+r
+∂
+θ
+u
+φ
++
+u
+r
+u
+φ
++
+u
+φ
+u
+θ
+cot
+⁡
+θ
+r
+)
+=
+−
+1
+r
+sin
+⁡
+θ
+∂
+φ
+p
++
+μ
+(
+1
+r
+2
+∂
+r
+(
+r
+2
+∂
+r
+u
+φ
+)
++
+1
+r
+2
+sin
+2
+θ
+∂
+φ
+2
+u
+φ
++
+1
+r
+2
+sin
+⁡
+θ
+∂
+θ
+(
+sin
+⁡
+θ
+∂
+θ
+u
+φ
+)
++
+2
+sin
+⁡
+θ
+∂
+φ
+u
+r
++
+2
+cos
+⁡
+θ
+∂
+φ
+u
+θ
+−
+u
+φ
+r
+2
+sin
+2
+θ
+)
++
+1
+3
+μ
+1
+r
+sin
+⁡
+θ
+∂
+φ
+(
+1
+r
+2
+∂
+r
+(
+r
+2
+u
+r
+)
++
+1
+r
+sin
+⁡
+θ
+∂
+θ
+(
+u
+θ
+sin
+⁡
+θ
+)
++
+1
+r
+sin
+⁡
+θ
+∂
+φ
+u
+φ
+)
++
+ρ
+g
+φ
+[
+8
+p
+x
+]
+θ
+:
+ 
+ρ
+(
+∂
+t
+u
+θ
++
+u
+r
+∂
+r
+u
+θ
++
+u
+φ
+r
+sin
+⁡
+θ
+∂
+φ
+u
+θ
++
+u
+θ
+r
+∂
+θ
+u
+θ
++
+u
+r
+u
+θ
+−
+u
+φ
+2
+cot
+⁡
+θ
+r
+)
+=
+−
+1
+r
+∂
+θ
+p
++
+μ
+(
+1
+r
+2
+∂
+r
+(
+r
+2
+∂
+r
+u
+θ
+)
++
+1
+r
+2
+sin
+2
+θ
+∂
+φ
+2
+u
+θ
++
+1
+r
+2
+sin
+⁡
+θ
+∂
+θ
+(
+sin
+⁡
+θ
+∂
+θ
+u
+θ
+)
++
+2
+r
+2
+∂
+θ
+u
+r
+−
+u
+θ
++
+2
+cos
+⁡
+θ
+∂
+φ
+u
+φ
+r
+2
+sin
+2
+θ
+)
++
+1
+3
+μ
+1
+r
+∂
+θ
+(
+1
+r
+2
+∂
+r
+(
+r
+2
+u
+r
+)
++
+1
+r
+sin
+⁡
+θ
+∂
+θ
+(
+u
+θ
+sin
+⁡
+θ
+)
++
+1
+r
+sin
+⁡
+θ
+∂
+φ
+u
+φ
+)
++
+ρ
+g
+θ
+.
+
+Mass continuity will read:
+∂
+t
+ρ
++
+1
+r
+2
+∂
+r
+(
+ρ
+r
+2
+u
+r
+)
++
+1
+r
+sin
+⁡
+θ
+∂
+φ
+(
+ρ
+u
+φ
+)
++
+1
+r
+sin
+⁡
+θ
+∂
+θ
+(
+sin
+⁡
+θ
+ρ
+u
+θ
+)
+=
+0
+.
+
+These equations could be (slightly) compacted by, for example, factoring 
+1
+r
+2
+ from the viscous terms. However, doing so would undesirably alter the structure of the Laplacian and other quantities.
+
+See also
+Adhémar Jean Claude Barré de Saint-Venant
+Boltzmann equation
+Cauchy momentum equation
+Cauchy stress tensor
+Chapman–Enskog theory
+Churchill–Bernstein equation
+Coandă effect
+Computational fluid dynamics
+Continuum mechanics
+Convection–diffusion equation
+Derivation of the Navier–Stokes equations
+Einstein–Stokes equation
+Euler equations
+Hagen–Poiseuille flow from the Navier–Stokes equations
+Millennium Prize Problems
+Newtonian fluid
+Non-dimensionalization and scaling of the Navier–Stokes equations
+Pressure-correction method
+Primitive equations
+Rayleigh–Bénard convection
+Reynolds transport theorem
+Stokes equations
+Supersonic flow over a flat plate
+Vlasov equation
+Citations
+ McLean, Doug (2012). "Continuum Fluid Mechanics and the Navier-Stokes Equations". Understanding Aerodynamics: Arguing from the Real Physics. John Wiley & Sons. pp. 13–78. ISBN 978-1-119-96751-4. "The main relationships comprising the NS equations are the basic conservation laws for mass, momentum, and energy. To have a complete equation set we also need an equation of state relating temperature, pressure, and density..."
+ Millennium Prize Problems—Navier–Stokes Equation, Clay Mathematics Institute, March 27, 2017, retrieved 2017-04-02
+ Fefferman, Charles L.. "Existence and smoothness of the Navier–Stokes equation". Clay Mathematics Institute.
+ Batchelor (1967), pp. 137 & 142
+ Batchelor (1967), pp. 142–148
+ Chorin, Alexandre E.; Marsden, Jerrold E. (1993). A Mathematical Introduction to Fluid Mechanics. p. 33.
+ Bird, Stewart, Lightfoot, Transport Phenomena, 1st ed., 1960, eq. (3.2-11a)
+ Batchelor (1967), p. 165
+ Landau, Lev Davidovich, and Evgenii Mikhailovich Lifshitz. Fluid mechanics: Landau And Lifshitz: course of theoretical physics, Volume 6. Vol. 6. Elsevier, 2013.
+ Landau & Lifshitz (1987), pp. 44–45, 196
+ White (2006), p. 67
+ Stokes, G. G. (1845). On the theories of the internal friction of fluids in motion, and of the equilibrium and motion of elastic solids.
+ Vincenti, W. G., Kruger Jr., C. H. (1975). Introduction to physical gas dynamic. Introduction to physical gas dynamics/Huntington.
+ Batchelor (1967), pp. 147 & 154
+ Batchelor (1967), p. 75
+ Acheson (1990)
+ Abdulkadirov, Ruslan; Lyakhov, Pavel (2022-02-22). "Estimates of Mild Solutions of Navier–Stokes Equations in Weak Herz-Type Besov–Morrey Spaces" (in en). Mathematics 10 (5): 680. doi:10.3390/math10050680. ISSN 2227-7390.
+ Batchelor (1967), pp. 21 & 147
+ Temam, Roger (2001), Navier–Stokes Equations, Theory and Numerical Analysis, AMS Chelsea, pp. 107–112
+ Quarteroni, Alfio (2014-04-25). Numerical models for differential problems (Second ed.). Springer. ISBN 978-88-470-5522-3.
+ Holdeman, J. T. (2010), "A Hermite finite element method for incompressible fluid flow", Int. J. Numer. Methods Fluids 64 (4): 376–408, doi:10.1002/fld.2154, Bibcode: 2010IJNMF..64..376H
+ Holdeman, J. T.; Kim, J. W. (2010), "Computation of incompressible thermal flows using Hermite finite elements", Comput. Meth. Appl. Mech. Eng. 199 (49–52): 3297–3304, doi:10.1016/j.cma.2010.06.036, Bibcode: 2010CMAME.199.3297H
+ Potter, M.; Wiggert, D. C. (2008). Fluid Mechanics. Schaum's Outlines. McGraw-Hill. ISBN 978-0-07-148781-8.
+ Aris, R. (1989). Vectors, Tensors, and the basic Equations of Fluid Mechanics. Dover Publications. ISBN 0-486-66110-5.
+ Parker, C. B. (1994). McGraw Hill Encyclopaedia of Physics (2nd ed.). McGraw-Hill. ISBN 0-07-051400-3.
+ Encyclopaedia of Physics (2nd Edition), R.G. Lerner, G.L. Trigg, VHC publishers, 1991, ISBN 3-527-26954-1 (Verlagsgesellschaft), ISBN 0-89573-752-3 (VHC Inc.)
+ Gorban, A.N.; Karlin, I. V. (2016), "Beyond Navier–Stokes equations: capillarity of ideal gas", Contemporary Physics 58 (1): 70–90, doi:10.1080/00107514.2016.1256123, Bibcode: 2017ConPh..58...70G
+ Cercignani, C. (2002), "The Boltzmann equation and fluid dynamics", in Friedlander, S.; Serre, D., Handbook of mathematical fluid dynamics, 1, Amsterdam: North-Holland, pp. 1–70, ISBN 978-0-444-50330-5
+ Nie, X.B.; Chen, S.Y.; Robbins, M.O. (2004), "A continuum and molecular dynamics hybrid method for micro-and nano-fluid flow", Journal of Fluid Mechanics 500: 55–64, doi:10.1017/S0022112003007225, Bibcode: 2004JFM...500...55N
+ Öttinger, H.C. (2012), Stochastic processes in polymeric fluids, Berlin, Heidelberg: Springer Science & Business Media, doi:10.1007/978-3-642-58290-5, ISBN 978-3-540-58353-0
+ Shah, Tasneem Mohammad (1972). "Analysis of the multigrid method". NASA Sti/Recon Technical Report N 91: 23418. Bibcode: 1989STIN...9123418S.
+ Wang, C. Y. (1991), "Exact solutions of the steady-state Navier–Stokes equations", Annual Review of Fluid Mechanics 23: 159–177, doi:10.1146/annurev.fl.23.010191.001111, Bibcode: 1991AnRFM..23..159W
+ Landau & Lifshitz (1987), pp. 75–88
+ Ethier, C. R.; Steinman, D. A. (1994), "Exact fully 3D Navier–Stokes solutions for benchmarking", International Journal for Numerical Methods in Fluids 19 (5): 369–375, doi:10.1002/fld.1650190502, Bibcode: 1994IJNMF..19..369E
+ Barna, I.F. (2011). "Self-Similar Solutions of Three-Dimensional Navier–Stokes Equation". Communications in Theoretical Physics 56 (4): 745–750. doi:10.1088/0253-6102/56/4/25. Bibcode: 2011CoTPh..56..745I.
+ Barna, I.F.; Mátyás, L. (2014). "Analytic solutions for the three-dimensional compressible Navier-Stokes equation". Fluid Dynamics Research 46 (5). doi:10.1088/0169-5983/46/5/055508. Bibcode: 2014FlDyR..46e5508B.
+ "Navier Stokes Equations".
+ Ladyzhenskaya, O. A. (1969), The Mathematical Theory of viscous Incompressible Flow (2nd ed.), p. preface, xi
+ Kamchatno, A. M. (1982), "Topological solitons in magnetohydrodynamics", Soviet Journal of Experimental and Theoretical Physics 55 (1): 69, Bibcode: 1982JETP...55...69K
+ Antuono, M. (2020), "Tri-periodic fully three-dimensional analytic solutions for the Navier–Stokes equations", Journal of Fluid Mechanics 890, doi:10.1017/jfm.2020.126, Bibcode: 2020JFM...890A..23A
+ McComb, W. D. (2008), Renormalization methods: A guide for beginners, Oxford University Press, pp. 121–128, ISBN 978-0-19-923652-7
+ Georgia Institute of Technology (August 29, 2022). "Physicists uncover new dynamical framework for turbulence". Proceedings of the National Academy of Sciences of the United States of America (Phys.org) 119 (34). doi:10.1073/pnas.2120665119. PMID 35984901. PMC 9407532.
+ de' Michieli Vitturi, Mattia, Navier–Stokes equations in cylindrical coordinates, retrieved 2016-12-26
+ Eric W. Weisstein (2005-10-26), Spherical Coordinates, MathWorld, retrieved 2008-01-22
+General references
+Acheson, D. J. (1990), Elementary Fluid Dynamics, Oxford Applied Mathematics and Computing Science Series, Oxford University Press, ISBN 978-0-19-859679-0
+Batchelor, G. K. (1967), An Introduction to Fluid Dynamics, Cambridge University Press, ISBN 978-0-521-66396-0
+Currie, I. G. (1974), Fundamental Mechanics of Fluids, McGraw-Hill, ISBN 978-0-07-015000-3
+V. Girault and P. A. Raviart. Finite Element Methods for Navier–Stokes Equations: Theory and Algorithms. Springer Series in Computational Mathematics. Springer-Verlag, 1986.
+Landau, L. D.; Lifshitz, E. M. (1987), Fluid mechanics, Course of Theoretical Physics Volume 6 (2nd revised ed.), Pergamon Press, ISBN 978-0-08-033932-0, OCLC 15017127
+Polyanin, A. D.; Kutepov, A. M.; Vyazmin, A. V.; Kazenin, D. A. (2002), Hydrodynamics, Mass and Heat Transfer in Chemical Engineering, Taylor & Francis, London, ISBN 978-0-415-27237-7
+Rhyming, Inge L. (1991), Dynamique des fluides, Presses polytechniques et universitaires romandes
+Smits, Alexander J. (2014), A Physical Introduction to Fluid Mechanics, Wiley, ISBN 0-47-1253499
+Temam, Roger (1984): Navier–Stokes Equations: Theory and Numerical Analysis, ACM Chelsea Publishing, ISBN 978-0-8218-2737-6
+Milne-Thomson, L.M. C.B.E (1962), Theoretical Hydrodynamics, Macmillan & Co Ltd.
+Tartar, L (2006), An Introduction to Navier Stokes Equation and Oceanography, Springer ISBN 3-540-35743-2
+Birkhoff, Garrett (1960), Hydrodynamics, Princeton University Press
+Campos, D.(Editor) (2017) Handbook on Navier-Stokes Equations Theory and Applied Analysis, Nova Science Publisher ISBN 978-1-53610-292-5
+Döring, C.E. and J.D. Gibbon, J.D. (1995) Applied analysis of the Navier-Stokes equations, Cambridge University Press, ISBN 0-521-44557-1 {{isbn}}: Check isbn value: checksum (help)
+Basset, A.B. (1888) Hydrodynamics Volume I and II, Cambridge: Delighton, Bell and Co
+Fox, R. W. McDonald, A.T. and Pritchard, P.J. (2004) Introduction to Fluid Mechanics, John Wiley and Sons, ISBN 0-471-2023-2 {{isbn}}: Check isbn value: length (help)
+Foias, C. Mainley, O. Rosa, R. and Temam, R. (2004) Navier–Stokes Equations and Turbulence, Cambridge University Press, {{ISBN}0-521-36032-3}}
+Lions, P-L. (1998) Mathematical Topics in Fluid Mechanics Volume 1 and 2, Clarendon Press, ISBN 0-19-851488-3
+Deville, M.O. and Gatski, T. B. (2012) Mathematical Modeling for Complex Fluids and Flows, Springer, ISBN 978-3-642-25294-5
+Kochin, N.E. Kibel, I.A. and Roze, N.V. (1964) Theoretical Hydromechanics, John Wiley & Sons, Ltd.
+Lamb, H. (1879) Hydrodynamics, Cambridge University Press,
+White, Frank M. (2006), Viscous Fluid Flow, McGraw-Hill, ISBN 978-0-07-124493-0
+External links
+Simplified derivation of the Navier–Stokes equations
+Three-dimensional unsteady form of the Navier–Stokes equations Glenn Research Center, NASA
+vte
+Topics in continuum mechanics
+Divisions	
+Solid mechanicsFluid mechanicsAcousticsVibrationsRigid body dynamics
+Laws and Definitions	
+Laws
+Conservation of massConservation of momentum Navier-StokesBernoulliPoiseuilleArchimedesPascalConservation of energyEntropy inequality
+Definitions
+Stress Cauchy stressStress measuresDeformationSmall strain Antiplane shearLarge strainCompatibility
+Solid and Structural mechanics	
+Solids
+Elasticity linearHooke's lawTransverse isotropyOrthotropyhyperelasticity Membrane elasticityEquation of state HugoniotJWLhypoelasticityCauchy elasticityViscoelasticity CreepConcrete creepPlasticity Rock mass plasticityViscoplasticityYield criterion Bresler-PisterContact mechanics FrictionlessFrictional
+Material failure theory
+Drucker stabilityMaterial failure theoryFatigueFracture mechanics J-integralCompact tension specimenDamage mechanics Johnson-Holmquist
+Structures
+Bending Bending momentBending of platesSandwich theory
+Fluid mechanics	
+Fluids
+Fluid staticsFluid dynamicsNavier–Stokes equationsBernoulli's principlePoiseuille equationBuoyancyViscosity NewtonianNon-NewtonianArchimedes' principlePascal's lawPressureLiquidsSurface tensionCapillary action
+Gases
+AtmosphereBoyle's lawCharles's lawGay-Lussac's lawCombined gas law
+Plasma
+Acoustics	
+Acoustic theoryAeroacoustics
+Rheology	
+ViscoelasticitySmart fluids MagnetorheologicalElectrorheologicalFerrofluidsRheometryRheometer
+Scientists	
+BernoulliBoyleCauchyCharlesEulerGay-LussacHookePascalNewtonNavierStokes
+Awards	
+Eringen MedalWilliam Prager Medal
+
+
+Public domain	
+0.00
+ (0 votes)
+Original source: https://en.wikipedia.org/wiki/Navier–Stokes equations. Read more
+
+
+Categories: Pages with ISBN errorsAerodynamicsComputational fluid dynamicsConcepts in physicsEquations of fluid dynamicsFunctions of space and timePartial differential equationsTransport phenomena
+Physics portal
+
+Encyclopedia of Knowledge
+Portals
+Navigation
+Add a new article
+Search in topics
+Search services
+Search in categories
+Search using prefix
+Resources
+About HandWiki
+Curated articles
+Support
+FAQs
+Donate
+Help
+How to edit
+Citation manager
+Formatting articles
+List of categories
+Recent pages
+Recent changes
+Random page
+Navigation
+Special pages
+Wiki tools
+Cite this page
+Expand all
+More
+What links here
+Related changes
+Printable version
+Permanent link
+Page information
+Page logs
+Categories
+Pages with ISBN errors
+Aerodynamics
+Computational fluid dynamics
+Concepts in physics
+Equations of fluid dynamics
+Functions of space and time
+Partial differential equations
+Transport phenomena
+DesignedWorld YouTube channel
+DataMelt statistical framewwork for data scientists
+HandWiki ads
+You see the box below because you did not login
+Powered by MediaWikiSupported by KMF
+This page was last edited on 18 November 2025, at 06:33.
+Privacy policyAbout HandWikiDisclaimersCopyrightContact
+
+
+WikipediaThe Free Encyclopedia
+Search Wikipedia
+Search
+Donate
+Create account
+Log in
+Wikimania logo	
+Registration for Wikimania's virtual attendance is now open!
+Register now to attend online.
+July 21–25
+
+Wikimania_wordmark
+[ Help with translations! ]
+Contents hide
+(Top)
+Basic assumptions
+The material derivative
+Continuity equations
+
+Conservation of mass
+Conservation of momentum
+Cauchy momentum equation
+Application to different fluids
+
+Newtonian fluid
+Compressible Newtonian fluid
+Incompressible Newtonian fluid
+Non-Newtonian fluids
+Bingham fluid
+Power-law fluid
+Stream function formulation
+
+2D flow in orthogonal coordinates
+The stress tensor
+See also
+References
+Derivation of the Navier–Stokes equations
+
+Article
+Talk
+Read
+Edit
+View history
+
+Appearance hide
+Text
+
+Small
+
+Standard
+
+Large
+Width
+
+Standard
+
+Wide
+Color
+
+Automatic
+
+Light
+
+Dark
+From Wikipedia, the free encyclopedia
+The derivation of the Navier–Stokes equations as well as their application and formulation for different families of fluids, is an important exercise in fluid dynamics with applications in mechanical engineering, physics, chemistry, heat transfer, and electrical engineering. A proof explaining the properties and bounds of the equations, such as Navier–Stokes existence and smoothness, is one of the important unsolved problems in mathematics.[1]
+
+Basic assumptions
+The Navier–Stokes equations are based on the assumption that the fluid, at the scale of interest, is a continuum – a continuous substance rather than discrete particles. Another necessary assumption is that all the fields of interest including pressure, flow velocity, density, and temperature are at least weakly differentiable.
+
+The equations are derived from the basic principles of continuity of mass, conservation of momentum, and conservation of energy. Sometimes it is necessary to consider a finite arbitrary volume, called a control volume, over which these principles can be applied. This finite volume is denoted by Ω and its bounding surface ∂Ω. The control volume can remain fixed in space or can move with the fluid.
+
+The material derivative
+Main article: material derivative
+Changes in properties of a moving fluid can be measured in two different ways. One can measure a given property by either carrying out the measurement on a fixed point in space as particles of the fluid pass by, or by following a parcel of fluid along its streamline. The derivative of a field with respect to a fixed position in space is called the Eulerian derivative, while the derivative following a moving parcel is called the advective or material (or Lagrangian[2]) derivative.
+
+The material derivative is defined as the linear operator:
+
+D
+D
+t
+ 
+=
+d
+e
+f
+ 
+∂
+∂
+t
++
+u
+⋅
+∇
+{\displaystyle {\frac {D}{Dt}}\ {\stackrel {\mathrm {def} }{=}}\ {\frac {\partial }{\partial t}}+\mathbf {u} \cdot \nabla }
+where u is the flow velocity. The first term on the right-hand side of the equation is the ordinary Eulerian derivative (the derivative on a fixed reference frame, representing changes at a point with respect to time) whereas the second term represents changes of a quantity with respect to position (see advection). This "special" derivative is in fact the ordinary derivative of a function of many variables along a path following the fluid motion; it may be derived through application of the chain rule in which all independent variables are checked for change along the path (which is to say, the total derivative).
+
+For example, the measurement of changes in wind velocity in the atmosphere can be obtained with the help of an anemometer in a weather station or by observing the movement of a weather balloon. The anemometer in the first case is measuring the velocity of all the moving particles passing through a fixed point in space, whereas in the second case the instrument is measuring changes in velocity as it moves with the flow.
+
+Continuity equations
+The Navier–Stokes equation is a special continuity equation. A continuity equation may be derived from conservation principles of:
+
+mass,
+momentum,
+energy.
+A continuity equation (or conservation law) is an integral relation stating that the rate of change of some integrated property φ defined over a control volume Ω must be equal to the rate at which it is lost or gained through the boundaries Γ of the volume plus the rate at which it is created or consumed by sources and sinks inside the volume. This is expressed by the following integral continuity equation:
+
+d
+d
+t
+∫
+Ω
+φ
+ 
+d
+Ω
+=
+−
+∫
+Γ
+φ
+u
+⋅
+n
+ 
+d
+Γ
+−
+∫
+Ω
+s
+ 
+d
+Ω
+{\displaystyle {\frac {d}{dt}}\int _{\Omega }\varphi \ d\Omega =-\int _{\Gamma }\varphi \mathbf {u\cdot n} \ d\Gamma -\int _{\Omega }s\ d\Omega }
+where u is the flow velocity of the fluid, n is the outward-pointing unit normal vector, and s represents the sources and sinks in the flow, taking the sinks as positive.
+
+The divergence theorem may be applied to the surface integral, changing it into a volume integral:
+
+d
+d
+t
+∫
+Ω
+φ
+ 
+d
+Ω
+=
+−
+∫
+Ω
+∇
+⋅
+(
+φ
+u
+)
+ 
+d
+Ω
+−
+∫
+Ω
+s
+ 
+d
+Ω
+.
+{\displaystyle {\frac {d}{dt}}\int _{\Omega }\varphi \ d\Omega =-\int _{\Omega }\nabla \cdot (\varphi \mathbf {u} )\ d\Omega -\int _{\Omega }s\ d\Omega .}
+Applying the Reynolds transport theorem to the integral on the left and then combining all of the integrals:
+
+∫
+Ω
+∂
+φ
+∂
+t
+ 
+d
+Ω
+=
+−
+∫
+Ω
+∇
+⋅
+(
+φ
+u
+)
+ 
+d
+Ω
+−
+∫
+Ω
+s
+ 
+d
+Ω
+⇒
+∫
+Ω
+(
+∂
+φ
+∂
+t
++
+∇
+⋅
+(
+φ
+u
+)
++
+s
+)
+d
+Ω
+=
+0.
+{\displaystyle \int _{\Omega }{\frac {\partial \varphi }{\partial t}}\ d\Omega =-\int _{\Omega }\nabla \cdot (\varphi \mathbf {u} )\ d\Omega -\int _{\Omega }s\ d\Omega \quad \Rightarrow \quad \int _{\Omega }\left({\frac {\partial \varphi }{\partial t}}+\nabla \cdot (\varphi \mathbf {u} )+s\right)d\Omega =0.}
+The integral must be zero for any control volume; this can only be true if the integrand itself is zero, so that:
+
+∂
+φ
+∂
+t
++
+∇
+⋅
+(
+φ
+u
+)
++
+s
+=
+0.
+{\displaystyle {\frac {\partial \varphi }{\partial t}}+\nabla \cdot (\varphi \mathbf {u} )+s=0.}
+From this valuable relation (a very generic continuity equation), three important concepts may be concisely written: conservation of mass, conservation of momentum, and conservation of energy. Validity is retained if φ is a vector, in which case the vector-vector product in the second term will be a dyad.
+
+Conservation of mass
+Mass may be considered also. When the intensive property φ is considered as the mass, by substitution into the general continuity equation, and taking s = 0 (no sources or sinks of mass):
+
+∂
+ρ
+∂
+t
++
+∇
+⋅
+(
+ρ
+u
+)
+=
+0
+{\displaystyle {\frac {\partial \rho }{\partial t}}+\nabla \cdot (\rho \mathbf {u} )=0}
+where ρ is the mass density (mass per unit volume), and u is the flow velocity. This equation is called the mass continuity equation, or simply the continuity equation. This equation generally accompanies the Navier–Stokes equation.
+
+In the case of an incompressible fluid, ⁠
+Dρ
+/
+Dt
+⁠ = 0 (the density following the path of a fluid element is constant) and the equation reduces to:
+
+∇
+⋅
+u
+=
+0
+{\displaystyle \nabla \cdot \mathbf {u} =0}
+which is in fact a statement of the conservation of volume.
+
+Conservation of momentum
+A general momentum equation is obtained when the conservation relation is applied to momentum. When the intensive property φ is considered as the mass flux (also momentum density), that is, the product of mass density and flow velocity ρu, by substitution into the general continuity equation:
+
+∂
+∂
+t
+(
+ρ
+u
+)
++
+∇
+⋅
+(
+ρ
+u
+⊗
+u
+)
+=
+s
+{\displaystyle {\frac {\partial }{\partial t}}(\rho \mathbf {u} )+\nabla \cdot (\rho \mathbf {u} \otimes \mathbf {u} )=\mathbf {s} }
+where u ⊗ u is a dyad, a special case of tensor product, which results in a second rank tensor; the divergence of a second rank tensor is again a vector (a first-rank tensor).[3]
+
+Using the formula for the divergence of a dyad,
+
+∇
+⋅
+(
+a
+⊗
+b
+)
+=
+(
+∇
+⋅
+a
+)
+b
++
+a
+⋅
+∇
+b
+{\displaystyle \nabla \cdot (\mathbf {a} \otimes \mathbf {b} )=(\nabla \cdot \mathbf {a} )\mathbf {b} +\mathbf {a} \cdot \nabla \mathbf {b} }
+we then have
+
+u
+∂
+ρ
+∂
+t
++
+ρ
+∂
+u
+∂
+t
++
+u
+∇
+⋅
+(
+ρ
+u
+)
++
+ρ
+u
+⋅
+∇
+u
+=
+s
+{\displaystyle \mathbf {u} {\frac {\partial \rho }{\partial t}}+\rho {\frac {\partial \mathbf {u} }{\partial t}}+\mathbf {u} \nabla \cdot (\rho \mathbf {u} )+\rho \mathbf {u} \cdot \nabla \mathbf {u} =\mathbf {s} }
+Note that the gradient of a vector is a special case of the covariant derivative, the operation results in second rank tensors;[3] except in Cartesian coordinates, it is important to understand that this is not simply an element by element gradient. Rearranging :
+
+u
+(
+∂
+ρ
+∂
+t
++
+∇
+⋅
+(
+ρ
+u
+)
+)
++
+ρ
+(
+∂
+u
+∂
+t
++
+u
+⋅
+∇
+u
+)
+=
+s
+{\displaystyle \mathbf {u} \left({\frac {\partial \rho }{\partial t}}+\nabla \cdot (\rho \mathbf {u} )\right)+\rho \left({\frac {\partial \mathbf {u} }{\partial t}}+\mathbf {u} \cdot \nabla \mathbf {u} \right)=\mathbf {s} }
+The leftmost expression enclosed in parentheses is, by mass continuity (shown before), equal to zero. Noting that what remains on the left side of the equation is the material derivative of flow velocity:
+
+ρ
+D
+u
+D
+t
+=
+ρ
+(
+∂
+u
+∂
+t
++
+u
+⋅
+∇
+u
+)
+=
+s
+{\displaystyle \rho {\frac {D\mathbf {u} }{Dt}}=\rho \left({\frac {\partial \mathbf {u} }{\partial t}}+\mathbf {u} \cdot \nabla \mathbf {u} \right)=\mathbf {s} }
+This appears to simply be an expression of Newton's second law (F = ma) in terms of body forces instead of point forces. Each term in any case of the Navier–Stokes equations is a body force. A shorter though less rigorous way to arrive at this result would be the application of the chain rule to acceleration:
+
+ρ
+d
+d
+t
+(
+u
+(
+x
+,
+y
+,
+z
+,
+t
+)
+)
+=
+s
+⇒
+ρ
+(
+∂
+u
+∂
+t
++
+∂
+u
+∂
+x
+d
+x
+d
+t
++
+∂
+u
+∂
+y
+d
+y
+d
+t
++
+∂
+u
+∂
+z
+d
+z
+d
+t
+)
+=
+s
+⇒
+ρ
+(
+∂
+u
+∂
+t
++
+u
+∂
+u
+∂
+x
++
+v
+∂
+u
+∂
+y
++
+w
+∂
+u
+∂
+z
+)
+=
+s
+⇒
+ρ
+(
+∂
+u
+∂
+t
++
+u
+⋅
+∇
+u
+)
+=
+s
+{\displaystyle {\begin{aligned}\rho {\frac {d}{dt}}{\bigl (}\mathbf {u} (x,y,z,t){\bigr )}=\mathbf {s} \quad &\Rightarrow &\rho \left({\frac {\partial \mathbf {u} }{\partial t}}+{\frac {\partial \mathbf {u} }{\partial x}}{\frac {dx}{dt}}+{\frac {\partial \mathbf {u} }{\partial y}}{\frac {dy}{dt}}+{\frac {\partial \mathbf {u} }{\partial z}}{\frac {dz}{dt}}\right)&=\mathbf {s} \\\quad &\Rightarrow &\rho \left({\frac {\partial \mathbf {u} }{\partial t}}+u{\frac {\partial \mathbf {u} }{\partial x}}+v{\frac {\partial \mathbf {u} }{\partial y}}+w{\frac {\partial \mathbf {u} }{\partial z}}\right)&=\mathbf {s} \\\quad &\Rightarrow &\rho \left({\frac {\partial \mathbf {u} }{\partial t}}+\mathbf {u} \cdot \nabla \mathbf {u} \right)&=\mathbf {s} \end{aligned}}}
+where u = (u, v, w). The reason why this is "less rigorous" is that we haven't shown that the choice of
+
+u
+=
+(
+d
+x
+d
+t
+,
+d
+y
+d
+t
+,
+d
+z
+d
+t
+)
+{\displaystyle \mathbf {u} =\left({\frac {dx}{dt}},{\frac {dy}{dt}},{\frac {dz}{dt}}\right)}
+is correct; however it does make sense since with that choice of path the derivative is "following" a fluid "particle", and in order for Newton's second law to work, forces must be summed following a particle. For this reason the convective derivative is also known as the particle derivative.
+
+Cauchy momentum equation
+See also: Cauchy momentum equation
+The generic density of the momentum source s seen previously is made specific first by breaking it up into two new terms, one to describe internal stresses and one for external forces, such as gravity. By examining the forces acting on a small cube in a fluid, it may be shown that
+
+ρ
+D
+u
+D
+t
+=
+∇
+⋅
+σ
++
+ρ
+f
+{\displaystyle \rho {\frac {D\mathbf {u} }{Dt}}=\nabla \cdot {\boldsymbol {\sigma }}+\mathbf {\rho } {f}}
+where σ is the Cauchy stress tensor, and f accounts for body forces present. This equation is called the Cauchy momentum equation and describes the non-relativistic momentum conservation of any continuum that conserves mass. σ is a rank two symmetric tensor given by its covariant components. In orthogonal coordinates in three dimensions it is represented as the 3 × 3 matrix:
+
+σ
+i
+j
+=
+(
+σ
+x
+x
+τ
+x
+y
+τ
+x
+z
+τ
+y
+x
+σ
+y
+y
+τ
+y
+z
+τ
+z
+x
+τ
+z
+y
+σ
+z
+z
+)
+{\displaystyle \sigma _{ij}={\begin{pmatrix}\sigma _{xx}&\tau _{xy}&\tau _{xz}\\\tau _{yx}&\sigma _{yy}&\tau _{yz}\\\tau _{zx}&\tau _{zy}&\sigma _{zz}\end{pmatrix}}}
+where the σ are normal stresses and τ shear stresses. This matrix is split up into two terms:
+
+σ
+i
+j
+=
+(
+σ
+x
+x
+τ
+x
+y
+τ
+x
+z
+τ
+y
+x
+σ
+y
+y
+τ
+y
+z
+τ
+z
+x
+τ
+z
+y
+σ
+z
+z
+)
+=
+−
+(
+p
+0
+0
+0
+p
+0
+0
+0
+p
+)
++
+(
+σ
+x
+x
++
+p
+τ
+x
+y
+τ
+x
+z
+τ
+y
+x
+σ
+y
+y
++
+p
+τ
+y
+z
+τ
+z
+x
+τ
+z
+y
+σ
+z
+z
++
+p
+)
+=
+−
+p
+I
++
+τ
+{\displaystyle \sigma _{ij}={\begin{pmatrix}\sigma _{xx}&\tau _{xy}&\tau _{xz}\\\tau _{yx}&\sigma _{yy}&\tau _{yz}\\\tau _{zx}&\tau _{zy}&\sigma _{zz}\end{pmatrix}}=-{\begin{pmatrix}p&0&0\\0&p&0\\0&0&p\end{pmatrix}}+{\begin{pmatrix}\sigma _{xx}+p&\tau _{xy}&\tau _{xz}\\\tau _{yx}&\sigma _{yy}+p&\tau _{yz}\\\tau _{zx}&\tau _{zy}&\sigma _{zz}+p\end{pmatrix}}=-p\mathbf {I} +{\boldsymbol {\tau }}}
+where I is the 3 × 3 identity matrix and τ is the deviatoric stress tensor. Note that the mechanical pressure p is equal to the negative of the mean normal stress:[4]
+
+p
+=
+−
+1
+3
+(
+σ
+x
+x
++
+σ
+y
+y
++
+σ
+z
+z
+)
+.
+{\displaystyle p=-{\tfrac {1}{3}}\left(\sigma _{xx}+\sigma _{yy}+\sigma _{zz}\right).}
+The motivation for doing this is that pressure is typically a variable of interest, and also this simplifies application to specific fluid families later on since the rightmost tensor τ in the equation above must be zero for a fluid at rest. Note that τ is traceless. The Cauchy equation may now be written in another more explicit form:
+
+ρ
+D
+u
+D
+t
+=
+−
+∇
+p
++
+∇
+⋅
+τ
++
+ρ
+f
+{\displaystyle \rho {\frac {D\mathbf {u} }{Dt}}=-\nabla p+\nabla \cdot {\boldsymbol {\tau }}+\mathbf {\rho } {f}}
+This equation is still incomplete. For completion, one must make hypotheses on the forms of τ and p, that is, one needs a constitutive law for the stress tensor which can be obtained for specific fluid families and on the pressure. Some of these hypotheses lead to the Euler equations (fluid dynamics), other ones lead to the Navier–Stokes equations. Additionally, if the flow is assumed compressible an equation of state will be required, which will likely further require a conservation of energy formulation.
+
+Application to different fluids
+The general form of the equations of motion is not "ready for use", the stress tensor is still unknown so that more information is needed; this information is normally some knowledge of the viscous behavior of the fluid. For different types of fluid flow this results in specific forms of the Navier–Stokes equations.
+
+Newtonian fluid
+Main article: Newtonian fluid
+Compressible Newtonian fluid
+The formulation for Newtonian fluids stems from an observation made by Newton that, for most fluids,
+
+τ
+∝
+∂
+u
+∂
+y
+{\displaystyle \tau \propto {\frac {\partial u}{\partial y}}}
+In order to apply this to the Navier–Stokes equations, three assumptions were made by Stokes:
+
+The stress tensor is a linear function of the strain rate tensor or equivalently the velocity gradient.
+The fluid is isotropic.
+For a fluid at rest, ∇ ⋅ τ must be zero (so that hydrostatic pressure results).
+The above list states the classic argument[5] that the shear strain rate tensor (the (symmetric) shear part of the velocity gradient) is a pure shear tensor and does not include any inflow/outflow part (any compression/expansion part). This means that its trace is zero, and this is achieved by subtracting ∇ ⋅ u in a symmetric way from the diagonal elements of the tensor. The compressional contribution to viscous stress is added as a separate diagonal tensor.
+
+Applying these assumptions will lead to :
+
+τ
+=
+μ
+(
+∇
+u
++
+(
+∇
+u
+)
+T
+)
++
+λ
+(
+∇
+⋅
+u
+)
+I
+{\displaystyle {\boldsymbol {\tau }}=\mu \left(\nabla \mathbf {u} +\left(\nabla \mathbf {u} \right)^{\mathsf {T}}\right)+\lambda \left(\nabla \cdot \mathbf {u} \right)\mathbf {I} }
+or in tensor form
+
+τ
+i
+j
+=
+μ
+(
+∂
+u
+i
+∂
+x
+j
++
+∂
+u
+j
+∂
+x
+i
+)
++
+δ
+i
+j
+λ
+∂
+u
+k
+∂
+x
+k
+{\displaystyle \tau _{ij}=\mu \left({\frac {\partial u_{i}}{\partial x_{j}}}+{\frac {\partial u_{j}}{\partial x_{i}}}\right)+\delta _{ij}\lambda {\frac {\partial u_{k}}{\partial x_{k}}}}
+That is, the deviatoric of the deformation rate tensor is identified to the deviatoric of the stress tensor, up to a factor μ.[6]
+
+δij is the Kronecker delta. μ and λ are proportionality constants associated with the assumption that stress depends on strain linearly; μ is called the first coefficient of viscosity or shear viscosity (usually just called "viscosity") and λ is the second coefficient of viscosity or volume viscosity (and it is related to bulk viscosity). The value of λ, which produces a viscous effect associated with volume change, is very difficult to determine, not even its sign is known with absolute certainty. Even in compressible flows, the term involving λ is often negligible; however it can occasionally be important even in nearly incompressible flows and is a matter of controversy. When taken nonzero, the most common approximation is λ ≈ −⁠
+2
+/
+3
+⁠μ.[7]
+
+A straightforward substitution of τij into the momentum conservation equation will yield the Navier–Stokes equations, describing a compressible Newtonian fluid:
+
+ρ
+(
+∂
+u
+∂
+t
++
+u
+⋅
+∇
+u
+)
+=
+−
+∇
+p
++
+∇
+⋅
+[
+μ
+(
+∇
+u
++
+(
+∇
+u
+)
+T
+)
+]
++
+∇
+⋅
+[
+λ
+(
+∇
+⋅
+u
+)
+I
+]
++
+ρ
+g
+{\displaystyle \rho \left({\frac {\partial \mathbf {u} }{\partial t}}+\mathbf {u} \cdot \nabla \mathbf {u} \right)=-\nabla p+\nabla \cdot \left[\mu \left(\nabla \mathbf {u} +\left(\nabla \mathbf {u} \right)^{\mathsf {T}}\right)\right]+\nabla \cdot \left[\lambda \left(\nabla \cdot \mathbf {u} \right)\mathbf {I} \right]+\rho \mathbf {g} }
+The body force has been decomposed into density and external acceleration, that is, f = ρg. The associated mass continuity equation is:
+
+∂
+ρ
+∂
+t
++
+∇
+⋅
+(
+ρ
+u
+)
+=
+0
+{\displaystyle {\frac {\partial \rho }{\partial t}}+\nabla \cdot (\rho \mathbf {u} )=0}
+In addition to this equation, an equation of state and an equation for the conservation of energy is needed. The equation of state to use depends on context (often the ideal gas law), the conservation of energy will read:
+
+ρ
+D
+h
+D
+t
+=
+D
+p
+D
+t
++
+∇
+⋅
+(
+k
+∇
+T
+)
++
+Φ
+{\displaystyle \rho {\frac {Dh}{Dt}}={\frac {Dp}{Dt}}+\nabla \cdot (k\nabla T)+\Phi }
+Here, h is the specific enthalpy, T is the temperature, and Φ is a function representing the dissipation of energy due to viscous effects:
+
+Φ
+=
+μ
+(
+2
+(
+∂
+u
+∂
+x
+)
+2
++
+2
+(
+∂
+v
+∂
+y
+)
+2
++
+2
+(
+∂
+w
+∂
+z
+)
+2
++
+(
+∂
+v
+∂
+x
++
+∂
+u
+∂
+y
+)
+2
++
+(
+∂
+w
+∂
+y
++
+∂
+v
+∂
+z
+)
+2
++
+(
+∂
+u
+∂
+z
++
+∂
+w
+∂
+x
+)
+2
+)
++
+λ
+(
+∇
+⋅
+u
+)
+2
+.
+{\displaystyle \Phi =\mu \left(2\left({\frac {\partial u}{\partial x}}\right)^{2}+2\left({\frac {\partial v}{\partial y}}\right)^{2}+2\left({\frac {\partial w}{\partial z}}\right)^{2}+\left({\frac {\partial v}{\partial x}}+{\frac {\partial u}{\partial y}}\right)^{2}+\left({\frac {\partial w}{\partial y}}+{\frac {\partial v}{\partial z}}\right)^{2}+\left({\frac {\partial u}{\partial z}}+{\frac {\partial w}{\partial x}}\right)^{2}\right)+\lambda (\nabla \cdot \mathbf {u} )^{2}.}
+With a good equation of state and good functions for the dependence of parameters (such as viscosity) on the variables, this system of equations seems to properly model the dynamics of all known gases and most liquids.
+
+Incompressible Newtonian fluid
+For the special (but very common) case of incompressible flow, the momentum equations simplify significantly. Using the following assumptions:
+
+Viscosity μ will now be a constant
+The second viscosity effect λ = 0
+The simplified mass continuity equation ∇ ⋅ u = 0
+This gives incompressible Navier-Stokes equations, describing incompressible Newtonian fluid:
+
+ρ
+(
+∂
+u
+∂
+t
++
+u
+⋅
+∇
+u
+)
+=
+−
+∇
+p
++
+∇
+⋅
+[
+μ
+(
+∇
+u
++
+(
+∇
+u
+)
+T
+)
+]
++
+ρ
+g
+{\displaystyle \rho \left({\frac {\partial \mathbf {u} }{\partial t}}+\mathbf {u} \cdot \nabla \mathbf {u} \right)=-\nabla p+\nabla \cdot \left[\mu \left(\nabla \mathbf {u} +\left(\nabla \mathbf {u} \right)^{\mathsf {T}}\right)\right]+\rho \mathbf {g} }
+then looking at the viscous terms of the x momentum equation for example we have:
+
+∂
+∂
+x
+(
+2
+μ
+∂
+u
+∂
+x
+)
++
+∂
+∂
+y
+(
+μ
+(
+∂
+u
+∂
+y
++
+∂
+v
+∂
+x
+)
+)
++
+∂
+∂
+z
+(
+μ
+(
+∂
+u
+∂
+z
++
+∂
+w
+∂
+x
+)
+)
+=
+2
+μ
+∂
+2
+u
+∂
+x
+2
++
+μ
+∂
+2
+u
+∂
+y
+2
++
+μ
+∂
+2
+v
+∂
+y
+∂
+x
++
+μ
+∂
+2
+u
+∂
+z
+2
++
+μ
+∂
+2
+w
+∂
+z
+∂
+x
+=
+μ
+∂
+2
+u
+∂
+x
+2
++
+μ
+∂
+2
+u
+∂
+y
+2
++
+μ
+∂
+2
+u
+∂
+z
+2
++
+μ
+∂
+2
+u
+∂
+x
+2
++
+μ
+∂
+2
+v
+∂
+y
+∂
+x
++
+μ
+∂
+2
+w
+∂
+z
+∂
+x
+=
+μ
+∇
+2
+u
++
+μ
+∂
+∂
+x
+(
+∂
+u
+∂
+x
++
+∂
+v
+∂
+y
++
+∂
+w
+∂
+z
+)
+0
+=
+μ
+∇
+2
+u
+{\displaystyle {\begin{aligned}&{\frac {\partial }{\partial x}}\left(2\mu {\frac {\partial u}{\partial x}}\right)+{\frac {\partial }{\partial y}}\left(\mu \left({\frac {\partial u}{\partial y}}+{\frac {\partial v}{\partial x}}\right)\right)+{\frac {\partial }{\partial z}}\left(\mu \left({\frac {\partial u}{\partial z}}+{\frac {\partial w}{\partial x}}\right)\right)\\[8px]&\qquad =2\mu {\frac {\partial ^{2}u}{\partial x^{2}}}+\mu {\frac {\partial ^{2}u}{\partial y^{2}}}+\mu {\frac {\partial ^{2}v}{\partial y\,\partial x}}+\mu {\frac {\partial ^{2}u}{\partial z^{2}}}+\mu {\frac {\partial ^{2}w}{\partial z\,\partial x}}\\[8px]&\qquad =\mu {\frac {\partial ^{2}u}{\partial x^{2}}}+\mu {\frac {\partial ^{2}u}{\partial y^{2}}}+\mu {\frac {\partial ^{2}u}{\partial z^{2}}}+\mu {\frac {\partial ^{2}u}{\partial x^{2}}}+\mu {\frac {\partial ^{2}v}{\partial y\,\partial x}}+\mu {\frac {\partial ^{2}w}{\partial z\,\partial x}}\\[8px]&\qquad =\mu \nabla ^{2}u+\mu {\frac {\partial }{\partial x}}{\cancelto {0}{\left({\frac {\partial u}{\partial x}}+{\frac {\partial v}{\partial y}}+{\frac {\partial w}{\partial z}}\right)}}\\[8px]&\qquad =\mu \nabla ^{2}u\end{aligned}}\,}
+Similarly for the y and z momentum directions we have μ∇2v and μ∇2w.
+
+The above solution is key to deriving Navier–Stokes equations from the equation of motion in fluid dynamics when density and viscosity are constant.
+
+Non-Newtonian fluids
+Main article: Non-Newtonian fluid
+A non-Newtonian fluid is a fluid whose flow properties differ in any way from those of Newtonian fluids. Most commonly the viscosity of non-Newtonian fluids is a function of shear rate or shear rate history. However, there are some non-Newtonian fluids with shear-independent viscosity, that nonetheless exhibit normal stress-differences or other non-Newtonian behaviour. Many salt solutions and molten polymers are non-Newtonian fluids, as are many commonly found substances such as ketchup, custard, toothpaste, starch suspensions, paint, blood, and shampoo. In a Newtonian fluid, the relation between the shear stress and the shear rate is linear, passing through the origin, the constant of proportionality being the coefficient of viscosity. In a non-Newtonian fluid, the relation between the shear stress and the shear rate is different, and can even be time-dependent. The study of the non-Newtonian fluids is usually called rheology. A few examples are given here.
+
+Bingham fluid
+Main article: Bingham plastic
+In Bingham fluids, the situation is slightly different:
+
+∂
+u
+∂
+y
+=
+{
+0
+,
+τ
+<
+τ
+0
+τ
+−
+τ
+0
+μ
+,
+τ
+≥
+τ
+0
+{\displaystyle {\frac {\partial u}{\partial y}}={\begin{cases}0,&\tau <\tau _{0}\\[5px]{\dfrac {\tau -\tau _{0}}{\mu }},&\tau \geq \tau _{0}\end{cases}}}
+These are fluids capable of bearing some stress before they start flowing. Some common examples are toothpaste and clay.
+
+Power-law fluid
+Main article: Power-law fluid
+A power law fluid is an idealised fluid for which the shear stress, τ, is given by
+
+τ
+=
+K
+(
+∂
+u
+∂
+y
+)
+n
+{\displaystyle \tau =K\left({\frac {\partial u}{\partial y}}\right)^{n}}
+This form is useful for approximating all sorts of general fluids, including shear thinning (such as latex paint) and shear thickening (such as corn starch water mixture).
+
+Stream function formulation
+In the analysis of a flow, it is often desirable to reduce the number of equations and/or the number of variables. The incompressible Navier–Stokes equation with mass continuity (four equations in four unknowns) can be reduced to a single equation with a single dependent variable in 2D, or one vector equation in 3D. This is enabled by two vector calculus identities:
+
+∇
+×
+(
+∇
+ϕ
+)
+=
+0
+∇
+⋅
+(
+∇
+×
+A
+)
+=
+0
+{\displaystyle {\begin{aligned}\nabla \times (\nabla \phi )&=0\\\nabla \cdot (\nabla \times \mathbf {A} )&=0\end{aligned}}}
+for any differentiable scalar φ and vector A. The first identity implies that any term in the Navier–Stokes equation that may be represented as the gradient of a scalar will disappear when the curl of the equation is taken. Commonly, pressure p and external acceleration g will be eliminated, resulting in (this is true in 2D as well as 3D):
+
+∇
+×
+(
+∂
+u
+∂
+t
++
+u
+⋅
+∇
+u
+)
+=
+ν
+∇
+×
+(
+∇
+2
+u
+)
+{\displaystyle \nabla \times \left({\frac {\partial \mathbf {u} }{\partial t}}+\mathbf {u} \cdot \nabla \mathbf {u} \right)=\nu \nabla \times \left(\nabla ^{2}\mathbf {u} \right)}
+where it is assumed that all body forces are describable as gradients (for example it is true for gravity), and density has been divided so that viscosity becomes kinematic viscosity.
+
+The second vector calculus identity above states that the divergence of the curl of a vector field is zero. Since the (incompressible) mass continuity equation specifies the divergence of flow velocity being zero, we can replace the flow velocity with the curl of some vector ψ so that mass continuity is always satisfied:
+
+∇
+⋅
+u
+=
+0
+⇒
+∇
+⋅
+(
+∇
+×
+ψ
+)
+=
+0
+⇒
+0
+=
+0
+{\displaystyle \nabla \cdot \mathbf {u} =0\quad \Rightarrow \quad \nabla \cdot (\nabla \times {\boldsymbol {\psi }})=0\quad \Rightarrow \quad 0=0}
+So, as long as flow velocity is represented through u = ∇ × ψ, mass continuity is unconditionally satisfied. With this new dependent vector variable, the Navier–Stokes equation (with curl taken as above) becomes a single fourth order vector equation, no longer containing the unknown pressure variable and no longer dependent on a separate mass continuity equation:
+
+∇
+×
+(
+∂
+∂
+t
+(
+∇
+×
+ψ
+)
++
+(
+∇
+×
+ψ
+)
+⋅
+∇
+(
+∇
+×
+ψ
+)
+)
+=
+ν
+∇
+×
+(
+∇
+2
+(
+∇
+×
+ψ
+)
+)
+{\displaystyle \nabla \times \left({\frac {\partial }{\partial t}}(\nabla \times {\boldsymbol {\psi }})+(\nabla \times {\boldsymbol {\psi }})\cdot \nabla (\nabla \times {\boldsymbol {\psi }})\right)=\nu \nabla \times \left(\nabla ^{2}(\nabla \times {\boldsymbol {\psi }})\right)}
+Apart from containing fourth order derivatives, this equation is fairly complicated, and is thus uncommon. Note that if the cross differentiation is left out, the result is a third order vector equation containing an unknown vector field (the gradient of pressure) that may be determined from the same boundary conditions that one would apply to the fourth order equation above.
+
+2D flow in orthogonal coordinates
+The true utility of this formulation is seen when the flow is two dimensional in nature and the equation is written in a general orthogonal coordinate system, in other words a system where the basis vectors are orthogonal. Note that this by no means limits application to Cartesian coordinates, in fact most of the common coordinates systems are orthogonal, including familiar ones like cylindrical and obscure ones like toroidal.
+
+The 3D flow velocity is expressed as (note that the discussion not used coordinates so far):
+
+u
+=
+u
+1
+e
+1
++
+u
+2
+e
+2
++
+u
+3
+e
+3
+{\displaystyle \mathbf {u} =u_{1}\mathbf {e} _{1}+u_{2}\mathbf {e} _{2}+u_{3}\mathbf {e} _{3}}
+where ei are basis vectors, not necessarily constant and not necessarily normalized, and ui are flow velocity components; let also the coordinates of space be (x1, x2, x3).
+
+Now suppose that the flow is 2D. This does not mean the flow is in a plane, rather it means that the component of flow velocity in one direction is zero and the remaining components are independent of the same direction. In that case (take component 3 to be zero):
+
+u
+=
+u
+1
+e
+1
++
+u
+2
+e
+2
+;
+∂
+u
+1
+∂
+x
+3
+=
+∂
+u
+2
+∂
+x
+3
+=
+0
+{\displaystyle \mathbf {u} =u_{1}\mathbf {e} _{1}+u_{2}\mathbf {e} _{2};\qquad {\frac {\partial u_{1}}{\partial x_{3}}}={\frac {\partial u_{2}}{\partial x_{3}}}=0}
+The vector function ψ is still defined via:
+
+u
+=
+∇
+×
+ψ
+{\displaystyle \mathbf {u} =\nabla \times {\boldsymbol {\psi }}}
+but this must simplify in some way also since the flow is assumed 2D. If orthogonal coordinates are assumed, the curl takes on a fairly simple form, and the equation above expanded becomes:
+
+u
+1
+e
+1
++
+u
+2
+e
+2
+=
+e
+1
+h
+2
+h
+3
+[
+∂
+∂
+x
+2
+(
+h
+3
+ψ
+3
+)
+−
+∂
+∂
+x
+3
+(
+h
+2
+ψ
+2
+)
+]
++
+{\displaystyle u_{1}\mathbf {e} _{1}+u_{2}\mathbf {e} _{2}={\frac {\mathbf {e} _{1}}{h_{2}h_{3}}}\left[{\frac {\partial }{\partial x_{2}}}\left(h_{3}\psi _{3}\right)-{\frac {\partial }{\partial x_{3}}}\left(h_{2}\psi _{2}\right)\right]+}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
++
+e
+2
+h
+3
+h
+1
+[
+∂
+∂
+x
+3
+(
+h
+1
+ψ
+1
+)
+−
+∂
+∂
+x
+1
+(
+h
+3
+ψ
+3
+)
+]
++
+e
+3
+h
+1
+h
+2
+[
+∂
+∂
+x
+1
+(
+h
+2
+ψ
+2
+)
+−
+∂
+∂
+x
+2
+(
+h
+1
+ψ
+1
+)
+]
+{\displaystyle {\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }+{\frac {\mathbf {e} _{2}}{h_{3}h_{1}}}\left[{\frac {\partial }{\partial x_{3}}}\left(h_{1}\psi _{1}\right)-{\frac {\partial }{\partial x_{1}}}\left(h_{3}\psi _{3}\right)\right]+{\frac {\mathbf {e} _{3}}{h_{1}h_{2}}}\left[{\frac {\partial }{\partial x_{1}}}\left(h_{2}\psi _{2}\right)-{\frac {\partial }{\partial x_{2}}}\left(h_{1}\psi _{1}\right)\right]}
+Examining this equation shows that we can set ψ1 = ψ2 = 0 and retain equality with no loss of generality, so that:
+
+u
+1
+e
+1
++
+u
+2
+e
+2
+=
+e
+1
+h
+2
+h
+3
+∂
+∂
+x
+2
+(
+h
+3
+ψ
+3
+)
+−
+e
+2
+h
+3
+h
+1
+∂
+∂
+x
+1
+(
+h
+3
+ψ
+3
+)
+{\displaystyle u_{1}\mathbf {e} _{1}+u_{2}\mathbf {e} _{2}={\frac {\mathbf {e} _{1}}{h_{2}h_{3}}}{\frac {\partial }{\partial x_{2}}}\left(h_{3}\psi _{3}\right)-{\frac {\mathbf {e} _{2}}{h_{3}h_{1}}}{\frac {\partial }{\partial x_{1}}}\left(h_{3}\psi _{3}\right)}
+the significance here is that only one component of ψ remains, so that 2D flow becomes a problem with only one dependent variable. The cross differentiated Navier–Stokes equation becomes two 0 = 0 equations and one meaningful equation.
+
+The remaining component ψ3 = ψ is called the stream function. The equation for ψ can simplify since a variety of quantities will now equal zero, for example:
+
+∇
+⋅
+ψ
+=
+1
+h
+1
+h
+2
+h
+3
+∂
+∂
+x
+3
+(
+ψ
+h
+1
+h
+2
+)
+=
+0
+{\displaystyle \nabla \cdot {\boldsymbol {\psi }}={\frac {1}{h_{1}h_{2}h_{3}}}{\frac {\partial }{\partial x_{3}}}\left(\psi h_{1}h_{2}\right)=0}
+if the scale factors h1 and h2 also are independent of x3. Also, from the definition of the vector Laplacian
+
+∇
+×
+(
+∇
+×
+ψ
+)
+=
+∇
+(
+∇
+⋅
+ψ
+)
+−
+∇
+2
+ψ
+=
+−
+∇
+2
+ψ
+{\displaystyle \nabla \times (\nabla \times {\boldsymbol {\psi }})=\nabla (\nabla \cdot {\boldsymbol {\psi }})-\nabla ^{2}{\boldsymbol {\psi }}=-\nabla ^{2}{\boldsymbol {\psi }}}
+Manipulating the cross differentiated Navier–Stokes equation using the above two equations and a variety of identities[8] will eventually yield the 1D scalar equation for the stream function:
+
+∂
+∂
+t
+(
+∇
+2
+ψ
+)
++
+(
+∇
+×
+ψ
+)
+⋅
+∇
+(
+∇
+2
+ψ
+)
+=
+ν
+∇
+4
+ψ
+{\displaystyle {\frac {\partial }{\partial t}}\left(\nabla ^{2}\psi \right)+(\nabla \times {\boldsymbol {\psi }})\cdot \nabla \left(\nabla ^{2}\psi \right)=\nu \nabla ^{4}\psi }
+where ∇4 is the biharmonic operator. This is very useful because it is a single self-contained scalar equation that describes both momentum and mass conservation in 2D. The only other equations that this partial differential equation needs are initial and boundary conditions.
+
+Derivation of the scalar stream function equation
+The assumptions for the stream function equation are:
+
+The flow is incompressible and Newtonian.
+Coordinates are orthogonal.
+Flow is 2D: u3 = ⁠
+∂u1
+/
+∂x3
+⁠ = ⁠
+∂u2
+/
+∂x3
+⁠ = 0
+The first two scale factors of the coordinate system are independent of the last coordinate: ⁠
+∂h1
+/
+∂x3
+⁠ = ⁠
+∂h2
+/
+∂x3
+⁠ = 0, otherwise extra terms appear.
+The stream function has some useful properties:
+
+Since −∇2ψ = ∇ × (∇ × ψ) = ∇ × u, the vorticity of the flow is just the negative of the Laplacian of the stream function.
+The level curves of the stream function are streamlines.
+The stress tensor
+The derivation of the Navier–Stokes equation involves the consideration of forces acting on fluid elements, so that a quantity called the stress tensor appears naturally in the Cauchy momentum equation. Since the divergence of this tensor is taken, it is customary to write out the equation fully simplified, so that the original appearance of the stress tensor is lost.
+
+However, the stress tensor still has some important uses, especially in formulating boundary conditions at fluid interfaces. Recalling that σ = −pI + τ, for a Newtonian fluid the stress tensor is:
+
+σ
+i
+j
+=
+−
+p
+δ
+i
+j
++
+μ
+(
+∂
+u
+i
+∂
+x
+j
++
+∂
+u
+j
+∂
+x
+i
+)
++
+δ
+i
+j
+λ
+∇
+⋅
+u
+.
+{\displaystyle \sigma _{ij}=-p\delta _{ij}+\mu \left({\frac {\partial u_{i}}{\partial x_{j}}}+{\frac {\partial u_{j}}{\partial x_{i}}}\right)+\delta _{ij}\lambda \nabla \cdot \mathbf {u} .}
+If the fluid is assumed to be incompressible, the tensor simplifies significantly. In 3D cartesian coordinates for example:
+
+σ
+=
+−
+(
+p
+0
+0
+0
+p
+0
+0
+0
+p
+)
++
+μ
+(
+2
+∂
+u
+∂
+x
+∂
+u
+∂
+y
++
+∂
+v
+∂
+x
+∂
+u
+∂
+z
++
+∂
+w
+∂
+x
+∂
+v
+∂
+x
++
+∂
+u
+∂
+y
+2
+∂
+v
+∂
+y
+∂
+v
+∂
+z
++
+∂
+w
+∂
+y
+∂
+w
+∂
+x
++
+∂
+u
+∂
+z
+∂
+w
+∂
+y
++
+∂
+v
+∂
+z
+2
+∂
+w
+∂
+z
+)
+=
+−
+p
+I
++
+μ
+(
+∇
+u
++
+(
+∇
+u
+)
+T
+)
+=
+−
+p
+I
++
+2
+μ
+e
+{\displaystyle {\begin{aligned}{\boldsymbol {\sigma }}&=-{\begin{pmatrix}p&0&0\\0&p&0\\0&0&p\end{pmatrix}}+\mu {\begin{pmatrix}2\displaystyle {\frac {\partial u}{\partial x}}&\displaystyle {{\frac {\partial u}{\partial y}}+{\frac {\partial v}{\partial x}}}&\displaystyle {{\frac {\partial u}{\partial z}}+{\frac {\partial w}{\partial x}}}\\\displaystyle {{\frac {\partial v}{\partial x}}+{\frac {\partial u}{\partial y}}}&2\displaystyle {\frac {\partial v}{\partial y}}&\displaystyle {{\frac {\partial v}{\partial z}}+{\frac {\partial w}{\partial y}}}\\\displaystyle {{\frac {\partial w}{\partial x}}+{\frac {\partial u}{\partial z}}}&\displaystyle {{\frac {\partial w}{\partial y}}+{\frac {\partial v}{\partial z}}}&2\displaystyle {\frac {\partial w}{\partial z}}\end{pmatrix}}\\[6px]&=-p\mathbf {I} +\mu \left(\nabla \mathbf {u} +\left(\nabla \mathbf {u} \right)^{\mathsf {T}}\right)\\[6px]&=-p\mathbf {I} +2\mu \mathbf {e} \end{aligned}}}
+e is the strain rate tensor, by definition:
+
+e
+i
+j
+=
+1
+2
+(
+∂
+u
+i
+∂
+x
+j
++
+∂
+u
+j
+∂
+x
+i
+)
+.
+{\displaystyle e_{ij}={\frac {1}{2}}\left({\frac {\partial u_{i}}{\partial x_{j}}}+{\frac {\partial u_{j}}{\partial x_{i}}}\right).}
+See also
+Derivation of Navier–Stokes equation from discrete LBE
+First law of thermodynamics (fluid mechanics)
+References
+ "Navier-Stokes Equation". Clay Mathematics Institute. Retrieved 2023-12-24.
+ Munson, Bruce R. (2013). Fundamentals of Fluid Mechanics (7th ed.). Jefferson City: John Wiley and Sons.[page needed]
+ Lebedev, Leonid P. (2003). Tensor Analysis. World Scientific. ISBN 981-238-360-3.
+ Batchelor 2000, p. 141.
+ Morse, P. M.; Ingard, K. U. (1968). Theoretical Acoustics. Princeton University Press.
+ Landau; Lifshitz. Fluid Mechanics. Course of Theoretical Physics. Vol. 6 (2nd ed.). p. 45.
+ Batchelor 2000, p. 144.
+ Eric W. Weisstein. "Vector Derivative". MathWorld. Retrieved 7 June 2008.
+Batchelor, G. K. (2000). An Introduction to Fluid Dynamics. New York: Cambridge University Press. ISBN 978-0-521-66396-0.
+White, Frank M. (2006). Viscous Fluid Flow (3rd ed.). New York: McGraw Hill. ISBN 0-07-240231-8.
+Surface Tension Module Archived 2007-10-27 at the Wayback Machine, by John W. M. Bush, at MIT OCW
+Galdi, An Introduction to the Mathematical Theory of the Navier–Stokes Equations: Steady-State Problems. Springer 2011
+Categories: Equations of fluid dynamicsAerodynamicsPartial differential equations
+This page was last edited on 15 February 2026, at 15:55 (UTC). Page was rendered with Parsoid.
+Text is available under the Creative Commons Attribution-ShareAlike 4.0 License; additional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Wikipedia® is a registered trademark of the Wikimedia Foundation, Inc., a non-profit organization.
+Privacy policyAbout WikipediaDisclaimersContact WikipediaLegal & safety contactsCode of ConductDevelopersStatisticsCookie statementMobile view
+Wikimedia Foundation
+Powered by MediaWiki
