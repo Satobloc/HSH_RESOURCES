@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T18:58:33Z`
-- Tree/content state: `c8535876dd85acad3167ce88858d0714d87f96007c82888008e2f7f73f8d10a3`
+- Scanned: `2026-09-07T19:04:24Z`
+- Tree/content state: `fa63f29cd2ff797b670c4386f106083bb17571958e391682993259314a8c5363`
 - Coverage: complete structural traversal
-- Files: 1084
-- Uploaded source files: 1077
-- PDF papers: 961
+- Files: 1091
+- Uploaded source files: 1084
+- PDF papers: 963
 - Repository machinery files: 7
 - Byte-identical duplicate groups: 60
 
@@ -21,7 +21,7 @@
 | `BIG PAPERS` | 3 |
 | `Consciousness + AI` | 16 |
 | `DATA` | 12 |
-| `EXPOSURE_STATS` | 114 |
+| `EXPOSURE_STATS` | 121 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -253,6 +253,8 @@
 | `DATA/DATA REL - notebooks-latest03_ScienceExamplesEmLineGalaxies02_EmLineGalaxies_Outliers.ipynb at master · astro-datalabnotebooks-latest.pdf` | 990887 |  |
 | `DATA/DATA REL - notebooks-latest04_HowTosSPARCLPlot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalabnotebooks-latest.pdf` | 211459 |  |
 | `DATA/DATA REL - SPARCL Notebooks.pdf` | 509725 |  |
+| `EXPOSURE_STATS/EXP_ANALYSIS/misc Central Recursion.pdf` | 316867 |  |
+| `EXPOSURE_STATS/EXP_ANALYSIS/Misc — A Chat.pdf` | 192987 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/2025 Scientific Triumph- Unifying the Laws of Physics through Mathematical Geniu.pdf` | 1057840 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/2408.07818v3.pdf` | 7682019 | arxiv:2408.07818v3 |
 | `EXPOSURE_STATS/MISC_PAPERS/2503.01800v1.pdf` | 1127581 | arxiv:2503.01800v1 |
