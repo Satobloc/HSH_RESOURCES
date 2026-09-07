@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T19:04:24Z`
-- Tree/content state: `fa63f29cd2ff797b670c4386f106083bb17571958e391682993259314a8c5363`
+- Scanned: `2026-09-07T19:39:58Z`
+- Tree/content state: `ebe64ed897d89bc33acb3bbc6cf480c1fb8dcfe51f959c4682bb548bcd49704d`
 - Coverage: complete structural traversal
-- Files: 1091
-- Uploaded source files: 1084
-- PDF papers: 963
+- Files: 1102
+- Uploaded source files: 1095
+- PDF papers: 974
 - Repository machinery files: 7
 - Byte-identical duplicate groups: 60
 
@@ -21,7 +21,7 @@
 | `BIG PAPERS` | 3 |
 | `Consciousness + AI` | 16 |
 | `DATA` | 12 |
-| `EXPOSURE_STATS` | 121 |
+| `EXPOSURE_STATS` | 132 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -255,6 +255,7 @@
 | `DATA/DATA REL - SPARCL Notebooks.pdf` | 509725 |  |
 | `EXPOSURE_STATS/EXP_ANALYSIS/misc Central Recursion.pdf` | 316867 |  |
 | `EXPOSURE_STATS/EXP_ANALYSIS/Misc — A Chat.pdf` | 192987 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/10.4324_9781003404989-2_chapterpdf.pdf` | 831413 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/2025 Scientific Triumph- Unifying the Laws of Physics through Mathematical Geniu.pdf` | 1057840 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/2408.07818v3.pdf` | 7682019 | arxiv:2408.07818v3 |
 | `EXPOSURE_STATS/MISC_PAPERS/2503.01800v1.pdf` | 1127581 | arxiv:2503.01800v1 |
@@ -264,16 +265,23 @@
 | `EXPOSURE_STATS/MISC_PAPERS/2605.15674v1.pdf` | 2101682 | arxiv:2605.15674v1 |
 | `EXPOSURE_STATS/MISC_PAPERS/2605.16977v1.pdf` | 5333615 | arxiv:2605.16977v1 |
 | `EXPOSURE_STATS/MISC_PAPERS/2605.22912v1.pdf` | 1174134 | arxiv:2605.22912v1 |
+| `EXPOSURE_STATS/MISC_PAPERS/2606.05346v1.pdf` | 421207 | arxiv:2606.05346v1 |
 | `EXPOSURE_STATS/MISC_PAPERS/41586_2026_10652_MOESM4_ESM.pdf` | 481607 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/978-981-96-9136-4_14.pdf` | 320546 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/[2605.19117] Quantum Magic Reveals CP Phases Invisible to Entanglement in Spin-0.pdf` | 160924 | arxiv:2605.19117 |
 | `EXPOSURE_STATS/MISC_PAPERS/A Unified SU(4) Qudit Gauge Lattice Framework for Emergent Geometry and Interaction Bryan E. W. Van Zandt KILOWADS Studios LLC Averill Park NY USA Dated May 21 2026.pdf` | 350075 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/a-l3-2l-l-css-code-from-the-fcc.pdf` | 365991 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Best Time to Post on r-redditpolicedept — Subreddit Analysis  Postpone.pdf` | 767175 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Class Likelihood Ratios to measure classification performance — scikit-learn 1.9.0 documentation.pdf` | 503446 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/dark-matter-as-a-trapped.pdf` | 657722 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/EdervaldoMelo.pdf` | 68608 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/emergent-quantum-gravity.pdf` | 451207 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/flag-assisted-error-correction-on-fcc-lattice.pdf` | 441898 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/fphy-13-1731777.pdf` | 315777 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/geometric-evaporation-primordial-black-hole-constraint.pdf` | 417394 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Grand Unification Theories And Supersymmetry  Physics  Research Starters  EBS.pdf` | 212049 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/JHEP03(2025)004.pdf` | 2572681 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/JHEP03(2025)095.pdf` | 734906 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code 2.pdf` | 647522 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code 3.pdf` | 647522 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code.pdf` | 647522 |  |
@@ -285,6 +293,7 @@
 | `EXPOSURE_STATS/MISC_PAPERS/LIGHT_IS_GEM_v12.pdf` | 429601 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/limit (1).pdf` | 219493 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Matter as incomplete crystallization- Quark charges, color confinement, and the .pdf` | 5255092 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Moving toward belonging in a physics department What changes are possible with and without a paradigm shift  Phys. Rev. Phys. Educ. Res..pdf` | 487497 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Notes_Boltzmann.pdf` | 3853151 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/OTHER - (99+) Heraclitean Extended Relational Field Dynamics Filament Ontology, Emergent Curvature, Bridge Maps to Effective Ge.pdf` | 596617 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/physical-spacetime.pdf` | 590747 |  |
@@ -294,6 +303,7 @@
 | `EXPOSURE_STATS/MISC_PAPERS/ssrn-6469931.pdf` | 1354869 | ssrn:6469931 |
 | `EXPOSURE_STATS/MISC_PAPERS/ssrn-6708182.pdf` | 963004 | ssrn:6708182 |
 | `EXPOSURE_STATS/MISC_PAPERS/Ten windows on the future of particle physics – CERN Courier.pdf` | 1532190 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/Test Functions — OptimLib documentation.pdf` | 2500449 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/The Neutrinoverse Hypothesis- Naming the Immutable Holographic Medium for Genuin.pdf` | 379016 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/THE UNIFIED COMPRESSION-BASED FIELD THEORY- THE FINAL EDITION  by Corybrent  M.pdf` | 139062 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/The Universe Has a Resolution Limit- New Theory Derives the Exact Mass Where Qua.pdf` | 106217 |  |
@@ -302,6 +312,7 @@
 | `EXPOSURE_STATS/MISC_PAPERS/uniphics_explained_simply.pdf` | 81957 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/w1sd-v69d.pdf` | 764891 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/What to Expect from Physics in 2026 - by Samreet Dhillon.pdf` | 11464382 |  |
+| `EXPOSURE_STATS/MISC_PAPERS/What_AI_Agents_Actually_Want_Measuring_R.pdf` | 1042223 |  |
 | `H(s)H_Toolkit/0105040v2.pdf` | 232815 | unresolved-seven-digit-id:0105040v2 |
 | `H(s)H_Toolkit/0112148v1.pdf` | 388150 | unresolved-seven-digit-id:0112148v1 |
 | `H(s)H_Toolkit/0112205v1.pdf` | 157916 | unresolved-seven-digit-id:0112205v1 |
