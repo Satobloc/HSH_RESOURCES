@@ -1,0 +1,2347 @@
+===== PAGE 1 =====
+The Value Equivalence Principle
+for Model-Based Reinforcement Learning
+Christopher Grimm
+Computer Science & Engineering
+University of Michigan
+crgrimm@umich.edu
+André Barreto, Satinder Singh, David Silver
+DeepMind
+{andrebarreto,baveja,davidsilver}@google.com
+Abstract
+Learning models of the environment from data is often viewed as an essential com-
+ponent to building intelligent reinforcement learning (RL) agents. The common
+practice is to separate the learning of the model from its use, by constructing a
+model of the environment’s dynamics that correctly predicts the observed state
+transitions. In this paper we argue that the limited representational resources of
+model-based RL agents are better used to build models that are directly useful
+for value-based planning. As our main contribution, we introduce the principle
+of value equivalence: two models are value equivalent with respect to a set of
+functions and policies if they yield the same Bellman updates. We propose a for-
+mulation of the model learning problem based on the value equivalence principle
+and analyze how the set of feasible solutions is impacted by the choice of policies
+and functions. Speciﬁcally, we show that, as we augment the set of policies and
+functions considered, the class of value equivalent models shrinks, until eventu-
+ally collapsing to a single point corresponding to a model that perfectly describes
+the environment. In many problems, directly modelling state-to-state transitions
+may be both difﬁcult and unnecessary. By leveraging the value-equivalence prin-
+ciple one may ﬁnd simpler models without compromising performance, saving
+computation and memory. We illustrate the beneﬁts of value-equivalent model
+learning with experiments comparing it against more traditional counterparts like
+maximum likelihood estimation. More generally, we argue that the principle of
+value equivalence underlies a number of recent empirical successes in RL, such as
+Value Iteration Networks, the Predictron, Value Prediction Networks, TreeQN, and
+MuZero, and provides a ﬁrst theoretical underpinning of those results.
+1 Introduction
+Reinforcement learning (RL) provides a conceptual framework to tackle a fundamental challenge in
+artiﬁcial intelligence: how to design agents that learn while interacting with the environment [36]. It
+has been argued that truly general agents should be able to learn a model of the environment that
+allows for fast re-planning and counterfactual reasoning [ 32]. Although this is not a particularly
+contentious statement, the question of how to learn such a model is far from being resolved. The
+common practice in model-based RL is to conceptually separate the learning of the model from its
+use. In this paper we argue that the limited representational capacity of model-based RL agents is
+better allocated if the future use of the model (e.g., value-based planning) is also taken into account
+during its construction [22, 15, 13].
+Our primary contribution is to formalize and analyze a clear principle that underlies this new approach
+to model-based RL. Speciﬁcally, we show that, when the model is to be used for value-based planning,
+requirements on the model can be naturally captured by an equivalence relation induced by a set
+34th Conference on Neural Information Processing Systems (NeurIPS 2020), Vancouver, Canada.
+arXiv:2011.03506v1  [cs.LG]  6 Nov 2020
+
+===== PAGE 2 =====
+of policies and functions. This leads to the principle of value equivalence: two models are value
+equivalent with respect to a set of functions and a set of policies if they yield the same updates under
+corresponding Bellman operators. The policies and functions then become the mechanism through
+which one incorporates information about the intended use of the model during its construction.
+We propose a formulation of the model learning problem based on the value equivalence principle
+and analyze how the set of feasible solutions is impacted by the choice of policies and functions.
+Speciﬁcally, we show that, as we augment the set of policies and functions considered, the class
+of value equivalent models shrinks, until eventually collapsing to a single point corresponding to a
+model that perfectly describes the environment.
+We also discuss cases in which one can meaningfully restrict the class of policies and functions
+used to tailor the model. One common case is when the construction of an optimal policy through
+value-based planning only requires that a model predicts a subset of value functions. We show that
+in this case the resulting value equivalent models can perform well under much more restrictive
+conditions than their traditional counterparts. Another common case is when the agent has limited
+representational capacity. We show that in this scenario it sufﬁces for a model to be value equivalent
+with respect to appropriately-deﬁned bases of the spaces of representable policies and functions.
+This allows models to be found with less memory or computation than conventional model-based
+approaches that aim at predicting all state transitions, such as maximum likelihood estimation. We
+illustrate the beneﬁts of value-equivalent model learning in experiments that compare it against more
+conventional counterparts. More generally, we argue that the principle of value equivalence underlies
+a number of recent empirical successes in RL and provides a ﬁrst theoretical underpinning of those
+results [40, 34, 26, 16, 33].
+2 Background
+As usual, we will model the agent’s interaction with the environment using a Markov Decision
+Process (MDP)M≡⟨S ,A,r,p,γ ⟩ whereS is the state space,A is the action space, r(s,a,s′)
+is the reward associated with a transition to state s′ following the execution of actiona in states,
+p(s′|s,a ) is the transition kernel andγ∈ [0, 1) is a discount factor [30]. For convenience we also
+deﬁner(s,a ) = ES′∼p(·|s,a)[r(s,a,S′)].
+A policy is a mappingπ :S↦→P (A), whereP(A) is the space of probability distributions overA.
+We deﬁneΠ≡{π|π :S↦→P (A)} as the set of all possible policies. The agent’s goal is to ﬁnd a
+policyπ∈ Π that maximizes the value of every state, deﬁned as
+vπ(s)≡ Eπ
+[∞∑
+i=0
+γir(St+i,At+i)|St =s
+]
+, (1)
+whereSt andAt are random variables indicating the state occupied and the action selected by the
+agent at time stept and Eπ[·] denotes expectation over the trajectories induced byπ.
+Many methods are available to carry out the search for a good policy [36, 39]. Typically, a crucial step
+in these methods is the computation of the value function of candidate policies—a process usually
+referred to as policy evaluation. One way to evaluate a policyπ is through its Bellman operator:
+Tπ[v](s)≡ EA∼π(·|s),S′∼p(·|s,A) [r(s,A ) +γv(S′)], (2)
+wherev is any function in the spaceV≡{f|f :S↦→ R}. It is known that limn→∞(Tπ)nv =vπ,
+that is, starting from anyv∈ V, the repeated application ofTπ will eventually converge tovπ [30].
+In RL it is generally assumed that the agent does not know p and r, and thus cannot directly
+compute (2). In model-free RL this is resolved by replacingvπ with an action-value function and
+estimating the expectation on the right-hand-side of (2) through sampling [35]. In model-based RL,
+the focus of this paper, the agent learns approximations ˜r≈r and ˜p≈p and use them to compute (2)
+withp andr replaced by ˜p and ˜r [36].
+3 Value equivalence
+Given a state spaceS and an action spaceA, we call the tuplem≡ (r,p ) a model. Note that a model
+plus a discount factor γ induces a Bellman operator (2) for every policy π∈ Π. In this paper we
+2
+
+===== PAGE 3 =====
+are interested in computing an approximate model ˜m = (˜r, ˜p) such that the induced operators ˜Tπ,
+deﬁned analogously to (2), are good approximations of the trueTπ. Our main argument is that models
+should only be distinguished with respect to the policies and functions they will actually be applied
+to. This leads to the following deﬁnition:
+Deﬁnition 1 (Value equivalence). Let Π⊆ Π be a set of policies and letV⊆ V be a set of functions.
+We say that modelsm and ˜m are value equivalent with respect to Π andV if and only if
+Tπv = ˜Tπv for allπ∈ Π and allv∈V ,
+whereTπ and ˜Tπ are the Bellman operators induced bym and ˜m, respectively.
+Two models are value equivalent with respect toΠ andV if the effect of the Bellman operator induced
+by any policy π∈ Π on any function v∈V is the same for both models. Thus, if we are only
+interested in Π andV, value-equivalent models are functionally identical. This can be seen as an
+equivalence relation that partitions the space of models conditioned on Π andV:
+Deﬁnition 2 (Space of value-equivalent models). Let Π andV be deﬁned as above and letM be a
+space of models. Given a model m, the space of value-equivalent modelsMm(Π,V)⊆M is the set
+of all models ˜m∈M that are value equivalent tom with respect to Π andV.
+LetM be a space of models containing at least one modelm∗ which perfectly describes the interaction
+of the agent with the environment. More formally,m∗ induces the true Bellman operatorsTπ deﬁned
+in (2). Given a space of modelsM⊆ M, often one is interested in models m∈M that are value
+equivalent tom∗. We will thus simplify the notation by deﬁningM(Π,V)≡M m∗(Π,V).
+3.1 The topology of the space of value-equivalent models
+The spaceM(Π,V) contains all the models inM that are value equivalent to the true modelm∗ with
+respect to Π andV. Since any two modelsm,m′∈M (Π,V) are equally suitable for value-based
+planning using Π andV, we are free to use other criteria to choose between them. For example, if m
+is much simpler to represent or learn thanm′, it can be preferred without compromises.
+Clearly, the principle of value equivalence can be useful if leveraged in the appropriate way. In order
+for that to happen, it is important to understand the space of value-equivalent modelsM(Π,V). We
+now provide intuition for this space by analyzing some of its core properties. We refer the reader to
+Figure 1 for an illustration of the concepts to be discussed in this section. We start with a property
+that follows directly from Deﬁnitions 1 and 2:
+Property 1. GivenM′⊆M , we have thatM′(Π,V)⊆M (Π,V).
+Figure 1: Understanding the space of value-
+equivalent models for a ﬁxed Π, M′ ⊂
+M and V′ ⊂ V. Denote M(V) ≡
+M(V, Π). Property 1 : M′(V) ⊂ M(V)
+and M′(V′) ⊂ M(V′). Property 3 :
+M(V) ⊂ M(V′) andM′(V) ⊂ M′(V′).
+Property 4: ifm∗∈M , thenm∗∈M (V).
+The proofs of all theoretical results are in Ap-
+pendix A.1. Property 1 states that, given a set of
+policies Π and a set of functionsV, reducing the size
+of the space of modelsM also reduces the space of
+value-equivalent modelsM(Π,V). One immediate
+consequence of this property is that, if we consider
+the space of all policiesΠ and the space of all func-
+tionsV, we have one of two possibilities: either we
+end up with a perfect model or we end up with no
+model at all. Or, more formally:
+Property 2. M(Π,V) either contains m∗ or is the
+empty set.
+Property 1 describes what happens toM(Π,V) when
+we varyM with ﬁxed Π andV. It is also interesting
+to ask what happens when we ﬁx the former and vary
+the latter. This leads to the next property:
+Property 3. Given Π′⊆ Π andV′⊆V , we have thatM(Π,V)⊆M (Π′,V′).
+According to Property 3, as we increase the size of Π orV the size ofM(Π,V) decreases. Although
+this makes intuitive sense, it is reassuring to know that value equivalence is a sound principle for
+3
+
+===== PAGE 4 =====
+model selection, since by adding more policies to Π or more values toV we can progressively restrict
+the set of feasible solutions. Thus, ifM contains the true model, we eventually pin it down. Indeed,
+in this case the true model belongs to all spaces of value equivalent models, as formalized below:
+Property 4. Ifm∗∈M , thenm∗∈M (Π,V) for all Π and allV.
+3.2 A basis for the space of value-equivalent models
+As discussed, it is possible to use the sets Π andV to control the size ofM(Π,V). But what exactly
+is the effect of Π andV onM(Π,V)? How much doesM(Π,V) decrease in size when we, say, add
+one function toV? In this section we address this and similar questions.
+We start by showing that, whenever a model is value equivalent tom∗ with respect to discrete Π and
+V, it is automatically value equivalent tom∗ with respect to much larger sets. In order to state this
+fact more concretely we will need two deﬁnitions. Given a discrete setH, we deﬁne span(H) as the
+set formed by all linear combinations of the elements inH. Similarly, given a discrete setH in which
+each element is a function deﬁned over a domainX , we deﬁne the pointwise span ofH as
+p-span(H)≡
+{
+h :h(x) =
+∑
+i
+αxihi(x)
+}
+, withαxi∈ R for allx∈X ,i∈{ 1,..., |H|} (3)
+wherehi∈H . Pointwise span can alternatively be characterized by considering each element in the
+domain separately: g∈ p-span(H) ⇐⇒ g(x)∈ span{h(x) : h∈H} for allx∈X . Equipped
+with these concepts we present the following result:
+Proposition 1. For discreteΠ andV, we have thatM(Π,V) =M(p-span(Π)∩Π, span(V)).
+Proposition 1 provides one possible answer to the question posed at the beginning of this section: the
+contraction ofM(Π,V) resulting from the addition of one policy to Π or one function toV depends
+on their effect onp-span(Π) and span(V). For instance, if a functionv can be obtained as a linear
+combination of the functions inV, adding it to this set will have no effect on the space of equivalent
+modelsM(Π,V). More generally, Proposition 1 suggests a strategy to build the setV: one should
+ﬁnd a set of functions that form a basis for the space of interest. WhenS is ﬁnite, for example, having
+V be a basis for R|S| means that the value equivalence principle will apply to every functionv∈ R|S|.
+The same reasoning applies to Π. In fact, becausep-span(Π) grows independently pointwise, it is
+relatively simple to build a set Π that covers the space of policies one is interested in. In particular,
+whenA is ﬁnite, it is easy to deﬁne a set Π for whichp-span(Π)⊇ Π: it sufﬁces to have for every
+state-action pair (s,a )∈S×A at least one policyπ∈ Π such thatπ(a|s) = 1. This means that we
+can apply the value equivalence principle to the entire setΠ using|A| policies only.
+Combining Proposition 1 and Property 2 we see that by deﬁning Π andV appropriately we can focus
+on the subset ofM whose models perfectly describe the environment:
+Remark 1. IfΠ⊆p-span(Π) andV = span(V), thenM(Π,V) =m∗ orM(Π,V) =∅.
+We have shown howΠ andV have an impact on the number of value equivalent models inM(Π,V);
+to make the discussion more concrete, we now focus on a speciﬁc model spaceM and analyze the
+rate at which this space shrinks as we add more elements to Π andV. Before proceeding we deﬁne a
+set of functionsH as pointwise linearly independent ifh /∈p-span(H\{ h}) for allh∈H .
+Suppose bothS andA are ﬁnite. In this case a model can be deﬁned as m = (r,P ), where
+r∈ R|S||A| andP ∈ R|S|×|S|×|A| . A policy can then be thought of as a vector π ∈ R|S||A|.
+We denote the set of all transition matrices induced by transition kernels as P. To simplify the
+analysis we will consider thatr is known and we are interested in ﬁnding a model ˜P∈ P. In this
+setting, we write P(Π,V) to denote the set of transition matrices that are value equivalent to the true
+transition matrixP∗. We deﬁne the dimension of a setX as the lowest possible Hamel dimension
+of a vector-space enclosing some translated version of it: dim[X ] = min W,c∈W(X)H-dim[W]
+whereW (X ) ={(W,c ) :X +c⊆W} ,W is a vector-space,c is an offset andH-dim[·] denotes
+the Hamel dimension. Recall that the Hamel dimension of a vector-space is the size of the smallest
+set of mutually linearly independent vectors that spans the space (this corresponds to the usual notion
+of dimension, that is, the minimal number of coordinates required to uniquely specify each point). So,
+under no restrictions imposed by Π andV, we have that dim[P] = (|S|− 1)|S||A|. We now show
+how fast the size of P(Π,V) decreases as we extend the ranges of Π andV:
+4
+
+===== PAGE 5 =====
+Proposition 2. Let Π be a set ofm pointwise linearly independent policiesπi∈ R|S||A| and letV
+be a set ofk linearly independent vectorsvi∈ R|S|. Then,
+dim [P(Π,V)]≤|S| (|S||A|− mk).
+Interestingly, Proposition 2 shows that the elements of Π andV interact in a multiplicative way:
+when there arem pointwise linearly independent policies, enlargingV with a single functionv that
+is linearly independent of its counterparts will decrease the bound on the dimension of P(Π,V) by
+a factor ofm. This makes intuitive sense if we note that by deﬁnition m≤|A| : for an expressive
+enough Π, eachv∈V will provide information about the effect of all actions ina∈A . Conversely,
+because span(V) = k≤|S| , we can only go so far in pinning down the model when m <|A|—
+which also makes sense, since in this case we cannot possibly know about the effect of all actions, no
+matter how bigV is. Note that whenm =|A| andk =|S| the space P(Π,V) reduces to{P∗}.
+4 Model learning based on the value-equivalence principle
+We now discuss how the principle of value equivalence can be incorporated into model-based
+RL. Often in model-based RL one learns a model ˜m = (˜r, ˜p) without taking the spaceM(Π,V)
+into account. The usual practice is to cast the approximations ˜r≈ r and ˜p≈ p as optimization
+problems over a model-spaceM that do not involve the sets Π andV. Given a spaceR of possible
+approximations ˜r, we can formulate the approximation of the rewards as argmin˜r∈R𝓁r(r, ˜r), where
+𝓁r is a loss function that measures the dissimilarity between r and ˜r. The approximation of the
+transition dynamics can be formalized in an analogous way: argmin˜p∈P𝓁p(p, ˜p), whereP is the
+space of possible approximations ˜p.
+A common choice for𝓁r is
+𝓁r,D(r, ˜r)≡ E(S,A)∼D
+[
+(r(S,A )− ˜r(S,A ))2]
+, (4)
+whereD is a distribution over S×A . The loss 𝓁p is usually deﬁned based on the principle of
+maximum likelihood estimation (MLE):
+𝓁p,D(p, ˜p)≡ E(S,A)∼D [DKL(p(·|S,A )|| ˜p(·|S,A ))], (5)
+where DKL is the Kullback-Leibler (KL) divergence. Since we normally do not have access tor and
+p, the losses (4) and (5) are usually minimized using transitions sampled from the environment [38].
+There exist several other criteria to approximate p based on state transitions, such as maximum a
+posteriori estimation, maximum entropy estimation, and Bayesian posterior inference [13]. Although
+we focus on MLE for simplicity, our arguments should extend to these other criteria as well.
+Both (4) and (5) have desirable properties that justify their widespread adoption [24]. However, we
+argue that ignoring the future use of ˜r and ˜p may not always be the best choice [22, 15]. To illustrate
+this point, we now show that, by doing so, one might end up with an approximate model when an
+exact one were possible. LetP(Π,V) be the set of value equivalent transition kernels inP. Then,
+Proposition 3. The maximum-likelihood estimate ofp∗ inP may not belong to aP(Π,V)⁄=∅.
+Proposition 3 states that, even when there exist models in P that are value equivalent to p∗ with
+respect to Π andV, the minimizer of (5) may not be in P(Π,V). In other words, even when it is
+possible to perfectly handle the policies in Π and the values inV, the model that achieves the smallest
+MLE loss will do so only approximately. This is unsurprising since the loss (5) is agnostic of Π and
+V, providing instead a model that represents a compromise across all policiesΠ and all functionsV.
+We now deﬁne a value-equivalence loss that explicitly takes into account the setsΠ andV:
+𝓁Π,V(m∗, ˜m)≡
+∑
+π∈Π
+∑
+v∈V
+‖Tπv− ˜Tπv||, (6)
+where ˜Tπ are Bellman operators induced by ˜m and||·|| is a norm. Given (6), the problem of learning
+a model based on the value equivalence principle can be formulated as argmin ˜m∈M𝓁Π,V(m∗, ˜m).
+As noted above, we usually do not have access toTπ, and thus the loss (6) will normally be minimized
+based on sample transitions. LetSπ≡{ (sπ
+i,aπ
+i,rπ
+i, ˆsπ
+i )|i = 1, 2,...,n π} benπ sample transitions
+associated with policyπ∈ Π. We assume that the initial statessπ
+i were sampled according to some
+5
+
+===== PAGE 6 =====
+distributionD′ overS and the actions were sampled according to the policyπ,aπ
+i ∼π(·|sπ
+i ) (note
+thatD′ can be the distribution resulting from a direct interaction of the agent with the environment).
+When‖·‖ appearing in (6) is ap-norm , we can write its empirical version as
+𝓁Π,V,D′(m∗, ˜m)≡
+∑
+π∈Π
+∑
+v∈V
+∑
+s∈S′
+π
+[∑nπ
+i=1 1 {sπ
+i =s}(rπ
+i +γv(ˆsπ
+i ))∑nπ
+i=1 1 {sπ
+i =s}
+− ˜Tπv[s]
+]p
+, (7)
+whereS
+′
+π is a set containing only the initial statessπ
+i ∈S π and 1 {·} is the indicator function. We
+argue that, when we know policies Π and functionsV that are sufﬁcient for planning, the appropriate
+goal for model-learning is to minimize the value-equivalence loss (6). As shown in Proposition 3,
+the model ˜m that minimizes (4) and (5) may not achieve zero loss on (6) even when such a model
+exists inM. In general, though, we should not expect there to be a model ˜m∈M that leads to zero
+value-equivalence loss. Even then, value equivalence may lead to a better model than conventional
+counterparts (see Figure 2 for intuition and Appendix A.1.2 for a concrete example).
+4.1 Restricting the sets of policies and functions
+Figure 2: When the hypothesis spaceM′ and
+the space of value-equivalent modelsM(V)
+intersect, the resulting model ˜mVE has zero
+loss (6), while the corresponding MLE model
+˜mMLE may not (Proposition 3). But even
+whenM′ andM(V′) do not intersect, the
+resulting ˜m′
+VE can outperform ˜mMLE with the
+appropriate choices of Π andV, as we illus-
+trate in the experiments of Section 5.
+The main argument of this paper is that, rather than
+learning a model that suits all policies Π and all func-
+tionsV, we should instead focus on the sets of policies
+Π and functionsV that are necessary for planning.
+But how can we know these sets a priori? We now
+show that it is possible to exploit structure on both
+the problem and the solution sides.
+First, we consider structure in the problem. Suppose
+we had access to the true modelm∗. Then, given an
+initial functionv, a value-based planning algorithm
+that makes use of m∗ will generate a sequence of
+functions ⃗Vv≡{ v1,v 2,...} [10]. Clearly, if we re-
+placem∗ with any model inM(Π,⃗Vv), the behavior
+of the algorithm starting from v remains unaltered.
+This allows us to state the following:
+Proposition 4. Supposev∈V′ =⇒ Tπv∈V′ for
+allπ∈ Π. Let p-span(Π)⊇ Π and span(V) =V′.
+Then, starting from anyv′∈V′, any ˜m∈M (Π,V)
+yields the same solution asm∗.
+BecauseTπ are contraction mappings, it is always possible to deﬁne aV′⊂ V such that the condition
+of Proposition 4 holds: we only need to makeV′ sufﬁciently large to encompassv and the operators’
+ﬁxed points. But in some cases there exist more structuredV′: in Appendix A.1 we give an example
+of a ﬁnite state-space MDP in which a sequence v1,v2 =Tπv1,v3 =Tπ′v2,... that reaches a
+speciﬁck-dimensional subspace of R|S| stays there forever. The value equivalence principle provides
+a mechanism to exploit this type of structure, while conventional model-learning approaches, like
+MLE, are oblivious to this fact. Although in general we do not have access toV′, in some cases this
+set will be revealed through the very process of enforcing value equivalence. For example, if ˜m is
+being learned online based on a sequence v1,v 2 =Tπv1,v 3 =Tπ′v2,... , as long as the sequence
+reaches avi∈V′ we should expect ˜m to eventually specialize toV′ [13, 33].
+Another possibility is to exploit geometric properties of the value functions⃗Vv. It is known that the
+set of all value functions of a given MDP forms a polytope ¨V⊂ V [11]. Even though the sequence⃗Vv
+an algorithm generates may not be strictly inside the polytope ¨V, this set can still serve as a reference
+in the deﬁnition ofV. For example, based on Proposition 1, we may want to deﬁne aV that spans as
+much of the polytope ¨V as possible [5]. This suggests that the functions inV should be actual value
+functionsvπ associated with policiesπ∈ Π. In Section 5 we show experiments that explore this idea.
+We now consider structure in the solution. Most large-scale applications of model-based RL use
+function approximation. Suppose the agent can only represent policiesπ∈ ˜Π and value functions
+v∈ ˜V. Then, a value equivalent model ˜m∈M (˜Π, ˜V) is as good as any model. To build intuition,
+suppose the agent uses state aggregation to approximate the value function. In this case two models
+6
+
+===== PAGE 7 =====
+with the same transition probabilities between clusters of states are indistinguishable from the agent’s
+point of view. It thus makes sense to buildV using piecewise-constant functions that belong to the
+space of function representable by the agent,v∈ ˜V. The following remark generalises this intuition:
+Remark 2. Suppose the agent represents the value function using a linear function approximation:
+˜V ={˜v| ˜v(s) =∑d
+i=1φi(s)wi}, whereφi :S↦→ R are ﬁxed features andw∈ Rd are learnable
+parameters. In addition, suppose the agent can only represent policiesπ∈ ˜Π. Then, Proposition 1
+implies that if we use the features themselves as the functions adopted with value equivalence,
+V ={φi}d
+i=1, we have thatM(˜Π,{φi}d
+i=1) =M(˜Π, ˜V). In other words, models that are value
+equivalent with respect to the features are indiscernible to the agent.
+According to the remark above, when using linear function approximation, a model that is value
+equivalent with respect to the approximator’s features will perform no worse than any other model.
+This prescribes a concrete way to leverage the value equivalence principle in practice, since the set of
+functionsV is automatically deﬁned by the choice of function approximator. Note that, although the
+remark is speciﬁc to linear value function approximation, it applies equally to linear and non-linear
+models (this is in contrast with previous work showing the equivalence between model-free RL using
+linear function approximation and model-based RL with a linear model for expected features [27, 38]).
+The principle of ﬁnding a basis for ˜V also extends to non-linear value function approximation, though
+in this case it is less clear how to deﬁne a setV that spans ˜V. One strategy is to sample the functions
+to be included inV from the set ˜V of (non-linear) functions the agent can represent. Despite its
+simplicity, this strategy can lead to good performance in practice, as we show next.
+5 Experiments
+We now present experiments illustrating the usefulness of the value equivalence principle in practice.
+Speciﬁcally, we compare models computed based on value equivalence (VE) with models resulting
+from maximum likelihood estimation (MLE). All our experiments followed the same protocol: (i)
+we collected sample transitions from the environment using a policy that picks actions uniformly
+at random, (ii) we used this data to learn an approximation ˜r using (4) as well as approximations
+˜p using either MLE (5) or VE (7), (iii) we learned a policy ˜π based on ˜m = (˜r, ˜p), and (iv) we
+evaluated ˜π on the actual environment. The speciﬁc way each step was carried out varied according
+to the characteristics of the environment and function approximation used; see App. A.2 for details.
+One of the central arguments of this paper is that the value equivalence principle can yield a better
+allocation of the limited resources of model-based agents. In order to verify this claim, we varied the
+representational capacity of the agent’s models ˜m and assessed how well MLE and VE performed
+under different constraints. As discussed, VE requires the deﬁnition of two sets: Π andV. It is
+usually easy to deﬁne a set of policies Π such thatp-span(Π)⊇ Π; since all the environments used in
+our experiments have a ﬁnite action spaceA, we accomplished that by deﬁning Π ={πa}a∈A where
+πa(a|s) = 1 for alls∈S . We will thus restrict our attention to the impact of the set of functionsV.
+As discussed, one possible strategy to deﬁneV is to use actual value functions in an attempt to span
+as much as possible of the value polytope ¨V [5]. Figure 3 shows results of VE when using this
+strategy. Speciﬁcally, we compare VE’s performance with MLE’s on two well known domains: “four
+rooms” [37] and “catch” [25]. For each domain, we show two types of results: we either ﬁx the
+capacity of the model ˜p and vary the size ofV or vice-versa (in the Appendix we show results with
+all possible combinations of model capacities and sizes ofV). Note how the models produced by VE
+outperform MLE’s counterparts across all scenarios, and especially so under stricter restrictions on
+the model. This corroborates our hypothesis that VE yields models that are tailored to future use.
+Another strategy to deﬁneV is to use functions from ˜V, the space of functions representable by the
+agent, in order to capture as much as possible of this space. In Figure 4 we compare VE using this
+strategy with MLE. Here we use as domains catch and “cart-pole” [4] (but see Appendix for the same
+type of result on the four-rooms environment). As before, VE largely outperforms MLE, in some
+cases with a signiﬁcant improvement in performance. We call attention to the fact that in cart-pole
+we used neural networks to represent both the transition models ˜p and the value functions ˜v, which
+indicates that VE can be naturally applied with nonlinear function approximation.
+It is important to note the broader signiﬁcance of our experiments. While our theoretical analysis
+of value equivalence focused on the case whereM contained a value equivalent model, this is not
+7
+
+===== PAGE 8 =====
+(a) Four rooms (ﬁxed V)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+0
+20
+40
+60
+80
+100Average State Value (b) Four rooms (ﬁxed ˜m)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value (c) Catch (ﬁxed V)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+4
+5
+6
+7
+8
+9
+10Average State Value (d) Catch (ﬁxed ˜m)
+Figure 3: Results with V composed of true value functions of randomly-generated policies. The
+models ˜p are rank-constrained transition matrices ˜P =DK, withD∈ R|S|×k,K∈ Rk×|S|, and
+k< |S|. Error bars are one standard deviation over 30 runs.
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+MLE
+VE
+(a) Catch (ﬁxed V)
+50 100 150 200 250
+size( ) (# clusters)
+4
+5
+6
+7
+8
+9
+10Average State Value (b) Catch (ﬁxed ˜m)
+5 10 15 20
+rank(m)
+0
+200
+400
+600
+800
+1000Average Episode Return (c) Cart-pole (ﬁxed V)
+0 500 1000
+size( ) (# hidden units)
+0
+200
+400
+600
+800
+1000Average Episode Return (d) Cart-pole (ﬁxed ˜m)
+Figure 4: Results withV composed of functions sampled from the agent’s representational space ˜V.
+(a–b) Functions inV are the features of the linear function approximation (state aggregation), as per
+Remark 2. Models ˜p are rank-constrained transition matrices (cf. Figure 3). (c–d) Functions inV
+are randomly-generated neural networks. Models ˜p are neural networks with rank-constrained linear
+transformations between layers (Appendix A.2). Error bars are one standard deviation over 30 runs.
+guaranteed in practice. Our experiments illustrate that, in spite of lacking such a guarantee, we see a
+considerable gap in performance between VE and MLE, indicating that VE models still offer a strong
+beneﬁt. Our goal here was to provide insight into the value equivalence principle; in the next section
+we point to prior work to demonstrate the utility of value equivalence in large-scale settings.
+6 The value-equivalence principle in practice
+Recently, there have been several successful empirical works that can potentially be understood as
+applications of the value-equivalence principle, like Silver et al.’s [34] Predictron, Oh et al.’s [26]
+Value Prediction Networks, Farquhar et al.’s [16] TreeQN, and Schrittwieser et al.’s [33] MuZero.
+Speciﬁcally, the model-learning aspect of these prior methods can be understood, with some abuse
+of notation, as a value equivalence principle of the formTv = ˜Tv, whereT is a Bellman operator
+applied with the true modelm∗ and ˜T is a Bellman operator applied with an approximate model ˜m.
+There are many possible forms for the operatorsT and ˜T . First, value equivalence can be applied to an
+uncontrolled Markov reward process; the resulting operatorTπ is analogous to having a single policy
+in Π. Second, it can be applied overn steps, using a Bellman operatorTn
+π that rolls the model forward
+n steps:Tn
+π [v](s) = Eπ[Rt+1 +... +γn−1Rt+n +γnvπ(St+n)|St =s], or aλ-weighted average
+Tλ
+π [6]. Third, a special case of the n-step operatorTa1...an can be applied to an open-loop action
+sequence{a1,...,a n}. Fourth, it can be applied to the Bellman optimality operator,TGv, whereGv is
+the “greedy” policy induced byv deﬁned asGv(a|s) = 1 {a = argmaxa′E[R +γv(S′)|s,a′]}. This
+idea can also be extended to ann-step greedy search operator,TGnv [v](s) = maxa1,...,an E[Rt+1 +
+... +γn−1Rt+n +γnv(St+n)|St =s,At =a1,...,A t+n =an]. Finally, instead of applying value
+equivalence over a ﬁxed set of value functionsV, we can have a setVt that varies over time—for
+example,Vt can be a singleton with an estimate of the value function of the current greedy policy.
+The two operatorsT and ˜T can also differ. For example, on the environment side we can use the
+optimal value function, which can be interpreted as T∞v = v∗ [40, 34], while the approximate
+operator can be ˜Tλ
+π [34] or ˜Tn
+Gvt
+[40]. We can also use approximate values ˜Tv≈T v′ wherev′≈v,
+8
+
+===== PAGE 9 =====
+for example by applyingn-step operators to approximate value functions, ˜Tnv≈T nv′ =TnTkv =
+Tn+kv [26, 33] or ˜Tnv≈T nv′ =Tn ˜Tkv [16], or even to approximate policies, ˜Tnva≈T nv′
+a
+whereva = π(a|s)≈ π′(a|s) = v′
+a for alla∈A [33]. The table below characterises the type of
+value equivalence principle used in prior work. We conjecture that this captures the essential idea
+underlying each method for model-learning, acknowledging that we ignore many important details.
+Algorithm Operator ˜T Policies Π FunctionsV
+Predictron [34] ˜Tλvt None Value functions for pseudo-rewards
+VIN [40] ˜Tn
+Gvt
+vt Gvt Value function
+TreeQN [16] ˜Tn
+Gnvt
+vt Gn
+vt Value function
+VPN [26] ˜Tn
+a1..anvt {a1,...,a n}∼ πt Value function
+MuZero [33] ˜Tn
+a1...anvt {a1,...,a n}∼ πt Distributional value bins, policy components
+All of these methods, with the exception of VIN, sample the Bellman operator, rather than computing
+full expectations (c.f. (7)). In addition, all of the above methods jointly learn the state representation
+alongside a value-equivalent model based upon that representation. Only MuZero includes both many
+policies and many functions, which may be sufﬁcient to approximately span the policy and function
+space required to plan in complex environments; this perhaps explains its stronger performance.
+7 Related work
+Farahmand et al.’s [14, 15] value-aware model learning (V AML) is based on a premise similar to
+ours. They study a robust variant of (6) that considers the worst-case choice ofv∈V and provide the
+gradient when the value-function approximation˜v is linear and the model ˜p belongs to the exponential
+family. Later, Farahmand [13] also considered the case where the model is learned iteratively. Both
+versions of V AML come with ﬁnite sample-error upper bound guarantees [ 14, 15, 13]. More
+recently, Asadi et al. [2] showed that minimizing the V AML objective is equivalent to minimizing the
+Wasserstein metric. Abachi et al. [1] applied the V AML principle to policy gradient methods. The
+theory of V AML is complementary to ours: we characterise the space of value-equivalent models,
+while V AML focuses on the solution and analysis of the induced optimization problem.
+Joseph et al. [22] note that minimizing prediction error is not the same as maximizing the performance
+of the resulting policy, and propose an algorithm that optimizes the parameters of the model rather
+than the policy’s. Ayoub et al.[3] proposes an algorithm that keeps a set of models that are consistent
+with the most recent value function estimate. They derive regret bounds for the algorithm which
+suggest that value-targeted regression estimation is both sufﬁcient and efﬁcient for model-based RL.
+More broadly, other notions of equivalence between MDPs have been proposed in the literature [12,
+28, 20, 31, 17, 23, 41, 29, 8, 42]. Any notion of equivalence over states can be recast as a form of
+state aggregation; in this case the functions mapping states to clusters can (and probably should) be
+used to enforce value equivalence (Remark 2). But the principle of value equivalence is more general:
+it can be applied with function approximations other than state aggregation and can be used to exploit
+structure in the problem even when there is no clear notion of state abstraction (Appendix A.1.2).
+In this paper we have assumed that the agent has access to a well-deﬁned notion of states∈S . More
+generally, the agent only receives observations from the environment and must construct its own state
+function—that is, a mapping from histories of observations to features representing states. This is
+an instantiation of the problem known as representation learning [43, 21, 9, 18, 45, 44, 19, 7]. An
+intriguing question which arises in this context is whether a model learned through value equivalence
+induces a space of “compatible” state representations, which would suggest that the loss (6) could also
+be used for representation learning. This may be an interesting direction for future investigations.
+8 Conclusion
+We introduced the principle of value equivalence: two models are value equivalent with respect to a
+set of functions and a set of policies if they yield the same updates of the former on the latter. Value
+equivalence formalizes the notion that models should be tailored to their future use and provides
+a mechanism to incorporate such knowledge into the model learning process. It also uniﬁes some
+important recent work in the literature, shedding light on their empirical success. Besides helping
+to explain some past initiatives, we believe the concept of value equivalence may also give rise to
+theoretical and algorithmic innovations that leverage the insights presented.
+9
+
+===== PAGE 10 =====
+Broader impact
+The bulk of the research presented in this paper consists of foundational theoretical results about the
+learning of models for model-based reinforcement learning agents. While applications of these agents
+can have social impacts depending upon their use, our results merely serve to illuminate desirable
+properties of models and facilitate the subsequent training of agents using them. In short, this work
+is largely theoretical and does not present any foreseeable societal impact, except in the general
+concerns over progress in artiﬁcial intelligence.
+Acknowledgements
+We would like to thank Gregory Farquhar and Eszter Vertes for the great discussions regarding
+the value equivalence principle. We also thank the anonymous reviewers for their comments and
+suggestions to improve the paper.
+References
+[1] Romina Abachi, Mohammad Ghavamzadeh, and Amir massoud Farahmand. Policy-Aware
+Model Learning for Policy Gradient Methods. arXiv preprint cs.AI:2003.00030, 2020.
+[2] Kavosh Asadi, Evan Cater, Dipendra Misra, and Michael L. Littman. Equivalence Between
+Wasserstein and Value-Aware Model-Based Reinforcement Learning. InFAIM Workshop on
+Prediction and Generative Modeling in Reinforcement Learning, 2018.
+[3] Alex Ayoub, Zeyu Jia, Csaba Szepesvári, Mengdi Wang, and Lin Yang. Model-Based Reinforce-
+ment Learning with Value-Targeted Regression. InProceedings of the International Conference
+on Machine Learning (ICML), 2020.
+[4] Andrew G. Barto, Richard S. Sutton, and Charles W Anderson. Neuronlike Adaptive Elements
+That Can Solve Difﬁcult Learning Control Problems. IEEE Transactions on Systems, Man, and
+Cybernetics, pages 834–846, 1983.
+[5] Marc Bellemare, Will Dabney, Robert Dadashi, Adrien Ali Taiga, Pablo Samuel Castro, Nicolas
+Le Roux, Dale Schuurmans, Tor Lattimore, and Clare Lyle. A Geometric Perspective on
+Optimal Representations for Reinforcement Learning. In Advances in Neural Information
+Processing Systems, pages 4360–4371, 2019.
+[6] Dimitri P. Bertsekas and John N. Tsitsiklis. Neuro-Dynamic Programming. Athena Scientiﬁc,
+1996.
+[7] Ondrej Biza, Robert Platt, Jan-Willem van de Meent, and Lawson LS Wong. Learning Discrete
+State Abstractions with Deep Variational Inference. arXiv preprint arXiv:2003.04300, 2020.
+[8] Pablo Samuel Castro. Scalable Methods for Computing State Similarity in Deterministic
+Markov Decision Processes. In Proceedings of the AAAI Conference on Artiﬁcial Intelligence,
+volume 34, pages 10069–10076, 2020.
+[9] Dane Corneil, Wulfram Gerstner, and Johanni Brea. Efﬁcient Model-Based Deep Reinforcement
+Learning with Variational State Tabulation. arXiv preprint arXiv:1802.04325, 2018.
+[10] Will Dabney, André Barreto, Mark Rowland, Robert Dadashi, John Quan, Marc G. Belle-
+mare, and David Silver. The Value-Improvement Path: Towards Better Representations for
+Reinforcement Learning, 2020.
+[11] Robert Dadashi, Adrien Ali Taiga, Nicolas Le Roux, Dale Schuurmans, and Marc G. Bellemare.
+The Value Function Polytope in Reinforcement Learning. In Proceedings of the International
+Conference on Machine Learning (ICML), volume 97, pages 1486–1495, 2019.
+[12] Thomas Dean and Robert Givan. Model Minimization in Markov Decision Processes. In
+AAAI/IAAI, pages 106–111, 1997.
+10
+
+===== PAGE 11 =====
+[13] Amir-massoud Farahmand. Iterative Value-Aware Model Learning. In Advances in Neural
+Information Processing Systems (NeurIPS), pages 9090–9101, 2018.
+[14] Amir-Massoud Farahmand, André Barreto, and Daniel Nikovski. Value-Aware Loss Function
+for Model Learning in Reinforcement Learning. In Proceedings of the European Workshop on
+Reinforcement Learning (EWRL), 2013.
+[15] Amir-Massoud Farahmand, André Barreto, and Daniel Nikovski. Value-Aware Loss Function
+for Model-Based Reinforcement Learning. In Proceedings of the International Conference on
+Artiﬁcial Intelligence and Statistics (AISTATS), volume 54, pages 1486–1494, 2017.
+[16] G Farquhar, T Rocktäschel, M Igl, and S Whiteson. TreeQN and ATreeC: Differentiable
+Tree-Structured Models for Deep Reinforcement Learning. In 6th International Conference on
+Learning Representations, ICLR 2018-Conference Track Proceedings, volume 6. ICLR, 2018.
+[17] Norm Ferns, Prakash Panangaden, and Doina Precup. Metrics for Finite Markov Decision
+Processes. In UAI, volume 4, pages 162–169, 2004.
+[18] Vincent François-Lavet, Yoshua Bengio, Doina Precup, and Joelle Pineau. Combined Rein-
+forcement Learning via Abstract Representations. In Proceedings of the AAAI Conference on
+Artiﬁcial Intelligence, volume 33, pages 3582–3589, 2019.
+[19] Carles Gelada, Saurabh Kumar, Jacob Buckman, Oﬁr Nachum, and Marc G Bellemare. Deep-
+MDP: Learning Continuous Latent Space Models for Representation Learning. In International
+Conference on Machine Learning, pages 2170–2179, 2019.
+[20] Robert Givan, Thomas Dean, and Matthew Greig. Equivalence Notions and Model Minimization
+in Markov Decision Processes. Artiﬁcial Intelligence, 147(1-2):163–223, 2003.
+[21] Maximillian Igl, Luisa Zintgraf, Tuan Anh Le, Frank Wood, and Shimon Whiteson. Deep
+Variational Reinforcement Learning for POMDPs. In ICML 2018: Proceedings of the Thirty-
+Fifth International Conference on Machine Learning, July 2018. URL http://www.cs.ox.
+ac.uk/people/shimon.whiteson/pubs/iglicml18.pdf.
+[22] Joshua Joseph, Alborz Geramifard, John W Roberts, Jonathan P How, and Nicholas Roy. Rein-
+forcement Learning with Misspeciﬁed Model Classes. In 2013 IEEE International Conference
+on Robotics and Automation, pages 939–946. IEEE, 2013.
+[23] Lihong Li, Thomas J. Walsh, and Michael L. Littman. Towards a Uniﬁed Theory of State
+Abstraction for MDPs. In Proceedings of the International Symposium on Artiﬁcial Intelligence
+and Mathematics, pages 531–539, 2006.
+[24] Russell B. Millar. Maximum Likelihood Estimation and Inference. Hoboken: Wiley, 2011.
+[25] V olodymyr Mnih, Nicolas Heess, Alex Graves, and Koray Kavukcuoglu. Recurrent Models
+of Visual Attention. In Advances in Neural Information Processing Systems (NIPS) , pages
+2204–2212, 2014.
+[26] Junhyuk Oh, Satinder Singh, and Honglak Lee. Value Prediction Networks. In Advances in
+Neural Information Processing Systems, pages 6118–6128, 2017.
+[27] Ronald Parr, Lihong Li, Gavin Taylor, Christopher Painter-Wakeﬁeld, and Michael L. Littman.
+An Analysis of Linear Models, Linear Value-Function Approximation, and Feature Selection for
+Reinforcement Learning. In Proceedings of the International Conference on Machine Learning
+(ICML), pages 752–759, 2008.
+[28] Pascal Poupart and Craig Boutilier. Value-Directed Compression of POMDPs. In Advances in
+Neural Information Processing Systems (NIPS), pages 1547–1554. MIT Press, 2002.
+[29] Pascal Poupart and Craig Boutilier. Value-Directed Belief State Approximation for POMDPs.
+CoRR, abs/1301.3887, 2013. URL http://arxiv.org/abs/1301.3887.
+[30] Martin L. Puterman. Markov Decision Processes—Discrete Stochastic Dynamic Programming .
+John Wiley & Sons, Inc., 1994.
+11
+
+===== PAGE 12 =====
+[31] Balaraman Ravindran and Andrew G Barto. Approximate Homomorphisms: A Framework for
+Non-Exact Minimization in Markov Decision Processes. 2004.
+[32] Stuart J. Russell and Peter Norvig. Artiﬁcial Intelligence: A Modern Approach . Pearson
+Education, 3 edition, 2003.
+[33] Julian Schrittwieser, Ioannis Antonoglou, Thomas Hubert, Karen Simonyan, Laurent Sifre, Si-
+mon Schmitt, Arthur Guez, Edward Lockhart, Demis Hassabis, Thore Graepel, et al. Mastering
+Atari, Go, Chess and Shogi by Planning with a Learned Model.arXiv preprint arXiv:1911.08265,
+2019.
+[34] David Silver, Hado van Hasselt, Matteo Hessel, Tom Schaul, Arthur Guez, Tim Harley, Gabriel
+Dulac-Arnold, David Reichert, Neil Rabinowitz, Andre Barreto, et al. The Predictron: End-to-
+End Learning and Planning. In Proceedings of the 34th International Conference on Machine
+Learning-Volume 70, pages 3191–3199. JMLR. org, 2017.
+[35] Richard S. Sutton. Learning to Predict by the Methods of Temporal Differences. Machine
+Learning, 3:9–44, 1988.
+[36] Richard S. Sutton and Andrew G. Barto. Reinforcement Learning: An In-
+troduction. MIT Press, 2018. URL https://mitpress.mit.edu/books/
+reinforcement-learning-second-edition . 2nd edition.
+[37] Richard S Sutton, Doina Precup, and Satinder Singh. Between MDPs and Semi-MDPs: A
+Framework for Temporal Abstraction in Reinforcement Learning. Artiﬁcial intelligence, 112
+(1-2):181–211, 1999.
+[38] Richard S. Sutton, Csaba Szepesvári, Alborz Geramifard, and Michael Bowling. Dyna-Style
+Planning with Linear Function Approximation and Prioritized Sweeping. In Proceedings of the
+Conference on Uncertainty in Artiﬁcial Intelligence (UAI), page 528–536, 2008.
+[39] Csaba Szepesvári. Algorithms for Reinforcement Learning. Synthesis Lectures on Artiﬁcial
+Intelligence and Machine Learning. Morgan & Claypool Publishers, 2010.
+[40] Aviv Tamar, Yi Wu, Garrett Thomas, Sergey Levine, and Pieter Abbeel. Value Iteration
+Networks. In Advances in Neural Information Processing Systems, pages 2154–2162, 2016.
+[41] Jonathan Taylor, Doina Precup, and Prakash Panagaden. Bounding Performance Loss in
+Approximate MDP Homomorphisms. In Advances in Neural Information Processing Systems
+(NIPS), pages 1649–1656, 2009.
+[42] Elise van der Pol, Thomas Kipf, Frans A Oliehoek, and Max Welling. Plannable Approximations
+to MDP Homomorphisms: Equivariance under Actions. In International Conference on
+Autonomous Agents and MultiAgent Systems, 2020.
+[43] Manuel Watter, Jost Springenberg, Joschka Boedecker, and Martin Riedmiller. Embed to
+Control: A Locally Linear Latent Dynamics Model for Control from Raw Images. In Advances
+in Neural Information Processing Systems (NIPS), pages 2746–2754, 2015.
+[44] Amy Zhang, Zachary C Lipton, Luis Pineda, Kamyar Azizzadenesheli, Anima Anandkumar,
+Laurent Itti, Joelle Pineau, and Tommaso Furlanello. Learning Causal State Representations of
+Partially Observable Environments. arXiv preprint arXiv:1906.10437, 2019.
+[45] Marvin Zhang, Sharad Vikram, Laura Smith, Pieter Abbeel, Matthew Johnson, and Sergey
+Levine. SOLAR: Deep Structured Representations for Model-Based Reinforcement Learning.
+In International Conference on Machine Learning (ICML), pages 7444–7453. PMLR, 2019.
+12
+
+===== PAGE 13 =====
+The Value-Equivalence Principle
+for Model-Based Reinforcement Learning
+Supplementary Material
+Christopher Grimm
+Computer Science & Engineering
+University of Michigan
+crgrimm@umich.edu
+André Barreto, Satinder Singh, David Silver
+DeepMind
+{andrebarreto,baveja,davidsilver}@google.com
+In this supplement we give details of our theoretical results and experiments that had to be left out
+of the main paper due to space constraints. We prove our theoretical results and provide a detailed
+description of our experimental procedure. Importantly, we present an illustrative example showing
+how value equivalence (VE) may lead to a better solution for a Markov decision process (MDP) than
+maximum-likelihood estimate (MLE). We show this to be true both in the exact case, when there exist
+a value-equivalent model in the model class considered, and in the approximate case, when such a
+model does not exist in the model class. Our appendix is organized as follows:
+• Section A.1.1 contains derivations of the properties and propositions presented in the main
+text.
+• Section A.1.2 contains a sequence of examples using a toy MDP that illustrate points made
+in the discussion surrounding Propositions 3 and 4. Moreover, we include an additional
+result which illustrates a situation in which approximate VE models can outperform the
+MLE model.
+• Section A.2 provides a detailed outline of the pipeline used across our experiments in the
+main text. We also report several additional results that had to be left out of the main paper
+due to space constraints.
+The numbering of equations, ﬁgures and citations resume from what is used in the main paper.
+A Appendix
+A.1 Proofs of theoretical results and illustrative examples
+A.1.1 Proofs
+Property 1. GivenM′⊆M , we have thatM′(Π,V)⊆M (Π,V).
+Proof. This result directly follows from Deﬁnitions 1 and 2.
+Property 2.M(Π,V) either containsm∗ or is the empty set.
+Proof.M(Π,V)⊆ M(Π,V) ={m∗} (Property 1).
+Property 3. Given Π′⊆ Π andV′⊆V , we have thatM(Π,V)⊆M (Π′,V′).
+Proof. We will show the result by contradiction. Suppose there is a model ˜m∈M (Π,V) such that
+˜m /∈M (Π′,V′). This means that there exists a π∈ Π′ and av∈V ′ for which ˜Tπv⁄=Tπv. But
+since Π′⊆ Π andV′⊆V , it must be the case that π∈ Π andv∈V , which contradicts the claim
+that ˜m∈M (Π,V).
+Property 4. Ifm∗∈M , thenm∗∈M (Π,V) for all Π and allV.
+Proof. m∗∈M (Π,V)⊆M (Π,V) (Property 3).
+13
+
+===== PAGE 14 =====
+Proposition 1. For discreteΠ andV, we have thatM(Π,V) =M(p-span(Π)∩Π, span(V)).
+Proof. Letπ∈ p-span(Π)∩Π. Based on (3), we know that there exists an αs∈ R|Π| such that
+π(·|s) =∑
+iαsiπi(·|s), whereπi∈ Π. Thus, for ˜m∈M (Π,V), we can write
+˜Tπ[v](s) = EA∼π(·|s),S′∼˜p(·|s,A) [˜r(s,A ) +γv(S′)]
+=
+∫
+π(a|s)ES′∼˜p(·|s,a) [˜r(s,a ) +γv(S′)]da
+=
+∫∑
+iαsiπi(a|s)ES′∼˜p(·|s,a) [˜r(s,a ) +γv(S′)]da
+=∑
+iαsi
+∫
+πi(a|s)ES′∼˜p(·|s,a) [˜r(s,a ) +γv(S′)]da
+=∑
+iαsiEA∼πi(·|s),S′∼˜p(·|s,a) [˜r(s,a ) +γv(S′)]
+=∑
+iαsiTπi[v](s).
+Letv∈ span(V). We know there is aβ∈ R|V| such thatv =∑
+iβivi, withvi∈V .
+˜Tπ[v](s) = EA∼π(·|s),S′∼˜p(·|s,A) [˜r(s,A ) +γ∑
+iβivi(S′)]
+=∑
+iβiEA∼π(·|s),S′∼˜p(·|s,A) [˜r(s,A ) +γvi(S′)]
+=∑
+iβi ˜Tπ[vi](s).
+In order to prove Proposition 2 we will need four lemmas which we state and prove below.
+Lemma 1. For arbitrary matrices A ∈ Rk×n,C ∈ Rm×𝓁, we can construct a vector-space
+B ={B∈ Rn×m :ABC = 0} where 0 denotes ak×𝓁 matrix of zeros. It follows that
+H-dim[B] =nm− rank(A)· rank(C). (8)
+Proof. We begin by converting the conditionABC = 0 into a matrix-vector product. Letai andcj
+denote the i’th row ofA and j’th column ofC respectively. Observe that (ABC)ij =aiBcj =∑
+x,yai
+xcj
+yBxy, which implies that
+ABC = 0 ⇐⇒
+∑
+x,y
+ai
+xcj
+yBxy = 0 ∀i∈ [k],j ∈ [𝓁] (9)
+where [k] denotes{1,...,k }.
+For each (i,j ) pair, the above expression is suggestive of a dot-product between two n× m
+vectors: a combination of ai andcj, and a “ﬂattened” version of B. Deﬁne the former com-
+bination of vectors as dij = [ai
+1cj
+1,ai
+1cj
+2,··· ,ai
+ncj
+m]⊤ ∈ Rnm×1, and stack them as rows as:
+D = [d11,d12,··· ,dnm]⊤∈ Rk𝓁×nm. To ﬂattenB, simply deﬁneb = [B11,B12,··· ,Bnm]⊤∈
+Rnm×1.
+We now have thatABC = 0 ⇐⇒ Db = 0. Moreover, unravelling the matrices inB does not
+change the dimension of the space, thus:
+H-dim[B] =H-dim[{b∈R nm×1 :Db = 0}] =nm− rank(D) (10)
+where the last equality comes from a application of the rank-nullity theorem.
+Finally notice that the construction of dij can be thought of as vertically stacking n copies ofcj
+each scaled by a different entry inai. We can also ﬁnd scaled copies ofai bycj
+k indij by selecting
+indices from the combined vector at regular intervals ofm:dij
+k+(𝓁−1)m =cj
+k·ai
+𝓁 for𝓁∈{ 1,...n }.
+This means that scaled copies of both ai andcj can be found by selecting speciﬁc groups of
+indices indij. It follows that if a1,..., an are linearly independent then so are d1j,..., dnj for
+anyj. And similarly, if c1,..., cm are linearly independent then so are di1,..., dim for any i.
+Hence ifa1,... an andc1,..., cm are both linearly independent sets, then so isd11,d12,..., dnm.
+Since these ai andcj vectors form the rows and columns of rank n andm matrices: A andC,
+their corresponding sets of row and column vectors are linearly independent. Thus we have that
+rank(D) = rank(A)· rank(C), completing the proof.
+Lemma 2. For anyc andY +c ={y +c :y∈Y} it follows that dim[Y +c] = dim[Y].
+14
+
+===== PAGE 15 =====
+Proof.
+dim[Y +c] = min
+(V,c′):Y+(c+c′)⊆W
+H-dim[W] = min
+(W,c′):Y+c′⊆W
+H-dim[W] = dim[Y]
+Lemma 3. IfY is a vector-space thenH-dim[Y] = dim[Y].
+Proof. Recall the deﬁnition of dim[Y]:
+dim[Y] = min
+(W,c):Y+c⊆W
+H-dim[W]
+whereW is a vector-space. By choosingW =Y andc = 0 we see that dim[Y]≤H -dim[Y].
+Suppose then that dim[Y] <H-dim[Y]. This implies that there is a vector space W and offsetc
+withd =H-dim[W] <H-dim[Y] andY +c⊆W . This means that for every y∈Y :y +c =∑d
+i=1αy
+iwi for someαy
+1:d wherew1:d are a basis ofW. SinceY is a vector space it must contain the
+0 vector, hencec =∑d
+i=1α0
+iwi. Accordingly anyy∈Y can be written asy =∑d
+i=1(αy
+i−α0
+i )wi.
+However, this is a contradiction sinceH-dim[W]<H-dim[Y]. Hence dim[Y] =H-dim[Y].
+Lemma 4. IfX⊆Y then dim[X ]≤ dim[Y].
+Proof. IfX⊆Y then for anyc,X +c⊆Y +c. Because of the above, for any vector-spaceW:
+W⊇Y +c =⇒ W⊇X +c, hence:{(W,c ) :X +c⊂W}⊇{ (W,c) :Y +c⊂W} . Notice
+that this last set-relation corresponds the set of vector-spaces that dim[·] is minimizing over forX
+andY respectively. Hence dim[X ]≤ dim[Y].
+Proposition 2. Let Π be a set ofm pointwise linearly independent policiesπi∈ R|S||A| and letV
+be a set ofk linearly independent vectorsvi∈ R|S|. Then,
+dim [P(Π,V)]≤|S| (|S||A|− mk).
+Proof. First note that ifπi /∈p-span(Π\{πi}) thenπi /∈ span(Π\{πi}). Hence, pointwise linear
+independence implies linear independence.
+Since|S| and|A| are ﬁnite, we can assume that A = {1,..., |A||} andS = {1,..., |S|}.
+For any transition probability kernel ˜p(s′|s,a ) we can construct matrix ˜P ∈ R|S||A|×|S| with
+˜P (a−1)|S|+s,s′ = ˜p(s′|s,a ). Denote the constructed matrix corresponding to the true dynamics
+asP . For any πi we can construct a matrix Πi∈ R|S|×|S||A| with (Πi)s,(a−1)|S|+s = πi(a|s).
+Vertically stack thesem Πi matrices to construct Π∈ Rm|S|×|S||A|. Additionally we construct
+V ∈ R|S|×k withVj,𝓁 = (v𝓁)j. Note that P(Π,V) ={ ˜P∈ P : Π( ˜P−P )V = 0}. Deﬁne the
+setsX ={X∈ R|S||A|×|S| :PXV = 0} andY ={ ˜P∈ R|S||A|×|S| : Π( ˜P−P )V = 0}.
+Note the following three facts:
+1. dim[X ] = dim[Y] since our notion of dimension is translation-invariant (Lemma 2).
+2. dim[X ] =H-dim[X ] sinceX is a vector-space (Lemma 3).
+3. P(Π,V)⊆Y which implies that dim[P(Π,V)]≤ dim[Y] (Lemma 4).
+Taken together this gives us that
+dim[P(Π,V)]≤ dim[Y] =H-dim[X ].
+We can now apply Lemma 1 to obtain dim[X ] =|S|2|A|− k· rank(Π). Notice that rank(Π) =
+min{|S||A|,m|S|}. Thus dim[P(Π,V)]≤|S|(|S||A|− mk) as needed.
+Proposition 3. The maximum-likelihood estimate ofp∗ inP may not belong to aP(Π,V)⁄=∅.
+15
+
+===== PAGE 16 =====
+Proof. Suppose we are trying to estimate a transition matrix P ∈ Rn×n and choose to use one
+parameterθi∈ R per row. Speciﬁcally, we parametrize the distribution on thei-th row as
+˜pii =θi and ˜pij = (1−θi)/(n− 1), fori⁄=j, withθi∈ [0, 1],
+wherepij =p(sj|si). We can then write the expected likelihood function forθ∈ Rn as
+m(θ) = ∑
+i
+[
+pii lnθi +∑
+j⁄=ipij ln(1−θi)−∑
+j⁄=ipij ln(n− 1)
+]
+=∑
+i [pii lnθi + (1−pii) ln(1−θi)− (1−pii) ln(n− 1)],
+which leads to the likelihood equation
+0 = ∂m(θ)
+θi
+= pii
+θi
++ 1−pii
+θi− 1 = pii(θi− 1) + (1−pii)θi
+θi(θi− 1) = θi−pii
+θi(θi− 1).
+The MLE solution is thus to haveθi =pii fori = 1, 2,...,n . This means that the solution provided
+by MLE will not be exact if and only if
+pij⁄=pik for any (i,j,k ) such thati⁄=j⁄=k. (11)
+Now, suppose we haveV ={v} withvi = 1 for some i andvj = 0 forj⁄= i. In this case it is
+possible to get an exact value-equivalent solution—that is, Pv = ˜Pv — by making θi = pii and
+θj = 1− (n− 1)pii forj⁄=i, regardless of whether (11) is true or not.
+Proposition 4. Suppose v ∈ V′ =⇒ Tπv ∈ V′ for all π ∈ Π. Let p-span(Π) ⊇ Π and
+span(V) =V′. Then, starting from anyv′∈V′, any ˜m∈M (Π,V) yields the same solution asm∗.
+Proof. Denote the Bellman operator under a policy that always selects action a asTa, the greedy
+Bellman operator asTv = maxaTav and the Bellman operator under a policy π asTπ, as before.
+LetT (n)v representn successive applications of operatorT on valuev.
+Note that for anyv∈ V we can construct aπv(s) = argmaxa(Tav)(s) such thatTv = maxaTav =
+Tπvv. This implies that the greedy Bellman operator is included in the assumption of our proposition:
+v∈V′ =⇒ Tv∈V′. (12)
+We now begin by showing that:
+T (n)v = ˜T (n)v∈V′ =⇒ T(n+1)v = ˜T (n+1)v∈V′ (13)
+for any v ∈ V and any n > 0. Assume that T (n)v = ˜T (n)v ∈ V′. Since T (n)v ∈ V′ and
+V′ = span(V), we can use use value equivalence to obtain:
+TaT (n)v = ˜TaT (n)v.
+for anya∈A . Next, sinceT (n)v = ˜T (n)v we can write:
+TaT (n)v = ˜Ta ˜T (n)v. (14)
+Since (14) holds for anya∈A , we can write:
+T (n+1)v = max
+a
+TaT (n)v = max
+a
+˜Ta ˜T (n)v = ˜T (n+1)v.
+We know from (12) that the fact thatT (n)v∈V′ implies thatT (n+1)v∈V′. Thus we have shown
+that (13) is true.
+Finally, by choosingv∈V′ and using analogous reasoning as as above, we can show thatTav = ˜Tav
+andTv = maxaTav = maxa ˜Tav = ˜Tv, and sincev∈V′, ˜Tv =Tv∈V′. ThusT (n)v =T (n)v
+for alln∈ N. This is sufﬁcient to conclude that
+˜v∗ = lim
+n→∞
+˜T (n)v′ = lim
+n→∞
+T (n)v′ =v∗,
+as needed.
+A.1.2 Examples with a simple MDP
+16
+
+===== PAGE 17 =====
+Figure 5
+Consider the 3 state MDP with statess1,s 2,s 3 and actions
+A ={a1,a 2}. Transitioning to state s1 always incurs a
+reward of 1, taking any action in statess2 ands3 always
+results in transitioning to s1 and taking action a ∈ A
+froms1 transitions among the other states according to
+action-dependent distribution (pa
+11,pa
+12,pa
+13). This MDP
+is depicted in Figure 5. We now use this MDP to illustrate
+several points made in the main text.
+Closure under Bellman updates We now address the
+discussion surrounding Proposition 4 in the main text.
+Consider a the following two-dimensional subspace of value functionsR ={[x,y,y ]⊤ :x,y∈ R}.
+We now show that, for the MDP described above,R exhibits closure under arbitrary Bellman updates.
+For an arbitrary policyπ :S↦→P (A) the Bellman update for a value functionv∈ R3 is given by
+Tπv =Rπ +γPπv where
+Rπ =
+[∑
+a∈Aπ(a|s1)pa
+11
+1
+1
+]
+,Pπ =
+[∑
+a∈Aπ(a|s1)pa
+11
+∑
+a∈Aπ(a|s2)pa
+12
+∑
+a∈Aπ(a|s3)pa
+13
+1 0 0
+1 0 0
+]
+Supposev∈R , thenv = [a,b,b ]⊤ for somea,b ∈ R. Notice that for such a value function the
+following holds:
+Tπv =
+[Rπ
+1 +γ[aPπ
+11 +b(1−Pπ
+11)]
+1 +γa
+1 +γa
+]
+∈R,
+thus we have illustrated that the two-dimensional subspace R is closed under arbitrary Bellman
+updates in our 3 state MDP. This means that, once a sequencev1,v2 =Tπv1,v3 =Tπ′v2... reaches
+avi∈R , it stays inR. We can then exploit this property ﬁnding value-equivalent models with
+respect toR, as we show next.
+A model class for whichexact VE outperforms MLE We now provide an example of the scenario
+discussed around Proposition 3 in the main text by examining the setting where a model, from a
+restricted class, must be learned to approximate the dynamics of our MDP. We restrict our model class
+by requiring that for each actiona∈A we represent (pa
+11,pa
+12,pa
+13) as ((1−θa)/2,θa, (1−θa)/2).
+Before continuing we note a few properties of value functions of our MDP. Notice that for anyvπ we
+can write:
+vπ
+1 =
+∑
+a∈A
+π(a|s1)[pa
+11(1 +γvπ
+1 ) + (1−pa
+11)(γ2vπ
+1 )],
+vπ
+2 = 1 +γvπ
+1,
+vπ
+3 = 1 +γvπ
+1,
+which illustrates thatvπ exclusively depends on the value ofPπ
+11≡∑
+a∈Aπ(a|s1)pa
+11.
+First we consider the MLE solution to this problem: it can be easily shown (see the proof of
+Proposition 3) that, for the model class deﬁned above, θa = pa
+12 for all a∈A maximizes the
+likelihood. However notice that this implies that our approximation ofpa
+11 equals (1−pa
+12)/2 which
+is clearly not true in general. Thus, there are settings of (pa
+11,pa
+12,pa
+13) and policies for which the
+value function produced by MLE, ˜vπ, is not equivalent to the true value functionvπ.
+Next we consider learning a value-equivalent model with the same restricted model class. Suppose
+we wish our model to be value equivalent to valuev = [1, 0, 0]⊤ and all policies.
+Note that any VE model with respect toV ={v}:{ ˜P
+a
+}a∈A, must satisfy ˜P
+a
+v =Pav. By requiring
+value equivalence with justv we have:
+˜P
+a
+v =
+[˜pa
+11
+˜pa
+21
+˜pa
+31
+]
+=
+[pa
+11
+1
+1
+]
+=Pav
+which implies that ˜pa
+11 =p11, ˜pa
+21 = ˜pa
+31 = 1 and ˜pa
+22 = ˜pa
+23 = ˜pa
+32 = ˜pa
+33 = 0 for alla∈A .
+17
+
+===== PAGE 18 =====
+Taking these constraints together restricts the class of VE models to those of the form:
+˜P =
+[pa
+11 ˜pa
+12 ˜pa
+13
+1 0 0
+1 0 0
+]
+where ˜pa
+1i are “free variables” for alli = 2, 3 anda∈A .
+Notice that when pa
+11 ≤ 0.5 for all a ∈ A, we can ﬁnd a value equivalent model by setting:
+(1−θa)/2 = pa
+11. This means that the values produced by these value equivalent models exactly
+match those of the environment: ˜vπ =vπ for allπ (and thus the solution of this model also coincides
+with the optimal value function, ˜v∗ =v∗).
+A model class for whichapproximate VE outperforms MLE In the previous example we showed
+that it is possible to have an MDP and a restricted model class such that VE models are able to
+perfectly estimatev∗ while MLE models fail to do so. Notice that in this example a value equivalent
+model actually existed, which is not guaranteed in general. We now show a related example where, in
+spite of an exactly value equivalent model not existing, an agent trained using an approximate value
+equivalent model will outperform its MLE counterpart.
+We use our example MDP from before, shown in Figure 5, and denote its actions A ={a,b} for
+later notational convenience. We set our environment’s transition dynamics accordingly: pa ≡
+(pa
+11,pa
+12,pa
+13) = (0.6, 0.4, 0.0) andpb≡ (pb
+11,pb
+12,pb
+13) = (0.4, 0.2, 0.4). We also use the same
+model class as above: (˜pi
+11, ˜pi
+12, ˜pi
+13) = (0.5(1−θi),θi, 0.5(1−θi)) for eachi∈A , being mindful
+of the boundary conditionsθi∈ [0, 1].
+As we saw in the previous example, the MLE estimator for this problem will produce the following
+approximations:pa
+MLE = (0.3, 0.4, 0.3),pb
+MLE = (0.4, 0.2, 0.4).
+We now consider what an approximate VE model will produce using the same value as before:
+v = [1, 0, 0]⊤ and all policies. Recall that we’re optimizing the following loss:
+∑
+j∈{a,b}
+3∑
+i=1
+(( ˜P
+j
+v)i− (Pjv)i))2 =
+∑
+j∈{a,b}
+(˜pj
+11−pj
+11)2 + ((˜pj
+12 + ˜pj
+13)− (pj
+12 +pj
+13))2
+=
+∑
+j∈{a,b}
+(˜pj
+11−pj
+11)2 + ((1− ˜pj
+11)− (1−pj
+11))2
+=
+∑
+j∈{a,b}
+2(˜pj
+11−pj
+11)2
+= 2(˜pa
+11−pa
+11)2 + 2(˜pb
+11−pb
+11)2.
+The form of this loss indicates that VE will attempt to minimize the MSE of ˜pa
+11 and ˜pb
+11 separately.
+Notice that for action a, we cannot perfectly estimate p11 due to the boundary conditions on θa.
+However, VE will still ﬁnd the closest possible ˜p11 that respects the boundary condition, giving:
+˜pa
+VE = (0.5, 0.0, 0.5), ˜pb
+VE = (0.4, 0.2, 0.4).
+We now display these models together in the following table:
+˜pa
+11 ˜pa
+12 ˜pa
+13 ˜pb
+11 ˜pb
+12 ˜pb
+13
+MDP 0.6 0.4 0.0 0.4 0.2 0.4
+MLE 0.3 0.4 0.3 0.4 0.2 0.4
+VE 0.5 0.0 0.5 0.4 0.2 0.4
+Notice that when optimally planning on this MDP, an agent can obtain the most reward by transitioning
+froms1 tos1 as often as possible. The agent can do this taking the action among{a,b} that is mostly
+likely to induce a self-transition each time it is ats1. In the true environment and the VE model this
+action isa. However, notice that the MLE model would instead prefer the sub-optimal actionb, since
+(˜pb
+MLE)11 > (˜pa
+MLE)11.
+This is a concrete example where VE outperforms MLE even though there is no value-equivalent
+models in the model class considered (that is, VE can be enforced only approximately).
+18
+
+===== PAGE 19 =====
+A.2 Experimental details
+(a) Catch
+ (b) Four Rooms
+ (c) Cart-pole
+Figure 6: (a) Catch: the agent has three actions corresponding to moving a paddle (orange) left, right
+and staying in place. Upon initialization, a ball (blue) is placed at a random square at the top of the
+environment and at each step it descends by one unit. Upon reaching the bottom of the environment
+the ball is returned to a random square at the top. The agent receives a reward of 1.0 if it moves its
+paddle and intercepts the ball. (b) Four Rooms: the agent (orange) has four actions corresponding to
+up, down, left and right movement. When the agent takes an action, it moves in its intended direction
+with 90% of the time and in an random other direction otherwise. There is a rewarding square in
+the right top corner (green). If the agent transitions into this square it receives a reward of 1.0. (c)
+Cart-pole: In Cart-pole, the agent may choose between three actions: pushing the cart to the left,
+right or not pushing the cart. There is a pole balanced on top of the cart that is at risk of tipping over.
+The agent is incentivized to keep the pole up-right through a reward of cos(θ) at each step whereθ is
+the angle of the pole (θ = 0 implies the pole is perfectly up-right). If the pole’s height drops below a
+threshold, the episode terminates and the agent receives a reward of 0.0. The cart itself is resting on a
+table; if it falls off the table, the episode similarly terminates with a reward of 0.0.
+A.2.1 Environment description
+The environments used in our experiments are described in depth in Figure 6. In both Catch and Four
+Rooms a tabular representation is employed in which each of the environment’s ﬁnitely many states
+(250 and 68, respectively) is represented by an index. In Cart-pole we have a continuous state space
+S⊂ R5 (so|S| =∞). Each states∈ R5 consists of the cart position, cart velocity, sine / cosine of
+pole angle, and pole’s angular velocity.
+A.2.2 Experimental pipeline
+As mentioned in the main text, a common experimental pipeline is used across all of our results, with
+slight variations depending upon the experiment type and environment. This pipeline is described at
+a high-level below:
+(i) Data collection: Data is collected using a policy which selects actions uniformly at random.
+(ii) Model training: The collected data is used to train a model.
+(iii) Policy construction: The model is used to produce a policy.
+(iv) Policy evaluation: The policy is evaluated to assess the quality of the model.
+We now discuss steps (ii), (iii) and (iv) in detail.
+(ii) Model training All of our experiments involve restricting the capacity of the class of models
+that the agent can represent:M. In general we restrict the rank of the models inM, but, depending
+upon the nature of the model, this restriction is carried in different ways.
+1. Tabular models: On domains with|S|<∞, we employ tabular models. In what follows,
+n×m matrices referred to as “row-stochastic” are ensured to be as such by the following
+parameterization:
+(a) A matrix F∈ Rn×m is sampled with entriesFij∼ Uniform([−1, 1]).
+19
+
+===== PAGE 20 =====
+(b) A new matrixPF is produced by applying row-wise softmax operations with tempera-
+tureτ = 1 toF :
+(PF )ij = exp(Fij)∑
+k exp(Fik).
+Here,F can be thought of as the parameters ofPF , which often will suppress as ˜P
+for clarity.
+That is, a model is represented by|A||S|×| S| row-stochastic matrices: ˜P
+1
+,..., ˜P
+|A|
+. We
+ensure that each of these matrices has rankk by factoring it as follows: ˜P
+a
+=DaKa where
+Da∈ R|S|×k,Ka∈ Rk×|S| and both are row-stochastic as well.
+2. Neural network models: On domains with|S| =∞ we instead use a neural network
+parameterized byθ:fθ : (S,A)↦→ (S, R).fθ takes a state and action as input and outputs
+an approximation of the expected next state and next reward. As an analogue to the rank
+restriction applied in the tabular case, we restrict the rank of weight matrices in all fully-
+connected layers infθ. Denote a fully-connected layer infθ asL(x) =σ(Wx +b) where
+σ(·) is an activation function,W is a weight matrix andb is a bias term. We restrictfθ by
+replacing eachL(x) withLk(x) =σ((DK)x +b) whereD,K ∈ R|S|×k, Rk×|S|.
+The models with the restrictions above are trained based on data collected by a policy that selects
+actions uniformly at random. With a small abuse of notation, denote the collected data as D =
+(si,ai,ri,s′
+i)N
+i=1. We will now describe how this data is used to train models in different contexts.
+1. Tabular models: When training a tabular model with capacity restricted to rankk, we use
+the following expressions:
+(a) Reward: In our experiments rewards are represented in the same way for both VE and
+MLE models:
+˜Rs,a =
+∑N
+i=1ri1 {si =s,ai =a}
+∑N
+i=1 1 {si =s,ai =a}
+,
+where 1 {·} is the indicator function.
+(b) Transition dynamics (MLE): To learn the transition dynamics we ﬁrst parameterize
+˜P
+a
+= DaKa for all a∈A , where Da andKa are row-stochastic matrices (see
+item 1 in the section “Restricting Model Capacity” above). Because we are assumingS
+to be ﬁnite, we can identify each state s∈S by an index. Letδ(s)∈{ 1,...,|S|} be an
+index that uniquely identiﬁes states. We then compute ˜P
+a
+=DaKa by minimizing
+the following loss with respect toDa andKa:
+˜𝓁p,D(Pa, ˜P
+a
+)≡−
+N∑
+i=1
+1 {ai =a} log
+[
+(DaKa)δ(si)δ(s′
+i)
+]
+,
+where (DaKa)ij is the element in thei-th row andj-th column of matrixDaKa. Note
+that the expression above is the empirical version of expression (5) in the paper [15].
+(c) Transition dynamics (VE): In the VE setting we have a set of value functions and
+policies:V and Π. We have one transition matrix ˜P
+π
+associated with each policy
+π∈ Π. As discussed in Section 5, in our experiments we used Π ={πa}a∈A, where
+πa(a|s) = 1 for alls∈S . Thus, we end up with the same parameterized probability
+matrices as above: ˜P
+a
+=DaKa. LetDia⊆D be the sample transitions starting in
+statei where actiona was taken, that is, (sj,aj,rj,s′
+j)∈D ia if and only ifδ(sj) =i
+and aj = a. We computed ˜P
+a
+= DaKa by minimizing the following loss with
+respect toDa andKa:
+𝓁πa,V,D(Pa, ˜P
+a
+)≡
+∑
+i,a
+∑
+v∈V
+
+ 1
+|Dia|
+∑
+(s,a,r,s′)∈Dia
+vδ(s′)−
+∑
+j
+(DaKa)ijvj
+
+
+2
+.
+Note that the expression above corresponds to equation (7) when learning transition
+matrices associated with policies{πa}a∈A in an environment with ﬁnite state spaceS
+(where statess can be associated with an indexi) andp = 2.
+20
+
+===== PAGE 21 =====
+2. Neural network models: When training a neural network model with capacity restrictions
+construct a networkfθ : (S,A)↦→ (S, R). The network is fully connected and takes the
+concatenation ofS with the one-hot representation ofA as input. For a given (s,a ) pair we
+denote it’s output as˜s′
+s,a, ˜r′
+s,a =fθ(s,a ). In all cases we train the neural network model
+by sampling mini-batches uniformly fromD. It is important to note that we only use these
+neural network models on deterministic domains (e.g., Cart-pole) meaning that the output
+of the model, ˜s′ represents a single state rather than an expectation over states.
+(a) Reward: For both VE and MLE models we train our neural network models to
+accurately predict the reward associated with each state action transition:
+𝓁r,D(θ) =
+N∑
+i=1
+(˜rsi,ai−ri)2.
+(b) Transition dynamics (MSE):We learn models by encouragingfθ to accurately predict
+the next state:
+𝓁s′,D(θ) =
+N∑
+i=1
+(˜s′
+si,ai−s′
+i)2.
+(c) Transition dynamics (VE): For VE models use (7), disregarding reward terms to give:
+𝓁V,D(θ) =
+n∑
+i=1
+∑
+v∈V
+(v(˜ssi,ai)−v(s′
+i))2.
+(iii) Policy construction In each experiment we present, after a model is constructed, we subse-
+quently use it to construct a policy. The manner in which we do this varies based upon the type of the
+experiment and the nature of the environment. There are three mechanisms for constructing policies
+from models:
+1. Value iteration: For experiments withV = V (which are performed only with tabular
+models), we use the learned model ˜m = (˜r, ˜p) to perform value iteration until convergence,
+yielding ˜v∗ [30]. Here ˜v∗ represents the optimal value function of the model ˜m. We then
+produce a policy according toπ(s) = argmaxa(˜r(s,a ) +γ∑
+s′ ˜p(s′|s,a )˜v∗(s′)).
+2. Approximate policy iteration with least squares temporal-difference learning (LSTD):
+For experiments on environments with ﬁniteS andV = ˜V we used policy iteration combined
+with least square policy evaluation using basis{φi}d
+i=1. Speciﬁcally, each iteration of policy
+iteration involved the following steps:
+(a) Collect experience tuples using the previous policy, π, leading to D =
+(si,ai,ri,s′
+i)n
+i=1.
+(b) Replace the reward and next-states with those predicted by the model: ˜ri, ˜s′
+i =
+fθ(si,ai), leading toD′ = (si,ai, ˜ri, ˜s′
+i)n
+i=1.
+(c) Learn vw(s) =∑d
+i=1wiφi(s)≈vπ using LSTD withD′.
+(d) Construct a new policyπ(s) = argmaxa(˜rs,a+γvw(˜s′
+s,a)) where ˜rs,a, ˜s′
+s,a are sampled
+from the trained model conditioned on states and actiona.
+This procedure is repeated for a ﬁxed number of iterations.
+3. Deep Q-networks (DQN): For experiments withV = ˜V and inﬁniteS we use Double Q-
+Learning to produce policies. We incorporate our learned model,fθ, by replacing elements
+in the replay buffer (s,a,r,s ′) with (s,a, ˜rs,a, ˜s′
+s,a) where ˜rs,a, ˜s′
+s,a =fθ(s,a ).
+(iv) Policy evaluation There are two methods to evaluate the policies resulting from the policy
+construction stage described above:
+1. For policies produced using value iteration or policy iteration plus LSTD the ensuing policy,
+π, is exactly evaluated on the true environment, yieldingvπ(s). Then the average value of
+vπ(s) over all states is reported.
+2. For policies produced using DQN, the average return over the last 100 episodes of training
+is reported.
+21
+
+===== PAGE 22 =====
+A.2.3 Classes of experiments
+In addition to varying the capacity ofM, there are two primary classes of experiments that were run
+in our paper that assess different choices ofV. We distinguish between these two classes below:
+span(V)≈ ¨V, ˜V = V, Π = Π: In these experiments we consider that there is no limitation
+on the agent’s ability to represent value functions, and focus on achieving value equivalence with
+respect to the polytope of value functions ¨V induced by the environment. We enable the agent to
+represent arbitrary functions in V by restricting ourselves to tabular environments and using dynamic
+programming to perform exact value iteration in our Policy Construction step. We approximate the
+value polytope by randomly sampling deterministic policies:{π1,...,π n} and evaluating them (again
+using dynamic programming) to produce{vπ1,...,v πn}. We then chooseV ={vπ1,...,v πn}. In
+this setting we vary the number of policies generated.
+Corresponding experiments: the experiments in this class vary two dimensions: (1) the rank of the
+model and (2) the number of policies generated. In Figures 3(a) and 3(b) we depict plots for the Four
+Rooms environment that ﬁx the number of policies while varying the rank of the model and plots that
+ﬁx the rank of the model while varying the number of policies, respectively. Figures 3(c) and 3(d) are
+analogous plots for the Catch environment.
+span(V)≈ ˜V, Π = Π: In these experiments we explore the setting described in Remark 2. We
+assume that the agent has variable ability to represent value functions, ˜V, and attempt to learn a model
+inM(˜V,Π). From Proposition 1 we only need to ﬁnd V such that span(V)⊇ ˜V. Experiments in
+this class can further be broken down into two settings based upon the nature of ˜V:
+(a) Linear function approximation: In certain experiments our agent uses a class of linear
+function approximators to represent value functions: ˜V ={˜v : ˜v(s) = ∑d
+i=1φi(s)wi}
+whereφi(s) :S↦→ R andw∈ Rd. In this setting achieving span(V)⊇ ˜V can be satisﬁed
+by choosingV = {φi}d
+i=1. For experiments using linear function approximation, we
+select our features{φi}d
+i=1 to correspond to state aggregations. This entails the following
+procedure:
+(i) Collect data using a policy that selects actions uniformly at random.
+(ii) For tabular domains (e.g., Catch, Four Rooms), convert tabular state representations
+into coordinate-based representations. For Catch we convert each tabular state into the
+positions of both the paddle and the ball: (xpaddle,y paddle,x ball,y ball). For Four Rooms
+we use the position of the agent: (xagent,y agent). Denote the function that performs
+this conversion as:f :S↦→ Rn wheren = 2 andn = 4 for Four Rooms and Catch
+respectively.
+(iii) Perform k-means clustering on these converted states to produce d centersc1:d.
+(iv) Deﬁne φi(s) = 1 {argminj‖f(s)−cj‖2 = i}, which corresponds to aggregating
+states according to their proximity to the previously calculated centers.
+Corresponding experiments: the experiments in this class vary two dimensions: (1) the
+rank of the model and (2) the number of basis functions in{φi}d
+i=1. In Figures 4(a) and 4(b)
+we depict plots of “slices” of this two-dimensional set of results on the Catch domain: 4(a)
+depicts ﬁxing the number of basis functions while varying model-rank and 4(b) depicts
+ﬁxing the model-rank while varying the number of basis functions.
+(b) Neural network function approximation:When Neural Networks are used to approximate
+the agent’s value functions we have˜V ={˜v : ˜v(s) =gθ(s)} wheregθ represents a neural
+network with a particular architecture parameterized byθ. In our experiments we choose
+the architecture ofgθ to be a 2 layer neural network with a tanh activation for its hidden
+layer. Unlike the linear function approximation setting, it is less obvious how to chooseV
+such that span(V)⊇ ˜V. One option is to use randomly initialized neural networks in ˜V as
+our basis. To randomly initialize a given layer in some networkgθ, we select weights from
+a truncated normal distribution where µ = 0 andσ = 1/√layer-input-size and initialize
+biases to 0.
+However, we found in practice that a large number of these randomly initialized networks
+were required to achieve reasonable performance. Instead of maintaining a large set of
+22
+
+===== PAGE 23 =====
+initializations inV, we allow the elements ofV themselves to be stochastic. Every time
+we apply an update of gradient descent we sample a new set of randomly initialized neural
+networks to function asV. This is equivalent to minimizing EV[𝓁Π,V,D′(m∗, ˜m)] where
+𝓁Π,V,D′ is deﬁned in 7. We ﬁnd that having more random elements in V decreases the
+variance in the performance of VE models;|V| = 5 in our experiments.
+Corresponding experiments: the experiments in this class vary two dimensions: (1) the
+rank of the model and (2) the width of the neural networks in ˜V. In Figures 4(c) and 4(d)
+we depict plots of “slices” of this two-dimensional set of results on the Catch domain:
+4(c) depicts ﬁxing the network width while varying model-rank and 4(d) depicts ﬁxing the
+model-rank while the network width varies.
+A.2.4 Additional results
+In the experimental section of the main text we showed that our theoretical claims about the value
+equivalence principle hold in practice through a series of bivariate experiments (e.g., varying model-
+rank and number of bases, varying model-rank and number of policies, varying model-rank and
+network width). We displayed our results as “slices” of these bivariate experiments, where one
+variable would be held ﬁxed and the other would be allowed to vary. To keep the paper concise, we
+only displayed a subset of these slices where the “ﬁxed” variable was selected as the median value
+over full set we experimented with. In what follows, we present the complete set of the experimental
+results we acquired. We indicate that a plot was included in the main text by printing its caption in
+bold font.
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# clusters) = 20
+MLE
+VE
+(a) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# clusters) = 30
+ (b) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# clusters) = 40
+ (c) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# clusters) = 50
+ (d) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# clusters) = 100
+(e) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# clusters) = 150
+ (f) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# clusters) = 200
+ (g) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# clusters) = 250
+ (h) Catch (ﬁxed V)
+Figure 7: All Catch results with ﬁxedV and span(V)≈ ˜V.
+23
+
+===== PAGE 24 =====
+50 100 150 200 250
+size( ) (# clusters)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 20
+(a) Catch (ﬁxed ˜m)
+50 100 150 200 250
+size( ) (# clusters)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 30
+ (b) Catch (ﬁxed ˜m)
+50 100 150 200 250
+size( ) (# clusters)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 40
+ (c) Catch (ﬁxed ˜m)
+50 100 150 200 250
+size( ) (# clusters)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 50
+ (d) Catch (ﬁxed ˜m)
+50 100 150 200 250
+size( ) (# clusters)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 100
+(e) Catch (ﬁxed ˜m)
+50 100 150 200 250
+size( ) (# clusters)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 150
+ (f) Catch (ﬁxed ˜m)
+50 100 150 200 250
+size( ) (# clusters)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 200
+ (g) Catch (ﬁxed ˜m)
+50 100 150 200 250
+size( ) (# clusters)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 250
+ (h) Catch (ﬁxed ˜m)
+Figure 8: All Catch results with ﬁxed ˜m and span(V)≈ ˜V.
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# policies) = 3
+MLE
+VE
+(a) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# policies) = 5
+ (b) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# policies) = 7
+ (c) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# policies) = 10
+ (d) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# policies) = 15
+(e) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# policies) = 20
+ (f) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# policies) = 30
+ (g) Catch (ﬁxed V)
+0 50 100 150 200 250
+rank(m)
+4
+5
+6
+7
+8
+9
+10Average State Value
+size( ) (# policies) = 40
+ (h) Catch (ﬁxed V)
+Figure 9: All Catch results with ﬁxedV andV ={vπ1,...,v πn}.
+24
+
+===== PAGE 25 =====
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 20
+MLE
+VE
+(a) Catch (ﬁxed ˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 30
+ (b) Catch (ﬁxed ˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 40
+ (c) Catch (ﬁxed ˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 50
+ (d) Catch (ﬁxed ˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 100
+(e) Catch (ﬁxed ˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 150
+ (f) Catch (ﬁxed ˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 200
+ (g) Catch (ﬁxed ˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+4
+5
+6
+7
+8
+9
+10Average State Value
+rank(m) = 250
+ (h) Catch (ﬁxed ˜m)
+Figure 10: All Catch results with ﬁxed ˜m andV ={vπ1,...,v πn}.
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# clusters) = 10
+MLE
+VE
+(a) Four Rooms (ﬁxed V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# clusters) = 20
+ (b) Four Rooms (ﬁxed V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# clusters) = 30
+ (c) Four Rooms (ﬁxed V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# clusters) = 40
+(d) Four Rooms (ﬁxed V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# clusters) = 50
+ (e) Four Rooms (ﬁxed V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# clusters) = 60
+ (f) Four Rooms (ﬁxed V)
+Figure 11: All Four Rooms results with ﬁxedV andV = ˜V.
+25
+
+===== PAGE 26 =====
+10 20 30 40 50 60
+size( ) (# clusters)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 18
+MLE
+VE
+(a) Four Rooms (ﬁxed ˜m)
+10 20 30 40 50 60
+size( ) (# clusters)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 28
+ (b) Four Rooms (ﬁxed ˜m)
+10 20 30 40 50 60
+size( ) (# clusters)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 38
+ (c) Four Rooms (ﬁxed ˜m)
+10 20 30 40 50 60
+size( ) (# clusters)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 48
+(d) Four Rooms (ﬁxed ˜m)
+10 20 30 40 50 60
+size( ) (# clusters)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 58
+ (e) Four Rooms (ﬁxed ˜m)
+10 20 30 40 50 60
+size( ) (# clusters)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 68
+ (f) Four Rooms (ﬁxed ˜m)
+Figure 12: All Four Rooms results with ﬁxed ˜m andV = ˜V.
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# policies) = 3
+MLE
+VE
+(a) Four Rooms (ﬁxed V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# policies) = 5
+ (b) Four Rooms (ﬁxed V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# policies) = 7
+ (c) Four Rooms (ﬁxed V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# policies) = 10
+ (d) Four Rooms (ﬁxed
+V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# policies) = 15
+(e) Four Rooms (ﬁxed V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# policies) = 20
+ (f) Four Rooms (ﬁxed V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# policies) = 30
+ (g) Four Rooms (ﬁxed V)
+20 30 40 50 60 70
+rank(m)
+0
+20
+40
+60
+80
+100Average State Value
+size( ) (# policies) = 40
+ (h) Four Rooms (ﬁxed V)
+Figure 13: All Four Rooms results with ﬁxedV andV ={vπ1,...,v πn}.
+26
+
+===== PAGE 27 =====
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 23
+MLE
+VE
+(a) Four Rooms (ﬁxed ˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 28
+ (b) Four Rooms (ﬁxed ˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 38
+ (c) Four Rooms (ﬁxed
+˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 48
+(d) Four Rooms (ﬁxed ˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 58
+ (e) Four Rooms (ﬁxed ˜m)
+0 5 10 15 20 25 30 35 40
+size( ) (# policies)
+0
+20
+40
+60
+80
+100Average State Value
+rank(m) = 68
+ (f) Four Rooms (ﬁxed ˜m)
+Figure 14: All Four Rooms results with ﬁxed ˜m andV ={vπ1,...,v πn}.
+5 10 15 20
+rank(m)
+0
+200
+400
+600
+800
+1000Average Episode Return
+size( ) (width) = 32
+(a) Cart-pole (ﬁxed V)
+5 10 15 20
+rank(m)
+0
+200
+400
+600
+800
+1000Average Episode Return
+size( ) (width) = 64
+ (b) Cart-pole (ﬁxed V)
+5 10 15 20
+rank(m)
+0
+200
+400
+600
+800
+1000Average Episode Return
+size( ) (width) = 128
+ (c) Cart-pole (ﬁxed V)
+5 10 15 20
+rank(m)
+0
+200
+400
+600
+800
+1000Average Episode Return
+size( ) (width) = 256
+(d) Cart-pole (ﬁxed V)
+5 10 15 20
+rank(m)
+0
+200
+400
+600
+800
+1000Average Episode Return
+size( ) (width) = 512
+ (e) Cart-pole (ﬁxed V)
+5 10 15 20
+rank(m)
+0
+200
+400
+600
+800
+1000Average Episode Return
+size( ) (width) = 1024
+ (f) Cart-pole (ﬁxed V)
+Figure 15: All Cart-pole results results with ﬁxedV and span(V)≈ ˜V.
+A.2.5 Hyperparameters
+Table 1 provides a list detailing the different hyperparameters used throughout our pipeline.
+27
+
+===== PAGE 28 =====
+0 500 1000
+size( ) (width)
+0
+200
+400
+600
+800
+1000Average Episode Return
+rank(m) = 2
+(a) Cart-pole (ﬁxed ˜m)
+0 500 1000
+size( ) (width)
+0
+200
+400
+600
+800
+1000Average Episode Return
+rank(m) = 4
+ (b) Cart-pole (ﬁxed ˜m)
+0 500 1000
+size( ) (width)
+0
+200
+400
+600
+800
+1000Average Episode Return
+rank(m) = 6
+ (c) Cart-pole (ﬁxed ˜m)
+0 500 1000
+size( ) (width)
+0
+200
+400
+600
+800
+1000Average Episode Return
+rank(m) = 8
+ (d) Cart-pole (ﬁxed ˜m)
+0 500 1000
+size( ) (width)
+0
+200
+400
+600
+800
+1000Average Episode Return
+rank(m) = 10
+(e) Cart-pole (ﬁxed ˜m)
+0 500 1000
+size( ) (width)
+0
+200
+400
+600
+800
+1000Average Episode Return
+rank(m) = 12
+ (f) Cart-pole (ﬁxed ˜m)
+0 500 1000
+size( ) (width)
+0
+200
+400
+600
+800
+1000Average Episode Return
+rank(m) = 14
+ (g) Cart-pole (ﬁxed ˜m)
+0 500 1000
+size( ) (width)
+0
+200
+400
+600
+800
+1000Average Episode Return
+rank(m) = 16
+ (h) Cart-pole (ﬁxed ˜m)
+Figure 16: All Cart-pole results results with ﬁxed ˜m and span(V)≈ ˜V.
+Hyperparameter Value Description
+minibatch size 32 Number of samples passed at a time during a training
+step of any learning method.
+model learning rate 5e-5 Learning rate used to train all models.
+# model samples 1,000,000 Number of transitions sampled by a random policy in
+the Data Collection phase.
+model depth 2 Number of hidden layers in the model architecture.
+model width 256 Number of units per hidden layer.
+model activation tanh Activation function following a hidden layer.
+model learning max steps 1,000,000 Maximum number of training iterations.
+γ 0.99 Discount factor used across environments.
+LSTD samples / policy 10,000 Number of samples collected for each phase of policy
+evaluation using LSTD.
+# policy iteration steps 40 Number of steps of policy iteration in the policy con-
+struction phase, when applicable.
+DQN learning rate 5e-4 Learning rate for DQN.
+DQN # environment steps 2,500,000 Number of environment steps that DQN learns over.
+DQN learning frequency 4 A learning update is applied after this many environ-
+ment steps.
+DQN depth 1 Number of hidden layers in the DQN.
+DQN activation tanh Activation function following a hidden layer.
+DQN target update 2000 Number of environment steps before the target network
+in the DQN is updated.
+Tabular # eval episodes 20 Number of episodes to average performance over to
+assess a policy in the tabular setting.
+DQN # eval episodes 100 Number of episodes to average DQN policy perfor-
+mance over at the end of training.
+DQNϵ 0.05 Chance of picking a random action during training.
+Optimizer Adam Optimizer used for all learning operations. Default
+Adam parameters were used.
+Table 1: List of hyperparameters used in the experiments.
+28
