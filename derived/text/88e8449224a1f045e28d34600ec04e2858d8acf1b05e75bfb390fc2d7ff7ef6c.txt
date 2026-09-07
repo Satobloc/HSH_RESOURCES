@@ -1,0 +1,2166 @@
+===== PAGE 1 =====
+Convolution absorbing boundaries for explicit-circuit quantum simulation of the wave
+equation
+Hoang Anh Nguyen 1,∗ and Ali Tura 1
+1Department of Geophysics, Colorado School of Mines, Golden, Colorado 80401, USA
+(Dated: September 4, 2026)
+Explicit quantum circuits for the wave equation, built by Hamiltonian simulation, are restricted to
+closed domains, in which outgoing waves reflect off the edge of the computational region and return.
+We lift that restriction with absorbing boundaries of the convolution type—a complex-frequency-
+shifted perfectly matched layer realised through exponential-kernel memory variables—and make
+the resulting non-unitary dynamics quantum-implementable by Schr¨ odingerisation. We obtain three
+results. First, explicit gate-level circuits for the absorbing evolution, obtained by extending a Bell-
+basis term-evolution circuit to projector-valued operator strings and Trotterising to second order;
+these run end to end on seventeen to twenty-one qubits and agree with exact references to within
+a tenth of a percent to a percent. Second, a structural obstruction: the memory form of the ab-
+sorbing generator carries an irreducibly indefinite Hermitian part, whose largest eigenvalue grows
+as the square root of the absorption strength divided by the grid spacing and survives any diagonal
+rescaling of the memory fields. The known recovery threshold for Schr¨ odingerisation then makes the
+post-selection cost grow exponentially in the simulated time. Third, a remedy: a Lyapunov sym-
+metrizer, precomputed classically, renders the transformed generator dissipative and replaces that
+time-dependent penalty with a time-independent conditioning factor of several hundred, measured
+on grids of up to four thousand unknowns and saturating under mesh refinement. The crossover
+is early: past it the symmetrized recovery is cheaper by four to twenty-six orders of magnitude in
+post-selection cost, and at the longest horizons tested it is the only recovery that works.
+I. INTRODUCTION
+Quantum algorithms for partial differential equations
+(PDEs) divide into oracle-based 1 constructions, which
+assume block-encoded or sparse-access operators [1, 2],
+and the explicit-circuit line initiated for hyperbolic prob-
+lems by Satoet al.[3], in which every gate of the time-
+stepping circuit is written down and the cost is dom-
+inated by a number of elementary operations polyno-
+mial in the register size. Explicit-circuit constructions for
+wave-type equations published to date operate onclosed
+domains: Dirichlet, Neumann, or periodic boundaries,
+for which the semi-discrete generator is skew-Hermitian
+and the evolution is genuinely unitary [3, 4]; the exten-
+sion to nonconservative systems [5] admits a bulk damp-
+ing termζ(x)∂ tuvia a linear combination of Hamiltonian
+simulations, but its boundaries remain closed walls and
+its demonstrations are confined to the undamped acous-
+tic and uniform heat equations. Scattering and radiation
+problems, however, are posed on open domains; truncat-
+ing the domain with hard walls reflects every outgoing
+wave back into the region of interest. The same require-
+ment propagates into wave-based inverse problems: full
+waveform inversion repeats the forward solve on a trun-
+cated domain at every iteration, and hybrid quantum-
+classical workflows for it—in which parameterized quan-
+tum circuits are embedded inside a domain-decomposed
+physics-informed network and trained end to end [6]—
+∗ hoanganh nguyen@mines.edu
+1 oracle is an unitary black box, you can run but do not need to
+know what is inside
+inherit the boundary problem unchanged. That route is
+variational and targets near-term hardware, whereas the
+explicit-circuit programme pursued here targets fault-
+tolerant hardware with provable gate counts; both need
+a forward model that does not reflect. Classical solvers
+handle this with absorbing layers, the de facto standard
+being the perfectly matched layer (PML) and its convo-
+lutional, complex-frequency-shifted variant (CPML) [7–
+10]. Absorption is dissipation: the generator acquires a
+non-trivial Hermitian part, and the dynamics ceases to
+be unitary.
+Schr¨ odingerisation [11] is a general route for running
+such non-unitary linear dynamics on a quantum com-
+puter: the warped phase-space transform turns ˙z=Az
+into a genuine Hamiltonian evolution on one extra regis-
+ter, at the price of a post-selected recovery slice. Figure 1
+summarises the resulting four-step structure of this work.
+The programme now spans artificial boundary condi-
+tions for the time-dependent Schr¨ odinger equation [12],
+inhomogeneous terms and the recovery-threshold the-
+ory [13], ill-posed problems [14], Maxwell’s equations [15,
+16], elastic waves [17], gate-level circuits for parabolic
+problems [18, 19], query-optimal formulations [20], and
+implicit-explicit integrators for multiscale dynamics in-
+cluding the bulk-damped telegraph equation [21]. What
+it does not yet contain is an absorbing boundary for a
+classical wave-type equation, at either matrix or circuit
+level.
+arXiv:2609.03440v1  [quant-ph]  3 Sep 2026
+
+===== PAGE 2 =====
+2
+Physics: second-order acous-
+tic wave equation∂ 2
+tu=c 2∆u
+First-order reduction(quantum encod-
+ing):ψ= [v;w],i∂ tψ=Hψ— unitary
+Absorbing layer(CPML, convolution mem-
+ory): ˙ψ= (−iH−Λ)ψ— non-Hermitian
+Schr¨ odingerisation:Htot =D η⊗H 1−I⊗H 2
+— unitary again (+n p qubits), recover atp ∗
+Ref. [3]
+this work, Sec. III
+Secs. II C, IV
+FIG. 1. The four-step structure: second-order acoustic
+physics, first-order quantum encoding, convolution absorbing
+layer applied in that first-order form, and Schr¨ odingerisation
+restoring unitarity. The cost of step three—the indefiniteness
+quantified by Lemma 1—and its remedy (the Lyapunov sym-
+metrizer) are the subject of Sec. III D.
+A. Related work and positioning
+The positioning below was verified by a full-text liter-
+ature review through June 2026. 2
+a. The core niche is open.No published or
+preprinted work through June 2026 combines any ab-
+sorbing boundary (PML, CPML, complex absorbing po-
+tential, sponge, or Dirichlet-to-Neumann map) forclas-
+sical wave-type equationswith Schr¨ odingerisation or any
+other unitarisation, at matrix or circuit level. Jin and
+Zhang [17] (elastic waves) state verbatim that non-
+periodic boundaries “remain an open issue” left “to the
+future.” Maxwell circuits exist only for perfect-electric-
+conductor boundaries [16] and for impedance bound-
+aries at matrix level [15]; the 2026 circuit papers [22,
+23] (Robin/Neumann/Dirichlet) contain no absorbing-
+boundary content. Two 2025 works corroborate this in-
+dependently. B¨ oschet al.[4], simulating lossless wave
+equations by Hamiltonian simulation, state that owing
+to their “fundamentally nonenergy conserving nature”
+absorbing boundaries and PMLs are “not straightfor-
+ward to implement. . . within the HS framework,” and
+resort to approximaterandomboundaries that scram-
+ble, rather than absorb, outgoing energy. Satoet al.[5]
+admit spatially varying bulk dampingζ(x)≥0 in an
+LCHS formulation, but the resulting Hermitian part is
+semidefinite by construction—the diagonal sponge/CAP
+case that Lemma 1 explicitly excludes—no layer-localised
+damping or absorbing-layer construction appears, and no
+damped-wave circuit is demonstrated.
+2 Adversarially cross-checked sweep over published and preprinted
+work, 2023–2026; all primary claims below were confirmed
+against the full texts of the cited papers.
+b. PML plus Schr¨ odingerisation per se is prior art
+for the time-dependent Schr¨ odinger equation [12], at
+query-complexity level and without circuits. Our con-
+tribution is therefore framed aswave-type equations plus
+explicit circuits.
+c. The recovery threshold is established theory[13,
+Thm. 3.1], and an indefinite boundary-augmented Her-
+mitian part was already handled through that threshold
+for the heat equation [19, Remark 1]. Our delta is the
+structuralresult: Lemma 1 proves that the indefinite-
+ness of CPML memory forms cannot be removed by any
+diagonal rescaling and quantifies its rate, Θ(
+p
+σmaxc/h).
+d. Diagonal similarity preconditioning is prior art.
+Liang and Liu [22] use a diagonal transform to enforce
+a positive-semidefinite Hermitian part before applying a
+linear-combination-of-Hamiltonian-simulation algorithm
+to parabolic problems. This is the foil that sharpens our
+symmetrizer contribution: Lemma 1 proves that diago-
+nal transforms areinsufficientfor CPML generators; the
+full (non-diagonal) Lyapunov symmetrizer of Sec. III D
+is both necessary and sufficient.
+e. Bell-basis circuits for non-unitary PDEs are prior
+art[18, 19]. Our circuit delta is narrower and is framed
+accordingly: projector-valued operator strings for sepa-
+rated multi-field (block) Hamiltonians, the two-level sym-
+metrised splitting, and the absorbing-boundary applica-
+tion at 17–21 qubits (Sec. IV).
+B. Contributions
+Ordered by verified novelty:
+1. the first absorbing boundaries for wave-type equa-
+tions in any unitarisation framework, closing the
+open problem stated in Ref. [17];
+2. the threshold lemma (Lemma 1) and the Lyapunov
+symmetrizer that circumvents it, with the diagonal-
+insufficiency contrast to Ref. [22];
+3. end-to-end validated explicit circuits, extending the
+Bell-basis constructions of Refs. [3, 18] to projector-
+valued block structure, with gold-standard classical
+validation.
+II. BACKGROUND
+A. The wave equation as Hamiltonian simulation
+Following Ref. [3], the wave equation∂ 2
+tu=c 2∆uis
+first-order-reduced throughψ= [v;w] withv=∂ tuand
+w=ic∂ xu(discretely,w=icDu), so thati∂ tψ=Hψ
+with
+H=
+ 0D
+D† 0
+
+,(1)
+
+===== PAGE 3 =====
+3
+whereDis the forward-difference operator andD † =
+−Db its negative backward counterpart. Mixed Dirich-
+let/Neumann boundary conditions emerge from the op-
+erator products (the conventions of Ref. [3], verified nu-
+merically in our implementation). In two dimensions we
+use the separated-block formψ= [v;w x;w y]—one block
+per field, in the style of Eq. (32) of Ref. [3] withd= 3—
+instead of the complex-combined two-block form, because
+per-direction damping requires separated gradient com-
+ponents.
+B. The convolutional perfectly matched layer
+The CPML stretches each coordinate by the complex-
+frequency-shifted (CFS) factor
+s(ω) =κ+ σ
+α+iω ,(2)
+which in the time domain replaces every spatial deriva-
+tive by a causal convolution with an exponential ker-
+nel [7],
+∂xf−→ 1
+κ∂xf+ζ∗∂xf, ζ(t) =− σ
+κ2 e−(σ/κ+α)tθ(t).
+(3)
+Each convolution is carried by one memory field obeying
+the local ODE
+∂tϕ=−
+σ
+κ +α
+
+ϕ− σ
+κ2 ∂xf.(4)
+The damping profile is polynomially graded inside a
+layer ofn pml points,σ(d) =σ max(d/L)m withσ max =
+−(m+1)clnR 0/(2L) [9]; we use the standard recipe
+m= 2,R 0 = 10−3 with the parameter conventions of
+Komatitsch and Martin [8]. The profile is sampled at
+the staggered locations where each field effectively lives
+(vat integer nodes,wat half-cells). This stagger is load-
+bearing: an ablation shows that unstaggered sampling
+degrades the measured reflection by factors of 120–235.
+C. Schr¨ odingerisation
+Write the semi-discrete absorbing dynamics as ˙z=Az
+3 and splitA=H 1 +iH 2 withH 1 = (A+A †)/2 and
+H2 = (A−A †)/(2i), both Hermitian 4. The warped
+transformw(t,p) =e −pz(t) (forp≥0, extended by a
+profilegbelow) obeys∂ tw=−H 1∂pw+iH 2w, and a
+Fourier series inpdecouples it into unitary evolutions
+per mode [11],
+ˆwk(T) =e −iT(ηkH1−H2) ˆwk(0),(5)
+3 This is the a linear ODE, need to find z(t) given initial condition
+z(0); z is Psi in this case
+4 Correct for all squared A
+i.e. a Hamiltonian simulation ofH tot =D η⊗H 1−I⊗H 2
+on the system register plus onepregister ofn p qubits.
+The initial dataw(0,p) =g(p)z(0) is a product state
+across the two registers. The solution is recovered from
+a slice,
+z(T) =e p∗
+w(T,p∗), p ∗ ≥λ +
+max(H1)T,(6)
+where the threshold onp ∗ is Theorem 3.1 of Ref. [13].
+The kinked profileg(p) =e −|p| is onlyO(∆p) accurate;
+theC 1 cubic profile of [13, Remark 4.9] restoresO(∆p 2)
+while keepingg(p) =e −p forp≥0, leaving Eq. (6) un-
+changed.
+III. ABSORBING GENERATORS
+A. One dimension: exact collapse of the
+convolution
+Withκ= 1,α= 0 the convolution collapsesexactly
+(for data supported outside the layer) to block-diagonal
+damping 5,
+˙ψ=Aψ, A=−iH−diag(σ v, σw),(7)
+soH 1 =−diag(σ)⪯0 and the recovery threshold (6) is
+unconditional (λ+ = 0, any smallp ∗ >0 is valid). The
+proof is the memory ansatzϕ=−σv/γ, which satis-
+fies the memory ODE (4) identically for data supported
+outside the layer; we verify the collapse numerically to
+6×10 −13. The general CFS memory form (two extra
+block qubits) is provided forκ>1 orα>0.
+B. Two dimensions: memory form and classical
+validation
+In 2D the damping acts per direction, so the state uses
+the separated-block form padded to eight blocks (three
+extra block qubits),
+
+v;w x;w y;ϕ vx;ϕ vy;ϕ x;ϕ y; 0
+
+,(8)
+with the memory injections masked to the layer strips.
+Corners need no special treatment—both directions’
+memory fields are simultaneously active, the structural
+advantage of unsplit CPML over split formulations [7].
+Long-time stability is a serious concern for PMLs in gen-
+eral [10, 24, 25]; here we measure max Re eig(A) = 0 to
+round-off across all tested configurations.
+Gold-standard validation.Comparing the truncated
+domain against a 4×enlarged reference, the true reflec-
+tion is 3.4×10 −4 (1D,n pml = 12) and 2.8×10 −4 (2D
+32×32,n pml = 8), at the floor reported by Komatitsch
+and Martin [8].
+5 Sato:A=−iH, closed system
+
+===== PAGE 4 =====
+4
+Convergence[1D gold standard,N= 128 versus an
+N= 512 reference, plateau overT∈{100,120,140}with
+plateau spread<10 −9, i.e. fully converged; Figs. 2(a,b)]:
+•versusn pml atR 0 = 10−3: 6.7×10−4 (4), 2.6×10−4
+(6), 2.6×10−4 (8), 3.4×10−4 (12), 4.2×10−4 (16)—
+non-monotonic, with a minimum atn pml ≈6–
+8. The two contributions are the discrete transi-
+tion error, which decreases with layer width, and
+the wall-return reflection, whichincreases toward
+the design value from below: node sampling of the
+polynomial profile overestimates
+R
+σdxby a fac-
+tor 1 +O(1/n pml), so the effective round-trip re-
+flection isR eff =R Σσh/
+R
+σ
+0 (R1.38
+0 = 7.1×10 −5
+atn pml = 4 rising toR 1.09
+0 = 5.2×10 −4 at
+16); forn pml ≥8 the measured reflection equals
+this prediction within 5–20%, i.e. the layer per-
+forms at design, converging toR 0 from below
+[Fig. 2(a)]. Jointly rescaling the staggered pro-
+file pair so the discrete sum matches the design
+integral (calibration=’discrete’, Appendix D)
+makes the realised reflection flat at 0.81–1.08R 0
+over the whole sweep—a one-line calibration fix
+that applies to classical CPML codes as well;
+•versusR 0 atn pml = 12: 4.5×10 −3 (10−2), 3.4×
+10−4 (10−3), 4.3×10−5 (10−4)—tracking the design
+reflectionR 0 within a factor∼2.3 over two decades.
+The Collino–Tsogka amplitude formula [9] is pre-
+dictive in this discretisation.
+C. The recovery-threshold obstruction
+The memory form pays a price. The injection column
+(γon one side) and the memory-source row (σ∂x/γon the
+other) of each memory field are structurally asymmetric,
+and this asymmetry cannot be scaled away. Throughout
+this sectionβ j =σ j/κj +αj≥0 denotes the CFS decay
+rate at nodej; we set the wave speedc= 1 (so the stencil
+entries obey|D ji|= 1/h), the general rate restoring a
+factor ofc.
+Lemma 1 (diagonal irreducibility)LetAbe the
+memory-form CPML generator of Sec. III B and letG=
+diag(γj)>0be any diagonal rescaling of the memory
+fields. Lets j denote the magnitude of the memory-source
+coupling (sj∼σ j/(γjh)for the difference stencil). Then
+the Hermitian partH 1(G)of the rescaled generator sat-
+isfies
+λmax
+ 
+H1(G)
+
+≥max
+j
+max
+
+f(γj,βj), g(sj,βj)
+	
+>0,
+(9)
+withf(γ,β) =
+ p
+β2 +γ 2−β
+
+/2, arising from the
+2×2principal submatrix
+ 0γ/2
+γ/2−β
+
+on a(v j,ϕj)pair by
+Cauchy interlacing, andg(s,β) =f(s,β)from a(w i,ϕj)
+pair (the one-directional coupling entrysentersH 1 as
+s/2, so both pairs are governed by the samef). Optimis-
+ingγagainst the two bounds gives
+λmax(H1) = Θ
+p
+σmaxc/h
+
+ash→0,(10)
+independent of the scaling.
+The full proof is given in Appendix A. Its consistency
+check is instructive: the collapsed 1D form of Sec. III A
+hasnoinjection pair (the memory is eliminated and the
+damping is diagonal), so the lemma does not apply—and
+indeedH 1 =−diag(σ)⪯0 there.
+Consequence.By the threshold of Eq. (6) [13,
+Thm. 3.1], recovery requiresp ∗ ≥λ +Twithλ + ≡
+λ+
+max(H1), and the post-selection probability of the re-
+covery window scales ase −2p∗
+=e−2λ+T . Numerically:
+atσ max = 0.5 on an 8×8 grid,λ + = 0.683; recovery
+below the threshold isO(1) wrong, while above it the
+error drops to 2×10 −3 relative (10−4 withn p = 11); see
+Fig. 3. The sponge/CAP alternative (diagonal damping
+σx +σy, four blocks) hasH 1⪯0 unconditionally at the
+price of matched-layer quality.
+CPML versus sponge at matched resources.A
+matched-resource sweep quantifies this tradeoff: both ab-
+sorbers on the same 32×32 grid with equal layer widths
+npml∈{4,8,12}and default parameters, each measured
+against one shared 4×enlarged (128×128) hard-wall
+reference by the gold-standard protocol of Sec. III B,
+the reflection being the maximum interior error over
+T∈{8,16,24,32,40}(Table I). At equal layer budget the
+CPML reaches its discrete wall-return level of 2.7×10 −4
+byn pml = 8 [consistent with the 2.8×10−4 gold-standard
+value of Sec. III B], while the sponge stays at the percent
+level, improving only from 6.2×10−2 to 3.6×10−2 across
+the sweep—a quality gap of a factor of 170 atn pml = 8
+(130 at 12). The quantum-side cost inverts the ranking.
+The sponge hasλ + = 0 exactly, so its recovery post-
+selects at theT-independente 2p∗
+≈1.2 (default slice
+p∗≈0.11); the CPML payse 2λ+T , withλ + = 0.93–1.54
+tracking the Θ(
+p
+σmaxc/h) rate of Lemma 1 to within
+5%—already 7×10 7 atT= 8 and 1.6×10 39 atT= 40
+forn pml = 8. Neither absorber dominates at matched
+resources: the sponge trades two orders of magnitude in
+reflection for an essentially free recovery, and the CPML
+trades an exponentially growing post-selection penalty
+for matched-layer accuracy—precisely the penalty that
+the symmetrizer of Sec. III D replaces by aT-independent
+conditioning factor.
+D. The Lyapunov symmetrizer
+A matrixW >0 solving the Lyapunov inequality
+WA+A †W⪯0 gives, withS=W 1/2, a transformed
+generator eA=SAS −1 whose Hermitian part satisfies
+eH1 = 1
+2S−1 
+WA+A †W
+
+S−1 ⪯0 (11)
+
+===== PAGE 5 =====
+5
+FIG. 2. Classical and Schr¨ odingerisation convergence. (a) Gold-standard reflection (truncated domain versus 4×reference)
+versus layer widthn pml at design reflectionR 0 = 10−3. The curve is non-monotonic: the transition error falls with layer width
+while the wall return rises toward the designR 0 from below, because node sampling of the polynomial profile over-damps
+thin layers (dashed curve: the predicted discrete wall-returnR eff =R
+Σσh/
+R
+σ
+0 , which the measurement tracks within 5–20%
+forn pml≥8). Red squares: the discretely calibrated profile pair (Appendix D), for which the realised reflection is flat at the
+design value. (b) Reflection versusR 0 atn pml = 12: the measured reflection tracks the Collino–Tsogka design value within a
+factor∼2.3 over two decades. (c) Recovery error versusp-register sizen p for the kinkede −|p| warping profile [O(∆p)] and the
+C1 cubic profile [O(∆p 2)] of Ref. [13], 1D CPML benchmark. (d) Trotter splitting error versus step count at orders 1 and 2
+(fitted slopes−1.02 and−2.01), measured against the exact Schr¨ odingerised evolution to isolate the splitting error.
+by congruence. Recovery of ˜z=Szis then valid at any
+p∗ >0, andz=S −1˜zis recovered classically (or folded
+into the readout). SinceAis only marginally stable (in-
+terior modes are neutral), we constructWfrom theϵ-
+shifted generator:
+Aϵ =A−ϵI, A †
+ϵW+WA ϵ =−I, S=W 1/2,
+(12)
+the shift being undone classically by the factore ϵT . An
+exact identity follows (Proposition 1 in Appendix E: con-
+gruence gives Herm(SA ϵS−1) =−W −1/2 exactly; veri-
+fied to better than 10−11 relative in all 18 measured con-
+figurations): the transform of theoriginalAhas
+λmax(eH1) =ϵ− 1
+2λmax(W) ≈ϵ,(13)
+while the transform ofA ϵ has eH1⪯0 strictly. We there-
+fore use the shifted transform; the undo factore ϵT≤e 0.4
+over the horizons tested is trivial.
+Measured results[grids 8×8, 16×8, 16×16 (n= 512–
+2048),σ max ∈ {0.5,1.0},ϵ∈ {10−2,10−3,10−4}; Lya-
+punov residuals≤1.4×10 −14; Tables II and III, Fig. 4]:
+•End-to-end recovery at the default smallp ∗ (ϵ=
+10−3): transformed errors 1.2×10 −6–3.5×10−5 on
+
+===== PAGE 6 =====
+6
+TABLE I. CPML versus sponge at matched resources: 32×32
+grid, equal layer widthn pml, default parameters [m= 2,R 0 =
+10−3, Collino–Tsogka amplitudesσ max = 2.59/1.30/0.86 at
+npml = 4/8/12]. Reflection is the gold-standard interior er-
+ror against a single shared 4×enlarged (128×128) hard-wall
+reference, maximised overT∈{8,16,24,32,40}(∥z 0∥= 1).
+λ+ =λ +
+max(H1) sets the CPML post-selection penaltye 2λ+T
+(quoted atT= 40) and tracks √σmax to within 5%; the
+sponge hasλ + = 0, post-selecting at theT- andn pml-
+independente 2p∗
+= 1.2 for the default recovery slicep ∗ =
+0.11.
+Reflection (max overT) CPML recovery cost
+npml CPML spongeλ +(H1)e 2λ+T ,T=40
+4 4.2×10 −3 6.2×10 −2 1.54 2.2×10 53
+8 2.7×10 −4 4.7×10 −2 1.13 1.6×10 39
+12 2.8×10 −4 3.6×10 −2 0.93 1.5×10 32
+FIG. 3. The recovery threshold in action (2D CPML, 8×8
+grid,σ max = 0.5,T= 10). Relative recovery error versus the
+slice positionp∗: below the thresholdp ∗ =λ +T(dashed line,
+λ+ = 0.683) the recovered state isO(1) wrong; just above
+it the error drops by four orders of magnitude, then grows
+slowly ase p∗
+amplifies thep-grid discretisation floor.
+the configurations withn p ∈{10,11}, essentially
+flat inToverT∈{10,20,40}; the 16×16 run with
+a reducedpregister (n p = 8) gives 1.1×10 −4–
+3.8×10 −3, consistent with itsO(∆p 2) floor. The
+untransformed system at the samep∗ returnsO(1)–
+O(10) garbage growing withT.
+•The direct above-threshold method is worse than its
+nominale 2λ+T cost: atT= 20 it degrades (errors
+0.24–0.45 atσ max = 0.5) and atT= 40 it explodes
+(error up to 7×10 15 atp∗ = 38) becausee p∗
+ampli-
+fies thep-grid floor. At longTthe symmetrizer is
+not merely cheaper—it is the only working recov-
+ery.
+•Conditioning:κ 2(S) = 4.0×10 2–8.6×10 2 atϵ=
+10−2 (the recommended setting), flat inσ max, scal-
+ing as∼ϵ −0.6 to−1.0—andsaturatinginn: extend-
+ing the measurement ton= 4096 givesκ 2(S) =
+564.5 atϵ= 10 −2 versus 566.9 atn= 2048 (local
+slope−0.006; over the full rangen= 512–4096 the
+fitted power-law exponent drops from 0.25 to 0.16
+with degrading fit quality, i.e. a power law is the
+wrong model becauseκis flattening).λ + itself sat-
+urates (0.683→0.694 over 8×inn) andλ min(W)
+stays at 0.66–0.68, so theκgrowth is driven en-
+tirely byλ max(W)∼1/(2ϵ): the conditioning
+isϵ-controlled, not grid-controlled, and the sym-
+metrizer cost does not blow up under mesh refine-
+ment. The eigenvector symmetrizerW= (VV †)−1
+is four to six orders of magnitude worse condi-
+tioned (κ 2∼3×10 8) and fails outright on near-
+defective configurations—the Lyapunov route is the
+right construction.
+•Tradeoff:T ∗ = lnκ 2/(2λ+) = 6.7–16.0 across all
+configurations; atT= 20 the symmetrizer wins by
+4–9 orders of magnitude in post-selection cost, at
+T= 40 by 16–26 orders.T ∗ grows only logarithmi-
+cally withκ, hence very weakly with grid size.
+Structure and compressibility ofS.We mea-
+sured the structure ofSdirectly and tested 25 ap-
+proximate symmetrizers (distance-banded, magnitude-
+thresholded, block-pattern, identity-plus-low-rank, hy-
+brid, and inverse-side-banded families) for dissipativity
+and end-to-end recovery on then= 512 andn= 1024
+systems. Three findings. (i) Identity-plus-low-rank is
+ruled out: the correctionE=S−αIis numerically full
+rank (995 of 1024 singular values above 10−2 of the top),
+andλ max( ˜H1) stays at theuntransformedλ + = 0.67 for
+ranks 8–64—no few-term LCU implementation ofSex-
+ists. (ii) Strict sparsification preservingλ max( ˜H1)≤ϵre-
+quires essentially the full active support (≈48–51% of en-
+tries; on the remaining “dead” indices—interior memory
+and padding, 30–50% of the space—Sis exactly a multi-
+ple of the identity, which is free structure). (iii)Moderate
+compression worksonce the residualλ b of an approxi-
+mateS b is absorbed as an additional shift (undone by
+eλbT ≤e 2.6 ≈14 at the worst measuredλ b = 0.066,
+T= 40): magnitude thresholding at 35% density recov-
+ers to 8.7×10 −6 (T= 10) and 5.4×10 −5 (T= 40);
+a rank-32-plus-band-8 hybrid at 26% reaches 1.3×10 −5
+and 6.6×10 −4 (alln= 1024; the conditioning of every
+usableS b stays∼5×10 2, equal to the exactS). The en-
+ergy ofEis 99.6% concentrated on layer-strip index pairs.
+The implementation route is therefore block-encoding of
+a∼35%-dense operator (times the free dead-index iden-
+tity factor), not a local circuit or a short LCU; at current
+theory the symmetrizer is best used as classical pre/post-
+processing, and a structured-ansatz Lyapunov construc-
+tion (solving forWwithin a polynomially parametrised
+operator family) is the open problem these measurements
+sharpen.
+Honest limitations.The construction requires a dense
+O(n3) classical precomputation ofW,S,S −1; the fate of
+the sparse quantised-tensor-train (QTT) term structure
+under the dense similarity (Trotter circuits for eA) is not
+assessed; theκscaling beyondn= 4096 is extrapolation
+(though saturating); the compression study is atn≤
+
+===== PAGE 7 =====
+7
+TABLE II. Lyapunov-symmetrizer conditioning across all measured configurations [grids (n x,ny) qubits per dimension, i.e.
+8×8, 16×8, 16×16 points;nis the full state dimension including the eight blocks].λ + =λ +
+max(H1) is the indefiniteness
+of the untransformed generator;κ 2(S) =
+p
+cond2(W) the conditioning of the symmetrizer;λ max(eH(ϵ)
+1 ) the (strictly negative)
+largest Hermitian-part eigenvalue of theϵ-shifted transformSA ϵS−1; andT ∗ = lnκ 2/(2λ+) the crossover time beyond which
+the symmetrizer beats the direct above-threshold recovery. All Lyapunov residuals are≤1.4×10 −14 (relative).
+Gridn σ max ϵ λ +(H1)κ 2(S)λ max(eH(ϵ)
+1 )T ∗
+8×8 512 0.5 10 −2 0.683 4.0×10 2 −4.6×10 −6 8.8
+8×8 512 0.5 10 −3 0.683 3.0×10 3 −8.1×10 −8 11.7
+8×8 512 0.5 10 −4 0.683 1.1×10 4 −6.0×10 −9 13.6
+8×8 512 1.0 10 −2 0.927 5.1×10 2 −5.2×10 −6 6.7
+8×8 512 1.0 10 −3 0.927 2.9×10 3 −1.6×10 −7 8.6
+8×8 512 1.0 10 −4 0.927 9.8×10 3 −1.4×10 −8 9.9
+16×8 1024 0.5 10 −2 0.687 5.1×10 2 −3.0×10 −6 9.1
+16×8 1024 0.5 10 −3 0.687 7.0×10 3 −1.5×10 −8 12.9
+16×8 1024 0.5 10 −4 0.687 3.1×10 4 −8.0×10 −10 15.0
+16×8 1024 1.0 10 −2 0.956 7.5×10 2 −2.4×10 −6 6.9
+16×8 1024 1.0 10 −3 0.956 7.0×10 3 −2.8×10 −8 9.3
+16×8 1024 1.0 10 −4 0.956 2.7×10 4 −1.8×10 −9 10.7
+16×16 2048 0.5 10 −2 0.694 5.7×10 2 −2.4×10 −6 9.1
+16×16 2048 0.5 10 −3 0.694 9.9×10 3 −7.7×10 −9 13.3
+16×16 2048 0.5 10 −4 0.694 6.6×10 4 −1.7×10 −10 16.0
+16×16 2048 1.0 10 −2 0.972 8.6×10 2 −1.9×10 −6 6.9
+16×16 2048 1.0 10 −3 0.972 1.2×10 4 −8.7×10 −9 9.7
+16×16 2048 1.0 10 −4 0.972 6.3×10 4 −3.4×10 −10 11.4
+TABLE III. End-to-end recovery tradeoff: direct versus symmetrized recovery, errors∥z rec−eATz0∥2/∥eATz0∥2. “Smallp ∗” is
+the library-default slice three grid points above zero. For the untransformed system above threshold,p ∗ =λ +T+ 1 and the
+post-selection penalty ise 2p∗
+; entries marked “–” exceed thep-domain (λ +T+ 1> p max). The symmetrized column uses the
+ϵ-shifted transform atϵ= 10 −3 recovered at the same smallp∗, with theT-independent penaltyκ 2
+2(S) of Table II. The 16×16
+run uses a reducedpregister (n p = 8), which sets its higher error floor.
+Untransformed Symmetrized (ϵ= 10 −3)
+ConfigurationTerr. (smallp ∗)p ∗≥λ+Terr. (above thr.) penaltye 2p∗
+err. (smallp∗)
+8×8 (σ max = 0.5,n p = 11) 10 3.4 7.8 1.2×10 −4 6.3×10 6 1.2×10 −6
+20 8.3 14.7 2.4×10 −1 5.4×10 12 2.4×10 −6
+40 2.6×10 1 – – – 4.4×10 −6
+8×8 (σ max = 1.0,n p = 11) 10 7.2 10.3 2.2×10 −2 8.4×10 8 2.1×10 −5
+20 1.6×10 1 19.6 3.0×10 2 1.0×10 17 2.3×10 −5
+40 2.9×10 1 38.1 7.3×10 15 1.2×10 33 3.5×10 −5
+16×8 (σ max = 0.5,n p = 10) 10 2.5 7.9 1.1×10 −4 7.4×10 6 4.2×10 −6
+20 4.8 14.8 4.5×10 −1 6.7×10 12 6.0×10 −6
+40 1.3×10 1 – – – 1.1×10 −5
+16×16 (σ max = 0.5,n p = 8) 10 2.0 8.0 1.3×10 −2 9.2×10 6 1.1×10 −4
+20 5.6 15.0 7.5×10 1 1.0×10 13 5.2×10 −4
+40 2.5×10 1 – – – 3.8×10 −3
+1024. IV. EXPLICIT CIRCUITS
+A. Projector-extended Bell-basis term evolution
+The circuit of Satoet al.[3] exponentiates ladder-
+string terms (alphabet{I,σ 01,σ 10}) via a Bell-basis
+
+===== PAGE 8 =====
+8
+FIG. 4. The Lyapunov symmetrizer. (a) Relative recovery error versus evolution timeTfor the 2D CPML system (8×8
+grid,σ max = 0.5): untransformed recovery at the default smallp ∗ (squares) isO(1) garbage; untransformed recovery above the
+thresholdp∗≥λ +T(diamonds) degrades withTase p∗
+amplifies thep-grid floor and leaves the admissiblep-domain entirely by
+T= 40; the Lyapunov-symmetrized recovery at the same smallp ∗ (circles,ϵ= 10 −3, shifted transform) stays at the 10−6 level,
+essentially flat inT. (b) Post-selection cost on the 16×16 grid: the directe 2λ+T penalty (solid) against theT-independent
+symmetrizer penaltyκ 2
+2(S) atϵ= 10 −2 (dashed) and 10−3 (dotted); the crossovers are theT ∗ values of Table II.
+change followed by one multi-controlledR z; Hu, Jin,
+Liu, and Zhang [18] extended the framework to non-
+unitary PDE dynamics via Schr¨ odingerisation, and Jin,
+Liu, and Yu [19] built gate-level circuits for the heat equa-
+tion with physical boundaries. Relative to these we add
+theprojectorextension: strings containingz=|0⟩⟨0|
+ando=|1⟩⟨1|(block projectors of separated multi-
+field systems) enter as plain 0-/1-controls; the Bell rota-
+tion outside the projected subspace is undone exactly, so
+the circuit implementse−iδt(cP+h.c.) for projector-valued
+P. Figure 5(a) shows the compiled circuit for a repre-
+sentative projector-containing term of the separated 2D
+wave Hamiltonian, and Fig. 5(b) the full Schr¨ odingerised
+pipeline it slots into.
+Due diligence (full-text check of both papers): nei-
+ther Ref. [18] nor Ref. [19] circuitises projector-containing
+strings—both use only the{I,σ 01,σ 10}alphabet. We
+confirmed this at code level in the published com-
+panion notebook of Ref. [18]: its term circuit (W j)
+implements the contiguous ladder pattern with rota-
+tions controlled uniformly on all lower qubits (an all-
+or-nothingX-conjugation flag serving the periodic cor-
+ner terms), with no per-qubit 0-/1-control selection
+(the nilpotent shift needs no projector guards in scalar
+single-field problems, and Ref. [19] routes boundary data
+into source terms precisely to avoid non-Toeplitz struc-
+ture). Ref. [5] comes closest: its symbolic operator alge-
+bra over{I,σ 00,σ 11,σ 01,σ 10}produces projector factors
+from boundary-truncated shifts and piecewise-constant
+coefficients, and poly-depth Trotterisation is asserted by
+citation to Ref. [3]; but no gate-level compilation rule
+for the projector factors and no projector-term circuit
+(a)
+q0 (σ10)
+q1 (σ01)
+q2 (I)
+q3 (I)
+q4 (σ00)
+q5 (σ01,piv.) P(λ) H Rz(2γδt) H P(−λ)
+(b)
+ns
+np
+...
+...
+sys |ψ0⟩
+e+i ∆t
+2 ηΣ
+e−i∆tH
+e+i∆tηΣ
+e−i∆tH
+e+i ∆t
+2 ηΣ
+p |g⟩ QFT† QFT
+p∗
+FIG. 5. Explicit circuits. (a) Bell-basis evolution
+e−iδt(cP+h.c.) of the projector-containing termP=σ 01⊗
+σ00⊗I⊗I⊗σ 01⊗σ 10 of the separated 2D wave Hamilto-
+nian (stringmzIImp, qubitq k carrying string character 5−k;
+λ= argc,γ=|c|;λ= 0 for the real wave-equation coef-
+ficients):cnots rotate the ladder qubits to the Bell basis,
+and the single multi-controlledR z carries the block projector
+σ00 (q4) as anopen-circle0-control—the entire compilation
+rule of Sec. IV A. The gate sequence is unitarily identical to
+the library-compiled circuit (verified to machine precision).
+(b) The Schr¨ odingerised pipeline (Sec. IV B) on bundled reg-
+isters: product-state preparation|g⟩⊗|ψ 0⟩, QFT† on thep
+register, Strang-split steps alternating the Bell wave circuit
+e−i∆tH with the diagonal damping phasese +i∆tηΣ (half steps
+at the ends), closing QFT, and recovery by measuring thep
+register, post-selecting the slice atp∗, and rescaling classically
+bye p∗
+.
+is given. A caveat we state explicitly: the abstract class
+|a⟩⟨b|+|b⟩⟨a|over basis states in Lemma 1 of Refs. [3, 18]
+
+===== PAGE 9 =====
+9
+implicitlycontainsHermitian-paired projector strings as
+an existence statement; our contribution is the explicit
+alphabet extension and compilation rule (projector fac-
+tor→0-/1-control) and its application to multi-field
+block-coupled systems, not a new diagonalisation prin-
+ciple. The extension is backward compatible. Unitary-
+level validation: the error is pure per-step Trotter error
+0.50δt 2 with no phase offset. This unlocks the separated
+2D wave Hamiltonian (zm/mzblock couplings) needed for
+per-direction absorbing layers.
+B. The Schr¨ odingerised circuit
+The full pipeline is
+init(g⊗ψ 0)→QFT †
+p →[Trotter steps]
+→QFT p →slice atp ∗.
+(14)
+Each step (diagonalH 1) factorises into the wave circuit
+(the Bell construction of Sec. IV A on the system regis-
+ter) and a diagonal damping phase with entriese+iδtη kσj.
+Both Trotter levels are symmetrised (Strang outer; palin-
+dromic term order inner), with measured clean second or-
+der: errors 4×10 −2→10−2→2.7×10 −3 at 50/100/200
+steps on 17 qubits.
+Fitted orders[1D benchmark, error versus the ex-
+act Schr¨ odingerised evolution to isolate the splitting;
+Fig. 2(d)]: slope−1.02 (order 1),−2.01 (order 2
+with both levels symmetrised); against the full matrix-
+exponential reference the order-2 error saturates at the
+p-discretisation floor, as expected.Warping-profile order
+[recovery error versusn p, fixed 1D PML case; Fig. 2(c)]:
+e−|p| slope∼−1 in ∆p(4.1×10 −2 →6.3×10 −4 over
+np = 6–11);C 1 cubic∼−2 (1.3×10 −2→2.4×10 −6),
+confirming Remark 4.9 of Ref. [13] in this setting.
+C. End-to-end demonstrations
+•1D CPML, 14 qubits (6 system + 8p), 60 steps,
+T= 30: recovered solution within 7×10 −4 of the
+exact non-unitary evolution.
+•2D sponge, 8×8 grid, 17 qubits,T= 10: 2.7×10 −3
+at 200 steps (Fig. 6).
+•2D sponge, 32×32 grid, 21 qubits (12 system + 9
+p), up to 240 steps (983 native operations per step):
+errors 7.7×10 −3 / 1.7×10 −2 / 1.4×10 −2 atT=
+8/16/24; energy decays from 0.97 to 1.25×10 −3
+(absorption complete); nine minutes of statevector
+simulation (Fig. 7).
+Qubit accounting: the absorbing overhead is +1 (sponge)
+or +2 (CPML) block qubits plusn p≈8–10 for thepreg-
+ister;n p depends only logarithmically onT, the damping
+rate, and the target accuracy.
+V. COMPLEXITY
+Term counts inherit the QTT structure of the differ-
+ence operators: 2n x + 2 terms in 1D and 4n x + 4 in 2D
+(nx =n y), exactly linear in the register size (fitted slopes
+4.000/2.000, intercepts 4/2). Transpiled to the{CX,u}
+basis, one Strang wave step costs 217/459/834/1343 op-
+erations forn sys = 6/8/10/12; a power-law fit gives expo-
+nent 2.63 withr 2 = 0.99997 (Fig. 8)—convincingly poly-
+nomial, and in fact asymptotically quadratic: the term
+count is linear innand the ancilla-free V-chain multi-
+controlled-Rz is linear in its control count, so ops/step
+=O(n 2). The constants are fixed by the measurements.
+The per-step cost in the{cx,U}basis is reproduced to
+0.03% (r2 = 0.9999999) by the quadratic
+Gstep(n) = 16.7n 2−112.7n+ 293,(15)
+whose structure is transparent: a Strang step exponenti-
+ates 2nHermitian-paired terms (4n x +4 atn= 2n x +2),
+each one Bell basis change plus one multi-controlledR z
+whose ancilla-free V-chain cost isexactly32k−31 el-
+ementary operations fork≥8 controls (measured),
+linear ink; with the QTT ladder structure averaging
+¯k≈n/4 controls per term, the leading coefficient is
+2n·32 ¯k/n2 ≈16.7. The total gate count is steps×
+ops/step with steps =T/δtandδtset by the second-
+order boundδt=
+p
+εtr/(C2T), whereC 2 is the Strang
+error constant of the slope-(−2) fits of Fig. 2(d):
+Gtotal =
+s
+C2T 3
+εtr
+Gstep(n) =O
+T 3/2
+√εtr
+n2
+
+,(16)
+plus the damping diagonal per step and two QFT(n p);
+the power-law fit across the measured range readsn 2.63
+because the subleading terms of Eq. (15) have not yet
+decayed atn≤12.
+Caveat (honest).The damping factor is a single na-
+tivediagonalinstruction on the simulator, but ageneric
+diagonal onnqubits synthesises to Θ(2 n) elementary
+gates: we measure a CX count of exactly 2 n−2 and
+totals within 15% of the 2 n+1−3 synthesis bound. For
+hardware the structure must be exploited: the diago-
+nal isD η⊗Σ withηlinear in thepindex andσa
+degree-mpolynomial profile on the layer strips, so phase-
+polynomial constructions give poly(n) circuits, and the
+logic-minimisation synthesis of piecewise-constant diago-
+nal operators of Ref. [5] (Espresso-compressed projector
+strings with matrix-product-state coefficient oracles) pro-
+vides an existing poly(n) toolbox directly applicable to
+the strip-wise polynomialσprofiles; making this explicit
+is deferred to future work.
+VI. DISCUSSION AND OUTLOOK
+Theλ + obstruction of Lemma 1 is generic for auxiliary-
+field absorbers—memory variables, auxiliary-differential-
+
+===== PAGE 10 =====
+10
+FIG. 6. Gate-level absorbing 2D wave evolution (sponge layer, 8×8 grid, 17 qubits = 6 grid + 2 block + 9p-register). Top row:
+snapshots of the recovered field from the Trotterised quantum circuit att= 2.5,5,7.5,10. Bottom row: the exact non-unitary
+referencee Atψ0. The expanding pulse is absorbed in the boundary layer with no visible reflection; snapshot errors are at the
+10−3 level (Sec. IV C).
+equation formulations, split fields—because the injec-
+tion/source asymmetry is structural rather than an arte-
+fact of one discretisation. The Lyapunov symmetrizer
+is the corresponding general remedy, and its quantum-
+implementable variants (block-encodingS, structured
+or banded approximate symmetrizers) are open. Nat-
+ural next steps include a hardware experiment in the
+style of Ref. [3]; quantum-signal-processing or qubiti-
+sation in place of Trotter (and the query-optimal
+Schr¨ odingerisation formulation of Ref. [20]); CPML for
+Maxwell’s equations [15, 16]; and smoother warping pro-
+files (error-function or numerically optimal) beyond the
+C1 cubic.
+Code and data availability.The implementation
+(lib/absorbing.py,lib/schrodingerisation.py),
+all experiment scripts and JSON result files
+(paper/experiments/), and the executed demonstration
+notebook are available in the accompanying repository
+athttps://github.com/x-repos/qawave-cpml.
+Appendix A: Proof of Lemma 1
+Fix a layer nodejwithσ j >0 and a stencil neigh-
+bourisuch that the difference entry satisfies|D ji|= 1/h
+(wave speedc= 1; the general case restores a factorcin
+Eq. (10)). Writeβ=σ j/κj +αj≥0 for the CFS decay
+rate,γfor the injection coefficient, ands=σ j|Dji|/(κ2
+jγ)
+for the memory-source magnitude. LetG= diag(g)>0
+beanypositive diagonal similarity, and set
+u= gvj
+gϕj
+, t= gϕj
+gwi
+, ρ=ut= gvj
+gwi
+.(A1)
+The transformed generator eA=GAG −1 has unchanged
+diagonal, and the three relevant coupling families scale
+as follows.
+(i)Injection pair(v j,ϕj): entryuγ, reverse entry 0, so
+eH1 contains the principal 2×2 submatrix
+"
+0uγ/2
+¯u¯γ/2−β
+#
+=⇒λ max(eH1)≥f(|u|γ,β),(A2)
+withf(x,β) :=
+ p
+β2 +x 2−β
+
+/2.
+(ii)Memory-source pair(w i,ϕj): entrytsanalogously,
+givingλ max(eH1)≥f(|t|s,β).
+(iii)Physical wave pair(v j,wi): elementwise, eA[v,w] =
+−iDjiρand eA[w,v] = +iD ji/ρ(using thatDis
+
+===== PAGE 11 =====
+11
+FIG. 7. Gate-level absorbing 2D wave evolution at scale: 32×32 grid, 21 qubits (12 system + 9p-register), up to 240 second-
+order Trotter steps (983 native operations per step). Top row: recovered field from the quantum circuit att= 0,8,16,24
+(dashed lines mark the absorbing-layer strips). Bottom row: exact referencee Atψ0. The outgoing ring is absorbed across the
+layer; the total energy decays from 0.97 to 1.25×10 −3, and the recovered field matches the reference to 7.7×10 −3–1.7×10−2.
+FIG. 8. Gate cost per Trotter step after transpilation to the
+{CX,u}basis, versus the number of system qubitsn: 1D steps
+(squares) and 2D Strang steps (circles). The dotted line is the
+power-law fit∝n 2.63 (r2 = 0.99997) to the 2D series; the term
+count itself is exactly linear inn(Sec. V).
+real andD † =−D b), so
+eH1[vj,wi] = iDji
+2
+ 
+ρ−1−ρ
+
+=⇒λ max(eH1)≥ |Dji|
+2
+ρ−1−ρ
+.
+(A3)
+All three are lower bounds onλ max(eH1) by Cauchy in-
+terlacing (the eigenvalues of any principal submatrix in-
+terlace those of the full Hermitian matrix).
+Case analysis.If|ρ|≤1/2 then|ρ −1−ρ|≥3/2, so (iii)
+givesλ max(eH1)≥3/(4h). Otherwise|ρ|>1/2 implies
+|uγ|·|ts|=|ρ|γs > γs
+2 = σj|Dji|
+2κ2
+j
+,(A4)
+hence max(|u|γ,|t|s)≥
+q
+σj/(2hκ2
+j) and (i)–(ii) give
+λmax(eH1)≥f
+ q
+σj/(2hκ2
+j), β
+
+. Therefore, for every
+positive diagonal scaling,
+λmax(eH1)≥min
+
+
+
+3
+4h,
+q
+β2 +σj/(2hκ2
+j)−β
+2
+
+
+,
+(A5)
+which is Θ
+ p
+σj/h
+
+ash→0 (the second branch is the
+minimum onceσ j/(2h)≫β 2, i.e. for any fixed profile
+
+===== PAGE 12 =====
+12
+and smallh). The bound is independent ofγand of the
+scalingG. The explicit balanced choiceγ ∗ =
+p
+2σmax/h
+attains the same rate from above: measuredλ + = 0.68–
+0.97 across our configurations, versus the lower bound
+0.18 at the 8×8,σ max = 0.5 parameters—the bound is
+a rate, not a sharp constant.■
+Consistency check.The collapsed 1D form (Sec. III A)
+has no injection pair: the memory is eliminated and the
+damping is diagonal, so the lemma does not apply—and
+indeedH 1 =−diag(σ)⪯0 there.
+Appendix B: The convolutional PML in the
+Hamiltonian-simulation variables
+This appendix expands the one-line statements of
+Secs. II B, III A, and III B: the causal kernel and mem-
+ory ODE from the CFS stretch (Appendix B 1), the
+one-dimensional memory generator and the frequency-
+domain collapse (Appendix B 2), the proof that the col-
+lapse is exact (Appendix B 3), the two-dimensional eight-
+block generator (Appendix B 4), the staggered profile-
+sampling rule (Appendix B 5), and the profile formulas
+(Appendix B 6). Throughout,Dis the forward-difference
+matrix andD† =−D b its negative backward counterpart
+(Sec. II A); all operators are exactly those constructed in
+the accompanying code.
+1. From the CFS stretch to the memory ODE
+We fix the Fourier convention ˆf(ω) =
+R
+dte−iωtf(t),
+f(t) = (2π)−1R
+dωe +iωt ˆf(ω), so that∂ t7→iωand the
+causal exponential has the transform
+R∞
+0 dte−βte−iωt =
+(β+iω) −1 forβ >0. A PML stretches the coordinate
+into the complex plane, ˜x=
+Rx
+0 s(x′,ω)dx′, which in
+the frequency domain replaces every spatial derivative
+by∂ x7→s(ω)−1∂x inside the layer. For the CFS factor
+of Eq. (2), partial fractions in the variableiωgive
+1
+s(ω) = α+iω
+κ(α+iω) +σ = 1
+κ + ˆζ(ω),(B1)
+with
+ˆζ(ω) =− σ
+κ2
+1
+β+iω , β:= σ
+κ +α(B2)
+the CFS decay rate: indeed 1/s−1/κ= (κ−s)/(κs)
+withκ−s=−σ/(α+iω) andκs=κ 2(β+iω)/(α+
+iω). The single pole atiω=−βinverts, by the causal
+transform above, to the exponential kernel of Eq. (3),
+ζ(t) =−(σ/κ 2)e−βtθ(t), and frequency multiplication is
+time convolution:s −1∂xf=κ −1∂xf+ζ∗∂ xf.
+The convolution becomes local in time once it is
+named. Letϕ:=ζ∗∂ xf. Multiplying Eq. (B1) by (β+iω)
+gives the polynomial identity (β+iω) ˆζ=−σ/κ 2, hence
+iω ˆϕ=−β ˆϕ−(σ/κ 2)d∂xf, which transforms back to the
+memory ODE of Eq. (4). Equivalently, in the time do-
+main,∂tϕ=ζ(0 +)∂xf+ζ′∗∂xfwithζ(0 +) =−σ/κ 2 and
+ζ′ =−βζ. One first-order ODE per stretched derivative
+thus carries the convolution exactly; this is the recursive-
+convolution CPML of Roden and Gedney [7].
+2. One dimension: memory generator and collapse
+In the variables of Sec. II A the undamped 1D system
+is ˙v=−iDw, ˙w=−iD †v[Eq. (1)]. Each equation
+contains exactly one spatial derivative, so the stretch
+generates one memory field per physical field. Sam-
+pling the profiles per field (Appendix B 5) defines the
+diagonal matrices Σ v = diag(σ v,j),K v = diag(κ v,j),
+Bv = diag(σ v,j/κv,j +α v,j), and the layer projector
+Πv = diag(1[σ v,j >0]), and likewise forw. Apply-
+ing the stretched-derivative rule to−iDwand carry-
+ing the convolution by the rescaled memory fieldϕ v :=
+γ−1ζv∗(−iDw)—whereγ >0 is a free constant rescal-
+ing under which the physical trajectory is invariant, set
+to the balanced valueγ=
+p
+2σmax/hof Appendix A—
+gives, by Eq. (4),
+˙v=−iK−1
+v Dw+γϕ v, ˙ϕv =−B vϕv + i
+γ ΣvK−2
+v Dw,
+(B3)
+and the analogous pair for (w,ϕw) withD→D †,v↔w.
+The source ofϕ v carries the factor Σ v, soϕ v vanishes
+identically outside the layer strips for memory-free data;
+masking the injection column by Π v therefore changes
+no such trajectory while removing the spuriousO(γ)
+interior entries that an unmasked column would con-
+tribute to the Hermitian partH1. On the four-block state
+[v;w;ϕ v;ϕ w] (two extra block qubits) the generator is
+Amem =
+
+
+0−iK −1
+v D γΠ v 0
+−iK−1
+w D† 0 0γΠ w
+0 i
+γ ΣvK−2
+v D−B v 0
+i
+γ ΣwK−2
+w D† 0 0−B w
+
+
+.
+(B4)
+Collapse forκ= 1,α= 0.In this case the stretch
+degenerates:s(ω) = (iω+σ)/(iω), so the stretchedv
+equation,iωˆv=s v(ω)−1(−iDˆw) per Fourier mode, mul-
+tiplies out to
+(iω+σ v) ˆv=−iDˆw,(B5)
+because the symbols(ω)iω=iω+σis afirst-degree
+polynomialiniω. Transforming back, ˙v=−iDw−σ vv,
+and likewise ˙w=−iD†v−σww: the convolution collapses
+to the local damping of Eq. (7),A=−iH−diag(σ v,σw),
+with no memory fields at all.
+3. Proof of the exact collapse
+The frequency-domain argument above is formal (it
+commutes the stretch with the time-domain initial-value
+
+===== PAGE 13 =====
+13
+problem); the following statement makes the equivalence
+exact at the semi-discrete level.
+Lemma 2 (exact collapse)Letκ≡1andα≡0in the
+generator of Eq.(B4), so thatB v = Σv andB w = Σw,
+and define the defects
+ev :=ϕ v +γ−1Σvv, e w :=ϕ w +γ−1Σww.(B6)
+Then˙ev = ˙ew = 0along every solution of ˙Ψ =A memΨ.
+Consequently a memory-form trajectory projects onto a
+trajectory of the collapsed generator Eq.(7)if and only if
+ev(0) =e w(0) = 0; for the standard embeddingϕ v(0) =
+ϕw(0) = 0this is the conditionΣ vv(0) = 0andΣ ww(0) =
+0, i.e. initial data supported outside the layer.
+Proof.Using both rows of Eq. (B3) withB v = Σv,
+˙ev =
+h
+−Σvϕv + i
+γ ΣvDw
+i
++γ−1Σv
+
+−iDw+γΠ vϕv
+
+= (ΣvΠv−Σv)ϕv = 0,
+since ΣvΠv = Σv (the projector is the support indicator
+of Σv); identically fore w. Equivalently, the block-row
+operatorE=
+γ−1Σv 0I0
+0γ −1Σw 0I
+
+annihilates the genera-
+tor from the left,EA mem = 0 (verified to round-off in our
+implementation). On the invariant slicee≡0 the mem-
+ory ansatzϕ v =−γ−1Σvvof Sec. III A holds at all times,
+the injection term becomesγΠ vϕv =−Σ vv, and (v,w)
+obeys Eq. (7); conversely, every collapsed trajectory lifts
+to the memory form through the ansatz.■
+Whene(0)̸= 0, the conserved defect acts on the phys-
+ical equations as the static in-layer forcingγΠ vev(0),
+γΠwew(0), so the discrepancy between the two forms
+scales with the layer content∥Σ vv(0)∥,∥Σ ww(0)∥of the
+initial data—and vanishes exactly for data supported
+outside the layer. Numerically, propagating the same
+interior pulse with Eq. (B4) and with Eq. (7) agrees to
+6×10 −13 (Sec. III A).
+Remark (the roles ofαandκ).The cancellation
+uses onlyα≡0: for a gradedκthe modified defect
+ev =ϕ v+γ−1ΣvK−1
+v vis conserved by the same computa-
+tion, and the convolution collapses to the local form ˙v=
+−iK−1
+v Dw−K −1
+v Σvv(both statements again verified to
+round-off). Forα>0, instead, ˙e v =−diag(α v)ϕv̸= 0—
+equivalently,s(ω)iωis no longer polynomial iniω—and
+the memory fields are irreducible: the four-block form is
+then the genuine content of the CFS layer.
+4. Two dimensions: the eight-block generator
+In 2D the damping acts per direction: thexstretch
+replaces every∂ x and theystretch every∂ y. On the
+separated-block state of Sec. II A the undamped equa-
+tions are ˙v=−iD xwx−iD ywy, ˙wx =−iD †
+xv, ˙wy =
+−iD†
+yv, withD x =D⊗I Ny andD y =I Nx⊗Don the
+flattenedNxNy grid register (xregister more significant).
+Thevequation contains one derivative of each direction
+and acquires two memory fieldsϕ vx,ϕ vy; eachwequa-
+tion contains a single derivative and acquires one,ϕ x for
+wx andϕ y forw y. The four memory fields plus the three
+physical fields are padded by one zero block to the eight
+blocks of Eq. (8) (three block qubits).
+Becauseσ x depends onxonly, its diagonal samples
+factorise on the grid register: Σ x
+v =S x⊗I Ny and
+Σx
+w =S st
+x ⊗INy, whereS x = diagσ(x j) holds the nodal
+samples andS st
+x = diagσ(x j−1/2) the half-cell sam-
+ples (Appendix B 5); symmetrically Σ y
+v =I Nx⊗Sy and
+Σy
+w =I Nx⊗S st
+y . Withκ≡1 (our 2D configurations),
+the decay rates areB x
+v = Σx
+v + diagαx(xj) etc., and the
+masks Πx
+v = diag(1[Σx
+v >0]), . . . are the layer-strip pro-
+jectors. Repeating the derivation of Appendix B 2 once
+per (field, stretched direction) pair gives the generator,
+in the block ordering of Eq. (8),
+A=
+
+
+0−iD x −iDy γΠx
+v γΠy
+v 0 0 0
+−iD†
+x 0 0 0 0γΠ x
+w 0 0
+−iD†
+y 0 0 0 0 0γΠ y
+w 0
+0 i
+γ Σx
+vDx 0−B x
+v 0 0 0 0
+0 0 i
+γ Σy
+vDy 0−B y
+v 0 0 0
+i
+γ Σx
+wD†
+x 0 0 0 0−B x
+w 0 0
+i
+γ Σy
+wD†
+y 0 0 0 0 0−B y
+w 0
+0 0 0 0 0 0 0 0
+
+
+on
+
+v;w x;w y;ϕ vx;ϕ vy;ϕ x;ϕ y; 0
+
+,(B7)
+which is, entry for entry, the matrix assembled by the
+accompanying implementation.
+Strip masking.The source of each memory field carries
+its own profile factor (Σ x
+v forϕ vx, . . . ), so the field re-
+
+===== PAGE 14 =====
+14
+TABLE IV. Staggered sampling of the damping profiles in 2D
+(forward-difference convention; the backward convention flips
+the half-cell shifts). Each profile is sampled on the grid of the
+field its equation updates.
+Field Lives at Profile samples
+v(x j, yk)σ(x j),σ(y k)
+wx (xj−1/2, yk)σ(x j−1/2)
+wy (xj, yk−1/2)σ(y k−1/2)
+mains identically zero outside its layer strip for memory-
+free initial data; the corresponding injection column is
+masked by the strip projector, exactly as in 1D, so that
+H1 carries no spurious interior coupling.
+Corners.In a corner cell bothσ x >0 andσ y >0
+hold simultaneously: both directions’ memory fields are
+active there, the same generator entries of Eq. (B7) apply
+unchanged, and no corner-specific terms arise. This is the
+structural advantage of the unsplit convolutional PML
+over split-field formulations [7]. The measured stability,
+max Re eig(A) = 0 to round-off, is reported in Sec. III B.
+5. The staggered sampling rule
+For the forward-difference convention, (Dw) j =
+(wj+1−w j)/h. The componentv j is updated through
+(Dw)j and represents the field at the integer nodex j =
+jh; the componentw j is updated through (D †v)j ∝
+vj−v j−1, a difference centered at the half-cell point
+xj−1/2, so thewfield lives on the staggered grid (the
+backward convention shifts it tox j+1/2). The sampling
+rule follows:every profile factor in an evolution equa-
+tion is sampled on the grid of the field that the equation
+updates,
+σv,j =σ(x j), σ w,j =σ(x j∓1/2),(B8)
+with the upper (lower) sign for the forward (backward)
+convention, and per direction in 2D (Table IV): only the
+xprofile of thew x family and theyprofile of thew y
+family are staggered; all other dependencies are nodal.
+Ablation.Sampling all profiles at the integer nodes
+instead—the only change being the half-cell shift of thew
+profiles—degrades the measured gold-standard reflection
+of Sec. III B by factors of 120–235. At the reflection floors
+of Fig. 2(a,b) the half-cell stagger is load-bearing, not a
+refinement.
+6. Profile formulas
+Within a layer ofn pml points (widthL=n pmlh) the
+damping is polynomially graded in the depthdmeasured
+from the interface,
+σ(d) =σ max (d/L)m,0≤d≤L,(B9)
+and zero outside; the interface node itself is undamped,
+σ(0) = 0, the outermost node attainsσ max, and stag-
+gered samples beyond the wall are clipped tod=L. The
+amplitude follows from the normal-incidence round trip:
+a wave crossing the layer, reflecting off the terminating
+hard wall, and crossing back accumulates the attenuation
+R= exp
+h
+−2
+c
+Z L
+0
+σ(x)dx
+i
+= exp
+h
+− 2σ maxL
+(m+ 1)c
+i
+,
+(B10)
+so prescribing a design reflectionR 0 gives the Collino–
+Tsogka amplitude [9]
+σmax =− (m+ 1)clnR 0
+2L ,(B11)
+used with the standard recipem= 2,R 0 = 10−3 [8]. The
+nominalR 0 is realised only for layers of≳8 points; for
+thinner layers the discrete transition error dominates (a
+four-point layer reflects at the 0.5–2% level for grid-scale
+wavelengths), consistent with the saturation of Fig. 2(a).
+When the CFS parameters are used they are graded
+with the same geometry,
+κ(d) = 1 + (κmax−1) (d/L)m, α(d) =α max (1−d/L),
+(B12)
+κrising from 1 at the interface toκ max at the wall with
+the same polynomial asσ, andαtapering linearly [8]
+fromα max just inside the interface to zero at the wall
+(and vanishing identically outside the layer); in the im-
+plementationα(d) =α max[1−(σ(d)/σ max)1/m], which is
+identical. A nonzeroαimproves grazing-incidence and
+evanescent absorption but unmatches the layer at low
+frequencies (the stretch is matched only forω≫α),
+so the fixed-horizon absorption benchmarks of Sec. III B
+useα max = 0. Finally, the memory rescaling defaults
+toγ=
+p
+2σmax/h, the choice that balances the injec-
+tion and memory-source contributions toλ max(H1) (Ap-
+pendix A).
+Appendix C: Schr¨ odingerisation: discrete formulas
+and recovery
+This appendix records the complete discrete recipe be-
+hind the summary of Sec. II C, with the exact sign, grid,
+and ordering conventions of our implementation; these
+are the conventions validated end to end by the demon-
+strations of Sec. IV C.
+1. Hermitian split and warped transform
+The semi-discrete absorbing dynamics ˙z=Azis split
+as
+A=H 1 +iH 2, H 1 = A+A †
+2 , H 2 = A−A †
+2i ,
+(C1)
+
+===== PAGE 15 =====
+15
+with the dissipative partH 1 and the Hamiltonian part
+H2 both Hermitian. The warped phase-space transform
+of Ref. [11] appends one auxiliary variablepand sets
+w(t,p) =e −pz(t) forp≥0 (extended top <0 by the
+profilegof Sec. C 3). The sign structure follows in one
+line: along the exact solution,∂ tw=e −pAz=Awand
+∂pw=−e −pz=−w, soH 1w=−H 1∂pwand
+∂tw=−H 1∂pw+iH 2w,(C2)
+a transport equation inp: the non-unitary part ofAhas
+become advection of the auxiliary variable.
+2. Discrete setup and per-mode evolution
+Thepregister holdsN p = 2np grid points on the peri-
+odic domain [−p max, pmax),
+pj =−p max +j∆p,∆p= 2pmax
+Np
+,(C3)
+j= 0,...,N p−1, with dual frequenciesη k =πk/p max
+fork=−N p/2,...,N p/2−1 in FFT ordering [i.e.
+η= 2π×fftfreq(N p,∆p)]. We fix the Fouriersynthesis
+conventionw(·,p) = P
+k ˆwke+iηkp (NumPy:w= ifft( ˆw)
+along thepaxis, ˆw= fft(w)). Substituting∂ p→iη k in
+Eq. (C2) decouples the modes into the unitary evolutions
+of Eq. (5),
+dˆwk
+dt =−i(η kH1−H 2) ˆwk
+=⇒ˆw k(T) =e −iT(ηkH1−H2) ˆwk(0).
+(C4)
+Stacking the modes, the whole evolution is one Hamilto-
+nian simulation,
+Htot =D η⊗H 1 −I p⊗H 2, D η = diag(ηk),(C5)
+acting on the tensor order (pregister, system register)
+with thepregister most significant: on the circuit, qubits
+0,...,n s−1 carry the system register (little-endian) and
+qubitsn s,...,n s +np−1 thepregister, so the flattened
+statevector index isj2 ns +s. The opening QFT † on
+thepregister maps the grid amplitudes to ˆw/
+p
+Np (the
+unitarily normalised FFT),e −iTH tot acts in theηbasis,
+and the closing QFT returns to thepgrid [Fig. 5(b)].
+3. Initial data and theC 1 profile
+The initial conditionw(0,p j) =g(p j)z(0) is a product
+state across the two registers,
+|W(0)⟩= |g⟩⊗|z 0⟩
+N0
+, N 0 =∥g∥ 2∥z0∥2,(C6)
+with the normalisationN 0 recorded classically and un-
+done at recovery. The plain profileg(p) =e −|p| is kinked
+atp= 0 and limits thepdiscretisation toO(∆p); theC 1
+cubic of Ref. [13, Remark 4.9] replaces it on (−1,0),
+g(p) =
+
+
+
+e−p, p≥0,
+3
+e−3
+
+p3 +
+4
+e−5
+
+p2−p+ 1,−1<p<0,
+ep, p≤−1,
+(C7)
+restoringO(∆p 2). The junctions areC 1 by construction:
+atp= 0 − the cubic givesg= 1,g ′ =−1, matchinge −p;
+atp=−1 + it givesg=g ′ =e−1, matchinge p. Because
+g(p) =e−p exactlyforp≥0, the recovery formula below
+is unchanged by the smoothing. Measured on the 1D
+CPML benchmark of Fig. 2(c) (2 5 spatial points,n pml =
+8,σ max = 1,T= 30,p max = 18): the recovery error at
+the default slice falls from 4.1×10 −2 to 6.3×10 −4 over
+np = 6–11 for the kinked profile and from 1.3×10 −2 to
+2.4×10 −6 for the cubic, with fitted slopes of log 2(error)
+versusn p of−1.2 and−2.6 (−1.6 and−3.4 on the pre-
+floor pointsn p≤9)—at or above the nominal first- and
+second-order rates, confirming the one-order upgrade of
+Ref. [13] in this setting.
+4. Recovery: threshold, wraparound, plateau
+The solution is recovered from a single grid slice,
+z(T) =e p∗
+w(T,p∗), p ∗ ≥λ +
+max(H1)T,(C8)
+whereλ +
+max = max{0,λ max(H1)}and the validity thresh-
+old onp∗ is Theorem 3.1 of Ref. [13]. WhenH 1⪯0 (the
+collapsed 1D CPML and the sponge) anyp∗ >0 is admis-
+sible, and the implementation defaults to the slice three
+grid points abovep= 0, i.e.p ∗ = 3∆p. For indefiniteH 1
+(the 2D CPML memory form of Lemma 1) the slice must
+be placed explicitly atp∗≥λ +T; below the threshold the
+recovered state isO(1) wrong (Fig. 3).
+Two further discrete conditions guard the slice.
+Wraparound: in Eq. (C2) anH 1-eigencomponent with
+eigenvalueλis advected inpwith velocityλ, so the most
+strongly damped components travel a distanceλ −Tleft-
+wards, withλ − =|λ min(H1)|(=σ max for the diagonal
+absorbers). The discretepdomain is periodic, sop max
+must be wide enough that this leftward-transported mass
+does not wrap throughp=−p max back into the recov-
+ery region.Plateau: sincee pw(T,p) =z(T) for every
+admissiblep, the functionp7→e p∥w(T,p)∥must be flat
+across the recovery window. The implementation tabu-
+lates it over the first twelve grid points right ofp= 0 and
+reports the relative peak-to-peak spread; a flat plateau
+certifies thatp max,N p, and the profile are adequate (our
+regression tests require a spread below 5×10−2), while a
+tilted or stepped plateau flags wraparound or an under-
+resolved profile.
+
+===== PAGE 16 =====
+16
+5. Measurement interpretation
+The pipeline is unitary, so the final statevector is ex-
+actlyW(T)/N 0, holdingw s(T,pj)/N0 at indexj2 ns +s.
+Measuring thepregister returns outcomep j with prob-
+ability∥w(T,p j)∥2/N2
+0 and collapses the system register
+ontow(T,p j)/∥w(T,p j)∥=z(T)/∥z(T)∥: every slice in
+the admissible window yields thesamenormalised state,
+so post-selection may accept the whole plateau window
+rather than a single outcome, summing the correspond-
+ing probabilities. The success probability of the slice at
+p∗ is, up top-discretisation error,
+Pr(p∗) = e−2p∗
+∥z(T)∥ 2
+N2
+0
+∝e −2p∗
+,(C9)
+which at the threshold slicep ∗ =λ +Tis thee −2λ+T
+post-selection penalty of Sec. III C—the cost that the
+Lyapunov symmetrizer of Sec. III D replaces by theT-
+independent factorκ 2
+2(S). On the statevector simulator
+used for the demonstrations of Sec. IV C, the slice is read
+off rather than sampled: the final statevector is reshaped
+to anN p×2ns array, rowjatp ∗ is extracted, and the
+result is rescaled bye pjN0. This is deterministic and ex-
+act, so the reported errors measure the Trotter and dis-
+cretisation error only; on hardware the same slice would
+additionally cost the factore −2p∗
+of Eq. (C9) in repeti-
+tions.
+Appendix D: Validation protocol and convergence
+data
+This appendix records the classical validation proto-
+col behind every reflection number quoted in Sec. III B
+and the raw convergence data behind the fitted orders of
+Sec. IV B [Figs. 2(a–d)].
+1. Gold-standard reflection protocol
+Measuring the residual reflection of an absorbing layer
+against the absorbing dynamics itself is circular; the gold
+standard is the open-domain solution. The truncated do-
+main hasN= 128 points (seven grid qubits) with the
+CPML occupyingn pml points at each end. The initial
+data are a Gaussian velocity bump centred atj= 64
+with width 3 cells andw(0) = 0, normalised to∥z 0∥2 = 1.
+The reference embeds thesametruncated data centred
+in a 4×hard-wall domain (N ref = 512, embedding offset
+∆ = (Nref−N)/2 = 192) and evolves it with the closed-
+domain unitarye −iHrefT . Both evolutions are computed
+by dense matrix exponentials, so the comparison con-
+tains no time-integration error. The reported error is the
+pointwiseℓ 2 difference on the interior window,
+E(T) 2 =
+X
+f∈{v,w}
+N−npml−1X
+j=npml
+fj(T)−f ref
+j+∆(T)
+2
+.(D1)
+TABLE V. Gold-standard true reflection (1D CPML,N=
+128 versus theN= 512 hard-wall reference,m= 2): plateau
+error max T∈{100,120,140} E(T) and relative plateau spread.
+Upper block: layer-width sweep atR 0 = 10−3; lower block:
+design-reflection sweep atn pml = 12.
+npml R0 plateau error plateau spread
+4 10 −3 6.7×10 −4 1.0×10 −9
+6 10 −3 2.6×10 −4 3.3×10 −10
+8 10 −3 2.6×10 −4 2.2×10 −10
+12 10 −3 3.4×10 −4 1.7×10 −9
+16 10 −3 4.2×10 −4 3.3×10 −5
+12 10 −2 4.5×10 −3 1.5×10 −10
+12 10 −3 3.4×10 −4 1.7×10 −9
+12 10 −4 4.3×10 −5 1.9×10 −7
+Two checks make the protocol sound. (i)Window align-
+ment: atT= 0 the windowed difference in Eq. (D1)
+evaluates to exactly zero in floating point, pinning the
+embedding offset and the index conventions. (ii)Causal
+validity: withc= 1,h= 1 the pulse meets the layer in-
+terface at depthj=n pml and its reflection is back at the
+centre byT≈2(64−n pml)≤120 forn pml≥4, whereas
+the far walls of the reference domain are first felt inside
+the comparison window only atT≈380. The plateau
+timesT∈{100,120,140}therefore capture the complete
+round-trip reflection of the truncated domain while the
+reference is still uncontaminated. The reported reflection
+is the maximum ofE(T) over the three plateau times,
+and the relative plateau spread [(max−min)/mean] is
+the flatness diagnostic. A reduced instance of the same
+protocol (N= 64 versus 256,T= 20 and 60, asserted
+<10−3) is pinned in the unit-test suite (Sec. D 6).
+2. Reflection versus layer width and design
+reflection
+Table V interprets as follows. The curve is the sum
+of two competing contributions. At the thinnest layer
+(npml = 4) the discrete transition error dominates: the
+measured reflection sits 9.4×above the discrete wall-
+return prediction. Forn pml≥8 the transition error is
+negligible and the reflection is set by the wall return,
+whichrises toward the design value from belowas the
+layer widens: node sampling of the polynomial profile
+overestimates
+R
+σdxby a factor 1 +O(1/n pml) (exactly
+Σσh/
+R
+σ= 1.38, 1.25, 1.19, 1.13, 1.09 forn pml = 4–16),
+so the effective round-trip reflection isR eff =R Σσh/
+R
+σ
+0 =
+7.1×10−5, 1.7×10−4, 2.7×10−4, 4.2×10−4, 5.2×10−4
+across the sweep; the measured values track this predic-
+tion within 5–20% forn pml≥8. Thin layers therefore
+over-perform the nominalR 0 (at the price of larger tran-
+sition error), and widening the layer converges the re-
+flection up to the design value. We verified this directly
+
+===== PAGE 17 =====
+17
+in theSEISMIC CPMLreference implementation [8] (the
+2D isotropic elastic code, unmodified kernels, same gold-
+standard protocol,α= 0,K= 1): itsP-wave reflec-
+tion is likewise non-monotonic and rises fromn pml = 12
+to 16 (5.8×10 −4 →6.5×10 −4, against a predicted
+6.5×10 −4→7.2×10 −4), converging up toward the de-
+signR 0 and matching its own discrete-sum prediction
+within∼10% forn pml≥12. Two scheme-dependent dif-
+ferences: the staggered elastic scheme samples the profile
+at both full and half points, so its quadrature ratio is
+1 + 3/(4npml) rather than our∼1 + 3/(2n pml); and the
+minimum sits atn pml≈12 there becauseS-wave transi-
+tion reflection (whose design valueR cp/cs
+0 is far smaller)
+and the coarser wavelength resolution keep the transition
+term dominant further out. The effect is invisible in nor-
+mal use of that code, where the layer width is fixed at
+∼10 cells.
+The miscalibration admits a one-line remedy, which
+we provide as an option (calibration=’discrete’):
+rescale the staggered profilepairby a single common
+factor so that the characteristic damping sum Σ (σ v +
+σw)h/2 equals the design integral exactly. The realised
+reflection is then flat at the design value, 0.81–1.08R 0
+across the whole sweepn pml = 4–16 [red squares in
+Fig. 2(a)], i.e. the Collino–Tsogka formula becomes ex-
+act on the grid. The common factor is essential: rescaling
+each profileseparatelygivesσ v andσ w different damp-
+ing functions (the node and midpoint quadratures dif-
+fer), an in-layer impedance mismatch that reflects at
+O(1/npml)—measured at 1.2×10 −2 to 6.9×10 −2, i.e.
+ten to seventy timesworsethan no calibration at all.
+This remedy applies verbatim to classical CPML codes.
+That the level isR 0-controlled rather than an absolute
+discretisation floor is established by the lower block: at
+npml = 12 the measured reflection tracks the design value
+over two decades, with ratiosE/R 0 = 0.45, 0.34, 0.43—
+the Collino–Tsogka formula is predictive within a factor
+∼2.3 in this discretisation, and loweringR 0 lowers the
+true reflection commensurately, down to 4.3×10 −5 at
+R0 = 10−4. This is the floor behaviour reported for clas-
+sical CPML implementations by Komatitsch and Mar-
+tin [8]. The plateau is flat to≤2×10 −9 (relative) in six
+of the eight rows; even the two most weakly damped rows
+(npml = 16 andR 0 = 10−4) vary by only 3.3×10 −5 and
+1.9×10 −7 of their mean acrossT∈{100,120,140}, i.e.
+the round-trip transient has fully decayed and the quoted
+numbers are converged inT.
+3. Recovery order in thepregister
+Table VI gives the recovery error of the full
+Schr¨ odingerised pipeline (exact per-mode evolution, no
+Trotter) as a function of thep-register size, for the two
+warping profiles of Sec. II C. The errors are absolute per
+unit initial norm; byT= 30 the layer has absorbed all
+but∥e ATz0∥2 = 1.4×10 −3 of the state, so resolving the
+residual field demands the higher-order profile. Both pro-
+TABLE VI. Schr¨ odingerisation recovery error versusp-
+register sizen p for the kinkede −|p| profile and theC 1 cubic
+profile of Ref. [13] [1D CPML benchmark,N= 32,n pml = 8,
+σmax = 1,T= 30,p∈[−18,18), ∆p= 36/2 np]. Errors
+are∥z rec−eATz0∥2 with∥z 0∥2 = 1, recovered at the library-
+default slicep ∗ = 3∆p(valid at anyp ∗ >0 sinceH 1 ⪯0
+here). The fitted orders are least-squares slopes of log 2Ever-
+susn p.
+np ∆p e −|p| profileC 1 cubic profile
+6 0.563 4.1×10 −2 1.3×10 −2
+7 0.281 1.6×10 −2 2.6×10 −3
+8 0.141 3.6×10 −3 1.7×10 −4
+9 0.0703 1.5×10 −3 1.3×10 −5
+10 0.0352 1.1×10 −3 5.9×10 −6
+11 0.0176 6.3×10 −4 2.4×10 −6
+order in ∆p(all points) 1.23 2.64
+order in ∆p(n p = 6–9) 1.64 3.40
+TABLE VII. Gate-level Trotter error versus step count [1D
+CPML,N= 8,n pml = 2,σ max = 1,T= 4,n p = 5,
+pmax = 8; transpiled circuits on a statevector simulator; er-
+rors∥z circ−z ref∥2 with∥z 0∥2 = 1]. “vs exact S.” uses the ex-
+act Schr¨ odingerised evolution (exact per-mode propagation at
+the samepdiscretisation) as reference, isolating the splitting
+error; “vse ATz0” uses the full matrix-exponential reference
+and therefore contains thep-discretisation floor, measured in-
+dependently as 1.29×10−2. Order 2 symmetrises both Trotter
+levels (Strang outer split, palindromic term order inner).
+order 1 order 2
+steps vs exact S. vse ATz0 vs exact S. vse ATz0
+10 1.36×10 −1 1.32×10 −1 3.24×10 −2 3.40×10 −2
+20 6.55×10 −2 6.27×10 −2 8.02×10 −3 1.46×10 −2
+40 3.25×10 −2 3.11×10 −2 2.00×10 −3 1.29×10 −2
+80 1.62×10 −2 1.75×10 −2 4.99×10 −4 1.29×10 −2
+slope−1.02−0.98−2.01−0.44 a
+a Floor-limited: not a meaningful order, see text.
+files meet or exceed their nominal orders [O(∆p) kinked,
+O(∆p2) cubic, Remark 4.9 of Ref. [13]]: the full-sweep fits
+give orders 1.23 and 2.64, and the pre-floor fits (n p = 6–
+9) give 1.64 and 3.40. Because the default slicep ∗ = 3∆p
+moves with refinement, we re-evaluated both series at the
+fixed slicep∗ = 1: the fitted orders become 1.64 and 3.25,
+so the profile ordering is not a slice artefact. Atn p = 11
+the cubic profile is∼260×more accurate (2.4×10 −6 ver-
+sus 6.3×10−4); the flattening of its last two points marks
+the approach to the recovery floor of this configuration.
+
+===== PAGE 18 =====
+18
+TABLE VIII. Stagger ablation under the gold-standard pro-
+tocol (Sec. D 1; 1D CPML,n pml = 12,R 0 = 10−3): plateau
+reflection versus the stagger offsetsof theσ w sampling,
+xj = (j+s)h.
+σw staggersplateau error degradation
+−1/2 (correct half-cell) 3.4×10 −4 1
+0 (unstaggered) 4.1×10 −2 ≈120
++1/2 (wrong sign) 8.1×10 −2 ≈235
+4. Trotter orders at gate level
+Table VII separates the two error sources of the circuit
+pipeline of Sec. IV B. Against the exact Schr¨ odingerised
+evolution the splitting error is clean: fitted slope−1.02
+at order 1 and−2.01 at order 2 with both Trotter lev-
+els symmetrised [Fig. 2(d)]. Against the fulle ATz0 ref-
+erence the order-2 series saturates at 1.29×10 −2 from
+40 steps onward—exactly the independently measured
+p-discretisation floor of this deliberately coarsen p = 5
+register—so the nominal slope−0.44 in that column is
+floor-limited rather than a defect of the splitting. The
+order-1 series does not saturate within the sweep because
+its splitting error stays above the floor. Enlarging thep
+register lowers the floor at the rates of Table VI.
+5. Stagger ablation
+The damping profiles are sampled atxj = (j+s)hwith
+the staggersmatched to where each field lives (Sec. II B):
+for the forward-difference convention,vat integer nodes
+(s= 0) andwat the half-cellsx j−1/2 (s=−1/2). Rerun-
+ning the gold-standard protocol (n pml = 12,R 0 = 10−3)
+with theσ w stagger ablated gives Table VIII: misplacing
+the profile by half a cell costs two orders of magnitude in
+true reflection. The stagger is load-bearing, not cosmetic.
+6. Test suite
+The classical and circuit layers are pinned by 24 unit
+tests (tests/test absorbing.py), grouped by the prop-
+erty classes they assert. (i)Generator structure and spec-
+tra: the Collino–Tsogka profile amplitude and support;
+max Re eig(A)≤0 to round-off for the collapsed 1D, gen-
+eral CFS (κ max = 2,α max = 0.05), and 2D memory-
+form generators; the Hermitian splitA=H 1 +iH 2 with
+H1 =−diag(σ)⪯0 for the collapsed 1D form and the
+sponge. (ii)Collapse: the 1D memory form reproduces
+the collapsed diagonal damping to 10−10. (iii)Absorption
+and reflection bounds: interior energy below 10 −5 where
+the hard-wall reference retains more than 0.5; round-
+trip amplitude reflection below 5×10 −3; 2D CPML and
+sponge energy decay; and the gold-standard true reflec-
+tion below 10 −3 on the reduced instance. (iv)Recov-
+ery thresholds: scalar decay recovered to 10−4; the cubic
+profile beating the kinked profile at equal resolution; 1D
+recovery below 2×10 −3 with a plateau-flatness diagnos-
+tic; 2D sponge recovery below 10−3 withλ + = 0 asserted;
+and the 2D CPML threshold of Sec. III C verified in both
+directions—accurate abovep∗ =λ +T+1 and at least ten
+times worse below. (v)Circuit-versus-matrix agreement:
+the exact-Hamiltonian-gate path against the numpy per-
+mode pipeline to 10 −8 (pinning the QFT/FFT conven-
+tions and qubit ordering); the Trotterised Bell circuit to
+5×10 −2; the separated 2D operator strings against the
+block Hamiltonian to 10−13; the per-step ordersO(δt 2)
+andO(δt 3) of the projector-aware Bell circuit and its
+Strang variant; and the 17-qubit end-to-end gate-level
+run to 3×10 −2. (vi)Guards and regression: rejection
+of out-of-range recovery slices, degenerate layers, and in-
+consistent damping vectors; and a regression test pinning
+the untouched closed-domain library (the mixed Dirich-
+let/Neumann Laplacian stencil). Every bound above is
+asserted numerically, so any change that degrades a spec-
+trum, a reflection, a recovery threshold, or a circuit con-
+vention fails the suite.
+Appendix E: The Lyapunov symmetrizer:
+construction, exact properties, and compressibility
+data
+This appendix collects the classical construction be-
+hind Sec. III D, the exact identity underlying Eq. (13)
+with its proof, the complete conditioning data of which
+Table II is an excerpt, the grid-size saturation measure-
+ments, and the compressibility study of the symmetrizer
+S.
+1. Construction and classical cost
+The absorbing generatorAis marginally stable—we
+measure max Re eig(A) = 0 to round-off (Sec. III B)—
+so the Lyapunov equation forAitself is singular. We
+therefore shift,Aϵ =A−ϵI, which is Hurwitz with margin
+ϵ, and solve
+A†
+ϵW+WA ϵ =−I, W=
+Z ∞
+0
+etA†
+ϵetAϵdt≻0,
+(E1)
+the integral being the unique Hermitian solution. The
+symmetrizer is the Hermitian square rootS=W 1/2,
+with conditioningκ 2(S) =
+p
+λmax(W)/λ min(W). The
+shift is undone classically by the scalar factore ϵT
+[Eq. (12)].
+Numerically, Eq. (E1) is solved by the Bartels–
+Stewart algorithm (one complex Schur decom-
+position ofA †
+ϵ plus a triangular substitution;
+scipy.linalg.solve continuous lyapunov), and
+S,S −1 follow from one Hermitian eigendecomposition of
+
+===== PAGE 19 =====
+19
+W—three denseO(n 3) kernels in total. Measured wall
+times at the largest completed size,n= 4096 (32×16
+grid,σ max = 0.5): the Lyapunov solve takes 268 s at
+ϵ= 10−2 and 244 s atϵ= 10 −3, the eigendecomposition
+ofWtakes 31 s, the residual verification 2.5–2.6 s, and
+the sparse Lanczos evaluation ofλ + =λ +
+max(H1) is
+negligible (0.05 s). Then= 8192 point was gated off
+by cubic extrapolation of the measuredn= 4096 time
+(projected 40.3 min perϵ, over the 25-min budget) and
+by memory (a dense complex 8192 2 matrix occupies 1
+GiB and the solve holds six to eight of them, against 5.1
+GiB free). Across all 18 configurations of Table IX the
+relative Lyapunov residual∥A †
+ϵW+WA ϵ +I∥ F/∥W∥F
+is at most 1.4×10 −14.
+2. An exact identity for the transformed Hermitian
+part
+The equality sign in Eq. (13) is not an estimate. With
+the unit right-hand side−Iin Eq. (E1), the Hermitian
+part of the transformed generator is an explicit function
+ofW:
+Proposition 1LetA∈C n×n have spectral abscissa at
+most zero, fixϵ >0, setA ϵ =A−ϵI, letW≻0solve
+A†
+ϵW+WA ϵ =−I, and letS=W 1/2 be the Hermitian
+positive-definite square root. Then, exactly,
+1
+2
+ 
+SAϵS−1 +S−1A†
+ϵS
+
+=− 1
+2W−1 ≺0,(E2)
+1
+2
+ 
+SAS−1 +S−1A†S
+
+=ϵI− 1
+2W−1.(E3)
+In particular theϵ-shifted transform is strictly dissipative
+withλ max(eH(ϵ)
+1 ) =−1/
+ 
+2λmax(W)
+
+, and the transform
+of the originalAhasλ max(eH1) =ϵ−1/
+ 
+2λmax(W)
+
+<ϵ.
+Proof.SinceA ϵ is Hurwitz, the integral in Eq. (E1) con-
+verges and is the unique Hermitian solution; it is positive
+definite, soS=W 1/2 exists, is Hermitian, andS 2 =W.
+Write eA=SA ϵS−1 and take anyx∈C n withx=Sy.
+By congruence,
+x† eA+eA†
+x=y † 
+WAϵ+A†
+ϵW
+
+y=−∥y∥ 2 =−x†W−1x,
+(E4)
+usingS eAS=WA ϵ andS eA†S=A †
+ϵW. Two Her-
+mitian matrices with equal quadratic forms are equal,
+so eA+ eA† =−W −1, which is Eq. (E2); its largest
+eigenvalue is− 1
+2λmin(W−1) =−1/(2λ max(W)). For
+Eq. (E3),SAS −1 =SA ϵS−1 +ϵIandϵIis Hermitian, so
+the Hermitian part shifts byϵIand the eigenvalues are
+ϵ−1/(2λ j(W)).■
+The identity is verified in every measured configu-
+ration: in all 18 rows of Table IX the directly com-
+putedλ max(eH1) (dense eigendecomposition of the Her-
+mitian part ofSAS −1) agrees with the predictionϵ−
+1/(2λmax(W)) to a relative deviation of at most 3.8×
+10−12—far beyond the four-digit agreement quoted in the
+main text—and the shifted column equals the unshifted
+one minusϵto the same precision. A direct check of the
+matrix identity (E2) on ann= 50 instance gives a Frobe-
+nius residual of 8.9×10 −14. Proposition 1 also explains
+the choice made in Sec. III D: the transform of theorig-
+inalAis not dissipative (λ max(eH1)≈ϵ >0), whereas
+the transform ofA ϵ is, strictly; we therefore evolve the
+shifted system and undoe ϵT classically.
+3. The full conditioning table
+Table IX lists all 18 measured configurations (three
+grids, two damping strengths, three shifts). Three regu-
+larities are worth recording. (i)λ min(W) is essentially
+independent ofϵ(0.66–0.68 atσ max = 0.5, 0.37 at
+σmax = 1.0), so the entireϵdependence ofκ 2(S) is car-
+ried byλ max(W), consistent with Proposition 1, in which
+λmax(W) is pinned to the inverse dissipativity margin of
+the shifted transform. (ii) Least-squares fits of lnκ 2(S)
+against lnϵper (grid,σ max) configuration give slopes be-
+tween−0.64 and−1.03 (the range quoted asϵ −0.6 to−1.0
+in Sec. III D), steepening with grid size at fixedϵrange.
+(iii) The crossover timesT ∗ = lnκ 2/(2λ+) span 6.7–16.0
+and grow only logarithmically withκ 2(S). For compar-
+ison, the eigenvector symmetrizerW= (VV †)−1 yields
+κ2(S) = 2.9×10 8–6.9×10 8 where it exists and fails out-
+right (VV † numerically singular) on both 16×8 config-
+urations; the Lyapunov construction is four to six orders
+of magnitude better conditioned and never fails.
+4. Saturation ofκ 2(S)with grid size
+Table X extends theσ max = 0.5 series ton= 4096.
+Atϵ= 10 −2 the conditioning is flat:κ 2(S)decreases
+from 566.9 to 564.5 betweenn= 2048 andn= 4096
+(local log–log slope−0.006). Atϵ= 10 −3 it still rises
+but visibly flattens. Power-law fits confirm that a power
+law is the wrong model: atϵ= 10 −2 the fitted expo-
+nent drops from 0.25 (r 2 = 0.963,n= 512–2048) to
+0.16 (r 2 = 0.823,n= 512–4096), and atϵ= 10 −3 from
+0.86 (r2 = 0.943) to 0.62 (r2 = 0.875)—falling exponents
+with degrading fit quality, i.e.κis saturating, not follow-
+ing a power law. The drivers saturate individually:λ +
+grows from 0.6829 to 0.6940 over the eightfold range inn
+and is then identical to ten digits betweenn= 2048 and
+n= 4096, andλ min(W) stays at 0.655–0.681 through-
+out. The conditioning is thereforeϵ-controlled, not grid-
+controlled: mesh refinement does not inflate the sym-
+metrizer cost.
+5. Compressibility ofS
+a. Protocol.Atϵ= 10 −2,σ max = 0.5, we mea-
+sured the structure ofSon then= 512 grid
+and confirmed on then= 1024 grid, and scored
+
+===== PAGE 20 =====
+20
+TABLE IX. Full Lyapunov-symmetrizer data set; Table II of the main text is the excerpt obtained by dropping theλmin(W) and
+unshifted-transform columns. Grids are listed in points (nis the full state dimension including the eight blocks).λ + =λ +
+max(H1)
+is the indefiniteness of the untransformed generator;κ 2(S) =
+p
+cond2(W);λ max(eH1) is the largest Hermitian-part eigenvalue
+of the transformSAS −1 of the original generator andλ max(eH(ϵ)
+1 ) that of theϵ-shifted transformSA ϵS−1;T ∗ = lnκ 2/(2λ+) is
+the crossover time. Every row satisfies the identities of Proposition 1:λ max(eH1) equalsϵ−1/(2λ max(W)) to a relative deviation
+≤3.8×10 −12, andλ max(eH(ϵ)
+1 ) =λ max(eH1)−ϵ. Relative Lyapunov residuals are≤1.4×10 −14.
+Gridn σ max ϵ λ +(H1)λ min(W)κ 2(S)λ max(eH1)λ max(eH(ϵ)
+1 )T ∗
+8×8 512 0.5 10 −2 0.683 0.669 402.1 9.9954×10 −3 −4.63×10 −6 8.8
+8×8 512 0.5 10 −3 0.683 0.681 3009 9.9992×10 −4 −8.10×10 −8 11.7
+8×8 512 0.5 10 −4 0.683 0.683 1.105×10 4 9.9994×10 −5 −6.00×10 −9 13.6
+8×8 512 1.0 10 −2 0.927 0.373 509.3 9.9948×10 −3 −5.17×10 −6 6.7
+8×8 512 1.0 10 −3 0.927 0.376 2851 9.9984×10 −4 −1.64×10 −7 8.6
+8×8 512 1.0 10 −4 0.927 0.377 9762 9.9986×10 −5 −1.39×10 −8 9.9
+16×8 1024 0.5 10 −2 0.687 0.661 506.3 9.9970×10 −3 −2.95×10 −6 9.1
+16×8 1024 0.5 10 −3 0.687 0.673 7009 9.9998×10 −4 −1.51×10 −8 12.9
+16×8 1024 0.5 10 −4 0.687 0.674 3.052×10 4 9.9999×10 −5 −7.96×10 −10 15.0
+16×8 1024 1.0 10 −2 0.956 0.369 749.6 9.9976×10 −3 −2.41×10 −6 6.9
+16×8 1024 1.0 10 −3 0.956 0.372 6981 9.9997×10 −4 −2.76×10 −8 9.3
+16×8 1024 1.0 10 −4 0.956 0.373 2.732×10 4 9.9998×10 −5 −1.80×10 −9 10.7
+16×16 2048 0.5 10 −2 0.694 0.655 566.9 9.9976×10 −3 −2.37×10 −6 9.1
+16×16 2048 0.5 10 −3 0.694 0.667 9856 9.9999×10 −4 −7.71×10 −9 13.3
+16×16 2048 0.5 10 −4 0.694 0.669 6.612×10 4 1.0000×10 −4 −1.71×10 −10 16.0
+16×16 2048 1.0 10 −2 0.972 0.367 857.7 9.9981×10 −3 −1.85×10 −6 6.9
+16×16 2048 1.0 10 −3 0.972 0.370 1.249×10 4 9.9999×10 −4 −8.67×10 −9 9.7
+16×16 2048 1.0 10 −4 0.972 0.370 6.347×10 4 1.0000×10 −4 −3.35×10 −10 11.4
+TABLE X.κ 2(S) andλ min(W) versus grid size atσ max = 0.5
+(grids in points;nis the state dimension). Then= 8192
+point was gated off by the projected runtime and memory
+(Sec. E 1).
+ϵ= 10−2 ϵ= 10−3
+Gridn λ +(H1)κ 2(S)λ min(W)κ 2(S)λ min(W)
+8×8 512 0.6829 402.1 0.669 3009 0.681
+16×8 1024 0.6875 506.3 0.661 7009 0.673
+16×16 2048 0.6940 566.9 0.655 9856 0.667
+32×16 4096 0.6940 564.5 0.655 11241 0.668
+25 candidate approximate symmetrizersS b ≈S
+drawn from six families (Manhattan-distance-banded,
+magnitude-thresholded, block-pattern, identity-plus-low-
+rank, low-rank-plus-band hybrid, and banded-S −1).
+Each candidate is scored by its residual indefiniteness
+λb =λ max
+ 
+Herm(SbAϵS−1
+b )
+
+; for the exactS,λ b =
+−1/(2λmax(W))<0 by Proposition 1. A candidate
+passesifλ b≤2×10−3 (theϵ-mode recovery at the default
+slice remains valid); a candidate with 2×10−3 <λ b≤0.5
+isrescue-eligible: the classical shift is enlarged fromϵto
+s=ϵ+λ b, so the evolved generatorSb(A−sI)S−1
+b is again
+dissipative, the undo factor becomese sT , and the post-
+selection penalty relative to the exactShas exponent
+2λbT. End-to-end recoveries (errors relative toe ATz0 at
+T∈ {10,40},n p = 10) were run for the exactSand
+one representative per surviving family. Table XI lists
+all candidates on then= 1024 confirmation grid.
+b. Structure ofS.Three exact or near-exact struc-
+tural facts. (i)Dead-index identity.On the 328 of 1024
+indices (32%; 176 of 512, i.e. 34%, atn= 512) that carry
+no dynamics—interior memory components and the zero
+padding block—Aacts as zero, so Eq. (E1) reduces to
+2ϵw= 1 there andSisexactly(2ϵ) −1/2Ion this sub-
+space: measured deviation 2.0×10 −14 on the diagonal,
+off-diagonal entries below 7.8×10 −15, and coupling to
+the active subspace below 1.1×10 −12. This factor is
+free structure for any implementation. (ii)The active
+support is about half the matrix: the exactShas 48.1%
+(n= 1024) and 51.1% (n= 512) nonzero entries (at
+threshold 10−14 of the largest). (iii)The correction is full
+rank but strip-localised: with the optimal scalarα= 16.7,
+the correctionE=S−αIcarries 94.5% of the Frobenius
+norm ofS, has 999 of 1024 singular values above 10 −2 of
+the largest, and needs rank 995 to capture 99.99% of its
+energy—numerically full rank—while 99.6% of that en-
+ergy sits on index pairs both lying in the absorbing-layer
+strips (72 of the 1024 indices are strip-free interior).
+c. Findings.The full-rank measurement rules out
+identity-plus-low-rank outright: for ranks 8–64 the resid-
+ualλ b = 0.674–0.677 equals theuntransformedλ + =
+
+===== PAGE 21 =====
+21
+TABLE XI. All 25 candidate approximate symmetrizers on then= 1024 (16×8) confirmation grid atϵ= 10 −2,σ max = 0.5.
+Density is the fraction of nonzero entries of the sparse object; for theαI+ rank-rfamily it is (r+1)/n(the number of LCU
+terms relative ton), and for the banded-S −1 family it is the density of the bandedS −1 (state preparation by sparse linear
+solve).λ b =λ max
+ 
+Herm(SbAϵS−1
+b )
+
+is the residual indefiniteness. Status: “pass” =λ b≤2×10 −3, valid inϵmode at the
+default slice; “rescue” = run end to end with the enlarged shiftϵ+λ b; “elig.” = rescue-eligible (λ b≤0.5) but not run end
+to end; “fail” =S b indefinite orλ b >0.5. The top-50% threshold and the support-of-A 2 patterns reproduce the exactSto
+machine precision (relative Frobenius deviation≤6×10 −16); the end-to-end errors of every usable candidate are obtained at
+conditioning cond(Sb) = 5.06×10 2–5.11×10 2, equal to the exact value 5.06×10 2.
+CandidateS b density (%)λ b status err. (T=10) err. (T=40)
+exactS(active support) 48.1−3.0×10 −6 pass 7.7×10 −6 4.9×10 −5
+Manhattan band,d= 1 1.8 2.36 fail – –
+Manhattan band,d= 2 4.2 1.32 fail – –
+Manhattan band,d= 4 10.8 3.09 fail – –
+Manhattan band,d= 8 26.5 0.062 elig. – –
+Manhattan band,d= 12 38.6 0.056 rescue 8.7×10 −6 3.1×10 −4
+magnitude threshold, top 1% 1.0 104 fail – –
+magnitude threshold, top 5% 5.0 3.03 fail – –
+magnitude threshold, top 10% 10.0 0.734 fail – –
+magnitude threshold, top 25% 25.0 0.054 elig. – –
+magnitude threshold, top 35% 35.0 4.2×10 −3 rescue 8.7×10 −6 5.4×10 −5
+magnitude threshold, top 50% 48.1−3.0×10 −6 pass – –
+block diagonal (per-field) 7.4 6.83 fail – –
+support ofA29.9 8.58 fail – –
+support ofA 2 48.1−3.0×10 −6 pass 7.7×10 −6 4.9×10 −5
+αI+ rank 8 0.9 0.677 fail – –
+αI+ rank 16 1.7 0.677 fail – –
+αI+ rank 32 3.2 0.674 fail – –
+αI+ rank 64 6.3 0.674 fail – –
+αI+ rank 32 + band 2 4.2 0.374 elig. – –
+αI+ rank 32 + band 8 26.5 0.066 rescue 1.3×10 −5 6.6×10 −4
+αI+ rank 64 + band 2 4.2 0.349 elig. – –
+αI+ rank 64 + band 8 26.5 0.033 elig. – –
+bandedS−1,d= 2 4.0 5.02 fail – –
+bandedS−1,d= 8 25.3 2.23 fail – –
+0.687 to within two percent, i.e. a short LCU correction
+has no symmetrizing effect at all. Narrow bands, aggres-
+sive thresholds, block patterns, and banded inverses are
+either indefinite or carryλ b ≳1. Moderate compres-
+sion, however, works under the rescue accounting: mag-
+nitude thresholding at 35% density recovers to 8.7×10−6
+(T= 10) and 5.4×10 −5 (T= 40); the Manhattan band
+d= 12 at 38.6% reaches 8.7×10 −6 and 3.1×10 −4; the
+rank-32 plus band-8 hybrid at 26.5% reaches 1.3×10 −5
+and 6.6×10 −4. The rescue cost is mild at the mea-
+sured residuals: the largest rescuedλ b = 0.066 gives
+an undo factore λbT =e 2.6 ≈14 and a post-selection
+penaltye 2λbT =e 5.3≈2×10 2 atT= 40, against the
+T-independent baselineκ 2
+2(S)≈2.6×10 5. The rescue
+frame is also the robust one: the dissipativity margin
+of the exactSis only|λ b|= 3.0×10 −6, and a pertur-
+bation ofSof relative spectral norm 6.4×10 −7 suffices
+to pushλ b past the 2×10 −3 gate, sostrictdissipativ-
+ity of any approximation is fragile, whereas absorbing
+the measuredλ b into the classical shift is exact book-
+keeping. Taken together—half-dense active support, full-
+rank strip-localised correction, free dead-index identity
+factor—these measurements support the implementation
+verdict of Sec. III D: block-encoding of a∼35%-dense op-
+erator rather than a local circuit or a short LCU, with a
+structured-ansatz Lyapunov solve as the open problem.
+The compression study is limited ton≤1024.
+6. Choosing the shiftϵ
+The shift enters the cost twice and the accuracy
+nowhere: the recovered state is exact up to the classi-
+cally applied factore ϵT , whileκ 2(S) grows asϵ −0.64–
+ϵ−1.03 (Sec. E 3) and the evolved norm of the shifted sys-
+tem costse 2ϵT in post-selection. At the recommended
+
+===== PAGE 22 =====
+22
+ϵ= 10−2 these areκ 2(S) = 4.0×10 2–8.6×10 2 across all
+configurations andeϵT≤e 0.4 (e2ϵT≤e 0.8≈2.2) over the
+horizons tested (T≤40)—the shift is negligible against
+κ2
+2, and decreasingϵby a decade buys only that trivial
+factor while inflatingκ 2
+2 by one and a half to two decades.
+The shifted transform is what makes the large-ϵchoice
+safe: with theunshiftedtransform ofA, Proposition 1
+givesλ max(eH1) =ϵ−1/(2λ max(W))≈ϵ >0, so the
+recovery threshold [Eq. (6)] would demandp ∗≳ϵT—at
+the default slicep ∗ = 0.117 (n p = 10,p max = 20) and
+T= 40 this would forceϵ≲2.9×10 −3, excluding the
+best-conditioned setting, and would coupleϵto the hori-
+zon and thep-register extent. The shifted transform has
+eH(ϵ)
+1 ⪯−1/(2λ max(W))I≺0, so anyp ∗ >0 is valid at
+everyTandϵacts purely as a conditioning knob.
+[1] P. C. S. Costa, S. Jordan, and A. Ostrander, Physical
+Review A99, 012323 (2019).
+[2] I. Novikau, I. Y. Dodin, and E. A. Startsev, Physi-
+cal Review Applied19, 054012 (2023), arXiv:2212.09113
+[quant-ph].
+[3] Y. Sato, R. Kondo, I. Hamamura, T. Onodera, and
+N. Yamamoto, Physical Review Research6, 033246
+(2024).
+[4] C. B¨ osch, M. Schade, G. Aloisi, S. D. Keating, and
+A. Fichtner, Physical Review Research7, 033225 (2025),
+arXiv:2411.17630 [quant-ph].
+[5] Y. Sato, H. Tezuka, R. Kondo, and N. Yamamoto, Physi-
+cal Review Applied23, 014063 (2025), arXiv:2407.05019
+[quant-ph].
+[6] H. A. Nguyen, D. Vashisth, and A. Tura, arXiv preprint
+arXiv:2606.01110 (2026), arXiv:2606.01110 [physics.geo-
+ph].
+[7] J. A. Roden and S. D. Gedney, Microwave and Optical
+Technology Letters27, 334 (2000).
+[8] D. Komatitsch and R. Martin, Geophysics72, SM155
+(2007).
+[9] F. Collino and C. Tsogka, Geophysics66, 294 (2001).
+[10] K. Duru and G. Kreiss, arXiv preprint arXiv:2201.03733
+(2022), arXiv:2201.03733 [math.NA].
+[11] S. Jin, N. Liu, and Y. Yu, Physical Review A108, 032603
+(2023), arXiv:2212.14703 [quant-ph].
+[12] S. Jin, X. Li, N. Liu, and Y. Yu, SIAM Journal on
+Scientific Computing46, B403 (2024), arXiv:2304.00667
+[quant-ph].
+[13] S. Jin, N. Liu, and C. Ma, SIAM Journal on Numerical
+Analysis63, 1861 (2025), arXiv:2402.14696 [quant-ph].
+[14] S. Jin, N. Liu, and C. Ma, SIAM Journal on Sci-
+entific Computing47, B976 (2025), arXiv:2403.19123
+[math.NA].
+[15] S. Jin, N. Liu, and C. Ma, arXiv preprint
+arXiv:2308.08408 (2023), arXiv:2308.08408 [quant-
+ph].
+[16] C. Ma, S. Jin, N. Liu, K. Wang, and L. Zhang, arXiv
+preprint arXiv:2411.10999 (2024), arXiv:2411.10999
+[quant-ph].
+[17] S. Jin and C. Zhang, arXiv preprint arXiv:2505.18711
+(2025), arXiv:2505.18711 [quant-ph].
+[18] J. Hu, S. Jin, N. Liu, and L. Zhang, Quantum8, 1563
+(2024), arXiv:2403.10032 [quant-ph].
+[19] S. Jin, N. Liu, and Y. Yu, Journal of Computational
+Physics538, 114138 (2025), arXiv:2407.15895 [quant-
+ph].
+[20] S. Jin, N. Liu, C. Ma, Y. Peng, and Y. Yu, arXiv preprint
+arXiv:2505.00370 (2025), arXiv:2505.00370 [quant-ph].
+[21] Q. Hu, X. He, S. Jin, and X.-D. Zhang, arXiv preprint
+arXiv:2605.29423 (2026), arXiv:2605.29423 [math.NA].
+[22] Y. Liang and J.-P. Liu, arXiv preprint arXiv:2606.03407
+(2026), arXiv:2606.03407 [quant-ph].
+[23] N. Guseynov, X. Huang, and N. Liu, Quantum Science
+and Technology11, 015057 (2026), arXiv:2506.20478
+[quant-ph].
+[24] E. B´ ecache, S. Fauqueux, and P. Joly, Journal of Com-
+putational Physics188, 399 (2003).
+[25] E. B´ ecache, P. G. Petropoulos, and S. D. Gedney, IEEE
+Transactions on Antennas and Propagation52, 1335
+(2004).

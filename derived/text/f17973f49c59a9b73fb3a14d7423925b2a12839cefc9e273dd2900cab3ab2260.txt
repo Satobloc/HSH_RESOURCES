@@ -1,0 +1,929 @@
+===== PAGE 1 =====
+Solomonoff Induction and Singular Integrals
+Will Troiani∗ Daniel Murfet †
+September 3, 2026
+Abstract
+The Solomonoff distributionM assigns an a priori probability to a finite binary
+string z by summing over all programs whose output begins withz, a program of
+length ℓ weighted by2−ℓ: the likely strings are those with many short explanations.
+This is apparently a purely discrete notion of complexity. However, Riemann sums
+are also countable. We show that the sum definingM contains, suitably reorganised,
+Riemann sums approximating the Bayesian evidence of any computable statistical
+model — singular integrals whose asymptotics are governed by Singular Learning
+Theory and, through it, by invariants of algebraic geometry. Concretely, for every
+computable Bayesian model we construct a single monotone Turing machine whose
+induced semimeasure agrees with the evidenceZn up to a uniform multiplicative
+constant. For a computable Bayesian model satisfying in addition the hypotheses of
+Watanabe’s free energy asymptotics, it follows that dataXn =X1···X n drawn i.i.d.
+from the true distribution satisfies
+−logM(X n)≤nL n(w0) +λlogn−(m−1) log logn+O P(1),
+where Ln is the empirical loss,w0 an optimal parameter,λ the learning coefficient,
+and m its multiplicity. The learning coefficient, a geometric measure of model
+simplicity, thereby appears within the Solomonoff distribution as the coefficient of
+lognin an upper bound on code length.
+1 Introduction
+An approach to universal Artificial General Intelligence (AGI) has been defined in [6, 7]
+using a formalisation of an agent performing optimally across all computable environments.
+A key ingredient towards this definition is theSolomonoff prior, which is the mixture,
+defined with respect to a fixed universal monotone Turing machineU:
+ξU :=
+X
+ν
+2−K(ν)·ν
+∗Resolution.will@resolution.org
+†Resolution.murfet@resolution.org
+1
+arXiv:2609.01666v1  [cs.IT]  1 Sep 2026
+
+===== PAGE 2 =====
+where the sum is over all lower-semicomputable semimeasuresν, andK is the Kolmogorov
+complexity with respect toU.1 Once a method of evaluating the performance of agents
+has been constructed, the universally intelligent agent AIXI (sometimes spelt AIξ) is then
+defined as a maximiser of this valuation; see [7, Chapter 7] for details. A key property of
+AIXI is that it usessimplereasoning, as motivated by philosophy of science concepts such
+as Occam’s razor2 and Epicurus’ principle3, and formalised by the minimisation ofK.
+It is therefore common to swap out the Solomonoff prior for the Solomonoffdistribution
+M, which agrees withξU up to a multiplicative constant in the case of sequence prediction,
+and is defined as follows for a finite binary stringz:
+M(z) =
+X
+p:U(p)=z∗
+2−ℓ(p),(1)
+summing overminimal programsp; hereU(p) = z∗ means that in the run ofU on any
+input tape extendingp, the input head has consumed exactlyp at the step at which the last
+bit ofz is written (Definition A.3). That(1) is a reasonable notion of a priori probability is
+exemplified by the correspondence between machines and semimeasures: every monotone
+Turing machineT induces a lower-semicomputable semimeasurePT (Definition A.4), where
+PT (z)is the probability that the output ofT begins withz when its input tape is filled
+with uniformly random bits, and conversely every lower-semicomputable semimeasure
+arises this way up to a bounded multiplicative factor [6, 7]. Under this correspondence,M
+dominates eachPT with constant2−ℓ(⟨T⟩) (Theorem A.7).
+The minimal programsp in (1) are binary strings which may be of the form⟨T⟩p′ where
+⟨T⟩ is some encoding of a Turing machineT and p′ is the rest of the string, which may be
+passed as input toT or as extra information. Amongst such strings are two conceptually
+distinct categories:deterministic programs, specified by the portion of the string⟨T⟩ and
+some input toT contained inp′; andsamplers, which read their code from⟨T⟩ and then
+continue readingp′ as random bits used to sample from a predictive distribution.
+A preference for simplicity has also been considered in a different context, that of
+Bayesian learning. Fix a model class {p(· |w) |w∈W} , a family of probability
+distributions indexed by a parameterw ranging over a spaceW, together with a prior
+distribution ϕ on W with densityφ. Given dataDn = (z1,...,z n)consisting of n i.i.d.
+samples, Bayes’ rule updates the prior to theposteriordistribution
+p(w|D n)∝φ(w)
+nY
+i=1
+p(zi|w),
+and by Bayesianlearningwe mean the evolution of this posterior asn increases. Amongst
+1Our monotone Turing machines have tape alphabetB ={0, 1} and no blank symbols, so the contents of
+the input tape may be read as random bits, to be used for random sampling (Definition A.3). In the context
+of reinforcement learning, this sum is instead over lower-semicomputablechronologicalsemimeasures, but
+we will not consider these here.
+2Among the hypotheses consistent with the observations, prefer the simplest [7, Section 16.1].
+3Discard no hypothesis consistent with the observations; in the prior, every such hypothesis retains
+positive weight [7, Section 16.1].
+2
+
+===== PAGE 3 =====
+the samplers appearing in (1) are those implementing Bayesian learning for a fixed
+computable model class: draww∼ϕ, then sample fromp(·|w).
+When the model class issingular, Singular Learning Theory (SLT) describes the large-n
+behaviour of theBayesian evidence
+Zn :=
+Z
+W
+φ(w)
+nY
+i=1
+p(zi|w)dw,
+the normalising constant of the posterior above. Watanabe’s theorems [14, 15] give the
+asymptotic expansion of the associatedfree energy(see Appendix B):
+Fn :=−logZ n =nL n(w0) +λlogn−(m−1) log logn+O P(1),
+where Ln(w) :=− 1
+n
+Pn
+i=1 logp (zi|w )is theempirical loss, w0 is an optimal parameter,
+λ> 0is thelearning coefficient, andm is its multiplicity. A localisation ofλ near a chosen
+parameter, the Local Learning Coefficient (LLC), has been adopted as a measure of model
+simplicity [8, 5]: in the regular case the learning coefficient equals half the number of
+parameters, and so reads as an effective parameter count. This leaves us with two notions
+of simplicity: minimum description length on the one hand, and singular model simplicity
+as measured by the learning coefficient on the other.
+The goal of the present paper is to see how these two notions of simplicity relate to
+one another. At first sight they belong to different worlds: the sum(1) is indexed by a
+countable set of discrete objects, while the evidenceZn is an integral over a continuous
+parameter space, whose asymptotics are controlled by the geometry of the zero locus of
+the Kullback–Leibler divergence and ultimately by resolution of singularities. The bridge
+is the observation that Riemann sums are also countable. We show that the sum defining
+M can be reorganised so that within it appear Riemann sums for the evidence integrals of
+computable Bayesian models.
+It is no great surprise that Bayesian learning can be approximated by computable
+procedures, and so ought to contribute terms to the sum(1). There is a challenge, though:
+to arrive at a meaningful relationship betweenM(z)on the one hand, withz =z1···z n
+and n free to grow, and the learning coefficient on the other, the contribution must come
+from asingle fixedmachine serving every n. This is possible, and constitutes the main
+technical work of the paper.
+The construction has two stages. First, we define a computable procedure
+BayesSampler(m,ω )(Definition 2.9), where m is a finite effective description of the
+statistical model, comprising an integer b > 0, a model class{p(· |w) |w∈W}
+of probability distributions on the setBb of bit-strings of lengthb, and a priorϕ on
+W, and ω∈B N is an infinite string of uniformly random bits. Second, fixingm and
+hard-wiring it into the procedure yields an ordinary monotone Turing machineBm with
+Bm(ω) = BayesSampler(m,ω ), whose only input isω. This one machine is fixed bym
+alone, receives neither the sample size nor the data, runs forever, and writes a single
+infinite string; its induced semimeasure reproduces the Bayesian evidenceZn of the model
+on every prefix, up to a uniform constant (Theorem 2.15). The relationship is that of a
+3
+
+===== PAGE 4 =====
+Riemann sum to its integral: for every stringz=z1···z n consisting ofnstringsz i∈B b,
+PBm(z) =
+X
+α
+nY
+t=1
+p
+ 
+zt|w t(α)
+
+ϕ
+ 
+Dj(n),α
+
+,
+Zn =
+Z
+W
+nY
+t=1
+p
+ 
+zt|w
+
+dϕ(w),
+where the cellsDj(n),α partition the parameter spaceW, up to a null set of boundaries, at
+a resolution growing withn, andwt(α)is the centre of the cube of the current cell at time
+stept(Lemma 2.14). The estimate relating the two is
+e−π2/6Zn ≤P Bm(z)≤e π2/6Zn,
+so the induced semimeasure ofBm has exactly the free energy asymptotics of the model
+(Corollary 2.16). SinceBm is one monotone Turing machine among those contributing to
+(1), dominance yields the main result (Theorem 2.17):
+−logM(z)≤ −logZ n +O(1),
+and when the stringsX1,...,X n are drawn i.i.d. from a true distribution satisfying the
+hypotheses of Watanabe’s theorem (Appendix B), writingXn :=X 1···X n,
+−logM(X n)≤nL n(w0) +λlogn−(m−1) log logn+O P(1).
+The two notions of simplicity are thereby related within a single bound: the additive
+constant, which depends on the model description but on neithern nor the data, pays for
+the description of the model, while the coefficient oflognis its learning coefficient.
+Background on the Solomonoff distribution, following [7], is recalled in Appendix A,
+and the necessary singular learning theory in Appendix B. Related work is discussed in
+Remark 2.20.
+2 An explicit sampler: description length and the learn-
+ing coefficient
+Fix an observed stringz = z1···z n∈ (Bb)n, with empirical lossLn and evidence Zn
+as in Definition B.13. The string is fixed only for the probability analysis: the sampler
+constructed below is built from the model description alone and inspects neitherz nor n.
+2.1 Computability assumptions
+The following definition collects the effective assumptions under which this section con-
+structs the samplerBayesSampler and its specialisationsBm. Fix a binary encoding of the
+finite objects appearing below: natural numbers, indices(j,α ), rational numbers, strings,
+and tuples of these. Programs and subroutines receive and return such encodings, and we
+do not distinguish a finite object from its encoding.
+4
+
+===== PAGE 5 =====
+Definition 2.1.Acomputable Bayesian modelis given by the data:
+• a compact set of parametersW⊆R d, for somed∈Z >0, contained in a rational box
+R,
+• a statistical model{p(·|w )|w∈R} on Bb, the set of bit-strings of lengthb, for
+some integerb>0,
+•a prior probability measureϕonWwith densityφ,
+required to satisfy the conditions:
+1. there exists a computableL0 >0such that for allw,w ′∈Rand alls∈B b,
+p(s|w)−p(s|w ′)
+≤L 0∥w−w ′∥;
+2. there exists a computableη∈(0,1]such that
+η≤p(s|w)∀w∈R,∀s∈B b;
+3. the map(r,α)7→ϕ(D r,α)is computable;
+4. the map(w,s )7→p (s|w )is uniformly computable at rational points: there is a
+program which, on input a rationalw∈R , a strings∈B b and l∈N , returns a
+rationalbpwith|bp−p(s|w)|≤2 −l.
+Remark 2.2.For (1) it suffices that each mapw7→p (s|w )is C 1 on R (uniformly in
+s∈B b) with a computable uniform bound on∥∇wp(s|w)∥.
+Definition 2.3.Amodel descriptionof a computable Bayesian model is a tuple
+m:=
+ 
+b, Tb, ϕ(D·,·), bG, R
+
+,
+where:
+•bis the string length;
+•T b is a program witnessing condition (4): on input(w,s,l ), withw∈R rational, it
+returns a rationalbpwith|bp−p(s|w)|≤2 −l;
+•ϕ(D ·,·)is a program computing the function(r,α)7→ϕ(D r,α)of condition (3);
+• bG is a rational number withbG≥ (L0/η)
+√
+d, whereL0 and η witness conditions (1)
+and (2);
+•Ris the list of rational endpoints of the box of Definition 2.1.
+5
+
+===== PAGE 6 =====
+Definition 2.4.Forj∈Nandα∈{0,...,2 j−1}d set
+Cj,α :=
+dY
+i=1
+[αi2−j,(αi + 1)2−j], D j,α :=W∩C j,α.
+Acellis a setD j,α; it ispositiveifϕ(D j,α)>0.
+Remark 2.5.Write R =Qd
+i=1[ai,ai +si]for the rational box of Definition 2.1 and let
+A : R→ [0, 1]d be the affine mapA(w)i = (wi−a i)/si, which is computable from the
+assumptions onR. Transporting the model alongAgives the model
+p′(s|w ′) :=p(s|A −1w′), A −1(w′)i =a i +siw′
+i,
+on the parameter setA(W )⊆ [0, 1]d with prior the pushforwardA∗ϕ. Condition (1) holds
+forp′ with the computable constantL0·maxisi, since
+p′(s|w ′
+1)−p ′(s|w ′
+2)
+≤L 0∥A−1w′
+1−A−1w′
+2∥
+≤L 0·max
+i
+si·∥w′
+1−w′
+2∥,
+and b and conditions (2) and (4) are unchanged. The rational constantbG of Definition 2.3
+is replaced bybG·max isi. The cells of the transported model are those of Definition 2.4
+forA(W), namelyD ′
+j,α =A(W)∩C j,α, and the map of condition (3) is
+(j,α)7−→A ∗ϕ(D′
+j,α) =ϕ
+ 
+W∩A −1(Cj,α)
+
+.
+In light of Remark 2.5, we assume from now on thatR = [0, 1]d, so thatC0,0 = R,
+W⊆[0,1] d, andD 0,0 =W.
+Lemma 2.6.Assume conditions(1)and(2)of Definition 2.1. Then for each s∈B b the
+mapw7→−logp(s|w)isG-Lipschitz onR, where
+G:= L0
+η ,
+and consequently, for every stringz∈ (Bb)n, the empirical lossLn of Definition B.13 is
+G-Lipschitz onR.
+Proof. On[ η, 1]the map u7→−logu is(1 /η)-Lipschitz. Thus for anys∈B b and any
+w,w′∈R,
+logp(s|w)−logp(s|w ′)
+≤ 1
+η
+p(s|w)−p(s|w ′)
+≤ L0
+η∥w−w ′∥.
+Averaging over thenstrings gives the same constant forLn.
+Definition 2.7.Define
+j(t) := min{j∈N| bG2−j≤t−2}fort≥1.
+6
+
+===== PAGE 7 =====
+Definition 2.9 specifies a computable procedureBayesSampler(m,ω ), which receives the
+model description m deterministically together with an infinite string of bitsω∈B N. It
+calls two subroutines, which we assume exist with the properties of the following definition.
+Definition 2.8.We assume given two subroutines, each consuming input bits sequentially,
+the decision to halt depending only on the bits consumed so far:
+•SampleChild (D): given a positive cellD of a dyadic partition ofW, replacesD by
+one of its childrenD′, chosen with conditional prior massϕ(D′)/ϕ(D); it terminates
+almost surely, and the returned child is almost surely positive.
+•StringSample (w): given a dyadic pointw∈R , consumes bits to sample one string
+fromp(·|w); it terminates almost surely.
+The random choices inSampleChild and StringSample can be implemented by the
+interval algorithm of Han and Hoshi [3] for sampling a finite distribution from uniformly
+random bits, using the programsϕ(D·,·)andT b of the model description.
+Definition 2.9. BayesSampler is the procedure which, on input a model description
+m = (b,Tb,ϕ (D·,·),bG,R )together with an infinite string of bitsω∈B N, writes an infinite
+string (concatenatedb-bit strings) on the output tape as follows:
+1:D←D 0,0 =W;j←0.
+2:loop overt= 1,2,3,...
+3:whilej <j(t)do
+4:D←SampleChild(D);j←j+ 1.
+5:end while
+6:w t←the centre ofC j,α, whereD=D j,α.
+7:StringSample(w t).
+8:end loop
+Example 2.10.Takeb= 1,d= 2,W=R= [0,1] 2,ϕthe uniform prior, and
+p(1|w) := 4 +w 1 +w 2
+16 , p(0|w) := 1−p(1|w).
+Thenp(1|w)∈[ 1
+4, 3
+8]andp(0|w)∈[ 5
+8, 3
+4], soη= 1
+4 witnesses condition (2), and
+|p(s|w)−p(s|w ′)|= 1
+16
+(w1−w′
+1) + (w2−w′
+2)
+≤
+√
+2
+16∥w−w ′∥,
+so L0 =
+√
+2
+16 witnesses condition (1). The cell masses areϕ(Dj,α) = 4−j, so conditions (3)
+and (4) hold. ThenG=L 0/η=
+√
+2
+4 , soG
+√
+d= 1
+2; we takebG= 1
+2, and
+j(t) = min{j∈N|2 j+1≥t 2}, j(1) = 0, j(2) = 1, j(3) = 3, j(4) = 3.
+In a run ofBayesSampler(m,ω ): att = 1no new child cell is sampled, sincej = 0 =j(1),
+and z1 is sampled fromp(·|w 1)with w1 = ( 1
+2, 1
+2), the centre ofC0,0; att = 2the loop
+samples one new child cell, a quadrantD1,α1 chosen with probability1
+4, and samplesz2
+from p(·|w 2); att = 3it samples two new child cells in succession, a cellD2,α2 and then
+a cellD3,α3, each chosen with probability1
+4, and samplesz3 from p(·|w 3). Sincej(4) = 3,
+at time stept= 4it samplesz 4 from the samep(·|w 3). Figure 1 shows this run.
+7
+
+===== PAGE 8 =====
+input tape: ⟨bB⟩ m 1 0 1 1 0 0 ···
+interpreter model description bitsω
+W=R= [0,1] 2
+D1,α1 (t= 2)
+D2,α2
+D3,α3 (t= 3)
+w1
+w2
+w3
+a new cell is sampled only whenj <j(t)
+1 new cell 2 new cells
+t=1 t=2 t=3 t=4
+output tape: z1 z2 z3 z4 ···
+∼p(·|w 1)∼p(·|w 2) ∼p(·|w 3)
+Figure 1: The run of Example 2.10, with the input tape segments ⟨bB⟩ and m of
+Definition 2.12. Each new cell is chosen from its parent with conditional prior mass
+ϕ(Dj,α)/ϕ(Dj−1,α′), here 1
+4 at every step.
+8
+
+===== PAGE 9 =====
+Definition 2.11.Let m be a model description. WriteBm for the monotone Turing
+machine such that
+Bm(ω) =BayesSampler(m,ω),∀ω∈B N.
+Definition 2.12.Fix a prefix-free encodingm7→ m of model descriptions as binary strings,
+and writebBfor the monotone Turing machine such that, for every model descriptionm,
+bB(mω) =B m(ω),∀ω∈B N.
+The single machinebB serves every model description, readingm from its input tape
+before the bitsω. The input tape shown in Figure 1 is that of the universal machineU
+computingU(⟨ bB⟩ mω) = bB(mω) =B m(ω), where⟨ bB⟩is the encoding of Definition A.5.
+Lemma 2.13.Started from D0,0 =W and iterated,SampleChild produces a nested se-
+quence of positive cellsD(0)⊇D (1)⊇··· with P(D(j) =Dj,α) =ϕ(Dj,α). The intersectionT
+jD(j) is a single pointw∞ with w∞∼ϕ , and for everyj the cellD(j) is ϕ-almost surely
+the unique cellDj,α containingw∞.
+Proof. By induction onj, using thatSampleChild selects a childD′ of D with probability
+ϕ(D′)/ϕ(D): P(D(j+1) =Dj+1,β) = P(D(j) =Dj,α)ϕ(Dj+1,β)/ϕ(Dj,α) =ϕ(Dj+1,β)for the
+parent α of β (telescoping). The cells are nested with diam(D(j))≤
+√
+d 2−j → 0, soT
+jD(j) ={w∞}; the law ofw∞ is the projective limit of the laws ofD(j), namelyϕ. The
+boundaries of the cubesCj,α are Lebesgue-null, henceϕ-null sinceϕ has a density, soϕ-a.s.
+w∞ lies, for eachj, in the interior of exactly one cubeCj,α; D(j) is therefore the unique
+cellD j,α containingw∞.
+Forn≥1, each positive cellD j(n),α and each time stept≤n, write
+wt(α) :=the centre ofC j(t),α′,for the ancestorD j(t),α′ ofD j(n),α.
+Lemma 2.14.Write PBm for the semimeasure induced byBm (Definition A.4). For every
+nand everyz=z 1···z n∈(B b)n,
+PBm(z) =
+X
+α
+nY
+t=1
+p
+ 
+zt|w t(α)
+
+ϕ
+ 
+Dj(n),α
+
+,(2)
+summing over the positive cellsDj(n),α.
+Proof.LetA={ω∈B N|B m(ω) =z∗}; by Definition A.4,
+PBm(z) =µ(A).
+By the assumed properties of the subroutines (Definition 2.8),Bm writes an infinite string
+almost surely, and membership ofA is determined at time stept =n, at which point cells
+Dj(n),α are being sampled. For a positive cellDj(n),α and1≤t≤nset
+Eα :=
+
+ω∈B ND(j(n))(ω) =D j(n),α
+	
+,
+9
+
+===== PAGE 10 =====
+At :=
+
+ω∈B NBm(ω)(t−1)b+1···B m(ω)tb =z t
+	
+,
+where D(j)(ω)is the j-th cell produced by the successive calls toSampleChild in the run
+of Bm on ω, as in Lemma 2.13. TheEα partition the sample space up to aµ-null set and
+µ(Eα) =ϕ(D j(n),α)by Lemma 2.13, so
+µ(A) =
+X
+α
+ϕ(Dj(n),α)µ(A|E α).
+On Eα the current cell at time stept≤n is the ancestorDj(t),α′ of Dj(n),α, so thet-th call
+to StringSample samples thet-th string fromp(·|w t(α)); by the halting assumption of
+Definition 2.8, it does so on a tail that is i.i.d. uniform conditional on the bits consumed
+so far. Hence
+µ(A|E α) =
+nY
+t=1
+µ
+ 
+A1∩···∩A t
+Eα
+
+µ
+ 
+A1∩···∩A t−1
+Eα
+
+=
+nY
+t=1
+µ
+ 
+At
+Eα∩A 1∩···∩A t−1
+
+=
+nY
+t=1
+p(zt|w t(α)),
+and (2) follows.
+Theorem 2.15.Let m be a model description andBm the monotone Turing machine of
+Definition 2.11. For everynand everyz=z 1···z n∈(B b)n,
+e−π2/6Zn ≤P Bm(z)≤e π2/6Zn.
+Proof. Let Dj(n),α be a positive cell andw∈D j(n),α. For eacht≤n , bothwt(α)and w
+lie in the cubeCj(t),α′ of the ancestorDj(t),α′ of Dj(n),α, so∥wt(α)−w∥≤
+√
+d 2−j(t) and,
+by Lemma 2.6 and Definition 2.7,
+logp(zt|w t(α))−logp(z t|w)
+≤G
+√
+d2−j(t)≤ bG2−j(t)≤t−2.
+Summing overt≤nand using P
+t≥1t−2 =π 2/6,
+e−π2/6
+nY
+t=1
+p(zt|w)≤
+nY
+t=1
+p(zt|w t(α))≤e π2/6
+nY
+t=1
+p(zt|w).
+Integrating overw∈D j(n),α against ϕ, summing over the positive cells, which partitionW
+up to aϕ-null set, and applying Lemma 2.14 together withZn =P
+α
+R
+Dj(n),α
+Qn
+t=1p(zt|
+w)dϕ(w), gives the two bounds.
+Corollary 2.16.If in addition the hypotheses of Theorem B.12 hold andXn =X1···X n
+is drawn i.i.d. from the true distribution, then
+−logP Bm(Xn) =nL n(w0) +λlogn−(m−1) log logn+O P(1).
+10
+
+===== PAGE 11 =====
+Proof.By Theorem 2.15,
+logPBm(Xn) + logZn
+≤π 2/6; apply Theorem B.12.
+Theorem 2.17.Let(W,{p (·|w )}w∈W,ϕ )be a computable Bayesian model (Definition 2.1)
+with model descriptionm, and letBm be the monotone Turing machine of Definition 2.11.
+For every observed stringz∈(B b)n,
+M(z)≥2 −ℓ(⟨Bm⟩)e−π2/6Zn,
+and consequently
+−logM(z)≤ −logZ n +O(1),
+the O(1)being independent of n and of the data. If in addition the hypotheses of Theo-
+rem B.12 hold andXn =X 1···X n is drawn i.i.d. from the true distribution, then
+−logM(X n)≤nL n(w0) +λlogn−(m−1) log logn+O P(1).
+Proof. By Theorem 2.15, PBm(z)≥e −π2/6Zn. The machine Bm of Definition 2.11 is
+fixed independently ofn and ofz, so dominance (Theorem A.7 withv =⟨Bm⟩) gives
+M(z)≥ 2−ℓ(⟨Bm⟩)PBm(z)≥ 2−ℓ(⟨Bm⟩)e−π2/6Zn. Taking−log gives the second inequality
+with O(1) =ℓ(⟨Bm⟩) log 2 +π2/6, which depends onm (in particular onb) but not onn
+or the data. Applying Theorem B.12 to−logZn yields the third.
+Remark 2.18.For regular models the analogue of Theorem 2.17 with the evidence in
+place ofM is considered in [2, Thm. 2.3] and [6, Thm. 3.74]: under suitable hypotheses
+including the condition that the Fisher information matrixI(w0)is nonsingular at a point
+w0∈W, forX 1,...,X n drawn i.i.d. fromp(·|w 0),
+E
+
+log
+Qn
+i=1p(Xi|w 0)
+Zn
+
+≤log 1
+φ(w0) + d
+2 log n
+2π + 1
+2 log detI(w 0) +o(1).
+The bound concerns the evidenceZn and notM; to bound−logM one must exhibit a
+machine whose semimeasure is comparable toZn. For continuously parameterized classes
+this step is discussed in [6, Sec. 3.7.2]; Theorem 2.17 proves it, for singular models.
+Remark 2.19.In [ 11] a two-part code is constructed: a code wordJpK describing a
+distributionp in the model class is transmitted first, followed by the messagexn =x1···x n
+encoded with respect top, written JxnKp, the combined length beingℓ(JpK) +Pn
+i=1 log 1
+p(xi).
+Theredundancyof the code is its excess length over the encoding that uses the data
+distribution itself: forx 1,...,x n drawn i.i.d. fromq,
+Rn :=ℓ(JpK) +ℓ(Jx nKp)−
+nX
+i=1
+log 1
+q(xi) =ℓ(JpK) +
+nX
+i=1
+logq(xi)
+p(xi).
+The main theorem of [11] asserts that the code can be chosen so that, for every realizable
+data generating distributionqin the model class,
+Rn =λlogn−(m−1) log logn+O P(1),
+11
+
+===== PAGE 12 =====
+The tree of positive cells.
+D0,0
+D1,0 D1,1
+D2,0 D2,1 D2,2 D2,3
+ϕ(D1,0)
+ϕ(D0,0)
+ϕ(D1,1)
+ϕ(D0,0)
+ϕ(D2,0)
+ϕ(D1,0)
+ϕ(D2,1)
+ϕ(D1,0)
+ϕ(D2,2)
+ϕ(D1,1)
+ϕ(D2,3)
+ϕ(D1,1)
+... ... ... ...
+The tree of Hennick–Dellago at thresholdt.
+D0,0
+D1,0 D1,1
+D2,0 D2,1 D2,2 D2,3
+... ...
+Figure 2: Left: a directed graphical model presentation of the sequences of nested
+positive cells that may be taken, along with their probabilities, by the algorithmBm of
+Definition 2.11, for dimensiond = 1and compact parameter setW = [0, 1]. Right: the
+tree construction of [4, Lem. 5.3], which fort> 0removes the nodes Dj,α (grey) such that
+{w∈W|K(w)<t}∩D j,α =∅, along with their descendants.
+withλ the learning coefficient ofq for the model andm its multiplicity. This two-part code
+is the core inspiration for the construction ofBm: our machine is a generic algorithm, one
+for every computable Bayesian model, which, when its input tape is filled with uniformly
+random bits, produces the output of a code of this format.
+Remark 2.20.We can represent the sequence of positive cells sampled byBm as a
+directed graphical model: the nodes are the positive cells, and each edge is labelled by the
+probability of its target being sampled. Doing this exhibits a similarity, shown in Figure 2,
+between our construction and that of [4, Lem. 5.3], whose trees have their branches pruned
+according to the following rule: for a thresholdt> 0, the nodeDj,α is removed, together
+with its descendants, if and only if
+{w∈W|K(w)<t}∩D j,α =∅,
+withK as in Definition B.3; the loss of [4] is the KL-divergencebK, which agrees withK in
+the realizable case (Remark B.11). WritingTt for the tree of retained cells and∂Tt for its
+set of infinite branches, the map sending a parameter to its branch of nested cells pushes
+the prior forward to a measureϕ∗ with ϕ∗(∂Tt) =ϕ(K <t), and the learning coefficientλ
+of the model, Definition B.6, is there shown to be the scaling exponent of this measured
+boundary ast→0[4, Lem. 5.6]:
+λ= lim
+t→0
+logϕ∗(∂Tt)
+logt .
+12
+
+===== PAGE 13 =====
+Acknowledgements
+The majority of this work was carried out while the authors were at Timaeus. This project
+is funded by the Advanced Research + Invention Agency (ARIA).
+A The Solomonoff distribution
+Following [7] we recall the elements of algorithmic information theory.
+Definition A.1.Let B :={0, 1}. Write B∗ for finite binary strings andBN for infinite
+binary strings. Forx,y∈B ∗∪B N, writex⊑yifxis aprefixofy.
+Definition A.2.Forx∈B ∗, define thecylinder set
+Γx :={ω∈B N|x⊑ω}.
+Let µ denote theuniform product measureon BN, characterised byµ(Γx) = 2−ℓ(x), where
+ℓ(x)denotes the length ofx.
+Definition A.3(cf. [7, Definition 2.7.1]).Amonotone Turing machineis given by the
+data:
+•a state set{1,...,k}for somek≥1,
+•one input tape, one output tape, andj≥1work tapes,
+•a transition functionδ,
+required to satisfy the conditions:
+• all tapes are binary, with no blank symbol, and the work tapes are initialised with
+zeros,
+• the input tape is read-only and unidirectional (its head can only move from left to
+right),
+•the output tape is write-only and unidirectional.
+Forω∈B N we writeT (ω)∈B∗∪B N for the output written during the run ofT on input
+tape ω. Forv,y∈B ∗ we writeT (v) = y∗ if, in the run on any inputω⊒v , the input
+head has consumed exactlyvat the step in which the last bit ofyis written.
+Definition A.4.Let T be a monotone Turing machine. Fory∈B ∗, the set ofminimal
+programs[7, Definition 2.7.1]
+VT,y :={p∈B ∗|T(p) =y∗}
+is prefix-free, and
+{ω∈B N|y⊑T(ω)}=
+G
+p∈VT,y
+Γp
+13
+
+===== PAGE 14 =====
+[7, Section 3.8]. Define thesemimeasureinduced byTon cylinders by
+PT (Γy) :=µ
+ 
+{ω∈B N|y⊑T(ω)}
+
+=
+X
+p∈VT,y
+2−ℓ(p),(3)
+the probability that the output ofT begins withy when the input tape is filled with
+uniformly random bits. We abbreviatePT (y) :=P T (Γy).
+Definition A.5(cf. [7, Definition 2.7.2]).Every monotone Turing machine has a canonical
+prefix-free encoding T7→ ⟨T⟩ as a binary string. A monotone Turing machineU is
+universalif
+U(⟨T⟩ω) =T(ω)for every monotone Turing machineTand everyω∈B N.
+Universal machines exist [7, Definition 2.7.2]; we fix one, thereference machineU [7,
+Remark 2.7.7].
+Definition A.6(cf. [7, Definition 3.8.2]).TheSolomonoff distribution(or universal a
+priori probability) is
+M(Γy) :=
+X
+p:U(p)=y∗
+2−ℓ(p),
+summing over the minimal programsVU,y of Definition A.4. By(3), M(Γy) =PU(Γy): the
+probability that the output ofU begins withy on a uniformly random input tape. For
+y∈B ∗ we abbreviateM(y) :=M(Γ y), as in (1).
+Theorem A.7.The universal semimeasureM dominates the contribution of every input
+prefix [6, 7]: for allv,y∈B ∗,
+M(y)≥2 −ℓ(v)µ
+ 
+{ω∈B N|y⊑U(vω)}
+
+.
+In particular, taking v = ⟨T⟩ for a monotone Turing machine T gives M(y) ≥
+2−ℓ(⟨T⟩)PT (y).
+B Singular learning theory (SLT)
+The asymptotics of the free energy associated to the Bayesian evidence are (for singular
+models) given by the theorems of Watanabe [14, 15]. Since then a range of introductions
+to and developments of the field have appeared [16, 9, 13, 8, 5, 12, 1, 10]. We give a
+minimal account here.
+Throughout,logdenotes the natural logarithm andlog 2 denotes base-2logarithm.
+We work in the binary setting used throughout the paper. Fix:
+•a dimensiond∈Z >0 and a compact parameter setW⊆R d,
+•a statistical modelp(x|w)forx∈B,w∈W,
+14
+
+===== PAGE 15 =====
+•a true distributionq(x)forx∈B,
+•a prior probability measureϕonWwith densityφ(sodϕ(w) =φ(w)dw),
+•an integern≥1,
+•dataX 1,...,X n
+i.i.d.
+∼q.
+Definition B.1.Define thelog density ratio:
+f(x,w) := log q(x)
+p(x|w),(x∈B, w∈W).
+We implicitly assume the usual absolute-continuity conditionq(x)> 0⇒p (x|w)> 0for
+allw∈Wso thatfis well-defined.
+Definition B.2.Define thepopulation lossandempirical loss:
+L(w) :=−E
+
+logp(X|w)
+
+, L n(w) :=− 1
+n
+nX
+i=1
+logp(Xi|w),
+where the expectation is taken underq.
+Let w0∈W be a minimizer ofL(w)(one exists since L is continuous on the compact
+setWunder fundamental condition (I) below) and define the minimizer set
+W0 :={w∈W|L(w) =L(w 0)}.
+Definition B.3.Forw∈W, define the KL-divergence
+bK(w) :=
+X
+x∈B
+q(x) log q(x)
+p(x|w) =E
+
+f(X,w)
+
+.
+Define the(centered) KL function
+K(w) := bK(w)− bK(w 0) =L(w)−L(w 0)≥0,
+so thatK(w) = 0if and only ifw∈W 0.
+Definition B.4.Define theempirical KL-divergenceand its centered version:
+bKn(w) := 1
+n
+nX
+i=1
+f(Xi,w) = 1
+n
+nX
+i=1
+log q(Xi)
+p(Xi|w),
+Kn(w) := bKn(w)− bKn(w0) =L n(w)−L n(w0),
+so thatKn(w0) = 0.
+15
+
+===== PAGE 16 =====
+Definition B.5.Thepartition function(Bayesian evidence) is
+Zn :=
+Z
+W
+nY
+i=1
+p(Xi|w)φ(w)dw=
+Z
+W
+exp
+ 
+−nLn(w)
+
+φ(w)dw.
+Equivalently,
+Zn = exp
+ 
+−nLn(w0)
+Z
+W
+exp
+ 
+−nKn(w)
+
+φ(w)dw.
+Definition B.6.Define thezeta functionfor ℜ(z)> 0, whereℜ(z)denotes the real part
+ofz, by
+ζ(z) :=
+Z
+W
+K(w)zφ(w)dw;
+under fundamental conditions (I) and (II) below it admits a meromorphic continuation to
+C. Let−λ be the pole ofζ with largest real part, and letm be its order. Thenλ> 0is
+thelearning coefficientandmitsmultiplicity.
+The learning-theoretic asymptotics depend on (i) analyticity of the log density ratio
+and (ii) mild integrability and regularity assumptions on(W,φ).
+Definition B.7.Fix s≥ 2. The tuple(q,p,φ )satisfiesfundamental condition (I) with
+indexsif the following hold.
+1. There exists an open setW(C)⊂C d such that
+(a)W⊂W (C)∩Rd,
+(b) the mapw7→f(·,w)is anL s(q)-valued complex-analytic function onW(C),
+(c) the envelope ¯f(x) := supw∈W (C)|f(x,w)|satisfies ¯f∈L s(q).
+2. There existsε 1 >0such that, defining
+Q(x) := sup{p(x|w)|w∈W, K(w)≤ε 1},
+we have the integrability condition
+X
+x∈B
+¯f(x) 2Q(x)q(x)<∞.
+Remark B.8.On the finite space B, item 2 of fundamental condition (I) follows from
+item 1(c), sinceQ≤ 1and the sum is finite; we retain it as stated to match the general
+form of [15].
+Definition B.9.The tuple(W,φ)satisfiesfundamental condition (II)if:
+1.Wis a compact semianalytic set of the form
+W={w∈R d|π 1(w)≥0,...,π J(w)≥0},
+where eachπj is real-analytic on some open neighborhoodW (R)⊂R d containingW.
+16
+
+===== PAGE 17 =====
+2. The prior density factors asφ(w) =φ1(w)φ2(w), whereφ1(w)> 0is C∞ on W (R)
+andφ 2(w)≥0is real-analytic onW (R).
+Definition B.10.Define
+f0(x,w) := log p(x|w0)
+p(x|w) =f(x,w)−f(x,w 0),(x∈B, w∈W),
+so that E
+
+f0(X,w )
+
+= K(w), whereX∼q . The model hasrelatively finite varianceif
+there existsc 0 >0such that
+E
+
+f0(X,w) 2
+≤c 0K(w)for allw∈W.
+Remark B.11.For w∈W 0 the condition forces E
+
+f0(X,w )2
+= 0, so all optimal
+parameters induce the same distributionq-almost surely; in particular Definition B.10
+does not depend on the choice ofw0. In the realizable caseq(x) =p(x|w0)we have f0 =f
+almost surely andK= bK.
+Theorem B.12.Assume the standard SLT hypotheses: fundamental condition (I) with
+some index s≥ 2, fundamental condition (II), and relatively finite variance (Defini-
+tion B.10); assume moreover thatφ
+ 
+{w∈W| 0<K (w)≤ε}
+
+> 0for every ε> 0, so
+that the pole defining(λ,m )exists. Let( λ,m )be the learning coefficient and multiplicity
+from Definition B.6. Then the normalized free energy satisfies
+F (0)
+n :=−log
+Z
+W
+exp
+ 
+−nKn(w)
+
+φ(w)dw=λlogn−(m−1) log logn+O P(1).
+Consequently,
+−logZ n =nL n(w0) +λlogn−(m−1) log logn+O P(1).
+Fix an integerb≥ 1. We identifys∈B b with the integerPb
+k=1sk 2b−k∈{ 0, 1,..., 2b−
+1} of which it is the length-b binary representation; thusBb is a finite outcome alphabet of
+2b symbols, andp(·|w )is a distribution on it. In the body of the paper the observed data
+is treated as a stringz =z1···z n∈ (Bb)n (i.e. n i.i.d. samples, each encoded inb bits).
+WheneverM(z)appears, z is understood as theconcatenatedbinary string z1···z n∈B nb.
+The caseb = 1recovers the binary setting. The development of this section is stated
+for binary outcomesx∈B but uses only finiteness of the outcome alphabet, and holds
+verbatim overBb; we invoke Theorem B.12 in this generality.
+Definition B.13.Fix an observed stringz=z 1···z n∈(B b)n. Define the empirical loss
+Ln(w) :=− 1
+n log
+ nY
+i=1
+p(zi|w)
+
+, e −nLn(w) =
+nY
+i=1
+p(zi|w),
+and the partition function (Bayesian evidence)
+Zn :=
+Z
+W
+e−nLn(w)dϕ(w).
+Forb= 1, Definition B.13 agrees with Definitions B.2 and B.5.
+17
+
+===== PAGE 18 =====
+Bibliography
+[1] Zhongtian Chen, Edmund Lau, Jake Mendel, Susan Wei, and Daniel Murfet. Dynam-
+ical versus Bayesian phase transitions in a toy model of superposition.arXiv preprint
+arXiv:2310.06301, 2023.
+[2] Bertrand S. Clarke and Andrew R. Barron. Information-theoretic asymptotics of
+Bayes methods.IEEE Transactions on Information Theory, 36(3):453–471, 1990.
+[3] Te Sun Han and Mamoru Hoshi. Interval algorithm for random number generation.
+IEEE Transactions on Information Theory, 43(2):599–611, 1997.
+[4] Max Hennick and Matthias Dellago. Learning coefficients, fractals, and trees in
+parameter space, 2026. Preprint, March 2026,https://openreview.net/forum?id=
+KUFH0n1BIM.
+[5] Jesse Hoogland, George Wang, Matthew Farrugia-Roberts, Liam Carroll, Susan
+Wei, and Daniel Murfet. Loss landscape degeneracy and stagewise development in
+transformers.Transactions on Machine Learning Research, 2025.
+[6] Marcus Hutter.Universal Artificial Intelligence: Sequential Decisions based on
+Algorithmic Probability. Springer, Berlin, 2005.
+[7] Marcus Hutter, David Quarel, and Elliot Catt.An Introduction to Universal Artificial
+Intelligence. Chapman & Hall/CRC Artificial Intelligence and Robotics Series. Taylor
+and Francis, 2024.
+[8] Edmund Lau, Zach Furman, George Wang, Daniel Murfet, and Susan Wei. The
+local learning coefficient: A singularity-aware complexity measure.arXiv preprint
+arXiv:2308.12108, 2024.
+[9] Shaowei Lin.Algebraic methods for evaluating integrals in Bayesian statistics. PhD
+thesis, University of California, Berkeley, 2011.
+[10] Daniel Murfet and Will Troiani. Programs as singularities, 2025. arXiv:2504.08075.
+[11] Einar Urdshals, Edmund Lau, Jesse Hoogland, Stan van Wingerden, and Daniel
+Murfet. Compressibility measures complexity: Minimum description length meets
+singular learning theory, 2025. arXiv:2510.12077.
+[12] George Wang, Jesse Hoogland, Stan van Wingerden, Zach Furman, and Daniel Murfet.
+Differentiation and specialization of attention heads via the refined local learning
+coefficient.arXiv preprint arXiv:2410.02984, 2024.
+[13] Thomas Waring. Geometric perspectives on program synthesis and semantics. Master’s
+thesis, The University of Melbourne, 2021.
+[14] Sumio Watanabe.Algebraic Geometry and Statistical Learning Theory. Cambridge
+University Press, USA, 2009.
+18
+
+===== PAGE 19 =====
+[15] Sumio Watanabe.Mathematical Theory of Bayesian Statistics. CRC Press, Boca
+Raton, FL, 2018.
+[16] Susan Wei, Daniel Murfet, Mingming Gong, Hui Li, Jesse Gell-Redman, and Thomas
+Quella. Deep Learning is Singular, and That’s Good.IEEE Transactions on Neural
+Networks and Learning Systems, 2022.
+19

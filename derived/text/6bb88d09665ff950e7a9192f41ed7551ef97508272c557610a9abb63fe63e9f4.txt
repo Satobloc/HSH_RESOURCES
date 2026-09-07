@@ -1,0 +1,3660 @@
+===== PAGE 1 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum
+Many-Body Systems Simulation
+Xiangyu Ren∗1, 7, Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6, Antonio Barbalace1
+1The University of Edinburgh, Edinburgh, United Kingdom
+2The University of Chicago, Chicago, IL, USA
+3The Hong Kong University of Science and Technology, Kowloon, Hong Kong
+4Northwestern University, Chicago, IL, USA
+5University of Wisconsin–Madison, Madison, WI, USA
+6The Chinese University of Hong Kong, Shatin, Hong Kong
+7Open Quantum Intelligence Co., Ltd.
+Abstract
+Simulating quantum many-body systems has been one of the most
+important applications of quantum computation. For simulation,
+the Hamiltonian of a physical system is compiled into quantum
+programs with native instructions for quantum hardware. In pre-
+vious works, the Hamiltonian is represented as Pauli strings, then
+compiled and optimized based on the quantum circuit model. Such
+representation paradigm neglects the spatial topology of original
+physical models, which is vital information to reducing the over-
+head of compiling many-body systems Hamiltonians.
+To address such neglect, we introduce a spatial-topology pre-
+serving compiler for quantum many-body simulation. Using Pauli
+gadgets as the representations of the Hamiltonian, we introduce
+our intermediate representation – GadIR, to preserve the spatial-
+topology information of original physical models. Our compiler
+frontend performs the group reduction algorithm based on Pauli
+gadget model, which is a hardware-independent optimization. Our
+compiler backend performs trotterization and scheduling on Pauli
+gadgets, then synthesizes the Pauli gadgets into hardware-native
+quantum programs. We evaluate our compiler on all the canonical
+quantum many-body system models, while achieving a significant
+reduction on compilation overhead regarding four major quantum
+architectures. Overall, our spatial-topology preserving IR exploits
+the compilation optimization space for quantum many-body sys-
+tems Hamiltonian.
+1 Introduction
+Among the various applications of quantum computing, simulating
+physical systems has long stood out as a primary motivation [30].
+Among various physical systems, the simulations of physical many-
+body systems are gaining prevalence, especially after their utility
+has been demonstrated on IBM quantum computers [61]. The quan-
+tum many-body simulation formulates a physical system on specific
+spatial topology, such as an𝑛-dimensional lattice. Taking the Bose-
+Hubbard model [28] as an example, the bosons are positioned at
+the sites of a 2D lattice, while they only interact with their neigh-
+boring bosons (box (1) of Figure 1). This topology is applicable to
+physical models of bosons and fermions – two fundamental classes
+MICRO 2026, Athens, Greece
+2026. ACM ISBN 978-X-XXXX-XXXX-X/XX/XX
+https://doi.org/XXXXXXX.XXXXXXX
+of particles. The core target of quantum many-body simulation is
+to simulate above physical models on quantum computers.
+Problem Definition.In a physical model, the interactions be-
+tween particles are formulated as Hamiltonian evolution, then the
+Hamiltonian can be approximated by quantum gates. Specifically,
+when a physical model is encoded as the Hamiltonian𝐻, its evo-
+lution over time𝑡 can be simulated by the operator𝑈=𝑒 −𝑖𝐻𝑡 . A
+compiler takes in the operator𝑈 and compiles it into a hardware-
+native quantum program to be executed on the target hardware.
+In this work, our main problem is compiling the Hamiltonians of
+physical many-body models into hardware-native programs, for
+different quantum hardware architectures.
+Prior Works.A series of research projects have been working
+on similar problems. Paulihedral [76] and 2QAN [68] leverage the
+permutation of Hamiltonian terms, to explore gate cancellation
+or SWAP reduction by reordering the Pauli strings. Tetris [58] im-
+proves gate cancellation technique and reduces hardware mapping
+cost. QuCLEAR [ 81] introduces a Clifford extraction method to
+reduce Pauli operators, based on the weak commutation of Clif-
+ford gates. Generally, these compilers use flattened Pauli strings
+as their intermediate representation (IR), optimizing mainly for
+circuit-level metrics such as two-qubit-gate count, circuit depth, or
+routing overhead.
+Challenge 1: Preserving topology of physical model.As the
+Hamiltonian𝐻 derives from a physical model with specific topol-
+ogy of particles, it contains spatial-topology information about the
+model structure. Such information assists in reducing compilation
+overhead, which will be elaborated in Section 4. However, prior
+works neglect the spatial-topology information in the Hamiltonian
+when they represent it with Pauli strings. When represented as
+Pauli strings, the Hamiltonian𝐻 is flattened into a linear sequence
+of Pauli operators, losing the spatial positional information of Pauli
+operators from original physical model. This process is illustrated
+with examples in the box (2) of Figure 1.
+Challenge 2: Hardware-independent optimization.Prior
+works reduce circuit compilation overhead – mainly based on su-
+perconducting (SC) hardware settings [58, 68, 76, 81]. This process
+is illustrated in the box (4) of Figure 1. Despite the efforts, those
+strategies they proposed are often incompatible with other quantum
+computing hardware, e.g., measurement-based quantum compu-
+tation (MBQC), because it has a naturally different computation
+1
+arXiv:2609.01771v1  [quant-ph]  1 Sep 2026
+
+===== PAGE 2 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+Supercon-
+ducting
+< / >
+Neutral 
+Atom
+< / >
+Photonic
+< / >
+FTQC
+< / >
+(1) Physical model
+Spatial 
+Structure
+System 
+Hamiltonian
+<latexit sha1_base64="EnQ6/fv8d0tIcTIjUcbHPM8/px8=">AAAC0nicfVJNTxsxEPVuaYH0K8CRy6hRJSpKtIsq6AUJtRduUIkEpDhdeR3v4mB7V/5ASldphXrtr+utP6H/Am+yBxJKR7L1/GbezNjjtBTc2Cj6E4RPVp4+W11bbz1/8fLV6/bGZt8UTlPWo4Uo9GVKDBNcsZ7lVrDLUjMiU8Eu0uvPtf/ihmnDC3VuJyUbSpIrnnFKrKeS9t8TOII9sICNk0mFBVG5YMDfwxiwnh2msJMm/CsekTxnGtJkDLv1fo/h71qA8S7gTBNa9abV/nSekMOilC/n4r543Kj7/21iWbfYwbhOsQdYukcKd5N2J+pGM4OHIG5ABzV2lrR/41FBnWTKUkGMGcRRaYcV0ZZT31ALO8NKQq9JzgYeKiKZGVazkUzhrWdGkBXaL2Vhxt5XVEQaM5Gpj5TEXpllX03+yzdwNvs4rLgqnWWKzgtlToAtoJ4vjLhm1IqJB4Rq7nsFekX8WKz/BS3/CPHylR+C/n43PugefPnQOf7UPMca2kZv0A6K0SE6RifoDPUQDU4DF3wPfoTn4bfwNvw5Dw2DRrOFFiz8dQfOh9s4</latexit>
+H=→t
+∑
+→i,j↑
+(b†
+ibj+b†
+jbi)
++U
+2
+∑
+i
+b†
+ibi(b†
+ibi→1)
++V
+∑
+→i,j↑
+b†
+ibib†
+jbj
+→µ
+∑
+i
+b†
+ibi.
+Particle-to-Qubit
+Encoding
+Supercon-
+ducting
+< / >
+Previous works: Circuit-based optimization + SC hardware synthesis
+Our proposal: Spatial topology-aware + Multi-target Compilation
+Paulihedral [51]
+𝑌𝑌𝑋𝑋𝐼𝐼…,𝛼0	,∆𝑡
+Tetris [39]
+{0123,	{𝑌𝑌𝑥𝑥,…}, {𝛼0,…},∆𝑡}
+(2)Pauli String-based IR (3) Logical Circuit Optimization
+e−iθ
+2(Y4Z3Z2Z1Y0+X4Z3Z2Z1X0)
+q0
+q1
+q2
+q3
+q4 RZθS†H
+S†H
+S H
+S H
+RZθH
+H
+H
+H
+(c)
+RZθ
+S†H
+S†H
+S H
+S H
+H
+H
+H
+Hq0
+q1
+q2
+q3
+q4
+RZθ
+(b)
+(a)
+Gate Cancellation
+Pauli Block Scheduling
+(4)Synthesis
+Synthesis on 
+SC Coupling Map q0
+q2
+q1
+q6
+q5
+q4
+q3
+q7
+X
+Z
+2
+find a tree embedding 
+in the coupling mapX X
+Z Z
+Y X
+X Y
+X I 
+3 X X
+I Y
+X X
+Y I
+X X 
+4
+X
+X
+1
+q3 q2 q5 q0
+q7 q4 q1 q6
+q3
+q2 q5
+q6q4
+(a) example program (b) hardware coupling map
+CNOT 
+(c) CNOT on embedded tree (d) embedded tree transformation
+SWAP 
+q3
+q2 q5
+q6q4
+connected 
+components core qubits 
+connected 
+after SWAP
+(5) To p o l o g y-Preserving IR
+Qubit
+ Spatial
+To p o l o g y
+Pauli 
+Gadget
+(6)Frontend
+Group Reduction
+(7)Backend
+Spatial-
+To p o l o g y
+Sub-
+set
+Sub-
+set
+…
+Sub
+-set
+… ……
+Sub
+-set
+Sub
+-set
+Sub
+-set
+Commutative 
+Group
+Trotterization Scheduling
+Figure 1: Comparison between our proposed framework and the frameworks in previous research [58, 68, 76, 81].
+model. Hence, a hardware-independent optimization that can be
+applied to diverse hardware architectures is highly desirable.
+Solution: Spatial-topology preserving IR.To address the
+challenges mentioned above, we introduce a Pauli gadget-based
+intermediate representation – GadIR, and implement the compiler
+based on GadIR. The structure of GadIR is designed topreserve the
+spatial topology of Hamiltonians derived from physical mod-
+els, while preserving such information throughout the compilation
+pipeline. The Pauli gadgets in GadIR have a graph structure corre-
+sponding to the physical model (shown in box (5) of Figure 1), in-
+spired bygraph-based IRin classical compiler techniques [ 9, 18, 73].
+The compiler frontend performs Pauli gadget group reduction on
+GadIR. The compiler backend performs hardware-independent trot-
+terization and scheduling optimization, then synthesizes GadIR into
+hardware-native programs. Both frontend and backend contribute
+to reducing compilation overhead, with the following designs:
+Frontend.GadIR represents the Hamiltonian operator asPauli
+gadget[ 21], which is a special graph structure of ZX-diagram [27].
+Specifically, compared to Pauli strings that linearly index the qubits,
+GadIR constructs a graph retaining the original topology of physical
+many-body models, while Pauli gadgets are anchored on this topol-
+ogy. Based on the topology information, our frontend optimizer
+performsPauli gadget reduction, by eliminating certain patterns on
+the gadgets to reduce Hamiltonian operators. In contrast to previ-
+ous works [58, 76] that apply gate cancellation to a pair of Pauli
+strings each time, our method can perform reduction on a large set
+of gadgets simultaneously, extending the optimization space.
+Backend.The backend performs Trotterization and scheduling
+directly on GadIR in ZX-diagram form, while the optimizations are
+all hardware-independent. Then, the backend synthesizes GadIR
+into hardware-native programs, while the preserved topology in-
+formation guides the compiler to find an appropriate qubit initial
+placement. Compared to prior works that generate a gate-based log-
+ical circuit and synthesize it into a physical circuit for SC hardware,
+our backend supports multiple hardware architectures.
+Although Pauli gadgets have been used to synthesize quantum
+chemistry circuits [21, 22], we are the first to use them for designing
+an IR and preserving model topology. Our major contributions can
+be summarized as follows:
+(1) For quantum many-body systems simulation, we propose a
+Pauli gadget-based IR to represent Hamiltonian terms, while
+preserving the spatial-topology information of original phys-
+ical model. To the best of our knowledge, it is the first quan-
+tum compiler preserving Hamiltonian topology.
+(2) In compiler frontend, we introduce a novel optimization
+strategy, which is the Pauli gadget group reduction, based
+on our uniquely designed IR. The strategy explores more
+chances for compilation overhead reduction than gate cancel-
+ing [58, 76] and Clifford extraction [81]. Furthermore, GadIR
+is hardware-agnostic and can be directly reused for multiple
+architectures, moving beyond conventional gate-based NISQ
+synthesis.
+(3) In compiler backend, we perform hardware-independent
+scheduling using ZX-diagrams, reducing circuit depth. Then
+we integrate hardware-specific optimizations in synthesis,
+utilizing preserved topology information.
+We evaluate our compiler framework on a wide range of bench-
+marks covering all canonical many-body models: spin, bosonic,
+fermionic and lattice-gauge. The evaluations are conducted on mul-
+tiple hardware architectures, including SC architectures from IBM
+and Google devices, zoned-architecture neutral-atom, photonic
+MBQC on silicon quantum dots, and FTQC with lattice surgery
+scheme. The results show that our compiler achieves significant
+reduction of dominant compilation overheads for each architecture.
+Compared to the state-of-the-art QuCLEAR, we reduce the over-
+heads to 0.56× (#2Q gate for SC), 0.87× (infidelity for neutral-atom),
+0.85× (#non-Clifford for FTQC), and 0.75× (#emitter-entanglement
+for MBQC) of QuCLEAR on average. While our compiler is primar-
+ily designed for quantum many-body simulation, results show that
+it also works well on other quantum simulation problems, e.g., quan-
+tum chemistry. Furthermore, it is orthogonal to particle-to-qubit
+encoding techniques, e.g. Fermihedral [82] and HATT [83].
+2 Background
+2.1 Quantum Many-Body Simulation
+Physical Many-Body Models.Quantum simulation algorithms
+utilize digital quantum computers to simulate the particle interac-
+tions in physical models. In a physical model, these particles follow
+a specific spatial structure, e.g., residing on the sites of a lattice,
+2
+
+===== PAGE 3 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+and interact with their neighboring particles. As a result, when we
+use Hamiltonians𝐻 to describe the interactions, it will inherently
+contain topological information of the model structure. We refer to
+such information as the topology of original physical model. An
+example of the spatial topology for a bosonic many-body system is
+shown in the box (1) of Figure 1, as the shape of a2×3lattice.
+Particle-to-Qubit Encoding.In quantum mechanics, particles in
+nature are categorized into fermions and bosons. Hence, the Hamil-
+tonians of a physical model are either fermionic operators or bosonic
+operators. To simulate these operators on quantum computers, they
+should be encoded to qubit operators, which are often represented
+in terms of Pauli operators. This process is shown as the blue arrow
+connected to box (1) of Figure 1. The encoding methods include
+well-known Jordan-Wigner (JW), Bravyi-Kitaev (BK) [11], and re-
+cently proposed Fermihedral [82] and HATT [83].
+Inherent Topology of Qubit-Hamiltonian.After particle operators
+are encoded to qubit operators, the inherent topological information
+of Hamiltonian is also mapped to a new structure. For example,
+the Bravyi-Kitaev (BK) encoding [11] maps fermionic model to a
+Fenwick treestructure; bosonic linear encoding [ 112] maps bosonic
+model in an𝑛-dimensional lattice to an(𝑛+ 1)-dimensional lattice.
+In Figure 1, the2×3bosonic model (depicted in box (1)) is mapped to
+a2×3×2lattice of qubits (depicted in box (5)), which is the topology
+of its qubit-Hamiltonian. These structures mentioned above are the
+spatial topologies of qubit-Hamiltonian, which is the topological
+information we preserve in GadIR.
+Suzuki-Trotter Decomposition.To simulate the qubit-Hamiltonian
+𝐻 on quantum hardware, it should be decomposed into unitary
+operations corresponding to each Hamiltonian term 𝐻𝑖. We use
+Suzuki-Trotter– a foundational decomposition technique, to ap-
+proximate the time evolution operator of qubit Hamiltonian. Given
+a Hamiltonian𝐻= ˝
+𝑖𝐻𝑖, the time evolution operator𝑒−𝑖𝐻𝑡 can be
+approximated by a product of exponentials of the individual terms,
+with each term in the form like𝐻𝑖 =𝑍 1𝑍2𝑋3𝐼4𝑌5. The second-order
+decomposition is given by
+𝑒−𝑖𝐻𝑡≈
+ 𝑁Ö
+𝑖=1
+𝑒−𝑖𝐻𝑖𝑡/(2𝑟)
+1Ö
+𝑖=𝑁
+𝑒−𝑖𝐻𝑖𝑡/(2𝑟)
+!𝑟
+,(1)
+where𝑟 is the number of Trotter steps. In our compiler, we perform
+the trotterization in backend, as shown in the box (7) of Figure 1.
+2.2 ZX-Diagram and Pauli Gadget
+In this subsection, we give a brief introduction to ZX-diagram, and
+Pauli gadget – a special structure in the ZX-diagram. Further details
+of these concepts can be found in [27, 64, 122].
+ZX-Diagram.The ZX-calculus is a diagrammatic language sim-
+ilar to the quantum circuit notation, while its instances are ZX-
+diagrams. The basic elements of a ZX-diagram arespidersandwires.
+Spidersare linear maps which can have any number of input or
+outputwires, and being associated with coefficients 𝛼. There are
+two varieties of spiders – the Z-spider depicted in green dot (Equa-
+tion (2)) and the X-spider depicted in red dot (Equation (3)), while
+the definitions of their input-output maps are given on the right
+sides of equations.
+𝜶
+...
+... := |0...0⟩⟨ 0...0|+𝑒 𝑖𝛼|1...1⟩⟨ 1...1| (2)
+𝜶
+...
+... := |+...+⟩⟨+...+|+𝑒 𝑖𝛼|−...−⟩⟨−...−| (3)
+A ZX-diagram can be built from spiders and wires, by compo-
+sition of the elements shown above. For a quantum program with
+𝑚 input qubits and𝑛 output qubits, its corresponding ZX-diagram
+has𝑚 input wires and 𝑛 output wires, representing linear maps
+(C2)⊗𝑚→ (C2)⊗𝑛. As examples, we have these quantum gates
+represented in ZX-diagram:
+𝜶 = |0⟩⟨0|+𝑒𝑖𝛼|1⟩⟨1| =𝑅 𝑍(𝛼)
+𝜶 = |+⟩⟨+|+𝑒𝑖𝛼|−⟩⟨−| =𝑅 𝑋(𝛼)
+Furthermore, to represent a CNOT gate, we can connect the
+second output wire of Z-spider to the first input wire of X-spider:
+=𝐶𝑁𝑂𝑇(4)
+Pauli Gadget.Similar to Pauli string and Pauli kernel [ 76] for
+quantum circuit, the Pauli gadget is a high-level structure for ZX-
+diagram, representing a Hamiltonian term. Given a Hamiltonian
+term𝑒−𝑖𝛼𝑋 0𝑌1𝐼2𝑍3, it can be depicted as:
+𝑒
+−𝑖𝛼
+2 𝑋0𝑌1𝐼2𝑍3 =
+𝑞3
+𝑞2
+𝑞1
+𝑞0
+𝛼 ,(5)
+where the spiders of Pauli gadget are especially shaped in squares.
+While the green square and red square still correspond to Z-spider
+and X-spider, the Y-spider is colored in both green and red. Each of
+the Pauli operators𝜎𝑋,𝜎𝑌,𝜎𝑍 is represented as X-, Y- and Z- spiders
+respectively. In the meantime, they are connected to the box of𝛼,
+representing the coefficient of the Hamiltonian term.
+3 GadIR Design
+In this section, we describe the design and motivation of our topology-
+preserving GadIR. Using the example of a2× 3bosonic model, we
+introduce how the original physical model and Hamiltonian terms
+are converted to GadIR step-by-step. The GadIR syntax is intro-
+duced in 3.2. Then in 3.3 we demonstrate the insight of GadIR: it
+captures the optimizations that Pauli-string IR misses. Following is
+the GadIR generation for physical models in 3.4.
+3.1 Introducing Topology-Preserving IR
+GadIR consists of two parts: 1 spatial topology as the "frame",
+derived from the physical structure, depicted in the lower part
+of Figure 2b; 2 Pauli gadgets as the "body", constructed from
+Hamiltonian terms, depicted in Figure 2c as the blue areas. While
+the spatial topology provides supportive information of inherent
+structures within the model, the Pauli gadget provides a concise
+representation of each Hamiltonian term. These two parts combine
+to form GadIR, shown in Figure 2d.
+3
+
+===== PAGE 4 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+Bosonic
+Hamiltonian
+Qubit
+Hamiltonian
+<latexit sha1_base64="/obMKBSHrx0fgXMALhEL7+EBXn4=">AAAB+XicbVBNS8NAEN3Ur1q/oh69LBbBU0lEqseiF48VbC00oWy2m3bpZjfsTool9J948aCIV/+JN/+N2zYHbX0w8Hhvhpl5USq4Ac/7dkpr6xubW+Xtys7u3v6Be3jUNirTlLWoEkp3ImKY4JK1gINgnVQzkkSCPUaj25n/OGbacCUfYJKyMCEDyWNOCVip57oBsCfII2WUnOIA855b9WreHHiV+AWpogLNnvsV9BXNEiaBCmJM1/dSCHOigVPBppUgMywldEQGrGupJAkzYT6/fIrPrNLHsdK2JOC5+nsiJ4kxkySynQmBoVn2ZuJ/XjeD+DrMuUwzYJIuFsWZwKDwLAbc55pREBNLCNXc3orpkGhCwYZVsSH4yy+vkvZFza/X6veX1cZNEUcZnaBTdI58dIUa6A41UQtRNEbP6BW9Obnz4rw7H4vWklPMHKM/cD5/AIBfk5U=</latexit>
+bosoni
+<latexit sha1_base64="5XkQ11g+CZS1Nvtb+/IkwrAVzao=">AAAB7HicbVBNS8NAEJ34WetX1aOXxSJ4KolI9Vj04rGCaQttLJvtpl262cTdiVBKf4MXD4p49Qd589+4bXPQ1gcDj/dmmJkXplIYdN1vZ2V1bX1js7BV3N7Z3dsvHRw2TJJpxn2WyES3Qmq4FIr7KFDyVqo5jUPJm+HwZuo3n7g2IlH3OEp5ENO+EpFgFK3kP3bFg9stld2KOwNZJl5OypCj3i19dXoJy2KukElqTNtzUwzGVKNgkk+KnczwlLIh7fO2pYrG3ATj2bETcmqVHokSbUshmam/J8Y0NmYUh7Yzpjgwi95U/M9rZxhdBWOh0gy5YvNFUSYJJmT6OekJzRnKkSWUaWFvJWxANWVo8ynaELzFl5dJ47ziVSvVu4ty7TqPowDHcAJn4MEl1OAW6uADAwHP8ApvjnJenHfnY9664uQzR/AHzucPfWGOfg==</latexit>
+q0
+i
+<latexit sha1_base64="KQLId4ElbwB220bujmTNLAJyR3U=">AAAB7HicbVBNS8NAEJ34WetX1aOXxSJ4KolI9Vj04rGCaQttLJvtpF262cTdjVBKf4MXD4p49Qd589+4bXPQ1gcDj/dmmJkXpoJr47rfzsrq2vrGZmGruL2zu7dfOjhs6CRTDH2WiES1QqpRcIm+4UZgK1VI41BgMxzeTP3mEyrNE3lvRikGMe1LHnFGjZX8xy5/8LqlsltxZyDLxMtJGXLUu6WvTi9hWYzSMEG1bntuaoIxVYYzgZNiJ9OYUjakfWxbKmmMOhjPjp2QU6v0SJQoW9KQmfp7YkxjrUdxaDtjagZ60ZuK/3ntzERXwZjLNDMo2XxRlAliEjL9nPS4QmbEyBLKFLe3EjagijJj8ynaELzFl5dJ47ziVSvVu4ty7TqPowDHcAJn4MEl1OAW6uADAw7P8ApvjnRenHfnY9664uQzR/AHzucPfuWOfw==</latexit>
+q1
+i
+<latexit sha1_base64="//SUbSlV+++8I/ddyEtI6J7CApw=">AAACAXicbVBNS8NAEN3Ur1q/ol4EL4tF8FQSkSqeil48VrAf0Iay2W7apZtN2J2IJdSLf8WLB0W8+i+8+W/cpjlo64OBx3szzMzzY8E1OM63VVhaXlldK66XNja3tnfs3b2mjhJFWYNGIlJtn2gmuGQN4CBYO1aMhL5gLX90PfVb90xpHsk7GMfMC8lA8oBTAkbq2Qd+j1/iLrAHSImUfMhF5kx6dtmpOBnwInFzUkY56j37q9uPaBIyCVQQrTuuE4OXEgWcCjYpdRPNYkJHZMA6hkoSMu2l2QcTfGyUPg4iZUoCztTfEykJtR6HvukMCQz1vDcV//M6CQQXXsplnACTdLYoSASGCE/jwH2uGAUxNoRQxc2tmA6JIhRMaCUTgjv/8iJpnlbcaqV6e1auXeVxFNEhOkInyEXnqIZuUB01EEWP6Bm9ojfryXqx3q2PWWvBymf20R9Ynz/35ZdB</latexit>
+bi: annihilation
+<latexit sha1_base64="//SUbSlV+++8I/ddyEtI6J7CApw=">AAACAXicbVBNS8NAEN3Ur1q/ol4EL4tF8FQSkSqeil48VrAf0Iay2W7apZtN2J2IJdSLf8WLB0W8+i+8+W/cpjlo64OBx3szzMzzY8E1OM63VVhaXlldK66XNja3tnfs3b2mjhJFWYNGIlJtn2gmuGQN4CBYO1aMhL5gLX90PfVb90xpHsk7GMfMC8lA8oBTAkbq2Qd+j1/iLrAHSImUfMhF5kx6dtmpOBnwInFzUkY56j37q9uPaBIyCVQQrTuuE4OXEgWcCjYpdRPNYkJHZMA6hkoSMu2l2QcTfGyUPg4iZUoCztTfEykJtR6HvukMCQz1vDcV//M6CQQXXsplnACTdLYoSASGCE/jwH2uGAUxNoRQxc2tmA6JIhRMaCUTgjv/8iJpnlbcaqV6e1auXeVxFNEhOkInyEXnqIZuUB01EEWP6Bm9ojfryXqx3q2PWWvBymf20R9Ynz/35ZdB</latexit>
+bi: annihilation
+<latexit sha1_base64="+95n4Y3o5lnndHaR4K25zx+7qrI=">AAACC3icbVC5TgMxFPSGK4QrQEljJUKiinYRCpQRNJRBIoeUDZHX+5JY8R6x3yKiVXoafoWGAoRo+QE6/gbnKCBhJEujmXm233ixFBpt+9vKrKyurW9kN3Nb2zu7e/n9g7qOEsWhxiMZqabHNEgRQg0FSmjGCljgSWh4g6uJ37gHpUUU3uIohnbAeqHoCs7QSJ18weuIO9dnvR4o6g6HCfOpi/CAKTfXTDLjTr5ol+wp6DJx5qRI5qh28l+uH/EkgBC5ZFq3HDvGdsoUCi5hnHMTDTHjA9aDlqEhC0C30+kuY3psFJ92I2VOiHSq/p5IWaD1KPBMMmDY14veRPzPayXYvWinIowThJDPHuomkmJEJ8VQXyjgKEeGMK6E+SvlfaYYR1NfzpTgLK68TOqnJadcKt+cFSuX8zqy5IgUyAlxyDmpkGtSJTXCySN5Jq/kzXqyXqx362MWzVjzmUPyB9bnD6+fm34=</latexit>
+b†
+i creation
+<latexit sha1_base64="+95n4Y3o5lnndHaR4K25zx+7qrI=">AAACC3icbVC5TgMxFPSGK4QrQEljJUKiinYRCpQRNJRBIoeUDZHX+5JY8R6x3yKiVXoafoWGAoRo+QE6/gbnKCBhJEujmXm233ixFBpt+9vKrKyurW9kN3Nb2zu7e/n9g7qOEsWhxiMZqabHNEgRQg0FSmjGCljgSWh4g6uJ37gHpUUU3uIohnbAeqHoCs7QSJ18weuIO9dnvR4o6g6HCfOpi/CAKTfXTDLjTr5ol+wp6DJx5qRI5qh28l+uH/EkgBC5ZFq3HDvGdsoUCi5hnHMTDTHjA9aDlqEhC0C30+kuY3psFJ92I2VOiHSq/p5IWaD1KPBMMmDY14veRPzPayXYvWinIowThJDPHuomkmJEJ8VQXyjgKEeGMK6E+SvlfaYYR1NfzpTgLK68TOqnJadcKt+cFSuX8zqy5IgUyAlxyDmpkGtSJTXCySN5Jq/kzXqyXqx362MWzVjzmUPyB9bnD6+fm34=</latexit>
+b†
+i creation
+0
+3
+1
+4
+2
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="kA7MqDv7t1w7YvruaU9+5cwof98=">AAACR3icbZC7TsMwFIadcivlFmBksaiQmKqktIWxgoWxSPQitWnkuE5r1blgO0hV1LdjYWXjFVgYQIgRJ/UALUeyzv+di2z/XsyokJb1ahTW1jc2t4rbpZ3dvf0D8/CoI6KEY9LGEYt4z0OCMBqStqSSkV7MCQo8Rrre9Cbrdx8JFzQK7+UsJk6AxiH1KUZSlVxz+OBaQwsOYJbtPNuabc1VzVXNF5ovNNc01zTXNdcVu2bZqlh5wFVha1EGOlqu+TIYRTgJSCgxQ0L0bSuWToq4pJiReWmQCBIjPEVj0lcyRAERTpr7MIdnqjKCfsTVCSXMq783UhQIMQs8NRkgORHLvaz4X6+fSP/KSWkYJ5KEeHGRnzAoI5iZCkeUEyzZTAmEOVVvhXiCOMJSWV9SJtjLX14VnWrFblQad7Vy81rbUQQn4BScAxtcgia4BS3QBhg8gTfwAT6NZ+Pd+DK+F6MFQ+8cgz9RMH4AyJqpAw==</latexit>
+q0
+0q1
+0q0
+1q1
+1q0
+2q1
+2q0
+3q1
+3q0
+4q1
+4q0
+5q1
+5
+<latexit sha1_base64="4Us39iKO3c6ZkB3/gpSwQiAM+yI=">AAAB+HicbVBNS8NAEJ34WetHox69LBbBU0lEqseiF48V7Ae0MWw223TtZhN2N0IN/SVePCji1Z/izX/jts1BWx8MPN6bYWZekHKmtON8Wyura+sbm6Wt8vbO7l7F3j9oqySThLZIwhPZDbCinAna0kxz2k0lxXHAaScYXU/9ziOViiXiTo9T6sU4EmzACNZG8u1K4LP7foijiEoU+A++XXVqzgxombgFqUKBpm9/9cOEZDEVmnCsVM91Uu3lWGpGOJ2U+5miKSYjHNGeoQLHVHn57PAJOjFKiAaJNCU0mqm/J3IcKzWOA9MZYz1Ui95U/M/rZXpw6eVMpJmmgswXDTKOdIKmKaCQSUo0HxuCiWTmVkSGWGKiTVZlE4K7+PIyaZ/V3HqtfntebVwVcZTgCI7hFFy4gAbcQBNaQCCDZ3iFN+vJerHerY9564pVzBzCH1ifP1UfkuU=</latexit>
+b†
+ibj
+<latexit sha1_base64="fPR2BaX81+AQgNxqW0wiSUQhBEE=">AAACMXicbVDLTgIxFO3gC8fXqEs3jcTEFZkxBl0S3bDERGAMg5NOp0Cl86DtkBDCL7nxT4wbFhrj1p+wM4wJgqfpzck596a9x4sZFdI0Z1phbX1jc6u4re/s7u0fGIdHTRElHJMGjljEbQ8JwmhIGpJKRuyYExR4jLS8wW3qt0aECxqF93Ick06AeiHtUoykklyjZrv00YRpteCD+6R4Wi3oOPqiZWeW/Ws5Iz+SAjrDYYJ86KjjGiWzbGaAq8TKSQnkqLvGq+NHOAlIKDFDQrQtM5adCeKSYkamupMIEiM8QD3SVjREARGdSbbxFJ4pxYfdiKsbSpipixMTFAgxDjzVGSDZF8teKv7ntRPZve5MaBgnkoR4/lA3YVBGMI0P+pQTLNlYEYQ5VX+FuI84wlKFrKsQrOWVV0nzomxVypW7y1L1Jo+jCE7AKTgHFrgCVVADddAAGDyDN/AOPrQXbaZ9al/z1oKWzxyDP9C+fwDBHKXA</latexit>
+X0
+iX1
+iY0
+jY1
+j
+X0
+iX1
+iX0
+jX1
+j
+...
+<latexit sha1_base64="fPR2BaX81+AQgNxqW0wiSUQhBEE=">AAACMXicbVDLTgIxFO3gC8fXqEs3jcTEFZkxBl0S3bDERGAMg5NOp0Cl86DtkBDCL7nxT4wbFhrj1p+wM4wJgqfpzck596a9x4sZFdI0Z1phbX1jc6u4re/s7u0fGIdHTRElHJMGjljEbQ8JwmhIGpJKRuyYExR4jLS8wW3qt0aECxqF93Ick06AeiHtUoykklyjZrv00YRpteCD+6R4Wi3oOPqiZWeW/Ws5Iz+SAjrDYYJ86KjjGiWzbGaAq8TKSQnkqLvGq+NHOAlIKDFDQrQtM5adCeKSYkamupMIEiM8QD3SVjREARGdSbbxFJ4pxYfdiKsbSpipixMTFAgxDjzVGSDZF8teKv7ntRPZve5MaBgnkoR4/lA3YVBGMI0P+pQTLNlYEYQ5VX+FuI84wlKFrKsQrOWVV0nzomxVypW7y1L1Jo+jCE7AKTgHFrgCVVADddAAGDyDN/AOPrQXbaZ9al/z1oKWzxyDP9C+fwDBHKXA</latexit>
+X0
+iX1
+iY0
+jY1
+j
+X0
+iX1
+iX0
+jX1
+j
+...
+2x3 Bose-Hubbard model
+2x3x2 qubit topology
+mapped to two qubits
+bosonic operator
+mapped to 4-qubit
+Pauli operators
+transform to
+Pauli gadgets
+	𝛼
+	𝛼
+<latexit sha1_base64="hlc/gy+TArOvzGy2ekqHfK7HqJo=">AAACBnicbVDLSgMxFL3js9bXqEsRgkVwVWZEqsuiG5cV7AP6GDJppk2beZhkhDJ05cZfceNCEbd+gzv/xsx0Ftp6INyTc+4luceNOJPKsr6NpeWV1bX1wkZxc2t7Z9fc22/IMBaE1knIQ9FysaScBbSumOK0FQmKfZfTpju+Tv3mAxWShcGdmkS06+NBwDxGsNKSYx7dO6xnoQ5Kq53VUX4f9WzHLFllKwNaJHZOSpCj5phfnX5IYp8GinAsZdu2ItVNsFCMcDotdmJJI0zGeEDbmgbYp7KbZGtM0YlW+sgLhT6BQpn6eyLBvpQT39WdPlZDOe+l4n9eO1beZTdhQRQrGpDZQ17MkQpRmgnqM0GJ4hNNMBFM/xWRIRaYKJ1cUYdgz6+8SBpnZbtSrtyel6pXeRwFOIRjOAUbLqAKN1CDOhB4hGd4hTfjyXgx3o2PWeuSkc8cwB8Ynz/LXJbM</latexit>
+q0
+iq1
+iq0
+jq1
+j
+<latexit sha1_base64="hlc/gy+TArOvzGy2ekqHfK7HqJo=">AAACBnicbVDLSgMxFL3js9bXqEsRgkVwVWZEqsuiG5cV7AP6GDJppk2beZhkhDJ05cZfceNCEbd+gzv/xsx0Ftp6INyTc+4luceNOJPKsr6NpeWV1bX1wkZxc2t7Z9fc22/IMBaE1knIQ9FysaScBbSumOK0FQmKfZfTpju+Tv3mAxWShcGdmkS06+NBwDxGsNKSYx7dO6xnoQ5Kq53VUX4f9WzHLFllKwNaJHZOSpCj5phfnX5IYp8GinAsZdu2ItVNsFCMcDotdmJJI0zGeEDbmgbYp7KbZGtM0YlW+sgLhT6BQpn6eyLBvpQT39WdPlZDOe+l4n9eO1beZTdhQRQrGpDZQ17MkQpRmgnqM0GJ4hNNMBFM/xWRIRaYKJ1cUYdgz6+8SBpnZbtSrtyel6pXeRwFOIRjOAUbLqAKN1CDOhB4hGd4hTfjyXgx3o2PWeuSkc8cwB8Ynz/LXJbM</latexit>
+q0
+iq1
+iq0
+jq1
+j
+<latexit sha1_base64="hlc/gy+TArOvzGy2ekqHfK7HqJo=">AAACBnicbVDLSgMxFL3js9bXqEsRgkVwVWZEqsuiG5cV7AP6GDJppk2beZhkhDJ05cZfceNCEbd+gzv/xsx0Ftp6INyTc+4luceNOJPKsr6NpeWV1bX1wkZxc2t7Z9fc22/IMBaE1knIQ9FysaScBbSumOK0FQmKfZfTpju+Tv3mAxWShcGdmkS06+NBwDxGsNKSYx7dO6xnoQ5Kq53VUX4f9WzHLFllKwNaJHZOSpCj5phfnX5IYp8GinAsZdu2ItVNsFCMcDotdmJJI0zGeEDbmgbYp7KbZGtM0YlW+sgLhT6BQpn6eyLBvpQT39WdPlZDOe+l4n9eO1beZTdhQRQrGpDZQ17MkQpRmgnqM0GJ4hNNMBFM/xWRIRaYKJ1cUYdgz6+8SBpnZbtSrtyel6pXeRwFOIRjOAUbLqAKN1CDOhB4hGd4hTfjyXgx3o2PWeuSkc8cwB8Ynz/LXJbM</latexit>
+q0
+iq1
+iq0
+jq1
+j
+<latexit sha1_base64="hlc/gy+TArOvzGy2ekqHfK7HqJo=">AAACBnicbVDLSgMxFL3js9bXqEsRgkVwVWZEqsuiG5cV7AP6GDJppk2beZhkhDJ05cZfceNCEbd+gzv/xsx0Ftp6INyTc+4luceNOJPKsr6NpeWV1bX1wkZxc2t7Z9fc22/IMBaE1knIQ9FysaScBbSumOK0FQmKfZfTpju+Tv3mAxWShcGdmkS06+NBwDxGsNKSYx7dO6xnoQ5Kq53VUX4f9WzHLFllKwNaJHZOSpCj5phfnX5IYp8GinAsZdu2ItVNsFCMcDotdmJJI0zGeEDbmgbYp7KbZGtM0YlW+sgLhT6BQpn6eyLBvpQT39WdPlZDOe+l4n9eO1beZTdhQRQrGpDZQ17MkQpRmgnqM0GJ4hNNMBFM/xWRIRaYKJ1cUYdgz6+8SBpnZbtSrtyel6pXeRwFOIRjOAUbLqAKN1CDOhB4hGd4hTfjyXgx3o2PWeuSkc8cwB8Ynz/LXJbM</latexit>
+q0
+iq1
+iq0
+jq1
+j
+Bose-Hubbard Hamiltonian
+GadIR
+(a) (b) (c) (d)
+<latexit sha1_base64="otN8qr259FzwVxB+zlQR3RTHKYY=">AAACP3icbVBNSwMxEM36bf2qevQyWARFLbsi6kUQvfSoYKvQrUs2m66p2eySzApl6T/z4l/w5tWLB0W8ejOtPfj1IOHlvRkm88JMCoOu++iMjI6NT0xOTZdmZufmF8qLSw2T5prxOktlqi9DargUitdRoOSXmeY0CSW/CG9O+v7FLddGpOocuxlvJTRWoi0YRSsF5UapFhTHtR4cwjYg+CZPgsKXVMWSg9iCDvh68OjBehiIKz+iccw1hEEHNvv3N0VsWMlnUYomKFfcqjsA/CXekFTIEKdB+cGPUpYnXCGT1Jim52bYKqhGwezwkp8bnlF2Q2PetFTRhJtWMdi/B2tWiaCdansUwkD93lHQxJhuEtrKhOK1+e31xf+8Zo7tg1YhVJYjV+xrUDuXgCn0w4RIaM5Qdi2hTAv7V2DXVFOGNvKSDcH7vfJf0tipenvVvbPdytHxMI4pskJWyTrxyD45IjVySuqEkTvyRF7Iq3PvPDtvzvtX6Ygz7FkmP+B8fAICO6yg</latexit>
+HBH=→t
+∑
+→i,j↑
+(b†
+ibj+b†
+jbi)+···
+Figure 2: Mapping a2×3Bose-Hubbard model to qubit Hamiltonian, and construct the corresponding GadIR.
+To understand how the topology frame is built, first we introduce
+the physical structure of a many-body system. We select the Bose-
+Hubbard model [28] as an example, which describes the interaction
+between boson particles. In the Bose-Hubbard model, the bosons are
+located on the sites of a lattice, and in this example we have a2× 3
+lattice as the physical structure. The Hamiltonian of Bose-Hubbard
+model is described as
+𝐻𝐵𝐻 =−𝑡
+∑︁
+⟨𝑖,𝑗⟩
+(𝑏†
+𝑖𝑏𝑗+𝑏†
+𝑗𝑏𝑖)+ 𝑈
+2
+∑︁
+𝑖
+𝑏†
+𝑖𝑏𝑖(𝑏†
+𝑖𝑏𝑖−1)−𝜇
+∑︁
+𝑖
+𝑏†
+𝑖𝑏𝑖.
+(6)
+Here in the𝐻𝐵𝐻 ,⟨𝑖,𝑗⟩ denotes a pair of neighboring sites of the
+lattice. For the site𝑖, we use𝑏†
+𝑖 to denote the bosonic creation, and
+𝑏𝑖 to denote bosonic annihilation at this site. From the Hamiltonian
+terms in Equation (6), we can notice that bosonic operators are only
+associated with neighboring bosons in an individual term, implying
+the locality of the model is critical information.
+Spatial Topology.The above bosonic Hamiltonian of Bose-Hubbard
+model is transformed to qubit Hamiltonian, via a boson-to-qubit
+mapping method [88, 112]. In this mapping, each boson, along with
+its creation and annihilation operators (𝑏†
+𝑖,𝑏𝑖), is mapped to two
+qubits (𝑞0
+𝑖,𝑞 1
+𝑖 ) in the qubit Hamiltonian model (Figure 2a). Hence,
+the2× 3bosonic Hamiltonian model is mapped to a2 × 3× 2qubit
+Hamiltonian model (Figure 2b). This 2×3×2 lattice of qubits is
+exactly the spatial topology information included in GadIR.
+Pauli Gadget.For the bosonic Hamiltonian terms in Equation (6),
+such as𝑏†
+𝑖𝑏𝑗 , are each mapped to a set of 4-qubit Pauli operators,
+such as𝑋 0
+𝑖𝑋 1
+𝑖𝑌 0
+𝑗𝑌 1
+𝑗 (Figure 2c). These Pauli operators are performed
+on𝑞0
+𝑖,𝑞 1
+𝑖,𝑞 0
+𝑗,𝑞 1
+𝑗 , which are the qubits derived from boson𝑖 and𝑗. The
+terms in the second line of Equation (6), such as𝑏†
+𝑖𝑏𝑖, are mapped to
+a set of 2-qubit Pauli operators performed on𝑞0
+𝑖,𝑞 1
+𝑖 . Consequently,
+we transform these Pauli operators into Pauli gadgets, as illustrated
+by the blue areas in Figure 2c. Such Pauli gadget representations
+are easily integrated into the frame of spatial topology, while their
+ZX-spiders can be attached to the qubit they perform on.
+In Figure 2d, when all the Pauli gadgets of qubit Hamiltonian are
+attached to the topology frame, we obtain the complete IR of this
+Bose-Hubbard model. Compared to conventional Pauli string-based
+IR [58, 68, 76],GadIR can reflect the locality of Hamiltonian
+operators,paving the way for the following optimizations in com-
+piler frontend and backend.
+3.2 GadIR Syntax
+We designed a concise IR syntax to represent the spatial topology
+and Pauli gadgets, adopting the data structures shown in Figure 3.
+The topology is an undirected graph with its nodes as the qubits.
+The Pauli gadgets contain two parts of information: (1) Pauli opera-
+tors (X, Y, Z) that compose the Pauli gadget, shown as the spiders
+in ZX-diagram. (2) The edges in spatial topology that are covered
+by this Pauli gadget. Specifically, an edge begin covered by a Pauli
+gadget is defined as follows: both adjacent nodes of the edge have a
+spider (Pauli operator) from this Pauli gadget. These covered edges
+serve as the critical information for group reduction method in
+Section 4. We emphasize that storing the information of covered
+edges is the main motivation for choosing Pauli gadget as the IR
+representation, instead of choosing the Pauli string.
+Pauli Gadget
+Paulioperators:
+[(Node[0], Pauli.Z), (Node[1], Pauli.X), 
+(Node[2], Pauli.Z), (Node[3], Pauli.X)]
+CoveredEdges:
+[Edge(0, 1), Edge(0, 2), 
+Edge(2, 3), Edge(1, 3)], 
+Parameter: 𝛼
+Pauli 
+Gadget
+…
+Spatial Topology
+Nodes: [0, 1, 2, 3]
+Edges: [(0, 1), (2, 3), (0, 2), (1, 3)]
+0 1
+2 3
+	𝛼
+0 1
+2 3
+Figure 3: GadIR syntax. Up: the spatial topology graph for
+Hamiltonian of many-body system model. Down: the Pauli
+gadgets corresponding to Hamiltonian terms, including their
+operators and the edges they cover on topology graph.
+3.3 A Motivating Example
+The preserved topology information in GadIR helps compilers to
+explore more chances of optimization. We explain the motivation
+of preserving spatial topology using an intuitive example shown in
+Figure 4. In this case, we apply the Paulihedral and GadIR methods
+to capture the opportunities of gate cancellation in a group of
+Hamiltonian terms. Note that here the Paulihedral method directly
+4
+
+===== PAGE 5 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+runs source code in [76], while the GadIR method runs the algorithm
+we describe in Section 4.3. Based on the topological path 𝑞2→
+𝑞1 and𝑞2→𝑞 3, GadIR captures more gate cancellation chances
+than Paulihedral, gaining more CNOT reductions. The example
+shows that topology-preserving strategy outperforms Paulihedral’s
+pairwise ordering strategy on general gate canceling optimization.
+Furthermore, with the group reduction method designed for GadIR
+(Section 4), the topology information can be fully utilized.
+Z I Z I Z
+Z Z I I Z
+spatial
+topology
+0 1
+23
+Z1Z2
+Z2Z3
+Z0Z1Z2
+Z0Z2Z3
+Z0Z1Z2Z3
+Paulihedral CNOTs:		18	→14
+I I Z Z Z
+I Z I Z Z
+Z Z Z Z Z
+GadIR CNOTs:		18	→10
+q2→	q3 q2→	q1
+q0
+q1
+q2
+q3
+I Z I Z Z
+I I Z Z Z
+Z Z Z Z Z
+Hamiltonian
+terms
+q0
+q1
+q2
+q3
+Figure 4: Comparison of Paulihedral and GadIR on the ability
+of capturing gate cancellation opportunities. On the left are
+the Hamiltonian and its spatial topology. On the right are the
+sequences of Pauli terms ordered by Paulihedral or GadIR
+approach, while the gate cancellations are highlighted in red.
+The results show that GadIR gains more CNOT reductions.
+3.4 Generating IR from Physical Models
+We target all canonical models in quantum many-body physics [17,
+32], with other specialized models often reducible to or expressible
+within them. These models are illustrated in Figure 5.
+1. Thespin-qubit models[ 97] (e.g.Heisenberg, Ising) define
+their physical interactions directly on qubit Hamiltonian, so the
+topology information is identical to the physical topology of spin-
+qubits. The Pauli operators are derived from spin couplings.
+2. Thefermionic models[ 121] define their interactions on local
+fermionic modes, and we utilizeBravyi-Kitaevtransformation [ 11]
+to map them into aFenwick tree[ 29] structure of qubits. For a
+fermion mode𝑖, its creation operator𝑓†
+𝑖 and annihilation operator
+𝑓𝑖 are generally mapped to a subgraph of the Fenwick tree [41]. We
+merge the set of edges in the Fenwick tree 𝐸𝑡𝑟𝑒𝑒 (shown as black
+lines in Figure 5b) with the set of edges in original fermion model
+𝐸𝑚𝑜𝑑𝑒𝑙 (partly shown as orange lines in Figure 5b), resulting in
+𝐸𝑡𝑟𝑒𝑒∪𝐸𝑚𝑜𝑑𝑒𝑙 as the spatial topology in the IR.
+3. Thebosonic models[ 38] are typically located on the sites of a
+lattice, and are mapped to Hamiltonian terms via linear method [88].
+We use the mapping method described in the example of Section 3.1.
+4. Thelattice gauge theory models[ 19] arrange thematter
+fieldson the sites of a 𝑥×𝑦 lattice [19]. As shown in Figure 5d,
+their interactions, namely Z2 gauge fields, are mapped to qubits,
+which is itself a centered square lattice (gray nodes and edges). The
+electric chargeormagnetic fluxinteractions are transformed into
+Pauli gadgets acting on squares in the topology (Pauli gadgets).
+	"	" 	"	" 	"	"
+	" 	"	" 	"
+	# 	#	" 	"
+(a) (b)
+(c) (d)
+	" 	"
+	"
+	"	"
+	"
+	# 	#
+	#
+	#
+	#
+	#
+	#	#
+	#
+Z2 gauge 
+fields
+electric 
+charge
+magnetic 
+flux
+Fenwick
+tree
+Edges from 
+fermionic model
+Spin
+couplings
+Figure 5: Examples of GadIR for (a) spin-qubit, (b) fermionic,
+(c) bosonic and (d) lattice gauge theory models.
+4 Compiler Frontend Design
+4.1 Preliminaries: Gadget Reduction
+In this section, we introduce our method to optimize the Pauli
+gadgets in GadIR, thus reducing the Hamiltonian terms. We start
+with the Pauli gadget reduction [ 21]. When specific gates pass
+through two spiders of a Pauli gadget, and these two spiders are in
+specific patterns, one of the spiders will be removed:
+... 𝛼
+0
+1 =
+... 𝛼
+0
+1 (7)
+In Equation (7), when a CNOT passes the spiders with Pauli opera-
+tors𝑍0𝑍1, one of the spiders is eliminated, turning into operators
+𝐼0𝑍1. From a mathematical aspect, this is equivalent as transforming
+[CNOT0,1·𝑍 0𝑍1] to[𝐼0𝑍1·CNOT 0,1]. In this transforming, the Pauli
+operator𝑍0 is reduced. By replacing the CNOT here with other
+gate sets, we can reduce different Pauli operators.
+4.2 Gadget Group Reduction
+In Section 3 we analyze the locality of Hamiltonian in quantum
+many-body systems, so we can utilize the locality characterization
+to maximally reduce Pauli gadgets. In our compiler frontend, we
+introduce an optimization method based on GadIR, which is thegad-
+get group reduction. When a gate set passes through multiple pairs of
+specific spiders pattern (from multiple gadgets) sequentially, one spi-
+der in each pair gets eliminated. We provide an example in Figure 6c,
+where a group of Pauli gadgets having[𝑍𝑍,𝑍𝑋,𝑋𝑌,𝑌𝑌] spiders on
+qubit𝑞𝑖 and𝑞𝑗 . When we pass a gate set𝐺=[CNOT 𝑖,𝑗·R𝑍(𝜋
+2)𝑗]
+through these spiders, one of the spiders is removed in each gadget,
+turning into[𝐼𝑍,𝐼𝑋,𝑋𝐼,𝑌𝐼].
+Here we explain the details of gadget group reduction step by
+step, illustrated in Figure 6c. In step1, we add two adjoint gate sets
+𝐺=[CNOT 𝑖,𝑗·R𝑍(𝜋
+2)𝑗] and[𝐺† =R𝑍(−𝜋
+2)𝑗·CNOT𝑖,𝑗] on the left
+of gadgets group. Since𝐺†·𝐺=𝐼 , adding them does not change the
+5
+
+===== PAGE 6 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+→ω
+2
+ω
+2
+...ω0 ...ω1 ...→ω2 ...→ω3
+1
+→ω
+2
+ω
+2
+...ω0 ...ω1 ...ω2 ...ω3
+1
+1. Add adjacent
+gate sets
+𝑞!
+𝑞"
+3. All gadgets are reduced
+𝑞!
+𝑞"
+2. Pass through
+{	𝑍!𝑍"	…,𝛼$};
+{	𝑍!𝑋"	…,𝛼%};
+{	𝑋!𝑌"	…,𝛼&};
+{	𝑌!𝑌"	…,𝛼’};
+No gate cancellation 
+chances 
+⛔
+(a) Gate Cancellation [39,51]
+(c) Gadget group reduction
+(b) Clifford extraction [56]
+P ZZ ZX XY YY
+P’ IZ ZX YZ XZ
+Only part of 
+Pauli operators 
+is reduced
+<latexit sha1_base64="Vnx+yC0pkGbl1tBDGRt7xKlm7zc=">AAAB8HicbVBNSwMxEJ2tX7V+VT16CRbBU9kVqR6LHvRYwX5Iu5ZsNtuGJtklyQpl6a/w4kERr/4cb/4b03YP2vpg4PHeDDPzgoQzbVz32ymsrK6tbxQ3S1vbO7t75f2Dlo5TRWiTxDxWnQBrypmkTcMMp51EUSwCTtvB6Hrqt5+o0iyW92acUF/ggWQRI9hY6eHmsRfiwYCqfrniVt0Z0DLxclKBHI1++asXxiQVVBrCsdZdz02Mn2FlGOF0UuqlmiaYjPCAdi2VWFDtZ7ODJ+jEKiGKYmVLGjRTf09kWGg9FoHtFNgM9aI3Ff/zuqmJLv2MySQ1VJL5oijlyMRo+j0KmaLE8LElmChmb0VkiBUmxmZUsiF4iy8vk9ZZ1atVa3fnlfpVHkcRjuAYTsGDC6jDLTSgCQQEPMMrvDnKeXHenY95a8HJZw7hD5zPH5abkEo=</latexit>
+G†
+<latexit sha1_base64="8DsWlPjpfee24a6GpeHlh2caBls=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKeyKRI9BD3pMwDwgWcLspDcZMzu7zMwKIeQLvHhQxKuf5M2/cZLsQRMLGoqqbrq7gkRwbVz328mtrW9sbuW3Czu7e/sHxcOjpo5TxbDBYhGrdkA1Ci6xYbgR2E4U0igQ2ApGtzO/9YRK81g+mHGCfkQHkoecUWOl+l2vWHLL7hxklXgZKUGGWq/41e3HLI1QGiao1h3PTYw/ocpwJnBa6KYaE8pGdIAdSyWNUPuT+aFTcmaVPgljZUsaMld/T0xopPU4CmxnRM1QL3sz8T+vk5rw2p9wmaQGJVssClNBTExmX5M+V8iMGFtCmeL2VsKGVFFmbDYFG4K3/PIqaV6UvUq5Ur8sVW+yOPJwAqdwDh5cQRXuoQYNYIDwDK/w5jw6L86787FozTnZzDH8gfP5A5+HjNY=</latexit>
+G
+<latexit sha1_base64="Vnx+yC0pkGbl1tBDGRt7xKlm7zc=">AAAB8HicbVBNSwMxEJ2tX7V+VT16CRbBU9kVqR6LHvRYwX5Iu5ZsNtuGJtklyQpl6a/w4kERr/4cb/4b03YP2vpg4PHeDDPzgoQzbVz32ymsrK6tbxQ3S1vbO7t75f2Dlo5TRWiTxDxWnQBrypmkTcMMp51EUSwCTtvB6Hrqt5+o0iyW92acUF/ggWQRI9hY6eHmsRfiwYCqfrniVt0Z0DLxclKBHI1++asXxiQVVBrCsdZdz02Mn2FlGOF0UuqlmiaYjPCAdi2VWFDtZ7ODJ+jEKiGKYmVLGjRTf09kWGg9FoHtFNgM9aI3Ff/zuqmJLv2MySQ1VJL5oijlyMRo+j0KmaLE8LElmChmb0VkiBUmxmZUsiF4iy8vk9ZZ1atVa3fnlfpVHkcRjuAYTsGDC6jDLTSgCQQEPMMrvDnKeXHenY95a8HJZw7hD5zPH5abkEo=</latexit>
+G†
+<latexit sha1_base64="8DsWlPjpfee24a6GpeHlh2caBls=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKeyKRI9BD3pMwDwgWcLspDcZMzu7zMwKIeQLvHhQxKuf5M2/cZLsQRMLGoqqbrq7gkRwbVz328mtrW9sbuW3Czu7e/sHxcOjpo5TxbDBYhGrdkA1Ci6xYbgR2E4U0igQ2ApGtzO/9YRK81g+mHGCfkQHkoecUWOl+l2vWHLL7hxklXgZKUGGWq/41e3HLI1QGiao1h3PTYw/ocpwJnBa6KYaE8pGdIAdSyWNUPuT+aFTcmaVPgljZUsaMld/T0xopPU4CmxnRM1QL3sz8T+vk5rw2p9wmaQGJVssClNBTExmX5M+V8iMGFtCmeL2VsKGVFFmbDYFG4K3/PIqaV6UvUq5Ur8sVW+yOPJwAqdwDh5cQRXuoQYNYIDwDK/w5jw6L86787FozTnZzDH8gfP5A5+HjNY=</latexit>
+G
+Figure 6: (c) Gadget reduction compared with (a) gate cancel-
+lation [58, 76] and (b) Clifford extraction [81].
+circuit logic. Then in step2, we pass𝐺 from left to right, through
+these gadgets. As a result in step3, these gadgets are reduced based
+on gate set passing rules, and the two gate sets𝐺† and𝐺 end up
+on each side of gadgets group. Generally, removing one spider in
+the gadget corresponds to reducing one Pauli operator from the
+Hamiltonian term, equivalent to reducing two CNOTs in compiled
+circuit [76]. Hence, applying reduction to a group of𝑛 gadgets can
+reduce 2𝑛−2 CNOTs at a time, since two extra CNOTs are induced
+from𝐺† and𝐺.
+A Full Set of Reduction Rules.We derive the group reduction rules
+of Pauli gadgets from the commutation rules of Pauli gadgets [21].
+In the last paragraph we show passing a gate set𝐺 through multiple
+gadgets to remove their spiders and reduce the gadgets. Specifically,
+when we customize the gate sets𝐺 as different combinations of
+the gates in{CNOT,H,R 𝑋(𝜋
+2),R𝑍(𝜋
+2)}, it reduces different pat-
+terns of Pauli gadgets. We specify the correspondence between
+gate set𝐺 and reducible gadgets in Table 1. The reduction rules
+are exhaustive under a Clifford model: We enumerate all24 2 local-
+Clifford dressings of both CNOT directions, Pauli signs, and qubit-
+order reversal. The model yields exactly the six canonical reducible
+Pauli-pair classes, as shown in Table 1.
+Comparison with Prior Methods.Shown in Figure 6a, thegate
+cancellationtechniques (e.g. Paulihedral [ 76] and Tetris [58]) only
+cancel the CNOTs from identical parts of Pauli strings. In contrast,
+our group reduction eliminates different patterns of Pauli opera-
+tors simultaneously. Shown in Figure 6b,Clifford extractionmethod
+in QuCLEAR [81] can only reduce a limited range of Pauli oper-
+ator patterns (Figure 6b). Specifically,Clifford extractionachieves
+the same reduction result as the first row of Table 1 (colored in
+Table 1: Reduction rules for Pauli gadgets.
+Gate Set𝐺 Reducible Gadget Patterns
+to Pass Through (−) = Coefficient Negation
+𝐶𝑁𝑂𝑇𝑖,𝑗 𝑍𝑖𝑍𝑗, 𝑍𝑖𝑌𝑗, 𝑋𝑖𝑋𝑗, 𝑌𝑖𝑋𝑗
+𝐻𝑖·𝐶𝑁𝑂𝑇 𝑖,𝑗 𝑋𝑖𝑍𝑗, 𝑋𝑖𝑌𝑗, 𝑍𝑖𝑋𝑗, 𝑌𝑖𝑋𝑗(−)
+𝐻𝑗·𝐶𝑁𝑂𝑇 𝑖,𝑗 𝑍𝑖𝑋𝑗, 𝑍𝑖𝑌𝑗(−), 𝑋𝑖𝑍𝑗, 𝑌𝑖𝑍𝑗
+𝑅𝑍(𝜋
+2)𝑗·𝐶𝑁𝑂𝑇 𝑖,𝑗 𝑍𝑖𝑍𝑗, 𝑍𝑖𝑋𝑗, 𝑋𝑖𝑌𝑗, 𝑌𝑖𝑌𝑗
+𝑅𝑋(𝜋
+2)𝑖·𝐶𝑁𝑂𝑇 𝑖,𝑗 𝑌𝑖𝑍𝑗, 𝑌𝑖𝑌𝑗, 𝑋𝑖𝑋𝑗, 𝑍𝑖𝑋𝑗(−)
+𝑅𝑋(𝜋
+2)𝑖·𝑅𝑍(𝜋
+2)𝑗·𝐶𝑁𝑂𝑇 𝑖,𝑗 𝑌𝑖𝑋𝑗(−),𝑌𝑖𝑍𝑗,𝑋𝑖𝑌𝑗(−),𝑍𝑖𝑌𝑗
+gray), but neglects other reducible patterns. In contrast, our re-
+duction method coversall combinations of Pauli operators.
+Previous works [21, 22] apply isolatedgadget reductionon Varia-
+tional Quantum Eigensolver (VQE) circuits, but their method fails to
+preserve the spatial-topology of Hamiltonian, thus losing chances
+of dedicated reductions on groups of gadgets. Also, the naturally
+weak-locality characterization of VQE leads to limited reduction.
+Insight with Hamiltonian Locality.The insight forgadget group
+reductionderives from the locality of Hamiltonian in quantum
+many-body systems. As we observed from Figure 2, an edge in
+the spatial topology graph is covered by multiple Pauli gadgets,
+providing an ideal opportunity to reduce these gadgets simultane-
+ously using the gadget group reduction. When the Hamiltonian
+locality of a physical model is stronger, the group of reducible Pauli
+gadgets is larger, thus the optimization will be more effective. In
+Section 7.7, we give definitions about Hamiltonian locality, and
+analyze its impact on GadIR performance.
+4.3 Algorithm for Gadget Group Reduction
+We develop an algorithm to systematically apply reductions on the
+Hamiltonian of a general quantum many-body system, while trying
+to find the maximal reduction with the help of topology information.
+Our algorithm is based on a tree structure, while its root stores
+GadIR of the original model. The whole procedure corresponds to
+recursively growing the tree from its root layer by layer, and each
+reducible group of gadgets with a sub-topology are stored in the
+nodes, as illustrated in Figure 7. We define two operations for tree
+growth, which aregroups dividingandnode updating.
+7
+6
+3
+2
+ 10
+11
+0
+1
+4
+5
+Root: 
+original GadIR 
+of model
+reduction 
+𝐺= H(6) ⋅ 
+CNOT(6,7)
+reduction 
+𝐺= 
+CNOT(2,3)
+reduction 
+𝐺= RX(!
+")(10) ⋅ 
+CNOT(10,11)
+divide dividedivide
+reduction 
+𝐺= Rz(!
+")(5) 
+⋅ CNOT(4,5)
+reduction 
+𝐺= 
+CNOT(0,1)
+divide divide
+…
+…
+…
+……
+𝑇𝑜𝑝𝑜𝑙𝑜𝑔𝑦
+Figure 7: The gadget reduction tree.
+6
+
+===== PAGE 7 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Groups Dividing:Given a set of Pauli gadgets with spatial
+topology, we divide them into multiple groups, while gadgets in
+the same group can be reduced by the same gate set𝐺. We use a
+greedy search to divide this set of gadgets into groups. Specifically,
+we iterate over all the edges⟨𝑖,𝑗⟩ in spatial topology𝐺𝑡𝑜𝑝𝑜 , and for
+each⟨𝑖,𝑗⟩ we iterate over all the𝐺 in Table 1, counting the number
+of reducible gadgets for each 𝐺. Throughout the iterations, we
+select the largest subset of gadgets which are reducible by a specific
+𝐺 on specific topological edge, e.g.𝐺=CNOT(2,3) . This largest
+subset forms a new group, and we keep applying this operation to
+the other gadgets, until all are grouped.
+Reduction and Updating:For a node, when all its gadgets are
+divided into groups, we spawn each of these groups as a child of this
+node. Hence, each child stores: 1 the GadIR of one divided group
+from its parent; 2 the specific gate set𝐺 that has been selected to
+reduce all gadgets in this group. Then we use this𝐺 to reduce all
+gadgets, and update them into new reduced gadgets by eliminating
+their spiders (following rules in Table 1).
+As illustrated in Figure 7, starting from the root, we keep apply-
+ing these two operations. When a node cannot find any reducible
+group of gadgets, it reaches the terminating condition and becomes
+a leaf node. The complete tree of GadIR is sent to compiler backend
+for further optimization.
+5 Compiler Backend Design
+Compared to Paulihedral [76], 2QAN [68] and Tetris [58] which
+tailor their Trotterization and scheduling algorithms for supercon-
+ducting architecture, we expect that our compiler can perform
+optimization in these modules for arbitrary hardware architectures.
+To achieve the goal, we design the Trotterization and scheduling
+algorithms directly on GadIR, which enable target-independent
+optimization. We search commutation information between gad-
+gets to schedule their simultaneous execution, thus enhancing par-
+allelization and reducing circuit depth. The compiler backend is
+implemented with PyZX [64], as the form of a ZX-diagram.
+5.1 Trotterization
+In the compiler frontend, GadIR serves as the representation of
+the Hamiltonian. To execute the Hamiltonians on a quantum com-
+puter, we transform them into a ZX-diagram using theSuzuki-
+Trottermethod, as mentioned in Section 2.1. In this procedure
+which is calledTrotterization, each Hamiltonian term is individu-
+ally extracted as ZX-diagram elements and appended to this circuit.
+Specifically for GadIR, each Hamiltonian term corresponds to a leaf
+node in the gadget reduction tree.
+Moreover, we have to add those extra gate sets𝐺 used for gadget
+reductions, which are stored in each node of the tree. Based on the
+gadget reduction procedure we introduced in Section 4.2, applying
+reduction on a gadget group will insert adjoint gate sets𝐺† and𝐺
+on each side of the gadgets. For a reduction tree that recursively
+applies group reduction to grow the nodes, correspondingly in the
+Trotterization circuit, the gate sets𝐺 are recursively wrapped on
+both sides of the leaf-nodes (see Figure 8).
+Leaf Node
+(gadgets)
+… ………
+non-Leaf 
+Node
+…
+NodesinLayer1
+NodesinLayer(n-1)LeavesinLayern
+<latexit sha1_base64="Vnx+yC0pkGbl1tBDGRt7xKlm7zc=">AAAB8HicbVBNSwMxEJ2tX7V+VT16CRbBU9kVqR6LHvRYwX5Iu5ZsNtuGJtklyQpl6a/w4kERr/4cb/4b03YP2vpg4PHeDDPzgoQzbVz32ymsrK6tbxQ3S1vbO7t75f2Dlo5TRWiTxDxWnQBrypmkTcMMp51EUSwCTtvB6Hrqt5+o0iyW92acUF/ggWQRI9hY6eHmsRfiwYCqfrniVt0Z0DLxclKBHI1++asXxiQVVBrCsdZdz02Mn2FlGOF0UuqlmiaYjPCAdi2VWFDtZ7ODJ+jEKiGKYmVLGjRTf09kWGg9FoHtFNgM9aI3Ff/zuqmJLv2MySQ1VJL5oijlyMRo+j0KmaLE8LElmChmb0VkiBUmxmZUsiF4iy8vk9ZZ1atVa3fnlfpVHkcRjuAYTsGDC6jDLTSgCQQEPMMrvDnKeXHenY95a8HJZw7hD5zPH5abkEo=</latexit>
+G†
+<latexit sha1_base64="8DsWlPjpfee24a6GpeHlh2caBls=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKeyKRI9BD3pMwDwgWcLspDcZMzu7zMwKIeQLvHhQxKuf5M2/cZLsQRMLGoqqbrq7gkRwbVz328mtrW9sbuW3Czu7e/sHxcOjpo5TxbDBYhGrdkA1Ci6xYbgR2E4U0igQ2ApGtzO/9YRK81g+mHGCfkQHkoecUWOl+l2vWHLL7hxklXgZKUGGWq/41e3HLI1QGiao1h3PTYw/ocpwJnBa6KYaE8pGdIAdSyWNUPuT+aFTcmaVPgljZUsaMld/T0xopPU4CmxnRM1QL3sz8T+vk5rw2p9wmaQGJVssClNBTExmX5M+V8iMGFtCmeL2VsKGVFFmbDYFG4K3/PIqaV6UvUq5Ur8sVW+yOPJwAqdwDh5cQRXuoQYNYIDwDK/w5jw6L86787FozTnZzDH8gfP5A5+HjNY=</latexit>
+G
+<latexit sha1_base64="Vnx+yC0pkGbl1tBDGRt7xKlm7zc=">AAAB8HicbVBNSwMxEJ2tX7V+VT16CRbBU9kVqR6LHvRYwX5Iu5ZsNtuGJtklyQpl6a/w4kERr/4cb/4b03YP2vpg4PHeDDPzgoQzbVz32ymsrK6tbxQ3S1vbO7t75f2Dlo5TRWiTxDxWnQBrypmkTcMMp51EUSwCTtvB6Hrqt5+o0iyW92acUF/ggWQRI9hY6eHmsRfiwYCqfrniVt0Z0DLxclKBHI1++asXxiQVVBrCsdZdz02Mn2FlGOF0UuqlmiaYjPCAdi2VWFDtZ7ODJ+jEKiGKYmVLGjRTf09kWGg9FoHtFNgM9aI3Ff/zuqmJLv2MySQ1VJL5oijlyMRo+j0KmaLE8LElmChmb0VkiBUmxmZUsiF4iy8vk9ZZ1atVa3fnlfpVHkcRjuAYTsGDC6jDLTSgCQQEPMMrvDnKeXHenY95a8HJZw7hD5zPH5abkEo=</latexit>
+G†
+<latexit sha1_base64="8DsWlPjpfee24a6GpeHlh2caBls=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKeyKRI9BD3pMwDwgWcLspDcZMzu7zMwKIeQLvHhQxKuf5M2/cZLsQRMLGoqqbrq7gkRwbVz328mtrW9sbuW3Czu7e/sHxcOjpo5TxbDBYhGrdkA1Ci6xYbgR2E4U0igQ2ApGtzO/9YRK81g+mHGCfkQHkoecUWOl+l2vWHLL7hxklXgZKUGGWq/41e3HLI1QGiao1h3PTYw/ocpwJnBa6KYaE8pGdIAdSyWNUPuT+aFTcmaVPgljZUsaMld/T0xopPU4CmxnRM1QL3sz8T+vk5rw2p9wmaQGJVssClNBTExmX5M+V8iMGFtCmeL2VsKGVFFmbDYFG4K3/PIqaV6UvUq5Ur8sVW+yOPJwAqdwDh5cQRXuoQYNYIDwDK/w5jw6L86787FozTnZzDH8gfP5A5+HjNY=</latexit>
+G
+𝑘 𝑘
+𝑖 𝑖
+<latexit sha1_base64="8DsWlPjpfee24a6GpeHlh2caBls=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKeyKRI9BD3pMwDwgWcLspDcZMzu7zMwKIeQLvHhQxKuf5M2/cZLsQRMLGoqqbrq7gkRwbVz328mtrW9sbuW3Czu7e/sHxcOjpo5TxbDBYhGrdkA1Ci6xYbgR2E4U0igQ2ApGtzO/9YRK81g+mHGCfkQHkoecUWOl+l2vWHLL7hxklXgZKUGGWq/41e3HLI1QGiao1h3PTYw/ocpwJnBa6KYaE8pGdIAdSyWNUPuT+aFTcmaVPgljZUsaMld/T0xopPU4CmxnRM1QL3sz8T+vk5rw2p9wmaQGJVssClNBTExmX5M+V8iMGFtCmeL2VsKGVFFmbDYFG4K3/PIqaV6UvUq5Ur8sVW+yOPJwAqdwDh5cQRXuoQYNYIDwDK/w5jw6L86787FozTnZzDH8gfP5A5+HjNY=</latexit>
+G𝑗
+<latexit sha1_base64="Vnx+yC0pkGbl1tBDGRt7xKlm7zc=">AAAB8HicbVBNSwMxEJ2tX7V+VT16CRbBU9kVqR6LHvRYwX5Iu5ZsNtuGJtklyQpl6a/w4kERr/4cb/4b03YP2vpg4PHeDDPzgoQzbVz32ymsrK6tbxQ3S1vbO7t75f2Dlo5TRWiTxDxWnQBrypmkTcMMp51EUSwCTtvB6Hrqt5+o0iyW92acUF/ggWQRI9hY6eHmsRfiwYCqfrniVt0Z0DLxclKBHI1++asXxiQVVBrCsdZdz02Mn2FlGOF0UuqlmiaYjPCAdi2VWFDtZ7ODJ+jEKiGKYmVLGjRTf09kWGg9FoHtFNgM9aI3Ff/zuqmJLv2MySQ1VJL5oijlyMRo+j0KmaLE8LElmChmb0VkiBUmxmZUsiF4iy8vk9ZZ1atVa3fnlfpVHkcRjuAYTsGDC6jDLTSgCQQEPMMrvDnKeXHenY95a8HJZw7hD5zPH5abkEo=</latexit>
+G†
+𝑗
+<latexit sha1_base64="Vnx+yC0pkGbl1tBDGRt7xKlm7zc=">AAAB8HicbVBNSwMxEJ2tX7V+VT16CRbBU9kVqR6LHvRYwX5Iu5ZsNtuGJtklyQpl6a/w4kERr/4cb/4b03YP2vpg4PHeDDPzgoQzbVz32ymsrK6tbxQ3S1vbO7t75f2Dlo5TRWiTxDxWnQBrypmkTcMMp51EUSwCTtvB6Hrqt5+o0iyW92acUF/ggWQRI9hY6eHmsRfiwYCqfrniVt0Z0DLxclKBHI1++asXxiQVVBrCsdZdz02Mn2FlGOF0UuqlmiaYjPCAdi2VWFDtZ7ODJ+jEKiGKYmVLGjRTf09kWGg9FoHtFNgM9aI3Ff/zuqmJLv2MySQ1VJL5oijlyMRo+j0KmaLE8LElmChmb0VkiBUmxmZUsiF4iy8vk9ZZ1atVa3fnlfpVHkcRjuAYTsGDC6jDLTSgCQQEPMMrvDnKeXHenY95a8HJZw7hD5zPH5abkEo=</latexit>
+G†
+1
+<latexit sha1_base64="Vnx+yC0pkGbl1tBDGRt7xKlm7zc=">AAAB8HicbVBNSwMxEJ2tX7V+VT16CRbBU9kVqR6LHvRYwX5Iu5ZsNtuGJtklyQpl6a/w4kERr/4cb/4b03YP2vpg4PHeDDPzgoQzbVz32ymsrK6tbxQ3S1vbO7t75f2Dlo5TRWiTxDxWnQBrypmkTcMMp51EUSwCTtvB6Hrqt5+o0iyW92acUF/ggWQRI9hY6eHmsRfiwYCqfrniVt0Z0DLxclKBHI1++asXxiQVVBrCsdZdz02Mn2FlGOF0UuqlmiaYjPCAdi2VWFDtZ7ODJ+jEKiGKYmVLGjRTf09kWGg9FoHtFNgM9aI3Ff/zuqmJLv2MySQ1VJL5oijlyMRo+j0KmaLE8LElmChmb0VkiBUmxmZUsiF4iy8vk9ZZ1atVa3fnlfpVHkcRjuAYTsGDC6jDLTSgCQQEPMMrvDnKeXHenY95a8HJZw7hD5zPH5abkEo=</latexit>
+G†
+2
+<latexit sha1_base64="8DsWlPjpfee24a6GpeHlh2caBls=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKeyKRI9BD3pMwDwgWcLspDcZMzu7zMwKIeQLvHhQxKuf5M2/cZLsQRMLGoqqbrq7gkRwbVz328mtrW9sbuW3Czu7e/sHxcOjpo5TxbDBYhGrdkA1Ci6xYbgR2E4U0igQ2ApGtzO/9YRK81g+mHGCfkQHkoecUWOl+l2vWHLL7hxklXgZKUGGWq/41e3HLI1QGiao1h3PTYw/ocpwJnBa6KYaE8pGdIAdSyWNUPuT+aFTcmaVPgljZUsaMld/T0xopPU4CmxnRM1QL3sz8T+vk5rw2p9wmaQGJVssClNBTExmX5M+V8iMGFtCmeL2VsKGVFFmbDYFG4K3/PIqaV6UvUq5Ur8sVW+yOPJwAqdwDh5cQRXuoQYNYIDwDK/w5jw6L86787FozTnZzDH8gfP5A5+HjNY=</latexit>
+G1
+<latexit sha1_base64="8DsWlPjpfee24a6GpeHlh2caBls=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKeyKRI9BD3pMwDwgWcLspDcZMzu7zMwKIeQLvHhQxKuf5M2/cZLsQRMLGoqqbrq7gkRwbVz328mtrW9sbuW3Czu7e/sHxcOjpo5TxbDBYhGrdkA1Ci6xYbgR2E4U0igQ2ApGtzO/9YRK81g+mHGCfkQHkoecUWOl+l2vWHLL7hxklXgZKUGGWq/41e3HLI1QGiao1h3PTYw/ocpwJnBa6KYaE8pGdIAdSyWNUPuT+aFTcmaVPgljZUsaMld/T0xopPU4CmxnRM1QL3sz8T+vk5rw2p9wmaQGJVssClNBTExmX5M+V8iMGFtCmeL2VsKGVFFmbDYFG4K3/PIqaV6UvUq5Ur8sVW+yOPJwAqdwDh5cQRXuoQYNYIDwDK/w5jw6L86787FozTnZzDH8gfP5A5+HjNY=</latexit>
+G2
+Pass-Through 
+Gate Set
+<latexit sha1_base64="8DsWlPjpfee24a6GpeHlh2caBls=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKeyKRI9BD3pMwDwgWcLspDcZMzu7zMwKIeQLvHhQxKuf5M2/cZLsQRMLGoqqbrq7gkRwbVz328mtrW9sbuW3Czu7e/sHxcOjpo5TxbDBYhGrdkA1Ci6xYbgR2E4U0igQ2ApGtzO/9YRK81g+mHGCfkQHkoecUWOl+l2vWHLL7hxklXgZKUGGWq/41e3HLI1QGiao1h3PTYw/ocpwJnBa6KYaE8pGdIAdSyWNUPuT+aFTcmaVPgljZUsaMld/T0xopPU4CmxnRM1QL3sz8T+vk5rw2p9wmaQGJVssClNBTExmX5M+V8iMGFtCmeL2VsKGVFFmbDYFG4K3/PIqaV6UvUq5Ur8sVW+yOPJwAqdwDh5cQRXuoQYNYIDwDK/w5jw6L86787FozTnZzDH8gfP5A5+HjNY=</latexit>
+G
+Figure 8: Trotterization: from gadget tree to ZX-diagram.
+5.2 Scheduling
+We arrange the time sequence of these leaf-nodes in Trotterization
+ZX-diagram via a scheduling method, as shown in Figure 9. This
+method relies on the topology subset information in each node
+of gadget reduction tree. Looking into each node of Figure 7, we
+can observe that each node and its descendants only involve a
+certain subset of the whole topology, and only perform operations
+on the qubits in this subset. If the two subsets of two nodes have
+no intersection, they and their descendants are fully commutative
+with each other, so they can be scheduled to execute in parallel.
+Hence we propose our scheduling strategy in Figure 9: starting
+from the root of reduction tree, in each node we store the subset
+information, which only contains the indices of qubits within this
+topology subset. We accumulate the nodes from a layer (and from
+same parent) into groups, while in each group the subsets of nodes
+have no intersecting qubits. Such accumulations are repeatedly ap-
+plied until all nodes including leaves are merged into commutative
+group. When we perform Trotterization, the nodes within same
+commutative group are arranged in the same layer of ZX-diagram.
+Overall, our scheduling method exploits the parallelization of com-
+mutative groups in GadIR.
+5.3 Hardware-Native Instruction Synthesis
+Our final step is to synthesize native quantum programs specifically
+for each hardware architecture. In this step, the spatial topology
+information that is preserved in GadIR is used for: 1. Assisting qubit
+initial placement for SC and Neutral-Atom; 2. Guiding ZX-diagram
+synthesis sequence for MBQC and FTQC.
+{6,7,8}
+{0,1,2,3,4,5}
+{1,2}
+{2,3}
+{0,1}
+Subset qubits =
+{0,1,…,n}
+Subset 
+qubits={0,
+1,2,3,4,5}
+Subset 
+qubits =
+{6,7,8}
+{1,
+3,7
+,8}
+{2,3,
+4,5}
+…
+divide divide
+Subset
+qubits 
+= {0,1}
+… ……
+Subset
+qubits 
+= {2,3}
+Subset
+qubits 
+= {1,2}
+Subset
+qubits 
+= {3,4}
+{3,4}
+Schedule
+Commutative
+Group
+Find Commutative Group:
+Figure 9: Scheduling: parallelizing the commutative groups.
+7
+
+===== PAGE 8 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+Superconducting.First, we extract the ZX-diagram into quantum
+circuit via the method described in [ 27]. Then, for qubit initial
+placement, we integrate a graph-based approach utilizing topology
+information from GadIR [4, 105]. Specifically, we map the GadIR
+topology to a subgraph of the physical qubit coupling graph, while
+the graph edit distance (GED) between these two graphs is minimal.
+The GED calculation uses the tool provided in [12, 13]. After initial
+placement, the logical quantum circuit is synthesized to a physical
+circuit via the SABRE routing method [75] in Qiskit [54].
+Neutral-Atom.We use ZAC compiler [80] for synthesizing zoned-
+architecture neutral-atom quantum circuits, while customizing our
+topology-aware qubit initial placement. For qubit initial placement,
+we use a min-cut algorithm to separate the topology in GadIR into
+subgraphs. The qubits from the same subgraph are mapped to the
+same SLM (spatial light modulator) row in storage zone. Mapping
+them to the same SLM row can parallelize qubit movements [80]
+when applying CNOT gates among them. This parallelization strat-
+egy leads to shorter execution time, thus reducing qubit decay.
+FTQC with lattice surgery.First, we synthesize the sub-ZX-diagram
+in each leaf-node into an FTQC subroutine, using LaSsynth method [116]
+implemented in Stim [33, 115]. Then, we synthesize the pass-through
+Clifford gates (CNOT, H, etc.) viaBlock_Synthesisfunction in
+TQEC [113] (a QEC design package). Next, we stitch all these sub-
+routines using TQEC, and synthesize them into fault-tolerant oper-
+ations such as lattice surgery. The idea of synthesizing each sub-
+routine separately avoids the massive overhead of synthesis.
+Photonic MBQC.Emitter-based photonic MBQC is a novel scheme
+addressing the indeterminacy problem in MBQC [74]. We adopt the
+divide-and-conquer synthesis method from [102], by synthesizing
+each leaf-node separately. Specifically, the ZX-diagram in each leaf-
+node corresponds to a graph state for MBQC, and we synthesize
+the graph state generation scheme using GraphiQ [79]. Then these
+graph states are combined together using methods from [102].
+6 Experimental Methodology
+6.1 Benchmarks
+We evaluate 8 different quantum many-body models in our experi-
+ments, each with a variety of model sizes. These models cover all
+canonical model categories we mentioned: spin, fermionic, bosonic,
+and lattice gauge. Apart from these, we add Molecule Hamiltonian
+models (LiH, H2O, Benzene) selected from [81], to demonstrate that
+our compiler is also compatible with quantum chemistry and vari-
+ational quantum eigensolver (VQE) circuit. The models are listed
+in Table 2, with varying sizes defined by parameters(𝑥,𝑦) . In the
+experiments, all the models are compiled with the second-order
+Trotterization with Suzuki-Trotter formula.
+6.2 Baselines and Metrics
+Baselines:We choose several compilers from previous work as our
+baseline, which are 1 QuCLEAR [81], 2 Tetris [58], 3 2QAN [68]
+and 4 PauliEvo-Rustiq [98] (a Qiskit implementation integrating
+Paulihedral [76] and Rustiq[25]). We note that 2QAN only supports
+spin-qubit models, because its IR and permutation-aware routing
+are designed for 2-local qubit Hamiltonians (e.g., ZZ and XX), while
+other models contain high-weight Hamiltonians (e.g., ZZZZ). 5
+We implement an extra baseline (PyZX-opt) that directly uses PyZX
+Table 2: Benchmark information. In result figures they are
+tagged as: Heis=Heisenberg, SLFH=spinless Fermi-Hubbard,
+FH=spinful Fermi-Hubbard, Jel=Jellium, BH=Bose-Hubbard,
+LGT=Lattice Gauge Theory.
+Many-Body Physical Model Number
+Category Name of Qubits
+spin-qubit Heisenberg(𝑥,𝑦) 𝑥×𝑦
+spin-qubit XY(𝑥,𝑦) 𝑥×𝑦
+Fermion spinless Fermi-Hubbard(𝑥,𝑦) 𝑥×𝑦
+Fermion spinful Fermi-Hubbard(𝑥,𝑦) 𝑥×𝑦×2
+Fermion Jellium(𝑥,𝑦) 𝑥×𝑦
+Boson Bose-Hubbard(𝑥,𝑦) 𝑥×𝑦×2
+Lattice (2+1)D Lattice 𝑥×𝑦×2
+Gauge Z2 Gauge Theory(𝑥,𝑦) −𝑥−𝑦
+Chemistry LiH / H2O / Benzene 6 / 8 / 12
+on Pauli-string IR, and it also enables the circuit optimization passes
+in PyZX. For MBQC and FTQC evaluation, the PyZX optimization
+is already integrated into baselines (QuCLEAR and Tetris), so we
+do not need to add the individual PyZX baseline.
+Metrics: 1 For SC architecture, the metrics are 2Q gate and circuit
+depth, aligning with the metrics used in baseline works [58, 68, 76,
+81]. 2 For NA architecture, apart from 2Q gate and circuit duration,
+we add the metric of fidelity. The main overhead of NA is moving
+the position of atoms to perform target gates, and the noise during
+movement is reflected in fidelity. This aligns with the metric selec-
+tion in SOTA compilers [45, 80, 124]. 3 For emitter-based MBQC,
+the prevalent overhead is CZ operation between emitters, since
+it has significantly longer execution time and higher noise than
+other operations [79]. So we select the emitter CZ metric, aligning
+with SOTA [77, 79, 102]. 4 For FTQC architecture, the non-Clifford
+gates are approximately 100x slower than other operations due to
+state distillation [10, 40]. We select #non-Clifford-gate as the metric,
+since it dominates the circuit execution overhead. Another metric
+is the infidelity of FTQC circuit, simulated under a comprehensive
+circuit-level noise model. These metrics align with SOTA FTQC
+compilers [39, 40].
+7 Evaluation
+7.1 Superconducting Architecture
+We compare GadIR with all baseline compilers by counting the num-
+ber of two-qubit gates (CZ) and circuit depth in compilation output.
+Results for these two metrics are respectively shown in Figure 10
+and Figure 11. OnIBM hardwareheavy-hexagon qubits layout,
+we reduce#CNOTto 0.79 × of 2QAN, 0.51× of PauliEvo-Rustiq,
+0.69× of Tetris, 0.55× of QuCLEAR, and0.46× of PyZX-opton
+average; and up to 0.68×, 0.08×, 0.29×, 0.12×, and0.17× respec-
+tively. OnGoogle hardwaresquare-grid qubits layout, we reduce
+#CZto 0.83× of 2QAN, 0.56× of PauliEvo-Rustiq, 0.65× of Tetris,
+0.57× of QuCLEAR, and0.36× of PyZX-opton average; and up to
+0.66×, 0.09×, 0.25×, 0.14×, and0.13× respectively. Due to the page
+limit, we only select part of the results for circuit depth comparison
+8
+
+===== PAGE 9 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Heis(4,4)
+Heis(5,5)
+Heis(6,6)
+Heis(6,7)
+Heis(7,7)
+Heis(7,8)
+Heis(8,8)
+XY(4,4)
+XY(5,5)
+XY(6,6)
+XY(6,7)
+XY(7,7)
+XY(7,8)
+XY(8,8)
+SLFH(3,3)
+SLFH(2,5)
+SLFH(3,4)
+SLFH(2,7)
+SLFH(3,5)
+SLFH(4,4)
+SLFH(3,6)
+SLFH(4,5)
+SLFH(3,7)
+SLFH(3,8)
+SLFH(5,5)
+FH(2,3)
+FH(2,4)
+FH(3,3)
+FH(2,5)
+FH(3,4)
+FH(2,7)
+FH(3,5)
+FH(4,4)
+FH(3,6)
+FH(4,5)
+Jel(2,3)
+Jel(2,4)
+Jel(3,3)
+Jel(3,4)
+BH(2,3)
+BH(2,4)
+BH(3,3)
+BH(3,4)
+BH(3,5)
+BH(4,4)
+BH(4,5)
+LGT(4,4)
+LGT(5,5)
+LGT(6,6)
+LiH
+H2O
+Benzene
+1
+2
+3
+4Normalized #CNOT (GadIR=1)
+1874
+491
+16006
+547
+836
+1302
+1524
+2065
+2784
+2941
+388
+622
+832
+1344
+998
+1538
+2069
+2678
+2309
+2958
+291
+469
+362
+619
+782
+952
+1275
+1552
+899
+1406
+2225
+210
+360
+585
+678
+855
+996
+1152
+764
+1776
+4598
+15336
+409
+713
+1426
+162
+290
+494
+601
+686
+855
+1052
+IBM heavy-hex
+Heis(4,4)
+Heis(5,5)
+Heis(6,6)
+Heis(6,7)
+Heis(7,7)
+Heis(7,8)
+Heis(8,8)
+XY(4,4)
+XY(5,5)
+XY(6,6)
+XY(6,7)
+XY(7,7)
+XY(7,8)
+XY(8,8)
+SLFH(3,3)
+SLFH(2,5)
+SLFH(3,4)
+SLFH(2,7)
+SLFH(3,5)
+SLFH(4,4)
+SLFH(3,6)
+SLFH(4,5)
+SLFH(3,7)
+SLFH(3,8)
+SLFH(5,5)
+FH(2,3)
+FH(2,4)
+FH(3,3)
+FH(2,5)
+FH(3,4)
+FH(2,7)
+FH(3,5)
+FH(4,4)
+FH(3,6)
+FH(4,5)
+Jel(2,3)
+Jel(2,4)
+Jel(3,3)
+Jel(3,4)
+BH(2,3)
+BH(2,4)
+BH(3,3)
+BH(3,4)
+BH(3,5)
+BH(4,4)
+BH(4,5)
+LGT(4,4)
+LGT(5,5)
+LGT(6,6)
+LiH
+H2O
+Benzene
+1
+2
+3
+4Normalized #CZ (GadIR=1)
+1427
+376
+11501
+405
+598
+950
+1160
+1520
+2174
+2347
+310
+486
+661
+1069
+612
+1041
+1346
+1759
+1529
+2034
+226
+357
+240
+427
+552
+716
+829
+1075
+568
+970
+1475
+138
+258
+399
+519
+648
+720
+855
+606
+1353
+3404
+10446
+234
+490
+884
+98
+202
+327
+429
+519
+531
+719
+Google square-grid
+2QAN PauliEvo-Rustiq Tetris QuCLEAR GadIR PyZX
+Figure 10: Upper figure: The CNOT count for compilation to IBM quantum computer with heavy-hexagon qubits layout. Lower
+figure: The CZ count for compilation to Google quantum computer with square-grid qubits layout.
+Heis(8,8)XY(8,8)
+SLFH(5,5)
+FH(4,5)Jel(3,4)BH(3,4)BH(4,5)LGT(5,5)LGT(6,6)
+H2O
+Benzene
+1
+2
+3
+4Normalized Circuit Depth (GadIR=1)              
+687
+594
+983
+1299
+9057
+1326
+1854
+169
+277
+1237
+14857
+Heis(8,8)XY(8,8)
+SLFH(5,5)
+FH(4,5)Jel(3,4)BH(3,4)BH(4,5)LGT(5,5)LGT(6,6)
+H2O
+Benzene
+483
+367
+772
+814
+9023
+941
+1367
+136
+208
+909
+10228
+2QAN PauliEvo-Rustiq Tetris QuCLEAR GadIR PyZX-opt
+Figure 11: Left figure: The circuit depth for compilation to
+IBM heavy-hexagon qubits layout. Right figure: The circuit
+depth for compilation to Google square-grid qubits layout.
+in Figure 11. It can be observed that GadIR outperforms all base-
+lines in most of the benchmarks, and within each benchmark the
+reduction rate improves with increasing model size. The trend of
+improvement implies that spatial topology information of GadIR
+becomes more important when many-body models scale up.
+7.2 Neutral-Atom Architecture
+We compare GadIR with baselines on zoned-architectureneu-
+tral atomplatform. The baseline compilers are integrated with
+ZAC [80] with the following pipeline: We run the compilation with
+an all-to-all qubit layout and get the output as a logical circuit, then
+pass the circuit to ZAC for atom initial placement and scheduling.
+Meanwhile, our compiler defines customized initial placements and
+only uses the atom scheduling module of ZAC, as introduced in Sec-
+tion 5.3. We use the following parameters: Rydberg 2Q gate time is
+0.36 us, 1Q gate time is 52 us, atom-transfer activation/deactivation
+time is 15 us, 2Q/1Q/atom-transfer fidelities are 0.996, 0.9998, and
+0.9995, respectively, and the qubit coherence time is 4e6 us. Circuit
+fidelity is then modeled as the product of 1Q gate fidelity, Rydberg
+2Q gate fidelity, atom-transfer fidelity, and coherence survival over
+the scheduled circuit duration.
+The results of 2Q gate, duration and fidelity are shown in Fig-
+ure 12. GadIR reduces#2Q gateto 0.54× of Tetris, 0.59× of PauliEvo-
+Rustiq, 0.71× of QuCLEAR, and 0.48× of PyZX-opt on average; for
+circuit duration, GadIR reduces duration to 0.44×, 0.45×, 0.52×,
+and 0.34× of those same baselines on average. GadIR achieves
+fidelityimprovements of 13.7× over Tetris, 11.2× over PauliEvo-
+Rustiq, 6.8× over QuCLEAR, and 10.9× over PyZX-opt on average.
+In the results, every baseline compiler demonstrates unexpectedly
+poor performance on certain benchmark models, highlighting the
+importance of robustness across diverse hardware.
+7.3 Early-Fault-Tolerant Architecture
+We compare GadIR with baselines onFTQCplatform with sur-
+face code. Limited by massive computation overhead for FTQC
+simulator, only the latest SOTA compiler – QuCLEAR [81] is se-
+lected as baseline in our experiments. We integrate QuCLEAR with
+PyZX [64] to convert compilation output into ZX-diagrams, and
+synthesize the lattice surgery scheme via TQEC [113]. As shown
+in Figure 13, GadIR reduces the number of non-Clifford gates com-
+pared to QuCLEAR.
+We compare theinfidelityof the FTQC circuits by running
+them on Stim simulator with PyMatching QEC decoder [43]. For
+each physical error rate 𝑝, we use the circuit-level SI1000 noise
+9
+
+===== PAGE 10 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+Heis(4,4)Heis(5,5)Heis(6,6)Heis(6,7)Heis(7,7)Heis(7,8)Heis(8,8)XY(4,4)XY(5,5)XY(6,6)XY(6,7)XY(7,7)XY(7,8)XY(8,8)FH(2,3)FH(2,4)FH(2,5)FH(2,7)FH(3,3)FH(3,4)FH(3,5)FH(3,6)FH(4,4)FH(4,5)
+SLFH(2,5)SLFH(2,7)SLFH(3,3)SLFH(3,4)SLFH(3,5)SLFH(3,6)SLFH(3,7)SLFH(3,8)SLFH(4,4)SLFH(4,5)SLFH(5,5)
+Jel(2,3)Jel(2,4)Jel(3,3)Jel(3,4)BH(2,3)BH(2,4)BH(3,3)BH(3,4)BH(3,5)BH(4,4)BH(4,5)LGT(4,4)LGT(5,5)LGT(6,6)
+H2OLiH
+Benzene
+1
+2
+3
+4Normalized #2Q gate (GadIR=1)
+120
+204
+306
+363
+432
+498
+576
+80
+136
+204
+242
+288
+332
+384
+176
+258
+344
+514
+320
+492
+626
+754
+638
+828
+128
+202
+138
+212
+270
+355
+429
+521
+308
+432
+644
+334
+700
+1678
+4568
+192
+284
+362
+484
+618
+708
+874
+166
+296
+456
+770
+228
+5592
+Tetris + ZAC PauliEvo-Rustiq + ZAC QuCLEAR + ZAC PyZX-opt + ZAC GadIR + ZAC.scheduler
+Heis(4,4)Heis(5,5)Heis(6,6)Heis(6,7)Heis(7,7)Heis(7,8)Heis(8,8)XY(4,4)XY(5,5)XY(6,6)XY(6,7)XY(7,7)XY(7,8)XY(8,8)FH(2,3)FH(2,4)FH(2,5)FH(2,7)FH(3,3)FH(3,4)FH(3,5)FH(3,6)FH(4,4)FH(4,5)
+SLFH(2,5)SLFH(2,7)SLFH(3,3)SLFH(3,4)SLFH(3,5)SLFH(3,6)SLFH(3,7)SLFH(3,8)SLFH(4,4)SLFH(4,5)SLFH(5,5)
+Jel(2,3)Jel(2,4)Jel(3,3)Jel(3,4)BH(2,3)BH(2,4)BH(3,3)BH(3,4)BH(3,5)BH(4,4)BH(4,5)LGT(4,4)LGT(5,5)LGT(6,6)
+H2OLiH
+Benzene
+1
+2
+3
+4
+5Normalized circuit duration
+18.7
+31.3
+43.7
+51.6
+56.6
+63.5
+77.3
+13.2
+21.9
+30.0
+35.1
+37.1
+41.2
+51.4
+33.8
+45.3
+61.8
+94.5
+57.6
+91.7
+116.2
+141.6
+107.8
+147.4
+23.2
+35.1
+25.7
+40.0
+49.5
+65.3
+71.5
+88.4
+57.1
+73.7
+119.7
+57.8
+122.8
+301.5
+841.4
+35.1
+58.2
+75.6
+98.3
+122.0
+148.2
+176.0
+27.0
+36.4
+52.5
+117.3
+34.0
+943.7
+Heis(4,4)
+Heis(5,5)
+Heis(6,6)
+XY(4,4)
+XY(5,5)
+XY(6,6)
+FH(2,3)
+FH(2,4)
+FH(3,3)
+FH(3,4)
+SLFH(3,4)
+SLFH(3,5)
+SLFH(4,4)
+SLFH(3,6)
+SLFH(3,7)
+Jel(2,3)
+Jel(2,4)
+BH(2,3)
+BH(2,4)
+BH(3,3)
+BH(3,4)
+LGT(4,4)
+LGT(5,5)
+LGT(6,6)
+H2O
+LiH
+10−2
+10−1
+100
+Fidelity (by simulator)
+0.345
+0.17
+0.0726
+0.448
+0.271
+0.141
+0.0434
+0.00853
+0.0011
+2.42e-05
+0.0118
+0.00565
+0.00387
+0.000985
+0.000318
+0.000375
+4.8e-09
+1.09e-06
+6.5e-10
+5.03e-12
+1.16e-17
+0.153
+0.0324
+0.00439
+1.01e-08
+0.0163
+0.141
+0.0081
+0.000485
+0.129
+0.0175
+0.00154
+0.181
+0.0585
+0.0221
+0.00262
+0.159
+0.104
+0.0401
+0.0461
+0.0117
+0.18
+0.0134
+0.00666
+0.000615
+3.36e-05
+2.47e-07
+0.228
+0.0408
+0.00182
+0.0109
+0.278
+0.176
+0.0288
+0.00396
+0.229
+0.0694
+0.0125
+0.204
+0.0721
+0.035
+0.00443
+0.198
+0.115
+0.0687
+0.0563
+0.0227
+0.17
+0.0214
+0.0181
+0.00281
+0.00065
+1.78e-05
+0.246
+0.0462
+0.00401
+0.0148
+0.285
+0.3
+0.125
+0.0363
+0.49
+0.28
+0.126
+0.0771
+0.0216
+0.00388
+0.000102
+0.0345
+0.0136
+0.00954
+0.00283
+0.000689
+0.00282
+4.53e-07
+3.86e-07
+3.19e-10
+2.48e-12
+5.66e-18
+0.173
+0.0327
+0.00248
+1.12e-05
+0.0841
+0.5
+0.292
+0.142
+0.608
+0.415
+0.25
+0.325
+0.186
+0.118
+0.0319
+0.262
+0.174
+0.137
+0.0979
+0.0581
+0.137
+0.0149
+0.296
+0.153
+0.0867
+0.0333
+0.33
+0.125
+0.0316
+0.0112
+0.274
+Figure 12: Comparison of #2Q gate (NA-native CZ), circuit duration, and fidelity on Neutral-Atom hardware.
+Heis
+(8,8)
+XY
+(8,8)
+FH
+(4,5)
+SLFH
+(4,5)
+BH
+(4,5)
+JEL
+(3,4)
+LGT
+(6,6)
+Benzene
+0
+500
+1000
+1500
+2000
+2500# non-Clifford gates
+670
+458 375
+230
+2107
+1779
+360
+2577
+576
+384 338
+221
+1072
+1773
+266
+2507QuCLEAR + PyZX + TQEC
+GadIR + TQEC
+Figure 13: Numbers of non-Clifford gates on FTQC.
+model [34] with CZ error rate𝑝, 1Q Clifford gate𝑝/10, measurement
+5𝑝, reset2𝑝, idle𝑝/10, and resonator-idle2𝑝. Aligning with SOTA
+early-FTQC compilers [39, 116], the qubit plane is a dynamic 2D
+nearest-neighbor lattice-surgery patch layout [84, 116] generated
+byLaSsynth[ 115], rather than a fixed data-ancilla layout. We
+model the non-Clifford rotations by applying execution noise to
+the resulting T gates using a depolarizing error [10, 39]. The results
+(code distance = 3, 5, 7) are given in Figure 14. GadIR reduces the
+logical CNOTsubroutines to0.58×of QuCLEARon average,
+which leads to a0.64×average circuit infidelityin the non-
+saturated regime and0.58×in the low-error regime.
+7.4 Emitter-Based MBQC Architecture
+We compare GadIR with the baselines on emitter-based MBQC
+platform, while using silicon-dot photon emitter [ 20, 70, 138] as
+synthesis target. The baseline compilers are integrated with SOTA
+10−4
+10−3
+Physical Error Rate
+10−4
+10−3
+10−2
+10−1
+100
+FTQC Circuit Error Rate
+FTQC Comparison for FH(4,5) Model
+10−4
+10−3
+Physical Error Rate
+FTQC Comparison for BH(4,5) Model
+QEC code distance d
+d = 3
+d = 5
+d = 7
+Compiler Solution
+GadIR + TQEC
+QuCLEAR + PyZX + TQEC
+Figure 14: Comparison of circuit infidelity on FTQC.
+graph-state synthesis algorithm (GSsynth) from [ 114]. In the ex-
+periments, we compare the number ofemitter entanglement
+operations(emitter-emitter CNOT), which is much more expen-
+sive than other operations [ 74]. The results in Figure 15 show
+that GadIR reduces the entanglement overhead to 0.69× that of
+Tetris+GSsynth, 0.75× that of QuCLEAR+GSsynth, and 0.56× that
+of PauliEvo-Rustiq+GSsynth on average.
+7.5 Runtime and Scalability
+Here we analyze the scalability of our algorithms by measuring
+their runtime. For Jellium models, we record the total execution
+time of the compiler pipeline, including gadget reduction, Trotteri-
+zation, scheduling, while synthesis time is excluded since it depends
+10
+
+===== PAGE 11 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Heis(6,6)Heis(7,7)Heis(8,8)XY(6,6)XY(7,7)XY(8,8)
+SLFH(4,4)SLFH(4,5)SLFH(5,5)
+FH(3,3)FH(4,4)FH(4,5)BH(3,3)BH(4,4)BH(4,5)Jel(2,3)Jel(2,4)LGT(5,5)LGT(6,6)
+LiHH2O
+0
+1
+2
+3
+4
+5#Emitter Entanglement (Normalized)          
+1031
+1420
+1907
+737
+1036
+1385
+1105
+1502
+2160
+1137
+2386
+3379
+1884
+3566
+4338
+727
+1798
+646
+1031
+392
+1619
+Tetris + GSsynth QuCLEAR + GSsynth PauliEvo-Rustiq + GSsynth GadIR
+Figure 15: The number of emitters CZ operations for compi-
+lation to emitter-based MBQC hardware.
+104 105 106 107 108
+#qubit × #Hamiltonian terms
+10 1
+100
+101
+102
+103
+Compiler Runtime (s)
+(9 × 316, 0.15)
+(16 × 2025, 1.54)
+(25 × 10626, 14.87)
+(36 × 33499, 87.36)
+(49 × 95012, 444.62)
+(100 × 655360, 4698.67)
+y  3.23e-05 * x^1.05
+Figure 16: GadIR runtime scaling with model size.
+10 20 30 40 50
+# Hamiltonian terms
+0
+5
+10
+15
+20
+25
+Reduction
+Percentage (%)
+Individual Reduction Group Reduction
+Figure 17: Comparison of individual gadget reduction [ 21]
+with our gadget group reduction, on random Hamiltonian.
+on selection of known SOTA methods. The results are given in Fig-
+ure 16, where it can be observed that the runtime scales nearly
+linearly with the parameter𝑥= #qubit× #Hamiltonian, giving the
+scaling of compilation runtime 𝑡≈ 3𝑒− 5×𝑥 1.05. Moreover, we
+perform a smoke test for large-scale model on FH(30, 30), yielding a
+9.1× 103 s runtime, matching the scaling curve. This result implies
+the scalability of our compiler framework, and its practicality for
+median- to large-scale quantum algorithm.
+7.6 Individual vs. Group Reduction
+	𝛼
+Maximalinternal
+distance=2
+Example:internaldistance
+(a) (b)
+0.0 0.2 0.4 0.6 0.8
+0%
+10%
+20%
+30%
+40%Distribution
+Bose-Hubbard
+0.2 0.4 0.6 0.8
+Jellium
+0.2 0.4 0.6 0.8 1.0
+Molecules(c)
+Maximal internal distance of Hamiltonian (normalized)
+(d)
+50
+100
+200
+500
+1000
+0
+20
+40
+60
+80
+# Hamiltonian Terms
+S
+MPS
+LiH
+H2O
+benzene
+Heis
+BH
+FH
+Jellium
+Molecule
+Figure 18: (a) Illustration of how the maximal internal dis-
+tance is counted for a representative Hamiltonian term. (b)
+Distribution of maximal internal distance for all Hamiltoni-
+ans in a2 × 3bosonic model. (c) The distribution ofmaximal
+internal distanceof the Hamiltonian terms from different
+models. (d) The𝑆𝑀𝑃𝑆 metric for different types of many-body
+system, which dominates the classical simulation overhead
+of their Hamiltonian models.
+The prior work [21, 22] extracts Clifford gates from each gadget
+and passes it through all other gadgets to eliminate spiders, but it
+often creates extra spiders thus undermining the effectiveness of
+gadget reduction. Here we perform an experiment to emphasize
+the broad impact of gadget group reduction, comparing to the in-
+dividual gadget reduction introduced in [21, 22]. In Figure 17, we
+compare individual and group reduction on different sizes of Hamil-
+tonian terms. Each size is evaluated with 1000 randomly generated
+instances of Hamiltonian, and we calculate the average reduction
+percentages. Note that in this experiment, we modify the group
+reduction method to ignore topology information and only use a
+topology-agnostic search strategy. The group reduction method
+outperforms individual reduction when the size of Hamiltonian
+scales up. Hence, the non-trivial improvement of group reduction
+11
+
+===== PAGE 12 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+Table 3: Ablation studies. The table reports relative change in 2Q gate count and circuit depth (duration) when each module is
+disabled. Since NA architecture provides an all-to-all physical qubit connectivity, the 2Q gate count remains unchanged. For
+NA, the backend modules mainly reduce atom movement distance, thereby reducing circuit duration.
+Architecture post-Trotterization gate cancelling w/o HW-native synthesis w/o entire GadIR backend w/o topology-preserving
+# 2Q gate Depth # 2Q gate Depth # 2Q gate Depth # 2Q gate Depth
+SC (Google) -8.5% +19.1% +15.6% +8.7% +17.8% +46.5% +43.6% +61.2%
+SC (IBM) -7.3% +15.5% +14.4% +6.3% +17.0% +53.3% +37.5% +38.2%
+Neutral-Atom -4.8% +24.0% 0 +22.4% 0 +68.3% +28.3% +69.0%
+itself provides better scalability for large-scale Hamiltonian models.
+7.7 Hamiltonian Locality Analysis
+Here we explore the locality of Hamiltonian in quantum many-
+body systems, serving as the motivation for the spatial topology-
+preserving design of GadIR. We introduce themaximal internal dis-
+tanceas a metric for quantifying the locality of a Hamiltonian term.
+This metric is defined as the maximum graph distance between
+any pair of qubits in the Hamiltonian term, where the distance is
+measured as the length of the shortest edge path between them
+on the GadIR topology graph. An illustrative example of maximal
+internal distance is given in Figure 18a. When the maximal internal
+distances of Hamiltonian terms in a model are generally smaller,
+the model has stronger topological constraints, implying stronger
+locality of Hamiltonian in this model.
+We calculate the distribution ofmaximal internal distancefor a
+2× 3bosonic model, and results are shown in Figure 18b. In this
+model, all the Hamiltonian terms have amaximal internal distance≤
+2. Observing the distribution, we know that qubit interactions in this
+model are constrained to short distances. Based on these constraints,
+we emphasize the locality of quantum many-body systems. The
+locality benefits our gadget group reduction method, and details
+are introduced in Section 4. The utilization of locality justifies
+preserving spatial topology in GadIR.
+From the evaluation results on SC and NA architectures, we
+notice that GadIR has more significant improvement on quantum
+many-body system benchmarks, than on Jellium and Molecular
+benchmarks. The differences are explained by the stronger Hamil-
+tonian locality in these quantum many-body systems. In Figure 18,
+we analyze the average distribution ofmaximal internal distanceof
+Hamiltonian terms. The distribution of BH models is concentrated
+around lower distances (implying strong topology-constraints),
+while the distribution of Molecule models tends to be more uniform
+(implying weak topology-constraints).
+We observe an empirical correlation between Hamiltonian local-
+ity and the classical simulation overhead of many-body systems, as
+shown in Figure 18. We quantify the overhead using MPS entropy
+𝑆MPS [16, 109]. The classical simulation complexity [110, 123] grows
+exponentially with𝑆 MPS:
+𝑇𝑐𝑙𝑎𝑠𝑠𝑖𝑐𝑎𝑙 ∼𝑝𝑜𝑙𝑦(𝑁 𝑞𝑢𝑏𝑖𝑡)𝑒 𝑆MPS.
+We calculate 𝑆MPS using MPS entanglement profiling [ 94, 109].
+The models where GadIR achieves larger reductions exhibit faster
+growth of𝑆MPS as the system size increases. This suggests that, the
+strong-locality models targeted by GadIR are associated with higher
+classical simulation overhead than the molecular models [72].
+7.8 Ablation Studies
+We perform four ablation studies with results in Table 3. (1) We
+modify the backend for maximizing gate cancellation after Trotteri-
+zation, by replacing the scheduling strategy for𝐺 with the method
+in Paulihedral [76]. The new backend slightly reduces 2Q gates but
+increases circuit depth. While the cancellation chances for CNOTs
+are𝐺 is limited, our GadIR backend focuses on capturing paralleliza-
+tion for commutative groups. We replace the (2) hardware-native
+synthesis or (3) the entire backend with Qiskit compiler. For SC,
+HW-native synthesis contribute more on reducing 2Q gate while
+the other modules contribute to reducing depth. For NA, each mod-
+ule has reasonable reduction on circuit duration. (4) By ablating
+the topology, we can observe that it is important for GadIR opti-
+mization, by capturing significantly more gadget reduction chances.
+8 Related Work
+Kernpiler [26] groups commutative Hamiltonian terms, and use
+Monte Carlo searching to find a circuit approximating each Hamil-
+tonian group. Kernpiler focuses on optimizing the Trotterization
+stage, while our compiler focuses on reducing Hamiltonian terms
+before Trotterization. Its approximation method is orthogonal to
+our gadget reduction optimization and can be integrated to reduce
+Trotterization error. HATT [82, 83] proposes novel methods for
+fermionic-to-qubit encoding. While our work simply uses Bravyi-
+Kitaev (BK) encoding for its fast runtime, these encoding algorithms
+can replace BK further to reduce the number of Pauli operators.
+Rustiq [25] focuses on greedily synthesizing flattened Pauli-
+rotation sets into low-CNOT/depth circuits through Clifford basis
+changes. By contrast, our compiler preserves the spatial topology
+and discovers optimizations from Pauli gadget reduction.
+PHOENIX [132] introduces a Pauli-level optimization that uses
+Clifford transformations to simultaneously reduce weights of Pauli
+strings in binary symplectic form representation. Unlike PHOENIX [132],
+which relies on sequential Clifford transformations to simplify
+groups of flattened Pauli strings, our frontend operates on topology-
+preserving Pauli gadgets, enabling reduction opportunities to be
+discovered directly along physical-topology edges.
+Genesis [14] is a compiler for Fermion-Boson Hamiltonian on
+continuous-variable discrete-variable (CV-DV) quantum architec-
+ture. Our insight of preserving spatial topology of bosonic models
+can be integrated into CV-DV compiler, thus one of our future di-
+rections is extending GadIR to support its synthesis.PhasePoly [15]
+explores the phase-polynomial optimization in quantum circuit.
+12
+
+===== PAGE 13 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Optimizing quantum simulation and variational quantum algo-
+rithms is a topic that has drawn significant research attention [5,
+23, 46, 56, 57, 62, 87, 99–101, 104, 111, 125, 126, 129, 130, 134],
+while we focus on quantum many-body systems simulation and
+use its topology information as a heuristic. A series of previous
+works have been discussing the importance of architecture-aware
+compilation [24, 35, 44, 47–49, 53, 55, 60, 66, 67, 69, 77, 78, 90–
+93, 95, 103, 106, 108, 117–120, 131, 133, 135–137], while we try to
+address this problem with the novel GadIR design.
+9 Conclusion
+We propose a modularized frontend-backend compiler for quantum
+many-body systems simulation. We introduce GadIR to preserve
+spatial-topology, enabling gadget group reduction in the front-
+end, and enabling backend synthesis for hardware-native programs
+across four different architectures. Evaluations on all canonical
+models show significant reductions in dominant overheads.
+13
+
+===== PAGE 14 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+References
+[1] A Altland and B Simons. 2006. Interaction effects in the tight-binding system.
+Condensed Matter Field Theory (Cambridge University Press, Cambridge, 2010)
+(2006), 59–66.
+[2] Assa Auerbach. 2012.Interacting electrons and quantum magnetism. Springer
+Science & Business Media.
+[3] Ryan Babbush, Nathan Wiebe, Jarrod McClean, James McClain, Hartmut Neven,
+and Garnet Kin-Lic Chan. 2018. Low-depth quantum simulation of materials.
+Physical Review X8, 1 (2018), 011044.
+[4] Medina Bandic, Carmen G Almudever, and Sebastian Feld. 2023. Interaction
+graph-based characterization of quantum benchmarks for improving quantum
+circuit mapping techniques.Quantum Machine Intelligence5, 2 (2023), 40.
+[5] Bikrant Bhattacharyya and Gokul Subramanian Ravi. 2023. Optimal clifford
+initial states for ising hamiltonians. In2023 IEEE International Conference on
+Rebooting Computing (ICRC). IEEE, 1–10.
+[6] Alexandre Blais, Arne L Grimsmo, Steven M Girvin, and Andreas Wallraff.
+2021. Circuit quantum electrodynamics.Reviews of Modern Physics93, 2 (2021),
+025005.
+[7] Immanuel Bloch, Jean Dalibard, and Wilhelm Zwerger. 2008. Many-body physics
+with ultracold gases.Reviews of modern physics80, 3 (2008), 885–964.
+[8] Robert W Boyd, Alexander L Gaeta, and Enno Giese. 2008. Nonlinear optics.
+InSpringer Handbook of Atomic, Molecular, and Optical Physics. Springer, 1097–
+1110.
+[9] Oliver Bračevac, Guannan Wei, Songlin Jia, Supun Abeysinghe, Yuxuan Jiang,
+Yuyan Bao, and Tiark Rompf. 2023. Graph IRs for impure higher-order languages:
+Making aggressive optimizations affordable with precise effect dependencies.
+Proceedings of the ACM on Programming Languages7, OOPSLA2 (2023), 400–430.
+[10] Sergey Bravyi and Alexei Kitaev. 2005. Universal quantum computation with
+ideal Clifford gates and noisy ancillas.Physical Review A—Atomic, Molecular,
+and Optical Physics71, 2 (2005), 022316.
+[11] Sergey B Bravyi and Alexei Yu Kitaev. 2002. Fermionic quantum computation.
+Annals of Physics298, 1 (2002), 210–226.
+[12] Lijun Chang, Xing Feng, Xuemin Lin, Lu Qin, Wenjie Zhang, and Dian Ouyang.
+2020. Speeding up GED verification for graph similarity search. In2020 IEEE
+36th International Conference on Data Engineering (ICDE). IEEE, 793–804.
+[13] Lijun Chang, Xing Feng, Kai Yao, Lu Qin, and Wenjie Zhang. 2022. Accelerating
+graph similarity search via efficient GED computation.IEEE Transactions on
+Knowledge and Data Engineering35, 5 (2022), 4485–4498.
+[14] Chi-Fang Anthony Chen, Andrew Lucas, and Chao Yin. 2023. Speed limits and
+locality in many-body quantum dynamics.Reports on Progress in Physics86, 11
+(2023), 116001.
+[15] Zihan Chen, Henry Chen, Yuwei Jin, Minghao Guo, Enhyeok Jang, Jiakang Li,
+Caitlin Chan, Won Woo Ro, and Eddy Z Zhang. 2025. PhasePoly: An Optimiza-
+tion Framework for Phase Polynomials in Quantum Circuits.arXiv preprint
+arXiv:2506.20624(2025).
+[16] J. Ignacio Cirac, David Pérez-García, Norbert Schuch, and Frank Verstraete.
+2021. Matrix product states and projected entangled pair states: Concepts,
+symmetries, and theorems.Reviews of Modern Physics93, 4 (2021), 045003.
+doi:10.1103/RevModPhys.93.045003
+[17] J Ignacio Cirac and Peter Zoller. 2012. Goals and opportunities in quantum
+simulation.Nature physics8, 4 (2012), 264–266.
+[18] Cliff Click and Michael Paleczny. 1995. A simple graph-based intermediate
+representation.ACM Sigplan Notices30, 3 (1995), 35–49.
+[19] Tyler A. Cochran, Bernhard Jobst, Eliott Rosenberg, Yuri D. Lensky, Gau-
+rav Gyawali, Norhan Eassa, Melissa Will, Dmitry Abanin, Rajeev Acharya,
+Laleh Aghababaie Beni, Trond I. Andersen, Markus Ansmann, Frank Arute,
+Kunal Arya, Abraham Asfaw, Juan Atalaya, Ryan Babbush, Brian Ballard,
+Joseph C. Bardin, Andreas Bengtsson, Alexander Bilmes, Alexandre Bourassa,
+Jenna Bovaird, Michael Broughton, David A. Browne, Brett Buchea, Bob B.
+Buckley, Tim Burger, Brian Burkett, Nicholas Bushnell, Anthony Cabrera,
+Juan Campero, Hung-Shen Chang, Zijun Chen, Ben Chiaro, Jahan Claes, Ag-
+netta Y. Cleland, Josh Cogan, Roberto Collins, Paul Conner, William Courtney,
+Alexander L. Crook, Ben Curtin, Sayan Das, Sean Demura, Laura De Lorenzo,
+Agustin Di Paolo, Paul Donohoe, Ilya Drozdov, Andrew Dunsworth, Alec Eick-
+busch, Aviv Moshe Elbag, Mahmoud Elzouka, Catherine Erickson, Vinicius S.
+Ferreira, Leslie Flores Burgos, Ebrahim Forati, Austin G. Fowler, Brooks Foxen,
+Suhas Ganjam, Robert Gasca, Élie Genois, William Giang, Dar Gilboa, Raja
+Gosula, Alejandro Grajales Dau, Dietrich Graumann, Alex Greene, Jonathan A.
+Gross, Steve Habegger, Monica Hansen, Matthew P. Harrigan, Sean D. Harring-
+ton, Paula Heu, Oscar Higgott, Jeremy Hilton, Hsin-Yuan Huang, Ashley Huff,
+William J. Huggins, Evan Jeffrey, Zhang Jiang, Cody Jones, Chaitali Joshi, Pavol
+Juhas, Dvir Kafri, Hui Kang, Amir H. Karamlou, Kostyantyn Kechedzhi, Trupti
+Khaire, Tanuj Khattar, Mostafa Khezri, Seon Kim, Paul V. Klimov, Bryce Kobrin,
+Alexander N. Korotkov, Fedor Kostritsa, John Mark Kreikebaum, Vladislav D.
+Kurilovich, David Landhuis, Tiano Lange-Dei, Brandon W. Langley, Kim-Ming
+Lau, Justin Ledford, Kenny Lee, Brian J. Lester, Loïck Le Guevel, Wing Yan Li,
+Alexander T. Lill, William P. Livingston, Aditya Locharla, Daniel Lundahl, Aaron
+Lunt, Sid Madhuk, Ashley Maloney, Salvatore Mandrà, Leigh S. Martin, Orion
+Martin, Cameron Maxfield, Jarrod R. McClean, Matt McEwen, Seneca Meeks, An-
+thony Megrant, Kevin C. Miao, Reza Molavi, Sebastian Molina, Shirin Montazeri,
+Ramis Movassagh, Charles Neill, Michael Newman, Anthony Nguyen, Murray
+Nguyen, Chia-Hung Ni, Murphy Yuezhen Niu, William D. Oliver, Kristoffer
+Ottosson, Alex Pizzuto, Rebecca Potter, Orion Pritchard, Chris Quintana, Ganesh
+Ramachandran, Matthew J. Reagor, David M. Rhodes, Gabrielle Roberts, Kan-
+nan Sankaragomathi, Kevin J. Satzinger, Henry F. Schurkus, Michael J. Shearn,
+Aaron Shorter, Noah Shutty, Vladimir Shvarts, Volodymyr Sivak, Spencer Small,
+W. Clarke Smith, Sofia Springer, George Sterling, Jordan Suchard, Aaron Szasz,
+Alex Sztein, Douglas Thor, M. Mert Torunbalci, Abeer Vaishnav, Justin Var-
+gas, Sergey Vdovichev, Guifre Vidal, Catherine Vollgraff Heidweiller, Steven
+Waltman, Shannon X. Wang, Brayden Ware, Theodore White, Kristi Wong,
+Bryan W. K. Woo, Cheng Xing, Z. Jamie Yao, Ping Yeh, Bicheng Ying, Juh-
+wan Yoo, Noureldin Yosri, Grayson Young, Adam Zalcman, Yaxing Zhang,
+Ningfeng Zhu, Nicholas Zobris, Sergio Boixo, Julian Kelly, Erik Lucero, Yu
+Chen, Vadim Smelyanskiy, Hartmut Neven, Adam Gammon-Smith, Frank Poll-
+mann, Michael Knap, and Pedram Roushan. 2025. Visualizing dynamics of
+charges and strings in (2+1)D lattice gauge theories.Nature642 (2025), 315–320.
+doi:10.1038/s41586-025-08999-9
+[20] Dan Cogan, Zu-En Su, Oded Kenneth, and David Gershoni. 2023. Deterministic
+generation of indistinguishable photons in a cluster state.Nature Photonics17,
+4 (2023), 324–329.
+[21] Alexander Cowtan, Silas Dilkes, Ross Duncan, Will Simmons, and Seyon
+Sivarajah. 2019. Phase gadget synthesis for shallow circuits.arXiv preprint
+arXiv:1906.01734(2019).
+[22] Alexander Cowtan, Will Simmons, and Ross Duncan. 2020. A generic com-
+pilation strategy for the unitary coupled cluster ansatz.arXiv preprint
+arXiv:2007.10515(2020).
+[23] Siddharth Dangwal, Gokul Subramanian Ravi, Poulami Das, Kaitlin N Smith,
+Jonathan Mark Baker, and Frederic T Chong. 2023. Varsaw: Application-tailored
+measurement error mitigation for variational quantum algorithms. InProceed-
+ings of the 28th ACM International Conference on Architectural Support for Pro-
+gramming Languages and Operating Systems, Volume 4. 362–377.
+[24] Subrata Das and Swaroop Ghosh. 2025. Optimization of Quantum Error Cor-
+recting Code under Temporal Variation of Qubit Quality. In2025 IEEE Computer
+Society Annual Symposium on VLSI (ISVLSI), Vol. 1. IEEE, 1–6.
+[25] Timothée Goubault de Brugière and Simon Martiel. 2024. Faster and shorter
+synthesis of hamiltonian simulation circuits.arXiv preprint arXiv:2404.03280
+(2024).
+[26] Ethan Decker, Lucas Goetz, Evan McKinney, Erik Gustafson, Junyu Zhou, Yuhao
+Liu, Alex K. Jones, Ang Li, Alexander Schuckert, Samuel Stein, Eleanor Crane,
+and Gushu Li. 2025. Kernpiler: Compiler Optimization for Quantum Hamiltonian
+Simulation with Partial Trotterization.arXiv preprint arXiv:2504.07214(2025).
+arXiv:2504.07214 [quant-ph] doi:10.48550/arXiv.2504.07214
+[27] Ross Duncan, Aleks Kissinger, Simon Perdrix, and John Van De Wetering. 2020.
+Graph-theoretic simplification of quantum circuits with the ZX-calculus.Quan-
+tum4 (2020), 279.
+[28] N Elstner and H Monien. 1999. Dynamics and thermodynamics of the Bose-
+Hubbard model.Physical Review B59, 19 (1999), 12184.
+[29] Peter M Fenwick. 1994. A new data structure for cumulative frequency tables.
+Software: Practice and experience24, 3 (1994), 327–336.
+[30] Richard P Feynman. 2018. Simulating physics with computers. InFeynman and
+computation. cRc Press, 133–153.
+[31] Christof Gattringer and Christian Lang. 2009.Quantum chromodynamics on
+the lattice: an introductory presentation. Vol. 788. Springer Science & Business
+Media.
+[32] Iulia M Georgescu, Sahel Ashhab, and Franco Nori. 2014. Quantum simulation.
+Reviews of Modern Physics86, 1 (2014), 153–185.
+[33] Craig Gidney. 2021. Stim: a fast stabilizer circuit simulator.Quantum5 (July
+2021), 497. doi:10.22331/q-2021-07-06-497
+[34] Craig Gidney, Michael Newman, Austin Fowler, and Michael Broughton.
+2021. A Fault-Tolerant Honeycomb Memory.Quantum5 (2021), 605.
+arXiv:2108.10457 [quant-ph] doi:10.22331/q-2021-12-20-605
+[35] Emmanouil Giortamis, Francisco Romão, Nathaniel Tornow, and Pramod Bha-
+totia. 2025.{QOS}: Quantum Operating System. In19th USENIX Symposium on
+Operating Systems Design and Implementation (OSDI 25). 429–447.
+[36] Gabriele Giuliani and Giovanni Vignale. 2008.Quantum theory of the electron
+liquid. Cambridge university press.
+[37] Griffiths and David J Griffiths. 2008.Introduction to Elementary Particles 2nd Ed.
+Wiley-VCH.
+[38] Cheng Guo, Andreas Weichselbaum, Jan von Delft, and Matthias Vojta. 2012.
+Critical and strong-coupling phases in one-and two-bath spin-boson models.
+Physical review letters108, 16 (2012), 160401.
+[39] Tianyi Hao, Joseph Sullivan, Sivaprasad Omanakuttan, Michael A Perlin, and
+Ruslan Shaydulin. 2025. Compilation Pipeline for Predicting Algorithmic Break-
+Even in an Early-Fault-Tolerant Surface Code Architecture.arXiv preprint
+arXiv:2511.20947(2025).
+14
+
+===== PAGE 15 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+[40] Tianyi Hao, Amanda Xu, and Swamit Tannu. 2025. Reducing T Gates with
+Unitary Synthesis.arXiv preprint arXiv:2503.15843(2025).
+[41] Vojtěch Havlíček, Matthias Troyer, and James D Whitfield. 2017. Operator
+locality in the quantum simulation of fermionic models.Physical Review A95, 3
+(2017), 032332.
+[42] Werner Heisenberg. 1928. Zur theorie des ferromagnetismus.Zeitschrift für
+Physik49, 9 (1928), 619–636.
+[43] Oscar Higgott and Craig Gidney. 2025. Sparse Blossom: correcting a million
+errors per core second with minimum-weight matching.Quantum9 (Jan. 2025),
+1600. doi:10.22331/q-2025-01-20-1600
+[44] Fei Hua, Yuwei Jin, Yanhao Chen, Suhas Vittal, Kevin Krsulich, Lev S Bishop,
+John Lapeyre, Ali Javadi-Abhari, and Eddy Z Zhang. 2023. Caqr: A compiler-
+assisted approach for qubit reuse through dynamic circuit. InProceedings of the
+28th ACM International Conference on Architectural Support for Programming
+Languages and Operating Systems, Volume 3. 59–71.
+[45] Chen Huang, Xi Zhao, Hongze Xu, Weifeng Zhuang, Meng-Jun Hu, Dong E Liu,
+and Jingbo Wang. 2026. ZAP: Zoned Architecture and Performant Compiler for
+Field Programmable Atom Array.IEEE Transactions on Quantum Engineering
+(2026).
+[46] Tsung-Wei Huang, Dian-Lun Lin, Chun-Xun Lin, and Yibo Lin. 2022. Taskflow:
+A Lightweight Parallel and Heterogeneous Task Graph Computing System. In
+IEEE Transactions on Parallel and Distributed Systems (TPDS). 1303–1320.
+[47] Yipeng Huang, Steven Holtzen, Todd Millstein, Guy Van den Broeck, and Mar-
+garet Martonosi. 2021. Logical abstractions for noisy variational Quantum
+algorithm simulation. InProceedings of the 26th ACM International Conference
+on Architectural Support for Programming Languages and Operating Systems
+(Virtual, USA)(ASPLOS ’21). Association for Computing Machinery, New York,
+NY, USA, 456–472. doi:10.1145/3445814.3446750
+[48] Yipeng Huang and Margaret Martonosi. 2019. Statistical assertions for validating
+patterns and finding bugs in quantum programs. InProceedings of the 46th
+International Symposium on Computer Architecture(Phoenix, Arizona)(ISCA
+’19). Association for Computing Machinery, New York, NY, USA, 541–553. doi:10.
+1145/3307650.3322213
+[49] Yuexun Huang, Xiangyu Ren, Bikun Li, Yat Wong, Zhiding Liang, and Liang
+Jiang. 2025. Peer-to-Peer Distribution of Graph States Across Spacetime Quan-
+tum Networks of Arbitrary Topology.Proceedings of the ACM on Measure-
+ment and Analysis of Computing Systems9, 2, Article 31 (2025), 36 pages.
+arXiv:2412.14757 [quant-ph] doi:10.1145/3727123
+[50] Yue-Xun Huang, Ming Li, Zi-Jie Chen, Yan-Lei Zhang, Xu-Bo Zou, Guang-Can
+Guo, and Chang-Ling Zou. 2023. Residual Quantum Effects beyond Mean-Field
+Treatment in Quantum Optics Systems.Laser & Photonics Reviews17, 4 (2023),
+2200599.
+[51] Yue-Xun Huang, Ming Li, Ke Lin, Yan-Lei Zhang, Guang-Can Guo, and Chang-
+Ling Zou. 2022. Classical-to-quantum transition in multimode nonlinear systems
+with strong photon-photon coupling.Physical Review A105, 4 (2022), 043707.
+[52] John Hubbard. 1963. Electron correlations in narrow energy bands.Proceedings
+of the Royal Society of London. Series A. Mathematical and Physical Sciences276,
+1365 (1963), 238–257.
+[53] Enhyeok Jang, Dongho Ha, Seungwoo Choi, Youngmin Kim, Jaewon Kwon,
+Yongju Lee, Sungwoo Ahn, Hyungseok Kim, and Won Woo Ro. 2024. Recompil-
+ing QAOA Circuits on Various Rotational Directions. InProceedings of the 2024
+International Conference on Parallel Architectures and Compilation Techniques
+(Long Beach, CA, USA)(PACT ’24). Association for Computing Machinery, New
+York, NY, USA, 309–324. doi:10.1145/3656019.3676899
+[54] Ali Javadi-Abhari, Matthew Treinish, Kevin Krsulich, Christopher J. Wood, Jake
+Lishman, Julien Gacon, Simon Martiel, Paul D. Nation, Lev S. Bishop, Andrew W.
+Cross, Blake R. Johnson, and Jay M. Gambetta. 2024. Quantum computing with
+Qiskit.arXiv preprint arXiv:2405.08810(2024). arXiv:2405.08810 [quant-ph]
+doi:10.48550/arXiv.2405.08810
+[55] Ali JavadiAbhari, Shruti Patil, Daniel Kudrow, Jeff Heckey, Alexey Lvov, Fred-
+eric T Chong, and Margaret Martonosi. 2014. ScaffCC: A framework for compi-
+lation and analysis of quantum computing programs. InProceedings of the 11th
+ACM Conference on Computing Frontiers. 1–10.
+[56] Shui Jiang, Hengrui Chen, Tsung-Yi Ho, and Tsung-Wei Huang. 2026. Q-TranSim:
+Batch Quantum Circuit Simulation using Tensor Transpilation. InACM Interna-
+tional Conference on Parallel Architectures and Compilation Techniques (PACT).
+[57] Shui Jiang, Yi-Hua Chung, Chih-Chun Chang, Tsung-Yi Ho, and Tsung-Wei
+Huang. 2025. BQSim: GPU-accelerated Batch Quantum Circuit Simulation using
+Decision Diagram. InACM International Conference on Architectural Support for
+Programming Languages and Operating Systems (ASPLOS).
+[58] Yuwei Jin, Zirui Li, Fei Hua, Tianyi Hao, Huiyang Zhou, Yipeng Huang, and
+Eddy Z Zhang. 2024. Tetris: A compilation framework for vqa applications in
+quantum computing. In2024 ACM/IEEE 51st Annual International Symposium
+on Computer Architecture (ISCA). IEEE, 277–292.
+[59] Robert Jördens, Niels Strohmaier, Kenneth Günter, Henning Moritz, and Tilman
+Esslinger. 2008. A Mott insulator of fermionic atoms in an optical lattice.Nature
+455, 7210 (2008), 204–207.
+[60] Hyungseok Kim, Enhyeok Jang, Seungwoo Choi, Youngmin Kim, and Won Woo
+Ro. 2025. Qr-map: A map-based approach to quantum circuit abstraction for
+qubit reuse optimization. InProceedings of the 52nd Annual International Sym-
+posium on Computer Architecture. 1568–1582.
+[61] Youngseok Kim, Andrew Eddins, Sajant Anand, Ken Xuan Wei, Ewout van den
+Berg, Sami Rosenblatt, Hasan Nayfeh, Yantao Wu, Michael Zaletel, Kristan
+Temme, and Abhinav Kandala. 2023. Evidence for the utility of quantum comput-
+ing before fault tolerance.Nature618, 7965 (2023), 500–505. doi:10.1038/s41586-
+023-06096-3
+[62] Youngmin Kim, Enhyeok Jang, Hyungseok Kim, Seungwoo Choi, Changheon
+Lee, Donghwi Kim, Woomin Kyoung, Kyujin Shin, and Won Woo Ro. 2025.
+Distribution-adaptive dynamic shot optimization for variational quantum algo-
+rithms.Physical Review Research7, 4 (2025), 043253.
+[63] M Kira and SW Koch. 2008. Cluster-expansion representation in quantum optics.
+Physical Review A—Atomic, Molecular, and Optical Physics78, 2 (2008), 022102.
+[64] Aleks Kissinger and John Van De Wetering. 2019. PyZX: Large scale automated
+diagrammatic reasoning.arXiv preprint arXiv:1904.04735(2019).
+[65] C Kittel. 2005. Int. to Solid State Physics, 8th edn., Maruzen.
+[66] Lingyi Kong, Chen Huang, Zhemin Zhang, Yidong Zhou, Xiangyu Ren,
+Shaochen Li, and Zhiding Liang. 2026. Compiler Framework for Directional
+Transport in Zoned Neutral Atom Systems with AOD Assistance: A Hybrid Re-
+mote CZ Approach. InProceedings of the 63rd ACM/IEEE Design Automation Con-
+ference (DAC ’26). 1–7. arXiv:2604.11000 [quant-ph] doi:10.1145/3770743.3804196
+[67] Satwik Kundu and Swaroop Ghosh. 2025. Inverse-Transpilation: Reverse-
+Engineering Quantum Compiler Optimization Passes from Circuit Snapshots.
+InProceedings of the Great Lakes Symposium on VLSI 2025. 273–277.
+[68] Lingling Lao and Dan E Browne. 2022. 2qan: A quantum compiler for 2-local
+qubit hamiltonian simulation algorithms. InProceedings of the 49th Annual
+International Symposium on Computer Architecture. 351–365.
+[69] Lingling Lao, Prakash Murali, Margaret Martonosi, and Dan Browne. 2021.
+Designing calibration and expressivity-efficient instruction sets for quantum
+computing. In2021 ACM/IEEE 48th Annual International Symposium on Computer
+Architecture (ISCA). IEEE, 846–859.
+[70] Hugo Larocque, Mustafa Atabey Buyukkaya, Carlos Errando-Herranz, Camille
+Papon, Samuel Harper, Max Tao, Jacques Carolan, Chang-Min Lee, Christopher
+J. K. Richardson, Gerald L. Leake, Daniel J. Coleman, Michael L. Fanto, Edo Waks,
+and Dirk Englund. 2024. Tunable quantum emitters on large-scale foundry
+silicon photonics.Nature Communications15, 1 (2024), 5781. doi:10.1038/s41467-
+024-50208-0
+[71] Robert B Laughlin. 1983. Anomalous quantum Hall effect: An incompressible
+quantum fluid with fractionally charged excitations.Physical Review Letters50,
+18 (1983), 1395.
+[72] Lucas Leclerc, Sergi Julià-Farré, Gabriel Silva Freitas, Guillaume Villaret, Boris
+Albrecht, Lucas Béguin, Lilian Bourachot, Clémence Briosne-Frejaville, Dorian
+Claveau, Antoine Cornillot, et al. 2026. One-to-one quantum simulation of a
+frustrated magnet with 256 qubits.arXiv preprint arXiv:2603.20372(2026).
+[73] Roland Leißa, Marcel Köster, and Sebastian Hack. 2015. A graph-based higher-
+order intermediate representation. In2015 IEEE/ACM International Symposium
+on Code Generation and Optimization (CGO). IEEE, 202–212.
+[74] Bikun Li, Sophia E Economou, and Edwin Barnes. 2022. Photonic resource
+state generation from a minimal number of quantum emitters.npj Quantum
+Information8, 1 (2022), 11.
+[75] Gushu Li, Yufei Ding, and Yuan Xie. 2019. Tackling the qubit mapping problem
+for NISQ-era quantum devices. InProceedings of the twenty-fourth international
+conference on architectural support for programming languages and operating
+systems. 1001–1014.
+[76] Gushu Li, Anbang Wu, Yunong Shi, Ali Javadi-Abhari, Yufei Ding, and Yuan Xie.
+2022. Paulihedral: a generalized block-wise compiler optimization framework
+for quantum simulation kernels. InProceedings of the 27th ACM International
+Conference on Architectural Support for Programming Languages and Operating
+Systems. 554–569.
+[77] Yingheng Li, Yue Dai, Aditya Pawar, Rongchao Dong, Jun Yang, Youtao Zhang,
+and Xulong Tang. 2025. Reinforcement Learning-Guided Graph State Generation
+in Photonic Quantum Computers. InProceedings of the 52nd Annual International
+Symposium on Computer Architecture (ISCA ’25). Association for Computing
+Machinery, New York, NY, USA, 1598–1612. doi:10.1145/3695053.3731085
+[78] Yingheng Li, Aditya Pawar, Zewei Mo, Youtao Zhang, Jun Yang, and Xulong
+Tang. 2025. FMCC: Flexible Measurement-based Quantum Computation over
+Cluster State(ASPLOS ’24). Association for Computing Machinery, New York,
+NY, USA, 111–126. doi:10.1145/3622781.3674185
+[79] Jie Lin, Benjamin MacLellan, Sobhan Ghanbari, Julie Belleville, Khuong Tran, Luc
+Robichaud, Roger G Melko, Hoi-Kwong Lo, and Piotr Roztocki. 2024. GraphiQ:
+Quantum circuit design for photonic graph states.Quantum8 (2024), 1453.
+[80] Wan-Hsuan Lin, Daniel Bochen Tan, and Jason Cong. 2025. Reuse-aware com-
+pilation for zoned quantum architectures based on neutral atoms. In2025 IEEE
+International Symposium on High Performance Computer Architecture (HPCA).
+IEEE, 127–142.
+15
+
+===== PAGE 16 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+[81] Ji Liu, Alvin Gonzales, Benchen Huang, Zain Hamid Saleem, and Paul Hovland.
+2025. QuCLEAR: Clifford Extraction and Absorption for Quantum Circuit Opti-
+mization. In2025 IEEE International Symposium on High Performance Computer
+Architecture (HPCA). IEEE, 158–172.
+[82] Yuhao Liu, Shize Che, Junyu Zhou, Yunong Shi, and Gushu Li. 2024. Fermihedral:
+On the optimal compilation for fermion-to-qubit encoding. InProceedings of the
+29th ACM International Conference on Architectural Support for Programming
+Languages and Operating Systems, Volume 3. 382–397.
+[83] Yuhao Liu, Kevin Yao, Jonathan Hong, Julien Froustey, Ermal Rrapaj, Costin
+Iancull, Gushu Li, and Yunong Shi. 2025. HATT: Hamiltonian Adaptive Ternary
+Tree for Optimizing Fermion-to-Qubit Mapping. In2025 IEEE International
+Symposium on High Performance Computer Architecture (HPCA). IEEE, 143–157.
+[84] Guang Hao Low, William J Huggins, Dominic W Berry, Tanuj Khattar, Alec F
+White, Nicholas C Rubin, and Ryan Babbush. 2026. A Denser Planar Surface
+Code.arXiv preprint arXiv:2605.30455(2026).
+[85] M Ma, BI Halperin, and PA Lee. 1986. Strongly disordered superfluids: Quantum
+fluctuations and critical behavior.Physical Review B34, 5 (1986), 3136.
+[86] Jarrod R. McClean, Nicholas C. Rubin, Kevin J. Sung, Ian D. Kivlichan, Xavier
+Bonet-Monroig, Yudong Cao, Chengyu Dai, E. Schuyler Fried, Craig Gidney,
+Brendan Gimby, Pranav Gokhale, Thomas Häner, Tarini Hardikar, Vojtěch
+Havlíček, Oscar Higgott, Cupjin Huang, Josh Izaac, Zhang Jiang, Xinle Liu,
+Sam McArdle, Matthew Neeley, Thomas O’Brien, Bryan O’Gorman, Isil Ozfidan,
+Maxwell D. Radin, Jhonathan Romero, Nicolas P. D. Sawaya, Bruno Senjean,
+Kanav Setia, Sukin Sim, Damian S. Steiger, Mark Steudtner, Qiming Sun, Wei
+Sun, Daochen Wang, Fang Zhang, and Ryan Babbush. 2020. OpenFermion: the
+electronic structure package for quantum computers.Quantum Science and
+Technology5, 3 (2020), 034014. doi:10.1088/2058-9565/ab8ebc
+[87] Amey Meher, Yuan Liu, and Huiyang Zhou. 2024. Error Mitigation of Hamil-
+tonian Simulations from an Analog-Based Compiler (SimuQ). In2024 IEEE
+International Conference on Quantum Computing and Engineering (QCE), Vol. 1.
+IEEE, 181–187.
+[88] Alexander Miessen, Pauline J Ollitrault, and Ivano Tavernelli. 2021. Quantum
+algorithms for quantum dynamics: A performance study on the spin-boson
+model.Physical Review Research3, 4 (2021), 043212.
+[89] Mario Motta, Erika Ye, Jarrod R McClean, Zhendong Li, Austin J Minnich, Ryan
+Babbush, and Garnet Kin-Lic Chan. 2021. Low rank representations for quantum
+simulation of electronic structure.npj Quantum Information7, 1 (2021), 83.
+[90] Prakash Murali, Jonathan M Baker, Ali Javadi-Abhari, Frederic T Chong,
+and Margaret Martonosi. 2019. Noise-adaptive compiler mappings for noisy
+intermediate-scale quantum computers. InProceedings of the twenty-fourth in-
+ternational conference on architectural support for programming languages and
+operating systems. 1015–1029.
+[91] Prakash Murali, Ali Javadi-Abhari, Frederic T Chong, and Margaret Martonosi.
+2019. Formal constraint-based compilation for noisy intermediate-scale quantum
+systems.Microprocessors and Microsystems66 (2019), 102–112.
+[92] Prakash Murali, Norbert Matthias Linke, Margaret Martonosi, Ali Javadi Abhari,
+Nhung Hong Nguyen, and Cinthia Huerta Alderete. 2019. Full-stack, real-system
+quantum computer studies: Architectural comparisons and design insights. In
+Proceedings of the 46th International Symposium on Computer Architecture. 527–
+540.
+[93] Prakash Murali, Norbert M Linke, Margaret Martonosi, Ali Javadi Abhari,
+Nhung Hong Nguyen, and Cinthia Huerta Alderete. 2020. Architecting noisy
+intermediate-scale quantum computers: A real-system study.IEEE Micro40, 3
+(2020), 73–80.
+[94] Román Orús. 2014. A practical introduction to tensor networks: Matrix product
+states and projected entangled pair states.Annals of Physics349 (2014), 117–158.
+doi:10.1016/j.aop.2014.06.013
+[95] Aditya Pawar, Yingheng Li, Zewei Mo, Yanan Guo, Xulong Tang, Youtao Zhang,
+and Jun Yang. 2025. QRCC: Evaluating Large Quantum Circuits on Small
+Quantum Computers through Integrated Qubit Reuse and Circuit Cutting(ASP-
+LOS ’24). Association for Computing Machinery, New York, NY, USA, 236–251.
+doi:10.1145/3622781.3674179
+[96] David Plankensteiner, Christoph Hotter, and Helmut Ritsch. 2022. Quantum-
+Cumulants. jl: A Julia framework for generalized mean-field equations in open
+quantum systems.Quantum6 (2022), 617.
+[97] Diego Porras and J Ignacio Cirac. 2004. Effective quantum spin systems with
+trapped ions.Physical review letters92, 20 (2004), 207901.
+[98] IBM Qiskit. [n. d.]. PauliEvolutionSynthesisRustiq. https://quantum.cloud.
+ibm.com/docs/en/api/qiskit/qiskit.transpiler.passes.synthesis.hls_plugins.
+PauliEvolutionSynthesisRustiq. Accessed: 2025-08-16.
+[99] Gokul Subramanian Ravi, Pranav Gokhale, Yi Ding, William Kirby, Kaitlin
+Smith, Jonathan M Baker, Peter J Love, Henry Hoffmann, Kenneth R Brown, and
+Frederic T Chong. 2022. CAFQA: A classical simulation bootstrap for variational
+quantum algorithms. InProceedings of the 28th ACM International Conference
+on Architectural Support for Programming Languages and Operating Systems,
+Volume 1. 15–29.
+[100] Gokul Subramanian Ravi, Kaitlin Smith, Jonathan M Baker, Tejas Kannan,
+Nathan Earnest, Ali Javadi-Abhari, Henry Hoffmann, and Frederic T Chong.
+2023. Navigating the dynamic noise landscape of variational quantum algo-
+rithms with qismet. InProceedings of the 28th ACM International Conference
+on Architectural Support for Programming Languages and Operating Systems,
+Volume 2. 515–529.
+[101] Gokul Subramanian Ravi, Kaitlin N Smith, Pranav Gokhale, Andrea Mari, Nathan
+Earnest, Ali Javadi-Abhari, and Frederic T Chong. 2022. Vaqem: A variational
+approach to quantum error mitigation. In2022 IEEE International Symposium on
+High-Performance Computer Architecture (HPCA). IEEE, 288–303.
+[102] Xiangyu Ren, Yuexun Huang, Zhiding Liang, and Antonio Barbalace. 2025. A
+Scalable and Robust Compilation Framework for Emitter-Photonic Graph State.
+arXiv preprint arXiv:2503.16346(2025).
+[103] Xiangyu Ren, Yuexun Huang, Zhemin Zhang, Yuchen Zhu, Tsung-Yi Ho, An-
+tonio Barbalace, and Zhiding Liang. 2026. Photonic Quantum Computing on
+Spin Memory Architecture with Tree-Encoded Fusion. InProceedings of the 53rd
+Annual International Symposium on Computer Architecture (ISCA ’26). 2333–2348.
+arXiv:2604.21475 [quant-ph] doi:10.1109/ISCA66397.2026.00164
+[104] Xiangyu Ren, Junjie Wan, Zhiding Liang, and Antonio Barbalace. 2024. Tackling
+Coherent Noise in Quantum Computing via Cross-Layer Compiler Optimization.
+arXiv:2410.09664 [cs.AR] doi:10.48550/arXiv.2410.09664
+[105] Xiangyu Ren, Mengyu Zhang, and Antonio Barbalace. 2024. A hardware-aware
+gate cutting framework for practical quantum circuit knitting. InProceedings of
+the 43rd IEEE/ACM International Conference on Computer-Aided Design. 1–9.
+[106] Xiangyu Ren, Tianyu Zhang, Xiong Xu, Yi-Cong Zheng, and Shengyu Zhang.
+2024. Invited: Leveraging Machine Learning for Quantum Compilation Opti-
+mization. InProceedings of the 61st ACM/IEEE Design Automation Conference
+(DAC ’24). Article 360, 4 pages. doi:10.1145/3649329.3663510
+[107] Heinz J Rothe. 2012.Lattice gauge theories: an introduction. World Scientific
+Publishing Company.
+[108] Rupshali Roy, Archisman Ghosh, and Swaroop Ghosh. 2025. Forensics of Tran-
+spiled Quantum Circuits. InProceedings of the Great Lakes Symposium on VLSI
+2025. 354–359.
+[109] Ulrich Schollwöck. 2011. The density-matrix renormalization group in the age
+of matrix product states.Annals of Physics326, 1 (2011), 96–192. doi:10.1016/j.
+aop.2010.09.012
+[110] Norbert Schuch, Michael M. Wolf, Frank Verstraete, and J. Ignacio Cirac. 2008.
+Entropy scaling and simulability by matrix product states.Physical Review
+Letters100, 3 (2008), 030504. doi:10.1103/PhysRevLett.100.030504
+[111] Lennart Maximilian Seifert, Siddharth Dangwal, Frederic T Chong, and
+Gokul Subramanian Ravi. 2024. Clapton: Clifford Assisted Problem Transforma-
+tion for Error Mitigation in Variational Quantum Algorithms. InProceedings of
+the 29th ACM International Conference on Architectural Support for Programming
+Languages and Operating Systems, Volume 4. 47–62.
+[112] Rolando Somma, Gerardo Ortiz, Emanuel Knill, and James Gubernatis. 2003.
+Quantum simulations of physics problems.International Journal of Quantum
+Information1, 02 (2003), 189–206.
+[113] Adrien Suau, Yiming Zhang, Purva Thakre, Yilun Zhao, Kabir Dubey, Jose A
+Bolanos, Arabella Schelpe, Tianyi Hao, Philip Seitz, Gian Giacomo Guerreschi,
+et al. 2026. tqec: A Python package for topological quantum error correction.
+Journal of Open Source Software11, 120 (2026), 9142.
+[114] Evangelia Takou, Edwin Barnes, and Sophia E Economou. 2025. Optimization
+complexity and resource minimization of emitter-based photonic graph state
+generation protocols.npj Quantum Information11, 1 (2025), 108.
+[115] Daniel Bochen Tan, Murphy Yuezhen Niu, and Craig Gidney. [n. d.]. Lattice
+Surgery Subroutine Synthesizer (LaSsynth). https://github.com/quantumlib/
+Stim/tree/main/glue/lattice_surgery. Accessed: 2025-08-16.
+[116] Daniel Bochen Tan, Murphy Yuezhen Niu, and Craig Gidney. 2024. A sat scalpel
+for lattice surgery: Representation and synthesis of subroutines for surface-code
+fault-tolerant quantum computing. In2024 ACM/IEEE 51st Annual International
+Symposium on Computer Architecture (ISCA). IEEE, 325–339.
+[117] Wei Tang and Margaret Martonosi. 2022. ScaleQC: A scalable framework
+for hybrid computation on quantum and classical processors.arXiv preprint
+arXiv:2207.00933(2022).
+[118] Wei Tang and Margaret Martonosi. 2025. Tensorqc: Towards scalable distributed
+quantum computing via tensor networks.arXiv preprint arXiv:2502.03445(2025).
+[119] Wei Tang, Teague Tomesh, Martin Suchara, Jeffrey Larson, and Margaret
+Martonosi. 2021. Cutqc: using small quantum computers for large quantum
+circuit evaluations. InProceedings of the 26th ACM International conference on
+architectural support for programming languages and operating systems. 473–486.
+[120] Nathaniel Tornow, Emmanouil Giortamis, and Pramod Bhatotia. 2025. QVM:
+Quantum Gate Virtualization Machine.Proceedings of the ACM on Programming
+Languages9, PLDI (2025), 993–1018.
+[121] Matthias Troyer and Uwe-Jens Wiese. 2005. Computational Complexity and
+Fundamental Limitations to Fermionic Quantum Monte Carlo Simulations.
+Physical review letters94, 17 (2005), 170201.
+[122] John van de Wetering. 2020. ZX-calculus for the working quantum computer
+scientist.arXiv preprint arXiv:2012.13966(2020).
+[123] Guifre Vidal. 2003. Efficient classical simulation of slightly entangled quan-
+tum computations.Physical Review Letters91, 14 (2003), 147902. doi:10.1103/
+16
+
+===== PAGE 17 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+PhysRevLett.91.147902
+[124] Hanrui Wang, Pengyu Liu, Daniel Bochen Tan, Yilian Liu, Jiaqi Gu, David Z
+Pan, Jason Cong, Umut A Acar, and Song Han. 2024. Atomique: A quantum
+compiler for reconfigurable neutral atom arrays. In2024 ACM/IEEE 51st Annual
+International Symposium on Computer Architecture (ISCA). IEEE, 293–309.
+[125] Meng Wang, Poulami Das, and Prashant J Nair. 2024. Qoncord: A multi-device
+job scheduling framework for variational quantum algorithms. In2024 57th
+IEEE/ACM International Symposium on Microarchitecture (MICRO). IEEE, 735–
+749.
+[126] Meng Wang, Bo Fang, Ang Li, and Prashant Nair. 2023. Efficient qaoa opti-
+mization using directed restarts and graph lookup. InProceedings of the 2023
+International Workshop on Quantum Classical Cooperative. 5–8.
+[127] Steven Weinberg. 1995.The quantum theory of fields. Vol. 2. Cambridge univer-
+sity press.
+[128] Kenneth G Wilson. 1974. Confinement of quarks.Physical review D10, 8 (1974),
+2445.
+[129] Anbang Wu, Gushu Li, Yufei Ding, and Yuan Xie. 2021. Mitigating noise-induced
+gradient vanishing in variational quantum algorithm training.arXiv preprint
+arXiv:2111.13209(2021).
+[130] Anbang Wu, Gushu Li, Yuke Wang, Boyuan Feng, Yufei Ding, and Yuan Xie.
+2021. Towards efficient ansatz architecture for variational quantum algorithms.
+arXiv preprint arXiv:2111.13730(2021).
+[131] Lei Xie, Jidong Zhai, ZhenXing Zhang, Jonathan Allcock, Shengyu Zhang,
+and Yi-Cong Zheng. 2022. Suppressing ZZ crosstalk of Quantum computers
+through pulse and scheduling co-optimization. InProceedings of the 27th ACM
+International Conference on Architectural Support for Programming Languages
+and Operating Systems(Lausanne, Switzerland)(ASPLOS ’22). Association for
+Computing Machinery, New York, NY, USA, 499–513. doi:10.1145/3503222.
+3507761
+[132] Zhaohui Yang, Dawei Ding, Chenghong Zhu, Jianxin Chen, and Yuan Xie. 2025.
+PHOENIX: Pauli-Based High-Level Optimization Engine for Instruction Execu-
+tion on NISQ Devices. In2025 62nd ACM/IEEE Design Automation Conference
+(DAC). IEEE, 1–7.
+[133] Zhaohui Yang, Kai Zhang, Xinyang Tian, Xiangyu Ren, Yingjian Liu, Yunfeng
+Li, Dawei Ding, Jianxin Chen, and Yuan Xie. 2026. Unifying Qubit Routing
+Across Diverse Quantum ISAs via Canonical Representation. InProceedings of
+the 53rd Annual International Symposium on Computer Architecture (ISCA ’26).
+2302–2317. arXiv:2511.04608 [quant-ph] doi:10.1109/ISCA66397.2026.00162
+[134] Junyao Zhang, Hanrui Wang, Gokul Subramanian Ravi, Frederic T Chong, Song
+Han, Frank Mueller, and Yiran Chen. 2023. Disq: Dynamic iteration skipping
+for variational quantum algorithms. In2023 IEEE International Conference on
+Quantum Computing and Engineering (QCE), Vol. 1. IEEE, 1062–1073.
+[135] Mengyu Zhang, Xiangyu Ren, Guanglei Xi, Zhenxing Zhang, Qiaonian Yu,
+Fuming Liu, Hualiang Zhang, Shengyu Zhang, and Yi-Cong Zheng. 2023. A
+Scalable, Fast and Programmable Neural Decoder for Fault-Tolerant Quantum
+Computation Using Surface Codes. arXiv:2305.15767 [quant-ph] doi:10.48550/
+arXiv.2305.15767
+[136] Ming Zhong, Xiangyu Ren, Jinglei Cheng, Shaohua Li, and Zhiding Liang. 2026.
+QuTuner: Feature- and Learning-Guided Optimization Pass Tuning for Quantum
+Compilers. arXiv:2607.04586 [quant-ph] doi:10.48550/arXiv.2607.04586
+[137] Ming Zhong, Zhemin Zhang, Xiangyu Ren, Chenghong Zhu, Siyuan Niu,
+and Zhiding Liang. 2026. A Compilation Framework for Quantum Circuits
+with Mid-Circuit Measurement Error Awareness. InProceedings of the 2026
+IEEE/ACM International Conference on Computer-Aided Design (ICCAD ’26).
+arXiv:2511.10921 [quant-ph] To appear.
+[138] Yifan Zhu, Runze Liu, Ailun Yi, Xudong Wang, Yuanhao Qin, Zihao Zhao, Junyi
+Zhao, Bowen Chen, Xiuqi Zhang, Sannian Song, Yongheng Huo, Xin Ou, and
+Jiaxiang Zhang. 2025. A hybrid single quantum dot coupled cavity on a CMOS-
+compatible SiC photonic chip for Purcell-enhanced deterministic single-photon
+emission.Light: Science & Applications14, 1 (2025), 86. doi:10.1038/s41377-024-
+01676-y
+17
+
+===== PAGE 18 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+Appendix is not allowed in MICRO26 submission!!! Remove later
+A ZX-calculus
+Here we give the derivation of CNOT in ZX-calculus:
+= |00⟩⟨0|+|11⟩⟨1|
+= |+⟩⟨++| +|−⟩⟨−−|
+(8)
+=𝐶𝑁𝑂𝑇:=
+'›››
+«
+1 0 0 0
+0 1 0 0
+0 0 0 1
+0 0 1 0
+“ﬁﬁﬁ
+‹
+(9)
+Here is an simple example of the relationship between ZX-
+diagram and quantum circuit.
+ω
+1
+q0: H • • H
+q1: • •
+q2: RZ(ω)
+Figure 19: An example of ZX-diagram (left) and the equiva-
+lent quantum circuit (right).
+Here are the approach for transforming Pauli gadget into nor-
+mal ZX-diagram elements. 1 decomposing Y-spiders to Z-spider
+sandwiched by single-qubit rotations𝑅𝑋 , and 2 decomposing the
+coefficient box with a X-spider connected to a dangling Z-spider:
+𝑞3
+𝑞2
+𝑞1
+𝑞0
+𝛼
+= 𝝅
+2 − 𝝅
+2
+2𝜶
+(10)
+There are various rewriting rules for ZX-diagram, while the
+basic rule is: spider with same color are commutative, thus they can
+pass through each other on the wire. In addition, two neighboring
+spiders with same color can be merged into a new one, with new
+the coefficient being the sum of each coefficient of them:
+𝜷
+...
+...
+𝜶
+...
+...
+=
+...
+...
+...𝜶+𝜷 (11)
+B IR Constructions of Benchmark Models
+In this section, we briefly introduce the models used for bench-
+marking, including their Hamiltonians and the corresponding IR
+construction.
+B.1 Spin-Qubit Model
+Depicted in Figure 20, theHeisenberg modelis a well-known model
+for studying the phase transition of magnetic systems [42, 65, 121],
+and it can be shown that the general Hubbard model introduced
+	𝛼	𝛼 	𝛼	𝛼 	𝛼	𝛼
+	𝛼 	𝛼	𝛼 	𝛼
+	𝜶 	𝜶	𝛼 	𝛼
+Figure 20: GadIR for spin-qubit model.
+later can be reduced to it under appropriate assumptions [1, 2, 52].
+The Hamiltonian of the Heisenberg model can be written as
+𝐻𝐻 =
+∑︁
+⟨𝑖,𝑗⟩
+(𝐽𝑥𝑋𝑖𝑋𝑗+𝐽 𝑦𝑌𝑖𝑌𝑗+𝐽 𝑧𝑍𝑖𝑍𝑗)+
+∑︁
+𝑖
+ℎ𝑧𝑍𝑖,(12)
+where⟨𝑖,𝑗⟩ denotes the pair of neighboring sites; 𝐽𝑥, 𝐽𝑦, 𝐽𝑧 are the
+coupling strengths along each direction; ℎ𝑧 is the magnetic field
+along the𝑧direction.
+If𝐽𝑧 = 0, then the only interaction left is the coupling along the
+𝑥 and𝑦 directions, which gives rise to the Hamiltonian of theXY
+model,𝐻 𝑋𝑌 .
+	𝛼	𝛼
+Figure 21: GadIR for Fermionic model.
+B.2 Fermion Model
+B.2.1 Fermi-Hubbard.As one of the most famous and fundamen-
+tal models, theFermi-Hubbard modelis particularly useful in solid
+state physics to describe the crystal under the tight-binding approx-
+imation [1, 52], which is closely related to the ultra-cold atoms in
+an optical lattice [7, 59]. A relatively general form of Hamiltonian
+for the Fermi-Hubbard model can be written as,
+𝐻𝐹𝐵𝑆 =−𝑡
+∑︁
+⟨𝑖,𝑗⟩
+∑︁
+𝜎
+(𝑐†
+𝑖,𝜎𝑐𝑗,𝜎+𝑐†
+𝑗,𝜎𝑐𝑖,𝜎)
++𝑈
+∑︁
+𝑖
+𝑛𝑖,↑𝑛𝑖,↓
+−𝜇
+∑︁
+𝑖
+∑︁
+𝜎
+𝑛𝑖,𝜎−ℎ
+∑︁
+𝑖
+ 𝑛𝑖,↑−𝑛𝑖,↓
+,(13)
+where𝑐𝑖,𝜎 is the fermionic field operator at site 𝑖,𝑛𝑖,𝜎 =𝑐 †
+𝑖,𝜎𝑐𝑖,𝜎
+is the number operator, and 𝑛𝑖 = ˝
+𝜎𝑛𝑖,𝜎 .⟨𝑖,𝑗⟩ denotes a pair of
+18
+
+===== PAGE 19 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+neighboring sites;𝑈 is the Coulomb potential;𝑡 is the tunneling
+amplitude;𝜇is the chemical potential; andℎis the magnetic field.
+To obtain the spinless version, one simply discards the spin
+degree of freedom 𝜎 and the corresponding interaction, which
+arrives in
+𝐻𝐹𝐵 =−𝑡
+∑︁
+⟨𝑖,𝑗⟩
+(𝑐†
+𝑖𝑐𝑗+𝑐†
+𝑗𝑐𝑖)
++𝑈
+∑︁
+⟨𝑖,𝑗⟩
+𝑛𝑖𝑛𝑗−𝜇
+∑︁
+𝑖
+𝑛𝑖.(14)
+Note that we will now have the Coulomb interaction between neigh-
+boring sites, which was previously dominated by the interaction
+on site and omitted in𝐻 𝐹𝐵𝑆 .
+B.2.2 Jellium.TheJellium modelis a special kind of the general
+Coulomb-governed interacting electron model under the Born-
+Oppenheimer approximation, where the background is idealized
+with a uniform positive charge density [36]. It is frequently applied
+for studying the fractional quantum Hall effect [71]. The continuous
+Hamiltonian with𝑁electrons can be approximated as
+˜𝐻Jellium≈
+𝑁∑︁
+𝑖
+𝑝2
+𝑖
+2𝑚
+|  {z  }
+𝑇
++
+𝑁∑︁
+𝑖<𝑗
+𝑒2
+|ﬁ𝑟𝑖−ﬁ𝑟𝑗|
+|        {z        }
+𝑉
+.(15)
+After choosing the plane-wave basis to discretize the model [3], the
+Hamiltonian has the following simple form,
+𝐻Jellium =
+∑︁
+𝑝𝑞
+𝑇𝑝𝑞𝑐†
+𝑝𝑐𝑞+
+∑︁
+𝑝𝑞
+𝑉𝑝𝑞𝑛𝑝𝑛𝑞,(16)
+with𝑝,𝑞 being the index of the site. 𝑉𝑝𝑞 and𝑇𝑝𝑞 denote the ki-
+netic energy strength and electron-electron repulsion, respectively,
+which can be calculated given the electron density.
+Figure 22: GadIR for Bosonic model.
+B.3 Boson Model
+Within the standard model, there are only two fundamental classes
+of particles concerning the particle-exchange statistic, namely bosons
+and fermions [37, 127]. We also benchmark our proposed frame-
+work for simulating the dynamics of bosons, which may imply
+its universal feasibility and advantages across many-body models
+in physics, especially for nonlinear optics systems and supercon-
+ducting systems [6, 8]. The simulation of bosons is known to be
+more difficult than that of fermions, as the number of particles in a
+particular state is unlimited and unrestricted by the Pauli exclusion
+principle, which leads to infinite dimensions of the Hilbert space
+in the particle number basis and requires special truncation tech-
+niques such as Fock-state truncation [7] or cluster expansion for
+Gaussian like states [50, 51, 63, 96].
+In this work, we adopt the bosonic version of the Hubbard
+model [38, 85], namely the Bose-Hubbard model, the Hamilton-
+ian of which is written as
+𝐻𝐵𝐻 =−𝑡
+∑︁
+⟨𝑖,𝑗⟩
+(𝑏†
+𝑖𝑏𝑗+𝑏†
+𝑗𝑏𝑖)+𝑉
+∑︁
+⟨𝑖,𝑗⟩
+𝑏†
+𝑖𝑏𝑖𝑏†
+𝑗𝑏𝑗
++𝑈
+2
+∑︁
+𝑖
+𝑏†
+𝑖𝑏𝑖(𝑏†
+𝑖𝑏𝑖−1)−𝜇
+∑︁
+𝑖
+𝑏†
+𝑖𝑏𝑖.(17)
+where𝑏𝑖 is the boson field operator;𝑡 is now the hopping ampli-
+tude,𝑈 is the on-site interaction;𝜇 is the chemical potential. We
+use a relatively straightforward mapping method by mapping a site
+with maximum𝑛 excitation to𝑛+ 1qubits, with each represent-
+ing one of the excitation levels [88], in contrast to the one-to-one
+correspondence of site and qubit in the fermionic case.
+	𝛼
+	𝛼	𝛼
+	𝛼
+	𝛽 	𝛽
+	𝛽
+	𝛽
+	𝛽
+	𝛽
+	𝛽	𝛽
+	𝛽
+Figure 23: GadIR for lattice gauge theory model.
+B.4 Lattice Gauge Theory
+Gauge theory constitutes the backbone of the standard model and
+thus also modern particle physics [37, 127]. The Lagrangian, which
+can be transformed into a Hamiltonian governing the dynamics of
+the particles, can be derived directly from the symmetry group of
+the system, marking the milestone of theoretical physics. The gauge
+theory offers the prediction of the particle under all interactions ex-
+cept gravity that matches the experimental results to an ultra-high
+precision by modeling the interaction between matter fermions
+as a gauge field carried by the corresponding gauge bosons. Due
+to the complicated nature of the interaction, the dynamics is usu-
+ally solved with perturbative methods organized with Feynman
+diagrams. However, this approach breaks down for quantum chro-
+modynamics (QCD), which is itself a SU(3) gauge theory because
+of the famous color confinement [128], as the interaction becomes
+stronger as the energy decreases, and calls for a non-perturbative
+method. Lattice gauge theory (LGT) is the most widely used method
+to overcome difficulties and provide fruitful results by discretiz-
+ing the space, or in other words, working in a discretized position
+basis [31, 107].
+19
+
+===== PAGE 20 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+𝑣1 𝑣2
+𝑣4 𝑣5
+𝑣3
+𝑣6
+𝑣8 𝑣9𝑣7
+𝑞1 𝑞2
+𝑞3 𝑞4
+Electron Magnetic Flux Gauge Link 
+Gauge
+𝑞1 𝑞2
+𝑞3 𝑞4
+𝑣1 𝑣2
+𝑣4 𝑣5
+𝑣3
+𝑣6
+𝑣8 𝑣9𝑣7
+Pure
+Field
+(a) (b)
+Figure 24: The illustration of theZ 2 lattice gauge theory.
+In this work, we strengthen the claim of our method’s universal
+effectiveness by simulating a simplified version of quantum elec-
+trodynamics, where the𝑈( 1) symmetry group is truncated into
+Z2 [107]. The matter fermions involved in this simplified model are
+electrons, while the gauge bosons are photons. The topology of the
+model can be represented in Figure 24(a), where the vertices repre-
+sent the values of the electrons’ wavefunction at a specific location
+of the discretized space, and the links represent the interaction (may
+also be considered the wavefunction) of the photons, which can be
+mapped to qubits. To further simplify the model, we can integrate
+out the wave function of the electrons and focus on the gauge field,
+which arrives at the topology represented in Figure 24(b) with each
+link mapped to a qubit. The Hamiltonian is, therefore, given by
+𝐻𝐿𝐺𝑇 =−𝐽 𝐸
+∑︁
+𝑣𝑖
+Ö
+𝑙∈𝑣 𝑖
+𝑍𝑙−𝐽 𝑀
+∑︁
+𝑝𝑖
+Ö
+𝑙∈𝑝 𝑖
+𝑋𝑝
+−ℎ𝐸
+∑︁
+𝑙
+𝑍𝑙−𝜆
+∑︁
+𝑙
+𝑋𝑙.(18)
+Here, the first two terms serve as the ’detectors’ for electrons and
+magnetic flux excitation with parameters𝐽𝐸 and𝐽𝑀, and the integral
+is performed over all the links involved in the vertices𝑣𝑖 and pla-
+quettes𝑝𝑖 as shown in Figure 24(b), respectively. The last two terms
+denote electric fields and the hopping of the matter field introduced
+by the gauge field with the strengthsℎ𝐸 and𝜆, respectively.
+B.5 Chemistry
+The Hamiltonian used for simulating the simplechemical molecules
+modelis a more general Coulomb Hamiltonian than the previously
+introduced Jellium model, which reads
+𝐻𝐶𝑌 =
+∑︁
+𝑝𝑞
+𝑇𝑝𝑞𝑐†
+𝑝𝑐𝑞+
+∑︁
+𝑝𝑞𝑟𝑠
+𝑉𝑝𝑞𝑟𝑠𝑐†
+𝑝𝑐𝑞𝑐†
+𝑟𝑐𝑠,(19)
+under a general basis (instead of the plane wave one). Although the
+interaction part contains 𝑁 4 terms for simulating the molecules
+with𝑁 sites (orbits), truncation of the eigenvalues with Cholesky
+decomposition can be applied to reduce the complexity to𝑂(𝑁 2)
+as the rank of the matrix𝑉𝑝𝑞𝑟𝑠 generally scales linearly with𝑁 [89].
+Given the desired number of active orbits (considering the spins,
+which double the number of qubits) and the geometry of the mole-
+cule, the parameters𝑇𝑝𝑞 and𝑉𝑝𝑞𝑟𝑠 can be calculated by the Colomb
+integral in the Molecular orbits with existing tools [86]. And in this
+work, we select LiH, H2O and Benzene with3, 4, 6active orbits,
+respectively, for benchmarks.
+C Pseudo Code for Algorithm
+Algorithm 1Pauli Gadget Reduction-Tree Algorithm
+Require:Pauli gadget of model𝑃 𝑚, Topology𝑇.
+Ensure:Gadget reduction tree𝑅.
+1:functionDivide_Group(gadget sets{𝑝}, Topology𝑇)
+2:Foredge𝑒in𝑇do
+3: Clifford set𝐺, Reducible gadgets{𝑝′}← iterate Clifford
+sets on𝑒and find maximal reducible #gadgets
+4:end For
+5:{𝑝 𝑟𝑒𝑠𝑡}←{𝑝}/{𝑝 ′}
+6:return{𝑝 ′},{𝑝𝑟𝑒𝑠𝑡},𝐺
+7:end function
+8:functionRecursion_Grow_Children(gadget sets{𝑝})
+9:Gadget set to divide{𝑝 𝑑𝑖𝑣}←{𝑝}
+10:ForTruedo
+11:{𝑝 ′},{𝑝𝑟𝑒𝑠𝑡},𝐺←Divide_Group({𝑝 𝑑𝑖𝑣},𝑇)
+12:if{𝑝 ′}=Nonethen
+13:return
+14:end if
+15:{𝑝 𝑑𝑖𝑣}←{𝑝 𝑟𝑒𝑠𝑡}
+16:Use𝐺to apply group reduction on{𝑝 ′}
+17:{𝑝 𝑟𝑒𝑑𝑢𝑐𝑒𝑑}←reduce gadgets from{𝑝 ′}
+18:Node of{𝑝}grow its child as node of{𝑝 𝑟𝑒𝑑𝑢𝑐𝑒𝑑}
+19:end For
+20:end function
+21:𝑅←Recursion_Grow_Children(𝑃 𝑚)
+20
+
+===== PAGE 21 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+D Pauli Gadget Reduction Rules
+... 𝛼 = ... 𝛼
+... 𝛼 = ... 𝛼
+... 𝛼 = ... −𝛼
+...
+𝝅
+2
+𝛼 = ...
+𝝅
+2
+𝛼
+...
+𝝅
+2
+𝛼 = ...
+𝝅
+2
+−𝛼
+...
+𝝅
+2
+𝛼 = ...
+𝝅
+2
+𝛼
+...
+𝝅
+2
+𝛼 = ...
+𝝅
+2
+𝛼
+...
+𝝅
+2
+𝛼 = ...
+𝝅
+2
+𝛼
+...
+𝝅
+2
+𝛼 = ...
+𝝅
+2
+−𝛼
+Figure 25: Clifford gate passing through rules for gadgets.
+21
+
+===== PAGE 22 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+                    
+ 
+                    
+                    
+ 
+                     
+                    
+ 
+                     
+  
+ 
+ 
+ 
+                    
+   
+ 
+ 
+ 
+                    
+  
+ 
+ 
+ 
+                    
+ 
+  
+ 
+ 
+ 
+                     
+  
+ 
+ 
+ 
+  
+ 
+ 
+ 
+                    
+ 
+  
+ 
+ 
+ 
+  
+ 
+ 
+ 
+                      
+𝐺 𝐺† 
+𝑞𝑖
+𝑞𝑗
+𝐺 
+𝐺† 
+𝑞𝑖
+𝑞𝑗
+𝐺 𝐺† 
+𝑞𝑖
+𝑞𝑗
+𝐺 𝐺† 
+𝑞𝑖
+𝑞𝑗
+𝐺 𝐺† 
+𝑞𝑖
+𝑞𝑗
+𝐺 
+𝐺† 
+𝑞𝑖
+𝑞𝑗
+𝐺 
+𝐺† 
+𝑞𝑖
+𝑞𝑗
+𝐺 𝐺† 
+𝑞𝑖
+𝑞𝑗
+𝐺 𝐺† 
+𝑞𝑖
+𝑞𝑗
+𝐺 
+𝐺† 
+𝑞𝑖
+𝑞𝑗
+𝐺 
+𝐺† 
+𝑞𝑖
+𝑞𝑗
+𝐺 
+𝐺† 
+𝑞𝑖
+𝑞𝑗
+Figure 26: Group reduction rules for Pauli gadgets.
+22
+
+===== PAGE 23 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+A Artifact Appendix
+A.1 Abstract
+This artifact reproduces the GadIR evaluation in Figures 10–15, 17,
+and 18(d). It runs GadIR and fixed baselines on superconducting
+(Figures 10–11), neutral-atom (Figure 12), FTQC (Figures 13–14),
+and MBQC (Figure 15) backends. It also evaluates group reduction
+on random Hamiltonians (Figure 17) and MPS entanglement scaling
+(Figure 18(d)). The archive includes the generated result tables and
+figures for immediate plot-only validation. No quantum hardware
+is required.
+A.2 Artifact check-list (meta-information)
+• Algorithm:GadIR and fixed baselines use one second-order Suzuki
+step in Figures 10–15; Figure 17 is a topology-agnostic group-reduction
+ablation.
+• Program:Python architecture drivers and packaged QuCLEAR,
+2QAN, Tetris, Rustiq, PyZX, ZAC, and GSsynth code. TQEC is in-
+stalled from a pinned upstream Git revision.
+• Compilation:Qiskit synthesis/routing; a Rust extension for Rustiq.
+• Transformations:Pauli-gadget reduction, routing/scheduling,
+FTQC conversion/simulation, and MBQC graph synthesis.
+• Binary:Rustiq is built locally; the remaining Python code runs
+from packaged source or pinned installed dependencies.
+• Model:52 Hamiltonians from eight physical/model families, plus
+random Hamiltonians for the group-reduction ablation.
+•Data set:JSON Hamiltonians and hardware specifications.
+• Run-time environment:Three pinned Conda environments. The
+analysis environment uses Python 3.10 and Qiskit 1.4.3; QuCLEAR
+uses Python 3.10 and Qiskit 1.1.1; 2QAN uses Python 3.9 and Qiskit 0.36.2.
+• Hardware:CPU-only; at least 16 Intel, AMD, or Apple CPU cores,
+32 GB RAM, and 20 GB disk recommended.
+• Run-time state:Generated tables and figures are included under
+results/ and output/; full reproduction overwrites them with
+fresh outputs.
+• Execution:One shell entry point; four architecture backends fol-
+lowed by the analysis workflows.
+• Metrics:Two-qubit count, depth, duration, fidelity, non-Clifford
+count, logical error, emitter-entanglement count, reduction percent-
+age, and maximum MPS bipartite entropy.
+• Output:CSV/QASM/statistics and ten PDF files for eight numbered
+figures, including full-range variants of Figures 10 and 11.
+•Experiments:Smoke, full reproduction, and plot-only modes.
+•How much disk space required (approximately)?:20 GB.
+• How much time is needed to prepare workflow (approxi-
+mately)?:30–90 minutes, depending on network/build speed.
+• How much time is needed to complete experiments (approx-
+imately)?:Smoke: tens of minutes; full run: hours to multiple
+days.
+•Publicly available?:Yes, through GitHub and Zenodo.
+• Code licenses (if publicly available)?:This AE folder does not
+introduce a GadIR license. Redistributed third-party code retains its
+upstream notice in baselines/<name>/LICENSE ; TQEC is pinned
+in the analysis environment specification.
+• Data licenses (if publicly available)?:See the released artifact
+and Zenodo record.
+•Workflow automation framework used?:Bash and Python.
+• Archived (provide DOI)?:https://doi.org/10.5281/zenodo.21550065.
+A.3 Description
+A.3.1 How to access.Repository: https://github.com/xiyurain/GadIR.
+Archive: https://doi.org/10.5281/zenodo.21550065.
+The public repository can be cloned over HTTPS, and the archive
+can be used without GitHub access. All commands run fromGadIR_
+AE/.
+A.3.2 Hardware dependencies.No quantum processor or GPU is re-
+quired. Intel, AMD, and Apple CPUs are supported; we recommend
+at least 16 CPU cores, 32 GB RAM, and 20 GB disk.
+A.3.3 Software dependencies.The host needs Bash, Git, Conda,
+C/C++ build tools, stable Rust/Cargo, and network access during
+installation.environments/pins:
+•analysis.yml : Python 3.10, Qiskit 1.4.3, Qiskit Aer 0.17.1,
+PyZX 0.9.0, scientific/plotting packages, Stim/sinter 1.15.0,
+PyMatching 2.3.0, pinned TQEC, and Jupyter Notebook;
+•quclear.yml: Python 3.10, Qiskit 1.1.1, and pytest 7.4.4.
+•2qan.yml : Python 3.9 and the pinned build/runtime depen-
+dencies for Qiskit Terra 0.20.2 (the Terra release in Qiskit 0.36.2).
+2QAN, QuCLEAR, Tetris, Rustiq, PyZX, and ZAC code used by the
+scripts is under baselines/. The Python GSsynth Naive imple-
+mentation is under src/mbqc/, with its upstream GPL-3.0 license
+under baselines/gssynth/. Conda installs the exact TQEC revi-
+sion pinned in analysis.yml. The bundled GraphiQ compatibil-
+ity wheel is installed without its obsolete Qiskit dependency, but
+the Figure 15 workflow uses GSsynth Naive. Packaged upstream
+licenses and available revision records are stored with the corre-
+sponding baseline.
+A.3.4 Data sets.There are 52 JSON Hamiltonians under benchmarks/
+hamiltonians/and architectures underhardware/.
+A.3.5 Models.The compiler evaluations in Figures 10–15 use one
+second-order Suzuki step. Figure 13 uses eight models, Figure 14
+uses FH(4,5)/BH(4,5), and Figure 15 uses 21 models, excluding only
+jellium_3_3. Figure 17 compares prior individual-gadget reduc-
+tion with GadIR group reduction using 1000 random instances at
+each Hamiltonian-term count and fixed seed 7; this ablation is
+topology-agnostic. Figure 18(d) covers Heisenberg, Bose–Hubbard,
+Fermi–Hubbard, Jellium, and molecule model families. It combines
+exact profiles computed from packaged Hamiltonians with dimension-
+derived bounds. Exact profiles use four product-formula steps at
+evolution times 0.4, 0.8, and 1.0. Because the structural Hamilton-
+ian inputs do not contain numerical coefficients, every term uses
+coefficient 1.
+A.4 Installation
+The following numbered procedure mirrors the explicit environ-
+ment setup used by the QuCLEAR artifact and should be followed
+on a fresh machine.
+(1) Install Miniconda or Anaconda from https://docs.conda.io/
+projects/miniconda/, initialize it for the current shell, open a
+new shell, and check:
+conda --version
+git --version
+(2) Install the host C/C++ build tools using the operating system
+package manager. Install stable Rust and Cargo using the of-
+ficial instructions at https://www.rust-lang.org/tools/install;
+the standard rustup command is:
+23
+
+===== PAGE 24 =====
+MICRO 2026, October 31–November 04, 2026, Athens, Greece
+Xiangyu Ren∗1, 7 , Yuexun Huang2, Zhaohui Yang3, Yuchen Zhu4,
+Tsung-Wei Huang5, Tsung-Yi Ho6, Zhiding Liang∗6 , Antonio Barbalace1
+curl --proto'=https'--tlsv1.2 -sSf \
+https://sh.rustup.rs | sh
+source "$HOME/.cargo/env"
+rustc --version
+cargo --version
+(3) Clone the repository and enter the self-contained artifact
+directory:
+git clone https://github.com/xiyurain/GadIR.git
+cd GadIR/GadIR_AE
+(4) Create all environments and build/install the packaged Rus-
+tiq component with the single installation script:
+./prepare.sh
+This creates .envs/analysis, .envs/quclear, and .envs/
+2qan from the three YAML files described above. It also builds
+and installs the Rustiq Python extension from baselines/
+rustiq/ into the analysis environment. The run scripts se-
+lect the appropriate interpreter automatically, so manual
+environment activation is unnecessary. Tweedledum 1.1.1 is
+installed without build isolation before Qiskit Terra 0.20.2 in
+the 2QAN environment, using the pinned CMake/scikit-build
+toolchain from2qan.yml.
+(5) Verify the three environments before starting a long run:
+./.envs/analysis/bin/python -c \
+"import qiskit,pyzx,rustiq,stim,sinter"
+./.envs/analysis/bin/python -c \
+"import pymatching,tqec"
+./.envs/quclear/bin/python -c \
+"import qiskit"
+./.envs/2qan/bin/python -c \
+"import qiskit"
+These commands verify the installed dependencies. The next
+section first checks the bundled results and then runs the
+functional smoke test.
+A.5 Experiment workflow
+The included tables should first be checked without rerunning the
+experiments:
+./run.sh plot
+plot redraws every PDF from the included tables. Next, run the
+reduced end-to-end validation across all four architecture backends
+and the analysis workflows:
+./run.sh smoke
+The smoke test writes reduced result tables and figures, so the
+plot-only check must precede it. The complete, potentially long
+reproduction restores the full tables and figures from the packaged
+Hamiltonians:
+./run.sh reproduce
+This command overwrites the bundled tables under results/ and
+regenerates Figures 10–15, 17, and 18(d). The two analysis work-
+flows writeresults/analysis/figure17.csv, results/analysis/
+figure18d.csv, output/figure17.pdf, and output/figure18d.
+pdf.
+To generate all paper figures from completed AE results, use the
+provided plot-only notebook:
+./.envs/analysis/bin/jupyter notebook \
+generate_all_figures.ipynb
+It draws Figures 10–15, 17, and 18(d) into output/; run ./run.
+shreproduce first when freshly regenerated rather than bundled
+tables are required.
+The expected PDFs are:
+output/figure10.pdf
+output/figure10_full_range.pdf
+output/figure11.pdf
+output/figure11_full_range.pdf
+output/figure12.pdf
+output/figure13.pdf
+output/figure14.pdf
+output/figure15.pdf
+output/figure17.pdf
+output/figure18d.pdf
+Workflows run in the fixed order superconducting, neutral atom,
+FTQC, MBQC, and analysis.
+A.6 Evaluation and expected results
+A successful run places raw data inresults/<backend>/ and PDFs
+in output/. Figure 10 reports normalized IBM CNOT/Google CZ
+count; Figure 11, normalized depth; Figure 12, neutral-atom two-
+qubit count, duration, and fidelity; Figure 13, QuCLEAR/GadIR
+non-Clifford count; Figure 14, fresh Stim/sinter statistics and logical-
+CNOT error extrapolation; and Figure 15, Tetris/QuCLEAR/PauliEvo-
+Rustiq/GadIR emitter-entanglement count. Figure 15 uses the same
+Suzuki-2 construction for all four frontends. QuCLEAR and PauliEvo-
+Rustiq optimize the forward and reverse halves independently;
+no Qiskit O3 pass is applied. Every method is reduced by PyZX
+clifford_simp and synthesized by the packaged Python GSsynth
+Naive backend. GadIR includes the cost of reconnecting its inde-
+pendently compiled leaves. Figure 17 reports, for each term count,
+the mean reduction percentage over 1000 random instances for
+individual- and group-reduction methods. Figure 18(d) reports max-
+imum bipartite entropy over MPS prefix cuts. Solid markers are
+exact profiles from packaged Hamiltonians, and open markers are
+dimension-derived bounds. Figure 14 uses stochastic Stim/sinter
+sampling and may show small run-to-run variation; the other work-
+flows use fixed seeds or deterministic settings. The regenerated
+tables and figures should match the revised paper figures. For Fig-
+ures 10–11, 2QAN runs one fixed seed on the Heisenberg and XY
+models that have 2QAN points in the paper. Each physical edge
+is represented by one structural gate whose body retains separate
+XX/YY/ZZ or XX/YY rotations. GadIR configurations are fixed by ar-
+chitecture and model family, and are shared by all sizes within a fam-
+ily. Baseline configurations are fixed and do not use per-benchmark
+trial selection. Figure 12 uses one calibrated noise model for all
+methods, and its GadIR candidate is also fixed by model family.
+Figure 14 is an extrapolation rather than full non-Clifford physical
+simulation; Figure 15 uses one deterministic trial and one uniform
+backend, without a fallback.
+A.7 Experiment customization
+For diagnosis, a backend may be run as:
+24
+
+===== PAGE 25 =====
+GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation MICRO 2026, October 31–November 04, 2026, Athens, Greece
+./.envs/analysis/bin/python -m src.<backend>.run smoke
+Changing fixed configurations is outside the reported evaluation.
+A.8 Methodology
+Submission, reviewing, and badging methodology:
+• https://www.acm.org/publications/policies/artifact-review-and-
+badging-current
+•https://cTuning.org/ae
+25

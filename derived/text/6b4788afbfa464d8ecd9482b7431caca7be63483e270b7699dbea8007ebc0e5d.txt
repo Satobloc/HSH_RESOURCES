@@ -1,0 +1,656 @@
+===== PAGE 1 =====
+Disproving the Greedy Superstring Conjecture
+Hiroki Shibata ∗1
+1Joint Graduate School of Mathematics for Innovation, Kyushu University, Japan
+September 2, 2026
+Abstract
+Theshortest common superstring problemis to find the shortest string that contains every string in
+a given set as a substring. It is conjectured that the greedy algorithm that repeatedly selects a pair of
+strings with maximum overlap and merges them is a 2-approximation algorithm, and this conjecture had
+remained open for nearly four decades. In this paper, we disprove this conjecture and show that the
+approximation ratio of this algorithm is at least 9/4.
+1 Introduction
+Theshortest common superstring problem(SCS, or theshortest superstring problem) is the problem of finding
+a string of minimum length that contains every input string as a substring. It arises in applications such
+as genome assembly [18, 21] and data compression [4, 9], and is also discussed in several textbooks [12, 27].
+This problem is NP-hard [9] and APX-hard even over a binary alphabet [26]. Consequently, much of the
+research on SCS has focused on approximation algorithms and heuristics. Since Blum et al. [3] gave the first
+constant-factor approximation algorithm, the best-known approximation ratio for SCS has been repeatedly
+improved for over 30 years [1,5,8,17,23], but the best possible ratio remains unknown.
+Thegreedy algorithmfor SCS has been studied for nearly four decades [10,13,24]. It repeatedly chooses
+a pair of strings attaining the maximum overlap and merges them until a single output string remains.
+Here, anoverlapof two strings is a string that is both a suffix of the first string and a prefix of the second.
+This algorithm is extremely simple and runs in linear time [25]. Furthermore, some studies report that the
+algorithm performs well in practice [15,22]. However, despite its simplicity, its exact approximation ratio is
+unknown.
+We can easily see that the approximation ratio of the greedy algorithm is at least 2. Indeed, for the input
+set{ab n,b n+1,b nc}, the greedy algorithm may begin by merging abn and bnc under a particular tie-breaking
+rule, giving an approximation ratio that approaches 2 asn→∞. Motivated by this lower bound, Tarhio
+and Ukkonen [24] conjectured that the greedy algorithm always achieves a 2-approximation, a statement
+now known as thegreedy superstring conjecture.
+Since its formulation, the greedy superstring conjecture has been studied extensively [4, 5, 14, 19, 20]. In
+particular, the conjecture is known to hold when all input strings have length 4 [14]. Also, several other works
+have studied various formulations and variants related to the greedy superstring conjecture [11,19,20]. Very
+recently, new progress has been made on both sides of the approximation-ratio gap. On the lower-bound
+side, Chukhin et al. [6] showed that the approximation ratio of the greedy algorithm is at least 2 even when
+all input strings have length 6. On the upper-bound side, the same research group improved the best-known
+upper bound on the approximation ratio of the greedy algorithm to 3 [5]. Together, these advances left a
+gap between the lower bound of 2 and the upper bound of 3. Although the conjecture had remained open
+for nearly four decades, no instance with an approximation ratio strictly greater than 2 was known.
+∗shibata.hiroki.753@s.kyushu-u.ac.jp
+1
+arXiv:2609.01365v1  [cs.DS]  1 Sep 2026
+
+===== PAGE 2 =====
+Our ContributionIn this paper, we disprove the greedy superstring conjecture. Specifically, for every
+even integerk≥10, we show that the approximation ratioρ k of the greedy algorithm for SCS instances in
+which all input strings have lengthksatisfies
+ρk≥ 9k+ 2
+4k+ 4.
+Thus, the conjecture fails even when all input strings have the same even lengthk≥10. By taking the
+limit ask→∞, the lower bound on the approximation ratio of the greedy algorithm for unrestricted SCS
+instances becomes 9/4.
+2 Preliminaries
+Let Σ be an alphabet. An element of Σ is called a character. A stringTof lengthn=|T|over the alphabet
+Σ is a sequenceT[1]···T[n] of characters such that eachT[i] is an element of Σ. Letεbe the empty string of
+length 0. For any two stringsXandY, we denote their concatenation byXY=X[1]···X[|X|]Y[1]···Y[|Y|].
+We use the same notation for concatenating a string and a character. IfT=XYZfor some possibly empty
+stringsX,Y,Z∈Σ ∗, thenX,Y, andZare called a prefix, a substring, and a suffix ofT, respectively.
+Also,Tis called asuperstringofY. A string that is both a prefix and a suffix ofTis called aborderof
+T. For 1≤i≤j≤n, we denote byT[i..j] =T[i]···T[j] the substring ofTfrom positionitoj. For
+convenience, defineT[i..j] =εwhenj <i. We denote the infinite string obtained by repeatingXinfinitely
+byX∞ =XXX···for a nonempty stringX. For any nonempty stringTand positive integersiandℓ, the
+circular substringof lengthℓstarting at positioniis defined byCSubstr ℓ(T,i) =T ∞[i..i+ℓ−1].
+For two stringsXandY, a string is anoverlap fromXtoYif it is both a suffix ofXand a prefix of
+Y. For any two stringsXandY, letov(X,Y) = max{0≤i≤min{|X|,|Y|}|X[|X|−i+ 1..|X|] =Y[1..i]}
+denote the maximum length of an overlap fromXtoY. Using the longest overlap fromXtoY, we define the
+merging operationbyX⊙Y=XY[1+ov(X,Y)..|Y|]. By definition,X⊙Yis the shortest string that contains
+Xas a prefix andYas a suffix. For a set of stringsS, letmaxov(S) = max{ov(X,Y)|X,Y∈S,X̸=Y}.
+The following two lemmas show basic properties of merging multiple strings and consecutive circular
+substrings.
+Lemma 1.LetA,B, andCbe strings. Ifov(A⊙B,C)<|B|, thenov(A⊙B,C) =ov(B,C). Symmetrically,
+ifov(A,B⊙C)<|B|, thenov(A,B⊙C) =ov(A,B).
+Proof.Letr=ov(A⊙B,C). SinceBis a suffix ofA⊙B, we haveov(B,C)≤r. The inequalityr <|B|
+implies that the suffix ofA⊙Bof lengthris also a suffix ofB, sor≤ov(B,C). The two inequalities prove
+the first equality. The second equality follows symmetrically.
+Lemma 2.LetTbe a string of lengthnthat is not unary, and letℓ≥n. For every positive integeri, we have
+ov(CSubstrℓ(T,i),CSubstr ℓ(T,i+ 1)) =ℓ−1. Moreover, for every positive integerp, merging thencircular
+substrings of lengthℓwhose starting positions arep,p+1,...,p+n−1in this order givesCSubstr ℓ+n−1(T,p),
+which hasCSubstr ℓ−1(T,p)as a border.
+Proof.For every positive integeri, the definitions of circular substrings giveCSubstr ℓ(T,i)[2..ℓ] =T ∞[i+
+1..i+ℓ−1] =CSubstr ℓ(T,i+1)[1..ℓ−1]. Hence, the overlap length is at leastℓ−1. If the overlap length were
+ℓ, the two circular substrings would be equal. Sinceℓ≥n, this equality would imply that thenconsecutive
+charactersT ∞[i],T∞[i+ 1],...,T ∞[i+n−1] are all equal, soTwould be unary. SinceTis not unary, the
+overlap length isℓ−1.
+Fix a positive integerp. The first circular substring isCSubstr ℓ(T,p) =T ∞[p..p+ℓ−1]. Each of the
+remainingn−1 merges extends this substring ofT ∞ by one character, givingT ∞[p..p+ℓ+n−2] =
+CSubstrℓ+n−1(T,p). SinceT ∞[p..p+ℓ−2] =T ∞[p+n..p+n+ℓ−2] =CSubstr ℓ−1(T,p), the resulting string
+hasCSubstr ℓ−1(T,p) as a border.
+2
+
+===== PAGE 3 =====
+For a set of stringsS={S 1,...,S m}, a stringTis acommon superstringofSifTis a superstring ofS i
+for allS i∈S. Theshortest common superstring problem (SCS)is to find a common superstring of minimum
+length for a given set of stringsS={S 1,...,S m}. If the inputScontains a stringS∈Sthat is a substring
+of another string inS, then we can removeSfromSwithout changing the answer. Thus, we assume that no
+input string is a substring of another input string. We denote the minimum length of a common superstring
+for an input setSby OPT(S).
+Thegreedy algorithmfor the SCS problem is defined recursively for an inputSas follows.
+1. If|S|= 1, then output the unique element ofS.
+2. If|S|>1, then find a pair of distinct stringsX,Y∈Ssuch thatov(X,Y) =maxov(S) and output the
+result of the greedy algorithm on the input (S∪{X⊙Y})\{X,Y}.
+If more than one ordered pairX,Y∈Ssatisfies the conditionov(X,Y) =maxov(S), we may select any such
+pair. Therefore, there may be multiple outputs for the same input set. We denote the set of output strings
+produced by the greedy algorithm above by GREEDY(S).
+The following lemma shows that the maximum overlap length does not increase after one step of the
+greedy algorithm.
+Lemma 3.LetSbe a set of strings such that|S|≥3and no element ofSis a substring of another element.
+LetX,Y∈Sbe distinct strings satisfyingov(X,Y) =maxov(S), and defineS ′ = (S\{X,Y})∪{X⊙Y}.
+Then, no element ofS ′ is a substring of another element, andmaxov(S ′)≤maxov(S).
+Proof.Letm=maxov(S) andZ=X⊙Y. We first show that no element ofS ′ is a substring of another
+element. The stringZcannot be a substring of anyA∈S\{X,Y}becauseXis a prefix ofZand is not
+a substring ofA. Suppose that someA∈S\{X,Y}is a substring ofZ. WriteX=X 0CandY=CY 0,
+where|C|=m, so thatZ=X 0CY0. SinceAis not a substring ofXorY, every occurrence ofAinZbegins
+inX 0 and ends inY 0. A prefix ofAis a suffix ofXthat containsCand at least one character ofX 0. This
+prefix has length greater thanm, soov(X,A)> m, contradicting the definition ofm. Thus, no element of
+S′ is a substring of another element.
+It remains to showmaxov(S ′)≤m. FixA∈S\{X,Y}. The assumption thatYis not a substring ofA
+impliesov(Z,A)<|Y|, so Lemma 1 givesov(Z,A) =ov(Y,A)≤m. Similarly,Xis not a substring ofA, so
+ov(A,Z)<|X|andov(A,Z) =ov(A,X)≤m. For any distinctA,B∈S\{X,Y}, the definition ofmgives
+ov(A,B)≤m. Together, these inequalities givemaxov(S ′)≤m.
+The repeated application of Lemma 3 gives the following monotonicity of the maximum overlap length.
+Corollary 4.LetS (0) be a set of strings such that no element is a substring of another element. For every
+0≤h<r, letS (h+1) be obtained fromS (h) by one step of the greedy algorithm, and assume that|S (r)|≥2.
+For any0≤i<j≤r, we havemaxov(S (i))≥maxov(S (j)).
+In this paper, we consider the approximation ratio of the greedy algorithm for thek-SCS problem, in
+which every input string has lengthk. For everyk≥1, we denote the approximation ratio for thek-SCS
+problem by
+ρk = sup
+Σ finite
+∅̸=S⊆Σ k
+sup
+T∈GREEDY(S)
+|T|
+OPT(S).
+3 Construction and Proof Outline
+3.1 Construction of the Instance
+In this section, we construct an instance of thek-SCS problem for every evenk≥10.
+3
+
+===== PAGE 4 =====
+Figure 1: An illustration of prefixes of the infinite periodic stringsU ∞
+i ,V ∞
+i , andW ∞
+i fors= 8. Each cell
+represents one character. The cells containing a and b i are shaded light gray and dark gray, respectively.
+The overbraces markU i,1,V i,1, andW i,1. The underbraces mark occurrences ofX s−3 andX s−1 as well as
+complete occurrences ofU i,V i, andW i.
+Fix an even integerk= 2s≥10. Lett≥1 be an arbitrary positive integer. We construct the instance over
+the alphabet Σ ={x,y,a,b 1,...,b t}. For anyn≥0, defineX n = (yx)n/2 ifnis even andX n = x(yx)(n−1)/2
+ifnis odd. For every 1≤i≤t, letU i,V i, andW i be defined by
+Ui = xaXs−3bixaXs−3y, V i = xaXs−3bi, W i = xaXs−1bi.
+For every 1≤i≤t, define
+Ui,j =CSubstr k(Ui,j) (1≤j≤k), V i,j =CSubstr k(Vi,j) (1≤j≤s),
+and
+Wi,j =CSubstr k(Wi,j) (1≤j≤s+ 2).
+Finally, we define the input setS k,t by
+Sk,t =
+t[
+i=1
+({Ui,j|1≤j≤k}∪{V i,j|1≤j≤s}∪{W i,j|1≤j≤s+ 2}).
+Figure 1 illustrates the constructed strings.
+We first verify that all strings in the construction are pairwise distinct.
+Lemma 5.The stringsU i,j with1≤j≤k,V i,j with1≤j≤s, andW i,j with1≤j≤s+ 2are pairwise
+distinct across all1≤i≤t.
+Proof.The stringsU i,V i, andW i have lengthsk,s, ands+ 2, respectively, and each contains exactly one
+occurrence of b i. Since these lengths are at mostk, every circular substring of lengthkgenerated fromU i,
+Vi, orW i contains at least one occurrence of b i. For everyi ′̸=i, the character b i does not occur inU i′,V i′,
+orW i′, nor in any of their circular substrings. Hence, strings with different values ofiare distinct.
+4
+
+===== PAGE 5 =====
+We now fixiand compare the strings indexed byi. The stringU i has lengthkand contains exactly one
+occurrence of b i. The position of this occurrence inU i,j uniquely determinesj, so the stringsU i,1,...,U i,k
+are pairwise distinct. Since|V i|=sandk= 2s, everyV i,j contains exactly two occurrences of b i, and their
+positions differ bys. The position of the first occurrence uniquely determinesj, so the stringsV i,1,...,V i,s
+are pairwise distinct. Moreover, the number of occurrences of b i distinguishes everyU i,j from everyV i,j′.
+The stringW i has lengths+ 2 and contains exactly one occurrence of a. Becauses+ 2<k <2(s+ 2),
+everyW i,j contains either one or two occurrences of a. If it contains two, their positions differ bys+ 2.
+The position of the first occurrence of a uniquely determinesj, so the stringsW i,1,...,W i,s+2 are pairwise
+distinct. On the other hand, everyU i,j and everyV i,j contains exactly two occurrences of a, and their
+positions differ bys. Therefore, noW i,j is equal to a string of the formU i,j′ orV i,j′.
+By Lemma 5, all strings listed in the definition ofS k,t are distinct. Hence,|S k,t|=t
+ 
+k+s+ (s+ 2)
+
+=
+t(4s+ 2). Every string inS k,t has length exactlyk, so the total length of all strings inS k,t iskt(4s+ 2). We
+useS k,t as the input instance in the following sections.
+3.2 Proof Outline
+Before giving the complete proof, we provide an overview of the proof and explain why this construction
+works.
+As shown in Lemma 5, all length-kcircular substrings ofU i,V i, andW i are distinct. On the other hand,
+each string has some length-(k−1) circular substrings in common with the other strings (Lemma 7). Because
+of this structure, the de Bruijn graph [7,16] of orderk−1 constructed from all length-kcircular substrings
+has an Eulerian circuit (Lemma 8). We can construct an optimal solution to the SCS instanceS k,t using
+such an Eulerian circuit (Theorem 10).
+In the lower-bound construction, we first merge the length-kcircular substrings generated from each
+Ui,V i, andW i and obtain 3tstrings corresponding toU i,V i, andW i (1≤i≤t). The resulting strings
+are length-(m+k−1) circular substrings of the corresponding strings, wheremis the number of circular
+substrings merged into a given resulting string. Each resulting string has a length-(k−1) circular substring
+as a border (Lemma 2). By carefully selecting the first circular substring in each sequence of merges, we
+restrict the pairs of borders with long overlaps (Lemma 12). Because of these restrictions, the remaining
+merge operations use shorter overlaps and produce a long output string (Theorem 13).
+4 Optimal Value of the Instance
+In this section, we determine OPT(S k,t) by proving matching lower and upper bounds.
+We first derive a lower bound from the number of distinct input strings.
+Lemma 6.OPT(S k,t)≥t(4s+ 2) +k−1.
+Proof.LetTbe an arbitrary common superstring ofS k,t. By Lemma 5, the elements ofS k,t are distinct
+strings of lengthk. The stringTcontains at most|T|−k+ 1 distinct substrings of lengthk. Since every
+element ofS k,t occurs inT, we have|S k,t|≤|T|−k+1. The definition ofS k,t gives|S k,t|=t(k+s+(s+2)) =
+t(4s+ 2). Therefore,|T|≥t(4s+ 2) +k−1. Thus, OPT(S k,t)≥t(4s+ 2) +k−1.
+For the matching upper bound, we construct the de Bruijn graphGfromS k,t [7,16] and use an Eulerian
+circuit inGto obtain a common superstring. The vertex set ofGconsists of all length-(k−1) substrings of
+the strings inS k,t. For everyS∈S k,t, the graphGhas a directed edge fromS[1..k−1] toS[2..k] with label
+S[k]. For every 1≤i≤tandX∈{U i,V i,W i}, the edges corresponding toCSubstr k(X,j) for 1≤j≤|X|
+form a directed circuitC X. SinceS k,t consists of the length-kcircular substrings ofU i,V i, andW i over
+all 1≤i≤t, the edge set ofGis the union of the edges ofC Ui,C Vi, andC Wi over the same indices. By
+Lemma 5, these circular substrings are pairwise distinct, so each edge ofGbelongs to exactly one of these
+circuits. Any two distinct strings of lengthkdiffer in their length-(k−1) prefix or suffix, soGhas no parallel
+edges.
+5
+
+===== PAGE 6 =====
+The following lemma definesα i,β i, andγand identifies their occurrences in the infinite periodic strings.
+Lemma 7.For every1≤i≤t, defineα i = xaXs−3bixaXs−3. Defineβ i =X s−3bixaXs−1. We also define
+γ= xaX s−3yxaXs−3. The following identities hold for every1≤i≤t.
+1.α i =CSubstr k−1(Ui,1) =CSubstr k−1(Vi,1).
+2.β i =CSubstr k−1(Ui,3) =CSubstr k−1(Wi,5).
+3.γ=CSubstr k−1(Ui,s+ 1).
+Proof.We first note that the three infinite strings have the following structure:
+U∞
+i = xaXs−3bixaXs−3yxaXs−3···,
+V∞
+i = xaXs−3bixaXs−3bi···,
+W∞
+i = xaXs−1bixaXs−1bi···.
+The prefixes ofU ∞
+i andV ∞
+i of lengthk−1 are bothα i = xaXs−3bixaXs−3, which proves the first identity.
+We consider the two circular substrings in the second identity separately. Since|U i|=k, we have
+CSubstrk−1(Ui,3) =U i[3..k]Ui[1]. Since|W i|=s+ 2, the circular substringCSubstr k−1(Wi,5) begins with
+Wi[5..s+2], whose length iss−2. The remainings+1 characters areW i[1..s+1] because (k−1)−(s−2) =s+1.
+The definitions ofU i,W i, andX n now give
+CSubstrk−1(Ui,3) =U i[3..k]Ui[1] =X s−3bixaXs−3yx =X s−3bixaXs−1 =β i,
+CSubstrk−1(Wi,5) =W i[5..s+ 2]W i[1..s+ 1] =X s−3bixaXs−1 =β i.
+Finally, the third identity follows from the equality
+CSubstrk−1(Ui,s+ 1) = (xaX s−3bixaXs−3yxaXs−3···)[s+ 1..3s−1] = xaX s−3yxaXs−3 =γ.
+Figure 2 illustrates the occurrences ofα i,β i, andγdescribed in Lemma 7.
+Figure 2: An illustration of occurrences ofα i,β i, andγinU ∞
+i ,V ∞
+i , andW ∞
+i fors= 8. The horizontal
+blocks with diagonal hatching, dots, and vertical bars mark occurrences ofα i,β i, andγ, respectively. As in
+Figure 1, cells containing a are filled with light gray, whereas cells containing b i are filled with dark gray.
+The underbraces mark occurrences ofX s−3,X s−1,U i,V i, andW i.
+6
+
+===== PAGE 7 =====
+Figure 3: The graphGconstructed fort= 2 ands= 5. Each directed circuit contains the edges
+corresponding to the length-kcircular substrings of one ofU i,V i, andW i. As in Figure 2, the common
+verticesα i,β i, andγare marked with diagonal hatching, dots, and vertical bars, respectively.
+By the definition ofG, the stringα i is a common vertex ofC Ui andC Vi, whereasβ i is a common vertex
+ofC Ui andC Wi. The vertexγbelongs toC Ui for every 1≤i≤t. Figure 3 illustrates the connections among
+these circuits.
+We next prove the existence of an Eulerian circuit inGusing these vertices.
+Lemma 8.Ghas an Eulerian circuit.
+Proof.By Euler’s theorem for digraphs [2], it suffices to prove thatGis strongly connected and that the
+indegree and outdegree are the same at every vertex. We first prove thatGis strongly connected. By
+Lemma 7, the verticesα i andβ i connectC Ui,C Vi, andC Wi for each 1≤i≤t. Also, the common vertexγ
+connects the circuitsC Ui over all 1≤i≤t. Hence,Gis strongly connected. We next prove that the indegree
+of every vertex equals its outdegree. In every directed circuit, the numbers of incoming and outgoing edges
+are equal at each vertex. SinceGis the union of these directed circuits, the indegree and outdegree are the
+same at every vertex ofG. These two properties imply thatGhas an Eulerian circuit.
+We now use an Eulerian circuit ofGto construct a common superstring whose length matches the lower
+bound.
+Lemma 9.OPT(S k,t)≤t(4s+ 2) +k−1.
+Proof.LetC= (e 1,...,e m) be an arbitrary Eulerian circuit ofG. SinceGhas no parallel edges, the
+definition ofGgivesm= Pt
+i=1(|Ui|+|V i|+|W i|) =t(4s+ 2). LetT 0 be the string corresponding to the
+starting vertex ofe 1. For each 1≤j≤m, letc j be the edge label ofe j. We defineT=T 0c1···c m. For every
+1≤j≤m, the string corresponding to the starting vertex ofe j isT[j..j+k−2]. When a stringS∈S k,t
+corresponds toe j, we haveT[j..j+k−1] =T[j..j+k−2]c j =S. Since every string inS k,t corresponds to an
+edge ofGand every edge ofGoccurs inC, the stringTis a common superstring ofS k,t. Since|T 0|=k−1,
+the length ofTis|T|=t(4s+ 2) +k−1. Thus, OPT(S k,t)≤t(4s+ 2) +k−1.
+7
+
+===== PAGE 8 =====
+By combining the lower and upper bounds in Lemma 6 and Lemma 9, we obtain the exact optimal value.
+Theorem 10.OPT(S k,t) =t(4s+ 2) +k−1.
+5 Lower Bound on the Approximation Ratio
+To prove the lower bound, we give a concrete procedure for selecting and merging strings when the initial
+input isS k,t.
+For every 1≤i≤t, we define ˆUi, ˆVi, and ˆWi as follows.
+ˆUi =CSubstr|Ui|+k−1(Ui,4)
+=U i,4⊙U i,5⊙···⊙U i,k⊙U i,1⊙U i,2⊙U i,3,
+ˆVi =CSubstr|Vi|+k−1(Vi,2)
+=V i,2⊙V i,3⊙···⊙V i,s⊙V i,1,
+ˆWi =CSubstr|Wi|+k−1(Wi,6)
+=W i,6⊙W i,7⊙···⊙W i,s+2⊙W i,1⊙···⊙W i,5.
+The equalities involving⊙follow from Lemma 2. The strings ˆUi, ˆVi, and ˆWi have lengths 4s−1, 3s−1, and
+3s+ 1, respectively. Our procedure first obtains ˆUi, ˆVi, and ˆWi for every 1≤i≤tby merging the elements
+Ui,j,V i,j, andW i,j as specified by the equalities involving⊙. The two strings merged at each step have an
+overlap of lengthk−1, and we perform the merge operations from left to right. Figure 4 illustrates these
+strings.
+We verify that every selection of a pair used to obtain ˆUi, ˆVi, or ˆWi satisfies the selection rule of the
+greedy algorithm. LetNbe the total number of steps used to obtain ˆUi, ˆVi, and ˆWi over all 1≤i≤t. For
+every 0≤r≤N, letS (r)
+k,t be the set of strings after the firstrsteps, whereS (0)
+k,t =S k,t. By Lemma 5, the
+strings inS (0)
+k,t are pairwise distinct and have lengthk, somaxov(S (0)
+k,t )≤k−1. We prove by induction onr
+that the firstrsteps satisfy the selection rule. The claim is immediate forr= 0. Assume that it holds for
+somer <N. Corollary 4 givesmaxov(S (r)
+k,t )≤maxov(S (0)
+k,t )≤k−1. The specified pair at stepr+ 1 has an
+overlap of lengthk−1, so this step also satisfies the selection rule.
+After theNsteps, the input set isS ′
+k,t =S (N)
+k,t ={ ˆUi, ˆVi, ˆWi|1≤i≤t}. For every 1≤i≤t, let
+U′
+i =CSubstr k−1(Ui,4),V ′
+i =CSubstr k−1(Vi,2), andW ′
+i =CSubstr k−1(Wi,6). By Lemma 2,U ′
+i,V ′
+i , andW ′
+i
+are borders of ˆUi, ˆVi, and ˆWi, respectively. The following lemma shows that the maximum overlap length
+between any two distinct strings inS ′
+k,t can be computed from their borders of lengthk−1.
+Lemma 11.For any two distinct stringsA,B∈S ′
+k,t, letA ′ andB ′ be their respective borders of length
+k−1, which belong to{U ′
+i,V′
+i,W′
+i|1≤i≤t}. Thenov(A,B) =ov(A ′,B′).
+Proof.Letr=ov(A,B). Every length-ksubstring of eitherAorBbelongs toS k,t. Ifr≥k, the length-
+ksuffix ofAis equal to the length-kprefix ofB. SinceAandBcorrespond to distinct members of
+{Ui,V i,W i|1≤i≤t}, this contradicts Lemma 5. Hence,r≤k−1.
+SinceA′ is a suffix ofAandB ′ is a prefix ofB,ov(A ′,B′)≤ov(A,B) =r. The boundr≤k−1 implies
+that the suffix ofAof lengthris a suffix ofA ′, and the prefix ofBof lengthris a prefix ofB ′. Hence,
+r≤ov(A ′,B′). The two inequalities giveov(A,B) =ov(A ′,B′).
+8
+
+===== PAGE 9 =====
+Figure 4: An illustration of ˆUi, ˆVi, and ˆWi inU ∞
+i ,V ∞
+i , andW ∞
+i , respectively, fors= 8. The overbraces
+mark these three strings, and the light gray blocks show the positions ofU i,j,V i,j, andW i,j in ˆUi, ˆVi, and
+ˆWi, respectively. The two dark gray blocks in each row markU ′
+i,V ′
+i , orW ′
+i as a border of the corresponding
+string. The underbraces mark occurrences ofX s−3,X s−1,U i,V i, andW i, while cells containing a and b i
+are filled with light gray and dark gray, respectively.
+Table 1: Maximum overlap lengths fromU ′
+i,V ′
+i , andW ′
+i toU ′
+j,V ′
+j , andW ′
+j. The labels (a)–(i) identify the
+entries referred to in the proof.
+ov(·,·) U′
+j V′
+j W′
+j
+U′
+i (a)
+(
+|U′
+i|(i=j),
+0 (i̸=j) (b) 1 (c) 0
+V′
+i (d)
+(
+s−3 (i=j),
+0 (i̸=j) (e)
+(
+|V′
+i|(i=j),
+0 (i̸=j) (f)
+(
+s−3 (i=j),
+0 (i̸=j)
+W′
+i (g)
+(
+s−3 (i=j),
+0 (i̸=j) (h) 0 (i)
+(
+|W′
+i|(i=j),
+0 (i̸=j)
+We next determine the overlaps among the bordersU ′
+i,V ′
+i , andW ′
+i. The overlap lengths are listed in
+Table 1, and their correctness is proved in the following lemma.
+9
+
+===== PAGE 10 =====
+Lemma 12.For every1≤i,j≤t, the values ofov(A,B)forA∈{U ′
+i,V′
+i,W′
+i}andB∈{U ′
+j,V′
+j,W′
+j}are
+as shown in Table 1.
+Proof.Setℓ=k−1 = 2s−1. The definitions ofU i,V i,W i, andX n give the following expressions for the
+three borders.
+U′
+i =X s−4bixaXs−1a,
+V′
+i = aXs−3bixaXs−3bi,
+W′
+i =X s−4bixaXs−1bi.
+The positions of b i and a in these expressions are as follows.
+bi a
+U′
+i s−3s−1,ℓ
+V′
+i s−1,ℓ1,s+ 1
+W′
+i s−3,ℓ s−1
+Ifov(A,B)>0, the definition ofovimpliesA[ℓ] =B[ov(A,B)].
+We first prove entries (a)–(c), which haveU ′
+i as the first argument. SinceU ′
+i[ℓ] = a, the possible positive
+overlap lengths withU ′
+j,V ′
+j , andW ′
+j are{s−1,ℓ},{1,s+ 1}, and{s−1}, respectively. For entry (b), the
+equalityU′
+i[ℓ] =V ′
+j [1] = a gives an overlap of length at least 1. At the candidate lengthss−1 ands+ 1, the
+prefix of the second argument contains b j, but the corresponding suffix ofU ′
+i contains only x, y, and a. For
+entry (a), the candidateℓrequiresU ′
+i =U′
+j, which holds exactly wheni=j. In this case,ov(U ′
+i,U′
+i) =|U′
+i|.
+No other positive overlap is possible, so entries (a)–(c) follow.
+We next prove entries (d)–(i). BothV ′
+i andW ′
+i end in bi. Fori̸=j, none ofU ′
+j,V ′
+j , andW ′
+j contains bi,
+so the corresponding cases in entries (d)–(i) are zero. Now assumei=j. The equalitiesov(V ′
+i,V′
+i ) =|V ′
+i|
+andov(W ′
+i,W′
+i) =|W ′
+i|prove entries (e) and (i), respectively. For the remaining entries (d), (f), (g), and (h),
+the possible positive overlap lengths withU ′
+i,V ′
+i , andW ′
+i as the second argument are{s−3},{s−1,ℓ}, and
+{s−3,ℓ}, respectively. The equalities
+U′
+i[1..s−3] =W ′
+i[1..s−3] =V ′
+i [s+ 3..ℓ] =W ′
+i[s+ 3..ℓ] =X s−4bi
+give the lower bounds−3 in entries (d), (f), and (g). Sinces−3 is the only candidate when the second
+argument isU′
+i, entries (d) and (g) are equal tos−3. For entry (f), the conditionsV′
+i [1] = a andW′
+i[1]∈{x,y}
+rule out an overlap of lengthℓ, so this entry is equal tos−3. For entry (h), the remaining candidates are
+s−1 andℓ. For both candidates, the corresponding suffix ofW ′
+i begins with the first character ofX s−4, while
+each prefix ofV ′
+i begins with a. The suffix and prefix differ for both candidates, so entry (h) is zero.
+We now specify the remaining merge operations in the lower-bound construction. By Lemma 11, the
+overlap between any two distinct strings inS ′
+k,t is equal to the overlap between their corresponding borders
+of lengthk−1. Lemma 12 therefore givesmaxov(S ′
+k,t) =s−3. For every 1≤i≤t, we merge ˆVi with ˆUi in
+this order and defineM i = ˆVi⊙ ˆUi. Lemma 11 and entry (d) of Table 1 giveov( ˆVi, ˆUi) =ov(V ′
+i,U′
+i) =s−3.
+By Corollary 4, the maximum overlap length is at mosts−3 at every step. Every selected pair has overlap
+lengths−3, so each operation satisfies the selection rule of the greedy algorithm.
+After these operations, the input set isS ′′
+k,t ={M i, ˆWi|1≤i≤t}. Corollary 4 givesmaxov(S ′′
+k,t)≤
+maxov(S′
+k,t) =s−3. For every 1≤i≤tandA∈S ′′
+k,t\{M i}, the inequalitys−3<min{| ˆUi|,| ˆVi|}and
+Lemma 1 giveov(M i,A) =ov( ˆUi,A) andov(A,M i) =ov(A, ˆVi). Thus, Lemmas 11 and 12 give
+ov(Mi,M j) =ov( ˆUi, ˆVj) = 1 (i̸=j),
+ov(Mi, ˆWj) =ov( ˆUi, ˆWj) = 0,
+ov( ˆWi,M j) =ov( ˆWi, ˆVj) = 0,
+ov( ˆWi, ˆWj) = 0 (i̸=j).
+10
+
+===== PAGE 11 =====
+The identities for the ordered pairs inS ′′
+k,t givemaxov(S ′′
+k,t)≤1. We next mergeM 1,M 2,...,M t in this
+order to obtainM=M 1⊙M 2⊙···⊙M t. Lemma 1 and Corollary 4 successively show that every operation
+has overlap length 1 and satisfies the selection rule of the greedy algorithm.
+After these operations, the input set isS ′′′
+k,t ={ ˆW1,..., ˆWt,M}. Corollary 4 givesmaxov(S ′′′
+k,t)≤
+maxov(S′′
+k,t)≤1. Since everyM i has length greater than 1, successive applications of Lemma 1 give
+ov(M, ˆWi) =ov(M t, ˆWi) = 0 andov( ˆWi,M) =ov( ˆWi,M 1) = 0.
+Together withov( ˆWi, ˆWj) = 0 fori̸=j, these equalities givemaxov(S ′′′
+k,t) = 0.
+The following theorem gives the length of the string obtained by the procedure above.
+Theorem 13.For every even integerk= 2s≥10and everyt≥1, there exists a stringT ′∈GREEDY(S k,t)
+of length
+|T′|=t(9s+ 1) + 1.
+Proof.We merge the strings inS ′′′
+k,t in the order
+T′ =M⊙ ˆW1⊙···⊙ ˆWt =M ˆW1··· ˆWt.
+Corollary 4 andmaxov(S ′′′
+k,t) = 0 show that alltoperations have overlap length 0 and satisfy the selection
+rule of the greedy algorithm. Since every merge operation used to obtainT ′ satisfies the selection rule of the
+greedy algorithm, we haveT ′∈GREEDY(S k,t).
+We compute the length ofT ′ by subtracting the sum of the overlap lengths in all merge operations from
+the total length of the strings inS k,t. The total length of all strings inS k,t iskt(4s+ 2). For eachi, the
+strings ˆUi, ˆVi, and ˆWi are obtained byk−1,s−1, ands+ 1 merge operations, respectively. All merge
+operations used to obtainS′
+k,t have overlap lengthk−1, so the sum of their overlap lengths ist(4s−1)(k−1).
+Thetoperations fromS ′
+k,t toS′′
+k,t each have overlap lengths−3. Thet−1 operations fromS ′′
+k,t toS′′′
+k,t each
+have overlap length 1. The finaltoperations have overlap length 0. Subtracting these overlap lengths from
+the total length gives
+|T′|=kt(4s+ 2)−t(4s−1)(k−1)−t(s−3)−(t−1)−t·0
+=t(2s(4s+ 2)−(4s−1)(2s−1)−(s−3)−1) + 1
+=t
+ 
+8s2 + 4s−8s 2 + 6s−1−s+ 2
+
++ 1
+=t(9s+ 1) + 1.
+We now obtain the lower bound on the approximation ratio for every evenk.
+Theorem 14.For every even integerk≥10,
+ρk≥ 9k+ 2
+4k+ 4 = 9
+4− 7
+4k+ 4.
+Proof.Fix an even integerk= 2s≥10. For everyt≥1, Theorems 10 and 13 imply that there exists a
+stringT ′∈GREEDY(S k,t) satisfying
+|T′|
+OPT(Sk,t) = t(9s+ 1) + 1
+t(4s+ 2) +k−1 .
+Sincetis arbitrary, the definition ofρ k gives
+ρk≥lim
+t→∞
+t(9s+ 1) + 1
+t(4s+ 2) +k−1 = 9s+ 1
+4s+ 2 = 9k+ 2
+4k+ 4 = 9
+4− 7
+4k+ 4.
+By taking the limit over evenk, we obtain the following lower bound of approximation ratio.
+Corollary 15.The approximation ratio of the greedy algorithm for the general SCS problem is at least9/4.
+11
+
+===== PAGE 12 =====
+AI Usage Disclosure
+The author used OpenAI’s GPT-5.6 Sol as part of a custom harness. The counterexample and proof strategies
+were first discovered by the model and then examined in detail and simplified by the author. For writing
+assistance, the same model was used to draft technical text, correct typographical errors, and improve the
+organization of the manuscript. All claims and proofs were verified by the author, who takes full responsibility
+for the contents of this paper.
+References
+[1] Chris Armen and Clifford Stein. A 2 2/3 superstring approximation algorithm.Discret. Appl. Math.,
+88(1-3):29–57, 1998.
+[2] Jørgen Bang-Jensen and Gregory Z. Gutin.Digraphs - Theory, Algorithms and Applications, Second
+Edition. Springer Monographs in Mathematics. Springer, 2009.
+[3] Avrim Blum, Tao Jiang, Ming Li, John Tromp, and Mihalis Yannakakis. Linear approximation of
+shortest superstrings.J. ACM, 41(4):630–647, 1994.
+[4] Bastien Cazaux and Eric Rivals. Relationship between superstring and compression measures: New
+insights on the greedy conjecture.Discret. Appl. Math., 245:59–64, 2018.
+[5] Nikolai Chukhin, Alexander Kulikov, Ivan Mihajlin, and Alexander Smal. A tight cycle-cover inequality
+for shortest common superstring. Technical Report TR26-157, Electronic Colloquium on Computational
+Complexity (ECCC), 2026.
+[6] Nikolai Chukhin, Alexander S. Kulikov, Ivan Mihajlin, and Alexander Smal. The greedy superstring
+algorithm achieves ratio 2 for strings of length 6 already, 2026.
+[7] N. G. de Bruijn. A combinatorial problem.Proceedings of the Section of Sciences of the Koninklijke
+Nederlandse Akademie van Wetenschappen te Amsterdam, 49(7):758–764, 1946.
+[8] Matthias Englert, Nicolaos Matsakis, and Pavel Vesel´ y. Approximation guarantees for shortest su-
+perstrings: Simpler and better. In Satoru Iwata and Naonori Kakimura, editors,34th International
+Symposium on Algorithms and Computation, ISAAC 2023, Kyoto, Japan, December 3-6, 2023, volume
+283 ofLIPIcs, pages 29:1–29:17. Schloss Dagstuhl - Leibniz-Zentrum f¨ ur Informatik, 2023.
+[9] John Gallant, David Maier, and James A. Storer. On finding minimal length superstrings.J. Comput.
+Syst. Sci., 20(1):50–58, 1980.
+[10] John K. Gallant.String Compression Algorithms. PhD thesis, Princeton University, 1982.
+[11] Alexander Golovnev, Alexander S. Kulikov, Alexander Logunov, Ivan Mihajlin, and Maksim Nikolaev.
+Collapsing superstring conjecture. In Dimitris Achlioptas and L´ aszl´ o A. V´ egh, editors,Approximation,
+Randomization, and Combinatorial Optimization. Algorithms and Techniques, APPROX/RANDOM
+2019, Massachusetts Institute of Technology, Cambridge, MA, USA, September 20-22, 2019, volume
+145 ofLIPIcs, pages 26:1–26:23. Schloss Dagstuhl - Leibniz-Zentrum f¨ ur Informatik, 2019.
+[12] Dan Gusfield.Algorithms on Strings, Trees, and Sequences - Computer Science and Computational
+Biology. Cambridge University Press, 1997.
+[13] Haim Kaplan and Nira Shafrir. The greedy algorithm for shortest superstrings.Inf. Process. Lett.,
+93(1):13–17, 2005.
+12
+
+===== PAGE 13 =====
+[14] Alexander S. Kulikov, Sergey Savinov, and Evgeniy Sluzhaev. Greedy conjecture for strings of length 4.
+In Ferdinando Cicalese, Ely Porat, and Ugo Vaccaro, editors,Combinatorial Pattern Matching - 26th
+Annual Symposium, CPM 2015, Ischia Island, Italy, June 29 - July 1, 2015, Proceedings, volume 9133
+ofLecture Notes in Computer Science, pages 307–315. Springer, 2015.
+[15] Bin Ma. Why greed works for shortest common superstring problem.Theor. Comput. Sci., 410(51):5374–
+5381, 2009.
+[16] Eduardo Moreno. De bruijn sequences and de bruijn graphs for a general language.Inf. Process. Lett.,
+96(6):214–219, 2005.
+[17] Marcin Mucha. Lyndon words and short superstrings. In Sanjeev Khanna, editor,Proceedings of the
+Twenty-Fourth Annual ACM-SIAM Symposium on Discrete Algorithms, SODA 2013, New Orleans,
+Louisiana, USA, January 6-8, 2013, pages 958–972. SIAM, 2013.
+[18] Eugene W. Myers. A history of DNA sequence assembly.it Inf. Technol., 58(3):126–132, 2016.
+[19] Maksim S. Nikolaev. All instantiations of the greedy algorithm for the shortest common superstring
+problem are equivalent. In Thierry Lecroq and H´ el` ene Touzet, editors,String Processing and Information
+Retrieval - 28th International Symposium, SPIRE 2021, Lille, France, October 4-6, 2021, Proceedings,
+volume 12944 ofLecture Notes in Computer Science, pages 61–67. Springer, 2021.
+[20] Maksim S. Nikolaev. Greedy conjecture for the shortest common superstring problem and its strengthen-
+ings. In Zsuzsanna Lipt´ ak, Edleno Silva de Moura, Karina Figueroa, and Ricardo Baeza-Yates, editors,
+String Processing and Information Retrieval - 31st International Symposium, SPIRE 2024, Puerto Val-
+larta, Mexico, September 23-25, 2024, Proceedings, volume 14899 ofLecture Notes in Computer Science,
+pages 233–248. Springer, 2024.
+[21] Pavel A. Pevzner, Haixu Tang, and Michael S. Waterman. A new approach to fragment assembly in DNA
+sequencing. In Thomas Lengauer, editor,Proceedings of the Fifth Annual International Conference on
+Computational Biology, RECOMB 2001, Montr´ eal, Qu´ ebec, Canada, April 22-25, 2001, pages 256–267.
+ACM, 2001.
+[22] Heidi J. Romero, Carlos A. Brizuela, and Andrei Tchernykh. An experimental comparison of ap-
+proximation algorithms for the shortest common superstring problem. In5th Mexican International
+Conference on Computer Science (ENC 2004), 20-24 September 2004, Colima, Mexico, pages 27–34.
+IEEE Computer Society, 2004.
+[23] Z. Sweedyk. A 2½-approximation algorithm for shortest superstring.SIAM J. Comput., 29(3):954–986,
+1999.
+[24] Jorma Tarhio and Esko Ukkonen. A greedy approximation algorithm for constructing shortest common
+superstrings.Theor. Comput. Sci., 57:131–145, 1988.
+[25] Esko Ukkonen. A linear-time algorithm for finding approximate shortest common superstrings.Algo-
+rithmica, 5(3):313–323, 1990.
+[26] Virginia Vassilevska. Explicit inapproximability bounds for the shortest superstring problem. In Joanna
+Jedrzejowicz and Andrzej Szepietowski, editors,Mathematical Foundations of Computer Science 2005,
+30th International Symposium, MFCS 2005, Gdansk, Poland, August 29 - September 2, 2005, Proceed-
+ings, volume 3618 ofLecture Notes in Computer Science, pages 793–800. Springer, 2005.
+[27] Vijay V. Vazirani.Approximation algorithms. Springer, 2001.
+13

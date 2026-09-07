@@ -1,0 +1,1884 @@
+===== PAGE 1 =====
+Variational preparation of thermofield double states for SYK models via multi-angle
+QAOA: sequential angle pruning for circuit reduction
+Haji Muhammad Husnain Ashfaq,1,∗ Moongul Byun,1,† and Keun-Young Kim1,‡
+1Department of Physics and Photon Science, Gwangju Institute of Science and Technology,
+123 Cheomdan-gwagiro, Gwangju 61005, Republic of Korea
+Variational preparation of thermofield double (TFD) states can require deep quantum circuits,
+particularly for interacting many-body systems. Reducing these circuits while retaining high fidelity
+is therefore crucial for TFD-state preparation on noisy quantum processors. We study this problem
+by applying the multi-angle quantum approximate optimization algorithm (ma-QAOA) to TFD-
+state preparation and introducing two top-down sequential angle-pruning algorithms. Starting from
+the optimized initial ma-QAOA circuit, both algorithms sequentially remove Pauli-string evolutions
+with small optimized angles and reoptimize the remaining parameters after each removal. We apply
+these algorithms to Gaussian and binary Sachdev–Ye–Kitaev (SYK) models in both dense and
+sparse cases. We find that ma-QAOA prepares the target TFD states with high fidelity and that
+sequential small-angle pruning retains high fidelity while reducing the circuit depth, particularly at
+low temperature. Moreover, using the post-reoptimization cost in sequential small-angle pruning
+further improves the fidelity. For the binary sparseN= 10SYK model atβ= 10,88.8%–92.1%of
+the nonlocal Pauli-string evolutions are removed while retaining an average fidelity of approximately
+95%. Finally, we propose extensions of the sequential pruning algorithms toward quantum–classical
+hybrid implementation.
+I. INTRODUCTION AND SUMMARY
+The thermofield double (TFD) state is a canonical pu-
+rification of a Gibbs state. It is a finite-temperature en-
+tangled state of two copies of a quantum many-body
+system and has been used in quantum simulations of
+traversable-wormhole protocols [1, 2] in the context of
+holographic duality [3]. Thus, accurate preparation of
+the TFD state on a quantum processor is important be-
+cause its fidelity directly affects the experimental results.
+Exact preparation of the TFD state on a quantum
+processor is challenging because its direct construction
+involves nonunitary imaginary-time evolution. One way
+to prepare the TFD state is to employ variational quan-
+tum algorithms (VQAs), which approximate the TFD
+state using a variational quantum circuit optimized with
+a suitable objective function [4, 5]. One standard choice
+of this function is the energy expectation value, as in the
+variational quantum eigensolver (VQE), which approxi-
+mates the ground state of a Hamiltonian [6, 7]. For TFD-
+state preparation via VQE, one can use an engineered
+Hamiltonian whose ground state approximates the TFD
+state [8, 9]. Other objective functions have also been con-
+sidered for TFD-state preparation, including engineered
+cost functions [10, 11] and infidelity in numerical simula-
+tions [12].
+Beyond the choice of objective function, the perfor-
+mance of a VQA also depends on the structure of the
+variational quantum circuit [13–16]. A Hamiltonian-
+informed ansatz provides a simple way to construct
+∗ m.husnainashfaq2911@gmail.com
+† moongulbyun@gm.gist.ac.kr
+‡ fortoe@gist.ac.kr
+the variational quantum circuit using Hamiltonians re-
+lated to the target system. A representative exam-
+ple is the quantum approximate optimization algorithm
+(QAOA) [17, 18]. In its standard form, QAOA alter-
+natesunitaryevolutionsgeneratedbytwononcommuting
+Hamiltonians, referred to as the cost and mixer Hamilto-
+nians. As a hybrid quantum–classical algorithm, QAOA
+can provide a time-efficient approach to approximate
+state preparation with shallow circuits, making it at-
+tractive for near-term quantum simulation of many-body
+systems [19–25]. QAOA-motivated approaches have also
+been applied to TFD-state preparation using intra- and
+inter-system Hamiltonians [10–12, 26].
+However, for complex problems, QAOA can require
+many gates and large circuit depth, limiting its imple-
+mentation on near-term quantum hardware [27–29]. One
+approach that can enable circuit reduction is the multi-
+angle QAOA (ma-QAOA) [30, 31]. Unlike standard
+QAOA, ma-QAOA assigns independent variational pa-
+rameters to individual Hamiltonian terms. In Ref. [30],
+many optimized parameters were found to be zero, so the
+corresponding gates could be removed while retaining the
+solution quality.
+Structurally similar to ma-QAOA, a variational circuit
+ansatz with independent parameters for different Hamil-
+tonian terms has been applied to TFD-state prepara-
+tion [9, 11, 26]. This suggests that ma-QAOA can also
+provide a natural ansatz for TFD-state preparation for
+many-bodysystems. Atthesametime, TFD-stateprepa-
+ration can require substantial circuit resources, making
+circuit reduction important for near-term quantum sim-
+ulation [9, 12]. However, the application of ma-QAOA to
+TFD-state preparation together with systematic circuit
+reduction has not yet been explored; this motivates the
+present work.
+As a model for a many-body system, we consider
+arXiv:2609.02793v1  [quant-ph]  2 Sep 2026
+
+===== PAGE 2 =====
+2
+the Sachdev–Ye–Kitaev (SYK) model, which describes
+strongly interactingNMajorana fermions [32, 33]. In
+the large-Nand low-temperature limit, the SYK model
+shows maximal quantum chaos and is holographically
+dual to nearlyAdS2 gravity [34–38]. These features make
+the model a useful platform for quantum simulations of
+traversable-wormhole protocols, which require accurate
+TFD-state preparation [1, 2]. One can further consider
+sparse SYK models, which reduce the number of interac-
+tion terms while preserving quantum chaos [39–43]. This
+makes sparse SYK models suitable for near-term quan-
+tum simulations [2, 44, 45].
+There have been several variational approaches to
+thermal-state preparation for both dense and sparse SYK
+models [8, 46–48]. Extending these works, we consider
+TFD-state preparation for the SYK models using ma-
+QAOA. The cost and mixer Hamiltonians are given by
+the two-sided SYK Hamiltonian and a left–right inter-
+action, respectively. An independent variational angle is
+assigned to the Pauli-string evolution corresponding to
+each Hamiltonian term.
+However, since SYK Hamiltonians contain many inter-
+action terms, the ma-QAOA ansatz correspondingly con-
+tains a large number of gates. Although zero-angle gates
+can be removed directly, a substantial number of gates
+can still remain, and implementing them can degrade the
+quantum simulation results. It therefore remains unclear
+how to systematically and substantially reduce these gates
+in ma-QAOA while retaining high fidelity for TFD-state
+preparation on quantum hardware.
+To resolve this, we note that pruning redundant or
+weakly contributing circuit elements is a common strat-
+egy for compacting variational circuits [49–54]. Previous
+ma-QAOA studies have also considered removing zero or
+near-zero variational angles for circuit reduction [30, 55].
+These observations motivate a top-down pruning ap-
+proach starting from the initial ma-QAOA ansatz. In
+addition, unlike bottom-up adaptive construction, this
+approach avoids the repeated search over an operator
+pool [56]. We therefore apply this top-down pruning ap-
+proach to TFD-state preparation with ma-QAOA; this is
+the main focus of this work.
+Specifically, we proposesequential angle-pruning ma-
+QAOA(SAP-ma-QAOA). After optimizing the initial
+ma-QAOA circuit, this algorithm removes the nonlocal
+Pauli-string evolution with the smallest angle magni-
+tude and classically reoptimizes the remaining param-
+eters after each removal.1 We further proposeobjective-
+aware SAP-ma-QAOA(OSAP-ma-QAOA). This algo-
+rithm considers several candidate Pauli-string evolutions
+with small optimized angles. Then, the evolution whose
+removal yields the lowest post-reoptimization cost is se-
+1 A related reoptimization procedure is used in recursive QAOA,
+where QAOA is repeatedly optimized after reducing the problem
+size [57].
+lected. These two angle-based sequential pruning algo-
+rithms are summarized schematically in Fig. 1.
+The main contributions of this work are threefold.
+First, we apply ma-QAOA to TFD-state preparation
+with SYK models and obtain high-fidelity TFD states
+even at low temperature. Second, we show that SAP-
+ma-QAOA retains high TFD fidelity with shallow cir-
+cuit depth, while OSAP-ma-QAOA can further improve
+the fidelity. Third, we show that SAP- and OSAP-ma-
+QAOA remain effective with an energy-based objective,
+while combined batch–sequential pruning reduces the op-
+timization cost.
+We substantiate these results by applying ma-QAOA
+and the proposed pruning algorithms to the Gaussian
+and binaryN= 8SYK models in both dense and sparse
+cases, and to the binary sparseN= 10SYK model at
+β= 0.1,1, and10. We quantify the performance of the
+algorithms by numerically computing the infidelity with
+the exact TFD state and the required circuit resources at
+each pruning step. We compare the infidelity trajectories
+of the sequential angle-pruning algorithms with those of
+the batch-pruning and random-pruning algorithms. We
+further verify the algorithms using the energy expecta-
+tion value as an alternative objective function and com-
+bine sequential and batch pruning to reduce the opti-
+mization cost.
+Therestofthispaperisorganizedasfollows. InSec.II,
+we introduce the dense and sparse SYK models and de-
+fine the corresponding TFD target states. In Sec. III, we
+describe the QAOA-inspired TFD ansatz and its multi-
+angle generalization. In Sec. IV, we introduce SAP-ma-
+QAOA and OSAP-ma-QAOA, describe the comparison
+algorithms, and present the numerical results. In Sec. V,
+we examine the two algorithms with a different objec-
+tive function and combine sequential and batch prun-
+ing for hardware-efficient implementation. We conclude
+with a discussion of the results and possible extensions
+in Sec. VI.
+II. SYK MODELS AND THERMOFIELD
+DOUBLE STATE
+For our analysis, we consider four SYK models: (i)
+Gaussian dense, (ii) Gaussian sparse, (iii) binary dense,
+and (iv) binary sparse SYK models. In the following, we
+briefly describe these models and the corresponding TFD
+target state.
+A. SYK models
+We consider a doubled SYK system consisting of a left
+and a right system, denoted asLandR, respectively.
+Each side containsNMajorana fermions, denoted by
+ψj
+L andψ j
+R, with the Clifford algebra{ψi
+a,ψj
+b}=δ abδij
+wherea,b=L,Randi,j= 1,...,N. For evenq, the
+
+===== PAGE 3 =====
+3
+DenseSYK models
+Sparse SYK models
+𝜃!
+ 𝜃"
+ 𝜃#
+ 𝜃$
+q0
+q1
+q2
+q3
+q4
+q5
+q6
+q7
+⋯
+𝜃!
+ 𝜃"
+ 𝜃#
+q0
+q1
+q2
+q3
+q4
+q5
+q6
+q7
+⋯
+𝜃!
+ 𝜃"
+ 𝜃#
+ 𝜃$
+q0
+q1
+q2
+q3
+q4
+q5
+q6
+q7
+⋯
+ 𝜃!
+ 𝜃#
+ 𝜃$
+q0
+q1
+q2
+q3
+q4
+q5
+q6
+q7
+⋯
+	𝜃" ℒ!
+Remove
+	𝜃$
+Remove
+ℒ!<ℒ"
+SAP-
+ma-QAOA
+OSAP-
+ma-QAOA
+Reoptimize
+Smallest angle: 𝜃$
+Smallest angles: 𝜃", 𝜃$
+(a) (b)
+ma-QAOA
+TFD 
+state
+Pruning round
+Evaluate ℒ
+ℒ"
+𝜃!
+ 𝜃"
+ 𝜃#
+q0
+q1
+q2
+q3
+q4
+q5
+q6
+q7
+⋯
+FIG. 1. Schematic overview of the SYK models and the circuit-pruning procedures in ma-QAOA. (a) Connectivity structures of
+the dense and sparse SYK models. (b) In SAP-ma-QAOA, the nonlocal Pauli-string evolution with the smallest angle magnitude
+(dashed) is removed and the remaining parameters are classically reoptimized. In OSAP-ma-QAOA, several evolutions with
+smallanglemagnitudes(dashed)areconsideredasremovalcandidates, andthecandidateyieldingthelowestpost-reoptimization
+cost is selected; in the example shown,L1 <L 2. The colored gates represent different Pauli-string evolutions. The red and
+blue arrows indicate classical and quantum computations, respectively, and the angles shown in red are those updated by the
+reoptimization. The green loop indicates that the pruning-and-reoptimization procedure is repeated until the target number of
+blocks is reached.
+Gaussian dense SYK Hamiltonian on each side is
+Ha =i q/2 X
+1≤j1<···<jq≤N
+Jj1···jqψj1
+a ···ψ jq
+a ,(1)
+where the random couplings have
+Jj1···jq = 0, J2
+j1···jq = J2(q−1)!
+Nq−1 .(2)
+Throughout this paper, we setJ=
+√
+2. The two copies
+are combined into the two-sided HamiltonianHL +HR.
+We also consider the left–right interaction Hamiltonian
+Hint =i
+NX
+j=1
+ψj
+Lψj
+R.(3)
+Thus, the total Hamiltonian is given by
+Htot =H L +HR +gH int,(4)
+wheregis a coupling constant.
+For quantum-computer implementation, we adopt the
+Jordan–Wigner (JW) transformation
+ψi
+L = 1√
+2Zi−1XIN−i, ψ i
+R = 1√
+2Zi−1YI N−i,(5)
+where the products and powers are understood as tensor
+products. This transformation ensures that the Majo-
+rana operators satisfy the Clifford algebra and thatHint
+is Hermitian.
+B. Sparse SYK models
+We briefly review two classes of sparse SYK models.
+1. Gaussian sparse SYK.— The Gaussian sparse SYK
+Hamiltonian is given by
+Ha =i q/2 X
+1≤j1<···<jq≤N
+Jj1···jqψj1
+a ···ψ jq
+a ,(6)
+Jj1···jq =J j1···jqxj1···jq,(7)
+wherex j1···jq∈{0,1}specifies whether the correspond-
+ing interaction term is retained. In the sparse ensemble,
+the nonzero Gaussian couplings have
+Jj1···jq = 0, J2
+j1···jq = J2(q−1)!
+psNq−1 ,(8)
+wherep s denotes the retention probability, such that
+xj1···jq = 1with probabilityp s. In our finite-Nnumer-
+ics, we fix the number of retained interaction terms to
+K=p s
+ N
+q
+
+for a givenps, whereps = 1corresponds to
+the dense case.
+2. Binary sparse SYK.— Another sparsification
+scheme is the binary-coupling sparse SYK model [42].
+This model takes the coefficient in (6) in the form
+Jj1···jq =x j1···jqηj1···jq
+J√
+K
+, η j1···jq∈{+1,−1},(9)
+with the two signs chosen with equal probability, while
+the retained interaction terms are chosen uniformly at
+random. All retained coefficients therefore have the same
+magnitudeJ/
+√
+K.
+
+===== PAGE 4 =====
+4
+It is known that the binary sparse SYK model retains
+quantum-chaotic behavior under sparsification more ro-
+bustly than the Gaussian sparse SYK model [42]. The
+binary sparse SYK model has been used for hardware-
+feasible quantum simulation for this reason [2, 45]. For
+comparison, we also consider the binary dense SYK
+model withp s = 1. For all four SYK models consid-
+ered above, we focus on theq= 4case throughout this
+paper.
+C. Thermofield double state
+The TFD target state with a given SYK Hamiltonian
+at an inverse temperatureβ= 1/Tis prepared from a
+normalized maximally entangled state|I⟩by imaginary-
+time evolution,
+|TFD(β)⟩= 2N/2
+p
+Zβ
+e−β
+4 (HL+HR)|I⟩,(10)
+whereZ β = Tre−βHL = Tre−βHR in the JW transfor-
+mation used here. The maximally entangled state sat-
+isfies(ψ j
+L +iψ j
+R)|I⟩= 0∀jand is the ground state of
+Hint. This is also equivalent to the infinite-temperature
+(β= 0) limit of (10), and imaginary-time evolution un-
+derH L +HR lowersTto the target value. We use (10)
+as the variational target state throughout this work.
+III. QAOA-MOTIVATED ANSATZ FOR
+TFD-STATE PREPARATION
+A. Quantum approximate optimization algorithm
+We briefly review the QAOA-motivated circuit ansatz
+applied to SYK models. The QAOA constructs a varia-
+tional state by alternating two noncommuting time evo-
+lutions, one generated by a cost HamiltonianHcost and
+the other by a mixer HamiltonianHmix [17, 18]. Starting
+from a simple reference state, denoted as|ψ0⟩, ap-layer
+QAOA circuit is written as
+|ψp(γ,α)⟩=
+pY
+ℓ=1
+Uℓ(γℓ,αℓ)|ψ 0⟩,
+Uℓ(γℓ,αℓ) =e−iαℓHmixe−iγℓHcost,
+(11)
+whereγ= (γ 1,...,γ p)andα= (α 1,...,α p)denote the
+cost and mixer angles, respectively, andℓdenotes the
+layer index.
+In our setting, the doubled SYK Hamiltonian serves
+as the cost Hamiltonian and the left–right coupling as
+the mixer Hamiltonian, so we identifyHcost =H L +HR
+andH mix =H int. The reference state is chosen as the
+maximally entangled state, such that|ψ0⟩=|I⟩, so the
+final variational state becomes
+|ψp(γ,α)⟩=
+pY
+ℓ=1
+e−iαℓHinte−iγℓ(HL+HR)|I⟩.(12)
+After the JW transformation,H cost andH mix become
+sums of Pauli strings,
+Hcost =
+MCX
+ν=1
+cνPC
+ν , H mix =
+MMX
+µ=1
+mµPM
+µ ,(13)
+whereP C
+ν andP M
+µ are Pauli strings acting on the qubit
+Hilbert space,cν andmµ are constants, andMC andMM
+denote the numbers of Pauli strings inHcost andH mix,
+respectively. In our ma-QAOA setting, SYK models with
+system sizeNgenerally give
+MC = 2K, M M =N.(14)
+Therefore, the time evolutions in QAOA can be decom-
+posed into products of individual Pauli-string evolutions
+in the schematic form ofe−iθP using the usual Trotteri-
+zation.
+The variational parameters{γ,α}are optimized to
+minimize a cost functionL(γ,α)at a desiredβ. We
+consider two choices forL. The first is the infidelity with
+respect to the target TFD state, where the fidelity is de-
+fined by
+F(γ,α) =|⟨TFD(β)|ψ p(γ,α)⟩| 2.(15)
+We maximize this quantity, or equivalently minimize the
+infidelity
+L(γ,α) = 1−F(γ,α).(16)
+Alternatively, one can adopt a VQE approach; the
+TFD state can approximately be obtained from the
+ground state ofH tot in (4), denoted as|GS(g)⟩. In
+the present finite-Nanalysis, we choosegsuch that
+|⟨GS(g)|TFD(β)⟩|2 ≈1. Thus, the approximate TFD
+statecanbeobtainedbyminimizingtheenergycostfunc-
+tion2
+L(γ,α) =⟨ψ p(γ,α)|H tot|ψp(γ,α)⟩,(17)
+so that the full optimization is expected to give
+|ψp(γ,α)⟩≈|GS(g)⟩. While determininggin this way
+still requires the exact TFD state, we use the energy ob-
+jective to examine whether our pruning algorithms re-
+main effective with a quantum-measurable objective. In
+coupled SYK models, however, the relation betweeng
+andβis known [3, 63], providing a practical way to esti-
+mategfor a targetβin an energy-based implementation.
+Unless otherwise stated, we use the infidelity objective;
+the energy objective is used in Sec. V.
+2 Variational approaches have also been developed to prepare
+Gibbs states directly by minimizing the free energy [47, 58–62].
+
+===== PAGE 5 =====
+5
+𝑆!
+𝐻
+𝑆!
+𝐻
+𝐻
+𝐻
+𝑅"
+𝐻
+𝐻
+𝑆
+𝐻
+𝑆
+𝐻
+q0
+q1
+q2
+q3
+FIG. 2. Circuit realization of a single cost evolution for
+the cost termψ1
+Lψ2
+Lψ3
+Lψ4
+L. The identity operators act on the
+other four qubits forN= 8SYK models.
+B. Multi-angle QAOA
+In the standard QAOA, all time evolutions generated
+byH cost within a layer share a single angleγℓ, while all
+time evolutions generated byH mix share another angle
+αℓ. Hereweinsteaduseama-QAOAansatz[30], inwhich
+every time evolution carries an independent angle,
+|ψ(θ)⟩=
+pY
+ℓ=1
+"MMY
+µ=1
+e−iθM
+ℓ,µPM
+µ
+MCY
+ν=1
+e−iθC
+ℓ,νPC
+ν
+#
+|I⟩,(18)
+for a givenp, whereθ={θ C
+ℓ,ν,θM
+ℓ,µ}. We refer to the
+Pauli-string evolutionse−iθC
+ℓ,νPC
+ν ande −iθM
+ℓ,µPM
+µ as cost
+and mixer evolutions, respectively.
+Each cost evolution can be decomposed into a ladder
+of CNOT gates around anRz gate, together withH,S,
+andS † gates. This structure is common to every cost
+evolution; forj 1 < j2 < j3 < j4, the JW transformation
+maps a cost term to
+ψj1
+a ψj2
+a ψj3
+a ψj4
+a ∼A j1Bj2Aj3Bj4
+j2−1Y
+k=j1+1
+Zk
+j4−1Y
+k=j3+1
+Zk,
+(19)
+where(A,B) = (Y,X)and(X,Y)fora=LandR, re-
+spectively. Here the subscript denotes the qubit position
+and the identity acts on the remaining qubits. An evolu-
+tion therefore acts onw=j 2 +j4−j1−j3 +2qubits with
+2(w−1)CNOT gates. After the basis change, the Pauli
+string becomes a product ofZoperators, so the phase
+depends only on the parity of the qubits involved. The
+CNOT chain accumulates this parity on the last qubit,
+where a singleRz rotation applies the phase, and is then
+reversed. Sincewdepends on the interaction indices,
+different cost evolutions can have different circuit depths
+and gate counts. Also, since the cost evolutions generally
+do not commute, their ordering is fixed for each disorder
+realization and kept unchanged throughout the optimiza-
+tion. Figure 2 shows a representative cost evolution from
+the cost termψ1
+Lψ2
+Lψ3
+Lψ4
+L.
+Ontheotherhand,H mix becomesasumofsingle-qubit
+operators under the JW transformation,
+Hmix =− 1
+2
+NX
+j=1
+Zj.(20)
+ModelβQAOAE J [F]ma-QAOAE J [F]
+Gaussian dense
+0.1 1.000000 (0) 1.000000 (0)
+1 0.999999 (1×10 −6) 1.000000 (0)
+10 0.920725 (0.029025) 1.000000 (0)
+Gaussian sparse
+0.1 1.000000 (0) 1.000000 (0)
+1 0.999999 (1×10 −6) 1.000000 (0)
+10 0.922651 (0.030152) 0.999075 (0.000328)
+Binary dense
+0.1 1.000000 (0) 1.000000 (0)
+1 0.999997 (2×10 −6) 1.000000 (0)
+10 0.886236 (0.030025) 1.000000 (0)
+Binary sparse
+0.1 1.000000 (0) 1.000000 (0)
+1 0.999998 (1×10 −6) 0.999999 (1×10 −6)
+10 0.901556 (0.032279) 0.987927 (0.008990)
+TABLE I. Comparison of disorder-averaged fidelitiesEJ [F]
+between standard QAOA and ma-QAOA for the fourN= 8
+SYK models, averaged over 20 disorder realizations. Each
+entry reports the mean fidelity with the standard deviation
+in parentheses. For the sparse models, Gaussian sparse uses
+K= 32and binary sparse usesK= 10. All quantum circuits
+usep= 3layers.
+Thus, each mixer evolution acts only on a single qubit.
+Since the cost evolutions require two-qubit gates in their
+circuit decomposition, we refer to each of them as anon-
+local block, or simplyblock, and we count only these
+blocks when referring to the circuit block count. There-
+fore, the initial ma-QAOA ansatz containspMC = 2pK
+blocks. In addition, for a consistent comparison, we eval-
+uate the circuit depth and gate counts after simplifying
+only the mixer evolutions, using the same gate set as in
+the ma-QAOA circuit,{CNOT,Rz,H,S,S †}.
+Assigning an independent parameter to each evolution
+in ma-QAOA increases the number of variational param-
+eters relative to the standard QAOA. For example, the
+denseN= 8Hamiltonian producesp(M C +MM) = 148p
+independent variational parameters before any simplifi-
+cation. Despite this large parameter space, optimizing
+each evolution allows the circuit to reach the target TFD
+state with high fidelity.3 As in (15) and (16), the objec-
+tive function is the infidelity with the exact TFD state,
+L(θ) = 1−F(θ), F(θ) =|⟨TFD(β)|ψ(θ)⟩| 2.(21)
+We first numerically compare ma-QAOA with stan-
+dard QAOA. Table I shows disorder-averaged fidelities
+EJ[F]and their standard deviationsσ J[F]for QAOA
+and ma-QAOA for the four SYK models atβ= 0.1,1,
+and10. As shown in this table, ma-QAOA achieves high
+fidelity with the TFD state over the temperatures consid-
+ered here. In particular, ma-QAOA outperforms QAOA
+at low temperature. This result shows that ma-QAOA
+provides a more effective ansatz for constructing the full
+variational circuit for the TFD state.
+3 One can reduce the optimization cost of ma-QAOA through pa-
+rameter freezing [64] and parameter reduction [55, 65].
+
+===== PAGE 6 =====
+6
+IV. SEQUENTIAL ANGLE-PRUNING
+MA-QAOA
+The ma-QAOA ansatz can contain a large number of
+nonlocal blocks, particularly for Hamiltonians with many
+interaction terms such as the SYK model. To reduce the
+resulting circuit cost while retaining high fidelity with
+the target TFD state, we consider pruning these blocks
+based on their optimized angle magnitudes.
+A. Sequential pruning algorithms
+We introduce two pruning algorithms for the ma-
+QAOA circuit, referred to as SAP-ma-QAOA and OSAP-
+ma-QAOA. We first introduce SAP-ma-QAOA.
+1. SAP-ma-QAOA.— This algorithm sequentially re-
+moves the nonlocal block with the smallest|θ|and reop-
+timizes the remaining parameters after each removal.
+The pruning procedure starts from the optimized ini-
+tial ma-QAOA ansatz. LetB={b j}be the set of nonlo-
+cal blocks in the optimized ansatz, whereθj∈{θ C
+ℓ,ν}⊂θ
+denotes the optimized angle associated with blockb j.
+The goal is to reduceBto a prescribed target sizeS
+while keeping the cost functionLas low as possible.
+To motivate the small-angle pruning criterion, we con-
+sider the change in the cost function when a blockbj
+is removed from the optimized circuit. Around the opti-
+mized parametersθ∗, the first-order variation is assumed
+to be negligible, so the cost function is locally given by
+L(θ∗ +δθ)≃L(θ ∗) + 1
+2
+X
+i,k
+Hikδθiδθk,(22)
+whereH ik =∂ 2L/∂θi∂θk
+
+θ∗ is the Hessian. Removing
+the block associated withθ∗
+j corresponds to settingθ∗
+j to
+zero while keeping the other parametersθ∗
+¯j =θ∗\{θ∗
+j}
+fixed. Therefore, the cost change immediately after the
+removal is approximately
+∆Lpre
+j :=L(θ∗ +δθ)−L(θ ∗)≃ 1
+2Hjj
+ 
+θ∗
+j
+2
+.(23)
+When the variation ofH jj among the blocks is not
+large, this relation indicates that removing a block with
+a smaller|θ∗
+j|produces a smaller perturbation∆L pre
+j to
+the optimized cost function.
+After removingb j, the remaining parametersθ ∗
+¯j are
+then reoptimized. Denoting the remaining parameters
+during reoptimization byθ¯j, the reoptimized cost is de-
+fined as
+Lpost
+j := min
+θ¯j
+L(0,θ ¯j)≤L pre
+j ,(24)
+whereL pre
+j :=L(0,θ ∗
+¯j )denotes the cost immediately af-
+ter removingb j. Thus, SAP-ma-QAOA first selects a
+block whose removal is expected to produce a small per-
+turbation to the optimized cost and then reoptimizes the
+remaining parameters to further reduce the cost.
+Algorithm 1:SAP-ma-QAOA: sequential
+small-angle pruning with reoptimization
+Input:θ,B,L,S
+Output:θ pr,B pr
+1InitializeB act←Bandθ act←θ;
+2whileN(B act)>Sdo
+3Select the smallest-angle block,
+j⋆←arg min
+j:bj∈Bact
+|θj|.
+4Remove the selected block and its angle,
+Bact←B act\{bj⋆},θ act←θ act\{θj⋆}.
+5Reoptimize the remaining parameters,
+θact←arg min
+θact
+L(θact).
+6SetB pr←B act andθ pr←θ act;
+7returnθ pr,B pr
+In SAP-ma-QAOA, the nonlocal blocks are removed
+sequentially according to their angle magnitudes. At
+each pruning round, letB act ⊆ Bdenote the set of
+active nonlocal blocks, and letθ act ⊆θdenote the
+active variational parameters, consisting of{θ M
+ℓ,µ}and
+{θj :b j ∈ Bact}. We denote byN(A)the number of
+blocks in a block setA. In the initial ma-QAOA, we have
+Bact =Bandθ act =θ. We select the blockb j⋆∈B act
+with the smallest angle magnitude,
+j⋆ = arg min
+j:bj∈Bact
+|θj|.(25)
+We then update
+Bact←B act\{bj⋆},θ act←θ act\{θj⋆}.(26)
+The remaining active variational parameters are reopti-
+mized as
+θact←arg min
+θact
+L(θact),(27)
+before the next pruning round. For each reoptimization,
+the search range for every parameter inθact is set to its
+current value plus[−π,π), with the current value used as
+the initial point. The next block is selected according to
+the reoptimized angles. The procedure is repeated until
+N(B act) =S. The final active block set and variational
+parameters are denoted byBpr andθ pr, respectively. We
+summarize the whole procedure in Algorithm 1.
+The angle magnitude, however, only estimates the cost
+perturbation before reoptimization. Although reopti-
+mization can only reduce the cost fromLpre
+j , as shown in
+(24), the amount of this reduction can differ depending
+on which block is removed. Therefore, removingbj⋆ does
+not necessarily yield the lowest post-reoptimization cost.
+To account for this effect, we introduce OSAP-ma-
+QAOA.
+
+===== PAGE 7 =====
+7
+Algorithm 2:OSAP-ma-QAOA:
+objective-aware sequential small-angle pruning
+Input:θ,B,L,S,N C
+Output:θ pr,B pr
+1InitializeB act←Bandθ act←θ;
+2whileN(B act)>Sdo
+3Form the candidate poolC⊆B act with
+N(C) = min(NC,N(B act)),
+consisting of the blocks with the smallest angle
+magnitudes;
+4foreachb j∈Cdo
+5θ (j)
+act←arg min θact\{θj}L(θact\{θj});
+6L post
+j ←L
+ 
+θ(j)
+act
+
+;
+7Select the candidate with the lowest
+post-reoptimization cost,
+j⋆←arg min
+j:bj∈C
+Lpost
+j .
+8Update the active block set and parameters,
+Bact←B act\{bj⋆},θ act←θ (j⋆)
+act .
+9SetB pr←B act andθ pr←θ act;
+10returnθ pr,B pr
+2. OSAP-ma-QAOA.— This algorithm tentatively re-
+moves candidate nonlocal blocks with small angle mag-
+nitudes, reoptimizes the remaining parameters for each
+candidate, and selects the candidate that yields the low-
+est post-reoptimization cost.
+At each pruning round, we form a candidate poolC⊆
+Bact consisting of the blocksbj∈B act with the smallest
+|θj|. We prescribe the candidate-pool size asNC, while
+the actual number of blocks inCis given by
+N(C) = min(NC,N(B act)).(28)
+Thus, ifN(B act)≤N C, we haveC=B act. For each
+candidate blockbj∈C, we tentatively apply the removal
+and reoptimization steps in (26) and (27), respectively,
+withj ⋆ replaced byj. This gives the reoptimized pa-
+rametersθ (j)
+act and the corresponding post-reoptimization
+costL post
+j =L(θ (j)
+act). We then select the candidate that
+yields the lowest post-reoptimization cost,
+j⋆ = arg min
+j:bj∈C
+Lpost
+j ,(29)
+and updateB act←B act\{b j⋆}andθ act←θ (j⋆)
+act . The
+procedure is then repeated, as in SAP-ma-QAOA, until
+the target sizeSis reached. We summarize the whole
+procedure in Algorithm 2.
+For the comparisons, we consider two more algorithms
+based on batch angle pruning (BAP), in which the blocks
+are removed at once according to the angles of the opti-
+mized initial ma-QAOA circuit.
+Method Pruning Objective Reoptimization
+SAP Sequential No Once per round
+OSAP Sequential YesN(C)per round
+BAP One-shot No Once in total
+BAP0 One-shot No No
+TABLE II. Comparison of the four pruning algorithms ap-
+plied to the ma-QAOA ansatz. The Objective column indi-
+cates whether the post-reoptimization cost is used for block
+selection, andN(C)denotes the number of blocks in the can-
+didate poolC.
+3. BAP-ma-QAOA.—ThisalgorithmkeepstheSnon-
+local blocks with the largest|θ|in a single batch and then
+reoptimizes the retained parameters.
+4. BAP0-ma-QAOA.— This algorithm uses the same
+selection rule as in BAP-ma-QAOA but evaluates the
+resulting circuit without reoptimization.
+Comparing BAP0 with BAP shows the effect of re-
+optimization, while comparing BAP with SAP shows the
+effectofsequentialpruningwithintermediatereoptimiza-
+tion relative to one-shot pruning. Comparing SAP with
+OSAP tests whether the objective-aware choice of the re-
+moved block further improves the fidelity-resource trade-
+off. The four algorithms are summarized in Table II.
+B. Performance of the pruning algorithms
+We numerically compare SAP-, OSAP-, BAP-, and
+BAP0-ma-QAOA for the four SYK models described in
+Sec. II. Unless otherwise stated, we considerN= 8SYK
+models atβ= 0.1,1, and10. We takeL= 1−Fas the
+cost function and setNC = 10. The four algorithms are
+compared at the sameS, while circuit depths and gate
+counts are reported separately. We show the trajectories
+of disorder-averaged infidelityEJ[1−F]and the corre-
+sponding standard deviationσJ[1−F]over 20 disorder
+realizations for each SYK model. We plot them on a
+logarithmic scale to clearly distinguish the performance
+of the algorithms. For reference, the figures also show
+EJ[1−|⟨TFD(β)|I⟩| 2], corresponding to the infidelity at
+S= 0when all nonlocal blocks are removed.
+For each disorder realization, we start fromp= 3
+and increasepwhen necessary until the optimized ini-
+tial ma-QAOA circuit reachesF≥99.99%before prun-
+ing. Atβ= 0.1and1, the initial ma-QAOA circuit
+reachesF≥99.99%for all disorder realizations of all
+four SYK models atp= 3. Atβ= 10, the Gaussian
+dense, Gaussian sparse, and binary dense SYK models
+reachF≥99.99%for all disorder realizations atp= 3,
+4, and3, respectively, while for the binary sparse SYK
+model the requiredpvaries from4to7across disorder re-
+alizations. Therefore, for the binary sparse SYK model
+atβ= 10, we plot the common infidelity trajectories
+fromS= 80, corresponding top= 4.
+Throughout this work, the variational parameters
+are optimized using the L-BFGS-B method, with the
+
+===== PAGE 8 =====
+8
+0100200300400
+10 12
+10 10
+10 8
+10 6
+10 4
+10 2
+100
+Infidelity 1 F
+(a) = 0.1
+0100200300400
+= 1
+0100200300400
+= 10
+0255075100125150175200
+Blocks
+10 12
+10 10
+10 8
+10 6
+10 4
+10 2
+100
+Infidelity 1 F
+(b)
+0255075100125150175200
+Blocks
+050100150200250
+Blocks
+OSAP-ma-QAOA
+SAP-ma-QAOA
+BAP-ma-QAOA
+BAP0-ma-QAOA
+Reference state |I
+FIG. 3. Infidelity trajectories of the four pruning algorithms for the GaussianN= 8SYK models atβ= 0.1,1, and10: (a)
+dense SYK and (b) sparse SYK withK= 32. The curves and shaded regions showE J [1−F]andσ J [1−F], respectively,
+averaged over 20 disorder realizations. The black dashed lines indicate the disorder-averaged reference infidelity between the
+exact TFD state and the maximally entangled state|I⟩.
+objective-function gradients evaluated analytically. For
+the initial ma-QAOA optimization, we use five random
+initializations for eachp, and the maximum number of
+iterations for each optimization run is set to 3000. Also,
+for each pruning reoptimization, the maximum number
+of iterations is set to 300.
+Figures 3 and 4 showEJ[1−F]for the Gaussian and
+binaryN= 8SYK models, respectively, including both
+dense and sparse cases. As these figures show, SAP-
+and OSAP-ma-QAOA generally maintain lower infideli-
+ties than BAP- and BAP0-ma-QAOA over the pruning
+trajectories at all temperatures considered here. Also,
+OSAP-ma-QAOA generally retains slightly lower infideli-
+tiesthanSAP-ma-QAOAoverthetrajectories. Thesame
+ordering generally holds for a single disorder realization,
+where the fidelities are compared at the sameSat each
+β; see Appendix A. In OSAP-ma-QAOA, increasingNC
+can further improve the performance at the expense of
+increased computational cost; the dependence onNC is
+examined in Appendix B.
+To further assess the circuit reduction, we consider a
+fixed-fidelity comparison for the binary sparseN= 8
+SYK model withK= 10atβ= 10. For each dis-
+order realization and each algorithm, we identifySfor
+which the fidelity is closest toF= 0.98, and report the
+disorder-averaged circuit resources in Table III. As this
+table shows, OSAP-ma-QAOA achievesF≈0.98with
+the fewest blocks and the lowest circuit depth and gate
+counts. SAP-ma-QAOA requires more resources, while
+the two BAP algorithms require substantially larger cir-
+cuits. Thus, the advantage of sequential angle pruning
+with reoptimization also translates into a more compact
+circuit at fixed target fidelity.
+We next examine whether SAP- and OSAP-ma-QAOA
+remain effective at a larger system size. To this end, we
+evaluate the infidelity trajectoriesEJ[1−F]for the bi-
+nary sparseN= 10SYK model withK= 16, as shown
+in Fig. 5. Atβ= 0.1and1, the initial ma-QAOA circuit
+reachesF≥99.99%for all disorder realizations atp= 3.
+Atβ= 10, the requiredpvaries from12to17across dis-
+order realizations, so we plot the common infidelity tra-
+jectories fromS= 384, corresponding top= 12. As this
+figure shows, SAP- and OSAP-ma-QAOA maintain lower
+infidelities than the two BAP algorithms over the prun-
+ingtrajectories. Inaddition, TableIVpresentsE J[F]and
+thecircuitresourcesofthefouralgorithmsforafixedSat
+eachβ. Atβ= 10, OSAP-ma-QAOA achieves the high-
+est fidelity with circuit resources comparable to those of
+the other algorithms, and SAP-ma-QAOA also retains
+high fidelity, whereas the two BAP algorithms show sub-
+stantially lower fidelities. AtS= 43, OSAP-ma-QAOA
+removes88.8%–92.1%of the nonlocal blocks from the ini-
+tial ma-QAOA circuits withp= 12–17, while retaining
+EJ[F]≃0.95.
+
+===== PAGE 9 =====
+9
+0100200300400
+10 9
+10 8
+10 7
+10 6
+10 5
+10 4
+10 3
+10 2
+10 1
+100
+Infidelity 1 F
+(a) = 0.1
+0100200300400
+= 1
+0100200300400
+= 10
+0102030405060
+Blocks
+10 9
+10 8
+10 7
+10 6
+10 5
+10 4
+10 3
+10 2
+10 1
+100
+Infidelity 1 F
+(b)
+0102030405060
+Blocks
+01020304050607080
+Blocks
+OSAP-ma-QAOA
+SAP-ma-QAOA
+BAP-ma-QAOA
+BAP0-ma-QAOA
+Reference state |I
+FIG. 4. Infidelity trajectories of the four pruning algorithms for the binaryN= 8SYK models atβ= 0.1,1, and10: (a)
+dense SYK and (b) sparse SYK withK= 10. The curves and shaded regions showE J [1−F]andσ J [1−F], respectively,
+averaged over 20 disorder realizations. The black dashed lines indicate the disorder-averaged reference infidelity between the
+exact TFD state and the maximally entangled state|I⟩.
+Method BlocksE J [F]Depth1q2q
+SAP 31(7) 0.979152(4.399×10 −3) 440(98) 456(91) 292(69)
+OSAP 25(5) 0.979750(1.774×10 −3) 346(84) 367(73) 229(61)
+BAP 46(11) 0.982122(4.356×10 −3) 639(147) 648(143) 426(103)
+BAP0 90(14) 0.979890(0.925×10 −3) 1234(208) 1217(192) 827(150)
+TABLE III. Comparison of the four ma-QAOA pruning algorithms for the binary sparseN= 8SYK model withK= 10at
+β= 10and fixed target fidelityF= 0.98, averaged over 20 disorder realizations. For each realization and each algorithm, we
+selectSfor which the fidelity is closest toF= 0.98and report the mean values with the standard deviations in parentheses.
+Columns list the mean number of blocks, disorder-averaged fidelityEJ [F], mean circuit depth, and single-qubit (1q) and two-
+qubit (2q) gate counts.
+C. Effectiveness of small-angle pruning
+We examine the effectiveness of the small-angle selec-
+tion rule used in SAP- and OSAP-ma-QAOA by com-
+paring them with two random-pruning algorithms. First,
+we consider random sequential pruning, where one block
+bj∈B act is selected randomly and removed at each prun-
+ing round, followed by reoptimization overθ act\{θ j}.
+Second, we consider one-shot random pruning, in which
+a random subset of blocks is removed at once to reach
+S, followed by reoptimization of the retained parame-
+ters. These two algorithms are the random counterparts
+of SAP- and BAP-ma-QAOA, respectively. In particular,
+the comparison between SAP-ma-QAOA and random se-
+quentialpruningteststheroleofthesmall-angleselection
+rule.
+In Fig. 6, we showEJ[1−F]of SAP-, OSAP-, BAP-,
+and BAP0-ma-QAOA and the two random-pruning algo-
+rithms, together with the correspondingσJ[1−F]. Here,
+we consider 20 disorder realizations of the binary sparse
+N= 8SYK model withK= 10. This figure shows
+a consistent performance ordering at allβconsidered:
+OSAP-ma-QAOA retains the lowest infidelity, followed
+by SAP-ma-QAOA and the random-pruning algorithms.
+Thisdemonstratestheadvantageofthesmall-angleselec-
+tion rule. As shown by the previous comparison between
+SAP- and BAP-ma-QAOA in Sec. IVB, sequential prun-
+ing with intermediate reoptimization provides an addi-
+tional advantage. Taken together, these results indicate
+that both small-angle selection and sequential pruning
+
+===== PAGE 10 =====
+10
+020406080100
+Blocks
+10 9
+10 8
+10 7
+10 6
+10 5
+10 4
+10 3
+10 2
+10 1
+100
+Infidelity 1 F
+= 0.1
+020406080100
+Blocks
+= 1
+050100150200250300350400
+Blocks
+= 10
+OSAP-ma-QAOA
+SAP-ma-QAOA
+BAP-ma-QAOA
+BAP0-ma-QAOA
+Reference state |I
+FIG. 5. Infidelity trajectories of the four pruning algorithms for the binary sparseN= 10SYK model withK= 16at
+β= 0.1,1, and10. The curves and shaded regions showE J [1−F]andσ J [1−F], respectively, averaged over 20 disorder
+realizations. The black dashed lines indicate the disorder-averaged reference infidelity between the exact TFD state and the
+maximally entangled state|I⟩.
+βMethod BlocksE J [F]Depth1q2q
+0.1
+SAP 1 0.999707(<10 −6) 16(4) 33(0) 10(4)
+OSAP 1 0.999707(<10 −6) 16(3) 32(4) 9(3)
+BAP 1 0.999707(<10 −6) 17(3) 32(2) 11(3)
+BAP0 1 0.999693(4.1×10 −5) 17(3) 32(2) 11(3)
+1
+SAP 1 0.971592(3.83×10 −4) 17(3) 28(5) 11(3)
+OSAP 1 0.971635(3.57×10 −4) 16(3) 28(5) 10(3)
+BAP 1 0.971517(3.97×10 −4) 16(3) 32(2) 9(3)
+BAP0 1 0.970756(5.07×10 −4) 16(3) 32(2) 9(3)
+10
+SAP 43 0.907769(3.6364×10 −2) 657(38) 688(18) 454(41)
+OSAP 43 0.951707(2.3653×10 −2) 663(44) 685(14) 459(44)
+BAP 43 0.714790(5.7844×10 −2) 654(48) 672(13) 452(50)
+BAP0 43 0.217304(1.05935×10 −1) 654(48) 672(13) 452(50)
+TABLE IV. Comparison of the four ma-QAOA pruning algorithms for the binary sparseN= 10SYK model withK= 16
+at the same target block countS, averaged over 20 disorder realizations. For each realization and each algorithm, we evaluate
+the circuit at fixedSand report the mean values with the standard deviations in parentheses. We setS= 1forβ= 0.1and1,
+andS= 43forβ= 10. Forβ= 10,S= 43is the smallest block count for which at least one algorithm achievesE J [F]≥0.95.
+Columns list the disorder-averaged fidelityEJ [F], mean circuit depth, and single-qubit (1q) and two-qubit (2q) gate counts.
+are important for maintaining low infidelity.
+V. TOWARD HARDWARE-EFFICIENT
+PRUNING ALGORITHMS
+The pruning algorithms considered above involve two
+practical challenges for implementation on quantum
+hardware. First, the direct-fidelity objective requires ex-
+plicit preparation of the target TFD state. Second, SAP-
+and OSAP-ma-QAOA require reoptimization after each
+pruning step, which increases the number of quantum–
+classical optimization rounds. In this section, we address
+these two aspects by considering an energy-based objec-
+tive and combined batch–sequential pruning algorithms.
+A. Energy-based objective
+VQE provides an alternative objective by optimizing
+the energy expectation value, which can be directly eval-
+uated through measurements on quantum hardware. We
+therefore examine whether SAP- and OSAP-ma-QAOA
+retain their pruning performance when the cost function
+is taken to beL=⟨H tot⟩instead of the infidelity. We
+specifically consider the binary sparseN= 8SYK model
+withK= 10.
+For each disorder realization, we first determine
+the couplingginH tot that maximizes the fidelity
+|⟨TFD(β)|GS(g)⟩|2. We then optimize the initial ma-
+QAOA circuit by minimizing⟨Htot⟩in (4), starting from
+p= 3and increasingpwhen necessary until the resulting
+state reachesF≥99.99%. The resultingpvalues are
+identical to those obtained with the fidelity objective in
+Sec. IVB. During pruning, the reoptimization in SAP-
+
+===== PAGE 11 =====
+11
+60 40 20 0
+Blocks
+10 10
+10 8
+10 6
+10 4
+10 2
+100
+Infidelity 1 F
+= 0.1
+60 40 20 0
+Blocks
+= 1
+80 60 40 20 0
+Blocks
+= 10
+OSAP-ma-QAOA
+SAP-ma-QAOA
+BAP-ma-QAOA
+BAP0-ma-QAOA
+Random sequential
+Random batch
+Reference state |I
+FIG. 6. Infidelity trajectories of the four pruning algorithms and two random-pruning algorithms for the binary sparseN= 8
+SYK model withK= 10atβ= 0.1,1, and10. The curves and shaded regions showE J [1−F]andσ J [1−F], respectively,
+averaged over 20 disorder realizations. The black dashed lines indicate the disorder-averaged reference infidelity between the
+exact TFD state and the maximally entangled state|I⟩.
+0102030405060
+Blocks
+10 9
+10 8
+10 7
+10 6
+10 5
+10 4
+10 3
+10 2
+10 1
+100
+Infidelity 1 F
+= 0.1
+0102030405060
+Blocks
+= 1
+01020304050607080
+Blocks
+= 10
+OSAP-ma-QAOA
+SAP-ma-QAOA
+BAP-ma-QAOA
+BAP0-ma-QAOA
+Reference state |I
+FIG. 7. Infidelity trajectories of the four pruning algorithms for the binary sparseN= 8SYK model withK= 10atβ= 0.1,
+1, and10. The variational parameters are optimized using the energy expectation value as the objective function. The curves
+and shaded regions showEJ [1−F]andσ J [1−F], respectively, averaged over 20 disorder realizations. The black dashed lines
+indicate the disorder-averaged reference infidelity between the exact TFD state and the maximally entangled state|I⟩.
+, OSAP-, and BAP-ma-QAOA is also performed with
+this cost function, and the removed block in OSAP-ma-
+QAOA is selected fromCby the same rule in (29).
+The trajectories ofE J[1−F]are shown in Fig. 7 at
+β= 0.1,1, and10. As this figure shows, SAP- and
+OSAP-ma-QAOA consistently maintain lower infidelities
+than the two batch-pruning algorithms across allβcon-
+sidered. These results show that the advantage of small-
+angle-based sequential pruning persists when the energy
+expectation value is used as the objective function and is
+not restricted to direct fidelity optimization.
+B. Combined batch–sequential pruning algorithms
+We next address the repeated reoptimization cost of
+sequential pruning. For a more hardware-efficient imple-
+mentation, we consider a combined algorithm in which
+BAP is first applied until the number of retained blocks
+reaches a prescribed transition block countS tr, after
+which SAP- or OSAP-ma-QAOA is applied. The initial
+batch pruning reduces the number of reoptimizations.
+After reachingS tr, SAP- or OSAP-ma-QAOA sequen-
+tially removes the remaining blocks with reoptimization.
+We compare these combined algorithms with SAP-,
+OSAP-, BAP-, and BAP0-ma-QAOA. The comparison
+at fixedSfor the binary sparseN= 8SYK Hamiltonian
+withK= 10is summarized in Table V. For the combined
+algorithms, wesetS tr = 20,20, and40forβ= 0.1,1, and
+10, respectively. Atβ= 0.1and1withS= 1, the com-
+bined algorithms recover fidelities comparable to those of
+the sequential algorithms. This indicates that the initial
+batch-pruning stage does not significantly degrade the
+final result under strong circuit reduction. Atβ= 10
+withS= 19, however, the combined algorithms achieve
+higher mean fidelities than BAP- and BAP0-ma-QAOA,
+but lower mean fidelities than their corresponding pure
+sequential algorithms. This shows that sequential reop-
+timization after the transition is useful, while substantial
+initial batch pruning can limit the subsequent recovery,
+
+===== PAGE 12 =====
+12
+βAlgorithm BlocksE J [F]Depth1q2q
+0.1
+SAP 1 0.999719(1×10 −6) 16(2) 28(3) 10(2)
+OSAP 1 0.999719(1×10 −6) 16(2) 27(3) 10(3)
+BAP 1 0.999719(1×10 −6) 15(2) 27(4) 9(2)
+BAP0 1 0.999663(1.01×10 −4) 15(2) 27(4) 9(2)
+BAP + SAP 1 0.999719(1×10 −6) 16(3) 28(3) 9(3)
+BAP + OSAP 1 0.999719(1×10 −6) 16(2) 29(2) 9(3)
+1
+SAP 1 0.972688(6.39×10 −4) 15(2) 25(4) 9(2)
+OSAP 1 0.972709(6.59×10 −4) 15(2) 24(4) 9(3)
+BAP 1 0.972596(6.67×10 −4) 16(2) 28(3) 9(2)
+BAP0 1 0.971581(1.021×10 −3) 16(2) 28(3) 9(2)
+BAP + SAP 1 0.972668(6.78×10 −4) 16(2) 27(4) 10(3)
+BAP + OSAP 1 0.972709(6.58×10 −4) 15(2) 25(4) 9(2)
+10
+SAP 19 0.868664(7.1575×10 −2) 268(12) 293(8) 178(14)
+OSAP 19 0.957391(2.0258×10 −2) 267(14) 293(8) 175(16)
+BAP 19 0.696494(1.13240×10 −1) 264(17) 287(4) 173(20)
+BAP0 19 0.331946(1.80966×10 −1) 264(17) 287(4) 173(20)
+BAP + SAP 19 0.860915(7.3597×10 −2) 267(15) 291(9) 176(16)
+BAP + OSAP 19 0.902914(6.0646×10 −2) 267(17) 292(8) 175(19)
+TABLE V. Comparison of the six ma-QAOA pruning algorithms for the binary sparseN= 8SYK model withK= 10at the
+same target block countS, averaged over 20 disorder realizations. For each realization and each algorithm, we evaluate the
+circuit at fixedSand report the mean values with the standard deviations in parentheses. We setS= 1forβ= 0.1and1, and
+S= 19forβ= 10, while the combined algorithms useS tr = 20,20, and40forβ= 0.1,1, and10, respectively. Forβ= 10,
+S= 19is the smallest block count for which at least one algorithm achievesEJ [F]≥0.95. Columns list the disorder-averaged
+fidelityE J [F], mean circuit depth, and single-qubit (1q) and two-qubit (2q) gate counts.
+40 36 32 28 24 20
+Transition block count tr
+10 1
+100
+Infidelity 1 F
+ SAP ( = 19)
+OSAP ( = 19)
+BAP ( = 19)
+BAP0 ( = 19)
+BAP + SAP
+BAP + OSAP
+FIG. 8. Final infidelities atS= 19as a function ofStr for the
+binary sparseN= 8SYK model withK= 10atβ= 10. The
+horizontal lines and shaded regions show the referenceEJ [1−
+F]andσ J [1−F], respectively, for SAP, OSAP, BAP, and
+BAP0 atS= 19, averaged over 20 disorder realizations. For
+BAP+SAP and BAP+OSAP, the curves and vertical error
+bars indicateEJ [1−F]andσ J [1−F], respectively, over the
+same disorder realizations.
+especially at low temperature.
+To examine this tradeoff more directly, Fig. 8 shows
+EJ[1−F]for BAP+SAP and BAP+OSAP algorithms
+at fixedS= 19as a function ofS tr atβ= 10. For com-
+parison, we also show the reference values ofEJ[1−F]for
+SAP-, OSAP-, BAP-, and BAP0-ma-QAOA atS= 19
+without initial batch pruning. The figure shows that
+BAP+OSAP maintains an infidelity between those of
+OSAP- and SAP-ma-QAOA whenStr is not too small.
+AsS tr is reduced further, both combined algorithms ap-
+proach the BAP reference result. This indicates that
+once too many blocks are removed in the initial batch-
+pruning step, the subsequent sequential pruning cannot
+fully restore the lost fidelity. Therefore, BAP+OSAP
+provides a practical compromise between retaining high
+TFD-state fidelity and reducing the reoptimization cost.
+One may also consider screening the candidates before
+reoptimizing, which reduces the number of reoptimiza-
+tions but does not improve the pruning performance over
+SAP-ma-QAOA, as discussed in Appendix C.
+Taken together, the energy-based objective considered
+above and the combined pruning algorithms provide use-
+ful ingredients for hardware-oriented TFD-state prepa-
+ration. The energy-based objective replaces direct fi-
+delityevaluationduringthevariationaloptimizationwith
+measurements of the energy expectation value on quan-
+tum hardware. In addition, moderate initial batch prun-
+ing reduces the number of sequential pruning rounds
+and thus the cost of quantum–classical reoptimization.
+Therefore, combining the energy-based objective with
+batch–sequential pruning provides a practical route to-
+ward quantum–classical hybrid implementation of high-
+fidelity TFD-state preparation.
+
+===== PAGE 13 =====
+13
+VI. DISCUSSION
+We have studied TFD-state preparation and circuit re-
+duction using ma-QAOA for Gaussian and binary SYK
+models in both dense and sparse cases. We find that ma-
+QAOA achieves higher TFD-state fidelity than standard
+QAOA, especially at low temperature.
+Starting from the optimized initial ma-QAOA circuit,
+we introduce SAP- and OSAP-ma-QAOA to reduce the
+number of nonlocal Pauli-string evolutions. At each
+pruning round, SAP-ma-QAOA identifies the nonlocal
+block with the smallest angle magnitude, removes the
+corresponding block, and then reoptimizes the remain-
+ing variational parameters. On the other hand, OSAP-
+ma-QAOA identifies several candidates with small angle
+magnitudes, evaluates the post-reoptimization cost for
+each candidate, and then chooses the block that yields
+the smallest cost.
+Wecomparethetwoalgorithmswiththebatchpruning
+algorithms, BAP- and BAP0-ma-QAOA, using the infi-
+delity with the exact TFD state as the cost function. We
+numericallycomputethedisorder-averagedinfidelitiesfor
+N= 8SYK models at three representative temperatures
+to track the full pruning trajectories for each algorithm.
+The results show that SAP- and OSAP-ma-QAOA retain
+higher fidelity than batch pruning under strong circuit
+reduction, particularly at low temperature. At fixed tar-
+get fidelity, sequential pruning also yields more compact
+circuits.
+The comparison between SAP- and BAP-ma-QAOA
+directly shows that sequential reoptimization at each
+roundisimportant. Wealsocompareouralgorithmswith
+random-pruning algorithms, and the comparison shows
+that identifying blocks with small angle magnitudes is
+advantageous for retaining the fidelity. Taken together,
+these comparisons indicate that both the small-angle se-
+lection rule and sequential pruning with intermediate
+reoptimization contribute to the performance of SAP-
+ma-QAOA. In addition, the comparison between SAP-
+and OSAP-ma-QAOA shows that objective-aware prun-
+ing further improves the fidelity. Thus, the optimized
+angle magnitude provides an effective criterion for iden-
+tifying removable blocks, while explicit objective-aware
+pruning can further improve SAP-ma-QAOA. We also
+confirm that the same qualitative behavior persists for
+the larger binary sparseN= 10SYK model.
+For a more hardware-feasible application, we examine
+our algorithms using the energy expectation value as the
+cost function, and observe the same qualitative behav-
+ior for the binary sparseN= 8SYK model. We also
+consider combined algorithms in which batch pruning is
+first applied and SAP- or OSAP-ma-QAOA is used only
+after a prescribed transition point. These algorithms re-
+tain much of the advantage of sequential pruning while
+reducing the number of reoptimization rounds. In partic-
+ular, the amount of initial batch pruning controls a trade-
+off between the reoptimization cost and the final TFD-
+state fidelity, especially at low temperature. Together,
+the energy-based objective and the combined pruning al-
+gorithms provide a route toward quantum–classical hy-
+brid implementation, where each reoptimization requires
+repeated evaluations of quantum circuits.
+Applying SAP- and OSAP-ma-QAOA to other many-
+body systems would be an interesting direction for fu-
+ture work. In addition, implementations on real quan-
+tum hardware will be needed to assess their practical
+performance, particularly for the combined BAP+SAP-
+andBAP+OSAP-ma-QAOA.Beyondthecombinedalgo-
+rithms, extending the sequential pruning algorithms to-
+ward more hardware-feasible schemes could also be con-
+sidered. For instance, integrating the pruning algorithms
+with other hybrid quantum–classical approaches could
+provideapossibleroutetowardpracticalhardwareimple-
+mentation with reduced quantum–classical optimization
+cost. The reduced TFD-preparation circuits can further
+be used in finite-temperature quantum simulations, in-
+cluding black-hole-inspired protocols.
+ACKNOWLEDGEMENTS
+This work was supported by the National Re-
+search Foundation of Korea(NRF) grant funded by the
+Korea government(MSIT)(RS-2026-25477372, RS-2025-
+02311201, RS-2025-02307394, RS-2024-00445164), and
+by the Creation of the Quantum Information Science
+R&D Ecosystem (Grant No. 2022M3H3A106307411,
+RS-2023-NR068116) This work was also supported by
+GIST research fund (Future leading Specialized Resarch
+Project, 2026 and the ANCHOR program through the
+Gwangju ANCHOR Center, funded by the Ministry
+of Education(MOE) and the Jeonnam-Gwangju Special
+Metropolitan City, Republic of Korea.(2026-ANCHOR-
+05-001)
+APPENDICES
+Appendix A: Circuit resources for a single disorder
+realization
+TableVIsummarizesthefidelitiesandcircuitresources
+of SAP-, OSAP-, BAP-, and BAP0-ma-QAOA for a sin-
+gle disorder realization in each SYK model. Here we
+report(F,D,2q), corresponding to the fidelity, circuit
+depth, and number of two-qubit gates, respectively, at
+fixedSfor eachβ. Atβ= 0.1and1, the differences
+among the four algorithms remain small even when the
+circuit is reduced to a single block. In contrast, a clear
+separation between sequential and batch pruning appears
+atβ= 10, where the performance differences persist
+under strong pruning. While the relative performance
+varies across disorder realizations, OSAP-ma-QAOA in
+the present case achieves the highest fidelity for all four
+SYK models. These results indicate that sequential re-
+optimization is important for retaining the TFD-state
+
+===== PAGE 14 =====
+14
+ModelβBlocks SAP(F,D,2q)OSAP(F,D,2q)BAP(F,D,2q)BAP 0 (F,D,2q)
+Gaussian dense
+0.11(0.999774,17,12) (0.999774,14,12) (0.999750,16,12) (0.999194,16,12)
+11(0.976565,13,6) (0.977732,14,12) (0.977732,17,12) (0.975150,17,12)
+1027(0.900126,390,264) (0.903129,350,260) (0.669229,382,258) (0.449123,382,258)
+Gaussian sparse
+0.11(0.999717,16,10) (0.999759,10,6) (0.999759,13,6) (0.999753,13,6)
+11(0.973337,15,10) (0.976845,10,6) (0.976845,13,6) (0.975685,13,6)
+1024(0.833507,332,220) (0.907946,300,216) (0.738726,331,220) (0.447241,331,220)
+Binary dense
+0.11(0.999693,12,6) (0.999693,13,6) (0.999689,13,6) (0.999269,13,6)
+11(0.971194,13,6) (0.971365,12,6) (0.971355,15,10) (0.970519,15,10)
+1048(0.845357,669,448) (0.901974,661,442) (0.795299,663,444) (0.442123,663,444)
+Binary sparse
+0.11(0.999719,12,6) (0.999719,10,8) (0.999719,15,8) (0.999713,15,8)
+11(0.972901,15,8) (0.972901,12,8) (0.972895,15,8) (0.972085,15,8)
+1025(0.729645,295,168) (0.959548,294,202) (0.676972,306,184) (0.233507,306,184)
+TABLE VI. Comparison of the four ma-QAOA pruning algorithms for the fourN= 8SYK models at the same target block
+countSfor a single disorder realization of each model. For the sparse models, Gaussian sparse usesK= 32and binary sparse
+usesK= 10. For each model and eachβ, we evaluate the four algorithms at fixedSand report(F,D,2q), whereDdenotes
+the circuit depth. We setS= 1forβ= 0.1and1, andS= 27,24,48, and25for the Gaussian dense, Gaussian sparse, binary
+dense, and binary sparse models atβ= 10, respectively. Forβ= 10,Sis the smallest block count for which at least one
+algorithm achievesF≥0.9, except for the binary sparse SYK model, for whichF≥0.95is used.
+fidelity under strong pruning at low temperature, while
+a systematic comparison between SAP- and OSAP-ma-
+QAOA requires averaging over disorder realizations, as
+shown in Figs. 3 and 4.
+Appendix B: Dependence on the candidate pool size
+in OSAP-ma-QAOA
+In OSAP-ma-QAOA, the candidate pool sizeNC de-
+termines the number of candidate blocks whose post-
+reoptimizationcostsareevaluatedateachpruninground.
+IncreasingNC allows more candidate blocks to be consid-
+ered for removal, while increasing the number of reopti-
+mizations required at each round.
+We examine the dependence onN C for the binary
+sparseN= 8SYK model withK= 10atβ= 10, where
+the difference between SAP- and OSAP-ma-QAOA is
+most pronounced. We compare OSAP-ma-QAOA with
+NC = 5,10, and20, togetherwithSAP-ma-QAOA,which
+effectively corresponds toNC = 1. Figure 9 shows the re-
+sulting trajectories ofEJ[1−F]as a function ofS. For
+relatively largeS, the three choices ofN C give similar
+infidelities. AsSdecreases, a largerN C generally gives
+lower infidelity until hard pruning. Thus, a largerNC
+further improves the performance of OSAP-ma-QAOA
+under strong circuit reduction. On the other hand, a
+largerNC increases the reoptimization cost. Thus, we use
+NC = 10throughout the main text as a practical compro-
+mise between the performance of OSAP-ma-QAOA and
+the computational cost.
+Appendix C: Objective-screened sequential angle
+pruning
+Although OSAP-ma-QAOA improves the pruning per-
+formance by using the post-reoptimization cost for se-
+01020304050607080
+Blocks
+10 4
+10 3
+10 2
+10 1
+100
+Infidelity 1 F
+= 10
+OSAP (NC = 5)
+OSAP (NC = 10)
+OSAP (NC = 20)
+SAP
+Reference state |I
+FIG. 9. Trajectories ofE J [1−F](solid) andσ J [1−F]
+(shaded) for OSAP-ma-QAOA, averaged over 20 disorder re-
+alizations of the binary sparseN= 8SYK model withK= 10
+atβ= 10. For OSAP-ma-QAOA, we considerN C = 5,
+10, and20, together withN C = 1, which effectively corre-
+sponds to SAP-ma-QAOA. The black dashed line indicates
+the disorder-averaged reference infidelity between the exact
+TFD state and the maximally entangled state|I⟩.
+lecting the removed block, it requires reoptimization for
+every candidate block at each pruning round, so the reop-
+timizationcostincreaseswiththecandidate-poolsizeN C.
+To reduce this cost, we consider objective-screened SAP-
+ma-QAOA (OSSAP-ma-QAOA), which extends SAP-
+ma-QAOA by screening small-angle candidates using
+their pre-reoptimization costs. Unlike OSAP-ma-QAOA,
+OSSAP-ma-QAOA performs only one reoptimization af-
+ter the removed block is selected.
+Starting from the optimized initial ma-QAOA ansatz,
+OSSAP-ma-QAOAformsthesamesmall-anglecandidate
+poolCas OSAP-ma-QAOA at each pruning round. For
+each candidate blockb j ∈C, we tentatively removeb j
+
+===== PAGE 15 =====
+15
+0102030405060
+Blocks
+10 9
+10 8
+10 7
+10 6
+10 5
+10 4
+10 3
+10 2
+10 1
+100
+Infidelity 1 F
+= 0.1
+0102030405060
+Blocks
+= 1
+01020304050607080
+Blocks
+= 10
+OSAP-ma-QAOA
+SAP-ma-QAOA
+BAP-ma-QAOA
+BAP0-ma-QAOA
+OSSAP-ma-QAOA
+Reference state |I
+FIG. 10. Infidelity trajectories of the five pruning algorithms for the binary sparseN= 8SYK model withK= 10atβ= 0.1,
+1, and10. The curves and shaded regions showEJ [1−F]andσ J [1−F], respectively, averaged over 20 disorder realizations.
+The black dashed lines indicate the disorder-averaged reference infidelity between the exact TFD state and the maximally
+entangled state|I⟩.
+while keeping all remaining parameters fixed at their cur-
+rent optimized values. We then evaluate the correspond-
+ing pre-reoptimization cost,
+Lpre
+j =L(θ act)|θj=0,(C1)
+without reoptimizing the remaining parameters. The
+candidate to be removed is selected as
+j⋆ = arg min
+j:bj∈C
+Lpre
+j .(C2)
+After removingb j⋆, we updateB act←B act\{bj⋆}and
+θact←θ act\{θ j⋆}, and reoptimizeθ act once. The re-
+sulting angles are then used to form the nextC. The
+procedure is repeated untilN(Bact) =S.
+Thedifference betweenOSSAP-and OSAP-ma-QAOA
+lies in how the reoptimization is used for candidate se-
+lection. For a givenC, OSAP-ma-QAOA performsN(C)
+reoptimizations at each pruning round and selects the re-
+moved block according to the post-reoptimization costs.
+In contrast, OSSAP-ma-QAOA evaluates theN(C)pre-
+reoptimization costs and performs only one reoptimiza-
+tion after the removed block is selected. Thus, OSSAP-
+ma-QAOA reduces the number of reoptimizations re-
+quired for objective-aware pruning.
+In Fig. 10, we showEJ[1−F]for SAP-, OSAP-, BAP-,
+BAP0-, and OSSAP-ma-QAOA, together with the corre-
+spondingσ J[1−F]. Here, we consider the binary sparse
+N= 8SYK model withK= 10atβ= 0.1,1, and
+10, using 20 disorder realizations. For all three tempera-
+tures, OSSAP-ma-QAOA closely follows the trajectories
+of SAP-ma-QAOA.
+We also find that OSSAP-ma-QAOA selects the non-
+local block with the smallest angle magnitude in most
+pruning rounds, while OSAP-ma-QAOA more frequently
+selects a different candidate. This behavior is consistent
+with the local cost analysis discussed in Sec. IV. Before
+reoptimization at each pruning round, the cost change
+caused by removing a block is approximately given by
+∆Lpre
+j ∼H jj|θ∗
+j|2. Therefore, when the variation ofHjj
+among the small-angle candidates is not large, minimiz-
+ing the pre-reoptimization cost in OSSAP-ma-QAOA is
+expected to select the same block as the small-angle cri-
+terion in SAP-ma-QAOA.
+To compare the computational costs of the sequential
+pruning algorithms, letC eval denote the cost of a single
+objective-function evaluation andC opt the cost of one
+reoptimization of the remaining parameters. For a can-
+didate pool of sizeN(C), SAP-ma-QAOA requires one
+reoptimization at each pruning round, while OSSAP-ma-
+QAOA requiresN(C)objective-function evaluations fol-
+lowed by one reoptimization. In contrast, OSAP-ma-
+QAOA requires one reoptimization for each candidate
+block. Thus, the computational costs per pruning round
+can be expressed schematically as
+CSAP∼C opt,
+COSSAP∼N(C)C eval +C opt,
+COSAP∼N(C)C opt.
+(C3)
+Since a reoptimization generally requires multiple
+objective-function evaluations,C opt is typically larger
+thanC eval. OSSAP-ma-QAOA therefore reduces the
+N(C)reoptimizations required by OSAP-ma-QAOA
+to a single reoptimization, at the cost ofN(C)di-
+rect objective-function evaluations. However, because
+OSSAP- and SAP-ma-QAOA show similar performance
+whileC SAP <C OSSAP, our results indicate that evaluat-
+ing the objective function before reoptimization does not
+improve the pruning performance over SAP-ma-QAOA.
+[1] D. Jafferis, A. Zlokapa, J.D. Lykken, D.K. Kolchmeyer,
+S.I. Davis, N. Lauk et al.,Traversable wormhole
+dynamics on a quantum processor,Nature612(2022)
+
+===== PAGE 16 =====
+16
+51.
+[2] M. Byun, K.-Y. Kim and H. Lee,Quantum simulation
+of traversable-wormhole-inspired quantum teleportation
+in a chaotic binary sparse SYK model,2604.10090.
+[3] J. Maldacena and X.-L. Qi,Eternal traversable
+wormhole,1804.00491.
+[4] J.R. McClean, J. Romero, R. Babbush and
+A. Aspuru-Guzik,The theory of variational hybrid
+quantum-classical algorithms,New Journal of Physics
+18(2016) 023023.
+[5] M. Cerezo, A. Arrasmith, R. Babbush, S.C. Benjamin,
+S. Endo, K. Fujii et al.,Variational quantum
+algorithms,Nature Reviews Physics3(2021) 625.
+[6] A. Peruzzo, J. McClean, P. Shadbolt, M.-H. Yung,
+X.-Q. Zhou, P.J. Love et al.,A variational eigenvalue
+solver on a photonic quantum processor,Nature
+Communications5(2014) 4213.
+[7] A. Kandala, A. Mezzacapo, K. Temme, M. Takita,
+M. Brink, J.M. Chow et al.,Hardware-efficient
+variational quantum eigensolver for small molecules and
+quantum magnets,Nature549(2017) 242.
+[8] V.P. Su,Variational preparation of the thermofield
+double state of the sachdev-ye-kitaev model,Phys. Rev.
+A104(2021) 012427.
+[9] D. Faílde, J. Santos-Suárez, D.A. Herrera-Martí and
+J. Mas,Hamiltonian forging of a thermofield double,
+Phys. Rev. A111(2025) 012432.
+[10] S.P. Premaratne and A.Y. Matsuura,Engineering a
+cost function for real-world implementation of a
+variational quantum algorithm, in2020 IEEE
+International Conference on Quantum Computing and
+Engineering (QCE), pp. 278–285, 2020, DOI.
+[11] R. Sagastizabal, S.P. Premaratne, B.A. Klaver,
+M.A. Rol, V. Negîrneac, M.S. Moreira et al.,Variational
+preparation of finite-temperature states on a quantum
+computer,npj Quantum Information7(2021) 130.
+[12] J. Wu and T.H. Hsieh,Variational thermal quantum
+simulation via thermofield double states,Phys. Rev.
+Lett.123(2019) 220502.
+[13] L. Li, M. Fan, M. Coram, P. Riley and S. Leichenauer,
+Quantum optimization with a novel gibbs objective
+function and ansatz architecture search,Phys. Rev. Res.
+2(2020) 023074.
+[14] M. Ostaszewski, E. Grant and M. Benedetti,Structure
+optimization for parameterized quantum circuits,
+Quantum5(2021) 391.
+[15] Y. Du, T. Huang, S. You, M.-H. Hsieh and D. Tao,
+Quantum circuit architecture search for variational
+quantum algorithms,npj Quantum Information8
+(2022) 62.
+[16] Y. Huang, S. Jin, B. Zeng and Q. Shao,Adaptive
+diversity-based quantum circuit architecture search,
+Phys. Rev. Res.6(2024) 033033.
+[17] E. Farhi, J. Goldstone and S. Gutmann,A quantum
+approximate optimization algorithm, 2014.
+[18] S. Hadfield, Z. Wang, B. O’Gorman, E.G. Rieffel,
+D. Venturelli and R. Biswas,From the quantum
+approximate optimization algorithm to a quantum
+alternating operator ansatz,Algorithms12(2019) 34.
+[19] E. Farhi and A.W. Harrow,Quantum Supremacy
+through the Quantum Approximate Optimization
+Algorithm,1602.07674.
+[20] J. Preskill,Quantum Computing in the NISQ era and
+beyond,Quantum2(2018) 79.
+[21] W.W. Ho, C. Jonay and T.H. Hsieh,Ultrafast
+variational simulation of nontrivial quantum states with
+long-range interactions,Phys. Rev. A99(2019) 052332.
+[22] W.W. Ho and T.H. Hsieh,Efficient variational
+simulation of non-trivial quantum states,SciPost Phys.
+6(2019) 029.
+[23] L. Zhou, S.-T. Wang, S. Choi, H. Pichler and
+M.D. Lukin,Quantum approximate optimization
+algorithm: Performance, mechanism, and
+implementation on near-term devices,Phys. Rev. X10
+(2020) 021067.
+[24] G. Pagano, A. Bapat, P. Becker, K.S. Collins, A. De,
+P.W. Hess et al.,Quantum approximate optimization of
+the long-range ising model with a trapped-ion quantum
+simulator,Proceedings of the National Academy of
+Sciences117(2020) 25396.
+[25] G. Matos, S. Johri and Z. Papić,Quantifying the
+efficiency of state preparation via quantum variational
+eigensolvers,PRX Quantum2(2021) 010309.
+[26] D. Zhu, S. Johri, N.M. Linke, K.A. Landsman,
+C.H. Alderete, N.H. Nguyen et al.,Generation of
+thermofield double states and critical ground states with
+a quantum computer,Proceedings of the National
+Academy of Sciences117(2020) 25402.
+[27] R. Herrman, J. Ostrowski, T.S. Humble and G. Siopsis,
+Lower bounds on circuit depth of the quantum
+approximate optimization algorithm,Quantum
+Information Processing20(2021) .
+[28] M.P. Harrigan, K.J. Sung, M. Neeley, K.J. Satzinger,
+F. Arute, K. Arya et al.,Quantum approximate
+optimization of non-planar graph problems on a planar
+superconducting processor,Nature Physics17(2021)
+332.
+[29] V. Vijendran, A. Das, D.E. Koh, S.M. Assad and
+P.K. Lam,An expressive ansatz for low-depth quantum
+approximate optimisation,Quantum Science and
+Technology9(2024) 025010.
+[30] R. Herrman, P.C. Lotshaw, J. Ostrowski, T.S. Humble
+and G. Siopsis,Multi-angle quantum approximate
+optimization algorithm,Scientific Reports12(2022)
+6781.
+[31] I. Gaidai and R. Herrman,Performance analysis of
+multi-angle qaoa forp>1,Scientific Reports14(2024)
+18911.
+[32] S. Sachdev and J. Ye,Gapless spin-fluid ground state in
+a random quantum heisenberg magnet,Phys. Rev. Lett.
+70(1993) 3339.
+[33] A. Kitaev, “A simple model of quantum holography.”
+KITP Strings Seminar and Entanglement 2015
+Program, 2015.
+[34] J. Maldacena, S.H. Shenker and D. Stanford,A bound
+on chaos,Journal of High Energy Physics2016(2016)
+106.
+[35] J. Maldacena and D. Stanford,Remarks on the
+sachdev-ye-kitaev model,Phys. Rev. D94(2016)
+106002.
+[36] B. Kobrin, Z. Yang, G.D. Kahanamoku-Meyer,
+C.T. Olund, J.E. Moore, D. Stanford et al.,Many-body
+chaos in the sachdev-ye-kitaev model,Phys. Rev. Lett.
+126(2021) 030602.
+[37] J. Maldacena, D. Stanford and Z. Yang,Conformal
+symmetry and its breaking in two-dimensional nearly
+anti-de sitter space,Progress of Theoretical and
+Experimental Physics2016(2016) 12C104.
+
+===== PAGE 17 =====
+17
+[38] K. Jensen,Chaos inads 2 holography,Phys. Rev. Lett.
+117(2016) 111601.
+[39] S. Xu, L. Susskind, Y. Su and B. Swingle,A sparse
+model of quantum holography, 2020.
+[40] A.M. García-García, Y. Jia, D. Rosa and
+J.J.M. Verbaarschot,Sparse sachdev-ye-kitaev model,
+quantum chaos, and gravity duals,Phys. Rev. D103
+(2021) 106002.
+[41] E. Cáceres, A. Misobuchi and R. Pimentel,Sparse syk
+and traversable wormholes,Journal of High Energy
+Physics2021(2021) 15.
+[42] M. Tezuka, O. Oktay, E. Rinaldi, M. Hanada and
+F. Nori,Binary-coupling sparse sachdev-ye-kitaev
+model: An improved model of quantum chaos and
+holography,Phys. Rev. B107(2023) L081103.
+[43] P. Orman, H. Gharibyan and J. Preskill,Quantum
+chaos in the sparse syk model,Journal of High Energy
+Physics2025(2025) 173.
+[44] E. Granet, Y. Kikuchi, H. Dreyer and E. Rinaldi,
+Simulating sparse syk model with a randomized
+algorithm on a trapped-ion quantum computer,npj
+Quantum Information12(2026) 43.
+[45] J. Bang, M. Byun, K. Cho, K.-Y. Kim and H. Lee,
+Hayden–Preskill recovery at finite temperature on a
+quantum processor: dynamics and initial state from the
+SYK model,2607.28486.
+[46] J. Martyn and B. Swingle,Product spectrum ansatz and
+the simplicity of thermal states,Phys. Rev. A100
+(2019) 032107.
+[47] J.Y. Araz, R.G. Jha, F. Ringer and B. Sambasivam,
+Thermal state preparation of the SYK model using a
+variational quantum algorithm,2406.15545.
+[48] A. Kundu,Improving thermal state preparation of
+sachdev–ye–kitaev model with reinforcement learning on
+quantum hardware,Machine Learning: Science and
+Technology6(2025) 025066.
+[49] S. Sim, J. Romero, J.F. Gonthier and A.A. Kunitsa,
+Adaptive pruning-based optimization of parameterized
+quantum circuits,Quantum Science and Technology6
+(2021) 025019.
+[50] H. Wang, Y. Ding, J. Gu, Y. Lin, D.Z. Pan,
+F.T. Chong et al.,Quantumnas: Noise-adaptive search
+for robust quantum circuits, in2022 IEEE International
+Symposium on High-Performance Computer
+Architecture (HPCA), pp. 692–708, 2022, DOI.
+[51] A. Kulshrestha, X. Liu, H. Ushijima-Mwesigwa,
+B. Bach and I. Safro,QAdaPrune: Adaptive Parameter
+Pruning For Training Variational Quantum Circuits, in
+2024 International Conference on Quantum Computing
+and Engineering, 8, 2024, DOI [2408.13352].
+[52] N. Vaquero-Sabater, A. Carreras and D. Casanova,
+Pruned-adapt-vqe: Compacting molecular ansätze by
+removing irrelevant operators,Journal of Chemical
+Theory and Computation21(2025) 8720.
+[53] P. Escofet, S. Rodrigo, R.S. Sarkar, C.G. Almudéver,
+E. Alarcón and S. Abadal,Quantum circuit pruning:
+Improving fidelity via compilation-aware circuit
+approximation, in2026 IEEE International Symposium
+on Circuits and Systems (ISCAS), pp. 1521–1525, 2026,
+DOI.
+[54] R. He, C. Liu, X. Hong, Q. Chai, J. Zhou, J. Guan
+et al.,Hamiltonian-Aware ADAPT Variational
+Quantum Eigensolver for Molecular Ground-State
+Simulation,2606.13118.
+[55] H. Kim and Y. Lee,SAFE ma-QAOA:
+Surrogate-Assisted and Fine-Tuning Enhanced
+Multi-Angle QAOA with Parameter Distillation, in2026
+IEEE International Conference on Quantum Computing
+and Engineering, 5, 2026 [2605.23377].
+[56] A. Warren, L. Zhu, N.J. Mayhall, E. Barnes and
+S.E. Economou,Adaptive variational algorithms for
+quantum Gibbs state preparation,2203.12757.
+[57] S. Bravyi, A. Kliesch, R. Koenig and E. Tang,Obstacles
+to variational quantum optimization from symmetry
+protection,Phys. Rev. Lett.125(2020) 260505.
+[58] Y. Wang, G. Li and X. Wang,Variational quantum
+gibbs state preparation with a truncated taylor series,
+Phys. Rev. Appl.16(2021) 054035.
+[59] X.-Y. Guo, S.-S. Li, X. Xiao, Z.-C. Xiang, Z.-Y. Ge,
+H.-K. Li et al.,Variational quantum simulation of
+thermal statistical states on a superconducting quantum
+processer,Chinese Physics B32(2023) 010307.
+[60] M. Consiglio, J. Settino, A. Giordano, C. Mastroianni,
+F. Plastina, S. Lorenzo et al.,Variational gibbs state
+preparation on noisy intermediate-scale quantum
+devices,Phys. Rev. A110(2024) 012445.
+[61] J. Selisko, M. Amsler, T. Hammerschmidt, R. Drautz
+and T. Eckl,Extending the variational quantum
+eigensolver to finite temperatures,Quantum Science and
+Technology9(2023) 015026.
+[62] R. Robertson, M. Consiglio, J. Stevens, E. Doucet,
+T.J.G. Apollaro and S. Deffner,Variational gibbs state
+preparation on trapped-ion devices,npj Quantum
+Information(2026) .
+[63] F. Alet, M. Hanada, A. Jevicki and C. Peng,
+Entanglement and confinement in coupled quantum
+systems,Journal of High Energy Physics2021(2021)
+34.
+[64] E. Jang, Z. Chen, D. Ha, S. Choi, Y. Lee, J. Kwon
+et al.,Layerwise retraining and freezing for multi-angle
+qaoa,Quantum Machine Intelligence8(2026) 5.
+[65] K. Shi, R. Herrman, R. Shaydulin, S. Chakrabarti,
+M. Pistoia and J. Larson,Multiangle qaoa does not
+always need all its angles, in2022 IEEE/ACM 7th
+Symposium on Edge Computing (SEC), pp. 414–419,
+2022, DOI.

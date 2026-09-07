@@ -1,0 +1,1114 @@
+===== PAGE 1 =====
+Discretization-Aware Fine-Tuning for Quantum
+Machine Learning with Chemical Foundation Models
+Shunji Matsuura∗†‡§ , Sonika Johri¶
+∗RIKEN Center for Interdisciplinary Theoretical and Mathematical Sciences (iTHEMS),
+RIKEN, Wako, Saitama 351-0198, Japan
+†Department of Electrical and Computer Engineering, University of British Columbia, Vancouver, BC V6T 1Z4, Canada
+‡Center for Mathematical Science and Advanced Technology, Japan Agency for Marine-Earth Science and Technology,
+Yokohama 236-0001, Japan
+§Department of Physics, University of Guelph, Guelph, ON N1G 1Y2, Canada
+¶Cascade Quantum, Cupertino, CA, USA
+shunji.matsuura@riken.jp,sonika@cascadequantum.com
+Abstract—A key challenge in practical quantum machine
+learning (QML), particularly for discriminative tasks such as
+classification, is the limited capacity of near-term quantum
+devices to encode high-dimensional classical data into small
+quantum registers. In optimized basis-encoded (bit-bit) settings,
+this constraint leads to cross-class collisions, where samples with
+different labels are mapped to the same discrete bit-string and
+thus become indistinguishable to any downstream model. In
+this work, we investigate how data representation affects QML
+performance under such severe information bottlenecks. We
+introduce discretization-aware fine-tuning (DAFT), a method
+that adapts a pre-trained chemical foundation model to produce
+representations that remain informative after quantization. DAFT
+reduces collision probability through a differentiable soft collision
+loss. We evaluate both quantum and classical models under a
+controlled setting in which they receive identical discretized bit-
+string inputs, isolating the effect of representation from model
+architecture. On the blood–brain barrier penetration (BBBP)
+molecular property prediction benchmark using ChemBERTa-
+77M, DAFT reduces collision counts by several orders of
+magnitude and improves quantum classification accuracy by
+more than 12 percentage points compared to a frozen backbone.
+Importantly, without DAFT, classical models outperform QML
+under the same input constraints. With DAFT, however, this
+comparison reverses at higher qubit counts. At 10 qubits, the
+quantum model surpasses a matched classical baseline trained
+on identical bit-strings (0.883 vs. 0.855, p= 0.026 ). These
+results show that, in information-constrained regimes, achieving
+a quantum advantage critically depends on aligning continuous
+representations with discrete quantum encodings.
+Index Terms—Quantum machine learning, Hybrid quantum
+algorithms, Chemistry, Quantum AI
+I. INTRODUCTION
+Near-term quantum machine learning (QML) based on
+building models with parameterized quantum circuits holds
+promise for learning tasks in high-dimensional spaces. In
+particular, to leverage hardware anticipated in the near future
+for practical applications, novel hybrid quantum-classical
+learning frameworks where classical models are augmented
+with quantum layers are being actively studied [1], [2], [3].
+In practice, the potential of QML is constrained by a funda-
+mental asymmetry. Parameterized quantum circuits operate in
+Hilbert spaces of dimension 2nq, which grows exponentially
+with the number of qubits nq. However, encoding classical
+data into quantum states remains costly and can restrict the
+quantum advantage that can be achieved. More precisely, the
+runtime of the quantum model will scale at least as the time
+to load the data, while the form of the encoding restricts the
+expressivity of the quantum model that can be built [4].
+Standard encoding strategies expose this tension. Amplitude
+encoding is efficient in the number of qubits required but
+generally requires O(2nq) gates for state preparation [ 5],
+making it impractical on near-term devices. Angle encoding,
+while hardware-friendly, maps features to local rotations,
+producing highly structured product states that underutilize the
+combinatorial capacity of the computational basis. As a result,
+it cannot efficiently capture high-order feature interactions.
+More broadly, reliably encoding even moderate-dimensional
+continuous data remains challenging on current hardware [6].
+Bit-bit encoding offers a practical alternative [ 7]. Instead of
+embedding continuous features directly, the input is compressed
+into a short binary string and loaded as a computational basis
+state:
+|ψi⟩=|b i,1,bi,2,···,b i,ndata⟩, b i,k∈0,1.(1)
+This approach reduces state preparation to O(nq) single-qubit
+gates, keeping circuits shallow and more robust to noise.
+Further, it allows for universal approximation with just one
+uploading of the data, unlike angle or amplitude encoding [ 8],
+[4], [9]. Combined with techniques such as exact coordinate-
+update training and progressive subnet initialization [ 7], it
+provides a hardware-realistic and scalable framework for
+quantum classification.
+A. The Central Challenge: What Survives Compression?
+While bit-bit encoding simplifies state preparation, it intro-
+duces a new challenge: severe information compression. For
+example, a 4-qubit classifier operates on only 3 bits of data,
+yielding just 8 possible input patterns. This raises a central
+question: whether the compressed representation preserves the
+label-relevant structure needed for accurate classification.
+arXiv:2609.03220v1  [quant-ph]  2 Sep 2026
+
+===== PAGE 2 =====
+A fundamental limitation arises when different samples are
+mapped to the same bit-string. If two molecules with different
+labels share the same representation, then neither a quantum
+nor a classical downstream model can correctly classify both
+using that encoding alone. We refer to such cases ascollisions.
+A collision is a limitation of the representation, not of the
+model.
+Here, we explore this limitation when fine-tuning a large
+classical model with frozen pre-trained embeddings on a
+particular dataset. Specifically, we find that ChemBERTa-
+77M [ 10], [ 11], a classical neural network trained on 107
+molecules via masked language modeling, on the blood–brain
+barrier penetration (BBBP) dataset suffers from severe colli-
+sion limitations. ChemBERTa-77M produces 384-dimensional
+embeddings that capture general chemical structure. However,
+when these embeddings are compressed to 3 bits for use in
+a 4-qubit circuit, we observe 11,544 collision-pairs on the
+blood–brain barrier penetration (BBBP) dataset, a standard
+molecular property prediction benchmark used to classify
+whether a compound can cross the blood–brain barrier. The pre-
+trained model is not optimized to preserve structure under such
+coarse discretization, leading to a dramatic loss of task-relevant
+information.
+B. Our Approach: Collision-Aware Representation Shaping
+Standard fine-tuning with cross-entropy loss improves
+continuous-space separability but does not directly control
+whether opposite-class samples collapse to the same discrete
+bin. Fisher discriminant-style objectives encourage inter-class
+distance in continuous space, but again without targeting the
+actual quantization boundary.
+We argue that neither is sufficient for bit-bit QML. The
+correct objective is to penalize collisions as they appear after
+discretization, not as a proxy measured in continuous space.
+We introducediscretization-aware fine-tuning(DAFT), a two-
+stage backbone adaptation procedure for chemical foundation
+models. Stage 1 is standard cross-entropy warm-up. Stage 2
+adds a differentiable soft collision penalty that estimates, for
+every opposite-class pair in the mini-batch, the probability that
+both samples fall into the same quantization bin. This penalty
+is computed in the continuous embedding space using soft bin
+assignments, so that gradients flow back through the projection
+head and into the transformer backbone.
+C. Contributions
+This paper makes the following contributions.
+1) We introduce the soft collision loss (Sec. II-D2), a
+differentiable objective that directly minimizes expected
+cross-class collision probability after quantization, and
+we show that it outperforms cross-entropy and Fisher
+fine-tuning in terms of collision reduction.
+2) We perform a four-condition ablation (FROZEN,CE-
+ONLY,FISHER,SOFT-COLL) across five independent
+seeds to isolate the effect of each fine-tuning objective on
+both the discrete representation quality (collision count,
+SMILES
+ChemBERTa-77M
+z∈R 384
+Frozen DAFT
+Stages 1–2
+Standardize PCA
+MI select Quantize
+Quantum circuit
+Prediction
+Baseline Ours
+Fig. 1. Pipeline overview. SMILES strings are mapped to embeddings by
+ChemBERTa-77M. The baseline (blue) uses frozen embeddings, while the
+proposed method (purple) applies discretization-aware fine-tuning (DAFT).
+Both paths share the same preprocessing pipeline (standardization, PCA, mutual
+information selection, and quantization) to produce bit-string inputs for the
+quantum circuit. All classical baselines are evaluated on identical inputs for
+fair comparison.
+Fisher PC1) and the downstream quantum classifier
+accuracy.
+3) We introduce an information-controlled evaluation pro-
+tocol (Sec. II-E) in which a logistic regression trained
+on the identical quantized bit-string at each qubit level
+serves as the matched classical baseline. This protocol
+separates representation effects from quantum processing
+effects.
+4) We provide two complementary statistical results at 10
+qubits (Sec. IV). Without DAFT, the matched classical
+baseline outperforms the quantum circuit by 6.0 pp
+(p<0.001 ), establishing fine-tuning as a necessary condi-
+tion. With DAFT, both models improve, but the quantum
+circuit improves by 12.2 pp while the classical baseline
+improves by only 3.5 pp, reversing the comparison and
+yielding a 2.8 pp quantum advantage (p= 0.026).
+The rest of the paper is organized as follows. Section II
+describes the full framework. Section III details the experi-
+mental protocol. Section IV presents and interprets all results.
+Section V discusses implications and limitations.
+II. METHOD
+Figure 1 provides an overview of the complete pipeline. We
+describe the components in turn.
+A. Foundation-Model Representations
+A molecule is represented in our pipeline by a SMILES
+string, which is a compact text encoding of its bond topology
+and atomic composition. To convert this discrete string into
+a form suitable for machine learning, we use a pre-trained
+chemical foundation model: a large transformer network that
+has been trained on millions of molecules and has learned a rich
+internal language of chemical structure. Concretely, the model
+ingests a SMILES string and produces a fixed-length continuous
+vectorz∈R demb, extracted from the [CLS] (classification)
+
+===== PAGE 3 =====
+token of the final transformer layer. This vector is often called
+anembedding: a compressed numerical fingerprint that encodes
+features such as functional groups, ring systems, and electronic
+character learned during pre-training. Note that this happens
+without any supervision from the target property label.
+The appeal of using such a foundation model, rather than
+hand-crafted descriptors such as Morgan fingerprints, is that
+the embedding space is already organized to reflect chemical
+similarity: molecules with structurally related SMILES tend
+to map to nearby points in Rdemb. This is exactly the kind
+of structure that a downstream classifier, whether quantum
+or classical, can exploit. However, as we discuss next, this
+high-dimensional continuous embedding cannot be loaded into
+a quantum register directly; the compression step required to
+do so introduces new challenges that form the central problem
+of this paper. Concrete architectural details of the foundation
+model used in our experiments are given in Sec. III.
+B. Bit-Bit Encoding
+a) Overview:Bit-bit encoding [ 7] firstdiscretizesthe
+molecular descriptor into a short binary string, then loads that
+string as a computational basis state (1). State preparation
+from a known classical bit-string requires only single-qubit
+X gates (one per qubit that should be set to |1⟩), making
+the encoding independent of the embedding dimensionality
+and compatible with shallow, noise-tolerant circuits. The
+expressivity of the quantum model is then controlled by the
+parameterized entangling circuit that processes the loaded state,
+not through the loading step itself.
+The embedding is compressed into ndata =n q−1 bits (one
+qubit is reserved as the output register), using the following
+three-stage pipeline.
+b) Stage 1: Standardization and PCA.:The raw em-
+bedding z∈R demb is first standardized to zero mean and
+unit variance per dimension, and then projected onto its top
+dPCA principal components. Principal component analysis
+(PCA) finds the orthogonal directions of maximum variance:
+by retaining the top dPCA components, we keep the most
+informative directions while discarding dimensions that are
+mostly noise and would otherwise introduce redundant bits.
+Crucially, the PCA projection is fit on the training set and then
+applied identically to the test set and all classical baselines, so
+no test-set information leaks into the representation. Following
+the PCA, a min-max normalization is applied along each PCA
+direction to map values into[0,1]prior to quantization.
+c) Stage 2: Mutual-information feature selection and bit
+allocation.:After PCA, we have dPCA components. Not all of
+them are equally predictive of the target label y, and we have
+a tight bit budget: ndata bits in total. We therefore measure, for
+each componentj, themutual information
+Ij =I(ˆxj;y),(2)
+where ˆxj is the j-th PCA coordinate and y∈{0,1} is the
+class label. Mutual information quantifies how much knowing
+ˆxj reduces uncertainty about y; components with higher Ij
+are more predictive. Bits are then allocated proportionally to
+predictive value:
+nj =
+
+ndata
+IjP
+kIk
+
+,(3)
+where⌊·⌉ denotes rounding subject to P
+jnj =n data. Com-
+ponents assigned nj = 0 bits are discarded. This procedure
+ensures that the available bit budget is spent on the dimensions
+that carry the most label-relevant information, rather than
+spreading it uniformly across all components.
+d) Stage 3: Quantization.:Each retained component j is
+min-max normalized to [0,1] and then uniformly divided into
+2nj equal bins. The bin index for sample i in component j is
+bij = min(⌊2nj ˜xij⌋,2 nj−1), b ij∈{0,...,2 nj−1}.
+(4)
+The binary representations of all retained bin indices are
+concatenated to form the full data bit-string bi∈{0,1} ndata,
+which is then loaded into the quantum register as|b i⟩.
+e) Collisions and their consequences.:Discretization
+introduces a fundamental risk: two molecules with different
+labels may map to the same bit-string. Formally, samples i̸=j
+are said tocollideif bi =b j and yi̸=y j. The collision set is
+C={(i,j) :b i =b j, yi̸=y j, i<j}.(5)
+Every pair in C represents a fundamental ambiguity: the
+quantum circuit receives the identical input state |b⟩ for both
+samples yet must predict opposite labels. This is not a failure
+of the model or the optimizer: no circuit, regardless of its depth
+or the number of trainable parameters, can correctly classify
+both members of a colliding pair using that encoding alone.
+The best achievable accuracy on colliding samples is bounded
+by the majority-class fraction among all samples sharing the
+same bit-string. Reducing|C| is therefore a necessary condition
+for high classification accuracy, and the goal of the fine-tuning
+procedure described in Sec. II-D is precisely to reshape the
+embedding space so that this condition is satisfied.
+C. Parameterized Quantum Classifier
+Once the bit-string bi has been prepared in the data register,
+a parameterized quantum circuit processes it to produce a
+classification output. The circuit has nq qubits in total, divided
+into ndata =n q−1 data qubits and one output qubit q∗. The
+data qubits are initialized in the computational basis state |bi⟩;
+the output qubit starts in|0⟩.
+a) Circuit architecture.:The circuit applies ndata identi-
+cal entangling blocks in sequence, one for each data qubit
+qk. Each block operates on the pair (q∗,qk) and consists
+of three gates: a single-qubit Euler rotation on the output
+qubit, E(α) =R X(α1)RZ(α2)RX(α3); a single-qubit Euler
+rotation on the data qubit, E(β) =R X(β1)RZ(β2)RX(β3);
+and a two-qubit Heisenberg interaction gate,
+H(γ) =e −iπ(γ1X∗Xk+γ2Y∗Yk+γ3Z∗Zk),(6)
+where RA(θ) =e−iθA/2 for A∈{X,Z} , and X,Y,Z are the
+Pauli operators. After all ndata blocks, a final Euler rotation
+
+===== PAGE 4 =====
+E(α∗) is applied to q∗. All rotation angles are independent
+trainable parameters. Critically, no gates act between pairs of
+data qubits, so entanglement is strictlybipartite: each data
+qubit interacts only with the output qubit. This design keeps
+the circuit shallow while still allowing the output qubit to
+aggregate information from the full data register through its
+sequential interactions.
+The predicted probability of class y= 1 is obtained by
+measuring the output qubit, marginalized over all data-qubit
+outcomes:
+p(y= 1|b i,θ) =⟨Ψ out|
+ 
+Indata⊗|1⟩⟨1|
+
+|Ψout⟩,(7)
+where|Ψout⟩=U(θ)|b i⟩⊗|0⟩ and U(θ) is the full circuit
+unitary.
+b) Loss function.:The circuit is trained to maximize
+the predicted probability of the correct class. Because the
+training set may contain collisions (multiple samples mapping
+to the same bit-string with conflicting labels), the loss function
+operates on unique bit-strings after assigning each to a majority-
+vote class. Formally,
+L(q)(θ) =
+X
+z
+f(z)
+h
+(1−λ) (1−p z) +λ(1−p z)2
+i
+,(8)
+where pz =p(y=C(z)|z,θ) is the predicted probability of
+the majority-vote classC(z), andf(z) is the relative frequency
+of bit-string z in the training set. The parameter λ∈[0,1]
+blends a linear loss term ( λ= 0 ) with a squared loss term
+(λ= 1 ); setting λ close to 1 emphasizes the squared term for
+most of the training, while a small linear component prevents
+the gradients from vanishing whenp z≈1.
+c) Exact coordinate updates.:Rather than estimating
+gradients by parameter-shift rules and following them by a fixed
+step size, parameters are updated byexact coordinate descent:
+at each step, one parameter θj is minimized while all others are
+held fixed. This approach is feasible because each probability
+term pz, viewed as a function of a single rotation angle, is a
+trigonometric polynomial. Its global minimum can therefore
+be determined in closed form using only three measurements.
+This allows the loss function in Eq. 8 to be reconstructed
+for arbitrary values of θj. Since the loss is periodic in θj
+with period 2π, we locate the minimum by evaluating the
+reconstructed loss over a 2π interval at a chosen resolution.
+Here, we use a resolution of 0.001 and measure the losses
+using ideal simulation.
+d) Progressive subnet initialization.:Training large quan-
+tum circuits from a random initialization risks converging
+to flat regions of the loss landscape, also known as barren
+plateaus [12]. We sidestep this by training circuits of increasing
+size in sequence and carrying learned parameters forward.
+Specifically, after training the nq-qubit circuit, the parameters
+for the existing qubits are copied to seed the (nq + ∆)-qubit
+circuit, with the new qubits initialized to implement the identity
+transformation. This ensures that each larger circuit begins from
+a well-trained solution rather than a random point, so that only
+the new qubits need to be optimized substantially.
+D. Discretization-Aware Fine-Tuning
+a) Why fine-tuning is necessary.:The pre-trained founda-
+tion model was not optimized with the quantum register in mind.
+Its embeddings capture general chemical structure, but the
+quantization pipeline imposes a coarse discrete grid on top of
+them. A 4-qubit circuit encodes only 3 data bits, corresponding
+to just 23 = 8 distinct bit-strings; a 10-qubit circuit uses 9 bits
+and 29 = 512 strings. When a high-dimensional continuous
+embedding is projected onto such a coarse grid, molecules with
+different labels but similar embeddings tend to fall into the
+same bin, which is the collision problem described in Sec. II-B.
+Because the pre-trained model had no knowledge of this grid,
+it has no incentive to push opposite-class molecules to different
+bins.
+Standard fine-tuning with cross-entropy loss improves
+continuous-space separability, that is, the model learns to assign
+high probability to the correct class, but it does not directly
+control whether opposite-class molecules land in different
+quantization bins. The gradient of the cross-entropy loss does
+not “see” the discretization boundary: the loss is computed
+from continuous logits, and a molecule that sits just on the
+wrong side of a bin boundary contributes no differently from
+one that is far away.
+We address this by introducing a two-stage fine-tuning
+procedure, calleddiscretization-aware fine-tuning(DAFT), that
+explicitly targets collision reduction in Stage 2. The procedure
+adapts the last few transformer layers of the foundation model
+together with a lightweight projection head fθ :R demb →
+Rdproj (linear layer, LayerNorm, GELU activation). Keeping the
+earlier layers frozen preserves the broad chemical knowledge
+encoded during pre-training while allowing the task-specific
+geometry of the representation to be adjusted. The full pipeline
+is depicted in Fig. 1.
+1) Stage 1: Cross-Entropy Warm-Up:Stage 1 is a standard
+supervised fine-tuning step that trains the backbone and
+projection head to be predictive of the target label in continuous
+space. We minimize the binary cross-entropy loss,
+LCE =− 1
+N
+NX
+i=1
+
+yi log ˆpi + (1−y i) log(1−ˆpi)
+
+,(9)
+where ˆpi =σ(w⊤fθ(zi) +b) is the predicted probability from
+a linear classification head placed on top of the projection.
+This loss drives the embedding to separate the two classes in
+the projected space, which also tends to reduce the number of
+collisions (because well-separated embeddings are less likely
+to fall in the same quantization bin), but does not guarantee
+collision-free representations. Stage 1 therefore acts as a warm-
+up that places the model in a useful region of parameter space
+before the more targeted Stage 2 penalty is applied.
+2) Stage 2: Soft Collision Penalty:
+a) Step 1: Why |C| cannot be minimized directly.:The
+ideal objective for Stage 2 is to minimize the hard collision
+count|C| (Eq. 5) directly. However, this is impossible with
+gradient-based optimization. The collision count is determined
+by whether two samples land in thesame binafter quantization
+
+===== PAGE 5 =====
+(Eq. 4), and the quantization step involves a floor function ⌊·⌋
+that is piecewise constant: its gradient with respect to the
+embedding values is zero almost everywhere, and undefined at
+the bin boundaries. No matter how the backbone parameters θ
+are adjusted, the gradient of |C| with respect to θ carries no
+information about which direction would reduce collisions.
+b) Step 2: Replacing the hard bin assignment with a
+soft probability.:We resolve this by replacing the binary bin
+assignment with adifferentiable soft approximation. Instead
+of asking “which bin does this sample fall into?” (a hard,
+discontinuous question), we ask “what is the probability that
+this sample falls into each bin?” (a smooth, continuous answer
+that admits gradients).
+Concretely, let ei =f θ(zi)∈R dproj be the projected
+embedding of the i-th training sample. Because the dproj-
+dimensional embedding is later compressed by MI-based bit
+allocation (Sec. II-B), only a small subset of its dimensions
+will actually be encoded into the quantum register. As a
+computationally efficient proxy for those dimensions, we select
+the K dimensions ofhighest varianceacross the mini-batch.
+Variance measures how spread out the values of a coordinate
+are; dimensions with high variance carry more information and
+are more likely to be assigned bits by the MI criterion. (This
+selection is performed with a stop-gradient so that the choice
+of K dimensions does not itself affect the gradients flowing
+to the other dimensions.) Each selected dimension k is then
+normalized to[0,1]:
+˜zik = eik−minjejk
+maxjejk−minjejk +ϵ ,(10)
+where eik is the k-th coordinate of ei, the min and max are
+taken over all samples j in the current mini-batch, and ϵ is a
+small constant for numerical stability.
+Fornb bits per dimension (2nb equal bins covering [0,1] ), the
+center of bin m iscm = (2m+1)/(2·2 nb). In our experiments,
+nb = 1, giving two bins with centers c0 = 1/4 and c1 = 3/4.
+The soft assignment of sample i to bin m in dimension k,
+denoted pikm, where i indexes the sample, k the dimension,
+and m the bin, is a Gaussian-kernel softmax centered on the
+bin centers:
+pikm = exp
+ 
+−τ(˜zik−cm)2
+2nb−1X
+m′=0
+exp
+ 
+−τ(˜zik−cm′)2
+,(11)
+where τ >0 is a temperature parameter that controls the
+sharpness of the assignment. When τ is large, the Gaussian
+concentrates tightly around the nearest bin center, so pikm→1
+for the bin closest to ˜zik and pikm→0 for all others, which
+recovers the hard bin assignment of Eq. 4. When τ is small,
+the distribution spreads across all bins. At any finite τ, Eq. 11
+is a smooth function of ˜zik, so its gradient with respect to the
+backbone parametersθ is well-defined and nonzero everywhere,
+allowing gradient descent to move samples toward or away
+from bin boundaries.
+c) Step 3: From soft assignments to a differentiable
+collision loss.:Given the soft bin assignments, the probability
+that samples i and j both land in the same bin in dimension k
+is
+Pk(i,j) =
+X
+m
+pikmpjkm.(12)
+This is simply the inner product of two probability vectors
+over bins: it equals 1 when both samples sit squarely inside the
+same bin, and approaches 0 when they are in clearly different
+bins. In the hard limit τ→∞ , Pk(i,j)→1[b ik =b jk], the
+indicator of a hard per-dimension collision.
+To obtain a single collision probability across all K selected
+dimensions, one might take the product Q
+kPk(i,j) , which
+would equal 1 only if both samples coincide in every dimension
+simultaneously. However, this product vanishes rapidly to zero
+as K grows (e.g., the product of eight values each equal to
+0.5 is ≈0.004 ), causing severe numerical underflow during
+training. We therefore use the mean instead:
+Pcoll(i,j) = 1
+K
+KX
+k=1
+Pk(i,j).(13)
+This average collision probability is a valid differentiable
+surrogate for the hard-collision indicator: it is large when
+the two samples tend to land in the same bin across many
+dimensions, and small when they are well-separated.
+The soft collision loss is the average of Pcoll(i,j) over all
+cross-classpairs(i,j)in the mini-batch:
+LSC = 1
+|M|
+X
+(i,j)∈M
+Pcoll(i,j),(14)
+whereM={(i,j) :y i̸=y j, i̸=j} is the set of opposite-
+class pairs in the mini-batch. Minimizing LSC therefore pushes
+opposite-class pairs to land in different bins across all selected
+dimensions simultaneously. Same-class pairs are not included
+inM and are not penalized, so the loss does not compress
+the within-class structure of the embedding; it acts only at the
+class boundary, which is precisely where collisions occur.
+d) Step 4: Combined Stage 2 objective.:The full Stage
+2 objective combines the cross-entropy loss, which maintains
+predictive accuracy in continuous space, with the soft collision
+penalty:
+L=L CE +λ SCLSC,(15)
+whereλSC >0 is chosen so that the two terms are comparable
+in magnitude at the start of Stage 2, ensuring balanced gradient
+contributions from both objectives. Stage 2 uses the same
+AdamW optimizer as Stage 1 but with a reduced learning rate
+η2 <η 1, running for E2 epochs. Concrete values are given in
+Sec. III.
+e) Model selection.:Because Stage 2 is optimizing
+two objectives simultaneously, the collision count and the
+continuous-space accuracy do not necessarily improve in
+lockstep. At every even epoch during Stage 2, we evaluate the
+hard collision count |C| and the Fisher discriminant ratio PC1
+(defined below, Eq. 18) on the full training set. The checkpoint
+
+===== PAGE 6 =====
+that lexicographically minimizes (|C|,−Fisher PC1) , meaning
+the lowest collision count first, then the highest Fisher ratio as a
+tiebreaker, is then restored as the final backbone before quantum
+training begins. This criterion ensures that we select the
+backbone that is best for the quantum register (low collisions)
+while still maintaining reasonable inter-class separation in
+continuous space.
+3) Ablation Conditions:To isolate the contribution of each
+component, we compare four fine-tuning conditions:
+FROZEN:No fine-tuning at all. The foundation model is
+used as-is, with all parameters fixed at their pre-trained values.
+This condition reveals the severity of the collision problem
+when the representation is not adapted to the quantum register.
+CE-ONLY:Stage 1 cross-entropy fine-tuning only, extended
+to twice the number of epochs used in the warm-up phase of
+DAFT, with no Stage 2 penalty. This isolates the benefit of
+supervised adaptation in continuous space.
+FISHER:Stage 1 warm-up followed by Stage 2 with a
+Fisher discriminant penalty instead of the soft collision loss.
+The Fisher discriminant is a classical criterion for linear class
+separability: it asks the embedding to push the two class
+centroids as far apart as possible, while simultaneously keeping
+each class internally compact.
+To define it precisely, let µc = 1
+Nc
+P
+i:y i=cei ∈R dproj
+denote the centroid (mean embedding vector) of class c, where
+Nc is the number of training samples in class c. Thebetween-
+class scatter SB measures how far the two class centroids are
+from each other in the projected space:
+SB =∥µ 1−µ 0∥2.(16)
+Thewithin-class scatter SW measures how spread out each
+class is around its own centroid, summed over both classes:
+SW =
+X
+c∈{0,1}
+X
+i:y i=c
+∥ei−µc∥2.(17)
+A small SW means that molecules with the same label form
+tight clusters in embedding space; a large SB means the two
+clusters are well separated. The Fisher loss maximizes the ratio
+SB/SW :
+LFisher =− SB
+SW +ϵ ,(18)
+and the full Stage 2 objective underFISHERis L=L CE +
+λFisherLFisher.
+The Fisher objective is a natural and strong baseline because
+it represents the classical gold standard for linear class
+separability. Its key limitation, however, is that it operates
+on class centroids and aggregate scatter, not on the discrete
+quantization grid. A molecule sitting just across a bin boundary
+from an opposite-class neighbour contributes almost nothing
+to SW (it is close to its centroid), so the Fisher gradient gives
+it almost no push. Yet it is exactly this molecule that causes a
+hard collision. By contrast, the soft collision loss (Eq. 14) is
+largest for pairs that straddle a bin boundary, and its gradient
+pushes those pairs apart most strongly. ComparingFISHER
+againstSOFT-COLLtherefore directly measures the benefit
+of targeting the quantization boundary explicitly, rather than
+through a continuous-space proxy, and explains whySOFT-
+COLLachieves|C|≈1whileFISHERleaves|C|≈128.
+SOFT-COLL:Stage 1 warm-up followed by Stage 2 with
+the soft collision loss (our proposal). This is the full DAFT
+method.
+All four conditions use the same preprocessing pipeline, the
+same quantum circuit architecture, and the same quantum
+training procedure. The only difference is the fine-tuning
+objective applied to the backbone. Specific hyperparameter
+values for each condition are given in Sec. III.
+E. Information-Controlled Classical Baselines
+A key methodological contribution of this work is a care-
+fully stratified set of classical baselines that controls for the
+information available to each model. This is essential for a
+fair comparison: if the quantum circuit receives only 3 bits
+of data (nq = 4) but the classical baseline operates on 384
+continuous features, any performance gap could reflect the
+information difference rather than any inherent difference in
+model capability. We therefore introduce three tiers of classical
+baselines, each receiving a different amount of information.
+a) Tier A: Matched discrete input.:The most critical
+comparison is between the quantum circuit and a classical
+model that receives exactly the same input, namely the same
+ndata-bit string bi, at the same qubit count nq. A logistic
+regression is trained on the one-hot encoding of bi (so that
+each of the 2ndata possible bit-strings gets its own feature), and
+a decision tree is trained on the raw integer representation.
+Neither model has access to any information beyond the bit-
+string. Any difference in accuracy between the quantum circuit
+and a Tier-A baseline is therefore attributable to the quantum
+processing of the bit-string, not to a richer feature set.
+b) Tier B: Continuous PCA input.:Two classical clas-
+sifiers are trained on the dPCA-dimensional continuous PCA
+features before any discretization. The first is logistic regression,
+a linear classifier that finds the hyperplane in feature space
+that best separates the two classes. The second is an RBF-
+kernel support vector machine (RBF-SVM), which uses a
+radial basis function kernel K(x,x′) = exp(−γ∥x−x ′∥2)
+to implicitly map the features into a high-dimensional space
+where a nonlinear decision boundary becomes linear; this allows
+it to capture curved class boundaries that logistic regression
+cannot. Both models receive strictly more information than the
+quantum circuit (continuous values rather than quantized bits)
+and serve as a reference for how much accuracy is lost by the
+discretization step.
+c) Tier C: Full fine-tuned embedding.:Three classical
+classifiers are trained on the full dproj-dimensional fine-
+tuned embedding, without any dimensionality reduction or
+quantization: logistic regression, RBF-SVM (as described
+above), and a multi-layer perceptron (MLP) with one hidden
+layer. An MLP is a feedforward neural network that learns
+nonlinear transformations of the input through multiple layers
+of weighted connections followed by activation functions; it is
+strictly more expressive than both logistic regression and SVMs
+on continuous data. Together, these three models represent
+
+===== PAGE 7 =====
+the unconstrained classical upper bound: the best accuracy
+achievable from the fine-tuned features with no quantum circuit
+and no bit-budget constraint.
+III. EXPERIMENTALSETUP
+A. Dataset and Protocol
+We evaluate on the blood-brain barrier permeability (BBBP)
+benchmark from MoleculeNet [ 13], a binary classification
+task predicting whether a molecule can cross the blood-brain
+barrier, which is a critical property for central nervous system
+drug candidates. The dataset contains 2039 molecules; we use
+Bemis–Murcko scaffold-based splitting [ 14] to create train/test
+folds that respect chemical diversity and reflect real-world
+distribution shifts. After splitting, training and test sets are
+balanced to 300 and 75 molecules per class respectively, giving
+600 training and 150 test molecules. Experiments are repeated
+over five random seeds (42, 0, 1, 7, 123) governing data
+subsampling and model initialization; results are reported as
+mean±std over valid seeds.
+B. Models and Baselines
+We use ChemBERTa-77M [ 10], [ 11] as the foundation
+model, with the last two of six transformer layers unfrozen for
+fine-tuning and a projection head mapping to 64 dimensions.
+The preprocessing pipeline (Sec. II-B) uses dPCA = 16
+principal components and is refit at each qubit level from
+training data only. Quantum circuits are trained using the Red
+Cedar framework [ 7] with exact coordinate updates, bipartite
+entanglement, and exact statevector simulation; circuits at
+nq∈{4,6,8,10} are trained in sequence using progressive
+subnet initialization.
+C. Statistical Reporting
+We report accuracies on the test dataset for each model.
+All per-seed differences δs =QML acc s−lr-bit acc s are
+reported individually to make the evidence transparent. We
+additionally report the mean ¯δ, Cohen’s d= ¯δ/sδ as the
+primary effect-size measure, and one-sample t-test p-values
+as a supplementary reference. Because the sample size is
+small (n≤5 seeds), p-values have limited power and should
+be interpreted alongside d and the per-seed results; we flag
+this explicitly when reporting statistics. We use the following
+notation: lr-bit: logistic regression with discretized data; lr-cont:
+logistic regression with continuous data.
+IV. RESULTS
+A. Fine-Tuning Objective: Representation Quality and Accu-
+racy
+Table I summarizes the effect of each fine-tuning condition
+on collision count, Fisher PC1, and downstream QML accuracy
+at nq = 4 (3 data bits, 23 = 8 possible bit-string patterns).
+Fisher PC1 is the inter-class Fisher ratio along the first principal
+component of the 16-dimensional compressed embedding,
+(µ1,PC1−µ 0,PC1)2/(σ2
+0,PC1 +σ 2
+1,PC1); higher values indicate
+better linear separability in continuous space. The qubit count
+nq = 4 is deliberately small here: the purpose of this table
+TABLE I
+EFFECT OF FINE-TUNING OBJECTIVE ON REPRESENTATION QUALITY AND
+QMLACCURACY(BBBP,n q = 4, 3DATA BITS).|C|:MEAN
+COLLISION-PAIR COUNT OVER VALID SEEDS; FISHERPC1:INTER-CLASS
+FISHER RATIO ON THE FIRSTPCAAXIS(HIGHER IS BETTER); QMLACC:
+MEAN±STD(n= 4FOR SOFT-COLL,n= 5OTHERWISE);LR-CONT
+(TIER-B):LOGISTIC REGRESSION ONd PCA-DIMENSIONAL CONTINUOUS
+PCAFEATURES,AN UPPER-BOUND REFERENCE.CE-ONLY AND SOFT-COLL
+SELECT CHECKPOINTS BY MINIMIZING|C|FIRST;FISHER SELECTS BY
+MAXIMIZINGFISHERPC1FIRST(SEC. V-C).
+Condition|C|Fisher PC1 QML acc lr-cont acc
+FROZEN11 544 1.10.760±0.000 0.840
+CE-ONLY≈392960.891±0.020 0.891
+FISHER≈1281030.872±0.016 0.891
+SOFT-COLL≈12030.883±0.013 0.883
+is not to compare quantum against classical (that comparison
+is reserved for nq = 10 in Table II), but to show how each
+fine-tuning objective reshapes the embedding before it enters
+the quantum register.
+a) Finding 1: Fine-tuning is the primary performance
+driver.:All three fine-tuned conditions lift QML accuracy by
+(+11)– (+13) pp overFROZEN, establishing that representation
+alignment, rather than circuit design, is the dominant factor.
+The frozen backbone produces 11 544 collision-pairs, exceeding
+the full training set size of 600 samples: every bit-string in
+the training data contains at least one conflicting label pair,
+making correct classification structurally impossible for any
+downstream model. Once fine-tuning is applied, collisions drop
+dramatically and accuracy rises correspondingly.
+b) Finding 2: Collision count and Fisher PC1 measure
+different things.:The three fine-tuning objectives produce
+noticeably different outcomes on the two quality metrics. Cross-
+entropy fine-tuning (CE-ONLY) reduces collisions by two orders
+of magnitude to ≈98 and achieves the highest Fisher PC1
+(301), confirming that task-specific supervision reshapes the
+embedding toward better separability. The Fisher discriminant
+(FISHER) achieves a similar collision count ( ≈88 ) but with
+a substantially lower Fisher PC1 (95 vs. 301), illustrating
+that maximizing continuous-space separability and minimizing
+discrete collision count are partially orthogonal objectives: an
+embedding can score well on one while performing poorly
+on the other. The soft collision penalty (SOFT-COLL) reduces
+collisions to≈1, the lowest of all conditions, while maintaining
+Fisher PC1 at 194, demonstrating that directly targeting the
+quantization boundary achieves both goals simultaneously.
+c) Finding 3: Fine-tuning closes the information-budget
+gap.:UnderFROZEN, QML achieves 0.760, which is 8 pp
+below lr-cont ( 0.840) even though lr-cont operates on dPCA
+continuous features while QML uses only 3 quantized bits.
+After fine-tuning, QML ( 0.883–0.891) matches lr-cont ( 0.883–
+0.891) within statistical noise, regardless of the fine-tuning
+objective. The fine-tuned 3-bit representation carries essentially
+the same class-discriminative information as the full continuous
+embedding, demonstrating that DAFT successfully concentrates
+the label-relevant structure into the limited bit budget.
+
+===== PAGE 8 =====
+TABLE II
+NUMBER OF UNIQUE TRAINING BIT-STRINGS UNDER SOFT-COLL ACROSS
+QUBIT LEVELS(SEEDS42, 0, 7, 123;n= 4VALID SEEDS). “UNIQUE”IS
+THE MEAN NUMBER OF DISTINCT BIT-STRINGS IN THE TRAINING SET
+AFTER COLLISION REMOVAL. QMLACCURACY IS CONSTANT AT
+0.883±0.013ACROSS ALL FOUR QUBIT LEVELS,REFLECTING THE
+EFFECTIVENESS OF PROGRESSIVE SUBNET INITIALIZATION. THE
+QUANTUM-VS.-CLASSICAL COMPARISON ATn q = 10IS INTABLEIII.
+nq unique
+4 7.0
+6 18.0
+8 41.0
+10 72.2
+d) Finding 4: QML nearly matches unconstrained classi-
+cal baselines despite severe information compression.:Under
+SOFT-COLLat nq = 10, the quantum circuit ( 0.883±0.013 )
+approaches the accuracy of Tier-B classifiers trained on the
+full 16-dimensional continuous PCA features ( 0.887±0.014 )
+and Tier-C classifiers trained on the complete 64-dimensional
+fine-tuned embedding ( 0.888±0.014 ), falling short by only
+0.5 pp and 0.5 pp respectively, and this is despite operating on
+only 9 quantized bits rather than continuous features. Tier-B
+and Tier-C receive 16× or 64× more dimensions and retain
+all continuous-valued information lost through quantization,
+yet their accuracy advantage over QML is negligible after
+DAFT. This confirms that the fine-tuning procedure success-
+fully concentrates the label-relevant information of the high-
+dimensional continuous representation into the constrained
+discrete bit budget.
+B. Qubit Scaling and Information-Controlled Quantum Advan-
+tage
+Table II reports the number of unique bit-strings seen
+during training at each qubit level under theSOFT-COLL
+condition. QML accuracy, which is constant across all four
+qubit levels, is given in the caption. The primary quantum-vs.-
+classical comparison is at nq = 10 (Table III); the purpose of
+Table II is to demonstrate the stability of QML accuracy across
+qubit levels, which is a consequence of progressive subnet
+initialization.
+The primary result is at nq = 10 qubits, where the quantum
+register is rich enough ( 29 = 512 possible bit-string patterns)
+for the quantum circuit to exploit its entanglement structure,
+and the effect of DAFT is most clearly visible.
+a) The central finding: DAFT benefits the quantum circuit
+far more than the classical baseline.:UnderSOFT-COLL,
+DAFT raises QML accuracy by +12.2 pp relative to the
+frozen backbone (from 0.761 to 0.883; Table III). The matched
+classical lr-bit baseline also improves under DAFT, but by only
++3.4 pp (from 0.821 to 0.855): the quantum circuit gains more
+than three times as much accuracy from the same improvement
+to the representation. This asymmetry arises because the
+quantum circuit and the logistic regression process the bit-
+string in qualitatively different ways. A logistic regression
+trained on one-hot features learns a linear decision boundary
+over the 2ndata possible bit-string patterns. The quantum circuit
+instead processes the bit-string through an entangling unitary
+that creates correlations across qubits, encoding higher-order
+feature interactions that a linear model cannot capture. DAFT,
+by concentrating class-discriminative information into collision-
+free bit-strings, provides the quantum circuit with exactly the
+structured input needed to exploit these interactions.
+Because the improvement differential is so large ( +12.2 pp
+vs. +3.4 pp), the comparison reverses entirely. UnderFROZEN,
+the classical lr-bit baseline outperforms QML at 10q by 6.0 pp
+(Cohen’sd= 4.50 , n= 5 , all seeds agree in direction): the
+quantum circuit is crippled by the corrupted training signal.
+UnderSOFT-COLL, QML surpasses the classical baseline
+by +2.8 pp (Cohen’s d= 2.06 , n= 4 ; p= 0.026 for
+reference). All four valid seeds show a positive advantage
+(+2.0,+4.0,+4.0,+1.3 pp for seeds 42, 0, 7, 123), confirming
+the result is not driven by a single outlier. The same reversal is
+independently confirmed under theFISHERcondition ( +2.3 pp
+at 10q,d= 3.81,p= 0.001,n= 5; see below).
+b) Stability of QML accuracy across qubit counts.:
+As shown in Table II, QML accuracy underSOFT-COLLis
+0.883±0.013 at every qubit level from 4 to 10. Progressive
+subnet initialization successfully carries the learned 4-qubit
+solution to larger circuits without loss of accuracy, consistent
+with the expectation that the information bottleneck (the
+finite bit budget) rather than circuit capacity is the limiting
+factor. The qubit-scaling curve for QML is therefore flat: once
+the representation is collision-free and the 4-qubit circuit
+has learned a good solution, scaling to more qubits adds
+discriminative power (more unique bit-string patterns, as shown
+in the “unique” column) without sacrificing what was already
+learned.
+c) The classical baseline is evaluated at nq = 10 only.:
+The lr-bit classical baseline (logistic regression trained on
+the same bit-string as the quantum circuit) does not require
+a sequential qubit-scaling protocol and is reported only at
+nq = 10 . Its accuracy underSOFT-COLLis 0.855±0.006 ,
+below the quantum circuit’s0.883±0.013.
+d) The Fisher condition corroborates the result inde-
+pendently.:We additionally validate using all 5 seeds under
+FISHER, for which no seed exclusion is needed. As underSOFT-
+COLL, QML accuracy underFISHERis constant across qubit
+levels 4–8 (also 0.872±0.016 ), consistent with progressive
+subnet initialization. At nq = 10, QML reaches 0.872±0.016
+against lr-bit 0.849±0.020 , a +2.3 pp advantage (d= 3.81 ,
+p= 0.001 , n= 5 ). Because this uses all 5 seeds without
+any exclusion, it provides stronger statistical evidence than the
+SOFT-COLLresult and confirms that the quantum advantage is
+not an artifact of the excluded seed.
+C. DAFT as a Necessary Condition
+Table III directly shows the reversal that DAFT produces at
+nq = 10, comparing theFROZENandSOFT-COLLconditions
+side by side.
+Without DAFT (FROZEN), the quantum circuit achieves only
+0.761±0.007 at 10 qubits while the matched lr-bit classical
+
+===== PAGE 9 =====
+baseline reaches 0.822±0.012, a gap of−6.0 pp in favor of the
+classical model (p= 0.001 ,n= 5 ). This can be understood as
+follows. 11 544 collision-pairs in the frozen embedding corrupt
+the quantum circuit’s training signal so severely that circuit
+optimization cannot recover, while the lr-bit baseline retains
+some statistical regularity in its one-hot feature space even
+under high collision rates.
+With DAFT (SOFT-COLL), the quantum circuit gains
++12.2 pp (to 0.883) and the classical baseline gains +3.3 pp
+(to 0.855). The quantum circuit’s gain is more than three times
+larger, reversing the comparison to +2.8 pp in favor of the
+quantum circuit (p= 0.026,n= 4).
+DAFT is therefore necessary, since without it the quantum
+circuit cannot match a simple logistic regression, and it is
+also differentially beneficial: the same improvement to the
+representation produces a far larger accuracy gain for the
+quantum circuit than for the classical baseline.
+V. DISCUSSION
+A. Why the Quantum Circuit Benefits More from DAFT than
+the Classical Baseline
+The central result of this paper goes beyond the observation
+that the quantum circuit outperforms the classical baseline at 10
+qubits after DAFT: DAFT produces a differential improvement,
+since both models benefit, but the quantum circuit gains
++12.2 pp while the classical lr-bit baseline gains only +3.4 pp.
+Understanding why this asymmetry arises is key to interpreting
+the result.
+The fundamental reason is that the quantum circuit and
+the logistic regression process the bit-string in qualitatively
+different ways. A logistic regression trained on one-hot features
+of the bit-string bi learns a separate weight for each possible
+bit-string pattern and outputs a linear combination. At 10
+qubits (29 = 512 patterns, but only ≈72 seen during training),
+the model must generalize from seen to unseen patterns by
+interpolating in the one-hot feature space. When DAFT reduces
+collisions, the training signal becomes less noisy, and the
+logistic regression can fit the training patterns more accurately;
+but it still faces the same generalization challenge to unseen
+bit-strings.
+The quantum circuit, by contrast, processes the bit-string
+through a parameterized entangling unitary. The Heisenberg
+interaction gates create quantum correlations between the output
+qubit and each data qubit, building an amplitude distribution
+TABLE III
+QUANTUM-VS.-CLASSICAL COMPARISON ATn q = 10:FROZEN VS.
+SOFT-COLL. DAFTREVERSES THE COMPARISON FROM−6.0 pp
+(CLASSICAL WINS)TO+2.8 pp(QUANTUM WINS),DRIVEN BY A
+DIFFERENTIALDAFTGAIN OF+12.2 ppFORQMLVS.+3.4 ppFOR
+LR-BIT.
+Condition QML acc lr-bit accp
+FROZEN(no DAFT)0.761±0.007 0.821±0.012.001(n= 5)
+SOFT-COLL(DAFT)0.883±0.013 0.855±0.006.026(n= 4)
+DAFT gain+12.2 pp +3.4 pp
+over basis states that encodes higher-order feature interactions,
+the kind of interactions that cannot be represented by a linear
+model. When DAFT produces a collision-free representation
+where bit 0 vs. bit 1 in each dimension reliably predicts the class
+label, the quantum circuit can exploit this structure through its
+entanglement; the logistic regression sees the same bit-string
+but cannot leverage higher-order correlations. The result is
+that the quality of the representation matters far more to the
+quantum circuit than to the classical one.
+The comparison is information-controlled at the discrete
+input level: both the quantum circuit and the lr-bit baseline
+receive exactly the same bit-string bi for each sample. The
+quantum advantage is therefore attributable to how the quantum
+circuit processes that information through entanglement and
+higher-order qubit interactions, not to access to richer features.
+B. Interpretation of the Quantum Advantage
+The statistically significant quantum advantage of +2.8 pp
+at 10q (p= 0.026 ) underSOFT-COLLshould be understood
+in the context of the broader finding. The primary claim is
+not “quantum circuits are generically superior to classical
+models on molecular classification.” The claim is more specific:
+DAFT improves both models, but the quantum circuit benefits
+more than three times as much ( +12.2 pp vs. +3.4 pp), and
+this differential improvement reverses the comparison from
+classical-wins to quantum-wins. The quantum advantage is
+attributable to how the quantum circuit processes the bit-
+string, namely through entanglement and higher-order qubit
+interactions, and not to access to richer features. The same
+reversal is independently confirmed under theFISHERcondition
+across all 5 seeds (+2.3 pp at 10q,p= 0.001 ,d= 3.81 ), ruling
+out the possibility that the result is an artifact of theSOFT-COLL
+condition or the excluded seed.
+C. Collision Count as a Performance Predictor
+The four fine-tuned/frozen conditions rank asSOFT-COLL
+(≈1 ) < CE-ONLY( ≈39 ) < FISHER( ≈128 ) < FROZEN
+(11 544) in collision count. This is a nq-independent proxy
+computed during Stage-2 training (Table I). We assess what
+this ordering predicts at nq = 10, the qubit count at which our
+primary claim (Sec. IV-A) is made. The relevant quantity is the
+QML−lr-bit gap. lr-bit is a linear classifier (logistic
+regression) trained on the same bit-strings the quantum circuit
+receives. UnderCE-ONLY, this gap at nq = 10 is +0.4pp±
+2.7pp across five seeds. The sign changes in two of them; the
+linear baseline wins on seeds 0 and 123. UnderSOFT-COLL,
+the same gap is +2.8pp±1.4pp and is positive on every seed
+tested. The residual ≈39 collisions left byCE-ONLYleave
+some class-separable structure in the bit-strings. On some seeds
+a linear model exploits this structure as well as the quantum
+circuit does, which erases or reverses the gap.SOFT-COLL’s
+near-elimination of collisions removes this headroom for the
+linear baseline. This is what makes the gap reproducible across
+seeds.FISHER’s larger collision count has a different cause. Its
+checkpoint-selection criterion prioritizes the Fisher discriminant
+ratio over collision minimization. This is not a weaker ability of
+
+===== PAGE 10 =====
+cross-entropy fine-tuning to suppress collisions. While collision
+count is certainly an important measure of QML accuracy, as
+evidenced by the large gain overFROZEN, it alone does not
+uniquely determine the accuracy. It also indicates how much
+structure remains for a matched linear classical model to exploit.
+The amount of such structure determines how robust and seed-
+independent the gap will be as nq grows.SOFT-COLLis the
+only condition whose Stage-2 objective directly targets the
+quantization boundary, via a differentiable surrogate (Eq. 14).
+This is why it alone drives |C| to near zero. It is the condition
+used for the qubit-scaling claim in Sec. IV-A.
+Correspondingly,SOFT-COLLandCE-ONLYboth select
+checkpoints using the criterion (|C|,−Fisher PC1) . Both mini-
+mize collision count first.FISHERinstead selects by maximizing
+Fisher PC1 first, with collision count only as a tiebreaker
+(Table I). Among the conditions that do select on collision
+count first,SOFT-COLLachieves the better outcome on both
+metrics simultaneously.
+VI. CONCLUSION
+We have introduced discretization-aware fine-tuning (DAFT),
+a method that shapes chemical foundation model embeddings
+specifically for downstream bit-bit quantum machine learning.
+The key ingredient is a differentiable soft collision penalty that
+directly minimizes the probability that opposite-class samples
+receive the same discrete code after quantization.
+Applied to ChemBERTa-77M on the BBBP benchmark,
+DAFT reduces collisions from 11 544 (frozen backbone) to
+approximately 1 on average, and raises quantum classifier
+accuracy by 12.3 percentage points over the frozen baseline.
+Through a four-condition ablation and an information-
+controlled evaluation protocol, we establish two complementary
+statistical results:
+1) Without DAFT, the logistic regression trained on the
+identical quantized bit-string outperforms the quantum
+circuit at 10 qubits by 6.0 pp (Cohen’s d= 4.50 , all
+5 seeds agree). Discretization-aware fine-tuning is a
+necessary condition for quantum competitiveness in this
+regime.
+2) With DAFT, both models improve relative to the frozen
+baseline, but the quantum circuit benefits far more
+(+12.2 pp) than the matched classical baseline (+3.4 pp).
+At 10 qubits, all four valid seeds show a positive QML
+advantage ( +2.0,+4.0,+4.0,+1.3 pp ; mean +2.8 pp,
+Cohen’sd= 2.06 ). The same reversal is independently
+confirmed under the Fisher condition across all 5 seeds
+(+2.3 pp, d= 3.81 ). The lower gain for the classical
+model is not caused by DAFT; it reflects the structural
+difficulty of generalizing a logistic regression across the
+sparse 29 = 512-pattern bit-string space from only ≈72
+unique training examples.
+These findings point to a design principle for hybrid quantum-
+classical pipelines: the information bottleneck imposed by the
+quantum register must be addressed at the representation level,
+not only at the circuit level. Aligning the upstream continuous
+embedding to the discrete structure of the quantum register,
+using objectives that directly target collision reduction, is not a
+peripheral optimization step but a prerequisite for meaningful
+quantum advantage in the information-constrained setting.
+VII. SOFTWAREFRAMEWORK
+The techniques in the paper are implemented using Red
+Cedar, a commercial software framework for quantum machine
+learning being developed at Cascade Quantum, Inc, previously
+known as Coherent Computing, Inc. It can be made available
+upon request.
+REFERENCES
+[1] S. H. Kim, J. Mei, C. Girotto, M. Yamada, and M. Roetteler, “Quantum
+large language model fine-tuning,” 2025.
+[2] M. S. Rudolph, N. B. Toussaint, A. Katabarwa, S. Johri, B. Peropadre,
+and A. Perdomo-Ortiz, “Generation of high-resolution handwritten digits
+with an ion-trap quantum computer,”Phys. Rev. X, vol. 12, p. 031010,
+Jul 2022.
+[3] M. Wang, X. Xue, M. Gao, and P. V . Coveney, “Quantum-informed
+machine learning for predicting spatiotemporal chaos with practical
+quantum advantage,”Science Advances, vol. 12, no. 16, p. eaec5049,
+2026.
+[4] M. Schuld, R. Sweke, and J. J. Meyer, “Effect of data encoding on
+the expressive power of variational quantum-machine-learning models,”
+Phys. Rev. A, vol. 103, p. 032430, 2021.
+[5] M. Schuld, A. Bocharov, K. Svore, and N. Wiebe, “Circuit-centric
+quantum classifiers,”arXiv e-prints, p. arXiv:1804.00633, Apr. 2018.
+[6] A. D. Corcoles, A. Kandala, A. Javadi-Abhari, D. T. McClure, A. W.
+Cross, K. Temme, P. D. Nation, M. Steffen, and J. M. Gambetta,
+“Challenges and Opportunities of Near-Term Quantum Computing
+Systems,”IEEE Proceedings, vol. 108, pp. 1338–1352, Aug. 2020.
+[7] S. Johri, “Bit-bit encoding, optimizer-free training and sub-net initializa-
+tion: techniques for scalable quantum machine learning,”arXiv e-prints,
+p. arXiv:2501.02148, Jan. 2025.
+[8] S. Leither, M. Kubal, and S. Johri, “How many qubits does a machine
+learning problem require?,” 2026.
+[9] A. P ´erez-Salinas, A. Cervera-Lierta, E. Gil-Fuster, and J. I. Latorre,
+“Data re-uploading for a universal quantum classifier,”Quantum, vol. 4,
+p. 226, Feb. 2020.
+[10] S. Chithrananda, G. Grand, and B. Ramsundar, “ChemBERTa: Large-
+Scale Self-Supervised Pretraining for Molecular Property Prediction,”
+arXiv e-prints, p. arXiv:2010.09885, Oct. 2020.
+[11] W. Ahmad, E. Simon, S. Chithrananda, G. Grand, and B. Ramsundar,
+“ChemBERTa-2: Towards Chemical Foundation Models,”arXiv e-prints,
+p. arXiv:2209.01712, Sept. 2022.
+[12] J. R. McClean, S. Boixo, V . N. Smelyanskiy, R. Babbush, and H. Neven,
+“Barren plateaus in quantum neural network training landscapes,”Nature
+Communications, vol. 9, p. 4812, Nov. 2018.
+[13] Z. Wu, B. Ramsundar, E. N. Feinberg, J. Gomes, C. Geniesse, A. S.
+Pappu, K. Leswing, and V . Pande, “MoleculeNet: A Benchmark for
+Molecular Machine Learning,”arXiv e-prints, p. arXiv:1703.00564, Mar.
+2017.
+[14] G. W. Bemis and M. A. Murcko, “The Properties of Known Drugs.
+1. Molecular Frameworks,”Journal of Medicinal Chemistry, vol. 39,
+pp. 2887–2893, Jan. 1996.

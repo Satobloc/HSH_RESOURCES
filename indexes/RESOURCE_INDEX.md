@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T17:19:27Z`
-- Tree/content state: `8743cffc3cbfe3bfa926753f3a8a8d3659f62bdc2e4386b5f7a1c0dc2bb1a6c2`
+- Scanned: `2026-09-07T17:23:32Z`
+- Tree/content state: `75352ef530f22911f841ea45ef4c27640d3e25e00d0d0e73ae7053674d1fdfb5`
 - Coverage: complete structural traversal
-- Files: 538
-- Uploaded source files: 531
-- PDF papers: 523
+- Files: 570
+- Uploaded source files: 563
+- PDF papers: 555
 - Repository machinery files: 7
-- Byte-identical duplicate groups: 29
+- Byte-identical duplicate groups: 31
 
 ## Top-level coverage
 
@@ -32,7 +32,7 @@
 | `HAUL 8` | 14 |
 | `HAUL 9` | 4 |
 | `KERR` | 16 |
-| `OUTSIDE RESEARCH LIBRARY` | 247 |
+| `OUTSIDE RESEARCH LIBRARY` | 279 |
 | `README.md` | 1 |
 | `derived` | 1 |
 | `requirements-tools.txt` | 1 |
@@ -99,9 +99,15 @@
 - `a1c28719e18532951800b35b33f55afae3c903491cdbeca2b20d6c51e18d6bfc`
   - `HAUL 2/ssrn-6887518 (1).pdf`
   - `HAUL 2/ssrn-6887518.pdf`
+- `a1fa3d81877b2cb1c49429ca22737d114ffb6eca95f319062c26407c39f77272`
+  - `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.03001v1.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03001v1.pdf`
 - `b521569545fe74776b6eafd2707b90710e3b06260d32cd94776f4a02c07f21ac`
   - `HAUL 2/ssrn-7352038 (1).pdf`
   - `HAUL 2/ssrn-7352038.pdf`
+- `b91414873efb096ba4982e96de429816ac853c60617b68024d5009bacd582989`
+  - `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2608.31163v1 (1).pdf`
+  - `OUTSIDE RESEARCH LIBRARY/STRINGS+/2608.31163v1.pdf`
 - `c5f441626fcae53d8bf7530a65b7790837f3db84a1ff031e42e4eed16e808875`
   - `HAUL 4/7258242.pdf`
   - `HAUL 7/ssrn-7258242.pdf`
@@ -650,13 +656,45 @@
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2609.03056v1.pdf` | 3363278 | arxiv:2609.03056v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2609.03710v1.pdf` | 615184 | arxiv:2609.03710v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/Long-term statistics of pulsar glitches due to history-dependent avalanches.pdf` | 2268501 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A new hypothesis could connect two of physics’ greatest mysteries_ dark energy and quantum gravity.pdf` | 1804814 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A simple discovery is shaking the foundations of spintronics _ ScienceDaily.pdf` | 1846769 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Caltech startup unveils physics AI that skips transformers_ No benchmark proof yet.pdf` | 1112359 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Chemical physicists quantitatively model electron interactions in real quantum materials.pdf` | 403955 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/In-orbit test of the weak equivalence principle with atom interferometry _ Science Advances.pdf` | 7154984 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Long-predicted gravitational effect seen in a quantum object for the very first time – Einstein’s theory passes another crucial test.pdf` | 1384921 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault.pdf` | 2197799 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Science says some spiders can launch into the sky using silk and electricity to fly and the physics is wild.pdf` | 1101043 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists just overturned a century-old physics assumption _ ScienceDaily.pdf` | 5368654 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists observe Einstein's gravity in the quantum world.pdf` | 1298617 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/The physics of brain development_ How cells pull together to form the neural tube.pdf` | 144799 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/“Really bizarre” quantum discovery defies the rules of physics _ ScienceDaily.pdf` | 1584190 |  |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2608.31163v1.pdf` | 488363 | arxiv:2608.31163v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.00119v1.pdf` | 2715711 | arxiv:2609.00119v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.00153v1.pdf` | 569366 | arxiv:2609.00153v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.00797v1.pdf` | 539693 | arxiv:2609.00797v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01365v1.pdf` | 715105 | arxiv:2609.01365v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01454v1.pdf` | 604427 | arxiv:2609.01454v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01634v1.pdf` | 503377 | arxiv:2609.01634v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01666v1.pdf` | 615069 | arxiv:2609.01666v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01771v1.pdf` | 5255865 | arxiv:2609.01771v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01986v1.pdf` | 5932838 | arxiv:2609.01986v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02425v1.pdf` | 601671 | arxiv:2609.02425v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02472v1.pdf` | 591853 | arxiv:2609.02472v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02793v1.pdf` | 1829848 | arxiv:2609.02793v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02814v1.pdf` | 516556 | arxiv:2609.02814v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02889v1.pdf` | 412483 | arxiv:2609.02889v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02962v1.pdf` | 819730 | arxiv:2609.02962v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03001v1.pdf` | 788954 | arxiv:2609.03001v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03043v1.pdf` | 590184 | arxiv:2609.03043v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03220v1.pdf` | 378654 | arxiv:2609.03220v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03440v1.pdf` | 979323 | arxiv:2609.03440v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03450v1.pdf` | 584170 | arxiv:2609.03450v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03703v1.pdf` | 443718 | arxiv:2609.03703v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03834v1.pdf` | 366462 | arxiv:2609.03834v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04107v1.pdf` | 3171859 | arxiv:2609.04107v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04114v1.pdf` | 1604688 | arxiv:2609.04114v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04117v1.pdf` | 1824628 | arxiv:2609.04117v1 |
+| `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04844v1.pdf` | 470761 | arxiv:2609.04844v1 |
 
 ## Limitations
 
