@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T06:53:24Z`
-- Tree/content state: `68c58f3f07140c31e470640295f851ae86be8b113973812d08aac709b05dc938`
+- Scanned: `2026-09-07T16:23:30Z`
+- Tree/content state: `064b9a980b1dd829c0950845a92931ee7dc9302ed768b502924e75f0f7579300`
 - Coverage: complete structural traversal
-- Files: 290
-- Uploaded source files: 283
-- PDF papers: 276
+- Files: 294
+- Uploaded source files: 287
+- PDF papers: 280
 - Repository machinery files: 7
 - Byte-identical duplicate groups: 25
 
@@ -31,6 +31,7 @@
 | `HAUL 8` | 14 |
 | `HAUL 9` | 4 |
 | `KERR` | 16 |
+| `OUTSIDE RESEARCH LIBRARY` | 4 |
 | `README.md` | 1 |
 | `derived` | 1 |
 | `requirements-tools.txt` | 1 |
@@ -396,6 +397,10 @@
 | `KERR/s10052-020-8138-9.pdf` | 1676422 |  |
 | `KERR/StijnJvanTongeren_bh_talk2.pdf` | 1262700 |  |
 | `KERR/zp85-xym1.pdf` | 264844 |  |
+| `OUTSIDE RESEARCH LIBRARY/MISC/0401094v2.pdf` | 90773 | unresolved-seven-digit-id:0401094v2 |
+| `OUTSIDE RESEARCH LIBRARY/MISC/2112.05701v2.pdf` | 658438 | arxiv:2112.05701v2 |
+| `OUTSIDE RESEARCH LIBRARY/MISC/2502.09894v2.pdf` | 7515544 | arxiv:2502.09894v2 |
+| `OUTSIDE RESEARCH LIBRARY/MISC/2605.00520v1.pdf` | 369503 | arxiv:2605.00520v1 |
 
 ## Limitations
 
