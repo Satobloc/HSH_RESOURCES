@@ -1,0 +1,1628 @@
+===== PAGE 1 =====
+arXiv:2012.06484v2  [gr-qc]  22 Dec 2020
+MICROSCOPE mission: Data analysis principle
+Joel Berg´ e1, Quentin Baghi 1,2‡, Emilie Hardy 1, Gilles M´ etris2,
+Alain Robert 3, Manuel Rodrigues 1, Pierre Touboul 1, Ratana
+Chhun1, Pierre-Yves Guidotti 3§, Sandrine Pires 4, Serge
+Reynaud5, Laura Serron 2, Jean-Michel Travert 6
+1 DPHY, ONERA, Universit´ e Paris Saclay, F-92322 Chˆ atillon, France
+2 Universit´ e Cˆ ote d’Azur, Observatoire de la Cˆ ote d’Azur, CNRS, IRD, G´ eoazur, 250
+avenue Albert Einstein, F-06560 Valbonne, France
+3 CNES Toulouse, 18 avenue Edouard Belin - 31401 Toulouse Cedex 9, F rance
+4 Laboratoire AIM, CEA/DSM–CNRS, Universit´ e Paris Diderot, IRFU/SAp, CEA
+Saclay, Orme des Merisiers, 91191 Gif-sur-Yvette, France
+5 Laboratoire Kastler Brossel, UPMC-Sorbonne Universit´ e, CNRS, ENS-PSL
+University, Coll` ege de France, 75252 Paris, France
+6 Altran technologies, 17 Avenue Didier Daurat, 31700 Blagnac, Fran ce
+E-mail: joel.berge@onera.fr
+December 2020
+Abstract. After performing highly sensitive acceleration measurements durin g two
+years of drag-free ﬂight around the Earth, MICROSCOPE provide d the best constraint
+on the Weak Equivalence Principle (WEP) to date. Beside being a techn ological
+challenge, this experiment required a specialised data analysis pipeline to look for
+a potential small signal burried in the noise, possibly plagued by instr umental defects,
+missing data and glitches. This paper describes the frequency-dom ain iterative least-
+square technique that we developed for MICROSCOPE. In particula r, using numerical
+simulations, we prove that our estimator is unbiased and provides co rrect error bars.
+This paper therefore justiﬁes the robustness of the WEP measur ements given by
+MICROSCOPE.
+Keywords: Experimental Gravitation, Data Analysis
+Submitted to: Class. Quantum Grav.
+1. Introduction
+MICROSCOPE’s test of the Weak Equivalence Principle (WEP) is based o n the
+comparison of the acceleration of two concentric cylindrical test m asses of diﬀerent
+composition as they orbit the Earth [1–3]. Thus, the gravity that p ulls the test masses
+‡ Current address: NASA Goddard Space Flight Center, Greenbelt, MD 20771, USA
+§ Current address: Airbus Defence and Space, 31 rue des Cosmona utes, 31402 Toulouse, France
+
+===== PAGE 2 =====
+MICROSCOPE data analysis 2
+being sourced by the Earth, any Equivalence Principle violation (EPV) signal will be
+proportional to the Earth gravity acceleration. More precisely, a s it is measured along
+the main axis of the cylindrical masses, the signal we look for can be e xpected to
+be proportional to the Earth’s gravity acceleration modulated by t he motion and the
+attitude of the satellite around the Earth, resulting in a periodic sign al with a well-known
+frequency (noted fEP in this paper).
+The main MICROSCOPE data consists in time series of accelerations me asured by
+two concentric accelerometers [4]. To look for an EPV, it is then enou gh to look for a
+non-zero signal at the fEP frequency in the diﬀerence of those two time series. Obviously,
+this process is impacted by instrumental noise and systematics (eit her instrumental or
+environmental). Thus, it consists in correcting the measured time s eries from –calibrated
+and/or modelled– instrumental and environmental systematics, b efore seeking a possible
+periodic signal amounting to a violation of the WEP in coloured-noise-d ominated data.
+As described in Ref. [5], the MICROSCOPE mission is divided in diﬀerent
+measurement sessions. Sessions represent a time span during whic h the satellite and
+the instrument keep the same conﬁguration (spin, drag-free con trol law...). Some of
+these sessions are directly devoted to the WEP test (called “EP ses sions” in this paper)
+while others (“calibration sessions”) are used to calibrate or chara cterise the instrument.
+EP sessions are the longest, most of them lasting 120 orbital period s (about 8 days),
+while calibration sessions typically last a few orbits.
+In this paper, we present MICROSCOPE’s data analysis pipeline. Afte r recalling
+the measurement equation in Sect. 2, we present our frequency- domain iterative
+ordinary least squares (OLS) algorithm and its mathematical backg round in Sect. 3.
+We then use “worst-case” simulations from a hybrid software-har dware MICROSCOPE
+simulator to discuss the optimal way to correct for gaps in MICROSC OPE data, in
+Sect. 4. Finally, in Sect. 5, we show with well-controlled numerical simu lations
+that our pipeline provides unbiased estimates and reliable error bars in the presence of
+instrumental systematics. Combined with previous works where we showed how we can
+successfully deal with missing data, those results prove that our d ata analysis pipeline
+allows us to reliably measure an EPV, if any. We conclude in Sect. 6. A de tailed
+appendix discusses uncertainty propagation. Note that this pape r is only about the
+MICROSCOPE data analysis methodology, and does not present rea l data. For the real
+data analysis (using the methods described in this paper), see Refs [3, 6–8].
+The terminology and notations used in this paper, as well as all obser vables, are
+deﬁned in Ref. [4]. In particular, we deﬁne the common-mode (resp. diﬀerential-
+mode) of a given observable or parameter as the half-sum (resp. h alf-diﬀerence) of
+this observable/parameter for both test masses, o(c,d) = ( o(1) ± o(2))/2, and we use the
+convention o to denote a vector and [ o] to denote a second-order tensor, respectively.
+We note the time derivative of observable o as .o.
+
+===== PAGE 3 =====
+MICROSCOPE data analysis 3
+2. Measurement principle
+2.1. Measurement equation
+MICROSCOPE looks for an EPV by monitoring the diﬀerence in accelera tions
+potentially undergone by the two test masses of a diﬀerential acce lerometer [1–4]. In
+an ideal case, the measurement equation is then straightforward to establish, since the
+diﬀerence of acceleration of the two test masses is expected to be proportional to Earth
+gravity ﬁeld g, Γ (d) ≡ Γ (1) − Γ (2) = δg, where δ is the (approximate) E¨ otv¨ os parameter
+that we wish to estimate. However, the instrument is not perfect: for instance, scale
+factors are not exactly unit and test masses are imperfectly cent ered and aligned with
+respect to each other and to the satellite’s frame of reference, s uch that the common-
+mode and diﬀerential-mode sensitivity matrices [ ac] and [ ad] are not the identity and
+null matrices, respectively. Furthermore, since the satellite rota tes it imparts a Coriolis
+acceleration on the test masses.
+The measurement equation is therefore much more complicated tha n in the ideal
+case. Ref. [4] establishes it in full generality, introducing and taking into account all
+instrumental defects and their notation. We measure the diﬀeren tial acceleration along
+the test masses’ sensitive axis ( x-coordinate in the instrument’s frame, see Fig. 1 of
+Ref. [9]), such that
+Γ (d)
+x = 2˜b(d)
+x + ac11δgx + ac12δgy + ac13δgz + ∆′
+xSxx + ∆′
+ySxy + ∆′
+zSxz
++
+(
+ac13∆′
+y + ac12∆′
+z
+)
+Syz + ac12∆′
+ySyy + ac13∆′
+zSzz
++
+(
+−ac13∆′
+y + ac12∆′
+z + 2cd11
+).Ωx − (∆′
+z − 2ac13∆′
+x − 2cd12) .Ωy
++
+(
+∆′
+y − 2ac12∆′
+x + 2cd13
+).Ωz + 2
+(
+ad11 ˜Γ (c)
+x + ad12 ˜Γ (c)
+y + ad13 ˜Γ (c)
+z
+)
++ 2 .∆′
+xΩx − 2 .∆′
+zΩy + 2 .∆′
+yΩz − ac11
+. .∆x − ac12
+. .∆y − ac13
+. .∆z
++ ˜K (1)
+2xx
+(
+˜Γ (1)
+x
+)2
+− ˜K (2)
+2xx
+(
+˜Γ (2)
+x
+)2
++ 2n(d)
+x , (1)
+where [ T] the Earth gravity gradient tensor (GGT) in the instrument’s fram e, [ In] =[ .Ω
+]
++ [Ω] [Ω] the gradient of inertia tensor, [ S] the symmetric part of the [ T] − [In]
+matrix, [ Ω] the angular velocity tensor of the satellite, and ∆ the vector between the
+center of the two test masses (called “oﬀcentering vector” here after).
+In Eq. (1), ˜Γ (c) = Γ (c) − n(c) is the noise-free common-mode measured acceleration,
+[ac11, ac12, ac13] is the ﬁrst row of the common-mode sensitivity matrix, [ ad11, ad12, ad13]
+is the ﬁrst row of the diﬀerential-mode sensitivity matrix, [ cd11, cd12, cd13] is the ﬁrst
+row of the diﬀerential-mode sensitivity matrix to the angular acceler ation, ˜b(d)
+x =
+bd
+0x +ac11b(d)
+1x +ac12b(d)
+1y +ac13b(d)
+1z (with b0
+(d) the diﬀerential electrostatic bias and b1
+(d) the
+diﬀerence of mechanical perturbations acting on the two test mas ses). For convenience,
+in the remainder of this paper, we denote δx ≡ ac11δ, δy ≡ ac12δ, δz ≡ ac13δ, but we
+warn the reader that δi should not be confused with the component of a tensor.
+We should stress that the measurement is not directly sensitive to t he actual
+
+===== PAGE 4 =====
+MICROSCOPE data analysis 4
+oﬀcenterings ∆, but to the following combinations of instrumental parameters:
+∆′
+x ≈ ac11∆x − ac12∆y − ac13∆z (2)
+∆′
+y ≈ ac11∆y + 2ac12∆x − ac23∆z (3)
+∆′
+z ≈ ac11∆z + 2ac13∆x + ac23∆y. (4)
+Only those “derived” oﬀcenterings ∆ x,y,z can be estimated. Finally, note that the
+quadratic factors K (j)
+2xx were neglected in Ref. [4] since they are estimated to be negligible
+in the real MICROSCOPE data. In this paper, we aim to be as general as possible, so
+that we take them into account, and set them to non-negligible value s in the simulations
+below. Similarly, Ref. [4] ignored the motion of the test masses (thus , setting the time
+derivatives of ∆ to 0); here, we consider it since it should be taken into account in som e
+calibration sessions.
+2.2. Modelled, estimated and ignored (combinations of ) par ameters
+Each term of Eq. (1) is the product of a time-varying signal by para meters related to the
+experiment (called “instrumental parameters” in the remainder of this paper). Their
+eﬀects are clear from Eq. (1): the diﬀerential bias shifts the meas ured acceleration from
+the true acceleration; the common-mode sensitivity matrix mixes co mponents from all
+axes; the diﬀerential-mode sensitivity matrix projects common-mo de acceleration into
+the measured diﬀerential acceleration; the coupling with the angula r acceleration makes
+the measurement depend on the satellite’s motion; and n(d) adds stochastic instrumental
+noise to the measurement.
+The varying signals are either directly measured or are derived by an alyzing tracking
+data, as described below and shown in Refs. [6, 10]: several satellit e manoeuvres
+(summarised in Appendix A) allow us to discriminate between instrumen tal defects
+and estimate them separately.
+Those terms come in four distinct categories and can be either corr ected for, or
+ignored in the measurement equation (1):
+(i) Terms computed through models and/or on-ground restitution s:
+• The position of the satellite as determined in the celestial reference frame
+J2000 [11] is expressed in the Earth’s reference frame using the ap propriate
+rotations [12]. From this position, the components of the gravity ac celeration
+g and of the GGT [ T] are computed in the Earth’s reference frame [13];
+afterwards they are transformed to the J2000 celestial frame a nd then to the
+instrument frame using the attitude of the satellite [11].
+• Like the attitude, the angular velocity Ω and acceleration .Ω result from an
+on-ground restitution [11].
+• ˜Γ (c)
+x , ˜Γ (c)
+y and ˜Γ (c)
+z are directly approximated by the measured quantities Γ (c)
+x ,
+Γ (c)
+y and Γ (c)
+z .
+(ii) Terms corrected using results from calibration sessions (∆ ′
+y, ad1j):
+
+===== PAGE 5 =====
+MICROSCOPE data analysis 5
+• ∆′
+y
+(
+Sxy + ˙Ωz
+)
+• 2
+(
+ad11 ˜Γ (c)
+x + ad12 ˜Γ (c)
+y + ad13 ˜Γ (c)
+z
+)
+(iii) Terms dependent on parameters estimated with the current se ssion:
+• 2˜b(d)
+x : in principle ˜b(d)
+x is a readily measurable constant, although it can drift in
+time (section 3.3).
+• δxgx + δzgz: we take advantage from the fact that gx and gz vary at the
+same frequency fEP but in quadrature to estimate both δx and δz almost
+without correlation. Since ac11 ≃ 1 and ac13 ≪ 1, δx ≈ δ (estimating δ being
+MICROSCOPE’s main objective). Given the upper bound on δ from previous
+experiments [14], δz = ac13δ is in principle not observable but a statistic over
+its value estimated in diﬀerent sessions could give interesting indicatio ns on
+the quality of the experiment.
+• ∆′
+xSxx+∆′
+zSxz: the components ∆ ′
+x and ∆′
+z of the oﬀcentering can be estimated
+very accurately thanks to the strong variations of Sxx and Sxz at 2 fEP
+(iv) Terms neglected due to their very small magnitude [6]:
+• δygy
+•
+(
+ac13∆′
+y + ac12∆′
+z
+)
+Syz + ac12∆′
+ySyy + ac13∆′
+zSzz
+•
+(
+−ac13∆′
+y + ac12∆′
+z + 2cd11
+)˙Ωx + (2ac13∆′
+x + 2cd12) ˙Ωy + (−2ac12∆′
+x + 2cd13) ˙Ωz
+2.3. Sessions dedicated to the test of the EP
+The measurement equation (1) is valid for all scientiﬁc sessions (calib ration and EP
+sessions). However, it can be simpliﬁed for EP sessions where test m asses are kept
+motionless, so that the velocities .∆x, .∆y, .∆z and the accelerations . .∆x, . .∆y, . .∆z vanish.
+Further applying the corrections described in Sect. 2.2, Eq. (1) th en simpliﬁes to
+Γ (d)
+x,corr = 2˜b
+′(d)
+x + δxgx + δzgz + ∆′
+xSxx + ∆′
+zSxz + 2n(d)
+x , (5)
+which is the core model ﬁtted to the data after applying the calibrat ion parameters: in
+addition to the E¨ otv¨ os parameterδx we also estimate δz which quantiﬁes the amplitude
+of a signal proportional to gz (varying also at the fEP frequency but in quadrature with
+gx) and the components ∆ ′
+x and ∆ ′
+z of the apparent oﬀcentering.
+The next section provides more conceptual and mathematical bac kground on the
+(instrumental and E¨ otv¨ os) parameters used in the MICROSCOPE data analysis.
+3. Parameters estimation
+3.1. Iterative weighted least square ﬁt
+Each in-ﬂight calibration session is dedicated to estimating one (or tw o) parameters and
+designed so that the signals sourced by those parameters have a f avourable signal-to-
+noise ratio. Although it is theoretically possible to cumulate all calibrat ion sessions and
+
+===== PAGE 6 =====
+MICROSCOPE data analysis 6
+estimate all parameters simultaneously from Eq. (1), we use the fa ct that they are almost
+independent from each other to simplify and better control the es timation process via an
+alternative method. We thus devised a technique to estimate each p arameter iteratively,
+reﬁning and updating the estimation of a given parameter using the e stimation of the
+other parameters until some convergence criterium is reached.
+The measurement equation Eq. (1) is of the form Γ (d)
+x = f (pk, t)+ n(d)
+x , where pk are
+parameters and the time dependence is linked to measured or modele d signals si(t). For
+each session, the data provides us with Γ (d)
+x and all si(t). It is then possible to perform
+a least-square (or similar) ﬁt to estimate the parameters pk from a given model.
+Moreover, for a given calibration session, we have a priori values pk,0 for the
+parameters pk, as some of them have been measured on ground, or as others may
+have been estimated during an earlier in-ﬂight calibration session (Se ct. 2.2). It is then
+possible to correct the measurement for the corresponding signa ls, and use an updated
+version of the measurement equation,
+Γ (d)
+x,corr(t) = Γ (d)
+x (t) − f (pk,0, t). (6)
+This equation can ﬁnally be used to reﬁne the estimation of some para meters pke, with
+a least-square method using the model
+Γ (d)
+x,corr(t) = Σ ke
+∂f (pk, t)
+∂pke
+(pke − pke,0) . (7)
+The actual estimation of a parameter depends on the technique us ed to deal with
+missing data (see Sect. 4 for the introduction of the techniques we use to deal with them
+–KARMA [15], M-ECM [16] and inpainting [17, 18]). M-ECM estimates the parameters
+and the noise and deals with missing data all at once; however, inpainting only ﬁlls in
+missing data, and must be augmented by a least square estimate.
+We use iteratively the Adam (Accelerometric Data Analysis for MICROSCOPE)
+Fortran code to estimate parameters in the frequency domain. On ce this iterative
+process has converged (typically in two to three iterations), we us e Eq. (5) to measure
+the E¨ otv¨ os parameterδx on calibrated data. The procedure is summarised in Algorithm
+1. The data analysis processes underlying Adam are described below.
+Algorithm 1 Iterative least-squares estimation of N instrumental parameters from M
+independent calibration sessions.
+Initial prior: Π = {π0(p1), . . . , π0(pi), . . . π0(pN )}
+while not converged do
+for i = 1 to M do
+Correct measurement from ith session with priors Π i−1 (Eq. 6)
+Estimate ith parameter (Eq. 7): estimator ˆ pi
+end for
+Update prior: Π = {ˆp1, . . . , ˆpi, . . . ˆpN }
+end while
+Estimate the E¨ otv¨ os parameterδx on calibrated data (Eq. 5)
+
+===== PAGE 7 =====
+MICROSCOPE data analysis 7
+3.2. Frequency domain least square analysis: Adam
+To allow for a least-squares analysis [19], the corrected measureme nt equation (7) can
+be formally written
+Y = [A]θ + n, (8)
+where Y is the vector of N measurements, θ is a vector of q unknown parameters to
+estimate (e.g. E¨ otv¨ os parameter or test masses’ oﬀcentering), [ A] is the design matrix
+and n is the noise vector. Since the models (given by Eq. 1 in the most gener al case
+and by Eq. 5 for EP sessions) are linear with respect to the estimate d parameters, the
+columns of [ A] simply correspond to the signal associated to each parameter, s ampled
+at the epochs of the measured acceleration. The N measurements are assumed to
+be regularly sampled at a frequency fe over a duration T . In case of missing data
+the analysis takes place after reconstruction of these data using inpainting or M-ECM
+algorithms (Sect. 4).
+3.2.1. Transformation of the problem from the time domain to the frequency domain In
+order to solve the problem in the Fourier domain, we take the Fourier transform of Eq.
+(8). To this aim, we make use of the Discrete Fourier Transform Ope rator [F]. The DFT
+operator being unitary, the signal energy content is preserved b y the transformation.
+The new system can be simply written
+ˆY =
+[
+ˆA
+]
+θ + ˆn. (9)
+The original quantities being real, the new system can be reduced to N useful real
+equations. These new equations can be grouped by pair (related to real and imaginary
+parts of the DFT), corresponding to frequencies fk = k
+T , k = 1 · · · ⌊N −1
+2 ⌋.
+Moreover, the discrete Fourier transform drastically decreases the correlations
+between the measurements projected in the frequency space (F ig. 1): the covariance
+matrix associated to [ F] n is diagonal dominant. This is beneﬁcial as a diagonal weight
+matrix leads to a quasi-optimal solution.
+3.2.2. Weighting in the frequency domain Since each measurement projected in the
+Fourier domain can be associated to a discrete frequency, the cor responding weight is
+w(fk) = 1√
+γ(fk)
+, (10)
+where γ(fk) is the Power Spectral Density (PSD) of the noise at the frequenc y fk.
+In practice, the PSD is estimated by smoothing the residual noise in t he frequency
+domain resulting from a ﬁrst estimation and removal of the signal. Th e estimation–
+correction–smoothing–weighting process can be iterated until co nvergence; in practice,
+two iterations are suﬃcient.
+
+===== PAGE 8 =====
+MICROSCOPE data analysis 8
+Figure 1. Covariance matrix of the measured diﬀerential acceleration of an E P session.
+Working in the frequency domain allows us to deal with a diagonal cova riance matrix.
+3.2.3. Restriction to the frequency bands containing the do minant signals As shown
+in Ref. [4], the MICROSCOPE mission was designed to concentrate use ful signal on
+speciﬁc frequencies (i.e., a potential EPV signal peaks at fEP, the GGT signal at 2 fEP
+and calibration signals at fcal). This is so true in the real data that a very simple analysis
+such as synchronous detection could lead to reasonable results. H owever, we use a more
+ﬂexible method: we limit our least square inversion to the bands of fre quency containing
+the relevant signals. In practice, this is equivalent to extracting a s ubsystem of Eq. (9)
+by selecting the relevant equations to get the truncated system
+[
+ˆAr
+]
+θ + ˆn = ˆYr. (11)
+This trade-oﬀ between synchronous detection and the inversion o f the full system brings
+several advantages:
+• it is more robust than synchronous detection in case of small ﬂuctu ation of the
+frequencies of the signals; it is not even necessary to know precise ly the value of
+these frequencies;
+• the choice of large enough bands containing also a substantial samp le of noise allows
+us to compute consistent values of the goodness of ﬁt;
+• contrary to the inversion of the full system (9) the solution of the truncated system
+(11) is immune to possible unmodelled perturbations in frequency ban ds containing
+no useful information (especially high frequency bands). Taking th ese bands into
+account would not change the parameter estimations (because eq uations at diﬀerent
+Fourier frequencies are uncorrelated) but could decrease the glo bal goodness of the
+ﬁt;
+• the number of observation equations is neatly decreased and the a nalyses are faster.
+A ﬁnal clariﬁcation is in order: the very low frequency part of the sig nal, which
+contains in particular the zero frequency component, is not used in the analysis. Indeed,
+not only does the zero frequency contain well-known signal such as some components
+
+===== PAGE 9 =====
+MICROSCOPE data analysis 9
+Figure 2. Time evolution of the diﬀerential acceleration. Left: evidence for a
+polynomial-like tendency. Right: after correcting for a polynomial o f degree 3.
+of the gravity gradient but it also contains unknown signals such as t he bias of the
+accelerometers. All these contributions are not separable, so th at the zero frequency is
+diﬃcult to exploit.
+3.3. Bias drift
+Strictly speaking, the bias # »b0(d) included in Eq. (1) should be constant. But in practice
+a very low frequency evolution can appear, in particular because of thermal variations
+in the instrument (left panel of Fig. 2). This evolution can be eﬃcient ly corrected by
+ﬁtting and subtracting a polynomial (right panel of Fig. 2). As illustr ated by Fig. 3,
+the polynomial aﬀects all frequencies in a wide low frequency band; c onsequently, the
+correlation with the EPV signal (which is concentrated at the fEP frequency) is very
+low. But to be sure that ﬁtting a polynomial does not aﬀect the signa l around fEP,
+we take advantage of our estimation in the Fourier space to remove the contribution of
+these frequencies in the estimation of the polynomial. More precisely :
+(i) we ﬁrst estimate simultaneously (i) the E¨ otv¨ os parameter using a narrow frequency
+band around fEP, (ii) the components ∆ ′
+x and ∆ ′
+z of the oﬀcentring using a narrow
+frequency band around 2 fEP, and (iii) the coeﬃcients of the polynomial using a
+wide band from 0 to 1 Hz but excluding the fEP and 2 fEP bands.
+(ii) we then use the ﬁrst estimations of all these parameters to cor rect the measurements
+according to Eq. (6); since this correction is performed in the time d omain, we
+implicitly correct all the frequencies and in particular the polynomial is also applied
+to the fEP and 2 fEP bands.
+(iii) ﬁnally, we use the corrected acceleration to re-estimate the sa me parameters in the
+same way as in step (i).
+Another option is to correct low frequency variations with a model o f temperature
+sensitivity. Ref. [8] shows that the substraction of a model linear w ith respect to the
+temperatures produces results similar to those obtained with a poly nomial ﬁt.
+
+===== PAGE 10 =====
+MICROSCOPE data analysis 10
+Figure 3. Same as Fig. 2 but in the frequency domain. As expected, the subtr action
+of the polynomial (blue) clearly reduces the low frequency contribu tion.
+3.4. Combining sessions
+In order to decrease the stochastic error in the estimation of (ins trumental and E¨ otv¨ os)
+parameters, it is interesting to combine measurements from sever al sessions with the
+same conﬁguration. This combination can be done either in the time or in the frequency
+domain, as shown below.
+3.4.1. Time domain Suppose that session k leads to the following linear system of Nk
+equations (of the form of Eq. 8):
+[Ak]θ + nk = Yk (12)
+To carry on with a classical inversion in the time domain, one can just g ather the above
+matrices and vectors:
+[A] =
+
+
+[A1]
+[A2]
+...
+[Am]
+
+ , n =
+
+
+n1
+n2
+...
+nm
+
+ , Y =
+
+
+Y1
+Y2
+...
+Ym
+
+ (13)
+where m is the number of sessions considered. Then an appropriately weight ed least-
+squares technique could be used to solve for the concatenated sy stem. Given the
+advantages with doing an analysis in the frequency domain as outlined above, we have
+not used this time domain analysis.
+
+===== PAGE 11 =====
+MICROSCOPE data analysis 11
+3.4.2. Fourier domain First, DFT are applied separately to the systems corresponding
+to each session k, as described in Sect. 3.2.1, to get equivalent systems in the freque ncy
+domain: [
+ˆAk
+]
+θ + ˆnk = ˆYk. (14)
+We use a weighting based on the PSD, as described in Sect. 3.2.2. Finally , all considered
+weighted systems are gathered as shown above for the time domain case.
+Like in the case of a unique session, we can use a Generalised Least-S quares
+regression to solve either the whole system or, more eﬃciently, a se lected subset of
+equations corresponding to the desired bands of frequency. Nev ertheless, the estimation
+process is ﬂexible enough to allow us to take into account the drift of some parameters
+(e.g. oﬀcenterings, which vary with respect to temperature).
+3.5. Error propagation
+Uncertainties in estimated parameters (or in the a priori knowledge of parameters
+that cannot be ﬁnely estimated) propagate when correcting for t hem in the measured
+diﬀerential acceleration, which involves three eﬀects when estimat ing the EPV signal:
+(1) residual systematic errors coming from the bias of each param eter estimate; (2)
+statistical errors coming from the variance of each parameter es timate and (3) statistical
+errors coming from the fact that we use noisy signals to calibrate th e measurement,
+whose noise is coupled with the parameters. The ﬁrst type of error s is assessed by
+upper bounds given by a detailed performance analysis [6, 20]. The se cond and third
+type of errors are discussed in this section: they can be assessed through Monte Carlo
+simulations or directly included in the least-square covariance matrix .
+Using an iterative estimation technique involves propagating the unc ertainties of
+the ith iteration estimates to the ( i + 1)th iteration. Consequently, as can be seen from
+Eq. (6), the variance of the calibrated diﬀerential acceleration is n ot only that of the raw
+measured diﬀerential acceleration, but also involves a contribution from the (imperfect)
+knowledge of the corrected instrumental parameters.
+Error propagation is derived rigorously in Appendix B. Eq. (B.6) gives the expected
+value of the calibrated diﬀerential acceleration used to estimate th e E¨ otv¨ os parameter
+when assuming that the estimates of all instrumental parameters are unbiased. Its
+variance is given by Eq. (B.9). Those equations can easily be generalis ed to the case
+where a given instrumental parameter is estimated given some othe rs.
+Two eﬀects coming from uncertainties in the iterative correction of instrumental
+parameters (through errors in the estimated amplitudes of the sig nals that it contains)
+can be noted: (i) statistical errors in the calibrated diﬀerential ac celeration, because of
+the imprecise estimation of corrected parameters (during previou s iterations), and (ii)
+uncertainty on the calibrated diﬀerential acceleration residuals (d ue to the fact that we
+subtract noisy quantities multiplied by estimated parameters). The refore, we can expect
+that the least-square estimator of a parameter measured from t he calibrated diﬀerential
+acceleration will be aﬀected by statistical errors from instrument al parameters, as well
+
+===== PAGE 12 =====
+MICROSCOPE data analysis 12
+as by statistical errors coming from the measurement noise, and e rrors on statistical
+errors coming from the uncertainties on the noise.
+In practice, in order to rigorously propagate uncertainties in our it erative least-
+square estimates, Eq. (B.9) can be used as the input variance, for each parameter,
+at each iteration. Another possibility is to run Monte Carlo simulations that use
+the variance as measured from the noise of several calibrated diﬀe rential accelerations
+created from drawings of instrumental parameters (that can be assumed normally
+distributed, with mean and variance deﬁned by the previous estimat ions). Although
+more CPU- and time-consuming, this technique is more sound than us ing Eq. (B.9),
+since it does not involve “educated guesses” on some parameters ( note that some terms
+appearing in Eq. (B.9) are the “true” values and not their estimates ).
+We show below that given the smallness of the uncertainty on the est imated
+instrumental parameters, we can actually safely ignore propagat ing errors on the
+estimation of instrumental parameters.
+4. Glitches and missing data
+4.1. (Masked) glitches and missing data (in practice)
+Data “gaps” come in two ﬂavours: (i) glitches, where data is available but contaminated
+by physical (e.g. impact with a micrometeorite or a satellite crack) or measurement (e.g.
+an internal saturation in the instrument’s servo-loop command) pr ocesses uncorrelated
+with testing the WEP, and (ii) telemetry losses, where data is missing d uring some time
+intervals. Glitches may bias the measurement or introduce spurious signals at speciﬁc
+frequencies, or within some frequency range [7]. Similar events are p resent e.g. in
+LIGO/Virgo data, where they hamper the detection and characte risation of candidate
+gravitational waves signals [21], and several techniques have been developed to correct
+for them (see e.g. Refs [22–26]).
+To counteract the direct eﬀect of glitches on MICROSCOPE’s WEP me asurement,
+we can model and subtract them as discussed in Ref. [27]; here, we c hoose to remove
+glitches, hence giving them the same status as telemetry losses (“m issing” data). Missing
+data break the even sampling of data in time, thereby preventing us from using standard
+OLS in the frequency domain and, most critically creating an importan t spectral leakage
+due to noise colour, potentially burying the EPV signal in MICROSCOPE data [15,17].
+We have developed and adapted methods to cope with such missing da ta, that
+allow us to reach the required accuracy on the EPV measurement:
+• KARMA [15]: the Kalman Auto-Regressive Model Analysis is a generalize d least-
+square technique based on an autoregressive model of the (unkn own) instrumental
+noise, whitened with a Kalman ﬁlter.
+• M-ECM [16]: the Modiﬁed-Expectation-Conditional-Maximization tech nique
+allows us to maximize the likelihood of available data through the estimat ion of
+
+===== PAGE 13 =====
+MICROSCOPE data analysis 13
+Figure 4. Example of a transient and its correction. The black curve shows th e raw
+measurement. The gray zone is the region discarded by the masking procedure. The
+red curve is the acceleration corrected by inpainting.
+missing data by their conditional expectation, based on the circulan t approximation
+of the complete data covariance.
+• inpainting [17, 18]: originally developed for 2D observational cosmology [28] and
+1D asteroseismology [29], the inpainting technique uses a sparsity prior to estimate
+the most probable value of missing data, therefore allowing us to use an ordinary
+least-square ﬁt ( Adam –see below).
+Those techniques have already been tested on numerical simulation s with the simplifying
+assumptions that instrumental defects were perfectly known an d corrected for [15–18].
+Note that Eq. (5) is equivalent to the form used by Refs. [15,16]; wh en further correcting
+for oﬀcenterings, it gives the measurement equation used by Refs . [17, 18]. Ref. [1] used
+Adam with no correction of transients nor missing data (taking advantag e of quiet and
+clean measurement sessions). Ref. [2] uses Adam on data corrected for missing data
+with inpainting.
+To search for glitches, we use a standard recursive σ-clipping technique, in which
+we ﬂag as outliers every point that deviates from the moving averag e of the data
+by more than a speciﬁc number of times (4 when deﬁning masks on the diﬀerential-
+mode acceleration, or 5 when masks are deﬁned on the common-mod e acceleration)
+the standard deviation of the data [7]. We then mask a speciﬁc time in terval after
+each detected outlier to make sure that the transient regime is alwa ys removed. The
+gray area in Fig. 4 shows such a mask after an outlier to remove the c orresponding
+glitch, visible in black, in SUSON-simulated data (see below). Additional data points
+are ﬂagged by the instrument’s electronics, if an internal saturat ion has been detected
+by the accelerometer digital electronics (and eventually smoothed out, thereby invisible
+
+===== PAGE 14 =====
+MICROSCOPE data analysis 14
+in the acceleration data [9]): we decide to reject those points. The r ed curve in Fig. 4
+shows the inpainting correction to the masked glitch (black).
+We discuss below (Sect. 4.3) how missing data couple with MICROSCOPE
+instrumental parameters. This allows us to deﬁne an optimal way to deal with missing
+data within the iterative process described in Sect. 3, by considerin g at which level of the
+data processing the correction for missing data should appear. Th is discussion is based
+on numerical simulations created by a hybrid software-hardware s imulator developed
+by CNES (Centre National d’Etudes Spatiales) to validate MICROSCO PE’s ground
+segment operations before ﬂight. Those simulations correspond t o worst-case scenarios,
+with exaggerated number of glitches and maximum allowed values for in strumental
+parameters. Although those simulations consider instrumental de fects higher than the
+in-ﬂight MICROSCOPE data, they are valuable to amplify the eﬀect of instrumental
+parameters and of missing data, and allow for a pedagogical discuss ion hereafter (all
+ﬁgures in this section were produced using those simulations).
+4.2. Hybrid simulations: SUSON
+The mock data used in this section were produced by the BVSS (Banc de Validation
+Syst` eme et SCAO –Drag Free and Attitude Control System Validation Bench), a CNES
+real time test bench which serves diﬀerent purposes in project de velopment plans. By
+simulating very accurately the spacecraft behavior, it aims at valida ting all the onboard
+functional chains, in particular the attitude and acceleration cont rol. It also aims at
+performing all the technical and operational system tests while co nnected to the ground
+entities (operational and scientiﬁc centers).
+The MICROSCOPE test bench relies on the other CNES microsatellite s imulation
+tools, and shares many hardware and software commonalities, whic h gives good
+conﬁdence in the product. Three benches were developed to enab le the various
+and intensive tests performed by the project. Each bench is cons tructed as follows.
+A Sun Microsystems station, running at 64Hz, includes various mode ls of the
+spacecraft environment (Earth gravitational potential, Earth a tmosphere and albedo,
+Sun illumination) and of its dynamics. It also includes physical models of all
+the embarked equipment (actuators and sensors), with major ev olutions for the
+MICROSCOPE peculiarities (see below). Those equipment models are c oupled with a
+rack of interface electronic boards, emulating the real hardware communication protocol
+for each equipment. A harness then connects the interface boar ds to a real onboard
+computer, on which the onboard software is running. Finally, electr ical ground support
+equipment simulates the ground stations and the radiofrequency lin k between stations
+and spacecraft, so that the users receive the telemetry data ou tput by the onboard
+computer as in the real life.
+A peculiarity of the MICROSCOPE bench is the T-SAGE ‖ simulation. A very
+‖ T-SAGE (Twin Space Accelerometers for Gravitation Experiments) is MICROSCOPE’s instrument
+core [9]
+
+===== PAGE 15 =====
+MICROSCOPE data analysis 15
+Figure 5. Spectra of the simulated diﬀerential acceleration for two diﬀerent
+measurement sessions, simulated with SUSON. Left: inertial WEP-m easurement
+session (shown are spectra with glitches present (gray) and mask ed then replaced by
+inpainted signal (black)). Right: ∆ y calibration session.
+representative model was developed by CNES, called SUSON. It is co mposed of a real
+Interface Control Unit (payload computer), running at 1027Hz a nd interfaced on one side
+with the main onboard computer and on the other side with a speciﬁc b oard simulating
+both the Front End Electronic Unit and the Sensing Unit [9]. The latter is fed with
+64Hz data coming from the dynamics models of the spacecraft, so a s to inject outside
+acceleration and gravity as sensed by the test masses. Within SUSO N, the 1027Hz
+control loop of two tests masses is simulated with the real T-SAGE c omputer and
+software in the loop, down to the electrode level. Many parameters enable to tune the
+characteristic of the measurements: mass misalignments, mass ce ntering, scale factor,
+quadratic scale factor, stiﬀness, and biases. A theoretical spec trum of T-SAGE noise is
+also injected.
+Another interesting aspect of this test bench is the simulation of mic ro-
+perturbations. A complementary model was developed to inject ra ndom impacts within
+the dynamics model, with the possibility to tune the time, direction, an d momentum
+random distributions. The lack of ﬂight data at the time of the ﬁrst s imulations
+campaign imposed a conservative parametrization ¶.
+Finally, we should emphasize that it was the ﬁrst time a BVSS test benc h was
+pushed so far in the simulation process. Among its notable characte ristics is the
+wide range of timecales used: 1027Hz for the payload frequency, 6 4Hz for dynamics
+simulation, 4Hz for the onboard activation of the SCAA (Attitude an d Orbit Control
+System) tasks, the whole process running during 10 days to obtain the ﬁnal simulation
+outputs. Such a long run time is required to simulate 120-orbit sessio ns during which the
+hardware elements of the simulator ensure a very realistic simulation of the spacecraft
+and the possibility to validate in depth the functional chains.
+¶ When compared to ﬂight data (MICROSCOPE was not launch at the tim e the simulations were
+created, but at the time of writing, we now have in-orbit estimates o f the amount of crackles), it shows
+that the real level of micro-perturbation is far below hypothesis.
+
+===== PAGE 16 =====
+MICROSCOPE data analysis 16
+Fig. 5 shows the spectra of the simulated diﬀerential acceleration f or two diﬀerent
+measurement sessions, simulated with SUSON. The left panel shows the noise and
+spectral leakage induced by glitches and missing data (gray) and th eir correction with
+inpainting (black) in the frequency domain. The right panel shows the diﬀeren tial
+acceleration during a simulated ∆ y calibration session. The bump between 0.01 Hz and
+0.1 Hz is not caused by transients but is due to worst-case inaccura cies simulated in the
+attitude control coming from the star sensor [30], and is linked to th e angular velocity
+of the satellite. This bump is not prejudicial since it occurs at freque ncies diﬀerent than
+those of the excitations and estimated signals. Furthermore, it ca n be corrected for
+when estimating parameters in the iterative way presented in Sect. 3.
+4.3. Eﬀect of the data level on glitches masking and missing d ata correction
+As presented in Ref. [5], we use diﬀerent data levels during data pro cessing and analysis.
+Those relevant for our current discussion are:
+• N1a data: raw science data sorted by inertial sensor
+• N2a data: raw science diﬀerential- and common-mode accelerations
+• N2b data: derived from N2a data after correcting for instrument al parameters.
+They are used to estimate the EPV signal.
+We can wonder at which stage we should deﬁne the mask and correct for glitches
+and missing data. We show here that the answer depends on what ta sk we aim to
+accomplish.
+4.3.1. Instrumental parameters estimation We deal with calibration at the N2a level;
+thus, two routes can be taken to deﬁne masks: either we mask N1a accelerations, then
+logically add those masks when creating N2a data, or we ignore maskin g N1a data
+and directly mask at the N2a level. One could naively think that when cr eating the
+diﬀerential acceleration, glitches would cancel out (both sensors see them in the same
+way, since they come from external perturbations); then, the m ask needed at the N2a
+level should be less conservative than the logical addition of the N1a masks. However,
+sensors are not exactly identical, therefore leaving signiﬁcant (th ough attenuated)
+imprints of glitches and other invalid data at N2a level. We ﬁnd that deﬁ ning the
+mask either at N1a level or N2a level lead to approximately the same ﬁ nal N2a mask,
+although we ﬁnd that it is best to apply inpainting on N2a data level rather than on
+the N1a level. When applying inpainting to N1a data, reconstruction errors add up in
+the N2a level data, thereby providing a less optimal result. We also ﬁ nd that KARMA
+and M-ECM are more stable than inpainting with respect to the mask deﬁnition.
+4.3.2. WEP measurement: non-commutativity of inpainting a nd systematics subtraction
+We look for an EPV at the N2b level. Once instrumental parameters a re estimated,
+subtracting their contribution from Eq. (1) can a priori be done on data still plagued by
+
+===== PAGE 17 =====
+MICROSCOPE data analysis 17
+missing or invalid data, to which simple subtractions should be immune. W e then have
+once again two routes to choose between in order to go from N2a to N2b data: either
+correct for instrumental parameters on already inpainted N2a da ta, or correct for them
+on raw N2a data, then apply inpainting, KARMA or M-ECM on those raw N2b data
+level. KARMA and M-ECM do not rely on ﬁlling missing data, but only on the mask
+deﬁnition. Therefore, their precision does not depend on whether we deﬁne masks at the
+N2b level or we create N2b level masks from N2a masks. Hence, the following discussion
+pertains only to methods that ﬁll data gaps and we specialise on the inpainting case.
+The instrumental parameters are coupled with the measured comm on-mode
+acceleration (through the ad parameters) and the square of the acceleration of individual
+sensors (through the quadratic factors K2). Their subtraction will then evidently depend
+on whether we subtract them (i) before applying inpainting or (ii) after correcting them
+for invalid and missing data. In the former case, we create raw N2b d ata from raw N2a
+data, that we must eventually mask and inpaint; in the latter case, w e create inpainted
+N2b data from inpainted N2a data. The guiding principle to choose between those two
+possibilities is to maximise the consistency between N2a data (inpainte d or raw) and
+systematic/instrumental eﬀects.
+We start by computing the systematic/instrumental parameters that are to be
+subtracted from N2a data. Fig. 6 shows the diﬀerent contributor s to systematic eﬀects
+when the common-mode and individual accelerations are not inpainte d (left panel) and
+are inpainted (right panel). In those ﬁgures, the blue curve shows the main eﬀect of
+the Earth gravity gradient combined with the oﬀcentering of the te st masses; the green
+curve shows the eﬀect of the common-mode misalignments acij; the purple curve shows
+the eﬀect of the test masses’ motion and satellite’s attitude; the o range curve shows the
+eﬀect of the projection of the common-mode accelerations; the c yan curve shows the
+eﬀect of the angular to linear couplings; the red curve shows the eﬀ ect of the quadratic
+factors; the transparent black curve is the total systematics.
+The main deterministic systematics come from the coupling between t he test-masses
+oﬀcentering and the gravity gradient. The 2 fEP line can be clearly seen, but the fEP
+peak is strong enough to mimic an EPV violation of about 10 −14 m/s2 if not corrected
+for. Furthermore, the spectral leakage from the mean of the qu adratic factor dominates
+at almost all frequencies. It is responsible for the ﬂat spectrum at low frequency, at a
+level of 10 −13 m/s2 before inpainting and 10 −15 m/s2 after inpainting. This plateau can
+be seen clearly on the N2a diﬀerential acceleration with the gray cur ve of the left panel
+of Fig. 5.
+The two options to create N2b data corrected for invalid and missing data can be
+seen graphically as (i) subtracting the black curve (at the data leve l) of Fig. 6’s left
+panel to Fig. 5’s gray curve, then mask the resulting data and apply inpainting to it or
+(ii) just subtracting the black curve (at the data level) of Fig. 6’s rig ht panel to Fig.
+5’s black curve. The resulting N2b spectra are shown in Fig. 7.
+The diﬀerences are striking. On the one hand, subtracting raw sys tematics to raw
+N2a diﬀerential accelerations, then mask and inpaint them (left pan el of Fig. 7), provides
+
+===== PAGE 18 =====
+MICROSCOPE data analysis 18
+Figure 6. Systematics and instrumental parameters contributions on a SUS ON
+simulation. Left panel: with no correction of missing data. Right pane l: after
+correction of missing data. See main text for the description of eac h curve.
+Figure 7. Left panel: inpainted N2b diﬀerential acceleration created from ra w N2a
+diﬀerential acceleration and systematics. Right panel: N2b diﬀeren tial acceleration
+created from inpainted N2a diﬀerential acceleration and systemat ics.
+a very clean N2b diﬀerential acceleration, with no signiﬁcant determ inistic signals.
+On the other hand, subtracting inpainted systematics to inpainted N2a diﬀerential
+acceleration provides a poor N2b acceleration (right panel of Fig. 7 ), with a higher
+low-frequency noise and still plagued by deterministic signals, with pe aks at fEP and
+2fEP and the “attitude” bump about 10 −2Hz (right panel of Fig. 5): although this
+bump is not problematic to estimate an EPV signal, the peak at fEP would lead us to
+incorrectly conclude for the existence of an EPV.
+This can be explained in the following way. Systematics and instrument al
+parameters are coupled with the common-mode acceleration and wit h the individual
+test mass squared accelerations; those are to be subtracted fr om the (N2a) diﬀerential-
+mode acceleration. Although there seems to be four diﬀerent acce lerations involved in
+this process, there are actually only two (whose sum and diﬀerence make up the common-
+mode and diﬀerential-mode accelerations), and hence all accelerat ions are signiﬁcantly
+correlated (up to the diﬀerences of both sensor’s transfer func tion). In particular,
+
+===== PAGE 19 =====
+MICROSCOPE data analysis 19
+transients are seen for both test masses (albeit not in exactly the same way due to
+their diﬀerent transfer functions). Therefore, when subtract ing raw systematics to raw
+N2a diﬀerential acceleration, we consistently remove most of the in valid data, and we
+almost get clean N2b data (see the gray spectrum in Fig. 8); masking the remaining
+outliers and inpainting them then improves the spectrum (to obtain t he clean N2b data
+of the black curve of Fig. 8).
+In contrast, when masking and inpainting N2a data and N1a data (ne eded to
+subtract the quadratic factors, that couple to the individual acc elerations –see Eq. 1),
+inpainting introduces small errors (although not visible on individual spectra) that break
+the consistency between the four accelerations involved. In part icular, if some bias (that
+can be diﬀerent for the diﬀerential-mode and common-mode acceler ation) is introduced
+by inpainting in the inpainted deterministic signals, their subtraction will be imperfe ct,
+resulting in an incorrect N2b diﬀerential acceleration. Such biases a re the likely cause
+of the remaining peaks in the spectrum of the lower panel of Fig. 7. F urthermore, if
+transients are periodic, those inconsistent errors will create a pe riodic pattern at the
+N2b diﬀerential acceleration, that can plague the inpainting reconstruction, thereby
+introducing an artefact at the frequency of this pattern. Such a n artefact can increase
+the appearance of a sub-optimally subtracted deterministic syste matics.
+To summarise this discussion: the invalid/missing data correction (us ing inpainting)
+and systematics substraction do not commute. Therefore, we ﬁr st create raw N2b-
+level diﬀerential accelerations from raw N2a accelerations and raw systematics, before
+masking them and ﬁlling their gaps. This allows us to apply inpainting only once (thus
+using it in the regime explored in [17, 18] and minimising the bias observe d in [18]),
+and to take advantage of the correlations between all the acceler ations involved in the
+process.
+5. Validating iterative least squares through numerical si mulations
+Although the SUSON simulations used above are suﬃcient to investiga te qualitatively
+the impact of instrumental parameters and the eﬀect of missing da ta, they are not precise
+enough to test our full pipeline down to the precision required for MI CROSCOPE. This
+is because they were not designed for such a high-precision task, b ut rather to make sure
+that all ground-segment systems worked as expected. Consequ ently, we developed Monte
+Carlo numerical simulations dedicated to test the data analysis tech nique presented in
+Sect. 3, to show the internal consistency of our iterative least-s quare estimations in
+the absence of data gaps. We already showed that KARMA, M-ECM a nd inpainting
+allow us to correctly deal with missing data when estimating (in a non-it erative way)
+parameters [15–18], thereby allowing us to ignore missing data in the r emainder of the
+paper.
+We assess the accuracy and precision of (i) ADAM’s least-squares e stimator and of
+(ii) the iterative calibration of instrumental parameters. We invest igate the ﬁrst point
+on focusing on how well Adam recovers the ∆ ′
+x oﬀcentering input in the simulations,
+
+===== PAGE 20 =====
+MICROSCOPE data analysis 20
+Figure 8. Spectrum of N2b level diﬀerential acceleration for the inertial ses sion used
+to estimate the EPV in SUSON simulations, before (grey) and after ( black) glitches
+and missing data correction. This spectrum can be compared with th at shown (in
+black) in Fig. 5 before correcting for instrumental parameters.
+when all other parameters are either ignored or perfectly correc ted for. The second point
+is investigated by simulating 200 sets of calibration sessions and runn ing our iterative
+least-square on them. In particular, such Monte Carlo simulations a llow us to easily
+look into error propagation. All the simulations use the same instrum ental parameters
+and noise characteristics, each of them with its own noise realisation (simulated from
+the power-law noise power spectral density discussed in Ref. [31]) , so that the dispersion
+of Adam’s outputs are solely statistical and representative of the data an alysis process.
+5.1. Simulations
+We use Simula, a numerical fortran simulation code developed speciﬁcally for
+MICROSCOPE, to simulate the acceleration measured by both test m asses. The
+simulator takes into account instrumental parameters (Eq. 1) th e satellite’s orbit and
+attitude (either measured from real data or simulated by any exte rnal orbit simulator
+–e.g. GINS [32] for the orbit) and computes the Earth GGT in the inst rument’s
+frame. Finally, the motion of each test mass is simulated individually alon g its orbit
+(see Ref. [4, 10] for the acceleration of individual test masses). M easurement errors
+and further systematic eﬀects (such as, but not limited to, attitu de errors, datation
+errors, drifts, periodic perturbations, missing data, scale facto r stability, stability of
+coupling between axes) can be taken into account, but the electro nic servo-loop used
+to control the test masses cannot easily be simulated, and is there fore ignored in this
+paper. Although we simulate the eﬀect of instrumental parameter s (misalignments,
+scale factors, couplings. . . ), we ignore systematic eﬀects not link ed to the instrument
+
+===== PAGE 21 =====
+MICROSCOPE data analysis 21
+Figure 9. Distribution of ˆ∆′
+x estimated with adam, from 2000 simulations. The red
+dotted vertical line is the value to be recovered. The black dot and e rror bar show
+the mean and rms of the distribution. Left: without correcting for other parameters.
+Right: with perfect prior knowledge of other parameters
+itself (e.g. drag-free residual or attitude control imperfections ) as well as transients
+and missing data. However, we take care to deﬁne all calibration ses sions as they are
+performed in reality (i.e. with the same duration and manoeuvres cha racteristics, see
+Ref. [6]). Using those simpliﬁed simulations allows us to check that the le ast-squares
+estimator is unbiased.
+The values of the parameters that can be estimated are the same a s in the SUSON
+simulations of Sect. 4, and are listed in the second column of Table 1. W e use
+exaggerated values, so that the instrumental defects’ eﬀect is most easily visible. Besides
+instrumental parameters, we simulate an EPV δ = 10 −14. Our goal is thus to recover
+all instrumental parameters, and estimate the EPV with a 7 × 10−15 precision (given
+the length and noise level of the corresponding simulated session) a fter correcting them
+from the simulated diﬀerential acceleration.
+5.2. Results
+5.2.1. Adam estimates’ bias and variance We ﬁrst check that the Adam least-square
+estimates are not intrinsically biased. To this aim, we measure the ∆ ′
+x oﬀcentering, ﬁrst
+with no prior on other instrumental parameters, i.e. without corre cting for them (which
+is equivalent to the ﬁrst iteration of the iterative calibration). The le ft panel of Fig. 9
+shows the distribution of the ˆ∆′
+x estimator, based on 2000 simulations; the black dot and
+associated error bar show the mean and rms of the distribution; th e input oﬀcentering
+(as should be recovered by Adam) is shown by the red dotted vertical line on the right
+hand side of the ﬁgure. This estimation is clearly biased; although the bias is small ( ≈
+1%), it is highly signiﬁcant.
+The observed bias is due to other uncorrected instrumental para meters aﬀecting
+the measurement, which justiﬁes the use of an iterative technique .
+To make sure of this assertion, we now consider the estimation of ∆ ′
+x when other
+
+===== PAGE 22 =====
+MICROSCOPE data analysis 22
+Figure 10. Distribution of Var( ˆ∆′
+x) estimated with adam. The red dotted vertical
+line is the “true” variance as computed from the distribution of the e stimator (Fig.
+9). The black dot and error bar show the mean and rms of the estima ted variance
+distribution.
+instrumental parameters are perfectly known, and can therefo re be corrected for in the
+measured diﬀerential acceleration before estimating ∆ ′
+x. The right panel of Fig. 9 shows
+the distribution of the ˆ∆′
+x estimators in this case: adam’s estimate is now unbiased,
+proving that the bias observed above was only due to ignoring the eﬀ ect of other
+parameters. We can therefore claim that it is essential to iterate a cross instrumental
+parameters when measuring them and that the iterative Adam’s estimation is unbiased.
+Nevertheless, we will show below that the E¨ otv¨ os parameter est imation is insensitive
+to small biases on instrumental parameters, and therefore does not require an iterative
+process.
+We show the distribution of the estimators’ variance in Fig. 10. We ca n ﬁrst
+notice that adam’s estimated variance is distributed as a χ2-distribution, as expected
+for a least-square estimator’s variance. In this ﬁgure, the red do tted vertical line is the
+“true” variance, as computed from the estimator’s distribution (F ig. 9). The black dot
+and associated error bars give the mean and rms of the variance of Adam’s individual
+estimator. Since the “true” variance is within those error bars, we can conclude that
+the variance provided by Adam for each estimation is reliable. This is particularly
+important in the MICROSCOPE landscape, and we can safely conclude that the upper
+bounds statistical errors on the E¨ otv¨ os parameter provided inRefs. [1, 2] are correct.
+We can then safely conclude that adam is intrinsically unbiased and provides
+correct error bars. We checked that our conclusions about ∆ ′
+x still hold for diﬀerent
+values of ∆ ′
+x, as well as for other instrumental parameters.
+
+===== PAGE 23 =====
+MICROSCOPE data analysis 23
+T able 1. Results of the Monte Carlo simulations: measured value of instrumen tal
+parameter at each iteration. For each parameter, the ﬁrst line pr ovides the results
+when propagating errors from one iteration to the next; the resu lts listed in the second
+line ignore the error propagation. The second column gives the input values with the
+precision required to meet MICROSCOPE’s objective in brackets.
+Expected Iter 1 Iter 2 Iter 3 Iter 4 Iter 5
+∆′
+x [µm] 33.275 33.172 ± 0.025 33 .303 ± 0.023 33 .266 ± 0.023 33 .264 ± 0.024 33 .269 ± 0.028
+(0.1) 33.171 ± 0.025 33 .301 ± 0.026 33 .269 ± 0.026 33 .267 ± 0.028 33 .271 ± 0.029
+∆′
+y [µm] -16.900 −17.552 ± 0.010 −17.268 ± 0.012 −17.368 ± 0.011 −17.368 ± 0.013 −17.367 ± 0.013
+(2) −17.550 ± 0.011 −17.265 ± 0.011 −17.368 ± 0.012 −17.367 ± 0.013 −17.367 ± 0.012
+∆′
+z [µm] -26.559 −26.561 ± 0.026 −26.559 ± 0.027 −26.559 ± 0.027 −26.557 ± 0.023 −26.554 ± 0.023
+(0.1) −26.557 ± 0.021 −26.557 ± 0.026 −26.556 ± 0.025 −26.556 ± 0.024 −26.557 ± 0.027
+a′
+d11 9.877 9.8866 ± 0.0004 9 .8865 ± 0.0004 9 .8865 ± 0.0003 9 .8865 ± 0.0004 9 .8866 ± 0.0004
+[×10−3] (0.15) 9.8866 ± 0.0004 9 .8865 ± 0.0004 9 .8865 ± 0.0003 9 .8865 ± 0.0003 9 .8865 ± 0.0004
+ad12 1.5983 1.5941 ± 0.0004 1 .5940 ± 0.0004 1 .5941 ± 0.0004 1 .5940 ± 0.0003 1 .5941 ± 0.0003
+[×10−3] (0.05) 1.5940 ± 0.0004 1 .5940 ± 0.0004 1 .5941 ± 0.0004 1 .5940 ± 0.0004 1 .5940 ± 0.0003
+ad13 -1.4026 −1.4067 ± 0.0004 −1.4068 ± 0.0003 −1.4068 ± 0.0003 −1.4067 ± 0.0003 −1.4068 ± 0.0004
+[×10−3] (0.05) −1.4068 ± 0.0003 −1.4068 ± 0.0004 −1.4068 ± 0.0004 −1.4068 ± 0.0004 −1.4068 ± 0.0004
+ac12 2.99 4.39 ± 0.05 2 .84 ± 0.05 2 .83 ± 0.05 2 .83 ± 0.04 2 .83 ± 0.05
+[×10−3] (0.9) 4.39 ± 0.04 2 .83 ± 0.04 2 .82 ± 0.05 2 .83 ± 0.04 2 .84 ± 0.04
+ac13 -3.75 −4.95 ± 0.04 −3.55 ± 0.05 −3.55 ± 0.05 −3.56 ± 0.05 −3.56 ± 0.04
+[×10−3] (0.9) −4.94 ± 0.05 −3.55 ± 0.05 −3.54 ± 0.05 −3.56 ± 0.04 −3.56 ± 0.05
+K2d [s2/m] 5612.6 5746.6 ± 1.2 5746 .7 ± 1.2 5746 .7 ± 1.2 5746 .6 ± 1.1 5746 .7 ± 1.2
+(250) 5746.7 ± 1.2 5746 .7 ± 1.1 5746 .7 ± 1.2 5746 .9 ± 1.1 5746 .8 ± 1.2
+δ [×10−15] 10 7.95 ± 7.39 10 .31 ± 8.07 11 .63 ± 7.97 11 .29 ± 6.58 9 .52 ± 6.68
+(7) 8.45 ± 7.48 9 .58 ± 7.00 10 .81 ± 7.80 9 .50 ± 7.34 8 .94 ± 7.30
+5.2.2. Full iterative calibration After focusing on the ∆ ′
+x estimation above, we now
+consider all parameters to mimic a real in-ﬂight iterative calibration. We estimate
+the parameters listed in the ﬁrst column of Table 1, with input values lis ted in the
+second column; the required combined accuracy and precision of th e estimation of each
+parameter is given in Table A1. The remaining columns list the values mea sured for
+each parameter at each iteration of the process. For each param eter, the ﬁrst line gives
+the value estimated when considering error propagation from one it eration to the other;
+in the second line, we ignore error propagation and use for the ith iteration the best ﬁt
+of each parameter obtained at the ( i − 1)th iteration. The best ﬁt and uncertainty for
+each parameter are computed as the mean and rms of the distribut ion of 100 estimates
+from 100 simulations for each parameter and iteration. For the est imation of a given
+parameter, all simulations share the same deterministic signals but h ave a diﬀerent
+realisation of the instrumental noise. Note however that because of computational
+limitations, we could not use the same set of simulations in both cases. This led to
+diﬀerent best ﬁts when propagating uncertainties or not (nevert heless, the diﬀerences
+are well within the error bars).
+It is clear that after the ﬁrst iteration where the estimation of som e parameters
+is somewhat biased (most notably ∆ ′
+x, ac12 and ac13), the iterative correction of
+instrumental parameters allows us to recover the input values, we ll within the required
+accuracy. In practice, based on these results, we iterate on inst rumental parameters
+
+===== PAGE 24 =====
+MICROSCOPE data analysis 24
+while estimates from one iteration to the next do not vary signiﬁcant ly, with a maximum
+number of iterations set to ﬁve [6]. Note also that the ac12 and ac13 parameters, though
+correctly estimated here, are not measured in real data [6,8] sin ce they are close to their
+required value from construction, and the noise (higher than in the se simulations) does
+not allow for a precise measurement.
+The discussions in Sect. 3.5 and Appendix B show that error propaga tion is not
+trivial in our iterative calibration. The comparison of each instrumen tal parameter’s
+lines in Table 1 (the ﬁrst one corresponding to the case where we pro pagate errors, the
+second one to the case where we ignore error propagation) shows that we can ignore
+error propagation when estimating instrumental parameters.
+The last line of Table 1 gives the measurement of the E¨ otv¨ os param eter after
+correction of the estimated instrumental parameters. It is clear that we are able to
+accurately recover the input EPV signal with the expected precisio n. Just like in the case
+of instrumental parameters, the uncertainty on the E¨ otv¨ os parameter is not impacted
+by the uncertainty propagation from one iteration to the next. We can therefore reliably
+ignore the error propagation in our iterative estimations.
+6. Conclusion
+In this paper, we summarised MICROSCOPE’s data analysis process. Building on
+the measurement equation, we showed how we can either estimate, model or ignore
+instrumental parameters. The estimation of those that cannot b e ignored nor modelled
+is performed through an iterative weighted least square ﬁt in the fr equency domain.
+We provided an extensive characterisation of inpainting, a gap-ﬁlling technique that
+we adapted to MICROSCOPE. This exercice, based on worst-case s cenario numerical
+simulations, shows the behavior of the algorithm in a complex data-pr ocessing pipeline,
+and can be useful to other experimental data analyses.
+Using well-controlled numerical simulations, we then showed that our iterative least-
+square method is robust to estimate instrumental parameters an d correct for them in
+order to reliably measure the E¨ otv¨ os ratio. In particular, we showed that our main least-
+square estimator is intrinsically unbiased. Combined with our previous works [15–18],
+those results prove that our data analysis pipeline allows us to reliably measure an EPV
+even in the presence of missing data and instrumental imperfection s.
+Finally, we discussed the non-trivial, but important, problem of unce rtainties
+propagation in our pipeline. Like in any precision experiment, the prob lem of
+uncertainty estimation is central to the MICROSCOPE data analysis . We showed that
+not only does our iterative least-square technique provide correc t error bars, but we can
+also safely ignore the problem of uncertainty propagation through out iterations. This
+paper therefore justiﬁes the results provided in Refs. [1–3, 8].
+
+===== PAGE 25 =====
+MICROSCOPE data analysis 25
+T able A1. Parameters that can be calibrated in orbit, method to perform the ir
+calibration, and precision required to satisfy MICROSCOPE’s object ive. Oscillations
+are given along or about axes in the instrument frame. fEP is the frequency of the
+test, where we may expect to detect a WEP violation. The fourth co lumn gives the
+maximal allowed value by design. See Ref. [6, 10] for details.
+Parameter Calibration technique Aimed precision Max. allowed value
+∆′
+x No satellite maneuver; take advantage of Earth’s GGT signal at 2 fEP 0.1µm 20 µm
+∆′
+y Angular oscillation of the satellite about the z-axis 2µm 20 µm
+∆′
+z No satellite maneuver; take advantage of Earth’s GGT signal at 2 fEP 0.1µm 20 µm
+ac12 Angular oscillation of the satellite about the x-axis and linear oscillation 9 × 10−4rad 2.6 × 10−3rad
+of the test mass along the z-axis
+ac13 Angular oscillation of the satellite about the x-axis and linear oscillation 9 × 10−4rad 2.6 × 10−3rad
+of the test mass along the y-axis
+a′
+d11 Linear oscillation of the satellite along the x-axis 1.5 × 10−4 0.01
+ad12 Linear oscillation of the satellite along the y-axis 5 × 10−5rad 1.5 × 10−3rad
+ad13 Linear oscillation of the satellite along the z-axis 5 × 10−5rad 1.5 × 10−3rad
+K (d)
+2xx/
+(
+K (c)
+1x
+)2
+Linear oscillation of the satellite along the x-axis 250 s 2/m 14000 s 2/m
+Acknowledgments
+This work makes use of technical data from the CNES-ESA-ONERA- CNRS-OCA
+MICROSCOPE mission, and has received ﬁnancial support from ONER A and CNES.
+We thank Bruno Christophe, Bernard Foulon and Isabelle Petitbon, as well as the
+members of the MICROSCOPE Science Working Group for useful disc ussions. Special
+thanks go to Pierre Fayet and Pieter Visser for detailed comments o n the manuscript.
+JB and SP acknowledge the ﬁnancial support of the UnivEarthS Lab ex program at
+Sorbonne Paris Cit´ e (ANR-10-LABX-0023 and ANR-11-IDEX-0005-02).
+Appendix A. In-ﬂight instrumental parameters estimation
+Table A1 lists the parameters that we can calibrate, and summarizes the techniques
+used to perform their estimation. The third column of the table lists t he precision
+and accuracy required on the estimation of each parameter to sat isfy the overall
+MICROSCOPE goal to reach the 10 −15 level for the E¨ otv¨ os parameter; the fourth
+column shows the maximum value allowed by design of the instrument; t hose numbers
+were obtained with a performance analysis, whose description is bey ond the scope of
+this paper. See Ref. [6] for a complete description of which paramet ers can be estimated
+in ﬂight.
+Appendix B. Error propagation through least-square estima tion
+This appendix presents a pedagogical derivation of error propaga tion when correcting
+the measured diﬀerential acceleration from estimated instrument al parameters. We
+show two diﬀerent approaches: the ﬁrst one is a traditional variat ional approach, while
+
+===== PAGE 26 =====
+MICROSCOPE data analysis 26
+the second one computes the full variance of the calibrated diﬀere ntial acceleration.
+We show that the latter provides a more complete view of the eﬀects of propagating
+uncertainties when correcting for (estimated) instrumental par ameter.
+Appendix B.1. Uncorrected diﬀerential acceleration and es timated parameters
+The uncorrected diﬀerential acceleration (Eq. 1) can be re-writt en as:
+Γ d(t) = 2Γ δ(t) +
+3∑
+j,k=1
+(Tjk(t) − In jk(t))ac1j∆k(t)
++ 2
+3∑
+k=1
+(−1)k
+[
+ac1i ˙∆j(t) − ac1j ˙∆i(t)
+]
+i<j,i,j⁄=k
+Ωk
+−
+3∑
+k=1
+ac1k ¨∆k(t) + 2
+3∑
+k=1
+ad1k ˜Γ c
+k(t)
++ K21
+(
+˜Γ (1)(t)
+)2
+− K22
+(
+˜Γ (2)(t)
+)2
++ 2nd(t), (B.1)
+where Γ δ(t) gathers terms depending on the E¨ otv¨ os ratioδ, and where the indices i, j, k
+are either in (1,2) or ( x,y,z) depending on the variable they index. In Eq. (B.1), we
+ignore angular-to-linear couplings. In this equation, the common-m ode and individual
+accelerations, marked by a tilde, are noise-corrected (e.g. ˜Γ c
+k(t) = Γ c
+k(t) − nc(t)).
+The common-mode and diﬀerential-mode noises are assumed normally distributed
+with variance σ2
+d = σ2
+1 + σ2
+2 and σ2
+c = ( σ2
+1 + σ2
+2)/4, where σ2
+k is the variance for the kth
+(k = 1, 2) sensor’s noise.
+The parameters estimated before correction are the following: ac1k, ad1k, ∆ k, K2k.
+In the following, we assume that their estimators ˆ ac1k, ˆad1k, ˆ∆k, ˆK2k are unbiased and
+of variance σac1k, etc.
+Note that although ac11 cannot be estimated, it is possible to consider it as an
+unknown parameter, and assume it is a random variable of mean 1 and variance given
+by its speciﬁcations (or an educated guess). For the sake of clarit y, we shall not pursue
+this possibility here.
+Appendix B.2. Synthetic uncorrected and calibrated accele rations
+In order to simplify the computation of the calibrated diﬀerential ac celeration, of its
+expectation value and of its variance after propagating the error s on the estimation of
+instrumental parameters, we deﬁne a synthetic (uncorrected) diﬀerential acceleration
+as:
+Γ d(t) = Γ δ(t) + κaaY (t) + κbcbcZ(t) + κkk ˜Γ c(t) + l1
+(
+˜Γ (1)
+)2
+− l2
+(
+˜Γ (2)
+)2
++ nd(t), (B.2)
+
+===== PAGE 27 =====
+MICROSCOPE data analysis 27
+where a, b, c, k, l1 and l2 are estimated, κi are numerical (constant) factors, Y (t) and Z(t)
+are deterministic signals that can be measured or modeled, and we ke pt the common-
+mode and individual accelerations unchanged. Although b and c may be degenerate, we
+will assume that they are not correlated. This equation encompass es all types of terms
+found in Eq. (B.1).
+The calibrated synthetic acceleration can then be shown to be:
+Γ d
+cal(t) = Γ δ(t) + κa(a − ˆa)Y (t) + κbc(bc − ˆbˆc)Z(t) + κk(k − ˆk)˜Γ c(t)
++ (l1 − ˆl1)
+[
+˜Γ (1)(t)
+] 2
+− 2 ˆl1˜Γ (1)(t)n1(t) − (l2 − ˆl2)
+[
+˜Γ (2)(t)
+] 2
++ 2 ˆl2˜Γ (2)(t)n2(t)
++ 1
+2
+[
+(n1(t) − n2(t)) − κkˆk(n1(t) + n2(t))
+]
+− ˆl1n2
+1(t) + ˆl2n2
+2(t) (B.3)
+In what follows, we assume that we wish to estimate the E¨ otv¨ os ra tio δ (hence,
+the assumption that the estimates of the instrumental paramete rs are unbiased). The
+discussion can readily be generalized to the estimation of any instrum ental parameter
+given priors on the others.
+Appendix B.3. Error propagation. Method 1: variational app roach
+We ﬁrst use a variational approach to compute the variance of the calibrated diﬀerential
+acceleration (see e.g. [33]).
+Appendix B.4. Expectation value of calibrated diﬀerential acceleration
+Under the assumption that all estimates are unbiased, the expect ation value of Eq.
+(B.3) is
+E[Γ d
+cal(t)] = Γ δ(t) − ˆl1σ2
+1 + ˆl2σ2
+2. (B.4)
+It should be noted that the calibration entails a constant non-zero bias. However,
+the same bias is applied at all times t, and therefore does not aﬀect the estimation of
+the amplitude of the WEP violation signal.
+Appendix B.4.1. Error propagation Taking the sum of partial derivatives of Eq. (B.3)
+and assuming that |Γ (1)| ≪ 1 and |Γ (2)| ≪ 1, we get:
+σ2
+Γ cal = κ2
+aY 2(t)σ2
+a + κbcZ 2(t)ˆb2ˆc2
+(σ2
+b
+ˆb
++ σ2
+c
+ˆc2
+)
++ κ2
+k [Γ c(t)]2 σ2
+k
++
+[
+1 − κkˆk
+2 − 2 ˆl1Γ (1)(t)
+] 2
+σ2
+1 +
+[
+2 ˆl2Γ (2)(t) − 1 + κkˆk
+2
+] 2
+σ2
+2 (B.5)
+Note that in Eq. (B.5), the common-mode and individual acceleration s that appear are
+the eﬀectively measured (hence, noisy) ones, contrary to those which appeared in the
+uncorrected acceleration.
+
+===== PAGE 28 =====
+MICROSCOPE data analysis 28
+Appendix B.4.2. Actual calibrated acceleration: Expectat ion value and variance
+Returning to the actual MICROSCOPE accelerations, Eqs. (B.4) an d (B.5) give:
+E[Γ d
+cal(t)] = Γ δ(t) − 1
+2 ( ˆK21σ2
+1 + ˆK22σ2
+2) (B.6)
+and
+σ2
+Γ cal(t) = 1
+4
+3∑
+j,k=1
+[Tjk (t) − In jk (t)]2 ˆa2
+c1j ˆ∆2
+k
+(
+σ2
+∆k
+ˆ∆2
+k
++ σ2
+ac1j
+ˆac1j 2
+)
++
+3∑
+k=1
+[
+˙∆j(t)2σ2
+ac1i + ˙∆i(t)2σ2
+ac1j
+]
+i,j⁄=k,i<j
+Ωk(t)2
++ 1
+4
+3∑
+k=1
+¨∆k(t)2σ2
+ac1k +
+3∑
+k=1
+[Γ c(t)]2 σ2
+ad1k
++
+[
+1 −∑ 3
+k=1 ˆad1k
+2 − 2 ˆK21Γ (1)(t)
+] 2
+σ2
+1
++
+[
+2 ˆK22Γ (2)(t) − 1 +∑ 3
+k=1 ˆad1k
+2
+] 2
+σ2
+2. (B.7)
+Note that the uncertainties on the quadratic factors σ2
+K2i do not appear in this
+equation. This is because we assumed that |Γ (i)| ≪ 1.
+Eq. (B.7) shows that the instrumental parameters themselves an d the uncertainties
+on their estimation bring up two diﬀerent eﬀects on the variance of t he calibrated
+diﬀerential acceleration:
+• extra-contributors to total variance: uncertainties on the est imated instrumental
+parameters add up to the noise, therefore increasing the calibrat ed diﬀerential
+acceleration’s variance, and increasing the uncertainty on the E¨ o tv¨ os parameter
+estimated with a least-square ﬁt of the calibrated diﬀerential acce leration. Those
+extra contributions can be taken into account simply by adding them in the data
+covariance passed to the least-square ﬁt. Another method (mor e computationally
+expensive) is to use Monte Carlo simulations where we vary the corre ction terms
+within their allowed bounds.
+• modiﬁcation of the noise: the calibrated diﬀerential acceleration no ise variance is
+not simply σ2
+d = σ2
+1 + σ2
+2 as that of the uncorrected diﬀerential acceleration noise.
+Instead, it is modiﬁed by the presence of non-zero diﬀerential par ameters ( ad1k)
+that couple to the common-mode acceleration and of non-zero qua dratic factors that
+couple to the individual accelerations. The knowledge of the best es timates for those
+instrumental parameters allows us to quantify the modiﬁcation of t he noise (which,
+given the values of the involved parameters, remains negligible). How ever, Eq.
+(B.7) is valid only for a given set of instrumental parameters’ estima tors, and does
+not tell us anything about the distribution of the corrected diﬀere ntial acceleration
+
+===== PAGE 29 =====
+MICROSCOPE data analysis 29
+noise, and hence on the uncertainty on the calibrated diﬀerential a cceleration noise.
+A more general approach is necessary (see below).
+Appendix B.5. Error propagation. Method 2: general varianc e analysis of the
+calibrated diﬀerential acceleration
+For this analysis, we ﬁrst go back to our synthetic model (B.3), who se variance we
+directly compute.
+Appendix B.5.1. Synthetic model Under the same assumptions as for Eq. (B.5), we
+ﬁnd (with a straightforward but tedious algebra):
+Var[Γcal(t)] = κ2
+aY 2(t)σ2
+a +κ2
+bcZ 2(t)ˆb2ˆc2
+[ σ2
+b σ2
+c
+ˆb2ˆc2
++ σ2
+b
+ˆb2
++ σ2
+c
+ˆc2
+]
++κ2
+k
+[
+˜Γ c(t)
+] 2
+σ2
+k +l2
+1σ4
+1 +l2σ4
+2
++ 1
+4
+[
+1 + κk(κkσ2
+k − 2k + k2) + 16(σ2
+l1 + l2
+1)
+[
+˜Γ (1)(t)
+] 2
+− 2(1 − κkk)l1 ˜Γ (1)(t)
+]
+σ2
+1
++ 1
+4
+[
+1 + κk(κkσ2
+k + 2k + k2) + 16(σ2
+l2 + l2
+2)
+[
+˜Γ (2)(t)
+] 2
+− 2(1 − κkk)l2˜Γ (2)(t)
+]
+σ2
+2. (B.8)
+Note that although we assume σ1,2 ≪ 1, we do not ignore the σ4
+1,2 terms since the
+l1,2 terms may be signiﬁcant (they encode the quadratic factors).
+We can observe that the contributors from the error propagatio n (those which do
+not contribute to the noise) are the same as in Eq. (B.5), except fo r the σ2
+b σ2
+c /ˆb2ˆc2 term,
+that pops-up here since we did not assume that b and c were independent. However,
+for MICROSCOPE, we always have σ2
+b,c ≪ (b, c)2, so we will ignore this term in the
+following, so that the contribution to the uncertainty on the E¨ otv ¨ os parameter from
+error propagation is the same in our two analyses (Eqs. (B.5) and (B .8)).
+However, the noise term is much more complex in Eq. (B.8) than in Eq. ( B.5). This
+is because it encompasses the uncertainty on the estimated instru mental parameters.
+In that sense, whereas Eq. (B.5) tells us how the noise is modiﬁed whe n we correct
+the diﬀerential acceleration for a given set of instrumental param eters, Eq. (B.8) tells
+us how the modiﬁed noise is distributed. It provides a more conserva tive uncertainty
+propagation, and should be favored when analyzing data.
+
+===== PAGE 30 =====
+MICROSCOPE data analysis 30
+Appendix B.5.2. Actual calibrated diﬀerential accelerati on Ignoring the σ2
+b σ2
+c /ˆb2ˆc2 term
+from Eq. (B.8), the total variance for the actual MICROSCOPE ac celeration is
+Var[Γcal(t)] = 1
+4
+3∑
+j,k=1
+[Tjk (t) − In jk (t)]2 ˆa2
+c1j ˆ∆2
+k
+(
+σ2
+∆k
+ˆ∆2
+k
++ σ2
+ac1j
+ˆa2
+c1j
+)
++
+3∑
+k=1
+[
+˙∆j(t)2σ2
+ac1i + ˙∆i(t)2σ2
+ac1j
+]
+i,j⁄=k,i<j
+Ωk(t)2
++ 1
+4
+3∑
+k=1
+¨∆k(t)2σ2
+ac1k +
+3∑
+k=1
+[Γ c(t)]2 σ2
+ad1k
++ 1
+4
+{
+1 +
+3∑
+k=1
+σ2
+ad1k − 2
+3∑
+k=1
+ad1k +
+3∑
+k=1
+a2
+d1k + 16
+(
+σ2
+K21 + K 2
+21
+)[
+˜Γ (1)
+] 2
+−2
+(
+1 −
+3∑
+k=1
+ad1k
+)
+K21 ˜Γ (1)
+}
+σ2
+1
++ 1
+4
+{
+1 +
+3∑
+k=1
+σ2
+ad1k + 2
+3∑
+k=1
+ad1k +
+3∑
+k=1
+a2
+d1k + 16
+(
+σ2
+K22 + K 2
+22
+)[
+˜Γ (2)
+] 2
+−2
+(
+1 +
+3∑
+k=1
+ad1k
+)
+K22 ˜Γ (2)
+}
+σ2
+2
++ K 2
+21σ4
+1 + K 2
+22σ4
+2 (B.9)
+The noise term in Eq. (B.9) makes it clear that the ad1k parameters and quadratic
+factors, as well as the uncertainty on their estimation, modify the measured noise.
+Although in practice the uncertainty on those parameters can be s een as bringing
+an uncertainty on the noise (the noise is corrected by some uncert ain estimates of the
+parameters), Eq. (B.9) combines those uncertainties to provide a n upper bound of the
+measured noise. That is, it provides the most conservative varianc e of the calibrated
+diﬀerential acceleration. Therefore, it should be used to complete ly take into account
+the errors in the estimate of instrumental parameters, and shou ld be included in the
+least-square ﬁt.
+Note that in this equation, the values of ad1k and K2i are not their estimates, but
+their “real” value. In practice, assuming that our estimates are un biased, or at least give
+a correct order of magnitude of the real value, we can replace the m by their estimated
+values.
+References
+[1] Touboul P, M´ etris G, Rodrigues M, Andr´ e Y, Baghi Q, Berg´ e J, Boulanger D, Bremer S, Carle P,
+Chhun R, Christophe B, Cipolla V, Damour T, Danto P, Dittus H, Fayet P, Foulon B, Gageant
+C, Guidotti P Y, Hagedorn D, Hardy E, Huynh P A, Inchauspe H, Kay ser P, Lala S, L¨ ammerzahl
+C, Lebat V, Leseur P, Liorzou F, List M, L¨ oﬄer F, Panet I, Pouilloux B, Prieur P, Rebray A,
+
+===== PAGE 31 =====
+MICROSCOPE data analysis 31
+Reynaud S, Rievers B, Robert A, Selig H, Serron L, Sumner T, Tangu y N and Visser P 2017
+Physical Review Letters 119 231101 ( Preprint 1712.01176)
+[2] Touboul P, M´ etris G, Rodrigues M, Andr´ e Y, Baghi Q, Berg´ e J, Boulanger D, Bremer S, Chhun
+R, Christophe B, Cipolla V, Damour T, Danto P, Dittus H, Fayet P, Fou lon B, Guidotti P Y,
+Hardy E, Huynh P A, L¨ ammerzahl C, Lebat V, Liorzou F, List M, Pan et I, Pires S, Pouilloux
+B, Prieur P, Reynaud S, Rievers B, Robert A, Selig H, Serron L, Sumn er T and Visser P 2019
+Classical and Quantum Gravity 36 225006
+[3] Touboul P and Microscope team in prep Class. Quant. Grav.
+[4] Touboul P, Rodrigues M, M´ etris G, Chhun R, Robert A, Baghi Q, Hardy E, Berg´ e J, Boulanger
+D, Christophe B, Cipolla V, Foulon B, Guidotti P Y, Huynh P A, Lebat V, Liorzou F, Pouilloux
+B, Prieur P and Reynaud S 2020 arXiv e-prints arXiv:2012.06472 ( Preprint 2012.06472)
+[5] Touboul P, M´ etris G, Rodrigues M, Bedouet J, Berg´ e J, Boulan ger D, Chhun R, Christophe B,
+Cipolla V, Damour T, Dittus H, Fayet P, Foulon B, Guidotti P Y, Hardy E , Huynh P A,
+L¨ ammerzahl C, Lebat V, Liorzou F, List M, Pouilloux B, Prieur P, Rey naud S, Rievers B,
+Robert A, Serron L, Sumner T and Visser P in prep Class. Quant. Grav.
+[6] Hardy E and Microscope team in prep Class. Quant. Grav.
+[7] Berg´ e J, Baghi Q, Robert A, Rodrigues M, Foulon B, Hardy E, M´ etris G, Pires S and Touboul P
+2020 arXiv e-prints arXiv:2012.06485 ( Preprint 2012.06485)
+[8] M´ etris G and Microscope team in prep Class. Quant. Grav.
+[9] Liorzou F, Touboul P, Rodrigues M, M´ etris G, Andr´ e Y, Berg´ eJ, Boulanger D, Bremer S, Chhun
+R, Christophe B, Danto P, Foulon B, Hagedorn D, Hardy E, Huynh P A , L¨ ammerzahl C, Lebat
+V, List M, L¨ oﬄer F, Rievers B, Robert A and Selig H 2020 arXiv e-prints arXiv:2012.11232
+(Preprint 2012.11232)
+[10] Hardy E, Levy A, M´ etris G, Rodrigues M and Touboul P 2013 Sapce Science Reviews 180 177–191
+(Preprint 1707.08024)
+[11] Robert A, Cipolla V, Prieur P, Touboul P, M´ etris G, Rodrigues M, Andr´ e Y, Berg´ e J, Boulanger
+D, Chhun R, Christophe B, Guidotti P Y, Hardy E, Lebat V, Lienart T , Liorzou F and Pouilloux
+B 2020 arXiv e-prints arXiv:2012.06479 ( Preprint 2012.06479)
+[12] Petit G and Luzum B (eds) 2010 IERS Conventions (2010) International Earth Rotation and
+Reference Systems Service (IERS) (Verlag des Bundesamts f¨ ur Kartographie und Geod¨ asie)
+[13] M´ etris G, Xu J and Wytrzyszczak I 1998 Celestial Mechanics and Dynamical Astronomy 71 137–
+151
+[14] Will C M 2014 Living Reviews in Relativity 17 4 ( Preprint 1403.7377)
+[15] Baghi Q, M´ etris G, Berg´ e J, Christophe B, Touboul P and Rod rigues M 2015 Phys. Rev. D 91
+062003 ( Preprint 1503.01470)
+[16] Baghi Q, M´ etris G, Berg´ e J, Christophe B, Touboul P and Rod rigues M 2016 Phys. Rev. D 93
+122007 ( Preprint 1608.08530)
+[17] Berg´ e J, Pires S, Baghi Q, Touboul P and M´ etris G 2015 Phys. Rev. D 92 112006 ( Preprint
+1512.00492)
+[18] Pires S, Berg´ e J, Baghi Q, Touboul P and M´ etris G 2016 Phys. Rev. D 94 123015 ( Preprint
+1612.05452)
+[19] Lupton R 1993 Statistics in theory and practice (Princeton University Press) ISBN 9780691074290
+[20] Hardy E, Levy A, Rodrigues M, Touboul P and M´ etris G 2013 Advances in Space Research 52
+1634–1646 ( Preprint 1707.07630)
+[21] Abbott B P et al. (LIGO Scientiﬁc, Virgo) 2020 Class. Quant. Grav. 37 055002 ( Preprint
+1908.11170)
+[22] Cornish N J and Littenberg T B 2015 Classical and Quantum Gravity 32 135012 ( Preprint
+1410.3835)
+[23] Zackay B, Venumadhav T, Roulet J, Dai L and Zaldarriaga M 2019 (Preprint 1908.05644)
+[24] Venumadhav T, Zackay B, Roulet J, Dai L and Zaldarriaga M 2019 Phys. Rev. D 100 023011
+(Preprint 1902.10341)
+
+===== PAGE 32 =====
+MICROSCOPE data analysis 32
+[25] Wei W and Huerta E 2020 Phys. Lett. B 800 135081 ( Preprint 1901.00869)
+[26] Torres-Forn´ e A, Cuoco E, Font J A and Marquina A 2020 Phys. Rev. D 102 023011 ( Preprint
+2002.11668)
+[27] Berg´ e J, Massey R, Baghi Q and Touboul P 2019 Monthly Notices of the Royal Astronomical
+Society 486 544–559 ( Preprint 1903.05837)
+[28] Pires S, Starck J L, Amara A, Teyssier R, R´ efr´ egier A and Fad ili J 2009 Monthly Notices of the
+Royal Astronomical Society 395 1265–1279 ( Preprint 0804.4068)
+[29] Pires S, Mathur S, Garc ´ ıa R A, Ballot J, Stello D and Sato K 2015 Astronomy and Astrophysics
+574 A18 ( Preprint 1410.6088)
+[30] Prieur P, Lienart T, Rodrigues M, Touboul P, Denver T, Jorgen sen J L, Bang A M and Metris
+G 2017 Microscope mission: on-orbit assessment of the drag-free and attitude control system
+ISTS-2017-d-038/ISSFD-2017-038 1-10, 26th Int Symp Space Flight Dynamics
+[31] Touboul P 2009 Space Science Reviews 148 455–474
+[32] Bourda G, Charlot P and Biancale R 2008 ArXiv e-prints (Preprint 0803.1432)
+[33] Ku H H 1966 Journal of research of the National Bureau of Standards 70 4
