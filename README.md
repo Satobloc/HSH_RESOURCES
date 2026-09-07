@@ -73,6 +73,22 @@ Manual runs accept a `max_files` batch size. `0` means all pending PDFs. Bounded
 runs select pending files after excluding current manifest entries, so repeated
 runs advance through the corpus.
 
+## Date conversation exports
+
+The [conversation date utility](tools/date_conversation_exports.py) prefixes
+ChatGPT exports with their first and last message dates in Eastern time. It is
+dry-run by default, follows the active conversation branch, emits an audit
+manifest, replaces its own prior prefix, and refuses filename collisions.
+
+Display its options:
+
+```bash
+python tools/date_conversation_exports.py --help
+```
+
+Only use it on a deliberately added conversation-export directory. Do not run it
+against paper, dataset, haul, extracted-text, or other evidence-source folders.
+
 ## Evidence discipline
 
 Keep these judgments separate:
