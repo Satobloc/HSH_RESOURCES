@@ -1,0 +1,530 @@
+===== PAGE 1 =====
+Dynamical Stability and Near-Resonant Architecture of the TOI-
+2076 Multi-Planet System: An N-Body Study 
+Aswin Karkadakattil 
+Independent Researcher in Advanced Manufacturing and Aerospace Engineering, with Applications in Artificial 
+Intelligence, Kerala, India 
+Correspondence: ashwinharik20000@gmail.com 
+Abstract 
+TOI-2076 is a young, compact multi-planet system whose orbital architecture places its adjacent planets close to 
+low-order mean-motion commensurabilities. We investigate the dynamical stability and near -resonant behaviour 
+of the system using direct 𝑁-body simulations with the REBOUND package and the WHFast symplectic 
+integrator. Three independent realizations, initialized with randomized orbital phases, were integrated for 𝑡 =
+2 × 106 yr using a timestep of Δ𝑡 = 0.5 days. All three realizations remained stable throughout the simulations, 
+with no planetary ejections or collisions. The eccentricities showed bounded oscillations without clear secular 
+growth, with mean standard deviations of 𝜎𝑒𝑏 = 0.00382, 𝜎𝑒𝑐 = 0.00329, and 𝜎𝑒𝑑 = 0.00335 for TOI-2076 b, 
+c, and d, respectively. The nominal period ratios are 
+𝑃𝑐
+𝑃𝑏
+= 1.6577 and 
+𝑃𝑑
+𝑃𝑐
+= 2.0461, compared with the exact 5: 3 
+and 2: 1 commensurabilities of 1.6667 and 2.0000, respectively. The corresponding resonance angles circulate 
+through the full 0∘--360∘ range rather than remaining confined to a bounded libration region, indicating that the 
+simulated configurations remain near-resonant without evidence of resonance locking over the 2 Myr integration. 
+The period ratios also remain nearly constant throughout the simulations, with no systematic evolution toward 
+exact commensurability. Overall, the results show that the adopted TOI-2076 configuration remains dynamically 
+stable over the simula ted interval while maintaining a near -resonant, non -librating orbital architecture. These 
+results provide a numerical baseline for future studies using longer integrations and a broader exploration of 
+uncertainties in the planetary orbital and physical parameters. 
+Keywords: exoplanets; multi -planet systems; orbital dynamics; N -body simulations; mean -motion resonance; 
+TOI-2076; celestial mechanics 
+1. Introduction 
+Compact multi -planet systems provide valuable laboratories for investigating planetary formation, orbital 
+evolution, and long-term dynamical stability. When several planets occupy relatively closely spaced orbits, their 
+mutual gravitational interactions can produce measurable departures from purely Keplerian motion and can place 
+adjacent planets close to mean -motion resonances (MMRs). Such configurations are particularly useful for 
+studying resonance capture, resonance breaking, and subsequent orbital diver gence, which can provide 
+information about the dynamical history of planetary systems ( Fabrycky et al., 2014; Lithwick & Wu, 2012).   
+TOI-2076 is a young planetary system orbiting a nearby K-type star that was identified through observations from 
+the Transiting Exoplanet Survey Satellite (TESS), followed by photometric and spectroscopic follow -up 
+observations (Hedges et al., 2021; Osborn  et al., 2022). Subsequent observations have further improved the 
+characterization of its planetary architecture (Damasso  et al., 2024; Barber et al., 2025). The system contains 
+multiple transiting planets, with TOI -2076 b, c, and d forming an outer planetary configuration of particular 
+interest for dynamical studies. The orbital solution adopted in the present analysis gives periods of approximately 
+10.36, 17.17, and 35.12 days for planets b, c, and d, respectively (Osborn et al., 2022).   The proximity of these 
+orbital periods to low -order mean -motion commensurabilities makes the system dynamically interesting. In 
+particular, the b –c pair lies close to the 5:3 commensurability, while the c –d pair lies close to the 2:1 
+commensurability. These relationships can be expressed through the period-ratio offsets 
+Δ5:3 = 𝑃𝑐/𝑃𝑏
+5/3 − 1 
+and 
+Δ2:1 = 𝑃𝑑/𝑃𝑐
+2/1 − 1.
+
+===== PAGE 2 =====
+For the adopted orbital periods, these ratios indicate that the planetary pairs are close to, but not exactly at, the 
+corresponding commensurabilities. However, proximity to an exact period ratio alone does not establish the 
+existence of a dynamical resona nce. A resonant configuration is more appropriately identified through the 
+behaviour of its critical resonant angles. In a dynamically resonant system, the relevant critical angle remains 
+confined to a bounded interval and undergoes libration, whereas circ ulation through the full angular range is 
+characteristic of a non -resonant or near -resonant configuration (Murray & Dermott, 1999).   This distinction is 
+important because systems that are close to resonance but are not currently resonance -locked can preserve 
+signatures of previous dynamical interactions. Statistical studies of multi-planet systems have identified an excess 
+of planetary pairs close to, but slightly offset from, exact low-order resonances, while theoretical work has shown 
+that dissipative processes can drive planets away from exact commensurability following resonant interaction 
+(Fabrycky et al., 2014; Lithwick & Wu, 2012).   Previous observational studies have established TOI -2076 as a 
+young multi-planetary system and have progressively refined its orbital and physical characterization (Hedges et 
+al., 2021; Osborn et al., 2022; Damasso et al., 2024; Barber et al., 2025). These studies provide the observational 
+foundation for examining the dynamical behaviour of the system. Consequently, the relevant question is not 
+simply whether the planetary periods are numerically close to 5:3 and 2:1, but whether the corresponding resonant 
+angles exhibit libration or circulation and whether the resulting behaviour remains consistent when the initial 
+orbital phases are varied.   Direct N-body integration provides a suitable approach for addressing this question 
+because the mutual gravitational interactions among the planets are explicitly propagated throughout the 
+integration. Repeating the integrations with different initial mean anomalies allows the robustness of the resulting 
+orbital behaviour to be assessed across independent realizations. Such an approach provides a numerical baseline 
+for subsequent investigations involving larger ensembles, observational uncertainties, and su bstantially longer 
+integration times.   In this study, we investigate the dynamical behaviour of the adopted TOI -2076 b –c–d 
+configuration using direct N -body simulations with the REBOUND package and the WHFast symplectic 
+integrator (Rein & Liu, 2012; Rein & Tamayo, 2015). Three independent reali zations with randomized initial 
+orbital phases are evolved for 2 × 106 years using a timestep of 0.5 days. We examine the evolution of the orbital 
+elements, period ratios, and critical resonant angles to assess the dynamical stability of the system and determine 
+whether the near-5:3 and near-2:1 configuration exhibit libration or circulation. The objective is to provide a direct 
+numerical assessment of the stability and phase-dependent dynamical behaviour of the adopted configuration over 
+the simulated interval. 
+2. Methods 
+2.1 N-body integration 
+The TOI-2076 planetary system was simulated using REBOUND, an open -source N-body integration package 
+widely used for gravitational dynamics (Rein & Liu, 2012). The integrations were performed using the WHFast 
+symplectic integrator (Rein & Tamayo, 2015), wh ich implements the Wisdom –Holman approach for efficient 
+long-term integration of planetary systems (Wisdom & Holman, 1991).  The simulations were performed in units 
+of years, astronomical units, and solar masses. A fixed timestep of 0.5 days was adopted. This corresponds to 
+approximately 1/20 of the orbital period of the innermost planet and therefore provides multiple integrati on steps 
+per orbital cycle while maintaining computational efficiency.   The initial orbital parameters of the three planets 
+and the host star were taken from the adopted orbital solution of Osborn et al. (2022). For each planet 𝑝, the initial 
+state was specified by its mass 𝑀𝑝, semi-major axis 𝑎𝑝, eccentricity 𝑒𝑝, inclination 𝑖𝑝, longitude of ascending 
+node Ω𝑝, argument of pericenter 𝜔𝑝, and mean anomaly 𝑀𝑝.  Because the present analysis focuses on the 
+robustness of the dynamical behaviour to orbital phase, three independent realizations were generated. For each 
+realization, the initial mean anomaly was independently sampled from a uniform distribution,  
+𝑀𝑝 ∼ 𝑈(0,2𝜋), 
+for each planet. The remaining adopted orbital parameters were kept fixed. This procedure allows the influence 
+of the initial orbital phase to be examined without changing the underlying planetary architecture.  
+Each realization was integrated forward for 
+𝑇max = 2 × 106 yr.
+
+===== PAGE 3 =====
+2.2 Period-ratio analysis 
+The proximity of adjacent planetary pairs to the 5:3 and 2:1 mean -motion commensurabilities was quantified 
+using the instantaneous period ratios 
+𝑅𝑏𝑐 = 𝑃𝑐
+𝑃𝑏
+, 
+and 
+𝑅𝑐𝑑 = 𝑃𝑑
+𝑃𝑐
+. 
+The nominal resonant values are 
+𝑅5:3 = 5
+3 
+and 
+𝑅2:1 = 2. 
+The temporal evolution of 𝑅𝑏𝑐 and 𝑅𝑐𝑑 was monitored throughout each integration to determine whether the 
+system remained near the nominal commensurabilities or developed significant departures during the simulated 
+interval. 
+2.3 Resonance-angle analysis 
+Period-ratio proximity alone cannot establish resonant locking. The dynamical state of each planetary pair was 
+therefore assessed through the evolution of the corresponding critical resonant angle (Murray & Dermott, 1999).  
+For the b–c pair near the 5:3 commensurability, the resonant angle was defined as 
+𝜃5:3 = 5𝜆𝑐 − 3𝜆𝑏 − 2𝜛𝑐, 
+where 𝜆 denotes mean longitude and 𝜛 denotes longitude of pericenter. 
+For the c–d pair near the 2:1 commensurability, the resonant angle was defined as 
+𝜃2:1 = 2𝜆𝑑 − 𝜆𝑐 − 𝜛𝑐. 
+The angles were evaluated modulo 360∘, 
+𝜃 → 𝜃 (mod 360∘). 
+The dynamical interpretation was based on the temporal behaviour of these angles. Libration corresponds to 
+confinement of a resonant angle within a bounded angular interval, whereas circulation corresponds to repeated 
+passage through the full 0∘–360∘ range. Libration is therefore taken as evidence for resonant locking, while 
+circulation indicates that the corresponding near -commensurability is not dynamically locked over the simulated 
+interval (Murray & Dermott, 1999). 
+2.4 Dynamical-stability assessment 
+Dynamical stability was assessed using complementary orbital and numerical criteria. First, each realization was 
+monitored for planetary escape, ejection, or collision during the integration. A realization was considered 
+numerically surviving when all thre e planets remained within the simulated planetary system throughout the 
+2 × 106-year integration.  Second, the temporal evolution of the orbital elements was examined. In particular, the 
+eccentricity and inclination histories of all three planets were monitored for unbounded growth or large secular 
+excitation. The maximum eccentricity reached by each planet was calculated as 
+𝑒𝑝,max = max
+𝑡∈[0,𝑇max]
+𝑒𝑝(𝑡), 
+while the standard deviation of the eccentricity was calculated as
+
+===== PAGE 4 =====
+𝜎𝑒𝑝 = √ 1
+𝑁 − 1 ∑[𝑒𝑝(𝑡𝑗) − 𝑒̅𝑝]
+2
+𝑁
+𝑗=1
+. 
+These quantities were used to characterize the amplitude of the eccentricity variations across each realization.  
+Similarly, the inclination evolution was monitored to identify any systematic secular increase. The absence of 
+escape or collision together with bounded eccentricity and inclination variations was interpreted as evidence of 
+dynamical stability over the sim ulated 2 × 106-year interval, rather than as proof of stability over the full 
+estimated age of the system. The adopted system parameters are listed in Table 1 (Osborn et al., 2022), and the 
+resulting orbital evolution is shown in Figure 1. 
+Table 1. Adopted system and planetary parameters for TOI-2076, adapted from Osborn et al. (2022). 
+Planet Period (days) (AU) 
+ 
+(deg) Mass () 
+b 10.355 0.0847 0.02 88.55 6.6 
+c 17.166 0.1184 0.02 89.10 8.2 
+d 35.124 0.1934 0.02 89.50 6.9 
+Host star () — — — — 0.87 
+ 
+3. Results 
+3.1 Orbital Stability 
+ 
+Figure 1. Time evolution of orbital elements for TOI -2076 b, c, and d over the 2 × 10⁶ yr integration, shown for 
+Realization 1 (solid lines) with the remaining two realizations overlaid (faint lines) for comparison. (a) Semi -
+major axis (AU); (b) eccentricity; (c) inclination (deg).
+
+===== PAGE 5 =====
+All three planets remained bound and dynamically stable throughout the full 2 × 10⁶ yr integration in every one 
+of the three realizations, with no ejections or collisions recorded by REBOUND's escape-detection routine. Semi-
+major axes remained essentially constant for all three planets over the full integration span (Figure 1a), as expected 
+for a well-separated, non-migrating system. Eccentricities oscillated within small, bounded ranges approximately 
+0.010–0.020 for planets b and c, and 0.020 –0.030 for planet d (Figure 1 b) with the amplitude and phase of these 
+oscillations consistent across all three realizations. Similarly, inclinations oscillated within a narrow band of 
+roughly 88.6°–89.6° for all three planets (Figure 1c), again without secular drift. Critically, none of the orbital 
+elements show evidence of long-term growth or divergence over the integration timescale, indicating the system 
+is dynamically stable on this timescale rather than undergoing slow chaotic diffusion toward instability.  
+3.2 Resonance Analysis 
+ 
+a 
+ 
+b 
+Figure 2. Resonance angle evolution across all three realizations (distinguished by colour) over the 2 × 106 yr 
+integration. (a) 𝜃5:3, the resonance angle for the b –c planet pair near the 5:3 commensurability; (b) 𝜃2:1, the 
+resonance angle for the c–d planet pair near the 2:1 commensurability. 
+To determine whether the near-commensurate period ratios reported by Osborn et al. (2022) reflect genuine mean-
+motion resonance locking, we tracked the resonance angles 𝜃5:3 and 𝜃2:1 (as defined in Section 2) throughout the 
+integration. In every realization, and for both angles, the resonance angle circulates freely across the full 0∘–360∘ 
+range rather than librating about a fixed value (Figure 2a,b). Circulation of this kind is the classic dynamical 
+signature of a system sitting near, but not trapped in, mean-motion resonance (Murray & Dermott 1999). Because 
+neither angle librates, we conclude that resonant or near-resonant dynamics do not govern the long-term evolution 
+of this system over the timescale probed here   consistent with the small -amplitude, non -secular eccentricity 
+oscillations reported in Section 3.1.
+
+===== PAGE 6 =====
+Figure 3. Period ratio evolution over the 2 × 106 yr integration for all three realizations. Top panel: 𝑃𝑐/𝑃𝑏, with 
+the exact 5:3 commensurability (5/3 ≈ 1.667) marked as a dashed line. Bottom panel: 𝑃𝑑/𝑃𝑐, with the exact 2:1 
+commensurability (2.000) marked as a dashed line. 
+This circulation is mirrored in the period ratios themselves, which stay essentially flat throughout the integration 
+and show no sign of drifting toward exact commensurability (Figure 3). The b –c pair settles near 
+𝑃𝑐
+𝑃𝑏
+≈ 1.653, 
+noticeably offset from the exact 5:3 ratio of 
+5
+3 ≈ 1.667, 
+while the c–d pair settles near 
+𝑃𝑑
+𝑃𝑐
+≈ 2.087, 
+offset from the exact 2:1 ratio of 2.000. Both ratios display only small, high -frequency scatter consistent with 
+ordinary orbital perturbations rather than any systematic trend reinforcing the picture of a system that sits close 
+to, but is dynamically decoupled from, both commensurabilities.
+
+===== PAGE 7 =====
+3.3 Ensemble Robustness 
+ 
+Figure 4. Maximum eccentricity reached by each planet (b, c, d) over the full 2 × 10⁶ yr integration, compared 
+across the three independent realizations (distinguished by colour). 
+Table 2. Summary of stability outcomes and eccentricity statistics for each of the three ensemble realizations.  
+Realization  Outcome max(e_b) max(e_c) max(e_d) std(e_b) std(e_c) std(e_d) 
+1  Stable ~0.0211 ~0.0207 ~0.0298 — — — 
+2  Stable ~0.0210 ~0.0207 ~0.0296 — — — 
+3  Stable ~0.0204 ~0.0203 ~0.0294 — — — 
+Ensemble mean  3/3 stable — — — 0.00382 0.00329 0.00335 
+All three independently seeded realizations remained dynamically stable over the full integration span, with peak 
+eccentricities differing by no more than ~0.0007 (roughly 3%) across realizations for any given planet (Figure 4; 
+Table 2). This close agreeme nt across randomized initial orbital phases indicates that the stability and non -
+resonant behaviour reported above are robust, general properties of the TOI -2076 system's architecture, rather 
+than artifacts arising from a single, arbitrarily chosen orbital-phase realization. 
+4. Discussion 
+The results presented here show that TOI -2076 occupies an interesting dynamical position: both adjacent planet 
+pairs lie close to low -order mean -motion commensurabilities, yet neither pair is dynamically trapped in the 
+corresponding resonance over the simulated interval. The b–c pair has a period ratio of approximately 1.653, close 
+to the 5:3 commensurability, while the c –d pair has a ratio of approximately 2.087, close to 2:1. However, 
+proximity to a commensurability alone does not establish resonance. In the present integrations, the corresponding 
+resonance angles circulate through the full 0∘–360∘ range rather than librating, providing direct dynamical 
+evidence that the two pairs are near -resonant but not resonance -locked. This distinction is important because 
+resonant capture is associated with libration of an appropriate critical resonant angle, whereas a circulating angle 
+indicates that the system is not presently trapped in the tested resonance (Murray & Dermott, 1999; Lithwick & 
+Wu, 2012). The statistical occurrence of near-resonant architectures among compact multi-planet systems further 
+demonstrates that proximity to low-order commensurabilities does not necessarily imply active resonance locking 
+(Fabrycky et al., 2014).   The result is particularly relevant because TOI -2076 is a young, compact multi -planet 
+system whose orbital architecture has been established through TESS observations and subsequent photometric 
+and spectroscopic follow -up (Hedges et al., 2021; Osborn et al ., 2022). More recent observational studies have 
+further refined the characterization of the system, including constraints from radial -velocity observations and
+
+===== PAGE 8 =====
+additional follow-up analyses (Damasso et al., 2024; Barber et al., 2025). The system therefore provides a useful 
+case for examining how closely spaced planets can occupy the neighbourhood of important resonances without 
+necessarily being dynamically locked. Our simulations indicate that the adopted present-day architecture remains 
+dynamically stable without requiring an active 5:3 or 2:1 resonance over the 2 × 106-year interval examined here. 
+All three planets remain bound, with bounded variations in their orbital elements and no evidence of secular 
+eccentricity growth across the three independent realizations. Thus, within the limits of the adopted initial 
+conditions and integration interval, the near -resonant architecture is compatible with stable, non -resonant 
+evolution.  One possible interpretation is that the planets may have experienced stronger resonant interactions 
+earlier in their evolution and subsequently moved away from exact commensurability. Lithwick and Wu (2012) 
+showed that dissipative evolution can produce div ergent displacement from exact period commensurabilities, 
+providing a physical framework for interpreting systems that lie close to, but outside, resonance. The prevalence 
+of near -resonant configurations in observed multi -planet systems also supports the b roader relevance of such 
+evolutionary pathways (Fabrycky et al., 2014). In this context, the approximately 0.8% offset of the b–c pair from 
+5:3 and the approximately 4.4% offset of the c–d pair from 2:1 place TOI-2076 within the broader class of systems 
+that reside near, but are not necessarily captured  into, low-order mean-motion resonances.  At the same time, the 
+present results do not demonstrate that TOI-2076 previously underwent resonant capture. The current circulation 
+of the resonance angles establishes the dynamical state sampled by the integrations, but it does not uniquely 
+reconstruct the system's past. The planets could have undergone an earlier resonant phase followed by divergent 
+evolution, or they could have reached their present configuration without becoming permanently trapped in 
+resonance. Distinguishing between these possibilit ies would require modelling the system's evolutionary history 
+rather than integrating only its present -day orbital configuration. We therefore regard the absence of resonance 
+locking as a constraint on the current dynamical architecture rather than as defi nitive evidence for a particular 
+formation or migration pathway.   The observational characterization of TOI -2076 also makes this distinction 
+important. The discovery studies established the three -planet architecture and provided the orbital parameters 
+adopted in the present integrations (Hedges et al., 2021; Osborn et al., 2022), while subsequent work has continued 
+to refine the physical and orbital characterization of the system (Damasso  et al., 2024; Barber et al., 2025). 
+Consequently, a dynamical analysis based on one adopted set of planetary parameters should not be interpreted 
+as an exhaustive exploration of the system's allowed phase space. Uncertainties in planetary masses and orbit al 
+elements can influence the detailed structure of resonant and secular dynamics. The use of three independent 
+initial mean anomalies in the present study reduces the possibility that the reported qualitative behaviour is solely 
+an artefact of one particu lar orbital -phase configuration, since all three realizations exhibit the same overall 
+behaviour. Nevertheless, a substantially larger ensemble sampling the observational uncertainties would provide 
+a stronger assessment of the robustness of the non -resonant configuration.   A second limitation concerns the 
+integration timescale. The present simulations demonstrate stable orbital behaviour and persistent resonance-angle 
+circulation over 2 × 106 years across three independent realizations. This interval is substantial compared with 
+the orbital periods of the planets, but it remains short relative to the estimated age of approximately 300 Myr for 
+the system (Osborn et al., 2022; Barber et al., 202 5). Consequently, the present calculations should not be 
+interpreted as proof of stability over the entire lifetime of TOI -2076. Very slow secular evolution or chaotic 
+diffusion, if present, could occur on timescales substantially longer than those sampled  here and would not 
+necessarily be detectable within the current integrations.  Future work should therefore extend the integrations to 
+at least 107–108 years and, ideally, use a substantially larger ensemble of initial conditions. In particular, 
+systematic sampling of the uncertainties in planetary masses, eccentricities, and orbital phases would allow the 
+stability and resonance classification to be tes ted across the observationally permitted parameter space. Such an 
+analysis could determine whether circulation of the 5:3 and 2:1 resonance angles remains a robust property of the 
+system or whether a subset of allowed configurations enters a resonant or weakly chaotic regime. Combining 
+these longer-term N-body calculations with increasingly refined observational constraints on TOI-2076 (Damasso 
+et al., 2024; Barber et al., 2025) would provide a more complete picture of its dynamical history.   Overall, the 
+present study establishes a clear dynamical baseline for TOI -2076: the system remains stable over the 2 × 106-
+year interval tested, while neither the b–c pair at 5:3 nor the c–d pair at 2:1 exhibits resonance-angle libration. The 
+system is therefore best described, within the adopted initial conditions and integration timescale, as near-resonant 
+but not dynamical ly trapped in either tested commensurability. This result does not by itself determine how the 
+planets formed or migrated, but it provides a quantitative dynamical constraint for future evolutionary models of 
+this young multi-planet system.
+
+===== PAGE 9 =====
+5. Conclusion 
+We have presented a dedicated N -body dynamical and resonance -angle analysis of the TOI -2076 multi-planet 
+system using three independent REBOUND/WHFast realizations integrated over 2 × 10⁶ years. Across all three 
+realizations, the three-planet configuration remained dynamically stable, with bounded, non-secular variations in 
+eccentricity and inclination and no evidence of instability over the simulated interval.   Quantitatively, the b –c 
+period ratio is approximately 0.8% wide of the 5:3 commensurability, while the c–d period ratio is approximately 
+4.4% wide of the 2:1 commensurability. Despite these close period -ratio configurations, the corresponding 
+resonance angles circulate rather than librate  in all three realizations, indicating that neither pair is captured in a 
+sustained mean-motion resonance over the 2 Myr integration interval. The system can therefore be characterized 
+as near-resonant but not resonance -locked on the timescale investigated . These results establish a quantitative 
+dynamical baseline for TOI -2076 and provide constraints for future investigations of its orbital evolution. 
+However, the 2 Myr integration represents only a small fraction of the system's estimated ~300 Myr age. 
+Therefore, the present results demonstrate stability over the simulated interval but cannot exclude slower secular 
+evolution or chaotic diffusion on substantially longer timescales.  Future work should extend the integrations to 
+10⁷–10⁸ years, using a larger ensemble of initial conditions and systematic sampling of the uncertainties in 
+planetary masses, eccentricities, and orbital parameters. Such calculations would determine whether the observed 
+near-resonant, non -librating configuration persists over timescales comparable to the system's age and would 
+provide stronger constraints on the long -term dynamical evolution of TOI -2076.  Overall, this study establishes 
+that TOI-2076 remains stable over 2 Myr, with the b –c pair approximately 0.8% offset from 5:3, the c –d pair 
+approximately 4.4% offset from 2:1, and circulating resonance angles across all three realizations. These 
+quantitative results provide a clear foundation for future studies of the system's long-term stability and formation 
+history. 
+Declaration of Conflict of Interest 
+The author declares that there is no conflict of interest associated with this manuscript.  
+Funding 
+The author received no specific funding or financial support for this research.  
+Declaration on the Use of Artificial Intelligence 
+Artificial intelligence tools were not used to generate the scientific content, analysis, results, or conclusions of 
+this manuscript. Grammarly was used solely for grammar, spelling, punctuation, and language correction.  
+The author remains fully responsible for the content, interpretation, and conclusions presented in the manuscript.  
+ 
+References  
+1. Rein, H., & Liu, S. F. (2012). REBOUND: an open -source multi-purpose N-body code for collisional 
+dynamics. Astronomy & Astrophysics, 537, A128. 
+2. Rein, H., & Tamayo, D. (2015). WHFAST: a fast and unbiased implementation of a symplectic Wisdom–
+Holman integrator for long -term gravitational simulations.  Monthly Notices of the Royal Astronomical 
+Society, 452(1), 376-388. 
+3. Murray, C. D., & Dermott, S. F. (1999).  Solar system dynamics  (Vol. 592). Cambridge: Cambridge 
+university press. 
+4. Wisdom, J., & Holman, M. (1991). Symplectic maps for the n -body problem.  Astronomical Journal 
+(ISSN 0004-6256), vol. 102, Oct. 1991, p. 1528-1538., 102, 1528-1538. 
+5. Howard, A. W. (2014). Transiting Exoplanet Survey Satellite. 
+6. Bonfanti, A., Gandolfi, D., Hedges, C., Leleu, A., Fortier, A., Futyan, D., ... & Walton, N. Uncovering 
+the true periods of the young sub-Neptunes orbiting TOI-2076. Astronomy & Astrophysics, 664.
+
+===== PAGE 10 =====
+7. Pelletier, S., Benneke, B., Darveau -Bernier, A., Boucher, A., Cook, N. J., Piaulet , C., ... & Vandal, T. 
+(2021). Where is the water? Jupiter -like C/H ratio but strong H2O depletion found on τ Boötis b using 
+SPIRou. The Astronomical Journal, 162(2), 73. 
+8. Hu, Z., Dai, F., Zhu, W., Wang, M. T., Goldberg, M., Lammers, C., & Masuda, K. (2025). Unexpected 
+near-resonant and metastable states of young multiplanet systems.  The Astrophysical Journal , 995(2), 
+206. 
+9. Gaidos, E., Hirano, T., Lee, R. A., Harakawa, H., Hodapp, K., Jacobson, S., ... & Vievard, S. (2023). 
+Planet (esimal) s around stars with TESS (PAST) III: A search for triplet He I in the atmospheres of two 
+200 Myr-old planets. Monthly Notices of the Royal Astronomical Society, 518(3), 3777-3783. 
+10. Barber, M. G., Mann, A. W., Vanderburg, A., Boyle, A. W., & Lopez Murillo, A. I. (2025). TESS 
+Investigation—Demographics of Young Exoplanets (TI -DYE). III. An Inner Super -Earth in TOI 
+2076. The Astronomical Journal, 170(1), 32. 
+11. Damasso, M., Locci, D., Benatti, S., Maggio, A., Baratella, M., Desidera , S., ... & Zingales, T. (2024). 
+The GAPS Programme at TNG: LIX. Characterisation study of the∼ 300 Myr-old multi-planetary system 
+orbiting the star BD+ 40 2790 (TOI-2076). Astronomy & Astrophysics, 690, A235. 
+12. Hedges, C., Hughes, A., Zhou, G., David, T. J., Becker, J., Giacalone, S., ... & Smith, J. C. (2021). TOI-
+2076 and TOI-1807: two young, comoving planetary systems within 50 pc identified by TESS that are 
+ideal candidates for further follow up. The Astronomical Journal, 162(2), 54. 
+13. Fabrycky, D. C., Lissauer, J. J., Ragozzine, D., Rowe, J. F., Steffen, J. H., Agol, E., ... & Van Cleve, J. 
+(2014). Architecture of Kepler's multi -transiting systems. II. New investigations with twice as many 
+candidates. The Astrophysical Journal, 790(2), 146. 
+14. Lithwick, Y., & Wu, Y. (2012). Resonant repulsion of Kepler planet pairs.  The Astrophysical Journal 
+Letters, 756(1), L11. 
+15. Karkadakattil, Aswin. 2026. “Spectral -Type Dependence of Habitable Zone Classification Differences 
+in Confirmed Exoplanets: A Systematic Comparison of Temperature -Dependent and Constant -Flux 
+Models”. International Astronomy and Astrophysics Research Journal  8 (1):66 -79. 
+https://doi.org/10.9734/iaarj/2026/v8i1125. 
+ 
+ 
+Appendix A. Pseudocode for the N-Body Stability and Resonance-Analysis Pipeline 
+The following pseudocode summarizes the numerical procedure used to investigate the long-term orbital evolution 
+and resonance behaviour of the TOI -2076 system. The simulations employ three independent realizations with 
+different initial mean anomalies while retaining the adopted planetary and stellar parameters. 
+A.1. Input Parameters and Simulation Configuration 
+Input: stellar and planetary parameters adopted from the observational characterization.  
+For the host star, 
+𝑀⋆ = host-star mass. 
+For each planet 𝑝 ∈ {𝑏, 𝑐, 𝑑}, the initial orbital parameters are 
+(𝑃𝑝, 𝑎𝑝, 𝑒𝑝, 𝑖𝑝, 𝑀𝑝), 
+where 𝑃𝑝 is the orbital period, 𝑎𝑝 is the semi-major axis, 𝑒𝑝 is the eccentricity, 𝑖𝑝 is the inclination, and 𝑀𝑝 is the 
+planetary mass. 
+The numerical configuration is defined as
+
+===== PAGE 11 =====
+𝑁REAL = 3, 
+𝑇MAX = 2 × 106 yr, 
+and 
+Δ𝑡 = 0.5 day. 
+An array containing 𝑁OUT output times is generated over the interval 
+𝑡 ∈ [0, 𝑇MAX]. 
+A.2. Initialization of the Output Arrays 
+For each realization 𝑟, the following quantities are stored at every output time: 
+𝑎𝑝(𝑡), 𝑒𝑝(𝑡), 𝑖𝑝(𝑡), 
+together with the resonance angles 
+𝜃5:3(𝑡), 𝜃2:1(𝑡), 
+and the instantaneous period ratios 
+𝑅𝑐𝑏(𝑡) = 𝑃𝑐(𝑡)
+𝑃𝑏(𝑡), 
+𝑅𝑑𝑐(𝑡) = 𝑃𝑑(𝑡)
+𝑃𝑐(𝑡) . 
+A survival indicator is initialized for each realization as 
+𝑆𝑟 = TRUE,  𝑟 = 1, … , 𝑁REAL. 
+A.3. Ensemble Initialization 
+For each realization, 
+𝑟 = 1,2, … , 𝑁REAL, 
+a unique random seed is assigned to ensure reproducibility while allowing different initial orbital phases.  
+A new N -body simulation is then created using stellar units and the WHFast  symplectic integrator. The central 
+star is inserted with mass 𝑀⋆, followed by planets b, c, and d. 
+For each planet, the mean anomaly is randomly sampled according to 
+ℳ𝑝 ∼ 𝑈(0,2𝜋). 
+The initial orbital state is therefore specified by 
+(ℳ𝑝, 𝑎𝑝, 𝑒𝑝, 𝑖𝑝, 𝜔𝑝, Ω𝑝), 
+where the initial argument of pericenter and longitude of ascending node are set to 
+𝜔𝑝 = 0, Ω𝑝 = 0. 
+After all bodies have been inserted, the simulation is transformed into the center -of-mass frame. 
+A.4. Numerical Integration 
+The system is integrated from 
+𝑡 = 0 to 𝑡 = 𝑇MAX. 
+At every output time 𝑡𝑗, the simulation is advanced to 𝑡𝑗 using the WHFast integrator.
+
+===== PAGE 12 =====
+If an escape or ejection event is detected, the corresponding realization is marked as unsuccessful:  
+𝑆𝑟 = FALSE, 
+and the integration for that realization is terminated. 
+For every successful output time, the instantaneous orbital elements are calculated relative to the host star:  
+𝑎𝑝(𝑡𝑗), 𝑒𝑝(𝑡𝑗), 𝑖𝑝(𝑡𝑗), 
+together with the mean longitude 𝜆𝑝(𝑡𝑗) and longitude of pericenter 𝜛𝑝(𝑡𝑗). 
+A.5. Resonance-Angle Calculation 
+The dynamical state of the two near-commensurable planet pairs is evaluated using resonant critical angles. 
+For the 5:3 b–c pair, the monitored resonance angle is 
+𝜃5:3 = (5𝜆𝑐 − 3𝜆𝑏 − 2𝜛𝑐) mod 360∘ , 
+where 𝜆𝑏 and 𝜆𝑐 are the mean longitudes of planets b and c, respectively, and 𝜛𝑐 is the longitude of pericenter of 
+planet c. 
+For the 2:1 c–d pair, the monitored resonance angle is 
+𝜃2:1 = (2𝜆𝑑 − 𝜆𝑐 − 𝜛𝑐) mod 360∘ . 
+The resulting angles are stored throughout the integration. 
+The resonance behaviour is subsequently classified from the temporal evolution of the angles. Continuous 
+bounded oscillation about a preferred angular value is interpreted as libration, whereas repeated circulation 
+through the full angular range is interpreted as circulation. 
+A.6. Instantaneous Period-Ratio Calculation 
+The instantaneous orbital periods are obtained from the simulated orbital states and used to calculate  
+𝑅𝑐𝑏(𝑡) = 𝑃𝑐(𝑡)
+𝑃𝑏(𝑡), 
+and 
+𝑅𝑑𝑐(𝑡) = 𝑃𝑑(𝑡)
+𝑃𝑐(𝑡) . 
+The nominal commensurability values used for comparison are 
+𝑅5:3 = 5
+3 = 1.6667, 
+and 
+𝑅2:1 = 2. 
+The relative offset from an exact commensurability can be expressed generally as  
+Δ𝑅 = |𝑅 − 𝑅res|
+𝑅res
+× 100%, 
+where 𝑅 is the measured period ratio and 𝑅res is the corresponding exact resonance value. 
+A.7. Stability Diagnostics 
+For each surviving realization, the maximum eccentricity reached by each planet is calculated as
+
+===== PAGE 13 =====
+𝑒𝑝,max = max
+𝑡
+𝑒𝑝(𝑡) ,  𝑝 ∈ {𝑏, 𝑐, 𝑑}, 
+while the standard deviation of eccentricity is calculated as 
+𝜎𝑒𝑝 = √1
+𝑁 ∑[𝑒𝑝(𝑡𝑗) − 𝑒̅𝑝]
+2
+𝑁
+𝑗=1
+. 
+The mean eccentricity is 
+𝑒̅𝑝 = 1
+𝑁 ∑ 𝑒𝑝
+𝑁
+𝑗=1
+(𝑡𝑗). 
+These quantities are used to quantify the amplitude of eccentricity variation and to identify any secular growth 
+during the integration. 
+The nominal period ratios obtained from the adopted literature periods are also calculated:  
+𝑅𝑐𝑏,0 = 𝑃𝑐,0
+𝑃𝑏,0
+, 
+𝑅𝑑𝑐,0 = 𝑃𝑑,0
+𝑃𝑐,0
+. 
+A.8. Figure Generation 
+The post-processing stage produces four principal diagnostic figures. 
+• Figure 1 — Orbital-element evolution:  The temporal evolution of 𝑎𝑝(𝑡), 𝑒𝑝(𝑡), 𝑖𝑝(𝑡) is plotted for 
+planets b, c, and d, with the surviving realizations overlaid. 
+• Figure 2 — Resonance-angle evolution: The two resonance angles, 𝜃5:3(𝑡) and 𝜃2:1(𝑡), are plotted for 
+all realizations. Because the angles are defined modulo 360∘, wrapped angular trajectories are displayed 
+accordingly. 
+• Figure 3 — Period-ratio evolution: The temporal evolution of 
+𝑃𝑐(𝑡)
+𝑃𝑏(𝑡) and 
+𝑃𝑑(𝑡)
+𝑃𝑐(𝑡) is plotted together with 
+horizontal reference levels corresponding to 
+5
+3 and 2, respectively. 
+• Figure 4 — Maximum eccentricity: The maximum eccentricity 𝑒𝑝,max is summarized for each planet 
+and realization to facilitate comparison of the dynamical response among the three simulations.  
+A.9. Pipeline Summary 
+The complete computational sequence can therefore be summarized as: 
+Input parameters → Randomized initial phases → N-body initialization → WHFast integration
+→ Orbital-element extraction 
+followed by 
+Resonance-angle calculation → Period-ratio analysis → Stability diagnostics → Cross-realization comparison

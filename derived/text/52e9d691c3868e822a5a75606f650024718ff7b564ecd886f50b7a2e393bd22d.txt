@@ -1,0 +1,986 @@
+===== PAGE 1 =====
+Prepared for submission to JINST
+Real-time Signal Detection for Cyclotron Radiation
+Emission Spectroscopy Measurements using Antenna
+Arrays
+The Project 8 collaboration
+A. Ashtari Esfahani𝑎 S. Böser𝑏 N. Buzinsky𝑎 M. C. Carmona-Benitez𝑐 C. Claessens𝑎
+L. de Viveiros𝑐 M. Fertl𝑏 J. A. Formaggio𝑑 B. T. Foust𝑒 J. K. Gaison𝑒 M. Grando𝑒
+J. Hartse𝑎 K. M. Heeger 𝑓 X. Huyan𝑒 A. M. Jones𝑒 B. J. P . Jones𝑔 K. Kazkazℎ
+B. H. LaRoque𝑒 M. Li𝑑 A. Lindman𝑏 A. Marsteller𝑎 C. Matthé𝑏 R. Mohiuddin𝑖 B. Monreal𝑖
+B. Mucogllava𝑏 R. Mueller𝑐 A. Negi𝑔 J. A. Nikkel 𝑓 E. Novitski𝑎 N. S. Oblath𝑒 M. Oueslati𝑗
+J. I. Peña𝑑 W. Pettus𝑗 R. Reimann𝑏 R. G. H. Robertson𝑎 G. Rybka𝑎 L. Saldaña𝑓
+P . L. Slocum𝑓 J. Stachurska𝑑 Y.-H. Sun𝑖 P . T. Surukuchi𝑓 J. R. Tedeschi𝑒 A. B. Telles𝑓
+F. Thomas𝑏 L. A. Thorne𝑏 T. Thümmler𝑘 W. Van De Pontseele𝑑 B. A. VanDevender𝑒,𝑎
+T. E. Weiss𝑓 T. Wendler𝑐 A. Ziegler, 𝑐,1
+𝑎Center for Experimental Nuclear Physics and Astrophysics and Department of Physics, University of
+Washington, Seattle, WA 98195, USA
+𝑏Institute for Physics, Johannes Gutenberg University Mainz, 55128 Mainz, Germany
+𝑐Department of Physics, Pennsylvania State University, University Park, PA 16802, USA
+𝑑Laboratory for Nuclear Science, Massachusetts Institute of Technology, Cambridge, MA 02139, USA
+𝑒Pacific Northwest National Laboratory, Richland, WA 99354, USA
+𝑓Wright Laboratory, Department of Physics, Yale University, New Haven, CT 06520, USA
+𝑔Department of Physics, University of Texas at Arlington, Arlington, TX 76019, USA
+ℎLawrence Livermore National Laboratory, Livermore, CA 94550, USA
+𝑖Department of Physics, Case Western Reserve University, Cleveland, OH 44106, USA
+𝑗CenterforExplorationofEnergyandMatterandDepartmentofPhysics,IndianaUniversity,Bloomington,
+IN 47405, USA
+𝑘Institute for Astroparticle Physics, Karlsruhe Institute of Technology, 76021 Karlsruhe, Germany
+E-mail: ziegler@psu.edu
+1Corresponding author.
+arXiv:2310.02112v1  [physics.ins-det]  3 Oct 2023
+
+===== PAGE 2 =====
+Abstract: Cyclotron Radiation Emission Spectroscopy (CRES) is a technique for precision
+measurement of the energies of charged particles, which is being developed by the Project 8
+Collaboration to measure the neutrino mass using tritium beta-decay spectroscopy. Project 8 seeks
+to use the CRES technique to measure the neutrino mass with a sensitivity of 40 meV, requiring
+a large supply of tritium atoms stored in a multi-cubic meter detector volume. Antenna arrays
+are one potential technology compatible with an experiment of this scale, but the capability of an
+antenna-based CRES experiment to measure the neutrino mass depends on the efficiency of the
+signal detection algorithms. In this paper, we develop efficiency models for three signal detection
+algorithmsandcomparethemusingsimulationsfromaprototypeantenna-basedCRESexperiment
+as a case-study. The algorithms include a power threshold, a matched filter template bank, and
+a neural network based machine learning approach, which are analyzed in terms of their average
+detection efficiency and relative computational cost. It is found that significant improvements in
+detection efficiency and, therefore, neutrino mass sensitivity are achievable, with only a moderate
+increase in computation cost, by utilizing either the matched filter or machine learning approach in
+placeofapowerthreshold,whichisthebaselinesignaldetectionalgorithmusedinpreviousCRES
+experiments by Project 8.
+Keywords: Triggerconceptsandsystems(hardwareandsoftware),Triggeralgorithms,Spectrom-
+eters, Microwave Antennas
+
+===== PAGE 3 =====
+Contents
+1 Introduction 1
+2 Signal Detection with Antenna Array CRES 2
+2.1 Antenna Array and Data Rate Estimates 2
+2.2 Real-time Signal Detection 4
+3 Signal Detection Algorithms 7
+3.1 Power Threshold 8
+3.2 Matched Filtering 9
+3.3 Machine Learning 12
+4 Methods 13
+4.1 Data Generation 13
+4.2 Ensemble Averaging of Distributions 14
+4.3 Template Bank Mean Match Estimation 14
+4.4 CNN Training and Data Augmentation 15
+5 Results and Discussion 17
+5.1 Trigger Classification Performance 17
+5.2 Computational Cost and Hardware Requirements 18
+6 Conclusion 20
+A Derivation of the Matched Filter Score PDF 21
+1 Introduction
+Cyclotron Radiation Emission Spectroscopy (CRES) is a technique for measuring the kinetic
+energies of charged particles by observing the frequency of the cyclotron radiation that is emitted
+as they travel through a magnetic field [1, 2]. The Project 8 Collaboration is developing the CRES
+technique as a next-generation approach to tritium beta-decay endpoint spectroscopy for neutrino
+mass measurement. Recently, Project 8 has performed the first CRES-based measurement of the
+tritium beta-decay energy spectrum and neutrino mass [3, 4].
+PreviousCRESmeasurementshaveutilizedrelativelysmallvolumesofradiationsourcegasthat
+aredirectlyintegratedwithawaveguidetransmissionline,whichpropagatesthecyclotronradiation
+emitted by magnetically trapped electrons to a cryogenic amplifier. While this technology has had
+demonstrable success, it is not a feasible option for scaling up to larger measurement volumes. In
+particular, the goal of the Project 8 Collaboration is to use CRES combined with atomic tritium to
+measure the neutrino mass with a 40 meV sensitivity. Achieving this sensitivity goal will require
+– 1 –
+
+===== PAGE 4 =====
+a multi-cubic-meter scale measurement volume to obtain the required event statistics in the tritium
+beta-spectrum endpoint region; hence, there is a need for new techniques to enable large volume
+CRES measurements for future experiments.
+Oneapproachistouseantennastocollectaportionofthecyclotronradiationemittedbytrapped
+electrons [5, 6]. A promising design is an inward-facing uniform circular array that surrounds a
+cylindricalcontainmentvolume. Increasingthesizeoftheantennaarraybyaddingadditionalrings
+ofantennasalongthelongitudinalaxis,allowsonetogrowtheexperimentvolumeuntilasufficient
+amount of tritium gas can be observed by the array. A challenging aspect of this approach is that
+the total radiated power emitted by an electron near the tritium spectrum endpoint is on the order
+of 1 fW or less in a 1 T magnetic field. Because the CRES signal power and information is spread
+across the antenna array, detecting the presence of a CRES signal and determining the electron’s
+kinetic energy requires reconstructing the entire array output over the duration of the event, posing
+a significant data acquisition and signal reconstruction challenge.
+Previous measurements with the CRES technique have utilized a threshold on the frequency
+spectrum formed from a segment of time-series data. This algorithm relies on the detection of a
+frequencypeakabovethethermalnoisebackground,whichlimitsthekinematicparameterspaceof
+electrons available for reconstruction (see Section 2.2). Although a trigger based on the amplitude
+ofthefrequencyspectrumwasadequateforpreviousProject8experiments, thisapproachdoesnot
+provide sufficient detection efficiency for future CRES-based measurements of the neutrino mass.
+Better efficiency is possible by taking advantage of the deterministic CRES signal structure with
+a matched filter or machine learning based classifier [7]. In order to evaluate the relative gains in
+efficiencythatcomefromutilizingthesealgorithmsforantennas,analyticalmodelsthatdescribethe
+detectionperformanceofapowerthresholdandmatchedfilterclassifieraredeveloped. Inaddition,
+a basic convolutional neural network (CNN) is implemented and tested as a first step towards the
+development of neural-network based classifiers for antenna array based CRES measurements.
+These results allow for a comparison between the estimated detection efficiencies of each of these
+methods, which are weighed against the associated computational costs for real-time applications.
+The outline of this paper is as follows. Section 2 is an overview of a prototype antenna
+array CRES experiment, and describes the approach to real-time signal identification. Section 3
+develops models for the power threshold and matched filter algorithms and introduces the machine
+learning approach and CNN architecture. Section 4 describes the process for generating simulated
+CRES signal data and the details of training the CNN. Finally, Section 5 compares the signal
+classification accuracy for the three approaches and discusses the relevant trade-offs in terms of
+detection efficiency and computational cost.
+2 Signal Detection with Antenna Array CRES
+2.1 Antenna Array and Data Rate Estimates
+InordertoexplorethepotentialofantennaarrayCRESforneutrinomassmeasurement,theProject
+8CollaborationhasdevelopedaconceptualdesignforaprototypeantennaarrayCRESexperiment
+[5,8],calledtheFree-spaceCRESDemonstratororFSCD(seeFigure1). TheFSCDdesignconsists
+of a single ring of antennas, which is the simplest form of a uniform circular array configuration,
+– 2 –
+
+===== PAGE 5 =====
+(a) Top-down view.
+ (b) Side view.
+Figure 1: An illustration of the conceptual design for the FSCD. The antenna array geometry
+consistsofa20cminteriordiameterwith60independentantennachannelsarrangedevenlyaround
+the circumference. The nominal antenna design is sensitive to radiation in the frequency range
+of 25-26 GHz, which corresponds to the cyclotron frequency of electrons emitted near the tritium
+beta-spectrumendpointina0.96Tmagneticfield. Thearrayislocatedatthecenterofthemagnetic
+trap produced by a set of current-carrying coils.
+to surround a radio-frequency (RF) transparent tritium gas vessel. A stand-alone version of this
+antenna array has been built and tested by the Project 8 collaboration [9] to validate simulations
+of the array radiation pattern and beamforming algorithms [10]. In the FSCD the antenna array is
+positioned at the center of the magnetic trap formed by a set of electromagnetic coils, which create
+a local minimum in the magnetic field with a flat central region and steep walls in the radial and
+axial directions. The multi-coil trap design produces a trap with a larger volume than a two-coil
+bathtub trap or the single-coil traps used in the Project 8 Phase II experiment [3].
+Whenanelectronistrappeditsmotionconsistsofthreeprimarycomponents. Thecomponent
+with the highest frequency is the cyclotron orbit whose frequency is determined by the size of
+the background magnetic field. The FSCD design assumes a background magnetic field value of
+approximately0.96T,whichresultsincyclotronfrequenciesofapproximately26GHzforelectrons
+withkineticenergiesnearthetritiumbeta-spectrumendpoint. Thecomponentwiththenexthighest
+frequency is the axial oscillation experienced by electrons with pitch angles1 of less than90◦ as
+they move back and forth between the trap walls [11]. Typical oscillation frequencies are on the
+order of∼ 10 MHz, which results in an oscillation period that is a factor of∼ 102 smaller than
+the observation time needed for precise measurement of the cyclotron frequency. Therefore, the
+axial extent of the electron’s motion is unknown, and the electron is treated as if it is located in
+the average axial position at the bottom of the magnetic trap. The component of motion with the
+1Pitch angle is defined as the angle of the particle’s total momentum with respect to the local magnetic field.
+– 3 –
+
+===== PAGE 6 =====
+smallest frequency is the grad-B drift caused by radial field gradients in the trap, producing an
+orbit of the electron around the central axis of the trap with a frequency on the order of a few kHz,
+dependent on the pitch angle and the radial position of the electron.
+Each component of motion influences the shape of the cyclotron radiation signals received
+by the antenna array, therefore, the data acquisition (DAQ) system must be properly designed in
+order to resolve the effects of the cyclotron, pitch angle, and grad-B motions on the signal shape.
+Frequencydown-conversionallowsforsamplingoftheCRESsignalswithabandwidthof200MHz,
+which must be large enough to contain all sidebands produced by pitch angle modulation. The
+noise temperature for the FSCD can be estimated using RF link-budget analysis, which depends
+upon the physical temperature of the experiment as well as the noise temperature of the cyrogenic
+amplifiers. The analysis presented in this paper assumes an effective system noise temperature of
+≈ 10 K, which is achievable with cyrogenic temperatures and low-noise commercially-available
+HEMT amplifiers.
+Figure 2: A block diagram illustration of the real-time signal detection algorithm proposed for
+antenna array CRES reconstruction.
+A design goal for the FSCD DAQ system is to enable a significant portion of the CRES event
+reconstructiontooccurinreal-time. TheestimateddatavolumegeneratedbytheFSCDis1exabyte
+of raw data per year of operation, with the nominal array size of 60 antennas sampled at 200 MHz,
+which would be prohibitive to store for offline processing. Therefore, it is ideal to perform some
+CRES event reconstruction in real-time so that it is possible to save a reduced form of the data for
+offline analysis.
+The first step of the real-time reconstruction would be a real-time signal detection algorithm,
+which is the focus of this paper. The basic approach consists of three operations performed on
+the time-series data blocks including digital beamforming, a short-time Fourier transform (STFT),
+and a binary classification algorithm to distinguish between data that consists of signal plus noise
+(Signal) and data that is purely noise (see Figure 2).
+2.2 Real-time Signal Detection
+The first step in the real-time detection algorithm is digital beamforming, which is a phased
+summation of the signals received by the array (see Figure 3). The phase shifts correspond to
+the path length differences between a spatial beamforming position and each antenna such that,
+when there is an electron located at the beamforming position, all the signals received by the array
+constructively interfere. Since one does not know a priori where an electron will be produced in
+thedetector, agridofbeamformingpositionsisdesignedtocovertheentireazimuthalplanewhere
+electronscanbetrapped. Thephasedsummationisperformedforallpointsinthegridateachtime
+– 4 –
+
+===== PAGE 7 =====
+Figure 3: An illustration of the digital beamforming procedure. The blue arrow indicates the
+distance from the beamforming position to the antenna. In the configuration depicted the actual
+position of the electron matches the beamforming position, therefore, one expects constructive
+interference when the phase shifted signals are summed. To prevent the electron’s grad-B motion
+from moving the electron off of the beamforming position, the beamforming phases include time-
+dependence to follow the trajectory of the electron in the magnetic trap.
+step. As discussed in Section 2.1, the axial oscillation of the electrons prevents one from resolving
+itspositionalongthez-axis,therefore,thebeamforminggridneedonlycoverthepossiblepositions
+of the electron in the two-dimensional plane defined by the antenna array.
+Mathematically, digital beamforming can be expressed as
+𝑦𝑖[𝑛]=
+𝑁ant∑︁
+𝑗=1
+Φ𝑖𝑗[𝑛]𝑥𝑗[𝑛], (2.1)
+where𝑥𝑗[𝑛] isthevoltagesampledatantenna 𝑗 attime 𝑛,Φ𝑖𝑗[𝑛] isamatrixelementfromthetime-
+dependent beamforming phase shift matrix, and𝑦𝑖[𝑛] is the summed time-series for beamforming
+position𝑖. The elements of the beamforming phase shift matrix can be expressed as a weighted
+complex exponential
+Φ𝑖𝑗[𝑛]= 𝐴𝑖𝑗[𝑛] exp  𝑖𝜙𝑖𝑗[𝑛], (2.2)
+where the weight𝐴𝑖𝑗 accounts for the relative power increase for antennas that are closer to the
+position of the electron, and𝜙𝑖𝑗 is the total beamforming phase shift for the𝑗-th antenna and the
+𝑖-th beamforming position.
+– 5 –
+
+===== PAGE 8 =====
+The beamforming phase shift is a sum of two terms
+𝜙𝑖𝑗[𝑛]= 2𝜋𝑑𝑖𝑗[𝑛]
+𝜆 +𝜃𝑖𝑗[𝑛], (2.3)
+where the first term is the phase shift originating from the path length difference (𝑑𝑖𝑗[𝑛]) between
+thebeamformingandantennapositions,whicharerepresentedbythevectors (𝑟𝑗,𝜃 𝑗)and(𝑟𝑖,𝜃𝑖[𝑛])
+(see Figure 3), and the second term is the angular separation (𝜃𝑖𝑗[𝑛]) of the two positions. The
+angular separation enters into the beamforming phase due to an effect caused by the circular
+cyclotron orbit of the electron that produces radiation whose phase is linearly dependent on the
+relative azimuthal position of the antenna [12, 13]. The time-dependence of the beamforming
+phases corrects for the effects of the grad-B drift, which cause the guiding centers of electrons to
+orbitthecenterofthemagnetictrap. Thecorrectionaddsalineartime-dependencetotheazimuthal
+beamforming position,
+𝜃𝑖𝑗[𝑛]=𝜃𝑗−𝜃𝑖[𝑛]=𝜃𝑗−𝜔∇𝐵𝑡[𝑛]+ 𝜃𝑖[0], (2.4)
+where𝜃𝑗 is the fixed azimuthal position of antenna𝑗,𝜃𝑖[0] is the starting azimuthal coordinate of
+the beamforming position,𝑡[𝑛] is the time vector, and𝜔∇𝐵 is the grad-B drift frequency, which
+allows the beamforming phases to track the XY-position of the guiding center. Predicting accurate
+values of𝜔∇𝐵 for a specific trap and set of kinematic parameters can be done with simulations,
+which are performed using the Locust software package [14] developed by Project 8.
+Figure4: FrequencyspectraofsimulatedCRESeventsintheFSCDmagnetictrapafterbeamform-
+ing. The depicted frequency range has been down-converted using a local oscillator frequency of
+25.86GHz. Thesignalofa 90◦ electronconsistsofasinglefrequencycomponentthatisclearlyde-
+tectableusingapowerthresholdonthefrequencyspectrum. Thispowerthresholdremainseffective
+for signals with relatively large pitch angles such as89.0◦, which are composed of a main carrier
+and a few small sidebands. Signals with smaller pitch angles, below about88.5◦, are dominated
+by sidebands such that no single frequency component can be distinguished from the noise with
+sufficient statistical confidence using a power threshold.
+– 6 –
+
+===== PAGE 9 =====
+After digital beamforming, a STFT is applied to the summed time-series to obtain the signal
+frequencyspectrum(seeFigure4). ThesparsenessofCRESsignalsinthefrequencydomainmakes
+this representation better than the time domain for the purposes of signal detection. The frequency
+spectraofCRESsignalsarewell-approximatedbyafrequencyandamplitudemodulatedsinusoidal
+whose carrier frequency increases as a linear chirp [11]. The modulation is caused by the axial
+oscillationoftheelectroninthemagnetictrap,andthelinearchirpiscausedbytheenergylossdue
+to cyclotron radiation, which results in a relatively slow increase in the frequency components of
+theCRESsignalovertime. AtypicalCRESsignalincreasesinfrequencybyapproximately15kHz
+duringthestandardFourieranalysiswindowof40.96 𝜇sec,whichissmallerthanthefrequencybin
+width for a 200 MHz sample rate. Therefore, when considering a single frequency spectrum it is
+justifiable to neglect the effects of the linear frequency chirp.
+The majority of the CRES signal power for electrons in the FSCD trap is contained in a single
+frequency component when the electron has a pitch angle≳ 88.5◦. The remaining signal power
+is distributed between a small number of sidebands with amplitudes proportional to the electron’s
+axial modulation (see Figure 4). Signal detection for these pitch angles is straightforward using a
+simple power threshold on the STFT, since the amplitude of the main signal peak is well above the
+thermal noise spectrum. However, as the pitch angle of the electron is decreased below88.5◦, the
+maximum amplitude of the frequency spectrum becomes comparable to typical noise fluctuations.
+At this point, the power threshold trigger is no longer able to distinguish between signal and noise
+leadingtoareductionindetectionefficiency,whichisdirectlylinkedtotheneutrinomasssensitivity
+of the FSCD. Because the distribution of electron pitch angles is effectively uniform, utilizing a
+signal detection algorithm that can improve efficiency for pitch angles less than88.5◦ can lead to
+improvements in the neutrino mass sensitivity of the FSCD.
+3 Signal Detection Algorithms
+Modeling detection performance requires one to pose the signal detection problem in a consistent
+manner. The approach taken here uses the frequency spectra obtained from a STFT applied to
+beamformed time-series from the FSCD to perform a binary hypothesis test. Mathematically, this
+is expressed as,
+H0 :𝑦[𝑛]=𝜈[𝑛] (3.1)
+H1 :𝑦[𝑛]=𝑥[𝑛]+ 𝜈[𝑛]. (3.2)
+Under hypothesisH0 the vector representing the frequency spectrum (𝑦[𝑛]) is composed only of
+complex white Gaussian noise (cWGN,𝜈[𝑛]) with total variance𝜏, and under hypothesisH1 the
+frequency spectrum is composed of a CRES signal (𝑥[𝑛]) with added cWGN. The dominant noise
+source for the FSCD is expected to be thermal Nyquist-Johnson noise, which is well approximated
+by a cWGN distribution. The hypothesis test is performed by calculating the ratio between the
+log-likelihood probability distributions for the classifier underH1 andH0, which is the standard
+Neyman-Pearson approach to hypothesis testing [15]. The output of the log-likelihood ratio test is
+called the test statistic, which is used to assign the data as belonging to the noise or signal classes
+using a decision threshold on the test statistic value.
+– 7 –
+
+===== PAGE 10 =====
+In practice, the decision threshold is selected by finding the value of the test statistic that
+guarantees a tolerable rate of false positives. Given this false positive rate (FPR), one attempts to
+find a classifier that maximizes the true positive rate (TPR), which is the probability of correctly
+identifying if a piece of data contains a signal. Because FSCD signal classifiers will be used to
+evaluate the spectra of𝑂(102) beamforming positions every 40.96𝜇sec, there is a requirement
+that the signal classifiers with FPR significantly smaller than 1% to minimize the number of false
+positives that must be filtered out in later stages of the CRES signal reconstruction chain.
+3.1 Power Threshold
+The power threshold detection algorithm uses the maximum amplitude of the frequency spectrum
+as the detection test statistic. Consider theH0 hypothesis where the signal is pure cWGN. The
+performanceofthepowerthresholdcanbemodeledbyfirstanalyzingasinglebininthefrequency
+spectrum. The probability that the amplitude of a frequency bin falls below the decision threshold
+is given by the Rayleigh cumulative distribution function (CDF),
+Ray(|𝑧|;𝜏)= 1− exp
+
+−|𝑧|2/𝜏
+
+, (3.3)
+where|𝑧| represents the value of the decision threshold on the spectrum amplitude, and𝜏 is the
+cWGN variance (defined below, Equation 3.5). Because the noise samples are independent and
+identically distributed (IID), the probability that all bins in the frequency spectrum fall below the
+threshold is the joint CDF formed by the product of each individual frequency bin CDF,
+𝐹0(|𝑧|;𝜏,𝑁 bin)= Ray(|𝑧|;𝜏)𝑁bin. (3.4)
+Finally, the PDF for the power threshold classifier can be obtained by differentiating Equation 3.4.
+The noise of a beamformed frequency spectrum is a summation of all the noise samples from
+the array channels. The received Nyquist-Johnson noise power for a single antenna is given by
+𝑘𝐵𝑇Δ𝑓,where 𝑘𝐵 isBoltzmann’sconstant, 𝑇 isthesystemnoisetemperature,and Δ𝑓 isthesample
+rate. The beamformed noise variance is increased by a factor of𝑁ch, where𝑁ch is the number
+of antennas, caused by the summation of incoherent noise samples, however, the noise variance
+per frequency bin is decreased by a factor equal to the number of samples in the STFT (𝑁FFT).
+The amplitude weights applied during beamforming also affect the noise variance in a position
+dependent way, since the analysis presented in this work focuses on only a single spatial position
+(see Section 4), it was decided to weigh the signal in each channel equally, which results in the
+same noise variance for all beamforming positions. The final expression for the noise variance that
+describes a beamformed frequency spectrum is given by
+𝜏=𝑘𝐵𝑇Δ𝑓𝑁 ch𝑅/𝑁FFT, (3.5)
+where the system impedance (𝑅) has been used to convert from power to voltage-squared.
+Similar toH0, the power threshold classifier distribution underH1 is calculated by combining
+thedistributionsofindividualfrequencybins; however, thefrequencybinsthatcontainsignalmust
+be treated separately. The probability that the amplitude of a frequency bin which contains both
+signal and noise is below the decision threshold is described by a Rician CDF [15]
+Rice(|𝑧|;𝜏,|𝑥𝑘|) = 1−
+∫ ∞
+|𝑧|
+𝑑| ˜𝑧| 2| ˜𝑧|
+𝜏 exp
+
+−| ˜𝑧|2+|𝑥𝑘|2
+𝜏
+
+I0
+ 2| ˜𝑧||𝑥𝑘|
+𝜏
+
+, (3.6)
+– 8 –
+
+===== PAGE 11 =====
+Figure 5: PDFs of the power threshold test statistic for CRES signals with various pitch angles as
+wellasthePDFforthenoise-only( H0)case. Asthepitchangleisdecreasedthe H1 PDFsconverge
+towards the noise PDF, which indicates that the power threshold is unable to distinguish between
+signal and noise.
+where|𝑥𝑘| defines the amplitude of the𝑘-th component of the signal frequency spectrum. The
+CDFthatdescribestheprobabilitythattheentirespectrumfallsbelowthedecisionthresholdisthe
+product of both signal and noise CDFs,
+𝐹1(|𝑧|;𝜏, x𝑠,𝑁 bin,𝑁𝑠)= Ray(|𝑧|;𝜏)𝑁bin−𝑁𝑠
+𝑁𝑠Ö
+𝑘=1
+Rice(|𝑧|;𝜏,|x𝑠[𝑘]|). (3.7)
+ThefirsthalfofEquation3.7isthecontributionfromthebinsinthefrequencyspectrumthatcontain
+onlynoise,andthesecondhalfistheproductoftheRicianCDFsforthefrequencybinsthatcontain
+signalpeakswithnoise-freeamplitudesof x𝑠 =
+
+𝑥1,...,𝑥 𝑁𝑠
+
+,where 𝑁𝑠 isthenumberofnon-zero
+frequency peaks in the CRES signal spectrum. Figure 5 shows plots of example PDFs underH1
+andH0.
+3.2 Matched Filtering
+TheshapeofaCRESsignalbetweenrandomscatteringeventswiththebackgroundgasiscompletely
+determinedbytheinitialconditionsoftheelectron,whichimpliesthatitispossibletoapplymatched
+filteringasasignaldetectionalgorithm. Amatchedfilterusestheshapeoftheknownsignal,which
+is called a template, to filter the incoming data by computing the convolution between the signal
+andthedata[15]. Thematchedfilteristheoptimaldetector,whichmeansitachievesthemaximum
+TPR for a particular FPR, under the assumption that the signal is perfectly known and the noise
+is Gaussian distributed. Since CRES signals have an unknown shape but are deterministic, the
+matched filter can be applied by using simulations to generate a large number of signal templates,
+called a "template bank", which spans the parameter space of possible signals. Then at detection
+time, the template bank is used to identify signals by performing the matched filter convolution for
+each template in an exhaustive search.
+– 9 –
+
+===== PAGE 12 =====
+CRES signals are highly periodic in nature. In such cases, it is advantageous to utilize
+the convolution theorem to replace the matched filter convolution with an inner product in the
+frequency-domain. Using the convolution theorem, the matched filter test statistic is given by
+T = max
+𝑚
+
+𝑁bin∑︁
+𝑛=0
+ℎ†
+𝑚[𝑛]𝑦[𝑛]
+, (3.8)
+where ℎ†
+𝑚[𝑛] is the complex conjugate of the𝑚-th signal template and𝑦[𝑛] is the frequency
+spectrum of the beamformed time-series.
+Single Template
+TheapproachtoderivingPDFsthatdescribethematchedfiltertemplatebankwillbetofirstderive
+PDFs forH0 andH1 in the case of a single template and use these solutions to create PDFs that
+describe the multi-template case. In the case when the template bank consists of only a single
+template it is possible to derive an exact analytical form for the PDF. Consider theH1 case, where
+the equation describing the matched filter test statistic, also known as the matched filter score,
+becomes
+T =
+
+𝑁bin∑︁
+𝑛=0
+ℎ†[𝑛]𝑦[𝑛]
+. (3.9)
+Each noisy frequency bin is a sum of signal and cWGN, which means𝑦[𝑛] is also a Gaussian
+distributed variable. Therefore, the value of the inner product between the template and the data is
+also a complex Gaussian variable; and, since the matched filter score is the magnitude of this inner
+product, it must follow a Rician distribution.
+In Appendix A the exact form of the matched filter score PDF is derived. The solution is
+𝑃1(𝑤;T0)= 2𝑤 exp
+
+−
+
+𝑤2+T 2
+0
+
+𝐼0(2𝑤T0), (3.10)
+where 𝐼0 is the zeroth-order modified Bessel function of the first kind and𝑤 is the value of
+the matched filter score decision threshold. The shape of the matched filter score distribution is
+controlled by the parameterT0, which is effectively the value of the matched filter score if the data
+contained no noise. Without noise, the data vector reduces to the signal,x, in which case Equation
+3.9 becomes the magnitude of an inner product between two vectors. The magnitude of an inner
+productcanbeexpressedintermsofthemagnitudesofthevectorsandaconstantthatdescribesthe
+degree of orthogonality between them. Applying this to Equation 3.9, one obtains
+T0=
+h†· x
+=|h|| x|Γ, (3.11)
+whereΓ is a number that ranges from 0 to 1 and describes the orthogonality betweenh and x. Γ
+effectively quantifies how well the template matches the unknown signal in the data.
+The matched filter score PDF underH0 is readily obtained from Equation 3.10 by setting the
+value ofT0 to zero, since the data contains no signal in the noise case. Doing this, one obtains a
+Rayleigh distribution,
+𝑃0(𝑤)= 2𝑤 exp
+
+−𝑤2
+
+. (3.12)
+– 10 –
+
+===== PAGE 13 =====
+Multi-template
+Equations 3.10 and 3.12 describe the behavior of the matched filter test statistic underH0 andH1
+for a single template. However, defining a PDF that describes the matched filter test statistic in
+the case of multiple templates is in general a mathematically intractable problem, since there is no
+guaranteeoforthogonalitybetweenmatchedfiltertemplates. Thisleadstocorrelationsbetweenthe
+matched filter scores of different templates, because only one sample of noise is used to compute
+the matched filter scores of the template bank.
+In order to proceed, it is assumed that the matched filter scores for all templates are IID
+variables, which allows one to ignore correlations between templates. The overall effect of this
+will be an underestimate of the performance of the matched filter by over-estimating the required
+number of templates and the magnitude of the statistical trials penalty. The magnitude of this
+underestimation,whileitcannotbepredictedinadvance,canbequantifiedusingMonte-Carlotests
+of the matched filter templates and randomly generated test signals.
+Figure 6: Example PDFs that describe the matched filter template bank test statistic for CRES
+signalswithvariouspitchangles,aswellastheestimatedPDFforthenoise-onlycase. 105 matched
+filter templates and perfect match between signal and template, i.e.Γ =1, is assumed. One can
+observethatthereisgreaterseparationbetweenthesignalPDFsandthenoisePDFforthematched
+filtertemplatebankcomparedtothepowerthreshold. Therefore,oneexpectsthatthematchedfilter
+will have generally better detection efficiency than the power threshold.
+Theprobabilitythatthematchedfilterscorefallsbelowthedecisionthresholdunder H0isagain
+givenbytheCDF.Becauseoftheassumptionthatmatchedfilterscoresfromdifferenttemplatesare
+independent, the probability that the matched filter score for all templates falls below the threshold
+value is simply the joint CDF, which is
+𝐹0(𝑤)=
+
+1−𝑒−𝑤2𝑁𝑡
+, (3.13)
+where𝑤 isthematchedfilterscorethresholdand 𝑁𝑡 isthenumberoftemplates. Oneshouldexpect
+that the distribution describing the maximum score of the matched filter template bank depends on
+– 11 –
+
+===== PAGE 14 =====
+𝑁𝑡,becausewithmoretemplatesthereisagreaterchanceofarandommatchbetweenthetemplate
+and noise data.
+TheCDFthatdescribes H1 isderivedbystartingwiththeCDFofthebestmatchingtemplate.
+The best matching template is simply the template that yields the largest matched filter score. The
+score of the best template is defined by
+Tbest= max
+𝑚
+(|h𝑚|| x|Γ𝑚)=|hbest|| x|Γbest. (3.14)
+wherevariables hbestandΓbestarethetemplateandcorrespondingmatchofthebest-fittingtemplate.
+A key performance parameter for a matched filter template bank is the mean value ofΓbest over the
+parameter space covered by the template bank. A higher density of matched filter templates will
+result in a higherΓbest and lead to better detection efficiency at the cost of a larger template bank.
+ThefinalformoftheCDFunder H1isthejointdistributionbetweenthebestmatchingtemplate
+CDF and the CDFs of all other templates. By the orthogonality assumption described above, the
+matched filter scores for all other templates are treated as negligible (T0≈ 0). Therefore, the CDF
+for the matched filter template bank underH1 is simply
+𝐹1(𝑤;Tbest)=𝐹best(𝑤;Tbest)
+
+1−𝑒−𝑤2𝑁𝑡
+. (3.15)
+Figure 6 shows plots of the matched filter template bank PDFs underH0 andH1.
+3.3 Machine Learning
+In this paper we specifically focus on the potential of Convolutional Neural Networks (CNN) as
+machine learning based signal classifiers at the trigger level. CNNs are constructed using a series
+ofconvolutionallayers,eachcomposedofasetoffiltersthatareconvolvedwiththeinputdata. The
+individual convolutional filters can be viewed heuristically as matched filter templates [16] that are
+learnedfromasetofsimulateddataratherthanbeingdirectlygenerated. Thisopensthepossibility
+offindingamoreefficientrepresentationofthematchedfiltertemplatesduringthetrainingprocess
+that can potentially reduce computational cost at inference time while retaining good classification
+performance.
+The machine learning approach is distinct from the power threshold and matched filtering in
+that there is no attempt to manually engineer a test statistic that can be computed from the input
+data. Instead, a test statistic is calculated by constructing a differentiable function that maps the
+complex frequency series to a binary classification as signal or noise. The differentiable function
+is trained using supervised learning to correctly perform this mapping. The test statistic for the
+machine learning classifier is expressed mathematically as
+T =𝐺(y; 𝛀), (3.16)
+where y is the noisy data vector and𝐺(y; 𝛀) is the machine learning model parameterized by the
+weights 𝛀.
+The CNN architecture used for this work is summarized by Table 1. No strategic hyper-
+parameter optimization approach was implemented beyond the manual testing of different CNN
+architecture variations, so this particular model is best viewed as a proof-of-concept rather than
+– 12 –
+
+===== PAGE 15 =====
+Table1: AsummaryoftheCNNmodellayersandparameters. Theoutputofeach1D-Convolution
+and Fully Connected layer is passed through a LeakyReLU activation function and re-normalized
+using batch normalization before being passed to the next layer in the model. The output of the
+final Fully Connected layer in the model is left without activation so that the model outputs can be
+directlypassedtotheBinaryCross-entropylossfunctionusedduringtraining. Thefirstlayerinthe
+network has two input channels for the real and imaginary components of the spectrum.
+Layer Type Input Channels Output Channels Parameters
+1 1D-Convolution 2 15 ( 𝑁kernel= 4,𝑁stride= 1)
+2 Maximum Pooling 15 15 ( 𝑁kernel= 4,𝑁stride= 4)
+3 1D-Convolution 15 20 ( 𝑁kernel= 4,𝑁stride= 1)
+4 Maximum Pooling 20 20 ( 𝑁kernel= 4,𝑁stride= 4)
+5 1D-Convolution 20 25 ( 𝑁kernel= 4,𝑁stride= 1)
+6 Maximum Pooling 25 25 ( 𝑁kernel= 4,𝑁stride= 4)
+7 Fully Connected 3200 512 NA
+8 Fully Connected 512 64 NA
+9 Fully Connected 64 2 NA
+a rigorously optimized design. Numerous model variations were tested, some with significantly
+more layers and convolutions filters per layer, as well as others that were even smaller than the
+architecture in Table 1. Ultimately, the model architecture choice was driven by the motivation to
+findthe minimalmodelwhose classificationperformancewas stillcomparableto thelargerCNN’s
+tested, because of the importance of minimizing computational cost in real-time applications. It
+is possible that more sophisticated machine learning models could improve upon the classification
+results achieved here, but this investigation is left for future work.
+4 Methods
+4.1 Data Generation
+Simulated CRES signals were generated using the Locust simulations package [12, 14]. Locust
+uses the separately developed Kassiopeia package [17] to calculate the magnetic fields produced
+by a user-specified set of current carrying coils along with any specified background magnetic
+fields, resulting in a magnetic trap. Next, Kassiopeia calculates the trajectory of an electron in this
+magneticfieldstartingfromasetofuserspecifiedinitialconditions. TheLocustsoftwarethenuses
+the electron trajectories from Kassiopeia to calculate the resulting electromagnetic fields using the
+Liénard-Wiechert equations, and determines the voltages generated in the antenna array with the
+antenna transfer function. Locust then simulates the down-conversion, filtering, and digitization
+steps resulting in the simulated CRES signals for an electron.
+The shape of the received CRES signal is determined by the initial kinematic parameters,
+including the starting position of the electron, the starting kinetic energy of the electron, and the
+pitch angle. The studies performed here are constrained to a single initial electron position located
+– 13 –
+
+===== PAGE 16 =====
+at(𝑥,𝑦,𝑧 ) =(5, 0, 0) mm. Two datasets are generated using this starting position by varying the
+initial kinetic energy and pitch angle.
+The first dataset consists of a two-dimensional square grid spanning an energy range from
+18575-18580 eV with a spacing of 0.1 eV, and pitch angles from85.5-88.5◦ with a spacing of
+0.001◦, resulting in 153051 signals with a unique energy-pitch angle combination. This dataset is
+intended to represent a matched filter template bank. The upper range of pitch angles is limited
+becauseofthegreaterrelativedetectionefficiencyofthematchedfilterandneuralnetworkclassifiers
+in this pitch angle range.
+The second dataset was generated by randomly sampling uniform probability distributions
+coveringthesameparameterspacetoproduceapproximately50000signalsrandomlyparameterized
+in energy and pitch angle. This dataset provides the training and test data for the machine learning
+approach,andactsasarepresentativesampleofsignalstoevaluatetheperformanceofthematched
+filter template bank.
+Each signal was simulated for a duration of40.96𝜇s or 8192 samples starting at time𝑡 = 0 s.
+This duration represents a single frequency spectrum generated by the STFT. The FSCD antenna
+array has sixty channels, and the output of the Locust simulations are a matrix of array snapshots
+with a size given by the number of channels times the event length (𝑁ch×𝑁sample). The raw data
+from Locust is first summed using digital beamforming and converted to frequency spectra using a
+Fourier transform. The beamforming procedure uses the exact position and grad-B drift correction
+to simplify the comparison between trigger algorithms. Many beamforming positions would be
+usedinpracticeandpotentiallyseveralestimatesofatypical 𝜔∇𝐵 dependingonthevariationofthe
+grad-B drift frequency with pitch angle.
+4.2 Ensemble Averaging of Distributions
+As described above (see Section 4.1), the parameter region of interest spans a 2-dimensional grid
+in energy and pitch angle, and the quantity of interest is the classifier’s overall detection efficiency
+acrossthisrange. Equations3.15and3.7werederivedundertheassumptionthataparticularsignal
+was present in the data. Therefore, in order to describe the overall efficiency of the classifiers, we
+perform an ensemble average of the distributions, given by Equations 3.15 and 3.7, that describe
+detection probabilities for individual electrons in the dataset. From this set of distributions, we
+can obtain a single distribution the describes the overall detection efficiency of the classifier by
+performing an ensemble average. This averaging is performed (see Section 5) using the second
+dataset described in Section 4.1, which is randomly parameterized in energy and pitch angle.
+4.3 Template Bank Mean Match Estimation
+Insection3.2,weintroduced Γbestasafigure-of-meritforamatchedfiltertemplatebank. Generally,
+as the number and density of the matched filter templates is increased towards infinityΓbest→ 1,
+sinceitbecomesincreasinglylikelythatthesignalwillmatchatleastonetemplate. Intheopposite
+extreme, where the template bank contains only one template, thenΓbest≈ 0, since it is unlikely
+thatanyparticulartemplatewillmatcharandomsignalfromtheexperiment. Thesizeofamatched
+filter template bank will always be limited based on practical constraints such as the availability of
+computational resources; therefore, it’s undesirable to use more templates than what is required to
+achieve aΓbest that is close to one.
+– 14 –
+
+===== PAGE 17 =====
+Figure7: Themeanmatchofthematchedfiltertemplatebanktoatestsetofrandomlyparameterized
+signals as a function of the number of templates. The parameter space includes pitch angles from
+85.5− 88.5◦ and energies from18575− 18580eV.
+Inthisworkweelectedtoevaluatethedetectionefficiencyofatemplatebankwhere Γbest= 0.95.
+The number of templates required to achieve this value of mean match was determined by Monte-
+Carlo studies using template banks of different sizes, which were obtained by decimating the
+regularlyspaceddataset(seeSection4.1)withseriesofintegerfactors. Therandomlyparameterized
+signals were used as test signals to calculate the mean match of the template bank by evaluating
+Γbest= 1
+𝑁𝑠
+𝑁𝑠∑︁
+𝑙=1
+Tbest
+T𝑙
+, (4.1)
+where𝑁𝑠 isthenumberoftestsignalsand T𝑙 istheidealmatchedfilterscorefortestsignal 𝑙,which
+is obtained if there is perfect match between signal and template.
+The results of these calculations are summarized by Figure 7, which showsΓbest as a function
+of the number of templates (𝑁𝑡). The linear trend ofΓbest as a function of the logarithm of𝑁𝑡
+indicates that match scales exponentially with the size of the template bank, although this trend
+breaks down at large𝑁𝑡 when match begins to saturate close to unity. Using linear interpolation
+betweenthedatapoints, weidentify ≈ 105 asthenumberof templatesconsistentwith Γbest= 0.95.
+4.4 CNN Training and Data Augmentation
+Therandomdatasetissplitinhalftocreatedistincttrainingandtestdatasetsfortrainingthemodel.
+A randomly selected 20% of the training data is isolated for use as a validation set during the
+training loop. The size of the training, validation, and test datasets are tripled by appending two
+additional copies of the data to increase the sample size of the dataset after data augmentation. A
+different sample of noise is added to the simulation data during the training loop, which prevents
+the model from overtraining on noise features. The training and test datasets contain an equal split
+between signal and noise data, which are randomly shuffled after each training epoch.
+– 15 –
+
+===== PAGE 18 =====
+The Locust simulation data was augmented to make the datasets more representative of actual
+experiment data. As the signals are loaded for training a unique random phase shift is applied.
+Since the simulations are generated using the same initial axial position and cyclotron orbit phase,
+the randomization is an attempt to prevent overtraining on these features. During each training
+epoch the data is randomly shuffled and split into batches of 2500 signals. Each batch of signals
+is then circularly shifted by a random number of frequency bins to simulate a kinetic energy shift
+from−75 to 20 eV, which imitates a dataset with a larger energy range. Next, a sample of cWGN,
+consistent with 10 K Nyquist-Johnson noise, is generated and added to the signal, which prevents
+overtraining on noise features. As a final step, the data is renormalized by the standard deviation
+of the noise so that the range of values in the data is close to[−1, 1], which ensures well-behaved
+back-propagation.
+Figure 8: Histograms of the trained CNN model output from the test dataset. The blue histogram
+shows the model outputs for signal data. The oddly shaped peak near the end is the result of the
+softmax function mapping the long tail of the raw output distribution to the range[0, 1].
+The Binary Cross-entropy loss function is used to compute the loss for each batch of data, and
+the model weights are updated using the ADAM optimizer with a learning rate of5× 10−3. After
+each training epoch, the loss and classification accuracy of the validation dataset are computed to
+monitor for overtraining. It was noticed that because of the relatively high noise power and the
+fact that a new sample of noise was used for each batch, it was nearly impossible to over-train the
+model. Typically, the loss and classification accuracy of the model converged after a few hundred
+training epochs, but the training loop was extended to 3000 epochs to attempt to achieve the best
+possible performance. The training procedure generally took about 24 hrs using a single NVIDIA
+V100 Graphics Processing Unit (GPU) [18].
+After training the model, it was used classify the test dataset and generate histograms of the
+model outputs for both classes of data. The data augmentation procedure for the evaluation of the
+test data mirrors the training procedure without the validation split. Since a random circular shift
+and a new sample of WGN is added to each batch, the testing evaluation loop is run for 100 epochs
+to get a representative sample of noise and circular shifts. The model outputs are passed through a
+– 16 –
+
+===== PAGE 19 =====
+softmax activation and then combined into histograms (see Figure 8).
+5 Results and Discussion
+5.1 Trigger Classification Performance
+Figure 9: ROC curves describing the true positive rate (detection efficiency) for the three signal
+classification algorithms examined in this paper. The matched filter and power threshold curves
+are computed analytically using the distribution functions introduced in Section 3, and the CNN
+curveiscomputednumericallyusingtheclassificationresultsonthetestdataset. Thepercentmatch
+indicated in the legend refers to the value ofΓbest for the template bank.
+Thedetectionperformanceofthesignalclassifierscanbecomparedbycomputingthereceiver
+operating characteristic (ROC) curves (see Figure 9). A single ROC curve is obtained for the
+matched filter and power threshold classifiers by averaging over the distributions for individual
+CRES signals as described in Section 4.2. ROC curves are calculated for the matched filter using
+template banks of two different sizes corresponding to mean matches of 95% and 83%. The ROC
+curve describing the CNN is obtained numerically from the histograms of the model outputs for
+each signal class.
+The true positive rates of the signal classifiers are equivalent to detection efficiency, and
+one sees that for the population of signals with pitch angles< 88.5◦ the power threshold has a
+consistently lower detection efficiency than the CNN and the matched filter. This result might have
+beenpredictedfromthevisualizationofsignalspectrainFigure4,whereitcanbeseenthatanoise
+peak and a signal peak cannot be distinguished with high-confidence at small pitch angles. The
+CNN offers a significant and consistent increase in detection efficiency over the power threshold
+approach.
+If one compares the CNN to the matched filter, it can be seen that the performance of the
+tested network is roughly equivalent to a matched filter detector with a mean match of about 83%,
+which uses approximately2× 104 matched filter templates. The overall best detection efficiency is
+achieved by the matched filter classifier if a large enough template bank is used. The plot displays
+– 17 –
+
+===== PAGE 20 =====
+the ROC curve for a matched filter template bank with 95% mean match, which is achieved with
+approximately 105 templates. Since the matched filter is known to be statistically optimal for
+detecting a known signal in WGN, it is unsurprising that this algorithm has the highest detection
+efficiency.
+AnimportantdifferencebetweenthematchedfilterandCNNalgorithmsisthattheCNNrelies
+upon convolutions as its fundamental calculation mechanism, whereas our implementation of a
+matched filter utilizes an inner product. Since convolution is a translation invariant operation, the
+detection performance of CNN can be extended to a wider range of CRES event kinetic energies
+withlesscostthanthematchedfilter,afeaturethatisexploitedduringtheCNNtrainingbyincluding
+circular translations of the CRES frequency spectra in the training loop. Increasing the range of
+detectable kinetic energies with a matched filter requires a proportional increase in the number
+of templates, which directly translates into increased computational and hardware costs. From
+a practical perspective, the detection algorithm is always limited by the available computational
+hardware, so estimating the relative costs is a key factor in determining their feasibility. A more
+detailed analysis of the relative costs of each of the detection algorithms is performed below.
+5.2 Computational Cost and Hardware Requirements
+Thetrade-offbetweenbetterdetectionefficiencyandcomputationalcostiscommontomanysignal
+detection problems and the FSCD is no exception. Computational costs can be related to actual
+hardware costs by calculating the theoretical amount of computer hardware required to implement
+the signal classifiers for real-time detection. The approach taken here utilizes order of magnitude
+estimates of the theoretical peak performance values for currently available GPUs as a metric.
+This approach underestimates the amount of required hardware, since it is unlikely that any CRES
+detection algorithm could reach the theoretical peak performance of the hardware.
+Since the signal detection algorithms are designed to work using beamformed frequency
+spectra, the computational cost of beamforming combined with a fast Fourier transform (FFT) is
+constantforallclassifiers. Thebeamforminggridisassumedtocontain 𝑁bf beamformingpositions,
+each of which will produce a frequency spectrum containing𝑁bin after the FFT.
+Considering the power threshold classifier, this results in𝑁bin𝑁b frequency bins that must
+be checked every𝑁bin/𝑓s seconds. The 20 cm diameter FSCD array requires𝑁bf≈ 𝑂(102) for
+sufficient coverage and has a sampling frequency𝑓s = 200 MHz with a Fourier analysis window
+of𝑁bin= 8192samples. Therefore the power threshold requires approximately𝑂(1010) FLOPS to
+check in real-time with these parameters.
+Current generations of GPUs have peak theoretical performances in the range of𝑂(1013)−
+𝑂(1014) FLOPS [19], dependent on the required floating-point precision of the computation.
+Therefore, the entire computational needs of a real-time triggering system using a power threshold
+classifier, including digital beamforming and generation of the STFT, could be met by a single
+high-end GPU or a small number of less powerful GPUs. Since triggering is only one step of the
+full real-time signal reconstruction approach, limiting the computational cost of this stage is ideal.
+However, the power threshold classifier does not provided sufficient detection efficiency across the
+entire range of possible signals, which is the primary motivation for exploring more complicated
+triggering solutions.
+– 18 –
+
+===== PAGE 21 =====
+As discussed, the computational cost of the matched filter approach requires counting the
+number of templates that must be checked for each frequency spectra produced by the STFT.
+Computing the matched filter scores requires𝑂(𝑁bf𝑁t𝑁bin) operations, since for each of the
+beamforming positions one must multiply𝑁t templates with a data vector that has length𝑁bin.
+The computation must be performed in a time less-than or equal to𝑁bin/𝑓s to keep up with the
+data generation rate. A 5 eV range of kinetic energies required104 to 105 templates in order for
+the matched filter to exceed the performance of the CNN. The number of templates is expected to
+scale linearly with the total kinetic energy range of interest, therefore,105 to 106 matched filter
+templates would be expected for the nominal 50 eV analysis window of the FSCD. Considering
+this,theestimatedcomputationalcosttoimplementamatchedfilterinaFSCD-scaleexperimentis
+between𝑂(1015) to𝑂(1016) FLOPS, which is𝑂(102) to𝑂(103) high-end GPUs .
+The computational cost of the CNN can be estimated by simply summing the computational
+costsoftheconvolutionsandmatrixmultiplicationsspecifiedbythenetworkarchitectureshownin
+Table 1. Each convolutional layer consists of𝑁in𝑁out𝑁kernel𝐿input floating-point operations, where
+𝑁in is the number of input channels,𝑁out is the number of output channels,𝑁kernel is the size of the
+convolutionalkernel,and 𝐿input isthelengthoftheinputvector,andthefullyconnectedlayerseach
+contribute𝑁in𝑁out operations. Summing all the neural network layers it is estimated that the CNN
+requires𝑂(106) floating point operations to evaluate each frequency spectra; therefore, the total
+computationalcostoftheCNNtriggerisvaluemultipliedbythenumberofbeamformingpositions
+per the data acquisition time, which is𝑂(1013) FLOPS or𝑂(100) GPUs.
+ComparedwiththematchedfiltertemplatebankapproachtheCNNrequires 𝑂(100)to𝑂(1000)
+fewer GPUs to implement, dependent on the exact number of templates used in the template bank.
+The 50 eV kinetic energy range is motivated by the application of these detection algorithms to
+an FSCD-like neutrino mass measurement experiment. However, if a significantly larger range of
+kineticenergiesisrequired,aCNNmaybethepreferreddetectionapproachdespitethelowermean
+detection efficiency due to computational cost considerations.
+Additional experiments with larger CNNs, generated by increasing the depth and width of the
+neural network, were performed. It was observed that these changes provided minimal (≲ 1%)
+improvement in the classification accuracy of the model. A potential reason for this could be the
+sparsenatureofthesignalsinthefrequencydomainandthelowSNR,whichmakesforachallenging
+datasettolearnfrom. Futureworkmightinvestigatemodificationstotheneuralnetworkarchitecture
+suchassparseconvolutions,whichmayimprovetheclassificationaccuracyofthemodelorfurther
+reducethecomputationalcostsofthisapproach. Alternatively,morecomplicatedCNNarchitectures
+such as a ResNet [20, 21] or VGG model may provide improved classification performance over
+a basic CNN. An additional promising area of investigation are recurrent neural networks, which
+may be able to exploit the time-ordered features of the STFT for more accurate signal detection if
+the electron signals last for multiple Fourier transform windows.
+The estimate of the computational costs of the matched filter is somewhat naive if one notices
+that the majority of the values that make up a noise-free CRES frequency spectrum are zero (see
+Figure4). Therefore,themajorityofoperationsinthematchedfilterinnerproductareunnecessary,
+andonecouldinsteadevaluatethematchedfilterinnerproductusingonlythe ≲ 10frequencypeaks
+thatmakeuptheCRESsignal. Thisoptimizationreducesthenumberofoperationsrequiredtocheck
+each template by a factor of𝑂(100) to𝑂(1000), which brings the estimated computational cost of
+– 19 –
+
+===== PAGE 22 =====
+the matched filter in line with the CNN. Although this level of sparsity results in a multiplication
+with very low arithmetic complexity, the resulting sparse matched filter algorithm is still likely to
+be constrained by memory access speed rather than compute speed. Ultimately, the comparison of
+the relative computational and hardware costs between the matched filter and CNN will depend on
+the efficiency of the software implementation and hardware support for neural network and sparse
+matrix calculations, which will need to be determined using real-world benchmarks.
+6 Conclusion
+Increasing the detection efficiency and overall event rate represents a key developmental path
+towardsnewscientificresultsandbroaderapplicationsoftheCREStechnique. Itiswhatmotivates
+both the antenna array detection approach and the development of real-time signal reconstruction
+algorithms. The work presented here demonstrates that gains in detection efficiency are achievable
+byutilizingtriggeringalgorithmsthataccountforthespecificshapeofCRESsignalsinthedetector.
+ThesealgorithmsemphasizetheneedforaccurateandfastmethodsforCRESsimulation,sincethey
+directlycontributetothesuccessofmatchedfiltermethodsbyprovidingawaytogenerateexpected
+signal templates and also serve as a source of training data for machine learning approaches.
+The down-side of more advanced approaches to signal detection and reconstruction is of-
+tentimes the increase in computational resources required to implement them. However, it was
+shown that a CNN of minimal size was able to significantly improve detection performance above
+the baseline power threshold trigger algorithm with a theoretical computational cost of only𝑂(1)
+high-end GPU. This algorithm improves on detection performance while requiring at least a factor
+𝑂(102) less in computer relative to a matched filter template bank, which would be the classical
+approach to signal detection in Gaussian noise. Future work that obtains real-life benchmarks of
+the CNN and matched filter algorithms are required to support these conclusions, but this study
+has indicated that a real-time signal detection algorithm for an antenna array CRES experiment is
+computationally feasible without an extraordinary increase in resources.
+Itisworthemphasizingthat,whilethisreal-timesignaldetectionalgorithmhasbeendeveloped
+specifically for the FSCD experiment, which uses a 60-channel array of antennas, this approach
+allows one to combine the signals from an array with an arbitrary number of receiving elements.
+Therefore, this general procedure could be implemented to perform signal reconstruction with
+close to optimal efficiency, especially if a matched filter classifier is used, for significantly larger
+antenna-based CRES experiments.
+While this work has focused on the real-time detection of CRES signals from antenna arrays,
+these same signal classifiers could be used in CRES experiments utilizing different detector tech-
+nologies, since the same principles of signal detection will apply. For example, previous CRES
+measurements by the Project 8 collaboration that utilized a waveguide gas cell, could in principle
+increase detection efficiency by employing a matched filter or neural network classifier to identify
+trappedelectronswithpitchanglesthataretoosmalltobedetectedbythepowerthresholdapproach.
+Furthermore, alternative CRES detector technologies such as resonant cavities [5] could also see
+similarimprovementsindetectionefficiency,whichisofcrucialimportancetofutureeffortsbythe
+Project 8 collaboration to utilize CRES to measure the neutrino mass.
+– 20 –
+
+===== PAGE 23 =====
+A Derivation of the Matched Filter Score PDF
+The matched filter templateh is a simulated signal (xℎ) with a normalization factor
+h= xℎ√︁
+𝜏|xℎ|2
+, (A.1)
+where 𝜏 is the noise variance. Inserting this into Equation 3.8 and expressing the data as a sum
+between a signal and a cWGN vector yields,
+T = 1√︁
+𝜏|xℎ|2
+
+𝑁bin∑︁
+𝑛=1
+𝑥†
+ℎ[𝑛]𝑥[𝑛]+
+𝑁bin∑︁
+𝑛=1
+𝑥†
+ℎ[𝑛]𝜈[𝑛]
+. (A.2)
+The first term is a scalar product between the signal and template vectors and the second term
+is a complex Gaussian distributed variable with variance one. For the purposes of identifying the
+statistical distribution, it is useful to rewrite the summation describing an inner product
+𝑁bin∑︁
+𝑛=1
+𝑥†
+ℎ[𝑛]𝑥[𝑛]= xℎ· x=|xℎ· x|𝑒𝑖𝜗≤| xℎ|| x|𝑒𝑖𝜗, (A.3)
+the last step utilizes the Cauchy-Schwarz inequality, where equality is guaranteed whenx = xℎ.
+Instead of the inequality it is useful to define a quantity called "match" such that
+|xℎ· x|𝑒𝑖𝜗 =|xℎ|| x|Γ𝑒𝑖𝜗, (A.4)
+where the match factorΓ∈[ 0, 1]. The match factor quantifies how well the template matches the
+signal.
+The fact that the second term in Equation A.2 is a random complex Gaussian variable with
+unity variance can be seen by noting that each of the noise samples are drawn from the complex
+Gaussian distribution,N( 0,𝜏). Therefore,
+𝑥†
+ℎ[𝑛]
+√︁
+𝜏|xℎ|2
+𝜈[𝑛]∼N
+ 
+0,
+𝑥†
+ℎ[𝑛]𝑥ℎ[𝑛]
+|xℎ|2
+!
+, (A.5)
+𝑛=
+𝑁bin∑︁
+𝑛=1
+𝑥ℎ[𝑛]√︁
+𝜏|xℎ|2
+𝜈[𝑛]∼N
+ 
+0,
+˝𝑁bin
+𝑛=1 𝑥†
+ℎ[𝑛]𝑥ℎ[𝑛]
+|xℎ|2
+!
+=N( 0, 1). (A.6)
+Equation A.2 can now be simplified
+T =
+|h|| x|Γ𝑒𝑖𝜗+𝑛
+, (A.7)
+whereEquationA.1hasbeenusedtoredefinetheinnerproductterm. Thequantity |h|| x|Γ isareal
+number,whichisthematchedfilterscorethatonewouldexpectifthedatacontainednonoise. Since
+h and x can potentially be mismatched,Γ is not necessarily equal to 1. The final simplification is
+to defineT0=|h|| x|Γ, from which one obtains
+T =|T0𝑒𝑖𝜗+𝑛|. (A.8)
+FromEquationA.8oncanseethat T issimplythemagnitudeofacomplexnumberwithadded
+cWGN of variance 1, which follows the Rician distribution
+Rice(𝑥;T0, 1/2)= 2𝑥 exp
+
+−
+
+𝑥2+T 2
+0
+
+𝐼0(2𝑥T0). (A.9)
+– 21 –
+
+===== PAGE 24 =====
+Acknowledgments
+This material is based upon work supported by the following sources: the U.S. Department of
+Energy Office of Science, Office of Nuclear Physics, under Award No. DE-SC0020433 to Case
+Western Reserve University (CWRU), under Award No. DE-SC0011091 to the Massachusetts
+Institute of Technology (MIT), under Field Work Proposal Number 73006 at the Pacific Northwest
+National Laboratory (PNNL), a multiprogram national laboratory operated by Battelle for the
+U.S. Department of Energy under Contract No. DE-AC05-76RL01830, under Early Career Award
+No. DE-SC0019088 to Pennsylvania State University, under Award No. DE-FG02-97ER41020
+to the University of Washington, and under Award No. DE-SC0012654 to Yale University; the
+National Science Foundation under Award No. PHY-2209530 to Indiana University, and under
+Award No. PHY-2110569 to MIT; the Cluster of Excellence "Precision Physics, Fundamental
+Interactions, and Structure of Matter" (PRISMA+ EXC 2118/1) funded by the German Research
+Foundation (DFG) within the German Excellence Strategy (Project ID 39083149); the Karlsruhe
+Institute of Technology (KIT) Center Elementary Particle and Astroparticle Physics (KCETA);
+LaboratoryDirectedResearchandDevelopment(LDRD)18-ERD-028and20-LW-056atLawrence
+LivermoreNationalLaboratory(LLNL),preparedbyLLNLunderContractDE-AC52-07NA27344,
+LLNL-JRNL-840701;theLDRDProgramatPNNL;andYaleUniversity. Aportionoftheresearch
+was performed using the HPC cluster at the Yale Center for Research Computing. Additionally, a
+portionofthecomputationsforthisresearchwereperformedonthePennsylvaniaStateUniversity’s
+Institute for Computational and Data Sciences’ Roar supercomputer, and was supported by the
+National Science Foundation Award No. PHY-2018280 to Pennsylvania State University.
+References
+[1] B. Monreal and J.A. Formaggio,Relativistic cyclotron radiation detection of tritium decay electrons
+as a new technique for measuring the neutrino mass, Phys. Rev. D80(2009) 051301.
+[2] Project 8 collaboration, Single electron detection and spectroscopy via relativistic cyclotron
+radiation,Phys. Rev. Lett.114 (2015) 162501 [1408.5362].
+[3] Project 8 collaboration, Tritium Beta Spectrum Measurement and Neutrino Mass Limit from
+Cyclotron Radiation Emission Spectroscopy,Phys. Rev. Lett.131 (2023) 102502 [2212.05048].
+[4] Project 8 collaboration, Cyclotron radiation emission spectroscopy of electrons from tritium beta
+decay and83mkr internal conversion, 2303.12055.
+[5] Project 8 collaboration, The project 8 neutrino mass experiment, 2203.07349.
+[6] Project 8 collaboration, Determining the neutrino mass with cyclotron radiation emission
+spectroscopy—Project 8,J. Phys. G44(2017) 054004 [1703.02037].
+[7] A. Ashtari Esfahani et al.,Cyclotron radiation emission spectroscopy signal classification with
+machine learning in project 8, New J. Phys.22 (2020) 033004 [1909.08115].
+[8] Project 8 collaboration, Project 8: R&D for a next-generation neutrino mass experiment,PoS
+PANIC2021(2022) 283.
+[9] Project 8 collaboration, Antenna arrays for physics measurements with large-scale cres detectors, In
+preparation(2024) .
+– 22 –
+
+===== PAGE 25 =====
+[10] C.A. Balanis,Antenna Theory: Analysis and Design, 4th Edition, Wiley (2016).
+[11] The Project 8 collaboration, Electron radiated power in cyclotron radiation emission spectroscopy
+experiments,Phys. Rev. C99(2019) 055501.
+[12] N. Buzinsky,Statistical Signal Processing and Detector Optimization in Project 8, Ph.D. thesis,
+Massachusetts Institue of Technology2021.
+[13] A.A. Esfahani, S. Böser, N. Buzinsky, M. Carmona-Benitez, C. Claessens, L. de Viveiros et al.,
+Synca: A synthetic cyclotron antenna for the project 8 collaboration,Journal of Instrumentation18
+(2023) P01034.
+[14] Project 8 collaboration, Locust: C++ software for simulation of RF detection, New J. Phys.21
+(2019) 113051 [1907.11124].
+[15] S. Kay,Fundamentals of Statistical Signal Processing: Detection Theory, Volume II, Pearson (1998).
+[16] L. Stanković and D. Mandic,Convolutional neural networks demystified: A matched filtering
+perspective-based tutorial,IEEE Transactions on Systems, Man, and Cybernetics: Systems53(2023)
+3614.
+[17] D. Furse et al.,Kassiopeia: a modern, extensible C++ particle tracking package,New Journal of
+Physics19 (2017) 053012.
+[18] https://www.nvidia.com/en-us/data-center/v100/.
+[19] https://www.nvidia.com/en-us/data-center/h100/.
+[20] K. He, X. Zhang, S. Ren and J. Sun,Deep residual learning for image recognition, in2016 IEEE
+Conference on Computer Vision and Pattern Recognition (CVPR), pp. 770–7782016, DOI.
+[21] K. Simonyan and A. Zisserman,Very deep convolutional networks for large-scale image recognition,
+in 3rd International Conference on Learning Representations, ICLR 2015, San Diego, CA, USA, May
+7-9, 2015, Conference Track Proceedings, Y. Bengio and Y. LeCun, eds.2015,
+http://arxiv.org/abs/1409.1556.
+– 23 –

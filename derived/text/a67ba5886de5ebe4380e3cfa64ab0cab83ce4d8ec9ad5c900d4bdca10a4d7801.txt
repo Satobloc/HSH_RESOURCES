@@ -1,0 +1,1258 @@
+===== PAGE 1 =====
+Spray Simulation
+Flow Fields
+&
+Droplet Geometries
+𝑉𝑉11 ⋯ 𝑉𝑉1𝑁𝑁
+⋮ ⋱ ⋮
+𝑉𝑉𝑁𝑁1 ⋯ 𝑉𝑉𝑁𝑁𝑁𝑁
+DIWECT 
+Vectorized Data
+𝒗𝒗 � 𝒏𝒏
+Graphical Abstract
+Geometric and Topological Data Analysis of Atomization Simula-
+tions for Model Development
+Brendan Christensen, Jack Ruder, Alex McCleary, Brittany Terese Fasy,
+Mark Owkes
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 2 =====
+Highlights
+Geometric and Topological Data Analysis of Atomization Simula-
+tions for Model Development
+Brendan Christensen, Jack Ruder, Alex McCleary, Brittany Terese Fasy,
+Mark Owkes
+• A novel method to extract droplet geometries and flow fields from at-
+omization simulations is implemented.
+• The DIWECT is described and applied to atomization data.
+• It is shown that complex geometric data from simulations can be vec-
+torized while retaining key physical characteristics.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 3 =====
+Geometric and Topological Data Analysis of
+Atomization Simulations for Model Development
+Brendan Christensena, Jack Ruder b, Alex McCleary b, Brittany Terese
+Fasyb, Mark Owkes a
+aMontana State University, Mechanical & Industrial Engineering
+Department, Bozeman, 59717, Montana, USA
+bMontana State University, Gianforte School of
+Computing, Bozeman, 59717, Montana, USA
+Abstract
+High-fidelity simulations of atomization present a promising approach to
+studying its complex physics. However, these simulations face significant
+challenges, often requiring hundreds of processors and generating tens to
+hundreds of terabytes of data, complicating their practical application. This
+work presents a method to extract localized geometries of droplets and their
+surrounding flow fields at the moment of breakup within a simulation, result-
+ing in a comprehensive database of atomization statistics. This improves the
+usefulness of simulation results by storing key information on the atomiza-
+tion process. Parsing and comparing these geometries remains challenging,
+so we apply the directionally integrated weighted Euler characteristic trans-
+form (DIWECT) to produce vectorized representations of the complex data.
+These vectors are well-suited for advanced data processing, machine-learning
+applications, and the development of reduced-order models. We demonstrate
+the effectiveness of this approach through both shape matching and K-means
+clustering to confirm that the DIWECT captures meaningful physical infor-
+mation in an abstract, reduced-order format. This work represents a novel,
+efficient, and physically relevant method with which to extract, parse, and
+analyze large-scale atomization simulation data with an eye toward reduced-
+order model development.
+Keywords: Physics extraction, data reduction, volume of fluid, geometric
+and topological data analysis
+Preprint submitted to Journal of Computational Physics May 2, 2025
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 4 =====
+1. Introduction
+Atomization—the process where a coherent liquid body breaks into smaller
+droplets—is a wide-ranging phenomenon with applications in numerous in-
+dustries and environmental applications. From fuel injection and fire sup-
+pression to agricultural spraying and air-sea interactions, a detailed under-
+standing of the underlying physics is essential for optimizing engineering
+designs and improving predictive models of natural phenomena. Despite its
+widespread importance, many of the underlying physical mechanisms that
+drive atomization remain unresolved. There remains significant research in
+the field attempting to answer the fundamental questions: when and how do
+liquids breakup?
+Experimental studies on atomization have long faced limitations due to
+the inherent complexity of capturing high-speed, multiphase flows. Simpli-
+fied jet flows can be captured well using traditional high-speed imaging tech-
+niques [1]. However, as the Weber and Reynolds numbers increase to values
+relevant for many practical applications, experimental analyses of the physics
+become intractable because of the formation of an opaque cloud of droplets
+that forms around the spray. Even with recent advances in imaging tech-
+niques like ballistic [2, 3, 4] and x-ray imaging [5, 6, 7], capturing temporally
+continuous, quantitative data remains problematic. As a result, experimen-
+tal methods have struggled to provide sufficient insight into the small-scale
+instabilities and breakup mechanics that occur in atomizing systems.
+In response to these challenges, high-fidelity simulations—commonly known
+as direct numerical simulations (DNS)—have emerged as a powerful alterna-
+tive [8] capable of resolving the detailed physics of atomization. High-fidelity
+simulations continue to produce increasingly accurate representations of the
+complex multiphase process, providing researchers with a tool to predict
+quantitative, three-dimensional, and temporally granular descriptions of liq-
+uid breakup. However, these simulations are not without their own limita-
+tions. As computational power has increased, the size of datasets generated
+from atomization simulations has grown dramatically. High-resolution simu-
+lations, capable of producing hundreds of terabytes of data, present immense
+challenges in both storage and analysis. Extracting meaningful physics from
+such massive datasets remains an ongoing challenge, and current methodolo-
+gies are ill-equipped to fully utilize this wealth of information.
+To address these limitations, the Atomization Simulation Statistics Ex-
+traction Tool (ASSET) [9, 10] was developed to extract detailed event-based
+2
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 5 =====
+data from large-scale simulations of atomizing liquids. Unlike traditional
+post-processing methods that are constrained by the sheer volume of data,
+ASSET works coincident with a simulation to identify and record breakup
+and coalescence events as they occur. This approach allows for the cre-
+ation of comprehensive databases that contain statistics, geometries of liquid
+structures, and the corresponding flow fields at the moment of each breakup
+event.
+Furthermore, ASSET tracks the evolution of each liquid structure, al-
+lowing for the reconstruction of breakup pathways. These are the sequen-
+tial processes by which liquid structures fragment into progressively smaller
+droplets. Breakup pathways reveal how individual droplets emerge from
+larger structures, shedding light on the mechanisms that govern spray for-
+mation. By capturing these data directly from simulations, researchers gain
+an unprecedented level of access to temporally continuous, localized infor-
+mation essential for studying the full physics of atomization.
+High-fidelity simulations are incredibly costly, often requiring hundreds
+of thousands of CPU hours on high-performance computers. Thus, predic-
+tive atomization models play a vital role, especially for practical applications
+where fully resolving the physics is not feasible. Reduced-order models such
+as Reitz-Diwakar (RD) [11], Taylor Analogy Breakup (TAB) [12], and Pilch-
+Erdman (PE) [13] models offer relatively fast and inexpensive ways to predict
+atomization behavior in specific systems. However, these models are heavily
+based on simplified assumptions and empirical data from idealized conditions,
+such as single droplets in controlled environments. As a result, they often
+fail to accurately represent the complex, multiscale behavior of atomization
+in real-world, turbulent systems. There is an increasing need for models
+that are informed by statistically relevant physics-based data extracted di-
+rectly from simulations, enabling more accurate predictions of atomization
+dynamics across a broader range of conditions.
+To meet this need, an essential step forward involves not only extracting
+more comprehensive data from simulations but also transforming these data
+into a format suitable for modern analysis techniques. Concretely, it is nec-
+essary to efficiently query and parse databases full of data from physical sim-
+ulations. The present work proposes using a geometric and topological data
+analysis tool known as the directionally integrated weighted Euler character-
+istic transform (DIWECT) to convert complex geometric and flow field data
+from atomization simulations into vectorized representations. This approach
+structures the data in a format well suited for machine learning and other
+3
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 6 =====
+data-driven techniques, enabling the development of reduced-order models
+that agree with the physics of atomization predicted by high-fidelity sim-
+ulations. The resulting structured database enables efficient querying and
+analysis, supporting the development of reduced-order models that retain
+the underlying physics of atomization rather than relying on significant as-
+sumptions.
+This paper focuses on demonstrating the process of generating these
+databases and applying DIWECT to enable future data-driven predictive
+models. Furthermore, the DIWECT provides a powerful foundation for
+novel analyses, enabling the identification of previously unrecognized pat-
+terns within these large-scale, complex systems. In doing so, we aim to bridge
+the gap between the vast amounts of data produced by high-fidelity atom-
+ization simulations and the limited models currently used, advancing toward
+a more accurate and physically informed understanding of atomization.
+1.1. Background - Topological Data Analysis
+Modern experimental and numerical methods in all range of scientific
+fields are producing increasingly complex and large-scale data, requiring ef-
+ficient methods to analyze and visualize them. Topological data analysis
+(TDA) methods have emerged as a family of tools for summarizing and ana-
+lyzing data in a mathematically robust and rigorous manner. For a compre-
+hensive background on the various methodologies see Topological Methods in
+Data Analysis and Visualization VI [14]. In the context of fluid mechanics,
+where massive datasets are a common challenge, TDA offers the ability to
+capture key geometric components of complex fields.
+There exist a few studies incorporating TDA into fluids [15, 16, 17, 18, 19,
+20]. Scalar fields in fluid mechanics, such as pressure, temperature, and image
+pixel intensity can be analyzed using the persistent homology TDA method.
+These analyses have been used to identify large-scale symmetries, transition
+regions, and patterns in the flow [21, 22]. Similarly, studies involving vector
+fields, such as velocity, have used topological descriptors to classify coherent
+flow features and reveal interactions within turbulent flows [23, 24]. While
+these applications illustrate the versatility of TDA in fluid mechanics, they
+are focused on scalar field data and large-scale flow dynamics rather than
+capturing the small-scale, underlying physics of liquid breakup studied in
+this work.
+In contrast, the geometric analysis of three-dimensional liquid structures
+in multiphase flows through TDA remains a relatively underexplored area.
+4
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 7 =====
+Chen et al. [25] introduced a skeletonization technique to capture the fun-
+damental topology of periodic liquid jets during atomization. This method
+allowed for the identification of branching points in the jet structure and
+offered new insights into the mechanisms driving liquid breakup. To the au-
+thors’ best knowledge, this is the only topological analysis of liquid structure
+geometries in multiphase flows. Beyond fluid mechanics, TDA has been suc-
+cessfully employed in fields such as medical imaging [26, 27, 28], 3D object
+recognition [29], and structural biology [30] to quantify, match, and analyze
+complex shapes. These examples demonstrate the versatility of geometric
+TDA in capturing intricate structural information and motivate its applica-
+tion to fluid systems.
+Building on these developments, this work focuses on analyzing three-
+dimensional geometries associated with liquid structures during atomization.
+Concretely, we use a topological tool referred to as the DIWECT for this pur-
+pose. Unlike previous methods that emphasize whole flow fields, the present
+work applies TDA to isolated liquid breakup events, providing concise, rep-
+resentative descriptions of complex geometries.
+1.2. Background - Atomization Modeling
+One of the primary objectives of this work is to provide physical data
+that can inform reduced-order atomization models. Achieving this requires
+an understanding of the information needed and the limitations of current
+modeling approaches. This section focuses on the role of Lagrangian droplet
+tracking models, as the data extracted from this study is particularly suited
+to their improvement.
+The Lagrangian-Eulerian (LE) technique is a method used to model at-
+omization with reduced computational cost. It represents the liquid phase
+as discrete, Lagrangian “blobs” or droplets, while the gas phase is treated
+as an Eulerian domain. Prominent implementations, such as the KIVA se-
+ries [31, 32, 33, 34, 35], have been widely adopted in industry [36]. Fol-
+lowing injection, the breakup of blobs is typically modeled using idealized
+instability mechanisms, such as Kelvin-Helmholtz and Rayleigh-Taylor in-
+stabilities [37, 11, 38]. Further breakup is often predicted using models like
+the Taylor Analogy Breakup (TAB) [12] or Pilch-Erdman (PE) [13]. These
+methods offer computational efficiency but rely heavily on simplifying as-
+sumptions, such as spherical droplet shapes and empirical correlations from
+isolated experiments.
+5
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 8 =====
+These simplifications fail to capture the multiscale and turbulent nature of
+real-world atomization processes. Experiments and DNS have revealed that
+atomization involves complex deformation and breakup mechanisms, includ-
+ing bag and sheet formation, ligament destabilization, and droplet fragmen-
+tation [1, 39, 40]. These mechanisms lead to highly variable, complex droplet
+and flow field geometries that are far beyond the capabilities of traditional
+blob injection models.
+Recently, there has been considerable development on the hybrid Volume-
+of-Fluid Lagrangian-Eulerian (VOFLE) method [41, 42, 43, 44, 45]. These
+models combines the Volume-of-Fluid (VOF) technique to resolve near field
+jet deformation and large-scale liquid structures before transitioning to an
+Lagrangian description for smaller droplets (Note: Level-set (LS) is also used
+for interface capturing in some cases [43]). Varying local criteria are used to
+determine when a droplet meets the requirements for Lagrangian treatment,
+with most opting for a size threshold for the drop diameter, and others ad-
+ditionally considering the sphericity of the droplet. Only two papers have
+considered further breakup to the author’s best knowledge. These are Yu et
+al. [46], who consider the RT instability for breakup and Kuo & Trujillo [45],
+who use the maximum entropy formalism (MEF) model. VOFLE balances
+computational efficiency and accuracy with an improved resolution of the
+early stages of jet formation and breakup.
+Despite these advancements, VOFLE models face challenges associated
+with empirical assumptions and computational trade-offs. For example, most
+methods require that droplets be spherical and/or below a size threshhold
+before transitioning to a Lagrangian representation. This increases the nec-
+essary size and cost of the Eulerian domain. Additionally, secondary atom-
+ization is largely neglected, and when it is considered, secondary atomization
+models are significantly limited.
+This work lays the foundation for a predictive VOFLE methodology, in-
+formed by high-resolution simulations. By extracting explicit breakup cas-
+cades, droplets can be transformed to Lagrangian structures at larger and
+less spherical sizes and their subsequent breakup can be more accurately pre-
+dicted. The envisioned approach would identify liquid structures as they de-
+tach, compare them to a database of high-fidelity DNS results, and use stored
+breakup pathways to inform how a given structure will fragment. While this
+study does not implement the full VOFLE model, it establishes techniques
+for extracting droplet geometries, surrounding flow fields, and breakup ge-
+nealogies, which are necessary steps toward improving atomization modeling.
+6
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 9 =====
+2. Project Outline and Scope
+This work seeks to establish a novel method to bridge the gap between
+high-resolution simulations and reduced-order modeling of atomization pro-
+cesses. The ultimate goal is to use the data and processing techniques out-
+lined in this paper to inform reduced-order atomization models. However,
+the development of a model is beyond the scope of the present work. The
+current project is structured into two key objectives:
+1. Use ASSET to extract atomization geometries: The ASSET
+methodology extracts the gas-liquid interface of liquid structures, along
+with their surrounding flow fields, from high-fidelity simulations during
+breakup and coalescence events. These structures and their interac-
+tions are stored in a graph database, allowing researchers to analyze
+the sequence of breakup events that lead to the formation of smaller
+droplets.
+2. Vectorize the resultant databases using the DIWECT: The ge-
+ometric and flow field data extracted using ASSET are transformed
+into vectorized representations with the DIWECT. This process pre-
+pares the data for machine learning applications, allowing for statistical
+analysis and efficient shape-matching. By capturing key geometric and
+topological features, the DIWECT helps identify patterns and relation-
+ships within the data.
+This work provides an approach to analyze large atomization simulation
+databases, yielding information necessary to inform a physics-based reduced-
+order model. Explicitly, it is important to analyze the DIWECT as a method
+for vectorizing data in auseful way—where useful refers to the ability of these
+representations to serve as effective inputs to machine learning algorithms.
+An ideal vectorization must preserve the key geometric and topological char-
+acteristics of complex flow structures while reducing them to a comparable
+format suitable for statistical analysis and training. This ensures that mean-
+ingful similarities and differences between structures are captured in a way
+that algorithms can learn from and generalize across. This quality will pro-
+vide both novel, in-depth, data-driven analyses into atomization as well as
+the potential to use these insights for predictive modeling.
+7
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 10 =====
+3. Methods
+3.1. Computational Platform
+The advancements outlined below are built into the NGA computational
+platform [47, 48, 49, 50]. This platform is then used to perform the atomiza-
+tion simulation outlined below. NGA solves the two-phase, incompressible
+Navier-Stokes equations for mass and momentum conservation, expressed as
+∂ρϕ
+∂t +∇· (ρϕuϕ) = 0 (1)
+and
+∂ρϕuϕ
+∂t +∇· (ρϕuϕ⊗ uϕ) =−∇pϕ +∇· (µϕ[∇uϕ +∇uT
+ϕ]) +ρϕg, (2)
+where ρϕ is the density, uϕ the velocity vector, pϕ the pressure, µϕ the dy-
+namic viscosity,t the time, g the gravitational acceleration vector, andϕ the
+phase indicator (g for gas and l for liquid). These equations are discretized
+on a staggered Cartesian grid, pressure stored at cell centers and velocity
+components at cell faces.
+Numerical methods include:
+• Time discretization: An iterative Crank-Nicolson scheme, with a semi-
+implicit correction [51]
+• Gas-liquid interface tracking: A geometric volume-of-fluid (VOF) method
+with unsplit semi-Lagrangian fluxes [49]. The interface is reconstructed
+using piecewise linear interface calculation (PLIC) [52] with efficient
+least-squares VoF interface reconstruction algorithm (ELVIRA) for nor-
+mal vector calculations [53] on subcells to ensure mass and momentum
+conservation [50].
+• Advection: Away from the interface, high-order finite differences for
+mass, momentum, and scalar transport [47] are used. Near the interface
+the semi-Lagrangian VOF method is used [49].
+• Pressure Solver: The Poisson equation is solved with the ghost fluid
+method to incorporate the surface tension force [54] and a black-box
+solver [55].
+8
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 11 =====
+• Surface Tension: Curvature is computed using the adjustable curvature
+evaluation scale (ACES) method [56].
+NGA is fully parallelized via MPI, enabling efficient scaling to tens of
+thousands of cores [57]. Its computational efficiency and robust numerical
+methods have made it an effective tool for studying atomization and related
+multiphase flow phenomena [58, 59, 49, 60].
+3.2. ASSET Methodology
+The first goal in this project is to extract liquid structure and flow field
+geometries from high-fidelity simulations. To meet this goal, it is necessary to
+identify key moments and extract only those structures that provide model-
+relevant data. The breakup process is important because it describes the
+formation of droplets. However, breakup represents only part of the dynamics
+in large-scale atomization. Coalescence is also common in dense spray clouds.
+Thus, tracking both breakup and coalescence is necessary to fully describe
+the system.
+In addition, liquid structures often deform significantly between breakup
+or coalescence events. These deformations provide information on the mecha-
+nisms leading to breakup, such as an elongating ligament undergoing Plateau-
+Rayleigh instability or a droplet flattening before undergoing bag-type breakup.
+The Atomization Simulation Statistics Extraction Tool (ASSET) is de-
+signed to capture this information by identifying and isolating breakup, co-
+alescence, and intermediate (update) events. ASSET is an event-triggered,
+parallelized algorithm that operates concurrently with simulations. It runs
+each timestep and efficiently identifies breakup and coalescence events, gath-
+ering physical data associated with each occurrence. A comprehensive de-
+scription of the algorithm is given in the original works [10, 9], however, a
+concise summary is included here. As we detail below, the key addition in
+this work is the ability to extract topologically sound geometries and to in-
+corporate update events for more comprehensive tracking of liquid structure
+evolution.
+The workflow for data extraction involves three key steps: event iden-
+tification, geometry extraction, and velocity calculation on the extracted
+meshes. 1) Event identification works by monitoring changes in identifica-
+tion numbers, providing liquid structure history and breakup pathways. 2)
+Once an event is detected, the geometries of the affected liquid structures
+are extracted by isolating the computational cells involved in the event. To
+9
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 12 =====
+generate a watertight surface representation, a marching cubes algorithm
+is applied, ensuring topological accuracy and avoiding artifacts that could
+interfere with subsequent analyses. 3) Finally, rather than storing the full
+velocity field, only the velocity component normal to the liquid surface is
+recorded, as this component is most relevant to droplet deformation. Details
+on each step are provided below.
+3.2.1. Event Identification
+Event identification in ASSET (described in detail by Christensen and
+Owkes [9]) begins by tagging liquid structures with two unique integers: S
+andL.S is assigned at every timestep using a band-growth algorithm [42],
+distinguishing independent liquid structures within the domain. L is persis-
+tent across timesteps and is transported with the liquid, only changing when
+breakup or coalescence occurs. L provides a history of the liquid, allowing
+us to track the breakup pathway of any given liquid structure.
+The event identification algorithm distinguishes the three types of events
+as follows:
+• Breakup Events: Occur when a single liquid structure (sameL) splits
+into multiple, structures (differentS) in non-adjacent grid cells.
+• Coalescence Events: Identified when two or more structures with
+distinctL values flux into a single grid cell.
+• Update Events: Triggered periodically for each structure based on a
+user-defined time interval relative to the last event the structure was
+involved in.
+The original method described the extraction of statistics when an event
+was identified. This utility is still applied. These data are sampled both
+immediately preceding and following an event, providing a record of the
+conditions leading to and resulting from each event. Data are stored in a
+Neo4j graph database (see Figure 1), enabling relationships between parent
+and child droplets to be established and liquid structures to be tracked back
+to the initial coherent liquid at the start of the simulation.
+3.2.2. Geometry Extraction
+When an event is identified, the region around the liquid structure(s) in
+the event is isolated. In fact, this is already done during the assignment of S
+10
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 13 =====
+Figure 1: Neo4j graph database representing data extracted from a numerical simulation
+of a diesel-type jet from [9]. Dots represent droplets with lines connecting related droplets
+(i.e parent and child droplets). Colors represent the number of breakups taken to get to a
+given droplet.
+through a band-growth algorithm [42], providing access to the computational
+cells of interest. With the cells isolated, the liquid-gas interface geometry is
+captured. Ensuring no erroneous topological features are captured in this
+step is necessary because the DIWECT methodology is highly sensitive to
+them. A naive implementation would be to output the PLIC representation
+of the interface, which is already calculated. However, as seen in Figure 2a,
+the edges and vertices of the PLIC interface are not aligned to produce a
+watertight surface, introducing non-physical holes. To ensure topological
+soundness, we implemented a formulation of the commonly used marching
+cubes algorithm [61] that is topologically robust [62]. This method generates
+a set of triangles representing the interface. The vertices and connectivity
+information of these triangles are stored as an unstructured mesh in the SILO
+format [63]. In this format, each triangle is represented as a zone, and scalar
+values can be associated with these zones. The marching cubes algorithm
+provides a topologically sound representation of the droplet, however, it does
+not ensure a fully accurate volume, whereas the PLIC interface is volume
+conserving, which is necessary for the geometric volume-of-fluid numerical
+methods. Producing a volume-conserving, water-tight representation and
+preventing the calculation of two separate interface reconstructions is an
+area of future work.
+11
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 14 =====
+(a) Interface geometry of a droplet
+computed with traditional PLIC
+method.
+(b) Interface geometry of a droplet
+computed with enhanced marching
+cubes algorithm [62].
+Figure 2: Comparison of the volume conserving PLIC interface and the topologically
+sound, watertight marching cubes interface.
+3.2.3. Velocity Calculation
+Saving the full velocity field around each droplet would present a signifi-
+cant storage requirement. To reduce the total data being saved, the flow field
+is simplified to include only the velocity component normal to the interface.
+This normal component, represented mathematically as u· n, where u is the
+velocity vector and n is the unit normal vector of the interface plane, is most
+prominently responsible for droplet deformation.
+Since u·n is a scalar quantity, it can be efficiently stored in the SILO file
+for each triangle zone. With the orientation of the interface plane and the
+velocity magnitude, the interaction between the velocity and the shape of
+the fluid is efficiently stored together. The simplified data can then be visu-
+alized and analyzed using tools such as VisIt [63], enabling detailed studies
+of droplet dynamics.
+3.3. The Directionally Integrated Weighted Euler Characteristic Transform
+(DIWECT)
+With droplet geometries and their associated normal velocities now ex-
+tracted and stored efficiently in a compact, structured format, the next objec-
+tive is to develop a means of comparing these complex shapes and dynamics in
+a consistent, scalable manner. Specifically, we require a vectorized represen-
+tation that captures the essential geometric and flow-related features of each
+droplet, enabling fast and meaningful comparison across a large database of
+breakup events. The Directionally Integrated Weighted Euler Characteris-
+tic Transform (DIWECT) is introduced here as a method to provide exactly
+12
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 15 =====
+this vectorization, translating high-dimensional surface and velocity data into
+forms suitable to statistical analysis and machine learning.
+This section details the methodology of the DIWECT. This method is
+an extension of the weighted Euler characteristic transform (WECT). For a
+more in-depth background on the WECT, see Jiang et al. [64] and Cisewski-
+Kehe et al. [65].
+The foundation of this method are simplicial complexes. Explicitly, for a
+set of verticesV⊆ Rn, a simplex is the convex hull of an affinely independent
+subset of V. Given any simplex σ, we define its dimension dim σ as the
+number of vertices in σ minus one (e.g. a zero-simplex is a vertex, a one-
+simplex is an edge, a two-simplex is a triangle, etc.). A face τ of a simplex
+σ is any subset of its vertices ( τ≤ σ), while σ is a coface of τ (σ≥ τ). A
+geometric simplicial complex is a finite collection of simplices K satisfying:
+1. If σ∈K, then all faces τ≤σ are also in K
+2. If any two simplices σ,σ′ ∈ K, have a nonempty intersection, then
+σ∩σ′ is a face of both σ and σ′
+A weighted simplicial complex (K,ω ) is defined by a simplicial complex
+K and a weight function ω :K→ R, that assigns a weight to each simplex
+in K. The unstructured meshes extracted in §3.2.2 are simplicial complexes
+with the normal velocities calculated in §3.2.3 as weights on each simplex.
+Weights for the edges and vertices are calculated by averaging the weights of
+their respective co-faces.
+The Euler characteristic of a simplicial complex is given as
+χ(K) =
+X
+σ∈K
+(−1)dimσ. (3)
+For example, for three-dimensional polyhedra (dim 3), the Euler Character-
+istic is defined χ = V −E +F where V , E, and F are defined vertices,
+edges, and faces, respectively. For example, the Euler characteristic of any
+Platonic polyhedra (e.g. tetrahedron, cube, octahedron, etc.) is two. The
+Euler characteristic is a topological invariant, meaning it remains unchanged
+under continuous deformations such as bending or stretching, as long as there
+is no tearing or gluing.
+The Euler characteristic is easily extended to the weighted Euler charac-
+teristic (χω) for weighted simplicial complexes, defined as
+χω(K,ω ) =
+X
+σ∈K
+ω(σ)· (−1)dimσ. (4)
+13
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 16 =====
+The weighted Euler characteristic alone is a limited representation of
+any complex, because it reduces all information to a single scalar value.
+However, by computing it across a sequence of subcomplexes, we can retain
+more information from the data. This is done using a filtration, which is a
+nested sequence of weighted simplicial complexes parameterized by R. Given
+a filtration{Kt}t∈R, it satisfies
+Ks⊆Kt for all s≤t. (5)
+This method specifically uses a height filtration, which orders simplices
+based on their vertex positions in a given direction d∈ Dn−1. The height
+filtration of a complex Kd,t is defined as
+Kd,t :={σ∈K|hd(σ)≤t}, (6)
+where hd(σ) is the maximum height of any vertex in σ along direction d,
+which is computed using the standard inner product ofRn. In the WECT, we
+take the height filtration in multiple directions, thus providing a structured
+and mathematically rigorous way to represent complex geometries as vector-
+valued quantities. See Figure 3 for a demonstration of this process.
+By computing the Euler characteristic over a height filtration {Kd}t∈R
+of a weighted simplicial complex ( K,ω ) for a direction d∈ Dn−1, we obtain
+the weighted Euler characteristic function (WECF : R→ R). This function
+maps a direction d and a height t to the weighted Euler characteristic of the
+corresponding subcomplex Kd,t. Formally
+WECF(K,ω),d(t) :=χω(Kd,t,ω ). (7)
+Finally, computing the weighted Euler characteristic function for all di-
+rections d ∈ Dn−1, we define the weighted Euler characteristic transform
+(WECT : Dn−1× R→ R) as the function
+WECT(K,ω)(d,t ) := WECF(K,ω),d(t). (8)
+Theoretically, the WECT fully encodes the shape of the simplicial com-
+plex K, when computed over all directions d and heights t. In practice, the
+WECT is computed for a finite sampling of directions and heights. Neverthe-
+less, with sufficiently dense sampling, the WECT retains enough information
+to uniquely characterize a given simplicial complex [64, 65].
+14
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 17 =====
+Figure 3: Height filtration in direction d. Simplices become bold when they are below the
+plane and contribute to the Euler characteristic for that height t.
+The WECT is sensitive to rotations and reflections of the simplicial com-
+plex. To address this limitation, we introduce the directionally integrated
+WECT, or DIWECT which integrates the WECT over all rotations and re-
+flections of the simplicial complex.
+For a uniformly sampled set of directions D∈ Dn−1, the DIWECT can
+be estimated as a directional average of the WECT and computed as
+DIWECT(K,ω)(t) = 1
+|D|
+X
+d∈D
+WECT(K,ω)(d,t ). (9)
+In practice, we are not able to compute the WECT over all directions
+and heights, so we use an estimated form of the DIWECT, and the theo-
+retical guarantees are necessarily limited by this discrete sampling. For this
+study, we selected 150 directions and 75 heights to balance two competing
+objectives: preserving fidelity of the droplet representation and minimizing
+15
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 18 =====
+storage requirements. As shown in Equation 9, the directional sampling is
+averaged over each height, yielding a 75-dimensional vector per droplet. This
+dimensionality was chosen to ensure that the resulting representation remains
+compact and do not increase the storage requirement for small droplets. For
+example, an octahedron, which is among the most simplified and lowest-
+resolution shapes extracted in our dataset, requires approximately 50 inte-
+gers to represent its vertices, faces, and associated velocity components. Most
+droplets in the dataset are significantly more complex than an octahedron, so
+a 75-element vector does not substantially increase the storage burden for the
+majority of cases, while still providing a decently high-resolution description
+of shape variation across directions. Moreover, since the DIWECT of a single
+orientation is sufficient to represent any rotated or reflected transformation
+of a droplet, we avoid the need to store multiple transformed variants, effec-
+tively reducing the total storage cost by a factor ofD, the number of sampled
+directions.
+16
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 19 =====
+Algorithm 1 Methodology Summary
+1: Run Simulation and Extract Data with ASSET
+2: while simulation is running do
+3: Assign initialS andL identifiers in the domain
+4: for each timestep do
+5: ReassignS for each liquid structure
+6: TransportL with the liquid
+7:
+8: Event Identification:
+9: if MultipleS associated with oneL then
+10: Breakup event identified
+11: end if
+12: if MultipleL in one cell then
+13: Coalescence event identified
+14: end if
+15: for each structure do
+16: if (Current time % update frequency = 0) then
+17: Update event identified
+18: end if
+19: end for
+20:
+21: Geometry Extraction:
+22: for each identified event do
+23: Extract the gas–liquid interface via marching cubes
+24: for each interface cell do
+25: Velocity Calculation:
+26: Compute u· n, on each triangle of the mesh
+27: end for
+28: Save as unstructured mesh with normal velocities
+29: end for
+30: end for
+31: end while
+32:
+33: Post-Processing: Estimate the DIWECT
+34: Aggregate all extracted data
+35: for each unstructured mesh χ do
+36: Estimate the DIWECT of χ
+37: end for
+38: Output: A vectorized representation of liquid structure geometries from
+atomization 17
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 20 =====
+4. Results
+The results presented here are derived from≈ 120, 000 droplets extracted
+from a high-fidelity simulation run. The entire simulation database, made
+up of a full rendering of each timestep requires ≈ 10TB of storage space.
+The total storage requirement of the unstructured SILO meshes was 133GB.
+The full WECT was calculated with 150 directions and 75 heights and only
+required 1.5 GB of storage. The averaging step was conducted over each
+direction and the DIWECT representation of the same dataset only required
+10 MB—a reduction of over 13,000-fold from the SILO meshes and 1,000,000-
+fold from the original simulation dataset.
+The following subsections provide proof of concept of the DIWECT as a
+method to uniquely and efficiently characterize liquid shapes and surrounding
+flow fields. First, we match droplets to their most similar counterparts using
+only their DIWECT values. Then, we show that the droplets can be clustered
+into groups which display physical relevance based on their DIWECTs.
+4.1. Simulation Setup
+To test the methodology, we ran a large-scale numerical simulation of an
+atomizing water droplet (Fig. 4a). The methods outlined in this work are
+designed to be scalable and capable of processing large numbers of droplets,
+as would be expected in most practical atomization applications. The setup
+in this work consists of a high-speed gas inflow at thex− wall, which is added
+to an initialized homogeneous isotropic turbulence (HIT) domain and inflow,
+as shown in Figure 4b. This simulation ran for one month on 128 processors
+on the Tempest HPC at Montana State University. To reduce the size of the
+resultant dataset, only droplets from the second half of the simulation were
+analyzed.
+This test case represents a common atomization scenario with broad ap-
+plications, including aerial firefighting, agricultural spraying, industrial spray
+cooling, and environmental aerosols. The chosen resolution balances compu-
+tational efficiency with sufficient detail to capture smaller-scale droplets. The
+key non-dimensional parameters for this simulation are listed in Table 1.
+4.2. Droplet Matching
+A key objective of this work is to establish a basis for efficiently com-
+paring droplets and their local flow fields across large simulation databases.
+In a future scenario, a user might extract a particular droplet of interest
+18
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 21 =====
+(a) Simulation domain with initial
+droplet in place ( D is droplet di-
+ameter).
+(b) HIT-derived turbulence initialized
+in the domain.
+Figure 4: Simulation domain setup.
+Table 1: Non-dimensional parameters for the simulation. D is initial droplet diameter, dx
+is grid spacing, ρg is gas density,Ug is the bulk gas velocity, µl is liquid viscosity,σ is the
+surface tension coefficient
+Parameters Description Value
+Cells across diameter D/dx 150
+Bulk Reynolds ρgUgD/µl 4.74× 104
+Bulk Weber ρgU 2
+gD/σ 825
+from an ongoing simulation and automatically search a previously computed
+database for the most similar droplet. Then, predictions can be made from
+the previously simulated droplet to inform how the droplet of interest might
+behave.
+For demonstration, we selected a set of four droplets from a separate
+simulation run. These droplets were pulled from another water drop atom-
+ization case, but with a larger initial diameter. Four common shapes from
+the database were chosen. Each droplet’s DIWECT signature was then com-
+pared against the database developed from the simulation in §4.1 to find
+the most similar entries according to Euclidean distance in DIWECT-space.
+19
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 22 =====
+These results can be seen in Figures 5-8, which show the reference droplet
+on the left, and the closest matched droplets on the right. AR is the aspect
+ratio, defined as the shortest principal axis divided by the longest, and V ,
+which is the volume of the droplet.
+The matching results show very nice qualitative agreement for the shapes.
+There exists some variation between the shape parameters, but it is impor-
+tant to note that there are many interacting factors that lead to the final
+DIWECT calculation, notably, the DIWECT captures information about
+the normal velocity components. Thus, comparing a simple shape parameter
+and the size of droplets is a limited assessment of the DIWECT’s capability
+of to compare similar structures.
+(a) Droplet 1: AR = 0.868, V = 3.3× 10−12
+(b) AR = 0.703, V =
+5.22× 10−12
+(c) AR = 0.782, V =
+2.99× 10−12
+(d) AR = 0.755, V =
+5.74× 10−12
+(e) AR = 0.780, V =
+1.44× 10−11
+Figure 5: Droplet 1 and the four closest matches based on DIWECT
+20
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 23 =====
+(a) Droplet 2: AR = 0.304, V = 4× 10−12
+(b) AR = 0.405, V =
+7.6× 10−12
+(c) AR = 0.478, V =
+7.8× 10−12
+(d) AR = 0.213, V =
+2.7× 10−11
+(e) AR = 0.174, V =
+1.3× 10−11
+Figure 6: Droplet 2 and the four closest matches based on DIWECT
+(a) Droplet 3: AR = 0.142, V = 2.1× 10−11
+(b) AR = 0.207, V =
+3.02× 10−11
+(c) AR = 0.064, V =
+5.7× 10−11
+(d) AR = 0.299, V =
+6.05× 10−11
+(e) AR = 0.065, V =
+4.53× 10−11
+Figure 7: Droplet 3 and the four closest matches based on DIWECT
+21
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 24 =====
+(a) Droplet 4: AR = 0.106, V = 9.79× 10−11
+(b) AR = 0.111, V =
+5.74× 10−11
+(c) AR = 0.068, V =
+2.38× 10−11
+(d) AR = 0.068, V =
+2.38× 10−11
+(e) AR = 0.228, V =
+2.96× 10−11
+Figure 8: Droplet 4 and the four closest matches based on DIWECT
+4.3. Clustering Results
+To further demonstrate the utility of the DIWECT, we apply clustering to
+the resulting vectors using Euclidean distance as a measure of similarity. By
+comparing the resulting clusters with known physical parameters, we assess
+how effectively the DIWECT preserves relevant physical information. Given
+the large size of the dataset (≈ 120, 000 samples), computational efficiency is
+a key consideration. To ensure efficiency of our analysis at scale, we consider
+methods better than O(n2) where n is the number of samples. Another con-
+sideration is the dimensionality of the data. The discretization produces a
+database of 75-dimensional vectors, so the dimensionality must be considered
+to avoid sparse sampling in high-dimensional space, otherwise known as the
+curse of dimensionality. Projecting the data into a lower dimension improves
+the capability of non-parametric methods and enhances computational ef-
+ficiency. Principal Component Analysis (PCA) is therefore applied to the
+dataset before clustering. We found that 20 components was sufficient to ex-
+plain the variability of our data (See Figure 9). To determine the appropriate
+number of PCA components, we used the elbow method, which identifies the
+point beyond which additional components contribute diminishing returns in
+explained variance. Following the application of PCA, we cluster the data
+22
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 25 =====
+using the K-means algorithm [66]. We choose K-means because of its scala-
+bility, with a complexity ofO(nki), wheren is the number of droplets,k is the
+number of clusters, andi is the dimensionality after PCA. This methodology
+provides both computational efficiency and a systematic way to assess, in a
+quantitative manner, whether the DIWECT representation retains physical
+information from atomization systems.
+Figure 9: Total displayed variance of data with varying PCA dimensions.
+We begin with relatively few clusters ( K = 4) to illustrate how the
+droplets naturally separate into groups with similar morphologies. Figure 10
+provides a random sampling of droplets from each cluster. Some droplets
+appear similar because they are either observed at consecutive update events
+(when only minor shape changes occur) or they represent large structures
+that experience a small breakup event (e.g. droplet shedding off of a liga-
+ment), which is not visible at the scale of the image.
+From inspection of Figure 10, cluster 0 appears to contain small, elongate
+droplets, whereas cluster 1 has small but more spherical droplets. Clusters
+2 and 3 generally contain larger, more complex shapes. A selection of statis-
+tics describing these clusters is shown in Figure 11, with mean values and
+standard deviations indicated by error bars. The quantities plotted—volume,
+aspect ratio, slip velocities, and cluster population—capture important phys-
+ical characteristics of the breakup process. Aspect ratio is defined as the
+ratio of the smallest principal axis length to the largest principal axis length
+(Lmin/Lmax); lower values indicate more elongate shapes, while higher values
+indicate more spherical droplets. Slip velocities refer to the difference be-
+tween the droplet velocity and the surrounding gas velocity in the x-, y-, and
+23
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 26 =====
+z-directions, which influences the aerodynamic forces acting on the droplet.
+The slip velocity is a slightly different (though related) quantity than the
+normal components of the velocity used as weights in the DIWECT. The
+slip velocity is calculated as a weighted sum of the gas velocity upstream of
+the droplet, which should represent the portion of the flow that impinges on
+the droplet.
+Figure 11 shows that clusters 0 and 1 are composed of large numbers of
+small droplets; cluster 0 tends to have more elongate droplets (lower aspect
+ratio), while cluster 1 contains droplets that are more spherical. In contrast,
+clusters 2 and 3 contain fewer but larger structures, with cluster 3 showing
+the greatest mean volume. Slip velocities do not vary drastically among
+clusters, suggesting that size and shape features contribute more toward the
+similarity or difference of droplets’ respective DIWECT values.
+(a) K-means cluster 0.
+ (b) K-means cluster 1.
+(c) K-means cluster 2.
+ (d) K-means cluster 3.
+Figure 10: Visualization of the droplets in K-means clusters for K = 4.
+Next, we increase the number of clusters to analyze. This will provide
+further analysis of how the DIWECT differentiates physical features. In the
+K = 4 clusters, it was clear that the size and shape of droplets were ulti-
+mately the key features in differentiating them (i.e. see Figs. 11a and 11b).
+While these are key factors in atomization, velocity contributes significantly
+to breakup mechanisms. The effects of velocity should become more appar-
+24
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 27 =====
+(a) Mean volume
+ (b) Mean aspect ratio
+(c) Mean x-direction velocity
+ (d) Mean y-direction velocity
+(e) Mean z-direction velocity
+ (f) Number of droplets
+Figure 11: Statistics for clusters created by k-means clustering.
+ent, as there are enough clusters to capture droplets with similar shapes, but
+differing local velocity fields. This will provide further confidence that the
+WECT can successfully differentiate structures by not only geometry, but
+also by their surrounding flow conditions.
+The results for K = 16 are shown in Fig. 12. The large cluster 1 in the
+25
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 28 =====
+original K = 4 collection is now spread out among clusters 1, 9, and 14,
+which display small-volume droplets with relatively high aspect ratios (see
+Fig. 13 for visual confirmation). Among these, cluster 14 exhibits a lower
+mean aspect ratio compared to clusters 1 and 9 ( ≈ 0.5 vs. ≈ 0.6). While
+clusters 1 and 9 appear geometrically similar, they were clustered separately,
+likely suggesting an influence from velocity. Notably, cluster 9 displays a
+stronger x-direction slip velocity than cluster 1 ( ≈ 35m/s vs. ≈ 25m/s),
+suggesting that droplets in this grouping were subjected to differing flow
+conditions, potentially experiencing higher shear. This differentiation implies
+that variations in velocity fields contribute to different breakup behaviors,
+which are now captured by the greater number of clusters.
+5. Conclusions
+This work has taken two significant steps toward a more comprehensive
+analysis of atomizing flows. First, we have shown that it is possible to extract
+liquid shapes and associated flow fields from high-fidelity simulations in a way
+that directly targets breakup and coalescence events. Previous approaches
+generally rely on full-field outputs [57, 67, 68, 23], but the method presented
+here isolates each relevant structure and captures localized information at the
+moment of breakup. This capability represents a shift from broad snapshots
+of the entire simulation domain to data that provides insights into model-
+relevant dynamics.
+Second, we have demonstrated a means of transforming these complex,
+high-dimensional datasets into vectorized representations using the DIWECT.
+By approximating a mapping of geometry and local velocity fields to con-
+cise vectorized descriptors, we can readily apply machine learning or other
+data-driven tools to an otherwise intractable volume of simulation data. Our
+clustering examples illustrate that droplets sharing similar shape, size, and
+flow conditions appear in common groups, reaffirming that the DIWECT
+captures physically meaningful features.
+While these contributions move atomization research closer to fully data-
+driven reduced-order modeling, there are limitations that must be addressed
+in future work. ASSET’s requirement that distinct liquid structures be sep-
+arated by a full grid cell can sometimes cause the output geometries to mis-
+represent connected components, either by grouping individual structures
+together or artificially separating continuous ones. This issue is evident in
+Figs. 10 and 13 and presents a challenge for the DIWECT, which is sensitive
+26
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 29 =====
+(a) Mean volume
+ (b) Mean aspect ratio
+(c) Mean x-direction velocity
+ (d) Mean y-direction velocity
+(e) Mean z-direction velocity
+ (f) Number of droplets
+Figure 12: Statistics for clusters created by k-means clustering.
+to discontinuities in interface representation. This artifact can be reduced
+with increasing simulation resolution, which is possible with continually im-
+proving with numerical methods and computational efficiency. However,
+more robust treatment of liquid structures at the moment of breakup would
+improve the methodology. Implementations of numerical methods such as
+27
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 30 =====
+(a) Sample from cluster 1
+ (b) Sample from cluster 9
+ (c) Sample from cluster 14
+Figure 13: Renderings of samples of droplets from clusters 1,9, and 14 inK = 16 clustering
+output.
+reconstruction with 2 planes (R2P) [69] in output simulations would greatly
+improve these artifacts.
+Despite the limitations, these methods show promise that physical data
+can be recovered from the DIWECT. As noted in §3.3, given an infinite
+number of sampling directions and heights, the DIWECT is a one-to-one
+mapping of any shape. Practically, the method must be discretized, so we
+chose 150 directions and 75 heights for the present application, then an es-
+timate of the DIWECT was computed. This resulted in a data reduction
+from 133 GB to 10 MB. Applying the methodology presented in this work to
+a predictive tool will necessitate tuning these sampling parameters, however
+this remains outside the scope of the present work.
+The key results in this work show that the DIWECT can be used for
+finding the closest match which can determine the closest match to a given
+droplet in a database of droplets. This will be useful as a breakup model
+where the database can be used to predict the dynamics of a droplet. Addi-
+tionally, clustering was performed by first computing PCA on the DIWECT
+database to further reduce the data size and to combat the curse of dimen-
+sionality. The clustering results first demonstrate the utility of the DIWECT
+as a way to represent droplets by classifying them into logical bins, and sec-
+ond to highlight the ability of the DIWECT to aid in analyzing simulation
+results where droplets can be clustered to understand the number of droplets
+in various types.
+Ultimately, this work bridges the gap between massive simulation datasets
+and meaningful data for model development. The methods outlined here
+represent significant improvements in the field of atomization simulations, by
+allowing greater utilization of massive, costly simulation runs. Future work
+will focus on model development to create a novel category of physics-based
+models without significant empirical assumptions.
+28
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 31 =====
+Acknowledgments
+We would like to express our sincere gratitude to David Millman for
+their invaluable assistance and insightful discussions, which significantly con-
+tributed to the development of the GTDA ideas presented in this paper.
+This material is based upon work supported by the National Science
+Foundation under Grant No. 2152737.
+Computational efforts were performed on the Tempest High Performance
+Computing System, operated and supported by University Information Tech-
+nology Research Cyberinfrastructure at Montana State University.
+29
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 32 =====
+References
+[1] P. H. Marmottant, E. Villermaux, On spray formation, Journal of Fluid
+Mechanics 498 (2004) 73–111. doi:10.1017/S0022112003006529.
+[2] M. A. Linne, M. Paciaroni, J. R. Gord, T. R. Meyer, Ballistic imaging
+of the liquid core for a steady jet in crossflow, Applied Optics (2005).
+[3] D. Sedarsky, E. Berrocal, M. Linne, Numerical analysis of ballistic imag-
+ing for revealing liquid breakup in dense sprays, Atomization and Sprays
+20 (2010). doi:10.1615/AtomizSpr.v20.i5.30.
+[4] P. R. Slangen, P. Lauret, F. Heymes, L. Aprin, N. Lecysyn,
+High-speed imaging optical techniques for shockwave and droplets
+atomization analysis, Optical Engineering 55 (2016) 121706.
+doi:10.1117/1.oe.55.12.121706.
+[5] Y. J. Wang, K. S. Im, K. Fezzaa, W. K. Lee, J. Wang, P. Micheli,
+C. Laub, Quantitative x-ray phase-contrast imaging of air-assisted water
+sprays with high weber numbers, Applied Physics Letters 89 (2006).
+doi:10.1063/1.2358322.
+[6] T. J. Heindel, X-ray imaging techniques to quantify spray char-
+acteristics in the near field, Atomization and Sprays 28 (2018).
+doi:10.1615/ATOMIZSPR.2019028797.
+[7] Z. Li, W. Zhao, Z. Wu, Understanding transient internal flow pro-
+cesses in high-pressure nozzles using synchrotron radiation x-ray phase
+contrast imaging technology, Atomization and Sprays 31 (2021).
+doi:10.1615/ATOMIZSPR.2021035808.
+[8] M. Gorokhovski, M. Herrmann, Modeling primary atomiza-
+tion, Annual Review of Fluid Mechanics 40 (2008) 343–366.
+doi:10.1146/annurev.fluid.40.111406.102200.
+[9] B. Christensen, M. Owkes, Efficient extraction of atomization processes
+from high-fidelity simulations, Computers and Fluids 254 (3 2023).
+doi:10.1016/j.compfluid.2023.105808.
+[10] C. Rubel, M. Owkes, Extraction of droplet genealogies from high-fidelity
+atomization simulations, Atomization and Sprays 29 (2019) 709–739.
+30
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 33 =====
+[11] R. D. Reitz, R. Diwakar, Structure of high-pressure fuel sprays, SAE
+Technical Papers (1987). doi:10.4271/870598.
+[12] P. O’Rourke, A. A. Amsden, The tab method for numerical cal-
+culation of spray droplet breakup, SAE Technical Papers (1987).
+doi:https://doi.org/10.4271/872089.
+[13] M. Pilch, C. A. Erdman, Use of breakup time data and velocity history
+data to predict the maximum size of stable fragments for acceleration-
+induced breakup of a liquid drop, Int. J. Multiphase Flow 13 (1987)
+741–757.
+[14] I. Hotz, T. B. Masood, F. Sadlo, J. Tierny, Topological methods in data
+analysis and visualization VI, Springer, 2021.
+[15] M. Gameiro, K. Mischaikow, T. Wanner, Evolution of pattern com-
+plexity in the cahn–hilliard theory of phase separation, Acta Materialia
+53 (3) (2005) 693–704.
+[16] K. Krishan, H. Kurtuldu, M. F. Schatz, M. Gameiro, K. Mischaikow,
+S. Madruga, Homology and symmetry breaking in rayleigh-b´ enard con-
+vection: Experiments and simulations, Physics of Fluids 19 (11) (2007).
+[17] R. Levanger, A comparison framework for interleaved persistence mod-
+ules and applications of persistent homology to problems in fluid dy-
+namics, Ph.D. thesis (2017).
+[18] A. R. Afanador, S. Zaleski, G. Tryggvason, J. Lu, Effect of topology
+changes on the breakup of a periodic liquid jet, Computers & Fluids
+228 (2021) 105059.
+[19] F. Nauleau, T. Bridel-Bertomeu, F. Vivodtzev, H. Beaugendre,
+J. Tierny, Topological data analysis for numerical method comparisons
+of 2d turbulent flows, in: Journ´ ee Visu 2021, 2021.
+[20] J. N´ u˜ nez, A. Gonz´ alez, E. Ramos, Topological data analysis of la-
+grangian orbits in natural convection flows confined in a cylinder, Phys-
+ical Review Fluids 7 (12) (2022) 123501.
+[21] M. Kram´ ar, R. Levanger, J. Tithof, B. Suri, M. Xu, M. Paul, M. F.
+Schatz, K. Mischaikow, Analysis of kolmogorov flow and rayleigh–b´ enard
+31
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 34 =====
+convection using persistent homology, Physica D: Nonlinear Phenomena
+334 (2016) 82–98.
+[22] A. Roy, R. Haque, A. Mitra, S. Tarafdar, T. Dutta, Characterizing fluid
+dynamical systems using euler characteristic surface and euler metric,
+Physics of Fluids 35 (8) (2023).
+[23] J. Hasslberger, S. Ketterl, M. Klein, N. Chakraborty, Flow topolo-
+gies in primary atomization of liquid jets: A direct numerical sim-
+ulation analysis, Journal of Fluid Mechanics 859 (2019) 819–838.
+doi:10.1017/jfm.2018.845.
+[24] J. Hasslberger, S. Marten, M. Klein, A theoretical investigation of
+flow topologies in bubble- and droplet-affected flows, Fluids 4 (2019).
+doi:10.3390/fluids4030117.
+[25] X. Chen, J. Lu, S. Zaleski, G. Tryggvason, Characterizing interface
+topology in multiphase flows using skeletons, Physics of Fluids 34 (9)
+(2022).
+[26] T. He, L. Hong, D. Chen, Z. Liang, Reliable path for virtual endoscopy:
+Ensuring complete examination of human organs, IEEE transactions on
+visualization and computer graphics 7 (4) (2001) 333–342.
+[27] S. M. Pizer, G. Gerig, S. Joshi, S. R. Aylward, Multiscale medial shape-
+based analysis of image objects, Proceedings of the IEEE 91 (10) (2003)
+1670–1679.
+[28] L. Crawford, A. Monod, A. X. Chen, S. Mukherjee, R. Rabad´ an, Pre-
+dicting clinical outcomes in glioblastoma: an application of topological
+and functional data analysis, Journal of the American Statistical Asso-
+ciation 115 (531) (2020) 1139–1150.
+[29] M. Hilaga, Y. Shinagawa, T. Kohmura, T. L. Kunii, Topology matching
+for fully automatic similarity estimation of 3d shapes, in: Proceedings
+of the 28th annual conference on Computer graphics and interactive
+techniques, 2001, pp. 203–212.
+[30] K. Turner, S. Mukherjee, D. M. Boyer, Persistent homology transform
+for modeling shapes and surfaces, Information and Inference: A Journal
+of the IMA 3 (4) (2014) 310–344.
+32
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 35 =====
+[31] A. Amsden, J. Ramshaw, P. O’rourke, J. Dukowicz, Kiva: A computer
+program for two-and three-dimensional fluid flows with chemical reac-
+tions and fuel sprays, Tech. rep., Los Alamos National Lab., NM (USA)
+(1985).
+[32] A. A. Amsden, P. J. O’Rourke, T. D. Butler, Kiva-ii: A computer pro-
+gram for chemically reactive flows with sprays, Tech. rep., Los Alamos
+National Lab.(LANL), Los Alamos, NM (United States) (1989).
+[33] A. A. Amsden, Kiva3. a kiva program with block-structured mesh for
+complex geometries, Tech. rep., Los Alamos National Lab.(LANL), Los
+Alamos, NM (United States) (1993).
+[34] A. Amsden, Kiva3v. a block-structured kiva program for engines with
+vertical or canted valves, Tech. rep., Los Alamos National Lab.(LANL),
+Los Alamos, NM (United States) (1997).
+[35] D. J. Torres, M. F. Trujillo, Kiva-4: An unstructured ale code for com-
+pressible gas flow with sprays, Journal of Computational Physics 219 (2)
+(2006) 943–975.
+[36] U.S. Department of Energy, Modeling of combustion processes improves
+engine efficiency (Jan. 2006).
+URL https://www.osti.gov/servlets/purl/845713-htwC2h/
+[37] J. C. Beale, R. D. Reitz, Modeling spray atomization with the kelvin-
+helmholtz/rayleigh-taylor hybrid model, Atomization and Sprays 9
+(1999). doi:10.1615/atomizspr.v9.i6.40.
+[38] M. A. Patterson, R. D. Reitz, Modeling the effects of fuel spray char-
+acteristics on diesel engine combustion and emission, SAE Technical
+Papers (1998). doi:10.4271/980131.
+[39] D. Jarrahbashi, W. A. Sirignano, Invited article: Vorticity dynamics for
+transient high-pressure liquid injection, Physics of Fluids 26 (9 2014).
+doi:10.1063/1.4895781.
+[40] A. Zandian, W. A. Sirignano, F. Hussain, Understanding liquid-jet at-
+omization cascades via vortex dynamics, Journal of Fluid Mechanics 843
+(2018) 293–354. doi:10.1017/jfm.2018.113.
+33
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 36 =====
+[41] G. Tomar, D. Fuster, S. Zaleski, S. Popinet, Multiscale simulations of
+primary atomization, Computers & Fluids 39 (10) (2010) 1864–1874.
+[42] M. Herrmann, A parallel eulerian interface tracking/lagrangian point
+particle multi-scale coupling procedure, Journal of Computational
+Physics 229 (2010) 745–759. doi:10.1016/j.jcp.2009.10.009.
+[43] D. Zuzio, J.-L. Estival` ezes, B. DiPierro, An improved multiscale
+eulerian–lagrangian method for simulation of atomization process, Com-
+puters & Fluids 176 (2018) 285–301.
+[44] F. Evrard, F. Denner, B. van Wachem, A multi-scale approach to sim-
+ulate atomisation processes, International Journal of Multiphase Flow
+119 (2019) 194–216.
+[45] C.-W. Kuo, M. F. Trujillo, Simulation of liquid jet atomization and
+droplet breakup via a volume-of-fluid lagrangian–eulerian strategy,
+Physics of Fluids 34 (11) (2022).
+[46] H. Yu, L. Goldsworthy, M. Ghiji, P. A. Brandner, V. Garaniya, A par-
+allel volume of fluid-lagrangian parcel tracking coupling procedure for
+diesel spray modelling, Computers & Fluids 150 (2017) 46–65.
+[47] O. Desjardins, G. Blanquart, G. Balarac, H. Pitsch, High order conser-
+vative finite difference scheme for variable density low mach number tur-
+bulent flows, Journal of Computational Physics 227 (2008) 7125–7159.
+doi:10.1016/j.jcp.2008.03.027.
+[48] O. Desjardins, V. Moureau, H. Pitsch, An accurate conserva-
+tive level set/ghost fluid method for simulating turbulent atom-
+ization, Journal of Computational Physics 227 (2008) 8395–8416.
+doi:10.1016/j.jcp.2008.05.027.
+[49] M. Owkes, O. Desjardins, A computational framework for conservative,
+three-dimensional, unsplit, geometric transport with application to the
+volume-of-fluid (vof) method, Journal of Computational Physics 270
+(2014) 587–612. doi:10.1016/j.jcp.2014.04.022.
+[50] M. Owkes, O. Desjardins, A mass and momentum conserving unsplit
+semi-lagrangian framework for simulating multiphase flows, Journal of
+Computational Physics 332 (2017) 21–46. doi:10.1016/j.jcp.2016.11.046.
+34
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 37 =====
+[51] H. Choi, P. Moin, Effects of the computational time step on numerical
+solutions of turbulent flow, Journal of Computational Physics 113 (7
+1994). doi:10.1006/jcph.1994.1112.
+[52] D. L. Youngs, Numerical Methods in Fluid Dynamics, Academic Press,
+1982, Ch. Time-Dependent Multi-material Flow with Large Fluid Dis-
+tortion, pp. 273–285.
+[53] J. E. Pilliod, E. G. Puckett, Second-order accurate volume-of-fluid al-
+gorithms for tracking material interfaces, Journal of Computational
+Physics 199 (2004) 465–502. doi:10.1016/j.jcp.2003.12.023.
+[54] R. P. Fedkiw, T. Aslam, B. Merriman, S. Osher, A non-
+oscillatory eulerian approach to interfaces in multimaterial flows (the
+ghost fluid method), Journal of Computational Physics 152 (1999).
+doi:10.1006/jcph.1999.6236.
+[55] J. E. Dendy, Black box multigrid, Journal of Computational Physics 48
+(1982). doi:10.1016/0021-9991(82)90057-2.
+[56] M. Owkes, E. Cauble, J. Senecal, R. A. Currie, Importance of curva-
+ture evaluation scale for predictive simulations of dynamic gas–liquid
+interfaces, Journal of Computational Physics 365 (2018) 37–55.
+doi:10.1016/j.jcp.2018.03.018.
+[57] O. Desjardins, H. Pitsch, Detailed numerical investigation of turbulent
+atomization of liquid jets, Atomization and Sprays 20 (2010) 311–336.
+[58] O. Desjardins, J. O. McCaslin, M. Owkes, P. Brady, Di-
+rect numerical and large-eddy simulation of primary atomiza-
+tion in complex geometries, Atomization and Sprays 23 (2013).
+doi:10.1615/AtomizSpr.2013007679.
+[59] W. Krolick, M. Owkes, Primary atomization instability extraction using
+dynamic mode decomposition, Atomization and Sprays 28 (2018) 1061–
+1079.
+[60] P. Sheehy, M. Owkes, Numerical study of electric reynolds number
+on electrohydrodynamic (ehd) assisted atomization, Atomization and
+Sprays 27 (2017). doi:10.1615/atomizspr.2017016576.
+35
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed
+
+===== PAGE 38 =====
+[61] W. Lorensen, H. Cline, Marching cubes: A high resolution 3d surface
+construction algorithm, Computer graphics 21 (1) (1987) 7–12.
+[62] T. Lewiner, H. Lopes, A. W. Vieira, G. Tavares, Efficient implemen-
+tation of marching cubes’ cases with topological guarantees, Journal of
+graphics tools 8 (2) (2003) 1–15.
+[63] H. Childs, E. Brugger, B. Whitlock, J. Meredith, S. Ahern, D. Pugmire,
+K. Biagas, M. Miller, C. Harrison, G. H. Weber, H. Krishnan, T. Fogal,
+A. Sanderson, C. Garth, E. W. Bethel, D. Camp, O. R¨ ubel, M. Durant,
+J. M. Favre, P. Navr´ atil, Visit: An end-user tool for visualizing and
+analyzing very large data, in: High Performance Visualization–Enabling
+Extreme-Scale Scientific Insight, 2012, pp. 357–372. doi:10.1201/b12985.
+[64] Q. Jiang, S. Kurtek, T. Needham, The weighted euler curve transform
+for shape and image analysis, in: 2020 IEEE/CVF Conference on Com-
+puter Vision and Pattern Recognition Workshops (CVPRW), 2020, pp.
+3685–3694. doi:10.1109/CVPRW50498.2020.00430.
+[65] J. Cisewski-Kehe, B. T. Fasy, D. Giriyan, E. Quist, The weighted euler
+characteristic transform for image shape classification, arXiv preprint
+arXiv:2307.13940 (2023).
+[66] S. Lloyd, Least squares quantization in pcm, IEEE transactions on in-
+formation theory 28 (2) (1982) 129–137.
+[67] J. Shinjo, A. Umemura, Simulation of liquid jet primary
+breakup: Dynamics of ligament and droplet formation, In-
+ternational Journal of Multiphase Flow 36 (2010) 513–532.
+doi:10.1016/j.ijmultiphaseflow.2010.03.008.
+[68] A. Zandian, W. A. Sirignano, F. Hussain, Planar liquid jet: Early
+deformation and atomization cascades, Physics of Fluids 29 (6 2017).
+doi:10.1063/1.4986790.
+[69] A. Han, R. Chiodi, O. Desjardins, Capturing thin structures in vof simu-
+lations with two-plane reconstruction, Journal of Computational Physics
+519 (2024) 113453.
+36
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=5240551
+Preprint not peer reviewed

@@ -2,19 +2,20 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T02:37:37Z`
-- Tree/content state: `59e6de8f1b4a9c144e645050294f4da09b3f6451`
+- Scanned: `2026-09-07T06:53:24Z`
+- Tree/content state: `68c58f3f07140c31e470640295f851ae86be8b113973812d08aac709b05dc938`
 - Coverage: complete structural traversal
-- Files: 288
-- Uploaded source files: 282
+- Files: 290
+- Uploaded source files: 283
 - PDF papers: 276
-- Repository machinery files: 6
+- Repository machinery files: 7
 - Byte-identical duplicate groups: 25
 
 ## Top-level coverage
 
 | Path | Files |
 |---|---:|
+| `.github` | 1 |
 | `.gitignore` | 1 |
 | `BIG PAPERS` | 3 |
 | `HAUL 1` | 70 |
@@ -31,88 +32,89 @@
 | `HAUL 9` | 4 |
 | `KERR` | 16 |
 | `README.md` | 1 |
+| `derived` | 1 |
 | `requirements-tools.txt` | 1 |
 | `tests` | 1 |
 | `tools` | 2 |
 
 ## Duplicate-content groups
 
-- `01f394467d7b5e03d412fef9e8fac52a90117f1e`
-  - `HAUL 2/ssrn-6993036 (1).pdf`
-  - `HAUL 2/ssrn-6993036.pdf`
-- `18292967738eaba3c9b2e606bd07f4d923534338`
-  - `HAUL 1/ssrn-7228958 (1).pdf`
-  - `HAUL 1/ssrn-7228958.pdf`
-- `1a4f3f6e4480b382e271bee429f1deca1a2b9e80`
-  - `HAUL 1/ssrn-7133961 (1).pdf`
-  - `HAUL 1/ssrn-7133961.pdf`
-- `1a647ee7e7652af713feac139ae1870840f2084d`
-  - `HAUL 3/0010047v2 (1).pdf`
-  - `HAUL 3/0010047v2.pdf`
-- `2a520e78afaa4c0534396608ab3815d716840aa1`
-  - `HAUL 2/ssrn-6956780 (1).pdf`
-  - `HAUL 2/ssrn-6956780.pdf`
-- `2d8c7b67c115bcdd033d878d667774fc526e0845`
+- `08254264acd8cdef806b25880378f470a3c04998d89cf76e93688ab12af17ff7`
+  - `HAUL 11/Bell (1).pdf`
+  - `HAUL 11/Bell.pdf`
+- `154e61da81d0b80377886702947225817da1acfee7435eff4cc16283afccc2fb`
   - `HAUL 3/PhysRevA.52.4381 (1).pdf`
   - `HAUL 3/PhysRevA.52.4381.pdf`
-- `37e8de0c4518040a2478b50a5bac80e4bc48350a`
-  - `HAUL 2/ssrn-7352038 (1).pdf`
-  - `HAUL 2/ssrn-7352038.pdf`
-- `4174716b3b2a073b0d1abfb219373b7d60c93759`
-  - `HAUL 2/ssrn-6315940.pdf`
-  - `HAUL 3/helic 6315940.pdf`
-- `4fd93237ee0eb6ada4ade5e956549df557493d58`
-  - `HAUL 2/ssrn-6962403 (1).pdf`
-  - `HAUL 2/ssrn-6962403.pdf`
-- `6b601ab5d850958edff50c3f3a3f63ba422a180e`
-  - `HAUL 5/ssrn-7060238 (1).pdf`
-  - `HAUL 5/ssrn-7060238.pdf`
-- `771cb1762badb53d1d5d7b470bf9ccdca6bf58aa`
-  - `HAUL 7/ssrn-7242985 (1).pdf`
-  - `HAUL 7/ssrn-7242985.pdf`
-- `838d0c43f7a974b950acce29b3d571e0fdad5e4e`
-  - `KERR/0407064v3 (1).pdf`
-  - `KERR/0407064v3.pdf`
-- `8a88af80a5b6e59ec383955a73564a9dd4c85c66`
-  - `HAUL 3/Aspect (1).pdf`
-  - `HAUL 3/Aspect.pdf`
-- `aa2e2df18043f19e1a77404ac75726a005835ff0`
-  - `HAUL 1/ssrn-7075498 (1).pdf`
-  - `HAUL 1/ssrn-7075498.pdf`
-- `ae3cb6de2e2aec1d94da09239fea3010592d2eaa`
-  - `HAUL 4/7258242.pdf`
-  - `HAUL 7/ssrn-7258242.pdf`
-- `b11b6ca8dd5582a35717fc26d8bb48aade119bc2`
-  - `HAUL 3/EPR (1).pdf`
-  - `HAUL 3/EPR.pdf`
-- `c10c71fb42c09640414637aaa7994d6de6beae91`
+- `165a78a97cb22cc7fccd31b3784bb2ca35dc6ee41567c0c4afd5ff2982511bb4`
+  - `HAUL 4/1704.04648v2 (1).pdf`
+  - `HAUL 4/1704.04648v2.pdf`
+- `17350dcca317338da146a56da70c222a4db2f5f77a2c29959a62d2ee58c28412`
+  - `HAUL 2/ssrn-6912299 (1).pdf`
+  - `HAUL 2/ssrn-6912299.pdf`
+- `2a066e046105cc5a5b488ba052854d38ddc2223b0add3912216017e2efefd6ee`
+  - `HAUL 2/ssrn-6956780 (1).pdf`
+  - `HAUL 2/ssrn-6956780.pdf`
+- `2b7c308566f7416a893aa3e0101484d453bee6f955387293cec47827f926442f`
   - `HAUL 8/RPP1978_Bell (1).pdf`
   - `HAUL 8/RPP1978_Bell (2).pdf`
   - `HAUL 8/RPP1978_Bell.pdf`
-- `c378971b226f29943de27c73bab912efe152760b`
-  - `HAUL 4/7075779.pdf`
-  - `HAUL 5/ssrn-7075779.pdf`
-- `cc8cc1ca500199e36476d2696adc0a3bede495f6`
-  - `HAUL 2/ssrn-6981703 (1).pdf`
-  - `HAUL 2/ssrn-6981703.pdf`
-- `d4d09c2c98e6a66bfd2748a6afcb1d8befb6fe7b`
-  - `HAUL 1/ssrn-7055399 (1).pdf`
-  - `HAUL 1/ssrn-7055399.pdf`
-- `e1d72ad748334bc16c2fd3a4a2debd051c0fc7d2`
-  - `HAUL 2/ssrn-6912299 (1).pdf`
-  - `HAUL 2/ssrn-6912299.pdf`
-- `e4625ad6adebf6f1a30a5070003cd426f023b8f4`
+- `483983ea4c464f1f6df3029c049e63cedf68b960746741b01427157d298c1a3a`
   - `HAUL 2/ssrn-6972282 (1).pdf`
   - `HAUL 2/ssrn-6972282.pdf`
-- `e8f87728e8c3626e55c3b2a25979e45deb8c7beb`
-  - `HAUL 11/Bell (1).pdf`
-  - `HAUL 11/Bell.pdf`
-- `eb0b181e6e41a56d7a2b3ea3df068d7b361813f7`
-  - `HAUL 4/1704.04648v2 (1).pdf`
-  - `HAUL 4/1704.04648v2.pdf`
-- `f485f48e3a272307bc902059680e9bc37a6a2153`
+- `5b862fda843c7de1a99af463264b746765064ce75049d02fbe6c4a260e5ff686`
+  - `HAUL 1/ssrn-7228958 (1).pdf`
+  - `HAUL 1/ssrn-7228958.pdf`
+- `66b5deb150c49484cfb031b8b56bdc97e0a72a65bba0b699cf82a7214ba85fee`
+  - `HAUL 3/EPR (1).pdf`
+  - `HAUL 3/EPR.pdf`
+- `6e70f9b7e04989238e08c647f314411e642b2c6bcf787b21335ccdd28df10d9e`
+  - `HAUL 3/0010047v2 (1).pdf`
+  - `HAUL 3/0010047v2.pdf`
+- `76413659ed85e3a44a27b59eee6cc46a78063d3ee9bbfc4180c80887e8d3df17`
+  - `HAUL 4/7075779.pdf`
+  - `HAUL 5/ssrn-7075779.pdf`
+- `818b15a4ad3f99274aa4686d639afa984e5ff7eac79aedcb2a2def907b0dc806`
+  - `HAUL 2/ssrn-6993036 (1).pdf`
+  - `HAUL 2/ssrn-6993036.pdf`
+- `821269d0b0c04ff60e557ef57e1fdb80305c7685cbb560712ce53db9670fbdc4`
+  - `HAUL 5/ssrn-7060238 (1).pdf`
+  - `HAUL 5/ssrn-7060238.pdf`
+- `85fb06fc0c55d3ebd80eb2e184d5198de6afdebbf5b5a7e8be305ba87b12874a`
+  - `HAUL 1/ssrn-7075498 (1).pdf`
+  - `HAUL 1/ssrn-7075498.pdf`
+- `91367965fe8e16aa5964a9e01ab2e482362ff4bef4112cec34cf651ffd2b0e2e`
+  - `HAUL 3/Aspect (1).pdf`
+  - `HAUL 3/Aspect.pdf`
+- `a1c28719e18532951800b35b33f55afae3c903491cdbeca2b20d6c51e18d6bfc`
   - `HAUL 2/ssrn-6887518 (1).pdf`
   - `HAUL 2/ssrn-6887518.pdf`
+- `b521569545fe74776b6eafd2707b90710e3b06260d32cd94776f4a02c07f21ac`
+  - `HAUL 2/ssrn-7352038 (1).pdf`
+  - `HAUL 2/ssrn-7352038.pdf`
+- `c5f441626fcae53d8bf7530a65b7790837f3db84a1ff031e42e4eed16e808875`
+  - `HAUL 4/7258242.pdf`
+  - `HAUL 7/ssrn-7258242.pdf`
+- `d1ee8716b2ffd59bf030f1e6ea7bb21e0b6437657a099c9435a7fa0b463ece81`
+  - `HAUL 2/ssrn-6962403 (1).pdf`
+  - `HAUL 2/ssrn-6962403.pdf`
+- `d7aabb1d64ca0acc5750bb4adf3c48c42ee22b5d6bf2c18b8c33ea49dc7fd4ca`
+  - `HAUL 2/ssrn-6315940.pdf`
+  - `HAUL 3/helic 6315940.pdf`
+- `d851868ccbe6bec2b43b0a79a4316e91d391c1bc9fd263a20e835d09d6971fc4`
+  - `KERR/0407064v3 (1).pdf`
+  - `KERR/0407064v3.pdf`
+- `e005bf81920b785959e211713c3e300af2c38a2b2cc92a9acbd5dc91a6314f34`
+  - `HAUL 1/ssrn-7055399 (1).pdf`
+  - `HAUL 1/ssrn-7055399.pdf`
+- `e203faa631e24e4fc932ee00c22529d463b7f79f5b29f5ac5023f46619ca7966`
+  - `HAUL 2/ssrn-6981703 (1).pdf`
+  - `HAUL 2/ssrn-6981703.pdf`
+- `e6a4964452167426e8d694c84bf80070b9c1a3e2a0795dd64faecd8843ff024e`
+  - `HAUL 1/ssrn-7133961 (1).pdf`
+  - `HAUL 1/ssrn-7133961.pdf`
+- `e997c865a586381c9c8ab575f95a1bc09ff0283a18ba6d39e658649e95688df4`
+  - `HAUL 7/ssrn-7242985 (1).pdf`
+  - `HAUL 7/ssrn-7242985.pdf`
 
 ## PDF inventory
 

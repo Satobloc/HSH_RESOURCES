@@ -1,0 +1,575 @@
+===== PAGE 1 =====
+Quantifying Shadow Deviations of Bardeen Regular Black Holes: 
+A Reproducible Computational Assessment for Event Horizon 
+Telescope Observations 
+Aswin Karkadakattil 
+Independent Researcher in Advanced Manufacturing and Aerospace Engineering, with Applications in Artificial 
+Intelligence, Kerala, India 
+Correspondence: ashwinharik20000@gmail.com 
+Abstract  
+The Kerr metric provides the standard description of astrophysical black holes, while singularity -free regular 
+black-hole models offer alternative spacetime geometries that can be tested through horizon -scale observations. 
+Here, we quantify the shadow devi ations produced by the non -rotating Bardeen regular black -hole metric and 
+assess their observational scale for Event Horizon Telescope (EHT) targets. A lightweight and fully reproducible 
+computational framework is implemented in a single Google Colab noteb ook, using the photon-sphere condition 
+and critical impact parameter to determine the Bardeen shadow boundary and its dependence on the regularisation 
+parameter g. The calculation recovers the Schwarzschild shadow diameter of 10.3923M at g/M=0 and shows a 
+smooth reduction to 10.2319M, 9.6795M, and 8.8817M at g/M=0.3, 0.6, and 0.8, corresponding to fractional 
+deviations of approximately 1.54%, 6.86%, and 14.53%, respectively. For Sagittarius A*, the corresponding 
+angular diameter decreases from 53.94μas at g/M=0 to 53.11μas at g/M=0.3 and 50.24μas at g/M=0.6; for M87*, 
+it decreases from 39.69μas to 39.08μas and 36.97μas, respectively. Across the tested range, both targets therefore 
+remain above the adopted EHT angular -resolution benchmark, indicating that geo metric resolvability is not 
+equivalent to parameter distinguishability. The results provide a quantitative mapping between the Bardeen 
+regularisation parameter and observable shadow -size deviations and establish a reproducible computational 
+baseline for fu ture comparisons incorporating black -hole spin, plasma effects, scattering, and full EHT image 
+modelling. The complete workflow is designed for open reproduction and extension using standard scientific 
+Python tools in a browser-based environment. 
+Keywords: black hole shadow; regular black holes; Bardeen metric; Event Horizon Telescope; null geodesics; 
+ray tracing; Sagittarius A*; M87*; reproducible computational astrophysics  
+1. Introduction 
+General relativity describes astrophysical black holes through the Kerr metric, but regular black -hole models 
+provide an alternative in which the central singularity is replaced by a nonsingular  geometry. The Bardeen 
+solution, originally proposed by Bardeen (1968), is one of the earliest and most widely studied examples. Ayón -
+Beato and García (1998, 1999, 2000) later demonstrated that the Bardeen geometry can arise as an exact solution 
+of Einstein gravity coupled to nonlinear electrodynamics. Subsequent studies extended regular black holes to 
+rotating configurations and invest igated their photon trajectories and shadow properties (Bambi and Modesto, 
+2013; Li and Bambi, 2014; Abdujabbarov et al., 2016; Stuchlík and Schee, 2019; He et al., 2022).   The 
+development of horizon -scale very -long-baseline interferometry has made these theoretical differences 
+increasingly relevant to observations. The Event Horizon Telescope (EHT) produced the first resolved image of 
+M87* (Event Horizon Telescope Collaborat ion, 2019) and subsequently imaged Sagittarius A* (Sgr  A*) at the 
+centre of the Milky Way (Event Horizon Telescope Collaboration, 2022a). EHT observations have also been used 
+to test the consistency of the observed image structure with the Kerr metric (Event Horizon Telescope 
+Collaboration, 2022b). These results provide an observational basis for examining deviations from standard black-
+hole geometries through their shadow properties.  Previous studies have established that regularisation can modify 
+the photon sphere and shadow and that these effects can, in principle, be distinguished from Kerr spin (Li and 
+Bambi, 2014; Abdujabbarov et al., 2016; Stuchlík and Schee, 2019). The influence  of accretion and surrounding 
+matter on Bardeen shadow appearance has also been investigated (He et al., 2022). However, an important 
+practical question remains: how does the Bardeen regularisation parameter translate into a measurable 
+shadow-size deviation, and what angular scale does this deviation correspond to for current EHT targets?   
+This distinction is important because shadow resolvability does not necessarily imply metric distinguishability. A 
+shadow may remain larger than the nominal instrumental resolution while the difference between competing 
+spacetime geometries remains too sma ll to identify reliably. A useful assessment therefore requires a direct
+
+===== PAGE 2 =====
+connection between the regularisation parameter, photon -sphere geometry, shadow diameter, and target -specific 
+angular scale.  This short communication addresses this question using a lightweight and reproducible 
+computational framework for the non -rotating Bardeen metric. The photon -sphere radius and critical impact 
+parameter are evaluated as functions of , with the Schwarzschild  limit providing the reference geometry. The 
+resulting fractional shadow-diameter deviations are then converted into angular diameters for Sgr  A* and M87* 
+using their measured masses and distances and compared with the adopted EHT angular -resolution scale. Kerr 
+shadow silhouettes are included separately to illustrate the effect of spin and distinguish its characteristic 
+asymmetry from the size c hange associated with Bardeen regularisation.   The contribution is therefore a 
+reproducible parameter -to-observable assessment  of Bardeen regularisation rather than a new black -hole 
+metric or shadow formalism. The analysis provides a transparent computational baseline for evaluating how 
+regularisation changes shadow size and for future studies incorporating spin, plasma effects, scattering, accretion-
+flow physics, and detailed EHT image modelling. The complete workflow is designed for execution in a browser-
+based Google Colab environment using standard scientific Python libraries.  
+3. Methods 
+3.1 Kerr shadow: analytic celestial coordinates 
+The Kerr shadow boundary was computed using the analytic formalism of Bardeen, Press and Teukolsky (1972) 
+for unstable spherical photon orbits. The dimensionless spin parameter is defined as  
+𝑎∗ = 𝑎
+𝑀, 
+where 𝑎 is the Kerr spin parameter and 𝑀 is the black -hole mass. For a given 𝑎∗, the allowed radial range of 
+unstable spherical photon orbits was determined analytically. Each orbit was then mapped to the conserved 
+quantities 𝜉 and 𝜂, corresponding to the photon angular -momentum and Carter -constant parameters. For an 
+observer at inclination 𝑖, these quantities were projected onto the celestial coordinates 
+𝛼 = − 𝜉
+sin 𝑖, 
+𝛽 = ±√𝜂 + 𝑎2 cos2 𝑖 − 𝜉2 cot2 𝑖. 
+The resulting (𝛼, 𝛽) coordinates define the Kerr shadow boundary. In the non-rotating limit, 
+𝑎∗ = 0, 
+the shadow becomes circular with critical impact parameter 
+𝑏Sch = 3√3𝑀, 
+and corresponding diameter 
+𝐷Sch = 2𝑏Sch = 6√3𝑀. 
+This limit provides an internal consistency check for the numerical implementation. Representative Kerr 
+silhouettes were generated for 𝑎∗ = 0,0.5,0.9 to illustrate the effect of increasing spin on shadow asymmetry and 
+displacement. 
+3.2 Bardeen regular black hole: metric, photon sphere, and shadow radius  
+The non-rotating Bardeen spacetime is described by the metric function introduced by Bardeen (1968) and later 
+given a nonlinear-electrodynamic interpretation by Ayón-Beato and García (2000): 
+𝑓(𝑟) = 1 − 2𝑀𝑟2
+(𝑟2 + 𝑔2)3/2, 
+where 𝑀 is the black-hole mass and 𝑔 is the regularisation parameter. The Schwarzschild limit is recovered as 
+𝑔 → 0,
+
+===== PAGE 3 =====
+for which 
+𝑓(𝑟) → 1 − 2𝑀
+𝑟 . 
+For null geodesics in the static, spherically symmetric spacetime, the relevant impact -parameter function can be 
+written as 
+ℎ(𝑟) = 𝑟2
+𝑓(𝑟). 
+The photon-sphere radius 𝑟ph is obtained from the extremum condition 
+𝑑ℎ(𝑟)
+𝑑𝑟 = 0. 
+Because no convenient closed-form expression for 𝑟ph is used here, the root of 
+𝑑
+𝑑𝑟 [ 𝑟2
+𝑓(𝑟)] = 0 
+is determined numerically using Brent's bracketed root -finding method over the selected radial interval. The 
+corresponding critical impact parameter is 
+𝑏ph = 𝑟ph
+√𝑓(𝑟ph)
+, 
+and the shadow diameter is therefore 
+𝐷sh = 2𝑏ph. 
+The fractional deviation from the Schwarzschild shadow is quantified as 
+Δ𝐷(%) = 𝐷Sch − 𝐷sh
+𝐷Sch
+× 100. 
+The calculation is evaluated over the prescribed 𝑔/𝑀 parameter grid, allowing the photon-sphere radius, shadow 
+diameter, and fractional deviation to be tracked continuously relative to the Schwarzschild reference.  
+3.3 Angular-scale conversion for Sagittarius A* and M87* 
+The dimensionless shadow diameter 𝐷sh/𝑀 is converted into an observable angular diameter using the 
+gravitational length scale 
+𝑟𝑔 = 𝐺𝑀
+𝑐2 . 
+For a source at distance 𝐷, the corresponding physical shadow diameter is 
+𝐿sh = (𝐷sh
+𝑀 ) 𝐺𝑀
+𝑐2 , 
+and its angular diameter is 
+𝜃sh = 𝐿sh
+𝐷 . 
+In microarcseconds, 
+𝜃sh(𝜇as) = 𝐿sh
+𝐷 (180
+𝜋 ) (3600)(106). 
+For Sagittarius A*, the adopted parameters are
+
+===== PAGE 4 =====
+𝑀Sgr A∗ ≈ 4.3 × 106𝑀⊙, 𝐷Sgr A∗ ≈ 8178 pc, 
+while for M87*, 
+𝑀M87∗ ≈ 6.5 × 109𝑀⊙, 𝐷M87∗ ≈ 16.8 Mpc. 
+These values follow the EHT measurements used in the original analysis (Event Horizon Telescope Collaboration, 
+2019, 2022a). The calculated angular diameters are compared with the adopted EHT angular -resolution scale at 
+230 GHz. This comparison is used spe cifically to distinguish geometric resolvability from the substantially 
+stronger requirement of parameter distinguishability. The latter also depends on calibration, systematic 
+uncertainties, image reconstruction, and astrophysical effects not represented by the idealised metric calculation. 
+3.4 Reproducibility statement 
+The complete computational workflow including Kerr shadow generation, Bardeen photon-sphere determination, 
+critical-impact-parameter calculation, angular -scale conversion, and figure generation —is implemented in a 
+single self-contained Google Colab notebook. The calculations require only sta ndard scientific Python libraries, 
+including NumPy, SciPy, and Matplotlib, and can be executed on a CPU without specialised numerical-relativity 
+software or GPU hardware. 
+The workflow follows the sequence 
+{𝑎∗, 𝑖} → (𝛼, 𝛽) → Kerr shadow, 
+and 
+𝑔
+𝑀 → 𝑟ph → 𝑏ph → 𝐷sh → 𝜃sh, 
+with the resulting numerical quantities used directly to generate the tables and figures presented in this study. The 
+browser-based implementation is intended to make the calculations readily reproducible and adaptable to other 
+regular black-hole parameters, spacetime models, and observational targets. 
+4. Results 
+Figure 1 shows the main geometric differences between the Kerr and Bardeen cases. The Kerr shadows for 𝑎∗ =
+0, 0.5, and 0.9 exhibit the expected displacement and increasing asymmetry associated with rotation, whereas the 
+Bardeen shadows for 𝑔/𝑀 = 0, 0.3, and 0.6 remain circular and become progressively smaller as 𝑔/𝑀 increases. 
+This provides a clear qualitative distinction: Kerr spin primarily changes the shadow's shape and position, while 
+Bardeen regularisation primarily changes its size. 
+The corresponding photon-sphere evolution is shown in Figure 3. The photon -sphere radius decreases smoothly 
+from the Schwarzschild value, 
+𝑟ph = 3𝑀, 
+at 𝑔/𝑀 = 0 to approximately 
+𝑟ph = 2.20𝑀 
+at 𝑔/𝑀 = 0.8. The continuous decrease indicates that the reduction in shadow size is directly associated with the 
+inward shift of the unstable photon orbit as the regularisation parameter increases.  
+The resulting shadow-diameter deviation is shown in Figure 4. The deviation is zero at 
+𝑔
+𝑀 = 0, 
+where the Bardeen metric exactly recovers the Schwarzschild limit, providing an internal check of the numerical 
+calculation. The deviation then increases smoothly with 𝑔/𝑀, reaching approximately 
+Δ𝐷 ≈ 1.51𝑀 
+at 𝑔/𝑀 = 0.8. Relative to the Schwarzschild diameter,
+
+===== PAGE 5 =====
+𝐷Sch = 6√3𝑀, 
+this corresponds to a fractional reduction of approximately 14.5%. The monotonic trend provides a direct 
+numerical relationship between the Bardeen regularisation parameter and the observable shadow -size change 
+ 
+a 
+ 
+b 
+ 
+c 
+Figure 1. Geometric characterisation of the Bardeen –Kerr shadow comparison. (A) Shadow silhouettes in the 
+observer's sky plane. (B) Photon sphere radius contraction with increasing regularisation parameter g/M. (C)
+
+===== PAGE 6 =====
+Absolute shadow diameter deviation from the Schwarzschild reference, confirming exact recovery (Δdiam = 0) 
+at g = 0. 
+4. Results 
+Figure 2 places the geometric results in an observational context. The angular shadow diameter decreases 
+progressively with increasing 𝑔/𝑀for both Sagittarius A* and M87*. For Sagittarius A*, the predicted diameter 
+decreases from approximately 53.9𝜇asat 𝑔/𝑀 = 0to 46.1𝜇asat 𝑔/𝑀 = 0.8. For M87*, the corresponding 
+decrease is from approximately 39.7𝜇asto 34.2𝜇as. Both remain above the adopted EHT angular -resolution 
+benchmark of approximately 22.5𝜇asthroughout the parameter range. Thus, the shadow itself remains 
+geometrically resolvable; the more important issue is whether the change in shadow size is sufficiently large to 
+distinguish the underlying spacetime.   The fractional deviation is shown in Figure 5. It increases smoothly from 
+zero at 𝑔/𝑀 = 0to approximately 14.5%at 𝑔/𝑀 = 0.8. This provides a dimensionless measure of the effect that 
+can be compared directly with observational uncertainties and systematic limitations.  
+Table 1.  Photon-sphere radius, critical impact parameter, shadow diameter, and absolute deviation from the 
+Schwarzschild reference as a function of the regularisation parameter 𝑔/𝑀. The complete parameter grid is 
+provided in the Supplementary Data. 
+𝑔/𝑀 𝑟ph (𝑀) 𝑏ph (𝑀) Diameter (𝑀) Δdiameter (𝑀) 
+0.00 3.000 5.1962 10.3923 0.0000 
+0.10 2.987 5.1875 10.3749 0.0174 
+0.20 2.950 5.1611 10.3222 0.0701 
+0.30 2.885 5.1159 10.2319 0.1604 
+0.40 2.788 5.0501 10.1002 0.2922 
+0.50 2.653 4.9600 9.9201 0.4722 
+0.60 2.475 4.8397 9.6795 0.7128 
+0.70 2.243 4.6772 9.3544 1.0379 
+0.80 2.196 4.4409 8.8817 1.5106 
+The results in Table 1 show a smooth and monotonic reduction in both the photon -sphere radius and shadow 
+diameter as 𝑔/𝑀increases. At 𝑔/𝑀 = 0, the calculation recovers the Schwarzschild values, 
+𝑟ph = 3𝑀, 
+ 
+𝑏ph = 3√3𝑀, 
+and 
+ 
+𝐷Sch = 6√3𝑀 = 10.3923𝑀, 
+giving 
+Δ𝐷 = 0. 
+This exact recovery provides a useful numerical consistency check. At 𝑔/𝑀 = 0.8, the shadow diameter decreases 
+to 8.8817𝑀, corresponding to an absolute reduction of 1.5106𝑀and a fractional reduction of approximately 
+14.5%.
+
+===== PAGE 7 =====
+Taken together, Figures 2 and 5 show that increasing regularisation produces a measurable geometric change in 
+the predicted shadow size while leaving the shadow above the adopted angular -resolution scale for both targets. 
+The results therefore separate two quantities that should not be conflated: whether a shadow can be resolved and 
+whether a deviation from the Schwarzschild/Kerr expectation can be statistically distinguished.  
+ 
+                                                                                                   a 
+ 
+b 
+Figure 2. Observational relevance of the shadow deviation. (A) Angular shadow diameter for Sgr A* and M87*, 
+compared to nominal EHT angular resolution (~22.5 µas); both targets remain individually resolvable across the 
+full g/M range tested. (B) Fractional shadow d iameter deviation from the Schwarzschild case, reaching ~14.5% 
+at g = 0.8M. 
+Table 2. Angular shadow diameter for Sagittarius A* and M87* at selected values of the Bardeen regularisation 
+parameter 𝑔/𝑀, compared with the adopted EHT angular-resolution scale of approximately 22.5𝜇asat 230 GHz. 
+Target 𝑔/𝑀 Diameter (𝑀) Angular diameter (𝜇as) 
+Sgr A* 0.00 (Schwarzschild) 10.3923 53.941 
+Sgr A* 0.30 10.2319 53.108 
+Sgr A* 0.60 9.6795 50.241 
+M87* 0.00 (Schwarzschild) 10.3923 39.692 
+M87* 0.30 10.2319 39.079 
+M87* 0.60 9.6795 36.970 
+The values in Table 2 show a consistent reduction in angular shadow diameter as the regularisation parameter 
+increases. For Sgr A*, the predicted diameter decreases from 53.941𝜇asat 𝑔/𝑀 = 0to 50.241𝜇asat 𝑔/𝑀 = 0.6.
+
+===== PAGE 8 =====
+For M87*, the corresponding decrease is from 39.692𝜇asto 36.970𝜇as. In both cases, the predicted shadow 
+remains above the adopted 22.5𝜇asangular-resolution benchmark.  These results reinforce two separate points. 
+First, Bardeen regularisation produces a smooth and quantitatively measurable reduction in shadow size. Second, 
+the reduction does not prevent the shadow from remaining geometrically resolvable for either target  under the 
+adopted resolution benchmark. The magnitude of the deviation, rather than the basic visibility of the shadow, is 
+therefore the more relevant quantity for assessing whether regularisation could be distinguished observationally. 
+The corresponding fractional deviations are examined further in the Discussion. 
+5.Discussion 
+The results highlight an important distinction between shadow resolvability and shadow distinguishability. Both 
+Sagittarius A∗ and M87∗ remain above the adopted EHT angular-resolution scale throughout the parameter range 
+considered, including the largest value of 𝑔/𝑀. Thus, the presence of a regularisation -induced change in the 
+predicted angular scale does not, by itself, prevent the corresponding structure from being geometrically resolved. 
+The more relevant question is whether the predicted change in shadow size is sufficiently large to be distinguished 
+from observational, calibration, reconstruction, and astrophysical uncertainties. The fractional deviation from the 
+Schwarzschild reference therefore provides a useful first-order measure of the magnitude of the geometric effect. 
+The Bardeen prediction differs from the Schwarzschild reference by approximately 1.54%, 6.86%, and 14.53% 
+for 𝑔/𝑀 = 0.3, 0.6, and 0.8, respectively. These values show that the effect is relatively modest at moderate 
+regularisation but becomes progressively more pronounced as 𝑔/𝑀 increases. The resulting trend is therefore 
+useful for identifying the parameter regime in which regularisation -induced changes become potentially relevant 
+to horizon-scale observations. However, these percentages should be interpreted as geometric deviat ions of the 
+model, rather than as direct observational exclusion or detection thresholds.  The comparison with EHT 
+observations should consequently be regarded as an order-of-magnitude benchmark rather than as a substitute for 
+a full metric -testing analysis. In particular, the EHT analysis of Sagittarius A∗ incorporates calibration, image 
+reconstruction, astrophysical modelling, and associated uncertainties when evaluating consistency with Kerr 
+predictions (Event Horizon Telescope Collaboration, 2022b). A direct comparison between a calculated fractional 
+shadow-size change and a single adopted uncertainty scale cannot reproduce this inference procedure. The present 
+results therefore do not establish an observational constraint on the Bardeen parameter. Instead, they identify the 
+range in which the predicted geometric effect becomes comparable to percent-level observational systematics and 
+thereby motivate a more complete image-level analysis. 
+Horizon structure and the role of the 𝑔/𝑀 = 0.8 endpoint 
+A specific qualification is required for the upper end of the parameter range. The standard Bardeen solution 
+possesses an extremal configuration at 𝑔ext/𝑀 ≃ 0.7698, beyond which the event horizon disappears. 
+Accordingly, 𝑔/𝑀 = 0.8 lies slightly beyond the horizon -bearing black-hole branch. Its inclusion in the present 
+study is deliberate rather than accidental: it provides a controlled extension of the geometric parameter sweep 
+across the extremal boundary and allows the response o f the photon-orbit and optical critical-scale calculation to 
+be examined immediately beyond the extremal limit.   The 𝑔/𝑀 = 0.8 result should therefore not be interpreted 
+as an ordinary horizon-bearing Bardeen black hole. More precisely, the value 8.8817𝑀 obtained at this endpoint 
+represents the characteristic optical critical scale associated with the calculated unstable photon orbit under the 
+adopted null-geodesic prescription. In the horizonless regime, it is preferable to regard this quantity as a form al 
+shadow-like critical -curve scale rather than automatically assigning it the same physical interpretation as the 
+black-hole shadow on the sub -extremal branch. This distinction preserves the continuity of the geometric 
+calculation while avoiding the assumption that the over-extremal configuration possesses an event horizon.   The 
+choice of 𝑔/𝑀 = 0.8 is nevertheless informative because it probes the immediate neighbourhood beyond the 
+extremal boundary rather than extending arbitrarily deep into the horizonless regime. The resulting continuation 
+of the calculated optical scale provides a sensitivity te st of how strongly the observable responds to increasing 
+regularisation near and slightly beyond extremality. The approximately 14.53% reduction relative to the 
+Schwarzschild reference should consequently be regarded as a formal upper sensitivity marker for the selected 
+parameter sweep, rather than as an astrophysical prediction for a conventional Bardeen black hole. This distinction 
+is particularly important when interpreting the endpoint in the context of EHT observations. The 𝑔/𝑀 < 𝑔ext/𝑀 
+cases correspond to the horizon -bearing branch of the Bardeen solution, whereas 𝑔/𝑀 = 0.8 is included as an 
+over-extremal extension of the same metric prescription. The comparison therefore separates the physical black -
+hole regime from the formal geometric continuation and prevents the largest parameter value from being 
+misinterpreted as evidence for an astrophysically realised horizonless object.
+
+===== PAGE 9 =====
+Limitations 
+Several additional limitations should be considered when interpreting the results:  
+• Non-rotating assumption:  The analysis uses a spherically symmetric, non -rotating Bardeen metric. 
+Astrophysical black holes are expected to possess spin, and a more complete treatment would require a 
+rotating regular-black-hole geometry, such as the construction discussed by Bambi and Modesto (2013). 
+A joint exploration of spin and regularisation would also allow possible degeneracies between rotation -
+induced shadow asymmetry and regularisation-induced size changes to be examined. 
+• Vacuum geodesic optics:  The optical boundary is obtained from idealised vacuum null geodesics and 
+does not include an accretion flow, plasma effects, or interstellar scattering. These environmental effects 
+can modify the apparent size and morphology of black-hole images and have been considered in previous 
+studies of regular black -hole shadows (Abdujabbarov et al., 2016; He et al., 2022). The present results 
+should therefore be interpreted as geometric predictions of the underlying spacetime rather than direct 
+predictions of reco nstructed EHT images. This limitation is particularly relevant for the 𝑔/𝑀 = 0.8 
+extension, where the calculated optical scale should not automatically be equated with a conventional 
+black-hole shadow. 
+• Simplified observational baseline:  The comparison with EHT angular resolution and systematic 
+uncertainty is intentionally simplified. It does not reproduce the EHT image -reconstruction process, 
+calibration pipeline, astrophysical modelling, or complete uncertainty budget. Consequently, the reported 
+fractional deviations should not be interpreted as observational constraints on the Bardeen parameter. 
+Instead, they provide a quantitative scale against which future image-level analyses can be designed. 
+• Extremality and parameter interpretation:  The inclusion of 𝑔/𝑀 = 0.8 extends the calculation 
+slightly beyond the extremal black -hole threshold. This endpoint is retained specifically to test the 
+behaviour of the geometric observable across the extremal transition. It is not used to expand the 
+physically interpreted black -hole parameter space. The distinction between the horizon -bearing and 
+horizonless branches is therefore maintained throughout the interpretation.  
+Future Work 
+These limitations also define the most direct directions for further work. A natural extension would combine spin 
+and regularisation in a rotating regular -black-hole metric and evaluate the resulting shadow morphology over a 
+two-parameter space. The geomet ric predictions could then be coupled to realistic accretion -flow and plasma 
+models and compared with EHT image simulations and published metric -testing frameworks (Event Horizon 
+Telescope Collaboration, 2022b). Such an approach would allow the size, asymmetry, brightness distribution, and 
+other image -level observables to be considered simultaneously rather than relying primarily on the shadow 
+diameter.  Because the present workflow is lightweight and browser -based, it provides a practical starting point 
+for these extensions without requiring specialised numerical-relativity infrastructure. Overall, the results establish 
+a clear quantitative relationship b etween the Bardeen regularisation parameter and the predicted optical critical 
+scale while demonstrating that geometric resolvability alone is insufficient to establish observational 
+distinguishability. The sub-extremal results provide the physically relev ant black-hole branch, while the 𝑔/𝑀 =
+0.8 calculation serves as a controlled over-extremal sensitivity test of the same geometric framework. The analysis 
+therefore provides a reproducible baseline for more complete tests of regular black-hole geometries using horizon-
+scale observations. 
+ 
+6. Conclusion 
+This study presents a lightweight and fully reproducible computational assessment of Bardeen regular black-hole 
+shadow deviations using a single Google Colab notebook. Across the tested range 𝑔/𝑀 = 0 − 0.8, the photon-
+sphere radius decreases from 3.000𝑀 to 2.196𝑀, while the shadow diameter decreases from the Schwarzschild 
+value of 10.3923𝑀 to 8.8817𝑀. The corresponding absolute diameter change reaches 1.5106𝑀, giving a 
+maximum fractional deviation of approximately 14.5%.  When converted to angular scales, the predicted shadow 
+diameter decreases from 53.94𝜇as to approximately 46.1𝜇as for Sagittarius A* and from 39.69𝜇as to 
+approximately 34.2𝜇as for M87* across the tested range. Both remain above the adopted EHT angular-resolution
+
+===== PAGE 10 =====
+benchmark of approximately 22.5𝜇as. Thus, the calculations indicate that Bardeen regularisation does not prevent 
+geometric shadow resolution for either target, while the increasing fractional deviation provides a quantitative 
+measure for assessing potential metric distinguishability.   The results also show that the deviation is modest at 
+intermediate regularisation values, reaching approximately 1.5% at 𝑔/𝑀 = 0.3 and 6.9% at 𝑔/𝑀 = 0.6. These 
+values should be regarded as geometric benchmarks rather than direct observational constraints, since a rigorous 
+EHT test requires image -level modelling that incorporates calibration, reconstruction, scattering, plasma, and 
+accretion-flow effects. The analysis therefore identifies a quantitative parameter range for future observational 
+studies rather than establishing a definitive detection threshold.  Beyond the physical results, the complete 
+workflow provides a transparent and reproducible computational baseline that can be executed in a free, browser-
+based environment. The framework can be extended to rotating regular black holes, joint spin –regularisation 
+studies, realistic plasma and accretion models, and full EHT forward modelling, providing a practical starting 
+point for more rigorous tests of regular black-hole geometries. 
+ 
+The end-to-end computational pipeline linking spacetime parameters to EHT observables is summarized in the 
+graphical workflow (Figure A1) 
+ 
+Figure A1. Graphical summary of the study. Schematic overview of the computational workflow linking Kerr 
+and Bardeen black -hole geometries to photon -sphere properties, shadow -size deviations, and EHT -scale 
+observables. Kerr spin primarily produces shadow asymmetry, whereas increasing Bardeen regul arisation 𝑔/𝑀 
+progressively reduces the photon -sphere radius and shadow diameter. The analysis gives a maximum shadow -
+diameter deviation of approximately 14.5% at 𝑔/𝑀 = 0.8, while the predicted angular diameters for Sgr A* and 
+M87* remain above the adopted EHT angular-resolution benchmark of ∼ 22.5𝜇as. The workflow is implemented 
+as a reproducible, browser-based computational pipeline. 
+ 
+Funding Declaration 
+Funding: This research received no specific grant from any funding agency in the public, commercial, or not-for-
+profit sectors.
+
+===== PAGE 11 =====
+Conflict of Interest Declaration 
+Conflict of Interest:  The author declares that there are no conflicts of interest that could have influenced the 
+research, analysis, or preparation of this manuscript. 
+AI-Assisted Writing Declaration 
+Use of AI: The author used Grammarly solely for checking grammar, spelling, punctuation, and general language 
+clarity. No generative AI tool was used to generate the scientific content, analysis, results, interpretations, or 
+conclusions of the manuscript. The author takes full responsibility  for the content and final version of the 
+manuscript. 
+ 
+References 
+1. Bardeen, J. M. (1968). Non -singular general-relativistic gravitational collapse. In Proceedings of GR5  
+(International Conference on Gravitation and the Theory of Relativity), Tbilisi, USSR, p. 174.  
+2. Ayón-Beato, E., & García, A. (1998). Regular black hole in general relativity coupled to nonlinear 
+electrodynamics. Physical Review Letters, 80, 5056–5059. arXiv:gr-qc/9911046. 
+3. Ayón-Beato, E., & García, A. (1999). New regular black hole solution from nonlinear electrodynamics. 
+Physics Letters B, 464, 25–29. arXiv:hep-th/9911174. 
+4. Ayón-Beato, E., & García, A. (2000). The Bardeen model as a nonlinear magnetic monopole. Physics 
+Letters B, 493, 149–152. arXiv:gr-qc/0009077. 
+5. Bardeen, J. M., Press, W. H., & Teukolsky, S. A. (1972). Rotating black holes: locally nonrotating 
+frames, energy extraction, and scalar synchrotron radiation. The Astrophysical Journal, 178, 347–369. 
+6. Bambi, C., & Modesto, L. (2013). Rotating regular black holes. Physics Letters B , 721, 329 –334. 
+arXiv:1302.6075. 
+7. Li, Z., & Bambi, C. (2014). Measuring the Kerr spin parameter of regular black holes from their shadow. 
+Journal of Cosmology and Astroparticle Physics, 2014(01), 041. arXiv:1309.1606. 
+8. Abdujabbarov, A., Amir, M., Ahmedov, B., & Ghosh, S. G. (2016). Shadow of rotating regular black 
+holes. Physical Review D, 93, 104004. arXiv:1604.03809. 
+9. Stuchlík, Z., & Schee, J. (2019). Shadow of the regular Bardeen black holes and comparison of the 
+motion of photons and neutrinos. The European Physical Journal C, 79, 44. 
+10. Rodrigues, M. E., & Silva, M. V. de S. (2018). Bardeen regular black hole with an electric source. 
+Journal of Cosmology and Astroparticle Physics, 2018(06), 025. arXiv:1802.05095. 
+11. He, K. -J., Guo, S., Tan, S. -C., & Li, G. -P. (2022). Shadow images and observed luminosity of the 
+Bardeen black hole surrounded by different accretions. Chinese Physics C, 46, 085106. 
+12. Event Horizon Telescope Collaboration. (2019). First M87 Event Horizon Telescope results. I. The 
+shadow of the supermassive black hole. The Astrophysical Journal Letters, 875, L1. 
+13. Event Horizon Telescope Collaboration. (2022). First Sagittarius A* Event Horizon Telescope results. I. 
+The shadow of the supermassive black hole in the center of the Milky Way. The Astrophysical Journal 
+Letters, 930, L12. 
+14. Event Horizon Telescope Collaboration. (2022). First Sagittarius A* Event Horizon Telescope results. 
+VI. Testing the black hole metric. The Astrophysical Journal Letters, 930, L17. arXiv:2311.09484. 
+15. Held, A., Gold, R., & Eichhorn, A. (2019). Asymptotic safety casts its shadow. Journal of Cosmology 
+and Astroparticle Physics, 2019(06), 029.
+
+===== PAGE 12 =====
+Appendix A: Pseudocode for the Shadow Ray-Tracing Pipeline 
+The following pseudocode summarises the complete computational workflow described in Section 3. The 
+implementation is designed to run in a single Google Colab notebook using standard scientific Python libraries.  
+Algorithm A1. Kerr Shadow Boundary from Analytic Celestial Coordinates  
+Input: Kerr spin parameter 𝑎, observer inclination 𝜃obs, black-hole mass 𝑀. 
+Output: Set of celestial coordinates (𝛼, 𝛽) defining the shadow boundary. 
+1. Schwarzschild limit: 
+If 𝑎 = 0, return the circular shadow 
+𝛼2 + 𝛽2 = 𝑏Sch
+2 , 
+with 𝑏Sch = 3√3𝑀. 
+2. Spherical photon orbits: 
+For 𝑎 ≠ 0, determine the radial interval 𝑟 ∈ [𝑟min, 𝑟max] corresponding to unstable spherical photon orbits using 
+the analytic relations of Bardeen, Press and Teukolsky (1972). 
+3. Conserved quantities: 
+For each sampled radius 𝑟, calculate 
+𝜉(𝑟) = 𝐿𝑧
+𝐸 ,  and 𝜂(𝑟) = 𝑄
+𝐸2, 
+where 𝐸, 𝐿𝑧, and 𝑄 are the photon energy, axial angular momentum, and Carter constant, respectively.  
+4. Physical-orbit condition: 
+If 𝜂(𝑟) < 0, the corresponding orbit is discarded. 
+5. Celestial-coordinate projection: 
+For an observer at inclination 𝜃obs, 
+𝛼 = − 𝜉
+sin 𝜃obs
+, 
+and 
+𝛽 = ±√𝜂 + 𝑎2 cos2 𝜃obs − 𝜉2 cot2 𝜃obs. 
+If 𝛽2 < 0, the corresponding point is discarded. 
+6. Store: (𝛼, +𝛽) and (𝛼, −𝛽) for every physically allowed orbit. 
+7. Return: The complete set 𝑆Kerr = {(𝛼𝑖, 𝛽𝑖)}. 
+Algorithm A2. Bardeen Regular Black Hole: Photon Sphere and Shadow Radius  
+Input: Regularisation parameter 𝑔, black-hole mass 𝑀. 
+Output: Photon-sphere radius 𝑟ph and critical impact parameter 𝑏ph. 
+1. The Bardeen metric function is defined as 
+𝑓(𝑟) = 1 − 2𝑀𝑟2
+(𝑟2 + 𝑔2)3/2. 
+2. The effective impact-parameter function is
+
+===== PAGE 13 =====
+ℎ(𝑟) = 𝑟2
+𝑓(𝑟). 
+3. The photon-sphere radius satisfies 
+𝑑ℎ(𝑟)
+𝑑𝑟 = 0, or equivalently, 
+𝑑
+𝑑𝑟 [ 𝑟2
+𝑓(𝑟)] = 0. 
+4. Define the radial search interval: 𝑟 ∈ [2.01𝑀, 6𝑀]. 
+5. Evaluate 
+𝑑ℎ
+𝑑𝑟 over the search interval and identify a bracket containing the relevant root. 
+6. Apply Brent's bracketed root-finding method to obtain 𝑟ph. 
+7. Evaluate the metric function at the photon sphere: 𝑓ph = 𝑓(𝑟ph). 
+8. Calculate the critical impact parameter: 
+𝑏ph = 𝑟ph
+√𝑓(𝑟ph)
+. 
+9. Calculate the shadow diameter: 𝐷sh = 2𝑏ph. 
+10. Return: (𝑟ph, 𝑏ph, 𝐷sh). 
+Algorithm A3. Shadow-Distinguishability Metrics 
+Input: Grid of regularisation parameters 𝑔/𝑀, Schwarzschild reference diameter. 
+1. The Schwarzschild reference is 
+𝐷Sch = 2𝑏Sch = 6√3𝑀 ≈ 10.3923𝑀. 
+2. For each value of 𝑔/𝑀: 
+o Evaluate Algorithm A2: (𝑟ph, 𝑏ph) = 𝐴2(𝑔, 𝑀). 
+o Calculate the Bardeen shadow diameter: 𝐷sh = 2𝑏ph. 
+o Calculate the absolute diameter deviation: Δ𝐷 = 𝐷Sch − 𝐷sh. 
+o Calculate the fractional diameter deviation: 
+Δ𝐷(%) = 𝐷Sch − 𝐷sh
+𝐷Sch
+× 100. 
+o Store (
+𝑔
+𝑀 , 𝑟ph, 𝑏ph, 𝐷sh, Δ𝐷, Δ𝐷(%)). 
+3. Perform the Schwarzschild recovery check: 
+Δ𝐷|𝑔=0 = 0,  and 𝐷sh|𝑔=0 = 6√3𝑀. 
+The resulting dataset provides the numerical basis for Table 1 and the shadow -deviation figures. 
+Algorithm A4. Angular-Scale Conversion and EHT Comparison 
+Input: Dimensionless shadow diameter 𝐷sh/𝑀, black-hole mass 𝑀⊙, source distance 𝐷pc. 
+Output: Angular shadow diameter 𝜃sh in microarcseconds. 
+1. The gravitational length scale is
+
+===== PAGE 14 =====
+𝑟𝑔 = 𝐺𝑀BH
+𝑐2 , 
+where 𝑀BH = 𝑀⊙ (
+𝑀BH
+𝑀⊙
+). 
+2. The physical shadow diameter is 
+𝐿sh = (𝐷sh
+𝑀 ) 𝑟𝑔. 
+3. The source distance is converted to metres according to 𝐷𝑚 = 𝐷pc × (1 pc). 
+4. For the small-angle approximation, 
+𝜃sh, rad = 𝐿sh
+𝐷𝑚
+. 
+5. Conversion to microarcseconds gives 
+𝜃sh(𝜇as) = 𝜃sh, rad (180
+𝜋 ) (3600)(106). 
+6. The calculation is applied to Sgr A* and M87* using the adopted masses and distances from Event 
+Horizon Telescope Collaboration (2019, 2022a). 
+7. The resulting angular diameter is then compared with the adopted EHT angular -resolution benchmark, 
+𝜃EHT ≈ 22.5𝜇as, to determine whether 𝜃sh > 𝜃EHT. 
+This comparison represents geometric resolvability and is not treated as a direct statistical test of metric 
+distinguishability. 
+Algorithm A5. Complete Computational Workflow 
+The complete pipeline is executed sequentially as follows: 
+(𝑎, 𝜃obs, 𝑀) ⟶ (𝜉, 𝜂) ⟶ (𝛼, 𝛽) ⟶ 𝑆Kerr 
+for the Kerr calculations, and 
+𝑔
+𝑀 ⟶ 𝑟ph ⟶ 𝑏ph ⟶ 𝐷sh ⟶ Δ𝐷 ⟶ Δ𝐷(%) 
+for the Bardeen calculations. 
+The end-to-end procedure is: 
+1. Generate Kerr shadows for 𝑎/𝑀 = 0,0.5,0.9, providing the Kerr silhouettes. 
+2. Evaluate the Bardeen photon sphere and shadow for representative values 𝑔/𝑀 = 0,0.3,0.6. 
+3. Evaluate Algorithm A3 over 0 ≤
+𝑔
+𝑀 ≤ 0.8, providing the photon -sphere evolution, shadow diameter, 
+absolute deviation, and fractional deviation. 
+4. Apply Algorithm A4 to Sgr A* and M87* over the same 𝑔/𝑀 grid. 
+5. Generate the corresponding figures and numerical tables. 
+6. Export the figures and numerical results from the Colab environment. 
+The complete computational sequence can therefore be summarised as 
+𝑔
+𝑀 ⟶ 𝑟ph ⟶ 𝑏ph ⟶ 𝐷sh ⟶ Δ𝐷 ⟶ Δ𝐷(%) ⟶ 𝜃sh
+
+===== PAGE 15 =====
+which provides a direct and reproducible mapping from the Bardeen regularisation parameter to the predicted 
+shadow observable.

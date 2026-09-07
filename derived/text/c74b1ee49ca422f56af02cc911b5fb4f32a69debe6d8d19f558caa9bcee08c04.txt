@@ -1,0 +1,288 @@
+===== PAGE 1 =====
+Quantum Illumination Toy Model — PKTron & IBM Quantum Hardware 
+Page 1 of 8 
+Quantum Illumination for Stealth Target Detection: A Discrete-
+Qubit Toy Model on PKTron and IBM Quantum Hardware 
+Dr. Zuhair Ahmed 
+The Centre of Excellence for Technology, Quantum and AI, Pakistan (CETQAP)  
+Correspondence: info@thecetqap.com 
+August 2026 
+Abstract 
+Quantum illumination has been proposed as a theoretical route to detecting low -reflectivity targets, such as 
+stealth aircraft, in high -background-noise environments where classical radar performance degrades. The 
+protocol, as originally formulated  (Lloyd, 2008; Tan et al., 2008), uses continuous -variable entangled light 
+(two-mode squeezed vacuum) and a specific phase -sensitive joint receiver to achieve a theoretical detection 
+advantage over classical illumination of matched energy, even though the entanglement itself does not 
+survive the round trip through a lossy, noisy channel. This study investigates whether that advantage appears 
+in a simpler, discrete -variable (qubit) toy model, of the kind commonly used for pedagogical intuition, 
+implemented o n PKTron and cross -checked on IBM Quantum hardware. A rigorously fair comparison was 
+constructed in which an entangled Bell pair and a classically correlated (separable) mixture of matched initial 
+correlation strength were each subjected to identical loss and background -noise channels, with detection 
+performance assessed via the same joint correlation measurement (Z⊗Z expectation) in both cases. In PKTron 
+simulation, the entangled probe showed a correlation separation between target -present and target-absent 
+hypotheses of 0.0100 at zero background noise, decreasing to 0.0025 at high background noise, while the 
+classically correlated probe showed a substantially larger separation, decreasing from 0.1000 to 0.0500 over 
+the same range — indicating no entangleme nt advantage, and if anything, a disadvantage, in this discrete 
+model. This qualitative finding was independently corroborated on IBM Quantum's ibm_kingston hardware, 
+using natural qubit T1 relaxation (rather than an artificially injected noise parameter) as the loss channel: 
+entangled correlation degraded to 54.5% of its initial value after 60 microseconds, compared to 77.7% 
+retained by the classically correlated mixture over the same interval. These results indicate that the 
+theoretical quantum illumination advantage does not straightforwardly emerge from a simple discrete -qubit 
+correlation model, consistent with the broader understanding that the effect is specific to continuous -
+variable Gaussian states and phase -sensitive joint detection, and consistent with quantum illumination's 
+status as a theoretical concept with no demonstrated range or signal -to-noise advantage over classical radar 
+to date. 
+Keywords 
+Quantum illumination; quantum radar; stealth detection; entanglement; discrete -variable toy model; 
+amplitude damping; T1 relaxation; PKTron; IBM Quantum; Qiskit.
+
+===== PAGE 2 =====
+Quantum Illumination Toy Model — PKTron & IBM Quantum Hardware 
+Page 2 of 8 
+1. Introduction 
+Detecting low -observable (stealth) aircraft is a longstanding challenge for air defense radar, since stealth 
+design specifically minimizes radar cross-section and therefore returned signal strength, particularly against a 
+background of thermal and clutter noise. Quantum illumination has been proposed as a theoretical means of 
+improving detection performance in exactly this high -noise, low-reflectivity regime, by exploiting quantu m 
+correlations between a transmitted 'signal' beam and a retained 'idler' beam [1, 2]. Critically, and as explicitly 
+acknowledged in the framing of this study, quantum illumination remains a theoretical concept: it has not 
+been demonstrated to provide a ra nge or signal-to-noise advantage over classical radar in practice, and the 
+engineering challenges of realizing a working quantum radar remain substantial and unresolved [3]. 
+The original quantum illumination protocol uses continuous -variable entangled ligh t — specifically, two -
+mode squeezed vacuum states — combined with a phase-sensitive joint (optical parametric amplifier-based) 
+receiver, and its proven advantage is a property of that specific combination of quantum state and 
+measurement strategy, not of e ntanglement in general [2, 4]. Simplified discrete -variable (qubit) toy models 
+are commonly used in the broader quantum information literature for pedagogical purposes, to build 
+intuition about entanglement's behavior under loss and noise, but it is not gu aranteed, and is in fact a 
+nontrivial and separate question, whether such simplified models reproduce the specific advantage of the full 
+continuous-variable protocol. 
+This study constructs the fairest possible discrete -qubit comparison — matching initial c orrelation strength 
+and measurement strategy between an entangled and a classically correlated probe, varying only the 
+presence of entanglement — and tests, in both PKTron simulation and on IBM Quantum hardware, whether a 
+detection advantage for the entangled probe emerges under loss and background noise conditions modeling 
+a low-reflectivity, high-clutter target scenario. 
+2. Theoretical Background 
+2.1 The Quantum Illumination Protocol 
+In the original proposal, an entangled photon pair is generated; the sig nal photon is sent toward a suspected 
+target through a lossy, noisy channel, while the idler photon is retained locally. Even though the round -trip 
+loss and background noise destroy the entanglement itself (a phenomenon known as entanglement 
+breaking), sufficient quantum correlation survives that a joint measurement between the returned signal and 
+the retained idler can outperform an equivalent classical illumination scheme of matched transmitted energy, 
+under specific conditions of low reflectivity and hig h thermal background — the exact regime relevant to 
+detecting a low-radar-cross-section target against a noisy background [1, 2]. 
+2.2 The Discrete-Qubit Toy Model and Its Limitations 
+This study represents the signal -idler pair as a two -qubit system, using amplitude damping to model round -
+trip loss (with damping rate 1 − reflectivity) and depolarizing noise to model background clutter, evaluated on 
+PKTron's density -matrix simulator. Det ection performance is quantified via the change in Z ⊗Z correlation 
+between target-present and target -absent hypotheses — the discrete-variable analogue of the correlation 
+statistic used in the continuous -variable protocol's joint receiver. It is important to note explicitly that this
+
+===== PAGE 3 =====
+Quantum Illumination Toy Model — PKTron & IBM Quantum Hardware 
+Page 3 of 8 
+substitution (discrete qubits and Pauli correlation for continuous -variable light and phase -sensitive 
+homodyne/OPA detection) is a simplification whose fidelity to the real protocol's advantage is not 
+guaranteed a priori, and testing that fidelity is the specific purpose of this study. 
+2.3 Constructing a Fair Comparison 
+An earlier, less rigorous version of this comparison (documented in this study's development process for 
+transparency) initially compared the entangled probe against a classical baseline with zero initial correlation, 
+which trivially favored the entangled case and did not isolate entanglement as the relevant variable. This 
+study instead compares the entangled Bell pair against a classically correlated (separable) mixture, (|00⟩⟨ 00| 
++ |11⟩⟨ 11|)/2, which has an identical initial Z⊗Z correlation value (+1) to the Bell pair, and is subjected to an 
+identical noise channel and measured with an identical statistic. The only difference between the two probes 
+is the presence or absence of entanglement, isolating the scientific question of interest. 
+3. Methods 
+3.1 Simulation Platform: PKTron 
+Simulation was performed using PKTron' s DensityMatrixSimulator (version 9.0.6), which implements Kraus -
+operator noise channels. For the entangled case, a Bell pair was prepared (Hadamard on qubit 0, CNOT from 
+qubit 0 to qubit 1); for the classical baseline, density matrices for |00 ⟩  and |11 ⟩  were each propagated 
+through the noise channel independently and classically averaged (0.5×ρ₀₀ + 0.5×ρ₁₁), producing the 
+classically correlated mixture. In both cases, the 'signal' qubit (qubit 1) received amplitude damping at rate (1 
+− reflectivity) when a target was modeled as present, or full damping (rate 1) when absent, plus depolarizing 
+noise at a swept background level (0.0 to 0.5) representing clutter/thermal background. Target reflectivity 
+was fixed at 0.10, representing a low-reflectivity, stealth-like target. 
+3.2 Hardware Validation: IBM Quantum 
+Hardware validation was performed via IBM Quantum Platform's Open Plan using Qiskit and Qiskit Runtime, 
+on ibm_kingston. Rather than artificially injecting a noise parameter (which real superconducting hard ware 
+has no direct mechanism to accept), this study used the qubits' own natural T1 relaxation as the physical loss 
+channel: a variable delay (0, 20, and 60 microseconds) was inserted on the signal qubit before measurement, 
+allowing natural amplitude dampi ng to degrade the correlation in direct physical analogy to the reflectivity 
+parameter in the PKTron simulation. Three circuits were run per delay value — the entangled Bell pair, and 
+the two classical basis -state preparations (|00 ⟩  and |11 ⟩ ) whose results  were classically averaged post -
+measurement to reconstruct the classically correlated mixture's statistics — batched into a single Sampler job 
+with 2,048 shots per circuit. 
+3.3 Reproducibility 
+All circuit-construction code, including the initial less-rigorous comparison and the corrected fair-comparison 
+PKTron script, and the Qiskit hardware -execution script, are provided in the accompanying supplementary 
+notebook, documented transparently including the methodological correction made during this study's 
+development. The IBM Quantum job identifier for the hardware run reported here is daaslppl216s739on5g0,
+
+===== PAGE 4 =====
+Quantum Illumination Toy Model — PKTron & IBM Quantum Hardware 
+Page 4 of 8 
+retrievable via the Qiskit Runtime service for independent verification, subject to IBM Quantum's data 
+retention policy. 
+4. Results 
+4.1 Simulation: No Entanglement Advantage in the Discrete Model 
+Background noise Entangled |H1−H0| Classical-mixture |H1−H0| Entangled − Classical 
+0.00 0.0100 0.1000 −0.0900 
+0.10 0.0081 0.0900 −0.0819 
+0.30 0.0049 0.0700 −0.0651 
+0.50 0.0025 0.0500 −0.0475 
+Table 1. Under a rigorously fair comparison (matched initial correlation, identical noise channel, identical measurement 
+statistic), the classically correlated mixture shows a substantially LARGER target-present/target-absent separation than 
+the entangled probe at every tested background noise level — the opposite of a quantum advantage. 
+Across all four tested background noise levels, the classically correlated mixture outperformed the entangled 
+probe by a wide margin, with the gap ranging from 0.0475 to 0. 0900. This is a clear, consistent result: in this 
+discrete-qubit toy model, entanglement provides no detection advantage, and in fact underperforms simple 
+classical correlation of matched initial strength. 
+4.2 Hardware Validation on IBM Quantum (ibm_kingston) 
+Figure 1 shows a representative measurement outcome histogram from the hardware run. 
+ 
+Figure 1. IBM Quantum ibm_kingston, representative measurement outcome distribution (entangled Bell-pair circuit, 
+2,048 shots). Job ID: daaslppl216s739on5g0. The dominant 00 and 11 outcomes (approximately 1,645 of 2,048, or 80.3%) 
+with smaller 01 and 10 populations reflect the expected Bell-state correlation pattern degraded by real hardware noise. 
+Table 2 reports the Z⊗Z correlation for both probe types across the three tested delay values, using natural T1 
+relaxation as the loss channel. 
+Delay (μs) Entangled Z⊗Z Classical-mixture Z⊗Z Entangled % retained Classical % retained 
+0 0.6074 0.4233 100% 100% 
+20 0.4521 0.3799 74.4% 89.7%
+
+===== PAGE 5 =====
+Quantum Illumination Toy Model — PKTron & IBM Quantum Hardware 
+Page 5 of 8 
+Delay (μs) Entangled Z⊗Z Classical-mixture Z⊗Z Entangled % retained Classical % retained 
+60 0.3311 0.3291 54.5% 77.7% 
+Table 2. On real IBM Quantum hardware, using natural T1 relaxation as a physically genuine loss channel, entangled 
+correlation degrades to 54.5% of its initial value after 60 microseconds, while the classically correlated mixture retains 
+77.7% over the same interval — corroborating the simulation finding that entanglement does not confer a robustness 
+advantage in this discrete model. 
+Both probe types began below the ideal +1.0 correlation at zero delay (0.607 entangled, 0.423 classical), 
+reflecting native two -qubit gate and readout error inherent to near -term superconducting hardware, 
+consistent with the noise floors reported in this g roup's companion hardware studies. The relative 
+degradation pattern, however, closely matches the qualitative simulation finding: entangled correlation 
+decayed proportionally faster than the classically correlated mixture across the full delay range tested. 
+5. Discussion 
+5.1 Interpretation of Results 
+Both simulation and independent hardware validation converge on the same finding: a rigorously fair, 
+discrete-qubit toy model of quantum illumination does not reproduce the theoretical detection advantage 
+associated with the full continuous -variable protocol. If anything, the entangled probe showed faster 
+correlation degradation than a classically correlated probe of matched initial strength, in both the idealized 
+PKTron simulation and on real IBM Quantum hardwa re using physically genuine T1 relaxation as the loss 
+mechanism. 
+This finding should not be interpreted as evidence against the theoretical validity of quantum illumination as 
+originally formulated. Rather, it is consistent with the specific and well -established understanding in the 
+quantum metrology literature that the protocol's advantage arises from the particular combination of 
+continuous-variable Gaussian entangled states (two -mode squeezed vacuum) and a phase -sensitive joint 
+receiver (optical parametric amplification or equivalent), and is not a generic property of entanglement that 
+automatically transfers to arbitrary discrete-variable analogues or arbitrary correlation measurements [2, 4]. 
+This study's result illustrates precisely why quantum illumin ation remains a theoretical concept without a 
+demonstrated practical radar advantage: reproducing its benefit requires a specific, technically demanding 
+physical implementation, not merely 'using entanglement' in a generic sense. 
+5.2 Scope and Limitations 
+● This study does not implement or simulate the actual quantum illumination protocol (continuous-
+variable two-mode squeezed vacuum states with a phase-sensitive joint receiver). It tests a simplified 
+discrete-qubit analogue commonly used for pedagogical purposes, and its negative result applies to 
+that analogue, not necessarily to the full continuous-variable protocol, which has established 
+theoretical support in the literature under its own specific assumptions. 
+● This study does not simulate real microwave or RF radar physics, real atmospheric or 
+electromagnetic propagation, or any actual stealth aircraft radar cross-section model. All noise and 
+loss parameters are illustrative and chosen for qualitative demonstration, not calibrated to any 
+specific real radar system or target.
+
+===== PAGE 6 =====
+Quantum Illumination Toy Model — PKTron & IBM Quantum Hardware 
+Page 6 of 8 
+● The hardware validation uses natural T1 relaxation as a stand-in for target-reflectivity-dependent 
+loss; this is a physically genuine amplitude-damping process but is not independently tunable per-
+shot in the way the simulation's reflectivity parameter is, limiting the hardware test to a small 
+number of discrete delay values rather than a continuous reflectivity sweep. 
+● This study's initial development included a less rigorous comparison (entangled probe vs. a zero-
+correlation classical baseline) that trivially favored the entangled case; this is documented 
+transparently in Section 2.3 and the supplementary notebook, and was corrected before the results 
+reported in Section 4 were obtained. 
+In summary: this study provides an honest,  methodologically corrected, hardware -corroborated test of 
+whether a simple discrete -qubit entanglement advantage exists for stealth -target-like detection scenarios, 
+and finds no such advantage in this model — a result consistent with, and explanatory of, quantum 
+illumination's continued status as an undemonstrated theoretical concept for practical radar applications. 
+6. Potential Defense and Dual-Use Application Context 
+Quantum radar and quantum illumination are discussed in unclassified defense and resear ch literature as a 
+theoretical, long -term research direction for detecting low -observable targets, explicitly including stealth 
+aircraft. Given this study's findings, this section describes the conditions under which the concept could 
+become relevant, rather than near-term applications. 
+6.1 Air Force — Stealth Aircraft Detection 
+If a full continuous -variable quantum illumination system (entangled microwave or optical sources, phase -
+sensitive joint receivers) could be engineered at practical scale and range,  it is theoretically proposed to 
+improve detection of low-radar-cross-section targets against high-clutter backgrounds. This study's finding — 
+that a naive discrete -qubit implementation does not reproduce this advantage — underscores that realizing 
+this benefit requires the full, technically demanding continuous -variable protocol, not a simplified quantum 
+circuit. 
+6.2 Distinguishing Genuine Quantum Advantage from Superficial Quantum Framing 
+This study's methodology — constructing a rigorously fair compariso n and reporting a negative result 
+transparently — is itself relevant to defense technology evaluation: proposals invoking 'quantum radar' or 
+'quantum illumination' should be assessed against the same standard of fair, matched comparison used here, 
+since th is study demonstrates that superficially plausible discrete -qubit implementations can fail to 
+reproduce claimed advantages, and can even underperform classical alternatives of matched resource. 
+6.3 Caveat on Application Readiness 
+Quantum illumination, as this study's own framing states at the outset, remains a theoretical concept with no 
+demonstrated range or signal-to-noise advantage over classical radar. This study's results are consistent with, 
+and help explain, that status: even in a fair and carefully constructed comparison, this study's discrete -qubit 
+toy model showed no advantage. Realizing any practical quantum radar capability would require full 
+continuous-variable quantum optics engineering at microwave or optical frequencies, entirely beyond the 
+scope of this study, and remains an open, unresolved research question. 
+7. Conclusion
+
+===== PAGE 7 =====
+Quantum Illumination Toy Model — PKTron & IBM Quantum Hardware 
+Page 7 of 8 
+This study constructed a rigorously fair, discrete -qubit toy -model comparison between entangled and 
+classically correlated probes for stealth -target-like detection under l oss and background noise, using PKTron 
+simulation and IBM Quantum hardware validation. In simulation, the classically correlated probe showed a 
+target-present/target-absent detection separation 5 to 20 times larger than the entangled probe across all 
+tested background noise levels. On real IBM Quantum hardware, using natural T1 relaxation as a physically 
+genuine loss channel, entangled correlation degraded to 54.5% of its initial value after 60 microseconds, 
+compared to 77.7% retained by the classically cor related probe. Both results converge on the same finding: 
+no entanglement advantage emerges in this simplified discrete model, consistent with the established 
+understanding that quantum illumination's theoretical advantage is specific to continuous -variable Gaussian 
+states and phase -sensitive joint detection, and consistent with the topic's own correct framing as a 
+theoretical concept with no demonstrated practical radar advantage to date. 
+8. Future Work 
+● Extend the hardware validation to a continuous sweep of delay values (rather than three discrete 
+points) to more precisely characterize the relative decay rates of entangled versus classically 
+correlated probes on real hardware. 
+● Investigate whether a continuous-variable simulation framework (Gaussian states, homodyne or 
+heterodyne detection) more faithfully reproduces the theoretical quantum illumination advantage, 
+as a more direct test of the original protocol than the discrete-qubit analogue used here. 
+● Test alternative discrete-variable entangled resource states and joint measurement strategies 
+beyond the simple Bell pair and Z⊗Z correlation used in this study, to determine whether any 
+discrete-variable analogue can reproduce the continuous-variable advantage. 
+● Survey the broader quantum sensing literature for other proposed 'quantum radar' schemes and 
+subject each to the same rigorous, fair-comparison methodology established in this study, to build a 
+clearer picture of which proposed advantages are robust and which are artifacts of unfair baseline 
+comparisons. 
+Data and Code Availability 
+The PKTron simulation scripts (including the initial, less rigorous comparison and the corrected fair -
+comparison version), the Qiskit hardware -execution script, and the executed Jupyter notebook (including all 
+raw output cells)  are available as supplementary material accompanying this article. IBM Quantum job 
+identifier daaslppl216s739on5g0 permits independent retrieval of raw hardware shot data via the Qiskit 
+Runtime service, subject to IBM Quantum's standard data retention policy. 
+Conflict of Interest 
+PKTron is developed and maintained by the corresponding author's affiliated organization, CETQAP. All 
+hardware results reported in this study were obtained independently on IBM Quantum's third -party 
+infrastructure. 
+References
+
+===== PAGE 8 =====
+Quantum Illumination Toy Model — PKTron & IBM Quantum Hardware 
+Page 8 of 8 
+[1] Lloyd, S. "Enhanced sensitivity of photodetection via quantum illumination." Science, 321(5895), 1463 –
+1465, 2008. 
+[2] Tan, S. H., Erkmen, B. I., Giovannetti, V., Guha, S., Lloyd, S., Maccone, L., Pirandola, S., & Shapiro, J. H. 
+"Quantum illumination with Gaussian states." Physical Review Letters, 101(25), 253601, 2008. 
+[3] Shapiro, J. H. "The quantum illumination story." IEEE Aerospace and Electronic Systems Magazine, 35(4), 
+8–20, 2020. 
+[4] Pirandola, S., Bardhan, B. R., Gehring, T., Weedbrook, C., &  Lloyd, S. "Advances in photonic quantum 
+sensing." Nature Photonics, 12(12), 724–733, 2018. 
+[5] IBM Quantum Platform. Qiskit Runtime documentation and Open Plan access terms. 
+https://quantum.ibm.com, accessed August 2026. 
+[6] CETQAP. PKTron: Quantum HPC & SDK Simulator, version 9.0.6. Python Package Index (PyPI), 2026.

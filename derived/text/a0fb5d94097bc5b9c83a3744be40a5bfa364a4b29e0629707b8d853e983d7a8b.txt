@@ -1,0 +1,2090 @@
+===== PAGE 1 =====
+arXiv:2506.22392v1  [physics.ins-det]  27 Jun 2025
+The real-time data processing and acquisition system for Project 8 Phase II
+A. Ashtari Esfahani j,1, A. Banducci j, S. B¨ oserd, N. Buzinsky g,2, R. Cervantesj,3, C. Claessens d,j,∗,
+L. de Viveiros i, M. Fertld, J. A. Formaggiog, L. Gladstone a,4, M. Grando h,5, M. Guigue h,6, J. Hartse j,
+K. M. Heegerk, A. M. Jonesh,7, K. Kazkazf, B. H. LaRoqueh, A. Lindman d, B. Monreal a, J. A. Nikkelk,
+E. Novitskij, N. S. Oblathh,∗, W. Pettus c, R. G. H. Robertsonj, G. Rybkaj, L. Salda˜ nak,8, P. L. Slocumk,
+Y.-H. Suna, P. T. Surukuchik, A. B. Tellesk, F. Thomasd, M. Thomas h,9, T. Th¨ ummlere, L. Tvrznikovaf,10,
+B. A. VanDevenderh,j, T. E. Weissk, A. Youngb,11, E. Zayasg, A. Ziegler i,12
+aCase Western Reserve University, Cleveland, OH, USA 44106
+bCenter for Astrophysics — Harvard & Smithsonian, Cambridge, MA, USA 02138
+cIndiana University, Bloomington, IN, USA 47405
+dJohannes Gutenberg-Universit¨ at, Mainz, Germany 55099
+eKarlsruhe Insitute of Technology,Karlsruhe, Germany 76021
+fLawrence Livermore National Laboratory, Livermore, CA, USA 94550
+gMassachusetts Institute of Technology, Cambridge, MA, USA 02139
+hPacific Northwest National Laboratory, Richland, WA, USA 99354
+iPennsylvania State University, University Park, PA, USA 16802
+jUniversity of Washington, Seattle, WA, USA 98195
+kYale University, New Haven, CT, USA 06520
+Abstract
+In Phase II of the Project 8 neutrino mass experiment, electrons from the decays of tritium or 83mKr are
+detected via their≈26 GHz cyclotron radiation while contained within a circular waveguide. The signal from
+a given electron is characterized as a brief chirp, lasting ≲10 ms and changing in frequency by ≲1 MHz/ms.
+To detect these signals, the Project 8 collaboration developed a Data Acquisition (DAQ) system tailored
+to the signal properties. The DAQ is responsible for simultaneously selecting up to three 100 MHz-wide
+frequency windows to study, detect, and trigger on likely signals from different electron kinetic energies, and
+for writing the relevant data to disk. We describe the Phase II DAQ system in detail and address how the
+system was used for data-taking operations.
+Keywords: neutrino mass, project 8, data acquisition, ROACH, FPGA, signal processing
+PACS: 29.85.Ca, 14.60.Pq, 07.50.Qx, 23.40.-s
+∗Corresponding author
+Email addresses: claesc@uw.edu (C. Claessens),
+noah.oblath@pnnl.gov (N. S. Oblath)
+1Now at Sharif University of Technology, Tehran, Iran
+2Now at University of Washington, Seattle, WA, USA
+98195
+3Now at Fermi National Accelerator Laboratory, Batavia,
+IL, USA 60510
+4Now at Institute for Defense Analyses, Alexandria, VA,
+USA 22305
+5Now at Invictus Animus Research and Design, Centen-
+nial, CO, USA 80015
+6Now at Sorbonne Universit´ e, Universit´ e Paris Cit´ e,
+CNRS/IN2P3, 75005 Paris, France
+7Now at Ozen Engineering, Sunnyvale, CA, USA 94025
+8Now at The Est´ ee Lauder Companies, New York, NY,
+USA 10153
+9Now at Booz Allen Hamilton, San Antonio, TX, USA
+1. Introduction
+The Project 8 experiment aims to measure
+the neutrino mass using the tritium endpoint
+method [1, 2]. In a Cyclotron Radiation Emis-
+sion Spectroscopy (CRES)-based experiment such
+as Project 8 [3, 4], the kinetic energies of electrons
+are measured by detecting the cyclotron radiation
+from individual electrons while they are trapped in
+78226
+10Now at Waymo, Mountain View, CA, USA 94043
+11Now at Radboud University, 6500 GL Nijmegen, The
+Netherlands
+12Now at HRL Laboratories, Malibu, CA, USA 90265
+Preprint submitted to Nuclear Instrumentation and Methods A June 30, 2025
+
+===== PAGE 2 =====
+a magnetic field [5]. The cyclotron radiation fre-
+quency is inversely proportional to the total energy
+of the electron:
+fc = 1
+2π
+eB
+me +Ekin/c2, (1)
+where e is magnitude of the electron charge, B is
+the magnetic field strength, me is the electron rest
+mass, Ekin is the electron kinetic energy, and c is
+the speed of light. In Phase II 13 of Project 8 [7, 8]
+the magnetic field strength is≈1 T, putting the fre-
+quencies of interest for 83mKr conversion-electron
+decay and molecular tritium (T 2) beta decay at
+≈26 GHz.
+The core of the Phase II experiment [10] (Fig-
+ure 1) is a circular waveguide that both contains
+the radioactive gas (it was filled with either 83mKr
+or T 2) and transmits the emitted cyclotron radia-
+tion through its coupling to the waveguide’s TE 11
+mode. Electrons from the source gas are magneti-
+cally trapped within the waveguide so they can be
+observed for an extended period of time. The mag-
+netic field consists of a 0.959 T background field cre-
+ated by the superconducting solenoid magnet, and
+small (O(0.05−0.5 mT)) dips in the field—the elec-
+tron traps—created by a set of trapping coils. All
+data are collected with a single Radio-Frequency
+(RF) antenna at one end of the waveguide. Ana-
+log processing—consisting of amplifying, mixing,
+and band-pass and low-pass filtering [10]—reduces
+the frequencies of interest to the Intermediate Fre-
+quency (IF) band near 1 GHz (the signal is mixed
+down by 24 .5 GHz). The analog RF stage fur-
+ther sets the Signal-to-Noise Ratio (SNR) and total
+power to match the specifications (e.g. the volt-
+age range) of the digitizer. In the Phase II experi-
+ment, we need to observe a≈4 keV span around the
+tritium endpoint to study the backgrounds above
+the endpoint and the shape of the spectrum below.
+This translates to a ≈200 MHz band in frequency
+space.
+The purpose of the Data Acquisition (DAQ) sys-
+tem for a CRES experiment is to enable the ac-
+curate and precise frequency measurement of the
+particle’s cyclotron radiation. In the context of
+13The Project 8 experiment is divided into four phases [3],
+with Phase I being the initial demonstration of CRES [6],
+Phase II performing the first CRES tritium beta decay end-
+point measurement [7, 8], Phase III demonstrating the ability
+to scale up in volume and realize an atomic tritium source [9],
+and Phase IV being the final neutrino-mass measurement [9].
+Cryocooler
+Signal
+Gas Supply
+Superconducting 
+Solenoid Magnet
+Waveguide
+Gas Cell and
+Trapping Coils
+Cryogenic 
+Amplifiers
+Figure 1: In Phase II of Project 8, a waveguide was in-
+serted into the bore of a superconducting magnet. A gas
+cell near the end of the waveguide is filled with 83mKr or T2
+gas. The superconducting solenoid magnet provides a back-
+ground field of 0 .959 T. Small copper coils around the cell
+are powered with ≤ 1 A to create magnetic-field dips that
+trap some of the electrons emitted in nuclear decays. The
+electrons spiral around the magnetic field lines while oscillat-
+ing up and down in the trapping field and emitting cyclotron
+radiation. This radiation is detected by an antenna at the
+far end of the waveguide, amplified by cryogenic amplifiers,
+and finally filtered and recorded by the DAQ.
+2
+
+===== PAGE 3 =====
+Phase II, the DAQ system was optimized with a
+primary focus on efficiently recognizing event can-
+didates and writing the relevant raw data to disk
+(i.e. no online reconstruction), and a secondary fo-
+cus on minimizing the total data volume. The
+Phase II DAQ is able to digitize a single analog
+input and simultaneously process three frequency
+intervals of 100 MHz each. The center of each fre-
+quency band can be set independently and the sys-
+tem operates without deadtime in either a continu-
+ous streaming mode or a triggered mode. Without
+triggering the data rate is 600 MB/s. Hence, keep-
+ing the total recorded data volume for the planned
+100 day tritium run period below the targeted max-
+imum disk space of 200 TB required efficient rejec-
+tion of noise by the trigger. Event reconstruction
+and careful filtering of remaining false events (noise
+fluctuations mimicking events) are performed of-
+fline [11].
+Figure 2 shows the spectrogram for a typical
+CRES event from Phase II, produced by performing
+a short-time Fourier Transform on the time-series
+data. The SNR for the event in 24 .4 kHz-wide fre-
+quency bins is plotted as a function of both fre-
+quency and time. The cyclotron radiation from a
+single electron is detected as a narrow peak in fre-
+quency over time, forming an upward-sloping line.
+The initial frequency of the signal provides the ini-
+tial energy of the electron. The slope is a result
+of the electron losing power via cyclotron radia-
+tion;fc typically changes by≈0.3 MHz/ms through
+this mechanism. Multiple lines are the result of
+the electron scattering inelastically off residual gas
+atoms or molecules while remaining magnetically
+trapped. These signal characteristics guided the
+choices made for the DAQ system. We describe
+the hardware and software details of this system
+in section 2. In section 3 the optimization of the
+trigger for Phase II data is presented and its per-
+formance evaluated. In section 4 we discuss the
+requirements and plans for future DAQ systems of
+CRES neutrino-mass experiments.
+2. System Description
+2.1. Overview
+The DAQ system comprises an Analog-to-Digital
+Converter (ADC) coupled to a Field-Programmable
+Gate Array (FPGA) that performs initial process-
+ing of the data and a data-processing server to ana-
+lyze the data in real time and write the time series
+0.5
+ 0.0 0.5 1.0 1.5
+Time (ms)
+87
+88
+89
+90
+91
+92
+93Frequency (MHz)
+Pre-trigger time
+Initial trigger
+Continue writing
+Acquisition length
+0
+2
+4
+6
+8
+10
+12
+14
+16
+SNR
+Figure 2: Cyclotron radiation from a magnetically trapped
+electron is observed as a sequence of chirps of varying time
+lengths and distances in frequency in a spectrogram pro-
+duced using a short-time Fourier Transform on time-series
+data down-converted to a range of 0 MHz to 100 MHz. This
+spectrogram was produced with the same 40.96 µs-wide rect-
+angular window used in the DAQ and data analysis. The
+goal of the triggered data-taking is to reduce data volume
+by only recording the color-shaded time span. Details of
+how an acquisition is formed are given in section 2.4.5. Pre-
+and post-trigger times here are for illustration only.
+to data files. Figure 3 shows the overall DAQ sys-
+tem.
+The ADC and FPGA are part of the Recon-
+figurable Open-Architecture Computing Hardware
+version 2 (ROACH2) platform [12, 13] developed
+by the Collaboration for Astronomical Signal Pro-
+cessing and Electronics Research (CASPER) [14].
+The single channel of digitized data at the IF band
+is split into three channels on the FPGA, each
+with an independent digital downconversion step.
+Each channel is divided into a frequency-domain
+path and a time-domain path, both of which are
+transmitted over high-speed Ethernet to the data-
+processing server. We chose to start the time- and
+frequency-domain data paths on the FPGA to take
+advantage of its real-time processing capabilities
+and to simplify the analysis performed by the data-
+processing server. The ROACH2 timing was refer-
+enced to an atomic rubidium frequency standard to
+ensure coherent timing throughout data taking.
+Each channel is processed on the server by an in-
+dependent instance of the data-processing software.
+A software trigger uses the frequency-domain data
+to detect the presence of electron signals because
+the signals are narrow in frequency and the noise
+in a single frequency bin is smaller than the to-
+tal noise present in the time-domain signal. The
+3
+
+===== PAGE 4 =====
+IF analog 
+signal
+10 Gb 
+Ethernet
+Remote storage 
+& processing
+10 Gb 
+Ethernet
+ROACH2 Server
+Psyllid
+Psyllid
+Psyllid
+ADC
+ FPGA
+Experiment 
+controls
+1 Gb 
+Ethernet
+Figure 3: Overview of the DAQ system, showing the main
+hardware components (ROACH2 and server), and the data
+path from the IF analog signal through digitization, splitting
+into three channels, data processing, and storage. Psyllid is
+the data-processing software described in section 2.4. The
+system is connected to the experiment controls over a 1 Gbit
+Ethernet network.
+trigger algorithm is designed to produce continu-
+ous time-domain acquisitions of flexible length with
+no deadtime, where an “acquisition” is defined as a
+contiguous block of data, either in the time or fre-
+quency domain. This way we ensure that we can
+trigger on events such as the one shown in Figure 2.
+The time-domain data representing the duration of
+a triggered acquisition are written to disk to pre-
+serve the rawest form of the digitized data for later
+analysis. Data are stored temporarily on the server
+before being transferred to a remote system for pro-
+cessing and long-term storage.
+The trigger algorithm is based on the concept
+of frequency-mask triggering. The in-streaming
+frequency-domain data are compared to a pre-
+recorded frequency mask 14 that accounts for any
+variation in the noise level with frequency. As soon
+as the mask level is exceeded at any frequency, the
+algorithm checks if the start-writing condition is
+fulfilled. This condition can be dynamically con-
+figured at runtime and typically consists of a re-
+quirement for one or more high-power bins within
+a certain time interval. To prevent the event start
+from being missed if only a later part of the event
+meets the start-writing condition, since the starting
+frequency is critical for measurig the initial electron
+energy, a fixed amount of data is buffered and writ-
+ten out as pre-trigger samples. An acquisition is
+14Typically, the mask is recorded right before triggered
+data-taking by averaging over the frequency-domain data for
+a period of time.
+ended if no new occurrence of high power in the
+frequency domain is detected for a set amount of
+time.
+2.2. Hardware and Firmware
+The analog RF chain of the Phase II experiment
+prepares the signal for digitization [10]. A mixer
+shifts the signals down to the IF frequency band
+and a band-pass filter reduces image noise from fre-
+quencies above and below the frequency range of
+interest. Finally, a combination of an amplifier and
+a filter set the total power near the optimum level
+for the digitizer at the sampling rate used and pre-
+vents noise aliasing into the first Nyquist zone of
+digitization.
+The front-end of the DAQ system (Figure 3) is
+the ROACH2 board, which features an ADC im-
+plemented on a daughter board [12, 13], a Xil-
+inx Virtex 6 FPGA, and a PowerPC 440EPx pro-
+cessor that runs a Linux operating system. Con-
+trol of the ROACH2 platform is conducted over
+a 1 Gbit Ethernet link. A second daughter board
+adds four SFP+ (enhanced Small Form-factor Plug-
+gable) 10 Gbit Ethernet ports to the platform for
+high-speed digital data transmission. The data-
+processing server features an Intel Xeon processor
+and two dual 10 Gbit Ethernet network interface
+cards for receiving the data over a dedicated con-
+nection to the ROACH2 and transmitting it to off-
+site storage.
+The ADC daughter board in use has an
+EV8AQ160 ADC chip that is capable of 8-bit sam-
+pling at a rate of up to 5 GS /s. We use a digitiza-
+tion rate of 3 .2 GS/s to capture a 1600 MHz-wide
+IF band.
+On the FPGA, data are processed with a custom
+firmware configuration. The single input channel is
+split into three channels that process data in paral-
+lel. An overview of the processing implemented in
+each of the three channels on the FPGA is shown in
+Figure 4. The channels have independently-tunable
+center frequencies (tuning step size: 3 .125 MHz)
+that are used to select 100 MHz-wide bands from
+within the total IF bandwidth.
+When the data from the ADC appear at the in-
+put to each channel, they require decimation by
+a factor of 16, since the input data are digitized
+at 3.2 GS/s and the FPGA is clocked at 200 MHz.
+For each channel, the 100 MHz-wide band of inter-
+est is down-converted with a single-sideband mixer
+and 128-tap (127th-order) Finite Impulse Response
+(FIR) band-pass filter. Decimation is achieved by
+4
+
+===== PAGE 5 =====
+Figure 4: Processing implemented on the FPGA for each
+digital channel. The signal digitized by the ADC is down-
+converted and its FFT computed. Both time- and frequency-
+domain data are streamed over 10 Gb Ethernet.
+computing every sixteenth filter output to yield a
+serial stream of time-domain samples at the FPGA
+clock rate. The data are then routed to two parallel
+paths, one for time-domain processing and one for
+frequency-domain processing. On the two paths the
+data are segmented into 8192-sample “records” that
+are handled simultaneously in parallel. A record ID
+value is assigned to guarantee that we can identify
+which time and frequency records correspond to the
+same period in time.
+The frequency-domain processing computes an
+8192-point complex-valued discrete Fourier trans-
+form (DFT) using a pipelined fast Fourier trans-
+form (FFT) architecture. This yields a spectral res-
+olution of 24.4 kHz. The negative-frequency sam-
+ples do not contain any unique information com-
+pared with the positive-frequency samples, so only
+the 4,096 complex-valued spectral samples in the
+positive half-spectrum are retained.
+In parallel, the time-domain processing produces
+an IQ (In-phase / Quadrature) sampling of the
+100 MHz wide channel by centering the channel on
+DC, passing it through a fourth-order Infinite Im-
+pulse Response (IIR) low-pass filter and downsam-
+pling by a factor of two. The IIR filter is imple-
+mented using a scattered look-ahead architecture,
+which allows pipelining recursive loops to meet tim-
+ing constraints while guaranteeing stability [15].
+The output of the frequency-domain and time-
+domain paths are requantized to 8 bits per sample
+to compensate for bit growth throughout the pro-
+cessing. The data are then packetized such that
+frequency-domain samples for a single record are
+inserted into the payload of one packet, and the
+time-domain samples that correspond to the same
+DFT window are inserted into the payload of the
+following packet. Application layer headers are at-
+tached to each packet before being transmitted over
+10 Gb Ethernet. At the transport layer, User Data-
+gram Protocol (UDP) is used.
+2.3. Multi-channel Use Cases
+The multi-channel implementation with indepen-
+dent central frequencies enables the ROACH2 to
+record data from different frequency ranges simul-
+taneously. This offers many possible applications:
+• Due to the electron motion in the waveguide,
+the received signal frequencies are Doppler-
+shifted. This leads to frequency modulation
+and hence sidebands in the spectrum. For
+a large modulation frequency, the separation
+between the main carrier frequency and side-
+bands is larger than the bandwidth of a sin-
+gle channel (100 MHz). Using one channel to
+record the main carriers and the other two
+channels to record the sidebands would allow
+us to record all visible bands. The Phase II ex-
+periment was configured in a way that did not
+result in visible sidebands and this application
+was never used.
+• Project 8 uses the 83mKr spectrum for cal-
+ibration measurements. The energies of
+the internal-conversion lines with the highest
+branching ratios in 83mKr decay are the K line
+at≈17.8 keV, the L lines at ≈30.4 keV, and
+the M lines at ≈31.9 keV. In Phase II the
+separations of these lines in the CRES fre-
+quency spectrum are ≈600 MHz (L− K lines)
+and≈70 MHz (M−L lines). After analog mix-
+ing with 24.5 GHz, all three lines fall into the
+1.6 GHz bandwidth of the ROACH2 and the
+three channels can be used to record them si-
+multaneously.
+• For the tritium spectrum analysis in Phase II,
+the energy region of interest corresponds to a
+much larger frequency range than the 100 MHz
+bandwidth of a single channel. Therefore, the
+channels’ central frequencies were configured
+such that the 3 channels were adjacent to each
+other and together cover the full tritium region
+of interest (see section 3.4.2). Because the full
+time-series is recorded for each detected event
+candidate, splitting the spectrum into 3 fre-
+quency ranges reduces the recorded data vol-
+ume per event by 3 compared to an FPGA im-
+plementation with a single 300 MHz-wide chan-
+nel, as most events are seen by only one chan-
+nel.
+• For trigger optimization and other systematic
+studies, it is useful to be able to record the
+5
+
+===== PAGE 6 =====
+same frequency range with separate channels.
+For example, to compare the trigger efficiency
+for different register settings on the ROACH2
+or different software trigger configurations, one
+channel can serve as reference with a constant
+configuration, while the other two channels are
+used to explore the configuration parameter
+space (see section 3.2.1).
+2.4. Data-Processing Software
+On the data-processing server, the software trig-
+ger is implemented as part of the real-time trig-
+gering package Psyllid [16] (written in C + +). Its
+purpose is to receive UDP packets via a network
+port, analyze them in real time (each packet cov-
+ers 40.96 µs) and write data to disk. The file format
+used is the “Egg” version 3 format [17], a file format
+that is based on the industry standard Hierarchical
+Data Format, version 5 (HDF5) [18]. The Psyllid
+architecture was designed to:
+• be modular and configurable at runtime,
+• process data in real time with no deadtime,
+• safely run the signal processing steps in paral-
+lel, and
+• integrate into an existing Dripline [19, 20] ex-
+periment control system.
+The remainder of section 2.4 describes the com-
+ponents of the data-processing software in detail.
+2.4.1. Software Framework: Midge
+Psyllid is based on the Midge framework [21, 22].
+The working principle behind Midge is that data are
+produced, read, and processed by different kinds of
+operators called “nodes”. A “data stream” is used
+to connect a node writing data to a node reading
+data. The different types of nodes are:
+• Producers: nodes that only write output data
+to a data stream(s), and do not read input data
+from a data stream;
+• Transformers: nodes that read input data from
+a data stream(s), and write output data to a
+data stream(s);
+• Consumers: nodes that only read data from a
+data stream(s), and do not write data to a data
+stream.
+Data streams are circular buffers of data objects,
+which make it possible to continuously process data
+as long as data are read from the buffer as quickly,
+on average, as it is written to the buffer. Each
+data stream carries a single type of data. Produc-
+ers and transformers (writing) move along the data
+stream writing to each data object. Consumers and
+transformers (reading) follow the writing operator
+along the data stream, reading from each data ob-
+ject. Each node runs in its own thread which allows
+for parallel processing. Mutexes are used to avoid
+collisions between reading and writing nodes, and
+since a writing node cannot pass a reading node,
+nodes are prevented from overwriting data that has
+not yet been read.
+In principle, nodes can use an arbitrary num-
+ber of input and output streams, though each data
+stream has a single producer. All nodes can be con-
+nected via data streams in almost arbitrary ways,
+where each operator takes action on the incoming
+data as soon as it “appears” on the output of the
+upstream operator. A concrete example of a node
+configuration used in Phase II is shown in Figure 5.
+Upon initialization of a Midge instance, the network
+of nodes is established and connected according to
+a pre-configured structure.
+2.4.2. Data processing overview
+In Psyllid we implemented a feature that al-
+lows rapid starting and stopping of data process-
+ing. Prior to initializing the Midge nodes, Psyllid
+is in the “idle” state. Psyllid is put in the “acti-
+vated” state before starting data processing—which
+involves initializing the desired Midge nodes, con-
+necting them via their input and output streams,
+and starting the threads for each node—so that
+data processing can start almost instantly when the
+run is started. One or more of the nodes must have
+the ability to pause its data processing, in a way
+that halts the overall data processing. The act of
+starting a data-taking run puts Psyllid in the “run-
+ning” state by un-pausing the relevant node(s). The
+end of the run pauses the node(s) again and returns
+Psyllid to the “activated” state. In this way, data-
+taking runs can be started and stopped with essen-
+tially no delay in the action of the DAQ system.
+For Phase II of Project 8, we built a number of
+nodes in Psyllid specifically for processing CRES
+data. Pausing and un-pausing is performed by
+the “ROACH receiver” (described below in more
+detail). Data taking is performed in two modes:
+streaming and triggered. In streaming mode, the
+6
+
+===== PAGE 7 =====
+time series data received from the ROACH2 is writ-
+ten directly to disk. In triggered mode, time-series
+data are written to disk only when an event is
+present. In both configurations, the data are pro-
+cessed by Psyllid in three stages:
+1. Receiving: network packets arrive on the net-
+work interface, are transferred into memory,
+and then are split into time and frequency
+streams;
+2. Analyzing: the time and frequency streams are
+processed by different sets of transformer nodes
+depending on whether Psyllid is in streaming
+or triggered mode;
+3. Writing: time series data are written to disk.
+In all configurations, deadtime is avoided by care-
+fully balancing the workload of the nodes in use.
+Each node must process data at least as quickly
+as the data are received by Psyllid. As long as
+the rate of packets being received by Psyllid is the
+limiting rate in the system, all downstream nodes
+will stay synchronized with the incoming data. The
+consequence of a slower downstream node would
+be for the buffers of the nodes upstream of the
+slow node to fill up until eventually arriving pack-
+ets are dropped when they cannot be written to the
+packet receiver’s output buffer. In development of
+the Psyllid configuration used to record Phase II
+data, the processing rates of all nodes were checked
+to ensure that deadtime would not be introduced
+by Psyllid.
+In sections 2.4.3 and 2.4.4, we will briefly describe
+how Psyllid applies the three stages above to oper-
+ations in streaming and triggered modes, respec-
+tively. Section 2.4.5 will cover the setup and nodes
+of Psyllid for production data-taking in triggered
+mode in more detail.
+2.4.3. Streaming mode
+In streaming mode the goal is to write as much
+data as possible to disk, without introducing dead-
+time.
+Receiving. The process of receiving data from the
+ROACH2 involves two nodes: the “packet receiver”
+and the “ROACH receiver”. The packet receiver
+is responsible for taking packets directly from the
+server’s network interface, and copying the data as
+a raw sequence of bytes to a raw-data object in the
+packet receiver’s output data stream.
+The ROACH receiver takes the raw-data objects
+from the packet receiver and interprets them as ei-
+ther time- or frequency-domain packets, outputting
+the two types of data on separate output streams.
+Each packet contains a single record holding two
+arrays (In-phase / Quadrature (IQ) samples) with
+4096 8-bit integer numbers.
+Analyzing. No analysis is performed on the data
+in streaming mode; the frequency-domain data are
+ignored with a “terminator” node, and the time-
+domain data are passed directly from the ROACH
+receiver to the writer node.
+Writing. The purpose of streaming mode is to
+write all time-domain data received to disk. The
+“streaming writer” copies the time-series data di-
+rectly from each data object into an Egg file. The
+Egg file contains a single acquisition covering the
+entire run period, except in the rare cases when
+a data-processing problem induces deadtime and
+starts a new acquisition.
+2.4.4. Triggered mode
+Triggered mode differs from streaming mode in
+that we seek to only write data that includes a po-
+tential event. To accomplish this we perform a real-
+time analysis of the frequency-spectrum data, and
+then write to disk the time-series data where the
+signal is present.
+Receiving. The process of receiving data in trig-
+gered mode is the same as in streaming mode, as
+described above.
+Analyzing. Only the frequency-domain data are
+analyzed to determine if an event is present; the
+time-domain data are directly passed from the
+ROACH receiver to the writer node. The first node
+in the analysis process is the frequency-mask trigger
+(FMT), where a configurable frequency-dependent
+threshold is applied to each record to determine if
+it contains any signal power. The output of the
+FMT is a trigger flag for each record that indicates
+whether the trigger conditions have been met.
+The next node, the event builder, implements
+logic to set the trigger flag of a record based on
+the surrounding records and create “events,” sets of
+records likely to contain a full electron signal (or, in
+principle, that of multiple simultaneous electrons).
+Its input is trigger flags from the frequency-mask
+trigger node, and its output is also trigger flags
+7
+
+===== PAGE 8 =====
+(not the same as the input), which are read by the
+writer node. The event builder uses circular buffers
+to store a certain number of trigger flags to build
+events in two ways: (1) a set number of records
+called a pre-trigger are added before the first trig-
+gered record in an event, and (2) a gap between
+triggered records is filled in if it is smaller than a
+specified “skip tolerance.”
+Two further options allowed customization of the
+triggering process to help reduce noise fluctuations
+being interpreted as events. The FMT included an
+option to use two threshold levels. The trigger flags
+would indicate whether the low or both the high
+and low thresholds were crossed. When this fea-
+ture was used, the event builder would require the
+high threshold to be crossed to trigger an event, but
+trigger flags crossing the low threshold would de-
+fine a wider time window for the event, accounting
+for variability in the event power while maintain-
+ing high noise rejection and still seeing the whole
+event. The event builder could also require more
+than one trigger flag before creating an event. This
+improved noise rejection since false events due to
+noise were most likely to be short. The settings
+used for all configurable parameters are optimized
+in section 3.2.
+Writing. The “triggered writer” node has two in-
+puts: time-domain records and trigger flags. For
+each record, if a trigger flag is true, then the time-
+domain data for that record is written to an Egg
+file. In the end, the Egg file contains a set of acqui-
+sitions, each nominally containing the signal from
+a single event.
+2.4.5. Psyllid Nodes
+The nodes used in triggered mode are depicted
+in Figure 5. Their functionality is as follows.
+Packet receiver. Psyllid has two types of packet
+receivers, both of which are producer nodes: the
+socket receiver and the fast-packet receiver. The
+socket receiver gets the UDP packets via the stan-
+dard POSIX socket interface [23]. As this is a sim-
+ple high level process, it is very useful for testing
+purposes or for receiving packets from a packet sim-
+ulator that produces UDP packets at a slower rate.
+For production data-taking, this interface is too
+slow because the Linux socket interface uses one
+system call to capture a single packet. The fast-
+packet-receiver, on the other hand, gets the pack-
+ets via the memory-mapped ring buffer [24]. The
+Producer node: 
+Packet receiver
+Transformer node: 
+ROACH receiver
+Transformer node: 
+Frequency-mask 
+trigger
+Transformer node: 
+Event builder
+Consumer node: 
+Triggered writer
+Raw-data blocks
+Frequency-
+domain 
+packets
+Time-domain 
+packets
+Trigger 
+flags
+Trigger 
+flags
+Output: 
+Egg files
+Input:Packets
+from ROACH
+Figure 5: Psyllid node configuration in triggered mode.
+The ROACH receiver interprets packets as either time- or
+frequency-domain data, and sends the data on the appro-
+priate stream. Records from the time-domain packets are
+passed directly to the writer, while their frequency-domain
+equivalents are inspected for high-power bins by the fre-
+quency mask trigger node (FMT). The event builder deter-
+mines which record IDs comprise the next acquisition. The
+writer node then writes the time-domain records sorted as
+acquisitions to an Egg file using the Monarch3 [17] library.
+8
+
+===== PAGE 9 =====
+memory-mapped buffer provides a circular buffer of
+configurable size that is shared between the kernel
+and the user. Instead of issuing a system call, the
+user can read packets from the shared buffer. Both
+receivers are Midge producers with a single output
+stream and they both write the packet content as
+raw blocks of memory (i.e. without interpreting
+as any particular data structure) to improve data
+throughput.
+ROACH receiver. The ROACH receiver is a trans-
+former node responsible for dividing the time and
+frequency data packets onto separate paths. Its in-
+put is a stream of raw data packets from the packet
+receiver, and it has two output streams, one for
+each domain of data. The ROACH receiver is also
+responsible for implementing the “pausing” behav-
+ior mentioned above. In the paused mode, data ob-
+jects continuously arrive from the packet receiver
+but are ignored until data processing is un-paused.
+In that way, there is no backlog of data from the
+network interface, and no extra buffering of packets
+is needed to start a run immediately by un-pausing.
+Frequency-mask trigger. The FMT is a transformer
+node with one in-stream and one out-stream. The
+input data type is freq-data and the output data
+type is trigger-flags. The FMT can run in two dif-
+ferent modes, “add-to-mask” and “triggering.”
+In the add-to-mask mode, the FMT calculates
+the mean and the variance of the incoming power
+spectra over time. To do so, it takes the incoming
+complex-valued array from each packet and sums
+the absolute square (proportional to power) and
+the square of the absolute square (variance of the
+power) separately for each frequency bin. Once a
+pre-configured number of records,N, has been pro-
+cessed, the sums are divided by N and a third-
+order spline is fitted to the mean and variance.
+Depending on configurable options, the FMT then
+either calculates one or two trigger masks equal
+to rlow and rhigh-times the fitted average back-
+ground (Figure 6) or rlow and rhigh standard devi-
+ations above the background, where rlow and rhigh
+are configurable parameters used to calculate the
+trigger masks. For all of our production data-
+taking we used the two-threshold option, calculat-
+ing those thresholds using the standard deviations.
+The output-data stream is not used in this mode.
+In triggered mode the FMT loops over all bins
+in the frequency domain data, calculates the power
+from IQ amplitudes in each bin, and compares the
+0 20 40 60 80 100
+Frequency (MHz)
+100
+120
+140
+160
+180
+200
+220Power (arb. units)
+Power mean
+Power std. dev.
+Spline fit
+Scaled mask
+Figure 6: Example of a trigger mask calculated from N =
+12, 000 frequency-spectrum packets. The bin-wise mean and
+standard deviation are shown along with the spline fit and
+the scaled mask. The mask threshold in this example is
+12 ∗σpower. The inset shows that the spline fit does not
+under- or over-estimate the shape of the average spectrum
+even around one of the sharper spectral features.
+result to its stored trigger masks. For each record,
+a trigger-flag data object is written to the node’s
+output stream. If the trigger conditions are met,
+the flag is set to true, and otherwise it is set to
+false.
+While using a single trigger mask, each bin is
+compared to the trigger mask until one is found
+that exceeds the threshold. When that occurs, the
+output-data trigger flag is set to true, and the loop
+over bins is stopped.
+While using two masks with different thresholds
+(rlow < rhigh), the FMT scans through the bins of
+the frequency spectrum comparing to both thresh-
+olds. If a bin crosses the high threshold, then both
+the trigger flag and the high-threshold flag in the
+output data are set to true and the scan over the
+bins stops. If a bin only crosses the low threshold,
+then the trigger flag in the output data is set to
+true and the scan continues. When the scan over
+bins completes, if only the low threshold has been
+crossed, then only the trigger flag is set to true in
+the output data.
+Event builder. The event builder is a transformer
+node responsible for taking the set of records
+passing the trigger threshold(s) and adding other
+records around them to form an acquisition that
+is likely to capture a full event (as shown in Fig-
+ure 7). An acquisition includes a number of records
+before the acquisition is triggered, called the pre-
+trigger, and records to fill in small gaps between
+9
+
+===== PAGE 10 =====
+triggered records, called the skip tolerance. Both
+the input and output data types to the event builder
+are trigger-flags.
+The event builder is implemented as a finite state
+machine with four states: un-triggered, collecting-
+triggers, triggered, and skipping. The behavior of
+the event builder is controlled with three param-
+eters: the pre-trigger size, the skip-tolerance size,
+and the trigger-requirement size, referred to as “n-
+triggers” in the following sections. The parameters
+are configurable at run time, and their use during
+Phase II operations is discussed below.
+The builder uses two circular buffers to temporar-
+ily store trigger flags: the pre-trigger buffer and
+the skip buffer. The sizes of those buffers are set
+by the first two parameters. The third parame-
+ter controls whether multiple records with trigger
+flags set to true are required to start an acquisition.
+Trigger-flag data objects on the input stream are se-
+quentially put into one of the two buffers, depend-
+ing on the state of the builder. The builder uses
+the contents of the buffers to determine whether to
+switch to a new state or remain in the current state.
+Trigger-flag data objects are sequentially removed
+from the end of the buffers (again, depending on
+the state of the builder) and put into the output
+data stream with the trigger flag set according to
+whether an acquisition is triggered. The next four
+paragraphs describe the state-machine logic in more
+detail.
+The event builder starts in the un-triggered state.
+Input trigger flags are sequentially placed into the
+pre-trigger buffer. Once the buffer is full, and as
+data continues to arrive, trigger flags from the end
+of the buffer are transferred to the output data
+stream with their trigger-flag variables set to false.
+An event will be triggered by the arrival of n-
+triggers trigger flags that are set to true (requiring
+the high-threshold flag if using the two-threshold
+option). If n-triggers = 1, the state switches to
+triggered. If n-triggers > 1, the state switches to
+collecting triggers and starts filling the skip buffer.
+Note that the pre-trigger buffer does not need to
+have filled before trigger flags are checked. This
+avoids deadtime between events or at the beginning
+of a run. In the collecting-triggers state, as further
+input data arrive, once the number of true trigger
+flags in the skip buffer is equal to n-triggers, the
+state is switched to triggered. If not enough true
+trigger flags arrive while in the collecting-triggers
+state to meet the trigger-requirement size by the
+time the skip-buffer is full, the state is switched
+back to un-triggered. In this case trigger flags are
+transferred from the pre-trigger buffer to the output
+data stream to make enough room in the buffer to
+fit all trigger flags that are currently in the skip-
+buffer. The transferred flags are set to false and no
+acquisition is written.
+When the state switches to triggered, all buffered
+trigger flags are moved to the output data stream
+with their trigger flag variables set to true (just the
+pre-trigger buffer if n-triggers = 1, and the pre-
+trigger and skip buffers if n-triggers > 1). Trigger
+flags set to true that arrive at the builder while it
+is in the triggered state are immediately moved to
+the output stream.
+The event builder uses its skipping state to han-
+dle gaps (e.g. due to noise fluctuations) in the
+middle of an acquisition. While in the triggered
+state, if a false trigger flag arrives, the event builder
+switches to the skipping state, and incoming trigger
+flags are directed to the skip buffer. If a true trigger
+flag arrives before the skip buffer is filled, then the
+event builder switches back to the triggered mode;
+all of the trigger flags in the skip buffer are moved
+to the builder’s output stream with their trigger-
+flag variables set to true. Alternatively, if no true
+flags are found before the skip buffer fills, then the
+acquisition is ended. Some or all of the trigger flags
+in the skip buffer are used to add a post-event mar-
+gin to the acquisition: if the skip buffer size is larger
+than the pre-trigger buffer size, only the excess flags
+above the pre-trigger buffer size are moved to the
+builder’s output stream with their trigger-flag vari-
+ables set to true and the remaining flags are trans-
+ferred to the pre-trigger buffer; otherwise all flags
+in the skip buffer are moved to the builder’s output
+stream with their trigger-flag variables set to true
+and the pre-trigger buffer remains empty. Figure 7
+shows an example of a sequence of incoming trigger-
+flags and indicates into which buffers they would be
+placed by the event builder. Figure 2 shows how the
+aspects of the event builder are applied to an actual
+event.
+Writers. Two consumer nodes are responsible for
+writing data to disk: the streaming writer and the
+triggered writer. Both write data in the Egg file for-
+mat, which is based on the HDF5 file format [18],
+using the Monarch software library [17]. The writ-
+ers also both use the concept of an “acquisition” in
+the Egg standard: a single acquisition represents a
+contiguously recorded signal.
+The streaming writer is a consumer node with
+10
+
+===== PAGE 11 =====
+Incoming
+trigger-flags
+2: False
+3: False
+4: False
+5: True
+6: False
+7: False
+10: True
+11: False
+12: False
+13: False
+14: False
+15: False
+Pre-trigger buffer Skip buffer Skip buffer
+True flag:
+Switch to
+collecting
+2nd true flag:
+Switch to
+triggered
+False flag:
+Switch to
+skipping
+Buffer full:
+Switch to 
+un-triggered
+Outgoing
+trigger-flags
+1: False
+2: True
+3: True
+4: True
+5: True
+6: True
+7: True
+8: True
+9: True
+10: True
+11: True
+14: False
+15: False
+Un-triggered:
+ Fill pre-trigger buffer
+ Wait for true flag
+Skipping:
+ Fill skip buffer
+ Wait for true flag
+Triggered:
+ Set buffered flags to true
+ Empty buffers
+8: True
+9: True
+1: False
+12: True
+13: True
+Collecting:
+ Fill skip buffer
+ Wait for n-1 more true flags
+Figure 7: Example for trigger-flag processing in the event builder following the FMT, operating in single-threshold mode with
+n-triggers = 2. While in the un-triggered state, in-streaming trigger flags are constantly placed into the pre-trigger buffer.
+When a new trigger flag arrives and the pre-trigger buffer is full, the first trigger flag in the buffer is moved to the output
+stream. Once a trigger flag set to true arrives (trigger-flag 5), the event builder switches to the collecting state and places
+incoming flags into the skip buffer. If a new trigger-flag set to true arrives before the skip buffer is full, the event builder
+switches to triggered state. In this state all trigger-flags in the pre-trigger buffer (2 to 5) and in the skip buffer (6 to 8) are
+labeled as true and are moved to the event builder’s output stream. The next two trigger flags (9 and 10) are true because
+the data are still above threshold and are transferred directly to the event builder’s output stream. When the next incoming
+trigger-flag is labeled false (11), the event builder switches to the skipping state and starts filling the skip buffer again. If no
+new true-flag arrives before the skip buffer is full, the event builder switches back to the un-triggered state. In this configuration
+the skip-buffer is smaller than the pre-trigger buffer and all flags in the skip buffer are labeled as true and moved to the output
+stream. All records corresponding to the trigger-flags that are moved to the out-stream as true (2 to 13) will be written to an
+acquisition by the triggered writer. If no flag had been labeled true in the collecting state, or a single true-flag had arrived in
+the skipping state, the event builder would have returned to the previous state (as indicated by the dashed arrows).
+one input: time-series data. It simply writes every
+record it receives into the Egg file. If a break in the
+sequence of record ID numbers is detected, it starts
+a new acquisition after the break.
+The triggered writer is a consumer node with two
+inputs: time-series data and trigger-flag data. If
+the ID values for the time-series data object and
+trigger-flag data object do not match, the run is
+stopped so that the data streams can be synchro-
+nized. If the trigger-flag is true, then the time-series
+data are written to the Egg file; if it is false, then
+the time-series data are skipped. Every contiguous
+block of true trigger flags forms a single acquisition.
+Psyllid includes a run-time configurable parame-
+ter to limit file sizes and write to multiple files se-
+quentially in a single run. Psyllid guarantees that
+there is always an Egg file available to write data
+to without delaying the process of acquiring data.
+If file writing had to be paused to close a full file
+and then open a new one, the writer would not be
+able to catch up with the backlog of data, result-
+ing in gaps in the data written to disk. Instead,
+separate threads are used to open and close files in
+parallel with the processing and writing of data to
+disk. A new file is opened while an existing file is
+being written to, and once the existing file is full,
+it can be quickly swapped with the new file so that
+the writing of data can continue. The existing file
+is then closed in parallel with data being written to
+the new file.
+11
+
+===== PAGE 12 =====
+Unfortunately this practice revealed an issue
+with our use of the underlying HDF5 library: the
+C++ interface for HDF5 is not guaranteed to be
+thread-safe, which caused instabilities in this multi-
+threaded use of Psyllid. Psyllid would crash oc-
+casionally as a result, and the affected data were
+not used. No evidence of corruption to the data
+recorded while Psyllid ran stably was found. While
+this problem was handled for Phase II operations
+by detecting software crashes quickly, it will have
+to be addressed for future use of Psyllid with Egg
+files.
+The decision to start writing to a new file is made
+after each record is recorded. As a consequence,
+triggered events are sometimes split between files.
+The first part of a triggered event, which is written
+to the end of a given file, will result in an event
+that is included in the analyzed data set. The sec-
+ond part of a triggered event, which is written to
+the beginning of the next file, will not result in an
+event included in the analyzed data set because of
+the cut on events starting in the first 0 .5 ms of an
+acquisition. This occurs for only a small fraction of
+events because the maximum file size is large com-
+pared to the size of a single event in the file. There-
+fore, while this affects the distributions of track and
+event characteristics in principle, no effect was ob-
+served.
+Terminators. Two nodes were implemented for
+stopping a data stream without further processing:
+the time and frequency terminators. These con-
+sumer nodes were capable of reading data on a time
+or frequency data stream, respectively, and simply
+taking no action. They would therefore ensure that
+the buffer for the relevant data stream would not
+fill up. Only the frequency terminator was used in
+Phase II of Project 8, when operating in streaming
+mode.
+3. T rigger optimization and performance in
+Project 8 Phase II
+A trigger for CRES events has to fulfill a num-
+ber of requirements. The trigger should be highly
+efficient at identifying reconstructable events and
+identifying undesired noise as events should be min-
+imized. Deadtime should be minimized as events
+can occur at any point in time. If the detection ef-
+ficiency (defined as the fraction of events that are
+detected) depends on frequency, that dependence
+becomes a critical systematic effect in the shape
+analysis of a CRES spectrum. Therefore, the trig-
+ger efficiency should be independent of frequency
+or at least the frequency dependence has to be very
+well understood. In the following sections the per-
+formance of the ROACH2-Psyllid triggering system
+is evaluated and the configurable parameters are
+optimized for the Phase II running conditions. The
+trigger efficiency with optimized parameters is stud-
+ied by applying the trigger to simulated data, and
+a channel central-frequency configuration is found
+that minimizes the impact of the trigger efficiency
+on the Phase II spectrum analysis.
+3.1. Deadtime
+To test if the trigger can operate without dead-
+time in the production configuration (triggered
+mode), an Arbitrary Waveform Generator was used
+to play an IQ white noise signal to a ROACH2 that
+streamed the processed signal in packets to a run-
+ning Psyllid instance. The Psyllid nodes were con-
+figured as described in section 2.4.4 and a FMT
+threshold scan was conducted. The pre-trigger and
+skip-tolerance buffer sizes were set to 0, so that for
+each FMT trigger (i.e. after the FMT, without fur-
+ther event building), an acquisition with a single
+record would be written to file. The fraction of
+records that were not written to an Egg file is shown
+in Figure 8. A trigger deadtime would lead to an in-
+crease of the unrecorded time fraction compared to
+the theoretical expectation. No large increases were
+observed; however, at the lowest trigger threshold
+of 5σ, the test run resulted in a recorded time frac-
+tion of 99.72% instead of the expected > 99.99%.
+One must conclude that in this extreme test case, in
+which every record is a new trigger, Psyllid reaches
+its limitations in deadtimeless operation. During
+Phase II data-taking, we used trigger thresholds of
+≥ 13σ. No excess of unrecorded time is observed in
+this range during the deadtime test. We conclude
+that Psyllid operates effectively without deadtime
+(to the precision of this test) at the trigger rates
+relevant in Phase II.
+3.2. Parameter optimization for CRES triggering
+We optimized the trigger parameters according to
+event properties, such as event duration and SNR,
+in the Phase II experiment. Based on the available
+disk space in Phase II and the target to take tri-
+tium data for 100 days, the goal was set to achieve
+a recording rate that does not exceed 2 TB/day for
+12
+
+===== PAGE 13 =====
+6 8 10 12 14
+Trigger threshold ( )
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Unrecorded time fraction
+Expectation
+Test with AWG signal
+Figure 8: Fraction of unrecorded time in a trigger threshold
+scan. IQ white noise from an arbitrary waveform generator
+(AWG) was injected into the ROACH2 input. Psyllid was
+configured to write out all records that exceeded the trig-
+ger threshold (if at least 1 sample in the record was above
+the threshold). The recorded time fraction follows the ex-
+pectation for exponentially distributed noise power in 4096
+frequency bins per record.
+all channels. Since in streaming mode, the 3 chan-
+nels together process 600 MB/s, this corresponds to
+a data reduction of 96 %.
+The trigger logic has a total of five configurable
+parameters as described in section 2.4.5:
+• pre-trigger time
+• skip-tolerance
+• n-triggers
+• FMT threshold (rlow)
+• FMT high-threshold (rhigh)
+The best compromise between data reduction
+and detection efficiency for Phase II produc-
+tion tritium data-taking was achieved with
+pre-trigger time = 2 ms, skip-tolerance = 0 .5 ms,
+n-triggers = 2, FMT high-threshold = 13 .5σ, and
+FMT threshold = 11 σ. The optimization proce-
+dure is described in the following sections.
+3.2.1. Trigger parameter space
+The optimum pre-trigger time is determined by
+the average event duration (≈1 ms), which depends
+on the gas pressure and composition in the waveg-
+uide, as well as on the trap configuration. In par-
+ticular, deeper traps lead to longer trapping times
+and hence longer events. The pre-trigger time is
+set such that >90 % of all event starts would still
+4 6 8 10 12 14 16
+Trigger threshold ( )
+100
+101
+102
+103
+104
+105
+106
+Trigger rate (Hz)
+Fit
+Noise simulation
+Figure 9: Noise trigger rate vs. FMT threshold for
+n-triggers = 1 in simulated data. Since the noise power
+is exponentially distributed, the noise trigger rate follows an
+exponential function.
+be contained in the acquisition window even if only
+the very last bin in the events triggered the ac-
+quisition. The skip tolerance was scanned between
+0.5 ms (12 records) and 2.5 ms (61 records), which
+roughly corresponds to the range of detected track
+durations under Phase II running conditions.
+To pre-select a range for the high-threshold pa-
+rameter, Figure 9 shows the FMT-trigger rate as
+a function of a set σ threshold for simulated noise.
+Note that the optimization task is not to reduce the
+noise trigger rate, but instead to limit the filled disk
+volume per time. Therefore the threshold choices
+depend on the acquisition lengths. With the as-
+sumption that the majority of triggers are noise
+triggers with no re-triggers (i.e. consecutive trig-
+gers within the skip-tolerance), the minimum ac-
+quisition length is calculated as the sum of the pre-
+trigger time plus the minimum time that is recorded
+after a trigger (skip-buffer length). For a skip-
+tolerance of 0.5 ms and a pre-trigger length of 2 ms,
+the resulting minimum acquisition length is 2.5 ms.
+To reach the data-reduction goal of≥96 %, the trig-
+ger rate has to be smaller than 16 Hz. We tested
+thresholds above 14σ (32 Hz simulated noise trigger
+rate) for the single-trigger configuration. For the
+trigger configurations with n-triggers > 1, thresh-
+olds as low as 13σ were tested because the re-trigger
+requirement provides additional data reduction.
+For the n-triggers parameter, only two settings
+were tested. Since most events at Phase II pressures
+are short (<1 ms) and hence not expected to exceed
+the trigger threshold very often in their lifetime, n-
+13
+
+===== PAGE 14 =====
+0.0 0.5 1.0 1.5 2.0 2.5
+Skip-tolerance (ms)
+9
+10
+11
+12
+13
+14
+Retrigger -threshold
+0.00
+0.25
+0.50
+0.75
+1.00
+Trigger rate reduction
+Figure 10: Noise trigger rate reduction in simulated data
+by requiring a second FMT-trigger before starting an acqui-
+sition (n-triggers = 2). The color encodes the fraction of
+acquisitions that are not recorded by requiring that a sec-
+ond trigger-flag from a re-trigger threshold σ occurs within
+the time limit set by the skip-tolerance. The first trigger was
+set at 13σ.
+triggers was either set to 1 or 2. The additional
+data reduction achievable by using a second trigger
+(n-trigger = 2) can be seen in Figure 10. Based on
+this simulation, an FMT threshold range between
+10σ and 13σ was tested. Below 10σ the additional
+data reduction is not sufficient to achieve the data
+volume target.
+3.2.2. Parallel trigger tests with 83mKr data
+The trigger parameter optimization in Phase II
+was done by maximizing the event rate in real data.
+Simulations were then used to study the perfor-
+mance of the trigger with respect to known true
+event properties (section 3.3). To find the opti-
+mum trigger configuration, 83mKr K-line electrons
+were recorded with all three ROACH2 channels, a,
+b, and c, in parallel, with all 3 central frequen-
+cies of the down-converted 100-MHz band set to
+IF = 1 .41 GHz (the frequency location of the K-
+line events in the IF band). The Psyllid instance
+processing packets from channel c served as ref-
+erence and was always configured with the same
+trigger settings (in a configuration that had been
+found to work reasonably well), while the channel
+a and b Psyllid instances were used to test new
+configurations in each run. This way, two config-
+urations could be tested per parallel three-channel
+run. The reference channel is needed to ensure the
+result is not falsified by fluctuations of the krypton
+source activity over time. The trigger parameters
+0.0 0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6
+Data volume rate (TB / day)
+0.6
+0.8
+1.0
+1.2
+1.4Relative event rate Reference configuration
+Selected configuration
+Configuration tests
+0.920.940.960.981.00
+Data reduction
+Figure 11: Event rate vs. data volume in the trigger-
+optimization test runs. Each data point originates from a
+different trigger configuration. The horizontal error bars are
+smaller than the markers. The configuration marked by a
+red star was chosen for production data-taking. It achieves
+a detection efficiency improvement of 8% over the reference
+configuration while reducing the data volume on disk by an
+additional 26%. See section 3.2.2 for a description of how the
+reference configuration was used. With 96.7% absolute data
+reduction the selected configuration satisfies the triggering
+requirement.
+were scanned over the pre-defined parameter space
+(see section 3.2.1), and the event rates after trig-
+gering and reconstruction were compared to obtain
+the relative efficiency and data reduction for each
+parameter combination. Figure 11 shows the de-
+tected event rate versus the recorded data volume
+for all tested trigger configurations. The selected
+configuration (marked in red) for production data-
+taking achieves a data reduction of 96 .7 %. Note
+that for the Phase II tritium data set [7, 8], the cut
+thresholds in the offline reconstruction were higher
+to achieve a zero background rate. As a result the
+relative impact of the trigger efficiency on the de-
+tected event rate is sub-dominant since more low-
+SNR events are missed by the offline reconstruction.
+The efficiency of the trigger and the offline recon-
+struction under Phase II tritium running conditions
+are compared in section 3.3.2.
+3.3. Trigger performance in simulation
+In this section we show the performance of the op-
+timized trigger configuration. The software trigger
+is tested using simulated events with signal proper-
+ties (e.g. SNR, track and event duration) and ADC
+settings that mimic real data. The simulated data
+are generated using the Locust package [25]. To im-
+itate CRES data, Locust is configured to generate
+14
+
+===== PAGE 15 =====
+0 1 2 3 4 5
+Event start in acquisition (ms)
+101
+102
+103
+104
+Counts per 40.96 s
+Figure 12: True start times of simulated events in triggered
+acquisitions. The pre-trigger time was set to 2 ms, the skip-
+tolerance to 0.5 ms. Only events that start within the acqui-
+sition are shown. Events starting before 2 ms only triggered
+after the true event start. This exhibits the importance of
+the pre-trigger time. The plateau from 2 ms to 2 .5 ms orig-
+inates from events that start during an ongoing acquisition
+initiated by a noise trigger.
+white noise and add CRES-like chirps to the time
+series. The simulated CRES-signal properties are
+randomly drawn from probability density functions
+describing their distributions, as described below,
+and the resulting chirp is added by Locust’s LM-
+CFakeTrackSignalGenerator. The distributions of
+track duration and number of tracks in an event are
+found by doing an exponential and geometric fit re-
+spectively to the reconstructed real data. The SNR
+distribution is obtained from the calculated power
+coupled to a waveguide by simulated electrons in
+a magnetic trap (see, for example, Figure 15). It
+was shown that this way, the signal of real CRES
+electrons is well reproduced [11].
+Locust writes the generated time series to Egg
+files. In addition, the LMCFakeTrackSignalGener-
+ator writes the simulated event truths to a ROOT
+file. To process the simulated Egg files, a frequency-
+transform node is added to the Psyllid stream to
+read in and Fourier transform the simulated time-
+series data before processing it with the FMT and
+event-builder nodes. After processing, the read-in
+and triggered time-domain data are written to a
+second Egg file. The acquisition start and end times
+are logged in the file header, which allows for analy-
+sis of the true event-start times relative to the time
+of triggering (Figure 12).
+0 5 10 15 20 25
+Nominal SNR
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Efficiency
+Event start recorded
+Event reconstructed
+Event detected
+Figure 13: Fraction of simulated events that are recorded
+by Psyllid (dark blue) or reconstructed offline (bright blue)
+as a function of the event SNR. The offline reconstruction
+is tuned to remove low-SNR or short events that cannot be
+distinguished from noise. Therefore, the combined detection
+efficiency (red) closely follows the offline reconstruction effi-
+ciency, and only a small additional fraction of otherwise re-
+constructed events go undetected when recording data with
+Psyllid.
+3.3.1. Trigger efficiency dependence on SNR and
+event duration
+In a CRES experiment, the most important data
+point of each event is the start of the signal. In
+the following analysis, an event is only counted as
+detected if the event start was recorded. To mea-
+sure the efficiency vs. event SNR, simulated events
+of various SNRs were generated and processed by
+Psyllid in triggered mode. The efficiency is calcu-
+lated as the fraction of events that started within
+the acquisition. The trigger efficiency dependence
+on simulated SNR is shown in Figure 13. In the low-
+SNR limit, the recording efficiency corresponds to
+the fraction of recorded time resulting from noise
+triggers. This is because in this SNR regime the
+events themselves do not lead to sufficient received
+power in order to trigger an acquisition. Only for
+SNR≥ 3 does the combination of noise power and
+signal power start to lead to an increase of recorded
+events above the random noise trigger efficiency.
+Because event duration follows an exponential dis-
+tribution, ≈10 % of events are shorter than one
+40.96 µs record length (the exact fraction varied de-
+pending on run conditions); their power is likely
+to be split between two records with diminished
+power in each. With n-triggers = 2, events that
+are not longer than one record are only likely to
+be detected if a noise fluctuation causes the second
+trigger. Hence the trigger efficiency does not con-
+15
+
+===== PAGE 16 =====
+0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0
+Event duration (ms)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Trigger efficiency
+Figure 14: Dependence of the fraction of recorded simu-
+lated events on the event duration. Events were simulated
+with random nominal SNR following a uniform distribution
+(range 0 − 25). Because of noise fluctuations and the varia-
+tion of event SNR in a spectrogram (caused by the upward-
+sloped tracks in conjunction with the frequency response of
+the DFT), longer events are more likely to surpass the trig-
+ger thresholds during their lifetime.
+verge to 1 for high SNR. A further dependence of
+the trigger efficiency on the event duration results
+from longer events having a higher chance of over-
+coming the trigger thresholds (Figure 14).
+3.3.2. Comparison of trigger and reconstruction ef-
+ficiencies
+After recording by Psyllid, Egg files are trans-
+ferred to a computing cluster for offline event re-
+construction. For tritium data-taking, the offline
+reconstruction was optimized for efficiency (event
+rate) while maintaining a false event rate below 1
+per 100 days per channel at 90 % confidence [11].
+In contrast, the trigger was optimized for efficiency
+while observing the constraint on data volume.
+Here the reconstruction and trigger efficiency are
+compared for simulated events. In Figure 13 it
+can be seen that the event reconstruction is stricter
+than the trigger and does not tolerate the misiden-
+tification of noise fluctuations as events. Conse-
+quently the efficiency of reconstructing events is sig-
+nificantly lower than the efficiency of triggering on
+events. Conversely, for events of a uniform SNR
+distribution, only a small fraction of events that
+could have been reconstructed are removed by the
+trigger. Under Phase II data-taking conditions, the
+majority of detected events have a reconstructed
+SNR between 8 and 11 (Figure 15). In this range
+the relative impact of the trigger efficiency on the
+event detection (trigger plus offline reconstruction)
+8 10 12 14 16 18 20 22
+Reconstructed first track SNR
+0
+100
+200
+300
+400
+500
+600
+700Counts
+Reconstructed events
+Detected events 
+(triggered & reconstructed)
+Figure 15: Histogram of reconstructed SNR from a simulated
+data set that mimics Phase II data. The simulated SNR dis-
+tribution of all events (not shown) resembles an exponential
+distribution. When both the triggering and the reconstruc-
+tion are applied (dashed red), 18% of the events that could
+have been found by the offline reconstruction alone (solid
+blue) are removed.
+is larger than at higher SNR (see Figure 13). As a
+result, 18 % of events that could be reconstructed
+offline are not recorded. Low-SNR events corre-
+spond to electrons with a large longitudinal trajec-
+tory in the magnetic trap and the waveguide. Due
+to the resulting frequency modulation [5], the power
+in the main carrier frequency is reduced. Because
+these electrons experience a different average mag-
+netic field along their trajectory than other elec-
+trons, they are detected at a different frequency ac-
+cording to Equation 1. In addition, the event start-
+ing points are more likely to be blurred by noise and
+the frequencies reconstructed by the offline analysis
+are on average less precise [11]. The trigger ineffi-
+ciency for these events therefore narrows the spread
+of detected frequencies and improves the frequency
+resolution of recorded spectra.
+3.4. Trigger efficiency vs. frequency
+In the Project 8 Phase II experiment, all three
+ROACH2 channels were used to record tritium data
+in parallel. The central frequency of each channel
+was set such that the channels covered different but
+overlapping frequency bands. This way, the upper
+2.6 keV of the tritium spectrum and 1 .1 keV past
+the endpoint were recorded. Tritium spectroscopy
+aiming for a neutrino mass measurement requires
+a precise shape analysis of the spectral endpoint
+region. The trigger efficiency as a function of fre-
+quency must therefore be precisely known. If this
+16
+
+===== PAGE 17 =====
+variation is not negligible compared to the statis-
+tical power of the recorded spectrum, it must be
+included in the spectral analysis. We measured the
+trigger efficiency across a single channel’s frequency
+band and found a configuration of the central fre-
+quencies that keeps the frequency dependence of
+the trigger efficiency small enough that it can be
+ignored in the Phase II tritium analysis.
+3.4.1. Trigger efficiency in a single channel
+During the first down-conversion stage on the
+ROACH2, the signal is band-pass filtered. Due to
+aliasing of the remaining noise outside the Nyquist
+zone, the SNR of a signal decreases towards the
+edges of a channel’s frequency band. To mea-
+sure the SNR dependence on frequency in a chan-
+nel, a tone of fixed frequency is injected while a
+single channel’s central frequency is scanned from
+50 MHz below to 50 MHz above the tone frequency.
+Figure 16a shows the ratio of the recorded tone
+power to the noise floor as a function of the tone’s
+frequency position in the channel. The event-
+detection efficiency is expected to follow a similar
+profile. To investigate the relative detection ef-
+ficiency in a channel (Figure 16b), 83mKr K-line
+electrons were recorded using all three channels si-
+multaneously. This time, the central frequencies of
+two channels were scanned from 50 MHz below the
+17.8 keV peak position to 50 MHz above. The third
+channel was kept centered on the peak and provided
+the reference count rate (Figure 17).
+For the count rate to be indicative of the ef-
+ficiency at the peak position in a channel, only
+events close to the peak center f0 are counted:
+|f−f0|≤ 1 MHz. Dividing the event rates in the
+two scanned channels by the rate in the reference
+channel yields the detection efficiency dependence
+on frequency relative to the central frequency in
+the reference channel. The result is shown in Fig-
+ure 16b. The efficiencies in the two channels agree
+and they are fitted together with a band-pass filter
+function of two independent orders, p1 and p2 and
+cut-off frequencies, fcut,1 and fcut,2:
+Gain(f) =A· 1r
+1 +
+
+f
+fcut,1
+2p1
+· 1r
+1 +
+
+f
+fcut,2
+2p2
+.
+(2)
+A is a frequency-independent scaling of the gain.
+The cut-off frequencies and orders are independent
+fit parameters because the efficiency roll-off is asym-
+metric. This results from the fact that events at
+0 20 40 60 80 100
+Frequency in channel (MHz)
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0
+1.2Relative SNR
+(a)
+0.00
+0.25
+0.50
+0.75
+1.00
+1.25Relative efficiency
+Fit
+Channel a
+Channel b
+0 20 40 60 80 100
+Frequency in channel (MHz)
+4
+2
+0
+2
+4
+Residuals ( )
+(b)
+Figure 16: SNR (a) and trigger efficiency (b) as a function
+of frequency in the ROACH2 channels. The SNR was mea-
+sured by injecting a test tone, whereas the efficiency was
+measured with 83mKr data. The trigger efficiency depen-
+dence on frequency originates from the SNR roll-off at the
+channel edges as a result of noise aliasing. The trigger effi-
+ciency is further reduced at high frequencies by the detection
+inefficiency for short tracks (at the upper edge of the fre-
+quency band, tracks are cut short because of their upward
+slope). The efficiency is fitted with Equation 2. The fitted
+parameters areA = 1.001 ±0.002,fcut,1 = (89.8 ±0.1) MHz,
+fcut,2 = (8.4±0.1) MHz,p1 = 31.4±1.3 andp2 = −2.3±0.2.
+17
+
+===== PAGE 18 =====
+100
+ 75
+ 50
+ 25
+ 0 25 50 75
+Frequency offset from channel c center (MHz)
+0
+20
+40
+60
+80
+100
+120
+140Counts per 100 kHz
+Scan channels a and b 
+up across 100 MHz
+Channel a+b
+Channel c
+Figure 17: The detection efficiency as a function of frequency
+is measured by comparing count rates in channels a and b
+with the count rate in channel c. The central frequencies
+of channels a and b (blue) are scanned in 3.125 MHz steps
+across the frequency band of channel c (light red) that is
+centered on the 83mKr K-line frequency (the histogram is the
+measured K-line distribution). Dividing the rate of detected
+events in the overlapping region of a moving channel (purple)
+by the rate in the stationary reference channel c yields the
+relative detection efficiency (see Figure 16b).
+high frequencies can drift out of the channel’s fre-
+quency band and are cut short in the reconstruc-
+tion. Because of the dependence of the trigger and
+reconstruction efficiency on event duration, the de-
+tection efficiency decreases more sharply at the up-
+per frequency edge of the channel.
+3.4.2. Channel configuration for Phase II
+Using the asymmetric fitted filter function from
+Figure 16b, the maximum efficiency loss for any
+given distance between two channel central frequen-
+cies can be calculated as illustrated in Figure 18.
+Note that the distance between the central fre-
+quencies in Figure 18b takes discrete values since
+the ROACH2 central frequencies can only be set
+in steps of 3 .125 MHz. For Phase II tritium data-
+taking, we required that the maximum efficiency
+decrease be< 0.5 % (Figure 19). An efficiency vari-
+ation on this scale is negligible compared to the
+statistical uncertainty of the recorded tritium spec-
+trum and it was hence neglected in the data anal-
+ysis [7, 8]. Events recorded in a channel beyond
+the intersection point with the neighboring chan-
+nel were cut during data analysis to avoid double
+counting. The central frequencies for each channel
+and the transition frequencies between channels are
+shown in Table 1. For context, Table 1 also provides
+the definition of the frequency window used in the
+Parameter IF Frequency
+(GHz)
+Minimum T2 analysis freq. 1 .33
+Center frequency, channel a 1 .353
+Transition freq., channels a→b 1 .386
+T2 endpoint 1 .371
+83mKr K-line 1 .41
+Center frequency, channel b 1 .413
+Transition freq., channels b→c 1 .446
+Center frequency, channel c 1 .472
+Maximum T2 analysis freq. 1 .49
+Table 1: Frequency parameters for the three channels as
+used for Project 8, Phase II. The minimum and maximum
+frequencies for the analysis of the tritium spectrum (shaded
+region in Figure 19), the T 2 endpoint frequency, and the
+83mKr K-line frequency are given as context. The full fre-
+quency range corresponds to the calibration range of the
+detector response [8] and is not limited by the DAQ.
+analysis of the tritium spectrum (shaded region in
+Figure 19) and the frequency of the T 2 beta-decay
+endpoint.
+3.5. Summary
+The DAQ system described in section 2 has been
+proven to be suitable for recording CRES events in
+Phase II. By optimizing the configurable trigger pa-
+rameters, a data reduction of 96 .7 % was achieved.
+The running conditions for Phase II tritium data-
+taking were chosen to maximize the event rate by
+increasing the gas pressure and using a deep mag-
+netic trap. Under these conditions, the trigger
+misses 18 % of all events that could be reconstructed
+offline. The majority of these events are of low SNR
+and offline reconstruction would yield an increased
+uncertainty on their start frequency [11].
+The trigger efficiency is uniform across the center
+of a channel’s frequency band but decreases towards
+the edges due to noise aliasing. To record a wide
+frequency range with all three channels in parallel,
+the central frequencies were chosen such that the
+efficiency drop between channels was small enough
+to be ignored in Phase II. The DAQ therefore could
+be eliminated as a source of systematic uncertainty
+in the analysis of the tritium spectrum [7, 8].
+4. Outlook for future CRES experiments
+A primary goal of the next phase of Project 8
+(Phase III) is to demonstrate the use of CRES for
+18
+
+===== PAGE 19 =====
+20
+ 15
+ 10
+ 5
+ 0 5 10 15
+Frequency - intersection frequency (MHz)
+0.980
+0.985
+0.990
+0.995
+1.000
+1.005
+1.010
+1.015
+1.020Channel efficiency
+Maximal 
+efficiency 
+drop
+Relative efficiency in channel a
+Relative efficiency in channel b
+Ignored in channel a
+Ignored in channel b
+(a)
+40 45 50 55 60 65 70
+Central frequency distance (MHz)
+0.980
+0.985
+0.990
+0.995
+1.000Relative efficiency at intercept
+(b)
+Figure 18: Efficiency drop between two channels: When
+channels are placed adjacent to one another and their fre-
+quency bands overlap, the channel efficiencies intersect (a).
+Events recorded in the shaded regions are ignored in the
+analysis to prevent double counting. The magnitude of the
+efficiency at the intersection point (b) depends on the dis-
+tance between the two central frequencies. The red star in
+(b) marks the selected channel configuration for Phase II tri-
+tium data-taking.
+1250 1300 1350 1400 1450 1500
+Frequency - 24.5 GHz (MHz)
+0.70
+0.75
+0.80
+0.85
+0.90
+0.95
+1.00Relative efficiency
+0.00
+0.01
+0.02
+0.03
+0.04
+0.05
+Spectrum density (arb. units)
+Channel a
+Channel b
+Channel c
+Tritium spectrum
+Figure 19: Channel configuration for tritium data-taking,
+overlayed by the tritium spectrum. In this configuration
+the efficiency drop between channels is < 0.5 % and could
+therefore be neglected in the Phase II tritium analysis [8].
+The grey shaded area marks the tritium analysis region of
+interest (corresponding to the energy range 16 .2–19.4 keV).
+measurements using a large-volume source. The de-
+sign currently being pursued by the Project 8 col-
+laboration uses a large resonant cavity to detect
+a narrow range of signal frequencies, as described
+in [9]. Project 8 plans to demonstrate the feasibil-
+ity of this technique using a series of demonstra-
+tor experiments that will eventually have resonant
+frequencies of ≤1 GHz. At this frequency, regard-
+less of the width of the final frequency band, the
+data can be directly digitized using modern signal-
+processing hardware. We are currently evaluating
+the AMD Zynq Ultrascale+ ZCU216 RF System-
+on-Chip (RFSoC) platform, but other hardware
+may be chosen for the final system. This type of
+system has the advantage of providing a highly inte-
+grated platform that includes high-rate digitization,
+a powerful FPGA for signal processing, and high-
+speed Ethernet connectivity. Overall the capabili-
+ties are similar to those provided by the ROACH2
+system, but in an off-the-shelf commercial package.
+Signal-processing optimizations can also be made
+to avoid the efficiency rolloffs at the edges of the
+frequency window(s) caused by image noise.
+The data acquisition for a cavity-based experi-
+ment will need to digitize a single or a few chan-
+nels. The sampling rate is limited on the lower end
+by the size of the frequency band corresponding to
+the energy and frequency region of interest. The
+frequency range to be covered by electron signals
+depends on the variation of magnetic field experi-
+enced by each electron and on the frequency of each
+19
+
+===== PAGE 20 =====
+electron’s axial motion in the magnetic trap. This
+range can then be mixed down to decrease the re-
+quired data-storage volume. If no down sampling is
+performed, the sampling rate would be larger than
+2 GS/s by a margin that allows clean low-pass fil-
+tering of the signal. A 2 GS /s sampling rate for
+simplicity, with IQ sampling at 8-bit, results in a
+data rate of 2 GB/s, and a total volume of 63 PB
+per channel for a 1-year runtime. This volume can
+be reduced by means of triggering and real-time
+signal reconstruction.
+In Phase III the goal is to demonstrate the abil-
+ity to handle event rates significantly higher than in
+Phase II and eventually it is expected that events
+could be ongoing at any point in time. While the
+information of main interest for performing spec-
+troscopy is the event-start frequencies, other fea-
+tures such as the full track durations, the number
+of tracks, and the distribution of frequency jumps
+between them contain important information about
+scattering and gas composition that is needed in the
+analysis of the spectrum [8]. Several options are
+being studied that would allow for a reduction in
+the overall data volume, while still providing the
+information necessary for precision spectroscopy.
+These include storing raw data at the start of each
+event and reconstructed information about the re-
+mainder of the event, and storing a narrow band
+of frequencies around the signal. For any data-
+reduction option, random triggers that record peri-
+ods of raw data independent of information about
+ongoing events would allow for the extraction of un-
+biased statistical information about the track prop-
+erties.
+5. Conclusion
+In this work we have described the data-
+acquisition system for Phase II of Project 8, in
+which we demonstrated the ability to record three
+channels each with a 100 MHz-wide bandwidth in
+parallel and perform real-time signal processing and
+triggering on the data to enable efficient data stor-
+age at the relevant event rate. We studied the sig-
+nal and noise properties such that the systematic
+uncertainties for the CRES analysis could produce
+the first precision measurement of the tritium beta-
+decay endpoint and neutrino mass limit with CRES
+[7, 8]. The lessons learned will inform the design
+and implementation of the data-acquisition system
+for future phases of Project 8.
+6. Acronyms
+ADC Analog-to-Digital Converter.
+CASPER Collaboration for Astronomical Signal
+Processing and Electronics Research.
+CRES Cyclotron Radiation Emission Spec-
+troscopy.
+DAQ Data Acquisition.
+FIR Finite Impulse Response.
+FPGA Field-Programmable Gate Array.
+HDF5 Hierarchical Data Format, version 5.
+IF Intermediate Frequency.
+IIR Infinite Impulse Response.
+IQ In-phase / Quadrature.
+RF Radio-Frequency.
+ROACH2 Reconfigurable Open-Architecture
+Computing Hardware version 2.
+SNR Signal-to-Noise Ratio.
+UDP User Datagram Protocol.
+7. Acknowledgments
+This material is based upon work supported by
+the following sources: the U.S. Department of En-
+ergy Office of Science, Office of Nuclear Physics,
+under Award No. DE-SC0020433 to Case Western
+Reserve University (CWRU), under Award No. DE-
+SC0011091 to the Massachusetts Institute of Tech-
+nology (MIT), under Field Work Proposal Number
+73006 at the Pacific Northwest National Laboratory
+(PNNL), a multiprogram national laboratory oper-
+ated by Battelle for the U.S. Department of Energy
+under Contract No. DE-AC05-76RL01830, under
+Early Career Award No. DE-SC0019088 to Penn-
+sylvania State University, under Award No. DE-
+FG02-97ER41020 to the University of Washing-
+ton, and under Award No. DE-SC0012654 to Yale
+University; the National Science Foundation un-
+der grant No. PHY-2209530 to Indiana Univer-
+sity, and under grant No. PHY-2110569 to MIT;
+the Cluster of Excellence “Precision Physics, Fun-
+damental Interactions, and Structure of Matter”
+(PRISMA+ EXC 2118/1) funded by the German
+20
+
+===== PAGE 21 =====
+Research Foundation (DFG) within the German
+Excellence Strategy (Project ID 39083149); the
+Karlsruhe Institute of Technology (KIT) Center El-
+ementary Particle and Astroparticle Physics (KC-
+ETA); Laboratory Directed Research and Devel-
+opment (LDRD) 18-ERD-028 and 20-LW-056 at
+Lawrence Livermore National Laboratory (LLNL),
+prepared by LLNL under Contract DE-AC52-
+07NA27344, LLNL-JRNL-847024; the LDRD Pro-
+gram at PNNL; and Yale University. Portions of
+the research were performed using Research Com-
+puting at PNNL and the HPC cluster at the Yale
+Center for Research Computing. The 83Rb/83mKr
+isotope used in this research was supplied by the
+United States Department of Energy Office of Sci-
+ence through the Isotope Program in the Office of
+Nuclear Physics.
+8. Author contributions
+C. Claessens : Software, Validation, Formal Anal-
+ysis, Investigation, and Writing - Original Draft;
+N. S. Oblath : Conceptualization, Software, Vali-
+dation, Investigation, and Writing - Original Draft;
+A. Y oung : Methodology, Software, Validation,
+Writing - Original Draft; B. H. LaRoque : Soft-
+ware, Investigation, Writing - Review & Editing;A.
+Ashtari Esfahani, N. Buzinsky , R. Cervantes,
+L. de Viveiros, M. F ertl, L. Gladstone, M.
+Guigue, A. Lindman, E. Novitski, W. Pet-
+tus, L. Salda˜ na, P . L. Slocum, Y.-H. Sun,
+P . T. Surukuchi, M. Thomas, L. Tvrznikova,
+T. E. W eiss, E. Zaya, and A. Ziegler: Investi-
+gation and Writing - Review & Editing; A. Ban-
+ducci, M. Grando, J. Hartse, A. M. Jones,
+J. A. Nikkel, A. B. T elles, and F. Thomas:
+Writing - Review & Editing; S. B¨ oser: Supervi-
+sion, Funding Acquisition, and Writing - Review &
+Editing; B. Monreal, J. A. F ormaggio, K. M.
+Heeger, K. Kazkaz, R. G. H. Robertson, G.
+Rybka, T. Th¨ ummler,and B. A. V anDeven-
+der: Funding Acquisition and Writing - Review &
+Editing
+References
+[1] G. Drexlin, V. Hannen, S. Mertens, C. Weinheimer,
+Current direct neutrino mass experiments, Adv. High
+Energy Phys. 2013 (2013) 293986. arXiv:1307.0101,
+doi:10.1155/2013/293986.
+[2] J. A. Formaggio, A. L. C. de Gouvˆ ea, R. G. H. Robert-
+son, Direct Measurements of Neutrino Mass, Phys.
+Rept. 914 (2021) 1–54. arXiv:2102.00594, doi:10.
+1016/j.physrep.2021.02.002.
+[3] A. Ashtari Esfahani, et al., Determining the neu-
+trino mass with cyclotron radiation emission spec-
+troscopy—Project 8, J. Phys. G 44 (5) (2017) 054004.
+arXiv:1703.02037, doi:10.1088/1361-6471/aa5b4f.
+[4] B. Monreal, J. A. Formaggio, Relativistic cyclotron
+radiation detection of tritium decay electrons as a
+new technique for measuring the neutrino mass, Phys.
+Rev. D 80 (2009) 051301. doi:10.1103/PhysRevD.80.
+051301.
+URL https://link.aps.org/doi/10.1103/PhysRevD.
+80.051301
+[5] A. Ashtari Esfahani, et al., Electron Radiated Power
+in Cyclotron Radiation Emission Spectroscopy Exper-
+iments, Phys. Rev. C 99 (5) (2019) 055501. arXiv:
+1901.02844, doi:10.1103/PhysRevC.99.055501.
+[6] D. M. Asner, et al., Single electron detection and spec-
+troscopy via relativistic cyclotron radiation, Phys. Rev.
+Lett. 114 (16) (2015) 162501. arXiv:1408.5362, doi:
+10.1103/PhysRevLett.114.162501.
+[7] A. Ashtari Esfahani, et al., Tritium Beta Spectrum
+Measurement and Neutrino Mass Limit from Cyclotron
+Radiation Emission Spectroscopy, Phys. Rev. Lett.
+131 (10) (2023) 102502. arXiv:2212.05048, doi:10.
+1103/PhysRevLett.131.102502.
+[8] A. Ashtari Esfahani, et al., Cyclotron radiation emis-
+sion spectroscopy of electrons from tritiumβ decay and
+Kr83m internal conversion, Phys. Rev. C 109 (3) (2024)
+035503. arXiv:2303.12055, doi:10.1103/PhysRevC.
+109.035503.
+[9] Project 8 Collaboration, The Project 8 Neutrino Mass
+Experiment (2022). doi:10.48550/ARXIV.2203.07349.
+URL https://arxiv.org/abs/2203.07349
+[10] A. A. Esfahani, et al., Project 8 apparatus for cyclotron
+radiation emission spectroscopy with 83mkr and tritium
+(2025). arXiv:2503.08807.
+URL https://arxiv.org/abs/2503.08807
+[11] A. Ashtari Esfahani, et al., Reconstruction of electron
+events from cyclotron radiation emission spectroscopy
+for the Project 8 experiment, in preparation (2022).
+[12] N. A. Patel, et al., Characterizing the performance of a
+high-speed ADC for the SMA digital backend, Journal
+of Astronomical Instrumentation 3 (01) (2014) 1450001.
+[13] H. Jiang, et al., Digitizing the Yuan Tseh Lee Array
+for microwave background anisotropy by 5Gsps ADC
+boards, in: 2012 19th IEEE International Conference
+on Electronics, Circuits, and Systems (ICECS 2012),
+2012, pp. 304–307. doi:10.1109/ICECS.2012.6463741.
+[14] J. Hickish, et al., A decade of developing radio-
+astronomy instrumentation using CASPER open-
+source technology, Journal of Astronomical Instrumen-
+tation 5 (04) (2016) 1641001.
+[15] K. K. Parhi, D. G. Messerschmitt, Pipeline interleaving
+and parallelism in recursive digital filters. I. Pipelining
+using scattered look-ahead and decomposition, IEEE
+Transactions on Acoustics, Speech, and Signal Process-
+ing 37 (7) (1989) 1099–1117. doi:10.1109/29.32286.
+[16] C. Claessens, B. H. LaRoque, N. S. Oblath, Psyl-
+lid v1.9.3, https://github.com/project8/psyllid (2019).
+doi:10.5281/zenodo.2621401.
+URL https://doi.org/10.5281/zenodo.2621401
+[17] N. S. Oblath, et al., Monarch, accessed: 2020-5-13
+(Aug. 2018). doi:10.5281/zenodo.1325961.
+URL https://github.com/project8/monarch
+21
+
+===== PAGE 22 =====
+[18] The HDF Group, Hierarchical data format version 5,
+accessed: 2019-10-4 (2000-2010).
+URL http://www.hdfgroup.org/HDF5
+[19] N. Oblath, B. LaRoque, N. Buzinsky, dripline-
+org/dripline: Dripline3 First Production Release (May
+2021). doi:10.5281/zenodo.4768475.
+URL https://doi.org/10.5281/zenodo.4768475
+[20] B. H. LaRoque, Cyclotron Radiation Emission Spec-
+troscopy: first demonstration and performance bench-
+marks from the Project 8 experiment, Ph.D. thesis,
+UCSB (2017).
+[21] D. Furse, N. S. Oblath, Midge,
+https://github.com/project8/midge (2019).
+doi:10.5281/zenodo.2621395.
+URL https://doi.org/10.5281/zenodo.2621395
+[22] D. L. Furse, Techniques for Direct Neutrino Mass Mea-
+surement Utilizing Tritiumβ-Decay, Ph.D. thesis, MIT
+(2015).
+[23] IEEE and The Open Group, The Open Group Base
+Specifications, Tech. Rep. 7 (2018).
+URL https://pubs.opengroup.org/onlinepubs/
+9699919799/functions/V2_chap02.html#tag_15_10
+[24] The Linux Kernel Archives, https://www.kernel.org/
+doc/Documentation/networking/packet_mmap.txt, ac-
+cessed: 2020-02-21 (2009).
+[25] A. A. Esfahani, et al., Locust: C++ software for simu-
+lation of RF detection, New Journal of Physics 21 (11)
+(2019) 113051. doi:10.1088/1367-2630/ab550d.
+URL https://doi.org/10.1088/1367-2630/ab550d
+22

@@ -1,0 +1,692 @@
+===== PAGE 1 =====
+1
+Held-out dynamical validation of a cross-survey chemical 
+decomposition of 468,000 Milky Way stars
+Nick Baruaa,b,*
+a AN Holdings Co., 2-18 Nishinomiya, Hyogo 662-0035, Japan
+b Department of Legal Medicine, Shiga University of Medical Science, Setatsukinowacho, Otsu 520-2192, Shiga, 
+Japan
+* Corresponding author: s.nick.barua@gmail.com; ORCID: 0000-0003-4641-0112
+Abstract
+We present a cross-survey chemical decomposition of 468,000 Milky Way stars assembled by harmonising 
+APOGEE DR17 and GALAH DR3 abundances and matching the resulting spectroscopic catalogue to Gaia 
+DR3. The classifier is restricted to four abundance dimensions ([Fe/H], [Mg/Fe], [Si/Fe] and [Al/Fe]), so 
+orbital actions and integrals of motion remain held out for validation. A Bayesian-information-criterion-
+selected four-component Gaussian mixture model identifies the thin disc, thick disc, a chemically 
+anomalous population (CAP) and the metal-poor halo; 91 per cent of the sample has posterior membership 
+probability above 0.75. The chemically defined populations occupy distinct regions of action space and of 
+the E–Lz Lindblad plane, providing an orthogonal dynamical test rather than a circular chemo-kinematic 
+selection. Under explicit literature-motivated kinematic boundaries, the CAP is partitioned into Gaia-
+Sausage/Enceladus candidates (34 ± 5 per cent), Sequoia candidates (8 ± 3 per cent) and a Splash-like 
+component (58 ± 5 per cent), where the uncertainties include boundary sensitivity. The thin-disc radial 
+metallicity gradient is −0.065 ± 0.004 dex kpc⁻¹, whereas the thick-disc gradient is flatter at −0.020 ± 0.006 
+dex kpc⁻¹. These fractions are selection- and boundary-dependent properties of the analysed catalogue, not 
+intrinsic Galactic mass fractions. The principal contribution is a transparent validation architecture, an 
+explicit uncertainty budget and conservative claim boundaries.
+Keywords: Milky Way; Galactic disc; Galactic halo; stellar abundances; stellar kinematics; Gaussian 
+mixtures; survey selection
+Glossary
+AGAMA: Action-based Galaxy Modelling Architecture.
+BIC: Bayesian information criterion.
+CAP: Chemically anomalous population identified by the Gaussian mixture model.
+GMM: Gaussian mixture model.
+GSE: Gaia-Sausage/Enceladus.
+HDBSCAN: Hierarchical density-based spatial clustering of applications with noise.
+E–Lz plane: Specific orbital energy versus vertical angular momentum.
+Vmax: Maximum observable survey volume under the adopted limits.
+1. Introduction
+The Milky Way is the only large galaxy for which chemical abundances, distances and three-
+dimensional motions can be measured star by star across its principal structural components. Galactic 
+archaeology exploits the long-lived fossil information encoded in stellar chemistry and phase space: 
+abundances constrain birth environments and enrichment timescales, while orbital structure records 
+subsequent heating, migration and accretion (Freeman and Bland-Hawthorn, 2002; Helmi, 2008; 
+Bland-Hawthorn and Gerhard, 2016; Helmi, 2020). Because phase mixing erases configuration-space 
+substructure more rapidly than structure in integrals of motion, combining chemically informative 
+surveys with Gaia astrometry has become central to reconstructing the Galaxy's assembly history 
+(Helmi and White, 1999).
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 2 =====
+2
+The final APOGEE release provides high-resolution near-infrared spectroscopy across the Galactic 
+disc and bulge (Majewski et al., 2017; Abdurro'uf et al., 2022), GALAH DR3 supplies complementary 
+optical abundances (Buder et al., 2021), and Gaia DR3 provides astrometry and radial velocities on an 
+unprecedented scale (Gaia Collaboration et al., 2023). These surveys make it possible to ask whether 
+structure identified in chemical space has an independent dynamical counterpart. That separation of 
+roles is essential: a population selected simultaneously by chemistry and kinematics cannot later use 
+the same kinematic information as independent confirmation. It is equally important to distinguish 
+astrophysical structure from survey structure, because APOGEE targeting, Gaia completeness and 
+Gaia subsample selection vary with magnitude, colour, sky position and observing strategy (Zasowski 
+et al., 2013, 2017; Cantat-Gaudin et al., 2023; Castro-Ginard et al., 2023).
+Barua (2025) described the combined recovery of chemical and dynamical fossils as "Galactic 
+palaeontology". A subsequent chemo-kinematic tomography study combined APOGEE, GALAH and 
+Gaia DR3 to connect chemical-space classification with action and integral-of-motion structure 
+(Barua, 2026). The present study converts that conceptual and empirical foundation into a stricter 
+falsifiable design in which the dynamical variables are explicitly withheld from the classifier and 
+reserved for validation. Barua (2022) developed a complementary full-spectrum stellar-population 
+synthesis framework; it is cited here for methodological continuity rather than used as evidence for 
+catalogue ages.
+1.1. Closest prior work and scope of the contribution
+The closest methodological comparator is Myeong et al. (2022), who used an unsupervised 
+Gaussian mixture decomposition of APOGEE DR17 and GALAH DR3 to identify four dominant 
+constituents of the local eccentric halo. That study sits within a broader literature that established 
+chemically and dynamically distinct halo populations, including low- and high-alpha sequences, Gaia-
+Sausage/Enceladus (GSE), Sequoia and in-situ heated populations (Nissen and Schuster, 2010; 
+Hawkins et al., 2015; Belokurov et al., 2018; Helmi et al., 2018; Mackereth et al., 2019; Myeong et al., 
+2019; Naidu et al., 2020; Horta et al., 2021). Accordingly, neither Gaussian mixtures nor the joint use 
+of APOGEE and GALAH is claimed as novel. The present scope is different in three respects: it treats 
+the dominant disc and halo populations in a common architecture; it withholds dynamics from the 
+chemical classifier and uses actions and the E–Lz plane as an orthogonal validation layer; and it 
+reports boundary, potential, model-family and radial-bin sensitivity alongside the component fractions. 
+The central question is therefore not whether four clusters can be fitted, but whether a chemically 
+defined decomposition survives physically independent dynamical tests. Barua (2026) provides the 
+immediate empirical precursor; the present study narrows those claims, stress-tests the decomposition 
+and reformulates the analysis around held-out validation and reproducibility.
+The analysis addresses four questions. First, is the four-component chemical model statistically 
+preferred over nearby model orders? Secondly, do the chemical components occupy distinct action-
+space and integral-of-motion families? Thirdly, how strongly do operational GSE, Sequoia and Splash 
+fractions depend on adopted boundaries? Finally, are the inferred radial metallicity gradients 
+consistent with modern APOGEE and Gaia-ESO measurements? Fig. 1 summarises the analysis logic.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 3 =====
+3
+Fig. 1. Analysis architecture. The Gaussian mixture model is fitted only in four-dimensional chemical space. 
+Actions and the E–Lz plane are withheld from the fit and used as an independent validation layer. Population 
+fractions are subjected to bootstrap, Galactic-potential, boundary and radial-bin sensitivity tests.
+2. Data and sample construction
+2.1. Spectroscopic and astrometric inputs
+The primary spectroscopic input is APOGEE DR17, which provides H-band spectra at resolving 
+power R approximately 22,500 and homogeneous ASPCAP estimates of [Fe/H], [Mg/Fe], [Si/Fe] and 
+[Al/Fe] (Majewski et al., 2017; Abdurro'uf et al., 2022). GALAH DR3 provides optical spectra at R 
+approximately 28,000 and a complementary abundance set (Buder et al., 2021). The merged 
+spectroscopic catalogue uses stars observed by both surveys as abundance-calibration anchors; the 
+resulting records are positionally matched to Gaia DR3 within 1 arcsec to obtain astrometry and 
+phase-space information. Gaia astrometric systematics and covariance information are treated 
+following the DR3 documentation and parallax-characterisation work (Lindegren et al., 2021; Gaia 
+Collaboration et al., 2023). Bayesian distances are taken from StarHorse where available (Queiroz et 
+al., 2018), and line-of-sight velocities are drawn from the spectroscopic pipelines.
+Absolute abundance scales are not identical between surveys. Comparisons of APOGEE, GALAH 
+and Gaia-ESO find broad consistency but residual element-dependent offsets that can exceed 0.1 dex 
+in restricted stellar-parameter regimes (Hegedus et al., 2023). The merged catalogue therefore uses 
+overlap stars as empirical calibration anchors, and residual survey dependence is carried as a 
+systematic limitation. The scientific interpretation is restricted to broad population structure and does 
+not rely on abundance differences of only a few hundredths of a dex. The reproducibility specification 
+therefore includes overlap-star residuals as functions of effective temperature, surface gravity, 
+metallicity and signal-to-noise ratio (Appendix B).
+2.2. Quality cuts and final sample
+The working sample requires signal-to-noise ratio above 50 per pixel, a complete Gaia five-
+parameter astrometric solution, fractional parallax uncertainty below 5 per cent, APOGEE 
+STARFLAG = 0 where applicable, Galactic latitude |b| > 5 degrees, and fractional action uncertainty 
+σ(J)/J < 0.2. The latter is evaluated after Monte Carlo propagation of the Gaia covariance matrix. The 
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 4 =====
+4
+final catalogue contains 468,000 stars. Table 1 reports the population counts after classification; the 
+component labels are introduced in Section 3.
+Table 1. Composition of the final working sample after all quality cuts. The last column gives the fraction of 
+each component with posterior membership probability above 0.75.
+Population N stars [Fe/H] range R range (kpc) median |z| (kpc) P > 0.75
+Thin disc 295,400 -0.7 to +0.5 5-12 0.22 91%
+Thick disc 116,600 -1.2 to -0.1 4-11 0.74 93%
+CAP 8,900 -1.8 to -0.3 5-13 1.62 89%
+Halo 47,100 -3.2 to -0.5 3-20 4.30 88%
+Total 468,000 - 3-20 - 91%
+Notes. R is the Galactocentric cylindrical radius with R⊙ = 8.122 kpc. CAP denotes the chemically anomalous population defined 
+by the GMM, not a pre-selected accretion component.
+3. Methods
+3.1. Chemical-space Gaussian mixture model
+Each star i is represented by the four-dimensional abundance vector qi = ([Fe/H], [Mg/Fe], [Si/Fe], 
+[Al/Fe]). A k-component Gaussian mixture with weights πk, means μk and covariance matrices Σk is 
+fitted by expectation maximisation. No velocity, action, orbital-energy or angular-momentum variable 
+enters the fit. The baseline model treats the measured abundances as point estimates; unlike extreme-
+deconvolution approaches, it does not explicitly convolve each component with star-by-star 
+heteroscedastic abundance uncertainties (Bovy et al., 2011). This approximation is tested indirectly 
+through quality cuts, survey-separated checks and bootstrap stability, and is retained as a stated 
+limitation.
+ln ℒ = ∑ᵢ ln [ ∑ₖ πₖ ￿(qᵢ | μₖ, Σₖ) ] (1)
+Posterior membership is evaluated from Bayes' rule, and a hard label is assigned only when P(k | q i) 
+> 0.75. Stars below that threshold remain in the soft catalogue and contribute through their posterior 
+probabilities where appropriate. This distinction prevents uncertain objects from being forced into a 
+physically over-interpreted class.
+P(k | qᵢ) = πₖ ￿(qᵢ | μₖ, Σₖ) / ∑ⱼ πⱼ ￿(qᵢ | μⱼ, Σⱼ) (2)
+3.2. Model order and non-Gaussian sensitivity
+Model order is selected over k = 2,...,8 using the Bayesian Information Criterion (BIC). For sample 
+size n and pk free parameters, the criterion is:
+BIC(k) = pₖ ln n − 2 ln ℒₘₐₓ(k) (3)
+The analysis yields a unique minimum at k = 4, with ΔBIC greater than 1,200 relative to the nearest 
+alternatives. The BIC follows the large-sample approximation of Schwarz (1978), and a difference of 
+this magnitude is conventionally regarded as decisive within the tested model family (Kass and 
+Raftery, 1995). Because Gaussian ellipsoids cannot perfectly trace curved abundance sequences, the 
+same four-dimensional space is also checked with HDBSCAN (Campello et al., 2013). The purpose of 
+the non-parametric run is not to force one-to-one labels, but to test whether the CAP disappears when 
+ellipsoidal geometry is relaxed.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 5 =====
+5
+3.3. Actions, energy and the held-out validation layer
+Orbital actions are computed with AGAMA using the Stäckel-fudge approximation in 
+MWPotential2014 (Binney, 2012; Bovy, 2015; Sanders and Binney, 2016; Vasiliev, 2019). For each 
+population, we report the trace of the action covariance matrix as an action-space dispersion statistic, 
+DJ. This is a descriptive measure of orbital spread and is not a thermodynamic temperature or a 
+calibrated stellar-age proxy.
+DJ = Tr(CJ) = Var(JR) + Var(Jφ) + Var(Jz) (4)
+Observational uncertainties are propagated with 500 Monte Carlo draws from the Gaia covariance 
+matrix in proper motion, parallax and radial velocity, including the published astrometric correlations 
+(Lindegren et al., 2021; Gaia Collaboration et al., 2023). A second Galactic potential based on 
+McMillan (2017) is used as a sensitivity test; the resulting actions change at the approximately 5 per 
+cent level. This test probes potential normalisation but not non-axisymmetric or time-dependent 
+perturbations.
+The independent integral-of-motion projection uses the specific orbital energy E and the vertical 
+angular momentum Lz:
+E = ½ |v|² + Φ(r),      Lz = (r × v)z (5)
+Because neither E nor L z is used in the GMM, separation in the Lindblad plane is a held-out 
+validation result. It does not by itself prove a unique formation channel, but it tests whether the 
+chemically defined groups correspond to dynamically distinct families.
+3.4. Operational decomposition of the CAP
+The CAP is partitioned with literature-motivated boundaries that define, rather than discover, the 
+sub-populations. GSE candidates satisfy Lz < 500 kpc km s⁻¹ and eccentricity e > 0.70, motivated by 
+the strongly radial debris identified in Gaia-era studies (Belokurov et al., 2018; Helmi et al., 2018; 
+Mackereth et al., 2019). Sequoia candidates satisfy Lz < -500 kpc km s⁻¹ and JR > 1,000 kpc km s⁻¹, 
+following the retrograde structures discussed by Myeong et al. (2018, 2019) and their globular-cluster 
+associations (Massari et al., 2019). The remaining CAP stars are labelled Splash-like, consistent with 
+the operational language used for heated in-situ populations (Belokurov et al., 2020; Naidu et al., 
+2020). These labels permit reproducible comparison but are not asserted to be unique physical 
+memberships.
+Fractions are estimated in 1,000 bootstrap iterations, each drawing 80 per cent of the CAP without 
+replacement. Statistical uncertainty is combined in quadrature with the shift induced by moving the L z 
+boundary by ±100 kpc km s⁻¹. The latter changes the Splash-like fraction by approximately 4-5 
+percentage points and dominates the final error budget.
+3.5. Geometric weighting and spatial gradients
+A 1/Vmax weight based on the available APOGEE and Gaia footprint masks is used only as a 
+geometric sensitivity correction. It is not a complete forward model of the combined APOGEE-
+GALAH targeting and selection functions, and the distinct GALAH selection is not fully represented. 
+APOGEE targeting changes across cohorts and fields (Zasowski et al., 2013, 2017), while Gaia 
+completeness and subsample selection depend on observables and sky position (Cantat-Gaudin et al., 
+2023; Castro-Ginard et al., 2023). The resulting fractions are therefore described throughout as 
+weighted sample fractions rather than intrinsic Galactic mass fractions. Stability is assessed in four 
+radial bins: R = 4-7, 7-9, 9-11 and 11-13 kpc.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 6 =====
+6
+Radial and vertical metallicity gradients are estimated from binned means using weighted linear 
+regression. The fitted relation is:
+[Fe/H] = aR + bR (R − R⊙) + bz |z| (6)
+The radial coefficients are fitted separately for the thin and thick discs. The quoted uncertainties are 
+the regression standard errors combined with bootstrap variation across the catalogue resamples.
+4. Results
+4.1. Chemical decomposition
+The four-component model recovers the familiar low-[Mg/Fe] and high-[Mg/Fe] disc sequences 
+together with a metal-poor halo and a lower-density CAP between the canonical thick-disc and halo 
+loci (Fig. 2). Similar abundance-plane structure has been mapped extensively with APOGEE and 
+complementary spectroscopic surveys (Hayden et al., 2015; Anders et al., 2017; Imig et al., 2023). The 
+high-[Mg/Fe] component is centred near ([Fe/H], [Mg/Fe]) = (-0.35, +0.30), whereas the low-[Mg/Fe] 
+component peaks near (-0.05, +0.05). The CAP is more metal poor, with median [Fe/H] = -0.75 and 
+intermediate [Mg/Fe]. A density minimum between the main disc sequences is visible, but chemistry 
+alone does not identify its cause; no claim of a unique quenching or two-infall timescale is made. This 
+decomposition is consistent with the broad chemo-kinematic structure reported in the preceding 
+tomography study (Barua, 2026), while the present analysis applies more conservative interpretation 
+limits.
+Fig. 2. [Mg/Fe]-[Fe/H] projection of the 468,000-star catalogue. The background shows logarithmic stellar 
+density; purple diamonds and green triangles mark the CAP and halo, and the solid curves trace the fitted 
+thick- and thin-disc loci. The GMM is fitted in four dimensions, so this two-dimensional view is illustrative 
+rather than the full decision surface.
+4.2. Action-space structure
+The chemical components occupy progressively broader regions of the (JR, Jz) plane (Fig. 3a). The 
+action-space dispersion DJ rises from 280 ± 35 kpc² km² s⁻² for the thin disc to 8,100 ± 950 kpc² km² 
+s⁻² for the halo, a factor of approximately 29. The CAP is dynamically hotter than either disc but 
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 7 =====
+7
+cooler than the halo. This ordering is expected for populations with increasing orbital eccentricity and 
+vertical excursion, but it should not be interpreted as a direct age sequence. The corresponding 
+population statistics are summarised in Table 2.
+Fig. 3. Action-space validation. (a) Chemically classified populations in the (JR, Jz) plane. (b) Trace of the 
+action covariance matrix, DJ, for each population. Error bars show 1σ bootstrap uncertainties.
+Table 2. Summary chemo-dynamical properties of the four GMM populations. DJ is the trace of the action 
+covariance matrix in kpc² km² s⁻².
+Population N stars [Fe/H] [Mg/Fe] DJ median e median |z|
+Thin disc 295,400 -0.05 ± 0.22 +0.05 ± 0.06 280 ± 35 0.08 ± 0.01 0.23
+Thick disc 116,600 -0.35 ± 0.18 +0.30 ± 0.06 1,200 ± 180 0.22 ± 0.03 0.74
+CAP 8,900 -0.75 ± 0.25 +0.20 ± 0.07 3,400 ± 420 0.67 ± 0.05 1.62
+Halo 47,100 -1.40 ± 0.45 +0.28 ± 0.09 8,100 ± 950 0.84 ± 0.04 4.30
+Notes. Chemical values are the reported population means and dispersions. DJ is descriptive; no stellar ages are inferred from it.
+4.3. Lindblad-plane validation
+The E–Lz projection provides the strongest orthogonal test of the chemical classification (Fig. 4). 
+Thin-disc stars cluster at high prograde angular momentum and high binding energy; thick-disc stars 
+occupy a broader intermediate locus. The CAP extends towards low and retrograde Lz, while the halo 
+covers the broadest energy range, as expected for phase-mixed accreted and heated populations that 
+retain structure in integrals of motion (Helmi and White, 1999; Helmi, 2008). Since these coordinates 
+were withheld from the GMM, the separation is not a restatement of the selection function.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 8 =====
+8
+Fig. 4. Lindblad diagram for the four chemically defined populations. The vertical dashed line marks the Solar 
+angular momentum, and the annotated regions indicate the operational low-Lz selections used for the CAP 
+sensitivity analysis. Kinematics were not used to train the GMM.
+4.4. Operational CAP fractions
+Under the adopted boundaries, the CAP contains 34 ± 3 per cent GSE candidates, 8 ± 2 per cent 
+Sequoia candidates and 58 ± 3 per cent Splash-like stars from bootstrap sampling alone. After 
+boundary sensitivity is included, the uncertainties expand to ±5, ±3 and ±5 percentage points, 
+respectively (Table 3). The dominant Splash-like fraction is qualitatively consistent with studies 
+arguing that a substantial share of the metal-poor eccentric inner-Galaxy population formed in situ and 
+was heated (Belokurov et al., 2020; Myeong et al., 2022). The GSE-like and Sequoia-like tails are 
+compared with the chemically and dynamically defined debris populations in Helmi et al. (2018), 
+Mackereth et al. (2019), Myeong et al. (2019) and Naidu et al. (2020). However, the numerical 
+fractions are definitions under the stated cuts, not unique progenitor masses or intrinsic halo fractions.
+Table 3. Bootstrap decomposition of the chemically anomalous population. Systematic-inclusive fractions 
+combine the statistical bootstrap term with angular-momentum-boundary sensitivity.
+Sub-population N stars Fraction (stat.) Fraction (syst.-incl.) median [Fe/H] median e
+GSE debris 2,914 ± 210 34 ± 3% 34 ± 5% -0.78 ± 0.22 0.71 ± 0.06
+Sequoia debris 678 ± 98 8 ± 2% 8 ± 3% -0.95 ± 0.28 0.82 ± 0.07
+Splash-like 5,308 ± 280 58 ± 3% 58 ± 5% -0.58 ± 0.20 0.55 ± 0.05
+Total CAP 8,900 100% 100% -0.75 ± 0.25 0.67 ± 0.05
+Notes. GSE: Lz < 500 kpc km s⁻¹ and e > 0.70. Sequoia: Lz < -500 kpc km s⁻¹ and JR > 1,000 kpc km s⁻¹. All other CAP stars are 
+labelled Splash-like for this operational comparison.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 9 =====
+9
+4.5. Radial variation of the weighted sample
+The weighted sample fractions vary strongly with Galactocentric radius (Fig. 5). The thin-disc 
+contribution rises from approximately 35 per cent in the 4-7 kpc bin to approximately 80 per cent at 
+11-13 kpc, whereas the thick-disc contribution falls from approximately 45 to 15 per cent. The halo 
+fraction also declines, from approximately 17 to 3 per cent; the CAP remains a small contribution of a 
+few per cent. These trends describe the analysed selection-weighted catalogue. A full inference of 
+Galactic density normalisations would require the targeting selection functions and a forward model of 
+observability.
+Fig. 5. Radial variation of the weighted sample fractions. Error bars show the bootstrap uncertainty ranges for 
+the binned estimates. The trends are internal consistency checks and are not intrinsic Galactic component mass 
+fractions without a full survey-selection model.
+4.6. Metallicity gradients
+The thin disc has a radial metallicity gradient of -0.065 ± 0.004 dex kpc⁻¹, while the thick-disc 
+gradient is -0.020 ± 0.006 dex kpc⁻¹ (Fig. 6). The thin-disc value agrees with the -0.06 ± 0.001 dex 
+kpc⁻¹ low-alpha gradient measured from the final APOGEE release by Imig et al. (2023) and lies 
+within the broader range obtained from APOGEE, Gaia-ESO, red-giant and open-cluster tracers 
+(Hayden et al., 2015; Anders et al., 2017; Cunha et al., 2016; Magrini et al., 2023). At R = 7-9 kpc, the 
+thin-disc vertical gradient is -0.250 ± 0.020 dex kpc⁻¹. The factor-of-three difference in radial slope 
+between the disc components is compatible with a more centrally concentrated and chemically mixed 
+high-alpha population, but the gradients alone do not identify a unique assembly history. The 
+numerical comparison with independent survey measurements is summarised in Table 4.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 10 =====
+10
+Fig. 6. (a) Radial metallicity profiles of the thin and thick discs, with weighted linear fits. (b) Thin-disc vertical 
+metallicity profile at R = 7-9 kpc. Error bars are the bin standard errors.
+Table 4. Metallicity gradients from this analysis and selected literature comparisons.
+Study/population Gradient Value (dex kpc⁻¹) Data set N stars
+This work: thin disc d[Fe/H]/dR -0.065 ± 0.004 APOGEE DR17 + GALAH 
+DR3 295,400
+This work: thick disc d[Fe/H]/dR -0.020 ± 0.006 APOGEE DR17 + GALAH 
+DR3 116,600
+This work: thin disc d[Fe/H]/d|z| -0.250 ± 0.020 R = 7-9 kpc 295,400
+Hayden et al. (2015) d[Fe/H]/dR -0.058 ± 0.008 APOGEE DR10 ~70,000
+Magrini et al. (2023) d[Fe/H]/dR -0.054 Gaia-ESO open clusters 62 clusters
+Lemasle et al. (2013) d[Fe/H]/dR -0.060 ± 0.010 Cepheids ~130
+Imig et al. (2023), low-alpha d[Fe/H]/dR -0.060 ± 0.001 APOGEE DR17 66,496 total
+Notes. Sample sizes for this work correspond to Table 1. Literature samples and definitions are not identical and are shown for scale 
+rather than as a formal meta-analysis.
+5. Robustness, interpretation and limitations
+5.1. What the validation establishes
+The agreement between the chemical classifier and the held-out dynamical projections establishes 
+that the fitted components are not merely numerical partitions of abundance space. It does not, by 
+itself, establish a unique progenitor for every star. In particular, chemical evolution can produce 
+overlapping abundance tracks, and heated in-situ stars can enter the same low-L z region as accreted 
+debris. The result is therefore strongest at the population level: the four chemical classes correspond to 
+different orbital families.
+5.2. Robustness matrix
+The robustness tests, sensitivity checks and corresponding limits on interpretation are summarised in 
+Table 5.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 11 =====
+11
+Table 5. Stress tests and the appropriate scope of the resulting claims.
+Test Reported outcome Interpretation
+Model order BIC minimum at k = 4; ΔBIC > 1,200 Strong preference within the tested Gaussian family
+Membership bootstrap 1,000 iterations; 91% above P = 0.75 Labels are stable for most stars, but not all stars
+Non-parametric 
+clustering CAP persists under HDBSCAN CAP is not solely an ellipsoidal-boundary artefact
+Galactic potential Actions shift at about the 5% level Broad dynamical ordering is stable; precise boundaries 
+move
+CAP Lz boundary Splash-like fraction changes by 4-5 
+percentage points
+The boundary systematic dominates the formal bootstrap 
+error
+Radial bins Population trends remain consistent 
+within 2 sigma No single radial bin drives the four-component solution
+Survey abundance scale Residual offsets may exceed 0.1 dex in 
+some regimes
+Fine chemical differences require survey-separated 
+diagnostics
+Geometric 1/Vmax 
+weighting Corrects footprint volume only Fractions are not intrinsic Galactic mass fractions
+Notes. The first six rows summarise the reported stress tests; the final two state interpretation limits are motivated by the survey-
+comparison literature and the weighting model.
+5.3. Relation to recent decompositions
+Myeong et al. (2022) found four dominant constituents within the local eccentric halo using 
+APOGEE DR17 and GALAH DR3: Aurora, Splash, GSE and Eos. The present four-component model 
+has a different scope and label set because it includes the dominant thin and thick discs and groups 
+residual metal-poor structure into the CAP and halo. The two decompositions should therefore not be 
+compared label by label. More generally, studies based on chemistry, actions, globular clusters and 
+spatial structure do not always assign identical boundaries or nomenclature to the same overlapping 
+debris field (Mackereth et al., 2019; Massari et al., 2019; Naidu et al., 2020; Horta et al., 2021). The 
+common message is that the inner halo contains substantial in-situ structure in addition to GSE and 
+that any chemically defined component requires independent dynamical and nucleosynthetic cross-
+checks. Relative to Barua (2026), the present version also separates descriptive catalogue results from 
+claims that require unreleased age products or a complete targeting-selection model.
+A particularly important caveat is that a rectangular E–Lz or eccentricity selection is not a clean 
+discovery operator. It is best treated as a reproducible comparison definition, because GSE, Sequoia, 
+Splash-like and other inner-halo populations overlap in chemistry and orbital space (Helmi et al., 
+2018; Myeong et al., 2019; Naidu et al., 2020; Myeong et al., 2022). Future work should add 
+abundance combinations such as [Mg/Mn]-[Al/Fe], uncertainty-aware mixture models, probabilistic 
+orbit families, and survey-separated posterior predictive checks. These additions would reduce the 
+degree to which a small change in a hard boundary propagates into a physical narrative.
+5.4. Limitations
+Five limitations are decisive. First, the APOGEE and GALAH abundance scales are not perfectly 
+homogeneous; the merged analysis requires release of the overlap-star calibration diagnostics. 
+Secondly, a Gaussian mixture approximates curved and potentially non-Gaussian abundance 
+manifolds and does not deconvolve star-by-star chemical uncertainties; extreme deconvolution or a 
+hierarchical errors-in-variables model would be a stronger successor (Bovy et al., 2011). Thirdly, the 
+geometric 1/Vmax weight does not substitute for a complete target-selection and observability model 
+(Zasowski et al., 2013, 2017; Cantat-Gaudin et al., 2023; Castro-Ginard et al., 2023). Fourthly, the 
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 12 =====
+12
+action calculation assumes an axisymmetric, time-independent potential and neglects bar, spiral and 
+satellite perturbations. Fifthly, hard CAP boundaries are comparison conventions, not unique 
+memberships. The conclusions have been written to remain within these limits.
+Stellar ages and star-formation histories are intentionally outside the scope of this analysis. The 
+Starlight Synthesis Algorithm (Barua, 2022) remains relevant as a complementary full-spectrum 
+method, but no catalogue-age calibration is used here; consequently, DJ and the chemical components 
+are not interpreted as direct age sequences.
+6. Discussion
+The combined chemical and dynamical picture supports a Milky Way in which the present inner 
+halo is a mixture of accreted debris and stars formed in the early Galaxy, consistent with modern Gaia-
+era reconstructions (Helmi, 2020). The CAP lies chemically between the canonical disc and halo 
+sequences and dynamically between the thick disc and the most extreme halo orbits. Its dominant 
+Splash-like operational fraction is qualitatively consistent with merger-driven heating of an early in-
+situ population (Belokurov et al., 2020), while the GSE-like tail remains substantial and the Sequoia-
+like contribution is smaller and more sensitive to the retrograde selection. This interpretation is 
+population-level and deliberately does not assign a unique origin to every star. The result therefore 
+refines, rather than merely repeats, the chemo-kinematic tomography interpretation advanced by Barua 
+(2026).
+The radial metallicity results provide an independent disc-scale consistency check. The thin-disc 
+gradient closely matches the final-APOGEE low-alpha result of Imig et al. (2023), while the high-
+alpha/thick-disc slope is much flatter. Such a contrast is compatible with inside-out growth, a more 
+compact early disc and subsequent radial redistribution, as discussed in dynamical and chemo-
+evolutionary studies (Sellwood and Binney, 2002; Minchev et al., 2013; Frankel et al., 2020; 
+Mackereth and Bovy, 2020). The present analysis does not distinguish uniquely among these 
+processes. A forward model connecting chemistry, ages, migration and the survey selection function 
+would be required for that stronger inference.
+Methodologically, the most transferable result is the held-out validation strategy. It provides a 
+simple safeguard against circular discovery: define classes in one information domain and test them in 
+another. In Galactic archaeology this can be extended beyond chemistry versus dynamics to include 
+ages, nucleosynthetic clocks, asteroseismology and spatial density as separate validation layers. Barua 
+(2025) used the term Galactic palaeontology for this broader reconstruction programme; the present 
+study supplies one concrete implementation with explicit failure modes.
+7. Conclusions
+The principal conclusions are:
+1. A four-component Gaussian mixture in [Fe/H], [Mg/Fe], [Si/Fe] and [Al/Fe] is strongly preferred 
+within the tested model family and assigns 91 per cent of the 468,000-star sample with posterior 
+probability above 0.75.
+2. Because actions and integrals of motion are not used by the classifier, their separation provides an 
+independent dynamical validation of the chemical decomposition.
+3. The action-space dispersion increases by approximately a factor of 29 from the thin disc to the 
+halo; this statistic measures orbital spread and is not an age proxy.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 13 =====
+13
+4. Under explicit operational boundaries, the CAP is partitioned into 34 ± 5 per cent GSE, 8 ± 3 per 
+cent Sequoia and 58 ± 5 per cent Splash-like stars. Boundary sensitivity is part of the quoted error 
+budget.
+5. The thin-disc radial metallicity gradient is -0.065 ± 0.004 dex kpc⁻¹, while the thick-disc gradient 
+is -0.020 ± 0.006 dex kpc⁻¹, consistent with the broad contrast seen in final-APOGEE analyses.
+6. The reported fractions describe the selected and geometrically weighted catalogue. They are not 
+intrinsic Galactic mass fractions without a complete survey-selection model.
+7. The paper's defensible novelty is the chemical-only classification plus held-out dynamical 
+validation and explicit stress testing, not the first mixture-model decomposition of APOGEE and 
+GALAH.
+Data and code availability
+The public input data are available from APOGEE DR17 (https://www.sdss.org/dr17/), GALAH DR3 
+(https://www.galah-survey.org/) and Gaia DR3 (https://gea.esac.esa.int/archive/). The analysis-ready 
+merged catalogue, abundance-harmonisation diagnostics, posterior membership catalogue, numerical 
+figure data and executable scripts have not yet been assigned a persistent repository identifier because 
+the versioned archive is being finalised. These materials will be deposited in a permanent repository 
+before acceptance and are available from the corresponding author for confidential peer-review 
+purposes.
+CRediT authorship contribution statement
+Nick Barua: Conceptualisation, Data curation, Formal analysis, Investigation, Methodology, Project 
+administration, Resources, Software, Validation, Visualisation, Writing - original draft, Writing - 
+review and editing.
+Funding
+This research did not receive any specific grant from funding agencies in the public, commercial, or 
+not-for-profit sectors.
+Declaration of competing interest
+The author declares that he has no known competing financial interests or personal relationships that 
+could have appeared to influence the work reported in this paper.
+Declaration of generative AI and AI-assisted technologies in the manuscript 
+preparation process
+During the preparation of this work, the author used OpenAI ChatGPT to assist with language editing, 
+structural organisation, reference-format checking and document formatting. After using this tool, the 
+author reviewed and edited the content as needed and takes full responsibility for the content of the 
+article.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 14 =====
+14
+Acknowledgements
+This work uses data from the Apache Point Observatory Galactic Evolution Experiment (APOGEE), 
+GALAH and the European Space Agency mission Gaia, processed by the Gaia Data Processing and 
+Analysis Consortium. The analysis used AGAMA (Vasiliev, 2019), galpy (Bovy, 2015), Astropy 
+(Astropy Collaboration et al., 2013), NumPy (Harris et al., 2020), SciPy (Virtanen et al., 2020), 
+Matplotlib (Hunter, 2007), scikit-learn (Pedregosa et al., 2011) and TOPCAT (Taylor, 2005).
+References
+Abdurro'uf et al., 2022. The Seventeenth Data Release of the Sloan Digital Sky Surveys: Complete release of MaNGA, 
+MaStar and APOGEE-2 data. Astrophys. J. Suppl. Ser. 259, 35. https://doi.org/10.3847/1538-4365/ac4414.
+Anders, F., et al., 2017. Galactic archaeology with asteroseismology and spectroscopy: Red giants observed by CoRoT and 
+APOGEE. Astron. Astrophys. 600, A70. https://doi.org/10.1051/0004-6361/201629363.
+Astropy Collaboration et al., 2013. Astropy: A community Python package for astronomy. Astron. Astrophys. 558, A33. 
+https://doi.org/10.1051/0004-6361/201322068.
+Barua, N., 2022. Formation and evolution of galaxies: Starlight Synthesis Algorithm. Int. J. Astron. Astrophys. 12, 68-93. 
+https://doi.org/10.4236/ijaa.2022.121005.
+Barua, N., 2025. Galactic Paleontology: Reconstructing accretion events with chemo-dynamical signatures. SSRN preprint. 
+https://doi.org/10.2139/ssrn.5427474.
+Barua, N., 2026. Chemo-kinematic tomography of the Milky Way using APOGEE, GALAH, and Gaia DR3. SSRN preprint. 
+https://doi.org/10.2139/ssrn.6334938.
+Belokurov, V., Erkal, D., Evans, N.W., Koposov, S.E., Deason, A.J., 2018. Co-formation of the disc and the stellar halo. 
+Mon. Not. R. Astron. Soc. 478, 611-619. https://doi.org/10.1093/mnras/sty982.
+Belokurov, V., et al., 2020. The Biggest Splash. Mon. Not. R. Astron. Soc. 494, 3880-3898. 
+https://doi.org/10.1093/mnras/staa876.
+Binney, J., 2012. Actions for axisymmetric potentials. Mon. Not. R. Astron. Soc. 426, 1324-1327. 
+https://doi.org/10.1111/j.1365-2966.2012.21757.x.
+Bland-Hawthorn, J., Gerhard, O., 2016. The Galaxy in context: Structural, kinematic, and integrated properties. Annu. Rev. 
+Astron. Astrophys. 54, 529-596. https://doi.org/10.1146/annurev-astro-081915-023441.
+Bovy, J., Hogg, D.W., Roweis, S.T., 2011. Extreme deconvolution: Inferring complete distribution functions from noisy, 
+heterogeneous and incomplete observations. Ann. Appl. Stat. 5, 1657-1677. https://doi.org/10.1214/10-AOAS439.
+Bovy, J., 2015. galpy: A Python library for Galactic dynamics. Astrophys. J. Suppl. Ser. 216, 29. 
+https://doi.org/10.1088/0067-0049/216/2/29.
+Buder, S., et al., 2021. The GALAH+ Survey: Third data release. Mon. Not. R. Astron. Soc. 506, 150-201. 
+https://doi.org/10.1093/mnras/stab1242.
+Campello, R.J.G.B., Moulavi, D., Sander, J., 2013. Density-based clustering based on hierarchical density estimates, in: Pei, 
+J., Tseng, V.S., Cao, L., Motoda, H., Xu, G. (Eds.), Advances in Knowledge Discovery and Data Mining. Lecture Notes 
+in Computer Science, vol. 7819. Springer, Berlin, Heidelberg, pp. 160-172. https://doi.org/10.1007/978-3-642-37456-
+2_14.
+Cantat-Gaudin, T., et al., 2023. An empirical model of the Gaia DR3 selection function. Astron. Astrophys. 669, A55. 
+https://doi.org/10.1051/0004-6361/202244784.
+Castro-Ginard, A., et al., 2023. Estimating the selection function of Gaia DR3 sub-samples. Astron. Astrophys. 677, A37. 
+https://doi.org/10.1051/0004-6361/202346547.
+Cunha, K., et al., 2016. Chemical abundance gradients from open clusters in the Milky Way disc: Results from the APOGEE 
+survey. Astron. Nachr. 337, 922-928. https://doi.org/10.1002/asna.201612398.
+Frankel, N., Sanders, J., Ting, Y.-S., Rix, H.-W., 2020. Keeping it cool: Much orbit migration, yet little heating, in the 
+Galactic disc. Astrophys. J. 896, 15. https://doi.org/10.3847/1538-4357/ab910c.
+Freeman, K., Bland-Hawthorn, J., 2002. The new Galaxy: Signatures of its formation. Annu. Rev. Astron. Astrophys. 40, 
+487-537. https://doi.org/10.1146/annurev.astro.40.060401.093840.
+Gaia Collaboration et al., 2023. Gaia Data Release 3: Summary of the content and survey properties. Astron. Astrophys. 674, 
+A1. https://doi.org/10.1051/0004-6361/202243940.
+Harris, C.R., et al., 2020. Array programming with NumPy. Nature 585, 357-362. https://doi.org/10.1038/s41586-020-2649-
+2.
+Hawkins, K., Jofre, P., Masseron, T., Gilmore, G., 2015. Using chemical tagging to redefine the interface of the Galactic disc 
+and halo. Mon. Not. R. Astron. Soc. 453, 758-774. https://doi.org/10.1093/mnras/stv1586.
+Hayden, M.R., et al., 2015. Chemical cartography with APOGEE: Metallicity distribution functions and the chemical 
+structure of the Milky Way disc. Astrophys. J. 808, 132. https://doi.org/10.1088/0004-637X/808/2/132.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 15 =====
+15
+Hegedus, V., et al., 2023. Comparative analysis of atmospheric parameters from high-resolution spectroscopic sky surveys: 
+APOGEE, GALAH, and Gaia-ESO. Astron. Astrophys. 670, A107. https://doi.org/10.1051/0004-6361/202244813.
+Helmi, A., White, S.D.M., 1999. Building up the stellar halo of the Galaxy. Mon. Not. R. Astron. Soc. 307, 495-517. 
+https://doi.org/10.1046/j.1365-8711.1999.02616.x.
+Helmi, A., 2008. The stellar halo of the Galaxy. Astron. Astrophys. Rev. 15, 145-188. https://doi.org/10.1007/s00159-008-
+0009-6.
+Helmi, A., et al., 2018. The merger that led to the formation of the Milky Way's inner stellar halo and thick disc. Nature 563, 
+85-88. https://doi.org/10.1038/s41586-018-0625-x.
+Helmi, A., 2020. Streams, substructures, and the early history of the Milky Way. Annu. Rev. Astron. Astrophys. 58, 205-256. 
+https://doi.org/10.1146/annurev-astro-032620-021917.
+Horta, D., et al., 2021. Evidence from APOGEE for the presence of a major building block of the halo buried in the inner 
+Galaxy. Mon. Not. R. Astron. Soc. 500, 1385-1403. https://doi.org/10.1093/mnras/staa2987.
+Hunter, J.D., 2007. Matplotlib: A 2D graphics environment. Comput. Sci. Eng. 9, 90-95. 
+https://doi.org/10.1109/MCSE.2007.55.
+Imig, J., et al., 2023. A tale of two discs: Mapping the Milky Way with the final data release of APOGEE. Astrophys. J. 954, 
+124. https://doi.org/10.3847/1538-4357/ace9b8.
+Kass, R.E., Raftery, A.E., 1995. Bayes factors. J. Am. Stat. Assoc. 90, 773-795. 
+https://doi.org/10.1080/01621459.1995.10476572.
+Lemasle, B., et al., 2013. Galactic abundance gradients from Cepheids: Alpha and heavy elements in the outer disc. Astron. 
+Astrophys. 558, A31. https://doi.org/10.1051/0004-6361/201322115.
+Lindegren, L., et al., 2021. Gaia Early Data Release 3: Parallax bias versus magnitude, colour, and position. Astron. 
+Astrophys. 649, A2. https://doi.org/10.1051/0004-6361/202039709.
+Mackereth, J.T., et al., 2019. The origin of accreted stellar halo populations in the Milky Way using APOGEE, Gaia, and the 
+EAGLE simulations. Mon. Not. R. Astron. Soc. 482, 3426-3442. https://doi.org/10.1093/mnras/sty2955.
+Mackereth, J.T., Bovy, J., 2020. Weighing the stellar constituents of the Galactic halo with APOGEE red giant stars. Mon. 
+Not. R. Astron. Soc. 492, 3631-3646. https://doi.org/10.1093/mnras/staa047.
+Magrini, L., et al., 2023. The Gaia-ESO survey: Mapping the shape and evolution of the radial abundance gradients with 
+open clusters. Astron. Astrophys. 669, A119. https://doi.org/10.1051/0004-6361/202244957.
+Majewski, S.R., et al., 2017. The Apache Point Observatory Galactic Evolution Experiment (APOGEE). Astron. J. 154, 94. 
+https://doi.org/10.3847/1538-3881/aa784d.
+Massari, D., Koppelman, H.H., Helmi, A., 2019. Origin of the system of globular clusters in the Milky Way. Astron. 
+Astrophys. 630, L4. https://doi.org/10.1051/0004-6361/201936135.
+McMillan, P.J., 2017. The mass distribution and gravitational potential of the Milky Way. Mon. Not. R. Astron. Soc. 465, 76-
+94. https://doi.org/10.1093/mnras/stw2759.
+Minchev, I., Chiappini, C., Martig, M., 2013. Chemodynamical evolution of the Milky Way disc. I. The solar neighbourhood 
+and the thin and thick discs. Astron. Astrophys. 558, A9. https://doi.org/10.1051/0004-6361/201220189.
+Myeong, G.C., Evans, N.W., Belokurov, V., Sanders, J.L., Koposov, S.E., 2018. The Sausage globular clusters. Astrophys. J. 
+Lett. 863, L28. https://doi.org/10.3847/2041-8213/aad7f7.
+Myeong, G.C., Vasiliev, E., Iorio, G., Evans, N.W., Belokurov, V., 2019. Evidence for two early accretion events that built 
+the Milky Way stellar halo. Mon. Not. R. Astron. Soc. 488, 1235-1247. https://doi.org/10.1093/mnras/stz1770.
+Myeong, G.C., Belokurov, V., Aguado, D.S., Evans, N.W., Caldwell, N., Bradley, J., 2022. Milky Way's eccentric 
+constituents with Gaia, APOGEE and GALAH. Astrophys. J. 938, 21. https://doi.org/10.3847/1538-4357/ac8d68.
+Naidu, R.P., et al., 2020. Evidence from the H3 Survey that the stellar halo is entirely comprised of substructure. Astrophys. 
+J. 901, 48. https://doi.org/10.3847/1538-4357/abaef4.
+Nissen, P.E., Schuster, W.J., 2010. Two distinct halo populations in the solar neighbourhood: Evidence from stellar 
+abundance ratios and kinematics. Astron. Astrophys. 511, L10. https://doi.org/10.1051/0004-6361/200913877.
+Pedregosa, F., et al., 2011. Scikit-learn: Machine learning in Python. J. Mach. Learn. Res. 12, 2825-2830.
+Queiroz, A.B.A., et al., 2018. StarHorse: A Bayesian tool for determining stellar masses, ages, distances, and extinctions for 
+field stars. Mon. Not. R. Astron. Soc. 476, 2556-2583. https://doi.org/10.1093/mnras/sty330.
+Sanders, J.L., Binney, J., 2016. A review of action estimation methods for Galactic dynamics. Mon. Not. R. Astron. Soc. 457, 
+2107-2121. https://doi.org/10.1093/mnras/stw106.
+Schwarz, G., 1978. Estimating the dimension of a model. Ann. Stat. 6, 461-464. https://doi.org/10.1214/aos/1176344136.
+Sellwood, J.A., Binney, J.J., 2002. Radial mixing in Galactic discs. Mon. Not. R. Astron. Soc. 336, 785-796. 
+https://doi.org/10.1046/j.1365-8711.2002.05806.x.
+Taylor, M.B., 2005. TOPCAT and STIL: Starlink table/VOTable processing software, in: Shopbell, P., Britton, M., Ebert, R. 
+(Eds.), Astronomical Data Analysis Software and Systems XIV. ASP Conf. Ser. 347, 29-33.
+Vasiliev, E., 2019. AGAMA: Action-based galaxy modelling architecture. Mon. Not. R. Astron. Soc. 482, 1525-1544. 
+https://doi.org/10.1093/mnras/sty2672.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 16 =====
+16
+Virtanen, P., et al., 2020. SciPy 1.0: Fundamental algorithms for scientific computing in Python. Nat. Methods 17, 261-272. 
+https://doi.org/10.1038/s41592-019-0686-2.
+Zasowski, G., et al., 2013. Target selection for the Apache Point Observatory Galactic Evolution Experiment (APOGEE). 
+Astron. J. 146, 81. https://doi.org/10.1088/0004-6256/146/4/81.
+Zasowski, G., et al., 2017. Target selection for the SDSS-IV APOGEE-2 survey. Astron. J. 154, 198. 
+https://doi.org/10.3847/1538-3881/aa8df9.
+Appendix A. Model-order diagnostic
+Fig. A.1 shows the BIC values for k = 2,...,8. The global minimum occurs at k = 4. Models with 
+fewer components merge the CAP into the broader halo or thick-disc structure, while higher-order 
+models split one of the dominant disc sequences without a clear independent physical interpretation. 
+The diagnostic supports four components within the specified feature space and covariance family; it 
+does not imply that the Galaxy contains only four physically meaningful populations.
+Fig. A.1. Bayesian Information Criterion as a function of Gaussian-mixture model order. The four-component 
+model is the global minimum within the tested model family.
+Appendix B. Reproducibility specification
+Table B.1 specifies the machine-readable products needed for independent reproduction: the 
+merged catalogue with original survey identifiers and Gaia source_id; quality flags and exclusions; 
+abundance-harmonisation coefficients and overlap-star residuals; Monte Carlo action summaries; 
+fitted GMM parameters and random seeds; posterior probabilities; bootstrap indices; boundary-
+sensitivity outputs; and the numerical data behind every figure and table.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 17 =====
+17
+Table B.1. Reproducibility bundle and verification criteria.
+Item Required content Verification criterion
+Derived catalogue Survey IDs, Gaia source_id, abundances, coordinates, actions, 
+weights, posterior probabilities
+Row count and Table 1 counts reproduce 
+exactly
+Calibration diagnostics Overlap-star offsets versus T_eff, log g and metallicity Residual survey structure quantified
+Model artefacts GMM means, covariances, weights, BIC values and random 
+seeds Figure A1 and memberships reproduce
+Uncertainty products Monte Carlo draws or summaries; bootstrap index seeds Tables 2-4 uncertainties reproduce
+Selection information Footprint masks, Vmax implementation and target-selection 
+caveats Weighted fractions traceable
+Figure data CSV or parquet table for every plotted point/bin All figures regenerate without manual 
+transcription
+Environment Pinned package versions and executable workflow Clean-environment run completes
+Notes. This appendix defines the data, model and environment records required to reproduce the reported tables and figures.
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 18 =====
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 19 =====
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 20 =====
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 21 =====
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 22 =====
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 23 =====
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed
+
+===== PAGE 24 =====
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7385521
+Preprint not peer reviewed

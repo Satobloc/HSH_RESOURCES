@@ -1,0 +1,1175 @@
+===== PAGE 1 =====
+A Guided Unconditional Diffusion Model to Synthesize and Inpaint Radio Galaxies from
+FIRST, MGCLS and Radio Zoo
+R. Poitevineaua, E. Tolleya, V . Etsebethb
+aInstitute of Physics, Laboratory of Astrophysics, Ecole Polytechnique Federale de Lausanne (EPFL) 1290 Sauverny, Switzerland,
+bDepartment of Physics and Astronomy, University of the Western Cape Private Bag X17, Bellville 7535, South Africa,
+Abstract
+We present a masked-guided approach for a denoising diffusion probabilistic model (DDPM) trained to generate and inpaint realistic
+radio galaxy images. The inpainting capability is particularly relevant for reconstructing incomplete observations, improving down-
+stream tasks such as source characterization and morphological classification. We train the model on a combination of the FIRST
+survey, Radio Galaxy Zoo, and cutouts from the MGCLS survey, enabling it to capture a broad range of radio galaxy morphologies
+across different observational regimes. We evaluate the realism of the generated samples through statistical comparisons with real
+data, ensuring consistency in key morphological and intensity distributions. Our unconditional model produces morphologically
+plausible galaxies while maintaining diversity, highlighting the suitability of diffusion models for this task. This approach pro-
+vides a scalable alternative to computationally expensive simulations and enables effective data augmentation for machine learning
+applications in radio astronomy, including source detection, classification, and image reconstruction.
+Keywords:methods: machine Learning, radio continuum: galaxies
+1. Introduction
+The Square Kilometer Array (SKA) is expected to signif-
+icantly advance radio astronomy by providing an unprece-
+dented volume of high-resolution observational data. With an
+estimated output of 600 PB of calibrated data products per
+year (SKAO science Team 2019), SKA will enable deeper in-
+sights into radio-emitting astrophysical phenomena. In particu-
+lar, it will contribute to the study of radio galaxies and galaxy
+clusters, including the impact of active galactic nucleus (AGN)
+feedback on galaxy evolution, as well as the properties of cos-
+mic rays and magnetic fields in the intracluster medium (ICM).
+Radio galaxies and galaxy clusters play a crucial role in shap-
+ing the evolution of cosmic structures. Radio-loud AGNs drive
+powerful jets that release vast amounts of energy, injecting heat
+and momentum into their environment. This process influences
+both the properties of their host galaxies and the surrounding
+ICM (e.g., Kormendy and Ho 2013). On larger scales, these
+jets contribute to AGN-driven feedback, which regulates the
+thermal and dynamical state of the ICM, particularly within
+galaxy clusters (e.g., Miley and De Breuck 2008; Fabian 2012;
+Magliocchetti 2022).
+Cosmic rays accelerated by AGN jets, along with shocks in-
+duced by galaxy mergers, generate diffuse radio emission in the
+form of radio halos and relics (van Weeren et al. 2019; ZuHone
+et al. 2021). These non-thermal components of the ICM are
+strongly influenced by the presence of magnetic fields, which
+shape the trajectories of charged particles and play a funda-
+mental role in energy transport within galaxy clusters. Investi-
+gating the interactions between AGN activity, cosmic rays, and
+magnetic fields provides essential insights into the mechanisms
+driving galaxy evolution and the formation of large-scale cos-
+mic structures (Wittor 2023).
+However, the scale and complexity of SKA datasets will ren-
+der manual analysis impractical, necessitating the development
+of automated detection and classification methods. Machine
+learning (ML) techniques provide a promising solution due to
+their ability to efficiently process large datasets and model com-
+plex relationships within data. Among these, generative models
+offer a valuable approach by producing synthetic data that can
+serve as empirically driven mock observations, which can be
+used to augment training datasets, improve model generaliza-
+tion, and facilitate robust uncertainty quantification (Ribas et al.
+2023; Doorenbos et al. 2024).
+Generative models have proven to be powerful tools in vari-
+ous image-processing applications, including super-resolution,
+inpainting, and data augmentation. In super-resolution, mod-
+els such as generative adversarial networks (GANs) and dif-
+fusion models enhance low-resolution images by generating
+high-resolution details, improving clarity and sharpness (Ledig
+et al. 2016; Luo et al. 2023; Bachimanchi and V olpe 2025). In-
+painting techniques use generative models to restore missing
+or corrupted parts of an image, seamlessly reconstructing gaps
+by learning contextual structures (Lugmayr et al. 2022a; Wang
+et al. 2023). In astrophysics, generative models have been ap-
+plied to parameter inference for stellar populations (Laroche
+and Speagle 2025), simulating galaxy observations (Ravan-
+bakhsh et al. 2016; Spindler et al. 2021), and analyzing mi-
+crolensed gravitational waves (Bada Nerin et al. 2024). GANs,
+in particular, have been used for denoising astrophysical data,
+enhancing gravitational wave detection (Murali and Lumley
+2023), deconvolution (Schawinski et al. 2017), synthetic galaxy
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 2 =====
+image generation (Fussell and Moews 2019), and radio halo de-
+tection (Mishra et al. 2024).
+Despite the success of ML in various astronomical applica-
+tions, its use in radio astronomy, particularly for radio galaxies,
+presents distinct challenges. Radio galaxies exhibit complex
+and diverse morphologies, often characterized by diffuse emis-
+sion structures and extended lobes. Unlike optical galaxies,
+which typically have well-defined features (Smith et al. 2022),
+radio galaxies are affected by noise and instrumental artifacts,
+complicating automated analysis (Tolley 2024). Furthermore,
+the limited availability of annotated datasets in radio astron-
+omy hinders the development of robust ML models. Addressing
+these challenges requires generative models capable of produc-
+ing realistic synthetic datasets to supplement existing labeled
+data.
+Among generative models, the most common approaches
+include variational autoencoders (V AEs)(Kingma and Welling
+2013), GANs(Goodfellow et al. 2014), and denoising diffusion
+probabilistic models (DDPMs)(Sohl-Dickstein et al. 2015).
+While GANs produce sharp images efficiently, they suffer from
+training instabilities and mode collapse. V AEs offer stable
+training and efficient inference but often generate blurry images
+due to their variational loss. DDPMs, by contrast, effectively
+capture a wide range of data distributions while avoiding these
+issues, enabling the reconstruction of fine details with high fi-
+delity(Ho et al. 2020).
+DDPMs generate high-quality, diverse images by iteratively
+refining noise, ensuring strong mode coverage and stability.
+This makes them particularly well-suited for simulating a broad
+range of radio galaxy morphologies, including extended lobes
+and diffuse emission, thereby enriching the diversity and util-
+ity of synthetic datasets. Such improvements in data generation
+can enhance the training and performance of ML models for
+radio astronomy applications. However, DDPMs are computa-
+tionally expensive due to their iterative denoising process, re-
+quiring multiple forward passes per image, which makes them
+significantly slower than GANs.
+Each generative model presents trade-offs between quality,
+stability, and computational efficiency, making it crucial to
+evaluate their suitability for specific astrophysical applications.
+Given the importance of preserving fine structural details in ra-
+dio galaxy images, DDPMs stand out as a promising approach
+despite their higher computational cost.
+DDPMs have recently been applied in astrophysics, with
+Smith et al. (2022) training a DDPM on data from the Dark
+Energy Spectroscopic Instrument (Dey et al. 2019) to generate
+synthetic observations tailored to a specific survey. Similarly,
+Viˇcánek Martínez et al. (2024) developed conditional models
+trained on cutouts from the LOFAR Two-Meter Sky Survey
+(Shimwell et al. 2017) and on the Faint Images of the Radio Sky
+at Twenty-Centimeters survey (FIRST) (Griese et al. 2023).
+In this work, we focus on a masked guided diffusion process
+to help the network generalize information and be able to gener-
+ate and inpaint realistic radio galaxies images without the need
+to retrain the model or perform multiple sampling per image in-
+painting (Lugmayr et al. 2022b). Furthermore, we propose an
+unconditional approach using multiple survey catalogs to train
+a single model. In Section 2, we describe the dataset used to
+train our model. Section 3 introduces the DDPM formalism,
+followed by Section 4, where we detail the model architecture,
+ML framework, and data preprocessing, and present our results.
+Finally, we discuss our findings and future perspectives in Sec-
+tion 5.
+2. Data
+2.1. FIRST
+The FIRST radio galaxies catalog is a consolidated dataset
+that integrates information from several prior catalogs (Mi-
+raghaei and Best 2017; Gendre et al. 2010; Capetti et al.
+2017a,b; Baldi et al. 2018; Proctor 2011), each of which char-
+acterizes radio galaxy sources observed in the VLA FIRST
+(Becker et al. 1995). The catalog comprises 2,158 images, each
+with dimensions of 300×300 pixels. To mitigate the impact
+of noise, all pixel values below three times the local root-mean-
+square (RMS) of the noise are clipped to this threshold.
+The radio galaxies in this dataset are categorized into four
+morphological classes: Fanaroff-Riley I (FR I) and Fanaroff-
+Riley II (FR II) sources (Fanaroffand Riley 1974), compact
+sources, and Bent sources. FR I and FR II classifications
+are based on the distribution of radio emission along the jets.
+The compact class includes unresolved point sources, while the
+Bent class comprises sources where the angle between the jets
+deviates significantly from 180 degrees.
+2.2. MGCLS
+The MeerKAT Galaxy Cluster Legacy Survey (MGCLS)
+(Knowles et al. 2022) is a comprehensive project that uses the
+sensitivity and resolution of the MeerKAT telescope to study
+galaxy clusters. It includes observations of 115 galaxy clusters
+from the MeerKAT continuum legacy survey.
+MGCLS acquired data in the L band, with a frequency range
+spanning 900–1670 MHz. In the survey, two main imaging
+products were produced, tailored for different scientific ob-
+jectives: high resolution images with an angular resolution
+of approximately 7”–8” and convolved images that have been
+smoothed to a lower resolution of 15”.
+MGCLS sources were extracted using Python Blob Detec-
+tion and Source Finder (PyBDSF) (Mohan and Rafferty 2015),
+using the default threshold parameters. Using this configura-
+tion, a total of 62,587 sources were extracted from the high res-
+olution images. To focus on resolved and diffuse sources only,
+a size-based filtering criterion was applied (Estebeth in prep).
+Specifically, sources with an area smaller than eight times the
+beam solid angle were excluded. This cut effectively removed
+compact sources, retaining those that are significantly extended
+relative to the instrumental beam. As a result, the dataset was
+reduced to 7,051 sources.
+2.3. Radio Galaxy Zoo
+Radio Galaxy Zoo is a citizen science project that is part of
+the Zooniverse 1 platform. It aims to help astronomers identify
+1https://www.zooniverse.org/
+2
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 3 =====
+and classify radio galaxies by enlisting the help of the public
+to visually inspect and match radio emission with their cor-
+responding host galaxies seen in infrared images. The subset
+of Radio Galaxy Zoo data used here is based on the first pub-
+lic data release, known as Radio Galaxy Zoo Data Release 1
+Wong et al. (2025). This subset comprises 20,000 unlabeled ra-
+dio galaxy images extracted from the Radio Galaxy Zoo Data
+Release 1 (RGZ) catalog, which contains over 98,000 sources
+primarily derived from the FIRST survey. Each image mea-
+sures 150 by 150 pixels, corresponding to a 4.5’ by 4.5’ region
+of the sky centered on the associated radio source.
+3. Denoising Diffusion Probabilistic Models
+DDPMs are a class of generative models that synthesize data
+through a two-step process: forward diffusion and reverse gen-
+eration. During the forward diffusion phase, a Markov chain
+progressively adds Gaussian noise to the data, systematically
+degrading its structure. In the reverse generation phase, the
+model is trained to iteratively remove the added noise, and
+learns to reconstruct coherent and realistic data samples from
+an initial state of random noise.
+3.1. F orward Process
+Figure 1: Illustration of the forward and backward process in a DDPM. The for-
+ward process (blue arrows) progressively adds Gaussian noise to an initial radio
+galaxy image x0, transforming it into a pure noise distribution x T over T time
+steps. The backward process (red arrows) aims to learn the denoising operation
+pθ(xt|x t−1), gradually removing noise to reconstruct the original image.
+Given a sample of imagesx, we can generate an individ-
+ual imagex 0 by sampling from a distributionq(x). The for-
+ward process is defined as a sequential procedure where a small
+amount of Gaussian noise,N, is gradually added to the input
+data over a series of steps, following a Markov chain formula-
+tion. This process generates a sequence of increasingly noisy
+representations,{x 1,x 2,...,x T}, whereTdenotes the total num-
+ber of steps in the forward process. Each stepx t depending
+only on the previous statex t−1. The posterior distribution for
+this process can be expressed as:
+q(x1:T|x 0)B
+TY
+t=1
+q(xt|x t−1) (1)
+q(xt|x t−1)BN(x t;
+p
+1−β t xt−1,β tI) (2)
+whereβ t is a parameter that controls the variance of the noise
+added at each step, which can be learned by reparameteriza-
+tion (Kingma and Welling 2013) or held constant as hyperpa-
+rameters. A commonly used scheduler is based on a cosine
+function, which effectively controls the rate at which noise is
+added across theTtotal steps (Nichol and Dhariwal 2021). The
+expressiveness of the reverse process is partly ensured by mod-
+eling the conditionalp θ(x(t−1)|x t) as a Gaussian distribution.
+This is because, when the noise scheduleβt is small, the forward
+and reverse processes behave similarly, making the reverse pro-
+cess easier to learn (Sohl-Dickstein et al. 2015).
+If we define the equation above to depend only onx0, we can
+calculate any stepx t explicitly (Ho et al. 2020). Let us define
+αt =1−β t andαt = Qt
+i=1αi. Then, we can calculate:
+xt =√αt xt−1 +
+p
+1−α tN(0,I) (3)
+=
+p
+αt x0 +
+p
+1− αtN(0,I) (4)
+Thus, we can also defineq(x t) without any dependency onx t−1:
+q(xt|x 0)=N(x t−1;µθ(xt,t),Σ θ(xt,t)) (5)
+3.2. Backward Process
+Once the forward process is established, the objective of the
+diffusion model is to learn the reverse process, which progres-
+sively removes noise in a step-by-step manner to reconstruct
+the original data. This reverse process is also formulated as a
+Markov chain and is parameterized by a neural network.
+The reverse process seeks to approximatep θ(xt−1 |x t), the
+conditional distribution ofx t−1 givenx t whereθrepresents the
+parameters of the neural network. To achieve this, the model
+learns how to remove the noise contribution at each time stept,
+iteratively refining the data to recover a less noisy versionx t−1.
+This reverse transition is initialized by modelingpθ(xt−1|x t) as
+a Gaussian distribution, given by:
+pθ(xt−1|x t)=N(x t−1;µθ(xt,t),Σ θ(xt,t)) (6)
+whereµ θ(xt,t) is the mean of the conditional distribution, and
+Σθ(xt,t) is the variance. The neural network takes the noisy
+inputx t at time steptand predictsµ θ(xt,t), which guides the
+denoising process. The varianceΣ θ(xt,t) represents the uncer-
+tainty in the reverse process and is often simplified or fixed dur-
+ing training to reduce computational complexity. To calculate
+xt−1, the model samples from the predicted Gaussian distribu-
+tionp θ(xt−1|x t):
+xt−1 =µ θ(xt,t)+σ tϵ(7)
+whereµ θ(xt,t) is the predicted mean,σ t is the standard devi-
+ation derived fromΣ θ(xt,t), andϵis a sample from a standard
+normal distributionN(0,I). This step iteratively refines the data
+by removing the noise and recovering a less noisy version of the
+original input.
+This parameterization enables the network to iteratively re-
+fine the data, leveraging the learned dynamics of the reverse
+process to accurately reconstruct the original distribution.
+3.3. Architecture and training
+The implementation was carried out inside the custom high
+performance deep learning framework CIANNA (Cornu 2024).
+3
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 4 =====
+The architecture adopts a U-shaped structure (Ronneberger
+et al. 2015), a design widely used in encoder-decoder models
+for image processing tasks. It consists of sequential convo-
+lutional layers organized into downsampling and upsampling
+blocks. It takes images as inputs and produces images of same
+dimensions. In the downsampling blocks, the spatial dimen-
+sions of the input are reduced while the number of filters in-
+creases, enabling the extraction of hierarchical features. The
+upsampling blocks reverse this process, reconstructing the spa-
+tial dimensions while preserving learned features. Skip connec-
+tions between corresponding downsampling and upsampling
+blocks are employed to retain fine-grained spatial information
+and enhance feature integration.
+The architecture utilized in this study is detailed in Table 1.
+Each convolutional layer employs a leaky rectified linear unit
+with a slope of 0.1 for the activation function, except for the
+final layer, which uses a linear activation function.
+In our architecture, max-pooling and unpooling operations
+were deliberately avoided for downsampling and upsampling,
+respectively. The primary rationale for this design choice lies
+in the need for consistency and adaptability in feature repre-
+sentation. Traditional unpooling operations typically require
+positional indices from the pooling layers in the encoder to re-
+store spatial information, which introduces dependencies that
+may not generalize well for certain data types. Instead, trans-
+posed convolutions are used for upsampling, paired with con-
+volutional operations for downscaling. This approach ensures
+a more homogeneous and expressive transformation across the
+network.
+Moreover, the choice of transposed convolutions is suited for
+astronomical data, which generally exhibit smoother features
+and lack the sharp edges commonly found in natural images.
+This smoothness benefits from the learned upscaling process
+provided by transposed convolutions, which is expected to yield
+better performance in reconstructing fine details in astronomi-
+cal imagery (Cornu et al. 2024).
+3.4. Guided diffusion
+Figure 2: Example of some masked images used for training. The masked
+regions are represented in gray
+The model is trained for the inpainting task using images
+with randomly masked regions. Each training instance contains
+either a single rectangular mask occupying 40–80% of the im-
+age area, two masks within the same size range, or three to
+four smaller masks occupying 20–40% each (i.e, Figure 2). To
+jointly enable unconditional image generation, a subset of train-
+ing images is entirely masked. The proportion of fully masked
+samples is initially set to 20% and is linearly increased to 80%
+throughout the training process, thereby progressively shifting
+the model’s objective from conditional completion to full image
+synthesis.
+By mixing partially masked and fully masked samples, the
+model learns both inpainting and unconditional generation dif-
+fusion processes within the same model. Since the model must
+learn to infer both small- and large-scale missing content, it be-
+comes more capable of leveraging global image context and se-
+mantic priors. The benefit over a classic unconditional DDPM
+training regime lies in improved global structural coherence,
+enhanced semantic representation capacity, and greater diver-
+sity of conditional contexts during learning, resulting in sharper,
+more plausible full-image generations when the model is later
+sampled during the generation generation task (Nichol et al.
+2021; Manukyan et al. 2023).
+3.5. Data preprocessing
+To extract patches around sources in the FIRST dataset, we
+first identify regions of interest by applying an intensity thresh-
+old of 100 (on a 0–255 grayscale range), producing a binary
+mask that isolates significant emission from the background
+noise. On this mask, we perform connected-component label-
+ing to detect contiguous pixel groups (“islands”), each corre-
+sponding to a candidate source or emission structure. For every
+detected island, we retrieve its full set of pixel coordinates and
+compute its bounding box, from which we estimate the geomet-
+ric center. Fixed-size patches of 64×64 pixels are then extracted
+by centering on this position, while enforcing boundary condi-
+tions to ensure the patch remains fully contained within the im-
+age. This initial extraction may produce multiple, potentially
+overlapping patches, especially in crowded regions. To address
+this, we rank all candidate patches by their total pixel intensity,
+used here as a proxy for source significance. We then apply
+a non-maximum suppression procedure based on the Intersec-
+tion over Union (IoU): starting from the highest-intensity patch,
+we iteratively discard any remaining patches whose overlap ex-
+ceeds a threshold of 0.2. This process yields a final dataset
+consisting of 2,535 images. We applied the same procedure to
+the RGZ data and obtained a sample of 20,468 images.
+For the MGCLS cutouts, the images were first cropped to the
+nearest smaller power-of-two dimension relative to their origi-
+nal size. To ensure uniformity with the sample obtained from
+the FIRST dataset, larger images were subsequently resized to
+64×64 pixels. Furthermore, the background noise and flux lev-
+els were then calculated for each image and the pixel values
+below 3σwere set to zero. The threshold of 3σwas chosen
+to mitigate artifacts present in many cutouts due to insufficient
+calibration. Thus, we create data that should be more homoge-
+neous with the FIRST data. The final MGCLS catalog contains
+6915 images.
+Combining our three datasets from FIRST, MGCLS and
+RGZ, we have a final sample of 29,918 radio galaxies. The
+final sample was normalized to a range between 0 and 1. To
+expand the dataset, data augmentation was applied, including
+rotations of 0, 90, 180, and 270 degrees, as well as horizontal
+4
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 5 =====
+Figure 3: Example of real images used to train our DDPM.
+and vertical flips. We show a few examples of these images in
+Figure 3.
+4. Results
+Figure 4: Example of images generated by our DDPM.
+The DDPM was trained using the NVIDIA H100 GPU over
+10000 epochs, employing the Adam optimizer (Kingma and Ba
+2014). Training the model required 24 hours, while generating
+10,000 samples took 20 hours. The model has 67.7 miilions of
+parameters. We used a batch size of 32 and a learning rate of
+0.0001. The sample generation was done without any semantic
+context, fully unconditional.
+Metrics such as the Fréchet Inception Distance and Incep-
+tion Score are commonly used to evaluate the performance
+of DDPMs. However, these metrics rely on neural networks
+trained on everyday-life images, which differ significantly from
+astrophysical images, as discussed in Sect. 3.3. Thus, we cannot
+be sure that the filters used in the neural networks are relevant
+to astrophysical images. Consequently, their applicability to
+assessing the performance of a DDPM trained on radio galaxy
+images is limited.
+A more straightforward approach to evaluation is a qualita-
+tive visual comparison between the generated images and the
+real images used during training. We illustrate some examples
+of the generated images in Figure 4. As we can see, the gener-
+ated radio galaxies look realistic compared to the real ones.
+Beyond generating images that visually resemble radio
+galaxies, it is also essential that the synthesized images capture
+the underlying physical properties of the original data. These
+properties are reflected in the statistical distribution of pixel
+values. To assess the quality of the DDPM in this regard, we
+compare the statistical distributions of real and generated im-
+ages.
+After training, the DDPM was used to generate 10,000 syn-
+thetic images, providing a sufficiently large sample for subse-
+quent statistical analysis.
+4.1. General statistics
+Figure 5: Statistical comparison of the brightest pixel values in each image in
+the real data sample and the generated one by our network
+Figure 6: Statistical comparison of the pixel values distribution in the real data
+sample and the one generated by our network.
+To assess the performance of our network, we compare the
+statistical distributions of 10,000 generated sampled images
+with those of the 10,000 real data chosen randomly.
+5
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 6 =====
+Figure 7: Statistical comparison of the mean pixel values in each image in the
+real data sample and the generated one by our network.
+Figure 8: Statistical comparison of the standard deviation of the pixel values in
+each image in the real data sample and the one generated by our network.
+Figure 5 presents the distribution of the brightest pixel values
+extracted from each image, comparing the real dataset (blue)
+with the generated samples (red). Both distributions extend
+from roughly 40 to the saturation limit near 255, and both dis-
+play a strong increase in frequency toward the upper end of the
+dynamic range. The histograms overlap across most intensity
+bins, indicating that the model captures the general behavior
+of the brightest-pixel distribution. A noticeable difference ap-
+pears at the highest intensity values, where the generated sam-
+ples show a higher occurrence of saturated or near-saturated
+pixels. This suggests that the model slightly overestimates the
+frequency of very bright peaks compared to the real data, while
+still reproducing the overall statistical shape of the distribution.
+The Figure 6 presents the overall pixel value distributions.
+Both real and generated images exhibit a similar range and align
+well at the lower and upper extremes. The generated distri-
+bution closely follows the real one but, at the lower end and
+high end, the sharp decline observed in real images is not fully
+reproduced. The steep decline at the low-intensity end of the
+distribution can be attributed to the large fraction of empty or
+near-zero pixels, while the sharp rise at the high-intensity end
+is primarily driven by pixel saturation in the images (see Fig-
+ure 3). Following this initial decrease, a secondary excess is
+observed, which is associated with diffuse emission and fainter
+pixels located at the outskirts of galaxies. The generated sam-
+ples exhibit an enhanced contribution in this regime, indicat-
+ing that the network produces a larger fraction of low-surface-
+brightness emission compared to the real data.
+Figure 7 and Figure 8 compare the mean and the standard de-
+viation distributions. The overall agreement between real and
+generated images is strong, with both distributions displaying
+similar trends. However, the real images show a slight excess
+compared to the generated data, and the generated distribution
+contains high-value outliers that extend beyond the range ob-
+served in real images.
+Overall, the comparison between real and generated radio
+galaxy images suggests that the DDPM effectively captures the
+general statistical properties of the data, producing images with
+similar distributions in pixel values, brightest pixel intensities,
+mean, and variance. The strong alignment between real and
+generated distributions indicates that the model successfully
+learns key features of radio galaxies, preserving their overall
+structure and characteristics. However, some discrepancies re-
+main, particularly in the brightest pixel values and at extreme
+variance levels. The generated images exhibit smoother tran-
+sitions and slightly reduced intensity, suggesting that while the
+DDPM models the underlying structure well, it may struggle to
+fully reproduce the most extreme features, such as the brightest
+compact sources or highly variable regions.
+4.2. Source statistics
+Figure 9: Statistical comparison of source sizes in the real data sample and
+those generated by our network. The top subplot shows the distributions of all
+sources, while the bottom subplot shows the distribution restricted to sources
+that contain at least one pixel with the maximum intensity in the image.
+Figure 10: Statistical comparison of source counts in the real data sample and
+those generated by our network. The top subplot shows the distributions of all
+sources, while the bottom subplot shows the distribution restricted to sources
+that contain at least one pixel with the maximum intensity in the image.
+The Figures 9, 10 and 11 consists of six subplots comparing
+statistical properties of real and generated sources. Each sub-
+plot presents a histogram with real data represented in blue and
+generated data in red. Respectively, we present the distributions
+6
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 7 =====
+Figure 11: Statistical comparison of source intensities in the real data sample
+and those generated by our network. The top subplot shows the distributions of
+all sources, while the bottom subplot shows the distribution restricted to sources
+that contain at least one pixel with the maximum intensity in the image.
+of source sizes, the number of sources per image, and the total
+source intensity. The top subplots display the distributions for
+all detected sources in the images, while the bottom row focuses
+on sources that contain at least We use the same algorithm as
+the one used in section 3.5 to identify, count and determine the
+sources size in the generated images.
+The model successfully captures the general statistical prop-
+erties of real radio sources, producing source size and inten-
+sity distributions that broadly follow the expected trends. The
+generated sources exhibit similar peak positions and overall be-
+haviors, demonstrating that the model is capable of learning
+key structural characteristics. However, notable discrepancies
+remain, particularly in the number of sources per image and
+the distribution of bright sources. The generated data show a
+more rapid drop-offin source sizes beyond 300 pixels and fail
+to reproduce the broader tail observed in real data, suggesting
+limitations in generating large and complex structures. Further-
+more, the model struggles to generate small, faint sources, lead-
+ing to an underestimation of the total number of sources per im-
+age. The excess of single-source images and occasional outputs
+dominated by noise indicate that the model does not fully cap-
+ture the complexity of source clustering and background varia-
+tions
+4.3. Inpainting
+As discussed in section 3.4, our training method allows our
+model to generate and inpaint radio galaxy images. We in-
+painted 1000 images.We show some examples in Figure 12. Vi-
+sual inspection indicates that our model inapinting results look
+realistic.
+To further quantify the quality of the inpainting capacity of
+our network, we looked at statistical distributions. We first ex-
+amine the distribution of inpainted pixel values relative to the
+original distribution, shown in Figure 13. The results are con-
+sistent with the trends seen in Figure 6. The inpainted pixel
+distribution appears as a smoother version of the original one.
+Figure 14 shows the distribution of mean pixel intensities
+computed within the masked (and subsequently inpainted) re-
+gions. The blue histogram corresponds to the mean intensi-
+ties measured from the same regions in the original images,
+while the red histogram shows those derived from the DDPM
+Figure 12: Examples of inpainting produced by our model. The left column
+shows the original images. The middle column shows the masked inputs given
+to the network, where gray regions mark the removed content. The right column
+shows the reconstructed images.
+Figure 13: Statistical comparison of the pixel values distribution of the pixel
+values in the masked regions of the real data sample and the values of the in-
+painted pixels by our network.
+inpainted outputs. Both distributions exhibit a sharp decline, in-
+dicating that most masked regions contain low-intensity emis-
+sion in both the real and reconstructed data.
+Figure 15 presents the distribution of the standard deviation
+of pixel intensities within the masked regions. The blue his-
+togram reflects the variability present in the original images,
+and the red histogram shows the variability recovered by the
+DDPM model. Both distributions span a wide range of values,
+demonstrating significant diversity in local structural complex-
+ity across the dataset. The substantial overlap between the two
+distributions indicates that the model generally preserves the
+intrinsic variability of the underlying emission.
+Figure 12 presents examples in which the DDPM success-
+fully recovers features that are fully or partially masked. The
+reconstructed features include a large elliptical structure, the
+jet of a radio galaxy, and a point source. A robust and de-
+tailed analysis of feature recovery would require either labeled
+datasets containing both the original and inpainted images, or a
+highly accurate method for classifying features in both datasets.
+At present, neither of these resources is available. Neverthe-
+less, class-dependent structures should be indirectly reflected
+7
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 8 =====
+Figure 14: Statistical comparison of the pixel values distribution of the mean of
+masked region in each image.
+Figure 15: Statistical comparison of the pixel values distribution of the standard
+deviation of masked region in each image. The color code used is the same as
+Figure 13.
+in the pixel-value distributions. Since no significant deviations
+are observed between the original and reconstructed distribu-
+tions, there is no evidence that the class representation is being
+systematically distorted. This suggests that the DDPM is capa-
+ble of recovering features correctly in a substantial fraction of
+cases.
+In some cases, the masked regions fully obscure the original
+signal. When this occurs, the network receives no information
+from the underlying data and the output is no longer a true in-
+painting, but a generated reconstruction constrained only by the
+imposed mask size. This effect introduces a bias in the statisti-
+cal distributions we analyze, although its magnitude cannot be
+quantified with the current approach.
+5. Conclusions
+In this study, we successfully generated synthetic radio
+galaxy images that visually and statistically resemble real ob-
+servations. To quantitatively assess the reliability of these im-
+ages, we compared various statistical distributions, including
+pixel value distributions, the distribution of the brightest pix-
+els, as well as the mean and variance of the generated and real
+datasets. The strong alignment between these distributions sug-
+gests that the model effectively captures key features of radio
+galaxies, preserving their overall structure and characteristics.
+However, discrepancies remain, indicating that the DDPM
+struggles to fully reproduce certain complex behaviors ob-
+served in real radio galaxies. These differences highlight the
+need for further refinements, such as improved training strate-
+gies or more sophisticated conditioning techniques, to enhance
+the model’s ability to generate physically accurate representa-
+tions of radio sources.
+We also tested our DDPM performance with inpainted im-
+ages. We saw that our model produce realistic looking results
+and that the statistical distributions of the inpainted regions have
+similar statistics.
+In this study, we chose to use DDPMs due to their training
+stability and ability to generate high-quality images, the feasi-
+bility of preparing their high computational cost and slow im-
+age generation process as well as their capacity for inpainted
+images. Additionally, DDPMs serve as a foundation for train-
+ing denoising diffusion restoration models (Kawar et al. 2022),
+which extend their applicability to image restoration. This ca-
+pability could be explored in future studies to enhance data
+quality and recovery in radio astronomy.
+Moreover, most generative models have been developed and
+optimized for everyday life images, limiting their direct appli-
+cability to scientific domains. This is particularly relevant in
+astrophysics, where observations differ fundamentally from ev-
+eryday life images. Astrophysical images are often sparsely
+populated, with large regions containing little to no emission.
+Additionally, the physical properties being studied are encoded
+not only in the morphology of the observed structures but also
+in the precise pixel values, which carry essential scientific infor-
+mation. They also frequently exhibit diffuse emission, making
+it challenging to define clear object boundaries. Furthermore,
+the dynamic range of pixel values in astrophysical images can
+be significantly more extreme than in conventional datasets.
+These differences highlight the need for adapting and refining
+generative models for astrophysical applications. Ensuring that
+DDPMs and other generative approaches can accurately capture
+both the structural and pixel-value distributions of astrophysical
+objects is crucial for their effective use in synthetic data gener-
+ation for astrophysics.
+Future work could focus on optimizing the training process,
+incorporating domain-specific constraints, or leveraging hybrid
+generative approaches to improve both fidelity and diversity in
+the generated samples.
+Alternative approaches to DDPM can be considered to re-
+duce computational cost at inference time. For instance, de-
+noising diffusion implicit model (Song et al. 2020) provides a
+deterministic sampling procedure that allows for a significant
+reduction in the number of denoising steps while maintaining
+comparable sample quality. Another promising direction is the
+use of latent diffusion model (Rombach et al. 2021), where
+the diffusion process is performed in a lower-dimensional la-
+tent space learned by an autoencoder, drastically reducing both
+memory usage and computational time. These approaches en-
+able faster generation and facilitate scaling to higher-resolution
+data while preserving overall model performance.
+We could also optimize the dataset construction. For exam-
+ple, we extract patches around the sources so that they are as
+8
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 9 =====
+centered as possible. This ensures that most of the emission
+is captured within each patch and simplifies the learning task.
+However, it may also introduce biases, such as an implicit pref-
+erence for centrally located sources and reduced translational
+invariance. As a result, the model may learn overly simplified
+spatial priors and struggle to generalize to more complex or off-
+center configurations.
+Additionally, exploring the use of DDPMs for tasks beyond
+image generation, such as denoising or super-resolution in radio
+astronomy, could further expand their applicability. As gener-
+ative models continue to advance, refining their adaptation to
+astrophysical data will be crucial for maximizing their potential
+in large-scale surveys, such as those conducted with the SKA,
+where automated and reliable synthetic data generation could
+play a key role in data augmentation and analysis.
+6. Data and code availability
+The code for the data pre-processing and the DDPM are
+available here. The CIANNA framework is available here. The
+FIRST dataset is available here. The MGCLS cutouts will be
+available when Etsebeth (in prep) will be published.
+Acknowledgements
+RP acknowledges financial support from the SNSF under the
+Weave/Lead Agency project RadioClusters (214815). ET ac-
+knowledges financial support from the SNSF under the Starting
+Grant project Deep Waves (218396). This work was supported
+by EPFL through the use of the facilities of its Scientific IT and
+Application Support Center (SCITAS) VE acknowledges sup-
+port from the South African Radio Astronomy Observatory and
+the National Research Foundation (NRF) towards this research.
+Opinions expressed and conclusions arrived at, are those of the
+authors and are not necessarily to be attributed to the NRF.
+This research made use of data from the MeerKAT telescope, a
+South African Radio Astronomy Observatory (SARAO) facil-
+ity. SARAO is a facility of the National Research Foundation,
+an agency of the Department of Science and Innovation.
+9
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 10 =====
+Table 1: Architecture
+Layer Filters Size Stride
+Conv 128 3x3 1
+4×Res 128 - -
+Res1 128 - -
+Group Norm 8 - -
+Conv 256 2x2 2
+Group Norm 8 - -
+Conv 256 3x3 1
+4×Res 256 - -
+Res2 256 - -
+Group Norm 8 - -
+Conv 384 2x2 2
+Group Norm 8 - -
+Conv 384 3x3 1
+4×Res 384 - -
+Res3 384 - -
+Group Norm 8 - -
+Conv 384 2x2 2
+Group Norm 8 - -
+Conv 512 3x3 1
+5×Res 512 - -
+Group Norm 8 - -
+Conv 384 2x2 1
+Merge(Res3) - - -
+Group Norm 8 - -
+Conv 384 3x3 1
+5×Res 384 - -
+Group Norm 8 - -
+Conv 256 2x2 1
+Merge(Res2) - - -
+Group Norm 8 - -
+Conv 256 3x3 1
+5×Res 256 - -
+Group Norm 8 - -
+Conv 128 2x2 1
+Merge(Res1) - - -
+Group Norm 8 - -
+Conv 128 3x3 1
+5×Res 128 - -
+Group Norm 8 - -
+Conv 128 1x1 1
+Table 2: Architecture used of our DDPM. From left to right, we describe the
+layers name, the number of filters, the kernel size and the stride. TheConv
+indicate convolutional layers, theMerge(Res)indicate a layer where we con-
+catenate the result of theResto the output of the previous layer. For theGroup
+Normlayers, the number of filters indicates the size of the groupe. The details
+of the Res layer is display in TableA.3
+.
+10
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 11 =====
+Appendix A. Residual Block
+Table A.3: Residual Block
+Layer Filters Size Stride
+Group Norm 8 -
+Convn3x3 1
+Group Norm 8 -
+Convn/
+√
+2 3x3 1
+Convn1x1 1
+Merge - - -
+Table A.4: Residual block used in the network describe in Sect.3.3. Here,n
+represent the number of filters chosen. For the Group Normalisation layer, the
+number of filters represents the group size parameter.
+References
+Bachimanchi, H., V olpe, G., 2025. Diffusion models for
+super-resolution microscopy: a tutorial. Journal of Physics:
+Photonics 7, 013001. doi:10.1088/2515-7647/ada101,
+arXiv:2409.16488.
+Bada Nerin, R., Bulashenko, O., Gramaxo Freitas, O., Font,
+J.A., 2024. Parameter estimation of microlensed gravi-
+tational waves with Conditional Variational Autoencoders.
+arXiv e-prints , arXiv:2412.00566doi:10.48550/arXiv.
+2412.00566,arXiv:2412.00566.
+Baldi, R.D., Capetti, A., Massaro, F., 2018. FR0CAT: a FIRST
+catalog of FR 0 radio galaxies. A&A 609, A1. doi:10.1051/
+0004-6361/201731333,arXiv:1709.00015.
+Becker, R.H., White, R.L., Helfand, D.J., 1995. The FIRST
+Survey: Faint Images of the Radio Sky at Twenty Centime-
+ters. ApJ 450, 559. doi:10.1086/176166.
+Capetti, A., Massaro, F., Baldi, R.D., 2017a. FRICAT: A FIRST
+catalog of FR I radio galaxies. A&A 598, A49. doi:10.
+1051/0004-6361/201629287,arXiv:1610.09376.
+Capetti, A., Massaro, F., Baldi, R.D., 2017b. FRI-
+ICAT: A FIRST catalog of FR II radio galaxies.
+A&A 601, A81. doi:10.1051/0004-6361/201630247,
+arXiv:1703.03427.
+Cornu, D., 2024. Deyht/cianna: Cianna v-1.0. URL:
+https://doi.org/10.5281/zenodo.12806325, doi:10.
+5281/zenodo.12806325.
+Cornu, D., Salomé, P., Semelin, B., Marchal, A., Freundlich,
+J., Aicardi, S., Lu, X., Sainton, G., Mertens, F., Combes,
+F., Tasse, C., 2024. YOLO-CIANNA: Galaxy detection
+with deep learning in radio data: I. A new YOLO-inspired
+source detection method applied to the SKAO SDC1.
+A&A 690, A211. doi:10.1051/0004-6361/202449548,
+arXiv:2402.05925.
+Dey, A., Schlegel, D.J., Lang, D., Blum, R., Burleigh, K., Fan,
+X., Findlay, J.R., Finkbeiner, D., Herrera, D., Juneau, S.,
+Landriau, M., Levi, M., McGreer, I., Meisner, A., Myers,
+A.D., Moustakas, J., Nugent, P., Patej, A., Schlafly, E.F.,
+Walker, A.R., Valdes, F., Weaver, B.A., Yèche, C., Zou,
+H., Zhou, X., Abareshi, B., Abbott, T.M.C., Abolfathi, B.,
+Aguilera, C., Alam, S., Allen, L., Alvarez, A., Annis, J.,
+Ansarinejad, B., Aubert, M., Beechert, J., Bell, E.F., Ben-
+Zvi, S.Y ., Beutler, F., Bielby, R.M., Bolton, A.S., Briceño,
+C., Buckley-Geer, E.J., Butler, K., Calamida, A., Carlberg,
+R.G., Carter, P., Casas, R., Castander, F.J., Choi, Y ., Com-
+parat, J., Cukanovaite, E., Delubac, T., DeVries, K., Dey,
+S., Dhungana, G., Dickinson, M., Ding, Z., Donaldson, J.B.,
+Duan, Y ., Duckworth, C.J., Eftekharzadeh, S., Eisenstein,
+D.J., Etourneau, T., Fagrelius, P.A., Farihi, J., Fitzpatrick,
+M., Font-Ribera, A., Fulmer, L., Gänsicke, B.T., Gaztanaga,
+E., George, K., Gerdes, D.W., Gontcho, S.G.A., Gorgoni,
+C., Green, G., Guy, J., Harmer, D., Hernandez, M., Hon-
+scheid, K., Huang, L.W., James, D.J., Jannuzi, B.T., Jiang,
+L., Joyce, R., Karcher, A., Karkar, S., Kehoe, R., Kneib,
+J.P., Kueter-Young, A., Lan, T.W., Lauer, T.R., Le Guil-
+lou, L., Le Van Suu, A., Lee, J.H., Lesser, M., Perreault
+Levasseur, L., Li, T.S., Mann, J.L., Marshall, R., Martínez-
+Vázquez, C.E., Martini, P., du Mas des Bourboux, H., Mc-
+Manus, S., Meier, T.G., Ménard, B., Metcalfe, N., Muñoz-
+Gutiérrez, A., Najita, J., Napier, K., Narayan, G., New-
+man, J.A., Nie, J., Nord, B., Norman, D.J., Olsen, K.A.G.,
+Paat, A., Palanque-Delabrouille, N., Peng, X., Poppett, C.L.,
+Poremba, M.R., Prakash, A., Rabinowitz, D., Raichoor, A.,
+Rezaie, M., Robertson, A.N., Roe, N.A., Ross, A.J., Ross,
+N.P., Rudnick, G., Safonova, S., Saha, A., Sánchez, F.J.,
+Savary, E., Schweiker, H., Scott, A., Seo, H.J., Shan, H.,
+Silva, D.R., Slepian, Z., Soto, C., Sprayberry, D., Staten,
+R., Stillman, C.M., Stupak, R.J., Summers, D.L., Sien Tie,
+S., Tirado, H., Vargas-Magaña, M., Vivas, A.K., Wech-
+sler, R.H., Williams, D., Yang, J., Yang, Q., Yapici, T.,
+Zaritsky, D., Zenteno, A., Zhang, K., Zhang, T., Zhou, R.,
+Zhou, Z., 2019. Overview of the DESI Legacy Imaging
+Surveys. AJ 157, 168. doi:10.3847/1538-3881/ab089d,
+arXiv:1804.08657.
+Doorenbos, L., Sextl, E., Heng, K., Cavuoti, S., Brescia, M.,
+Torbaniuk, O., Longo, G., Sznitman, R., Márquez-Neila, P.,
+2024. Galaxy Spectroscopy without Spectra: Galaxy Prop-
+erties from Photometric Images with Conditional Diffusion
+Models. ApJ 977, 131. doi:10.3847/1538-4357/ad8bbe,
+arXiv:2406.18175.
+Fabian, A.C., 2012. Observational Evidence of Ac-
+tive Galactic Nuclei Feedback. ARA&A 50,
+455–489. URL:https://ui.adsabs.harvard.
+edu/abs/2012ARA&A..50..455F/abstract,
+doi:10.1146/annurev-astro-081811-125521.
+Fanaroff, B.L., Riley, J.M., 1974. The morphology of extra-
+galactic radio sources of high and low luminosity. MNRAS
+167, 31P–36P. doi:10.1093/mnras/167.1.31P.
+11
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 12 =====
+Fussell, L., Moews, B., 2019. Forging new worlds: high-
+resolution synthetic galaxies with chained generative adver-
+sarial networks. MNRAS 485, 3203–3214. doi:10.1093/
+mnras/stz602,arXiv:1811.03081.
+Gendre, M.A., Best, P.N., Wall, J.V ., 2010. The Combined
+NVSS-FIRST Galaxies (CoNFIG) sample - II. Comparison
+of space densities in the Fanaroff-Riley dichotomy. MN-
+RAS 404, 1719–1732. doi:10.1111/j.1365-2966.2010.
+16413.x,arXiv:1001.4514.
+Goodfellow, I.J., Pouget-Abadie, J., Mirza, M., Xu, B.,
+Warde-Farley, D., Ozair, S., Courville, A., Bengio, Y .,
+2014. Generative Adversarial Networks. arXiv e-
+prints , arXiv:1406.2661doi:10.48550/arXiv.1406.2661,
+arXiv:1406.2661.
+Griese, F., Kummer, J., Connor, P.L.S., Brüggen, M., Rustige,
+L., 2023. FIRST radio galaxy data set containing curated
+labels of classes FRI, FRII, compact and bent. Data in Brief
+47, 108974. doi:10.1016/j.dib.2023.108974.
+Ho, J., Jain, A., Abbeel, P., 2020. Denoising Diffusion Prob-
+abilistic Models. arXiv e-prints , arXiv:2006.11239doi:10.
+48550/arXiv.2006.11239,arXiv:2006.11239.
+Kawar, B., Elad, M., Ermon, S., Song, J., 2022. De-
+noising Diffusion Restoration Models. arXiv e-prints ,
+arXiv:2201.11793doi:10.48550/arXiv.2201.11793,
+arXiv:2201.11793.
+Kingma, D.P., Ba, J., 2014. Adam: A Method for Stochas-
+tic Optimization. arXiv e-prints , arXiv:1412.6980doi:10.
+48550/arXiv.1412.6980,arXiv:1412.6980.
+Kingma, D.P., Welling, M., 2013. Auto-Encoding Variational
+Bayes. arXiv e-prints , arXiv:1312.6114doi:10.48550/
+arXiv.1312.6114,arXiv:1312.6114.
+Knowles, K., Cotton, W.D., Rudnick, L., Camilo, F., Goedhart,
+S., Deane, R., Ramatsoku, M., Bietenholz, M.F., Brüggen,
+M., Button, C., Chen, H., Chibueze, J.O., Clarke, T.E.,
+de Gasperin, F., Ianjamasimanana, R., Józsa, G.I.G., Hilton,
+M., Kesebonye, K.C., Kolokythas, K., Kraan-Korteweg,
+R.C., Lawrie, G., Lochner, M., Loubser, S.I., Marchegiani,
+P., Mhlahlo, N., Moodley, K., Murphy, E., Namumba, B.,
+Oozeer, N., Parekh, V ., Pillay, D.S., Passmoor, S.S., Ramaila,
+A.J.T., Ranchod, S., Retana-Montenegro, E., Sebokolodi, L.,
+Sikhosana, S.P., Smirnov, O., Thorat, K., Venturi, T., Abbott,
+T.D., Adam, R.M., Adams, G., Aldera, M.A., Bauermeister,
+E.F., Bennett, T.G.H., Bode, W.A., Botha, D.H., Botha, A.G.,
+Brederode, L.R.S., Buchner, S., Burger, J.P., Cheetham, T.,
+de Villiers, D.I.L., Dikgale-Mahlakoana, M.A., du Toit, L.J.,
+Esterhuyse, S.W.P., Fadana, G., Fanaroff, B.L., Fataar, S.,
+Foley, A.R., Fourie, D.J., Frank, B.S., Gamatham, R.R.G.,
+Gatsi, T.G., Geyer, M., Gouws, M., Gumede, S.C., Hey-
+wood, I., Hlakola, M.J., Hokwana, A., Hoosen, S.W., Horn,
+D.M., Horrell, J.M.G., Hugo, B.V ., Isaacson, A.R., Jonas,
+J.L., Jordaan, J.D.B., Joubert, A.F., Julie, R.P.M., Kapp,
+F.B., Kasper, V .A., Kenyon, J.S., Kotzé, P.P.A., Kotze, A.G.,
+Kriek, N., Kriel, H., Krishnan, V .K., Kusel, T.W., Legodi,
+L.S., Lehmensiek, R., Liebenberg, D., Lord, R.T., Lunsky,
+B.M., Madisa, K., Magnus, L.G., Main, J.P.L., Makhaba,
+A., Makhathini, S., Malan, J.A., Manley, J.R., Marais, S.J.,
+Maree, M.D.J., Martens, A., Mauch, T., McAlpine, K.,
+Merry, B.C., Millenaar, R.P., Mokone, O.J., Monama, T.E.,
+Mphego, M.C., New, W.S., Ngcebetsha, B., Ngoasheng,
+K.J., Ockards, M.T., Otto, A.J., Patel, A.A., Peens-Hough,
+A., Perkins, S.J., Ramanujam, N.M., Ramudzuli, Z.R., Rat-
+cliffe, S.M., Renil, R., Robyntjies, A., Rust, A.N., Salie,
+S., Sambu, N., Schollar, C.T.G., Schwardt, L.C., Schwartz,
+R.L., Serylak, M., Siebrits, R., Sirothia, S.K., Slabber, M.,
+Sofeya, L., Taljaard, B., Tasse, C., Tiplady, A.J., Toru-
+vanda, O., Twum, S.N., van Balla, T.J., van der Byl, A.,
+van der Merwe, C., van Dyk, C.L., Van Tonder, V ., Van Wyk,
+R., Venter, A.J., Venter, M., Welz, M.G., Williams, L.P.,
+Xaia, B., 2022. The meerkat galaxy cluster legacy sur-
+vey: I. survey overview and highlights. Astronomy &amp;
+Astrophysics 657, A56. URL:http://dx.doi.org/10.
+1051/0004-6361/202141488, doi:10.1051/0004-6361/
+202141488.
+Kormendy, J., Ho, L.C., 2013. Coevolution (Or Not)
+of Supermassive Black Holes and Host Galaxies.
+ARA&A 51, 511–653. URL:https://ui.adsabs.
+harvard.edu/abs/2013ARA&A..51..511K/abstract,
+doi:10.1146/annurev-astro-082708-101811.
+Laroche, A., Speagle, J.S., 2025. Closing the stellar labels
+gap: Stellar label independent evidence for [alpah/m] infor-
+mation in gaia bp/rp spectra. The Astrophysical Journal 979,
+5. URL:https://dx.doi.org/10.3847/1538-4357/
+ad9607, doi:10.3847/1538-4357/ad9607.
+Ledig, C., Theis, L., Huszar, F., Caballero, J., Cunning-
+ham, A., Acosta, A., Aitken, A., Tejani, A., Totz, J.,
+Wang, Z., Shi, W., 2016. Photo-Realistic Single Im-
+age Super-Resolution Using a Generative Adversarial Net-
+work. arXiv e-prints , arXiv:1609.04802doi:10.48550/
+arXiv.1609.04802,arXiv:1609.04802.
+Lugmayr, A., Danelljan, M., Romero, A., Yu, F., Tim-
+ofte, R., Van Gool, L., 2022a. RePaint: Inpainting
+using Denoising Diffusion Probabilistic Models. arXiv
+e-prints , arXiv:2201.09865doi:10.48550/arXiv.2201.
+09865,arXiv:2201.09865.
+Lugmayr, A., Danelljan, M., Romero, A., Yu, F., Tim-
+ofte, R., Van Gool, L., 2022b. RePaint: Inpainting
+using Denoising Diffusion Probabilistic Models. arXiv
+e-prints , arXiv:2201.09865doi:10.48550/arXiv.2201.
+09865,arXiv:2201.09865.
+Luo, F., Xiang, J., Zhang, J., Han, X., Yang, W., 2023. Image
+Super-resolution Via Latent Diffusion: A Sampling-space
+Mixture Of Experts And Frequency-augmented Decoder Ap-
+proach. arXiv e-prints , arXiv:2310.12004doi:10.48550/
+arXiv.2310.12004,arXiv:2310.12004.
+12
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 13 =====
+Magliocchetti, M., 2022. Hosts and environments: a (large-
+scale) radio history of AGN and star-forming galaxies. arXiv
+e-prints , arXiv:2206.15286arXiv:2206.15286.
+Manukyan, H., Sargsyan, A., Atanyan, B., Wang, Z.,
+Navasardyan, S., Shi, H., 2023. HD-Painter: High-
+Resolution and Prompt-Faithful Text-Guided Image
+Inpainting with Diffusion Models. arXiv e-prints ,
+arXiv:2312.14091doi:10.48550/arXiv.2312.14091,
+arXiv:2312.14091.
+Miley, G., De Breuck, C., 2008. Distant radio galaxies and
+their environments. A&A 15, 67–144. doi:10.1007/
+s00159-007-0008-z,arXiv:0802.2770.
+Miraghaei, H., Best, P.N., 2017. The nuclear properties and
+extended morphologies of powerful radio galaxies: the roles
+of host galaxy and environment. MNRAS 466, 4346–4363.
+doi:10.1093/mnras/stx007,arXiv:1701.00919.
+Mishra, A.K., Tolley, E., Parth Krishna, S., Kneib, J.P., 2024.
+Radio Halo Detection in MW A Data using Deep Neu-
+ral Networks and Generative Data Augmentation. arXiv
+e-prints , arXiv:2411.15559doi:10.48550/arXiv.2411.
+15559,arXiv:2411.15559.
+Mohan, N., Rafferty, D., 2015. Pybdsf: Python blob de-
+tection and source finder. Astrophysics Source Code Li-
+brary, record ascl:1502.007. URL:https://ui.adsabs.
+harvard.edu/abs/2015ascl.soft02007M.
+Murali, C., Lumley, D., 2023. Detecting and denoising grav-
+itational wave signals from binary black holes using deep
+learning. prd 108, 043024. doi:10.1103/PhysRevD.108.
+043024,arXiv:2210.01718.
+Nichol, A., Dhariwal, P., 2021. Improved Denois-
+ing Diffusion Probabilistic Models. arXiv e-prints ,
+arXiv:2102.09672doi:10.48550/arXiv.2102.09672,
+arXiv:2102.09672.
+Nichol, A., Dhariwal, P., Ramesh, A., Shyam, P.,
+Mishkin, P., McGrew, B., Sutskever, I., Chen, M.,
+2021. GLIDE: Towards Photorealistic Image Generation
+and Editing with Text-Guided Diffusion Models. arXiv
+e-prints , arXiv:2112.10741doi:10.48550/arXiv.2112.
+10741,arXiv:2112.10741.
+Proctor, D.D., 2011. Morphological Annotations for Groups in
+the First Database. ApJ 194, 31. doi:10.1088/0067-0049/
+194/2/31,arXiv:1104.3896.
+Ravanbakhsh, S., Lanusse, F., Mandelbaum, R., Schnei-
+der, J., Poczos, B., 2016. Enabling Dark Energy Sci-
+ence with Deep Generative Models of Galaxy Images.
+arXiv e-prints , arXiv:1609.05796doi:10.48550/arXiv.
+1609.05796,arXiv:1609.05796.
+Ribas, I., Reiners, A., Zechmeister, M., Caballero, J.A.,
+Morales, J.C., Sabotta, S., Baroch, D., Amado, P.J., Quir-
+renbach, A., Abril, M., Aceituno, J., Anglada-Escudé, G.,
+Azzaro, M., Barrado, D., Béjar, V .J.S., Benítez de Haro, D.,
+Bergond, G., Bluhm, P., Calvo Ortega, R., Cardona Guil-
+lén, C., Chaturvedi, P., Cifuentes, C., Colomé, J., Cont,
+D., Cortés-Contreras, M., Czesla, S., Díez-Alonso, E., Drei-
+zler, S., Duque-Arribas, C., Espinoza, N., Fernández, M.,
+Fuhrmeister, B., Galadí-Enríquez, D., García-López, A.,
+González-Álvarez, E., González Hernández, J.I., Guenther,
+E.W., de Guindos, E., Hatzes, A.P., Henning, T., Herrero,
+E., Hintz, D., Huelmo, Á.L., Jeffers, S.V ., Johnson, E.N.,
+de Juan, E., Kaminski, A., Kemmer, J., Khaimova, J., Kha-
+lafinejad, S., Kossakowski, D., Kürster, M., Labarga, F., La-
+farga, M., Lalitha, S., Lampón, M., Lillo-Box, J., Lodieu,
+N., López González, M.J., López-Puertas, M., Luque, R.,
+Magán, H., Mancini, L., Marfil, E., Martín, E.L., Martín-
+Ruiz, S., Molaverdikhani, K., Montes, D., Nagel, E., Nort-
+mann, L., Nowak, G., Pallé, E., Passegger, V .M., Pavlov,
+A., Pedraz, S., Perdelwitz, V ., Perger, M., Ramón-Ballesta,
+A., Reffert, S., Revilla, D., Rodríguez, E., Rodríguez-López,
+C., Sadegi, S., Sánchez Carrasco, M.Á., Sánchez-López,
+A., Sanz-Forcada, J., Schäfer, S., Schlecker, M., Schmitt,
+J.H.M.M., Schöfer, P., Schweitzer, A., Seifert, W., Shan,
+Y ., Skrzypinski, S.L., Solano, E., Stahl, O., Stangret, M.,
+Stock, S., Stürmer, J., Tabernero, H.M., Tal-Or, L., Trifonov,
+T., Vanaverbeke, S., Yan, F., Zapatero Osorio, M.R., 2023.
+The CARMENES search for exoplanets around M dwarfs.
+Guaranteed time observations Data Release 1 (2016-2020).
+A&A 670, A139. doi:10.1051/0004-6361/202244879,
+arXiv:2302.10528.
+Rombach, R., Blattmann, A., Lorenz, D., Esser, P., Ommer,
+B., 2021. High-Resolution Image Synthesis with Latent Dif-
+fusion Models. arXiv e-prints , arXiv:2112.10752doi:10.
+48550/arXiv.2112.10752,arXiv:2112.10752.
+Ronneberger, O., Fischer, P., Brox, T., 2015. U-Net: Con-
+volutional Networks for Biomedical Image Segmentation.
+arXiv e-prints , arXiv:1505.04597doi:10.48550/arXiv.
+1505.04597,arXiv:1505.04597.
+Schawinski, K., Zhang, C., Zhang, H., Fowler, L., Santhanam,
+G.K., 2017. Generative adversarial networks recover features
+in astrophysical images of galaxies beyond the deconvolution
+limit. MNRAS 467, L110–L114. doi:10.1093/mnrasl/
+slx008,arXiv:1702.00403.
+Shimwell, T.W., Röttgering, H.J.A., Best, P.N., Williams, W.L.,
+Dijkema, T.J., de Gasperin, F., Hardcastle, M.J., Heald, G.H.,
+Hoang, D.N., Horneffer, A., Intema, H., Mahony, E.K., Man-
+dal, S., Mechev, A.P., Morabito, L., Oonk, J.B.R., Raf-
+ferty, D., Retana-Montenegro, E., Sabater, J., Tasse, C., van
+Weeren, R.J., Brüggen, M., Brunetti, G., Chy˙ zy, K.T., Con-
+way, J.E., Haverkorn, M., Jackson, N., Jarvis, M.J., McKean,
+J.P., Miley, G.K., Morganti, R., White, G.J., Wise, M.W., van
+Bemmel, I.M., Beck, R., Brienza, M., Bonafede, A., Calistro
+Rivera, G., Cassano, R., Clarke, A.O., Cseh, D., Deller, A.,
+Drabent, A., van Driel, W., Engels, D., Falcke, H., Ferrari,
+C., Fröhlich, S., Garrett, M.A., Harwood, J.J., Heesen, V .,
+Hoeft, M., Horellou, C., Israel, F.P., Kapi´nska, A.D., Kunert-
+Bajraszewska, M., McKay, D.J., Mohan, N.R., Orrú, E.,
+13
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
+
+===== PAGE 14 =====
+Pizzo, R.F., Prandoni, I., Schwarz, D.J., Shulevski, A., Sip-
+ior, M., Smith, D.J.B., Sridhar, S.S., Steinmetz, M., Stroe, A.,
+Varenius, E., van der Werf, P.P., Zensus, J.A., Zwart, J.T.L.,
+2017. The LOFAR Two-metre Sky Survey. I. Survey descrip-
+tion and preliminary data release. A&A 598, A104. doi:10.
+1051/0004-6361/201629313,arXiv:1611.02700.
+SKAO science Team, 2019. SKA1 Scheduling and Archive
+Constraints.
+Smith, M.J., Geach, J.E., Jackson, R.A., Arora, N., Stone, C.,
+Courteau, S., 2022. Realistic galaxy image simulation via
+score-based generative models. MNRAS 511, 1808–1818.
+doi:10.1093/mnras/stac130,arXiv:2111.01713.
+Sohl-Dickstein, J., Weiss, E.A., Maheswaranathan, N.,
+Ganguli, S., 2015. Deep Unsupervised Learning us-
+ing Nonequilibrium Thermodynamics. arXiv e-prints ,
+arXiv:1503.03585doi:10.48550/arXiv.1503.03585,
+arXiv:1503.03585.
+Song, J., Meng, C., Ermon, S., 2020. Denoising Diffusion
+Implicit Models. arXiv e-prints , arXiv:2010.02502doi:10.
+48550/arXiv.2010.02502,arXiv:2010.02502.
+Spindler, A., Geach, J.E., Smith, M.J., 2021. AstroVaDEr: as-
+tronomical variational deep embedder for unsupervised mor-
+phological classification of galaxies and synthetic image gen-
+eration. MNRAS 502, 985–1007. doi:10.1093/mnras/
+staa3670,arXiv:2009.08470.
+Tolley, E., 2024. Wavelet Scattering Networks for Identifying
+Radio Galaxy Morphologies. URSI Radio Science Letters 5,
+28. doi:10.46620/23-0028,arXiv:2403.03016.
+van Weeren, R.J., de Gasperin, F., Akamatsu, H., Brüggen, M.,
+Feretti, L., Kang, H., Stroe, A., Zandanel, F., 2019. Diffuse
+Radio Emission from Galaxy Clusters. ssr 215, 16. doi:10.
+1007/s11214-019-0584-z,arXiv:1901.04496.
+Viˇcánek Martínez, T., Baron Perez, N., Brüggen, M., 2024.
+Simulating images of radio galaxies with diffusion models.
+A&A 691, A360. doi:10.1051/0004-6361/202451429,
+arXiv:2410.07794.
+Wang, Y ., Cao, C., Xiangyang Xue Yanwei Fu, K.F., 2023.
+Towards Context-Stable and Visual-Consistent Image In-
+painting. arXiv e-prints , arXiv:2312.04831doi:10.48550/
+arXiv.2312.04831,arXiv:2312.04831.
+Wittor, D., 2023. Cosmic-Ray Acceleration and Magnetic
+Fields in Galaxy Clusters and Beyond: Insights from
+Radio Observations. Universe 9, 319. doi:10.3390/
+universe9070319.
+Wong, O.I., Garon, A.F., Alger, M.J., Rudnick, L., Shabala,
+S.S., Willett, K.W., Banfield, J.K., Andernach, H., Norris,
+R.P., Swan, J., Hardcastle, M.J., Lintott, C.J., White, S.V .,
+Seymour, N., Kapi ´nska, A.D., Tang, H., Simmons, B.D.,
+Schawinski, K., 2025. Radio Galaxy Zoo data release 1:
+100185 radio source classifications from the FIRST and AT-
+LAS surveys. MNRAS 536, 3488–3506. doi:10.1093/
+mnras/stae2790,arXiv:2412.14502.
+ZuHone, J.A., Markevitch, M., Weinberger, R., Nulsen,
+P., Ehlert, K., 2021. How Merger-driven Gas Motions
+in Galaxy Clusters Can Turn AGN Bubbles into Radio
+Relics. ApJ 914, 73. doi:10.3847/1538-4357/abf7bc,
+arXiv:2012.02001.
+14
+This preprint research paper has not been peer reviewed. Electronic copy available at: https://ssrn.com/abstract=7388510
+Preprint not peer reviewed
