@@ -1,21 +1,22 @@
-# Hourly H(s)H construction-scan rotation
+# Hourly H(s)H Construction Scan — source rotation
 
-This ledger records completed public-source sectors so consecutive automation runs do not repeat them.
+- Last completed sector: **2. arXiv mathematics and nonlinear systems**
+- Completed: **2026-09-08T15:00:30Z**
+- Next sector: **3. Other preprint servers**
+- Selection rule: retain only additions with operationally useful constructions, quantitative results, reproducible machinery, empirical limits, or structurally decisive null/incompatibility results.
 
-## Current state
+## Retained in the latest pass
 
-- Last completed sector: 1 — arXiv physics (gr-qc, hep-th, hep-ph, astro-ph, quant-ph)
-- Completed at: 2026-09-08T14:01:10Z
-- Next sector: 2 — arXiv mathematics and nonlinear systems
-- Search window: recent listings through the arXiv announcement dated 2026-09-07; included one newly surfaced late-August experimental preprint still present in the current recent listings.
-- Retained primary records: arXiv:2609.02635v1; arXiv:2609.01644v1; arXiv:2609.05407v1; arXiv:2608.28832v1.
-- Examined but not promoted: arXiv:2609.01634v1 (useful shared machinery, but lower immediate leverage than retained items); arXiv:2609.01267v1 (topological no-go result, not yet close enough to a current H(s)H operator or readout).
+- arXiv:2609.04538v1 — Lagrangian polymer conformation; measured anisotropic history-dependent relaxation and constitutive-model failure.
+- arXiv:2609.05243v1 — work-conservative transfer across non-conforming fluid/structure discretizations.
+- arXiv:2609.04617v1 — elastic-turbulence attractor and scaling across duct/pipe boundary geometries.
+- arXiv:2609.03197v1 — executable invariant reduction of conservation laws, variational forms, and presymplectic structures.
+- arXiv:2609.03932v1 — motion-group to Khovanov-homology automorphism map and split-link semidirect-product decomposition.
 
-## Rotation order
+## Examined but not promoted in the latest pass
 
-1. arXiv physics
-2. arXiv mathematics and nonlinear systems
-3. Other preprint servers
-4. Journal early-view and society repositories
-5. Primary institutional and collaboration releases
-6. Data and experiment pass
+- arXiv:2609.04719v1 — SLE/turbulence scaling construction; potentially useful but insufficiently distinct from retained stochastic scaling machinery for this pass.
+- arXiv:2609.03909v1 — conic pseudo-Finsler mechanics; useful shared machinery, but no immediate H(s)H variable map without a derived direction-dependent kinetic form.
+- arXiv:2609.03913v1 — domain-wall/conformal-map match not strong enough for promotion.
+- arXiv:2609.03500v1 — hyperbolic-manifold active-continuum scaling not sufficiently close operationally.
+- arXiv:2609.04153v1 — dynamics on a flat three-torus; rejected as a direct counterpart to an embedded donut torus.
