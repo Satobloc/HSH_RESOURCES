@@ -1,20 +1,20 @@
 # Hourly H(s)H Construction Scan — source rotation
 
-- Last completed sector: **6. Data and experiment pass**
-- Completed: **2026-09-08T20:03:43Z**
-- Next sector: **1. arXiv physics: gr-qc, hep-th, hep-ph, astro-ph, quant-ph**
+- Last completed sector: **1. arXiv physics: gr-qc, hep-th, hep-ph, astro-ph, quant-ph**
+- Completed: **2026-09-08T21:05:28Z**
+- Next sector: **2. arXiv mathematics and nonlinear systems: math-ph, differential geometry, geometric topology, dynamical systems, nlin, fluids**
 - Selection rule: retain only additions with operationally useful constructions, quantitative results, reproducible machinery, empirical limits, or structurally decisive null/incompatibility results.
 
 ## Retained in the latest pass
 
-- LUX-ZEPLIN high-energy nuclear-recoil candidate as quantitatively exposed by arXiv:2609.02608v2 and arXiv:2609.01592v2 — one event at 248 ± 32.5 keVnr in 2.84 tonne-year, maximum local significance 3.4 sigma and global significance 2.6 sigma. A neutral-current absorption benchmark requiring 1.07e-46 cm^2 and an 11.5 TeV EFT scale is excluded by a KamLAND neutron-emission recast, making the cross-apparatus incompatibility more useful than the speculative ontology.
-- Paolo Soffitta et al., arXiv:2603.23808 / Astrophysical Journal (2026) — phase-averaged and phase-resolved IXPE and optical polarimetry after the 17 July and 6 August 2025 Crab glitches finds no polarization change; under the rotating-vector plus starquake assumptions, any magnetic-obliquity change is no greater than ±4 degrees at 95% confidence.
-- LIGO Scientific, Virgo and KAGRA Collaborations, arXiv:2605.27090 and GWTC-5.0 — public O4b calibrated strain, auxiliary channels, data-quality segments and event products. O4b provides 91.08 days of triple-detector time; GWTC-5.0 contains 390 p_astro >= 0.5 transients, while the propagation/cosmology analysis uses 236 sources and finds no departure from GR propagation.
-- M. E. Ramos-Ceja et al., arXiv:2607.27772 with eROSITA-DE DR2 — catalogue-only release from the first three all-sky scans: 1,911,744 point-like and 63,796 extended detections at 0.2–2.3 keV, plus nearly 15,000 hard-band sources and six counterpart catalogues. Retained as a large-scale benchmark for selection, extent classification and cross-survey readout rather than as direct object morphology.
+- W. A. Zúñiga-Galindo, arXiv:2609.04358v1 — a p-adic Dirac equation with bounded nonlocal kernel operators and two continuous-time discretizations. On the finite hierarchical graph, summing over internal particle/antiparticle components produces a normalized stochastic transition matrix at every time. Retained as a concrete internal-state-to-coarse-readout construction, with explicit incompatibility as a causal spacetime model because the ultrametric dynamics violates Einstein causality.
+- Caglar Pala, arXiv:2609.04448v1 — branch-complete classification of all 116 local parity-even pure-gravity nonmetricity operators through four derivatives. Linear diffeomorphism invariance leaves a three-parameter quadratic family (A,B,C); generic regular points carry 8 degrees of freedom and an unavoidable opposite-residue massive spin-2 pole. Only GR/STEGR and a scalar extension remain fully healthy around Minkowski space.
+- Robert de Mello Koch, Vinayak Raj and Anik Rudra, arXiv:2609.04664v1 — a finite-N invariant configuration space realized as an eight-sheeted branched cover of its primary-invariant space. Ramification creates additional saddles; an explicit rank-two saddle controls both the leading Borel singularity and large-order growth, including the first subleading correction without fitted parameters. Retained as a warning against primary-coordinate-only reductions.
+- M.M. Sheikh-Jabbari and H. Yavartanoo, arXiv:2609.04844v1 — a constraint-level separation between a partially gauged Carrollian sigma model and a true null string. Carroll-Weyl gauging is obstructed at finite tension but adds a first-class constraint and gauge-orbit identification at zero tension. Retained as a decisive singular-limit/gauge-rank audit for any null or tensionless H(s)H limit.
 
 ## Examined but not promoted in the latest pass
 
-- Seasonal-modulation forecasts for the LZ high-energy event — testable, but predictive rather than measured.
-- Older xenon-recoil calibration extending to 426 keV — relevant background machinery for the LZ event but not a new release.
-- Secondary news reports describing the LZ candidate — rejected in favor of traceable quantitative arXiv analyses; a public LZ Collaboration manuscript was not located in this pass.
-- Generic GWTC-5 population interpretations — not promoted separately where they did not add a sharper propagation, calibration, or readout constraint.
+- arXiv:2609.04309, strong-drive Floquet engineering — finite-duration pulses generate useful effective interactions and symmetry sectors, but no sharper H(s)H consequence than already retained readout/back-action constructions.
+- arXiv:2609.04459, 3D-control quantum LDPC layout — strong engineering improvements for a [[144,12,12]] code, but the embedding result did not transfer cleanly to the current finite-core or resolving-map equations.
+- arXiv:2609.05350, jet-precession evolution — structurally relevant competing torques, but the reported flare-interval behavior is prospective rather than a new measurement or bound.
+- Generic reviews and keyword-only matches in zitterbewegung, torsion, strings, anyons and reconnection were rejected when they supplied no new equation, branch classification, dataset, empirical bound or reproducible solver.
