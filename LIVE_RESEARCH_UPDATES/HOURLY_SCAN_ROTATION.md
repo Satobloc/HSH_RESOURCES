@@ -1,21 +1,20 @@
 # Hourly H(s)H Construction Scan — source rotation
 
-- Last completed sector: **2. arXiv mathematics and nonlinear systems: math-ph, differential geometry, geometric topology, dynamical systems, nlin, fluids**
-- Completed: **2026-09-08T22:04:55Z**
-- Next sector: **3. Other preprint servers: HAL, Zenodo, OSF Preprints, engrXiv, ChemRxiv, bioRxiv and medRxiv**
+- Last completed sector: **3. Other preprint servers: HAL, Zenodo, OSF Preprints, engrXiv, ChemRxiv, bioRxiv and medRxiv**
+- Completed: **2026-09-08T23:12:40Z**
+- Next sector: **4. Journal early-view/accepted-paper pages and society repositories**
 - Selection rule: retain only additions with operationally useful constructions, quantitative results, reproducible machinery, empirical limits, or structurally decisive null/incompatibility results.
 
 ## Retained in the latest pass
 
-- Ehsan Roohi, arXiv:2609.04606v1 — localized Gaussian kinetic representations preserve conserved moments below 1% error and transport/higher moments to roughly 1–2% for separately fitted Mach-3 and Mach-5 shocks at a 4608-coefficient budget, while matched multilinear grids give 89–98% errors. Withheld Mach-6 distribution error falls from 42.86 ± 5.40% to 11.45 ± 0.94%, but transport errors remain 30–40%; an explicit coordinate guard rejects Mach 12.
-- Zhi-Xun Xu and Amaresh Sahu, arXiv:2609.05373v1 — confined lipid-bilayer simulations show that the transverse velocity autocorrelation is not the exponential predicted by a memoryless continuum closure, but has damped oscillations and a slow tail. A Mori–Zwanzig memory construction yields wavevector-dependent surface viscosity, validated over a decade in wavevector and extrapolating to 0.064–0.18 pN·μs/nm.
-- Amareshwara Sainadh Chamarthi, arXiv:2604.20036v2, revised 2026-09-04 — complete characteristic eigenstructures for the Allaire five-equation model. Both fully and semi-conservative formulations maintain pressure/velocity equilibrium when reconstruction is performed in characteristic space; direct physical-space reconstruction produces order-one interface errors regardless of variable choice. Shear is exactly decoupled from thermodynamic and interface fields.
-- Joaquín Cullen, Melisa Y. Vinograd and Patricio Clark di Leoni, arXiv:2609.04477v1 — Newton–Krylov/Floquet continuation finds a steady state and three periodic-orbit families in 2D Rayleigh–Bénard flow. S2 symmetry breaks near Ra=9e6, while the leading Lyapunov exponent turns positive only near Ra=1.4e7; heat transport remains approximately Nu=0.16 Ra^0.2748 across the intervening transitions.
-- Jack Keeler and Mark Blyth, arXiv:2609.04888v1 — exact forced-KdV and numerical Euler branches show homoclinic shedding: for supercritical Fr>1, critical-flow branches roll into loops and reconnect after emitting paired upstream/downstream solitary waves. Trench, Gaussian and algebraically decaying Agnesi forcings have distinct termination and branch-merger structures.
+- Eva Bertosin, Bert Van Herck, Anders Barth, Shuo Wang and Cees Dekker, bioRxiv:2026.09.03.749129v1, posted 2026-09-08 — a tetrameric octagonal DNA-origami nanopore reversibly changes inner diameter from 57 to 66 nm after oligonucleotide addition, reaches the dilated state within minutes, recontracts more slowly, retains both conformations after lipid-bilayer insertion, and supports selective transport after Nsp1 functionalization. Outer diameter reaches 87 nm.
+- Y. Chen and D. Vigolo, bioRxiv:2026.07.20.739554v2, revised 2026-09-08 with new results — a biomimetic vein-on-chip, GPV, CFD and FSI identify a Reynolds-number-dependent transition from a symmetric post-valve jet to a stable asymmetric branch. Compliance delays onset by widening the effective opening; a small geometric offset advances onset through higher gap velocity; the selected branch persistently biases red-blood-cell-sized particle transport.
+- S. Nishikawa, S. Kuwana, G. Honda, H. Hashimura, H. Sawai and S. Ishihara, bioRxiv:2026.09.02.748873v1, posted 2026-09-08 — Young–Laplace shape analysis and AFM indentation motivate a hydrodynamic phase-field model with independently tunable surface and interfacial tensions. Once stalk elongation begins, the cell mass lifts by dewetting; quantitative comparison identifies the mechanical conditions for substrate detachment and 3D morphology.
+- S. Wang, B. Zhu, S. Li and X. Wei, bioRxiv:2026.08.12.744394v2, revised 2026-09-08 with new results — SPARKLE estimates a sample-level leakage length and gene-specific leakage coefficients from capture locations outside segmentation masks, applies correction only where goodness of fit supports it, and uses expression-dependent conservative shrinkage. It leads cell-wise concordance in 8/10 simulated scenarios and RMSE in 9/10, with near-linear runtime scaling.
 
 ## Examined but not promoted in the latest pass
 
-- arXiv:2609.04595, discrete-power-function Michell–Prager trusses — structurally attractive but the available evidence did not supply a sharper transferable bound than the retained interface and reduced-representation results.
-- arXiv:2609.04675 and related high-codimension minimal-submanifold pinching results — rigorous curvature bounds, but no sufficiently direct finite-core, readout or solver consequence for the current map.
-- arXiv:2609.04816, deformation stability of Kähler/balanced hyperbolicity — useful moving-intersection machinery, but too remote from the present typed H(s)H variables to promote.
-- Generic topology, foliation and geometric-analysis matches were rejected when similarity depended mainly on terminology or visual form.
+- R. De Marco et al., bioRxiv:2026.05.01.721665v3 — a useful demonstration that FFT window length is not a neutral preprocessing choice, but its dolphin-whistle classifier is less directly transferable than the retained spatial-leakage construction.
+- I. Filin, bioRxiv:2025.06.24.659690v7 — conical-helix fits and aperture inclination are structurally suggestive, but no revision-specific quantitative addition strong enough for promotion was established.
+- IS110 transposon dual sequence/structure recognition, Pan1 self-assembly, and macrocyclic-peptide topology records were rejected as more remote from the current typed H(s)H variables.
+- Same-day medRxiv records, HAL search results and Zenodo records yielded no stronger finite-core, characteristic, topology, or readout construction.
