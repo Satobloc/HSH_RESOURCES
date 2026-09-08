@@ -1,21 +1,21 @@
 # Hourly H(s)H Construction Scan — source rotation
 
-- Last completed sector: **3. Other preprint servers**
-- Completed: **2026-09-08T16:02:21Z**
-- Next sector: **4. Journal early-view and accepted-paper pages**
+- Last completed sector: **4. Journal early-view and accepted-paper pages**
+- Completed: **2026-09-08T17:00:02Z**
+- Next sector: **5. Primary institutional and collaboration releases**
 - Selection rule: retain only additions with operationally useful constructions, quantitative results, reproducible machinery, empirical limits, or structurally decisive null/incompatibility results.
 
 ## Retained in the latest pass
 
-- bioRxiv:10.64898/2026.08.25.747076v1 — curvature-controlled helical collective order; convex/concave sign reversal, local/global chirality distinction, and +1 dome defects.
-- bioRxiv:10.64898/2026.08.31.748270v1 — circular closure plus crowding selects quasi-planar structure, suppresses size fluctuations, and shortens decorrelation time.
-- HAL:hal-05742301v1 / DOI 10.3847/1538-4357/ae80ae — 31-flare high-cadence dataset with 6–24 s kernel periods, 2–3 s heating events, 480–1200 km kernels, and 20–1800 km/s slipping.
+- Physical Review Research 8, 033283 / DOI 10.1103/dy7y-qllc — probe-induced quadratic spin-noise scaling above a measured density threshold, plus an optical quench that suppresses the nonlinear contribution.
+- Physical Review Research 8, 033292 / DOI 10.1103/xd68-dpwm — direct large-chain Lieb-Robinson correlation calculation; disorder arrests propagation and yields a fitted localization-length exponent of -2.07.
+- Physical Review Research 8, 033104 / DOI 10.1103/5mmn-fm2p — newly surfaced readout counterexample: ballistic phase mixing plus a moving sampling trajectory produces diffusion-like temporal signals and 3–4-drift-period decorrelation.
+- Physical Review Research 8, 033288 / DOI 10.1103/dn6t-y9ky — theorem and semidefinite witnesses separating classical-memory mixed-unitary channels from channels requiring quantum memory.
 
 ## Examined but not promoted in the latest pass
 
-- bioRxiv:10.64898/2026.03.18.711671v2 — Tau condensate core–shell aging; revision surfaced September 1, but no verified new quantitative result over v1 was established.
-- bioRxiv:10.1101/2025.05.08.652886v3 — hierarchical cytoplasmic fluctuations; useful multiscale readout machinery but overlaps the preceding pass's retained two-timescale constitutive result.
-- ChemRxiv:10.26434/chemrxiv.15008358v1 — peptide helicity mapping; local structure match was too weak for H(s)H promotion.
-- HAL:hal-05704867v2 and hal-05704870v1 — newly deposited records of 2014 reconnection papers, rejected as new additions.
-- HAL:hal-05738441v1 — recent deposit of an already indexed 2025/2026 vortex-lattice result; no new version-specific content established.
-- Zenodo API — temporarily unresponsive during the pass; public search results yielded no qualifying recent record.
+- Physical Review Research 8, 033289 / DOI 10.1103/qcq3-c6ph — atom-surface rotation-transport proposal; useful apparatus and forecast 10% relative uncertainty for c4, but no measurement yet.
+- Physical Review Research 8, 033278 — stable 3D SOC atomic-molecular solitons; interesting vortex support but no sufficiently close finite-core/readout counterpart beyond generic nonlinear localization.
+- Physical Review Research 8, 033275 — chiral-current/surface-wave proposal in superfluid helium-3; retained for later experimental watch, but currently a proposal without new measured values.
+- Physical Review Letters 137, 105101 — topological arrest of ballooning modes; relevant connectivity machinery, but not promoted because it predates the current pass and no newly surfaced quantitative addition was verified.
+- Nature Portfolio, Optica, Springer and indexed IOP early-view results checked in this pass yielded no additional primary article that cleared the structural and quantitative filter.
