@@ -1,21 +1,19 @@
 # Hourly H(s)H Construction Scan — source rotation
 
-- Last completed sector: **4. Journal early-view and accepted-paper pages**
-- Completed: **2026-09-08T17:00:02Z**
-- Next sector: **5. Primary institutional and collaboration releases**
+- Last completed sector: **5. Primary institutional and collaboration releases**
+- Completed: **2026-09-08T17:58:21Z**
+- Next sector: **6. Data and experiment pass**
 - Selection rule: retain only additions with operationally useful constructions, quantitative results, reproducible machinery, empirical limits, or structurally decisive null/incompatibility results.
 
 ## Retained in the latest pass
 
-- Physical Review Research 8, 033283 / DOI 10.1103/dy7y-qllc — probe-induced quadratic spin-noise scaling above a measured density threshold, plus an optical quench that suppresses the nonlinear contribution.
-- Physical Review Research 8, 033292 / DOI 10.1103/xd68-dpwm — direct large-chain Lieb-Robinson correlation calculation; disorder arrests propagation and yields a fitted localization-length exponent of -2.07.
-- Physical Review Research 8, 033104 / DOI 10.1103/5mmn-fm2p — newly surfaced readout counterexample: ballistic phase mixing plus a moving sampling trajectory produces diffusion-like temporal signals and 3–4-drift-period decorrelation.
-- Physical Review Research 8, 033288 / DOI 10.1103/dn6t-y9ky — theorem and semidefinite witnesses separating classical-memory mixed-unitary channels from channels requiring quantum memory.
+- ESO / GRAVITY+ Collaboration release eso2612, tracing Nature DOI 10.1038/s41586-026-10894-w and arXiv:2607.12664 — discovery and orbit fit of S301, a stellar test history with an 8.7-year period, eccentricity about 0.983, pericenter 136–142 Schwarzschild radii, and a forecast spin-dependent precession of 0.11 degrees per orbit times the projected dimensionless spin.
+- ATLAS Collaboration Run-3 displaced-vertex plus displaced-muon search, arXiv:2603.01991 / Phys. Lett. B 878 (2026) 140509 — no significant excess; model-independent visible-cross-section bounds down to 0.018 fb and mass–lifetime exclusions extending to 100 ns.
+- PPPL / DIII-D PACMAN release, tracing arXiv:2511.08818 and Nuclear Fusion 66 (2026) 076050 — a four-block, safety-arbitrated diagnostic-to-actuator pipeline demonstrated in five live experiments, with a 5–50 ms design cycle, typical operation near 20 ms, and tearing-mode prediction about 200 ms in advance.
 
 ## Examined but not promoted in the latest pass
 
-- Physical Review Research 8, 033289 / DOI 10.1103/qcq3-c6ph — atom-surface rotation-transport proposal; useful apparatus and forecast 10% relative uncertainty for c4, but no measurement yet.
-- Physical Review Research 8, 033278 — stable 3D SOC atomic-molecular solitons; interesting vortex support but no sufficiently close finite-core/readout counterpart beyond generic nonlinear localization.
-- Physical Review Research 8, 033275 — chiral-current/surface-wave proposal in superfluid helium-3; retained for later experimental watch, but currently a proposal without new measured values.
-- Physical Review Letters 137, 105101 — topological arrest of ballooning modes; relevant connectivity machinery, but not promoted because it predates the current pass and no newly surfaced quantitative addition was verified.
-- Nature Portfolio, Optica, Springer and indexed IOP early-view results checked in this pass yielded no additional primary article that cleared the structural and quantitative filter.
+- PPPL NSTX-U geometry overview (19 August 2026) — useful design context, but primarily a facility prospectus without a newly reported experimental parameter, threshold, or primary result.
+- ATLAS double-Higgs bbττ briefing (5 August 2026) — substantive particle-physics result, but no sufficiently direct structural addition beyond generic parameter inference for the current H(s)H construction map.
+- ESO Betelgeuse-companion and exomoon releases — traceable observations, but weak operational relevance to the selected structural targets.
+- Saturn south-polar decagon reports — potentially relevant to polygonal-wave bifurcation, but not promoted because the institutional-source-to-primary-result chain and quantitative mode-selection analysis were not established in this pass.
