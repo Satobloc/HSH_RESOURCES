@@ -1,20 +1,20 @@
 # Hourly H(s)H Construction Scan — source rotation
 
-- Last completed sector: **4. Journal early-view/accepted-paper pages and society repositories**
-- Completed: **2026-09-09T02:04:53Z**
-- Next sector: **5. Primary institutional and collaboration releases**
+- Last completed sector: **5. Primary institutional and collaboration releases**
+- Completed: **2026-09-09T03:06:23Z**
+- Next sector: **6. Data and experiment pass**
 - Selection rule: retain only additions with operationally useful constructions, quantitative results, reproducible machinery, empirical limits, or structurally decisive null/incompatibility results.
 
 ## Retained in the latest pass
 
-- Mehrana R. Nejad and L. Mahadevan, Phys. Rev. E 114, 034403, published 2026-09-08 — a controlled long-wavelength reduction of a three-dimensional active nematic layer keeps thickness as a dynamical field. Thickness, orientational order, surface shape and curvature form coupled modes; fixed-thickness reduction deletes instability branches. For a cylindrical extensile ordered state the axial-mode condition is \(-m\gamma/(\mu K_Q)>4/(3R_0^2)\), with \(R_c=[4\mu K_Q/(-3m\gamma)]^{1/2}\).
-- T. Morita et al., Phys. Rev. E 114, 035206, published 2026-09-08 — two-directional Thomson scattering of laser-produced plasmas with 1-mm and 2-mm drive-spot separations reconstructs upstream magnetic field and flux by mass/energy conservation. Despite different global expansion histories, both formed sheets give comparable fields and normalized reconnection rates \(0.1\)–\(0.2\), supporting a local-sheet rather than global-inflow rate law after sheet formation.
-- Adrian Scurtu, Phys. Rev. E 114, 035209, published 2026-09-08 — four neutral-pressure ramps spanning nearly an order of magnitude in rate drive a counter-rotating dusty-plasma lobe pair from a statistically confirmed baseline asymmetry \(\Delta\alpha<0\) through equalization and inversion. Only the gentlest ramp completes inversion during forcing; the normalized inversion time rises with \(De=T_{rot}/\tau_{ramp}\).
-- Aditya Kumar Dutta, Swarnajit Chatterjee, Matthieu Mangeat and Raja Paul, Phys. Rev. E 114, 034115, published 2026-09-08 — coherent chiral motion in a finite-range nonreciprocal Vicsek mixture is a metastable finite-time state at every nonzero motility, not an asymptotically stable phase. The breaking time scales approximately as \(\tau\sim v_0^{-\xi}\), with \(\xi\simeq2+1/(4\mu)\); high density, low speed, sufficient mixing and system size small relative to interaction range are jointly required.
-- Samuele De Bartolo and Carlo De Michele, Phys. Rev. E 114, 034305, published 2026-09-08 — normalized branch widths are modeled on a simplex with an exchangeable Dirichlet null and a concentrated isotropic logistic-normal alternative. Eleven Brahmaputra-Jamuna surveys show a 1976–1985 uniform regime, Dirichlet breakdown between 1995 and 1999, logistic-normal goodness of fit above 0.95, and logistic transition fit \(R^2=0.997\). This is compositional branch geometry, not braid-group topology.
+- Michael Grimes et al., Nature Materials, published 2026-09-07 — an 80-nm free-standing BaTiO3 membrane provides a bistable, non-volatile chirality switch: ±3.5-V write pulses reverse ferroelectric polarization and phonon angular momentum, ±0.2 V holds the state, and circular-dichroic RIXS reverses with both field and X-ray helicity. The dichroic signal is about 5% of total intensity; 16 independent measurements were made per field/polarization configuration. Experimental, derived and computational datasets are public through ESRF and Zenodo.
+- BESIII Collaboration, Nature 657, 92–97, published 2026-09-02 — entangled Lambda–anti-Lambda pairs and double tagging reconstruct an otherwise invisible neutrino channel through a joint seven-variable likelihood. From (10.087±0.044)×10^9 J/psi events, BESIII obtains B(Lambda→p e anti-neutrino)=(8.16±0.22_stat±0.15_syst)×10^-4, weak-electricity coupling -0.19^{+0.65}_{-0.63}±0.18 (consistent with zero), and |V_us|=0.2339±0.0041 with lattice-QCD form factors.
+- Or Dobkowski et al., Science Advances 12, aec8045, published 2026-09-02; Oxford release 2026-08-28 — a hybrid atom-chip interferometer holds one rubidium wave packet stationary while a second follows free fall, then recombines them to measure the branch-relative gauge phase. About 13 oscillations produce approximately 80 rad of phase; the blind simulation differs by 2 rad (2.5%), statistical phase noise is 1.3%, and ±5% deviations from the cubic law or prefactor are excluded by the reported comparison.
+- Giorgio Galanti and Marco Roncadelli, Phys. Rev. Lett. 137, 111002, published 2026-09-08 — a full Carpet analysis supports a GRB 221009A photon energy of 300^{+43}_{-38} TeV. Standard CMB-attenuated propagation and the explored ALP-only scenarios strongly disfavor that event; specific LIV models remain compatible only under conditional scales E_LIV,1<1.22^{+0.19}_{-0.22}×10^21 GeV and E_LIV,2<2.03^{+0.17}_{-0.22}×10^13 GeV at 95% CL. These are model-conditioned upper bounds from one event, not a generic detection of Lorentz violation.
 
 ## Examined but not promoted in the latest pass
 
-- Kaviya Bhaskaran, Shobhit Jain and Mingwu Li, Phys. Rev. E 114, 034303 — spectral-submanifold reduction is useful solver machinery, but less directly informative than the retained finite-thickness and metastability tests.
-- Same-date Nature, Science, Optica and Springer searches produced no stronger traceable primary result in the target construction classes.
-- APS items already retained in the prior journal cycle—measurement back-action, disordered operator-front arrest, moving-projection phase mixing and mixed-unitary memory witnesses—were excluded as duplicates.
+- Previously retained institutional releases on S301, the ATLAS displaced-vertex search and PACMAN plasma control were excluded as duplicates.
+- A proposed superfluid-helium-3 qubit and several institutional device forecasts were rejected because they lack a realized apparatus or new measurement.
+- Quantinuum’s complement-sampling demonstration was quantitatively substantial but less structurally direct than the retained history, chirality and hidden-channel readout constructions.
+- Press-release restatements without a traceable primary paper, dataset or new numerical result were excluded.
