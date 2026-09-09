@@ -1,20 +1,19 @@
 # Hourly H(s)H Construction Scan — source rotation
 
-- Last completed sector: **5. Primary institutional and collaboration releases**
-- Completed: **2026-09-09T03:06:23Z**
-- Next sector: **6. Data and experiment pass**
+- Last completed sector: **6. Data and experiment pass**
+- Completed: **2026-09-09T04:03:21Z**
+- Next sector: **1. arXiv physics**
 - Selection rule: retain only additions with operationally useful constructions, quantitative results, reproducible machinery, empirical limits, or structurally decisive null/incompatibility results.
 
 ## Retained in the latest pass
 
-- Michael Grimes et al., Nature Materials, published 2026-09-07 — an 80-nm free-standing BaTiO3 membrane provides a bistable, non-volatile chirality switch: ±3.5-V write pulses reverse ferroelectric polarization and phonon angular momentum, ±0.2 V holds the state, and circular-dichroic RIXS reverses with both field and X-ray helicity. The dichroic signal is about 5% of total intensity; 16 independent measurements were made per field/polarization configuration. Experimental, derived and computational datasets are public through ESRF and Zenodo.
-- BESIII Collaboration, Nature 657, 92–97, published 2026-09-02 — entangled Lambda–anti-Lambda pairs and double tagging reconstruct an otherwise invisible neutrino channel through a joint seven-variable likelihood. From (10.087±0.044)×10^9 J/psi events, BESIII obtains B(Lambda→p e anti-neutrino)=(8.16±0.22_stat±0.15_syst)×10^-4, weak-electricity coupling -0.19^{+0.65}_{-0.63}±0.18 (consistent with zero), and |V_us|=0.2339±0.0041 with lattice-QCD form factors.
-- Or Dobkowski et al., Science Advances 12, aec8045, published 2026-09-02; Oxford release 2026-09-03 — a hybrid atom-chip interferometer holds one rubidium wave packet stationary while a second follows free fall, then recombines them to measure the branch-relative gauge phase. About 13 oscillations produce approximately 80 rad of phase; the blind simulation differs by 2 rad (2.5%), statistical phase noise is 1.3%, and ±5% deviations from the cubic law or prefactor are excluded by the reported comparison.
-- Giorgio Galanti and Marco Roncadelli, Phys. Rev. Lett. 137, 111002, published 2026-09-08 — a full Carpet analysis supports a GRB 221009A photon energy of 300^{+43}_{-38} TeV. Standard CMB-attenuated propagation and the explored ALP-only scenarios strongly disfavor that event; specific LIV models remain compatible only under conditional scales E_LIV,1<1.22^{+0.19}_{-0.22}×10^21 GeV and E_LIV,2<2.03^{+0.17}_{-0.22}×10^13 GeV at 95% CL. These are model-conditioned upper bounds from one event, not a generic detection of Lorentz violation.
+- L. Toscani De Col et al., arXiv:2606.04997 v1 2026-06-03, v2 2026-06-05; public data by Sebastian Lahs, Zenodo v1 published 2026-09-08 — continuous feedback locks a 148-nm laser to the Th-229 transition and compares its subharmonic to a Yb+ clock. The 23-h, 20-s-cycle data give instability 3×10^-12/sqrt(tau/s), approaching 10^-15 over one day; no Lomb–Scargle peak crosses the global 5% threshold from 1/t_total to 1/T. A linear ratio drift of (2±4)×10^-14/day is consistent with zero. Beat traces, Allan data, Monte Carlo thresholds and 95% exclusion bands are public.
+- Alex T. Chartier et al., AMPERE GRD & IRD Data (2020-Jan), Zenodo v2.0 published 2026-09-02 and deposited 2026-09-08 — 19.0 GB of north/south individual delta-B observations and fitted delta-B/Birkeland-current products. IRD samples are arranged in 10-min chunks at 2-min resolution with previously flagged bad observations removed; GRD maps are fitted at 2-min cadence. This is a useful raw-versus-inverted multi-probe benchmark, not a new 2020 physical event.
+- Christelle Kadlec et al., numerical supplement to “THz-induced phonomagnetism in diamagnetic quantum paraelectric KTaO3,” Zenodo v1 published 2026-09-07 and deposited 2026-09-08; paper arXiv:2608.27060 v1 2026-08-27 — a 20.1-MB figure/numerical package accompanies an experiment where approximately 300-kV/cm circular THz pulses drive a soft polar phonon. Opposite-helicity subtraction cancels most helicity-even Kerr response and isolates the odd Faraday signal; the model reproduces transient curves but not their unexpected temperature-dependent amplitudes.
 
 ## Examined but not promoted in the latest pass
 
-- Previously retained institutional releases on S301, the ATLAS displaced-vertex search and PACMAN plasma control were excluded as duplicates.
-- A proposed superfluid-helium-3 qubit and several institutional device forecasts were rejected because they lack a realized apparatus or new measurement.
-- Quantinuum’s complement-sampling demonstration was quantitatively substantial but less structurally direct than the retained history, chirality and hidden-channel readout constructions.
-- Press-release restatements without a traceable primary paper, dataset or new numerical result were excluded.
+- Previously retained GWOSC O4/GWTC-5.0, eROSITA DR2, LZ/KamLAND, Crab-glitch/IXPE and BaTiO3 RIXS releases were excluded as duplicates.
+- Forecast-only sensitivity studies and catalogue restatements without newly released measurements or files were excluded.
+- The AMPERE release is retained for inversion architecture and versioned data access; its January 2020 observations are not treated as a newly observed phenomenon.
+- The THz dataset is retained for its paired-helicity nuisance-cancellation map; phonon angular momentum is not identified with H(s)H material twist or writhe.
