@@ -1,0 +1,522 @@
+===== PAGE 1 =====
+Dual Park–Ravani Interpolation of Rigid Motions:
+Acceleration-Field Continuity and Holonomic Hermite Repair
+Daniel Condurache
+“Gheorghe Asachi” Technical University of Ia¸ si, Romania
+Abstract
+The Park–Ravani construction generates a twice continuously differentiable, frame-
+invariant spline on SO(3) by exponentiating cubic canonical-coordinate polynomials. We
+show that the complete construction transfers, without a change of form, to the group of
+orthogonal dual tensors, a representation of rigid displacements. The transferred recurrence
+is stated compactly through the dual extension of the right Jacobian of the exponential
+map and its first Fr´ echet derivative. This yields interpolation of prescribed rigid poses
+and continuity of the body dual twist and its first derivative. Using the higher-order
+rigid-body kinematics of dual spatial twists, we then prove that the resulting curve has
+a continuous physical acceleration field, not merely a continuous quantity obtained by
+formally differentiating the dual part of a twist. We also distinguish algebraic dual transfer
+from temporal differential prolongation: their simultaneous first-order use takes place in
+a hyper-dual algebra, and interpolation of arbitrary prolonged nodal data need not be
+holonomic. A noncommuting three-pose example verifies the recurrence, all knot continuity
+statements, and dimensional covariance under a change from metres to millimetres. We
+define and analyse the first-order holonomy defect of a generic hyper-dual interpolant,
+exhibit an exact counterexample, and remove the defect by cubic or quintic Hermite
+interpolation in dual logarithmic coordinates.
+2020 Mathematics Subject Classification.65D05, 65D17, 70B10, 22E70.
+1 Introduction
+Park and Ravani introduced an efficient invariant interpolation scheme onSO(3) in which each
+segment is the exponential of a cubic polynomial in canonical coordinates [ 1]. The construction
+interpolates an ordered set of rotations, is invariant under changes of fixed and moving frames,
+and produces a C2 rotation curve. Its relation to minimum angular acceleration is approximate
+in general and exact only in the special cases identified in the original paper; no stronger
+variational assertion is used here.
+Invariant rotation and rigid-motion interpolation has also been developed through quater-
+nion curves [2, 3], Lie-group versions of the de Casteljau algorithm [ 4], and interpolation or
+projection schemes on SE(3) [5, 6]. Dual-quaternion blending and screw interpolation provide
+a further computational representation of rigid displacements [ 7]. These approaches establish
+the broader geometric setting, but they do not supply the dual-tensor continuation of the
+Park–Ravani recurrence or the acceleration-field and holonomy results proved below. Unlike
+projection or blending methods, the present construction retains the Park–Ravani recurrence
+in canonical coordinates and transfers it exactly to a dimensionally homogeneous dual-tensor
+representation; no projection back toSE(3) is required.
+Rigid displacement, however, possesses a natural dual description. An orthogonal dual
+tensor combines rotation and translation without placing dimensionless and length-valued
+entries in the same real matrix norm. This suggests a direct question: does the Park–Ravani
+1
+arXiv:2608.28826v1  [cs.RO]  28 Aug 2026
+
+===== PAGE 2 =====
+construction itself extend from rotations to rigid motions by dual continuation? The answer is
+yes. More precisely, every algebraic and analytic relation used by the construction extends
+to the dual algebra, provided the logarithm is evaluated in one admissible local branch [ 14].
+The representation used here builds on dual-tensor formulations of rigid motion [ 8] and on the
+classical principle of transference [ 9, 10, 11]. Hyper-dual arithmetic is used only where the
+directional derivative of the Jacobian must be evaluated exactly, in the automatic-differentiation
+sense of [12, 13].
+A second question is subtler. The dual part of the time derivative of a dual twist is often
+informally called a linear acceleration. In general this is incorrect. The derivative of the
+spatial dual twist determines a helicoidal field of reduced accelerations; the complete physical
+acceleration field is determined by the spatial dual twist together with its first derivative [ 15].
+Consequently, the physically meaningful smoothness statement for a dual Park–Ravani spline
+must be proved at the level of the entire point-acceleration field.
+The contribution is not a formal substitution of dual quantities into a real algorithm. The
+paper establishes: (i) an exact transfer theorem for the complete Park–Ravani construction on
+orthogonal dual tensors; (ii) a compact nonuniform-knot recurrence using the right Jacobian
+and its directional derivative; (iii) continuity of the complete physical acceleration field of every
+material point, rather than only of a formally differentiated dual component; (iv) a precise
+distinction between dual extension and temporal differential transformation, including an exact
+nonholonomy counterexample; and (v) minimal-degree cubic and quintic dual-logarithmic
+Hermite repairs for prescribed endpoint twist and acceleration-field data. Thus transfer,
+physical interpretation, and holonomic repair form a single closed argument.
+Theorem 5.1 gives a precise algorithmic form of the classical principle of transference for
+the complete Park–Ravani construction. Its scope is deliberately algebraic: analytic identities
+transfer from real to dual data. Proposition 7.2 identifies the boundary of this statement.
+After an independent temporal nilpotent unit is introduced, coefficientwise algebraic transfer
+does not ensure that the resulting hyper-dual curve is the temporal jet of its base projection.
+Algebraic transference and temporal holonomy are therefore distinct properties.
+2 Dual orthogonal tensors and rigid displacements
+2.1 Dual vectors and tensors
+Let
+D=R[ε 0]/(ε2
+0)
+be the algebra of dual numbers. Throughout the paper, an underline denotes a dual quantity:
+x =x+ε 0x◦, A =A+ε 0A◦.
+The unit ε0 is the rigid, or geometric, nilpotent unit. It is dimensionless as an algebraic
+generator; physical dimensions reside in the coefficients. For example, the real part of a dual
+rotation vector is angular, whereas its dual part has the dimension of length.
+The transpose, scalar product, cross product, and tensor product are extended by dual
+bilinearity. In particular,
+(x+ε 0x◦)×(y+ε 0y◦) =x×y+ε 0(x×y ◦ +x◦×y).
+Hencex ×x = 0.
+Definition 2.1.An orthogonal dual tensor is a dual tensorR satisfying
+RTR =I,detR = 1.
+The resulting group is denoted bySO(3,D).
+2
+
+===== PAGE 3 =====
+Every rigid displacement (R,p) admits the representation
+R = (I+ε 0[p]×)R=R+ε 0[p]×R, R∈SO(3), p∈R 3.(1)
+Composition and inversion are ordinary dual-tensor multiplication and transpose. Thus
+SO(3,D) is a dimensionally homogeneous realization of the rigid-displacement group.
+The Lie algebra consists of dual skew tensors. We identify [ x]× with the dual vector x.
+Exponential and logarithm are defined by analytic continuation of their real tensor series.
+Anadmissible logarithm branchis a local inverse of the exponential selected around a dual
+logarithm x whose real rotation-vector norm is not a nonzero multiple of 2 π [14]. The value
+∥Rex∥ =π is admissible after fixing one of the two axis signs: this is a branch choice, not a
+singularity of the exponential Jacobian. Pure translation is included by the regular zero-angle
+continuation. On such a branch,
+exp[x]×∈SO(3,D),logR = [x]×.
+2.2 Body and spatial dual twists
+For a differentiable rigid motionR (t), define
+[ωb]× =R T ˙R,[ω s]× = ˙RRT.(2)
+The corresponding dual-vector relation is
+ωs =Rωb.(3)
+Differentiating and using ˙Rx =R (ωb×x ) gives
+˙ωs =R ˙ωb +R (ωb×ω b) =R ˙ωb.(4)
+This cancellation will be essential at an interpolation knot.
+3 Temporal differential transform
+Letx (t) be a dual-valued differentiable function. Its first temporal differential transform is
+˘x(t) =x (t) +ε˙x(t), ε 2 = 0.(5)
+Here ε is distinct from the rigid dual unit ε0. The two units commute, so the global coefficient
+algebra is
+HD =R[ε 0,ε]/(ε 2
+0,ε 2), ε 0ε̸= 0.(6)
+Indeed,
+˘x=x+ε 0x◦ +ε˙x+ε 0ε˙x◦.
+Thus the first differential transform of a dual quantity is hyper-dual. No hat notation is used
+at this level; it is reserved for higher-order extensions.
+Because (5) is exact first-order automatic differentiation, analytic identities prolong functo-
+rially:
+˘F(x) =F(˘x) =F(x ) +εDF(x )[ ˙x].(7)
+This applies in particular to the exponential, the logarithm inside an admissible chart, and the
+Jacobian used below. Equation (7) must not be confused with holonomy of an interpolated
+hyper-dual curve: arbitrary transformed nodal data need not be the temporal transform of
+the curve obtained by projecting their base parts.
+3
+
+===== PAGE 4 =====
+4 The dual Park–Ravani construction
+Let t0 <···< t N be knot times, hi = ti+1−ti, and let Ri∈SO (3,D ) be prescribed rigid
+poses. Choose one admissible logarithm branch for every relative displacement, fixing an axis
+sign when the real relative angle isπ, and set
+[si]× = log(RT
+i Ri+1).(8)
+On the normalized intervalu= (t−t i)/hi∈[0,1], define
+ri(u) =a iu3 +biu2 +ciu,(9)
+R(t) =R i exp[ri(u)]×.(10)
+Endpoint interpolation is equivalent to
+ai =s i−bi−ci.(11)
+For a dual vectorr define the dual right Jacobian
+J(r) =I− 1−cosq
+q2 [r]× + q−sinq
+q3 [r]2
+×, q 2 =r ·r,(12)
+with the regular analytic continuation at q = 0. Under the convention (2), the body dual twist
+of (10) is
+ωb(t) = 1
+hi
+J(ri)r′
+i.(13)
+Its time derivative is
+˙ωb(t) = 1
+h2
+i
+
+DJ(ri)[r′
+i]r′
+i +J (ri)r′′
+i
+	
+.(14)
+Put
+τi = 3ai + 2bi +ci, ν i = 6ai + 2bi.(15)
+These are the first twou-derivatives ofr i atu= 1.
+Proposition 4.1(Nonuniform dual Park–Ravani recurrence).Assume that the initial body
+dual twistω b,0 and its derivative˙ω b,0 are prescribed. Set
+c0 =h 0ωb,0, b 0 = h2
+0
+2 ˙ωb,0, a 0 =s 0−b 0−c 0.(16)
+Fori= 0,...,N−2, define successively
+ci+1 = hi+1
+hi
+J(si)τi,(17)
+2bi+1 = h2
+i+1
+h2
+i
+{DJ(si)[τi]τi +J (si)νi},(18)
+ai+1 =s i+1−bi+1−ci+1.(19)
+Then (10) interpolates every Ri, and its body dual twist and body dual-twist derivative are
+continuous at every internal knot.
+Proof. Atu = 0, J(0) =I and DJ(0)[c]c = 0. Equations (13)–(14) therefore give the initial
+data (16). At u = 1,ri =si,r′
+i =τi, and r′′
+i =νi. The left limits of the twist and its derivative
+are consequently
+1
+hi
+J(si)τi, 1
+h2
+i
+{DJ(si)[τi]τi +J (si)νi}.
+The corresponding right limits on segment i + 1 are ci+1/hi+1 and 2bi+1/h2
+i+1. Their equality
+is precisely (17)–(18). Finally, (19) givesr i+1(1) =s i+1, hence pose interpolation.
+4
+
+===== PAGE 5 =====
+5 Exact dual transfer
+Write a complete set of real Park–Ravani input data as Y and denote the resulting real spline
+construction byP(Y ). Its dual continuation is not a new independently postulated algorithm.
+Theorem 5.1(Dual transfer principle).Let Y +ε0Y◦ be dual input data lying in a product
+of admissible logarithm charts. Then
+PD(Y+ε 0Y◦) =P(Y) +ε 0DP(Y)[Y ◦].(20)
+In particular, every analytic identity used in the real Park–Ravani construction, including its
+recurrence and frame covariance, holds over the dual algebra with exactly the same form.
+Proof. Addition, multiplication, contraction, and cross product extend by dual bilinearity. For
+every analytic scalar or tensor functionF,
+F(X+ε 0X◦) =F(X) +ε 0DF(X)[X◦],
+because ε2
+0 = 0. The Park–Ravani construction is a finite composition of these operations with
+exponential, local logarithm, and the analytic functions entering J. The chain rule therefore
+gives (20). Applying the same continuation to any real analytic identity proves the final
+assertion.
+Remark 5.2.The theorem is an exact first-order transfer in the rigid dual direction. It
+does not assert a variational minimum in a lexicographically ordered dual functional. Such a
+statement requires a separate definition and proof.
+Remark 5.3(Forward propagation).As in the original Park–Ravani construction, the
+recurrence propagates the initial twist data forward and imposes no terminal condition. Over
+long knot sequences, coefficient growth may therefore occur. The present paper establishes the
+exact transferred recurrence and its physical continuity properties, not a global conditioning
+result.
+6 Continuity of the physical acceleration field
+Let the spatial dual twist and its derivative be decomposed as
+ωs =ω+ε 0v,˙ω s = ˙ω+ε 0 ˙v.(21)
+The vector ˙vis the reduced acceleration of the instantaneous point of the rigid body passing
+through the origin. It is not, by itself, the physical linear acceleration of a fixed material point.
+For a spatial point with position vectorρ, define
+Φ2 = [ ˙ω]× + [ω]2
+×,(22)
+a2 = ˙v+ω×v,(23)
+aρ =a 2 + Φ2ρ.(24)
+Equation (24) is the physical acceleration field of the rigid body [15].
+Theorem 6.1(Acceleration-field continuity).The dual Park–Ravani spline generated by
+Proposition 4.1 has a continuous physical acceleration field at every internal knot. More
+explicitly, for each fixed knot time ti, the left and right limits of aρ coincide for every ρ∈R 3.
+5
+
+===== PAGE 6 =====
+Proof. Proposition 4.1 gives equality at the knot of the left and right limits of R, ωb, and ˙ωb.
+Equations (3) and (4) imply equality of the corresponding spatial pair
+(ωs,˙ωs).
+Taking real and dual parts in (21) yields identical left and right values of ω, v, ˙ω, and ˙v.
+Therefore (22) and (23) give identical Φ2 anda2. Substitution in (24) proves equality of aρ for
+every spatial pointρ.
+Remark 6.2.Continuity of the dual-twist derivative alone is not the appropriate physical in-
+terpretation. For n = 2, the pair( ωs,˙ωs)uniquely determines the complete physical acceleration
+field; the dual Park–Ravani recurrence makes this pair continuous.
+7 Holonomy and its Hermite repair
+7.1 The first-order holonomy condition
+Let a curve with coefficients in the hyper-dual algebra (6) be written as
+˘R(t) =R 0(t) +εR 1(t).(25)
+Its base projection is π0 ˘R = R0. If ˘R is orthogonal over the hyper-dual algebra, then
+R0∈SO (3,D ) and RT
+0R1 is dual skew. This tangency condition is necessary but does not say
+that theεcoefficient is the time derivative of the base curve.
+Definition 7.1(First-order holonomy).The curve(25)is temporally holonomic if
+R1(t) = ˙R0(t) (26)
+throughout its interval. Equivalently, ˘R =R0 +ε ˙R0 is the temporal differential transform of
+its base projection.
+Define the tensor defect and its body-trivialized dual vector by
+∆(t) =R 1(t)− ˙R0(t),(27)
+[δb(t)]× =R 0(t)T ∆(t).(28)
+For an orthogonal hyper-dual curve, the right-hand side of (28) is dual skew. Holonomy is
+equivalent toδb≡ 0. Under a constant change of fixed frame the body defect is unchanged;
+under a constant change of moving frame it transforms by the corresponding dual orthogonal
+action.
+Proposition 7.2(Algebraic interpolation does not imply holonomy).Applying the dual
+Park–Ravani formulas coefficientwise to individually prolonged nodal data does not, in general,
+produce the temporal differential transform of the spline obtained from the base data.
+Proof. It is sufficient to work in a one-parameter, hence commutative, subgroup. Let u =t∈
+[0,1] and fix a nonzero dual vectore . Write
+R0(u) = exp[x(u)e]×.
+Take base endpoint coordinates x(0) = 0, x(1) = 1 and zero initial first and second derivatives.
+The Park–Ravani cubic is
+x(u) =u 3.(29)
+6
+
+===== PAGE 7 =====
+Attach zero temporal coefficients to both endpoint coordinates and to the initial derivative
+data. Coefficientwise application of the same construction gives
+˘x(u) =u3 +ε0.(30)
+The temporal differential transform of the base interpolant is instead
+x(u) +εx′(u) =u 3 + 3εu2.(31)
+Thus the scalar defect is −3u2, and the tensor defect is nonzero for every u∈ (0, 1]. The
+failure already occurs in a commutative subgroup, so noncommutativity is not its cause.
+Remark 7.3.Each nodal object in the counterexample is individually a legitimate temporal
+transform. The obstruction is global: the independently assigned nodal coefficients are not the
+jet of the base spline selected by the interpolation algorithm. Functorial prolongation (7) and
+holonomy are therefore distinct statements.
+7.2 Cubic dual-logarithmic Hermite interpolation
+Consider one interval [ti,ti+1], put u = (t−t i)/hi, and let si be given by (8), with∥Res i∥/∈
+2πZ\{0}. Suppose the body dual twistsω b,i andω b,i+1 are prescribed. Define
+d0 =h iωb,i, d 1 =h iJ(si)−1ωb,i+1.(32)
+The inverse in (32) is well defined in the selected admissible logarithm chart. Indeed, if
+J =J+ε 0J◦ and the real JacobianJis nonsingular, then
+J−1 =J−1−ε 0J−1J◦J−1.(33)
+The cubic dual-vector polynomial
+rH(u) = (3u2−2u 3)si + (u3−2u 2 +u)d 0
++ (u3−u 2)d1 (34)
+satisfies
+rH(0) = 0, r H(1) =s i, r ′
+H(0) =d 0, r ′
+H(1) =d 1.
+Theorem 7.4(Holonomic cubic repair).The curve
+RH(t) =R i exp[rH(u)]× (35)
+interpolates the two dual poses and the two prescribed body dual twists. Its temporal differential
+transform
+˘RH(t) =R H(t) +ε ˙RH(t) (36)
+is identically holonomic.
+Proof. The endpoint values of rH give the two poses. At u = 0, J(0) = I, and (13) gives
+ωb(ti) =d 0/hi =ω b,i. Atu= 1 it gives
+ωb(ti+1) =h−1
+i J(si)d1 =ω b,i+1.
+Equation (36) satisfies (26) by construction, so its defect (27) vanishes identically.
+For the scalar data in Proposition 7.2, with zero endpoint velocities, the repaired base
+coordinate and its prolongation are
+xH(u) = 3u2−2u 3,˘x H(u) = 3u2−2u 3 +ε(6u−6u 2).
+They have zero defect and match both prescribed endpoint velocities.
+7
+
+===== PAGE 8 =====
+7.3 Quintic repair for prescribed accelerations
+If the body dual-twist derivatives are prescribed at both endpoints, set
+e0 =h 2
+i ˙ωb,i,(37)
+e1 =J (si)−1 
+h2
+i ˙ωb,i+1−DJ (si)[d1]d1
+	
+.(38)
+Introduce the quintic Hermite basis
+H01 = 10u3−15u 4 + 6u5,
+H10 =u−6u 3 + 8u4−3u 5,
+H11 =−4u 3 + 7u4−3u 5,
+H20 = 1
+2(u2−3u 3 + 3u4−u 5),
+H21 = 1
+2(u3−2u 4 +u 5),
+and define
+rQ(u) =H 01si +H 10d0 +H 11d1 +H 20e0 +H 21e1.(39)
+Theorem 7.5(Holonomic quintic repair).The curve
+RQ(t) =R i exp[rQ(u)]×
+interpolates the endpoint dual poses, body dual twists, and body dual-twist derivatives. Its
+temporal differential transform is identically holonomic. Consequently, the prescribed physical
+acceleration fields are attained at both endpoints.
+Proof.The quintic basis gives
+(rQ,r′
+Q,r′′
+Q)(0) = (0,d 0,e 0),(r Q,r′
+Q,r′′
+Q)(1) = (si,d 1,e 1).
+Equations (13) and (14), together with (32)–(38), give the prescribed endpoint twists and
+derivatives. Temporal prolongation of this single base curve makes (26) an identity. The
+endpoint physical acceleration fields follow from (24).
+Remark 7.6.The cubic and quintic constructions solve different interpolation problems. The
+cubic matches pose and twist. The quintic matches pose, twist, and twist derivative, hence
+the complete physical acceleration field. The latter is not claimed to be the unique possible
+holonomic repair; it is the minimal-degree polynomial in one logarithm chart satisfying these
+six endpoint conditions.
+8 Numerical verification
+8.1 Data and implementation
+We consider three prescribed rigid poses at the nonuniform knot times
+t0 = 0, t 1 = 1, t 2 = 2.5, h 0 = 1, h 1 = 1.5.
+The real rotation vectorsq i, in radians, and translationsp i, in metres, are
+i qi1 qi2 qi3 pi1 pi2 pi3
+0 0.08−0.04 0.06 0.05−0.02 0.03
+1 0.38−0.22 0.29 0.42−0.16 0.27
+2 −0.18 0.46 0.34 0.83 0.31−0.12
+(40)
+8
+
+===== PAGE 9 =====
+and the poses are formed as
+Ri = exp[qi]×, R i = (I+ε 0[pi]×)Ri.
+The initial body dual twist and its derivative are prescribed as
+ωb,0 = (0.24,−0.13,0.19) +ε 0(0.18,0.07,−0.11),(41)
+˙ωb,0 = (0.11,0.08,−0.06) +ε 0(−0.09,0.14,0.05).(42)
+Angular components use seconds as the time unit; the dual components carry the corresponding
+metre-based dimensions.
+The two relative logarithms obtained from (8) are
+s0 = (0.2992674465,−0.1796622622,0.2312136665)
++ε 0(0.3750816019,−0.1514565323,0.2248304621),(43)
+s1 = (−0.4427966639,0.7577255960,−0.0168351043)
++ε 0(0.5945254558,0.2816054523,−0.3798654220).(44)
+These rotations do not share a common axis, so the test is genuinely noncommutative.
+All analytic functions of dual tensors are evaluated by their exact dual extensions. In
+particular, the quantity
+DJ(si)[τi]τi
+in (18) is computed by a second nilpotent unitε: the coefficient of ε inJ(si+ετi)τi is extracted.
+Thus the calculation uses the hyper-dual algebra (6) and no finite-difference approximation.
+The Python scripts reproducing every numerical value reported in this section are provided
+as ancillary files. A single driver script executes the metre and millimetre experiments, the
+dimensional-covariance check, and the independent cubic and quintic Hermite verifications.
+8.2 Knot-continuity residuals
+The compact recurrence (17)–(18) was also evaluated after expandingDJ into the trigonometric
+Park–Ravani formula. Table 1 reports Euclidean norms obtained by stacking the real and dual
+vector components, or Frobenius norms applied separately to the real and dual tensor parts and
+then combining their numerical entries. They are diagnostics in the fixed radian–metre–second
+convention, not intrinsic norms on the dual Lie algebra. Dimensional covariance is assessed
+separately in Section 8.3.
+Most residuals in Tables 1–2 verify mutually equivalent algebraic representations within
+the implementation. The finite-difference differentiation of the complete dual-tensor curves in
+Section 8.4 provides the independent curve-level check.
+Table 1: Residuals at the internal knott 1.
+Verification Residual
+Compact versus expanded recurrence 8.33×10 −17
+Dual pose interpolation 8.05×10 −16
+Body dual twist continuity 1.36×10 −16
+Body dual-twist derivative continuity 2.29×10 −16
+Spatial dual twist continuity 2.00×10 −16
+Spatial dual-twist derivative continuity 2.29×10 −16
+Maximum point-acceleration-field residual 3.14×10 −16
+9
+
+===== PAGE 10 =====
+For an explicit field-level check, (24) was evaluated at four points: p1 and the three points
+obtained from p1 by offsets 0.25e1, 0.20e2, and 0.18e3 metres. The common acceleration values
+at the knot are shown in Table 2. The maximum norm of the left-minus-right difference is the
+last residual of Table 1.
+Table 2: Physical point accelerations att 1 in m s−2.
+Pointa x ay az
+p1 1.336338 -1.792470 1.773506
+p1 + 0.25e1 1.284059 -1.754410 1.928334
+p1 + 0.20e2 1.256146 -1.840993 1.788991
+p1 + 0.18e3 1.267878 -1.844018 1.728332
+8.3 Dimensional covariance
+The entire experiment was repeated after replacing metres by millimetres. Every translational
+datum, dual coefficient, and point offset was therefore multiplied by 10 3, whereas angles and
+times were unchanged. The real parts of both relative logarithms remained identical. Their
+dual parts scaled by 10 3 with a maximum absolute discrepancy of 2 .27× 10−13 mm. The
+computed physical accelerations also scaled by 10 3; the maximum relative scaling error was
+8.25×10 −16.(45)
+The largest knot residual in the millimetre computation was 5 .57× 10−13, consistent with the
+corresponding change in the magnitude of the length-valued components.
+This test is not a claim that a numerical norm is independent of units. Rather, it verifies
+the correct covariance of each homogeneous component: angular quantities remain unchanged
+and length-valued quantities acquire the same scale factor as the unit of length. No norm
+combines a dimensionless rotation matrix with a translation column.
+8.4 Independent curve-level check of the Hermite construction
+The cubic and quintic curves were constructed explicitly for a separate dual rigid displacement
+with independently prescribed twists and twist derivatives at both ends. Their dual tensor
+exponentials were then differentiated by five-point, fourth-order finite-difference stencils. This
+verification is independent of the J and DJ formulas used to generate the Hermite data.
+The resulting pose, twist, and twist-derivative residuals are reported in Table 3. The larger
+derivative residuals reflect finite-difference truncation and cancellation rather than failure of
+the exact endpoint identities.
+Table 3: Independent curve-level verification of the Hermite interpolants.
+Residual Initial endpoint Final endpoint
+Cubic pose 0 8.05×10 −16
+Cubic body twist 7.14×10 −13 4.04×10 −12
+Quintic pose 0 8.05×10 −16
+Quintic body twist 1.59×10 −13 1.73×10 −12
+Quintic body-twist derivative 1.08×10 −10 6.32×10 −9
+The earlier algebraic round-trip residuals, retained in the software as auxiliary imple-
+mentation checks, remain between 2.40× 10−17 and 3.40× 10−17. Direct evaluation of the
+10
+
+===== PAGE 11 =====
+five quintic basis polynomials and their first two derivatives verifies all endpoint Kronecker
+conditions exactly. For the scalar counterexample, the maximum defect is 3, whereas the
+repaired prolongation has identically zero defect.
+9 Conclusion and next steps
+The Park–Ravani construction transfers exactly from SO(3) to orthogonal dual tensors and
+therefore to rigid displacements. In compact form, its nonuniform recurrence is governed by
+the dual right Jacobian and one directional derivative. The transferred spline interpolates the
+prescribed poses and preserves both the dual twist and its first derivative across knots. The
+latter statement has been translated into its correct physical content: the entire rigid-body
+acceleration field is continuous.
+The noncommuting three-pose example verifies the compact recurrence, twist continuity,
+acceleration-field continuity, and dimensional covariance under a metre-to-millimetre change.
+The computations use exact hyper-dual directional differentiation rather than finite differ-
+ences. The first-order holonomy problem has also been closed: coefficientwise interpolation
+of independently prolonged nodal data is generically nonholonomic, while cubic and quintic
+dual-logarithmic Hermite curves provide exact repairs for endpoint twist and acceleration-field
+data, respectively. Higher temporal orders, their contact defects, and holonomic Hermite
+interpolation of general rigid-motion jets are left for future work.
+References
+[1] F. C. Park and B. Ravani, “Smooth invariant interpolation of rotations,”ACM Transactions on
+Graphics, vol. 16, no. 3, pp. 277–295, 1997.
+[2] K. Shoemake, “Animating rotation with quaternion curves,”Computer Graphics, vol. 19, no. 3,
+pp. 245–254, 1985.
+[3] M.-J. Kim, M.-S. Kim, and S. Y. Shin, “A general construction scheme for unit quaternion curves
+with simple high order derivatives,” inProceedings of SIGGRAPH, pp. 369–376, 1995.
+[4] P. Crouch, G. Kun, and F. Silva Leite, “The de Casteljau algorithm on Lie groups and spheres,”
+Journal of Dynamics and Control Systems, vol. 5, pp. 397–429, 1999.
+[5] M. ˇZefran, V. Kumar, and C. Croke, “On the generation of smooth three-dimensional rigid body
+motions,”IEEE Transactions on Robotics and Automation, vol. 14, no. 4, pp. 576–589, 1998.
+[6] C. Belta and V. Kumar, “An SVD-based projection method for interpolation on SE(3),”IEEE
+Transactions on Robotics and Automation, vol. 18, no. 3, pp. 334–345, 2002.
+[7] L. Kavan, S. Collins, J. ˇZ´ ara, and C. O’Sullivan, “Geometric skinning with approximate dual
+quaternion blending,”ACM Transactions on Graphics, vol. 27, no. 4, Art. 105, 2008.
+[8] D. Condurache and A. Burlacu, “Dual tensors based solutions for rigid body motion parameteri-
+zation,”Mechanism and Machine Theory, vol. 74, pp. 390–412, 2014.
+[9] A. P. Kotelnikov,Screw Calculus and Some Applications to Geometry and Mechanics, Kazan,
+1895 (in Russian).
+[10] E. Study,Geometrie der Dynamen, Teubner, Leipzig, 1903.
+[11] J. Rooney, “On the principle of transference,” inProceedings of the Fourth World Congress on the
+Theory of Machines and Mechanisms, Newcastle upon Tyne, 1975.
+11
+
+===== PAGE 12 =====
+[12] J. A. Fike and J. J. Alonso, “Automatic differentiation through the use of hyper-dual numbers
+for second derivatives,” inRecent Advances in Algorithmic Differentiation, Springer, pp. 163–173,
+2012.
+[13] A. Cohen and M. Shoham, “Application of hyper-dual numbers to multibody kinematics,”Journal
+of Mechanisms and Robotics, vol. 8, no. 1, Art. 011015, 2016.
+[14] D. Condurache and I. Popa, “Computation without singularity for logarithms of homogeneous
+matrices and orthogonal dual tensors,”Bulletin of the Polytechnic Institute of Ia¸ si, vol. 71(75),
+no. 1–2, pp. 39–56, 2025, doi: 10.2478/bipmf-2025-0004.
+[15] D. Condurache, “Higher-order relative kinematics of rigid body and multibody systems. A novel
+approach with real and dual Lie algebras,”Mechanism and Machine Theory, vol. 176, Art. 104999,
+2022, doi: 10.1016/j.mechmachtheory.2022.104999.
+12

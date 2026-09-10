@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T05:55:56Z`
-- Tree/content state: `0d36149f43592891fe0417da93377b0d63c3d313d7a6f5c646c89b46219c985f`
+- Scanned: `2026-09-10T08:56:55Z`
+- Tree/content state: `d1ca7dac6c0bdbb44614f48cd75e6524b5e588f9227b306e079a6566262d70ee`
 - Coverage: complete structural traversal
-- Files: 1333
-- Uploaded source files: 1324
-- PDF papers: 1166
-- Repository machinery files: 9
-- Byte-identical duplicate groups: 87
+- Files: 1418
+- Uploaded source files: 1408
+- PDF papers: 1187
+- Repository machinery files: 10
+- Byte-identical duplicate groups: 97
 
 ## Top-level coverage
 
@@ -22,7 +22,7 @@
 | `BIG PAPERS` | 3 |
 | `Consciousness + AI` | 16 |
 | `DATA` | 12 |
-| `EXPOSURE_STATS` | 165 |
+| `EXPOSURE_STATS` | 217 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -39,10 +39,11 @@
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 9 |
 | `OUTSIDE RESEARCH LIBRARY` | 318 |
-| `PRIOR_ART` | 191 |
+| `PRIOR_ART` | 223 |
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
+| `indexes` | 1 |
 | `info` | 1 |
 | `requirements-tools.txt` | 1 |
 | `symmetry-11-01298.pdf` | 1 |
@@ -67,15 +68,23 @@
   - `LIVE_RESEARCH_UPDATES/s41586-026-10904-x.pdf`
   - `PRIOR_ART/s41586-026-10904-x (1).pdf`
   - `PRIOR_ART/s41586-026-10904-x.pdf`
+- `09a9d2e21c0360a8cbb06afd5e812a098b479600ddd585a0800be09ef5a390b0`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_AgeByGender_all-time.csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_AgeByGender_all-time.csv`
 - `0ac267c6ecc28155702be5473d2c740f491dc65400b5088f83d892cf946cd543`
   - `PRIOR_ART/Topics_in_statistical_physics_invol.pdf`
   - `Topics_in_statistical_physics_invol.pdf`
 - `0cc0fae313cfc0772b60a8f4abd1c97fbb757caf60d62e2de640c40e811a1b03`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TopEpisodesByConsumptionTime_all-time (1).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TopEpisodesByConsumptionTime_all-time.csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TopEpisodesByConsumptionTime_all-time (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TopEpisodesByConsumptionTime_all-time.csv`
 - `110a8973d4e507b7378ea8371ba769579b88a8a509a7db7a3784e5b7f9f8179c`
   - `H(s)H_Toolkit/2f8805397ee8506926404a60d8d677d2_lecture16.pdf`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/2f8805397ee8506926404a60d8d677d2_lecture16.pdf`
+- `113a41dbb5ae086da0436f530726278c592e4021fb730e00a0da0f0746b25643`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_EpisodeCompletionRates.csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_EpisodeCompletionRates.csv`
 - `154e61da81d0b80377886702947225817da1acfee7435eff4cc16283afccc2fb`
   - `HAUL 3/PhysRevA.52.4381 (1).pdf`
   - `HAUL 3/PhysRevA.52.4381.pdf`
@@ -104,6 +113,9 @@
   - `HAUL 8/RPP1978_Bell (1).pdf`
   - `HAUL 8/RPP1978_Bell (2).pdf`
   - `HAUL 8/RPP1978_Bell.pdf`
+- `2b80b2428ec701256374990886ee9fccac85de85b37afc5bbaec56df8d903129`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_GeoLocationAllPlatforms_all-time (1).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_GeoLocationAllPlatforms_all-time (1).csv`
 - `313b0d3ab3470848f203ba1333537ab08805a40322d93fabfc19a562e2485cbc`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Commits over time.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Satobloc's Commits.csv`
@@ -111,9 +123,13 @@
   - `EXPOSURE_STATS/EXP_ANALYSIS/CONCAT_DAI_Transcripts_TEXT.txt`
   - `EXPOSURE_STATS/PODCAST_EPs/DAI_Transcripts_TEXT.txt`
 - `37bc7d2921bad508feb7fdd04b7faa9e19d5a60257f49b534eceef1c2ccbf221`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_1-1-2026--6-16-2026 (1).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_1-1-2026--6-16-2026.csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_1-1-2026--6-16-2026 (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_1-1-2026--6-16-2026.csv`
 - `42ab243dcce4ecf92215f81aa62f2102a1159b1572ce5a2c5a947b45780e887d`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (10).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (9).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (10).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (9).csv`
 - `430f3bf16ba6f10c87a74775810b60b9f25d10e1ac164cb5b9925e10c4dff907`
@@ -129,6 +145,11 @@
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1.pdf`
 - `514e24ff641ba0eda717b43317e21e8f3368efc7d8fded755e744b5b956fcc4c`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (1).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (2).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (3).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (4).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_Engagement_all-time.csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (2).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (3).csv`
@@ -158,6 +179,9 @@
 - `660d1364447644b4eddf51ce56c6435ca90c799e14aebf8f6b4b38ea74812009`
   - `PRIOR_ART/2605.26410v1 (1).pdf`
   - `PRIOR_ART/2605.26410v1.pdf`
+- `66736f8e59aa4d763dbefcc93797bbf02b053204acaf5f2399496f77b9fb73e4`
+  - `EXPOSURE_STATS/DEBATING AI DATA/8DebatingA.I.OntheFutureofPhysics_GeoLocationAllPlatforms_all-time.csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/8DebatingA.I.OntheFutureofPhysics_GeoLocationAllPlatforms_all-time.csv`
 - `66b5deb150c49484cfb031b8b56bdc97e0a72a65bba0b699cf82a7214ba85fee`
   - `HAUL 3/EPR (1).pdf`
   - `HAUL 3/EPR.pdf`
@@ -171,6 +195,10 @@
   - `H(s)H_Toolkit/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`
 - `75abda0396494af785d88d996fcad58b6cba9063ff23a1d9a988513459229999`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (5).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (6).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (7).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (8).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (5).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (6).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (7).csv`
@@ -179,6 +207,9 @@
   - `HAUL 4/7075779.pdf`
   - `HAUL 5/ssrn-7075779.pdf`
 - `77503f187b1530697d648402f8162a28d235052c5496d07171d00aa3798fcf65`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (1).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (2).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days.csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (2).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days.csv`
@@ -195,6 +226,8 @@
   - `HAUL 5/ssrn-7060238 (1).pdf`
   - `HAUL 5/ssrn-7060238.pdf`
 - `82181a5ba3ce46b16728d077a90e7beaadf240a8efbd34ad48af54440680f59a`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TopEpisodesByImpressions_3-17-2026--6-14-2026 (1).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TopEpisodesByImpressions_3-17-2026--6-14-2026.csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TopEpisodesByImpressions_3-17-2026--6-14-2026 (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TopEpisodesByImpressions_3-17-2026--6-14-2026.csv`
 - `85fb06fc0c55d3ebd80eb2e184d5198de6afdebbf5b5a7e8be305ba87b12874a`
@@ -206,6 +239,9 @@
 - `91c21c000c80c84d50af58df471aebda7db00ebd7c47f03a27050fabc010b334`
   - `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2605.05114v2 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2605.05114v2.pdf`
+- `92514011e974d2dfff845f78961e23b905a39216ef0d3e73537fc0aa5cbc4ace`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_Gender_all-time.csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Gender_all-time.csv`
 - `9547c986b9dab96fc8d0dab7f25edb9b8080cb838bf07f7decf8688ff0ec65a5`
   - `H(s)H_Toolkit/829a382e2a755917efbfc190507e51df_lecture01.pdf`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/829a382e2a755917efbfc190507e51df_lecture01.pdf`
@@ -218,6 +254,9 @@
 - `a1c28719e18532951800b35b33f55afae3c903491cdbeca2b20d6c51e18d6bfc`
   - `HAUL 2/ssrn-6887518 (1).pdf`
   - `HAUL 2/ssrn-6887518.pdf`
+- `a1db4863418e8826dd91a6f39a07d52b54646743cae70a99673274c99f038276`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (3).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (3).csv`
 - `a1fa3d81877b2cb1c49429ca22737d114ffb6eca95f319062c26407c39f77272`
   - `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.03001v1.pdf`
   - `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03001v1.pdf`
@@ -228,6 +267,9 @@
 - `aa8f6caebb76d33df6366596262dacb5514d368d56c40cd92f5bdb4d2ecda329`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/f704cfed444c1740427310905d04042d_lecture17.pdf`
   - `H(s)H_Toolkit/f704cfed444c1740427310905d04042d_lecture17.pdf`
+- `b0a888c52021d9bcad08d9c1cd83fce9c6664e47f02d56ae07e1fbc0b65bc762`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_3-19-2026--6-16-2026.csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_3-19-2026--6-16-2026.csv`
 - `b311e294098b5b4e9970a0c99823c929d9ea12bcde46cb4b693f74c3f45053c6`
   - `PRIOR_ART/2509.07686v1.pdf`
   - `PRIOR_ART/BLACKHOLED 2509.07686v1 (1).pdf`
@@ -255,6 +297,9 @@
 - `cb8afdccaf6239938dc8a41946052a3e41df8859cd86cc94b75392ea44ffd4be`
   - `EXPOSURE_STATS/MISC_PAPERS/light (5) 2.pdf`
   - `EXPOSURE_STATS/MISC_PAPERS/light (5).pdf`
+- `ce8a12a3cf27e0512ee84340b63d318f49ab07e1a11d2971ee315418dd95b806`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_AudienceSegments_1-1-2025--6-15-2026.csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_AudienceSegments_1-1-2025--6-15-2026.csv`
 - `d1ee8716b2ffd59bf030f1e6ea7bb21e0b6437657a099c9435a7fa0b463ece81`
   - `HAUL 2/ssrn-6962403 (1).pdf`
   - `HAUL 2/ssrn-6962403.pdf`
@@ -304,6 +349,9 @@
 - `eeaca47f4c1b046b98f25575bbc85d1f7be87c4bd54fa1c85828b6d17f865d1a`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2.pdf`
+- `f11f871f4aa948feade1a904b13e92097e58906e00965d32c764a539ffc6c640`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (4).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (4).csv`
 - `f173b0840e4b1d04f9049771b8698a1a13560e00baabfcff318acc1d119d9aab`
   - `LIVE_RESEARCH_UPDATES/s41467-026-76389-4_reference.pdf`
   - `PRIOR_ART/s41467-026-76389-4_reference.pdf`
@@ -311,6 +359,8 @@
   - `PRIOR_ART/2512.04481v2.pdf`
   - `PRIOR_ART/HOPF 2512.04481v2 (1).pdf`
 - `f4d05006bf66385da8af5a271e7571781a19dcccac6c32d45a47cb15f5390a38`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_DailyImpressions_3-17-2026--6-14-2026 (1).csv`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_DailyImpressions_3-17-2026--6-14-2026.csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_DailyImpressions_3-17-2026--6-14-2026 (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_DailyImpressions_3-17-2026--6-14-2026.csv`
 - `f80612ec39a4da59b70064e3140235e91d89ed83c1642f647f58612afac71952`
@@ -322,6 +372,9 @@
 - `fbcebed5b0ac33642d6d10255ec69871c63890046204a0abd4cbd5ba1798331d`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI Podcast Stats.txt`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI Podcast.txt`
+- `ffbdf650a8e6892a082e2eccba86e2b359ace8381177d8604ec5187dafe59b4d`
+  - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_GeoLocationAllPlatforms_all-time.csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_GeoLocationAllPlatforms_all-time.csv`
 
 ## PDF inventory
 
@@ -347,6 +400,13 @@
 | `DATA/DATA REL - notebooks-latest03_ScienceExamplesEmLineGalaxies02_EmLineGalaxies_Outliers.ipynb at master · astro-datalabnotebooks-latest.pdf` | 990887 |  |
 | `DATA/DATA REL - notebooks-latest04_HowTosSPARCLPlot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalabnotebooks-latest.pdf` | 211459 |  |
 | `DATA/DATA REL - SPARCL Notebooks.pdf` | 509725 |  |
+| `EXPOSURE_STATS/DEBATING AI DATA/2Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf` | 147798 |  |
+| `EXPOSURE_STATS/DEBATING AI DATA/3Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf` | 147374 |  |
+| `EXPOSURE_STATS/DEBATING AI DATA/4Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf` | 147092 |  |
+| `EXPOSURE_STATS/DEBATING AI DATA/5Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf` | 148149 |  |
+| `EXPOSURE_STATS/DEBATING AI DATA/6Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf` | 145202 |  |
+| `EXPOSURE_STATS/DEBATING AI DATA/7Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf` | 141392 |  |
+| `EXPOSURE_STATS/DEBATING AI DATA/Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf` | 177487 |  |
 | `EXPOSURE_STATS/EXP_ANALYSIS/misc Central Recursion.pdf` | 316867 |  |
 | `EXPOSURE_STATS/EXP_ANALYSIS/Misc — A Chat.pdf` | 192987 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/10.4324_9781003404989-2_chapterpdf.pdf` | 831413 |  |
@@ -1311,12 +1371,15 @@
 | `PRIOR_ART/2410.17036v3.pdf` | 1544369 | arxiv:2410.17036v3 |
 | `PRIOR_ART/2412.12372v2.pdf` | 413188 | arxiv:2412.12372v2 |
 | `PRIOR_ART/2501.09536v2.pdf` | 452977 | arxiv:2501.09536v2 |
+| `PRIOR_ART/2502.07710v1.pdf` | 327551 | arxiv:2502.07710v1 |
 | `PRIOR_ART/2502.11322v3.pdf` | 9098090 | arxiv:2502.11322v3 |
 | `PRIOR_ART/2506.15832v2.pdf` | 934364 | arxiv:2506.15832v2 |
 | `PRIOR_ART/2507.03462v1.pdf` | 1665912 | arxiv:2507.03462v1 |
 | `PRIOR_ART/2507.16633v2.pdf` | 831450 | arxiv:2507.16633v2 |
+| `PRIOR_ART/2507.23090v1.pdf` | 142433 | arxiv:2507.23090v1 |
 | `PRIOR_ART/2508.00100v1.pdf` | 500730 | arxiv:2508.00100v1 |
 | `PRIOR_ART/2508.00297v2.pdf` | 1256202 | arxiv:2508.00297v2 |
+| `PRIOR_ART/2508.01538v1.pdf` | 270280 | arxiv:2508.01538v1 |
 | `PRIOR_ART/2508.01944v1.pdf` | 1491223 | arxiv:2508.01944v1 |
 | `PRIOR_ART/2508.07274v1 (1).pdf` | 1761591 | arxiv:2508.07274v1 |
 | `PRIOR_ART/2508.07274v1.pdf` | 1761591 | arxiv:2508.07274v1 |
@@ -1329,10 +1392,12 @@
 | `PRIOR_ART/2509.19407v1.pdf` | 766244 | arxiv:2509.19407v1 |
 | `PRIOR_ART/2509.25019v1.pdf` | 553744 | arxiv:2509.25019v1 |
 | `PRIOR_ART/2510.25430v2.pdf` | 482020 | arxiv:2510.25430v2 |
+| `PRIOR_ART/2511.05635v1.pdf` | 322909 | arxiv:2511.05635v1 |
 | `PRIOR_ART/2511.06567v1.pdf` | 556948 | arxiv:2511.06567v1 |
 | `PRIOR_ART/2511.07455v1.pdf` | 645646 | arxiv:2511.07455v1 |
 | `PRIOR_ART/2511.07670v1.pdf` | 3449689 | arxiv:2511.07670v1 |
 | `PRIOR_ART/2511.10125v2.pdf` | 594085 | arxiv:2511.10125v2 |
+| `PRIOR_ART/2511.15612v2.pdf` | 250298 | arxiv:2511.15612v2 |
 | `PRIOR_ART/2511.15639v2.pdf` | 5734454 | arxiv:2511.15639v2 |
 | `PRIOR_ART/2511.19756v2.pdf` | 1932600 | arxiv:2511.19756v2 |
 | `PRIOR_ART/2511.20773v2.pdf` | 428984 | arxiv:2511.20773v2 |
@@ -1349,6 +1414,7 @@
 | `PRIOR_ART/2601.16213v2.pdf` | 1272195 | arxiv:2601.16213v2 |
 | `PRIOR_ART/2601.17297v1.pdf` | 449263 | arxiv:2601.17297v1 |
 | `PRIOR_ART/2601.19111v1.pdf` | 1289211 | arxiv:2601.19111v1 |
+| `PRIOR_ART/2602.04860v1.pdf` | 313949 | arxiv:2602.04860v1 |
 | `PRIOR_ART/2602.05427v2.pdf` | 3814195 | arxiv:2602.05427v2 |
 | `PRIOR_ART/2602.11828v1.pdf` | 844506 | arxiv:2602.11828v1 |
 | `PRIOR_ART/2602.13627v3.pdf` | 505724 | arxiv:2602.13627v3 |
@@ -1363,6 +1429,7 @@
 | `PRIOR_ART/2605.26410v1 (1).pdf` | 743627 | arxiv:2605.26410v1 |
 | `PRIOR_ART/2605.26410v1.pdf` | 743627 | arxiv:2605.26410v1 |
 | `PRIOR_ART/2605.26697v1.pdf` | 589240 | arxiv:2605.26697v1 |
+| `PRIOR_ART/2605.26853v1.pdf` | 276138 | arxiv:2605.26853v1 |
 | `PRIOR_ART/2605.27297v1.pdf` | 15764956 | arxiv:2605.27297v1 |
 | `PRIOR_ART/2605.27471v1.pdf` | 354573 | arxiv:2605.27471v1 |
 | `PRIOR_ART/2605.27669v1.pdf` | 531115 | arxiv:2605.27669v1 |
@@ -1381,6 +1448,7 @@
 | `PRIOR_ART/2606.11694v1.pdf` | 389709 | arxiv:2606.11694v1 |
 | `PRIOR_ART/2606.12693v3.pdf` | 1014266 | arxiv:2606.12693v3 |
 | `PRIOR_ART/2606.13074v3.pdf` | 3608013 | arxiv:2606.13074v3 |
+| `PRIOR_ART/2606.17492v1.pdf` | 298690 | arxiv:2606.17492v1 |
 | `PRIOR_ART/2606.17597v1.pdf` | 467331 | arxiv:2606.17597v1 |
 | `PRIOR_ART/2606.17758v2.pdf` | 770216 | arxiv:2606.17758v2 |
 | `PRIOR_ART/2606.19655v1.pdf` | 1605052 | arxiv:2606.19655v1 |
@@ -1392,6 +1460,7 @@
 | `PRIOR_ART/2606.31409v1.pdf` | 406128 | arxiv:2606.31409v1 |
 | `PRIOR_ART/2607.01341v2.pdf` | 2890495 | arxiv:2607.01341v2 |
 | `PRIOR_ART/2607.05218v1.pdf` | 388949 | arxiv:2607.05218v1 |
+| `PRIOR_ART/2607.05591v1.pdf` | 205088 | arxiv:2607.05591v1 |
 | `PRIOR_ART/2607.06517v1.pdf` | 1152482 | arxiv:2607.06517v1 |
 | `PRIOR_ART/2607.07342v1.pdf` | 410666 | arxiv:2607.07342v1 |
 | `PRIOR_ART/2607.08481v1.pdf` | 793646 | arxiv:2607.08481v1 |
@@ -1400,12 +1469,15 @@
 | `PRIOR_ART/2607.12366v1.pdf` | 515717 | arxiv:2607.12366v1 |
 | `PRIOR_ART/2607.14822v1.pdf` | 468424 | arxiv:2607.14822v1 |
 | `PRIOR_ART/2607.15629v2.pdf` | 438309 | arxiv:2607.15629v2 |
+| `PRIOR_ART/2607.16037v1.pdf` | 263334 | arxiv:2607.16037v1 |
 | `PRIOR_ART/2607.16835v1.pdf` | 464388 | arxiv:2607.16835v1 |
+| `PRIOR_ART/2607.18334v1.pdf` | 280903 | arxiv:2607.18334v1 |
 | `PRIOR_ART/2607.19037v1.pdf` | 730625 | arxiv:2607.19037v1 |
 | `PRIOR_ART/2607.19514v2.pdf` | 1438683 | arxiv:2607.19514v2 |
 | `PRIOR_ART/2607.20522v1.pdf` | 371956 | arxiv:2607.20522v1 |
 | `PRIOR_ART/2607.20887v1.pdf` | 517709 | arxiv:2607.20887v1 |
 | `PRIOR_ART/2607.21405v1.pdf` | 2485813 | arxiv:2607.21405v1 |
+| `PRIOR_ART/2607.21639v2.pdf` | 346579 | arxiv:2607.21639v2 |
 | `PRIOR_ART/2607.22236v1.pdf` | 1048404 | arxiv:2607.22236v1 |
 | `PRIOR_ART/2607.24640v1.pdf` | 2731731 | arxiv:2607.24640v1 |
 | `PRIOR_ART/2607.26080v3.pdf` | 1057692 | arxiv:2607.26080v3 |
@@ -1429,6 +1501,7 @@
 | `PRIOR_ART/2608.12031v1.pdf` | 466318 | arxiv:2608.12031v1 |
 | `PRIOR_ART/2608.12850v2.pdf` | 1681957 | arxiv:2608.12850v2 |
 | `PRIOR_ART/2608.14541v1.pdf` | 576553 | arxiv:2608.14541v1 |
+| `PRIOR_ART/2608.15585v2.pdf` | 313693 | arxiv:2608.15585v2 |
 | `PRIOR_ART/2608.15923v1.pdf` | 572510 | arxiv:2608.15923v1 |
 | `PRIOR_ART/2608.16487v1.pdf` | 480830 | arxiv:2608.16487v1 |
 | `PRIOR_ART/2608.16501v1.pdf` | 1439839 | arxiv:2608.16501v1 |
@@ -1449,6 +1522,7 @@
 | `PRIOR_ART/2608.23481v1.pdf` | 348395 | arxiv:2608.23481v1 |
 | `PRIOR_ART/2608.25829v1.pdf` | 374261 | arxiv:2608.25829v1 |
 | `PRIOR_ART/2608.26813v1.pdf` | 553597 | arxiv:2608.26813v1 |
+| `PRIOR_ART/2608.28826v1.pdf` | 233707 | arxiv:2608.28826v1 |
 | `PRIOR_ART/2608.30231v1.pdf` | 507334 | arxiv:2608.30231v1 |
 | `PRIOR_ART/2608.30802v1.pdf` | 945202 | arxiv:2608.30802v1 |
 | `PRIOR_ART/2608.31008v1.pdf` | 454130 | arxiv:2608.31008v1 |
