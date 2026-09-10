@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T13:20:48Z`
-- Tree/content state: `c660712068dab69870971267e5f43994d406252622044fa953865af4651e9b3b`
+- Scanned: `2026-09-10T14:20:28Z`
+- Tree/content state: `3d5aa3f73cfbd9e8d8bbad10b75747c8ff69f02171c641da649feaa3ba97951e`
 - Coverage: complete structural traversal
-- Files: 1485
-- Uploaded source files: 1472
+- Files: 1503
+- Uploaded source files: 1490
 - PDF papers: 1211
 - Repository machinery files: 13
-- Byte-identical duplicate groups: 97
+- Byte-identical duplicate groups: 104
 
 ## Top-level coverage
 
@@ -25,7 +25,7 @@
 | `EINSTEIN - Über die spezielle und die allgemeine Relativitätstheorie.txt` | 1 |
 | `EINSTEIN — SIDELIGHTS ON RELATIV.txt` | 1 |
 | `EINSTEIN+MINKOWSKI — PRINCIP RELAT.txt` | 1 |
-| `EXPOSURE_STATS` | 221 |
+| `EXPOSURE_STATS` | 232 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -42,9 +42,9 @@
 | `HISTORICAL` | 28 |
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 9 |
-| `OUTSIDE RESEARCH LIBRARY` | 322 |
+| `OUTSIDE RESEARCH LIBRARY` | 325 |
 | `PDF_SPECS` | 21 |
-| `PRIOR_ART` | 224 |
+| `PRIOR_ART` | 228 |
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
@@ -110,6 +110,12 @@
 - `1f0074df00937b359c6efca4e88265bc7f5db38151fced2b47e9253bd1746446`
   - `PRIOR_ART/s10714-025-03408-y (1).pdf`
   - `PRIOR_ART/s10714-025-03408-y.pdf`
+- `2292c55e99962c85ac3cb4d4896c431d0c1d22b657c01db983dbb6fa95742787`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB ACTIVITY - Unique cloners in last 14 days.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Unique cloners in last 14 days.csv`
+- `23b4f2feeb20192662c43d839de47fb6226678e606101f7db6fb30892453da26`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/ANALYSIS - NEWS + THEORY.txt`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - BROADER SCIENCE.txt`
 - `2a066e046105cc5a5b488ba052854d38ddc2223b0add3912216017e2efefd6ee`
   - `HAUL 2/ssrn-6956780 (1).pdf`
   - `HAUL 2/ssrn-6956780.pdf`
@@ -123,7 +129,11 @@
 - `2b80b2428ec701256374990886ee9fccac85de85b37afc5bbaec56df8d903129`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_GeoLocationAllPlatforms_all-time (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_GeoLocationAllPlatforms_all-time (1).csv`
+- `2cbb766eadd764771cb4ff0ed2c18b77af97d1aad77e99b836b497f443553775`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB ACTIVITY - Clones in last 14 days.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Clones in last 14 days.csv`
 - `313b0d3ab3470848f203ba1333537ab08805a40322d93fabfc19a562e2485cbc`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB ACTIVITY - Satobloc's Commits.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Commits over time.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Satobloc's Commits.csv`
 - `35b46d6497c947b41f3f314065412c57d48b44c8de827eaa5174429a47c8e3c9`
@@ -177,6 +187,9 @@
 - `5b862fda843c7de1a99af463264b746765064ce75049d02fbe6c4a260e5ff686`
   - `HAUL 1/ssrn-7228958 (1).pdf`
   - `HAUL 1/ssrn-7228958.pdf`
+- `5f35c6e848a6eb00c2f3cfc424d6000e796005934665e28432e367b5c9690832`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB ACTIVITY - MAY GITHUB ACTIVITY.txt`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — MAY GITHUB ACTIVITY.txt`
 - `61bb52495a9a54e6230c5404152fac61487b6851a212a6120876aed6d11778d1`
   - `EXPOSURE_STATS/SAT_IMPACT/SAT RECON — Gg3.txt`
   - `EXPOSURE_STATS/SAT_IMPACT/SAT RECON — Goog.txt`
@@ -280,6 +293,9 @@
 - `b311e294098b5b4e9970a0c99823c929d9ea12bcde46cb4b693f74c3f45053c6`
   - `PRIOR_ART/2509.07686v1.pdf`
   - `PRIOR_ART/BLACKHOLED 2509.07686v1 (1).pdf`
+- `b4bcc1b053a0c538fb65b7a543c5e43c6dda6abcb124d1121d221dc812d37861`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/SAT TIMELINE.txt`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/SAT_TIMELINE.txt`
 - `b521569545fe74776b6eafd2707b90710e3b06260d32cd94776f4a02c07f21ac`
   - `HAUL 2/ssrn-7352038 (1).pdf`
   - `HAUL 2/ssrn-7352038.pdf`
@@ -295,6 +311,9 @@
 - `bc4623b582ff7ef3f742799711b626a3333a60d0f2946d3977a06cca76c21f3e`
   - `PRIOR_ART/2608.19271v1 (1).pdf`
   - `PRIOR_ART/2608.19271v1.pdf`
+- `bdc002ee89d6450dfe075d7abfb418b31c26035d87e5a1d20ba75502fa98a407`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB ACTIVITY - Unique visitors in last 14 days.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Unique visitors in last 14 days.csv`
 - `c5f441626fcae53d8bf7530a65b7790837f3db84a1ff031e42e4eed16e808875`
   - `HAUL 4/7258242.pdf`
   - `HAUL 7/ssrn-7258242.pdf`
@@ -373,6 +392,9 @@
 - `f80612ec39a4da59b70064e3140235e91d89ed83c1642f647f58612afac71952`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Total views in last 14 days 2.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Total views in last 14 days.csv`
+- `f85304062c20e45f4d169aa5c823c3d54603f78f93ce6d2a9f252111e59454a0`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI Episodes List.txt`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/PODCAST - Episodess.txt`
 - `f9139507c03a4a58d03a5f43d82a02d8db1bd64b21fb4eaebd648121be8422cd`
   - `EXPOSURE_STATS/MISC_PAPERS/w1sd-v69d.pdf`
   - `LIVE_RESEARCH_UPDATES/w1sd-v69d.pdf`
