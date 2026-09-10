@@ -1,0 +1,1468 @@
+===== PAGE 1 =====
+Information Hierarchy in Many-Body Berry Phase
+Kai Watanabe 1,∗
+1Independent Researcher
+(Dated: June 2, 2026)
+Many-body topology is a central concept in modern theories of solids, and identifying effective de-
+grees of freedom that capture it is important both fundamentally and practically. This work studies
+the extent to which geometric information of an interacting many-body ground state can be inferred
+from a finite number of local correlations. Starting from the Resta formula,z=
+D
+exp
+
+2πi
+L
+ˆX
+E
+,
+we view logzas the cumulant generating function and establish a generic information hierarchy
+across cumulant orders. We show that, for anN-particle system, even complete knowledge of all
+density correlators up to orderN−1 does not, in general, uniquely determine the Berry phase
+γ= Im logz(mod 2π). In the thermodynamic limit, the statement becomes stronger: no finite
+set of local correlators suffices to determine the global holonomy. We also identify two exceptional
+yes-go cases in which the hierarchy is broken. First, for quasi-free models, all cumulants are deter-
+mined by the particle two-point correlation function. Second, symmetry-enforced constraints can
+reduce the infinite cumulant sum entering logzto finite information. The argument is analytic and
+does not rely on a specific microscopic Hamiltonian. Our results clarify a limitation of approaches
+based on local degrees of freedom for many-body holonomy and provide a minimal framework for
+distinguishing when global holonomies are encoded in local correlations and when they are not. We
+also comment on the possibility of analogous hierarchies in other contexts, such as the quantum
+marginal problem in quantum information theory and many-body scattering problems. Finally, we
+discuss implications for future numerical work, including machine-learning approaches to the search
+for topological phases.
+I. INTRODUCTION
+In modern theories of solids, topological structures of
+quantum many-body systems determine their responses
+to gauge fields and are related to global observables such
+as polarization [1–3]. Thus, describing such holonomies
+in terms of effective degrees of freedom is important both
+practically and fundamentally. Practically, it provides
+a basis for developing economical yet reliable computa-
+tional techniques for many-body systems based on essen-
+tial set of degrees of freedom [4–6]. Fundamentally, this
+description paves the way to identify the relevant degrees
+of freedom underlying topological structures, from crys-
+tals to polarization phenomena of the quantum vacuum.
+The importance of finding the degrees of freedom deter-
+mining the holonomy is not confined to condensed matter
+physics but extends to other fields that deal with quan-
+tum many-body systems, for example, nuclear theory and
+quantum field theory [7–9].
+A representative holonomy in condensed matter
+physics is the Berry phase. Using the Resta formula [10],
+the Berry phase is given by the argument of the expec-
+tation value of the Lieb-Schultz-Mattis (LSM) unitary
+operator constructed from density operators. Thus, one
+may naively expect that it can be computed once den-
+sity correlators up to some finite order are known. When
+symmetries are present or when a one-body approxima-
+tion is valid, either exactly or approximately, the Berry
+phase can indeed be related to reduced density informa-
+tion [11–13]. Such quantities have also been widely used
+to characterize topological structures [14].
+∗ kaiw.sshhrm@gmail.com
+However, a closer look at prior works suggests that the
+Berry phase may not be determined by local bulk cor-
+relators alone. In a periodic ring, the totalU(1) flux
+threading the ring cannot be gauged away. Nevertheless,
+one can choose a gauge in which the flux is concentrated
+near the boundary, namely, a twisted boundary condi-
+tion. In this gauge, local bulk observables in the gapped
+regime can become insensitive to the flux twist angle in
+the thermodynamic limit [15]. On the other hand, the
+Berry phase is the global phase acquired by the ground
+state when the flux twist angleθis varied from 0 to 2π.
+This raises the possibility that local measurements in the
+bulk do not contain sufficient information to determine
+the Berry phase. This point is closely related to the
+observation by Ortiz, Souza, and Martin [16] that the
+Berry-phase polarization cannot be inferred solely from
+local bulk density information.
+Another indication comes from the LSM unitary [17,
+18] appearing in the Resta formula. A Taylor expan-
+sion of this unitary generates statistical moments of the
+multipole operator, whose local definition under periodic
+boundary conditions is known to be subtle [19]. This
+may suggest that truncating the expansion at a finite
+order hides a conceptual issue.
+A closely related obstruction appears in quantum in-
+formation theory. A many-body state can always be
+reduced to subsystem states, for example through par-
+tial traces or a Schmidt decomposition across a bipar-
+tition. However, reconstructing the original many-body
+state from such reduced states requires additional global
+consistency conditions. This issue is known as the quan-
+tum marginal problem [20]. In many-body physics, it
+is related to theN-representability problem, which con-
+cerns the reconstruction of anN-body quantum state
+arXiv:2606.02155v1  [quant-ph]  1 Jun 2026
+
+===== PAGE 2 =====
+2
+from reduced density matrices [21].
+These considerations do not by themselves prove that
+the Berry phase cannot be determined from local degrees
+of freedom. However, they suggest that there are intrinsic
+limitations to local information. How should one recon-
+cile the many existing examples where the Berry phase is
+extracted from local correlators [12, 22]? This work ad-
+dresses this question by asking to what extent the Berry
+phase can be constrained by local correlation functions.
+More concretely, we regard the logarithm of the Resta
+formula as a cumulant generating function [23–25]. Then,
+we address the above question by examining cumulants
+order by order. In this formulation, thep-th cumulant
+is determined by connected density correlators up top
+points. If the Berry phase is fixed at some finite orderp=
+r, then it is determined from density correlators of finite
+order. On the other hand, if higher-order cumulants are
+not controlled, it suggests that the Berry phase cannot
+be determined from any finite set of correlators.
+The paper is organized as follows. In Sec. II, we inter-
+pret the Resta formula for the Berry phase as a cumulant
+generating function and derive the cumulants order by or-
+der. We first present a simple example that illustrates the
+order-by-order information hierarchy as a warm-up. We
+then establish a generic hierarchy in a model-independent
+manner. This yields a no-go statement that, for anN-
+particle system, density correlators up to orderN−1 do
+not determine the Berry phase in general. In the ther-
+modynamic limit, this statement is elevated to a local-
+to-global hierarchy: no fixed finite order of local den-
+sity correlators determines the Berry phase in general.
+In Sec. III, we identify two yes-go scenarios. The first
+is the quasi-free case, namely ground states of quadratic
+Hamiltonians. The second is symmetry-induced informa-
+tion reduction, which breaks the information hierarchy.
+In Sec. IV, we discuss connections to prior works, includ-
+ing the quantum marginal problem in quantum informa-
+tion theory. We also explain why previous approaches
+based on density-correlator calculations can succeed in
+symmetry-enforced yes-go scenarios. We also discuss
+guidelines for machine-learning approaches to topological
+phases. Then, we briefly comment on the possibility that
+scattering phase shifts in interacting many-body systems
+may be viewed as global phases and may exhibit analo-
+gous information hierarchies. Finally, we summarize our
+results and outline future directions in Sec. V.
+II. THE INFORMATION HIERARCHY FROM
+THE CUMULANT EXPANSION
+A. Resta formula as a cumulant generating
+function
+We start from the Resta formula [10], given by
+z=⟨Ψ| ˆULSM|Ψ⟩.(1)
+Here, the unitary ˆULSM =e iαL ˆX is the Lieb-Schultz-
+Matis (LSM) unitary [17, 18, 26, 27] and ˆX= PL
+j=1jˆnj
+is the generator of the localU(1) transformation with
+the angleα L = 2π
+L [28]. In ˆX, ˆnj denotes the density
+operator at sitej. We omit spin indices because they
+are not relevant in the present discussion. The density
+operator is defined in the conventional way in terms of
+the electron annihilation and creation operators, ˆcj and
+ˆc†
+j, as
+ˆnj = ˆc†
+jˆcj.
+The vacuum state|0⟩is defined by
+ˆcj|0⟩= 0 for allj.
+The fermion operators satisfy the canonical anticommu-
+tation relations
+{ˆci,ˆc†
+j}=δ ij,{ˆc i,ˆcj}= 0,{ˆc †
+i,ˆc†
+j}= 0.
+Accordingly,
+[ˆnj,ˆcj] =−ˆcj,[ˆn j,ˆc†
+j] = ˆc†
+j.
+The many-body state|Ψ⟩is an element of the Fock space
+generated by these fermion creation operators from the
+vacuum.
+The formula in Eq. (1) is thus the expectation value
+of the LSM unitary evaluated in the many-body state
+|Ψ⟩. When|Ψ⟩is a gapped and nondegenerate many-
+body ground state, the argument ofzcan be interpreted
+as the Berry phase. Thus,
+γ= Im logz(mod 2π).(2)
+The Resta formula Eq. (1) can be viewed as a shortcut
+to the Wilson-loop evaluation of the Abelian Berry phase
+associated with theU(1) flux-insertion cycleθ: 0→2π
+[3, 29]. The total fluxθthreading the ring cannot be
+gauged out by any single-valuedU(1) transformation un-
+der the periodic boundary condition (PBC). It is there-
+fore a gauge-invariant parameter of the Hamiltonian.
+The phase accumulated along a closedθ-cycle is the Berry
+phase.
+We assume that the ground state remains gapped and
+nondegenerate throughout theθ-cycle so that the Berry
+phase is well-defined. The proof that such gapped ground
+states exist is given in Appendix A, where we employ the
+technique of H. Watanabe [15, 30].
+The key observation is that the logarithm ofzin
+Eq. (1) is a cumulant generating function in the sense
+of mathematical statistics:
+logz=
+X
+p≥1
+(iαL)p
+p! κp.(3)
+Thep-th order cumulant of ˆXin the state|Ψ⟩is given
+by
+κp = dp
+dtp log⟨Ψ|et ˆX|Ψ⟩
+
+t=0
+.(4)
+
+===== PAGE 3 =====
+3
+Here and below, we do not put a hat onκ p, since it is
+a c-number. For instance, the first three cumulants are
+given by
+κ1 =⟨Ψ| ˆX|Ψ⟩.(5)
+κ2 =⟨Ψ| ˆX2|Ψ⟩−κ 2
+1.(6)
+κ3 =⟨Ψ| ˆX3|Ψ⟩−3κ 2κ1−κ 3
+1.(7)
+Since ˆXis a weighted sum of commuting density opera-
+tors, thep-th cumulantκ p is controlled byp-point con-
+nected density correlators, namely,⟨Ψ|ˆnj1 ˆnj2···ˆnjp|Ψ⟩.
+In what follows, we denote the expectation value with
+respect to|Ψ⟩by⟨·⟩, namely,⟨ ˆO⟩=⟨Ψ| ˆO|Ψ⟩, to save
+space, if not mentioned.
+Now, we show that fixing cumulants up to orderpdoes
+not, in general, constrain cumulants of orderp+ 1 and
+higher. We refer to this as the cumulant order-by-order
+hierarchy non-closure. Since Eq. (3) extends to all or-
+ders, this implies that finite number of density correlators
+(equivalently, finitely many cumulants) do not determine
+γin general. Equivalently, the many-body Berry phase
+can not be, in general, expressed as a functional of any
+fixed finite local correlations.
+B. Minimal example fromL= 6chain ring at half
+filling
+We begin with an analytically tractable example, for
+which all quantities can be evaluated explicitly and the
+cumulant order-by-order hierarchy non-closure mecha-
+nism is visualized.
+ForL= 6, the ground state can be expanded as a
+linear combination of the occupation basis, namely,
+|Ψ⟩=
+X
+n1,...,n6∈{0,1}
+an1···n6|n1n2···n 6⟩.(8)
+At half fillingN= P6
+j=1 <ˆnj >= 3, there are 20 ba-
+sis states. Among them, we consider two pure states as
+uniform superpositions of fourN= 3 configurations:
+|ΨE⟩= 1
+2
+
+|000111⟩+|011100⟩+|101010⟩+|110001⟩
+
+.
+(9)
+|ΨO⟩= 1
+2
+
+|001110⟩+|010101⟩+|100011⟩+|111000⟩
+
+.
+(10)
+The two states of interest are chosen so that the one-
+and two-point density correlators obey particularly sim-
+ple analytic constraints. For both states, all density one-
+point correlators coincide:
+⟨ΨE|ˆni|ΨE⟩=⟨Ψ O|ˆni|ΨO⟩= 1
+2 (∀i∈{1,...,6}).(11)
+Moreover, all density two-point correlators read
+⟨ΨE|ˆniˆni+3|ΨE⟩=⟨Ψ O|ˆniˆni+3|ΨO⟩= 0 (∀i∈{1,2,3}).(12)
+⟨ΨE|ˆniˆnj|ΨE⟩=⟨Ψ O|ˆniˆnj|ΨO⟩= 1
+4 (∀i,j∈{1,...,6}, i̸=j, j̸=i+ 3).(13)
+The cumulants up to second order are evaluated from
+the density correlators. For example, the first-order cu-
+mulant reads
+κ1 =⟨ ˆX⟩=
+6X
+j=1
+j⟨ˆnj⟩.(14)
+Thus, substituting Eq. (11), we arrive at
+κ1
+
+ΨE
+=κ 1
+
+ΨO
+= 21
+2 .(15)
+The calculation for the second-order cumulant is also
+straightforward. The result is
+κ2
+
+ΨE
+=κ 2
+
+ΨO
+= 27
+4 .(16)
+
+===== PAGE 4 =====
+4
+Thus, the cumulants from the even and odd ground states
+coincide up to second order.
+However, the third-order cumulant is not identical and
+has opposite signs. This is because the density three-
+point correlator for the even and odd states differ. Ex-
+plicitly, for the even ground state, the three-point corre-
+lator is given by,
+
+ΨE|ˆnj1 ˆnj2 ˆnj3|ΨE
+
+=
+
+
+
+1
+4 for (j1,j 2,j 3)∈{(4,5,6),(2,3,4),(1,3,5),(1,2,6)},
+0,otherwise.
+(17)
+In the odd ground state, the site configurations for which the three-point density correlator takes a finite value dif-
+fer from those in the even case, which reads
+
+ΨO|ˆnj1 ˆnj2 ˆnj3|ΨO
+
+=
+
+
+
+1
+4 for (j1,j 2,j 3)∈{(3,4,5),(2,4,6),(1,5,6),(1,2,3)},
+0,otherwise.
+(18)
+Substituting the above together with the first and second
+order cumulants, we find,
+κ3
+
+ΨE
+= 81
+4 ,(19)
+and
+κ3
+
+ΨO
+=− 81
+4 .(20)
+Thus, the constraints on density one-point and two-point
+correlators do not constrain the third order cumulant.
+The three-point correlators differ due to the hidden
+particle-number parity. To see this, we partition the
+ring into two three-site blocks,B 1 ={1,2,3}andB 2 =
+{4,5,6}. The two states in Eqs. (9) and (10) are distin-
+guished by the number parity onB1:|Ψ E⟩and|Ψ O⟩yield
+(−1)n1+n2+n3 = +1 and−1, respectively. The three-
+point correlator encodes this number parity and is there-
+fore not constrained by one-point and two-point correla-
+tors. This limitation of low-order correlators is consistent
+with the discussion of the one-particle reduced-density-
+matrix case [31].
+From the above, the Berry phases computed from the
+even and odd ground states start to differ at third order
+in the cumulant expansion. The difference between the
+Berry phase evaluated with the even ground state (de-
+noted byγ E) and that evaluated with the odd ground
+state (denoted byγ O) reads
+γE−γO =− 27
+4 α3
+L +O(α 5
+L).(21)
+Here, theO(α 5
+L) terms arise fromκ 5 and higher cumu-
+lants. Terms of even order do not contribute since they
+are real; moreover, for this example they vanish exactly,
+as shown in the discussion below.
+Higher order cumulantsO(α 5
+L) are not constrained ei-
+ther. To see this, we evaluate the Resta formula in terms
+of cumulants of ˆXin each state, one may write
+logzE =
+X
+p≥1
+(iαL)p
+p! κp
+
+ΨE
+.(22)
+logzO =
+X
+p≥1
+(iαL)p
+p! κp
+
+ΨO
+.(23)
+Therefore,
+logzE
+zO
+=
+X
+p≥1
+(iαL)p
+p!
+
+κp
+
+ΨE
+−κp
+
+ΨO
+
+.(24)
+In the presentL= 6 example, ˆXtakes only two values
+on the occupation configurations appearing in each state.
+For|ΨE⟩, one hasX∈{9,15}, and hence
+XE = 9 + 6Y,(25)
+whereY∈ {0,1}is a Bernoulli random variable with
+P(Y= 1) = 1/4. For|Ψ O⟩, one hasX∈{6,12}. Using
+the same Bernoulli variableY, this can be written as
+XO = 12−6Y.(26)
+Thus, the even and odd cases are related by the sign
+reversal of theYterm.
+Writing the random variables explicitly, forp≥2, their
+cumulants satisfy
+
+
+
+κp[6Y+ 9] = 6 pκp[Y],
+κp[−6Y+ 12] = (−6) pκp[Y].
+(27)
+
+===== PAGE 5 =====
+5
+Though a constant shift affects only the first cumulant,
+i.e., the average, in the present construction, the first cu-
+mulants are already fixed to be identical. As a result, the
+odd-order cumulants change sign while the even-order cu-
+mulants coincide, which implies that log(zE/zO) receives
+contributions only from the odd-order cumulants as
+logzE
+zO
+= 2
+X
+m≥1
+(iαL)2m+1
+(2m+ 1)! κ2m+1
+
+ΨE
+.(28)
+One might naively expect cancellations after summing
+over all orders in the cumulant expansion. However,z E
+andz O can be evaluated directly from the occupation
+configurations. Forα L =π/3, this yieldsz E =−1 and
+zO = +1, and equivalently,γ E =πandγ O = 0, respec-
+tively. This shows that the difference between the two
+states persists to all orders and is not removed by any
+potential cancelation.
+Although all density correlators on four distinct sites
+vanish in theN= 3 sector, this does not imply the van-
+ishing of higher cumulants. Indeed, expanding ˆXp gener-
+ates many terms with repeated indices, and the identity
+ˆn2
+i = ˆni reduces such terms to lower-point correlators,
+which is finite.
+C. General case with arbitraryLandN
+Now we shall move on to the general case with arbi-
+traryLandN. The ground state in the occupation basis
+is given by
+|Ψ⟩=
+X
+n1,...,nL∈{0,1}
+an1···nL|n1···n L⟩,(29)
+the coefficienta n1···nL|n1···n L⟩satisfyP
+n1,...,nL
+|an1···nL|2 = 1 and thusp(n 1,...,n L) :=
+|an1···nL|2 is the weight. We abbreviaten:=
+(n1,...,n L)∈ {0,1} L and writep(n). To fix the
+particle number sector, the weight is set top(n) = 0
+unlessPL
+j=1nj =N.
+Since ˆnj and hence ˆX= PL
+j=1jˆnj are diagonal in this
+basis, we obtain
+z:=⟨Ψ|e iαL ˆX|Ψ⟩=
+X
+n
+p(n)eiαLX(n),(30)
+whereX(n) := PL
+j=1jnj is the expectation value of ˆX.
+The densityp-point correlator is given by
+⟨ˆnj1···ˆnjp⟩=
+X
+n
+p(n)nj1···n jp,(1≤p≤r).
+(31)
+Constraining thep-point correlation function is equiva-
+lent to fixing the expectation values, that is,
+⟨ˆnj1···ˆnjp⟩=A j1···jp,(32)
+for all choices ofpsites (j 1,...,j p), whereA j1···jp is a
+constant.
+We now emphasize that fixing density correlators up
+to orderpdoes not uniquely specify the ground state.
+Indeed, there exist infinitely many superposition states
+in the occupation basis whose weights are chosen so that
+they share the same set of correlatorsAj1···jp for allp≤r
+(and for all choices of sites).
+The above is explicitly shown by the cumulant expan-
+sion. Let|Ψ⟩and|Ψ ′⟩be two gapped ground states in
+the same (L,N) sector. Then, we have two expectation
+values of the LSM unitary given by,
+z=⟨Ψ| ˆULSM|Ψ⟩, z ′ =⟨Ψ′| ˆULSM|Ψ′⟩.
+Assume that density correlators coincide up to orderr,
+⟨Ψ|ˆnj1···ˆnjp|Ψ⟩=⟨Ψ ′|ˆnj1···ˆnjp|Ψ′⟩,(1≤p≤r),
+(33)
+for all choices of sites (j 1,...,j p).
+Under the condition (33), the cumulant expansion
+yields
+log z
+z′ =
+∞X
+p=r+1
+(iαL)p
+p!
+ 
+κp−κ′
+p
+
+,(34)
+whereκp andκ′
+p are thep-th cumulants of ˆXevaluated in
+|Ψ⟩and|Ψ ′⟩, respectively. Since cumulants withp≥r+1
+are not determined by correlators up to orderr, the right-
+hand side of (34) is unconstrained in general. Note that
+the cancellation of even orders observed in the special
+case (L,N) = (6,3) relies on additional structure where a
+hidden particle-number parity leads to a Bernoulli statis-
+tics.
+1. Scaling with system sizeL
+One may naively expect that higher-order cumulants
+are suppressed sinceα L = 2π/Lis small for large system
+sizeL. However, cumulants of ˆXnaturally involve the
+combinationα Lj, which is typically
+αLj∼O(1) (j∼O(L)).
+Thus the scaling fromα L is compensated by the scale
+ofj, so that each order can remainO(1). Moreover, the
+p-th order contribution involves a sum over choices ofp
+sites, whose combinatorial factor scales as
+L
+p
+
+∼O(L p).
+Therefore, no suppression inLis guaranteed, and the cu-
+mulant expansion is not controlled solely by the smallness
+ofα L.
+Table I summarizes the exact cumulants for the equal-
+weighted superposition of all configurations in the half
+filling sector for representative system sizesL. Here, the
+cumulants were evaluated from the central moments [25]
+by exhaustively enumerating all configurations in the half
+filling sector. The table shows that the higher-order
+
+===== PAGE 6 =====
+6
+TABLE I. Exact cumulants for the equal-weighted superpo-
+sition of all configurations in the half-filling sector.
+L N p κ p
+(iαL)p
+p! κp
+2 21
+4 ≃−2.8786
+6 3 4− 693
+40 ≃−0.8681
+6 1041
+4 ≃−0.4767
+2 12≃−3.7011
+8 4 4− 336
+5 ≃−1.0654
+6 12144
+7 ≃−0.5655
+2 39≃−5.3460
+12 6 4−468≃−1.4656
+6 183378
+7 ≃−0.7497
+2 272
+3 ≃−6.9910
+16 8 4− 28288
+15 ≃−1.8687
+6 1655936
+9 ≃−0.9372
+cumulants grow rather than being suppressed. Conse-
+quently, the factor (iαL)p/p! does not make the rescaled
+cumulants negligible, as seen from the fourth- and sixth-
+order values. Moreover, the cumulants themselves grow
+with increasingL.
+In the thermodynamic limitL→∞, the particle num-
+berNalso diverges, and the cumulant hierarchy is nat-
+urally promoted from an order-by-order hierarchy to a
+local-to-global hierarchy. At a fixed orderp, the num-
+ber of density correlators already scales as
+ L
+p
+
+∼O(L p).
+Thus, even before taking the orderpto increase withN,
+the number of density correlators that must be fixed in
+order to determine the Berry phase grows polynomially
+with the system size.
+As shown in the next section, however, this obstruc-
+tion can be avoided in at least two exceptional scenarios,
+where additional structures make a practical determina-
+tion possible.
+An alternative proof of the hierarchy is given in Ap-
+pendix B, where we writezexplicitly in terms of density
+p-point correlators rather than cumulants.
+
+===== PAGE 7 =====
+7
+III. EXCEPTIONAL CASES WHERE THE
+HIERARCHY IS REDUCED
+We have shown that, in general, the many-body Berry
+phase cannot be determined from density correlators up
+to a fixed orderp. However, as is also clear from numer-
+ous existing studies, there are many situations in which
+the Berry phase is successfully extracted from a finite set
+of density correlators [12, 13, 32].
+The origin of this apparent tension can be traced back
+to two distinct mechanisms, which we refer to as the yes-
+go scenario. The first scenario is when Wick’s theorem
+applies, so that higher-order cumulants are fully deter-
+mined by the particle two-point correlation function. In
+the alternative case, the symmetry reduces the informa-
+tion hierarchy drastically.
+A. Gaussian closure
+The first exceptional case is that of quasi-free ground
+states. The Hamiltonian is then quadratic in fermions
+and reads
+ˆH=
+LX
+i,j=1
+ˆc†
+ihij ˆcj.(35)
+Here,h ij is a Hermitian one-body matrix and contains no
+density-dependent terms. When the Hamiltonian is given
+in the form Eq. (35), the Berry phase is determined from
+particle (not density) two-point correlators.
+To see this, it is convenient to work in the finite-
+temperature formulation. First, the unitary in the Resta
+formula can also be written in a quadratic form as
+eiαL ˆX = exp
+
+iαL
+LX
+i,j=1
+ˆc†
+iMij ˆcj
+
+,(36)
+whereM= diag(1,2,...,L). The expectation value of
+the LSM unitary is given by
+z(β) =
+Tr
+
+e−β ˆHeiαL ˆX
+
+Tr
+
+e−β ˆH
+ ,(37)
+whereβis the inverse temperature. Since both ˆHand
+ˆXare quadratic in fermions, the producte −β ˆHeiαL ˆX is
+again Gaussian and can be written as
+e−β ˆHeiαL ˆX =Ce (− P
+i,j ˆc†
+iKijˆcj),
+with a constantCand a one-body matrixK ij. Therefore,
+for a quasi-free Hamiltonian, the expectation value of
+LSM unitaryz(β) is expressed in terms of the single-
+particle correlation matrix as
+z(β) = det
+ 
+Iij−Cij(β) +
+LX
+k=1
+Cik(β)
+ 
+eiαLM
+kj
+!
+,
+(38)
+whereC ij(β) =⟨ˆc†
+i ˆcj⟩β is the thermal particle two-point
+correlator.
+In gapped models, the ground state becomes dominant
+in the zero-temperature limit, similar to the ground state
+saturation in imaginary time approaches. This is easily
+shown by the spectral decomposition
+ˆH=
+X
+n≥0
+En|ψn⟩⟨ψn|,(39)
+where|ψ n⟩denotes then-th excited state. We set, with-
+out loss of generality,E0 = 0 for the ground state|Ψ⟩and
+define the gap byE 1 >0. Then, for the LSM unitary,
+we can re-write as,
+⟨ ˆULSM⟩β =
+P
+n≥0e−βEn⟨ψn| ˆULSM|ψn⟩P
+n≥0e−βEn
+=⟨Ψ| ˆULSM|Ψ⟩+e −βE1⟨ψ1| ˆULSM|ψ1⟩+···
+1 +e−βE1 +··· .(40)
+Taking the limitβ→∞, the expectation value reduces
+to that of the ground state. Thus, we recover the Resta
+formula in the zero temperature as limβ→∞z(β)→z. In
+what follows, we assume that the limit is already taken
+and we omitβfrom the arguments.
+The determinant formula in Eq. (38) already implies
+that the Berry phase is determined solely by the two-
+point correlators. The connection to the cumulant hier-
+archy is as follows. Take a densityp-point correlator, for
+example. In a quasi-free state, Wick’s theorem implies
+that it is completely determined by the particle two-point
+correlator as
+⟨ˆnj1 ˆnj2···ˆnjp⟩=
+X
+all permutations
+(−1)λ
+pY
+m=1
+
+ˆc†
+jmˆcjm′
+
+,(j 1,...,j p all distinct),(41)
+where the permutation maps (j1,...,j p)7→(j 1′,...,j p′), andλis the number of pairwise interchanges needed to
+
+===== PAGE 8 =====
+8
+realize the permutation.
+The equation (41) shows that any density correlators
+are evaluated solely fromC ij. Consequently, the cumu-
+lant hierarchy is governed byC ij as well, which explains
+the closure in the Gaussian case and hence the unique
+determination of the Berry phase.
+B. Symmetry enforced information reduction
+Symmetry provides the other yes-go mechanism, be-
+cause it constrains the many-body system itself. Since
+symmetry imposes constraints across all orders of cumu-
+lants (equivalently, on density correlators of all orders),
+it can dramatically reduce the information hierarchy.
+Let us demonstrate this mechanism for inversion sym-
+metry. From Eq. (29), inversion symmetry can be im-
+posed by demanding that the weights in the occupation
+basis are invariant under the mappingI:j7→L+ 1−j,
+namely,
+p(n) =p(In).(42)
+Moreover, one easily finds that the mapping of ˆXis given
+by
+X(In) = (L+ 1)N−X(n).(43)
+Therefore, the expectation valuezsatisfies
+z=
+X
+n
+p(n)eiαLX(n) =
+X
+n
+p(In)eiαLX(In)
+=
+X
+n
+p(n)eiαL
+ 
+(L+1)N−X(n)
+
+=e iαL(L+1)NX
+n
+p(n)e−iαLX(n)
+=e iαL(L+1)Nz∗.(44)
+Thus,zsatisfies a conjugation constraint, which strongly
+constrains the cumulants at all orders. Taking out the
+argument of z, it shows that the Berry phaseγ=
+Im logz(mod 2π) satisfies
+γ= πN
+L orγ= πN
+L +π(mod 2π).(45)
+This shows that, when inversion symmetry is present, the
+Berry phase is determined fromLandN.
+To make the constraint explicit, we shift the origin and
+introduce the centered position operator
+ˆXc =
+LX
+j=1
+
+j− L+ 1
+2
+
+ˆnj = ˆX− L+ 1
+2
+ˆN.
+This shift of the origin to (L+ 1)/2 absorbs the phase
+factore−iαL
+L+1
+2 N. Then, the constraint Eq. (44) reduces
+toz c =z∗
+c , i.e.,z c is real.
+The above discussion implies that symmetry reduces
+the infinite cumulant sum entering logzinto finite in-
+formation. In this sense, the information hierarchy is
+broken by symmetry. From an information-theoretic per-
+spective, quantization of a holonomy, e.g., theZ 2 quan-
+tization [33, 34], can be viewed as an extreme form of
+information compression, where a priori continuous data
+are reduced to a discrete set of quantized possibilities,
+namely topological invariants [35].
+In the (L,N) = (6,3) analytic example, the underlying
+Bernoulli distribution leads to a cancelation of the even
+order cumulants in logzandzis pure imaginary. Once
+inversion symmetry is imposed, however,zis constrained
+to be real. These two constraints are incompatible in this
+analytic setting, and the expectation value can collapse to
+z= 0 [36], so the Berry phase extracted fromzbecomes
+ill-defined. This can be understood as a consequence of
+imposing two independent constraints on the information
+hierarchy, which overconstrain the problem and leave no
+admissible solution.
+IV. DISCUSSION
+Viewed through the Resta formula, the Berry phase
+γ= Im logzplays the role of a cumulant generating
+functional, and the cumulant expansion naturally defines
+an order-by-order information hierarchy. This viewpoint
+is closely related to the quantum marginal problem in
+quantum information, which asks whether prescribed re-
+duced density matrices are compatible with a global pure
+state [20]. It has been pointed out that reconstructing a
+many-body state from reduced local data faces a com-
+putational obstruction [21]. Our result indicates that an
+analogous information hierarchy exists in the context of
+topological many-body systems. The appearance of re-
+lated hierarchies in different fields may indicate a sim-
+ple general principle: although passing from the original
+many-body state to reduced subsystem state is well de-
+fined, the inverse operation is not well defined without
+additional global consistency conditions.
+However, physical many-body systems often have sym-
+metries that can break the information hierarchy as
+we have seen previously. This is consistent with the
+symmetry-based organization of topological phases. In
+many classification frameworks, global invariants are con-
+strained and often reduced to discrete labels once sym-
+metries are imposed [37, 38].
+From this viewpoint, searching for symmetry-enforced
+constraints is practical. For instance, transformation
+rules of Wilson-loops under group actions provide addi-
+tional global constraints on the allowed holonomies. Such
+constraints reduce the amount of information that has to
+be supplied independently, and hence provide a natural
+route to break the information hierarchy [29, 39].
+The other yes-go scenario, namely the case of quadratic
+Hamiltonians, also helps explain the success of prior
+works. For instance, the pioneering density-functional
+treatment of polarization in noninteracting band insu-
+lators relies on a single-particle description [32]. More
+generally, if an interacting ground state is well approx-
+imated by a quasi-free state, approaches based on the
+
+===== PAGE 9 =====
+9
+one-body reduced density matrix (1RDM) may remain
+effective [11, 12]. This effectiveness reflects the absence
+or perturbative weakness of interactions: the many-body
+problem reduces to independent single-particle problems
+with controlled corrections.
+In principle, an information hierarchy may also be ex-
+pected in the scattering problem. The scattering phase
+shift can be viewed as a global phase shift in the wave-
+function accumulated under an evolution fromt= 0 to
+t→∞[40]. In practice, however, scattering theory of-
+ten relies on perturbative expansions around quasi-free
+asymptotic states, and additional symmetry constraints
+can further restrict the allowed phase shifts. The practi-
+cal success of scattering theory does not negate the pres-
+ence of an information hierarchy. Rather, it provides
+another perspective on why yes-go scenarios can arise in
+concrete settings.
+The information hierarchy indicates a limitation of
+machine-learning techniques. As we have shown, a fi-
+nite set of constraints onr-point density correlators does
+not determine the many-body Berry phase. This remains
+true even if one allows an arbitrary functional constraint.
+Since a neural network is fundamentally a nonlinear func-
+tional of its inputs, it effectively imposes a constraint of
+the form
+f
+ 
+⟨ˆn⟩,⟨ˆnˆn⟩,⟨ˆnˆnˆn⟩,...
+
+= const.
+Accordingly, the many-body holonomy cannot be repro-
+duced in general from such finite local correlators. Non-
+linearity does not help unless additional, genuinely nonlo-
+cal input is provided or the hypothesis class is restricted
+to a yes-go regime. A simple way around this obstruction
+is to train on data originating from symmetric many-
+body systems, or to include global holonomies as in-
+put features together with density correlators [16]. One
+promising way to obtain such global data would be to
+directly acquire data such as polarization through exper-
+iments [41, 42]. Indeed, many recent machine-learning
+studies aimed at predicting phase diagrams use, either ex-
+plicitly or implicitly, nonlocal inputs or data drawn from
+symmetry-constrained settings [43–46]. In such cases the
+problem is effectively restricted to a yes-go regime.
+V. SUMMARY AND OUTLOOK
+In this work, we studied to what extent the geometric
+information of an interacting many-body ground state
+can be inferred from a finite set of density correlations.
+Using the Resta formula and viewing logzas a cumulant
+generating functional, we established a generic cumulant
+order-by-order information hierarchy. In general, low-
+order information does not determine higher-order infor-
+mation. That is, fixing density correlators (or cumulants)
+up to a finite order does not, in general, constrain higher-
+order ones, so the many-body holonomy is not uniquely
+determined from such low-order data.
+In the thermodynamic limit, the information hierarchy
+is essentially local-to-global. Finite-order local correla-
+tors constrain the local structure of the state, but they
+do not determine the global structure in general.
+We also identified two yes-go mechanisms that break
+this hierarchy. First, for quasi-free (Gaussian) states, the
+hierarchy effectively closes andzis determined by low-
+order data. Second, symmetry constraints can reduce the
+infinite cumulant sum entering logzinto finite informa-
+tion, which collapses the hierarchy.
+From a practical viewpoint, our results identify what
+must be supplied, beyond finite-order density correlators,
+in order to access many-body holonomy. In yes-go cases,
+symmetry constraints or (approximate) quasi-free struc-
+ture compress the relevant information into a finite set
+of descriptors, so thatγbecomes accessible from reduced
+data.
+Outside such regimes, no finite-order local information
+is sufficient, and one must incorporate genuinely nonlocal
+input or evaluate the global holonomy directly. In this
+regard, methods that directly target many-body wave
+functions, such as DMRG [47, 48] and quantum Monte
+Carlo [49], are the representatives. In the longer term,
+quantum computers may also provide a route to access
+such global holonomy data [50–52], provided that the
+hardware and algorithms mature sufficiently. From this
+perspective, data-driven approaches would ultimately re-
+quire inputs that contain the many-body holonomy itself,
+or other genuinely nonlocal information that is equivalent
+to it.
+
+===== PAGE 10 =====
+10
+Appendix A:θ-independent bulk effective description and the gap non-closure
+We start from twoθ-threaded Hamiltonians, ˆHE(θ) and ˆHO(θ), defined on chains with the same number of sites
+and satisfying
+ˆHE(θ)|ΨE(θ)⟩=E E(θ)|ΨE(θ)⟩, ˆHO(θ)|ΨO(θ)⟩=E O(θ)|ΨO(θ)⟩.(A1)
+HereEandOlabel two distinct Hamiltonians. Accordingly, the Berry phases computed from these Hamiltonians are,
+in general, different, as seen in the main text. Concretely, one may think of two Hamiltonians whose ground states
+have even and odd bulk particle-number parity, respectively.
+The gap along theθ-cycle is then given by
+∆(θ) =E O(θ)−E E(θ).(A2)
+As discussed in the main text,θis 2π-periodic.
+Atθ= 0, we define the reference eigenstates and the bulk gap by
+ˆHE(0)|ΨE⟩= 0, ˆHO(0)|ΨO⟩= ∆|Ψ O⟩,(A3)
+so that ∆ = ∆(0) is the energy gap between the even and odd ground states atθ= 0.
+The assumption in the main text is that the energy gap ∆ is sufficiently large to separate the even and odd ground
+states. Below we show that, under appropriate conditions, the gap does not close along theθ-cycle. Therefore, the
+Berry phase discussed in the main text is well defined, and our construction indeed provides a counterexample.
+1. Edge–bulk bipartition and Schmidt decomposition
+We show that theθ-dependence of the energy gap is sufficiently small, and that this conclusion is independent of
+the gauge fixing.
+Adopting a twisted-boundary gauge, we choose the edge region to carry all explicitθ-dependence. Conversely, the
+bulk is chosen to beθ-independent. Symbolically, this bipartition is written as
+H=H edge⊗H bulk.(A4)
+Then, for each sector the ground state|Ψ s(θ)⟩is decomposed by the Schmidt decomposition as
+|Ψs(θ)⟩=
+χsX
+α=1
+λ(s)
+α (θ)|e (s)
+α (θ)⟩⊗|b (s)
+α ⟩, λ (s)
+α (θ)≥0.(A5)
+Here,|e (s)
+α (θ)⟩∈H edge denotes the edge Schmidt state, and|b (s)
+α ⟩∈H bulk denotes its Schmidt partner. The sector
+labels∈{E,O}distinguishes the even/odd ground states.
+The Schmidt sum overαis truncated at a bond dimensionχ s. In practice, it is chosen large enough to faithfully
+capture the entanglement relevant. However, in this Appendix we do not rely on any finite-bond-dimension truncation
+and formally take the Schmidt expansion without truncation (equivalently,χs→∞for each sectors). In the following,
+we omitχ s and treat the Schmidt expansion as untruncated.
+The states satisfy the orthonormality relations
+⟨e(s)
+α (θ)|e(s)
+β (θ)⟩=δ αβ,⟨b (s)
+α |b(s)
+β ⟩=δ αβ.(A6)
+Such a choice of edge and bulk states is possible because the seam position can be relocated by a gauge choice. The
+bulk states and bulk operators can be isolated from the gauge-dependent edge states, leaving at most an exponentially
+suppressedθ-dependence [15].
+2. Bulk-space operator description
+Now we introduce an effective bulk-space approach by defining effective operators acting on the bulk. This approach
+is closely related in spirit to Ref. [5], although our construction is not identical.
+Recall that the ground-state energy is given by the expectation value
+Es(θ) =⟨Ψ s(θ)| ˆHs(θ)|Ψs(θ)⟩, s∈{E,O}.(A7)
+
+===== PAGE 11 =====
+11
+Substituting the Schmidt decomposition (A5) into (A7), we obtain
+Es(θ) =
+X
+α,β≥1
+λ(s)
+α (θ)λ(s)
+β (θ)
+
+⟨e(s)
+α (θ)|⊗⟨b (s)
+α |
+
+ˆHs(θ)
+
+|e(s)
+β (θ)⟩⊗|b (s)
+β ⟩
+
+=
+X
+α,β≥1
+λ(s)
+α (θ)λ(s)
+β (θ)⟨b (s)
+α |
+
+⟨e(s)
+α (θ)| ˆHs(θ)|e (s)
+β (θ)⟩
+
+|b(s)
+β ⟩.(A8)
+Equation (A8) motivates introducing the bulk-space operator
+ˆS(s)
+αβ(θ)≡⟨e (s)
+α (θ)| ˆHs(θ)|e (s)
+β (θ)⟩.(A9)
+For each fixed (s,α,β), ˆS(s)
+αβ(θ) is an operator acting on the bulk-spaceH bulk. In terms of (A9), Eq. (A8) reads
+Es(θ) =
+X
+α,β≥1
+λ(s)
+α (θ)λ(s)
+β (θ)⟨b (s)
+α | ˆS(s)
+αβ(θ)|b (s)
+β ⟩.(A10)
+We further separate the explicitθ-dependence of the Hamiltonian by
+δ ˆHs(θ) := ˆHs(θ)− ˆHs(0),(A11)
+and define the corresponding decomposition of ˆS(s)
+αβ(θ) as
+δ ˆS(s)
+αβ(θ) :=⟨e (s)
+α (θ)|δ ˆHs(θ)|e (s)
+β (θ)⟩,(A12)
+ˆS(s,0)
+αβ (θ) :=⟨e (s)
+α (θ)| ˆHs(0)|e (s)
+β (θ)⟩,(A13)
+so that
+ˆS(s)
+αβ(θ) = ˆS(s,0)
+αβ (θ) +δ ˆS(s)
+αβ(θ).(A14)
+Equation (A14) is an identity following from (A11).
+The point is that, once one insists on a bulk-space operator description through (A9),θ-dependence necessarily
+enters the bulk effective model in two ways: (i) through the explicitθdependent part of the Hamiltonianδ ˆHs(θ),
+which contributes via (A12), and (ii) through theθ-dependence of the edge Schmidt states|e (s)
+α (θ)⟩used to define
+(A9), reflecting the cut-induced (virtual) gluing across the gauge-dependent edge–bulk decomposition.
+The latter implies that although ˆHs(0) itself has noθ-dependence, the edge degrees of freedom are coupled to
+the flux. This coupling enters to the bulk-space operator ˆS(s,0)
+αβ (θ) as a correction associated with the artificial
+decomposition. Similar cut-induced contributions, where an effective subspace inherits nontrivial contributions from
+its Schmidt-complement space, have been discussed in the contexts of matrix-product-state constructions and many-
+body entanglement, e.g., Refs. [5, 6, 53].
+This idea of virtual current mechanism has a close analogue in effective descriptions in nuclear physics, where
+integrating out degrees of freedom of the exchanged charged-mesons induces “exchange-current” contributions [54, 55].
+For example, in an effective two-neutron description written solely in terms of anNNpotential, one may naively
+expect that an external electromagnetic field has no effect to the system. However, theNNpotential itself encodes
+pion-exchange processes that have been integrated out, and therefore induces currents in the effective theory (often
+discussed as exchange currents).
+3. Bulk gap non closure
+We now fix a common gauge for the even/odd states by aligning the position of the twisted boundary condition
+(tBC). The tBC position is gauge-dependent and can be relocated by a gauge transformation. Concretely, the twist
+implemented at a linkℓcan be shifted to another linkℓ ′ by
+ˆUℓ→ℓ′(θ) :=
+
+
+
+exp
+
+−iθ
+ℓ′
+X
+j=ℓ+1
+ˆnj
+
+, ℓ<ℓ ′,
+exp
+
++iθ
+ℓX
+j=ℓ′+1
+ˆnj
+
+, ℓ>ℓ ′.
+(A15)
+
+===== PAGE 12 =====
+12
+For example, consider a gauge in which the twist is localized on the bond (ℓ,ℓ+ 1),
+ˆh(ℓ)
+tBC(θ) :=te −iθ ˆc†
+ℓˆcℓ+1 + h.c.(A16)
+and all other hopping terms carry no phase. The unitary tBC shift acts on fermion operators as follows. Forℓ < ℓ ′
+andℓ<j <ℓ ′,
+ˆUℓ→ℓ′(θ) ˆcj ˆU−1
+ℓ→ℓ′(θ) =e +iθˆcj, ˆUℓ→ℓ′(θ) ˆc†
+j ˆU−1
+ℓ→ℓ′(θ) =e−iθˆc†
+j.
+Forℓ>ℓ ′ andℓ′ <j <ℓ,
+ˆUℓ→ℓ′(θ) ˆcj ˆU−1
+ℓ→ℓ′(θ) =e−iθˆcj, ˆUℓ→ℓ′(θ) ˆc†
+j ˆU−1
+ℓ→ℓ′(θ) =e +iθˆc†
+j.
+Hence the hopping on any internal bond (j,j+ 1) withℓ < j < ℓ′ is unchanged, since the phases cancel: ˆc†
+jˆcj+17→
+(e±iθˆc†
+j)(e∓iθˆcj+1) = ˆc†
+jˆcj+1, where the choice of signs follows from the two casesℓ<ℓ ′ andℓ>ℓ ′ in Eq. (A15). Thus,
+the phase factors cancel for bothℓ<ℓ ′ andℓ>ℓ ′. On the other hand, the boundary bonds transform as
+ˆc†
+ℓˆcℓ+17→ˆc†
+ℓ(e+iθˆcℓ+1) =e +iθˆc†
+ℓˆcℓ+1,
+forℓ<ℓ ′, or,
+ˆc†
+ℓˆcℓ+17→(e +iθˆc†
+ℓ)ˆcℓ+1 =e +iθˆc†
+ℓˆcℓ+1,
+forℓ>ℓ ′. Either way, acting with the unitary ˆUℓ→ℓ′(θ) on the Hamiltonian removes the twist from the bond (ℓ,ℓ+ 1)
+given by Eq. (A16). Similar calculations show that the phase is relocated to the bond (ℓ ′,ℓ′ + 1). Thus, the unitary
+shifts the tBC fromℓtoℓ ′. We therefore can choose a gauge in which the tBC position is common to the even and
+odd ground states.
+The neighborhood of the aligned tBC position is nothing but the edge region, the bulk is the complement region
+sufficiently far from the tBC. With this tBC position, we assume that the operator ˆS(s,0)
+αβ (θ) introduced in Eq. (A9)
+can be chosen to be sector-independent, namely
+ˆS(s,0)
+αβ (θ) = ˆSαβ(θ).(A17)
+Moreover, theθ-dependence of ˆSαβ(θ) is due to the virtual contribution from the edge state|e β(θ)⟩. Any remainingθ-
+dependence in the bulk effective description originates solely from the virtual current. We assume that this contribution
+is exponentially suppressed in the system size, following Ref. [15]. Hence, we can rewrite
+ˆSαβ(θ)≃ ˆSαβ +O(e−L/ξ).(A18)
+Here,ξis the correlation length, which is typically smaller than the system sizeLfor a one-dimensional system. On
+the other hand, the gauge-dependent edge contribution (contribution fromδ ˆSαβ(θ)) is common to the even and odd
+states and therefore cancels in their difference.
+Since we adopt the same aligned tBC position for the even and odd states, it is not a severe assumption to
+also assume that the Schmidt coefficients are common. By isolating the Schmidt cut from the tBC, the remaining
+θ-dependence is suppressed as well. The resulting expression is
+λ(s)
+α (θ)≃λ α +O(e−L/ξ).(A19)
+We now evaluate the even–odd energy difference using Eq. (A10). Substituting equations Eqs. (A18) and (A19)
+we obtain
+EO(θ)−E E(θ)≃
+X
+α,β≥1
+λαλβ
+n
+⟨b(O)
+α | ˆSαβ|b(O)
+β ⟩−⟨b (E)
+α | ˆSαβ|b(E)
+β ⟩
+o
++O(e−L/ξ).(A20)
+This implies that theθ-dependence on the even and odd energy difference is at most exponentially small inLonce
+the tBC position is aligned, consistent with Haruki Watanabe’s observation.
+Therefore, the even–odd splitting is mainly dominated by its value atθ= 0,
+EO(θ)−E E(θ) =
+
+EO(0)−E E(0)
+
++O(e−L/ξ),(A21)
+and since ∆ =E O(0)−E E(0)>0 is assumed to be sufficiently large in the beginning, the gap cannot close along the
+θ-cycle.
+
+===== PAGE 13 =====
+13
+4. Remark: Hellmann–Feynman Theorem
+Let us leave a comment on the Hellmann–Feynman theorem. Naively, the Hellmann–Feynman theorem seems useful
+for evaluating the excitation gap. A direct application gives
+∂θ(EO(θ)−E E(θ)) =⟨Ψ O(θ)|∂θ ˆHO(θ)|ΨO(θ)⟩−⟨Ψ E(θ)|∂θ ˆHE(θ)|ΨE(θ)⟩.
+If one could identify ˆHO(θ)− ˆHE(θ) as a purely bulk energy difference and, at the same time, compare the expectation
+values in the same gauge, this would suggest aθ-independent gap. However, theθ-dependence of|Ψ s(θ)⟩is not unique
+under tBC relocation, and the bulk/edge separation becomes meaningful only after fixing an explicit gauge-dependent
+decomposition, as discussed above.
+The naive Hellmann–Feynman argument assumes that the relevant state can be compared as a normalized eigenstate
+in a fixed Hilbert-space representation. In the present bulk-space description, however, the bulk states are keptθ-
+independent, while their Schmidt counterparts, namely the edge Schmidt states, carry theθ-dependence. Hence, the
+effective bulk expectation value contains additionalθ-dependent weights and matrix elements, and the normalization
+argument used in the standard derivation of the Hellmann–Feynman theorem does not directly apply to the bulk-
+effective description. Hence, this naive argument is not sufficient by itself to establish the gap non-closure.
+Appendix B: Alternative proof based on the occupation-basis factorization
+We prove the information hierarchy by directly constructing the occupation-basis counterexample. As discussed in
+the main text, the ground state in the occupation basis is given by
+|Ψ⟩=
+X
+n1,...,nL∈{0,1}
+an1···nL|n1···n L⟩.(B1)
+We apply the Resta formula to two distinct ground states|Ψ⟩and|Ψ ′⟩, namely
+z=⟨Ψ|e iαL ˆX|Ψ⟩, z ′ =⟨Ψ′|eiαL ˆX|Ψ′⟩.(B2)
+Since ˆnj is diagonal in the occupation basis and satisfies ˆn2
+j = ˆnj, the operator
+ˆX=
+LX
+j=1
+jˆnj
+is also diagonal, and its moments are directly expressed in terms of density correlators. Moreover, keeping ˆn2
+j = ˆnj in
+mind, the exponential appearing in the Resta expression simplifies as
+eiαLjˆnj = 1 +
+ 
+eiαLj−1
+
+ˆnj.(B3)
+Hence one can factorize the exponential and expand it site by site, which yields
+z= 1 +
+LX
+p=1
+X
+1≤j1<···<jp≤L
+" pY
+m=1
+ 
+eiαLjm−1
+
+#
+Aj1···jp,(B4)
+where⟨ˆnj1···ˆnjp⟩=A j1···jp. An identical expression forz ′ withA j1···jp replaced byA′
+j1···jp.
+Suppose that allp-point correlators withp≤rare identical for the states|Ψ⟩and|Ψ ′⟩. Subtracting the two
+expansions, we obtain
+z−z ′ =
+LX
+p=r+1
+X
+1≤j1<···<jp≤L
+" pY
+m=1
+ 
+eiαLjm−1
+
+#
+Aj1···jp−A′
+j1···jp
+
+.(B5)
+Thus, the leading contribution is controlled by the (r+ 1)-point difference, while there is no reason for higher-point
+correlators to coincide in general, in close analogy with theL= 6 example discussed above. For example, even the
+
+===== PAGE 14 =====
+14
+connected densityr+ 1-point function inzandz ′ can differ, namely,A 1···r+1̸=A′
+1···r+1, and the Berry phase may
+differ as well.
+[1] Q. Niu, D. J. Thouless, and Y.-S. Wu, Quantized hall
+conductance as a topological invariant, Phys. Rev. B31,
+3372 (1985).
+[2] D. Vanderbilt,Berry Phases in Electronic Structure
+Theory: Electric Polarization, Orbital Magnetization
+and Topological Insulators(Cambridge University Press,
+Cambridge, 2018).
+[3] M. V. Berry, Quantal phase factors accompanying adia-
+batic changes, Proc. R. Soc. Lond. A392, 45 (1984).
+[4] D. Di Sante, T. Neupert, G. Sangiovanni, R. Thomale,
+R. Comin, I. Zeljkovic, J. G. Checkelsky, and S. D. Wil-
+son, Kagome metals, Rev. Mod. Phys.98, 015002 (2026).
+[5] G. Knizia and G. K.-L. Chan, Density matrix embed-
+ding: A simple alternative to dynamical mean-field the-
+ory, Phys. Rev. Lett.109, 186404 (2012).
+[6] O. E. Sommer, X. Wen, and A. Vishwanath, Higher berry
+curvature from the wave function. I. Schmidt decompo-
+sition and matrix product states, Phys. Rev. Lett.134,
+146601 (2025).
+[7] G. ’t Hooft, On the phase transition towards permanent
+quark confinement, Nucl. Phys. B138, 1 (1978).
+[8] M. L¨ uscher, Volume dependence of the energy spectrum
+in massive quantum field theories. II. scattering states,
+Commun. Math. Phys.105, 153 (1986).
+[9] K. G. Wilson, Confinement of quarks, Phys. Rev. D10,
+2445 (1974).
+[10] R. Resta, Quantum-mechanical position operator in ex-
+tended systems, Phys. Rev. Lett.80, 1800 (1998).
+[11] R. Requist and E. K. U. Gross, Accurate formula for the
+macroscopic polarization of strongly correlated materi-
+als, The Journal of Physical Chemistry Letters9, 7045
+(2018).
+[12] K. J. H. Giesbertz and M. Ruggenthaler, One-body re-
+duced density-matrix functional theory in finite basis sets
+at elevated temperatures, Phys. Rep.806, 1 (2019).
+[13] P. Gori-Giorgi and P. Ziesche, Momentum distribution of
+the uniform electron gas: Improved parametrization and
+exact limits of the cumulant expansion, Phys. Rev. B66,
+235116 (2002).
+[14] C.-K. Chiu, J. C. Y. Teo, A. P. Schnyder, and S. Ryu,
+Classification of topological quantum matter with sym-
+metries, Rev. Mod. Phys.88, 035005 (2016).
+[15] H. Watanabe, Insensitivity of bulk properties to the
+twisted boundary condition, Phys. Rev. B98, 155137
+(2018).
+[16] G. Ortiz, I. Souza, and R. M. Martin, Exchange-
+correlation hole in polarized insulators, Phys. Rev. Lett.
+80, 353 (1998).
+[17] D. Bohm, Note on a theorem of bloch concerning possible
+causes of superconductivity, Phys. Rev.75, 502 (1949).
+[18] E. Lieb, T. Schultz, and D. Mattis, Two soluble models
+of an antiferromagnetic chain, Ann. Phys. (N.Y.)16, 407
+(1961).
+[19] S. Ono, L. Trifunovic, and H. Watanabe, Difficulties in
+operator-based formulation of the bulk quadrupole mo-
+ment, Phys. Rev. B100, 245133 (2019).
+[20] X.-D. Yu, T. Simnacher, N. Wyderka, H. C. Nguyen,
+and O. G¨ uhne, A complete hierarchy for the pure state
+marginal problem in quantum mechanics, Nat. Commun.
+12, 1012 (2021).
+[21] Y.-K. Liu, M. Christandl, and F. Verstraete, Quantum
+computational complexity of the N-representability prob-
+lem: QMA complete, Phys. Rev. Lett.98, 110503 (2007).
+[22] A. Y. Sokolov and H. F. Schaefer, Orbital-optimized den-
+sity cumulant functional theory, J. Chem. Phys.139,
+204110 (2013).
+[23] I. Souza, T. Wilkens, and R. M. Martin, Polarization and
+localization in insulators: Generating function approach,
+Phys. Rev. B62, 1666 (2000).
+[24] R. Resta and S. Sorella, Electron localization in the in-
+sulating state, Phys. Rev. Lett.82, 370 (1999).
+[25] B. Het´ enyi and S. Cengiz, Geometric cumulants asso-
+ciated with adiabatic cycles crossing degeneracy points:
+Application to finite size scaling of metal-insulator transi-
+tions in crystalline electronic systems, Phys. Rev. B106,
+195151 (2022).
+[26] M. Yamanaka, M. Oshikawa, and I. Affleck, Nonpertur-
+bative approach to luttinger’s theorem in one dimension,
+Phys. Rev. Lett.79, 1110 (1997).
+[27] M. Oshikawa, Commensurability, excitation gap, and
+topology in quantum many-particle systems on a peri-
+odic lattice, Phys. Rev. Lett.84, 1535 (2000).
+[28] To be accurate, the local charge ˆnj is the generator of a
+localU(1) gauge rotation. Accordingly, ˆX= PL
+j=1jˆnj
+is a linear combination of these generators and generates
+a position-dependent phase rotation.
+[29] K. Watanabe, An exact conjugation identity for the
+many-body wilson-loop beyond quantization (2026),
+https://arxiv.org/abs/2603.22217 arXiv:2603.22217
+[cond-mat.str-el].
+[30] H. Watanabe and M. Oshikawa, Inequivalent berry
+phases for the bulk polarization, Phys. Rev. X8, 021065
+(2018).
+[31] C. Schilling and R. Schilling, Number-parity effect for
+confined fermions in one dimension, Phys. Rev. A93,
+021601(R) (2016).
+[32] R. D. King-Smith and D. Vanderbilt, Theory of polariza-
+tion of crystalline solids, Phys. Rev. B47, 1651 (1993).
+[33] L. Fu and C. L. Kane, Time reversal polarization and a
+Z2 adiabatic spin pump, Phys. Rev. B74, 195312 (2006).
+[34] C. L. Kane and E. J. Mele,Z 2 topological order and the
+quantum spin hall effect, Phys. Rev. Lett.95, 146802
+(2005).
+[35] D. J. Thouless, M. Kohmoto, M. P. Nightingale, and
+M. den Nijs, Quantized hall conductance in a two-
+dimensional periodic potential, Phys. Rev. Lett.49, 405
+(1982).
+[36] For an inversion-symmetric Hamiltonian with a nonde-
+generate gapped ground state, the ground state can be
+chosen to have a definite inversion parity. In the present
+analytic construction, inversion pairs the even and odd
+states, so the symmetric combination|Ψ+⟩∝|Ψ E⟩+|ΨO⟩
+is the natural ground state in the presence of inver-
+
+===== PAGE 15 =====
+15
+sion symmetry. Evaluating the Resta expectation value
+in|Ψ +⟩immediately givesz Ψ+ =z E +zO = 0 by cancel-
+lation.
+[37] C.-K. Chiu, J. C. Y. Teo, A. P. Schnyder, and S. Ryu,
+Classification of topological quantum matter with sym-
+metries, Rev. Mod. Phys.88, 035005 (2016).
+[38] K. Shiozaki and M. Sato, Topology of crystalline insu-
+lators and superconductors, Phys. Rev. B90, 165114
+(2014).
+[39] K. Shiozaki, Equivariant parameter families of spin
+chains: A discrete MPS formulation, SciPost Phys.20,
+024 (2026).
+[40] M. E. Peskin and D. V. Schroeder,An Introduction to
+Quantum Field Theory(Westview Press, Boulder, CO,
+1995).
+[41] S. Nakatsuji, N. Kiyohara, and T. Higo, Large anoma-
+lous hall effect in a non-collinear antiferromagnet at room
+temperature, Nature527, 212 (2015).
+[42] A.-S. Walter, Z. Zhu, M. G¨ achter, J. Minguzzi,
+S. Roschinski, K. Sandholzer, K. Viebahn, and
+T. Esslinger, Quantization and its breakdown in a
+hubbard–thouless pump, Nat. Phys.19, 1471 (2023).
+[43] J. Carrasquilla and R. G. Melko, Machine learning phases
+of matter, Nat. Phys.13, 431 (2017).
+[44] E. P. L. van Nieuwenburg, Y.-H. Liu, and S. D. Huber,
+Learning phase transitions by confusion, Nat. Phys.13,
+435 (2017).
+[45] P. Zhang and H. Shen, Machine learning topological in-
+variants with neural networks, Phys. Rev. Lett.120,
+066401 (2018).
+[46] N. Sun, J. Yi, P. Yang,et al., Deep learning topological
+invariants of band insulators, Phys. Rev. B98, 085402
+(2018).
+[47] S. R. White, Density matrix formulation for quantum
+renormalization groups, Phys. Rev. Lett.69, 2863 (1992).
+[48] J. Hauschild and F. Pollmann, Efficient numerical sim-
+ulations with tensor networks: Tensor Network Python
+(TeNPy), SciPost Phys. Lect. Notes5, 5 (2018).
+[49] W. M. C. Foulkes, L. Mitas, R. J. Needs, and G. Ra-
+jagopal, Quantum monte carlo simulations of solids, Rev.
+Mod. Phys.73, 33 (2001).
+[50] M. Niedermeier, M. Nairn, C. Flindt, and J. L.
+Lado, Quantum computing topological invariants of two-
+dimensional quantum matter, Phys. Rev. Res.6, 043288
+(2024).
+[51] S. Tamiya, S. Koh, and Y. O. Nakagawa, Calculating
+nonadiabatic couplings and berry’s phase by variational
+quantum eigensolvers, Phys. Rev. Res.3, 023244 (2021).
+[52] J. Kattem¨ olle and J. van Wezel, Variational quantum
+eigensolver for the heisenberg antiferromagnet on the
+kagome lattice, Phys. Rev. B106, 214429 (2022).
+[53] C. Zhanget al., Analyzing quantum entanglement with
+the Schmidt decomposition of operators, Phys. Rev. Lett.
+133, 040203 (2024).
+[54] K. Ohta, Exchange currents for systems of extended nu-
+cleons, Nucl. Phys. A495, 564 (1989).
+[55] K. Watanabe and N. Ishii, Current matrix element in
+HAL QCD’s wavefunction-equivalent potential method,
+Prog. Theor. Exp. Phys.2018, 043D01 (2018).

@@ -1,0 +1,813 @@
+===== PAGE 1 =====
+Do Sheaf Neural Networks Use Holonomy? A
+Measure–Intervene–Control Study
+Ankit Grover and Rémi Bourgerie
+KTH Royal Institute of Technology, Stockholm, Sweden
+{agrover,remibo}@kth.se
+Abstract. Geometric architectures are often motivated by internal mech-
+anisms, but accuracy alone does not show whether predictions use them.
+In Sheaf Neural Networks (SNNs), edge transports form a connection
+whose cycle products define holonomy. We ask whether training changes
+triangle holonomy, whether predictions rely on the learned connection,
+and whether holonomy drives triangle counting. We use basis-independent
+loop readouts with identity interventions and shortcut controls. On high-
+homophilyGraphUniversegraphs, triangle counting increases the mean
+SO(2)triangle rotation in Neural Sheaf Propagation (NSP) from0.010
+to0 .388radians, while community detection ends at0.029radians. With
+more data, learnedSO(2)–NSP outperforms Identity NSP, and replac-
+ing its transports after training increases error further. However, ridge
+regression is more accurate, diagonal maps improve without continuous
+rotation, and fixed-degree models develop rotation without improved
+counting. Thus NSP can learn and rely on a nontrivial connection, but
+our experiments do not show that triangle holonomy drives its predictions.
+Keywords:Geometric deep learning·Sheaf Neural Networks·Cellular
+sheaves·Geometric inductive biases·Holonomy·Interpretability
+1 Introduction
+Geometric architectures are often interpreted through the rules they encode.
+Architectural guarantees, however, are not mechanistic explanations. AnSE(3)-
+equivariant pose estimator or physics-aware scene-flow model may satisfy a
+geometric constraint by construction. Accuracy alone cannot reveal its driving
+cues. Interpretability work makes an analogous distinction between detecting an
+internal property and testing its behavioral use through a removal intervention [6].
+Reliable geometric learning therefore needs mechanism-level tests, not only
+benchmark scores.
+Sheaf Neural Networks equip a graph with additional local geometry: vector
+spaces, orstalks, on nodes and edges, linked by learned restriction maps at each
+incidence [3,9,10]. These maps induce transports that carry vectors between
+neighboring node stalks. The collection of transports forms a discrete connection,
+and their product around a cycle is its holonomy [2]. Triangles are a natural test
+because message-passing GNNs have known counting limitations and they are
+the shortest cycles on which a learned connection can exhibit holonomy [5,13].
+arXiv:2607.19514v2  [cs.LG]  22 Aug 2026
+
+===== PAGE 2 =====
+2 A. Grover and R. Bourgerie
+Prior work finds that non-identity sheaf maps can be dispensable at task
+level [11] and separates this from fixed-checkpoint reliance [12], but does not
+examine their cycle products. Sevetlidis and Pavlidis estimate holonomy by
+aligning embeddings along closed paths of nearby inputs; we instead compose
+transports explicitly defined on graph edges [14]. Higher-order networks take a
+different route: they represent each triangle explicitly as its own rank-2 cell, rather
+than leaving it implicit as a three-edge cycle [8]. Whether graph-based SNN
+predictions use their learned triangle-loop geometry therefore remains unresolved.
+F(v 0) F(v 1)
+F(v 2)
+e1
+e2e3
+T0→1
+T1→2T2→0
+x HCx
+θ
+Fig.1: Discrete triangle
+holonomy.Edge stalks
+(blue) receive maps from
+incident node stalks. Loop
+transport sendsxtoH Cx,
+producing mismatchθ.
+We ask three questions: How do triangle-loop
+products change during training across tasks? Do
+predictions rely on the complete learned connection
+at a fixed checkpoint? After controlling for predic-
+tive shortcuts, is there evidence that triangle holon-
+omy is used for triangle counting? Our experiments
+useGraphUniverse, a synthetic graph genera-
+tor based on a degree-corrected stochastic block
+model (DC-SBM). In this graph family, triangle
+counts can covary with graph size, degree hetero-
+geneity, and community structure [18]. Models may
+exploit these predictive shortcuts [7]. We therefore
+compare three NSP connection conditions and two
+non-neural models. We also train an SCCN with
+explicit triangle simplices and generate fixed-degree
+graphs.
+Using TopoBench [17], wemeasuretrained triangle-loop products,intervene
+on the complete learned connection at a fixed checkpoint, and usecontrolsto
+assess evidence for triangle-specific computation.
+2 Loop Measurement and Experimental Design
+Each layer learns feature-conditioned restriction maps whose products give trans-
+ports T (ℓ)
+u→v. For a cycleC = (v0,...,v k−1,v 0), a local vectorx∈F (v0)≃R 2 is
+acted on by
+x7→H (ℓ)
+C x, H (ℓ)
+C =T (ℓ)
+vk−1→v0···T (ℓ)
+v0→v1.(1)
+Figure 1 illustrates the closed-loop action. We measure this operator, not one
+observed activation. All readouts use the final-layer loop productH (2)
+C , computed
+from layer-1 representations. Initialization and trained measurements therefore
+use the same layer (Appendix A.1). Under independent orthonormal changes
+of stalk basis,H (2)
+C changes only by conjugation. The readouts are therefore
+basis independent (Appendix A.3). ForH = QP in d = 2, the readouts are
+twist(H) = arccos(trQ/ 2), gain(H) =|detH| , andflip(H) = sign(detH ). These
+measure rotation magnitude, stalk-space area scaling, and orientation reversal.
+All three readouts are needed.SO(2)maps use rotation while fixing gain
+to one and flip to+1. Diagonal maps lack continuous rotation but can change
+scaling and orientation. General maps combine rotation with anisotropic scaling.
+
+===== PAGE 3 =====
+Do Sheaf Neural Networks Use Holonomy? 3
+Models.We use two-layer Neural Sheaf Propagation (NSP) as the primary
+model [16] and repeat the triangle-loop measurements with Neural Sheaf Diffusion
+(NSD) [3]. As an explicit-triangle control, we train a two-layer Simplicial Complex
+Convolutional Network (SCCN) [19] on clique-complex lifts, where every graph
+triangle is a rank-2 simplex (Appendix B.7). Sheaf models used = 2with diagonal,
+SO(2), or general restrictions.
+Connection control and intervention.Learned SO(2)–NSP trains its transports
+jointly with all other weights and serves as the reference. Identity NSP is the
+training-time control: it fixes every transport toId while training the remaining
+weights. Comparing their test errors asks whether learning non-identity trans-
+ports helps. Identity-replaced NSP is the test-time intervention: it replaces the
+learned transports withId while leaving all other weights unchanged. The error
+change asks whether the trained model relies on its transports. Because this in-
+tervention replaces the complete connection, it does not isolate triangle holonomy
+(Appendix B.6).
+Tasks, regimes, and evaluation.OnGraphUniverse, we compare triangle
+counting with community detection, where node features and homophilous neigh-
+borhoods provide predictive cues that do not depend on triangle loops. This
+comparison uses 30 training and 8 test graphs across 10 splits. A three-seed sweep
+repeats the connection comparisons with 30–3000 training graphs. A fixed-degree
+control uses random 6-regular graphs, holding graph size and every node degree
+constant while triangle counts vary (Appendix B.3). For evaluation, triangle
+counting uses test MSE on the standardizedlog(1 +y)target computed from
+training statistics; community detection uses accuracy. Ridge regression tests
+graph-size and degree shortcuts without access to adjacency or enumerated tri-
+angles (Appendix B.5, Eq. 14). We also report∆const = MSEmodel−MSE mean,
+where negative values indicate improvement.
+3 Results
+Training on triangle counting changes theSO(2)loop products.For NSP, triangle
+countingincreasestriangle-weightedmeanlooprotationfrom0 .010to0 .388±0.078
+rad (Appendix A.4). The community-detection comparison ends at0.029± 0.005
+rad (Fig. 2a–b). The increase is similar for NSP and NSD:0.378± 0.078and
+0.405± 0.075rad. For community detection, seven NSD runs stay near identity.
+The remaining three show high rotation and lower accuracy. We therefore use
+NSP for the main task comparison and report the NSD results descriptively
+(Appendix C.1).
+The setting admits multiple predictive routes.AtNtrain = 30, ridge regression
+and SCCN reach MSE0.110and0 .121. The best graph-based SNN reaches0.71.
+The sampledGraphUniverseregime therefore contains shortcuts based on
+graph size and degree statistics. It also rewards explicit access to triangles. This
+does not show that the SNNs use either source.
+
+===== PAGE 4 =====
+4 A. Grover and R. Bourgerie
+Fig.2: Measure–intervene–control results in NSP.Thin lines show runs and
+thick lines show means. Panels (c–f) use three seeds. (a–b) Counting increases
+final-layer twist, while community detection remains near identity. With more data, (c)
+MSE falls but remains above ridge regression, and (d) the identity-replacement effect
+grows. On random 6-regular graphs, (e) performance remains near the training mean,
+while (f) twist approaches one radian.
+Learning and retaining the connection both matter.LearnedSO(2)–NSP has
+lower mean MSE than Identity NSP throughout the sweep. The separation is clear
+from Ntrain = 300onward. Replacing the learned connection after training raises
+the error further. The same pattern appears on 200 new test graphs. Identity
+NSP tests whether learning the connection helps. Identity-replaced NSP tests
+whether a trained checkpoint relies on it. Neither result isolates triangle holonomy
+(Fig. 2c–d and Appendix D.2–D.3).
+Increasing rotation does not establish triangle-specific computation.SCCN has
+lower mean MSE than each NSP condition (Appendix E.3). Ridge regression is
+also highly accurate. Diagonal maps improve even though they cannot express
+continuous rotations. On fixed-degree graphs, bundle rotation approaches one
+radian, but performance remains near the training mean (Fig. 2e–f and Ap-
+pendix E.2). These results show that rotation is not sufficient for better counting.
+They do not identify rotation as the mechanism used by learnedSO(2)–NSP.
+4 Conclusion
+In the larger-data regime, learned connections have training-time value and
+fixed-checkpoint reliance. However, ridge regression, diagonal maps, and fixed-
+degree graphs provide no evidence that triangle holonomy drives predictions.
+Our basis-independent loop readouts may provide a useful template for testing
+geometric biases. Limitations appear in Appendix F.
+
+===== PAGE 5 =====
+Do Sheaf Neural Networks Use Holonomy? 5
+References
+1. Abboud, R., Ceylan, İ.İ., Grohe, M., Lukasiewicz, T.: The surprising power of graph
+neural networks with random node initialization. In: Proceedings of the Thirtieth
+International Joint Conference on Artificial Intelligence (IJCAI) (2021)
+2. Barbero, F., Bodnar, C., Sáez de Ocáriz Borde, H., Bronstein, M., Veličković,
+P., Liò, P.: Sheaf neural networks with connection laplacians. In: Proceedings of
+Topological, Algebraic, and Geometric Learning Workshops 2022. Proceedings of
+Machine Learning Research, vol. 196, pp. 28–36. PMLR (2022)
+3. Bodnar, C., Di Giovanni, F., Chamberlain, B.P., Liò, P., Bronstein, M.M.: Neural
+sheaf diffusion: A topological perspective on heterophily and oversmoothing in
+GNNs. In: Advances in Neural Information Processing Systems (2022)
+4. Cartwright, D., Harary, F.: Structural balance: a generalization of Heider’s theory.
+Psychological Review63(5), 277–293 (1956)
+5. Chen, Z., Chen, L., Villar, S., Bruna, J.: Can graph neural networks count sub-
+structures? In: Advances in Neural Information Processing Systems (2020)
+6. Elazar, Y., Ravfogel, S., Jacovi, A., Goldberg, Y.: Amnesic probing: Behavioral
+explanation with amnesic counterfactuals. Transactions of the Association for
+Computational Linguistics9, 160–175 (03 2021).https://doi.org/10.1162/tacl_
+a_00359,https://doi.org/10.1162/tacl_a_00359
+7. Geirhos, R., Jacobsen, J.H., Michaelis, C., Zemel, R., Brendel, W., Bethge, M.,
+Wichmann, F.A.: Shortcut learning in deep neural networks. Nature Machine
+Intelligence2(11), 665–673 (2020).https://doi.org/10.1038/s42256-020-00257-
+z
+8. Hajij, M., Bastian, L., Osentoski, S., Kabaria, H., Davenport, J.L., Dawood, S.,
+Cherukuri, B., Kocheemoolayil, J.G., Shahmansouri, N., Lew, A., Papamarkou,
+T., Birdal, T.: Copresheaf topological neural networks: A generalized deep learn-
+ing framework. In: The Thirty-ninth Annual Conference on Neural Information
+Processing Systems (2025),https://openreview.net/forum?id=3G56xClPYg
+9. Hansen, J., Gebhart, T.: Sheaf neural networks. In: NeurIPS Workshop on Topo-
+logical Data Analysis and Beyond (2020)
+10. Hansen, J., Ghrist, R.: Toward a spectral theory of cellular sheaves. Journal of
+Applied and Computational Topology3, 315–358 (2019)
+11. Hernandez Caralt, F., Gonzàlez i Català, M., Bazaga, A., Liò, P.: On the necessity
+of learnable sheaf Laplacians. In: ICLR 2026 Workshop on Geometry-grounded
+Representation Learning and Generative Modeling (GRaM), Tiny Paper Track
+(2026), arXiv:2603.05395
+12. Liu, Y.: Learned, relied upon, or necessary? separating checkpoint dependence
+from task-level value in sheaf GNNs. arXiv preprint arXiv:2607.25387 (2026).
+https://doi.org/10.48550/arXiv.2607.25387
+13. Morris, C., Ritzert, M., Fey, M., Hamilton, W.L., Lenssen, J.E., Rattan, G., Grohe,
+M.: Weisfeiler and Leman go neural: Higher-order graph neural networks. In:
+Proceedings of the AAAI Conference on Artificial Intelligence (2019)
+14. Sevetlidis, V., Pavlidis, G.: Gauge-invariant representation holonomy. In: The
+Fourteenth International Conference on Learning Representations (2026),https:
+//openreview.net/forum?id=czJqKToDGq
+15. Singer, A., Wu, H.T.: Vector diffusion maps and the connection Laplacian. Com-
+munications on Pure and Applied Mathematics65(8), 1067–1144 (2012)
+16. Suk, J., Giusti, L., Hemo, T., Lopez, M., Barmpas, K., Bodnar, C.: Surfing on the
+neural sheaf. In: NeurIPS 2022 Workshop on Symmetry and Geometry in Neural
+Representations (2022)
+
+===== PAGE 6 =====
+6 A. Grover and R. Bourgerie
+17. Telyatnikov, L., Bernardez, G., Montagna, M., Hajij, M., Carrasco, M., Vasylenko,
+P., Papillon, M., Zamzmi, G., Schaub, M.T., Verhellen, J., Snopov, P., Miquel-
+Oliver, B., Gil-Sorribes, M., Molina, A., Guallar, V., Long, T., Suk, J., Rygiel,
+P., Nikitin, A.V., Escalona, G., Banf, M., Filipiak, D., Imasheva, L., Schattauer,
+M., Martinez, A.L., Fritze, H., Masden, M., Sánchez, V., Lecha, M., Cavallo, A.,
+Battiloro, C., Piekenbrock, M., Tec, M., Dasoulas, G., Miolane, N., Scardapane,
+S., Papamarkou, T.: TopoBench: A framework for benchmarking topological deep
+learning. Journal of Data-centric Machine Learning Research (2025)
+18. Van Langendonck, L., Bernárdez, G., Miolane, N., Barlet-Ros, P.: GraphUniverse:
+Synthetic graph generation for evaluating inductive generalization. In: International
+Conference on Learning Representations (2026), arXiv:2509.21097
+19. Yang, R., Sala, F., Bogdan, P.: Efficient representation learning for higher-order
+data with simplicial complexes. In: Rieck, B., Pascanu, R. (eds.) Proceedings of the
+First Learning on Graphs Conference. Proceedings of Machine Learning Research,
+vol. 198, pp. 13:1–13:21. PMLR (2022)
+
+===== PAGE 7 =====
+Do Sheaf Neural Networks Use Holonomy? 7
+Appendix Contents
+A Loop-Product Measurement and Validation............................. 8
+A.1 Edge Transports and Loop Products......................................8
+A.2 Twist, Gain, and Flip.....................................................8
+A.3 Basis Independence.......................................................9
+A.4 Aggregation over Test Triangles...........................................9
+A.5 Local Triangle Loops and Global Connection Consistency................10
+A.6 Validation of Measurement and Identity Replacement....................10
+B Data, Models, and Evaluation Protocol.................................10
+B.1 Graph Regimes and Tasks ............................................... 10
+B.2 Generating theGraphUniverseGraphs.................................11
+B.3 Generating the Fixed-Degree Graphs.....................................12
+B.4 Architectures, Pooling, and Optimization ................................ 12
+B.5 Targets, Metrics, and Non-Neural Models................................12
+B.6 Learned, Identity, and Identity-Replaced NSP............................13
+B.7 Simplicial Complex Convolutional Network...............................14
+Results at a Glance............................................................14
+C How Training Changes Loop Geometry.................................15
+C.1 NSP and NSD Across Tasks..............................................15
+C.2 How Restriction Families Change the Readouts .......................... 15
+D Does Performance Depend on the Learned Connection?..............16
+D.1 Identity Replacement with 30 Training Graphs...........................16
+D.2 Performance across Training-Set Sizes....................................17
+D.3 Robustness on 200 Test Graphs..........................................17
+E Does Loop Rotation Explain Triangle Counting?.......................18
+E.1 Loop Rotation versus Counting Error ....................................18
+E.2 Results on Generated Fixed-Degree Graphs .............................. 19
+E.3 Comparison with SCCN..................................................19
+F Limitations................................................................. 19
+Acknowledgements.............................................................20
+
+===== PAGE 8 =====
+8 A. Grover and R. Bourgerie
+A Loop-Product Measurement and Validation
+A.1 Edge Transports and Loop Products
+LetG = (V,E )be an undirected graph. A cellular sheaf assigns a stalkF(v)≃R d
+to every node. It also assigns a restriction mapF (ℓ)
+v⊴e :F(v)→F (e)to each
+incident node–edge pair at propagation layerℓ. For an edgee ={u,v}, the
+unnormalized off-diagonal block and derived transport are
+(L(ℓ)
+F )vu =−(F (ℓ)
+v⊴e)⊤F (ℓ)
+u⊴e, T (ℓ)
+u→v = (F (ℓ)
+v⊴e)⊤F (ℓ)
+u⊴e =−(L (ℓ)
+F )vu.(2)
+We reserve∆(ℓ)
+F = (D(ℓ)
+F )−1/2L(ℓ)
+F (D(ℓ)
+F )−1/2 for the normalized Laplacian. For
+orthogonal restriction maps, transpose equals inverse and the transports form a
+discrete O(d)connection. TopoBench’s two-dimensional bundle parameterization
+uses the Cayley transform and produces proper rotations inSO(2).
+For a cycleC = (v0,v 1,...,v k−1,v 0), the layer-ℓ loop product based atv0 is
+H (ℓ)
+C =T (ℓ)
+vk−1→v0···T (ℓ)
+v1→v2T (ℓ)
+v0→v1.(3)
+It acts on x∈ F (v0)by x7→H (ℓ)
+C x. The measurement records the linear
+operator induced by the learned connection. It does not trace one observed hidden
+activation around the graph. Each model layer has its own feature-conditioned
+sheaf learner. All reported readouts use the final-layer productH (2)
+C . Its transports
+are computed from representations already processed by layer 1. Initialization
+and trained-model measurements both use layer 2. Identity replacement changes
+transports in both layers. It therefore tests the complete learned connection
+rather than only the measured final layer.
+For isometric transports,H (ℓ)
+C is the holonomy of the discrete connection. For
+diagonal and general restrictions, we use the more neutral termloop product.
+A.2 Twist, Gain, and Flip
+LetH =QP be the polar decomposition, withQ orthogonal andP⪰ 0. Because
+all experiments used= 2, we compute
+twist(H) = arccos
+tr(Q)
+2
+
+,
+gain(H) =|detH|,flip(H) = sign(detH).(4)
+The main text describes these as loop-rotation magnitude, area factor, and
+orientation sign. In general dimension, the determinant is a volume multiplier.
+Here|detH| specifically multiplies two-dimensional stalk-space area. Gain below
+one means that the loop product contracts area. It does not mean that the graph
+shrinks. It also does not require every vector norm to decrease. One singular
+direction may expand while the other contracts more strongly.
+The interpretation depends on the restriction family.
+
+===== PAGE 9 =====
+Do Sheaf Neural Networks Use Holonomy? 9
+–SO (2)bundle maps. P =Id, gain is exactly one, flip is+1, and twist is the
+magnitude of the ordinary rotation angle in[0,π ]. This is the setting used
+for the central rotation claims.
+– Diagonal maps.Loop products remain diagonal. They have no continuous
+rotation degree of freedom. The orientation sign is the product of edge signs
+and corresponds toZ2 frustration in signed-graph balance theory [4].
+– General maps.The polar factor separates rotation from net area change,
+but its rotation estimate becomes unstable whenHis nearly singular.
+These differences are why we do not combine the three readouts into one generic
+geometry score.
+A.3 Basis Independence
+Let Gv∈O (d)be an independent orthogonal change of coordinates in each node
+stalk. Restrictions and transports transform as
+F (ℓ)
+v⊴e7→F (ℓ)
+v⊴eG⊤
+v, T (ℓ)
+u→v7→G vT (ℓ)
+u→vG⊤
+u.(5)
+Substitution into the loop product gives
+(H (ℓ)
+C )′ = (Gv0T (ℓ)
+vk−1→v0G⊤
+vk−1)···(G v1T (ℓ)
+v0→v1G⊤
+v0)(6)
+=G v0H (ℓ)
+C G⊤
+v0,(7)
+because every interior factorG⊤
+vGv cancels. Thus a loop product changes by
+conjugation only. Gain and flip are invariant under orthogonal conjugation. For
+nonsingular H, the polar factor is unique and transforms asQ7→GQG ⊤, so
+twist is invariant as well. The reported quantities therefore do not depend on the
+orthonormal coordinate bases chosen in the stalks.
+A.4 Aggregation over Test Triangles
+All reported loop summaries are triangle-weighted. IfC3(G)is the set of triangles
+in test graphG, the reported mean rotation is
+¯θtri =
+P
+G∈Dtest
+P
+C∈C3(G) twist(H(2)
+C )
+P
+G∈Dtest|C3(G)| .(8)
+Every enumerated triangle contributes equally. Graphs with more triangles there-
+fore contribute more loop observations. Per-graph loop means were not retained.
+We therefore do not report graph-balanced reweighting. This convention affects
+the interpretation of the mean. It does not affect the layer, basis-independence,
+or identity-replacement definitions.
+
+===== PAGE 10 =====
+10 A. Grover and R. Bourgerie
+A.5 Local Triangle Loops and Global Connection Consistency
+For SO(2)transports, global consistency means that a coordinate frame can be
+assigned to every node. The relative frames at an edge must explain its transport.
+Such a connection has identity transport around every closed cycle. A nonzero
+triangle-loop rotation is therefore a local certificate of inconsistency on that
+triangle.
+Singer and Wu use the connection Laplacian to study graph-wide synchro-
+nization and frustration [15]. In contrast, we compose learned transports around
+individual triangles and measure their local loop products. Our measurement
+does not estimate global spectral frustration or consistency on a longer cycle
+basis. The two views are complementary rather than interchangeable.
+A.6 Validation of Measurement and Identity Replacement
+Section A.3 proves the invariance property mathematically. The checks below test
+its numerical implementation. They also verify that bundle loop products remain
+in SO(2). A perturbation test measures the stability of bundle rotation. A final
+check confirms that identity replacement changes the intended transports. These
+tests validate the measurement and intervention code. They are not additional
+learning experiments. Reporting them makes the procedure reproducible for
+future studies that use the same readouts.
+Table 1:Numerical checks on the loop measurement and identity-replacement imple-
+mentation.
+Check What it establishes Result
+Basis change The code agrees with the
+conjugation-invariance derivation.
+Maximum readout change
+2.8×10 −15 across 1,000 random
+orthogonal basis changes.
+SO(2)constraint Cayley-parameterized transports
+and their loop products remain
+proper rotations.
+|detH|= 1.000for measured
+bundle loops.
+Perturbation stability Bundle twist is numerically stable at
+the scale used in the experiments.
+Perturbations of size10−4 change
+rotation by6.86×10 −5 rad.
+Nearly singular maps The same rotation readout is
+unreliable for ill-conditioned general
+loop products.
+The perturbation changes
+general-map rotation by0.195rad
+in the near-singular case.
+Identity replacement Both transport layers are replaced
+as intended and the resulting
+bundle loops are identities.
+H (2)
+C =I d: twist0, gain1, and
+zero Frobenius error.
+B Data, Models, and Evaluation Protocol
+B.1 Graph Regimes and Tasks
+The main experiments use a custom high-homophilyGraphUniverseregime
+rather than the benchmark’s standard regime grid. The average-degree range
+
+===== PAGE 11 =====
+Do Sheaf Neural Networks Use Holonomy? 11
+is set to 5–7 so that sampled graphs contain enough triangles for repeated
+loop measurements. Community detection is a comparison task under the same
+generator.Nodefeaturesandhomophilousneighborhoodsprovidedirectpredictive
+cues. They do not require closed-loop transport. This task is not a cycle-isolating
+control. The conclusions remain scoped to this synthetic regime.
+The second graph regime uses generated random6-regular graphs. It comple-
+mentsGraphUniverseby holding graph size, edge count, and the complete
+degree sequence fixed while wiring and triangle count vary. This removes the
+graph-size and degree cues available to ridge regression in the main regime.
+B.2 Generating theGraphUniverseGraphs
+GraphUniverseuses a two-stage degree-corrected stochastic block model (DC-
+SBM).
+Fixed universe.A master universe is created once with seed 42. It contains
+K = 20universe-level communities and a20× 20edge-propensity matrix with
+variance 1.0. Node features form 15-dimensional Gaussian clusters. Community
+centers have variance 0.2. Within-community features have variance 0.4.
+Graph-family sampling.For each run, graph-level parameters are sampled from
+the ranges in Table 2. Conditional on community labelscu,cv and Pareto degree
+factorsθ u,θv, edge probabilities are proportional to
+Bcucvθuθv,(9)
+then clipped to[0, 1]. Graphs are made undirected and connectivity is enforced.
+Data generation and model initialization are independently resampled across
+seeds. A data split consists of one generated training set and one separately
+generated test set associated with seeds. All methods compared within a split
+receive exactly those graphs and the same transformed target.
+Table 2:GraphUniversesettings. Ranges are sampled independently for each graph
+family.
+Setting Value
+Nodes per graph 100–160
+Communities per graph 5–7, drawn from 20 universe communities
+Average degree 5.0–7.0
+Power-law exponent 2.0–2.5
+Degree separation 0.5–1.0
+Homophily[0.9,1.0]
+Main split 30 training and 8 test graphs per seed
+Larger test 200 newly generated test graphs for selected settings
+Training-set sizesN train∈{30,100,300,1000,3000}, with the same 8 test
+graphs within each seed
+
+===== PAGE 12 =====
+12 A. Grover and R. Bourgerie
+B.3 Generating the Fixed-Degree Graphs
+The fixed-degree graphs are generated separately fromGraphUniverseusing
+NetworkX random regular graphs,
+G(s)
+i ∼random_regular_graph(r= 6,n= 100,seed= 1000s+i).(10)
+Every graph has 100 nodes, 300 edges, and degree six at every node. Only its
+wiring and triangle count vary. We evaluate two feature conditions. Independent
+15-dimensional Gaussian features act as symmetry breakers. Constant all-ones fea-
+tures retain anonymous message passing. The split construction and standardized
+log-count target in Eq. 12 otherwise match theGraphUniverseexperiment.
+B.4 Architectures, Pooling, and Optimization
+Table 3:Architecture and training settings.
+Setting Value
+Neural architectures NSP [16], NSD [3], and SCCN [19]
+Sheaf restrictions diagonal,SO(2)bundle, and general2×2
+Sheaf model size 2 layers, stalk dimensiond= 2, and feature width 32
+Graph-level readout mean pooling followed by an MLP
+Loop measurement final-layer productH (2)
+C
+Optimization Adam with learning rate10 −2, batch size 8, and 60
+epochs
+Main task comparison 30 training graphs and2sheaf dynamics×2tasks×3
+restriction families×10seeds
+Training-size sweepN train = 30,100,300,1000,3000, with 3 seeds and fixed
+test graphs within each seed
+For graph-level triangle prediction, mean pooling keeps the representation scale
+from growing directly with graph size or simplex multiplicity. This is compatible
+with the standardizedlog(1 +y)target, which grows much more slowly than the
+raw count. We report this as the chosen parameterization, not as a separately
+evaluated pooling result.
+B.5 Targets, Metrics, and Non-Neural Models
+Community detection predicts the universe-level community identifier for each
+node, with labels in{0,..., 19}. Triangle counting first computes the raw graph-
+level count
+y(G) = 1
+3
+X
+v∈V
+triangles(v),(11)
+
+===== PAGE 13 =====
+Do Sheaf Neural Networks Use Holonomy? 13
+where each triangle is counted at its three vertices. For splits, the regression
+target is
+zs(G) = log(1 +y(G))−µ s
+σs
+,(12)
+where µs and σs are computed from the training graphs only. They are the
+mean and standard deviation oflog(1 +y). The raw counts span a wide, right-
+skewed range. The natural-log transform compresses that range. This prevents
+triangle-heavy graphs from dominating squared error and reduces target-scale
+variation. Adding one keeps the target defined wheny = 0. Standardization gives
+the training target zero mean and unit variance within each split. All reported
+counting MSEs are errors in standardized log-count space. They are not absolute
+errors in raw triangle counts. Test graphs never contribute to the transformation.
+The two non-neural models use the same training and test graphs and the
+same targetzs as the neural models.
+Thetraining-mean modelignores the input graph and always outputszs = 0.
+This is equivalent to predictingµs, the training-set mean oflog(1 +y). It is not
+the mean of the raw triangle counts. Its test MSE is
+Lmean = 1
+|Dtest|
+X
+G∈Dtest
+zs(G)2.(13)
+It is computed separately for every split rather than assumed to equal one. The
+test graphs need not have the training variance. With eight test graphs, this value
+varies substantially. In the fixed-degree experiment it ranges from approximately
+0.43 to 3.28 across seeds.
+Ridge regressionis anℓ2-regularized linear model. It receives seven graph-level
+inputs. Two are node count and edge count. The other five are the minimum,
+maximum, mean, standard deviation, and median of the node degrees. For design
+matrixZ∈R m×7 and standardized targetsz∈R m, its parameters solve
+(ˆb, ˆβ) = arg min
+b,β
+∥z−b1−Zβ∥ 2
+2 +λ∥β∥ 2
+2,(14)
+where b is an unpenalized intercept andλ≥ 0controls regularization. Ridge
+regression never receives the adjacency matrix, node triples, or enumerated
+triangles. It asks whether the sampledGraphUniversefamily permits accurate
+prediction from graph size and the marginal degree distribution. Its success does
+not show that the SNNs use the same information.
+B.6 Learned, Identity, and Identity-Replaced NSP
+We compare three conditions built from the same two-layer NSP propagation
+architecture.
+– Learned SO(2)–NSPjointly optimizes both layers’ Cayley-parameterized
+transports and all remaining model parameters.
+
+===== PAGE 14 =====
+14 A. Grover and R. Bourgerie
+– Identity NSPfixes every transport toId from initialization while optimiz-
+ing all remaining NSP parameters under the same protocol. It is the NSP
+implementation of an Identity Sheaf Network [11].
+– Identity-replaced NSPfirst trains learnedSO(2)–NSP. It then zeroes both
+layers’ Cayley parameters without retraining. BecauseCayley(0) =Id, every
+transport becomesId. All remaining weights retain the values learned with a
+non-identity connection.
+Identity NSP asks whether allowing a non-identity connection improves the model
+obtained by training. Identity-replaced NSP instead asks whether a particular
+trained checkpoint relies on its learned connection. This distinction follows the
+separation between task-level value and checkpoint reliance [12]. The intervention
+is broad: it changes the complete two-layer connection and does not selectively
+remove triangle holonomy.
+For the fixed-checkpoint intervention we report
+∆id =L identity-replaced−L learned.(15)
+Positive values mean that replacing the learned connection increases error.
+B.7 Simplicial Complex Convolutional Network
+We implement the two-layer Simplicial Complex Convolutional Network (SCCN)
+of Yang et al. [19]. Each input graph is lifted to its two-dimensional clique complex.
+Nodes are rank-0 simplices, and edges are rank-1 simplices. Every graph triangle
+becomes one rank-2 simplex. The model propagates across simplex ranks. It then
+mean-pools the learned rank-2 representations and passes the result through an
+MLP.
+SCCN uses the sameGraphUniversesplits and standardized log(1 +y)
+target as the NSP training-size sweep. It also uses the same three seeds, 60
+training epochs, and eight test graphs. Its representation is intentionally different
+from the graph-based SNNs. The clique-complex construction exposes every
+target triangle before learning. The SCCN result tests whether the protocol
+rewards explicit triangle simplices. It is not a representation-matched test of the
+sheaf connection.
+Results at a Glance
+Table 4 links each main conclusion to its central evidence and the appendix
+section containing the full result.
+
+===== PAGE 15 =====
+Do Sheaf Neural Networks Use Holonomy? 15
+Table 4:Guide to the principal results.
+Finding Central evidence Details
+Counting changes bundle loop
+geometry
+NSP twist increases from0.010to0.388±0.078
+rad. Community detection ends at0.029±0.005
+rad.
+C.1
+The complete learned connection
+has training-time value
+LearnedSO(2)–NSP has lower mean MSE than
+Identity NSP, with clear separation from
+Ntrain = 300onward.
+D.2
+Trained checkpoints rely on the
+learned connection
+Identity-replaced NSP has higher mean MSE.
+The direction persists on 200 new test graphs.
+D.2, D.3
+Accurate counting is possible in
+this protocol
+SCCN reaches0.070±0.058MSE at
+Ntrain = 3000when triangles are explicit
+simplices.
+E.3
+Rotation alone does not explain
+counting
+Rotation is weakly associated with error.
+Diagonal and fixed-degree results separate
+rotation from counting performance.
+E.1, E.2
+C How Training Changes Loop Geometry
+C.1 NSP and NSD Across Tasks
+On triangle counting, the final-layerSO(2)loop-rotation changes are similar for
+NSP and NSD. They are0.378± 0.078and0 .405± 0.075rad, respectively. The
+difference appears in community detection. Seven of ten NSD runs stay near
+identity. The other three reach roughly1.6rad and have the lowest accuracies in
+that condition. We therefore report the NSD task comparison descriptively.
+C.2 How Restriction Families Change the Readouts
+Figure 3 shows the three measured responses. Bundle maps increase final-layer
+loop rotation while preserving stalk-space area exactly. Diagonal community-
+detection models reduce the fraction of loops with negative orientation sign,
+consistent with a more balanced sign pattern. Diagonal and general loop products
+contract strongly. A single scalar would hide these distinct behaviors and would
+make the unstable rotation estimate of nearly singular general maps appear more
+comparable than it is.
+
+===== PAGE 16 =====
+16 A. Grover and R. Bourgerie
+Fig.3: Restriction families change different loop readouts (NSP).Triangle
+counting increases bundle rotation (a). Community detection reduces the fraction of
+diagonal loops with negative determinant below the0.5chance line (b). Only bundle
+loops preserve area. Diagonal and general loops contract it (c), wherelog10|detH| = 0
+denotes preservation. Points are seeds. Bars show mean 95% confidence intervals.
+D Does Performance Depend on the Learned Connection?
+D.1 Identity Replacement with 30 Training Graphs
+For triangle counting, identity replacement increases MSE by0.48± 0.68for
+NSP and0.17± 0.80for NSD. Both 95% confidence intervals include zero. They
+also include increases large enough to matter. The small-data result is therefore
+unresolved. For community detection, the mean change is close to zero for both
+dynamics.
+Fig.4: Identity replacement is unresolved with 30 training graphs.Zero
+denotes no change. Positive values mean higher counting MSE (a) or lower community
+accuracy (b) after replacement. Counting seeds lie on both sides of zero, and both mean
+95% confidence intervals cross it. Community effects are mostly near zero, with three
+larger NSD accuracy losses. Small marks are seeds. Large marks are means.
+
+===== PAGE 17 =====
+Do Sheaf Neural Networks Use Holonomy? 17
+D.2 Performance across Training-Set Sizes
+Table 5 separates three questions. These are training-time connection value, fixed-
+checkpoint reliance, and performance with explicit triangle simplices. Learned
+SO(2)–NSP has lower mean MSE than Identity NSP at every training size.
+The first two differences are small relative to seed variability. FromNtrain = 300
+onward, the mean separation is substantial. AtNtrain = 3000, learnedSO(2)–NSP
+reaches0.521±0.259MSE. Identity NSP reaches2.724±0.549.
+Identity-replaced NSP has higher mean MSE than the learned model through-
+out the sweep. AtNtrain = 3000, it reaches9 .981± 4.652. Thus the learned
+connection has value during training. The resulting checkpoints also depend
+on retaining it. Neither comparison identifies triangle holonomy as the causal
+mechanism. Both concern the complete connection.
+Table 5:Performance across connection conditions and SCCN. Entries are standardized
+log(1 +y)test MSE. We report the mean± sample standard deviation over three seeds.
+Lower is better. Identity replacement is applied after training without retraining.
+Ntrain Identity NSP Learned
+SO(2)–NSP
+Identity-replaced
+NSP
+SCCN
+30 1.228±0.265 1.114±0.478 1.644±1.167 0.121±0.020
+100 1.054±0.584 0.946±0.327 1.113±0.207 0.144±0.114
+300 2.512±1.607 0.935±0.296 4.957±1.610 0.091±0.075
+1000 2.949±1.845 0.748±0.080 3.185±3.379 0.108±0.047
+3000 2.724±0.549 0.521±0.259 9.981±4.652 0.070±0.058
+D.3 Robustness on 200 Test Graphs
+The training-size curves use eight test graphs per seed. We selected the pivotal
+GraphUniverseconfigurations at Ntrain∈{ 300, 3000}. We also selected the
+fixed-degree configuration atNtrain = 3000. The original checkpoints were not
+saved. We therefore retrained each configuration with the same split, seed, and
+protocol. Each retrained model was evaluated on the original eight graphs and
+on 200 new test graphs. This is a larger-test robustness check, not an additional
+independent training seed.
+The retrained eight-graph metrics closely match the originals. The median
+absolute difference is zero, and 72% of runs are within0.01. A fewNtrain =
+3000runs differ across retraining. On the 200-graph tests, the mean identity-
+replacement effect remains positive at the selectedGraphUniversesettings.
+The fixed-degree models remain near the training-mean model. The larger test
+therefore supports the direction of the connection-reliance result. It does not
+remove the seed variability.
+
+===== PAGE 18 =====
+18 A. Grover and R. Bourgerie
+Fig.5: Larger-test robustness check.Lines in (a) connect the same retrained model
+evaluated on 8 and 200 test graphs. They expose shifts caused by the small original test
+set. On 200 graphs, the mean identity-replacement effect remains positive atN= 300
+and N = 3000(b). The latter is highly variable. In (b), small marks are seeds. Large
+marks and bars are means with 95% confidence intervals.
+E Does Loop Rotation Explain Triangle Counting?
+E.1 Loop Rotation versus Counting Error
+Within theSO(2)bundle family, loop-rotation change is not negatively associated
+with triangle-counting error. Across the plotted runs, Pearsonr =−0.18with
+p = 0.58. Figure 6 plots error relative to the training-mean model. We do not pool
+restriction families in one regression. Family identity dominates that comparison,
+and continuous rotation is not meaningful for diagonal maps.
+Fig.6: More loop rotation is not associated with better counting.Each point
+is one seed. Circles denote NSP and squares denote NSD. The horizontal axis is the
+change in final-layer twist. The vertical axis is∆const, where lower values are better.
+The weak association (r =−0.18, p = 0.58) provides no evidence that larger rotation
+changes reduce error.
+
+===== PAGE 19 =====
+Do Sheaf Neural Networks Use Holonomy? 19
+E.2 Results on Generated Fixed-Degree Graphs
+On random6-regular graphs with independent Gaussian node features, no re-
+striction family consistently improves on the training-mean model. Bundle maps
+nevertheless develop substantial loop rotation. With constant node features, all
+families match the training-mean model to within|∆|≤ 0.007. The learned bun-
+dle transports remain identities, so identity replacement is vacuous. Random node
+features can make message passing more expressive than anonymous1-WL [1].
+The observed failure is therefore an empirical optimization and sample-efficiency
+result, not an expressivity theorem.
+Fig.7: Fixed degree separates loop rotation from counting skill.With Gaussian
+node features, no restriction family consistently falls below the∆const = 0training-mean
+reference in (a). Nevertheless, bundle twist increases for both NSP and NSD (b). Small
+marks are seeds. Large marks and bars are means with 95% confidence intervals.
+E.3 Comparison with SCCN
+SCCN has lower mean MSE than all three NSP conditions at every training
+size in Table 5. AtNtrain = 3000, it reaches0 .070± 0.058. This shows that
+the protocol rewards explicit access to triangle simplices. It also addresses an
+alternative explanation: perhaps no trained model could learn the target under
+the chosen splits and transformed loss.
+The result does not make SCCN a representation-matched baseline for the
+graph-based SNNs. The clique-complex lift enumerates every target triangle
+before learning. The SNNs receive only nodes and edges and must use edge-based
+propagation. SCCN therefore establishes learnability with explicit higher-order
+structure. It does not show that the SNNs should recover the same solution. It
+also does not show that their learned connection stores triangle counts.
+F Limitations
+The experiments cover synthetic high-homophily graphs, two-dimensional stalks,
+and triangle loops. The training-size study uses three seeds. The main task
+comparison relies on NSP because three NSD community-detection runs behave
+
+===== PAGE 20 =====
+20 A. Grover and R. Bourgerie
+differently from the other seven. Rotation from nearly singular general loop
+products is unreliable and is used only descriptively.
+Identity replacement is a broad intervention. It changes both learned transport
+layers after training. This may disrupt weights that adapted to the original
+connection. Identity NSP reduces this concern. LearnedSO(2)–NSP also has
+lower mean error when the alternative is trained from initialization. Nevertheless,
+neither comparison reveals what information the complete connection stores.
+Neither isolates triangle holonomy. A matched-size connection perturbation or a
+cycle-consistency objective would separate those questions more directly. Training
+for a fixed 60 epochs also gives larger datasets more optimizer updates. Data size
+and optimization effort are therefore not fully separated.
+SCCN confirms that explicit triangle structure is useful. Its clique-complex lift
+is not representation matched to the graph-based SNNs because it enumerates the
+target motif. Ridge regression further shows that the sampledGraphUniverse
+regime contains strong graph-size and degree cues. The conclusions may not
+extend to longer cycles or less structured graph families. They may also differ for
+higher-order models that are not given the counted motif explicitly.
+Acknowledgements
+This work was conducted independently, but benefited from discussions at the
+2026 London Geometry and Machine Learning (LOGML) Summer School. We are
+grateful to its participants and organizers for creating a stimulating environment.
+We also thank Modal for providing free GPU credits.

@@ -1,0 +1,1549 @@
+===== PAGE 1 =====
+A Flat Connection:
+The Pooling Factor and the Geometry of
+Centring in Hierarchical MCMC ∗
+Aidan D. Bindoff
+University of Tasmania
+aidan.bindoff@utas.edu.au
+Abstract
+Standard MCMC diagnostics ( ˆR, effective sample size, divergence counts) detect
+whether a chain has mixed, but not why it has not. We ask whether the centring/non-
+centring obstruction in hierarchical models has ageometriccause beyond the metric.
+The joint parameter space is a fiber bundle (hyperparameters the base, group-level
+parameters the fibers), and the Fisher information metric induces an Ehresmann
+connection A = −G−1
+FFGBF ; the natural hypothesis is that the obstruction is its
+curvature, felt by the sampler as holonomy. We prove this false. The connection isflat
+foranysmooth hierarchical posterior, not only the Gaussian or conjugate case, because
+its horizontal leaves are the level sets of the fiber score ∂α logp : there is no geometric
+obstruction above the metric. What remains is statistical, not geometric, and the flat
+connection identifies it as a single quantity: the conditional dependence of fiber on base,
+governed per group by theprior fraction πj, the classical pooling factor. From it the
+framework recovers the established picture, that the prior-dominated groups are the
+ones that mix slowly and that the optimal per-group non-centring weight follows in
+closed form, and a simulation study then separates this base–fiber coupling from the
+funnel, a distinct base-space pathology, by their opposite dependence on the hierarchical
+variance. A direct attribution test confirms that NUTS does not transport the fiber:
+the chain-level footprint is excess conditional autocorrelation in prior-dominated groups,
+exactly as πj predicts. Genuine, even rotational, curvaturedoesappear — but only
+for connections built from a sampler’sworkingmetric (a fixed mass matrix), where
+holonomy re-enters as an algorithmic rather than geometric phenomenon. The prior-
+fraction diagnostic is distributed as the open-source R package fibr, with the geometric
+methods as accompanying reproduction code.
+Keywords:Markov chain Monte Carlo, hierarchical models, fiber bundles, Ehresmann
+connection, flat connection, holonomy, prior fraction, pooling factor, centering, convergence
+diagnostics.
+∗Code and package available athttps://github.com/ABindoff/fibr.
+1
+arXiv:2606.19655v1  [stat.CO]  17 Jun 2026
+
+===== PAGE 2 =====
+Contents
+1 Introduction 4
+1.1 Contributions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+1.2 Notation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+2 Background 7
+2.1 Hierarchical models and the centering problem . . . . . . . . . . . . . . . . . 7
+2.2 Riemannian manifold HMC . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+2.3 Fiber bundles in statistics . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+3 The Geometric Framework 8
+3.1 Fiber bundle structure of hierarchical posteriors . . . . . . . . . . . . . . . . 8
+3.2 The Fisher metric and its block structure . . . . . . . . . . . . . . . . . . . . 9
+3.3 The Ehresmann connection . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+3.4 Which connection? A disambiguation . . . . . . . . . . . . . . . . . . . . . . 10
+3.5 Holonomy and curvature . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+3.6 Universal flatness: the score is a first integral . . . . . . . . . . . . . . . . . . 11
+3.7 The linearised curvature . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+3.8 What the framework requires of a model . . . . . . . . . . . . . . . . . . . . 12
+4 The Loop-Conditional Dependence Diagnostic 12
+4.1 Overview . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+4.2 Loop detection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+4.3 Transport map estimation . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+4.4 Per-group dependence coefficients and scalar summary . . . . . . . . . . . . 14
+4.5 Bootstrap uncertainty . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+4.6 Gap sensitivity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+4.7 Attribution: empirical transport vs. integrated connection . . . . . . . . . . 15
+4.8 Comparison: centred vs. non-centred . . . . . . . . . . . . . . . . . . . . . . 16
+5 Analytic Connection for the Centred Logistic GLMM 17
+5.1 Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+5.2 Fisher metric blocks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+5.3 Connection form . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+5.4 Curvature: linearised and full . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+5.5 Prior fraction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+5.6 Synthetic loop validation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+6 Simulation Study 21
+6.1 Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+6.2 Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+2
+
+===== PAGE 3 =====
+7 What to Do About It: Guidance for Practitioners 23
+7.1 Per-group (partial) non-centering, guided by the prior fraction . . . . . . . . 23
+7.2 Interweaving (ASIS) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+7.3 Marginalising the fiber . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+7.4 The connection as a fixed linear reparameterisation . . . . . . . . . . . . . . 25
+7.5 Connection-corrected proposals (proof of concept) . . . . . . . . . . . . . . . 25
+7.6 Reading the prior fraction: influence and sensitivity . . . . . . . . . . . . . . 26
+8 ThefibrR Package 26
+9 Discussion 27
+9.1 Coupling vs. the funnel: two distinct pathologies . . . . . . . . . . . . . . . . 27
+9.2 The connection is flat; curvature lives in the working metric . . . . . . . . . 28
+9.3 Limitations and future work . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+9.4 Note on methods of discovery . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+3
+
+===== PAGE 4 =====
+1 Introduction
+A central challenge in Bayesian computation is the hierarchical model. The joint parameter
+space of a two-level model − hyperparameters (µ,σ ) and group-level parameters (α1,...,α J)
+− has a geometry that makes it simultaneously natural to write and difficult to sample
+from. The pathology is well documented: the centred parameterisation develops a funnel,
+non-centred parameterisations help when the prior dominates, and the right choice depends
+on a balance of prior and likelihood information that varies by group and dataset.
+A geometric account of this trade-off already exists, at the level of themetric. Betancourt
+and Girolami (2015) anatomised the funnel and showed that the optimal parameterisation is
+governed by the relative contribution of prior and likelihood to a group’s posterior (centred
+when the likelihood dominates, non-centred when the prior does) and Papaspiliopoulos et al.
+(2007) characterised the centred/non-centred trade-off in the same terms. Betancourt (2019)
+sharpened this into an equivalence: an incomplete reparameterisation such as centering
+versus non-centering is equivalent to modifying the Riemannian metric directly, so the two
+parameterisations are mirror-image metric geometries rather than genuinely different targets.
+At the metric level, then, the obstruction is well understood.
+What is not yet settled is whether there is structurebeyondthe metric. The base–fiber
+split of the joint space is a fiber bundle, and a metric on the total space induces not only
+a Riemannian geometry but aconnection, a rule for how the fiber must co-move with the
+base as the hyperparameters change. A natural hypothesis, which we state here as our own,
+since to our knowledge it does not appear in the statistics literature, is that the residual
+obstruction is thecurvatureof this connection, carried into the chain asholonomy: a net
+contraction of the fiber after the hyperparameters traverse a closed loop (Figure 1). Were
+it true, this would be a connection-level account sitting above the metric-level one, and it
+would tell the sampler something the metric does not: that closed excursions in ( µ,σ ) leave a
+systematic, transportable imprint on the group parameters.
+This hypothesis belongs to the geometric program in MCMC, and it is that program the
+proof is aimed at. Riemannian-manifold HMC (Girolami and Calderhead, 2011) and the
+differential-geometric account of Hamiltonian flow (Betancourt, 2017; Livingstone et al., 2019)
+navigate hierarchical posteriors by exploiting the curvature of the Fisher metric, while a parallel
+line learns reparameterising transformations that absorb the funnel automatically (Gorinova
+et al., 2020). A connection-curvature account of centering would slot directly into this program:
+it would licence samplers thatparallel-transportthe fiber as the hyperparameters move, rather
+than only reparameterise, and would motivate proposals built from the connection. Whether
+that structure exists is therefore worth settling before such a method is built.
+Our central finding is that this hypothesis is false, and not just for the canonical model.
+The object is themetric-orthogonal Ehresmann connection A =−G−1
+FFGBF , the horizontal
+distribution G-orthogonal to the fibers, and we prove it isflatforanysmooth hierarchical
+posterior (Proposition 1): its horizontal leaves are the level sets of the fiber score ∂α logp ,
+so a global flat trivialisation always exists and there is no holonomy to obstruct mixing.
+Gaussianity, conjugacy, and the dimension of the fiber are irrelevant; the logistic GLMM
+(Proposition 4) is one closed-form instance. The connection-level account collapses onto the
+metric-level one. What survives is not geometric but statistical: the conditional dependence
+of the fiber on the base, governed per group by the prior fraction πj, the pooling factor
+4
+
+===== PAGE 5 =====
+B
+(µ,σ)θ1
+Fθ1
+θ2
+Fθ2
+θ3
+Fθ3
+π
+E
+(α1,...,α J)
+s
+(a) Fiber bundle π:E → B.
+Each base pointθ = (µ,σ ) has
+a fiberFθ∼= RJ of group pa-
+rameters; a sections picks one
+fiber point per base value.
+B
+γθ0
+Fθ0
+Hjα0
+j
+∆αj
+∆αj=0
+α0
+j
+(b) Apparent holonomy is a lin-
+earisation artifact. The fiber-
+frozen (linearised) connection
+seems to contract the fiber
+aroundγ toHjα0
+j (faded), but
+the true connection transports
+it back to itself: ∆ αj = 0
+(Prop. 4).
+δα
+δθ
+(θ,α)
+Vp
+Hp
+Aδθ
+δθ
+X
+XV
+A=−G −1
+FFGBF
+(c) The connection A =
+−G−1
+FFGBF decomposes the
+tangent space at ( θ,α ) ∈ E
+into vertical Vp (fiber direc-
+tions) and horizontal Hp (pre-
+scribed co-movement δα =
+Aδθ ). A NUTS proposal
+X carries a non-zero vertical
+residualX V .
+Figure 1: Geometric structure of a hierarchical posterior.(a)The joint space E is a fiber
+bundle over the hyperparameter base B; each fiberFθ∼= RJ carries the group parameters
+(α1,...,α J).(b)The naive holonomy picture, in which a closed loop γ inB contracts the
+fiber by Hj < 1. This is the behaviour of the linearised connection only; we prove the
+true connection is flat (Prop. 4), so its holonomy is trivial.(c)The Ehresmann connection
+A =−G−1
+FFGBF defines a horizontal subspace Hp at each point; a generic NUTS proposal X
+has a non-zero vertical residualX V because the sampler does not knowA.
+of Gelman and Pardoe (2006), the precise form of the prior/likelihood balance whose role
+Betancourt and Girolami (2015) established geometrically, which the bundle geometry now
+produces in closed form, and which, once the connection is known to be flat, is theonlything
+left governing the obstruction. The Fisher information actually carries several connections,
+of which only this one is at issue; we keep them apart in Section 3.4. The geometry is not
+thereby vacuous, however: genuine, even rotational, curvature reappears as soon as one
+transports along a sampler’sworkingmetric rather than the true Hessian, and that is where
+holonomy returns — as an algorithmic rather than a geometric phenomenon (Section 9.2).
+Standard diagnostics do not identify this mechanism. ˆR (Gelman and Rubin, 1992; Vehtari
+et al., 2021) measures chain-to-chain variability. ESS measures autocorrelation. Divergence
+counts flag regions of high curvature in the Hamiltonian, not in the parameter-space geometry.
+All of these register thesymptomsof the obstruction (slow mixing in the affected coordinates),
+but none localises the base–fiber coupling to specific groups, and none indicates the remedy
+(which groups to reparameterise). The empirical sections show that the mechanism’s chain-
+level signature is structured conditional autocorrelation localised in prior-dominated groups
+and predicted by the analytic prior fraction πj, rather than transport-following drift —
+consistent with the connection being flat.
+5
+
+===== PAGE 6 =====
+1.1 Contributions
+This paper makes the following contributions.
+1. Geometric framework and a universal flatness theorem(Section 3). We formalise
+the fiber bundle structure of hierarchical posterior parameter spaces, on which the
+Fisher information metric induces a natural Ehresmann connection A =−G−1
+FFGBF .
+Our main geometric result (Proposition 1) is that this connection isflatforanysmooth
+hierarchical posterior, of any fiber dimension and any prior: its horizontal leaves are
+the level sets of the fiber score ∂α logp , so the holonomy is trivial and the closed-form
+logistic-GLMM case (Proposition 4) is a corollary. The nonzero exterior-derivative
+curvatureFj =−2/(σ5G2
+FF,j ) is only the fiber-frozenlinearisation; the true connection
+transports trivially, and the synthetic “holonomy” it appears to show is that linearisation
+artifact.
+2. The prior fraction as the operative quantity(Section 5). With the connection
+flat, the obstruction reduces to the conditional dependence of fiber on base, governed
+per group by the prior fraction πj = (1/σ2)/GFF,j . This quantity is not new: it is
+exactly the pooling factor ω of Gelman and Pardoe (2006) and the per-group form of
+the prior/likelihood balance that Betancourt and Girolami (2015) tied to the optimal
+parameterisation. Our contribution is to derive it from the bundle geometry as theonly
+quantity left governing the obstruction once the connection is known to be flat, to give
+it in closed form for the GLMM, and to compute it per coordinate from a fitted model.
+3. A loop-conditional dependence diagnostic and an attribution null(Section 4).
+We propose a chain-based diagnostic that estimates per-group loop-conditional de-
+pendence coefficients ˆρj by weighted least squares over approximate loops in the
+hyperparameter chain. A direct attribution test, comparing observed fiber displace-
+ments with parallel-transport predictions along the same chain segments, returns a
+null result, exactly as flatness requires: NUTS does not transport the fiber, so the
+chain-level signature is excess conditional autocorrelation localised in prior-dominated
+groups, not transport-following drift.
+4. Where curvature genuinely lives: working-metric connections(Section 9.2).
+Flatness holds for the connection of thetrueHessian metric. For a connection built
+from aworkingmetric (a sampler’s fixed mass matrix), the curvature is generically
+nonzero and can be rotational, which we demonstrate with derivatives validated against
+automatic differentiation. A fixed-metric sampler transports along this curved connec-
+tion, so holonomy re-enters as analgorithmicrather than geometric phenomenon — the
+natural bridge to connection-aware sampling.
+5. Simulation study(Section 6). A 4 × 4 factorial study over observations per group
+(nj∈{ 3, 10, 30, 100}) and hierarchical standard deviation ( σtrue∈{ 0.5, 1, 2, 3}), 10
+replicates per cell, confirms that the diagnostic signal tracks the analytic prior fraction.
+The relationship with σ is non-monotone, separating funnel severity (a base-space
+pathology) from the base–fiber coupling thatπ j measures.
+6
+
+===== PAGE 7 =====
+6. Practitioner guidance and a controlled comparison(Section 7). We situate
+πj within established remedies, per-group partial non-centering (Papaspiliopoulos
+et al., 2003; Gorinova et al., 2020), interweaving (Yu and Meng, 2011), and fiber
+marginalisation, so a flagged group comes with a standard-tool response, with wj≈π j
+supplying the per-group weight analytically. A controlled mixed-design comparison
+shows this rule is a safe interpolator that tracks the better uniform parameterisation
+without surpassing it when the min-ESS bottleneck is the σ-funnel. A connection-
+corrected block sampler (horizontal mcmc) is included as a proof of concept.
+7. The fibr R package(Section 8). The prior fraction (with a brms adapter) and the
+smoothbp advisor() companion are distributed as the open-source R package fibr
+(Bindoff, 2026a); the connection, dependence, and sampler methods accompany the
+paper as reproduction code in the repository.
+1.2 Notation
+Scalars are unadorned (µ,σ,α j). Vectors are lower-case bold (α). Matrices are upper-case
+(G,A,H ). We write J for the number of groups, K for the dimension of the base space
+(K = 2 throughout: θ = (µ,σ )),M for the number of detected loop pairs, and N for the total
+number of observations. The notation [J] denotes{1,...,J}.∥·∥ F is the Frobenius norm.
+2 Background
+2.1 Hierarchical models and the centering problem
+The two-level normal hierarchy, and its generalisations to GLMMs, are the canonical setting
+where posterior geometry creates sampling difficulty. Papaspiliopoulos et al. (2003, 2007)
+characterised the centering/non-centering trade-off: the centred parameterisation is efficient
+when the likelihood identifies the group-level parameters well, while the non-centred parame-
+terisation is efficient when the prior dominates. Betancourt and Girolami (2015) described
+the geometric anatomy of the resulting funnel and established the role of the prior/likelihood
+balance in determining the optimal parameterisation. Betancourt (2019) gave the sharpest
+geometric statement to date: centering versus non-centering is anincompletereparameteri-
+sation, equivalent to a change of the Riemannian metric, so the two parameterisations are
+mirror-image metric geometries. These are metric-level accounts, and they are essentially
+complete at that level; what they leave open, and what we take up, is whether the base–fiber
+connectionadds anything beyond the metric. The per-group quantity at the centre of our
+answer, the prior fraction πj, makes this balance precise and coincides with the shrinkage
+/ pooling factor of Gelman and Pardoe (2006); Sections 3 and 5 derive it from the bundle
+geometry.
+2.2 Riemannian manifold HMC
+Girolami and Calderhead (2011) proposed Riemannian manifold Langevin and Hamiltonian
+Monte Carlo (RMHMC), using the Fisher information metric as a position-dependent mass
+7
+
+===== PAGE 8 =====
+matrix. This adapts the sampler to the local curvature of the posterior manifold and
+dramatically improves performance in the funnel and related geometries. Betancourt (2013)
+extended this to a general metric framework. Zhang and Sutton (2014) proposed a semi-
+separable decomposition for hierarchical models, splitting the Hamiltonian into base and
+fiber contributions with a Schur complement correction. Kleppe (2024) showed that the
+log-density gradient covariance provides a practical proxy for the Fisher metric without
+requiring analytical computation.
+These are all metric-adaptation methods: they precondition with the Fisher metric
+or a proxy for it. Our results bear on them in two opposite ways. First, the base–fiber
+Schur-complement correction of Zhang and Sutton (2014) is built from the same blocks as
+our connection A =−G−1
+FFGBF , which is the horizontal lift of a base move; Proposition 1
+shows this connection is flat, so for thetrueFisher metric there is no horizontal information
+beyond the metric to exploit — consistent with the reparameterisation–metric equivalence of
+Betancourt (2019). Second, and conversely, a sampler thatfixesits mass matrix, as adaptive
+HMC does after warmup, transports the fiber along the connection of thatworkingmetric,
+which is generically curved (Section 9.2). That is the regime in which a connection-aware
+correction has genuine content, and it is the subject of a companion paper.
+2.3 Fiber bundles in statistics
+Differential and information geometry have a long history in statistics: the dually-flat structure
+of exponential families and the α-connections of Amari and Nagaoka (2000) are standard, and
+tangent-bundle constructions appear throughout that literature. What is new here, to our
+knowledge, is the specific object: the metric-orthogonalEhresmann connectionof the base–
+fiber split of a hierarchical posterior, A =−G−1
+FFGBF , together with its curvature analysis and
+the resulting flatness theorem. The connection describes how fibers are parallel-transported
+as the base moves. We give a self-contained treatment of the necessary geometry in Section 3;
+accessible references include Kobayashi and Nomizu (1963) and Nakahara (2003).
+3 The Geometric Framework
+3.1 Fiber bundle structure of hierarchical posteriors
+Consider a two-level hierarchical model with hyperparametersθ∈B⊆R K (thebase space)
+and group-level parameters α∈R J (thefiber). The joint parameter space is thetotal space
+E=B×R J, equipped with the projectionπ:E→B,π(θ,α) =θ.
+The fiber over a pointθ∈B isFθ =π−1(θ)∼= RJ, representing the group-level parameters
+conditioned on the hyperparameters. In the canonical GLMM:
+B={(µ,σ) :µ∈R, σ >0}, K= 2,(1)
+F(µ,σ) =R J with priorα j|µ,σ∼N(µ,σ 2).(2)
+Fixed effects β may be treated as part of the base space or marginalised; for clarity we
+include them in the base throughout and writeθ= (µ,σ,β) when they are relevant.
+8
+
+===== PAGE 9 =====
+Remark 1.The bundle E→B is topologically trivial (E∼=B×R J). The off-diagonal Fisher
+metric blocks GBF couple base and fiber in a way that depends on the current parameter
+values, so the induced connection is non-trivial as adistribution; whether it iscurvedis a
+separate question, and Section 5 shows that for the GLMM it is not (the connection is flat).
+The centering/non-centering debate is, geometrically, a search for a trivialisation that flattens
+the induced connection; flatness guarantees one exists.
+3.2 The Fisher metric and its block structure
+The Fisher information metric onEis the expected negative Hessian of the log-posterior:
+Gpq(θ,α) =−E y|θ,α
+∂2 logp(y,θ,α)
+∂ξp∂ξq
+
+,(3)
+whereξ = (θ,α ) concatenates all parameters. The block structure of G in the base–fiber
+decomposition is
+G=
+GBB G⊤
+BF
+GBF GFF
+
+,(4)
+where GFF ∈R J×J is the fiber metric block, GBF∈R J×K is the off-diagonal coupling block,
+andGBB∈R K×K is the base metric block. The off-diagonal block GBF encodes how base and
+fiber directions are coupled: it is non-zero whenever the prior creates statistical dependence
+betweenθandα.
+Two points fix the precise object the connection is built from. First, GBF arises only from
+the prior p(α|θ ), the likelihood does not depend on the hyperparameters, so it carries no
+expectation over y: GBF =−∂α∂θ logp (α|θ ). Second, the connection (5) and the flatness
+analysis below use the negative Hessian of therealisedlog-posterior, the observed information
+the sampler sees at a point. This coincides with the expected Fisher metric (3) whenever the
+likelihood Hessian is data-independent, as it is for canonical-link GLMs, including the logistic
+GLMM of Section 5, where−∂2
+αj logp (y|α j) =P
+ipji(1−pji) does not depend ony. We keep
+the nameFisher information metricfor both, in keeping with the RMHMC literature; the
+distinction matters only for non-canonical links, where the observed-information connection
+is the relevant object.
+3.3 The Ehresmann connection
+Definition 1(Ehresmann connection).Given the block metric (4), theEhresmann connection
+formis theJ×Kmatrix-valued function
+A(θ,α) =−G FF (θ,α)−1GBF (θ,α).(5)
+Thehorizontal liftof a base tangent vector vB∈T θB to a point( θ,α )∈E is the total-space
+vector ˜v= (v B, AvB): the unique direction inTEthat isG-orthogonal to the fiber.
+Geometrically,A tells us how the fiber must co-move with the base to remain “stationary”
+relative to the posterior geometry. Moving the hyperparameters by δθ while keeping the fiber
+on the horizontal slice requires a simultaneous fiber displacement ofδα=Aδθ.
+9
+
+===== PAGE 10 =====
+Remark 2(Relationship to centering).In the centred parameterisation of a normal–normal
+hierarchy,Aj,µ = 1/(σ2GFF,j )(derived in Section 5). This is positive and large when σ is
+small (tight prior, high prior precision), meaning the conditional posterior of every αj tracks
+µ tightly. The centred chain explores this slowly; we show below that the obstruction is this
+conditional dependence rather than any holonomy ofA.
+3.4 Which connection? A disambiguation
+The Fisher information carries several connections, and our results concern one of them
+specifically. We separate three objects on which the words “flat” and “curved” have different
+answers.
+(i) The Levi-Civita connection of the Fisher–Rao metric on the base.The intrinsic
+Riemannian geometry of the location-scale family (µ,σ ) is hyperbolic: the Fisher–Rao metric
+has constant negative curvature and isnotflat (Amari and Nagaoka, 2000). This is the
+genuine curvature of the base manifold, and it is the geometric content of the funnel. Nothing
+in this paper removes or trivialises it.
+(ii) The Amari e- and m-connections.Because the Gaussian is an exponential family, the
+dual α =±1 connections are flat: affine (natural and expectation) coordinates exist in which
+they vanish (Amari and Nagaoka, 2000). That the α =±1 connections are flat while the
+α = 0 (Levi-Civita) connection of (i) is not is the standard fact that dual flatness does not
+imply Riemannian flatness.
+(iii) The metric-orthogonal Ehresmann connection A of (5).This is not an affine
+connection on a statistical manifold but an Ehresmann connection on the parameter bundle
+E→B : a horizontal distribution, G-orthogonal to the fibers. Propositions 1 and 4 concern
+this object, andonlythis object: its curvature, the obstruction to integrability of the
+horizontal distribution, vanishes identically.
+Every “flat”, “curvature”, and “holonomy” statement in Sections 4–9 refers to A of (iii).
+The nonzero Fj of (7) below is the curvature of thelinearisedconnection ˜A(θ) :=A(θ,α 0)
+obtained by freezing the fiber, a different Ehresmann connection that approximates A near
+a fixed fiber point, and is the quantity our synthetic-loop validation integrates. When we
+later call this nonzero Fj an “artifact,” we mean precisely that it is the curvature of ˜A, not
+of A; we donotmean the Fisher–Rao curvature of (i), which is real and which we leave
+untouched. Why A is flat, its horizontal leaves are the level sets of the fiber score, is the
+subject of Section 3.6. The flat coordinate that results is the conditional score, which for the
+GLMM is theprecision-weighted residual ( αj−µ )/σ2, not the SD-weighted non-centering
+(αj−µ)/σ; both reparameterise the fiber, but only the score is horizontal forA.
+3.5 Holonomy and curvature
+Definition 2(Holonomy).Let γ : [0, 1]→B be a closed loop in the base ( γ(0) =γ(1) =θ0).
+Starting from a fiber point α0∈F θ0, theparallel transportof α0 along γ is the path t7→α (t)
+inEsatisfying
+˙α(t) =A(γ(t),α(t)) ˙γ(t),α(0) =α 0,(6)
+and theholonomyis the net displacement∆α=α(1)−α 0 after traversing the loop.
+10
+
+===== PAGE 11 =====
+Thecurvatureof the connection is the obstruction to integrability of its horizontal
+distribution, equivalently, the vertical component of the Lie bracket of two horizontal lifts,
+and it governs holonomy: for a small loop enclosing areaA, the holonomy is ∆α≈ (curvature)·
+A+O(A3/2), so a connection of zero curvature, aflatconnection, has trivial holonomy around
+contractible loops. The entire centring/non-centring intuition rests on the hypothesis that A
+is curved. The next subsection shows it is not.
+3.6 Universal flatness: the score is a first integral
+The curvature in (7)–(8) is the linearised one. Thefullcurvature of A is governed by a single
+fact that does not depend on the model at all.
+Proposition 1(Universal flatness of the metric connection).Let ℓ(θ,α )be a smooth log-
+posterior onE =B×RJ with fiber-precision blockGFF =−∂2
+αℓ nonsingular on an open region
+U⊆E , and GBF =−∂α∂θℓ. The metric-orthogonal Ehresmann connection A =−G−1
+FFGBF
+isflaton U: its horizontal distribution is integrable, with thefiber score s(θ,α ) =∂αℓ as
+a (vector) first integral. On any simply connected subregion the holonomy is trivial; and
+where the conditional score α7→∂ αℓ is a diffeomorphism (in particular when the conditional
+posterior is log-concave, as in the logistic GLMM), the map( θ,α )7→ (θ,s )is a global flat
+trivialisation; otherwise it is local.
+Proof.The horizontal lift ofv∈T θBis (v,Av). Differentiating the score along it,
+ds(v,Av) =∂ 2
+ααℓ(Av) +∂ 2
+αθℓv= (−G FF )(−G−1
+FFGBFv) + (−GBF )v=0.
+Sos is constant along horizontal curves and the horizontal distribution lies in kerds . Where
+GFF is nonsingular,ds has rankJ (its fiber block−GFF is invertible), so kerds has dimension
+K, equal to the rank of the horizontal distribution; the two coincide. The horizontal
+distribution is therefore the tangent distribution of the foliation of U by the level sets of the
+globally defined maps, hence integrable, and its curvature vanishes.
+Three consequences are worth stating. First,the flatness has nothing to do with conjugacy,
+Gaussianity, or the dimension of the fiber: the proof uses only that ℓ is smooth and GFF
+is nonsingular. The closed-form GLMM computation of Section 5 (Proposition 4) is one
+instance, retained because the explicit cancellation is instructive and because it pins down
+the linearised curvature Fj (Section 3.7). Second, the flat coordinate is the conditional score
+s =∂αℓ, equivalently the residual to the conditional mode (where s =0); for a Gaussian
+prior this is the precision-weighted residual ( αj−µ )/σ2. Third, the hypotheses are sharp.
+Flatness can fail only where GFF issingular(a degenerate or unidentified conditional, the
+fiber-degeneracy mode of Section 9) or for a connection built from a metric other than the
+true Hessian. The latter is where genuine, and even rotational, curvature appears; we return
+to it in Section 9.2.
+3.7 The linearised curvature
+A non-zero curvature reappears the moment onefreezesthe fiber. Treating A as a function
+of the base alone, holding α at a fixed α0, its exterior derivative gives, for the K = 2 base, a
+11
+
+===== PAGE 12 =====
+J-vector
+Fj = ∂Aj,2
+∂θ1 − ∂Aj,1
+∂θ2 , j∈[J],(7)
+where Aj,k is the (j,k ) entry of A (for a base of dimension K the curvature is a J×K×K
+antisymmetric tensor; only K = 2 is needed here). This is the curvature of thelinearised
+(fiber-frozen) connection ˜A(θ) =A(θ,α 0). The full curvature of A adds the vertical terms
+A∂ αA that Proposition 1 cancels exactly; Fj keeps only the first piece. Its Stokes prediction,
+∆αj≈F j(θ0,α 0)A+O(A 3/2),(8)
+is therefore the holonomy of ˜A, not of A, whose holonomy is zero. The linearised object
+is not a fiction: it is what one obtains by evaluating the connection at a fixed fiber point
+and ignoring its motion, which is exactly what a numerical validation that holds α0 fixed
+computes (Section 5.6) and what the chain diagnostic sees at the loop time-scale. We compute
+Fj in closed form for the GLMM in Section 5.
+3.8 What the framework requires of a model
+To apply the dependence diagnostic (Section 4) to a new hierarchical model, the practitioner
+needs only a posterior chain: the diagnostic algorithm uses the chain draws themselves and
+requires no analytical computation. To compute the analytic connection and curvature (Sec-
+tion 5), one additionally needs closed-form or automatic-differentiation-computed expressions
+for GFF and GBF . For the two-level logistic GLMM, both are available analytically; the
+extension to models where AD must be used is future work (Section 9).
+4 The Loop-Conditional Dependence Diagnostic
+Because the connection is flat (Section 5), the chain-level quantity this diagnostic estimates
+is not geometric holonomy butloop-conditional fiber dependence: the residual dependence of
+the fiber at the end of an approximate base-space loop on its value at the start. We denote
+the per-group coefficient ˆρj to distinguish it from the (trivial) geometric holonomy Hj of
+Section 5. The diagnostic is implemented as holonomy diagnostic() in fibr; the function
+name is retained for continuity.
+Why estimate this at all, given that Proposition 1 already settles the geometry and the
+analytic prior fraction πj (Section 5) localises the coupling more cleanly? The diagnostic is
+secondaryto πj and we treat it as such, but it earns a place on three grounds. First, it is
+model-agnostic: it uses only the posterior draws and needs no closed-form or differentiated
+metric blocks, so it applies to models where GFF and GBF are unavailable and πj cannot be
+computed. Second, it isloop-conditional— it measures fiber dependence conditioned on the
+hyperparameters returning to (approximately) where they started, which is not the same
+as a plain per-group effective sample size: that conditioning is what isolates the base–fiber
+coupling from generic fiber autocorrelation. Third, it is theempiricalcounterpart of πj, and
+the agreement between the two (Section 6) is what ties the analytic theory to chain behaviour.
+Where πj is available it is the primary, more robust per-group flag (Section 9); the diagnostic
+corroborates and extends it.
+12
+
+===== PAGE 13 =====
+4.1 Overview
+Given a posterior chain on (θ,α ), the diagnostic proceeds in four steps: (1) detect approximate
+loops in the base space B, (2) estimate per-group loop-conditional dependence coefficients ρj
+from the fiber values at loop endpoints, (3) assess sensitivity to the minimum loop gap g, and
+(4) corroborate flatness empirically (the attribution test) by comparison with the analytically
+integrated parallel transport (Section 4.7).
+A point of interpretation governs everything that follows, so we state it up front. For
+a chain in equilibrium, the fiber value at the end of a detected loop is a draw from the
+conditional posterior given (approximately) the same base point as at the start. If the chain
+mixed instantly,αe andαs would be independent draws from that conditional, and the best
+linear dependence map would be P≈ 0 (after residualisation; Section 4.3). A slowly mixing
+chain instead retains memory of αs, giving P closer to the identity. The raw coefficients
+therefore measureloop-conditional fiber dependence at the loop time-scale. In principle this
+could be driven by connection geometry (systematic, signed, area-dependent transport) as well
+as by generic autocorrelation (unsigned persistence); the flatness result rules out the former,
+but we retain the attribution step in Section 4.7, which tests directly whether thedirection
+and magnitudeof fiber displacement across each loop matches the analytic parallel-transport
+prediction, and which returns the null result that flatness predicts.
+4.2 Loop detection
+Aloop pairis a pair of chain iterations ( s,e ) with e−s≥g (minimum gap g) such that
+the base-space distance∥θe−θs∥2 is small. The gap g ensures that loop endpoints are not
+simply adjacent autocorrelated states.
+Algorithm 1Loop detection in base space
+Require: Base-space chain{θt}T
+t=1, tolerance ε, minimum gap g, number of neighbours k,
+maximum loopsL max
+1:Standardise columns of{θ t}to unit variance.
+2:Ifε=NULL: setεto the 5th percentile of a sub-sampled pairwise distance distribution.
+3:Build ak-nearest-neighbour index over{θ t}.
+4:foreacht= 1,...,T:
+5: Query the k nearest neighbours of θt; letNt be those with distance <ε and index gap
+>g.
+6:Record pairs (t,s) for eachs∈N t.
+7:Keep theL max tightest pairs (smallest∥θ e−θs∥2).
+Ensure:Data frame of loop pairs (s,e,d) whered=∥θ e−θs∥2.
+Loop detection is runper chainso that independent chains are never spliced. Pairs from
+all chains are pooled for the subsequent regression.
+13
+
+===== PAGE 14 =====
+4.3 Transport map estimation
+By Remark 5, the transport map for the GLMM class is diagonal with real entries: parallel
+transport scales each fiber coordinate independently. We therefore estimate J per-group
+scalars rather than a full J×J matrix. Given M loop pairs with fiber start values αsk,j and
+end valuesα ek,j, the weighted least squares estimate for groupjis
+ˆρj =
+PM
+k=1wkαek,jαsk,j
+PM
+k=1wkα2
+sk,j +δ
+,(9)
+where wk are loop weights and δ >0 is a small ridge penalty. We write ˆP = diag(ˆρ1,...,ˆρ J).
+The fibr implementation retains the unrestricted J×J estimator ˆP = (EWS⊤)(SWS⊤ +
+δI)−1 as an option ( structure = "full" ) for models with genuinely coupled fibers, but
+for diagonal-transport models the full estimator fits J2 parameters to M noisy pairs and
+manufactures spurious off-diagonal structure, including spurious complex eigenvalues that
+can be mistaken for rotational holonomy. All results in this paper use the diagonal estimator.
+Weights are based on loop tightness: wk∝exp (−dk/ ¯d), where dk =∥θek−θsk∥2 and
+¯d is the mean distance, so that tighter loops (better approximations to true closed loops)
+contribute more.
+Residualisation.Before estimating ˆP , the fiber draws are residualised against the base
+draws via OLS, removing the linear base-to-fiber effect (e.g., αj≈µ in the centred GLMM).
+This isolates the vertical fiber component where geometric holonomy lives.
+Interpretation.The model αe≈Pα s is the simplest linear summary of loop-conditional
+dependence. For a well-mixed chain the endpoints are independent draws from the same
+conditional, so ˆρj≈ 0; a slowly mixing chain gives ˆρj closer to unity. Note that geometric
+holonomy would also have produced ˆρj̸= 0, but with a loop-orientation- and area-dependent
+signature; since the connection is flat, no such geometric contribution exists, and any nonzero
+ˆρj is conditional autocorrelation. This is what the attribution test of Section 4.7 confirms.
+4.4 Per-group dependence coefficients and scalar summary
+The estimated coefficients ˆρ1,...,ˆρ J are read as follows:
+•ˆρj≈ 0: loop endpoints are approximately independent draws from the conditional
+posterior; the chain mixes faster than the loop time-scale and no signal survives.
+•ˆρj substantially above 0: the fiber retains loop-conditional dependence at the loop
+time-scale. Under flatness this is conditional autocorrelation; the attribution step
+(Section 4.7) and the gap profile (Section 4.6) confirm there is no additional geometric
+component.
+•ˆρj > 1: indicates numerical instability or insufficient residualisation rather than a
+genuine effect.
+14
+
+===== PAGE 15 =====
+The mean coefficient ¯ρ= J−1P
+j ˆρj is our primary scalar summary, ranging from 0
+(independent endpoints) toward 1 (full persistence). The Frobenius deviation
+
+
+
+ ˆP−I
+
+
+
+F
+is also reported but is a less discriminating summary: it equals
+√
+J in both the P≈ 0
+and P≈I limits. Because the coefficients are group-aligned, ˆρj can be compared directly
+with per-group analytic quantities: the prior fraction πj (20) and the integrated transport
+prediction (Section 4.7).
+4.5 Bootstrap uncertainty
+Uncertainty is quantified by resampling loop pairs with replacement. For each of B bootstrap
+replicates, equation (9) is re-solved on the resampled pairs, and the resulting factors are
+recorded. Because the diagonal estimator preserves group identity, the bootstrap distribution
+of each ˆρj is directly interpretable as per-group uncertainty, displayed as intervals on the
+per-group transport plot.
+4.6 Gap sensitivity
+The minimum gap g sets the time-scale at which loops are detected. If g is inside the
+integrated autocorrelation time (IACT) of the fiber chain, ˆρj is dominated by ordinary
+autocorrelation; as g grows past the IACT, the autocorrelation contribution decays. Had the
+connection been curved, a systematic transport contribution would re-accumulate on every
+loop regardless of elapsed time and persist beyond the IACT; the gap profile was designed
+to expose such a component. Flatness implies there is none, and the profiles bear this out.
+We report ˆρj as a profile over a grid of gaps (e.g. g∈{ 3, 10, 25, 50}) rather than at a single
+value, alongside the estimated IACT of the base and fiber chains. Two components can
+contribute to a signal surviving at g beyond the IACT: ordinary autocorrelation (decays with
+gap) and residualisation leakage (gap-independent, arising because OLS removes only the
+linearbase-to-fiber dependence, while loop endpoints share the same base point and hence
+the same nonlinear conditional mean). A negative-control experiment reported in Section 4.7
+separates these contributors empirically.
+4.7 Attribution: empirical transport vs. integrated connection
+A sharper test of the geometric interpretation bypasses the transport factors entirely. For each
+detected loop, integrate transport() numerically integrates the analytic connection (6)
+along the actual chain trajectory between the loop endpoints, producing a per-loop, per-group
+predictionof the fiber displacement attributable to parallel transport, together with the
+signed enclosed area of the base trajectory. Holonomy predicts displacements whose sign
+tracks loop orientation and whose magnitude tracks the enclosed area and local curvature Fj;
+generic autocorrelation predicts displacements uncorrelated with orientation and area.
+On the sparse GLMM benchmark analysed here, this attribution test yields a null result.
+Regressing empirical displacement on the integrated-connection prediction gives slopes near
+zero for all groups (range −0.001 to 0.005; one borderline significant at p = 0.025), and
+empirical displacements show no dependence on signed loop area in any group.
+15
+
+===== PAGE 16 =====
+Two caveats scope this null.Test harshness: integrated parallel-transport predictions
+reach|∆α|≈ 100–200 against observed displacements of 2–5, because the linear-transport
+approximation breaks down along long, jagged MCMC paths through high-curvature regions.
+A restricted test on only the shortest, tightest loops (length ≤ 50, tightest distance quartile)
+also yields null results: 38 loops survived the filter and per-group slopes are of order 10 −5 per
+posterior SD.
+Negative control: for each gap g, we construct matched-gap control pairs chosen to have
+largebase distance (above the median of pairwise distances at that gap). On the prior-
+dominated cell (nj = 3, σtrue = 0.5, high πj), true loops give ¯ρj≈ 0.03–0.07 while controls
+give ¯ρj≈ 0: base-closure conditioning carries signal in exactly the cell where πj predicts it.
+On the likelihood-dominated cell (σtrue = 3.0, low πj), both arms give ¯ρj≈ 0. Figure 2 shows
+the full gap profile for all four experimental cells: the contrast between true-loop ˆρj and the
+near-zero control band is confined to the high- πj cell, in quantitative agreement with the
+analytic prediction.
+This null is exactly what the flatness of the connection (Proposition 4) requires: there is
+no curvature, so there is no parallel-transport displacement for the chain to track, whether or
+not the sampler follows horizontal lifts. The geometry’s chain-level signature is insteadexcess
+conditional autocorrelation localised in prior-dominated groups—precisely what base-closure
+conditioning isolates and what the analytic πj predicts. The analytic πj is the primary and
+more robust diagnostic output: it requires no chain-based estimation, is free of residualisation
+leakage, and directly identifies which groups will show elevated ˆρj. The chain-based ˆρj and
+its gap-sensitivity profile serve as empirical corroboration of the πj prediction, confirming
+that the conditional dependence is detectable in actual chains, but πj remains the headline
+flag. The diagnostic workflow (loop detection, estimation of ˆρj, and gap-sensitivity profiling)
+remains a valid probe of loop-conditional fiber dependence; flatness tells us that what it
+measures is conditional autocorrelation rather than holonomy.
+4.8 Comparison: centred vs. non-centred
+Figure 3 shows the per-group dependence coefficients across the gap grid for the centred and
+non-centred parameterisations of a sparse logistic GLMM ( J = 8 groups, nj = 3 observations
+each,σtrue = 3). At the shortest gap (g = 3), the centred chain shows a modestly larger mean
+coefficient ( ¯ρ≈0.044) than the non-centred chain ( ¯ρ≈0.022). The centred profile decays
+with gap (to≈ 0.005 at g = 50), while the non-centred profile is flat across all gaps (≈ 0.022–
+0.023). The gap-independence of the non-centred factors, for a parameterisation in which
+˜αj is conditionally independent of (µ,σ ) by construction, is consistent with residualisation
+leakage rather than geometric signal (Section 4.7). At long gaps the centred profile falls
+below the non-centred level; the short-gap excess in the centred chain (≈ 0.044 at g = 3 vs
+≈ 0.005 at g = 50) is the autocorrelation contribution that decays with lag, while the flat
+non-centred baseline (≈ 0.022–0.023 across all gaps) is the leakage floor, confirmed by the
+negative-control experiment.
+16
+
+===== PAGE 17 =====
+5 Analytic Connection for the Centred Logistic GLMM
+5.1 Model
+We work throughout with the two-level logistic GLMM:
+yji∼Bernoulli
+ 
+logit−1(αj +x⊤
+jiβ)
+
+, j∈[J], i= 1,...,n j,(10)
+αj∼N(µ,σ 2),(11)
+µ∼N(0,25), σ∼Exponential(1),β∼N(0,4I).(12)
+The base space is B = R×R >0 with coordinates (µ,σ ), and the fiber is RJ with coordinates
+α = (α1,...,α J). We write pji = logit−1(αj +x⊤
+jiβ) for the success probability of observation
+iin groupj.
+5.2 Fisher metric blocks
+We instantiate the block metric (4) for the GLMM. Because the logistic link is canonical,
+the observed information used below equals the expected Fisher information (Section 3), so
+naming these “Fisher metric blocks” is unambiguous here.
+Proposition 2(Fisher metric blocks for the centred GLMM).The negative Hessian of the
+log-posterior for model (10)–(12) has the following blocks, evaluated at a single parameter
+point(µ,σ,α,β):
+GFF,jj = 1
+σ2 +
+njX
+i=1
+pji(1−p ji),(13)
+GBF,j1 =− 1
+σ2,(base direction:µ)(14)
+GBF,j2 =− 2(αj−µ)
+σ3 ,(base direction:σ)(15)
+whereG FF is diagonal andG BF∈R J×2.
+Proof.The log-posterior is
+logp∝
+X
+j∈[J]
+njX
+i=1
+
+yji logpji +(1−y ji) log(1−pji)
+
+−
+X
+j
+(αj−µ) 2
+2σ2 −Jlogσ−priors onµ,σ,β.
+Taking second derivatives: the cross term between αj and αk (j̸ = k) vanishes because
+observations within group j do not depend on αk. The diagonal ∂2/∂α2
+j gives (13). Cross
+terms ∂2/∂αj∂µ and ∂2/∂αj∂σ give (14) and (15) respectively, from the prior term−(αj−
+µ)2/(2σ2).
+Remark 3.The full base–base block GBB is not positive definite outside the posterior mode
+in the centred parameterisation. This is the fingerprint of the funnel: the realised geometry of
+the total space is indefinite in the( µ,σ )directions when the chain is in the neck of the funnel.
+17
+
+===== PAGE 18 =====
+The indefiniteness is confined to GBB, however; the fiber block GFF,jj = 1/σ2 +P
+ipji(1−pji)
+is strictly positive throughout, so the connection A =−G−1
+FFGBF and its G-orthogonality are
+globally well-defined and never see the funnel. This is the two-pathologies distinction already
+visible in the metric: the fiber geometry is always benign, the funnel is purely base-space. The
+SoftAbs regularisation (Betancourt, 2013) resolves the base indefiniteness for the RMHMC
+sampler (Section 2.2).
+5.3 Connection form
+From (5) and Proposition 2, the connection coefficients are:
+Aj,µ = 1
+σ2GFF,j
+,(16)
+Aj,σ = 2(αj−µ)
+σ3GFF,j
+.(17)
+Both depend on the current fiber point αj, confirming that the connection is genuinely
+non-linear.
+5.4 Curvature: linearised and full
+Proposition 3(Curvature of the linearised connection).Let ˜A(θ) :=A(θ,α 0)be the fiber-
+frozen linearisation of A at a fixed fiber point α0. Its curvature (7), for the centred GLMM,
+is
+Fj = ∂Aj,σ
+∂µ − ∂Aj,µ
+∂σ =− 2
+σ5G2
+FF,j
+.(18)
+Equivalently,F j is the exterior derivative ofAtaken with the fiber held fixed.
+Proof. From (17), noting that GFF,j does not depend on µ (the likelihood term involves αj,
+β, and the data, but notµ):
+∂Aj,σ
+∂µ = −2
+σ3GFF,j
+.
+From (16), noting that∂G FF,j/∂σ=−2/σ 3 (from the prior term 1/σ 2):
+∂Aj,µ
+∂σ = −2
+σ3GFF,j
++ 1
+σ2· 2/σ3
+G2
+FF,j
+= −2
+σ3GFF,j
++ 2
+σ5G2
+FF,j
+.
+Subtracting:F j =−2/(σ 5G2
+FF,j ).
+This linearised curvature is always negative (Fj < 0), and|Fj| grows as the prior dominates
+(small σ, few data). Read naively, this suggests a contractive holonomy of ˜A that worsens as
+the prior tightens. But ˜A is not the connection the sampler would have to follow; the true
+connection is the fiber-dependent A. By Proposition 1 its full curvature vanishes; for the
+GLMM this can be seen explicitly, and the cancellation is instructive.
+18
+
+===== PAGE 19 =====
+Proposition 4(Flatness of the GLMM connection, instance of Proposition 1).The full
+curvature of the metric-orthogonal Ehresmann connection A of (16)–(17), including the
+vertical (fiber-derivative) terms, is identically zero for every groupj:
+F full
+j = ∂Aj,σ
+∂µ − ∂Aj,µ
+∂σ| {z }
+=−2/(σ 5G2
+FF,j )
++Aj,µ
+∂Aj,σ
+∂αj
+−Aj,σ
+∂Aj,µ
+∂αj
+| {z }
+= +2/(σ5G2
+FF,j )
+= 0.(19)
+Consequently the horizontal distribution is integrable (Frobenius), and since the base B =
+R×R >0 is simply connected, the holonomy of every loop is trivial: a global flat trivialisation
+exists.
+Proof. The first pair is Proposition 3. For the vertical pair, write Sj =P
+ipji(1−pji) so that
+GFF,j = 1/σ2 +Sj and∂G FF,j/∂αj =S′
+j =P
+ipji(1−p ji)(1−2p ji). Then
+Aj,µ
+∂Aj,σ
+∂αj
+= 1
+σ2GFF,j
+"
+2
+σ3GFF,j
+− 2(αj−µ)S′
+j
+σ3G2
+FF,j
+#
+= 2
+σ5G2
+FF,j
+− 2(αj−µ)S′
+j
+σ5G3
+FF,j
+,
+Aj,σ
+∂Aj,µ
+∂αj
+= 2(αj−µ)
+σ3GFF,j
+"
+− S′
+j
+σ2G2
+FF,j
+#
+=− 2(αj−µ)S′
+j
+σ5G3
+FF,j
+.
+The S′
+j terms cancel in the difference, leaving +2 /(σ5G2
+FF,j ), which is exactly the negative of
+the first pair. HenceF full
+j = 0.
+Remark 4(Why the linearised curvature is nonzero).The discrepancy between Fj̸= 0
+and F full
+j = 0is the vertical variation of A along the transported fiber. Freezing the fiber
+(equivalently, holding GFF,j at its value at the loop centre) discards the second pair in (19)
+and recovers the nonzeroFj. This is precisely what the synthetic-loop validation of Section 5.6
+does, so the “holonomy” it reports is the holonomy of the linearised connection, not of
+the true one. We confirm the result numerically in data-raw/verify flat connection.R:
+integrating the true transport ODE around closed loops returns displacement of order10 −14,
+while freezing GFF,j reproduces the linearised holonomy of Figure 4. Both Fj and F full
+j are
+curvatures of the Ehresmann connection (iii) of Section 3.4; neither is the Riemann curvature
+of the Fisher–Rao metric, which is hyperbolic and nonzero and which the flatness of A does
+not affect.
+Remark 5(The structure group is abelian: no rotational holonomy).Because GFF is
+diagonal and the rows of GBF decouple across groups, parallel transport acts on each fiber
+coordinate independently: any loop’s transport is a per-group scaling αj7→h jαj withhj∈R >0
+(and, by Proposition 4, hj = 1for the true connection). The structure group of this bundle is
+abelian, and genuinelyrotationalholonomy (complex transport eigenvalues) is impossible for
+this model class. This has a practical consequence for estimation: the diagnostic’s dependence
+matrix ˆP is diagonal with real entries, so it should estimate J scalars rather than a full J×J
+matrix (Section 4.3).
+19
+
+===== PAGE 20 =====
+5.5 Prior fraction
+The ratio of the prior precision to the total fiber precision
+πj = 1/σ2
+GFF,j
+= 1/σ2
+1/σ2 +Pnj
+i=1pji(1−p ji) (20)
+takes values in (0, 1) and measures how much of the fiber metric at group j is attributable
+to the prior. When πj→ 1 the prior dominates (sparse data or large σ); when πj→ 0 the
+likelihood dominates. This is exactly thepooling factor ω of Gelman and Pardoe (2006), the
+fraction of a group’s posterior precision contributed by the prior: their ω = 1−σ 2
+α/(σ2
+α +σ2
+y)
+is (1/σ2
+α)/(1/σ2
+α +nj/σ2
+y), which is Equation (20) for the Gaussian case. It is thus a classical
+quantity, not a new one: recoverable by hand from a fitted multilevel model’s variance
+components and per-group information, and reported in related (population-level) form as
+the intraclass correlation by standard tools. What we add is its geometric derivation as
+the residual obstruction once the connection is flat, and its per-coordinate computation;
+the package simply returns it. (We use “pooling factor” rather than “shrinkage factor”
+deliberately: some authors call the complement 1 −πj the shrinkage factor, a usage Gelman
+and Pardoe flag as confusing, since a shrinkage factor of zero then means complete pooling.) It
+is also the per-group form of the prior/likelihood balance that Betancourt and Girolami (2015)
+tied to the optimal parameterisation. In plain terms, πj is the share of what the posterior
+knows about group j that comes from the prior rather than from that group’s own data:
+near 1, the data barely constrain the group and a non-centred parameterisation helps; near
+0, the group is well identified and centring is fine. What the bundle derivation adds locally
+is the observation that πj is determined by priorprecision1 /σ2 rather than priorvariance
+— the source of the non-monotone behaviour in σ documented in Section 6. Substituting
+into the linearised curvature (18) gives|Fj| = 2π2
+j/σ: even the spurious linearised curvature
+is controlled by πj, so the diagnostic and the analytic flag agree on where any signal must
+concentrate.
+Remark 6.The prior fraction πj is computed analytically from a subsample of posterior
+draws and serves as a diagnostic in its own right: groups with πj > 0.6are good candidates
+for non-centred reparameterisation (Section 7.4). This is the geometric basis for the per-group
+parameterisation advice implemented infibr.
+5.6 Synthetic loop validation
+We check thelinearisedcurvature formula (18) against Stokes’ theorem (8) using synthetic
+circular loops in (µ,σ ) space, bypassing any MCMC noise. We stress that this validates the
+linearised connection only: the integration below holds the fiber fixed at α0 (equivalently,
+freezes GFF ), which is the linearisation whose curvature is nonzero. Integrating thetrue
+connection, with GFF updated as the fiber moves, returns zero displacement to integrator
+precision, consistent with Proposition 4.
+For a circle of radiusrcentred at the posterior mean (µ 0,σ 0,α 0,β 0):
+1. Numerically integrate the ODE (6) around the circle (discretised into ns = 400 steps)
+to obtain ∆α num
+j .
+20
+
+===== PAGE 21 =====
+2. Compute the first-order Stokes prediction ∆α Stokes
+j =F j(µ0,σ 0,α 0)·πr 2.
+Figure 4 shows the comparison for radii r∈ [0.02, 0.30] (approximately 0.02–0.30 posterior
+standard deviations), displayed separately for each of the J = 8 groups. The numerically
+integrated linearised transport and its first-order Stokes prediction agree closely for r≤ 0.20
+across all groups, and diverge for larger radii where the quadratic Stokes term becomes
+relevant. The divergence is not uniform: groups with higher |Fj| depart from the linear Stokes
+prediction at smaller r, while groups with near-flat linearised curvature remain in agreement
+throughout the range. This agreement validates the internal consistency of the connection
+(16)–(17) and the linearised curvature (18). It isnotevidence of geometric holonomy: by
+Proposition 4 the true holonomy is zero, and Figure 4 reports the linearised object that the
+freezing ofα 0 creates.
+6 Simulation Study
+6.1 Design
+We ran a 4× 4 factorial simulation study varying observations per group nj∈{ 3, 10, 30, 100}
+and true hierarchical standard deviation σtrue∈{ 0.5, 1.0, 2.0, 3.0}, with J = 8 groups and
+10 replicates per cell (160 Stan fits in total). For each replicate: data were simulated from
+model (10)–(12) withβtrue = (0.8,− 0.5), µtrue = 0; the centred Stan model was fitted with 4
+chains× 2,000 post-warmup iterations; the dependence diagnostic (diagonal estimator) was
+evaluated at each gap in the grid g∈{ 3, 10, 25, 50}, alongside the estimated IACT of the
+base and fiber chains; and the analytic prior fraction was computed from 200 subsampled
+draws viacompute connection().
+The primary scalar is the mean dependence coefficient ¯ρ=J−1P
+j ˆρj at each gap. As
+established in Section 4, this is near 0 when loop endpoints are independent (well-mixed at
+the loop time-scale) and grows toward 1 with loop-conditional persistence. The gap profile
+separates the two contributors that flatness leaves: ordinary autocorrelation, which decays
+onceg exceeds the IACT, and residualisation leakage, which is gap-independent (Section 4.7).
+With flatness established analytically, the simulation is not a search for a geometric signal
+but a check of two things: that the conditional dependence πj predicts is detectable and
+correctly localised in finite chains, and that it is geometrically separable from the funnel.
+6.2 Results
+The headline of the study is the geometric separation of the two pathologies (the non-monotone
+σ behaviour below); the theory–empirical agreement confirms that the predicted dependence
+is detectable in finite chains, but it is the weaker, expected half of the picture.
+Heatmap.Figure 5 shows the median ¯ρover 10 replicates. The signal is strongest in the
+upper-left corner (nj = 3, σtrue = 0.5–1.0) and decreases monotonically with nj at every σtrue
+value.
+21
+
+===== PAGE 22 =====
+The σ-direction is non-monotone and illuminating.Within the nj = 3 row, ¯ρis
+highest at σtrue = 0.5–1.0 (0.040 and 0.036 at the headline gap g = 50) and drops sharply
+for σtrue∈{ 2.0, 3.0} (0.013, 0.015). This is not a failure of the diagnostic but a genuine
+distinction: the prior fraction πj = (1/σ2)/GFF,j is determined by the ratio of priorprecision
+to total precision. Increasing σ reduces 1/σ2, whichreducesthe prior fraction (Table 1) even
+as it worsens the funnel. The funnel pathology (large σ, slow mixing in σ) and the coupling
+pathology (large πj, strong base-conditional fiber dependence) are related but distinct: the
+former is a problem of base-space geometry; the latter is a problem of the base–fiber coupling.
+Standard diagnostics (divergences, low ESS) detect the former; the per-group ˆρj and analytic
+πj from fibr localise the coupling pathology to specific groups, its chain-level signature being
+structured conditional autocorrelation, per Section 4.7.
+Theory vs. empirical.Figure 6 plots the mean prior fraction ¯π(analytic) against ¯ρ
+(diagnostic), faceted by gap, for all 640 cell-replicate–gap combinations. The LOESS trend is
+positive, consistent with the analytic prior fraction being a leading predictor of the empirical
+signal. Given flatness, we read this straightforwardly: prior dominance slows mixing, so
+πj predicts the strength of the conditional autocorrelation that the diagnostic measures,
+with no geometric component to disentangle. The attribution test of Section 4.7 yielded the
+corresponding null result; this figure establishes that the analytic quantity and the empirical
+diagnostic move together across the design. Scatter around the trend reflects simulation
+variability in the data and chain.
+Table 1: Simulation study cell-level summary (median over 10 replicates, at headline gap
+g = 50). ¯ρ: mean dependence coefficient; ρmax: largest per-group coefficient; ¯π: mean prior
+fraction (analytic); % Div: percentage of runs with at least one divergence.
+nj σtrue ¯ρ ρ max ¯π% Div
+3 0.5 0.040 0.090 0.784 100
+3 1.0 0.036 0.070 0.802 100
+3 2.0 0.013 0.028 0.537 100
+3 3.0 0.015 0.033 0.533 100
+10 0.5 0.034 0.057 0.635 100
+10 1.0 0.023 0.044 0.444 100
+10 2.0 0.011 0.026 0.276 90
+10 3.0 0.005 0.016 0.250 40
+30 0.5 0.032 0.062 0.474 100
+30 1.0 0.010 0.022 0.166 50
+30 2.0 0.002 0.016 0.113 0
+30 3.0 0.002 0.015 0.094 0
+100 0.5 0.011 0.034 0.172 50
+100 1.0 0.001 0.010 0.051 10
+100 2.0 0.001 0.013 0.029 0
+100 3.0 0.001 0.013 0.037 0
+22
+
+===== PAGE 23 =====
+7 What to Do About It: Guidance for Practitioners
+The diagnostic identifieswhichgroups suffer a geometric obstruction andwhy; this section
+addresses what a practitioner should do next. The good news is that the indicated remedies
+are well-established methods that require no new sampler: the geometric analysis tells us
+whenandwhereto apply them.
+7.1 Per-group (partial) non-centering, guided by the prior fraction
+The prior fraction πj (20) is precisely the quantity that determines the optimal parameterisa-
+tion of group j (Papaspiliopoulos et al., 2003, 2007). Groups with πj near 1 (prior-dominated)
+should be non-centred; groups with πj near 0 (data-dominated) should remain centred;
+intermediate groups benefit frompartialnon-centering,
+αj =µ+σ wj ˜α
+(wj)
+j , w j∈[0,1],
+which interpolates between the centred ( wj = 0) and non-centred ( wj = 1) coordinates.
+For the Gaussian case the optimal partial non-centring weight is classical and closed-form
+(Papaspiliopoulos et al., 2003); for non-Gaussian models Gorinova et al. (2020) instead learn
+wj by stochastic variational optimisation (the VIP algorithm). The geometric analysis of
+Section 5 supplies the GLMM analogue in closed form: wj≈π j evaluated at the posterior
+mean, recovering the variational weight from a pilot run rather than an optimisation. This is
+the primary practical payoff of the framework: a cheap, analytic, per-group parameterisation
+rule with a clear justification. We tested this rule directly on a mixed design. Table 2
+reports median min-ESS (over all parameters, J = 8 groups, 10 replicates) for the centred,
+half (wj = 0.5), non-centred, and wj =πj parameterisations, across uniform-sparse, mixed,
+and uniform-dense designs at σ∈{ 1, 2}. Two findings emerge, both consistent with the
+two-pathologies view (Section 9).
+(i)On min-ESS the non-centred parameterisation wins in every cell. The minimum
+is taken over all parameters and is dominated by σ, whose centred geometry retains a
+funnel that non-centering removes regardless of group size; in the range tested ( σ∈{ 1, 2},
+nj∈{ 3, 50}) non-centering is never harmful enough elsewhere to forfeit this advantage. The
+πj-adaptive rule interpolates in the right direction: atσ= 1 sparse,π j≈0.8, so its weights
+are near-non-centred and it reaches min-ESS 2381, far above centred (187) and half (1071),
+but it does not match full non-centring (3327), because the residual centering left by wj < 1
+leaves some σ-funnel. We therefore do not claim wj =πj beatsboth uniform choices: in this
+regime it is a safe interpolator that improves on the worse uniform choice and moves toward
+the better asπ j rises, not a uniform winner.
+(ii)The prior fraction nonetheless does its job at the level it speaks to, the per-group fiber.
+On per-group αj ESS (Figure 8), wj =πj sits at or near the best method for every group:
+it non-centres exactly the prior-dominated groups whose centred αj ESS would otherwise
+lag, and leaves data-dominated groups alone. The min-ESS bottleneck is the σ-funnel, a
+base-space pathology that no per-group fiber reparameterisation can touch; the gap between
+per-group success and min-ESS is the two-pathologies distinction made concrete. A practical
+aside visible in the same data: in the mixed design the data-rich groups stabilise σ and lift αj
+23
+
+===== PAGE 24 =====
+ESS forallmethods, so a few well-identified groups can make centring tolerable for the sparse
+ones. The value of wj =πj over a single uniform choice is thus robustness across regimes
+(a uniform choice is optimal only within its own regime, and very large nj or σ→ 0 would
+reverse non-centring’s advantage, cases not covered here) together with its role as an analytic
+per-group diagnostic from a single pilot run. This is the typical situation in unbalanced
+multilevel and panel data, where groups carry very different numbers of observations; there a
+per-group choice can matter, whereas balanced designs are usually well served by a single
+uniform parameterisation.
+Table 2: Controlled comparison: median min-ESS (over all parameters) by parameterisation
+and design. J = 8 groups, 10 replicates, 4 × 2000 post-warmup draws. wj = πj is the
+proposed prior-fraction adaptive rule. Non-centred wins on min-ESS throughout because the
+bottleneck is theσ-funnel;w j =π j interpolates toward it.
+Methodσ= 1.0σ= 2.0
+Sparse Mixed Dense Sparse Mixed Dense
+Centred (wj = 0) 187 1988 1559 609 1993 1395
+Half (wj = 0.5) 1071 2143 1768 1457 2173 1510
+Non-centred (wj = 1) 3327 2626 1858 2349 2467 1628
+wj =π j (adaptive) 2381 2119 1621 1432 2082 1389
+7.2 Interweaving (ASIS)
+When no single parameterisation works for all groups, or when the practitioner prefers not to
+commit, the ancillarity–sufficiency interweaving strategy of Yu and Meng (2011) alternates
+centred and non-centred updates within each iteration. ASIS is provably robust exactly in the
+regime the diagnostic flags: where no single parameterisation suits every group simultaneously,
+because the prior fractions πj are spread across the unit interval. By combining the sufficient
+(centred) and ancillary (non-centred) augmentations it is efficient whenever at least one
+is, group by group. For Stan users, the per-group rule of Section 7.1 is usually simpler to
+implement; ASIS is the method of choice for Gibbs-style samplers where both conditionals
+are tractable.
+7.3 Marginalising the fiber
+The coupling pathology lives in the base–fiber dependence; it can be removed entirely by
+integrating the fiber out. For the logistic GLMM the conditional posterior of each αj given
+(µ,σ,β ) is log-concave, so a Laplace or adaptive quadrature approximation to the marginal
+likelihood of (µ,σ,β ) is accurate and cheap (as in INLA; Rue et al., 2009). Sampling the
+low-dimensional marginal and drawing α|µ,σ,β,y afterwards eliminates the connection
+rather than correcting for it, at the cost of an approximation whose error must be checked.
+Where it applies, this is the most direct remedy; the diagnostic identifies when the extra
+machinery is warranted.
+24
+
+===== PAGE 25 =====
+7.4 The connection as a fixed linear reparameterisation
+The connection can also be turned into a reparameterisation directly. Evaluating the
+coefficients{Aj,µ,Aj,σ} at the posterior mean (µ0,σ 0) and introducing horizontally-corrected
+fiber coordinates
+˜αj =α j−Aj,µ (µ−µ 0)−A j,σ (σ−σ 0) (21)
+removes thelinearcontribution of the base to the fiber, weakening the base-conditional
+dependence that πj measures. This isnotthe exact flat coordinate: by Proposition 1 that
+is the conditional score ∂αℓ, the precision-weighted residual ( αj−µ )/σ2 for the GLMM,
+which is nonlinear in the base. Equation (21) is itslinearisation, with A frozen at the
+posterior mean and kept to first order in ( µ−µ 0,σ−σ 0). It is implemented in Stan as
+glmm hconnected.stan and needs only the connection coefficients as data. Table 3 compares
+effective sample size for the centred, non-centred, and horizontally-corrected models on the
+sparse GLMM benchmark (J= 8,n j = 3,σ true = 3).
+Table 3: ESS bulk (percentage of nominal 8,000) for key parameters under three parameteri-
+sations on the sparse GLMM. H-corrected uses the posterior-mean connection coefficients as
+in (21).
+Parameter Centred H-corrected Non-centred
+µ39.6% 90.6% 41.7%
+σ7.7% 12.3% 29.3%
+α[1] 66.5% 100.8% 100.2%
+β[1] 60.8% 70.6% 86.4%
+The H-corrected parameterisation dominates on µ (90.6% vs. 39.6% centred and 41.7%
+non-centred) and matches non-centred on α[1]: the linear correction removes the µ–fiber
+coupling well, even though it is only the linearisation of the exact trivialisation. It is weaker
+on σ (12.3%) than non-centering (29.3%), but for a reason distinct from linearisation error:
+σ is the funnel, abase-spacepathology, andnofiber reparameterisation (the exact score
+map included) can touch it. Since σ is the bottleneck here, plain non-centering wins on
+minimum ESS; the H-correction’s gains are on µ and the fiber. We therefore present it as a
+diagnostic-driven illustration that the connection is directly actionable, not as a replacement
+for non-centering, the per-group rule of Section 7.1 is the tool we recommend. The per-group
+rule is already used in the smoothbp change-point package (Bindoff, 2026b), where πj guides
+the parameterisation of each subject’s change-points; a worked example is in the package’s
+reproduction materials, with a fuller treatment in a companion paper.
+7.5 Connection-corrected proposals (proof of concept)
+Finally, the connectionA =−G−1
+FFGBF is itself directly actionable: it prescribes how the fiber
+should co-move when the base moves to remain on the horizontal slice. The fibr package
+provides horizontal mcmc(), a block Metropolis-within-Gibbs sampler in which each base-
+block proposal ( µ,σ ) → (µ′,σ′) pre-displaces the fiber by ∆ α = A(µ,σ,α ) (∆µ, ∆σ)⊤
+before the joint accept/reject step. We include this as a proof of concept that the analytic
+25
+
+===== PAGE 26 =====
+connection is actionable at negligible cost, not as a recommended production sampler; for
+applied work the methods of Sections 7.1–7.3 are mature, available in standard tooling, and
+should be preferred. Two cautions are warranted. First, naively applying the connection as
+a deterministic pre-displacement without the corresponding Jacobian correction is biased:
+a simulation-based calibration check of that variant fails decisively, whereas the exactly-
+invertible Laplace transport and a reparameterised HMC in the Laplace-standardised fiber
+both pass calibration. This is consistent with flatness: the correct “connection-aware” move
+is a reparameterisation, not a transport. Second, on the sparse benchmark the calibrated
+variants are correct but do not outperform non-centred NUTS in effective sample size per
+gradient evaluation; they are a demonstration, not a faster sampler. A full treatment of
+connection-aware sampling (horizontal leapfrog HMC with A recomputed at every leapfrog
+step, ergodicity analysis, and multi-model benchmarking) is developed in a companion paper.
+7.6 Reading the prior fraction: influence and sensitivity
+Beyond the centring decision,πj is an inferential quantity: it is the share of groupj’s posterior
+precision supplied by the prior, so it localiseswhere prior choices can move conclusions. High-
+πj groups are prior-dominated and are the ones to interrogate; low- πj groups are prior-robust
+by construction. Two questions follow. Is σ well identified, or is πj inheriting the hyperprior?
+Since πj = 1/(1 +Ijσ2), with Ij =GFF,j− 1/σ2 the group’s own likelihood information, and
+σ is identified by thenumberof groups rather than the data per group, a refit under an
+alternativeσ-prior shows whether the high-πj groups move (a hyperprior artefact) or hold (a
+data statement). And for those groups, is the population-level prior they are shrunk toward
+one you would defend for a group with little data of its own? A fuller treatment for applied
+users is left to a separate paper.
+Remark 7(A frequentist reading).The shrinkage is not itself Bayesian: the REML/BLUP
+predictor of αj shrinks by the same factor, and the flat-prior limit σ→∞ sends πj→ 0,
+recovering the per-group maximum-likelihood (no-pooling) estimate. That limit is also where
+the sparse group becomes awkward — with small Ij the no-pooling estimate has variance
+∼ 1/Ij and is barely admissible, and such groups are routinely discarded. A proper hierarchical
+prior retains them with a coherent posterior, and πj states how much of the estimate rests on
+that prior rather than on the likelihood, making the evidence explicit instead of excluding the
+case.
+8 ThefibrR Package
+The fibr package (Bindoff, 2026a) centres on the prior fraction, the quantity this paper
+concludes is the operative one; it is the maintained, user-facing tool and is distributed
+on CRAN. The geometric and sampler methods used to produce the figures (the analytic
+connection, the loop-conditional dependence diagnostic, the transport integrator, and the
+connection-corrected sampler) accompany the paper as reproduction code under paper/ in
+the source repository: with the connection flat for this model class, they are demonstration
+apparatus rather than routine diagnostics, and they load by sourcing paper/setup.R. Table 4
+lists the package’s exported functions.
+26
+
+===== PAGE 27 =====
+Table 4: Exported functions in the fibr R package. The connection, dependence,
+and sampler methods of Sections 4–7 ( compute connection(), holonomy diagnostic(),
+integrate transport(), synthetic holonomy loop(), horizontal mcmc()) are reproduc-
+tion code in the repository, not package exports.
+Function Description
+prior fraction() Read-only per-coordinate prior fraction πj (shrinkage / pooling
+factor) for a fitted hierarchical model, with an adapter forbrms fits
+and a manual path for other Stan models. Reports which group-
+level coordinates are prior-dominated, without reparameterising
+or refitting.
+smoothbp advisor() Fisher information decomposition for changepoint random effects
+in smoothbp fits; returns per-group prior fractions and parame-
+terisation recommendations.
+The package itself depends only on posterior (B¨ urkner et al., 2022) for chain handling
+and ggplot2 for visualisation; the reproduction code under paper/ additionally uses FNN
+for k-nearest-neighbour search, Matrix, deSolve, and a Stan backend ( cmdstanr, Gabry
+et al., 2024). While the connection and dependence machinery target the two-level logistic
+GLMM, the prior fraction is model-agnostic: prior fraction() computes it per coordinate
+for any fitted hierarchical model, with an adapter for brms fits, as a read-only report of
+which group-level estimates are prior-dominated (mostly shrinkage) rather than data-driven.
+Because the per-coordinate computation needs only the fitted variance components and the
+per-observation working weights, it extends without special-casing to nested, crossed, and
+multi-level designs and to non-Gaussian families. This is the regime in which the intraclass
+correlation requires case-specific conventions (a latent-scale residual for generalised models, a
+covariate value for random slopes, separate adjusted and unadjusted forms at each level), and
+the package’s tests verify the per-coordinate values against an independent recomputation for
+nested, crossed, and three-level Gaussian and Bernoulli fits. Because it neither reparameterises
+nor refits, it carries none of the calibration burden of a reparameterisation and serves as a
+lightweight prior-influence diagnostic alongside ˆR and effective sample size. The package is
+available athttps://github.com/ABindoff/fibr.
+9 Discussion
+9.1 Coupling vs. the funnel: two distinct pathologies
+The simulation study (Section 6) reveals two related but distinct pathologies, neither of
+which is geometric holonomy of A. The funnel is a base-space pathology, and itisgenuinely
+geometric: it reflects the intrinsic curvature of the base, whose Fisher–Rao metric is hyperbolic
+(connection (i) of Section 3.4). When σ is large, the posterior of σ is concentrated at small
+values (shrinkage) and the conditional distribution p(α|µ,σ ) is narrow, creating a highly
+non-isotropic target. HMC struggles because leapfrog steps that work in the wide region
+overshoot in the neck. The flatness of A says nothing about this curvature and does not
+27
+
+===== PAGE 28 =====
+remove it.
+The second is a base–fibercouplingpathology: when σ issmall(tight prior, high prior
+precision), the connection Aj,µ = 1/(σ2GFF,j ) is large, so the conditional posterior of αj
+tracks µ tightly and the centred chain explores it slowly. It is tempting to read this as
+holonomy, a sampler that does not know the connection cannot make horizontally-corrected
+proposals, but Proposition 4 shows the connection is flat, so there is no holonomy to follow,
+and the key empirical finding (Section 4.7) confirms it: NUTS does nottransportthe fiber,
+and chain displacements αend−α start do not track any parallel-transport prediction. What
+remains is purely statistical:excess conditional autocorrelation. Prior-dominated groups ( πj
+large) retain loop-conditional fiber dependence that likelihood-dominated groups do not, and
+a negative-control experiment confirms this signal is tied to base-closure conditioning rather
+than to lag autocorrelation alone. The two pathologies can co-occur (sparse data and a wide
+prior create both a funnel and, at intermediate σ, strong coupling), but they are separable:
+the funnel is a base-space curvature problem, while the coupling is captured entirely by the
+per-group prior fractionπ j.
+9.2 The connection is flat; curvature lives in the working metric
+Proposition 1 settles a question an earlier draft of this paper left open. The metric-orthogonal
+connection is flat foranysmooth hierarchical posterior, of any fiber dimension, with any
+prior — not because of conjugacy but because the fiber score is a first integral. In particular,
+correlated random effects, spatial or temporal fiber dependence, and vector-valued group
+effects with a non-diagonal prior covariance all giveflatconnections; they donot, contrary
+to what one might expect, produce rotational holonomy of the true connection. The only
+ways the metric-orthogonal connection fails to be flat are (i) where GFF is singular (the
+fiber-degeneracy regime discussed below, where the foliation by score level sets breaks down
+and obstruction can genuinely re-enter) and (ii) when the connection is built from a metric
+other than the true Hessian. Case (ii) is not a defect but an opportunity: it is where genuine
+curvature lives.
+WriteAM =−M−1
+FFGBF for the distribution orthogonal with respect to aworkingmetric
+M: a fixed mass matrix, an empirical covariance, or the prior-only metric. The score argument
+no longer applies, since MFF ̸=−∂2
+αℓ, and AM is generically curved. We verify this in a
+two-fiber example: a bivariate group effect α∈R 2 with base-dependent prior correlation
+Λ(θ) =R(θ2)diag(eθ1,e−θ1)R(θ2)⊤ and a logistic likelihood (so the posterior is non-Gaussian
+and GFF is fiber-dependent). The metric blocks are computed in closed form and validated
+against automatic differentiation to machine precision (∼ 10−16), and the holonomy operator
+HM is obtained by integrating parallel transport with an adaptive high-order solver ( DOP853,
+tolerance 10−12); the true Fisher connection returns to the identity at the integrator floor
+(∥HM−I∥ F∼ 10−13) at every loop size, confirming Proposition 1 numerically. Taking MFF
+to be the identity instead yields a holonomy operator withcomplexeigenvalues 0 .986±0.167i;
+an anisotropic fixed metric diag(1, 3) gives 0.998± 0.071i. Crucially,∥HM−I∥ F grows as
+thefirstpower of the enclosed base area (fitted log-log slopes 1 .08 and 0.99, Figure 9), the
+hallmark of genuine curvature (leading-order holonomy = curvature × area) rather than
+numerical noise. This is exactly the rotational holonomy that the true connection never
+produces (Remark 5), and for which the full-matrix estimator (structure = "full" ) and the
+28
+
+===== PAGE 29 =====
+complex eigenspectrum become the right tools; its magnitude measures how far the working
+metric is from horizontal. (Reproduced with exact derivatives in data-raw/ad holonomy.py.)
+This matters because every practical sampler uses afixedmetric. NUTS adapts a mass
+matrix once during warmup and then holds it; a blocked sampler uses whatever conditional
+scale it is handed. Such a sampler does not transport along the flat true connection but along
+the curvedAM of its own working metric, so it can experience a genuinealgorithmicholonomy
+(a systematic, orientation- and area-dependent fiber drift after the hyperparameters traverse
+a loop) even though the underlying geometry is flat. This reframes the empirical signal of
+Section 4: the loop-conditional dependence ˆρj is an algorithmic, not geometric, footprint,
+and the attribution test (Section 4.7) asks precisely whether it carries the orientation and
+area structure that holonomy would imply. For NUTS on the GLMM it does not, which
+is consistent with NUTS adapting a metric close enough to horizontal that AM has little
+curvature in the explored region. A deliberately mis-scaled sampler should instead show
+algorithmic holonomy tracking the curvature of its working metric — a concrete, testable
+prediction. This is the subject of a companion paper: a horizontal leapfrog HMC sampler
+that recomputes A at every leapfrog step so that trajectories follow horizontal lifts, keeping
+the working metric aligned with−∂2
+αℓ so that AM stays flat. That paper develops the full
+treatment: ergodicity arguments, the Metropolis–Hastings correction, a compiled backend,
+and multi-model benchmarks against NUTS on coupling-dominated targets.
+This closes the loop with the hypothesis we set out to test. For the geometric program
+in MCMC, the Riemannian and connection-aware samplers that would naturally pursue a
+curvature account of centring, the flat result is a redirection rather than a dead end: there is
+no base–fiber holonomy to transport along in a hierarchical posterior, so the effort is better
+spent keeping a sampler’s working metric aligned with the true Hessian, which is where the
+exploitable curvature lives.
+9.3 Limitations and future work
+Model-specific derivations.The flatness itself is not model-specific (Proposition 1); only
+theclosed-formconnection, curvature, and prior fraction of Section 5 are particular to the
+logistic GLMM. For other models the same quantities follow from GFF and GBF , which
+can be obtained by reverse-mode automatic differentiation of the log-posterior gradient;
+supplying them is the natural next step for a compiled backend, and the prior fraction
+πj = (∂2
+αjprior)/GFF,j generalises directly.
+Simulation study.The simulation study uses a single model family and does not include a
+power analysis for the dependence diagnostic. Characterising the minimum detectable signal
+as a function of chain length and number of groups is an important practical question left for
+future work.
+Fiber degeneracy.A second failure mode, distinct from residualisation leakage, arises
+when the fiber itself has collapsed under the funnel pathology. The diagnostic estimates
+per-group dependence coefficients from residual fiber variation around detected loops; if the
+fiber has contracted to near a point, as happens when an unidentified group-level parameter
+29
+
+===== PAGE 30 =====
+is pinned close to its prior mean under a tight prior and near-absent likelihood, there is
+no variance to autocorrelate and ˆρj→ 0 regardless of pathology severity. The diagnostic
+is therefore blindest in the most severe cases: a collapsed fiber and a well-mixed fiber are
+observationally equivalent in ˆρj. This was observed in a spike-and-slab changepoint model
+where some subjects’ second changepoint parameter was completely unidentified; those
+subjects produced ˆρj≈ 0 despite sitting in a Neal funnel, while the analytic prior fraction πj
+correctly flagged the group. The two failure modes — residualisation leakage (Section 4.7),
+which inflates ˆρj at short gaps, and fiber degeneracy, which suppresses it in collapsed groups
+— act in opposite directions and should both be considered when interpreting a low ˆρj. The
+analytic πj, which depends only on the model structure and pilot draws rather than on chain
+variation, is the more robust per-group flag and should be treated as the primary output.
+Prior dependence of πj.We compute πj at a point estimate of σ, so it inherits the
+σ-hyperprior when σ is weakly identified (few groups). Reporting πj per posterior draw, its
+distribution rather than a plug-in value, propagates this uncertainty, and a wide posterior
+for πj is itself the signal that a group’s reading is hyperprior-sensitive. This refinement is
+natural future work.
+Variational inference.The same geometric structure applies to variational families:
+the fibration of the space of variational parameters over the mean-field components has
+a connection whose curvature determines the holonomy of the variational update. This
+connection to variational Bayes geometry is speculative but worth pursuing.
+9.4 Note on methods of discovery
+This work was developed through an extended, iterative collaboration with Claude Sonnet
+(Anthropic). The fiber bundle framing, the mathematical derivations, the R package ar-
+chitecture, and the exposition were developed jointly through dialogue rather than by the
+author alone. The mathematical results were checked both analytically and numerically
+(the package test suite and data-raw/verify flat connection.R); the flatness result in
+particular emerged from a critical re-examination of an earlier draft that had reported only
+the linearised curvature. The scientific framing, experimental decisions, and responsibility for
+errors are the author’s. The author views this as an example of AI-collaborative mathematical
+research, distinct from using AI as a writing assistant or code generator, and reports it ex-
+plicitly rather than subsuming it into generic tool-use language, in the hope that transparent
+description contributes to evolving community norms around human–AI co-production of
+scientific knowledge.
+Acknowledgements
+Computations were performed using Stan (Carpenter et al., 2017) via cmdstanr (Gabry et al.,
+2024), and the posterior package (B¨ urkner et al., 2022).
+30
+
+===== PAGE 31 =====
+References
+Shun-ichi Amari and Hiroshi Nagaoka.Methods of Information Geometry, volume 191 of
+Translations of Mathematical Monographs. American Mathematical Society, 2000.
+Michael Betancourt. A General Metric for Riemannian Manifold Hamiltonian Monte Carlo.
+arXiv preprint arXiv:1212.4693, 2013.
+Michael Betancourt. A Conceptual Introduction to Hamiltonian Monte Carlo.arXiv preprint
+arXiv:1701.02434, 2017.
+Michael Betancourt. Incomplete reparameterizations and equivalent metrics.arXiv preprint
+arXiv:1910.09407, 2019. URLhttps://arxiv.org/abs/1910.09407.
+Michael Betancourt and Mark Girolami. Hamiltonian Monte Carlo for Hierarchical Models.
+In S.K. Upadhyay, U. Singh, D.K. Dey, and A. Loganathan, editors,Current Trends in
+Bayesian Methodology with Applications, pages 79–101. CRC Press, 2015.
+Aidan D. Bindoff. fibr: Prior-Fraction Diagnostics for Hierarchical Models, 2026a. URL
+https://doi.org/10.5281/zenodo.20724550. R package version 0.1.1.
+Aidan D. Bindoff.smoothbp: Hierarchical Piecewise Regression with Smoothed Change-Points,
+2026b. URL https://CRAN.R-project.org/package=smoothbp. R package version 0.2.3.
+Paul-Christian B¨ urkner, Jonah Gabry, Matthew Kay, and Aki Vehtari.posterior: Tools for
+Working with Posterior Distributions, 2022. URL https://mc-stan.org/posterior/. R
+package version 1.4.0.
+Bob Carpenter, Andrew Gelman, Matthew D. Hoffman, Daniel Lee, Ben Goodrich, Michael
+Betancourt, Marcus Brubaker, Jiqiang Guo, Peter Li, and Allen Riddell. Stan: A Prob-
+abilistic Programming Language.Journal of Statistical Software, 76(1):1–32, 2017. doi:
+10.18637/jss.v076.i01.
+Jonah Gabry, Rok ˇCeˇ snovar, Andrew Johnson, and Steve Bronder.cmdstanr: R Interface to
+CmdStan, 2024. URLhttps://mc-stan.org/cmdstanr.
+Andrew Gelman and Iain Pardoe. Bayesian measures of explained variance and pooling
+in multilevel (hierarchical) models.Technometrics, 48(2):241–251, 2006. doi: 10.1198/
+004017005000000517.
+Andrew Gelman and Donald B. Rubin. Inference from Iterative Simulation Using Multiple
+Sequences.Statistical Science, 7(4):457–472, 1992.
+Mark Girolami and Ben Calderhead. Riemann Manifold Langevin and Hamiltonian Monte
+Carlo Methods.Journal of the Royal Statistical Society: Series B, 73(2):123–214, 2011.
+Maria I. Gorinova, Dave Moore, and Matthew D. Hoffman. Automatic reparameterisation of
+probabilistic programs. InProceedings of the 37th International Conference on Machine
+Learning, volume 119 ofProceedings of Machine Learning Research, pages 3648–3657, 2020.
+31
+
+===== PAGE 32 =====
+Tore Selland Kleppe. Log-Density Gradient Covariance and Automatic Metric Tensors for
+Riemannian Manifold Monte Carlo Methods.Scandinavian Journal of Statistics, 51(3):
+1206–1229, 2024. doi: 10.1111/sjos.12705.
+Shoshichi Kobayashi and Katsumi Nomizu.Foundations of Differential Geometry, Volume I.
+Wiley Interscience, 1963.
+Samuel Livingstone, Michael Betancourt, Simon Byrne, and Mark Girolami. On the Geometric
+Ergodicity of Hamiltonian Monte Carlo.Bernoulli, 25(4A):3109–3138, 2019.
+Mikio Nakahara.Geometry, Topology and Physics. CRC Press, 2nd edition, 2003.
+Omiros Papaspiliopoulos, Gareth O. Roberts, and Martin Sk¨ old. Non-Centered Parameteri-
+sations for Hierarchical Models and Data Augmentation. In J.M. Bernardo, M.J. Bayarri,
+J.O. Berger, A.P. Dawid, D. Heckerman, A.F.M. Smith, and M. West, editors,Bayesian
+Statistics 7, pages 307–326. Oxford University Press, 2003.
+Omiros Papaspiliopoulos, Gareth O. Roberts, and Martin Sk¨ old. A General Framework for
+the Parametrization of Hierarchical Models.Statistical Science, 22(1):59–73, 2007.
+H˚ avard Rue, Sara Martino, and Nicolas Chopin. Approximate Bayesian inference for latent
+Gaussian models by using integrated nested Laplace approximations.Journal of the Royal
+Statistical Society: Series B, 71(2):319–392, 2009. doi: 10.1111/j.1467-9868.2008.00700.x.
+Aki Vehtari, Andrew Gelman, Daniel Simpson, Bob Carpenter, and Paul-Christian B¨ urkner.
+Rank-Normalization, Folding, and Localization: An Improved bR for Assessing Convergence
+of MCMC.Bayesian Analysis, 16(2):667–718, 2021.
+Yaming Yu and Xiao-Li Meng. To center or not to center: That is not the question—an
+ancillarity–sufficiency interweaving strategy (ASIS) for boosting MCMC efficiency.Journal
+of Computational and Graphical Statistics, 20(3):531–570, 2011. doi: 10.1198/jcgs.2011.
+203main.
+Yichuan Zhang and Charles Sutton. Semi-Separable Hamiltonian Monte Carlo for Inference
+in Bayesian Hierarchical Models.arXiv preprint arXiv:1406.3843, 2014.
+32
+
+===== PAGE 33 =====
+Figure 2: Negative-control experiment: true-loop ˆρj vs. matched-gap control pairs, per group
+(colour) across the gap grid.Coloured lines and points: per-group ˆρj from true loops (small
+base distance, base-closure conditioning active).Grey band: full range of ˆρj from matched-gap
+control pairs withlargebase distance; dashed line is the control mean. Panels are ordered
+from high πj (top left) to low πj (bottom right). In the high- πj cell (nj = 3, σ = 0.5) the
+true-loop ˆρj values are consistently above the control band across all gaps, confirming that
+base-closure conditioning carries signal beyond lag autocorrelation and residualisation leakage
+in exactly the cell where πj predicts it. In the moderate- and low- πj cells both arms are
+indistinguishable from zero.
+33
+
+===== PAGE 34 =====
+Figure 3: Per-group dependence coefficients ˆρj with bootstrap 90% intervals for the centred
+(left) and non-centred (right) parameterisations of the sparse logistic GLMM ( J = 8, nj = 3,
+σtrue = 3), shown across the gap grid g∈{ 3, 10, 25, 50}. The centred chain has additional
+short-gap signal that decays with lag ( ¯ρ≈0.044 at g = 3 falling to≈ 0.005 at g = 50). The
+non-centred chain shows a flat, gap-stable baseline ( ¯ρ≈0.022–0.023 at all gaps), consistent
+with residualisation leakage rather than geometric signal (Section 4.7).
+34
+
+===== PAGE 35 =====
+Figure 4:Linearisedholonomy Hj vs. loop radius r for the centred GLMM, shown per group
+(j = 1,..., 8, colour).Top: lines are the first-order Stokes prediction Hj = 1 +Fj·πr 2/α0j;
+points are numerical integration of the transport ODE with the fiber held fixed at α0 (i.e.
+GFF frozen). Both objects are thelinearisedholonomy: with GFF updated along the fiber
+the displacement is zero (Proposition 4).Bottom: residuals (numerical − Stokes) reveal the
+structure of the agreement. Residuals are near zero for r≤ 0.20 across all groups, confirming
+internal consistency of the linearised curvature formula; the negative departure at larger r is
+the quadratic Stokes correction term, sharpest for groups with high |Fj|. The vertical dashed
+line marksr= 0.20.
+35
+
+===== PAGE 36 =====
+Figure 5: Simulation study: median mean dependence coefficient ¯ρover 10 replicates, by
+gap g. Tile labels show median [Q25, Q75]. The signal (dark tiles) is concentrated in
+the prior-dominated upper-left corner ( nj small, σtrue small to moderate). The σ-axis is
+non-monotone: the coupling signal is driven by priorprecision1/σ 2, not byσitself.
+36
+
+===== PAGE 37 =====
+Figure 6: Analytic prior fraction ¯π(x-axis) against empirical mean dependence coefficient ¯ρ
+(y-axis), faceted by loop gap g. Each panel contains all 160 cell-replicates at that gap. Colour
+encodes σtrue; shape encodes nj. The positive LOESS trend (grey band: 95% pointwise CI)
+is consistent with the prediction that a larger prior fraction implies stronger conditional
+dependence. The trend persists at all gaps but attenuates as g increases, reflecting the decay
+of the autocorrelation contribution.
+37
+
+===== PAGE 38 =====
+Figure 7: Per-group dependence coefficients ρj as a function of the minimum loop gap g∈
+{3, 10, 25, 50} for four corner cells (replicate 1). Shaded bands show 90% bootstrap intervals.
+In the prior-dominated cell (nj = 3, σtrue = 0.5, bottom left), ρj decays monotonically from
+gap 3 to gap 50, consistent with an autocorrelation-dominated signal. In data-dominated cells
+(nj = 100, top row), the coefficients are near zero for σtrue≥ 1.0; one group in the nj = 100,
+σtrue = 0.5 panel shows a gap-independent ρj≈ 0.06, a candidate for residualisation leakage
+(OLS removes only the linear base-to-fiber dependence; nonlinear coupling at loop endpoints
+sharing the same base point can persist). The negative-control experiment of Section 4.7
+separates leakage from base-closure signal. The bottom-right cell ( nj = 3, σtrue = 3.0) also
+shows near-zero factors: even with sparse data, a wide prior reduces 1 /σ2 and hence πj,
+suppressing the signal. This illustrates that the coupling signal is driven by priorprecision,
+not by priorvariance.
+38
+
+===== PAGE 39 =====
+Figure 8: Per-group αj ESS against the prior fraction πj, by design (columns) and σ (rows),
+median over 10 replicates. The πj-adaptive rule (green) tracks the best method across the
+whole πj range: it lifts the αj ESS of prior-dominated groups (high πj), where centred (dark
+blue) lags, without harming data-dominated groups (low πj). This per-group success coexists
+with non-centred winning onmin-ESS (Table 2), because the min-ESS bottleneck is the
+σ-funnel, not the fiber.
+Figure 9: Working-metric connections are genuinely curved.Left: Frobenius holonomy
+∥HM−I∥ F against enclosed base area πr2, log-log. The true (Fisher) connection sits at the
+integrator floor (∼ 10−13, flat, Proposition 1); the identity and diag(1, 3) working metrics lie
+on slope-1 lines, so their holonomy scales linearly with area — the signature of a genuine
+curvature, not noise.Right: holonomy eigenvalues at r = 0.20; the working-metric spectra
+sit off the real axis (rotation), while the true connection gives λ = 1. Derivatives are
+validated against automatic differentiation to∼ 10−16; transport uses DOP853 at tolerance
+10−12 (data-raw/ad holonomy.py).
+39

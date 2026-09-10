@@ -1,0 +1,3354 @@
+===== PAGE 1 =====
+TwistedMerge: Certified Higher-Order Diagnostics and Abstention for Model Merging
+Ting Gonga,∗, Shitan Xub
+aDepartment of Mathematics, University of Washington, Box 354350, Seattle, WA 98195-4350, USA
+bBeijing International Center for Mathematical Research, Peking University, No. 5 Yiheyuan Road, Haidian District, Beijing, 100871, P .R. China
+Abstract
+Model merging combines independently trained or fine-tuned models, but pairwise alignability does not imply globally consistent
+alignment. We formulate merging as a finite descent problem in which checkpoints are local objects, alignment maps are transitions,
+and cycle products are residuals. TwistedMerge is a conservative certification pipeline that separates fixed-chart averaging,
+synchronization-removable gauge inconsistency, a certified central obstruction on a specified comparison complex, and nonabelian
+holonomy. A residual is promoted to a cohomology class only after inverse-consistency, coefficient-identification, centrality, and
+closure tests; otherwise the method abstains and returns an ordinary or synchronized fallback. We prove a constant-edge no-go result,
+frozen-complex three-way and predeclared-family error-control theorems, and a refinement test for comparison-complex sensitivity.
+A planted neural alignment defect is removed by cycle-consistent synchronization, showing that a nonzero cycle score alone is not
+a higher obstruction. Controlled central systems recover the predicted non-coboundary and projective-rank behavior, while noisy
+estimates move from certification to abstention without false lifts on the tested controls. A trained low-rank-adapter audit shows that
+naive factor averaging depends on the chosen GLr representative, whereas global factor synchronization and dense-delta SVD are
+stable. On natural checkpoint collections, cycle residuals do not predict merge degradation and no natural central or period-index
+class is certified. The results position descent theory as a falsifiable certification and abstention framework.
+Keywords:model merging, gauge synchronization, higher-order diagnostics, cohomology, holonomy, abstention
+1. Introduction
+Model merging combines independently trained or fine-tuned
+checkpoints without retraining a single model from scratch.
+Most methods either assume a common parameter chart or es-
+timate pairwise alignments before averaging. A nonzero cycle
+residual is tempting to interpret as a higher obstruction. The
+main idea of this paper is that this inference is generally in-
+valid. Cycle inconsistency may be caused by a synchronization-
+removable gauge defect, a misspecified coefficient system, in-
+coherent comparison contexts, or estimation noise. A cohomo-
+logical interpretation is warranted only after the comparison
+complex, coefficient identifications, centrality, closure, and per-
+mitted repair model have been fixed and tested.
+This dependence on the comparison complex is decisive. If
+the checkpoint complex is a full simplex and the coefficient
+group is constant and abelian, then all positive-degree cohomol-
+ogy vanishes. A nonzero finiteH 2 certificate therefore requires
+missing or unavailable higher comparison contexts, and those
+absences must be determined before the target residual is in-
+spected. We accordingly treat the complex K as part of the
+scientific design.
+TwistedMerge is the resulting certification pipeline. Check-
+points are local objects, pairwise alignments are transitions,
+and triangle products are residuals. The pipeline separates
+∗Corresponding author
+Email addresses:tgong2@uw.edu(Ting Gong),
+shitanxu@bicmr.pku.edu.cn(Shitan Xu)
+four regimes: fixed-chart averaging, synchronization-removable
+gauge inconsistency, a certified central class on a specified com-
+parison complex, and nonabelian holonomy. Its output is three-
+way—trivial,nontrivial on K, oruncertified—and an uncertified
+structural branch returns to an ordinary or synchronized valida-
+tion fallback. Projective or branch predictors are admitted only
+after separate construction and invariant-readout tests; they are
+not identified with the vanishing of the original class.
+1.1. Contributions and claim boundary
+The paper makes three contributions.
+1. We formalize a finite certification problem that distin-
+guishes raw cycle inconsistency, strict gauge synchroniza-
+tion, a closed central H2 obstruction on a frozen compari-
+son complex, and nonabelian holonomy. The construction
+uses disjoint roles for complex selection, transition fitting,
+certification, candidate selection, and final testing.
+2. We prove paper-specific no-go and error-control results.
+Context-independent central edge matrices cannot realize
+the one-negative-face tetrahedral class; a frozen-complex
+three-way rule controls false trivial and false nontrivial
+declarations under estimated transitions; a simultaneous
+extension controls multiplicity over a predeclared family
+of complexes; and a refinement proposition states exactly
+which certificates persist, disappear, or fail to extend when
+simplices are changed.
+3. We validate the framework through causal, controlled, and
+natural experiments. A planted neural alignment defect
+arXiv:2607.20887v1  [cs.LG]  23 Jul 2026
+
+===== PAGE 2 =====
+Freeze K = Φ( DK)
+before residual
+or test access
+Fit transitions on Dalign
+Apply inverse, projection,
+centrality, closure, and
+margin gates on Dcert
+Strict or synchronization-
+removable
+ordinary/synchronized candidate
+single model, 1× inference
+Certified central
+branch
+trivial/nontrivial
+on K /uncertified
+optional verified
+rank-r predictor
+Noncentral holonomy
+optional invariant
+branch predictor
+branch multiplier recorded
+Uncertified structure
+ordinary or syn-
+chronized fallback
+single model, 1× inference
+Select admitted can-
+didates on Dselect;
+evaluate the frozen
+choice once on Dtest
+Figure 1: Core certification flow. The comparison complex is frozen before transition fitting and residual inspection. Structural branches are admitted only after their
+own certificates, and any increase in rank or branch count is reported as an output cost. Uncertified branches return to a 1×ordinary or synchronized fallback.
+is removed by strict synchronization; trained low-rank
+adapters expose the representation dependence of naive
+factor averaging; controlled projective systems verify certi-
+fication and abstention gates; and natural checkpoint collec-
+tions fail the proposed higher-order predictive and central-
+class tests.
+The contribution is a certification, falsification, and no-go
+framework. A nonzero class inH2(K; A) rules out only the tested
+A-valued edge repair on the stated K and no natural Brauer or
+period-index class is certified in the present experiments.
+1.2. Relation to recent work
+Model-merging methods make different assumptions about
+the parameter coordinates in which the local models are com-
+pared. Git Re-Basin aligns permutation-equivalent networks to
+a reference model before averaging [1], while C2M3 imposes cy-
+cle consistency on permutation alignments across several models
+[2]. Task Arithmetic [3], TIES-Merging [4], and DARE [5] oper-
+ate on parameter updates relative to a shared base model. SLERP
+instead interpolates along a spherical path in a chosen parameter
+geometry [6]. Yang et al. give a broad survey of model-merging
+methods, theories, and applications [ 7]. A recent large-scale
+study evaluates six merging methods across four open-weight
+language models, twelve fine-tuned checkpoints per base model,
+and sixteen benchmarks, and finds that Task Arithmetic is the
+only tested method that reliably improves performance in its
+in-the-wild setting [8].
+Recent work has also moved beyond purely pairwise model-
+merging diagnostics. Zheng and Allen-Blanchette use Hodge
+decomposition to diagnose higher-order merge failures on a
+simplicial structure [9]. Karuturi et al. analyze the GLr gauge
+symmetry of LoRA through its principal-bundle geometry and
+discuss its implications for adapter merging [10]. Javidnia de-
+velops a sheaf-theoretic atlas of neural representations and mea-
+sures shearing, jamming, and loop holonomy in a frozen large
+language model [11]. These works are adjacent to the present
+paper, although they address different structural and certification
+questions.
+The distinction from Hodge decomposition is important. A
+harmonic component gives a useful numerical decomposition
+of a residual. In our framework, a residual determines a central
+cohomology class only after the coefficient system, centrality,
+and cocycle closure have been certified. The distinction from
+the LoRA gauge analysis is also explicit. The GLr symmetry
+is standard background, while our experiment audits the rep-
+resentation dependence, global synchronization, systems cost,
+and fallback behavior of concrete factor-merging rules. The
+relation to gauge-theoretic superposition is conceptual: our lo-
+cal objects are checkpoints and adapter updates, while Javidnia
+studies semantic feature charts inside a frozen language model.
+The implementation, reports, and audited experimental ar-
+tifacts used in this paper are available in the TwistedMerge
+repository [12].
+1.3. Organization
+Section 2 defines the frozen comparison protocol, separates
+standard background from paper-specific results, proves the no-
+go, single-complex and familywise error-control, refinement,
+and invariant-readout statements, and gives the core certifica-
+tion pipeline. Section 3 presents the primary causal, adapter,
+controlled-certification, and natural falsification experiments.
+Section 4 states the realization, scale, comparison-complex, and
+decision-utility limitations. Extended proofs, the full algorithm,
+and secondary experiments are collected in the appendices.
+2. Finite comparison and certification theory
+In this section, we specify a finite certification problem.
+Standard descent and projective-representation statements are
+used as background; the paper-specific contribution lies in
+the comparison-complex no-go conditions, the frozen-complex
+three-way certificate, and the conservative interpretation of the
+resulting diagnostics. Extended proofs and background material
+are included in the appendices of this paper, beginning with
+Appendix Appendix B.
+2
+
+===== PAGE 3 =====
+Table 1: Claim–evidence matrix. Metrics in different rows answer different hypotheses and are not combined into one performance leaderboard.
+Hypothesis Data regime Output type Primary metric Conclusion
+Cycle inconsistency can be
+synchronization-removable
+exact-copy MNIST MLPs
+with one corrupted edge
+single synchronized
+model
+merge degradation strict synchronization removes the
+planted defect; cycle score is not an
+H2 certificate
+Naive adapter-factor
+averaging is
+representation-dependent
+five groups of trained
+rank-4 residual adapters
+single merged
+update
+update and prediction
+invariance
+factor averaging changes under
+equivalent GLr representatives;
+global synchronization and dense
+SVD are stable
+A prescribed central class
+can obstruct the permitted
+repair
+tetrahedralµ 2 oracle
+witness
+diagnostic only exact coboundary test the one-negative-face class is
+nontrivial on∂∆ 3 but is not an
+end-to-end constant-edge neural
+realization
+Conservative abstention
+prevents unsupported lifts
+controlled
+finite-Heisenberg systems
+under noise
+diagnostic and
+optional projective
+realization
+coverage, uncertainty,
+false-lift rate
+small-noise positives are certified,
+intermediate noise abstains, and
+tested negative controls do not lift
+Natural cycle residual
+predicts merge failure
+120 natural checkpoint
+collections
+diagnostic only leave-one-setting-out
+R2
+the hypothesis is unsupported;
+validation quantities are more
+predictive
+Table 2: Comparison with recent higher-order, gauge, and sheaf-theoretic work.
+Work Object of study Higher-order object Gauge or coefficient
+treatment
+Primary objective
+Zheng–Allen-Blanchette
+[9]
+model-merge residuals on
+a simplicial structure
+Hodge components of
+higher-order failure
+simplicial residual
+decomposition
+diagnosis of failures beyond
+a star-shaped or pairwise
+merging pipeline
+Karuturi et al. [10] LoRA factor space principal-bundle geometry
+of GLr symmetry
+exact rank-space gauge geometric implications for
+optimization and adapter
+merging
+Javidnia [11] local semantic charts in an
+LLM
+loop holonomy, shearing,
+and jamming
+chart transport with
+information-geometric
+weighting
+interpretability and transfer
+bounds in a frozen LLM
+This paper checkpoint transitions on
+a frozen finite complex
+central 2-cochain or class,
+or nonabelian holonomy
+coefficient identification,
+closure, no-go tests, and
+abstention
+certification of when
+higher-order language is
+warranted in model merging
+Table 3: Status and role of the principal mathematical statements. “Adapted” means that a standard fact is specialized to the model-merging setting; it is not claimed
+as a new theorem of algebraic geometry.
+Result Status Source or basis Role in the pipeline
+Effective descent and central obstruction standard; adapted descent and gerbe theory [13, 14] separates ordinary gluing from a fixed-cover central
+obstruction
+Full-simplex higher-cohomology vanishing standard contractibility of a simplex prevents a nonzero constant-coefficient certificate on
+a complete nerve
+Constant-edge tetrahedral no-go paper-specific Proposition 2.3.6 shows that the one-negative-face witness cannot
+come from six context-independent central edge
+matrices
+Distance and three-way margin rule paper-specific
+adaptation
+finite-dimensional distance stability controls trivial/nontrivial/uncertified decisions under
+estimated transitions
+Frozen-complex error control new in this paper Theorem 2.2.9 prevents the comparison complex from being chosen
+using the residual under test
+Predeclared-family error control new in this paper Theorem 2.2.10 controls multiplicity when several complex
+thresholds are audited
+Refinement-persistence test new in this paper Proposition 2.2.11 formalizes sensitivity to adding, deleting, or
+subdividing comparison simplices
+Projective rank thresholds and invariant pooling standard; adapted projective representations and invariant maps supplies necessary rank and path-independence gates
+Exact ReLU and LoRA gauges standard; adapted positive homogeneity and rank-factor
+symmetry
+identifies representation-dependent averaging rules
+3
+
+===== PAGE 4 =====
+2.1. Status of the mathematical results
+2.2. Finite comparison data and descent background
+In this subsection, we review the traditional mathematical
+theory of twisted sheaves and descent obstructions. We use
+the abstract language of algebraic geometry here; readers who
+want the learning-theoretic interpretation may compare the terms
+below with the dictionary in Section Appendix A.1.
+Before we begin, we fix a small notational convention. We
+will sometimes write the trivial obstruction as 1 and sometimes
+as 0. This is only a matter of notation: for multiplicative groups
+the identity is written as 1, while for rings, modules, or additive
+cohomology groups the identity is written as 0. Thus a condition
+such asg i jg jkgki =1 is the multiplicative form of strict descent,
+while the corresponding cohomology class is written as [c]=0.
+Definition 2.2.1(Learning site, cover, and overlaps).Alearning
+siteC learn is a category equipped with a Grothendieck topology.
+Its objects are local learning contexts, and its covering families
+specify which collections of local contexts are regarded as jointly
+covering a global learning problem.
+Let X∈C learn. A finite learning cover of X is a covering
+family
+U={u i :U i−→X} i∈I
+in the chosen Grothendieck topology.
+Assume that the relevant fiber products exist. For an ordered
+tuple (i0,...,i p), we write
+Ui0···ip =U i0×X Ui1×X···× X Uip.
+In particular,
+Ui j =U i×X U j,U i jk =U i×X U j×X Uk.
+The object Ui j is the context on which two local models are
+compared, while Ui jk is the context on which the compatibility
+of three pairwise comparisons can be tested.
+Definition 2.2.2.Let U ={Ui→X} i∈I be a finite learning cover.
+Itsnerve N(U) is the simplicial object whose p-simplices are
+the overlap objects Ui0···ip, with the usual face and degeneracy
+maps.
+After passing to an incidence complex, a simplex (i0,...,i p)
+is present when the corresponding overlap object is noninitial,
+or nonempty in settings where an underlying-space notion of
+emptiness is available. No higher overlap is deleted merely for
+computational convenience. A deliberately selected or truncated
+family of simplices will instead be called a finite comparison
+complex in the sense of Definition 2.2.3.
+Definition 2.2.3.In a computational model-merging problem,
+one may instead specify a finite simplicial complex K directly.
+Its vertices index local models or checkpoints, an edge (i j) indi-
+cates that models Mi and M j are compared on prescribed data
+Di j, and a face (i jk) indicates that the three pairwise alignments
+can be composed and evaluated on a common comparison con-
+textD i jk.
+We call such a K afinite comparison complex. It need not be
+the nerve of a cover in a Grothendieck topology. We call K a
+cover nerveonly when there is a specified cover U ={Ui→X}
+for which K = N(U) and the comparison contexts Di0···ip arise
+from the corresponding overlapsU i0···ip.
+Definition 2.2.4.Afinite model-merging descent instanceis a
+tuple
+D=
+
+K,{M i}i∈K0,{Dσ}σ∈K,{g i j}(i j)∈K1,A
+
+,
+where:
+1.Kis a finite comparison complex;
+2.M i is the local model attached to the vertexi;
+3.D σ is the common comparison context attached to a sim-
+plexσ∈K;
+4.g i j : Mi|Di j−→M j|Di j is an alignment or transition map
+attached to the oriented edge (i j);
+5.A is a coefficient system in which central residuals are
+recorded.
+Throughout the paper, products of transition maps are writ-
+ten inpath order: gi jg jk means first apply gi j and then apply
+g jk, equivalently g jk◦g i j in the conventional right-to-left nota-
+tion for composition. Matrix formulas may be read either as
+path-ordered symbols or in row-vector coordinates. In the ex-
+act setting, we impose the inverse convention g ji = g−1
+i j . For
+an oriented face ( i jk), the corresponding triangle residual is
+hi jk = gi jg jkgki. When K = N(U) and the objects Mi, com-
+parison contexts Dσ, and maps gi j arise by restriction from a
+sheaf or stack on Clearn, the finite descent instance is the finite
+restriction of an ordinary ˇCech descent problem. For a general
+finite comparison complex K, the tuple D is a combinatorial di-
+agnostic model. It is not, by itself, a descent datum on a learning
+site, and a class in H2(K; A) is not automatically a class in the
+cohomology ofC learn.
+Remark2.2.5 (Three levels of cohomology).The following
+objects should be distinguished:
+H2(K;A), ˇH2(U;A),H 2(Clearn;A).
+The first is the simplicial cohomology of a finite comparison
+complex. The second is the ˇCech cohomology of a specified
+cover. The third is the cohomology of the full learning site.
+When K = N(U), a finite central cocycle may be interpreted
+as a class in ˇH2(U; A). It may be identified with a class in
+H2(Clearn; A) only when an appropriate comparison theorem
+applies, for example when the chosen cover is sufficiently acyclic
+for the coefficient system A. Without such a hypothesis, the
+obstruction computed by TwistedMerge is a class or residual on
+the chosen finite complex only.
+Remark2.2.6 (Scope of a finite obstruction certificate).A cer-
+tificate is relative to the permitted corrections and to the chosen
+comparison contexts. A nonzero class in H2(K; A) means that
+the measured central residual cannot be removed by multiplying
+the transition maps by an A-valued 1-cochain on the edges of
+K. In particular, a different gauge group, a refined or enlarged
+comparison complex, a nonlinear retraining procedure, a projec-
+tive representation, or an invariant branch readout may change
+the computational problem. For this reason, the implementation
+4
+
+===== PAGE 5 =====
+records the three statusestrivial,nontrivial on K, anduncertified.
+The last status is used whenever centrality, closure, coefficient
+identification, or the statistical margin is not established.
+Remark2.2.7.Suppose that K contains every subset of its vertex
+set as a simplex. Then K is a full simplex and is contractible.
+Consequently, for a constant abelian coefficient groupA,
+Hq(K;A)=0 for everyq>0.
+Thus a nonzero finite H2 certificate requires nontrivial incidence
+data: some higher overlaps must be absent, unavailable, or
+deliberately excluded from the comparison complex.
+In particular, the tetrahedral benchmark used below takes
+K = ∂∆3, the boundary of a tetrahedron, rather than the full
+simplex∆ 3. The missing 3-simplex represents the absence of a
+fourfold compatibility datum in that controlled construction. We
+use this example as an explicit finite obstruction witness. The
+tetrahedral boundary is part of the controlled incidence structure
+of the synthetic witness.
+Definition 2.2.8(Frozen construction of the comparison com-
+plex).Let the available data be separated into
+DK,D align,D cert,D select,D test.
+The complex-construction data DK contain only information
+used to decide whether a common comparison context is avail-
+able, such as sample overlap, task overlap, communication avail-
+ability, or a predeclared reliability score for composing restric-
+tions. For every nonempty set of verticesσ, fix an availability
+score qσ(DK) and a thresholdλdimσ before fitting transition maps
+or inspecting residuals. Define
+σ∈K⇐⇒q τ(DK)≥λ dimτ for every nonemptyτ⊆σ,
+and a common comparison contextD τ
+is available for each suchτ.
+This downward-closed rule produces a simplicial complex. The
+rule, thresholds, and data split are frozen before gi j, hi jk, Def(bc),
+validation performance, or test performance are examined. Ab-
+sence of a simplex means that the corresponding common con-
+text was not certified as available by this rule.
+Theorem 2.2.9(Frozen-complex three-way error control).Let
+K = Φ(DK)be constructed by Definition 2.2.8, and assume that
+DK is independent of the certification data. Conditional on K,
+let c∈Z 2(K;V)and suppose that
+Pr ∥bc−c∥≤ε|K ≥1−δ.
+Set
+L=max{0,Def( bc)−ε},U=Def( bc)+ε,
+and fix0 ≤a<b . After centrality, coefficient identification, and
+closure have passed, return
+trivial if U≤a,
+nontrivial on K if L≥b,
+uncertified otherwise.
+On the stated event, a class with Def(c) >a is never declared
+trivial, and a class with Def(c)<b is never declared nontrivial.
+Moreover, every class withDef(c)≤a− 2ε is declared trivial,
+while every class with Def(c)≥b +2ε is declared nontrivial.
+The same probability bound holds unconditionally because K
+was selected independently of Dcert.
+Proof. By the 1-Lipschitz property of distance to the fixed sub-
+spaceB 2(K;V),
+|Def(bc)−Def(c)|≤ε.
+Hence L≤Def (c)≤U . The two no-false-decision statements
+follow immediately. IfDef(c)≤a− 2ε, then U≤Def (c)+2ε≤a .
+If Def(c)≥b +2ε, then L≥Def (c)− 2ε≥b . Conditioning
+on the independently constructed K and then averaging over K
+preserves the probability bound.
+Theorem 2.2.10(Simultaneous control over a predeclared com-
+plex family).LetΛbe finite, and let Kλ = Φλ(DK),λ∈ Λ, be a
+predeclared family of comparison complexes constructed with-
+out access to Dcert. For eachλ, let cλ∈Z 2(Kλ; V)and suppose
+that, conditional on DK,
+Pr ∥bcλ−c λ∥≤ε λ|D K
+≥1−δ λ.
+Define
+Lλ =max{0,Def( bcλ)−ε λ},U λ =Def( bcλ)+ε λ.
+Then, with probability at least1− P
+λ∈Λδλ, all intervals
+[Lλ,Uλ]
+simultaneously contain Def(cλ). On this event, any complex se-
+lected after inspecting the certification data still satisfies the
+no-false-trivial and no-false-nontrivial conclusions of Theo-
+rem 2.2.9, provided that its decision uses the simultaneous inter-
+val. Moreover, a declaration that a class is nontrivial throughout
+a predeclared subfamilyΛ 0⊆ Λimplies Def(cλ)≥b λ for every
+λ∈ Λ0, while a declaration of triviality throughoutΛ 0 implies
+Def(cλ)≤a λ for everyλ∈Λ 0.
+Proof. For each λ, the distance-to-coboundaries map is 1-
+Lipschitz, so the stated estimation event implies Lλ≤Def (cλ)≤
+Uλ. A union bound gives simultaneous coverage for the fi-
+nite family. Every subsequent choice of λ, including a data-
+dependent one, is then made on an event on which all intervals
+are valid. The final two statements follow by applying the lower
+or upper bound to every member ofΛ 0.
+Proposition 2.2.11(Refinement persistence and sensitivity).Let
+i : K,→L be an inclusion of finite simplicial complexes and let
+A be an abelian coefficient group.
+1. If cL∈Z 2(L; A), then i∗cL∈Z 2(K; A)and i∗[cL]=[ i∗cL].
+Consequently, if the restricted class is nonzero onK, then
+[cL]is nonzero on L.
+2. A class on K need not extend to L. In particular, the one-
+negative-faceµ2 cocycle on ∂∆3 does not extend to a co-
+cycle on∆ 3, because its alternating boundary product is
+−1.
+5
+
+===== PAGE 6 =====
+3. Removing one face from ∂∆3 produces a2-ball and kills
+H2 with constant coefficients, while barycentric subdivi-
+sion preserves the class under the canonical cohomology
+isomorphism.
+Thus a certificate should be reported together with a predeclared
+filtration or sensitivity family of comparison complexes. Persis-
+tence across admissible refinements is stronger evidence than
+nontriviality for one post hoc complex.
+Proof. The restriction map is a cochain map and therefore in-
+duces the stated map on cohomology. If [ cL]=0, then its
+restriction is zero, proving the contrapositive of the first claim.
+The second claim is the tetrahedral closure calculation. The
+third follows from contractibility of a triangulated 2-ball and
+homotopy invariance under subdivision.
+Definition 2.2.12.Asheaf of local modelson Clearn is a sheaf of
+sets whose elements over U are local learned objects and whose
+restriction maps satisfy the sheaf condition. More generally, a
+stack of local models M is a category fibered in groupoids satis-
+fying descent; we write M (U) for its groupoid of objects overU.
+A stack is the natural ambient structure when local models have
+nontrivial automorphisms, such as hidden-unit permutations,
+ReLU scalings, or other gauge symmetries.
+LetU ={Ui→X} be a cover. Adescent datumconsists
+of local objects Mi∈M (Ui) and transition isomorphisms gi j :
+Mi|Ui j−→M j|Ui j satisfying g ji = g−1
+i j . Strict descent requires
+the cocycle condition gi jg jkgki =1 on every triple overlap Ui jk.
+If descent is effective for M overU, such a datum glues to an
+ordinary global object inM(X).
+More generally, the triple product may fail by a defect
+gi jg jkgki = ci jk, where ci jk ∈A (Ui jk) for a coefficient sheaf
+A. If the ci jk form a ˇCech 2-cocycle on the coverU, we write
+[c]U ∈ ˇH2(U; A) for its fixed-cover class. If this class deter-
+mines a class in the cohomology of the learning site through
+the relevant comparison map, we denote the resulting class by
+[c]∈H 2(Clearn; A). A system of local objects whose gluing is
+controlled by this class is called a [ c]-twisted descent datum.
+When the coefficient system and the ambient stack support the
+standard notion of twisted sheaves, we also call it a [c]-twisted
+sheaf. If A is an abelian coefficient sheaf lying in the center of
+the relevant gauge groups, then we call [c] a central obstruction
+class. In particular, cyclic coefficient groups such asµn give the
+basic examples of central obstructions.
+Example 2.2.13.Below are several examples arising in learning
+theory.
+• Model merging.The objects Ui are training runs, clients,
+tasks, or local model charts. The objectsMi are checkpoints
+or local models, and the transition maps gi j are alignments,
+such as permutation, orthogonal, diagonal, or monomial
+alignments. A nontrivial triple product gi jg jkgki , 1 is a
+cycle-consistency or holonomy defect.
+• Same-base task vectors and fixed-chart methods.Suppose
+that we have chosen a common chart V→X of the global
+learning space. A base model M0 is a reference section
+over this chart. If every local model Mi is represented in
+the same chart, then one can form the task vector∆ i =
+Mi−M 0. Thus Task Arithmetic, TIES, and DARE work
+after a choice of global trivialization: the transition maps
+have effectively been fixed in advance. SLERP is similar,
+except that it uses the chosen chart as a weight geometry
+in which interpolation is defined. Without a common chart
+V→X , the expressions∆ i and the interpolation paths are
+not intrinsic.
+• Projective latent representations.If local latent coordinates
+are comparable only projectively, then the transition maps
+live in PGLr. Lifting them to GLr may fail by a Gm-valued
+2-cocycle. This is the obstruction measured by the bound-
+ary map arising from
+1→G m→GL r→PGL r→1.
+Thus a projective system of local latent representations
+may define a projective descent datum whose obstruction
+lies in H2(Clearn; Gm). The cohomological Brauer group
+is the torsion subgroup Br′(Clearn) := H2(Clearn; Gm)tors.
+The Azumaya Brauer group Br(Clearn) maps naturally to
+Br′(Clearn); we identify them only in settings where this
+map is known to be an isomorphism.
+Remark2.2.14 (Finite central classes and Brauer classes).Let
+X be a scheme, or an algebraic stack for which the Kummer
+sequence is exact on the chosen étale site, and suppose that n
+is invertible on X. Then the Kummer sequence gives an exact
+sequence
+0−→Pic(X)/n−→H 2
+´et(X;µ n)−→Br ′(X)[n]−→0.
+Consequently, a nonzero class in H2
+´et(X;µn) need not have
+nonzero image in H2
+´et(X; Gm). It may lie in the image of
+Pic(X)/n. In the finite computational setting, a µn-valued certifi-
+cate should therefore first be called a finite central obstruction
+on the chosen comparison complex. We use the term Brauer
+class only after a specified site-level comparison and a nonzero
+torsion image in H2
+´et(X; Gm), equivalently a nonzero class in
+Br′(X), have been established.
+Theorem 2.2.15(Descent obstruction).Let Clearn be a learn-
+ing site, and let M be a stack of local models with effective
+strict descent for a coverU ={Ui→X} . Let G be the sheaf
+of gauge groups acting on the local objects, and let A be an
+abelian coefficient sheaf lying in the center of G. Suppose that
+we are given local objects Mi∈M (Ui)and transition isomor-
+phisms gi j : Mi|Ui j −→M j|Ui j such that, on triple overlaps,
+gi jg jkgki = ci jk for some ci jk∈A (Ui jk). Then c ={ci jk} is a ˇCech
+2-cocycle. Its cohomology class[ c]∈ ˇH2(U; A)is invariant
+under objectwise gauge changes and under changes of the edge
+representatives by A-valued1-cochains.
+Moreover, if[c]=0, then the transition maps can be corrected
+by an A-valued edge correction so that they satisfy strict descent;
+hence, by effective descent, the local objects glue to an ordinary
+global object. If[ c], 0, then no such edge correction can make
+6
+
+===== PAGE 7 =====
+Table 4: Exact sensitivity of the controlled tetrahedral certificate to the comparison complex. This is a topology audit, not a natural-data experiment.
+Complex Status of the one-negative-face data Conclusion
+∂∆3 closed and non-coboundary nontrivial class inH 2(∂∆3;µ 2)
+∆3 boundary assignment fails
+3-simplex closure
+no extension as a cocycle on the filled simplex
+∂∆3 with one face removed restriction lies on a 2-ballH 2 =0; no higher certificate remains
+Barycentric subdivision of∂∆ 3 pullback cocycle class persists under subdivision
+the datum into strict descent. Thus the data remain nontrivial
+as twisted descent data on the chosen cover. If the induced
+class in the cohomology of the learning site is nonzero, the same
+conclusion holds at the site level. When the ambient theory
+admits effective descent for[ c]-twisted objects, these data define
+a nontrivial twisted object rather than an ordinary global object.
+Proof. We omit restriction symbols from the notation. Since
+A lies in the center of the gauge group, the defect terms ci jk
+commute with the transition maps. The relation gi jg jkgki = ci jk
+is equivalently gi jg jk = ci jkgik. On a quadruple overlap Ui jkl,
+compare the productg i jg jkgkl in two ways. First,
+(gi jg jk)gkl =c i jkgikgkl =c i jkciklgil.
+Second,
+gi j(g jkgkl)=g i jc jklg jl =c jklgi jg jl =c jklci jlgil.
+So ci jkcikl = c jklci jl. This is exactly the ˇCech 2-cocycle condition
+for the multiplicative cochain c = {ci jk}, up to the standard
+convention for ordering the indices. Thus c defines a class
+[c]∈ ˇH2(U;A).
+We next check gauge invariance. A change of local gauges re-
+places the transition maps by conjugate transition maps. Since A
+is central, the corresponding defect terms are unchanged. More
+generally, if we modify the transition maps by an A-valued 1-
+cochaina={a i j}, settingg′
+i j =a i jgi j, then the new defect is
+c′
+i jk =a i ja jkakici jk =(δa) i jkci jk.
+Thus the cocycle changes only by a ˇCech coboundary, so the
+class [c] is well-defined.
+If [c]=0, then there exists an A-valued 1-cochain a ={ai j}
+such that ( δa)i jk = c−1
+i jk. For the corrected transition maps
+g′
+i j = ai jgi j, the new defect is c′
+i jk =( δa)i jkci jk =1. Hence
+the corrected transition maps satisfy strict descent. Since strict
+descent is effective for M over the cover, the local objects glue
+to an ordinary global object.
+Conversely, if some A-valued edge correction made the tran-
+sition maps satisfy strict descent, then the new defect would be
+trivial. The formula above would then imply thatc differs from 1
+by a ˇCech coboundary, so [c]=0. Therefore, if [ c], 0, no such
+edge correction is possible. The datum remains nontrivial as
+twisted descent data on the chosen cover. If the induced class in
+H2(Clearn; A) is nonzero, the same obstruction persists at the site
+level. Existence of a corresponding twisted object is a separate
+effectivity statement in the ambient theory.
+Remark2.2.16.Under the centrality assumption in Theo-
+rem 2.2.15, the defect terms take values in an abelian coefficient
+sheaf A, or more generally in a central subsheaf of the gauge
+group. They form an ordinary ˇCech 2-cocycle on the chosen
+cover and define a class [ c]U ∈ ˇH2(U; A). When the corre-
+sponding comparison map is available, this fixed-cover class
+determines a class [c]∈H 2(Clearn; A). This is the situation mod-
+eled by the controlled central and projective examples, including
+theµ n- andG m-valued cases.
+For a genuinely nonabelian gauge group G, the same formula
+should not be read as an ordinary abelian cohomology class.
+If gi jg jk = ci jkgik, then on quadruple overlaps the terms ci jk
+satisfy a twisted nonabelian compatibility condition, involving
+conjugation by the transition maps:
+ci jkcikl =g i jc jklg−1
+i j ci jl.
+Thus the obstruction is a nonabelian descent or holonomy object
+rather than an element of ordinaryH 2(Clearn;G).
+Equivalently, in the usual language of nonabelian cohomology
+and gerbes, one does not only remember a G-valued 2-cocycle.
+One also has aband, or outer automorphism datum, recording
+how the local copies of G are identified up to inner automor-
+phism. This is why outer automorphism groups naturally appear
+in nonabelian descent. Once the band is fixed, the remaining
+central ambiguity is controlled by the center Z(G), and central
+obstruction classes live in ordinary abelian cohomology with co-
+efficients in this center or in the corresponding central coefficient
+sheaf. For this theory, see [13].
+In our terminology, the central/projective experiments are
+modeled by the ordinary H2 theory above. By contrast, the
+executed two-loop S 3 and D4 experiment should be read as a
+nonabelian holonomy experiment. The branch construction does
+not kill an abelian H2 class; rather, it represents the nontrivial
+holonomy on branches and then applies invariant pooling. This
+is the condition Pρ(h)= P, which makes the holonomy invisible
+after pooling even though it remains nontrivial before pooling.
+In the executed construction, this is a structural certificate and
+not an accuracy-advantage result.
+2.3. The computational aspect of the theory
+In this subsection, we discuss the computational implementa-
+tion of the descent-theoretic framework. The goal is to explain
+how the abstract objects above become concrete procedures
+for model merging. In particular, we describe greedy soup
+as fixed-chart search over a finite family of candidate predic-
+tors, analogous to empirical global-section search; task-vector
+methods as fixed-chart descent; ReLU gauge alignment as a
+monomial-gauge synchronization problem; the H2(µ2) certifi-
+cate as a central obstruction test; and the period-index mecha-
+7
+
+===== PAGE 8 =====
+nism as an arithmetic gate for admissible projective ranks in the
+controlled systems.
+Let K be either the nerve of a specified finite cover or a finite
+comparison complex in the sense of Definition 2.2.3.
+Definition 2.3.1.Let
+D=
+
+K,{M i}i∈K0,{Dσ}σ∈K,{g i j}(i j)∈K1,A
+
+be a finite model-merging descent instance, and let G be the
+structure group containing the transition maps. We assume that
+every unoriented edge is given one orientation and thatg ji = g−1
+i j
+in the exact setting.
+For an oriented face (i jk)∈K 2, define thetriangle residual
+hi jk =g i jg jkgki =g i jg jkg−1
+ik .
+The element hi jk∈G measures the failure of the three pairwise
+transition maps to satisfy strict descent on the face ( i jk). The
+collection h ={hi jk}(i jk)∈K2 is initially a collection of G-valued
+triangle holonomies.
+Definition 2.3.2.Let A⊆Z (G) be an abelian central subgroup.
+We say that the triangle residual isexactly A-centralif hi jk∈A
+for every oriented face (i jk)∈K 2.
+In this case, the assignment ci jk = hi jk defines a multiplicative
+2-cochain c∈C 2(K; A). We call c thecentral residual 2-cochain.
+If the residuals are only approximately central, and if a projection
+or rounding map πA : G−→A has been fixed, then one may
+define a projected 2-cochain bci jk = πA(hi jk). The projected
+cochainbcis a numerical diagnostic.
+Definition 2.3.3.Assume that A is a constant abelian coeffi-
+cient group. For a multiplicative 2-cochain c∈C 2(K; A), its
+coboundary is the 3-cochainδ2c∈C 3(K; A) given on an oriented
+3-simplex (i jkl) by
+(δ2c)i jkl =c jklc−1
+ikl ci jlc−1
+i jk.
+The cochain c is a 2-cocycle if and only if ( δ2c)i jkl =1 A for
+every oriented 3-simplex (i jkl)∈K 3.
+Thus
+Z2(K;A)=ker
+
+δ2 :C 2(K;A)−→C 3(K;A)
+
+.
+Only whenc∈Z 2(K;A) does it determine a cohomology class
+[c]∈H 2(K;A)=Z 2(K;A)/B 2(K;A).
+Remark2.3.4.Definition 2.3.3 is written for a constant abelian
+coefficient group A. If A is a nonconstant coefficient system,
+local system, or sheaf of central groups, the formula forδ2 must
+include the appropriate restriction or transport maps.
+Proposition 2.3.5.Let( i jkl)∈K 3 be an oriented 3-simplex.
+Assume that:
+1. the maps gab are all defined on a common quadruple com-
+parison context Di jkl;
+2.g ba =g−1
+ab ;
+3. for every oriented face( abc)of( i jkl), the triangle residual
+cabc =g abgbcg−1
+ac lies in the central subgroup A⊆Z(G).
+Then
+(δ2c)i jkl =c jklc−1
+ikl ci jlc−1
+i jk =1 A.
+Consequently, exact central triangle residuals obtained from
+a coherent collection of transition maps on common higher
+overlaps define a 2-cocycle.
+Proof.Usingg i jg jk =c i jkgik andg ikgkl =c iklgil, we obtain
+(gi jg jk)gkl =c i jkciklgil.
+On the other hand,g jkgkl =c jklg jl, and hence
+gi j(g jkgkl)=g i jc jklg jl.
+Sincec jkl is central, this equals
+c jklgi jg jl =c jklci jlgil.
+Associativity gives ci jkcikl = c jklci jl. Since all four terms lie in
+the abelian group A, this is equivalent to c jklc−1
+ikl ci jlc−1
+i jk =1 A.
+Proposition 2.3.6.Let K = ∂∆3, let G be a group, and let
+A⊆Z (G)be an abelian central subgroup. Assign one context-
+independent element gi j∈G to every oriented edge, with g ji =
+g−1
+i j . Suppose that
+hi jk =g i jg jkgki∈A
+for all four faces. Then
+h123h−1
+023h013h−1
+012 =1.
+Consequently, for constant coefficients A, the resulting face
+cochain represents the zero class in H2(∂∆3;A).
+Proof.From the definitions,
+g01g12 =h 012g02,g 02g23 =h 023g03,
+so
+(g01g12)g23 =h 012h023g03.
+On the other hand,
+g12g23 =h 123g13,g 01g13 =h 013g03,
+and centrality ofh 123 gives
+g01(g12g23)=h 123h013g03.
+Associativity therefore implies h012h023 = h123h013, which is
+equivalent to the stated alternating product identity. This identity
+is the evaluation of the face cochain on the fundamental class of
+∂∆3, so the class is zero.
+Remark2.3.7.The one-negative-face µ2 cocycle used below
+is a cocycle-level oracle witness. It cannot be produced by
+six globally composable, context-independent edge matrices
+satisfying the hypotheses of Proposition 2.3.6. A genuine ˇCech
+realization requires overlap-dependent transition sections gi j :
+Di j→G , whose restrictions to different triple contexts need not
+be represented by one common matrix, or a projective bundle
+construction in which the missing fourfold comparison context
+is part of the geometry.
+8
+
+===== PAGE 9 =====
+Remark2.3.8.Proposition 2.3.5 applies to exact transition maps
+defined coherently on common higher overlaps. Its hypotheses
+need not hold in a numerical model-merging problem.
+Closure may fail, or may be uncertified, when:
+1. the opposite edge maps are fitted independently and g ji ,
+g−1
+i j ;
+2. the triangle residuals are not central;
+3. a nearest-central projection πA is applied to noncentral
+residuals;
+4. different faces are evaluated on different comparison data
+and do not restrict to a common quadruple context;
+5. the transition maps are known only approximately;
+6. the coefficient identifications vary from face to face.
+For these reasons, the output of a numerical central projection
+should first be called a projected 2-cochain. It should be called
+a cocycle, obstruction class, or Brauer-type class only after a
+cocycle-closure test has been passed.
+Definition 2.3.9(Distance to coboundaries and obstruction
+norm).Let V be a finite-dimensional normed vector space in
+which the central coefficient data have been encoded additively.
+Consider the cochain complex
+C1(K;V)
+δ1
+−→C2(K;V)
+δ2
+−→C3(K;V),
+and write
+Z2(K;V)=kerδ 2,B 2(K;V)=imδ 1.
+For an arbitrary 2-cochain u∈C 2(K; V), define its distance to
+coboundaries by
+Def(u) :=dist
+
+u,B 2(K;V)
+
+=inf
+a∈C1(K;V)
+∥u−δ 1a∥.
+Thus, for everya∈C 1(K;V),
+∥u−δ 1a∥≥Def(u).
+If u is closed, so that u∈Z 2(K; V), then Def(u) depends only
+on the cohomology class
+[u]∈H 2(K;V)=Z 2(K;V)/B 2(K;V).
+In this case, we may also write Obs([u]) := Def(u) and call this
+quantity the obstruction norm of the class [u]. Since the cochain
+spaces are finite-dimensional,
+Obs([u])=0⇐⇒[u]=0.
+If u is not known to be closed, then Def(u) is only a distance-
+to-coboundaries diagnostic. It is not the norm of a cohomology
+class, because [u] is not defined unlessδ 2u=0.
+We record three elementary facts that will be used below.
+Proposition 2.3.10(Defect distance and stability).Let K be
+finite.
+1. Suppose that V is a finite-dimensional inner-product space
+and that C•(K; V)is equipped with the induced finite
+cochain inner product. Let
+H 2(K;V)=kerδ 2∩kerδ ∗
+1
+be the space of harmonic 2-cochains. If c∈Z 2(K; V), then
+Def(c)=Obs([c])=
+
+
+
+ΠH 2(K;V) (c)
+
+
+
+,
+whereΠ H 2(K;V) denotes orthogonal projection onto
+H 2(K;V).
+2.If c, bc∈C 2(K;V)and∥ bc−c∥≤ε, then
+|Def(bc)−Def(c)|≤ε.
+In particular, if Def(c) > 2ε, then Def(bc) > ε. Hence
+the observed residual cannot be explained by an ε-sized
+perturbation of a trivial coboundary.
+3.Let g i j,g jk,g ki andbgi j,bg jk,bgki be matrices satisfying
+∥gab∥≤M,∥ bgab−g ab∥≤σ
+for the three edges(ab)=(i j),(jk),(ki). Then
+∥bgi jbg jkbgki−g i jg jkgki∥≤3M 2σ+3Mσ 2 +σ 3.
+Proof. For part (1), we use the standard finite cochain Hodge
+decomposition for simplicial complexes; see, for example, [15,
+16]. Since K is finite and V is finite-dimensional, all cochain
+spaces are finite-dimensional inner-product spaces, and one has
+the orthogonal decomposition
+C2(K;V)=imδ 1⊕H 2(K;V)⊕imδ ∗
+2.
+Becausecis closed, one has
+c∈kerδ 2 =  imδ∗
+2
+⊥.
+Therefore the imδ∗
+2 component of c vanishes, and there exist
+a∈C 1(K; V) and h∈H 2(K; V) such that c =δ1a + h. The two
+terms are orthogonal. Hence the closest element of imδ 1 to c is
+δ1a, and therefore
+Def(c)=dist (c,imδ 1) =∥h∥.
+Sinceh= Π H 2(K;V) (c), we obtain
+Def(c)=Obs([c])=
+
+
+
+ΠH 2(K;V) (c)
+
+
+
+.
+For (2), the distance to any fixed subset of a normed vector
+space is 1-Lipschitz [17]. Indeed, for anya∈C 1(K;V),
+∥bc−δ 1a∥≤∥ bc−c∥+∥c−δ 1a∥.
+Taking the infimum over a gives Def(bc)≤ε + Def(c). Inter-
+changingcand bcgives Def(c)≤ε+Def( bc). Hence
+|Def(bc)−Def(c)|≤ε.
+If Def(c)>2ε, then Def( bc)≥Def(c)−ε>ε.
+9
+
+===== PAGE 10 =====
+For (3), write
+bgab =g ab +e ab,∥e ab∥≤σ.
+Then
+bgi jbg jkbgki−g i jg jkgki =e i jg jkgki +g i je jkgki
++g i jg jkeki +e i je jkgki
++e i jg jkeki +g i je jkeki
++e i je jkeki.
+Using submultiplicativity of the matrix norm [18], the first three
+terms are each bounded by M2σ, the next three terms are each
+bounded byMσ 2, and the last term is bounded byσ 3. So
+∥bgi jbg jkbgki−g i jg jkgki∥≤3M 2σ+3Mσ 2 +σ 3.
+This proves the proposition.
+Proposition 2.3.11(Margin-consistent distance decision).Let
+V be a finite-dimensional normed coefficient space, let c∈
+C2(K;V), and let bc satisfy
+Pr ∥bc−c∥≤ε ≥1−δ.
+Write∆ = dist(c,B 2(K; V)). Consider the decision rule that
+declares a positive distance from coboundaries whenDef(bc)>τ .
+If c∈B 2(K; V)and τ>ε , then the rule makes no false positive-
+distance declaration on the stated event. If∆>0and
+ε<τ<∆−ε,
+then the rule correctly detects positive distance from cobound-
+aries on the same event. If, in addition, both the coefficient
+identification and cocycle closure ofbc are certified, this positive-
+distance conclusion may be promoted to a nontrivial class in
+H2(K;V).
+Proof.The distance to a fixed subspace is 1-Lipschitz, so
+Def(bc)−Def(c)
+≤ε.
+If c is a coboundary, then Def(c)=0 and hence Def(bc)≤ε <
+τ. If Def(c)= ∆ > 0, then Def(bc)≥ ∆−ε > τ. The final
+cohomological interpretation follows only after the separate
+closure gate, because an arbitrary 2-cochain does not define a
+class inH 2.
+Remark2.3.12.Proposition 2.3.11 suggests a three-way numer-
+ical output. A closed class is declared trivial when an upper
+confidence bound lies below a triviality threshold, nontrivial
+when a lower confidence bound lies above a nontriviality thresh-
+old, and uncertified otherwise. Before closure has been certified,
+the same bounds refer only to distance from coboundaries. For
+a finite coefficient group A embedded in a metric ambient space,
+let sA be the minimum ambient distance between distinct ele-
+ments of A. If the exact coefficient is a∈A and an estimate u has
+ambient distance less than sA/2 from a, then nearest-coefficient
+projection recovers a uniquely. In a numerical pipeline, the
+projection should be accepted only when the uncertainty bound,
+not merely the point estimate, lies inside such a half-separation
+margin. The robust calibration experiments in Section 3.4.2
+implement this conservative abstention principle.
+Remark2.3.13.Part (2) is a metric stability statement for ar-
+bitrary 2-cochains and does not require cocycle closure. Its
+interpretation as stability of a cohomological obstruction re-
+quires the relevant cochains to be closed. Without closure, Def
+remains a distance-to-coboundaries diagnostic rather than the
+norm of anH 2 class.
+Proposition 2.3.10(3) controls the perturbation of the triangle
+residual under small pairwise alignment errors. Suppose further
+that the central projection πA : G−→A is L-Lipschitz on the
+relevant neighborhood. If the edgewise alignment error is at
+mostσ and the exact transition maps have norm at most M, then
+the projected triangle residual satisfies a bound of the form
+∥bc−c∥≤L
+
+3M 2σ+3Mσ 2 +σ 3
+,
+with the corresponding normalization when the cochain norm
+aggregates over several faces. Combining this with Proposi-
+tion 2.3.10(2) gives a metric robustness criterion. If both c and
+bc are closed, the same estimate gives stability of the obstruc-
+tion norms. Without closure, the conclusion concerns only the
+distance-to-coboundaries diagnostic.
+2.3.1. Compilation of results for related algorithms
+We record three elementary computational facts that explain
+how several existing algorithms appear in the descent-theoretic
+language. The first concerns fixed-chart task-vector methods,
+the second concerns exact ReLU gauge symmetries, and the
+third gives the minimal centralH 2(µ2) obstruction certificate.
+Proposition 2.3.14(Task vectors require a common chart).Let
+Θbe a finite-dimensional parameter vector space with a non-
+trivial gauge group G acting linearly on it. Let θ0∈ Θbe a base
+model and let θi∈ Θbe a fine-tuned model. The task vector
+∆i = θi−θ 0 is not an intrinsic object on the quotient param-
+eter stack[Θ /G]. Rather, it is defined only after choosing a
+common parameter coordinate system, or a specified alignment
+convention, in which bothθi andθ0 are represented. Thus alge-
+braic operations on task vectors are gauge-dependent unless a
+common base chart or an alignment convention has been fixed.
+Proof.The subtraction map
+d:Θ×Θ→Θ,d(θ,η)=θ−η
+is defined in the chosen parameter vector space. If the same
+gaugea∈Gis applied to both entries, then
+d(aθi,aθ 0)=a(θ i−θ 0).
+Thus the difference is equivariant for the diagonal action of G
+onΘ × Θ. This is the situation in which a common chart has
+been chosen: both the base model and the fine-tuned model are
+expressed in the same trivialization.
+However, the quotient stack [Θ/G] allows the two representa-
+tives to be changed independently. The relevant ambiguity is the
+action ofG×GonΘ×Θ, given by
+(ai,a 0)·(θ i,θ 0)=(a iθi,a 0θ0).
+10
+
+===== PAGE 11 =====
+The difference map d is not invariant, or even equivariant with
+respect to a single copy ofG, for this independent action. Indeed,
+independent gauges produce
+d(aiθi,a 0θ0)=a iθi−a 0θ0,
+and there is in general no elementa∈Gsuch that
+aiθi−a 0θ0 =a(θ i−θ 0).
+Equivalently, the map d does not descend fromΘ × Θto the
+quotient stack [Θ/G]×[Θ/G].
+A simple way to see the obstruction is to take θi = θ0 = θ.
+Then the task vector in the common chart is zero:θ−θ =0. But
+after changing only the gauge of the second representative, one
+obtainsθ−a 0θ, which is generally nonzero. Since the zero vector
+is fixed by every linear gauge transformation, this new vector
+cannot be obtained from the old one by a single global gauge
+transformation unless a0θ =θ. Thus the difference depends on
+the chosen representatives.
+We then have that task vectors are well-defined only after
+fixing a common chart, such as a shared base model and a shared
+parameter coordinate system, or after choosing transition maps
+that align the local charts. Without such a choice, the expression
+θi−θ 0 is a chart-dependent representative rather than an intrinsic
+object on the quotient by gauge symmetries.
+Remark2.3.15.This is the fixed-chart assumption behind Task
+Arithmetic, TIES, DARE, and other task-vector methods: the
+local models have already been placed in a shared coordinate
+chart. SLERP is similar in spirit, but uses a chosen weight
+geometry.
+Theorem 2.3.16(Exact monomial ReLU reparameterization).
+Consider a one-hidden-layer ReLU network
+f(x)=W 2σ(W1x+b 1)+b 2,
+whereσ = ReLU is applied coordinatewise. Let M = DP be a
+positive monomial matrix, where D is a positive diagonal matrix
+and P is a permutation matrix. Define
+W′
+1 =MW 1,b ′
+1 =Mb 1,W ′
+2 =W 2M−1,b ′
+2 =b 2.
+Then the reparameterized network computes exactly the same
+function:
+W′
+2σ(W′
+1x+b ′
+1)+b ′
+2 =W 2σ(W1x+b 1)+b 2.
+The same argument applies layerwise to adjacent layers of a
+multi-layer ReLU MLP , provided that the inverse monomial
+transformation is applied to the following layer.
+Proof. Since D has positive diagonal entries and P is a permu-
+tation matrix, ReLU is equivariant under M = DP: σ(Mz)=
+Mσ(z) for every vector z. Applying this with z = W1x + b1, we
+get
+σ(W′
+1x+b ′
+1)=σ(M(W 1x+b 1))=Mσ(W 1x+b 1).
+Therefore
+W′
+2σ(W′
+1x+b ′
+1)+b ′
+2 =W 2M−1Mσ(W1x+b 1)+b 2
+=W 2σ(W1x+b 1)+b 2.
+Thus the function is unchanged. The multi-layer statement
+follows by applying the same calculation to one hidden layer at
+a time and compensating the monomial change in the next linear
+layer.
+Remark2.3.17.This theorem separates exact gauge equiv-
+alence from empirical performance. Monomial gauges are
+exact ReLU reparameterizations before averaging. Whether
+monomial-aligned averaging improves test accuracy is a sepa-
+rate empirical question.
+Remark2.3.18 (Batch-normalization boundary).Theo-
+rem 2.3.16 applies directly to ReLU layers without stateful
+normalization between the compensated linear maps. A separate
+ResNet-18 identity audit in the repository checks what remains
+exact in the presence of BatchNorm. Compatible graph-wide
+channel permutations, including residual branches, shortcut
+projections, BatchNorm affine parameters and buffers, and
+classifier inputs, preserve predictions in both evaluation and
+training modes within the preregistered floating-point tolerance.
+Positive channel scaling is more delicate: with frozen running
+statistics it is exact in evaluation mode only for the explicit affine
+or epsilon-aware running-affine parameterizations tested there.
+Scaling running means and variances alone is not exact when
+the BatchNorm constant ε is positive, and arbitrary positive
+scaling is not claimed to be exact in training mode. These are
+functional identity tests, not merging-performance results.
+Theorem 2.3.19.Let K be the boundary of a tetrahedron, with
+vertex set{0,1,2,3}and face set
+K2 ={012,013,023,123}.
+Letµ2 ={±1}. A face cochain assigns a sign c f ∈µ 2 to each
+face, and an edge cochain assigns signs bi j∈µ 2 to edges, with
+coboundary(δb)i jk = bi jb jkbki. Since K has dimension2, every
+face cochain is a2-cocycle. Such a cochain c is a coboundary
+if and only if Q
+f∈K 2 c f = +1. In particular, the sign pattern
+with exactly one negative face represents the nonzero class in
+H2(S 2;µ 2)µ 2.
+Proof. First suppose c = δb. Multiplying over all four faces
+gives Y
+f∈K 2
+c f =
+Y
+(i jk)∈K2
+bi jb jkbki.
+Every edge of the tetrahedral boundary appears in exactly two
+faces. Hence every edge sign appears twice in the product, and
+sinceb 2
+i j =1, the total product is+1.
+Conversely, identifyµ2 with F2 by sending−1 to 1 and+1
+to 0. Then multiplication of signs becomes addition in F2. The
+tetrahedral boundary is a triangulation of S 2, so H2(K; F2)F 2.
+Since K has four faces, dimC 2(K; F2)=4, and therefore im(δ :
+C1→C 2) has codimension one inC 2(K;F 2). The condition
+Y
+f∈K 2
+c f = +1
+11
+
+===== PAGE 12 =====
+is exactly one linear condition in additive F2 notation, namely
+that the sum of the four face labels is zero. This codimension-
+one subspace contains imδ by the first paragraph, so it is exactly
+imδ . Thus c is a coboundary if and only if the product of its
+face signs is+1.
+If exactly one face is negative, then the product of the four
+face signs is −1, so the cocycle is not a coboundary. Since
+H2(S 2;µ 2)µ 2, it represents the nonzero class.
+Remark2.3.20.This tetrahedral example is the minimal cocycle-
+level witness used in our controlled obstruction experiments. It
+proves that the one-negative-face cochain is not removable by a
+µ2-valued edge cochain on∂∆3. The prediction-level two-branch
+(q =2) task in Section 3.4.1 is therefore recorded separately
+from this non-coboundary certificate.
+The unsigned product criterion in Theorem 2.3.19 is specific
+to µ2. Indeed, inversion is trivial in µ2, so orientation signs
+do not alter the product. For a general coefficient group µn,
+the corresponding expression must be written using the chosen
+orientation of the tetrahedral boundary. With the convention
+∂[0123]=[123]−[023]+[013]−[012],
+the oriented evaluation of a multiplicative 2-cochain c on the
+fundamental 2-cycle is c123c−1
+023c013c−1
+012. Thus one should not
+replace this alternating expression by the unsigned product of
+the four face values whenn>2.
+Remark2.3.21.For the controlled µ2 experiments, we distin-
+guish the exact cohomological certificate from a raw numerical
+face statistic. For aµ2-valued face cochain c ={c f} f∈K 2, define
+its negative-face rate by
+R−(c)= 1
+|K2|#{f∈K 2 :c f =−1}.
+This quantity records the proportion of faces carrying a negative
+triangle residual. It is not, in general, invariant under the addition
+of a coboundary.
+For the chosen tetrahedral representative with exactly one
+negative face, one has R−(c)=0 .250. The exact certificate of
+nontriviality is instead
+Y
+f∈K 2
+c f =−1,
+or equivalently c<B 2(K;µ2). Thus the value 0 .250 is a raw
+representative-level residual statistic, while the nontriviality of
+the class is established by the finite coboundary certificate of
+Theorem 2.3.19.
+2.3.2. Period-index and rank-lift gates
+We now recall the period-index distinction for central ob-
+struction classes. In the classical theory, period and index are
+invariants of Brauer classes and twisted sheaves [19, 20]. In our
+setting, the same distinction explains why detecting the order of
+an obstruction is not enough: one must also know which ranks
+can support a compatible projective or twisted realization.
+Definition 2.3.22.Let A be an abelian coefficient sheaf onClearn,
+and let [c]∈H 2(Clearn; A) be a torsion central obstruction class.
+Theperiodof [c] is its order in cohomology:
+per([c])=min{n>0 :n[c]=0}.
+When A = Gm, this is the usual period of a cohomological
+Brauer class.
+Definition 2.3.23.Suppose that [ c] is a central class in a setting
+where [c]-twisted locally free objects and their ranks are defined.
+Theindexof [c] is the rank-divisibility invariant
+ind([c])=gcd
+n
+r>0 : there exists a rankr[c]-twisted
+locally free object
+o
+.
+In the standard Brauer settings in which twisted locally free
+objects realize the class, this rank gcd agrees with the usual
+index. Over a field, the latter is the degree of the division algebra
+in the Brauer class; equivalently, it is the greatest common
+divisor of the degrees of central simple algebras representing
+that class.
+In the computational setting, letR be the finite set of candidate
+ranks searched by the algorithm. When the set of passing ranks
+is nonempty, we define the tested lift threshold by
+rtest([c];R)=min
+n
+r∈R: the implemented rank-rconstruction
+passes the stated test
+o
+.
+If no candidate rank passes, we set rtest([c]; R)= +∞. This is
+an empirical search statistic rather than the classical index. It
+depends on the candidate set, optimization procedure, imple-
+mentation, and acceptance tolerances. It may be identified with
+ind([c]) only when a separate mathematical argument proves
+that the implemented construction realizes the minimal possible
+rank.
+Proposition 2.3.24(Period and index over a field).Let F be a
+field and let α∈Br (F). Then per(α)|ind (α), and per(α)and
+ind(α)have the same prime divisors [19, Theorem 2.8.7].
+Thus the period-index problem asks, for a given class of fields
+or spaces, to bound ind(α) in terms of per(α). In other words,
+after the period detects the order of the Brauer class, one asks
+how large the smallest rank or degree realizing that class must
+be.
+Remark2.3.25.Classical period-index conjectures seek bounds
+on ind(α) in terms of per(α) under specific hypotheses on the
+field, variety, characteristic, and torsion. The precise expo-
+nent depends on the geometric and cohomological setting. The
+present paper does not use any general period-index conjecture;
+it uses only the distinction between the order of a class and the
+rank divisibility of objects realizing it.
+For background and recent progress on the period-index prob-
+lem, see the introduction of [21]. Some important related works
+include [20, 22–24].
+Definition 2.3.26(Projective-representation index).LetΓbe a
+finite group and let [α]∈H 2(Γ; k×) be represented by a normal-
+ized cocycleα. Define
+indrep([α])=gcd
+n
+dimW: Wis a nonzero finite-dimensional
+α-projective representation
+o
+.
+12
+
+===== PAGE 13 =====
+Table 5: Qualitative structural coverage of model-merging methods. This table records which mechanisms are explicitly present in the method; it is not an accuracy
+leaderboard.
+Method Validation Sync. Perm. ReLU gauge Sign/sparse Cycle/hol. Central obs. Nonabelian lift Reject
+Weight averaging no no no no no no no no no
+Model Soups yes no no no no no no no no
+C2M3-style no yes yes no no cycle no no no
+SLERP optional no no no no no no no no
+Task Arithmetic optional no no no no no no no no
+TIES optional no no no yes no no no no
+DARE optional no no no yes no no no no
+TwistedMerge yes yes yes yes partial yes yes yes yes
+Here “Validation” means that validation selection is intrinsic to the stated method; “optional” means that validation can be used to tune or select the method but is not
+part of its defining algebraic operation. “Sync.” means synchronization of alignments or gauges; “Perm.” means permutation gauge handling; “ReLU gauge” means
+monomial positive-scaling/permutation gauges; and “Sign/sparse” means coordinatewise sign or sparsity handling. In the column headed “Cycle/hol.,” “cycle”
+denotes the cycle-consistency mechanism ofC 2M3, whereas “yes” denotes the broader cycle and holonomy diagnostics of TwistedMerge. “Central obs.” means
+central/projective obstruction detection; “Nonabelian lift” means a branch representation with invariant pooling; and “Reject” means a conservative no-lift rule when
+the relevant structural certificate is unavailable.
+Cohomologous cocycles define equivalent projective-
+representation categories and hence the same set of repre-
+sentation dimensions, so this quantity depends only on [α]. It
+is the appropriate rank-divisibility invariant for the controlled
+finite-group experiments. It should not be identified with
+a classical Brauer index without an additional geometric
+realization.
+Proposition 2.3.27(Clock–shift divisibility).Let ζ be a prim-
+itive d-th root of unity. If invertible matrices A,B∈GL r(C)
+satisfy
+AB=ζBA,
+then d|r . Conversely, the standardd×d clock and shift matrices
+satisfy this relation, and direct sums realize every rank divisible
+by d.
+Proof.Taking determinants gives
+det(A) det(B)=det(ζBA)=ζ r det(B) det(A),
+so ζr =1 and hence d|r . The standard clock matrix Z =
+diag(1,ζ,...,ζ d−1) and cyclic shift matrix X satisfy ZX =ζXZ .
+Direct sums preserve the relation.
+Theorem 2.3.28(Finite Heisenberg rank threshold).Let k be
+algebraically closed, suppose that char(k) ∤d , and assume that
+k contains a primitive d-th root of unityζ. Let
+V=(Z/dZ) 2m,
+and write its elements as(x,y)with x,y∈(Z/dZ) m. Define
+α((x,y),(x ′,y′))=ζ y·x′
+.
+Then
+per([α])=d,ind rep([α])=d m.
+In particular, everyα-projective representation has dimension
+divisible by dm, and one of dimension dm exists.
+Proof. Bilinearity of the exponent shows thatα is a normalized
+2-cocycle. Since its values lie inµd, the order of [α] divides d.
+Its commutator bicharacter is
+β(v,v′)=α(v,v ′)α(v′,v)−1 =ζ y·x′−y′·x.
+This bicharacter is nondegenerate and assumes the primitive
+valueζ. If [α] had order e<d , thenαe would be a coboundary,
+whose commutator bicharacter is trivial; hence βe =1. The
+primitive valueζwould then satisfyζ e =1, a contradiction. So
+per([α])=d.
+For one Weyl pair, the standard clock and shift matrices give
+a d-dimensionalα-projective representation. Tensoring the m
+pairs gives a homomorphism
+kα[V]−→M d(k)⊗m≃M dm(k).
+The d2 Weyl operators span Md(k), and their tensor products
+span Mdm(k). Hence the image is the full matrix algebra. Both
+algebras have dimension |V| = d2m over k, so the homomor-
+phism is an isomorphism. Every finite-dimensional module over
+Mdm(k) is a direct sum of copies of its dm-dimensional simple
+module. Consequently every α-projective representation has
+dimension divisible by dm, and dimension dm occurs. Thus
+indrep([α])=d m.
+Theorem 2.3.29(Projective lifting obstruction).Let U ={Ui→
+X} be a cover in Clearn, and suppose that ¯gi j : Ui j−→PGL r is a
+PGLr-valued ˇCech1-cocycle. Thus ¯gi j¯gjk = ¯gik on every triple
+overlap Ui jk, together with the usual conventions ¯gii =1, and
+¯gji =¯g−1
+i j .
+Assume that lifts egi j : Ui j−→GL r have been chosen on the
+pairwise overlaps, after refining the cover if necessary; after
+such a refinement, retain the notationU. Then, on every triple
+overlap Ui jk, there is a unique scalar function ci jk∈G m(Ui jk)
+such thategi jeg jk =c i jkegik. Equivalently,
+egi jeg jkeg−1
+ik =c i jkIr.
+The collection c ={ci jk} is a Gm-valued ˇCech2-cocycle and
+defines a fixed-cover class[ c]U ∈ ˇH2(U; Gm). This class is
+independent of the chosen lifts.
+Moreover,[ c]U =0if and only if the lifts can be modified
+by scalar functions so as to give GLr-valued transition maps
+satisfying strict descent on the same coverU.
+The image of[c]U under the natural comparison map
+ˇH2(U;G m)−→H 2(X;G m),
+13
+
+===== PAGE 14 =====
+where H2(X; Gm)denotes cohomology on the induced site
+Clearn/X, is the obstruction class associated with the central
+extension
+1−→G m−→GL r−→PGL r−→1.
+This site-level class vanishes if and only if the corresponding
+PGLr-torsor lifts to a GLr-torsor, equivalently if strict GLr-
+valued transition maps exist after possibly refining the cover.
+Proof. Since the projective transition maps satisfy ¯gi j¯gjk = ¯gik,
+the element egi jeg jkeg−1
+ik maps to the identity in PGLr. It lies in
+the kernel of GLr −→PGL r, which is the central subgroup
+Gm. Consequently, there is a unique ci jk∈G m(Ui jk) such that
+egi jeg jk =c i jkegik.
+We next verify the ˇCech 2-cocycle condition. On a quadruple
+overlap Ui jkl, associativity gives two expressions for egi jeg jkegkl.
+First
+(egi jeg jk)egkl =c i jkegikegkl =c i jkciklegil.
+On the other hand,
+egi j(eg jkegkl)= egi jc jkleg jl =c jklegi jeg jl =c jklci jlegil,
+where we used the fact that c jkl is scalar and therefore central.
+It follows that ci jkcikl = c jklci jl. Equivalently, c jklc−1
+ikl ci jlc−1
+i jk =1.
+This is the multiplicative ˇCech 2-cocycle condition. Hence
+c∈Z 2(U;G m) and defines a class [c]U∈ ˇH2(U;G m).
+Suppose that the lifts are changed by scalar functions:
+eg′
+i j =a i jegi j,a i j∈G m(Ui j).
+Then
+eg′
+i jeg′
+jk =a i ja jkegi jeg jk =a i ja jkci jkegik =a i ja jka−1
+ik ci jkeg′
+ik.
+Thus the new scalar cocycle is
+c′
+i jk =a i ja jka−1
+ik ci jk =(δa) i jkci jk.
+Hence c′ and c differ by a ˇCech coboundary, so [c]U is indepen-
+dent of the chosen lifts.
+If [c]U =0, then there is a Gm-valued ˇCech 1-cochain a =
+{ai j} such that (δa)i jk = c−1
+i jk. Replacing egi j byeg′
+i j = ai jegi j gives
+c′
+i jk =( δa)i jkci jk =1. Hence eg′
+i jeg′
+jk = eg′
+ik, so the modified lifts
+satisfy strict GLr-descent onU.
+Conversely, suppose that strict GLr-valued transition maps
+bgi j lifting the same projective cocycle exist on U. Since bgi j
+andegi j have the same image in PGLr, there are scalar functions
+ai j∈G m(Ui j) such thatbgi j = ai jegi j. The strict cocycle condition
+for thebgi j implies 1=( δa)i jkci jk. Thus c is a ˇCech coboundary
+and [c]U =0.
+Finally, the exact sequence of sheaves
+1−→G m−→GL r−→PGL r−→1
+gives the usual connecting obstruction from PGLr-torsors to
+H2(X; Gm). The image of [c]U in site cohomology is precisely
+this obstruction class. Its vanishing is equivalent to the existence
+of a GLr-torsor lifting the given PGLr-torsor, which may require
+refining the original cover.
+Theorem 2.3.30(Rank-realization gate).Let[ c]∈H 2(Clearn; A)
+be a central obstruction class for which an index ind([c])is de-
+fined. If a rank-r locally free[ c]-twisted realization exists, then
+ind([c])|r . Consequently, a candidate rank r with ind([c]) ∤r
+must be rejected by any conservative realization gate. Con-
+versely, if the category of twisted objects is closed under direct
+sums and contains a rank- ind([c])object, then every positive
+multiple of ind([c])is an admissible rank for such a realization.
+Proof. By definition, ind([c]) divides the rank of every locally
+free twisted object representing the class [ c]. Hence a rank- r
+twisted realization can exist only if ind([c])|r . This proves the
+conservative rejection rule.
+For the converse, suppose that E is a rank ind([c]) twisted
+object. Then for any m≥ 1, the direct sum E⊕m is again [c]-
+twisted and has rank mind ([c]). Thus every multiple of the index
+is admissible under the stated closure assumption.
+Corollary 2.3.31(Algorithmic period-index rule).In the cen-
+tral/projective module ofTwistedMerge, the period determines
+the torsion type of the obstruction, while a certified classical
+index, projective-representation index, or proved lower-bound
+gate restricts the eligible ranks. The algorithm should activate a
+rank-r construction only when the available theorem or certifi-
+cate permits that rank. If no such rank certificate is available, the
+arithmetic status remains uncertified; divisibility by the period
+alone is not sufficient.
+Remark2.3.32.This is the mathematical reason for separat-
+ing period from index in the experiments. In the controlled
+clock–shift and finite-Heisenberg systems, the phase order gives
+the period while the projective-representation index gives the
+arithmetic rank threshold. More generally, a period records
+torsion type, whereas an index records rank divisibility for the
+corresponding geometric or projective realization.
+Remark2.3.33 (Arithmetic admissibility is not a construction).
+The divisibility condition ind([c]) |r , or indrep([α]) |r in a
+controlled finite system, is necessary for the corresponding rank.
+The algorithm separates four events:
+rank admissible,lift constructed,
+readout invariant,candidate validated.
+Only a candidate passing all four stages enters the validation
+envelope.
+Proposition 2.3.34(Descent after invariant pooling).Let K
+be connected, let G act on a lifted feature space W through
+a representation ρ : G→GL (W), and choose a root vertex.
+Let H≤G be the subgroup generated by the path-difference
+holonomies based at that root; equivalently, after a spanning tree
+is chosen, H is generated by the fundamental-cycle holonomies
+associated with the non-tree edges. Suppose that P : W→Y
+satisfies
+Pρ(h)=P for every h∈H.
+Then the prediction obtained by transporting a local lifted fea-
+ture to the root and applying P is independent of the chosen
+transport path. It defines a globally consistent pooled predictor.
+14
+
+===== PAGE 15 =====
+Proof. Let T p and Tq be the transport operators associated with
+two paths from the same local chart to the root. With the chosen
+path-order convention, the two operators differ by an element
+of the residual holonomy subgroup: there is an h∈H such that
+Tq =ρ(h)T p. Therefore
+PTq =Pρ(h)T p =PT p.
+Thus the pooled prediction is path-independent.
+Remark2.3.35.For the regular representation of a finite group
+Γ, the averaging map
+P((vγ)γ∈Γ)= 1
+|Γ|
+X
+γ∈Γ
+vγ
+satisfies Pρ(g)= P for every g∈ Γ. This is the mechanism
+checked in the executed two-loop nonabelian experiment. It
+explains how a nontrivial holonomy can remain present before
+pooling while becoming harmless after the invariant readout.
+2.4. Core certification pipeline
+The mandatory part of TwistedMerge is a certification and
+abstention pipeline. Projective rank searches and nonabelian
+branch representations are optional research branches; they are
+not required to return a diagnostic decision.
+Algorithm 1.Core TwistedMerge certification pipeline
+Require: Checkpoints{Mi}; frozen complex-construction data
+DK; alignment, certification, selection, and test splits; gauge
+families; candidate central coefficient systems; structural
+and statistical thresholds.
+Ensure: A selected ordinary or synchronized predictor and a
+diagnostic status for every tested structural branch.
+1: Construct K = Φ(DK) before fitting transitions or inspecting
+residuals.
+2: Build ordinary fixed-chart candidates and estimate pairwise
+transitions onD align.
+3: Synchronize each admissible gauge family and add every
+strict candidate that passes the pairwise gate.
+4: On Dcert, compute inverse-consistency, projection-fidelity,
+triangle, centrality, and closure diagnostics.
+5: ifa central coefficient system passes all structural gatesthen
+6: Compute a confidence interval for distance to cobound-
+aries.
+7: Returntrivial,nontrivial on K, oruncertifiedby Theo-
+rem 2.2.9.
+8: ifthe status is nontrivial and a proved projective-rank
+construction is availablethen
+9: Attempt it only at admissible ranks; admit it only
+after overlap and readout verification.
+10:end if
+11:else
+12: Treat the residual as noncentral holonomy or as uncerti-
+fied; do not assign anH 2 class.
+13:end if
+14: ifa nonabelian representation and invariant readout are
+independently certifiedthen
+15: Admit the branch predictor and record its parameter,
+memory, and inference multipliers.
+16:end if
+17: Select among admitted candidates on Dselect; evaluate the
+frozen choice once onD test.
+18: Return the selected predictor together with the complete
+diagnostic and abstention record.
+The detailed candidate-generation algorithm, all diagnostics,
+and computational-cost accounting are given in Appendix Ap-
+pendix C. The reduced form above makes the scientific claim
+explicit: TwistedMerge is a regime classifier with conservative
+fallback, we do not guarantee that a projective or branch candi-
+date will outperform ordinary merging.
+3. Primary experiments
+The primary experiments are organized by hypothesis. They
+ask whether a cycle defect is synchronization-removable,
+whether a concrete factor-merging rule is gauge-invariant,
+whether the three-way certificate has controlled decision utility
+under noise, and whether the resulting diagnostics generalize
+to natural checkpoint collections. Secondary benchmarks and
+structural sanity checks are reported in Appendix Appendix E.
+3.1. Primary hypotheses and statistical protocol
+The inferential unit is an independently trained checkpoint
+group or base-model seed. Exact algebraic rows are reported as
+deterministic audits. Confirmatory and exploratory analyses are
+separated in Table 6.
+All final model choices use validation or selection data, while
+test data are evaluation-only. The complex-construction rule is
+conceptually assigned its own split DK. In the controlled tetra-
+hedral witness, the incidence structure is prescribed by construc-
+tion; in the natural checkpoint studies, no nontrivialK-based cen-
+tral claim is promoted because an application-grounded complex-
+selection and sensitivity protocol has not yet passed the required
+gate.
+Where several fixed settings or complex thresholds are in-
+spected, exploratory screens are not promoted to a confirmatory
+claim merely because one row passes. The one-of-sixteen fixed-
+setting correlation result is reported as exploratory, while the
+leave-one-setting-out study is the primary natural prediction
+test. For a predeclared finite complex family, Theorem 2.2.10
+supplies simultaneous error control through the reported P
+λδλ
+budget.
+3.2. Primary practical audit: trained low-rank adapter gauges
+The exact-gauge discussion above concerns hidden-unit co-
+ordinates in ReLU networks. A later repository program tests
+an analogous gauge issue on trained low-rank adapters of LoRA
+form [25]. For a rank-rupdate
+∆W=BA,B∈R dout×r,A∈R r×din,
+the factorization is unchanged by
+(B,A)7−→(BQ,Q −1A),Q∈GL r.
+15
+
+===== PAGE 16 =====
+Table 6: Statistical protocol for the primary experimental claims.
+Hypothesis Inferential unit Data roles Status Primary endpoint
+Planted alignment defect is
+removable
+trained base-model
+seed
+train; align; evaluate controlled causal degradation relative to the
+uncorrupted aligned merge
+Adapter-factor merge is
+gauge-stable
+independently trained
+adapter group
+fixed trained group;
+equivalent scrambles;
+held-out evaluation
+confirmatory gauge audit relative merged-update
+change and prediction
+disagreement
+Central certificate abstains
+safely
+case/noise/noise-type
+seed
+exact generator;
+certification only
+controlled calibration certification coverage,
+uncertainty, rejection, and
+false-lift rate
+Natural cycle residual predicts
+degradation
+complete checkpoint
+collection
+train; align;
+leave-one-setting-out
+prediction; test
+preregistered confirmatory held-outR 2 for
+weight-average degradation
+Natural central or holonomy
+branch activates
+independently trained
+collection or lineage
+separate fitting, gating,
+and evaluation
+confirmatory negative
+audit
+preregistered gate pass and
+incremental predictive or
+corrective value
+Thus an averaging rule applied directly to A and B should be
+tested for invariance under equivalent rank-space representa-
+tions.
+The experiment reuses five independent groups of eight chart-
+specific rank-4 residual adapters over frozen ResNet-18 CIFAR-
+10 features. The primary audit uses three preregistered well-
+conditioned gauge families—orthogonal, positive diagonal with
+condition number at most 8, and dense with condition num-
+ber at most 30—and twenty scrambles per family and group,
+giving 300 primary rows. Individual effective updates, logits,
+predictions, and validation accuracies are preserved to numeri-
+cal precision. Naive factor averaging is not invariant, whereas
+whitened global synchronization and deterministic full-delta
+SVD are stable; Table 7 records the largest observed deviations.
+Across all primary families, the reported group-bootstrap
+difference in relative merged-update change between global syn-
+chronization and naive averaging is−3.218202, with 95% con-
+fidence interval [−3.437573,− 2.998831]. This is an invariance
+result. Full-delta SVD is at least as stable and exceeds global
+synchronization by 0.051725 in mean test accuracy across the
+five trained groups. Moreover, every primary natural cycle-
+aware row exceeds the preregistered cycle gate and selects the
+dense full-delta SVD fallback; no factor-only natural holonomy
+correction is obtained.
+The associated process-isolated systems grid spans dimen-
+sions 768–4096, ranks 4–32, and 4–16 adapters. All 336
+method/shape cases and 1008 timed trials finish without fail-
+ure or timeout. Pairwise and global factor-space methods make
+no dense effective-update allocation. At dimension 4096, global
+synchronization has lower measured incremental peak resident-
+set size than deterministic dense SVD in all twelve rank/count
+configurations and is faster in ten of the twelve; so the runtime
+statement is not uniform. Table 8 gives one representative case.
+The scope is limited. The trained corpus contains one resid-
+ual LoRA-form feature layer and a classification head, not a
+multi-layer transformer LoRA stack. The ill-conditioned 10 8
+boundary is excluded from the primary claim and produces 204
+alignment failures. The experiment does not establish adapter
+fingerprinting, unrestricted GLr robustness, accuracy superiority,
+uniqueness, or a natural Brauer or holonomy class.
+The experiment is deliberately reported as a bounded systems
+and invariance study. It does not satisfy the stronger modern-
+scale test of multilayer transformer or vision-transformer
+adapters proposed in Section 4; that experiment remains neces-
+sary for a performance-oriented claim.
+3.3. Causal parameter-level bridge: planted alignment incon-
+sistency
+The controlled obstruction examples below begin from pre-
+scribed cocycles or holonomy representations. We add an inter-
+mediate neural-network experiment in which the local functions
+are held fixed while the observed alignment data are perturbed.
+For each seed, one MNIST MLP is trained and four copies are
+produced by exact hidden-unit permutations together with the
+compensating classifier-column permutations. The copies are
+functionally equivalent: the mean base accuracy is 0.8632, the
+maximum measured copy-accuracy standard deviation is 0, and
+the maximum logit disagreement is approximately 2.9×10 −6.
+One observed alignment edge is then corrupted at four defect
+levels. Table 9 and Figure 2 report the central-involution fam-
+ily. Git Re-Basin-style [1] degradation increases monotonically
+from 0 to 0.0387, and the Spearman correlation between cycle
+score and degradation is 0.8741. C2M3-style [2] synchroniza-
+tion removes the one-edge inconsistency at every level. The
+rank-lift branch agrees with C2M3 and gives no additional gain.
+A random noncentral corruption produces a weaker trend,
+with Spearman correlation 0.6967 and high-defect degradation
+0.0190. This comparison shows that the cycle statistic is not
+a universal scalar explanation of every merging failure. More
+importantly, the central planted family is a synchronization-
+positive benchmark: the residual is removed by an ordinary edge
+correction.
+3.4. Controlled central and projective structures
+We now turn to the controlled central and projective exper-
+iments. Three levels must be kept separate. A cocycle-level
+obstruction witness proves that a specified edge correction is im-
+possible. A projective or Morita construction realizes a central
+commutation relation at an admissible rank. A charted branch
+predictor produces an invariant output on a controlled task. None
+16
+
+===== PAGE 17 =====
+Table 7: Gauge stability on trained rank-4 residual adapters. The individual-adapter row checks preservation under the reparameterization itself; the remaining rows
+compare merged outputs across equivalent representations.
+Method or check maximum relative update change maximum logit change maximum prediction disagreement
+Individual-adapter preservation 1.447298×10 −15 2.131628×10 −14 0
+Naive factor average 1.034210×10 1 1.156529×10 1 0.579250
+Whitened global synchronization 2.709900×10 −13 9.865442×10 −13 0
+Deterministic full-delta SVD 2.711270×10 −15 1.154632×10 −14 0
+Table 8: Representative process-isolated systems measurement at dimension 4096, rank 8, and eight adapters. Temporary-memory figures are analytical counts. These
+numerical fixtures are scaled from the trained factors and do not provide application-accuracy evidence.
+Method dense effective update incremental peak RSS temporary memory median time
+Whitened global synchronization no 11,845,632 bytes 2,113,536 bytes 0.009687 s
+Deterministic full-delta SVD yes 54,214,656 bytes 68,157,440 bytes 0.061481 s
+Table 9: Causal planted-alignment benchmark on functionally identical MNIST MLP copies. The degradation is measured relative to the uncorrupted aligned merge.
+Defect level Git Re-Basin degradationC 2M3 degradation Rank-lift minusC 2M3
+none 0.0000 0.0000 0.0000
+low 0.0031 0.0000 0.0000
+medium 0.0149 0.0000 0.0000
+high 0.0387 0.0000 0.0000
+None Low Medium High
+Planted edge-defect level
+0.000
+0.005
+0.010
+0.015
+0.020
+0.025
+0.030
+0.035
+0.040Mean degradation in test accuracy
+0.0000
+0.0031
+0.0149
+0.0387Git Re-Basin-style pairwise alignment
+C 2M 3-style synchronization
+Figure 2: Causal parameter-level alignment inconsistency. The vertical axis is
+the decrease in test accuracy relative to the uncorrupted aligned merge. The
+pairwise merge degrades with the planted edge defect, while cycle-consistent
+synchronization removes this particular inconsistency.
+of the last two statements implies that a non-coboundary cocycle
+has become a coboundary.
+3.4.1. Tetrahedral H2(µ2)witness and prediction-level branch
+task
+LetK=∂∆ 3 and let the face signs be
+(c012,c 013,c 023,c 123)=(−1,+1,+1,+1).
+By Theorem 2.3.19, this cocycle is not a coboundary. The
+negative-face rate is 0.250, but the exact certificate is the product
+of the four face signs, not the raw rate. By Proposition 2.3.6,
+this one-negative-face pattern is not produced by six context-
+independent edge matrices satisfying the exact central hypothe-
+ses. We treat it as a cocycle-level oracle witness on the pre-
+scribed comparison complex.
+A separate controlled finite central task supplies a charted
+representation with branch count q =2 and tests prediction-
+level recovery. This is the benchmark shown in Table 11. Strict
+0.0 0.2 0.4 0.6 0.8 1.0
+Test accuracy
+Ordinary weight average
+Git Re-Basin pairwise alignment
+C 2M 3 synchronized
+No-twist branch control
+Validation-selected branch
+ensemble
+Distilled charted
+single model
+Parameter-matched
+wide control
+Random branch
+ensemble
+Wrong-context control
+Wrong-twist control
+Correct q = 2 charted branch
+Learned context router
+Width 32 Width 64
+Figure 3: Controlled finite central charted-prediction benchmark on the full
+accuracy scale [0, 1]. The branch count is q =2. The correct branch and router
+recover the task, but this prediction-level result does not make the tetrahedral
+non-coboundary class vanish.
+pairwise and synchronized methods plateau at 0.7500, while the
+correct q =2 branch and a learned context router reach 1.0000.
+Wrong-context and wrong-twist controls remain at chance. The
+successful rows show that the supplied charted representation
+carries task-relevant central structure; they are not a construction
+of ordinary edge-level descent for the non-coboundary tetrahe-
+dral class.
+The repository also contains a complete-graphµ2 edge-noise
+sweep. The face cochain in this experiment is c =δb, so it is a
+coboundary rather than a nontrivial H2 class. At low triangle-
+residual rates, ordinary and rank-lifted predictions agree. At
+residual rates 0.3992, 0.4795, and 0.4947, ordinary accuracy is
+0.9214, 0.8100, and 0.7196, while the lifted branch remains at
+0.9338, 0.9351, and 0.9356. This is a robustness experiment for
+structured edge inconsistency.
+17
+
+===== PAGE 18 =====
+Table 10: Tetrahedral H2(µ2) cocycle-level witness. No rank-lift success is asserted for the non-coboundary class; the current edge-level algorithm records that no
+permitted edge correction removes it.
+Case Local loss Pairwise loss Negative-face rate Coboundary?
+trivial face cocycle 0.000 0.000 0.000 yes
+nontrivial face cocycle 0.000 0.000 0.250 no
+Table 11: Controlled finite central charted-prediction benchmark with branch count q =2. Branch, router, and ensemble rows are not capacity-matched single-model
+outputs.
+Method Width 32 acc. Width 64 acc.
+ordinary weight average 0.4993 0.4998
+Git Re-Basin pairwise 0.7500 0.7500
+C2M3 synchronized 0.7500 0.7500
+no-twist branch control 0.7500 0.7500
+validation-selected branch ensemble 0.7500 0.7500
+distilled charted single model 0.7500 0.7500
+parameter-matched wide control 0.7373 0.7393
+random branch ensemble 0.5500 0.5167
+wrong-context control 0.5000 0.5000
+wrong-twist control 0.5000 0.5000
+correctq=2 charted branch1.0000 1.0000
+learned context router1.0000 1.0000
+0.0 0.1 0.2 0.3 0.4 0.5
+Mean triangle-residual rate
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Mean test accuracy
+Ordinary descent
+Lifted branch predictor
+Oracle local-model reference
+Figure 4: Syntheticµ2 edge-noise sweep on the full accuracy scale [0, 1]. The
+horizontal axis is the mean triangle-residual rate before complete edge-level
+repair. Because the face cochain is induced from an edge cochain, it is a
+coboundary and not a nontrivial H2 class. The lifted curve is a branch-prediction
+control rather than a cohomology certificate.
+3.4.2. Robust certification under noisy transition maps
+The exact rank identities do not determine what to do with
+noisy estimates. The robust calibration uses the three-way output
+from Proposition 2.3.11. Hereτphase is the tolerance for the scalar
+phase-relation residual. Under the selected policy
+τcent =τ phase =3×10 −4,confidence margin=0.25,
+the small-noise certification rate is 1, the false-central rate is
+0, the false-lift rate is 0, the medium-noise uncertainty rate is
+0.7233, and the large-noise rejection rate is 1. No grouped trivial
+or noncentral control produces a false lift. Uncertain rows do
+not activate a lift.
+3.4.3. Decision utility and threshold sensitivity
+The calibration can be read as a selective decision system.
+“Coverage” is the fraction of designated small-noise positive
+cases that receive a central/projective certificate; “selective error”
+0.0 0.2 0.4 0.6 0.8 1.0
+Rate
+Small-noise certification rate
+False-positive central-certificate rate
+False-positive lift rate
+Medium-noise uncertainty rate
+Large-noise rejection rate
+1.0000
+0.0000
+0.0000
+0.7233
+1.0000
+Figure 5: Robust period-index certification and abstention. Intermediate noise is
+assigned to an uncertain state rather than being forced into a binary decision.
+is the false-lift rate among tested decisions; intermediate-noise
+uncertainty records abstention rather than an error. Table 12
+reports the precomputed policy sweep at fixed confidence margin
+0.25.
+The selected policy increases positive coverage while retain-
+ing zero false lifts in this controlled grid. Its practical utility is
+rejection of unsupported structure. A complete risk–coverage
+study across architectures and distribution shifts remains open.
+3.5. Natural-data and architecture boundary
+The controlled experiments identify their coefficient group
+and representation by construction. Natural neural checkpoints
+do not provide this information. The repository contains several
+repeated-seed and held-out tests designed to prevent a descriptive
+residual from being promoted into a general obstruction claim.
+3.5.1. Natural diagnostic prediction
+An earlier quality-gated permutation/activation study using
+the repository architecture labelled mlp2 evaluated sixteen pri-
+mary fixed settings with thirty observed seeds per setting. One
+18
+
+===== PAGE 19 =====
+Table 12: Controlled coverage–abstention trade-offfor the centrality and phase tolerances. All tested policies have zero false-central and false-lift rate on the grouped
+negative controls; the table does not claim calibration under natural distribution shift.
+Tolerance small-noise coverage medium-noise uncertainty false-lift rate large-noise rejection
+10−5 0.6417 0.8892 0 1.0000
+3×10 −5 0.8017 0.8892 0 1.0000
+10−4 0.9506 0.8892 0 1.0000
+3×10 −4 1.0000 0.7233 0 1.0000
+−0.2 0.0 0.2 0.4 0.6 0.8 1.0
+Leave-one-setting-out R 2
+Cycle residual
+Pairwise alignment loss
+Validation loss
+Validation-loss delta
+-0.206
+0.387
+0.511
+0.972
+Figure 6: Natural-data held-out prediction boundary. The horizontal axis is leave-
+one-setting-out R2. “Validation-loss delta” is the validation-loss change relative
+to the synchronized baseline used in the repository audit. The cycle residual
+has negative held-out R2, while ordinary validation information is substantially
+more predictive in this run.
+setting passed the predefined positive-correlation gate: Fashion-
+MNIST, N =3, no shift, activation matching, with Pearson corre-
+lation 0.2420, bootstrap lower bound 0.0065, and Spearman cor-
+relation 0.2629. The other fifteen settings did not pass. A later
+monomial-gauge verifier, which varied MNIST and Fashion-
+MNIST, N∈{ 3, 4}, widths 64, 128, no shift and input noise, and
+monomial activation or weight matching, produced no passing
+observed setting.
+The preregistered held-out study uses 120 natural checkpoint
+collections and leaves out one complete (N,width ) setting at a
+time. Its primary predictor is the cycle residual and its target
+is weight-average degradation. The cycle residual has Pearson
+correlation−0.1828, Spearman correlation−0.2626, and held-
+out R2 =−0.2055. Pairwise alignment loss has held-out R2 =
+0.3872, while validation loss and validation delta have held-out
+R2 =0.5108 and 0.9723. Thus cycle residual is not supported as
+a general held-out predictor in this dataset.
+3.5.2. Natural holonomy applications and model lineages
+The most recent repository programs test whether the struc-
+tural diagnostics yield a positive practical holonomy application.
+The first program reuses a shared frozen-encoder CIFAR-10
+corpus with eight D4 chart adapters and five training seeds.
+Its held-out-selected weight-derived connections are trivial or
+coboundary. Among fifteen nontrivial alternative seed–estimator
+settings, all fifteen are noncentral under the strict, medium, and
+loose tolerance policies. No natural seed–estimator setting is
+a central finite-order candidate, so the term Brauer class is not
+warranted for this corpus.
+The predictive and corrective gates are also negative. Orbit
+invariant pooling is 0.0160 below a generic mixture-of-experts
+control and 0.0062 below a matched random-branch control,
+with both reported confidence intervals excluding zero in the
+unfavorable direction. A mixed natural/controlled linter im-
+proves descriptively, but on natural rows alone the full holon-
+omy diagnostic changes AUROC by −0.0273, with reported
+95% cell-bootstrap interval [−0.0429,− 0.0057]. In controlled
+finite-Heisenberg carrier layers on the same frozen-image fea-
+tures and saved logits, the ( period,index ) cases (2, 2), (2, 4),
+and (3, 3) recover the exact minimum structurally coherent ca-
+pacity for all five seeds. The coherent lift nevertheless ties a
+parameter-matched generic unitary carrier in accuracy in ev-
+ery predicted-index comparison. This is a controlled structural
+validation, not a superior practical capacity planner.
+A separate confirmatory model-lineage audit uses one frozen
+ResNet-18 encoder, rank-4 feature adapters, a classifier, three de-
+terministic CIFAR-10 corruptions, and five independent training
+seeds as the inferential units. Different learning orders produce
+measurable terminal differences, but no loop/layer row passes the
+frozen nonidentity-stability gate, no commutator row passes the
+noncommutation gate, and the relevant admissible loop distances
+are only 1.933× 10−14 to 6.229× 10−14. The four preregistered
+predictive and corrective hypotheses all fail; in particular, there
+are zero harmful raw merge rows and no held-out improvement
+beyond pairwise drift. The largest raw adapter-layer distance is
+0.9734, but it is not stable and is not promoted to a holonomy
+signal.
+These audits strengthen the conservative interpretation. The
+supported practical use is certification and rejection: a selected
+trivial connection is kept trivial, noncentral alternatives are not
+forced into a Brauer interpretation, and unstable loop estimates
+are not used to activate a lift.
+The conclusion of the natural-data section is negative. The
+repository does not certify a natural central, Brauer, or period-
+index class; cycle residual is not a general held-out predictor;
+and exact gauge refinements do not displace greedy soup as
+the strongest generic boundary baseline in these experiments.
+These outcomes are consistent with the conservative design of
+Algorithm 2: when the structural gates do not pass, no lift is
+activated.
+3.6. Secondary evidence summary
+The remaining experiments support the taxonomy. The
+independent-seed MLP ladder places the selector at the greedy-
+soup boundary; the matched attribution audit does not establish
+a TwistedMerge-specific selector gain. Same-base task-vector
+methods can outperform the original checkpoint-only soup be-
+cause a common chart is supplied. Finite-Heisenberg and learned
+time-frequency systems verify projective-representation rank
+thresholds. The executed two-loop S 3 and D4 experiment ver-
+ifies noncommuting holonomy and invariant pooling but has
+19
+
+===== PAGE 20 =====
+Table 13: Recent practical holonomy and model-lineage audits. These are negative or controlled-structural results and do not establish a natural Brauer class, a
+practical invariant-pooling advantage, or a general model-lineage holonomy predictor.
+Audit Recorded outcome Interpretation
+Natural central certificate 0 central finite-order candidates Brauer terminology not warranted
+Invariant pooling−0.0160 vs generic MoE;−0.0062 vs random branch practical gate fails
+Natural-only linter AUROC delta−0.0273, CI [−0.0429,−0.0057] no incremental mergeability value
+Controlled real-feature carrier exact thresholds (2,2),(2,4),(3,3); accuracy delta 0 vs generic structural validation only
+Model-lineage loops 0 stable nonidentity rows; 0 noncommuting rows no incremental predictive/corrective value
+no discriminative accuracy value. Batch-normalization, CNN,
+bridge-dataset, and branch-lift audits are engineering or bound-
+ary results. Full tables, figures, and claim qualifications appear
+in Appendix Appendix E.
+4. Limitations and decisive next tests
+The first limitation is the construction of K. Definition 2.2.8
+gives an ex ante protocol, Theorem 2.2.10 controls a predeclared
+threshold family, and Proposition 2.2.11 gives an exact topology-
+sensitivity test, but the present natural checkpoint collections
+do not yet supply an application-grounded higher-overlap rule
+that persists across datasets and architectures. The controlled
+tetrahedral boundary is prescribed; it should not be mistaken for
+a topology discovered from four ordinary checkpoints.
+The second limitation is a realization gap. The one-negative-
+face µ2 class is a cocycle-level oracle witness. The separate
+q =2 charted task realizes a twisted prediction rule, but it does
+not make the original class a coboundary and it is not an ordinary
+edge-level descent realization of the same neural system. The
+decisive next controlled experiment should estimate overlap-
+dependent transition sections and certify the nontrivial class and
+the successful capacity-accounted projective predictor in one
+data-generating mechanism.
+The third limitation is scale. The low-rank-adapter audit uses
+one residual feature layer over frozen ResNet-18 features. It is
+not a multilayer LoRA stack on a transformer or vision trans-
+former. A journal-level practical follow-up should compare
+naive factor averaging, pairwise and global factor synchroniza-
+tion, dense delta averaging or SVD, and applicable task-vector
+baselines across several backbones, task families, adapter ranks,
+and independent training groups. It should report accuracy, in-
+variance error, peak accelerator memory, runtime, and inference
+cost under a predeclared primary endpoint.
+The fourth limitation is decision utility. The controlled cali-
+bration reports a useful coverage–abstention trade-offand zero
+false lifts on the tested negative controls, but it does not yet pro-
+vide natural distribution-shift calibration, full gate ablations, or
+regret relative to an oracle regime selector. The current natural
+evidence instead shows that pairwise and validation diagnostics
+are more predictive than cycle residual. Accordingly, the sup-
+ported use of the certificate is conservative rejection rather than
+natural accuracy forecasting.
+Finally, several mathematical statements in the appendices are
+standard or adapted background. The new theorem-level content
+is deliberately isolated in Table 3. The neuro-algebraic-geometry
+discussion is retained only as additional context.
+5. Conclusion
+Cycle inconsistency in model merging is not automatically
+cohomology. A higher-obstruction claim depends on a frozen
+comparison complex, coherent transition data, a fixed coefficient
+system, centrality, closure, and a stated repair model. Twisted-
+Merge organizes these requirements into a three-way certifica-
+tion pipeline with ordinary or synchronized fallback.
+The causal planted benchmark shows why the distinction mat-
+ters: a nonzero cycle score can be produced by an inconsistent
+observed edge and removed completely by synchronization. The
+controlled central experiments show the opposite possibility rel-
+ative to a prescribed complex: a closed central cocycle may be
+non-coboundary, and noisy estimates should then be certified,
+rejected, or left uncertain. The low-rank-adapter audit supplies a
+practical gauge example in which naive factor averaging depends
+on an equivalent representation, although dense SVD remains
+the accuracy boundary. Natural checkpoint and lineage studies
+do not support a general cycle predictor or a natural central class.
+The established contribution is diagnostic. The framework
+states what has been ruled out, what has merely been represented
+in a larger predictor, and when no higher-order conclusion is
+justified. The next decisive evidence must come from an ex
+ante natural comparison complex, an end-to-end obstruction re-
+alization, or a modern multilayer adapter study with measurable
+decision and systems utility.
+Code and data availability
+The repository state audited for this revision is commit
+b0e1ac4. The complete source package contains the clean
+manuscript, a referee-change version, the bibliography, every
+referenced figure, the source CSV files for generated figures,
+deterministic plotting code, the comparison-complex and claim-
+evidence audits, and the report snapshots used for the numerical
+statements. No invalidated nonabelian accuracy-evidence arti-
+fact is used.
+Appendix A. Extended descent dictionary
+The compact terminology used in the main text is expanded
+here. The table is interpretive and does not identify a compu-
+tational comparison complex with a site-level descent problem
+without the hypotheses stated in Section 2.
+20
+
+===== PAGE 21 =====
+Appendix A.1. Full dictionary
+Below we give a dictionary translating between descent-
+theoretic terms and their learning-theoretic interpretations. This
+dictionary is meant as a guide for the reader: it indicates which
+practical learning objects should be kept in mind when abstract
+terms such as covers, restriction maps, cocycles, and global
+sections appear. The goal is to make the following technical
+introduction readable both to mathematicians and to machine-
+learning theorists.
+RemarkAppendix A.1.1.The dictionary above includes both a
+literal descent interpretation and a finite computational interpre-
+tation. In the literal interpretation,U ={Ui→X} is a cover in
+a specified learning site and N(U) is its nerve. In the computa-
+tional interpretation, the algorithm may instead be given a finite
+comparison complex K whose simplices record the available
+pairwise and higher-order comparison data. These distinctions
+are made precise in Definitions 2.2.1–2.2.4.
+Appendix B. Additional theory and proofs
+This appendix retains the fixed-chart empirical-descent proof
+and the extended background used to relate the certification
+pipeline to existing merging algorithms. Their placement here
+should not be read as a claim of theorem-level novelty.
+Appendix B.0.1. Greedy soup as a fixed-chart empirical descent
+analogy
+We now reinterpret greedy model soup [ 26] through a fi-
+nite descent analogy. Fix a common parameter chart in which
+checkpoint averaging is defined. Let S ={σ1,...,σ N} be a
+finite set of trained checkpoints. For every nonempty subset
+S⊆{ 1,...,N} , letσS denote the averaged predictor obtained
+from{σi}i∈S . Model souping therefore produces the finite family
+Psoup :={σ S :S⊆{1,...,N},S,∅}.
+The validation set defines an empirical risk functional bR :
+Psoup →R . These averaged checkpoints are candidate pre-
+dictors in a fixed chart. They become literal sheaf-theoretic
+global sections only when the relevant compatibility and effec-
+tivity conditions have also been established. Greedy soup is a
+greedy search overPsoup, analogous to empirical descent on a
+finite family of global-section candidates.
+Definition Appendix B.0.1(Empirical compatibility of soup
+candidates).Let S⊆{ 1,...,N} be the current soup, and let
+j<S be a new checkpoint. We say that σ j isempirically
+compatiblewith σS if bR(σS∪{j} )≤ bR(σS ). Equivalently, adding
+σ j does not decrease validation accuracy. Greedy soup accepts
+exactly the empirically compatible candidates in its prescribed
+validation order.
+The next proposition records the elementary consequences
+of this validation rule. The finite-class comparison event used
+below is standard in empirical risk minimization and uniform-
+convergence arguments [27, 28].
+Proposition Appendix B.0.2(Greedy soup as empirical de-
+scent).Let S 0⊆S 1⊆···⊆S T be the sequence of accepted
+soups produced by greedy soup, and letPeval be the finite family
+of predictors evaluated by the procedure.
+1.The empirical risk is nonincreasing along accepted steps:
+bR(σS T )≤ bR(σS T−1 )≤···≤ bR(σS 0).
+Equivalently, validation accuracy is nondecreasing along
+accepted steps.
+2.Suppose that, with probability at least1−δ, one has
+sup
+σ∈Peval
+R(σ)− bR(σ)
+≤ε,
+where R denotes population risk. Then, on this event,
+R(σS T )≤min
+i
+R(σ{i})+2ε.
+3. Under the same uniform comparison event, suppose that
+σ j is rejected at the current soupσS , so that bR(σS∪{j} ) >
+bR(σS ). Then adding σ j cannot improve population risk by
+more than2ε:
+R(σS∪{j} )≥R(σ S )−2ε.
+If the algorithm uses the strict margin rule bR(σS∪{j} ) >
+bR(σS )+τ, then
+R(σS∪{j} )≥R(σ S )+τ−2ε.
+Proof. For (1), at step t, the algorithm accepts j<S t only if
+bR(σS t∪{j} )≤ bR(σS t). If the candidate is accepted, then S t+1 =
+S t∪{j} , and hence bR(σS t+1)≤ bR(σS t). Rejected candidates leave
+the soup unchanged. Induction gives the monotone chain.
+For (2), let i∗ ∈arg min i R(σ{i}). The initial predictor σS 0
+is chosen to be the best single checkpoint by validation, so
+bR(σS 0)≤ bR(σ{i∗}). By (1), bR(σS T )≤ bR(σS 0). Using the uniform
+comparison event twice gives
+R(σS T )≤ bR(σS T )+ε≤ bR(σS 0)+ε≤ bR(σ{i∗})+ε≤R(σ {i∗})+2ε.
+For (3), the uniform comparison event gives R(σS∪{j} ) ≥
+bR(σS∪{j} )−ε . Since j is rejected, bR(σS∪{j} ) > bR(σS ), and the
+same event gives bR(σS ) ≥R (σS )−ε . Combining these in-
+equalities yields R(σS∪{j} )>R (σS )− 2ε. The margin version is
+identical.
+Corollary Appendix B.0.3(Validation envelope).Let F be a
+finite family of candidate-predictor generators, such as weight
+averaging, greedy soup, Task Arithmetic, DARE, TIES, and
+SLERP. For each f∈F , letσ f be the candidate predictor pro-
+duced by f . Let bf∈arg min f∈F bR(σ f )be selected by validation,
+and let f∗∈arg min f∈F R(σ f )minimize population risk within
+the same finite family. If
+sup
+f∈F
+R(σ f )− bR(σ f )
+≤ε,
+then R(σbf )≤R(σ f∗)+2ε.
+21
+
+===== PAGE 22 =====
+Table A.14: Dictionary between descent-theoretic language and practical learning language.
+Mathematical/descent term Practical learning interpretation
+Global objectX, siteC learn, cover{U i→X} The whole merging problem, together with its decomposition into local
+pieces such as clients, tasks, domains, or checkpoints.
+OverlapsU i j andU i jk Places where local pieces are compared. Pairwise overlaps compare two
+pieces; triple overlaps check whether the pairwise comparisons fit
+together.
+Local objectM i, restrictionM i|Ui j, and restriction maps A local model and the part of it visible on an overlap. The restriction
+map is the operation that sends a local model to the part that can be
+compared with another one.
+Transition mapsg i j, gauges, gauge groupG, synchronization,
+and nonabelianH 1
+The data used to align local models. Gauge changes are allowed
+changes of coordinates, and synchronization means choosing them so
+that the alignments become mutually consistent. When the relevant
+torsor problem is defined, nonabelianH 1 classifies gauge-descent data;
+it is not a numerical mismatch score.
+Descent datum, strict descent, gluing, and ordinary object A descent datum is the collection of local objects and their transition
+maps. Strict descent means that these data satisfy the cocycle condition.
+When descent is effective in the ambient category, they glue to an
+ordinary global object or section; in the computational analogy, this
+corresponds to a consistent global merge.
+Global sections, space of global sections, andH 0 The possible globally consistent choices. In a literal descent problem,
+these are global sections. In the computational analogy, greedy soup
+searches only a prescribed finite family of fixed-chart candidate
+predictors; it should not be identified with the full spaceH 0 unless the
+relevant descent conditions have been established.
+Triple-overlap defectc i jk, coefficient sheafA, 2-cocycle,
+obstruction class [c]∈H 2(Clearn;A), and coboundary
+Ifg i jg jkgki =c i jk, thenc i jk first records a triangle residual. When the
+residuals lie in a fixed central coefficient system and satisfy cocycle
+closure, they define a class on the chosen comparison complex or cover.
+A site-level class is obtained only when the relevant comparison map
+applies. If the certified class is trivial, it can be removed by an edge
+correction; if it is nontrivial, strict gluing fails on the corresponding
+complex or cover.
+Twisted descent datum, failed gluing, and invariant readout In a genuine descent problem, a nonzero certified class prevents the
+permitted edge correction from producing strict descent on the stated
+complex or cover. The resulting datum is twisted; it determines a
+twisted sheaf only when the ambient category supports such objects. A
+projective or branch representation with invariant readout may still yield
+a globally consistent predictor, but it does not make the original class
+vanish.
+Nerve of the cover and ˇCech complex The combinatorial and algebraic devices used to organize the
+calculation. The nerve records local pieces, pairwise overlaps, and triple
+overlaps; the ˇCech complex records the corresponding alignment and
+obstruction data.
+Obstruction score For an arbitrary projected 2-cochain, this is a numerical distance from
+the space of coboundaries. It is interpreted as the norm of anH 2 class
+only after cocycle closure has been certified.
+Period per([c]) and index ind([c]) of an obstruction class
+[c]∈H 2(Clearn;A), where per([c]) is the order of [c] and
+ind([c]) is the rank-divisibility obstruction for twisted objects
+realizing [c]
+The period tells us the torsion type. The classical index, or the
+projective-representation index in a controlled finite system, gives an
+arithmetic rank-divisibility condition. Passing this condition does not by
+itself construct a lifted predictor; the implemented overlap relations and
+invariant readout must also pass.
+22
+
+===== PAGE 23 =====
+Current predictor
+σS∈P soup
+Add checkpointj
+candidateσ S∪{j}
+Validation-risk check
+bR(σS∪{j} )≤ bR(σS )?
+Accept
+S←S∪{j}
+Reject
+Sunchanged
+yes no
+Figure B.7: Greedy soup as a fixed-chart empirical descent analogy. A checkpoint is accepted only when the validation risk of the resulting averaged predictor does
+not increase. The diagram describes a finite candidate-predictor search; it is not a computation of the full space of sheaf-theoretic global sections.
+Proof. Since bf is chosen by validation, bR(σbf )≤ bR(σ f∗). There-
+fore
+R(σbf )≤ bR(σbf )+ε≤ bR(σ f∗)+ε≤R(σ f∗)+2ε.
+RemarkAppendix B.0.4.Greedy soup is a greedy algorithm on
+a finite family of candidate predictors in a fixed chart. It does
+not compute the full sheaf of models or test twisted cocycle data.
+Its validation rule is analogous to empirical descent only within
+the prescribed finite family. This explains why greedy soup is a
+strong baseline in low-obstruction settings and why it can still
+miss structured compatibility information that is not represented
+in its candidate pool.
+Appendix C. Full algorithm and diagnostics
+The following version exposes the optional rank, projective,
+and nonabelian branches that were suppressed in Algorithm 1.
+Appendix C.1. Detailed candidate-generation pipeline
+In this subsection, we record the algorithmic form of Twist-
+edMerge after the distinctions above. The guiding principle is
+that a model merge is a search over candidate global predictors
+together with a diagnosis of the comparison data. It also records
+the gauge family, output type, capacity multiplier, synchroniza-
+tion status, centrality and closure margins, projective rank gate,
+invariant-readout certificate, and the reason for every abstention.
+Definition Appendix C.1.1.Fix metrics dG on G and dA on A,
+write dG(x,A )= infa∈A dG(x,a ), and let K+
+1 be a choice of one
+orientation for each unoriented edge. The diagnostics below are
+used only when the corresponding edge, face, or tetrahedron
+set is nonempty; otherwise that branch is skipped rather than
+evaluated with a zero denominator. When a structured edge
+familyS⊆G K+
+1 is used, let
+ΠS(g)= eg={ egi j}(i j)∈K+
+1
+be the fitted or projected edge connection, extended to reverse
+orientations by inversion. If no structural projection is used, set
+eg=g. Define
+ehi jk = egi jeg jkegki, bci jk =π A(ehi jk)
+whenever the coefficient projection is defined. We use the diag-
+nostics
+Einv =
+
+1
+|K+
+1|
+X
+(i j)∈K+
+1
+dG(g jigi j,1 G)2
+
+1/2
+,
+Eproj =
+
+1
+|K+
+1|
+X
+(i j)∈K+
+1
+dG(gi j,egi j)2
+
+1/2
+,
+Ecent =
+
+1
+|K2|
+X
+(i jk)∈K2
+dG(ehi jk,A) 2
+
+1/2
+,
+Ecob =inf
+b∈C1(K;A)
+
+1
+|K2|
+X
+(i jk)∈K2
+dA(bci jk,(δ 1b)i jk)2
+
+1/2
+.
+WhenK 3 ,∅, define
+Eclosed =
+
+1
+|K3|
+X
+(i jkl)∈K3
+dA((δ2bc)i jkl,1 A)2
+
+1/2
+;
+when K3 = ∅, set Eclosed =0 by convention. The projection
+residual is an edge-level fidelity test: a small post-projection
+cycle score is not accepted when the learned connection is far
+from the structural family used to produce it. If dimK≤ 2,
+closure is vacuous for dimensional reasons, but inverse consis-
+tency, structural-projection fidelity, centrality, and distance to
+coboundaries remain nonvacuous.
+Here g ji in Einv denotes a reverse transition fitted indepen-
+dently when such a fit is part of the protocol. If reverse transi-
+tions are defined by g ji = g−1
+i j rather than estimated separately,
+then Einv =0 identically and serves only as a bookkeeping
+check.
+Definition Appendix C.1.2(Three-way certification).Let Lcob
+and Ucob be lower and upper confidence bounds for the dis-
+tance to coboundaries after the structural gates have passed. For
+thresholdsτ 0 <τ 1, the central branch returns
+
+trivial,U cob≤τ 0,
+nontrivial onK,L cob≥τ 1,
+uncertified,otherwise.
+23
+
+===== PAGE 24 =====
+Table C.15: Main modules of TwistedMerge. A module either produces a candidate predictor or records a diagnostic explaining why the corresponding branch is
+unavailable.
+Module Mathematical object Computation Output
+Candidate predictorsP cand averages, soups, task-vector, and path candidates ordinary candidates
+Pairwise alignment transitionsg i j permutation, monomial, block, or projective fitting aligned models and edge maps
+Strict synchronization candidate untwisted datum synchronize gauges overKstrict candidate
+Triangle diagnosticsg i jg jkgki cycle or holonomy residuals face-level defect data
+Central certification bc∈C 2(K;A) inverse, projection, centrality, closure, margin trivial/nontrivial/uncertified
+Projective rank gate per([α]) and ind rep([α]) arithmetic and representation checks admissible or rejected rank
+Invariant readoutPρ(h)=Ppath-independence certificate charted predictor
+Validation envelope empirical risk bRevaluate certified candidates only selected output
+Conservative rejection abstention state retain ordinary candidates safe fallback
+The same uncertified state is returned whenever inverse consis-
+tency, centrality, coefficient projection, closure, or the confidence
+margin fails.
+Algorithm 2.TwistedMerge
+Require: Checkpoints{Mi}n
+i=1; alignment data Dalign; certifica-
+tion data Dcert; selection data Dselect; optional held-out test
+data Dtest; a specified finite comparison complex K and,
+when applicable, a coverU with K = N(U); gauge families
+G; candidate central coefficient systems and projectionsπA;
+candidate ranksR; structural and statistical tolerances.
+Ensure:A selected predictorM ∗ and a diagnostic recordR.
+1: Initialize candidate setC←∅ and diagnostic record R←∅ .
+2: Construct ordinary candidates: weight average, greedy soup,
+and any available same-base task-vector or path candidates.
+Add them to C and record output type and cost for each
+candidate.
+3:foreach gauge familyG∈Gdo
+4: Estimate the edge transitions gi j∈G on Dalign and com-
+pute pairwise alignment losses.
+5:ifthe pairwise gate passesthen
+6: Synchronize the edge gauges over K, construct the
+strict candidateσ sync, and add it toC.
+7:end if
+8:Fit or project the structured edge connection eg= ΠS(g)
+when applicable, and computeE inv andE proj onD cert.
+9:Compute the triangle residuals ehi jk = egi jeg jkegki.
+10: foreach candidate central coefficient system A and pro-
+jectionπ A do
+11:ComputeE cent relative toA.
+12: ifthe inverse-consistency, centrality, and projection-
+fidelity gates passthen
+13:Form bci jk =π A(ehi jk).
+14:ifK 3 ,∅then
+15:ComputeE closed =∥δ 2bc∥.
+16:else
+17:SetE closed =0 for dimensional reasons.
+18:end if
+19:ifthe closure gate passesthen
+20: Compute a confidence interval for Ecob =
+dist(bc,B 2(K;A)).
+21:ifthe status is trivialthen
+22: Solve for an A-valued edge correction
+and add the corrected strict candidate when the overlap
+equations pass.
+23:else ifthe status is nontrivial onKthen
+24: ifa certified classical index, projective-
+representation index, or proved rank lower-bound gate is
+availablethen
+25:foreach candidate rankr∈Rdo
+26: if r passes the arithmetic rank
+gatethen
+27: Attempt the projective or
+charted rank-rconstruction.
+28: ifthe lifted overlap relations
+and invariant-readout certificate passthen
+29: Add the lifted candidate
+and record its output type and cost.
+30:else
+31: Record construction or
+readout rejection.
+32:end if
+33:else
+34: Record arithmetic no-lift re-
+jection for rankr.
+35:end if
+36:end for
+37:else
+38: Keep the central class statusnontriv-
+ial on K; record the rank gate as uncertified and skip rank
+constructions.
+39:end if
+40:else
+41: Record central uncertified status and do
+not activate a lift.
+42:end if
+43:else
+44: Record a projected cochain that failed clo-
+sure; do not assign anH 2 class.
+45:end if
+46:else
+47: Record a noncentral, inverse-inconsistent, or
+projection-unstable result for this coefficient system.
+48:end if
+49:end for
+50:ifthe residual is treated as nonabelian holonomythen
+51: Estimate generatorsγ1,...,γ s of the holonomy sub-
+24
+
+===== PAGE 25 =====
+group.
+52:Search for a representationρand pooling mapP.
+53: if Pρ(γℓ)= P within tolerance for every generator
+then
+54: Construct the branch predictor, record its branch
+and inference multipliers, and add it toC.
+55:else
+56:Record nonabelian no-lift rejection.
+57:end if
+58:end if
+59:end for
+60:Evaluate bR(σ) onD select for everyσ∈C.
+61:Selectσ ∗∈arg minσ∈C bR(σ).
+62:ifD test is suppliedthen
+63:Evaluate the frozen selection once onD test.
+64:end if
+65:ReturnM ∗ =σ∗ andR.
+The separation of Dalign, Dcert, Dselect, and Dtest is conceptu-
+ally important. Alignment data estimate the transition maps,
+certification data decide whether a structural branch is admis-
+sible, selection data compare the resulting candidates, and test
+data are evaluation-only. When data are limited, these roles can
+be cross-fitted rather than literally assigned disjoint samples.
+Let
+CTM =C base∪C sync∪C proj∪C br
+be the admitted candidate family. The final predictor is
+σ∗∈arg min
+σ∈CTM
+bR(σ).
+If no projective or nonabelian branch is certified, then Cproj∪
+Cbr = ∅, and TwistedMerge reduces to validation selection
+among ordinary and synchronized candidates. This is the con-
+servative fallback used in the natural-data experiments.
+Appendix C.1.1. Computational cost
+Let|E(K)|,|F(K)|, and|T(K)| denote the numbers of edges,
+faces, and tetrahedra. Let Calign be the cost of fitting one edge
+alignment, Ctri the cost of one triangle diagnostic, and Cval the
+cost of validating one candidate. The base connection and trian-
+gle diagnostics cost
+O |E(K)|C align +|F(K)|C tri
+.
+For each candidate coefficient system, one must additionally pay
+for coefficient projection, closure on T(K), and the distance-to-
+coboundaries computation; these costs depend on the represen-
+tation of the coefficient group and on the chosen solver. Rank
+and branch searches add their own construction costs. The final
+validation cost is
+O |CTM|Cval
+.
+A branch or rank lift may also have an inference multiplier,
+which is recorded explicitly. The conservative design avoids the
+construction and inference costs of structural branches whenever
+their certificates are absent or uncertain.
+Appendix D. Geometric discussion
+The following discussion is conceptual background and is not
+used in the experimental conclusions.
+Appendix D.1. Neural quotient stacks and coarse spaces
+We end the theoretical part with a remark on neuro-algebraic
+geometry. The point is only to explain how the descent-theoretic
+language above can be viewed as a finite computational shadow
+of a more geometric object: the étale site of a neural variety, or
+more naturally, of its quotient stack by gauge symmetries.
+LetΘdenote the parameter space for a fixed neural architec-
+ture, and let ev :Θ →Y be an evaluation map to a space of
+functions, outputs, or finite evaluations. For a polynomial archi-
+tecture A, one can regard this as an algebraic mapΘ A→F A,
+whereΘ A is the parameter space of the architecture andFA is the
+finite-dimensional affine space of functions, or finite evaluation
+vectors, represented by the chosen algebraic output coordinates.
+Then define the associated neurovariety
+NA := im(ΘA→F A).
+The coarse neurovariety records expressivity and algebraic con-
+straints on the realizable functions. For ReLU networks, the
+same picture should be understood stratumwise or piecewise al-
+gebraically, since ReLU is piecewise linear rather than globally
+algebraic. This viewpoint is compatible with recent work on
+neuro-algebraic geometry and with earlier algebraic and tropical
+approaches to neural networks [29–32].
+However, the coarse neurovariety does not retain the auto-
+morphism data of a parameter presentation. Neural parameter
+spaces usually carry nontrivial gauge symmetries: hidden-unit
+permutations, positive ReLU scalings, monomial gauges, and
+changes of basis can change the parameters without changing
+the represented function. Thus a natural object for descent is
+the quotient stack NA =[Θ A/GA], where GA is the relevant
+gauge group. This quotient stack records the parameter sym-
+metries that the image in the coarse space alone does not retain.
+The quotient stack remembers automorphisms of local models,
+while the coarse quotient may forget them. This is important for
+us because descent obstructions are sensitive precisely to such
+automorphism data.
+Definition Appendix D.1.1.Let N =[Θ/G] be a quotient stack
+associated to a neural architecture. Itsétale learning siteis the
+site N´et whose objects are étale charts U→N and whose covers
+are étale covers. A local model over such a chart is a section
+or object of the model stack over U, and transition maps on
+overlaps record how two local parameter charts or latent charts
+are identified.
+In practice, TwistedMerge works with a finite comparison
+complex K. When the local model charts arise from a genuine
+coverU of a neural quotient stack, one may take K = N(U)
+and interpret the computation as a finite ˇCech approximation.
+In controlled or purely combinatorial experiments, however,
+K is specified directly, and the resulting cohomology is the
+cohomology of that finite comparison complex rather than an
+25
+
+===== PAGE 26 =====
+Table C.16: Diagnostics returned by TwistedMerge. The diagnostic record is part of the output rather than an auxiliary log.
+Diagnostic Meaning Use
+Pairwise alignment loss discrepancy after an edge alignment edge-level compatibility
+Inverse residualE inv discrepancy betweeng ji andg−1
+i j coherent orientation data
+Triangle residual value ofg i jg jkgki strict-descent failure
+Centrality residualE cent distance toA⊆Z(G) applicability of abelian branch
+Projection residualE proj learned-to-structural distance rejection of projection traps
+Closure residualE closed size ofδ 2bcexistence of a cohomology class
+Coboundary interval uncertainty for dist( bc,B 2) trivial/nontrivial/uncertified status
+Period and index gate torsion type and rank divisibility arithmetic lift eligibility
+Lifted-overlap residual error in implemented projective relations construction certificate
+Pooling certificate verification ofPρ(h)=Ppath-independent readout
+Output type and cost single, soup, ensemble, branch, diagnostic capacity-aware comparison
+Validation risk empirical risk of each admitted candidate final selection
+automatically identified class in the étale cohomology of the
+neural stack.
+Definition Appendix D.1.2.The cohomological Brauer group
+of the neural stack is Br′(N) := H2(N´et,G m)tors. The Azumaya
+Brauer group Br(N) maps naturally to Br′(N), and the two are
+identified only when the comparison map is known to be an
+isomorphism. Their elements measure torsion central or projec-
+tive descent obstructions on the quotient stack; see, for example,
+[33, 34].
+Proposition Appendix D.1.3(A coarse quotient can forget twist-
+ing).Let k be an algebraically closed field, letΘ A≃A N
+k , and
+let a finite group GA whose order is invertible in k act onΘ A.
+Assume that the coarse quotient QA = ΘA/GA exists and is an
+affine space. Then Br′(QA)=0. On the other hand, the quo-
+tient stack NA =[Θ A/GA]can have a nontrivial cohomological
+Brauer group. More precisely, under the vanishing
+H1((ΘA)´et;G m)=0,H 2((ΘA)´et;G m)=0,
+one has a natural identification
+Br′(NA)H 2(GA;k×),
+where GA acts trivially on k×. In particular, the quotient stack
+can carry twisting data that is invisible on its coarse quotient.
+Proof. Since QA is an affine space over an algebraically closed
+field, its cohomological Brauer group is trivial: Br′(QA)=0;
+see [35, Chapter 1].
+For the action of GA onΘ A, we use the equivariant Cartan–
+Leray spectral sequence; see [36]:
+E p,q
+2 =H p(GA,H q((ΘA)´et,G m))=⇒H p+q(([ΘA/GA])´et,G m).
+BecauseΘ A ≃A N
+k , the units are H0((ΘA)´et; Gm)= k×, and
+the action of GA on these constant units is trivial. The stated
+vanishing removes the terms E1,1
+2 and E0,2
+2 of total degree two.
+It also eliminates the only possible incoming differential to E2,0
+2 ,
+namely the differential from E0,1
+2 . No differential can leave E2,0
+r
+because the target would have negative second index. Hence the
+total degree-two group is naturally identified with H2(GA; k×).
+SinceG A is finite, this group is torsion, so
+Br′([ΘA/GA])=H 2(([ΘA/GA])´et,G m)tors H 2(GA;k×).
+This group can be nontrivial and is the familiar source of pro-
+jective representations and central extensions. Thus a coarse
+quotient may have trivial Brauer group while the quotient stack
+still carries nontrivial twisting.
+RemarkAppendix D.1.4.This proposition explains why the
+Brauer group appears in our framework. A central/projective
+obstruction is the finite-computational analogue of a class in
+H2(−,G m) on the stack of local model charts. In the experi-
+ments, we compute such a class only on a finite nerve. Thus
+the finite-complex residual or class is a diagnostic for the cho-
+sen comparison data, while Br′(N) is the conceptual geometric
+object behind the projective site-level theory.
+Example Appendix D.1.5(Permutation and ReLU quotient
+stacks).For an MLP with hidden width m, hidden-unit permuta-
+tions give an action of S m on a parameter chart. ReLU networks
+also have positive scaling symmetries, so the relevant gauge
+group is enlarged to a monomial group. Thus one should think
+of a local parameter chart as being replaced by a quotient stack
+[Θ/Gmono], where Gmono contains permutations and positive di-
+agonal rescalings. This explains why raw parameter averaging
+is not intrinsic, and why alignment or synchronization is needed
+before averaging.
+RemarkAppendix D.1.6.The Brauer group records only the cen-
+tral/projective part of the obstruction. If the residual transition
+data are genuinely nonabelian, then the correct object is not sim-
+ply a class in Br′(N). One must also remember the nonabelian
+holonomy data and the way local gauge groups are identified
+up to inner automorphism. This is why the executed S 3 and D4
+construction in this paper is described as a nonabelian holonomy
+experiment rather than an ordinary Brauer group computation.
+Appendix E. Secondary experiments
+These experiments support the taxonomy, audit implementa-
+tion boundaries, or provide controlled algebraic checks.
+Appendix E.1. Independent-seed MLP merging and exact ReLU
+gauges
+We first consider independently trained MLPs. This is the
+regime in which a common base chart is absent and hidden-unit
+alignment is part of the problem.
+26
+
+===== PAGE 27 =====
+0.0 0.2 0.4 0.6 0.8 1.0
+Mean test accuracy
+Weight averaging
+Git Re-Basin-style pairwise alignment
+C 2M 3-style synchronization
+Raw monomial scaling
+TwistedMerge selector
+Greedy soup
+0.7186
+0.8460
+0.8480
+0.8521
+0.8690
+0.8714
+Figure E.8: Small independent-seed MLP benchmark on the full accuracy scale
+[0, 1]. Exact values are printed at the bar ends; TwistedMerge remains close to
+greedy soup and above the internalC 2M3-style baseline.
+Appendix E.1.1. Small benchmark
+The initial benchmark uses four fixed settings, obtained from
+N∈{ 3, 4} local models and hidden width in{32, 64}, with five
+seeds per setting. Table E.17 and Figure E.8 reproduce the com-
+pact comparison. Uniform weight averaging performs poorly,
+while pairwise and synchronized gauge methods recover much
+of the lost accuracy. The TwistedMerge selector reaches 0.8690,
+compared with 0.8480 for internal C2M3-style synchronization
+and 0.8714 for greedy soup.
+Appendix E.1.2. Expanded exact-gauge ladder
+The repository also contains a larger confirmatory exact-
+gauge ladder. It uses MNIST, one-hidden-layer ReLU MLPs,
+N∈{ 3, 4}, widths 16, 32, 64, and twenty seeds per fixed set-
+ting, giving 120 paired runs. The candidate family includes
+raw, shrinkage, global, and optimized positive monomial gauges,
+gauge-aware soups, and validation selectors.
+The paired mean difference between the improved selector and
+internal C2M3-style synchronization is+0.0438, with reported
+95% paired bootstrap confidence interval [0.0372, 0.0508] and
+win/tie/loss count 117/0/3. Against greedy soup, the difference
+is−0.0015, with reported 95% paired bootstrap confidence in-
+terval [−0.0023,− 0.0008] and count 20/49/51. Shrinkage and
+global scaling improve raw monomial scaling by+0.0070 and
++0.0071, respectively. These results support the exact-gauge
+mechanism from Theorem 2.3.16 only in the sense of function-
+preserving ReLU reparameterization; the empirical gain comes
+from the candidate construction and validation procedure, not
+from a central obstruction certificate.
+Appendix E.1.3. Official-core audit and selector attribution
+A later audit connects adapter-assisted official matching cores
+to exact checkpoint families. Table E.20 reports the successful
+rows. All entries are same-capacity single models with one
+inference path. The official C2M3 core improves over its match-
+ing internal implementation by+0 .0128, and the official Git
+Re-Basin core improves over its internal pairwise implementa-
+tion by+0.0086. Official TIES agrees exactly with the internal
+TIES-style merge on the three audited same-base rows.
+On the twenty independent-initialization settings, official
+C2M3 exceeds the pure TwistedMerge monomial-gauge can-
+didate by+0 .0087, with reported 95% paired bootstrap confi-
+dence interval [0.0050, 0.0123]. The existing validation selector
+exceeds official C2M3 by+0.0081, with reported 95% paired
+bootstrap confidence interval [0.0030, 0.0136], and official Git
+Re-Basin by+0.0143, with reported 95% paired bootstrap confi-
+dence interval [0.0074, 0.0221]. Because that selector chooses
+from an enlarged candidate pool, these comparisons do not iso-
+late a TwistedMerge-specific algorithmic contribution.
+The budget-matched attribution experiment addresses this is-
+sue on forty exact settings grouped into ten independent training
+seeds. We use the repository’s notation: A0 is the ordinary
+greedy baseline; A1 is the official-synchronization pool; A2 is
+gauge-only augmentation; A3 is gauge-plus-soup augmentation;
+A4 is diagnostic-only augmentation; A5 is the full TwistedMerge
+selector; B0 is an ordinary soup control matched to A5 in can-
+didate count and selector validation evaluations; and A6 is a
+nondeployable test-oracle upper bound. A5 contains no lift.
+Candidate-generation kernels and total generation compute are
+recorded but are not identical between A5 and B0.
+The full selector A5 has mean test accuracy 0.8707, whereas
+B0 has mean test accuracy 0.8726. Their group-bootstrap paired
+difference is−0.0019, with reported 95% group-bootstrap con-
+fidence interval [−0.0026,− 0.0012]. The primary attribution
+gate fails. Figure E.9 gives a publication-scale summary re-
+generated from the exact values in the repository report. The
+supported conclusion is enriched-pool validation selection, not a
+TwistedMerge-specific selector gain.
+Appendix E.2. Same-base fixed-chart merging and empirical
+descent
+Task Arithmetic, TIES, DARE, and SLERP require a com-
+mon base chart. The repository therefore evaluates them in a
+separate same-base benchmark rather than placing them in the
+independent-seed leaderboard. One base checkpoint using the
+repository architecture labelled mlp2 is trained, task-specific
+copies are fine-tuned from that base, and all candidate hyper-
+parameters are chosen on validation data. Git Re-Basin and
+C2M3 are recorded as not-run secondary diagnostics because
+the construction does not intentionally introduce an independent
+permutation mismatch.
+On MNIST digit subsets with width 64, Task Arithmetic im-
+proves over the original greedy soup by+0.0439, with reported
+95% paired bootstrap confidence interval [0.0407, 0.0474]. At
+width 128, the corresponding gain is+0 .0494, with reported
+95% paired bootstrap confidence interval [0 .0469, 0.0521].
+On Fashion-MNIST width 64, DARE improves by+0 .0109,
+with reported 95% paired bootstrap confidence interval
+[0.0048, 0.0161]. These are exact-setting same-base results, not
+evidence about independently trained models.
+The descent-envelope experiment enlarges the generated
+candidate family to include weight averages, base and fine-
+tuned models, SLERP, Task Arithmetic, TIES, DARE, and the
+original greedy soup. Greedy soup over this enriched gener-
+ated family improves over the checkpoint-only greedy soup by
++0.0227, with reported 95% paired bootstrap confidence inter-
+val [0.0189, 0.0267]. This is a direct empirical illustration of
+Corollary Appendix B.0.3: the improvement comes from en-
+larging the finite family of candidate predictors while retaining
+validation-only selection.
+27
+
+===== PAGE 28 =====
+Table E.17: Small independent-seed MLP benchmark. The Git Re-Basin-style andC 2M3-style rows are in-repository baselines.
+Method Mean test acc.∆vsC 2M3 ∆vs greedy
+Weight averaging 0.7186−0.1294−0.1528
+Git Re-Basin-style pairwise alignment 0.8460−0.0021−0.0254
+C2M3-style synchronization 0.8480 0.0000−0.0233
+Raw monomial scaling 0.8521+0.0040−0.0193
+TwistedMerge selector 0.8690+0.0209−0.0024
+Model Soups/greedy soup 0.8714+0.0233 0.0000
+Table E.18: Greedy soup versus the TwistedMerge selector on the small benchmark. Each fixed setting uses five seeds; the overall row aggregates twenty runs.
+Nwidth runs greedy TwistedMerge∆reported 95% CI W/T/L
+3 32 5 0.8622 0.8623+0.0000 [0.0000,0.0001] 1/4/0
+3 64 5 0.8803 0.8756−0.0047 [−0.0076,−0.0012] 1/0/4
+4 32 5 0.8621 0.8604−0.0017 [−0.0051,0.0002] 1/2/2
+4 64 5 0.8809 0.8775−0.0034 [−0.0080,0.0006] 1/1/3
+overall all 20 0.8714 0.8690−0.0024 [−0.0042,−0.0009] 4/7/9
+Table E.19: Expanded independent-seed exact-gauge ladder over 120 paired runs. Exact positive scaling variants improve the internalC2M3-style baseline, but the
+improved selector remains slightly below greedy soup.
+Method Mean test accuracy
+C2M3-style synchronization 0.8119
+Raw monomial scaling 0.8197
+Shrinkage monomial scaling 0.8268
+Global positive scaling 0.8269
+Optimized monomial scaling 0.8206
+Improved TwistedMerge selector 0.8557
+Greedy soup 0.8572
+Table E.20: Adapter-assisted official-core audit. The rows use official matching or merge cores through explicit checkpoint adapters; they are not unmodified
+end-to-end executions of the original repositories.
+Core Regime settings mean test acc.∆vs matching internal
+Official Git Re-Basin independent initialization 20 0.8546+0.0086
+OfficialC 2M3 independent initialization 20 0.8608+0.0128
+Official TIES same base 3 0.8215 0.0000
+Table E.21: Representative same-base task-vector results over twenty seeds per setting. The fine-tuned oracle mean is not a single merged model.
+Method MNIST digit subsets, width 64 MNIST digit subsets, width 128 Fashion subsets, width 64
+Greedy soup 0.8164 0.8345 0.6828
+Sequential SLERP 0.8166 0.8347 0.6832
+Task Arithmetic0.8603 0.88390.6932
+DARE 0.8556 0.87700.6936
+TIES 0.8245 0.8500 0.6462
+Fine-tuned oracle mean 0.9267 0.9372 0.7779
+Appendix E.2.1. Finite-index and higher period-index thresh-
+olds
+Proposition 2.3.27 gives the first rank gate. The repository
+tests primitive orders d =2, 3, 4, 5, 6 and several nonprimitive
+roots. In every case, the smallest successful clock–shift rank
+equals the order d, and, among the tested ranks, success occurs
+exactly at multiples of d. This experiment is described as a
+projective or Morita realization of the relation AB =ζBA, not as
+the vanishing of the original scalar 2-cocycle.
+The higher finite-Heisenberg benchmark realizes Theo-
+rem 2.3.28. Table E.22 shows that the period remainsd while the
+projective-representation index grows to dk for k independent
+Weyl pairs.
+Appendix E.2.2. Known and learned time-frequency charts
+Finite signals on Z/dZ give a natural controlled source of the
+Weyl relation. If T is the cyclic time shift and M is modulation,
+then
+MT=ζT M.
+28
+
+===== PAGE 29 =====
+0.0 0.2 0.4 0.6 0.8 1.0
+Mean test accuracy
+Full TwistedMerge selector (A5)
+Budget-matched ordinary selector (B0)
+0.8707
+0.8726
+−0.0030 −0.0025 −0.0020 −0.0015 −0.0010 −0.0005 0.0000 0.0005
+Paired mean test-accuracy difference
+A5 - B0
+-0.0019  [-0.0026, -0.0012]
+Figure E.9: Primary selector-attribution comparison regenerated from the repository report. A5 is the full TwistedMerge selector and contains no lift; B0 is the
+ordinary selector matched to A5 in candidate count and selector validation evaluations. Top: mean test accuracy on the full scale [0 , 1]. Bottom: paired mean
+difference A5−B0 with the reported 95% group-bootstrap confidence interval.
+Table E.22: Controlled finite-Heisenberg period and projective-representation index. The minimal successful tested rank equalsd k.
+Case PerioddPairskind rep([α])=d k
+d=2,k=1 2 1 2
+d=2,k=2 2 2 4
+d=2,k=3 2 3 8
+d=3,k=1 3 1 3
+d=3,k=2 3 2 9
+d=4,k=1 4 1 4
+d=4,k=2 4 2 16
+MNIST digit subsets
+width 64
+MNIST digit subsets
+width 128
+Fashion-MNIST class subsets
+width 64
+0.0
+0.2
+0.4
+0.6
+0.8
+1.0Mean test accuracy
+Greedy soup
+Sequential SLERP
+Task Arithmetic
+DARE
+TIES
+Figure E.10: Same-base fixed-chart merging on the full accuracy scale [0 , 1].
+Task Arithmetic and DARE improve over the original greedy-soup pool in the
+stated settings because the common base already supplies the chart required by
+the task-vector operations.
+For k independent pairs, the expected threshold is dk. The
+known-operator benchmark recovers this threshold: ( d,k )=
+(2, 2), (2, 3), (3, 2), (4, 1) have minimal certified ranks 4, 8, 9, 4,
+respectively. The corresponding controlled orbit-invariant classi-
+fier accuracies at the admissible rank are 0.9155, 0.9734, 1.0000,
+and 0.9557.
+The learned-chart experiment estimates the transition oper-
+0 2 4 6 8 10 12 14 16
+Order or representation rank
+d = 2, k = 1
+d = 2, k = 2
+d = 2, k = 3
+d = 3, k = 1
+d = 3, k = 2
+d = 4, k = 1
+d = 4, k = 2
+2
+2
+2
+3
+3
+4
+4
+2
+4
+8
+3
+9
+4
+16
+Period d Projective-representation index d k
+Figure E.11: Controlled period-index thresholds. Here d is the commutator-
+phase order and k is the number of independent Weyl pairs. Period divisibility
+alone is insufficient when several independent pairs are present.
+ators from paired observations. Clean least-squares and full-
+dimensional linear-autoencoder estimates recover the expected
+phase order and projective-representation rank threshold with
+certification rate 1 and operator errors near numerical precision.
+Raw estimates at noise levels 0.01 and 0.05 are rejected. For
+the d =3,k =2 case, candidate ranks 3 and 6 remain rejected
+and rank 9 is selected only when the learned structural relations
+29
+
+===== PAGE 30 =====
+0 2 4 6 8 10
+Order or representation rank
+d = 2, k = 2
+d = 2, k = 3
+d = 3, k = 2
+d = 4, k = 1
+2
+2
+3
+4
+4
+8
+9
+4
+Commutator-phase order d Minimal certified projective-representation rank
+Figure E.12: Finite time-frequency chart thresholds. Heredis the commutator-
+phase order and k is the number of independent time-frequency pairs. The phase
+order and the minimal certified projective-representation rank differ when k> 1.
+pass. A subsequent denoising experiment shows that nearest-
+unitary projection can raise the d =2,k =2, rank-4, noise-10−4
+certification rate from 0.5 to 0.9. Finite-Heisenberg projection
+extends the range further, but only when the learned-to-projected
+residual also passes. This projection residual is the empirical
+reason for includingE proj in Definition Appendix C.1.1.
+Appendix E.3. Executed two-loop noncommuting holonomy
+The central experiments use abelian coefficient data. We now
+consider a genuinely nonabelian residual, where the relevant
+object is a holonomy subgroup rather than an ordinary H2 class.
+The executed construction uses the groupsS 3 and
+D4 =⟨r,s|r 4 =s 2 =1,srs=r −1⟩.
+The comparison complex is a wedge of two length-three cycles,
+0–1–2–0 and 0–3–4–0. The first loop carries a planted transpo-
+sition or reflection s, and the second carries a planted 3-cycle
+or rotationr. Five local checkpoints are exact hidden-unit repa-
+rameterizations of the same executed one-hidden-layer ReLU
+MLP. The duplicated regular hidden orbit supplies exact au-
+tomorphisms carrying the two transitions, while the remaining
+hidden units are generic. The run grid uses widths 32 and 64,
+with seeds 0,...,49, giving 100 executed instances per group.
+Table E.23 records the structural certificates. The pre-lift,
+commutator, and post-lift entries are the normalized operator
+residuals defined by the executed benchmark; they are report-
+specific diagnostics rather than universal group invariants. The
+positive commutator residual verifies that the two recovered
+generators do not commute. The local functional-equivalence
+residual is at numerical precision, the regular-action multiplica-
+tion residual is zero, and both invariant-pooling residuals van-
+ish. Thus the experiment verifies the hypotheses of Proposi-
+tion 2.3.34 for two noncommuting generators.
+The executed accuracy results impose an equally important
+negative boundary. Table E.24 averages the two widths. Or-
+dinary unaligned weight averaging is substantially worse, but
+every evaluated aligned, synchronized, soup, and branch method
+reaches accuracy 1. The random same-branch-count and wrong-
+action controls also reach accuracy 1. Consequently, the paired
+accuracy difference between the branch regular lift and Git
+Re-Basin-style alignment, C2M3-style synchronization, greedy
+soup, or any of the recorded branch controls is exactly zero, with
+100 ties per group.
+Pre-lift residual Commutator residual Post-lift residual Max. invariant-pooling residual
+0.0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6Normalized operator residual
+0.523 0.523
+0.000 0.000
+0.604 0.604
+0.000 0.000
+S3
+D4
+Figure E.13: Executed two-loop structural residuals. The displayed quantities
+are the normalized operator residuals used by the benchmark. The maximum
+invariant-pooling residual is the maximum of the two generator-wise pooling
+residuals. The pre-lift and commutator residuals are positive for both groups,
+whereas the post-lift and pooling residuals vanish.
+Accordingly, this experiment supports only a structural non-
+abelian claim: the executed models carry two noncommuting
+holonomies, and invariant pooling makes both generators invis-
+ible at the readout. It does not support an accuracy advantage
+for the branch lift. The distinction is essential, because the
+structural certificate remains meaningful even when ordinary
+alignment and the negative controls already solve the particular
+classification task.
+Appendix E.3.1. Observed branch and rank lifts
+Representative MNIST and Fashion-MNIST branch rows are
+shown in Table E.25. Greedy soup remains a strong boundary.
+The small rank and branch candidates sometimes improve over
+synchronized or averaged baselines, but they do not reliably
+exceed greedy soup and do not carry a certified natural finite-
+index class.
+Appendix E.3.2. Exact channel gauges and vision boundaries
+The exact positive-gauge experiment extends to a small
+no-BatchNorm Fashion-MNIST convolutional neural network
+(CNN). Across fifteen settings, internal C2M3-style channel syn-
+chronization reaches 0.7716, optimized exact channel scaling
+reaches 0.7809, and greedy soup reaches 0.8442. The optimized
+channel scale improves overC 2M3 by+0.00933, with reported
+95% paired bootstrap confidence interval [0 .00479, 0.01456],
+but remains 0.06323 below greedy soup. The residuals are
+noncentral under the tested diagnostics, so no CNN Brauer or
+period-index claim is made.
+A separate ResNet-18 identity audit examines BatchNorm
+rather than merge accuracy. Compatible graph-wide channel
+permutations preserve predictions in evaluation and training
+modes within the preregistered floating-point tolerance. Positive
+scaling is evaluation-exact only for the explicit frozen-statistic
+affine or epsilon-aware running-affine parameterizations tested
+there; scaling the stored running moments alone fails when
+ε> 0, and static positive scaling is not train-mode exact. This
+audit limits the scope of Theorem 2.3.16; it does not provide an
+independent-initialization ResNet merging result.
+Rotated- and colored-MNIST bridge datasets show the same
+boundary pattern. Across seventeen settings, greedy soup im-
+proves over C2M3-style channel synchronization by+0 .0847,
+30
+
+===== PAGE 31 =====
+Table E.23: Executed two-loop noncommuting holonomy certificates. The post-lift and pooling residuals vanish, while the positive commutator residual certifies
+noncommutation.
+Group pre-lift residual commutator residual post-lift residual poolγ 1 poolγ 2 action multiplication local equivalence
+S 3 0.522693 0.522693 0 0 0 0 5.40×10 −16
+D4 0.603553 0.603553 0 0 0 0 5.61×10 −16
+Table E.24: Executed two-loop accuracy boundary, averaged over widths 32 and 64. The branch model has additional inference paths. The equality of the aligned and
+lifted rows is retained as a negative empirical result.
+MethodS 3 acc.D 4 acc. inference multiplier output type
+Ordinary weight average 0.5667 0.5768 1 single model
+Git Re-Basin-style pairwise alignment 1.0000 1.0000 1 single model
+C2M3-style synchronization 1.0000 1.0000 1 single model
+Greedy soup 1.0000 1.0000 1 soup
+Naive regular representation, no pooling 1.0000 1.0000 6/8 branch model
+Branch regular lift with invariant pooling 1.0000 1.0000 6/8 branch model
+Random same-branch-count control 1.0000 1.0000 6/8 branch model
+Wrong generator, order, and group-action controls 1.0000 1.0000 6/8 branch models
+Table E.25: Representative observed MNIST/Fashion-MNIST branch boundary. In the last column, the first value is the rank-lift accuracy and the second is the
+validation-selected branch accuracy. These outputs may have additional inference capacity.
+DatasetNwidth setting greedy soup rank lift/validation branch
+Fashion-MNIST 3 64 input noise, activation 0.8154 0.7982/0.8095
+Fashion-MNIST 3 64 input noise, weight 0.8154 0.8023/0.8095
+Fashion-MNIST 3 64 none, activation 0.8242 0.8180/0.8247
+Fashion-MNIST 4 128 none, weight 0.8328 0.8265/0.8332
+MNIST 3 64 input noise, activation 0.9016 0.8963/0.8995
+MNIST 3 64 input noise, weight 0.9016 0.8955/0.8995
+while the validation-safe selector ties greedy soup. These are
+MNIST-derived bridge datasets and do not imply CIFAR or
+broad vision performance.
+The bounded no-BatchNorm CIFAR rescue clears the base-
+accuracy gate, with mean per-run best individual-model accu-
+racy 0.6506. Nevertheless, optimized channel scaling is only
++0.00054 versus C2M3, with reported 95% paired bootstrap con-
+fidence interval [−0.00088, 0.00274], while greedy soup reaches
+0.6480 and internal C2M3 reaches 0.4644. The union candi-
+date soup is only+0 .00044 over greedy soup, with a reported
+95% paired bootstrap confidence interval that contains zero. We
+therefore retain this no-BatchNorm CIFAR study as a descrip-
+tive appendix boundary rather than as evidence for the main
+method. A later torchvision-style CIFAR-10 ResNet-18 pipeline
+is test-isolated, checkpoint-resumable, and smoke-tested, but its
+base-quality pilot and confirmatory merge study remain gated
+and unrun at the recorded commit; it supplies no positive or
+negative model-merging result.
+31
+
+===== PAGE 32 =====
+10−5 10−4 10−3 10−2 10−1
+BatchNorm constant ε
+10−6
+10−5
+10−4
+Maximum absolute logit error
+Graph-compatible channel permutation
+Evaluation mode
+Training mode
+Training-mode tolerance
+10−5 10−4 10−3 10−2 10−1
+BatchNorm constant ε
+10−7
+10−6
+10−5
+10−4
+10−3
+10−2
+10−1
+Maximum absolute logit error
+Evaluation-mode positive channel scaling
+Permutation reference
+Running moments only
+Affine only with frozen statistics
+Epsilon-aware running-affine
+No-BatchNorm control
+Evaluation tolerance 5 × 10−5
+Figure E.14: ResNet-18 BatchNorm identity audit regenerated from the exact repository summary values. Top: graph-compatible channel permutations in evaluation
+and training modes; the dashed line is the preregistered training-mode tolerance. Bottom: evaluation-mode scaling strategies. “Affine only with frozen statistics”
+leaves the stored moments fixed, while “epsilon-aware running-affine” transforms the moments and applies the correspondingε-aware affine correction. The dashed
+line is the evaluation-mode tolerance. Both vertical axes report maximum absolute logit error. These are functional-identity tests, not merge-accuracy results.
+0.0 0.2 0.4 0.6 0.8 1.0
+Mean test accuracy
+C 2M 3-style channel synchronization
+Optimized exact channel scaling
+Greedy soup
+0.7716
+0.7809
+0.8442
+Figure E.15: Fashion-MNIST no-BatchNorm CNN boundary on the full ac-
+curacy scale [0, 1]. Exact channel scaling gives a limited improvement over
+internal strict synchronization but remains below greedy soup.
+Report on AI Usage
+In preparing this paper, we used ChatGPT 5.6 Pro to improve
+the language and organization of the manuscript. We also used
+Codex to assist with coding and running the experiments. All
+mathematical arguments, experimental designs, results, and con-
+clusions were reviewed and verified by the authors, who take
+full responsibility for the content of the paper.
+Acknowledgements
+The first author thanks the UW Math AI Lab for supporting
+this project and his advisor, Max Lieblich, for his guidance.
+Besides, the first author thanks the hospitality of the Beijing In-
+ternational Center for Mathematical Research (BICMR), where
+part of this work was carried out. The first author also thanks
+Soham Ghosh and Michael Ruofan Zeng for discussion. The
+second author thanks his mentor Zhiyu Tian for his support
+and guidance and BICMR for providing an excellent working
+environment.
+32
+
+===== PAGE 33 =====
+References
+[1] S. K. Ainsworth, J. Hayase, S. Srinivasa, Git re-basin:
+Merging models modulo permutation symmetries (2022).
+arXiv:2209.04836.
+URLhttps://arxiv.org/abs/2209.04836
+[2] D. Crisostomi, et al., c2m3: Cycle-consistent multi-model
+merging, in: Advances in Neural Information Processing
+Systems, 2024.arXiv:2405.17897.
+[3] G. Ilharco, et al., Editing models with task arithmetic,
+in: International Conference on Learning Representations,
+2023.
+[4] P. Yadav, et al., Ties-merging: Resolving interference when
+merging models, in: Advances in Neural Information Pro-
+cessing Systems, V ol. 36, 2023, pp. 7093–7115.
+[5] L. Yu, et al., Language models are super mario: Absorb-
+ing abilities from homologous models as a free lunch, in:
+International Conference on Machine Learning, 2024.
+[6] K. Shoemake, Animating rotation with quaternion curves,
+ACM SIGGRAPH Computer Graphics 19 (3) (1985) 245–
+254.
+[7] E. Yang, L. Shen, G. Guo, X. Wang, X. Cao, J. Zhang,
+D. Tao, Model merging in LLMs, MLLMs, and beyond:
+Methods, theories, applications and opportunities, arXiv
+preprint arXiv:2408.07666Revised December 2025 (2024).
+doi:10.48550/arXiv.2408.07666.
+URLhttps://arxiv.org/abs/2408.07666
+[8] O. K. Hitit, L. Girrbach, Z. Akata, A systematic study
+of in-the-wild model merging for large language models,
+Transactions on Machine Learning Research (2026). arXi
+v:2511.21437.
+URLhttps://arxiv.org/abs/2511.21437
+[9] D. Zheng, C. Allen-Blanchette, Beyond pairwise: Diagnos-
+ing higher-order merge failures via hodge decomposition,
+in: ICML 2026 Workshop on Weight-Space Symmetries,
+2026.
+URL https://openreview.net/forum?id=5IsDyR
+zKks
+[10] S. Karuturi, K. S. Bukkapatnam, L. Patel, T. A. Shastry,
+The GL(r) gauge symmetry of LoRA: Principal bundle
+structure, loss landscape geometry, and implications for
+adapter merging, in: ICML 2026 Workshop on Weight-
+Space Symmetries, 2026.
+URL https://openreview.net/forum?id=YMsbYX
+Dtqw
+[11] H. Javidnia, A gauge theory of superposition: Toward a
+sheaf-theoretic atlas of neural representations (2026).arXi
+v:2603.00824,doi:10.48550/arXiv.2603.00824.
+URLhttps://arxiv.org/abs/2603.00824
+[12] T. Gong, Twistedmerge: Twisted sheaves, descent the-
+ory, and learning theory, GitHub repository, commit
+7a0620bb19dffba97012350b6ffd20684bcbe220 (2026).
+URL https://github.com/tinggong9/TwistedMe
+rge
+[13] J. Giraud, Cohomologie non abélienne, Springer, 1971.
+[14] M. Lieblich, Moduli of twisted sheaves, Duke Mathemati-
+cal Journal 138 (1) (2007) 23–118.
+[15] J. Dodziuk, Finite-difference approach to the hodge the-
+ory of harmonic forms, American Journal of Mathematics
+98 (1) (1976) 79–104.
+[16] D. Horak, J. Jost, Spectra of combinatorial laplace oper-
+ators on simplicial complexes, Advances in Mathematics
+244 (2013) 303–336.
+[17] H. H. Bauschke, P. L. Combettes, Convex Analysis and
+Monotone Operator Theory in Hilbert Spaces, 2nd Edition,
+Springer, 2017.
+[18] R. A. Horn, C. R. Johnson, Matrix Analysis, 2nd Edition,
+Cambridge University Press, 2012.
+[19] P. Gille, T. Szamuely, Central Simple Algebras and Galois
+Cohomology, Cambridge University Press, 2006.
+[20] M. Lieblich, Twisted sheaves and the period–index prob-
+lem, Compositio Mathematica 144 (1) (2008) 1–31.
+[21] T. Gong, Moduli of vector bundles onµn-gerbes over genus
+2 curves and the period–index problem (2025). arXiv:
+2512.03417.
+URLhttps://arxiv.org/abs/2512.03417
+[22] A. J. de Jong, The period–index problem for the brauer
+group of an algebraic surface, Duke Mathematical Journal
+123 (1) (2004) 71–94.
+[23] J. Hotchkiss, A. Perry, The period–index conjecture for
+abelian threefolds and donaldson–thomas theory (2024).
+arXiv:2405.03315.
+URLhttps://arxiv.org/abs/2405.03315
+[24] D. Huybrechts, The period–index problem for hyperkähler
+manifolds (2024).arXiv:2411.17604.
+URLhttps://arxiv.org/abs/2411.17604
+[25] E. J. Hu, Y . Shen, P. Wallis, Z. Allen-Zhu, Y . Li, S. Wang,
+L. Wang, W. Chen, Lora: Low-rank adaptation of large
+language models (2021).arXiv:2106.09685.
+URLhttps://arxiv.org/abs/2106.09685
+[26] M. Wortsman, et al., Model soups: Averaging weights
+of multiple fine-tuned models improves accuracy without
+increasing inference time, in: International Conference on
+Machine Learning, 2022.arXiv:2203.05482.
+[27] V . N. Vapnik, Statistical Learning Theory, Wiley-
+Interscience, 1998.
+33
+
+===== PAGE 34 =====
+[28] S. Shalev-Shwartz, S. Ben-David, Understanding Machine
+Learning: From Theory to Algorithms, Cambridge Univer-
+sity Press, 2014.
+[29] G. L. Marchetti, et al., Algebra unveils deep learning: An
+invitation to neuroalgebraic geometry, in: International
+Conference on Machine Learning, 2025. arXiv:2501.1
+8915.
+[30] J. Kileel, M. Trager, J. Bruna, On the expressive power of
+deep polynomial neural networks (2019). arXiv:1905.1
+2207.
+URLhttps://arxiv.org/abs/1905.12207
+[31] L. Zhang, G. Naitzat, L.-H. Lim, Tropical geometry of
+deep neural networks (2018).arXiv:1805.07091.
+URLhttps://arxiv.org/abs/1805.07091
+[32] M.-C. Brandenburg, G. Loho, G. Montúfar, The real
+tropical geometry of neural networks (2024). arXiv:
+2403.11871.
+URLhttps://arxiv.org/abs/2403.11871
+[33] A. Grothendieck, Le groupe de Brauer. I, II, III, North-
+Holland, 1968.
+[34] D. Edidin, B. Hassett, A. Kresch, A. Vistoli, Brauer groups
+and quotient stacks, American Journal of Mathematics
+123 (4) (2001) 761–777.
+[35] J.-L. Colliot-Thélène, A. N. Skorobogatov, The Brauer–
+Grothendieck Group, Springer, 2021.
+[36] The Stacks Project Authors, Stacks project (2026).
+URLhttps://stacks.math.columbia.edu
+34

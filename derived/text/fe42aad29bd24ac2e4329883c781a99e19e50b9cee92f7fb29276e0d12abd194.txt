@@ -1,0 +1,2010 @@
+===== PAGE 1 =====
+A Gauge-Covariant Theoretical Framework for Non-Abelian
+Holonomy Estimation and Feed-Forward Correction in
+Time-Bin Photonic Qudits
+N. Josef Bruzzese
+May 27, 2026
+We develop a theoretical and compu-
+tational framework for estimating and
+correcting non-Abelian geometric distor-
+tions in time-bin photonic qudit pro-
+cessing when the relevant encoded ob-
+ject is a transported logical subspace
+rather than a collection of independent
+rays. In such settings—for example
+under mode mixing, multiplexed rout-
+ing, or effective degeneracies—the geo-
+metric contribution is naturally matrix-
+valued and is described by a Wilczek–
+Zee holonomy on a rank-msubbundle of
+the ambient Hilbert space. The frame-
+work generalises prior Abelian time-bin
+Pancharatnam–Berry feed-forward cali-
+bration, in which geometric distortions
+are represented by bin-resolved scalar
+phases, to the non-Abelian, matrix-
+valued case. We construct a gauge-
+covariant discrete estimator from over-
+lap matrices between successive subspace
+frames: the polar factor of each overlap
+gives a unitary backward frame compara-
+tor, and the adjoint comparators com-
+pose to approximate the forward path-
+ordered exponential of the Wilczek–Zee
+connection. We prove gauge covari-
+ance under frame changes, polar optimal-
+ity of the local comparator, consistency
+under partition refinement, and pertur-
+bative stability under well-conditioned
+overlap errors. We then formulate left-
+and right-acting feed-forward correction
+rules for removing the estimated holon-
+omy from an effective logical operation.
+The work does not assume a device-
+specific transfer matrix, loss model, de-
+tectormodel, orexperimentalcalibration
+pipeline; numerical studies use synthetic
+non-Abeliantransportmodelstovalidate
+covariance, convergence, conditioning de-
+pendence, and correction fidelity.
+1 Introduction
+Geometric phases are a foundational feature of
+quantum theory. The Abelian phase associated
+withcyclicadiabaticevolutionwasidentifiedby
+Berry, while related formulations due to Pan-
+charatnam, Aharonov–Anandan, and Samuel–
+Bhandari clarified its interferometric, nonadia-
+batic, and kinematic structure [1, 2, 3, 4]. The
+corresponding non-Abelian generalisation was
+introduced by Wilczek and Zee for degenerate
+eigenspaces and was later developed in nonadia-
+baticsettingsbyAnandan[5,6]. Matrix-valued
+holonomies have since become central to holo-
+nomic quantum computation and decoherence-
+free geometric control [7, 8].
+Time-bin encodings support high-
+dimensional photonic quantum information
+processing but remain sensitive to interfero-
+metric drift, mode mixing, and path-dependent
+calibration errors. Recent work has empha-
+sised both the robustness and the practical
+challenges of time-bin photonic architec-
+tures, including high-dimensional time-bin
+entanglement, time-bin protocol stability,
+scalable time-bin photonic qudit logic, and
+the characterisation of linear optical de-
+vices [9, 10, 11, 12, 13]. In many time-bin
+calibration settings, the relevant geometric
+contribution is treated as a scalar phase, or
+as a list of scalar phases associated with inde-
+pendently transported time-bin components.
+1
+arXiv:2605.26697v1  [quant-ph]  26 May 2026
+
+===== PAGE 2 =====
+This is appropriate when the encoded objects
+can be modelled as independent rays, or when
+the relevant geometric action is diagonal or
+commuting in the chosen logical basis.
+The present paper studies what changes
+when that raywise or diagonal assumption is
+no longer the appropriate effective description.
+In architectures involving mode mixing, multi-
+plexed routing, coupled interferometric stages,
+or approximately degenerate encoded sectors,
+the transported object may be better modelled
+as an entire logical subspace rather than as a
+collection of independent one-dimensional rays.
+In that case the geometric effect is no longer
+a scalar phase attached to a single ray. It is a
+unitary matrix acting on the encoded subspace.
+This distinction is operationally important.
+A scalar geometric phase can be removed by es-
+timatingonenumber, oroneindependentphase
+per time bin. A non-Abelian holonomy cannot
+generally be removed in this way, because its
+matrix representation depends on the chosen
+basis inside the transported subspace and be-
+cause geometric contributions accumulated at
+different points of the path need not commute.
+The calibration problem is therefore not simply
+phase estimation; it is the reconstruction of a
+unitary operator defined only up to a change of
+logical frame.
+This perspective is especially natural for
+high-dimensional photonic encodings. In an
+idealised time-bin model, each logical basis
+state may be treated as an independent tem-
+poral mode. In a more general interferomet-
+ric architecture, however, routing, multiplex-
+ing, mode mixing, or effective degeneracies can
+cause the relevant logical sector to evolve as a
+subspace. The basis used to describe that sub-
+space is then partly conventional. A useful cal-
+ibration procedure must therefore respect this
+gauge freedom rather than depend on an arbi-
+trary choice of basis.
+The appropriate continuum description is a
+Wilczek–Zee holonomy. If a rank-mlogical sub-
+spaceS(λ)⊂His transported along a closed
+pathγin parameter space, the geometric con-
+tribution is
+Uγ =Pexp
+
+−
+Z
+γ
+A
+
+,(1.1)
+whereA= Φ †dΦis the non-Abelian Berry
+connection associated with a local orthonormal
+frameΦfor the subspace. Since the choice
+of frame is arbitrary, physically meaningful
+quantities must be gauge-covariant or gauge-
+invariant.
+The conceptual shift can be summarised as
+follows. In the Abelian picture, calibration es-
+timates scalar phase errors and removes them
+by phase subtraction. In the non-Abelian
+subspace picture, calibration must estimate a
+matrix-valuedholonomy, trackhowthatmatrix
+transforms under changes of logical frame, and
+apply its inverse on the correct side of an ef-
+fective logical operation. The purpose of this
+paper is to formulate that non-Abelian replace-
+ment in a way that is mathematically gauge-
+covariant, numerically reproducible, and explic-
+itlylimitedtothetheoreticalsettingconsidered
+here.
+1.1 Relation to prior Abelian time-
+bin calibration
+This work is a non-Abelian generalisation of
+the Abelian time-bin geometric-phase calibra-
+tion framework developed in Ref. [14]. In that
+earlier setting, the relevant geometric distor-
+tion is diagonal in the time-bin basis: each bin
+acquires a scalar Pancharatnam–Berry phase,
+and feed-forward correction amounts to esti-
+mating and subtracting a bin-resolved phase
+profile. That framework is rooted in the
+Abelian geometric-phase structure introduced
+in Refs. [1, 2, 3, 4]. The present work ad-
+dresses the more general situation in which
+the transported object is not a collection of in-
+dependent rays but anm-dimensional logical
+subspace. In that case the geometric contri-
+bution is no longer a diagonal phase transfor-
+mation but a matrix-valued Wilczek–Zee holon-
+omy [5, 6]. Thus the scalar phase correction
+ϕj7→ϕ j−bϕj (1.2)
+is replaced by the non-Abelian correction
+Veff7→ bU†
+γVeff,(1.3)
+or by the corresponding right-acting version de-
+pending on the circuit convention. The earlier
+Abelian protocol is therefore recovered when
+the transported logical sector decomposes into
+independent one-dimensional rays or when all
+relevant holonomies commute and are simulta-
+neously diagonal in the chosen time-bin basis.
+2
+
+===== PAGE 3 =====
+1.2 Scope and validity assumptions
+Scope.This paper is theoretical
+and computational. It studies unitary
+holonomy reconstruction for trans-
+ported rank-mlogical subspaces from
+adjacent-frame overlap data. The
+overlap data may come from an an-
+alytic model, a numerical transfer-
+matrix simulation, prior device char-
+acterisation, or synthetic validation
+data. The present manuscript does
+not perform device tomography, does
+not model detector noise, and does
+not claim an experimental implemen-
+tation.
+Loss and leakage are included only insofar
+as they leave a well-defined, well-transmitted
+m-dimensional sector from which orthonormal
+frames can be extracted. The reconstruction
+is reliable only when adjacent overlap matrices
+remain well-conditioned. If the minimum sin-
+gular value of any adjacent overlap approaches
+zero, the local unitary comparison problem
+becomes ill-conditioned and the reconstructed
+holonomy should be treated as unreliable even
+though the polar product itself remains unitary.
+1.3 Main contributions
+The paper develops a gauge-covariant discrete
+holonomy estimator based on polar decompo-
+sition of adjacent overlap matrices, together
+withasignandorderingconventiondistinguish-
+ing backward frame comparators from forward
+coefficient transport. The discrete estimator
+is shown to be gauge-covariant, with spectral
+and Wilson-loop diagnostics that are gauge-
+invariant, and the local comparator is identi-
+fied as the nearest unitary to the raw overlap
+matrix via a polar-optimality result. A con-
+tinuum consistency theorem establishes conver-
+gence under partition refinement, while a per-
+turbative stability statement quantifies how re-
+construction error depends on overlap condi-
+tioning. Building on the reconstruction, a feed-
+forward correction principle is derived for re-
+moving the estimated non-Abelian holonomy
+from an effective logical operation. The frame-
+work is supported by reproducible Mathemat-
+ica/Wolfram Language validation of gauge co-
+variance, Abelian reduction, convergence, non-
+commutativity, conditioning dependence, and
+correction fidelity.
+1.4 Positioning relative to existing
+methods
+The mathematical ingredients used here are
+closely related to established ideas in geomet-
+ric phase theory, lattice Berry-curvature cal-
+culations, and adiabatic projector transport.
+Kato’s formulation of adiabatic transport and
+Simon’s geometric interpretation provide a
+standard projector-based background for sub-
+space holonomy [15, 16]. Gauge-covariant link
+variables and Wilson-loop-type discretisations
+are also widely used in numerical Berry-phase
+and Chern-number computations; the Fukui–
+Hatsugai–Suzuki construction is a canonical ex-
+ample of a gauge-invariant discretised Berry-
+connection method on a lattice [17]. Polar
+decompositions and their perturbation proper-
+ties are standard tools in numerical linear alge-
+bra [18].
+The contribution of this paper is therefore
+not the claim that discrete non-Abelian holon-
+omy or polar decomposition is new in isola-
+tion. Rather, the contribution is to assemble
+these ingredients into a gauge-covariant cali-
+bration and feed-forward framework tailored
+to transported time-bin photonic logical sub-
+spaces. The emphasis is on how adjacent-
+frame overlap data can be converted into a uni-
+tary holonomy estimate, how the resulting es-
+timate transforms under logical-frame changes,
+how conditioning controls reliability, and how
+the reconstructed non-Abelian geometric factor
+should be removed from an effective logical op-
+eration.
+This positioning also clarifies the role of the
+numerical validation. The tests below do not
+attempt to establish a new numerical method
+forBerrycurvatureingeneral. Theyverifythat
+the proposed calibration pipeline has the prop-
+erties needed for a later platform-specific im-
+plementation: covariance under frame changes,
+correct path ordering, stable polar unitarisa-
+tion of overlaps, and successful left- or right-
+acting feed-forward correction.
+3
+
+===== PAGE 4 =====
+2 Notation and standing as-
+sumptions
+2.1 Ambient space, logical sub-
+spaces, and frames
+LetHdenote theambient Hilbert space, includ-
+ing the time-bin modes and any auxiliary or
+leakage modes used in an analytic model. The
+encoded logical system is assumed to occupy an
+m-dimensional subspace
+S(λ)⊂H,dimS(λ) =m,(2.1)
+depending on external control parametersλ.
+The orthogonal projector onto this subspace is
+denoted by
+P(λ) :H→S(λ).(2.2)
+A local orthonormal frame forS(λ)is repre-
+sented by a matrix
+Φ(λ) =
+
+
+| |
+u1(λ)···u m(λ)
+| |
+
+,(2.3)
+satisfyingΦ(λ) †Φ(λ) =I m, whose columns
+spanS(λ). The corresponding projector is
+P(λ) = Φ(λ)Φ(λ)†.(2.4)
+The frame is not unique. Any smooth right
+multiplication
+Φ(λ)7→Φ ′(λ) = Φ(λ)G(λ),(2.5)
+withG(λ)∈U(m), represents the same physi-
+cal subspace. This is the gauge freedom of the
+encoded logical subspace.
+This gauge freedom is analogous to choos-
+ing coordinates on a vector space. The sub-
+space itself is physical, but the ordered list of
+basis vectors used to represent it is not. Conse-
+quently, matrix representatives of connections,
+holonomies, and gates can change under a
+frametransformationevenwhentheunderlying
+physical object has not changed. Throughout
+the paper, statements about matrices should
+therefore be read as statements in a chosen
+frame, while spectra and traces of closed-loop
+holonomiesprovideframe-independentdiagnos-
+tics.
+2.2 Wilczek–Zee connection
+The Wilczek–Zee connection one-form associ-
+ated with a chosen frame is
+A(λ) := Φ(λ)†dΦ(λ)∈u(m).(2.6)
+BecauseΦ†Φ =I m, differentiating gives
+A† =−A,(2.7)
+so the connection is anti-Hermitian.
+For a parameterised patht7→λ(t),t∈[0,T],
+we write
+Φ(t) := Φ(λ(t)),(2.8)
+and
+At(t) := Φ(t)† ˙Φ(t).(2.9)
+The continuum forward holonomy is
+Uγ =Pexp
+
+−
+Z T
+0
+At(t) dt
+
+,(2.10)
+wherePdenotes path ordering.
+2.3 Discrete frames, overlaps, and
+endpoint identification
+Let
+0 =t 0<t 1<···<t N =T(2.11)
+be a discretisation of the path. Define
+Φk := Φ(tk), P k :=P(t k).(2.12)
+The adjacent-frame overlap matrix is
+Mk := Φ†
+kΦk+1, k= 0,...,N−1.(2.13)
+This matrix compares the frame at stepk+ 1
+with the frame at stepk.
+For a physical projector loop one requires
+PN =P 0, but the endpoint frame need not lit-
+erally satisfyΦ N = Φ 0. In general, one may
+have
+ΦN = Φ0B, B∈U(m),(2.14)
+whereBis the endpoint identification between
+the final frame and the chosen base frame.
+With the column-vector convention used below,
+the discrete productbUγ maps initial coefficients
+in the frameΦ0 to final coefficients in the frame
+4
+
+===== PAGE 5 =====
+ΦN. Therefore the representative of the closed-
+loop holonomy in the base frameΦ0 is
+bU (0)
+γ =B bUγ.(2.15)
+If the sampled frame loop is literally closed,
+thenB=I m and bU (0)
+γ = bUγ. If not, the end-
+point identification in equation (2.15) must be
+included before quoting eigenphases or Wilson-
+loop traces. This convention is necessary be-
+cause such quantities are invariants of a closed
+transport represented in a single base frame.
+A key convention used throughout the paper
+is the following. The polar unitary extracted
+fromM k is abackward frame comparator, while
+its adjoint is the correspondingforward coeffi-
+cient transport. Explicitly,
+Wk := polar(Mk) =M k(M†
+kMk)−1/2,(2.16)
+and
+Tk :=W †
+k.(2.17)
+With column coefficient vectors, the forward
+discrete holonomy is ordered as
+bUγ :=T N−1TN−2···T 1T0.(2.18)
+This convention is chosen so that
+bUγ−→Pexp
+
+−
+Z T
+0
+At(t) dt
+
+(2.19)
+under partition refinement.
+2.4 Standing assumptions
+Unless otherwise stated, we assume that each
+Φk has orthonormal columns and that each
+overlap matrixMk = Φ†
+kΦk+1 is invertible. We
+further assume that the overlap matrices are
+uniformly well-conditioned:
+µmin := min
+0≤k≤N−1
+σmin(Mk)≥µ>0.(2.20)
+For continuum convergence statements, the
+frameΦ(t)is assumed to be at leastC 2 along
+the path, and closed-loop spectral diagnostics
+are evaluated after a fixed base-frame endpoint
+identification.
+The invertibility and conditioning assump-
+tions are part of the validity domain of the
+method, not merely technical conveniences. If
+µmin is small, adjacent frames have poor mu-
+tual overlap in at least one logical direction, the
+polar factor is ill-conditioned, and the recon-
+structed holonomy should not be interpreted
+as reliable without further refinement or addi-
+tional physical information.
+3 Subspace transport and non-
+Abelian holonomy
+This section records the continuum geomet-
+ric structure underlying the discrete estimator.
+The key point is that a transported logical
+subspace carries a natural gauge freedom: the
+physical subspace is specified by the projector
+P= ΦΦ †, while the choice of frameΦinside
+the subspace is arbitrary up to a right action
+byU(m).
+The continuum structure used here is the
+standard Wilczek–Zee geometry of a trans-
+ported degenerate subspace [5]. The essential
+difference from the Abelian Berry phase [2] is
+that the connection takes values in the noncom-
+muting Lie algebrau(m)rather than inu(1).
+This is why the holonomy requires path order-
+ing and why its matrix representative is gauge-
+covariant rather than gauge-invariant. Related
+nonadiabatic generalisations and holonomic-
+control applications appear in Refs. [6, 7, 8].
+3.1 Gauge transformation of the
+Wilczek–Zee connection
+Lemma 3.1(Gauge transformation law).Un-
+der a frame change
+Φ(λ)7→Φ ′(λ) = Φ(λ)G(λ), G(λ)∈U(m),
+(3.1)
+the Wilczek–Zee connection
+A= Φ†dΦ(3.2)
+transforms as
+A7→A ′ =G†AG+G †dG.(3.3)
+Proof.UsingΦ ′ = ΦG,
+A′ = (ΦG)†d(ΦG)(3.4)
+=G†Φ†(dΦ)G+G †Φ†Φ dG(3.5)
+=G†AG+G †dG,(3.6)
+sinceΦ†Φ =I m.
+5
+
+===== PAGE 6 =====
+The inhomogeneous termG†dGshows that
+the connection itself is not gauge-invariant.
+This is expected:Adepends on the arbitrary
+frame choice. The physical information is in-
+stead encoded in the conjugacy class of the
+closed-loop holonomy.
+3.2 Holonomy and conjugacy invari-
+ants
+For a patht7→λ(t),t∈[0,T], the forward coef-
+ficienttransportassociatedwiththeconnection
+is
+˙U(t) =−A t(t)U(t), U(0) =I m.(3.7)
+The solution is the path-ordered exponential in
+equation (2.10). For a closed loopγ, we write
+this endpoint transport asUγ.
+Under a gauge transformationΦ(t)7→
+Φ(t)G(t), the solution of equation (3.7) trans-
+forms as
+U(t)7→U ′(t) =G(t)†U(t)G(0).(3.8)
+For a closed loop withG(T) =G(0), and after
+using the same base-frame endpoint identifica-
+tion before and after the transformation, the
+holonomy transforms by conjugation:
+Uγ7→U′
+γ =G(0)†UγG(0).(3.9)
+Therefore the spectrum ofUγ and the Wilson-
+loop-type tracesTr(U r
+γ), forr= 1,2,..., are
+gauge-invariant.
+3.3 Projector formulation
+Although the frame-based connection is con-
+venient for computations, the underlying ge-
+ometry can also be expressed in terms of the
+projector pathP(t). The projector is gauge-
+invariant:
+P(t) = Φ(t)Φ(t)†.(3.10)
+DifferentiatingP 2 =Pgives
+P ˙PP= 0,(3.11)
+which expresses the fact that ˙Ponly couples
+the subspace to its orthogonal complement at
+first order.
+Parallel transport of a state vector|ψ(t)⟩∈
+RanP(t)may be characterised by
+P(t)|ψ(t)⟩=|ψ(t)⟩, P(t)| ˙ψ(t)⟩= 0.
+(3.12)
+Writing|ψ(t)⟩= Φ(t)c(t)gives
+0 =P| ˙ψ⟩(3.13)
+= ΦΦ†( ˙Φc+ Φ ˙c)(3.14)
+= Φ(Atc+ ˙c).(3.15)
+Thus
+˙c(t) =−At(t)c(t),(3.16)
+which is the coefficient transport equation used
+above.
+3.4 Abelian reduction
+Whenm= 1, the frame is a single normalised
+vector|u(λ)⟩defined up to a phase,
+|u(λ)⟩7→|u(λ)⟩e iχ(λ).(3.17)
+The connection becomes the scalar one-form
+A=⟨u|du⟩.(3.18)
+Under the phase change,
+A7→A+ i dχ.(3.19)
+For a closed loop, the holonomy is
+Uγ = exp
+
+−
+I
+γ
+⟨u|du⟩
+
+.(3.20)
+This is the usual Abelian geometric phase.
+Hence the non-Abelian framework reduces to
+standard Pancharatnam–Berry phase calibra-
+tion when the transported logical subspace has
+rank one.
+4 Discrete holonomy estima-
+tion from overlap matrices
+We now construct the discrete holonomy es-
+timator from adjacent-frame overlap matrices.
+The construction has three ingredients: the
+overlap matrixM k = Φ†
+kΦk+1, its polar uni-
+tary factorW k = polar(Mk), and the forward
+transportT k =W †
+k. The adjoint in the final
+step is essential:Wk compares the next frame
+to the current frame, whereasTk transports co-
+efficient vectors forward.
+The use of overlap matrices is motivated by
+the following elementary fact. If two adjacent
+frames span the same subspace and differ only
+6
+
+===== PAGE 7 =====
+by a unitary change of basis, then the over-
+lap matrix between them is unitary. For gen-
+uinelymovingsubspaces, however, theadjacent
+frames do not span exactly the same subspace,
+and the overlap matrix is generally not unitary.
+Its singular values measure how well the two
+neighbouring subspaces overlap in each logical
+direction. The polar decomposition separates
+this information into a unitary part, which
+gives the best local basis comparator, and a
+positive part, which encodes the loss of perfect
+overlap between the neighbouring subspaces.
+Thusthepolarstepshouldnotbeinterpreted
+as an arbitrary numerical projection onto the
+unitary group. It is the canonical way to ex-
+tract the unitary comparison contained in the
+raw overlap data. The positive polar factor is
+not discarded because it is unimportant; rather,
+it is converted into a conditioning diagnostic.
+When that positive factor has very small singu-
+lar values, the local comparison problem itself
+becomes unstable.
+4.1 Local polar comparator
+For adjacent framesΦk andΦ k+1, define
+Mk := Φ†
+kΦk+1.(4.1)
+IfM k is nonsingular, its polar decomposition is
+Mk =W kHk,(4.2)
+whereW k∈U(m)andH k = (M†
+kMk)1/2 >0.
+Equivalently,
+Wk = polar(Mk) =M k(M†
+kMk)−1/2.(4.3)
+We callW k the polar backward comparator.
+The corresponding forward coefficient trans-
+port is
+Tk :=W †
+k.(4.4)
+The discrete forward holonomy is then
+bUγ :=T N−1TN−2···T 1T0.(4.5)
+Remark4.1 (Ordering convention).The prod-
+uct in equation (4.5) acts on column coefficient
+vectors. Ifc k is the coefficient vector in the
+frameΦ k, thenc k+1 =T kck, and hence after
+Nsteps,
+cN =T N−1···T 1T0c0.(4.6)
+4.2 Polar optimality
+The polar comparator is not an arbitrary uni-
+tarisation ofMk. It is the nearest unitary ma-
+trix toMk in Frobenius norm.
+This optimality property is useful conceptu-
+ally because it explains why the polar unitary is
+the natural local comparator. Among all pos-
+sible unitary matrices that could be assigned
+to a nonunitary overlap matrix, the polar fac-
+tor is the one that changes the overlap least in
+Frobenius norm. In this sense, the algorithm
+extracts the minimally distorted unitary trans-
+port compatible with the adjacent-frame data.
+Proposition 4.2(Polar optimality).LetM∈
+Cm×m be nonsingular and let
+W= polar(M) =M(M †M)−1/2.(4.7)
+ThenWis the unique nearest unitary matrix to
+Min Frobenius norm:
+W= arg min
+Q∈U(m)
+∥M−Q∥ F.(4.8)
+Proof.Let
+M=LΣR † (4.9)
+be a singular value decomposition, withΣ =
+diag(σ1,...,σ m)positive becauseMis nonsin-
+gular. The polar unitary is
+W=LR †.(4.10)
+For anyQ∈U(m),
+∥M−Q∥ 2
+F = Tr[(M−Q) †(M−Q)](4.11)
+= Tr(M†M) +m−2ℜTr(Q †M).
+(4.12)
+Thus minimising∥M−Q∥ 2
+F is equivalent to
+maximisingℜTr(Q †M). Define
+Y:=L †QR.(4.13)
+SinceQ,L,Rare unitary,Y∈U(m). Then
+ℜTr(Q†M) =ℜTr(Y †Σ)(4.14)
+=
+mX
+a=1
+σaℜ(Yaa)(4.15)
+≤
+mX
+a=1
+σa,(4.16)
+with equality only whenY=I m. Hence the
+unique maximiser isQ=LR † =W.
+7
+
+===== PAGE 8 =====
+4.3 Gauge covariance of the discrete
+estimator
+Gauge covariance is the central consistency re-
+quirement for the discrete estimator. Since the
+framesΦk arearbitrarybasesforthesamephys-
+ical subspaces, the reconstructed holonomy ma-
+trix cannot be expected to be identical after a
+gauge transformation. Equality of matrix en-
+tries would be the wrong criterion. The cor-
+rect requirement is covariance: a change of
+base frame should conjugate the closed-loop
+holonomy. This ensures that basis-independent
+quantities, such as eigenvalues and traces of
+powers, are unchanged.
+Proposition 4.3(Gauge covariance of the po-
+lar estimator).Let the discrete frames trans-
+form as
+Φk7→Φ′
+k = ΦkGk, G k∈U(m).(4.17)
+Then the overlap matrices transform as
+Mk7→M′
+k =G†
+kMkGk+1.(4.18)
+The polar backward comparators and forward
+transports transform as
+Wk7→W ′
+k =G†
+kWkGk+1,(4.19)
+Tk7→T ′
+k =G†
+k+1TkGk.(4.20)
+For a closed loop withGN =G 0, and after us-
+ing the same endpoint base-frame identification,
+the discrete holonomy transforms by conjuga-
+tion:
+bUγ7→ bU′
+γ =G†
+0bUγG0.(4.21)
+Consequently,spec( bUγ)andTr( bUr
+γ)forr=
+1,2,...are gauge-invariant.
+Proof.The overlap transformation follows im-
+mediately:
+M′
+k = (ΦkGk)†(Φk+1Gk+1)(4.22)
+=G†
+kMkGk+1.(4.23)
+The polar decomposition is equivariant under
+left and right multiplication by unitary matri-
+ces. Indeed, ifM=WHis the polar decompo-
+sition ofM, then
+G†
+kMGk+1 = (G†
+kWGk+1)(G†
+k+1HGk+1),
+(4.24)
+whereG†
+kWGk+1 is unitary andG†
+k+1HGk+1 is
+positive Hermitian. Therefore
+W′
+k =G†
+kWkGk+1.(4.25)
+Taking adjoints gives
+T′
+k =G†
+k+1TkGk.(4.26)
+Using the ordered product convention,
+bU′
+γ =T ′
+N−1T′
+N−2···T ′
+0 (4.27)
+=G†
+N(TN−1TN−2···T 0)G0.(4.28)
+For a closed loop with the same endpoint iden-
+tification,G N =G 0, so
+bU′
+γ =G†
+0bUγG0.(4.29)
+Spectra and traces of powers are invariant un-
+der conjugation.
+4.4 Consistency under partition re-
+finement
+Theorem 4.4(Consistency of forward po-
+lar transport).LetΦ(t)be aC 2 orthonormal
+frame along a patht∈[0,T]. Let
+0 =t 0<t 1<···<t N =T(4.30)
+be a partition with mesh sizeh:= maxk(tk+1−
+tk). Define
+Mk = Φ(tk)†Φ(tk+1),(4.31)
+Wk = polar(Mk),(4.32)
+Tk =W †
+k,(4.33)
+and bUγ =T N−1···T 0. Assume that allM k
+are nonsingular for sufficiently fine partitions.
+Then
+bUγ−→Pexp
+
+−
+Z T
+0
+At(t) dt
+
+,(4.34)
+withA t(t) = Φ(t) † ˙Φ(t), ash→0. For the
+first-order product rule above, the global error
+isO(h).
+Proof.Let∆t k =t k+1−tk. SinceΦ(t)isC 2,
+Φ(tk+1) = Φ(tk) + ˙Φ(tk)∆tk +O(∆t 2
+k).(4.35)
+Therefore, withAk :=A t(tk),
+Mk =I m +Ak∆tk +O(∆t 2
+k).(4.36)
+8
+
+===== PAGE 9 =====
+BecauseΦ†Φ =I m, differentiating givesA†
+k =
+−Ak. Hence
+M†
+kMk =I m +O(∆t 2
+k),(4.37)
+and
+(M†
+kMk)−1/2 =I m +O(∆t 2
+k).(4.38)
+Thus
+Wk =I m +Ak∆tk +O(∆t 2
+k),(4.39)
+and the forward step is
+Tk =W †
+k =I m−Ak∆tk +O(∆t 2
+k).(4.40)
+The productT N−1···T 0 is therefore the stan-
+dard first-order product approximation to the
+path-ordered exponential generated by−At(t).
+The local error isO(∆t 2
+k), and summing over
+O(h−1)steps gives a globalO(h)error.
+The theorem gives a conservative continuum
+guarantee. It assumes only smooth frame data
+and uses the first-order information contained
+in adjacent overlaps. In special synthetic
+benchmarks, higher apparent convergence or-
+der may be observed when midpoint exponen-
+tials or additional smoothness are used. Such
+behaviour is useful as an implementation check,
+but it should not be confused with the general
+theorem: the theorem states the robust condi-
+tion under which the estimator approaches the
+Wilczek–Zee holonomy for arbitrary sufficiently
+smooth frame paths.
+4.5 Abelian discrete limit
+Form= 1, the overlap matrix is a scalar,
+Mk =⟨u k|uk+1⟩.(4.41)
+The polar backward comparator is
+Wk = Mk
+|Mk|,(4.42)
+and the forward step is
+Tk =W †
+k = M∗
+k
+|Mk|.(4.43)
+Therefore
+bUγ =
+0Y
+k=N−1
+⟨uk|uk+1⟩∗
+|⟨uk|uk+1⟩|.(4.44)
+This is the discrete Abelian geometric phase
+convention corresponding to
+exp
+
+−
+I
+γ
+⟨u|du⟩
+
+.(4.45)
+5 Minimal two-level non-
+Abelian example
+Before connecting the formalism to time-bin
+photonics, it is useful to record a minimal rank-
+two example that displays the essential non-
+Abelian features. Let the transported logical
+subspace havem= 2, and suppose that in a
+chosen frame the connection along a parameter
+path is
+At(t) = i [a(t)σx +b(t)σz],(5.1)
+whereσ x andσ z are Pauli matrices and
+a(t),b(t)are real functions. The connection
+is anti-Hermitian, as required. If the ratio
+a(t)/b(t)varies along the path, then generally
+[At(t),At(t′)] =−2i
+
+a(t)b(t′)−b(t)a(t ′)
+
+σy̸= 0.
+(5.2)
+The holonomy is therefore not determined by
+the ordinary exponential of the integrated con-
+nection; it requires path ordering:
+Uγ =Pexp
+
+−
+Z T
+0
+At(t) dt
+
+.(5.3)
+This example also illustrates why feed-
+forward correction has a left/right convention.
+If an intended logical gateVdoes not commute
+withU γ, then
+UγV̸=VU γ.(5.4)
+Thus a measured or modelled effective opera-
+tion must first be assigned a convention,
+Veff≈U γVorV eff≈VU γ,(5.5)
+before the inverse holonomy can be applied on
+the correct side. In the Abelian limit, where
+all relevant factors commute or reduce to scalar
+phases, this distinction disappears.
+6 A concrete time-bin pho-
+tonic interpretation
+The formalism above is platform-independent,
+but it can be connected to a concrete time-bin
+photonic setting. A useful point of contact is
+the architecture proposed by Delteil, in which
+Nqubits are encoded in a single photon occu-
+pying a superposition of2N time bins and ma-
+nipulated with a number of linear-optical ele-
+ments scaling linearly inN[13]. Consider more
+9
+
+===== PAGE 10 =====
+generally a device whose accessible modes con-
+sist ofdtemporal bins, possibly augmented by
+ancillary routing or leakage modes. For each
+value of a control parameterλ—for example a
+vector of interferometer phases, switch settings,
+pulse-shaper phases, or electro-optic modula-
+tion amplitudes—the calibrated single-photon
+transformation may be represented by a trans-
+fer matrix
+T(λ) :C d→C d.(6.1)
+Such transfer information can in principle be
+obtained from linear-optical device characteri-
+sation or tomography [9]. The present work
+does not implement such a characterisation
+experimentally; it assumes that the required
+model or overlap data have already been sup-
+plied.
+Anm-dimensional logical time-bin code may
+be represented by a reference isometry
+Φin :C m→C d.(6.2)
+After propagation through the device, an ef-
+fective transported logical subspace can be ob-
+tained by orthonormalising the columns of
+T(λ)Φ in,(6.3)
+or, more generally, by extracting anm-
+dimensional singular-vector subspace associ-
+ated with the well-transmitted logical sector.
+This yields a frame
+Φ(λ)(6.4)
+for the transported logical subspace. Sampling
+a closed control pathλ0,λ 1,...,λ N then gives
+adjacent overlaps
+Mk = Φ(λk)†Φ(λk+1),(6.5)
+which are precisely the inputs to the polar
+holonomy estimator.
+In this interpretation, the feed-forward cor-
+rection is not necessarily a physical operation
+applied at every infinitesimal step. It may in-
+stead be compiled as a final logical correction
+acting on the encodedm-dimensional subspace.
+Depending on the hardware, this correction
+could be implemented by a programmable in-
+terferometric mesh, a pulse-shaping stage, or
+a calibrated logical-basis transformation. The
+present paper does not claim such an imple-
+mentation. Its purpose is to specify the gauge-
+covariant mathematical object that such a cor-
+rection would have to implement and to iden-
+tify the conditioning diagnostics that deter-
+mine whether the reconstruction is reliable.
+This example also clarifies why the overlap
+formulation is useful. The algorithm does not
+require direct access to a continuum connection
+At. It requires only adjacent frame-comparison
+data, which can be generated by a model, sim-
+ulation, or future device characterisation. This
+is the sense in which the proposed method is
+a calibration framework rather than an experi-
+mental demonstration.
+7 Stability and conditioning
+The preceding construction assumes exact over-
+lap matrices. In practice, even in a theoreti-
+cal numerical benchmark, one may have access
+only to approximate overlaps
+fMk =M k +Ek,(7.1)
+whereE k represents numerical error, model er-
+ror, or characterisation error. The relevant
+question is how perturbations inMk propagate
+to perturbations in the polar unitary and, ulti-
+mately, to the reconstructed holonomy.
+The key conditioning parameter is the small-
+est singular value of the overlap matrix,
+σmin(Mk).(7.2)
+Ifσ min(Mk)is bounded away from zero, the
+local polar comparator is stable. Ifσ min(Mk)
+is small, then the local frame-comparison prob-
+lem becomes ill-conditioned.
+The conditioning issue has a simple geomet-
+ric interpretation. Ifσ min(Mk)is close to one,
+then every logical direction inS(t k+1)has a
+strong projection ontoS(tk), so the local com-
+parison between frames is reliable. Ifσmin(Mk)
+is close to zero, then at least one logical direc-
+tion at the next step is almost orthogonal to
+the previous logical subspace. In that situation,
+there is not enough local overlap information to
+identify a stable unitary comparator. The in-
+stability is therefore not an artefact of the polar
+decomposition; it reflects a genuine loss of lo-
+cal distinguishability in the subspace-matching
+problem.
+10
+
+===== PAGE 11 =====
+This is why the singular-value diagnostic is
+part of the algorithm rather than a secondary
+numerical detail. A holonomy estimate can be
+exactly unitary and nevertheless unreliable if
+it is assembled from poorly conditioned local
+overlaps. Reportingµ min alongside the holon-
+omy spectrum makes this distinction explicit.
+7.1 Local polar stability
+Proposition 7.1(Local polar stability).Let
+M∈C m×m be nonsingular withσ min(M)≥
+µ >0, and letfM=M+Ewith∥E∥ 2≤ϵ <
+µ/2. ThenfMis nonsingular and there exists a
+constantCsuch that
+∥polar(fM)−polar(M)∥ 2≤C ϵ
+µ.(7.3)
+The constant is not claimed to be sharp; it de-
+pends on the chosen norm convention and on
+the compact neighbourhood of nonsingular ma-
+trices on which the polar map is evaluated, but
+not on the particular perturbationEwithin that
+neighbourhood.
+Proof.By Weyl’s singular value inequality,
+σmin(fM)≥σ min(M)−∥E∥ 2> µ
+2,(7.4)
+so fMis nonsingular. The polar map
+M7→polar(M) =M(M †M)−1/2 (7.5)
+is smooth on the open set of nonsingular ma-
+trices. Standard perturbation results for the
+matrix polar decomposition imply local Lips-
+chitz continuity on subsets with singular values
+bounded away from zero [18]. On the subset
+satisfyingσ min(M)≥µ/2, its Fréchet deriva-
+tive is bounded by a constant proportional to
+µ−1. Applying the mean-value theorem for
+matrix functions along the segmentM+sE,
+s∈[0,1], gives the stated estimate.
+The bound should be read as a local per-
+turbative statement. For fixed overlap errorϵ,
+the polar factor becomes more sensitive as the
+lowersingularvalueboundµdecreases. Equiva-
+lently, the relevant small parameter is not just
+the absolute perturbation size but the dimen-
+sionless ratioϵ/µ. This ratio is the quantity
+tested in the numerical conditioning study be-
+low.
+7.2 Accumulated holonomy pertur-
+bation
+Proposition 7.2(Accumulated holonomy sta-
+bility).Let
+Wk = polar(Mk), fWk = polar(fMk),(7.6)
+with∥ fWk−W k∥2 ≤δ k. LetT k =W †
+k and
+eTk =fW†
+k, and define
+bUγ =T N−1···T 0,(7.7)
+eUγ = eTN−1··· eT0.(7.8)
+Then
+∥eUγ−bUγ∥2≤
+N−1X
+k=0
+δk.(7.9)
+In particular, if∥ fMk −M k∥2 ≤ϵ k and
+σmin(Mk)≥µ>0for allk, then
+∥eUγ−bUγ∥2≤C
+N−1X
+k=0
+ϵk
+µ.(7.10)
+Proof.Use the telescoping identity
+eTN−1··· eT0−TN−1···T 0
+=
+N−1X
+j=0
+eTN−1··· eTj+1(eTj−Tj)Tj−1···T 0.
+(7.11)
+All factors outsideeTj−Tj are unitary. There-
+fore
+∥eUγ−bUγ∥2≤
+N−1X
+j=0
+∥eTj−Tj∥2 (7.12)
+=
+N−1X
+j=0
+∥fWj−Wj∥2.(7.13)
+The final claim follows by applying Proposi-
+tion 7.1 to each overlap matrix.
+7.3 Conditioning diagnostic
+The stability bounds identify a simple diagnos-
+tic for any theoretical or numerical implemen-
+tation:
+µmin := min
+0≤k≤N−1
+σmin(Mk).(7.14)
+Reliable holonomy reconstruction requiresµmin
+to remain bounded away from zero. In addi-
+tion to reporting the reconstructed holonomy,
+one should therefore report conditioning data.
+A minimal gauge-compatible diagnostic set is
+given byspec(bUγ),Tr( bUr
+γ), andµ min.
+11
+
+===== PAGE 12 =====
+8 Feed-forward correction on
+the logical subspace
+The reconstructed holonomy can be used as a
+feed-forward correction when the effective logi-
+cal operation contains a geometric contribution
+induced by subspace transport. The correction
+rule depends on whether the geometric contri-
+bution acts on the left or on the right of the
+intended logical gate.
+This section separates two issues that are of-
+ten conflated. The first is holonomy reconstruc-
+tion: estimating the geometric unitary associ-
+ated with the transported subspace. The sec-
+ondis correction convention: decidingonwhich
+sideoftheeffectivelogicaloperationtheinverse
+holonomy should be applied. In an Abelian
+problem the distinction is mostly invisible, be-
+cause phases commute. In the present non-
+Abelian setting the distinction is essential.
+8.1 Left-acting geometric distortion
+LetV∈U(m)denote the intended logical gate
+in the chosen base frame. Suppose that the
+effective logical operation is approximately de-
+composed as
+Veff≈U γV,(8.1)
+whereU γ is the geometric holonomy associated
+with the transported logical subspace. Given
+the discrete estimate bUγ, define the corrected
+operation by
+Vcorr := bU†
+γVeff.(8.2)
+Ifthedecompositionequation(8.1)isexactand
+bUγ =U γ, thenV corr =V.
+8.2 Right-acting geometric distor-
+tion
+Some circuit or coefficient conventions may in-
+stead lead to
+Veff≈VU γ.(8.3)
+In this case the correction is
+Vcorr :=V effbU†
+γ.(8.4)
+The distinction between equations (8.2)
+and (8.4) is important in the non-Abelian
+case. Whenm >1, matrix multiplication is
+generally noncommutative, so left and right
+correction are not interchangeable.
+In applications, the appropriate convention
+must be fixed by the circuit or coefficient order-
+ing convention. For example, if the geometric
+transport is accumulated before the intended
+logical gate in the chosen representation, then
+the left-acting correction is appropriate. If in-
+stead the intended gate is followed by geomet-
+rictransport, thentheright-actingcorrectionis
+the appropriate one. The formalism does not
+require one convention to be universal; it re-
+quires only that the estimated holonomy and
+the effective logical operation be represented in
+the same base frame. These correction rules ap-
+ply only after a model-dependent identification
+of the geometric factor as left- or right-acting;
+the present work supplies the covariant recon-
+struction of that factor, not a universal hard-
+ware compilation procedure.
+8.3 Gauge covariance of the correc-
+tion
+Proposition 8.1(Gauge-covariant feed-for-
+ward correction).Assume the left-acting con-
+ventionV eff ≈U γV. Suppose that, under a
+base-frame changeΦ 0 7→Φ 0G0 withG 0 ∈
+U(m), the effective operation and reconstructed
+holonomy transform covariantly:
+Veff7→G†
+0VeffG0,(8.5)
+bUγ7→G†
+0bUγG0.(8.6)
+Then the corrected operationV corr = bU†
+γVeff
+transforms covariantly:
+Vcorr7→G†
+0VcorrG0.(8.7)
+Proof.Using the assumed transformation laws,
+V′
+corr = (bU′
+γ)†V′
+eff (8.8)
+= (G†
+0bUγG0)†(G†
+0VeffG0)(8.9)
+=G†
+0bU†
+γVeffG0 (8.10)
+=G†
+0VcorrG0.(8.11)
+8.4 Correction error
+In the left-acting convention, suppose
+Veff =U γV+R,(8.12)
+12
+
+===== PAGE 13 =====
+whereRrepresents residual non-geometric im-
+plementation error. Then
+Vcorr−V= bU†
+γVeff−V(8.13)
+=
+
+bU†
+γUγ−Im
+
+V+ bU†
+γR.(8.14)
+Taking the operator norm and using unitarity
+gives
+∥Vcorr−V∥ 2≤∥ bUγ−Uγ∥2 +∥R∥ 2.(8.15)
+A convenient gauge-invariant diagnostic for
+the corrected logical operation is the nor-
+malised unitary overlap
+F(V corr,V) := 1
+m2
+Tr(V†
+corrV)
+
+2
+.(8.16)
+9 Protocol-level algorithm
+The algorithm takes as input either a sequence
+of frames{Φ k}N
+k=0 or a sequence of adjacent
+overlap matrices{Mk}N−1
+k=0 . It outputs a recon-
+structed holonomy bUγ and, when an effective
+logical operationV eff is supplied, a corrected
+operationV corr.
+For a right-acting geometric distortion, the
+final correction line should instead be replaced
+by
+Vcorr←V effbU†
+γ.(9.1)
+The dominant operation at each step is the
+polar decomposition of anm×mmatrix. Using
+a singular value decomposition or eigendecom-
+positionofM †
+kMk, thiscostsO(m 3)perstep, so
+the full reconstruction cost scales asO(Nm3).
+10 Reproducible numerical val-
+idation
+The framework above is theoretical, but it
+is supported by reproducible numerical val-
+idation. The repository accompanying this
+manuscriptcontainssixMathematica/Wolfram
+Language notebooks: gauge covariance, non-
+Abelian convergence, frame-based overlap re-
+construction, feed-forward correction, condi-
+tioning/noise sensitivity, and an aggregate val-
+idation summary. The generated data are
+synthetic validation outputs, not experimental
+measurements.
+The validation studies are designed to sup-
+port the formal claims of the paper rather than
+to reproduce a specific device. In an experi-
+mental photonic setting, one could obtain the
+required overlap or transfer information from
+devicecharacterisationortomographymethods
+such as linear-optical process reconstruction [9].
+The present manuscript instead uses analytic
+andsyntheticdatasothatthegaugecovariance,
+convergence, and conditioning behaviour can
+be isolated from device-specific noise sources.
+The relevance of such calibration tools
+is strengthened by recent progress in high-
+dimensional and robust time-bin photonic pro-
+tocols, including single-photon time-bin qudit
+logic proposals [10, 11, 12, 13].
+The purpose of these numerical studies is
+not to model a particular photonic chip. In-
+stead, the tests isolate the mathematical claims
+of the paper. Each benchmark is designed to
+check one structural property: covariance un-
+der frame changes, convergence to a known con-
+tinuum holonomy, correct reconstruction from
+overlap data, feed-forward removal of the re-
+constructed holonomy, or sensitivity to overlap
+conditioning. This makes the numerical results
+reproducible without requiring device-specific
+parameters.
+The validation suite also distinguishes be-
+tween two kinds of evidence. Connection-based
+tests check the non-Abelian ordered-product
+convention directly. Frame-based tests check
+the full pipeline from sampled frames to over-
+laps, polar comparators, and holonomy recon-
+struction. Noise and conditioning tests then
+probe the regime in which the assumptions of
+the stability theorem begin to fail.
+10.1 Validation overview
+The numerical suite tests the closed-loop gauge
+covariance of the estimator; the convergence
+of a discrete ordered product to a contin-
+uum non-Abelian holonomy; the convergence
+of the full frame-to-overlap-to-polar-holonomy
+pipeline against an analytic frame-loop refer-
+ence; feed-forward correction for left- and right-
+acting geometric distortions; and stability scal-
+ing with the dimensionless perturbation ratio
+η/µmin. The aggregate validation status was
+PASS: all checks for gauge covariance, unitar-
+ity, convergence, feed-forward correction, and
+scaled-noise behaviour returned true in the val-
+idation summary.
+13
+
+===== PAGE 14 =====
+Figure 1: Gauge-covariant holonomy reconstruction and feed-forward correction.
+Require:Frames{Φ k}N
+k=0 or overlaps{Mk}N−1
+k=0 ; optional effective gateVeff
+Ensure:Holonomy estimate bUγ; optional corrected gateVcorr
+1:fork= 0toN−1do
+2:ifframes are suppliedthen
+3:M k←Φ†
+kΦk+1
+4:end if
+5:W k←M k(M†
+kMk)−1/2 ▷polar backward comparator
+6:T k←W †
+k ▷forward coefficient transport
+7:end for
+8: bUγ←T N−1TN−2···T 1T0
+9:ifV eff is suppliedthen
+10:V corr← bU†
+γVeff ▷left-acting correction
+11:end if
+12:return bUγ and, if computed,Vcorr
+Table 1: Structure of the validation suite. The tests are synthetic checks of the theoretical
+pipeline rather than measurements from a photonic device.
+Validation module Quantity checked Expected behaviour
+Gauge covariance∥ bU′
+γ−G†
+0bUγG0∥Numerical-zero residual
+Abelian reduction Scalar phase convention Agreement with the Abelian phase limit
+Non-Abelian convergence∥ bUγ−U ref∥Decrease under refinement
+Frame-overlap pipeline Error from sampled frames alone Agreement with analytic frame-loop reference
+Feed-forward correctionF(V corr,V)Near-unit fidelity when assumptions hold
+Conditioning/noise Error versusη/µ min Growth as conditioning worsens
+10.2 Gauge covariance
+The gauge covariance test samples a synthetic
+frame loop and applies random closed-loop
+gauge transformationsGN =G 0. The residual
+ϵgauge =∥ bU′
+γ−G†
+0bUγG0∥F (10.1)
+was at numerical precision. Across the tested
+refinements, the maximum gauge covariance
+residual was
+9.54×10 −15,(10.2)
+and the maximum gauge-run unitarity residual
+was
+1.45×10 −14.(10.3)
+Theseresidualsareatthelevelexpectedfrom
+floating-point arithmetic. The test confirms
+that changing the frame sequence alters the
+holonomy matrix only by the predicted base-
+frame conjugation. Thus the matrix entries
+themselves are not invariant, but the spectrum
+and Wilson-loop traces are stable under the
+gauge transformation.
+10.3 Non-Abelian connection bench-
+mark
+The first convergence benchmark uses the anti-
+Hermitian connection
+A(t) = i
+
+0.7 cos(t)σx
++ 0.4 sin(2t)σy + 0.2σz
+
+,(10.4)
+fort∈[0,2π]. For generict,t ′,[A(t),A(t ′)]̸= 0,
+so path ordering is essential. The continuum
+reference is obtained from
+˙U(t) =−A(t)U(t), U(0) =I 2.(10.5)
+The reference eigenphases were
+{−0.70134,0.70134}. The Wilson traces
+forr= 1,2,3were approximately
+{1.52795,0.33464,−1.01663}.(10.6)
+14
+
+===== PAGE 15 =====
+The Frobenius error decreased from1.57×
+10−2 at the coarsest tested partition to9.01×
+10−7 at the finest partition. A log–log fit gave
+an estimated convergence order
+2.00849.(10.7)
+The observed order is higher than the con-
+servative first-order consistency guarantee be-
+cause this benchmark uses smooth midpoint
+exponentials for the connection-based ordered
+product. The purpose of the test is therefore
+nottoreplacethegeneraltheorem, buttoverify
+that the implemented ordering and sign conven-
+tion reproduce the expected non-Abelian con-
+tinuum transport with rapid convergence in a
+smooth benchmark.
+10.4 Frame-based overlap pipeline
+The second convergence benchmark validates
+the full frame-to-overlap-to-polar-holonomy
+pipeline using an analytic rank-2 tangent-frame
+loop on a sphere. The fixed polar angle was
+θ0 = 0.7, withcosθ 0 = 0.76484. The exact
+connection is
+Aϕ =
+ 0−cosθ 0
+cosθ 0 0
+
+,(10.8)
+and the exact reference holonomy isU ref =
+exp(−2πAϕ). The exact reference eigenphases
+were approximately{−1.47754,1.47754}. The
+reference unitarity error was5.89×10−17.
+The frame-pipeline Frobenius error de-
+creased from9.32×10 −2 to5.66×10 −6. A
+log–log fit gave an estimated convergence order
+2.00065.(10.9)
+The minimum overlap singular value over the
+run wasµ min = 0.92074, so the test remained
+well-conditioned.
+This benchmark is closer to the intended
+overlap-based use case than the direct connec-
+tion benchmark. The algorithm is not given
+the connectionAϕ directly. It receives sampled
+frames, constructs the overlapsMk = Φ†
+kΦk+1,
+extracts the polar comparators, and forms the
+ordered product. Agreement with the analytic
+tangent-frame reference therefore validates the
+complete discrete reconstruction pipeline.
+The minimum singular value reported in this
+test also confirms that convergence is not be-
+ing obtained from an ill-conditioned sequence
+of overlaps. The adjacent subspaces remain suf-
+ficientlyclosethroughouttherefinement, sothe
+polar comparators are stable representatives of
+local transport.
+10.5 Feed-forward correction
+The feed-forward validation uses the non-
+Abelian connection in equation (10.4). The
+ODE reference holonomy was projected to the
+nearest unitary by polar decomposition before
+constructing synthetic effective gates. The uni-
+tarity error before this projection was5.35×
+10−8, while the projected unitary reference had
+unitarity error3.93×10 −17.
+For both left- and right-acting conventions,
+the correction error converged with the same
+order as the holonomy estimate:
+holonomy order= 2.00855,(10.10)
+left correction order= 2.00855,(10.11)
+right correction order= 2.00855.(10.12)
+At the finest tested refinement, both left and
+right corrections achieved infidelity of order1−
+F≃3.9×10 −13.
+The correction test shows that the feed-
+forward error tracks the holonomy estimation
+error. This is precisely what the correction
+bound predicts: once non-geometric residual er-
+rors are absent from the synthetic model, the
+remaining gate error is controlled by∥bUγ−Uγ∥.
+The left- and right-acting conventions give the
+same convergence order in this benchmark be-
+cause both are corrected using the same holon-
+omy estimate, but they correspond to differ-
+ent operator orderings and should not be in-
+terchanged in a general circuit model.
+10.6 Conditioning and noise sensitiv-
+ity
+Thenoisebenchmarkperturbsoverlapmatrices
+by random complex matrices with controlled
+norm. For the baseline frame loop withN=
+80, the minimum singular value wasµ min =
+0.99872, and the holonomy unitarity residual
+was8.02×10 −15.
+To test the stability scaling, each clean over-
+lap was replaced by
+polar(Mk) diag(1,µ),(10.13)
+15
+
+===== PAGE 16 =====
+Summary of convergence tests
+10 50 100 500 1000
+10-6
+10-5
+10-4
+0.001
+0.010
+0.100
+Number of steps N
+Frobenius error
+Non-Abelian connection
+Frame-overlap pipeline
+Holonomy estimate for correction
+Left correction
+Right correction
+Figure 2: Aggregate convergence validation.
+The plot shows Frobenius errors for the non-
+Abelian connection benchmark, frame-overlap
+pipeline, holonomy estimation for correction,
+and left/right feed-forward correction.
+so that the polar factor remained unchanged
+while the smallest singular value was controlled.
+For scaled noiseη=ρµ min, the fitted slopes of
+mean holonomy error versusρ=η/µ min were
+{0.995,1.017,0.947,1.066,0.983},(10.14)
+with mean1.00159. This confirms approxi-
+mately linear scaling withη/µmin in the pertur-
+bative regime, consistent with Proposition 7.1.
+In a fixed-ηtest withη= 10−6, the fitted slope
+oferrorversusinverseconditioningwas0.36445,
+showing increased sensitivity asµmin decreases.
+The important feature is not the precise fit-
+ted exponent in every finite-trial noise model,
+but the dependence on the dimensionless per-
+turbation ratioη/µ min. This is the ratio pre-
+dicted by the polar stability bound. The scaled-
+noise test confirms that, in the perturbative
+regime, the mean holonomy error is approxi-
+mately linear in this quantity. The fixed-ηtest
+then illustrates the complementary effect: for
+the same absolute perturbation, worse condi-
+tioning produces larger reconstruction error.
+11 Discussion
+The central claim of this paper is modest
+but structurally important: once the rele-
+vant transported object is a logical subspace
+rather than a collection of independent rays,
+Abelian phase calibration must be replaced
+by a gauge-covariant matrix-valued reconstruc-
+tion problem. In the raywise setting, geomet-
+ric distortion may be represented by scalar
+Pancharatnam–Berry phases and corrected by
+Summary of unitarity residuals
+0 200 400 600 800 1000 1200
+10-15
+10-14
+10-13
+10-12
+Number of steps N
+Unitarity residual
+Gauge test holonomy
+Connection holonomy
+Frame holonomy
+Correction holonomy
+Left corrected gate
+Right corrected gate
+Figure 3: Aggregate unitarity validation. The
+reconstructed holonomies and corrected gates
+remain unitary to numerical precision across
+the tested refinements.
+Feed-forward correction infidelity
+10 50 100 500 1000
+10-11
+10-7
+Number ofstepsN
+Correction infidelity 1-F
+ 
+Left correction
+Right correction
+Figure 4: Feed-forward correction infidelity
+1−F. Plotting infidelity rather than fidelity
+resolves convergence near unit fidelity.
+subtracting a phase profile. In the subspace
+setting, the corresponding geometric object is
+a Wilczek–Zee holonomy: a unitary matrix de-
+fined only after a choice of logical frame and
+transforming by conjugation under changes of
+that frame. In this precise sense, the present
+work is the non-Abelian theoretical counterpart
+of the Abelian time-bin calibration and feed-
+forward framework of Ref. [14].
+The distinction between Abelian and non-
+Abelian geometric effects is not merely for-
+mal. In the Abelian case, geometric informa-
+tion is captured by a phase associated with a
+ray [1, 2, 3, 4]. In the non-Abelian case, the
+transported object is an entire subspace, and
+the geometric information is captured by a uni-
+tary matrix defined up to conjugation [5, 6].
+This is the same structural feature that under-
+lies holonomic quantum computation propos-
+als, where logical operations are implemented
+or interpreted through geometric transport of
+16
+
+===== PAGE 17 =====
+Table 2: Summary of numerical validation metrics. All data are synthetic numerical validation
+outputs, not experimental measurements. Numerical precision is rounded for readability.
+Validation Metric Value
+Gauge covariance Maximum covariance residual9.5×10 −15
+Gauge covariance Maximum unitarity residual1.4×10 −14
+Non-Abelian convergence Estimated order2.008
+Non-Abelian convergence Error range1.57×10 −2→9.01×10 −7
+Frame-overlap pipeline Estimated order2.001
+Frame-overlap pipeline Error range9.32×10 −2→5.66×10 −6
+Frame-overlap pipeline Minimum overlap singular value0.921
+Feed-forward correction Holonomy convergence order2.009
+Feed-forward correction Left correction order2.009
+Feed-forward correction Right correction order2.009
+Feed-forward correction Final infidelity∼3.9×10 −13
+Noise sensitivity Mean scaled-noise slope1.002
+Noise sensitivity Fixed-ηconditioning slope0.364
+Scaled-noise slopes across conditioning
+levels
+0.0 0.2 0.4 0.6 0.8
+0.94
+0.96
+0.98
+1.00
+1.02
+1.04
+1.06
+Targetconditioningmu
+Slope of error vs eta/mu
+ 
+Figure 5: Scaled-noise slopes across controlled
+conditioning levels. The slopes cluster near
+one, consistent with approximately linear de-
+pendence onη/µ min in the perturbative regime.
+subspaces [7, 8]. The present paper does not
+claim to implement holonomic computation or
+an experimental calibration routine. Rather, it
+identifies the form that a covariant calibration
+object must take when a time-bin logical sector
+is modelled as a transported subspace.
+This gives the framework its main concep-
+tual arc. The hidden simplifying assump-
+tion in an Abelian feed-forward model is that
+the relevant geometric distortion can be rep-
+resented by commuting scalar data. Once
+that assumption is relaxed, three changes oc-
+cur simultaneously. First, the estimated ob-
+Projector-step refinement diagnostic
+10 50 100 500 1000
+0.005
+0.010
+0.050
+0.100
+0.500
+Number ofstepsN
+Max projector step distance
+ 
+Figure 6: Projector-step refinement diagnos-
+tic for the frame-overlap pipeline. The maxi-
+mum adjacent-projector distance decreases un-
+der mesh refinement, consistent with the re-
+quirement that nearby overlap matrices remain
+well-conditioned.
+ject becomes a unitary matrix rather than a
+phase. Second, the matrix depends on an ar-
+bitrary choice of logical frame and therefore
+must be handled covariantly rather than entry-
+wise. Third, feed-forward correction becomes
+side-dependent: applying the inverse holonomy
+on the left is not equivalent to applying it on
+the right unless the relevant matrices commute.
+Thus “subtract the phase” is replaced by “recon-
+struct the holonomy and invert it on the correct
+side.”
+The overlap matricesMk = Φ†
+kΦk+1 contain
+precisely the frame-comparison data needed to
+17
+
+===== PAGE 18 =====
+reconstruct a discrete version of Wilczek–Zee
+transport. The polar decomposition extracts
+a unitary comparator from each overlap, ensur-
+ing that the reconstructed evolution remains on
+U(m)even though the raw overlaps need not
+be unitary. Moreover, by polar optimality, this
+comparator is the nearest unitary matrix to the
+raw overlap in Frobenius norm. The method
+therefore gives a canonical local unitarisation
+of frame-comparison data.
+Another way to view the construction is as a
+discrete parallel-transport rule. The raw over-
+lap matrix answers the question: how does the
+next frame project onto the current one? The
+polar factor extracts from that answer the uni-
+tary part of the comparison, while the singu-
+lar values record whether the comparison was
+trustworthy. This separation is useful because
+it keeps the reconstructed transport on the uni-
+tary group without hiding the conditioning in-
+formation.
+The gauge structure is not a technical com-
+plication but a necessary part of the formula-
+tion. Since the choice of frame inside the logical
+subspace is arbitrary, the reconstructed closed-
+loop holonomy can only be expected to trans-
+form by conjugation. Consequently, physical
+reporting should use conjugacy invariants, such
+as eigenphases or Wilson-loop traces.
+This point is particularly important for re-
+porting numerical or experimental results. A
+differentchoiceoflogicalbasiscanchangeevery
+entry of the holonomy matrix, even though the
+underlying closed-loop transport is the same.
+For this reason, tables of raw matrix entries
+are less meaningful than eigenphases, traces of
+powers, and conditioning diagnostics. The val-
+idation suite follows this principle by reporting
+gauge-covariant residuals and gauge-invariant
+spectral data.
+The feed-forward correction principle gener-
+alises Abelian geometric phase cancellation. In
+the scalar case, one estimates a phase and sub-
+tracts it. In the non-Abelian case, one esti-
+mates a unitary matrix and applies its inverse
+on the appropriate side of the effective logical
+operation. The side matters:
+Veff≈U γV⇒V corr = bU†
+γVeff,(11.1)
+whereas
+Veff≈VU γ ⇒V corr =V effbU†
+γ.(11.2)
+These two correction rules coincide only in spe-
+cial commuting cases. In any device-specific
+application, the correct side must be fixed by
+the physical circuit convention, coefficient con-
+vention, or effective model used to identify the
+geometric factor.
+The theory also identifies a practical limita-
+tion. The method is stable only when adjacent
+overlap matrices are well-conditioned. Thus a
+refined discretisation is not merely a numeri-
+cal convenience; it is part of the validity condi-
+tion for reliable holonomy reconstruction. The
+smallest singular value diagnosticµmin should
+therefore be reported in any theoretical or nu-
+merical validation.
+The numerical validation clarifies the role
+of the theory. The tests do not constitute
+an experimental demonstration; they are repro-
+ducible synthetic benchmarks of the mathemat-
+ical framework. Their value is that they verify
+thealgorithmicpropertiesthatanylaterdevice-
+specific implementation would need: gauge co-
+variance, correct path ordering, stable over-
+lap reconstruction, and successful feed-forward
+correction when the geometric contribution is
+known or estimated.
+The present work is intentionally platform-
+independent. It does not assume a specific
+integrated photonic circuit, loss model, detec-
+tor model, or experimental calibration pipeline.
+Device-specificimplementationscanbebuilton
+top of this framework by supplying a physical
+model for the frames or overlaps. In that sense,
+the framework is best read not as a completed
+experimental protocol, but as a theoretical ac-
+count of what calibration must track once the
+relevant time-bin logical object is treated as a
+transported subspace rather than as a collec-
+tion of independent rays.
+12 Code and data availability
+The accompanying repository contains Math-
+ematica/Wolfram Language notebooks and a
+headless validation pipeline that reproduce the
+numerical validation tables, figures, and logs
+used in this manuscript. The notebooks are
+organised as independent validation modules:
+gauge covariance, non-Abelian convergence,
+frame-overlap reconstruction, feed-forward cor-
+rection, conditioning/noise sensitivity, and ag-
+18
+
+===== PAGE 19 =====
+gregate summary. The repository also includes
+shared source routines for polar holonomy con-
+struction, overlap processing, unitary diagnos-
+tics, randomgaugetransformations, andexport
+of reproducibility artefacts. The generated
+data are synthetic numerical validation outputs
+rather than experimental measurements.
+The reproducibility package is archived on
+Zenodo with DOI 10.5281/zenodo.19945689;
+the source is on GitHub.
+13 Conclusion
+We developed a gauge-covariant framework for
+reconstructing non-Abelian holonomies from
+discrete overlap matrices between transported
+logical subspace frames. The polar factor of
+each overlap matrix defines a canonical back-
+ward comparator, whose adjoint gives the for-
+ward coefficient transport. The resulting or-
+dered product is gauge-covariant, converges to
+the Wilczek–Zee holonomy under partition re-
+finement, and is stable when overlap matrices
+remain well-conditioned.
+The framework generalises Abelian time-bin
+geometric-phase correction to the non-Abelian
+setting. Scalar phase subtraction is replaced
+by matrix-valued feed-forward correction, with
+distinct left- and right-acting forms depending
+on the circuit convention. Reproducible numer-
+ical validation confirms gauge covariance, con-
+vergence, feed-forward correction fidelity, and
+the predicted dependence on overlap condition-
+ing.
+A Proof details
+This appendix collects several technical de-
+tails used in the main text. The purpose
+is to make explicit the sign convention, the
+polar-decomposition covariance, and the rela-
+tionship between frame comparison and coeffi-
+cient transport.
+A.1 Equivariance of the polar de-
+composition
+Let
+M=WH(A.1)
+be the polar decomposition of a nonsingular
+matrixM∈C m×m, withW∈U(m)and
+H= (M †M) 1/2>0. LetL,R∈U(m). Then
+LMR= (LWR)(R †HR).(A.2)
+ThefirstfactorLWRisunitary, andthesecond
+factorR†HRis positive Hermitian. By unique-
+ness of the polar decomposition for nonsingular
+matrices,
+polar(LMR) =Lpolar(M)R.(A.3)
+This identity is the key algebraic input in the
+gauge-covariance proof.
+A.2 First-order expansion of the
+overlap matrix
+LetΦ(t)be aC 2 orthonormal frame and let
+At(t) = Φ(t)† ˙Φ(t).(A.4)
+For a small step∆t, Taylor expansion gives
+Φ(t+ ∆t) = Φ(t) + ˙Φ(t)∆t+O(∆t 2).(A.5)
+Hence the adjacent-frame overlap is
+M(t,∆t) := Φ(t)†Φ(t+ ∆t)(A.6)
+=I m + Φ(t)† ˙Φ(t)∆t+O(∆t 2)
+(A.7)
+=I m +At(t)∆t+O(∆t 2).(A.8)
+SinceΦ(t) †Φ(t) =I m, differentiation gives
+At(t)† =−A t(t).
+A.3 First-order expansion of the po-
+lar comparator
+Using equation (A.8), write
+M=I m +A∆t+O(∆t 2),(A.9)
+withA† =−A. Then
+M†M=I m +O(∆t 2).(A.10)
+Therefore
+(M†M)−1/2 =I m +O(∆t 2),(A.11)
+and the polar unitary satisfies
+polar(M) =M(M †M)−1/2 (A.12)
+=I m +A∆t+O(∆t 2).(A.13)
+Thus the polar factor ofMk = Φ†
+kΦk+1 has the
+same first-order sign as the connection:
+Wk =I m +Ak∆tk +O(∆t 2
+k).(A.14)
+19
+
+===== PAGE 20 =====
+A.4 Discrete-to-continuum sign con-
+vention
+Let
+|ψ(t)⟩= Φ(t)c(t)(A.15)
+be a state vector lying in the transported log-
+ical subspace. Projector parallel transport is
+characterised by
+P(t)|ψ(t)⟩=|ψ(t)⟩, P(t)| ˙ψ(t)⟩= 0,
+(A.16)
+whereP(t) = Φ(t)Φ(t) †. Using
+| ˙ψ(t)⟩= ˙Φ(t)c(t) + Φ(t) ˙c(t),(A.17)
+we obtain
+0 =P| ˙ψ⟩(A.18)
+= ΦΦ†( ˙Φc+ Φ ˙c)(A.19)
+= Φ(Atc+ ˙c).(A.20)
+SinceΦhas full column rank,
+˙c(t) =−At(t)c(t).(A.21)
+Thus the forward coefficient transport over a
+small step is
+c(t+ ∆t) =
+
+Im−At(t)∆t+O(∆t 2)
+
+c(t).
+(A.22)
+On the other hand, the polar unitary extracted
+from the overlap matrix satisfies
+Wk =I m +Ak∆tk +O(∆t 2
+k).(A.23)
+ThereforeW k is naturally a backward frame
+comparator. The forward coefficient transport
+is its adjoint:
+Tk =W †
+k =I m−Ak∆tk +O(∆t 2
+k).(A.24)
+A.5 Product ordering
+The convention in this paper uses column coef-
+ficient vectors. Ifc k+1 =T kck, then iterating
+gives
+cN =T N−1TN−2···T 1T0c0.(A.25)
+Thus the discrete holonomy acting on column
+vectors is
+bUγ =T N−1TN−2···T 1T0.(A.26)
+A.6 Telescoping identity for product
+perturbations
+Let
+U=T N−1···T 0,(A.27)
+eU= eTN−1··· eT0.(A.28)
+Then
+eU−U
+=
+N−1X
+j=0
+eTN−1··· eTj+1(eTj−Tj)Tj−1···T 0.
+(A.29)
+If allT k and eTk are unitary, then taking the
+operator norm gives
+∥eU−U∥ 2≤
+N−1X
+j=0
+∥eTj−Tj∥2.(A.30)
+SinceT j =W †
+j and eTj =fW†
+j, one also has
+∥eTj−Tj∥2 =∥fWj−Wj∥2.(A.31)
+References
+[1] S. Pancharatnam. Generalized theory of
+interference, and its applications. part i.
+coherent pencils.Proc. Indian Acad. Sci.
+A, 44:247–262, 1956.
+[2] M. V. Berry. Quantal phase factors accom-
+panying adiabatic changes.Proc. R. Soc.
+Lond. A, 392(1802):45–57, 1984.
+[3] Y. Aharonov and J. Anandan. Phase
+change during a cyclic quantum evolution.
+Phys. Rev. Lett., 58(16):1593–1596, 1987.
+[4] J. Samuel and R. Bhandari. General set-
+ting for Berry’s phase.Phys. Rev. Lett.,
+60(23):2339–2342, 1988.
+[5] Frank Wilczek and A. Zee. Appearance of
+gauge structure in simple dynamical sys-
+tems.Phys. Rev. Lett., 52(24):2111–2114,
+1984.
+[6] J. Anandan. Non-adiabatic non-abelian
+geometric phase.Phys. Lett. A, 133(4–
+5):171–175, 1988.
+20
+
+===== PAGE 21 =====
+[7] Erik Sjöqvist, D. M. Tong, L. M. An-
+dersson, B. Hessmo, M. Johansson, and
+K. Singh. Non-adiabatic holonomic
+quantum computation.New J. Phys.,
+14:103035, 2012.
+[8] G. F. Xu, J. Zhang, D. M. Tong,
+E. Sjöqvist, and L. C. Kwek. Nonadi-
+abatic holonomic quantum computation
+in decoherence-free subspaces.Phys. Rev.
+Lett., 109:170501, 2012.
+[9] Anthony Laing and Jeremy L. O’Brien.
+Super-stable tomography of any linear op-
+tical device, 2012.
+[10] Hao Yu, Stefania Sciara, Mario Chem-
+nitz, et al. Quantum key distribution im-
+plemented withd-level time-bin entangled
+photons.Nat. Commun., 16:171, 2025.
+[11] Simon J. U. White, Emanuele Polino,
+Farzad Ghafari, Dominick J. Joch, Luis
+Villegas-Aguilar, Lynden K. Shalm,
+Varun B. Verma, Marcus Huber, and
+Nora Tischler. Robust approach for
+time-bin-encoded photonic quantum
+information protocols.Phys. Rev. Lett.,
+134(18):180802, 2025.
+[12] A. Singh et al. Photonic quantum infor-
+mation with time-bins, 2025.
+[13] Aymeric Delteil.n-qubit universal quan-
+tum logic with a photonic qudit ando(n)
+linear optics elements.APL Quantum,
+1(4):046101, 2024.
+[14] Ryan Rae-Cheng Wee and Josef Bruzzese.
+Geometric-phase (pancharatnam–berry)
+correction for time-bin photonic qudits:
+A calibration and feed-forward algorithm.
+arXiv preprint arXiv:2604.27009, 2026.
+[15] Tosio Kato. On the adiabatic theorem of
+quantum mechanics.Journal of the Phys-
+ical Society of Japan, 5(6):435–439, 1950.
+[16] Barry Simon. Holonomy, the quantum
+adiabatic theorem, and berry’s phase.
+Physical Review Letters, 51(24):2167–2170,
+1983.
+[17] Takahiro Fukui, Yasuhiro Hatsugai, and
+Hiroshi Suzuki. Chern numbers in dis-
+cretized brillouin zone: Efficient method
+of computing (spin) hall conductances.
+Journal of the Physical Society of Japan,
+74(6):1674–1677, 2005.
+[18] Nicholas J. Higham. Computing the polar
+decomposition—with applications.SIAM
+Journal on Scientific and Statistical Com-
+puting, 7(4):1160–1174, 1986.
+21

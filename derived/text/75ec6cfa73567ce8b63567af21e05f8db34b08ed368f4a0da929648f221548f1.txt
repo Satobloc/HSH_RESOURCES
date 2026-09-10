@@ -1,0 +1,830 @@
+===== PAGE 1 =====
+Linguistic Holonomy and Statistical Watermarks:
+Inner Geometry of Meaning-Preserving
+Transformations
+Daniele Corradetti
+Grupo de Física Matemática, Instituto Superior Técnico
+Av. Rovisco Pais, 1049-001 Lisboa, Portugal
+Departamento de Matemática, Universidade do Algarve
+Campus de Gambelas, 8005-139 Faro, Portugal
+danielecorradetti@tecnico.ulisboa.pt
+Abstract
+Statistical watermarks for language models live in the freedom of the signifier: they
+choose among tokens that are nearly equivalent in meaning, and they are therefore
+eroded by exactly those transformations which move the form of a text while
+leaving its content in place. The literature measures such transformations by their
+endpoint, through the semantic similarity between the original and the rewritten
+text. We show that the endpoint is the wrong statistic. Adapting the formalism
+of linguistic loops, we prove that the invariant of a chain of meaning-preserving
+transformations factorises canonically into an endpoint part and a holonomy in the
+stabiliser of the initial state, the second of which the semantic deficit cannot see;
+the loop rotation is parallel transport on the unit sphere of the embedding space,
+so that the analogy with the Wilson loop becomes a theorem rather than a figure
+of speech. On the side of the detector we prove an exact identity: the residual
+statistic is proportional to the number of positions whose seeding window survived
+intact, from which the decay lawρh+1 follows as the independent-edit corollary.
+The identity has a disconcerting consequence, which we confirm to three decimal
+places: at one and the same retention rate the surviving signal may be one half of
+the original, one quarter of it, or exactly nothing, according only to where the edits
+fall.
+1 Introduction and Motivation
+When Raymond Queneau published hisExercices de stylein 1947, inspired by Bach’sArt of Fugue,
+he wrote the same trivial anecdote ninety-nine times. A man is jostled on a bus; two hours later a
+friend advises him to move a button on his overcoat. Nothing else happens. What varies is everything
+else: the register, the tense, the person, the alphabet, the sonnet form, the language of a mathematician.
+The content is held fixed by fiat, and the form is allowed to move as far as it can. Queneau took
+himself to be doing something intrinsically geometric, and named an early version of the work
+Dodécaèdre; the intuition, as was argued in [4], is not casual at all.
+Eighty years later the same operation has acquired an adversarial use. Since 2 August 2026 the
+outputs of at least one major language model carry a machine-readable mark, in response to the
+transparency obligations of Article 50 of the European AI Act [1]. The published description of such
+marks is careful: the mark does not change meaning, quality or readability, it survives copying and
+light editing, and it is stated to be lost under paraphrase, heavy editing, translation and mixing with
+other text. Whoever wishes to remove the mark, then, is being invited to perform anExercice de style.
+The question of how much of the mark survives such an exercise is the subject of this article.
+Preprint.
+arXiv:2608.19369v1  [cs.CL]  19 Aug 2026
+
+===== PAGE 2 =====
+Family Mechanism ContexthOutput law What an edit destroys
+Green list [7] logit bias≥1perturbed tokenanditshpredecessors
+Unigram [15] logit bias0perturbed the token alone
+Exponential [10, 2] sampling rule≥0exact tokenandseeding context
+Tournament [5] sampling rule≥1exact tokenandseeding context
+Semantic [6] sentence partition — perturbed the sentence embedding
+Table 1:Synoptic table of the families of text watermarks. The last column is the one that matters
+for this article: in every family except the Unigram scheme, an edit damages not only the position it
+touches but every position that used it as seeding context. It is this asymmetry which the geometry of
+Section 4 and the identity of Section 5 make precise.
+The landscape
+The dominant construction is thegreen-listwatermark of Kirchenbaueret al.[ 7]: at each step
+a pseudo-random subset of the vocabulary, of relative size γ, is declared green on the basis of a
+secret key and of the h preceding tokens, and the logits of green tokens are raised by a bias δb.
+Detection counts green tokens and reads off a z-score. Setting h= 0 gives the Unigram scheme
+of Zhaoet al.[ 15], whose robustness is provable. A different family, initiated by Aaronson and
+developed by Kuditipudiet al.[ 10] and by Christ, Gunn and Zamir [2], leaves the output distribution
+mathematically untouched and replaces instead the source of randomness in the sampler; these are the
+distortion-freeschemes. A production deployment at scale, using tournament sampling, is described
+in [5]. A synoptic view is given in Table 1.
+Against these constructions stands a literature of attacks. Krishnaet al.[ 9] introduced a dedicated
+paraphraser; Sadasivanet al.[ 13] iterated it; a recent large-scale study [3] chains rewritings up to
+five deep and reports detection falling from 87.9% on the original outputs to 4.86% after five hops.
+Kirchenbaueret al.[ 8] had already observed, on empirical grounds, that a longer seeding context
+makes a watermark less robust to editing.
+All of these studies share a habit of measurement. An attack is scored by itsendpoint: by the semantic
+similarity between the original and the final text, and by a count of how many tokens or hops separate
+them. The intermediate states are treated as scaffolding.
+The gap
+This habit is not innocent. Consider two chains of rewritings that begin at the same text and end at
+texts of identical meaning. One proceeds directly; the other wanders through three languages and
+returns. By any endpoint measure they are the same attack. Are they?
+To ask the question one needs a formalism in which the intermediate states are part of the object
+rather than part of the apparatus. Such a formalism exists. In [ 4] alinguistic loopwas defined as
+a chain of transformations that move the signifier while preserving the semantic core, itssemantic
+deficitwas defined as the cosine distance between the first and last embedded states, and a rotation
+RU ∈SO(n) was associated with the entire chain by composing the minimal rotations between
+consecutive states. The signature of a quadratic form built from RU was proposed as the invariant of
+the loop, and the construction was compared, in the introduction of that paper, with the Wilson loop
+of lattice gauge theory.
+We take up that formalism, and we find three things.
+The first is that the proposed invariant collapses. The representing matrixIn−R∗
+U is always positive
+semidefinite, so its Sylvester signature is (2p,0,n−2p) and carries no more information than its
+rank. The negative index, which is where a signature normally keeps its content, is identically zero.
+The second is that the analogy with the Wilson loop is not an analogy. The minimal rotation of [4]is
+parallel transport along the minimising geodesic of the unit sphere; RU is parallel transport along
+the geodesic polygon of the chain; and the quantity that the semantic deficit discards is precisely a
+holonomy, an element of SO(n−1) fixing the initial state. Endpoint and path separate canonically,
+and they are independent: neither constrains the other.
+2
+
+===== PAGE 3 =====
+The third is that on the side of the detector there is an exact law, and it is not the law the field has
+been assuming. The residual statistic after an attack is proportional to the number of scored positions
+whose entire seeding window survived. When the edits are independent this gives ρh+1, which
+explains in closed form the trend reported in [8]. When they are not — and real edits never are — the
+retention rateρdoes not determine the residual at all.
+Contribution
+In this work we prove that the invariant of a linguistic loop factorises canonically asRU = RdirH
+withH in the stabiliser of the base point, that the semantic deficit depends only on the first factor,
+and that the two factors are functionally independent; we identifyH as the Riemannian holonomy of
+the geodesic polygon of the chain, which on the two-sphere is the area of the enclosed triangle; we
+show that the signature invariant of [4] degenerates to a rank and is superseded by the angle spectrum;
+and we prove the intact-window identity for green-list and exponential detectors, with its corollary
+that an adversary who knows the context widthh can annihilate the signal while retaining a fraction
+1−1/(h+ 1) of the tokens. Every statement is verified numerically against exact detectors whose
+keys we hold, and the geometric machinery is applied to real chains of round-trip machine translation.
+In Section 2 we recall, in a self-contained form, the apparatus of linguistic loops. In Section 3 we
+prove the degeneracy of the signature. Section 4 contains the factorisation, the identification with
+parallel transport and the Gauss–Bonnet corollary. Section 5 turns to the detector and proves the
+intact-window law. Section 6 reports the experiments, including a preregistered test whose outcome
+we report whichever way it fell. Section 7 discusses what the results do and do not license.
+2 Linguistic loops and their invariants
+We recall the apparatus of [4], in the form in which we shall use it. The reader who knows that paper
+may skip to Section 3; the reader who does not should find here everything the sequel requires.
+Language is not a metric space, but its images under an embedding map are. Ametrizable linguis-
+tic spaceis a triple (A,ψ,d) where A is a set of linguistic elements — words, phrases, whole
+propositions — in a context of interest, and
+ψ:A−→R n, λ7−→ψ(λ),(2.1)
+is an embedding map, generally neither injective nor surjective. A distance d∗ on Rn induces a
+semantic distanceonAby composition,
+d(λ,ν) :=d ∗
+ 
+ψ(λ),ψ(ν)
+
+,(2.2)
+and throughout this articled∗ is the cosine distance
+d∗,cos(x,y) = 1− x·y
+∥x∥∥y∥.(2.3)
+The choice is not innocuous and we shall return to it in Remark 3.2: it is what makes the whole
+construction orthogonally natural rather than linearly natural.
+Alinguistic transformationUis a map ofAinto itself which acts on the signifier while preserving,
+in a controlled way, the semantic core. In [4] three requirements are imposed: closure,U(λ)∈A ;
+reversibility, the existence of an approximate inverseU−1 withd(U−1(U(λ)),λ)< ε for a fixed
+thresholdε; and coherence, the requirement that similar elements have similar images. Translation
+between languages, conversion to the negative or interrogative form, dialectal or stylistic adaptation,
+expansion and synthesis, and paraphrase are all linguistic transformations; inventing a story is not,
+because its generative content is too large for the original to be reconstructible.
+Given a sequenceU={⊮,U 1,...,U L} of such transformations and an initial elementλ, the iterated
+composition produces a chain inA, whose image underψis a chain of vectors
+ψ(U(λ)) ={v 0,v 1,...,v L}, v 0 =ψ(λ), v i =ψ
+ 
+(Ui◦···◦U 1)(λ)
+
+.(2.4)
+Thesemantic deficitof the chain is the distance between its extremes,
+δU(λ) :=d∗(v0,v L),(2.5)
+3
+
+===== PAGE 4 =====
+and whenδU <ξ for a fixed thresholdξ the sequence is called alinguistic loop. Small deficit means
+the meaning came back; the form, in the meantime, may have gone anywhere.
+To capture where it went, one rewrites the chain as a sequence of rotations. Forx,y∈R n neither
+zero nor antipodal, writeˆx=x/∥x∥and let
+eRx,y :=I n +
+ 
+ˆyˆxT−ˆxˆyT
++ 1
+1 + ˆxT ˆy
+ 
+ˆyˆxT−ˆxˆyT2
+∈SO(n)(2.6)
+be theminimal rotationcarrying ˆxto ˆy. Its minimality is the statement that it rotates in the plane
+spanned byx andy only, acting as the identity on the orthogonal complement. The whole chain is
+then summarised by the ordered product
+RU := eRvL−1,vLeRvL−2,vL−1··· eRv0,v1 ∈SO(n),(2.7)
+which satisfies RU ˆv0 = ˆvL and, unlike the deficit, remembers the intermediate states. Writing
+R∗
+U = 1
+2(RU + RT
+U) for the symmetric part, an elementary computation recovers the deficit as a
+quadratic form,
+δU(λ) =QU(ˆv0,ˆv0), Q U(ˆv,ˆv) := ˆvT 
+In−R∗
+U
+
+ˆv,(2.8)
+whose representing matrix is the real symmetricIn−R∗
+U. It was proposed in [4] that the Sylvester
+signature of this matrix be taken as the invariant of the loop, on the ground that it probes finer
+structural properties than the deficit alone. That it probes finer properties is true. How much finer is
+the subject of the next section.
+3 The signature and its degeneracy
+A signature keeps its information in the interplay between its positive and negative indices; Sylvester’s
+law of inertia is informative because a form can be indefinite. The forms which arise from linguistic
+loops, however, cannot.
+Proposition 3.1(Degeneracy of the signature).Let R∈SO(n) with non-trivial rotation angles
+θ1,...,θ p∈(0,π] , and setM=I n− 1
+2(R+R T ). ThenM is positive semidefinite, its spectrum is
+
+1−cosθ k with multiplicity2
+	p
+k=1 ∪
+
+0with multiplicityn−2p
+	
+,(3.1)
+and consequently
+sign(M) = (2p,0, n−2p).(3.2)
+The negative index vanishes identically, rank(M) = 2p, and the signature is a function of the single
+integerp.
+Proof. By the real normal form of a special orthogonal matrix there is Q∈O(n) withQTRQ=
+diag(R(θ1),...,R(θ p),I n−2p), whereR(θ) is the planar rotation byθ. Angles are taken in (0,π] :
+the eigenvalue−1 of an element of SO(n) occurs with even multiplicity, and each pair constitutes a
+blockR(π), whileθ= 0 contributes a trivial block absorbed intoIn−2p. SinceR(θ)T =R(−θ) , the
+symmetric part of a block iscos(θ)I 2, whence
+QTMQ= diag
+ 
+(1−cosθ 1)I2,...,(1−cosθ p)I2,0
+
+.(3.3)
+As Q is orthogonal, (3.3) is at once a congruence and a similarity, so its diagonal entries are
+the eigenvalues of M, which is (3.1); and 1−cosθ k >0 forθk∈(0,π] , which gives positive
+semidefiniteness and (3.2).
+The proof is four lines, and this is itself the point: nothing in the construction could have produced an
+indefinite form, because a rotation never moves a vector further than antipodally. It is worth stating
+what survives. The integerp, the number of two-planes in which the chain has genuinely rotated, is a
+real invariant of the loop, and it is not visible in the deficit; what does not survive is the expectation
+that a signature carries more than a rank.
+The natural replacement is not far to seek. Since QTRQ is determined up to permutation of the
+blocks by the multiset of angles, the complete invariant ofR under conjugation is theangle spectrum
+Θ(R) :={θ 1,...,θ p},(3.4)
+4
+
+===== PAGE 5 =====
+equivalently the conjugacy class of R in SO(n), of which (3.2) retains only the cardinality. That
+the refinement is strict is immediate: for n≥4 any two rotations with two non-trivial planes and
+different angles share the signature (4,0,n−4) and differ in Θ. We shall use throughout the scalar
+reduction
+∥Θ(R)∥2 =
+ pX
+k=1
+θ2
+k
+1/2
+,(3.5)
+which we call therotation energyof R, with the warning that it is a lossy summary of Θ and is used
+for convenience of regression, not because it is canonical.
+Remark 3.2(The invariance group).It is of paramount importance to notice which group is acting.
+The signature of afixedquadratic form is invariant under congruence M7→P TMP for any
+P∈GL(n,R) ; this is Sylvester’s law and it is not in question. But the assignment which sends a
+chain to its form is not GL(n,R) -natural. IfA∈O(n) then cAx=Aˆx and ˆx·ˆyis preserved, so (2.6)
+transforms by conjugation, eRAx,Ay =A eRx,yAT , and therefore so does (2.7); the angle spectrum is
+an invariant of the chain. For a general A∈GL(n,R) neither identity holds, because (2.3) is not
+preserved, and the loop matrix of the transformed chain is unrelated to the original. The natural
+invariance group of the construction is thus O(n), and the invariant it protects is Θ, not the signature.
+Remark 3.3(A trap in the numerics).The identity n+ = 2p holds numerically only if the two counts
+are taken with matched tolerances. Declaring a plane non-trivial whenθ>tol , while declaring an
+eigenvalue positive when 1−cosθ >tol , admits to the first count planes with tol< θ <
+√
+2 tol
+which the second legitimately rejects; the angle threshold must be arccos(1−tol) . Moreover a plane
+rotated by exactlyπ has both its eigenvalues equal to−1, so a count based on the arguments of the
+eigenvalues reports the angle π twice for a single plane. We record this because both traps were
+sprung in the course of the verification reported in Section 6.
+4 The holonomy of a linguistic loop
+The deficit (2.5) is a function of the two extreme states. The loop matrix (2.7) is a function of all of
+them. The difference between the two is an object, and it is a familiar one.
+We begin by observing that the minimal rotation was not an arbitrary choice of interpolant.
+Lemma 4.1(The minimal rotation is parallel transport).Let ˆx,ˆybe distinct, non-antipodal unit
+vectors of Rn and P= span(ˆx,ˆy). Then eRx,y is the parallel transport of the round metric of
+Sn−1 along the minimising geodesic from ˆxto ˆy, extended to Rn as the ambient rotation fixingP⊥
+pointwise.
+Proof. The minimising geodesic is the arc of the great circleSn−1∩P . A fieldW along a geodesic
+c of the round sphere is parallel exactly when its ambient derivative is normal to the sphere, that is
+whenW′ =−⟨W,c ′⟩c. DecomposingW=W P +W⊥, the componentW⊥ is constant, sincec and
+c′ lie inP , whileWP rotates insideP by the arclength travelled. Transport is therefore the rotation
+byθ= arccos(ˆx·ˆy)insideP together with the identity onP⊥. WritingA= ˆyˆxT−ˆxˆyT one has
+AP⊥ = 0, so (2.6) is the identity onP⊥; onP it carries ˆxto ˆypreserving orientation and metric,
+hence it is the rotation byθ.
+Thus RU is parallel transport along the geodesic polygon joining ˆv0,ˆv1,...,ˆv L on the unit sphere of
+the embedding space, and the chain of reformulations is literally a path on a sphere. The Wilson loop
+of [4] was not a metaphor.
+Proposition 4.2(Endpoint–path factorisation).Let V= (v 0,...,v L) be a chain as in (2.4), with
+n≥3and no two consecutive states antipodal. PutR dir = eRv0,vL and
+H:= R−1
+dir RU.(4.1)
+Then
+(i)Hˆv 0 = ˆv0, so thatH∈Stab(ˆv 0)∼= SO(n−1), andR U = RdirHcanonically;
+(ii)δ U = 1−⟨ˆv0,R dirˆv0⟩depends only onR dir, and is therefore blind toH;
+5
+
+===== PAGE 6 =====
+(iii)H is the Riemannian holonomy, based at ˆv0, of the closed geodesic polygon obtained by
+closing the path with the geodesic fromˆvL back toˆv0;
+(iv) for everyu∈S n−1 and everyH0∈Stab(ˆv0) there is a chain with initial state ˆv0, final
+stateuand holonomy exactlyH 0.
+Proof. (i) By construction eRvi−1,viˆvi−1 = ˆvi, so by induction RU ˆv0 = ˆvL; and Rdirˆv0 = ˆvL by
+definition. Since Rdir is orthogonal,Hˆv0 = RT
+dirˆvL = ˆv0. An element of SO(n) fixing a unit vector
+preserves its orthogonal hyperplane and restricts there to an element ofSO(n−1).
+(ii) Immediate from (2.5), (2.3) andˆvL = Rdirˆv0.
+(iii) By Lemma 4.1, RU and Rdir are the transports along the two paths, and (4.1) is the transport
+around the closed circuit.
+(iv) It suffices to realise every H0 as the holonomy of a closed geodesic polygon based at ˆv0:
+appending the single geodesic leg from ˆv0 to u multiplies the loop matrix on the left by eRˆv0,u
+and leaves the holonomy unchanged. Fix a two-plane Q⊂ˆv ⊥
+0 and an angle α∈(0,2π) , and
+let Σ =S n−1∩(span(ˆv0)⊕Q) , a totally geodesic two-sphere through ˆv0 whose tangent space
+there isQ. A geodesic triangle in Σ with vertex ˆv0 and areaα exists, since the area of a geodesic
+triangle on the unit two-sphere sweeps the whole of (0,2π) ; transport around a loop contained in
+a totally geodesic submanifold is the transport computed inside it, extended by the identity on the
+normal directions, so by Corollary 4.3 below the holonomy is the rotation ofQ byα and the identity
+elsewhere. By the normal form used in Proposition 3.1, every element of SO(n−1) is a product
+of at most⌊(n−1)/2⌋ such plane rotations, and the corresponding polygons, each beginning and
+ending atˆv0, may be concatenated.
+Part (iv) deserves a word, because it is what makes the factorisation worth having. It says that the
+endpoint datum and the path datum arefree: prescribing how far the meaning has drifted places
+no constraint whatever on how far the form has wandered, and conversely. Incidentally the proof
+re-establishes, without appeal to the classification of symmetric spaces, that Hol(Sn−1,ˆv0) =
+SO(n−1).
+Corollary 4.3(Gauss–Bonnet).For n= 3 andL= 2 the holonomy is the rotation of the tangent
+plane atˆv0 by the spherical excess of the geodesic triangleˆv0ˆv1ˆv2, that is by its area.
+Proof. Gauss–Bonnet with Gaussian curvature 1, the excess of a geodesic triangle beingA+B+
+C−π.
+This is the statement to keep in mind, and it is worth dwelling on. On the two-sphere the invariant that
+the semantic deficit throws away is thearea sweptby the chain of reformulations. Two paraphrase
+chains ending at the same meaning differ by the area they enclose. One should add, since the numerics
+will otherwise appear to fail, that the angle of a rotation is recovered from its eigenvalues only as a
+principal value in (0,π] , so the holonomy determines the area outright when the triangle covers at
+most a hemisphere and modulo2πin general.
+We shall use the scalar
+η(U) :=∥Θ(H)∥ 2 (4.2)
+and call it theholonomy energyof the chain. It is, again, a lossy reduction: a null result for η is not a
+null result forH.
+5 Watermarks as functionals on the loop
+We now cross from the semantic channel to the channel in which a watermark actually lives. The
+two are complementary, and the complementarity is the conceptual heart of this article: what a
+meaning-preserving chainpreservesis the semantic core, and what a watermarkoccupiesis precisely
+the freedom that remains once the meaning is fixed. The invariant and the carrier are, so to speak,
+dual coordinates on the same transformation. A loop with small deficit and large holonomy is, from
+the point of view of the detector, the worst case.
+6
+
+===== PAGE 7 =====
+5.1 The intact-window law
+Fix a green-list scheme with green fractionγ, context widthh≥0 and biasδb, detecting a sequence
+y0,...,y T−1 by
+z= G−γT ′
+p
+T′γ(1−γ)
+, T ′ :=T−h,(5.1)
+whereG counts the scored positionst=h,...,T−1 at whichyt lies in the green list seeded by
+(yt−h,...,y t−1). Let an attack replace the tokens at a setE of positions without changing the length,
+and define theintact-window set
+I:=
+
+t:h≤t<T,[t−h, t]∩E=∅
+	
+.(5.2)
+We assume, as is standard, that the hash behaves as a random oracle, so that green membership is an
+independent Bernoulli(γ) across distinct pairs of seed and token; and that at each scored position of
+unattacked watermarked text the green indicator is Bernoulli(γw) withγw >γ , independently across
+positions. The second is a mean-field hypothesis and is the weaker of the two; we return to it below.
+Theorem 5.1(Intact-window law).Under the two hypotheses above,
+E[zatt] =|I|
+T′ E[z0].(5.3)
+Proof. Fix a scored positiont. Ift∈I thenyt and its whole seeding window are those the generator
+produced, so the pair evaluated by the detector is the pair the generator evaluated, and it is green
+with probability γw. If t /∈Ithen either the window or the token differs, so the pair is one the
+generator never biased, and by the random-oracle hypothesis its green indicator is a fresh Bernoulli(γ).
+Summing,
+E[Gatt] =|I|γ w + (T′−|I|)γ=γT ′ +|I|(γ w−γ),(5.4)
+and substituting into (5.1) gives E[zatt] =|I|(γ w−γ)/
+p
+T′γ(1−γ) . The same computation with
+|I|=T ′ givesE[z 0], and the ratio is (5.3).
+The identity is deterministic in|I|; no distribution over the edits has been assumed. It is only when
+one wishes to compute|I| that a model of the attack becomes necessary, and the model the field has
+implicitly been using is the independent one.
+Corollary 5.2(Context-width decay law).If each position is retained independently with probability
+ρ, thenE|I|=ρ h+1T′ and
+E[zatt] =ρ h+1 E[z0].(5.5)
+The signal decays exponentially in the context width and only linearly in the retention rate.
+Equation (5.5) is, in closed form, the trend that [8] reported empirically. It also explains a phenomenon
+familiar to anyone who has attacked such a scheme by hand: the signal falls considerably faster than
+the fraction of altered words, and it falls faster the longer the seeding context. Since E[z0] grows as√
+T′, one obtains at once the length required for detection at a fixed thresholdz∗,
+T′ ≥ (z∗)2γ(1−γ)
+ 
+ρh+1(γw−γ)
+2,(5.6)
+which grows likeρ−2(h+1) and quantifies the published warning that short passages carry no reliable
+signal.
+5.2 Why the retention rate is the wrong statistic
+Real edits are not independent. A translator rewrites clauses, not tokens; a human editor works on
+paragraphs. The following is therefore not a curiosity but the typical case.
+Proposition 5.3(Arrangement dominates the rate).Fix the retention rateρ= 1−|E|/T. Then
+(i) ifE is a single contiguous run,|I|≥T ′−|E|−h , so the residual ratio is at leastρ−h/T ′,
+independently ofh;
+7
+
+===== PAGE 8 =====
+(ii) ifEconsists ofbmaximal contiguous runs,|I|≥T ′−|E|−hb;
+(iii) ifE contains an arithmetic progression of stepk≤h+ 1 covering [0,T) , thenI=∅ and
+the expected residual is exactly zero.
+Consequently, whenever 1−ρ≥1/(h+ 1) , the residual ratio ranges over essentially the whole of
+[0,ρ]as the arrangement varies at fixedρ.
+Proof. A scored position leavesI only if its window ofh+ 1 consecutive positions meetsE. For
+a single run of length|E| the windows meeting it are those witht∈[minE,maxE+h] , at most
+|E|+h of them, which is (i); withb runs the bound is additive, which is (ii). IfE contains everyk-th
+position withk≤h+ 1 , every window ofh+ 1 consecutive positions contains a member ofE, so
+I=∅and Theorem 5.1 gives zero.
+The consequence is worth stating without euphemism. An adversary who knows h — andh is a
+published design parameter, not a secret — can reduce the expected detector statistic to zero while
+retaining a fraction 1−1/(h+ 1) of the tokens. For the common choiceh= 1 this means editing
+one token in two; forh= 3 , one in four. Nothing in the attack requires knowledge of the key. This is
+not a new attack so much as an exact accounting of a known design tension [8, 11], but we have not
+found it written down in this form, and its corollary — that a robustness table indexed by retention
+rate or by endpoint similarity is under-specified — appears not to have been drawn.
+Remark 5.4(The exponential family).Nothing in the proof of Theorem 5.1 used the biasing
+mechanism; only the context seeding was used. For the distortion-free scheme which seeds a uniform
+vectorξ from the context and scores S= P
+t−log(1−ξ yt), whose null mean is T′, the same
+conditioning gives
+E[Satt]−T ′ =|I|
+T′
+ 
+E[S0]−T ′
+,(5.7)
+and with it the analogues of Corollary 5.2 and Proposition 5.3. Leaving the output distribution
+mathematically untouched buys nothing at all against this particular weakness: the vulnerability is a
+property of context seeding, not of distortion.
+5.3 Scope
+It is worth being explicit about what hasnotbeen proved. Theorem 5.1 concerns substitutions that
+preserve length. Insertions and deletions shift the indices, and the correct generalisation replacesI by
+the set of positions whose window survives as a contiguous block of the attacked text; the identity then
+holds only approximately. The mean-field hypothesis onγw is false in real text, where entropy varies
+strongly with content, so that (5.3) is anupperbound on what survives in the wild. And nothing here
+concerns any undisclosed production scheme: the deployment recalled in the introduction motivates
+the question and is not an object of measurement.
+6 Experiments
+Three experiments are reported. The first verifies numerically that the propositions describe the
+objects the pipeline computes. The second tests Theorem 5.1 and Proposition 5.3 against exact
+detectors. The third applies the geometry to real chains of round-trip machine translation, and
+executes a test whose criterion was fixed in writing before any measurement was taken. All code, run
+directories and manifests are described in Section 6.4.
+6.1 The geometry
+Over 300 pseudo-random chains in each of the dimensionsn∈{8,16,64,384} , with chain lengths
+in{2,3,4,6,8} , the worst deviations observed were: minimum eigenvalue of In−R∗
+U equal to
+−6.1×10 −15; negative indexn− = 0 in every case;|n+−2p|= 0 in every case;∥Hˆv0−ˆv0∥=
+3.3×10 −12; and∥RdirH−R U∥= 5.9×10 −12. This is Propositions 3.1 and 4.2 at machine
+precision.
+Independence, part (iv) of Proposition 4.2, is exhibited directly. A family of chains with a prescribed
+common endpoint, wandering through an increasing number of extra dimensions, gives a semantic
+8
+
+===== PAGE 9 =====
+detoursδ U η(U) sign(I n−R∗
+U )
+0 0.12241744 0.0000(2,0,62)
+1 0.12241744 0.2454(2,0,62)
+2 0.12241744 0.5190(4,0,60)
+3 0.12241744 0.6898(4,0,60)
+4 0.12241744 0.8260(6,0,58)
+5 0.12241744 0.9427(6,0,58)
+6 0.12241744 1.0465(8,0,56)
+Table 2:This table summarizes the independence of the endpoint and path data, in dimension n= 64 .
+All seven chains share the same first and last state, so the semantic deficit is constant to the last
+recorded digit; the holonomy energy is not. Note also that the signature, in the last column, moves in
+steps and is constant on pairs of rows, exactly as Proposition 3.1 predicts it must.
+ρindependent contiguous block periodic
+0.95 0.904 0.947 0.903
+0.90 0.806 0.897 0.802
+0.80 0.637 0.795 0.595
+0.70 0.492 0.697 0.399
+0.60 0.362 0.594 0.196
+0.50 0.247 0.488−0.005
+Table 3:Residual detector statistic, as a fraction of the original, for the green-list scheme with
+h= 1 under three edit patterns of identical retention rate. Counting the intact-window set directly
+from each edit pattern, Theorem 5.1 predicts0.947,0.897,0.797,0.697,0.597,0.496 for the middle
+column and 0.902,0.802,0.602,0.401,0.201,0.000 for the right-hand one. The largest discrepancy
+is 0.008 and the typical one 0.003, over 120 sequences per cell; and the periodic pattern atρ= 0.5
+is predicted to give exactly zero, and does.
+deficit constant at 0.12241744 with spread exactly zero, while the holonomy energy runs from 0 to
+1.0465(Table 2).
+Corollary 4.3 is verified on random geodesic triangles of the two-sphere: for the 159 of 200 triangles
+of area at mostπ, the holonomy angle and the spherical excess agree to better than 1.8×10 −9; the
+remainder agree after reduction to the principal branch, as the corollary says they must. Finally, the
+blindness of the signature is visible in the data: among random chains sharing the signature (8,0,56) ,
+the rotation energy ranges over[0.937,1.464]and the holonomy energy over[0.365,0.791].
+6.2 The intact-window law against exact detectors
+To test Theorem 5.1 one needs a detector whose key one holds and a generator whose entropy
+one controls. We therefore emit from a Zipf distribution over a vocabulary of 4000 with a freshly
+permuted support at each step, which fixes the entropy by construction, and watermark it with our own
+implementations of the green-list scheme ath∈{0,1,2,3} and of the context-seeded exponential
+scheme, usingγ= 0.25 andδb = 2.0. Sequences are 400 tokens long and each condition is averaged
+over120of them.
+Under independent edits, the mean absolute deviation between the observed ratio andρh+1, over the
+seven values ofρ from 1 down to 0.5, is 0.0023, 0.0023, 0.0022 and 0.0021 forh= 0,1,2,3 , and
+0.0011 for the exponential scheme. Atρ= 0.5 the observed ratios are 0.499, 0.247, 0.125 and 0.065
+against the predicted 0.500, 0.250, 0.125 and 0.063. Corollary 5.2 is confirmed across two decades
+of the ratio and across both families.
+The consequence of Proposition 5.3 is more striking, and is collected in Table 3. At one and the
+same retention rate, the residual signal depends only on where the edits fall. Atρ= 0.5 withh= 1 ,
+the same half of the tokens survives in all three columns and the residual statistic is one half of the
+original, one quarter of it, or nothing at all.
+9
+
+===== PAGE 10 =====
+chainL δ U η(U)ρ|I|/T ′ residual detected
+Spanish 2 0.064 0.083 0.767 0.679 0.680 84/90
+German 2 0.071 0.092 0.733 0.651 0.633 83/90
+French 2 0.073 0.094 0.722 0.616 0.625 82/90
+German twice 4 0.082 0.101 0.692 0.598 0.591 82/90
+German, French 4 0.109 0.118 0.644 0.531 0.554 67/90
+French, German, Spanish 6 0.116 0.129 0.594 0.501 0.496 66/90
+Table 4:The six chains; medians over the ninety passages of the three schemes, except the last column,
+which counts the chains still detected abovez= 4 . Ordered by semantic deficit, every column moves
+monotonically: the meaning drifts, the path lengthens, the surface is retained less and the mark fades,
+all together. That is precisely why the endpoint alone cannot be read as a measure of attack strength,
+and why the test below holds it fixed.
+6.3 Real transformation chains
+The two experiments reported so far measure objects that we ourselves built. The third measures text.
+From thirty open-ended prompts spread over five domains we generate, with a 0.5B instruction-tuned
+model at temperature one, one hundred and eighty new tokens under each of the three schemes: the
+green-list scheme ath= 1 , the unigram scheme ath= 0 , and the context-seeded exponential scheme.
+The keys are ours, so every detector statistic below is exact and not an estimate. The ninety passages
+so obtained have medianz0 equal to 9.62, 9.30 and 19.05 respectively, and every single one of them
+is detected abovez= 4 : they are the population on which an attack can be said to do anything at all.
+Each passage then travels six chains of round-trip machine translation, sentence by sentence, through
+the Opus-MT models: three single round trips, through German, French and Spanish; two chains of
+two pivots, one through German and then French and one through German twice; and a three-pivot
+detour through French, German and Spanish. Every return to English is a waypoint at which the exact
+detector is run, and every waypoint — the German, French and Spanish ones included — is embedded
+by a multilingual encoder of dimension 384, so that the invariants of Sections 3 and 4 are computed
+along the chain as it is actually traversed and not along its English shadow. The retention rateρand
+the intact-window fraction|I|/T′ are not modelled but measured, by longest-common-subsequence
+alignment on the tokenizer’s own token ids, which are the objects the detector sees. Consecutive
+waypoints never come near to being antipodal — over all 540 chains the smallest cosine similarity
+between neighbours is0.148— so the minimal rotation of Section 2 is everywhere well defined.
+Table 4 collects what the chains do. Of the 540 attacked passages, 464 are still detected abovez= 4
+— 173 of the 180 unigram chains, 165 of the exponential ones and 126 of the green-list ones — so
+round-trip translation at this depth is an erosion and not an erasure. It is worth seeing where it does
+erase. The green-list scheme carried through French, German and Spanish has a median residual
+z of 3.98, which is below the threshold, while the same three pivots leave the unigram scheme at
+5.88 and the exponential one at 8.90; but the exponential scheme starts from a much higherz0, so
+the honest comparison is between fractions, and there the context-free scheme retains 0.685 of its
+statistic against 0.509 and 0.601 for the two schemes that seed on a context. That is the ordering
+Corollary 5.2 demands: what cannot be broken is a window of one.
+The intact-window law on real text.Theorem 5.1 was proved for substitutions that preserve length,
+and translation preserves nothing of the kind. The correction is not a new hypothesis but the same
+theorem with the normalisation of the statistic carried through: all three detectors divide by the square
+root of the number of scored positions, so if the attacked text offersT′
+att of them against the original’s
+T′
+0, then
+E[zatt]
+E[z0] = |I|p
+T′
+0T′
+att
+=|I|
+T′
+0
+s
+T′
+0
+T′
+att
+,(6.1)
+the intact-window fraction times a factor which is one when the length is preserved. Table 5 compares
+both forms with what the detectors actually returned.
+The medians agree; the scatter chain by chain does not vanish, and it should not, since the mean-field
+hypothesis of Section 5 is false in real text, where entropy varies from one sentence to the next. One
+10
+
+===== PAGE 11 =====
+schemeh ρ ρ h+1 |I|/T′ T′
+att/T′
+0 (6.1) observed
+green-list 1 0.700 0.490 0.542 0.972 0.553 0.509
+unigram 0 0.694 0.694 0.694 0.972 0.708 0.685
+exponential 1 0.692 0.478 0.531 0.978 0.535 0.601
+Table 5:Theorem 5.1 against the 538 chains whose statistic is finite; medians. The measured intact-
+window fraction predicts the median residual to within one hundredth for the context-free scheme,
+three for the green-list scheme and seven for the exponential one. The independent-edit corollary
+ρh+1, which needs no measurement of the attacked text at all, happens to fall closer for the green-list
+scheme and much further for the exponential one, where it is off by twelve hundredths; and chain by
+chain it is the measured fraction that follows the residual, correlating+0.67 with it against +0.54
+for the retention rate. The median absolute error per chain is 0.083, 0.054 and 0.088, which the
+length correction of (6.1) moves to 0.086, 0.067 and 0.081: at this depth of translation the length is
+preserved in the median, and the correction has little to do.
+caution about the instrument is due here: the intact-window count is read off the longest common
+subsequence of the two token strings and does not verify that a surviving window is still contiguous
+in the attacked text, so|I|/T′ is an upper bound on the number of intact windows the detector really
+meets. Both green-list schemes do come out just below it. The exponential scheme comes out above,
+which we record without explaining: its statistic is a sum of continuous scores and not a count of
+successes, and the mean-field hypothesis bites differently there. What is more interesting is a sign.
+Pooled over all chains, the correlation between the intact-window fraction and the residual is+0.51
+for the green-list scheme and +0.67 for the exponential one, but−0.21 for the unigram scheme —
+as though, for the one scheme where the law is simplest, retaining more of the text destroyed more
+of the mark. It does not. A pooled correlation compares passages with one another, and passages
+differ in entropy, in length, and in how much watermark was ever in them; the law speaks about one
+passage carried along attacks of differing severity. Computed within each passage, across the six
+chains that passage travels, the correlation is +0.73 for the green-list scheme and +0.68 for each of
+the other two, and it is positive in 28, 28 and 29 of the thirty passages. The anomaly is an instance of
+Simpson’s paradox, and we report it because the pooled number, taken by itself, would have been
+read as evidence against a theorem which the same data in fact support.
+One family of chains deserves to be named rather than averaged away. In nine chains the residual
+z falls below−3, and in two more the exponential p-value underflows to one, which sends its
+normal-equivalent statistic to−∞ and removes those two from the regressions below. All but one of
+the eleven show the text expanding, in the extreme case from 180 tokens to 881, and they come from
+only five of the ninety passages: the translator has fallen into repetition. Repetition is exactly the
+circumstance in which the random-oracle hypothesis fails outright, since one repeated pair of context
+and token is scored again and again and the effective number of independent positions collapses.
+Such chains are reported and not trimmed.
+The preregistered test.The criterion was fixed in writing before any measurement was taken. In a
+regression of the residual ratio on the retention rate, the semantic deficit and the holonomy energy, the
+partial coefficient onη was required to be negative and significant atα= 0.01 , Bonferroni corrected
+for the three schemes, in at least two of them; failing that, the path-dependence claim was to be
+recorded as refuted and reported as a negative result. Table 6 gives the outcome. The criterion is met.
+The coefficient onη is negative in all three schemes and clears the corrected threshold of 3.3×10 −3
+in two of them, the unigram scheme by five orders of magnitude and the green-list scheme by a factor
+of two.
+We would rather state the result at its strongest defensible level than at its most flattering one. The
+six chains of a scheme are applied to the same thirty passages, so the observations are clustered and
+the classical standard error is optimistic. Clustered on the passage, the unigram coefficient stands at
+p= 8.2×10 −4 and the green-list one moves top= 3.5×10 −2, which is significant at five per cent
+and not at the corrected one. Absorbing the passage altogether — so that each chain is compared
+only with the other five chains of the same text, which is the comparison this whole article is about —
+the coefficient onη becomes−0.11 for the green-list scheme,−0.14 for the unigram one and−0.13
+for the exponential one: all negative, and now of one size, withp equal to 2.5×10 −2, 2.1×10 −4
+and 0.13 respectively. The honest summary is this. With the passage held fixed, a chain that wanders
+11
+
+===== PAGE 12 =====
+schemen R 2 βρ βδ βη pη clustered
+green-list 180 0.41+0.051−0.023−0.070 1.7×10 −3 3.5×10 −2
+unigram 180 0.49+0.064 +0.278−0.145 4.0×10 −9 8.2×10 −4
+exponential 178 0.34+0.116−0.060−0.014 0.74 0.77
+Table 6:The preregistered regression. The predictors are standardised, so that the coefficients may
+be compared; the corrected threshold is 3.3×10 −3. The last column is a robustness check which the
+clause did not ask for: the same coefficient with a standard error clustered on the base passages, of
+which there are only thirty, so that the check is a severe one. Under it the unigram scheme still clears
+the threshold and the green-list scheme no longer does.
+further destroys more of the mark at equal retention and equal endpoint, by an amount which is stable
+across all three schemes; the evidence that this is not chance is decisive for the context-free scheme,
+good for the green-list scheme and inconclusive for the exponential one; and thirty clusters are few.
+One further number belongs in the reader’s hands before the result is weighed. In this corpus the two
+geometric quantities are far from independent: the correlation between δU andη(U) is +0.85 for
+the green-list scheme, +0.91 for the unigram one and +0.90 for the exponential one, and within a
+passage it is scarcely lower, at +0.86, +0.89 and +0.80. Round-trip translation lengthens the path
+and moves the endpoint together; Proposition 4.2(iv) says that the two data are free, but this corpus
+does not exercise that freedom, and a family of chains engineered to hold the one while varying the
+other — a larger experiment than this one — would be the natural next step. Two consequences
+follow. The separate coefficients of Table 6 are not separate effects: two nearly collinear predictors
+entering with opposite signs are a suppression pair, and that is what produces the positive coefficient
+on the semantic deficit in the unigram row — a coefficient which survives absorbing the passage, and
+which we can describe but not explain. And the preregistered test is a demanding one, since once δ is
+held only a fifth to a quarter of the variation ofη is left to carry any effect at all; that it is significant
+nonetheless, in two schemes of three, is the fact worth taking away.
+The matched-delta strata, which are the design the criterion was written for, tell the same story from
+the other side. Within the four bands of semantic deficit the rank correlation between the holonomy
+energy and the residual is negative in all four for the green-list scheme, at−0.46,−0.46,−0.23 and
+−0.53. And among the ninety-five chains whose semantic deficit lies between 0.05 and 0.07 — as
+matched an endpoint as this instrument can deliver — the holonomy energy ranges over a factor of
+nearly three, from 0.053 to 0.146, while the residual runs from 0.285 to 0.998. Two chains may bring
+a text to the same meaning and leave, the one of them, essentially the whole mark, and the other, less
+than a third of it.
+What the encoder can and cannot see.One caveat is ours to raise before a referee raises it. The
+encoder is multilingual, and a multilingual encoder is by design nearly invariant under translation: it
+places a German waypoint almost on top of its English source. That is the property which makes
+it the right instrument for the semantic deficit and a poor one for the path, since it flattens the very
+excursion the holonomy is meant to record. The effect is measurable: over the 268 chains with more
+than one pivot the median holonomy energy is 0.117 along the full chain and 0.056 when only the
+English waypoints are kept. The remaining 270 chains are single round trips, whose two English
+waypoints determine no holonomy whatever — a loop through two points is its own direct rotation
+andH is the identity exactly. Repeating the regression on the English waypoints alone, which is
+exploratory and was not preregistered, the coefficient on the holonomy energy is −0.128 for the
+unigram scheme (p= 5.4×10 −6),−0.081 for the exponential one (p= 0.065 ) and−0.029 for the
+green-list one (p= 0.41). It does not change the verdict, and it was not permitted to.
+Three things this experiment does not establish. It does not establish that η is causal: a chain that
+wanders further is also a chain that has been rewritten more, and nothing reported here separates
+the two. It does not transfer to learned paraphrasers, which choose their path adversarially where
+round-trip translation chooses it only incidentally. And it rests on a single embedder, so thatδ andη
+are both defined by one encoder’s idea of meaning; replication across encoders is the first thing we
+should do with more compute than this article had.
+12
+
+===== PAGE 13 =====
+result script run stamp
+Props. 3.1, 4.2, Cor. 4.3exp_geometry_v1 20260819T135822
+Thm. 5.1, Cor. 5.2, Prop. 5.3exp_decay_v1 20260819T135047
+detector calibrationexp_detector_validation_v1 20260819T141737
+watermarked corpus and chainsexp_corpus_v1 20260819T154350
+loop invariants of the chainsexp_indicators_v1 20260819T161524
+the preregistered testexp_analysis_v1 20260819T163238
+audit of the regenerationexp_corpus_v1 20260819T174004
+Table 7:Every numerical claim of Section 6 and the run that produced it. Directory names
+are the script name prefixed by run_ and suffixed by the stamp of the third column, under
+7. Results/Article_LLW/ . The corpus was built in three successive invocations, each car-
+rying forward the chains of the one before, so that an interruption on a machine of this size would
+cost at most one of them; the stamp given is that of the last, whose manifest records the provenance
+of the other two. The final row is the targeted re-audit of the records which had failed to regenerate,
+discussed below.
+6.4 Reproducibility
+Everything described in this section is public, and lives in the repository https://github.com/
+DCorradetti/linguistic-holonomy; the paths below are paths within it.
+The watermark keys are ours, so every detection statistic reported here is ground truth and not an
+estimate. A detector whose key one holds is nevertheless still an implementation, and an implementa-
+tion deserves to be audited before it is believed; since the three schemes are re-implemented here
+rather than imported, there are no published numbers to reproduce, and what remains available is
+self-calibration. On 400 token streams of length 400 not produced with the key, the realised green
+fraction isγ to within sampling error (0.2475, 0.2508 and 0.2498 forh= 1,2,3 againstγ= 0.25 );
+the nullz-statistic has mean and standard deviation (−0.11,0.99) , (0.04,0.97) and (−0.01,1.03)
+in the same three conditions, at Kolmogorov–Smirnov distance 0.070, 0.064 and 0.056 from the
+standard normal; and no stream in any condition reachedz= 4 . Watermarked text scored with a key
+other than the one that produced it gives a meanz of−0.03, +0.03 and−0.29 for the green-list, the
+unigram and the exponential scheme, with unit standard deviation and no false alarm, while the same
+text scored with the correct key is detected in every single case, at mean z of 20.8, 20.9 and 37.0.
+Thep-values of the exponential scheme are uniform under the null (Kolmogorov–Smirnov 0.044,
+p= 0.40).
+One asymmetry is worth recording, because it belongs to the scheme and not to our implementation
+of it. Forh= 0 the green list is fixed for the whole text, so the null is key-dependent by construction:
+the statistic is centred not onγbut on the green fraction of the particular key, and that displacement
+has standard deviation
+p
+T/|V| across keys. Over 24 keys we measure 0.328 against the predicted
+0.316. At the synthetic vocabulary of 4000 used for the calibration the effect is plainly visible; at the
+vocabulary of a real tokenizer it is0.03 and negligible. The context-free scheme is thus marginally the
+harder of the two to calibrate, which is the reverse of the robustness ordering established in Section 5,
+and a small irony of the design space.
+The models are open-weights and named in the manifests: a 0.5B instruction-tuned generator, the
+Opus-MT sentence translators for the three pivot languages, and a multilingual sentence encoder
+of dimension 384 for the embeddingψ. Generation is deterministic given the model revision, the
+seed and the key — very nearly, and the exception is worth a paragraph, since it is the sort of thing a
+reproducibility section usually asserts without looking. We looked. Regenerating all ninety stored
+completions from scratch and comparing them token by token, eighty-seven came back identical and
+three diverged, each after a long common prefix: 82, 153 and 173 tokens of 180. Regenerating the
+divergent ones again is instructive. Two of them diverge every single time, four attempts of four, and
+always at exactly the same token; the third reproduces itself four times of four, as does a fourth record
+which had diverged in an earlier sweep. Regeneration is therefore deterministic within a process and
+not across processes: the order in which a CPU kernel accumulates a sum depends on the state of
+the process it runs in, and a difference in the last bits of a logit is enough to move a multinomial
+sampling boundary, after which the continuation goes its own way. Two passages of the ninety sit
+close enough to such a boundary that the process which produced them cannot now be reproduced
+13
+
+===== PAGE 14 =====
+on this machine at all. Every number in this article is computed from the stored corpus, whose hash
+is in the manifest, and the audit says how faithfully that corpus regenerates — a weaker claim than
+bit-exact reproducibility, and the true one.
+This is deliberately the small, CPU-sized version of the testbed: the scale-up to a larger generator and
+to learned paraphrasers is stated in Section 7 as work to be done, and is not claimed here. The scripts,
+the generated corpora, the run directories with their logs and manifests, and the derived measurements
+from which every number of this section is computed are all in the repository named at the head of
+this section; the manifests carry the hashes, so that a regeneration may be checked against what was
+actually run.
+7 Conclusions and Future Developments
+In this work we have taken up the formalism of linguistic loops and carried it to a place where it can
+be tested. We proved that the Sylvester signature proposed as the invariant of a loop is always positive
+semidefinite and therefore degenerates to a rank, the complete invariant being the angle spectrum;
+that the loop rotation is parallel transport on the unit sphere of the embedding space, so that the chain
+of reformulations is a path and its residue a holonomy; that this holonomy lies in the stabiliser of
+the initial state and is exactly what the semantic deficit discards, the two data being functionally
+independent; and, on the side of the detector, that the residual statistic of a context-seeded watermark
+is proportional to the number of positions whose seeding window survived intact.
+It is mesmerizing, and we cannot help but observe it, how neatly the two halves of the picture fit. What
+a meaning-preserving chain preserves is an invariant; what a watermark occupies is the complement of
+that invariant; and the geometric object which measures the complement — a holonomy inSO(n−1)
+— turns out on the two-sphere to be nothing more exotic than the area swept by the path. That the
+same construction which was proposed as a way toward pre-verbal thought should also measure the
+erosion of a provenance mark is, in our humble opinion, a point in favour of the construction.
+Three limitations are ours to state. The intact-window identity assumes substitutions that preserve
+length and a mean-field hypothesis on the strength of the mark; in real text, where entropy varies
+with content, it is an upper bound. The holonomy energyη is a lossy scalar reduction ofH, and a
+null result for the former is not a null result for the latter. And the empirical layer of this article is
+bounded by the compute available to it: a small generator, one attack family, one embedder.
+It would be then definitely interesting to analyse whether aholonomy-awarewatermark can be
+constructed — one whose seeding depends on a quantity invariant under the transport, rather than on
+the raw token window, and which would therefore be insensitive to the arrangement of the edits in
+the way that Proposition 5.3 shows the present schemes are not. The semantic schemes of [6] are a
+first step in that direction, and it would be natural to evaluate them with the instrument developed
+here rather than with an endpoint similarity. In a forthcoming work we intend to study the holonomy
+of chains produced by learned paraphrasers rather than by translation, where the path is chosen
+adversarially and the geometry should be correspondingly richer. All in all, we have presented
+evidence that the robustness of a watermark is a functional of the path and not of its endpoint, and
+that the natural language in which to say so is that of parallel transport.
+Use of Generative AI
+The implementation of the reproducibility certificates listed in Section 6.4 was supported by AI-
+assisted code generation (Claude Opus, Anthropic) under the author’s direction; all certificates were
+independently inspected, run, and validated by the author. AI tools were also used for language
+editing during manuscript preparation. The author conceived the mathematical content, designed and
+verified the proofs, and takes full responsibility for the content of this article.
+14
+
+===== PAGE 15 =====
+Acknowledgments
+References
+[1] Anthropic,How Claude marks AI-generated content, Help Center article 16266773, August
+2026.
+[2] M. Christ, S. Gunn, O. Zamir,Undetectable Watermarks for Language Models, COLT 2024.
+[3] Chainwash: Multi-Step Rewriting Attacks on Diffusion Language Model Watermarks,
+arXiv:2605.05503, 2026.
+[4] D. Corradetti, A. Marrani,Linguistic Loops and Geometric Invariants as a Way to Pre-Verbal
+Thought?, arXiv:2503.23311, 2025.
+[5] S. Dathathriet al.,Scalable watermarking for identifying large language model outputs, Nature,
+2024.
+[6] A. Houet al.,SemStamp: A Semantic Watermark with Paraphrastic Robustness for Text
+Generation, NAACL 2024.
+[7] J. Kirchenbauer, J. Geiping, Y . Wen, J. Katz, I. Miers, T. Goldstein,A Watermark for Large
+Language Models, ICML 2023.
+[8] J. Kirchenbaueret al.,On the Reliability of Watermarks for Large Language Models, ICLR
+2024.
+[9] K. Krishna, Y . Song, M. Karpinska, J. Wieting, M. Iyyer,Paraphrasing evades detectors of
+AI-generated text, but retrieval is an effective defense, NeurIPS 2023.
+[10] R. Kuditipudi, J. Thickstun, T. Hashimoto, P. Liang,Robust Distortion-free Watermarks for
+Language Models, TMLR 2024.
+[11] No Free Lunch in LLM Watermarking: Trade-offs in Watermarking Design Choices,
+arXiv:2402.16187, 2024.
+[12] J. Piet, C. Sitawarinet al.,Mark My Words: Analyzing and Evaluating Language Model
+Watermarks, arXiv:2312.00273.
+[13] V . Sadasivan, A. Kumar, S. Balasubramanian, W. Wang, S. Feizi,Can AI-Generated Text be
+Reliably Detected?
+[14] H. Zhanget al.,Watermarks in the Sand: Impossibility of Strong Watermarking for Language
+Models, ICML 2024.
+[15] X. Zhao, P. Ananth, L. Li, Y .-X. Wang,Provable Robust Watermarking for AI-Generated Text,
+ICLR 2024.
+15

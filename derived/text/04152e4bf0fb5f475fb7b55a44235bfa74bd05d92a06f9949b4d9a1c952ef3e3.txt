@@ -1,0 +1,961 @@
+===== PAGE 1 =====
+A CUBICAL FORMALISATION OF TOPOS CAUSAL MODELS:
+INTERVENTION, FORCING, AND A CONTEXTUALITY
+OBSTRUCTION
+KAREN SARGSYAN
+Institute of Chemistry, Academia Sinica, Taipei, Taiwan
+e-mail address: karen.sarkisyan@gmail.com
+Abstract. Topos causal models recast causal inference inside a topos: a causal world is a
+presheaf, an intervention is a sub-model named by a characteristic map into the subobject
+classifier Ω, and reasoning is Kripke-Joyal forcing in an intuitionistic internal language. We
+give the first axiom-free machine-checked account of this 1-topos core, in Cubical Agda
+over a previously verified probability monad and do-calculus; the framework is otherwise
+developed on paper, with central claims stated rather than proved. Three of our results
+go beyond faithful transcription. We exhibit a contextuality obstruction the programme
+does not treat: pairwise-consistent local causal data with no global model, detected by
+a degree-one holonomy class. We delimit the claim that interventions are modelled by
+the subobject classifier: an intervention and an observation name the same subobject,
+so Ω fixes the target of a do-operation but not the operation itself, which is surgery on
+the kernels — where, on a confounder, the interventional and observational laws differ.
+And we settle the modal unit — inflationarity is derivable from j⊤ = ⊤ and naturality,
+not a fourth axiom. We also machine-check the classifier of sieves with its classification
+theorem, the pullback collating local mechanisms, and the Kripke-Joyal forcing clauses.
+The development assumes no axioms and typechecks under Agda’s --safe flag, with the
+ordered field discharged at Q; type-level sheafification and a directed do-calculus are future
+work.
+1.Introduction
+A structural causal model is a system of equations: each variable is a function of its causes
+and an independent noise term, and an intervention replaces one equation by a constant
+assignment. Mahadevan’stopos causal models(TCMs) [ Mah25c, Mah25b] recast this picture
+categorically. A causal world is a presheaf over a base category of contexts; a mechanism
+is a morphism of presheaves; and an intervention is no longer an edit to a syntax tree but
+asub-model, a monic arrow Mx ,→M into its parent model, named by its characteristic
+map into the subobject classifier Ω, the object of truth values of the topos. Because a
+presheaf topos has an intuitionistic (Heyting, not Boolean) internal logic, causal statements
+live in that internal language, interpreted by Kripke-Joyal forcing. A companion line of
+Mahadevan’s work [Mah25a] adds anintuitionistic j-do-calculus, in which a Lawvere-Tierney
+topology j : Ω→ Ω acts as a modality picking out the causal statements that are stable
+under localisation.
+The appeal of this reformulation is that several pieces of causal machinery become
+standard topos-theoretic universal properties: intervention is a subobject, named by a
+© K. Sargsyan
+CC⃝Creative Commons
+arXiv:2607.15629v2  [cs.LO]  3 Aug 2026
+
+===== PAGE 2 =====
+2 K. SARGSYAN
+characteristic map into Ω; the assembly of local mechanisms into a global one is gluing;
+and counterfactual reasoning is forcing in the internal logic. Two further phenomena live
+on the same machinery: the j-do-calculus modality that isolates the causal facts invariant
+across regimes, and — new to this account — a cohomological obstruction, the failure of
+pairwise-consistent local models to assemble into a global one. The framework is, however,
+developed on paper, and some of its central claims are stated rather than proved.
+This paper supplies that verification: a machine-checked account of the 1-topos core in
+Cubical Agda [CCHM17, VMA19]. It is a direct sequel to a companion development [ Sar26],
+which verifies a probability monad as a higher inductive type together with Pearl’s do-calculus
+rules and the soundness of d-separation (the graphical criterion for which conditional
+independences a DAG entails); that development supplies the mechanisms (probability
+kernels) that the present one organises into a topos. Throughout we work in the presheaf
+topos PShC = SetCop
+over an abstract base categoryC of contexts, exactly the setting in
+which Mahadevan’s general definition of Ω lives.
+Contributions.Our account is faithful to the source where the source is precise, and in
+three places it does more than transcribe: it delimits the account of intervention — the
+classifier names the target, not the operation — settles the status of the modal unit (it is
+derivable, not a missing axiom), and adds an obstruction the programme leaves out.
+• The intervention’s target and its classifier(Section 3). We build Ω as the presheaf of sieves
+and realise the value-fixing subobject “ X = x0” as the characteristic map χ : X⇒ Ω.
+We prove the classification theorem χc(b) =⊤ ⇐⇒b = x0c in both directions, and
+connect χ to the operational, kernel-level intervention of the companion paper. We also
+prove the general universal property — every restriction-closed sub-presheaf is classified
+by auniquemap into Ω, the standard characterisation of the subobject classifier — and
+the value-fixing map is one instance. A small design point falls out: a topos-internal
+intervention must fix X to anaturalglobal element, not merely a context-indexed family.
+• What the classifier does not classify(Section 4). The programme’s account of intervention
+is that a sub-model is a monic arrow into its parent model, classified by Ω. We delimit it:
+at the level of Ω the event “ X =x0” is the same whether it is intervened or observed, so
+no map into Ω separates surgery from conditioning. We machine-check that the two do
+differ — on a confounder the interventional and observational laws of the outcome are
+distinct (module DoSeeDistinct), with a concrete interior witness so the statement is not
+vacuous — and that the surgery pins X to the value χ classifies. The classifier names the
+target of an intervention; the kernels beneath it carry the operation. This is a limit on
+what the subobject classifier contributes, not a defect in the construction.
+• Collation by pullback(Section 5). Mahadevan motivates sheaves with the claim that
+local mechanisms “collate” into a unique global one, but proves no existence theorem for
+collation: the companion’s local-to-global result assumes a sheaf of causal kernels and
+gives only uniqueness. We verify the limit form: two mechanisms agreeing on a shared
+target have a pullback, computed contextwise, with its universal property. Collation over
+a cover is instead the sheaf condition, which a presheaf topos does not satisfy in general
+and which we do not supply: we neither formalise sheafification nor assume it compatible
+with our distribution carrier (Section 11). And it is that collation over a cover — not the
+pullback, which always exists — that three contexts can obstruct entirely (Section 8).
+
+===== PAGE 3 =====
+A CUBICAL FORMALISATION OF TOPOS CAUSAL MODELS 3
+• The internal language(Section 6). We define Kripke-Joyal forcing and machine-check the
+clause for each connective and quantifier: ⊤,⊥,∧,∨,⇒,∀,∃ , together with the locality
+(monotonicity) property that defines a Kripke semantics.
+• An instantiated do-calculus, the modal unit settled(Section 7). We machine-check
+that inflationarity S≤jS — the unit of the modality — isderivablefrom j⊤ =⊤
+and naturality, so a Lawvere-Tierney topology on Ω needs no fourth axiom (module
+InflationarityDerivable). The three equationsalonedo not force it: on a bare three-
+element chain with its meet and induced order, where naturality has no meaning, the
+equations hold yet a truth value is collapsed (module InflationarityIndependence);
+the derivation therefore rests on naturality. We exhibit the double-negation topology ¬¬
+as a concrete non-degenerate instance (the source never specialises j on Ω to a concrete
+operator; its instances are Grothendieck covers of regimes), present the modality ⃝ =j as
+a closure operator on truth values — its modal objects a sub-poset of Ω, not a subuniverse
+of types — and prove that the value the intervention forces, and Pearl’s Rules 1, 2 and 3,
+arej-closed for every topology, and hence stable under any sheaf localisation.
+• An obstruction(Section 8). The pullback always exists, but collation over a cover can
+fail: we machine-check that pairwise-consistent local causal data may admit no global
+model — strong contextuality, formalised combinatorially — a phenomenon outside the
+programme’s scope (Section 12 positions it against prior contextuality work).
+The whole development typechecks under Agda’s --safe flag — no postulates, holes, or
+unsafe features anywhere in it — with the underlying ordered field discharged concretely at
+Q. It is openly available athttps://github.com/karsar/cubical-topos-causal.
+Significance.Mechanising a paper framework is worthwhile in two ways here. One is
+assurance: the framework’s central claims are now certified rather than asserted, which
+matters for a programme aimed at automated causal reasoning [ Mah26], where a verified
+core is what machine-generated models are checked against. The other is that carrying
+out the proofs brought out two points that matter in practice. First, the modal layer’s
+guarantees rest on j being a closure operator; on the classifier this is automatic, since
+naturality and j⊤ =⊤ supply the unit. What the formalisation establishes is that this is a
+property of the classifier, not of the three equations: a formalisation that models topologies
+on a bare Heyting algebra would silently lose it (Section 7). Second, the gluing on which
+modular, map-reduce assembly of local mechanisms rests can be obstructed — over three
+contexts, locally consistent pieces can share no global model at all (Section 8). The practical
+implication is that modular causal discovery needs a global-consistency check, not merely
+pairwise agreement; and because the obstruction is cohomological, that check is in principle
+computable. We verify it on a minimal three-context example rather than on data; what
+this establishes is that the failure mode is real and exactly located, not that it is common.
+Scope.This is the1-topos(presheaf) account: truth values are sieves, the modality acts on
+truth values, and the internal logic is the standard Kripke-Joyal one. We do not formalise
+type-level sheafification (the associated-sheaf reflector on the whole topos), which is a larger
+construction whose effect on our distribution carrier we leave open, nor thedirectedlift of
+the do-operator itself, which needs directed univalence and so lies outside current tools; its
+structural core, however, we do machine-check in rzk (Section 11). Section 11 states the
+boundary precisely.
+
+===== PAGE 4 =====
+4 K. SARGSYAN
+2.The presheaf topos and its subobject classifier
+We fix a base categoryC ofcontexts(Mahadevan’s “regimes” [ Mah25a]): objects are contexts,
+morphisms are admissible context maps. Acausal worldis a presheaf X :Cop→Set : a
+family of value-sets X(c) with a restriction map X(f) : X(c)→X (d) for each f :d→c ,
+functorial in f. We write composition in diagrammatic order, f ⋆g meaning “f then g”, so
+that restriction composes left to right. Amechanismis a natural transformationX⇒Y.
+The classifier of sieves.Asieveon a context c is a downward-closed family of morphisms
+into c: a predicate S on arrows f : d→c such that f∈S implies k⋆f∈S for every k.
+Sieves on c form a set, and pulling a sieve back along h :c′→c (keeping the arrows f with
+f ⋆h∈S ) makes the assignment c7→{sieves onc} a presheaf Ω. Over the two-object poset
+0→ 1, for instance, there are two sieves on 0 butthreeon 1: the empty sieve, the single
+arrow{0→ 1}, and the maximal sieve. That middle one — true only after restriction to
+0 — already shows the non-Boolean, intuitionistic character of Ω. This is thesubobject
+classifier: a sub-presheaf A,→B is named by a unique map χ :B⇒ Ω, with b∈A exactly
+when χ(b) is the maximal sieve ⊤ (all arrows). This is precisely Mahadevan’s definition (his
+sieves are subobjects of the representable C(−,x ), and his Ω(X) is their collection [ Mah25b,
+Def. 8,11]); we restate it as an Agda record and verify the presheaf laws. Membership of a
+sieve is a proposition, which keeps Ω(c) a set — needed for Ω to be a presheaf of sets — and
+lets us reason about sieve equality by their membership alone.
+Internal mechanisms.The mechanisms we intervene on come from the companion pa-
+per [Sar26]. There, a two-variable structural model on sets X,Y is a prior pX onX together
+with a kernelkY :X→FDistY into the probability monad, and the interventiondo(X :=x0)
+replacespX by the point mass at x0. Internally, a model on presheaves X,Y is such a model
+contextwise — one at each context c — and the internal intervention is the contextwise
+point-mass substitution. The marginal of the outcome Y is a context-indexed element of
+the internal distribution object. We take all of this as given; the present paper studies how
+interventions sit inside the topos and, in Section 4, what at the kernel level separates an
+intervention from an observation.
+3.The intervention’s target and its classifier
+Fix a value presheaf X and a value x0 to which we wish to fix it. For the construction to
+be topos-internal, x0 must be aglobal element x0 :1 ⇒X , that is, a value x0c∈X (c) at
+each context, natural in c: X(f)(x0c) =x0d for every f :d→c . Naturality is what makes
+“X =x0” a sub-presheaf, and hence classifiable. A bare context-indexed family c7→x 0c that
+ignored restriction would not cut out a subobject, and the construction below would fail to
+be natural.
+The classifier.Define χ :X⇒ Ω by sending b∈X (c) to the sieve of arrows along which b
+restricts to the fixed value:
+χc(b) ={f:d→c|X(f)(b) =x 0d}.
+This is a sieve (closure under precomposition is naturality of x0 together with functoriality
+of X), and χ is a mechanism: it commutes with restriction, again by functoriality. The
+Agda statement is the record below (where pt d is the global element x0 evaluated at d);
+the proof obligations are the two equations just named.
+
+===== PAGE 5 =====
+A CUBICAL FORMALISATION OF TOPOS CAUSAL MODELS 5
+χ-sieve : (c : Ob)→F 0 X c→Sieve c
+χ-sieve c b = (λd f→(F 1 X f b≡pt d) , isSetF 0 X d _ _) ,χ-closed
+χ: Nat XΩ
+χ= (λc b→χ-sieve c b) ,χ-nat
+Classification.The mapχclassifies the subobject “X=x 0”:
+χc(b) =⊤ ⇐⇒b=x 0c.
+Both directions are short. If b = x0c then for every f : d→c we have X(f)(b) =
+X(f)(x0c) = x0d by naturality, so every arrow lies in χc(b) and the sieve is maximal.
+Conversely, ifχc(b) is maximal then in particular the identity lies in it, which saysX(id)(b) =
+x0c, i.e. b = x0c. Specialising the first direction to b = x0c gives that the value the
+intervention forces is always classified true:χ c(x0c) =⊤.
+What χ names, and what it does not.This χ is the characteristic map of the target the
+companion paper’s intervention forces, not a parallel construction. The internal do(X :=x0)
+sets the prior at context c to the point mass at x0c, whose support is the singleton {x0c}.
+Two lemmas tie this to χ: do-prior shows the intervened prior is exactly that point mass,
+and do-classified showsx0c is the point χ classifies true. So χ is the topos-internal name
+of the value the intervention pins X to. It is not, by itself, the name of theoperation: at
+the level of Ω the subobject “ X =x0” is the same whether it is reached by intervening or
+by observing, and χ classifies that target without telling the two apart. The distinction is a
+property of the mechanisms beneath Ω, which the next section establishes.
+Why the target, and not the sub-model.The source states the intervention differently:
+a sub-model of an SCM M “is simply a monic arrow fx : Mx ,→M ” [Mah25c, Mah25b],
+with Pearl’s Mx =⟨U,V,F x⟩, Fx ={fi : Vi /∈X}∪{X = x}, as the intended subobject.
+The arrow is never instantiated. The general shape is given — a commuting square whose
+two vertical maps i and j are stipulated monic — and the source asserts that “Definition 14
+. . . in fact explicitly defines one such (monic) arrow between the model M and its submodel
+Mx” [Mah25b]. But Definition 14 is Pearl’s submodel definition verbatim, and defines no
+arrow: no i, no j, no monicity. Read in the setting the source’s own classifier fixes — objects
+are functions f : U→V , and Ω is the three-element {0, 1
+2, 1}→{ 0, 1}, the classifier of
+the arrow topos — a monic Mx ,→M is a pair of injections i : U ,→U and j : V ,→V
+with F◦i =j◦F x, and it forks. If i and j are identities, the square forces Fx =F , which
+excludes every non-trivial intervention. If the sub-model is instead given smaller variable
+sets — the realisations on which X already takes the value x — the inclusion is monic, but
+what it describes is selection: conditioning, not surgery. Pearl’s Mx is neither: it has the
+same exogenous and endogenous variables as M and differs only in the mechanism, so it is
+not a subobject ofM.
+This is why we classify the value-fixing subobject and not the sub-model. What Ω can
+name is the target “X =x0”, and it names it uniquely. What it cannot name is the difference
+between fixing that value by surgery and finding it by observation: the two determine the
+same subobject, so no map into Ω separates them. The next section shows that the difference
+is real, and that it lives one level down, among the kernels.
+
+===== PAGE 6 =====
+6 K. SARGSYAN
+The classifier in general.The intervention is one instance of a general fact we also
+prove: Ω classifies sub-presheaves, which is the standard characterisation of the subobject
+classifier. Foranyrestriction-closed predicate P on a presheaf B — a sub-presheaf — the
+map χP
+c (b) = {f : d→c|B (f)(b)∈P} is natural, its ⊤-fibre is exactly P in both
+directions, and it is theuniquesuch map: any natural χ′ :B⇒ Ω whose⊤-fibre is P equals
+χP . Uniqueness turns on a single fact about sieves — one containing the identity is maximal,
+by closure under precomposition — which forces the membership of χ′
+c(b) at each arrow f
+to be “B(f)(b)∈P ”, the defining clause of χP . The value-fixing classifier above is the case
+P={x 0}(Topos.Classifier, with the intervention recovered asdo-classifier).
+4.The do-operator is not conditioning
+The classifier of Section 3 names the target an intervention forces — the same subobject, we
+saw, whether that target is reached by do(X :=x0) or by conditioning on X =x0. What
+separates the two is causal, and it lives one level down, among the kernels: an intervention
+is surgery on the model, and surgery is not conditioning. The inequality itself is classical —
+it is the confounding Pearl’s do-calculus is built to handle [ Pea09]; what is new here is its
+machine-checked internalisation, beneath an Ω that cannot tell the two apart. We make this
+a theorem.
+A confounder.Take a common cause U with edges U→X and U→Y and no direct
+X→Y edge — a pure confounder. The do-operator is graph surgery: do(X :=x0) severs
+the incoming edge U→X and pins X to x0, leaving U and the Y -mechanism untouched.
+Conditioning on X =x0 does something else — it reweights U, and through U the outcome
+Y . On the binary model with U∼Bernoulli (p) for any 0 <p< 1, X =U, and Y =U —
+perfect confounding — the interventional and observational answers differ:
+Pr(Y= 1|do(X:=1)) =p,Pr(Y= 1|X= 1) = 1,
+where p = Pr(U=1) is the prior on the common cause. Intervening on X cannot touch Y ,
+whose law stays Pr(U); observingX= 1 forcesU= 1 and with itY= 1.
+The theorem.Both sides are computed in the companion paper’s probability monad. The
+interventional marginal is the pushforward of the surgically altered model; the observational
+side is the conditional-probability quotient Pr(X=1,Y= 1)/Pr (X=1), formed with the
+development’s own partial division — the definition of conditional probability, not a stand-in.
+The two are distinct weights,p̸= 1, so
+Pr(Y|do(X:=1))̸= Pr(Y|X= 1)
+is a machine-checked inequality (module DoSeeDistinct). It is not vacuous: we exhibit a
+concrete strictly-interior weight 1
+2 (with 0 < 1
+2 < 1) at the rational layer, so a confounded
+model on which the two disagree exists rather than being merely posited.
+Two facts frame the result. On the do-side the outcome’s law does not depend on the
+value forced on X — there is no X→Y edge to carry it — so do(X :=1) and do(X :=0)
+give the same Y -marginal (do-joint-Y-invariant: the Y -marginal of the intervened joint
+reduces, by the monad laws, to Pr(U) bound through kY , which never mentions the forced
+value); observation has no such invariance. And the surgery pins X exactly where the
+classifier looks: under do(X :=x0) the X-marginal is the point mass at x0 (do-fixes-X),
+
+===== PAGE 7 =====
+A CUBICAL FORMALISATION OF TOPOS CAUSAL MODELS 7
+the valueχ of Section 3 classifies true. The classifier gives the intervention its internal name;
+this section gives it its content.
+5.Collating local mechanisms: a pullback
+When two mechanisms are computed over a shared target, they combine into a single one:
+their pullback over that target. Mahadevan motivates sheaves with a stronger claim — that
+“local functions can be collated together to yield a unique global function” [Mah25b,§6] — but
+proves no existence theorem for collation; the local-to-global result of the companion [Mah25a]
+assumes a sheaf of causal kernels and establishes only uniqueness. Collation over acover
+is the sheaf condition, which a presheaf need not satisfy once a topology is fixed; the
+canonical way to supply it is sheafification, which we do not formalise and whose effect on the
+distribution carrier we leave open (Section 11). What a presheaf topos does provide is the
+limit: two mechanisms agreeing on a common target have a pullback, computed contextwise,
+with a universal property, and that pullback is what we verify here. It always exists. The
+interesting case is therefore not the pullback but assembly over a cover: over three contexts,
+pairwise-agreeing local data need not assemble into a global section at all (Section 8).
+The pullback.Let p :X⇒Z and q :Y⇒Z be two mechanisms with a common target Z,
+against which agreement is measured. Their pullback X× ZY has, at each context c, the
+pairs that agree inZ:
+(X× ZY)(c) ={(x,y)∈X(c)×Y(c)|p c(x) =q c(y)}.
+The agreement condition is a proposition (equality in the set Z(c)), so the fibre is a set and
+restriction preserves it: restricting an agreeing pair gives an agreeing pair, using naturality
+of p and q. This makes X× ZY a presheaf with two projections π1,π 2 to X and Y , and the
+square p◦π 1 =q◦π 2 commutes by construction: the commuting witness is just the stored
+agreement.
+The universal property.Aconeis a presheaf A with two mechanisms a : A⇒X ,
+b : A⇒Y that agree on Z, i.e. p◦a = q◦b pointwise. It collates to auniqueglobal
+mechanism⟨a,b⟩:A⇒X× ZY:
+glue : Nat A Pullback
+glue-π1 : (c)(z)→fstπ 1 c (fst glue c z)≡fst a c z
+glue-π2 : (c)(z)→fstπ 2 c (fst glue c z)≡fst b c z
+glue-uniq : (u : Nat A Pullback)
+→(π 1 ◦u≡a)→(π 2 ◦u≡b)→u≡glue
+Existence is immediate: send z to the agreeing pair (ac(z),b c(z)), whose agreement is the
+cone’s hypothesis; naturality is naturality of a and b on the two components, with the
+agreement coherence automatic because it is a proposition. The projection equations hold
+by definition. Uniqueness is the only step with content: a competing mechanism u whose
+projections are a andb must equal⟨a,b⟩ , because a pair is determined by its two components
+and the agreement witness is again propositional. This is the pullback form of collation —
+two mechanisms agreeing on a target combine into a unique third — a limit in the presheaf
+topos, needing neither a topology nor sheafification.
+
+===== PAGE 8 =====
+8 K. SARGSYAN
+6.The internal language
+Apredicateon a presheaf B is a mechanism φ :B⇒ Ω, i.e. a B-indexed family of truth
+values, equivalently a subobject of B. Kripke-Joyal semantics interprets the connectives
+of the internal language as operations on Ω and determines, for each context c and each
+generalised elementa∈B(c), whethercforcesφata.
+Forcing.We define forcing of a truth value S at a context c by “the identity of c lies in S”:
+c⊩S:= (id c∈S).
+Since a sieve containing the identity is the maximal sieve, this agrees with “ S =⊤”; the
+identity formulation is prop-valued and keeps the clauses at the value level. Forcing a
+predicate at an element is forcing its truth value:c⊩ φa:=c⊩φ c(a).
+Locality.The defining property of a Kripke semantics is that forcing is stable under
+restriction: if c⊩S and f :d→c , then d⊩S·f (the pullback of S). This holds because
+a sieve is downward closed. At the level of predicates it says: if a satisfies φ at c, so does
+every restriction ofa; this internal-logic form is proved from naturality ofφ.
+The clauses.We verify the Mac Lane-Moerdijk clauses [ MM92, VI.6] specialised to a
+presheaf topos. Conjunction and disjunction are local at the context, as in any Kripke
+model:
+c⊩S∧T⇐⇒(c⊩S) and (c⊩T), c⊩S∨T⇐⇒ ∥(c⊩S) + (c⊩T)∥.
+Both hold definitionally once the sieve operations are pointwise meet and join; the join carries
+a propositional truncation, which is why disjunction is recorded up to ∥−∥. Implication is
+the characteristic Kripke-Joyal clause, quantifying over all future contexts:
+c⊩S⇒T⇐⇒for allf:d→c,(d⊩S·f) implies (d⊩T·f).
+Falsity is forced nowhere, c⊩⊥ is empty. For the quantifiers, over a value presheaf D, a
+predicateφonB×Dyields predicates∀ Dφand∃ DφonB, with clauses
+c⊩∀ Dφ(a)⇐⇒ ∀(f:d→c) (t∈D(d)), d⊩ φ (a·f, t),
+c⊩∃ Dφ(a)⇐⇒
+
+
+P
+t∈D(c) c⊩ φ (a, t)
+
+
+.
+The universal quantifier ranges over all restrictions and all elements; the existential is
+local-existential at the context (the image of the projection), in the presheaf-Kripke style.
+Each quantifier object carries full sieve structure (downward closure and naturality), which
+we verify; most of the formalisation effort lies there rather than in the clauses themselves.
+The source states these clauses for a general topos and refers their proof to Mac Lane-
+Moerdijk [Mah25c, Theorem 12]; what we add is their verification for the presheaf case —
+each binary connective and both quantifiers in both directions, together with the ⊤ and⊥
+clauses and the locality property — carried out in a proof assistant.
+7.A Lawvere-Tierney do-calculus
+The modal layer interprets aLawvere-Tierney topology j : Ω→ Ω as a causal modality: jS
+is the closure of S, and the j-closed truth values are those stable under the localisation j
+names.
+
+===== PAGE 9 =====
+A CUBICAL FORMALISATION OF TOPOS CAUSAL MODELS 9
+Inflationarity is derivable.A Lawvere-Tierney topology is usually given by three equations:
+j⊤ =⊤, j(S∧T ) =jS∧jT , and j(jS ) =jS (Mahadevan’s Definition 10 [Mah25a] states
+exactly these). A closure operator also needs the unit S≤jS (inflationarity), and it is
+tempting to add it as a fourth axiom. On the subobject classifier one need not: a topology
+is anaturalmorphism j : Ω ⇒ Ω, and naturality together with j⊤ =⊤ already force
+inflationarity. For f∈S the restriction S·f is the maximal sieve (sieves are downward
+closed), so by naturality (jS )·f =j(S·f ) =j⊤ =⊤, whence f∈jS ; we machine-check this
+derivation (module InflationarityDerivable). What the three equations donotforce is
+inflationarity for an operator on anarbitraryHeyting algebra, where j is a bare monotone
+map and naturality has no meaning: a three-element chain ⊥< a <⊤ with j(a) = ⊥
+satisfies all three yet collapses a below itself (module InflationarityIndependence). The
+naturality of j on Ω is thus what makes it a closure operator (anucleus): a formalisation
+that models topologies on a bare Heyting algebra must add inflationarity by hand, but on
+the classifier it is a theorem.
+record LawvereTierney where field
+jop : (c)→Sieve c→Sieve c
+jnat : IsNatΩ Ωjop -- j is a mechanismΩ⇒Ω
+j-⊤: jop c⊤ ≡ ⊤
+j-∧: jop c (S∧T)≡jop c S∧jop c T
+j-idem : jop c (jop c S)≡jop c S
+-- inflationarity f∈S→f∈jop c S is DERIVED (jnat + j-⊤)
+The modality as a reflector.Writing ⃝ =j, the data above make⃝ areflectivemodality
+on truth values — one that sends each truth value to the least j-closed value above it (its
+reflector). The unit η :S≤⃝S is inflationarity,⃝S is modal (j-closed) by idempotence,
+and⃝ is monotone, which we derive from meet-preservation rather than assume. The
+reflector universal property follows: for a modalT,
+S≤T⇐⇒ ⃝S≤T.
+So the j-closed truth values form a reflective sub-poset of Ω, with ⃝ the reflector; this is
+the propositional shadow of sheafification.
+A concrete topology.The identity is a topology but a vacuous one. The source never
+specialises j on Ω to a concrete operator, its instances being Grothendieck covers of
+regimes [Mah25a]; we provide the double-negation topology¬¬ as a non-degenerate instance,
+for which the j-closed truth values are the classically-behaved ones. This needs the Heyting
+structure on sieves — bottom, implication, negation — which we build, and then the three
+topology axioms plus naturality for¬¬. Two are short (truth-preservation, and idempotence
+via the triple-negation law ¬¬¬ =¬); meet-preservation is the substantial one, whose
+difficult direction¬¬S∧¬¬T≤¬¬ (S∧T ) is the intuitionistically-valid but non-trivial step.
+With¬¬established, the modal results below are no longer vacuous.
+Interventions are modal.The upshot is that interventions and the do-calculus survive
+localisation. The truth value classifying the intervened value is j-closed for every topology:
+χc(x0c) isj-closed,
+because it equals⊤ (Section 3) and⊤ isj-closed for every topology. Likewise each of Pearl’s
+three rules, as verified in the companion paper, has a conclusion that is an equality of
+
+===== PAGE 10 =====
+10 K. SARGSYAN
+distributions; that equality is a proposition (distributions form a set), so it has an internal
+truth value, and that truth value isj-closed for every topology.
+do-j-stable : (J)(c)→is-j-closed J c (χ-sieve c (pt c))
+modal-rule1 : (J)(c)→is-j-closed J c (rule1-Ωc)
+modal-rule2 : (J)(c)→is-j-closed J c (rule2-Ωc)
+modal-rule3 : (J)(c)→is-j-closed J c (rule3-Ωc)
+In causal terms, a do-fact and each do-calculus rule hold in the internal logic of every sheaf
+subtopos; they are invariant under any modality ⃝. At the double-negation topology this is
+concrete: the intervention sieve and Rule 1 are¬¬-closed (moduleNonTrivialModal), the
+Boolean-localisation instance of the generic statement.
+What this does and does not show.These closure facts are true, but their proof
+carries no causal content, and we do not overstate them. Each rule’s conclusion is a proved
+equality of distributions, hence a proposition with internal truth value ⊤, and j⊤ =⊤
+is a topology axiom; the same holds for χc(x0c), which equals ⊤ by Section 3. Thus
+modal-rulei would typecheck verbatim with the causal content deleted: the proof depends
+only on the conclusion’s truth value being ⊤, not on the rule that produced it. Mahadevan’s
+thesis, however, is that j selectsthe causal claims stable under localisation [ Mah25a], which
+presupposes that some are not. The substantive statement therefore concernscontingent
+causal claims — conditional independences, which hold at some regimes and fail at others —
+whose truth value is a non-maximal sieve.
+A contingent claim, and its stability.We exhibit one (module ContingentCI). Over
+two regimes, with values in a two-point type and rational kernels, take the claim that the
+Y -marginal is invariant under do(X :=1) — the very proposition rule1-Ω internalises, now
+withoutassuming Y⊥X . At the regime whose mechanism is the constant kernel it holds,
+so its truth value is ⊤; at the regime whose mechanism is the copy kernel Y := X, the
+intervention shifts the marginal from the point mass at 0 to the point mass at 1, so it
+fails. The failure is a computation in the rational weight algebra, not a postulate: the two
+marginals are distinct point masses, separated by their mass at 1 (w1̸=w0), giving
+witness-non-maximal: Σ (c: regime)¬(ci-Ωc≡⊤).
+It gives the modal layer a claim not already ⊤ — the case the modal-rule stability theorems
+could not reach. The same non-maximal claim, taken through the classifier of Section 3 rather
+than regime-by-regime, is a subobject of the terminal presheaf, i.e. an internal truth value
+1⇒ Ω (module CIObject) — the subobject shape Section 9 gives counterfactuals. On it the
+stability question has content, and we answer it (module ModalCI): for the double-negation
+topology, ci-Ω is j-closed atbothregimes — at one because its value is ⊤, at the other
+because its value is⊥ (the empty sieve, which is¬¬-closed), and⊥ is not⊤. The verdict of a
+contingent independence, whether it holds or fails, therefore survives the Boolean localisation
+— j-stability applied to something other than ⊤. This escapes the ⊤-vacuity above but
+not degeneracy in general: the base here is thediscretetwo-regime category, on which Ω
+is Boolean and ¬¬ is the identity, so every truth value is ¬¬-closed automatically. The
+non-degenerate case is the intervention coverage below. This is the j-do-calculus claim in the
+case where the statement is not already ⊤. The general soundness that would let ci-Ω range
+over arbitrary graphical independences (Section 11) remains future work, and not by routine
+extension. The sieve structure holds only where refinement preserves the independence, and
+
+===== PAGE 11 =====
+A CUBICAL FORMALISATION OF TOPOS CAUSAL MODELS 11
+for a collider — a variable with two arrows into it, X→C←Y — it does not: conditioning
+on the collision vertexC opens the path between its causes (Berkson’s paradox). That failure
+of restriction-stability is the obstruction the general case must address — CIObject builds
+the contingent-independence subobject and records the collider as that scope boundary, in
+comments, not as a theorem.
+The modality does causal selection.The stability above is limited. Asiteis a category
+of contexts together with a notion of which arrow-familiescoveran object; on the two-regime
+discretesite the only covering families are trivial, so j nevercollatesacross contexts, and
+the⊤-value of modal-rulei is a degeneracy of that coverage rather than a feature of the
+framework. The selection Mahadevan’s thesis wants — j closing a claim that holds at every
+contextbelowup to holding at the one above — needs a site with a non-trivial coverage.
+The companion j-do-calculus [Mah25a] specifies such coverages on paper, as observational
+and interventional chart bases over a graph. We give a minimal causal base category
+and compute in it (modules InterventionSite, InterventionModality): the intervention
+poset do0→obs←do 1, with the observational context obs intended to be covered by its
+two interventions{do0,do 1} — a non-maximal sieve, impossible on the discrete site. The
+induced closure is discriminating: a claim holding underbothinterventions is covered up to
+holding observationally, while one holding under onlyonesurvives as a proper sieve,
+j{do 0,do 1}≡⊤,¬(j{do 0}≡⊤).
+On this intended coverage the closure at obs is thus non-degenerate — the two decisive mem-
+berships are what we machine-check. We formalise neither the coverage as a Grothendieck
+topology nor the closure as a natural map Ω ⇒ Ω, and we do not verify the Lawvere-Tierney
+axioms for it: the operator is defined at obs and computed there. What the computation re-
+alises is the invariance-across-interventions selection thej-do-calculus intends; the⊤-collapse
+is a property of the coverage, not an obstruction in the theory. The directed / ∞-categorical
+lift (Section 11) would let this range over the full space of interventions; the propositional,
+single-variable case is what we machine-check here.
+8.An obstruction: causal contextuality
+The pullback of Section 5 always exists, being a limit; but collation over a cover is a different
+matter, and it can fail. Over a cover by three measurement contexts, a compatible family of
+local models — one per context, agreeing on every shared marginal — can have a support
+that admits no global section. This isstrong contextualityin the sense of Abramsky and
+Brandenburger [AB11], and in causal terms it is the statement that pairwise-consistent local
+causal data need not come from any single global model. At least three contexts are needed,
+and the reason is combinatorial rather than a fact about limits: over a cover by two contexts,
+any local model in the support at one extends across the overlap, by compatibility, to one at
+the other, and the two together are a global section. For the modular, “map-reduce” assembly
+of mechanisms from local data that motivates the gluing, this is a structural warning. Local
+pieces that agree wherever they overlap can still fail to assemble, so a procedure that stitches
+local causal models cannot certify a global one from pairwise agreement alone. The witness
+below is minimal and built by hand, not drawn from data; it shows the failure mode occurs
+and is exactly located, not that it is common.
+
+===== PAGE 12 =====
+12 K. SARGSYAN
+Specker’s triangle.The minimal witness has three Boolean observables A,B,C , measured
+pairwise, each pair perfectly anti-correlated: the context {A,B} supports only A̸ =B, and
+likewise{B,C} and{A,C} . Each context is locally realisable, and the family iscompatible
+(no signalling): every value of a shared observable occurs in both contexts that contain it, so
+the single-observable marginals agree. But there is no global assignment, because A̸ =B and
+B̸ =C force A =C, against A̸ =C. We prove its three obligations: local realisability and
+the absence of a global section (bundled as a record), and compatibility, i.e. no-signalling
+(a separate lemma); the no-global obligation is discharged by deciding the eight Boolean
+assignments.
+no-global :¬GlobalSection
+no-global ((true , true , _) , p , _ , _) = p refl
+no-global ((true , false , true) , _ , _ , r) = r refl
+... -- six cases in all
+A holonomy criterion.The obstruction can also be computed, in the spirit of Abramsky,
+Mansfield and Barbosa [ AMB12], and the computation generalises well beyond this exam-
+ple. Over anarbitraryset of observables andarbitraryabelian coefficients, we define the
+coboundary δ and the holonomy of a closed walk — the sum of a 1-cochain along it — and
+prove the telescope: a coboundary’s holonomy is the difference of its endpoints, hence trivial
+around a loop. It follows that any 1-cochain with non-trivial holonomy around a closed walk
+is not a coboundary on that walk’s edges. The causal reading is direct. A candidate global
+model is a labelling of the observables, a 0-cochain, whose coboundary should realise the
+observed pairwise correlations, a 1-cochain on the measured pairs; so a correlation cochain
+that is not a coboundary is one that no global labelling explains.
+The criterion discriminates, which is what makes it more than a second proof of the
+same fact. Specker’s model — the cochain anti-correlated on every edge of the triangle —
+has holonomy 1, so it is not a coboundary, and the obstruction is a computed, non-trivial
+class. A four-cycle is the contrasting instance: its holonomy is trivial, and the even cycle is
+moreoversatisfiable, as we machine-check a global two-colouring that is a coboundary on
+all four of its edges ( square-coboundary) — the global section the triangle lacks. For the
+triangle we also machine-check both inclusions imδ = ker(hol) — every edge-coboundary
+has zero holonomy, and every zero-holonomy cochain is an edge-coboundary — together
+with surjectivity of holonomy; H 1∼= Z2 follows, though we do not formalise the quotient
+itself. And because a global model is exactly an edge-coboundary witness, the class recovers
+the possibilistic no-global-section fact proved above: two formalisations of one obstruction,
+agreeing.
+What we machine-check is the degree-one, constant-coefficient fragment of that line. The
+full invariant of Abramsky, Mansfield and Barbosa takes its class in the ˇCech cohomology
+of the nerve of the cover, with coefficients in an abelian presheaf derived from the support,
+and is sufficient but not necessary — they exhibit a strongly contextual model whose class
+vanishes. Our complex is not that nerve: we take the observables as vertices and the
+measured pairs as edges. (For the triangle the nerve is also a 3-cycle, so the two agree here;
+in general they do not.) Those presheaf coefficients, the higher cochain degrees, and the
+nerve of an arbitrary cover are the remaining generalisation.
+
+===== PAGE 13 =====
+A CUBICAL FORMALISATION OF TOPOS CAUSAL MODELS 13
+9.Counterfactual transport as an invariance modality
+The modal layer of Section 7 shows that interventions and Pearl’s rules are j-stable for every
+topology: invariant under the localisations a Lawvere-Tierney topology names. A natural
+question, which Section 11 flags, is whether the internal logic yields atransportabilitycriterion
+— whether a causal effect established in one domain can be transferred to another, where it
+need not take the same value — of the kind Bareinboim and Pearl give graphically [ BP16].
+We answer its invariance case: across a cover of regimes, the transport of a counterfactual
+— its holding at the global regime, and so, by locality, throughout the cover — coincides
+with j-stability. This is invariance across regimes, not the full graphical transportability
+of Bareinboim and Pearl, a boundary Section 11 draws. The development is in the same
+Cubical Agda, typechecks under --safe, and reuses the classifier, the forcing layer, and the
+modal layer verified above.
+Counterfactuals as subobjects.Fix a base category of regimes (environments) and
+a presheaf W of worlds over it, a world carrying the exogenous data against which a
+counterfactual is evaluated. A counterfactual query is a predicate on worlds that isrestriction-
+stable: if it holds of a world it holds of every restriction. Restriction-stability is exactly sieve
+closure, so such a predicate cuts out a subobject, named by a characteristic map χ :W⇒ Ω
+whose naturality we prove. Forcing χ at a regime is the counterfactual holding there; we call
+this transport to that regime. Kripke locality then yields transport-invariance immediately:
+a counterfactual forced at a regime is forced at every regime restricting into it.
+Direct transportability is j-stability.The identification is as follows. A counterfactual
+transports to the global regime iff it is forced there, iff its internal truth value is the maximal
+sieve⊤; and being⊤ entails being j-closed foreveryLawvere-Tierney topology, so direct
+transportability entails invariance (the converse is the soundness result below, under a
+density hypothesis). The middle step is restriction-stability carrying global truth down to
+the cover; the last is the truth-preservation axiom j⊤ =⊤ — the same⊤-collapse by which
+Section 7 proves do-facts and Pearl’s rules j-stable. So the invariance modality the paper
+studies for interventions is, for counterfactuals, transport to the global regime:
+holds at the global regime⇐⇒j-stable (invariant),
+the backward direction under the density and local-truth hypotheses of the soundness
+paragraph below. A counterfactual that holds only in an environment, not globally, corre-
+spondingly fails to be j-closed for a topology under which the global regime is covered by its
+environments: forced at the environment but not at the global regime, exactly the failure of
+transport. The qualification is needed — under the identity topology every truth value is
+j-closed — and this failure case we do not machine-check.
+The probabilistic case.The identification is not special to deterministic outcomes. The
+finite-distribution monad FDist is a set, so a distributional statement is a proposition and a
+probabilistic counterfactual is again an internal truth value; the subobject and its forcing
+transfer unchanged. We carry this out for a point-mass outcome; lifting it to the companion
+paper’s full interventional distribution, with abduction as Bayesian conditioning, is the
+natural next step and is not yet formalised.
+
+===== PAGE 14 =====
+14 K. SARGSYAN
+Soundness.The converse direction is transportsoundness: invariance entails direct trans-
+portability. We prove that for any topology in which the environment is j-dense — the
+identity lies in the closure of its sieve — a j-stable counterfactual that holds in the environ-
+ment holds globally. In the present finite regime category the double-negation topology is
+dense in this sense: the negation of a counterfactual holding along the environment arrow
+is empty, so its double-negation closure is ⊤, which is the density hypothesis up to the
+identification of a maximal sieve with membership of the identity; density in a general
+base category is not claimed. This is soundness in the shape of the companion paper’s
+d-separation soundness, and of Bareinboim and Pearl’s transport soundness, both of which
+carry admissibility side-conditions. The matching completeness statement, an equivalence
+with their s-hedge criterion [ BP13], we leave open; so too the discharge of the density
+side-condition into a single unconditional term, which the present finite regime category
+does not support cleanly.
+Scope of this development.This is the deterministic and finite-regime account: the
+worlds are a presheaf of exogenous data, the cover is small, and transport is the internal-logic
+notion just defined, not yet proved equivalent to the complete graphical criterion. The
+⊤-collapse and the j-closedness that identify transport with invariance are proved for an
+arbitrary restriction-stable regime predicate, but over this fixed two-regime cover; the forcing
+and classifier layers beneath them are general in the base category as well. Neither half of
+the framing is new on its own. Counterfactual logic inside a topos, with a neighbourhood
+system of possible worlds, is de Araujo Fernandes and Haeusler’s [ dAFH09], and the source
+sketches counterfactuals over causal models on exactly that basis [ Mah25b,§9.2], following
+Lewis rather than Kripke-Joyal. What we add is the modal identification and its proof: a
+counterfactual is a restriction-stable predicate, hence a subobject; forcing it at a regime
+is transport there; and transport to the global regime coincides with j-stability for every
+topology — machine-checked, for an arbitrary such predicate.
+10.The formalisation
+The core development is thirty-two Cubical Agda modules, with eight more for counterfactual
+transport (Section 9), over an eight-module companion probability layer. We indicate where
+the cubical setting is used essentially, which proofs were substantial, and two points that
+mechanisation forced.
+Structure and reuse.The base modules fix a category of contexts and the presheaves
+over it (Cat, PSh), build the classifier of sieves Ω ( Omega), and re-export the companion
+paper’s finite-distribution monad as an internal distribution object DistX = FDist◦X
+(InternalDist). On top sit the pillars — the intervention classifier ( DoClassifier, with
+Ω’s general universal property and uniqueness in Classifier), the do-operator’s separation
+from conditioning (DoSeeDistinct), collation by pullback (Gluing), forcing (Forcing), the
+modal layer ( LawvereTierney, InflationarityDerivable, Modality, DoubleNegation,
+with the contingent-independence stability of ContingentCI and ModalCI and the inter-
+vention coverage of InterventionSite and InterventionModality), and the obstruc-
+tion (Contextuality, Cohomology, CechCohomology) — together with the internalised
+do-calculus rules (Rule1–Rule3, ModalRules) and the counterfactual-transport development
+(the Transport modules). The mechanisms themselves are not rebuilt: the internal kernels
+are the companion paper’s, and the topos layer only organises them. The Agda development
+
+===== PAGE 15 =====
+A CUBICAL FORMALISATION OF TOPOS CAUSAL MODELS 15
+assumes no axioms (the directed rzk companion of Section 11 assumes one, extension
+extensionality). The probability monad is built over an ordered field that earlier drafts
+left as a postulate; we now supply that field concretely as the cubical-library rationals Q,
+each of its ring, order, and bounded-division laws a proved theorem. One subtlety makes
+this more than a substitution: a transparent Q unfolds to stuck set-quotient projections,
+which defeats the unifier and breaks implicit-argument inference at hundreds of downstream
+sites — the very reason the field had been left abstract. We recover the abstract behaviour
+by re-exporting the field through a single opaque block, which keeps the operations rigid
+for unification while concretely equal to Q; every downstream proof then goes through
+unchanged. The whole development, probability layer and topos layer alike, typechecks
+under Agda’s --safe flag — which rules out postulates and any bypass of the termination,
+positivity, or universe checks — and contains no unsolved holes. The account is therefore not
+merely postulate-free relative to an assumed interface: it is unconditionally machine-checked,
+with the ordered field discharged atQ.
+What the cubical setting provides.Sieve membership is valued in propositions, which
+keeps each Ω(c) a set and lets us prove sieve equality from membership alone; the same device
+makes the agreement condition in the pullback and the commuting square of the gluing proof
+hold automatically, because a proof of a proposition is unique. Two of the forcing clauses
+then holddefinitionally: c⊩S∧T and the pair of c⊩S and c⊩T are literally the same
+term, and likewise for∨ against the truncated sum, so those soundness proofs are the identity.
+Propositional truncation∥−∥ carries disjunction, the local-existential quantifier, and the
+compatibility (no-signalling) witnesses of the contextuality model. Function extensionality
+and the propositional-extensionality path ⇔-to-≡ give the naturality and extensionality
+lemmas that every universal-property argument runs through.
+The substantial proofs.Three steps account for most of the difficulty. First, the double-
+negation topology needs the Heyting structure on sieves built by hand — bottom, implication,
+negation — and its substance is the intuitionistically-valid meet inclusion ¬¬S∧¬¬T≤
+¬¬(S∧T ): the witness restricts both double-negations along the test arrow and reassembles
+an (S∧T )-membership from an S- and a T -witness, reassociating every composite by hand;
+idempotence then follows easily from the triple-negation law¬¬¬ =¬. Second, the quantifier
+objects of Forcing are not the one-line clauses they reduce to: each of ∀D and∃D must be
+given full sieve structure — downward closure and naturality — with the substitutions along
+associativity and functoriality discharged explicitly, and∃D threaded through the truncation.
+Third, the gluing universal property is a limit argument: existence is the agreeing pair, but
+uniqueness needs that a cone map is determined by its two components, with the agreement
+coherence automatic because it is propositional.
+Two consequences of mechanisation.Formalising forced one design choice and collapsed
+one family of proofs. The intervention classifier typechecks only when x0 is anaturalglobal
+element: a bare context-indexed family does not cut out a subobject and χ fails to be
+natural, so the naturality side-condition of Section 3 is something the type system insisted
+on, not something we imposed. And the modal-stability results — that the intervention
+sieve and Pearl’s three rules are j-closed foreverytopology — collapse to a single three-line
+argument: each conclusion is an equality of distributions, hence a truth value equal to ⊤,
+and⊤ is fixed by every j. The contextuality obstruction, by contrast, is decided concretely:
+the no-global-section lemma rules out all eight Boolean assignments, and the holonomy
+
+===== PAGE 16 =====
+16 K. SARGSYAN
+obstruction is a theorem over an arbitrary observable set and arbitrary abelian coefficients
+(CechCohomology); on the triangle’s cover, with Z2 coefficients, the class is non-zero. The
+Specker triangle then has holonomy 1 and is contextual, while a four-cycle has holonomy 0
+and, correctly, is not.
+11.Scope and limitations
+We have formalised the 1-topos core: the classifier, the do-operator’s separation from
+conditioning, gluing, the internal language, and the modal do-calculus, all over a presheaf
+topos. Three things are deliberately outside it.
+First, the modality acts ontruth values, not on arbitrary types. A full type-level reflector
+(sheafification of an arbitrary presheaf, with its descent) is a larger construction — the
+plus-construction, applied twice — and needs no machinery beyond what Cubical Agda
+offers. We have built the propositional reflector that the do-calculus actually uses. Whether
+that larger construction leaves the distribution object intact is a further question, and we
+leave it open: our distributions are normalised contextwise ( DistX = FDist◦X ), so a
+section is already a quotient of weights, and the plus-construction’s separating step quotients
+again, identifying any two sections that agree on some covering family. That a functional
+reading such a section — an adjustment weighting strata by a confounder’s marginal, say —
+still descends is not a consequence of the construction being standard.
+Second, we work over presheaves, not sheaves on an instantiated site. This matches the
+topos-causal-model papers [Mah25c, Mah25b], whose constructions are presheaf constructions
+and whose Grothendieck topology is defined but never instantiated. The companion j-do-
+calculus [Mah25a] does instantiate one, giving observational and interventional chart bases
+on named collider graphs; we do not formalise those covers. Pillars one (classifier) and three
+(internal logic) transfer to a sheaf topos unchanged; the gluing pillar is where covers would
+enter — our pullback is the limit a presheaf topos already carries, whereas collation over a
+cover is the sheaf condition, which we do not supply and, for the reason just given, do not
+assume sheafification would supply.
+Third, this is theundirectedaccount, and we can now say precisely what a directed one
+keeps and what it costs. Causation is asymmetric, and the identity types of cubical type
+theory are symmetric: a causal arrow modelled as a path x =y silently yields its inverse,
+collapsing “X causes Y ” into “Y causes X”. A faithful treatment instead models causal
+influence as anon-invertiblearrow, and we have machine-checked the structural core of
+one. This is a companion development in the directed cousin of cubical type theory — the
+simplicial type theory of Riehl and Shulman [ RS17], in which a type can carry a primitive
+notion of directed arrow that, unlike a path, has no inverse — in the rzk proof assistant
+on the sHoTT library, verified under rzk 0.8, in the directed/ directory of the artifact
+repository.
+The translation is direct. A causal world is aSegal type, a type whose arrows compose;
+causal influence is one of those directed arrows, a hom, with no backward partner; transitivity
+of influence is composition of arrows. A mechanism — a downstream variable depending on
+an upstream one — is acovariant family, a family of types that transports forward along
+arrows, and interventional propagation is that forward transport. On this dictionary we
+machine-check the structural laws of causal reasoning. The trivial mechanism propagates
+a value unchanged. A causal history propagates by composition, so influence through a
+mediator factors into its two legs — associativity of causal composition (the one place the
+
+===== PAGE 17 =====
+A CUBICAL FORMALISATION OF TOPOS CAUSAL MODELS 17
+directed core invokes an axiom: the library’s extension extensionality, the directed analogue
+of function extensionality). A morphism between mechanisms commutes with propagation,
+so mechanisms transform naturally. In a complete (Rezk) world — isomorphic variables
+already equal — causal identity is causal isomorphism, by the completeness condition itself;
+and the Yoneda embedding realises a variable through the cone of its downstream effects.
+This is the shape of a Yoneda identifiability statement; we instantiate the embedding, not
+its full-faithfulness. A counterfactual, finally, is the span underlying a twin network: two
+runs of the world sharing a single exogenous source. The asymmetry is faithful throughout
+— a forward hom yields nothing backward, where a symmetric path would have yielded the
+reverse automatically.
+What this directed development cannot reach is exactly the do-operator. An intervention
+do(X :=x0) mutilates the causal world, and to recover it, the directed account has to treat
+the universe of types as itself a directed world and extract the intervention as an arrow
+inside it. That step isdirected univalence: the principle that an arrow between two types
+in the universe is the same data as a function between them, homS(A,B )≃ (A→B ).
+It is the construction of Gratzer, Weinberger and Buchholtz [ GWB24], carried out in a
+modal extension of the theory (triangulated type theory) for S, the universe ofdiscrete
+types — the relevant regime here, since causal state spaces are sets. For the universe of
+categories the corresponding equivalence is modal, which is why the discrete case is the one
+to want. rzk 0.8 provides part of that experimental substrate but disallows the amazing right
+adjoint the construction requires, and does not build the universe itself; and nosynthetic
+directed-univalent universe has been formalised in a proof assistant, to our knowledge and at
+the time of writing — the one constructive model, Weaver and Licata’s bicubical sets [WL20],
+is semantic, with the cobar modality axiomatised. We canstatethe goal in rzk but not
+inhabit it. The two accounts thus meet at a precise boundary: the present, undirected one
+machine-checks the full 1-topos do-calculus and the invariance (direct-transportability) case,
+though its causal arrows are symmetric and invertible; the directed one keeps the asymmetry
+faithfully but stops short of the do-operator. A machine-checked directed do-calculus, joining
+the two, requires a directed-univalent universe.
+Invariance, not transportability.The modality is easy to over-interpret, and warrants
+one caution. A j-closed truth value is one that holds identically across the contexts j
+glues: it isinvariant. This is the “globally valid” interpretation the source intends for
+j [Mah25a], and it is the natural home for invariant-prediction approaches to discovery,
+whose target is exactly the mechanism that does not change across environments. It isnot
+transportability in the sense of Bareinboim and Pearl. A causal effect can be identifiable in a
+target domain from source-experimental and target-observational data (hence transportable)
+while taking a different value in each domain, so it is not invariant and not j-closed. Our
+modal-stability theorems (Section 7) therefore certify invariance, the direct-transportability
+case, not transportability in general; the same caveat applies to the source, whose j is the
+same invariance modality. General transport is a marginalisation of a source factor against
+a target factor: the arithmetic is available (it is monadic bind in the underlying probability
+monad), and the selection structure separating shared from domain-specific mechanisms
+can plausibly be modelled by naturality, though we do not prove this. Section 9 carries out
+this invariance case, identifying a counterfactual’s invariance across a regime cover with
+j-stability and proving soundness; the completeness equivalence with the graphical s-hedge
+
+===== PAGE 18 =====
+18 K. SARGSYAN
+criterion [BP13], which is where effects taking a different value in each domain are decided,
+remains open.
+12.Related work
+The source of the framework is Mahadevan’s topos causal models [ Mah25c, Mah25b] and
+the intuitionistic j-do-calculus [Mah25a]; our development is a formalisation and, in the
+gluing and modal layers, a clarification of that work. The categorical-probability background
+— mechanisms as kernels, conditioning and disintegration as abstract theory — is that of
+Markov categories [Fri20, CJ19], and our internal mechanisms are instances of the probability
+monad verified in the companion paper [ Sar26]. The do-operator itself has a categorical
+treatment in that line: Jacobs, Kissinger and Zanasi [ JKZ19] represent an intervention as
+an endofunctor performing surgery on string diagrams, with the interventional distribution
+recovered through the interpretation functor. That is the same reading of intervention-
+as-surgery that Section 4 confirms — carried out on syntax, where the two operations
+are visibly different constructions, rather than on truth values, where they are not. The
+topos-theoretic constructions follow Mac Lane and Moerdijk [ MM92]: the classifier of sieves,
+the Kripke-Joyal clauses, and Lawvere-Tierney topologies are all theirs. The treatment
+of a topology as a reflective modality is the propositional case of the modalities of Rijke,
+Shulman and Spitters [ RSS20]; the directed lift of the do-operator, which we leave to
+future work, draws on directed type theory. The topos infrastructure we build on has been
+formalised before, though never for causal models: Quirin and Tabareau machine-check
+Lawvere-Tierney topologies and sheafification in homotopy type theory [ QT16], and the
+Cubical Agda library and its scheme-theoretic developments [ ZM23] formalise presheaves
+and the sheaf condition. The universal property of the subobject classifier, which we verify
+here to ground the intervention and for self-containedness, is likewise standard and has been
+mechanised in general topos-theory libraries; we claim it as a completion, not a novelty.
+What is new here is the causal interpretation of this machinery — not the machinery itself.
+The book-length development of the framework [ Mah26] includes a Lean 4 formalisation
+of its own. That development and ours do not overlap in substance. It is, by its author’s
+own verification map, partial: the topos results record only a finite-limit core (the coalgebra
+topos is marked as future work), and the Grothendieck–Lawvere-Tierney correspondence is
+formalised in a single direction. It is classical, built on Mathlib, and does not aim at Agda’s
+--safe discipline. It does not touch the intervention classifier’s classification theorem, the
+gluing universal property, or the modal-stability results. Where it does address related
+material — it states a Kripke-Joyal semantics declaration — our contribution is not to be
+first to name the clauses but to prove all of them, constructively and axiom-free, for the
+causal setting.
+A complementary line studies do-calculusderivationscombinatorially rather than
+semantically. Yvernes, Devijver, Clausel and Gaussier [ YDCG26] organise the rewrites of
+Pearl’s rules into a derivation graph, presupposing the soundness our companion paper
+mechanises, and show that do-calculus-equivalent estimands can differ in statistical efficiency.
+That distinction lives below the population layer any faithful semantics identifies, and is
+hence orthogonal to what a truth value in Ω can see. Their open problem, extending the
+derivation graph with probabilistic rewritings that trivial identities render infinite, would
+be a sheafification: precisely the type-level modality that Section 11 defers to future work,
+along with the open question recorded there.
+
+===== PAGE 19 =====
+A CUBICAL FORMALISATION OF TOPOS CAUSAL MODELS 19
+The obstruction of Section 8 belongs to a well-developed line that we do not claim to
+originate. That contextuality is an obstruction to assembling a compatible family of local
+models into a global section is due to Abramsky and Brandenburger [ AB11]; its witnessing
+by a ˇCech cohomology class — sufficient for contextuality, though not necessary — is due to
+Abramsky, Mansfield and Barbosa [ AMB12]. Both are in quantum foundations. Gogioso
+and Pinzani [GP23] carry the sheaf framework to causality and identify a “causally-induced
+contextuality”, but in an operational setting covering arbitrary causal orders — definite,
+dynamical or indefinite — rather than for classical structural causal models. For classical
+causal models the closest work is very recent: global counterfactuals can be obstructed by
+the homology of the causal graph [ WXL26], formalised there through cellular sheaves over
+optimal-transport spaces, a route different from ours and not machine-checked. Quantum
+no-go inequalities have been machine-checked before — the CHSH inequality and Tsirelson’s
+bound in Isabelle/HOL [ EMM23] and in Lean’s Mathlib [ The24] — but those are bounds
+on correlations, not the global-section obstruction we treat here. Computer-verified Kochen-
+Specker results exist too [LBG24], but as SAT and computer-algebra proof certificates rather
+than proof-assistant developments. Against this background, our contribution is a machine-
+checked realisation of the obstruction (a compatible empirical model whose support admits
+no global section): to our knowledge it is the first such global-section obstruction verified in
+a proof assistant. It is realised as finite combinatorics — a possibilistic empirical model over
+three contexts — and connects Mahadevan’s j-stability programme, where obstructions do
+not appear, to the contextuality line.
+13.Conclusion
+Topos causal models recast intervention, mechanism assembly and counterfactual reasoning
+as three topos-theoretic universal properties. We have machine-checked the 1-topos core of
+this picture in Cubical Agda over a verified probability monad: the intervention classifier
+with its classification theorem (an instance of Ω’s universal property, which we also verify),
+the do-operator machine-checked to differ from conditioning on a confounder, the collation
+of local mechanisms as a pullback with its universal property, the Kripke-Joyal forcing
+clauses for every connective and quantifier, and a Lawvere-Tierney do-calculus in which
+interventions and Pearl’s rules are stable under every topology. Relative to the source, the
+development gives the pullback form of collation that the source only motivates, shows
+the subobject classifier names the target of an intervention but not the operation, which
+is surgery rather than conditioning, and shows the modal unit is derivable rather than a
+missing axiom — inflationarity follows from naturality and j⊤ =⊤; the double-negation
+topology makes the modal layer concrete where the source stays abstract. The development
+is machine-checked under Agda’s --safe flag, with the ordered field discharged concretely
+at Q. The structural core of a directed account, in which the asymmetry of causation is
+primitive, we machine-check in rzk; the directed do-operator itself, which needs directed
+univalence, remains future work.
+Acknowledgements
+I thank Jon Sterling for pointing out that inflationarity is derivable from j⊤ =⊤ on the
+subobject classifier, which the modal layer of Section 7 now reflects, and for identifying
+
+===== PAGE 20 =====
+20 K. SARGSYAN
+further problems in an earlier version of this paper, which the present version corrects. Those
+observations are his; any errors that remain are mine alone.
+References
+[AB11] Samson Abramsky and Adam Brandenburger. The sheaf-theoretic structure of non-locality and
+contextuality.New Journal of Physics, 13(11):113036, 2011.
+[AMB12] Samson Abramsky, Shane Mansfield, and Rui Soares Barbosa. The cohomology of non-locality
+and contextuality. InProceedings 8th International Workshop on Quantum Physics and Logic
+(QPL 2011), volume 95 ofEPTCS, pages 1–14, 2012.
+[BP13] Elias Bareinboim and Judea Pearl. A general algorithm for deciding transportability of experi-
+mental results.Journal of Causal Inference, 1(1):107–134, 2013.doi:10.1515/jci-2012-0004.
+[BP16] Elias Bareinboim and Judea Pearl. Causal inference and the data-fusion problem.Proceedings of
+the National Academy of Sciences, 113(27):7345–7352, 2016.doi:10.1073/pnas.1510507113.
+[CCHM17] Cyril Cohen, Thierry Coquand, Simon Huber, and Anders M¨ ortberg. Cubical type theory:
+A constructive interpretation of the univalence axiom.Journal of Applied Logics (IfCoLog),
+4(10):3127–3170, 2017. Conference version: TYPES 2015, LIPIcs 69, 5:1–5:34, 2018.
+[CJ19] Kenta Cho and Bart Jacobs. Disintegration and Bayesian inversion via string diagrams.Mathe-
+matical Structures in Computer Science, 29(7):938–971, 2019. doi:10.1017/S0960129518000488.
+[dAFH09] Ricardo Queiroz de Araujo Fernandes and Edward Hermann Haeusler. A topos-theoretic approach
+to counterfactual logic.Electronic Notes in Theoretical Computer Science, 256:33–47, 2009.
+[EMM23] Mnacho Echenim, Mehdi Mhalla, and Coralie Mori. A formalization of the CHSH inequality and
+Tsirelson’s upper-bound in Isabelle/HOL.Journal of Automated Reasoning, 2023. Archive of
+Formal Proofs entryTsirelsonBound.
+[Fri20] Tobias Fritz. A synthetic approach to Markov kernels, conditional independence and theorems
+on sufficient statistics.Advances in Mathematics, 370:107239, 2020. doi:10.1016/j.aim.2020.
+107239.
+[GP23] Stefano Gogioso and Nicola Pinzani. The topology of causality.arXiv preprint arXiv:2303.07148,
+2023.
+[GWB24] Daniel Gratzer, Jonathan Weinberger, and Ulrik Buchholtz. Directed univalence in simplicial
+homotopy type theory.arXiv preprint arXiv:2407.09146, 2024.
+[JKZ19] Bart Jacobs, Aleks Kissinger, and Fabio Zanasi. Causal inference by string diagram surgery. In
+Foundations of Software Science and Computation Structures (FoSSaCS 2019), volume 11425 of
+Lecture Notes in Computer Science. Springer, 2019.doi:10.1007/978-3-030-17127-8_18.
+[LBG24] Zhengyu Li, Curtis Bright, and Vijay Ganesh. A SAT solver and computer algebra attack on the
+minimum Kochen–Specker problem. InProceedings of the 33rd International Joint Conference on
+Artificial Intelligence (IJCAI 2024), 2024.
+[Mah25a] Sridhar Mahadevan. Intuitionistic j-do-calculus in topos causal models.arXiv preprint
+arXiv:2510.17944v2, 2025. Version 2, 25 July 2026; all references here are to that version.
+[Mah25b] Sridhar Mahadevan. Topos causal models, 2025.arXiv:2508.08295.
+[Mah25c] Sridhar Mahadevan. Universal causal inference in a topos. InAdvances in Neural Information
+Processing Systems 38 (NeurIPS 2025), 2025.
+[Mah26] Sridhar Mahadevan.Categories for AGI. Draft manuscript, 2026. Lean 4 formalization companion
+athttps://github.com/sridharmahadevan/catagi.
+[MM92] Saunders Mac Lane and Ieke Moerdijk.Sheaves in Geometry and Logic: A First Introduction to
+Topos Theory. Universitext. Springer, 1992.
+[Pea09] Judea Pearl.Causality: Models, Reasoning, and Inference. Cambridge University Press, 2nd
+edition, 2009.
+[QT16] Kevin Quirin and Nicolas Tabareau. Lawvere-tierney sheafification in homotopy type theory.
+Journal of Formalized Reasoning, 9(2):131–161, 2016.doi:10.6092/issn.1972-5787/6232.
+[RS17] Emily Riehl and Michael Shulman. A type theory for synthetic ∞-categories.Higher Structures,
+1(1):147–224, 2017.
+[RSS20] Egbert Rijke, Michael Shulman, and Bas Spitters. Modalities in homotopy type theory.Logical
+Methods in Computer Science, 16(1), 2020.
+
+===== PAGE 21 =====
+A CUBICAL FORMALISATION OF TOPOS CAUSAL MODELS 21
+[Sar26] Karen Sargsyan. A cubical formalisation of conditional independence, Bayesian conditioning, and
+Pearl’s d-separation soundness, 2026. Companion paper. URL: https://arxiv.org/abs/2606.
+20351,arXiv:2606.20351.
+[The24] The mathlib Community. Mathlib.Algebra.Star.CHSH: Tsirelson’s inequality, 2024. Lean 4
+mathematical library.
+[VMA19] Andrea Vezzosi, Anders M¨ ortberg, and Andreas Abel. Cubical Agda: A dependently typed
+programming language with univalence and higher inductive types. InProceedings of the ACM
+on Programming Languages (ICFP), volume 3, pages 87:1–87:29, 2019.doi:10.1145/3341691.
+[WL20] Matthew Z. Weaver and Daniel R. Licata. A constructive model of directed univalence in bicubical
+sets. InProceedings of the 35th Annual ACM/IEEE Symposium on Logic in Computer Science
+(LICS), pages 915–928, 2020.doi:10.1145/3373718.3394794.
+[WXL26] Rui Wu, Hong Xie, and Yongjun Li. Cohomological obstructions to global counterfactuals: A
+sheaf-theoretic foundation for generative causal models, 2026.arXiv:2603.17384.
+[YDCG26] Cl´ ement Yvernes, Emilie Devijver, Marianne Clausel, and Eric Gaussier. Unveiling the structure
+of do-calculus reasoning via derivation graphs. InProceedings of the 43rd International Conference
+on Machine Learning (ICML 2026), 2026. URL:https://arxiv.org/abs/2606.03719.
+[ZM23] Max Zeuner and Anders M¨ ortberg. A univalent formalization of constructive affine schemes.
+In28th International Conference on Types for Proofs and Programs (TYPES 2022), volume
+269 ofLeibniz International Proceedings in Informatics (LIPIcs), pages 14:1–14:24. Schloss
+Dagstuhl—Leibniz-Zentrum f¨ ur Informatik, 2023.doi:10.4230/LIPIcs.TYPES.2022.14.
+This work is licensed under the Creative Commons Attribution License. T o view a copy of this
+license, visithttps://creativecommons.org/licenses/by/4.0/or send a letter to Creative
+Commons, 171 Second St, Suite 300, San Francisco, CA 94105, USA, or Eisenacher Strasse 2,
+10777 Berlin, Germany

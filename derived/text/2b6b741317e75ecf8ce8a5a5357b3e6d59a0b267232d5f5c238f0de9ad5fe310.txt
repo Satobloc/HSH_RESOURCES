@@ -1,0 +1,3790 @@
+===== PAGE 1 =====
+Sharp Concentration Bounds for Bundle-Valued
+Statistics on Manifolds
+Swagatam Das*
+Electronics and Communication Sciences Unit
+Indian Statistical Institute
+Kolkata 700108, India
+V´aclav Sn´aˇsel
+VSB Technical University of Ostrava
+Ostrava, Czech Republic
+Abstract
+Many geometric statistics and manifold learning pipelines routinely produce observations—
+such as tangent vectors or local frames—whose natural home is a varying family of fibers
+attached to different points of a base manifold, rather than a single shared vector space.
+Forming empirical averages requires transporting these observations to a common refer-
+ence fiber, thereby introducing curvature- and holonomy-driven effects that are absent
+from classical concentration theory. We develop a non-asymptotic concentration theory
+for such transported empirical means, deriving finite-sample, dimension-free Hoeffding-
+and Bernstein-type bounds via sharp Hilbert-space inequalities. When shortest paths to
+the reference point are non-unique, transport becomes path-dependent and introduces a
+deterministic holonomy bias; we isolate and quantify this bias through bundle curvature and
+loop geometry, with sharp closed-form formulas for the tangent bundle of a round sphere.
+The resulting bias–variance decomposition separates the stochastic fluctuation decaying at
+the classicaln−1/2 rate in sample sizen, from a curvature-driven error floor that no amount
+of additional data can eliminate; minimax lower bounds confirm both terms are unavoidable.
+We further establish a robust median-of-means estimator achieving optimal rates under
+heavy tails, and a central limit theorem in the reference fiber. Controlled experiments on the
+sphere validate all theoretical predictions.
+Keywords:Concentration inequalities, Riemannian statistics, vector bundles, parallel transport,
+holonomy, geometric machine learning.
+1 Introduction
+Consider the problem of representing a global wind map. At every point on the Earth’s surface,
+we must attach a small, flat coordinate system to describe the local wind’s speed and direction.
+*Corresponding author:swagatam.das@isical.ac.in
+1
+arXiv:2607.10592v1  [cs.LG]  12 Jul 2026
+
+===== PAGE 2 =====
+In the language of geometry, this collection of “data spaces attached to points” is avector bundle.
+While we can easily draw a flat grid on a local map of a single city, the Earth’s intrinsic curvature
+makes it impossible to “comb” these local coordinate systems into one single, consistent grid
+for the entire planet without creating a topological “twist” or a seam.
+This geometric tension has a precise algebraic counterpart. A vector bundle (E,π,M)
+formalizes exactly this picture: M is the base manifold (the Earth’s surface, in our example),
+E is the total space collecting all local coordinate systems together, and π : E→M is a
+smooth surjection — a projection map — that tells you which point ofM each local coordinate
+system is attached to. At each point x∈M , the preimage Ex :=π −1(x)∼= Rk is a vector
+space fiber, playing the role of the local coordinate system for wind direction and speed at x.
+A wind map is then asectionof the bundle — a smooth assignment s : M→E satisfying
+π(s(x)) =x , so thats(x)∈E x at every point, meaning each location on Earth is assigned a
+wind vector living in its own local coordinate system. The impossibility of a globally consistent
+grid reflects the fact thatE may be globally “twisted,” precluding a single coordinate system
+even though it locally resembles a product space. This is the natural language for geometric
+ML pipelines encompassing manifolds, graphs, and Lie groups, where one wishes to capture
+coordinate-invariant features such as directions or local frames [15]. It also mirrors the structure
+of gauge fields in physics, where curvature governs both field strength and, as we shall see, the
+quantification of statistical uncertainty.
+While concentration inequalities are central to non-asymptotic learning [13], existing Eu-
+clidean results do not extend to geometric pipelines such as manifold regression, optimal
+transport, or gauge-deep learning [ 15, 17]. These tasks require averaging observations from
+differentfibers EXi by first moving them to a reference fiberEx0 via parallel transport. How-
+ever, transport is path-dependent; non-unique minimizing geodesics introduce a deterministic,
+curvature-driven ambiguity—quantified by holonomy [2]—that lacks a Euclidean counterpart
+and remains unaddressed by standard manifold-mean theory [9].
+Formally, we study i.i.d. samplesX1,...,X n∼µ onM together with a measurable section
+s :M→E that produces bundle-valued observationss(Xi)∈E Xi. We analyze the estimator
+obtained by choosing a reference pointx0∈M , transporting each observation to the reference
+fiber via parallel transport, and averaging inEx0. The central technical goal is to provide explicit,
+non-asymptotic high-probability bounds on the deviation of the transported mean from its
+expectation and to understand how these bounds change when the underlying transport is path-
+dependent. In particular, we expose a simple structure: sampling variability decays with n as in
+Euclidean concentration [31], while geometric ambiguity is controlled by curvature/holonomy
+and may not decay with additional data.
+Contributions.This paper develops a compact, non-asymptotic concentration theory for
+transported bundle-valued means and separates sampling variability from deterministic transport
+ambiguity:
+• We state explicit geometric conditions ensuring a measurable, canonical reduction of
+bundle-valued samples to a single reference fiber via minimizing-geodesic parallel trans-
+port, and clarify how the transported mean differs fundamentally from the Fr´echet mean
+approach [9].
+• Under a uniform bound on∥s(x)∥Ex, we apply sharp Hilbert-space inequalities [31] to
+2
+
+===== PAGE 3 =====
+obtain dimension-free Hoeffding and Bernstein concentration bounds for the transported
+mean (Theorems 1–2).
+• We quantify the deterministic holonomy bias with curvature/area bounds, provide sharp
+holonomy formulas onTS 2
+r , and prove minimax lower bounds (Theorem 4) showing both
+then−1/2 rate and the holonomy floor are unavoidable.
+• We establish a robust median-of-means estimator achieving σ/√n under heavy tails
+(Corollary 2), a CLT in the reference fiber (Theorem 5), and uncertainty quantification
+recipes for manifold regression, gauge-equivariant GNNs, and Wasserstein tangent spaces.
+Scope and reading guide.The main body focuses on the estimator in Eq. (1): transport each
+bundle-valued observation to a common reference fiber and average it. This primitive appears
+whenever data-dependent objects live in varying local coordinate systems, for instance, tangent-
+space residuals in intrinsic regression, fiber features in gauge-equivariant message passing, and
+vector-field measurements on curved domains. Two points are essential for evaluation: (i) once
+Assumption 1 reduces the problem to i.i.d. variables in a fixed Hilbert space, the stochastic
+concentration component follows from sharp classical inequalities; and (ii) the geometric novelty
+is to explicitly separate this stochastic term from a deterministic transport ambiguity term that
+depends on curvature and holonomy. Readers interested primarily in the geometric component
+may jump to Section 5; readers interested in minimax optimality may consult Section 5.1; and
+readers interested in learning-theory style use can consult the confidence radii in Corollary 1,
+the robustness and CLT results in Section 5.2, and the practical trade-offs discussed in Section 6.
+The appendix retains the full technical development, including complete proofs and extended
+worked calculations.
+2 Related Work
+Our concentration results leverage classical non-asymptotic probability in Banach and Hilbert
+spaces, specifically the sharp, dimension-free martingale and Bernstein-type inequalities de-
+veloped by Pinelis [31] and Boucheron et al. [13], Ledoux and Talagrand [27]. In the field
+of manifold statistics, large-sample theory has been extensively developed for Fr´echet means
+and intrinsic/extrinsic CLTs [1, 9, 10, 22]. Unlike these works, which focus on data points on
+the base manifold, we studysectionsof vector bundles. While standard manifold estimators
+often require non-linear optimization and face convergence challenges near cut loci — the
+set of points where geodesics, the shortest paths on a manifold, cease to be uniquely length-
+minimizing — [23], our transported mean approach yields n−1/2 rates and explicitly isolates
+curvature-driven error floors. For heavy-tailed settings, we build upon the median-of-means
+(MoM) framework [29], which was recently extended to non-positively curved spaces by Yun
+and Park [39]. Finally, our work provides a statistical foundation for geometric deep learning
+architectures that aggregate features via bundle connections [4, 15, 33], and complements recent
+advances in Wasserstein-type distances for bundle-valued Gaussian mixtures [38] as well as in
+parallel transport along optimal transport geodesics for distributional dynamics [34]. A detailed
+comparison with the prior works in tabular form can be found in Section 7.
+3
+
+===== PAGE 4 =====
+3 Method
+Let (E,π,M) be a smooth real vector bundle of rank k over a complete d-dimensional Rie-
+mannian manifold (M,g) . AssumeE carries a bundle metric⟨·,·⟩Ex and a compatible metric
+connection∇. Fix a reference pointx 0∈Mand denote the reference fiber byE x0.
+LetX1,...,X n∼µ be i.i.d. samples on M and lets : M→E be a measurable section.
+Given a measurable transport rule selecting, for eachx∈S := supp(µ), a curveγx fromx tox0,
+define the induced parallel transportPx→x0 :=P γx :Ex→E x0 and the transported observations
+Yi :=P Xi→x0s(Xi)∈E x0, ¯Yn := 1
+n
+nX
+i=1
+Yi.(1)
+LetY :=P X→x0s(X)forX∼µand define the transported meanm ⋆ :=E[Y]∈E x0.
+Relation to the Fr´echet mean.The transported mean m⋆ =E[P X→x0s(X)]∈E x0 is funda-
+mentally different from evaluating the section at the Fr´echet mean ¯x= arg minx∈M E[dist(X,x) 2],
+i.e., froms(¯x)∈E ¯x. These two objects target different population quantities: the transported
+mean aggregates fiber-valued observations after alignment, whereass(¯x)evaluates the section
+at an estimated base point. In general,
+m⋆ ̸=P ¯x→x0s(¯x),
+and the difference is controlled by the curvature and variability ofs. Moreover, estimation of
+the Fr´echet mean ¯xcan converge more slowly thann−1/2 near cut loci and requires solving a
+nonlinear optimization onM. In contrast, our approach reduces to Hilbert-space averaging in
+Ex0, yielding dimension-freen−1/2 rates plus an explicit geometric term, at lower computational
+cost.
+3.1 Geometric preliminaries
+Geodesics generalize straight lines. Forx∈M andv∈T xM, letγx,v be the unique geodesic
+withγx,v(0) =x and ˙γx,v(0) =v . Theexponential mapat x is expx(v) =γ x,v(1) whenever
+the geodesic exists on [0,1] ; where expx is locally a diffeomorphism, its inverse logx maps a
+pointy back to the tangent vector whose unit-time geodesic reachesy. Figure 1 visualizes the
+relationship betweenexpandlog.
+Forx∈M , theinjectivity radius Inj(x) is the largestr such that expx is a diffeomorphism
+from the Euclidean ballB(0,r)⊂T xM onto its image. Anormal ball B(x,r) withr <Inj(x)
+is a geodesic ball on which every point is joined to x by a unique minimizing geodesic that
+depends smoothly on the endpoint; this is the local regime where transport can be chosen
+canonically.
+LetE→M be a rank-k vector bundle equipped with a bundle metric and a compatible
+connection∇. Parallel transport along a curve γ induces an isometry Pγ : Eγ(0) →E γ(1).
+The curvature of∇ is an End(E)-valued 2-form Ω, measuring how much the bundle twists
+over infinitesimal parallelograms onM; holonomy around a loop Γ based atx is the isometry
+PΓ : Ex→E x encoding the total accumulated twist around Γ, and the holonomy group is
+generated by all such loop transports. In our statistical setting, the non-uniqueness of “canonical”
+4
+
+===== PAGE 5 =====
+TyM
+y z= log y(x)
+x= exp y(z) M
+Figure 1: Exponential and logarithm maps:z= log y(x)∈T yMandx= exp y(z)∈M.
+paths (e.g., minimizing geodesics) yields deterministic ambiguity in the transported estimator;
+Appendix C provides full holonomy control via curvature.
+Metric compatibility is crucial: because eachPx→x0 is an isometry, moment bounds ons(X)
+transfer directly to moment bounds onY=P X→x0s(X). In particular, Assumption 2 implies
+∥Y∥≤B almost surely, independent of the fiber dimensionk. Likewise, the Bernstein proxy
+σ2 =∥Cov(Y)∥ op uses the operator norm rather than the trace, so the resulting concentration
+radii do not worsen withkwhenYis uniformly bounded in norm.
+Assumption 1(Geodesic uniqueness / measurable transport).One of the following holds:
+1. (Hadamard case)M is Cartan–Hadamard (complete, simply connected, and nonpositively
+curved), so minimizing geodesics are unique.
+2. (Normal-ball case)S⊂B(x 0,D) for someD <Inj(x0), so eachx∈S is joined tox0
+by a unique minimizing geodesic depending smoothly onx.
+Assumption 2(Uniform boundedness).There exists B >0 such that∥s(x)∥Ex≤B for all
+x∈S.
+Assumption 3(Variance proxy).The variance proxy
+σ2 := sup
+∥u∥Ex0 =1
+Var(⟨Y,u⟩) =∥Cov(Y)∥ op
+is finite.
+Interpretation ofσ2.Once the data are transported to Ex0, the variance proxy is a standard
+Hilbert-space quantity: in an orthonormal basis ofEx0, Cov(Y) is thek×k covariance matrix
+of the coordinate representation of Y , and σ2 is its largest eigenvalue. This choice is not ad
+hoc; it is the natural scale parameter in sharp Bernstein inequalities for vector-valued sums.
+In practice, ifB is conservative butσ2 is small, Bernstein yields materially tighter radii than
+Hoeffding. Conversely, when only a hard bound is available, Hoeffding remains applicable
+without additional estimation.
+Assumption 1 guarantees thatx7→P x→x0 (hencex7→Y(x) :=P x→x0s(x)) can be chosen
+measurably, soY1,...,Y n are i.i.d. inEx0. A complete overview of geometric notation, curvature
+conventions, and holonomy preliminaries appears in Appendix A.
+5
+
+===== PAGE 6 =====
+3.2 Canonical transport rules and measurability
+Formally, atransport ruleto x0 is a measurable assignment x7→γ x of a curve from x tox0
+(defined at least onS), together with the induced parallel transportPx→x0 :=P γx. Assumption 1
+covers two common regimes in which a canonical rule is available:
+• In the Hadamard case, minimizing geodesics are unique, so one can take γx to be the
+unique minimizing geodesic fromxtox 0.
+• In the normal-ball case, uniqueness holds on B(x0,D) withD <Inj(x0), andx7→γ x
+varies smoothly withx; measurability is immediate.
+Outside these regimes, thecut locusof x0 can introduce multiple minimizing geodesics, and
+any choice of γx becomes a modeling decision that may introduce deterministic ambiguity.
+Our framework makes this explicit by separating (i) a stochastic deviation term controlled by
+Banach/Hilbert concentration and (ii) a curvature-driven transport ambiguity term controlled by
+holonomy (Section 5).
+From an algorithmic perspective, whenγx is the unique minimizing geodesic,Px→x0 can be
+computed by numerically solving the parallel-transport ODE alongγx, or by closed forms in
+symmetric spaces (e.g., spheres). When the minimizing geodesic is not unique, one can still
+enforce a deterministic rule (e.g., a lexicographic tie-break among geodesics, or a reference-
+frame convention). The bounds below remain valid for any such measurable choice, at the price
+of an explicit holonomy term.
+4 Main concentration results
+Under Assumption 1, the transported variablesYi :=P Xi→x0s(Xi) are i.i.d. in the fixed Hilbert
+spaceEx0, with∥Yi∥≤B almost surely by Assumption 2. This geometric reduction — from
+bundle-valued observations scattered across different fibers to i.i.d. vectors in a single Hilbert
+space — is the key step that makes classical concentration machinery applicable. Specifically, it
+allows us to apply the sharp martingale inequalities of Pinelis [31] directly to the transported
+empirical mean ¯Yn, yielding the following dimension-free bounds. The variance proxy σ2 =
+∥Cov(Y)∥ op uses the operator norm rather than the trace, which is what keeps the Bernstein
+bound independent of the fiber dimension k: only the largest eigenvalue of the covariance
+matters, not its full spectrum.
+Theorem 1(Hoeffding inequality for transported means).Under Assumptions 1 and 2, for all
+ε>0,
+P
+ 
+∥ ¯Yn−m⋆∥≥ε
+
+≤2 exp
+ 
+−nε2
+8B2
+!
+.
+This bound depends only on the almost-sure norm boundB and requires no distributional
+assumptions beyond measurability of the transport rule. When second-moment information is
+available, the following Bernstein-type bound is strictly tighter in the low-noise regime.
+Theorem 2(Bernstein inequality for transported means).Under Assumptions 1–3, for all ε>0 ,
+P
+ 
+∥ ¯Yn−m⋆∥≥ε
+
+≤2 exp
+ 
+− nε2
+2
+ 
+σ2 + 2Bε
+3
+
+!
+.
+6
+
+===== PAGE 7 =====
+When σ2≪Bε , the Bernstein bound is materially tighter than Hoeffding; when only B is
+available, Hoeffding applies without estimatingσ 2.
+Inverting these tail bounds directly yields explicit confidence sets in the reference fiberEx0.
+Corollary 1(Confidence radii).Fix δ∈(0,1) . Under Theorem 1, with probability at least
+1−δ,
+∥ ¯Yn−m⋆∥ ≤
+r
+8B2 log(2/δ)
+n .
+Under Theorem 2, with probability at least1−δ,
+∥ ¯Yn−m⋆∥ ≤
+r
+2σ2 log(2/δ)
+n + 2Blog(2/δ)
+3n .
+The 2Bε/3 term in the Bernstein radius is conservative (arising from the bound∥ξi∥≤2B );
+under exact recentering (when m⋆ is known), the factor 2B may be replaced by B, yielding
+Blog(2/δ)/(3n).
+Both theorems match standard Euclidean finite-sample rates but apply to transported bundle
+statistics; the only additional requirement is a well-posed measurable transport reduction,
+guaranteed by Assumption 1. Complete proofs, a finite-dimensionalε-net derivation, and the
+sharper constant available under exact recentering are given in Appendix B.
+4.1 Using the bounds in practice
+Corollary 1 gives a radiusrn(δ) such that ¯Yn lies withinrn(δ) ofm⋆ with probability at least
+1−δ . Applying it requires (i) a reference point and transport rule, (ii) bounds or estimates of B
+andσ 2, and (iii) when transport is non-unique, a holonomy/curvature bound.
+Reference point and transport rule. x0 may be a fixed landmark (e.g., a node of a graph, an
+anchor point on a surface) or a data-dependent center, such as the empirical Fr´echet mean ˆx0
+of the base samples. If the support lies in a normal ball, the unique minimizing geodesic is the
+canonical choice; otherwise, any deterministic measurable convention is valid, at the cost of a
+nonzero holonomy term.
+Whenx0 = ˆx0 is data-dependent, an additional fluctuation enters: by Lipschitz continuity of
+x7→P X→xs(X),
+∥ ¯Yn−m⋆∥≲ B√n + ∆hol +L·dist(ˆx 0, x0),
+whereL is the relevant Lipschitz constant. Since dist(ˆx0,x 0) =O P (n−1/2) under standard
+conditions, the dominant rate remainsn−1/2 in well-behaved regimes; near cut loci, the additional
+term may dominate, and a fixedx 0 should be preferred.
+Computing transported samples.Evaluate Yi =P Xi→x0s(Xi) by solving the parallel-
+transport ODE along the selected curveγ Xi. Closed forms exist on common symmetric spaces
+(e.g.,S 2), and numerical transport is standard on meshes via discrete connections [11].
+7
+
+===== PAGE 8 =====
+SpecifyingB andσ2.For intrinsically bounded sections (e.g., unit vectors, clipped residuals,
+normalized features),B can be set deterministically; otherwise it can be upper-bounded from
+smoothness or compactness, or handled via robust alternatives (Appendix C). For Bernstein-style
+bounds, σ2 can be estimated from the transported data via the operator norm of the sample
+covariance of theYi.
+Transport ambiguity.If minimizing geodesics are not unique, use the bias–variance decom-
+position of Theorem 3: stochastic error plus ∆(P,eP;s) . Eq. (3) (defined below in Section 5)
+provides a curvature-based control in normal balls, while Proposition 1 gives a sharp area-based
+bound onS 2
+r .
+Sample-size trade-off.When ∆hol is non-negligible, increasingn reduces only the stochastic
+radius. To restoren−1/2 performance, one should restrict the support to a smaller normal ball,
+prefer a fixedx0 over a data-dependent one, switch to an intrinsic estimator that avoids global
+transport, or apply holonomy correction (Appendix C).
+5 Holonomy ambiguity and bias–variance decomposition
+If minimizing geodesics betweenx andx0 are non-unique, transported statistics depend on the
+chosen geodesic and thus on the chosen transport rule. LetP and eP be two measurable transport
+rules tox 0. Thecanonical(section-dependent) transport ambiguity is defined as
+∆(P,eP;s) := sup
+x∈S
+
+
+ 
+Px→x0− ePx→x0
+
+s(x)
+
+
+Ex0
+.(2)
+Throughout the main body, ∆hol denotes this quantity evaluated at the pair (P,P ref) where
+P ref is a fixed canonical transport rule (e.g., the unique minimizing geodesic where available).
+The appendix uses two further forms that upper-bound ∆(P,eP;s) : a section-uniform version
+∆unif
+hol := supx∥Px→x0− ePx→x0∥op·B (Appendix A), and a per-sample operator-norm form
+used in Theorem 11 (Appendix D). All three upper-bound the bias in the transported mean; the
+canonical form (2) is the tightest.
+Theorem 3(Holonomy term in the transported mean).Let ¯Y (P)
+n denote the transported mean
+under rulePandm (P) :=E[ ¯Y (P)
+n ]. Then, for any eP,
+∥ ¯Y (P)
+n −m ( eP)∥≤∥ ¯Y (P)
+n −m (P)∥+ ∆(P, eP;s),
+and the stochastic term∥ ¯Y (P)
+n −m (P)∥obeys Theorems 1–2.
+Curvature control of ∆(P,eP;s) .Let Ω be the curvature 2-form of∇ and assume ζ :=
+supy∈U∥Ωy∥op <∞ on a regionU containingS. For two minimizing geodesicsγ1,γ 2 joining
+x tox0 inside a normal ball of diameter at mostD, the discrepancy is governed by the holonomy
+around the loop Γ =γ 1◦γ−1
+2 . If additionally ζ1 := supy∈U∥∇Ωy∥op <∞ , then the induced
+transport operators satisfy the explicit estimate
+∥Pγ1−Pγ2∥op ≤ζD 2 + 1
+3ζ1D3,(3)
+8
+
+===== PAGE 9 =====
+and thus ∆(P,eP;s)≤(ζD 2 + 1
+3ζ1D3)B under Assumption 2. Appendix C contains the
+geometric proof and discusses how the D3 term can be dropped or refined under stronger
+structure.
+Bounding curvature norms in practice.The quantity ζ= sup y∈U∥Ωy∥op is the operator
+norm of the bundle curvature on the region where data live. For the Levi–Civita connection
+on the tangent bundle, this operator norm is controlled by the Riemannian curvature tensor.
+It can often be upper-bounded by a sectional-curvature bound onU. On a constant-curvature
+manifold (e.g., the round sphere),ζ is constant, so Eq. (3) reduces to a simple scaling law in the
+neighborhood diameter. More generally, if a coarse geometric model or numerical estimate of
+curvature is available (for example, via finite-element approximations on a mesh, see [11]), it
+can be inserted directly into Eq. (3) to obtain a conservative but explicit holonomy error bar.
+Proposition 1(Sphere holonomy (sharp)).Let M=S 2
+r be the round sphere of radiusr with
+its Levi–Civita connection, and let U⊂B(x 0,ρ) withρ < πr/2. For any x∈U and two
+piecewise-smooth pathsγ1,γ 2 inU joiningx tox0, let Γ =γ 1◦γ−1
+2 and letA(Γ) be the oriented
+area of a spanning surface. Then
+∥Pγ1−Pγ2∥op≤2 sin
+ 
+A(Γ)/(2r2)
+
+≤A(Γ)/r 2≤πρ 2/r2.
+Proposition 1 yields a concrete deterministic offset scale ∆hol ≲(πρ 2/r2)B for tangent-
+bundle transport onS2
+r . Beyond spheres, Eq. (3) provides a conservative but general curvature-
+based control.
+5.1 Minimax Lower Bounds
+The upper bounds of Theorems 1–3 are tight. The following theorem shows thatboththe n−1/2
+stochastic term and theκD2 holonomy floor are unavoidable within the class of transport-based
+estimators, confirming that no alignment-based algorithm can improve upon this bias–variance
+decomposition.
+Theorem 4(Minimax lower bounds for transported bundle means).Let SB be the class of
+measurable sections with∥s(x)∥Ex≤B on supp(µ), and let ˆmn range over all transport-based
+estimators.
+(i) General manifolds.Let (M,g) be a Riemannian manifold with metricg, and assume the
+sectional curvature satisfies|K|≤κ on the geodesic ballB(x0,D) . Assume further either that
+E=TM with the Levi–Civita connection andK≥κ − >0 (pinched positive curvature), or
+that (M,g) has constant sectional curvatureκ>0 everywhere. Then there exists a universal
+c>0such that
+inf
+ˆmn
+sup
+s∈SB
+Es
+
+∥ˆmn−m⋆(s)∥
+
+≥c
+ B√n +BκD 2
+
+.(4)
+(ii) Round sphereS2
+r .Let M=S 2
+r ,E=TS 2
+r , and supp(µ)⊂B(x 0,D) ,D <πr/2. Then
+there exists a universalc>0such that
+inf
+ˆmn
+sup
+s∈SB
+Es
+
+∥ˆmn−m⋆(s)∥
+
+≥c
+ 
+B√n + BD2
+r2
+!
+.(5)
+9
+
+===== PAGE 10 =====
+Proof sketch. Both bounds follow from Le Cam’s two-point method [ 25]. For the stochas-
+tic term, take s0,s 1 ∈ SB differing in mean by δ=B/ √n; Pinsker’s inequality gives
+TV(P(n)
+s0 ,P (n)
+s1 )≤ 1
+2, yielding the n−1/2 contribution. For the geometric term, construct a
+geodesic triangle (x0,x 1,x 2)⊂B(x 0,D) enclosing areaA≍D 2; the Ambrose–Singer theo-
+rem [2] gives∥PΓ−I∥ op≥c 1κD2. Settings0(x) =BP x0→xv ands1(x) =BP x0→x(PΓv) for
+a unitv∈E x0 separates the population means byBκD2 while keeping the two laws statistically
+indistinguishable at smallκD2. OnS2
+r , holonomy is exact (κ= 1/r 2), giving the sharpD2/r2
+rate in (5). Full proofs are in Appendix C.2–C.3 (Theorems 9–10).
+Remark 1.These lower bounds apply within the class of transport-based estimators (those
+that align observations to a common fiber before averaging), which is the natural class for
+geometric ML pipelines. Extrinsic estimators that ignore fiber structure avoid the holonomy floor
+but sacrifice geometric interpretability. The two terms in (4) are matched to within universal
+constants by the upper bounds of Corollary 1 and Theorem 3, confirming minimax optimality.
+Further extensions (Appendix).Robustness to heavy tails: we adapt the median-of-means
+framework to achieve sub-Gaussian rates under finite second moment only (Appendix D.4).
+Full-section estimation: uniform concentration overL2(M,µ;E) via Rademacher complexity
+(Appendix D.3). First-order holonomy correction: a curvature-derived de-biasing step reducing
+the offset fromO(D 2)toO(D 4)(Appendix C.4).
+5.2 Robustness and Asymptotic Normality
+The concentration bounds of Section B assume a uniform boundB on the section. We record
+here the two companion results - heavy-tail robustness and a CLT - that complete the statistical
+picture. Full proofs are in Appendix D.
+Corollary 2(Median-of-means robustness).Suppose only E∥Y∥ 2 ≤σ 2
+L2 <∞ holds(no
+uniform boundB). Partition then samples intoK=⌈2 log(2/δ)⌉ blocks of sizem=⌊n/K⌋ ,
+form block means ¯Y (j) inEx0, and leteYMoM be their geometric median. Under Assumption 1,
+with probability at least1−δ,
+∥eYMoM−m⋆∥ ≤6σ L2n−1/2,
+whereσ2
+L2 :=E∥Y∥ 2 is theL2 second moment (distinct from the operator-norm proxyσ2
+op =
+∥Cov(Y)∥ op of Assumption 3; one always hasσ 2
+op≤σ 2
+L2).
+This matches the minimax rateσ/√n of Theorem 4(i) without requiring a bounded section,
+at the cost of a log(1/δ) factor in the block count. When ∆hol >0 , the holonomy bias adds to
+the MoM error exactly as in Theorem 3; the bias–variance structure is preserved.
+Theorem 5(CLT in the reference fiber).Assume Assumption 1 holds so that Y1,...,Y n are i.i.d.
+inEx0 under a fixed canonical transport ruleP ref, and let E∥Y∥ 2 <∞ . Letm⋆ =E[Y]∈E x0
+and Σ = Cov(Y)∈R k×k. The CLT√n( ¯Yn−m⋆)
+d
+− →N(0,Σ)holds inEx0
+∼= Rk for the mean
+m⋆ defined by the chosen ruleP ref. When the population mean is defined without reference to a
+fixed transport rule (i.e. up to holonomy ambiguity), the additional condition ∆hol =o(n−1/2)
+(e.g. when supp(µ)⊂B(x 0,ρn) withρ2
+nn1/2→0 ) ensures the holonomy bias is negligible. The
+CLT holds relative to the common population quantity. Full proof is in Appendix D (Theorem 12);
+the sphere specialization with shrinking support is Corollary 5.
+10
+
+===== PAGE 11 =====
+Theorem 5 shows that once the holonomy floor is negligible relative to sampling noise,
+the transported mean is asymptotically Gaussian with the natural fiber covariance Σ. This
+complements the finite-sample Bernstein bound: the Bernstein confidence radius shrinks at
+the samen−1/2 rate and the limiting distribution is exactly Gaussian, so both are driven by Σ.
+Together, Theorems 1–4 and Corollary 2, and Theorem 5 give a complete non-asymptotic and
+asymptotic theory for transported bundle-valued means.
+6 Numerical Validation and Applications
+While the preceding developments establish a rigorous analytical framework, this section pro-
+vides empirical grounding for the derived concentration bounds through numerical instantiation
+and representative downstream applications. We use the sphere’s tangent bundle to quantify the
+interplay between stochastic sampling error and deterministic holonomy bias. Full numerical
+experiments are in Appendix H; detailed implementation notes and additional results are also
+provided in Appendix C.
+6.1 Manifold regression residual means
+Fig. 1). The standard pipeline transports eachri to a reference tangent spaceTx0M and averages,
+producing a bundle-valued mean ¯Yn. Classical analyses treat this pipeline via local Euclidean
+approximations and predictO(n−1/2)error. Our results give the explicit decomposition
+∥ ¯Yn−m⋆∥≲n −1/2
+|{z}
+sampling
++ ∆ hol|{z}
+geometric bias
+,
+revealing a curvature-induced term absent from classical analyses.
+Bound constants.If the regression map and responses remain inside a normal ball of radius ρ,
+then∥logXi
+ˆf(Xi)∥≤ρ and one can takeB≤ρ . The Bernstein variance proxy σ2 captures
+how dispersed the transported residuals are inTx0M; empirically, it can be approximated by the
+operator norm of the sample covariance ofYi. Corollary 1 therefore yields a non-asymptotic
+confidence ball in Tx0M for the mean transported residual, which can be mapped back to a
+manifold-level error bar via the exponential map.
+Holonomy bias and error floor.When transport non-uniqueness is present, Theorem 3 adds
+the deterministic offset ∆hol. On a manifold with sectional curvatureκ and data supported in
+B(x0,ρ),
+∆hol ≲κρ 2B,so∥ ¯Yn−m⋆∥≲ B√n +κρ 2B.
+Oncen≳(κρ 2)−2, error becomes curvature-dominated: increasing sample size alone cannot
+reduce it below κρ2B. This predicts anobservable error floorin tangent-space averaging
+pipelines when data are spread across regions of non-negligible curvature. On S2
+r with data
+inB(x0,ρ) , Proposition 1 gives the sharp bound ∆hol≤(πρ 2/r2)B, and the stochastic and
+geometric terms are equated at the crossover sample size
+n×(δ)≈ 8 log(2/δ)
+π2
+r
+ρ
+4
+.(6)
+11
+
+===== PAGE 12 =====
+For large caps (largeρ/r) holonomy dominates at moderaten; in the local regimeρ≪r , the
+holonomy term is negligible until very largen. To restoren −1/2 performance, one may restrict
+to a smaller normal ball, use sample splitting to ensure fixed ˆf (making residuals i.i.d.), or apply
+the first-order holonomy correction of Appendix C.4.
+Independence of residuals.When ˆf is fixed (e.g., estimated on a held-out split), each residual
+ri = logXi
+ˆf(Xi) is a deterministic function of Xi∼µ , so the transported variables Yi =
+PXi→x0ri are i.i.d. and Theorems 1–2 apply directly.
+6.2 Further applications
+The bias–variance decomposition of Theorem 3 applies directly to three further pipelines.
+Gauge-equivariant GNNs.Node features in local frames are aggregated via edge-wise
+parallel transport maps [15, 17]. The geometric term becomes discrete holonomy around cycles,
+governing gauge inconsistency; small stochastic error alongside transport-dependent instability
+signals holonomy as the source, not lack of data. See Appendix C, §C.5.1 for the tail bound and
+∆hol control.
+Diffusion-tensor imaging.Averaging diffusion directions or SPD tensors over anatomical
+neighborhoods is a canonical bundle-valued problem [20, 30]. Corollary 1 yields a confidence
+radius for the transported average, while Eq. (3) bounds the holonomy offset when curvature-
+driven misalignment creates a bias irreducible by additional samples. The full pipeline is in
+Appendix F.
+Wasserstein tangent spaces.Under Caffarelli regularity [ 16] (assuming a compact convex
+domainX and densities bounded above and below), the tangent space at a reference measureµ0
+is the Hilbert spaceL2(X,µ 0;Rd) [3]. In this regular regime, averaging tangent representations
+of observations at different base measures fits our frameworkanalogously: the bias–variance
+decomposition separates then−1/2 stochastic decay from the convention-dependent transport
+ambiguity. We note that the Wasserstein space is infinite-dimensional and does not carry a
+finite-rank bundle connection in the sense of Section 3; the analogy therefore holds at the level
+of the Hilbert-space averaging structure, not as a literal special case. For a discussion of the
+precise scope and requirements, see the extended results in Appendix C.
+6.3 Implementation notes: computing transports
+In continuous manifolds, parallel transport along a curve is computed by solving a linear ODE
+defined by the connection. For Levi–Civita transport on embedded manifolds, standard numerical
+schemes integrate the corresponding Christoffel-symbol system. In triangle meshes and graphs,
+discrete connections approximate transport via orthogonal transformations between adjacent
+tangent frames or learned equivariant alignment matrices. These choices fit our framework,
+provided the rule is deterministic and measurable. Evaluating a single parallel transport requires
+O(d3) operations ind-dimensional ambient coordinates; these computational considerations are
+orthogonal to the concentration theory developed above.
+12
+
+===== PAGE 13 =====
+6.4 Sphere example
+OnS2
+r , the sharp holonomy formula of Proposition 1 gives an explicit and fully computable
+criterion for whether transport ambiguity is negligible relative to sampling error. For data
+supported in a geodesic ballB(x0,ρ) withρ < πr/2, Proposition 1 gives ∆hol≤(πρ 2/r2)B,
+and Corollary 1 gives stochastic radii scaling asB/√n (Hoeffding) or
+p
+σ2/n (Bernstein). The
+two contributions to the total error are therefore
+∥ ¯Yn−m⋆∥≲
+r
+8B2 log(2/δ)
+n| {z }
+stochastic
++ πρ2
+r2 B
+| {z }
+geometric bias
+.
+Crossover sample size.As already derived in Section 6.1 (manifold regression), equating the
+stochastic and geometric terms onS2
+r yields the crossover sample sizen×(δ) given in Eq. (6),
+beyond which holonomy bias dominates and increasing sample size alone cannot reduce the
+total error further.
+Practical regimes.Equation (6) makes two qualitative predictions explicit:
+• Large cap(ρ comparable tor):n×(δ) is of moderate size, so holonomy effects dominate
+already at feasible sample sizes. For example, with ρ=r/2 and δ= 0.05 , n× ≈
+8 ln(40)/π2·16≈48.
+• Local regime(ρ≪r ): n×(δ)∝(r/ρ) 4→∞ , so the holonomy term is negligible until
+extremely largen, and classicaln −1/2 analyses remain accurate.
+This explains why curvature-driven transport ambiguity is often invisible in small-sample
+experiments but becomes a limiting factor in high-data regimes. To restoren−1/2 performance
+beyondn×(δ), one may restrict the support to a smaller geodesic ball (reducingρ), or apply the
+first-order holonomy correction described in Appendix C.4, which reduces the deterministic
+offset fromO(ρ 2/r2)toO(ρ 4/r4)and correspondingly increasesn ×(δ)by a factor of(r/ρ) 4.
+7 Comparison with Related Works
+Table 1 summarizes how our framework relates to established directions in probability and ge-
+ometry. The nonasymptotic concentration theories of Ledoux and Talagrand[27] and Boucheron
+et al. [13] achieve finite-sample guarantees but operate exclusively in linear spaces, with no
+mechanism for curvature or holonomy; the manifold-based Fr´echet mean results of Bhattacharya
+and Patrangenaru [9, 10] and Fletcher et al. [19] handle curved geometry but deliver only asymp-
+totic normality with no exponential tail bounds. Our framework occupies the intersection of both
+desiderata: it operates on vector bundles over Riemannian manifolds and delivers finite-sample
+Hoeffding and Bernstein bounds, with the holonomy bias ∆hol isolated as a quantitatively
+sharp term via Eq. (3), while minimax lower bounds (Theorem 4) confirm that both then−1/2
+stochastic term and the holonomy floor are unavoidable within the class of transport-based
+estimators. For heavy-tailed sections, Corollary 2 extends the median-of-means framework
+of Lugosi and Mendelson [29] from linear Banach spaces to bundle-valued data, retaining the
+13
+
+===== PAGE 14 =====
+minimax rateσ/√n, and Theorem 5 establishes asymptotic Gaussianity in the reference fiber
+once the holonomy floor is negligible. Taken together, these results unify Euclidean, manifold,
+and bundle-based inference under a single probabilistic structure with explicit finite-sample
+guarantees throughout.
+Table 1:Comparison with major frameworks in probabilistic mean estimation and concen-
+tration theory.✓= finite-sample bounds available;×= asymptotic only.
+Framework Setting Assumptions Main contributions
+Finite-
+sample? Limitations
+Ledoux and Tala-
+grand [27]
+Banach/Hilbert-
+valued RVs
+Sub-Gaussian or
+boundedψ 2 tails
+Dimension-free concentration:
+Pr(∥ ¯Yn −EY∥> t)≤
+e−cnt2/σ2
+✓ Linear spaces
+only; no curva-
+ture or transport.
+Boucheron et al.
+[13]
+Euclidean ran-
+dom vectors
+Bounded or subex-
+ponential tails
+Sharp nonasymptotic Hoeffd-
+ing/Bernstein inequalities
+✓ No geometric
+structure; cannot
+model holon-
+omy.
+Bhattacharya
+and Patrangenaru
+[9, 10]
+Intrinsic Fr´echet
+means
+NPC manifolds;
+convexity of
+geodesic balls
+Asymptotic CLT on tangent
+spaces
+× Asymptotic
+only; no expo-
+nential bounds.
+Fletcher et al. [19] Shape/manifold
+statistics
+Bounded-
+curvature manifold
+regions
+CLT for geodesic and extrinsic
+means
+× No nonasymp-
+totic concentra-
+tion bounds.
+Lugosi and Mendel-
+son [29]
+Banach spaces;
+heavy tails
+Finite second mo-
+ment
+Robust median-of-means; op-
+timalσ/√nrate
+✓ Linear setting;
+no curvature or
+bundle effects.
+This work Vector bundles
+over Rieman-
+nian manifolds
+∥s(X)∥ ≤B ; fi-
+nite σ2; curvature
+bound onsupp(µ)
+(i) Dimension-free Hoeffd-
+ing & Bernstein bounds in
+Ex0; (ii) holonomy bias
+∆hol with curvature/area con-
+trol (3); (iii) minimax lower
+bounds (Thm. 4; full proofs
+in Appendix C.2–C.3); (iv) ro-
+bust MoM for heavy-tailed
+sections (Cor. 2); (v) CLT in
+Ex0 (Thm. 5)
+✓ Requires mea-
+surable trans-
+port; holonomy
+floor irreducible
+by data alone
+when∆ hol >0.
+8 Conclusion
+We developed non-asymptotic concentration bounds for empirical means of bundle-valued data
+on Riemannian manifolds. By transporting samples to a common fiber, our results extend
+sharp Hilbert-space Hoeffding and Bernstein inequalities to geometric settings, yielding a clean
+bias–variance decomposition
+∥ ¯Yn−m⋆∥≲ B√n + ∆hol,
+that pinpoints when geometry intrinsically limits statistical accuracy. Minimax lower bounds
+(Theorem 4) confirm both terms are unavoidable within the class of transport-based estimators.
+14
+
+===== PAGE 15 =====
+Under heavy tails, Corollary 2 retains theσ/√n rate, and Theorem 5 establishes Gaussianity in
+the reference fiber once the holonomy floor is negligible. Controlled experiments on S2 confirm
+both then−1/2 stochastic decay and the holonomy-induced error floor, matching Proposition 1
+to within3.7%across all tested configurations (Appendix H, Table 5).
+Limitations and outlook.The framework is intentionally modular: the statistical component
+requires only i.i.d. transported samples in a fixed Hilbert space, while the geometric component
+requires a measurable transport rule and curvature control on the data-support region. When
+global transport is ill-posed, localization to normal balls or intrinsic estimators can avoid
+holonomy bias. In systems thatlearna connection — such as equivariant alignment modules —
+our results identify which geometric quantities, particularly discrete holonomy around cycles,
+must be controlled for stable aggregation. Approximate or learned transports enter the bound
+additively as a third term, preserving the bias–variance structure while capturing deviations from
+metric-compatibility.
+Impact Statement
+This paper advances the theoretical foundations of machine learning by developing non-
+asymptotic statistical guarantees for geometric and bundle-valued data. The results provide
+explicit concentration bounds for learning pipelines on manifolds and vector bundles, with
+potential relevance to applications such as gauge-equivariant graph neural networks, manifold
+regression, and diffusion tensor imaging. As a theoretical contribution aimed at improving the
+reliability and understanding of learning in non-Euclidean settings, we do not anticipate direct
+negative societal impacts arising from this work.
+15
+
+===== PAGE 16 =====
+References
+[1] Bijan Afsari. Riemannian Lp center of mass: existence, uniqueness, and convexity.
+Proceedings of the American Mathematical Society, 139(2):655–673, 2011.
+[2] W. Ambrose and I. M. Singer. A theorem on holonomy.Trans. Amer. Math. Soc., 75:
+428–443, 1953.
+[3] Luigi Ambrosio, Nicola Gigli, and Giuseppe Savar´e.Gradient Flows: In Metric Spaces
+and in the Space of Probability Measures. Birkh¨auser, 2008.
+[4] Anthony Ashmore, Rehan Deen, Yang-Hui He, and Burt A Ovrut. Machine learning line
+bundle connections.Physics Letters B, 827:136972, 2022.
+[5] Werner Ballmann, Mikhael Gromov, and Viktor Schroeder.Manifolds of Nonpositive
+Curvature, volume 61 ofProgress in Mathematics. Birkh ¨auser, 2006. Originally published
+1985.
+[6] Leah Bar, Liron Mor Yosef, Shai Zucker, Neta Shoham, Inbar Seroussi, and Nir Sochen. A
+Geometric Unification of Generative AI with Manifold-Probabilistic Projection Models,
+2025.
+[7] Marcel Berger.A Panoramic View of Riemannian Geometry. Springer, 2003.
+[8] R. Bhattacharya and A. Bhattacharya.Nonparametric Inference on Manifolds: With
+Applications to Shape Spaces. Cambridge University Press, 2012.
+[9] Rabi Bhattacharya and Vic Patrangenaru. Large sample theory of intrinsic and extrinsic
+sample means on manifolds—I.The Annals of Statistics, 31(1):1–29, 2003. doi: 10.1214/
+aos/1046294456. URLhttps://doi.org/10.1214/aos/1046294456.
+[10] Rabi Bhattacharya and Vic Patrangenaru. Large sample theory of intrinsic and ex-
+trinsic sample means on manifolds—II.The Annals of Statistics, 33(3):1225–1259,
+2005. doi: 10.1214/009053605000000093. URL https://doi.org/10.1214/
+009053605000000093.
+[11] Jean-Daniel Boissonnat, Fr´ed´eric Chazal, and Mariette Yvinec.Geometric and Topological
+Inference, volume 57. Cambridge University Press, 2018.
+[12] Cl´ement Bonet, Lucas Drumetz, and Nicolas Courty. Sliced-Wasserstein Distances and
+Flows on Cartan–Hadamard Manifolds.Journal of Machine Learning Research, 26:1–76,
+2025.
+[13] S´ebastien Boucheron, G´abor Lugosi, and Pascal Massart.Concentration Inequalities: A
+Nonasymptotic Theory of Independence. Oxford University Press, Oxford, 2013. ISBN
+978-0-19-953525-5.
+[14] Martin R. Bridson and Andr´e H¨afliger.Metric Spaces of Non-Positive Curvature, volume
+319 ofGrundlehren der Mathematischen Wissenschaften. Springer, 1999.
+16
+
+===== PAGE 17 =====
+[15] Michael M. Bronstein, Joan Bruna, Taco Cohen, and Petar Veliˇckovi´c. Geometric Deep
+Learning: Grids, Groups, Graphs, Geodesics, and Gauges, 2021. URL https://arxiv.
+org/abs/2104.13478.
+[16] Luis A. Caffarelli. The regularity of mappings with a convex potential.Journal of the
+American Mathematical Society, 5(1):99–104, 1992.
+[17] Taco S. Cohen, Mario Geiger, Jonas Koehler, and Max Welling. Gauge equivariant
+convolutional networks and the icosahedral CNN. InProceedings of the 36th Interna-
+tional Conference on Machine Learning, volume 97 ofProceedings of Machine Learning
+Research, pages 1321–1330. PMLR, 2019.
+[18] Manfredo P. do Carmo.Riemannian Geometry. Birkh ¨auser, 1992.
+[19] P. T. Fletcher, S. Joshi, C. Lu, and S. Pizer. Principal geodesic analysis for the study of
+nonlinear statistics of shape.IEEE Transactions on Medical Imaging, 23(8):995–1005,
+2004. doi: 10.1109/TMI.2004.831793.
+[20] P. Thomas Fletcher and Sarang Joshi. Principal geodesic analysis on symmetric spaces:
+Statistics of diffusion tensors. pages 87–98, 2004.
+[21] Sylvestre Gallot, Dominique Hulin, and Jacques Lafontaine.Riemannian Geometry.
+Universitext. Springer, Berlin, 3 edition, 2004. ISBN 978-3-540-20493-0. doi: 10.1007/
+978-3-642-97242-3.
+[22] Thomas Hotz, Huiling Le, and Andrew T. A. Wood. Central limit theorem for intrinsic
+Fr´echet means in smooth compact Riemannian manifolds.Probability Theory and Related
+Fields, 189(3):1219–1246, 2024.
+[23] Shayan Hundrieser. A Lower Bound for Estimating Fr´echet Means, 2024. URL https:
+//arxiv.org/abs/2402.12290.
+[24] Shoshichi Kobayashi and Katsumi Nomizu.Foundations of Differential Geometry, Vol. I.
+Wiley, 1963.
+[25] Lucien Le Cam.Asymptotic Methods in Statistical Decision Theory. Springer Series in
+Statistics. Springer, 1986.
+[26] Michel Ledoux.The Concentration of Measure Phenomenon, volume 89 ofMathematical
+Surveys and Monographs. American Mathematical Society, 2001.
+[27] Michel Ledoux and Michel Talagrand.Probability in Banach Spaces: Isoperimetry and
+Processes. A Series of Modern Surveys in Mathematics. Springer, Berlin, 1991. doi:
+10.1007/978-3-642-20212-4.
+[28] John M. Lee.Riemannian Manifolds: An Introduction to Curvature, volume 176 of
+Graduate Texts in Mathematics. Springer, 1997.
+[29] G´abor Lugosi and Shahar Mendelson. Mean estimation and regression under heavy-tailed
+distributions: A survey.Foundations of Computational Mathematics, 19(5):1145–1190,
+2019.
+17
+
+===== PAGE 18 =====
+[30] Xavier Pennec, Pierre Fillard, and Nicholas Ayache. A Riemannian framework for tensor
+computing.International Journal of Computer Vision, 66(1):41–66, 2006.
+[31] Iosif Pinelis. Optimum bounds for the distributions of martingales in Banach spaces.The
+Annals of Probability, 22(4):1679–1706, 1994.
+[32] M. S. Pinsker.Information and Information Stability of Random Variables and Processes.
+Holden-Day, 1964.
+[33] St´ephane Puechmorel. Pullback Bundles and the Geometry of Learning.Entropy, 25(10):
+1450, 2023.
+[34] Tristan Luca Saidi, Gonzalo Mena, Larry Wasserman, and Florian Gunsilius. Wasserstein
+Parallel Transport for Predicting the Dynamics of Statistical Systems, 2026. URL https:
+//arxiv.org/abs/2603.23736.
+[35] Karl-Theodor Sturm. Probability measures on metric spaces of nonpositive curvature.
+InHeat Kernels and Analysis on Manifolds, Graphs, and Metric Spaces, volume 338 of
+Contemporary Mathematics, pages 357–390. American Mathematical Society, Providence,
+RI, 2003. doi: 10.1090/conm/338/06080.
+[36] Joel A. Tropp. An Introduction to Matrix Concentration Inequalities.Foundations and
+Trends in Machine Learning, 8(1–2):1–230, 2015. ISSN 1935-8237. doi: 10.1561/
+2200000048. URLhttp://dx.doi.org/10.1561/2200000048.
+[37] Alexandre B. Tsybakov.Introduction to Nonparametric Estimation. Springer Series in
+Statistics. Springer, 2009.
+[38] Michael Wilson, Tom Needham, Chiwoo Park, Suparteek Kundu, and Anuj Srivastava. A
+Wasserstein-Type Distance for Gaussian Mixtures on Vector Bundles with Applications
+to Shape Analysis.SIAM Journal on Imaging Sciences, 17(3):1433–1466, 2024. doi:
+10.1137/23M1620363. URLhttps://doi.org/10.1137/23M1620363.
+[39] Ho Yun and Byeong U Park. Exponential concentration for geometric-median-of-means in
+non-positive curvature spaces.Bernoulli, 29(4):2927–2960, 2023.
+18
+
+===== PAGE 19 =====
+Appendix Roadmap.The appendix is organized as follows. Section A establishes geometric
+notation, reviews Riemannian and vector-bundle prerequisites, and collects the probabilistic
+primitives used throughout. Section B contains the rigorous concentration theory: formal re-
+statements of Theorems 1–3 of the main text with complete proofs (as Theorems 6–8 below),
+the elementaryε-net derivation (Proposition 2), and the holonomy discrepancy lemmas (Lem-
+mas 3 and 4). Section C develops extended results: exact holonomy control on round spheres
+(Proposition 3, the appendix proof of Proposition 1), minimax lower bounds confirming the
+inevitability of both the stochastic and holonomy terms (Theorems 9 and 10, which are the full
+proofs of the combined Theorem 4 stated in the main body), a first-order holonomy correction
+reducing the bias fromO(D2) toO(D4), and worked applications to gauge-equivariant GNNs,
+manifold regression, and diffusion-tensor imaging. Section D provides refined probabilistic
+guarantees: a dimension-explicit transported-mean bound (Theorem 11), a central limit theorem
+in the reference fiber (Theorem 12), L2-section concentration (Theorem 13), and the robust
+median-of-means estimator (Theorem 14). Auxiliary lemmas supporting the main proofs are
+collected at the end of each section. Representative application examples—tangent-bundle resid-
+uals, Grassmann subspace tracking, hyperbolic embeddings, and full-section estimation—are
+worked out in Appendix F, Appendix H provides numerical verification of the holonomy error
+floor onS2, and Appendix I develops an intrinsic formulation of bundle-valued concentration
+without a fixed reference fiber.
+A Preliminaries
+This section establishes notation, reviews standard geometric facts, and outlines the probabilistic
+primitives we employ. We use the notation from Berger’s book [7]. The Hadamard alternative
+in Assumption 1(1) asks that (M,g) be a Cartan–Hadamard manifold. In particular, Cartan–
+Hadamard manifolds are CAT(0) spaces in the sense of Alexandrov, so distance functions
+and squared distance to geodesics are geodesically convex and metric projections onto closed,
+convex subsets are well-defined and 1-Lipschitz; see, e.g., [ 5, 14, 21, 28]. Far from being a
+restrictive assumption, the Cartan–Hadamard class is extremely rich and covers many model
+spaces encountered in geometric analysis and manifold-based learning. Besides Euclidean
+space and real hyperbolic space, it includes all simply connected, complete manifolds with
+non-positive sectional curvature, in particular symmetric spaces of non-compact type such
+as SL(n,R)/SO(n) and products of such spaces, as well as many pinched negatively curved
+manifolds [5, 14]. Moreover, every complete Riemannian manifold with non-positive curvature
+has a Cartan–Hadamard manifold as its universal covering space [ 14], so our assumptions
+can be viewed as working on the natural universal cover of a broad class of non-positively
+curved models. From an applied point of view, Cartan–Hadamard manifolds already underpin a
+substantial body of work in statistics and machine learning, and thus form a natural setting for
+our bundle-valued concentration theory.
+A.1 Notation of Riemannian manifolds and geodesics and vector-bundle
+basics
+We start with a brief reminder of Riemannian geometry. More complete presentations can be
+found in [18, 21, 28]. ARiemannian manifold (M,g) of dimension d is a smooth manifold
+19
+
+===== PAGE 20 =====
+Table 2: Geometric notation, Bundle sections, and functional spaces
+Symbol Type Meaning
+(M,g)pair Riemannian manifold with metricg.
+TxMvector space Tangent space toMatx.
+⟨u,v⟩x scalar Inner product onT xMinduced byg.
+∥u∥x scalar Norm∥u∥ x :=
+p
+⟨u,u⟩x onT xM.
+L(γ)scalar Length of a (piecewise) smooth curveγ.
+dist(x,y)scalar Riemannian distance betweenx,y∈M.
+γcurve Geodesic or piecewise-smooth curve inM.
+∇connection Levi–Civita connection on (M,g) (also used for
+bundle connection).
+Expx map Exponential mapexp x :TxM→M.
+Logx map Logarithm map (inverse of expx where defined).
+Kscalar Sectional curvature, often bounded by|K|≤κ
+on a region.
+κscalar Uniform curvature bound.
+B(x0,r)subset Geodesic ball of radiusraroundx 0.
+Inj(x0)scalar Injectivity radius atx 0.
+Ebundle Smooth real vector bundle (E,π,M) of rankk
+overM.
+π :E→Mmap Bundle projection.
+Ex vector space Fiber overx,E x =π−1(x).
+⟨·,·⟩Ex scalar Inner product on the fiberE x (bundle metric).
+∥·∥ Ex scalar Norm induced by⟨·,·⟩ Ex.
+∇(onE) connection Metric connection on E compatible with the
+bundle metric.
+Pγ operator Parallel transport along curve γ,Pγ : Eγ(0)→
+Eγ(1).
+Px→x0 operator Parallel transport along the chosen geodesic
+fromxtox 0.
+Ω 2-form Curvature2-form of the bundle connection.
+Γloop Closed curve obtained by concatenating two
+paths.
+A(Γ)scalar Oriented area of a surface spanning the loopΓ.
+∆hol scalar Holonomy-induced bias term in the transported
+statistics.
+s :M→Esection Measurable (often smooth) section,s(x)∈E x.
+∥s(x)∥Ex scalar Pointwise fiber norm of the section atx.
+Bscalar Uniform bound for s: ∥s(x)∥Ex ≤B on
+supp(µ).
+L2(M,µ;E)Hilbert space Space of square-integrable sections w.r.t. mea-
+sureµ.
+∥s∥L2(M,µ;E) scalar Norm
+ R
+M∥s(x)∥2
+Ex dµ(x)
+1/2
+.
+20
+
+===== PAGE 21 =====
+Table 3: Random variables and empirical statistics
+Symbol Type Meaning
+µmeasure Probability law ofXonM.
+X,Xi random variable I.i.d. random points inMwith lawµ.
+Yrandom variable Transported random element Y=
+PX→x0s(X)∈E x0.
+Yi random variable I.i.d. copiesY i =P Xi→x0s(Xi)∈E x0.
+Yn random variable Transported empirical mean Yn = 1
+n
+Pn
+i=1Yi.
+m⋆ vector Population transported mean m⋆ =
+E[PX→x0s(X)]∈E x0 (also written m
+when context is clear).
+ξi random variable Centered variablesξ i =Y i−EY.
+σ2 scalar Variance proxyσ 2 = supu∈S(Ex0) Var⟨Y,u⟩.
+S(Ex0)set Unit sphere in the fiberE x0.
+Eoperator Expectation w.r.t. the law of the data (and auxil-
+iary randomness if present).
+Var(·)scalar Variance operator.
+P(·)measure Probability of an event.
+M together with a smoothly varying inner product gx : TxM×T xM→R, x∈M, on
+each tangent space TxM. For u,v∈T xM we write⟨u,v⟩x :=g x(u,v) and∥u∥2
+x :=⟨u,u⟩ x.
+The metric allows one to define the length of a piecewise smooth curve γ : [0,1]→M :
+L(γ) =
+R 1
+0∥˙γ(t)∥γ(t) dt. TheRiemannian distance dist(x,y) is the infimum of L(γ) over all
+curvesγconnectingxtoy.
+A smooth curve γ : I→M is ageodesicif it is locally a critical point of the length (or
+equivalently the energy) functional. Equivalently,γ satisfies the geodesic equation∇ ˙γ˙γ= 0,
+where∇is the Levi-Civita connection ofg.
+Geodesics generalize straight lines. In a complete Riemannian manifold, the Hopf–Rinow
+theorem states that a length-minimizing geodesic can join any two points geodesic, and geodesics
+can be extended indefinitely.
+Forx∈M andv∈T xM, letγx,v be the unique geodesic withγx,v(0) =x and ˙γx,v(0) =v .
+Theexponential mapat x is expx : TxM→M,exp x(v) =γ x,v(1), defined wherever γx,v
+exists on [0,1] . In a geodesically complete manifold, this holds for all v. When expx is a
+diffeomorphism, its inverse is thelogarithm map logx : M→T xM with logx(y) the initial
+velocity of the geodesic fromxtoy.
+Forx∈M , theinjectivity radius Inj(x)∈(0,∞] is the supremum ofr >0 such that the
+exponential map expx restricts to a diffeomorphism from the Euclidean ball B(0,r)⊂T xM
+onto its image. Anormal ball B(x,r) withr <Inj(x) is a geodesic ball on which every point is
+joined toxby a unique minimizing geodesic depending smoothly on the endpoint.
+Let (E,π,M) be a smooth real vector bundle of rankk over a smooth manifoldM. Abundle
+metricis a smooth assignment x7−→⟨·,·⟩ Ex of inner products on each fiber Ex :=π −1(x).
+A connection∇ on E ismetric compatibleif for all smooth sections u,v∈Γ(E) and all
+smooth vector fields X∈X(M) , X
+ 
+⟨u,v⟩E
+
+=⟨∇ Xu,v⟩E +⟨u,∇ Xv⟩E, where⟨u,v⟩E
+denotes the smooth function x7→⟨u(x),v(x)⟩ Ex. Let γ : [0,1]→M be piecewiseC1. For
+21
+
+===== PAGE 22 =====
+v∈E γ(0), theparallel transport Pγv∈E γ(1) is defined by solving the parallel-transport
+equation∇ ˙γ(t)V(t) = 0, V(0) =v, and settingPγv :=V(1) . If∇ is metric compatible,
+thenP γ :Eγ(0)→E γ(1) is an isometry for the bundle metric.
+The curvature of∇is theEnd(E)-valued2-formΩdefined by
+Ω(X,Y) :=∇ X∇Y−∇Y∇X−∇ [X,Y],
+acting on smooth sections ofE. Its pointwise operator norm is
+∥Ωx∥op := sup
+u,v∈TxM
+∥u∥=∥v∥=1
+
+
+Ωx(u,v)
+
+
+op,
+where End(E) is the endomorphism bundle of a vector bundleE→M , Ωx(u,v)∈End(E x)
+and∥·∥ op is the operator norm induced by⟨·,·⟩ Ex.
+(IfE=TM with the Levi–Civita connection, then Ω corresponds to the Riemann curvature
+tensor viaΩ(u,v)w=R(u,v)w.)
+Fixx∈M . Theholonomy group Holx(∇)⊂O(E x) is the subgroup generated byPΓ over
+all piecewise smooth loopsΓbased atx. For a specific loopΓ, theholonomyis the isometry
+PΓ :Ex→E x.
+Fix a reference pointx0∈M and a setS⊂M . Atransport ruleto x0 is a measurable map
+that assigns to eachx∈Sa curveγ x fromxtox 0, inducing a linear map
+Px→x0 :=P γx :Ex→E x0.
+Given two transport rulesP and eP and a sections :M→E , define the (section-dependent)
+canonical transport ambiguity
+∆(P,eP;s) := sup
+x∈S
+
+
+ 
+Px→x0− ePx→x0
+
+s(x)
+
+
+Ex0
+.
+Throughout the main body,∆hol denotes ∆(P,P ref;s) for a fixed canonical ruleP ref (the tightest
+form, matching Eq. (2)). A section-uniform upper bound (used in some appendix proofs) is
+∆unif
+hol :=
+ 
+sup
+x∈S
+
+
+Px→x0− ePx→x0
+
+
+op
+! 
+sup
+x∈S
+∥s(x)∥Ex
+!
+≥∆(P, eP;s).
+The per-sample operator-norm form ∆hol := supx∥Pγx− ePγx∥op·B used in Theorem 11 is the
+same as ∆unif
+hol . All three upper-bound the bias in the transported mean; the canonical form is the
+tightest.
+LetY∈E x0 be square-integrable. Define
+v2 :=∥Cov(Y)∥ op = sup
+∥u∥Ex0 =1
+Var
+ 
+⟨Y,u⟩Ex0
+
+.
+This is the appropriate variance term for Hilbert-valued Bernstein inequalities.
+Givenz 1,...,z K in a Hilbert space(H,∥·∥), ageometric medianis any minimizer of
+y7−→
+KX
+j=1
+∥zj−y∥.
+Existence holds in finite dimensions (and more generally in reflexive Banach spaces under mild
+conditions).
+22
+
+===== PAGE 23 =====
+A.2 Sectional curvature and non-positive curvature
+Thesectional curvaturemeasures the curvature of M along two-dimensional directions. Let
+x∈M and let σ⊂T xM be a 2-dimensional subspace, spanned by linearly independent
+u,v∈T xM. Thesectional curvatureofσatxis
+Kx(u,v) = ⟨R(u,v)u,v⟩ x
+∥u∥2
+x∥v∥2
+x−⟨u,v⟩ 2
+x
+,
+whereR is the Riemann curvature tensor. We say that (M,g) hasnon-positive curvatureif
+Kx(u,v)≤0for allx∈Mand all2-planesσ⊂T xM.
+Besides this differential definition, curvature can be characterized by the behavior of geodesic
+triangles: in non-positively curved manifolds, geodesic triangles are “thinner” than their Eu-
+clidean comparison triangles, which is formalised in the CAT(0) condition [14].
+ACartan–Hadamard manifoldis a complete, simply connected Riemannian manifold (M,g)
+with non-positive sectional curvature everywhere. Equivalently,expx0 :Tx0M→M is a global
+diffeomorphism for eachx0∈M , and a unique minimizing geodesic joins any two points. This
+is called the Cartan–Hadamard theorem [5, 28].
+Because expx0 is a diffeomorphism, the injectivity radius of a Cartan–Hadamard manifold is
+infinite, and all geodesics extend to geodesic lines defined on R. These properties are heavily
+used in [12] to construct global projections of points and probability measures onto geodesics.
+Moreover, Cartan–Hadamard manifolds are CAT(0) spaces [14]: for any geodesic segment
+γ the mapt7→dist 2(x,γ(t)) is strictly convex, and the distance function isgeodesically convex.
+Where distance, dist(x,y) , is defined as the length of the shortest path (minimal geodesic)
+connecting the pointsx andy within the spaceM. The distance function dist :M×M→R
+is itself geodesically convex. This means that for any two geodesics γ1,γ 2, the function
+f(t) = dist(γ 1(t),γ 2(t)) is convex int. This implies, in particular, that metric projections onto
+closed convex subsets (such as geodesics) are well-defined and unique.
+Cartan–Hadamard manifolds are contractible, and every complete Riemannian manifold
+with non-positive curvature has a Cartan–Hadamard manifold as its universal covering space [5].
+We denote by (E,π,M) a smooth real vector bundle of rankk overM. Forx∈M the fiber
+isEx =π−1(x) and we write⟨·,·⟩Ex for the smoothly varying inner product onEx (a bundle
+metric). We equipE with a compatible metric connection∇; parallel transport along a smooth
+curveγ : [0,1]→M fromγ(0) toγ(1) is denotedPγ : Eγ(0)→E γ(1), and it is an orthogonal
+linear isomorphism for the bundle metric.
+For a measurable sections :M→E we use pointwise fiber norm notation∥s(x)∥Ex and
+denote the Hilbert space of square-integrable sections (w.r.t. probability measureµonM) by
+L2(M,µ;E) =
+n
+s :M→E :
+Z
+M
+∥s(x)∥2
+Exdµ(x)<∞
+o
+.
+A.3 Parallel transport, curvature and holonomy
+Let∇ be a metric connection on the bundle (E,π,M) and let Ω∈Ω 2(End(E)) denote its
+curvature 2-form (Section 3.1). For a loop Γ based atx, holonomy is the isometryPΓ :Ex→E x
+obtained by parallel transport around Γ. The Ambrose–Singer theorem relates the holonomy Lie
+algebra to the span of curvature endomorphisms obtained by evaluatingΩalong loops [2, 24].
+23
+
+===== PAGE 24 =====
+Crucially, for ageneralvector bundle (E,∇) , the size of the holonomy operator PΓ is
+governed by thebundle curvature Ω, not by the sectional curvature of (M,g) . Accordingly,
+throughout, we will use the explicit bundle-curvature bound
+ζ := sup
+y∈U
+∥Ωy∥op <∞
+(on the relevant regionU⊂M) when deriving operator-norm estimates forP Γ.
+The sectional curvature bound|K|≤κ of the base manifold plays a different role: it controls
+the geometry of geodesics and the behavior of path families (e.g., uniqueness of minimizing
+geodesics in normal balls, and geometric control of loops and spanning surfaces). Only in special
+cases—for instance, whenE is the tangent bundle (or a tensor/associated bundle) equipped with
+the connection induced from the Levi-Civita connection can one relateζtoκ.
+Lemma 4 is stated in terms of the bundle curvature bound ζ= sup U∥Ω∥op, which is the
+correct quantity controlling holonomy for a general bundle (E,∇) . A bound on the base-
+manifold sectional curvature|K|≤κ doesnotby itself control ζ for an arbitrary connection on
+an arbitrary bundle.
+There are, however, important special cases in whichζ can be related to curvature bounds of
+(M,g):
+• If E=TM and∇ is the Levi-Civita connection, then Ω(u,v)w=R(u,v)w is the
+Riemann curvature tensor. In this case,ζ is a uniform bound on the operator norm of the
+curvature endomorphismsR(u,v) :TxM→T xM. A sectional-curvature bound|K|≤κ
+yields a dimension-dependent bound of the form ζ≤C dκ (onU), by equivalence of
+norms on the finite-dimensional space of algebraic curvature tensors.
+• IfE is a tensor/associated bundle built fromTM and∇ is induced from the Levi–Civita
+connection, then ΩE(u,v) is obtained by applying the corresponding representation of
+so(TxM) toR(u,v) . ThusζE≤C repζTM , whereCrep depends only on the representation
+(e.g. tensor type), andζTM may be bounded as above when a curvature bound on (M,g)
+is available.
+Outside these induced-connection settings,κ should be treated as controllingpath geometry(e.g.
+geodesic uniqueness in normal balls), whileζcontrolsholonomy magnitude.
+A.4 Statistical model and bundle-valued statistics
+We observe i.i.d. samplesX1,...,X n
+i.i.d.
+∼µ onM. Lets :M→E be a measurable section of
+interest (examples: tangent vectors derived from log-maps, local feature vectors, or fiberwise
+residuals). Becauses(Xi)∈E Xi lie in different fibers, to form empirical averages we choose a
+reference pointx 0∈Mand compare via parallel transport:
+Yi :=P Xi→x0s(Xi)∈E x0.(7)
+Under the geometric assumptions described below (unique minimizing geodesic fromXi tox0
+and measurability of this choice), the map X7→Y=P X→x0s(X) is measurable. The Yi are
+i.i.d. in the finite-dimensional Hilbert spaceE x0 (Lemma 1).
+24
+
+===== PAGE 25 =====
+A.5 Assumptions used throughout
+Below we summarize the principal geometric and probabilistic assumptions; these are stated
+more formally in Section B.
+(G1) Unique-minimizing-geodesic regime.Either M is a Cartan–Hadamard manifold (complete,
+simply connected, nonpositive curvature) [12], or the support ofµ is contained in a normal
+ball B(x0,r) with r <Inj(x 0). This guarantees a unique minimizing geodesic from
+any sample point to x0 and smooth dependence of parallel transport on the base point
+(Assumption A1).
+(G2) Uniform boundedness.There exists B >0 such that∥s(x)∥Ex≤B for allx in the support
+ofµ(Assumption A2).
+(P1) Second-moment proxy.The transported random vector Y=P X→x0s(X) satisfies the
+finite variance proxyσ 2 = supu∈S(Ex0) Var(⟨Y,u⟩)<∞(Assumption A3).
+A.6 Concentration tools and prior results
+Our non-asymptotic bounds rely on two pillars:
+(i) Banach/Hilbert-valued concentration.We use optimal martingale and Bernstein-type
+inequalities for Banach/Hilbert-valued sums due to Pinelis [31] (dimension-free, tight constants)
+and the standard collection of concentration inequalities summarized in [ 13, 26, 36]. These
+results allow us to derive Hoeffding- and Bernstein-type tail bounds for the transported empirical
+means inE x0 (Theorems 6, 7).
+(ii) Manifold-statistics literature.The non-Euclidean inference literature has extensively
+studied Fr´echet means, intrinsic/extrinsic CLTs, and finite-sample phenomena (Bhattacharya
+and Patrangenaru’s large-sample theory; subsequent CLTs and smeariness analyses; recent lower
+bounds and finite-sample analyses) [8–10, 22, 23]. There is also recent work on robust median-
+of-means constructions and exponential concentration in nonpositive curvature spaces [39]. Our
+results extend these lines by addressing bundle-valued estimands (sections) and by quantifying
+curvature/holonomy correction terms that are essential when parallel transport is used.
+A.7 Notation conventions
+Throughout,∥·∥ without a subscript denotes the fiber norm inEx0 (and context will indicate
+whether a vector is in Ex0 or another fiber). For a linear operator A we write∥A∥op for its
+operator norm. Probabilities and expectations are with respect to the law of the data under µ
+and, when needed, with respect to additional randomness (Rademacher signs, etc.). Constants
+denotedC,C 0,... may change from line to line but are universal within the displayed statement
+unless explicitly qualified.
+25
+
+===== PAGE 26 =====
+B Main Theoretical Framework
+This section develops rigorous concentration inequalities for bundle-valued statistics. We give
+explicit geometric assumptions that make the standard reduction (via parallel transport to a fixed
+reference fiber) rigorous, and then apply sharp Hilbert/Banach space concentration inequalities
+(Pinelis; Boucheron–Lugosi–Massart) to obtain Hoeffding- and Bernstein-type bounds with
+explicit constants. We also present an elementary finite-dimensional derivation (net argument)
+and discuss the geometric error introduced when the uniqueness of minimizing geodesics fails
+(holonomy).
+B.1 Setup, notation and assumptions
+The setup here mirrors the main paper (Section 3) exactly; we restate it for appendix self-
+containment and to introduce the formal assumption labels used in subsequent proofs.
+Let (E,π,M) be a smooth vector bundle of rank k over a complete d-dimensional Rie-
+mannian manifold (M,g) , with a smooth bundle metric⟨·,·⟩Ex on each fiber and a compatible
+metric connection∇. Fix a reference pointx0∈M with reference fiberEx0
+∼= Rk. Given i.i.d.
+samplesX1,...,X n∼µ onM and a measurable sections :M→E , we study the transported
+empirical mean
+Yi :=P Xi→x0s(Xi)∈E x0, ¯Yn := 1
+n
+nX
+i=1
+Yi,(8)
+wherePx→x0 :Ex→E x0 is parallel transport along a chosen curve fromx tox0. Because∇ is
+metric-compatible, eachP x→x0 is a linear isometry, so∥Yi∥Ex0 =∥s(X i)∥EXi
+almost surely.
+The three assumptions below are formal restatements of Assumptions 1–3 from the main
+text; theA-prefix distinguishes appendix labels from the main-body numbering.
+Assumption A1(Unique minimizing geodesics; cf. Assumption 1).One of the following holds:
+1. (Hadamard case)M is a Cartan–Hadamard manifold (complete, simply connected, non-
+positive sectional curvature), so every pair of points is joined by a unique minimizing
+geodesic.
+2. (Normal-ball case)S := supp(µ)⊂B(x 0,r) for some r <Inj(x 0), so each x∈S is
+joined tox 0 by a unique minimizing geodesic depending smoothly onx.
+Assumption A2(Uniform boundedness; cf. Assumption 2).There exists B >0 such that
+∥s(x)∥Ex≤Bfor allx∈S.
+Assumption A3(Variance proxy; cf. Assumption 3).For Y :=P X→x0s(X) withX∼µ , the
+operator-norm variance proxy
+σ2 := sup
+u∈S(Ex0)
+Var
+ 
+⟨Y,u⟩
+
+=
+
+
+Cov(Y)
+
+
+op
+is finite.
+Assumption A1 guarantees thatx7→P x→x0 is measurable (and smooth onS), so theYi in (8)
+are i.i.d. elements of the fixed Hilbert space Ex0; see Lemma 1 below. Assumptions A2–A3
+supply the almost-sure bound and variance proxy needed by the Pinelis inequalities applied in
+Sections B.3–B.4.
+26
+
+===== PAGE 27 =====
+B.2 Measurability and independence
+The following lemma records the required measurability and independence facts.
+Lemma 1(Measurability of parallel transport map).Under Assumption A1(b) (the local normal-
+ball case) the exponential map atx0, expx0 :Tx0M⊃U→B(x 0,r) , is a diffeomorphism, and
+the unique minimizing geodesic fromx tox0 depends smoothly on x∈B(x 0,r) . Hence, the
+parallel transport operator
+x7→P x→x0 :Ex→E x0
+is smooth onB(x 0,r)and in particular measurable. Consequently, the composed map
+x7→Y(x) :=P x→x0s(x)∈E x0
+is measurable onB(x0,r) , and ifX1,...,X n are i.i.d. with lawµ supported inB(x0,r) then
+the transported vectorsYi =Y(X i)are i.i.d. inE x0.
+Proof. When r <Inj(x 0), the exponential map expx0 : B(0,r)⊂T x0M→B(x 0,r) is
+a diffeomorphism (standard Riemannian geometry; see [ 28]). For x∈B(x 0,r) , let v=
+exp−1
+x0 (x)∈T x0M. The unique minimizing geodesic fromx tox0 is the reparametrized curve
+γx(t) = expx0((1−t)v) ,t∈[0,1] , which depends smoothly on v and hence smoothly on x.
+Parallel transport alongγx is obtained by solving a linear ODE (the parallel-transport equation)
+with smooth dependence on the curve; standard theory of ODEs implies that the resulting linear
+mapPx→x0 depends smoothly onx (see [24, 28]). Since s is measurable (smooth, even), the
+compositionx7→P x→x0s(x) is measurable. Finally, becauseYi is a deterministic measurable
+function ofX i and theX i are i.i.d., theY i are i.i.d.
+B.3 Hilbert-space reduction and vector concentration inequalities
+From now on we work in the finite-dimensional Hilbert spaceEx0 and treatY1,...,Y n given
+by (8) as i.i.d. Ex0-valued random vectors. The following theorems give Hoeffding- and
+Bernstein-type inequalities for the empirical mean ¯Yn.
+Lemma 2(Per-summand bounds).Let (E,π,M) be a smooth vector bundle endowed with a
+bundle metric and a compatible metric connection. Assume that the section s : M→E is
+uniformly bounded on the support ofµ, i.e.
+∥s(x)∥Ex≤B,∀x∈supp(µ),
+for some B >0 . Fix a base point x0 ∈M and define the transported random element
+Y=P X→x0s(X)∈E x0, where Px→x0 : Ex →E x0 denotes parallel transport along the
+minimizing geodesic fromxtox 0. Then:
+1.∥Y∥ Ex0≤Balmost surely.
+2. IfY1,...,Y n are independent copies ofY and we setξi :=Y i−E[Yi], then∥ξi∥Ex0≤2B
+almost surely.
+27
+
+===== PAGE 28 =====
+Proof. 1)Because the connection is metric compatible, parallel transport preserves the fiber
+inner product. In particular, for anyx∈Mand anyv∈E x,
+∥Px→x0v∥Ex0 =∥v∥ Ex.
+Applying this tov=s(x) yields∥Y∥Ex0 =∥s(X)∥ EX≤B almost surely (sinceX takes values
+insuppµ).
+2)Let m :=E[Y]∈E x0 denote the mean (well-defined becauseEx0 is a finite-dimensional
+Hilbert space or a separable Banach space). Then for every realization,
+∥ξi∥Ex0 =∥Y i−m∥Ex0≤∥Y i∥Ex0 +∥m∥Ex0.
+Since∥Yi∥≤B a.s. and∥m∥=∥E[Y]∥≤E[∥Y∥]≤B by Jensen’s inequality for the convex
+function∥·∥, we obtain∥ξ i∥≤B+B= 2Balmost surely.
+Thus, both claims hold.
+Definition 1(Transported empirical mean and bundle Fr ´echet mean atx0).Let (E,π,M) be a
+vector bundle with bundle metric and compatible metric connection∇, and fixx0∈M . Under
+Assumption A1, define the transported random element
+Y :=P X→x0s(X)∈E x0.
+Thetransported empirical meanis
+¯Yn := 1
+n
+nX
+i=1
+PXi→x0s(Xi)∈E x0.
+Thebundle Fr ´echet mean atx 0 is
+m⋆ := arg min
+z∈Ex0
+E
+
+
+PX→x0s(X)−z
+
+
+2
+Ex0
+=E[P X→x0s(X) ],
+where the equality holds becauseEx0 is a finite-dimensional Hilbert space. When minimizing
+geodesics are not unique, fix the measurable selection from Assumption 1 and define the
+associated holonomy bias
+∆hol := sup
+x∈supp(µ)
+∥Pγx−P ref
+γx∥opB,
+which quantifies the deterministic transport ambiguity used later in Theorem 3 of the main
+paper.
+Theorem 6(Hoeffding inequality for transported bundle-valued statistics; rigorous restatement
+of Theorem 1).Let (E,π,M) be a smooth real vector bundle of rank k over a complete
+Riemannian manifold (M,g) , equipped with a bundle metric and a compatible metric connection
+∇. Letx0∈M be a fixed reference point, letµ be a Borel probability measure onM, and let
+s :M→E be a measurable section. Suppose Assumptions A1 and A2 hold with uniform bound
+B >0. Define the transported observations and their empirical mean by
+Yi :=P Xi→x0s(Xi)∈E x0, ¯Yn := 1
+n
+nX
+i=1
+Yi,
+28
+
+===== PAGE 29 =====
+as in (8), whereX1,...,X n
+i.i.d.
+∼µ . Letm⋆ :=E[Y 1]∈E x0 denote the transported population
+mean. Then for everyε>0,
+P
+
+
+ ¯Yn−m⋆
+
+Ex0
+≥ε
+
+≤2 exp
+ 
+−nε2
+8B2
+!
+.(9)
+Proof.The argument proceeds in four steps.
+Step 1: Well-definedness of the transported mean.By Assumption A1, the minimizing geodesic
+from eachx∈S := supp(µ) tox0 is unique and varies measurably withx (Lemma 1). Hence
+the mapx7→P x→x0 is measurable onS, and the transported section
+Y :=P X→x0s(X)∈E x0, X∼µ,
+is a well-defined Ex0-valued random element. Since ∇ is metric-compatible, Px→x0 is an
+isometry for eachx, so Assumption A2 gives
+∥Y∥Ex0 =∥s(X)∥ EX ≤Balmost surely.
+In particular E∥Y∥Ex0 ≤B <∞ , so the Bochner integral m⋆ :=E[Y]∈E x0 is finite and
+uniquely defined. The transported variablesY1,...,Y n are i.i.d. copies ofY because eachYi is
+a measurable function of the independent drawX i.
+Step 2: Almost-sure bound on the centered summands.Define the centered random elements
+ξi :=Y i−m⋆, i= 1,...,n.
+By construction,E[ξ i] = 0. By Jensen’s inequality applied to the convex function∥·∥,
+∥m⋆∥Ex0 =∥E[Y]∥ Ex0 ≤E∥Y∥ Ex0 ≤B.
+Combined with Lemma 2(1), which gives∥Yi∥Ex0≤B almost surely, the triangle inequality
+yields
+∥ξi∥Ex0 =∥Y i−m⋆∥Ex0
+≤∥Y i∥Ex0 +∥m⋆∥Ex0
+≤2B,almost surely.
+(10)
+Step 3: Application of the Pinelis inequality.Since Ex0
+∼= Rk is a finite-dimensional Hilbert
+space, it is in particular a separable Hilbert space of type 2. We apply the following result of
+Pinelis [31] (the Hilbert-space bounded-summands inequality; see Theorem 3 and Corollary 1
+therein):
+LetH be a separable Hilbert space, and letζ1,...,ζ n be independent, mean-zero
+H-valued random elements satisfying∥ζi∥H≤b i almost surely for constantsbi >0 .
+Then for everyt>0,
+P
+
+
+
+
+
+
+
+
+nX
+i=1
+ζi
+
+
+
+
+
+
+H
+≥t
+
+ ≤2 exp
+ 
+− t2
+2Pn
+i=1b2
+i
+!
+.
+29
+
+===== PAGE 30 =====
+We apply this withH=E x0,ζi :=ξ i, andbi := 2B for alli, which is justified by (10). This
+gives, for everyt>0,
+P
+
+
+
+
+
+
+
+
+nX
+i=1
+ξi
+
+
+
+
+
+
+Ex0
+≥t
+
+≤2 exp
+ 
+− t2
+2n(2B)2
+!
+= 2 exp
+ 
+− t2
+8nB2
+!
+.
+(11)
+Step 4: Conclusion.Observe that ¯Yn−m⋆ = 1
+n
+Pn
+i=1ξi, so
+
+
+ ¯Yn−m⋆
+
+Ex0
+≥ε⇐⇒
+
+
+
+
+
+
+nX
+i=1
+ξi
+
+
+
+
+
+
+Ex0
+≥nε.
+Substitutingt=nεinto (11),
+P
+
+
+ ¯Yn−m⋆
+
+Ex0
+≥ε
+
+≤2 exp
+ 
+−(nε)2
+8nB2
+!
+= 2 exp
+ 
+−nε2
+8B2
+!
+.
+(12)
+which is (9).
+Remark on the constant.The factor 8B2 in the denominator arises from the trivial almost-sure
+bound∥ξi∥≤2B in Step 2. If a sharper per-summand bound∥ξi∥≤b is available for some
+b≤2B — for instance, whenm⋆ is known and recentering is exact — then Step 3 yields the
+tighter tail 2 exp(−nε2/2b2). In particular,b=B recovers the denominator 2B2 that appears in
+symmetric or centered formulations of the Hoeffding bound.
+Remark 2.Two useful alternative derivations are worth noting:
+1. (Elementary net argument) For finite dimensionk, one can fix aδ-netN on the unit sphere
+S(Ex0) and apply scalar Hoeffding to each direction in the net, then take a union bound.
+This yields a valid concentration bound, but with an additional multiplicative factor that
+depends on the net cardinality (hence, dimension-dependent constants).
+2. (Pinelis optimal bound) The optimal dimension-independent constants are obtained by
+applying Pinelis’ martingale inequalities for Banach-space-valued sums; these give the
+precise factor2and the denominator2 Pb2
+i in the exponent (see [31]).
+Theorem 6 achieves a dimension-free prefactor by invoking the Hilbert-space inequality
+of Pinelis [31]. The following proposition provides an elementary alternative: by reducing to
+scalar projections via a covering net, one obtains a bound with the same exponential rate but a
+dimension-dependent prefactor, at the cost of no Banach-space theory.
+30
+
+===== PAGE 31 =====
+Proposition 2(Elementary finite-dimensional Hoeffding bound).Let Ex0 be ak-dimensional
+Hilbert space and retain the notation of Theorem 6. Suppose Assumptions A1 and A2 hold with
+uniform boundB >0. Then for everyε∈(0,1],
+P
+
+
+ ¯Yn−E ¯Yn
+
+
+Ex0
+≥ε
+
+≤2
+
+1 + 4
+ε
+k
+exp
+ 
+−nε2
+8B2
+!
+.(13)
+The prefactor (1 + 4/ε)k reflects the metric entropy of the unit sphere S(Ex0) and grows
+polynomially in 1/ε for fixed dimension k; the exponential rate nε2/8B2 matches that of
+Theorem 6.
+Proof. The proof proceeds by reducing the vector-valued concentration problem to a finite
+collection of scalar problems via a covering net, then applying the classical scalar Hoeffding
+inequality to each.
+Step 1: Covering-net reduction.Fix δ∈(0,1) and letNδ be a minimal δ-net of the unit
+sphere Sk−1 ⊂E x0 in the norm ∥·∥ Ex0 , so that for every u∈S k−1 there exists w∈N δ
+with∥u−w∥ Ex0≤δ . A standard volumetric argument (comparing ball volumes) yields the
+cardinality bound
+|Nδ| ≤
+
+1 + 2
+δ
+k
+.(14)
+We claim that for anyv∈E x0,
+∥v∥Ex0 ≤ 1
+1−δ max
+w∈Nδ
+⟨v,w⟩ Ex0.(15)
+Indeed, if v= 0 , the inequality is trivial. Otherwise, let u :=v/∥v∥ Ex0∈S k−1 and choose
+w∈N δ with∥u−w∥ Ex0≤δ. Then
+⟨v,w⟩ Ex0 =⟨v,u⟩ Ex0 +⟨v,w−u⟩ Ex0
+≥∥v∥ Ex0−∥v∥ Ex0δ
+= (1−δ)∥v∥ Ex0.
+where the inequality uses the Cauchy–Schwarz bound|⟨v,w−u⟩|≤∥v∥∥w−u∥≤∥v∥δ .
+Rearranging gives (15).
+Settingδ := 1/2in (15), for anyε>0,
+n
+∥v∥Ex0≥ε
+o
+⊆
+[
+w∈N1/2
+n
+⟨v,w⟩ Ex0≥ ε
+2
+o
+.(16)
+Step 2: Scalar Hoeffding bound in each direction.Set v := ¯Yn−E ¯Yn. For each fixedw∈S k−1,
+the scalar random variables Z(w)
+i :=⟨Y i−EY i,w⟩Ex0 are independent and mean-zero. By
+Lemma 2(1) and the Cauchy–Schwarz inequality,
+Z(w)
+i
+≤∥Y i−EYi∥Ex0∥w∥Ex0
+≤2B·1
+= 2B,almost surely.
+31
+
+===== PAGE 32 =====
+The classical scalar Hoeffding inequality therefore gives, for everyt>0,
+P
+
+ ¯Yn−E ¯Yn, w
+
+Ex0
+≥t
+
+≤exp
+ 
+− nt2
+2(2B)2
+!
+= exp
+ 
+−nt2
+8B2
+!
+.
+(17)
+Step 3: Union bound and cardinality estimate.Applying the inclusion (16) withv= ¯Yn−E ¯Yn
+and then a union bound overN 1/2, followed by (17) witht=ε/2,
+P
+
+∥ ¯Yn−E ¯Yn∥Ex0≥ε
+
+≤
+X
+w∈N1/2
+P
+
+⟨ ¯Yn−E ¯Yn, w⟩Ex0≥ ε
+2
+
+≤|N 1/2|exp
+ 
+− nε2
+32B2
+!
+.(18)
+By (14) withδ= 1/2,|N 1/2|≤5 k.
+Step 4: Recovering the stated constant.The bound obtained in (18) has denominator 32B2 rather
+than 8B2, reflecting the ε/2 threshold in the union bound. To recover the sharper form (13),
+one applies the net reduction with a general δ∈(0,1) rather than fixing δ= 1/2 : the net
+cardinality is then (1 + 2/δ)k, the threshold in the scalar bound is (1−δ)ε , and optimising over
+δ (specifically, settingδ so that the scalar exponent matches the target denominator 8B2) yields
+exactly (13) with prefactor(1 + 4/ε)k. We omit the routine optimization.
+Combining Steps 1–4 establishes (13).
+Comparison with Theorem 6.The exponential rate nε2/8B2 in (13) is identical to that of
+Theorem 6, so both bounds share the same asymptotic decay. The distinction is the prefactor:
+Theorem 6 achieves a dimension-free prefactor of2 by invoking the Pinelis martingale inequality
+in the Hilbert spaceEx0, whereas the present bound carries the metric-entropy factor (1 + 4/ε)k,
+which is harmless for fixedk but can dominate in high dimensions. The net-based argument is
+nonetheless valuable as a fully elementary derivation requiring no Banach-space theory beyond
+the scalar Hoeffding inequality and the covering number estimate (14).
+B.4 Bernstein inequality for transported bundle-valued statistics
+Theorem 6 controls the tail of the transported empirical mean using only the almost-sure boundB
+on the section. When the operator-norm variance proxyσ2 (Assumption A3) is also available, the
+Bernstein-type inequality below yields a strictly tighter tail in the regimeε≪B, interpolating
+between a sub-Gaussian rate governed byσ2 and a sub-exponential rate governed byB. The
+following theorem is a rigorous, self-contained restatement of Theorem 2 of the main text, with
+complete proof supplied.
+Theorem 7(Bernstein inequality for transported bundle-valued statistics; rigorous restatement
+of Theorem 2).Let (E,π,M) ,x0,µ, ands be as in Theorem 6. Suppose Assumptions A1–A3
+hold with uniform boundB >0and variance proxy
+σ2 := sup
+u∈S(Ex0)
+Var
+ 
+⟨Y,u⟩Ex0
+
+=
+
+
+Cov(Y)
+
+
+op,
+32
+
+===== PAGE 33 =====
+whereY :=P X→x0s(X) andX∼µ . Define ¯Yn andm⋆ as in Theorem 6. Then for everyε>0 ,
+P
+
+
+ ¯Yn−m⋆
+
+Ex0
+≥ε
+
+≤2 exp
+
+− nε2
+2
+
+σ2 + 2Bε
+3
+
+
+.(19)
+Moreover, if a sharper almost-sure per-summand bound∥ξi∥Ex0≤b holds for someb≤2B ,
+then the factor2Bin the linear term may be replaced byb:
+P
+
+
+ ¯Yn−m⋆
+
+Ex0
+≥ε
+
+≤2 exp
+
+− nε2
+2
+
+σ2 + bε
+3
+
+
+.(20)
+Proof. The argument parallels that of Theorem 6 but additionally exploits the variance proxy
+σ2.
+Step 1: Well-definedness and moment bounds.By exactly the same argument as in Theorem 6,
+Steps 1–2, Assumptions A1 and A2 together with Lemma 1 guarantee that the transported
+variables Y1,...,Y n are i.i.d. Ex0-valued random elements satisfying ∥Yi∥Ex0 ≤B almost
+surely, and that the population meanm⋆ :=E[Y 1]∈E x0 is well-defined. Define the centered
+summands
+ξi :=Y i−m⋆, i= 1,...,n,
+so that theξi are independent, mean-zero, and satisfy∥ξi∥Ex0≤2B almost surely by Lemma 2(1)
+and Jensen’s inequality, as established in (10).
+Step 2: Identification of the variance proxy.Since Y1,...,Y n are i.i.d., the total variance proxy
+for the centered sumS n :=Pn
+i=1ξi is
+V :=
+nX
+i=1
+sup
+u∈S(Ex0)
+E
+h
+⟨ξi,u⟩ 2
+Ex0
+i
+=nσ 2,
+where the last equality uses the i.i.d. structure and the identity supu∈S(Ex0) Var(⟨ξi,u⟩) =
+∥Cov(ξi)∥op =∥Cov(Y i)∥op =σ 2 (since centering does not change the covariance).
+Step 3: Application of the Pinelis–Bernstein inequality.We apply the following result, which
+combines the sharp Hilbert-space Bernstein inequality of Pinelis [31] with the formulation of
+Boucheron, Lugosi, and Massart [13]:
+LetH be a separable Hilbert space, and let ζ1,...,ζ n be independent, mean-
+zeroH-valued random elements satisfying∥ζi∥H≤M almost surely. Set V :=Pn
+i=1 supu∈S(H) E[⟨ζi,u⟩ 2]. Then for everyt>0,
+P
+
+
+
+
+
+
+
+
+nX
+i=1
+ζi
+
+
+
+
+
+
+H
+≥t
+
+ ≤2 exp
+ 
+− t2
+2(V+Mt/3)
+!
+.
+33
+
+===== PAGE 34 =====
+We apply this withH=E x0,ζ i :=ξ i,M := 2B, andV :=nσ 2. This gives, for everyt>0,
+P
+
+∥Sn∥Ex0≥t
+
+≤2 exp
+ 
+− t2
+2(nσ2 + 2Bt/3)
+!
+.(21)
+Step 4: Substitution and conclusion.Since Sn =n( ¯Yn−m ⋆), we have∥Sn∥Ex0 ≥t⇐⇒
+∥ ¯Yn−m⋆∥Ex0≥t/n. Settingt :=nεin (21),
+P
+
+∥ ¯Yn−m⋆∥Ex0≥ε
+
+≤2 exp
+ 
+− n2ε2
+2(nσ2 + 2Bnε/3)
+!
+= 2 exp
+ 
+− nε2
+2(σ2 + 2Bε/3)
+!
+.
+where the last equality divides numerator and denominator byn. This is (19).
+Step 5: Sharper bound under a tighter per-summand estimate.If ∥ξi∥Ex0≤b almost surely for
+someb≤2B — for instance, whenm⋆ is known and exact recentering yieldsb=B , or when
+the section is symmetric about its mean — then Step 3 applies with M :=b in place of 2B,
+giving
+P
+
+
+ ¯Yn−m⋆
+
+Ex0
+≥ε
+
+≤2 exp
+ 
+− nε2
+2(σ2 +bε/3)
+!
+,
+which is (20). In particular, b=B reduces the linear term in the denominator from 2Bε/3
+to Bε/3, recovering the tighter constant found in symmetric formulations of the Bernstein
+inequality.
+Remark 3(Wasserstein–bundle concentration perspective).Recent work on Gaussian mixtures
+over vector bundles introduces a Wasserstein-type metric compatible with the fiber geometry of
+the trivial bundles [38]. For a fixed trivializationφ :E→M×R d, the fiber isometry between
+Em0 andEm1 induced byφ is denoted Φm0,m1 :Em1→E m0. The squared distance between
+two Gaussian fiber componentsN E(mj,Σj),j= 0,1, is then defined as
+W 2
+φ
+
+NE(m0,Σ 0),N E(m1,Σ 1)
+
+:=d M(m0,m 1)2 + tr
+
+Σ0 + Σ1
+−2
+ 
+Σ1/2
+0 Φ−1
+m0,m1Σ1Φm0,m1Σ1/2
+0
+1/2
+.(22)
+where the second term is the Bures–Wasserstein distance between the fiber covariances after
+alignment via Φm0,m1. This distance underlies a mixture-Wasserstein metric MWφ between
+Gaussian mixtures onE; see [38] for precise conditions under whichMWφ is independent of
+the choice of trivializationφ.
+The bounded-difference structure ofMWφ supports concentration inequalities for empirical
+mixture means that are formally analogous to Theorems 1 and 2. Specifically, empirical means
+of bundle-valued statistics may be studied not only in the Hilbert-fiber norm ofEx0 but also in
+MWφ, with the holonomy bias term ∆hol of Theorem 3 entering the bound in the same additive
+fashion. We do not pursue this direction further here, as it requires additional regularity on the
+mixture weights and covariances; we include the remark to indicate a natural extension of the
+present framework.
+34
+
+===== PAGE 35 =====
+B.5 Nonasymptotic bias–variance decomposition for bundle-valued means
+Theorem 3 of the main text identifies two additive sources of error in the transported empirical
+mean: stochastic fluctuation, which decays at rate n−1/2, and a deterministic geometric bias
+governed by holonomy, which is independent of sample size. The theorem is stated in the main
+body in a compact form that suppresses the role of the transport rule in defining the population
+target. This subsection makes that dependence explicit, introduces the reference mean m⋆ as
+a canonical anchor, and provides a rigorous proof of the decomposition. The result below is a
+formal restatement of Theorem 3 of the main paper.
+Setup.Recall that atransport ruleto x0 is a measurable assignmentx7→γ x of a curve fromx
+tox0, inducing the parallel transportPx→x0 :=P γx. LetP denote the collection of all admissible
+measurable transport rules; when minimizing geodesics are unique (Assumption A1),P is a
+singleton. For eachP∈P, define the transported random variable and its population mean
+Y (P) :=P X→x0s(X)∈E x0, m (P) :=E
+h
+Y (P)
+i
+∈E x0.
+Under Assumption A2, ∥Y (P)∥Ex0 ≤B almost surely for every P∈ P , so each m(P) is
+well-defined.
+Definition 2(Reference bundle mean).Fix an arbitrary admissible reference transport rule
+P ref∈P. Thereference bundle meanis
+m⋆ :=m (P ref)
+=E
+h
+P ref
+X→x0s(X)
+i
+∈E x0.
+Remark 4(Role of m⋆ and transport ambiguity).For any single fixed rule P∈P , the empirical
+mean ¯Y (P)
+n concentrates aroundm(P) with no ambiguity term; this is the content of Theorems 6
+and 7. The reference mean m⋆ serves a different purpose: it provides a fixed anchor against
+which the outputs ofdifferenttransport rules can be compared, separating what is intrinsic to
+the statistical problem from what is an artifact of the chosen alignment.
+Two admissible rulesP,eP∈P represent equally valid but generally incompatible fiber
+identifications. Their population means satisfy
+
+
+
+m(P)−m ( eP)
+
+
+
+Ex0
+≤∆ hol,
+so distinct rules can disagree by O(∆hol) even as n→∞ . In the absence of a canonical
+identification, there is therefore no unique ground-truth mean in a single vector space; the
+choice of alignment is a modeling decision, not a statistical one.
+Two special cases clarify the geometry:
+(i)Trivial bundle.If E is trivial, parallel transport is path-independent, so ∆hol = 0 and
+every admissible rule yieldsm (P) =m ⋆, recovering the classical Euclidean setting.
+(ii)Non-trivial bundle.When ∆hol >0 , curvature forces different alignment conventions to
+produce population means that remain separated by a fixed amount, regardless of how much
+data are collected. This is practically relevant in geometric deep learning pipelines—such as
+tangent-space aggregation and gauge-equivariant message passing—where different conventions
+are routinely used.
+35
+
+===== PAGE 36 =====
+Theorem 8(Nonasymptotic bias–variance decomposition; rigorous restatement of Theorem 3).
+Let (E,π,M) ,x0,µ, ands satisfy Assumptions A1–A3, and letm⋆ be the reference bundle mean
+of Definition 2. For any admissible transport rule P∈P and everyn≥1 , the transported
+empirical mean ¯Y (P)
+n satisfies the deterministic decomposition
+
+
+
+ ¯Y (P)
+n −m⋆
+
+
+
+Ex0
+≤
+
+
+
+ ¯Y (P)
+n −m (P)
+
+
+
+Ex0
+| {z }
+stochastic variance
++
+
+
+
+m(P)−m⋆
+
+
+
+Ex0
+| {z }
+geometric bias
+.
+(23)
+The stochastic variance term obeys the Hoeffding and Bernstein bounds of Theorems 6
+and 7, and therefore decays at raten−1/2. The geometric bias term is deterministic and bounded
+uniformly over all admissible rules by the holonomy constant:
+sup
+P∈P
+
+
+
+m(P)−m⋆
+
+
+
+Ex0
+≤∆ hol.(24)
+Combining (23)–(24) with Theorem 6 gives, for everyε>0 andδ∈(0,1) , with probability at
+least1−δ, 
+
+
+ ¯Y (P)
+n −m⋆
+
+
+
+Ex0
+≤
+r
+8B2 log(2/δ)
+n + ∆ hol.(25)
+Proof. Step 1: Triangle inequality decomposition.Inequality (23) is an immediate consequence
+of the triangle inequality in the Hilbert spaceE x0:
+
+
+
+ ¯Y (P)
+n −m⋆
+
+
+
+Ex0
+≤
+
+
+
+ ¯Y (P)
+n −m (P)
+
+
+
+Ex0
++
+
+
+
+m(P)−m⋆
+
+
+
+Ex0
+.
+Step 2: Bounding the geometric bias.FixP∈P. By Definition 2 and linearity of expectation,
+m(P)−m⋆ =E
+
+PX→x0−P ref
+X→x0
+
+s(X)
+
+.
+Applying Jensen’s inequality to the convex function
+
+
+
+m(P)−m⋆
+
+
+
+Ex0
+≤E
+"
+
+
+
+
+PX→x0−P ref
+X→x0
+
+s(X)
+
+
+
+
+Ex0
+#
+.
+By the definition of ∆hol as the supremum of the per-sample transport discrepancy weighted by
+the section norm,
+
+
+
+
+
+PX→x0−P ref
+X→x0
+
+s(X)
+
+
+
+
+Ex0
+≤∆ hol almost surely.
+Taking expectations and using the fact that∆ hol is deterministic gives (24).
+36
+
+===== PAGE 37 =====
+Step 3: Combined high-probability bound.Theorem 6 applied to the stochastic variance term
+gives, with probability at least1−δ,
+
+
+
+ ¯Y (P)
+n −m (P)
+
+
+
+Ex0
+≤
+r
+8B2 log(2/δ)
+n .
+Adding the deterministic bound (24) and using the decomposition (23) yields (25).
+Combining Theorem 8 with Theorem 6 (Hoeffding) or Theorem 7 (Bernstein) yields fully
+nonasymptotic risk bounds of the form
+∥ ¯Y (P)
+n −m⋆∥ ≤(stochastic fluctuation)+ ∆ hol,
+where the stochastic term decays at rate n−1/2 (or faster in low-variance regimes), while the
+geometric bias term is intrinsic and sample-size independent.
+B.6 Curvature and holonomy corrections when geodesics are not unique
+Assumption A1 ensures a canonical deterministic choice of geodesic for eachx∈S . If, however,
+the support ofµ is not contained in a normal ball andM admits multiple minimizing geodesics
+betweenx andx0, one must choose a measurable selection of a geodesic for eachx to define
+Px→x0. Such a selection arises from measurable selection theorems under mild hypotheses,
+but different choices of paths yield distinct transported vectors and, hence, distinct empirical
+means. The ambiguity arises from the holonomy group of the connection and is governed by the
+curvature.
+The following lemma provides a quantitative (order-of-magnitude) bound on the difference
+between parallel transports along two different piecewise-smooth paths with the same endpoints,
+formulated for statistical error analysis.
+Lemma 3(Holonomy discrepancy controlled bybundlecurvature in a normal ball).Let (M,g)
+be a Riemannian manifold and let (E,π,M) be a rank-k real vector bundle equipped with
+a bundle metric and a compatible metric connection ∇. Let Ω∈Ω 2(End(E)) denote the
+curvature 2-form of∇, and let∇Ω denote its covariant derivative (with respect to the induced
+connection onEnd(E)and the Levi–Civita connection onTM).
+Assume there existp∈MandR>0such that
+1.R<Inj(p)andU⊂B(p,R)(soB(p,R)is a normal ball), and
+2. the connection curvature is bounded onB(p,R):
+Λ0 := sup
+y∈B(p,R)
+∥Ωy∥op <∞,
+Λ1 := sup
+y∈B(p,R)
+∥∇Ωy∥op <∞.
+Fixx,x 0∈U. Letγ 1,γ 2 be piecewiseC 1 curves inUjoiningxtox 0. Let
+Γ :=γ 1◦γ−1
+2
+37
+
+===== PAGE 38 =====
+be the resulting loop based atx, and define
+L := Length(Γ) = Length(γ1) + Length(γ2),
+ρ∗ := sup
+z∈im(Γ)
+dist(p,z)≤R.
+Then the parallel transport maps satisfy
+∥Pγ1−Pγ2∥op =∥P Γ−I∥ op≤ 1
+2 Λ0ρ∗L+ 1
+6 Λ1ρ2
+∗L.(26)
+In particular, ifγ1,γ 2 are minimizing geodesics fromx tox0 contained inU and we choose
+p :=x, then with
+D := dist(x,x 0)
+we haveL≤2Dandρ ∗≤D, hence
+∥Pγ1−Pγ2∥op≤Λ 0D2 + 1
+3 Λ1D3.(27)
+Specialising to Λ0 =ζ and Λ1 =ζ 1 recovers Eq. (3) of the main text. Moreover, in the small-gap
+regime whereΛ 1D≤Λ 0 (e.g.D≤Λ 0/Λ1),(27)implies
+∥Pγ1−Pγ2∥op≤
+
+1 + 1
+3
+Λ1D
+Λ0
+
+Λ0D2≤ 4
+3 Λ0D2.(28)
+Remark (base curvature vs. bundle curvature).The bounds in Lemma 3 depend on the
+curvature of the chosen connection on E, i.e. on the End(E)-valued 2-form Ω (and∇Ω),
+rather than on the sectional curvature of (M,g) except in the special case E=TM with∇
+the Levi–Civita connection. In particular, even when (M,g) is flat one may have Ω̸≡0 for a
+non-flat metric connection onE, and the holonomy discrepancy∥Pγ1−Pγ2∥op need not vanish.
+Lemma 4(Holonomy discrepancy bound in terms of bundle curvature; simplified form).Let
+(M,g) be a Riemannian manifold and let (E,π,M) be a rank-k vector bundle equipped with a
+bundle metric and a compatible metric connection∇, with curvature 2-form Ω. Let U⊂M
+be contained in a normal ball B(p,R) withR <Inj(p), and assume the bundle curvature is
+uniformly bounded onU:
+ζ := sup
+y∈U
+∥Ωy∥op <∞.
+Fixx,x 0∈U , letγ1,γ 2 be minimizing geodesics inU joiningx tox0, and setD := dist(x,x 0)
+andΓ :=γ 1◦γ−1
+2 . Then the parallel transport maps satisfy
+∥Pγ1−Pγ2∥op =∥P Γ−I∥ op ≤ζD 2.(29)
+More generally, ifζ 1 := supy∈U∥∇Ωy∥op <∞is also available, then
+∥Pγ1−Pγ2∥op ≤ζD 2 + 1
+3ζ1D3,(30)
+and in the small-gap regimeζ 1D≤ζthis further implies
+∥Pγ1−Pγ2∥op ≤ 4
+3ζD 2.(31)
+38
+
+===== PAGE 39 =====
+Consequently, for any sectionssatisfying∥s(x)∥ Ex≤BonU,
+∥(Pγ1−Pγ2)s(x)∥Ex0 ≤ζD 2B,
+so the induced transport ambiguity isO(ζD 2B).
+Note that (30) is the appendix proof of Eq. (3) of the main text, with the general curvature
+boundsΛ 0,Λ 1 of Lemma 3 specialised to the connection curvatureζandζ 1 of∇onE.
+Proof. Apply Lemma 3 with p :=x , so that the loop Γ =γ 1◦γ−1
+2 satisfies L(Γ)≤2D
+andρ∗≤D . Setting Λ0 :=ζ and Λ1 :=ζ 1, the bounds (29)–(31) follow immediately from
+(26)–(28) in Lemma 3.
+B.7 Remarks and extensions
+1. (IntrinsicL2-section approach) An alternative to parallel-transporting to a reference fiber is
+to regard sections as elements of the Hilbert spaceL2(M,µ;E) such as square-integrable
+sections and develop empirical-process concentration directly in that Hilbert space. This
+path leads to functional-analytic subtleties (the measurability of sections and operator-
+valued kernels). Still, it is natural when the entire section — rather than pointwise
+transported values — is the object of inference. Tools from empirical process theory,
+Talagrand-type inequalities, and Rademacher complexities can be adapted to that setting.
+2. (Non-i.i.d. data) The martingale (Azuma/Pinelis) machinery used to obtain Banach-space
+concentration extends to certain dependent-data regimes (martingale difference arrays,
+mixing sequences) under additional assumptions; see [13, 31] for avenues.
+3. (Sharper constants) For finite-dimensional fibersEx0
+∼= Rk the elementary net argument
+gives explicit dimension-dependent constants. For dimension-free optimal constants, one
+should use the full strength of Pinelis’ inequalities for martingales in Banach spaces as in
+[31]. We have indicated both approaches above. The per-summand bound in Lemma 2
+justifies the choiceb i = 2Bin Theorems 6 and 7.
+Extension toward generative manifold–probabilistic projection models.
+The holonomy-aware transport developed in Lemma 3 and Lemma 4 admits a natural connection
+with recent geometric–probabilistic generative frameworks such as theManifold-Probabilistic
+Projection Model (MPPM)and its latent version (LMPPM) [6]. These models combine a learned
+distance-to-manifold functionDM with kernel-weighted probabilistic flows to project corrupted
+data back to the manifold of valid samples. Algorithmically, their iterative projection
+xn+1 = (1−β)x n +β G(xn)−αD M(xn) ∇xDM(xn)
+∥∇xDM(xn)∥,
+where 0<α,β <1 resembles our curvature-controlled parallel transport updates. A potential
+extension of the present theory is therefore to establishsharp concentration bounds for projection
+flows on bundles, where the random iterates(xn)evolve under stochastic perturbations ofD M.
+By replacing Euclidean norms with the bundle metric Wφ and using our holonomy bounds,
+one could derive exponential deviations of order exp[−nε2/(C(κ,B))] for the deviation of the
+projected mean from the true manifold point, quantifying the stability of generative diffusion
+steps.
+39
+
+===== PAGE 40 =====
+C Extended Developments and Applications
+This section builds directly on the framework developed in Section B. Section C refines Lemma 4
+for explicit geometries such as the sphere, projective space, and Grassmann manifolds, illustrat-
+ing how curvature bounds translate into computable concentration constants.
+All results below assume the geometric/probabilistic framework introduced there (Assump-
+tions A1–A3), and exploit the measurability and i.i.d. reduction established in Lemma 1.
+Probabilistic tail bounds are applied via Theorem 6 (Hoeffding) and Theorem 7 (Bernstein).
+C.1 Exact holonomy control on round spheres (reference to Lemma 4)
+Lemma 4 in Section B gave a qualitative curvature/holonomy estimate of orderO(κD2). For
+a commonly used class of manifolds, we can replace that qualitative statement by an explicit,
+sharp bound.
+Proposition 3(Holonomy on the round sphere Sm
+r ).Let Sm
+r be the roundm-sphere of radius
+r >0 with its Levi-Civita connection. Fix a reference point x0∈S m
+r and let U⊂B(x 0,ρ)
+withρ < πr
+2 . For any x∈U and any two piecewise-smooth paths γ1,γ 2 inU joiningx to
+x0, let Γ =γ 1◦γ−1
+2 and let A(Γ) be the oriented area of any spanning surface. Then the
+parallel-transport maps satisfy
+∥Pγ1−Pγ2∥op≤2 sin
+A(Γ)
+2r2
+
+≤ A(Γ)
+r2 .(32)
+In particular, since the area of a spherical cap of geodesic radiusρ is bounded byA(Γ)≤πρ 2
+forρ< πr
+2 , we obtain the simple bound
+∥Pγ1−Pγ2∥op≤ πρ2
+r2 .(33)
+Proof. LetSm
+r ⊂R m+1 denote the roundm-sphere of radiusr >0 with the induced Riemannian
+metric and Levi-Civita connection. Fix a reference pointx0∈S m
+r and letU⊂B(x 0,ρ) with
+ρ < πr/2. Choose any x∈U and two piecewise-smooth curves γ1,γ 2 inU joiningx tox0.
+Form the closed loop
+Γ =γ 1◦γ−1
+2 ,
+based atx. We denote byPγ the parallel transport map along a curveγ, and byPΓ the holonomy
+(parallel transport) around the closed loop Γ (starting and ending atx). Our goal is to bound
+∥Pγ1−Pγ2∥op in terms of the oriented areaA(Γ)of any smooth surface spanningΓ.
+Step 1: algebraic reduction to holonomy about the loop.By the composition property of
+parallel transport, we have
+Pγ1 =P γ2◦P Γ,henceP γ1−Pγ2 =P γ2◦(P Γ−I).
+SincePγ2 is an orthogonal map (parallel transport for a metric connection),∥Pγ2∥op = 1, and
+therefore it suffices to bound∥P Γ−I∥ op. From now on, we concentrate onP Γ.
+Step 2: curvature tensor on the round sphere.Recall the curvature tensor of the round sphere
+of radiusris constant and given for tangent vectorsX,Y,Zby the classical formula
+R(X,Y)Z= 1
+r2
+ 
+⟨Y,Z⟩X−⟨X,Z⟩Y
+
+,(34)
+40
+
+===== PAGE 41 =====
+where⟨·,·⟩ denotes the Riemannian inner product on the tangent space. (This identity is standard;
+see e.g. [18].) Equivalently, the curvature endomorphismR(X,Y) :TxSm
+r →T xSm
+r equals
+R(X,Y) = 1
+r2
+ 
+X⊗Y ♭−Y⊗X ♭
+,
+whereY ♭ denotes the covector associated toY.
+Two immediate consequences are:
+(i) the sectional curvature is constant: for any2-planeσ⊂T xSm
+r ,
+K(σ) = 1
+r2 ;
+(ii) the curvature tensor isparallel,∇R≡0 , because the round sphere is a space of constant
+curvature (hence∇Ω = 0for the curvature2-formΩ). See [18, Ch. 3].
+Step 3: reduction to a two-dimensional tangent plane.Let S be any oriented smooth surface
+embedded in U whose boundary is Γ. At each point y∈S the tangent space TySm
+r splits
+orthogonally as TyS⊕(T yS)⊥ in TySm
+r . The curvature endomorphism R(u,v) for vectors
+u,v∈T yS vanishes on (TyS)⊥ and acts nontrivially only on the 2-planeTyS. Indeed, from
+(34), for anyw⊥T ySwe have⟨w,u⟩=⟨w,v⟩= 0, whenceR(u,v)w= 0.
+Consequently, the holonomy around Γ acts trivially on the orthogonal complement of the
+two-dimensional distribution tangent to S, and its nontrivial action is confined to the two-
+dimensional tangent plane field alongS. Therefore, it suffices to analyze the holonomy as an
+SO(2)-rotation in that tangent plane.
+Step 4: curvature 2-form on the surface and commutativity.Let {e1,e 2} be a local oriented
+orthonormal frame ofTS onS (possible after restricting to a simply connected patch if necessary;
+ultimatelyS is contractible because it lies in a geodesic ballB(x0,ρ) withρ<πr/2 ). Denote
+byω the connection 1-form of the Levi–Civita connection with respect to this frame (soω is an
+so(2)-valued 1-form) and by Ω the curvature 2-form. In this 2-frame the curvature 2-form can
+be written as
+Ω =KdA⊗J,
+whereK= 1/r 2 is the sectional curvature, dA is the oriented area form onS, andJ denotes
+the standard skew-symmetric generator of rotations on the two-dimensional tangent plane (i.e.J
+corresponds to a 90◦ rotation in the oriented frame{e1,e 2}). To see this explicitly, evaluateΩ
+on the basis vectorse 1,e 2:
+Ω(e1,e 2) =R(e 1,e 2) = 1
+r2
+ 
+e1⊗e♭
+2−e 2⊗e♭
+1
+
+,
+which, when viewed as an endomorphism of the plane spanned bye1,e 2, equals 1
+r2J (because
+Je1 =e 2 andJe 2 =−e 1 up to sign convention). Thus indeedΩ = 1
+r2 dA⊗J.
+Importantly, sinceJ is the same skew operator at every point of S (the curvature tensor
+is parallel and the sphere is isotropic), the curvature 2-form at distinct points acts by scalar
+multiples of the same endomorphismJ. Consequently, the family of curvature endomorphisms
+{Ωy : y∈S} commutes pairwise, because they are all scalar multiples of a single fixed
+skew-symmetric operatorJ.
+Step 5: exponentiation of the integrated curvature (nonabelian Stokes).In general, holon-
+omy is given by the path-ordered exponential (parallel-transport solution) along the boundary
+41
+
+===== PAGE 42 =====
+curve, and the Ambrose–Singer theorem expresses holonomy in terms of the curvature 2-form
+integrated over a spanning surface, but in the non-abelian case, one must use path-ordering
+/ surface-ordered exponentials. However, when the curvature 2-form takes values in a one-
+dimensional abelian subalgebra (spanned by a single operatorJ) The curvature forms commute,
+and path-ordering is unnecessary. Concretely, because for all y∈S we have Ωy =ϕ(y)J
+with scalar functionϕ(y) = 1
+r2 (density ofdAaty) , the surface integral is an element of the Lie
+algebra generated byJ:
+Z
+S
+Ω =
+Z
+S
+ϕ(y) dA(y)
+
+J=
+A(Γ)
+r2
+
+J,
+whereA(Γ) =
+R
+S dA is the oriented area ofS. Because all terms in the surface integral commute
+(they are scalar multiples ofJ), the holonomy reduces to the simple exponential of the integrated
+curvature:
+PΓ = exp
+Z
+S
+Ω
+
+= exp
+A(Γ)
+r2 J
+
+.
+This equality reflects that the surface-ordered exponential equals the ordinary exponential when
+the integrand takes values in an abelian subalgebra; see Ambrose–Singer [2] and Kobayashi–
+Nomizu [24] for the general justification of this reduction.
+Step 6: explicit matrix form and operator-norm bound.On the two-dimensional tangent
+plane, the operatorJis (up to basis choice) the2×2skew matrix
+J∼
+ 
+0−1
+1 0
+!
+,
+soexp(θJ)is the rotation matrix by angleθ:
+exp(θJ) =
+ 
+cosθ−sinθ
+sinθcosθ
+!
+.
+In our situation θ=A(Γ)/r 2. Therefore PΓ acts on the tangent plane by rotation through
+angleθ and acts trivially on the orthogonal complement, so as an endomorphism ofTxSm
+r it is
+block-diagonal with a2×2rotation block and an identity block elsewhere.
+Hence
+PΓ−I(on the 2-plane)=
+ 
+cosθ−1−sinθ
+sinθcosθ−1
+!
+.
+The operator norm of this 2×2 matrix (induced by the Euclidean norm / Riemannian inner
+product) equals the spectral radius here and can be computed explicitly. The eigenvalues of the
+rotation minus identity aree±iθ−1, whose moduli are|e ±iθ−1|= 2|sin(θ/2)|. Thus
+∥PΓ−I∥ op = 2
+ sinθ
+2
+ = 2 sin
+A(Γ)
+2r2
+
+,
+where we used 0≤A(Γ)≤2πr 2 and henceθ/2∈[0,π] so the sine is nonnegative. This proves
+the exact equality in the first displayed inequality.
+Finally, using the elementary bound 2 sin(t/2)≤t for allt≥0 (equivalently sinu≤u ),
+we obtain
+∥PΓ−I∥ op≤ A(Γ)
+r2 .
+42
+
+===== PAGE 43 =====
+Combining with the reduction in Step 1 gives the claimed inequality
+∥Pγ1−Pγ2∥op≤2 sin
+A(Γ)
+2r2
+
+≤ A(Γ)
+r2 .
+Step 7: spherical-cap area bound.It remains to bound A(Γ) when Γ lies in a geodesic ball of
+radiusρ<πr/2. The area of a spherical cap of geodesic radiusρon the sphereS m
+r equals
+Area(cap of radiusρ) = 2πr 2 
+1−cos(ρ/r)
+
+.
+Using the elementary inequality1−cosu≤ 1
+2u2 valid for all realu, we obtain
+A(Γ)≤2πr 2 
+1−cos(ρ/r)
+
+≤2πr 2· 1
+2
+ ρ
+r
+2
+=πρ 2.
+Substituting this bound into the A(Γ)
+r2 upper bound yields
+∥Pγ1−Pγ2∥op≤ A(Γ)
+r2 ≤ πρ2
+r2 ,
+which is (33).
+This completes the rigorous proof of Proposition 3.
+Note that Proposition 3 refines the order-of-magnitude control given by Lemma 4 to an
+explicit constant useful in statistical bounds.
+Corollary 3(Exact order of geometric bias on spheres).Let M=S m
+r and suppose supp(µ)⊂
+B(x0,ρ)withρ<πr/2. Then there exist constantsc 1,c 2 >0such that
+c1
+ρ2
+r2 ≤sup
+P∈P
+∥m(P)−m⋆∥ ≤c 2
+ρ2
+r2.
+C.2 Minimax lower bound: inevitability of holonomy bias
+We now show that the curvature–holonomy bias term identified in Theorem 3 isinformation-
+theoretically unavoidable. In particular, no estimator can achieve an error rate better than the
+sum of the stochasticn−1/2 term and the deterministicO(κD2) holonomy term. Thus, our upper
+bounds are minimax-optimal up to universal constants.
+Theorem 9(Minimax lower bound matching holonomy bias).Let (M,g) be a complete d-
+dimensional Riemannian manifold with sectional curvature bounded by|K|≤κ on a geodesic
+ballB(x0,D) , and let (E,π,M) be a rank-k vector bundle equipped with a bundle metric and
+a compatible metric connection∇. Letµ be any probability measure supported onB(x0,D) .
+(Lower-curvature assumption for the geometric term.)For the holonomy lower bound in Step 2
+of the proof to hold, we additionally assume either (a)E=TM with the Levi–Civita connection
+and the sectional curvature satisfies K≥κ − >0 onB(x0,D) (pinched positive curvature),
+or (b) (M,g) has constant sectional curvature κ >0 (e.g., the round sphere). Under either
+condition, the bundle curvature satisfies∥Ωy∥op≥c′κfor a dimensional constantc ′ >0.
+FixB >0, and letSB be the class of measurable sectionss :M→E satisfying∥s(x)∥Ex≤
+B for allx in the support ofµ. Let ˆmn =ϕ(Y 1,...,Y n) be any estimator in the class of transport-
+based estimators, i.e., measurable functions of the transported observations
+Yi :=P Xi→x0s(Xi)∈E x0, i= 1,...,n,
+43
+
+===== PAGE 44 =====
+under some admissible transport ruleP∈P, of the transported mean
+m⋆(s) :=E
+
+PX→x0s(X)
+
+∈E x0, X∼µ.
+Then there exists a universal constantc>0such that
+inf
+ˆmn
+sup
+s∈SB
+Es
+
+∥ˆmn−m⋆(s)∥Ex0
+
+≥c
+ B√n +BκD 2
+
+,
+where Es denotes expectation under the law induced by s, and the infimum is taken over all
+transport-based estimators.
+Remark 5.The curvature bound κ in Theorem 9 denotes the infimum of all valid sectional
+curvature upper bounds onB(x0,D) , i.e., the intrinsic local curvature scale of the manifold
+over the data support. It is a fixed geometric quantity determined by (M,g) and is not a free
+parameter under the analyst’s control. In particular, enlargingκ beyond this intrinsic value
+would not violate the assumption but would only inflate the lower bound, making the stated
+bound meaningful only at the tightest admissibleκ.
+Furthermore, this lower bound applies within the class of transport-based estimators and
+identifies a structural limitation of alignment-based pipelines. It does not constitute a universal
+minimax lower bound over all conceivable estimators: for instance, an extrinsic estimator
+that ignores fiber structure may avoid the holonomy term, but at the cost of not producing
+a geometrically meaningful section-valued output. The class of transport-based estimators
+is the natural one for geometric ML pipelines such as tangent-space aggregation and gauge-
+equivariant models, where observations must be aligned to a common fiber before any pooling
+or averaging operation.
+Proof. The proof proceeds by a standard two-point minimax argument (Le Cam’s method;
+see, e.g., [25, 37]), combined with an explicit geometric construction that induces holonomy
+separation. We treat the stochastic and geometric contributions separately and then add the
+resulting lower bounds.
+Step 1: Reduction to a two-point testing problem.Let s0,s 1∈S B be two sections. By
+Le Cam’s inequality (see, e.g., [25, 37]), for any estimatorˆmn,
+sup
+s∈{s0,s1}
+Es∥ˆmn−m⋆(s)∥ ≥
+1
+2∥m⋆(s0)−m ⋆(s1)∥
+
+1−TV(P (n)
+s0 ,P (n)
+s1 )
+
+,(35)
+where P(n)
+s denotes the joint law of then samples under sections, and TV denotes total variation
+distance. Thus it suffices to constructs 0,s 1 such that:
+1.∥m ⋆(s0)−m ⋆(s1)∥≳B(κD 2 +n−1/2),
+2.TV(P (n)
+s0 ,P (n)
+s1 )≤ 1
+2.
+44
+
+===== PAGE 45 =====
+Step 2: Construction of sections with controlled holonomy.Choose two points x1,x 2∈
+B(x0,D) such that the geodesic triangle (x0,x 1,x 2) encloses an areaA≍D 2; this is possible
+forD small enough since the area of a geodesic triangle with sides of orderD on a manifold
+with|K|≤κ satisfiesA≥c 0κD2 for a dimensional constantc0 >0 wheneverκD2 is small
+(see, e.g., [7, Ch. 12]. Let Γ be the closed loop obtained by traversing x0→x 1→x 2→x 0
+along minimizing geodesics.
+By the Ambrose–Singer theorem [2, 24], the holonomy aroundΓsatisfies
+PΓ = exp
+Z
+Σ
+Ω
+
+,
+where Σ is any smooth surface spanning Γ and Ω is the curvature 2-form of∇. Since∥Ωy∥op≥
+c′κ fory∈B(x 0,D) (the bundle curvature is bounded below by the sectional curvature when
+E=TMwith the Levi–Civita connection), andArea(Σ)≍D 2, we obtain
+
+
+
+Z
+Σ
+Ω
+
+
+
+op
+≥c ′κ·A≥c 1κD2.
+ForκD2 small, the elementary bound∥eA−I∥ op≥∥A∥ op− 1
+2∥A∥2
+op≥ 1
+2∥A∥op, valid for any
+skew operatorAwith∥A∥ op≤1, gives
+∥PΓ−I∥ op =
+
+
+
+exp
+Z
+Σ
+Ω
+
+−I
+
+
+
+op
+≥ 1
+2
+
+
+
+Z
+Σ
+Ω
+
+
+
+op
+≥ c1
+2 κD2.
+Absorbing 1
+2 into the constant, we write∥P Γ−I∥ op≥c 1κD2.
+Fix a unit vectorv∈E x0 and define two sections by
+s0(x)≡BP x0→xv, s 1(x)≡BP x0→x(Uv),
+where U :=P Γ ∈O(E x0). Both sections satisfy ∥si(x)∥Ex =B for all x, since parallel
+transport is an isometry.
+Step 3: Separation of population means.By definition,
+m⋆(s0) =Bv, m ⋆(s1) =BUv.
+Therefore,
+∥m⋆(s0)−m ⋆(s1)∥=B∥(I−U)v∥ ≥
+B∥U−I∥ op ≥c 1BκD2,(36)
+where the first inequality uses∥(I−U)v∥≥∥I−U∥ op applied to the unit vectorv, and the
+second uses the holonomy lower bound from Step 2.
+45
+
+===== PAGE 46 =====
+Step 4: Control of statistical indistinguishability.Under sj, the transported observations
+Yi =P Xi→x0sj(Xi) are i.i.d. with∥Yi∥≤B almost surely. The two laws differ only by the
+fixed orthogonal transformationU=P Γ: ifY (0)
+i ∼P s0 thenY (1)
+i =UY (0)
+i ∼P s1.
+By tensorization of KL divergence for product measures and Pinsker’s inequality [32],
+TV(P(n)
+s0 ,P (n)
+s1 )≤
+rn
+2 KL(Ps0∥Ps1),
+where we used KL(P(n)
+s0∥P(n)
+s1 ) =nKL(P s0∥Ps1). For two distributions on a bounded domain
+with means differing byδ=∥m ⋆(s0)−m ⋆(s1)∥ and per-coordinate variance at mostB2, the
+KL divergence satisfies
+KL(Ps0∥Ps1)≤ δ2
+2B2
+(see [37], Lemma 2.6). Substituting,
+TV(P(n)
+s0 ,P (n)
+s1 )≤
+r
+nδ2
+4B2 =
+√nδ
+2B .
+This is at most 1
+2 wheneverδ≤B/ √n, i.e.,∥m ⋆(s0)−m ⋆(s1)∥≤B/ √n.
+Step 5: Conclusion by balancing.We combine the geometric and stochastic contributions
+via two separate applications of Le Cam’s inequality.
+Geometric regime.Use the sections s0,s 1 from Steps 2–3, giving δgeo :=∥m ⋆(s0)−
+m⋆(s1)∥≥c 1BκD2. ProvidedκD 2≤1/(2c 1
+√n), the TV bound of Step 4 gives
+TV(P(n)
+s0 ,P (n)
+s1 )≤
+√n·c 1BκD2
+2B = c1
+√nκD2
+2 ≤ 1
+4,
+so that1−TV≥ 3
+4. Le Cam’s inequality then gives
+inf
+ˆmn
+sup
+s
+Es∥ˆmn−m⋆(s)∥ ≥ 1
+2·c 1BκD2· 3
+4 ≥ 3c1
+8 BκD2.
+Stochastic regime.Construct s0,s 1∈S B differing only in mean byδsto :=B/√n, e.g., take
+s1(x) =s 0(x) + (δsto/B)Px0→xw for a fixed unit vectorw∈E x0 chosen orthogonal tov. Then
+the TV bound of Step 4 gives
+TV(P(n)
+s0 ,P (n)
+s1 )≤
+√n·δ sto
+2B = 1
+2,
+so1−TV≥ 1
+2. Le Cam’s inequality gives
+inf
+ˆmn
+sup
+s
+Es∥ˆmn−m⋆(s)∥ ≥ 1
+2· B√n· 1
+2 = B
+4√n.
+Combining.Since the two pairs (s0,s 1) are drawn fromSB independently of each other,
+both lower bounds hold simultaneously for the worst-case risk overSB. Adding and absorbing
+all numerical constants into a single universalc>0yields
+inf
+ˆmn
+sup
+s∈SB
+Es∥ˆmn−m⋆(s)∥ ≥c
+ B√n +BκD 2
+
+.
+46
+
+===== PAGE 47 =====
+Remark 6.This lower bound applies within the class of transport-based estimators and identifies
+a structural limitation of alignment-based pipelines. It does not constitute a universal minimax
+lower bound over all conceivable estimators: for instance, an extrinsic estimator that ignores
+fiber structure may avoid the holonomy term, but at the cost of not producing a geometrically
+meaningful section-valued output.
+C.3 Minimax lower bound onTS 2: sharpness of holonomy bias
+We now specialize the general minimax lower bound to the tangent bundle of the round sphere
+and show that the curvature-induced bias term identified in Proposition 3 isunavoidable. Because
+holonomy on the sphere admits an exact formula, this result is fully explicit and sharp.
+Theorem 10(Minimax lower bound on TS 2
+r ).Let S2
+r be the round two-dimensional sphere of
+radiusr >0 with its Levi–Civita connection, and letµ be any probability measure supported in
+a geodesic ballB(x 0,D)⊂S 2
+r withD <πr/2. LetE=TS 2
+r be the tangent bundle.
+FixB >0 , and let SB denote the class of measurable tangent-vector fields (sections)
+s :S2
+r→TS 2
+r satisfying
+∥s(x)∥TxS2r≤Bfor allx∈supp(µ).
+For any estimatorˆmn of the transported mean
+m⋆(s) :=E
+
+PX→x0s(X)
+
+∈T x0S2
+r, X∼µ,
+there exists a universal constantc>0such that
+inf
+ˆmn
+sup
+s∈SB
+Es
+
+∥ˆmn−m⋆(s)∥Tx0S2r
+
+≥c
+ B√n +B D2
+r2
+
+.
+Proof. The argument combines an exact holonomy computation onS2
+r with a two-point minimax
+lower bound.
+Step 1: Exact holonomy on the sphere.Let Γ be a closed, piecewise-smooth loop on S2
+r
+bounding an oriented surface of areaA(Γ). Parallel transport around Γ acts onTx0S2
+r as a planar
+rotation by angle
+θ(Γ) = A(Γ)
+r2 ,
+see classical results in Riemannian geometry. Consequently,
+∥PΓ−I∥ op = 2 sin
+θ(Γ)
+2
+
+= 2 sin
+A(Γ)
+2r2
+
+.
+Choose pointsx1,x 2∈B(x 0,D) such that the geodesic triangle (x0,x 1,x 2) encloses area
+A(Γ)≍D 2. Then, forD≪r,
+∥PΓ−I∥ op≥c 1
+D2
+r2
+for a numerical constantc 1 >0.
+47
+
+===== PAGE 48 =====
+Step 2: Construction of two tangent fields.Fix a unit vector v∈T x0S2
+r . Define two sections
+s0,s 1∈S B by
+s0(x) =BP x0→xv, s 1(x) =BP x0→x(Uv),
+whereU :=P Γ. Since parallel transport is an isometry,∥si(x)∥=B for allx, hences0,s 1∈S B.
+Step 3: Separation of population means.Transporting back toT x0S2
+r ,
+m⋆(s0) =Bv, m ⋆(s1) =BUv.
+Therefore,
+∥m⋆(s0)−m ⋆(s1)∥=B∥(I−U)v∥≥B∥U−I∥ op≥c 1BD2
+r2 .
+Step 4: Statistical indistinguishability.Under boths 0 ands 1, the transported observations
+Y (j)
+i =P Xi→x0sj(Xi)
+satisfy∥Y (j)
+i ∥≤B almost surely. Moreover, the two distributions differ only by the fixed
+rotationU.
+For any estimatorˆmn, Le Cam’s two-point inequality yields
+sup
+j∈{0,1}
+Esj∥ˆmn−m⋆(sj)∥
+≥ 1
+2∥m⋆(s0)−m ⋆(s1)∥
+ 
+1−TV(P (n)
+s0 ,P (n)
+s1 )
+
+.
+Since the per-sample variance in every direction is bounded byB2, standard concentration
+or Pinsker-type arguments imply
+TV(P(n)
+s0 ,P (n)
+s1 )≤c 2
+n∥m⋆(s0)−m ⋆(s1)∥2
+B2 .
+Thus, the two distributions are statistically indistinguishable whenever∥m⋆(s0)−m ⋆(s1)∥≲
+B/√n.
+Step 5: Combining stochastic and geometric scales.Balancing the statistical separation
+B/√nwith the geometric separationBD 2/r2 and inserting into Le Cam’s bound gives
+inf
+ˆmn
+sup
+s∈SB
+Es∥ˆmn−m⋆(s)∥ ≥c
+ B√n +B D2
+r2
+
+,
+for a universal constantc>0.
+C.4 Holonomy-aware bias correction (uses Proposition 3)
+Suppose parallel transport along different (measurable) minimizing geodesics induces an op-
+erator bias of size at mostβ (e.g., in the sphere caseβ=πρ 2/r2 from (33)). In that case, the
+48
+
+===== PAGE 49 =====
+empirical mean formed by transported samples may contain a deterministic bias of order at most
+βB, whereBis the uniform section bound in Assumption A2.
+A simple first-order correction subtracts the leading holonomy-induced rotation: for each
+sample, define
+Y′
+i :=
+ 
+I− 1
+2H(Xi)
+
+PXi→x0s(Xi),(37)
+whereH(Xi) denotes the antisymmetric operator obtained by integrating the curvature form
+over a small spanning surface for the (chosen) transport path tox0 (for constant curvatureK,
+one may takeH(Xi) =KΩ i). Under the small-area regime (∥H(Xi)∥op≪1 ) the bias of the
+corrected mean drops fromO(βB) toO(β2B) (first-order cancellation), while the variance term
+used in Theorem 7 remains governed by the same per-sample second moment. Thus, corrected
+empirical means retain the concentration exponents from Theorems 6–7 but with a smaller
+deterministic offset.
+C.5 Applications (explicit references to Theorems 6, 7)
+C.5.1 Geometric graph embeddings
+Letf :V→M be an embedding of graph nodes intoM, and attach local featureszv∈E f(v)
+with∥zv∥≤B . For a small connected subgraph G′ whose image underf lies inB(f(v 0),ρ) ,
+transport features to Ef(v0) and form the mean ¯zG′. By Lemma 1 the transported vectors are
+i.i.d.-like within random neighborhoods and Theorem 6 gives a tail bound of the form
+Pr
+
+∥¯zG′−E¯zG′∥≥ϵ+ ∆ hol
+
+≤2 exp
+
+−|G′|ϵ 2
+8B2
+
+,
+where 1/(8B2) is the explicit constant from Theorem 6 (and ∆hol is the deterministic holonomy
+bias controlled by Proposition 3 or Lemma 4). If variance information is available, replace
+Theorem 6 by Theorem 7 for the sharper sub-Gaussian/sub-exponential interpolation.
+C.5.2 Manifold-valued regression
+In regression setups where residuals are modeled as tangent vectors (i.e., elements of fibers) and
+are supported in small normal neighborhoods, the confidence sets for estimated tangent-mean
+parameters can be constructed using Theorem 7, with a curvature correction term given by
+Proposition 3. Concretely, if residuals satisfy the variance proxy in Assumption A3, then with
+probability at least1−δthe estimation error satisfies
+∥bθ−θ ∗∥≤
+s
+2(σ2 + 2
+3Bϵ)
+n ·Φ−1(1−δ/2) + ∆ hol,
+where the first term follows the Bernstein-type scaling of Theorem 7 and ∆hol is the holonomy
+bias as above.
+C.6 Worked example: tangent bundle of the unit sphereS 2
+Specialize toS2 with radiusr (setr= 1 for the unit sphere). Assume data support is contained
+inB(x0,ρ) withρ < πr
+2 and section bound B from Assumption A2. By Proposition 3, the
+49
+
+===== PAGE 50 =====
+holonomy bias per sample is at mostπρ2/r2, so (πρ2/r2)B bounds the total deterministic offset
+of the empirical mean.
+Applying Theorem 6 (Hoeffding form) to the transported samples (or to the holonomy-
+correctedY ′
+i if correction (37) is used) yields that for anyϵ>0
+Pr
+
+∥ ¯Yn−E ¯Yn∥≥ϵ+ πρ2
+r2 B
+
+≤2 exp
+
+− nϵ 2
+8B2
+
+,
+where 1/(8B2) is the explicit constant from Theorem 6. Thus, to have the holonomy bias
+negligible relative to sampling noise of order n−1/2, it suffices to ensure ρ≪n −1/4 (for unit
+radius).
+C.7 Empirical-process reductions (connection to Lemma 1)
+When the inference target is an entire section rather than pointwise transported values, it is
+natural to work in the Hilbert spaceL2(M,µ;E) as discussed in Section B. Lemma 1 ensures
+measurability of the transported representation and thus validity of empirical-process tools
+(symmetrization, Rademacher complexity, Dudley integrals). One may then either (i) project
+sections onto a finite spectral basis (Laplace–Beltrami eigenfunctions) and apply Theorems 6–7
+to coefficient vectors, or (ii) use vector-valued chaining/Talagrand machinery to produce intrinsic
+concentration bounds; see [13, 26] for the general empirical-process techniques and [ 31] for
+Banach/Hilbert-valued concentration primitives used in Section B.
+D Refined Probabilistic Guarantees for Bundle-Valued Statis-
+tics
+This section extends the probabilistic theory for bundle-valued data developed in Sections B,
+giving fully rigorous, finite-sample and asymptotic results under the geometric assumptions
+already stated. We retain the notation: (E,π,M) is a smooth vector bundle over a compact
+Riemannian manifold (M,g) with Levi–Civita connection∇. For a reference pointx0∈M and
+a measurable section s : M→E , letY=P X→x0s(X)∈E x0, ¯Yn = 1
+n
+Pn
+i=1Yi,m=E[Y],
+where X∼µ on M. We assume ∥Y∥≤B almost surely, E∥Y∥ 2 =: σ2
+L2 <∞ , and that
+Ex0
+∼= Rk is equipped with the Euclidean norm ∥·∥ . Note that σ2
+L2 =E∥Y∥ 2 (the L2
+second moment) is distinct from the operator-norm variance proxyσ2
+op :=∥Cov(Y)∥ op used in
+Theorems 1–2; one always hasσ 2
+op≤σ 2
+L2. In Theorem 14 below,σdenotesσ L2.
+D.1 Transported mean with holonomy bias: dimension-explicit bound
+Theorem 11(Transported mean with holonomy bias: dimension-explicit bound).Let
+∆hol := sup
+x∈supp(µ)
+∥Pγx− ePγx∥opB,
+wherePγx is the chosen minimizing-geodesic transport and ePγx a canonical reference transport
+rule, and letm⋆ :=E[ ePX→x0s(X)] be the transported mean under the canonical rule. Then for
+50
+
+===== PAGE 51 =====
+everyε>0and dimensionk≥1,
+Pr
+
+∥ ¯Yn−m⋆∥≥ε+ ∆ hol
+
+≤2·5 k exp
+ 
+− nε2
+8(σ2 + 2Bε
+3 )
+!
+.(38)
+Consequently, for anyδ∈(0,1), with probability at least1−δ,
+∥ ¯Yn−m⋆∥≤σ
+r
+8 log(10k/δ)
+n + 4B
+3
+log(10k/δ)
+n + ∆hol.(39)
+Proof. WriteYi = eYi +d i where eYi := ePXi→x0s(Xi) are the observations transported under
+the canonical rule anddi := (PXi→x0− ePXi→x0)s(Xi) is the per-sample transport discrepancy.
+By the definition of ∆hol, we have∥di∥≤∆ hol almost surely, and hence∥ ¯dn∥≤∆ hol and
+∥Ed∥≤∆ hol almost surely.
+Sincem ⋆ =EeY, we decompose
+¯Yn−m⋆ = ( ¯eYn−EeY) + ( ¯dn−Ed),
+where the second term satisfies∥ ¯dn−Ed∥≤2∆ hol almost surely. By the triangle inequality,
+{∥ ¯Yn−m⋆∥≥ε+ ∆ hol} ⊆
+n
+∥ ¯eYn−EeY∥≥ε
+o
+.
+It therefore suffices to bound the probability of the right-hand event. LetSn =Pn
+i=1(eYi−EeY) .
+For each v∈S k−1, define Z(v)
+i =⟨v, eYi−EeY⟩ . Since eP is an isometry,∥eYi∥≤B almost
+surely (Assumption 2), so EZ(v)
+i = 0,|Z(v)
+i |≤2B , and Var(Z(v)
+i )≤σ 2. The scalar Bernstein
+inequality [13] gives
+Pr
+ nX
+i=1
+Z(v)
+i ≥t
+
+≤exp
+ 
+− t2
+2(nσ2 + 4Bt
+3 )
+!
+.
+For a 1
+2-netNofS k−1 with|N|≤5 k and the standard bound∥x∥≤2 max v∈N⟨v,x⟩,
+Pr(∥Sn∥≥t)≤Pr
+
+∃v∈N :⟨v,Sn⟩≥t/2
+
+≤5 k exp
+ 
+− t2
+8(nσ2 + 2Bt
+3 )
+!
+.
+Settingt=nε , dividing byn, and applying the same bound for both tails yields (38). Setting
+the right-hand side equal toδand solving forεyields (39).
+Remark 7.Equation (3) of the main text bounds ∆hol≤(ζD 2 + 1
+3ζ1D3)B in terms of the
+bundle curvatureζ and diameterD; onS2
+r , Proposition 1 sharpens this to∆hol≤(πρ 2/r2)B. If
+k is fixed, the factor 5k is a harmless constant; the form (38) is dimension-explicit and recovers
+Theorems 1–2 when∆ hol = 0.
+51
+
+===== PAGE 52 =====
+D.2 Central Limit Theorem in the reference fiber
+Theorem 12(CLT for transported empirical mean).Assume minimizing geodesics x→x 0 are
+unique on supp(µ) so that the transported variablesYi are i.i.d. and satisfy E∥Y∥ 2 <∞ . Let
+m⋆ =E[Y]∈E x0 andΣ = Cov(Y)∈R k×k. Then,
+√n( ¯Yn−m⋆)
+d
+− →N(0,Σ).
+Remark 8.This theorem proves the CLT for the mean m⋆ =E[Y] defined by afixed canonical
+transport rule. Theorem 5 of the main body additionally handles the case where the popula-
+tion mean is only defined up to holonomy ambiguity: when ∆hol =o(n −1/2), the holonomy
+bias is negligible and the CLT holds relative to a well-defined common quantity. The sphere
+specialisation with shrinking support (ensuring∆ hol→0) is Corollary 5.
+Proof. For any directionv∈R k, the projection is⟨v,√n( ¯Yn−m⋆)⟩= 1√n
+Pn
+i=1⟨v,Yi−m⋆⟩.
+Since the centered summands are i.i.d. with mean zero and variance Var(⟨v,Yi−m ⋆⟩) =
+v⊤Σv <∞, the univariate Lindeberg–Feller CLT implies:
+⟨v,√n( ¯Yn−m⋆)⟩
+d
+− →N(0,v⊤Σv).
+The Cram ´er–Wold device then implies joint convergence to N(0,Σ) in the k-dimensional
+Hilbert spaceE x0.
+D.3 Concentration in the section spaceL 2(M,µ;E)
+Theorem 13(Hilbert-valued empirical process bound).Let F⊂L 2(M,µ;E) satisfy∥f(x)∥≤
+Ba.s. and define
+Rn(F) :=E
+h
+sup
+f∈F
+
+
+
+ 1
+n
+nX
+i=1
+εif(Xi)
+
+
+
+L2
+i
+,
+whereεi are i.i.d. Rademacher variables. Then for allδ∈(0,1),
+Pr
+ 
+sup
+f∈F
+∥bfn−Ef∥ L2 >2R n(F) +B
+r
+2 log(2/δ)
+n
+!
+≤δ.
+Proof.By symmetrization (see [27], Ch. 4),
+Esup
+f∈F
+∥bfn−Ef∥ L2≤2R n(F).
+For bounded differences, changing a singleXi alters each term by at most 2B/n inL2-norm,
+hence McDiarmid’s inequality (Theorem 3.1 in [13]) gives
+Pr(Φ−EΦ≥t)≤exp
+ 
+−nt2
+2B2
+!
+,
+Φ := sup
+f∈F
+∥bfn−Ef∥ L2.
+Settingt=B
+p
+2 log(2/δ)/nand combining with the expectation bound yields the result.
+52
+
+===== PAGE 53 =====
+D.4 Robust median-of-means bound
+Theorem 14(Median-of-means estimator).Let E∥Y∥ 2 <∞ and divide the n samples into
+K=⌈2 log(2/δ)⌉ blocks of sizem=⌊n/K⌋ . For each blockBj set ¯Y (j) = 1
+m
+P
+i∈BjYi and let
+eYMoM be their geometric median. Then with probability≥1−δ,
+∥eYMoM−m∥≤6σn −1/2.
+Proof. Writem=⌊n/K⌋ and let mj denote the size of block Bj; then m≤m j≤m+ 1
+for all j, and m≥n/(2K) becauseK≤n/2 for all relevant n (otherwise the statement is
+trivial). Since the block means ¯Y (j) have expectationm and variance proxyσ2 in the sense of
+Assumption A3,
+E∥ ¯Y (j)−m∥ 2 =E
+
+
+
+ 1
+mj
+X
+i∈Bj
+(Yi−m)
+
+
+
+2
+≤ σ2
+mj
+≤ σ2
+m.
+By Chebyshev’s inequality,
+Pr
+
+∥ ¯Y (j)−m∥≥ 2σ√m
+
+≤ 1
+4.
+Call a blockgoodif ∥ ¯Y (j)−m∥≤2σ/ √m. If G denotes the number of good blocks, then
+EG≥(3/4)K . Applying Hoeffding’s inequality to the Bernoulli indicators of the good blocks
+gives
+Pr(G≤K/2)≤exp(−K/8)≤δ/2
+becauseK=⌈2 log(2/δ)⌉.
+On the event{G≥K/2} , at least half of the points ¯Y (1),..., ¯Y (K) lie in the Euclidean
+ballB(m,2σ/√m)⊂E x0. By Proposition 1 of [29], the geometric median of any multiset of
+points containing at least K/2 points in a ball B(m,r) lies in B(m,2r) . Applying this with
+r= 2σ/√myields
+∥eYMoM−m∥ ≤4 σ√m wheneverG≥K/2.
+It remains to expressm in terms ofn. Since m=⌊n/K⌋≥n/(2K) andK= 2 log(2/δ)
+up to+1,
+1√m ≤
+r
+2K
+n ≤
+r
+6 log(2/δ)
+n ,
+where we usedK≤3 log(2/δ)for allδ <1. Hence
+∥eYMoM−m∥ ≤4σ
+r
+6 log(2/δ)
+n ≤6σn −1/2,
+because the constant 6 dominates 4
+p
+6 log(2/δ) wheneverK=⌈2 log(2/δ)⌉ (exact constants
+are easily absorbed). Combining this withPr(G≤K/2)≤δ/2 gives the stated1−δ bound.
+53
+
+===== PAGE 54 =====
+D.5 Corollaries and geometric specialization
+Corollary 4(Sphere Sm
+r ).If M=S m
+r and supp(µ) lies in a geodesic ball of radiusρ<πr/2 ,
+then∆ hol≤(πρ 2/r2)Band for allε>0,
+Pr
+
+∥ ¯Yn−m∥≥ε+ πρ2
+r2 B
+
+≤2·5 k exp
+
+− nε2
+8(σ2+ 2Bε
+3 )
+
+.
+Proof. SinceM=S m
+r and supp(µ)⊂B(x 0,ρ) withρ < πr/2, any point x admits at most
+two minimizing geodesics tox0. By Proposition 3, for any such pairγ1,γ 2 the associated loop Γ
+satisfies
+∥Pγ1−Pγ2∥op ≤ A(Γ)
+r2 ≤ πρ2
+r2 ,
+because a geodesic digon of diameterρ onSm
+r has area at mostπρ2. Multiplying by∥s(x)∥≤B
+yields the holonomy bound
+∆hol ≤ πρ2
+r2 B.
+Now write Yi =P Xi→x0s(Xi) and let m⋆ =E[Y] . The bias–variance decomposition of
+Theorem 8 shows that
+∥ ¯Yn−m∥ ≤ ∥¯Yn−m⋆∥+ ∆ hol,
+and therefore
+Pr
+
+∥ ¯Yn−m∥≥ε+ ∆ hol
+
+≤Pr
+
+∥ ¯Yn−m⋆∥≥ε
+
+.
+To bound the right-hand side, note that eachYi takes values in the fixed Hilbert spaceEx0,
+satisfies∥Yi−m ⋆∥≤2B , and has variance proxy σ2 as in Assumption A3. Applying the
+Bernstein inequality of Theorem 7 to the one-dimensional projections⟨u, ¯Yn−m⋆⟩ and then
+combining these via the1/2-net argument of Lemma 5 (whose net has size at most5 k) gives
+Pr
+
+∥ ¯Yn−m⋆∥≥ε
+
+≤2·5 k exp
+
+− nε2
+8(σ2+ 2Bε
+3 )
+
+.
+Substituting the bound on∆ hol obtained above completes the proof.
+Corollary 5(Asymptotic normality without bias).If ρn→0 withρ2
+nn1/2→0 , then ∆hol =
+o(n−1/2)and √n( ¯Yn−m)
+d
+− →N(0,Σ).
+Proof.Immediate from Corollary 4 and Theorem 12.
+Remark 9.The condition ρ2
+nn1/2→0 , equivalentlyρn =o(n−1/4), is a fast support-shrinkage
+regime that rules out fixed-support estimation. It is relevant forlocalnonparametric estimation
+but not for global averages over a manifold region of fixed radius. In fixed-support settings,
+the error floor ∆hol≍πρ 2B/r2 persists for all n, and the crossover sample size n×(δ) from
+Section 6.4 marks the point beyond which increasingnalone cannot reduce total error.
+54
+
+===== PAGE 55 =====
+E Auxiliary Lemmas
+The following auxiliary results provide the geometric and analytic tools used in the proofs of
+Theorems 11 and 14. Lemma 5 formalizes the Euclidean covering-net argument underlying the
+dimension-explicit Bernstein bound, while Lemma 6 establishes the quantitative stability of the
+geometric median when a majority of sample blocks are close to the population mean. Both
+statements are included for completeness and to make the presentation self-contained.
+E.1 Covering-net bound on Euclidean norms
+Lemma 5(Euclidean net bound).Let x∈R k and letN be a 1
+2-net of the unit sphereSk−1 in
+the Euclidean norm, i.e., for everyv∈S k−1 there existsu∈Nwith∥u−v∥≤ 1
+2. Then
+∥x∥≤2 max
+u∈N
+⟨u,x⟩,(40)
+and a1/2-net can be constructed with cardinality|N|≤5 k.
+Proof. Letv∗ =x/∥x∥ be the unit vector in the direction ofx. By definition of the net, there
+existsu∈N with∥u−v ∗∥≤ 1
+2. By the polarization identity for unit vectors in a Hilbert
+space,⟨u,v∗⟩= 1− 1
+2∥u−v ∗∥2 (which follows from ∥u∥2 =∥v ∗∥2 = 1 and expanding
+∥u−v ∗∥2 = 2−2⟨u,v ∗⟩). Therefore,
+⟨u,v∗⟩= 1− 1
+2∥u−v ∗∥2≥1− 1
+2· 1
+4 = 7
+8.
+Hence
+⟨u,x⟩=∥x∥⟨u,v ∗⟩≥ 7
+8∥x∥.
+Thus maxu∈N⟨u,x⟩≥ 7
+8∥x∥, which implies∥x∥≤ 8
+7 maxu∈N⟨u,x⟩ . Rounding 8
+7 to 2 simplifies
+constants without affecting asymptotic sharpness, yielding (40).
+To bound|N| , consider covering Sk−1 by closed Euclidean balls of radius 1/2 centered
+at points inN . The disjoint balls of radius 1/4 centered at these points lie within the ball
+Bk(0,5/4)of radius5/4inR k. Comparing volumes gives
+|N|vol(B k(0,1/4))≤vol(B k(0,5/4))⇒ |N|≤(5) k.
+Remark 10.The constant 2 in (40) is sufficient for all probabilistic bounds in Theorem 11. A
+sharper bound 8
+7 can be used if desired.
+E.2 Geometric median inequality
+Lemma 6(Deviation bound for the geometric median).Let z1,...,z K∈R k and suppose at
+least a fractionα >1/2 of them lie in the Euclidean ball B(m,r) ={z :∥z−m∥≤r} for
+somem∈R k. Letmed(z 1,...,z K)denote a geometric median, i.e.,
+y∗ := arg min
+y∈Rk
+KX
+j=1
+∥zj−y∥.
+Then
+∥y∗−m∥≤ r
+2α−1 .(41)
+55
+
+===== PAGE 56 =====
+Proof. LetG⊆{1,...,K} be the set of indices of “good” points satisfying ∥zj−m∥≤r ,
+and let B be its complement. Denote y∗ = med(z 1,...,z K). Define the function F(y) =PK
+j=1∥zj−y∥. At any minimizery ∗, the subgradient condition0∈∂F(y ∗)implies
+KX
+j=1
+y∗−zj
+∥y∗−zj∥ = 0.
+(Ify∗ =z j for somej, the corresponding summand is replaced by any subgradient of∥·−z j∥
+aty∗, i.e. any unit vector; the conclusion still holds since such a term contributes at most1 to the
+right-hand sum, and the bound below remains valid.) Letv= (y ∗−m)/∥y∗−m∥(ify ∗ =m,
+the claim is trivial). Taking the inner product of this equality withvgives
+0 =
+KX
+j=1
+⟨(y∗−zj)/∥y∗−zj∥,v⟩=
+X
+j∈G
+⟨uj,v⟩+
+X
+j∈B
+⟨uj,v⟩,
+uj := y∗−zj
+∥y∗−zj∥.
+Forj∈G, the triangle inequality implies
+∥y∗−zj∥≤∥y ∗−m∥+r,
+⟨uj,v⟩= ⟨y∗−zj,v⟩
+∥y∗−zj∥ ≥∥y∗−m∥−r
+∥y∗−m∥+r .
+Forj∈B, we have⟨u j,v⟩≥−1. Hence
+0≥|G| ∥y∗−m∥−r
+∥y∗−m∥+r −|B|.
+Using|G|≥αKand|B|≤(1−α)Kgives
+α∥y∗−m∥−r
+∥y∗−m∥+r ≤1−α.
+Solving for∥y∗−m∥yields (41).
+Remark 11.In the median-of-means estimator (Theorem 14), α≥3/4 and r= 2σ/ √m,
+so(41)gives∥y ∗−m∥≤4σ/ √m, which agrees with the constant used in the main text.
+F Examples of Bundle–Valued Statistics in Applications
+This appendix presents representative examples in which statistical estimands arise naturally as
+sections of a vector bundle (E,π,M) over a Riemannian manifold. The constructions mirror
+the theoretical framework developed in Sections III–IV and reflect applications documented in
+geometric statistics [8–10], shape analysis [19], geometric deep learning [15], pullback-bundle
+learning [33], and the geometric analysis of bundle transport [24, 28].
+Throughout,Px→x0 denotes parallel transport along the minimizing geodesic fromx tox0,
+Y=P X→x0s(X) is the transported random section as in (1), and ∆hol denotes the holonomy-
+induced transport ambiguity described in Lemma 3 and Proposition 3.
+56
+
+===== PAGE 57 =====
+F.1 Tangent–Vector Residuals in Manifold Regression
+Tangent-vector regression models frequently arise in intrinsic statistical analysis on manifolds
+[8]. Given a predictor X∈M , a model produces a prediction ˆm(X)∈M , and the residual
+sections(x) = logx( ˆm(x))∈TxM lies in the tangent bundleE=TM . Under the normal-ball
+assumption (Assumption 1), the transported residualY=P x→x0s(x)∈T x0M enables intrinsic
+regression analysis in a fixed Hilbert space. The concentration theory of Theorems 2–3 therefore
+applies directly, with sectional-curvature effects governed by the geometric bounds of Lemma 3.
+F.2 Tangent Bundle of the SphereS 2
+Directional and spherical statistics provide classical examples of tangent-bundle–valued data
+[19]. LetM=S 2
+r with the Levi–Civita connection. ForX∈B(x 0,ρ) ,ρ<πr/2 , the holonomy
+discrepancy between two minimizing geodesics is explicitly bounded by the area formula of
+Proposition 3 (a specialization of Ambrose–Singer holonomy theory [2, 24]). Thus,
+∆hol ≤ πρ2
+r2 B,
+yielding an explicit curvature-dependent bias term in the concentration bounds. This context
+includes geodesic PCA onS2, directional feature representations, and spherical CNN feature
+analysis [15].
+F.3 Grassmann Bundle in Subspace Tracking
+Grassmann manifolds Gr(p,n) carry a natural tangent bundle structure used extensively in shape
+analysis, low-rank learning, and geometric signal processing [ 19]. Tangent vectors s(X)∈
+TXGr(p,n) represent local variations of subspaces, and parallel transport along geodesics is
+given by matrix exponentials. Since the sectional curvature satisfies 0≤K≤2 , Lemma 4
+implies
+∥Pγ1−Pγ2∥op≤CK maxD2, K max = 2,
+yielding explicit constants in the vector-bundle concentration bounds. This setting underlies
+principal geodesic analysis [19] and modern Grassmann machine-learning pipelines.
+F.4 Hyperbolic Embeddings and Negative Curvature
+Hyperbolic manifolds play a prominent role in graph embeddings and hierarchical modeling. In
+Hm, parallel transport is an isometry in the Lorentz model, and the holonomy bound
+∥Pγ1−Pγ2∥op≤Csinh(ρ)|tanh(ρ/2)|≈Cρ 2
+for smallρ matches the curvature-scaling predicted by Lemma 4 withK=−1 . These construc-
+tions appear in modern hyperbolic learning architectures and pullback-bundle formalisms in
+geometric ML [33].
+57
+
+===== PAGE 58 =====
+F.5 Full-Section Estimation inL 2(M,µ;E)
+When the target is the entire section s∈L 2(M,µ;E) rather than the transported pointwise
+values, Lemma 1 ensures measurability of the transported representation, enabling empirical-
+process arguments. Standard Hilbert-space techniques [13, 27, 31]—together with the geometric
+reduction of Section III—yield intrinsic concentration bounds for spectral coefficients ofs after
+projection onto a Laplace-Beltrami basis. This generalizes the classical CLT and concentration
+theory for manifold-valued means [9, 10].
+G Holonomy Geometry for Probabilists
+This appendix provides an intuitive, probabilist-friendly treatment of holonomy, summarizing the
+key geometric facts used in Lemma 3 and Proposition 3. Our goal is to explain (i) what holonomy
+is, (ii) why it affects bundle-valued statistics, and (iii) how curvature controls the magnitude of
+holonomy-induced bias ∆hol. All statements here follow directly from the curvature identities
+and holonomy bounds developed in Section III-B and the full geometric proofs in the Appendix
+(see [2, 24, 28]).
+G.1 Parallel transport and path dependence
+Parallel transport Pγ : Eγ(0) →E γ(1) along a smooth curve γ is defined using the metric
+connection∇ on the bundle (E,π,M) ; see Section 1 and the review in [24, 28]. It is an isometry
+for the fiber metric:
+∥Pγv∥γ(1) =∥v∥ γ(0).
+Crucially, parallel transport generally depends on the chosen path. If two curvesγ 1,γ 2 join
+the same endpoints, their transports satisfy
+Pγ1 =P γ2◦P Γ,Γ :=γ 1◦γ−1
+2 ,
+so the discrepancy is encoded by the holonomy mapP Γ around the closed loopΓ.
+The “holonomy ambiguity” entering the statistical theory (Section III-D) is therefore the
+operator-norm difference
+∥Pγ1−Pγ2∥op =∥P γ2◦(P Γ−I)∥ op =∥P Γ−I∥ op,
+becauseP γ2 is an isometry.
+G.2 Curvature controls holonomy (Ambrose–Singer)
+The Ambrose–Singer theorem [2, 24] expresses holonomy entirely in terms of the curvature
+2-formΩof∇:
+PΓ =I+
+Z
+SΓ
+Ω +higher-order terms,
+whereSΓ is any smooth surface spanning the loopΓ. Under a sectional curvature bound|K|≤κ
+on a regionU⊂M, the qualitative estimate proved in Lemma 4 yields
+∥Pγ1−Pγ2∥op ≤CκD 2,
+58
+
+===== PAGE 59 =====
+whereD= diam(U)andCdepends only on dimension and∇.
+Intuitively:curvature measures how much infinitesimal parallelograms fail to close. The
+area of the loop produces a first-order holonomy effect of orderK×Area.
+G.3 Constant-curvature geometries: explicit holonomy
+For constant-curvature manifolds (spheres, projective spaces, hyperbolic spaces), the curvature
+tensor is parallel and the curvature 2-form lies in a 1-dimensional abelian subalgebra. Hence,
+the path-ordered exponential reduces to a closed-form expression; see the complete derivation in
+Proposition 3.
+Spherical case (K= 1/r 2).For x,x 0 in a spherical cap of radius ρ < πr/2, Proposition 3
+gives the exact holonomy:
+∥Pγ1−Pγ2∥op = 2 sin
+A(Γ)
+2r2
+
+≤ A(Γ)
+r2 ≤ πρ2
+r2 ,
+whereA(Γ) is the oriented area of the loop. Thus, the holonomy bias for statistical transport
+satisfies the deterministic bound
+∆hol ≤ πρ2
+r2 B
+when∥s(x)∥≤B(Assumption A2).
+Hyperbolic case (K=−1 ).As shown in Section F.4, small-radius hyperbolic regions satisfy
+∥Pγ1−Pγ2∥op ≤Csinh(ρ)
+ tanh(ρ/2)
+ ≈Cρ 2,
+mirroring the spherical bound with curvature sign reversed.
+Grassmann manifolds (0≤K≤2).Using the canonical metric onGr(p,n), the bound
+∥Pγ1−Pγ2∥op ≤CK maxD2, K max = 2,
+follows from the uniform curvature bound (see Section F.4).
+G.4 Probabilistic meaning of holonomy
+When computing the empirical mean of transported bundle-valued observations
+Yi :=P Xi→x0s(Xi),
+holonomy implies thatPXi→x0 is not unique if multiple geodesics joinXi tox0. Any measurable
+choice gives a valid probability law, but different choices differ by an operator of sizeO(κD2)
+(Lemma 4). Therefore,
+∥Yi−eYi∥=∥(P γi−P eγi)s(Xi)∥≤∆ hol,
+and the empirical mean satisfies a concentration inequality with a deterministic bias ∆hol added
+to the stochastic deviation (Theorems 2–3). Thus, holonomy acts as a systematic geometric bias:
+59
+
+===== PAGE 60 =====
+• curvature creates path–dependence;
+• path–dependence creates transport ambiguity;
+• transport ambiguity creates a deterministic offset.
+G.5 Practical rule-of-thumb for statistical applications
+When the support ofµlies in a ball of radiusDwith|K|≤κ, holonomy bias satisfies
+∆hol≍κD 2B.
+Hence the regime
+κD2≪n−1/2
+ensures that holonomy error is negligible relative to sampling noise. This precisely corresponds
+to the small-area regime derived in the spherical and hyperbolic examples above.
+This appendix summarizes how curvature and holonomy interact to produce the deterministic
+offset in our bundle-valued concentration results, grounding the statistical phenomena in the
+geometric identities of Section C and the explicit holonomy formulas proved in Proposition 3.
+H Numerical Verification of the Holonomy Error Floor
+This appendix provides numerical verification of the key theoretical predictions onS2 (r= 1 ,
+κ= 1 ). The experiments confirm (i) the stochastic error ∥ ¯YA
+n −m ⋆∥ decays as n−1/2 under
+a canonical transport rule, and (ii) switching to an alternative rule introduces a determinis-
+tic holonomy floor ∆hol that does not decay with n, in precise quantitative agreement with
+Proposition 1.
+H.1 Experimental Setup
+Manifold and bundle.Unit sphere S2⊂R 3, round metric (r= 1 ,κ= 1 ), tangent bundle
+E=TS 2, reference pointx 0 = (0,0,1), reference directionv 0 = (1,0,0)∈T x0S2.
+Section.A random unit tangent sections :S2→TS 2 with mean directionv 0 andB= 1:
+s(x) = projTxS2(v0) +σξ x
+∥projTxS2(v0) +σξ x∥,(42)
+whereξx∼N(0,I 3) projected toTxS2 andσ=0.3 . The population mean m⋆ =E[P X→x0s(X)]
+is estimated by Monte Carlo ( nMC = 200,000 ). Base points Xi are drawn uniformly from
+B(x0,ρ)via rejection sampling.
+60
+
+===== PAGE 61 =====
+Table 4: Err(A) (stochastic, decays asn−1/2) and Err(B) (holonomy floor, constant inn) on
+S2 (κ= 1,r= 1,B= 1, 300 trials). The italicized bottom row gives the theoretical prediction
+∆hol =2 sin(πρ2/2)(Proposition 1); it is not an experimental measurement.
+ρ= 0.5ρ= 1.0
+nErr(A) Err(B) Err(A) Err(B)
+100 0.019 0.746 0.023 1.925
+500 0.008 0.747 0.010 1.925
+2 000 0.004 0.746 0.005 1.925
+10 000 0.002 0.747 0.002 1.926
+Theoretical:∆ hol = 2 sin(πρ2/2)(Proposition 1)
+∆hol (theory)n/a 0.765 n/a 2.000
+Transport rules.We compare two measurable rules (cf. Theorem 3):
+• Rule A(canonical): parallel transport along the unique minimizing geodesic from Xi to
+x0 (closed form onS 2). Yields∥ ¯YA
+n −m⋆∥≲n −1/2.
+• Rule B(holonomy-perturbed): Rule A composed with a rotation by θ=πρ 2 inTx0S2,
+simulating an alternative geodesic enclosing area A≈πρ 2. The theoretical holonomy
+norm (Proposition 1) is
+∆hol = 2 sin
+πρ2
+2
+
+≤πρ 2.(43)
+Metrics.Averaged over 300 independent trials:
+Err(A) =∥ ¯YA
+n −m⋆∥,Err(B) =∥ ¯YB
+n −m⋆∥.(44)
+H.2 Stochastic Decay vs. Holonomy Floor
+Table 4 reportsErr(A)andErr(B)forρ∈{0.5,1.0}andn∈{100,500,2000,10000}.
+Discussion. Err(A) decreases by≈
+p
+nnew/nold at each step in the table (the steps are×5,×4,
+×5), confirming then−1/2 rate of Theorems 1–2. Err(B) is constant across alln: the holonomy
+floor is a deterministic geometric quantity unaffected by additional data. The observed plateau
+(0.747 forρ=0.5 ; 1.926 forρ=1.0 ) matches the theoretical prediction (0.765; 2.000) to within
+3.7%, with the residual gap attributable to finite Monte Carlo estimation ofm⋆. This illustrates
+the bias–variance decomposition of Theorem 3:
+∥ ¯YB
+n −m⋆∥ ≤ ∥¯YB
+n −m (B)∥| {z }
+→0
++∥m (B)−m⋆∥| {z }
+≈∆ hol
+,(45)
+where the stochastic term vanishes, and the geometric bias persists.
+61
+
+===== PAGE 62 =====
+Table 5: Holonomy floor Err(B) vs.ρ atn=10,000 (κ=1 ,r=1 ,B=1 , 300 trials). Ratio→1
+confirms the floor equals∆ hol (Proposition 1).Err(A)≈0.002throughout.
+ρ∆ hol Err(A) Err(B)ratio
+0.3 0.282 0.002 0.275 0.977
+0.5 0.765 0.002 0.747 0.976
+0.8 1.689 0.002 1.638 0.970
+1.0 2.000 0.002 1.926 0.963
+H.3 Holonomy Floor Scales asρ 2
+Table 5 reports results at fixedn= 10,000 forρ∈{0.3,0.5,0.8,1.0} , together with the ratio
+Err(B)/∆hol.
+Discussion.The ratio Err(B)/∆hol is consistently near 1, confirming the error floor matches
+Proposition 1. For smallρ, ∆hol≈πρ 2, so the floor scales quadratically in the support radius,
+consistent with theκρ 2Bscaling established in Theorem 3 and Eq. (3).
+H.4 Practical Implications
+Tables 4–5 jointly demonstrate the diagnostic principle of Section 4.1: small Err(A) alongside
+large Err(B) signals holonomy as the error source, not lack of data. The correct remedies are
+geometric:
+• restrict support to a smaller geodesic ball (reduceρ, hence∆ hol≈πρ 2);
+• apply the holonomy correction of Appendix C.4, reducing the floor fromO(ρ2) toO(ρ4);
+• use Rule A (canonical transport), eliminating∆ hol when geodesics are unique.
+Increasingnalone is ineffective oncen>n ×(δ) = 8 log(2/δ)
+π2 (r/ρ)4 (Section 6.4).
+H.5 Reproducibility
+All experiments use pure NumPy; parallel transport on S2 is implemented in closed form
+(no ODE solver). The code is available at https://github.com/swagatam-das/
+bundle-valued-statistics, and reproduces all tables with seednumpy.random.default rng(2024)
+in under two minutes on a standard laptop.
+I Intrinsic concentration for bundle-valued statistics
+The concentration results in Section III are stated after reducing bundle-valued observations to a
+fixed reference fiber. We now show that this reduction isnot essential: the same rates admit an
+intrinsic formulationon the vector bundle itself, with explicit curvature–holonomy correction
+terms. This establishes that concentration is a geometric property of the bundle, not an artifact
+of a chosen trivialization.
+62
+
+===== PAGE 63 =====
+Intrinsic setup.Let (E,π,M) be a rank-k vector bundle over a complete Riemannian man-
+ifold (M,g) , endowed with a bundle metric and a compatible metric connection ∇. Let
+X1,...,X n∼µ be i.i.d. samples onM, and lets :M→E be a measurable section satisfying
+∥s(x)∥Ex≤Bonsupp(µ).
+Define the intrinsic Fr´echet functional
+F(z) :=E
+
+d2
+E(s(X),z)
+
+, z∈E,
+wheredE denotes the bundle distance induced by∇ (i.e. squared norm after parallel transport
+along minimizing geodesics). Let
+z⋆ := arg min
+z∈E
+F(z)
+denote the intrinsic bundle mean, assumed to be unique. Similarly, define the empirical intrinsic
+mean
+ˆzn := arg min
+z∈E
+1
+n
+nX
+i=1
+d2
+E(s(Xi),z).
+Theorem 15(Intrinsic bundle concentration).Assume:
+(i)supp(µ)is contained in a normal ballB(x 0,D)withD <Inj(x 0),
+(ii) sectional curvature satisfies|K|≤κonB(x 0,D),
+(iii)∥s(x)∥ Ex≤Bonsupp(µ).
+Then there exist universal constantsc,C >0such that for allε>0,
+P
+ 
+dE(ˆzn,z⋆)≥ε+CBκD 2
+≤2 exp
+ 
+−cnε 2
+B2
+!
+.
+In particular,
+dE(ˆzn,z⋆) =O P
+ B√n +BκD 2
+
+.
+Proof. We proceed in four logically independent steps, making explicit all reductions and
+stability arguments.
+Step 1: Well-posedness of intrinsic and transported means.By Assumption (i), supp(µ)⊂
+B(x0,D) withD <Inj(x0). Hence for every x∈supp(µ) there exists a unique minimizing
+geodesic γx→x0, and parallel transport Px→x0 : Ex→E x0 is well defined and smooth in x
+(Lemma 1).
+Define the transported random variable
+Y :=P X→x0s(X)∈E x0.
+Since∥s(x)∥Ex≤B and parallel transport is an isometry,∥Y∥≤B almost surely, and therefore
+the Bochner mean
+m⋆ :=E[Y]∈E x0
+63
+
+===== PAGE 64 =====
+exists and is unique.
+Similarly, define the empirical mean
+¯Yn := 1
+n
+nX
+i=1
+PXi→x0s(Xi).
+On the intrinsic side, define the Fr´echet functional
+F(z) :=E[d 2
+E(s(X),z)], z∈E,
+and its empirical counterpart
+Fn(z) := 1
+n
+nX
+i=1
+d2
+E(s(Xi),z).
+By Assumptions (i)–(iii) and standard results on Fr´echet means on Riemannian vector bundles
+(cf. [1, 35]),F is strictly convex on the relevant domain and admits a unique minimizerz⋆, and
+likewiseFn admits a unique minimizerˆzn almost surely.
+Step 2: Exact reduction of intrinsic distance to fiber norm.For any z∈E lying overx0,
+and anyx∈supp(µ), the bundle distance satisfies
+d2
+E(s(x),z) =∥P x→x0s(x)−z∥ 2
+Ex0
+,
+becausedE is defined by parallel transport along the unique minimizing geodesic. Consequently,
+the intrinsic Fr´echet functionals reduce to
+F(z) =E
+
+∥Y−z∥ 2
+,
+Fn(z) =∥ ¯Yn−z∥ 2 + 1
+n
+nX
+i=1
+∥Yi− ¯Yn∥2,
+where the second term does not depend onz. It follows immediately that
+z⋆ =m ⋆,ˆz n = ¯Yn,
+when all parallel transports are taken along the same reference rule.
+Step 3: Concentration in the reference fiber.By Theorem 6 (Hoeffding inequality for
+Hilbert-valued sums), there exist universal constantsc 1,c 2 >0such that for allε>0,
+P
+ 
+∥ ¯Yn−m⋆∥≥ε
+
+≤2 exp
+ 
+−c1nε2/B2
+.
+Step 4: Control of transport ambiguity and intrinsic deviation.The intrinsic estimator
+ˆzn is defined without reference to a fixed transport rule, whereas ¯Yn depends on the choice of
+minimizing geodesics tox0. Let P ref
+x→x0 denote the canonical transport rule used to defineY and
+¯Yn, and letP x→x0 be the (implicit) transport rule induced by the intrinsic minimization.
+64
+
+===== PAGE 65 =====
+By the triangle inequality in the bundle metric,
+dE(ˆzn,z⋆)≤∥ ¯Yn−m⋆∥+ sup
+x∈supp(µ)
+∥(Px→x0−P ref
+x→x0)s(x)∥.
+By Lemma 3 (holonomy bound),
+sup
+x∈supp(µ)
+∥(Px→x0−P ref
+x→x0)s(x)∥≤CBκD 2
+for a universal constantC >0depending only on curvature bounds.
+Combining the above inequalities yields
+P
+ 
+dE(ˆzn,z⋆)≥ε+CBκD 2
+≤2 exp
+ 
+−c1nε2/B2
+,
+which is the claimed bound.
+65

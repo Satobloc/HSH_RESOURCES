@@ -1,0 +1,2618 @@
+===== PAGE 1 =====
+High-Accuracy Semi-Analytical Method for Solving the Problem of Electromagnetic
+Wave Scattering by Arbitrary Ensembles of Parallel Circular Cylinders
+V.V. Ternovski 1,∗ and M.I. Tribelsky 2, 3,†
+1Lomonosov Moscow State University, Faculty of Computational Mathematics and Cybernetics,
+Department of Computational Methods, Leninskie Gory 1,
+bldg. 52, 2nd Education Building, Moscow, 119991, Russia
+2Lomonosov Moscow State University, Faculty of Physics,
+Department of Polymer and Crystal Physics, Leninskie Gory 1, bldg. 2, Moscow, 119991, Russia
+3Center for Photonics and 2D Materials, Moscow Institute of Physics and Technology (MIPT), 141700 Dolgoprudny, Russia
+(Dated: July 8, 2026)
+A method is proposed for solving the two-dimensional problem of electromagnetic wave scattering
+by a cluster of an arbitrary number of parallel, infinitely long, homogeneous, non-overlapping right
+circular cylinders. The cylinders may have arbitrary radii and complex permittivities, and their
+axes, while remaining parallel, may occupy arbitrary positions in the transverse plane. The solution
+is constructed using an analytical expansion of the electromagnetic field in cylindrical harmonics.
+Multiple scattering is taken into account by Graf’s addition theorem, which leads to a system of linear
+equations for the expansion coefficients. This system is solved numerically with condition number
+monitoring and, when necessary, extended-precision arithmetic, followed by a multistage verification
+of convergence. The method provides numerically verified solutions with controlled accuracy over a
+wide range of parameters, including densely packed subwavelength configurations. As an example,
+scattering of a normally incident, linearly polarized monochromatic plane wave by a subwavelength
+cluster of three identical aluminum nanocylinders (nanowires) is studied. The scattering, absorption,
+and extinction cross sections, as well as the scattering indicatrix, are computed and analyzed.
+Streamlines of the Poynting vector field are constructed, demonstrating redistribution of the energy
+flux between the cylinders of the cluster and the formation of localized regions of field enhancement
+near their surfaces.
+Keywords:multiple scattering, Mie theory, cylindrical
+harmonics, addition theorem, trimer, field enhancement,
+Poynting vector, optical theorem, plasmonics, Gaussian
+rational numbers, exact arithmetic.
+I. INTRODUCTION
+Scattering of electromagnetic waves by ensembles of
+parallel cylinders is a classical problem in electrodynam-
+ics. In addition to the purely academic interest it is im-
+portant to design photonic crystals, plasmonic nanostruc-
+tures, optical antennas, and metamaterials [1–3]. For a
+single cylinder, an exact solution is available in the frame-
+work of the Mie multipole expansion.
+For clusters of two or more elements, simple analytical
+solutions are generally unavailable, so numerical methods
+become essential. Numerous freely available and com-
+mercial packages exist for this class of problems. With-
+out discussing their features in detail, we note that any
+finite-difference scheme inevitably approximates both the
+cylinder surfaces and the structure of the electromag-
+netic field. Therefore, when computing near fields in the
+most application-relevant cases, where the field may have
+sharp spatial variations, such schemes either cannot pro-
+vide the required accuracy or imply extremely small-step
+∗ E-mail: vladimir.ternovskii at gmail.com
+† E-mail: mitribel at gmail.com
+discretization, which makes the computations very costly.
+On top of that, in these cases, the question about con-
+vergence of the numerical scheme arises.
+In the present work, we propose an alternative semi-
+analytical approach that addresses this difficulty. The
+method is based on expanding the field in cylindrical
+harmonics about the axis of each cylinder and apply-
+ing Graf’s addition theorem for Bessel and Hankel func-
+tions. The resulting self-consistent system of linear equa-
+tions for the modal coefficients is solved numerically by
+an original technique designed to ensure high accuracy.
+Similar approaches have already been applied to the
+class of problems considered here [4–10]. A major draw-
+back of these methods in modeling resonant and densely
+packed structures is the ill-conditioning of the resulting
+linear systems, which can severely degrade the numerical
+accuracy and slow iterative convergence. The multistage
+adaptive solver developed in the present work is designed
+specifically to overcome this difficulty.
+We emphasize, however, that despite its high accuracy
+and the other advantages discussed below, the proposed
+method is applicable only to a relatively limited class of
+problems similar to those considered here. Its generaliza-
+tion to other situations, with the exception of scattering
+by ensembles of spheres [11], involves considerable dif-
+ficulties. Therefore, it cannot replace existing methods
+with a broader domain of applicability; rather, it can play
+an important role in testing and validating them.
+As an example, we consider the scattering of a nor-
+mally incident, linearly polarized monochromatic plane
+arXiv:2607.06517v1  [physics.optics]  7 Jul 2026
+
+===== PAGE 2 =====
+2
+wave by a symmetric trimer: a cluster of three identi-
+cal aluminum nanocylinders (nanowires) of circular cross
+section whose axes pass through the vertices of an equi-
+lateral triangle lying in the plane perpendicular to these
+axes. This choice is motivated by the fact that aluminum
+is a promising plasmonic material owing to its low dis-
+sipative losses in the UV spectral range [12–14]. The
+symmetric trimer, in turn, has a special place among
+nano-oligomers: despite its relatively simple geometry, it
+has a rich structure of collective modes that are sensi-
+tive to the distance between the cylinders and to their
+radii [15–19].
+The paper is organized as follows. Section II presents
+the derivation of the vector Helmholtz equation and its
+reduction to a two-dimensional scalar problem. The ana-
+lytical treatment of the problem for an arbitrary ensem-
+ble of cylinders, taking into account multiple scattering,
+is given in Sec. III. Section IV briefly summarizes the
+main analytical results. The numerical algorithm, includ-
+ing the four-level adaptive solver for the truncated system
+of linear equations for the modal coefficients, is described
+in Sec. V. The formulas for computing the Poynting vec-
+tor field and its streamlines are given in Sec. VI. Nu-
+merical results for the aluminum trimer are presented in
+Sec. VII, and the conclusions are given in Sec. VIII.
+II. FORMULATION OF THE PROBLEM
+A. Preliminary remarks
+We consider the scattering of a linearly polarized
+monochromatic plane wave propagating in vacuum at
+normal incidence on an ensemble of infinitely long par-
+allel cylinders of circular cross section. Under these as-
+sumptions, the problem is two-dimensional. Since plane
+waves form a complete set of functions, an arbitrary laser
+pulse can be expanded in them. Owing to the linearity
+of the problem with respect to the fieldsEandH, each
+monochromatic component can be considered indepen-
+dently. The Poynting vector fieldSis then computed
+from the known total fieldsEandH.
+Thus, the analysis of scattering of a monochromatic
+plane wave is fundamental: solutions for more complex
+incident fields can be obtained as superpositions of such
+waves, provided material dispersion is taken into account.
+Such generalizations are not considered in the present
+work.
+B. Vector Helmholtz equations
+We use the Gaussian system of units, in which the
+fieldsEandHhave the same dimension, and the per-
+mittivity and permeability of vacuum are equal to unity.
+The cylinders are assumed to be isotropic and spatially
+homogeneous. In general, they may have different com-
+plex permittivitiesε p =ε′
+p + iε′′
+p, wherepis the cylinder
+index. Owing to this spatial homogeneity,ε p is inde-
+pendent of the coordinates inside each cylinder. At op-
+tical frequencies, the magnetic permeability is equal to
+unity [20], which will be assumed in what follows. For
+time-harmonic fields with the time dependence e−iωt, the
+source-free Maxwell equations read
+∇×E= ik 0H,∇×H=−ik 0ε(j)pE.(2.1)
+Hereε (j)p is equal toε p inside the cylinders and to unity
+outside them;k 0 =ω/c, wherecis the speed of light in
+a vacuum.
+In the absence of free charges and currents, the condi-
+tions∇·(ε (j)pE) = 0 and∇·H= 0 hold. Within each
+homogeneous region, whereε (j)p =ε p = const, they re-
+duce to∇·E= 0 and∇·H= 0.
+Applying the curl operation to Eq. (2.1) and using the
+identity∇×(∇×F) =∇(∇·F)−∇ 2F, we obtain in
+the standard way the vector Helmholtz equations [20]
+∇2E+k 2
+(j)pE=0,∇ 2H+k 2
+(j)pH=0,
+wherek (j)p =k 0
+√ε(j)p is the local wavenumber. The
+branch is chosen so that, for passive media, Im(k(j)p)≥0.
+C. Dimensionless variables
+To make all subsequent relations independent of the
+system of units (SI, Gaussian, etc.), it is convenient to
+introduce dimensionless field variables by normalizing all
+fields to the amplitudes of the corresponding fields in the
+incident wave. Since only such dimensionless variables
+will be used below, we keep the same notation as for the
+dimensional quantities; this should not cause confusion.
+The time-averaged Poynting vectorSis normalized to its
+magnitude in the incident wave. This normalization fixes
+the overall scale and makes it possible, when needed, to
+compare the fieldsE,H, and the energy fluxSin the
+same plot.
+D. Geometry of the problem. Scalar wave equation
+The cylinders are assumed to be non-overlapping and
+non-touching. The case of touching cylinders, often ro-
+mantically called “kissing” cylinders [21], requires sep-
+arate treatment. We do not consider it here because,
+for the present problem, this question is mainly of aca-
+demic interest. Although the approach developed below
+is formally applicable only for finite gaps between the
+cylinders, the threshold gap values are so small that they
+impose no significant restrictions on its practical applica-
+tion. For example, in nanoclusters the approach remains
+applicable down to gaps of atomic size, which, within the
+macroscopic description used here, is effectively equiva-
+lent to touching cylinders.
+
+===== PAGE 3 =====
+3
+Let us choose a coordinate system with thezaxis par-
+allel to the cylinder axes. As noted above, we consider
+only normal incidence with respect to the cylinder axes,
+so that thezcomponent of the incident wave vectork 0
+is zero. As for the orientation of the polarization plane,
+owing to the linearity of Maxwell’s equations, the fields
+EandHfor an arbitrary orientation of this plane can
+be represented as a linear combination of waves with the
+vectorEparallel and perpendicular to thezaxis, with
+the corresponding orientation of the vectorH.
+Thus, without loss of generality, it is sufficient to con-
+sider only these two independent polarizations [22]. They
+are usually called TM and TE. Here, however, we use the
+termsE z polarization andH z polarization to emphasize
+which field is oriented along thezaxis.
+Under the assumptions made above, the electromag-
+netic fields are independent of the coordinatez. More-
+over, by symmetry, for theE z polarization, not only the
+incident wave but also the scattered wave and the field
+inside the cylinders have only thezcomponent of the
+electric field different from zero. This single component
+satisfies the wave equation
+ 
+∇2
+⊥ +k 2
+(j)p
+
+Ez = 0,(2.2)
+where∇ 2
+⊥ =∂ 2/∂x2 +∂ 2/∂y2 is the two-dimensional
+Laplace operator.
+The transverse components of the magnetic field are
+expressed in terms ofE z according to Maxwell’s equa-
+tions, see Eq. (2.1), as
+Hx = c
+iω
+∂Ez
+∂y , H y =− c
+iω
+∂Ez
+∂x .
+Similarly, for theH z polarization we have
+ 
+∇2
+⊥ +k 2
+(j)p
+
+Hz = 0,(2.3)
+Ex =− c
+iωε (j)p
+∂Hz
+∂y , E y = c
+iωε (j)p
+∂Hz
+∂x .(2.4)
+It is convenient to combine Eqs. (2.2) and (2.3) into a
+single scalar wave equation:
+ 
+∇2
+⊥ +k 2
+(j)p
+
+ψ= 0.(2.5)
+Here
+ψ=
+(
+Ez,for theE z polarization,
+Hz,for theH z polarization.
+E. Normalized Poynting vector
+In the dimensionless variables introduced above, the
+time-averaged Poynting vector is given by the following
+formulas:
+for theE z polarization,
+S= 1
+k0
+Im(ψ∗∇ψ),(2.6)
+for theH z polarization,
+S= 1
+k0
+Im
+ 1
+ε(j)p
+ψ∗∇ψ
+
+.(2.7)
+Formula (2.7) contains the piecewise-constant function
+ε(j)p. In computations near the interfaces, one should use
+the local value of the permittivity in the region, outside
+or inside the cylinder, where the observation point is lo-
+cated. This ensures that the energy flux is computed
+correctly in each medium.
+In expanded form, these expressions are written as
+Sx = 1
+k0
+Im
+
+E∗
+z
+∂Ez
+∂x
+
+, S y = 1
+k0
+Im
+
+E∗
+z
+∂Ez
+∂y
+
+,
+for theE z polarization, and
+Sx = 1
+k0
+Im
+ H∗
+z
+ε(j)p
+∂Hz
+∂x
+
+, S y = 1
+k0
+Im
+ H∗
+z
+ε(j)p
+∂Hz
+∂y
+
+,
+for theH z polarization.
+III. ANALYTICAL SOLUTION FOR AN
+ARBITRARY ENSEMBLE OF PARALLEL
+NON-OVERLAPPING CIRCULAR CYLINDERS
+In this section, following the approach developed in
+Ref. [7], we present the exact solution of the problem
+formulated above for an arbitrary number of arbitrar-
+ily placed cylinders. We refer to the original coordinate
+system as theglobalcoordinate system. To apply the
+method, we need expansions of the functionψin cylin-
+drical harmonics in local coordinate systems whosezaxes
+coincide with the axes of the individual cylinders.
+Letrbe the two-dimensional position vector of a point
+in the global coordinate system in the plane perpendic-
+ular to thezaxis. Letr p be the position vector ofthe
+same pointin the local coordinate system associated with
+thep-th cylinder, with polar coordinates (r p,φp) in that
+local system. Then,
+r=c p +rp,
+wherec p is the position vector of the center of the local
+system in the global one.
+The main idea of the method is as follows. For each
+cylinder, in its local coordinate system, one can write
+a formally exact general solution of the wave equation,
+separately outside and inside the cylinder, as an infinite
+series in appropriate cylindrical functions with unknown
+coefficients. Outside the cylinders, the field is represented
+as the superposition of such a solution and the incident
+field.
+
+===== PAGE 4 =====
+4
+The problem then reduces to finding these unknown
+coefficients. This is done by imposing the boundary con-
+ditions on the surface of each cylinder, which leads to a
+chain of linear equations for the coefficients. Solving this
+chain completes the analytical treatment of the problem.
+Thus, the task is to construct the corresponding formal
+solution, determine the boundary conditions, and then
+implement the procedure in practice. We now proceed
+with this construction.
+As noted above, the problem splits into two coupled
+boundary-value problems: the exterior problem, which
+determines the field outside the cylinders, and the in-
+terior problem, which describes the field inside them.
+These two problems are coupled through the boundary
+conditions on the cylinder surfaces. We discuss them
+separately.
+A. Exterior boundary-value problem
+The general solution of the wave equation associated
+with each cylinder and satisfying the outgoing-wave con-
+dition at infinity is written in terms of Hankel functions
+of the first kindH (1)
+n [1]. Thus, the total field scattered
+by all cylinders has the form
+ψ(sca)(r) =
+PX
+p=1
+ψ(sca)
+p (r) (3.1)
+ψ(sca)
+p (r)≡
+∞X
+n=−∞
+AnpH(1)
+n (k0rp) einφp;r p≥a p,(3.2)
+wherePis the number of cylinders in the cluster,a p
+is the radius of thep-th cylinder, andA np are yet un-
+known coefficients. We emphasize thatrin Eq. (3.2) is
+the position vector of the observation point in the global
+coordinate system, whereas (r p,φp) are the coordinates
+ofthe samepoint ineachof the local coordinate systems.
+The total field in the exterior boundary-value problem,
+ψ(out), is the sum of the incident fieldψ (0) and the scat-
+tered fieldψ (sca):
+ψ(out) =ψ (0) +ψ (sca).(3.3)
+Let us now pass to a fixedp-th local coordinate sys-
+tem and separate fromψ (out) the field scattered by the
+cylinder associated with this coordinate system. In other
+words, in the exterior neighborhood of this cylinder, we
+representψ (out) as
+ψ(out) =ψ (ext) +ψ (sca)
+p ,(3.4)
+whereψ (sca)
+p is described by Eq. (3.2), andψ (ext)(r) is
+the field acting on thep-th cylinder from outside, i.e., the
+superposition of the incident field and the waves scattered
+by the remainingP−1 cylinders. We expand the fields
+ψ(ext) andψ (sca)
+p in cylindrical harmonics in the chosen
+local coordinate system. Forψ (ext), this expansion is
+ψ(ext)
+p (r) =
+∞X
+n=−∞
+BnpJn(k0rp) einφp,(3.5)
+where the coefficientsB np are determined during the so-
+lution of the problem.
+For the incident plane wave propagating in the direc-
+tionκ= (cosφ 0,sinφ 0),
+ψ(0)(r) = eik0κ·r.
+Its expansion in the form (3.5) follows from the Jacobi–
+Anger identity
+eiζcosγ ≡
+∞X
+n=−∞
+inJn(ζ)einγ.
+This gives
+B(0)
+np = in e−inφ0 eik0κ·cp.(3.6)
+B. Interior boundary-value problem
+The general solution of the wave equation inside each
+cylinder, finite on its axis, has the form [1]
+ψ(in)
+p (rp) =
+∞X
+n=−∞
+DnpJn(kprp) einφp;r p≤a p,(3.7)
+whereD np are the unknown interior coefficients. Here
+kp≡k 0
+√εp.
+Equations (3.2), (3.5), and (3.7) are the standard mul-
+tipole expansions widely used in exact solutions of the
+diffraction problem for a monochromatic plane wave in-
+cident on a cylinder. Heren=±1 corresponds to dipole
+radiation,n=±2 to quadrupole radiation, and so on [1].
+C. Boundary conditions on the cylinder surfaces
+The boundary conditions require continuity of the tan-
+gential components of the fieldsEandHon the surfaces
+of the cylinders [1]. It is convenient to write these con-
+ditions in the local cylindrical coordinate systems associ-
+ated with the individual cylinders. We consider the two
+independent polarizations separately.
+Ez polarization. The nonzero components areEz,Hφp,
+andH rp, and the scalar variable in Eq. (2.5) isE z. Since
+Ez is tangential to the cylinder surface, one boundary
+condition reduces to its continuity:E z
+
+− =E z
+
++.
+The fieldHis computed from the known fieldEusing
+the Maxwell equationH=−(i/k 0)∇×E. Continuity of
+the componentH φ then gives∂ rpEz
+
+− =∂ rpEz
+
++.
+Hz polarization. The nonzero components areH z,
+Eφp, andE rp, and the scalar variable isH z. Conti-
+nuity ofH z givesH z
+
+− =H z
+
++. The fieldEis com-
+puted fromHaccording toE= ic
+ωε(j)p
+∇×H, see
+
+===== PAGE 5 =====
+5
+Eq. (2.4). Outside the cylindersε (j)p = 1, whereas inside
+themε (j)p =ε p̸= 1. Therefore, continuity ofE φ gives
+(1/εp)∂rpHz
+
+− =∂ rpHz
+
++.
+Passing to the scalar variableψand combining the two
+cases, the boundary conditions on the surface of each
+cylinder can be written as
+ψ
+
+− =ψ
+
++, α p
+∂ψ
+∂rp
+
+−
+= ∂ψ
+∂rp
+
++
+.(3.8)
+Here, for theE z polarization,ψ=E z andα p = 1,
+whereas, for theH z polarization,ψ=H z andα p = 1/εp.
+For clarity, we emphasize that whileε (j)p introduced
+above is a piecewise-constant function of the coordinates,
+αp is a coordinate-independent material constant.
+D. Scattering of an arbitrary linearly polarized
+monochromatic wave by a single cylinder
+In the problem considered here, each cylinder is placed
+in the incident field and in the field of waves multiply
+rescattered by all cylinders of the cluster. The latter
+field is completely determined by the coefficientsA np.
+Our task is to obtain the equations for these coefficients.
+To this end, we first solve the scattering problem for a
+single cylinder excited by anarbitrarymonochromatic
+field of the form (3.5), and then close the problem by
+relating this solution to the scattering problem for each
+cylinder of the cluster.
+Thus, we first solve the scattering problem for the ex-
+ternal field (3.5) without specifying the coefficientsB np.
+This problem is straightforward.
+Let us choose and fix a value ofp. The general solutions
+for the field scattered by this cylinder and for the field
+inside it are given by Eqs. (3.2) and (3.7), respectively.
+Applying the boundary conditions (3.8) and using the
+orthogonality of einφp for differentn, we obtain
+Jn
+
+x(0)
+p
+
+Bnp +H (1)
+n
+
+x(0)
+p
+
+Anp =J n
+
+x(c)
+p
+
+Dnp,(3.9)
+h
+J′
+n
+
+x(0)
+p
+
+Bnp +H (1)
+n
+′
+x(0)
+p
+
+Anp
+i
+k0 = (3.10)
+=J′
+n
+
+x(c)
+p
+
+Dnpαpkp,
+where the notationx (0)
+p ≡k 0ap has been introduced (this
+quantity is often called thesize parameter, a name we
+also use),x (c)
+p ≡k pap≡k 0ap
+√εp, and the prime denotes
+differentiation with respect to the full argument of the
+function.
+Equations (3.9) and (3.10) may be rewritten as
+Anp =s npBnp,(3.11)
+Dnp =t npBnp.(3.12)
+Here thescattering coefficients 1 (snp) and thetransmis-
+sion coefficients(t np), which depend on the polarization
+through the parameterαp, are defined by the expressions
+snp = (3.13)
+=
+αpkpJ′
+n
+
+x(c)
+p
+
+Jn
+
+x(0)
+p
+
+−k0J′
+n
+
+x(0)
+p
+
+Jn
+
+x(c)
+p
+
+k0Jn
+
+x(c)
+p
+
+H(1)
+n
+′
+x(0)
+p
+
+−αpkpJ′n
+
+x(c)
+p
+
+H(1)
+n
+
+x(0)
+p
+,
+tnp = (3.14)
+= 2ik0
+πx(0)
+p
+h
+k0Jn
+
+x(c)
+p
+
+H(1)
+n
+′
+x(0)
+p
+
+−αpkpJ′n
+
+x(c)
+p
+
+H(1)
+n
+
+x(0)
+p
+i,
+and, in deriving Eq. (3.14), we used the identity
+Jn(z)H (1)
+n
+′
+(z)−J n
+′(z)H (1)
+n (z)≡ 2i
+πz.
+E. Graf’s addition theorem. Translation matrix
+To complete the problem formulation, it remains to
+express the coefficientsB np in Eqs. (3.11) and (3.12) in
+terms of the known coefficientsB (0)
+np , see Eq. (3.6), and
+the set of coefficientsA nq. This is done using Graf’s
+addition theorem [23, 24], which represents the field of
+an outgoing wave centered at pointqas an expansion in
+Bessel functions centered at pointp.
+To apply this theorem, choose two arbitrary cylinders
+pandqfrom the cluster. Let the positions of their
+axes in the global coordinate system be given by the
+two-dimensional vectorsc p andc q. Define the vector
+Rpq =c p−cq, which in the local coordinate system as-
+sociated with cylinderqhas polar coordinates 2 (Rpq,θpq).
+Consider them-th partial scattered wave associated
+with cylinderq. In the chosen local coordinate system,
+this field is described byH (1)
+m (k0rq) eimφq, see Eq. (3.2).
+According to Graf’s theorem,
+H(1)
+m (k0rq) eimφq = (3.15)
+=
+∞X
+n=−∞
+H(1)
+m−n(k0Rpq) ei(m−n)θpq
+| {z }
+(Tpq)nm
+Jn(k0rp) einφp.
+Formula (3.15) is valid under the conditionr p < Rpq,
+which is always satisfied in the vicinity of the surface of
+cylinderpif the cylinders in the cluster do not intersect.
+1 The scattering coefficients used here differ in sign from the coef-
+ficients usually employed in such problems [1].
+2 For clarity, we denote the polar angles of the coordinates of
+the cylinder axes byθ, whereas all other polar angles are
+denoted byφ.
+
+===== PAGE 6 =====
+6
+Equation (3.15) defines the elements of thetranslation
+matrix:
+(Tpq)nm =H (1)
+m−n(k0Rpq) ei(m−n)θpq.(3.16)
+It is essential that the right-hand side of Eq. (3.15) con-
+tainsregularBessel functionsJ n(k0rp) rather than sin-
+gular Hankel functions. The latter enter this expansion
+only as coefficients at fixed finite arguments. Therefore,
+the field scattered by cylinderq, re-expanded about the
+center of cylinderp, has the same functional form as the
+expansion (3.5). This makes it possible to combine alge-
+braically the contributions of the incident plane wave and
+of the cylindrical waves scattered by the cylinders of the
+cluster. Replacing the dummy indexnbymin Eq. (3.2),
+substituting Eq. (3.15), summing overq, and adding the
+incident wave in the representation (3.5), (3.6), we ob-
+tain the following expression for the external field near
+thep-th cylinder:
+ψ(ext)
+p (rp) =
+=
+∞X
+n=−∞
+"
+B(0)
+np +
+PX′
+q=1
+∞X
+m=−∞
+(Tpq)nmAmq
+#
+Jn(k0rp)e inφp.
+Here the prime at the summation sign means thatq̸=p.
+Comparing this formula with the expansion (3.5) gives
+an explicit expression for the coefficientsB np:
+Bnp =
+PX′
+q=1
+∞X
+m=−∞
+Amq (Tpq)nm +B (0)
+np.(3.17)
+Substituting these values into Eq. (3.11), we obtain a
+closed infinite system of linear equations, valid for each
+value ofp—that is,Psuch systems in total:
+Anp−snp
+PX′
+q=1
+∞X
+m=−∞
+(Tpq)nm Amq =s npB(0)
+np.(3.18)
+The solutions of Eqs. (3.18), together with Eqs. (3.5),
+(3.7), (3.11), (3.12), and (3.17), constitute the exact an-
+alytical solution of the problem in the form of infinite
+series.
+F. Far field. Scattering amplitude, cross-sections,
+and the optical theorem
+In the far field, the wave scattered by any object whose
+properties are independent of the coordinatezand whose
+transverse cross-section is finite is an outgoing cylindrical
+wave. In the global coordinate system, such a wave is
+described by the well-known asymptotic form ofH (1)
+n (z)
+asz→∞:
+H(1)
+n (z)≃
+r
+2
+πz ei(z−nπ/2−π/4),(3.19)
+and can be represented as [25]
+ψsca(r,φ)≃f(φ)
+r
+2
+πk0r ei(k0r−π/4), r→∞.(3.20)
+The functionf(φ) is thescattering amplitude. It follows
+from Eq. (3.20) thatf(φ) is dimensionless.
+The scattering (C sca), absorption (C abs), and extinc-
+tion (Cext≡C sca +C abs) cross-sections are expressed in
+the standard way through the scattering amplitude [25].
+Before computing them, however, we recall that, in the
+presence of continuous translational symmetry along the
+zaxis, all cross-sections are computed per unit length
+along this axis. Therefore, in the present two-dimensional
+problem,C ext,sca,abs have the dimension of length rather
+than area.
+To computeC sca, it is sufficient to calculate the flux
+of the Poynting vector through a circle of large radiusr
+centered at the origin of the global coordinate system.
+Substituting Eq. (3.20) into Eqs. (2.6) and (2.7), which
+are identical in the far field becauseε (j)p = 1 there, gives
+the radial component of the Poynting vector of the scat-
+tered wave:
+S(sca)
+r ≃ 2|f(φ)|2
+πrk0
+, r→∞.
+Integration over the circle gives the scattering cross-
+section [25]:
+Csca = 2
+πk0
+Z 2π
+0
+|f(φ)|2dφ.(3.21)
+The extinction cross-section is obtained from the opti-
+cal theorem, which in the present convention gives 3 [25]
+Cext =− 4
+k0
+Ref(φ 0).(3.22)
+The absorption cross-section is then found from
+Cabs =C ext−C sca.
+To use these relations in the present problem, we need
+the explicit expression forf(φ). To this end, in Eqs. (3.1)
+and (3.2), we expressH (1)
+n (k0rp)einφp in terms of the co-
+ordinates of the observation point whose position vector
+in the global coordinate system isr. Since, by defini-
+tion,k 0rp≫1 in the far field for anyp, we may use the
+asymptotic expression (3.19) forH (1)
+n (k0rp).
+Next, we writerp =r−c p, square this expression, and
+take the square root. This gives
+rp =r
+ 
+1−2 r·c p
+r2 + c2
+p
+r2
+!1/2
+≈
+≈r−(x p cosφ+y p sinφ).
+3 The right-hand side of Eq. (3.22) has the sign opposite to that
+of the formula given in [25]. This is because Ref. [25] assumes
+the time dependence exp(iωt), whereas here we use exp(−iωt).
+
+===== PAGE 7 =====
+7
+Here (xp,yp) are the Cartesian coordinates of the tip of
+cp in the global coordinate system, andφis the polar
+angle of the observation pointr. We have expanded the
+square root in a Taylor series, keeping only terms linear
+in the small parameterc p/r. Taking into account that,
+to the same accuracy,φ p≈φfor anyp, we obtain
+f(φ) =
+PX
+p=1
+∞X
+n=−∞
+Anp e−inπ/2e−ik0(xp cosφ+y p sinφ) einφ.
+(3.23)
+In our implementation of the optical theorem, the
+forward-scattering amplitude contains by definition the
+additional prefactor
+p
+2/(πk0) e−iπ/4 that follows from
+the asymptotic form (3.20). Therefore, the expression
+Cext =−
+p
+8π/k0 Re
+h
+eiπ/4ψ(sca,fwd)
+∞
+i
+and Eq. (3.22) are identical.
+IV. INTERIM SUMMARY
+We now finish the analytical part and turn to the nu-
+merical methods used to solve the system of equations
+for the modal coefficients and to compute the fields and
+other physical characteristics of the problem. Before do-
+ing so, it is useful to summarize the analytical results.
+We have obtainedPequivalent representations of the
+solution, one in each local cylindrical coordinate sys-
+tem associated with a cylinder of the cluster. In such
+a local coordinate system, the solution of the exterior
+boundary-value problem is given by Eqs. (3.2), (3.4), and
+(3.5), where the coefficientsB np are expressed in terms
+ofA np and the incident-wave coefficientsB (0)
+np according
+to Eq. (3.17). The coefficientsA np themselves are found
+by solving the linear system (3.18).
+Although formally equivalent expressions for the ex-
+ternal field are obtained for any choice of the local coor-
+dinate system, in actual computations it is convenient
+to choose the value ofpcorresponding to the cylin-
+der near which the field structure is of greatest inter-
+est. The interior boundary-value problem is described
+by Eqs. (3.7), (3.12), and (3.14), and is ultimately also
+expressed through the coefficientsA np.
+When describing the overall field structure, it is con-
+venient to return to the global coordinate system. This
+transition from any local system is achieved by a simple
+shift of the origin.
+V. DESCRIPTION OF THE NUMERICAL
+ALGORITHM
+A. Truncation of the series
+The first step in actual applying the exact solution
+above is truncating the infinite multipole series at a fi-
+nite orderN. The physical basis for this truncation is
+the well-known fact that, for scattering of a monochro-
+matic plane wave by a single cylinder with size param-
+eterx (0) ≡k 0a, the contribution of multipoles of or-
+dernto the scattered radiation decreases exponentially
+for|n|≫k 0a. At such values ofn, the incident wave
+hardly excites the corresponding modes, and the scat-
+tering coefficients|s n|rapidly tend to zero. Therefore,
+in our numerical computations the indexnsatisfies the
+condition|n|≤N, i.e.,M= 2N+ 1 harmonics are re-
+tained for each cylinder, with the same value ofNfor all
+cylinders in the cluster.
+The initial value of the truncation order was chosen
+using the heuristic formula
+Nstart =
+h
+8 +x max + 5x 1/3
+max
+i
+;x max≡k 0 max
+p
+
+ap|√εp|
+
+,
+where square brackets denote taking the integer part.
+The sufficiency of the chosenNwas checked by con-
+vergence of the results: after increasingNby 2, the field
+at the probe points (see Sec. VII E) had to change by
+no more than a prescribed tolerance, typically about 1%.
+When necessary, for example to resolve sharp spatial vari-
+ations of the field, the accuracy was increased. In the
+specific nanotrimer computations presented below, the
+required accuracy was achieved at the fixed valueN= 18.
+B. Matrix formulation of the problem
+After truncation, system (3.18) for a cluster ofPcylin-
+ders becomes a system ofP·Mlinear equations with
+P·Munknowns, whereM= 2N+ 1 coefficientsA np
+are assigned to each cylinder. It is convenient to write
+this system in compact block form. For each cylinderp,
+we introduce the column vector of its unknown scatter-
+ing coefficientsA p = (A−Np, ..., A Np) of lengthM
+and the analogous vector of incident-wave coefficients
+B(0)
+p = (B(0)
+−Np, ..., B (0)
+Np).
+To avoid confusion with the Poynting vector, we
+denote the diagonal matrix 4 of the scattering co-
+efficients of thep-th cylinder by a Gothic letter:
+Sp = diag(s−Np, ..., sNp), and the translation matrix
+with elements (3.16) byT pq. These matrices have size
+M×M. In the general case of an ensemble ofPcylinders,
+the system (3.18) becomes
+PX
+q=1
+ApqAq =S pB(0)
+p , p= 1,...,P,(5.1)
+where the blocks of the global system matrixAof size
+P·M×P·Mare defined as
+Apq =
+(
+I, p=q,
+−SpTpq, p̸=q,
+4 All matrices are denoted by boldface symbols.
+
+===== PAGE 8 =====
+8
+andIis theM×Midentity matrix.
+For the three-cylinder cluster considered below,P= 3,
+and the block system can be written explicitly as
+
+
+I−S 1T12 −S1T13
+−S2T21 I−S 2T23
+−S3T31 −S3T32 I
+
+
+| {z }
+A
+
+
+A1
+A2
+A3
+
+
+| {z }
+A
+=
+
+
+S1B(0)
+1
+S2B(0)
+2
+S3B(0)
+3
+
+
+| {z }
+B(0)
+.
+(5.2)
+The identity diagonal blocks describe the self-response
+of each cylinder, while the off-diagonal blocks−S pTpq
+describe their coupling through multiple scattering.
+In actual computations, the matrixAand the vec-
+torB (0) are constructed explicitly. The off-diagonal
+blocks−S pTpq forp̸=qare formed as the product
+of the diagonal matrixS p and the translation matrix
+Tpq, whose elementsH (1)
+m−n(k0Rpq) ei(m−n)θpq are pre-
+computed once for each pair (p,q) and stored in mem-
+ory. The diagonal matrixS p is stored not as a matrix
+but as a vector of lengthMcomposed of the valuess np,
+|n|≤N, computed from Eq. (3.13) using the recurrence
+relation for the derivatives of the Bessel functions; see
+Sec. VI B. RepresentingS p as a one-dimensional array
+rather than anM×Mmatrix is an implementation detail
+that eliminates unnecessary memory access in multipli-
+cation byT pq.
+C. Use of mirror symmetry
+If the cluster geometry and the direction of the inci-
+dent wave have mirror symmetry with respect to a plane
+passing through thezaxis, then the electromagnetic field
+has the same symmetry. This makes it possible to reduce
+the computational cost by determining the field configu-
+ration in only one of the mirror halves.
+Let theyaxis of the global coordinate system coincide
+with the incident-wave vector. Then the mirror sym-
+metry transformation corresponds tox→−x, which in
+polar coordinates meansφ→π−φ. Since in each local
+coordinate system thexandyaxes are parallel to the cor-
+responding axes of the global system, this transformation
+induces the simultaneous transformationφ p→π−φ p in
+alllocal systems.
+Suppose that, among thePcylinders of the cluster,
+the axes ofKcylinders lie in the mirror-symmetry plane,
+while the remainingP−Kdo not. Then mirror reflec-
+tion maps theKcylinders onto themselves and splits
+the remaining cylinders into symmetric pairs. In this
+case, symmetry means that the transformation does not
+change the fieldψ. Applying it to Eq. (3.2) for theK
+cylinders whose axes lie in the symmetry plane, we obtain
+NX
+n=−N
+AnpH(1)
+n (k0rp) einφp =
+=
+NX
+m=−N
+AmpH(1)
+m (k0rp) (−1)m e−imφp =
+=
+NX
+n=−N
+A−npH(1)
+−n(k0rp)(−1)−n einφp =
+=
+NX
+n=−N
+A−npH(1)
+n (k0rp) einφp,
+where we relabeled the dummy indexmas−nand used
+the identityH (1)
+−n(z) = (−1) nH(1)
+n (z). Orthogonality of
+the functionsH (1)
+n then givesA np =A −np. For sym-
+metric pairs of cylinders,pandp ′, whose axes do not
+lie in the symmetry plane, an analogous relation holds:
+Anp =A−np′.
+This reduces the number of independent coefficients
+Anp for each of theKcylinders from 2N+ 1 toN+ 1
+and allows one to exclude (P−K)/2 cylinders lying on
+one side of the mirror-symmetry plane (recall that, by
+definition,P−Kis an even number). Thus, the total
+number of independent variables is reduced fromP(2N+
+1) to
+K(N+ 1) + (2N+ 1) P−K
+2 ≡NP+ K+P
+2 .
+In particular, for the trimer discussed below, see
+Sec. VII,P= 3 andK= 1, so the number of inde-
+pendent coefficientsA np is reduced from 3(2N+ 1) to
+3N+ 2. This reduction was used in all computations
+presented below. The results were compared with the
+solution of the full system in Sec. VII E. Since the full
+and reduced systems are built by different code branches
+with independent matrix operations, agreement of their
+solutions at the level of∼10 −13 verifies the absence of
+programming errors in the assembly of the blocksSpTpq
+and the correctness of the transfer of the coefficients of
+the mirror cylinder when forming the right-hand side of
+the equations.
+D. Condition number of the system matrix
+The central indicator of the difficulty of solving sys-
+tem (5.2) numerically is itscondition number. For an ar-
+bitrary nonsingular complex matrixAof the sizen×n,
+it is defined as
+κ(A) =∥A∥·∥A −1∥,
+where∥...∥is any consistent matrix norm. Unless stated
+otherwise, we use the spectral norm∥A∥2 =σ max, so that
+κ(A) = σmax(A)
+σmin(A),(5.3)
+whereσ max andσ min are the largest and smallest singular
+values ofA, i.e., the square roots of the largest and small-
+est eigenvalues of the Hermitian positive-semidefinite ma-
+trixA†A.
+
+===== PAGE 9 =====
+9
+The meaning ofκis as follows. If the right-hand side
+of the equations is specified with relative errorδ, then
+the relative error of the solution does not exceedκδ. In
+the present case,δ∼u≈2.22×10 −16, whereuis the
+machine epsilon offloat64arithmetic. In terms of sig-
+nificant decimal digits, this means that in the computed
+coefficientsA np no more than
+dpreserved≈d input−log 10κ
+digits are preserved [26], whered input ≈16 for double
+precision. In particular, forκ≳10 16, one can expect, in
+the worst case, the loss ofallsignificant digits in the for-
+ward error of the solution. Therefore, a result obtained
+infloat64arithmetic alone cannot be considered reli-
+able without additional checks. This is precisely why the
+multilevel adaptive solver described in Sec. V F is needed.
+1. Dependence on problem parameters
+In the present problem, the condition numberκ(A)
+depends on three groups of parameters.
+System size. As the truncation orderNof the
+multipole expansion increases, the number of modes
+M= 2N+ 1 grows, and therefore so does the size of the
+matrixA. The higher modes|n|≫k 0aare weakly ex-
+cited by the incident wave but are present in the matrix
+through the translation elements (Tpq)nm, which contain
+high-order Hankel functionsH (1)
+m−n(k0Rpq). At fixed ar-
+gumentk 0Rpq, the modulus|H (1)
+ℓ |grows factorially as
+|ℓ|→∞, whereas|J ℓ|decreases factorially. This leads
+to an exponential spread in the moduli of the diagonal
+and off-diagonal matrix elements and to the correspond-
+ing growth ofκ. Such growth has been confirmed nu-
+merically for the aluminum trimer discussed below: at
+g/a= 0.01, wheregis the gap between cylinders, the
+values ofκare 4.1×10 44 forN= 18, 2.7×10 65 for
+N= 24, and 2.5×10 87 forN= 30. This corresponds
+to about 3.6 orders of magnitude of growth inκper unit
+increase ofN.
+Cluster geometry. For subwavelength cylinders and
+subwavelength gaps, the quantitiesk 0Rpq are small, at
+least for neighboring cylinders. In such cases, the func-
+tionsH (1)
+ℓ behave as (k 0Rpq)−|ℓ|. This produces large
+off-diagonal elements of the translation matrix and ulti-
+mately determines the ill-conditioning ofAfor densely
+packed clusters of subwavelength cylinders. The con-
+ditioning deteriorates as neighboring cylinders approach
+each other.
+Material parameters. Near the resonances of individual
+cylinders, the denominators in Eq. (3.13) for the scatter-
+ing coefficientss np become small, producing large ele-
+ments in the diagonal blocksS p and thus additionally
+increasingκ. For plasmonic materials withε ′ <0 and
+smallε′′, such as aluminum in the wavelength range dis-
+cussed in Sec. VII, this effect is especially pronounced.
+2. Practical computation and use
+Direct computation ofκfrom Eq. (5.3) by sin-
+gular value decomposition requiresO(n 3) operations.
+Forn=PMof order several hundred, this cost is
+not prohibitive. In well-conditioned and moderately
+conditioned regimes, the standard Python function
+numpy.linalg.cond[27] is used; it returnsκin the spec-
+tral norm.
+However, this method has a fundamental limitation.
+Singular value decomposition infloat64arithmetic can-
+not provide reliable values ofκifκ≳10 16: the com-
+puted smallest singular valueσ min cannot fall below the
+rounding-noise level∼uσ max, whereu≈2.22×10 −16 is
+the machine epsilon. As a result, the estimate of the ra-
+tio (5.3) saturates at∼1/u∼10 16 regardless of the true
+value ofκ. For choosing the solver level, item (i) below,
+this fact is usually sufficient: saturation near 10 16 reli-
+ably indicates that the system is ill-conditioned and that
+extended-precision arithmetic is required. For quantita-
+tive determination ofκ, however,numpy.linalg.cond
+is unsuitable in this regime. Therefore, the values of
+κin the range 10 21...10 44 were obtained by recomput-
+ing the corresponding norms in the extended-precision
+arithmetic provided bympmath[28]. The quantities ob-
+tained in this way agree with the analytical estimate
+|H(1)
+ℓ (k0Rpq)| ∼(k0Rpq)−|ℓ| for the growth of the off-
+diagonal translation-matrix elements, which provides an
+additional reliability check.
+The value ofκis used in two ways: (i) to choose the
+solver level according to the threshold values described
+in Sec. V F; and (ii) to adaptively determine the number
+of decimal digitsmp.dpsin thempmatharithmetic using
+the heuristic formula
+mp.dps= max
+ 
+50,⌊log 10κ⌋+ 20
+
+,(5.4)
+which provides a margin of approximately 20 significant
+decimal digits above the minimum needed to compen-
+sate for the loss of accuracy during factorization. In
+the ill-conditioned regime, the high-precision estimate
+ofκmust be substituted into Eq. (5.4); using the sat-
+uratedfloat64-SVD value would underestimate log 10κ
+and, consequently, the required number of working digits.
+In applications to nano-optical phenomena, however,
+Eq. (5.4) is usually not needed. In particular, in
+the example discussed below, we use the fixed value
+mp.dps= 120, which gives a margin of about 100 deci-
+mal digits relative to double precision.
+3. Conditioning and symmetry reduction
+The transition from the full system of equations to
+the symmetry-reduced system described in Sec. V C it-
+selfimprovesthe condition number of the matrix. This
+improvement results from projecting the original problem
+onto the symmetry subspace and eliminating the eigen-
+values corresponding to antisymmetric modes, which do
+
+===== PAGE 10 =====
+10
+not contribute to the solution of a symmetric problem
+but do affect the matrix spectrum. Although the typical
+ratioκ full/κred is only a few units, the reduced system
+often remains within the applicability range offloat64
+arithmetic at parameter values for which the full system
+already requires switching tompmath.
+E. Residual and the criterion of solution quality
+After the vectorAis found, therelative residualof
+system (5.2) is computed to monitor accuracy:
+ρ= max
+1≤p≤P
+max
+|n|≤N
+ 
+AA−B (0)
+np
+
+max
+|n|≤N
+B(0)
+np
+ .(5.5)
+Here the numerator is the maximum absolute residual
+error over all equations of blockp, the denominator nor-
+malizes it to the amplitude of the right-hand side of the
+same block, and the outer maximum is taken over allP
+cylinders. In the numerical solution, we use an adap-
+tive four-level solver with successively increasing compu-
+tational precision, described in detail in Sec. V F.
+At each solver level,ρis computed. Ifρexceeds the
+thresholds specified below, the solution is passed to the
+next level.
+We emphasize, however, that a small value ofρindi-
+cates only a smallbackward errorin the linear-algebra
+step. It does not guarantee a smallforward errorin the
+computed coefficientsA np or in the fields computed from
+them, because such errors may also arise from the fi-
+nite truncation orderN, approximate evaluation of the
+cylindrical functions, and summation of the series. The
+multistage adaptive solver only improves the accuracy of
+the solution of the linear system; the forward error is re-
+lated to the accuracy of the coefficients of this system.
+These issues must be considered together, as done in the
+following sections.
+Additional instability indicator. If the maximum coeffi-
+cient amplitude maxnp|Anp|exceeds a prescribed thresh-
+old, typically 10 4, the configuration is flagged as poten-
+tially unstable regardless of theρvalue.
+F. Four-level solver structure
+To obtain a reliable solution over the entire parameter
+range, including configurations near resonances and/or
+with subwavelength gaps, a four-level procedure has been
+implemented. Each subsequent level is invoked only
+when the accuracy of the previous one is insufficient.
+a. Level 1. Standard LU decomposition
+(numpy.linalg.solve).5 The system (5.1) is solved
+5 Here and below, the parentheses after each paragraph title indi-
+cate the specific Python function that directly implements the
+corresponding solver level.
+by LU factorization with partial pivoting infloat64
+arithmetic (IEEE 754 standard, approximately 16
+significant decimal digits). This is implemented by
+callingnumpy.linalg.solve[27], which internally uses
+the LAPACK routinezgesv[29]. For well-conditioned
+configurations, far from resonances and with moderate
+gaps, level 1 gives a residualρ≲10 −12, and no transition
+to higher levels is required.
+b. Level 2. Matrix scaling and iterative refinement.
+If a preliminary estimate indicates ill-conditioning,
+κ(A)≳10 12 (which is still much smaller than the in-
+dicated above saturation level 10 16), two-sided diagonal
+scaling (matrix equilibration) is applied to the matrixA
+and the right-hand sideB (0):
+˜A=G r AGc, ˜B
+(0)
+=G r B(0),
+where the diagonal matricesGr andGc reduce the spread
+of the row and column norms ofA.
+Here therow normof thei-th row of a ma-
+trix is the maximum modulus of its elements,
+maxj|Aij|, and thecolumn normis defined anal-
+ogously. The matricesG r = diag(1/r1,...,1/r MP )
+andGc = diag(1/c1,...,1/c MP ) are constructed sequen-
+tially. First,r i = max j|Aij|, so that after row nor-
+malization max j|Aij/ri|= 1 for each rowi. Then,
+cj = max i|Aij/ri|, which ensures max i
+( ˜A)ij
+ = 1 for
+each columnj. Strict two-sided equality of all norms to
+unity is generally not achieved in one pass; when neces-
+sary, the procedure is repeated iteratively as two-sided
+diagonal equilibration [26].
+The scaled system is solved by LU factorization, after
+which the obtained solution ˜A
+(0)
+is refined by at most
+five residual-correction iterations. At each step, the cor-
+rection and the updated approximation are computed as
+δ(k) = ˜A
+−1
+˜B
+(0)
+− ˜A ˜A
+(k)
+; ˜A
+(k+1)
+= ˜A
+(k)
++δ (k),
+where ˜A
+(k)
+denotes thek-th approximation,
+(k= 0,1,...,5).
+After each step, the residualρ
+
+˜A
+(k+1)
+is computed.
+If it does not decrease relative toρ
+
+˜A
+(k)
+, the iterations
+are terminated early. The approximation ˜A
+(kmin)
+with
+the smallest achieved residual is accepted as the result.
+The original coefficients are recovered according to the
+relationA=G c ˜A
+(kmin)
+.
+It is important to emphasize that, at this level, the
+residual is computed in standardfloat64arithmetic.
+Thus, this is standard iterative refinement [29], not a
+mixed-precision method. To obtain a substantial gain in
+a mixed-precision scheme, the residual must be computed
+in arithmetic of higher precision than that used for the
+factorization [26].
+For ill-conditioned problems, level 2 may still be insuf-
+ficient. In such cases, control is passed to level 3.
+
+===== PAGE 11 =====
+11
+c. Level 3. Arbitrary-precision arithmetic (mpmath).
+Forκ(A)>10 16, the entire matrix ˜Aand the right-
+hand side are recomputed from scratch using the Python
+librarympmath[28] withmp.dps= 120 working decimal
+digits rather than converted fromfloat64; this prevents
+the transfer of rounding errors from lower solver levels
+into the high-precision representation.
+The solution obtained bympmath.lu solveis con-
+verted back tofloat64, after which the residual is
+checked again. Level 3 increases the reliability of so-
+lutions of ill-conditioned systems: the intermediate com-
+putations are carried out with 120 decimal digits, sup-
+pressing the accumulation of rounding errors during fac-
+torization, while the final coefficientsA np are rounded to
+standard double precision.
+d. Level 4. Exact elimination over the fieldQ(i)
+(sympy.DomainMatrix).For the most critical configu-
+rations, such as subwavelength gaps near resonances, the
+code provides the possibility of anexactsolution of the
+system, completely eliminating rounding errors during
+matrix inversion. We now explain what is meant by this.
+In modern numerical computations, real numbers are
+stored in memory in floating-point format (IEEE 754
+standard). In this format, each number is represented as
+(−1)s×m×2 e, wheres∈{0,1}is the sign,mis an in-
+teger specifying the significant digits (mantissa), and the
+integeredetermines the magnitude, playing, in base 2,
+the same role as the power of 10 in the familiar notation
+1.23×10 n. Standard double precision (float64) allo-
+cates 53 binary digits to the mantissa, corresponding to
+about 16 significant decimal digits, and 11 digits toe,
+with−1022≤e≤1023, which covers magnitudes from
+about 10−308 to 10 308. Arithmetic operations on such
+numbers are accompanied by rounding to 53 binary dig-
+its. In ill-conditioned linear systems, these small errors
+may accumulate and eventually lead to a catastrophic
+loss of accuracy.
+The key idea of this solver level is to eliminate such
+rounding by using the fact that any IEEE 754 number has
+anexactrepresentation as a fraction of the formm/2 e,
+with an integer numerator and a power of two in the de-
+nominator, i.e., as arational number. Complex numbers
+with rational real and imaginary parts form thefield of
+Gaussian rational numbersQ(i), i.e., numbers of the form
+a+ib, whereaandbare rational. This set is closed under
+addition, subtraction, multiplication, and division: the
+sum, difference, product, and quotient of two Gaussian
+rational numbers are again Gaussian rational numbers.
+Thus, the real and imaginary parts of all elements of
+the equilibrated matrix ˜Aand right-hand side vector ˜B
+(0)
+can be stored as rational numbers and representedex-
+actlyas ordinary fractions. Therefore, Gaussian elimi-
+nation applied to the system ˜A ˜A= ˜B
+(0)
+with elements
+fromQ(i) is performedexactly: all intermediate quan-
+tities remain rational fractions, and no rounding errors
+occur during elimination [30].
+In practice, this is implemented in Python using
+sympy.DomainMatrix[30]. The matrix ˜Ais converted
+to the fieldQ(i) by command.convert to(QQ I), af-
+ter which.solve(b)is called with the exact right-hand
+side vector. The exact solution is then converted back to
+float64, and the final residual (5.5) is computed.
+The level 4 implementation was verified independently:
+fraction-free Bareiss elimination overZ[i] atg/a= 0.01,
+N= 8 (dimension 51) gave astrictly zeroresidual
+AA−B (0) = 0 and agreement with level 3 with an error
+∥x4−x 3∥∼10 −121 atmp.dps= 120.
+At the same time, one must distinguish clearly between
+what exact elimination ensures and what it does not. Ex-
+act eliminationcompletely eliminatesthe backward error
+of the matrix-inversion step: if the elements of ˜Aand
+˜B
+(0)
+are specified exactly, the solution ˜Ais found with-
+out rounding errors during elimination. However, exact
+eliminationdoes not removethe forward error caused by
+errors in the input data. For example, if the matrix ele-
+ments contain special-function evaluation errors of order
+u∼10 −16, the machine epsilon offloat64arithmetic,
+then exact elimination finds the exact solution of anin-
+exactlyformulated system [26].
+Thus, the rigorous statement about level 4 is as follows:
+it minimizes the backward error of the linear-algebra
+step, but it does not eliminate other unavoidable sources
+of error, namely (i) the error due to truncation of the
+multipole series, which is controlled by the convergence
+criterion described in Sec. V A; (ii) the initial error in the
+computation of special functions at the machine-epsilon
+level, which is present in the matrix elements and cannot
+be corrected by any postprocessing; and (iii) the error of
+summing the series when computing the field with the
+obtained modal coefficients. For configurations in which
+the accuracy of special-function computation is especially
+important, for example at|x (c)
+p |≫1, the elements ofS p
+andT pq can be recomputed usingmpmathbefore invok-
+ing level 4, which provides a fully high-precision compu-
+tational chain.
+In principle, level 4 is redundant because the same
+computations can also be performed at level 3. The dif-
+ficulty is that the accuracy of level 3 depends on the
+prescribed value ofmp.dps, and the heuristic estimates
+used for this value do not guarantee that it is sufficient.
+Level 4 is free from this drawback. Its main purpose is
+therefore the cross-validation of level 3.
+VI. COMPUTATION OF THE
+ELECTROMAGNETIC FIELD AND OF THE
+POYNTING VECTOR
+A. Computation of the field in different regions
+After the coefficients{A p}have been found, the elec-
+tromagnetic field at an arbitrary pointris computed as
+follows. If the point is outside all cylinders, the total
+external-field representation (3.3) is used, with the scat-
+
+===== PAGE 12 =====
+12
+tered contribution summed over allPcylinders according
+to Eqs. (3.1) and (3.2). If the point is inside cylinderp,
+the Bessel-function series (3.7) is used, with the coeffi-
+cientsD p computed by Eq. (3.12).
+To prevent numerical artifacts near the cylinder
+boundaries, three different procedures are used in the
+code depending on the purpose of the computation. In
+visualizationsof the scalar field on a regular grid, a ring
+of half-widthbw·a p is introduced between the interior
+region of the cylinder, where the field is described by
+Bessel functions, and the exterior region, where the field
+is a superposition of the incident plane wave and of the
+scattered partial waves described by Hankel functions.
+Herebw∈[0.04,0.10]. In this ring, the field and its
+spatial derivatives are obtained as a linear combination
+of the interior and exterior representations and therefore
+do not satisfy Maxwell’s equations. This region is used
+only for rendering imagesand is not used for quantitative
+diagnostics.
+In quantitative computations of the Poynting vector
+in the exterior region, a bufferδ ext = 10−3 minpap is ap-
+plied. At the stage of local refinement of the maximum
+on the surface, 10−1δext = 10−4 minpap is used. For the
+grid map of|S|, the bufferδ grid = 5·10−3 minpap is used.
+All numerical values of|S|presented in this work were
+obtained without using the interpolation ring.
+B. Computation of special functions and their
+derivatives
+The Bessel functionsJ n(z) and Hankel functions
+H(1)
+n (z) for integernare computed over the whole ar-
+ray of orders−(N+ 1)≤n≤N+ 1 simultaneously us-
+ing the standard Python functionsscipy.special.jv
+andscipy.special.hankel1. The coefficientss np and
+tnp are cached usingfunctools.lru cache. This avoids
+repeated solution of the single-cylinder problem. The
+special functions themselves are recomputed for each set
+of probe points, but in vectorized form over the indexn,
+which provides the main performance gain compared
+with element-by-element computation. The derivatives
+are computed using the recurrence relation
+F′
+n(z) = 1
+2
+
+Fn−1(z)−F n+1(z)
+
+,
+which requires the valuesF n±1 in advance. This is why
+Jn(z) andH (1)
+n (z) are tabulated over the range [−N−
+1,N+ 1] rather than [−N,N]. This approach provides
+accuracy of order machine epsilon, unlike finite-difference
+approximation of the derivative, which would introduce
+an additional errorO(h 2).
+C. Vectorized computation of the field at probes
+and on the visualization grid
+The computation of the fieldψ(r) is vectorized simul-
+taneously over observation points and the modal indexn.
+For each cylinderp, the contribution of the scattered field
+at all probe points can be written as a matrix product:
+ψ(sca)
+pl =
+NX
+n=−N
+AnpH(1)
+n (k0rpl) einφpl≡(6.1)
+≡
+ 
+Ap
+T
+hpl⊙epl
+
+,
+wherelis the observation-point index,h pl ande pl are
+vectors of lengthMcontainingH (1)
+n (k0rpl) and e inφpl,
+respectively, and⊙denotes elementwise multiplication.
+The matrices [hpl] and [epl] have sizeM×N probe, where
+Nprobe is the number of probes. These expressions are
+precomputed once before the optimization iterations and
+stored in RAM.
+The computation of the field (6.1) and its spatial
+derivatives, which determine the Poynting vectorS, on
+the visualization grid is organized blockwise. The grid
+is partitioned into fragments of moderate size, 160×160
+nodes in the computations presented here, and the for-
+mula is applied to each fragment in vectorized form. This
+allows each block to be computed independently. The
+partitioning is purely technical; its only purpose is to
+keep memory consumption constant regardless of the to-
+tal number of nodes, making it possible to construct maps
+of the Poynting vector and its streamlines at arbitrarily
+high resolution.
+The spatial derivatives ofψare computed analytically
+from the same cylindrical-function series. For a field of
+the form
+ψ(r,φ) =
+NX
+n=−N
+cnFn(κr) einφ,(6.2)
+whereF n =J n inside the cylinder andF n =H (1)
+n out-
+side, and whereκ=k p ork 0, respectively, the radial and
+azimuthal derivatives are
+∂ψ
+∂r =κ
+X
+n
+cnF′
+n(κr) einφ, ∂ψ
+∂φ = i
+X
+n
+cnnFn(κr) einφ.
+The Cartesian derivatives are obtained from these deriva-
+tives by the standard relations
+∂ψ
+∂x = cosφ ∂ψ
+∂r− sinφ
+r
+∂ψ
+∂φ ; ∂ψ
+∂y = sinφ ∂ψ
+∂r + cosφ
+r
+∂ψ
+∂φ.
+(6.3)
+Equations (6.3) contain division byrand are for-
+mally singular atr= 0, i.e., on the cylinder axis.
+This singularity is only apparent. From the expansion
+ψ= P
+ncnJn(κr)einφ and the asymptotics|J n(κr)|≈
+(κr/2)|n|/|n|! andJ 0(κr)≈1 +O
+ 
+(κr)2
+asκr→0,
+it follows that the derivatives on the right-hand sides of
+Eq. (6.3) are determined by theJ±1 terms. All other har-
+monics contribute only higher-order terms that vanish as
+κr→0. Thus, we obtain
+
+===== PAGE 13 =====
+13
+∂ψ
+∂r
+
+r=0
+= κ
+2
+ 
+c1 eiφ−c−1 e−iφ
+,
+1
+r
+∂ψ
+∂φ
+
+r=0
+= iκ
+2
+ 
+c1 eiφ +c−1 e−iφ
+.
+Substituting these expressions into Eq. (6.3) cancels the
+dependence onφ, yielding
+∂ψ
+∂x
+
+r=0
+= κ
+2 (c1−c−1), ∂ψ
+∂y
+
+r=0
+= iκ
+2 (c1 +c−1),
+which confirms the regularity of these derivatives on the
+cylinder axis.
+D. Streamlines of the Poynting vector field
+The field lines of the Poynting vector fieldS, which
+by analogy with hydrodynamics we callstreamlines, are
+defined as curves whose tangent at every point has the
+same direction asS. Letr S(t) be the parametric equa-
+tion of such a curve, wheretis a scalar parameter. The
+tangency condition requires that the vectorsdr S/dtand
+Sbe collinear, givingdr S/dt= const·S.
+This equation is inconvenient for numerical integra-
+tion. At singular points of the field, streamlines may in-
+tersect, which is possible only ifS= 0. Near such points,
+S≡|S|is small, and direct numerical integration of the
+unnormalized equation leads to excessively small steps.
+Normalizing the right-hand side bySremoves this prob-
+lem without changing the direction of the vector field.
+Choosing the scale of the parametertso that the propor-
+tionality coefficient betweendr S/dtandS/Sis unity, we
+obtain
+drS
+dt = S(r S)
+S .(6.4)
+Since the right-hand side is a unit vector, the parame-
+tertcoincides with the arc length along the streamline.
+The integration is carried out in both directions from the
+initial point corresponding tot= 0, i.e., for botht >0
+andt<0, and the two tracks are joined to form a single
+continuous streamline.
+a. Integration method.The Cauchy problem (6.4) is
+solved numerically by an explicit Runge–Kutta method
+with adaptive step-size selection based on the embedded
+Bogacki–Shampine pair RK3(2) [31]. This method be-
+longs to the class of methods with automatic error control
+by embedded formulas of different orders. Its Butcher
+tableau is
+0
+1/2 1/2
+3/4 0 3/4
+1 2/9 1/3 4/9
+b(3) 2/9 1/3 4/9 0
+b(2) 7/24 1/4 1/3 1/8
+whereb (3)
+i andb (2)
+i are the weights of the third- and
+second-order quadrature formulas, respectively. The
+method has the FSAL (First Same As Last) property:
+the fourth stage of the current step is identical to the first
+stage of the next one, reducing the computational cost to
+three evaluations of the right-hand side of Eq. (6.4) per
+integration step.
+Letr (3)
+m+1 andr (2)
+m+1 be the approximations to the ex-
+act solutionr(t m +h m) obtained with the weightsb (3)
+andb (2), respectively. The higher-order approximation
+rm+1 =r (3)
+m+1 is taken as the advanced solution, i.e., lo-
+cal extrapolation is used [32]. The local error estimate
+is constructed as the difference between the two approx-
+imations:
+em+1 =r (3)
+m+1−r (2)
+m+1.(6.5)
+Accuracy is controlled using the normalized error,
+which includes both absolute (ε abs) and relative (ε rel)
+tolerances:
+Enorm =
+=
+
+
+
+X
+α=x,y
+ 
+eα
+εabs +ε rel max
+ 
+|r(m)
+α |,|r (m+1)
+α |,10−6
+!2
+
+
+1/2
+,
+wheree α are the components of the vectore m+1 in
+Eq. (6.5). The tolerances areε abs = 10 −5 and
+εrel = 5×10 −4. The threshold 10−6 in the denominator
+prevents division by zero.
+Adaptive step-size control.IfE norm≤1, the step is
+accepted, the pointr m+1 is added to the history, and
+the new step is chosen as
+hm+1 = min
+
+hmax, hm·min
+
+5,0.9E −1/3
+norm
+
+.(6.6)
+ForE norm <10 −12, i.e., for a practically machine-zero
+error, the factor is set to 2.5. IfE norm >1, the required
+accuracy has not been reached, and the step is repeated
+with the reduced value
+hretry = max
+
+hmin, hm·max
+
+0.1,0.9E −1/3
+norm
+
+.(6.7)
+The step is also accepted unconditionally if the current
+value ofhis already equal toh min, which guarantees ad-
+vancement even in regions with sharp field variations. Af-
+ter twenty sequential unsuccessful attempts, a forced Eu-
+ler step is performed:r m+1 =r m +h minS(rm)/|S(rm)|,
+after which the adaptive integration is resumed with the
+initial steph 0.
+The exponent−1/3 in Eqs. (6.6) and (6.7) is deter-
+mined by the order of the error estimate of the embed-
+ded pair. The local error (6.5) is of orderO(h ˆp+1), where
+ˆp= 2 is the order of the lower-order solution. When the
+step is changed by a factorσ, the error scales asσ ˆp+1.
+Hence the conditionE normσˆp+1= 1 gives the optimal
+factorσ opt =E −1/(ˆp+1)
+norm =E −1/3
+norm [32]. The same expo-
+nent is used both for increasing the step after a successful
+
+===== PAGE 14 =====
+14
+step and for reducing it after an unsuccessful one, ensur-
+ing a uniform adaptation strategy. The factor 0.9<1 is
+a safety coefficient that helps avoid immediate rejection
+after step-size increase.
+b. Stopping conditions.The integration stops when
+one of the following events occurs:
+(i) the trajectory leaves the computational domain
+[−L,L] 2;
+(ii)|S| 2 <10 −60, corresponding to the vicinity of
+a topological singular point, i.e., a practical zero
+ofS;
+(iii) stagnation occurs, meaning that over the last 20
+steps the displacement is less than 5% of the arc
+length of the traversed segment, which is typical
+near a singular point.
+No dead zone is introduced near the interface. The in-
+tegration is carried out in a through-boundary-crossing
+mode, in whichSis computed analytically on both sides
+of the boundary, with the normal components smoothly
+matched on the boundary itself. The tangential compo-
+nent ofSmay be discontinuous at the boundary, which
+plays an important role in the formation of the Poynting-
+vector-field topology.
+To conclude the discussion of the numerical part of the
+method, we note that despite the validation and cross-
+validation techniques described above, the final evidence
+of convergence and high computational accuracy is the
+satisfaction of physical tests. Section VII E is devoted to
+this analysis.
+VII. ALUMINUM TRIMER
+A. Configuration parameters
+As noted in the Introduction, to demonstrate the ca-
+pabilities of the method we consider a trimer of three
+identical aluminum nanocylinders (nanowires) of circu-
+lar cross-section whose axes are located at the vertices of
+an equilateral triangle lying in the plane perpendicular
+to these axes. The origin of the global coordinate sys-
+tem is chosen at the centroid of the triangle. The vertex
+coordinates are
+cp =R
+ 
+cosθp,sinθ p
+
+, θ p = π
+2 + 2π(p−1)
+3 ,(7.1)
+wherep= 1,2,3. The incidence angle isφ 0 =π/2, so
+the incident wave vectork 0 is parallel to theyaxis, and
+R=d/
+√
+3 = (2a+g)/
+√
+3. The computational parame-
+ters are given in Table I.
+The permittivity of aluminum atλ= 116 nm, where
+λ≡2π/k 0, was taken from Palik’s tabulated data [33]
+and set equal toε≈−0.974 + 0.086 i, corresponding to
+the plasmonic scattering regime (ε′ <0) with moderate
+dissipative losses (ε′′≪1).
+The magnitudes of the scattering coefficients for the
+first few values ofnat the chosen permittivity and size
+parameter are presented in Table II. The magnitude of
+|s1|is much larger than the others, meaning that the se-
+lected parameters correspond to the vicinity of the dipole
+resonance of a single cylinder. The table also shows the
+rapid decrease of|s n|forn≥3.
+We emphasize that the parameters were chosen only to
+demonstrate the capabilities of the method clearly. The
+results presented here do not claim to provide a com-
+plete description of the various near-field structures aris-
+ing in this problem, nor do they optimize the geometry
+for record enhancement of the fieldsE,H, orS. These
+questions will be discussed in a separate publication.
+a. Choice of initial points.To visualize the topol-
+ogy of the Poynting vector field as completely as pos-
+sible, the initial integration points are taken from sev-
+eral independent sources. In the exterior region, these
+are: (a) a uniform rectangular grid, with 3×8 nodes
+in the half-planex≥0 when mirror symmetry is used
+(the result is then reflected), or 5×8 nodes over the
+whole domain [−L,L] 2 otherwise; (b) 16 points on 6
+concentric rings around each cylinder at the radiir/a∈
+{1.005,1.01,1.02,1.04,1.08,1.15}; and (c) 5×5 points
+in each intercylinder gap, corresponding to 5 longitudinal
+sections and 5 transverse offsets within±0.3a.
+For streamlines inside the cylinders, a grid of 4×10
+points in the radialr/a∈{0.3,0.5,0.7,0.9}and angu-
+lar (φn = 2πn/10, n∈{1,2,...,10}) variables is used
+inside each cylinder.
+Initial points closer than 1.003ato the surface of a
+neighboring cylinder are excluded to avoid immediate
+penetration into that cylinder. When mirror symmetry
+is used, seeds withx<0 are excluded, and the obtained
+streamlines are reflected into the left half-plane. The fi-
+nal set is thinned out: for each streamline, its median
+point, corresponding to the middle of the arc length, is
+computed; if the median points of two lines are separated
+by less than 0.03a, one of them is removed.
+The initial steps depend on the seed type. In the case
+considered here,h 0 = 0.03afor the far field,h 0 = 0.02a
+for the near-surface region and gaps, andh 0 = 0.015a
+for the cylinder interiors. We useh max = 6h 0 and
+hmin = 10−5a.
+B. Near-field map and streamlines
+Figure 1 shows a map of the Poynting vector field near
+the trimer with streamlines superimposed. The topology
+of the energy-flux density is complex. In the far exterior
+region, the streamlines generally follow the propagation
+direction of the incident wave (from bottom to top in
+the figure). Near the cluster, however, they are strongly
+deformed, with energy concentrated in surface plasmons
+around which characteristic vortex structures are formed.
+
+===== PAGE 15 =====
+15
+Table I. Parameters of the test configuration of the aluminum-nanocylinder trimer.
+Parameter Value
+Wavelengthλ116 nm
+PolarizationH z
+Radii of the cylindersa 1 =a 2 =a 3≡a10.0 nm
+Minimum gap between cylindersg5.0 nm
+Gap-to-radius ratiog/a0.5
+Size parameterk 0a0.542
+Side length of the triangled= 2a+g25.0 nm
+Permittivity of Al (λ= 116 nm)ε≈−0.974 + 0.086i
+Truncation orderN(adaptive) 18
+Number of equations for the coefficientsA np 3(2×18 + 1) = 111
+Number of equations for the coefficientsA np in the symmetry-reduced system 3×18 + 2 = 56
+Number of points in the visualization grid 400×400
+Table II. Magnitudes of the scattering coefficients|s n|for the
+values ofεandk 0agiven in Table I.
+Parameter Value
+n 0 1 2 3 4
+|sn| 0.014 0.730 0.095 1.82·10 −3 1.225·10 −5
+Two important properties of this field map are fairly
+general and are also observed for other parameter val-
+ues, provided the mirror symmetry with respect to the
+yaxis and the orientation of the trimer relative to the
+incident radiation are preserved. First, a branch of the
+separatrix runs along theyaxis, separating the basins
+of attraction of the field lines associated with the right
+and left cylinders. As a result, no energy exchange oc-
+curs between these two cylinders. By contrast, the en-
+ergy exchange between each of them and the upper cylin-
+der is quite strong. Second, the cylinders at the base
+of the trimer, i.e., the upstream cylinders, screen the
+upper cylinder. Therefore, the characteristic values of
+the Poynting-vector magnitude inside and near the up-
+per cylinder are smaller than those for the base cylin-
+ders. However, the situation may change in the vicinity
+of cooperative mode resonant frequencies—a topic not
+discussed here.
+C. Far field. Scattering indicatrix
+An important far-field characteristic of the scattered
+radiation describing its angular dependence is the scat-
+tering indicatrix. To remove the trivial radial depen-
+dence caused by the divergence of the scattered cylin-
+drical wave, the indicatrix should be normalized. We
+normalize it to the forward-scattering intensity, which in
+the global coordinate system used here corresponds to
+φ= 90◦.
+In the example considered below, the scattering indi-
+catrix was computed in several independent ways. The
+results were compared to check the accuracy and stability
+of the computations.
+First, the indicatrix is related to the scattering ampli-
+tude by the expression
+I(φ) = |f(φ)|2
+|f(φ0)|2.(7.2)
+Second, the indicatrix can be computed from first prin-
+ciples. A circle of radius 100λcentered at the origin of
+the global coordinate system was drawn. The incident
+field was subtracted from the total electromagnetic field,
+leaving only the scattered one. For this field, the radial
+component of the Poynting vector was computed as a
+function of the observation angleφ. The circle radius
+was then doubled, and the computations were repeated.
+The curves obtained by these methods were compared.
+The comparison showed that all three curves agree with
+high accuracy6.
+The scattering indicatrix obtained in this way is shown
+in Fig. 2. For comparison, the scattering indicatrices
+of a single cylinder and of an electric dipole are also
+shown. The latter is described by the well-known ex-
+pressionI= sin 2φin the coordinate system used here.
+The trimer indicatrix is close to that of a single cylin-
+der, and both are close to the dipole-radiation pattern.
+Thus, despite the complex near-field structure shown in
+Fig. 1, the dipole mode makes the main contribution to
+the far-field directivity pattern of the trimer. This is
+consistent with the dominant role of the dipole scatter-
+ing coefficient in the multipole expansion at the selected
+parameter values; see Table II.
+D. Scattering, absorption, and extinction
+cross-sections
+While the indicatrix determines the angular distribu-
+tion of the scattered radiation, the integral characteris-
+6 For the reader’s convenience, a detailed discussion of the com-
+parison criteria is given in Sec. VII E.
+
+===== PAGE 16 =====
+16
+3
+ 2
+ 1
+ 0 1 2 3
+x / a
+3
+2
+1
+0
+1
+2
+3y / a
+0
+1
+2
+3
+4
+|S| 
+Figure 1. Map of the Poynting vector field for scattering of a linearly polarized monochromatic plane wave by the trimer at
+the parameter values given in Table I. The cylinder surfaces are indicated by white circles. The incident wave propagates along
+theyaxis, from bottom to top in the figure. The vectorElies in the plane of the figure (H z polarization). The color scale
+shows the magnitude of the Poynting vector normalized to its magnitude in the incident wave.
+tics of the phenomenon are the scattering, absorption,
+and extinction cross-sectionsC sca,C abs, andC ext. It
+is convenient to introduce the dimensionless efficiencies
+Qext,sca,abs by dividing the corresponding cross-sections
+by the geometric cross-section of the scattering object.
+In the two-dimensional geometry considered here, for the
+trimer this normalization corresponds to division by three
+cylinder diameters:
+Q(3)
+ext,sca,abs ≡
+C(3)
+ext,sca,abs
+6a ,
+where the superscript (3) denotes the trimer.
+For comparison, we also use the efficiencies of a single
+cylinder:
+Q(1)
+ext,sca,abs ≡
+C(1)
+ext,sca,abs
+2a .
+The individual absorption cross-sections of the cylinders
+forming the trimer are also of interest. They are de-
+noted byC (3,p)
+abs , wherepis defined according to Eq. (7.1);
+thus,p= 1 corresponds to the apex of the trimer, while
+p= 2,3 correspond to the base cylinders. Owing to sym-
+metry,C (3,2)
+abs =C (3,3)
+abs . Since we compare the dissipation
+in each trimer cylinder with that in a single cylinder, it
+is convenient to define
+Q(3,p)
+abs ≡ C(3,p)
+abs
+2a .
+HereC (3)
+abs = P
+pC(3,p)
+abs , which gives
+P3
+p=1Q(3,p)
+abs = 3Q (3)
+abs; the factor 3 appears because
+Q(3)
+abs andQ (3,p)
+abs use different normalizations.
+As in the computation of the indicatrix, when several
+equivalent expressions for the cross-sections were avail-
+able, all of them were used. The values obtained by dif-
+ferent methods were compared to monitor the quality of
+
+===== PAGE 17 =====
+17
+45°
+135°
+225°
+270°
+315°
+0.2
+0.4
+0.6
+0.8
+1.0
+90°
+0°180°
+3
+2
+1
+Figure 2. Scattering indicatrices normalized to the forward-
+scattering intensity. Curve 1 corresponds to electric-dipole
+radiation, curve 2 to a single cylinder, and curve 3 to the
+trimer. In cases 2 and 3, the parameter values are those given
+in Table I.
+the computations; see Sec. VII E.
+The results are presented in Table III. All trimer ef-
+ficiencies are noticeably smaller than the corresponding
+quantities for a single cylinder. This is because, for the
+selected parameters, the base cylinders screen the apex
+cylinder from the incident radiation. This screening is
+partially compensated by energy fluxes from the lower
+cylinders to the upper one, as seen in Fig. 1. The compen-
+sation, however, is incomplete, while the energy trans-
+ferred from the lower cylinders to the upper one reduces
+both the electromagnetic dissipation in the lower cylin-
+ders and the efficiency of their scattering.
+Table III. Comparison of the scattering, absorption, and ex-
+tinction efficiencies of the trimer and of a single cylinder at
+the parameters of Table I (λ= 116 nm,a= 10 nm,g= 5 nm;
+aluminum,H z polarization). The trimer efficienciesQ (3) are
+normalized to the total transverse size of the three cylinders,
+6a; the single-cylinder efficienciesQ (1) and per-cylinder effi-
+cienciesQ (3,p) are normalized to 2a.
+Single cylinder Trimer
+Qext 5.217 2.767
+Qsca 4.018 2.237
+Qabs 1.199 0.532
+Q(3,1)
+abs — 0.182
+Q(3,2)
+abs — 0.708
+Q(3,3)
+abs — 0.708
+It is also interesting to trace how the scattering charac-
+teristics of the trimer approach those of a single cylinder
+as the distance between the cylinders increases. The cor-
+responding results are presented in Table IV.
+For a single cylinder, exact expressions for the cross-
+sections in terms of the scattering coefficientssn are avail-
+able [1, 25]:
+Q(1)
+sca = 2
+k0a
+X
+n
+|sn|2, Q (1)
+ext =− 2
+k0a Re
+X
+n
+sn,
+(7.3)
+together with the expression forC (1)
+abs following from these
+formulas7 and from the definition of the extinction cross-
+section. Comparison of the values computed by the pro-
+posed method withP= 1 and those obtained from
+Eq. (7.3) gave zero machine error, which also confirms
+the high accuracy of the computations.
+A reliable substantiation of the accuracy of the pro-
+posed algorithm, however, requires more systematic ver-
+ification. We now turn to this issue.
+Table IV. Scattering, absorption, and extinction efficiencies of
+the equilateral trimer at different gap valuesg(g=d−2a),
+together with the corresponding single-cylinder values. Here
+Q=C/σ geom, whereσ geom = 2afor a single cylinder and
+σgeom = 6afor the trimer. Parameters:λ= 116 nm,
+a= 10 nm,ε=−0.974 + 0.086 i, andH z polarization. The
+truncation order isN= 18; the arithmetic precision was se-
+lected automatically by the four-stage adaptive solver. The
+columnQ ext/Q(1)
+ext gives the ratio of the trimer extinction ef-
+ficiency to that of a single cylinder and therefore measures
+cooperative screening.
+g, nmg/a Q ext Qsca Qabs
+Qext
+Q(1)
+ext
+Trimer
+5 0.50 2.767 2.237 0.532 0.531
+10 1.00 2.977 2.419 0.559 0.571
+20 2.00 3.420 2.768 0.652 0.656
+50 5.00 4.031 3.203 0.828 0.773
+Single cylinder
+— — 5.217 4.018 1.199 —
+E. Comprehensive accuracy verification
+The accuracy of the method was checked using a series
+of independent tests—each verifying a separate aspect of
+the computational scheme. Some of these tests have al-
+ready been mentioned above. For convenience, we collect
+all of them here.
+a. Convergence with respect to the truncation or-
+derN.The dependence of max|H z|and max|S|on the
+truncation orderNshows the emergence of a plateau
+atN≳18. IncreasingNfrom the working value
+18 to 26 changes the values of|S(r max)|at the fixed
+7 The coefficients n introduced here has the sign opposite to that of
+the scattering coefficient traditionally used in such problems; this
+explains the minus sign in the expression forQ (1)
+ext in Eq. (7.3).
+
+===== PAGE 18 =====
+18
+field-maximum pointr max by no more than∼10 −3 on
+the absolute scale, corresponding to a relative accuracy
+δ|S(rmax)|/|S(rmax)|of order 10 −4. The fast conver-
+gence atN >18 is due to the subwavelength size pa-
+rameterk 0a≈0.54: forN≫k 0a, the Bessel functions
+Jn(k0a) decrease factorially, and the higher multipoles
+are exponentially suppressed.
+However, besides the size parameter, the required value
+ofNdepends strongly on the minimum gapgbetween
+the cylinders. For large gaps,g≫a, the interaction
+between the cylinders is suppressed, the higher multi-
+poles are practically not excited, and moderate values of
+Nare sufficient. Conversely, as the cylinders approach
+each other (g≪a) the field in the gap gets an increas-
+ingly sharp spatial profile, and high multipoles must be
+included to reproduce it.
+Mathematically, this is related to the fact that the
+translation-matrix elementsT (pq)
+nm in Eq. (3.16) con-
+tain the Hankel functionsH (1)
+m−n(k0Rpq), whose modulus
+grows as the argumentk 0Rpq =k 0(2a+g) decreases.
+This strengthens the coupling between higher modes of
+neighboring cylinders and slows the convergence of the
+multipole expansion asgdecreases. It explains why, for
+g≪a, many multipoles are required to describe the field
+in the gap, notwithstanding the small size parameter. 8
+Thus, asgdecreases,Nmust be increased to achieve
+the prescribed accuracy. As a result, the condition
+numberκ(A) of the matrix in system (5.2), defined by
+Eq. (5.3), grows. With traditional numerical methods
+for solving the linear system (5.2), this leads to increased
+forward error and complicates the computation of fields
+in the regions most relevant for applications, where both
+the fields and their spatial derivatives may be large.
+In our approach, this difficulty is overcome by reduc-
+ing the backward error of the linear-algebra step and by
+using extended-precision arithmetic. This makes it possi-
+ble to perform computations with the required accuracy
+for arbitrary cylinder configurations, including very small
+but finite gaps.
+To illustrate this, Table V gives the values ofκat
+the working truncation orderN= 18, forg/a≳0.5 and
+k0a≈0.54. For smaller gaps,g/a≲0.1, a largerNmay
+be required to resolve the sharp spatial variations of the
+field. The values ofκgiven for such gaps should there-
+fore be regarded as lower bounds corresponding to the
+specified truncation level.
+The last column indicates the minimum solver level,
+see Sec. V F, at which the residualρ≲10 −10 is achieved.
+Atg/a= 100, the system matrix is practically diagonal,
+κ≈50, and standard LU factorization at level 1 gives a
+residual at the machine-epsilon level.
+8 In the limit of touching cylinders,g= 0, a singularity arises at
+the point of contact. In such a situation, even convergence of
+the multipole expansion itself becomes a separate question. This
+case requires a special analysis and is not considered here; see
+also the remark in Sec. II D.
+Table V. Condition numberκ(A) of the matrix of system (5.2)
+at fixedN= 18 for different gap valuesg(λ= 116 nm,
+a= 10 nm, andH z polarization). The column “Solver level”
+indicates the minimum level theoretically required to achieve
+ρ≲10 −10. In the demonstration considered below,g/a= 0.5,
+level 3 was used.
+g/a g, nmκ(A) Solver level
+100.0 1000.0 5×10 1 1
+5.00 50.0 3×10 21 3
+2.00 20.0 1×10 31 3
+1.00 10.0 3×10 36 3
+0.50 5.0 2×10 40 3
+0.10 1.0 1×10 44 3–4
+0.01 0.1 4×10 44 3–4
+As the gap decreases tog/a= 0.5, the condition
+number grows to about 10 40. In this case, a reliable
+solution is obtained after switching to the third solver
+level, i.e., to arbitrary-precisionmpmatharithmetic. At
+g/a≲0.1, the loss of significant digits during factoriza-
+tion makes arbitrary-precision arithmetic or exact elimi-
+nation overQ(i) practically unavoidable. Note also that
+atg/a≲0.01, the growth ofκwith decreasing gap slows
+down because the contribution to conditioning from fi-
+niteNbegins to dominate over the contribution from
+intercylinder coupling.
+It is important that a large value ofκalone does not
+imply an equally large error in the physical observables.
+The condition number refers to the full modal system,
+including weakly excited high harmonics whose contri-
+bution to the resulting field is small. Therefore, the final
+assessment of accuracy is based not onκalone but on the
+full set of physical and numerical tests described below.
+b. Residual of the boundary conditions.The relative
+error in the boundary conditions (3.8) was computed on
+the surface of each cylinder at 360 equally spaced points.
+At each point, the quantities on the two sides of the
+equalities in Eq. (3.8) were computed independently from
+the exterior representation (3.4) and the interior repre-
+sentation (3.7). Then, the two values were compared.
+The median and maximum relative errors over all com-
+parisons were 3.6×10 −6 and 2.4×10 −5, respectively.
+c. Scattering indicatrix.For a quantitative compar-
+ison of the indicatrices obtained by the three methods
+described above, we computed
+∆ij = max
+φ
+Ii(φ)−I j(φ)
+,
+whereI i(φ) is the indicatrix normalized to its maximum,
+i.e., to the forward-scattering intensity, computed by the
+i-th method. Herei= 1 corresponds to Eq. (7.2), while
+i= 2,3 correspond to the radial component of the Poynt-
+ing vector atr= 100λandr= 200λ, respectively. The
+computation gave ∆23≈10−3 and ∆12≈2×10 −3, with
+∆12≈2 ∆ 13, in agreement with the expected decrease
+
+===== PAGE 19 =====
+19
+of the corrections 9 proportional to 1/(k 0r). Thus, the
+three independent methods of computing the indicatrix
+give results differing by no more than 0.2%.
+d. Cross-sections.The scattering cross-sectionC (3)
+sca
+was determined in three independent ways: (i) from the
+scattering amplitudef(φ) using Eq. (3.21); (ii) by inte-
+grating the radial component of the Poynting vector of
+the scattered field over a circle of radiusR 1 = 100λ; and
+(iii) by the analogous integration over a circle of radius
+R2 = 200λ.
+Methods (i)–(iii) are not completely independent al-
+gebraically: all rely on the same expansion of the scat-
+tered field in cylindrical functions with coefficientsA np.
+They differ, however, in the summation procedure. In
+method (i), the closed-form expression (3.23) for the scat-
+tering amplitude is used, followed by analytical integra-
+tion of its squared modulus. In methods (ii) and (iii),
+the total scattered field is computed pointwise on a fi-
+nite radius circle by summing the series (3.1) and (3.2),
+followed by numerical integration. The relative error for
+all three methods was about 3×10 −7. This test con-
+firms the correct implementation of the phase factors in
+Eq. (3.21) and the absence of programming errors in the
+field-computation procedure at larger.
+The values ofC (3,p)
+abs were computed separately for each
+cylinder from the flux of the Poynting vector of the total
+external field through its lateral surface. The external
+field was computed using Eq. (3.3).
+The extinction cross-sectionC ext was computed in two
+independent ways. First, it was computed directly as
+C(3)
+ext =C (3)
+sca +C (3)
+abs.
+Second, it was computed from the two-dimensional op-
+tical theorem, Eq. (3.22). Comparison of the two values
+gave a relative error of about 10 −6, providing another
+check of computational accuracy.
+Methods (ii) and (iii) are the same as those used in
+the computation of the scattering indicatrix. However,
+for the indicatrix their discrepancy is about 10 −3. It is
+three orders of magnitude larger than forC sca. This is
+becauseC sca is an integral characteristic in whichS (sca)
+r
+is effectively averaged over the angleφ, whereas the indi-
+catrixI(φ) is sensitive to the local intensity at each fixed
+angle.
+e. Energy balance.We also checked the energy-flux
+balance through a closed circular contour of radiusR
+9 This decrease is related to the fact that, at finiter, the scattered
+wave is not purely transverse. Forψ=ψ(r,φ), its gradient has
+a nonzero azimuthal component, which contains an extra factor
+of 1/(k 0r) relative to the radial component. Asymptotically, as
+r→∞, the wave becomes purely transverse. This azimuthal
+component generates a nonzero tangential component ofS, ex-
+plaining the finite-radius corrections to the indicatrix in methods
+2 and 3. SinceS φ contains the same extra factor of 1/(k 0r) rel-
+ative toS r, the corresponding corrections decrease accordingly.
+Table VI. Summary of verification results forHz polarization,
+λ= 116 nm,g=a/2,N= 18, solver level 3, and
+mp.dps= 120.
+Test Relative error
+Boundary conditions
+(i) median error 3.6×10 −6
+(ii) maximum error 2.4×10 −5
+Scattering indicatrix∼10 −3
+Optical theorem 7.5×10 −7
+Energy-flux balance 3.9×10 −6
+Mirror symmetry
+(in the coefficientsA np)≤5×10 −13
+enclosing the whole cluster. The integral of the total-
+field flux over such a contour must be equal to−C abs:
+I
+Γ
+Stot· ˆndl=−C abs,
+whereS tot is the Poynting vector of the total, incident
+plus scattered, field, and ˆnis the outward normal to the
+contour Γ. The relative error in this balance was about
+4×10 −6.
+f. Mirror symmetry.The equilateral trimer under
+incidence along the symmetry axis has mirror symmetry
+with respect to the planex= 0. The solver uses this
+symmetry to reduce the number of independent coeffi-
+cientsA np from 3(2N+ 1) to 3N+ 2, i.e., it reduces the
+number of equations in the corresponding linear system
+by 3N+ 1; see Sec. V C. An independent check showed
+that the scattering coefficientsAnp obtained from the full
+system agree with those obtained from the reduced sys-
+tem with a relative error not exceeding 5×10 −13, and
+that the values of the fieldsψand|S|at the probe points
+are reproduced with the same accuracy.
+The verification results for the configuration of Table I,
+withg=a/2 andN= 18, are summarized in Table VI.
+VIII. CONCLUSION
+In this work, we have proposed a complete semi-
+analytical scheme for computing light scattering by a
+cluster of an arbitrary number of infinitely long, par-
+allel, homogeneous, non-overlapping and non-touching
+right circular cylinders. Each cylinder has an arbitrary
+complex permittivityε p, constant within the cylinder,
+wherepis the cylinder index.
+The main results are as follows:
+1. Based on the exact analytical solution of the prob-
+lem, we have obtained the compact block sys-
+tem (5.1) of linear equations for the cylindrical-
+function expansion coefficients. The system con-
+sists of the diagonal matrices of scattering coeffi-
+cientsS p and the translation matricesT pq. It is
+valid for a cluster with an arbitrary numberPof
+cylinders.
+
+===== PAGE 20 =====
+20
+2. We have presented a four-level adaptive solution
+strategy with control of conditioning and work-
+ing precision: LU decomposition→equilibra-
+tion with iterative refinement→arbitrary-precision
+mpmatharithmetic→exact elimination overQ(i).
+This strategy provides numerically verified solu-
+tions over a broad parameter range, including con-
+figurations near resonances and/or with subwave-
+length cylinder sizes and gaps.
+3. The method has been comprehensively verified us-
+ing the example of scattering of a normally incident,
+Hz linearly polarized monochromatic plane wave
+by a symmetric trimer of aluminum nanocylinders,
+witha= 10 nm,λ= 116 nm,g= 5 nm. The
+verification included convergence with respect to
+the truncation orderN, control of the boundary-
+condition residual, analysis of the directivity pat-
+tern, and several physical tests.
+The method is computationally efficient, analytically
+controllable, and can be applied to arrays ofPcylin-
+ders of arbitrary configuration, oligomer chains, and or-
+dered or disordered metamaterial lattices. Its semi-
+analytical character makes it promising for inverse design
+in nanophotonics [34], fast preliminary screening of nano-
+cluster geometries in SERS applications [35, 36], fluores-
+cence enhancement, nanoplasmonics [12, 13], and many
+other problems.
+The approach developed here has several important
+advantages over the finite-element method (FEM) [37,
+38] and the finite-difference time-domain method
+(FDTD) [39, 40]. In particular:
+(i) The Sommerfeld radiation condition is satisfied ex-
+actly through the asymptotics of the Hankel func-
+tions.
+(ii) The field at arbitrary spatial points is computed an-
+alytically without spatial interpolation or extrapo-
+lation.
+(iii) The near and far fields are computed from the same
+set of modal coefficients.
+(iv) There is no spatial grid, and the only discretization
+parameter is the truncation orderNof the multi-
+pole series.
+(v) The boundary conditions are satisfied analytically
+on the exact circular surfaces, eliminating the
+“staircase” or staircasing errors of FDTD grids.
+(vi) For narrow gaps between cylinders, accuracy is en-
+sured by increasingNand using the appropriate
+solver level, rather than by grid refinement.
+At the same time, the main drawback of the method
+is that it is applicable only to a strictly limited class of
+problems. Therefore, it does not replace universal meth-
+ods such asFEM,FDTD, orBEM, which can handle
+considerably more complex geometries and spatially in-
+homogeneous materials. Rather, it is a powerful com-
+plementary tool that is useful for parametric studies and
+for producing benchmark solutions for validating more
+universal numerical schemes.
+We also point out that, after truncation of the mul-
+tipole expansion, the size of the linear system for the
+modal coefficients isPM, wherePis the number of
+cylinders,M= 2N+ 1, andNis the truncation or-
+der. In this case, the computational cost of factorization
+scales asO((PM) 3), and memory consumption scales as
+O((PM) 2). This version of the algorithm is therefore
+aimed primarily at finite clusters of moderate size. As
+Pincreases and/or the gaps between cylinders decrease,
+computational-cost limitations arise.
+These limitations are not too restrictive in practice.
+For example, in the symmetric aluminum-trimer case
+considered here, confident convergence on a personal
+computer was achieved for a gap equal to 0.1% of the
+cylinder radius.
+Finally, the results were obtained for a cluster located
+in vacuum, but they are straightforwardly transferred to
+cylinders embedded in any homogeneous non-absorbing
+medium. Although the specific example of the aluminum
+trimer belongs to nano-optics, the domain of applicabil-
+ity of the developed approach is much broader. Within
+the convergence limits of the numerical solution, it is
+bounded only by the applicability of classical continuum
+electrodynamics and extends from the hard ultraviolet to
+the far radio band.
+This work was carried out within the framework of the
+state assignment of Lomonosov Moscow State University.
+The numerical study was supported by the Russian Sci-
+ence Foundation (Grant No. 23-72-00037).
+[1] C. F. Bohren and D. R. Huffman,Absorption and Scatter-
+ing of Light by Small Particles(Wiley, New York, 1983).
+[2] L. Tsang, J. A. Kong, and K.-H. Ding,Scattering of Elec-
+tromagnetic Waves: Theories and Applications(Wiley,
+New York, 2000).
+[3] A. Rahmani, P. C. Chaumet, and G. W. Bryant, Astro-
+phys. J.607, 873 (2004).
+[4] V. Twersky, J. Acoust. Soc. Am.24, 42 (1952).
+[5] C. M. Linton and P. A. Martin, J. Acoust. Soc. Am.117,
+3413 (2005).
+[6] P. A. Martin,Multiple Scattering: Interaction of Time-
+Harmonic Waves withNObstacles(Cambridge Univer-
+sity Press, 2006).
+[7] J. Sch¨ afer, S.-C. Lee, and A. Kienle, J. Quant. Spectrosc.
+Radiat. Transfer113, 2113 (2012).
+[8] D. Beutel, I. Fernandez-Corbaton, and C. Rockstuhl,
+Computer Physics Communications297, 109076 (2024).
+[9] I. Loulas, E. Almpanis, M. Kouroublakis, K. L. Tsak-
+
+===== PAGE 21 =====
+21
+makidis, C. Rockstuhl, and G. P. Zouros, ACS Photonics
+12, 1524 (2025).
+[10] T. Tanaka, JASA Express Letters6, 10.1121/10.0043125
+(2026).
+[11] D. W. Mackowski, J. Opt. Soc. Am. A11, 2851 (1994).
+[12] M. W. Knight, N. S. King, L. Liu, H. O. Everitt, P. Nord-
+lander, and N. J. Halas, ACS Nano8, 834 (2014).
+[13] D. G´ erard and S. K. Gray, J. Phys. D: Appl. Phys.48,
+184001 (2015).
+[14] A. Thøgersen, I. J. Jensen, B. D. Belle, M. Stange, V. M.
+Reinertsen, T. Kjeldstad, Ø. Prytz, E. Monakhov, and
+D. Kepaptsoglou, Journal of Physics: Condensed Matter
+35, 065301 (2023).
+[15] P. Nordlander, C. Oubre, E. Prodan, K. Li, and M. I.
+Stockman, Nano Lett.4, 899 (2004).
+[16] E. Prodan, C. Radloff, N. J. Halas, and P. Nordlander,
+Science302, 419 (2003).
+[17] D. W. Brandl, N. A. Mirin, and P. Nordlander, J. Phys.
+Chem. B110, 12302 (2006).
+[18] J. Alegret, T. Rindzevicius, T. Pakizeh, Y. Alaverdyan,
+L. Gunnarsson, and M. K¨ all, J. Phys. Chem. C112,
+14313 (2008).
+[19] X. Zhao, X. Liu, D. Chen, G. Shi, G. Li, X. Tang,
+X. Zhu, M. Li, L. Yao, Y. Wei, W. Song, Z. Sun, X. Fan,
+Z. Zhou, T. Qiu, and Q. Hao, Nature Communications
+15, 10.1038/s41467-024-50321-0 (2024).
+[20] L. D. Landau, J. S. Bell, M. Kearsley, L. Pitaevskii,
+E. Lifshitz, and J. Sykes,Electrodynamics of continuous
+media, Vol. 8 (elsevier, 2013).
+[21] D. Y. Lei, A. Aubry, S. A. Maier, and J. B. Pendry, New
+Journal of Physics12, 093030 (2010).
+[22] M. I. Tribelsky, Laser & Photonics Reviews18,
+10.1002/lpor.202300512 (2023).
+[23] M. Abramowitz and I. A. Stegun,Handbook of Mathe-
+matical Functions(Dover, New York, 1964).
+[24] G. N. Watson,A Treatise on the Theory of Bessel Func-
+tions, 2nd ed. (Cambridge University Press, 1944).
+[25] H. C. Hulst,Light scattering by small particles,
+unabridged and corrected republication of the work orig-
+inally published in 1957 by John Wiley and Sons, Inc.,
+N.Y. ed., Dover books on physics (Dover Publications,
+Inc., New York, 2018).
+[26] N. J. Higham,Accuracy and Stability of Numerical Algo-
+rithms, 2nd ed. (SIAM, Philadelphia, 2002).
+[27] C. R. Harris, K. J. Millman, S. J. van der Walt,et al.,
+Nature585, 357 (2020).
+[28] F. Johansson, (2013),http://mpmath.org/.
+[29] E. Anderson, Z. Bai, C. Bischof, S. Blackford, J. Demmel,
+J. Dongarra, J. Du Croz, A. Greenbaum, S. Hammarling,
+A. McKenney, and D. Sorensen,LAPACK Users’ Guide,
+3rd ed. (SIAM, Philadelphia, 1999).
+[30] A. Meurer, C. P. Smith, M. Paprocki,et al., PeerJ Com-
+put. Sci.3, e103 (2017).
+[31] P. Bogacki and L. F. Shampine, Appl. Math. Lett.2, 321
+(1989).
+[32] E. Hairer, S. P. Nørsett, and G. Wanner,Solving Ordi-
+nary Differential Equations I: Nonstiff Problems, 2nd ed.
+(Springer, Berlin, 1993).
+[33] E. D. Palik,Handbook of Optical Constants of Solids
+(Academic Press, San Diego, 1998).
+[34] S. Molesky, Z. Lin, A. Y. Piggott, W. Jin, J. Vuckovi´ c,
+and A. W. Rodriguez, Nature Photon.12, 659 (2018).
+[35] E. Hao and G. C. Schatz, J. Chem. Phys.120, 357 (2004).
+[36] J. P. Camden, J. A. Dieringer, Y. Wang, D. J. Masiello,
+L. D. Marks, G. C. Schatz, and R. P. Van Duyne, J. Am.
+Chem. Soc.130, 12616 (2008).
+[37] J.-M. Jin,The Finite Element Method in Electromagnet-
+ics, 3rd ed. (Wiley-IEEE Press, Hoboken, NJ, 2015).
+[38] P. Monk,Finite Element Methods for Maxwell’s Equa-
+tions(Oxford University Press, Oxford, 2003).
+[39] A. Taflove and S. C. Hagness,Computational Electro-
+dynamics: The Finite-Difference Time-Domain Method,
+3rd ed. (Artech House, Boston, 2005).
+[40] K. S. Yee, IEEE Trans. Antennas Propag.14, 302 (1966).
