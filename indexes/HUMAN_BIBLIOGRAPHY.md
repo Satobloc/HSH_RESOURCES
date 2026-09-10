@@ -4,6 +4,40 @@ Status: provisional / incremental / provenance-first
 
 Purpose: human-readable bibliographic navigation for source material in `HSH_RESOURCES`. This is intentionally separate from `indexes/RESOURCE_INDEX.md`, which is the complete structural inventory. Presence here does not imply relevance, endorsement, novelty displacement, or mathematical/physical validity.
 
+## Theorybuilding boundary and cross-repo routing
+
+This repository is an **external evidence and reference store**, not the generative theorybuilding workspace.
+
+SAT/H(s)H development is to proceed from its own Fundamental Intuitions and internal developmental genealogy — SAT → SAT-O → 4DHH → Blockwave/Satobloc → H(s)H — rather than being rebuilt from newly discovered outside theories or their assumptions. External literature belongs here for proper citation, standard mathematical/physical context, empirical constraints, prior-art comparison, independent-development assessment, and any **deliberate** imported machinery whose provenance is explicitly recorded.
+
+That boundary implements Nathan's source-side instruction in `PRIOR_ART/README_FROM_NATHAN.md`: continued R&D is intended to remain in-house while relevant prior art receives appropriate credit. The 2026-09-09 exposure statement in that file is provenance evidence about when this literature was encountered; it is not by itself a claim-level novelty determination.
+
+Point-of-use routing:
+
+- **Need or use an external source in HsH?** Record the theory-side location in `Satobloc/HsH/ledgers/CITATION_LEDGER.md` and mirror the same handoff ID in the `Citation handoff register` at the bottom of this file.
+- **Need to know whether a resource exists?** Use `indexes/RESOURCE_INDEX.md` / `indexes/index-state.json`.
+- **Need to know what has not yet received a human bibliographic entry?** Use the generated `indexes/BIBLIOGRAPHY_COVERAGE.md`.
+- **Need internal SAT/H(s)H development/provenance rather than an external citation?** Follow the internal source path into `Satobloc/HsH` and/or `Satobloc/SAT_THEORY_ARCHIVE_2023-25`; do not substitute this bibliography for internal provenance.
+
+A useful rule at the point of use is therefore:
+
+**internal source answers “where did H(s)H get this?”; external citation answers “what outside result, evidence, comparison, constraint, or antecedent should be credited?”**
+
+## Citation handoff lifecycle
+
+When any workflow, LLM, reviewer, bibliography pass, synthesis pass, formalization pass, or audit identifies that a resource should be cited somewhere in HsH:
+
+1. assign a stable handoff ID `CITE-YYYY-NNN`;
+2. record the exact HSH_RESOURCES source path in the handoff register below;
+3. record the exact destination in `Satobloc/HsH` — preferably file plus section/claim/equation anchor;
+4. classify the citation role as `STD`, `EMPIRICAL`, `PRIOR_ART`, `COMPARISON`, `CONSTRAINT`, or `DELIBERATE_IMPORT`;
+5. use status `NEEDED`, `PLACED`, `VERIFIED`, `REJECTED`, or `SUPERSEDED`;
+6. mirror the same handoff ID in `Satobloc/HsH/ledgers/CITATION_LEDGER.md`.
+
+`VERIFIED` means the actual source has been checked against the actual HsH statement at its point of use. Merely storing or indexing a paper is not enough.
+
+The handoff register is intentionally **human/LLM-reviewed**, not automatically populated from keyword resemblance. Automatic machinery may report bibliography coverage gaps; it must not decide theoretical relevance or citation obligation.
+
 Read-status vocabulary used below:
 - `metadata verified` — bibliographic identity checked against an external primary or reliable bibliographic page; paper not yet substantively read in this audit pass.
 - `repository observed` — exact repository path confirmed.
@@ -43,6 +77,16 @@ Read-status vocabulary used below:
 
 ## Coverage limits / next work
 
-This bibliography remains a small subset of the repository. The structural index scanned 1,444 files total and currently reports 224 files under `PRIOR_ART`; therefore silence in this document means **not yet bibliographically processed**, not absent or irrelevant. Duplicate-content groups in `indexes/RESOURCE_INDEX.md` should be used to avoid counting mirrored copies as independent sources.
+This bibliography remains a small subset of the repository. The generated structural and bibliography-coverage indexes should be used for current counts rather than freezing a file-count claim here. Silence in this document means **not yet bibliographically processed**, not absent or irrelevant. Duplicate-content groups in `indexes/RESOURCE_INDEX.md` and the generated `indexes/BIBLIOGRAPHY_COVERAGE.md` should be used to avoid counting mirrored copies as independent sources or independent backlog items.
 
-Next passes should: (1) recover metadata from source contents or primary bibliographic records rather than filenames alone; (2) mark full/partial/abstract-only reading separately; (3) add exact HsH FULL-CONVO and main-Archive source pointers only where textual or chronological evidence supports them; (4) distinguish prior art, independent rediscovery, extension, loose resemblance, empirical constraint, and unrelated/background material; and (5) prioritize claim-level comparison of the newly indexed braid/monodromy/holonomy sources rather than generic keyword overlap.
+Next bibliography work should: (1) recover metadata from source contents or primary bibliographic records rather than filenames alone; (2) mark full/partial/abstract-only reading separately; (3) add exact HsH and historical-Archive source pointers only where textual or chronological evidence supports them; (4) distinguish prior art, independent rediscovery, extension, loose resemblance, empirical constraint, and unrelated/background material; and (5) use the handoff register whenever a source becomes an actual citation obligation rather than merely a comparison candidate.
+
+## Citation handoff register
+
+This is the **source-side** half of the citation system. Rows are created only when some workflow/reviewer actually identifies a citation need or use. A source may appear in the bibliography without appearing here.
+
+Mirror each active row in `Satobloc/HsH/ledgers/CITATION_LEDGER.md` using the same handoff ID.
+
+| Handoff ID | Exact HSH_RESOURCES source path | HsH destination / point of use | Citation role | Why citation is needed | Identified by / workflow | Status | Verification / backlink notes |
+|---|---|---|---|---|---|---|---|
+| — | — | — | — | — | — | — | Add a row when a real citation obligation is identified. |
