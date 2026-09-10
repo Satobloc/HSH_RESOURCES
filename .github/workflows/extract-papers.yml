@@ -84,9 +84,31 @@ jobs:
           manifest = Path('derived/manifests/extraction.jsonl')
           rows = [json.loads(line) for line in manifest.read_text(encoding='utf-8').splitlines() if line.strip()]
           counts = Counter(row.get('status', 'unknown') for row in rows)
+          text_paths = [row.get('text_path') for row in rows if row.get('text_path')]
+          unique_text_paths = set(text_paths)
+          actual_text_files = set(
+              p.relative_to(Path('.')).as_posix()
+              for p in Path('derived/text').glob('*.txt')
+              if p.is_file()
+          )
+          missing_text_paths = sorted(unique_text_paths - actual_text_files)
+          unreferenced_text_files = sorted(actual_text_files - unique_text_paths)
+
           print(f"manifest_entries={len(rows)}")
           for key in sorted(counts):
               print(f"status_{key}={counts[key]}")
+          print(f"manifest_text_path_records={len(text_paths)}")
+          print(f"unique_manifest_text_paths={len(unique_text_paths)}")
+          print(f"actual_derived_text_files={len(actual_text_files)}")
+          print(f"duplicate_source_records_sharing_text={len(text_paths) - len(unique_text_paths)}")
+          print(f"missing_manifest_text_paths={len(missing_text_paths)}")
+          print(f"unreferenced_derived_text_files={len(unreferenced_text_files)}")
+
+          if missing_text_paths:
+              print("ERROR: manifest points to missing derived text files")
+              for path in missing_text_paths[:20]:
+                  print(f"missing_text_path={path}")
+              raise SystemExit(1)
           PY
 
       - name: Commit derived text and indexes
