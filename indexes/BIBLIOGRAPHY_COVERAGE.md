@@ -1,41 +1,32 @@
 # HSH Resources — Bibliography Coverage
 
-> Generated coverage artifact. Reviewed, provisional, and unresolved layers are reported separately. This does **not** decide relevance, citation need, prior art, novelty, or theory authority.
+> Generated coverage artifact. Reviewed, provisional, excluded, and unresolved layers are reported separately. This does **not** decide relevance, citation need, prior art, novelty, or theory authority.
 
 - Structural index scan: `2026-09-10T14:57:01Z`
 - PDF paths in structural index: **1211**
 - Unique PDF content groups: **1136**
-- Reviewed unique-content groups: **56**
+- Reviewed unique-content groups: **70**
 - Provisionally machine-indexed unique-content groups: **1065**
-- Total bibliographically indexed unique-content groups: **1121**
-- Remaining unindexed/straggler unique-content groups: **15**
-- Exact indexed PDF paths represented across reviewed + provisional corpora: **1191**
+- Total bibliographically indexed unique-content groups: **1135**
+- Explicitly excluded non-bibliographic unique-content groups: **1**
+- Total accounted unique-content groups: **1136**
+- Remaining unresolved unique-content groups: **0**
+- Exact PDF paths represented in reviewed + provisional bibliography: **1208**
+- Exact PDF paths explicitly excluded as non-bibliographic artifacts: **1**
 
 Reviewed corpus: `indexes/HUMAN_BIBLIOGRAPHY.md` plus `indexes/bibliography_batches/BATCH_*.md`.
 
 Provisional corpus: deterministic `indexes/bibliography_provisional/PROVISIONAL_*.md` files produced only from successfully extracted PDF lineages. Provisional means indexed, not individually reviewed.
 
+Explicit exclusions: `indexes/BIBLIOGRAPHY_EXCLUSIONS.md`. These remain preserved in the repository but are not literature/source bibliography items.
+
 Byte-identical copies count as one content lineage when any path in the lineage is represented.
 
-## Remaining unindexed unique PDF content groups
+## Remaining unresolved unique PDF content groups
 
 | Representative source path | Duplicate paths | Identifier hint |
 |---|---:|---|
-| `HAUL 11/Bell (1).pdf` | 1 |  |
-| `HAUL 7/ssrn-7092380.pdf` | 0 | ssrn:7092380 |
-| `HAUL 3/PhysRev.47.777.pdf` | 0 |  |
-| `HAUL 3/EPR (1).pdf` | 1 |  |
-| `HAUL 1/ssrn-7270079.pdf` | 0 | ssrn:7270079 |
-| `HAUL 1/ssrn-7130498.pdf` | 0 | ssrn:7130498 |
-| `HAUL 1/ssrn-7046138.pdf` | 0 | ssrn:7046138 |
-| `HAUL 7/ssrn-7195781.pdf` | 0 | ssrn:7195781 |
-| `HAUL 1/ssrn-7130459.pdf` | 0 | ssrn:7130459 |
-| `HAUL 3/Aspect (1).pdf` | 1 |  |
-| `HAUL 7/ssrn-7269867.pdf` | 0 | ssrn:7269867 |
-| `PRIOR_ART/PlagiarismCheckReport.pdf` | 0 |  |
-| `HAUL 1/ssrn-7195699.pdf` | 0 | ssrn:7195699 |
-| `HAUL 3/EinsteinWormhole.pdf` | 0 |  |
-| `HAUL 5/ssrn-7269980.pdf` | 0 | ssrn:7269980 |
+| — | 0 | Every currently indexed PDF content group is accounted for as reviewed bibliography, provisional bibliography, or an explicit non-bibliographic exclusion. |
 
 ## Bibliography path discrepancies
 
@@ -71,7 +62,8 @@ Reviewed corpus paths absent from current structural index:
 - `BACKREACTION/2608.31163v1 (1).pdf`
 - `Over 1.pdf`
 - `Over 2.pdf`
+- `PhysRev.47.777.pdf`
 
 ## Machine/human boundary
 
-Provisional coverage closes the machine-indexing backlog without pretending that every source received individual review. Metadata correction, neutral description refinement, source reading, H(s)H relationship, and citation-handoff decisions remain review work. Extraction/OCR failures are tracked separately in `indexes/BIBLIOGRAPHY_STRAGGLERS.md`.
+Provisional coverage closes the machine-indexing backlog without pretending that every source received individual review. Exception batches may preserve unresolved identity fields rather than guess. Metadata correction, neutral description refinement, source reading, H(s)H relationship, and citation-handoff decisions remain review work. Any future extraction/indexing failures are tracked separately in `indexes/BIBLIOGRAPHY_STRAGGLERS.md`.
