@@ -33,6 +33,12 @@ Preferred fields:
 - **Summary** — optional; may remain pending
 - **Notes** — optional provenance/citation/comparison status
 
+## Reviewed bibliography batches
+
+General-resource indexing is divided into bounded reviewed batches under `indexes/bibliography_batches/`. Those `BATCH_*.md` files are part of the human bibliography layer and are included automatically in bibliography coverage and intake suppression. The master file remains the policy, PRIOR_ART, provenance, and citation-handoff surface.
+
+Current batch size: **10 unique-content lineages**. See `indexes/bibliography_batches/README.md` for the batch protocol.
+
 ## PRIOR_ART
 
 ### 1. *Projected WIMP sensitivity of the LUX-ZEPLIN (LZ) dark matter experiment*
