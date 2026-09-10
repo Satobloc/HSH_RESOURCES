@@ -2,7 +2,7 @@
 
 > Generated structural/coverage artifact. It does **not** decide relevance, citation need, prior art, novelty, or theory authority.
 
-- Structural index scan: `2026-09-10T13:20:48Z`
+- Structural index scan: `2026-09-10T14:57:01Z`
 - PDF paths in structural index: **1211**
 - Unique PDF content groups: **1136**
 - Exact indexed PDF paths mentioned in the human bibliography: **19**
