@@ -5,13 +5,15 @@
 - Structural index scan: `2026-09-10T14:57:01Z`
 - PDF paths in structural index: **1211**
 - Unique PDF content groups: **1136**
-- Exact indexed PDF paths mentioned in the human bibliography: **19**
-- Unique PDF content groups represented in the human bibliography: **16**
-- Unique PDF content groups not yet represented: **1120**
+- Exact indexed PDF paths mentioned in the human bibliography corpus: **29**
+- Unique PDF content groups represented in the human bibliography corpus: **26**
+- Unique PDF content groups not yet represented: **1110**
+
+The human bibliography corpus is `indexes/HUMAN_BIBLIOGRAPHY.md` plus reviewed `indexes/bibliography_batches/BATCH_*.md` files.
 
 A duplicate file is counted as bibliographically represented when at least one byte-identical path in its content group is represented. This avoids inflating the human backlog with mirrored copies.
 
-The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source can be structurally present yet unprocessed; an unprocessed source is not thereby irrelevant.
+A source can be structurally present yet unprocessed; an unprocessed source is not thereby irrelevant.
 
 ## Unrepresented unique PDF content groups
 
@@ -116,7 +118,6 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2609.03710v1.pdf` | 0 | arxiv:2609.03710v1 |
 | `PRIOR_ART/2608.11369v1.pdf` | 0 | arxiv:2608.11369v1 |
 | `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.27297v1.pdf` | 0 | arxiv:2608.27297v1 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2007.06487v2.pdf` | 0 | arxiv:2007.06487v2 |
 | `H(s)H_Toolkit/2607.07028v1.pdf` | 0 | arxiv:2607.07028v1 |
 | `PRIOR_ART/2607.06517v1.pdf` | 0 | arxiv:2607.06517v1 |
 | `H(s)H_Toolkit/Mathematical formulation of the Standard Model - Wikipedia.pdf` | 0 |  |
@@ -127,7 +128,6 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `H(s)H_Toolkit/0112148v1.pdf` | 0 | unresolved-seven-digit-id:0112148v1 |
 | `H(s)H_Toolkit/2607.01371v1.pdf` | 0 | arxiv:2607.01371v1 |
 | `HAUL 2/ssrn-7387398.pdf` | 0 | ssrn:7387398 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2006.11528v1.pdf` | 0 | arxiv:2006.11528v1 |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/c9cb6d23481b7450aaa996bbf2ebc16d_lecture23.pdf` | 0 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/9df3140e29275c1d64f2b74318d1a0e0_lec19.pdf` | 0 |  |
 | `H(s)H_Toolkit/HsHtoolkit3_2.pdf` | 0 |  |
@@ -149,7 +149,6 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `HAUL 6/ssrn-7377198.pdf` | 0 | ssrn:7377198 |
 | `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2607.10889v3.pdf` | 0 | arxiv:2607.10889v3 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2606.28385v1.pdf` | 0 | arxiv:2606.28385v1 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2006.14073v1.pdf` | 0 | arxiv:2006.14073v1 |
 | `HAUL 7/ssrn-7208083.pdf` | 0 | ssrn:7208083 |
 | `HAUL 2/ssrn-6954558.pdf` | 0 | ssrn:6954558 |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/The physics of brain development_ How cells pull together to form the neural tube.pdf` | 0 |  |
@@ -201,11 +200,9 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `PRIOR_ART/2607.10592v1.pdf` | 0 | arxiv:2607.10592v1 |
 | `HAUL 8/RPP1978_Bell (1).pdf` | 2 |  |
 | `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - Kolb_2006_New_J._Phys._8_322.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2008.10610v2.pdf` | 0 | arxiv:2008.10610v2 |
 | `H(s)H_Toolkit/s40574-023-00359-7.pdf` | 0 |  |
 | `HAUL 2/ssrn-7379158.pdf` | 0 | ssrn:7379158 |
 | `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.28850v1.pdf` | 0 | arxiv:2608.28850v1 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2006.11400v2.pdf` | 0 | arxiv:2006.11400v2 |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2608.03739v2.pdf` | 0 | arxiv:2608.03739v2 |
 | `HAUL 2/ssrn-6823978.pdf` | 0 | ssrn:6823978 |
 | `HAUL 2/ssrn-7363500.pdf` | 0 | ssrn:7363500 |
@@ -263,7 +260,6 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `HAUL 1/ssrn-7227698.pdf` | 0 | ssrn:7227698 |
 | `HAUL 6/ssrn-7365302.pdf` | 0 | ssrn:7365302 |
 | `HAUL 3/2212.05048v2.pdf` | 0 | arxiv:2212.05048v2 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2005.12903v3.pdf` | 0 | arxiv:2005.12903v3 |
 | `DATA/DATA REL - notebooks-latest04_HowTosSPARCLPlot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalabnotebooks-latest.pdf` | 0 |  |
 | `Consciousness + AI/Over 3.pdf` | 0 |  |
 | `HAUL 1/ssrn-6999018.pdf` | 0 | ssrn:6999018 |
@@ -373,7 +369,6 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `LIVE_RESEARCH_UPDATES/6dt2-sq44.pdf` | 0 |  |
 | `H(s)H_Toolkit/0105040v2.pdf` | 0 | unresolved-seven-digit-id:0105040v2 |
 | `HAUL 3/ssrn-5799042.pdf` | 0 | ssrn:5799042 |
-| `ARXIV PAPER - 2503.14745v2.pdf` | 0 | arxiv:2503.14745v2 |
 | `H(s)H_Toolkit/hypersph.pdf` | 0 |  |
 | `H(s)H_Toolkit/Bouman-Computer_aided_Design-1995-Geometric_Constraint_Solver.pdf` | 0 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/JHEP03(2025)095.pdf` | 0 |  |
@@ -479,7 +474,6 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `HAUL 1/ssrn-7270079.pdf` | 0 | ssrn:7270079 |
 | `H(s)H_Toolkit/2607.05918v1.pdf` | 0 | arxiv:2607.05918v1 |
 | `HAUL 3/ssrn-5397230.pdf` | 0 | ssrn:5397230 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2007.01828v1.pdf` | 0 | arxiv:2007.01828v1 |
 | `HAUL 8/rspa.2025.0413.pdf` | 0 | arxiv:2025.0413 |
 | `HAUL 12/rspa.2025.0413.pdf` | 0 | arxiv:2025.0413 |
 | `EXPOSURE_STATS/DEBATING AI DATA/6Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf` | 0 |  |
@@ -1081,7 +1075,6 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `H(s)H_Toolkit/anna-symplectic.pdf` | 0 |  |
 | `HAUL 1/ssrn-7191618.pdf` | 0 | ssrn:7191618 |
 | `PRIOR_ART/2607.01341v2.pdf` | 0 | arxiv:2607.01341v2 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2006.16652v1.pdf` | 0 | arxiv:2006.16652v1 |
 | `H(s)H_Toolkit/3eac34a102df34d001b9e721b2302922_soln04.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2512.03168v5.pdf` | 0 | arxiv:2512.03168v5 |
 | `HAUL 4/BlackHoleDiagrams_EinsteinRosenBridgeSchwarzschildWormhole.pdf` | 0 |  |
@@ -1099,7 +1092,6 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `OUTSIDE RESEARCH LIBRARY/KELVIN/2608.03602v1.pdf` | 0 | arxiv:2608.03602v1 |
 | `PRIOR_ART/2507.03462v1.pdf` | 0 | arxiv:2507.03462v1 |
 | `HAUL 3/Mermin1993.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2007.07871v1.pdf` | 0 | arxiv:2007.07871v1 |
 | `PRIOR_ART/2608.06491v1.pdf` | 0 | arxiv:2608.06491v1 |
 | `HAUL 1/ssrn-7112098.pdf` | 0 | ssrn:7112098 |
 | `PRIOR_ART/2605.28871v1.pdf` | 0 | arxiv:2605.28871v1 |
@@ -1140,8 +1132,18 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 
 ## Bibliography path discrepancies
 
-No bibliographic PDF paths fall outside the current structural index.
+The following PDF-like paths appear in the human bibliography corpus but are not present in the current structural index. They may be stale paths, cross-repo references, or indexing discrepancies and require human review.
+
+- `BACKREACTION/2005.12903v3.pdf`
+- `BACKREACTION/2006.11400v2.pdf`
+- `BACKREACTION/2006.11528v1.pdf`
+- `BACKREACTION/2006.14073v1.pdf`
+- `BACKREACTION/2006.16652v1.pdf`
+- `BACKREACTION/2007.01828v1.pdf`
+- `BACKREACTION/2007.06487v2.pdf`
+- `BACKREACTION/2007.07871v1.pdf`
+- `BACKREACTION/2008.10610v2.pdf`
 
 ## Machine/human boundary
 
-This report may be regenerated automatically after resource ingest. Metadata recovery, neutral description, reading status, H(s)H relationship, and citation-handoff decisions remain human/LLM-reviewed fields in the human bibliography.
+This report may be regenerated automatically after resource ingest or a reviewed bibliography batch. Metadata recovery, neutral description, reading status, H(s)H relationship, and citation-handoff decisions remain human/LLM-reviewed fields.
