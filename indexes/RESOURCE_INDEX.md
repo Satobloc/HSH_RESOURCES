@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T05:08:41Z`
-- Tree/content state: `48c38ea03620b1d4cb2595ef74810d299ff971c7f4b52c319fd12361d9a42835`
+- Scanned: `2026-09-10T05:25:20Z`
+- Tree/content state: `c81ecac19dc423cb07e0283bea2067e4a2f96b1f6212a02248e15abbee565632`
 - Coverage: complete structural traversal
-- Files: 1145
-- Uploaded source files: 1136
-- PDF papers: 980
+- Files: 1148
+- Uploaded source files: 1139
+- PDF papers: 982
 - Repository machinery files: 9
-- Byte-identical duplicate groups: 71
+- Byte-identical duplicate groups: 72
 
 ## Top-level coverage
 
@@ -27,7 +27,7 @@
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
 | `HAUL 11` | 6 |
-| `HAUL 12` | 4 |
+| `HAUL 12` | 5 |
 | `HAUL 2` | 69 |
 | `HAUL 3` | 41 |
 | `HAUL 4` | 14 |
@@ -39,7 +39,7 @@
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 9 |
 | `OUTSIDE RESEARCH LIBRARY` | 318 |
-| `PRIOR_ART` | 4 |
+| `PRIOR_ART` | 6 |
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
@@ -51,6 +51,9 @@
 
 ## Duplicate-content groups
 
+- `01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b`
+  - `HAUL 12/gitignore.txt`
+  - `PRIOR_ART/gitignore.txt`
 - `064069f9073580c36f12711012d0e52f2e6b2167a80f677908c6ed9d23a7fe24`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf`
   - `H(s)H_Toolkit/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf`
@@ -1253,6 +1256,8 @@
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04117v1.pdf` | 1824628 | arxiv:2609.04117v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04844v1.pdf` | 470761 | arxiv:2609.04844v1 |
 | `PRIOR_ART/2020-10-braiding-photonic-topological-modes.pdf` | 354922 |  |
+| `PRIOR_ART/s41586-026-10915-8.pdf` | 1426863 |  |
+| `PRIOR_ART/s42005-026-02638-z.pdf` | 2106775 |  |
 | `PRIOR_ART/symmetry-11-01298.pdf` | 1097058 |  |
 | `PRIOR_ART/Topics_in_statistical_physics_invol.pdf` | 209935 |  |
 | `symmetry-11-01298.pdf` | 1097058 |  |
