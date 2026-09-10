@@ -2,12 +2,12 @@
 
 > Generated structural/coverage artifact. It does **not** decide relevance, citation need, prior art, novelty, or theory authority.
 
-- Structural index scan: `2026-09-10T09:32:36Z`
-- PDF paths in structural index: **1206**
-- Unique PDF content groups: **1131**
+- Structural index scan: `2026-09-10T13:20:48Z`
+- PDF paths in structural index: **1211**
+- Unique PDF content groups: **1136**
 - Exact indexed PDF paths mentioned in the human bibliography: **19**
 - Unique PDF content groups represented in the human bibliography: **16**
-- Unique PDF content groups not yet represented: **1115**
+- Unique PDF content groups not yet represented: **1120**
 
 A duplicate file is counted as bibliographically represented when at least one byte-identical path in its content group is represented. This avoids inflating the human backlog with mirrored copies.
 
@@ -423,6 +423,7 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `PRIOR_ART/Advanced Science - 2026 - Lee - Non‐Hermitian Stealthy Hyperuniformity.pdf` | 0 |  |
 | `HAUL 2/ssrn-6684378.pdf` | 0 | ssrn:6684378 |
 | `H(s)H_Toolkit/qft.pdf` | 0 |  |
+| `HAUL 12/0512012v1.pdf` | 0 | unresolved-seven-digit-id:0512012v1 |
 | `HAUL 2/ssrn-6897338.pdf` | 0 | ssrn:6897338 |
 | `H(s)H_Toolkit/2607.05360v1.pdf` | 0 | arxiv:2607.05360v1 |
 | `H(s)H_Toolkit/PDEs_Project____GPE_derivation-1.pdf` | 0 |  |
@@ -449,6 +450,7 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `PDF_SPECS/LATEX_amsldoc.pdf` | 0 |  |
 | `DATA/DATA REL - notebooks-latest03_ScienceExamplesEmLineGalaxies02_EmLineGalaxies_Outliers.ipynb at master · astro-datalabnotebooks-latest.pdf` | 0 |  |
 | `PRIOR_ART/s41524-025-01715-1.pdf` | 0 |  |
+| `HISTORICAL/BOHR — QUANT SPECT 1+2.pdf` | 0 |  |
 | `HAUL 2/ssrn-7398357.pdf` | 0 | ssrn:7398357 |
 | `EXPOSURE_STATS/MISC_PAPERS/Class Likelihood Ratios to measure classification performance — scikit-learn 1.9.0 documentation.pdf` | 0 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/LIGHT_IS_GEM_v12.pdf` | 0 |  |
@@ -467,6 +469,7 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2012.14990v1.pdf` | 0 | arxiv:2012.14990v1 |
 | `PRIOR_ART/LZ_Paper_Preprint_WS2025_v6.0_20251208.pdf` | 0 |  |
 | `HAUL 1/ssrn-7220579.pdf` | 0 | ssrn:7220579 |
+| `HISTORICAL/BOHR — SPECTRA.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/KELVIN/2608.18629v2.pdf` | 0 | arxiv:2608.18629v2 |
 | `HAUL 6/ssrn-7390778.pdf` | 0 | ssrn:7390778 |
 | `H(s)H_Toolkit/navier_stokes.pdf` | 0 |  |
@@ -478,6 +481,7 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `HAUL 3/ssrn-5397230.pdf` | 0 | ssrn:5397230 |
 | `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2007.01828v1.pdf` | 0 | arxiv:2007.01828v1 |
 | `HAUL 8/rspa.2025.0413.pdf` | 0 | arxiv:2025.0413 |
+| `HAUL 12/rspa.2025.0413.pdf` | 0 | arxiv:2025.0413 |
 | `EXPOSURE_STATS/DEBATING AI DATA/6Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf` | 0 |  |
 | `PRIOR_ART/2607.20522v1.pdf` | 0 | arxiv:2607.20522v1 |
 | `HAUL 1/ssrn-7251340.pdf` | 0 | ssrn:7251340 |
@@ -883,6 +887,7 @@ The authoritative human layer remains `indexes/HUMAN_BIBLIOGRAPHY.md`. A source 
 | `H(s)H_Toolkit/talk-patna19b.pdf` | 0 |  |
 | `HAUL 7/ssrn-7135127.pdf` | 0 | ssrn:7135127 |
 | `H(s)H_Toolkit/0712.0108.pdf` | 0 | arxiv:0712.0108 |
+| `HISTORICAL/HILBERT — FOUND GEO.pdf` | 0 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Notes_Boltzmann.pdf` | 1 |  |
 | `HAUL 2/ssrn-7381919.pdf` | 0 | ssrn:7381919 |
 | `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.24108v1.pdf` | 0 | arxiv:2608.24108v1 |
