@@ -17,6 +17,7 @@ on:
       - "**/*.pdf"
       - "tools/extract_papers.py"
       - "tools/index_papers.py"
+      - "tools/build_bibliography_intake.py"
       - "requirements-tools.txt"
       - ".github/workflows/extract-papers.yml"
 
@@ -67,10 +68,14 @@ jobs:
       - name: Refresh structural index
         run: python tools/index_papers.py --root . --apply
 
+      - name: Build bibliography intake queue
+        run: python tools/build_bibliography_intake.py --root . --max-items 250
+
       - name: Validate generated state
         run: |
           python -m json.tool indexes/index-state.json >/dev/null
           test -f derived/manifests/extraction.jsonl
+          test -f indexes/BIBLIOGRAPHY_INTAKE.md
           python -c 'import json, pathlib; [json.loads(x) for x in pathlib.Path("derived/manifests/extraction.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]'
 
       - name: Report extraction state
@@ -93,12 +98,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f derived/text derived/manifests
-          git add indexes/RESOURCE_INDEX.md indexes/index-state.json
+          git add indexes/RESOURCE_INDEX.md indexes/index-state.json indexes/BIBLIOGRAPHY_INTAKE.md
           if git diff --cached --quiet; then
-            echo "No extraction changes; corpus is current for the checked tree."
+            echo "No extraction/intake changes; corpus is current for the checked tree."
             exit 0
           fi
-          git commit -m "Extract next bounded PDF batch"
+          git commit -m "Refresh extracted corpus and bibliography intake"
           if ! git push origin HEAD:main; then
             echo "Main advanced during extraction; refusing to rebase generated extraction state over newer source changes."
             exit 1
