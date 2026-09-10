@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T08:56:55Z`
-- Tree/content state: `d1ca7dac6c0bdbb44614f48cd75e6524b5e588f9227b306e079a6566262d70ee`
+- Scanned: `2026-09-10T09:32:36Z`
+- Tree/content state: `8cb4d32797aa604fc6d20046b3dae42014e05f8d29233000e9086b20a89fe1cb`
 - Coverage: complete structural traversal
-- Files: 1418
-- Uploaded source files: 1408
-- PDF papers: 1187
+- Files: 1444
+- Uploaded source files: 1434
+- PDF papers: 1206
 - Repository machinery files: 10
 - Byte-identical duplicate groups: 97
 
@@ -22,7 +22,7 @@
 | `BIG PAPERS` | 3 |
 | `Consciousness + AI` | 16 |
 | `DATA` | 12 |
-| `EXPOSURE_STATS` | 217 |
+| `EXPOSURE_STATS` | 221 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -39,7 +39,8 @@
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 9 |
 | `OUTSIDE RESEARCH LIBRARY` | 318 |
-| `PRIOR_ART` | 223 |
+| `PDF_SPECS` | 21 |
+| `PRIOR_ART` | 224 |
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
@@ -54,6 +55,7 @@
 
 - `01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b`
   - `HAUL 12/gitignore.txt`
+  - `PDF_SPECS/gitignore.txt`
   - `PRIOR_ART/gitignore.txt`
 - `064069f9073580c36f12711012d0e52f2e6b2167a80f677908c6ed9d23a7fe24`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf`
@@ -1362,6 +1364,25 @@
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04114v1.pdf` | 1604688 | arxiv:2609.04114v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04117v1.pdf` | 1824628 | arxiv:2609.04117v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04844v1.pdf` | 470761 | arxiv:2609.04844v1 |
+| `PDF_SPECS/APS_Journals_Style_Guide_Authors_Nov2024_ua91lv.pdf` | 964140 |  |
+| `PDF_SPECS/LATEX_amsldoc.pdf` | 496963 |  |
+| `PDF_SPECS/LaTeX_encguide.pdf` | 1309627 |  |
+| `PDF_SPECS/LaTeX_fntguide.pdf` | 514821 |  |
+| `PDF_SPECS/LaTeX_interface3.pdf` | 1743155 |  |
+| `PDF_SPECS/LaTeX_ltcmdhooks-doc.pdf` | 504480 |  |
+| `PDF_SPECS/LaTeX_lthooks-doc.pdf` | 755599 |  |
+| `PDF_SPECS/LaTeX_ltmarks-doc.pdf` | 609295 |  |
+| `PDF_SPECS/LaTeX_ltpara-doc.pdf` | 559594 |  |
+| `PDF_SPECS/LaTeX_ltshipout-doc.pdf` | 566403 |  |
+| `PDF_SPECS/LATEX_usrguide.pdf` | 514397 |  |
+| `PDF_SPECS/REVTeX_apsguide4-2.pdf` | 232285 |  |
+| `PDF_SPECS/REVTeX_auguide4-2.pdf` | 452319 |  |
+| `PDF_SPECS/REVTeX_ltxdocext.pdf` | 324579 |  |
+| `PDF_SPECS/REVTeX_ltxfront.pdf` | 546693 |  |
+| `PDF_SPECS/REVTeX_ltxgrid.pdf` | 801858 |  |
+| `PDF_SPECS/REVTeX_ltxutil.pdf` | 623128 |  |
+| `PDF_SPECS/REVTeX_revtex4-2.pdf` | 839993 |  |
+| `PDF_SPECS/REVTeX_summary4-2.pdf` | 230858 |  |
 | `PRIOR_ART/1802.06039v2.pdf` | 2407146 | arxiv:1802.06039v2 |
 | `PRIOR_ART/1807.04276v1.pdf` | 522794 | arxiv:1807.04276v1 |
 | `PRIOR_ART/2009.13779v3.pdf` | 516845 | arxiv:2009.13779v3 |

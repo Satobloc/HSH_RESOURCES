@@ -1,0 +1,437 @@
+===== PAGE 1 =====
+Theltshipoutdocumentation ∗
+Frank Mittelbach, LATEX Project Team
+June 16, 2025
+Contents
+1 Introduction 1
+1.1 Overloading the\shipoutprimitive . . . . . . . . . . . . . . . . . . . . 2
+1.2 Provided hooks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+1.3 Legacy LATEX commands . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+1.4 Special commands for use inside the hooks . . . . . . . . . . . . . . . . 5
+1.5 Provided LuaTEX callbacks . . . . . . . . . . . . . . . . . . . . . . . . . 5
+1.6 Information counters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+1.7 Debugging shipout code . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+2 Emulating commands from other packages 7
+2.1 Emulatingatbegshi. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+2.2 Emulatingeveryshi. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+2.3 Emulatingatenddvi. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+2.4 Emulatingeverypage. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+Index 9
+1 Introduction
+The code provides an interface to the\shipoutprimitive of TEX which is called when
+a finished pages is finally “shipped out” to the target output file, e.g., the.dvior.pdf
+file. A good portion of the code is based on ideas by Heiko Oberdiek implemented in his
+packagesatbegshiandatenddvieven though the interfaces are somewhat different. 1
+∗This file has version v1.0p dated 2025/04/27,©LATEX Project.
+1Heiko’s interfaces are emulated by the kernel code, if a document requests his packages, so older
+documents will continue to work.
+1
+
+===== PAGE 2 =====
+1.1 Overloading the\shipoutprimitive
+With this implementation TEX’s shipout primitive is no longer available for direct use.
+Instead\shipoutis running some (complicated) code that picks up the box to be shipped
+out regardless of how that is done, i.e., as a constructed\vboxor\hboxor as a box
+register.
+It then stores it in a named box register. This box can then be manipulated through
+a set of hooks after which it is shipped out for real.
+Each shipout that actually happens (i.e., where the material is not discarded for one
+or the other reason) is recorded and the total number is available in a readonly variable
+and in a LATEX counter.
+\shipout
+This command implements a simplified shipout that bypasses the foreground and back-
+ground hooks, e.g., onlyshipout/firstpageandshipout/lastpageare executed and
+the total shipout counters are incremented.
+The command doesn’t use\ShipoutBoxbut its own private box register so that it
+can be used inside of shipout hooks to do some additional shipouts while already in the
+output routine with the current page being stored in\ShipoutBox. It does have access
+to\ShipoutBoxif it is used inshipout/before(orshipout/after) and can use its
+content.
+It is safe to use it inshipout/beforeorshipout/afterbut not necessarily in the
+othershipout/...hooks as they are intended for special processing.
+\RawShipout
+This box register is called\ShipoutBox(alternatively available via the L3 name\l_-
+shipout_box).
+This box is a “local” box and assignments to it should be done only locally. Global
+assignments (as done by some packages with older code where this is box is known as
+255) may work but they are conceptually wrong and may result in errors under certain
+circumstances.
+During the execution ofshipout/beforethis box contains the accumulated ma-
+terial for the page, but not yet any material added by other shipout hooks. During
+execution ofshipout/after, i.e., after the shipout has happened, the box also contains
+any background or foreground material.
+Material from the hooksshipout/firstpageorshipout/lastpageis not included
+(but only used during the actual shipout) to facilitate reuse of the box data (e.g.,
+shipout/firstpagematerial should never be added to a later page of the output).
+\ShipoutBox
+\l_shipout_box
+\l_shipout_box_ht_dim
+\l_shipout_box_dp_dim
+\l_shipout_box_wd_dim
+\l_shipout_box_ht_plus_dp_dim
+The shipout box dimensions are available in the L3 registers\l_shipout_box_ht_dim,
+etc. (there are no LATEX2 ε names).2 These variables can be used inside the hook code
+forshipout/before,shipout/foregroundandshipout/backgroundif needed.
+2Might need changing, but HO’s version as strings is not really helpful I think).
+2
+
+===== PAGE 3 =====
+1.2 Provided hooks
+The code for\shipoutoffers a number of hooks into which packages (or the user) can
+add code to support different use cases. These are:
+shipout/beforeThis hook is executed after the finished page has been stored in
+\ShipoutBox/\l_shipout_box). It can be used to alter that box content or
+to discard it completely (see\DiscardShipoutBoxbelow).
+You can use\RawShipoutinside this hook for special use cases. It can make use of
+\ShipoutBox(which doesn’t yet include the background and foreground material).
+Note:It is not possible (or say advisable) to try and use this hook to typeset
+material with the intention to return it to main vertical list, it will go wrong and
+give unexpected results in many cases—for starters it will appear after the current
+page not before or it will vanish or the vertical spacing will be wrong!
+shipout/before
+shipout/after
+shipout/foreground
+shipout/background
+shipout/firstpage
+shipout/lastpage
+shipout/backgroundThis hook adds a picture environment into the background of the
+page with the(0,0)coordinate in the top-left corner using a\unitlengthof1pt.
+It should therefore only receive\putcommands or other commands suitable in a
+pictureenvironment and the vertical coordinate values would normally be nega-
+tive.
+Technically this is implemented by adding a zero-sized\hboxas the very first item
+into the\ShipoutBoxcontaining thatpictureenvironment. Thus the rest of the
+box content will overprint what ever is typeset by that hook.
+shipout/foregroundThis hook adds a picture environment into the foreground of the
+page with the(0,0)coordinate in the top-left corner using a\unitlengthof1pt.
+Technically this is implemented by adding a zero-sized\hboxas the very last item
+into the\ShipoutBoxand raising it up so that it still has its(0,0)point in the
+top-left corner. But being placed after the main box content it will be typeset later
+and thus overprints it (i.e., is in the foreground).
+shipoutThis hook is executed after foreground and/or background material has been
+added, i.e., just in front of the actual shipout operation. Its purpose is to allow
+manipulation of the finalized box (stored in\ShipoutBox) with the extra material
+also in place (which is not yet the case inshipout/before).
+It cannot be used to cancel the shipout operation via\DiscardShipoutBox(that
+has to happen inshipout/before, if desired!
+shipout/firstpageThe material from this hook is executed only once at the very be-
+ginning of the first output page that is shipped out (i.e., not discarded at the last
+minute). It should only contain\specialor similar commands needed to direct
+post processors handling the.dvior.pdfoutput. 3
+This hook is added to the very first page regardless of how it is shipped out (i.e.,
+with\shipoutor\RawShipout).
+3In LATEX2 ε that was already existing, but implemented using a box register with the name
+\@begindvibox.
+3
+
+===== PAGE 4 =====
+shipout/lastpageThe corresponding hook to add\specials at the very end of the
+output file. It is only executed on the very last page of the output file — or rather
+on the page that LATEX believes is the last one. Again it is executed regardless of
+the shipout method.
+It may not be possible for LATEX to correctly determine which page is the last one
+without several reruns. If this happens and the hook is non-empty then LATEX will
+add an extra page to place the material and also request a rerun to get the correct
+placement sorted out.
+shipout/afterThis hook is executed after a shipout has happened. If the shipout box
+is discarded this hook is not looked at.
+You can use\RawShipoutinside this hook for special use cases and the main
+\ShipoutBoxis still available at this point (but in contrast toshipout/before
+it now includes the background and foreground material).
+Note:Just likeshipout/beforethis hook is not meant to be used for adding
+typeset material back to the main vertical list—it might vanish or the vertical
+spacing will be wrong!
+As mentioned above the hookshipout/beforeis executed first and can manipulate
+the prepared shipout box stored in\ShipoutBoxor set things up for use in\write
+during the actual shipout. It is even run if there was a\DiscardShipoutBoxrequest in
+the document.
+The other hooks (exceptshipoutandshipout/after) are added inside hboxes to
+the box being shipped out in the following order:
+shipout/firstpageonly on the first page
+shipout/background
+⟨boxed content of\ShipoutBox⟩
+shipout/foreground
+shipout/lastpageonly on the last page
+If any of the hooks has no code then the corresponding box is added at that point.
+Once the (page) box has got the above extra content it can again be manipulated
+using theshipouthook and then is shipped out for real.
+Once the (page) box has been shipped out theshipout/afterhook is called (while
+you are still inside the output routine). It is not called if the shipout box was discarded.
+In a document that doesn’t produce pages, e.g., only makes\typeouts, none of the
+hooks are ever executed (as there is no\shipout) not even theshipout/lastpagehook.
+If\RawShipoutis used instead of\shipoutthen only the hooksshipout/firstpage
+andshipout/lastpageare executed (on the first or last page), all others are bypassed.
+1.3 Legacy L ATEX commands
+\AtBeginDvi {⟨code⟩}
+\AtBeginDviis the existing LATEX2 ε interface to fill theshipout/firstpagehook. This
+is not really a good name as it is not just supporting.dvibut also.pdfoutput or.xdv.
+\AtEndDviis the counterpart that was not available in the kernel but only through
+the packageatenddvi. It fills theshipout/lastpagehook.
+Neither interface can set a code label but uses the current default label.
+\AtBeginDvi
+\AtEndDvi
+4
+
+===== PAGE 5 =====
+As these two wrappers have been available for a long time we continue offering them
+(but not enhancing them, e.g., by providing support for code labels).
+For new code we strongly suggest using the high-level hook management commands
+directly instead of “randomly-named” wrappers. This will lead to code that is easier to
+understand and to maintain and it also allows you to set code labels if needed.
+For this reason we do not provide any other “new” wrapper commands for the above
+hooks in the kernel, but only keep the existing ones for backward compatibility.
+1.4 Special commands for use inside the hooks
+\AddToHookNext {shipout/before} {...\DiscardShipoutBox...}
+The\DiscardShipoutBoxdeclaration (L3 name\shipout_discard:) requests that on
+the next shipout the page box is thrown away instead of being shipped to the.dvior
+.pdffile.
+Typical applications wouldn’t do this unconditionally, but have some processing logic
+that decides to use or not to use the page.
+Note that if this declaration is used directly in the document it may depend on the
+placement to which page it applies, given that LATEX output routine is called in an asyn-
+chronous manner! Thus normally one would use this only as part of theshipout/before
+code.
+Todo: Once we have a new mark mechanism available we can improve on that
+and make sure that the declaration applies to the page that contains it — not
+done (yet)
+\DiscardShipoutBoxcannot be used in any of theshipout/...hooks other than
+shipout/before.
+\DiscardShipoutBox
+\shipout_discard:
+In theatbegshipackage there are a number of additional commands for use inside
+theshipout/beforehook. They should normally not be needed any more as one can
+instead simply add code to the hooksshipout/before,shipout,shipout/background
+orshipout/foreground. 4 Ifatbegshigets loaded then those commands become available
+as public functions with their original names as given below.
+1.5 Provided LuaT EX callbacks
+Under LuaTEX thepre_shipout_filterLua callback is provided which gets called di-
+rectly after theshipouthook, immediately before the shipout primitive gets invoked.
+The signature is
+function(<node> head)
+return true
+end
+Theheadis the list node corresponding to the box to be shipped out. The return value
+should always betrue.
+pre_shipout_filter
+4If that assumption turns out to be wrong it would be trivial to change them to public functions
+(right now they are private).
+5
+
+===== PAGE 6 =====
+1.6 Information counters
+\ifnum\ReadonlyShipoutCounter=...
+\int_use:N \g_shipout_readonly_int % expl3 usage
+This integer holds the number of pages shipped out up to now (including the one to be
+shipped out when inside the output routine). More precisely, it is incremented only after
+it is clear that a page will be shipped out, i.e., after theshipout/beforehook (because
+that might discard the page)! In contrastshipout/aftersees the incremented value.
+Just like with thepagecounter its value is only accurate within the output rou-
+tine. In the body of the document it may be off by one as the output routine is called
+asynchronously!
+Also important: itmust notbe set, only read. There are no provisions to prevent
+that restriction, but if you manipulate it, chaos will be the result. To emphasize this
+fact it is not provided as a LATEX counter but as a TEX counter (i.e., a command), so
+\Alph{\ReadonlyShipoutCounter}etc, would not work.
+\ReadonlyShipoutCounter
+\g_shipout_readonly_int
+\arabic{totalpages}
+\int_use:N \g_shipout_totalpage_int % expl3 usage
+In contrast to\ReadonlyShipoutCounter, thetotalpagescounter is a L ATEX counter
+and incremented for each shipout attempt including those pages that are discarded for
+one or the other reason. Againshipout/beforesees the counter before it is incremented.
+In contrastshipout/aftersees the incremented value.
+Furthermore, while it is incremented for each page, its value is never used by LATEX.
+It can therefore be freely reset or changed by user code, for example, to additionally
+count a number of pages that are not build by LATEX but are added in a later part of the
+process, e.g., cover pages or picture pages made externally.
+Important: as this is a page-related counter its value is only reliable inside the output
+routine!
+totalpages
+\g_shipout_totalpages_int
+\PreviousTotalPages
+Command that expands to the number of total pages from the previous run. If there was
+no previous run or if used in the preamble it expands to0. Note that this is a command
+and not a counter, so in order to display the number in, say, Roman numerals you have
+to assign its value to a counter and then use\Romanon that counter.
+\PreviousTotalPages
+1.7 Debugging shipout code
+\DebugShipoutsOn
+Turn the debugging of shipout code on or off. This displays changes made to the shipout
+data structures.
+Todo: This needs some rationalizing and may not stay this way.
+\DebugShipoutsOn
+\DebugShipoutsOff
+\shipout_debug_on:
+\shipout_debug_off:
+6
+
+===== PAGE 7 =====
+2 Emulating commands from other packages
+The packages in this section are no longer necessary, but as they are used by other
+packages, they are emulated when they are explicitly loaded with\usepackageor
+\RequirePackage.
+Please note that the emulation only happens if the package is explicitly requested,
+i.e., the commands documented below are not automatically available in the LATEX kernel!
+If you write a new package we suggest to use the appropriate kernel hooks directly instead
+of loading the emulation.
+2.1 Emulatingatbegshi
+\AddToHook {shipout/before} {...\AtBeginShipoutUpperLeft{⟨code⟩}...}\AtBeginShipoutUpperLeft
+\AtBeginShipoutUpperLeftForeground
+This adds apictureenvironment into the background of the shipout box expecting
+⟨code⟩to containpicturecommands. The same effect can be obtained by simply using
+kernel features as follows:
+\AddToHook{shipout/background}{⟨code⟩}
+There is one technical difference: if\AtBeginShipoutUpperLeftis used several times
+each invocation is put into its own box inside the shipout box whereas all⟨code⟩going
+intoshipout/backgroundends up all in the same box in the order it is added or sorted
+based on the rules for the hook chunks.
+\AtBeginShipoutUpperLeftForegroundis similar with the difference that the
+pictureenvironment is placed in the foreground. To model it with the kernel func-
+tions use the hookshipout/foregroundinstead.
+\AddToHook {shipout/before} {...\AtBeginShipoutAddToBox{⟨code⟩}...}\AtBeginShipoutAddToBox
+\AtBeginShipoutAddToBoxForeground
+Theseworklike\AtBeginShipoutUpperLeftand\AtBeginShipoutUpperLeftForeground
+with the difference that⟨code⟩is directly placed into an\hboxinside the shipout box
+and not surrounded by apictureenvironment.
+To emulate them usingshipout/backgroundorshipout/foregroundyou may have
+to wrap⟨code⟩into a\putstatement but if the code is not doing any typesetting just
+adding it to the hook should be sufficient.
+This is the name of the shipout box asatbegshiknows it.\AtBeginShipoutBox
+\AtBeginShipoutOriginalShipout
+This is the name of the\shipoutprimitive asatbegshiknows it. This bypasses all the
+mechanisms set up by the LATEX kernel and there are various scenarios in which it can
+therefore fail. It should only be used to run existing legacyatbegshicode but not in
+newly developed applications.
+The kernel alternative is\RawShipoutwhich is integrated with the LATEX mech-
+anisms and updates, for example, the\ReadonlyShipoutCountercounter. Please use
+\RawShipoutfor new code if you want to bypass the before, foreground and background
+hooks.
+7
+
+===== PAGE 8 =====
+By defaultatbegshidelayed its action until\begin{document}. This command was
+forcing it in an earlier place. With the new concept it does nothing.
+\AtBeginShipoutInit
+\AtBeginShipout{⟨code⟩}≡\AddToHook{shipout/before}{⟨code⟩}
+\AtBeginShipoutNext{⟨code⟩}≡\AddToHookNext{shipout/before}{⟨code⟩}
+This is equivalent to filling theshipout/beforehook by either using\AddToHookor
+\AddToHookNext, respectively.
+\AtBeginShipout
+\AtBeginShipoutNext
+Theatbegshinames for\AtBeginDviand\DiscardShipoutBox.\AtBeginShipoutFirst
+\AtBeginShipoutDiscard
+2.2 Emulatingeveryshi
+Theeveryshipackage is providing commands to run arbitrary code just before the shipout
+starts. One point of difference: in the new shipout hooks the page is available as
+\ShipoutBoxfor inspection of change, one should not manipulate box 255 directly inside
+shipout/before, so old code doing this would change to use\ShipoutBoxinstead of
+255or\@cclv.
+\EveryShipout{⟨code⟩}≡\AddToHook{shipout/before}{⟨code⟩}\EveryShipout
+\AtNextShipout{⟨code⟩}≡\AddToHookNext{shipout/before}{⟨code⟩}\AtNextShipout
+However, most use cases foreveryshiare attempts to put some picture or text into
+the background or foreground of the page and that can be done today simply by using
+theshipout/backgroundandshipout/foregroundhooks without any need to coding.
+2.3 Emulatingatenddvi
+Theatenddvipackage implemented only a single command:\AtEndDviand that is now
+available out of the box so the emulation makes the package a no-op.
+2.4 Emulatingeverypage
+This package patched the original\@begindvihook and replaced it with its own version.
+Its functionality is now covered by the hooks offered by the kernel so that there is no
+need for such patching any longer.
+\AddEverypageHook{⟨code⟩}≡
+\AddToHook{shipout/background}{\put(1in,-1in){⟨code⟩}}
+\AddEverypageHookis adding something into the background of every page at a position
+of 1in to the right and 1in down from the top left corner of the page. By using the
+kernel hook directly you can put your material directly to the right place, i.e., use other
+coordinates in the\putstatement above.
+\AddEverypageHook
+\AddThispageHook{⟨code⟩}≡
+\AddToHookNext{shipout/background}{\put(1in,-1in){⟨code⟩}}
+The\AddThispageHookwrapper is similar but uses\AddToHookNext.
+\AddThispageHook
+8
+
+===== PAGE 9 =====
+Index
+The italic numbers denote the pages where the corresponding entry is described, numbers
+underlined point to the definition, all others indicate the places where it is used.
+A
+\AddEverypageHook. . . . . . . . . . . . . . . .8
+\AddThispageHook. . . . . . . . . . . . . . . . .8
+\AddToHook. . . . . . . . . . . . . . . . . . . . . .7
+\AddToHookNext. . . . . . . . . . . . . . . . . . .8
+\Alph. . . . . . . . . . . . . . . . . . . . . . . . . . .6
+\arabic. . . . . . . . . . . . . . . . . . . . . . . . .6
+\AtBeginDvi. . . . . . . . . . . . . . . . . . . . . .4
+\AtBeginShipout. . . . . . . . . . . . . . . . . .8
+\AtBeginShipoutAddToBox. . . . . . . . . . .7
+\AtBeginShipoutAddToBoxForeground. . .7
+\AtBeginShipoutBox. . . . . . . . . . . . . . . .7
+\AtBeginShipoutDiscard. . . . . . . . . . . .8
+\AtBeginShipoutFirst. . . . . . . . . . . . . .8
+\AtBeginShipoutInit. . . . . . . . . . . . . . .8
+\AtBeginShipoutNext. . . . . . . . . . . . . . .8
+\AtBeginShipoutOriginalShipout. . . . .7
+\AtBeginShipoutUpperLeft. . . . . . . . . . .7
+\AtBeginShipoutUpperLeftForeground. .7
+\AtEndDvi. . . . . . . . . . . . . . . . . . . . . . .4
+\AtNextShipout. . . . . . . . . . . . . . . . . . .8
+D
+\DebugShipoutsOff. . . . . . . . . . . . . . . .6
+\DebugShipoutsOn. . . . . . . . . . . . . . . . .6
+\DiscardShipoutBox. . . . . . . . . . . . . . . .4
+E
+\EveryShipout. . . . . . . . . . . . . . . . . . . .8
+H
+\hbox. . . . . . . . . . . . . . . . . . . . . . . . . . .7
+I
+\ifnum. . . . . . . . . . . . . . . . . . . . . . . . . .6
+intcommands:
+\int_use:N. . . . . . . . . . . . . . . . . . . .6
+P
+precommands:
+pre_shipout_filter. . . . . . . . . . . . .5
+\PreviousTotalPages. . . . . . . . . . . . . . .6
+\put. . . . . . . . . . . . . . . . . . . . . . . . . . . .7
+R
+\RawShipout. . . . . . . . . . . . . . . . . . . . . .4
+\ReadonlyShipoutCounter. . . . . . . . . . .6
+\RequirePackage. . . . . . . . . . . . . . . . . .7
+\Roman. . . . . . . . . . . . . . . . . . . . . . . . . .6
+S
+\shipout. . . . . . . . . . . . . . . . . . . . . . . .2
+shipoutcommands:
+\l_shipout_box. . . . . . . . . . . . . . . .2
+\l_shipout_box_dp_dim. . . . . . . . . .2
+\l_shipout_box_ht_dim. . . . . . . . . .2
+\l_shipout_box_ht_plus_dp_dim. . . .2
+\l_shipout_box_wd_dim. . . . . . . . . .2
+\shipout_debug_off:. . . . . . . . . . . .6
+\shipout_debug_on:. . . . . . . . . . . . .6
+\shipout_discard:. . . . . . . . . . . . . .5
+\g_shipout_readonly_int. . . . . . . . .6
+\g_shipout_totalpage_int. . . . . . . .6
+\g_shipout_totalpages_int. . . . . . .6
+shipout/after. . . . . . . . . . . . . . . . . . . .3
+shipout/background. . . . . . . . . . . . . . . .3
+shipout/before. . . . . . . . . . . . . . . . . . .3
+shipout/firstpage. . . . . . . . . . . . . . . .3
+shipout/foreground. . . . . . . . . . . . . . . .3
+shipout/lastpage. . . . . . . . . . . . . . . . .3
+\ShipoutBox. . . . . . . . . . . . . . . . . . . . . .3
+\special. . . . . . . . . . . . . . . . . . . . . . . .4
+T
+TEX and LATEX 2ε commands:
+\@begindvi. . . . . . . . . . . . . . . . . . . .8
+\@begindvibox. . . . . . . . . . . . . . . . .3
+\@cclv. . . . . . . . . . . . . . . . . . . . . . .8
+totalpages. . . . . . . . . . . . . . . . . . . . . .6
+\typeout. . . . . . . . . . . . . . . . . . . . . . . .4
+U
+\unitlength. . . . . . . . . . . . . . . . . . . . . .3
+\usepackage. . . . . . . . . . . . . . . . . . . . . .7
+V
+\vbox. . . . . . . . . . . . . . . . . . . . . . . . . . .2
+W
+\write. . . . . . . . . . . . . . . . . . . . . . . . . .4
+9

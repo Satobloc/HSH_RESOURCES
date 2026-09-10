@@ -1,0 +1,1545 @@
+===== PAGE 1 =====
+LATEX font encodings
+Frank Mittelbach Robin Fairbairns Werner Lemberg
+LATEX Project Team.
+©Copyright 1995–2016
+18 February 2016
+Contents
+1 Introduction 2
+1.1 Encodings in TEX . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
+1.2 The history of TEX font encodings . . . . . . . . . . . . . . . . . 2
+1.3 Further information . . . . . . . . . . . . . . . . . . . . . . . . . 3
+2 Existing font encodings 3
+2.1 Naming conventions . . . . . . . . . . . . . . . . . . . . . . . . . 4
+2.2 128 + glyph encodings (text) . . . . . . . . . . . . . . . . . . . . . 4
+2.3 256 glyph encodings (text) . . . . . . . . . . . . . . . . . . . . . . 6
+2.4 256 − glyph encodings (text symbols) . . . . . . . . . . . . . . . . 9
+2.5 256 glyph encodings (text extended) . . . . . . . . . . . . . . . . 9
+2.6 128 + glyph encodings (mathematics) . . . . . . . . . . . . . . . . 10
+2.7 256 glyph encodings (mathematics) . . . . . . . . . . . . . . . . . 10
+2.8 Other encodings . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+3 Restrictions 13
+3.1 Required glyphs for general text encodings . . . . . . . . . . . . . 13
+3.2 The constraints on upper/lower case tables . . . . . . . . . . . . 13
+4 Encoding specific commands 14
+5 Encodings for Unicode based TEX systems 16
+References 17
+A Example code tables 19
+A.1 Text encodings . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+A.2 Text symbol encodings . . . . . . . . . . . . . . . . . . . . . . . . 29
+A.3 Extended text encodings . . . . . . . . . . . . . . . . . . . . . . . 32
+A.4 Mathematical encodings . . . . . . . . . . . . . . . . . . . . . . . 33
+A.5 Other encodings . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+B Uppercase and lowercase tables 38
+1
+
+===== PAGE 2 =====
+1 Introduction
+This document explains the ideas that underpin LATEX font encodings and the
+constraints that apply when defining a new encoding; it also lists the encodings
+that have already been defined.
+1.1 Encodings in TEX
+TEX (the program) implicitly recognises three sorts of encoding, and all are (in
+a sense) discussed in the TEXbook [16]:
+1. The input encoding, which specifies the meanings of characters in files
+presented to TEX for processing. The TEXbook suggests that ‘your version
+of TEX will recognise the characters you type on your keyboard’ (TEX the
+program has provision for static translations of input characters).
+Such direct use of TEX’s facilities is not the way modern LATEX (or indeed
+any other TEX macro package) is likely to deal with input encodings. This
+document does not address the topic of input encodings; the interested reader
+should examine the LATEX base packageinputenc[21, sec. 7.5.2, p. 357].
+2. The token stream that TEX processes internally. This stream of TEX’s
+consciousness is discussed in great detail in the TEXbook.
+Again, this document does not address the topic. LATEX’s internal character
+representation (licr) is well discussed in [21, sec. 7.11.2, p. 442].
+3. The font encoding—i.e., the mapping of character codes to glyphs in the
+fonts that are used to typeset TEX’s output. Again, a set of font encodings
+is enumerated in the TEXbook, but that set has proved inadequate to the
+needs of modern multilingual use of LATEX.
+This document explainswhyKnuth’s original set of encodings is inadequate
+to modern conditions, and discusses the issues that surround the design and
+definition of new font encodings.
+Font encodings are important for more than their rôle in mapping the glyphs of
+the fonts to be used for typesetting: their glyph tables are also the context in
+which TEX’s hyphenation algorithm operates. There are constraints imposed by
+TEX that affect the way in which new font encodings, for use in a multi-lingual
+environment, may be structured (see section 3 for details).
+1.2 The history of TEX font encodings
+Little attention was paid to font encodings prior to the arrival of TEX3. Up to
+that time, one used Donald Knuth’s fonts (the Computer Modern family, using
+the encodings we now refer to asOT1and theOMseries), or one was on one’s
+own.
+The Computer Modern text encoding raises problems in unmodified TEX, be-
+cause hyphenation cannot break words containing\accentcommands. Even
+in those Western European languages for which theOT1encoding has symbols
+for the necessary\accent-based diacritics, this shortcoming ruins typesetting
+of running text.
+2
+
+===== PAGE 3 =====
+WiththeadventofT EX3, withitsabilitytoswitchbetweenhyphenationpattern
+sets, it was clear that the situation could not continue. Thus a group at the
+TUG Annual General Meeting in Cork, Ireland, specified a uniform encoding for
+256-glyphfonts, thatcontainsaccentedlettersandnon-asciilettersnecessaryto
+express most Western European languages (and some Eastern European ones)
+without recourse to the\accentcommand.
+This “Cork” encoding has since been realised in a series of fonts designed with
+Metafont, in at least one font series that is available both in Adobe Type 1
+format and in OpenType format, and in a number of virtual-font mappings of
+other font series.
+Since the time of the Cork meeting, much effort has been devoted to the design
+of encodings for text fonts to use with TEX, and the Cork encoding influenced
+the design of many such encodings.
+Encodings for mathematical fonts have, in contrast, changed little since Knuth’s
+contributions. A TUG Technical Working Group was established at the Cork
+meeting, whose aim was to define a set of 256-glyph encodings to regularise
+and extend Knuth’s originals, using ideas from several other fonts that had
+appeared since, and from the known needs of researchers in mathematics and
+the mathematical sciences.
+Independently, a first proposal (the so-calledAston proposal) was worked out
+by Justin Ziegler together with Frank Mittelbach and other members of the
+LATEX Project team [24]. A first implementation of this propsal was realized by
+Matthias Clasen und Ulrik Vieth [6, 7].
+However, the slow progress of these Mathematical encodings has been overtaken
+by the addition (in the last decade or so) of a large number of mathematical
+symbols to Unicode [3]; one can expect further changes so that new public
+mathematical font encodings will most likely be delayed still further.
+1.3 Further information
+For a general introduction to LATEX, including the new features of LATEX2 ε, you
+should readLATEX: A Document Preparation System, Leslie Lamport, Addison
+Wesley, 2nd ed, 1994.
+A more detailed description of the new features of LATEX, including an overview
+of more than 200 packages and nearly 1000 ready to run examples, is to be
+found inThe LATEX Companion second editionby Frank Mittelbach and Michel
+Goossens [21].
+The LATEX project sponsored a report on Mathematical font encodings, which
+is worth reading for its insight into the problems of defining the way in which
+math is used: see [24, 6, 7].
+The LATEX font selection scheme is based on TEX, which is described by its
+developer inThe TEXbook, Donald E. Knuth, Addison Wesley, 1986, revised in
+1991 to include the features of TEX 3.
+For more information about TEX and LATEX, please contact your local TEX Users
+Group, or the international TEX Users Group (http://www.tug.org).
+2 Existing font encodings
+This section lists the encodings currently assigned; for each encoding, we list
+the registered (LATEX) name, the assigned purpose of the encoding, and the
+3
+
+===== PAGE 4 =====
+author. Further details may list the code positions used in the encoding, the
+variable slots(see below), an example font (for which a listing will be provided
+later in the document if the relevant fonts are present), and a source for further
+reference.
+While the characteristic feature of an encoding is that each font encoded accord-
+ing to the encoding should have the same glyph set, there are some encodings
+(notablyOT1and its descendants) in which a few glyph code slots differ in their
+contents in different fonts.
+2.1 Naming conventions
+Names for encoding schemes are strings of up to three letters (all upper case)
+plus digits.
+The LATEX Project reserves the use of encoding names starting with the follow-
+ing letters:T(standard 256-long text encodings),TS(symbols that are designed
+to extend a correspondingTencoding),X(text encodings that do not conform
+to the strict requirements forTencodings),M(standard 256-long mathemati-
+cal encodings),S(other symbol encodings),A(other special applications),OT
+(standard 128-long text encodings), andOM(standard 128-long mathematical
+encodings).
+Please do not use the above starting letters for non-portable encodings. If new
+standard encodings emerge then we shall add them in a later release of LATEX.
+Encoding schemes which are local to a site or a system should start withL,
+experimental encodings intended for wide distribution will start withE, whilst
+Uis for Unknown or Unclassified encodings.
+We recommend that new encoding names should not be introduced
+unless careful consideration and discussion in the user community
+has confirmed the need for the encoding. If encodings have to change
+from font to font, a number of problems arise, so it is best to develop
+encodings that can be used with a large number of fonts in parallel.
+This allows documents to be typeset using different fonts without
+problems.
+TheTS1encoding is a good example of abadencoding (even though
+it was developed with the best intentions) as a huge number of fonts
+can only implement parts of it. Similarly, the fact that the few sets of
+available mathematical fonts (beside Computer Modern Math) nearly
+all implement slightly different encodings is a huge source of prob-
+lems. Don’t add to this if possible!
+2.2 128 + glyph encodings (text)
+The ‘OT’ series of font encodings start with Donald Knuth’s original text en-
+coding, that used for the text fonts in the earliest releases of TEX itself. The ‘O’
+of the encoding designator may be taken as signifying ‘original’, or just ‘old’.
+LATEX name:OT1
+Public name: T EX text
+Author: Donald Ervin Knuth
+Glyph slots used: 0x00–0x7F
+Variable slots: 0x0B–0x0F, 0x24, 0x3C, 0x3E, 0x5C, 0x7B–0x7D
+Font example:cmr10; encoding table on page 19
+Further reference: [16, p.427]
+4
+
+===== PAGE 5 =====
+Donald Knuth designed his font encoding (and hence his fonts) in a
+very different environment from that which now pervades the TEX
+world: his (mainframe) computer had very little memory, there was
+little experience in (or demand for) for multilingual technical type-
+setting, and as a result it was appropriate to sacrifice uniformity for
+efficiency.
+Thus Knuth’s original fonts differ slightly in some encoded slots:
+for example, the glyphs<,>,\,{, and}are only available in the
+typewriter fonts and the $ and £ signs share the same position (in
+different font shapes).
+This means that direct selection of these slots can produce unpre-
+dictable results, e.g., typing<or\symbol{’74}in a document can
+yield ‘¿’.
+LATEX name:OT2
+Public name: UW cyrillic encoding
+Author: University of Washington
+Glyph slots used: 0x00–0x7F
+Variable slots: —
+Font example:wnr10; encoding table on page 20
+Further reference: [2]
+Support for this encoding is available in the Cyrillic bundle although
+for all practical purposes it is better to use one of theT2encodings.
+LATEX name:OT3
+Public name: UW IPA encoding
+Author: University of Washington
+Glyph slots used: 0x00–0x7f
+Variable slots: —
+Font example:wsuipa10; encoding table on page 20
+Further reference: [8, p.149]
+TheOT3encoding was never really used with LATEX2 ε following the
+introduction of the TIPA system which offers much better support
+for IPA. In particular, noot3enc.deffile was ever produced.
+LATEX name:OT4
+Public name: Polish text encoding
+Author: B. Jackowski and M. Ryćko
+Glyph slots used: 0x00–0x7F, 0x81, 0x82, 0x86, 0x8A, 0x8B, 0x91, 0x99,
+0x9B, 0xA1, 0xA2, 0xA6, 0xAA, 0xAB, 0xAE, 0xAF,
+0xB1, 0xB9, 0xBB, 0xD3, 0xF3, 0xFF
+Variable slots: 0x0B–0x0F, 0x24, 0x3C, 0x3E, 0x5C, 0x7B–0x7D
+Font example:plr10; encoding table on page 21
+Further reference: —
+While Knuth included the means of typesetting the ‘lost L’ (Ł) in
+hisOT1encoding, he omitted the ogonek (˛), a diacritic mark that
+is also needed in Polish text; hence the appearance, well before the
+T1encoding, of fonts using this encoding.
+5
+
+===== PAGE 6 =====
+LATEX name:OT5
+Public name: Not currently allocated
+Author: —
+Glyph slots used: —
+Variable slots: —
+Font example:
+Further reference: —
+LATEX name:OT6
+Public name: Armenian text encoding
+Author: Serguei Dachian
+Glyph slots used: 0x03–0x0F, 0x13–0x7F
+Variable slots: —
+Font example:artmr10
+Further reference: —
+This encoding was allocated to permit use of Dachian’s Armenian
+fonts in a standard LATEX environment.
+Because of license issues theartmrfonts are not necessarily included
+in distributed TEX installations (and for this reason the correspond-
+ing encoding table is not shown below). However, the fonts and
+the support macros can be found on the CTAN archives (look for
+armtex).
+2.3 256 glyph encodings (text)
+LATEX name:T1
+Public name: Cork encoding
+Author: Euro T EX conference at Cork
+Glyph slots used: 0x00–0xFF
+Variable slots: —
+Font example:ecrm1000; encoding table on page 22
+Further reference: [10, p.514], [15, p.99]
+The Cork encoding was developed so that advantage could be taken
+of the (then) new facilities of TEX3, allowing hyphenation of most
+Western European (and some Eastern European) languages in an
+unmodified version of TEX.
+The encoding was developed in the absence of any extant effort at
+font design, but instances written in Metafont (the ‘EC’ fonts), and
+more recently Adobe Type 1 instances of the same fonts have become
+available.
+Substantial (but incomplete) instances have also been developed,
+which use virtual fonts. These latter instances map either Knuth’s
+original (OT1-encoded) fonts, or commercial fonts that contain the
+Adobe ‘standard’ set of 224 glyphs.
+6
+
+===== PAGE 7 =====
+LATEX name:T2A, T2B, T2C
+Public name: Cyrillic encodings
+Author: The CyrTUG font team
+Glyph slots used: 0x00–0xFF
+Variable slots: — (within each encoding)
+Font example:larm1000; encoding table on page 23
+Further reference: [4]
+There are too many glyphs in the full Cyrillic complement of lan-
+guages for all of them to be covered by a single LATEX-compliant
+encoding (the lower half of eachT2encoding is identical to that of
+T1, in order that each should be a conforming LATEX encoding —
+see section 3). The approach taken is therefore to develop a single
+encoding,X2(see 2.5) which contains all the glyphs needed for the
+full set of languages, and then to derive the three LATEX-complaint
+T2-family encodings using theX2set together with that ofT1.
+LATEX name:T3
+Public name: IPA encoding
+Author: FUKUI Rei, University of Tokyo
+Glyph slots used: 0x00–0xFF
+Variable slots: —
+Font example:tipa10; encoding table on page 26
+Further reference: [12, p.102]
+TheT3encoding (and associated macros) provides the glyphs re-
+quired in phonetic description according to current International
+Phonetic Association recommendations [18].
+TheT3encoding doesnot fulfilthe requirements forTencodings—
+the name is a historical accident. The correct name would beX3,
+but due to the fact that this font family has been used under its
+current encoding name for a long time, the name will not change for
+compatibility reasons.
+LATEX name:T4
+Public name: African Latin (fc)
+Author: Jörg Knappen
+Glyph slots used: 0x00–0xFF
+Variable slots: 0x24
+Font example:fcr10; encoding table on page 27
+Further reference: [14]
+The African Latin fonts contain in their lower half (0–127) the same
+characters as the European Latin (T1-encoded) Fonts, while in their
+upper half (128–255) they contain letters and symbols for African
+languages that use extended Latin alphabets. Due to lack of space,
+Jörg had to play the unfortunate trick of assigning\textdollarand
+\textsterlingthesameposition; usersshouldtakethesecharacters
+from the text companion font, if they are needed. Instead of defining
+a lot of new control sequences for the single letters, there are three
+accent-like control sequences with general purpose:\m(Modified-1),
+\M(Modified-2) and\B(Barred). Most standard L ATEX encoding-
+dependent commands work. However, the Icelandic special letters
+7
+
+===== PAGE 8 =====
+are not available and ‘best replacements’ for\Th,\th, and\dhare
+used (barred T and d resp.).
+LATEX name:T5
+Public name: Vietnamese encoding
+Author: Werner Lemberg and Vladimir Volovich
+Glyph slots used: 0x00–0xFF
+Variable slots: —
+Font example:vnr10; encoding table on page 28
+Further reference: [17]
+TheT5encoding was developed for Vietnamese. Again, this encod-
+ingdoes notconformtotherequirementsforaT-encodingbecauseits
+large number of accented letters prevent the\lccodeand\uccode
+mapping requirements forTencodings from being fulfilled. However,
+since the Vietnamese language does not use word division in typeset-
+ting so that this requirement is actually not important for this par-
+ticular language. Since every glyph used in Vietnamese text is inter-
+nally represented aslicrmacros, the commands\MakeUppercase
+and\MakeLowercasestill work as expected (as they change the case
+of theasciicharacters inlicrdefinitions).
+LATEX name:T6
+Public name: Armenian
+Author: —
+Glyph slots used: —
+Variable slots: —
+Font example:
+Further reference: —
+This encoding is reserved to permit future expansion of Armenian
+TEX to use 256-character (hyphenatable) fonts.
+LATEX name:T7
+Public name: Greek encoding
+Author: —
+Glyph slots used: —
+Variable slots: —
+Font example:
+Further reference: —
+The name is already reserved for a 256 glyph greek encoding. The
+encoding itself hasn’t been defined so far.
+8
+
+===== PAGE 9 =====
+2.4 256 − glyph encodings (text symbols)
+LATEX name:TS1
+Public name: Text Companion encoding (Cork)
+Author: Jörg Knappen
+Glyph slots used: 0x00–0x0D, 0x12, 0x15, 0x16, 0x18–0x1D, 0x20, 0x24,
+0x27, 0x2A, 0x2C–0x3A, 0x3C–0x3E, 0x4D, 0x4F, 0x57,
+0x5B, 0x5D–0x60, 0x62–0x64, 0x6C–0x6E, 0x7E–0xBF,
+0xD6, 0xF6
+Variable slots: —
+Font example:tcrm1000; encoding table on page 29
+Further reference: [15]
+The text symbol encoding offers access to symbolic glyphs that are
+commonly used in text (for a variety of reasons), and whose style
+should vary with the text that surrounds them.
+Unfortunately, theTS1encoding was developed without reference to
+the glyphs available in existing commercial fonts. As a result, only
+font families explicitly developed for TEX (i.e., typically originating
+withMETAFONT) actually contain all glyphs required by theTS1
+encoding. Most other font families (whether free or commercial)
+often only provide half of the set (compare the two tables forTS1
+on pages 29 and 30). To improve this situation somewhat, NFSS
+provides a way to define encoding subsets on a per family basis
+in thetextcomppackage (which package offers support for theTS1
+encoding).
+LATEX name:TS3
+Public name: IPA symbol encoding
+Author: FUKUI Rei, University of Tokyo
+Glyph slots used: 0x00–0x0A, 0x20–0x49, 0x50–0x56, 0x70–0x7B
+Variable slots: —
+Font example:tipx10; encoding table on page 31
+Further reference: [12]
+TheTS3encoding (together with theT3encoding) provides the
+glyphs for typesetting phonetic transcriptions following the guide-
+lines of the International Phonetic Association [18]. Support is of-
+fered through thetipapackage.
+2.5 256 glyph encodings (text extended)
+LATEX name:X2
+Public name: Cyrillic glyph container
+Author: The CyrTUG font team
+Glyph slots used: 0x00–0xFF
+Variable slots: —
+Font example:rxrm1000; encoding table on page 32
+Further reference: [4]
+This encoding specifies the glyph container for Cyrillic characters,
+which is used in specifying theT2A,T2BandT2Cencodings.
+9
+
+===== PAGE 10 =====
+2.6 128 + glyph encodings (mathematics)
+LATEX name:OML
+Public name: T EX math italic
+Author: Donald Ervin Knuth
+Glyph slots used: 0x00–0x7F
+Variable slots: —
+Font example:cmmi10; encoding table on page 33
+Further reference: [16, p.430]
+TheOMLencoding contains italic Latin and Greek letters for use in
+mathematical formulas (typically used for variables) together with
+some symbols.
+LATEX name:OMS
+Public name: T EX math symbol
+Author: Donald Ervin Knuth
+Glyph slots used: 0x00–0x7F
+Variable slots: —
+Font example:cmsy10; encoding table on page 33
+Further reference: [16, p.431]
+TheOMSencoding contains basic mathematical symbols, together
+with an uppercase “calligraphic” Latin alphabet.
+LATEX name:OMX
+Public name: T EX math extension
+Author: Donald Ervin Knuth
+Glyph slots used: 0x00–0x7F
+Variable slots: —
+Font example:cmex10; encoding table on page 34
+Further reference: [16, p.432]
+OMSencodes mathematical symbols with variable sizes, such as the∑ sign, which changes its size if used in displayed formulas, and the
+construction parts for brackets, braces and radicals, etc., which can
+stretch to accommodate the thing they’re enclosing.
+2.7 256 glyph encodings (mathematics)
+So far there are no 256 glyph mathematical encodings. A proposal is given in
+[24].
+2.8 Other encodings
+LATEX name:C..
+Public name: CJK encodings
+Author: Werner Lemberg
+Glyph slots used: 0x00–0xFF
+Variable slots: —
+Font example:
+Further reference: [5]
+10
+
+===== PAGE 11 =====
+TheCJKpackage defines a number of encodings which access Chi-
+nese, Japanese and Korean fonts.
+LATEX name:E..
+Public name: Experimental encodings
+Author: —
+Glyph slots used: 0x00–0xFF
+Variable slots: all
+Font example:
+Further reference: [21, p.416]
+As the name indicates, encodings starting with the letterEare in-
+tended for experimental encodings, that are still likely to change.
+LATEX name:L..
+Public name: Local encoding (site dependent)
+Author: —
+Glyph slots used: 0x00–0xFF
+Variable slots: all
+Font example:
+Further reference: [21, p.416]
+‘Local’ encodings provide the means to develop representation tech-
+niques that are suited to a particular TEX environment. While the
+developer has freedom to specify their encoding as he or she pleases,
+there is a strong incentive to obey the LATEX rules for encodings,
+since it will otherwise be difficult to compose text using the encod-
+ing.
+At least it was the intention thatL..encodings are local and site
+dependent. However, a number of such encodings became generally
+used without ever getting a different name allocated.
+LATEX name:LY1
+Public name: Y&Y 256 glyph encoding
+Author: Berthold Horn
+Glyph slots used: 0x00–0x08, 0x0C, 0x10, 0x12–0xFF
+Variable slots:believed none
+Font example:ptmr8y; encoding table on page 35
+Further reference: [21, p.416]
+This is an alternative to theT1encoding developed by Y&Y and
+used in their commercial TEX implementation.
+LATEX name:LV1
+Public name: MicroPress encoding
+Author: Michael Vulis
+Glyph slots used:unknown
+Variable slots:unknown
+Font example:
+Further reference: [21, p.416]
+11
+
+===== PAGE 12 =====
+This is an encoding developed by MicroPress and used for some of
+their fonts.
+LATEX name:LGR
+Public name: Greek 256 glyph encoding
+Author:unknown
+Glyph slots used: 0x00–0xFF
+Variable slots:believed none
+Font example:grmn1000; encoding table on page 36
+Further reference: [21, p.575]
+Currently the main encoding in use for the Greek language.
+This encoding doesn’t conform to the restrictions forT-encodings
+described in section 3 on page 13 as it doesn’t haveasciiglyphs at
+all.
+LATEX name:PD1
+Public name: PDF DocEncoding
+Author: Adobe
+Glyph slots used: 0x08–0x0A, 0x0C, 0x0D, 0x18–0x7E, 0x80–0x9E,
+0xA0–0xAE, 0xB0–0xFF
+Variable slots: —
+Font example:
+Further reference: [1], [13]
+ThePD1encoding is a virtual encoding with 256 glyphs needed to
+produce bookmarks and similar text in PDF document generated
+with pdfLATEX. The encoding is “virtual” because by design there
+are no TEX fonts that coverPD1. Details can be found in appendix
+D.1 of [1].
+LATEX name:PU
+Public name: PDF Unicode Encoding
+Author: Adobe
+Glyph slots used: —
+Variable slots: —
+Font example:
+Further reference: [1], [13]
+Anothervirtualencoding(withmorethan600characters)forUnicode-
+encoded bookmarks in PDF documents.
+LATEX name:U
+Public name: Unknown encoding
+Author: —
+Glyph slots used: potentially 0x00-0xFF
+Variable slots: all
+Font example:wasy10; encoding table on page 37
+Further reference: [21, p.416]
+This encoding should be used for fonts that resist classification, e.g.,
+when it is clear that there will never be more than one font using
+the same encoding.
+12
+
+===== PAGE 13 =====
+3 Restrictions
+3.1 Required glyphs for general text encodings
+Encodings that are supposed to be used with LATEX for ‘general purpose text
+fonts’ need to have certain fixed glyphs in certain encoding slots. A ‘general
+purpose text font’ is one intended for arbitrary natural language text and not
+just within special environments (such as the phonetic alphabet) or just for
+typesetting individual symbols (e.g., the text companion font with encoding
+TS1).
+This is the case for the following glyphs that have to be in theirasciipositions
+for general purpose text encodings:
+Glyph Position
+! 33
+’ 39
+( 40
+) 41
+* 42
++ 43
+, 44
+- 45
+. 46
+/ 47
+0 ... 9 48 to 57
+Glyph Position
+: 58
+; 59
+= 61
+? 63
+@ 64
+A ... Z 65 to 90
+[ 91
+] 93
+‘ 96
+a ... z 97 to 122
+Glyph1 Position
+< 60
+> 62
+| 124
+In addition the following glyphs have to be present somewhere2 in the encoding
+together with corresponding ligature programs to generate them:
+Glyph Ligature program
+“‘‘
+”’’
+–--
+—---
+This is33 + 2∗26 = 85positions “required”, which leaves 171 positions free.
+If there are free slots available then adding all or some of the diacritics would
+be the best way to fill them.
+If there are insufficient slots for the characters needed, a possible technique is
+to create a subsidiary encoding, and to move non-letter characters to it. Since
+only “letters” take part in the hyphenation algorithm, this technique doesn’t
+affect the appearance of the typeset result.
+3.2 The constraints on upper/lower case tables
+Due to some technical restrictions of TEX related to hyphenation it is not pos-
+sible in LATEX to use more than one\lccodeor\uccodetable. Therefore all
+encodings need to share these two tables which are defined to be those of the
+T1encoding.
+1The requirement for these three glyphs is violated in the Latin alphabetOTencodings.
+2The position in this case is not important as they are generated from ligature programs.
+13
+
+===== PAGE 14 =====
+TheT1encoding has some nasty peculiarities which make certain slot positions
+more or less unusable for other encodings if this restriction is to be obeyed. This
+is unfortunate but sinceT1is well established and the basis for a large number
+of languages it seemed better to live with this situation instead of trying to
+replaceT1with a slightly better standard (with the result that for a long time
+different LATEX installations would not be able to communicate with each other
+because of incompatible font sets).
+The positions that are problematic are as follows.
+25 (ı) uppercase maps strangely (same as for 105, i)
+26 (ȷ) uppercase maps strangely (same as for 106, j)
+27 (ff) lowercase maps to itself which makes this slot subject to hy-
+phenation (used to supportOT1encoding)
+157 (İ) lowercase maps strangely (same as for 73, I)
+158 (đ) uppercase maps strangely (same as for 240, ð)
+One way to use such slots is to fill them with ligature glyphs as TEX will not con-
+sult these tables for glyphs constructed through ligatures programs but instead
+uses the entries for the individual glyphs used to produce the ligature.
+A complete listing of the uppercase/lowercase mapping tables is to be found in
+section B (page 38).
+4 Encoding specific commands
+An encoding specific command is one that generates a glyph (or glyphs), to pro-
+duce a graphic effect that may be implemented differently in different encodings.
+The encoding specific command automatically changes its implementation when
+the encoding changes in the course of the document. Encoding specific com-
+mands figure in LATEX’s internal character representation (licr) and are also
+discussed in [21, sec. 7.11.2, p. 442].
+The following table only covers the encoding specific commands from theOT1
+andT1encodings. Other encodings may specify additional encoding specific
+commands. In the table, the first 15 commands are ‘accent-like’ and need as an
+argument the character to be accented. For example,\v{c}is thelicrfor ‘č’.
+\‘OT1,T1 ` (grave)
+\’OT1,T1 ´ (acute)
+\^OT1,T1 ˆ (circumflex)
+\~OT1,T1 ˜ (tilde)
+\"OT1,T1 ¨ (umlaut)
+\HOT1,T1 ˝ (Hungarian umlaut)
+\rOT1,T1 ˚ (ring)
+\vOT1,T1 ˇ (haček)
+\uOT1,T1 ˘ (breve)
+\tOT1,T1⁄tieacce♪tlowercaſe(tie)
+\=OT1,T1 ¯ (macron)
+\.OT1,T1 ˙ (dot)
+\bOT1,T1 ¯ (underbar)
+\cOT1,T1 ¸ (cedilla)
+\dOT1,T1 . (dot under)
+\kT1 ˛ (ogonek)
+\AEOT1,T1 Æ
+14
+
+===== PAGE 15 =====
+\DHT1 Ð
+\DJT1 Ð
+\LOT1,T1 Ł
+\NGT1 Ŋ
+\OEOT1,T1 Œ
+\OOT1,T1 Ø
+\SSOT1,T1 SS
+\THT1 Þ
+\aeOT1,T1 æ
+\dhT1 ð
+\djT1 đ
+\guillemotleftT1 « (guillemet)
+\guillemotrightT1 » (guillemet)
+\guilsinglleftT1 ‹ (guillemet)
+\guilsinglrightT1 › (guillemet)
+\iOT1,T1 ı
+\jOT1,T1 ȷ
+\lOT1,T1 ł
+\ngT1 ŋ
+\oeOT1,T1 œ
+\oOT1,T1 ø
+\quotedblbaseT1 „
+\quotesinglbaseT1 ‚
+\ssOT1,T1 ß
+\textasciicircumOT1,T1 ^
+\textasciitildeOT1,T1 ~
+\textbackslashOT1,T1 \
+\textbarOT1,T1 |
+\textbraceleftOT1,T1 {
+\textbracerightOT1,T1 }
+\textcompwordmarkOT1,T1 ‌ (invisible)
+\textdollarOT1,T1 $
+\textemdashOT1,T1 —
+\textendashOT1,T1 –
+\textexclamdownOT1,T1 ¡
+\textgreaterOT1,T1 >
+\textlessOT1,T1 <
+\textquestiondownOT1,T1 ¿
+\textquotedblT1 "
+\textquotedblleftOT1,T1 “
+\textquotedblrightOT1,T1 ”
+\textquoteleftOT1,T1 ‘
+\textquoterightOT1,T1 ’
+\textregisteredOT1,T1®
+\textsectionOT1,T1 §
+\textsterlingOT1,T1 £
+\texttrademarkOT1,T1™
+\textunderscoreOT1,T1 _
+\textvisiblespaceOT1,T1 ␣
+\thT1 þ
+15
+
+===== PAGE 16 =====
+5 Encodings for Unicode based TEX systems
+The preceding text has assumed a classic TeX system that is restricted to the
+use of fonts with at most 256 characters. In order to accommodate all the
+characters needed for different languages and mathematics it is necessary to
+have multiple encodings as described above, and LATEX needs to be aware of the
+encoding used for each font.
+Unicode aims to provide a single encoding that removes most of the need to
+switch encodings, apart from very specialist use for non-standard characters.
+Rather than assign codes in the range 0–256 (hex FF) Unicode codes are in the
+range 0–1,114,111 (hex 10FFFF), although not all slots are available for distinct
+characters for technical reasons. Unicode offers the possibility to use a single
+input encoding (usually UTF-8) for all documents and to use essentially the
+same Unicode encoding for all fonts, so removing the need to switch encodings
+in different contexts.
+OmegawasperhapsthefirstwidelyusedT EXextensionthatsupportedUnicode.
+Currently the two actively supported systems that are present in most modern
+TEX distributions are XeTEX and LuaTEX.
+When used with these extended TEX engines, LATEX’s font system can refer to
+Unicode fonts (typically OpenType fonts installed system-wide on your operat-
+ing system rather than fonts specifically encoded/installed for TEX). Currently
+the usual method of accessing these fonts is through the contributedfontspec
+package. This uses as encodingTU: “TEX Unicode” (historically two experimen-
+tal encodingsEU1andEU2were used, depending on the engine, but these are
+deprecated). The exact rules for LATEX encodings for Unicode engines have not
+yet been finalised in terms of the (usual) requirement that each slot should be
+defined. (This is not realistic for a Unicode font, as almost all fonts address sub-
+sets of the full range.) It is rare to need to specify theTUencoding a document
+as thefontspecpackage sets up the correct encoding when loaded.
+The restrictions described in section 3 do not apply, or need to be modified in a
+Unicode based engine. Clearly the lowercase table (and hyphenation patterns)
+can not be restricted to the values used forT1and do only refer to the first 256
+characters.
+When the LATEX format is made LATEX sets up the lowercase table and classifies
+characters as letter- or non-letter-based onT1if a classic T EX or pdfTEX is
+being used. If a Unicode based TEX is detected, the values are instead based
+on the classification and lower-case mappings provided by the Unicode Char-
+acter Database [23]. The LATEX team have written a generic loader bundle,
+unicode-data, which provides the mechanism to load this information directly
+from the Unicode Character Database data files and which is read when a
+Unicode-compliant engine is detected during format-building.
+Similarly in the default configuration files used by modern TEX distribution, the
+hyphenation files for each supported language are written in UTF-8 encoding,
+using Unicode code points for all letters, then if a classic TEX system is detected,
+some additional macros are loaded to convert these files to 256-character encod-
+ings where possible, and assuming theT1lowercase table. For Unicode engines
+no conversion takes place. (The hyphenation patterns for a small number of lan-
+guages require that some punctuation characters have non-zero c values. This
+are set during pattern reading, and may at some stage in the future use the e-
+TEX\savinghyphcodesmechanism to avoid any need to manipulate\lccode
+in the document.)
+16
+
+===== PAGE 17 =====
+References
+[1]PDFreference: Adobe portable document format version 1.6.
+Adobe Systems Incorporated, 2005.http://partners.adobe.com/
+public/developer/en/pdf/PDFReference16.pdf.
+[2] Barbara Beeton:Mathematical symbols and cyrillic fonts ready for distri-
+bution. In: TUGBoat, 6#3), 1985.http://tug.org/TUGboat/Articles/
+tb06-3/tb13beetcyr.pdf.
+[3] Barbara Beeton:Unicode and math, a combination whose time has come
+– Finally!. In: TUGBoat, 21#3, 2000.http://www.tug.org/TUGboat/
+Articles/tb21-3/tb68beet.pdf.
+[4] A. Berdnikov, O. Lapko, M. Kolodin, A. Janishevsky and A. Burykin:The
+Encoding Paradigm in LATEX2 ε and the Projected X2 Encoding for Cyril-
+lic Texts. EuroTEX 98.http://www.gutenberg.eu.org/pub/GUTenberg/
+publicationsPDF/28-29-berdnikova.pdf.
+[5]TheCJKpackage:http://cjk.ffii.org.
+[6] Matthias Clasen:A new implementation of LATEX math, 1997-98.http:
+//www.tug.org/twg/mfg/papers/current/newmath.ps.gz.
+[7] Matthias Clasen and Ulrik Vieth:Towards a new Math Font Encoding for
+(La)TEX. March 1998,http://www.tug.org/twg/mfg/papers/current/
+mfg-euro-all.ps.gz.
+[8] Dean Guenther and Janene Winter. An international phonetic alphabet.
+In Guenther [9], pages 149–156. Published as TUGboat 12#1.
+[9] Mary Guenther, editor.TEX 90 Conference Proceedings, March 1991. Pub-
+lished as TUGboat 12#1.
+[10] Michael J. Ferguson. Report on multilingual activities.TUGboat,
+11(4):514–516, 1990.
+[11]Thefontinstpackage:〈CTAN〉/fonts/utilities/fontinst.
+[12] Fukui Rei:TIPA: A system for processing phonetic symbols in LATEX. In:
+TUGBoat, 17#, 1996.http://www.tug.org/TUGboat/Articles/tb17-2/
+tb51rei.pdf.
+[13]Thehyperrefpackage:http://www.tug.org/applications/hyperref.
+[14] Jörg Knappen. Fonts for Africa: The fc Fonts.TUGboat, 14(2):104, 1993.
+[15] Jörg Knappen:Thedcfonts 1.3: Move towards stability and completeness.
+In: TUGBoat 17#2, 1996.http://www.tug.org/TUGboat/Articles/
+tb17-2/tb51knap.pdf.
+[16] Donald E. Knuth.The TEXbook. Volume A ofComputers & Typesetting,
+May 1989. Eight printing.
+[17]Thevnrfont family, developed by the author of pdfTEX, Hàn Thê´ Thành.
+http://vntex.org/download/vntex.
+[18] Home page of the International Phonetic Association.http://www.arts.
+gla.ac.uk/IPA/ipa.html
+[19] Leslie Lamport.LATEX: A Document Preparation System. Addison-Wesley,
+Reading, Massachusetts, second edition, 1994.
+17
+
+===== PAGE 18 =====
+[20]Thelh-Fonts for Cyrillic:〈CTAN〉/fonts/cyrillic/lh.
+[21] Frank Mittelbach and Michel Goossens.The LATEX Companion second edi-
+tion. With Johannes Braams, David Carlisle, and Chris Rowley. Addison-
+Wesley, Reading, Massachusetts, 2004.
+[22]The Unicode Standard.http://unicode.org.
+[23]The Unicode Character Database.http://unicode.org/ucd.
+[24] Justin Ziegler,Technical Report on Math Font Encodings, June 1994,http:
+//www.tug.org/twg/mfg/papers/ltx3pub/l3d007.ps.gz.
+18
+
+===== PAGE 19 =====
+Appendices
+A Example code tables
+This appendix contains a table of each font mentioned as an “example” font
+above, providing that the font was available when the document was processed
+with LATEX. (LATEX generates a warning message for each font it fails to find.)
+A.1 Text encodings
+cmr10,OT1 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x Γ ∆ Θ Λ Ξ Π Σ Υ ˝0x´01x Φ Ψ Ω ff fi fl ffi ffl
+´02x ı ȷ ` ´ ˇ ˘ ¯ ˚ ˝1x´03x ¸ ß æ œ ø Æ Œ Ø
+´04x  ! ” # $ % & ’ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; ¡ = ¿ ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ “ ] ˆ ˙
+´14x ‘ a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z – — ˝ ˜ ¨
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+19
+
+===== PAGE 20 =====
+wnr10,OT2 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x          ˝0x´01x  	 
+   
+  
+´02x         ˝1x´03x        
+´04x  ! " # $ % & ' ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ \ ] ^ _
+´14x ` a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z { | } ~ 
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+wsuipa10,OT3 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x          ˝0x´01x  	 
+   
+  
+´02x         ˝1x´03x        
+´04x  ! " # $ % & ' ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ \ ] ^ _
+´14x ` a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z { | } ~ 
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+20
+
+===== PAGE 21 =====
+plr10,OT4 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x Γ ∆ Θ Λ Ξ Π Σ Υ ˝0x´01x Φ Ψ Ω ff fi fl ffi ffl
+´02x ı ȷ ` ´ ˇ ˘ ¯ ˚ ˝1x´03x ¸ ß æ œ ø Æ Œ Ø
+´04x /suppress! ” # $ % & ’ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; ¡ = ¿ ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ “ ] ˆ ˙
+´14x ‘ a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z – — ˝ ˜ ¨
+´20x Ą Ć Ę ˝8x´21x Ł Ń
+´22x Ś ˝9x´23x Ź Ż
+´24x ą ć ę ˝Ax´25x ł ń « »
+´26x ś ˝Bx´27x ź ż
+´30x ˝Cx´31x
+´32x Ó ˝Dx´33x
+´34x ˝Ex´35x
+´36x ó ˝Fx´37x „
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+21
+
+===== PAGE 22 =====
+ecrm1000,T1 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ` ´ ˆ ˜ ¨ ˝ ˚ ˇ ˝0x´01x ˘ ¯ ˙ ¸ ˛ ‚ ‹ ›
+´02x “ ” „ « » – — ‌ ˝1x´03x /perthousandzeroı ȷ ff fi fl ffi ffl
+´04x ␣ ! " # $ % & ’ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ \ ] ^ _
+´14x ‘ a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z { | } ~ -
+´20x Ă Ą Ć Č Ď Ě Ę Ğ ˝8x´21x Ĺ Ľ Ł Ń Ň Ŋ Ő Ŕ
+´22x Ř Ś Š Ş Ť Ţ Ű Ů ˝9x´23x Ÿ Ź Ž Ż Ĳ İ đ §
+´24x ă ą ć č ď ě ę ğ ˝Ax´25x ĺ ľ ł ń ň ŋ ő ŕ
+´26x ř ś š ş ť ţ ű ů ˝Bx´27x ÿ ź ž ż ĳ ¡ ¿ £
+´30x À Á Â Ã Ä Å Æ Ç ˝Cx´31x È É Ê Ë Ì Í Î Ï
+´32x Ð Ñ Ò Ó Ô Õ Ö Œ ˝Dx´33x Ø Ù Ú Û Ü Ý Þ SS
+´34x à á â ã ä å æ ç ˝Ex´35x è é ê ë ì í î ï
+´36x ð ñ ò ó ô õ ö œ ˝Fx´37x ø ù ú û ü ý þ ß
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+22
+
+===== PAGE 23 =====
+larm1000,T2A ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ` ´ ˆ ˜ ¨ ˝ ˚ ˇ ˝0x´01x ˘ ¯ ˙ ¸ ˛ Ӏ 〈 〉
+´02x “ ”  ̑  ̏ ˘ – — ‌ ˝1x´03x /perthousandzeroı ȷ ff fi fl ffi ffl
+´04x ␣ ! " # $ % & ’ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ \ ] ^ _
+´14x ‘ a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z { | } ~ -
+´20x Ґ Ғ Ђ Ћ Һ Җ Ҙ Љ ˝8x´21x Ї Қ Ҡ Ҝ Ӕ Ң Ҥ Ѕ
+´22x Ө Ҫ Ў Ү Ұ Ҳ Џ Ҹ ˝9x´23x Ҷ Є Ә Њ Ё № ¤ §
+´24x ґ ғ ђ ћ һ җ ҙ љ ˝Ax´25x ї қ ҡ ҝ ӕ ң ҥ ѕ
+´26x ө ҫ ў ү ұ ҳ џ ҹ ˝Bx´27x ҷ є ә њ ё „ « »
+´30x А Б В Г Д Е Ж З ˝Cx´31x И Й К Л М Н О П
+´32x Р С Т У Ф Х Ц Ч ˝Dx´33x Ш Щ Ъ Ы Ь Э Ю Я
+´34x а б в г д е ж з ˝Ex´35x и й к л м н о п
+´36x р с т у ф х ц ч ˝Fx´37x ш щ ъ ы ь э ю я
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+23
+
+===== PAGE 24 =====
+lbrm1000,T2B ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ` ´ ˆ ˜ ¨ ˝ ˚ ˇ ˝0x´01x ˘ ¯ ˙ ¸ ˛ Ӏ 〈 〉
+´02x “ ”  ̑  ̏ ˘ – — ‌ ˝1x´03x /perthousandzeroı ȷ ff fi fl ffi ffl
+´04x ␣ ! " # $ % & ’ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ \ ] ^ _
+´14x ‘ a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z { | } ~ -
+´20x /CYRGDSCHCRSҒ /CYRGDSCҔ Һ Җ /CYRDELTAӠ ˝8x´21x Љ Қ /CYRLDSCӃ /CYRLHKҢ Ҥ Ӈ
+´22x Ө /CYRSACRSЎ Ү /CYRHHCRSҲ /CYRHHKӋ ˝9x´23x Ҷ Њ Ә /CYREPSЁ № ¤ §
+´24x /cyrgdschcrsғ /cyrgdscҕ һ җ /cyrdeltaӡ ˝Ax´25x љ қ /cyrldscӄ /cyrlhkң ҥ ӈ
+´26x ө /cyrsacrsў ү /cyrhhcrsҳ /cyrhhkӌ ˝Bx´27x ҷ њ ә /cyrepsё „ « »
+´30x А Б В Г Д Е Ж З ˝Cx´31x И Й К Л М Н О П
+´32x Р С Т У Ф Х Ц Ч ˝Dx´33x Ш Щ Ъ Ы Ь Э Ю Я
+´34x а б в г д е ж з ˝Ex´35x и й к л м н о п
+´36x р с т у ф х ц ч ˝Fx´37x ш щ ъ ы ь э ю я
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+24
+
+===== PAGE 25 =====
+lcrm1000,T2C ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ` ´ ˆ ˜ ¨ ˝ ˚ ˇ ˝0x´01x ˘ ¯ ˙ ¸ ˛ Ӏ 〈 〉
+´02x “ ”  ̑  ̏ ˘ – — ‌ ˝1x´03x /perthousandzeroı ȷ ff fi fl ffi ffl
+´04x ␣ ! " # $ % & ’ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ \ ] ^ _
+´14x ‘ a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z { | } ~ -
+´20x Ҧ Ҵ Ҭ Ҕ Һ /CYRRDSCҎ Ӡ ˝8x´21x /CYRMDSCҚ /CYRLDSCҞ /CYRLHKҢ /CYRMHKӇ
+´22x Ө Ҽ Ҿ Ҍ /CYRISHRTDSCҲ Џ Ҩ ˝9x´23x Ҷ /CYRNLHKӘ /CYRRHKЁ № ¤ §
+´24x ҧ ҵ ҭ ҕ һ /cyrrdscҏ ӡ ˝Ax´25x /cyrmdscқ /cyrldscҟ /cyrlhkң /cyrmhkӈ
+´26x ө ҽ ҿ ҍ /cyrishrtdscҳ џ ҩ ˝Bx´27x ҷ /cyrnlhkә /cyrrhkё „ « »
+´30x А Б В Г Д Е Ж З ˝Cx´31x И Й К Л М Н О П
+´32x Р С Т У Ф Х Ц Ч ˝Dx´33x Ш Щ Ъ Ы Ь Э Ю Я
+´34x а б в г д е ж з ˝Ex´35x и й к л м н о п
+´36x р с т у ф х ц ч ˝Fx´37x ш щ ъ ы ь э ю я
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+25
+
+===== PAGE 26 =====
+tipa10,T3 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ` ´ ˆ ˜ ¨ ˝ ˚ ˇ ˝0x´01x ˘ ¯ ˙ ¸ ˛ ‚ ‹ ›
+´02x “ ” „ « » – — ‌ ˝1x´03x ‰ ı ȷ ff fi fl ffi ffl
+´04x  ! " # $ % & ’ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ \ ] ^ _
+´14x ‘ a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z { | } ~ ­
+´20x Ă Ą Ć Č Ď Ě Ę Ğ ˝8x´21x Ĺ Ľ Ł Ń Ň Ŋ Ő Ŕ
+´22x Ř Ś Š Ş Ť Ţ Ű Ů ˝9x´23x Ÿ Ź Ž Ż Ĳ İ đ §
+´24x ă ą ć č ď ě ę ğ ˝Ax´25x ĺ ľ ł ń ň ŋ ő ŕ
+´26x ř ś š ş ť ţ ű ů ˝Bx´27x ÿ ź ž ż ĳ ¡ ¿ £
+´30x À Á Â Ã Ä Å Æ Ç ˝Cx´31x È É Ê Ë Ì Í Î Ï
+´32x Ð Ñ Ò Ó Ô Õ Ö Œ ˝Dx´33x Ø Ù Ú Û Ü Ý Þ SS
+´34x à á â ã ä å æ ç ˝Ex´35x è é ê ë ì í î ï
+´36x ð ñ ò ó ô õ ö œ ˝Fx´37x ø ù ú û ü ý þ ß
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+26
+
+===== PAGE 27 =====
+fcr10,T4 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x          ˝0x´01x  	 
+   
+  
+´02x         ˝1x´03x        
+´04x  ! " # $ % & ' ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ \ ] ^ _
+´14x ` a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z { | } ~ 
+´20x         ˝8x´21x        
+´22x         ˝9x´23x        
+´24x   ¡ ¢ £ ¤ ¥ ¦ § ˝Ax´25x ¨ © ª « ¬ ­ ® ¯
+´26x ° ± ² ³ ´ µ ¶ · ˝Bx´27x ¸ ¹ º » ¼ ½ ¾ ¿
+´30x À Á Â Ã Ä Å Æ Ç ˝Cx´31x È É Ê Ë Ì Í Î Ï
+´32x Ð Ñ Ò Ó Ô Õ Ö × ˝Dx´33x Ø Ù Ú Û Ü Ý Þ ß
+´34x à á â ã ä å æ ç ˝Ex´35x è é ê ë ì í î ï
+´36x ð ñ ò ó ô õ ö ÷ ˝Fx´37x ø ù ú û ü ý þ ÿ
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+27
+
+===== PAGE 28 =====
+vnr10,T5 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ` ´ ˆ ˜ ¨  ˚ ˇ ˝0x´01x ˘ ¯ ˙ ¸  ‚ ‹ ›
+´02x “ ” „ « » – —  ˝1x´03x ₀ ı Ỷ ỷ Ỵ ỵ Đ đ
+´04x ␣ ! " # $ % & ’ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ \ ] ^ _
+´14x ‘ a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z { | } ~ ­
+´20x À Á Ã Ả Ạ Â Ầ Ấ ˝8x
+´21x Ẫ Ẩ Ậ Ă Ằ Ắ Ẵ Ẳ
+´22x Ặ È É Ẽ Ẻ Ẹ Ê Ề ˝9x
+´23x Ế Ễ Ể Ệ Ì Í Ĩ Ỉ
+´24x à á ã ả ạ â ầ ấ ˝Ax´25x ẫ ẩ ậ ă ằ ắ ẵ ẳ
+´26x ặ è é ẽ ẻ ẹ ê ề ˝Bx´27x ế ễ ể ệ ì í ĩ ỉ
+´30x Ị Ò Ó Õ Ỏ Ọ Ô Ồ ˝Cx
+´31x Ố Ỗ Ổ Ộ Ơ Ờ Ớ Ỡ
+´32x Ở Ợ Ù Ú Ũ Ủ Ụ Ư ˝Dx´33x Ừ Ứ Ữ Ử Ự Ỳ Ý Ỹ
+´34x ị ò ó õ ỏ ọ ô ồ ˝Ex´35x ố ỗ ổ ộ ơ ờ ớ ỡ
+´36x ở ợ ù ú ũ ủ ụ ư ˝Fx´37x ừ ứ ữ ử ự ỳ ý ỹ
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+28
+
+===== PAGE 29 =====
+A.2 Text symbol encodings
+The full table forTS1as provided by European Computer Modern family:
+tcrm1000,TS1 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ` ´ ⁄Circumflex ⁄Tilde ¨ ˝ ⁄Ri♪g ˇ ˝0x´01x ⁄Breve ¯ ⁄Dotacce♪t ¸ ˛ ‚
+´02x „ ⁄twelveudash  ‌ ˝1x´03x ← → ⁄tieacce♪tlowercase⁄tieacce♪tcapital⁄tieacce♪tlowercase.♪ew⁄tieacce♪tcapital.♪ew ‌
+´04x ␢ $ ' ˝2x´05x ∗ , ⹀ . ⁄
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 〈 − 〉
+´10x ˝4x´11x ℧ ○
+´12x Ω ˝5x´13x 〚 〛 ↑ ↓
+´14x ` ⁄bor♪ ⁄divorced ⁄died ˝6x´15x ⁄leaf ⁄married ♪
+´16x ˝7x´17x ⁄tildelow ⁄hyphe♪dbl.alt
+´20x ˘ ˇ ˝  ̏ † ‡ ‖ ‰ ˝8x´21x • ℃ $ ¢ ƒ ₡ ₩ ₦
+´22x ₲ ₱ ₤ ⁄recipe ‽ ⁄g♪aborret♪i ₫ ™ ˝9x´23x ‱ ¶ ฿ № ⁄discou♪t ℮ ◦ ℠
+´24x ⁅ ⁆ ¢ £ ¤ ¥ ¦ § ˝Ax´25x ¨ © ª ⁄copyleft ¬ ℗ ® ¯
+´26x ° ± ² ³ ´ µ ¶ · ˝Bx´27x ※ ¹ º √ ¼ ½ ¾ €
+´30x ˝Cx´31x
+´32x × ˝Dx´33x
+´34x ˝Ex´35x
+´36x ÷ ˝Fx´37x
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+29
+
+===== PAGE 30 =====
+In contrast typical PostScript fonts usually have incomplete implementations of
+TS1sometimes missing more than half of the glyphs:
+ptmr8c,TS1 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ` ´ ˆ ˜ ¨ ˝ ˚ ˇ ˝0x´01x ˘ ¯ ˙ ¸ ˛ ‚
+´02x „ – – – – ˝1x´03x
+´04x $ ' ˝2x´05x * , . ⁄
+´06x ˝3x´07x −
+´10x ˝4x´11x
+´12x ˝5x´13x [ [ ] ]
+´14x ` ˝6x´15x
+´16x ˝7x´17x ~
+´20x ˘ ˇ ´´ `` † ‡ || ‰ ˝8x´21x • °C ƒ
+´22x ™ ˝9x´23x
+´24x ¢ £ ¤ ¥ ¦ § ˝Ax´25x ¨ © ª ¬ ® ¯
+´26x ° ± ² ³ ´ µ ¶ · ˝Bx´27x ¹ º ¼ ½ ¾ C
+´30x ˝Cx´31x
+´32x × ˝Dx´33x
+´34x ˝Ex´35x
+´36x ÷ ˝Fx´37x
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+30
+
+===== PAGE 31 =====
+tipx10,TS3 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ` ´ ˆ ˜ ¨ ˝ ˚ ˇ ˝0x´01x ˘ ¯ ˙
+´02x ˝1x´03x
+´04x ␣ ! " # $ % & ’ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I
+´12x P Q R S T U V ˝5x´13x
+´14x ˝6x´15x
+´16x p q r s t u v w ˝7x´17x x y z {
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+31
+
+===== PAGE 32 =====
+A.3 Extended text encodings
+rxrm1000,X2 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ` ´ ˆ ˜ ¨ ˝ ˚ ˇ ˝0x´01x ˘ ¯ ˙ ¸ ˛ Ӏ 〈 〉
+´02x “ ”  ̑  ̏ ˘ – — ‌ ˝1x´03x /pҿҭҵhҧџѕӕҩҽѵҿҭҧˎ ˏ ̵ /ЋѪҬҼҾLҴӔ/ћѫҭҽҿlҵӕ/ЋѪҬҨLHЉ/ћѫҭҩlhљ
+´04x ␣ ! " # $ % & ’ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ Ӕ Ђ Ћ Ҽ Ҿ Ҝ Ҟ ˝4x´11x /ЋѪҬLҼЅЋІ Ј Љ /ЋѪҬЊҼЅЋЊ Ҩ Ҧ
+´12x /ЋѪҬҬҼЅЋ/ЋѪҬQҬ Ѕ Ҵ Џ Ҹ /ЋѪҬW˝5x´13x Ѣ Ѫ Ѵ [ \ ] ^ _
+´14x ‘ ӕ ђ ћ ҽ ҿ ҝ ҟ ˝6x´15x /ћѫҭlҽѕћі ј љ /ћѫҭњҽѕћњ ҩ ҧ
+´16x /ћѫҭҭҽѕћ/ћѫҭq ҭ ѕ ҵ џ ҹ /ћѫҭw˝7x´17x ѣ ѫ ѵ { | } ~ -
+´20x Ґ Ғ /ЋѪҬҞҼЅЋҔ Һ Җ Ҙ Ӡ ˝8x´21x Ї Қ Ҡ Ӄ /ЋѪҬLHЉҢ Ҥ Ӈ
+´22x Ө Ҫ Ў Ү Ұ Ҳ /ЋѪҬHHЉӋ ˝9x´23x Ҷ Є Ә /ЋѪҬҾPЅЁ № ¤ §
+´24x ґ ғ /ћѫҭҟҽѕћҕ һ җ ҙ ӡ ˝Ax´25x ї қ ҡ ӄ /ћѫҭlhљң ҥ ӈ
+´26x ө ҫ ў ү ұ ҳ /ћѫҭhhљӌ ˝Bx´27x ҷ є ә /ћѫҭҿpѕё „ « »
+´30x А Б В Г Д Е Ж З ˝Cx´31x И Й К Л М Н О П
+´32x Р С Т У Ф Х Ц Ч ˝Dx´33x Ш Щ Ъ Ы Ь Э Ю Я
+´34x а б в г д е ж з ˝Ex´35x и й к л м н о п
+´36x р с т у ф х ц ч ˝Fx´37x ш щ ъ ы ь э ю я
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+32
+
+===== PAGE 33 =====
+A.4 Mathematical encodings
+cmmi10,OML ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x Γ ∆ Θ Λ Ξ Π Σ Υ ˝0x´01x Φ Ψ Ω α β γ δ ϵ
+´02x ζ η θ ι κ λ µ ν ˝1x´03x ξ π ρ σ τ υ ϕ χ
+´04x ψ ω ε ϑ ϖ ϱ ς φ ˝2x´05x ↼ ↽ ⇀ ⇁ , - ▷ ◁
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 . , < / > ⋆
+´10x ∂ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z ♭ ♮ ♯ ⌣ ⌢
+´14x ℓ a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z ı ȷ ℘ ⃗ 
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+cmsy10,OMS ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x − · × ∗ ÷ ⋄ ± ∓ ˝0x´01x ⊕ ⊖ ⊗ ⊘ ⊙ ⃝ ◦ •
+´02x ≍ ≡ ⊆ ⊇ ≤ ≥ ⪯ ⪰ ˝1x´03x ∼ ≈ ⊂ ⊃ ≪ ≫ ≺ ≻
+´04x ← → ↑ ↓ ↔ ↗ ↘ ≃ ˝2x´05x ⇐ ⇒ ⇑ ⇓ ⇔ ↖ ↙ ∝
+´06x ′ ∞ ∈ ∋ △ ▽ ̸ 7 ˝3x´07x ∀ ∃ ¬ ∅ ℜ ℑ ⊤ ⊥
+´10x ℵ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z ∪ ∩ ⊎ ∧ ∨
+´14x ⊢ ⊣ ⌊ ⌋ ⌈ ⌉ { } ˝6x´15x ⟨ ⟩ | ∥ ↕ ⇕ \ ≀
+´16x √ ⨿ ∇ ∫ ⊔ ⊓ ⊑ ⊒ ˝7x´17x § † ‡ ¶ ♣ ♢ ♡ ♠
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+33
+
+===== PAGE 34 =====
+cmex10,OMX ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x
+        
+˝0x
+´01x
+ 	 
+   
+  
+´02x
+       
+˝1x
+´03x
+       
+´04x
+ ! " # $ % & ’
+˝2x
+´05x
+( ) * + , - . /
+´06x
+       
+˝3x
+´07x        
+´10x
+    D E F G
+˝4x
+´11x
+H I J K L M N O
+´12x P Q R S T U V W
+˝5x
+´13x
+X Y Z [ \ ] ^ _
+´14x ‘ a
+b c d e f g
+˝6x
+´15x
+h i j k l m n o
+´16x
+p q r s t u v w
+˝7x´17x x y z { | } ~ 
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+34
+
+===== PAGE 35 =====
+A.5 Other encodings
+ptmr8y,LY1 ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ⁄ ˙ ˝ ˛ ˝0x´01x fl fi
+´02x ı ` ´ ˇ ˘ ¯ ˚ ˝1x´03x ¸ ß æ œ ø Æ Œ Ø
+´04x  ! " # $ % & ’ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M N O
+´12x P Q R S T U V W ˝5x´13x X Y Z [ \ ] ˆ _
+´14x ‘ a b c d e f g ˝6x´15x h i j k l m n o
+´16x p q r s t u v w ˝7x´17x x y z { | } ˜ ¨
+´20x Ł ' ‚ ƒ „ … † ‡ ˝8x´21x ˆ ‰ Š ‹ Œ Ž ^ −
+´22x ł ‘ ’ “ ” • – — ˝9x´23x ˜ ™ š › œ ž ~ Ÿ
+´24x   ¡ ¢ £ ¤ ¥ ¦ § ˝Ax´25x ¨ © ª « ¬ ® ¯
+´26x ° ± ² ³ ´ µ ¶ · ˝Bx´27x ¸ ¹ º » ¼ ½ ¾ ¿
+´30x À Á Â Ã Ä Å Æ Ç ˝Cx´31x È É Ê Ë Ì Í Î Ï
+´32x Ð Ñ Ò Ó Ô Õ Ö × ˝Dx´33x Ø Ù Ú Û Ü Ý Þ ß
+´34x à á â ã ä å æ ç ˝Ex´35x è é ê ë ì í î ï
+´36x ð ñ ò ó ô õ ö ÷ ˝Fx´37x ø ù ú û ü ý þ ÿ
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+35
+
+===== PAGE 36 =====
+grmn1000,LGR ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x –  ̯ 𐅄 𐅅 𐅆 𐅇 ϛ ϛ ˝0x´01x ι ᾼ ῌ ῼ Α Ϋ α ϋ
+´02x ˏ ˎ ϟ ϙ  ̮ Ϙ Ϛ Ϡ ˝1x´03x € ‰ ə ϡ ‘ ’ ˘ ¯
+´04x ῁ ! ¨ ΅ ῭ % · ΄ ˝2x´05x ( ) * + , - . /
+´06x 0 1 2 3 4 5 6 7 ˝3x´07x 8 9 : · ῾ = ᾿ ;
+´10x ῟ Α Β ῝ Δ Ε Φ Γ ˝4x´11x Η Ι Θ Κ Λ Μ Ν Ο
+´12x Π Χ Ρ Σ Τ Υ ῞ Ω ˝5x´13x Ξ Ψ Ζ [ ῏ ] ῎ ῍
+´14x ` α β ς δ ε φ γ ˝6x´15x η ι θ κ λ μ ν ο
+´16x π χ ρ σ τ υ v ω ˝7x´17x ξ ψ ζ « ͺ » ῀ —
+´20x ὰ ἁ ἀ ἃ ᾲ ᾁ ᾀ ᾃ ˝8x´21x ά ἅ ἄ ἂ ᾴ ᾅ ᾄ ᾂ
+´22x ᾶ ἇ ἆ ϝ ᾷ ᾇ ᾆ  ͝ ˝9x´23x ὴ ἡ ἠ ῂ ᾑ ᾐ 
+´24x ή ἥ ἤ ἣ ῄ ᾕ ᾔ ᾓ ˝Ax´25x ῆ ἧ ἦ ἢ ῇ ᾗ ᾖ ᾒ
+´26x ὼ ὡ ὠ ὣ ῲ ᾡ ᾠ ᾣ ˝Bx´27x ώ ὥ ὤ ὢ ῴ ᾥ ᾤ ᾢ
+´30x ῶ ὧ ὦ Ϝ ῷ ᾧ ᾦ ˝Cx´31x ὶ ἱ ἰ ἳ ὺ ὑ ὐ ὓ
+´32x ί ἵ ἴ ἲ ύ ὕ ὔ ὒ ˝Dx´33x ῖ ἷ ἶ Ϊ ῦ ὗ ὖ Ϋ
+´34x ὲ ἑ ἐ ἓ ὸ ὁ ὀ ὃ ˝Ex´35x έ ἕ ἔ ἒ ό ὅ ὄ ὂ
+´36x ϊ ῒ ΐ ῗ ϋ ῢ ΰ ῧ ˝Fx´37x ᾳ ῃ ῳ ῥ ῤ ʹ ͵
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+36
+
+===== PAGE 37 =====
+wasy10,U ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x       ∴   ˝0x´01x  	 
+  ♩ 
+  
+´02x         ˝1x´03x  ♀ ♂ ¤    
+´04x  ! " # $ % ♁ ’ ˝2x´05x ( ) * + , - ☼ /
+´06x 0 1 2 3 4 ◊ 6 7 ˝3x´07x 8 9 : ; < = > ?
+´10x @ A B C D E F G ˝4x´11x H I J K L M € O
+´12x P Q R S ſ U V W ˝5x´13x X Y Z [ \ ] ^ _
+´14x ‘ a b c d e f ¢ ˝6x´15x h þ Þ k l m n o
+´16x p q
+r s t u v w
+˝7x
+´17x
+x y z {
+| } ~ 
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+logo10,U ´0 ´1 ´2 ´3 ´4 ´5 ´6 ´7
+´00x ˝0x´01x
+´02x ˝1x´03x
+´04x ˝2x´05x
+´06x ˝3x´07x
+´10x A E F ˝4x´11x M N O
+´12x P S T ˝5x´13x
+´14x ˝6x´15x
+´16x ˝7x´17x
+˝8 ˝9 ˝A ˝B ˝C ˝D ˝E ˝F
+37
+
+===== PAGE 38 =====
+B Uppercase and lowercase tables
+The following two sets of tables list the\uppercaseand\lowercasevalues for
+each position in the LATEX standard 256-character tables.
+Each row of each table lists:
+pos The position in the table (0-255)
+lc The value in the\lowercasetable at the position
+(note that value 0 here means that\lowercaseis in-
+effective for this character, and hyphenation does not
+apply to it)
+uc The value in the\uppercasetable at the position
+(note that value 0 here means that\uppercaseis inef-
+fective for this character)
+glyphs The glyphs specified for the T1 encoding for this po-
+sition, laid out as⟨glyph⟩(⟨lowercase glyph⟩/⟨uppercase
+glyph⟩)
+pos lc uc glyphs
+00 0 `(–/–)
+10 0 ´(–/–)
+20 0 ˆ(–/–)
+30 0 ˜(–/–)
+40 0 ¨(–/–)
+50 0 ˝(–/–)
+60 0 ˚(–/–)
+70 0 ˇ(–/–)
+80 0 ˘(–/–)
+90 0 ¯(–/–)
+100 0 ˙(–/–)
+110 0 ¸(–/–)
+120 0 ˛(–/–)
+130 0 ‚(–/–)
+140 0 ‹(–/–)
+150 0 ›(–/–)
+160 0 “(–/–)
+170 0 ”(–/–)
+180 0 „(–/–)
+190 0 «(–/–)
+200 0 »(–/–)
+210 0 –(–/–)
+220 0 —(–/–)
+2323 0 ‌(‌/–)
+240 0 /perthousandzero(–/–)
+2525 73 ı(ı/I)
+2626 74 ȷ(ȷ/J)
+2727 0 ff(ff/–)
+280 0 fi(–/–)
+290 0 fl(–/–)
+300 0 ffi(–/–)
+310 0 ffl(–/–)
+pos lc uc glyphs
+320 0 ␣(–/–)
+330 0 !(–/–)
+340 0 "(–/–)
+350 0 #(–/–)
+360 0 $(–/–)
+370 0 %(–/–)
+380 0 &(–/–)
+390 0 ’(–/–)
+400 0 ((–/–)
+410 0 )(–/–)
+420 0 *(–/–)
+430 0 +(–/–)
+440 0 ,(–/–)
+4545 0 -(-/–)
+460 0 .(–/–)
+470 0 /(–/–)
+480 0 0(–/–)
+490 0 1(–/–)
+500 0 2(–/–)
+510 0 3(–/–)
+520 0 4(–/–)
+530 0 5(–/–)
+540 0 6(–/–)
+550 0 7(–/–)
+560 0 8(–/–)
+570 0 9(–/–)
+580 0 :(–/–)
+590 0 ;(–/–)
+600 0 <(–/–)
+610 0 =(–/–)
+620 0 >(–/–)
+630 0 ?(–/–)
+pos lc uc glyphs
+640 0 @(–/–)
+6597 65 A(a/A)
+6698 66 B(b/B)
+6799 67 C(c/C)
+68100 68 D(d/D)
+69101 69 E(e/E)
+70102 70 F(f/F)
+71103 71 G(g/G)
+72104 72 H(h/H)
+73105 73 I(i/I)
+74106 74 J(j/J)
+75107 75 K(k/K)
+76108 76 L(l/L)
+77109 77 M(m/M)
+78110 78 N(n/N)
+79111 79 O(o/O)
+80112 80 P(p/P)
+81113 81 Q(q/Q)
+82114 82 R(r/R)
+83115 83 S(s/S)
+84116 84 T(t/T)
+85117 85 U(u/U)
+86118 86 V(v/V)
+87119 87 W(w/W)
+88120 88 X(x/X)
+89121 89 Y(y/Y)
+90122 90 Z(z/Z)
+910 0 [(–/–)
+920 0 \(–/–)
+930 0 ](–/–)
+940 0 ^(–/–)
+950 0 _(–/–)
+pos lc uc glyphs
+960 0 ‘(–/–)
+9797 65 a(a/A)
+9898 66 b(b/B)
+9999 67 c(c/C)
+100100 68 d(d/D)
+101101 69 e(e/E)
+102102 70 f(f/F)
+103103 71 g(g/G)
+104104 72 h(h/H)
+105105 73 i(i/I)
+106106 74 j(j/J)
+107107 75 k(k/K)
+108108 76 l(l/L)
+109109 77 m(m/M)
+110110 78 n(n/N)
+111111 79 o(o/O)
+112112 80 p(p/P)
+113113 81 q(q/Q)
+114114 82 r(r/R)
+115115 83 s(s/S)
+116116 84 t(t/T)
+117117 85 u(u/U)
+118118 86 v(v/V)
+119119 87 w(w/W)
+120120 88 x(x/X)
+121121 89 y(y/Y)
+122122 90 z(z/Z)
+1230 0 {(–/–)
+1240 0 |(–/–)
+1250 0 }(–/–)
+1260 0 ~(–/–)
+127127 0 -(-/–)
+38
+
+===== PAGE 39 =====
+pos lc uc glyphs
+128160 128 Ă(ă/Ă)
+129161 129 Ą(ą/Ą)
+130162 130 Ć(ć/Ć)
+131163 131 Č(č/Č)
+132164 132 Ď(ď/Ď)
+133165 133 Ě(ě/Ě)
+134166 134 Ę(ę/Ę)
+135167 135 Ğ(ğ/Ğ)
+136168 136 Ĺ(ĺ/Ĺ)
+137169 137 Ľ(ľ/Ľ)
+138170 138 Ł(ł/Ł)
+139171 139 Ń(ń/Ń)
+140172 140 Ň(ň/Ň)
+141173 141 Ŋ(ŋ/Ŋ)
+142174 142 Ő(ő/Ő)
+143175 143 Ŕ(ŕ/Ŕ)
+144176 144 Ř(ř/Ř)
+145177 145 Ś(ś/Ś)
+146178 146 Š(š/Š)
+147179 147 Ş(ş/Ş)
+148180 148 Ť(ť/Ť)
+149181 149 Ţ(ţ/Ţ)
+150182 150 Ű(ű/Ű)
+151183 151 Ů(ů/Ů)
+152184 152 Ÿ(ÿ/Ÿ)
+153185 153 Ź(ź/Ź)
+154186 154 Ž(ž/Ž)
+155187 155 Ż(ż/Ż)
+156188 156 Ĳ(ĳ/Ĳ)
+157105 157 İ(i/İ)
+158158 208 đ(đ/Ð)
+1590 0 §(–/–)
+pos lc uc glyphs
+160160 128 ă(ă/Ă)
+161161 129 ą(ą/Ą)
+162162 130 ć(ć/Ć)
+163163 131 č(č/Č)
+164164 132 ď(ď/Ď)
+165165 133 ě(ě/Ě)
+166166 134 ę(ę/Ę)
+167167 135 ğ(ğ/Ğ)
+168168 136 ĺ(ĺ/Ĺ)
+169169 137 ľ(ľ/Ľ)
+170170 138 ł(ł/Ł)
+171171 139 ń(ń/Ń)
+172172 140 ň(ň/Ň)
+173173 141 ŋ(ŋ/Ŋ)
+174174 142 ő(ő/Ő)
+175175 143 ŕ(ŕ/Ŕ)
+176176 144 ř(ř/Ř)
+177177 145 ś(ś/Ś)
+178178 146 š(š/Š)
+179179 147 ş(ş/Ş)
+180180 148 ť(ť/Ť)
+181181 149 ţ(ţ/Ţ)
+182182 150 ű(ű/Ű)
+183183 151 ů(ů/Ů)
+184184 152 ÿ(ÿ/Ÿ)
+185185 153 ź(ź/Ź)
+186186 154 ž(ž/Ž)
+187187 155 ż(ż/Ż)
+188188 156 ĳ(ĳ/Ĳ)
+1890 0 ¡(–/–)
+1900 0 ¿(–/–)
+1910 0 £(–/–)
+pos lc uc glyphs
+192224 192 À(à/À)
+193225 193 Á(á/Á)
+194226 194 Â(â/Â)
+195227 195 Ã(ã/Ã)
+196228 196 Ä(ä/Ä)
+197229 197 Å(å/Å)
+198230 198 Æ(æ/Æ)
+199231 199 Ç(ç/Ç)
+200232 200 È(è/È)
+201233 201 É(é/É)
+202234 202 Ê(ê/Ê)
+203235 203 Ë(ë/Ë)
+204236 204 Ì(ì/Ì)
+205237 205 Í(í/Í)
+206238 206 Î(î/Î)
+207239 207 Ï(ï/Ï)
+208240 208 Ð(ð/Ð)
+209241 209 Ñ(ñ/Ñ)
+210242 210 Ò(ò/Ò)
+211243 211 Ó(ó/Ó)
+212244 212 Ô(ô/Ô)
+213245 213 Õ(õ/Õ)
+214246 214 Ö(ö/Ö)
+215247 215 Œ(œ/Œ)
+216248 216 Ø(ø/Ø)
+217249 217 Ù(ù/Ù)
+218250 218 Ú(ú/Ú)
+219251 219 Û(û/Û)
+220252 220 Ü(ü/Ü)
+221253 221 Ý(ý/Ý)
+222254 222 Þ(þ/Þ)
+223255 223 SS(ß/SS)
+pos lc uc glyphs
+224224 192 à(à/À)
+225225 193 á(á/Á)
+226226 194 â(â/Â)
+227227 195 ã(ã/Ã)
+228228 196 ä(ä/Ä)
+229229 197 å(å/Å)
+230230 198 æ(æ/Æ)
+231231 199 ç(ç/Ç)
+232232 200 è(è/È)
+233233 201 é(é/É)
+234234 202 ê(ê/Ê)
+235235 203 ë(ë/Ë)
+236236 204 ì(ì/Ì)
+237237 205 í(í/Í)
+238238 206 î(î/Î)
+239239 207 ï(ï/Ï)
+240240 208 ð(ð/Ð)
+241241 209 ñ(ñ/Ñ)
+242242 210 ò(ò/Ò)
+243243 211 ó(ó/Ó)
+244244 212 ô(ô/Ô)
+245245 213 õ(õ/Õ)
+246246 214 ö(ö/Ö)
+247247 215 œ(œ/Œ)
+248248 216 ø(ø/Ø)
+249249 217 ù(ù/Ù)
+250250 218 ú(ú/Ú)
+251251 219 û(û/Û)
+252252 220 ü(ü/Ü)
+253253 221 ý(ý/Ý)
+254254 222 þ(þ/Þ)
+255255 223 ß(ß/SS)
+39
