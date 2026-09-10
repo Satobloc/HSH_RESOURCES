@@ -5,9 +5,9 @@
 - Structural index scan: `2026-09-10T14:57:01Z`
 - PDF paths in structural index: **1211**
 - Unique PDF content groups: **1136**
-- Exact indexed PDF paths mentioned in the human bibliography corpus: **29**
-- Unique PDF content groups represented in the human bibliography corpus: **26**
-- Unique PDF content groups not yet represented: **1110**
+- Exact indexed PDF paths mentioned in the human bibliography corpus: **39**
+- Unique PDF content groups represented in the human bibliography corpus: **36**
+- Unique PDF content groups not yet represented: **1100**
 
 The human bibliography corpus is `indexes/HUMAN_BIBLIOGRAPHY.md` plus reviewed `indexes/bibliography_batches/BATCH_*.md` files.
 
@@ -21,7 +21,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 |---|---:|---|
 | `HAUL 6/ssrn-7404440.pdf` | 0 | ssrn:7404440 |
 | `H(s)H_Toolkit/s41598-020-68619-6.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2008.13493v1.pdf` | 0 | arxiv:2008.13493v1 |
 | `H(s)H_Toolkit/70c4c4bbfedb587f8bb55d1848986d94_MIT2_682S12_termproject_01.pdf` | 0 |  |
 | `PRIOR_ART/2608.01596v1.pdf` | 0 | arxiv:2608.01596v1 |
 | `H(s)H_Toolkit/axioms-15-00365.pdf` | 0 |  |
@@ -227,7 +226,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `LIVE_RESEARCH_UPDATES/k41k-2pnc.pdf` | 0 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/ce66f56d85495be4ef425a592bbe9238_hwk8.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04107v1.pdf` | 0 | arxiv:2609.04107v1 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2009.03635v2.pdf` | 0 | arxiv:2009.03635v2 |
 | `H(s)H_Toolkit/10.3934_cpaa.2026045.pdf` | 0 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_Matter_as_Incomplete_Crystallization.pdf` | 0 |  |
 | `PRIOR_ART/2601.01600v1.pdf` | 0 | arxiv:2601.01600v1 |
@@ -399,7 +397,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2608.01372v1.pdf` | 0 | arxiv:2608.01372v1 |
 | `HAUL 5/ssrn-7083318.pdf` | 0 | ssrn:7083318 |
 | `DATA/DATA REL - DESI spectral viewer.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2009.00754v1.pdf` | 0 | arxiv:2009.00754v1 |
 | `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.29402v1.pdf` | 0 | arxiv:2608.29402v1 |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/In-orbit test of the weak equivalence principle with atom interferometry _ Science Advances.pdf` | 0 |  |
 | `H(s)H_Toolkit/Brian-Nathan-Daniel-Final.pdf` | 0 |  |
@@ -435,7 +432,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `H(s)H_Toolkit/quantum electrodynamics - What is the full QED Lagrangian with physics units written out_ - Physics Stack Exchange.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2607.18136v3.pdf` | 0 | arxiv:2607.18136v3 |
 | `LIVE_RESEARCH_UPDATES/589s-s1yy.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2010.00390v1.pdf` | 0 | arxiv:2010.00390v1 |
 | `HAUL 10/2603.23256v2.pdf` | 0 | arxiv:2603.23256v2 |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2407.05686v1.pdf` | 0 | arxiv:2407.05686v1 |
 | `PRIOR_ART/2608.12850v2.pdf` | 0 | arxiv:2608.12850v2 |
@@ -648,7 +644,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists observe Einstein's gravity in the quantum world.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03450v1.pdf` | 0 | arxiv:2609.03450v1 |
 | `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - 2508.18082v2.pdf` | 0 | arxiv:2508.18082v2 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2010.13590v1.pdf` | 0 | arxiv:2010.13590v1 |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2506.19196v1.pdf` | 0 | arxiv:2506.19196v1 |
 | `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - Carney_2025_ApJL_994_L46.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2012.11545v1.pdf` | 0 | arxiv:2012.11545v1 |
@@ -751,7 +746,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `H(s)H_Toolkit/LHC_school_2016.pdf` | 0 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/72638bd04f1aa94b59d9d1feb745ac91_pset03.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02425v1.pdf` | 0 | arxiv:2609.02425v1 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2010.03971v1.pdf` | 0 | arxiv:2010.03971v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.00797v1.pdf` | 0 | arxiv:2609.00797v1 |
 | `PRIOR_ART/2608.09878v1.pdf` | 0 | arxiv:2608.09878v1 |
 | `H(s)H_Toolkit/f704cfed444c1740427310905d04042d_lecture17.pdf` | 1 |  |
@@ -807,7 +801,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `HAUL 2/ssrn-7352038 (1).pdf` | 1 | ssrn:7352038 |
 | `PRIOR_ART/2607.14822v1.pdf` | 0 | arxiv:2607.14822v1 |
 | `PRIOR_ART/s41114-025-00057-0.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2009.10716v2.pdf` | 0 | arxiv:2009.10716v2 |
 | `HAUL 3/PhysRevLett.134.251801.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2605.22442v1.pdf` | 0 | arxiv:2605.22442v1 |
 | `DATA/DATA REL - SPARCL Notebooks.pdf` | 0 |  |
@@ -890,7 +883,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `HAUL 6/ssrn-7364618.pdf` | 0 | ssrn:7364618 |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2608.15044v1.pdf` | 0 | arxiv:2608.15044v1 |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2608.25203v1_part002_p0007-0008.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2009.08743v2.pdf` | 0 | arxiv:2009.08743v2 |
 | `H(s)H_Toolkit/The deconstructed Standard Model equation _ symmetry magazine.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.17048v1.pdf` | 0 | arxiv:2605.17048v1 |
 | `PRIOR_ART/2608.28826v1.pdf` | 0 | arxiv:2608.28826v1 |
@@ -956,7 +948,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2605.26822v3.pdf` | 0 | arxiv:2605.26822v3 |
 | `KERR/0407064v3 (1).pdf` | 1 |  |
 | `PRIOR_ART/2608.09607v1 (1).pdf` | 1 | arxiv:2608.09607v1 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2009.01937v1.pdf` | 0 | arxiv:2009.01937v1 |
 | `PRIOR_ART/2511.07670v1.pdf` | 0 | arxiv:2511.07670v1 |
 | `HAUL 2/ssrn-6982561.pdf` | 0 | ssrn:6982561 |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2408.03474v3.pdf` | 0 | arxiv:2408.03474v3 |
@@ -1060,7 +1051,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `H(s)H_Toolkit/2409.08995v2.pdf` | 0 | arxiv:2409.08995v2 |
 | `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2608.10563v1.pdf` | 0 | arxiv:2608.10563v1 |
 | `PRIOR_ART/2607.22236v1.pdf` | 0 | arxiv:2607.22236v1 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2009.03650v1.pdf` | 0 | arxiv:2009.03650v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2 (1).pdf` | 1 | arxiv:2608.15166v2 |
 | `HAUL 3/JQIS_2016010815361715.pdf` | 0 |  |
 | `HAUL 1/ssrn-7284361.pdf` | 0 | ssrn:7284361 |
@@ -1143,6 +1133,16 @@ The following PDF-like paths appear in the human bibliography corpus but are not
 - `BACKREACTION/2007.06487v2.pdf`
 - `BACKREACTION/2007.07871v1.pdf`
 - `BACKREACTION/2008.10610v2.pdf`
+- `BACKREACTION/2008.13493v1.pdf`
+- `BACKREACTION/2009.00754v1.pdf`
+- `BACKREACTION/2009.01937v1.pdf`
+- `BACKREACTION/2009.03635v2.pdf`
+- `BACKREACTION/2009.03650v1.pdf`
+- `BACKREACTION/2009.08743v2.pdf`
+- `BACKREACTION/2009.10716v2.pdf`
+- `BACKREACTION/2010.00390v1.pdf`
+- `BACKREACTION/2010.03971v1.pdf`
+- `BACKREACTION/2010.13590v1.pdf`
 
 ## Machine/human boundary
 
