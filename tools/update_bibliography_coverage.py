@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Build deterministic bibliography coverage accounting for HSH_RESOURCES.
 
-Reports reviewed coverage, provisional machine-index coverage, and remaining
-stragglers separately. It does not decide relevance, citation need, scientific
-quality, prior-art status, novelty, or theory authority.
+Reports reviewed coverage, provisional machine-index coverage, explicit
+non-bibliographic exclusions, and any remaining unresolved groups separately.
+It does not decide relevance, citation need, scientific quality, prior-art
+status, novelty, or theory authority.
 """
 from __future__ import annotations
 
@@ -18,6 +19,7 @@ DEFAULT_STATE = Path("indexes/index-state.json")
 DEFAULT_BIBLIOGRAPHY = Path("indexes/HUMAN_BIBLIOGRAPHY.md")
 DEFAULT_BATCH_DIR = Path("indexes/bibliography_batches")
 DEFAULT_PROVISIONAL_DIR = Path("indexes/bibliography_provisional")
+DEFAULT_EXCLUSIONS = Path("indexes/BIBLIOGRAPHY_EXCLUSIONS.md")
 DEFAULT_OUTPUT = Path("indexes/BIBLIOGRAPHY_COVERAGE.md")
 HANDOFF_HEADING = "## Citation handoff register"
 PATH_RE = re.compile(r"`([^`]+\.pdf)`", re.IGNORECASE)
@@ -72,18 +74,23 @@ def escape(value: str) -> str:
     return value.replace("|", "\\|").replace("\n", " ")
 
 
-def build_report(state: dict[str, Any], reviewed_text: str, provisional_text: str) -> str:
+def build_report(state: dict[str, Any], reviewed_text: str, provisional_text: str, exclusions_text: str) -> str:
     rows = pdf_rows(state)
     known_paths = {row["path"] for row in rows}
     reviewed_exact = mentioned_paths(reviewed_text) & known_paths
     provisional_exact = mentioned_paths(provisional_text) & known_paths
-    all_exact = reviewed_exact | provisional_exact
+    excluded_exact = mentioned_paths(exclusions_text) & known_paths
+    bibliographic_exact = reviewed_exact | provisional_exact
+    accounted_exact = bibliographic_exact | excluded_exact
+
     stale_reviewed = sorted(mentioned_paths(reviewed_text) - known_paths)
     stale_provisional = sorted(mentioned_paths(provisional_text) - known_paths)
+    stale_exclusions = sorted(mentioned_paths(exclusions_text) - known_paths)
 
     all_groups = groups(rows)
     reviewed_groups = []
     provisional_only_groups = []
+    excluded_groups = []
     missing_groups = []
     for group in all_groups:
         paths = {row["path"] for row in group["members"]}
@@ -91,30 +98,40 @@ def build_report(state: dict[str, Any], reviewed_text: str, provisional_text: st
             reviewed_groups.append(group)
         elif paths & provisional_exact:
             provisional_only_groups.append(group)
+        elif paths & excluded_exact:
+            excluded_groups.append(group)
         else:
             missing_groups.append(group)
+
+    indexed_total = len(reviewed_groups) + len(provisional_only_groups)
+    accounted_total = indexed_total + len(excluded_groups)
 
     lines = [
         "# HSH Resources — Bibliography Coverage",
         "",
-        "> Generated coverage artifact. Reviewed, provisional, and unresolved layers are reported separately. This does **not** decide relevance, citation need, prior art, novelty, or theory authority.",
+        "> Generated coverage artifact. Reviewed, provisional, excluded, and unresolved layers are reported separately. This does **not** decide relevance, citation need, prior art, novelty, or theory authority.",
         "",
         f"- Structural index scan: `{state.get('scanned_at', 'unknown')}`",
         f"- PDF paths in structural index: **{len(rows)}**",
         f"- Unique PDF content groups: **{len(all_groups)}**",
         f"- Reviewed unique-content groups: **{len(reviewed_groups)}**",
         f"- Provisionally machine-indexed unique-content groups: **{len(provisional_only_groups)}**",
-        f"- Total bibliographically indexed unique-content groups: **{len(reviewed_groups) + len(provisional_only_groups)}**",
-        f"- Remaining unindexed/straggler unique-content groups: **{len(missing_groups)}**",
-        f"- Exact indexed PDF paths represented across reviewed + provisional corpora: **{len(all_exact)}**",
+        f"- Total bibliographically indexed unique-content groups: **{indexed_total}**",
+        f"- Explicitly excluded non-bibliographic unique-content groups: **{len(excluded_groups)}**",
+        f"- Total accounted unique-content groups: **{accounted_total}**",
+        f"- Remaining unresolved unique-content groups: **{len(missing_groups)}**",
+        f"- Exact PDF paths represented in reviewed + provisional bibliography: **{len(bibliographic_exact)}**",
+        f"- Exact PDF paths explicitly excluded as non-bibliographic artifacts: **{len(excluded_exact)}**",
         "",
         "Reviewed corpus: `indexes/HUMAN_BIBLIOGRAPHY.md` plus `indexes/bibliography_batches/BATCH_*.md`.",
         "",
         "Provisional corpus: deterministic `indexes/bibliography_provisional/PROVISIONAL_*.md` files produced only from successfully extracted PDF lineages. Provisional means indexed, not individually reviewed.",
         "",
+        "Explicit exclusions: `indexes/BIBLIOGRAPHY_EXCLUSIONS.md`. These remain preserved in the repository but are not literature/source bibliography items.",
+        "",
         "Byte-identical copies count as one content lineage when any path in the lineage is represented.",
         "",
-        "## Remaining unindexed unique PDF content groups",
+        "## Remaining unresolved unique PDF content groups",
         "",
         "| Representative source path | Duplicate paths | Identifier hint |",
         "|---|---:|---|",
@@ -124,24 +141,27 @@ def build_report(state: dict[str, Any], reviewed_text: str, provisional_text: st
         rep = members[0]
         lines.append(f"| `{escape(rep['path'])}` | {len(members)-1} | {escape(identifier_hint(rep))} |")
     if not missing_groups:
-        lines.append("| — | 0 | Every currently indexed PDF content group is represented in reviewed or provisional bibliography. |")
+        lines.append("| — | 0 | Every currently indexed PDF content group is accounted for as reviewed bibliography, provisional bibliography, or an explicit non-bibliographic exclusion. |")
 
     lines += ["", "## Bibliography path discrepancies", ""]
-    if stale_reviewed or stale_provisional:
+    if stale_reviewed or stale_provisional or stale_exclusions:
         if stale_reviewed:
             lines.append("Reviewed corpus paths absent from current structural index:")
             lines.extend(f"- `{p}`" for p in stale_reviewed)
         if stale_provisional:
             lines.append("Provisional corpus paths absent from current structural index:")
             lines.extend(f"- `{p}`" for p in stale_provisional)
+        if stale_exclusions:
+            lines.append("Exclusion paths absent from current structural index:")
+            lines.extend(f"- `{p}`" for p in stale_exclusions)
     else:
-        lines.append("No bibliographic PDF paths fall outside the current structural index.")
+        lines.append("No bibliography or exclusion PDF paths fall outside the current structural index.")
 
     lines += [
         "",
         "## Machine/human boundary",
         "",
-        "Provisional coverage closes the machine-indexing backlog without pretending that every source received individual review. Metadata correction, neutral description refinement, source reading, H(s)H relationship, and citation-handoff decisions remain review work. Extraction/OCR failures are tracked separately in `indexes/BIBLIOGRAPHY_STRAGGLERS.md`.",
+        "Provisional coverage closes the machine-indexing backlog without pretending that every source received individual review. Exception batches may preserve unresolved identity fields rather than guess. Metadata correction, neutral description refinement, source reading, H(s)H relationship, and citation-handoff decisions remain review work. Any future extraction/indexing failures are tracked separately in `indexes/BIBLIOGRAPHY_STRAGGLERS.md`.",
         "",
     ]
     return "\n".join(lines)
@@ -162,6 +182,7 @@ def main() -> int:
     p.add_argument("--bibliography", type=Path, default=DEFAULT_BIBLIOGRAPHY)
     p.add_argument("--batch-dir", type=Path, default=DEFAULT_BATCH_DIR)
     p.add_argument("--provisional-dir", type=Path, default=DEFAULT_PROVISIONAL_DIR)
+    p.add_argument("--exclusions", type=Path, default=DEFAULT_EXCLUSIONS)
     p.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     p.add_argument("--apply", action="store_true")
     args = p.parse_args()
@@ -169,9 +190,14 @@ def main() -> int:
     state = load_state(root / args.state)
     reviewed = corpus(root, args.bibliography, args.batch_dir, "BATCH_*.md")
     provisional = corpus(root, None, args.provisional_dir, "PROVISIONAL_*.md")
-    report = build_report(state, reviewed, provisional)
+    exclusions_path = root / args.exclusions
+    exclusions = exclusions_path.read_text(encoding="utf-8", errors="ignore") if exclusions_path.exists() else ""
+    report = build_report(state, reviewed, provisional, exclusions)
     known = {row["path"] for row in pdf_rows(state)}
-    print(f"pdf_paths={len(known)} reviewed_exact={len(mentioned_paths(reviewed)&known)} provisional_exact={len(mentioned_paths(provisional)&known)}")
+    print(
+        f"pdf_paths={len(known)} reviewed_exact={len(mentioned_paths(reviewed)&known)} "
+        f"provisional_exact={len(mentioned_paths(provisional)&known)} excluded_exact={len(mentioned_paths(exclusions)&known)}"
+    )
     if not args.apply:
         print("dry-run: no files written")
         return 0

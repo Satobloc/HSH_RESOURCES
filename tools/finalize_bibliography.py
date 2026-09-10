@@ -5,8 +5,8 @@ Reviewed bibliography batches remain the high-confidence human/LLM-reviewed laye
 This tool indexes every other successfully extracted PDF lineage into bounded
 PROVISIONAL_*.md files using extraction metadata and first-page heuristics only.
 It also writes a straggler report for lineages that cannot yet be indexed from
-available extraction state. Provisional indexing is not review and is not a
-citation/relevance/prior-art judgment.
+available extraction state. Explicit non-bibliographic exclusions are respected.
+Provisional indexing is not review and is not a citation/relevance/prior-art judgment.
 """
 from __future__ import annotations
 
@@ -25,6 +25,7 @@ PAGE_MARKER_RE = re.compile(r"^===== PAGE \d+ =====$")
 NOISE_RE = re.compile(r"^(?:arxiv|doi|http|www\.|received|accepted|published|copyright|abstract\b|eur\.\s*phys\.|mon\.\s*not\.|will be inserted by the editor|prepared for submission|preprint|manuscript no\b)", re.I)
 PATH_RE = re.compile(r"`([^`]+\.pdf)`", re.I)
 HANDOFF_HEADING = "## Citation handoff register"
+EXCLUSIONS_FILE = Path("indexes/BIBLIOGRAPHY_EXCLUSIONS.md")
 
 
 def clean(s: str) -> str:
@@ -96,6 +97,13 @@ def reviewed_corpus(root: Path) -> str:
     return "\n".join(docs)
 
 
+def excluded_paths(root: Path) -> set[str]:
+    path = root / EXCLUSIONS_FILE
+    if not path.exists():
+        return set()
+    return {p.replace("\\", "/") for p in PATH_RE.findall(path.read_text(encoding="utf-8", errors="ignore"))}
+
+
 def load_manifest(path: Path) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for line in path.read_text(encoding="utf-8").splitlines():
@@ -129,8 +137,8 @@ def build_entry(index: int, representative: dict[str, Any], paths: list[str], te
     out = [
         f"## {index}. {md_safe(title)}",
         "",
-        f"**Status:** provisional machine index; not individually reviewed  ",
-        f"**Source type:** PDF resource  ",
+        "**Status:** provisional machine index; not individually reviewed  ",
+        "**Source type:** PDF resource  ",
         f"**Identifier:** {(ident[0] + ': `' + ident[1] + '`') if ident else 'unresolved'}  ",
         f"**Author metadata:** {md_safe(author)}  ",
         f"**Date hints:** {', '.join(dates[:5]) if dates else 'unresolved'}  ",
@@ -168,7 +176,9 @@ def main() -> int:
     manifest = load_manifest(root / "derived/manifests/extraction.jsonl")
     state = load_state(root / "indexes/index-state.json")
     reviewed = reviewed_corpus(root)
-    reviewed_paths = set(PATH_RE.findall(reviewed))
+    reviewed_paths = {p.replace("\\", "/") for p in PATH_RE.findall(reviewed)}
+    exclusions = excluded_paths(root)
+    accounted_paths = reviewed_paths | exclusions
 
     by_hash: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in manifest:
@@ -183,7 +193,7 @@ def main() -> int:
         lineage = sorted(by_hash[key], key=lambda r: str(r.get("source_path", "")).casefold())
         paths = [str(r.get("source_path")) for r in lineage if r.get("source_path")]
         manifest_paths.update(paths)
-        if set(paths) & reviewed_paths:
+        if set(paths) & accounted_paths:
             continue
         extracted = [r for r in lineage if r.get("status") == "extracted" and r.get("text_path")]
         if extracted:
@@ -195,12 +205,11 @@ def main() -> int:
             stragglers.append(("missing derived text", paths, str(rep.get("text_path"))))
             continue
         statuses = sorted({str(r.get("status") or "unknown") for r in lineage})
-        detail = ", ".join(statuses)
-        stragglers.append(("extraction not clean", paths, detail))
+        stragglers.append(("extraction not clean", paths, ", ".join(statuses)))
 
     structural_pdf_paths = {str(row.get("path")) for row in state["items"] if row.get("kind") == "paper-pdf" and row.get("path")}
     for path in sorted(structural_pdf_paths - manifest_paths, key=str.casefold):
-        if path not in reviewed_paths:
+        if path not in accounted_paths:
             stragglers.append(("no extraction-manifest record", [path], "structurally indexed PDF"))
 
     out_dir = root / "indexes/bibliography_provisional"
@@ -214,7 +223,7 @@ These files are deterministic machine-generated bibliographic indexing, not the 
 
 A provisional entry means the PDF lineage was successfully extracted and received source identity hints from PDF metadata, repository naming, and/or the first extracted page. It does **not** mean the source was individually read or verified, and it carries no judgment about relevance, citation need, prior art, novelty, authority, or scientific validity.
 
-Reviewed bibliography remains in `indexes/HUMAN_BIBLIOGRAPHY.md` and `indexes/bibliography_batches/BATCH_*.md`.
+Reviewed bibliography remains in `indexes/HUMAN_BIBLIOGRAPHY.md` and `indexes/bibliography_batches/BATCH_*.md`. Explicit non-source exclusions are recorded in `indexes/BIBLIOGRAPHY_EXCLUSIONS.md`.
 
 Provisional batches are bounded at 50 unique-content lineages by default. Byte-identical repository copies are collapsed into one entry while retaining all known paths.
 """
@@ -230,15 +239,13 @@ Provisional batches are bounded at 50 unique-content lineages by default. Byte-i
             "> Machine-indexed from successful extraction state. Not individually reviewed.",
             "",
         ]
-        body: list[str] = []
-        for i, (rep, paths, text) in enumerate(chunk, 1):
-            body.append(build_entry(i, rep, paths, text))
+        body = [build_entry(i, rep, paths, text) for i, (rep, paths, text) in enumerate(chunk, 1)]
         write_if_changed(out_dir / f"PROVISIONAL_{batch_no:04d}.md", "\n".join(header + body).rstrip() + "\n")
 
     s_lines = [
         "# Bibliography Stragglers",
         "",
-        "> Generated cleanup queue. These lineages were intentionally excluded from provisional bibliography batches because clean extraction evidence is incomplete.",
+        "> Generated cleanup queue. These lineages are neither bibliographically represented nor explicitly classified as non-source exclusions.",
         "",
         f"Straggler lineages/items: **{len(stragglers)}**",
         "",
@@ -249,15 +256,15 @@ Provisional batches are bounded at 50 unique-content lineages by default. Byte-i
         path_text = "; ".join(f"`{p}`" for p in paths)
         s_lines.append(f"| {reason} | {path_text} | {str(detail).replace('|', '\\|')} |")
     if not stragglers:
-        s_lines.append("| — | — | No extraction/indexing stragglers remain. |")
+        s_lines.append("| — | — | No bibliography stragglers remain. |")
     s_lines += [
         "",
-        "This queue is operational only. A straggler is not thereby irrelevant; it simply lacks enough clean machine-readable extraction state for provisional bibliographic indexing.",
+        f"Explicit non-bibliographic exclusions tracked separately: **{len(exclusions)} path(s)** in `indexes/BIBLIOGRAPHY_EXCLUSIONS.md`.",
         "",
     ]
     write_if_changed(root / "indexes/BIBLIOGRAPHY_STRAGGLERS.md", "\n".join(s_lines))
 
-    print(f"reviewed_paths={len(reviewed_paths)} provisional_lineages={len(provisional)} batches={(len(provisional)+batch_size-1)//batch_size} stragglers={len(stragglers)}")
+    print(f"reviewed_paths={len(reviewed_paths)} excluded_paths={len(exclusions)} provisional_lineages={len(provisional)} batches={(len(provisional)+batch_size-1)//batch_size} stragglers={len(stragglers)}")
     return 0
 
 
