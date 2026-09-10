@@ -4,12 +4,14 @@
 This is a candidate-harvesting tool, not a bibliography writer. It extracts
 high-value identity hints (title, DOI/arXiv, PDF metadata author/title, dates,
 keywords) into a readable queue for human/LLM verification before promotion to
-indexes/HUMAN_BIBLIOGRAPHY.md.
+the human bibliography layer.
 
-Byte-identical PDF copies are treated as one bibliographic lineage. If any path
-in a duplicate lineage is already represented in the human bibliography, the
-whole lineage is omitted from intake. Otherwise one canonical path is shown and
-all duplicate paths are preserved beneath it.
+Reviewed bibliography batches under indexes/bibliography_batches/ are part of
+the human bibliography corpus. Byte-identical PDF copies are treated as one
+bibliographic lineage. If any path in a duplicate lineage is already represented
+in the master bibliography or a reviewed batch, the whole lineage is omitted
+from intake. Otherwise one canonical path is shown and all duplicate paths are
+preserved beneath it.
 """
 from __future__ import annotations
 
@@ -30,6 +32,8 @@ NOISE_RE = re.compile(
     r"eur\.\s*phys\.|mon\.\s*not\.|will be inserted by the editor|preprint|manuscript no\b)",
     re.I,
 )
+HANDOFF_HEADING = "## Citation handoff register"
+DEFAULT_BATCH_DIR = Path("indexes/bibliography_batches")
 
 
 def clean(s: str) -> str:
@@ -102,8 +106,23 @@ def load_manifest(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def human_text(path: Path) -> str:
-    return path.read_text(encoding="utf-8", errors="ignore") if path.exists() else ""
+def bibliography_source_section(text: str) -> str:
+    """Exclude citation handoffs: a citation request alone is not indexing."""
+    if HANDOFF_HEADING in text:
+        return text.split(HANDOFF_HEADING, 1)[0]
+    return text
+
+
+def human_bibliography_corpus(root: Path, master: Path, batch_dir: Path) -> str:
+    documents: list[str] = []
+    master_path = root / master
+    if master_path.exists():
+        documents.append(bibliography_source_section(master_path.read_text(encoding="utf-8", errors="ignore")))
+    directory = root / batch_dir
+    if directory.exists():
+        for path in sorted(directory.glob("BATCH_*.md"), key=lambda p: p.name.casefold()):
+            documents.append(bibliography_source_section(path.read_text(encoding="utf-8", errors="ignore")))
+    return "\n".join(documents)
 
 
 def main() -> int:
@@ -111,12 +130,13 @@ def main() -> int:
     p.add_argument("--root", type=Path, default=Path("."))
     p.add_argument("--manifest", type=Path, default=Path("derived/manifests/extraction.jsonl"))
     p.add_argument("--human-bib", type=Path, default=Path("indexes/HUMAN_BIBLIOGRAPHY.md"))
+    p.add_argument("--batch-dir", type=Path, default=DEFAULT_BATCH_DIR)
     p.add_argument("--output", type=Path, default=Path("indexes/BIBLIOGRAPHY_INTAKE.md"))
     p.add_argument("--max-items", type=int, default=250)
     args = p.parse_args()
 
     root = args.root.resolve()
-    human = human_text(root / args.human_bib)
+    human = human_bibliography_corpus(root, args.human_bib, args.batch_dir)
     rows = [r for r in load_manifest(root / args.manifest) if r.get("status") in {"extracted", "needs_ocr"}]
 
     by_hash: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -171,7 +191,7 @@ def main() -> int:
         "> Generated candidate metadata for human/LLM verification. Not the bibliography and not evidence of relevance.",
         "",
         f"Candidate unique-content entries shown: **{len(records)}**",
-        f"Duplicate lineages already represented in the human bibliography and suppressed here: **{duplicate_lineages_skipped}**",
+        f"Duplicate lineages already represented in the human bibliography corpus and suppressed here: **{duplicate_lineages_skipped}**",
         "",
     ]
     for i, r in enumerate(records, 1):

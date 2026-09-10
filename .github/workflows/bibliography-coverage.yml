@@ -7,7 +7,10 @@ on:
     paths:
       - "indexes/index-state.json"
       - "indexes/HUMAN_BIBLIOGRAPHY.md"
+      - "indexes/bibliography_batches/**/*.md"
       - "tools/update_bibliography_coverage.py"
+      - "tools/build_bibliography_intake.py"
+      - ".github/workflows/bibliography-coverage.yml"
 
 permissions:
   contents: write
@@ -25,6 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
       - uses: actions/setup-python@v5
@@ -34,21 +38,27 @@ jobs:
       - name: Build bibliography coverage report
         run: python tools/update_bibliography_coverage.py --root . --apply
 
-      - name: Validate source structural state
+      - name: Advance bibliography intake queue
+        run: python tools/build_bibliography_intake.py --root . --max-items 250
+
+      - name: Validate bibliography state
         run: |
           python -m json.tool indexes/index-state.json >/dev/null
           test -f indexes/HUMAN_BIBLIOGRAPHY.md
           test -f indexes/BIBLIOGRAPHY_COVERAGE.md
+          test -f indexes/BIBLIOGRAPHY_INTAKE.md
 
-      - name: Commit coverage report
+      - name: Commit generated bibliography state
         run: |
           git config user.name "HSH Resources Bibliography Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add indexes/BIBLIOGRAPHY_COVERAGE.md
+          git add indexes/BIBLIOGRAPHY_COVERAGE.md indexes/BIBLIOGRAPHY_INTAKE.md
           if git diff --cached --quiet; then
-            echo "Bibliography coverage already current"
+            echo "Bibliography coverage and intake already current"
             exit 0
           fi
-          git commit -m "[skip bibliography-coverage] Refresh bibliography coverage"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          git commit -m "[skip bibliography-coverage] Refresh bibliography coverage and intake"
+          if ! git push origin HEAD:main; then
+            echo "Main advanced during bibliography maintenance; refusing to rebase generated state over newer source/review changes."
+            exit 1
+          fi
