@@ -5,9 +5,9 @@
 - Structural index scan: `2026-09-10T14:57:01Z`
 - PDF paths in structural index: **1211**
 - Unique PDF content groups: **1136**
-- Exact indexed PDF paths mentioned in the human bibliography corpus: **39**
-- Unique PDF content groups represented in the human bibliography corpus: **36**
-- Unique PDF content groups not yet represented: **1100**
+- Exact indexed PDF paths mentioned in the human bibliography corpus: **50**
+- Unique PDF content groups represented in the human bibliography corpus: **46**
+- Unique PDF content groups not yet represented: **1090**
 
 The human bibliography corpus is `indexes/HUMAN_BIBLIOGRAPHY.md` plus reviewed `indexes/bibliography_batches/BATCH_*.md` files.
 
@@ -457,7 +457,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `H(s)H_Toolkit/Quantum electrodynamics - Wikipedia.pdf` | 0 |  |
 | `H(s)H_Toolkit/Ensembles.pdf` | 0 |  |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/fb813f7f8eb1c6c5fbc0682b3ebc6ddf_pset02.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2012.14990v1.pdf` | 0 | arxiv:2012.14990v1 |
 | `PRIOR_ART/LZ_Paper_Preprint_WS2025_v6.0_20251208.pdf` | 0 |  |
 | `HAUL 1/ssrn-7220579.pdf` | 0 | ssrn:7220579 |
 | `HISTORICAL/BOHR — SPECTRA.pdf` | 0 |  |
@@ -523,7 +522,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `H(s)H_Toolkit/S0002-9939-2017-13699-5.pdf` | 0 |  |
 | `HAUL 2/ssrn-6924741.pdf` | 0 | ssrn:6924741 |
 | `H(s)H_Toolkit/gradientimproREVISED.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2503.19970v1.pdf` | 0 | arxiv:2503.19970v1 |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2510.20652v1.pdf` | 0 | arxiv:2510.20652v1 |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/9ecdcfceddc533f3d72c197fa2c7deb9_practice.pdf` | 0 |  |
 | `PRIOR_ART/2608.19369v1.pdf` | 0 | arxiv:2608.19369v1 |
@@ -646,7 +644,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - 2508.18082v2.pdf` | 0 | arxiv:2508.18082v2 |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2506.19196v1.pdf` | 0 | arxiv:2506.19196v1 |
 | `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - Carney_2025_ApJL_994_L46.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2012.11545v1.pdf` | 0 | arxiv:2012.11545v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.19555v1.pdf` | 0 | arxiv:2608.19555v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.12193v1.pdf` | 0 | arxiv:2608.12193v1 |
 | `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.25722v1.pdf` | 0 | arxiv:2608.25722v1 |
@@ -687,7 +684,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `PRIOR_ART/s10052-025-13970-z.pdf` | 0 |  |
 | `H(s)H_Toolkit/Order_theory_for_discrete_gradient_methods.pdf` | 0 |  |
 | `Consciousness + AI/solonoid2.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2012.08302v1.pdf` | 0 | arxiv:2012.08302v1 |
 | `HAUL 3/1310.7390v1.pdf` | 0 | arxiv:1310.7390v1 |
 | `H(s)H_Toolkit/2607.01732v1.pdf` | 0 | arxiv:2607.01732v1 |
 | `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2608.09977v1.pdf` | 0 | arxiv:2608.09977v1 |
@@ -702,7 +698,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `PRIOR_ART/SUBMITTED SAT BIG PAPER.pdf` | 0 |  |
 | `HAUL 7/ssrn-7171698.pdf` | 0 | ssrn:7171698 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2607.25208v1.pdf` | 0 | arxiv:2607.25208v1 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2012.09192v2.pdf` | 0 | arxiv:2012.09192v2 |
 | `PRIOR_ART/2608.18284v1.pdf` | 0 | arxiv:2608.18284v1 |
 | `H(s)H_Toolkit/calculus-of-variations.pdf` | 0 |  |
 | `HAUL 4/2506.22392v1.pdf` | 0 | arxiv:2506.22392v1 |
@@ -791,7 +786,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2601.01450v1.pdf` | 0 | arxiv:2601.01450v1 |
 | `OUTSIDE RESEARCH LIBRARY/KELVIN/2608.23076v2.pdf` | 0 | arxiv:2608.23076v2 |
 | `HAUL 11/2303.12055v3.pdf` | 0 | arxiv:2303.12055v3 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2012.03710v1.pdf` | 0 | arxiv:2012.03710v1 |
 | `PRIOR_ART/2608.14541v1.pdf` | 0 | arxiv:2608.14541v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2606.10090v1.pdf` | 0 | arxiv:2606.10090v1 |
 | `EXPOSURE_STATS/MISC_PAPERS/The Universe Has a Resolution Limit- New Theory Derives the Exact Mass Where Qua.pdf` | 0 |  |
@@ -811,7 +805,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `HAUL 2/ssrn-7385522.pdf` | 0 | ssrn:7385522 |
 | `PRIOR_ART/2606.19655v1.pdf` | 0 | arxiv:2606.19655v1 |
 | `HAUL 9/2503.08807v1.pdf` | 0 | arxiv:2503.08807v1 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2608.31163v1 (1).pdf` | 1 | arxiv:2608.31163v1 |
 | `H(s)H_Toolkit/DeGiuli.pdf` | 0 |  |
 | `PRIOR_ART/2512.19282v6.pdf` | 0 | arxiv:2512.19282v6 |
 | `EXPOSURE_STATS/MISC_PAPERS/a-l3-2l-l-css-code-from-the-fcc.pdf` | 0 |  |
@@ -829,7 +822,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `H(s)H_Toolkit/123_Clifford_Algebraic_Rotor_E.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.29295v1_part001_p0001-0015.pdf` | 0 |  |
 | `PRIOR_ART/2608.19271v1 (1).pdf` | 1 | arxiv:2608.19271v1 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2012.06484v2.pdf` | 0 | arxiv:2012.06484v2 |
 | `H(s)H_Toolkit/7e7dd3994f88a5d72db832da090358b3_soln01.pdf` | 0 |  |
 | `PRIOR_ART/2608.02370v1.pdf` | 0 | arxiv:2608.02370v1 |
 | `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - 2601.14559v2.pdf` | 0 | arxiv:2601.14559v2 |
@@ -986,7 +978,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2606.25836v2.pdf` | 0 | arxiv:2606.25836v2 |
 | `HAUL 6/ssrn-7394118.pdf` | 0 | ssrn:7394118 |
 | `PRIOR_ART/2508.07274v1 (1).pdf` | 1 | arxiv:2508.07274v1 |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2012.12032v1.pdf` | 0 | arxiv:2012.12032v1 |
 | `H(s)H_Toolkit/Holonomy.pdf` | 0 |  |
 | `PRIOR_ART/s42005-026-02638-z.pdf` | 0 |  |
 | `H(s)H_Toolkit/drae037.pdf` | 0 |  |
@@ -1055,7 +1046,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `HAUL 3/JQIS_2016010815361715.pdf` | 0 |  |
 | `HAUL 1/ssrn-7284361.pdf` | 0 | ssrn:7284361 |
 | `EXPOSURE_STATS/DEBATING AI DATA/5Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf` | 0 |  |
-| `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2608.27412v1.pdf` | 0 | arxiv:2608.27412v1 |
 | `H(s)H_Toolkit/v-conj-karlstad.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/MISC/2502.09894v2.pdf` | 0 | arxiv:2502.09894v2 |
 | `H(s)H_Toolkit/25058a02940443d8cae6dde3271fdbb6_MIT2_682S12_bglec06.pdf` | 0 |  |
@@ -1143,6 +1133,16 @@ The following PDF-like paths appear in the human bibliography corpus but are not
 - `BACKREACTION/2010.00390v1.pdf`
 - `BACKREACTION/2010.03971v1.pdf`
 - `BACKREACTION/2010.13590v1.pdf`
+- `BACKREACTION/2012.03710v1.pdf`
+- `BACKREACTION/2012.06484v2.pdf`
+- `BACKREACTION/2012.08302v1.pdf`
+- `BACKREACTION/2012.09192v2.pdf`
+- `BACKREACTION/2012.11545v1.pdf`
+- `BACKREACTION/2012.12032v1.pdf`
+- `BACKREACTION/2012.14990v1.pdf`
+- `BACKREACTION/2503.19970v1.pdf`
+- `BACKREACTION/2608.27412v1.pdf`
+- `BACKREACTION/2608.31163v1 (1).pdf`
 
 ## Machine/human boundary
 
