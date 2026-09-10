@@ -5,9 +5,11 @@ on:
   push:
     branches: [main]
     paths:
+      - "derived/manifests/extraction.jsonl"
       - "indexes/index-state.json"
       - "indexes/HUMAN_BIBLIOGRAPHY.md"
       - "indexes/bibliography_batches/**/*.md"
+      - "tools/finalize_bibliography.py"
       - "tools/update_bibliography_coverage.py"
       - "tools/build_bibliography_intake.py"
       - ".github/workflows/bibliography-coverage.yml"
@@ -23,7 +25,7 @@ jobs:
   coverage:
     if: ${{ github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip bibliography-coverage]') }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
@@ -35,10 +37,13 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Build provisional bibliography batches and straggler queue
+        run: python tools/finalize_bibliography.py --root . --batch-size 50
+
       - name: Build bibliography coverage report
         run: python tools/update_bibliography_coverage.py --root . --apply
 
-      - name: Advance bibliography intake queue
+      - name: Refresh human-review intake queue
         run: python tools/build_bibliography_intake.py --root . --max-items 250
 
       - name: Validate bibliography state
@@ -47,17 +52,19 @@ jobs:
           test -f indexes/HUMAN_BIBLIOGRAPHY.md
           test -f indexes/BIBLIOGRAPHY_COVERAGE.md
           test -f indexes/BIBLIOGRAPHY_INTAKE.md
+          test -f indexes/BIBLIOGRAPHY_STRAGGLERS.md
+          test -f indexes/bibliography_provisional/README.md
 
       - name: Commit generated bibliography state
         run: |
           git config user.name "HSH Resources Bibliography Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add indexes/BIBLIOGRAPHY_COVERAGE.md indexes/BIBLIOGRAPHY_INTAKE.md
+          git add indexes/BIBLIOGRAPHY_COVERAGE.md indexes/BIBLIOGRAPHY_INTAKE.md indexes/BIBLIOGRAPHY_STRAGGLERS.md indexes/bibliography_provisional/
           if git diff --cached --quiet; then
-            echo "Bibliography coverage and intake already current"
+            echo "Bibliography state already current"
             exit 0
           fi
-          git commit -m "[skip bibliography-coverage] Refresh bibliography coverage and intake"
+          git commit -m "[skip bibliography-coverage] Finalize provisional bibliography batches"
           if ! git push origin HEAD:main; then
             echo "Main advanced during bibliography maintenance; refusing to rebase generated state over newer source/review changes."
             exit 1
