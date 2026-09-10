@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T05:25:20Z`
-- Tree/content state: `c81ecac19dc423cb07e0283bea2067e4a2f96b1f6212a02248e15abbee565632`
+- Scanned: `2026-09-10T05:28:23Z`
+- Tree/content state: `0851498f632a54bf63ed12a9145ae7ce548a4d29f0978e021506b0681e02037c`
 - Coverage: complete structural traversal
-- Files: 1148
-- Uploaded source files: 1139
-- PDF papers: 982
+- Files: 1158
+- Uploaded source files: 1149
+- PDF papers: 992
 - Repository machinery files: 9
 - Byte-identical duplicate groups: 72
 
@@ -39,7 +39,7 @@
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 9 |
 | `OUTSIDE RESEARCH LIBRARY` | 318 |
-| `PRIOR_ART` | 6 |
+| `PRIOR_ART` | 16 |
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
@@ -1256,6 +1256,16 @@
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04117v1.pdf` | 1824628 | arxiv:2609.04117v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04844v1.pdf` | 470761 | arxiv:2609.04844v1 |
 | `PRIOR_ART/2020-10-braiding-photonic-topological-modes.pdf` | 354922 |  |
+| `PRIOR_ART/JHEP01(2024)063.pdf` | 930881 |  |
+| `PRIOR_ART/JHEP06(2023)087.pdf` | 541036 |  |
+| `PRIOR_ART/pdf.pdf` | 16531855 |  |
+| `PRIOR_ART/s10052-018-6106-4.pdf` | 698763 |  |
+| `PRIOR_ART/s10052-018-6488-3.pdf` | 828155 |  |
+| `PRIOR_ART/s10052-023-11169-8.pdf` | 571281 |  |
+| `PRIOR_ART/s10052-023-12004-w.pdf` | 336647 |  |
+| `PRIOR_ART/s41467-025-64182-8.pdf` | 1777970 |  |
+| `PRIOR_ART/s41467-026-77076-0.pdf` | 782526 |  |
+| `PRIOR_ART/s41524-025-01715-1.pdf` | 2287315 |  |
 | `PRIOR_ART/s41586-026-10915-8.pdf` | 1426863 |  |
 | `PRIOR_ART/s42005-026-02638-z.pdf` | 2106775 |  |
 | `PRIOR_ART/symmetry-11-01298.pdf` | 1097058 |  |
