@@ -1,0 +1,2 @@
+Unbeknownst to me there is a *major* research program that, apparently, descends directly from the same lineage as SAT. Documents in the PRIOR_ART directory are mostly fetched via their site. This is good news--and a call for editorial and bibliographic diligence. I discovered this and connected the dots on 9/9/2026, so everything prior to that is independent development. In addition to the somewhat ad hoc collection of papers here, this website should be searched for the appropriate citations in any bibliographic work. --N
+https://ncatlab.org/nlab/show/HomePage
