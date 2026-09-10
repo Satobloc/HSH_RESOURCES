@@ -2,13 +2,13 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T14:20:28Z`
-- Tree/content state: `3d5aa3f73cfbd9e8d8bbad10b75747c8ff69f02171c641da649feaa3ba97951e`
+- Scanned: `2026-09-10T14:26:43Z`
+- Tree/content state: `0d931489aa4dc47c6398dc78b30860521c73a39cc257866d39af0e4f6d3d3387`
 - Coverage: complete structural traversal
-- Files: 1503
+- Files: 1504
 - Uploaded source files: 1490
 - PDF papers: 1211
-- Repository machinery files: 13
+- Repository machinery files: 14
 - Byte-identical duplicate groups: 104
 
 ## Top-level coverage
@@ -53,7 +53,7 @@
 | `requirements-tools.txt` | 1 |
 | `symmetry-11-01298.pdf` | 1 |
 | `tests` | 1 |
-| `tools` | 5 |
+| `tools` | 6 |
 
 ## Duplicate-content groups
 
