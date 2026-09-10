@@ -2,91 +2,238 @@
 
 Status: provisional / incremental / provenance-first
 
-Purpose: human-readable bibliographic navigation for source material in `HSH_RESOURCES`. This is intentionally separate from `indexes/RESOURCE_INDEX.md`, which is the complete structural inventory. Presence here does not imply relevance, endorsement, novelty displacement, or mathematical/physical validity.
+Purpose: a readable bibliographic index of source material in `HSH_RESOURCES`. This is intentionally separate from the machine inventory in `indexes/RESOURCE_INDEX.md` and the generated coverage report in `indexes/BIBLIOGRAPHY_COVERAGE.md`.
+
+Presence here means only that a source has received human-readable bibliographic treatment. It does not imply relevance, endorsement, novelty displacement, or mathematical/physical validity.
 
 ## Theorybuilding boundary and cross-repo routing
 
-This repository is an **external evidence and reference store**, not the generative theorybuilding workspace.
+`HSH_RESOURCES` is an external evidence and reference store, not the generative theorybuilding workspace.
 
-SAT/H(s)H development is to proceed from its own Fundamental Intuitions and internal developmental genealogy — SAT → SAT-O → 4DHH → Blockwave/Satobloc → H(s)H — rather than being rebuilt from newly discovered outside theories or their assumptions. External literature belongs here for proper citation, standard mathematical/physical context, empirical constraints, prior-art comparison, independent-development assessment, and any **deliberate** imported machinery whose provenance is explicitly recorded.
+SAT/H(s)H development proceeds from its own Fundamental Intuitions and internal developmental genealogy — SAT → SAT-O → 4DHH → Blockwave/Satobloc → H(s)H — rather than being rebuilt from newly discovered outside theories or their assumptions. External literature belongs here for citation, standard mathematical/physical context, empirical constraints, prior-art comparison, independent-development assessment, and deliberately imported machinery whose provenance is explicitly recorded.
 
-That boundary implements Nathan's source-side instruction in `PRIOR_ART/README_FROM_NATHAN.md`: continued R&D is intended to remain in-house while relevant prior art receives appropriate credit. The 2026-09-09 exposure statement in that file is provenance evidence about when this literature was encountered; it is not by itself a claim-level novelty determination.
+When a source becomes an actual point-of-use citation in HsH, record the destination in `Satobloc/HsH/ledgers/CITATION_LEDGER.md` and mirror the same handoff ID in the citation handoff register at the bottom of this file.
 
-Point-of-use routing:
+Internal source answers: **where did H(s)H get this?**
 
-- **Need or use an external source in HsH?** Record the theory-side location in `Satobloc/HsH/ledgers/CITATION_LEDGER.md` and mirror the same handoff ID in the `Citation handoff register` at the bottom of this file.
-- **Need to know whether a resource exists?** Use `indexes/RESOURCE_INDEX.md` / `indexes/index-state.json`.
-- **Need to know what has not yet received a human bibliographic entry?** Use the generated `indexes/BIBLIOGRAPHY_COVERAGE.md`.
-- **Need internal SAT/H(s)H development/provenance rather than an external citation?** Follow the internal source path into `Satobloc/HsH` and/or `Satobloc/SAT_THEORY_ARCHIVE_2023-25`; do not substitute this bibliography for internal provenance.
+External citation answers: **what outside result, evidence, comparison, constraint, or antecedent should be credited?**
 
-A useful rule at the point of use is therefore:
+## Entry format
 
-**internal source answers “where did H(s)H get this?”; external citation answers “what outside result, evidence, comparison, constraint, or antecedent should be credited?”**
+Entries are numbered and kept vertically readable. Bibliographic identity comes first. Summaries and theory-comparison notes can be filled in later without obstructing the basic index.
 
-## Citation handoff lifecycle
+Preferred fields:
 
-When any workflow, LLM, reviewer, bibliography pass, synthesis pass, formalization pass, or audit identifies that a resource should be cited somewhere in HsH:
+- **Title**
+- **Author(s)**
+- **Bibliographic ID** — DOI first when known; otherwise arXiv, journal citation, ISBN, report number, URL identifier, etc.
+- **Date / publication**
+- **Repository path**
+- **Keywords** — only when supplied by the source or already reliably identified
+- **Summary** — optional; may remain pending
+- **Notes** — optional provenance/citation/comparison status
 
-1. assign a stable handoff ID `CITE-YYYY-NNN`;
-2. record the exact HSH_RESOURCES source path in the handoff register below;
-3. record the exact destination in `Satobloc/HsH` — preferably file plus section/claim/equation anchor;
-4. classify the citation role as `STD`, `EMPIRICAL`, `PRIOR_ART`, `COMPARISON`, `CONSTRAINT`, or `DELIBERATE_IMPORT`;
-5. use status `NEEDED`, `PLACED`, `VERIFIED`, `REJECTED`, or `SUPERSEDED`;
-6. mirror the same handoff ID in `Satobloc/HsH/ledgers/CITATION_LEDGER.md`.
+## PRIOR_ART
 
-`VERIFIED` means the actual source has been checked against the actual HsH statement at its point of use. Merely storing or indexing a paper is not enough.
+### 1. *Projected WIMP sensitivity of the LUX-ZEPLIN (LZ) dark matter experiment*
 
-The handoff register is intentionally **human/LLM-reviewed**, not automatically populated from keyword resemblance. Automatic machinery may report bibliography coverage gaps; it must not decide theoretical relevance or citation obligation.
+**Author(s):** D. S. Akerib et al.  
+**Bibliographic ID:** arXiv:1802.06039  
+**Date / publication:** v1 2018-02-16; v2 2019-12-02; later *Physical Review D* 101, 052002 (2020)  
+**Repository path:** `PRIOR_ART/1802.06039v2.pdf`  
+**Keywords:** LUX-ZEPLIN; LZ; WIMP; dark matter; detector sensitivity  
+**Summary:** Pending expansion.  
+**Notes:** Repository observed; metadata verified.
 
-Read-status vocabulary used below:
-- `metadata verified` — bibliographic identity checked against an external primary or reliable bibliographic page; paper not yet substantively read in this audit pass.
-- `repository observed` — exact repository path confirmed.
-- `relevance unassessed` — no claim-level comparison yet.
+### 2. *Entanglement Holonomies*
 
-## PRIOR_ART — verified metadata batch 1
+**Author(s):** Bartlomiej Czech; Lampros Lamprou; Leonard Susskind  
+**Bibliographic ID:** arXiv:1807.04276  
+**Date / publication:** 2018-07-11  
+**Repository path:** `PRIOR_ART/1807.04276v1.pdf`  
+**Keywords:** entanglement holonomy; modular Berry connection; Wilson lines; wormholes; AdS/CFT  
+**Summary:** Pending expansion.  
+**Notes:** Candidate comparison source for holonomy / wormhole / transport structure; claim-level comparison not yet completed.
 
-| Exact repository path | Title | Author(s) | Source type / date | Neutral description | Coverage status | H(s)H/SAT comparison status |
-|---|---|---|---|---|---|---|
-| `PRIOR_ART/1802.06039v2.pdf` | *Projected WIMP sensitivity of the LUX-ZEPLIN (LZ) dark matter experiment* | D. S. Akerib et al. | arXiv:1802.06039; v1 2018-02-16, v2 2019-12-02; later Phys. Rev. D 101, 052002 (2020) | LZ projected sensitivity and detector-background study for WIMP dark-matter searches. | repository observed; metadata verified; not substantively read here | relevance unassessed; do not infer a SAT/H(s)H relationship from folder placement alone |
-| `PRIOR_ART/1807.04276v1.pdf` | *Entanglement Holonomies* | Bartlomiej Czech; Lampros Lamprou; Leonard Susskind | arXiv:1807.04276; 2018-07-11 | Introduces parallel transport between subsystems of a quantum state and entanglement holonomies; in AdS/CFT relates them to bulk spacetime connection, modular Berry connection, and Wilson lines through a dual wormhole. | repository observed; metadata verified; abstract-level only | candidate prior-art comparison for H(s)H holonomy / wormhole / transport language; claim-level equivalence not assessed |
-| `PRIOR_ART/2009.13779v3.pdf` | *Minkowski norm and Hessian isometry induced by an isoparametric foliation on the unit sphere* | Ming Xu | arXiv:2009.13779; v1 2020-09-29, v3 2021-04-23 | Differential-geometric construction of Minkowski norms from isoparametric foliations, with Hessian isometries and indicatrix results. | repository observed; metadata verified; abstract-level only | candidate comparison for indicatrix / Minkowski-geometry machinery; no SAT/H(s)H dependency established |
-| `PRIOR_ART/2112.10971v1.pdf` | *Differentiated uniformization: A new method for inferring Markov chains on combinatorial state spaces including stochastic epidemic models* | Kevin Rupp; Rudolf Schill; Jonas Süskind; Peter Georg; Maren Klever; Andreas Lösch; Lars Grasedyck; Tilo Wettig; Rainer Spang | arXiv:2112.10971; 2021-12-21 | Numerical/statistical method for derivatives of matrix exponentials in large structured continuous-time Markov chains. | repository observed; metadata verified; abstract-level only | presently no obvious SAT/H(s)H relation; retain as source evidence pending human/AI intent review |
-| `PRIOR_ART/2410.10668v2.pdf` | *Banach's Indicatrix Reloaded* | Ikemefuna Agbanusi | arXiv:2410.10668; revised v2 in 2025 | Analysis of Banach's indicatrix theorem via level/superlevel sets, bounded variation, modulus of continuity, and regularity of open sets. | repository observed; metadata verified; abstract-level only | candidate terminology/mathematical-background comparison for SAT/H(s)H indicatrix usage; not evidence of substantive equivalence by itself |
-| `PRIOR_ART/2410.17036v3.pdf` | *Dark Matter Search Results from 4.2 Tonne-Years of Exposure of the LUX-ZEPLIN (LZ) Experiment* | J. Aalbers et al. (LZ Collaboration) | arXiv:2410.17036; v1 2024-10-22, v3 2025-07-01; Phys. Rev. Lett. 135, 011802 (2025) | Direct-detection dark-matter search reporting no excess over expected backgrounds and updated WIMP constraints. | repository observed; metadata verified; abstract-level only | potentially useful as empirical constraint/background for any H(s)H dark-matter claims; not prior art for the theory construction itself |
-| `PRIOR_ART/2412.12372v2.pdf` | *On Mahler's conjecture for even s-concave functions in dimensions 1 and 2* | Matthieu Fradelizi; Elie Nakhle | arXiv:2412.12372; v1 2024-12-16, v2 2025-06-25 | Functional-analysis / metric-geometry work on Mahler-type inequalities for s-concave functions; uses indicatrix and asymptotic structure. | repository observed; metadata verified; abstract-level only | relevance unassessed; likely mathematical-background rather than direct theory prior art unless a specific SAT/H(s)H dependency is identified |
-| `PRIOR_ART/2501.09536v2.pdf` | *Wind-Finslerian structure of black holes* | Hengameh R. Dehkordi; Mauricio Richartz; Alberto Saa | arXiv:2501.09536; v1 2025-01-16, v2 2025-06-26; Phys. Rev. D 112, 024004 (2025) | Applies wind-Finslerian / Zermelo-navigation geometry to black-hole horizons, interiors, frame dragging, null geodesics, and indicatrices. | repository observed; metadata verified; abstract-level only | strong candidate for comparison with H(s)H indicatrix, null-trajectory, effective-metric, and black-hole geometry; no priority conclusion yet |
-| `PRIOR_ART/2502.07710v1.pdf` | *Kaluza-Klein Supergravity 2025* | M. J. Duff; B. E. W. Nilsson; C. N. Pope | arXiv:2502.07710; 2025-02-11 | Retrospective/review of eleven-dimensional supergravity and round/left-squashed/right-squashed S7 compactifications, including holonomy, topology vs geometry, and chirality/supersymmetry consequences. | repository observed; metadata verified; abstract-level only | candidate prior-art/background comparison for higher-dimensional compactification, squashing, chirality and holonomy; not yet mapped claim-by-claim |
-| `PRIOR_ART/2502.11322v3.pdf` | *Intersection of holonomy varieties of CP1-structures* | Shinpei Baba | arXiv:2502.11322; v1 2025-02-17, v3 2025-08-08 | Geometric-topology result on pairs of complex projective structures sharing holonomy representations. | repository observed; metadata verified; abstract-level only | candidate mathematical-background comparison for holonomy/intersection structure; no substantive SAT/H(s)H equivalence established |
-| `PRIOR_ART/2506.15832v2.pdf` | *The Hidden Symmetries of Yang-Mills Theory in (3+1)-dimensions* | L. A. Ferreira; H. Malavazzi | arXiv:2506.15832; 2025 | Develops integral/loop-space Yang-Mills structures with flat generalized-loop-space connections and infinitely many gauge-invariant conserved charges; discusses holonomies and integrability-like structure. | repository observed; metadata verified; abstract/secondary summary level only | high-value comparison candidate for loop/holonomy/gauge-structure aspects of SAT/H(s)H; requires direct paper read before any equivalence or priority judgment |
+### 3. *Minkowski norm and Hessian isometry induced by an isoparametric foliation on the unit sphere*
 
-## PRIOR_ART — verified metadata batch 2
+**Author:** Ming Xu  
+**Bibliographic ID:** arXiv:2009.13779  
+**Date / publication:** v1 2020-09-29; v3 2021-04-23  
+**Repository path:** `PRIOR_ART/2009.13779v3.pdf`  
+**Keywords:** Minkowski norm; Hessian isometry; indicatrix; isoparametric foliation  
+**Summary:** Pending expansion.  
+**Notes:** Candidate mathematical-background comparison for indicatrix and Minkowski-geometry machinery.
 
-| Exact repository path | Title | Author(s) | Source type / date | Neutral description | Coverage status | H(s)H/SAT comparison status |
-|---|---|---|---|---|---|---|
-| `PRIOR_ART/2020-10-braiding-photonic-topological-modes.pdf` | *The first demonstration of braiding in photonic topological zero modes* | secondary Science X/Phys.org report on work by Jiho Noh et al. | news report, 2020-10-09; reports Nature Physics 16, 989–993 (2020), DOI 10.1038/s41567-020-1007-5 | Reports the experimental measurement of geometric phase arising from braiding photonic topological zero modes and points to the underlying Nature Physics paper. | repository observed; source identity verified; report-level only | useful as experimental/background evidence that braid-associated geometric phase is not confined to electronic anyons; not itself prior art for H(s)H recursive braid ontology |
-| `PRIOR_ART/2603.12434v1.pdf` and duplicate-lineage `PRIOR_ART/LENNY 2603.12434v1 (1).pdf` | *Is Time Reversal in de Sitter Space a Spontaneously Broken Gauge Symmetry?* | Leonard Susskind | arXiv:2603.12434v1; 2026-03-12 | Argues that time reversal in de Sitter space is a spontaneously broken bulk gauge symmetry and highlights a closed-curve holonomy that exchanges forward- and backward-going clocks. | repository observed; metadata/abstract verified; not fully read here | high-value comparison target for SAT/H(s)H time-direction, holonomy and closed-transport language; shared vocabulary alone is insufficient for priority. Archive search located older SAT holonomy/reversal language, but this specific compound has not yet been matched to an earlier SAT source |
-| `PRIOR_ART/2606.25499v1.pdf` | *Holonomies and Boundary Symmetries in the Discrete BF Formulation of Carroll Dilaton Gravity* | H. T. Özer; Aytül Filiz | arXiv:2606.25499v1; 2026-06-24 | Constructs a discrete holonomy-based BF formulation of two-dimensional Carroll dilaton gravity and derives boundary affine/Conformal symmetry structure. | repository observed; metadata/abstract verified; not fully read here | candidate background/prior-art comparison for holonomy variables, discretization, boundary dynamics and emergent symmetry; no direct H(s)H equivalence established |
-| `PRIOR_ART/2606.31224v1.pdf` plus byte-identical duplicate `PRIOR_ART/2606.31224v1 (1).pdf` | *Nowhere-vanishing harmonic 1-forms on real loci of K3-fibred Calabi-Yau 3-folds* | Shih-Kai Chiu; Daniel Platt; Calum Spicer | arXiv:2606.31224v1; 2026-06-30 | Constructs nowhere-vanishing harmonic 1-forms on real loci of collapsing K3-fibred Calabi-Yau threefolds; applications include compact seven-manifolds with G2 holonomy. | repository observed; metadata/abstract verified; not fully read here | higher-geometry background candidate for fibrations, mapping tori and holonomy; no claim-level SAT/H(s)H dependency or priority relationship established |
-| `PRIOR_ART/2608.19619v1.pdf` plus byte-identical duplicate `PRIOR_ART/2608.19619v1 (1).pdf` | *Moore--Read construction and explicit monodromies of Laughlin states on Riemann surfaces* | Kiyoon Eum | arXiv:2608.19619v1; 2026-08-20 | Derives higher-genus Laughlin-state conformal blocks from U(1) Chern–Simons theory, computes explicit quasi-hole/flux monodromies, and relates them to conjectured adiabatic holonomies. | repository observed; metadata/abstract verified; not fully read here | high-value braid/monodromy/holonomy comparison target. Because anyonic/Laughlin braiding long predates SAT/H(s)H, the August 2026 date cannot by itself establish SAT priority over the underlying braid concepts; only a more specific compound could be compared chronologically |
+### 4. *Differentiated uniformization: A new method for inferring Markov chains on combinatorial state spaces including stochastic epidemic models*
+
+**Author(s):** Kevin Rupp; Rudolf Schill; Jonas Süskind; Peter Georg; Maren Klever; Andreas Lösch; Lars Grasedyck; Tilo Wettig; Rainer Spang  
+**Bibliographic ID:** arXiv:2112.10971  
+**Date / publication:** 2021-12-21  
+**Repository path:** `PRIOR_ART/2112.10971v1.pdf`  
+**Keywords:** Markov chains; matrix exponentials; combinatorial state spaces; stochastic models  
+**Summary:** Pending expansion.  
+**Notes:** Relevance presently unassessed.
+
+### 5. *Banach's Indicatrix Reloaded*
+
+**Author:** Ikemefuna Agbanusi  
+**Bibliographic ID:** arXiv:2410.10668  
+**Date / publication:** revised v2 in 2025  
+**Repository path:** `PRIOR_ART/2410.10668v2.pdf`  
+**Keywords:** Banach indicatrix; bounded variation; level sets; modulus of continuity  
+**Summary:** Pending expansion.  
+**Notes:** Mathematical-background comparison for indicatrix terminology and structure.
+
+### 6. *Dark Matter Search Results from 4.2 Tonne-Years of Exposure of the LUX-ZEPLIN (LZ) Experiment*
+
+**Author(s):** J. Aalbers et al. (LZ Collaboration)  
+**Bibliographic ID:** arXiv:2410.17036; *Physical Review Letters* 135, 011802 (2025)  
+**Date / publication:** v1 2024-10-22; v3 2025-07-01  
+**Repository path:** `PRIOR_ART/2410.17036v3.pdf`  
+**Keywords:** LUX-ZEPLIN; LZ; dark matter; WIMP; direct detection  
+**Summary:** Pending expansion.  
+**Notes:** Potential empirical-constraint source for H(s)H dark-matter claims; not theory-construction prior art by itself.
+
+### 7. *On Mahler's conjecture for even s-concave functions in dimensions 1 and 2*
+
+**Author(s):** Matthieu Fradelizi; Elie Nakhle  
+**Bibliographic ID:** arXiv:2412.12372  
+**Date / publication:** v1 2024-12-16; v2 2025-06-25  
+**Repository path:** `PRIOR_ART/2412.12372v2.pdf`  
+**Keywords:** Mahler conjecture; s-concave functions; functional analysis; metric geometry  
+**Summary:** Pending expansion.  
+**Notes:** Relevance presently unassessed.
+
+### 8. *Wind-Finslerian structure of black holes*
+
+**Author(s):** Hengameh R. Dehkordi; Mauricio Richartz; Alberto Saa  
+**Bibliographic ID:** arXiv:2501.09536; *Physical Review D* 112, 024004 (2025)  
+**Date / publication:** v1 2025-01-16; v2 2025-06-26  
+**Repository path:** `PRIOR_ART/2501.09536v2.pdf`  
+**Keywords:** Finsler geometry; Zermelo navigation; black holes; null geodesics; indicatrices; frame dragging  
+**Summary:** Pending expansion.  
+**Notes:** High-value comparison candidate for H(s)H indicatrix, null-trajectory, effective-metric, and black-hole geometry.
+
+### 9. *Kaluza-Klein Supergravity 2025*
+
+**Author(s):** M. J. Duff; B. E. W. Nilsson; C. N. Pope  
+**Bibliographic ID:** arXiv:2502.07710  
+**Date / publication:** 2025-02-11  
+**Repository path:** `PRIOR_ART/2502.07710v1.pdf`  
+**Keywords:** Kaluza-Klein; supergravity; compactification; S7; holonomy; chirality  
+**Summary:** Pending expansion.  
+**Notes:** Higher-dimensional geometry/background comparison source.
+
+### 10. *Intersection of holonomy varieties of CP1-structures*
+
+**Author:** Shinpei Baba  
+**Bibliographic ID:** arXiv:2502.11322  
+**Date / publication:** v1 2025-02-17; v3 2025-08-08  
+**Repository path:** `PRIOR_ART/2502.11322v3.pdf`  
+**Keywords:** holonomy; CP1 structures; geometric topology  
+**Summary:** Pending expansion.  
+**Notes:** Mathematical-background comparison; substantive H(s)H relationship not established.
+
+### 11. *The Hidden Symmetries of Yang-Mills Theory in (3+1)-dimensions*
+
+**Author(s):** L. A. Ferreira; H. Malavazzi  
+**Bibliographic ID:** arXiv:2506.15832  
+**Date / publication:** 2025  
+**Repository path:** `PRIOR_ART/2506.15832v2.pdf`  
+**Keywords:** Yang-Mills; loop space; holonomy; conserved charges; gauge symmetry  
+**Summary:** Pending expansion.  
+**Notes:** High-value comparison candidate; direct paper read still required before equivalence or priority judgments.
+
+### 12. *The first demonstration of braiding in photonic topological zero modes*
+
+**Author / source:** Secondary Science X / Phys.org report on work by Jiho Noh et al.  
+**Bibliographic ID:** underlying *Nature Physics* paper DOI: `10.1038/s41567-020-1007-5`  
+**Date / publication:** report 2020-10-09; underlying *Nature Physics* 16, 989–993 (2020)  
+**Repository path:** `PRIOR_ART/2020-10-braiding-photonic-topological-modes.pdf`  
+**Keywords:** braiding; photonics; topological zero modes; geometric phase  
+**Summary:** Pending expansion.  
+**Notes:** This repository item is a report, not the primary paper; citation should normally point to the primary paper when the underlying result is used.
+
+### 13. *Is Time Reversal in de Sitter Space a Spontaneously Broken Gauge Symmetry?*
+
+**Author:** Leonard Susskind  
+**Bibliographic ID:** arXiv:2603.12434  
+**Date / publication:** 2026-03-12  
+**Repository paths:** `PRIOR_ART/2603.12434v1.pdf`; duplicate-lineage `PRIOR_ART/LENNY 2603.12434v1 (1).pdf`  
+**Keywords:** de Sitter space; time reversal; gauge symmetry; holonomy  
+**Summary:** Pending expansion.  
+**Notes:** High-value comparison target for time-direction / holonomy / closed-transport structure; specific equivalence unresolved.
+
+### 14. *Holonomies and Boundary Symmetries in the Discrete BF Formulation of Carroll Dilaton Gravity*
+
+**Author(s):** H. T. Özer; Aytül Filiz  
+**Bibliographic ID:** arXiv:2606.25499  
+**Date / publication:** 2026-06-24  
+**Repository path:** `PRIOR_ART/2606.25499v1.pdf`  
+**Keywords:** holonomy; BF theory; Carroll gravity; dilaton gravity; boundary symmetry  
+**Summary:** Pending expansion.  
+**Notes:** Background/prior-art comparison for holonomy variables, discretization, and boundary dynamics.
+
+### 15. *Nowhere-vanishing harmonic 1-forms on real loci of K3-fibred Calabi-Yau 3-folds*
+
+**Author(s):** Shih-Kai Chiu; Daniel Platt; Calum Spicer  
+**Bibliographic ID:** arXiv:2606.31224  
+**Date / publication:** 2026-06-30  
+**Repository paths:** `PRIOR_ART/2606.31224v1.pdf`; byte-identical duplicate `PRIOR_ART/2606.31224v1 (1).pdf`  
+**Keywords:** K3 fibrations; Calabi-Yau; harmonic 1-forms; G2 holonomy; mapping tori  
+**Summary:** Pending expansion.  
+**Notes:** Higher-geometry background candidate.
+
+### 16. *Moore--Read construction and explicit monodromies of Laughlin states on Riemann surfaces*
+
+**Author:** Kiyoon Eum  
+**Bibliographic ID:** arXiv:2608.19619  
+**Date / publication:** 2026-08-20  
+**Repository paths:** `PRIOR_ART/2608.19619v1.pdf`; byte-identical duplicate `PRIOR_ART/2608.19619v1 (1).pdf`  
+**Keywords:** Laughlin states; Moore-Read construction; monodromy; adiabatic holonomy; Chern-Simons theory; braiding  
+**Summary:** Pending expansion.  
+**Notes:** High-value braid / monodromy / holonomy comparison target. Underlying anyonic/Laughlin braid machinery substantially predates this paper.
 
 ## Provenance material in PRIOR_ART
 
-`PRIOR_ART/FileIndex.csv` is not an external bibliography item. It is a provenance artifact preserving Windows filesystem timestamps for ten SAT-local files. The earliest listed creation time is `SATiii REWORK MARK III.txt` on 2025-04-25 04:35:16; entries continue through `SAT RETRODICTED DATA JUNE 1 2025.txt` on 2025-06-01 09:30:11. These timestamps are potentially useful chronology evidence but should be cross-checked against file contents, conversation dates, Git history, and public-release dates before being used in any priority argument.
+`PRIOR_ART/FileIndex.csv` is not an external bibliography entry. It preserves Windows filesystem timestamps for ten SAT-local files. Treat those timestamps as one chronology evidence class to be cross-checked against contents, conversation dates, Git history, and public-release dates.
 
-`PRIOR_ART/README_FROM_NATHAN.md` records Nathan's statement that he connected the current PRIOR_ART/nLab lineage on 2026-09-09 and asks for careful bibliographic credit. Treat that as a provenance statement about discovery/exposure timing, not by itself as a claim-level novelty determination.
+`PRIOR_ART/README_FROM_NATHAN.md` records Nathan's statement that he connected the current PRIOR_ART/nLab lineage on 2026-09-09 and asks for careful bibliographic credit. Treat this as exposure/provenance information rather than a claim-level novelty determination.
 
 ## Coverage limits / next work
 
-This bibliography remains a small subset of the repository. The generated structural and bibliography-coverage indexes should be used for current counts rather than freezing a file-count claim here. Silence in this document means **not yet bibliographically processed**, not absent or irrelevant. Duplicate-content groups in `indexes/RESOURCE_INDEX.md` and the generated `indexes/BIBLIOGRAPHY_COVERAGE.md` should be used to avoid counting mirrored copies as independent sources or independent backlog items.
+This bibliography remains a small subset of the repository. Use `indexes/BIBLIOGRAPHY_COVERAGE.md` for current machine-generated coverage counts.
 
-Next bibliography work should: (1) recover metadata from source contents or primary bibliographic records rather than filenames alone; (2) mark full/partial/abstract-only reading separately; (3) add exact HsH and historical-Archive source pointers only where textual or chronological evidence supports them; (4) distinguish prior art, independent rediscovery, extension, loose resemblance, empirical constraint, and unrelated/background material; and (5) use the handoff register whenever a source becomes an actual citation obligation rather than merely a comparison candidate.
+Silence here means **not yet bibliographically processed**, not absent or irrelevant.
+
+Next bibliography passes should prioritize basic identity in this order:
+
+1. title;
+2. DOI or other primary bibliographic identifier;
+3. author(s);
+4. publication/date information;
+5. exact repository path;
+6. source-provided or reliably identified keywords;
+7. summary and H(s)H/SAT comparison notes afterward.
+
+Duplicate-content groups should be collapsed bibliographically unless different copies carry distinct provenance value.
 
 ## Citation handoff register
 
-This is the **source-side** half of the citation system. Rows are created only when some workflow/reviewer actually identifies a citation need or use. A source may appear in the bibliography without appearing here.
+This is the source-side half of the citation system. Create an entry only when a workflow or reviewer identifies an actual citation need or use. A bibliography entry does not automatically create a citation obligation.
 
-Mirror each active row in `Satobloc/HsH/ledgers/CITATION_LEDGER.md` using the same handoff ID.
+Mirror each active handoff in `Satobloc/HsH/ledgers/CITATION_LEDGER.md` using the same ID.
 
-| Handoff ID | Exact HSH_RESOURCES source path | HsH destination / point of use | Citation role | Why citation is needed | Identified by / workflow | Status | Verification / backlink notes |
-|---|---|---|---|---|---|---|---|
-| — | — | — | — | — | — | — | Add a row when a real citation obligation is identified. |
+No active handoffs recorded yet.
+
+### Handoff entry template
+
+**CITE-YYYY-NNN**  
+**Source:** `exact HSH_RESOURCES path`  
+**HsH point of use:** `exact file + section / claim / equation if available`  
+**Citation role:** `STD | EMPIRICAL | PRIOR_ART | COMPARISON | CONSTRAINT | DELIBERATE_IMPORT`  
+**Why needed:**  
+**Identified by / workflow:**  
+**Status:** `NEEDED | PLACED | VERIFIED | REJECTED | SUPERSEDED`  
+**Verification / backlink notes:**
