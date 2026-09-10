@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T05:33:11Z`
-- Tree/content state: `53ee839cd9409eba9c6b13087b0dd9d89bb5d4241bf267f14b856e0645445ad6`
+- Scanned: `2026-09-10T05:43:29Z`
+- Tree/content state: `77defa7463d5acddffdc6358d68f14237d3189f9fda5109edd4c09a848d6dc17`
 - Coverage: complete structural traversal
-- Files: 1171
-- Uploaded source files: 1162
-- PDF papers: 1005
+- Files: 1172
+- Uploaded source files: 1163
+- PDF papers: 1006
 - Repository machinery files: 9
 - Byte-identical duplicate groups: 75
 
@@ -39,7 +39,7 @@
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 9 |
 | `OUTSIDE RESEARCH LIBRARY` | 318 |
-| `PRIOR_ART` | 29 |
+| `PRIOR_ART` | 30 |
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
@@ -1270,6 +1270,7 @@
 | `PRIOR_ART/JHEP01(2024)063.pdf` | 930881 |  |
 | `PRIOR_ART/JHEP06(2023)087.pdf` | 541036 |  |
 | `PRIOR_ART/pdf.pdf` | 16531855 |  |
+| `PRIOR_ART/PlagiarismCheckReport.pdf` | 24470876 |  |
 | `PRIOR_ART/s10052-018-6106-4.pdf` | 698763 |  |
 | `PRIOR_ART/s10052-018-6488-3.pdf` | 828155 |  |
 | `PRIOR_ART/s10052-023-11169-8.pdf` | 571281 |  |
