@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T05:05:53Z`
-- Tree/content state: `eabc3dfbc4f2c1f6b8623f2523c5fd88d1582931840bb560b5bfd76694c5f79e`
+- Scanned: `2026-09-10T05:08:41Z`
+- Tree/content state: `48c38ea03620b1d4cb2595ef74810d299ff971c7f4b52c319fd12361d9a42835`
 - Coverage: complete structural traversal
-- Files: 1141
-- Uploaded source files: 1132
-- PDF papers: 977
+- Files: 1145
+- Uploaded source files: 1136
+- PDF papers: 980
 - Repository machinery files: 9
-- Byte-identical duplicate groups: 68
+- Byte-identical duplicate groups: 71
 
 ## Top-level coverage
 
@@ -39,6 +39,7 @@
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 9 |
 | `OUTSIDE RESEARCH LIBRARY` | 318 |
+| `PRIOR_ART` | 4 |
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
@@ -56,6 +57,9 @@
 - `08254264acd8cdef806b25880378f470a3c04998d89cf76e93688ab12af17ff7`
   - `HAUL 11/Bell (1).pdf`
   - `HAUL 11/Bell.pdf`
+- `0ac267c6ecc28155702be5473d2c740f491dc65400b5088f83d892cf946cd543`
+  - `PRIOR_ART/Topics_in_statistical_physics_invol.pdf`
+  - `Topics_in_statistical_physics_invol.pdf`
 - `0cc0fae313cfc0772b60a8f4abd1c97fbb757caf60d62e2de640c40e811a1b03`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TopEpisodesByConsumptionTime_all-time (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TopEpisodesByConsumptionTime_all-time.csv`
@@ -111,6 +115,9 @@
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (3).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (4).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time.csv`
+- `595648c84501e8a6c184d579dbbab5bb974d107bf2d6c127ed6d93c1a335cff9`
+  - `PRIOR_ART/symmetry-11-01298.pdf`
+  - `symmetry-11-01298.pdf`
 - `59c04099e11fcd24083ae7955d63993d2d1304633c605ad25994f509629ada6f`
   - `H(s)H_Toolkit/AssemblyTheory.pdf`
   - `H(s)H_Toolkit/s41586-023-06600-9.pdf`
@@ -234,6 +241,9 @@
 - `e203faa631e24e4fc932ee00c22529d463b7f79f5b29f5ac5023f46619ca7966`
   - `HAUL 2/ssrn-6981703 (1).pdf`
   - `HAUL 2/ssrn-6981703.pdf`
+- `e676ea6df3cbbb1d5ac14661ba4be225fa9c71e6daec45d405d113ef63fafbec`
+  - `2020-10-braiding-photonic-topological-modes.pdf`
+  - `PRIOR_ART/2020-10-braiding-photonic-topological-modes.pdf`
 - `e6a4964452167426e8d694c84bf80070b9c1a3e2a0795dd64faecd8843ff024e`
   - `HAUL 1/ssrn-7133961 (1).pdf`
   - `HAUL 1/ssrn-7133961.pdf`
@@ -1242,6 +1252,9 @@
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04114v1.pdf` | 1604688 | arxiv:2609.04114v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04117v1.pdf` | 1824628 | arxiv:2609.04117v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04844v1.pdf` | 470761 | arxiv:2609.04844v1 |
+| `PRIOR_ART/2020-10-braiding-photonic-topological-modes.pdf` | 354922 |  |
+| `PRIOR_ART/symmetry-11-01298.pdf` | 1097058 |  |
+| `PRIOR_ART/Topics_in_statistical_physics_invol.pdf` | 209935 |  |
 | `symmetry-11-01298.pdf` | 1097058 |  |
 | `Topics_in_statistical_physics_invol.pdf` | 209935 |  |
 
