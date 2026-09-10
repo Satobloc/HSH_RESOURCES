@@ -8,6 +8,8 @@ The master `indexes/HUMAN_BIBLIOGRAPHY.md` remains the policy, prior-art, proven
 
 Automatic bibliography coverage and intake treat the master plus all `BATCH_*.md` files as one human bibliography corpus. A source disappears from the intake queue once any path in its byte-identical lineage is represented in that corpus.
 
+Source enumeration comes from the extraction manifest and structural index, not from GitHub's rendered directory listings; UI truncation of large folders does not define batch coverage.
+
 Batch indexing establishes bibliographic identity and a neutral source description. It does **not** by itself establish H(s)H relevance, citation need, prior art, independent rediscovery, novelty displacement, or scientific validity. Those judgments belong to later comparison passes.
 
 ## Batch protocol
