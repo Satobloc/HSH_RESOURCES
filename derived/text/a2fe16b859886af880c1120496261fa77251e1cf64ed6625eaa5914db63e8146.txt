@@ -1,0 +1,982 @@
+===== PAGE 1 =====
+Anti-Periodic Positional Encoding: Möbius Boundary
+Conditions Make In-Context Retrieval Reliable
+Ji Ho Baea,∗
+aJRTI, Seoul, 05855, Republic of Korea
+Abstract
+Möbius RoPE is a rotary positional encoding built on the anti-periodic fre-
+quency ladderθ i =π(2i+ 1)/N: every rotation plane advances by an odd
+multiple ofπacross the training context, so the positional holonomy is−1
+and the two ends of the sequence are deterministically coupled through a
+closed-form Dirichlet “dipole”; to our knowledge this is the first anti-periodic
+boundary condition in positional encoding. We verify the theory numer-
+ically to∼10−6 and pretrain 48 models spanning six 160M-class and three
+410M-class arms (2B FineWeb-Edu tokens each; the hybrid arm puts Möbius
+frequencies on 25% of heads). Hybrid perplexity is unchanged (29.66 vs.
+29.72), but needle-in-a-haystack retrieval becomes reliable:90.3±5.7%ver-
+sus63.3±31.4%at context 512 (n=6seeds), observed worst seed 86% versus
+14%, robust variance testsp= 0.013–0.029(unadjusted), recurring at 410M
+(Levenep= 0.040). Matched controls isolate the mechanism: an aperi-
+odic ladder in the same frequency band reproduces none of the effect, and
+a periodic (holonomy+1) ladder only a fraction. Swapping trained models’
+frequency table back to standard RoPE (weights frozen) collapses retrieval,
+with damage concentrated on far needles: trained models depend on this
+long-range geometry. A NoPE arm is even more reliable at short context but
+pays a 13% perplexity tax and extrapolates worst; only the anti-periodic hy-
+brid pairs baseline perplexity with a high reliability floor. The effect is scoped
+to single-needle retrieval within the training window; a one-line frequency
+swap thus provides zero-cost insurance against the retrieval seed lottery.
+Keywords:positional encoding, rotary position embedding, in-context
+∗Corresponding author.
+Email address:jihobae@snu.ac.kr(Ji Ho Bae)
+arXiv:2607.21405v1  [cs.CL]  23 Jul 2026
+
+===== PAGE 2 =====
+retrieval, training stability, anti-periodic boundary condition, language
+model pretraining
+1. Introduction
+Whether a pretrained language model can retrieve a fact planted earlier in
+its context is one of the most consequential capabilities that emerges (or fails
+to emerge) during pretraining. We find experimentally that at small scale
+this capability is subject to a severeseed lottery: six 160M-class (162M-
+parameter) models pretrained identically with standard RoPE, differing only
+in random seed, span needle-in-a-haystack (NIAH) accuracies from 14% to
+98% at a context of 512 tokens (§5.2). Perplexity gives no warning: the
+retrieval-failing seeds are not worse language models (correlation between
+perplexity and retrieval across the 12 RoPE-vs-hybrid models is only+0.206;
+across the study’s 30-model five-arm cohort the association even runs against
+quality, §5.3). A practitioner who trains one model and sees healthy loss
+curves has no way to know whether the resulting model retrieves reliably or
+not.
+This paper proposes a deterministic geometric intervention that largely
+eliminates this lottery. Standard RoPE (Su et al., 2024) rotates each two-
+dimensional query/key plane of adh-dimensional attention head at frequency
+θi = 10000−2i/dh; these frequencies share no short common period, so at
+large relative distance the per-plane phases scramble and the positional in-
+ner product wanders erratically. We ask: what if positions lived on a cir-
+cle with ananti-periodicboundary condition (the condition obeyed by
+fermionic fields, whose allowed modes are the half-integer harmonics)? Set-
+tingθ i =π(2i+ 1)/N, every rotation plane advances by an odd multiple
+ofπafterNpositions, so the composite rotation after one full traversal is
+exactly−I: the positional holonomy is−1. This has three closed-form con-
+sequences (§3): (i) the position-only attention profile is a Dirichlet kernel
+that is essentially silent over the interior of the sequence (largest interior re-
+sponse≤2.2%of the endpoint response atd h=64); (ii) the two ends of the
+context are deterministically coupled with a sign flip, an end-to-end dipole
+(informally, a “wormhole” between the sequence boundaries); and (iii) under
+length extrapolation the positional coefficient remains bounded and exactly
+2N-periodic, in contrast to standard RoPE’s aperiodic phase drift. We verify
+each prediction numerically to∼10−6.
+2
+
+===== PAGE 3 =====
+Anti-periodicity is a strong prior, so we do not impose it everywhere.
+Ourhybridscheme gives Möbius frequencies (withNfixed to the training
+context, 2048) to 25% of attention heads and standard RoPE to the rest,
+adding zero parameters and zero FLOPs: it is literally a different constant
+table of sines and cosines for a quarter of the heads.
+Contributions..
+1.A new class of positional encoding.We introduce anti-periodic
+boundary conditions into positional encoding, with closed-form theory
+(Dirichlet-kernel attention signature,−1holonomy, dipole structure,
+bounded2N-periodic extrapolation), verified numerically to∼10−6 (§3,
+§3.4).
+2.Main empirical result: retrieval reliability.Inn=6-seed pretrain-
+ing runs at 160M/2B tokens, hybrid Möbius RoPE matches standard
+RoPE’s perplexity (29.66 vs. 29.72) while raising mean NIAH accuracy
+at every in-training length (suggestive, not individually significant; min
+p= 0.09) and, more importantly, collapsing its across-seed variance:
+raw ratio30.8×atL=512, robust variance testsp= 0.013–0.029, worst
+seed 86% vs. 14% (§5.2). The variance reduction replicates at 410M
+withn=4per arm (SD 6.5% vs. 16.5% atL=2048, Levenep= 0.040;
+worst seed 29.4% vs. 18.8%) (§5.4).
+3.The active ingredient is anti-periodicity, isolated by controls
+and made causal by ablation.Two matched control pretraining
+arms (n=6each) dissect the mechanism: an aperiodic ladder covering
+the identical low-frequency band (no holonomy class) reproduces none
+ofthereliabilityeffect(varianceratio1.0×vs.standard), andaperiodic
+ladder (integer harmonics, holonomy+1) only a fraction (3.1×, n.s.);
+against30.8×for holonomy−1, this is a dose–response ordering in
+the boundary condition. An evaluation-time ablation on the trained
+hybrid models (all weights frozen, only the frequency table swapped
+back to standard) collapses retrieval from90.3%to41.7%atL=512,
+with damage concentrated on far-from-query needles (−55pp at depth
+0.1 vs.−36pp at depth 0.9): trained models causally depend on the
+Möbius geometry, with the damage pattern implicating its long-range
+structure (§5.3).
+4.A reliability–quality trade-off across positional-encoding fam-
+ilies.A NoPE arm (n=6; no positional encoding) achieves the best
+3
+
+===== PAGE 4 =====
+short-context retrieval reliability of all arms (95.2±4.0%atL=512,
+worst seed 88.8%), but pays a13%perplexity tax (33.66 vs. 29.66–
+29.72), redevelops a seed lottery at the full training length (SD 24.1%
+atL=2048vs. hybrid’s 8.2%), and extrapolates worst (5.6×ppl blow-
+up at4N max). Across the 30 models of the five-arm cohort, retrieval
+and language-modeling quality anti-align (r=+0.43between ppl and
+NIAH,p=0.017, pooled across arms); hybrid Möbius is the only arm
+that combines standard-level perplexity with a high, low-variance re-
+trieval floor (§5.3).
+5.A capacity–scale interaction in allocating the anti-periodic
+budget.Splitting the Möbius heads across multiple scales (“ladder”,
+N∈{512,1024,2048})issignificantlyworsethanasinglescaleat160M
+(−30pp,p= 0.015; dipole dilution); yet at 410M (n=4per arm) the
+ordering reverses: ladder attains the best mean NIAH at every length
+with the smallest seed-variance among then=4arms, and the best ex-
+trapolation perplexity (ppl@4096 35.7 vs. 38.7, Welchp= 0.006; all
+four seed-paired deltas negative, pairedp= 0.013). Concentrate the
+budget when heads are scarce; distribute it when heads are plentiful
+(§5.5).
+6.A characterized failure boundary.Beyond the training length,
+all variants collapse to 0% retrieval through the same critical tran-
+sition (median retrieved-token rank jumps from∼2.5–6to∼8,400–
+9,500betweenL=2048and3072; needle attention mass evaporates
+0.073→0.004at 3072,0.003by 4096) (§5.6). Möbius RoPE is forre-
+liable retrieval within the training window, not a long-context method
+(§6).
+Practical framing..The intervention is a one-line frequency change on 25%
+of heads with no cost at the training length:pretraining insurancethat
+converts a capability that emerges stochastically into one that emerges reli-
+ably.
+2. Related Work
+Rotary positional encoding..RoPE (Su et al., 2024) encodes relative position
+by rotating query/key pairs indh/2two-dimensional planes at geometrically
+spaced frequenciesθ i =b −2i/dh (baseb= 10 4). Because theθ i share no
+4
+
+===== PAGE 5 =====
+short common period, the encoding is aperiodic in practice: no shift of real-
+istic length returns the phase configuration to itself, and long-range relative
+phases are effectively scrambled. All of our comparisons use this standard
+parameterization as the baseline.
+Length generalization for RoPE..A large body of work modifies RoPE’s
+frequency spectrum to extend usable context: position interpolation (Chen
+et al., 2023), NTK-aware scaling and YaRN (Peng et al., 2024), LongRoPE
+(Ding et al., 2024), FoPE’s Fourier-series spectrum repair (Hua et al., 2025),
+and MrRoPE’s mixed-radix generalization (Tian et al., 2026). Our goal is
+orthogonal: we do not extend context. We change theboundary condition
+at a fixed training length, and show explicitly (§5.6) that our method does
+not help, and slightly hurts, beyond the training window. Among non-rotary
+families, we pretrain a NoPE arm (Kazemnejad et al., 2023) under the iden-
+tical protocol as a reference point outside the RoPE family (§5.3); ALiBi
+(Press et al., 2022) is left to future work. All within-family comparisons are
+against standard RoPE, the dominant choice in current pretrained models.
+Periodic positional encodings..The closest relative is P-RoPE (Huo, 2026),
+which pairs sliding-window attention with a periodic positional structure
+(positions are reset modulo the window, so the encoding returns to itself after
+one traversal, holonomy+1in our terms). Anti-periodic frequencies are a
+topologically distinct class (half-integer harmonics, holonomy−1; within the
+class ofN-(anti)periodic encodings the two holonomy classes are separated,
+though generic non-periodic ladders interpolate between them), and the sign
+matters: holonomy+1aliases the two ends of the sequence, whereas−1
+couples them with a deterministic sign flip; this is the distinction between a
+cylinder and a Möbius band. To our knowledge no prior positional encoding
+uses anti-periodic boundary conditions (prior-art search: July 2026).
+Möbius structures in attention..MöbiusAttention (Halacheva et al., 2024)
+introduces Möbius transformations (complex fractional-linear maps) into the
+attention computation, acting on learned query/weight representations to
+enrich their geometry. Despite the shared name, it is unrelated to our con-
+struction: itmodifiestheattentionnonlinearitywithlearnedprojectivemaps,
+whereaswemodifythepositional boundary conditionwithafixed, parameter-
+freefrequencyladder. Our“Möbius” referstothe−1holonomyoftheposition
+bundle, i.e., the topology of the Möbius band.
+5
+
+===== PAGE 6 =====
+Retrieval evaluation and emergence..Passkey retrieval (Mohtashami &
+Jaggi, 2023), popularized as needle-in-a-haystack testing (Kamradt, 2023), is
+commonly applied to pretrained models at long context; we use it instead as
+a probe ofwhether the capability emerges at allduring small-scale pretrain-
+ing, across seeds. The instability we document connects to induction heads
+(Olsson et al., 2022); our results suggest that at small scale the formation of
+such retrieval circuitry is seed-dependent. Our intervention can be read as
+seeding that circuit geometrically.
+Physics antecedents..Our ladder is exactly the Matsubara mode structure of
+fermionic fields on a thermal circle (ωn =π(2n+ 1)/β; Matsubara, 1955; the
+fermionic anti-periodicity condition itself: Ezawa et al., 1957), with inverse
+temperature replaced by context length; we import the boundary condition,
+not any dynamical content.
+3. Theory: Anti-Periodic Frequencies and the Dipole Kernel
+3.1. Setup
+RoPE acts on a head of dimensiondh (even) by partitioning it intoP=
+dh/2planes and rotating planeiof the query/key at positionmby angle
+mθi:
+R(m) =
+P−1M
+i=0
+cosmθ i −sinmθ i
+sinmθ i cosmθ i
+
+, q m =R(m)q, k n =R(n)k,(1)
+so that⟨q m,k n⟩depends only on the relative offsetm−n. Standard RoPE
+takesθ std
+i =b−2i/dh withb= 10 4.
+Definition 1(Möbius RoPE).FixN(in all experiments, the training con-
+text lengthN max = 2048). Möbius RoPE uses the anti-periodic (half-integer)
+frequency ladder
+θi = π(2i+ 1)
+N , i= 0,1,...,P−1. (2)
+Nis fixed at model creation and does not change with the runtime se-
+quence length; extrapolation behavior is governed by the2N-periodicity be-
+low.
+6
+
+===== PAGE 7 =====
+3.2. Holonomy−1: one traversal flips the sign
+After a relative offset of exactlyNpositions, planeihas rotated byNθi =
+π(2i+ 1), an odd multiple ofπ, hence each planar rotation equals−I2 and
+R(N) =−I dh, R(2N) = +I dh.(3)
+Each rotation plane realizes a flat bundle over the circle with holonomy−1,
+the Möbius sign; we use the name for this boundary sign, not as a claim about
+the topology of the full rank-dh bundle. Every linear positional feature built
+from these frequencies (any fixed linear combination of the per-plane sines
+and cosines) is anti-periodic,f(m+N) =−f(m), and2N-periodic; periodic
+constructions (R(N) = +I) cannot distinguish positionmfromm+N, while
+the anti-periodic class distinguishes them by sign.
+3.3. Closed-form attention signature: a Dirichlet kernel
+Consider the pure positional geometry: identical, per-plane-normalized
+query and key (q=k, equal energy in every plane). The position-only
+attention coefficient at offsetmis the average phase coherence
+c(m) = 1
+P
+P−1X
+i=0
+cos
+ 
+mθ i
+
+= 1
+P
+P−1X
+i=0
+cos
+ 
+(2i+ 1)x
+
+, x= πm
+N .(4)
+The half-integer harmonic sum has a classical closed form (geometric series:PP−1
+i=0 cos((2i+ 1)x) = sin(2P x)
+2 sinx ); writingD=d h = 2P:
+c(m) = sin
+ 
+Dπm/N
+
+Dsin
+ 
+πm/N
+ (5)
+— a (shifted)Dirichlet kernel. This closed form makes four falsifiable
+predictions:
+•(P1) Local lobe.c(0) = 1with a main lobe of half-widthN/D:
+positions within∼N/Dof each other cohere, giving ordinary local po-
+sitional discrimination.
+•(P2) Silence in the bulk.Formaway from0andN,|c(m)| ≤
+1/(Dsin(πm/N)) =O(1/D): the middle of the sequence contributes
+at most a few percent.
+7
+
+===== PAGE 8 =====
+•(P3) Antipodal dipole.Asm→N,x→πandc→−1: the far
+end of the context is coupled to the origin with coefficient≈−1. The
+kernel is adipole:+1lobe at offset 0,−1lobe at offsetN, near-zero in
+between; under this diagnostic (q=k, equal per-plane energy), a key
+at one end contributes a deterministic pre-softmax coefficient of≈−1
+at the other end. The sign is benign: the coupling enters pre-softmax,
+where a sign flip of the learned key projection converts inhibition to
+excitation.
+•(P4) Bounded,2N-periodic extrapolation.For any runtime
+lengthL,cis exactly given by the same formula;|c| ≤1always,
+c(m+N) =−c(m),c(m+ 2N) =c(m). Standard RoPE trivially
+satisfies|c|≤1as well, but admits no analogous closed form or short
+exact period: its coefficient at fixed offset drifts quasi-randomly, with
+no2N-periodic structure.
+3.4. Numerical verification
+All four predictions were tested directly (Phases 1–2.5 on CPU/MPS;
+Stage A on H100):
+•Attention-map signature (Phase 1).N×Nattention maps under
+Möbius frequencies match the Dirichlet closed form with maximum
+absolute error1.33×10 −6 (5/5 registered predictions pass), including
+the sign-flipped anti-diagonal corner (Fig. A.2, appendix).
+•End-to-end signal transport (Phase 2; Fig. A.4).In a single
+attention layer atN= 10,000, a value vector planted at position 0 is
+transported, sign-inverted, to positionN−1withcos(o,V) =−0.9606:
+one-hop propagation across ten thousand tokens through the nega-
+tive dipole lobe. Implementation cost is unchanged (only the constant
+cos/sin table differs; measured runtime versus sequence length matches
+the standard-RoPE implementation, log–log slope 1.002).
+•Dipole profile census (Phase 2.5; Fig. A.5).Full profile scan
+atN= 10,000,D= 32confirms a silent bulk (largest middle-50%
+response=4.2% of the endpoint response, matching the closed form’s
+4.2%; 2.2% atD= 64) with extremal negative response exactly at the
+far end (argmin at position 0 as predicted); 3/3 pass.
+8
+
+===== PAGE 9 =====
+•Extrapolation (Stage A; Fig. A.3).Withθ i frozen atNmax = 2048,
+the measured endpoint coefficientc(L)at the ten registered runtime
+lengthsL∈{0.25,...,4}×N max (up to 8192) matches theory with
+per-point error≤1.8×10 −6 (max over the full 800-point float32 sweep:
+1.2×10−5); it is bounded and2Nmax-periodic (e.g.,c(L−1) =−0.9984
+atL= 2048and+0.0022atL= 2560, i.e., offsets2047and2559), while
+the standard-RoPE coefficient varies erratically (+0.20,+0.24,+0.014,
+−0.011, ...) with no closed form. All four registered judgments pass.
+Why might a dipole help retrieval?.Retrieval circuits must learn to move in-
+formation from an arbitrary earlier position to the current query; under stan-
+dard RoPE the long-range positional geometry is unstructured, and whether
+training discovers such a circuit appears to be seed-dependent (§5.2). The
+Möbius dipole provides the network with adeterministic long-range chan-
+nel at initialization; the hypothesis tested below is that this scaffold makes
+retrieval-circuit formation reliable rather than left to chance.
+4. Method: Hybrid and Ladder Head Allocation
+Anti-periodicity trades bulk positional resolution for boundary coupling,
+so imposing it on all heads is likely harmful for language modeling. We
+therefore use mixed allocations:
+Hybrid (main method)..A fractionρ= 0.25of attention heads (determin-
+istically the first⌈ρH⌉heads of every layer) use Möbius frequencies with a
+singleN max = 2048equal to the training context; the remaining 75% use
+standard RoPE (b= 10 4). For the 160M model (H= 12) this is 3 Möbius
+heads per layer; for 410M (H= 16), 4 heads. No new parameters; the only
+change is the cos/sin table applied to those heads. FLOPs, memory, and
+throughput are identical to the baseline.
+Ladder (ablation)..To test whether multi-scale dipoles help, the ladder
+variant assigns 3 heads per layer Möbius frequencies with different scales
+Nmax ∈ {512,1024,2048}(one head per scale, a positional “skip list” of
+dipoles), the rest standard. This probes whether several weaker boundary
+couplings at staggered ranges beat one strong coupling at the full context
+scale. The ladder always uses 3 Möbius heads: at 160M this matches hybrid’s
+budget (3/12), but at 410M it is 3/16 (ρ=18.75%) vs. hybrid’s 4/16 (ρ=25%),
+so the 410M ladder-vs-hybrid comparison confounds allocation with a slightly
+smaller budget.
+9
+
+===== PAGE 10 =====
+Controls (mechanism dissection)..Anti-periodicity confounds two ingredi-
+ents: where the frequencies live (a narrow low-frequency band) and how
+they are quantized (half-integer harmonics, holonomy−1). Two matched
+control allocations separate them, each identical to hybrid except for the
+special heads’ frequency table:banduses a geometric, mutually incommen-
+surate ladder spanning exactly the Möbius band[π/N, π(dh−1)/N]: same
+band placement, no holonomy class (R(N)̸=±I);periodicuses integer har-
+monicsθ i = 2π(i+1)/N(the nearest integer-harmonic band,[2π/N, πdh/N],
+one frequency bin from the Möbius band), with holonomy+1(the cylinder
+to Möbius’s band). Together with hybrid (holonomy−1) they dissect band
+placement from boundary condition across three boundary classes.
+NoPE and mobius (all-heads)..A NoPE arm (no positional encoding on any
+head) is pretrained under the identical protocol as an out-of-family reference
+(§5.3); all-heads mobius is used only in the synthetic suite (§5.1).
+5. Experiments
+All pretraining uses one pipeline: decoder-only transformers (GPT-NeoX
+tokenizer), FineWeb-Edu (Penedo et al., 2024) streamed and packed, se-
+quence length 2048, 2.0B tokens (3814 steps×524,288 tokens), AdamW, lr
+6×10 −4 cosine, bf16, H100. Two pythia-like scales (Biderman et al., 2023):
+160M (12 layers,d model=768, 12 heads) and 410M-class (405M parameters;
+24 layers,d model=1024, 16 heads);d h = 64for both. Same-seed runs within
+a training round share identical data order, so same-round within-seed com-
+parisons are paired (the control arms used a mirrored data-serving path;
+limitation 9); seed-paired tests corroborate the independent-samples tests
+reported below (e.g., pairedtatL=512, hybrid vs. standard:p= 0.110, vs.
+Welchp= 0.090).
+Evaluation..(i) Validation perplexity at 2048 and extrapolated lengths
+4096/8192 (training-time validation losses and these evaluation perplexities
+are computed on different held-out samples of the stream and are not nu-
+merically interchangeable). (ii) NIAH passkey retrieval: the needle sentence
+“Remember this important fact: the secret pass-key isword.” is planted at
+depthd∈ {0.1,...,0.9}inside coherent English filler and queried at the
+end (“Question: what is the secret pass-key? Answer: the secret pass-key
+is”); 32 trials per depth (16 words×2 contexts)×5 depths=160 trials per
+length per seed,L∈{128,...,8192}; top-1 accuracy, plus the correct token’s
+10
+
+===== PAGE 11 =====
+Lhybrid standard∆(pp) WelchpCohen’sd
+128 67.8±21.9% (46%) 46.0±30.9% (6%)+21.80.192+0.81
+256 90.0±8.0% (82%) 65.2±30.7% (22%)+24.80.107+1.10
+51290.3±5.7% (86%) 63.3±31.4% (14%)+27.00.090+1.20
+1024 55.0±15.1% (38%) 32.9±25.6% (6%)+22.10.106+1.05
+2048 27.4±8.2% (18%) 17.9±12.0% (5%)+9.50.146+0.92
+Table 1: 160M NIAH accuracy, mean±SD over 6 seeds (worst seed in parentheses). No
+mean difference reachesp <0.05atn=6; the reliability evidence lives in the variance tests
+(Table 2).
+rank in the model’s output distribution (0 = top-1) recorded for every trial.
+Harness note:an initial harness with random packed-token filler returned a
+spurious 0% for every model; all results use the corrected harness (see §6,
+limitation 6).
+5.1. Synthetic convergence
+100 training runs (25 per positional variant: none / standard / mobius /
+hybrid; mixed associative-recall, multi-needle, and reverse-copy tasks; small
+softmax-attention models) measure learning efficiency rather than ceiling.
+Final accuracy is indistinguishable across RoPE variants (65.5–65.6%), but
+Möbius reaches the 90% accuracy threshold in 28% fewer steps than standard
+(350 vs. 487; hybrid 403; Table A.6, appendix); an earlier three-seed local
+pilot atN= 256shows the same convergence ordering (Fig. A.6). This is
+consistent with the scaffold hypothesis: the dipole does not add capacity but
+accelerates the formation of recall circuits.
+5.2. Main result (160M pretraining,n= 6seeds): retrieval becomes reliable
+Six seeds per condition (hybrid vs. standard), otherwise identical. Per-
+plexity at the training length is at parity:29.66±0.09vs.29.72±0.24,
+p= 0.63; final validation losses are likewise statistically indistinguishable
+(3.333±0.018vs.3.333±0.020). NIAH separates the conditions sharply
+(Table 1; Figs. 1 and A.12; loss parity in Fig. A.9).
+Variance is the central finding..The per-seed spread is more informative
+than the means. Standard RoPE seeds atL=512: 14, 84, 39, 98, 62, 82% (a
+lottery). Hybrid seeds: 95, 86, 91, 86, 86, 99%. The robust statistic is the
+worst-seed floor: 86% vs. 14%; the hybrid’s worst seed beats the standard
+arm’s mean. The raw variance ratio atL=512is30.8×(one-sided Fp=
+11
+
+===== PAGE 12 =====
+LSD hybrid SD standard var ratio F-testpworst hyb worst std
+128 21.9% 30.9% 2.0×0.235 46% 6%
+256 8.0% 30.7% 14.7×0.0052 82% 22%
+512 5.7% 31.4% 30.8×0.0009 86% 14%
+1024 15.1% 25.6% 2.9×0.135 38% 6%
+2048 8.2% 12.0% 2.1×0.213 18% 5%
+Table2: Across-seedvarianceof160MNIAHaccuracy(n=6; allin-windowlengthsshown).
+F-testpis one-sided; atL=512the robust tests remain significant (Levene 0.014, Brown–
+Forsythe 0.029, Fligner 0.013).
+standard
+(n=6)
+hybrid
+(n=6)
+0
+20
+40
+60
+80
+100NIAH accuracy (%)
+160M, L = 512
+standard
+(n=4)
+hybrid
+(n=4)
+ladder
+(n=4)
+0
+20
+40
+60
+80
+100
+410M, L = 1024
+Figure 1: Seed-level NIAH scatter (regenerated from archived raw evaluations).Left:the
+160M retrieval seed lottery atL=512(n=6per arm): standard RoPE spans 14–98% while
+hybrid clusters at 86–99%.Right:at 410M (L=1024,n=4per arm) the reliability property
+transfers to the multi-scale ladder variant.
+0.0009) and survives distribution-robust tests (p= 0.013–0.029; Table 2).
+Part of the raw ratio is a ceiling effect (logit-scale ratio3.4×,p= 0.10),
+but the scale-free facts stand: hybrid’s SD (5.7%) sits near the iid-binomial
+reference floor (≈2.3–3.8%at 160 trials; trials share words and contexts, so
+the true noise floor may be larger) while standard’s (31.4%) is∼8×above it.
+In deployment terms, within our sample: standard seeds ranged from 14%
+to 98% while every hybrid seed retrieved at or above 86%, though six seeds
+cannot bound the population worst case.
+Retrieval failure is invisible to perplexity..Across these 12 models, Pearson
+correlation betweenppl@2048 and NIAH@512 is+0.206(≈0; if anything
+the sign is opposite to a “bad seeds are worse language models” explanation).
+The standard seed with 14% retrieval hasppl29.59, third-best in the entire
+12-model cohort. Retrieval and language modeling are decoupled skills at
+12
+
+===== PAGE 13 =====
+this scale (indeed, across the 30-model five-arm cohort the association runs
+significantly against quality; §5.3), which is exactly why the seed lottery is a
+practical risk: standard training telemetry will not catch it.
+Where the advantage lives..Depth-resolved accuracy (Fig. A.7) shows the
+hybrid advantage across all depths atL≤512(+18to+36pp), concentrating
+at late depths atL=2048(+29pp atd= 0.9); we report depth patterns
+descriptively: the kernel magnitude is symmetric inm↔N−m, so single-
+lobe geometric readings of depth are not warranted. Hybrid wins on 16/16
+passkey words.
+Robustness of the finding itself..Three internal checks argue the effect is not
+an evaluation artifact: an independent 2-seed pilot with bootstrap CIs on
+pooled trials found the same gaps (L=512:+38.8pp, 95% CI[+29.4,+47.5],
+5000 resamples); every hybrid seed sits above the standard arm’s mean at
+L=512; and the effect has structure noise would not produce (systematic
+depth structure, monotone rank separation, uniform per-word wins). The
+failure mode is clear: standard seeds 0 and 2 retrieve 14.4% and 39.4% at
+L=512with healthy perplexities (29.59 and 29.73; the cohort’s best is 29.42,
+seed 5). Two of the six standard seeds retrieve below 40% atL=512, and
+nothing in training telemetry flags them.
+5.3. Isolating the active ingredient: controls, a causal ablation, and the NoPE
+trade-off
+Three follow-up experiment families (n=6seeds each, protocol identical
+to §5.2) dissect why hybrid works.
+Band vs. boundary condition..Table 3 compares five arms atL=512. The
+band control (same low-frequency band as Möbius, but aperiodic) is statis-
+tically indistinguishable from standard RoPE in mean and variance (ratio
+1.0×): concentrating frequencies at long wavelengths does nothing by itself.
+The periodic control (holonomy+1) recovers a small, non-significant fraction
+of the reliability (3.1×, Levenep= 0.15). Only holonomy−1produces the
+effect (30.8×, all robust tests significant). The ordering (aperiodic1.0×<
+periodic3.1×<anti-periodic30.8×) is a dose–response in the boundary con-
+dition, and the controls also fall below hybrid in mean (periodic:−22.0pp,
+p= 0.028; band:−30.8pp,p= 0.058, marginal). Perplexity is at parity for
+all RoPE-family arms (Table 3), so the controls are quality-neutral; within
+this design, the reliability difference tracks the boundary condition (with the
+13
+
+===== PAGE 14 =====
+arm (n=6) holonomy NIAH@512 worst var-ratio Lev./BF/Flig.ppl@2048
+standard — (aperiodic) 63.3±31.4% 14.4% 1×— 29.72±0.24
+band ctrl — (aperiodic) 59.5±30.9% 19.4% 1.0×.83/.85/.62 29.65±0.10
+periodic ctrl+168.3±17.8% 37.5% 3.1×.15/.19/.09 29.69±0.06
+hybrid−190.3±5.7% 85.6% 30.8×.014/.029/.01329.66±0.09
+NoPE (no PE) 95.2±4.0% 88.8% 61.4×.009/.019/.00633.66±0.10
+Table 3: Mechanism dissection at 160M (L=512; variance ratios and robust variance
+tests vs. standard). Band placement alone reproduces nothing; holonomy+1a fraction;
+holonomy−1the full effect at perplexity parity. NoPE is most reliable here but pays a
+13% perplexity tax (bold = anomaly).
+caveats that the periodic band sits one frequency bin away and that limita-
+tion 9 notes a serving-path difference).
+Causal ablation: trained models need the geometry..We take the six trained
+hybrid models and, at evaluation time only, (i) swap the Möbius heads’ fre-
+quency table back to standard RoPE with all weights frozen (rope-swap),
+(ii) zero the Möbius heads’ output projection (zero-mob), or (iii) zero
+an equal number of standard heads (zero-std, damage control). Rope-
+swap, which changes no parameters, collapses retrieval from90.3±5.7%to
+41.7±26.9%atL=512(and90.0→28.1%at 256,55.0→32.8%at 1024),
+on every seed. Depth-resolved, the damage concentrates on needles far from
+the query (−55.2and−58.9pp at depths 0.1 and 0.3, easing to−36.5pp at
+depth 0.9): the trained circuit depends most on the removed geometry in the
+far half of the context, where query–needle distances are longest, consistent
+with the Möbius planes’ low-frequency long-range structure (of which the
+endpoint dipole is the extreme case). This establishes causal dependence on
+the anti-periodic geometry; attributing it to the endpoint lobe specifically
+rests on the closed form and this distance pattern, and remains partly in-
+terpretive. We caution that the head-zeroing conditions are less diagnostic:
+zero-std collapses retrieval even harder (7.2%at 512), i.e., removing any 3 of
+12 heads from these small models is catastrophic, so the causal weight rests
+on rope-swap, which removes nothing but the geometry.
+Task-scope probe: the reliability effect is specific to single-needle retrieval..
+To test generality beyond passkey NIAH, we evaluated all 30 archived check-
+points on two harder retrieval families under the identical protocol (trial-
+paired across models; 160 trials per length each):KV-lookup(4–12 key–
+value pairs planted in filler; query one key’s value) andmulti-needle(three
+14
+
+===== PAGE 15 =====
+named passkeys; query one by name). Both tasks sit near the capability floor
+at this scale (arm means 2.5–25.6% atL∈{512,1024}), and no arm, hybrid
+included, reproduces the variance-collapse signature there (all Levene tests
+n.s.; hybrid attains the best RoPE-family means on both tasks,+4.5pp KV
+and+8.4pp multi-needle atL=512, but n.s. atn=6; NoPE’s mean advan-
+tage partially generalizes,+10.4pp multi-needle,p= 0.026). Two readings
+fit these results: floor compression limits variance comparisons (the mirror
+image of the NIAH ceiling caveat), and, consistent with the mechanism, the
+dipole is a positional end-to-end channel, not a content-addressing device: it
+reliably transports a single planted signal across the context, but provides
+neither key→value binding (KV) nor disambiguation among same-format
+competitors (multi-needle). The reliability claim of this paper is therefore
+scoped to the single-needle regime that the geometry actually addresses.
+The NoPE surprise, and the trade-off..The out-of-family NoPE arm is the
+most reliable short-context retriever in the study (95.2±4.0%atL=512; flat
+depth profile 92.7–96.9%, consistent with purely content-based addressing),
+evidence that the seed lottery is largelyinduced by positional structure in-
+terfering with retrieval-circuit formation. However, this reliability comes at
+a cost on every other axis: (i) it pays a 13% perplexity tax at the training
+length (33.66 vs. 29.66–29.72; final val loss 3.474 vs. 3.333), (ii) its reliabil-
+ity is confined to short/mid context: atL=2048its own lottery re-emerges
+(SD 24.1% vs. hybrid’s 8.2%), and (iii) it extrapolates worst of all arms (ppl
+ratio5.60×atL=8192vs. standard’s3.89×). Across the 30 models of the
+five-arm control cohort (ladder excluded) the pattern generalizes: perplex-
+ity and NIAH@512 are positively correlated (r=+0.431,p=0.017; a pooled,
+between-arm association, as within-arm samples are too small to establish
+a model-level trade-off), i.e., worse language models retrieve more reliably.
+This exposes a trade-off surface across positional-encoding families on which
+hybrid Möbius is the only arm that pays neither cost: standard-RoPE per-
+plexity and a near-NoPE reliability floor within the training window (band
+matches the perplexity without the reliability; NoPE the reliability without
+the perplexity).
+5.4. Scaling to 410M-class models (405M parameters)
+Round 2 repeats the comparison at 405M parameters/2B tokens (seeds 0–
+1; all three arms were later extended ton=4, seeds 0–3; for the Möbius arms
+see §5.5). Perplexity again at parity, hybrid marginally ahead: 25.16±0.06
+15
+
+===== PAGE 16 =====
+vs. 25.26±0.12 (bothn=4). NIAH at the training length: 38.1±6.5% (hy-
+brid,n=4) vs. 34.4±16.5% (standard,n=4); per-seed 38.8/39.4/29.4/45.0%
+vs. 41.2/23.1/18.8/54.4%. Two observations:
+1.The robustness effect persists at scale, now with statistical
+support.Standard RoPE still draws unstable seeds at 410M (range
+18.8–54.4% atL=2048); hybrid’s four seeds span 29.4–45.0%. At
+matchedn=4, the variance reduction is significant (SD 6.5% vs. 16.5%,
+Levenep= 0.040) and the worst-seed floor rises from 18.8% to 29.4%.
+(At 410M the strongest reliability signature belongs to the ladder vari-
+ant, §5.5.)
+2.The mean-accuracy gap shrinks.The 160M advantage of+22to
++27pp atL≤1024becomes a deficit-to-parity at 410M. The driver
+is the baseline: standard RoPE’s absolute retrieval improves markedly
+with capacity (L=512:63→88%atn=4) while hybrid is roughly flat.
+With more capacity, standard training finds retrieval circuits on its own
+more often: the dipole scaffold matters most exactly where emergence
+is most fragile.
+Depth-resolved accuracy (see also Fig. A.11, 160M cohort) sharpens the
+picture: atL=2048all variants score 0% for needles in the first third of the
+context, and the hybrid advantage is confined to the latest depth (+23.4pp
+atd=0.9;+0.8pp atd=0.7); as above, we treat depth profiles as descriptive.
+The picture is not uniformly favorable: atL=512hybrid trails standard
+at most depths (−18.8pp atd=0.1,−11.7pp atd=0.9, parity only at mid
+depths), consistent with its overall mean deficit at this length (Table 5). Sub-
+top-1 analysis mirrors 160M: median rank atL=2048is 2.5 (hybrid) vs. 6
+(standard), pooled over then=4seeds.
+5.5. Ladder ablation: a negative result at 160M, and a confirmed reversal at
+410M
+160M,n= 6: multi-scale is clearly worse..Theladdervariant(Möbiusheads
+split acrossN max∈{512,1024,2048}) was hypothesized to add mid-range
+retrieval structure. It does the opposite (Table 4).
+Ladder is statistically indistinguishable from standard and far below hy-
+brid; the effective retrieval window (mean≥50%) is 512 tokens for ladder
+and standard vs. 1024 for hybrid. Interpretation: with only 3 Möbius heads
+per layer, splitting across scales leaves one head per scale (dipole dilution).
+This negative result is primary evidence for the single-dipole mechanism.
+16
+
+===== PAGE 17 =====
+Lladder hybrid standard∆(lad−hyb, pp) Welchp
+512 60.3±20.7% 90.3±5.7% 63.3±31.4%−30.00.015
+1024 25.8±15.0% 55.0±15.1% 32.9±25.6%−29.20.007
+2048 13.5±9.0% 27.4±8.2% 17.9±12.0%−13.90.020
+Table 4: 160M ladder ablation (n=6): multi-scale allocation is significantly worse than
+single-scale hybrid.
+metricladder (n=4)hybrid (n=4) standard (n=4) lad. vs. hyb.p
+NIAH @25681.9±9.8%69.7±20.2% 72.0±19.2% 0.33
+NIAH @51290.3±5.0%80.9±13.5% 88.3±12.3% 0.27
+NIAH @102469.8±3.4%57.8±15.2% 67.2±17.7% 0.21
+NIAH @204838.9±3.0%38.1±6.5% 34.4±16.5% 0.84
+ppl@204824.70±0.6925.16±0.06 25.26±0.12 0.28
+ppl@409635.72±0.6338.71±1.12 36.65±1.080.006
+ppl@819282.92±3.0296.48±3.82 85.21±5.380.002
+val loss 3.1456±0.0308 3.1509±0.0234 3.1475±0.0364 † —
+Table 5: 410M three-way comparison, nown=4per arm (standard seeds 2–3 added in
+Round 4). Welch tests, ladder vs. hybrid.†val loss for standard from the originaln=2
+logs.
+410M,n= 4per Möbius arm: the reversal, confirmed..At 410M the picture
+flips. An initialn=2signal (ladder best on every metric, but with a data-
+order confound from mid-training stream-crash resumes) prompted four ad-
+ditional clean runs (seeds 2–3 for both ladder and hybrid, identical protocol
+and single-run data order). The reversal’s direction survives (Table 5), with
+an important refinement about which part is statistically solid.
+We note three findings.(i) The extrapolation-perplexity advantage
+is the solid one:ladder beats hybrid onppl@4096 in all four seed-paired
+comparisons (deltas−3.46,−3.09,−4.01,−1.41; Welchp= 0.006at 4096,
+0.002at 8192; pairedt:0.013,0.005), eliminating the data-order confound:
+multi-scale Möbius pays no extrapolation tax and extrapolates best of all
+variants including standard.(ii) The NIAH advantage is real in means
+but driven by variance:ladder has the highest mean at every length
+and the smallest seed-variance of all three arms (±3.4vs. hybrid’s±15.2
+and standard’s±17.7atL=1024, alln=4), but the mean differences do not
+individually reach significance (p= 0.21–0.84) and per-pair results are het-
+17
+
+===== PAGE 18 =====
+erogeneous. The correct claim is that at 410M ladder inherits the reliability
+property that hybrid exhibits at 160M.(iii) The 160M→410M sign flip
+itself is unambiguous(from−30pp,p=0.015against ladder to+9–12pp in
+its favor atL≤1024,+0.8pp at 2048; formal capacity×allocation interaction
+atL=512:z= 3.5,p= 0.0005): a capacity–scale interaction (concentrate
+the budget when heads are scarce, distribute it when heads are plentiful),
+with the §4 caveat that at 410M ladder also carries a smaller budget (18.75%
+vs. 25%), so allocation and budget are not fully separable.
+5.6. Beyond the training length: a critical collapse, common to all variants
+Retrieval collapses past the training window in every arm: NIAH is ex-
+actly0.0%forhybrid, standard, andladderatL∈{3072,4096,6144,8192}at
+both scales, every seed; the control arms follow (band and periodic: exactly
+0% atL=3072; NoPE: arm mean 2.5% at 3072, one seed retaining 11.2%,
+exactly 0% atL≥4096; NoPE additionally suffers the worst extrapolation
+perplexity,5.60×atL=8192). Three probes show this is a sharp transition,
+not gradual decay:
+•Rank cliff(see also Fig. A.8 for the 160M cohort). Median rank of
+the correct token (410M, pooled over then=4seeds): 2.5 (hybrid) / 6
+(standard) / 3 (ladder) atL=2048→8,436/9,547/8,672atL=3072
+(chance≈25,000). The fraction of trials with rank≤10falls from
+∼52–55%to≤0.3%. Even sub-top-1 retrieval signal vanishes across
+the boundary.
+•Attention-mass evaporation(Fig. A.10). Layer-wise probing
+(160M, seed 2): peak attention mass on the needle span is 0.073 (hy-
+brid) / 0.043 (standard) atL=2048, concentrated at layer 9 (the re-
+trieval layer) and collapses to 0.004 / 0.004 at 3072 and 0.003 / 0.003
+at 4096, with the peak relocating to layer 0 (i.e., no layer attends to
+the needle at all).
+•Entropy flattening.Normalized attention entropy at the retrieval
+layer rises from 0.54 (L=2048) toward uniform (0.85 at 3072, 0.90 at
+4096). Attention does not mis-retrieve out-of-distribution; it diffuses.
+This is a generic OOD failure of models trained at fixed context, indiffer-
+ent to the positional variant. Möbius theory says its geometry stays bounded
+under extrapolation (§3.4), and it does, but bounded geometry cannot com-
+pensate for query/key statistics that were never trained pastNmax.
+18
+
+===== PAGE 19 =====
+Extrapolation perplexity cost..Hybrid pays a real, if modest, tax out-of-
+window: 160Mppl@4096 55.05 vs. 51.19 (×1.86 vs.×1.72 overppl@2048;
+p= 0.031) and @8192 132.65 vs. 115.47 (p <0.001); at 410M (n=4vs.
+n=4),×1.54 vs.×1.45 at 4096 and 96.5 vs. 85.2 at 8192. The cost shrinks
+with scale but persists. Ladder pays no such tax (×1.45 at 410M, the best
+extrapolationpplof all three 410M arms). Plausibly thec≈−1endpoint
+lobe re-entering atL > Nmax injects spurious long-range coupling into text
+that no longer warrants it.
+6. Discussion and Limitations
+What we claim..Within the training context length, replacing the frequency
+table on 25% of heads with anti-periodic frequencies (i) leaves perplexity un-
+changed, (ii) increases mean in-context retrieval accuracy at small scale, and
+(iii), the central finding, collapses the across-seed variance of retrieval capa-
+bility at 160M (robust variance testsp= 0.013–0.029, unadjusted; limitation
+4), raising the observed worst-seed floor from 14% to 86%; at 410M (n=4
+per arm) the variance reduction is significant (Levenep= 0.040) and the
+floor rises from 19% to 29%, with the strongest reliability signature transfer-
+ring to the ladder allocation. The mechanism is no longer merely consistent
+with the closed-form dipole; it isisolated(matched band and periodic con-
+trols reproduce none/little of the effect, §5.3) andcausally probed(freezing
+all weights and removing only the geometry collapses retrieval, with damage
+concentrated at long range): a deterministic end-to-end positional channel
+that suppresses the stochasticity of retrieval-circuit formation.
+What we do not claim..Möbius RoPE is not a long-context method: it does
+not extend usable context by a single token, all variants collapse pastNmax
+(§5.6), and hybrid slightly worsens extrapolation perplexity. The correct
+positioning isin-training-length retrieval robustness.
+Limitations and threats to validity..(1) Scale:largest model is 405M /
+2B tokens; the 160M→410M trend (baseline improves, mean gap shrinks,
+variance gap persists) is extrapolation from two points.(2) Task scope
+(now measured, not merely unknown):the variance-collapse effect
+is established for single-needle passkey retrieval; on harder families (KV-
+lookup, multi-needle) 160M models are near the capability floor and no arm
+shows the signature (§5.3), so claims should not be extrapolated beyond the
+single-needle regime; QA-over-context and downstream benchmarks remain
+19
+
+===== PAGE 20 =====
+untested.(3) Ladder NIAH means not individually significant at
+410M:the 160M negative result is solid (n=6,p≤0.02) and the 410M
+extrapolation-ppladvantage consistent (p= 0.006, all four seed pairs agree-
+ing), but 410M NIAH mean differences do not reachp <0.05atn=4; that
+claim rests on consistent ordering plus variance reduction. Practical rule:
+single-scale hybrid at≤160M-class, ladder at≥410M-class.(4) Statistical
+power:atn=6, no 160M hybrid-vs-standard mean-difference test reaches
+p <0.05(minp= 0.09); the mean claims are effect-size claims (dup to
+1.2), and the inferential weight rests on the robust variance tests and the
+worst-seed floor; the raw30.8×ratio is partly a ceiling artifact (logit-scale
+3.4×). Allp-values are unadjusted; under a conservative Bonferroni correc-
+tion over the five evaluated lengths theL=512robust variance tests attenuate
+top= 0.065–0.145(and the 410M Levene top= 0.20), so single-length sig-
+nificance should be read as exploratory; the cross-length consistency of the
+variance ordering (Table 2) and the recurrence at 410M carry the inferen-
+tial weight. All per-seed values for the headline comparisons are reported.
+(5) Hyperparameters not swept:ρ= 0.25, head placement, andNmax =
+traininglengthwerefixedapriori.(6)Evaluationfragility:ourfirstNIAH
+harness silently returned 0% for all models (filler-packing bug); we fixed and
+re-scored, and report this to flag how brittle retrieval evals are.(7) Controls
+at one scale:the band/periodic controls and the NoPE arm were run at
+160M only; the boundary-class dissection is not yet replicated at 410M.(8)
+Head-zeroing ablations are confounded:removing any 3 of 12 heads
+is broadly destructive (§5.3); the causal claim rests on the weight-preserving
+rope-swap condition.(9) Data serving path:the Round-4 arms (band,
+periodic, NoPE, 410M standard seeds 2–3) were trained on a mirrored copy
+of the identical FineWeb-Edu shards served from local disk (a CDN outage
+made Hugging Face Hub streaming unavailable); same data and shuffle pro-
+cedure, but byte-identical stream order relative to the original arms is not
+guaranteed. Arm-level comparisons are across seed distributions and are not
+expected to be sensitive to serving order, but we cannot fully exclude residual
+data-order effects; we disclose this for completeness.
+Outlook..The seed lottery itself deserves attention: capability variance
+across seeds is invisible to loss-based monitoring yet operationally decisive.
+Deterministic geometric scaffolds, of which the anti-periodic dipole is one
+instance, may be a general tool for converting fragile emergent circuits into
+reliable ones.
+20
+
+===== PAGE 21 =====
+7. Conclusion
+We introduced anti-periodic boundary conditions into positional encod-
+ing: Möbius RoPE, whose−1holonomy couples the ends of the training
+context through a closed-form Dirichlet dipole. On 25% of heads at zero
+cost, it leaves perplexity untouched while making retrieval reliable: the ob-
+served 160M worst-seed floor rises from 14% to 86% (robust variance tests
+p= 0.013–0.029, unadjusted), replicating at 410M (Levenep= 0.040).
+Matched controls show the effect is specific to anti-periodicity (same-band
+aperiodic and periodic (+1) ladders reproduce a1.0×and3.1×fraction of
+the30.8×variance reduction), and a weight-frozen geometry swap collapses
+trained models’ retrieval, establishing causal dependence on the anti-periodic
+geometry. Across the wider design space, NoPE attains reliability at a 13%
+perplexity tax and standard RoPE attains quality at the price of a retrieval
+lottery; theanti-periodichybridistheonlyobservedconfigurationthatavoids
+both costs. A multi-scale variant fails at 160M yet leads at 410M: a capacity-
+dependent allocation rule. A one-line frequency swap provides free insurance
+against the retrieval seed lottery within the training context.
+CRediT authorship contribution statement
+Ji Ho Bae:Conceptualization, Methodology, Software, Validation, For-
+mal analysis, Investigation, Resources, Data curation, Writing – original
+draft, Writing – review & editing, Visualization, Project administration.
+Declaration of competing interest
+The author declares that he has no known competing financial interests
+or personal relationships that could have appeared to influence the work
+reported in this paper.
+Funding
+This research did not receive any specific grant from funding agencies in
+the public, commercial, or not-for-profit sectors; cloud compute costs were
+self-funded.
+21
+
+===== PAGE 22 =====
+Data availability
+All raw evaluation records (per-trial retrieval outcomes), training logs,
+final model weights and optimizer checkpoints for the 48 pretrained mod-
+els (all later-round models and all surviving original checkpoints), the ex-
+act training-data shards (with SHA-256 manifests), the complete train-
+ing/evaluation/analysis code, and per-run launch commands are archived.
+Toward the journal’s research-data policy (Option C): at submission time
+this deposit is not yet public; the complete package will be deposited in a
+public repository with a citable DOI upon acceptance, and is available to
+the editors and reviewers on request during review. One 410M checkpoint
+(hybrid, seed 1) was lost to a compute-instance failure after its evaluation
+completed; its statistics are intact and a same-seed retrained checkpoint is
+archived. AllWelchp-valuesusetheexactStudent-tdistributionwithWelch–
+Satterthwaite degrees of freedom.
+Appendix A. Additional tables and figures
+variant mean final acc runs reaching 90% mean steps to 90%
+none 59.9% 12/25 621
+standard 65.5% 15/25 487
+hybrid65.6% 15/25403
+mobius65.6% 15/25350
+Table A.6: Synthetic suite, 100 runs: final accuracy is indistinguishable across RoPE
+variants, but Möbius reaches the 90% threshold in 28% fewer steps than standard.
+References
+Biderman, S., Schoelkopf, H., Anthony, Q. G., Bradley, H., O’Brien, K., Hal-
+lahan, E., Khan, M. A., Purohit, S., Prashanth, U. S., Raff, E., Skowron,
+A., Sutawika, L., & van der Wal, O. (2023). Pythia: A suite for analyz-
+ing large language models across training and scaling. InProceedings of
+the 40th International Conference on Machine Learning(pp. 2397–2430).
+PMLR.https://proceedings.mlr.press/v202/biderman23a.html
+22
+
+===== PAGE 23 =====
+Figure A.2: Phase 1: Möbius vs. standard attention maps. The Möbius map exhibits
+the predicted Dirichlet-kernel structure with the sign-flipped anti-diagonal (end-to-end
+dipole); maximum deviation from the closed form (Eq. 5) is1.33×10−6.
+Chen, S., Wong, S., Chen, L., & Tian, Y. (2023).Extending context window
+of large language models via positional interpolation(arXiv:2306.15595).
+arXiv.https://doi.org/10.48550/arXiv.2306.15595
+Ding, Y., Zhang, L. L., Zhang, C., Xu, Y., Shang, N., Xu, J., Yang, F., &
+Yang, M. (2024). LongRoPE: Extending LLM context window beyond 2
+million tokens. InProceedings of the 41st International Conference on Ma-
+chine Learning(pp. 11091–11104). PMLR.https://proceedings.mlr.
+press/v235/ding24i.html
+Ezawa, H., Tomozawa, Y., & Umezawa, H. (1957). Quantum statistics of
+fields and multiple production of mesons.Il Nuovo Cimento,5(4), 810–
+841.https://doi.org/10.1007/BF02903206
+Halacheva, A.-M., Nayyeri, M., & Staab, S. (2024).Expanding expressivity
+in transformer models with MöbiusAttention(arXiv:2409.12175). arXiv.
+https://doi.org/10.48550/arXiv.2409.12175
+23
+
+===== PAGE 24 =====
+Figure A.3: Stage A: with frequencies frozen atN max = 2048, the Möbius endpoint
+coefficient is bounded and2N max-periodic under extrapolation to4×N max, matching
+Eq. 5 to≤1.8×10 −6 at the ten registered test points (float32 sweep max1.2×10−5,
+bottom panel), while standard RoPE’s coefficient drifts erratically.
+Hua, E., Jiang, C., Lv, X., Zhang, K., Sun, Y., Fan, Y., Zhu, X., Qi, B., Ding,
+N., & Zhou, B. (2025). Fourier position embedding: Enhancing attention’s
+periodic extension for length generalization. InProceedings of the 42nd
+International Conference on Machine Learning(pp. 24932–24949). PMLR.
+https://proceedings.mlr.press/v267/hua25b.html
+Huo, S. (2026).Periodic RoPE for infinite context LLMs(arXiv:2605.27980).
+arXiv.https://doi.org/10.48550/arXiv.2605.27980
+Kamradt, G. (2023).Needle in a haystack: Doing simple retrieval from LLM
+models at various context lengths[Computer software]. GitHub.https:
+//github.com/gkamradt/needle-in-a-haystack
+Kazemnejad, A., Padhi, I., Ramamurthy, K. N., Das, P., & Reddy, S. (2023).
+Theimpactofpositionalencodingonlengthgeneralizationintransformers.
+InAdvances in Neural Information Processing Systems(Vol.36, pp.24892–
+24928).https://arxiv.org/abs/2305.19466
+Matsubara, T. (1955). A new approach to quantum-statistical mechanics.
+24
+
+===== PAGE 25 =====
+Figure A.4: Phase 2: end-to-end signal transport atN= 10,000through the negative
+dipole lobe (cos(o, V) =−0.9606) and runtime scaling (log–log slope 1.002).
+Figure A.5: Phase 2.5: dipole profile census atN= 10,000,D= 32: silent bulk (largest
+middle-50% response 4.2% of the endpoint response; 2.2% at thedh = 64used in pretrain-
+ing), extremal negative response at the far end.
+Progress of Theoretical Physics,14(4), 351–378.https://doi.org/10.
+1143/PTP.14.351
+Mohtashami, A., & Jaggi, M. (2023). Random-access infinite context length
+for transformers. InAdvances in Neural Information Processing Systems
+(Vol. 36).https://arxiv.org/abs/2305.16300
+Olsson, C., Elhage, N., Nanda, N., Joseph, N., DasSarma, N., Henighan, T.,
+Mann, B., Askell, A., Bai, Y., Chen, A., Conerly, T., Drain, D., Ganguli,
+D., Hatfield-Dodds, Z., Hernandez, D., Johnston, S., Jones, A., Kernion,
+J., Lovitt, L., ... Olah, C. (2022). In-context learning and induction
+25
+
+===== PAGE 26 =====
+Figure A.6: Local pilot: needle-recall training curves atN= 256; Möbius converges∼20%
+faster on 3/3 seeds.
+Figure A.7: 160M (n=6): depth×length NIAH heatmaps, hybrid vs. standard, and their
+difference.
+heads.Transformer Circuits Thread.https://transformer-circuits.
+pub/2022/in-context-learning-and-induction-heads/index.html
+Penedo, G., Kydlíček, H., Ben Allal, L., Lozhkov, A., Mitchell, M., Raffel,
+C., von Werra, L., & Wolf, T. (2024). The FineWeb datasets: Decanting
+the web for the finest text data at scale. InAdvances in Neural Information
+Processing Systems(Vol. 37, pp. 30811–30849).https://arxiv.org/abs/
+2406.17557
+Peng, B., Quesnelle, J., Fan, H., & Shippole, E. (2024). YaRN: Efficient
+context window extension of large language models. InThe Twelfth Inter-
+26
+
+===== PAGE 27 =====
+Figure A.8: Rank of the correct token vs. context length (160M cohort, pooled across
+seeds and depths): sub-top-1 retrieval signal separates hybrid from standard within the
+training window and vanishes for both beyond it.
+national Conference on Learning Representations.https://openreview.
+net/forum?id=wHBfxhZu1u
+Press, O., Smith, N. A., & Lewis, M. (2022). Train short, test long: Attention
+with linear biases enables input length extrapolation. InThe Tenth Inter-
+national Conference on Learning Representations.https://openreview.
+net/forum?id=R8sQPpGCv0
+Su, J., Ahmed, M., Lu, Y., Pan, S., Wen, B., & Liu, Y. (2024). RoFormer:
+Enhanced transformer with rotary position embedding.Neurocomputing,
+568, Article 127063.https://doi.org/10.1016/j.neucom.2023.127063
+Tian, Q., Zhu, W., Liu, X., Wang, X., & Wang, R. (2026). MrRoPE: Mixed-
+radix rotary position embedding. InThe Fourteenth International Confer-
+ence on Learning Representations.https://openreview.net/forum?id=
+1J63FJYJKg
+27
+
+===== PAGE 28 =====
+Figure A.9: Validation-loss trajectories for the 12 original 160M runs: all converge to 3.30–
+3.35 (loss parity across conditions); the retrieval divergence (Table 1) is invisible here.
+Figure A.10: Collapse trace (160M, seed 2): per-layer needle attention mass atL=
+2048vs.4096(left) and normalized attention entropy rising toward uniform (right). The
+retrieval layer (layer 9) collapses to≈0.003–0.004needle mass past the training length;
+the intermediateL=3072values quoted in §5.6 come from the same trace data.
+28
+
+===== PAGE 29 =====
+Figure A.11: Retrieval distance analysis (160M cohort): accuracy as a function of query–
+needle distance.
+128 256 512 1024 2048 30724096 61448192
+context length L
+0
+20
+40
+60
+80
+100NIAH accuracy (%)
+160M
+standard (n=6)
+hybrid (n=6)
+ladder (n=6)
+128 256 512 1024 2048 30724096 61448192
+context length L
+410M
+standard (n=4)
+hybrid (n=4)
+ladder (n=4)
+Figure A.12: NIAH accuracy vs. context length (mean±SD across seeds; regenerated
+from archived raw evaluations), standard/hybrid/ladder at both scales, 160M (n=6per
+arm) and 410M (n=4per arm, including the extended standard arm), with the training-
+length boundary marked.
+29

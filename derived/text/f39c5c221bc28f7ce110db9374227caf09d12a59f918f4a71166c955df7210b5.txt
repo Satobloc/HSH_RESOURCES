@@ -1,0 +1,2465 @@
+===== PAGE 1 =====
+Gauge Geometry of Hodge Zero-Mode Transport in
+Parameter-Dependent Topological Data Analysis
+Satoshi Kanno 1*, Rei Nishimura 1, Hiroshi Yamauchi 1,
+Yoshi-aki Shimada1
+1* Quantum Information Technology Department, Quantum
+Technology Division, Product Research and Development Division,
+SoftBank Corp., 1-7-1 Kaigan, Minato-ku, 105-7529, Tokyo, Japan .
+*Corresponding author(s). E-mail(s): satoshi.kanno06@g.softbank.co.jp;
+Contributing authors: rei.nishimura@g.softbank.co.jp;
+hiroshi.yamauchi@g.softbank.co.jp;
+yoshiaki.shimada01@g.softbank.co.jp;
+Abstract
+We propose a practical computational framework for detecting structural changes
+in parameter-dependent topological data. In many applications, such as time-
+series data analysis, anomaly detection, and monitoring of systems under
+changing control parameters, persistence diagrams describe the birth and death
+of topological features at each parameter value, but they do not fully capture
+how these features are reorganized over time. To address this limitation, we rep-
+resent homological features by zero modes of the ordinary combinatorial Hodge
+Laplacian and track the corresponding feature spaces in a common ambient
+chain space. This allows us to compute curvature and holonomy as descriptors
+of local reorganization and accumulated memory in evolving topological struc-
+tures. Curvature highlights parameter regions where homological features mix or
+change rapidly, while holonomy summarizes the net effect of such changes after
+a closed cycle. We also establish stability estimates showing that these descrip-
+tors are robust under perturbations of the Hodge Laplacian on regular regions.
+Numerical experiments on controlled time-dependent point-cloud data show that
+the proposed method detects tracking instability, distinguishes systems with
+nearly identical persistence diagrams, and captures cycle-level memory invisible
+to pointwise feature matching. These results suggest that zero-mode trans-
+port geometry can serve as a useful computational tool for analyzing dynamic
+topological data.
+1
+arXiv:2605.28326v1  [math.AT]  27 May 2026
+
+===== PAGE 2 =====
+Keywords:Topological data analysis, Hodge Laplacian, Parameter-dependent
+homology, Berry connection
+1 Introduction
+Persistent homology [1–5] is one of the central tools in topological data analysis. It
+extracts topological structures from data through a filtration and summarizes their
+robustness in terms of birth and death. Barcodes and persistence diagrams provide
+concise representations of the lifetimes of topological features, and have been widely
+used in both theory and applications, including glassy states[6–8], materials science,
+machine learning, and neural network analysis[9–17].
+In many applications, data depend not only on a filtration parameter but also
+on an additional external parameter, such as time, an external field, a control vari-
+able, an environmental variable, or an experimental condition. In such situations, it
+is practically important to describe and quantify how persistent homology, or more
+generally homological features, change as the external parameter varies. For example,
+when filtrations are constructed at successive times from time-series medical images,
+large changes in homological structure may be used as indicators of abnormal behav-
+ior. Similarly, when time-series data are analyzed by delay-coordinate embedding, or
+Takens embedding, changing the observation window produces a family of filtrations
+depending on a window parameter. In this case, detecting changes in the resulting
+homological features is useful for anomaly detection and the analysis of state transi-
+tions. Thus, tracking homology along variations of an external parameter is not merely
+a mathematical problem, but an important practical task in data analysis. In particu-
+lar, one needs tools that describe not only the birth and death of topological features
+at each parameter value, but also how the corresponding homological feature spaces
+themselves vary over parameter space.
+A representative viewpoint for such situations is given by vineyards [18, 19]. Vine-
+yards track how points in persistence diagrams move as the underlying data vary,
+thereby visualizing the evolution of topological features. This viewpoint is intuitive
+and has the advantage of directly displaying the motion of features in the diagram.
+By contrast, zigzag persistence [20] extends interval-decomposition-type descriptions
+to diagrams with both forward and backward maps, rather than aiming to describe
+the transport of feature spaces along an external parameter. Likewise, much of multi-
+parameter persistence treats the additional parameter itself as a filtration coordinate,
+so that the entire structure becomes a genuine multifiltration, as in the rank invariant
+[21], fibered barcodes and their visualization in RIVET [22], Hilbert functions [23],
+and multiparameter landscapes [24]. The setting of the present work is different: the
+scale parameter is regarded as the filtration parameter, while the second variable is
+treated as an external parameter such as time or a control variable.
+Although vineyards provide an important description, any approach based on
+pointwise tracking has intrinsic limitations. When several significant persistence points
+approach one another, or when many short-lived features appear simultaneously,
+matching diagram points becomes unstable, and small perturbations can substantially
+2
+
+===== PAGE 3 =====
+change the correspondence. Moreover, even when local tracking is possible, it may fail
+to extend to a globally consistent labeling[25, 26]. Thus, parameter-dependent topo-
+logical structure cannot always be fully described by trajectories of labeled points in
+persistence diagrams.
+This difficulty reflects the fact that homology is, at each parameter value, a finite-
+dimensional vector space. Choices of generators or representative cycles are generally
+not unique and need not be preserved under parameter variation. A basis that appears
+natural at one parameter value may become a different linear combination at another.
+Hence, tracking individual generators or feature labels is basis-dependent, whereas the
+intrinsic object is the variation of the homology space itself.
+In this work, we therefore shift attention from individual persistence-diagram
+points to the reorganization of homological feature spaces. Rather than asking only
+how diagram points move, we ask how the corresponding homology spaces are
+transported, mixed, and reorganized over parameter space. Since homology is a finite-
+dimensional vector space at each parameter value, these spaces can be regarded as
+fibers over parameter space, and their variation can be formulated as a transport
+problem for homological vector spaces.
+We make this transport geometry concrete using the ordinary combinatorial Hodge
+Laplacian. For a finite simplicial complex, the discrete Hodge theorem identifies
+the zero eigenspace of the Hodge Laplacian with homology. Thus, for a parameter-
+dependent filtration, the homology at each scale and external parameter value can
+be realized as a Hodge zero-mode space. The key point is that, instead of choos-
+ing individual generators or representative cycles, one can obtain a basis-independent
+description by using the orthogonal projection onto the zero-mode space. More con-
+cretely, we embed the zero-mode spaces into a common Hilbert space and regard them
+as a zero-mode bundle over regular regions where the zero-mode multiplicity is con-
+stant and a spectral gap is maintained. On this bundle, a change of basis acts as a
+gauge transformation, while the curvature defined by the projection formula, as well as
+spectral quantities, invariant norms, and trace-type quantities derived from holonomy,
+provide gauge-invariant information. Therefore, our method describes the reorganiza-
+tion of homological feature spaces through zero-mode projections and gauge-invariant
+geometric quantities, rather than through generator tracking that depends on choices
+of bases or labels.
+The proposed framework is not intended to replace vineyards. Rather, zero-mode
+transport is naturally connected to vineyard-type tracking. In regular regimes where
+persistence features are well separated and matching is stable, zero-mode transport is
+numerically consistent with vineyard-type monodromy. In this sense, the correspon-
+dences and exchanges described by vineyards can be viewed as coarse observations
+of transport in the zero-mode space. At the same time, because the proposed quan-
+tities are defined from the geometry of Hodge zero-mode subspaces rather than from
+a choice of labels or bases, transport, curvature, and holonomy remain stably com-
+putable even when persistence points approach one another and vineyard matching
+becomes ambiguous. This is one of the central numerical findings of this work.
+The resulting quantities capture information that is difficult to detect by rank-type
+summaries or pointwise matching alone. Curvature measures local reorganization of
+3
+
+===== PAGE 4 =====
+homological feature spaces and the noncommutativity of infinitesimal transport, while
+holonomy records the cumulative effect of transport along closed loops, corresponding
+to global memory or monodromy. Thus, even when Betti numbers remain constant
+or persistence diagrams change only slightly, the internal structure of the zero-mode
+space may rotate, mix, or reorganize in a detectable way. The novelty of this work lies
+in formulating parameter-dependent homology as a transport theory of homological
+feature spaces and describing their reorganization through curvature and holonomy.
+This viewpoint is also related to recent developments in quantum topological
+data analysis[27–33], where Hodge Laplacians, persistent Laplacians[34, 35], and other
+operator-based formulations play an important role. Since our construction is based
+directly on Laplacian zero modes and Berry-type geometry of subspaces, it suggests
+a possible connection between parameter-dependent topological data analysis and
+quantum geometric structures.
+The main contributions of this work are as follows.
+• A zero-mode transport geometry based on the ordinary Hodge Lapla-
+cian.We formulate parameter-dependent homology as a transport geometry of
+zero-mode spaces associated with the ordinary combinatorial Hodge Laplacian. This
+provides a framework for describing the reorganization of homological feature spaces
+in terms of zero-mode projections, Berry-type connections, curvature, and holonomy.
+• Theoretical and numerical stability of the proposed zero-mode geome-
+try .We show that, on regular regions, the zero-mode projection and the curvature
+defined by the projection formula are locally stable under perturbations of the Hodge
+Laplacian as an operator family. Numerical experiments further support the stable
+computation of curvature under noise and small perturbations.
+• Numerical relation to vineyard tracking and detection of additional
+transport information.We show numerically that zero-mode transport repro-
+duces vineyard-type feature tracking in regular regimes, while remaining stably
+computable when persistence points approach one another and vineyard matching
+becomes unstable. We further show that curvature and holonomy detect mixing,
+reorganization, and cycle-level memory of homological feature spaces, which are
+difficult to capture by pointwise matching alone.
+Overall, this work provides a framework for studying time-evolving data and data
+depending on external parameters through the transport geometry of homological fea-
+ture spaces. It enables the analysis not only of the existence and lifetime of topological
+features, but also of the reorganization, transport, and memory effects of their internal
+structure.
+This paper is organized as follows. Section 2 reviews parameter-dependent persis-
+tent homology and the limitations of pointwise feature tracking. Section 3 introduces
+the Hodge zero-mode bundle, together with curvature, holonomy, and stability on
+regular regions. Section 4 explains their interpretation as descriptors of local reorga-
+nization and global memory. Section 5 presents numerical experiments demonstrating
+the usefulness of the proposed descriptors. Section 6 concludes with discussion and
+future directions.
+4
+
+===== PAGE 5 =====
+2 Background and Motivation
+In this section, we review the basic concepts and notation used in this paper. We
+first recall the definitions of filtrations and persistent homology, and then formulate
+the setting in which an additional parameter independent of the filtration parameter
+is present. We then briefly discuss the idea of pointwise tracking in persistence dia-
+grams, as represented by vineyards, and its limitations. Based on these preparations,
+in the next section we introduce the zero-mode bundle construction using the ordinary
+combinatorial Hodge Laplacian.
+In the geometric and operator-theoretic parts of this paper, we use adjoint oper-
+ators, orthogonal projections, Hodge Laplacians, and Berry connections. Therefore,
+chain groups are regarded as finite-dimensional Hilbert spaces overRorC. Each chain
+group is equipped with the standard inner product for which the oriented simplices
+form an orthonormal basis. Hence the Hodge Laplacians and zero-mode projections
+used below are defined with respect to this inner product.
+2.1 Filtrations and persistent homology
+We first recall the basic notion of a filtration. LetIbe a totally ordered set. A family
+of simplicial complexes
+{Ka}a∈I
+is called a filtration if
+a≤b=⇒K a⊂K b
+for alla,b∈I. In this paper, we mainly consider the caseI⊂R. Typical exam-
+ples include Vietoris–Rips filtrations and ˇCech filtrations associated with finite point
+clouds.
+Given a filtration, for eacha≤bthere is an inclusion map
+ιa,b :K a ,→Kb.
+The image of the induced linear map on homology
+(ιa,b)∗ :H q(Ka)→H q(Kb)
+is called theq-th persistent homology fromatob:
+Ha,b
+q := Im (Hq(Ka)→H q(Kb)).
+Its dimension
+βa,b
+q := dimHa,b
+q
+is called the persistent Betti number.
+The persistent Betti number counts the number ofq-dimensional features that have
+appeared by scaleaand remain alive until scaleb. In this sense, persistent homology
+describes not only the existence of topological features, but also their robustness across
+scales.
+5
+
+===== PAGE 6 =====
+In one-parameter persistent homology, every pointwise finite-dimensional persis-
+tence module decomposes as a direct sum of interval modules. Consequently, its
+isomorphism class is described by a barcode, equivalently by a persistence diagram.
+This is why birth–death data play a central role in one-parameter persistent homology.
+2.2 An additional parameter independent of the filtration
+In many applications, persistent homology depends not only on the filtration param-
+eter, but also on an additional parameter independent of the filtration. The most
+typical example is time-dependent data, but the same situation also appears for data
+depending on external fields, control variables, temperature, pressure, environmental
+variables, or experimental conditions.
+LetA⊂Rbe the filtration-parameter set, and let Λ be an additional parameter
+space. We consider a family
+{K(a,λ)} (a,λ)∈A×Λ.
+If, for each fixedλ∈Λ,
+a≤b=⇒K(a,λ)⊂K(b,λ),
+then this family is called a parameter-dependent filtration.
+For each fixedλ, one obtains the usual one-parameter persistent homology
+Ha,b
+q (λ) = Im (Hq(K(a,λ))→H q(K(b,λ)) ).
+Thus, for eachλ, one may compute a persistence diagram or barcode. However, when
+an additional parameter is present, computing these objects separately for eachλdoes
+not by itself fully describe how the topological structure changes asλvaries.
+In this paper, we do not regard the additional parameter as a second filtration
+coordinate. In other words, our setting is not that of genuine multiparameter persis-
+tence itself. Rather, we consider a situation in which an external parameter, such as
+time or a control variable, is present in addition to the filtration direction. From this
+viewpoint, the problem is not to construct a barcode-type complete invariant, but to
+describe how homological features vary along the external parameter.
+2.3 Vineyards and feature tracking
+A natural way to understand persistent homology depending on an additional param-
+eter is to track points in the persistence diagram. This viewpoint is known as the
+vineyard construction. Informally, asλvaries, the persistence-diagram points
+(bi(λ),di(λ))
+move in the plane, and their trajectories are interpreted as the evolution of topological
+features.
+6
+
+===== PAGE 7 =====
+This viewpoint is natural and has the advantage of directly visualizing feature
+evolution. In particular, when the diagram points are well separated and the corre-
+sponding features are clearly distinguishable, vineyard-style tracking gives an effective
+description.
+However, pointwise tracking has limitations. When several important features
+approach one another in the persistence diagram, it becomes unstable to decide which
+point should be regarded as the continuation of which. Moreover, when many short-
+lived features appear simultaneously, matching becomes sensitive to noise, and small
+perturbations may significantly change the resulting correspondence.
+Furthermore, from the viewpoint of persistence diagram bundles, even if diagram
+points can be tracked locally, they may not glue together into a globally consistent
+labeling. Therefore, describing parameter-dependent topological structure solely in
+terms of trajectories of labeled persistence-diagram points has intrinsic limitations.
+For this reason, in the following sections we introduce a framework for geometrically
+describing the variation of homological feature spaces using zero-mode spaces of the
+ordinary combinatorial Hodge Laplacian.
+3 Zero-Mode Bundles and Its Geometry
+In this section, we realize the family of zero-mode spaces of the ordinary combinatorial
+Hodge Laplacian as a family of subspaces inside a common Hilbert space, and show
+that it forms a vector bundle on a regular region. We then introduce a natural Berry-
+type connection on this zero-mode bundle and define the associated curvature and
+holonomy. Finally, we state that, on regular regions, the zero-mode projection and the
+curvature expressed by the projection formula are stable under perturbations of the
+operator family.
+The Laplacian used in this section is not the persistent Laplacian, but the ordi-
+nary combinatorial Hodge Laplacian associated with the complex at each parameter
+point. Therefore, the construction in this section describes the transport geometry of
+instantaneous homology spaces at each scale and external parameter, rather than the
+transport geometry of fixed-birth persistent feature spaces.
+3.1 Zero-mode spaces and the zero-mode bundle
+We retain the notation of Section 2. LetA⊂Rbe the set of filtration parameters,
+and let Λ be an additional parameter space.
+Throughout this subsection, we fix such a parameter-dependent filtration.
+Definition 1(Ambient chain space) LetK max denote the maximal simplicial complex on
+the fixed vertex setV. For each degreeq, define
+Hq :=Cq(Kmax).
+We regardHq as a finite-dimensional Hilbert space overRorC, equipped with the standard
+inner product for which the orientedq-simplices ofK max form an orthonormal basis.
+7
+
+===== PAGE 8 =====
+For every (d,λ)∈A×Λ, the chain groupC q(K(d,λ)) is naturally identified with
+a subspace ofH q:
+Cq(K(d,λ))⊂H q.
+Definition 2(Natural combinatorial Hodge Laplacian) For each (d,λ)∈A×Λ, let
+∂q(d,λ) :C q(K(d,λ))−→C q−1(K(d,λ))
+be the boundary operator. Thenaturalq-th combinatorial Hodge LaplacianonK(d,λ) is the
+self-adjoint operator
+∆Hodge,nat
+q (d,λ) :C q(K(d,λ))−→C q(K(d,λ))
+defined by
+∆Hodge,nat
+q (d,λ) =∂ q(d,λ)∗∂q(d,λ) +∂ q+1(d,λ)∂q+1(d,λ)∗,
+where∗denotes the adjoint with respect to the standard inner product.
+The operator above is defined on the parameter-dependent spaceC q(K(d,λ)). In
+order to compare Laplacians at different parameter values, we extend it to the fixed
+Hilbert spaceH q.
+Definition 3(Extended Hodge Laplacian) For each (d,λ)∈A×Λ, consider the orthogonal
+decomposition
+Hq =Cq(K(d,λ))⊕C q(K(d,λ))⊥.
+Theextendedq-th Hodge Laplacianis the self-adjoint operator
+∆Hodge
+q (d,λ) :H q−→Hq
+defined by
+∆Hodge
+q (d,λ) := ∆ Hodge,nat
+q (d,λ)⊕I,
+whereIdenotes the identity operator onC q(K(d,λ))⊥.
+Remark 1The extension by the identity is chosen so that no additional zero modes are
+created on the orthogonal complement. In particular,
+ker ∆Hodge
+q (d,λ) = ker ∆Hodge,nat
+q (d,λ).
+Definition 4(Zero-mode space) For each (d,λ)∈A×Λ, theq-th zero-mode spaceofK(d,λ)
+is defined by
+E0(d,λ) := ker ∆Hodge
+q (d,λ)⊂H q.
+The following proposition shows that the zero-mode space recovers the usual
+simplicial homology.
+Proposition 1For every(d,λ)∈A×Λ, there is a natural isomorphism
+E0(d,λ)∼=Hq(K(d,λ)).
+In particular,
+dimE 0(d,λ) =β q(d,λ).
+8
+
+===== PAGE 9 =====
+ProofBy definition of the extended Hodge Laplacian, we have
+∆Hodge
+q (d,λ) = ∆ Hodge,nat
+q (d,λ)⊕I
+with respect to the orthogonal decomposition
+Hq =Cq(K(d,λ))⊕C q(K(d,λ))⊥.
+Since the identity operator onC q(K(d,λ))⊥ has trivial kernel, it follows that
+ker ∆Hodge
+q (d,λ) = ker ∆Hodge,nat
+q (d,λ).
+On the other hand, by the discrete Hodge theorem,
+ker ∆Hodge,nat
+q (d,λ)∼=Hq(K(d,λ)).
+Therefore,
+E0(d,λ) = ker ∆Hodge
+q (d,λ)∼=Hq(K(d,λ)).
+Taking dimensions gives
+dimE 0(d,λ) =β q(d,λ).
+This completes the proof.□
+3.2 Regular regions and smooth operator models
+In this subsection, we formulate the regions on which the zero-mode spaces of
+parameter-dependent Hodge Laplacians can be treated as vector bundles. In particu-
+lar, we clarify the regularity and spectral-gap assumptions needed in order to define
+Berry connections, curvature, and holonomy.
+Vietoris–Rips and ˇCech filtrations do not, in general, vary smoothly with respect
+to parameters. For example, consider a finite point cloud depending on a parameterλ,
+X(λ) ={x 1(λ),...,x N(λ)}.
+The Vietoris–Rips complex at scaledis given by
+K(d,λ) ={σ⊂X(λ)|diam λ(σ)≤d}.
+Thus, a simplexσenters the complex precisely when one crosses the critical
+hypersurface
+d= diam λ(σ).
+For this reason, the ordinary combinatorial Hodge Laplacian is not, in general, a
+globally smooth operator family in the parameters (d,λ). Rather, it is an operator
+family that changes discretely as simplices enter or leave the complex.
+In this work, we model this discretely varying operator by a smooth Hodge-type
+operator family on a common Hilbert space. This does not mean that the filtration
+itself is replaced by a smooth topological invariant. Rather, the entrance and exit of
+simplices are modeled by smooth activation weights so that Berry connections and
+curvature can be defined.
+9
+
+===== PAGE 10 =====
+Definition 5(Filtration threshold) For each simplexσ∈K max, let
+rσ(λ)
+denote the filtration threshold at whichσappears. In the Vietoris–Rips case, this is typically
+given by
+rσ(λ) = diamλ(σ).
+In the ordinary filtration, the presence or absence of the simplexσis described by
+the discontinuous indicator
+1{d≥rσ(λ)}.
+Definition 6(Smooth activation weight) Letρ ε be a smooth approximation of the step
+function. For each simplexσ∈K max, define the smooth activation weight
+wε
+σ(d,λ) =ρ ε(d−r σ(λ)).
+For example, one may take
+ρε(s) = 1
+1 +e−s/ε.
+Ifd≪r σ(λ), one has
+wε
+σ(d,λ)≈0,
+so that the simplexσis almost inactive. On the other hand, ifd≫r σ(λ), then
+wε
+σ(d,λ)≈1,
+so that the simplexσis almost fully active. Only near the critical hypersurface
+d=r σ(λ)
+does the weight smoothly transition from 0 to 1.
+Remark 2The sigmoid function is used only as a simple smooth approximation of the dis-
+continuous simplex indicator. Since it is not exactly equal to 0 or 1 for finiteε, the resulting
+weighted operator is not, in general, the exact simplicial Hodge Laplacian.
+Nevertheless, with a sufficiently sharp activation profile, or with a smooth cutoff function
+that is exactly 0 and 1 outside a small transition region, the operator agrees with, or closely
+approximates, the ordinary Hodge Laplian away from critical hypersurfaces.
+Definition 7(Weight operator) For each degreeq, define the diagonal operator
+Wε
+q (d,λ) = diag
+ 
+wε
+σ(d,λ)
+
+σ∈K (q)
+max
+.
+This is a self-adjoint operator on the common Hilbert spaceH q, and records the activation
+strength of eachq-simplex direction.
+10
+
+===== PAGE 11 =====
+Definition 8(Weighted boundary operator) Let
+∂q :Hq→Hq−1
+be the ordinary boundary operator on the maximal complexK max. The weighted boundary
+operator is defined by
+∂ε
+q(d,λ) =
+ 
+Wε
+q−1(d,λ)
+1/2∂q
+ 
+Wε
+q (d,λ)
+1/2.
+This definition smoothly turns the boundary relation on or off according to the
+activation of theq-simplex on the domain side and the (q−1)-simplex on the target
+side. If both simplices are sufficiently active, the operator is close to the ordinary
+boundary operator. If either simplex is inactive, its contribution is suppressed.
+Definition 9(Smooth Hodge-type operator) Fix a parameterµ >0. The smooth Hodge-
+type operator in degreeqis defined by
+∆ε
+q(d,λ) = (∂ε
+q)∗∂ε
+q +∂ε
+q+1(∂ε
+q+1)∗ +µ
+ 
+I−W ε
+q (d,λ)
+
+.
+Hereµis a penalty parameter assigning positive energy to inactiveq-simplex directions.
+The final term
+µ(I−W ε
+q )
+pushes inactiveq-simplex directions away from the zero-mode space. Indeed, in direc-
+tions wherew ε
+σ≈1, the penalty almost disappears, while in directions wherew ε
+σ≈0,
+a positive energy of orderµis assigned.
+Remark 3(Choice of the penalty parameter) The role ofµis only to assign positive energy
+to inactive simplex directions. Thus, from the theoretical point of view, any fixedµ >0 is
+sufficient.
+In the numerical experiments, unless otherwise stated, we take
+µ= 1.
+This is the natural choice that assigns a unit penalty to inactive simplex directions and is
+sufficient to remove those directions from the zero-mode sector. More generally, one may
+chooseµaccording to the typical scale of the nonzero spectrum, but in this work we use the
+fixed valueµ= 1.
+Proposition 2(Basic properties of the smooth Hodge-type operator)The operator
+∆ε
+q(d,λ)
+defined above is self-adjoint and positive semidefinite on the common Hilbert spaceH q.
+Moreover, if each weightw εσ(d,λ)is of classC r in(d,λ), then
+(d,λ)7−→∆ ε
+q(d,λ)
+is aC r family of self-adjoint operators.
+11
+
+===== PAGE 12 =====
+ProofFirst,
+(∂ε
+q)∗∂ε
+q
+is of the formA∗A, withA=∂ εq. Hence it is self-adjoint and positive semidefinite. Similarly,
+∂ε
+q+1(∂ε
+q+1)∗
+is of the formBB ∗, and is therefore self-adjoint and positive semidefinite.
+Furthermore, if
+0≤w ε
+σ(d,λ)≤1
+for allσ, then the diagonal operatorW εq (d,λ) satisfies
+0≤W ε
+q (d,λ)≤I.
+Hence
+I−W ε
+q (d,λ)
+is self-adjoint and positive semidefinite. Sinceµ>0, the operator
+µ(I−W ε
+q (d,λ))
+is also self-adjoint and positive semidefinite.
+Therefore ∆εq(d,λ), being the sum of these three terms, is self-adjoint and positive
+semidefinite.
+Ifw εσ(d,λ) depends on (d,λ) in aC r manner, then so doesW εq (d,λ). Moreover, since
+Wεq (d,λ) is diagonal with nonnegative entries, its square root also dependsC r-smoothly on
+(d,λ), under the chosen smooth activation model. Consequently,
+∂ε
+q(d,λ)
+is aC r family of operators, and hence so is
+∆ε
+q(d,λ).
+□
+Remark 4The smooth ambient Hodge model is not intended to define a new topological
+invariant. Near critical hypersurfaces, simplices may have intermediate weights between 0
+and 1, and therefore
+ker ∆ε
+q(d,λ)
+need not coincide exactly with simplicial homology at every parameter value.
+Rather, the zero-mode space, or low-energy space, of ∆εq(d,λ) should be interpreted as the
+feature space of a smooth Hodge-type operator model associated with the discrete filtration.
+On the other hand, away from critical hypersurfaces and for sufficiently smallε, eachw εσ is
+close to either 0 or 1, and the operator approximates the ordinary Hodge Laplacian together
+with a positive penalty on inactive simplex directions.
+Definition 10(Regular region) LetU⊂A×Λ be an open set, and let
+∆q(d,λ)
+be the chosen Hodge-type operator family in degreeq. We say thatUis aregular regionfor
+∆q if the following conditions hold:
+1. The map
+(d,λ)7−→∆ q(d,λ)
+is continuous onU, and is of classC r whenever derivatives are needed.
+12
+
+===== PAGE 13 =====
+2. The zero-mode space
+E0(d,λ) := ker ∆q(d,λ)
+has constant dimension onU.
+3. There exists a constantγ >0 such that, for every (d,λ)∈U,
+Spec
+ 
+∆q(d,λ)
+
+⊂{0}∪[γ,∞).
+Thus, on a regular region, the zero eigenvalue is separated from the nonzero
+spectrum by a uniform spectral gap.
+Remark 5(Spectral gap condition) The spectral-gap condition ensures that the zero-mode
+space remains stably separated from the nonzero modes.
+If the smallest positive eigenvalue is denoted by
+λ+
+1 (d,λ) := min (Spec(∆q(d,λ))\{0}),
+then on a regular region we require
+λ+
+1 (d,λ)≥γ
+uniformly.
+Proposition 3(Riesz projection onto the zero-mode space)LetU⊂A×Λbe a connected
+regular region. Then the orthogonal projection
+P0(d,λ) :H q→Hq
+onto the zero-mode space is given by the Riesz projection
+P0(d,λ) = 1
+2πi
+Z
+Γ
+ 
+z−∆ q(d,λ)
+−1dz.
+HereΓis a small closed contour enclosing the origin and no nonzero spectrum.
+Moreover, if∆ q(d,λ)is aC r operator family, then
+(d,λ)7−→P 0(d,λ)
+is also of classC r.
+ProofBy the definition of a regular region, the zero eigenvalue is separated from the nonzero
+spectrum by a uniform positive distance. Therefore, one can choose a closed contour Γ,
+uniformly overU, which encloses the origin and no nonzero spectrum.
+By the standard spectral decomposition for finite-dimensional operators, or equivalently
+by the Riesz functional calculus,
+1
+2πi
+Z
+Γ
+ 
+z−∆ q(d,λ)
+−1dz
+is the spectral projection onto the generalized eigenspace corresponding to the eigenvalues
+enclosed by Γ.
+Since ∆q(d,λ) is self-adjoint and the only eigenvalue enclosed by Γ is 0, this projection
+is precisely the orthogonal projection onto
+E0(d,λ) = ker ∆q(d,λ).
+13
+
+===== PAGE 14 =====
+This proves the formula.
+If ∆q(d,λ) is of classC r, then for eachz∈Γ the resolvent
+ 
+z−∆ q(d,λ)
+−1
+also dependsC r-smoothly on (d,λ). Since the contour Γ is fixed, integration over Γ preserves
+Cr-regularity. Hence
+P0(d,λ)
+is aC r family of projections.□
+Proposition 4(Zero-mode bundle)LetU⊂A×Λbe a connected regular region. Then
+E0 :=
+G
+(d,λ)∈U
+E0(d,λ)
+forms a finite-dimensional vector bundle overU. Its fiber at(d,λ)∈Uis
+E0(d,λ) = ImP 0(d,λ).
+ProofBy the definition of a regular region,
+dimE 0(d,λ)
+is constant onU. Moreover, by the preceding proposition, the projection
+P0(d,λ)
+depends continuously, orC r-smoothly, on (d,λ).
+Therefore,
+ImP 0(d,λ)
+defines a continuous, orC r, family of fixed-dimensional subspaces of the fixed finite-
+dimensional Hilbert spaceH q. Hence
+E0 =
+G
+(d,λ)∈U
+E0(d,λ)
+is a vector bundle overU.□
+Definition 11(Hodge zero-mode bundle) LetU⊂A×Λ be a connected regular region.
+The vector bundle
+E0→U
+constructed above is called theq-th Hodge zero-mode bundle, or theinstantaneous zero-mode
+bundle, overU.
+Definition 12(Singular set and regular part) Let Σ⊂A×Λ be the set of points at which
+at least one of the following occurs:
+1. dimE 0(d,λ) is not locally constant;
+2. the spectral gap between the zero eigenvalue and the nonzero spectrum is lost.
+We call Σ thesingular set. Its complement
+(A×Λ) ◦ := (A×Λ)\Σ
+is called theregular part.
+14
+
+===== PAGE 15 =====
+Remark 6The geometric theory developed in this paper is not a globally smooth theory over
+the entire parameter space. At critical hypersurfaces where the spectral gap closes, the smooth
+vector-bundle picture need not hold. Such points are excluded as part of the singular set Σ.
+The Berry connections, curvature, and holonomy considered in this work are understood as
+geometric quantities of the Hodge zero-mode bundle defined on regular regions away from
+the singular set.
+Strictly speaking, if the regular regionUis not connected, the zero-mode multiplicity
+may be constant only on each connected component and may differ from one component to
+another. In that case,E 0 should not be regarded as a single vector bundle of fixed rank over all
+ofU, but rather as a collection of vector bundles over the connected components ofU. In the
+following discussion, we always work on one connected component on which dimE0(d,λ) =m
+is fixed. For simplicity, we continue to call this object the zero-mode bundle.
+3.3 Natural connection and Berry connection
+LetU⊂A×Λ be a regular region, and consider the zero-mode bundle
+E0→U.
+For each (d,λ)∈U, the fiberE 0(d,λ) is a subspace of the common Hilbert space
+Hq, andP 0(d,λ) is the orthogonal projection onto it. HenceP 0 induces a natural
+connection onE 0.
+Definition 13For a local sections∈Γ(U,E 0), define
+∇s:=P 0(ds).
+Proposition 5The operator∇defines a connection on the vector bundleE 0→U.
+ProofLinearity of∇follows from the definition. Letf∈C ∞(U) ands∈Γ(U,E 0). Then
+∇(fs) =P 0(d(fs)) =P 0(df⊗s+fds).
+Sincesis a section ofE 0, we haveP 0s=spointwise. Therefore
+P0(df⊗s) =df⊗s, P 0(fds) =fP 0(ds) =f∇s.
+Thus
+∇(fs) =df⊗s+f∇s.
+This is the Leibniz rule, so∇is a connection.□
+Let rankE 0 =m, and choose a local orthonormal frame
+ψ1(d,λ),...,ψ m(d,λ)
+onU. Arrange these vectors as columns into the matrix
+Ψ(d,λ) := (ψ 1(d,λ),...,ψ m(d,λ)).
+15
+
+===== PAGE 16 =====
+Then
+Ψ∗Ψ =I m, P 0 = ΨΨ∗.
+Every local sectionscan be written uniquely as
+s= Ψξ,
+whereξ:U→C m is a coefficient vector. In the real case,C m is replaced byRm. Then
+∇s= Ψ
+ 
+dξ+ Ψ∗dΨξ
+
+.
+Thus the connection 1-form in the frame Ψ is
+A:= Ψ∗dΨ.
+Definition 14The matrix-valued 1-form
+A= Ψ∗dΨ
+is called the Berry connection on the zero-mode bundle.
+Differentiating Ψ∗Ψ =I m, we obtain
+dΨ∗ Ψ + Ψ∗dΨ = 0.
+Hence
+A∗ =−A.
+In particular, in the complex case,Ais au(m)-valued 1-form. In the real case, it is an
+o(m)-valued 1-form.
+If the local orthonormal frame is changed by
+Ψ′ = Ψg,
+then in the complex caseg:U→U(m), while in the real caseg:U→O(m). The
+corresponding connection 1-formA ′ satisfies
+A′ =g−1Ag+g −1dg.
+Thus the local expression of the Berry connection is gauge-dependent.
+3.4 Curvature and holonomy
+We now define the curvature and holonomy associated with the Berry connection.
+Definition 15The curvature of the Berry connectionAis defined by
+F:=dA+A∧A.
+16
+
+===== PAGE 17 =====
+IfUis a two-dimensional parameter space with local coordinates (d,t), then
+A=A ddd+A tdt,
+and
+F=F dtdd∧dt,
+where
+Fdt =∂ dAt−∂tAd + [Ad,At].
+The curvature can also be expressed solely in terms of the projectionP 0.
+Proposition 6The curvature satisfies
+F=P 0[dP0,dP 0]P0.
+ProofThis follows by a standard computation usingP 0 = ΨΨ∗ andA= Ψ ∗dΨ.□
+This projection formula is particularly important in the present work. The con-
+nection formAdepends on the choice of local frame, whereas the projectionP 0 is
+intrinsically defined as an operator on the common Hilbert space. Thus, by writing
+the curvature as
+F=P 0[dP0,dP 0]P0,
+we obtain a gauge-independent description of the noncommutativity of local zero-mode
+transport.
+Next, letγ: [0,1]→Ube a piecewiseC 1 curve. The parallel-transport equation
+in a local frame is d
+dsξ(s) +A( ˙γ(s))ξ(s) = 0.
+Its solution defines a linear map
+Πγ :E 0(γ(0))→E 0(γ(1)).
+Definition 16Ifγis a closed curve, that is, ifγ(0) =γ(1) =x, then
+Uγ := Πγ :E 0(x)→E 0(x)
+is called the holonomy alongγ.
+In a local frame, the holonomy is written as
+Uγ =Pexp
+
+−
+Z
+γ
+A
+
+,
+wherePdenotes path ordering.
+17
+
+===== PAGE 18 =====
+Under a gauge transformation Ψ′ = Ψg, the matrix representation of the holonomy
+transforms by conjugation:
+U′
+γ =g(γ(0))−1Uγg(γ(0)).
+Therefore,
+tr(Uγ),det(U γ),Spec(U γ)
+are gauge-invariant.
+3.5 Stability on regular regions
+Finally, we state the local stability of the zero-mode projection and the curvature
+on regular regions. To obtain an intrinsic stability statement that does not depend
+on gauge choices, we do not directly compare local connection formsAor holonomy
+matrices. Instead, we focus onP 0, which can be compared as an operator on the
+common Hilbert space, and on the curvature expressed by the projection formula
+F=P 0[dP0,dP 0]P0.
+LetU⊂A×Λ be a regular region, and let
+L(d,λ), eL(d,λ)
+be two self-adjoint operator families onH q. Here we regard them as common-
+Hilbert-space realizations of ordinary Hodge Laplacians, or as perturbations of such
+realizations. Let
+P0, eP0
+denote the corresponding zero-mode projections. Define the corresponding curvatures
+by
+F:=P 0[dP0,dP 0]P0, eF:= eP0[deP0,deP0]eP0.
+Theorem 7(Quantitative stability on regular regions)Assume that:
+1.Land eLare of classC 2 onUand have the same constant zero-mode multiplicity
+m;
+2. there exists a common spectral-gap constantγ >0such that, for everyx∈U,
+Spec(L(x)),Spec(eL(x))⊂{0}∪[γ,∞);
+3.Land eLhave uniformly boundedC 2 norms onU.
+Then there exist constantsC 0,C 1,C 2 >0such that
+∥P0− eP0∥C0(U)≤C 0∥L− eL∥C0(U),
+∥dP0−d eP0∥C0(U)≤C 1∥L− eL∥C1(U),
+and
+∥F− eF∥C0(U)≤C 2∥L− eL∥C2(U).
+18
+
+===== PAGE 19 =====
+In particular, on a regular region with a uniform spectral gap, the zero-mode projection is
+Lipschitz stable with respect toC 0-perturbations of the operator family, and the curvature is
+Lipschitz stable with respect toC 2-perturbations of the operator family.
+Proof sketchThe zero-mode projection is expressed as the Riesz projection
+P0 = 1
+2πi
+Z
+Γ
+(z−L) −1dz.
+Hence the estimate forP 0− eP0 follows from the resolvent identity. Next, differentiating
+the Riesz projection formula gives the estimate fordP 0−d eP0. Finally, using the projection
+formula for curvature,
+F=P 0[dP0,dP 0]P0,
+the estimate forF− eFfollows from the estimates forP 0 anddP 0.□
+The constants in the estimates deteriorate as the spectral gapγbecomes smaller.
+Therefore, near the singular set, such uniform stability generally cannot be expected.
+This is not a defect of the theory, but reflects the loss of separation between zero
+modes and nonzero modes.
+3.6 Choice of the Ordinary Hodge Laplacian
+We finally explain why this paper uses the ordinary Hodge Laplacian rather than the
+persistent Laplacian.
+If the goal is to realize fixed-birth persistent homology
+Hb0,d
+q (λ)
+as a zero-mode space, then the persistent Laplacian is the natural operator. The per-
+sistent Laplacian is designed to give an operator-theoretic realization of the persistent
+homology associated with the inclusion
+K(b0,λ)⊂K(d,λ),
+and is therefore the most direct object for studying fixed-birth persistent feature
+spaces.
+However, the curvature and holonomy introduced in this work are differential-
+geometric quantities associated with a family of fibers over parameter space. In
+particular, the curvature
+F=P 0[dP0,dP 0]P0
+is a local quantity measuring how the zero-mode projectionP 0(d,λ) changes noncom-
+mutatively under infinitesimal variations in thed-direction and theλ-direction. From
+this viewpoint, the ordinary Hodge Laplacian, which is intrinsically attached to the
+complexK(d,λ) at each parameter point (d,λ), is more natural for describing local
+transport geometry.
+19
+
+===== PAGE 20 =====
+When the ordinary Hodge Laplacian is used, the fiber is
+E0(d,λ) = ker ∆Hodge
+q (d,λ)∼=Hq(K(d,λ)).
+This space is canonically determined by the complex at the point (d,λ) itself. There-
+fore, the resulting zero-mode bundle is a family of instantaneous homology spaces
+placed over parameter space. In this case, the curvature directly reflects the local
+reorganization of the homology space ofK(d,λ) itself.
+By contrast, when the persistent Laplacian is used, the fiber is
+ker ∆pers
+q,b0
+(d,λ)∼= Im
+ 
+Hq(K(b0,λ))→H q(K(d,λ))
+
+.
+This space is not determined solely by the complex at (d,λ), but by its relation to
+the fixed birth levelb 0. Thus, the zero-mode space of the persistent Laplacian is not
+a homology space locally attached to a parameter point, but rather a space involving
+the persistence window from the fixed birth level to the death level.
+This distinction is important for the interpretation of curvature. The curvature
+obtained from the persistent Laplacian contains not only the local reorganization of
+the homology space, but also the change in feature selection imposed by the fixed birth
+levelb 0. Thus, when the curvature is large, it may reflect either a reorganization of
+the homological structure of the current complexK(d,λ), or a change in the selection
+of persistent features caused by the fixed birth constraint, or a mixture of both.
+Moreover, the choice ofb 0 is not merely a gauge choice. A gauge transformation
+changes only the frame of the same vector bundle, whereas changingb 0 generally
+changes the fiber
+Im
+ 
+Hq(K(b0,λ))→H q(K(d,λ))
+
+itself. Therefore, the fixed birth level is not an auxiliary choice that only changes the
+representation of the connection; it is an additional structure that may change the
+bundle itself.
+For this reason, if the goal is first to isolate the local zero-mode transport geome-
+try over parameter space, it is theoretically more natural to use the ordinary Hodge
+Laplacian. The ordinary Hodge Laplacian is intrinsically determined by the complex
+at each parameter point and does not depend on the choice of a fixed birth level
+or a persistent upper operator. As a result, the curvature and holonomy obtained
+from it more directly reflect the transport, mixing, reorganization, and memory of the
+parameter-dependent homology spaces themselves.
+Thus, the role of the two Laplacians can be summarized as follows. The persistent
+Laplacian is the natural operator for realizing fixed-birth persistent homology as a
+zero-mode space. On the other hand, the ordinary Hodge Laplacian gives an intrinsic
+zero-mode realization of the homology space at each parameter point, and is therefore
+a more standard and more interpretable object for detecting local and global transport
+geometry such as curvature and holonomy.
+In this sense, the formulation in this paper uses the ordinary Hodge Laplacian
+rather than the persistent Laplacian. This does not diminish the importance of persis-
+tent homology. Rather, it clarifies the transport geometry of homological zero-mode
+20
+
+===== PAGE 21 =====
+spaces themselves before introducing the additional persistence window associated
+with a fixed birth level. Curvature describes local reorganization, while holonomy
+describes global memory accumulated along closed loops. This basic geometric mech-
+anism appears most clearly in the zero-mode bundle associated with the ordinary
+Hodge Laplacian.
+4 Geometric Interpretation: Reorganization,
+Memory, and Dynamic Homological Geometry
+In this section, we explain the geometric meaning of the connection, curvature, and
+holonomy introduced in Section 3. For parameter-dependent topological data, the
+essential issue is not only which homological features exist at each parameter value,
+but also how the corresponding homological feature space moves over parameter
+space. The connection provides the rule of comparison, the curvature measures local
+reorganization, and the holonomy records the cumulative global effect along closed
+loops.
+4.1 Dynamic homological geometry
+In one-parameter persistent homology, barcodes and persistence diagrams provide a
+concise description of the birth and death of topological features. They indicate at
+which scales features appear and how long they persist, thereby encoding both exis-
+tence and robustness. However, when an additional parameter is present, such as time
+or an external field, listing persistence diagrams at each parameter value is no longer
+sufficient to describe the full behavior of the underlying homological structure.
+The reason is that, in the presence of an additional parameter, what evolves is not
+merely the birth–death data, but the homological feature space itself. Even when the
+Betti number remains constant, the zero-mode spaceE 0(d,λ) of the ordinary Hodge
+Laplacian may point in different directions inside the common ambient Hilbert space.
+Moreover, this direction may vary continuously with the parameters, mix locally, and
+accumulate into a nontrivial transformation after one circuit along a closed path.
+Therefore, to understand parameter-dependent homological structure, one must con-
+sider not only what exists at each point, but also how the feature spaces are transported
+from point to point.
+From this perspective, the Hodge zero-mode bundle provides the dynamical object
+associated with parameter-dependent homology, and the connection specifies how to
+compare nearby fibers. The resulting curvature and holonomy describe local reorgani-
+zation and global memory, respectively. In this way, the framework developed in this
+paper provides a language for understanding homology not as a mere sequence of static
+snapshots, but as a geometric process in which time evolution and scale dependence
+interact.
+4.2 Reorganization of homological feature spaces
+To understand this phenomenon intuitively, it is useful to consider the simplest non-
+trivial example. Suppose that, in some fixed homological degree, the homology is
+21
+
+===== PAGE 22 =====
+always two-dimensional, so that there are always “two important features.” Then the
+Betti number is constantly equal to 2, and each persistence diagram appears to indicate
+the existence of two dominant features at every parameter value.
+Nevertheless, the internal structure of the homology space may still vary. At one
+parameter value, a natural basis may be
+(ψ1,ψ 2),
+whereas at another parameter value, the more natural basis may be
+ψ1 +ψ 2√
+2 ,ψ1−ψ 2√
+2
+
+.
+Moreover, after transport along a closed path, one may obtain an exchange such as
+(ψ1,ψ 2)7→(ψ 2,ψ 1).
+What changes here is not the number of features, but the internal structure of
+the zero-mode space, namely, which directions should be naturally associated with
+which features and how those directions mix. In this paper, we refer to such changes—
+recombination, mixing, and exchange of basis directions inside the homological feature
+space—asreorganization.
+Geometrically, such reorganization typically occurs where several features approach
+one another and can no longer be easily distinguished as independent objects. One
+may imagine, for example, two holes gradually approaching each other, or two loops
+becoming connected by a thin corridor and thus nearly merging. In such a situation,
+one may still be able to choose generators corresponding to the “left hole” and the
+“right hole” at one time and one scale, but after a slight change in time or scale, this
+distinction may no longer be natural.
+In other words, what changes here is not the number of holes. Rather, what changes
+is which linear combinations should be regarded as the natural independent generators.
+At one parameter value, two generators may correspond to two spatially separated
+holes, while at another parameter value, the sum and difference of those generators
+may provide a more natural description. In this sense, reorganization concerns not the
+mere existence of features, but the rearrangement of the relations among them.
+To make this more explicit, consider again generators
+ψ1, ψ 2.
+If the two holes are well separated, thenψ 1 andψ 2 can be naturally regarded as
+corresponding to two distinct features. But as the two holes approach one another, it
+may become more natural to use the combinations
+ψ1 +ψ 2√
+2 , ψ1−ψ 2√
+2
+22
+
+===== PAGE 23 =====
+instead. This does not mean that the original features have disappeared. Rather, it
+means that the natural coordinate system for describing the features has changed.
+The connection introduced in this paper describes this change of natural coordinates
+as transport.
+4.3 Curvature and local sensitivity
+Curvature is a local indicator of reorganization because it measures the noncommu-
+tativity of infinitesimal transport in two parameter directions along the zero-mode
+subspace. As shown in Section 3, the curvature is given by
+F=dA+A∧A,
+or equivalently by
+F=P 0[dP0,dP 0]P0.
+The latter expression is particularly revealing. The differentialdP 0 describes how
+the zero-mode subspace changes under parameter variation, and the commutator
+[dP0,dP 0] measures the failure of two infinitesimal variations to commute. The final
+projections byP 0 restrict the result back to the zero-mode subspace itself. Hence the
+curvature measures how the mismatch between infinitesimal changes appears as an
+internal mixing inside the homological feature space.
+More intuitively, consider moving first slightly in the time direction and then
+slightly in the scale direction, and compare this with doing the same two moves in the
+opposite order. If the resulting zero-mode spaces differ even infinitesimally, then there
+is local twisting in the transport of the feature space. The curvature measures that
+infinitesimal discrepancy. If the curvature vanishes, then the two infinitesimal trans-
+ports are locally compatible. If it is large, then the internal structure of the zero-mode
+space is being rapidly reorganized in that neighborhood.
+Therefore, a curvature heatmap should be understood as a visualization of where,
+in time and scale, the internal structure of the homology space changes most strongly.
+It indicates not merely where the number of features changes, but where nontrivial
+changes occur inside the feature space itself.
+Moreover, large curvature also suggests increased sensitivity of the zero-mode
+description, that is, reduced robustness. In the standard eigenstate formula for Berry
+curvature, the curvature is generally expressed as a sum of couplings to other modes
+weighted by the inverse square of the spectral gaps. Consequently, when the spectral
+separation between the zero modes and nearby nonzero modes becomes weak, the zero-
+mode projectionP 0 becomes more sensitive to parameter variation, and the curvature
+tends to become large.
+It is important, however, that the proximity of nearby nonzero modes is not itself
+the reorganization. Reorganization itself is the internal mixing within the zero-mode
+subspace, while the proximity of nonzero modes is the mechanism that makes the
+geometry sharper and more sensitive. In this sense, large curvature has a unified
+interpretation: geometrically, it indicates strong internal reorganization of the zero-
+mode space; analytically, it indicates reduced robustness of the zero-mode projection.
+These are two aspects of the same geometry.
+23
+
+===== PAGE 24 =====
+4.4 Holonomy, global memory, and the relation to vineyards
+While curvature is a local quantity, holonomy is a global quantity obtained by accu-
+mulating local effects along a closed path. If one parallel-transports the zero-mode
+bundle along a closed curveγ, one returns to the same fiber at the starting point. The
+resulting linear transformation
+Uγ
+is the holonomy.
+IfU γ =I, then the transport along that loop is globally trivial, and the feature
+space returns to its original state. IfUγ̸=I, then even though the Betti number at the
+beginning and at the end is the same, the internal structure of the feature space has
+undergone a nontrivial transformation. This means that the homological information
+may look unchanged at the level of dimension, while internally it has accumulated
+mixing, exchange, or more general monodromy.
+For this reason, holonomy may be regarded as an indicator ofglobal memory. In
+particular, for periodically evolving data, it provides a natural quantity measuring
+what remains after one full cycle. It therefore goes beyond the question of how many
+features are present at the end, and instead records how the feature space remembers
+the path it has traversed.
+This viewpoint does not oppose vineyards. Vineyards provide an intuitive picture
+of how individual topological features evolve by following the trajectories of points in
+the persistence diagram. When features are sufficiently well separated, this viewpoint
+is very effective and gives a clear geometric interpretation of feature tracking.
+By contrast, the framework of the present paper provides a complementary view-
+point for situations in which vineyards become harder to apply. When several features
+approach one another in the persistence diagram, when many short-lived features
+appear, or when pointwise matching becomes unstable, the essential issue is not merely
+that labels on individual features become ambiguous. Rather, the internal structure
+of the homological feature space itself is undergoing substantial change. The curva-
+ture and holonomy introduced here are designed precisely to capture that underlying
+geometry.
+In this sense, vineyards ask which point corresponds to which point, whereas the
+present framework asks how the whole feature space moves. The former is well suited
+for local feature tracking, while the latter is sensitive to internal mixing and global
+memory. The two viewpoints should therefore be understood as complementary rather
+than competing.
+To summarize, the main gain of the present framework is threefold. First, curvature
+detects where in time and scale the internal structure of the homology space changes
+strongly. Second, holonomy records what global effect remains after those local changes
+accumulate around a loop. Third, by showing that the difficulty of pointwise tracking
+arises from strong reorganization of the homological feature space, the framework
+provides a geometric explanation for why tracking becomes difficult.
+Accordingly, while the Betti number tells us how many features there are, curva-
+ture and holonomy tell us how the feature space itself moves. For homology with an
+additional parameter, this distinction is essential.
+24
+
+===== PAGE 25 =====
+5 Numerical Experiments
+In this section, we demonstrate through five numerical experiments how the proposed
+framework visualizes the transport geometry of parameter-dependent homology and
+how it complements the standard description based on persistence diagrams. In our
+approach, at each scale and external parameter, the zero-mode space of the ordinary
+Hodge Laplacian is regarded as the homological feature space, and its dependence on
+the scale and the external parameter is interpreted as transport on the zero-mode bun-
+dle. In this setting, curvature represents local reorganization of the homological feature
+space, while holonomy represents global memory accumulated along closed loops. In
+particular, from the viewpoint of this paper, even when the Betti number remains
+constant, the internal structure of the zero-mode space may still rotate, mix, and reor-
+ganize continuously, so dimensional information alone is not sufficient to describe the
+essential change.
+The experiments are organized as follows. In Experiment 1, we first confirm that
+when vineyard-style tracking is stably defined, vineyard monodromy is reproduced by
+zero-mode holonomy. This shows that the proposed method is not an unrelated alter-
+native to vineyards, but rather a description on the zero-mode bundle that is consistent
+with vineyard-type global transport information. In Experiment 2, we then show that
+even in regions where persistence-diagram points approach one another and vineyard-
+style pointwise tracking becomes unstable, the curvature defined from the zero-mode
+projection remains stably computable. In Experiment 3, we show that two systems
+that are nearly indistinguishable by persistence diagrams and standard diagram-level
+quantities can nevertheless be distinguished by curvature. In Experiment 4, we show
+that even when pointwise tracking and local diagram comparison reveal little dif-
+ference, one-cycle holonomy can detect a difference in global transport. Finally, in
+Experiment 5, we numerically verify the stability of curvature and holonomy under
+noise perturbations.
+5.1 Preparatory remark: pointwise tracking and PD drift
+Before presenting the experiments, we briefly explain the two diagram-based quantities
+used for comparison, namely pointwise tracking and PD drift. Both are defined only
+from persistence-diagram points, so they serve as natural baselines against which the
+proposed transport-geometric quantities can be compared.
+At each sampled timet j, let
+p(j)
+1 , p(j)
+2 ∈R 2
+denote the two persistence-diagram points with the largest lifetimes. Each point is
+written as
+p(j)
+a = (b(j)
+a ,d (j)
+a ),
+which records the birth scale and death scale of one of the two most persistent features
+at timet j.
+Pointwise tracking asks, in a very simple form, the following question: when we
+move from timetj tot j+1, which of the two points at the new time should be regarded
+25
+
+===== PAGE 26 =====
+as the continuation of each previously tracked feature? To make this decision, we
+compare the two possible assignments between the two tracked points at the previous
+time,
+ep(j)
+1 ,ep(j)
+2 ,
+and the two candidate points at the next time,
+p(j+1)
+1 , p(j+1)
+2 .
+Specifically, using the Euclidean distance in the persistence diagram, we define the
+matching cost
+C(j)
+ab =∥ep(j)
+a −p (j+1)
+b ∥2
+2.
+We then choose the assignment with the smaller total cost. In other words, tracking
+is based on the idea that a feature should continue to the nearest available diagram
+point at the next time. When the two candidate points are well separated, this rule is
+usually almost unambiguous. However, when the candidate points come very close to
+each other, the identity assignment and the swapped assignment can have nearly the
+same cost, and the labeling becomes unstable.
+By contrast, PD drift is a different quantity. It does not compare consecutive times
+within the same system, but instead compares two persistence diagrams at the same
+time, typically a baseline diagram and a noisy one. Let
+p(j)
+1 ,p (j)
+2
+be the top two points of the baseline diagram at timet j, and let
+q(j)
+1 ,q (j)
+2
+be the corresponding top two points of the perturbed diagram. Then the PD drift is
+defined as the minimum average matching distance
+PDdrift(tj) = 1
+2 min
+σ∈S2
+2X
+a=1
+∥p(j)
+a −qσ(a)∥2.
+Thus, PD drift measures how much the two most persistent diagram points move
+under perturbation. A small value means that the noisy diagram remains close to the
+baseline one, whereas a larger value indicates a larger diagram-level deformation.
+In summary, pointwise tracking compares persistence-diagram points across neigh-
+boring times in order to maintain feature labels, whereas PD drift compares
+persistence-diagram points between two datasets at the same time in order to measure
+diagram displacement. These two quantities provide intuitive diagram-based base-
+lines, while the proposed curvature and holonomy are designed to capture changes
+in the transport structure of the homological feature space beyond such pointwise
+comparisons.
+26
+
+===== PAGE 27 =====
+Fig. 1Vineyard-like tracking used in Experiment 1. The resulting vineyard-like tracking, including
+the elder vine and crossing windows.
+5.2 Experiment 1: Vineyard-like Monodromy and Zero-Mode
+Holonomy
+In Experiment 1, we examine the relation between vineyard-type monodromy and the
+holonomy of the zero-mode bundle. This experiment is motivated by the viewpoint
+of Braiding Vineyards, where persistence diagrams along a periodic one-parameter
+family are stacked to form a vineyard, and identifying the two ends of the period gives
+a closed vineyard. In such a closed vineyard, following the family for one period may
+permute the persistence-diagram points nontrivially; this is interpreted as vineyard
+monodromy [19]. For the detailed geometric construction of braided vineyards, we
+refer the reader to [19]. Here, we use a simplified vineyard-like dataset whose tracked
+birth and death coordinates exhibit the same type of cyclic behavior.
+Figure 1 shows the vineyard-like tracking used in this experiment. The upper panel
+shows the birth coordinates of the three tracked features, and the lower panel shows
+the corresponding death coordinates. The red dotted curve represents the elder vine,
+while the shaded regions indicate crossing windows. The three dominant non-elder
+vines vary smoothly over one period and approach one another near the crossing
+windows. The data are constructed so that, after one full period, the three dominant
+vines undergo a cyclic relabeling.
+We then construct the ordinary Hodge Laplacian at each parameter value and
+transport its zero-mode space along the time direction over one full cycle. In order
+to compare the result with the vineyard-side monodromy, we focus on the non-elder
+part selected from the Hodge zero-mode space using the dominant tracked features.
+The one-cycle holonomy obtained from the zero-mode transport induces the nearest
+27
+
+===== PAGE 28 =====
+Fig. 2Endpoint permutation and holonomy in Experiment 1. One loop sends (v 1, v2, v3) to
+(v2, v3, v1), and the zero-mode holonomy gives the same permutation matrix.
+permutation
+(1,2,0).
+This agrees with the cyclic endpoint permutation expected from the vineyard-like
+tracking. Thus, the global relabeling visible at the level of persistence-diagram points
+is reproduced as the holonomy of the Hodge zero-mode space.
+Figure 2 compares the two descriptions directly. On the vineyard side, following
+the three non-elder vines over one period sends
+v17→v 2, v 27→v 3, v 37→v 1.
+On the holonomy side, the corresponding zero-mode transport gives the same per-
+mutation matrix. This shows that the endpoint permutation of the braided vineyard
+and the one-cycle holonomy of the Hodge zero-mode bundle encode the same global
+transport information in this example.
+Moreover, after removing the trivial direction corresponding to the sum of the three
+non-elder components, the induced action on the two-dimensional quotient space is a
+rotation by
+−120◦.
+This is the standard two-dimensional geometric representation of an order-three cyclic
+monodromy. Equivalently, applying the holonomy three times returns the quotient
+zero-mode space to its original state.
+This experiment clarifies the relation between vineyards and the gauge-geometric
+framework proposed in this paper. Vineyard-style tracking describes how individual
+persistence-diagram points move and how their labels are permuted after one period.
+By contrast, the present framework describes the transport of the Hodge zero-mode
+space itself. In the vineyard-like situation considered here, the cyclic permutation of
+28
+
+===== PAGE 29 =====
+Fig. 3Dense snapshots over one period for Experiment 3, approaching double circles.
+diagram points is lifted to a nontrivial linear holonomy on the zero-mode space. There-
+fore, the proposed holonomy should not be regarded as a replacement for vineyard
+monodromy, but rather as its zero-mode-bundle counterpart.
+5.3 Experiment 2: Where Pointwise Tracking Becomes
+Unstable
+In Experiment 2, we use a time evolution of double circles in which two loops approach
+each other and then separate again3, and track the top two persistence features in the
+persistence diagram by vineyard-style successive matching. In pointwise tracking, one
+assigns points between consecutive times by minimizing a matching cost. However,
+when two important features approach each other, the difference between the iden-
+tity assignment cost and the swap assignment cost becomes extremely small, and it
+becomes impossible to determine stably which point should be regarded as feature 1
+and which as feature 2. In such regions, pointwise tracking becomes unstable both
+numerically and conceptually (see Figs. 4, 5).
+By contrast, the curvature used in the present work does not depend on any discrete
+correspondence between persistence-diagram points. Instead, it is computed directly
+from the zero-mode projection embedded in a common ambient space. Therefore,
+even in regions where vineyard-style pointwise tracking essentially loses its meaning,
+the curvature can still be evaluated. Indeed, even near the time where the top two
+persistence-diagram points nearly merge and pointwise tracking becomes ambiguous,
+the curvature exhibits a clear localized peak and continuously describes the strength
+of reorganization of the homological feature space. The crucial point is that curvature
+is not a quantity that judges whether a discrete labeling succeeds or fails; rather, it
+measures changes in the internal structure of the feature space itself.
+29
+
+===== PAGE 30 =====
+Fig. 4Vineyard-style tracking of the top two persistence points in Experiment 2.
+Fig. 5Time series of three quantities in Experiment 2: the distance between the top two persistence
+points, the tracking ambiguity margin, and the maximum curvature. The distance and ambiguity
+margin become nearly zero at the swap time, while the curvature attains its peak in the same region.
+30
+
+===== PAGE 31 =====
+Fig. 6Dense snapshots over one period for the size-only control in Experiment 3.
+More importantly, the curvature peak coincides with the region where the point-
+wise tracking swap occurs, or equivalently where the assignment ambiguity becomes
+extremely small (Fig. 5). This indicates that the instability of pointwise tracking is
+not merely a superficial consequence of the proximity of points in the persistence dia-
+gram, but is rooted in a strong reorganization of the homological feature space itself.
+In other words, the reason why it becomes unclear which point should correspond to
+which is that the internal zero-mode space is actually undergoing strong mixing, and
+the natural basis directions are changing rapidly.
+In this sense, curvature should be understood not merely as an auxiliary quantity,
+but as a geometric explanation of why vineyard-style tracking becomes unreliable.
+As discussed in Section 3, curvature measures the noncommutativity of infinitesi-
+mal transport, that is, the strength of local reorganization. Experiment 2 shows that
+this theoretical interpretation has concrete explanatory power in an actual numerical
+example. Thus, this experiment provides a deeper geometric explanation of tracking
+instability beyond the usual description in terms of proximity of diagram points alone.
+5.4 Experiment 3: Similar Persistence Diagrams but Different
+Curvature
+In Experiment 3, we considered the time evolution of double circles in which two loops
+approach each other and then separate again (Fig. 3). As a comparison, we prepared a
+size-only control in which only the overall scale changes over time (Fig. 6). The persis-
+tence diagrams of these two systems are very similar at each time, so at the diagram
+level they are almost indistinguishable (Figs. 7, 8). However, from the viewpoint of the
+present work, what matters is not merely the similarity of the birth–death informa-
+tion at each time, but rather how the homological feature space is transported along
+the scale direction and the time direction.
+31
+
+===== PAGE 32 =====
+Fig. 7Time evolution of the persistence diagrams for the two systems in Experiment 3.
+Fig. 8Time evolution of the bottleneck distance between the two systems in Experiment 3.
+As shown in Fig. 9, the curvature in the approaching double-circle system is clearly
+concentrated in a localized region, whereas in the size-only control it is almost com-
+pletely zero. Thus, although the two systems look very similar in terms of persistence
+diagrams, they are fundamentally different from the viewpoint of transport geometry of
+the zero-mode space. In the control system, the near-vanishing curvature indicates that
+the transport is almost commutative and that there is essentially no internal reorgani-
+zation of the homological feature space. By contrast, in the approaching double-circle
+system, even though the Betti number itself changes little, the internal structure of the
+zero-mode space undergoes substantial mixing and reorganization, which is visualized
+by the curvature map.
+This result demonstrates that closeness of persistence diagrams does not imply
+closeness of transport geometry. In other words, there are structural differences that
+are invisible at the level of birth–death data alone, and curvature plays an essential
+32
+
+===== PAGE 33 =====
+Fig. 9Curvature heatmaps for the two systems in Experiment 3.
+role in detecting them. The curvature introduced in Section 3,
+F=P[dP,dP]P,
+was defined as a measure of the noncommutativity of changes of the zero-mode
+projection, and Experiment 3 shows numerically that this quantity visualizes local
+reorganization of homological feature spaces. Therefore, this experiment provides an
+explicit example showing that the proposed framework does not replace persistence
+diagrams, but rather complements them by capturing transport-structural differences
+that are difficult to see from diagram data alone.
+5.5 Experiment 4: Holonomy Reveals Global Differences
+Invisible to Pointwise Tracking
+In Experiment 4, we used periodically deforming dumbbell-type point-cloud data
+(Fig. 10). More specifically, we considered a time series containing two outer loop struc-
+tures together with an additional loop-like structure in the middle. As a comparison,
+we considered another dataset in which, as shown in Fig. 11, the middle loop appears
+to rotate over time. The point clouds evolve smoothly and continuously in time, and
+from the viewpoint of the time series of persistence diagrams the two systems are dif-
+ficult to distinguish locally. The purpose of this experiment is to examine whether
+holonomy, as the accumulated transport over one full cycle, can detect a difference
+between two systems that look very similar at the local diagram level.
+We first applied the standard vineyard-style successive matching, that is, point-
+wise tracking based on local distances between persistence-diagram points. From this
+viewpoint, both systems have swap count zero, so no explicit local label exchange is
+observed (Fig. 12). Moreover, the mean diagram distance between the two systems
+is relatively small (Fig. 13). Thus, based only on persistence-diagram-centered local
+tracking, the two systems do not appear to be substantially different.
+33
+
+===== PAGE 34 =====
+Fig. 10Dense snapshots over one period for the first system in Experiment 4.
+Fig. 11Dense snapshots over one period for the second system in Experiment 4.
+By contrast, when we compare the one-cycle holonomy
+Ucycle =Q Nt−1QNt−2···Q 1Q0,
+constructed by accumulating the discrete parallel transports of the Hodge zero-mode
+space over one full cycle, a clear difference emerges. For the first system, the one-cycle
+34
+
+===== PAGE 35 =====
+Fig. 12Vineyard-style tracking of the top two persistence points in the two systems of Experiment 4.
+Fig. 13Time evolution of the bottleneck distance between the two systems in Experiment 4.
+holonomy is
+Ucycle(ex3) =
+−0.6207−0.7840
+−0.7840 0.6207
+
+,
+whereas for the second system it is
+Ucycle(ex4) =
+
+0.9795−0.2013
+0.2013 0.9795
+
+.
+35
+
+===== PAGE 36 =====
+Fig. 14One-cycle holonomy and tracking comparison for the two systems in Experiment 4.
+These matrices are clearly different in form, showing that even when the point-
+cloud sequence and the persistence-diagram sequence look similar, the transformation
+undergone by the homological feature space after one full cycle can be fundamentally
+different.
+To quantify the nontriviality of the holonomy, we also compare the Frobenius norm
+∥Ucycle−I∥ F.
+We obtain
+∥Ucycle(ex3)−I∥ F = 2.0000,∥U cycle(ex4)−I∥ F = 0.2862.
+Thus, the first system accumulates a strongly nontrivial transport over one cycle,
+whereas the second system remains much closer to the identity. Furthermore, the
+difference between the two holonomies is itself large:
+∥Ucycle(ex3)−U cycle(ex4)∥F = 2.0000.
+Therefore, at the level of one-cycle holonomy, the two systems are numerically well
+separated (see Figs. 14, 15).
+Accordingly, the essential message of Experiment 4 is that the local question asked
+by pointwise tracking—“which point continues to which point?”—is fundamentally
+different from the global question asked by holonomy—“what linear transformation
+does the homological feature space undergo after one full cycle?” Even when the former
+shows almost no difference, the latter can reveal a substantial difference in global
+memory. This provides a direct numerical illustration of the theoretical meaning of
+holonomy introduced in Section 3, namely, as global memory accumulated along closed
+loops.
+In Experiment 4, the holonomy is computed not from an arbitrary labeling of
+persistence-diagram points, but from the transport of a persistence-selected subspace
+inside the Hodge zero-mode space. More precisely, the persistence diagram is used only
+36
+
+===== PAGE 37 =====
+Fig. 15Holonomy acting on zero-mode space for the two systems in Experiment 4.
+to select the dominant long-lived features at the chosen scale, and their representative
+cycles are projected onto the Hodge zero-mode space. After orthonormalization, these
+vectors define a rank-two selected frame, and the one-cycle holonomy is computed from
+the overlap matrices between these selected zero-mode frames. Thus, the holonomy in
+Experiment 4 should be interpreted as the Berry holonomy of a persistence-selected
+rank-two subbundle, rather than necessarily that of the full zero-mode bundle.
+5.6 Experiment 5: Stability of Curvature Through the Hodge
+Laplacian
+Finally, in Experiment 5, we examined how stable the curvature is under noise. In
+the theoretical part of this paper, we showed that on regular regions, as long as
+a sufficient spectral gap is maintained, the zero-mode projection and the curvature
+derived from it are locally stable under perturbations of the ordinary Hodge Lapla-
+cian. In Experiment 5, we tested how this theoretical expectation appears in actual
+discrete computations using multiple noisy realizations. Here we focus on the stability
+of curvature.
+First, quantities based directly on persistence diagrams exhibit a very clean pro-
+portional relationship with the noise strength: as the noise increases, the diagram-level
+discrepancy also increases almost proportionally (Fig. 16). This gives a natural base-
+line. In the present framework, however, we want to show that geometric quantities
+such as curvature are also stable, not directly at the diagram level, but through the
+more fundamental operator-level quantity given by the Hodge Laplacian.
+To this end, we compared the relative change of the curvature with the relative
+perturbation size of the ordinary Hodge Laplacian. As shown in the figure, there is
+a clear positive correlation between them: samples with small Laplacian perturbation
+exhibit small curvature change, while larger Laplacian perturbations lead to larger
+curvature change in an approximately proportional manner (Fig. 17). This shows that
+curvature does not fluctuate chaotically under noise, but rather responds continuously
+and stably according to the size of the perturbation in the underlying Hodge Laplacian.
+37
+
+===== PAGE 38 =====
+Fig. 16Noise dependence of PD drift and swap count.
+Fig. 17Noise dependence of curvature versus Hodge Laplacian perturbation.
+Of course, curvature is defined through
+F=P[dP,dP]P,
+that is, through derivatives of the projection and their commutator, so its behavior is
+more structured than that of a first-order quantity such as a direct distance between
+persistence diagrams. Nevertheless, the important point is that the response of curva-
+ture to noise is not scattered arbitrarily; when viewed through the Hodge Laplacian, it
+still exhibits a clean proportional trend. Thus, just as diagram-based quantities behave
+proportionally with respect to noise strength, curvature also behaves proportionally
+and stably once one looks at it through the operator-level perturbation.
+This is fully consistent with the stability results established in Section 3 on reg-
+ular regions. There, the change of curvature is controlled through the change of the
+zero-mode projection, and hence ultimately through the perturbation of the Hodge
+38
+
+===== PAGE 39 =====
+Laplacian, provided that the spectral gap remains open. Experiment 5 provides numer-
+ical evidence for precisely this theoretical picture. In other words, the stability of
+curvature is not grounded in pointwise correspondence between persistence-diagram
+points, but in the stability of the Hodge Laplacian as an operator. This is an impor-
+tant indication that the transport-geometric framework developed here provides not
+only a visualization tool, but also a theoretically consistent and numerically stable
+description.
+5.7 Summary
+Through these experiments, we confirmed that the proposed framework comple-
+ments the standard persistence-diagram-centered description by visualizing transport
+structure that is difficult to see otherwise.
+Experiment 1 illustrated the relationship between vineyard monodromy and zero-
+mode holonomy. Motivated by the construction of closed vineyards in Braiding
+Vineyards [19], we considered vineyard-like data in which three dominant non-elder
+vines undergo cyclic monodromy over one period. The resulting one-cycle holonomy of
+the Hodge zero-mode bundle reproduced the same permutation (1,2,0). After remov-
+ing the trivial direction, the induced action on the two-dimensional quotient space was
+a rotation by−120 ◦, which is the standard geometric representation of order-three
+monodromy. This shows that the global label permutation observed in vineyard-style
+tracking can be interpreted as holonomy of the Hodge zero-mode space.
+Experiment 2 showed that curvature can still be computed even in regions where
+vineyard-style pointwise tracking loses its meaning, and that the instability of point-
+wise tracking is rooted in strong reorganization of the homological feature space itself.
+Experiment 3 showed that even when the persistence diagrams are almost identi-
+cal, the curvature can be clearly nonzero in one case and almost completely zero in
+the other, indicating a fundamental difference in transport geometry. Experiment 4
+showed that even when two systems are difficult to distinguish by local diagram-based
+tracking, their one-cycle holonomies can differ substantially, and that this difference
+can be quantified numerically both at the matrix level and by scalar measures such
+as Frobenius norms. Experiment 5 showed that the change in curvature exhibits a
+proportional relationship with the perturbation size of the ordinary Hodge Laplacian,
+demonstrating stable behavior under noise.
+These results support the central claim of this paper: parameter-dependent
+topological structure should be understood not only through the motion of persistence-
+diagram points, but also through the transport geometry of homological feature spaces.
+Curvature visualizes local reorganization, while holonomy describes global memory
+accumulated along closed loops. The vineyard-like example shows that this holon-
+omy can reproduce monodromy phenomena familiar from vineyard theory, thereby
+positioning the present framework not as a replacement for vineyards, but as a gauge-
+geometric counterpart of their global transport information on the zero-mode space.
+Moreover, the stability of these quantities is consistent with the regular-region theory
+developed in Section 3. Therefore, the gauge-geometric framework proposed here pro-
+vides an effective way to describe changes in topological structure that are difficult to
+capture by pointwise matching alone.
+39
+
+===== PAGE 40 =====
+6 Discussion and Future Directions
+In this paper, we proposed a framework for describing time-evolving topological data
+not by tracking feature points in persistence diagrams, but by regarding the family of
+zero-mode spaces of the ordinary Hodge Laplacian as the primary object. The central
+idea is to interpret the zero eigenspace
+E0(d,t) = ker ∆Hodge
+q (d,t)
+of the ordinary combinatorial Hodge Laplacian at each parameter point (d,t) as the
+homological feature space, and to treat the collection of these spaces as a vector
+bundle over parameter space. From this viewpoint, one can introduce geometric struc-
+tures such as a Berry-type connection, curvature, and holonomy into the analysis of
+parameter-dependent homology.
+The first significance of this work is that it reinterprets homological information
+not as a static collection of features, but as a family of linear spaces transported over
+parameter space. In classical one-parameter persistent homology, the main informa-
+tion is described by barcodes or persistence diagrams. By contrast, in the present
+framework, the object of study is the variation of the zero-mode space itself, namely
+the orientation, mixing, and transport structure of the homological feature space. This
+makes it possible to study not only the existence of topological features, but also
+dynamical information such as reorganization and global memory.
+The second significance is that curvature and holonomy serve as basis-independent
+quantities describing the reorganization of homological feature spaces. When fea-
+tures in a persistence diagram are sufficiently separated, vineyard-type tracking and
+monodromy can be computed stably. Our numerical experiments confirmed that, in
+such regular situations, zero-mode holonomy reproduces vineyard monodromy. On the
+other hand, even in regions where persistence points approach one another and vine-
+yard matching becomes unstable, the curvature defined from the zero-mode projection
+remains stably computable and detects local mixing and reorganization of the feature
+space. We further showed that there are examples in which persistence diagrams or
+pointwise tracking look nearly identical, while curvature or holonomy distinguishes
+the underlying dynamics. Thus, these quantities are not replacements for vineyards,
+but geometric quantities that complement diagram-level tracking by describing the
+basis-independent reorganization of the homological feature space behind it.
+The third significance is that the robustness of the proposed geometric quanti-
+ties against noise is confirmed both theoretically and numerically. In this paper, we
+showed that on regular regions away from the singular set, the zero-mode projection
+and the curvature expressed by the projection formula are locally stable under per-
+turbations of the Hodge Laplacian as an operator family. Since local connection forms
+and holonomy matrices depend on gauge choices, the stability theorem was stated for
+the projection and curvature, which can be compared intrinsically on the common
+Hilbert space. Numerical experiments further confirmed that the change in curvature
+under noise perturbations correlates with the perturbation size of the Hodge Laplacian
+and responds stably rather than fluctuating chaotically. This shows that the proposed
+40
+
+===== PAGE 41 =====
+geometric quantities can function, at least on regular regions, as stable descriptors in
+actual data analysis.
+Near the singular set, however, the uniform spectral gap may close, and the stability
+estimates may break down. This should not be regarded as a defect of the theory.
+Rather, it reflects essential phenomena such as changes in Betti number, topological
+transitions, or strong local reorganization of the homological feature space. Indeed, in
+our numerical experiments, curvature becomes locally large in regions where pointwise
+tracking becomes unstable, indicating that this instability corresponds not merely to
+the proximity of diagram points, but to the reorganization of the zero-mode space
+itself.
+We also interpreted curvature not only as a measure of the strength of reorgani-
+zation, but also, by analogy with Berry curvature, as an effective geometric 2-form
+describing the noncommutativity of transport over parameter space. The resulting
+“force” is not a physical Newtonian force, but it can be regarded as an effective geo-
+metric bias that bends transport in parameter space. This viewpoint is useful because
+it allows one to read curvature heatmaps not merely as scalar intensity maps, but as
+indicators of where the flow of homological structure is strongly deflected.
+Taken together, the present framework provides a dynamical and gauge-geometric
+description of parameter-dependent homology. At the same time, several limitations
+and future directions remain.
+First, the proposed curvature and holonomy tend to be more computationally
+demanding than ordinary persistence diagrams or Betti numbers. For large point
+clouds or high-dimensional simplicial complexes, constructing the Hodge Laplacian,
+computing the zero-mode projection, and evaluating transport and holonomy can
+become numerically expensive. On the other hand, this difficulty may be alleviated in
+the future by quantum computation. Quantum algorithmic implementations of Hodge
+Laplacians have been studied in the context of quantum topological data analysis[27–
+30], and quantum computational methods for Berry phases and Berry curvature have
+also been proposed[36, 37]. Therefore, the zero-mode bundle, curvature, and holon-
+omy introduced in this work may develop into topological-geometric descriptors that
+are executable on quantum computational platforms.
+Second, this paper takes the zero-mode as the primary object, while low-energy
+subspaces are introduced only as auxiliary extensions. The zero-mode is topologically
+natural because it corresponds directly to homology, but it may be too fragile for
+numerical implementation or near the singular set. In such cases, it may be practically
+advantageous to use the low-energy subspace
+Eη(d,t) = Im1 [0,η]
+ 
+∆Hodge
+k (d,t)
+
+instead, whereη >0 is a low-energy cutoff. Understanding the relation between the
+zero-mode theory and its low-energy extension more systematically, especially from
+the viewpoints of numerical analysis and stability, is an important direction for future
+work.
+Third, this paper is mainly theoretical and illustrative, and does not yet include
+full-scale applications to real data. Nevertheless, the curvature heatmap and holonomy
+may provide useful information for engineering and industrial datasets. For example,
+41
+
+===== PAGE 42 =====
+a curvature heatmap may indicate time ranges and scale ranges where local reorgani-
+zation is intense, while holonomy may quantify nontrivial memory remaining in the
+homological feature space after one period. Possible applications include monitoring
+of periodic operations, early anomaly detection, and visualization of state transitions.
+Future work should therefore include implementation on real data, stable discretization
+schemes, and empirical comparison with existing methods.
+Finally, the conceptual message of this work can be summarized as follows. Topo-
+logical data analysis has often described evolving data through static summaries such
+as birth and death times, persistence diagrams, and Betti numbers. In contrast, this
+paper proposes to regard homology as a family of zero-mode spaces transported over
+parameter space and to introduce connection, curvature, and holonomy on this family.
+As a result, one gains access not only to the existence of topological features, but also
+to dynamical information such as reorganization, transport, memory, and magnetic-
+field-like geometric deflection. In particular, the proposed method reproduces vineyard
+monodromy in regular cases, while still providing basis-independent reorganization
+quantities when vineyard matching becomes unstable. In this sense, this work intro-
+duces a gauge-geometric viewpoint into topological data analysis and provides a new
+descriptive framework for the topological analysis of time-evolving data.
+Statements and Declarations
+Funding
+The authors declare that no funds, grants, or other support were received during the
+preparation of this manuscript.
+Competing interests
+The authors have no relevant financial or non-financial interests to disclose.
+Author contributions
+S.K. conceived the study, developed the theoretical framework, and carried out the
+numerical computations. Y.S. made significant contributions through extensive dis-
+cussions with S.K. and provided important guidance for refining the direction of the
+study. All authors reviewed and approved the final manuscript.
+Data availability
+The datasets generated and analyzed during the current study are available from the
+corresponding author upon reasonable request.
+Code availability
+The code used for the numerical experiments is available from the corresponding
+author upon reasonable request.
+42
+
+===== PAGE 43 =====
+Ethics approval
+Not applicable.
+Consent to participate
+Not applicable.
+Consent for publication
+Not applicable.
+Appendix A Minimal Geometric Preliminaries
+We now review the minimal geometric notions needed later: vector bundles, connec-
+tions, curvature, holonomy, gauge transformations, and the Berry connection induced
+from a family of subspaces.
+A.1 Vector bundles
+Definition 17(Vector bundle) LetMbe a smooth manifold. A smooth vector bundle of
+rankroverMconsists of a smooth manifoldEand a smooth surjective map
+π:E→M
+such that, for everyx∈M, the fiber
+Ex :=π−1(x)
+is anr-dimensional vector space, and for everyx∈Mthere exist an open neighborhood
+U⊂Mand a diffeomorphism
+Φ :π−1(U)→U×k r
+satisfying
+pr1◦Φ =π,
+with the property that for eachy∈U, the restriction
+Φ|Ey :Ey→{y}×k r∼= kr
+is a linear isomorphism.
+Definition 18(Local frame) LetE→Mbe a rank-rvector bundle. A collection of smooth
+sections
+e1,...,e r∈Γ(U,E)
+over an open setU⊂Mis called a local frame if, for everyx∈U, the vectors
+e1(x),...,e r(x)
+form a basis of the fiberE x.
+If a local frame is fixed, any sections∈Γ(U,E) can be uniquely written as
+s=
+rX
+a=1
+saea.
+43
+
+===== PAGE 44 =====
+A.2 Connections
+Definition 19(Connection) LetE→Mbe a smooth vector bundle. A connection onEis
+ak-linear map
+∇: Γ(E)→Ω 1(M,E)
+satisfying the Leibniz rule
+∇(fs) =df⊗s+f∇s
+for allf∈C ∞(M) and alls∈Γ(E).
+Ife 1,...,e r is a local frame onU⊂M, then
+∇ea =
+rX
+b=1
+Abaeb
+for uniquely determined 1-formsA ba∈Ω 1(U). The matrix-valued 1-form
+A= (A ba)
+is called the connection 1-form in the chosen frame.
+For a section
+s=
+X
+a
+saea,
+one has
+∇s=
+X
+a
+dsa⊗ea +
+X
+a,b
+saAbaeb,
+or, in matrix notation,
+∇s=ds+As.
+Definition 20(Parallel transport) Letγ: [0,1]→Mbe a smooth curve. A sections(t)∈
+Eγ(t) alongγis called parallel if
+∇ ˙γ(t)s(t) = 0.
+Given an initial vectors(0)∈E γ(0), this equation determines a vectors(1)∈E γ(1). The
+resulting linear map
+Πγ :Eγ(0)→Eγ(1)
+is called the parallel transport alongγassociated with∇.
+A.3 Curvature
+Definition 21(Curvature) The curvature of a connection∇is the End(E)-valued 2-form
+F∇ :=∇ 2.
+IfAis the connection 1-form in a local frame, then
+F=dA+A∧A.
+44
+
+===== PAGE 45 =====
+In components,
+Fab =dA ab +
+X
+c
+Aac∧Acb.
+The curvature measures the local nontriviality of the connection. In particular,F= 0
+means that the connection is locally flat.
+A.4 Holonomy
+Definition 22(Holonomy) Letγ: [0,1]→Mbe a closed curve withγ(0) =γ(1) =x. The
+parallel transport alongγdefines a linear map
+Uγ :Ex→Ex.
+This map is called the holonomy alongγ.
+In a local frame, the holonomy is written as
+Uγ =Pexp
+
+−
+Z
+γ
+A
+
+,
+wherePdenotes path-ordering.
+For a sufficiently small loopγ=∂S, one has the approximation
+Uγ≈I−
+Z
+S
+F.
+Thus the curvature can be viewed as the infinitesimal generator of holonomy.
+A.5 Gauge transformations
+Since the choice of local frame is not unique, the local matrix representation of a
+connection depends on the frame.
+Definition 23(Gauge transformation) Let (e a) and (e′a) be two local frames on an open
+setU⊂M, related by
+e′
+a =
+X
+b
+ebgba,
+where
+g:U→GL(r,k)
+is a smooth map. Thengis called a gauge transformation.
+IfAandA ′ are the corresponding connection 1-forms, then
+A′ =g−1Ag+g −1dg.
+Moreover, the curvature transforms as
+F′ =g−1Fg.
+45
+
+===== PAGE 46 =====
+Hence the connection 1-form itself is gauge-dependent, whereas quantities such
+as the eigenvalues ofF, the conjugacy class ofU γ, tr(Uγ), and det(U γ) are gauge-
+invariant. These are the quantities with intrinsic geometric meaning.
+A.6 Berry connection
+The connection used in this paper is not chosen arbitrarily on a vector bundle. Rather,
+it is induced naturally from a family of subspaces inside a common inner-product
+space. This is the same structure as the Berry connection in quantum mechanics.
+LetHbe a finite-dimensional inner-product space, and suppose that for each
+x∈Mone is given anr-dimensional subspace
+Ex⊂H
+depending smoothly onx. Then
+E=
+G
+x∈M
+Ex
+forms a vector bundle overM.
+Let
+P(x) :H→H
+denote the orthogonal projection ontoE x.
+Definition 24(Connection induced from a projection) For a local sectionsofE, define
+∇s:=P(ds).
+This defines a natural connection onEinduced from the family of subspacesE x⊂H.
+If one chooses a local orthonormal frame
+ψ1(x),...,ψ r(x)
+and writes
+Ψ(x) = (ψ1(x),...,ψ r(x)),
+then the corresponding connection 1-form is
+A= Ψ∗dΨ.
+This is the Berry connection.
+Its curvature is
+F=dA+A∧A,
+and it can also be written in terms of the projectionPas
+F=P[dP,dP]P.
+46
+
+===== PAGE 47 =====
+This formula will be essential later, when we construct the connection on the zero-mode
+bundle of the Hodge Laplacian.
+Appendix B Proof of Local Stability on Regular
+Regions
+In this appendix, we prove the quantitative stability theorem on regular regions. The
+proof is based on resolvent estimates for self-adjoint operator families on a finite-
+dimensional Hilbert space.
+We only treat quantities that can be stated independently of gauge choices. Namely,
+we prove the stability of the zero-mode projection
+P0
+and of the curvature expressed by the projection formula
+F=P 0[dP0,dP 0]P0.
+Since the local connection formAand the holonomy matrix depend on the choice of
+frame, we do not directly compare them in this appendix.
+B.1 Setup and assumptions
+LetU⊂A×Λ be a regular region, and let
+L(x), eL(x) (x∈U)
+be two self-adjoint operator families on the common Hilbert spaceH q, wherex=
+(d,λ). We regard them as common-Hilbert-space realizations of ordinary Hodge
+Laplacians, or as perturbations of such realizations.
+Let
+P0(x), eP0(x)
+be the corresponding zero-mode projections. That is,
+P0(x) :H q→kerL(x), eP0(x) :H q→ker eL(x)
+are orthogonal projections.
+The corresponding curvatures are defined by the projection formula
+F=P 0[dP0,dP 0]P0, eF= eP0[deP0,deP0]eP0.
+We assume the following:
+1. dim kerL(x) = dim kereL(x) =mis constant onU.
+2. There existsγ >0 such that, for allx∈U,
+Spec(L(x))⊂{0}∪[γ,∞),Spec( eL(x))⊂{0}∪[γ,∞).
+47
+
+===== PAGE 48 =====
+3.Land eLare of classC 2 onU, and theirC 2-norms are uniformly bounded.
+Let Γ be the positively oriented circle centered at the origin with radiusγ/2. Then
+the zero-mode projections are given by the Riesz projection formulas
+P0(x) = 1
+2πi
+Z
+Γ
+(z−L(x)) −1dz,
+and
+eP0(x) = 1
+2πi
+Z
+Γ
+(z− eL(x))−1dz.
+Throughout this appendix,∥·∥denotes the operator norm.
+B.2 Stability of the zero-mode projection
+We first record a uniform resolvent estimate.
+Lemma 8For everyx∈Uand everyz∈Γ,
+∥(z−L(x)) −1∥≤ 2
+γ,∥(z− eL(x))−1∥≤ 2
+γ.
+ProofSincez∈Γ, we have|z|=γ/2. On the other hand,
+Spec(L(x))⊂{0}∪[γ,∞).
+Hence the distance fromzto Spec(L(x)) is at leastγ/2. Therefore, by finite-dimensional
+spectral theory,
+∥(z−L(x)) −1∥≤ 1
+dist(z,Spec(L(x))) ≤ 2
+γ.
+The proof for eL(x) is identical.□
+We also use the standard resolvent identity.
+Lemma 9(Resolvent identity)
+(z−L) −1−(z− eL)−1 = (z−L) −1(L− eL)(z− eL)−1.
+The preceding two lemmas imply the stability of the zero-mode projection.
+Proposition 10There exists a constantC 0 >0such that
+∥P0− eP0∥C0(U)≤C 0∥L− eL∥C0(U).
+48
+
+===== PAGE 49 =====
+ProofUsing the Riesz projection formula and the resolvent identity, we obtain
+P0− eP0 = 1
+2πi
+Z
+Γ
+
+(z−L) −1−(z− eL)−1
+
+dz
+= 1
+2πi
+Z
+Γ
+(z−L) −1(L− eL)(z− eL)−1dz.
+Therefore,
+∥P0− eP0∥≤ 1
+2π length(Γ) sup
+z∈Γ
+∥(z−L) −1∥∥L− eL∥sup
+z∈Γ
+∥(z− eL)−1∥.
+Since length(Γ) =πγ, the uniform resolvent estimate gives
+∥P0− eP0∥≤ 1
+2π·πγ· 2
+γ· 2
+γ∥L− eL∥= 2
+γ∥L− eL∥.
+Taking the supremum overUproves the claim.□
+B.3 Stability of the derivative of the projection
+We next prove stability of the derivative of the projection. Differentiating the Riesz
+projection formula gives
+dP0 = 1
+2πi
+Z
+Γ
+(z−L) −1(dL)(z−L) −1dz.
+Similarly,
+deP0 = 1
+2πi
+Z
+Γ
+(z− eL)−1(deL)(z− eL)−1dz.
+Proposition 11There exists a constantC 1 >0such that
+∥dP0−d eP0∥C0(U)≤C 1∥L− eL∥C1(U).
+ProofSubtracting the two formulas above, we obtain
+dP0−d eP0 = 1
+2πi
+Z
+Γ
+h
+(z−L) −1(dL)(z−L) −1−(z− eL)−1(deL)(z− eL)−1
+i
+dz.
+We decompose the integrand into the following three terms:
+
+(z−L) −1−(z− eL)−1
+
+(dL)(z−L) −1
++(z− eL)−1(dL−d eL)(z−L) −1
++(z− eL)−1(deL)
+
+(z−L) −1−(z− eL)−1
+
+.
+For the first and third terms, we apply the resolvent identity. For all three terms, we use the
+uniform resolvent estimate. Each term is then bounded by a constant multiple of
+∥L− eL∥+∥dL−d eL∥.
+The constant depends only on the spectral gapγand the uniformC 1-bounds ofLand eL.
+Therefore,
+∥dP0−d eP0∥C0(U)≤C 1∥L− eL∥C1(U).
+□
+49
+
+===== PAGE 50 =====
+B.4 Stability of the curvature
+We now prove stability of the curvature. We do not use connection forms; instead, we
+directly use the projection formula
+F=P 0[dP0,dP 0]P0.
+Letx a be local coordinates. The components of the curvature are
+Fab =P 0[∂aP0,∂bP0]P0.
+Similarly,
+eFab = eP0[∂aeP0,∂beP0]eP0.
+Proposition 12There exists a constantC 2 >0such that
+∥F− eF∥C0(U)≤C 2∥L− eL∥C2(U).
+ProofIt suffices to estimate each local componentF ab. We write
+Fab− eFab =P 0[∂aP0,∂bP0]P0− eP0[∂aeP0,∂beP0]eP0.
+We decompose this as
+Fab− eFab = (P0− eP0)[∂aP0,∂bP0]P0
++eP0
+
+[∂aP0,∂bP0]−[∂ aeP0,∂beP0]
+
+P0
++eP0[∂aeP0,∂beP0](P0− eP0).
+Moreover,
+[∂aP0,∂bP0]−[∂ aeP0,∂beP0]
+can be written as
+[∂aP0−∂aeP0,∂bP0] + [∂aeP0,∂bP0−∂beP0].
+Using the uniform boundedness ofP 0,eP0,dP 0,deP0, we obtain
+∥Fab− eFab∥≤C
+
+∥P0− eP0∥+∥dP 0−d eP0∥
+
+.
+By the estimates proved above,
+∥P0− eP0∥C0(U)≤C∥L− eL∥C0(U)
+and
+∥dP0−d eP0∥C0(U)≤C∥L− eL∥C1(U).
+Thus the curvature difference is controlled by the perturbation of the operator family. In
+particular, since the theorem assumesC 2-control, we obtain
+∥F− eF∥C0(U)≤C 2∥L− eL∥C2(U).
+In fact, forC 0-stability ofFalone,C 1-control ofL− eLis sufficient. In the main theorem,
+however, we impose aC 2-assumption as a convenient sufficient condition that also covers the
+regularity of the curvature.□
+50
+
+===== PAGE 51 =====
+B.5 Proof of the stability theorem
+Combining the preceding estimates proves the stability theorem on regular regions.
+Theorem 13Under the assumptions of the quantitative stability theorem in the main text,
+∥P0− eP0∥C0(U)≤C 0∥L− eL∥C0(U),
+∥dP0−d eP0∥C0(U)≤C 1∥L− eL∥C1(U),
+and
+∥F− eF∥C0(U)≤C 2∥L− eL∥C2(U).
+In particular, the zero-mode projection and the curvature are locally stable on regular regions.
+ProofThe first estimate follows from the Riesz projection formula and the resolvent iden-
+tity. The second estimate follows by differentiating the Riesz projection formula. The third
+estimate follows from the projection formula for curvature,
+F=P 0[dP0,dP 0]P0,
+together with the estimates forP 0 anddP 0.□
+B.6 Failure near the singular set
+We conclude by explaining why such uniform stability generally fails near the singular
+set.
+The essential quantity in the estimates above is the resolvent norm
+∥(z−L) −1∥.
+This is controlled by the spectral gapγseparating the zero eigenvalue from the nonzero
+spectrum:
+∥(z−L) −1∥≤ 2
+γ.
+Therefore, asγ→0, the constants in the estimates diverge.
+This means that quantities such as the zero-mode projection and the curvature
+may become unstable near the singular set. In particular, at points where the Betti
+number changes or where the separation between zero modes and nonzero modes is
+lost, the smooth bundle picture on regular regions breaks down.
+Thus, the uniform Lipschitz-type stability ofP 0 andFis a local statement on
+regular regions with a spectral gap. It is not expected to hold globally across the
+singular set. This is not a defect of the theory; rather, it reflects genuine topological
+changes or abrupt reorganization of the zero-mode space.
+Appendix C Numerical Details
+Let the time parameter be sampled as a discrete sequence
+t0,t 1,...,t Nt−1,
+51
+
+===== PAGE 52 =====
+and let the scale parameter be sampled as
+d0,d 1,...,d Nd−1.
+For each timet j, we construct a Vietoris–Rips filtration from the point cloud and
+compute the one-dimensional persistence diagram
+Dj ={(b (j)
+α ,d (j)
+α )}α.
+We also retain the representative cycle associated with each finite interval as a vector
+c(j)
+α ∈R m
+embedded in a common ambient edge space
+Hamb
+1 ∼= Rm.
+At each grid point (di,tj), we construct the ordinary one-dimensional combinatorial
+Hodge Laplacian
+L1(di,tj) =B 1(di,tj)⊤B1(di,tj) +B 2(di,tj)B2(di,tj)⊤
+from the simplicial complex at thresholdd i. HereB 1(di,tj) andB 2(di,tj) denote the
+boundary matrices of the Vietoris–Rips complexK(d i,tj). We then compute its zero
+space
+H(di,tj) = kerL 1(di,tj),
+which is the harmonic subspace at that parameter value. By the discrete Hodge
+theorem, this space realizes the ordinary first homology
+H(di,tj)∼=H1(K(di,tj)).
+The persistence diagram is used only as a feature-selection device for choosing
+representative cycles inside the ordinary Hodge zero-mode space. More precisely, at
+each (di,tj), we consider those persistence intervals that are alive at the thresholdd i,
+namely those satisfying
+b(j)
+α ≤d i, d (j)
+α >d i.
+For each such interval, the representative cyclec (j)
+α is projected onto the harmonic
+subspace:
+bc(i,j)
+α = ΠH(di,tj)c(j)
+α .
+Among these candidates, we select the two with the longest lifetimes and orthonor-
+malize them by Gram–Schmidt to obtain
+Ψi,j = Ψ(di,tj) =
+
+ψ1(di,tj),ψ 2(di,tj)
+
+∈R m×2,Ψ ⊤
+i,jΨi,j =I 2.
+We refer to this as the rank-two Hodge zero-mode basis.
+52
+
+===== PAGE 53 =====
+The associated orthogonal projection is
+Pi,j =P(d i,tj) = Ψi,jΨ⊤
+i,j.
+In the theoretical framework of this paper, the Berry connection is written in a local
+frame Ψ as
+A= Ψ∗dΨ,
+and the curvature is given by
+F=dA+A∧A=P[dP,dP]P.
+In the numerical experiments, we implement the projection formula directly on the
+discrete grid.
+C.1 Numerical Evaluation of Curvature
+Theoretically, the curvature on the zero-mode bundle is given by
+F=P[dP,dP]P.
+In the present experiments, the (d,t)-componentF dt of the curvature two-form is
+approximated by central differences. Namely,
+∂dP(di,tj)≈ Pi+1,j−Pi−1,j
+2∆d , ∂ tP(di,tj)≈ Pi,j+1−Pi,j−1
+2∆t .
+We then define the curvature matrix by
+Fdt(di,tj) =P i,j
+
+(∂dP)i,j(∂tP)i,j−(∂tP)i,j(∂dP)i,j
+
+Pi,j.
+This is the direct discretization of the theoretical formula
+F=P[dP,dP]P.
+To visualize the matrix-valued curvature as a scalar field, we use its Frobenius norm
+Curv(di,tj) :=∥F dt(di,tj)∥F,
+and display it as a heatmap. Thus, the “curvature map” in this paper is the distribution
+of∥Fdt∥F , which measures the local strength of internal mixing in the Hodge zero-mode
+space. Larger values indicate that the infinitesimal transports in the scale direction
+and the time direction are strongly noncommutative, meaning that the homological
+feature space is rapidly reorganizing in that neighborhood.
+53
+
+===== PAGE 54 =====
+C.2 Numerical Evaluation of Holonomy
+C.2.1 One-Step T ransport
+Given two neighboring grid points (di,tj) and (di′,tj′) with zero-mode bases Ψi,j and
+Ψi′,j′, we define the overlap matrix
+M= Ψ⊤
+i,jΨi′,j′.
+We then take its polar decomposition
+M=QS, Q∈O(2), S≥0,
+and regard the orthogonal factor
+Q= polar(M)
+as the discrete one-step parallel transport. In practice, this is computed by the singular
+value decomposition
+M=UΣV ⊤
+and setting
+Q=UV ⊤.
+ThisQgives the closest orthogonal transformation from the previous zero-mode basis
+to the next one, and therefore provides a natural discrete approximation to Berry
+transport.
+C.2.2 Local Holonomy
+Near a curvature peak, we consider a small rectangular loop
+(di0,tj0)→(d i1,tj0)→(d i1,tj1)→(d i0,tj1)→(d i0,tj0).
+By multiplying the one-step transports along the boundary, we define the local
+holonomy
+U□ =
+Y
+ℓ∈∂□
+Qℓ.
+For a sufficiently small loop, one has
+U□≈I−
+ZZ
+□
+F,
+soU □ represents the integrated local effect of the curvature. In the figures, its
+nontriviality is quantified by
+∥U□−I∥ F.
+54
+
+===== PAGE 55 =====
+C.2.3 One-Cycle Holonomy
+In Experiment 4, we fix ad=d i∗ and compute transport along the closed loop in time
+t0→t 1→···→t Nt−1→t 0.
+The one-step transports are defined by
+Qj = polar
+ 
+Ψ(di∗,tj)⊤Ψ(di∗,tj+1)
+
+, j= 0,...,N t−2,
+and the closing transport is
+QNt−1 = polar
+ 
+Ψ(di∗,tNt−1)⊤Ψ(di∗,t 0)
+
+.
+The one-cycle holonomy is then
+Ucycle =Q Nt−1QNt−2···Q 1Q0.
+This is the accumulated linear transformation undergone by the Hodge zero-mode
+space after one full cycle. Theoretically, holonomy is defined as parallel transport along
+a closed loop and represents the accumulated local effect of curvature, that is, global
+memory or monodromy.
+We also define the cumulative transport up to stepnby
+Hn =Q n−1···Q 1Q0,
+and plot
+∥Hn−I∥ F
+as the cumulative holonomy deviation. This quantity measures how far the transported
+zero-mode basis at timet n has deviated from the initial one.
+C.3 Numerical Evaluation of Pointwise Tracking
+C.3.1 Successive Matching
+In Experiment 2, for each timet j, we extract from the persistence diagram the two
+points with the largest lifetimes
+ℓ(j)
+α =d (j)
+α −b (j)
+α ,
+and denote them by
+p(j)
+1 ,p (j)
+2 ∈R 2, p (j)
+a = (b(j)
+a ,d (j)
+a ).
+Given the tracked labeled points at timet j,
+ep(j)
+1 ,ep(j)
+2 ,
+55
+
+===== PAGE 56 =====
+and the two candidates at the next timet j+1,
+p(j+1)
+1 ,p (j+1)
+2 ,
+we form the cost matrix
+C(j)
+ab =
+
+
+ep(j)
+a −p (j+1)
+b
+
+
+2
+2.
+For a permutationσ∈S 2, the total matching cost is
+C(j)(σ) =
+2X
+a=1
+C(j)
+a,σ(a).
+We then determine the assignment by
+σ∗
+j = arg min
+σ∈S2
+C(j)(σ),
+and update the tracked points as
+ep(j+1)
+a =p (j+1)
+σ∗
+j (a).
+Although this was implemented using the Hungarian algorithm, in the two-point case
+this is equivalent to comparing only the identity assignment and the swap assignment.
+Accordingly, at each step we explicitly compute the identity cost
+C(j)
+id =∥ep(j)
+1 −p (j+1)
+1 ∥2
+2 +∥ep(j)
+2 −p (j+1)
+2 ∥2
+2
+and the swap cost
+C(j)
+swap =∥ep(j)
+1 −p (j+1)
+2 ∥2
+2 +∥ep(j)
+2 −p (j+1)
+1 ∥2
+2.
+A swap is said to occur whenever
+C(j)
+swap<C (j)
+id .
+We further define the matching ambiguity by
+margin(j) =
+C(j)
+id −C (j)
+swap
+.
+A small value of margin(j) means that the two assignments have nearly identical cost,
+indicating instability of pointwise tracking.
+To measure how close the top two persistence points are at the same time, we also
+define
+sep(j) =∥p (j)
+1 −p (j)
+2 ∥2.
+In Experiment 2, swaps occurred precisely at times where sep (j) became extremely
+small and margin (j) simultaneously approached zero, and these times coincided with
+the curvature peak region.
+56
+
+===== PAGE 57 =====
+C.3.2 Holonomy-Guided T racking
+In Experiment 3, we again first construct the ordinary vineyard-style tracking
+ep(j)
+a
+by successive matching of the top two persistence points.
+On the other hand, from the transport of the Hodge zero-mode space we obtain
+the one-step orthogonal transport
+Qj = polar
+ 
+Ψ(di∗,tj)⊤Ψ(di∗,tj+1)
+
+∈O(2).
+To determine whether this step is mainly label-preserving or swap-like, we define
+s(j)
+diag =|Q (j)
+11|+|Q (j)
+22|, s (j)
+off =|Q (j)
+12|+|Q (j)
+21|,
+and then
+swap-likeness(j) =s (j)
+off−s (j)
+diag.
+If this quantity is negative, the transport is mainly diagonal and thus approximately
+preserves the basis directions. If it is positive, the transport is mainly off-diagonal and
+thus behaves like a swap.
+We therefore define a permutation
+πj =
+(
+id,swap-likeness (j)≤0,
+(12),swap-likeness (j) >0,
+and reorder the persistence points according to
+bp(j+1)
+a =p (j+1)
+πj(a).
+The sequencebp(j)
+a uses not only local distances in the persistence diagram, but also the
+transport directionQ j of the Hodge zero-mode space itself. To quantify the difference
+between ordinary tracking and holonomy-guided tracking, we define
+TrackError = 1
+Nt
+Nt−1X
+j=0
+ 2X
+a=1
+∥ep(j)
+a −bp(j)
+a ∥2
+2
+!1/2
+.
+A larger value indicates that pointwise matching alone does not sufficiently capture
+the transport structure of the homological feature space.
+C.4 Definition of PD Drift
+In the noise robustness experiment, we define the discrepancy between the persistence
+diagrams of the baseline data and the noisy data as the optimal matching distance
+between their top two persistence points at each time.
+57
+
+===== PAGE 58 =====
+Let
+p(j)
+1 ,p (j)
+2
+be the top two points of the baseline persistence diagram at timet j, and let
+q(j)
+1 ,q (j)
+2
+be the corresponding top two points for the noisy data. Then the PD drift at timet j
+is defined by
+PDdrift(tj) = 1
+2 min
+σ∈S2
+2X
+a=1
+∥p(j)
+a −q (j)
+σ(a)∥2.
+In practice, this is computed by applying the Hungarian algorithm to the distance
+matrix
+D(j)
+ab =∥p (j)
+a −q (j)
+b ∥2
+and taking the minimum average cost
+PDdrift(tj) = 1
+2
+2X
+a=1
+D(j)
+a,σ∗
+j (a).
+In the plots as a function of noise strength, we use the temporal average
+PDdrift = 1
+Nt
+Nt−1X
+j=0
+PDdrift(tj).
+Thus, the “mean PD drift” in the main text is the time-averaged optimal matching
+distance between the top two persistence points of the baseline data and those of the
+noisy realization.
+References
+[1] Edelsbrunner, Letscher, Zomorodian: Topological persistence and simplification.
+Discrete & computational geometry28(4), 511–533 (2002)
+[2] Zomorodian, A., Carlsson, G.: Computing persistent homology. In: Proceedings
+of the Twentieth Annual Symposium on Computational Geometry, pp. 347–356
+(2004)
+[3] Cohen-Steiner, D., Edelsbrunner, H., Harer, J.: Stability of persistence dia-
+grams. In: Proceedings of the Twenty-first Annual Symposium on Computational
+Geometry, pp. 263–271 (2005)
+[4] Edelsbrunner, H., Harer, J.,et al.: Persistent homology-a survey. Contemporary
+mathematics453(26), 257–282 (2008)
+58
+
+===== PAGE 59 =====
+[5] Otter, N., Porter, M.A., Tillmann, U., Grindrod, P., Harrington, H.A.: A roadmap
+for the computation of persistent homology. EPJ data science6(1), 17 (2017)
+[6] Obayashi, I., Nakamura, T., Hiraoka, Y.: Persistent homology analysis for materi-
+als research and persistent homology software: Homcloud. journal of the physical
+society of japan91(9), 091013 (2022)
+[7] Nakamura, T., Hiraoka, Y., Hirata, A., Escolar, E.G., Nishiura, Y.: Persistent
+homology and many-body atomic structure for medium-range order in the glass.
+Nanotechnology26(30), 304001 (2015)
+[8] Hiraoka, Y., Nakamura, T., Hirata, A., Escolar, E.G., Matsue, K., Nishiura, Y.:
+Hierarchical structures of amorphous solids characterized by persistent homology.
+Proceedings of the National Academy of Sciences113(26), 7035–7040 (2016)
+[9] Moor, M., Horn, M., Rieck, B., Borgwardt, K.: Topological autoencoders. In:
+International Conference on Machine Learning, pp. 7045–7054 (2020). PMLR
+[10] Vandaele, R., Kang, B., Lijffijt, J., De Bie, T., Saeys, Y.: Topologically regularized
+data embeddings. arXiv preprint arXiv:2110.09193 (2021)
+[11] Gabrielsson, R.B., Nelson, B.J., Dwaraknath, A., Skraba, P.: A topology layer
+for machine learning. In: International Conference on Artificial Intelligence and
+Statistics, pp. 1553–1563 (2020). PMLR
+[12] Hofer, C., Graf, F., Rieck, B., Niethammer, M., Kwitt, R.: Graph filtration learn-
+ing. In: International Conference on Machine Learning, pp. 4314–4323 (2020).
+PMLR
+[13] Adams, H., Emerson, T., Kirby, M., Neville, R., Peterson, C., Shipman, P., Che-
+pushtanova, S., Hanson, E., Motta, F., Ziegelmeier, L.: Persistence images: A
+stable vector representation of persistent homology. Journal of Machine Learning
+Research18(8), 1–35 (2017)
+[14] Hofer, C., Kwitt, R., Niethammer, M., Uhl, A.: Deep learning with topological
+signatures. Advances in neural information processing systems30(2017)
+[15] Bubenik, P.: The persistence landscape and some of its properties. In: Topological
+Data Analysis: The Abel Symposium 2018, pp. 97–117 (2020). Springer
+[16] Chazal, F., Fasy, B.T., Lecci, F., Rinaldo, A., Wasserman, L.: Stochastic conver-
+gence of persistence landscapes and silhouettes. In: Proceedings of the Thirtieth
+Annual Symposium on Computational Geometry, pp. 474–483 (2014)
+[17] Kaliˇ snik, S.: Tropical coordinates on the space of persistence barcodes. Founda-
+tions of Computational Mathematics19(1), 101–129 (2019)
+59
+
+===== PAGE 60 =====
+[18] Cohen-Steiner, D., Edelsbrunner, H., Morozov, D.: Vines and vineyards by updat-
+ing persistence in linear time. In: Proceedings of the Twenty-second Annual
+Symposium on Computational Geometry, pp. 119–126 (2006)
+[19] Chambers, E.W., Fillmore, C., Stephenson, E., Wintraecken, M.: Braiding vine-
+yards. In: Proceedings of the 2026 Annual ACM-SIAM Symposium on Discrete
+Algorithms (SODA), pp. 6240–6263 (2026). SIAM
+[20] Carlsson, G., De Silva, V.: Zigzag persistence. Foundations of computational
+mathematics10(4), 367–405 (2010)
+[21] Carlsson, G., Zomorodian, A.: The theory of multidimensional persistence.
+In: Proceedings of the Twenty-third Annual Symposium on Computational
+Geometry, pp. 184–193 (2007)
+[22] Lesnick, M., Wright, M.: Interactive visualization of 2-d persistence modules.
+arXiv preprint arXiv:1512.00180 (2015)
+[23] Oudot, S., Scoccola, L.: On the stability of multigraded betti numbers and hilbert
+functions. SIAM Journal on Applied Algebra and Geometry8(1), 54–88 (2024)
+[24] Vipond, O.: Multiparameter persistence landscapes. Journal of Machine Learning
+Research21(61), 1–38 (2020)
+[25] Hickok, A.: Persistence diagram bundles: A multidimensional generalization of
+vineyards. arXiv preprint arXiv:2210.05124 (2022)
+[26] Hickok, A.: Computing persistence diagram bundles. arXiv preprint
+arXiv:2210.06424 (2022)
+[27] Lloyd, S., Garnerone, S., Zanardi, P.: Quantum algorithms for topological and
+geometric analysis of data. Nature communications7(1), 10138 (2016)
+[28] Akhalwaya, I.Y., Bhayat, A., Connolly, A., Herbert, S., Horesh, L., Sorci, J.,
+Ubaru, S.: Comparing quantum and classical monte carlo algorithms for esti-
+mating betti numbers of clique complexes. arXiv preprint arXiv:2408.16934
+(2024)
+[29] Gyurik, C., Cade, C., Dunjko, V.: Towards quantum advantage via topological
+data analysis. Quantum6, 855 (2022)
+[30] Yamauchi, H., Kanno, S., Sato, Y., Tezuka, H., Shimada, Y.-a., Kaminishi, E.,
+Yamamoto, N.: Quantum spectroscopy of topological dynamics via a supersym-
+metric hamiltonian. arXiv preprint arXiv:2511.23169 (2025)
+[31] Ameneyro, B., Maroulas, V., Siopsis, G.: Quantum persistent homology. Journal
+of Applied and Computational Topology8(7), 1961–1980 (2024)
+60
+
+===== PAGE 61 =====
+[32] Hayakawa, R.: Quantum algorithm for persistent betti numbers and topological
+data analysis. Quantum6, 873 (2022)
+[33] Gyurik, C., Schmidhuber, A., King, R., Dunjko, V., Hayakawa, R.: Quan-
+tum computing and persistence in topological data analysis. arXiv preprint
+arXiv:2410.21258 (2024)
+[34] Wei, X., Wei, G.-W.: Persistent topological laplacians—a survey. Mathematics
+13(2), 208 (2025)
+[35] M´ emoli, F., Wan, Z., Wang, Y.: Persistent laplacians: Properties, algorithms and
+implications. SIAM Journal on Mathematics of Data Science4(2), 858–884 (2022)
+[36] Hayakawa, R., Sakamoto, K., Kiumi, C.: Computational complexity of berry
+phase estimation in topological phases of matter. arXiv preprint arXiv:2509.13423
+(2025)
+[37] Mootz, M., Yao, Y.-X.: Efficient berry phase calculation via adaptive variational
+quantum computing approach. APL Quantum3(1) (2026)
+61

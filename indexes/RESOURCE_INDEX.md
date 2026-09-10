@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T05:43:29Z`
-- Tree/content state: `77defa7463d5acddffdc6358d68f14237d3189f9fda5109edd4c09a848d6dc17`
+- Scanned: `2026-09-10T05:47:22Z`
+- Tree/content state: `b2e1702db46bca70afbf56ba7ee2536adf33430db5e6235a7c119654651834ee`
 - Coverage: complete structural traversal
-- Files: 1172
-- Uploaded source files: 1163
-- PDF papers: 1006
+- Files: 1198
+- Uploaded source files: 1189
+- PDF papers: 1031
 - Repository machinery files: 9
-- Byte-identical duplicate groups: 75
+- Byte-identical duplicate groups: 76
 
 ## Top-level coverage
 
@@ -39,7 +39,7 @@
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 9 |
 | `OUTSIDE RESEARCH LIBRARY` | 318 |
-| `PRIOR_ART` | 30 |
+| `PRIOR_ART` | 56 |
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
@@ -170,6 +170,9 @@
 - `788bc34e1fc0ce72ab2f643efaab1b0650b92a2359f5141818c2a2e5b69df9a6`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/pdfer.py`
   - `H(s)H_Toolkit/pdfer.py`
+- `7cf8e222b487529828519ed249396401a00c0873150d2f3ec36e8c76d3269abb`
+  - `PRIOR_ART/2605.26224v1 (1).pdf`
+  - `PRIOR_ART/2605.26224v1.pdf`
 - `818b15a4ad3f99274aa4686d639afa984e5ff7eac79aedcb2a2def907b0dc806`
   - `HAUL 2/ssrn-6993036 (1).pdf`
   - `HAUL 2/ssrn-6993036.pdf`
@@ -1265,7 +1268,31 @@
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04114v1.pdf` | 1604688 | arxiv:2609.04114v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04117v1.pdf` | 1824628 | arxiv:2609.04117v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04844v1.pdf` | 470761 | arxiv:2609.04844v1 |
+| `PRIOR_ART/1802.06039v2.pdf` | 2407146 | arxiv:1802.06039v2 |
 | `PRIOR_ART/2020-10-braiding-photonic-topological-modes.pdf` | 354922 |  |
+| `PRIOR_ART/2112.10971v1.pdf` | 2520130 | arxiv:2112.10971v1 |
+| `PRIOR_ART/2502.11322v3.pdf` | 9098090 | arxiv:2502.11322v3 |
+| `PRIOR_ART/2508.12444v4.pdf` | 1931497 | arxiv:2508.12444v4 |
+| `PRIOR_ART/2511.07670v1.pdf` | 3449689 | arxiv:2511.07670v1 |
+| `PRIOR_ART/2511.15639v2.pdf` | 5734454 | arxiv:2511.15639v2 |
+| `PRIOR_ART/2511.19756v2.pdf` | 1932600 | arxiv:2511.19756v2 |
+| `PRIOR_ART/2512.18789v1.pdf` | 2023653 | arxiv:2512.18789v1 |
+| `PRIOR_ART/2602.05427v2.pdf` | 3814195 | arxiv:2602.05427v2 |
+| `PRIOR_ART/2605.26224v1 (1).pdf` | 2634056 | arxiv:2605.26224v1 |
+| `PRIOR_ART/2605.26224v1.pdf` | 2634056 | arxiv:2605.26224v1 |
+| `PRIOR_ART/2605.27297v1.pdf` | 15764956 | arxiv:2605.27297v1 |
+| `PRIOR_ART/2605.28326v1.pdf` | 3144997 | arxiv:2605.28326v1 |
+| `PRIOR_ART/2606.02343v2.pdf` | 4732593 | arxiv:2606.02343v2 |
+| `PRIOR_ART/2606.10259v1.pdf` | 2259922 | arxiv:2606.10259v1 |
+| `PRIOR_ART/2606.13074v3.pdf` | 3608013 | arxiv:2606.13074v3 |
+| `PRIOR_ART/2607.01341v2.pdf` | 2890495 | arxiv:2607.01341v2 |
+| `PRIOR_ART/2607.21405v1.pdf` | 2485813 | arxiv:2607.21405v1 |
+| `PRIOR_ART/2607.24640v1.pdf` | 2731731 | arxiv:2607.24640v1 |
+| `PRIOR_ART/2607.26140v1.pdf` | 2050576 | arxiv:2607.26140v1 |
+| `PRIOR_ART/2608.06491v1.pdf` | 4365565 | arxiv:2608.06491v1 |
+| `PRIOR_ART/2608.17817v2.pdf` | 3761961 | arxiv:2608.17817v2 |
+| `PRIOR_ART/2608.22919v1.pdf` | 1939528 | arxiv:2608.22919v1 |
+| `PRIOR_ART/4dyc-z8zf.pdf` | 1954789 |  |
 | `PRIOR_ART/Advanced Science - 2026 - Lee - Non‐Hermitian Stealthy Hyperuniformity.pdf` | 3129315 |  |
 | `PRIOR_ART/JHEP01(2024)063.pdf` | 930881 |  |
 | `PRIOR_ART/JHEP06(2023)087.pdf` | 541036 |  |
@@ -1292,6 +1319,7 @@
 | `PRIOR_ART/s41586-026-10904-x.pdf` | 10478424 |  |
 | `PRIOR_ART/s41586-026-10915-8.pdf` | 1426863 |  |
 | `PRIOR_ART/s42005-026-02638-z.pdf` | 2106775 |  |
+| `PRIOR_ART/SUBMITTED SAT BIG PAPER.pdf` | 5489504 |  |
 | `PRIOR_ART/symmetry-11-01298.pdf` | 1097058 |  |
 | `PRIOR_ART/Topics_in_statistical_physics_invol.pdf` | 209935 |  |
 | `symmetry-11-01298.pdf` | 1097058 |  |

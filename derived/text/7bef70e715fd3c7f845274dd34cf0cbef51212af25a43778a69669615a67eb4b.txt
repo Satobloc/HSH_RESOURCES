@@ -1,0 +1,901 @@
+===== PAGE 1 =====
+Diﬀerentiated uniformization: A new method for inferring Markov chains on
+combinatorial state spaces including stochastic epidemic models
+Kevin Rupp ∗1, Rudolf Schill ∗†1, Jonas S¨ uskind∗1, Peter Georg 2, Maren Klever 3, Andreas L¨ osch1,
+Lars Grasedyck 3, Tilo Wettig 2, Rainer Spang †1
+1Department of Statistical Bioinformatics, University of Regensburg, 93040 Regensburg, Germany
+2Department of Physics, University of Regensburg, 93040 Regensburg, Germany
+3Institut f¨ ur Geometrie und Praktische Mathematik, RWTH Aachen University, 52062 Aachen, Germany
+Abstract
+Motivation: We consider continuous-time Markov chains that describe the stochastic evolution of a dynamical system
+by a transition-rate matrix Q which depends on a parameter θ. Computing the probability distribution over states at
+time t requires the matrix exponential exp( tQ), and inferring θ from data requires its derivative ∂ exp (tQ)/∂θ. Both
+are challenging to compute when the state space and hence the size of Q is huge. This can happen when the state
+space consists of all combinations of the values of several interacting discrete variables. Often it is even impossible to
+store Q. However, when Q can be written as a sum of tensor products, computing exp( tQ) becomes feasible by the
+uniformization method, which does not require explicit storage of Q.
+Results: Here we provide an analogous algorithm for computing∂ exp (tQ)/∂θ, the diﬀerentiated uniformization method.
+We demonstrate our algorithm for the stochastic SIR model of epidemic spread, for which we show thatQ can be written
+as a sum of tensor products. We estimate monthly infection and recovery rates during the ﬁrst wave of the COVID-19
+pandemic in Austria and quantify their uncertainty in a full Bayesian analysis.
+Availability: Implementation and data are available at https://github.com/spang-lab/TenSIR.
+1 Introduction
+Predicting the time evolution of complex dynamical systems has a wide range of applications in medicine and public
+health. One of them is the SIR model of epidemic spread, which describes a population by the numbers of susceptible ( S),
+infected (I) and recovered (R) people. Until recently the SIR model has been approximated deterministically (Kermack
+and McKendrick 1927) and was considered computationally intractable in its stochastic formulation (McKendrick 1925).
+The stochastic SIR model is a continuous-time Markov chain (CTMC) in which infections happen randomly with a rate
+proportional to S and proportional to I (Allen 2017). The state of the system at a given time is thus fully speciﬁed by
+the combination of S and I. Since infections happen randomly one must keep track of a huge number of probabilities,
+one for every possible state. For example, the Austrian population of 9 million people can go through roughly 9 million ×
+9 million = 81 trillion possible states during the course of an epidemic.
+More generally, we consider CTMCs that describe the evolution of a probability distribution p(t) over a huge discrete
+state space according to the Kolmogorov forward equation
+dp(t)
+dt =Qp(t) with solution p(t) = exp(tQ)p(0). (1)
+HereQ is the transition-rate matrix and exp(tQ) is the matrix exponential. For an SIR model of the Austrian population
+Q has 81 trillion× 81 trillion entries, and naively computing the matrix exponential requires on the order of 81 trillion ×
+81 trillion× 81 trillion operations (Moler and Van Loan 2003), which is practically impossible.
+Even more dauntingly, whenQ depends on an unknown parameter θ, such as the infection or recovery rate in the SIR
+model, we must ﬁrst infer θ from data by maximizing its likelihood or by sampling from its posterior in a full Bayesian
+analysis. This typically requires the derivative of the matrix exponential ∂ exp(tQ)p(0)/∂θ in order to compute ∂p(t)/∂θ.
+However, Ho, Crawford, et al. (2018) have recently provided an algorithm that solves the Kolmogorov equation in the
+Laplace domain and evaluates the inverse Laplace transform numerically, thus avoiding the matrix exponential. Their
+∗These authors contributed equally.
+†Correspondence: Rudolf.Schill@klinik.uni-regensburg.de, Rainer.Spang@klinik.uni-regensburg.de
+1
+arXiv:2112.10971v1  [stat.ML]  21 Dec 2021
+
+===== PAGE 2 =====
+algorithm is applicable to systems where each discrete variable increases monotonically. This includes the SIR model, 1 for
+which their algorithm scales quadratically in the population size.
+Here, we provide an alternative algorithm that directly computes exp( tQ) and ∂ exp(tQ)/∂θ. For the SIR model it
+scales cubically in the population size but is still practical. Importantly, our approach is applicable to a broader class
+of CTMCs with large state spaces that arise from interacting discrete variables, without requiring monotonicity. For
+example, in tumor progression models the states are combinations of possible mutations (Beerenwinkel and Sullivant
+2009, Schill et al. 2019), in stochastic neural networks the states are activation patterns of neurons (Yamanaka et al.
+1997), in predator-prey dynamics they are joint population sizes of interacting species (Owen et al. 2014), or in chemical
+reaction networks they are joint counts of chemical species (Wolf 2007).
+For many of these models Q can be written as a sum of tensor products (P. Buchholz 1999). We provide such a
+representation for the stochastic SIR model. To the best of our knowledge, this representation is novel. We use it for
+matrix-vector products that do not require explicit storage of Q (Buis and Dyksen 1996) and make computation of the
+matrix exponential tractable via the uniformization method (Grassmann 1977). A similar approach by Sherlock (2021)
+exploits the sparsity of Q. We extend the uniformization method and provide an analogous algorithm that also computes
+the derivative of the matrix exponential. Finally, we use Hamiltonian Monte Carlo sampling to provide a full Bayesian
+analysis of the ﬁrst wave of the COVID-19 pandemic for the Austrian population, shedding new light on the uncertainties
+associated with the estimation of infection and recovery rates.
+2 Diﬀerentiated uniformization for parameter estimation
+A discrete-state, continuous-time Markov chain (CTMC) describes probability distributions p(t)∈ R|X| over a state space
+X, where an entry p(t)x denotes the probability that the CTMC is in state x∈ X at time t∈ [0,∞). Its change over
+time is governed by the Kolmogorov forward equation
+dp(t)
+dt =Qp(t) (2)
+with transition-rate matrixQ∈ R|X|×|X|, where an oﬀ-diagonal entryQy,x is the transition rate from state x∈X to state
+y∈X and diagonal entries are set such that columns sum to zero.
+The solution to eq. (2) is given by the matrix exponential
+p(t) = exp(tQ)p(0) =
+∞∑
+n=0
+tn
+n!Qnp(0), (3)
+which could be approximated in principle by terminating after a ﬁnite number of terms. However, catastrophic cancel-
+lations occur (Moler and Van Loan 2003) due to the fact that Q has negative entries and negative eigenvalues. 2 The
+uniformization method (Grassmann 1977) addresses this problem by introducing a strictly nonnegative matrix
+P := 1
+γQ + I for some γ≥ max
+x
+|Qx,x| (4)
+such that
+p(t) = exp(tQ)p(0) = exp(γt(− I +P ))p(0)
+= exp(−γt I)exp(γtP )p(0)
+=
+∞∑
+n=0
+e−γt (γt)n
+n! Pnp(0) (5)
+does not suﬀer from cancellations. P can be viewed as the transition probability matrix of a discrete-time Markov chain
+where the number of transitions is a Poisson-distributed random variable with mean γt.
+Using the recursions
+Pn =PP n−1, (6)
+(γt)n
+n! = γt
+n
+(γt)n−1
+(n− 1)!, (7)
+1By changing variables from susceptibles and infected to infections and recoveries.
+2Negative entries directly lead to cancellations in eq. (3). If eq. (3) is transformed to the eigenbasis of Q, negative eigenvalues of Q lead to
+cancellations as well.
+2
+
+===== PAGE 3 =====
+p(t) can be computed according to eq. (5) by algorithm 1 (Grassmann 1977). Note that Pnp(0) sums to 1 and hence
+eq. (5) sums to less than 1 when terminated after a ﬁnite number of terms. The algorithm stops once this probability
+mass defect
+1−
+m∑
+n=0
+e−γt (γt)n
+n! (8)
+is smaller than a preset tolerance ε. The required number m of iterations is inO(γ) (Reibman and Trivedi 1988) and can
+be determined, e.g., using the numerically robust method by Sherlock (2021).
+In this paper we are interested in statistical models where Q depends on a parameter θ that we want to estimate
+from data by maximizing its likelihood or by sampling from its posterior. To this end, we propose a novel algorithm for
+computing the derivative
+∂p(t)
+∂θ = ∂exp(tQ)p(0)
+∂θ
+= ∂
+∂θ
+(∞∑
+n=0
+e−γt (γt)n
+n! Pnp(0)
+)
+=
+∞∑
+n=0
+e−γt (tγ)n
+n!
+∂Pn
+∂θ p(0) +e−γt∂γ
+∂θ
+(
+−tn+1γn
+n! + tnγn−1
+(n− 1)!
+)
+Pnp(0)
+=
+∞∑
+n=0
+e−γt (tγ)n
+n!
+(∂Pn
+∂θ p(0) +∂γ
+∂θ
+(n
+γ−t
+)
+Pnp(0)
+)
+(9)
+building on the uniformization method. We use the recursions (6), (7) and additionally
+∂Pn
+∂θ = ∂P
+∂θ Pn−1 +P∂P
+∂θ Pn−2 +... +Pn−2∂P
+∂θ P +Pn−1∂P
+∂θ
+= ∂P
+∂θ Pn−1 +P
+(∂P
+∂θ Pn−2 +... +Pn−3∂P
+∂θ P +Pn−2∂P
+∂θ
+)
+= ∂P
+∂θ Pn−1 +P
+(∂Pn−1
+∂θ
+)
+(10)
+to compute p(t)′ :=∂p(t)/∂θ according to eq. (9) by algorithm 2.
+Algorithm 1: Uniformization
+input : p (0),t,P,γ,ε
+output: p(t)
+1 n← 0
+2 w← 1
+3 p(t)← 0
+4 q← p(0)
+5 repeat
+6 p(t)← p(t) +e−γtwq
+7 n←n + 1
+8 q←P q
+9 w← γt
+nw
+10 until 1−| p(t)|1 <ε ;
+11 return p(t)
+Algorithm 2: Diﬀerentiated Uniformization
+input : p (0),t,P,P ′,γ,γ ′,ε
+output: p(t), p(t)′
+1 n← 0
+2 w← 1
+3 p(t) ← 0
+4 p(t)′← 0
+5 q ← p(0)
+6 q′← 0
+7 repeat
+8 p(t) ← p(t) + e−γtwq
+9 p(t)′← p(t)′ +e−γtw
+(
+q′ +γ′
+(
+n
+γ−t
+)
+q
+)
+10 n ←n + 1
+11 q′←P′q +P q′
+12 q ←P q
+13 w← γt
+nw
+14 until 1−| p(t)|1 <ε ;
+15 return p(t), p(t)′
+Applying diﬀerentiated uniformization for a particular statistical model requires the scalars
+γ≥ max
+x
+|Qx,x| and γ′ := ∂γ
+∂θ, (11)
+3
+
+===== PAGE 4 =====
+where a generic choice for γ can be the 2-norm of the diagonal of Q or any p-norm with even p. It also requires the
+operators
+P = 1
+γQ + I and P′ := ∂P
+∂θ =− 1
+γ2
+∂γ
+∂θQ + 1
+γ
+∂Q
+∂θ . (12)
+Crucially, these operators are only needed for matrix-vector products in lines 11 and 12 of algorithm 2 and do not need to
+be stored explicitly. This makes our method especially useful for models where Q is large but has a compact representation
+as a sum of tensor products, which allows one to cheaply compute matrix-vector products (Buis and Dyksen 1996).
+Diﬀerentiated uniformization thus opens the door to parameter inference for CTMCs on huge discrete state spaces.
+Let{x1,...,x K} be observations of the Markov chain at corresponding time points {t1,...,t K}. We represent each data
+point by an empirical probability distribution δ(tk)∈ R|X|, where δ(tk)xk = 1 and all other entries are zero. The likelihood
+of θ for a single observation of state xk at time tk with k> 1 is
+p(tk)xk, where p(tk) = exp
+(
+(tk−tk−1)Q
+)
+δ(tk−1). (13)
+The log-likelihood for the whole data set,
+𝓁(θ) =
+K∑
+k=2
+log(p(tk)xk), (14)
+can be maximized using its derivative
+∂𝓁(θ)
+∂θ =
+K∑
+k=2
+p(tk)′
+xk
+p(tk)xk
+, (15)
+for example by gradient ascent. This derivative can also be used for sampling a posterior distribution ofθ in a full Bayesian
+model using a Hamiltonian Monte Carlo method (Gelman et al. 2013).
+3 Modeling epidemic spread
+The most basic models of epidemic spread are SIR models, which describe the numbers of susceptible ( S), infected/infec-
+tious (I) and recovered (R) people during an epidemic in a closed population of constant size N. There is a widely known
+deterministic and a lesser-known stochastic variant of the SIR model (Allen 2017). The latter involves a huge discrete
+state space and is therefore challenging to use. However, it allows for uncertainty quantiﬁcation in its dynamics and in
+inferred parameters.
+(a) Solution of a deterministic SIR model (black curve)
+and 10 randomly sampled trajectories of the correspond-
+ing stochastic SIR model (blue and red). The trajectory
+highlighted in red deviates drastically from the determin-
+istic solution.
+(b) Analytic solution of the Kolmogorov equation for a
+stochastic SIR model. The time slices show distributions
+p(t) where the shades of blue show the smallest (not nec-
+essarily contiguous) areas that contain 30%, 60% and 90%
+of the probability mass at time t.
+Figure 1: Illustration of SIR models with N = 500, α = 1w−1, β = 2.5w−1, I(0) = 3, S(0) = 497.
+4
+
+===== PAGE 5 =====
+The deterministic SIR model (Kermack and McKendrick 1927) assumes that S(t),I (t),R (t)∈ [0,N ] are continuous
+and describes their evolution over time t∈ [0,∞) by the following system of nonlinear ordinary diﬀerential equations:
+dS(t)
+dt =
+infectionsz }| {
+−βI(t)S(t)
+N
+recoveriesz }| {
+,
+dI(t)
+dt = +βI(t)S(t)
+N −αI(t), (16)
+dR(t)
+dt = + αI(t),
+where α,β ∈ R+ are parameters. Note that once S(t) and I(t) are given, R(t) = N−S(t)−I(t) is already determined
+and can be omitted in further analysis.
+In words, an infection occurs when a susceptible person comes in suﬃciently close contact with an infected person,
+which happens proportionally to the number of susceptible and to the density of infected people in the population and
+proportionally to an infection rate β. This rate β encompasses, for example, disease characteristics, people’s behavior,
+public policy and weather. An infected person recovers with rate α and can then no longer become susceptible or infected
+again. The basic reproduction number R0 := β/α is the number of people (in a fully susceptible population) that one
+infected person infects before recovering.
+There is no analytical solution to system (16), but it can be solved numerically, for example by Euler’s method:
+S(t + ∆t) =S(t)−βS(t)I(t)
+N ∆t, (17)
+I(t + ∆t) =I(t) +βS(t)I(t)
+N ∆t−αI(t)∆t.
+The black curve in Figure 1a illustrates this solution for given parameters α = 1w−1, β = 2.5w−1 and initial conditions
+N = 500, I(0) = 3, S(0) = 497.
+This model has several limitations. First, an epidemic is in fact a stochastic process and not a deterministic dynamical
+system. Second, without modeling the stochastics explicitly it is not possible to quantify the uncertainties of inferred
+parameters, which contributes to the uncertainties in the course of the epidemic.
+The stochastic SIR model (McKendrick 1925; Allen 2017) is a continuous-time Markov chain over all possible states
+of the population. A state is a pair of integers ( S,I )∈{ 0,...,N }×{ 0,...,N } denoting the number of susceptible and
+infected people. States with S +I >N are unreachable but still accounted for in the model. 3
+Let p(t)∈ R(N+1)2
+denote the probability distribution at timet over all states (S,I ). That is, p(t)(S,I) is the probability
+that at time t there are S susceptible and I infected people. Its time evolution is governed by the Kolmogorov forward
+equation
+dp(t)
+dt =Qp(t), (18)
+where the matrix Q∈ R(N+1)2×(N+1)2
+contains the transition rates from a state ( S,I ) to a state (S + ∆S,I + ∆I):
+Q(S+∆S,I+∆I),(S,I) =
+
+
+
+βSI
+N if ∆S =−1, ∆I = +1,
+αI if ∆S = 0, ∆I =−1,
+−βSI
+N −αI if ∆S = 0, ∆I = 0,S ⁄= 0,I ⁄=N,
+−αI if ∆S = 0, ∆I = 0,S = 0 or I =N,
+0 otherwise .
+(19)
+The blue and red curves in Figure 1a depict 10 randomly sampled trajectories where transitions happen according to the
+rates in eq. (19), generated by the Gillespie (1976) algorithm. The trajectory highlighted in red shows how stochastic
+ﬂuctuations, especially at the beginning of the epidemic, can drastically alter the shape of the curve compared to its
+deterministic counterpart. Figure 1b shows the analytic solution to eq. (18) and further illustrates that the stochasticity is
+not merely additive noise around the deterministic solution. In particular, the stochastic SIR model allows for a bifurcation
+where the epidemic dies out in the beginning with nonzero probability.
+3This is necessary for the tensor representation in eq. (21).
+5
+
+===== PAGE 6 =====
+The parameters α,β ∈ R+ can be inferred from data using diﬀerentiated uniformization. This requires multiple
+matrix-vector products with Q which is, however, too large to be stored explicitly, even for populations of only thousands
+of people. Hence, we propose a novel representation of Q that does not require explicit storage. To this end, we introduce
+band matrices of size (N + 1)× (N + 1):
+S+
+inf = superdiag(1,...,N ),
+S−
+inf = diag(0,...,N ),
+S+
+rec = diag(1, 1,..., 1) = I,
+S−
+rec = diag(1, 1,..., 1) = I,
+I+
+inf = subdiag(0,...,N − 1),
+I−
+inf = diag(0,...,N − 1, 0),
+I+
+rec = superdiag(1,...,N ),
+I−
+rec = diag(0,...,N ).
+(20)
+This yields a representation of the transition-rate matrix
+Q = β
+N (S+
+inf⊗I +
+inf) +α(S+
+rec⊗I +
+rec)− β
+N (S−
+inf⊗I−
+inf)−α(S−
+rec⊗I−
+rec) (21)
+as a sum of tensor products 4 (see Figure 2 for an illustrated explanation). Note that eq. (21) is not an approximation but
+an exact reformulation of eq. (19). The beneﬁt of this representation is that its storage complexity is O(N) rather than
+O(N4) and that performing matrix-vector products has a complexity in only O(N2) (Buis and Dyksen 1996) rather than
+O(N4).
+Additionally, diﬀerentiated uniformization requires the derivative ∂Q/∂θ . Here we perform inference with respect to
+logarithmic parameters θ = (logα, logβ) in order to ensure the positivity constraint on α and β:
+∂Q
+∂ logα =α(S+
+rec⊗I +
+rec)−α(S−
+rec⊗I−
+rec), (22)
+∂Q
+∂ logβ = β
+N (S+
+inf⊗I +
+inf)− β
+N (S−
+inf⊗I−
+inf). (23)
+Finally, diﬀerentiated uniformization requires a diﬀerentiable upper bound γ on the absolute diagonal entries of Q. For
+the SIR model we choose the exact maximum
+γ = max
+x
+|Qx,x| = max
+{
+|Q(N−1,N−1),(N−1,N−1)|,|Q(N,N),(N,N)|
+}
+= max
+{
+N(N− 1)β
+N + (N− 1)α,Nα
+}
+= max{(N− 1)β + (N− 1)α,α + (N− 1)α}
+= (N− 1)α + max{(N− 1)β,α}. (24)
+It is diﬀerentiable5 for α⁄= (N− 1)β with
+∂γ
+∂ logα =
+{
+Nα if α> (N− 1)β,
+(N− 1)α if α< (N− 1)β, (25)
+∂γ
+∂ logβ =
+{
+0 if α> (N− 1)β,
+(N− 1)β if α< (N− 1)β. (26)
+Overall, diﬀerentiated uniformization performs O(γ) matrix-vector products and thus has a total runtime complexity in
+O(γN 2) =O(N3) for the SIR model. It requires storage of the result p(t), which has complexityO(N2).
+For parameter inference we are typically only interested in the likelihood that an earlier data point ( S,I ) is followed
+by a later data point (S + ∆S,I + ∆I) after time t. Since the number of susceptibles cannot increase (∆ S≤ 0) and the
+number of recovered cannot decrease (∆R =−∆S− ∆I≥ 0) along a trajectory, it is suﬃcient to compute p(t) and p(t)′
+on the restricted state space
+{S + ∆S,...,S }×{ I− ∆R,...,I − ∆S},
+as explained in Appendix A. Following Ho, Crawford, et al. (2018) we use this state-space restriction to reduce the time
+complexity of our algorithm to O
+(
+(I +|∆S|)(∆S2 +|∆S|∆R)
+)
+and its storage complexity to O(∆S2 +|∆S|∆R).
+4For clarity, we did not factor outS+
+rec =S−
+rec = I, which would allow for a representation with only three terms.
+5Forα = (N− 1)β a diﬀerentiable upper bound for max{(N− 1)β,α} is log(e(N −1)β +eα).
+6
+
+===== PAGE 7 =====
+0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3
+0 1 0 0 1 0 1
+1 2 1 0 1 1 1 2
+2 3 2 1 2 1 2 3
+3 3 2 3 1 3
+0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3
+0 0 0 0 0 1 0 0
+1 1 1 1 1 1 1 1
+2 2 2 2 2 1 2 2
+3 3 3 0 3 1 3
+ 3
+00 01 02 03 10 11 12 13 20 21 22 23 30 31 32 33
+00 1α
+01 -1α 2α
+02 -2α 3α 1·1β/N
+03 -3α 1·2β/N
+10 1α
+11 -1·1β/N
+-1α 2α
+12 -1·2β/N
+-2α 3α 2·1β/N
+13 -3α 2·2β/N
+20 1α
+21 -2·1β/N
+-1α 2α
+22 -2·2β/N
+-2α 3α 3·1β/N
+23 -3α 3·2β/N
+30 1α
+31 -3·1β/N
+-1α 2α
+32 -3·2β/N
+-2α 3α
+33
+ -3α
+Figure 2: Illustration of Q for a population of size N = 3 given by its entry-wise representation in eq. (19) (top) and
+its tensor representation in eq. (21) (bottom). Blue numbers indicate susceptibles, red numbers indicate infected and
+blank entries in the matrices are zero. Transitions should be read from columns to rows.
+S +
+inf: An infection decreases the number of susceptibles by one and happens proportionally to the current number of
+susceptibles.
+I +
+inf: At the same time, an infection increases the number of infected by one and happens proportionally to the current
+number of infected. The tensor product⊗ combines both these transitions for a single infection. Moreover, an infection
+happens inversely proportional to the total population size N and proportionally to the parameter β.
+S +
+rec: A recovery does not change the number of susceptibles.
+I +
+rec: At the same time, a recovery decreases the number of infected by one and happens proportionally to the current
+number of infected. The tensor product ⊗ combines both these transitions for a single recovery. Moreover, a recovery
+happens proportionally to the parameter α.
+The matricesS −
+inf,I −
+inf,S −
+rec,I −
+rec generate corresponding negative entries for the diagonal of Q.
+7
+
+===== PAGE 8 =====
+4 COVID-19 pandemic
+March April May June July August
+date in 2020
+0
+2000
+4000
+6000
+8000
+10000infected
+0
+5000
+10000
+15000
+20000
+25000
+recovered
+Figure 3: Daily reported numbers of people infected by and recovered from SARS-CoV-2 in Austria.
+0.01 0.10
+0.01
+0.10
+March 2020
+0.01 0.10
+0.01
+0.10
+April 2020
+0.01 0.10
+0.01
+0.10
+May 2020
+0.01 0.10
+0.01
+0.10
+June 2020
+0.01 0.10
+0.01
+0.10
+July 2020
+0.01 0.10
+0.01
+0.10
+August 2020
+recovery rate α [day−1]
+infection rate β [day−1]
+Figure 4: Posterior probability densities over parameter pairs (α,β ) for separate stochastic SIR models of the
+ﬁrst six months of the COVID-19 pandemic in Austria. The dashed lines indicate parameters where the basic
+reproduction number R0 = β/α = 1. The crosses mark the least-squares estimators of the corresponding
+deterministic SIR models.
+8
+
+===== PAGE 9 =====
+Here we model the ﬁrst wave of the COVID-19 pandemic in Austria as a stochastic SIR model. We employ diﬀerentiated
+uniformization to estimate the parameters α and β and quantify their uncertainty. We use daily numbers on S, I and
+R between 2020-03-01 and 2020-09-01 from public health data provided by the Austrian Bundesministerium f¨ ur Soziales
+(2021) (Figure 3). I and R are given directly, and we set S = N−I−R assuming that the initial population size
+N = 8,932,664 stays constant. People who have died from COVID-19 are counted under “recovered” in a technical sense
+as they are no longer infectious. We do not correct for undiscovered cases and biases in testing and reporting. We also
+assume that parameters are piecewise constant for each month.
+We do a full Bayesian analysis for parameter pairs (log α, logβ) with a uniform prior. Following Ho, Crawford, et
+al. (2018) we sample from the joint posterior using a Hamiltonian Monte Carlo (HMC) scheme (Duane et al. 1987; Neal
+2011). Unlike a standard Metropolis-Hastings scheme, HMC makes use of the gradient of the likelihood, which we compute
+using diﬀerentiated uniformization. This makes sampling more eﬃcient with less samples needed to cover the posterior
+distribution (Gelman et al. 2013). We estimated the joint posterior of (log α, logβ) for every month between March 2020
+and August 2020 separately. For each month we performed 10 parallel Monte Carlo chains with length 100, where we
+discarded the ﬁrst 10 points each, resulting in 900 points per month. These calculations were done on the QPACE 4
+cluster (Georg, Meyer, et al. 2021) and took about 30 minutes for each of May and June, 2 hours for July, 16 hours for
+each of April and August and 4 days for March.
+Figure 4 shows the results of this analysis. The estimated posterior is plotted for ( α,β ) on logarithmic scales. The
+gray shaded areas were generated using Gaussian-kernel density estimation applied to the posterior samples. The crosses
+mark the least-squares estimators of the corresponding deterministic SIR models. The dashed lines represent parameter
+constellations where α = β and thusR0 = 1. Here the epidemic switches between growing and decreasing numbers of
+infected. From April-August 2020 the posterior of the recovery rate α varies around a value of 0.07 per day, corresponding
+to the realistic mean time to recovery of about 2 weeks (Faes et al. 2020). In contrast, the posterior of α in March
+2020 appears to be oﬀ, with a mean of about 0 .03 per day corresponding to a mean time to recovery of one month.
+Inspecting the original numbers, we observed that the numbers of recovered are unexpectedly low (less than 100 people
+until 2020-03-23) possibly due to lagging declaration of recoveries because of cautious hospital policies in the beginning
+of the pandemic.
+Overall, we observe large uncertainties associated with the parameters in several but not all months. These might
+hint at epidemic courses that are not perfectly in line with an SIR model or with the assumption of piecewise constant
+parameters. Such deviations from the model assumptions are much less readily apparent in deterministic approaches.
+5 Discussion
+We provide a novel method for computing the transient distribution and its derivative for continuous-time Markov Chains
+on huge discrete state spaces. This makes parameter inference tractable for a large family of statistical models, including
+the stochastic SIR model of epidemic spread.
+Our key observation is that the transition-rate matrix of an SIR model can be written as a sum of tensor products,
+which allows us to cheaply compute matrix-vector products without storing the matrix itself. This operation alone is
+suﬃcient to compute the transient distribution by the uniformization method (Grassmann 1977), a numerically stable
+power-series expansion of the matrix exponential. We propose the diﬀerentiated uniformization method , an analogous
+power series for computing the derivative of the transient distribution with respect to parameters of a CTMC.
+For the SIR model our algorithm scales cubically in the size of the population, which is one order slower than the
+state-of-the-art method for multivariate birth processes (Ho, Crawford, et al. 2018). On the other hand, our general-
+purpose algorithm also applies to birth-death processes such as predator-prey dynamics (Owen et al. 2014), which have
+been considered intractable so far (Ho, Xu, et al. 2017). We illustrate this in Appendix B.
+Beyond epidemiology we are interested in tumor progression modeling using mutual hazard networks (Schill et al. 2019).
+Similar to an epidemiological model that scales exponentially in the number of compartments, a tumor progression model
+is a CTMC that scales exponentially in the number of possible mutations. While both diﬀerentiated uniformization and
+the algorithm of Ho, Crawford, et al. (2018) have the potential to advance this ﬁeld, large scale inference remains an open
+problem for tumor progression models with up to hundreds of mutations. The tensor representation of the transition-rate
+matrix could serve as a starting point for representing the transient distribution itself in a low-rank tensor format. These
+formats reduce the exponential cost (e.g., in the number of mutations or compartments) to linear cost provided certain
+low-rank structures exist (Hackbusch 2012). For large-scale CTMCs, low-rank tensor formats were already successfully
+used, e.g., for the computation of transient (Johnson et al. 2010) and stationary distributions (Benson et al. 2017; Peter
+Buchholz et al. 2016; Kressner and Macedo 2014) and also for a variant of the uniformization method (Georg, Grasedyck,
+et al. 2020). Therefore, the combination of low-rank tensor formats and diﬀerentiated uniformization could be a promising
+new avenue for large-scale inference problems in computational oncology and epidemiology.
+9
+
+===== PAGE 10 =====
+From this perspective our work can also be seen as an attempt to connect these two communities.
+6 Acknowledgements
+This work was funded by the German Research Foundation (DFG) grants TRR-305, SFB/TRR-55 and GR-3179/6-1.
+References
+Allen, L. J. S. (2017). “A primer on stochastic epidemic models: Formulation, numerical simulation, and analysis”. In:
+Infectious Disease Modelling 2.2, pp. 128–142. doi: https://doi.org/10.1016/j.idm.2017.03.001.
+Beerenwinkel, N. and S. Sullivant (2009). “Markov models for accumulating mutations”. In: Biometrika 96.3, pp. 645–661.
+doi: https://doi.org/10.1093/biomet/asp023.
+Benson, Austin R., David F. Gleich, and Lek-Heng Lim (Jan. 2017). “The Spacey Random Walk: A Stochastic Process
+for Higher-Order Data”. In: SIAM Review 59.2, pp. 321–345. doi: 10.1137/16m1074023.
+Buchholz, P. (1999). “Structured analysis approaches for large Markov chains”. In: Applied Numerical Mathematics 31.4,
+pp. 375–404. issn: 0168-9274. doi: https://doi.org/10.1016/S0168-9274(99)00005-7.
+Buchholz, Peter, Tuˇ grul Dayar, Jan Kriege, and M. Can Orhan (2016). “Compact Representation of Solution Vectors
+in Kronecker-Based Markovian Analysis”. In: Quantitative Evaluation of Systems . New York: Springer International
+Publishing, pp. 260–276. doi: 10.1007/978-3-319-43425-4_18 .
+Buis, P E. and Wayne R. Dyksen (1996). “Eﬃcient Vector and Parallel Manipulation of Tensor Products”. In: 22.1,
+pp. 18–23. doi: https://doi.org/10.1145/225545.225548.
+Bundesministerium f¨ ur Soziales Gesundheit, Pﬂege und Konsumentenschutz (BMSGPK) (2021). Open Data ¨Osterreich.
+url: https : / / www . data . gv . at / katalog / dataset / ef8e980b - 9644 - 45d8 - b0e9 - c6aaf0eff0c0(visited on
+10/15/2021).
+Duane, S., A. D. Kennedy, B. P. J. Pendleton, and D. Roweth (1987). “Hybrid Monte Carlo”. In: Physics Letters B 195.2,
+pp. 216–222. doi: https://doi.org/10.1016/0370-2693(87)91197-X.
+Faes, Christel, Steven Abrams, Dominique Van Beckhoven, Geert Meyfroidt, Erika Vlieghe, and Niel Hens and (Oct. 2020).
+“Time between Symptom Onset, Hospitalisation and Recovery or Death: Statistical Analysis of Belgian COVID-19
+Patients”. In: International Journal of Environmental Research and Public Health 17.20, p. 7560. doi: 10 . 3390 /
+ijerph17207560.
+Gelman, A., J. B. Carlin, H. S. Stern, and D. B. Rubin (2013). Bayesian Data Analysis. 3rd ed. Chapman and Hall/CRC.
+doi: https://doi.org/10.1201/b16018.
+Georg, Peter, Lars Grasedyck, Maren Klever, Rudolf Schill, Rainer Spang, and Tilo Wettig (June 2020). “Low-rank tensor
+methods for Markov chains with applications to tumor progression models”. In: arXiv: 2006.08135 [math.NA].
+Georg, Peter, Nils Meyer, Stefan Solbrig, and Tilo Wettig (2021). Grid on QPACE 4 . arXiv: 2112.01852 [hep-lat].
+Gillespie, D. T. (1976). “A general method for numerically simulating the stochastic time evolution of coupled chemical
+reactions”. In: Journal of Computational Physics 22.4, pp. 403–434. doi: https://doi.org/10.1016/0021-9991(76)
+90041-3.
+Grassmann, W.K. (1977). “Transient solutions in markovian queueing systems”. In: Computers & Operations Research
+4.1, pp. 47–53. doi: https://doi.org/10.1016/0305-0548(77)90007-7.
+Hackbusch, Wolfgang (Feb. 2012). Tensor Spaces and Numerical Tensor Calculus . Springer Berlin Heidelberg. 524 pp.
+isbn: 3642280269. doi: 10.1007/978-3-642-28027-6 .
+Ho, Lam Si Tung, F.W. Crawford, and M. A. Suchard (2018). “Direct likelihood-based inference for discretely observed
+stochastic compartmental models of infectious disease”. In: The Annals of Applied Statistics 12.3, pp. 1993–2021. doi:
+https://doi.org/10.1214/18-AOAS1141.
+Ho, Lam Si Tung, Jason Xu, Forrest W. Crawford, Vladimir N. Minin, and Marc A. Suchard (July 2017). “Birth/birth-
+death processes and their computable transition probabilities with biological applications”. In:Journal of Mathematical
+Biology 76.4, pp. 911–944. doi: 10.1007/s00285-017-1160-3 .
+Johnson, T. H., S. R. Clark, and D. Jaksch (Sept. 2010). “Dynamical simulations of classical stochastic systems using
+matrix product states”. In: Physical Review E 82.3, p. 036702. doi: 10.1103/physreve.82.036702.
+Kermack, W.O. and A.G. McKendrick (1927). “A Contribution to the Mathematical Theory of Epidemics”. In:Proceedings
+of the Royal Society of London Series A 115.772, pp. 700–721. doi: https://doi.org/10.1098/rspa.1927.0118.
+Kressner, Daniel and Francisco Macedo (2014). “Low-Rank Tensor Methods for Communicating Markov Processes”. In:
+Quantitative Evaluation of Systems . New York: Springer International Publishing, pp. 25–40. doi: 10.1007/978-3-
+319-10696-0_4.
+10
+
+===== PAGE 11 =====
+Lotka, Alfred James (1925). Elements of physical biology . Williams & Wilkins.
+McKendrick, A.G. (1925). “Applications of Mathematics to Medical Problems”. In: Proceedings of the Edinburgh Mathe-
+matical Society 44, pp. 98–130. doi: https://doi.org/10.1017/S0013091500034428.
+Moler, C. and C. Van Loan (2003). “Nineteen Dubious Ways to Compute the Exponential of a Matrix, Twenty-Five Years
+Later”. In: SIAM Review 45.1, pp. 3–49. doi: https://doi.org/10.1137/S00361445024180.
+Neal, R. M. (2011). “MCMC using Hamiltonian dynamics”. In: Handbook of markov chain monte carlo 2.11. doi: https:
+//doi.org/10.1201/b10905.
+Owen, Jamie, Darren J. Wilkinson, and Colin S. Gillespie (Nov. 2014). “Scalable inference for Markov processes with
+intractable likelihoods”. In: Statistics and Computing 25.1, pp. 145–156. doi: 10.1007/s11222-014-9524-7 .
+Reibman, A. and K. Trivedi (1988). “Numerical transient analysis of markov models”. In: Computers & Operations
+Research 15.1, pp. 19–36. doi: https://doi.org/10.1016/0305-0548(88)90026-3.
+Schill, R., S. Solbrig, T. Wettig, and R. Spang (2019). “Modelling cancer progression using Mutual Hazard Networks”. In:
+Bioinformatics 36.1, pp. 241–249. doi: https://doi.org/10.1093/bioinformatics/btz513.
+Sherlock, Chris (Apr. 2021). “Direct statistical inference for ﬁnite Markov jump processes via the matrix exponential”.
+In: Computational Statistics 36.4, pp. 2863–2887. doi: 10.1007/s00180-021-01102-6 .
+Volterra, Vito (Oct. 1926). “Fluctuations in the Abundance of a Species considered Mathematically”. In: Nature 118.2972,
+pp. 558–560. doi: 10.1038/118558a0.
+Wolf, V. (2007). “Modelling of Biochemical Reactions by Stochastic Automata Networks”. In: Electronic Notes in Theo-
+retical Computer Science 171.2, pp. 197–208. doi: https://doi.org/10.1016/j.entcs.2007.05.017.
+Yamanaka, K., M. Agu, and T. Miyajima (1997). “A Continuous-Time Asynchronous Boltzmann Machine”. In: Neural
+Networks 10.6, pp. 1103–1107. doi: https://doi.org/10.1016/S0893-6080(97)00006-3.
+A State-space restriction
+In order to compute the likelihood that an earlier data point ( S,I ) is followed by a later data point ( S + ∆S,I + ∆I)
+after time t, it is suﬃcient to compute p(t) on a small subset of the entire state space. Since the number of susceptibles
+cannot increase (∆S≤ 0) and the number of recovered cannot decrease (∆ R =−∆S− ∆I≥ 0), all possible trajectories
+from (S,I ) to (S + ∆S,I + ∆I) must necessarily stay within the restricted state space
+{Smin,...,S max}×{ Imin,...,I max},
+where
+Smin =S + ∆S, S max =S,
+Imin =I− ∆R, I max =I− ∆S. (27)
+All probability mass that leaves this space must be accounted for, but we do not need to keep track of its destination.
+To this end, we introduce the modiﬁed band matrices
+˜S+
+inf = superdiag(Smin + 1,...,S max)
+˜S−
+inf = diag(Smin,...,S max)
+˜S+
+rec = diag(1, 1,..., 1) = I
+˜S−
+rec = diag(1, 1,..., 1) = I| {z }
+(|∆S| + 1)× (|∆S| + 1)
+˜I+
+inf = subdiag(Imin,...,I max− 1)
+˜I−
+inf = diag(Imin,...,I max)
+˜I+
+rec = superdiag(Imin + 1,...,I max)
+˜I−
+rec = diag(Imin,...,I max).| {z }
+(|∆S| + ∆R + 1)× (|∆S| + ∆R + 1)
+(28)
+and deﬁne a smaller transition-rate matrix on the restricted state space as
+˜Q = β
+N ( ˜S+
+inf⊗ ˜I+
+inf) +α( ˜S+
+rec⊗ ˜I+
+rec)− β
+N ( ˜S−
+inf⊗ ˜I−
+inf)−α( ˜S−
+rec⊗ ˜I−
+rec) (29)
+with derivatives
+∂ ˜Q
+∂ logα =α( ˜S+
+rec⊗ ˜I+
+rec)−α( ˜S−
+rec⊗ ˜I−
+rec), (30)
+∂ ˜Q
+∂ logβ = β
+N ( ˜S+
+inf⊗ ˜I+
+inf)− β
+N ( ˜S−
+inf⊗ ˜I−
+inf). (31)
+11
+
+===== PAGE 12 =====
+Note that the columns of ˜Q sum to less than zero and that p(t) therefore sums to less than 1 on the restricted state space.
+Computing matrix-vector products using these operators has a time complexity in O(|∆S|2 +|∆S|∆R).
+The largest absolute diagonal entry of ˜Q is
+γ = max
+x
+| ˜Qx,x| = β
+NSmaxImax +αImax (32)
+with derivatives
+∂γ
+∂ logα =αImax, (33)
+∂γ
+∂ logβ = β
+NSmaxImax. (34)
+We performm iterations of algorithm 2 such that the entire probability mass (including that which left the restricted
+state space) according to eq. (8) reaches the required tolerance. Hence, the overall time complexity of the algorithm is
+O
+(
+γ(|∆S|2 +|∆S|∆R)
+)
+=O
+(
+Imax(|∆S|2 +|∆S|∆R)
+)
+=O
+(
+(I +|∆S|)(|∆S|2 +|∆S|∆R)
+)
+. (35)
+Storing the result p(t) has complexityO(|∆S|2 +|∆S|∆R).
+B Predator-prey dynamics
+(a) Solution of a deterministic predator-prey model (black
+curve) and 10 randomly sampled trajectories (blue) of the
+corresponding stochastic model.
+(b) Analytic solution of the Kolmogorov equation for a
+stochastic predator-prey model. The time slices show dis-
+tributions p(t) where the shades of blue show the smallest
+areas that contain 30%, 60% and 90% of the probability
+mass at time t.
+Figure 5: Illustration of predator-prey models with α = 1, β = 0.004, δ = 0.8, X(0) = 100, Y (0) = 40,
+Xmax =Ymax = 1200.
+We consider the following deterministic predator-prey equations, based on (Lotka 1925; Volterra 1926),
+dX(t)
+dt = −βX(t)Y (t)
+prey birth
+z }| {
++αX(t)−αX(t)2
+Xmax
+(36)
+dY (t)
+dt = + βX(t)Y (t)| {z }
+prey consumption
+& predator birth
+−δY (t)| {z }
+predator death
+(37)
+which describe how the population size X(t)∈ R+ of a prey species and the population size Y (t)∈ R+ of a predator
+species change continuously over time as the species interact (black curve in Figure 5a). The parameter α is the birth
+12
+
+===== PAGE 13 =====
+rate of prey, δ is the death rate of predators and β is the contact rate between predators and prey. Upon contact a prey
+is consumed and, we assume for simplicity, exactly one predator is born. Xmax is a ﬁnite carry capacity representing the
+available plant resources for the prey species, which would result in logistic growth in the absence of predators. This is
+neither necessary nor commonly assumed in the literature on the deterministic model, since the prey population is always
+limited by a nonzero number of predators in R+.
+Here we are interested in a corresponding stochastic model (Owen et al. 2014) (blue curves in Figure 5a) in which the
+number of predators is an integer and may drop to zero, which would lead to exponential growth of the prey population
+without ﬁnite carry capacity. We deﬁne a stochastic predator-prey model as a CTMC over the state space
+{0,...,X max}×{ 0,...,Y max}
+with transition-rate matrix
+Q(X+∆X,Y +∆Y ),(X,Y ) =
+
+
+
+βXY if ∆X =−1, ∆Y = +1,
+δY if ∆X = 0, ∆Y =−1,
+αX−αX2/Xmax if ∆X = +1, ∆Y = 0,
+−βXY −δY−αX +αX2/Xmax if ∆X = 0, ∆Y = 0,
+0 otherwise
+(38)
+whose columns sum to less than zero. This is because the upper limit Ymax of the predator population is a computational
+cutoﬀ and not enforced by the model. Transitions that leave the state space result in missing probability mass, which
+must be mitigated by choosing a suﬃciently high Ymax.
+We introduce the band matrices
+X +
+cons = superdiag(1,...,X max),
+X−
+cons = diag(0,...,X max),
+X +
+birth = subdiag(0,...,X max− 1),
+X−
+birth = diag(0,...,X max− 1, 0),
+X +
+cap = subdiag(02, 12, 22,..., (Xmax− 1)2),
+X−
+cap = diag(02, 12, 22,..., (Xmax− 1)2, 0),
+X +
+death = diag(1, 1,..., 1) = I,
+X−
+death = diag(1, 1,..., 1) = I,| {z }
+(Xmax + 1)× (Xmax + 1)
+Y+
+cons = subdiag(0,...,Y max− 1),
+Y−
+cons = diag(0,...,Y max),
+Y+
+birth = diag(1, 1,..., 1) = I,
+Y−
+birth = diag(1, 1,..., 1) = I,
+Y+
+cap = diag(1, 1,..., 1) = I,
+Y−
+cap = diag(1, 1,..., 1) = I,
+Y+
+death = superdiag(1,...,Y max),
+Y−
+death = diag(1,...,Y max),| {z }
+(Ymax + 1)× (Ymax + 1)
+(39)
+in order to represent the transition-rate matrix
+Q = +β(X +
+cons⊗Y +
+cons) +α(X +
+birth⊗Y +
+birth)− α
+Xmax
+(X +
+cap⊗Y +
+cap) +δ(X +
+death⊗Y +
+death)
+−β(X−
+cons⊗Y−
+cons)−α(X−
+birth⊗Y−
+birth) + α
+Xmax
+(X−
+cap⊗Y−
+cap)−δ(X−
+death⊗Y−
+death) (40)
+as a sum of tensor products. This allows us to eﬃciently compute solutions p(t) of the Kolmogorov equation for the
+stochastic predator-prey model (see Figure 5b).
+13

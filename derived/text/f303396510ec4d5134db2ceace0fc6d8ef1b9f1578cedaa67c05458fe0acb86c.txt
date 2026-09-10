@@ -1,0 +1,1608 @@
+===== PAGE 1 =====
+IFT-26-99
+CasimirRFM: A Mathematica package for Riemann-flat
+compactifications with Casimir energies
+Bruno Valeixo Bento
+Instituto de F´ ısica Te´ orica IFT-UAM/CSIC, C/ Nicol´ as Cabrera 13-15, Campus de Cantoblanco,
+28049 Madrid, Spain
+E-mail:bruno.bento@ift.csic.es
+Abstract:CasimirRFM is a Mathematica package for the study of compactifications
+on Riemann-flat manifolds and the computation of one-loop Casimir energies in higher-
+dimensional field theories and supergravity. It implements an efficient numerical evaluation
+of lattice sums using Ewald summation, and computes both lower-dimensional Casimir
+potentials and local higher-dimensional Casimir energy densities, allowing for general mass-
+less spectra and twisted boundary conditions. The package provides tools for constructing
+and analysing the finite groups defining these manifolds, determining invariant metrics and
+cohomology bases, identifying compatible spin structures, and computing moduli-space
+metrics. Moreover, it evaluates the traces of holonomy elements in the graviton,p-form,
+spinor, and Rarita-Schwinger representations. We describe the mathematical formulation and
+numerical implementation of the package, and illustrate its use through a compactification
+of Type IIB supergravity onT 6/Z8, including the computation of the Casimir potential and
+the visualization of localised Casimir-brane contributions.
+arXiv:2607.26140v1  [hep-th]  28 Jul 2026
+
+===== PAGE 2 =====
+Package Information
+NameCasimirRFM
+Version1.0
+Release DateJuly 2026
+Repositoryhttps://github.com/bruno-valeixo-bento/CasimirRFM
+LicenseMIT License
+RequirementsMathematica 13.0 or later
+AuthorBruno Valeixo Bento
+Description:CasimirRFMis a Mathematica package for the study of compactifica-
+tions on Riemann-flat manifolds (RFMs) and the computation of one-loop Casimir
+energies in higher-dimensional field theories and supergravity models.
+✧Construction and analysis of finite groups defining RFMs; computation of
+invariant metrics, cohomology forms, and spin structures.
+✧Efficient numerical evaluation of lattice sums using Ewald summation; com-
+putation of Casimir potentials and Casimir energy densities.
+✧Evaluation of Lorentz-group traces in graviton,p-form, spinor and Rarita–
+Schwinger representations.
+Citation:If you useCasimirRFMin scientific work, please cite
+B. Valeixo Bento,CasimirRFM: A Mathematica package for Riemann-
+flat compactifications with Casimir energies, Version 1.0 (2026),https:
+//github.com/bruno-valeixo-bento/CasimirRFM
+and the accompanying methodology paper [1]
+B. Valeixo Bento and M. Montero,An M-theory dS maximum from
+Casimir energies on Riemann-flat manifolds, JHEP01(2026) 099,
+arXiv:2507.02037
+
+===== PAGE 3 =====
+Contents
+1 Introduction & Quick description 1
+2 Detailed description of package functions 6
+2.1 Riemann-flat manifolds (RFMs) and finite groups 6
+2.2 Group functions 8
+2.3 Compactification functions 12
+2.4 Casimir energies 15
+2.5 Lorentz group traces under different representations 21
+3 Example: Type IIB onT 6/Z8 25
+1 Introduction & Quick description
+CasimirRFMis a Mathematica package built for the computation of Casimir energies in
+Riemann-flat compactifications ofD-dimensional supergravity theories. It implements the
+methods developed in [1], with particular emphasis on the one-loop Casimir contribution
+from the massless spectrum of higher-dimensional supersymmetric field theories. The pack-
+age includes a broad set of functions that can be split in three groups.
+1.Functions for Riemann-flat manifolds
+These functions can be used to study Riemann-flat manifolds and their properties. Some
+of these focus on the holonomy groups defining the Riemann-flat manifolds (RFMs),
+which apply more generally to finite groups Γ, and are listed in Table 1; others refer to
+properties of the manifold itself, and are listed separately in Table 2.
+2.Functions for Casimir potentials
+These functions compute the Casimir potentials and energy densities arising in com-
+pactifications on RFMs. They are based on an efficient implementation of Ewald’s
+summation method [2,3], and are listed in Table 3.
+3.Functions for Lorentz group traces
+The computation of Casimir potentials requires taking the trace of group elements
+γ∈Γ⊂SO(k) in different representations belonging to the massless spectrum of the
+higher-dimensional theory. These functions compute the traces in the graviton,p-form,
+spinor and Rarita-Schwinger representations, and are listed in Table 4.
+– 1 –
+
+===== PAGE 4 =====
+The computation of Casimir energies can be made more efficient by combining the func-
+tions implemented in the package with Mathematica’s parallelization functions; it is useful to
+run multiple evaluations in parallel using Mathematica functions such as
+Parallelize, ParallelEvaluate, ParallelTable, ParallelSum.
+For maximum flexibility,Parallelizeis not used internally in any of the function definitions,
+apart fromRFMGradandRFMHessian. It is helpful to start by launching all kernels and loading
+the package in each of them,
+In[1]:=LaunchKernels[];
+ParallelEvaluate[<< CasimirRFM`];
+DistributedContexts = None;
+Installation
+To install the package
+1. DownloadCasimirRFM.wl;
+2. CopyCasimirRFM.wlto$UserBaseDirectory/Applications/CasimirRFM/
+It can then be loaded in anyMathematicanotebook with the usual command 1
+In[2]:=<< CasimirRFM`
+The package includes a description and template for every function, which can be accessed
+within the notebook as
+In the following sections we will describe each function in more detail, including its
+input, output, options, and mathematical background behind its implementation. For easier
+reference, we provide as supplementary material the notebookCasimirRFM-Template.nb,
+listing all functions, their descriptions and concrete examples of their use. We also include a
+notebookCasimirRFM-TypeIIB-Example.nbwith the example provided in Section 3.
+1The symbol at the end of the package name used by Mathematica isU+0060 Grave Accent.
+– 2 –
+
+===== PAGE 5 =====
+Function Returns
+DefGenerator[M,σγ]Generatorg ={D γ,{b1,...,b k},σγ}built from the
+matrixM=
+
+Dγ ⃗bγ
+0 1
+
+and the choice of spin liftσ γ∈
+{0, 1
+2}(set to 0 by default).
+ActsFreelyQ[Γ] Trueif every non-identity element of Γ acts without
+fixed points, andFalseotherwise.
+ElementAction[g][z]Vectorg(z)obtained by acting with elementgon the
+vectorz.
+ComposeElements[g1,g2]Elementg 1◦g 2.
+ElementOrder[g]Orderkofg, such thatg k =1, as an affine torus
+isometry, not taking into account the spin lift.
+GetAllowedShifts[Dg]Set of shift vectors ⃗bg satisfyingD g⃗bg =⃗bg (mod Λ⊥)
+for which the resulting space-group action is fixed-
+point free.
+GetGroup[{g1,g2,...}]Finite group generated by{g 1,g2,...}.
+NormalizerQ[Γ,{Q,q}] Trueif the transformationf(⃗ z) =Q⃗ z+⃗ qrepre-
+sented by{Q,q}is in the normalizer of group Γ;‘True
+for point group only’iff(⃗ z) normalizes the point
+group, but not the space group; andFalseotherwise.
+GetCompanionMatrix[p(x),x]Companion matrix of the polynomialp(x)in the form
+of aSparseArray.
+FiniteOrderMatrices[k]Block-diagonal representatives of the rational conju-
+gacy classes of finite-orderk×kinteger matrices, con-
+structed as direct sums of companion matrices of cy-
+clotomic polynomials. The output is a list of pairs
+{order,matrix}.
+Table 1. Group functions for Riemann-flat manifolds, including input arguments, defaults and output.
+These functions focus on the holonomy groups defining the RFMs, and apply more generally to the
+study of finite groups Γ. Detailed descriptions of these functions and their implementation can be
+found in Sections 2.1 and 2.2.
+– 3 –
+
+===== PAGE 6 =====
+Function Returns
+CasimirBranes[g]Coordinates of Casimir branes of elementg.
+GetInvariantMetric[{g1,g2,...}]{number of moduli,{c 1,c2,...},G}whereG
+is the most general metric invariant under the
+group generated by{g 1,g2,...}, and parame-
+terised by the geometric moduli{c 1,c2,...}.
+GetModuliSpaceMetric[D,G,{ci},print]Metric on the moduli space parameterised by
+{ci}, upon compactifying aD-dimensional the-
+ory on an RFM with metricG. Ifprint = True,
+the kinetic terms are printed (print = False
+by default).
+GetInvariantForms[{g1,g2,...}]{Betti numbers,{basis ofH 0(Fk,R),
+..., basis ofH k(Fk,R)}, basis form
+coefficients}, providing a basis ofp-forms
+invariant under the action of the group with
+generators{g 1,g2,...}.
+SpinStructures[{g1,g2,...}]Association
+⟨|"GeneralForm"→h,"Allowed"→list|⟩
+of spin structures/boundary conditions onT k
+compatible with the quotientT k/Γ, with Γ gen-
+erated by{g 1,g2,...}. The"GeneralForm"
+key points to the most general structure
+{h1,...,hk}; the"Allowed"key points to a list
+of all allowed spin structures.
+Table 2. Compactification functions for Riemann-flat manifolds, including input arguments, defaults
+and output. These functions focus on the compactification of aD-dimensional field theory on ak-
+dimensional RFM. Detailed descriptions of these functions and their implementation can be found in
+Section 2.3.
+– 4 –
+
+===== PAGE 7 =====
+Function Returns
+Ewald[c,h,s,α,G,ε]Lattice sum P
+⃗ n∈Zk
+e2πi⃗h·⃗ n
+|⃗ n+⃗ c|2s
+G
+using numerical im-
+plementation of Ewald’s summation method.
+The parameterαcontrols the split between
+real and reciprocal space contributions in Ewald
+summation.
+ReducedLatticeSum[D,g,h,G,ε]Integrated lattice sum
+Z
+[0,1]k
+dkz
+X
+⃗ n∈Zk
+e2πi⃗h·⃗ n
+|(1−D g)⃗ z+⃗ n−⃗bg|D
+G
+projecting onto theg-invariant lattice and col-
+lapsing the sum to the lowest dimension possi-
+ble, before summing numerically usingEwald.
+TracedSum[
+D,g,spectrum,hspin,G,ϕ0,ε]
+Sum of lattice sum contributions (summed nu-
+merically usingReducedLatticeSum) over all
+representations inspectrumwith the appropri-
+ate traces ofgand boundary conditions;hspin
+encodes the RFM spin structure and sets the de-
+fault boundary conditions for fermions;ϕ 0 is the
+point in moduli space where the symbolic met-
+ricGis evaluated, given as a replacement rule
+for the moduli.
+CasimirPotential[
+D,Γ,spectrum,hspin,G,ϕ0,ε]
+Casimir potentialV Cas given by the sum of lat-
+tice sums over all elementsγ∈Γ, each com-
+puted usingTracedSum.
+CasimirEnergyDensity[
+D,Γ,spectrum,hspin,G,ϕ0,z,ε]
+Casimir energy densityρ Cas(⃗ z) at a point⃗ z∈
+Tk/Γ given by the sum of lattice sums over all
+elementsγ∈Γ.
+RFMGrad[V,⃗ x0,δ⃗ x]Gradient vector ⃗∂V| x0 normalized byVcom-
+puted numerically at⃗ x0, using values ofVa
+distanceδ⃗ xaway from⃗ x0 (defaultδ⃗ x= 10−4·⃗1).
+RFMHessian[V,⃗ x0,δ⃗ x]Hessian matrix∂ i∂jV|x0 computed numerically
+at⃗ x0, using values ofVa distanceδ⃗ xaway from
+⃗ x0 (defaultδ⃗ x= 10−4·⃗1).
+Table 3. Functions for the computation of lattice sums and Casimir potentials, including input
+arguments, defaults and output. The parameterεcontrols the estimated truncation of the numerical
+sums such thatε= 10 −p targets roughlypdecimal digits (ε= 10 −4 by default). Detailed descriptions
+of these functions and their implementation can be found in Section 2.4.
+– 5 –
+
+===== PAGE 8 =====
+Function Returns
+TraceSym[g,D]Trace of elementg∈Γ in the symmetric traceless
+(graviton) representation ofSO(D−2).
+TraceForm[p,g,D]Trace of elementg∈Γ in the antisymmetricp-form
+representation ofSO(D−2).
+TraceSpinor[g,D,Weyl]Trace of elementg∈Γ in the spinor representation of
+SO(D−2), taking into account the choice of spin lift
+±1 ofg; set parameterWeyl = Truefor a Weyl spinor
+(Weyl = Falseby default).
+TraceRS[g,D,Weyl]Trace of elementg∈Γ in the Rarita-Schwinger (grav-
+itino) representation ofSO(D−2), taking into account
+the choice of spin lift±1 ofg; set parameterWeyl =
+Truefor a Weyl spinor (Weyl = Falseby default).
+TraceBosons[bosons,g,D]Sum of traces of elementg∈Γ under the bosonic rep-
+resentations listed inbosonsinDdimensions;bosons
+accepts association-based field specifications or the list
+shorthand notation described in Section 2.5.
+TraceFermions[fermions,g,D]Sum of traces of the (spin lift of) elementg∈Γ under
+the fermionic representations listed infermionsinD
+dimensions;fermionsaccepts association-based field
+specifications or the list shorthand notation described
+in Section 2.5
+Table 4. Functions for the computation of Lorentz group traces under different representations,
+including input arguments, defaults and output. Detailed descriptions of these functions and their
+implementation can be found in Section 2.5.
+2 Detailed description of package functions
+In this section we will give a detailed description of the functions implemented in the
+CasimirRFMpackage, and the background—regarding finite groups, RFMs, spin structures,
+traces of elements ofSO(D−2) under different representations, the Ewald summation
+method and other connected topics—necessary to understand both how to use it and how it
+is built. The detailed descriptions are intended both to support use of the current package
+and to facilitate future extensions.
+2.1 Riemann-flat manifolds (RFMs) and finite groups
+Every Riemann-flat manifold (RFM) can be defined as the quotient of a torusT k by afinite
+group Γ of isometries ofT k, i.e. isometries ofR k that preserve the torus lattice Λ such that
+Tk =R k/Λ [1,4–6],
+Fk =T k/Γ.(2.1)
+– 6 –
+
+===== PAGE 9 =====
+The group Γ—also called the point group or holonomy group of the RFM—acts freely on the
+torus, meaning that it has no fixed points; the quotient is a smooth manifold rather than a
+singular orbifold. An elementγ∈Γ is represented by the pair (D γ,⃗bγ) corresponding to the
+affine transformation
+⃗ z→ιγ(⃗ z) =Dγ⃗ z+⃗bγ (2.2)
+of points inT k, where⃗bγ is taken modulo Λ-translations andD γ is orthogonal. We will focus
+on orientable RFMs, for whichD γ∈SO(k).
+It is always possible to perform a change of coordinates in the ambient spaceR k such
+that the lattice Λ becomes exactlyZ k, the standard integer lattice, at the price of having an
+ambient metric and corresponding induced metric on the RFM that are no longer standard,
+but rather some flat metricGthat must be determined. In this basis, the matricesD γ∈
+SL(k,Z) preserve the latticeZ k; from the representation theory of conjugacy classes of such
+matrices, we know that they are all conjugate to the block-diagonal form [7]
+Dγ∼
+
+
+B1 0 0 ... ... ...
+0 ... 0 ⃗ v1 ··· ⃗ vl
+0 0 Bi
+... ... ...
+0 ··· 0 ... ...
+... 0 ... ··· Il×l ···
+0 ··· 0 ... ...
+
+
+,(2.3)
+where the diagonal blocksB i are standard and determined by the order of the matrix [7],
+andlis the dimension of its invariant subspace. The only ambiguity is the choice of the
+upper-right entries, which must be analysed on a case-by-case basis [1]. Note that there may
+not exist a similarity transformation that simultaneously puts allD γ in the form (2.3) when
+Γ is non-abelian. In all that follows and in the code implementation we work in the basis
+with Λ =Z k, which is the torus lattice over which we perform the lattice sums.
+When working with spinors, we must also consider the spin lift of Γ. Spinor repre-
+sentations are representations ofSpin(n), the double cover ofSO(n), rather than ordinary
+representations ofSO(n). The groupSpin(n) is such that there exists a short exact sequence
+of groups
+1−→Z 2−→Spin(n)−→SO(n)−→1,
+so that the spin lift of Γ is aZ 2 extension of Γ, with a transformationD γ having two spin
+lifts±D γ related by a sign (see [1, 8] and Appendix B of [9] for more details). A consistent
+lift must respect all group relations [8], so that not all choicese 2πiσ g =±1 may be allowed.
+– 7 –
+
+===== PAGE 10 =====
+The basic object ofCasimirRFMis a group element defined by the triple
+g ={D γ,{b1,...,b k},σγ},(2.4)
+withD γ ∈SL(k,Z) conjugate to an orthogonal matrix, ⃗bγ defined moduloZ k, and
+σγ∈{0, 1
+2}specifying the spin lifte 2πiσγ =±1 ofγ∈Γ⊂SO(k)→Spin(k).
+In the mathematical literature, and in software such as GAP [10] and CARAT [11], it is
+common to represent the pair (D γ,⃗bγ) in terms of the matrix
+M=
+ 
+Dγ ⃗bγ
+0 1
+!
+.
+We have included functionDefGeneratorthat builds an object (2.4) for such a matrix.
+DefGenerator[M,σγ]returns the generatorg ={D γ,{b1,...,b k},σγ}built from the
+matrixM =
+ 
+Dγ ⃗bγ
+0 1
+!
+and the choice of spin liftσ γ∈{0, 1
+2}(set to 0 by default).
+2.2 Group functions
+In this subsection we describe the functions ofCasimirRFMbuilt for the study of finite groups
+Γ that can define RFMs through the quotient (2.1). For more details on the mathematical
+background see [1].
+To begin with, an elementγacts on a vector⃗ z∈T k as in (2.2).
+ElementAction[g][z]returns the vectorD γ⃗ z+⃗bγ obtained by acting with elementγ
+on⃗ z. The inputs are an elementgof the form (2.4) and ak–dimensional symbolic or
+numericArray; the output is a symbolic or numeric array of the same dimension.
+Demanding that the Γ action has no fixed points leads to constraints on the pairs (D γ,⃗bγ).
+For instance, the equation
+(Dγ−I)⃗ z+⃗bγ = 0 modZ k (2.5)
+must have no solution, so that ⃗bγ must have a non-zero component along the invariant sub-
+space ofD γ, which must therefore have a non-trivial invariant subspace.
+– 8 –
+
+===== PAGE 11 =====
+ActsFreelyQ[Γ]returnsTrueif Γ acts freely on the torus, by checking whether (2.5)
+has no solutions for non-identity elements. The input is aListof elements of the form
+(2.4) and the output is aBooleanvalue.
+Moreover, we are free to rotate ⃗bγ by any power ofD γ and shift it by the projection of
+any vector⃗ u∈Zk onto the subspace orthogonal to the invariant subspace ofD γ, i.e. ⃗bγ→
+Dq
+γ + (I−Dγ)⃗ uwithq∈Z. The set of equivalence classes of ⃗bγ vectors is the set of solutions
+to the equation
+Dγ⃗bγ =⃗bγ mod Λ ⊥,(2.6)
+where Λ⊥ is the lattice defined as the projection ofZ k onto the subspace orthogonal to the
+invariant subspace ofD γ [1].
+GetAllowedShifts[Dγ]returns the set of shift vectors ⃗bγ satisfying condition (2.6) for
+which the resulting space-group action is fixed-point free for a generatorD γ of the point
+group Γ. The input is a (k×k)–dimensional numericArray(typically corresponding to
+g[[1]]from (2.4)) and the output is aListof vectors ⃗bγ.
+Since Γ is afinitesubgroup of isometries ofT k, all elementsγ∈Γ must have finite order,
+defined as the smallest integerksuch thatγ k =1, where1is the identity element of Γ. In
+terms of the representative pair (D γ,⃗bγ), the identity is1≡(I k,⃗0), whereI k is thek×k
+identity matrix and⃗0 thek-dimensional vector with all entries 0 (modZ).
+ElementOrder[g]returns the order ofg, i.e. the smallest integerksuch thatg k =1. It
+takesgas an affine torus isometry, not taking into account the spin lift.
+The finite group Γ is generated by a set{g 1,g 2,...}, each of which of finite orderk i, as
+Γ ={1,g 1,g 2
+1,...,g k1−1
+1 ,g 2,g 2
+2,...,g k2−1
+2 ,g 1g2,...},(2.7)
+i.e. Γ is built recursively by acting with all generators on Γ i and removing duplicate elements
+(e.g.1=g k1
+1 =g k2
+2 ), starting from Γ 0 ={1}and stopping when acting with any generator
+does not produce new elements.
+GetGroup[{g1,g 2,...}]returns the finite group generated by{g 1,g 2,...}. All elements
+in{g 1,g 2,...}must have finite order. The input is aListof elements of the form (2.4)
+and the output is anotherListof elements of the form (2.4) corresponding to (2.7).
+– 9 –
+
+===== PAGE 12 =====
+It is often convenient to exploit symmetry transformations that leave the group Γ
+invariant—transformations⃗ z→f(⃗ z) =Q⃗ z+⃗ qthat belong to the normalizer of Γ—since
+they become symmetries of the Casimir potential. A transformationf(⃗ z), represented by
+the pair (Q,⃗ q), lies in the normalizer of Γ if by applying it to all elementsγ∈Γ we get the
+same group Γ. These are affine transformations of the parentT k that descend to well-defined
+diffeomorphisms ofF k for which⃗ zandf(⃗ z) are in the same Γ-orbit generated by (2.2). Such
+transformations must satisfy
+f(ιγ(⃗ z)) =ιγ′(f(⃗ z)),(2.8)
+for someγ ′∈Γ and for any⃗ z, leading to the pair of conditions [1]
+Q·D γ·Q−1 =D γ′ andQ ⃗bγ + (I−Q·D γ·Q−1)⃗ q=⃗bγ′.(2.9)
+A given transformationf(⃗ z) may satisfy the first condition on the rotation matricesDγ, but
+not the second on the shift vectors ⃗bγ; when this happens, one says that the transformation
+normalizes thepoint groupthat only sees rotations, but not thespace groupthat takes into
+account translations as well. In some cases, such transformations are still useful, even if they
+do not descend to a well-defined diffeomorphism ofF k.
+NormalizerQ[Γ,{Q,q}]returnsTrueif the affine transformationf(⃗ z) =Q⃗ z+⃗ qrepre-
+sented by the pair{Q,q}is in the normalizer of group Γ, i.e. if the map
+Dγ→Q·D γ·Q−1
+⃗bγ→Q ⃗bγ + (I−Q·D γ·Q−1)⃗ q
+maps Γ to itself. It returns‘True for point group only’iff(⃗ z) normalizes thepoint
+group, but not thespace group, andFalseotherwise.
+A particularly simple class of RFMs consists of those whose holonomy group Γ is cyclic,
+which we refer to ascyclicRFMs [1]. Not only are these manifolds easier to analyse because
+the holonomy group is generated by a single elementg, they can also be classified in terms of
+finite-order matricesA∈GL(k,Z) representing the action of Γ on the lattice. More precisely,
+one seeks matrices satisfying
+An =I,A p̸=Ifor allp<n,(2.10)
+so thatAhas ordern. Since two matrices related by an integral change of lattice basis define
+equivalent holonomy representations, the problem reduces to classifying finite-order elements
+ofGL(k,Z) up to integral conjugacy [1,12].
+The classification relies on the factorisation ofx n−1 into cyclotomic polynomials [13].
+– 10 –
+
+===== PAGE 13 =====
+Then th cyclotomic polynomial is defined as
+Φn(x) =
+Y
+1≤p≤n
+gcd(p,n)=1
+
+x−e 2πip
+n
+
+,(2.11)
+and its roots are precisely the primitiven-th roots of unity—it is irreducible overQ, has integer
+coefficients, and degreeφ(n) given by Euler’s totient functionφ. By the rational canonical
+form, every finite-order matrix inGL(k,Z) is conjugate overGL(k,Q) to a block-diagonal
+matrix whose blocks are companion matrices of cyclotomic polynomials [14],
+A∼
+
+
+C(Φd1) 0 0
+0 ... 0
+0 0 C(Φ dq)
+
+ ,such that
+X
+i
+φ(di) =k,(2.12)
+where the companion matrix of a polynomial
+p(x) =x d +ad−1xd−1 +...+a 1x+a 0
+is defined as
+C(p)≡
+
+
+0 0···0−a 0
+1 0···0−a 1
+0 1···0−a 2
+... ... ...
+0 0···1a d−1
+
+
+.(2.13)
+GetCompanionMatrix[p(x),x]returns the companion matrix of the polynomialp(x)in
+the form of aSparseArray.
+Therefore, the rational conjugacy classes are in one-to-one correspondence with combinations
+of cyclotomic polynomials{Φ d1, ... ,Φdq}whose degrees sum tok. Passing from rational
+to integral conjugacy is more subtle, since a given rational conjugacy class may split into
+several integral conjugacy classes [15, 16]. In the dimensions relevant for cyclic RFMs, these
+integral conjugacy classes can nevertheless be enumerated explicitly [12]. We can then use
+these block-diagonal finite-order matrices as representatives of the distinct actions of cyclic
+groups Γ on the lattice.
+FiniteOrderMatrices[k]returns block-diagonal representatives of the rational conju-
+gacy classes of finite-orderk×kinteger matrices, constructed as direct sums of companion
+matrices of cyclotomic polynomials. The output is a list of pairs{order,matrix}.
+– 11 –
+
+===== PAGE 14 =====
+Since Euler’s totient function is bounded asϕ(n)≥ pn
+2 [17], any cyclotomic polynomial
+Φn(x) contributing to ak×kmatrix satisfiesn≤2k 2, so that only finitely many cyclotomic
+companion matrices need to be considered.
+2.3 Compactification functions
+Recall that, by choosing the covering torus lattice Λ =Z k, the metric onT k and hence the
+one induced on the RFM is not the standard metric. The most general metrics on the RFM
+are those metricsGonT k that satisfy [1]
+DT
+γ·G·D γ =G,∀γ∈Γ.(2.14)
+Since all elementsγ∈Γ are generated by a given set of generators{g 1,g 2,...}, in such a way
+that the matricesD γ are all products of{D g1,D g2,...}, it is sufficient to check condition
+(2.14) for the smaller set of generators. While the most general metricGonT k would contain
+k(k+ 1)
+2
+independent components, the conditions (2.14) imposed by{g 1,g 2,...}usually reduce the
+number of independent components and therefore the number of moduli of the metricGon
+the RFM. From the compactification point-of-view, the group Γprojects outorfreezessome
+of the metric moduli.
+GetInvariantMetric[{g1,g 2,...}]returns the invariant metricGand geometric moduli
+{c1,c 2,...}from a set of generators{g 1,g 2,...}in the form
+{number of moduli,{c1,c 2,...},G}
+whereGis ak×ksymmetric matrix that is a function of the moduli{c 1,c 2,...}and
+satisfies (2.14) for allγ∈{g 1,g 2,...}. The input is aListof elements in the form (2.4)
+and the output metricGis symbolic.
+The functionGetInvariantMetricreturns a symbolic invariant symmetric matrix, rather
+than an actual metric; for this matrix to be a Riemannian metric, it must also be positive-
+definite, which depends on the values of the parameters (moduli){c 1,c 2,...}. Therefore, not
+all value assignments for the moduli lead to a physical metricG.
+Given ak-dimensional RFM, we want to consider the dimensional reduction of aD-
+dimensional supersymmetric theory on the RFM, down tod=D−kdimensions. Since RFMs
+are quotients of tori, the kinetic terms of the moduli{c 1,c 2,...}come from the Einstein-
+– 12 –
+
+===== PAGE 15 =====
+Hilbert action onT k [18],
+1
+2κ2
+d
+Z
+ddx√−gd
+ 1
+(d−2) (∂log
+√
+detG) 2 + 1
+4Tr((G−1∂G)2)
+
+.(2.15)
+From these we can read off the moduli space metric, which is required for instance to determine
+the masses of the moduli.
+GetModuliSpaceMetric[D,G,{c1,c2,...},print]returns the metric on the moduli
+space parameterised by the moduli{c 1,c2,. . .}of the RFM with metricG(c 1,c2,...),
+when compactifying aD-dimensional theory. Ifprint = True, the kinetic terms (2.15)
+are printed (print = Falseby default).
+It is often convenient to reparametrise the moduli of the invariant metric (e.g. in such a way
+that all moduli values correspond to a physical metricG),
+In[3]:=G = GetInvariantMetric[{g1,g2,...}][[3]]/.{c1 -> f[newc],...}
+Therefore, the functionGetModuliSpaceMetrictakes the list of moduli as input in order to
+be independent ofGetInvariantMetricand it can be used given any parametrisation with
+the appropriate list of moduli{c 1,c2,. . .}.
+The action of Γ onT k also determines the cohomology classes inH p(Fk,R) from the
+standard basis ofH p(Tk,R), since they correspond top-forms onT k that are invariant under
+the action (2.2) for allγ∈Γ,
+ωa...bdza∧...∧dz b→ω a...b (Dγ)a
+a′...(D γ)b
+b′dza′
+∧...∧dz b′
+.(2.16)
+As before, it is sufficient to check invariance under (2.16) for the set of generators{g1,g 2,...}.
+The dimension ofH p(Fk,R) is given by the Betti numberb p, as usual.
+GetInvariantForms[{g1,g 2,...}]returns a basis ofH p(Fk,R), i.e. a basis ofp-forms
+invariant under the action (2.16) of the group generators{g 1,g 2,...}in the form
+{{1,b 1,...,b k},
+{basis ofH 0(Fk,R),
+...
+basis ofH k(Fk,R)}
+,basis form coefficients}
+The functionGetInvariantFormsoutputs the basis of invariantp-forms in terms of linear
+combinations ofdz a∧...∧dz b in the language of differential forms—convenient for reading
+off the form basis—and in component formω a...b (2.16) as a set of rules that takes into
+account the index antisymmetry and with which aSparseArraycan be defined. The basis of
+– 13 –
+
+===== PAGE 16 =====
+Hp(Fk,R) does not, in general, give a basis of the integer cohomologyHp(Fk,Z) of forms with
+quantised periods. For flux compactifications, one must take into account flux quantisation
+and a properly quantised basis becomes important. Returning the set of rules rather than
+theSparseArrayitself allows us to subsequently rescale certain basis forms to correctly
+implement period quantisation.
+The Casimir energies depend heavily on the spin structure chosen for the RFM [1]. On
+the covering torus, a spin structure can be specified by the periodicity of spinor fieldsψ(⃗ z)
+under lattice transformations,
+ψ(⃗ z+⃗ n) =e2πi⃗h·⃗ nψ(⃗ z),(2.17)
+and is encoded in a vector ⃗hwhose entries are 0 along periodic directions and 1
+2 along anti-
+periodic directions. A spin structure on the torus descends to a well-defined spin structure
+on the RFM if it is preserved by the action of the group Γ defining the quotient. The
+diffeomorphism (2.2) acts on spinor fields as
+ψ(⃗ z)→(−1)2σγDγψ(Dγ⃗ z+⃗bγ),(2.18)
+where the sign ambiguity in the spin representation is associated with the choice of spin lift
+SO(k)→Spin(k), i.e.D γ→±D γ≡e 2πiσγDγ withσ γ∈{0, 1
+2}. A consistent spin lift of
+Γ must preserve the group structure; as usual, since all group elements are obtained from
+applying different combinations of the generators{g 1,g 2,...}, the choice of lifts{σ 1,σ 2,...}
+determines the signsσ γ of all other elements [8], and a consistent choice of lift must be such
+that all group relations are respected.
+For the spin structure onT k to be preserved by the action ofγ, the vector ⃗hmust
+satisfy [1]
+(I−D T
+γ )· ⃗h∈Z k.(2.19)
+Moreover, for anyD γ of orderp, the action⃗ z→Dp
+γ⃗ z+p⃗bγ is a translation along the vector
+p⃗bγ, which must be in the latticeZ k. Since the spin lift ofD γ satisfies (±Dγ)p =e 2πi(pσ γ)I,
+the choice of spin structure on the coveringT k along the directionp ⃗bγ is correlated with the
+choice of spin lift,
+pσγ≡⃗h·(p ⃗bγ) modZ.(2.20)
+Note that for evenp, we havepσ γ = 0 modZregardless of the choice of spin lift, constraining
+the vector⃗hdirectly in such a way that ⃗h·(p ⃗bγ) = 0 modZ. In contrast, whenpis odd the
+choice of liftσγ is correlated with the choice of spin structure⃗hfor consistency.
+– 14 –
+
+===== PAGE 17 =====
+SpinStructures[{g1,g2,...}]returns anAssociation⟨|"GeneralForm"→h,
+"Allowed"→list|⟩with the spin structures onT k that descend to a well-defined spin
+structure on the RFM defined as the quotientT k/Γ with Γ generated by{g 1,g2,...},
+according to the consistency conditions (2.19) and (2.20). The"GeneralForm"key
+points to the most general consistent structure{h 1,...,hk}; the"Allowed"key points
+to a list of all allowed spin structures (withh i = 0 for periodic boundary conditions and
+hi = 1
+2 for anti-periodic boundary conditions around directionion the torus).
+2.4 Casimir energies
+Upon compactification of aD-dimensional field theory on ak-dimensional RFM, the lower-
+dimensional Casimir energy, i.e. the effective potential coming from the Casimir term, is
+given by [1]
+VCas =− Γ(s)
+2πs
+1
+|Γ|
+∼X
+γ∈Γ
+⃗ n∈Zk
+X
+r
+Z
+[0,1]k
+dk⃗ z
+√
+G Trr(Dγ)e 2πi⃗h·⃗ n
+|⃗ z−(Dγ⃗ z+⃗bγ +⃗ n)|D .(2.21)
+The integral over the compact spaceF k is expressed as an integral over the covering torus
+Tk, with fundamental domain [0,1) k over which we integrate and equipped with a metricG
+satisfying (2.14); the integral is divided by the order|Γ|of the finite group Γ defining the
+RFM because the torus is coveringF k a total of|Γ|times. The∼over the sum indicates
+that we sum over allγ∈Γ and⃗ n∈Z k such that the denominator does not vanish, which
+only happens forγ=I,⃗ n= 0 due to the fixed-point-freeness of the group. We also sum
+over all representationsrpresent in the massless spectrum of theD-dimensional theory. The
+vector ⃗hencodes twisted boundary conditions of various fields, that transform as a phase
+under translations. TheZ 2-twisted boundary conditions of fermion fields, related to the spin
+structures discussed in the previous section, are a particular example; however, the function
+Ewaldaccepts more general phase vectors, allowing for other twisted boundary conditions.
+The potential (2.21) can be expressed as a sum—over the elementsγ∈Γ and the massless
+representationsr—of infinite lattice sums, such that eachγ∈Γ gives a definite contribution
+E(γ) [1],
+VCas =
+X
+γ∈Γ
+X
+r
+Trr(Dγ)E(γ),E(γ) =− ˆδ⃗h
+Γ(sγ)
+2πsγ
+·
+pG∥
+|Γ|
+X
+⃗ξ∈Ξγ
+e2πi⃗βγ·⃗ξ
+|⃗ξ+ ⃗b∥
+γ|2sγ
+∥
+.(2.22)
+In this formula,s γ =s− k−k′
+2 , wheres=D/2 andk ′ is the dimension of the subspace
+invariant underDγ. The lattice Ξγ and the vector⃗b∥
+γ are the projections of the latticeZ k and
+vector⃗bγ onto the invariant subspace ofD γ, whileG∥ is the metric induced on this subspace
+and used for the inner product|·| ∥. EachE(γ) behaves exactly as the contribution to the
+– 15 –
+
+===== PAGE 18 =====
+potential that would arise from an effectivek ′–dimensional “Casimir brane” wrapped on the
+invariant subspace ofD γ and with a tension given by (2.22) [1].
+CasimirBranes[g]returns the position of the Casimir branes associated withgcorre-
+sponding to the locus inT k of the invariant subspace underDγ, i.e. the subspace defined
+by the solutions toD γ⃗ z=⃗ z∈Tk.
+Finally, the factor ˆδ⃗h evaluates to 1 if there exists a solution to the equation
+(I−D γ)T⃗ η= (I−Dγ)T⃗h,(2.23)
+with⃗ η∈Zk, and zero otherwise, in which case the sumE(γ) vanishes identically. Interestingly,
+the factor ˆδ⃗h is related to a field theory version [1] of Atkin-Lehner symmetry [19–21]. Note
+that ˆδ⃗h = 1 regardless ofD γ whenever⃗h= ⃗0, e.g. for bosons with fully periodic boundary
+conditions on the covering torus. Whenever there is a solution⃗ η∈Zk, the vector ⃗βγ in (2.22)
+is defined as ⃗βγ≡⃗h−⃗ ηand belongs to the invariant subspace ofD T
+γ .
+The lattice sums in (2.22) are computed using the Ewald summation formula (see Ap-
+pendix C of [1] for derivation and details),
+X
+⃗ n+⃗ c̸=0
+e2πi⃗h·⃗ n
+|⃗ n+⃗ c|2s =
+X
+⃗ n+⃗ c̸=0
+e2πi⃗h·⃗ n
+|⃗ n+⃗ c|2s
+Γ(s,α|⃗ n+⃗ c|2)
+Γ(s)
++ π2s−k
+2
+√
+G
+X
+⃗k−⃗h̸=0
+e2πi(⃗k−⃗h)·⃗ c
+|⃗k− ⃗h|k−2s
+D
+Γ
+
+k
+2−s, π2
+α|⃗k− ⃗h|2
+D
+
+Γ(s)
++δ⃗h,⃗0
+π
+k
+2αs−k/2
+√
+GΓ(s)
+ 
+s− k
+2
+− αse−2πi⃗h·⃗ c
+Γ(s+ 1) χZk(⃗ c).(2.24)
+where|⃗ v|2
+D≡G−1
+ij vivj is the canonical norm in momentum space. This expression is exact
+for anyα, but in practice one truncates both the sum over⃗ n(position space) and the one
+over⃗k(momentum space), and choosesαto maximize the speed of convergence.
+Ewald[c,h,s,α,G,ε]numerically computes the lattice sum (2.24), with vector norms
+computed using the metricG, shift vector⃗ cand phase vectorh={h 1,...,h k}; the
+parameterαspecifies the split between real and reciprocal sums; the parameterεcontrols
+the estimated truncation of the numerical sums such thatε= 10 −p targets roughlyp
+decimal digits (ε= 10 −4 by default). All input arguments are numeric and the output
+is the numeric result of the sum.
+In our numerical implementation, we first determine the set of vectors with norm smaller
+than a given cutoff, i.e. within the ellipsoid defined by the metric and the cutoff, and perform
+– 16 –
+
+===== PAGE 19 =====
+the sum only after this set of vectors has been fully identified and stored in memory. This
+provides a large speedup over implementations that sum over a large square box of points,
+which despite not needing to spend computer resources identifying the appropriate set for
+the sum, spend time evaluating many points of very large norm with negligible contribu-
+tion. This is particularly important in larger dimension where there are many points in the
+square box that are not contained in the ellipsoid for a generic norm. In the private function
+GetEwaldLatticeByNorm[r2,G,⃗c]we implement a recursive dimensional-reduction method
+inspired by the Fincke–Pohst algorithm for short-vector enumeration in a lattice [22]: rather
+than scanning a rectangular box, it recursively bounds each coordinate using the positive-
+definite quadratic form. Our implementation uses Schur complements for the recursive re-
+duction and does not require a separate lattice-reduction stage.
+More precisely, this function generates the lattice of vectors with
+|⃗ n+⃗ c|2
+G<r 2,(2.25)
+with inner-product given by the metricG. Decomposing the vectors⃗ n= (n 1,⃗ n′) and⃗ c=
+(c1,⃗ c′), and the metric
+G=
+ 
+G11 ⃗GT
+1
+⃗G1 G′
+!
+,(2.26)
+we can rewrite (2.25) as
+(n1 +c 1)2[G11− ⃗GT
+1 (G′)−1⃗G1] +|⃗ n′ +⃗ c′ + (n1 +c 1)(G′)−1⃗G1|2
+G′ <r 2.(2.27)
+Since the second term is also a non-negative norm, this implies
+n1∈
+"
+−
+s
+r2
+G11− ⃗GT
+1 (G′)−1⃗G1
+−c 1,
+s
+r2
+G11− ⃗GT
+1 (G′)−1⃗G1
+−c 1
+#
+∩Z.(2.28)
+Then, for each value ofn 1 in this range, the remaining coordinates must satisfy the same
+constraint (2.25) for the redefined quantities
+⃗ n→⃗ n′, ⃗ c→⃗ c′ + (n1 +c 1)(G′)−1⃗G1, G→G ′,
+one dimension lower than in the original problem. This allows us to solve the problem
+recursively, one direction at a time, reducing the problem by one dimension at each step,
+until we fill in the ellipsoid with the points of interest.
+Now the cutoff for each sum in (2.24) that determines the accuracy of the numerical
+summation can be chosen by bounding the contribution from all the terms with norm larger
+– 17 –
+
+===== PAGE 20 =====
+than somer 2
+max. For example, for the first sum we want to findr 2
+max such that
+X
+|⃗ n+⃗ c|2
+G>r2max
+e2πi⃗h·⃗ n
+|⃗ n+⃗ c|2s
+G
+Γ(s,α|⃗ n+⃗ c|2
+G)
+Γ(s) < ε
+2,
+for a given accuracyε(split evenly between the two sums). For large enough norms, we can
+approximate the sum by an integral overρ=r 2,
+X
+|⃗ n+⃗ c|2
+G>r2max
+e2πi⃗h·⃗ n
+|⃗ n+⃗ c|2s
+G
+Γ(s,α|⃗ n+⃗ c|2
+G)
+Γ(s) ≈ πk/2
+Γ(k/2)
+1√
+G
+Z ∞
+r2max
+dρρ
+k
+2−s−1 Γ(s,αρ)
+Γ(s) (2.29)
+= πk/2
+Γ(k/2)
+1√
+G
+αs−k
+2 Γ(k
+2,αr 2
+max)−(r 2
+max)
+k
+2−sΓ(s,αr 2
+max) k
+2−s
+
+Γ(s) ,
+where we have included a volume factor that estimates the number of points with a given
+norm,
+dV= 2πk/2
+Γ(k/2)
+rk−1
+√
+G
+dr= πk/2
+Γ(k/2)
+ρ
+k
+2−1
+√
+G
+dρ.(2.30)
+The result is given in terms of powers and Γ-functions, and is monotonically decreasing as
+rmax increases; it can therefore be efficiently solved by Mathematica’sFindRootsolver. This
+is what we implement in the package. Likewise, for the reciprocal sum
+π2s−k
+2
+Γ(s)
+√
+G
+X
+|⃗h−⃗k|2
+D>˜r2max
+Γ
+ 
+k
+2−s, π2|⃗h− ⃗k|2
+D
+α
+!
+e−2πi(⃗h−⃗k)·⃗ c
+|⃗h− ⃗k|k−2s
+D
+< ε
+2,(2.31)
+we compute the integral
+π2s
+Γ(k/2)
+Z ∞
+˜r2max
+dρρs−1 Γ(k
+2−s, π2 ˜r2
+max
+α )
+Γ(s) = α2Γ(k
+2, π2˜r2
+max
+α )−π 2s(˜r2
+max)s Γ(k
+2−s, π2˜r2
+max
+α )
+Γ(k/2)sΓ(s) ,
+(2.32)
+and as before find ˜r2
+max using Mathematica’sFindRoot. Note that the factor of
+√
+Gin the
+reciprocal sum cancels the factor of
+√
+Gthat arises from the volume element (2.30) when the
+inverse metricG−1 is used.
+The sums over⃗ nand⃗kare performed using compiled code (CompilationTarget→"C",
+RuntimeOptions→"Speed") which significantly increases the speed of summation. In or-
+der to be compiled, our implementation uses$MachinePrecisionrather than Mathemat-
+ica’s software-implemented arbitrary precision arithmetic. This substantially improves per-
+formance, at the cost of restricting the numerical evaluation to approximately 16 decimal
+digits.
+The contribution of elementγ∈Γ to the Casimir potential only requires the evaluation
+– 18 –
+
+===== PAGE 21 =====
+of a sum over the sublattice invariant underD γ (2.22); for non-trivial elements, this lattice
+is smaller than the fullZ k lattice. Therefore, before performing the sums numerically, we
+project onto this invariant sublattice Ξγ and evaluateδ ⃗h.
+ReducedLatticeSum[D,g,h,G,ε]evaluates numerically the lattice sumE(g) correspond-
+ing to elementg(2.22) a, withs=D/2, vector norms computed with metricGand phase
+vectorh={h 1,...,h k}; the parameterεcontrols the estimated truncation of the numer-
+ical sums such thatε= 10 −p targets roughlypdecimal digits (ε= 10 −4 by default); this
+function uses the elementgand phase vectorhto evaluate the factorδ ⃗h through (2.23)
+before callingEwaldfor summation.
+aFor convenience, the output is
+
+Γ(s)
+2πs
+1
+|Γ|
+−1
+E(g), rather thanE(g) itself.
+This function is already adapted to the context of Casimir potentials, taking the dimension
+D= 2sas input rather than the parameters.
+In order to compute the full Casimir potentialV Cas (2.22), we still need to include the nu-
+merical factors, including the trace Trr(Dγ) in each representationrin the massless spectrum
+of the theory, and to sum over all representations and all elementsγ∈Γ.
+TracedSum[D,g,spectrum,hspin,G,{ϕi → ϕi},ε]usesReducedLatticeSumto com-
+pute the lattice sums numerically and sums over all representations inspectrumtak-
+ing into account the traces Tr r(Dg) of elementg(2.22) a; the sums are evaluated with
+s=D/2, and vector norms computed with metricG(ϕ i) evaluated at the point in
+moduli space given by the replacement rule{ϕ i→ ϕi};hspinis the vector encoding
+the spin structure on the RFM; the phase vector ⃗hin each sum is determined by the
+"TwistedBoundaryConditions"key for each field inspectrum(by default it is ⃗h= ⃗0
+for bosons andhspinfor fermions); the parameterεcontrols the estimated truncation
+of the numerical sums such thatε= 10 −p targets roughlypdecimal digits (ε= 10 −4 by
+default).
+aFor convenience, the output is
+
+Γ(s)
+2πs
+1
+|Γ|
+−1P
+r Trr(Dg)E(g), rather than P
+r Trr(Dg)E(g) itself.
+The replacement rules{ϕ i→ ϕi}specifying the point in moduli space must evaluateGto
+a numerical, real and positive-definite matrix. The traces Tr r(Dg) are computed using the
+functions in Table 4, which we discuss in more detail in the next section. Thespectrumof
+the theory is specified through theAssociation
+spectrum=⟨|"Bosons"→bosonList,"Fermions"→fermionList|⟩,
+– 19 –
+
+===== PAGE 22 =====
+wherebosonListandfermionListare lists ofAssociations,
+bosonList={⟨|"Type"→... ,"Multiplicity"→... ,"Rank"→... ,"SelfDual"→...|⟩}
+fermionList={⟨|"Type"→... ,"Multiplicity"→... ,"Weyl"→...|⟩}.
+Valid values for"Type"are{"Graviton","Form","Scalar","Spinor","Gravitino"};
+"Multiplicity"specifies how many fields of this type are in the spectrum ("Multiplicity"→1
+by default); forp-forms,"Rank"→pspecifies the rank of the form;"SelfDual"→True
+indicates a self-dual form ("SelfDual"→Falseby default); for fermions"Weyl"→True
+indicates that the fermion is in the Weyl (definite-chirality) representation ("Weyl"→False
+by default; option ignored in odd dimensions, since Weyl spinors do not exist). All types also
+admit the option"TwistedBoundaryConditions"→{h 1,...,h k}, encoding transformation
+by a phase under translations on the covering torus; the default for"Bosons"is{0,...,0}
+for fully periodic boundary conditions, while for"Fermions"it is fixed by the spin structure
+on the RFM. To access only bosons useKeyTake[spectrum,"Bosons"]and to access only
+fermions useKeyTake[spectrum,"Fermions"]. For example, the spectrum of M-theory is
+specified as follows
+⟨|"Bosons"→{⟨|"Type"→"Graviton"|⟩,⟨|"Type"→"Form","Rank"→3|⟩},
+"Fermions"→{⟨|"Type"→"Gravitino"|⟩}|⟩,
+while the spectrum of Type IIB supergravity would be specified as
+⟨|"Bosons"→{⟨|"Type"→"Graviton"|⟩,
+⟨|"Type"→"Scalar","Multiplicity"→2|⟩,
+⟨|"Type"→"Form","Rank"→2,"Multiplicity"→2|⟩,
+⟨|"Type"→"Form","Rank"→4,"SelfDual"→True|⟩},
+"Fermions"→{⟨|"Type"→"Spinor","Weyl"→True,"Multiplicity"→2|⟩,
+⟨|"Type"→"Gravitino","Weyl"→True,"Multiplicity"→2|⟩}|⟩.
+The"Weyl"key selects a definite-chirality representation, but does not distinguish between
+chiralities. This is enough for the computation of traces in Riemann-flat compactifications
+because every holonomy element of a Riemann-flat manifold has a +1 eigenvalue, and the
+traces of the two different-chirality spinor representations coincide on the holonomy group.
+We are finally able to introduce the two key functions ofCasimirRFM. The full potentialV Cas
+(2.22) can be obtained directly using the functionCasimirPotential.
+– 20 –
+
+===== PAGE 23 =====
+CasimirPotential[D,Γ,spectrum,hspin,G,{ϕi → ϕi},ε]computes the Casimir po-
+tentialV Cas (2.22) summing over all elementsγ∈Γ, usingTracedSumfor all lattice
+sums, including traces over all representations in thespectrumand all numerical factors;
+hspinis the vector encoding the spin structure on the RFM; the phase vector ⃗hin each
+sum is determined by the"TwistedBoundaryConditions"key for each field inspectrum
+(by default it is ⃗h= ⃗0 for bosons andhspinfor fermions); the parameterεcontrols the
+estimated truncation of the numerical sums such thatε= 10 −p targets roughlypdecimal
+digits (ε= 10−4 by default).
+It is also useful to study the Casimir energy densityρ Cas(⃗ z) inDdimensions, rather than the
+(D−k)-dimensional Casimir potential (e.g. to visualize Casimir brane profiles or to estimate
+the average gradients). This can be computed at a given point⃗ z∈T k directly by evaluating
+the integrand of (2.21), while still summing over all elementsγ∈Γ and all representationsr
+in the massless spectrum of the theory.
+CasimirEnergyDensity[D,Γ,spectrum,hspin,G,{ϕi → ϕi},z,ε]computes the
+Casimir energy densityρ Cas(⃗ z) summing over all elementsγ∈Γ, usingEwaldfor all
+lattice sums, including traces over all representations in thespectrumand all numerical
+factors;hspinis the vector encoding the spin structure on the RFM; the phase vector
+⃗hin each sum is determined by the"TwistedBoundaryConditions"key for each field
+inspectrum(by default it is ⃗h= ⃗0 for bosons andhspinfor fermions); the parameter
+εcontrols the estimated truncation of the numerical sums such thatε= 10 −p targets
+roughlypdecimal digits (ε= 10 −4 by default).
+The definition ofCasimirEnergyDensitydoes not include the factor of 1/|Γ|that appears
+in the Casimir potential (2.21), since this factor arises from expressing the integral over the
+RFM by an integral over the covering torus.
+2.5 Lorentz group traces under different representations
+The Casimir energy involves traces over representations of the group action on the Hilbert
+space of the massless particles inDdimensions. The little group acting onD-dimensional
+massless particles isSO(D−2), which decomposes as
+SO(D−2)→SO(k)×SO(d−2),(2.33)
+as we compactify the theory on ak-dimensional manifold down tod=D−kdimensions, and
+accurately counts the physical polarizations (degrees of freedom) for each field. The geometric
+action we use to obtain a Riemann-flat manifold as a quotient ofTk is in theSO(k) factor, but
+it is useful to work in terms ofSO(D−2) matrices. Hence, we will embed theSO(k) matrix
+– 21 –
+
+===== PAGE 24 =====
+in the vector representation as a block-diagonalSO(D−2) matrixM, with an additional
+(d−2)×(d−2) block representing the identity.
+In principle, the matrixMmust be orthogonal. However, because the trace of a matrix
+is invariant under similarity transformations,Mcan be replaced byXMX −1 for any non-
+singular matrixX. In particular, we may replace the orthogonal matrices by non-orthogonal
+representatives of themselves (for instance, in terms of theSL(k,Z) matrixD γ that imple-
+ments the action in the lattice basis).
+The trace in the symmetric-traceless tensor representation (i.e. the graviton) is given by
+Tr(MSym.) = 1
+2
+ 
+Tr(M)2 + Tr(M2)
+
+−1,(2.34)
+where the−1 removes the trace (see Appendix F of [1] for details).
+TraceSym[g,D]returns the trace of elementgin the symmetric-traceless (graviton) rep-
+resentation ofSO(D−2).
+The trace in thep-index antisymmetric representation (i.e.p-form) can be extracted
+from the general formula [23] encoding the character of a fully antisymmetric representation 2
+via a generating function,
+∞X
+k=0
+xkTr(Mk-Antisym.) =
+∞Y
+l=1
+exp
+
+−(−x)l Tr(Ml)
+l
+
+,(2.35)
+and it is given by the coefficient ofx p in its Taylor series expansion.
+TraceForm[p,g,D]returns the trace of elementgin the antisymmetricp-form represen-
+tation ofSO(D−2) by picking the coefficient ofx p in the expansion of (2.35).
+The vector-spinor representation—a tensor product between a vector and a spinor—
+decomposes into a gamma-traceless Rarita-Schwinger (gravitino) representation and a spinor
+representation. Consequently, the trace in the gravitino representation can be obtained by
+subtracting the spinor trace from the trace in the vector-spinor representation,
+Tr(MR.S.) = (Tr(M)−1) Tr(M Spinor).(2.36)
+2Note a typo in the rhs of (49) of [23], the term Ch R(lF) should be divided byl[24, 25].
+– 22 –
+
+===== PAGE 25 =====
+TraceRS[g,D,Weyl]returns the trace of elementgin the vector-spinor (Rarita-
+Schwinger/gravitino) representation ofSO(D−2), taking into account the spin lift of
+g; the parameterWeylmust be set toTruefor Weyl spinors, andFalseotherwise (Weyl
+= Falseby default).
+For traces in the spinor representation it is more convenient to use Cartan decomposition
+and encode the representations in terms of weight vectors as follows. The Cartan subalgebra
+ofso(D−2), defined as a maximally commuting set of generators, corresponds to a set of
+rotations in mutually orthogonal planes. We can write anySO(D−2) element in the form
+M= exp
+ 
+iθαE3
+α
+
+,(2.37)
+whereE 3
+α is a diagonal generator that is a linear combination of the Cartan generators, i.e.
+E3
+α =|α|−2(α·H), withαa root ofSO(D−2) andH i the Cartan generators. The coefficients
+θα correspond to the eigenvalues of the matrixM, i.e. the element in the fundamental/vector
+representation ofSO(D−2), encoding the angle of the rotation along each mutually orthogonal
+plane. Since we can decompose each representation into eigenstates|µ⟩ofH i labelled by a
+weight vector⃗ µ, once we know each decomposition in terms of its weights we can take the
+trace in some representationRas
+TrR(M) =
+X
+⃗ µ∈R
+exp
+
+i⃗θ·⃗ µ
+
+,(2.38)
+where⃗ µ∈Rincludes all weight vectors⃗ µin the representationR(e.g. there are (D−2)
+such vectors in the fundamental representation and (D−1)(D−2)
+2 −1 in the rank-2 symmetric
+traceless representation). We then find that the traces computed in this way match the
+ones computed using the character formulas above. For the weight decomposition of each
+representation, it matters whetherD−2 is even or odd, in other words whether the group is
+SO(2n) orSO(2n+ 1).
+SO(2n) (Deven)
+✧Fundamental (vector)representation has weight decomposition given by all permuta-
+tions ofn-dimensional vectors (±1,0,...,0), a total of 2nweights and a representation
+of dimension 2n.
+✧Symmetric traceless (graviton)representation has weight decomposition given by
+all permutations ofn-dimensional vectors (±2,0,...,0), (1,±1,0,...,0), together with
+(0,...,0) with multiplicityn−1, a total of 2n(2n+ 1)/2−1 weights.
+✧Antisymmetric rank−krepresentation has weight decomposition given by all sums
+µ1 +...+µ k of distinct weightsµ i in the fundamental (vector) representation, i.e. of
+– 23 –
+
+===== PAGE 26 =====
+n-dimensional vectors (±1,0,...,0), for a total of
+ 2n
+k
+
+weights.
+✧Spinorrepresentation has weight decomposition given by alln-dimensional vectors
+of the form 1
+2(±1,...,±1), with dimension 2 n. This representation decomposes into
+two irreducible representations of definite chirality determined by the parity of minus
+signs; therefore, in even dimensionsDthere exist Weyl spinors of definite chirality of
+dimension 2n−1.
+SO(2n+ 1) (Dodd)
+✧Fundamental (vector)representation has weight decomposition given by all permu-
+tations ofn-dimensional vectors (±1,0,...,0) plus the vector (0,...,0), a total of 2n+1
+weights and a representation of dimension 2n+ 1.
+✧Symmetric traceless (graviton)representation has weight decomposition given by
+all permutations ofn-dimensional vectors (±2,0,...,0), (1,±1,0,...,0), (±1,0,...,0),
+together with (0,...,0) with multiplicityn, a total of (2n+ 1)(2n+ 2)/2−1 weights.
+✧Antisymmetric rank−krepresentation has weight decomposition given by all sums
+µ1 +...+µ k of distinct weightsµ i in the fundamental (vector) representation, i.e. of
+n-dimensional vectors (±1,0,...,0) and (0,...,0), for a total of
+ 2n+1
+k
+
+weights.
+✧Spinorrepresentation has weight decomposition given by alln-dimensional vectors of
+the form 1
+2(±1,...,±1), with dimension 2 n. This representation is irreducible; therefore,
+in odd dimensionsDthere are no Weyl spinors of definite chirality.
+Using the trace formula (2.38) and the weight decomposition of each representation we
+can compute all the necessary traces. Traces in the spinor representation are defined up to
+a sign, related to the choice of spin lift ofMas discussed before; for any elementD γ this
+sign is determined by the parameterσ γ. For example, taking the spinor representation with
+weight vectors (± 1
+2,...,± 1
+2) we find
+TrSpinor(Dγ) = (−1)2σγ
+nY
+i=1
+2 cosθi
+2 .(2.39)
+TraceSpinor[g,D,Weyl]returns the trace of elementgin the spinor representation of
+SO(D−2), taking into account the spin lift ofg; the parameterWeylmust be set to
+Truefor a Weyl spinor, andFalseotherwise (Weyl = Falseby default).
+Finally, we defined the functionsTraceBosonsandTraceFermionsthat return the
+sum of the traces Tr r(Dγ) over all bosonic and fermionic representations, respectively.
+– 24 –
+
+===== PAGE 27 =====
+TraceBosons[bosons,g,D]returns the sum of all traces of elementgunder the bosonic
+representations ofSO(D−2) listed inbosons.
+TraceFermions[fermions,g,D]returns the sum of all traces of elementgunder the
+fermionic representations ofSO(D−2) listed infermions.
+The lists ofbosonsandfermionscan be given in terms ofAssociationsas described in
+the Section 2.4. It is also possible to use the shorthand notation
+bosons={graviton,p 1,p2,...}
+fermions={fermion 1,fermion2,...}.
+Setgraviton = 1if the spectrum contains the graviton, andgraviton = 0otherwise; for
+eachp-form in the spectrum include the rank of the form, withp= 0 for scalars; if the form
+is self-dual, input the corresponding rank as an imaginary number,ip 1. For fermions, set
+fermionn = 3/2for a gravitino (Rarita-Schwinger representation) andfermion n = 1for a
+spinor; to indicate that a fermion is in an irreducible Weyl representation (whenDis even)
+input the corresponding value as an imaginary number,ifermion n. For example,
+M-theory:spectrum={{1,3},{3/2}};
+Type IIB:spectrum={{1,0,0,2,2,4i},{3/2i,3/2i,1i,1i}}.
+The shorthand list notation does not support field-specific twisted boundary conditions.
+When this syntax is used, bosons are assigned periodic boundary conditions and fermions
+use the spin-structure vectorhspin.
+3 Example: Type IIB onT 6/Z8
+As an example, consider Type IIB supergravity compactified onT 6/Z8 with theZ 8 action
+generated by the affine transformation
+⃗ z→ιg(⃗ z) =Dg⃗ z+⃗bg,withD g≡
+
+
+0 0 0−1 0 0
+1 0 0 0 0 0
+0 1 0 0 0 0
+0 0 1 0 0 0
+0 0 0 0 1 0
+0 0 0 0 0 1
+
+
+, ⃗bg =
+
+
+0
+0
+0
+0
+0
+1
+8
+
+
+.(3.1)
+We will choose the spin lift ofD g such thatσ g = 1
+2. Using the functionGetGroupwe get the
+eight elements ofZ 8 generated byg(we show the first three elements).
+– 25 –
+
+===== PAGE 28 =====
+In[  ]:= <<CasimirRFM`
+In[  ]:= gens=
+0 0 0-1 0 0
+1 0 0 0 0 0
+0 1 0 0 0 0
+0 0 1 0 0 0
+0 0 0 0 1 0
+0 0 0 0 0 1
+,0, 0, 0, 0, 0, 1
+8
+, 1
+2
+;
+Γ=GetGroup[gens];
+Length[Γ]
+Γ〚;; 3〛//Map[MatrixForm, # ,{2}]&
+Out[  ] = 8
+Out[  ] = 
+0 0 0-1 0 0
+1 0 0 0 0 0
+0 1 0 0 0 0
+0 0 1 0 0 0
+0 0 0 0 1 0
+0 0 0 0 0 1
+,
+0
+0
+0
+0
+0
+1
+8
+, 1
+2 ,
+0 0-1 0 0 0
+0 0 0-1 0 0
+1 0 0 0 0 0
+0 1 0 0 0 0
+0 0 0 0 1 0
+0 0 0 0 0 1
+,
+0
+0
+0
+0
+0
+1
+4
+, 0,
+0-1 0 0 0 0
+0 0-1 0 0 0
+0 0 0-1 0 0
+1 0 0 0 0 0
+0 0 0 0 1 0
+0 0 0 0 0 1
+,
+0
+0
+0
+0
+0
+3
+8
+, 1
+2 
+The most general metric invariant under thisZ 8 action contains 5 moduli and
+there are 4 distinct spin structures onT 6 compatible with the group action and
+spin lift. To get the most general form of the spin structure vector ⃗hwe evaluate
+SpinStructures[gens]["GeneralForm"], and to get a list of all allowed spin structures we
+evaluateSpinStructures[gens]["Allowed"]. We find that we must make the same choice
+for all of the first four directions, and that the last direction must be necessarily zero.
+In[  ]:= MatrixForm/@ {G=GetInvariantMetric[gens]〚3〛}
+SpinStructures[gens]["GeneralForm"]
+SpinStructures[gens]["Allowed"]
+Out[  ]= 
+c4 c5 0-c 5 0 0
+c5 c4 c5 0 0 0
+0 c 5 c4 c5 0 0
+-c5 0 c 5 c4 0 0
+0 0 0 0 c 3 c2
+0 0 0 0 c 2c1
+
+Out[  ]= {h1, h 1, h 1, h 1, h 5, 0}
+Out[  ]= {0, 0, 0, 0, 0, 0},0, 0, 0, 0, 1
+2, 0,1
+2,1
+2,1
+2,1
+2, 0, 0,1
+2,1
+2,1
+2,1
+2,1
+2, 0
+The massless spectrum of Type IIB contains the graviton, two scalars, two 2-forms and
+one self-dual 4-form (G,ϕ,C 0,B 2,C 2,C 4), in the bosonic sector, and two Weyl spinors and
+two gravitinos (χµ,1
+α ,χµ,2
+α ,λ 1
+α,λ 2
+α), in the fermionic sector.
+– 26 –
+
+===== PAGE 29 =====
+In[  ]:= spectrum=
+"Bosons"{
+"Type"" Graviton",
+"Type"" Scalar", " Multiplicity"2,
+"Type"" Form", " Rank"2, " Multiplicity"2,
+"Type"" Form", " Rank"4, " SelfDual"True
+},
+"Fermions"{
+"Type"" Spinor", " Weyl"True, " Multiplicity"2,
+"Type"" Gravitino", " Weyl"True, " Multiplicity"2
+}; (*Type IIB*)
+TraceBosons[spectrum["Bosons"], # , 10]&/@Γ
+TraceFermions[spectrum["Fermions"], # , 10]&/@Γ
+Out[  ] = {24, 32, 24, 0, 24, 32, 24, 128}
+Out[  ] =-16 2 , 32,-16 2 , 0,-16 2 , 32,-16 2 , 128
+For the identity element, both traces equal 128, reproducing the matching numbers of physical
+bosonic and fermionic degrees of freedom in Type IIB supergravity. The same results are
+obtained using the shorthand notation introduced in Section 2.5.
+In[  ]:= TraceBosons[{1, 0, 0, 2, 2, 4 I}, # , 10]&/@Γ
+TraceFermions[{3/2,3/2,1,1}I,#,10]&/@Γ
+Out[  ] = {24, 32, 24, 0, 24, 32, 24, 128}
+Out[  ] =-16 2, 32,-16 2, 0,-16 2, 32,-16 2, 128
+The Casimir potential is a function of the 5 moduli{c 1,c 2,c 3,c 4,c 5}. We can evaluate
+it—for example, at the point in moduli space that reduces the metricGto the identity
+matrix—for two different choices of spin structure ⃗h. The numerical values below use the
+default truncation targetε= 10 −4.
+In[  ]:= MatrixForm/@ {G/.{ c2 0, c5 0, ca_1}}
+Out[  ]= 
+1 0 0 0 0 0
+0 1 0 0 0 0
+0 0 1 0 0 0
+0 0 0 1 0 0
+0 0 0 0 1 0
+0 0 0 0 0 1
+
+In[  ]:= CasimirPotential[10,Γ, spectrum,{0, 0, 0, 0, 0, 0}, G,{ c2 0, c5 0, ca_1}]
+Out[  ]= 98 697.9
+In[  ]:= CasimirPotential10,Γ, spectrum,1
+2
+,1
+2
+,1
+2
+,1
+2
+, 0, 0, G,{ c2 0, c5 0, ca_ 1}
+Out[  ]= 51 872.6
+– 27 –
+
+===== PAGE 30 =====
+By plotting the Casimir potential as a function ofc 2, while keeping all other moduli fixed
+at their identity matrix values, we see that there is a critical point (maximum) along this
+direction atc 2 = 0, corresponding to a point in moduli space where the metric becomes the
+identity matrix.
+Plot{CasimirPotential[10,Γ, spectrum,{0, 0, 0, 0, 0, 0}, G,{ c2  x, c5 0, ca_ 1}]},
+{x,-0.5, 0.5}, PlotStyle{Black}, FrameTrue,
+FrameLabel Style" c2 ", 16, FontFamily" Times",
+Style"VCas(x) ", 16, FontFamily" Times"
+Out[  ]=
+-0.4 -0.2 0.0 0.2 0.4
+86 000
+88 000
+90 000
+92 000
+94 000
+96 000
+98 000
+c2
+VCas(x)
+We can visualise Casimir branes by plotting the Casimir energy density along a given
+plane. For example, there are two Casimir branes associated with the generator (and first
+element of Γ),
+In[  ]:= CasimirBranes@Γ〚1〛
+Out[  ] = {0, 0, 0, 0, z[5], z[6]}, 1
+2,1
+2,1
+2,1
+2, z[5], z[6]
+The two branes are localised in the first four directions ofT 6 and wrap the last two. In order
+to see both branes, we can change coordinates as
+
+
+z1
+z2
+z3
+z4
+
+→
+
+
+u1
+u2
+u3
+u4
+
+ = 1
+4
+
+
+1 1 1 1
+1−1 1−1
+1 1−1−1
+1−1−1 1
+
+·
+
+
+z1
+z2
+z3
+z4
+
+ ,(3.2)
+– 28 –
+
+===== PAGE 31 =====
+so that the two Casimir branes are located at{0,0,0,0}and{ 1
+2,0,0,0}and we can plot the
+Casimir energy density along theu 1–u2 plane, withu 3 =u 4 = 0.
+In[  ]:= R= 1
+4
+1 1 1 1 0 0
+1-1 1-1 0 0
+1 1-1-1 0 0
+1-1-1 1 0 0
+0 0 0 0 4 0
+0 0 0 0 0 4
+;(*Rotation matrix*)
+R.# &/@ (CasimirBranes@Γ〚1〛)
+Out[  ] = {0, 0, 0, 0, z[5], z[6]}, 1
+2, 0, 0, 0, z[5], z[6]
+This is also a case in which parallelising the computation is particularly useful. We can first
+generate aParallelTablewith
+1. the Casimir energy density from element Γ[[1]];
+2. the boson contribution to the Casimir energy density from element Γ[[1]];
+3. the fermion contribution to the Casimir energy density from element Γ[[1]];
+and then plot them usingListPlot3D. This also has the advantage that we can style the plot
+without having to evaluate the functions every time.
+In[  ]:= LaunchKernels[];
+ParallelEvaluate[<<CasimirRFM`];
+DistributeDefinitions[Γ, spectrum, G, R];
+In[  ]:= CBranes=
+ParallelTableu1, u2, CasimirEnergyDensity10,{Γ〚1〛}, spectrum, 1
+2
+, 1
+2
+, 1
+2
+, 1
+2
+, 0, 0, G,
+{c2 0, c5 0, ca_ 1}, Inverse[R].{ u1, u2, 0, 0, 0, 0},{ u1,-0.25, 0.75, 0.005},
+{u2,-0.25, 0.25, 0.005}//Flatten[ # , 1]&;
+In[  ]:= CBranesBosons=
+ParallelTableu1, u2, CasimirEnergyDensity10,{Γ〚1〛}, KeyTake[spectrum, " Bosons"],
+ 1
+2
+, 1
+2
+, 1
+2
+, 1
+2
+, 0, 0, G,{ c2 0, c5 0, ca_ 1}, Inverse[R].{ u1, u2, 0, 0, 0, 0},
+{u1,-0.25, 0.75, 0.005},{ u2,-0.25, 0.25, 0.005}//Flatten[ # , 1]&;
+In[  ]:= CBranesFermions=
+ParallelTableu1, u2, CasimirEnergyDensity10,{Γ〚1〛}, KeyTake[spectrum, " Fermions"],
+ 1
+2
+, 1
+2
+, 1
+2
+, 1
+2
+, 0, 0, G,{ c2 0, c5 0, ca_ 1}, Inverse[R].{ u1, u2, 0, 0, 0, 0},
+{u1,-0.25, 0.75, 0.005},{ u2,-0.25, 0.25, 0.005}//Flatten[ # , 1]&;
+– 29 –
+
+===== PAGE 32 =====
+In[  ]:= CBraneStyle= {ViewPoint2{1.5,-1.5, 0.5}, BoxRatios{1, 1, 2/3}, TicksStyleDirective[12],
+ColorFunction(ColorData[" BlueGreenYellow"]), MeshNone, ImageSize500};
+In[  ]:= ListPlot3DCBranes, PlotRange10 9 {-2, 2},
+AxesLabel(Style[ # , 18, FontFamily" Times"]&/@ {" u1", " u2", " ρCas"}), Evaluate[CBraneStyle]
+Out[  ]=
+By plotting the boson and fermion contributions separately we see the cancellation between
+them at{ 1
+2,0,0,0}, which explains why this Casimir brane is not visible in the plot of the
+full Casimir energy density.
+In[  ]:= GraphicsRow
+ListPlot3DCBranesBosons, PlotRange10 9 {-1, 1},
+AxesLabel(Style[ # , 18, FontFamily" Times"]&/@ {" u1", " u2", " ρCas"}), Evaluate[CBraneStyle],
+ListPlot3DCBranesFermions, PlotRange10 9 {-1, 1},
+AxesLabel(Style[ # , 18, FontFamily" Times"]&/@ {" u1", " u2", " ρCas"}), Evaluate[CBraneStyle]
+, ImageSize750
+Out[  ]=
+The notebookCasimirRFM-TypeIIB-Example.nbused for this example is included as
+suplementary material and can also be found in the package repository, together with the
+notebookCasimirRFM-Template.nb, providing descriptions and examples for every function.
+– 30 –
+
+===== PAGE 33 =====
+Acknowledgements:We thank Miguel Montero for his collaboration on the development of
+the methods implemented in this package and early implementation of some of the functions;
+Miquel Aparici for helpful discussions and for testing progressive versions of the package; and
+Michelangelo Tartaglia for helpful discussions on spin structures and spin lifts, much needed
+for the conclusion of the package, and feedback on the manuscript. We gratefully acknowledge
+the support of an Atraccion del Talento Fellowship 2022-T1/TIC-23956 from Comunidad de
+Madrid, which supported this project in its early stages, as well as the Spanish State Research
+Agency (Agencia Estatal de Investigacion) through the grants Europa Excelencia EUR2024-
+153547, IFT Centro de Excelencia Severo Ochoa CEX2020-001007-S, PID2021-123017NB-I00
+and PID2024-156043NB-I00, funded by MCIN/AEI/10.13039/501100011033, and ERDF, EU.
+References
+[1] B. Valeixo Bento and M. Montero, “An M-theory dS maximum from Casimir energies on
+Riemann-flat manifolds”,JHEP01(2026) 099,arXiv:2507.02037 [hep-th].
+[2] P. P. Ewald, “Die berechnung optischer und elektrostatischer gitterpotentiale”,Annalen der
+Physik369(1921) no. 3, 253–287.
+https://onlinelibrary.wiley.com/doi/abs/10.1002/andp.19213690304.
+[3] B. Nijboer and F. De Wette, “On the calculation of lattice sums”,Physica23(1957) no. 1,
+309–321.https://www.sciencedirect.com/science/article/pii/S0031891457921249.
+[4] L. S. Charlap, “Compact flat riemannian manifolds: I”,Annals of Mathematics81(1965) no. 1,
+15–30.http://www.jstor.org/stable/1970379.
+[5] L. S. Charlap and A. T. Vasquez, “Compact Flat Riemannian Manifolds II: The Cohomology of
+Zp-Manifolds”,American Journal of Mathematics87(1965) no. 3, 551–563.
+http://www.jstor.org/stable/2373062.
+[6] J. M. Borwein, M. L. Glasser, R. C. McPhedran, J. G. Wan, and I. J. Zucker,Lattice Sums
+Then and Now. Encyclopedia of Mathematics and its Applications. Cambridge University
+Press, 2013.
+[7] T. J. Laffey, “Lectures on integer matrices”, 2002.
+https://api.semanticscholar.org/CorpusID:11160418.
+[8] R. Lutowski and B. Putrycz, “Spin structures on flat manifolds”,Journal of Algebra436(2015)
+277–291.https://www.sciencedirect.com/science/article/pii/S0021869315002252.
+[9] B. Fraiman, V. Larotonda, and M. Tartaglia, “Non-abelian asymmetric orbifolds with vanishing
+one-loop vacuum energy”,arXiv:2607.15349 [hep-th].
+[10] The GAP Group,GAP – Groups, Algorithms, and Programming, Version 4.16.0, 2026.
+https://www.gap-system.org.
+– 31 –
+
+===== PAGE 34 =====
+[11] W. Plesken, J. Opgenorth, and T. Schulz, “CARAT– a package for mathematical
+crystallography”,Journal of Applied Crystallography31(1998) no. 5, 827–828.
+https://doi.org/10.1107/S0021889897019468.
+[12] M. Ono, “Classification of Lattices WithZ(m) Symmetry”,Commun. Math. Phys.126(1989)
+25.
+[13] M. Newman,Integral matrices, vol. 45. Academic Press, 1972.
+[14] C. Curtis and I. Reiner,Representation Theory of Finite Groups and Associative Algebras.
+AMS Chelsea Publishing Series. Interscience Publishers, 1966.
+https://books.google.es/books?id=RKwjeZKMr8oC.
+[15] C. G. Latimer and C. C. MacDuffee, “A correspondence between classes of ideals and classes of
+matrices”,Annals of Mathematics34(1933) no. 2, 313–316.
+http://www.jstor.org/stable/1968204.
+[16] J. McKee and C. Smyth,Minimal Polynomials of Integer Symmetric Matrices, pp. 361–377.
+Springer International Publishing, Cham, 2021.
+https://doi.org/10.1007/978-3-030-80031-4_21.
+[17] G. H. Hardy and E. M. Wright,An Introduction To The Theory Of Numbers. Oxford
+University Press, 2008.https://doi.org/10.1093/oso/9780199219858.001.0001.
+[18] M. Etheredge, B. Heidenreich, S. Kaya, Y. Qiu, and T. Rudelius, “Sharpening the Distance
+Conjecture in diverse dimensions”,JHEP12(2022) 114,arXiv:2206.04063 [hep-th].
+[19] A. O. Atkin and J. Lehner, “Hecke operators onγ 0(m)”,Mathematische Annalen185(1970)
+134–160.
+[20] G. W. Moore, “ATKIN-LEHNER SYMMETRY”,Nucl. Phys. B293(1987) 139. [Erratum:
+Nucl.Phys.B 299, 847 (1988)].
+[21] K. R. Dienes, “Generalized Atkin-Lehner symmetry”,Phys. Rev. D42(1990) 2004–2021.
+[22] U. Fincke and M. Pohst, “Improved methods for calculating vectors of short length in a lattice,
+including a complexity analysis”,Mathematics of computation44(1985) no. 170, 463–471.
+[23] T. van Ritbergen, A. N. Schellekens, and J. A. M. Vermaseren, “Group theory factors for
+Feynman diagrams”,Int. J. Mod. Phys. A14(1999) 41–96,arXiv:hep-ph/9802376.
+[24] H. Weyl,The Classical Groups: Their Invariants and Representations (PMS-1). Princeton
+University Press, Princeton, NJ, 2016.
+[25] A. N. Schellekens and N. P. Warner, “Anomalies, Characters and Strings”,Nucl. Phys. B287
+(1987) 317.
+– 32 –
