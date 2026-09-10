@@ -2,11 +2,11 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T14:29:19Z`
-- Tree/content state: `d71c98c610d8b5b16f75cbc42ac7080d08712f52321ee3af83e9006060cb815b`
+- Scanned: `2026-09-10T14:50:53Z`
+- Tree/content state: `af6a930832c21736ddfcf0e5396784ddb049dcf86fbdf7f18a276a1da1367b2c`
 - Coverage: complete structural traversal
-- Files: 1505
-- Uploaded source files: 1490
+- Files: 1506
+- Uploaded source files: 1491
 - PDF papers: 1211
 - Repository machinery files: 15
 - Byte-identical duplicate groups: 104
@@ -41,7 +41,7 @@
 | `HAUL 9` | 4 |
 | `HISTORICAL` | 28 |
 | `KERR` | 16 |
-| `LIVE_RESEARCH_UPDATES` | 9 |
+| `LIVE_RESEARCH_UPDATES` | 10 |
 | `OUTSIDE RESEARCH LIBRARY` | 325 |
 | `PDF_SPECS` | 21 |
 | `PRIOR_ART` | 228 |
