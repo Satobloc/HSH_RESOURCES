@@ -2,13 +2,13 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T14:50:53Z`
-- Tree/content state: `af6a930832c21736ddfcf0e5396784ddb049dcf86fbdf7f18a276a1da1367b2c`
+- Scanned: `2026-09-10T14:57:01Z`
+- Tree/content state: `0da4a69b2d0e3dd61f0ed3d8b258d0fe2cc6fc35457a0f72c2b4c139861e6e1a`
 - Coverage: complete structural traversal
-- Files: 1506
+- Files: 1507
 - Uploaded source files: 1491
 - PDF papers: 1211
-- Repository machinery files: 15
+- Repository machinery files: 16
 - Byte-identical duplicate groups: 104
 
 ## Top-level coverage
@@ -47,7 +47,7 @@
 | `PRIOR_ART` | 228 |
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
-| `derived` | 1 |
+| `derived` | 2 |
 | `indexes` | 4 |
 | `info` | 1 |
 | `requirements-tools.txt` | 1 |
