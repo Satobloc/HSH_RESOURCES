@@ -2,13 +2,13 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T14:26:43Z`
-- Tree/content state: `0d931489aa4dc47c6398dc78b30860521c73a39cc257866d39af0e4f6d3d3387`
+- Scanned: `2026-09-10T14:29:19Z`
+- Tree/content state: `d71c98c610d8b5b16f75cbc42ac7080d08712f52321ee3af83e9006060cb815b`
 - Coverage: complete structural traversal
-- Files: 1504
+- Files: 1505
 - Uploaded source files: 1490
 - PDF papers: 1211
-- Repository machinery files: 14
+- Repository machinery files: 15
 - Byte-identical duplicate groups: 104
 
 ## Top-level coverage
@@ -48,7 +48,7 @@
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
-| `indexes` | 3 |
+| `indexes` | 4 |
 | `info` | 1 |
 | `requirements-tools.txt` | 1 |
 | `symmetry-11-01298.pdf` | 1 |
