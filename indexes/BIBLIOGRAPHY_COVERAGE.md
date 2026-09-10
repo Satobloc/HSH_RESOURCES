@@ -5,9 +5,9 @@
 - Structural index scan: `2026-09-10T14:57:01Z`
 - PDF paths in structural index: **1211**
 - Unique PDF content groups: **1136**
-- Exact indexed PDF paths mentioned in the human bibliography corpus: **50**
-- Unique PDF content groups represented in the human bibliography corpus: **46**
-- Unique PDF content groups not yet represented: **1090**
+- Exact indexed PDF paths mentioned in the human bibliography corpus: **60**
+- Unique PDF content groups represented in the human bibliography corpus: **56**
+- Unique PDF content groups not yet represented: **1080**
 
 The human bibliography corpus is `indexes/HUMAN_BIBLIOGRAPHY.md` plus reviewed `indexes/bibliography_batches/BATCH_*.md` files.
 
@@ -133,7 +133,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `HAUL 4/daed.a.984.pdf` | 0 |  |
 | `PRIOR_ART/2609.00673v1.pdf` | 0 | arxiv:2609.00673v1 |
 | `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2008.12546v1.pdf` | 0 | arxiv:2008.12546v1 |
-| `BIG PAPERS/qt2f18n5nk.pdf` | 0 |  |
 | `PRIOR_ART/2607.19037v1.pdf` | 0 | arxiv:2607.19037v1 |
 | `HAUL 1/ssrn-7060278.pdf` | 0 | ssrn:7060278 |
 | `HAUL 2/ssrn-6645638.pdf` | 0 | ssrn:6645638 |
@@ -177,7 +176,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.27640v1.pdf` | 0 | arxiv:2608.27640v1 |
 | `HAUL 8/ssrn-5714603.pdf` | 0 | ssrn:5714603 |
 | `H(s)H_Toolkit/Fundamental equation(s) of string theory_ - Physics Stack Exchange.pdf` | 0 |  |
-| `Consciousness + AI/Silence.pdf` | 0 |  |
 | `EXPOSURE_STATS/MISC_PAPERS/Test Functions — OptimLib documentation.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2608.17872v1.pdf` | 0 | arxiv:2608.17872v1 |
 | `H(s)H_Toolkit/STRING THEORY (MIT)/e5b834fb595f307dd99fcf6913971a4c_lecture03.pdf` | 0 |  |
@@ -259,7 +257,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `HAUL 6/ssrn-7365302.pdf` | 0 | ssrn:7365302 |
 | `HAUL 3/2212.05048v2.pdf` | 0 | arxiv:2212.05048v2 |
 | `DATA/DATA REL - notebooks-latest04_HowTosSPARCLPlot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalabnotebooks-latest.pdf` | 0 |  |
-| `Consciousness + AI/Over 3.pdf` | 0 |  |
 | `HAUL 1/ssrn-6999018.pdf` | 0 | ssrn:6999018 |
 | `H(s)H_Toolkit/Assembly theory_ formalizing assembly spaces, discovering patterns and bounds _ Royal Society Open Science _ The Royal Society.pdf` | 0 |  |
 | `HAUL 8/ssrn-5393479.pdf` | 0 | ssrn:5393479 |
@@ -273,7 +270,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `H(s)H_Toolkit/Interior C2 estimates for a class of sum Hessian equations - ScienceDirect.pdf` | 0 |  |
 | `PRIOR_ART/2508.00297v2.pdf` | 0 | arxiv:2508.00297v2 |
 | `HAUL 2/ssrn-7364240.pdf` | 0 | ssrn:7364240 |
-| `Consciousness + AI/rusty button.pdf` | 0 |  |
 | `HAUL 8/gzp7-1nvx.pdf` | 0 |  |
 | `PRIOR_ART/2608.17817v2.pdf` | 0 | arxiv:2608.17817v2 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03834v1.pdf` | 0 | arxiv:2609.03834v1 |
@@ -363,7 +359,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04114v1.pdf` | 0 | arxiv:2609.04114v1 |
 | `PRIOR_ART/s41586-026-10915-8.pdf` | 0 |  |
 | `HAUL 1/ssrn-7247099.pdf` | 0 | ssrn:7247099 |
-| `Consciousness + AI/Consciousness_of_AI.pdf` | 0 |  |
 | `LIVE_RESEARCH_UPDATES/6dt2-sq44.pdf` | 0 |  |
 | `H(s)H_Toolkit/0105040v2.pdf` | 0 | unresolved-seven-digit-id:0105040v2 |
 | `HAUL 3/ssrn-5799042.pdf` | 0 | ssrn:5799042 |
@@ -544,7 +539,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2605.18790v2.pdf` | 0 | arxiv:2605.18790v2 |
 | `HAUL 9/ssrn-7351441.pdf` | 0 | ssrn:7351441 |
 | `EXPOSURE_STATS/MISC_PAPERS/2605.15674v1.pdf` | 0 | arxiv:2605.15674v1 |
-| `Consciousness + AI/Over 1.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03043v1.pdf` | 0 | arxiv:2609.03043v1 |
 | `PRIOR_ART/2603.22694v1.pdf` | 0 | arxiv:2603.22694v1 |
 | `H(s)H_Toolkit/81abfa54a934a8892501ef16dd126ede_MIT2_682S12_lec12.pdf` | 0 |  |
@@ -578,7 +572,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `H(s)H_Toolkit/1204.3714v6.pdf` | 0 | arxiv:1204.3714v6 |
 | `HAUL 6/ssrn-7352020.pdf` | 0 | ssrn:7352020 |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2509.23598v5.pdf` | 0 | arxiv:2509.23598v5 |
-| `BIG PAPERS/ssrn-7385521.pdf` | 0 | ssrn:7385521 |
 | `H(s)H_Toolkit/2012Morrison.pdf` | 0 |  |
 | `HAUL 1/ssrn-7130459.pdf` | 0 | ssrn:7130459 |
 | `EXPOSURE_STATS/MISC_PAPERS/What_AI_Agents_Actually_Want_Measuring_R.pdf` | 0 |  |
@@ -664,7 +657,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `HAUL 1/ssrn-7346462.pdf` | 0 | ssrn:7346462 |
 | `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2605.24494v1.pdf` | 0 | arxiv:2605.24494v1 |
 | `OUTSIDE RESEARCH LIBRARY/KELVIN/2608.13788v1.pdf` | 0 | arxiv:2608.13788v1 |
-| `BIG PAPERS/ssrn-7394178.pdf` | 0 | ssrn:7394178 |
 | `H(s)H_Toolkit/s44260-025-00049-9.pdf` | 0 |  |
 | `PRIOR_ART/2606.22530v2.pdf` | 0 | arxiv:2606.22530v2 |
 | `HAUL 2/ssrn-6873965.pdf` | 0 | ssrn:6873965 |
@@ -766,7 +758,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `H(s)H_Toolkit/2607.03139v1.pdf` | 0 | arxiv:2607.03139v1 |
 | `OUTSIDE RESEARCH LIBRARY/HUBBLE/2604.06941v1.pdf` | 0 | arxiv:2604.06941v1 |
 | `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2607.06983v1.pdf` | 0 | arxiv:2607.06983v1 |
-| `Consciousness + AI/CHAT — Tell me.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2606.01855v2.pdf` | 0 | arxiv:2606.01855v2 |
 | `KERR/kw5g-d732.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/MISC/2112.05701v2.pdf` | 0 | arxiv:2112.05701v2 |
@@ -798,7 +789,6 @@ A source can be structurally present yet unprocessed; an unprocessed source is n
 | `HAUL 3/PhysRevLett.134.251801.pdf` | 0 |  |
 | `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2605.22442v1.pdf` | 0 | arxiv:2605.22442v1 |
 | `DATA/DATA REL - SPARCL Notebooks.pdf` | 0 |  |
-| `Consciousness + AI/Over 2.pdf` | 0 |  |
 | `HAUL 7/ssrn-7340278.pdf` | 0 | ssrn:7340278 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.24690v1.pdf` | 0 | arxiv:2608.24690v1 |
 | `H(s)H_Toolkit/Lagrangian (field theory) - Wikipedia.pdf` | 0 |  |
@@ -1143,6 +1133,8 @@ The following PDF-like paths appear in the human bibliography corpus but are not
 - `BACKREACTION/2503.19970v1.pdf`
 - `BACKREACTION/2608.27412v1.pdf`
 - `BACKREACTION/2608.31163v1 (1).pdf`
+- `Over 1.pdf`
+- `Over 2.pdf`
 
 ## Machine/human boundary
 
