@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       max_files:
-        description: "Maximum pending PDFs to process; 0 means all"
+        description: "Maximum pending PDFs in this pass"
         required: false
-        default: "0"
+        default: "100"
+  schedule:
+    # Drain the backlog in bounded resumable passes. Once current, scheduled
+    # runs become cheap no-ops because source hashes are recorded in the manifest.
+    - cron: "17 * * * *"
   push:
     branches: [main]
     paths:
@@ -14,6 +18,7 @@ on:
       - "tools/extract_papers.py"
       - "tools/index_papers.py"
       - "requirements-tools.txt"
+      - ".github/workflows/extract-papers.yml"
 
 permissions:
   contents: write
@@ -25,10 +30,11 @@ concurrency:
 jobs:
   extract:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
       - uses: actions/setup-python@v5
@@ -43,15 +49,20 @@ jobs:
       - name: Test tools
         run: python -m unittest discover -s tests -v
 
-      - name: Extract pending PDFs
+      - name: Extract bounded pending batch
         env:
-          MAX_FILES: ${{ github.event.inputs.max_files || '0' }}
+          MAX_FILES: ${{ github.event.inputs.max_files || '100' }}
         run: |
-          args=(--root . --apply --allow-errors)
-          if [[ "$MAX_FILES" =~ ^[0-9]+$ ]] && (( MAX_FILES > 0 )); then
-            args+=(--max-files "$MAX_FILES")
+          if ! [[ "$MAX_FILES" =~ ^[1-9][0-9]*$ ]]; then
+            echo "Invalid or unbounded max_files: $MAX_FILES"
+            exit 2
           fi
-          python tools/extract_papers.py "${args[@]}"
+          echo "Processing at most $MAX_FILES pending PDFs this run."
+          python tools/extract_papers.py \
+            --root . \
+            --apply \
+            --allow-errors \
+            --max-files "$MAX_FILES"
 
       - name: Refresh structural index
         run: python tools/index_papers.py --root . --apply
@@ -62,6 +73,21 @@ jobs:
           test -f derived/manifests/extraction.jsonl
           python -c 'import json, pathlib; [json.loads(x) for x in pathlib.Path("derived/manifests/extraction.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]'
 
+      - name: Report extraction state
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from pathlib import Path
+
+          manifest = Path('derived/manifests/extraction.jsonl')
+          rows = [json.loads(line) for line in manifest.read_text(encoding='utf-8').splitlines() if line.strip()]
+          counts = Counter(row.get('status', 'unknown') for row in rows)
+          print(f"manifest_entries={len(rows)}")
+          for key in sorted(counts):
+              print(f"status_{key}={counts[key]}")
+          PY
+
       - name: Commit derived text and indexes
         run: |
           git config user.name "github-actions[bot]"
@@ -69,9 +95,11 @@ jobs:
           git add -f derived/text derived/manifests
           git add indexes/RESOURCE_INDEX.md indexes/index-state.json
           if git diff --cached --quiet; then
-            echo "No extraction changes"
+            echo "No extraction changes; corpus is current for the checked tree."
             exit 0
           fi
-          git commit -m "Extract and index uploaded papers"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          git commit -m "Extract next bounded PDF batch"
+          if ! git push origin HEAD:main; then
+            echo "Main advanced during extraction; refusing to rebase generated extraction state over newer source changes."
+            exit 1
+          fi
