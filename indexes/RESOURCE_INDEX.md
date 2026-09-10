@@ -2,26 +2,29 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T09:32:36Z`
-- Tree/content state: `8cb4d32797aa604fc6d20046b3dae42014e05f8d29233000e9086b20a89fe1cb`
+- Scanned: `2026-09-10T13:16:55Z`
+- Tree/content state: `f68464b237dd9e2cb8d0cc19383a3172aeee21cf30520f0b0d013ef41ebcc081`
 - Coverage: complete structural traversal
-- Files: 1444
-- Uploaded source files: 1434
-- PDF papers: 1206
-- Repository machinery files: 10
+- Files: 1483
+- Uploaded source files: 1470
+- PDF papers: 1209
+- Repository machinery files: 13
 - Byte-identical duplicate groups: 97
 
 ## Top-level coverage
 
 | Path | Files |
 |---|---:|
-| `.github` | 1 |
+| `.github` | 2 |
 | `.gitignore` | 1 |
 | `2020-10-braiding-photonic-topological-modes.pdf` | 1 |
 | `ARXIV PAPER - 2503.14745v2.pdf` | 1 |
 | `BIG PAPERS` | 3 |
 | `Consciousness + AI` | 16 |
 | `DATA` | 12 |
+| `EINSTEIN - Über die spezielle und die allgemeine Relativitätstheorie.txt` | 1 |
+| `EINSTEIN — SIDELIGHTS ON RELATIV.txt` | 1 |
+| `EINSTEIN+MINKOWSKI — PRINCIP RELAT.txt` | 1 |
 | `EXPOSURE_STATS` | 221 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
@@ -36,25 +39,27 @@
 | `HAUL 7` | 12 |
 | `HAUL 8` | 14 |
 | `HAUL 9` | 4 |
+| `HISTORICAL` | 28 |
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 9 |
-| `OUTSIDE RESEARCH LIBRARY` | 318 |
+| `OUTSIDE RESEARCH LIBRARY` | 322 |
 | `PDF_SPECS` | 21 |
 | `PRIOR_ART` | 224 |
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
-| `indexes` | 1 |
+| `indexes` | 3 |
 | `info` | 1 |
 | `requirements-tools.txt` | 1 |
 | `symmetry-11-01298.pdf` | 1 |
 | `tests` | 1 |
-| `tools` | 4 |
+| `tools` | 5 |
 
 ## Duplicate-content groups
 
 - `01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b`
   - `HAUL 12/gitignore.txt`
+  - `HISTORICAL/gitignore.txt`
   - `PDF_SPECS/gitignore.txt`
   - `PRIOR_ART/gitignore.txt`
 - `064069f9073580c36f12711012d0e52f2e6b2167a80f677908c6ed9d23a7fe24`
@@ -1041,6 +1046,9 @@
 | `HAUL 9/ssrn-6093306.pdf` | 6092929 | ssrn:6093306 |
 | `HAUL 9/ssrn-7351441.pdf` | 6065772 | ssrn:7351441 |
 | `HAUL 9/ssrn-7366944.pdf` | 5969756 | ssrn:7366944 |
+| `HISTORICAL/BOHR — QUANT SPECT 1+2.pdf` | 766804 |  |
+| `HISTORICAL/BOHR — SPECTRA.pdf` | 1116135 |  |
+| `HISTORICAL/HILBERT — FOUND GEO.pdf` | 1051576 |  |
 | `KERR/0407064v3 (1).pdf` | 130247 |  |
 | `KERR/0407064v3.pdf` | 130247 | unresolved-seven-digit-id:0407064v3 |
 | `KERR/1365236_156-159.pdf` | 274664 |  |
