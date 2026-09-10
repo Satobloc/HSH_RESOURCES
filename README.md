@@ -39,8 +39,24 @@ HSH_RESOURCES source path and exact HsH destination path/claim.
 - `indexes/index-state.json` — machine-readable structural scan state.
 - `indexes/HUMAN_BIBLIOGRAPHY.md` — human/LLM-reviewed bibliography and source-side citation handoffs.
 - `indexes/BIBLIOGRAPHY_COVERAGE.md` — generated accounting of indexed PDF content not yet represented in the human bibliography.
-- `derived/text/` — page-marked text extraction keyed by source content hash.
-- `derived/manifests/` — extraction results, errors, and OCR-needed status.
+- `derived/text/` — page-marked text extraction keyed by source-content SHA-256; not a source inventory.
+- `derived/manifests/` — authoritative extraction mapping/results, errors, and OCR-needed status.
+- `derived/README.md` — wayfinding for the derived layer and large-directory/truncation warning.
+
+### Large derived-text directory warning
+
+Do not use the GitHub web listing of `derived/text/` as a completeness check.
+GitHub truncates large directory views at 1,000 entries. The extracted-text file
+count also need not equal the source-PDF count because byte-identical source PDFs
+share one content-addressed `<sha256>.txt` extraction while retaining separate
+source-path records.
+
+For complete extraction coverage, use `derived/manifests/extraction.jsonl` as the
+authoritative `source_path → sha256 → text_path` mapping. The bibliography intake
+workflow reads that manifest and the corresponding text files from a full checkout;
+it does not depend on GitHub's truncated directory rendering. Extraction workflow
+logs also report manifest records, unique text paths, actual derived-text files,
+and any missing manifest targets.
 
 Do not silently rename, deduplicate, repair, or replace source files. Duplicate
 paths are recorded in the index and can remain as provenance evidence.
