@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-07T19:39:58Z`
-- Tree/content state: `ebe64ed897d89bc33acb3bbc6cf480c1fb8dcfe51f959c4682bb548bcd49704d`
+- Scanned: `2026-09-10T05:05:53Z`
+- Tree/content state: `eabc3dfbc4f2c1f6b8623f2523c5fd88d1582931840bb560b5bfd76694c5f79e`
 - Coverage: complete structural traversal
-- Files: 1102
-- Uploaded source files: 1095
-- PDF papers: 974
-- Repository machinery files: 7
-- Byte-identical duplicate groups: 60
+- Files: 1141
+- Uploaded source files: 1132
+- PDF papers: 977
+- Repository machinery files: 9
+- Byte-identical duplicate groups: 68
 
 ## Top-level coverage
 
@@ -17,11 +17,12 @@
 |---|---:|
 | `.github` | 1 |
 | `.gitignore` | 1 |
+| `2020-10-braiding-photonic-topological-modes.pdf` | 1 |
 | `ARXIV PAPER - 2503.14745v2.pdf` | 1 |
 | `BIG PAPERS` | 3 |
 | `Consciousness + AI` | 16 |
 | `DATA` | 12 |
-| `EXPOSURE_STATS` | 132 |
+| `EXPOSURE_STATS` | 165 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -36,14 +37,16 @@
 | `HAUL 8` | 14 |
 | `HAUL 9` | 4 |
 | `KERR` | 16 |
-| `LIVE_RESEARCH_UPDATES` | 8 |
+| `LIVE_RESEARCH_UPDATES` | 9 |
 | `OUTSIDE RESEARCH LIBRARY` | 318 |
 | `README.md` | 1 |
+| `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
 | `info` | 1 |
 | `requirements-tools.txt` | 1 |
+| `symmetry-11-01298.pdf` | 1 |
 | `tests` | 1 |
-| `tools` | 2 |
+| `tools` | 4 |
 
 ## Duplicate-content groups
 
@@ -53,6 +56,9 @@
 - `08254264acd8cdef806b25880378f470a3c04998d89cf76e93688ab12af17ff7`
   - `HAUL 11/Bell (1).pdf`
   - `HAUL 11/Bell.pdf`
+- `0cc0fae313cfc0772b60a8f4abd1c97fbb757caf60d62e2de640c40e811a1b03`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TopEpisodesByConsumptionTime_all-time (1).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TopEpisodesByConsumptionTime_all-time.csv`
 - `110a8973d4e507b7378ea8371ba769579b88a8a509a7db7a3784e5b7f9f8179c`
   - `H(s)H_Toolkit/2f8805397ee8506926404a60d8d677d2_lecture16.pdf`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/2f8805397ee8506926404a60d8d677d2_lecture16.pdf`
@@ -84,6 +90,12 @@
 - `35b46d6497c947b41f3f314065412c57d48b44c8de827eaa5174429a47c8e3c9`
   - `EXPOSURE_STATS/EXP_ANALYSIS/CONCAT_DAI_Transcripts_TEXT.txt`
   - `EXPOSURE_STATS/PODCAST_EPs/DAI_Transcripts_TEXT.txt`
+- `37bc7d2921bad508feb7fdd04b7faa9e19d5a60257f49b534eceef1c2ccbf221`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_1-1-2026--6-16-2026 (1).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_1-1-2026--6-16-2026.csv`
+- `42ab243dcce4ecf92215f81aa62f2102a1159b1572ce5a2c5a947b45780e887d`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (10).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (9).csv`
 - `483983ea4c464f1f6df3029c049e63cedf68b960746741b01427157d298c1a3a`
   - `HAUL 2/ssrn-6972282 (1).pdf`
   - `HAUL 2/ssrn-6972282.pdf`
@@ -93,6 +105,12 @@
 - `4b805b013b0a1fafc90ae9452423d0f438a5eceac454ec916549db0731c7cca2`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1.pdf`
+- `514e24ff641ba0eda717b43317e21e8f3368efc7d8fded755e744b5b956fcc4c`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (1).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (2).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (3).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (4).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time.csv`
 - `59c04099e11fcd24083ae7955d63993d2d1304633c605ad25994f509629ada6f`
   - `H(s)H_Toolkit/AssemblyTheory.pdf`
   - `H(s)H_Toolkit/s41586-023-06600-9.pdf`
@@ -120,9 +138,18 @@
 - `743828e4368cce7613822b02440094fc3deb980da2fbec6fd805b3b9db8071ff`
   - `H(s)H_Toolkit/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`
+- `75abda0396494af785d88d996fcad58b6cba9063ff23a1d9a988513459229999`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (5).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (6).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (7).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (8).csv`
 - `76413659ed85e3a44a27b59eee6cc46a78063d3ee9bbfc4180c80887e8d3df17`
   - `HAUL 4/7075779.pdf`
   - `HAUL 5/ssrn-7075779.pdf`
+- `77503f187b1530697d648402f8162a28d235052c5496d07171d00aa3798fcf65`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (1).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (2).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days.csv`
 - `788bc34e1fc0ce72ab2f643efaab1b0650b92a2359f5141818c2a2e5b69df9a6`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/pdfer.py`
   - `H(s)H_Toolkit/pdfer.py`
@@ -132,6 +159,9 @@
 - `821269d0b0c04ff60e557ef57e1fdb80305c7685cbb560712ce53db9670fbdc4`
   - `HAUL 5/ssrn-7060238 (1).pdf`
   - `HAUL 5/ssrn-7060238.pdf`
+- `82181a5ba3ce46b16728d077a90e7beaadf240a8efbd34ad48af54440680f59a`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TopEpisodesByImpressions_3-17-2026--6-14-2026 (1).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TopEpisodesByImpressions_3-17-2026--6-14-2026.csv`
 - `85fb06fc0c55d3ebd80eb2e184d5198de6afdebbf5b5a7e8be305ba87b12874a`
   - `HAUL 1/ssrn-7075498 (1).pdf`
   - `HAUL 1/ssrn-7075498.pdf`
@@ -220,6 +250,9 @@
 - `eeaca47f4c1b046b98f25575bbc85d1f7be87c4bd54fa1c85828b6d17f865d1a`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2.pdf`
+- `f4d05006bf66385da8af5a271e7571781a19dcccac6c32d45a47cb15f5390a38`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_DailyImpressions_3-17-2026--6-14-2026 (1).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_DailyImpressions_3-17-2026--6-14-2026.csv`
 - `f80612ec39a4da59b70064e3140235e91d89ed83c1642f647f58612afac71952`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Total views in last 14 days 2.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Total views in last 14 days.csv`
@@ -234,6 +267,7 @@
 
 | Path | Bytes | Identifier hint |
 |---|---:|---|
+| `2020-10-braiding-photonic-topological-modes.pdf` | 354922 |  |
 | `ARXIV PAPER - 2503.14745v2.pdf` | 16221373 | arxiv:2503.14745v2 |
 | `BIG PAPERS/qt2f18n5nk.pdf` | 14358136 |  |
 | `BIG PAPERS/ssrn-7385521.pdf` | 10277174 | ssrn:7385521 |
@@ -1208,6 +1242,8 @@
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04114v1.pdf` | 1604688 | arxiv:2609.04114v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04117v1.pdf` | 1824628 | arxiv:2609.04117v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04844v1.pdf` | 470761 | arxiv:2609.04844v1 |
+| `symmetry-11-01298.pdf` | 1097058 |  |
+| `Topics_in_statistical_physics_invol.pdf` | 209935 |  |
 
 ## Limitations
 
