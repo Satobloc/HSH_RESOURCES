@@ -1,4 +1,6 @@
 # HSH Resources
+THE CONTENTS OF THIS REPO ARE STRICTLY FOR INFORMATION AND PRIOR ART CITATIONS AS NEEDED.
+NOTHING IN THIS ARCHIVE BINDS SAT/H(S)H HUMAN OR LLM THEORISTS TO THEIR FINDINGS AND ACCURACY SHOULD NOT BE ASSUMED.
 
 Private source repository for scientific papers, raw datasets, and their derived
 navigation artifacts used during the H(s)H reconstruction.
