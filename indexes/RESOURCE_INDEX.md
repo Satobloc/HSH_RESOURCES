@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T05:28:23Z`
-- Tree/content state: `0851498f632a54bf63ed12a9145ae7ce548a4d29f0978e021506b0681e02037c`
+- Scanned: `2026-09-10T05:33:11Z`
+- Tree/content state: `53ee839cd9409eba9c6b13087b0dd9d89bb5d4241bf267f14b856e0645445ad6`
 - Coverage: complete structural traversal
-- Files: 1158
-- Uploaded source files: 1149
-- PDF papers: 992
+- Files: 1171
+- Uploaded source files: 1162
+- PDF papers: 1005
 - Repository machinery files: 9
-- Byte-identical duplicate groups: 72
+- Byte-identical duplicate groups: 75
 
 ## Top-level coverage
 
@@ -39,7 +39,7 @@
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 9 |
 | `OUTSIDE RESEARCH LIBRARY` | 318 |
-| `PRIOR_ART` | 16 |
+| `PRIOR_ART` | 29 |
 | `README.md` | 1 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 1 |
@@ -60,6 +60,10 @@
 - `08254264acd8cdef806b25880378f470a3c04998d89cf76e93688ab12af17ff7`
   - `HAUL 11/Bell (1).pdf`
   - `HAUL 11/Bell.pdf`
+- `09172367691a0cc4af8d4645dd05f9b5d4aa2e0a764380c563bdc97971bf8141`
+  - `LIVE_RESEARCH_UPDATES/s41586-026-10904-x.pdf`
+  - `PRIOR_ART/s41586-026-10904-x (1).pdf`
+  - `PRIOR_ART/s41586-026-10904-x.pdf`
 - `0ac267c6ecc28155702be5473d2c740f491dc65400b5088f83d892cf946cd543`
   - `PRIOR_ART/Topics_in_statistical_physics_invol.pdf`
   - `Topics_in_statistical_physics_invol.pdf`
@@ -81,6 +85,9 @@
 - `17350dcca317338da146a56da70c222a4db2f5f77a2c29959a62d2ee58c28412`
   - `HAUL 2/ssrn-6912299 (1).pdf`
   - `HAUL 2/ssrn-6912299.pdf`
+- `1f0074df00937b359c6efca4e88265bc7f5db38151fced2b47e9253bd1746446`
+  - `PRIOR_ART/s10714-025-03408-y (1).pdf`
+  - `PRIOR_ART/s10714-025-03408-y.pdf`
 - `2a066e046105cc5a5b488ba052854d38ddc2223b0add3912216017e2efefd6ee`
   - `HAUL 2/ssrn-6956780 (1).pdf`
   - `HAUL 2/ssrn-6956780.pdf`
@@ -263,6 +270,9 @@
 - `eeaca47f4c1b046b98f25575bbc85d1f7be87c4bd54fa1c85828b6d17f865d1a`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2.pdf`
+- `f173b0840e4b1d04f9049771b8698a1a13560e00baabfcff318acc1d119d9aab`
+  - `LIVE_RESEARCH_UPDATES/s41467-026-76389-4_reference.pdf`
+  - `PRIOR_ART/s41467-026-76389-4_reference.pdf`
 - `f4d05006bf66385da8af5a271e7571781a19dcccac6c32d45a47cb15f5390a38`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_DailyImpressions_3-17-2026--6-14-2026 (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_DailyImpressions_3-17-2026--6-14-2026.csv`
@@ -1256,16 +1266,29 @@
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04117v1.pdf` | 1824628 | arxiv:2609.04117v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.04844v1.pdf` | 470761 | arxiv:2609.04844v1 |
 | `PRIOR_ART/2020-10-braiding-photonic-topological-modes.pdf` | 354922 |  |
+| `PRIOR_ART/Advanced Science - 2026 - Lee - Non‐Hermitian Stealthy Hyperuniformity.pdf` | 3129315 |  |
 | `PRIOR_ART/JHEP01(2024)063.pdf` | 930881 |  |
 | `PRIOR_ART/JHEP06(2023)087.pdf` | 541036 |  |
 | `PRIOR_ART/pdf.pdf` | 16531855 |  |
 | `PRIOR_ART/s10052-018-6106-4.pdf` | 698763 |  |
 | `PRIOR_ART/s10052-018-6488-3.pdf` | 828155 |  |
 | `PRIOR_ART/s10052-023-11169-8.pdf` | 571281 |  |
+| `PRIOR_ART/s10052-023-11274-8.pdf` | 2702884 |  |
 | `PRIOR_ART/s10052-023-12004-w.pdf` | 336647 |  |
+| `PRIOR_ART/s10052-025-13970-z.pdf` | 959596 |  |
+| `PRIOR_ART/S1063779624701028.pdf` | 332775 |  |
+| `PRIOR_ART/s10701-017-0122-3.pdf` | 872938 |  |
+| `PRIOR_ART/s10714-025-03408-y (1).pdf` | 560669 |  |
+| `PRIOR_ART/s10714-025-03408-y.pdf` | 560669 |  |
+| `PRIOR_ART/s10714-026-03524-3.pdf` | 3862193 |  |
+| `PRIOR_ART/s41114-025-00057-0.pdf` | 8207109 |  |
 | `PRIOR_ART/s41467-025-64182-8.pdf` | 1777970 |  |
+| `PRIOR_ART/s41467-026-76389-4_reference.pdf` | 13510559 |  |
 | `PRIOR_ART/s41467-026-77076-0.pdf` | 782526 |  |
 | `PRIOR_ART/s41524-025-01715-1.pdf` | 2287315 |  |
+| `PRIOR_ART/s41550-024-02238-3.pdf` | 2588203 |  |
+| `PRIOR_ART/s41586-026-10904-x (1).pdf` | 10478424 |  |
+| `PRIOR_ART/s41586-026-10904-x.pdf` | 10478424 |  |
 | `PRIOR_ART/s41586-026-10915-8.pdf` | 1426863 |  |
 | `PRIOR_ART/s42005-026-02638-z.pdf` | 2106775 |  |
 | `PRIOR_ART/symmetry-11-01298.pdf` | 1097058 |  |
