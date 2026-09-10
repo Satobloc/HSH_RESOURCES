@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T13:16:55Z`
-- Tree/content state: `f68464b237dd9e2cb8d0cc19383a3172aeee21cf30520f0b0d013ef41ebcc081`
+- Scanned: `2026-09-10T13:20:48Z`
+- Tree/content state: `c660712068dab69870971267e5f43994d406252622044fa953865af4651e9b3b`
 - Coverage: complete structural traversal
-- Files: 1483
-- Uploaded source files: 1470
-- PDF papers: 1209
+- Files: 1485
+- Uploaded source files: 1472
+- PDF papers: 1211
 - Repository machinery files: 13
 - Byte-identical duplicate groups: 97
 
@@ -30,7 +30,7 @@
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
 | `HAUL 11` | 6 |
-| `HAUL 12` | 5 |
+| `HAUL 12` | 7 |
 | `HAUL 2` | 69 |
 | `HAUL 3` | 41 |
 | `HAUL 4` | 14 |
@@ -867,8 +867,10 @@
 | `HAUL 11/Bell.pdf` | 5204922 |  |
 | `HAUL 11/ssrn-5240551.pdf` | 5455746 | ssrn:5240551 |
 | `HAUL 11/ssrn-6731179.pdf` | 5591729 | ssrn:6731179 |
+| `HAUL 12/0512012v1.pdf` | 733904 | unresolved-seven-digit-id:0512012v1 |
 | `HAUL 12/Forstner_2025_J._Inst._20_P06013 (1).pdf` | 7611121 |  |
 | `HAUL 12/Forstner_2025_J._Inst._20_P06013.pdf` | 7611121 |  |
+| `HAUL 12/rspa.2025.0413.pdf` | 1088076 | arxiv:2025.0413 |
 | `HAUL 12/s41586-025-09739-9.pdf` | 8837830 |  |
 | `HAUL 12/ssrn-7347618.pdf` | 7961344 | ssrn:7347618 |
 | `HAUL 2/ssrn-6315940.pdf` | 893394 | ssrn:6315940 |
