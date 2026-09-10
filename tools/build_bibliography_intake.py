@@ -5,12 +5,18 @@ This is a candidate-harvesting tool, not a bibliography writer. It extracts
 high-value identity hints (title, DOI/arXiv, PDF metadata author/title, dates,
 keywords) into a readable queue for human/LLM verification before promotion to
 indexes/HUMAN_BIBLIOGRAPHY.md.
+
+Byte-identical PDF copies are treated as one bibliographic lineage. If any path
+in a duplicate lineage is already represented in the human bibliography, the
+whole lineage is omitted from intake. Otherwise one canonical path is shown and
+all duplicate paths are preserved beneath it.
 """
 from __future__ import annotations
 
 import argparse
 import json
 import re
+from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
@@ -19,7 +25,11 @@ ARXIV_RE = re.compile(r"\b(?:arXiv\s*:\s*)?(\d{4}\.\d{4,5})(v\d+)?\b", re.I)
 DATE_RE = re.compile(r"\b(?:19|20)\d{2}[-/.](?:0?[1-9]|1[0-2])[-/.](?:0?[1-9]|[12]\d|3[01])\b")
 KEYWORD_RE = re.compile(r"^\s*(?:keywords?|key\s*words?|index\s+terms?)\s*[:—-]\s*(.+)$", re.I)
 PAGE_MARKER_RE = re.compile(r"^===== PAGE \d+ =====$")
-NOISE_RE = re.compile(r"^(?:arxiv|doi|http|www\.|received|accepted|published|copyright|abstract\b)", re.I)
+NOISE_RE = re.compile(
+    r"^(?:arxiv|doi|http|www\.|received|accepted|published|copyright|abstract\b|"
+    r"eur\.\s*phys\.|mon\.\s*not\.|will be inserted by the editor|preprint|manuscript no\b)",
+    re.I,
+)
 
 
 def clean(s: str) -> str:
@@ -47,10 +57,9 @@ def first_page_lines(text: str) -> list[str]:
 def title_candidate(lines: list[str], metadata_title: str | None) -> tuple[str | None, str]:
     if metadata_title and len(clean(metadata_title)) >= 8:
         title = clean(metadata_title)
-        if title.lower() not in {"untitled", "microsoft word", "document"}:
+        if title.lower() not in {"untitled", "microsoft word", "document"} and not NOISE_RE.match(title):
             return title, "pdf-metadata"
-    # First-page heuristic: favor an early substantial line that is not obvious metadata/noise.
-    for line in lines[:18]:
+    for line in lines[:24]:
         if not (18 <= len(line) <= 260):
             continue
         if NOISE_RE.match(line) or DOI_RE.search(line):
@@ -73,13 +82,10 @@ def find_keywords(text: str) -> str | None:
 
 
 def source_identifier(source_path: str, text: str) -> dict[str, str]:
-    dois = []
     for m in DOI_RE.finditer(text[:20000]):
         value = m.group(0).rstrip(".,;)]}")
-        if value not in dois:
-            dois.append(value)
-    if dois:
-        return {"scheme": "doi", "value": dois[0]}
+        if value:
+            return {"scheme": "doi", "value": value}
     m = ARXIV_RE.search(Path(source_path).name)
     if not m:
         m = ARXIV_RE.search(text[:12000])
@@ -96,10 +102,8 @@ def load_manifest(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def already_in_human_bib(path: Path, source_path: str) -> bool:
-    if not path.exists():
-        return False
-    return f"`{source_path}`" in path.read_text(encoding="utf-8", errors="ignore")
+def human_text(path: Path) -> str:
+    return path.read_text(encoding="utf-8", errors="ignore") if path.exists() else ""
 
 
 def main() -> int:
@@ -112,14 +116,27 @@ def main() -> int:
     args = p.parse_args()
 
     root = args.root.resolve()
-    human = root / args.human_bib
+    human = human_text(root / args.human_bib)
+    rows = [r for r in load_manifest(root / args.manifest) if r.get("status") in {"extracted", "needs_ocr"}]
+
+    by_hash: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        digest = str(row.get("sha256") or row.get("source_path") or "")
+        by_hash[digest].append(row)
+
     records = []
-    for row in load_manifest(root / args.manifest):
-        if row.get("status") not in {"extracted", "needs_ocr"}:
+    duplicate_lineages_skipped = 0
+    for digest in sorted(by_hash, key=lambda d: min(str(r.get("source_path", "")).casefold() for r in by_hash[d])):
+        lineage = sorted(by_hash[digest], key=lambda r: str(r.get("source_path", "")).casefold())
+        paths = [str(r.get("source_path")) for r in lineage if r.get("source_path")]
+        if any(f"`{path}`" in human for path in paths):
+            duplicate_lineages_skipped += 1 if len(paths) > 1 else 0
             continue
+
+        row = lineage[0]
         source = row.get("source_path")
         text_path = row.get("text_path")
-        if not source or not text_path or already_in_human_bib(human, source):
+        if not source or not text_path:
             continue
         pth = root / text_path
         if not pth.exists():
@@ -134,6 +151,7 @@ def main() -> int:
                 dates.append(m.group(0))
         records.append({
             "source_path": source,
+            "duplicate_paths": paths[1:],
             "status": row.get("status"),
             "title": title,
             "title_basis": title_basis,
@@ -152,7 +170,8 @@ def main() -> int:
         "",
         "> Generated candidate metadata for human/LLM verification. Not the bibliography and not evidence of relevance.",
         "",
-        f"Candidate entries shown: **{len(records)}**",
+        f"Candidate unique-content entries shown: **{len(records)}**",
+        f"Duplicate lineages already represented in the human bibliography and suppressed here: **{duplicate_lineages_skipped}**",
         "",
     ]
     for i, r in enumerate(records, 1):
@@ -165,13 +184,17 @@ def main() -> int:
             f"**Author metadata:** {r['author_metadata'] or 'unresolved'}  ",
             f"**Date hints:** {', '.join(r['date_hints']) if r['date_hints'] else 'unresolved'}  ",
             f"**Repository path:** `{r['source_path']}`  ",
+        ]
+        if r["duplicate_paths"]:
+            lines.append("**Duplicate repository paths:** " + "; ".join(f"`{p}`" for p in r["duplicate_paths"]) + "  ")
+        lines += [
             f"**Keywords from source:** {r['keywords'] or 'none detected'}  ",
             f"**Extraction:** {r['status']}; {r['pages'] or '?'} pages; {r['text_chars'] or 0} non-space characters  ",
             f"**Title basis:** {r['title_basis']}  ",
             "",
         ]
     (root / args.output).write_text("\n".join(lines), encoding="utf-8", newline="\n")
-    print(f"intake_candidates={len(records)} output={args.output}")
+    print(f"intake_candidates={len(records)} duplicate_lineages_suppressed={duplicate_lineages_skipped} output={args.output}")
     return 0
 
 
