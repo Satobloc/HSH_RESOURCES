@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the human-facing HSH_RESOURCES catalog.
+"""Build a compact human-facing router plus bounded HSH_RESOURCES catalog shards.
 
 This is a presentation/indexing layer over the reviewed bibliography, reviewed
 batch files, provisional bibliography batches, and explicit exclusions. It does
@@ -8,12 +8,14 @@ need, relevance, priority, novelty, or scientific validity.
 """
 from __future__ import annotations
 
+import argparse
 import re
 from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(".")
 OUTPUT = Path("!_HSH_RESOURCES_INDEX.md")
+SHARD_DIR = Path("indexes/human_source_index")
 MASTER = Path("indexes/HUMAN_BIBLIOGRAPHY.md")
 REVIEWED_DIR = Path("indexes/bibliography_batches")
 PROVISIONAL_DIR = Path("indexes/bibliography_provisional")
@@ -56,7 +58,7 @@ def parse_entries(path: Path, kind: str) -> list[dict]:
         end = starts[pos + 1][0] if pos + 1 < len(starts) else len(lines)
         block = lines[start:end]
         fields = field_map(block)
-        paths = []
+        paths: list[str] = []
         for p in PATH_RE.findall("\n".join(block)):
             p = p.replace("\\", "/")
             if p not in paths:
@@ -74,8 +76,6 @@ def parse_entries(path: Path, kind: str) -> list[dict]:
         desc = fields.get("neutral description") or fields.get("summary") or ""
         notes = fields.get("notes") or ""
         status = "provisional" if kind == "provisional" else "reviewed"
-        if kind == "master":
-            status = "reviewed"
         if not desc or desc.lower().startswith("pending"):
             if status == "provisional":
                 keywords = fields.get("keywords from source") or fields.get("keywords") or ""
@@ -149,9 +149,9 @@ def top_folder(path: str) -> str:
     return path.split("/", 1)[0] if "/" in path else "Repository root"
 
 
-def anchor(text: str) -> str:
-    a = re.sub(r"[^a-z0-9 -]", "", text.lower())
-    return re.sub(r"\s+", "-", a.strip())
+def slug(text: str) -> str:
+    value = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+    return value or "root"
 
 
 def cell(value: str, limit: int = 360) -> str:
@@ -162,11 +162,7 @@ def cell(value: str, limit: int = 360) -> str:
 
 
 def path_cell(paths: list[str]) -> str:
-    bits = []
-    for p in paths:
-        # Angle-bracket destination keeps spaces readable in GitHub Markdown.
-        bits.append(f"[`{cell(p, 170)}`](<{p}>)")
-    return "<br>".join(bits)
+    return "<br>".join(f"[`{cell(p, 170)}`](<../../{p}>)" for p in paths)
 
 
 def coverage_summary() -> list[str]:
@@ -178,14 +174,54 @@ def coverage_summary() -> list[str]:
         "Explicitly excluded non-bibliographic unique-content groups", "Total accounted unique-content groups",
         "Remaining unresolved unique-content groups",
     )
-    found = []
-    for line in COVERAGE.read_text(encoding="utf-8", errors="ignore").splitlines():
-        if line.startswith("- ") and any(label in line for label in wanted):
-            found.append(line)
-    return found
+    return [
+        line for line in COVERAGE.read_text(encoding="utf-8", errors="ignore").splitlines()
+        if line.startswith("- ") and any(label in line for label in wanted)
+    ]
+
+
+def write_if_changed(path: Path, content: str) -> bool:
+    if path.exists() and path.read_text(encoding="utf-8", errors="ignore") == content:
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8", newline="\n")
+    return True
+
+
+def render_shard(folder: str, part_no: int, total_parts: int, entries: list[dict], start_no: int, total_folder: int) -> str:
+    end_no = start_no + len(entries) - 1
+    out = [
+        f"# HSH_RESOURCES — {folder} — Part {part_no} of {total_parts}",
+        "",
+        f"> Catalog rows **{start_no}–{end_no} of {total_folder}** for `{folder}`. [Return to the human-readable index](../../!_HSH_RESOURCES_INDEX.md).",
+        "",
+        "`reviewed` = bibliographic identity received human/LLM review. `provisional` = metadata/navigation only and still needs individual review. `excluded` = preserved non-source artifact.",
+        "",
+        "| Title | Author(s) | ID / date | Source type | Status / read level | Repository path(s) | Description / identity note |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    for e in entries:
+        iddate = e["ident"]
+        if e["date"] and e["date"] != "unresolved":
+            iddate += f"<br>{e['date']}"
+        status_read = f"**{e['status']}**<br>{e['read']}<br>record: `{e['record']}`"
+        out.append(
+            "| " + " | ".join([
+                cell(e["title"], 220), cell(e["author"], 180), cell(iddate, 220),
+                cell(e["type"], 150), cell(status_read, 260), path_cell(e["paths"]),
+                cell(e["description"], 360),
+            ]) + " |"
+        )
+    out += ["", "[← Return to human-readable index](../../!_HSH_RESOURCES_INDEX.md)", ""]
+    return "\n".join(out)
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--shard-size", type=int, default=100)
+    args = parser.parse_args()
+    shard_size = max(10, args.shard_size)
+
     entries: list[dict] = []
     if MASTER.exists():
         entries += parse_entries(MASTER, "master")
@@ -197,7 +233,6 @@ def main() -> int:
             entries += parse_entries(path, "provisional")
     entries += parse_exclusions(EXCLUSIONS)
 
-    # If a path appears in more than one presentation layer, keep the strongest record.
     rank = {"reviewed": 3, "provisional": 2, "excluded": 1}
     by_primary: dict[str, dict] = {}
     for entry in entries:
@@ -217,12 +252,43 @@ def main() -> int:
     provisional_n = sum(e["status"] == "provisional" for e in entries)
     excluded_n = sum(e["status"] == "excluded" for e in entries)
 
+    SHARD_DIR.mkdir(parents=True, exist_ok=True)
+    for old in SHARD_DIR.glob("*.md"):
+        old.unlink()
+
+    router_rows: list[tuple[str, int, list[tuple[str, int, int]]]] = []
+    shard_count = 0
+    for folder in sorted(grouped, key=str.casefold):
+        values = grouped[folder]
+        parts: list[tuple[str, int, int]] = []
+        total_parts = (len(values) + shard_size - 1) // shard_size
+        for part_no, start in enumerate(range(0, len(values), shard_size), 1):
+            chunk = values[start:start + shard_size]
+            filename = f"{slug(folder)}__{part_no:03d}.md"
+            content = render_shard(folder, part_no, total_parts, chunk, start + 1, len(values))
+            write_if_changed(SHARD_DIR / filename, content)
+            parts.append((filename, start + 1, start + len(chunk)))
+            shard_count += 1
+        router_rows.append((folder, len(values), parts))
+
+    readme = [
+        "# Human-readable source-index shards",
+        "",
+        f"Generated catalog shards. Each shard contains at most **{shard_size} catalog rows**.",
+        "",
+        "Start from [`../../!_HSH_RESOURCES_INDEX.md`](../../!_HSH_RESOURCES_INDEX.md), which is the compact router. Do not treat these presentation files as source artifacts or as citation judgments.",
+        "",
+    ]
+    write_if_changed(SHARD_DIR / "README.md", "\n".join(readme))
+
     out = [
         "# HSH_RESOURCES — Human-Readable Source Index",
         "",
-        "> **Start here for people.** This is the consolidated navigation catalog for source material in this repository. The machine inventory, extraction manifests, bibliography ledgers, and audit logs remain separate supporting layers.",
+        "> **Start here for people.** This is a compact router into bounded human-readable catalog shards. Source files, machine inventories, extraction manifests, bibliography ledgers, and audit logs remain separate layers.",
         "",
-        "This index does **not** imply that a source is correct, relevant to H(s)H, prior art for a specific claim, or an influence on SAT/H(s)H. It preserves the reviewed/provisional distinction explicitly.",
+        "No catalog shard contains more than **{} rows**. Large repository areas are automatically divided into multiple parts rather than producing giant Markdown files.".format(shard_size),
+        "",
+        "This index does **not** imply that a source is correct, relevant to H(s)H, prior art for a specific claim, or an influence on SAT/H(s)H.",
         "",
         "## Coverage at this build",
         "",
@@ -230,53 +296,34 @@ def main() -> int:
     out += coverage_summary()
     out += [
         "",
-        f"Catalog rows in this human-facing view: **{len(entries)}** ({reviewed_n} reviewed records, {provisional_n} provisional records, {excluded_n} explicit non-source exclusions). Multiple byte-identical or bibliographically duplicate repository paths can appear in one row.",
+        f"Human-facing catalog records: **{len(entries)}** ({reviewed_n} reviewed, {provisional_n} provisional, {excluded_n} explicit non-source exclusions).",
+        f"Catalog shards: **{shard_count}**, maximum **{shard_size} rows per shard**.",
         "",
-        "**Status key:** `reviewed` = bibliographic identity received human/LLM review; `provisional` = identity/navigation generated from extraction metadata and first-page heuristics and still needs individual review; `excluded` = preserved archive artifact that is not itself a literature/source item.",
+        "## Catalog router",
         "",
-        "For citation decisions, use `indexes/HUMAN_BIBLIOGRAPHY.md` and the HsH point-of-use citation ledger. For exact machine coverage, use `indexes/BIBLIOGRAPHY_COVERAGE.md` and `indexes/RESOURCE_INDEX.md`.",
-        "",
-        "## Quick navigation",
-        "",
+        "| Repository area | Records | Catalog shard(s) |",
+        "|---|---:|---|",
     ]
-    for folder in sorted(grouped, key=str.casefold):
-        out.append(f"- [{folder}](#{anchor(folder)}) — {len(grouped[folder])} catalog row(s)")
-
-    for folder in sorted(grouped, key=str.casefold):
-        out += [
-            "",
-            f"## {folder}",
-            "",
-            "| Title | Author(s) | ID / date | Source type | Status / read level | Repository path(s) | Description / identity note |",
-            "|---|---|---|---|---|---|---|",
-        ]
-        for e in grouped[folder]:
-            iddate = e["ident"]
-            if e["date"] and e["date"] != "unresolved":
-                iddate += f"<br>{e['date']}"
-            status_read = f"**{e['status']}**<br>{e['read']}<br>record: `{e['record']}`"
-            out.append(
-                "| " + " | ".join([
-                    cell(e["title"], 220), cell(e["author"], 180), cell(iddate, 220),
-                    cell(e["type"], 150), cell(status_read, 260), path_cell(e["paths"]),
-                    cell(e["description"], 360),
-                ]) + " |"
-            )
-
+    for folder, count, parts in router_rows:
+        links = []
+        for filename, first, last in parts:
+            label = f"{first}–{last}" if first != last else str(first)
+            links.append(f"[{label}](indexes/human_source_index/{filename})")
+        out.append(f"| {folder.replace('|', '\\|')} | {count} | {' · '.join(links)} |")
     out += [
         "",
-        "## Reading this index",
+        "## Status key",
         "",
-        "The catalog is intentionally broad. A provisional row is useful for finding and identifying a source, but should not be cited or used for priority adjudication solely on the basis of this index. Upgrade a source through the reviewed bibliography layer when title/author/identifier/description or H(s)H relationship matters to an argument.",
+        "`reviewed` means bibliographic identity received human/LLM review. `provisional` means identity/navigation was generated from extraction metadata and first-page heuristics and still needs individual review. `excluded` means a preserved archive artifact is not itself a literature/source item.",
         "",
-        "The exact repository path is retained at point of use so a reader can move from this human-facing catalog directly to the preserved source file, while the originating bibliography-record file is also shown in the status column.",
+        "For citation decisions use `indexes/HUMAN_BIBLIOGRAPHY.md` and the HsH point-of-use citation ledger. For exact machine coverage use `indexes/BIBLIOGRAPHY_COVERAGE.md` and `indexes/RESOURCE_INDEX.md`.",
         "",
     ]
-    content = "\n".join(out)
-    changed = not OUTPUT.exists() or OUTPUT.read_text(encoding="utf-8", errors="ignore") != content
-    if changed:
-        OUTPUT.write_text(content, encoding="utf-8", newline="\n")
-    print(f"human_index_rows={len(entries)} reviewed={reviewed_n} provisional={provisional_n} excluded={excluded_n} changed={changed}")
+    changed = write_if_changed(OUTPUT, "\n".join(out))
+    print(
+        f"human_index_rows={len(entries)} reviewed={reviewed_n} provisional={provisional_n} "
+        f"excluded={excluded_n} shards={shard_count} shard_size={shard_size} router_changed={changed}"
+    )
     return 0
 
 
