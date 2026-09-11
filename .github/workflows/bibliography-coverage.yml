@@ -13,6 +13,7 @@ on:
       - "tools/finalize_bibliography.py"
       - "tools/update_bibliography_coverage.py"
       - "tools/build_bibliography_intake.py"
+      - "tools/build_human_readable_index.py"
       - ".github/workflows/bibliography-coverage.yml"
 
 permissions:
@@ -47,6 +48,9 @@ jobs:
       - name: Refresh human-review intake queue
         run: python tools/build_bibliography_intake.py --root . --max-items 250
 
+      - name: Build human-readable source index
+        run: python tools/build_human_readable_index.py
+
       - name: Validate bibliography state
         run: |
           python -m json.tool indexes/index-state.json >/dev/null
@@ -56,17 +60,18 @@ jobs:
           test -f indexes/BIBLIOGRAPHY_INTAKE.md
           test -f indexes/BIBLIOGRAPHY_STRAGGLERS.md
           test -f indexes/bibliography_provisional/README.md
+          test -f '!_HSH_RESOURCES_INDEX.md'
 
       - name: Commit generated bibliography state
         run: |
           git config user.name "HSH Resources Bibliography Bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add indexes/BIBLIOGRAPHY_COVERAGE.md indexes/BIBLIOGRAPHY_INTAKE.md indexes/BIBLIOGRAPHY_STRAGGLERS.md indexes/bibliography_provisional/
+          git add '!_HSH_RESOURCES_INDEX.md' indexes/BIBLIOGRAPHY_COVERAGE.md indexes/BIBLIOGRAPHY_INTAKE.md indexes/BIBLIOGRAPHY_STRAGGLERS.md indexes/bibliography_provisional/
           if git diff --cached --quiet; then
             echo "Bibliography state already current"
             exit 0
           fi
-          git commit -m "[skip bibliography-coverage] Finalize provisional bibliography batches"
+          git commit -m "[skip bibliography-coverage] Refresh bibliography and human-readable index"
           if ! git push origin HEAD:main; then
             echo "Main advanced during bibliography maintenance; refusing to rebase generated state over newer source/review changes."
             exit 1
