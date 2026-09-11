@@ -47,7 +47,7 @@ SUBJECT_RULES: list[tuple[str, tuple[str, ...]]] = [
     ("Nuclear Physics", ("nuclear", "shell model", "isotope", "hadron", "quark", "proton", "neutron")),
     ("Chemistry & Materials", ("chemistry", "chemical", "periodic table", "material", "lanthan", "calcium", "crystal")),
     ("Biology, Medicine & Applied Statistics", ("mortality", "medical", "health", "biology", "epidemic", "hospital", "clinical", "statistical", "statistics")),
-    ("AI, Cognition & Consciousness", ("consciousness", "cognition", "artificial intelligence", " ai ", "llm", "language model", "mind", "solonoid")),
+    ("AI, Cognition & Consciousness", ("consciousness", "cognition", "artificial intelligence", "ai", "llm", "language model", "mind", "solonoid")),
     ("Information & Computation", ("information theory", "information-theoretic", "quantum computation", "computation", "entropy", "complexity", "coding")),
     ("Archive, Provenance & Exposure", ("exposure_stats", "spotify for creators", "analytics", "provenance", "plagiarismcheck", "archive-native", "conversation")),
 ]
@@ -219,21 +219,27 @@ def write_if_changed(path: Path, content: str) -> bool:
     return True
 
 
+def term_hit(haystack: str, term: str) -> bool:
+    term = term.lower()
+    if len(term) <= 4 and term.replace("-", "").isalnum():
+        return re.search(rf"(?<![a-z0-9]){re.escape(term)}(?![a-z0-9])", haystack) is not None
+    return term in haystack
+
+
 def subject_tags(entry: dict) -> list[str]:
     haystack = " " + " ".join([
         entry["title"], entry["type"], entry["description"], entry["ident"], entry["paths"][0]
     ]).lower() + " "
-    tags = [label for label, terms in SUBJECT_RULES if any(term in haystack for term in terms)]
+    tags = [label for label, terms in SUBJECT_RULES if any(term_hit(haystack, term) for term in terms)]
     if not tags:
         tags = ["Other / Unclassified"]
     return tags[:5]
 
 
 def primary_year(entry: dict) -> str:
+    # Prefer an explicitly indexed date. Do not mine arbitrary 4-digit DOI
+    # components (for example ApJL's 2041 journal code) as publication years.
     m = YEAR_RE.search(entry.get("date", ""))
-    if m:
-        return m.group(1)
-    m = YEAR_RE.search(entry.get("ident", ""))
     if m:
         return m.group(1)
     arx = re.search(r"arXiv\s*:?\s*`?(\d{2})(\d{2})\.\d+", entry.get("ident", ""), re.I)
@@ -449,7 +455,7 @@ def main() -> int:
         year_groups[e["year"]].append(e)
     date_router = [
         "# Browse by Date", "",
-        "> Grouped by the first recoverable bibliographic year from the indexed date/identifier fields. `Unknown` is kept explicit rather than guessed.", "",
+        "> Grouped by the first recoverable bibliographic year from the indexed date fields or an arXiv identifier. `Unknown` is kept explicit rather than guessed from unrelated numeric identifiers.", "",
         "[← Human-readable index](../../!_HSH_RESOURCES_INDEX.md)", "",
         "| Year | Records | Catalog shard(s) |", "|---|---:|---|",
     ]
