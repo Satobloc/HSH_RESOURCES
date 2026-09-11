@@ -1,5 +1,5 @@
-# Human-readable source-index shards
+# Human-readable source-index views
 
-Generated catalog shards. Each shard contains at most **100 catalog rows**.
+Generated navigation layer. Every record-bearing shard contains at most **100 records**.
 
-Start from [`../../!_HSH_RESOURCES_INDEX.md`](../../!_HSH_RESOURCES_INDEX.md), which is the compact router. Do not treat these presentation files as source artifacts or as citation judgments.
+Start at [`../../!_HSH_RESOURCES_INDEX.md`](../../!_HSH_RESOURCES_INDEX.md). Parallel views are by physical folder/subfolder, broad subject tag, first-listed author, and bibliographic year.

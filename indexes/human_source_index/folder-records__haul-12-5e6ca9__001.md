@@ -1,0 +1,16 @@
+# HSH_RESOURCES — Folder: HAUL 12 — Part 1 of 1
+
+> Records **1–6 of 6**. Subject tags are machine-assigned navigation aids until individually reviewed.
+
+[← Human-readable index](../../!_HSH_RESOURCES_INDEX.md)
+
+| Title | Author(s) | ID / date | Subject tag(s) | Source type | Status / read level | Repository path(s) | Description / identity note |
+|---|---|---|---|---|---|---|---|
+| Citethisarticle: LohmillerW,SlotineJ-J | unresolved | arXiv: `2025.0413` | Quantum Foundations | Research paper / preprint | **provisional**<br>machine extraction metadata + first-page heuristic only; no claim-level reading implied<br>record: `indexes/bibliography_provisional/PROVISIONAL_0009.md` | [`HAUL 12/rspa.2025.0413.pdf`](<../../HAUL 12/rspa.2025.0413.pdf>) | Metadata-only record; concise description pending individual review. |
+| EUROPEAN ORGANIZATION FOR NUCLEAR RESEARCH | unresolved | unresolved | Nuclear Physics | Research/document PDF | **provisional**<br>machine extraction metadata + first-page heuristic only; no claim-level reading implied<br>record: `indexes/bibliography_provisional/PROVISIONAL_0009.md` | [`HAUL 12/0512012v1.pdf`](<../../HAUL 12/0512012v1.pdf>) | Metadata-only record; concise description pending individual review. |
+| PAPER • OPEN ACCESS | unresolved | DOI: `10.1088/1748-0221/20/06/P06013` | Other / Unclassified | Research/document PDF | **provisional**<br>machine extraction metadata + first-page heuristic only; no claim-level reading implied<br>record: `indexes/bibliography_provisional/PROVISIONAL_0009.md` | [`HAUL 12/Forstner_2025_J._Inst._20_P06013 (1).pdf`](<../../HAUL 12/Forstner_2025_J._Inst._20_P06013 (1).pdf>) | Metadata-only record; source keywords: Detector alignment and calibration methods (lasers, sources, particle-beams); Detector |
+| PAPER • OPEN ACCESS | unresolved | DOI: `10.1088/1748-0221/20/06/P06013` | Other / Unclassified | Research/document PDF | **provisional**<br>machine extraction metadata + first-page heuristic only; no claim-level reading implied<br>record: `indexes/bibliography_provisional/PROVISIONAL_0009.md` | [`HAUL 12/Forstner_2025_J._Inst._20_P06013.pdf`](<../../HAUL 12/Forstner_2025_J._Inst._20_P06013.pdf>) | Metadata-only record; source keywords: Detector alignment and calibration methods (lasers, sources, particle-beams); Detector |
+| Sterile-neutrino search based on 259 days of KATRIN data | H. Acharya | DOI: `10.1038/s41586-025-09739-9` | Quantum Field Theory & Particle Physics | Research/document PDF | **provisional**<br>machine extraction metadata + first-page heuristic only; no claim-level reading implied<br>record: `indexes/bibliography_provisional/PROVISIONAL_0009.md` | [`HAUL 12/s41586-025-09739-9.pdf`](<../../HAUL 12/s41586-025-09739-9.pdf>) | Metadata-only record; concise description pending individual review. |
+| Umbilic thermodynamics | unresolved | unresolved | Quantum Foundations | Research paper / preprint | **provisional**<br>machine extraction metadata + first-page heuristic only; no claim-level reading implied<br>record: `indexes/bibliography_provisional/PROVISIONAL_0009.md` | [`HAUL 12/ssrn-7347618.pdf`](<../../HAUL 12/ssrn-7347618.pdf>) | Metadata-only record; concise description pending individual review. |
+
+[← Human-readable index](../../!_HSH_RESOURCES_INDEX.md)
