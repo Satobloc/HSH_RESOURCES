@@ -2,19 +2,20 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-10T14:57:01Z`
-- Tree/content state: `0da4a69b2d0e3dd61f0ed3d8b258d0fe2cc6fc35457a0f72c2b4c139861e6e1a`
+- Scanned: `2026-09-11T06:07:58Z`
+- Tree/content state: `fcabbd25747dbfdbaa008dc4bfa239d0bb0c1e84855d3f23f610a57ca3b520a6`
 - Coverage: complete structural traversal
-- Files: 1507
-- Uploaded source files: 1491
-- PDF papers: 1211
-- Repository machinery files: 16
+- Files: 1709
+- Uploaded source files: 1498
+- PDF papers: 1215
+- Repository machinery files: 211
 - Byte-identical duplicate groups: 104
 
 ## Top-level coverage
 
 | Path | Files |
 |---|---:|
+| `!_HSH_RESOURCES_INDEX.md` | 1 |
 | `.github` | 2 |
 | `.gitignore` | 1 |
 | `2020-10-braiding-photonic-topological-modes.pdf` | 1 |
@@ -46,14 +47,15 @@
 | `PDF_SPECS` | 21 |
 | `PRIOR_ART` | 228 |
 | `README.md` | 1 |
+| `REDISCOVERED` | 6 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 2 |
-| `indexes` | 4 |
+| `indexes` | 197 |
 | `info` | 1 |
 | `requirements-tools.txt` | 1 |
 | `symmetry-11-01298.pdf` | 1 |
 | `tests` | 1 |
-| `tools` | 6 |
+| `tools` | 8 |
 
 ## Duplicate-content groups
 
@@ -62,6 +64,7 @@
   - `HISTORICAL/gitignore.txt`
   - `PDF_SPECS/gitignore.txt`
   - `PRIOR_ART/gitignore.txt`
+  - `REDISCOVERED/gitignore.txt`
 - `064069f9073580c36f12711012d0e52f2e6b2167a80f677908c6ed9d23a7fe24`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf`
   - `H(s)H_Toolkit/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf`
@@ -1618,6 +1621,10 @@
 | `PRIOR_ART/SUBMITTED SAT BIG PAPER.pdf` | 5489504 |  |
 | `PRIOR_ART/symmetry-11-01298.pdf` | 1097058 |  |
 | `PRIOR_ART/Topics_in_statistical_physics_invol.pdf` | 209935 |  |
+| `REDISCOVERED/a00982.pdf` | 1192732 |  |
+| `REDISCOVERED/Fletcher2004a.pdf` | 64793 |  |
+| `REDISCOVERED/Fletcheretal2001.pdf` | 446625 |  |
+| `REDISCOVERED/fuller-1971-the-writhing-number-of-a-space-curve.pdf` | 931874 |  |
 | `symmetry-11-01298.pdf` | 1097058 |  |
 | `Topics_in_statistical_physics_invol.pdf` | 209935 |  |
 
