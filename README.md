@@ -1,6 +1,7 @@
 # HSH Resources
 
-> **Human-facing catalog:** [`!_HSH_RESOURCES_INDEX.md`](!%5FHSH%5FRESOURCES%5FINDEX.md)
+> **Human-facing catalog:** [`!_HSH_RESOURCES_INDEX.md`](!%5FHSH%5FRESOURCES%5FINDEX.md)  
+> **AI / LLM start here:** [`indexes/AI_START_HERE.md`](indexes/AI_START_HERE.md)
 
 THE CONTENTS OF THIS REPO ARE STRICTLY FOR INFORMATION AND PRIOR ART CITATIONS AS NEEDED.
 NOTHING IN THIS ARCHIVE BINDS SAT/H(S)H HUMAN OR LLM THEORISTS TO THEIR FINDINGS AND ACCURACY SHOULD NOT BE ASSUMED.
@@ -13,8 +14,12 @@ This repository is evidence storage, not the public synthesis. A paper's presenc
 
 For people browsing the repository, use [`!_HSH_RESOURCES_INDEX.md`](!%5FHSH%5FRESOURCES%5FINDEX.md). It consolidates reviewed and provisional source records into one navigable catalog with title, author/metadata, identifier/date, source type, review/read status, exact repository path, and a concise description or identity note.
 
+For Janus and other H(s)H agents, use [`indexes/AI_START_HERE.md`](indexes/AI_START_HERE.md). It routes directly into the two priority technical corridors—`PRIOR_ART` and `H(s)H_Toolkit`—and specifies how to move from bounded catalog records to the structural index, extraction manifest, and extracted full text without treating external literature as H(s)H theory authority.
+
 Supporting layers remain separate:
 
+- `indexes/AI_START_HERE.md` — compact AI/LLM routing contract and priority-corridor entry point.
+- `indexes/ai_source_index/` — focused AI corridors for `PRIOR_ART` and `H(s)H_Toolkit`.
 - `indexes/HUMAN_BIBLIOGRAPHY.md` — reviewed bibliography policy, PRIOR_ART notes, and citation handoffs.
 - `indexes/bibliography_batches/` — bounded human/LLM-reviewed bibliography batches.
 - `indexes/bibliography_provisional/` — bounded machine-generated identity/navigation batches for successfully extracted sources.
