@@ -1,0 +1,183 @@
+# SAT / H(s)H arXiv Structural Scan
+
+> Literature-navigation heuristic only. Structural similarity is not confirmation,
+> and control vocabulary is a calibration baseline rather than a negative score.
+
+Scanner version: **0.4**
+Fetched **1328** of **1328** records; reported **10** at score >= **8.0**.
+
+## Calibration summary
+
+Positive vocabulary: **101 features** across **14 sectors**.
+Structural bundles: **22**.
+Controls: **23 features** across **4 families**.
+
+Most common positive features in the fetched corpus:
+- `rg_flow`: 17/1328
+- `coarse_graining`: 15/1328
+- `topological_defect`: 15/1328
+- `braid`: 9/1328
+- `filament_defect`: 9/1328
+- `collective_mode_boson`: 7/1328
+- `causal_geometry`: 5/1328
+- `geometric_phase`: 5/1328
+- `interferometry_phase`: 5/1328
+- `self_similarity`: 5/1328
+- `foliation`: 5/1328
+- `phase_locking`: 5/1328
+
+Most common controls in the fetched corpus:
+- `ctl_neighbor_black_hole`: 86/1328
+- `ctl_neighbor_dark`: 72/1328
+- `ctl_neighbor_standard_model`: 71/1328
+- `ctl_generic_numerics`: 69/1328
+- `ctl_generic_perturbation`: 57/1328
+- `ctl_generic_action`: 54/1328
+- `ctl_nonphysics_ml`: 37/1328
+- `ctl_neighbor_cosmology`: 32/1328
+- `ctl_orthogonal_materials`: 27/1328
+- `ctl_orthogonal_superconductivity`: 25/1328
+- `ctl_generic_statistics`: 19/1328
+- `ctl_generic_symmetry`: 17/1328
+
+## Ranked papers
+
+### 1. [Superconnections, descent, and monodromy on transversely holomorphic foliations](https://arxiv.org/abs/2609.04796v1)
+
+**Score:** 13.48 (medium) · **Contrast:** 13.48 · **Control:** 0.0 · **Primary:** `math.AG` · **NEW/UPDATED**
+
+**Sectors:** holonomy, projection, scale
+
+**Bundles:** —
+
+**Features:** foliation, holonomy, monodromy, rg_flow
+
+**Controls:** —
+
+Let $X$ carry a transversely holomorphic foliation, equivalently an elliptic involutive structure $V\subset T_{\mathbb C}X$, and let ${\mathcal O}_V$ be its sheaf of leafwise-constant, transversely holomorphic functions. We construct a finite superconnection model for the derived category of coherent ${\mathcal O}_V$-modules. The key input is a mixed local reduction for finite Maurer--Cartan objects over the mixed de Rham--Dolbeault dga $(\wedge^\bullet V^\vee,d_V)$: a multiplicative homotopy contracts the real directions, after which Block's Dolbeault gauge theorem removes the positive transverse form degrees. For compact $X$, this gives an exact equivalence between the homotopy category of bounded finite-rank flat $V$-superconnections and $D^b_{\mathrm{coh}}(X,{\mathcal O}_V)$, interpolating between the de Rham and Dolbeault realizations. We prove locally finite Čech descent under necessary uniform amplitude and rank bounds, identify the coherent heart with equivariant coherent analytic sheaves on a transverse monodromy groupoid, and characterize descent to ordinary holonomy. For a holomorphic suspension, we identify the full superconnection category, up to Morita equivalence, with the homotopy fixed points of the Dolbeault category of the transversal and derive an equivariant Ext spectral sequence. Examples on $S^1$ and $S^2$ delimit when ordinary monodromy $1$-groupoids can recover the derived category.
+
+### 2. [Eye-opening bounds on cusps](https://arxiv.org/abs/2609.04302v1)
+
+**Score:** 13.35 (medium) · **Contrast:** 13.35 · **Control:** 0.0 · **Primary:** `hep-th` · **NEW/UPDATED**
+
+**Sectors:** gauge, topology, worldtube
+
+**Bundles:** constraint_topology
+
+**Features:** filament_defect, topological_defect, topological_selection
+
+**Controls:** —
+
+We derive new nonperturbative inequalities on the cusp anomalous dimensions of conformal line defects. We impose reflection positivity, locality, and conformal invariance on a pair of cusps forming an ``eye'' geometry, deriving a novel condition on the cusp anomalous dimension which we refer to as conformal concavity. The resulting constraint is much stronger than the known angular concavity, and our derivation applies also to cusps involving distinct line defects. Remarkably, it directly links the smooth and fusion limits, yielding bounds on defect-changing operator dimensions, Casimir energies, and subleading fusion data. We thus uncover a new quantitative bridge between aspects of the local operator data and the fusion rules of line operators in conformal field theories.
+
+### 3. [Internal geometries regulate the symmetry of defect configurations in cell populations confined to domains with a negative Euler characteristic](https://arxiv.org/abs/2609.03328v1)
+
+**Score:** 12.35 (watch) · **Contrast:** 12.35 · **Control:** 0.0 · **Primary:** `physics.bio-ph` · **NEW/UPDATED**
+
+**Sectors:** gauge, topology
+
+**Bundles:** constraint_topology
+
+**Features:** topological_defect, topological_selection, winding
+
+**Controls:** —
+
+Nematic order of confined cell populations plays an important role in determining cell alignment and stable configurations of topological defects, which are related to various biomechanical phenomena. Topological charges (or winding numbers) of topological defects strictly depend on the Euler characteristic of the confining domain, which has typically been non-negative in studies focused on domains without internal obstacles. However, biological tissues often surround two or more internal obstacles or holes, which inherently generate defects with negative charges. To understand the mechanical interaction between cellular tissue and obstacles, it is necessary to elucidate the geometrical effects of obstacles on cell alignment and defects with negative charges. Here, we investigate how cell populations achieve stable defect configurations of two -1/2 defects in a triply connected domain. First, we present experimental observations of C2C12 myoblasts confined by two circular obstacles of varying diameter, demonstrating that two $-1/2$ defects are the most frequent configuration when the obstacles are sufficiently large. Second, to theoretically validate these experimental observations, we perform systematic stability analyses of defect configurations using an explicit expression of cell alignment and numerical minimization of the Frank elastic energy. Our numerical calculations reveal that the most stable configuration shifts continuously from a horizontal, through off-axis, to a vertical configuration as the obstacle size increases. In addition, the experimentally observed defect positions agreed with these theoretical predictions to within 60 $μ$m. These findings suggest that obstacle sizes control the symmetry of cell alignment, providing insights into how geometric and topological constraints can generate complex force patterns during morphogenesis or organ movements.
+
+### 4. [A topological version of the Cartan-Hadamard Theorem and asphericity complexity](https://arxiv.org/abs/2609.04440v1)
+
+**Score:** 12.0 (watch) · **Contrast:** 12.0 · **Control:** 0.0 · **Primary:** `math.GT` · **NEW/UPDATED**
+
+**Sectors:** gauge, projection, topology
+
+**Bundles:** —
+
+**Features:** fiber_bundle, homotopy, projection_loss, section_bundle
+
+**Controls:** —
+
+We investigate a topological version of the Cartan-Hadamard theorem that allows one to study asphericity of spaces via distinguished families of paths. A topological space has the distinguished path property (dpp) if there exists a continuous map from the space $Π(X)$ of homotopy classes of paths (relative endpoints) to the path space $X^I$ that is a right inverse to the canonical quotient map. For complete metric spaces endowed with a locally convex metric, the distinguished paths are precisely the local geodesics. We show that if $X$ has the dpp, then its universal cover is contractible and, in particular, $X$ is aspherical. The space $Π(X)$ is a fiber bundle over $X$ whose fiber is the universal cover of $X$, and in the case of Riemannian manifolds of non-positive curvature it is naturally isomorphic to the tangent bundle. We prove that every aspherical CW-complex that is locally finite or countable has the dpp, and this allows us to reinterpret asphericity of CW-complexes in terms of the existence of continuous sections. We also define and study the notion of asphericity complexity of spaces by means of local sections from $Π(X)$ to $X^I$ and relate it to the concept of equivariant topological complexity introduced by Colman and Grant.
+
+### 5. [Studying line defect at Deconfined Quantum Criticality via fuzzy sphere regularization](https://arxiv.org/abs/2609.03465v1)
+
+**Score:** 11.29 (watch) · **Contrast:** 11.29 · **Control:** 0.0 · **Primary:** `cond-mat.str-el` · **NEW/UPDATED**
+
+**Sectors:** scale, topology, worldtube
+
+**Bundles:** —
+
+**Features:** filament_defect, rg_flow, topological_defect
+
+**Controls:** —
+
+The interplay between bulk critical fluctuations and nontrivial topology can enrich defect physics and give rise to novel defect universality classes. Understanding the fate of such defects therefore constitutes an important open problem. In this work, we studied a particularly simple setting: a (0+1)-dimensional pinning-field defect coupled to a (2+1)-dimensional deconfined quantum critical bulk. Using the fuzzy-sphere regularization, we numerically investigated the defect operator spectrum and extracted several universal quantities characterizing the defect conformal fixed point, including the scaling dimensions of defect-changing(creating) operators and the defect \(g\)-function. These results establish the first numerical characterization of line-defect conformal data at deconfined quantum criticality and may stimulate further investigations of defect critical phenomena in topological quantum critical matter.
+
+### 6. [Symmetry-breaking line defects embedded to a 3D $O(N)$ critical bulk](https://arxiv.org/abs/2609.03289v1)
+
+**Score:** 11.29 (watch) · **Contrast:** 11.29 · **Control:** 0.0 · **Primary:** `cond-mat.str-el` · **NEW/UPDATED**
+
+**Sectors:** scale, topology, worldtube
+
+**Bundles:** —
+
+**Features:** filament_defect, rg_flow, topological_defect
+
+**Controls:** —
+
+While spontaneous breaking of a discrete symmetry in one-dimensional classical systems with short-range interactions is absent, it is expected that a line defect embedded in a bulk criticality exhibits a stable discrete symmetry spontaneous breaking. Here, we investigate the behavior of a pinning-field line defect immersed in a 3D bulk that remains tuned to the $O(N)$ Wilson-Fisher critical point. Employing the fuzzy sphere technique, we provide convincing evidence of the existence of stable defect conformal fixed points, and we demonstrate their renormalization group stability by showing no relevant operator and less effective degrees of freedom than that at bulk fixed point via $g$-function. Moreover, we investigate the defect domain wall operator for various $N$, and we identify that it becomes irrelevance for $N\gtrsim 3$ but it is relevant for $N<3$.These evidence indicate that a one-dimensional defect coupled to a critical bulk cannot support a stable symmetry spontaneously broken defect fixed point due to domain wall proliferation for $N<3$ Wilson-Fisher universality, while in the case of $N \gtrsim 3$ a symmetry broken defect is possible.
+
+### 7. [$\mathcal{N}$-bein formalism for degenerate states in the parameter space of quantum geometry](https://arxiv.org/abs/2609.01752v1)
+
+**Score:** 11.2 (watch) · **Contrast:** 11.2 · **Control:** 0.0 · **Primary:** `quant-ph` · **NEW/UPDATED**
+
+**Sectors:** curve_geometry, gauge, holonomy
+
+**Bundles:** —
+
+**Features:** gauge_connection, geometric_phase, normal_bundle
+
+**Controls:** —
+
+Recently, we introduced a geometric object analogous to an orthonormal frame in the Cartan formalism to study the parameter space of quantum systems; we called it $\mathcal{N}$-bein, with $\mathcal{N}$ being the number of parameters that characterize the quantum system. Acting as the ``square root'' of the quantum geometric tensor (QGT), the $\mathcal{N}$-bein allows us to define new tensors to improve our understanding of the structure beneath the parameter space of quantum mechanics. In this work, we extend this mathematical framework surrounding the $\mathcal{N}$-bein to analyze the parameter space of quantum systems with degenerate spectra. As in the non-degenerate case, we define a non-Abelian two-state QGT to identify possible transitions between degenerate states after two consecutive parameter variations. Additionally, using the Wilczek-Zee connection, we introduce a torsion-like tensor as the covariant derivative of the $\mathcal{N}$-bein. This torsion captures the noncommutativity of successive parameter variations and coincides with the antisymmetric part of the two-state QGT. We also present a geometrical formulation using differential forms and discuss the physical implications of the newly defined tensors. Furthermore, we construct several gauge-invariant observables from the $\mathcal{N}$-bein and its derivatives to highlight the utility of the new tensors. Finally, to illustrate the convenience and applications of this formalism, we apply the theoretical framework to a system of coupled harmonic oscillators immersed in an electric field. The coupling between the oscillators results in a degenerate system. Thus, using the new formalism, we found correlations among the quantum states quantified by the new invariants.
+
+### 8. [Superfluidity and Vortex Dynamics in Neutron Stars](https://arxiv.org/abs/2609.01022v1)
+
+**Score:** 11.2 (watch) · **Contrast:** 10.85 · **Control:** 1.0 · **Primary:** `nucl-th` · **NEW/UPDATED**
+
+**Sectors:** particle, topology
+
+**Bundles:** topological_confinement
+
+**Features:** flux_tube, topological_defect
+
+**Controls:** ctl_orthogonal_superconductivity
+
+Neutron stars contain several forms of quantum condensed matter whose microscopic properties control macroscopic rotational dynamics and magnetic behavior of these fascinating objects. This review surveys superfluidity and superconductivity in compact stars, with emphasis on phenomena associated with quantized vorticity and magnetic-flux structures, and the possible connections to observed phenomena. We first summarize the microphysics of nucleonic pairing, including spin-singlet $^1S_0$ neutron pairing in the inner crust, proton superconductivity in the outer core, and spin-triplet $^3P_2$--$^3F_2$ neutron pairing at higher densities, together with the principal many-body uncertainties affecting the corresponding pairing gaps. We then discuss the dynamics of neutron vortices, including pinning, vortex creep, and dissipative motion, and the role of vortex dynamics in angular-momentum exchange between the superfluid and the observable crustal component. We give special attention to proton flux tubes in type-II superconducting cores, the possible realization of type-I superconductivity, and vortex--flux-tube interactions. We also review collective rotational phenomena, including Tkachenko oscillations of the vortex lattice and free precession, and their possible relation to long-term variability in pulsar timing. Finally, we discuss the possible deconfinement of hadronic matter into quark matter, the formation of color-superconducting phases, and the topological defects associated with these phases, together with their possible observational consequences. Throughout the review, we identify key open questions connecting microscopic pairing, mesoscopic defect dynamics, and observable neutron-star phenomena.
+
+### 9. [On Braided Differential Calculi and Quantum G-structures](https://arxiv.org/abs/2609.01401v1)
+
+**Score:** 8.5 (watch) · **Contrast:** 8.5 · **Control:** 0.0 · **Primary:** `math.QA` · **NEW/UPDATED**
+
+**Sectors:** gauge, topology
+
+**Bundles:** —
+
+**Features:** braid, fiber_bundle
+
+**Controls:** —
+
+We develop a theory of first order differential calculi in braided monoidal categories and classify braided covariant and bicovariant calculi on braided Hopf algebras. We show that, under certain conditions, bicovariant calculi can be transmuted to braided bicovariant calculi. For Radford--Majid biproducts, we combine bicovariant calculi on a Hopf algebra and braided bicovariant calculi on the corresponding braided Hopf algebra to covariant smash product calculi. The associated Maurer--Cartan form is shown to decompose into a direct sum of the Maurer--Cartan forms of the structure Hopf algebra of the quantum principal bundle and the braided Hopf algebra on the base. Geometrically, this construction realises the quantum affine extension of a given Hopf algebra, and we prove that the resulting quantum principal bundle is equipped with a frame resolution induced by the quantum Maurer--Cartan form. Building on this correspondence, we introduce and develop the notion of quantum $\textrm{G}$-structure, proving that quantum $\textrm{G}$-structures are quantum frame resolutions on the reduction. The theory is illustrated by examples based on transmutations of higher analogues of Sweedler's Hopf algebra and on the braided quantum plane, seen as a Yetter--Drinfeld module of $O_q(\mathrm{GL}_2)$.
+
+### 10. [Cutting corners: exciting and magical bounds from the cusp bootstrap](https://arxiv.org/abs/2609.04041v1)
+
+**Score:** 8.3 (watch) · **Contrast:** 8.3 · **Control:** 0.0 · **Primary:** `hep-th` · **NEW/UPDATED**
+
+**Sectors:** topology, worldtube
+
+**Bundles:** —
+
+**Features:** filament_defect, topological_defect, worldline
+
+**Controls:** —
+
+An illuminating probe of the dynamics of a line defect is the global geometry of its worldline. For a conformal line defect in a conformal field theory, sharp corners in the worldline, i.e. cusps, host dynamical degrees of freedom characterized in part by a spectrum of scaling dimensions, called cusp anomalous dimensions. We present various general bounds on cusp anomalous dimensions following from unitarity and cutting-and-gluing consistency of different defect geometries. We first establish, for cusps involving conjugate defects, that level crossings upon varying the cusp angle are forbidden between the lightest singlet cusp and any non-singlet cusp, proving that singlet cusps are the lightest. Then, we study line defects arranged in a rectangular geometry, which are subject to bootstrap constraints reminiscent of the spinless modular bootstrap. We find an analytic ``magic" functional that produces an optimal and universal lower bound on the dimension of a right angle bare cusp in terms of the universal defect Casimir energy between the corresponding defect and its conjugate in flat space.
