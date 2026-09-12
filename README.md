@@ -6,9 +6,26 @@
 THE CONTENTS OF THIS REPO ARE STRICTLY FOR INFORMATION AND PRIOR ART CITATIONS AS NEEDED.
 NOTHING IN THIS ARCHIVE BINDS SAT/H(S)H HUMAN OR LLM THEORISTS TO THEIR FINDINGS AND ACCURACY SHOULD NOT BE ASSUMED.
 
+## PRIVATE REFERENCE BOUNDARY
+
+**This repository is not part of the public SAT/H(s)H cross-link surface.** The public bidirectional provenance/navigation pair is:
+
+**`Satobloc/HsH` ↔ `Satobloc/SAT_THEORY_ARCHIVE_2023-25`**
+
+HSH_RESOURCES is private research infrastructure. Use links/paths inside it for internal retrieval only. Do **not** make a public HsH/archive document depend on a private HSH_RESOURCES URL.
+
+When material found here is used in public-facing HsH/archive work, carry it across the boundary in a usable public form:
+
+- normally a **Chicago-style citation to the original external source**;
+- an accurately attributed **quotation/extract** with page/location and source identification;
+- a clearly identified **summary/paraphrase** with source citation/provenance;
+- for private/raw project data, an appropriate **public-safe extract or summary** stating what was analyzed and its provenance.
+
+Internal ledgers/research notes may retain an HSH_RESOURCES repository-relative path and content hash so the exact archived copy can be recovered. That private locator is not itself the public citation.
+
 Private source repository for scientific papers, raw datasets, and their derived navigation artifacts used during the H(s)H reconstruction.
 
-This repository is evidence storage, not the public synthesis. A paper's presence here does not endorse it, make it relevant, or establish an H(s)H claim. Public synthesis statements belong in [`Satobloc/HsH`](https://github.com/Satobloc/HsH) and should cite the exact resource record used.
+This repository is evidence storage, not the public synthesis. A paper's presence here does not endorse it, make it relevant, or establish an H(s)H claim. Public synthesis statements belong in [`Satobloc/HsH`](https://github.com/Satobloc/HsH) and should cite the original external source supporting the statement; internal citation handoffs may additionally record the exact resource copy used here.
 
 ## Start here
 
@@ -31,7 +48,7 @@ Supporting layers remain separate:
 
 SAT/H(s)H research and development is reconstructed from the project's own Fundamental Intuitions and internal SAT → SAT-O → 4DHH → Blockwave/Satobloc → H(s)H development. External literature is stored here for bibliographic credit, standard mathematical/physical context, empirical evidence and constraints, prior-art comparison, and explicitly provenance-labeled imports. Related outside theories are not silently treated as the generative basis of H(s)H.
 
-The source-side citation and handoff surface is `indexes/HUMAN_BIBLIOGRAPHY.md`. The receiving point-of-use ledger in the public theory repository is `Satobloc/HsH/ledgers/CITATION_LEDGER.md`. When an actual citation need is identified, record the same stable `CITE-YYYY-NNN` handoff ID on both sides with the exact source and theory destination.
+The source-side citation and handoff surface is `indexes/HUMAN_BIBLIOGRAPHY.md`. The receiving point-of-use ledger in the public theory repository is `Satobloc/HsH/ledgers/CITATION_LEDGER.md`. When an actual citation need is identified, record the same stable `CITE-YYYY-NNN` handoff ID on both sides with the exact source and theory destination. The HSH_RESOURCES side may store the private archived-copy path/hash; the public HsH side should expose the bibliographic citation/source rather than the private repo link.
 
 ## Repository layers
 
