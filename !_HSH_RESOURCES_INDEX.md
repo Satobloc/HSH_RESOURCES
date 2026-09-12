@@ -2,6 +2,8 @@
 
 > **Start here for people.** This is a compact router; the catalog itself is split into bounded documents rather than one giant file.
 
+> **Private-reference boundary:** HSH_RESOURCES is not a public cross-link target. The public provenance/navigation pair is `Satobloc/HsH` ↔ `Satobloc/SAT_THEORY_ARCHIVE_2023-25`. When material found here is used publicly, cite the original source in Chicago style or carry forward an attributed quotation/extract or sourced summary/paraphrase. Private repository paths/hashes may be retained internally for retrieval, but are not the public citation.
+
 No record-bearing catalog document contains more than **100 records**.
 
 ## Browse the archive
