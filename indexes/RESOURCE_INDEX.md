@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-11T06:07:58Z`
-- Tree/content state: `fcabbd25747dbfdbaa008dc4bfa239d0bb0c1e84855d3f23f610a57ca3b520a6`
+- Scanned: `2026-09-12T06:20:07Z`
+- Tree/content state: `ebbd2ba5c1b2c5bf980b9125c34ce2b9d515f1c2c7241632690ff980af5b3de6`
 - Coverage: complete structural traversal
-- Files: 1709
-- Uploaded source files: 1498
-- PDF papers: 1215
+- Files: 1720
+- Uploaded source files: 1509
+- PDF papers: 1225
 - Repository machinery files: 211
-- Byte-identical duplicate groups: 104
+- Byte-identical duplicate groups: 106
 
 ## Top-level coverage
 
@@ -42,7 +42,7 @@
 | `HAUL 9` | 4 |
 | `HISTORICAL` | 28 |
 | `KERR` | 16 |
-| `LIVE_RESEARCH_UPDATES` | 10 |
+| `LIVE_RESEARCH_UPDATES` | 21 |
 | `OUTSIDE RESEARCH LIBRARY` | 325 |
 | `PDF_SPECS` | 21 |
 | `PRIOR_ART` | 228 |
@@ -139,6 +139,9 @@
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB ACTIVITY - Satobloc's Commits.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Commits over time.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Satobloc's Commits.csv`
+- `31e249e7c80023a4eaa6e480212f4e50f891946758199952377a92b9eb4322d9`
+  - `LIVE_RESEARCH_UPDATES/EINSTEIN EQUIVALENCE PRINC.txt`
+  - `OUTSIDE RESEARCH LIBRARY/EINSTEIN EQUIVALENCE PRINC.txt`
 - `35b46d6497c947b41f3f314065412c57d48b44c8de827eaa5174429a47c8e3c9`
   - `EXPOSURE_STATS/EXP_ANALYSIS/CONCAT_DAI_Transcripts_TEXT.txt`
   - `EXPOSURE_STATS/PODCAST_EPs/DAI_Transcripts_TEXT.txt`
@@ -320,6 +323,9 @@
 - `c5f441626fcae53d8bf7530a65b7790837f3db84a1ff031e42e4eed16e808875`
   - `HAUL 4/7258242.pdf`
   - `HAUL 7/ssrn-7258242.pdf`
+- `c609fa471a672bd6f1ebfa93568aceddd6280f839f3f41721208ca2d201f2ddf`
+  - `HAUL 3/Physics.19.120.pdf`
+  - `LIVE_RESEARCH_UPDATES/Physics.19.120.pdf`
 - `c7145c5b45df7a3da496b742777ecb2a35e597fb91d1513273eada0aab1d1cb2`
   - `EXPOSURE_STATS/MISC_PAPERS/Notes_Boltzmann.pdf`
   - `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - Notes_Boltzmann.pdf`
@@ -1091,14 +1097,24 @@
 | `KERR/s10052-020-8138-9.pdf` | 1676422 |  |
 | `KERR/StijnJvanTongeren_bh_talk2.pdf` | 1262700 |  |
 | `KERR/zp85-xym1.pdf` | 264844 |  |
+| `LIVE_RESEARCH_UPDATES/1301.1361v2.pdf` | 801738 | arxiv:1301.1361v2 |
 | `LIVE_RESEARCH_UPDATES/589s-s1yy.pdf` | 12431006 |  |
 | `LIVE_RESEARCH_UPDATES/6dt2-sq44.pdf` | 1193735 |  |
+| `LIVE_RESEARCH_UPDATES/8x7k-rwx2.pdf` | 472650 |  |
 | `LIVE_RESEARCH_UPDATES/Can AI find physics beyond the standard model_.pdf` | 4006830 |  |
+| `LIVE_RESEARCH_UPDATES/gilliardASTP1-4-2020.pdf` | 524400 |  |
+| `LIVE_RESEARCH_UPDATES/gpzj-ch7h.pdf` | 204829 |  |
 | `LIVE_RESEARCH_UPDATES/k41k-2pnc.pdf` | 1654459 |  |
+| `LIVE_RESEARCH_UPDATES/m4h9-s6y6.pdf` | 1042319 |  |
+| `LIVE_RESEARCH_UPDATES/Physics.19.120.pdf` | 75459 |  |
+| `LIVE_RESEARCH_UPDATES/PhysRevD.80.065020.pdf` | 1057795 |  |
+| `LIVE_RESEARCH_UPDATES/rnx6-wqpf.pdf` | 296600 |  |
 | `LIVE_RESEARCH_UPDATES/rspa.2025.0413.pdf` | 1088089 | arxiv:2025.0413 |
 | `LIVE_RESEARCH_UPDATES/s41467-026-76389-4_reference.pdf` | 13510559 |  |
 | `LIVE_RESEARCH_UPDATES/s41586-026-10904-x.pdf` | 10478424 |  |
+| `LIVE_RESEARCH_UPDATES/universe-12-00002-v2.pdf` | 2145588 |  |
 | `LIVE_RESEARCH_UPDATES/w1sd-v69d.pdf` | 764891 |  |
+| `LIVE_RESEARCH_UPDATES/w6x5-cwbm.pdf` | 972097 |  |
 | `OUTSIDE RESEARCH LIBRARY/2608.28736v1.pdf` | 18835329 | arxiv:2608.28736v1 |
 | `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2005.09332v1.pdf` | 7402735 | arxiv:2005.09332v1 |
 | `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2005.11624v2.pdf` | 2250309 | arxiv:2005.11624v2 |
