@@ -1,0 +1,205 @@
+use_bpm 60
+use_debug false
+use_sched_ahead_time 1
+
+# Define instrumentation and melody information
+instruments = {
+  pad_synth: :hollow,
+  lead_synth: :pluck,
+  markov_synth: :organ_tonewheel,
+  slide_synth: :saw,
+  ambient_synth: :prophet,
+  guitar_synth: :piano,
+  voice_synth: :dark_ambience,
+  beat_samples: [:elec_plip, :elec_twang, :glitch_perc4, :sc808_claves],
+  background_sample: [:elec_twang, :sc808_tommid],
+  glitch_sample: :glitch_perc3
+}
+
+melody_notes = [:e4, :g4, :a4, :b4, :a4, :g4, :e4, :b3]
+
+# Define a Markov chain for note transitions
+markov_chain = {
+  :c4 => { :e3 => 0.3, :g4 => 0.7 },
+  :e3 => { :g5 => 0.2, :c4 => 0.8 },
+  :g4 => { :c4 => 0.7, :a5 => 0.3 },
+  :a5 => { :g4 => 0.9, :e5 => 0.1 },
+  :g5 => { :e3 => 0.8, :c5 => 0.2 },
+  :c5 => { :c4 => 0.5, :a5 => 0.5 },
+  :e5 => { :g4 => 0.8, :c5 => 0.2 }
+}
+
+# Function to get the next note based on the Markov chain
+def next_note_chain(current_note, chain)
+  next_notes = chain[current_note]
+  total_weight = next_notes.values.sum
+  rand_val = rand * total_weight
+  cumulative_weight = 0
+  next_notes.each do |note, weight|
+    cumulative_weight += weight
+    return note if rand_val < cumulative_weight
+  end
+end
+
+# Generate a sequence based on the Markov chain
+current_note = :c4
+sequence = [current_note]
+50.times do
+  current_note = next_note_chain(current_note, markov_chain)
+  sequence << current_note
+end
+
+# Convert note symbols to MIDI numbers
+note_to_midi = { :c4 => 60, :e3 => 52, :g4 => 67, :a5 => 81, :g5 => 79, :c5 => 72, :e5 => 76 }
+
+# Define a function for the beat samples
+define :play_beat do |sample_name, rate=1, amp=0.5|
+  sample sample_name, rate: rate, amp: amp
+end
+
+# Define a function for glitchy effects
+define :glitch_effect do |synth_name, note|
+  with_fx :flanger, bits: 8, sample_rate: 8000 do
+    with_synth synth_name do
+      play note, release: 2, cutoff: rrand(60, 120), res: 0.9, amp: 0.6
+    end
+  end
+end
+
+# Define a function for background texture
+define :background_texture do |sample_name, amp=0.5|
+  with_fx :echo, bits: 8, sample_rate: 8000 do
+    with_fx :wobble, bits: 8, sample_rate: 8000 do
+      sample sample_name, rate: rrand(0.5, 1.5), amp: amp
+    end
+  end
+end
+
+# Define a function for a Pink Floyd-like melody
+define :pink_floyd_melody do |notes, synth_name, amp=0.8|
+  with_fx :reverb, room: 1 do
+    with_fx :echo, phase: 0.75, decay: 8 do
+      with_synth synth_name do
+        notes.each do |n|
+          play n, release: 4, amp: amp
+          sleep 2
+        end
+      end
+    end
+  end
+end
+
+# Define a function for voice-like effects
+define :voice_effect do |synth_name, note, amp=0.5|
+  with_fx :pitch_shift, pitch: 12 do
+    with_synth synth_name do
+      play note, release: 4, amp: amp
+    end
+  end
+end
+
+# Define sections
+define :intro do
+  4.times do
+    use_synth instruments[:pad_synth]
+    play chord(:e3, :minor), release: 8, amp: 1
+    sleep 4
+    with_fx :echo, bits: 8, sample_rate: 8000 do
+      play_beat instruments[:beat_samples].choose, rrand(0.8, 1.2)
+      sleep 1
+    end
+  end
+end
+
+
+define :verse do
+  4.times do
+    use_synth instruments[:lead_synth]
+    pink_floyd_melody melody_notes, instruments[:lead_synth]
+    glitch_effect instruments[:glitch_sample], melody_notes.choose
+    sleep 2
+  end
+end
+
+
+define :chorus do
+  2.times do
+    use_synth instruments[:guitar_synth]
+    play_pattern_timed scale(:e4, :minor_pentatonic), (ring 0.5, 0.5, 1), amp: 0.8
+    play_pattern_timed scale(:e5, :minor_pentatonic), [0.5, 0.25].shuffle, amp: 0.8
+    use_synth instruments[:voice_synth]
+    voice_effect instruments[:voice_synth], (scale :e3, :minor_pentatonic).choose
+    sleep 4
+  end
+end
+
+
+define :bridge do
+  2.times do
+    sequence.each do |note|
+      use_synth instruments[:markov_synth]
+      play note_to_midi[note], release: 3, cutoff: 80, amp: 0.6
+      sleep 1
+      background_texture instruments[:background_sample].choose
+      sleep 4
+    end
+  end
+end
+
+
+define :outro do
+  4.times do
+    use_synth instruments[:ambient_synth]
+    play :e4, release: 16, cutoff: 80, amp: 0.5
+    sleep 4
+    play :a4, release: 16, cutoff: 80, amp: 0.5
+    sleep 4
+  end
+end
+
+# Play the song structure with increasing layers
+intro
+
+verse do
+  4.times do
+    play_beat instruments[:beat_samples].choose, rrand(0.8, 1.2)
+    sleep 1
+  end
+end
+
+chorus do
+  4.times do
+    use_synth instruments[:lead_synth]
+    pink_floyd_melody melody_notes, instruments[:lead_synth]
+  end
+end
+
+verse do
+  4.times do
+    glitch_effect instruments[:glitch_sample], melody_notes.choose
+    sleep 2
+  end
+end
+
+bridge do
+  4.times do
+    play_beat instruments[:beat_samples].choose, rrand(0.8, 1.2)
+    sleep 1
+  end
+end
+
+chorus do
+  2.times do
+    use_synth instruments[:guitar_synth]
+    play_pattern_timed scale(:e4, :minor_pentatonic), (ring 0.5, 0.5, 1), amp: 0.8
+    play_pattern_timed scale(:e5, :minor_pentatonic), [0.5, 0.25].shuffle, amp: 0.8
+  end
+end
+
+outro do
+  4.times do
+    use_synth instruments[:voice_synth]
+    voice_effect instruments[:voice_synth], (scale :e3, :minor_pentatonic).choose
+    sleep 4
+  end
+end
