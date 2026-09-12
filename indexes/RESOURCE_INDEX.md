@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-12T06:26:50Z`
-- Tree/content state: `10bfd74a2820722398409d878eac0507b7884148702ccfdaf89114d843dc16ed`
+- Scanned: `2026-09-12T15:49:00Z`
+- Tree/content state: `d17ef2b5e9121b22e865e864027a7044fa4212e613c37df4f4d128860851caf9`
 - Coverage: complete structural traversal
-- Files: 1745
-- Uploaded source files: 1534
-- PDF papers: 1236
-- Repository machinery files: 211
-- Byte-identical duplicate groups: 116
+- Files: 1821
+- Uploaded source files: 1607
+- PDF papers: 1238
+- Repository machinery files: 214
+- Byte-identical duplicate groups: 118
 
 ## Top-level coverage
 
@@ -26,13 +26,13 @@
 | `EINSTEIN - Über die spezielle und die allgemeine Relativitätstheorie.txt` | 1 |
 | `EINSTEIN — SIDELIGHTS ON RELATIV.txt` | 1 |
 | `EINSTEIN+MINKOWSKI — PRINCIP RELAT.txt` | 1 |
-| `EXPOSURE_STATS` | 244 |
+| `EXPOSURE_STATS` | 306 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
 | `HAUL 11` | 6 |
 | `HAUL 12` | 7 |
-| `HAUL 2` | 69 |
+| `HAUL 2` | 72 |
 | `HAUL 3` | 41 |
 | `HAUL 4` | 14 |
 | `HAUL 5` | 10 |
@@ -43,7 +43,7 @@
 | `HISTORICAL` | 28 |
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 21 |
-| `OUTSIDE RESEARCH LIBRARY` | 338 |
+| `OUTSIDE RESEARCH LIBRARY` | 340 |
 | `PDF_SPECS` | 21 |
 | `PRIOR_ART` | 228 |
 | `README.md` | 1 |
@@ -51,15 +51,16 @@
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
 | `derived` | 2 |
 | `indexes` | 197 |
-| `info` | 1 |
+| `info` | 7 |
 | `requirements-tools.txt` | 1 |
 | `symmetry-11-01298.pdf` | 1 |
 | `tests` | 1 |
-| `tools` | 8 |
+| `tools` | 11 |
 
 ## Duplicate-content groups
 
 - `01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b`
+  - `EXPOSURE_STATS/arXiv_analysis/gitignore.txt`
   - `HAUL 12/gitignore.txt`
   - `HISTORICAL/gitignore.txt`
   - `PDF_SPECS/gitignore.txt`
@@ -167,6 +168,11 @@
 - `430f3bf16ba6f10c87a74775810b60b9f25d10e1ac164cb5b9925e10c4dff907`
   - `PRIOR_ART/2603.12434v1.pdf`
   - `PRIOR_ART/LENNY 2603.12434v1 (1).pdf`
+- `47b14faa4ac02dad37138e094d6f8a4ddaac657faa498842c780241351e8fca6`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/TheNewPhysics_TrendsChart_AvgConsumptionTime_SincePublished (1).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/TheNewPhysics_TrendsChart_AvgConsumptionTime_SincePublished (2).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/TheNewPhysics_TrendsChart_AvgConsumptionTime_SincePublished (3).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/TheNewPhysics_TrendsChart_AvgConsumptionTime_SincePublished.csv`
 - `483983ea4c464f1f6df3029c049e63cedf68b960746741b01427157d298c1a3a`
   - `HAUL 2/ssrn-6972282 (1).pdf`
   - `HAUL 2/ssrn-6972282.pdf`
@@ -211,6 +217,9 @@
 - `5f35c6e848a6eb00c2f3cfc424d6000e796005934665e28432e367b5c9690832`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB ACTIVITY - MAY GITHUB ACTIVITY.txt`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — MAY GITHUB ACTIVITY.txt`
+- `60aa04afd73906bd831556d6152e3603be5916c9c586eaf1c9df2bab45c667d7`
+  - `HAUL 12/0512012v1.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/0512012v1.pdf`
 - `61bb52495a9a54e6230c5404152fac61487b6851a212a6120876aed6d11778d1`
   - `EXPOSURE_STATS/SAT_IMPACT/SAT RECON — Gg3.txt`
   - `EXPOSURE_STATS/SAT_IMPACT/SAT RECON — Goog.txt`
@@ -232,6 +241,9 @@
 - `69bafd656f9f09a6d6248f926e65bd8bd090336fb46587487ef96169cd9c4626`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/a13b3444c1e2926aca5f25bdda522bc6_lecture07.pdf`
   - `H(s)H_Toolkit/a13b3444c1e2926aca5f25bdda522bc6_lecture07.pdf`
+- `6a5a3b169283f62efb63821a625aaa1219229a8ac5155c2493047121b1095a0c`
+  - `HAUL 12/rspa.2025.0413.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/rspa.2025.0413.pdf`
 - `6e70f9b7e04989238e08c647f314411e642b2c6bcf787b21335ccdd28df10d9e`
   - `HAUL 3/0010047v2 (1).pdf`
   - `HAUL 3/0010047v2.pdf`
@@ -368,9 +380,6 @@
 - `d3883c529cfe6a944d77e2899d53d17a35d0593f29f3199c7799c2f4979b69e2`
   - `H(s)H_Toolkit/HsHtoolkit2_5.pdf`
   - `H(s)H_Toolkit/HsHtoolkit_5.pdf`
-- `d4affed459e167c3a802706bbee8fbab6116faf3926162ff1cfc5bfe27fa93c2`
-  - `LIVE_RESEARCH_UPDATES/rspa.2025.0413.pdf`
-  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/rspa.2025.0413.pdf`
 - `d7aabb1d64ca0acc5750bb4adf3c48c42ee22b5d6bf2c18b8c33ea49dc7fd4ca`
   - `HAUL 2/ssrn-6315940.pdf`
   - `HAUL 3/helic 6315940.pdf`
@@ -935,6 +944,7 @@
 | `HAUL 12/rspa.2025.0413.pdf` | 1088076 | arxiv:2025.0413 |
 | `HAUL 12/s41586-025-09739-9.pdf` | 8837830 |  |
 | `HAUL 12/ssrn-7347618.pdf` | 7961344 | ssrn:7347618 |
+| `HAUL 2/My Development of X-Ray Films.pdf` | 2545481 |  |
 | `HAUL 2/ssrn-6315940.pdf` | 893394 | ssrn:6315940 |
 | `HAUL 2/ssrn-6400621.pdf` | 952791 | ssrn:6400621 |
 | `HAUL 2/ssrn-6435063.pdf` | 231060 | ssrn:6435063 |
@@ -1402,6 +1412,7 @@
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2609.03056v1.pdf` | 3363278 | arxiv:2609.03056v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2609.03710v1.pdf` | 615184 | arxiv:2609.03710v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/Long-term statistics of pulsar glitches due to history-dependent avalanches.pdf` | 2268501 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/0512012v1.pdf` | 733904 | unresolved-seven-digit-id:0512012v1 |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/589s-s1yy.pdf` | 12431006 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/6dt2-sq44.pdf` | 1193735 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A new hypothesis could connect two of physics’ greatest mysteries_ dark energy and quantum gravity - Copy.pdf` | 1804814 |  |
@@ -1422,7 +1433,7 @@
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Ten windows on the future of particle physics – CERN Courier.pdf` | 1532190 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault - Copy.pdf` | 2197799 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault.pdf` | 2197799 |  |
-| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/rspa.2025.0413.pdf` | 1088089 | arxiv:2025.0413 |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/rspa.2025.0413.pdf` | 1088076 | arxiv:2025.0413 |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Science says some spiders can launch into the sky using silk and electricity to fly and the physics is wild.pdf` | 1101043 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists just overturned a century-old physics assumption _ ScienceDaily - Copy.pdf` | 5368654 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists just overturned a century-old physics assumption _ ScienceDaily.pdf` | 5368654 |  |
