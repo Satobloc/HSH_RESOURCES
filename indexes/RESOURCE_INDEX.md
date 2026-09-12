@@ -2,14 +2,14 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-12T06:20:07Z`
-- Tree/content state: `ebbd2ba5c1b2c5bf980b9125c34ce2b9d515f1c2c7241632690ff980af5b3de6`
+- Scanned: `2026-09-12T06:26:50Z`
+- Tree/content state: `10bfd74a2820722398409d878eac0507b7884148702ccfdaf89114d843dc16ed`
 - Coverage: complete structural traversal
-- Files: 1720
-- Uploaded source files: 1509
-- PDF papers: 1225
+- Files: 1745
+- Uploaded source files: 1534
+- PDF papers: 1236
 - Repository machinery files: 211
-- Byte-identical duplicate groups: 106
+- Byte-identical duplicate groups: 116
 
 ## Top-level coverage
 
@@ -26,7 +26,7 @@
 | `EINSTEIN - Über die spezielle und die allgemeine Relativitätstheorie.txt` | 1 |
 | `EINSTEIN — SIDELIGHTS ON RELATIV.txt` | 1 |
 | `EINSTEIN+MINKOWSKI — PRINCIP RELAT.txt` | 1 |
-| `EXPOSURE_STATS` | 232 |
+| `EXPOSURE_STATS` | 244 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -43,7 +43,7 @@
 | `HISTORICAL` | 28 |
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 21 |
-| `OUTSIDE RESEARCH LIBRARY` | 325 |
+| `OUTSIDE RESEARCH LIBRARY` | 338 |
 | `PDF_SPECS` | 21 |
 | `PRIOR_ART` | 228 |
 | `README.md` | 1 |
@@ -107,12 +107,18 @@
 - `165a78a97cb22cc7fccd31b3784bb2ca35dc6ee41567c0c4afd5ff2982511bb4`
   - `HAUL 4/1704.04648v2 (1).pdf`
   - `HAUL 4/1704.04648v2.pdf`
+- `172ffcc104920c72a640bf4a10820c1e764ddc04aceef9cf326cb2c2d1fd8af0`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists just overturned a century-old physics assumption _ ScienceDaily - Copy.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists just overturned a century-old physics assumption _ ScienceDaily.pdf`
 - `17350dcca317338da146a56da70c222a4db2f5f77a2c29959a62d2ee58c28412`
   - `HAUL 2/ssrn-6912299 (1).pdf`
   - `HAUL 2/ssrn-6912299.pdf`
 - `1f0074df00937b359c6efca4e88265bc7f5db38151fced2b47e9253bd1746446`
   - `PRIOR_ART/s10714-025-03408-y (1).pdf`
   - `PRIOR_ART/s10714-025-03408-y.pdf`
+- `2173c905c5d114e5dd559091a059c7d6b4c1d0e7863393b026d3d590b88b3b42`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheNewPhysics_TrendsChart_AvgConsumptionTime_SincePublished (1).csv`
+  - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheNewPhysics_TrendsChart_AvgConsumptionTime_SincePublished.csv`
 - `2292c55e99962c85ac3cb4d4896c431d0c1d22b657c01db983dbb6fa95742787`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB ACTIVITY - Unique cloners in last 14 days.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Unique cloners in last 14 days.csv`
@@ -142,6 +148,9 @@
 - `31e249e7c80023a4eaa6e480212f4e50f891946758199952377a92b9eb4322d9`
   - `LIVE_RESEARCH_UPDATES/EINSTEIN EQUIVALENCE PRINC.txt`
   - `OUTSIDE RESEARCH LIBRARY/EINSTEIN EQUIVALENCE PRINC.txt`
+- `325df60a77e33a80b5652f3870c46002c675f270f37904c219b0bd000cb711a6`
+  - `LIVE_RESEARCH_UPDATES/k41k-2pnc.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/k41k-2pnc.pdf`
 - `35b46d6497c947b41f3f314065412c57d48b44c8de827eaa5174429a47c8e3c9`
   - `EXPOSURE_STATS/EXP_ANALYSIS/CONCAT_DAI_Transcripts_TEXT.txt`
   - `EXPOSURE_STATS/PODCAST_EPs/DAI_Transcripts_TEXT.txt`
@@ -167,6 +176,9 @@
 - `4b805b013b0a1fafc90ae9452423d0f438a5eceac454ec916549db0731c7cca2`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1.pdf`
+- `5029c5a37bbbbd19b57d24f1228ff306a7ea6e632a8e60c2f7d13dff5fe93873`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A simple discovery is shaking the foundations of spintronics _ ScienceDaily - Copy.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A simple discovery is shaking the foundations of spintronics _ ScienceDaily.pdf`
 - `514e24ff641ba0eda717b43317e21e8f3368efc7d8fded755e744b5b956fcc4c`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (1).csv`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (2).csv`
@@ -178,6 +190,9 @@
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (3).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time (4).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_Engagement_all-time.csv`
+- `5507eaede9f2237fd272598086971096f1557543474151213156ff5d0a25a77e`
+  - `LIVE_RESEARCH_UPDATES/6dt2-sq44.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/6dt2-sq44.pdf`
 - `58ba1db7860eba50d2d9aa3dc42495f87234f49bd1b8e220040e4e9c9b0a3c08`
   - `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2606.25499v1.pdf`
   - `PRIOR_ART/2606.25499v1.pdf`
@@ -202,6 +217,9 @@
 - `62b66317da58231100f02164b8d0a17d0acaf91bd481474d531dd889cd4daedc`
   - `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.24002v1.pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.24002v1.pdf`
+- `63c3435b2fd525afcf8672db37bdb8e2b0438550a57a3fb9aea4f53ce3208a4c`
+  - `LIVE_RESEARCH_UPDATES/589s-s1yy.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/589s-s1yy.pdf`
 - `660d1364447644b4eddf51ce56c6435ca90c799e14aebf8f6b4b38ea74812009`
   - `PRIOR_ART/2605.26410v1 (1).pdf`
   - `PRIOR_ART/2605.26410v1.pdf`
@@ -217,6 +235,9 @@
 - `6e70f9b7e04989238e08c647f314411e642b2c6bcf787b21335ccdd28df10d9e`
   - `HAUL 3/0010047v2 (1).pdf`
   - `HAUL 3/0010047v2.pdf`
+- `72f21ed12d5a937c95540dace2700bc5b190a6132cf89691bc9a4b2d79440193`
+  - `LIVE_RESEARCH_UPDATES/Can AI find physics beyond the standard model_.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Can AI find physics beyond the standard model_.pdf`
 - `743828e4368cce7613822b02440094fc3deb980da2fbec6fd805b3b9db8071ff`
   - `H(s)H_Toolkit/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`
@@ -239,6 +260,9 @@
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (2).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days.csv`
+- `778cffa3a62d2c01965ac5598ab27f1f291945833328ec14bb13db96e6a11382`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault - Copy.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault.pdf`
 - `788bc34e1fc0ce72ab2f643efaab1b0650b92a2359f5141818c2a2e5b69df9a6`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/pdfer.py`
   - `H(s)H_Toolkit/pdfer.py`
@@ -259,6 +283,9 @@
 - `85fb06fc0c55d3ebd80eb2e184d5198de6afdebbf5b5a7e8be305ba87b12874a`
   - `HAUL 1/ssrn-7075498 (1).pdf`
   - `HAUL 1/ssrn-7075498.pdf`
+- `90316b0cfebb35db92065020670ed6603b904c3d87d3dba5b6bc2b217d1919ac`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A new hypothesis could connect two of physics’ greatest mysteries_ dark energy and quantum gravity - Copy.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A new hypothesis could connect two of physics’ greatest mysteries_ dark energy and quantum gravity.pdf`
 - `91367965fe8e16aa5964a9e01ab2e482362ff4bef4112cec34cf651ffd2b0e2e`
   - `HAUL 3/Aspect (1).pdf`
   - `HAUL 3/Aspect.pdf`
@@ -341,6 +368,9 @@
 - `d3883c529cfe6a944d77e2899d53d17a35d0593f29f3199c7799c2f4979b69e2`
   - `H(s)H_Toolkit/HsHtoolkit2_5.pdf`
   - `H(s)H_Toolkit/HsHtoolkit_5.pdf`
+- `d4affed459e167c3a802706bbee8fbab6116faf3926162ff1cfc5bfe27fa93c2`
+  - `LIVE_RESEARCH_UPDATES/rspa.2025.0413.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/rspa.2025.0413.pdf`
 - `d7aabb1d64ca0acc5750bb4adf3c48c42ee22b5d6bf2c18b8c33ea49dc7fd4ca`
   - `HAUL 2/ssrn-6315940.pdf`
   - `HAUL 3/helic 6315940.pdf`
@@ -407,6 +437,7 @@
 - `f9139507c03a4a58d03a5f43d82a02d8db1bd64b21fb4eaebd648121be8422cd`
   - `EXPOSURE_STATS/MISC_PAPERS/w1sd-v69d.pdf`
   - `LIVE_RESEARCH_UPDATES/w1sd-v69d.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/w1sd-v69d.pdf`
 - `fbcebed5b0ac33642d6d10255ec69871c63890046204a0abd4cbd5ba1798331d`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI Podcast Stats.txt`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI Podcast.txt`
@@ -1371,22 +1402,33 @@
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2609.03056v1.pdf` | 3363278 | arxiv:2609.03056v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2609.03710v1.pdf` | 615184 | arxiv:2609.03710v1 |
 | `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/Long-term statistics of pulsar glitches due to history-dependent avalanches.pdf` | 2268501 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/589s-s1yy.pdf` | 12431006 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/6dt2-sq44.pdf` | 1193735 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A new hypothesis could connect two of physics’ greatest mysteries_ dark energy and quantum gravity - Copy.pdf` | 1804814 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A new hypothesis could connect two of physics’ greatest mysteries_ dark energy and quantum gravity.pdf` | 1804814 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A simple discovery is shaking the foundations of spintronics _ ScienceDaily - Copy.pdf` | 1846769 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A simple discovery is shaking the foundations of spintronics _ ScienceDaily.pdf` | 1846769 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/acs.jchemed.6c00141.pdf` | 4719077 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Caltech startup unveils physics AI that skips transformers_ No benchmark proof yet.pdf` | 1112359 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Can AI find physics beyond the standard model_.pdf` | 4006830 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Chemical physicists quantitatively model electron interactions in real quantum materials.pdf` | 403955 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/In-orbit test of the weak equivalence principle with atom interferometry _ Science Advances.pdf` | 7154984 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/k41k-2pnc.pdf` | 1654459 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Long-predicted gravitational effect seen in a quantum object for the very first time – Einstein’s theory passes another crucial test.pdf` | 1384921 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - APOD 2016 February 11 - LIGO Detects Gravitational Waves from Merging Black Holes.pdf` | 1093379 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Grand Unification Theories And Supersymmetry  Physics  Research Starters  EBS.pdf` | 212049 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - October News - Polish Gangs Hunt PUAs after Tom Torero Killer Strikes Again - Th.pdf` | 7825811 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Taking dark energy out of the equation Mathematicians challenge the standard cosmological model of the universe.pdf` | 188943 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Ten windows on the future of particle physics – CERN Courier.pdf` | 1532190 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault - Copy.pdf` | 2197799 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault.pdf` | 2197799 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/rspa.2025.0413.pdf` | 1088089 | arxiv:2025.0413 |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Science says some spiders can launch into the sky using silk and electricity to fly and the physics is wild.pdf` | 1101043 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists just overturned a century-old physics assumption _ ScienceDaily - Copy.pdf` | 5368654 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists just overturned a century-old physics assumption _ ScienceDaily.pdf` | 5368654 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists observe Einstein's gravity in the quantum world.pdf` | 1298617 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/The physics of brain development_ How cells pull together to form the neural tube.pdf` | 144799 |  |
+| `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/w1sd-v69d.pdf` | 764891 |  |
 | `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/“Really bizarre” quantum discovery defies the rules of physics _ ScienceDaily.pdf` | 1584190 |  |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2608.31163v1.pdf` | 488363 | arxiv:2608.31163v1 |
 | `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.00119v1.pdf` | 2715711 | arxiv:2609.00119v1 |

@@ -707,7 +707,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
 **Repository path:** `EXPOSURE_STATS/MISC_PAPERS/w1sd-v69d.pdf`  
-**Duplicate repository paths:** `LIVE_RESEARCH_UPDATES/w1sd-v69d.pdf`  
+**Duplicate repository paths:** `LIVE_RESEARCH_UPDATES/w1sd-v69d.pdf`; `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/w1sd-v69d.pdf`  
 **Keywords from source:** none detected  
 **Extraction:** extracted; 17 pages; 60179 non-space characters  
 **Title basis:** pdf-metadata  
