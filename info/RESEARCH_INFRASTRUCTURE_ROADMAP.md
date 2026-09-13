@@ -164,6 +164,114 @@ Automatable stages:
 
 Human/LLM review remains required for the central question: **does this source actually support the sentence being cited?**
 
+## Workstream G — internal lineage, terminology, and continuous digestion
+
+Goal: make the historical SAT/H(s)H corpus legible enough that an LLM can reliably answer **what is present, where it came from, when it appeared, how it was classified at the time, how terminology changed, and what later conversation evidence confirms or revises the dating/context**.
+
+### Primary internal source families
+
+Treat these as distinct evidence classes rather than flattening them into one corpus:
+
+1. **Explicit glossaries** — usually filenames containing `glossary`, definitions, terminology, dictionary, lexicon, etc. These are concentrated semantic sources and should be indexed line/entry-wise.
+2. **Translation glossaries / crosswalks** — especially `Standard-To-SAT`, `SAT-To-Standard`, and equivalent mapping documents. Preserve directionality, date, source wording, and whether a relation is exact, approximate, historical, analogical, or unresolved.
+3. **Archive-front timelines / status pages** — concentrated chronology and retrospective organization. Preserve both the stated event date and the date/version of the timeline document itself.
+4. **Conversation archives** — strongest source for exact message timestamps, correction/supersession context, and conversational first-appearance candidates. Do not assume completeness: missing conversations remain an explicit coverage limitation.
+5. **Original general archive** — concentrated summaries, off-the-cuff idea dictation, records of what Nathan considered important, partial self-classification of ideas, and evidence for the early archival tendency/intent of the project. It contains dated and undated material in heterogeneous formats, so accessibility and dating confidence must be tracked independently.
+
+### Ingest contract
+
+Every source artifact should acquire, where possible:
+
+- `repo`, `path`, `content_hash`;
+- `source_family` from the classes above;
+- `native_format`;
+- `access_state` (`native-readable`, `text-extracted`, `OCR-extracted`, `handler-required`, `unsupported`);
+- `source_date` / date range if explicit;
+- `date_basis` (`embedded`, `filename`, `git-history`, `conversation-timestamp`, `timeline-asserted`, `inferred`, `unknown`);
+- `date_confidence`;
+- `ingest_date` and tool version;
+- stable locator (page/line/entry/message UUID/timestamp);
+- `currentness_status` where explicitly established (`current`, `historical`, `superseded`, `clarified`, `unresolved`, etc.);
+- authority/provenance role (`Nathan-direct`, assistant/contextual, external-source, later synthesis, etc.);
+- extraction/OCR quality notes.
+
+### Derived internal graph
+
+Build an explicit graph/table layer rather than relying on narrative memory alone:
+
+- **document ↔ extracted-text surface**;
+- **term ↔ definition occurrence**;
+- **SAT term ↔ standard term relation**;
+- **claim/idea ↔ first-located occurrence**;
+- **claim/idea ↔ later clarification/correction/supersession**;
+- **timeline event ↔ underlying source evidence**;
+- **summary/archive note ↔ confirming conversation timestamp(s)**;
+- **conversation message ↔ related archive documents**;
+- **historical term ↔ current term**.
+
+Every edge must retain its source and status. `first-located` must remain distinct from absolute historical first appearance.
+
+### Keyword / terminology bucket
+
+Maintain a broad retrieval bucket assembled from:
+
+- explicit glossaries;
+- Standard↔SAT translation glossaries;
+- timelines/status-history documents;
+- provenance/first-appearance notes;
+- naming/definition language in Nathan-authored conversation messages;
+- terms extracted from high-value original-archive summaries.
+
+Bucket membership is **not** authority. It means only “search/correlation candidate.” The bucket should support search in both directions: SAT jargon → standard terminology and standard terminology → SAT/historical wording.
+
+### Dating and verification strategy
+
+Where an archive file is undated or retrospectively dated, use conversations and repository history to constrain it, but preserve the distinction between:
+
+- date stated in source;
+- earliest repository evidence;
+- earliest located conversation occurrence;
+- later retrospective timeline claim;
+- current best-supported range.
+
+Do not silently collapse these into one date.
+
+### Continuous-ingest behavior
+
+New material should integrate without requiring manual reconstruction of the whole archive:
+
+`new/changed file -> structural inventory -> accessibility classification -> extraction/OCR if needed -> source-family classification -> metadata/date extraction -> term/definition/provenance scan -> index update -> cross-link candidate generation -> review queue -> durable HsH navigation surfaces`
+
+The pipeline should be incremental by content hash: unchanged sources are skipped; changed/new sources are processed and downstream derived indexes rebuilt deterministically.
+
+### Coverage reporting
+
+Maintain an always-current machine-readable dashboard with counts for:
+
+- total source files by repository and source family;
+- native-readable vs extracted/OCR vs unresolved;
+- dated vs partially dated vs undated;
+- indexed vs pending;
+- conversation coverage by date range and known missing intervals;
+- glossary/crosswalk/timeline documents located;
+- first-appearance candidates reviewed/unreviewed;
+- terminology relations reviewed/unreviewed;
+- unresolved provenance/date conflicts.
+
+This coverage state is as important as the search result itself: absence from an incomplete corpus must never be reported as nonexistence.
+
+### Automation boundary
+
+Automation may discover, extract, normalize, cross-link, rank, and surface candidates. It must not silently decide:
+
+- what SAT/H(s)H is;
+- whether a historical claim is current;
+- whether two terms are truly synonymous;
+- whether a located occurrence is the genuine first appearance;
+- whether an external parallel implies influence, ancestry, or priority.
+
+Those are review/presentation questions grounded in Nathan-authoritative context and explicit provenance.
+
 ## Shared data contracts
 
 Use durable source identities of the form:
@@ -187,7 +295,7 @@ Never collapse them into one ambiguous `date` field.
 
 The workstreams depend on each other, so the order is:
 
-**A. accessibility -> B. normalized analytics substrate -> C. field timeline -> D. prior-art/nLab comparison -> E. toolkit digestion -> F. citation closure**
+**A. accessibility -> G. internal lineage/terminology digestion -> B. normalized analytics substrate -> C. field timeline -> D. prior-art/nLab comparison -> E. toolkit digestion -> F. citation closure**
 
 They can overlap once A is stable. In particular, citation needs discovered during C–E should immediately enter the citation ledger even before full citation closure.
 
