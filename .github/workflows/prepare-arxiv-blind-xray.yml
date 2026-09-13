@@ -1,0 +1,35 @@
+name: Prepare blinded arXiv structural x-ray corpus
+
+on:
+  push:
+    paths:
+      - 'EXPOSURE_STATS/arXiv_analysis/2026-09-13_RANDOM_100x3_JAN_SEP/prepare_blind_corpus.py'
+      - '.github/workflows/prepare-arxiv-blind-xray.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Build blinded corpus and key
+        run: python 'EXPOSURE_STATS/arXiv_analysis/2026-09-13_RANDOM_100x3_JAN_SEP/prepare_blind_corpus.py'
+      - name: Commit blind corpus
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'EXPOSURE_STATS/arXiv_analysis/2026-09-13_RANDOM_100x3_JAN_SEP/BLIND_300_title_abstract.csv' \
+                  'EXPOSURE_STATS/arXiv_analysis/2026-09-13_RANDOM_100x3_JAN_SEP/BLIND_KEY_DO_NOT_USE_FOR_SCORING.csv' \
+                  'EXPOSURE_STATS/arXiv_analysis/2026-09-13_RANDOM_100x3_JAN_SEP/BLINDING_METADATA.json'
+          if git diff --cached --quiet; then
+            echo 'No changes.'
+            exit 0
+          fi
+          git commit -m 'Prepare blinded 300-paper arXiv x-ray corpus'
+          git pull --rebase origin main
+          git push
