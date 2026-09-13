@@ -1,0 +1,64 @@
+name: Sync random arXiv analysis corpus
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/sync-arxiv-random-sample.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Copy random arXiv corpus from HsH Common
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC='https://raw.githubusercontent.com/Satobloc/HsH/main/WORKSPACES/COMMON/ARXIV_RANDOM_SAMPLES'
+          DST='EXPOSURE_STATS/arXiv_analysis/2026-09-13_RANDOM_100x3_JAN_SEP'
+          mkdir -p "$DST"
+          files=(
+            'results/README.md'
+            'results/arxiv_random_100_2024_jan_sep.csv'
+            'results/arxiv_random_100_2024_jan_sep.json'
+            'results/arxiv_random_100_2025_jan_sep.csv'
+            'results/arxiv_random_100_2025_jan_sep.json'
+            'results/arxiv_random_100_2026_jan_sep.csv'
+            'results/arxiv_random_100_2026_jan_sep.json'
+            'results/arxiv_random_100_2024_2025_2026_combined.csv'
+            'results/arxiv_random_100_2024_2025_2026_combined.json'
+            'arxiv_random_sample.py'
+          )
+          for f in "${files[@]}"; do
+            out="$DST/${f#results/}"
+            curl -fL --retry 3 --retry-delay 2 "$SRC/$f" -o "$out"
+          done
+          cat > "$DST/PROVENANCE.md" <<'EOF'
+          # Provenance
+
+          Random arXiv corpus generated in `Satobloc/HsH` Common and copied here because this directory is the durable HSH_RESOURCES home for arXiv exposure/analysis material.
+
+          Source workspace: `WORKSPACES/COMMON/ARXIV_RANDOM_SAMPLES/`
+
+          Sampling target: 100 physics abstracts each from Jan-Sep 2024, 2025, and 2026 (300 total), fixed seed `20260912`, official arXiv OAI-PMH metadata API.
+
+          This copy preserves the original CSV/JSON datasets, README, and sampler script. Subsequent SATity/structural analyses of this corpus should be stored alongside these source materials rather than in the live Common workspace.
+          EOF
+      - name: Commit corpus
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'EXPOSURE_STATS/arXiv_analysis/2026-09-13_RANDOM_100x3_JAN_SEP'
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Archive random 2024-2026 arXiv analysis corpus'
+          git pull --rebase origin main
+          git push
