@@ -1,0 +1,44 @@
+name: arXiv longitudinal topic atlas pilot
+
+on:
+  push:
+    paths:
+      - 'EXPOSURE_STATS/arXiv_analysis/LONGITUDINAL_TOPIC_ATLAS/harvest_topic_atlas.py'
+      - '.github/workflows/arxiv-longitudinal-topic-atlas-pilot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Harvest anchor-year pilot
+        run: |
+          python 'EXPOSURE_STATS/arXiv_analysis/LONGITUDINAL_TOPIC_ATLAS/harvest_topic_atlas.py' \
+            --years 1992 1995 2000 2005 2010 2015 2020 2024 2025 2026 \
+            --days-per-year 4 \
+            --max-per-year 500 \
+            --seed 20260913 \
+            --current-date 2026-09-13 \
+            --out 'EXPOSURE_STATS/arXiv_analysis/LONGITUDINAL_TOPIC_ATLAS/data/pilot_v1'
+      - name: Commit pilot data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 'EXPOSURE_STATS/arXiv_analysis/LONGITUDINAL_TOPIC_ATLAS/data/pilot_v1'
+          if git diff --cached --quiet; then
+            echo 'No changes.'
+            exit 0
+          fi
+          git commit -m 'Add longitudinal arXiv topic atlas pilot data'
+          git pull --rebase origin main
+          git push
