@@ -1,11 +1,11 @@
-# Nathan Peer-Review Writing Fingerprint — v0.1
+# Nathan Peer-Review Writing Fingerprint — v8.0
 
 **Track:** 1A — Formal scientific / peer-review writing  
 **Priority:** **1 — PRIMARY ACTIVE VOICE TARGET**  
 **Purpose:** drafting, revising, or evaluating scientific prose intended for peer review, formal technical circulation, or manuscript-style presentation  
 **Status:** PROVISIONAL ACTIVE FINGERPRINT  
 **Authority:** direct Nathan calibration + verified/corpus-derived cross-register evidence + one genuine historical formal-science sample + mature formal argumentative prose; not yet calibrated against a substantial modern peer-reviewed science manuscript written entirely by Nathan  
-**Supersedes for this purpose:** `Nathan_Formal_Scientific_Transfer_v0.1.md`  
+**Supersedes for this purpose:** `HISTORY/Nathan_Formal_Scientific_Transfer_v0.1.md`  
 **Does not supersede:** the identification/provenance fingerprint, creative/informal reference, or the general nonfiction communication standard for their own purposes
 
 ---
@@ -534,7 +534,7 @@ Before accepting a peer-review paragraph, ask:
 
 ## 21. Evidence status and calibration
 
-This fingerprint is materially better grounded than `Nathan_Formal_Scientific_Transfer_v0.1.md` because the evidence base now includes:
+This fingerprint is materially better grounded than `HISTORY/Nathan_Formal_Scientific_Transfer_v0.1.md` because the evidence base now includes:
 
 - direct Nathan correction of the voice model;
 - a genuine 1999 senior thesis as historical formal-science evidence;
@@ -544,13 +544,11 @@ This fingerprint is materially better grounded than `Nathan_Formal_Scientific_Tr
 
 Important limitation: the 1999 thesis is historically distant and strongly genre/education constrained, and mature argumentative prose from other domains cannot determine the exact temperature of a modern scientific paper. No substantial modern peer-reviewed scientific manuscript written entirely by Nathan has yet been used as the final calibration target.
 
-Therefore this remains **v0.1 / provisional**.
+Therefore this remains **PROVISIONAL** within the `v8.0` lineage.
 
-Promote to `v1.0` only after:
+Before changing its approval status, use it on one or more substantial scientific manuscript sections, obtain direct Nathan correction of the resulting prose, and obtain explicit Nathan approval that the fingerprint is fit to serve as the active peer-review standard.
 
-1. use on one or more substantial scientific manuscript sections;
-2. direct Nathan correction of the resulting prose;
-3. explicit Nathan approval that the fingerprint is fit to serve as the active peer-review standard.
+Version number and approval status are deliberately separate: `v8.0` means “current split-generation successor to the v7 combined model,” not “approved/final.”
 
 ---
 

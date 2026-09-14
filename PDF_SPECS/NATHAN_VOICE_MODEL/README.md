@@ -1,149 +1,107 @@
 # Nathan Voice / Communication Model — Index, Purpose, and Authority
 
-**Purpose:** control which voice-model documents are used for which task. The directory now separates two operational goals that should not be conflated:
+**Purpose:** keep the active voice-model surfaces immediately legible at directory level. Versioning, file placement, and authority status should agree rather than require a reader to decode a README exception.
 
-1. **write scientific prose for peer review in Nathan’s likely mature formal voice**;
-2. **identify/provenance Nathan-authored material in mixed corpora** (with occasional communication/emulation use).
+The last combined model was `v7`. The current split architecture is therefore the **v8 generation**.
 
-These purposes overlap in evidence but have different targets. The peer-review fingerprint should not imitate conversational artifacts merely because they are useful for identification.
+> **Version lineage and approval status are separate.** `v8.0` means “current successor generation to v7,” not “approved/final.” Each active file carries its own explicit status.
 
 ---
 
-## Operational priority
+## ACTIVE — v8.0
 
-### PRIORITY 1 — PEER-REVIEW WRITING
+### Priority 1 — peer-review scientific writing
 
-`Nathan_Peer_Review_Writing_Fingerprint_v0.1.md`
+`Nathan_Peer_Review_Writing_Fingerprint_v8.0.md`
 
 - **Status:** PROVISIONAL ACTIVE FINGERPRINT
-- **Purpose:** primary voice target for drafting, revising, or evaluating scientific manuscripts, formal theory papers, peer-review submissions, and manuscript-style technical prose
-- **Use first when:** the question is “How should Nathan write this for scientific strangers / reviewers?”
-- **Authority:** direct Nathan calibration + cross-register corpus + 1999 genuine formal-science sample + mature formal argumentative evidence + reduced-fluency/cross-language structural evidence
-- **Important limitation:** no substantial modern peer-reviewed scientific manuscript written entirely by Nathan has yet served as final calibration
-- **Supersedes for this purpose:** `Nathan_Formal_Scientific_Transfer_v0.1.md`
+- Primary target for scientific manuscripts, formal theory papers, peer-review submissions, and manuscript-style technical prose.
+- Use first when the question is: **How should Nathan write this for scientific strangers / reviewers?**
 
-**Core rule:** the target is not “Nathan cleaned up.” It is Nathan’s communicative machinery operating under peer-review constraints.
+### Priority 2 — identification / provenance
 
-### PRIORITY 2 — IDENTIFICATION / PROVENANCE
-
-`Nathan_Voice_Identification_Provenance_Fingerprint_v0.1.md`
+`Nathan_Voice_Identification_Provenance_Fingerprint_v8.0.md`
 
 - **Status:** PROVISIONAL ACTIVE IDENTIFICATION FINGERPRINT
-- **Purpose:** speaker/author attribution support in mixed SAT/H(s)H conversations and documents; distinguish likely Nathan material from assistant, NotebookLM, source text, transcription artifacts, and mixed passages
-- **Secondary use:** occasional recognizable emulation/translation of difficult material for Nathan when that would aid communication
-- **Use first when:** the question is “Is this Nathan?” / “Which parts are Nathan?” / “What production source best explains this wording?”
-- **Not the default style source for peer-review writing.**
+- Primary support for mixed-corpus speaker/author attribution and production-source discrimination.
+- Use first when the question is: **Is this Nathan / which parts are Nathan / what production source best explains this wording?**
 
-**Core rule:** identify deep structural behavior before surface mannerisms; ellipses, typos, spelling, coinages, and cadence are supporting evidence only after their production cause is understood.
+### Supporting — general nonfiction / active repo communication
 
----
-
-## Supporting active documents
-
-### General nonfiction / active repo communication
-
-`Nathan_Nonfiction_Communication_Standard_v0.1.md`
+`Nathan_Nonfiction_Communication_Standard_v8.0.md`
 
 - **Status:** PROVISIONAL ACTIVE DRAFT
-- **Purpose:** communication with Nathan, repo coordination, directives, summaries, reconstruction planning, methodological discussion
-- **Role:** supporting source-side communication standard; lower priority than the dedicated peer-review fingerprint for manuscript prose and lower priority than the identification fingerprint for provenance decisions
+- Communication with Nathan, repo coordination, directives, summaries, reconstruction planning, and methodological discussion.
 
-### Earlier formal transfer specification
+### Reference — creative / informal
 
-`Nathan_Formal_Scientific_Transfer_v0.1.md`
-
-- **Status:** SUPERSEDED FOR ACTIVE PEER-REVIEW VOICE; RETAINED AS DEVELOPMENT HISTORY / SUPPORTING TRANSFER NOTES
-- **Purpose:** earlier protocol for converting Nathan’s nonfiction reasoning structure into formal scientific prose
-- **Current role:** historical scaffold and supporting checklist only
-- **Superseded by:** `Nathan_Peer_Review_Writing_Fingerprint_v0.1.md`
-- **Reason:** the evidence base is now materially richer, including genuine formal-science writing, mature formal prose, direct Nathan metalinguistic calibration, and cross-language stress-test material
-
----
-
-## Reference-only / creative + informal voice
-
-`Nathan_Creative_Informal_Reference_v0.1.md`
+`Nathan_Creative_Informal_Reference_v8.0.md`
 
 - **Status:** REFERENCE ONLY
-- **Purpose:** creative writing, informal voice emulation, narrative analysis, historical style comparison
-- **Do not use as the primary style source for formal scientific writing or provenance attribution except where a cross-register structural habit is independently supported.**
+- Creative writing, informal voice emulation, narrative analysis, and historical style comparison.
+- Not the default source for scientific/repo writing.
 
 ---
 
-## Legacy combined models
+## HISTORY
 
-- `Nathan_Voice_Model_v7.md` — combined synthesis immediately preceding the operational split; retain for provenance/development history
-- `Nathan_Voice_Model_v6.md`
-- `Nathan_Voice_Model_v1.md`
-- `NATHAN VOICE ANALYSIS.txt`
+All pre-v8 combined models and superseded split-draft material live under `HISTORY/`.
 
-These files are not deleted or silently rewritten. They record how the model developed and may contain observations not yet promoted into an active-purpose fingerprint.
+Important anchors:
+
+- `HISTORY/Nathan_Voice_Model_v7.md` — final combined synthesis immediately preceding the split architecture
+- `HISTORY/Nathan_Voice_Model_v6.md`
+- `HISTORY/Nathan_Voice_Model_v1.md`
+- `HISTORY/NATHAN VOICE ANALYSIS.txt`
+- `HISTORY/Nathan_Formal_Scientific_Transfer_v0.1.md` — superseded transfer protocol retained for development history
+
+Historical files are preserved for provenance and auditability, not presented as coequal active standards.
 
 ---
 
 ## Evidence / authority hierarchy
 
-For voice-model interpretation, use roughly this order:
+For interpretation, use roughly this order:
 
-1. **newer direct Nathan correction or instruction**;
-2. **direct Nathan explanation of his own wording / communicative intent**;
-3. **verified mature Nathan-authored prose in a relevant genre**;
-4. **verified Nathan-authored prose in adjacent genres, with genre limitations stated**;
-5. **cross-register / cross-language evidence for deep structural habits**;
-6. **assistant inference from mixed corpus**;
-7. **surface-frequency observations without production provenance**.
+1. newer direct Nathan correction or instruction;
+2. direct Nathan explanation of his own wording / communicative intent;
+3. verified mature Nathan-authored prose in a relevant genre;
+4. verified Nathan-authored prose in adjacent genres, with genre limitations stated;
+5. cross-register / cross-language evidence for deep structural habits;
+6. assistant inference from mixed corpus;
+7. surface-frequency observations without production provenance.
 
 Direct Nathan correction outranks all model inference.
 
-A recurrent artifact is not automatically a voice preference. Always test whether it arose from deliberate wording, VTT/transcription, typo, automated generation, platform formatting, performed character voice, outside source material, or another model.
+A recurrent artifact is not automatically a voice preference. Test whether it arose from deliberate wording, VTT/transcription, typo, automated generation, platform formatting, performed character voice, outside source material, or another model.
 
 ---
 
 ## Purpose firewall
 
-### If the task is peer-review writing
+For **peer-review writing**, use `Nathan_Peer_Review_Writing_Fingerprint_v8.0.md` first, then `Nathan_Nonfiction_Communication_Standard_v8.0.md` as supporting structure. Do not mechanically import identification artifacts such as typos, ellipsis density, dictation residue, or chat fragments.
 
-Use, in order:
+For **provenance / voice identification**, use `Nathan_Voice_Identification_Provenance_Fingerprint_v8.0.md` first, then source metadata and causal-production evidence. Resemblance to the peer-review fingerprint is not proof of Nathan authorship.
 
-1. `Nathan_Peer_Review_Writing_Fingerprint_v0.1.md`
-2. `Nathan_Nonfiction_Communication_Standard_v0.1.md` as supporting structure
-3. older models only as provenance/evidence
-
-Do **not** mechanically import identification markers such as typos, ellipsis density, dictation residue, or chat fragments.
-
-### If the task is provenance / voice identification
-
-Use, in order:
-
-1. `Nathan_Voice_Identification_Provenance_Fingerprint_v0.1.md`
-2. source metadata and causal-production evidence
-3. legacy voice models / creative reference as supporting comparison where appropriate
-
-Do **not** treat resemblance to the peer-review fingerprint as proof of Nathan authorship.
-
-### If the task is creative or informal emulation
-
-Use `Nathan_Creative_Informal_Reference_v0.1.md` plus the identification fingerprint’s cautions about register, production cause, and accidental artifacts.
+For **creative or informal emulation**, use `Nathan_Creative_Informal_Reference_v8.0.md` plus the identification fingerprint’s cautions about register, production cause, and accidental artifacts.
 
 ---
 
-## Version lifecycle
+## Version rule
 
-- `v0.x` — working/provisional; open to substantial revision
-- `v1.0` — first Nathan-approved active standard for that specific purpose
-- `v1.x` — backward-compatible clarification/addition
-- `v2.0+` — material conceptual revision
+- `v1`–`v7` — historical combined-model lineage.
+- `v8.0` — first split-purpose successor generation.
+- `v8.x` — revisions within the current split architecture.
+- `v9.0+` — material architecture-level successor.
 
-A version number is purpose-specific. Peer-review and identification tracks may reach `v1.0` independently.
-
-**Do not promote any document to `v1.0` merely because it has been committed or used successfully once. Explicit Nathan approval is required.**
+**Approval is expressed by status, not inferred from the version number.** A committed file may still be provisional. Explicit Nathan approval is required before changing a file’s status to approved/authoritative.
 
 ---
 
 ## Current state
 
-**Primary current development target:** peer-review writing fingerprint.  
-**Secondary current development target:** voice identification / provenance fingerprint.  
-**Supporting track:** general nonfiction communication.  
-**Reference track:** creative/informal voice.  
-**Legacy:** earlier combined and transfer models retained for auditability.
+**Primary development target:** peer-review writing fingerprint.  
+**Secondary:** voice identification / provenance fingerprint.  
+**Supporting:** general nonfiction communication.  
+**Reference:** creative/informal voice.  
+**Historical:** everything pre-v8 or explicitly superseded is under `HISTORY/`.

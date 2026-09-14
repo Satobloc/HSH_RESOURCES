@@ -1,4 +1,4 @@
-# Nathan Creative + Informal Voice Reference — v0.1
+# Nathan Creative + Informal Voice Reference — v8.0
 
 **Track:** 2 — Creative writing and informal voice emulation
 **Status:** REFERENCE ONLY
@@ -208,8 +208,8 @@ Some structural habits cross into nonfiction:
 
 But their **surface realization should not transfer automatically**.
 
-For active repo/scientific work, use `Nathan_Nonfiction_Communication_Standard_v0.1.md` and `Nathan_Formal_Scientific_Transfer_v0.1.md` instead.
+For active repo/scientific work, use `Nathan_Nonfiction_Communication_Standard_v8.0.md` and `Nathan_Peer_Review_Writing_Fingerprint_v8.0.md` instead. The earlier transfer protocol is retained only as development history under `HISTORY/Nathan_Formal_Scientific_Transfer_v0.1.md`.
 
 ---
 
-**Version rule:** this document remains reference-only unless Nathan explicitly promotes a portion of it into Track 1.
+**Version/status rule:** `v8.0` marks this document’s place in the current split voice-model lineage. Its status remains **REFERENCE ONLY**; version number and approval/authority status are separate.

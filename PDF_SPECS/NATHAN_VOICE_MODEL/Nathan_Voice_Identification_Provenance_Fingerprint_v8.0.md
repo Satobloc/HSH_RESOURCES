@@ -1,10 +1,10 @@
-# Nathan Voice Identification / Provenance Fingerprint — v0.1
+# Nathan Voice Identification / Provenance Fingerprint — v8.0
 
 **Track:** 1B — Voice identification / provenance  
 **Priority:** **2 — ACTIVE IDENTIFICATION SUPPORT**  
 **Purpose:** identify likely Nathan-authored material in mixed corpora, distinguish Nathan from AI/collaborator/transcription artifacts, and support provenance tagging; secondarily, provide a source model for occasional recognizable emulation when useful for communication with Nathan  
 **Status:** PROVISIONAL ACTIVE IDENTIFICATION FINGERPRINT  
-**Not for:** default peer-review drafting. Use `Nathan_Peer_Review_Writing_Fingerprint_v0.1.md` for scientific manuscript voice.
+**Not for:** default peer-review drafting. Use `Nathan_Peer_Review_Writing_Fingerprint_v8.0.md` for scientific manuscript voice.
 
 ---
 
@@ -400,7 +400,7 @@ If used for emulation:
 - match conversational tempo and task-state;
 - avoid turning every sentence into a performance of “Nathan-ness.”
 
-For peer-reviewed scientific prose, **do not use this document as the primary writing target**. Use `Nathan_Peer_Review_Writing_Fingerprint_v0.1.md`.
+For peer-reviewed scientific prose, **do not use this document as the primary writing target**. Use `Nathan_Peer_Review_Writing_Fingerprint_v8.0.md`.
 
 ---
 
@@ -412,13 +412,13 @@ For peer-reviewed scientific prose, **do not use this document as the primary wr
 
 ## 15. Version status
 
-This remains `v0.1` because it has not yet been tested systematically against a large blinded mixed-author corpus.
+This document is **v8.0 / PROVISIONAL**. `v8.0` identifies its place in the current split voice-model lineage; it does not imply approval or finality.
 
-Promote toward `v1.0` only after:
+Before promoting its status from provisional, test it against:
 
-1. applying it to known Nathan / known AI / mixed documents;
-2. recording false positives and false negatives;
-3. adjusting feature weights by register and medium;
-4. explicit Nathan approval of the resulting identification standard.
+1. known Nathan / known AI / mixed documents;
+2. recorded false positives and false negatives;
+3. register- and medium-specific feature weighting;
+4. direct Nathan review.
 
 **Priority rule:** direct Nathan correction outranks this file. For formal peer-review writing, the peer-review fingerprint has higher operational priority. For provenance and mixed-corpus authorship identification, this file is the active target.

@@ -1,4 +1,4 @@
-# Nathan Nonfiction Communication Standard — v0.1
+# Nathan Nonfiction Communication Standard — v8.0
 
 **Track:** 1 — Active repo work / nonfiction
 **Status:** PROVISIONAL ACTIVE DRAFT
@@ -234,18 +234,18 @@ A recurrent corpus artifact is not automatically a Nathan preference.
 
 This standard is the source-side model for formal scientific transfer.
 
-The scientific target should preserve the nonfiction architecture above while normally removing or regularizing informal surface features. See `Nathan_Formal_Scientific_Transfer_v0.1.md`.
+The scientific target should preserve the nonfiction architecture above while normally removing or regularizing informal surface features. For active manuscript voice, see `Nathan_Peer_Review_Writing_Fingerprint_v8.0.md`. The earlier transfer protocol is retained as development history under `HISTORY/Nathan_Formal_Scientific_Transfer_v0.1.md`.
 
 ---
 
 ## 9. Open calibration needs
 
-- Genuine Nathan-authored formal scientific prose has **not yet been supplied**.
-- We therefore know the source communication architecture much better than the final formal scientific surface style.
-- Future formal samples should be used to determine sentence cadence, section architecture, first-person usage, terminology introduction, equation/prose balance, citation rhythm, and degree of rhetorical compression.
+- One genuine historical Nathan-authored formal-science sample has now been supplied: the 1999 senior thesis. It is useful evidence but historically distant and strongly constrained by undergraduate/disciplinary convention.
+- A substantial modern peer-reviewed scientific manuscript written entirely by Nathan has **not yet** served as the final calibration target.
+- Future modern samples should be used to refine sentence cadence, section architecture, first-person usage, terminology introduction, equation/prose balance, citation rhythm, and degree of rhetorical compression.
 
-Until then, do not claim that assistant-generated formal prose is a validated imitation of Nathan’s scientific-paper voice.
+Until then, do not claim that assistant-generated formal prose is a fully validated imitation of Nathan’s modern scientific-paper voice.
 
 ---
 
-**Version rule:** direct Nathan correction outranks this document. Promote to v1.0 only after explicit Nathan approval as an active standard.
+**Version/status rule:** `v8.0` marks this document’s place in the current split voice-model lineage. Its status remains **PROVISIONAL ACTIVE DRAFT**. Version number and approval status are separate; direct Nathan correction outranks this document.
