@@ -4,21 +4,21 @@
 **Status:** Preliminary / research-in-progress  
 **Handling:** **PRIOR_ART quarantine only. Do not propagate into H(s)H/SAT theory-building surfaces without explicit source attribution and a deliberate release decision.**
 
-This report records the current prior-art findings. It is intentionally concise in-repo because the supporting external literature is being handled under quarantine. Derived indexing, extraction, OCR, search, summaries, embeddings, or catalog records must inherit the same quarantine and must not be copied into general-purpose public or cross-project discovery surfaces.
+This report records the current prior-art findings. Derived indexing, extraction, OCR, search, summaries, embeddings, or catalog records must inherit the same quarantine and must not be copied into general-purpose public or cross-project discovery surfaces.
 
 ## Findings
 
-1. **Hinton is major prior art.** Charles Howard Hinton’s *The Fourth Dimension* (1904) gives a moving-film/spiral construction in which a stationary spiral sectioned by a moving film produces apparent circular motion, then generalizes to higher-dimensional structures consisting of filaments whose sections appear as atoms and bodies. This is specific prior art for higher-dimensional persistent structure, moving lower-dimensional section, apparent particles as intersections, and filamentary ensembles.[^1]
+1. **Hinton is major prior art.** Charles Howard Hinton’s *The Fourth Dimension* (1904) gives a moving-film/spiral construction in which a stationary spiral sectioned by a moving film produces apparent circular motion, then generalizes to higher-dimensional structures consisting of filaments whose sections appear as atoms and bodies.[^1]
 
-2. **Whately Smith confirms persistence and self-awareness.** In 1920 W. Whately Smith describes threads piercing a lower-dimensional film, appearing as atoms, with many intertwined threads forming a filamentary structure whose successive sections produce the changing lower-dimensional world. He explicitly extends the argument into N-space and situates it in a historical lineage.[^2]
+2. **Whately Smith confirms persistence and self-awareness.** In 1920 W. Whately Smith describes threads piercing a lower-dimensional film, appearing as atoms, with many intertwined threads forming a filamentary structure whose successive sections produce the changing lower-dimensional world. He explicitly extends the argument into N-space.[^2]
 
 3. **The modern lineage is self-aware.** The nLab higher-geometry corpus explicitly connects Klein/Poincaré/Minkowski local geometry to Cartan geometry, first-order gravity, super-Cartan geometry, supergravity, higher Cartan geometry, higher gauge theory, branes, and higher-dimensional supergravity.[^3]
 
-4. **Braid theory overlaps with SAT/H(s)H at the object-family level, not at the level of detailed topology.** nLab describes braid groups as continuous motions of non-colliding points whose worldlines form braid strands, classified up to isotopy.[^4] SAT/H(s)H generally treats filament bundles, cords, braids, ropes, tangles, and ensembles at a coarser architectural level. It does not usually attempt the detailed micro-topological classification that mature braid theory does.
+4. **Braid theory overlaps with SAT/H(s)H at the object-family level, not at the level of detailed topology.** SAT/H(s)H usually treats filament bundles, cords, braids, ropes, tangles, and ensembles at a coarser architectural level than braid theory’s mature classification by isotopy, braid groups, configuration spaces, and categorical structures.[^4]
 
-5. **The nLab encounter belongs to Nathan, not to SAT’s developmental history.** Direct nLab exposure occurred only in September 2026, after the relevant SAT/H(s)H structures were already documented, and was immediately sequestered. nLab is therefore a post hoc comparator and prior-art source, not a development input from which SAT was built.
+5. **The nLab encounter belongs to Nathan, not to SAT’s developmental history.** Direct nLab exposure occurred only in September 2026, after the relevant SAT/H(s)H structures were already documented, and was immediately sequestered.
 
-6. **Hypothesis H is a serious comparator, but no reduction relation has yet been demonstrated.** Hypothesis H explicitly presents itself as a research program for M-theory centered on J-twisted cohomotopy charge quantization of the C-field and embedded in super-Cartan/higher-gauge/brane/homotopy machinery.[^5] The possibility that SAT/H(s)H relates to it by compactification, dimensional reduction, projection, quotient, restriction, or coarse-graining remains an open mathematical question.
+6. **Hypothesis H is a serious comparator, but no reduction relation has yet been demonstrated.** Hypothesis H explicitly presents itself as a research program for M-theory centered on J-twisted cohomotopy charge quantization of the C-field and embedded in super-Cartan/higher-gauge/brane/homotopy machinery.[^5]
 
 ## Priority, independence, and perception
 
