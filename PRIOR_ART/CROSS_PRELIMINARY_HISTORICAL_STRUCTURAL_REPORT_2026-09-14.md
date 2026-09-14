@@ -80,7 +80,7 @@ Hinton should therefore be cited prominently whenever SAT's slice/intersection c
 
 ## 4. The higher-space tradition was self-aware and did not stop at four dimensions
 
-Hinton's work is not an isolated curiosity. His books themselves contain historical discussion of higher-space thought, non-Euclidean geometry, and earlier mathematical developments. Edwin A. Abbott's *Flatland* provided a major cultural vehicle for dimensional analogy. Whately Carington (Whately Smith), writing in 1920, explicitly situates his work within earlier higher-dimensional research and cites predecessors including Hinton and the non-Euclidean tradition.
+Hinton's work is not an isolated curiosity. His books themselves contain historical discussion of higher-space thought, non-Euclidean geometry, and earlier mathematical developments. Edwin A. Abbott's *Flatland* provided a major cultural vehicle for dimensional analogy. W. Whately Smith (later Whately Carington), writing in 1920, explicitly situates his work within earlier higher-dimensional research and cites predecessors including Hinton and the non-Euclidean tradition.
 
 Smith's dimensional reasoning is also structurally relevant. He describes thread-like higher-dimensional structures intersecting a lower-dimensional film so that the intersections appear as lower-dimensional atoms, then considers many threads twisted or intertwined into complicated structures whose passage across the film generates a changing lower-dimensional world.
 
@@ -249,7 +249,7 @@ The next strategic step is not to decide whether SAT "is" any one of these exist
 
 1. Charles Howard Hinton, *A New Era of Thought* (London: Swan Sonnenschein, Lowrey & Co., 1888).
 2. Charles Howard Hinton, *The Fourth Dimension* (London: Swan Sonnenschein & Co., 1904).
-3. A. P. Sinnett [Whately Carington/Whately Smith materials in the project archive require bibliographic normalization before external use]; see the archived 1920 fourth-dimension text for the thread/film construction and historical discussion.
+3. W. Whately Smith, *A Theory of the Mechanism of Survival: The Fourth Dimension and Its Applications* (London: Kegan Paul, Trench, Trubner & Co.; New York: E. P. Dutton & Co., 1920). Smith later took the name Whately Carington.
 4. Edwin A. Abbott, *Flatland: A Romance of Many Dimensions* (London: Seeley & Co., 1884).
 5. Felix Klein, "A Comparative Review of Recent Researches in Geometry," trans. M. W. Haskell, *Bulletin of the New York Mathematical Society* 2 (1892–93): 215–249; originally published as *Vergleichende Betrachtungen über neuere geometrische Forschungen* (1872).
 6. Élie Cartan, "Sur une généralisation de la notion de courbure de Riemann et les espaces à torsion," *Comptes Rendus de l'Académie des Sciences* 174 (1922): 593–595.
@@ -312,4 +312,6 @@ nLab. "braid category." Accessed September 14, 2026. https://ncatlab.org/nlab/sh
 Sati, Hisham, and Urs Schreiber. "Flux Quantization." In *Encyclopedia of Mathematical Physics*, 2nd ed., vol. 4, 281–324. Academic Press, 2025. https://doi.org/10.1016/B978-0-323-95703-8.00078-1.
 
 Schreiber, Urs. "Hypothesis H." nLab/Schreiber. Accessed September 14, 2026. https://ncatlab.org/schreiber/show/Hypothesis+H.
+
+Smith, W. Whately. *A Theory of the Mechanism of Survival: The Fourth Dimension and Its Applications*. London: Kegan Paul, Trench, Trubner & Co.; New York: E. P. Dutton & Co., 1920.
 
