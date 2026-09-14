@@ -36,7 +36,7 @@ The strongest current historical formulation is:
 
 The direct nLab encounter establishes a chronological exposure boundary. Material documented before this exposure may be compared against nLab as independent prior development, subject to provenance audit. Developments after direct nLab exposure should be marked as post-exposure where relevant unless traceable to pre-existing internal work.
 
-The nLab corpus and every derivative artifact from it must remain quarantined. If standard mathematics from that corpus is later imported into H(s)H, the import should be explicit, cited, and labeled as adopted formal language or tooling rather than silently rewritten into SAT vocabulary.
+The nLab corpus and every derivative artifact from it must remain quarantined. If standard mathematics from that corpus is later imported into H(s)H, the import should be explicit, cited, and labeled as adopted formal language or tool rather than silently rewritten into SAT vocabulary.
 
 # Notes
 
