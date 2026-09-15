@@ -48,9 +48,25 @@ For SAT exposure / outward-diffusion work, use the sequence:
 - `Debating AI —  Podcast.txt`
 - CSV analytics files and screenshot captures; numerics not yet considered complete.
 
+### Attribution correction — Nathan versus LLM analysis
+
+A previous Cross compression risked making some **LLM-generated audience stories** sound like Nathan's arguments. That is now explicitly corrected.
+
+In particular, claims such as:
+- technical mini-binges mean listeners are “stress-testing” or “auditing” SAT;
+- later returns mean “audit-and-monitor” behavior;
+- age/country bins identify physicists, students, professionals, or specific research communities;
+- search impressions mean people were directly searching for SAT/McKnight;
+
+are to be treated as **LLM hypotheses unless an independent Nathan statement adopting them is recovered**. Nathan has directly rejected some of these overinterpretations, especially the SAT-specific-search and bypass-oriented-audience stories.
+
+Nathan's own arguments should be reconstructed across turns, with local correction, qualification, and alternatives preserved. An explicit `user` speaker tag is Nathan. An explicit `NATHAN:` label is Nathan. Untagged/mixed attribution should use production metadata and conversational continuity first, with `PDF_SPECS/NATHAN_VOICE_MODEL/Nathan_Voice_Identification_Provenance_Fingerprint_v8.0.md` only as supporting evidence. Direct Nathan correction outranks all model inference.
+
+Nathan's joking “hyperellipsistosis” / recursive self-revision pattern is a useful high-yield clue in genuinely ambiguous mixed prose, but not a substitute for source metadata.
+
 ### Early claim-extraction warning
 
-Several prior LLM analyses make strong unsupported jumps, including:
+Several prior **LLM analyses** make strong unsupported jumps, including:
 - treating Spotify search impressions as direct searches for SAT/McKnight;
 - inferring professional identity from age/country bins;
 - interpreting mini-binges as physicists “stress-testing” the theory;
@@ -58,8 +74,8 @@ Several prior LLM analyses make strong unsupported jumps, including:
 - converting structural resemblance in science news into a diffusion claim;
 - presenting broad “paradigm shift” language as established consensus without first validating source quality and chronology.
 
-Nathan explicitly corrected at least some of these overinterpretations in the archived conversations. These corrections are part of the argument record and must be preserved.
+These are not to be compressed into “Nathan argued X.” Where Nathan responds, the response/correction is a separate evidentiary object and often materially narrows the claim.
 
 ### Next operation
 
-Complete the conversational argument/evidence extraction before touching channel-level meta-analysis.
+Continue conversational argument/evidence extraction with speaker attribution locked down before touching channel-level meta-analysis.
