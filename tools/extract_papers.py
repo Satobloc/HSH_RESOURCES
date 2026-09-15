@@ -3,6 +3,14 @@
 
 Dry-run is the default. Pass --apply to create derived text and a deterministic
 current-state manifest. OCR is deliberately not automatic.
+
+Safety properties
+-----------------
+- source PDFs are never modified;
+- PRIOR_ART and other excluded roots are pruned before file discovery;
+- explicit supplied paths inside excluded/quarantined roots are rejected;
+- derived text is named by source SHA-256 and finalized atomically;
+- the manifest is finalized atomically.
 """
 
 from __future__ import annotations
@@ -10,6 +18,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -18,8 +27,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-VERSION = "1.1.1"
-SKIP_PARTS = {".git", "derived", "__pycache__", ".pytest_cache"}
+VERSION = "1.2.0"
+SKIP_PARTS = {".git", "derived", "__pycache__", ".pytest_cache", "PRIOR_ART"}
+QUARANTINED_COMPONENTS = {"PRIOR_ART"}
 
 
 def iso_now() -> str:
@@ -96,24 +106,71 @@ def load_manifest(path: Path) -> dict[str, dict[str, Any]]:
     return result
 
 
-def write_manifest(path: Path, rows: dict[str, dict[str, Any]]) -> None:
+def atomic_write_text(path: Path, content: str) -> None:
+    """Write a text file by temporary sibling + atomic replace."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    content = "".join(json.dumps(rows[key], ensure_ascii=False, sort_keys=True) + "\n" for key in sorted(rows))
-    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False, newline="\n") as handle:
+    with tempfile.NamedTemporaryFile(
+        "w",
+        encoding="utf-8",
+        dir=path.parent,
+        delete=False,
+        newline="\n",
+    ) as handle:
         handle.write(content)
         temp = Path(handle.name)
     temp.replace(path)
 
 
+def write_manifest(path: Path, rows: dict[str, dict[str, Any]]) -> None:
+    content = "".join(json.dumps(rows[key], ensure_ascii=False, sort_keys=True) + "\n" for key in sorted(rows))
+    atomic_write_text(path, content)
+
+
+def is_excluded_relative(relative: Path) -> bool:
+    return any(part in SKIP_PARTS for part in relative.parts)
+
+
+def discovered_pdfs(root: Path) -> list[Path]:
+    """Discover PDFs while pruning excluded/quarantined directory roots before descent."""
+    found: list[Path] = []
+    for current, dirs, files in os.walk(root):
+        current_path = Path(current)
+        relative_current = current_path.relative_to(root)
+        if is_excluded_relative(relative_current):
+            dirs[:] = []
+            continue
+
+        dirs[:] = sorted(
+            [name for name in dirs if name not in SKIP_PARTS],
+            key=str.casefold,
+        )
+        for name in sorted(files, key=str.casefold):
+            if name.lower().endswith(".pdf"):
+                found.append(current_path / name)
+    return found
+
+
 def pdfs(root: Path, supplied: list[Path]) -> list[Path]:
     if supplied:
-        candidates = [(root / path).resolve() if not path.is_absolute() else path.resolve() for path in supplied]
+        candidates: list[Path] = []
+        for raw in supplied:
+            path = (root / raw).resolve() if not raw.is_absolute() else raw.resolve()
+            try:
+                relative = path.relative_to(root)
+            except ValueError as exc:
+                raise ValueError(f"supplied path is outside repository root: {raw}") from exc
+            if any(part in QUARANTINED_COMPONENTS for part in relative.parts):
+                raise ValueError(f"refusing quarantined path: {relative.as_posix()}")
+            if is_excluded_relative(relative):
+                continue
+            candidates.append(path)
     else:
-        candidates = sorted(root.rglob("*.pdf"), key=lambda p: p.as_posix().casefold())
-    return [
-        path for path in candidates
-        if path.is_file() and path.suffix.lower() == ".pdf" and not any(part in SKIP_PARTS for part in path.relative_to(root).parts)
-    ]
+        candidates = discovered_pdfs(root)
+
+    return sorted(
+        [path for path in candidates if path.is_file() and path.suffix.lower() == ".pdf"],
+        key=lambda p: p.relative_to(root).as_posix().casefold(),
+    )
 
 
 def pending_pdfs(
@@ -170,12 +227,16 @@ def main() -> int:
     root = args.root.resolve()
     manifest_path = root / args.manifest
     prior = load_manifest(manifest_path)
+    try:
+        candidates = pdfs(root, args.paths)
+    except ValueError as exc:
+        parser.error(str(exc))
     selected, current = pending_pdfs(
-        root, pdfs(root, args.paths), prior, args.force, args.max_files
+        root, candidates, prior, args.force, args.max_files
     )
     print(
-        f"pending={len(selected)} already_current={current} "
-        f"mode={'apply' if args.apply else 'dry-run'}"
+        f"eligible_pdfs={len(candidates)} pending={len(selected)} already_current={current} "
+        f"mode={'apply' if args.apply else 'dry-run'} quarantine_pruned=PRIOR_ART"
     )
     if not args.apply:
         for path, _digest in selected:
@@ -183,6 +244,14 @@ def main() -> int:
         return 0
 
     rows = dict(prior)
+    # Remove any legacy manifest rows that point into quarantine so ordinary generated
+    # state cannot continue to expose quarantined path metadata.
+    rows = {
+        key: value
+        for key, value in rows.items()
+        if not any(part in QUARANTINED_COMPONENTS for part in Path(key).parts)
+    }
+
     summary = {"extracted": 0, "already_current": current, "needs_ocr": 0, "error": 0}
     for path, digest in selected:
         rel = path.relative_to(root).as_posix()
@@ -202,9 +271,8 @@ def main() -> int:
             status = "needs_ocr" if text_chars < threshold else "extracted"
             output_rel = args.output_root / f"{digest}.txt"
             output = root / output_rel
-            output.parent.mkdir(parents=True, exist_ok=True)
             if not output.exists() or output.read_text(encoding="utf-8") != document:
-                output.write_text(document, encoding="utf-8", newline="\n")
+                atomic_write_text(output, document)
             record.update(
                 {
                     "status": status,
