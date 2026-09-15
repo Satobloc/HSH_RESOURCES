@@ -54,6 +54,7 @@ jobs:
           echo "RESOURCES_SHA=$(git -C RESOURCES rev-parse HEAD)" >> "$GITHUB_ENV"
           echo "HSH_SHA=$(git -C HsH rev-parse HEAD)" >> "$GITHUB_ENV"
           echo "GLASS_SHA=$(git -C GLASS rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "RUN_STARTED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
 
       - name: Run quarantine-respecting inventory sampler
         shell: bash
@@ -83,27 +84,94 @@ jobs:
           mv "$RESOURCES_GIT" RESOURCES/.git
           trap - EXIT
 
-          # Add immutable snapshot provenance after generation.
+          # Add immutable snapshot provenance and emit the standard cross-repo run manifest.
           python - <<'PY'
+          import hashlib
           import json
           import os
+          from datetime import datetime, timezone
           from pathlib import Path
 
-          path = Path(os.environ['RUNNER_TEMP']) / 'source_inventory_run' / 'summary.json'
-          data = json.loads(path.read_text(encoding='utf-8'))
-          data['source_commits'] = {
+          out = Path(os.environ['RUNNER_TEMP']) / 'source_inventory_run'
+          summary_path = out / 'summary.json'
+          data = json.loads(summary_path.read_text(encoding='utf-8'))
+          source_commits = {
               'HSH': os.environ['HSH_SHA'],
               'GLASS': os.environ['GLASS_SHA'],
               'RESOURCES': os.environ['RESOURCES_SHA'],
           }
+          data['source_commits'] = source_commits
           data['execution_surface'] = 'GitHub Actions / Satobloc/HSH_RESOURCES'
-          path.write_text(json.dumps(data, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          summary_path.write_text(json.dumps(data, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+
+          def sha256(path: Path) -> str:
+              digest = hashlib.sha256()
+              with path.open('rb') as handle:
+                  for chunk in iter(lambda: handle.read(1024 * 1024), b''):
+                      digest.update(chunk)
+              return digest.hexdigest()
+
+          run_id = f"github-actions:{os.environ.get('GITHUB_RUN_ID', 'unknown')}:{os.environ.get('GITHUB_RUN_ATTEMPT', '1')}"
+          pruned = data.get('prior_art_pruned_by_repository', {})
+          remote_root = 'SOURCE_INVENTORY/SABLE/source_inventory_run'
+          manifest = {
+              'schema_version': 1,
+              'run_id': run_id,
+              'tool': {
+                  'name': 'source_inventory_sampler.py',
+                  'version_or_commit': f"{data.get('tool', 'unknown')} @ HsH {os.environ['HSH_SHA']}",
+              },
+              'started_at': os.environ['RUN_STARTED_AT'],
+              'finished_at': datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z'),
+              'inputs': [
+                  {
+                      'repository': 'Satobloc/HsH',
+                      'commit_sha': source_commits['HSH'],
+                      'read_roots': ['/'],
+                      'quarantine_roots_pruned': int(pruned.get('HSH', 0)),
+                  },
+                  {
+                      'repository': 'Satobloc/SAT_THEORY_ARCHIVE_2023-25',
+                      'commit_sha': source_commits['GLASS'],
+                      'read_roots': ['/'],
+                      'quarantine_roots_pruned': int(pruned.get('GLASS', 0)),
+                  },
+                  {
+                      'repository': 'Satobloc/HSH_RESOURCES',
+                      'commit_sha': source_commits['RESOURCES'],
+                      'read_roots': ['/'],
+                      'quarantine_roots_pruned': int(pruned.get('RESOURCES', 0)),
+                  },
+              ],
+              'write_scope': {
+                  'repositories': ['Satobloc/HSH_RESOURCES'],
+                  'paths': [remote_root + '/'],
+              },
+              'mode': 'replace-generated',
+              'seed': data.get('seed'),
+              'outputs': [
+                  {'path': remote_root + '/inventory.csv', 'sha256': sha256(out / 'inventory.csv'), 'source_identity': data.get('inventory_sha256')},
+                  {'path': remote_root + '/sample.csv', 'sha256': sha256(out / 'sample.csv'), 'source_identity': data.get('inventory_sha256')},
+                  {'path': remote_root + '/summary.json', 'sha256': sha256(summary_path), 'source_identity': data.get('inventory_sha256')},
+              ],
+              'status': 'success',
+              'github_actions': {
+                  'run_id': os.environ.get('GITHUB_RUN_ID'),
+                  'run_attempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
+                  'workflow': os.environ.get('GITHUB_WORKFLOW'),
+              },
+              'notes': 'Published commit is represented by repository history; the manifest records exact input snapshots and output hashes without creating a self-referential commit hash.',
+          }
+          (out / 'run_manifest.json').write_text(
+              json.dumps(manifest, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
           PY
 
           mkdir -p RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run
           cp "$OUT/inventory.csv" RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/inventory.csv
           cp "$OUT/sample.csv" RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/sample.csv
           cp "$OUT/summary.json" RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/summary.json
+          cp "$OUT/run_manifest.json" RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/run_manifest.json
 
       - name: Validate outputs and quarantine behavior
         shell: bash
@@ -111,7 +179,9 @@ jobs:
           set -euo pipefail
           test -s RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/inventory.csv
           test -s RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/sample.csv
+          test -s RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/run_manifest.json
           python -m json.tool RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/summary.json >/dev/null
+          python -m json.tool RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/run_manifest.json >/dev/null
 
           python - <<'PY'
           import csv
@@ -120,8 +190,18 @@ jobs:
 
           root = Path('RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run')
           summary = json.loads((root / 'summary.json').read_text(encoding='utf-8'))
+          manifest = json.loads((root / 'run_manifest.json').read_text(encoding='utf-8'))
           assert summary['file_count'] > 0
           assert set(summary['source_commits']) == {'HSH', 'GLASS', 'RESOURCES'}
+
+          assert manifest['run_id']
+          assert manifest['mode'] == 'replace-generated'
+          assert manifest['status'] == 'success'
+          assert len(manifest['inputs']) == 3
+          assert manifest['write_scope']['repositories'] == ['Satobloc/HSH_RESOURCES']
+          assert all(item['commit_sha'] for item in manifest['inputs'])
+          assert len(manifest['outputs']) == 3
+          assert all(item['sha256'] for item in manifest['outputs'])
 
           with (root / 'inventory.csv').open(newline='', encoding='utf-8') as handle:
               rows = list(csv.DictReader(handle))
@@ -129,6 +209,7 @@ jobs:
           leaked = [r['path'] for r in rows if 'PRIOR_ART' in Path(r['path']).parts]
           assert not leaked, f'PRIOR_ART path leaked into inventory: {leaked[:5]}'
           print(json.dumps(summary, indent=2, sort_keys=True))
+          print(json.dumps(manifest, indent=2, sort_keys=True))
           PY
 
       - name: Commit refreshed private inventory
