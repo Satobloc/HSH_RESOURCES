@@ -2,21 +2,21 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-12T15:49:00Z`
-- Tree/content state: `d17ef2b5e9121b22e865e864027a7044fa4212e613c37df4f4d128860851caf9`
+- Scanned: `2026-09-15T06:51:46Z`
+- Tree/content state: `f5ee8d6cf4ccd9f39a02277e4c5b2eca49f054fe026bd25c18e77f0a6ba93f40`
 - Coverage: complete structural traversal
-- Files: 1821
-- Uploaded source files: 1607
-- PDF papers: 1238
-- Repository machinery files: 214
-- Byte-identical duplicate groups: 118
+- Files: 2063
+- Uploaded source files: 1805
+- PDF papers: 1321
+- Repository machinery files: 258
+- Byte-identical duplicate groups: 119
 
 ## Top-level coverage
 
 | Path | Files |
 |---|---:|
 | `!_HSH_RESOURCES_INDEX.md` | 1 |
-| `.github` | 2 |
+| `.github` | 7 |
 | `.gitignore` | 1 |
 | `2020-10-braiding-photonic-topological-modes.pdf` | 1 |
 | `ARXIV PAPER - 2503.14745v2.pdf` | 1 |
@@ -26,7 +26,7 @@
 | `EINSTEIN - Über die spezielle und die allgemeine Relativitätstheorie.txt` | 1 |
 | `EINSTEIN — SIDELIGHTS ON RELATIV.txt` | 1 |
 | `EINSTEIN+MINKOWSKI — PRINCIP RELAT.txt` | 1 |
-| `EXPOSURE_STATS` | 306 |
+| `EXPOSURE_STATS` | 341 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
@@ -43,19 +43,21 @@
 | `HISTORICAL` | 28 |
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 21 |
-| `OUTSIDE RESEARCH LIBRARY` | 340 |
-| `PDF_SPECS` | 21 |
-| `PRIOR_ART` | 228 |
+| `OUTSIDE RESEARCH LIBRARY` | 344 |
+| `PDF_SPECS` | 33 |
+| `PRIOR_ART` | 365 |
 | `README.md` | 1 |
-| `REDISCOVERED` | 6 |
+| `REDISCOVERED` | 7 |
+| `SCRIPT_EXECUTION_SAFETY.md` | 1 |
+| `SOURCE_INVENTORY` | 3 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
-| `derived` | 2 |
+| `derived` | 45 |
 | `indexes` | 197 |
 | `info` | 7 |
 | `requirements-tools.txt` | 1 |
 | `symmetry-11-01298.pdf` | 1 |
 | `tests` | 1 |
-| `tools` | 11 |
+| `tools` | 12 |
 
 ## Duplicate-content groups
 
@@ -371,6 +373,9 @@
 - `cb8afdccaf6239938dc8a41946052a3e41df8859cd86cc94b75392ea44ffd4be`
   - `EXPOSURE_STATS/MISC_PAPERS/light (5) 2.pdf`
   - `EXPOSURE_STATS/MISC_PAPERS/light (5).pdf`
+- `cba496d1def5e224b8abb725232222408df62b84fa7af14815ff8f9124063d63`
+  - `PRIOR_ART/1904.10207v4 (1).pdf`
+  - `PRIOR_ART/1904.10207v4.pdf`
 - `ce8a12a3cf27e0512ee84340b63d318f49ab07e1a11d2971ee315418dd95b806`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_AudienceSegments_1-1-2025--6-15-2026.csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_AudienceSegments_1-1-2025--6-15-2026.csv`
@@ -1487,11 +1492,83 @@
 | `PDF_SPECS/REVTeX_ltxutil.pdf` | 623128 |  |
 | `PDF_SPECS/REVTeX_revtex4-2.pdf` | 839993 |  |
 | `PDF_SPECS/REVTeX_summary4-2.pdf` | 230858 |  |
+| `PRIOR_ART/0001-0036.pdf` | 7611660 |  |
+| `PRIOR_ART/0001025v2.pdf` | 729353 | unresolved-seven-digit-id:0001025v2 |
+| `PRIOR_ART/0312069v2.pdf` | 465421 | unresolved-seven-digit-id:0312069v2 |
+| `PRIOR_ART/0911.2761v1.pdf` | 78781 | arxiv:0911.2761v1 |
+| `PRIOR_ART/0912.0090v1.pdf` | 228342 | arxiv:0912.0090v1 |
+| `PRIOR_ART/1001.3538v1.pdf` | 43151 | arxiv:1001.3538v1 |
+| `PRIOR_ART/1003.1015v1.pdf` | 71600 | arxiv:1003.1015v1 |
+| `PRIOR_ART/1005.0535v1.pdf` | 86857 | arxiv:1005.0535v1 |
+| `PRIOR_ART/1006.4587v2.pdf` | 114256 | arxiv:1006.4587v2 |
+| `PRIOR_ART/1008.1312v1.pdf` | 87494 | arxiv:1008.1312v1 |
+| `PRIOR_ART/1008.3345v2.pdf` | 154433 | arxiv:1008.3345v2 |
+| `PRIOR_ART/1010.3420v1.pdf` | 260291 | arxiv:1010.3420v1 |
+| `PRIOR_ART/1105.4326v1.pdf` | 168048 | arxiv:1105.4326v1 |
+| `PRIOR_ART/1202.0412v2.pdf` | 237072 | arxiv:1202.0412v2 |
+| `PRIOR_ART/1202.0720v1.pdf` | 78906 | arxiv:1202.0720v1 |
+| `PRIOR_ART/1202.4066v1.pdf` | 29688 | arxiv:1202.4066v1 |
+| `PRIOR_ART/1203.6191v2.pdf` | 1113782 | arxiv:1203.6191v2 |
+| `PRIOR_ART/1205.3636v1.pdf` | 143820 | arxiv:1205.3636v1 |
+| `PRIOR_ART/1207.1002v1.pdf` | 151514 | arxiv:1207.1002v1 |
+| `PRIOR_ART/1208.5874v2.pdf` | 184903 | arxiv:1208.5874v2 |
+| `PRIOR_ART/1210.5317v1.pdf` | 36508 | arxiv:1210.5317v1 |
+| `PRIOR_ART/1212.0454v1.pdf` | 57257 | arxiv:1212.0454v1 |
+| `PRIOR_ART/1212.4863v3.pdf` | 706625 | arxiv:1212.4863v3 |
+| `PRIOR_ART/1295-1317.pdf` | 377433 |  |
+| `PRIOR_ART/1309.0311v2.pdf` | 274124 | arxiv:1309.0311v2 |
+| `PRIOR_ART/1309.0314v2.pdf` | 185281 | arxiv:1309.0314v2 |
+| `PRIOR_ART/1401.0276v1.pdf` | 122931 | arxiv:1401.0276v1 |
+| `PRIOR_ART/1401.0286v1.pdf` | 77149 | arxiv:1401.0286v1 |
+| `PRIOR_ART/1401.0288v1.pdf` | 136009 | arxiv:1401.0288v1 |
+| `PRIOR_ART/1403.2080v3.pdf` | 321117 | arxiv:1403.2080v3 |
+| `PRIOR_ART/1405.2390v2.pdf` | 13055772 | arxiv:1405.2390v2 |
+| `PRIOR_ART/1408.3797v1.pdf` | 120900 | arxiv:1408.3797v1 |
+| `PRIOR_ART/1412.4220v2.pdf` | 221363 | arxiv:1412.4220v2 |
+| `PRIOR_ART/1504.06070v2.pdf` | 188130 | arxiv:1504.06070v2 |
+| `PRIOR_ART/1507.01019v2.pdf` | 1065934 | arxiv:1507.01019v2 |
+| `PRIOR_ART/1508.00732v3.pdf` | 107050 | arxiv:1508.00732v3 |
+| `PRIOR_ART/1606.03206v3.pdf` | 294348 | arxiv:1606.03206v3 |
+| `PRIOR_ART/1703.01415v3.pdf` | 146944 | arxiv:1703.01415v3 |
+| `PRIOR_ART/1703.04462v2.pdf` | 176860 | arxiv:1703.04462v2 |
+| `PRIOR_ART/1709.02657v2.pdf` | 349565 | arxiv:1709.02657v2 |
+| `PRIOR_ART/1801.02176v2.pdf` | 141164 | arxiv:1801.02176v2 |
 | `PRIOR_ART/1802.06039v2.pdf` | 2407146 | arxiv:1802.06039v2 |
+| `PRIOR_ART/1803.08683v1.pdf` | 228889 | arxiv:1803.08683v1 |
+| `PRIOR_ART/1805.00233v1.pdf` | 659093 | arxiv:1805.00233v1 |
+| `PRIOR_ART/1805.04647v2.pdf` | 286242 | arxiv:1805.04647v2 |
+| `PRIOR_ART/1806.04641v2.pdf` | 3752133 | arxiv:1806.04641v2 |
 | `PRIOR_ART/1807.04276v1.pdf` | 522794 | arxiv:1807.04276v1 |
+| `PRIOR_ART/1810.05464v3.pdf` | 212744 | arxiv:1810.05464v3 |
+| `PRIOR_ART/1903.02834v1.pdf` | 1861822 | arxiv:1903.02834v1 |
+| `PRIOR_ART/1904.10207v4 (1).pdf` | 767590 | arxiv:1904.10207v4 |
+| `PRIOR_ART/1904.10207v4.pdf` | 767590 | arxiv:1904.10207v4 |
+| `PRIOR_ART/1912.06462v2.pdf` | 600909 | arxiv:1912.06462v2 |
+| `PRIOR_ART/1912.10425v3.pdf` | 1153712 | arxiv:1912.10425v3 |
+| `PRIOR_ART/2003.07324v2.pdf` | 630743 | arxiv:2003.07324v2 |
+| `PRIOR_ART/2006.00012v1.pdf` | 606093 | arxiv:2006.00012v1 |
+| `PRIOR_ART/2006.14175v2.pdf` | 63773 | arxiv:2006.14175v2 |
 | `PRIOR_ART/2009.13779v3.pdf` | 516845 | arxiv:2009.13779v3 |
+| `PRIOR_ART/2010.01324v2.pdf` | 247936 | arxiv:2010.01324v2 |
+| `PRIOR_ART/2010.01327v5.pdf` | 398442 | arxiv:2010.01327v5 |
 | `PRIOR_ART/2020-10-braiding-photonic-topological-modes.pdf` | 354922 |  |
+| `PRIOR_ART/2107.11497v1.pdf` | 346032 | arxiv:2107.11497v1 |
+| `PRIOR_ART/2108.07292v4.pdf` | 335693 | arxiv:2108.07292v4 |
+| `PRIOR_ART/2109.02676v3.pdf` | 781531 | arxiv:2109.02676v3 |
+| `PRIOR_ART/2110.07168v1.pdf` | 78776 | arxiv:2110.07168v1 |
+| `PRIOR_ART/2111.09347v2.pdf` | 584458 | arxiv:2111.09347v2 |
+| `PRIOR_ART/2112.00436v1.pdf` | 45078 | arxiv:2112.00436v1 |
 | `PRIOR_ART/2112.10971v1.pdf` | 2520130 | arxiv:2112.10971v1 |
+| `PRIOR_ART/2201.07282v2.pdf` | 1371751 | arxiv:2201.07282v2 |
+| `PRIOR_ART/2204.01768v3.pdf` | 93572 | arxiv:2204.01768v3 |
+| `PRIOR_ART/2206.10445v3.pdf` | 234555 | arxiv:2206.10445v3 |
+| `PRIOR_ART/2206.10619v4.pdf` | 109661 | arxiv:2206.10619v4 |
+| `PRIOR_ART/2211.01331v2.pdf` | 66615 | arxiv:2211.01331v2 |
+| `PRIOR_ART/2301.03499v3.pdf` | 889540 | arxiv:2301.03499v3 |
+| `PRIOR_ART/2309.12293v2.pdf` | 1051242 | arxiv:2309.12293v2 |
+| `PRIOR_ART/2309.12299v2.pdf` | 545971 | arxiv:2309.12299v2 |
+| `PRIOR_ART/2312.07308v2.pdf` | 610629 | arxiv:2312.07308v2 |
+| `PRIOR_ART/2401.10202v1.pdf` | 1333749 | arxiv:2401.10202v1 |
 | `PRIOR_ART/2410.10668v2.pdf` | 532393 | arxiv:2410.10668v2 |
 | `PRIOR_ART/2410.17036v3.pdf` | 1544369 | arxiv:2410.17036v3 |
 | `PRIOR_ART/2412.12372v2.pdf` | 413188 | arxiv:2412.12372v2 |
@@ -1500,6 +1577,7 @@
 | `PRIOR_ART/2502.11322v3.pdf` | 9098090 | arxiv:2502.11322v3 |
 | `PRIOR_ART/2506.15832v2.pdf` | 934364 | arxiv:2506.15832v2 |
 | `PRIOR_ART/2507.03462v1.pdf` | 1665912 | arxiv:2507.03462v1 |
+| `PRIOR_ART/2507.07049v2.pdf` | 496621 | arxiv:2507.07049v2 |
 | `PRIOR_ART/2507.16633v2.pdf` | 831450 | arxiv:2507.16633v2 |
 | `PRIOR_ART/2507.23090v1.pdf` | 142433 | arxiv:2507.23090v1 |
 | `PRIOR_ART/2508.00100v1.pdf` | 500730 | arxiv:2508.00100v1 |
@@ -1516,6 +1594,7 @@
 | `PRIOR_ART/2509.18042v1.pdf` | 1453287 | arxiv:2509.18042v1 |
 | `PRIOR_ART/2509.19407v1.pdf` | 766244 | arxiv:2509.19407v1 |
 | `PRIOR_ART/2509.25019v1.pdf` | 553744 | arxiv:2509.25019v1 |
+| `PRIOR_ART/2510.11037v1.pdf` | 299404 | arxiv:2510.11037v1 |
 | `PRIOR_ART/2510.25430v2.pdf` | 482020 | arxiv:2510.25430v2 |
 | `PRIOR_ART/2511.05635v1.pdf` | 322909 | arxiv:2511.05635v1 |
 | `PRIOR_ART/2511.06567v1.pdf` | 556948 | arxiv:2511.06567v1 |
@@ -1530,11 +1609,13 @@
 | `PRIOR_ART/2512.04481v2.pdf` | 806417 | arxiv:2512.04481v2 |
 | `PRIOR_ART/2512.18789v1.pdf` | 2023653 | arxiv:2512.18789v1 |
 | `PRIOR_ART/2512.19282v6.pdf` | 434964 | arxiv:2512.19282v6 |
+| `PRIOR_ART/2512.20100v2.pdf` | 1199397 | arxiv:2512.20100v2 |
 | `PRIOR_ART/2512.23923v2.pdf` | 359437 | arxiv:2512.23923v2 |
 | `PRIOR_ART/2512.24036v1.pdf` | 1787554 | arxiv:2512.24036v1 |
 | `PRIOR_ART/2512.24480v1.pdf` | 390633 | arxiv:2512.24480v1 |
 | `PRIOR_ART/2601.01600v1.pdf` | 777802 | arxiv:2601.01600v1 |
 | `PRIOR_ART/2601.02222v2.pdf` | 1014460 | arxiv:2601.02222v2 |
+| `PRIOR_ART/2601.02293v2.pdf` | 394017 | arxiv:2601.02293v2 |
 | `PRIOR_ART/2601.07960v2.pdf` | 551980 | arxiv:2601.07960v2 |
 | `PRIOR_ART/2601.16213v2.pdf` | 1272195 | arxiv:2601.16213v2 |
 | `PRIOR_ART/2601.17297v1.pdf` | 449263 | arxiv:2601.17297v1 |
@@ -1641,6 +1722,7 @@
 | `PRIOR_ART/2608.19399v1.pdf` | 542397 | arxiv:2608.19399v1 |
 | `PRIOR_ART/2608.19619v1 (1).pdf` | 456349 | arxiv:2608.19619v1 |
 | `PRIOR_ART/2608.19619v1.pdf` | 456349 | arxiv:2608.19619v1 |
+| `PRIOR_ART/2608.20311v1.pdf` | 1702408 | arxiv:2608.20311v1 |
 | `PRIOR_ART/2608.20330v1.pdf` | 383959 | arxiv:2608.20330v1 |
 | `PRIOR_ART/2608.22453v1.pdf` | 1520904 | arxiv:2608.22453v1 |
 | `PRIOR_ART/2608.22919v1.pdf` | 1939528 | arxiv:2608.22919v1 |
@@ -1654,6 +1736,8 @@
 | `PRIOR_ART/2609.00673v1.pdf` | 542254 | arxiv:2609.00673v1 |
 | `PRIOR_ART/3d ker 2510.25430v2 (1).pdf` | 482020 | arxiv:2510.25430v2 |
 | `PRIOR_ART/4dyc-z8zf.pdf` | 1954789 |  |
+| `PRIOR_ART/9412228v1.pdf` | 1571482 | unresolved-seven-digit-id:9412228v1 |
+| `PRIOR_ART/9612181v1.pdf` | 218838 | unresolved-seven-digit-id:9612181v1 |
 | `PRIOR_ART/[2505.06654] A G_2G2-Holonomy Model for Late-Time Cosmic Acceleration in M-theory_ Alleviating the Hubble Tension through Geometric Vacuum Energy.pdf` | 403368 | arxiv:2505.06654 |
 | `PRIOR_ART/Advanced Science - 2026 - Lee - Non‐Hermitian Stealthy Hyperuniformity.pdf` | 3129315 |  |
 | `PRIOR_ART/BLACKHOLED 2509.07686v1 (1).pdf` | 1822290 | arxiv:2509.07686v1 |
@@ -1665,6 +1749,7 @@
 | `PRIOR_ART/LZ_Paper_Preprint_WS2025_v6.0_20251208.pdf` | 806552 |  |
 | `PRIOR_ART/LZ_Preprint_260901_Dark_Matter_EFT_Nuclear_Recoil_Search_at_Higher_Energies.pdf` | 1927272 |  |
 | `PRIOR_ART/pdf.pdf` | 16531855 |  |
+| `PRIOR_ART/PhysRevX.2.041002.pdf` | 687346 |  |
 | `PRIOR_ART/PlagiarismCheckReport.pdf` | 24470876 |  |
 | `PRIOR_ART/s10052-018-6106-4.pdf` | 698763 |  |
 | `PRIOR_ART/s10052-018-6488-3.pdf` | 828155 |  |
@@ -1673,6 +1758,7 @@
 | `PRIOR_ART/s10052-023-12004-w.pdf` | 336647 |  |
 | `PRIOR_ART/s10052-025-13970-z.pdf` | 959596 |  |
 | `PRIOR_ART/S1063779624701028.pdf` | 332775 |  |
+| `PRIOR_ART/s10701-016-9987-9.pdf` | 650555 |  |
 | `PRIOR_ART/s10701-017-0122-3.pdf` | 872938 |  |
 | `PRIOR_ART/s10714-025-03408-y (1).pdf` | 560669 |  |
 | `PRIOR_ART/s10714-025-03408-y.pdf` | 560669 |  |
@@ -1687,8 +1773,10 @@
 | `PRIOR_ART/s41586-026-10904-x.pdf` | 10478424 |  |
 | `PRIOR_ART/s41586-026-10915-8.pdf` | 1426863 |  |
 | `PRIOR_ART/s42005-026-02638-z.pdf` | 2106775 |  |
+| `PRIOR_ART/Schreiber-MTheoryMathematics2020-v200126.pdf` | 3819902 |  |
 | `PRIOR_ART/SUBMITTED SAT BIG PAPER.pdf` | 5489504 |  |
 | `PRIOR_ART/symmetry-11-01298.pdf` | 1097058 |  |
+| `PRIOR_ART/tanyon.pdf` | 289177 |  |
 | `PRIOR_ART/Topics_in_statistical_physics_invol.pdf` | 209935 |  |
 | `REDISCOVERED/a00982.pdf` | 1192732 |  |
 | `REDISCOVERED/Fletcher2004a.pdf` | 64793 |  |
