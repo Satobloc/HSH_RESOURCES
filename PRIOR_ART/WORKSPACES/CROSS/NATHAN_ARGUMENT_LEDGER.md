@@ -112,7 +112,7 @@ He also asks whether age/country/listening patterns are **consistent with** narr
 
 ## N09 — Nathan's strongest audience-level conclusion is self-selection
 
-**Source:** `EXPOSURE_STATS/SAT_IMPACT/` audience-analysis conversation preserved in the exposure corpus.
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
 
 Nathan says the clearest thing the statistics taught him is that the audience is **extremely self-selected**. He thinks the older consciousness/epistemology audience and newer physics audience are probably substantially different, while hoping some listeners followed the whole transition.
 
@@ -122,7 +122,7 @@ His emphasis is willingness to engage with unusual/dense material, not a verifie
 
 ## N10 — Nathan explicitly rejects SAT-specific interpretation of Spotify Search
 
-**Source:** same audience-analysis conversation.
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
 
 Nathan rejects the claim that Search impressions mean people are deliberately looking for his content or SAT. He notes that “SAT” itself would more naturally mean standardized college-entry exams to many searchers and interprets the metric more conservatively as evidence that some episode keywords are popular enough to be searched.
 
@@ -132,7 +132,7 @@ Nathan rejects the claim that Search impressions mean people are deliberately lo
 
 ## N11 — Nathan explicitly rejects the “bypass-oriented audience” story
 
-**Source:** same audience-analysis conversation.
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
 
 Nathan points out that “Starting At the End” is most listened to primarily because it is the **first episode**, not because the audience prefers conclusions before foundations. His deliberately absurd “clam chowder and bacon” counterexample demonstrates the logical error: changing the title would not change its position as the first episode.
 
@@ -242,6 +242,50 @@ For this audit, a continuation prompt counts as assent only when the wording act
 
 ---
 
+## N21 — Nathan rejects demographic essentialism around rigor
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
+
+When the generated interviewer frames the male-skewed audience as a question about “rigor,” Nathan explicitly rejects any gender split in rigor. He treats the demographic asymmetry as a product of culture/history rather than an intrinsic difference in intellectual seriousness. He even uses the fully listened-to “Kissing Points and Lissajou Curves” example to puncture the idea that gender predicts willingness to consume technical material.
+
+**Operational consequence:** do not use gender composition as a proxy for rigor, technical literacy, profession, or seriousness.
+
+---
+
+## N22 — Podcast wayfinding is intentionally designed to permit self-selection by topic and technical depth
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
+
+Nathan explains that visual/color/title wayfinding exists so listeners can choose paths through the archive according to their interests or build outward from material they already know. He says the physics/science-focused episodes are visibly marked separately from philosophy/consciousness material, and titles are intended to give some warning about mathematical heaviness.
+
+He also says this organization became more audience-conscious once it became clear that some followers were sticking around; the project began much more as something he was doing for himself.
+
+**Exposure implication to test later:** episode choice is not random across an undifferentiated feed. The catalog itself gives listeners tools to select physics vs. philosophy and heavier vs. lighter material. Therefore technical-episode clustering may partly reflect the deliberately exposed navigation architecture and cannot by itself identify listener occupation or motive.
+
+---
+
+## N23 — Nathan expects audience turnover across the podcast's shift from consciousness/philosophy toward physics
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
+
+Nathan says the conversation naturally bled from consciousness/epistemology into physics, but he increasingly tries to separate those subjects for scientific and listenership reasons. In discussing the first-episode position effect, he says the transition to more science-based content **“no doubt drives off some of the audience.”**
+
+Combined with N09, his working picture is not one stable audience acquiring new interests; it is at least partly a changing/self-selected audience as the subject matter changes.
+
+**Numeric implication for later:** changes in retention, age, geography, or consumption across eras cannot automatically be treated as evolution of the same listener cohort.
+
+---
+
+## N24 — A major publishing/cadence gap reflected Nathan's attention moving from podcasting into calculation and LLM-environment design
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
+
+Asked to explain a roughly three-month gap between a December 2025 episode and a March 2026 assessment, Nathan says that period was dominated by focused calculating and design of LLM environments. As the science began to seem more substantial to him, it took priority over the podcast; he returned to thinking more about the podcast only later.
+
+**Operational consequence:** podcast cadence and listener activity must not be interpreted as if episode supply were exogenous or regular. Creator attention/publication rate changed substantially with the internal research cycle.
+
+---
+
 ## Negative finding currently locked
 
 ### No recovered Nathan claim: “technical binges mean hostile auditing”
@@ -260,6 +304,6 @@ Until a direct Nathan statement is found, classify:
 
 Nathan's position, as presently recovered, is approximately:
 
-> SAT became publicly available through channels with small but nonzero reach. Later, Nathan noticed outside scientific/news developments that looked structurally similar to ideas already present in SAT, and he also noticed some audience patterns that made actual outside exposure plausible. He wants to know whether the timing, sequence, audience data, search history, and later literature collectively make **diffusion** a serious explanation in any cases. At the same time, he repeatedly keeps open older prior art, common intellectual ancestry, independent convergence, search-selection effects, ordinary audience explanations, and null-distribution problems in demographics/geography. He actively asks for tests that could distinguish those possibilities and catches an LLM falsely treating source-fed 2025–26 information as if it came from older training data. The “blind survey” material adds another methodological wrinkle: several external-topic prompts were deliberately generic category probes, but the generated answers themselves often became much stronger than the prompts. The question is therefore not “Did science copy SAT?” but “After reconstructing what SAT publicly said when, what outsiders could actually have encountered, what changed outside afterward, and what ordinary baseline would predict, does any residual pattern materially favor transmission over convergence?”
+> SAT became publicly available through channels with small but nonzero reach. Later, Nathan noticed outside scientific/news developments that looked structurally similar to ideas already present in SAT, and he also noticed some audience patterns that made actual outside exposure plausible. He wants to know whether the timing, sequence, audience data, search history, and later literature collectively make **diffusion** a serious explanation in any cases. At the same time, he repeatedly keeps open older prior art, common intellectual ancestry, independent convergence, search-selection effects, ordinary audience explanations, and null-distribution problems in demographics/geography. He actively asks for tests that could distinguish those possibilities and catches an LLM falsely treating source-fed 2025–26 information as if it came from older training data. The “blind survey” material adds another methodological wrinkle: several external-topic prompts were deliberately generic category probes, but the generated answers themselves often became much stronger than the prompts. The podcast architecture itself also encourages topic/depth self-selection, and Nathan expects substantial audience turnover as the show shifts from consciousness/philosophy toward physics. The question is therefore not “Did science copy SAT?” but “After reconstructing what SAT publicly said when, what outsiders could actually have encountered, what changed outside afterward, and what ordinary baseline would predict, does any residual pattern materially favor transmission over convergence?”
 
 This paragraph is a working synthesis and must continue to be checked against direct Nathan turns as more conversations are read.
