@@ -29,22 +29,47 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Build neutral transcript keyword index
-        run: python tools/build_podcast_transcript_index.py
-
-      - name: Commit index outputs
+      - name: Regenerate, validate, and publish transcript keyword index
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_CATALOG.csv \
-            EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_HITS.csv \
-            EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_MATRIX.csv \
-            EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_INDEX.md
-          if git diff --cached --quiet; then
-            echo "No transcript index changes to commit."
-          else
-            git commit -m "Refresh podcast transcript keyword index"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
+
+          # Generated indexes are snapshots, not mergeable source. If main advances
+          # while the index is being built, discard the stale generated commit, reset
+          # to latest main, regenerate from that tree, and retry.
+          for attempt in 1 2 3 4; do
+            echo "Publish attempt ${attempt}/4"
+            git fetch origin main
+            git reset --hard origin/main
+
+            python tools/build_podcast_transcript_index.py
+
+            test -s EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_CATALOG.csv
+            test -s EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_HITS.csv
+            test -s EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_MATRIX.csv
+            test -s EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_INDEX.md
+
+            git add \
+              EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_CATALOG.csv \
+              EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_HITS.csv \
+              EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_MATRIX.csv \
+              EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_INDEX.md
+
+            if git diff --cached --quiet; then
+              echo "Transcript keyword index already current on latest main."
+              exit 0
+            fi
+
+            git commit -m "[skip podcast-index] Refresh podcast transcript keyword index"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+
+            echo "Push race on attempt ${attempt}; discarding generated commit and rebuilding from latest main." >&2
+            sleep $((attempt * 2))
+          done
+
+          echo "Transcript keyword index changed but could not be published after four rebuild-from-main attempts." >&2
+          exit 1
