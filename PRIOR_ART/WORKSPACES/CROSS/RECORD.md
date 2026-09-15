@@ -79,3 +79,27 @@ These are not to be compressed into “Nathan argued X.” Where Nathan responds
 ### Next operation
 
 Continue conversational argument/evidence extraction with speaker attribution locked down before touching channel-level meta-analysis.
+
+## 2026-09-15 — Successor setup / control refresh
+
+Nathan requested that the current instance review the prior Alden Cross conversation and set up as the new Alden Cross.
+
+Continuity is recorded as **successor / resumed-from**, not literal instance identity. Prior conversation export: `6aa814bf-053c-83ea-8145-f130df03b231`. Current live-conversation raw ID is `PENDING RAW-ID BACKFILL`.
+
+The successor re-read the current Cross README, this work record, `EXPOSURE_STATS/CROSS_DIFFUSION_JOB_DESCRIPTION.md`, and the current Common automation/autonomy/script-safety control surfaces.
+
+### Newer instruction controls
+
+The 2026-09-15 diffusion job description supersedes the older final step above for present work: diffusion work is now **collection and chronology only until Nathan explicitly authorizes interpretation**. Do not currently make causal/significance judgments, similarity scores, or inferences of influence, copying, convergence, awareness, priority, novelty, or independence from the diffusion data.
+
+### Current artifact state verified
+
+The successor verified the existence of the source manifest, master chronology, image-text index, and podcast transcript retrieval outputs, including `CROSS_TRANSCRIPT_CATALOG.csv`, `CROSS_TRANSCRIPT_KEYWORD_HITS.csv`, `CROSS_TRANSCRIPT_KEYWORD_MATRIX.csv`, and `CROSS_TRANSCRIPT_KEYWORD_INDEX.md`. The current transcript keyword index reports 13 transcript-like files, 81 literal keyword phrases, and 342 episode-keyword hit rows. This is mechanical indexing only.
+
+A new `PRIOR_ART/WORKSPACES/CROSS/CONTINUITY.md` now records successor state, controls, provenance, verified frontier, and restart instructions.
+
+No Cross recurring automation was created. Current Common control does not list Cross among the active hourly loops and reserves cross-lane cadence/reassignment to Sable unless Nathan explicitly directs otherwise.
+
+### Next operation
+
+Re-read the diffusion job description, inspect current manifest/chronology/transcript-catalog coverage for a concrete missing collection or chronology tranche, and perform one bounded non-interpretive raw-evidence operation. Do not repeat already-generated transcript keyword work solely because the prior chat ended before reporting it.
