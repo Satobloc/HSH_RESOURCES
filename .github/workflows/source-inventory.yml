@@ -1,0 +1,165 @@
+name: Build three-repo source inventory
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'SOURCE_INVENTORY/SABLE/source_inventory_run/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: three-repo-source-inventory
+  cancel-in-progress: false
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout private resources repository
+        uses: actions/checkout@v4
+        with:
+          path: RESOURCES
+          fetch-depth: 0
+
+      - name: Checkout HsH
+        uses: actions/checkout@v4
+        with:
+          repository: Satobloc/HsH
+          ref: main
+          path: HsH
+          fetch-depth: 1
+
+      - name: Checkout GLASS
+        uses: actions/checkout@v4
+        with:
+          repository: Satobloc/SAT_THEORY_ARCHIVE_2023-25
+          ref: main
+          path: GLASS
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Record exact source revisions
+        shell: bash
+        run: |
+          echo "RESOURCES_SHA=$(git -C RESOURCES rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "HSH_SHA=$(git -C HsH rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "GLASS_SHA=$(git -C GLASS rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Run quarantine-respecting inventory sampler
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          OUT="$RUNNER_TEMP/source_inventory_run"
+          RESOURCES_GIT="$RUNNER_TEMP/resources.git"
+
+          # Do not let prior generated inventory feed back into the next inventory.
+          rm -rf RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run
+          rm -rf "$OUT"
+
+          # The sampler inventories repository content, not local checkout metadata.
+          # Preserve the private repo's .git directory outside the scanned tree so it
+          # can be restored for the publish step. Public checkout metadata is disposable.
+          mv RESOURCES/.git "$RESOURCES_GIT"
+          trap 'if [ -d "$RESOURCES_GIT" ]; then mv "$RESOURCES_GIT" RESOURCES/.git; fi' EXIT
+          rm -rf HsH/.git GLASS/.git
+
+          python HsH/WORKSPACES/SABLE/scripts/source_inventory_sampler.py \
+            --repo HSH=HsH \
+            --repo GLASS=GLASS \
+            --repo RESOURCES=RESOURCES \
+            --out-dir "$OUT"
+
+          mv "$RESOURCES_GIT" RESOURCES/.git
+          trap - EXIT
+
+          # Add immutable snapshot provenance after generation.
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path(os.environ['RUNNER_TEMP']) / 'source_inventory_run' / 'summary.json'
+          data = json.loads(path.read_text(encoding='utf-8'))
+          data['source_commits'] = {
+              'HSH': os.environ['HSH_SHA'],
+              'GLASS': os.environ['GLASS_SHA'],
+              'RESOURCES': os.environ['RESOURCES_SHA'],
+          }
+          data['execution_surface'] = 'GitHub Actions / Satobloc/HSH_RESOURCES'
+          path.write_text(json.dumps(data, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          PY
+
+          mkdir -p RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run
+          cp "$OUT/inventory.csv" RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/inventory.csv
+          cp "$OUT/sample.csv" RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/sample.csv
+          cp "$OUT/summary.json" RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/summary.json
+
+      - name: Validate outputs and quarantine behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/inventory.csv
+          test -s RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/sample.csv
+          python -m json.tool RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run/summary.json >/dev/null
+
+          python - <<'PY'
+          import csv
+          import json
+          from pathlib import Path
+
+          root = Path('RESOURCES/SOURCE_INVENTORY/SABLE/source_inventory_run')
+          summary = json.loads((root / 'summary.json').read_text(encoding='utf-8'))
+          assert summary['file_count'] > 0
+          assert set(summary['source_commits']) == {'HSH', 'GLASS', 'RESOURCES'}
+
+          with (root / 'inventory.csv').open(newline='', encoding='utf-8') as handle:
+              rows = list(csv.DictReader(handle))
+          assert rows, 'inventory is empty'
+          leaked = [r['path'] for r in rows if 'PRIOR_ART' in Path(r['path']).parts]
+          assert not leaked, f'PRIOR_ART path leaked into inventory: {leaked[:5]}'
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - name: Commit refreshed private inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd RESOURCES
+          git config user.name 'H(s)H Source Inventory Bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          git add SOURCE_INVENTORY/SABLE/source_inventory_run
+          if git diff --cached --quiet; then
+            echo 'Source inventory already current for this snapshot.'
+            exit 0
+          fi
+
+          git commit -m '[skip source-inventory] Refresh three-repo source inventory'
+
+          for attempt in 1 2 3 4; do
+            echo "Publish attempt ${attempt}/4"
+            git fetch origin main
+            if ! git rebase origin/main; then
+              echo 'Inventory rebase conflicted; refusing to guess or overwrite concurrent work.'
+              git rebase --abort || true
+              exit 1
+            fi
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep $((attempt * 2))
+          done
+
+          echo 'Unable to publish inventory after four non-destructive retries.'
+          exit 1
