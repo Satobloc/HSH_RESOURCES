@@ -12,6 +12,7 @@ This ledger is deliberately stricter than the mixed `EXPOSURE_ARGUMENT_EVIDENCE_
 - Explicit `NATHAN:` = Nathan.
 - Untagged/mixed text: use source/production context first; use the active Nathan provenance fingerprint only as supporting evidence.
 - Nathan's joking “hyperellipsistosis” / nested local self-revision is a useful clue in ambiguous passages, not proof.
+- Re-quotation can recursively deepen the local self-revision structure; do not flatten nested qualification merely because a later turn quotes an earlier one.
 - Read across turns. Preserve later narrowing, alternatives, and correction rather than freezing the first loose formulation.
 
 ---
@@ -219,6 +220,28 @@ The LLM then concedes that the 2025–26 timeline came from Nathan's supplied so
 
 ---
 
+## N19 — The preserved “blind survey” interaction uses category probes, not SAT-loaded prompts
+
+**Source:** `EXPOSURE_STATS/SAT_IMPACT/PARADIGM CHATTER [Blind Survey].txt`
+
+In the preserved survey sequence, Nathan's visible prompts include terse follow-ups such as **“what about how they’re talking about dimensions”** and **“what about how matter is discussed.”** These prompts ask the search/model to continue surveying an external topic category; they do not contain a claim about what the answer should be and do not, in those turns, feed SAT's own vocabulary into the answer.
+
+That makes these turns methodologically different from asking “find things that resemble SAT.” The generated answers are still highly vulnerable to search-engine ranking, prompt history, source quality, and LLM narrative inflation, but the **question layer itself is comparatively weakly leading**.
+
+**Do not back-project the generated answer's rhetoric (“new consensus,” “complete inversion,” “paradigm revolution”) onto Nathan merely because he asked the next category question.** Continuing the survey is not endorsement of the preceding prose.
+
+---
+
+## N20 — Nathan's questioning style often advances by local continuation rather than explicit restatement
+
+**Source:** `PARADIGM CHATTER [Blind Survey].txt`, `Debating  LISTENERSHIP.txt`, and current attribution instruction.
+
+Nathan frequently advances an already-active test with short continuation prompts rather than restating the full methodological frame. In a mixed transcript this creates a specific compression hazard: a terse “what about X?” or “and Y?” can be misread as acceptance of the model's preceding interpretation when its actual conversational function is simply **continue the sampling procedure into the next domain**.
+
+For this audit, a continuation prompt counts as assent only when the wording actually assents. Otherwise, preserve it as a request for another observation/test.
+
+---
+
 ## Negative finding currently locked
 
 ### No recovered Nathan claim: “technical binges mean hostile auditing”
@@ -237,6 +260,6 @@ Until a direct Nathan statement is found, classify:
 
 Nathan's position, as presently recovered, is approximately:
 
-> SAT became publicly available through channels with small but nonzero reach. Later, Nathan noticed outside scientific/news developments that looked structurally similar to ideas already present in SAT, and he also noticed some audience patterns that made actual outside exposure plausible. He wants to know whether the timing, sequence, audience data, search history, and later literature collectively make **diffusion** a serious explanation in any cases. At the same time, he repeatedly keeps open older prior art, common intellectual ancestry, independent convergence, search-selection effects, ordinary audience explanations, and null-distribution problems in demographics/geography. He actively asks for tests that could distinguish those possibilities and catches an LLM falsely treating source-fed 2025–26 information as if it came from older training data. The question is therefore not “Did science copy SAT?” but “After reconstructing what SAT publicly said when, what outsiders could actually have encountered, what changed outside afterward, and what ordinary baseline would predict, does any residual pattern materially favor transmission over convergence?”
+> SAT became publicly available through channels with small but nonzero reach. Later, Nathan noticed outside scientific/news developments that looked structurally similar to ideas already present in SAT, and he also noticed some audience patterns that made actual outside exposure plausible. He wants to know whether the timing, sequence, audience data, search history, and later literature collectively make **diffusion** a serious explanation in any cases. At the same time, he repeatedly keeps open older prior art, common intellectual ancestry, independent convergence, search-selection effects, ordinary audience explanations, and null-distribution problems in demographics/geography. He actively asks for tests that could distinguish those possibilities and catches an LLM falsely treating source-fed 2025–26 information as if it came from older training data. The “blind survey” material adds another methodological wrinkle: several external-topic prompts were deliberately generic category probes, but the generated answers themselves often became much stronger than the prompts. The question is therefore not “Did science copy SAT?” but “After reconstructing what SAT publicly said when, what outsiders could actually have encountered, what changed outside afterward, and what ordinary baseline would predict, does any residual pattern materially favor transmission over convergence?”
 
 This paragraph is a working synthesis and must continue to be checked against direct Nathan turns as more conversations are read.
