@@ -219,28 +219,40 @@ jobs:
           cd RESOURCES
           git config user.name 'H(s)H Source Inventory Bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          OUT="$RUNNER_TEMP/source_inventory_run"
+          TARGET='SOURCE_INVENTORY/SABLE/source_inventory_run'
 
-          git add SOURCE_INVENTORY/SABLE/source_inventory_run
-          if git diff --cached --quiet; then
-            echo 'Source inventory already current for this snapshot.'
-            exit 0
-          fi
-
-          git commit -m '[skip source-inventory] Refresh three-repo source inventory'
-
+          # Generated snapshots are never rebased. If main advances while this run is
+          # publishing, discard the stale local commit, reset to the newest main, lay
+          # the already-validated snapshot back down, and retry the scoped commit.
+          # The manifest records the exact source SHAs sampled, so this remains honest;
+          # any newer non-generated push queues a later inventory run via the trigger.
           for attempt in 1 2 3 4; do
             echo "Publish attempt ${attempt}/4"
             git fetch origin main
-            if ! git rebase origin/main; then
-              echo 'Inventory rebase conflicted; refusing to guess or overwrite concurrent work.'
-              git rebase --abort || true
-              exit 1
+            git reset --hard origin/main
+
+            rm -rf "$TARGET"
+            mkdir -p "$TARGET"
+            cp "$OUT/inventory.csv" "$TARGET/inventory.csv"
+            cp "$OUT/sample.csv" "$TARGET/sample.csv"
+            cp "$OUT/summary.json" "$TARGET/summary.json"
+            cp "$OUT/run_manifest.json" "$TARGET/run_manifest.json"
+
+            git add "$TARGET"
+            if git diff --cached --quiet; then
+              echo 'Source inventory already current for this sampled snapshot.'
+              exit 0
             fi
+
+            git commit -m '[skip source-inventory] Refresh three-repo source inventory'
             if git push origin HEAD:main; then
               exit 0
             fi
+
+            echo "Push race on attempt ${attempt}; discarding generated commit and retrying from latest main." >&2
             sleep $((attempt * 2))
           done
 
-          echo 'Unable to publish inventory after four non-destructive retries.'
+          echo 'Unable to publish inventory after four rebuild-from-main retries.' >&2
           exit 1
