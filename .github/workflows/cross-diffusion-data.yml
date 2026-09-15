@@ -1,0 +1,159 @@
+name: Cross diffusion data compilation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "EXPOSURE_STATS/**"
+      - "LIVE_RESEARCH_UPDATES/**"
+      - "OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/**"
+      - "OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/**"
+      - "tools/extract_image_text.py"
+      - "tools/extract_papers.py"
+      - "tools/build_analytics_store.py"
+      - "tools/build_diffusion_inventory.py"
+      - ".github/workflows/cross-diffusion-data.yml"
+      - "requirements-tools.txt"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cross-diffusion-data-main
+  cancel-in-progress: false
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-tools.txt
+
+      - name: Install text extraction tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr poppler-utils
+          python -m pip install --disable-pip-version-check -r requirements-tools.txt
+
+      - name: Extract text from focused PDFs only
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          scopes = [
+              Path('EXPOSURE_STATS'),
+              Path('LIVE_RESEARCH_UPDATES'),
+              Path('OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS'),
+              Path('OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH'),
+          ]
+          files = []
+          for scope in scopes:
+              if scope.exists():
+                  files.extend(p for p in scope.rglob('*.pdf') if p.is_file())
+          files = sorted(set(files), key=lambda p: p.as_posix().casefold())
+          for i in range(0, len(files), 50):
+              chunk = files[i:i+50]
+              subprocess.run([
+                  'python', 'tools/extract_papers.py', '--root', '.', '--apply', '--allow-errors',
+                  *[p.as_posix() for p in chunk]
+              ], check=True)
+          print(f'focused_pdfs={len(files)}')
+          PY
+
+      - name: OCR focused image files only
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          scopes = [
+              Path('EXPOSURE_STATS'),
+              Path('LIVE_RESEARCH_UPDATES'),
+              Path('OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS'),
+              Path('OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH'),
+          ]
+          exts = {'.png','.jpg','.jpeg','.webp','.tif','.tiff','.bmp'}
+          files = []
+          for scope in scopes:
+              if scope.exists():
+                  files.extend(p for p in scope.rglob('*') if p.is_file() and p.suffix.lower() in exts)
+          files = sorted(set(files), key=lambda p: p.as_posix().casefold())
+          for i in range(0, len(files), 50):
+              chunk = files[i:i+50]
+              subprocess.run([
+                  'python', 'tools/extract_image_text.py', '--root', '.', '--apply', '--allow-errors',
+                  *[p.as_posix() for p in chunk]
+              ], check=True)
+          print(f'focused_images={len(files)}')
+          PY
+
+      - name: Compile structured analytics without legacy scoring corpus
+        run: |
+          python tools/build_analytics_store.py \
+            --root . \
+            --apply \
+            --output derived/analytics/cross_diffusion.sqlite \
+            --scope "EXPOSURE_STATS/DEBATING AI DATA" \
+            --scope "EXPOSURE_STATS/EXP_ANALYSIS" \
+            --scope "EXPOSURE_STATS/PODCAST_EPs" \
+            --scope "EXPOSURE_STATS/SAT — PODCAST STATS" \
+            --scope "EXPOSURE_STATS/SAT_IMPACT" \
+            --scope "EXPOSURE_STATS/_SAT  Satobloc GitHubStats" \
+            --scope "LIVE_RESEARCH_UPDATES" \
+            --scope "OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS" \
+            --scope "OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH"
+
+      - name: Build neutral source and image-text indexes
+        run: python tools/build_diffusion_inventory.py --root .
+
+      - name: Validate image extraction coverage
+        run: |
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+
+          manifest = Path('EXPOSURE_STATS/CROSS_DIFFUSION_SOURCE_MANIFEST.csv')
+          rows = list(csv.DictReader(manifest.open(encoding='utf-8')))
+          images = [r for r in rows if r['media_kind'] == 'image']
+          missing = [r for r in images if r['text_status'] != 'extracted' or not r['text_path']]
+          missing_files = [r for r in images if r['text_path'] and not Path(r['text_path']).is_file()]
+          print(f'image_records={len(images)}')
+          print(f'image_extraction_missing={len(missing)}')
+          print(f'image_text_files_missing={len(missing_files)}')
+          if missing or missing_files:
+              for r in (missing + missing_files)[:25]:
+                  print('MISSING', r['source_path'], r['text_status'], r['text_path'])
+              raise SystemExit(1)
+          PY
+
+      - name: Commit derived Cross data
+        run: |
+          if git status --porcelain | grep -q .; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add \
+              derived/text \
+              derived/image_text \
+              derived/manifests/extraction.jsonl \
+              derived/manifests/image_text_extraction.jsonl \
+              derived/analytics/cross_diffusion.sqlite \
+              derived/analytics/cross_diffusion_sources.csv \
+              derived/analytics/cross_diffusion_observations.csv \
+              EXPOSURE_STATS/CROSS_DIFFUSION_SOURCE_MANIFEST.csv \
+              EXPOSURE_STATS/CROSS_IMAGE_TEXT_INDEX.md
+            git commit -m "Refresh Cross diffusion data and image text"
+            git push origin HEAD:main
+          else
+            echo "No derived changes to commit."
+          fi
