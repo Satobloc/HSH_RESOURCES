@@ -139,21 +139,25 @@ jobs:
 
       - name: Commit derived Cross data
         run: |
-          if git status --porcelain | grep -q .; then
+          if git status --porcelain --untracked-files=all | grep -q .; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add \
-              derived/text \
-              derived/image_text \
               derived/manifests/extraction.jsonl \
+              EXPOSURE_STATS/CROSS_DIFFUSION_SOURCE_MANIFEST.csv \
+              EXPOSURE_STATS/CROSS_IMAGE_TEXT_INDEX.md || true
+            git add -f \
+              derived/image_text \
               derived/manifests/image_text_extraction.jsonl \
               derived/analytics/cross_diffusion.sqlite \
               derived/analytics/cross_diffusion_sources.csv \
-              derived/analytics/cross_diffusion_observations.csv \
-              EXPOSURE_STATS/CROSS_DIFFUSION_SOURCE_MANIFEST.csv \
-              EXPOSURE_STATS/CROSS_IMAGE_TEXT_INDEX.md
-            git commit -m "Refresh Cross diffusion data and image text"
-            git push origin HEAD:main
+              derived/analytics/cross_diffusion_observations.csv
+            if git diff --cached --quiet; then
+              echo "No staged derived changes to commit."
+            else
+              git commit -m "Refresh Cross diffusion data and image text"
+              git push origin HEAD:main
+            fi
           else
             echo "No derived changes to commit."
           fi
