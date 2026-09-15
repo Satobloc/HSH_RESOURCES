@@ -32,6 +32,21 @@ Quarantine is bibliographic/provenance hygiene, not a claim that the material is
 
 For post-9-Sep-2026 H(s)H work, relevant overlap with nLab/braid/higher-geometry material should be marked exposure-aware unless independently traceable to earlier internal sources.
 
+## Speaker-attribution / Nathan-argument rules
+
+Cross must preserve **Nathan's actual argumentative contour**, not a compressed amalgam of Nathan + assistant speculation + later corrections.
+
+1. Explicit `user` tags in archived ChatGPT conversations are Nathan unless the source explicitly documents an exception. This is source metadata and outranks stylistic inference.
+2. Explicit `NATHAN:` labels are Nathan.
+3. For genuinely untagged/mixed/damaged passages, use production metadata and conversational continuity first. The active provenance aid is `PDF_SPECS/NATHAN_VOICE_MODEL/Nathan_Voice_Identification_Provenance_Fingerprint_v8.0.md`.
+4. The voice fingerprint is supporting evidence, not a biometric detector. Direct Nathan correction outranks it.
+5. Nathan's joking “hyperellipsistosis” heuristic — dense ellipses, local self-revision, nested qualification, and 1,1-style recursive return — is useful in ambiguous mixed prose, but not proof by itself.
+6. Read arguments across turns. Nathan often states something loosely, then narrows, recasts, distinguishes, or supplies an alternative explanation. Preserve the mature multi-turn argument, not the loudest sentence.
+7. Keep epistemic levels separate: observation → interpretation → suspicion/hypothesis → alternative explanation → conclusion. Do not promote one level into another by compression.
+8. Motive/identity stories attached to anonymous podcast behavior (“auditing,” “stress-testing,” “professional,” “researcher,” etc.) remain LLM hypotheses unless Nathan independently adopts them.
+
+The current v8 voice-model index explicitly says direct Nathan correction outranks model inference and recommends the identification/provenance fingerprint for mixed-corpus speaker attribution.
+
 ## Current task order
 
 ### 1. Exposure arguments first
@@ -81,6 +96,7 @@ No premature synthesis.
 ## Existing quarantined output
 
 - `PRIOR_ART/2026-09-14_CROSS_PRELIMINARY_PRIOR_ART_REPORT.md`
+- `PRIOR_ART/WORKSPACES/CROSS/EXPOSURE_ARGUMENT_EVIDENCE_MATRIX.md`
 
 ## Public/common communication rule
 
