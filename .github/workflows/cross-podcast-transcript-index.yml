@@ -1,0 +1,50 @@
+name: Cross podcast transcript index
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "EXPOSURE_STATS/PODCAST_EPs/**"
+      - "tools/build_podcast_transcript_index.py"
+      - ".github/workflows/cross-podcast-transcript-index.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cross-podcast-transcript-index-main
+  cancel-in-progress: false
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build neutral transcript keyword index
+        run: python tools/build_podcast_transcript_index.py
+
+      - name: Commit index outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_CATALOG.csv \
+            EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_HITS.csv \
+            EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_MATRIX.csv \
+            EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_INDEX.md
+          if git diff --cached --quiet; then
+            echo "No transcript index changes to commit."
+          else
+            git commit -m "Refresh podcast transcript keyword index"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
