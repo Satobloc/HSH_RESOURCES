@@ -159,6 +159,66 @@ This matters for attribution analysis: loose or dictation-like surface form is n
 
 ---
 
+## N14 — Nathan actively challenges geographic overfitting
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating  LISTENERSHIP.txt`
+
+When the LLM links Netherlands/Turkey/Hungary listeners to famous physicists and research traditions, Nathan pushes back. He says it seems like **a stretch** to imagine ’t Hooft personally hearing SAT and explicitly raises the selection-effect problem: if he had asked for famous physicists from a completely different country list, the sources would contain famous physicists from those countries too.
+
+He then asks for a proper baseline comparison: would a cooking podcast or a generic physics podcast show a similar geographic distribution? Are these countries unusually aligned with SAT-adjacent traditions **relative to an appropriate null distribution**, or are they just ordinary podcast geography?
+
+**This is a direct anti-overfitting argument, not a claim that the geographic pattern is significant.**
+
+---
+
+## N15 — Nathan treats age/behavior patterns as observations to explain, not identities already known
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating  LISTENERSHIP.txt`
+
+Nathan notes what he thinks may be roughly half a dozen 18–22-year-old listeners, mostly US-based with at least one Netherlands listener, who appeared to focus on technical episodes for a while, followed by one listener apparently checking in periodically.
+
+He asks **“What do you make of the fact…”** rather than identifying those people as students, physicists, auditors, or hostile reviewers.
+
+**Required distinction:**
+- observed demographic/behavior pattern = candidate fact to verify from raw analytics;
+- “undergrad,” “researcher,” “auditor,” “monitor” = hypotheses generated downstream.
+
+---
+
+## N16 — Nathan asks for seasonality as a discriminator among audience hypotheses
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating  LISTENERSHIP.txt`
+
+Nathan asks what months should show the most and least listening under four competing audience models: general serious enthusiasts, undergraduates, graduate students, and working physicists — and then asks which mixture best fits the actual data.
+
+This is another explicit attempt to generate **differential predictions** rather than confirm a preferred audience identity.
+
+---
+
+## N17 — Nathan seeks an external test for whether SAT-like ideas are actually in professional conversation
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating  LISTENERSHIP.txt`
+
+Nathan asks where academic physicists and graduate students actually talk physics online, then asks for the best search strategy to determine whether SAT itself or SAT-like ideas are genuinely part of the conversation.
+
+He specifically asks for a signal that would be SAT-like **without requiring SAT's own jargon**, recognizing that even an interested physicist might discuss an idea in standard disciplinary language rather than repeat outsider terminology.
+
+**Important contour:** the goal is to design an observational test, not to assume covert discussion exists.
+
+---
+
+## N18 — Nathan catches the training-data contradiction himself
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating  LISTENERSHIP.txt`
+
+After repeatedly asking the LLM to distinguish what came from its training data from what came from Nathan's supplied materials, Nathan asks how current the training data actually is. When the model says its knowledge effectively stops in late 2023/early 2024, Nathan immediately points out the consequence: **the training data predates SAT's public emergence, so how could the model have inferred a 2025–26 “uptick” from training data?**
+
+The LLM then concedes that the 2025–26 timeline came from Nathan's supplied sources and conversation history, not independent training-data observation.
+
+**Operational consequence:** earlier LLM claims to have independently “detected” a post-2025 zeitgeist shift in its training data are invalid as independent evidence. Nathan is the one who exposed that failure mode in the conversation.
+
+---
+
 ## Negative finding currently locked
 
 ### No recovered Nathan claim: “technical binges mean hostile auditing”
@@ -177,6 +237,6 @@ Until a direct Nathan statement is found, classify:
 
 Nathan's position, as presently recovered, is approximately:
 
-> SAT became publicly available through channels with small but nonzero reach. Later, Nathan noticed outside scientific/news developments that looked structurally similar to ideas already present in SAT, and he also noticed some audience patterns that made actual outside exposure plausible. He wants to know whether the timing, sequence, audience data, search history, and later literature collectively make **diffusion** a serious explanation in any cases. At the same time, he repeatedly keeps open older prior art, common intellectual ancestry, independent convergence, search-selection effects, and ordinary audience explanations. The question is therefore not “Did science copy SAT?” but “After reconstructing what SAT publicly said when, what outsiders could actually have encountered, and what changed outside afterward, does any residual pattern require or materially favor transmission over convergence?”
+> SAT became publicly available through channels with small but nonzero reach. Later, Nathan noticed outside scientific/news developments that looked structurally similar to ideas already present in SAT, and he also noticed some audience patterns that made actual outside exposure plausible. He wants to know whether the timing, sequence, audience data, search history, and later literature collectively make **diffusion** a serious explanation in any cases. At the same time, he repeatedly keeps open older prior art, common intellectual ancestry, independent convergence, search-selection effects, ordinary audience explanations, and null-distribution problems in demographics/geography. He actively asks for tests that could distinguish those possibilities and catches an LLM falsely treating source-fed 2025–26 information as if it came from older training data. The question is therefore not “Did science copy SAT?” but “After reconstructing what SAT publicly said when, what outsiders could actually have encountered, what changed outside afterward, and what ordinary baseline would predict, does any residual pattern materially favor transmission over convergence?”
 
 This paragraph is a working synthesis and must continue to be checked against direct Nathan turns as more conversations are read.
