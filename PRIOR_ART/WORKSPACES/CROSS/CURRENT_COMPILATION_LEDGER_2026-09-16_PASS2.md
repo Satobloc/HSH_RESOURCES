@@ -36,7 +36,7 @@ Current classifications recorded in the Cross map:
 - `PARADIGM CHATTER [Blind Survey].txt`: primary for survey design; generated claims require source checking.
 - `PARADIGM — Chatter.txt`: derivative/composite routing source unless unique Nathan turns are found.
 - `SAT RECON — Gg1.txt`: generated calculation/reconstruction; low relevance to exposure arguments, potentially useful for dating claimed prediction/closure language.
-- `SAT RECON — Gg2.txt`: generated reconstruction; direct Nathan turns, if any, must be separated from generated prose.
+- `SAT RECON — Gg2.txt`: triaged generated assistant/LLM reconstruction; no explicit Nathan/user turn or later correction located; generated claims remain recorded as `R-GG2-01` through `R-GG2-05`; see `SOURCE_TRIAGE_GG2_2026-09-17.md`.
 - `SAT RECON — Gg3.txt`: triaged generated assistant/LLM `GOOGLE NEW GROUND` reconstruction; no explicit Nathan/user turn located; byte-identical to `SAT RECON — Goog.txt`; see `SOURCE_TRIAGE_GG3_GOOG_2026-09-17.md`.
 - `SAT RECON — Goog.txt`: duplicate-only alias of Gg3; do not count separately.
 - `SAT RECON — Gg4.txt`: triaged generated search/reconstruction record; no explicit `NATHAN:` block located; see `SOURCE_TRIAGE_GG4_2026-09-17.md`.
@@ -110,7 +110,7 @@ These are preserved as source claims only. They are not treated as validated phy
 **Claimant:** Assistant/LLM  
 **Claim:** the same reconstruction extrapolates the SAT geometry into speculative spacecraft/navigation mechanisms including “time feathering,” a “dark matter vessel phase,” teleological pull, and a re-entry/topological phase condition.
 
-**Source handling note:** these are generated reconstruction/speculation claims. They are useful for dating what claims existed in the archive, not as external evidence.
+**Source handling note:** these are generated reconstruction/speculation claims. They are useful for dating what claims existed in the archive, not as external evidence. Direct full-file triage on 2026-09-17 located no explicit Nathan/user turn or later correction in the file; see `SOURCE_TRIAGE_GG2_2026-09-17.md`.
 
 ---
 
@@ -178,7 +178,7 @@ Current Cross raw-conversation extraction remains incomplete. The feeder/chunkin
 
 ## Next raw-compilation targets
 
-1. Continue bounded triage of remaining `SAT RECON` files, beginning with `SAT RECON — Gg2.txt` if a fresh source-classification pass is still needed beyond the existing claim extraction.
+1. Close the remaining `SAT RECON` source-classification loop with `SAT RECON — Gg1.txt` if a dedicated provenance/triage note is still useful beyond the existing claim extraction.
 2. Continue recovery of exact Google Trends source turns only when a new candidate raw locator surfaces; do not repeat exhausted normalization-phrase searches.
 3. Continue source-deduplication before counting repeated summaries, generated reconstructions, or screenshots as independent records.
 4. Continue direct-Nathan extraction from mixed podcast conversational files where speaker attribution remains unresolved.
