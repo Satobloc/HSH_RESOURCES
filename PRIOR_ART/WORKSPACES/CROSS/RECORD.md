@@ -103,3 +103,37 @@ No Cross recurring automation was created. Current Common control does not list 
 ### Next operation
 
 Re-read the diffusion job description, inspect current manifest/chronology/transcript-catalog coverage for a concrete missing collection or chronology tranche, and perform one bounded non-interpretive raw-evidence operation. Do not repeat already-generated transcript keyword work solely because the prior chat ended before reporting it.
+
+
+## 2026-09-17 — Transparent interface / Organizatino pass
+
+Nathan requested that the current Cross record be fully documented and expose a transparent interface.
+
+### Interface changes
+
+- Created `START_HERE.md` as the human-readable front door.
+- Created `ARTIFACT_REGISTRY.tsv` as a machine-readable inventory of every Cross-workspace artifact, with class, currentness, authority role, purpose, and caution/supersession field.
+- Replaced the older README with a concise current landing page that routes new instances through the interface rather than through historical task-order prose.
+- Connected the Analysis Readiness Ledger and current processing checkpoint to the interface.
+- Added an explicit control warning to `EXPOSURE_SOURCE_ATTRIBUTION_MAP.md`: inherited analytical prose remains for auditability but is non-controlling under the current collection-only interlock.
+- Classified historical compilation ledgers, savepoints, MEMORY.md, and the early provenance manifest as historical/snapshot artifacts rather than current-state interfaces.
+- Kept `SCHREIBER_HH_LINEAGE_RESEARCH_PLAN.md` explicitly deferred/outside the current diffusion factual-record scope.
+
+### Source-family closure
+
+The interrupted `Debating AI 1.txt` pass was completed and documented in `SOURCE_TRIAGE_DEBATING_AI_1_2026-09-17.md`.
+
+The numbered `Debating AI 1–3` source family now has explicit source classifications:
+- 1 = generated catalog/keyword summary, no direct Nathan turn;
+- 2 = generated analytics/report prose, no direct Nathan turn;
+- 3 = compiled generated-question / direct-`NATHAN:` Q&A, byte-identical to archive `PODCAST - PODlod.txt`.
+
+No causal or evidentiary interpretation was added during this interface pass.
+
+### Authority rule exposed
+
+For operating instructions, latest Nathan instruction + `CONTINUITY.md` + the diffusion job description control over older plans.
+
+For factual content, directly inspected raw sources outrank source-triage notes; source-triage notes outrank current ledgers; current ledgers outrank routing aids and historical summaries.
+
+The interface now makes this ordering explicit instead of relying on institutional memory.
