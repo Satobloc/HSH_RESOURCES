@@ -37,6 +37,8 @@ Current classifications recorded in the Cross map:
 - `PARADIGM — Chatter.txt`: derivative/composite routing source unless unique Nathan turns are found.
 - `SAT RECON — Gg1.txt`: generated calculation/reconstruction; low relevance to exposure arguments, potentially useful for dating claimed prediction/closure language.
 - `SAT RECON — Gg2.txt`: generated reconstruction; direct Nathan turns, if any, must be separated from generated prose.
+- `SAT RECON — Gg3.txt`: triaged generated assistant/LLM `GOOGLE NEW GROUND` reconstruction; no explicit Nathan/user turn located; byte-identical to `SAT RECON — Goog.txt`; see `SOURCE_TRIAGE_GG3_GOOG_2026-09-17.md`.
+- `SAT RECON — Goog.txt`: duplicate-only alias of Gg3; do not count separately.
 - `SAT RECON — Gg4.txt`: triaged generated search/reconstruction record; no explicit `NATHAN:` block located; see `SOURCE_TRIAGE_GG4_2026-09-17.md`.
 - `SAT RECON — google4.txt`: triaged generated search/reconstruction record; substantially overlaps Gg4 and adds later search-answer material; see `SOURCE_TRIAGE_GOOGLE4_2026-09-17.md`.
 - `SAT TO DO — Google py.txt`: triaged generated SAT Python simulation/audit bundle; not Google Trends provenance; see `SOURCE_TRIAGE_GOOGLE_PY_2026-09-17.md`.
@@ -112,6 +114,30 @@ These are preserved as source claims only. They are not treated as validated phy
 
 ---
 
+## Assistant/LLM reconstruction claims from `SAT RECON — Gg3.txt` / `Goog.txt`
+
+These two filenames are byte-identical and are one source record, not two.
+
+### R-GG3-01 — four generated frontier proposals
+**Claimant:** Assistant/LLM  
+**Claim:** the source proposes `Timesheet Wake`, `Kink Splitting`, `Macroscopic Holonomy Clumping`, and `Topological Tearing` as four SAT extensions/frontiers.
+
+### R-GG3-02 — generated kink-splitting audit
+**Claimant:** Assistant/LLM  
+**Claim:** a Python boundary selector is presented using a `14.1°` obscuration threshold, and the accompanying generated prose calls the mechanism `proved` / `confirmed`.
+
+### R-GG3-03 — generated Planck-length relation
+**Claimant:** Assistant/LLM  
+**Claim:** the source proposes `l_P = l_f * (B / theta_obs)^(Q^2 * pi)` and compares the result to a NIST/CODATA Planck-length target.
+
+### R-GG3-04 — generated numerical verdict
+**Claimant:** Assistant/LLM  
+**Claim:** the source reports approximately `1.61621 × 10^-35 m`, states a `0.0026%` deviation, and labels the result a `decisive PASS`.
+
+**Source handling note:** no explicit Nathan/user turn or self-correction was located in this file. All of the above are preserved as generated-source claims only. See `SOURCE_TRIAGE_GG3_GOOG_2026-09-17.md`.
+
+---
+
 ## Source-level Google Trends / search provenance status
 
 ### GT-PROV01
@@ -127,7 +153,7 @@ These are preserved as source claims only. They are not treated as validated phy
 Current direct GitHub code search for the literal control term `paraglider` and for several remembered Trends phrases returned no result. Absence from GitHub code search is therefore not being treated as absence from the raw conversations/screenshots.
 
 ### GT-PROV05
-The `EXPOSURE_STATS/SAT_IMPACT/` directory contains repository image files `trends.PNG` and `trends2.PNG`. Their content has not yet been inspected in this pass. They are candidate direct visual-source records for the Google Trends provenance lane and should be handled as images rather than inferred from filenames alone.
+Repository image files `EXPOSURE_STATS/SAT_IMPACT/trends.PNG` and `trends2.PNG` were mapped on 2026-09-17. Both entered the repo in commit `394954cb9902d53e1768f27716940135f23be11a` dated 2026-09-10T09:18:04Z. The June 10/June 16 raw screenshot-upload lineage and contemporaneous assistant visual transcriptions were also recovered, but no binary/source-generation bridge currently establishes that the September 1920×1080 repository PNGs are identical to the earlier tall mobile screenshots. See `SOURCE_TRIAGE_TRENDS_IMAGES_2026-09-17.md` and `CROSS_SOURCE_GAPS.tsv` row `GAP-TRENDS-REPO-IMAGE-LINEAGE`.
 
 ---
 
@@ -152,9 +178,9 @@ Current Cross raw-conversation extraction remains incomplete. The feeder/chunkin
 
 ## Next raw-compilation targets
 
-1. Locate or recover the conversation feeder/chunker so large raw JSON exports can be inspected in bounded slices.
-2. Recover the exact Google Trends visual-inspection turns, including chart settings, term groupings, normalization correction, controls, and Nathan/assistant turn sequence.
-3. Inspect `EXPOSURE_STATS/SAT_IMPACT/trends.PNG` and `trends2.PNG` as a bounded image-source pair; record only visible chart metadata/terms/values and provenance.
-4. Continue source-deduplication before counting repeated summaries or screenshots as independent evidence.
+1. Continue bounded triage of remaining `SAT RECON` files, beginning with `SAT RECON — Gg2.txt` if a fresh source-classification pass is still needed beyond the existing claim extraction.
+2. Continue recovery of exact Google Trends source turns only when a new candidate raw locator surfaces; do not repeat exhausted normalization-phrase searches.
+3. Continue source-deduplication before counting repeated summaries, generated reconstructions, or screenshots as independent records.
+4. Continue direct-Nathan extraction from mixed podcast conversational files where speaker attribution remains unresolved.
 
 **Quarantine:** this pass remains inside `PRIOR_ART/WORKSPACES/CROSS/` unless Nathan explicitly releases it.
