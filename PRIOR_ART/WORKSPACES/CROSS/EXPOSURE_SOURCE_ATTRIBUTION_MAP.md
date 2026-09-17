@@ -2,7 +2,8 @@
 
 **Status:** working inventory, not conclusions  
 **Lane:** Alden Cross / quarantined  
-**Current phase:** conversational argument extraction before raw podcast / Google Trends numerics
+**Current phase:** factual source attribution / chronology with a bounded Analysis Pass 1 interface; quantitative normalization remains ongoing.  
+**Control note:** this file retains inherited analytical prose from earlier Cross phases for auditability. Under the active collection-only interlock, use its source classifications, duplicate controls, and attribution notes as routing metadata; do not treat older causal/significance language below as current factual-record conclusions. Analysis readiness is governed by `ANALYSIS_READINESS_LEDGER_2026-09-17.md`.
 
 ## Governing distinction
 
@@ -45,7 +46,7 @@ A separate distinction applies to **what a blind search survey can evidence**. G
 | `Debating  LISTENERSHIP.txt` | long mixed Nathan/LLM conversation | **PRIMARY** | several strongest audience-motive narratives (“stress-testing,” “audit-and-monitor”) are LLM constructions; Nathan repeatedly narrows or questions them |
 | `Debating  Listeners .txt` | Nathan analysis instruction / prompt | **PRIMARY for methodological intent** | explicitly asks realistic/best/worst, alternative hypotheses, and consistency tests; does not itself identify listeners as researchers |
 | `Debating  Listeners 2.txt` | duplicate blob of LISTENERSHIP | **DUPLICATE** | do not double-count |
-| `Debating AI 1.txt` | generated catalog / keyword summary | **SECONDARY routing aid** | contains factual and interpretive errors (e.g. acronym expansions / audience-strategy narrative); not a Nathan argument source unless direct turns are present |
+| `Debating AI 1.txt` | generated catalog / keyword summary; triaged 2026-09-17 | **SECONDARY routing aid** | no direct `NATHAN:` turn; generated SAT expansion, audience interpretation, AI-consciousness attribution, and derivative numerics require independent sourcing/reconciliation; see `SOURCE_TRIAGE_DEBATING_AI_1_2026-09-17.md` |
 | `Debating AI 2.txt` | generated analytics/report prose; triaged 2026-09-17 | **GENERATED-CLAIM ROUTING; derivative numerics deferred to reconciliation** | no direct Nathan/user turn located; contains generated `brand intent`, `bypass-oriented`, professional-audience, retention, and listener-behavior narratives; opening strategic report repeats within the file; see `SOURCE_TRIAGE_DEBATING_AI_2_2026-09-17.md` |
 | `Debating AI 3.txt` | compiled generated-question / direct-`NATHAN:` Q&A; triaged 2026-09-17 | **PRIMARY for explicitly labeled Nathan answers; generated question premises kept separate** | not a raw chat export; no original message IDs/timestamps; byte-identical to archive `PODCAST - PODlod.txt`; three late `NATHAN:` answer fields are blank; see `SOURCE_TRIAGE_DEBATING_AI_3_2026-09-17.md` |
 | `DEBATING AI BIG STATS.txt` | likely analytics synthesis | **DEFER to numeric phase** | derivative numbers must be reconciled to raw exports/screens |
