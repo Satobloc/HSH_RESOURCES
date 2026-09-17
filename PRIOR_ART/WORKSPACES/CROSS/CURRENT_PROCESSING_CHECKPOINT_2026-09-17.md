@@ -30,6 +30,7 @@
 - `SAT RECON — google4.txt`: triaged as a larger generated search/reconstruction record that substantially reproduces `Gg4` and then continues with additional antecedent/SAT terminology/worldline material. See `SOURCE_TRIAGE_GOOGLE4_2026-09-17.md`.
 - `SAT TO DO — Google py.txt`: triaged as a bundle of SAT Python simulations/audits, not Google Trends retrieval or Trends API tooling. See `SOURCE_TRIAGE_GOOGLE_PY_2026-09-17.md`.
 - `trends.PNG` / `trends2.PNG`: repository image provenance and earlier June screenshot-conversation lineage mapped. See `SOURCE_TRIAGE_TRENDS_IMAGES_2026-09-17.md`. Repository PNGs are 1920×1080 and were uploaded 2026-09-10; earlier June raw-conversation screenshots are separate tall mobile-image records. No binary/hash bridge between those layers has been recovered, so they remain distinct source records.
+- `Debating AI —  Podcast.txt`: triaged as a generated interview-question sheet addressed to Nathan, not a mixed dialogue. It contains four thematic question groups and multiple second-person/quoted premises, but no direct Nathan answer, raw user turn, or `NATHAN:` block. Those premises remain routing leads until independently sourced. Exact repository filename has two spaces between the em dash and `Podcast`. See `SOURCE_TRIAGE_DEBATING_AI_PODCAST_2026-09-17.md`.
 
 The bounded `SAT RECON` Gg1–Gg4 cleanup run is complete. Future work should not reopen these files for generic classification; return only for a specific dated/source-defined question.
 
