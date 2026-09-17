@@ -51,7 +51,7 @@ A separate distinction applies to **what a blind search survey can evidence**. G
 | `Debating AI Podcast Stats.txt` | analytics synthesis / captures | **DEFER to numeric phase** | normalize platform definitions |
 | `Debating AI Podcast.txt` | duplicate blob of Podcast Stats | **DUPLICATE** | do not double-count |
 | `Debating AI Stats.txt`, `Debating AI Stats 2.txt` | OCR / analytics rips | **DEFER to numeric phase** | ordering / first-week-retention caveats already noted |
-| `Debating AI — Podcast.txt` | mixed podcast analysis | **TO TRIAGE** | separate direct Nathan turns from generated summaries |
+| `Debating AI —  Podcast.txt` | generated interview-question sheet addressed to Nathan; triaged 2026-09-17 | **ROUTING / premise index only** | no direct Nathan answer/turn; quoted and second-person attributions are question-document premises until independently sourced; actual filename contains two spaces after the em dash; see `SOURCE_TRIAGE_DEBATING_AI_PODCAST_2026-09-17.md` |
 
 ---
 
