@@ -37,7 +37,9 @@ Current classifications recorded in the Cross map:
 - `PARADIGM — Chatter.txt`: derivative/composite routing source unless unique Nathan turns are found.
 - `SAT RECON — Gg1.txt`: generated calculation/reconstruction; low relevance to exposure arguments, potentially useful for dating claimed prediction/closure language.
 - `SAT RECON — Gg2.txt`: generated reconstruction; direct Nathan turns, if any, must be separated from generated prose.
-- `SAT RECON — Gg4.txt` and `SAT RECON — google4.txt`: generated search/reconstruction records requiring prompt/source attribution before extraction.
+- `SAT RECON — Gg4.txt`: triaged generated search/reconstruction record; no explicit `NATHAN:` block located; see `SOURCE_TRIAGE_GG4_2026-09-17.md`.
+- `SAT RECON — google4.txt`: triaged generated search/reconstruction record; substantially overlaps Gg4 and adds later search-answer material; see `SOURCE_TRIAGE_GOOGLE4_2026-09-17.md`.
+- `SAT TO DO — Google py.txt`: triaged generated SAT Python simulation/audit bundle; not Google Trends provenance; see `SOURCE_TRIAGE_GOOGLE_PY_2026-09-17.md`.
 
 ---
 
@@ -113,16 +115,19 @@ These are preserved as source claims only. They are not treated as validated phy
 ## Source-level Google Trends / search provenance status
 
 ### GT-PROV01
-The current source-attribution map identifies `SAT TO DO — Google py.txt` as needing triage to determine whether it records actual Google Trends retrieval or merely Google/tooling work. No assumption should be made from the filename alone.
+`SAT TO DO — Google py.txt` has now been directly triaged. It is a 33,610-byte generated SAT Python simulation/audit bundle containing numbered `Google Py` code blocks. Full-file inspection found no Google Trends query/output and no `Trends`, `pytrends`, `TrendReq`, or `interest_over_time` retrieval material. It is therefore not Google Trends provenance. See `SOURCE_TRIAGE_GOOGLE_PY_2026-09-17.md`.
 
 ### GT-PROV02
-`SAT RECON — Gg4.txt` is classified as a broad generated web/search trend survey plus later reconstruction. It may preserve candidate claims and source trails, but source mix and prompt history must be separated from the generated narrative.
+`SAT RECON — Gg4.txt` has now been directly triaged. It is a broad generated web/search trend survey plus later reconstruction, with no explicit `NATHAN:` speaker block located. It preserves generated candidate claims and source trails. See `SOURCE_TRIAGE_GG4_2026-09-17.md`.
 
 ### GT-PROV03
-`SAT RECON — google4.txt` remains untriaged in the current map and is specifically flagged as likely containing additional candidate claims/source trails requiring speaker/production attribution.
+`SAT RECON — google4.txt` has now been directly triaged. It substantially reproduces Gg4 and continues with additional generated searches/reconstructions covering antecedents, worldline/equation material, SAT/Blockwave terminology, filament terminology, and a Nathan McKnight podcast-search conflict. No unique direct Nathan turn was identified. See `SOURCE_TRIAGE_GOOGLE4_2026-09-17.md`.
 
 ### GT-PROV04
 Current direct GitHub code search for the literal control term `paraglider` and for several remembered Trends phrases returned no result. Absence from GitHub code search is therefore not being treated as absence from the raw conversations/screenshots.
+
+### GT-PROV05
+The `EXPOSURE_STATS/SAT_IMPACT/` directory contains repository image files `trends.PNG` and `trends2.PNG`. Their content has not yet been inspected in this pass. They are candidate direct visual-source records for the Google Trends provenance lane and should be handled as images rather than inferred from filenames alone.
 
 ---
 
@@ -149,7 +154,7 @@ Current Cross raw-conversation extraction remains incomplete. The feeder/chunkin
 
 1. Locate or recover the conversation feeder/chunker so large raw JSON exports can be inspected in bounded slices.
 2. Recover the exact Google Trends visual-inspection turns, including chart settings, term groupings, normalization correction, controls, and Nathan/assistant turn sequence.
-3. Triage `SAT RECON — Gg4.txt` and `SAT RECON — google4.txt` for unique direct Nathan turns and exact search-source trails.
+3. Inspect `EXPOSURE_STATS/SAT_IMPACT/trends.PNG` and `trends2.PNG` as a bounded image-source pair; record only visible chart metadata/terms/values and provenance.
 4. Continue source-deduplication before counting repeated summaries or screenshots as independent evidence.
 
 **Quarantine:** this pass remains inside `PRIOR_ART/WORKSPACES/CROSS/` unless Nathan explicitly releases it.
