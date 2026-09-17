@@ -286,6 +286,72 @@ Asked to explain a roughly three-month gap between a December 2025 episode and a
 
 ---
 
+## N25 — Nathan repeatedly distinguishes scientific evidence from proof
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
+
+When asked what metric `proves` SAT has an edge over other theories, Nathan says that physics does not provide proof in that sense: it provides evidence and compares claims with observations. Later, when asked how SAT claims could be `empirically proved`, he again says the task is to obtain numbers and compare them with observations.
+
+This entry records Nathan's own terminology and correction of the generated interview premise.
+
+---
+
+## N26 — Nathan corrects repeated 24-cell-lattice characterization of SAT
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
+
+Nathan says SAT does not currently use the 24-cell lattice as its active formalism. He says the lattice was briefly explored and could be used as a coordinate/grid representation, but the work described in this source proceeds with worldline geometry. Later in the same document he again tells the interviewer to `stay away from the 24 lattice` and says `pure isolated world line geometry is all we're doing`.
+
+This is a direct correction of generated questions that describe SAT as fundamentally a 24-cell-lattice theory.
+
+---
+
+## N27 — Nathan rejects the description of LLM audits as neutral and describes his audit procedure
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
+
+Nathan says LLMs cannot conduct neutral audits any more than humans can. He describes a failure mode in which they agree when prompted toward agreement and confidently reject when prompted toward rejection. His stated response is repeated passes, opposed roles, his own interrogation of the output, and a workflow in which NotebookLM calculations are audited by ChatGPT and himself.
+
+He separately describes `LLM ecological design` as mostly trial and error rather than a settled theory.
+
+---
+
+## N28 — Nathan describes the podcast primarily as a vehicle for working through his own thinking
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
+
+Nathan says the podcast has always been a byproduct of his thinking aloud rather than the point of the work. He says listener-facing organization and iconography became more deliberate only later, after persistent listeners and increasing density made navigation more relevant. He denies deliberately filtering early listeners in order to isolate a particular physicist or professional audience.
+
+---
+
+## N29 — Nathan rejects generated `establishment` and tuning accusations
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
+
+When a generated question says mainstream academia `universally` views SAT as radical, Nathan rejects the premise and says mainstream academia does not universally view it because only a small number of people have heard of the theory; he gives `upwards of 25 people` as the rough figure in this compiled answer.
+
+When another question frames SAT as accusing modern physics of artificial parameter tuning to hide conceptual gaps, Nathan again rejects the premise. He describes the Standard Model's collect-data/find-relationships procedure as the appropriate way to proceed when underlying structure is unknown.
+
+The `upwards of 25 people` figure is Nathan's statement in this source, not a separately verified audience count.
+
+---
+
+## N30 — Nathan separates model usefulness from literal ontology
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
+
+Nathan rejects a generated premise that treats his geometry as literal truth while other models are merely mathematical tricks. He says there is no accessible `literal truth` in that sense and frames the question in terms of whether the mathematical/modeling device works.
+
+---
+
+## N31 — Nathan describes LLM contribution as substantial but not identical to his own authorship role
+
+**Source:** `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI 3.txt`
+
+Nathan says LLMs are an important part of the SAT working system, especially for organization, and that they have produced specific innovations at points along the way. He also says he has been the main driving force behind most SAT innovation. He states that if he publishes an actual scientific paper he would credit LLM contributions, while noting that current scientific conventions would not permit listing them as co-authors.
+
+---
+
 ## Negative finding currently locked
 
 ### No recovered Nathan claim: “technical binges mean hostile auditing”
