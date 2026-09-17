@@ -34,7 +34,7 @@ A separate distinction applies to **what a blind search survey can evidence**. G
 | `SAT RECON — Gg4.txt` | generated web/search trend survey + later reconstruction; triaged 2026-09-17 | **SECONDARY routing / candidate source trails** | no explicit `NATHAN:` block located; assistant self-correction present without triggering user turn; see `SOURCE_TRIAGE_GG4_2026-09-17.md` |
 | `SAT RECON — google4.txt` | generated search/reconstruction record; triaged 2026-09-17 | **SECONDARY routing / candidate source trails; deduplicate reproduced Gg4 material** | substantially overlaps Gg4 but adds a tail covering antecedent searches, worldline/equation material, SAT/Blockwave terminology, filament terminology, and a Nathan McKnight podcast-search conflict; no unique direct Nathan turn identified; see `SOURCE_TRIAGE_GOOGLE4_2026-09-17.md` |
 | `SAT TO DO — Citations.txt` | citation-search synthesis | **LATER prior-art/citation lane** | useful for identifying adjacent traditions, not for podcast exposure conclusions |
-| `SAT TO DO — Google py.txt` | tooling / Google-related work | **TO TRIAGE for Google Trends provenance** | determine whether it records actual Trends retrieval or merely proposed tooling |
+| `SAT TO DO — Google py.txt` | generated SAT Python simulation/audit bundle; triaged 2026-09-17 | **NOT GOOGLE TRENDS PROVENANCE; route only to SAT reconstruction/history when specifically needed** | no `Trends`, `pytrends`, `TrendReq`, or `interest_over_time` retrieval material; no explicit `NATHAN:` block; generated PASS/FAIL language is not external validation; see `SOURCE_TRIAGE_GOOGLE_PY_2026-09-17.md` |
 
 ---
 
