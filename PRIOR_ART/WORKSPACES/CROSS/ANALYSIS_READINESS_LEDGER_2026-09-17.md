@@ -1,0 +1,64 @@
+# Cross Analysis Readiness Ledger — 2026-09-17
+
+**Lane:** factual-record administration / analysis handoff control  
+**Nickname:** the `organizatino` pass  
+**Purpose:** identify which questions are organized well enough for the separate Analysis instance to assess now, which require explicit caveats, and which should remain on hold pending further collection or normalization.
+
+This ledger is **not an analysis of evidentiary force**. `READY` means only that the relevant sources are sufficiently located, attributed, deduplicated, and organized for an analyst to work from them without first doing basic source archaeology. It does not mean that the evidence is strong, weak, persuasive, dispositive, or causally meaningful.
+
+## Status key
+
+- **READY** — source organization/provenance is sufficient for analysis now.
+- **READY WITH CAVEATS** — analysis can begin, but the listed incompleteness must remain explicit and any conclusion must stay bounded to the organized subset.
+- **HOLD** — source state is not yet normalized or complete enough for the proposed analysis.
+- **OUT OF CURRENT CROSS SCOPE** — not part of the present diffusion/exposure packet.
+
+| Analysis question / domain | Status | What is organized now | Current limitation / do not assume | Next collection step |
+|---|---|---|---|---|
+| Nathan's actual exposure/diffusion position | **READY** | `NATHAN_ARGUMENT_LEDGER.md` separates 31 Nathan propositions/corrections from LLM narrative; major caution, convergence, audience, search, proof/evidence, ontology, and process statements are attributed. | Some statements come from compiled `NATHAN:` Q&A rather than raw chat exports, so original authored-message timestamps are absent for those passages. | Continue adding only genuinely new Nathan propositions as source triage proceeds. |
+| What LLMs/assistants claimed versus what Nathan corrected | **READY** | Attribution map, argument/evidence ledger, direct Q&A sources, and source-triage notes separate generated premises from Nathan responses across the principal podcast/exposure files already processed. | Not every generated file in the repository has been triaged; analysis must remain inside the mapped corpus. | Finish remaining small source-classification loose ends. |
+| Documented public SAT/podcast chronology | **READY** | `CROSS_MASTER_CHRONOLOGY.md`, podcast episode records, and public-release records contain dated chronology including the current 2025-02-02 public SAT boundary. | Internal generation dates, podcast publication dates, attachment dates, and later repository-upload dates are not interchangeable. | Add source-defined generation dates only when directly recovered. |
+| Podcast episode ordering, titles, publication dates, and supplied stream/download counts | **READY** | Episode-ranking export is indexed with dates, titles, rank, supplied counts, and Spotify episode URIs. | This status concerns the supplied fields themselves, not why episodes rank where they do. | Reconcile only if conflicting raw exports appear. |
+| Existence of podcast exposure and dated podcast activity | **READY** | Raw audience-segment, engagement, impression, ranking, geography and related records exist; many dated rows are already on the master chronology. | Aggregate cross-report comparisons remain partly unnormalized. | Normalize raw exports by metric definition and capture window. |
+| Podcast aggregate growth / audience-size trajectory across all snapshots | **READY WITH CAVEATS** | Multiple raw and derivative records exist across 2025–26. | Reports use different windows/definitions and some derivative summaries contain incompatible totals. Do not merge snapshots into one continuous series until normalized. | Build canonical metric dictionary and reconciled time series from raw exports. |
+| Podcast demographic pattern as measured — age/gender/geography | **READY WITH CAVEATS** | Raw/near-raw demographic and geography exports are present; derivative summaries are separately identified. | Small N, changing capture windows, and conflicting summary percentages remain to be reconciled. | Produce canonical per-snapshot demographic table from raw exports. |
+| Podcast listener motive or occupational identity | **HOLD** | Nathan and LLM hypotheses are now separated; behavior/demographic observations are preserved. | Occupation/motive is not directly observed. Demography, episode choice, retention, geography, seasonality and repeat behavior have not yet been normalized jointly or compared with baselines. | Reconcile raw measures, then identify appropriate podcast/physics-audience baselines before inference. |
+| Spotify Search — Nathan's interpretation/correction | **READY** | Exact Nathan wording is located in `PODCAST - PODlod.txt` and byte-identical `Debating AI 3.txt`. | Original raw chat-turn timestamp is still unidentified; earliest attachment occurrence is not authorship time. | Search only if a direct source-generation/raw-turn locator surfaces. |
+| Spotify Search — quantitative discovery behavior | **READY WITH CAVEATS** | Search/Home/Library impression counts are present in source records. | Platform metric semantics and window reconciliation are not yet canonical; Search impressions do not expose the actual query or searcher intent. | Normalize Spotify metric definitions/windows from raw exports/screens. |
+| Google Trends — existence of the June search/screenshot exercise and visible term sets | **READY WITH CAVEATS** | June 10 and June 16 screenshot-upload turns, attachment/message IDs, contemporaneous assistant visual transcriptions, and control-term records are located. | Repository `trends.PNG` / `trends2.PNG` are not yet binary-linked to specific June attachments; some chart labels/values were not legible in the contemporaneous transcription. | Preserve the two image layers separately; compare pixels/hashes only if the original attachments become directly materializable. |
+| Google Trends — exact June 5 normalization correction and original wording/context | **HOLD** | Later secondary restatements and nearby screenshot context are located. | Original June 5 raw Nathan correction and immediately following assistant turn remain unlocated. | Wait for a new raw-conversation/source locator; do not repeat exhausted phrase searches. |
+| Google Trends — quantitative trend comparison across terms | **HOLD** | Some screenshot-derived term groupings/windows are known. | Exact settings, normalization context, chart values, geography/category/search type and source-image identity are incomplete for the target comparison. | Recover direct screenshot pixels/exports or equivalent exact settings before quantitative analysis. |
+| GitHub/archive access — existence and timing of views/clones/unique cloners | **READY WITH CAVEATS** | Multiple raw CSV/text traffic series exist and many dated values are on the master chronology. | Several overlapping capture series exist; metric-window overlap and duplicate snapshots are not yet canonicalized. | Build one deduplicated GitHub traffic table keyed by repository, metric, date, and capture window. |
+| GitHub/archive access — aggregate magnitude or anomalous-spike analysis | **HOLD** | Raw series exist, including large clone/unique-cloner values. | Overlapping series and capture windows have not been fully reconciled; analysis could double-count or compare unlike snapshots. | Complete canonical GitHub traffic reconciliation first. |
+| Public access pathways / exposure vectors as documented facts | **READY** | Podcast publication, public repositories, repository traffic, search/indexing records, and known public file surfaces are cataloged as vectors. | This status permits asking what routes existed and when, not whether any route caused later external work. | Add newly located access/indexing records as dated facts. |
+| External scientific publication chronology | **READY WITH CAVEATS** | `CROSS_EXTERNAL_CHRONOLOGY.tsv` contains directly extracted or authoritative-date-verified 2025–26 scientific items with dates, authors/venues/identifiers and neutral notes. | Some entries still lack earliest preprint/submission dates; the corpus is not exhaustive of physics. | Backfill earliest public preprint dates where chronology comparisons require them. |
+| External science/news chronology relative to SAT public dates | **READY WITH CAVEATS** | Both SAT public chronology and an external-item chronology exist on dated records. | Comparing dates is possible; interpreting temporal order as transmission, independence, convergence, or causal lag is an Analysis task and must remain conditioned on corpus incompleteness. | Continue expanding direct-source external chronology without selecting by desired resemblance. |
+| Blind/weakly guided search-survey procedure | **READY** | Prompt structure and generated answers are separated; category-probe prompts and later Nathan/LLM corrections are mapped. | Search-engine ranking, source mix, hidden conversation context, and generated rhetoric remain properties of the procedure that Analysis must account for. | Verify individual surfaced external claims only when they become analytically material. |
+| Whether generated blind-survey prose accurately describes field consensus | **HOLD** | Generated claims and candidate source trails are preserved. | Many strong phrases such as `new consensus` / `paradigm revolution` have not been source-by-source validated as field-level claims. | Check underlying publications/reviews/discourse samples before any field-consensus conclusion. |
+| SAT claim/reconstruction history inside `Gg1–Gg4`, `google4`, `Google py` | **READY WITH CAVEATS** | These files are classified, duplicates controlled, and generated language separated from direct Nathan material. | They are reconstruction/generated-source records, not independent external validation and not necessarily contemporaneous raw SAT authorship records. | Use only for the specific claim-history/source-routing questions they document. |
+| Theory provenance / priority / Schreiber / nLab / braid antecedents | **OUT OF CURRENT CROSS SCOPE** | Separate future/prior-art lane exists. | Present factual-record assignment explicitly does not adjudicate theory priority, independent rediscovery, or antecedent ownership. | Route to dedicated prior-art/provenance work when Nathan opens that lane. |
+| Physical or mathematical correctness of SAT/H(s)H | **OUT OF CURRENT CROSS SCOPE** | Some generated audits/calculations are preserved as historical source records. | Cross factual-record lane does not establish physical/mathematical correctness. | Route to theory-validation/mathematics lanes. |
+| Overall diffusion hypothesis — final causal assessment | **READY WITH CAVEATS FOR PASS 1; HOLD FOR FULL PASS** | Chronology, argument attribution, documented exposure vectors, substantial raw metrics, and an external chronology are organized enough for an initial bounded analysis. | Podcast/GitHub/Google Trends normalization remains incomplete; external chronology is still expanding; several direct-source gaps remain. Any current analysis must explicitly mark these unresolved components and cannot treat them as negative or positive evidence by default. | Run Analysis Pass 1 on the frozen organized subset; continue quantitative normalization in parallel, then run a later full pass. |
+
+## Recommended Analysis Pass 1 boundary
+
+The Analysis instance can work now on:
+
+1. what Nathan actually argued, corrected, and left open;
+2. what the LLMs asserted and which of those assertions were later corrected;
+3. what exposure pathways are directly documented to have existed and when;
+4. what dated SAT/public/external chronology is presently established;
+5. which proposed inferences fail because the underlying datum is not directly observed;
+6. which questions remain genuinely unresolved because the quantitative layer is unfinished.
+
+It should **not yet** produce a final quantitative assessment of audience identity, Google Trends magnitude, GitHub-traffic anomaly size, or an overall diffusion-versus-convergence verdict.
+
+## Collection priorities before a fuller Analysis Pass 2
+
+1. Canonical podcast metric dictionary and reconciled raw time series.
+2. Canonical GitHub traffic series with overlapping captures deduplicated.
+3. Google Trends settings/value recovery where possible, while preserving the open June 5 source gap.
+4. External chronology backfill for earliest preprint/public dates on analytically relevant items.
+5. Finish residual source-attribution loose ends, including `Debating AI 1.txt` and any remaining mixed podcast files that could alter speaker attribution.
+
+**Quarantine:** this readiness ledger belongs only in `PRIOR_ART/WORKSPACES/CROSS/` until Nathan explicitly releases material.
