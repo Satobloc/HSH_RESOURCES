@@ -46,7 +46,8 @@ A separate distinction applies to **what a blind search survey can evidence**. G
 | `Debating  Listeners .txt` | Nathan analysis instruction / prompt | **PRIMARY for methodological intent** | explicitly asks realistic/best/worst, alternative hypotheses, and consistency tests; does not itself identify listeners as researchers |
 | `Debating  Listeners 2.txt` | duplicate blob of LISTENERSHIP | **DUPLICATE** | do not double-count |
 | `Debating AI 1.txt` | generated catalog / keyword summary | **SECONDARY routing aid** | contains factual and interpretive errors (e.g. acronym expansions / audience-strategy narrative); not a Nathan argument source unless direct turns are present |
-| `Debating AI 2.txt`, `Debating AI 3.txt` | generated podcast summaries/analysis with direct Nathan material embedded | **TRIAGE DIRECT NATHAN TURNS AS PRIMARY; generated narrative separately** | attribution before use |
+| `Debating AI 2.txt` | generated analytics/report prose; triaged 2026-09-17 | **GENERATED-CLAIM ROUTING; derivative numerics deferred to reconciliation** | no direct Nathan/user turn located; contains generated `brand intent`, `bypass-oriented`, professional-audience, retention, and listener-behavior narratives; opening strategic report repeats within the file; see `SOURCE_TRIAGE_DEBATING_AI_2_2026-09-17.md` |
+| `Debating AI 3.txt` | generated podcast summary/analysis; direct-turn status not yet rechecked | **TO TRIAGE** | attribution before use; do not inherit the prior assumption that direct Nathan turns are embedded without inspecting the file |
 | `DEBATING AI BIG STATS.txt` | likely analytics synthesis | **DEFER to numeric phase** | derivative numbers must be reconciled to raw exports/screens |
 | `Debating AI Podcast Stats.txt` | analytics synthesis / captures | **DEFER to numeric phase** | normalize platform definitions |
 | `Debating AI Podcast.txt` | duplicate blob of Podcast Stats | **DUPLICATE** | do not double-count |
