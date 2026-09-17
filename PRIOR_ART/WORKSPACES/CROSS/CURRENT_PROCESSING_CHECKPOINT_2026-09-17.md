@@ -21,6 +21,13 @@
 - `ALDEN CROSS — raw (2).json`: Library raw-file materialization now succeeds. Local materialized path: `/mnt/data/cross_resume/ALDEN CROSS — raw (2).json`; size 13,613,028 bytes; parsed title `ALDEN CROSS`; 2,650 mapping nodes; 2,649 messages; 1,419 nodes on current active branch. Computed Git blob SHA `198f2acfab8930de315f6f84811efb1b94b2698d` exactly matches the previously recorded repository blob. The former oversize-access gap is CLOSED; direct bounded inspection is now permitted.
 - Large-source feeder: `Satobloc/HsH/tools/large_document_feeder.py`.
 
+## Completed source triage on 2026-09-17
+
+- `SAT RECON — Gg4.txt`: triaged as generated/compiled research/search prose; no explicit `NATHAN:` block located. See `SOURCE_TRIAGE_GG4_2026-09-17.md`.
+- `SAT RECON — google4.txt`: triaged as a larger generated search/reconstruction record that substantially reproduces `Gg4` and then continues with additional antecedent/SAT terminology/worldline material. See `SOURCE_TRIAGE_GOOGLE4_2026-09-17.md`.
+- `SAT TO DO — Google py.txt`: triaged as a bundle of SAT Python simulations/audits, not Google Trends retrieval or Trends API tooling. See `SOURCE_TRIAGE_GOOGLE_PY_2026-09-17.md`.
+- `trends.PNG` / `trends2.PNG`: repository image provenance and earlier June screenshot-conversation lineage mapped. See `SOURCE_TRIAGE_TRENDS_IMAGES_2026-09-17.md`. Repository PNGs are 1920×1080 and were uploaded 2026-09-10; earlier June raw-conversation screenshots are separate tall mobile-image records. No binary/hash bridge between those layers has been recovered, so they remain distinct source records.
+
 ## Current direct-source gaps / provenance state
 
 See `CROSS_SOURCE_GAPS.tsv` for the detailed record.
@@ -28,6 +35,16 @@ See `CROSS_SOURCE_GAPS.tsv` for the detailed record.
 1. **Google Trends normalization, 2026-06-05:** OPEN. Original Nathan correction turn and immediately following assistant reply remain unlocated. Existing later Cross/Geometry records are secondary to the missing original turn. Do not repeat the same broad phrase searches unless a new candidate source or exact locator surfaces.
 2. **Spotify Search correction:** PARTIAL metadata gap. The direct source document is now located at `Satobloc/SAT_THEORY_ARCHIVE_2023-25/SAT PODCAST STATS/PODCAST - PODlod.txt`; it contains the exact Nathan correction wording. The document is compiled Q&A prose with `NATHAN:` labels, not a raw ChatGPT export, so it exposes no original authored-message ID/time. Earliest currently identified project attachment occurrence is 2026-06-01T09:45:58.033Z; do not treat that attachment time as authorship time. Repository path was uploaded 2026-09-04T20:20:18Z; likewise do not treat that upload time as authorship time.
 3. **ALDEN CROSS — raw (2).json:** CLOSED as an access gap on 2026-09-17. Full raw file is materialized and byte-identity to the known repository blob has been verified.
+4. **Trends repository-image lineage:** PARTIAL. `trends.PNG` and `trends2.PNG` have exact Git metadata and PNG headers; June 10 and June 16 screenshot-upload turns plus contemporaneous assistant visual transcriptions are directly located in materialized raw conversations. No direct source-generation/hash bridge currently maps the repository images to particular June attachments. Keep the layers separate.
+
+## Google Trends screenshot conversation locators now recovered
+
+- `Geometry in Physics — raw(1).json`, user screenshot upload `2026-06-10T19:08:54.784838Z`, message `f4d30ed4-ed8b-4eb0-a8ff-35947c863af6`.
+- Additional readable bundles: user messages `f17cdf46-546e-46e2-9314-e0dae596a7db` at `2026-06-10T19:25:03.804911Z` and `d9e58489-cc42-47a1-a007-5c848661e2de` at `2026-06-10T19:25:27.435162Z`.
+- Assistant visual transcription: `5f88ed2d-2548-4455-82ad-12d2831222fa` at `2026-06-10T19:25:38.672270Z`; it distinguishes Google Trends from Google Books Ngram and records the visible search-term sets/windows while noting that not all values/month labels were legible.
+- Nathan factual-only correction: `ef9b6435-0db9-4672-8e96-684e44fbc9af` at `2026-06-10T19:32:39.688477Z` begins `Knock it off. You state the facts.`
+- `Where is Velserbroek — raw.txt`, user control-image upload `59258987-28e8-4888-a933-8007e913aefb` at `2026-06-16T12:50:39.841316Z`; assistant visual response `c2a08438-9a00-4126-bf8a-8af399208fed` names control terms `paraglider`, `beagle`, `smurf`, `farce`, `polyphonic`, `geiger`.
+- Nathan proof-language corrections immediately follow at `2026-06-16T12:51:13.395222Z` and `2026-06-16T12:51:26.859214Z`.
 
 ## Controlling method
 
