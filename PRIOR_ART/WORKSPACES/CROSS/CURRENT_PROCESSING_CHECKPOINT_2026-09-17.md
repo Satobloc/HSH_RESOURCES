@@ -23,10 +23,15 @@
 
 ## Completed source triage on 2026-09-17
 
+- `SAT RECON — Gg1.txt`: triaged as a generated assistant/LLM reconstruction/calculation bundle. It contains generated 270° phase-step, heat-capacity, 17.095 mK convergence-width, silver-spacing, and electron g−2 blocks. No direct Nathan/user turn is exposed in the inspected document text. See `SOURCE_TRIAGE_GG1_2026-09-17.md`.
+- `SAT RECON — Gg2.txt`: triaged as generated assistant/LLM reconstruction covering electron g−2/timesheet-nutation and `Lattice Navigator` material. No explicit Nathan/user turn or later correction located. See `SOURCE_TRIAGE_GG2_2026-09-17.md`.
+- `SAT RECON — Gg3.txt` / `SAT RECON — Goog.txt`: triaged as one byte-identical generated `GOOGLE NEW GROUND` source record. See `SOURCE_TRIAGE_GG3_GOOG_2026-09-17.md`.
 - `SAT RECON — Gg4.txt`: triaged as generated/compiled research/search prose; no explicit `NATHAN:` block located. See `SOURCE_TRIAGE_GG4_2026-09-17.md`.
 - `SAT RECON — google4.txt`: triaged as a larger generated search/reconstruction record that substantially reproduces `Gg4` and then continues with additional antecedent/SAT terminology/worldline material. See `SOURCE_TRIAGE_GOOGLE4_2026-09-17.md`.
 - `SAT TO DO — Google py.txt`: triaged as a bundle of SAT Python simulations/audits, not Google Trends retrieval or Trends API tooling. See `SOURCE_TRIAGE_GOOGLE_PY_2026-09-17.md`.
 - `trends.PNG` / `trends2.PNG`: repository image provenance and earlier June screenshot-conversation lineage mapped. See `SOURCE_TRIAGE_TRENDS_IMAGES_2026-09-17.md`. Repository PNGs are 1920×1080 and were uploaded 2026-09-10; earlier June raw-conversation screenshots are separate tall mobile-image records. No binary/hash bridge between those layers has been recovered, so they remain distinct source records.
+
+The bounded `SAT RECON` Gg1–Gg4 cleanup run is complete. Future work should not reopen these files for generic classification; return only for a specific dated/source-defined question.
 
 ## Current direct-source gaps / provenance state
 
