@@ -2,7 +2,8 @@
 
 **Lane:** factual-record administration / analysis handoff control  
 **Nickname:** the `organizatino` pass  
-**Purpose:** identify which questions are organized well enough for the separate Analysis instance to assess now, which require explicit caveats, and which should remain on hold pending further collection or normalization.
+**Purpose:** identify which questions are organized well enough for the separate Analysis instance to assess now, which require explicit caveats, and which should remain on hold pending further collection or normalization.  
+**Interface:** enter through `START_HERE.md`; artifact roles/currentness are machine-indexed in `ARTIFACT_REGISTRY.tsv`.
 
 This ledger is **not an analysis of evidentiary force**. `READY` means only that the relevant sources are sufficiently located, attributed, deduplicated, and organized for an analyst to work from them without first doing basic source archaeology. It does not mean that the evidence is strong, weak, persuasive, dispositive, or causally meaningful.
 
@@ -59,6 +60,6 @@ It should **not yet** produce a final quantitative assessment of audience identi
 2. Canonical GitHub traffic series with overlapping captures deduplicated.
 3. Google Trends settings/value recovery where possible, while preserving the open June 5 source gap.
 4. External chronology backfill for earliest preprint/public dates on analytically relevant items.
-5. Finish residual source-attribution loose ends, including `Debating AI 1.txt` and any remaining mixed podcast files that could alter speaker attribution.
+5. Finish any remaining mixed podcast/source-attribution files that could alter speaker attribution. The numbered `Debating AI 1–3` set is now triaged.
 
 **Quarantine:** this readiness ledger belongs only in `PRIOR_ART/WORKSPACES/CROSS/` until Nathan explicitly releases material.
