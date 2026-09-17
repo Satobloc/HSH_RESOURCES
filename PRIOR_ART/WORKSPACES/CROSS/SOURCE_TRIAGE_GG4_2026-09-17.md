@@ -59,4 +59,4 @@ For Cross collection purposes:
 - do not promote its generated descriptions into raw external facts without inspecting the underlying cited source;
 - the assistant Kulkarni timeline correction may be recorded as an attributed LLM correction, with the triggering Nathan/user turn marked missing from this source.
 
-`Gg4` source triage is complete. `SAT RECON — google4.txt` remains a separate untriaged source.
+`Gg4` source triage is complete. `SAT RECON — google4.txt` was separately triaged on 2026-09-17 in `SOURCE_TRIAGE_GOOGLE4_2026-09-17.md`; that note records the substantial overlap and additional `google4` tail.
