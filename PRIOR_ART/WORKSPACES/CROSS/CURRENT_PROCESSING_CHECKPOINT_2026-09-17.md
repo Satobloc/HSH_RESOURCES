@@ -4,8 +4,11 @@
 
 **Mandatory interlock:** before each collection bite, re-check `CONTINUITY.md` → `STRICT OPERATING INTERLOCK — evidence collection is not analysis`. Record what the source contains; do not decide what it supports, strengthens, weakens, confirms, implies, favors, undermines, establishes, or makes likely/unlikely. Work one bounded source/provenance target at a time.
 
-## Durable ledgers
+## Transparent interface / durable ledgers
 
+- `START_HERE.md` — human-readable front door, authority order, update protocol, and Analysis handoff route.
+- `ARTIFACT_REGISTRY.tsv` — machine-readable inventory of every artifact in this workspace, including currentness/authority class and cautions.
+- `ANALYSIS_READINESS_LEDGER_2026-09-17.md` — current READY / READY WITH CAVEATS / HOLD / OUT-OF-SCOPE interface for the separate Analysis instance.
 - `CROSS_SOURCE_GAPS.tsv` — source/provenance gaps and closed access problems.
 - `CROSS_EXTERNAL_CHRONOLOGY.tsv` — external scientific chronology, dates and source metadata only.
 - `CROSS_ARGUMENT_EVIDENCE_LEDGER.tsv.gz.b64` — compressed/base64 snapshot of the current full argument/evidence TSV.
@@ -31,10 +34,11 @@
 - `SAT TO DO — Google py.txt`: triaged as a bundle of SAT Python simulations/audits, not Google Trends retrieval or Trends API tooling. See `SOURCE_TRIAGE_GOOGLE_PY_2026-09-17.md`.
 - `trends.PNG` / `trends2.PNG`: repository image provenance and earlier June screenshot-conversation lineage mapped. See `SOURCE_TRIAGE_TRENDS_IMAGES_2026-09-17.md`. Repository PNGs are 1920×1080 and were uploaded 2026-09-10; earlier June raw-conversation screenshots are separate tall mobile-image records. No binary/hash bridge between those layers has been recovered, so they remain distinct source records.
 - `Debating AI —  Podcast.txt`: triaged as a generated interview-question sheet addressed to Nathan, not a mixed dialogue. It contains four thematic question groups and multiple second-person/quoted premises, but no direct Nathan answer, raw user turn, or `NATHAN:` block. Those premises remain routing leads until independently sourced. Exact repository filename has two spaces between the em dash and `Podcast`. See `SOURCE_TRIAGE_DEBATING_AI_PODCAST_2026-09-17.md`.
+- `Debating AI 1.txt`: triaged as generated catalog/keyword-summary prose, not a dialogue. No direct `NATHAN:` turn occurs in the file. Generated SAT expansion, audience interpretation, AI-consciousness attribution, and derivative demographic values are source text only and require independent sourcing/reconciliation. See `SOURCE_TRIAGE_DEBATING_AI_1_2026-09-17.md`.
 - `Debating AI 2.txt`: triaged as generated analytics/report prose, not a mixed Nathan/LLM transcript. No direct Nathan/user turn was located in the full bounded file pass. The file contains generated `brand intent`, `bypass-oriented`, professional-audience, retention, and listener-behavior interpretations alongside derivative analytics values; the first two correspond to Nathan corrections already recorded elsewhere. The opening strategic report is repeated within the same file. See `SOURCE_TRIAGE_DEBATING_AI_2_2026-09-17.md`.
 - `Debating AI 3.txt`: triaged as a compiled generated-question / direct-`NATHAN:` Q&A. It is not a raw chat export. It is byte-identical to `Satobloc/SAT_THEORY_ARCHIVE_2023-25/SAT PODCAST STATS/PODCAST - PODlod.txt` at blob SHA `64b4779266ef13cd7e8c8d688cd5d1377860f15c`. Existing `N09`–`N24` remain sourced here; `N25`–`N31` were added for newly separated direct Nathan corrections/propositions from this pass. Three late `NATHAN:` answer fields are blank and remain unresolved. See `SOURCE_TRIAGE_DEBATING_AI_3_2026-09-17.md`.
 
-The bounded `SAT RECON` Gg1–Gg4 cleanup run is complete. Future work should not reopen these files for generic classification; return only for a specific dated/source-defined question.
+The bounded `SAT RECON` Gg1–Gg4 cleanup run is complete. The numbered `Debating AI 1–3` source-family classification is also complete. Future work should not reopen these files for generic classification; return only for a specific dated/source-defined question.
 
 ## Current direct-source gaps / provenance state
 
