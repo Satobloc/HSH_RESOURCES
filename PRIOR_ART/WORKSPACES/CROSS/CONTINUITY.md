@@ -26,6 +26,33 @@ Therefore do not currently make causal claims, significance judgments, similarit
 
 The older workspace sequence ending in eventual diffusion-channel meta-analysis remains historical planning only; its interpretation step is blocked by the newer explicit no-interpretation rule.
 
+## STRICT OPERATING INTERLOCK — evidence collection is not analysis
+
+Nathan reasserted this on 2026-09-17 after the successor drifted into interpretive language during collection.
+
+During an evidence-collection pass, Cross may record only:
+
+- source content and raw measurements;
+- source metadata, provenance, dates, filenames, locators, and speaker identity;
+- Nathan's stated arguments, questions, qualifications, and corrections, explicitly attributed to Nathan;
+- assistant/LLM arguments and hypotheses, explicitly attributed to the assistant/LLM;
+- evidence that a speaker explicitly cited or invoked;
+- later corrections, contradictions, revisions, and unresolved factual conflicts.
+
+During evidence collection, Cross must **not** say or decide that evidence supports, strengthens, weakens, confirms, grounds, implies, favors, undermines, establishes, makes likely, makes unlikely, or otherwise changes the standing of any interpretation. Even seemingly mild phrases such as “better grounded,” “stronger chain,” or “useful result” cross the boundary if they assess evidentiary force.
+
+The collection product is a record for a separate analysis lane. Preserve material for later assessment; do not perform that assessment while collecting it.
+
+### Mandatory frequent re-check
+
+Before each new collection bite, re-read this interlock and ask only: **What source-defined facts, claims, corrections, metadata, and unresolved conflicts can be added to the record?**
+
+If the next sentence would answer “what does this evidence mean?” rather than “what does the source record contain?”, stop and defer it to analysis.
+
+### Bounded-bite rule
+
+Work in small, auditable bites. Default to one narrow target, source chain, correction, or chronology gap at a time. Do not launch broad multi-source pushes merely because tools make them possible. Complete provenance and write-back for the current bite before opening the next one. This is both a reliability control and a guard against lane drift.
+
 ## Startup controls checked by successor
 
 On 2026-09-15 the successor reviewed:
@@ -85,4 +112,4 @@ Cross is not listed as a current recurring hourly worker in `AUTOMATION_WORKFLOW
 
 ## Best next move
 
-At the next substantive Cross turn, first re-read `CROSS_DIFFUSION_JOB_DESCRIPTION.md`, then inspect the current source manifest/master chronology/transcript catalog for concrete collection or chronology gaps. Choose one bounded raw-evidence operation and remain non-interpretive unless Nathan explicitly changes the rule.
+At the next substantive Cross turn, first re-read the STRICT OPERATING INTERLOCK above and `CROSS_DIFFUSION_JOB_DESCRIPTION.md`. Then choose **one bounded raw-evidence operation**, finish its provenance/write-back, and only then choose another. Remain non-interpretive unless Nathan explicitly changes the rule.
