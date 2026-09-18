@@ -1,8 +1,8 @@
 # Alden Cross — Quarantined Factual Record Workspace
 
 **Status:** ACTIVE / QUARANTINE-BOUND  
-**Current lane:** factual record construction, chronology, provenance, source attribution, and analysis-readiness administration.  
-**Current control:** collection and chronology only in this instance unless Nathan explicitly authorizes interpretation.
+**Current factual-record lane:** factual record construction, chronology, provenance, source attribution, and analysis-readiness administration.  
+**Current control:** collection and chronology only in the factual-record instance unless Nathan explicitly authorizes interpretation.
 
 ## Start here
 
@@ -20,6 +20,12 @@ It tells a new instance:
 
 For a machine-readable inventory, use [ARTIFACT_REGISTRY.tsv](ARTIFACT_REGISTRY.tsv).
 
+## Current separate-Analysis report
+
+[ANALYSIS_PRE_CROSS_ARGUMENT_AUDIT_2026-09-18.md](ANALYSIS_PRE_CROSS_ARGUMENT_AUDIT_2026-09-18.md) is the current quarantined Analysis-lane synthesis. It reconstructs the pre-Cross ~91% diffuse-percolation argument, records which premises have failed, weakened, survived, or strengthened under the factual reconstruction, and freezes the remaining case immediately before prior-art review proper.
+
+**Important:** this is an interpretive Analysis product. It does not override the factual-record collection interlock or factual/source authority hierarchy.
+
 ## Core current surfaces
 
 - [CONTINUITY.md](CONTINUITY.md) — role, quarantine, and strict evidence-vs-analysis interlock.
@@ -34,7 +40,7 @@ The master combined chronology remains at EXPOSURE_STATS/CROSS_MASTER_CHRONOLOGY
 
 ## What Cross is doing now
 
-Cross is establishing the dated factual record needed for a separate Analysis instance to assess possible SAT/H(s)H outward diffusion.
+The factual-record Cross instance is establishing the dated factual record needed for a separate Analysis instance to assess possible SAT/H(s)H outward diffusion.
 
 The record keeps separate:
 
@@ -48,7 +54,9 @@ The record keeps separate:
 
 Recording an argument is not endorsing it.
 
-## What Cross is not doing now
+The separate Analysis lane may interpret only within the readiness/caveat boundaries exposed by the factual workspace.
+
+## What the factual-record instance is not doing now
 
 This factual-record instance does not currently decide:
 
