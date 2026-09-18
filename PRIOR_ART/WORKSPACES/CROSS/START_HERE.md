@@ -32,6 +32,9 @@ Read these in order:
 7. **External chronology:** [CROSS_EXTERNAL_CHRONOLOGY.tsv](CROSS_EXTERNAL_CHRONOLOGY.tsv)  
    Dated external scientific records with source metadata and neutral notes.
 
+8. **Current separate-Analysis report:** [ANALYSIS_PRE_CROSS_ARGUMENT_AUDIT_2026-09-18.md](ANALYSIS_PRE_CROSS_ARGUMENT_AUDIT_2026-09-18.md)  
+   Reconstructs and audits the pre-Cross ~91% percolation argument before prior-art review proper. This is an Analysis-lane product and is **not** a factual-record conclusion or collection control.
+
 For a machine-readable inventory of every artifact in this directory, use [ARTIFACT_REGISTRY.tsv](ARTIFACT_REGISTRY.tsv).
 
 ## External controlling / primary interface files
@@ -77,6 +80,10 @@ Use this order:
 
 Never promote an older summary above a directly available raw source.
 
+### Analysis products
+
+Separate Analysis-lane reports may interpret READY / READY WITH CAVEATS material inside their documented limits. They do **not** override the factual/source authority order above and must not be silently folded back into raw-data ledgers as factual conclusions.
+
 ## Artifact classes
 
 ### A. Current control and interface
@@ -106,7 +113,11 @@ Never promote an older summary above a directly available raw source.
 
 **Caution:** these files contain some inherited interpretive language from earlier Cross phases. The present collection-only control supersedes any causal/significance language in them. Use their source-attribution and routing content; do not treat older analytical passages as current factual-record conclusions.
 
-### E. Source-specific triage notes
+### E. Current Analysis products
+
+- ANALYSIS_PRE_CROSS_ARGUMENT_AUDIT_2026-09-18.md — separate Analysis-lane reconstruction of the pre-Cross diffuse-percolation case, its failed/weakened/surviving premises, and the freeze immediately before prior-art review proper. **Interpretive; not a factual-record control.**
+
+### F. Source-specific triage notes
 
 Each SOURCE_TRIAGE_*.md note records a bounded source classification, provenance, speaker structure, duplicate relationship, correction/conflict, and routing rule. Current set includes:
 
@@ -124,7 +135,7 @@ Each SOURCE_TRIAGE_*.md note records a bounded source classification, provenance
 
 If a source is already triaged, do not reopen it generically. Reopen only for a specific unresolved datum.
 
-### F. Historical / superseded working snapshots
+### G. Historical / superseded working snapshots
 
 - CURRENT_COMPILATION_LEDGER_2026-09-16.md
 - CURRENT_COMPILATION_LEDGER_2026-09-16_PASS2.md
@@ -134,7 +145,7 @@ If a source is already triaged, do not reopen it generically. Reopen only for a 
 
 These are retained for auditability and continuity. They are not the current front door. If they conflict with the current checkpoint/readiness ledger or a later source-triage note, use the later/current artifact.
 
-### G. Deferred / separate scope
+### H. Deferred / separate scope
 
 - SCHREIBER_HH_LINEAGE_RESEARCH_PLAN.md — prior-art / Schreiber / nLab lineage plan. It is deliberately outside the current diffusion factual-record assignment unless Nathan reopens that lane.
 
@@ -150,6 +161,8 @@ Current interface states are:
 - **OUT OF CURRENT CROSS SCOPE** — route elsewhere.
 
 The readiness label describes organization, not evidentiary strength.
+
+The current Analysis-lane synthesis is `ANALYSIS_PRE_CROSS_ARGUMENT_AUDIT_2026-09-18.md`. It is explicitly downstream of the factual record and freezes the diffuse-percolation case before prior-art review proper.
 
 ## Current major unresolved data work
 
