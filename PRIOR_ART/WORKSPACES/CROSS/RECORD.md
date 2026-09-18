@@ -137,3 +137,37 @@ For operating instructions, latest Nathan instruction + `CONTINUITY.md` + the di
 For factual content, directly inspected raw sources outrank source-triage notes; source-triage notes outrank current ledgers; current ledgers outrank routing aids and historical summaries.
 
 The interface now makes this ordering explicit instead of relying on institutional memory.
+
+## 2026-09-18 — Separate Analysis report / pre-prior-art freeze
+
+Nathan explicitly authorized the separate Analysis instance to reconstruct and audit the pre-Cross ~91% diffuse-percolation argument before turning to prior art proper.
+
+### New artifact
+
+Created `ANALYSIS_PRE_CROSS_ARGUMENT_AUDIT_2026-09-18.md` in the Cross quarantine root.
+
+The report:
+
+- reconstructs what the ~91% proposition actually referred to;
+- preserves the historical 87% → 92–94% → 90–93% working-credence lineage without treating it as calibrated Bayesian inference;
+- separates failed, weakened, surviving, strengthened, and held premises;
+- incorporates current factual corrections on podcast audience inference, Spotify Search, GitHub acquisition, public-repo timing, external scientific-origin dates, and Google Trends normalization;
+- records the later 7,090 H(s)H clones / 1,136 distinct unique-cloner snapshot as new exposure-side evidence not available to the original calculation;
+- reduces the remaining load-bearing case to six explicit propositions;
+- freezes the Analysis position immediately before prior-art review proper.
+
+### Interface routing
+
+Updated:
+
+- `START_HERE.md` to expose the report in the 60-second entry path and define a separate Analysis-product artifact class;
+- `README.md` to surface the current Analysis report from the landing page;
+- `ARTIFACT_REGISTRY.tsv` to register the report as `analysis_report / CURRENT / separate_analysis_lane`.
+
+### Interlock preserved
+
+The report is explicitly downstream of the factual record. It does not alter the factual-record collection-only interlock. The factual instance should route to the report but should not treat its interpretations as raw facts or controlling factual conclusions.
+
+### Next Analysis operation
+
+Prior art proper: test whether the allegedly diagnostic SAT packages/dependency graphs were actually distinctive relative to earlier literature, distinguishing old ingredients from old functional packages and from already-active pre-SAT architectures.
