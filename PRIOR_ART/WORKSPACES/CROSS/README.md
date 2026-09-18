@@ -20,11 +20,13 @@ It tells a new instance:
 
 For a machine-readable inventory, use [ARTIFACT_REGISTRY.tsv](ARTIFACT_REGISTRY.tsv).
 
-## Current separate-Analysis report
+## Current separate-Analysis reports
 
-[ANALYSIS_PRE_CROSS_ARGUMENT_AUDIT_2026-09-18.md](ANALYSIS_PRE_CROSS_ARGUMENT_AUDIT_2026-09-18.md) is the current quarantined Analysis-lane synthesis. It reconstructs the pre-Cross ~91% diffuse-percolation argument, records which premises have failed, weakened, survived, or strengthened under the factual reconstruction, and freezes the remaining case immediately before prior-art review proper.
+[ANALYSIS_PRE_CROSS_ARGUMENT_AUDIT_2026-09-18.md](ANALYSIS_PRE_CROSS_ARGUMENT_AUDIT_2026-09-18.md) reconstructs the pre-Cross ~91% diffuse-percolation argument, records which premises have failed, weakened, survived, or strengthened under the factual reconstruction, and freezes the remaining case immediately before prior-art review proper.
 
-**Important:** this is an interpretive Analysis product. It does not override the factual-record collection interlock or factual/source authority hierarchy.
+[ANALYSIS_SAT_REVIVAL_MODEL_EVIDENCE_MATRIX_2026-09-18.md](ANALYSIS_SAT_REVIVAL_MODEL_EVIDENCE_MATRIX_2026-09-18.md) is the current revival/popularization synthesis. It reframes the central question around whether SAT helped revive or increase the salience of obscure Minkowski-descended / higher-dimensional / geometric-physics branches; records the authority/evidence rules, two main podcast-entry channels, niche microdiffusion hypothesis, QFiT catalyst/relay role, repository/machine layer, null models, evidence matrix, and next empirical tests.
+
+**Important:** these are interpretive Analysis products. They do not override the factual-record collection interlock or factual/source authority hierarchy.
 
 ## Core current surfaces
 
@@ -40,7 +42,7 @@ The master combined chronology remains at EXPOSURE_STATS/CROSS_MASTER_CHRONOLOGY
 
 ## What Cross is doing now
 
-The factual-record Cross instance is establishing the dated factual record needed for a separate Analysis instance to assess possible SAT/H(s)H outward diffusion.
+The factual-record Cross instance is establishing the dated factual record needed for a separate Analysis instance to assess possible SAT/H(s)H outward diffusion and revival/popularization effects.
 
 The record keeps separate:
 
