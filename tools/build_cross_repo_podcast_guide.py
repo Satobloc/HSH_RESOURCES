@@ -10,12 +10,12 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-VERSION="cross-podcast-guide/0.2.1"
+VERSION="cross-podcast-guide/0.2.2"
 REPOS={"resources":"Satobloc/HSH_RESOURCES","hsh":"Satobloc/HsH","archive":"Satobloc/SAT_THEORY_ARCHIVE_2023-25"}
-PATH_TERMS=("podcast","podcast_ep","podcast eps","podcast stats","episode","debatinga.i","debating a.i","the new physics","field notes")
+PATH_TERMS=("podcast","podcast_ep","podcast eps","podcast stats","episode","debatinga.i","debating a.i","debating ai","the new physics","field notes")
 TRANSCRIPT_TERMS=("transcript","field notes","first public mention","subtitle","caption")
 ANALYTICS_TERMS=("analytics","listener","listenership","ranking","geolocation","audience","streams","starts","spotify","podlod","podlode","stats")
-TEXT={".txt",".md",".srt",".vtt"}; DATA={".csv",".json",".tsv",".xlsx"}; IMAGES={".png",".jpg",".jpeg",".webp"}
+TEXT={".txt",".md",".srt",".vtt"}; DATA={".csv",".json",".tsv",".xlsx",".pdf"}; IMAGES={".png",".jpg",".jpeg",".webp"}
 RIGOR=re.compile(r"\b(rigor|rigorous|rigorously|validation|falsification|verification|proof|audit|criteria|canonical|accepted|tentative|speculative|independent|blind|provenance)\b",re.I)
 INSIGHT=re.compile(r"\b(you asked(?: us)? (?:to|for)|our job is to|secondary mission|read between the lines|identify additional (?:insights|convergences)|find additional (?:insights|convergences)|determine additional)\b",re.I)
 FIELD=re.compile(r"\b(?:field theory|twist field|scalar field|field)\b",re.I)
@@ -121,7 +121,7 @@ def main():
  write_csv(out/"SOURCE_INVENTORY.csv",src,fields);analytics=[s for s in src if s["kind"] in {"analytics","analytics_capture","metadata_or_analytics"}];write_csv(out/"ANALYTICS_INVENTORY.csv",analytics,fields)
  rs=rankings(roots["resources"]);groups=defaultdict(list)
  for s in src:
-  if s["kind"] not in {"transcript_subtitle","transcript_text","podcast_text_unspecified"}:continue
+  if s["kind"] not in {"transcript_subtitle","transcript_text"}:continue
   r=rank_match(s["title_candidate"],rs);t=(r.get("Episode title") if r else "") or s["title_candidate"];d=s["published_date_candidate"]
   if not d and r:
    try:d=datetime.strptime((r.get("Publish date") or "").strip(),"%m/%d/%Y").date().isoformat()
@@ -129,8 +129,8 @@ def main():
   groups[(d,norm(t))].append((s,r,t))
  eps=[]
  for (d,_),items in groups.items():
-  s0,r,t=items[0];trans=[x[0] for x in items if x[0]["kind"] in {"transcript_subtitle","transcript_text"}]
-  eps.append({"episode_id":f"ep-{d or 'undated'}-{slug(t,70)}","series":"Debating A.I. On the Future of Physics / The New Physics","series_aliases":["Debating A.I.","DAI","The New Physics"],"title":t,"published_date":d,"published_date_basis":"transcript_header_or_episode_rankings","episode_number_if_known":"","duration":(r.get("Duration") if r else "") or "","spotify_uri_or_url":(r.get("Episode URI") if r else "") or "","source_instances":[x[0]["source_id"] for x in items],"transcript_status":"located" if trans else "candidate_only","derived_text_paths":[x["derived_text_path"] for x in trans if x["derived_text_path"]],"analytics_sources":[],"public_exposure_evidence":True,"interpretive_task_class":"insight_generation_requested" if any(x[0]["insight_generation_requested"] for x in items) else "ordinary_public_exposition","rigor_signal":any(x[0]["rigor_signal"] for x in items),"terminology_hazards":["field"] if any(x[0]["terminology_hazard_field"] for x in items) else [],"review_status":"unreviewed","notes":"Public-exposure record; not automatic SAT/H(s)H core authority."})
+  s0,r,t=items[0];trans=[x[0] for x in items]
+  eps.append({"episode_id":f"ep-{d or 'undated'}-{slug(t,70)}","series":"Debating A.I. On the Future of Physics / The New Physics","series_aliases":["Debating A.I.","DAI","The New Physics"],"title":t,"published_date":d,"published_date_basis":"transcript_header_or_episode_rankings","episode_number_if_known":"","duration":(r.get("Duration") if r else "") or "","spotify_uri_or_url":(r.get("Episode URI") if r else "") or "","source_instances":[x[0]["source_id"] for x in items],"transcript_status":"located","derived_text_paths":[x["derived_text_path"] for x in trans if x["derived_text_path"]],"analytics_sources":[],"public_exposure_evidence":True,"interpretive_task_class":"insight_generation_requested" if any(x[0]["insight_generation_requested"] for x in items) else "ordinary_public_exposition","rigor_signal":any(x[0]["rigor_signal"] for x in items),"terminology_hazards":["field"] if any(x[0]["terminology_hazard_field"] for x in items) else [],"review_status":"unreviewed","notes":"Public-exposure record; not automatic SAT/H(s)H core authority."})
  eps.sort(key=lambda x:(x["published_date"] or "9999",x["title"].casefold()));(out/"EPISODES.json").write_text(json.dumps(eps,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
  flat=[{"episode_id":e["episode_id"],"published_date":e["published_date"],"title":e["title"],"transcript_status":e["transcript_status"],"source_instance_count":len(e["source_instances"]),"derived_text_count":len(e["derived_text_paths"]),"interpretive_task_class":e["interpretive_task_class"],"rigor_signal":e["rigor_signal"],"terminology_hazards":";".join(e["terminology_hazards"]),"spotify_uri_or_url":e["spotify_uri_or_url"],"review_status":e["review_status"]} for e in eps];write_csv(out/"EPISODES.csv",flat,list(flat[0]) if flat else [])
  lines=["# Episode Guide","","Mechanical cross-repository guide. Podcast transcripts are public-exposure evidence, not automatic SAT/H(s)H core authority.","",f"Episodes represented: **{len(eps)}**  ",f"Source instances: **{len(src)}**  ",f"Analytics/metadata instances: **{len(analytics)}**","","| Date | Episode | Transcript | Sources | Review signals |","|---|---|---|---:|---|"]
