@@ -1,4 +1,4 @@
-name: Cross podcast transcript index
+name: Cross-repo podcast episode guide
 
 on:
   workflow_dispatch:
@@ -6,7 +6,10 @@ on:
     branches: [main]
     paths:
       - "EXPOSURE_STATS/PODCAST_EPs/**"
+      - "EXPOSURE_STATS/SAT — PODCAST STATS/**"
+      - "EXPOSURE_STATS/PODCAST_GUIDE/README.md"
       - "tools/build_podcast_transcript_index.py"
+      - "tools/build_cross_repo_podcast_guide.py"
       - ".github/workflows/cross-podcast-transcript-index.yml"
 
 permissions:
@@ -30,47 +33,72 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Regenerate, validate, and publish transcript keyword index
+      - name: Rebuild and publish podcast indexes
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Generated indexes are snapshots, not mergeable source. If main advances
-          # while the index is being built, discard the stale generated commit, reset
-          # to latest main, regenerate from that tree, and retry.
+          # Generated products are snapshots, not mergeable source. On a push race,
+          # discard the stale generated commit, reset to current main, refresh the
+          # public-repo checkouts, regenerate, and retry.
           for attempt in 1 2 3 4; do
             echo "Publish attempt ${attempt}/4"
             git fetch origin main
             git reset --hard origin/main
 
+            rm -rf "$RUNNER_TEMP/HsH" "$RUNNER_TEMP/SAT_THEORY_ARCHIVE_2023-25"
+            git clone --depth 1 https://github.com/Satobloc/HsH.git "$RUNNER_TEMP/HsH"
+            git clone --depth 1 https://github.com/Satobloc/SAT_THEORY_ARCHIVE_2023-25.git "$RUNNER_TEMP/SAT_THEORY_ARCHIVE_2023-25"
+
+            # Preserve the established literal-keyword products while upgrading the
+            # canonical source/episode layer to all three repositories.
             python tools/build_podcast_transcript_index.py
+
+            rm -rf EXPOSURE_STATS/PODCAST_GUIDE/text EXPOSURE_STATS/PODCAST_GUIDE/cues
+            python tools/build_cross_repo_podcast_guide.py \
+              --resources-root . \
+              --hsh-root "$RUNNER_TEMP/HsH" \
+              --archive-root "$RUNNER_TEMP/SAT_THEORY_ARCHIVE_2023-25"
 
             test -s EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_CATALOG.csv
             test -s EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_HITS.csv
             test -s EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_MATRIX.csv
             test -s EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_INDEX.md
+            test -s EXPOSURE_STATS/PODCAST_GUIDE/SOURCE_INVENTORY.csv
+            test -s EXPOSURE_STATS/PODCAST_GUIDE/ANALYTICS_INVENTORY.csv
+            test -s EXPOSURE_STATS/PODCAST_GUIDE/EPISODES.json
+            test -s EXPOSURE_STATS/PODCAST_GUIDE/EPISODES.csv
+            test -s EXPOSURE_STATS/PODCAST_GUIDE/EPISODE_GUIDE.md
+            test -s EXPOSURE_STATS/PODCAST_GUIDE/MANIFEST.json
+
+            # Safety assertions: generated inventory must not contain quarantine paths.
+            if grep -Eqi '(^|[/\\])PRIOR_ART([/\\]|$)' EXPOSURE_STATS/PODCAST_GUIDE/SOURCE_INVENTORY.csv; then
+              echo "ERROR: quarantine path leaked into podcast inventory" >&2
+              exit 1
+            fi
 
             git add \
               EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_CATALOG.csv \
               EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_HITS.csv \
               EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_MATRIX.csv \
-              EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_INDEX.md
+              EXPOSURE_STATS/PODCAST_EPs/CROSS_TRANSCRIPT_KEYWORD_INDEX.md \
+              EXPOSURE_STATS/PODCAST_GUIDE
 
             if git diff --cached --quiet; then
-              echo "Transcript keyword index already current on latest main."
+              echo "Podcast indexes already current on latest main."
               exit 0
             fi
 
-            git commit -m "[skip podcast-index] Refresh podcast transcript keyword index"
+            git commit -m "[skip podcast-index] Refresh cross-repo podcast episode guide"
             if git push origin HEAD:main; then
               exit 0
             fi
 
-            echo "Push race on attempt ${attempt}; discarding generated commit and rebuilding from latest main." >&2
+            echo "Push race on attempt ${attempt}; rebuilding from latest main." >&2
             sleep $((attempt * 2))
           done
 
-          echo "Transcript keyword index changed but could not be published after four rebuild-from-main attempts." >&2
+          echo "Podcast guide changed but could not be published after four rebuild-from-main attempts." >&2
           exit 1
