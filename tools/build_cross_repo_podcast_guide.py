@@ -10,9 +10,9 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-VERSION="cross-podcast-guide/0.2.0"
+VERSION="cross-podcast-guide/0.2.1"
 REPOS={"resources":"Satobloc/HSH_RESOURCES","hsh":"Satobloc/HsH","archive":"Satobloc/SAT_THEORY_ARCHIVE_2023-25"}
-PATH_TERMS=("podcast","podcast_ep","podcast eps","podcast stats","episode","exposure_stats","exposure stats","debatinga.i","debating a.i","the new physics","field notes")
+PATH_TERMS=("podcast","podcast_ep","podcast eps","podcast stats","episode","debatinga.i","debating a.i","the new physics","field notes")
 TRANSCRIPT_TERMS=("transcript","field notes","first public mention","subtitle","caption")
 ANALYTICS_TERMS=("analytics","listener","listenership","ranking","geolocation","audience","streams","starts","spotify","podlod","podlode","stats")
 TEXT={".txt",".md",".srt",".vtt"}; DATA={".csv",".json",".tsv",".xlsx"}; IMAGES={".png",".jpg",".jpeg",".webp"}
