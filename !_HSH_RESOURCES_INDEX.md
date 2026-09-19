@@ -2,6 +2,8 @@
 
 > **Start here for people.** This is a compact router; the catalog itself is split into bounded documents rather than one giant file.
 
+> **Reference lane / authority:** **methods/resources — supporting-resource repository.** HSH_RESOURCES supplies outside literature, mathematical/technical tools, data, and research infrastructure. It is **not a theory-authority surface**: inclusion, indexing, review status, recency, or usefulness here does not promote a proposition into SAT/H(s)H bedrock. Current theory-premise authority is routed through `Satobloc/HsH/BEDROCK.md`; project-origin/historical claims must be established from the appropriate Nathan/project primary record rather than inferred from this resource collection.
+
 > **Private-reference boundary:** HSH_RESOURCES is not a public cross-link target. The public provenance/navigation pair is `Satobloc/HsH` ↔ `Satobloc/SAT_THEORY_ARCHIVE_2023-25`. When material found here is used publicly, cite the original source in Chicago style or carry forward an attributed quotation/extract or sourced summary/paraphrase. Private repository paths/hashes may be retained internally for retrieval, but are not the public citation.
 
 No record-bearing catalog document contains more than **100 records**.
