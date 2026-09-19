@@ -1,67 +1,111 @@
 # Episode Guide
 
-**Seed state:** 2026-09-18 ET  
-**Canonical role:** cross-repository podcast/public-exposure guide  
-**Source rule:** raw transcripts remain canonical; this guide is derived discovery/index state.
+Mechanical cross-repository guide. Podcast transcripts are public-exposure evidence, not automatic SAT/H(s)H core authority.
 
-Podcast transcripts primarily document **what was said publicly**. They are not automatically exact SAT/H(s)H core definitions. Episodes explicitly tasked with deriving additional insights receive elevated review, but still require source and mathematical validation.
+Episodes represented: **101**  
+Source instances: **556**  
+Analytics/metadata instances: **215**
 
-## Verified source clusters
-
-| Repository | Location | Material | Status |
-|---|---|---|---|
-| `Satobloc/HSH_RESOURCES` | `EXPOSURE_STATS/PODCAST_EPs/` | individual/compiled transcript text, SRT subtitles, episode ranking metadata, older transcript keyword indexes | current primary transcript collection |
-| `Satobloc/HSH_RESOURCES` | `EXPOSURE_STATS/DEBATING AI DATA/` | Spotify-for-Creators analytics PDFs/CSVs and related show analytics | exposure/analytics evidence |
-| `Satobloc/HSH_RESOURCES` | `EXPOSURE_STATS/SAT — PODCAST STATS/` | historical/current platform analytics CSVs, captures/screenshots | exposure/analytics evidence |
-| `Satobloc/SAT_THEORY_ARCHIVE_2023-25` | `SAT PODCAST STATS/` | historical listenership/statistics text and analytics material | historical exposure evidence |
-| `Satobloc/HsH` | `WORKSPACES/COMMON/PODCAST_EPISODE_GUIDE_PLAN.md` | existing public episode-guide design/schema | infrastructure/design, not an episode |
-
-The cross-repository builder searches all three repositories for additional podcast/episode/show-specific paths; this table is not used as an exhaustive hard-coded whitelist.
-
-## Seed episode/transcript catalog
-
-This table is seeded from the established `CROSS_TRANSCRIPT_CATALOG.csv` plus the newly uploaded subtitle episode. It will be replaced/refreshed by `tools/build_cross_repo_podcast_guide.py` when the cross-repository build publishes.
-
-| Date | Episode / transcript title | Source | Review note |
-|---|---|---|---|
-| 2025-02-02 | FIRST PUBLIC MENTION SAT DAI — WHAT IS THOUGHT MADE OF | `PODCAST_EPs/FIRST PUBLIC MENTION SAT DAI -- WHAT IS THOUGHT MADE OF.txt` | first-public-mention **candidate**; scoped verification required |
-| 2025-12-21 | Scalar-Angular Theory Field Notes — Lithium-7: The First Dark Matter Horizon | `PODCAST_EPs/FULL_Scalar-Angular Theory_ Field Notes - Lithium-7_ The First Dark Matter Horizon_.txt` | public exposition |
-| 2025-12-24 | Scalar-Angular Theory Field Notes — Proof GR & QM Are Compatible | `PODCAST_EPs/Scalar-Angular Theory_ Field Notes - Proof GR & QM Are Compatible.txt` | **P1 GR↔QM proof-recovery priority**; title wording is not itself proof certification |
-| 2026-01-16 | Scalar-Angular Theory Field Notes — Post-Closure Experimental Predictions | `PODCAST_EPs/FULL_Scalar-Angular Theory_ Field Notes - Post-Closure Experimental Predictions.txt` | predictions/public-exposure record |
-| 2026-01-19 | Scalar-Angular Theory Field Notes — Timelike Twist in the Accelerator | `PODCAST_EPs/FULL_Scalar-Angular Theory_ Field Notes - Timelike Twist in the Accelerator .txt` | public exposition |
-| 2026-02-24 | Scalar-Angular Theory Field Notes — The 0.239 rad Constant | `PODCAST_EPs/FULL_Scalar-Angular Theory_ Field Notes - The 0.239 rad Constant.txt` | constants/symbol-history priority |
-| 2026-02-25 | Scalar-Angular Theory Field Notes — SAT’s Derivations | `PODCAST_EPs/FULL_Scalar-Angular Theory_ Field Notes - SAT’s Derivations.txt` | derivation/method review priority |
-| undated in current catalog | Scalar-Angular Theory Field Notes — Prior Model Prediction Drop 3.1.26 | `PODCAST_EPs/FULL_Scalar-Angular Theory_ Field Notes - Prior Model Prediction Drop 3.1.26.txt` | date/title reconciliation required |
-| 2026-03-07 | Scalar-Angular Theory Field Notes — Method for QM-GR Unification | `PODCAST_EPs/FULL_Scalar-Angular Theory_ Field Notes - Method for QM-GR Unification.txt` | **P1 GR↔QM reconstruction priority** |
-| 2026-03-16 | Scalar-Angular Theory Field Notes — A Lab Testable TOE | `PODCAST_EPs/FULL_Scalar-Angular Theory_ Field Notes - A Lab Testable TOE.txt` | test/methodology review priority |
-| 2026-05-08 | Scalar-Angular Theory Field Notes — The 17mK He3 λ Anomaly | `PODCAST_EPs/FULL_Scalar-Angular Theory_ Field Notes - The 17mK He3 λ Anomaly.txt` | **P3 He-3 anchor priority** |
-| 2026-05-09 | Scalar-Angular Theory Field Notes — Full Unification GR-QM-ST | `PODCAST_EPs/FULL_Scalar-Angular Theory_ Field Notes - Full Unification GR-QM-ST.txt` | **P1 GR↔QM reconstruction priority** |
-| undated in current catalog | Scalar-Angular Theory Field Notes — Neutrino-Photon Identity, Quantum Tunneling, and Chondrules(..!) | `PODCAST_EPs/FULL_Scalar-Angular Theory_ Field Notes - Neutrino-Photon Identity, Quantum Tunneling, and Chondrules(..!).txt` | traveling-excitation/history priority |
-| 2026-09-06 | The New Physics — Majorana Coupling & Coiled Cooper Pairing | `PODCAST_EPs/The New Physics - Majorana Coupling & Coiled Cooper Pairing.srt` | `insight_generation_requested`; He-3/Majorana/Cooper/parafermion candidate insights |
-
-## Generated index/extraction format
-
-The cross-repository builder writes:
-
-- `SOURCE_INVENTORY.csv` — every located source instance with repo/path/hash/type and exact-duplicate grouping;
-- `ANALYTICS_INVENTORY.csv` — analytics/metadata/capture sources separated from transcript authority;
-- `EPISODES.json` — logical episode records with all linked source instances;
-- `EPISODES.csv` — flat filterable episode index;
-- `MANIFEST.json` — exact input repo commits and build counts;
-- `text/*.txt` — mechanically derived transcript text with provenance header;
-- `cues/*.jsonl` — timestamp-preserving subtitle cues for SRT/VTT sources.
-
-Raw SRT/VTT/TXT is never rewritten. Derived text removes subtitle timing/sequence markup only; it does **not** paraphrase, fix ASR language, normalize SAT terminology, change `field` wording, or silently update historical theory language.
-
-## Retrieval/review flags
-
-High-value automatic retrieval signals include:
-
-- `insight_generation_requested`
-- `rigor_signal`
-- `terminology_hazard_field`
-- exact duplicate/source-copy groups
-- transcript date/title disagreement
-- first-public-mention **candidate** status
-
-A retrieval flag is not a theory-status judgment.
+| Date | Episode | Transcript | Sources | Review signals |
+|---|---|---|---:|---|
+| 2025-02-02 | FIRST PUBLIC MENTION SAT DAI -- WHAT IS THOUGHT MADE OF | located | 1 | rigor signal |
+| 2025-12-21 | Scalar-Angular Theory Field Notes - Lithium-7 The First Dark Matter Horizon | located | 2 | rigor signal, field-language hazard |
+| 2025-12-24 | Scalar-Angular Theory Field Notes - Proof GR & QM Are Compatible | located | 2 | rigor signal, field-language hazard |
+| 2026-01-15 | DAI Transcripts TEXT | located | 1 | insight-generation requested, rigor signal, field-language hazard |
+| 2026-01-15 | Scalar-Angular Theory Field Notes - Neutrino-Photon Identity, Quantum Tunneling, and Chondrules(..!) | located | 1 | rigor signal, field-language hazard |
+| 2026-01-16 | Scalar-Angular Theory Field Notes - Post-Closure Experimental Predictions | located | 2 | rigor signal, field-language hazard |
+| 2026-01-19 | Scalar-Angular Theory Field Notes - Timelike Twist in the Accelerator | located | 2 | rigor signal, field-language hazard |
+| 2026-02-24 | Scalar-Angular Theory Field Notes - The 0.239 rad Constant | located | 2 | rigor signal, field-language hazard |
+| 2026-02-25 | Scalar-Angular Theory Field Notes - SAT’s Derivations | located | 2 | rigor signal, field-language hazard |
+| 2026-03-07 | Scalar-Angular Theory Field Notes - Method for QM-GR Unification | located | 2 | rigor signal, field-language hazard |
+| 2026-03-16 | Scalar-Angular Theory Field Notes - A Lab Testable TOE | located | 2 | rigor signal, field-language hazard |
+| 2026-04-21 | Superdeterminism and SAT | located | 2 | rigor signal, field-language hazard |
+| 2026-04-22 | Simulating Einstein, Pt 1 | located | 2 | rigor signal, field-language hazard |
+| 2026-04-22 | Simulating Einstein, Pt 2 | located | 2 | rigor signal |
+| 2026-04-22 | Unification Mark II Pt 1 — The Process | located | 2 | rigor signal |
+| 2026-04-23 | Life As A Planetary Trauma Response | located | 2 | rigor signal |
+| 2026-04-23 | Simulating Einstein, Pt 3 | located | 2 | rigor signal, field-language hazard |
+| 2026-04-25 | This Title Might Not Be Accurate | located | 2 | rigor signal |
+| 2026-05-05 | Bosons Reclassified | located | 2 | rigor signal, field-language hazard |
+| 2026-05-05 | Electro-Gravity Unification  | located | 2 | rigor signal, field-language hazard |
+| 2026-05-06 | EVENT TOMORROW! COLUMBUS, OHIO | located | 2 | rigor signal |
+| 2026-05-08 | A New Interpretation of String Theory Dimensions? | located | 2 | rigor signal, field-language hazard |
+| 2026-05-08 | Renormalization Is Obsolete | located | 4 | rigor signal, field-language hazard |
+| 2026-05-08 | SAT Predictions March 2026 | located | 2 | rigor signal, field-language hazard |
+| 2026-05-08 | Scalar-Angular Theory Field Notes - The 17mK He3 λ Anomaly | located | 2 | rigor signal, field-language hazard |
+| 2026-05-09 | Electrogravacoustics 1 | located | 2 | rigor signal, field-language hazard |
+| 2026-05-09 | Electrogravacoustics 2 | located | 4 | insight-generation requested, rigor signal, field-language hazard |
+| 2026-05-09 | GR-QCD-QED-QFT-SM-ST Unification in Plain English | located | 2 | rigor signal, field-language hazard |
+| 2026-05-09 | Scalar-Angular Theory Field Notes - Full Unification GR-QM-ST | located | 2 | rigor signal, field-language hazard |
+| 2026-05-10 | How the Universe Scales | located | 2 | rigor signal |
+| 2026-05-10 | SAT’s Conservative Methodology | located | 2 | rigor signal, field-language hazard |
+| 2026-05-14 | No More Wick Rotation | located | 2 | rigor signal, field-language hazard |
+| 2026-05-15 | Welcome to the Zottenwelt | located | 2 | rigor signal, field-language hazard |
+| 2026-05-16 | A Poem | located | 2 | field-language hazard |
+| 2026-05-16 | The Mass of the Photon | located | 2 | rigor signal |
+| 2026-05-17 | A Review of McKnight’s Camera Talk | located | 2 | rigor signal, field-language hazard |
+| 2026-05-17 | AI Weirdness | located | 2 | rigor signal, field-language hazard |
+| 2026-05-17 | Debating A.I. On the Future of Physics - The Two Rocks, Revisited | located | 2 | insight-generation requested, rigor signal |
+| 2026-05-17 | Making AI Music Weird | located | 2 | rigor signal |
+| 2026-05-17 | McKnight’s Camera Talk Pt 2 | located | 2 | rigor signal, field-language hazard |
+| 2026-05-17 | McKnight’s Intellectual Universe | located | 2 | insight-generation requested, rigor signal |
+| 2026-05-18 | Background for SAT Predictions | located | 2 | rigor signal, field-language hazard |
+| 2026-05-18 | Physics Without Magic | located | 2 | rigor signal, field-language hazard |
+| 2026-05-18 | Predictions for Upcoming Observations | located | 2 | rigor signal, field-language hazard |
+| 2026-05-18 | Predictions from Scalar-Angular Torsion Filamental Physics | located | 2 | rigor signal, field-language hazard |
+| 2026-05-18 | String Gravity Predictions H0=71.2 | located | 2 | rigor signal, field-language hazard |
+| 2026-05-18 | The Least Radical TOE | located | 2 | rigor signal, field-language hazard |
+| 2026-05-20 | How Science Sciences and More | located | 2 | rigor signal, field-language hazard |
+| 2026-05-21 | Ampère’s Understanding | located | 2 | rigor signal, field-language hazard |
+| 2026-05-22 | Black Hole Conjecture | located | 2 | rigor signal, field-language hazard |
+| 2026-05-22 | Grand Unification Audit | located | 2 | rigor signal, field-language hazard |
+| 2026-05-22 | Persistent AI TOE Hallucinations | located | 2 | rigor signal |
+| 2026-05-22 | Unification Missing Piece? | located | 2 | rigor signal, field-language hazard |
+| 2026-05-22 | Why No Tetraquarks | located | 2 | rigor signal, field-language hazard |
+| 2026-05-24 | The Ongoing Big Bang | located | 2 | rigor signal, field-language hazard |
+| 2026-05-25 | Debating A.I. On the Future of Physics - Throwback Ep SAT One Year Ago 1 | located | 2 | rigor signal, field-language hazard |
+| 2026-05-25 | Debating A.I. On the Future of Physics - Throwback SAT One Year Ago 3 — The Debate | located | 2 | rigor signal, field-language hazard |
+| 2026-05-25 | Throwback: SAT One Year Ago 2 | located | 2 | rigor signal, field-language hazard |
+| 2026-06-03 | Debating A.I. On the Future of Physics - The Scorecard 2026 (Cumulative) | located | 2 | rigor signal, field-language hazard |
+| 2026-06-05 | Remedial Math Student Considers Institutions | located | 2 | rigor signal, field-language hazard |
+| 2026-06-07 | Debating A.I. On the Future of Physics - SAT Methodology | located | 2 | rigor signal, field-language hazard |
+| 2026-06-07 | Debating A.I. On the Future of Physics - Worldlines to Worldtube Manifolds and Kelvin Vortices | located | 2 | rigor signal, field-language hazard |
+| 2026-06-08 | Debating A.I. On the Future of Physics - The Glass Sausage Factory | located | 2 | rigor signal, field-language hazard |
+| 2026-06-09 | Debating A.I. On the Future of Physics - The Prehistory of SAT | located | 2 | rigor signal, field-language hazard |
+| 2026-06-09 | Debating A.I. On the Future of Physics - Topological Primacy | located | 2 | rigor signal, field-language hazard |
+| 2026-06-11 | Debating A.I. On the Future of Physics - Catching Up with the Field | located | 2 | rigor signal, field-language hazard |
+| 2026-06-13 | Debating A.I. On the Future of Physics - Minkowski Sufficiency | located | 2 | rigor signal, field-language hazard |
+| 2026-06-13 | Debating A.I. On the Future of Physics - RMS-SAT Debug | located | 2 | rigor signal, field-language hazard |
+| 2026-06-14 | Debating A.I. On the Future of Physics - Bass Ackwards | located | 2 | rigor signal, field-language hazard |
+| 2026-06-14 | Debating A.I. On the Future of Physics - The Theory That Wasn’t A Theory | located | 2 | rigor signal, field-language hazard |
+| 2026-06-15 | Debating A.I. On the Future of Physics - 2026 Pre-Synthesis | located | 2 | rigor signal, field-language hazard |
+| 2026-06-15 | Debating A.I. On the Future of Physics - Anarcheologist | located | 2 | rigor signal |
+| 2026-06-15 | Debating A.I. On the Future of Physics - The Rabbit and the Duck | located | 2 | rigor signal, field-language hazard |
+| 2026-06-15 | Debating A.I. On the Future of Physics - The Two Fundamental Forces | located | 2 | rigor signal, field-language hazard |
+| 2026-06-15 | Debating A.I. On the Future of Physics - Time | located | 2 | rigor signal, field-language hazard |
+| 2026-06-15 | Debating A.I. On the Future of Physics - WWRD What Would Rope Do | located | 2 | rigor signal, field-language hazard |
+| 2026-06-16 | Debating A.I. On the Future of Physics - 2026 ReSynthesis Overview | located | 2 | rigor signal, field-language hazard |
+| 2026-06-16 | Debating A.I. On the Future of Physics - But are you...𝙎𝘼𝙏 𝙧𝙞𝙜𝙤𝙧𝙤𝙪𝙨 | located | 2 | rigor signal, field-language hazard |
+| 2026-06-16 | Debating A.I. On the Future of Physics - Doomsday Brunchtime | located | 2 | rigor signal, field-language hazard |
+| 2026-06-16 | Debating A.I. On the Future of Physics - Math… is a tad wishy-washy | located | 2 | rigor signal, field-language hazard |
+| 2026-06-16 | Debating A.I. On the Future of Physics - SAT == H(s)H | located | 2 | rigor signal, field-language hazard |
+| 2026-06-16 | Debating A.I. On the Future of Physics - SAT Rigor Pt 2 | located | 2 | rigor signal, field-language hazard |
+| 2026-06-16 | Debating A.I. On the Future of Physics - The c - H 0 Gap | located | 2 | rigor signal, field-language hazard |
+| 2026-06-18 | Debating A.I. On the Future of Physics - Physics The Full Stack | located | 2 | field-language hazard |
+| 2026-06-18 | Debating A.I. On the Future of Physics - The Einstein-Rosen Key | located | 2 | rigor signal, field-language hazard |
+| 2026-06-24 | Debating A.I. On the Future of Physics - Chemical-Optical Lab Bench | located | 2 | insight-generation requested, rigor signal, field-language hazard |
+| 2026-06-26 | 2026 ≠ 2024 | located | 2 | rigor signal, field-language hazard |
+| 2026-06-30 | Debating A.I. On the Future of Physics - Convergence | located | 2 | rigor signal, field-language hazard |
+| 2026-07-02 | Debating A.I. On the Future of Physics - Intellectual Playgrounds Thought As Structure — Revisited | located | 2 | rigor signal |
+| 2026-07-05 | Debating A.I. On the Future of Physics - The Math of it All | located | 2 | rigor signal, field-language hazard |
+| 2026-07-12 | Debating A.I. On the Future of Physics - Hasimoto Particle Cosmology | located | 2 | rigor signal, field-language hazard |
+| 2026-07-12 | Debating A.I. On the Future of Physics - Quantum Kelvin Waves | located | 2 | rigor signal, field-language hazard |
+| 2026-07-13 | Debating A.I. On the Future of Physics - (++++) or (+++,+++) | located | 2 | rigor signal, field-language hazard |
+| 2026-07-17 | Debating A.I. On the Future of Physics - Dual-Shell λ Expansion | located | 2 | rigor signal, field-language hazard |
+| 2026-07-17 | Debating A.I. On the Future of Physics - Finger Trap World | located | 2 | rigor signal, field-language hazard |
+| 2026-07-17 | Debating A.I. On the Future of Physics - Physics vs Dogma | located | 2 | insight-generation requested, rigor signal, field-language hazard |
+| 2026-07-17 | Debating A.I. On the Future of Physics - Viscous Or Superfluid | located | 2 | rigor signal, field-language hazard |
+| 2026-09-06 | Majorana Coupling & Coiled Cooper Pairing | located | 1 | rigor signal, field-language hazard |
+| undated | CROSS TRANSCRIPT KEYWORD INDEX | located | 1 |  |
+| undated | Scalar-Angular Theory Field Notes - Neutrino-Photon Identity, Quantum Tunneling, and Chondrules(..!) | located | 1 | rigor signal, field-language hazard |
+| undated | Scalar-Angular Theory Field Notes - Prior Model Prediction Drop 3.1.26 | located | 2 | insight-generation requested, rigor signal, field-language hazard |
