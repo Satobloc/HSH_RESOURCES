@@ -8,9 +8,11 @@ As soon as a new document dump arrives, run a broad first-pass process that does
 
 The desired behavior is:
 
-`probe -> triage -> first-try de/reconstruct -> editor-facing summary -> review queue`
+`probe -> triage -> first-try de/reconstruct -> editor-facing summary -> reviewing-LLM editorial pass -> review queue / reusable capability updates`
 
 The output should be useful immediately to an LLM or human editor, but should avoid hard conclusions where the evidence is still thin.
+
+The reviewing LLM has full editorial control over the provisional machine output. The first-pass machinery is advisory infrastructure, not the editor. The reviewing LLM may reorganize, rewrite, discard, merge, split, reinterpret, or replace any provisional summary structure when the source material supports a better editorial treatment.
 
 ## Why FLC is a good baseline
 
@@ -19,7 +21,7 @@ The *Floating Liars' Club* scans are a useful "possibly difficult" benchmark bec
 - scanned/image-heavy PDFs;
 - prose, illustration, page furniture and ads on the same pages;
 - issue-level and story-level structures;
-- design elements that may itself carry narrative/comic function;
+- design elements that may themselves carry narrative/comic function;
 - uncertain OCR quality;
 - page-order / continuation / attribution questions;
 - multiple contributors and roles;
@@ -54,6 +56,20 @@ Only then propose larger units such as issues, stories, chapters, packets, timel
 ### First-try reconstruction is provisional
 The system may propose a best current reading of structure, ordering, boundaries or relationships, but must label it as a working reconstruction rather than a settled conclusion.
 
+### Reviewing LLM is the editor
+The reviewing LLM is not expected to preserve the pipeline's wording, ordering, categories or intermediate judgments. It should use the machine output as evidence and orientation, then produce the best editorial representation it can from the actual sources.
+
+The reviewing LLM may:
+- rewrite the summary completely;
+- reorder the evidence;
+- combine machine categories that were too granular;
+- split categories that concealed meaningful distinctions;
+- reject false-positive structure;
+- identify a better ontology after seeing the whole dump;
+- request or perform targeted re-probes;
+- define new reusable modules when a recurring need becomes clear;
+- keep one-off logic local when it is genuinely job-specific.
+
 ### Editor-facing output
 The primary first-pass product is not a giant machine dump. It is a concise but substantive editorial orientation that tells the next reader:
 - what seems to be here;
@@ -61,7 +77,9 @@ The primary first-pass product is not a giant machine dump. It is a concise but 
 - what looks important or unusual;
 - what remains ambiguous;
 - what should be read next;
-- which automatic inferences should not yet be trusted.
+- which automatic inferences should not yet be trusted;
+- what existing machinery helped;
+- what new capability, if any, would materially improve future runs.
 
 ## Seed workflow
 
@@ -131,7 +149,7 @@ When useful, search all three project repositories for exact names, titles, phra
 Use existing locator-aware retrieval machinery where possible. Cross-archive hits are contextual evidence candidates, not automatic overrides of the source dump.
 
 ### 7. Editor-facing summary
-Produce a compact orientation with these sections:
+Produce a compact orientation with these sections as a default, not a mandatory final form:
 
 #### What arrived
 A descriptive inventory of the dump.
@@ -157,6 +175,83 @@ A provisional map of how the pieces may fit together.
 #### Do-not-conclude-yet
 Explicit warning list for tempting but unsupported interpretations.
 
+#### Capability / module notes
+A short editorial assessment of what this job revealed about the tooling.
+
+The reviewing LLM may change this structure whenever another presentation would be clearer or more faithful to the source.
+
+## Editorial control handoff
+
+The pipeline should hand the reviewing LLM enough source-linked evidence to exercise real editorial judgment, rather than merely asking it to polish a machine summary.
+
+The handoff should include:
+- the provisional summary;
+- exact-source locators behind important claims;
+- the probe log;
+- triage labels and confidence;
+- reconstruction candidates;
+- known extraction/OCR weaknesses;
+- module/tool provenance for each derived result;
+- unresolved questions;
+- candidate capabilities discovered during the run.
+
+The reviewing LLM can then decide what survives into the editor-facing result.
+
+## Reusable-module routing
+
+Every run should distinguish new logic or capability into three buckets.
+
+### A. Job-specific
+Useful for this document dump but probably not worth generalizing.
+
+Examples:
+- a one-off correction for an idiosyncratic page numbering scheme;
+- a local alias list for a single publication;
+- a manual mapping for one damaged scan.
+
+Keep this close to the project/job and do not burden the general pipeline with it.
+
+### B. Maybe repurpose
+A pattern that may generalize, but has not yet earned global integration.
+
+Examples:
+- a new heuristic for recognizing contributor-bio pages;
+- an illustration-versus-ad discriminator that worked on one or two corpora;
+- a useful clustering trick whose failure modes are not yet understood.
+
+Package it cleanly enough to reuse experimentally, document what triggered it, and leave it opt-in or project-local until another corpus confirms its value.
+
+### C. Yes — plug that capability in
+A broadly useful capability with clear provenance, inspectable behavior, and a demonstrated recurring need.
+
+Examples:
+- robust page-image hashing;
+- a generic region manifest contract;
+- a better cross-repo exact-phrase probe;
+- a reliable repeated-page-furniture detector;
+- a general reviewed-transcription bridge.
+
+When the reviewing LLM identifies one of these, it should be empowered to write or adapt the reusable module, document it, test it on the current corpus, and integrate it into the general pipeline when repository/tooling permissions allow.
+
+Do not require a separate architectural ceremony merely because the capability was discovered during editorial work. The important safeguards are:
+- source preservation;
+- reversible derived outputs;
+- inspectable behavior;
+- clear scope;
+- tests or bounded validation where transformation is involved;
+- documentation of what the module does and does not establish.
+
+## Module-writing principle
+
+The reviewing LLM may create code, configuration, adapters, schemas, prompts, manifests or helper documents as part of the editorial pass when doing so materially improves the reconstruction or creates a reusable capability.
+
+Prefer the smallest useful abstraction:
+- one-off rule when one-off is enough;
+- project module when the pattern may recur locally;
+- general module only when the capability is genuinely reusable.
+
+New modules should integrate with existing archive machinery where sensible rather than recreating search, hashing, OCR, manifests, provenance or indexing from scratch.
+
 ## Output contract
 
 The first run should ideally emit:
@@ -166,7 +261,9 @@ The first run should ideally emit:
 3. triage queue;
 4. provisional structure graph or table;
 5. editor-facing summary;
-6. unresolved questions / review queue.
+6. unresolved questions / review queue;
+7. capability-routing notes: `job-specific`, `maybe-repurpose`, `plug-in`;
+8. any small modules/configuration written by the reviewing LLM, with provenance and scope documented.
 
 The editor-facing summary should cite / link exact source locations wherever practical.
 
@@ -195,12 +292,15 @@ Automation may:
 - detect repeated structure;
 - nominate boundaries;
 - propose relationships;
-- summarize provisional findings.
+- summarize provisional findings;
+- propose new modules or adapters.
 
-Automation should not silently decide:
+The reviewing LLM may go further editorially and architecturally, but must still preserve evidentiary distinctions.
+
+Neither automation nor the reviewing LLM should silently decide:
 - authorship from style;
 - intent;
-- literary quality;
+- literary quality as fact;
 - definitive chronology from weak dating evidence;
 - that visually similar items are the same object;
 - that missing search results imply absence;
@@ -218,7 +318,8 @@ A baseline run on the FLC dump should be able to surface, without being told all
 - that some image-heavy pages deserve direct visual review;
 - that the magazine has issue-level editorial / contents / contributor material;
 - that a simple OCR-only representation would lose meaningful information;
-- which pages / relationships are still uncertain.
+- which pages / relationships are still uncertain;
+- which useful capabilities were generic enough to reuse elsewhere.
 
 It does **not** need to infer the full social history or authorial intentions on first pass.
 
@@ -232,6 +333,8 @@ Keep the standalone prototype small:
 4. generate bounded automatic page/file descriptors;
 5. run exact / structural search across the dump and, where configured, across the three archives;
 6. create one provisional reconstruction table;
-7. write one editor-facing summary plus review queue.
+7. write one provisional editor-facing summary plus review queue;
+8. hand all of that to a reviewing LLM with authority to rewrite the summary and route any newly useful capability into `job-specific`, `maybe-repurpose`, or `plug-in`;
+9. allow the reviewing LLM to implement a small reusable module immediately when the evidence for reuse is strong.
 
-FLC can then be used as the initial difficult-case benchmark. The benchmark should measure whether the summary gives a new editor a useful mental map quickly, not whether the system reproduces every manual judgment.
+FLC can then be used as the initial difficult-case benchmark. The benchmark should measure whether the workflow gives a new editor a useful mental map quickly **and** whether the reviewing LLM can improve the tooling intelligently from the corpus, not whether the system reproduces every manual judgment.
