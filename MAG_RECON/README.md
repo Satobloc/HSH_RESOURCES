@@ -145,3 +145,17 @@ Every derived record should retain when available:
 - manual correction / annotation history.
 
 Use `unknown` or `unresolved` rather than filling gaps by inference.
+
+## Private workspace
+
+Working material that is useful to the editor but not yet appropriate for the durable/public-facing reconstruction layer should go to:
+
+`HSH_RESOURCES/PRIVATE_WORKSPACE/MAG_RECON/`
+
+Use that private home for Sites feedback, alternate reconstructions, prompt harvests, image experiments, module candidates, temporary page maps, ambiguity cards, and editorial scratch.
+
+The general workspace routing policy lives at:
+
+`HSH_RESOURCES/PRIVATE_WORKSPACE/README.md`
+
+Promote material back into `MAG_RECON/`, `tools/`, Sites-ready packets, voice corpora, or another repository only when its role and review state are clear.
