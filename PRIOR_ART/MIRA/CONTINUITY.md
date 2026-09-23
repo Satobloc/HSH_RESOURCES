@@ -4,6 +4,35 @@
 **Lane:** Code Grurple provenance + bibliography  
 **Quarantine:** hard; workspace remains under `HSH_RESOURCES/PRIOR_ART/MIRA/`
 
+# MAJOR MIRA-CENTRAL SOURCE ROUTING — READ THIS FIRST
+
+For Mira-specific ingest, provenance checks, citation audits, and antecedent searches, use the following source families **first**, in this rough order of importance:
+
+1. `Satobloc/HSH_RESOURCES/HISTORICAL/`
+   - https://github.com/Satobloc/HSH_RESOURCES/tree/main/HISTORICAL
+2. the full `Satobloc/SAT_THEORY_ARCHIVE_2023-25/`
+   - https://github.com/Satobloc/SAT_THEORY_ARCHIVE_2023-25/
+3. `Satobloc/HSH_RESOURCES/OUTSIDE RESEARCH LIBRARY/`
+   - https://github.com/Satobloc/HSH_RESOURCES/tree/main/OUTSIDE%20RESEARCH%20LIBRARY
+4. `Satobloc/HSH_RESOURCES/PRIOR_ART/`
+   - https://github.com/Satobloc/HSH_RESOURCES/tree/main/PRIOR_ART
+5. `Satobloc/HSH_RESOURCES/H(s)H_Toolkit/`
+   - https://github.com/Satobloc/HSH_RESOURCES/tree/main/H(s)H_Toolkit
+6. `Satobloc/HSH_RESOURCES/EXPOSURE_STATS/`
+   - https://github.com/Satobloc/HSH_RESOURCES/tree/main/EXPOSURE_STATS
+7. `Satobloc/HSH_RESOURCES/OUTSIDE RESEARCH LIBRARY/` again
+   - repeated intentionally as emphasis: return to this corpus after the first pass through the other Mira-central lanes rather than treating one pass as sufficient.
+
+**Second-tier widening rule:** after the Mira-central source families above have been checked, widen to the **whole SAT/H(s)H three-repository estate** rather than concluding absence from a priority-lane miss:
+
+- `Satobloc/HSH_RESOURCES`
+- `Satobloc/SAT_THEORY_ARCHIVE_2023-25`
+- `Satobloc/HsH`
+
+This is a routing order, not an evidence hierarchy. A direct primary/internal source still outranks an index, synthesis, summary, or later retrieval event wherever it is found.
+
+A `NOT FOUND` or "no internal precedent recovered" statement is not defensible until the relevant Mira-central lanes have been checked and, where the question warrants it, the full three-repo estate has been widened into the search.
+
 ## Standing scope
 
 Mira does four things:
@@ -102,15 +131,16 @@ Seeded with concept mappings for:
 
 ## Retrieval / attribution rules locked
 
-1. Internal source chronology leads every SAT/H(s)H attribution unless explicit external influence is documented.
-2. Similarity never proves influence.
-3. Pre-2026-09-09 SAT/H(s)H material is treated as pre-nLab/Hypothesis-H exposure unless a specific contrary source is found.
-4. Direct primary source > raw conversation > standalone transcript > synthesis > index/summary.
-5. A raw wrapper that merely retrieves a standalone document does not upgrade that document's internal speaker provenance.
-6. Directory labels do not prove composition dates.
-7. Git upload dates are evidence of repository presence, not necessarily authorship/composition dates.
-8. `NOT FOUND` requires bounded-scope language unless all relevant retrieval surfaces have been checked.
-9. Prior-art technical correctness is examined only far enough to prevent false ancestry/equivalence/priority statements.
+1. Check the **Major Mira-Central Source Routing** at the top of this file before broad repo search.
+2. Internal source chronology leads every SAT/H(s)H attribution unless explicit external influence is documented.
+3. Similarity never proves influence.
+4. Pre-2026-09-09 SAT/H(s)H material is treated as pre-nLab/Hypothesis-H exposure unless a specific contrary source is found.
+5. Direct primary source > raw conversation > standalone transcript > synthesis > index/summary.
+6. A raw wrapper that merely retrieves a standalone document does not upgrade that document's internal speaker provenance.
+7. Directory labels do not prove composition dates.
+8. Git upload dates are evidence of repository presence, not necessarily authorship/composition dates.
+9. `NOT FOUND` requires bounded-scope language unless all relevant retrieval surfaces have been checked.
+10. Prior-art technical correctness is examined only far enough to prevent false ancestry/equivalence/priority statements.
 
 ## Open cursors — ordered for throughput
 
@@ -128,14 +158,8 @@ Do not hold broader ingest open waiting for these.
 ### Cursor C — Cross bibliography primary-source upgrade [HIGH]
 Where a review paper actually needs the lineage, prefer original Klein/Cartan/Fiorenza-Sati-Schreiber/Huerta-Schreiber publications over nLab summary citations. Keep nLab as map/wayfinding/cross-reference.
 
-### Cursor D — PRIOR_ART 187-record triage [HIGH]
-Bulk ingest the two catalog shards by relevance buckets rather than alphabetically:
-1. geometry/topology/holonomy;
-2. worldline/worldsheet/branes/higher gauge;
-3. particle/braid/topological models;
-4. gravity/Lorentzian/signature/causal structure;
-5. remaining material.
-Each record gets metadata + tags first; claim-level reading only when triggered by a paper/concept.
+### Cursor D — Mira-central bulk ingest [HIGH]
+Proceed in the standing source-family order at the top of this file. For large corpora, ingest metadata + topical tags first and use claim-level reading only when triggered by a paper/concept. `OUTSIDE RESEARCH LIBRARY` receives both an early pass and a deliberate return pass.
 
 ### Cursor E — photon-neutrino external lineage [MEDIUM]
 Normalize primary bibliography for historical neutrino theories of light and classify exact relation to SAT's one-excitation orientation/projection claim. Do not collapse composite neutrino-antineutrino photon models into SAT's claim by analogy.
@@ -148,4 +172,4 @@ Do not attempt a grand identity map by default. When a paper contains a potentia
 
 ## Workflow principle
 
-**Index broadly, read narrowly, verify directly when it matters, and never let unresolved metadata stop the rest of the ingest.**
+**Priority lanes first; then whole-estate widening. Index broadly, read narrowly, verify directly when it matters, and never let unresolved metadata stop the rest of the ingest.**
