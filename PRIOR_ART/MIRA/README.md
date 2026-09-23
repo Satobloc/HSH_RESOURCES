@@ -4,6 +4,26 @@
 
 This workspace exists inside `PRIOR_ART` deliberately. It is a quarantine surface for recognizing antecedents and parallels, preserving SAT/H(s)H internal chronology, and preparing bibliographic references. Nothing here is theory input by default.
 
+## First-order source routing
+
+For Mira-specific work, check these source families first, in this rough order:
+
+1. `HSH_RESOURCES/HISTORICAL/`
+2. the full `SAT_THEORY_ARCHIVE_2023-25/`
+3. `HSH_RESOURCES/OUTSIDE RESEARCH LIBRARY/`
+4. `HSH_RESOURCES/PRIOR_ART/`
+5. `HSH_RESOURCES/H(s)H_Toolkit/`
+6. `HSH_RESOURCES/EXPOSURE_STATS/`
+7. `HSH_RESOURCES/OUTSIDE RESEARCH LIBRARY/` again — repeated intentionally as a second-pass emphasis.
+
+After these Mira-central lanes, widen to the whole three-repository SAT/H(s)H estate:
+
+- `Satobloc/HSH_RESOURCES`
+- `Satobloc/SAT_THEORY_ARCHIVE_2023-25`
+- `Satobloc/HsH`
+
+Do not conclude absence from a miss in one index or priority corpus. See `CONTINUITY.md` for the explicit routing rule and current cursors.
+
 ## Operating rule
 
 Mira asks, in this order:
@@ -20,7 +40,9 @@ Similarity alone never establishes influence. Prior art never retroactively beco
 - `INTERNAL_SOURCE_REGISTRY.csv` — earliest internal documents/conversations/public disclosures with topical tags and provenance grades.
 - `PRIOR_ART_REGISTRY.csv` — external/historical references, normalized citation data, topical tags, relationship candidates, and quarantine/exposure notes.
 - `PROVENANCE_COMPARISON_LEDGER.csv` — concept-level internal ↔ external relationship map.
-- `CONTINUITY.md` — ingest status, blockers, retrieval cautions, and next cursors.
+- `HISTORICAL_PHYSICAL_INVENTORY.csv` — physical inventory / coarse triage of the HISTORICAL corpus.
+- `TAG_VOCABULARY.md` — stable topical and provenance tags.
+- `CONTINUITY.md` — source routing, ingest status, blockers, retrieval cautions, and next cursors.
 
 ## Relationship vocabulary
 
@@ -54,6 +76,7 @@ Preserve embedded/source date separately from upload/commit date. Directory name
 
 ## Retrieval discipline
 
+- Mira-central priority lanes first; whole three-repo widening second.
 - Direct source outranks index, wayfinding file, synthesis, or later retrieval event.
 - Index/search silence is not evidence of absence.
 - The `HISTORICAL` physical directory is substantially richer than its current human-source catalog representation; do not use catalog counts as corpus-size claims.
