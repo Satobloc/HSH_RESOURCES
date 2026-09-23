@@ -2,6 +2,12 @@
 
 Operational request queue for Nathan-authorized quarantine-side work. This file is an inbox, not a theory-authority surface and not a replacement for `STATUS.md` or the citation ledger.
 
+## Current coordination status
+
+- **Mira:** active quarantine-side contact.
+- **Cross:** temporarily out of office / inactive for current routing; do not assign new work by default.
+- **Tern:** may pull Cross back into active service at any time; Cross's current inactivity is not retirement, deauthorization, or permanent unavailability.
+
 ## 2026-09-23 — Modes / Nathan-model comparative excavation
 
 **From:** Nathan-directed cross-instance request
@@ -16,7 +22,9 @@ The endogenous reconstruction is being done from Nathan/project conversations an
 
 ### Nathan-direct methodological note
 
-Nathan's current methodological rule is deliberately permissive at hypothesis admission: **entertain all notions**. Do not reject a model merely because it is strange, violates common assumptions, or fails ordinary common-sense expectations. Steelman it first; make premises explicit; then decide what survives through rational discourse, constraints, evidence, explanatory behavior, and comparison with alternatives. Nathan suggested RMS may be a useful lens for this, but do **not** infer or backfill what RMS means: recover its actual project sources before using it as a formal label.
+Nathan's methodological rule is deliberately permissive at hypothesis admission: **entertain all notions**. Do not reject a model merely because it is strange, violates common assumptions, or fails ordinary common-sense expectations. Steelman it first; make premises explicit; then decide what survives through rational discourse, constraints, evidence, explanatory behavior, and comparison with alternatives.
+
+Use **RMS (Radical Meta-Skepticism)** in its project sense as an epistemic-boundary lens: question hidden assumptions; distinguish what is actually knowable or discriminable from explanatory constructions; keep alternatives live long enough to expose their consequences. Do not turn RMS into an indiscriminate "anything goes" principle. Where model operation or comparison invokes other project machinery (including MR), preserve those distinctions rather than folding everything into RMS.
 
 An intentionally extreme example is a "Gnomes model of the universe": if it can be coherently steelmanned, it is worth considering long enough to expose its premises and discriminators. Admission to discussion does not imply equal evidential standing, theory authority, or endorsement.
 
