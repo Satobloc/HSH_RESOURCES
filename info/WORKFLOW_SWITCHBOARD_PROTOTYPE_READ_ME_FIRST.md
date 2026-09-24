@@ -3,7 +3,8 @@
 **Status:** PROTOTYPE / SANDBOXED WORKFLOW EXPERIMENT.  
 **Not production authority. Not a settled architecture. Not theory authority.**  
 **Primary POC:** `info/WORKFLOW_SWITCHBOARD_POC.md`  
-**Executable demo:** `tools/workflow_switchboard_demo.py`
+**Executable demo:** `tools/workflow_switchboard_demo.py`  
+**Threading companion:** `info/WORKFLOW_THREADING_PROTOTYPE.md` + `tools/workflow_threading_demo.py`
 
 ## What this is
 
@@ -13,6 +14,8 @@ This package is a working proof of concept for several workflow-control ideas Na
 - **CENTRAL** — an awake hub that checks locale, deltas, current state, available affordances, active rules, and the next bounded operation;
 - **BRANCH** — different workrooms, benches, lockers, playgrounds, actor overlays, continuity/education, capability scouting, and theory/public-readiness routes;
 - **HYDRA** — guarded recurrence-leveraged bootstrapping: synchronized, parallel, perpendicular, nested, and state-sensitive recurrence-definition rewriting.
+
+A companion **THREADING** prototype explores temporal coordination: a worker can seed a reusable tool/question/test, deliberately vacate a recurrence while other workers use it, let evidence accumulate, and rejoin when a state threshold or time cap makes the return turn more valuable.
 
 The POC is deliberately small. Its successful output is not “this code becomes the workflow.” Its useful outputs are mechanisms, vocabulary, tests, failure cases, and evidence about what should or should not survive into a master switchboard.
 
@@ -31,10 +34,12 @@ Start here, then read the larger design document selectively:
 1. `info/WORKFLOW_SWITCHBOARD_PROTOTYPE_READ_ME_FIRST.md` — status, roles, review method, operationalization tracks.
 2. `info/WORKFLOW_SWITCHBOARD_POC.md` — full design rationale, TOP/CENTRAL/BRANCH/HYDRA patterns, failure modes, and theory-work exemplar.
 3. `tools/workflow_switchboard_demo.py` — standard-library executable POC; planner/state transformer only, not a hidden scheduler or permissions bypass.
-4. `HSH_RESOURCES/HQ/THE_WAR_ROOM/DECLARATION.txt` — current source directive that motivated the live routing regression case.
-5. HsH `WORKSPACES/COMMON/SWITCHBOARD_PROTOTYPE_OPERATIONALIZATION_2026-09-24.md` — current coordination note for the two independent operationalization tracks.
+4. `info/WORKFLOW_THREADING_PROTOTYPE.md` — seed/vacate/propagate/accumulate/rendezvous/rejoin temporal-coordination patterns and pitfalls.
+5. `tools/workflow_threading_demo.py` — small executable threading state/gate demonstration.
+6. `HSH_RESOURCES/HQ/THE_WAR_ROOM/DECLARATION.txt` — current source directive that motivated the live routing regression case.
+7. HsH `WORKSPACES/COMMON/SWITCHBOARD_PROTOTYPE_OPERATIONALIZATION_2026-09-24.md` — current coordination note for the two independent operationalization tracks.
 
-Useful demo commands after retrieving the script:
+Useful demo commands after retrieving the scripts:
 
 ```bash
 python workflow_switchboard_demo.py self-test
@@ -45,6 +50,10 @@ python workflow_switchboard_demo.py scenario capability_awareness
 python workflow_switchboard_demo.py scenario nested_learning
 python workflow_switchboard_demo.py scenario lease_receipt_gate
 python workflow_switchboard_demo.py demo
+
+python workflow_threading_demo.py self-test
+python workflow_threading_demo.py schema
+python workflow_threading_demo.py demo
 ```
 
 ## Two operationalization tracks
@@ -56,8 +65,10 @@ Nathan has asked for **two independent-but-communicating operationalization effo
 Purpose: operate the prototype as a live experimental workbench and learn from use.
 
 - **Nathan:** human director; supplies corrections, evaluates ergonomics/usefulness, and decides when a behavior does or does not match intended project practice.
-- **Elias Kern:** prototype operator/documentarian; exercises TOP/CENTRAL/BRANCH/HYDRA mechanisms on real bounded project operations, records failures/successes, keeps the prototype inspectable, and proposes revisions without treating them as production law.
-- **Orson Vey:** cognition/team-systems observer and experimental collaborator. Orson studies how the new control system changes model/team behavior, exposure, convergence, false independence, role bleed, wake-state behavior, tool awareness, recurrence behavior, and continuity/education. Orson should distinguish observation from interpretation and design proposal.
+- **Elias Kern:** prototype operator/documentarian; exercises TOP/CENTRAL/BRANCH/HYDRA/THREADING mechanisms on real bounded project operations, records failures/successes, keeps the prototype inspectable, and proposes revisions without treating them as production law.
+- **Orson Vey:** cognition/team-systems observer and experimental collaborator. Orson studies how the new control system changes model/team behavior, exposure, convergence, false independence, role bleed, wake-state behavior, tool awareness, recurrence/threading behavior, and continuity/education. Orson should distinguish observation from interpretation and design proposal.
+
+Orson is **observer-with-discretion**, not a passive camera. At his discretion he may also run bounded trial work, prototype signal-switching ideas, test a mechanism directly, or pick up small adjacent work he finds useful. When he intervenes, he records that intervention so later notes can distinguish observation of the system from behavior changed by Orson’s experiment.
 
 Track A may change the prototype and generate experiments, but it does not install project-wide production workflow authority.
 
@@ -101,7 +112,7 @@ mechanism | Track A result | Track B result | evidence | conflict | next discrim
 Rook is asked to confer with Sable and place Elias into the first safe available execution lease. Elias’s initial rotating duty is **prototype operationalization**, not generic ownership of the switchboard:
 
 1. pick one real bounded workflow problem;
-2. run it through the smallest relevant TOP/CENTRAL/BRANCH/HYDRA mechanism;
+2. run it through the smallest relevant TOP/CENTRAL/BRANCH/HYDRA/THREADING mechanism;
 3. leave durable before/after state and a receipt;
 4. record what became easier, worse, ambiguous, or misleading;
 5. do not broaden rules from one success/failure without a transfer test.
@@ -120,12 +131,18 @@ Each Orson observation pass should sample a real switchboard event or bounded pr
 - actor/locale behavior changes;
 - role/persona bleed or over-homogenization;
 - independence/convergence conditions;
-- recurrence/lease/scheduler effects;
+- recurrence/lease/threading/scheduler effects;
 - sticky-learning candidate and whether it deserves a transfer test;
-- any loop, self-undoing, prompt-drift, state-split, receipt-loss, or authority-confusion failure;
+- any loop, self-undoing, prompt-drift, state-split, receipt-loss, authority-confusion, starvation, dead-seed, premature-return, or tool-monoculture failure;
 - one design implication or discriminating test, clearly labeled as interpretation/proposal rather than observation.
 
-**Required durable output:** a concise observation note must be deposited into Orson’s own Vey Cognition Lab record, with a pointer or summary appended to `Consciousness + AI/VEY_COGNITION_LAB/INBOX.md`. A scheduler run without a durable note does not count as delivered.
+At Orson’s discretion, a pass may include a bounded signal-switching trial, prototype tweak, code/tool use, or small adjacent task. Such intervention should be logged explicitly as `INTERVENTION` with its purpose and expected discriminator.
+
+**Required durable output:** a concise observation/trial note must be deposited into Orson’s own Vey Cognition Lab record, with a pointer or summary appended to `Consciousness + AI/VEY_COGNITION_LAB/INBOX.md`. A scheduler run without a durable note does not count as delivered.
+
+## Threading in one paragraph
+
+Threading asks a different question from ordinary recurrence: **what should I make available now, who can productively use it while I am gone, how long or until what state should I stay out of the way, and what accumulated material would make my return turn better?** Prefer hybrid return gates such as `min outputs/workers/failure classes OR max hours` over a blind sleep timer. Preserve seed version, exposure, output receipts, displaced work, and rejoin action. See `WORKFLOW_THREADING_PROTOTYPE.md`.
 
 ## Prototype-readiness checklist
 
@@ -143,7 +160,8 @@ This prototype is ready to inspect when all of the following remain true:
 - capability/tool discovery exists before laborious workaround escalation;
 - parallel work is distinguished from exposure-separated perpendicular work;
 - failure branches can prune/salvage rather than only repeat;
-- there is an explicit exit/retire path for spawned/nested recurrence;
+- spawned/nested recurrence has an explicit exit/retire path;
+- threading has explicit seed/version/consumer/output/return state and a starvation cap;
 - the two operationalization tracks can compare results without assuming one is canonical.
 
 ## What this prototype does not claim
@@ -152,7 +170,7 @@ It does not claim that:
 
 - the demonstrated Python data model is the master switchboard architecture;
 - all workflow should be automated;
-- recurrence rewriting is always beneficial;
+- recurrence rewriting or threading is always beneficial;
 - model self-report is evidence of internal mechanism;
 - multiple workers are independent merely because they are separate conversations;
 - passing workflow gates validates SAT/H(s)H physics;
