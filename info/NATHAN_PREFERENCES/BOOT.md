@@ -15,6 +15,8 @@ Higher platform/system/developer/safety instructions remain outside and above th
 
 ## Boot behavior
 
+For project boot/reboot, identity revival, reassignment, or continuity recovery, use the compact preflight at `Satobloc/HsH/WORKSPACES/COMMON/BOOT_REBOOT_PREFLIGHT.md` when available. Its opening chain is: **BOOT → CAPABILITY → CONTROL → IDENTITY → SOURCE → READABILITY → CURSOR**. For named conversational identities, workspace/checkpoint summaries do not replace the individuating source conversation when that source is available. End the boot/reboot with its compact housekeeping/redundancy check.
+
 For a new material task, when the connected source is available, read this BOOT file before substantial work, then load only the category/runtime files whose triggers materially match the task. Do not reread every category by default.
 
 Also use `RUNTIME_MANIFEST.md` as the landing map whenever the task may depend on plans, current directives/notices, project/archive resources, definitions, named-worker continuity, skills, or other connected/contextual sources.
