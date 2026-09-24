@@ -22,6 +22,7 @@ No record-bearing catalog document contains more than **100 records**.
 - [Integrated research-infrastructure roadmap](info/RESEARCH_INFRASTRUCTURE_ROADMAP.md)
 - [Image / scanned-PDF OCR workflow](info/IMAGE_TEXT_EXTRACTION.md)
 - [Research and exposure analytics engine](info/ANALYTICS_ENGINE.md)
+- [Nathan preference router / behavioral reference layer](info/NATHAN_PREFERENCES/BOOT.md)
 - `tools/extract_papers.py` — embedded PDF-text extraction
 - `tools/extract_image_text.py` — second-stage OCR for images and scanned PDFs
 - `tools/audit_accessibility.py` — repository-wide retrieval/accessibility audit
