@@ -8,6 +8,12 @@ If you are arriving as a lead, deputy, supervisor, reboot, or replacement instan
 - [`THE_WAR_ROOM/`](THE_WAR_ROOM/) — adversarial proposition-testing and epistemic challenge.
 - [`THE_PEACE_ROOM/`](THE_PEACE_ROOM/) — current all-team operating directive and collaboration doctrine.
 
+## Nathan-facing surfaces
+- [`NATHAN_DESK/`](NATHAN_DESK/) — sparse direct-review surface: papers, precise visual geometry, solver specs, and actual decisions.
+- [`THE_PILE/`](THE_PILE/) — everything useful that should remain visible but does not warrant direct desk placement.
+- [`REQUEST_PIPELINE/`](REQUEST_PIPELINE/) — visible proposals/trials for plugins, apps, skills, services, automation, and communication surfaces.
+- [`OUTREACH_PIPELINE/`](OUTREACH_PIPELINE/) — Substack, podcast, website, social, interactive, and science-communication candidates.
+
 ## The tool chest
 **Do not begin a tenure without knowing where the tools are.**
 
@@ -24,4 +30,4 @@ Every named worker should have, at minimum:
 ## Authority hygiene
 HQ is a control and coordination surface. It does not by itself promote a proposition into SAT/H(s)H theory authority. Keep provenance, quarantine, and source-role boundaries intact.
 
-— HQ housekeeping pass, Mercer Calder, 25 Sep 2026
+— HQ housekeeping; expanded for Nathan-facing operational surfaces, 28 Sep 2026
