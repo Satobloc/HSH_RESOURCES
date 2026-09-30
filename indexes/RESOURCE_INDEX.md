@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-30T17:54:34Z`
-- Tree/content state: `a82ee7e396809858c699031b6e7d2f416c22edfecfa3c38fd574951de1ce7913`
+- Scanned: `2026-09-30T17:58:40Z`
+- Tree/content state: `dade98f989e698c51a37631ba127c444250f55707b62b3fbfbace9d4088c0d9b`
 - Coverage: complete structural traversal
-- Files: 2681
-- Uploaded source files: 2416
-- PDF papers: 1426
+- Files: 2692
+- Uploaded source files: 2427
+- PDF papers: 1437
 - Repository machinery files: 265
 - Byte-identical duplicate groups: 162
 
@@ -19,7 +19,7 @@
 | `.github` | 8 |
 | `.gitignore` | 1 |
 | `2020-10-braiding-photonic-topological-modes.pdf` | 1 |
-| `30SEP_PAPER_DUMP` | 112 |
+| `30SEP_PAPER_DUMP` | 123 |
 | `ARXIV PAPER - 2503.14745v2.pdf` | 1 |
 | `BIG PAPERS` | 3 |
 | `Consciousness + AI` | 20 |
@@ -637,6 +637,7 @@
 | `30SEP_PAPER_DUMP/6Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 510021 |  |
 | `30SEP_PAPER_DUMP/7Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 509380 |  |
 | `30SEP_PAPER_DUMP/A Spectral–Geometric Tensor Framework Beyond Hartree–Fock and Kohn–Sham Closure - ScienceDirect.pdf` | 295346 |  |
+| `30SEP_PAPER_DUMP/A-family-of-difference-sets-in-non-cyc_1973_Journal-of-Combinatorial-Theory-.pdf` | 480341 |  |
 | `30SEP_PAPER_DUMP/Advanced Search _ arXiv e-print repository.pdf` | 354659 |  |
 | `30SEP_PAPER_DUMP/AMNH Sign In _ American Museum of Natural History.pdf` | 76785 |  |
 | `30SEP_PAPER_DUMP/atqerfwerfde.pdf` | 285450 |  |
@@ -646,11 +647,15 @@
 | `30SEP_PAPER_DUMP/Carlo Rovelli takes aim at analytic philosophy's naive realism _ Carlo Rovelli, Ozbir Kip » IAI TV.pdf` | 5514109 |  |
 | `30SEP_PAPER_DUMP/Casimir operators of 4D , 𝒩=2 supersymmetry in the harmonic approach.pdf` | 906072 |  |
 | `30SEP_PAPER_DUMP/Casimir wormhole solutions in f(R,Lm) gravity - ScienceDirect.pdf` | 522647 |  |
+| `30SEP_PAPER_DUMP/Central-and-local-limit-theorems-applied-to-_1973_Journal-of-Combinatorial-T.pdf` | 787700 |  |
 | `30SEP_PAPER_DUMP/CHSH Bell Inequality Test — Simulator _ PhysSandbox.pdf` | 400811 |  |
+| `30SEP_PAPER_DUMP/Configurations-arising-from-maximal_1973_Journal-of-Combinatorial-Theory--Se.pdf` | 255945 |  |
 | `30SEP_PAPER_DUMP/Consciousness came before life » IAI TV.pdf` | 8522804 |  |
 | `30SEP_PAPER_DUMP/Consciousness can't be uploaded_ Why digital immortality is a metaphysical mirage _ William Egginton » IAI TV.pdf` | 5753237 |  |
 | `30SEP_PAPER_DUMP/dfsadfAdvanced Search _ arXiv e-print repository.pdf` | 537987 |  |
+| `30SEP_PAPER_DUMP/Distributions-modulo-subgroups-of-G_1973_Journal-of-Combinatorial-Theory--Se.pdf` | 184370 |  |
 | `30SEP_PAPER_DUMP/Earthquake Aftershocks_ Omori + Gutenberg-Richter — Simulator _ PhysSandbox.pdf` | 333634 |  |
+| `30SEP_PAPER_DUMP/Editorial-Board_1973_Journal-of-Combinatorial-Theory--Series-A.pdf` | 54063 |  |
 | `30SEP_PAPER_DUMP/El_teseracto_Kant_y_los_espejos_La_influencia_de_C.pdf` | 134677 |  |
 | `30SEP_PAPER_DUMP/Electronic correlations in magnetized helical edge states coupled to s-wave superconductors.pdf` | 1747003 |  |
 | `30SEP_PAPER_DUMP/Exact Kantowski–Sachs and Bianchi type-III cosmologies in nonlinear f(T) gravity_ Dynamics and background-level viability - ScienceDirect.pdf` | 313201 |  |
@@ -671,12 +676,16 @@
 | `30SEP_PAPER_DUMP/Ideal Line Vortex — Simulator _ PhysSandbox.pdf` | 315258 |  |
 | `30SEP_PAPER_DUMP/Inhomogeneity, magnetic auto-Bäcklund transformations and magnetic solitons for a generalized variable-coefficient Kraenkel-Manna-Merle system in a deformed ferrite - ScienceDirect.pdf` | 344929 |  |
 | `30SEP_PAPER_DUMP/Isomorphism of nonlocal sets of orthogonal product states in bipartite quantum systems - ScienceDirect.pdf` | 393874 |  |
+| `30SEP_PAPER_DUMP/Maximal-sets-of-points-in-finite-projective-sp_1973_Journal-of-Combinatorial.pdf` | 464914 |  |
 | `30SEP_PAPER_DUMP/New studies suggest consciousness exists in organisms without brains _ Natalie Lawrence » IAI TV.pdf` | 4327312 |  |
 | `30SEP_PAPER_DUMP/New studies suggest unique state of matter gies rise to living organisms _ Addy Pross » IAI TV.pdf` | 5358347 |  |
 | `30SEP_PAPER_DUMP/New theory argues quantum physics must abandon irratonal numbers and the continuum _ Tim Palmer » IAI TV.pdf` | 5287455 |  |
 | `30SEP_PAPER_DUMP/newPAPER.pdf` | 227905 |  |
 | `30SEP_PAPER_DUMP/Newton's Cradle — Simulator _ PhysSandbox.pdf` | 352905 |  |
 | `30SEP_PAPER_DUMP/Newton’s Rings — Simulator _ PhysSandbox.pdf` | 681049 |  |
+| `30SEP_PAPER_DUMP/On-finite-limit-sets-for-transformations-o_1973_Journal-of-Combinatorial-The.pdf` | 1026767 |  |
+| `30SEP_PAPER_DUMP/On-maximal-t-linearly-independent-_1973_Journal-of-Combinatorial-Theory--Ser.pdf` | 374344 |  |
+| `30SEP_PAPER_DUMP/On-the-maximum-of-Stirling-numbers-of-th_1973_Journal-of-Combinatorial-Theor.pdf` | 520362 |  |
 | `30SEP_PAPER_DUMP/Overview of the structural unification of quantum mechanics and relativity using the algebra of quantions.pdf` | 1124503 |  |
 | `30SEP_PAPER_DUMP/paper1.pdf` | 267949 |  |
 | `30SEP_PAPER_DUMP/Particle in a 1D Box — Simulator _ PhysSandbox.pdf` | 347491 |  |
@@ -712,6 +721,8 @@
 | `30SEP_PAPER_DUMP/The quantum world reveals reality is made of relations, not objects _ George Webster » IAI TV.pdf` | 5277932 |  |
 | `30SEP_PAPER_DUMP/The self exists and it is an illusion » IAI TV.pdf` | 4560551 |  |
 | `30SEP_PAPER_DUMP/The universe is fine-tuned for technology, not just life _ Jeff Shainline » IAI TV.pdf` | 4916887 |  |
+| `30SEP_PAPER_DUMP/The-asymptotic-distribution-of-the-order-of-el_1973_Journal-of-Combinatorial.pdf` | 343212 |  |
+| `30SEP_PAPER_DUMP/The-module-structure-of-integral-de_1973_Journal-of-Combinatorial-Theory--Se.pdf` | 730514 |  |
 | `30SEP_PAPER_DUMP/The_Hintons_legacy_to_the_knowledge_of_the_flora_.pdf` | 4616990 |  |
 | `30SEP_PAPER_DUMP/Thin-Film Interference — Simulator _ PhysSandbox.pdf` | 399694 |  |
 | `30SEP_PAPER_DUMP/To unify Relativity and Quantum Mechanics we must abandon materialism _ Dean Rickles » IAI TV.pdf` | 4890167 |  |
