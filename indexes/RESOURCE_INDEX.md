@@ -2,12 +2,12 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-30T17:42:06Z`
-- Tree/content state: `277c39e83984d5f2848b8feb98c3998307025cf08ad3e264d89d70d5e724784e`
+- Scanned: `2026-09-30T17:54:34Z`
+- Tree/content state: `a82ee7e396809858c699031b6e7d2f416c22edfecfa3c38fd574951de1ce7913`
 - Coverage: complete structural traversal
-- Files: 2596
-- Uploaded source files: 2331
-- PDF papers: 1341
+- Files: 2681
+- Uploaded source files: 2416
+- PDF papers: 1426
 - Repository machinery files: 265
 - Byte-identical duplicate groups: 162
 
@@ -19,7 +19,7 @@
 | `.github` | 8 |
 | `.gitignore` | 1 |
 | `2020-10-braiding-photonic-topological-modes.pdf` | 1 |
-| `30SEP_PAPER_DUMP` | 27 |
+| `30SEP_PAPER_DUMP` | 112 |
 | `ARXIV PAPER - 2503.14745v2.pdf` | 1 |
 | `BIG PAPERS` | 3 |
 | `Consciousness + AI` | 20 |
@@ -616,6 +616,7 @@
 |---|---:|---|
 | `2020-10-braiding-photonic-topological-modes.pdf` | 354922 |  |
 | `30SEP_PAPER_DUMP/0408104v2.pdf` | 202106 | unresolved-seven-digit-id:0408104v2 |
+| `30SEP_PAPER_DUMP/0408306v1.pdf` | 147630 | unresolved-seven-digit-id:0408306v1 |
 | `30SEP_PAPER_DUMP/0707.0071v3.pdf` | 652197 | arxiv:0707.0071v3 |
 | `30SEP_PAPER_DUMP/1-s2.0-0097316573900332-main.pdf` | 1026705 |  |
 | `30SEP_PAPER_DUMP/1-s2.0-S000187081930115X-main.pdf` | 1295422 |  |
@@ -635,6 +636,90 @@
 | `30SEP_PAPER_DUMP/5Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 508569 |  |
 | `30SEP_PAPER_DUMP/6Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 510021 |  |
 | `30SEP_PAPER_DUMP/7Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 509380 |  |
+| `30SEP_PAPER_DUMP/A Spectral–Geometric Tensor Framework Beyond Hartree–Fock and Kohn–Sham Closure - ScienceDirect.pdf` | 295346 |  |
+| `30SEP_PAPER_DUMP/Advanced Search _ arXiv e-print repository.pdf` | 354659 |  |
+| `30SEP_PAPER_DUMP/AMNH Sign In _ American Museum of Natural History.pdf` | 76785 |  |
+| `30SEP_PAPER_DUMP/atqerfwerfde.pdf` | 285450 |  |
+| `30SEP_PAPER_DUMP/Big Bang Nucleosynthesis (BBN) — Simulator _ PhysSandbox.pdf` | 492525 |  |
+| `30SEP_PAPER_DUMP/Canonical quantum gravity - Wikipedia.pdf` | 531258 |  |
+| `30SEP_PAPER_DUMP/Carlo Rovelli - Wikipedia.pdf` | 621591 |  |
+| `30SEP_PAPER_DUMP/Carlo Rovelli takes aim at analytic philosophy's naive realism _ Carlo Rovelli, Ozbir Kip » IAI TV.pdf` | 5514109 |  |
+| `30SEP_PAPER_DUMP/Casimir operators of 4D , 𝒩=2 supersymmetry in the harmonic approach.pdf` | 906072 |  |
+| `30SEP_PAPER_DUMP/Casimir wormhole solutions in f(R,Lm) gravity - ScienceDirect.pdf` | 522647 |  |
+| `30SEP_PAPER_DUMP/CHSH Bell Inequality Test — Simulator _ PhysSandbox.pdf` | 400811 |  |
+| `30SEP_PAPER_DUMP/Consciousness came before life » IAI TV.pdf` | 8522804 |  |
+| `30SEP_PAPER_DUMP/Consciousness can't be uploaded_ Why digital immortality is a metaphysical mirage _ William Egginton » IAI TV.pdf` | 5753237 |  |
+| `30SEP_PAPER_DUMP/dfsadfAdvanced Search _ arXiv e-print repository.pdf` | 537987 |  |
+| `30SEP_PAPER_DUMP/Earthquake Aftershocks_ Omori + Gutenberg-Richter — Simulator _ PhysSandbox.pdf` | 333634 |  |
+| `30SEP_PAPER_DUMP/El_teseracto_Kant_y_los_espejos_La_influencia_de_C.pdf` | 134677 |  |
+| `30SEP_PAPER_DUMP/Electronic correlations in magnetized helical edge states coupled to s-wave superconductors.pdf` | 1747003 |  |
+| `30SEP_PAPER_DUMP/Exact Kantowski–Sachs and Bianchi type-III cosmologies in nonlinear f(T) gravity_ Dynamics and background-level viability - ScienceDirect.pdf` | 313201 |  |
+| `30SEP_PAPER_DUMP/Extra dimensions – and how to hide them « Einstein-Online.pdf` | 680296 |  |
+| `30SEP_PAPER_DUMP/Faraday Waves — Simulator _ PhysSandbox.pdf` | 458896 |  |
+| `30SEP_PAPER_DUMP/Fiber Bend & TIR Loss — Simulator _ PhysSandbox.pdf` | 329923 |  |
+| `30SEP_PAPER_DUMP/Fresnel vs Fraunhofer — Simulator _ PhysSandbox.pdf` | 369976 |  |
+| `30SEP_PAPER_DUMP/Glossary « Einstein-Online.pdf` | 2316181 |  |
+| `30SEP_PAPER_DUMP/Graphene Tight-Binding Band Structure — Simulator _ PhysSandbox.pdf` | 363042 |  |
+| `30SEP_PAPER_DUMP/Higher « Search Results « Einstein-Online.pdf` | 811712 |  |
+| `30SEP_PAPER_DUMP/Holographic dark energy in Einstein-Cartan spin cosmology - ScienceDirect.pdf` | 3278185 |  |
+| `30SEP_PAPER_DUMP/Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 508333 |  |
+| `30SEP_PAPER_DUMP/How Smuggling Groceries To The Starving Landed Me In Jail _ by Winter.of.Discontext _ Medium.pdf` | 2468095 |  |
+| `30SEP_PAPER_DUMP/Hunting for extra dimensions « Einstein-Online.pdf` | 455026 |  |
+| `30SEP_PAPER_DUMP/Huygens Principle (Slit) — Simulator _ PhysSandbox.pdf` | 653761 |  |
+| `30SEP_PAPER_DUMP/Hybrid Expansion Cosmology in f(T) Gravity_ Late-Time Evolution and Observational Bounds - ScienceDirect.pdf` | 364981 |  |
+| `30SEP_PAPER_DUMP/IAI News Philosophy » IAI TV.pdf` | 3595761 |  |
+| `30SEP_PAPER_DUMP/Ideal Line Vortex — Simulator _ PhysSandbox.pdf` | 315258 |  |
+| `30SEP_PAPER_DUMP/Inhomogeneity, magnetic auto-Bäcklund transformations and magnetic solitons for a generalized variable-coefficient Kraenkel-Manna-Merle system in a deformed ferrite - ScienceDirect.pdf` | 344929 |  |
+| `30SEP_PAPER_DUMP/Isomorphism of nonlocal sets of orthogonal product states in bipartite quantum systems - ScienceDirect.pdf` | 393874 |  |
+| `30SEP_PAPER_DUMP/New studies suggest consciousness exists in organisms without brains _ Natalie Lawrence » IAI TV.pdf` | 4327312 |  |
+| `30SEP_PAPER_DUMP/New studies suggest unique state of matter gies rise to living organisms _ Addy Pross » IAI TV.pdf` | 5358347 |  |
+| `30SEP_PAPER_DUMP/New theory argues quantum physics must abandon irratonal numbers and the continuum _ Tim Palmer » IAI TV.pdf` | 5287455 |  |
+| `30SEP_PAPER_DUMP/newPAPER.pdf` | 227905 |  |
+| `30SEP_PAPER_DUMP/Newton's Cradle — Simulator _ PhysSandbox.pdf` | 352905 |  |
+| `30SEP_PAPER_DUMP/Newton’s Rings — Simulator _ PhysSandbox.pdf` | 681049 |  |
+| `30SEP_PAPER_DUMP/Overview of the structural unification of quantum mechanics and relativity using the algebra of quantions.pdf` | 1124503 |  |
+| `30SEP_PAPER_DUMP/paper1.pdf` | 267949 |  |
+| `30SEP_PAPER_DUMP/Particle in a 1D Box — Simulator _ PhysSandbox.pdf` | 347491 |  |
+| `30SEP_PAPER_DUMP/Penrose’s theory of consciousness supported by new quantum evidence _ Mike Wiest » IAI TV.pdf` | 6814449 |  |
+| `30SEP_PAPER_DUMP/PhysRevX.13.041040.pdf` | 811662 |  |
+| `30SEP_PAPER_DUMP/Pipe Friction & Moody Chart — Simulator _ PhysSandbox.pdf` | 347488 |  |
+| `30SEP_PAPER_DUMP/Quantum and non-signalling graph isomorphisms - ScienceDirect.pdf` | 10702889 |  |
+| `30SEP_PAPER_DUMP/Quantum dynamics in real Hilbert space_ Algebraic isomorphism and symplectic geometry of the Schrödinger equation - ScienceDirect.pdf` | 379440 |  |
+| `30SEP_PAPER_DUMP/Quantum Grothendieck ring isomorphisms, cluster algebras and Kazhdan-Lusztig algorithm - ScienceDirect.pdf` | 21334721 |  |
+| `30SEP_PAPER_DUMP/Quantum measurement influences the past _ Avshalom Elitzur.pdf` | 17708154 |  |
+| `30SEP_PAPER_DUMP/Real-commutant phase selection from real Hilbert representations - ScienceDirect.pdf` | 2732370 |  |
+| `30SEP_PAPER_DUMP/Reality is a dream not a simulation _ Andrew T. Jaffe » IAI TV.pdf` | 5481962 |  |
+| `30SEP_PAPER_DUMP/Reconstructed traversable wormholes and lensing features in linear f(R,Lm,T) gravity - ScienceDirect.pdf` | 384496 |  |
+| `30SEP_PAPER_DUMP/Relativity and the Quantum _ Elementary Tour part 5_ Superstrings and universal harmony « Einstein-Online.pdf` | 279440 |  |
+| `30SEP_PAPER_DUMP/Relativity and the Quantum _ Elementary Tour_ Conclusion « Einstein-Online.pdf` | 226131 |  |
+| `30SEP_PAPER_DUMP/Relativity and the Quantum « Einstein-Online.pdf` | 566866 |  |
+| `30SEP_PAPER_DUMP/Rossby Waves on a Beta-Plane — Simulator _ PhysSandbox.pdf` | 418061 |  |
+| `30SEP_PAPER_DUMP/rsos.250646.pdf` | 1156923 |  |
+| `30SEP_PAPER_DUMP/Rubber Sheet & Ball — Simulator _ PhysSandbox.pdf` | 293440 |  |
+| `30SEP_PAPER_DUMP/Schrödinger’s blunder created the quantum measurement problem _ Anthony Valentini » IAI TV.pdf` | 5281172 |  |
+| `30SEP_PAPER_DUMP/Schwarzschild Orbit Precession (Rosette) — Simulator _ PhysSandbox.pdf` | 318532 |  |
+| `30SEP_PAPER_DUMP/Search _ arXiv e-print repository.pdf` | 783061 |  |
+| `30SEP_PAPER_DUMP/Search Publications _ ResearchGate.pdf` | 428783 |  |
+| `30SEP_PAPER_DUMP/SO4_SIX_ROTATION_PLANES_CLASS_P.pdf` | 40910 |  |
+| `30SEP_PAPER_DUMP/Soap Film (Minimal Surface) — Simulator _ PhysSandbox.pdf` | 462910 |  |
+| `30SEP_PAPER_DUMP/SPARC-calibrated galactic wormholes in Einstein–Cartan gravity with Dekel–Zhao and Hernquist dark-matter halos - ScienceDirect.pdf` | 299602 |  |
+| `30SEP_PAPER_DUMP/Spring Work (F–x) — Simulator _ PhysSandbox.pdf` | 319948 |  |
+| `30SEP_PAPER_DUMP/The Choi-Jamiolkowski Isomorphism_ You’re Doing It Wrong! _ Matt LeiferMatt Leifer.pdf` | 187828 |  |
+| `30SEP_PAPER_DUMP/The covariant origin of microforce balance in continua with coarse-grained scalar internal variables - ScienceDirect.pdf` | 315134 |  |
+| `30SEP_PAPER_DUMP/The crisis of quantum gravity _ Karen Crowther » IAI TV.pdf` | 4175151 |  |
+| `30SEP_PAPER_DUMP/The mathematical universe « Einstein-Online.pdf` | 511397 |  |
+| `30SEP_PAPER_DUMP/The Morita theory of quantum graph isomorphisms.pdf` | 4391394 |  |
+| `30SEP_PAPER_DUMP/The quantum world reveals reality is made of relations, not objects _ George Webster » IAI TV.pdf` | 5277932 |  |
+| `30SEP_PAPER_DUMP/The self exists and it is an illusion » IAI TV.pdf` | 4560551 |  |
+| `30SEP_PAPER_DUMP/The universe is fine-tuned for technology, not just life _ Jeff Shainline » IAI TV.pdf` | 4916887 |  |
+| `30SEP_PAPER_DUMP/The_Hintons_legacy_to_the_knowledge_of_the_flora_.pdf` | 4616990 |  |
+| `30SEP_PAPER_DUMP/Thin-Film Interference — Simulator _ PhysSandbox.pdf` | 399694 |  |
+| `30SEP_PAPER_DUMP/To unify Relativity and Quantum Mechanics we must abandon materialism _ Dean Rickles » IAI TV.pdf` | 4890167 |  |
+| `30SEP_PAPER_DUMP/Ueber die Bedeutung der Pacchionischen Granulationen (Ludwig Meyer) (z-library.sk, 1lib.sk, z-lib.sk).pdf` | 1254985 |  |
+| `30SEP_PAPER_DUMP/Unifying quantum mechanics with Einstein’s general relativity.pdf` | 2944863 |  |
+| `30SEP_PAPER_DUMP/Vortex Ring (Smoke Ring) — Simulator _ PhysSandbox.pdf` | 377646 |  |
+| `30SEP_PAPER_DUMP/Your body thinks as much as your mind _ Barbara Tversky » IAI TV.pdf` | 5445401 |  |
+| `30SEP_PAPER_DUMP/β⁻ Decay_ Electron Spectrum — Simulator _ PhysSandbox.pdf` | 334263 |  |
 | `ARXIV PAPER - 2503.14745v2.pdf` | 16221373 | arxiv:2503.14745v2 |
 | `BIG PAPERS/qt2f18n5nk.pdf` | 14358136 |  |
 | `BIG PAPERS/ssrn-7385521.pdf` | 10277174 | ssrn:7385521 |
