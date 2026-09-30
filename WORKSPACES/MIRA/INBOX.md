@@ -8,6 +8,37 @@ Operational request queue for Nathan-authorized quarantine-side work. This file 
 - **Cross:** temporarily out of office / inactive for current routing; do not assign new work by default.
 - **Tern:** may pull Cross back into active service at any time; Cross's current inactivity is not retirement, deauthorization, or permanent unavailability.
 
+## 2026-09-30 — 30SEP_PAPER_DUMP review / Resources ownership
+
+**From:** Nathan Direct
+
+**Priority:** HIGH — new Resources intake review
+
+### Request
+
+Nathan has uploaded a substantial new batch to `30SEP_PAPER_DUMP/`, including many arXiv/research PDFs and at least one notebook artifact. Mira is currently responsible for RESOURCES and should review this intake as the Resources-side owner.
+
+Please:
+
+- verify that the paper-extraction / structural-index / bibliography-intake machinery has actually ingested the new PDFs, noting that `extract-papers.yml` is bounded to 100 pending PDFs per run and may require additional passes for a large upload;
+- survey the new papers for useful routing to active workers without silently importing outside literature into endogenous SAT/H(s)H theory authority;
+- preserve PRIOR_ART soft quarantine exactly as currently defined;
+- identify duplicates / copies that already exist elsewhere in HSH_RESOURCES and prefer canonical source identity plus cross-pointers rather than unnecessary duplication;
+- where a source is mainly relevant to an existing Resources/archive location, update that location's index/wayfinding with a small related-material pointer, e.g. `main source for X; additional relevant material exists at ...`;
+- use original external bibliographic identity/citation wherever possible rather than treating the repository path as the citation;
+- route worker-relevant findings through existing inbox/common surfaces with concise source pointers and why they matter.
+
+### New intake surface
+
+- `30SEP_PAPER_DUMP/`
+
+### Cross-repo related intake to be aware of
+
+- `Satobloc/HsH/DEVELOPMENT_FULL_CONVOS/HAGALAZ/`
+- `Satobloc/HsH/DEVELOPMENT_FULL_CONVOS/30SEP26_DUMP/`
+
+These HsH folders contain additional conversation/source material that may identify or contextualize papers in the Resources dump. Keep endogenous project history distinct from external literature while cross-linking them for wayfinding.
+
 ## 2026-09-23 — Modes / Nathan-model comparative excavation
 
 **From:** Nathan-directed cross-instance request
