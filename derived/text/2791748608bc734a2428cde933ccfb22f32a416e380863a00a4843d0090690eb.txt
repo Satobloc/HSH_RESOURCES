@@ -1,0 +1,123 @@
+===== PAGE 1 =====
+Home / Engineering / Holonomic 2D Hovercraft MPC (MPPI)
+Holonomic 2D Hovercraft MPC (MPPI)
+Planar double integrator with ǁ u ǁ ₂  thrust cap: sampling-based MPPI steers to a draggable goal while soft-penalizing
+circular obstacles — rollout fan and best predicted path drawn live.
+MPPI (HOLONOMIC 2D)
+Obstacle layout
+Twin disks (corridor)
+Horizon H 45
+Samples K 84
+Noise σ 0.1 m/s²
+Temperature λ 0.1
+Plan Δ t 0.12 s
+ǁ u ǁ ₂  limit 4 m/s²
+COST
+Position weight 0.5
+Velocity weight 0.05
+Control effort R 0.01
+Pause
+ Reset
+
+===== PAGE 2 =====
+About this model
+This page extends the sampling-based MPC idea from engineering/mpc-pendulum to a planar holonomic
+“hovercraft” modeled as a double integrator: ẍ  = u_x, ÿ = u_y with a bounded Euclidean thrust ǁ(u_x, u_y) ǁ ₂  ≤  u_max.
+A Model Predictive Path Integral (MPPI) loop draws K noisy open-loop acceleration sequences over a horizon H, rolls
+each trajectory forward with simple semi-implicit Euler steps plus light velocity damping, and scores rollouts with a
+quadratic goal attraction to a click-draggable target, velocity regularization, control effort, and soft obstacle costs
+Terminal weight 40
+Obstacle skirt 8
+Inside penalty 1200
+Skirt length d ₀ 0.31 m
+Velocity damping 1.2
+RNG seed 99999
+Draw rollout fan (K ≤  140)
+Obstacles are soft costs (exponential skirt + quadratic
+penetration). Tight gaps need enough q_crash and
+horizon to “see” the corridor.
+SHORTCUTS
+• Click anywhere in the arena to move the goal
+(yellow crosshair).
+• If the canvas stutters, lower samples K or disable
+rollout fan.
+MEASURED VALUES
+Distance to goal 0.656  m
+Speed ǁ v ǁ 0.711  m/s
+Best rollout cost 46.2
+
+===== PAGE 3 =====
+around fixed circular rocks (exponential “skirt” when outside plus a strong quadratic penalty if the robot disk
+penetrates the inflated obstacle boundary). The weighted-average control update matches MPPI’s information-theoretic
+reweighting; the simulator applies the first mean action until the next replan at interval Δ t. Purple fan trajectories
+(optional when K is not huge) visualize the ensemble; the green polyline is the lowest-cost sample path from the last
+plan. Layout presets create a narrow corridor or an offset pillar field so students can trade horizon, temperature λ,
+noise σ, and obstacle weights against conservatism and compute budget.
+Who it's for:Students who finished the pendulum MPPI demo and want the same sampling intuition on a 2D navigation
+task before touching full nonholonomic models or QP-based MPC.
+KEY TERMS
+Holonomic robot
+ Double integrator
+ Model Predictive Path Integral (MPPI)
+ Trajectory sampling
+Soft collision constraints
+ Obstacle avoidance
+ Warm-started control sequence
+How it works
+Holonomic 2D “hovercraft” with ẍ  = u_x, ÿ = u_y and bounded L2 thrust: MPPI rolls
+K noisy acceleration trajectories over horizon H, adds obstacle skirts around circular
+rocks, and reweights the mean control each step — same sampling spirit as
+engineering/mpc-pendulum, now with goal seeking and collision avoidance in the
+plane.
+Key equations
+ẍ  = u_x, ÿ = u_y, with ǁ (u_x,u_y) ǁ ₂  ≤  u_max — holonomic double
+integrator (hovercraft abstraction).
+MPPI: sample noisy accelerations along the horizon, score rollouts with goal, speed,
+effort, and obstacle soft penalties, then exponential weights update the mean control
+sequence.
+Frequently asked questions
+Why soft obstacles instead of hard “if collision discard rollout”?
+Hard rejection creates discontinuous costs and brittle gradients for sampling methods—many rollouts die in useless configurations. Smooth penalties keep grad-like information in the
+exponential weights while still exploding cost on deep penetration.
+Is this literally a hovercraft dynamics model?
+Only as a cartoon: real hovercraft have attitude–thrust coupling, fan dynamics, and ground effect. The double integrator with ǁ u ǁ ₂ cap is the standard holonomic surrogate used in
+curricula to isolate MPC in the plane.
+Why does the robot sometimes scrape obstacles despite MPC?
+
+===== PAGE 4 =====
+Soft costs allow trade-offs: if q_pos dominates or horizon is short, the planner may briefly accept small penetration to cut a corner. Raise q_crash, lengthen H, or increase R on control to
+be more cautious.
+Does disabling the rollout fan change the controller?
+No—it only hides the purple ensemble for performance. The green best-path preview and applied u are unchanged.
+Related simulators
+Continue with similar topics in this category — or all 48 in Engineering. View category →
+NEW UNIVERSITY / RESEARCH
+MPC Pendulum Swing-Up (MPPI)
+Launch Simulator
+Sampling-based Model Predictive Control: K candidate
+torque rollouts over horizon H, MPPI cost-weighted…
+NEW SCHOOL
+RRT Path Planner (grid)
+Launch Simulator
+Same 40×28 wall map as A*: random samples, nearest-
+neighbor steer, goal bias, collision-checked edges; gro…
+NEW UNIVERSITY / RESEARCH
+Cart–Pole: LQR vs MPC vs PID
+Launch Simulator
+Nonlinear cart inverted pendulum: linearize about
+upright φ  = θ , discrete-time LQR from DARE (Q, R →  K),…
+NEW UNIVERSITY / RESEARCH
+Particle Filter Localization (MCL)
+Launch Simulator
+1D or 2D toy robot with fixed range beacons: predict
+with noisy odometry, update with Gaussian range…
+NEW UNIVERSITY / RESEARCH
+EKF SLAM (toy)
+Launch Simulator
+Augmented state [x,y, θ , landmarks…]: noisy planar
+odometry predict, range & bearing updates with known…
+NEW UNIVERSITY / RESEARCH
+ADC / DAC (Sampling)
+Launch Simulator
+Sine →  samples →  quantization →  ZOH; Nyquist and
+optional aliasing demo.

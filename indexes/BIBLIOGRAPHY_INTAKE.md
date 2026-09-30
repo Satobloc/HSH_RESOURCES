@@ -15,7 +15,197 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 4 pages; 4819 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 2. Let's rest here a moment
+## 2. Studies of CP violation in B0 →J/ψK ∗0 decays
+
+**Identifier candidate:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/0408104v2.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 15 pages; 29271 non-space characters  
+**Title basis:** first-page-heuristic  
+
+## 3. 2+1 Flavor QCD simulated in the ǫ-regime in
+
+**Identifier candidate:** ARXIV: `0707.0071v3`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/0707.0071v3.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 19 pages; 23559 non-space characters  
+**Title basis:** first-page-heuristic  
+
+## 4. PII: 0097-3165(73)90033-2
+
+**Identifier candidate:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/1-s2.0-0097316573900332-main.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 20 pages; 31466 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 5. Advances in Mathematics 347 (2019) 192–272
+
+**Identifier candidate:** DOI: `10.1016/j.aim.2019.02.024`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/1-s2.0-S000187081930115X-main.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 81 pages; 126344 non-space characters  
+**Title basis:** first-page-heuristic  
+
+## 6. Continuous spin superparticle in [formula omitted], [formula omitted] curved superspace
+
+**Identifier candidate:** DOI: `10.1016/j.nuclphysb.2025.117135`  
+**Author metadata:** I.L. Buchbinder  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/1-s2.0-S055032132500344X-main.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 16 pages; 53677 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 7. Braided finite automata and representation theory
+
+**Identifier candidate:** DOI: `10.1016/j.nuclphysb.2026.117532`  
+**Author metadata:** Anastasia Doikou  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/1-s2.0-S0550321326002385-main.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 39 pages; 114397 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 8. Ueber die Bedeutung der Pacchionischen Granulationen
+
+**Identifier candidate:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/10.1007_bf02018723.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 19 pages; 34208 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 9. A latent spatial factor approach for synthesizing opioid
+
+**Identifier candidate:** ARXIV: `1806.05232v1`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/1806.05232v1.pdf`  
+**Keywords from source:** Bayesian hierarchical modeling, disease mapping, multivariate, spatial analysis,  
+**Extraction:** extracted; 22 pages; 31047 non-space characters  
+**Title basis:** first-page-heuristic  
+
+## 10. Generation of superhelical time-varying OAM beam with space-time-coding
+
+**Identifier candidate:** ARXIV: `2210.06941v1`  
+**Author metadata:** ZHANG Jingxin  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/2210.06941v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 16 pages; 21820 non-space characters  
+**Title basis:** first-page-heuristic  
+
+## 11. Electronic correlations in magnetized helical edge states coupled to s-wave superconductors
+
+**Identifier candidate:** ARXIV: `2508.21326v2`  
+**Author metadata:** Zeinab Bakhshipour; Mir Vahid Hosseini  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/2508.21326v2.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 22 pages; 75288 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 12. Klein Bottle Cosmology
+
+**Identifier candidate:** ARXIV: `2511.23447v3`  
+**Author metadata:** Brian Greene; Daniel Kabat; Janna Levin; Massimo Porrati  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/2511.23447v3.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 25 pages; 29974 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 13. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
+
+**Identifier candidate:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/2Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4575 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 14. Advanced Search | arXiv e-print repository
+
+**Identifier candidate:** DOI: `10.1145/3773078.3831930`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/3234Advanced Search _ arXiv e-print repository.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 17 pages; 31793 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 15. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
+
+**Identifier candidate:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/3Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4577 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 16. Nathan McKnight - User on NightCafe - NightCafe
+
+**Identifier candidate:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/3Nathan McKnight - User on NightCafe - NightCafe.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 2 pages; 1677 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 17. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
+
+**Identifier candidate:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/4Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4572 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 18. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
+
+**Identifier candidate:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/5Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4571 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 19. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
+
+**Identifier candidate:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/6Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4573 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 20. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
+
+**Identifier candidate:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/7Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4573 non-space characters  
+**Title basis:** pdf-metadata  
+
+## 21. Let's rest here a moment
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -25,7 +215,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 52 pages; 99657 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 3. ：0•0=0：＄¢④∞=00：
+## 22. ：0•0=0：＄¢④∞=00：
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -35,7 +225,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 26 pages; 35438 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 4. DESI spectral viewer
+## 23. DESI spectral viewer
 
 **Identifier candidate:** unresolved  
 **Author metadata:** N  
@@ -45,7 +235,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 1 pages; 627 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 5. DESI spectral viewer
+## 24. DESI spectral viewer
 
 **Identifier candidate:** unresolved  
 **Author metadata:** N  
@@ -55,7 +245,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 1 pages; 625 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 6. DESI spectral viewer
+## 25. DESI spectral viewer
 
 **Identifier candidate:** unresolved  
 **Author metadata:** N  
@@ -65,7 +255,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 1 pages; 627 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 7. notebooks-latest/03_ScienceExamples/EmLineGalaxies/02_EmLineGalaxies_Outliers.ipynb at master · astro-datalab/notebooks-latest
+## 26. notebooks-latest/03_ScienceExamples/EmLineGalaxies/02_EmLineGalaxies_Outliers.ipynb at master · astro-datalab/notebooks-latest
 
 **Identifier candidate:** DOI: `10.1117/12.2057445`  
 **Author metadata:** N  
@@ -75,7 +265,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 13 pages; 24865 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 8. notebooks-latest/04_HowTos/SPARCL/Plot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalab/notebooks-latest
+## 27. notebooks-latest/04_HowTos/SPARCL/Plot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalab/notebooks-latest
 
 **Identifier candidate:** DOI: `10.1117/12.2057445`  
 **Author metadata:** N  
@@ -85,7 +275,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 12698 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 9. Notebooks
+## 28. Notebooks
 
 **Identifier candidate:** DOI: `10.1117/12.2057445`  
 **Author metadata:** N  
@@ -95,7 +285,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 19 pages; 28252 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 10. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+## 29. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -105,7 +295,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 1 pages; 440 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 11. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+## 30. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -115,7 +305,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 1 pages; 436 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 12. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+## 31. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -125,7 +315,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 1 pages; 434 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 13. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+## 32. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -135,7 +325,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 1 pages; 371 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 14. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+## 33. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -145,7 +335,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 1 pages; 415 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 15. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+## 34. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -155,7 +345,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 1 pages; 460 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 16. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+## 35. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -165,7 +355,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 1 pages; 475 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 17. Central Recursion
+## 36. Central Recursion
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -175,7 +365,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 57 pages; 75137 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 18. Those are very interesting. But my interests in electromagnetism reflect…
+## 37. Those are very interesting. But my interests in electromagnetism reflect…
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -185,7 +375,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 36 pages; 52408 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 19. STEM in a changing world: 'Insider' and 'outsider' perspectives
+## 38. STEM in a changing world: 'Insider' and 'outsider' perspectives
 
 **Identifier candidate:** DOI: `10.4324/9781003404989-2`  
 **Author metadata:** Lyn D. English  
@@ -195,7 +385,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 16 pages; 45779 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 20. 2025 Scientific Triumph- Unifying the Laws of Physics through Mathematical Genius - Scientia Magazine
+## 39. 2025 Scientific Triumph- Unifying the Laws of Physics through Mathematical Genius - Scientia Magazine
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -205,7 +395,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 3 pages; 3241 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 21. Long time derivation of the Boltzmann equation from hard sphere dynamics
+## 40. Long time derivation of the Boltzmann equation from hard sphere dynamics
 
 **Identifier candidate:** ARXIV: `2408.07818v3`  
 **Author metadata:** Yu Deng; Zaher Hani; Xiao Ma  
@@ -215,7 +405,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 192 pages; 537298 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 22. HILBERT’S SIXTH PROBLEM: DERIVATION OF FLUID EQUATIONS VIA
+## 41. HILBERT’S SIXTH PROBLEM: DERIVATION OF FLUID EQUATIONS VIA
 
 **Identifier candidate:** ARXIV: `2503.01800v1`  
 **Author metadata:** unresolved  
@@ -225,7 +415,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 48 pages; 145727 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 23. Revisiting Residual Connections: Orthogonal Updates for Stable and Efficient Deep Networks
+## 42. Revisiting Residual Connections: Orthogonal Updates for Stable and Efficient Deep Networks
 
 **Identifier candidate:** ARXIV: `2505.11881v5`  
 **Author metadata:** Giyeong Oh; Woohyun Cho; Siyeol Kim; Suhwan Choi; Youngjae Yu  
@@ -235,7 +425,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 34 pages; 82464 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 24. Superspace worldline formalism approach to Quantum Gravity: dimensional reduction and Holography
+## 43. Superspace worldline formalism approach to Quantum Gravity: dimensional reduction and Holography
 
 **Identifier candidate:** ARXIV: `2601.07382v1`  
 **Author metadata:** Jean-Baptiste Roux  
@@ -245,7 +435,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 20 pages; 57755 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 25. Exclusive Self Attention
+## 44. Exclusive Self Attention
 
 **Identifier candidate:** DOI: `10.1016/j`  
 **Author metadata:** Shuangfei Zhai  
@@ -255,7 +445,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 14793 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 26. Spectral reconstruction from Euclidean lattice correlators through singular value decomposition
+## 45. Spectral reconstruction from Euclidean lattice correlators through singular value decomposition
 
 **Identifier candidate:** ARXIV: `2605.15674v1`  
 **Author metadata:** Ryutaro Tsuji; Shoji Hashimoto  
@@ -265,7 +455,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 29 pages; 36237 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 27. Two-nucleon systems at m_π≈292 MeV from lattice QCD
+## 46. Two-nucleon systems at m_π≈292 MeV from lattice QCD
 
 **Identifier candidate:** ARXIV: `2605.16977v1`  
 **Author metadata:** Kuan Zhang; Kang Yu; Yiqi Geng; Chuan Liu; Liuming Liu; Peng Sun; Jia-Jun Wu; Ruilin Zhu  
@@ -275,7 +465,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 14 pages; 37545 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 28. Sharpening the Supersymmetric Axion Weak Gravity Conjecture
+## 47. Sharpening the Supersymmetric Axion Weak Gravity Conjecture
 
 **Identifier candidate:** ARXIV: `2605.22912v1`  
 **Author metadata:** Muldrow Etheredge; Matthew Reece; Tom Rudelius; Christopher Tudball  
@@ -286,7 +476,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 43 pages; 73466 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 29. Trajectory Dynamics in Language Model Hidden States Predict Human Processing Costs Beyond Surprisal
+## 48. Trajectory Dynamics in Language Model Hidden States Predict Human Processing Costs Beyond Surprisal
 
 **Identifier candidate:** ARXIV: `2606.05346v1`  
 **Author metadata:** Elan Barenholtz  
@@ -296,7 +486,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 17 pages; 42923 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 30. A multi-agent system for automating scientific discovery
+## 49. A multi-agent system for automating scientific discovery
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -306,7 +496,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 30 pages; 95155 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 31. ﻿Chapter 14 Theoretical and Methodological Innovative Futures for Physics in Postsecondary Contexts
+## 50. ﻿Chapter 14 Theoretical and Methodological Innovative Futures for Physics in Postsecondary Contexts
 
 **Identifier candidate:** DOI: `10.1007/978-981-96-9136-4_14`  
 **Author metadata:** unresolved  
@@ -316,7 +506,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 19 pages; 51282 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 32. [2605.19117] Quantum Magic Reveals CP Phases Invisible to Entanglement in Spin-0 Decays
+## 51. [2605.19117] Quantum Magic Reveals CP Phases Invisible to Entanglement in Spin-0 Decays
 
 **Identifier candidate:** DOI: `10.48550/arXiv.2605.19117`  
 **Author metadata:** unresolved  
@@ -326,7 +516,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 5 pages; 2948 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 33. A Unified SU(4) Qudit–Gauge Lattice
+## 52. A Unified SU(4) Qudit–Gauge Lattice
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -336,7 +526,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 41 pages; 53579 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 34. A [[L3, 2L,L ]] CSS Code from the FCC Lattice
+## 53. A [[L3, 2L,L ]] CSS Code from the FCC Lattice
 
 **Identifier candidate:** DOI: `10.1063/1.1499754`  
 **Author metadata:** unresolved  
@@ -346,7 +536,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 10 pages; 16298 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 35. Best Time to Post on r-redditpolicedept — Subreddit Analysis | Postpone
+## 54. Best Time to Post on r-redditpolicedept — Subreddit Analysis | Postpone
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -356,7 +546,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 10 pages; 5930 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 36. Class Likelihood Ratios to measure classification performance — scikit-learn 1.9.0 documentation
+## 55. Class Likelihood Ratios to measure classification performance — scikit-learn 1.9.0 documentation
 
 **Identifier candidate:** unresolved  
 **Author metadata:** N  
@@ -366,7 +556,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 14 pages; 17069 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 37. Dark Matter as a Trapped K=6 Remnant
+## 56. Dark Matter as a Trapped K=6 Remnant
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -376,7 +566,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 20 pages; 56561 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 38. A Conceptual Architectural Design for Symbolic-Modular Cog nitive
+## 57. A Conceptual Architectural Design for Symbolic-Modular Cog nitive
 
 **Identifier candidate:** DOI: `10.36227/techrxiv.176704918.84639135/v1`  
 **Author metadata:** unresolved  
@@ -386,7 +576,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 22676 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 39. Visons, the Continuum Einstein-Hilbert Limit, and One-Loop Finiteness
+## 58. Visons, the Continuum Einstein-Hilbert Limit, and One-Loop Finiteness
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -396,7 +586,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 17 pages; 40512 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 40. Tunable Distance at Constant Rate
+## 59. Tunable Distance at Constant Rate
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -406,7 +596,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 16 pages; 23444 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 41. Italian Institute of Technology (IIT), Italy
+## 60. Italian Institute of Technology (IIT), Italy
 
 **Identifier candidate:** DOI: `10.3389/fphy.2025.1731777`  
 **Author metadata:** unresolved  
@@ -416,7 +606,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 8 pages; 39816 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 42. Geometric Evaporation and Hierarchical Information Reduction
+## 61. Geometric Evaporation and Hierarchical Information Reduction
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -426,7 +616,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 13 pages; 34406 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 43. Grand Unification Theories And Supersymmetry | Physics | Research Starters | EBSCO Research
+## 62. Grand Unification Theories And Supersymmetry | Physics | Research Starters | EBSCO Research
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -437,7 +627,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 11 pages; 22259 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 44. Non-extremal island in de Sitter gravity
+## 63. Non-extremal island in de Sitter gravity
 
 **Identifier candidate:** DOI: `10.1007/JHEP03(2025)004`  
 **Author metadata:** unresolved  
@@ -447,7 +637,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 53 pages; 111451 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 45. A teleportation protocol in Schwarzschild-de Sitter space
+## 64. A teleportation protocol in Schwarzschild-de Sitter space
 
 **Identifier candidate:** DOI: `10.1007/JHEP03(2025)095`  
 **Author metadata:** unresolved  
@@ -457,7 +647,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 28 pages; 56970 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 46. A 67%-Rate CSS Code on the FCC Lattice: [[192,130,3]] from Weight-12 Stabilizers
+## 65. A 67%-Rate CSS Code on the FCC Lattice: [[192,130,3]] from Weight-12 Stabilizers
 
 **Identifier candidate:** ARXIV: `2603.20294v1`  
 **Author metadata:** Raghu Kulkarni  
@@ -468,7 +658,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 14 pages; 24080 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 47. The Mass-Energy-Information Equivalence: A bottom-up identification of the particle spectrum via FCC lattice error correction
+## 66. The Mass-Energy-Information Equivalence: A bottom-up identification of the particle spectrum via FCC lattice error correction
 
 **Identifier candidate:** DOI: `10.1016/j.physo.2026.100414`  
 **Author metadata:** Raghu Kulkarni  
@@ -478,7 +668,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 23666 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 48. Matter as incomplete crystallization: Quark charges, color confinement, and the proton mass from a single extra node in the vacuum lattice
+## 67. Matter as incomplete crystallization: Quark charges, color confinement, and the proton mass from a single extra node in the vacuum lattice
 
 **Identifier candidate:** DOI: `10.1016/j.physo.2026.100423`  
 **Author metadata:** Raghu Kulkarni  
@@ -488,7 +678,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 13 pages; 59937 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 49. A Pascal Anti-Diagonal of M-theory Sector Dimensions
+## 68. A Pascal Anti-Diagonal of M-theory Sector Dimensions
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -498,7 +688,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 20352 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 50. Geometric Renormalization of the Speed of
+## 69. Geometric Renormalization of the Speed of
 
 **Identifier candidate:** DOI: `10.5281/zenodo.18294925(2026`  
 **Author metadata:** unresolved  
@@ -509,7 +699,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 9652 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 51. T h e G + E M O r t h o g o n a l T r i a d : G r a v i t y a s t h e
+## 70. T h e G + E M O r t h o g o n a l T r i a d : G r a v i t y a s t h e
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -519,7 +709,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 13 pages; 29071 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 52. Discrete Wave Mechanics: Deriving the
+## 71. Discrete Wave Mechanics: Deriving the
 
 **Identifier candidate:** DOI: `10.5281/zenodo.18294925(2026`  
 **Author metadata:** unresolved  
@@ -529,7 +719,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 12131 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 53. Matter as incomplete crystallization- Quark charges, color confinement, and the proton mass from a single extra node in the vacuum lattice - ScienceDirect
+## 72. Matter as incomplete crystallization- Quark charges, color confinement, and the proton mass from a single extra node in the vacuum lattice - ScienceDirect
 
 **Identifier candidate:** DOI: `10.1016/j.physo.2026.100423`  
 **Author metadata:** unresolved  
@@ -539,7 +729,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 50 pages; 61468 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 54. Moving toward belonging in a physics department: What changes are possible with and without a paradigm shift? | Phys. Rev. Phys. Educ. Res
+## 73. Moving toward belonging in a physics department: What changes are possible with and without a paradigm shift? | Phys. Rev. Phys. Educ. Res
 
 **Identifier candidate:** DOI: `10.1103/PhysRevPhysEducRes.21.010114`  
 **Author metadata:** N  
@@ -549,7 +739,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 41 pages; 89920 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 55. NOTES ON THE LONG TIME DERIVATION OF BOLTZMANN’S EQUATION
+## 74. NOTES ON THE LONG TIME DERIVATION OF BOLTZMANN’S EQUATION
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -560,7 +750,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 36 pages; 71907 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 56. Heraclitean Extended Relational Field Dynamics: Filament Ontology, Emergent Curvature, Bridge Maps to Effective Geometry and Quantum Sectors
+## 75. Heraclitean Extended Relational Field Dynamics: Filament Ontology, Emergent Curvature, Bridge Maps to Effective Geometry and Quantum Sectors
 
 **Identifier candidate:** unresolved  
 **Author metadata:** N  
@@ -570,7 +760,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 48 pages; 184569 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 57. Exact SO(4) Lattice QCD with Quarks as Tetrahedral Defects
+## 76. Exact SO(4) Lattice QCD with Quarks as Tetrahedral Defects
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -580,7 +770,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 28 pages; 60206 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 58. Relaxation-Driven Cyclic Cosmology (RDCC) v21.0 - solves the near-adiabaticity puzzle
+## 77. Relaxation-Driven Cyclic Cosmology (RDCC) v21.0 - solves the near-adiabaticity puzzle
 
 **Identifier candidate:** DOI: `10.5281/zenodo.20218109`  
 **Author metadata:** unresolved  
@@ -590,7 +780,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 10 pages; 11337 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 59. A multi-agent system for automating scientific discovery
+## 78. A multi-agent system for automating scientific discovery
 
 **Identifier candidate:** DOI: `10.1038/s41586-026-10652-y`  
 **Author metadata:** Ali Essam Ghareeb  
@@ -600,7 +790,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 36 pages; 85631 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 60. Geometric Foundations of the Selection-Stitch Model: Deriving c, GN, lP, Lorentz Invariance, and the Decoherence Threshold from K=12 Lattice Topology
+## 79. Geometric Foundations of the Selection-Stitch Model: Deriving c, GN, lP, Lorentz Invariance, and the Decoherence Threshold from K=12 Lattice Topology
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Raghu Kulkarni;  
@@ -610,7 +800,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 20 pages; 32064 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 61. Exact Lorentz Invariance from Holographic Projection: Explicit RT Verification and the Boundary Origin of Bulk Symmetry in the Selection-Stitch Model
+## 80. Exact Lorentz Invariance from Holographic Projection: Explicit RT Verification and the Boundary Origin of Bulk Symmetry in the Selection-Stitch Model
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Raghu Kulkarni;  
@@ -620,7 +810,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 12 pages; 22638 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 62. Reverse-Engineering the FCC Vacuum to a Single Bell
+## 81. Reverse-Engineering the FCC Vacuum to a Single Bell
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -630,7 +820,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 12 pages; 29414 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 63. Ten windows on the future of particle physics – CERN Courier
+## 82. Ten windows on the future of particle physics – CERN Courier
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -641,7 +831,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 15 pages; 17188 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 64. Test Functions — OptimLib documentation
+## 83. Test Functions — OptimLib documentation
 
 **Identifier candidate:** unresolved  
 **Author metadata:** N  
@@ -651,7 +841,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 17 pages; 8003 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 65. The Neutrinoverse Hypothesis- Naming the Immutable Holographic Medium for Genuine Psi
+## 84. The Neutrinoverse Hypothesis- Naming the Immutable Holographic Medium for Genuine Psi
 
 **Identifier candidate:** DOI: `10.5281/zenodo.19795813`  
 **Author metadata:** unresolved  
@@ -661,7 +851,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 6233 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 66. THE UNIFIED COMPRESSION-BASED FIELD THEORY- THE FINAL EDITION | by Corybrent | Medium
+## 85. THE UNIFIED COMPRESSION-BASED FIELD THEORY- THE FINAL EDITION | by Corybrent | Medium
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -671,7 +861,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 21 pages; 20729 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 67. The Universe Has a Resolution Limit- New Theory Derives the Exact Mass Where Quantum Mechanics Ends
+## 86. The Universe Has a Resolution Limit- New Theory Derives the Exact Mass Where Quantum Mechanics Ends
 
 **Identifier candidate:** DOI: `10.5281/zenodo.18447672`  
 **Author metadata:** unresolved  
@@ -681,7 +871,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 5 pages; 4845 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 68. 1 Main thread of the algorithm
+## 87. 1 Main thread of the algorithm
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -691,7 +881,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 32 pages; 56627 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 69. su(3)from a Trapped Tetrahedral Defect in the FCC Lattice
+## 88. su(3)from a Trapped Tetrahedral Defect in the FCC Lattice
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -701,7 +891,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 11 pages; 18291 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 70. Uniphics Explained Simply
+## 89. Uniphics Explained Simply
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -711,7 +901,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 12235 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 71. Geodesics in quantum gravity
+## 90. Geodesics in quantum gravity
 
 **Identifier candidate:** DOI: `10.1103/w1sd-v69d`  
 **Author metadata:** unresolved  
@@ -722,7 +912,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 17 pages; 60179 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 72. What to Expect from Physics in 2026 - by Samreet Dhillon
+## 91. What to Expect from Physics in 2026 - by Samreet Dhillon
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -732,7 +922,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 25 pages; 16863 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 73. What AI Agents Actually Want
+## 92. What AI Agents Actually Want
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -742,7 +932,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 113 pages; 250717 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 74. G Arreaga †, R Capovilla †and J Guven ‡
+## 93. G Arreaga †, R Capovilla †and J Guven ‡
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -752,7 +942,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 20 pages; 42645 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 75. In defence of naivet´ e: The conceptual status of
+## 94. In defence of naivet´ e: The conceptual status of
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -762,7 +952,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 43 pages; 95846 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 76. Introduction to Eﬀective Lagrangians for QCD
+## 95. Introduction to Eﬀective Lagrangians for QCD
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -772,7 +962,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 12 pages; 22862 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 77. Lecture 11 Background Notes
+## 96. Lecture 11 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -782,7 +972,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 4 pages; 6904 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 78. Eﬀective Lagrangian of QED
+## 97. Eﬀective Lagrangian of QED
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -792,7 +982,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 18737 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 79. Holonomy and four-dimensional manifolds
+## 98. Holonomy and four-dimensional manifolds
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -802,7 +992,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 11 pages; 10521 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 80. Lecture 2 8.251 Spring 2007
+## 99. Lecture 2 8.251 Spring 2007
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -812,7 +1002,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 10 pages; 3903 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 81. ON THE MODULI OF CONST ANT MEAN CUR V A TURE CYLINDERS OF
+## 100. ON THE MODULI OF CONST ANT MEAN CUR V A TURE CYLINDERS OF
 
 **Identifier candidate:** ARXIV: `0712.0108`  
 **Author metadata:** unresolved  
@@ -822,7 +1012,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 44 pages; 127809 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 82. lecture11.dvi
+## 101. lecture11.dvi
 
 **Identifier candidate:** ARXIV: `0809.3238`  
 **Author metadata:** unresolved  
@@ -833,7 +1023,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 9 pages; 8772 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 83. 2.682 Term Project Option 2
+## 102. 2.682 Term Project Option 2
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -843,7 +1033,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 2 pages; 1520 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 84. Lecture 5 8.251 Spring 2007
+## 103. Lecture 5 8.251 Spring 2007
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -853,7 +1043,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 3257 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 85. Introduction to Spectral Graph Theory
+## 104. Introduction to Spectral Graph Theory
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Nathan Nie, Brian Pan, Daniel Wang  
@@ -863,7 +1053,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 32 pages; 8056 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 86. Communications on Pure and Applied Analysis
+## 105. Communications on Pure and Applied Analysis
 
 **Identifier candidate:** DOI: `10.3934/cpaa.2026045`  
 **Author metadata:** unresolved  
@@ -873,7 +1063,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 13 pages; 18771 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 87. Dimension-Six Terms in the Standard Model Lagrangian ⋆
+## 106. Dimension-Six Terms in the Standard Model Lagrangian ⋆
 
 **Identifier candidate:** ARXIV: `1008.4884v3`  
 **Author metadata:** unresolved  
@@ -883,7 +1073,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 17 pages; 35699 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 88. LOG-CONCAVITY OF THE ALEXANDER POLYNOMIAL
+## 107. LOG-CONCAVITY OF THE ALEXANDER POLYNOMIAL
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -893,7 +1083,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 11 pages; 30954 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 89. Lectures on AKSZ Sigma Models for Physicists
+## 108. Lectures on AKSZ Sigma Models for Physicists
 
 **Identifier candidate:** ARXIV: `1204.3714v6`  
 **Author metadata:** unresolved  
@@ -903,7 +1093,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 99 pages; 136295 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 90. Maybe embeddings should start to CARE
+## 109. Maybe embeddings should start to CARE
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -913,7 +1103,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 5 pages; 13195 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 91. A FRAMEWORK FOR FRACTIONAL HARDY INEQUALITIES
+## 110. A FRAMEWORK FOR FRACTIONAL HARDY INEQUALITIES
 
 **Identifier candidate:** ARXIV: `1305.5181v2`  
 **Author metadata:** unresolved  
@@ -923,7 +1113,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 16 pages; 29667 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 92. Application of Kawaguchi Lagrangian formulation to string theory
+## 111. Application of Kawaguchi Lagrangian formulation to string theory
 
 **Identifier candidate:** ARXIV: `1508.02168v2`  
 **Author metadata:** unresolved  
@@ -933,7 +1123,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 12 pages; 15059 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 93. MEAN-FIELD LIMIT OF BOSE SYSTEMS: RIGOROUS
+## 112. MEAN-FIELD LIMIT OF BOSE SYSTEMS: RIGOROUS
 
 **Identifier candidate:** ARXIV: `1510.04407v1`  
 **Author metadata:** unresolved  
@@ -943,7 +1133,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 26 pages; 54021 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 94. A BRIEF INTRODUCTION TO SPECTRAL GRAPH THEORY
+## 113. A BRIEF INTRODUCTION TO SPECTRAL GRAPH THEORY
 
 **Identifier candidate:** ARXIV: `1609.08072v1`  
 **Author metadata:** unresolved  
@@ -953,7 +1143,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 92 pages; 177160 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 95. LECTURES ON BATALIN-VILKOVISKY FORMALISM AND ITS
+## 114. LECTURES ON BATALIN-VILKOVISKY FORMALISM AND ITS
 
 **Identifier candidate:** ARXIV: `1707.08096v1`  
 **Author metadata:** unresolved  
@@ -963,7 +1153,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 155 pages; 312208 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 96. REMARKS ON THE SELF-SHRINKING CLIFFORD TORUS
+## 115. REMARKS ON THE SELF-SHRINKING CLIFFORD TORUS
 
 **Identifier candidate:** ARXIV: `1802.01423v3`  
 **Author metadata:** unresolved  
@@ -973,7 +1163,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 31 pages; 63657 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 97. final_07-8.dvi
+## 116. final_07-8.dvi
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -983,7 +1173,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 8822 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 98. lec25.dvi
+## 117. lec25.dvi
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -994,7 +1184,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 11 pages; 13414 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 99. Lecture 16 Notes
+## 118. Lecture 16 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1004,7 +1194,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 3 pages; 6110 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 100. Lecture 8 Notes
+## 119. Lecture 8 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1014,7 +1204,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 6875 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 101. A Link Theoretic Perspective on the Isotopy
+## 120. A Link Theoretic Perspective on the Isotopy
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1024,7 +1214,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 12 pages; 24697 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 102. Demystifying the Lagrangians of Special Relativity
+## 121. Demystifying the Lagrangians of Special Relativity
 
 **Identifier candidate:** ARXIV: `2108.07786v2`  
 **Author metadata:** unresolved  
@@ -1034,7 +1224,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 36 pages; 63947 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 103. XXXXX, 202X, X(X), X-X
+## 122. XXXXX, 202X, X(X), X-X
 
 **Identifier candidate:** ARXIV: `2202.13795v2`  
 **Author metadata:** unresolved  
@@ -1044,7 +1234,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 15 pages; 69593 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 104. DISCRETE OLLIVIER-RICCI CUR V A TURE
+## 123. DISCRETE OLLIVIER-RICCI CUR V A TURE
 
 **Identifier candidate:** ARXIV: `2203.16837v1`  
 **Author metadata:** unresolved  
@@ -1054,7 +1244,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 37 pages; 77630 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 105. TOW ARDS EQUIV ARIANT YANG-MILLS THEORY
+## 124. TOW ARDS EQUIV ARIANT YANG-MILLS THEORY
 
 **Identifier candidate:** ARXIV: `2210.00372v2`  
 **Author metadata:** unresolved  
@@ -1064,7 +1254,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 27 pages; 36893 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 106. Lecture 14 Background Notes
+## 125. Lecture 14 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1074,7 +1264,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 3 pages; 4543 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 107. FRACTIONAL HARDY INEQUALITIES AND CAPACITY DENSITY
+## 126. FRACTIONAL HARDY INEQUALITIES AND CAPACITY DENSITY
 
 **Identifier candidate:** ARXIV: `2404.05222v1`  
 **Author metadata:** unresolved  
@@ -1084,7 +1274,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 29 pages; 64440 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 108. OLLIVIER-RICCI CUR V A TURE OF REGULAR GRAPHS
+## 127. OLLIVIER-RICCI CUR V A TURE OF REGULAR GRAPHS
 
 **Identifier candidate:** ARXIV: `2407.08854v3`  
 **Author metadata:** unresolved  
@@ -1094,7 +1284,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 43 pages; 75016 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 109. BIMODULES OVER TWISTED ZHU ALGEBRAS AND TWISTED
+## 128. BIMODULES OVER TWISTED ZHU ALGEBRAS AND TWISTED
 
 **Identifier candidate:** ARXIV: `2409.08995v2`  
 **Author metadata:** unresolved  
@@ -1104,7 +1294,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 36 pages; 60765 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 110. Jet Modification and Medium Response - Theory Overview
+## 129. Jet Modification and Medium Response - Theory Overview
 
 **Identifier candidate:** ARXIV: `2504.21744v1`  
 **Author metadata:** unresolved  
@@ -1114,7 +1304,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 8 pages; 22830 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 111. On biquandle-based invariant of immersed surface-links, Yoshikawa oriented fifth move, and ribbon 2-knots
+## 130. On biquandle-based invariant of immersed surface-links, Yoshikawa oriented fifth move, and ribbon 2-knots
 
 **Identifier candidate:** ARXIV: `2505.14724v3`  
 **Author metadata:** Michal Jablonowski  
@@ -1124,7 +1314,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 14 pages; 21996 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 112. Lecture 6 Background Notes
+## 131. Lecture 6 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1134,7 +1324,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 4 pages; 8255 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 113. BV Pushforward of Palatini-Cartan gravity
+## 132. BV Pushforward of Palatini-Cartan gravity
 
 **Identifier candidate:** ARXIV: `2507.06279v1`  
 **Author metadata:** Giovanni Canepa; Alberto S. Cattaneo  
@@ -1144,7 +1334,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 28 pages; 44450 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 114. On some log-concavity properties of the Alexander-Conway and Links-Gould invariants
+## 133. On some log-concavity properties of the Alexander-Conway and Links-Gould invariants
 
 **Identifier candidate:** ARXIV: `2509.16868v1`  
 **Author metadata:** Matthew Harper; Ben-Michael Kohli; Jiebo Song; Guillaume Tahar  
@@ -1154,7 +1344,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 26 pages; 43666 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 115. Interior Hessian estimates for sum Hessian quotient equation
+## 134. Interior Hessian estimates for sum Hessian quotient equation
 
 **Identifier candidate:** ARXIV: `2510.21301v1`  
 **Author metadata:** Changyu Ren; Ziyi Wang  
@@ -1164,7 +1354,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 20 pages; 23669 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 116. Generalized Gross-Pitaevskii Equation for 2D Bosons with Attractive Interactions
+## 135. Generalized Gross-Pitaevskii Equation for 2D Bosons with Attractive Interactions
 
 **Identifier candidate:** ARXIV: `2511.10115v3`  
 **Author metadata:** Michał Suchorowski; Fabian Brauneis; Hans-Werner Hammer; Michał Tomza; Artem G. Volosniev  
@@ -1174,7 +1364,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 16 pages; 52350 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 117. Dynamic stress response kernels for dislocations and cracks: unified anisotropic Lagrangian formulation
+## 136. Dynamic stress response kernels for dislocations and cracks: unified anisotropic Lagrangian formulation
 
 **Identifier candidate:** ARXIV: `2601.02124v1`  
 **Author metadata:** Yves-Patrick Pellegrini; Marc Josien; Martin Chassard  
@@ -1184,7 +1374,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 23 pages; 54604 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 118. The Assistant Axis: Situating and Stabilizing the Default Persona of Language Models
+## 137. The Assistant Axis: Situating and Stabilizing the Default Persona of Language Models
 
 **Identifier candidate:** ARXIV: `2601.10387v1`  
 **Author metadata:** Christina Lu; Jack Gallagher; Jonathan Michala; Kyle Fish; Jack Lindsey  
@@ -1194,7 +1384,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 54 pages; 152025 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 119. Multisymplectic AKSZ sigma models
+## 138. Multisymplectic AKSZ sigma models
 
 **Identifier candidate:** ARXIV: `2601.16785v1`  
 **Author metadata:** Thomas Basile; Maxim Grigoriev; Evgeny Skvortsov  
@@ -1204,7 +1394,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 23 pages; 60517 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 120. Interior Hessian estimates for Hessian quotient equations in dimension three
+## 139. Interior Hessian estimates for Hessian quotient equations in dimension three
 
 **Identifier candidate:** ARXIV: `2602.14064v3`  
 **Author metadata:** Heming Jiao; Zhenan Sui  
@@ -1214,7 +1404,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 18 pages; 22393 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 121. Torus embeddings
+## 140. Torus embeddings
 
 **Identifier candidate:** ARXIV: `2603.03135v1`  
 **Author metadata:** Dan Stowell  
@@ -1224,7 +1414,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 21 pages; 49693 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 122. Geometry- and topology-controlled synchronization phase transition on manifolds
+## 141. Geometry- and topology-controlled synchronization phase transition on manifolds
 
 **Identifier candidate:** ARXIV: `2604.03770v2`  
 **Author metadata:** Yang Tian  
@@ -1234,7 +1424,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 33 pages; 114273 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 123. Gap Phenomenon for Yamabe Type Problems of M^m× T^n-m
+## 142. Gap Phenomenon for Yamabe Type Problems of M^m× T^n-m
 
 **Identifier candidate:** ARXIV: `2605.25145v1`  
 **Author metadata:** Fang Wang; Zhixin Wang  
@@ -1244,7 +1434,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 23 pages; 38510 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 124. A Multi-Invariant Preserving Discrete Gradient Methods
+## 143. A Multi-Invariant Preserving Discrete Gradient Methods
 
 **Identifier candidate:** ARXIV: `2605.30827v1`  
 **Author metadata:** Haodong Pu; Maohua Ran  
@@ -1254,7 +1444,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 19 pages; 28835 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 125. Generalized Frenet frames and frame sequences of singular space curves
+## 144. Generalized Frenet frames and frame sequences of singular space curves
 
 **Identifier candidate:** ARXIV: `2606.17607v1`  
 **Author metadata:** Shun'ichi Honda  
@@ -1264,7 +1454,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 13 pages; 22551 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 126. A non-convergence phenomenon for the CR Yamabe flow
+## 145. A non-convergence phenomenon for the CR Yamabe flow
 
 **Identifier candidate:** ARXIV: `2606.27164v1`  
 **Author metadata:** Claudio Afeltra; Andrea Pinamonti; Pak Tung Ho  
@@ -1274,7 +1464,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 17 pages; 25201 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 127. New constructions relating Real and Complex Contact Structure
+## 146. New constructions relating Real and Complex Contact Structure
 
 **Identifier candidate:** ARXIV: `2607.01264v1`  
 **Author metadata:** Ali M. Elgindi  
@@ -1284,7 +1474,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 13082 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 128. Categorical structures of Kuranishi spaces with L_∞[1]-algebras
+## 147. Categorical structures of Kuranishi spaces with L_∞[1]-algebras
 
 **Identifier candidate:** ARXIV: `2607.01371v1`  
 **Author metadata:** Taesu Kim  
@@ -1294,7 +1484,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 57 pages; 98295 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 129. A homotopy coherent Pontryagin-Thom isomorphism
+## 148. A homotopy coherent Pontryagin-Thom isomorphism
 
 **Identifier candidate:** ARXIV: `2607.01482v2`  
 **Author metadata:** Kenneth Blakey; Liam Keenan  
@@ -1304,7 +1494,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 82 pages; 152033 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 130. Kuranishi chart categories and higher cocycle conditions
+## 149. Kuranishi chart categories and higher cocycle conditions
 
 **Identifier candidate:** ARXIV: `2607.01732v1`  
 **Author metadata:** Taesu Kim  
@@ -1314,7 +1504,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 24 pages; 40240 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 131. Every cusp singularity link admits infinitely many strong symplectic fillings
+## 150. Every cusp singularity link admits infinitely many strong symplectic fillings
 
 **Identifier candidate:** ARXIV: `2607.01991v1`  
 **Author metadata:** Naohiko Kasuya; Takahiro Oba  
@@ -1324,7 +1514,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 15 pages; 28660 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 132. Conformally symplectic topology from a dynamical viewpoint
+## 151. Conformally symplectic topology from a dynamical viewpoint
 
 **Identifier candidate:** ARXIV: `2607.03019v1`  
 **Author metadata:** Julian Chaidez  
@@ -1334,7 +1524,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 25 pages; 65809 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 133. Two-boost problem for the rotating Kepler problem
+## 152. Two-boost problem for the rotating Kepler problem
 
 **Identifier candidate:** ARXIV: `2607.03139v1`  
 **Author metadata:** Jagna Wiśniewska  
@@ -1344,7 +1534,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 34 pages; 51537 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 134. A Deformation of the Compact Fukaya Category via the Relative Fukaya Category
+## 153. A Deformation of the Compact Fukaya Category via the Relative Fukaya Category
 
 **Identifier candidate:** ARXIV: `2607.03234v1`  
 **Author metadata:** Mohamad Rabah  
@@ -1354,7 +1544,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 43 pages; 70559 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 135. Isolated Hypersurface Singularities May Be Stably Degenerate
+## 154. Isolated Hypersurface Singularities May Be Stably Degenerate
 
 **Identifier candidate:** ARXIV: `2607.03497v1`  
 **Author metadata:** Mark McLean; Ivan Smith  
@@ -1364,7 +1554,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 16 pages; 32710 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 136. Convex hypersurfaces and robust heterodimensional dynamics
+## 155. Convex hypersurfaces and robust heterodimensional dynamics
 
 **Identifier candidate:** ARXIV: `2607.03649v1`  
 **Author metadata:** Julian Chaidez; Michael Huang  
@@ -1374,7 +1564,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 47 pages; 115964 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 137. Family Floer SYZ mirror algorithm for the Grassmannian Gr(2,4)
+## 156. Family Floer SYZ mirror algorithm for the Grassmannian Gr(2,4)
 
 **Identifier candidate:** ARXIV: `2607.03843v1`  
 **Author metadata:** Zekai Yu; Hang Yuan  
@@ -1384,7 +1574,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 28 pages; 54346 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 138. The Delayed Stabilizer ZX-Calculus
+## 157. The Delayed Stabilizer ZX-Calculus
 
 **Identifier candidate:** ARXIV: `2607.04015v1`  
 **Author metadata:** Cole Comfort; Giovanni de Felice  
@@ -1394,7 +1584,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 53 pages; 82179 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 139. Algebra of the Infrared with Curve-Valued Potential
+## 158. Algebra of the Infrared with Curve-Valued Potential
 
 **Identifier candidate:** ARXIV: `2607.04039v1`  
 **Author metadata:** Longfei Li  
@@ -1404,7 +1594,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 62 pages; 109223 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 140. Algebraic and Geometric Aspects of Non-Classical Knots
+## 159. Algebraic and Geometric Aspects of Non-Classical Knots
 
 **Identifier candidate:** ARXIV: `2607.04445v1`  
 **Author metadata:** Ioannis Diamantis  
@@ -1414,7 +1604,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 53 pages; 109905 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 141. Equivariant cosymplectic geometry
+## 160. Equivariant cosymplectic geometry
 
 **Identifier candidate:** DOI: `10.13039/501100011033`  
 **Author metadata:** Eva Miranda; Pablo Nicolás  
@@ -1424,7 +1614,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 28 pages; 56280 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 142. Hamiltonian group actions in cosymplectic geometry
+## 161. Hamiltonian group actions in cosymplectic geometry
 
 **Identifier candidate:** DOI: `10.13039/501100011033`  
 **Author metadata:** Eva Miranda; Pablo Nicolás  
@@ -1434,7 +1624,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 27 pages; 50085 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 143. Noncommutative Cartier Formulae
+## 162. Noncommutative Cartier Formulae
 
 **Identifier candidate:** ARXIV: `2607.05360v1`  
 **Author metadata:** Semon Rezchikov  
@@ -1444,7 +1634,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 80 pages; 217815 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 144. Virtual Jeffrey–Kirwan localisation
+## 163. Virtual Jeffrey–Kirwan localisation
 
 **Identifier candidate:** ARXIV: `2607.05575v1`  
 **Author metadata:** Riccardo Ontani; Richard P. Thomas  
@@ -1454,7 +1644,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 69 pages; 135458 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 145. Shifted Poisson unfoldings and quantum anomalies
+## 164. Shifted Poisson unfoldings and quantum anomalies
 
 **Identifier candidate:** ARXIV: `2607.05918v1`  
 **Author metadata:** Mauricio Corrêa; Simone Noja  
@@ -1464,7 +1654,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 41 pages; 118466 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 146. Symplectic billiards as Minkowski billiards
+## 165. Symplectic billiards as Minkowski billiards
 
 **Identifier candidate:** ARXIV: `2607.05986v1`  
 **Author metadata:** Peter Albers; Ana Chavez Caliz; Serge Tabachnikov  
@@ -1474,7 +1664,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 20 pages; 26061 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 147. Comparison of Kähler quotients of torus actions
+## 166. Comparison of Kähler quotients of torus actions
 
 **Identifier candidate:** ARXIV: `2607.06345v1`  
 **Author metadata:** Xiangsheng Wang; Xiangdong Yang  
@@ -1484,7 +1674,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 48 pages; 102188 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 148. Mutation matrices from Poisson CGL extensions
+## 167. Mutation matrices from Poisson CGL extensions
 
 **Identifier candidate:** ARXIV: `2607.07028v1`  
 **Author metadata:** Zihang Liu; Jiang-Hua Lu; Yipeng Mi  
@@ -1494,7 +1684,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 51 pages; 92158 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 149. Relative homotopy moment maps
+## 168. Relative homotopy moment maps
 
 **Identifier candidate:** ARXIV: `2607.07088v1`  
 **Author metadata:** Djounvouna Dinamo  
@@ -1504,7 +1694,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 23 pages; 52264 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 150. Applications of relative multisymplectic geometry
+## 169. Applications of relative multisymplectic geometry
 
 **Identifier candidate:** ARXIV: `2607.07149v1`  
 **Author metadata:** Djounvouna Dinamo  
@@ -1514,7 +1704,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 15 pages; 39717 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 151. Lecture 13 Background Notes
+## 170. Lecture 13 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1524,7 +1714,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 5 pages; 9762 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 152. Generalized Gross-Pitaevskii Equation for 2D Bosons with Attractive Interactions
+## 171. Generalized Gross-Pitaevskii Equation for 2D Bosons with Attractive Interactions
 
 **Identifier candidate:** DOI: `10.1103/2831-t3jk`  
 **Author metadata:** unresolved  
@@ -1534,7 +1724,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 9 pages; 32836 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 153. Lecture 15 Background Notes
+## 172. Lecture 15 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1544,7 +1734,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 5 pages; 9587 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 154. soln05.dvi
+## 173. soln05.dvi
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1554,7 +1744,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 12004 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 155. 8.821 String Theory
+## 174. 8.821 String Theory
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1565,7 +1755,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 8 pages; 7635 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 156. 4. Calculus of V ariations
+## 175. 4. Calculus of V ariations
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1575,7 +1765,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 10 pages; 9458 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 157. pset3sols.dvi
+## 176. pset3sols.dvi
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1585,7 +1775,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 9 pages; 13552 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 158. Lecture 1 Notes
+## 177. Lecture 1 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1595,7 +1785,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 3 pages; 2442 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 159. pset4sols.dvi
+## 178. pset4sols.dvi
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1605,7 +1795,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 8 pages; 15841 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 160. 4.2 Spike response model (SRM)
+## 179. 4.2 Spike response model (SRM)
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1615,7 +1805,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 16 pages; 24279 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 161. Lecture 11 Notes
+## 180. Lecture 11 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1625,7 +1815,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 3 pages; 2426 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 162. Lecture 2 Background Notes
+## 181. Lecture 2 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1635,7 +1825,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 3 pages; 4812 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 163. Lecture 1 Background Notes
+## 182. Lecture 1 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1645,7 +1835,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 3 pages; 3526 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 164. On the Expressive Power of Ollivier-Ricci Curvature on Graphs
+## 183. On the Expressive Power of Ollivier-Ricci Curvature on Graphs
 
 **Identifier candidate:** DOI: `10.2140/involve.2020.13.559`  
 **Author metadata:** Joshua Southern, Jeremy Wayland, Michael Bronstein, Bastian Rieck  
@@ -1655,7 +1845,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 4 pages; 14986 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 165. 8.821 String Theory
+## 184. 8.821 String Theory
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1666,7 +1856,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 8049 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 166. lecture12.dvi
+## 185. lecture12.dvi
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1677,7 +1867,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 9 pages; 5942 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 167. 2.682 Term Project Option 1
+## 186. 2.682 Term Project Option 1
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1687,7 +1877,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 3 pages; 2542 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 168. Problem Set #1
+## 187. Problem Set #1
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1697,7 +1887,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 2 pages; 158 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 169. pset1sols.dvi
+## 188. pset1sols.dvi
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1707,7 +1897,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 11204 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 170. 8.3. Quantum Electrodynamics (QED) — Theoretical Physics Reference 0.5 documentation
+## 189. 8.3. Quantum Electrodynamics (QED) — Theoretical Physics Reference 0.5 documentation
 
 **Identifier candidate:** ARXIV: `1412.8284`  
 **Author metadata:** unresolved  
@@ -1717,7 +1907,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 11 pages; 9429 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 171. Lecture 12 Notes
+## 190. Lecture 12 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1727,7 +1917,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 13 pages; 14748 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 172. lecture01.dvi
+## 191. lecture01.dvi
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1738,7 +1928,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 9 pages; 15075 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 173. Lecture 2 Notes
+## 192. Lecture 2 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1748,7 +1938,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 4 pages; 2675 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 174. Lecture 10 Background Notes
+## 193. Lecture 10 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1758,7 +1948,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 3 pages; 4538 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 175. su1rev2.dvi
+## 194. su1rev2.dvi
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1768,7 +1958,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 21 pages; 24972 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 176. Lecture 4 Notes
+## 195. Lecture 4 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1778,7 +1968,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 10 pages; 6360 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 177. 8.821 String Theory
+## 196. 8.821 String Theory
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1788,7 +1978,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 9 pages; 17291 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 178. The Eﬀective Lagrangian of QED with a Magnetic Charge
+## 197. The Eﬀective Lagrangian of QED with a Magnetic Charge
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1798,7 +1988,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 16 pages; 19403 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 179. 8.821 String Theory
+## 198. 8.821 String Theory
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1809,7 +1999,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 7249 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 180. Lecture 9 Background Notes
+## 199. Lecture 9 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -1819,7 +2009,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 4 pages; 6047 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 181. Lecture 21 8.251 Spring 2007
+## 200. Lecture 21 8.251 Spring 2007
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1829,7 +2019,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 2961 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 182. test04.tex
+## 201. test04.tex
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1839,7 +2029,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 2 pages; 3135 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 183. Spectral Graph Theory
+## 202. Spectral Graph Theory
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1849,7 +2039,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 36 pages; 65186 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 184. AN OVERVIEW OF KNOT INVARIANTS
+## 203. AN OVERVIEW OF KNOT INVARIANTS
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1859,7 +2049,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 17 pages; 25327 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 185. lecture06.dvi
+## 204. lecture06.dvi
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1870,7 +2060,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 9 pages; 13341 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 186. 7.2. CALCULUS OF VARIATIONS c©2006 Gilbert Strang
+## 205. 7.2. CALCULUS OF VARIATIONS c©2006 Gilbert Strang
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1880,7 +2070,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 18 pages; 31331 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 187. Symplectic geometry is a branch of differential geometry and topology that studies smooth
+## 206. Symplectic geometry is a branch of differential geometry and topology that studies smooth
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1890,7 +2080,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 11435 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 188. Annals of Mathematics, 162 (2005), 581–642
+## 207. Annals of Mathematics, 162 (2005), 581–642
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1900,7 +2090,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 62 pages; 120366 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 189. The Standard Model of Particle Physics
+## 208. The Standard Model of Particle Physics
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Bobby Samir AcharyaInternational Centre for Theoretical Physics and King's College London  
@@ -1910,7 +2100,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 90 pages; 41774 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 190. Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
+## 209. Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
 
 **Identifier candidate:** DOI: `10.1098/rsos.260082`  
 **Author metadata:** unresolved  
@@ -1920,7 +2110,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 48 pages; 78002 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 191. Assembly theory explains and quantifies selection and evolution
+## 210. Assembly theory explains and quantifies selection and evolution
 
 **Identifier candidate:** DOI: `10.1038/s41586-023-06600-9`  
 **Author metadata:** Abhishek Sharma  
@@ -1931,7 +2121,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 12 pages; 48203 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 192. “Assembly Theory” in life-origin models: A critical review
+## 211. “Assembly Theory” in life-origin models: A critical review
 
 **Identifier candidate:** DOI: `10.1016/j.biosystems.2024.105378`  
 **Author metadata:** unresolved  
@@ -1941,7 +2131,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 13 pages; 84022 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 193. Spline-Based Smoothing of Noisy Discrete Curves in the Frenet–Serret Framework: Sensitivity Analysis of Curvature and Torsion Estimation via CSI and TSI Indices for Analytically Defined Space Curves
+## 212. Spline-Based Smoothing of Noisy Discrete Curves in the Frenet–Serret Framework: Sensitivity Analysis of Curvature and Torsion Estimation via CSI and TSI Indices for Analytically Defined Space Curves
 
 **Identifier candidate:** DOI: `10.3390/axioms15050365`  
 **Author metadata:** Gülden Altay Suroğlu, Şeyma Firdevs Hızal and Hasan Bulut  
@@ -1951,7 +2141,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 34 pages; 75732 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 194. Lecture 11 8.251 Spring 2007
+## 213. Lecture 11 8.251 Spring 2007
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1961,7 +2151,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 9 pages; 3641 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 195. A Geometric Constraint Solver
+## 214. A Geometric Constraint Solver
 
 **Identifier candidate:** unresolved  
 **Author metadata:** William Bouma, Ioannis Fudos, Christoph M. Hoffmann, Jiazhen Cai, and Robert Paige  
@@ -1971,7 +2161,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 40 pages; 67410 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 196. AN INTRODUCTION TO SPECTRAL GRAPH THEORY
+## 215. AN INTRODUCTION TO SPECTRAL GRAPH THEORY
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1981,7 +2171,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 30 pages; 50215 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 197. Defects in fully extended TQFT – a tour in
+## 216. Defects in fully extended TQFT – a tour in
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -1991,7 +2181,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 22 pages; 3564 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 198. Lecture 3 Background Notes
+## 217. Lecture 3 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -2001,7 +2191,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 3 pages; 5504 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 199. 2.682 Term Project Option 3
+## 218. 2.682 Term Project Option 3
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -2011,7 +2201,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 2 pages; 803 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 200. Lecture 10 Notes
+## 219. Lecture 10 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -2021,7 +2211,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 6261 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 201. 8.251 2005 Midterm Solutions
+## 220. 8.251 2005 Midterm Solutions
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2031,7 +2221,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 5 pages; 1764 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 202. CALCULUS OF VARIATIONS
+## 221. CALCULUS OF VARIATIONS
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2041,7 +2231,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 6757 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 203. Calculus of Variations
+## 222. Calculus of Variations
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2051,7 +2241,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 85 pages; 179955 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 204. Lecture 4-5 Background Notes
+## 223. Lecture 4-5 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -2061,7 +2251,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 7 pages; 15364 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 205. 6 Symmetries in Quantum Field Theory
+## 224. 6 Symmetries in Quantum Field Theory
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2071,7 +2261,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 22 pages; 62257 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 206. Quantum Field Theory I, Chapter 4
+## 225. Quantum Field Theory I, Chapter 4
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Prof. N. Beisert  
@@ -2081,7 +2271,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 15 pages; 25602 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 207. GENERAL RELATIVITY: THE FIELD THEORY APPROACH
+## 226. GENERAL RELATIVITY: THE FIELD THEORY APPROACH
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2091,7 +2281,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 13 pages; 21020 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 208. The Gross-Pitaevskii equation
+## 227. The Gross-Pitaevskii equation
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Tobias Donner and Sebastian Huberpdftitle  
@@ -2101,7 +2291,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 10282 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 209. classical mechanics - D-brane Lagrangian? - Physics Stack Exchange
+## 228. classical mechanics - D-brane Lagrangian? - Physics Stack Exchange
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2111,7 +2301,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 5 pages; 9173 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 210. THE COBORDISM HYPOTHESIS
+## 229. THE COBORDISM HYPOTHESIS
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2121,7 +2311,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 36 pages; 85285 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 211. The Calculus of Variations
+## 230. The Calculus of Variations
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2131,7 +2321,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 187 pages; 165000 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 212. Tree metrics and log-concavity for matroids
+## 231. Tree metrics and log-concavity for matroids
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Federico Ardila-Mantilla, Sergio Cristancho , Graham Denham, Christopher Eur, June Huh, and Botong Wang  
@@ -2141,7 +2331,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 12 pages; 19259 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 213. Stringtheorie
+## 232. Stringtheorie
 
 **Identifier candidate:** unresolved  
 **Author metadata:** David Reutter  
@@ -2151,7 +2341,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 26 pages; 31206 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 214. Lecture 9 Notes
+## 233. Lecture 9 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -2161,7 +2351,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 4 pages; 1298 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 215. Lecture 8 Background Notes
+## 234. Lecture 8 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -2171,7 +2361,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 4 pages; 6973 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 216. 8.821 String Theory
+## 235. 8.821 String Theory
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2182,7 +2372,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 10 pages; 11028 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 217. Lagrangian Formulation of General Relativity
+## 236. Lagrangian Formulation of General Relativity
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2192,7 +2382,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 9 pages; 12087 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 218. disgrad.dvi
+## 237. disgrad.dvi
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2202,7 +2392,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 9 pages; 10894 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 219. A geometric integration approach to smooth optimization: foundations of the discrete gradient method
+## 238. A geometric integration approach to smooth optimization: foundations of the discrete gradient method
 
 **Identifier candidate:** DOI: `10.1093/imanum/drae037`  
 **Author metadata:** unresolved  
@@ -2212,7 +2402,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 31 pages; 66248 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 220. Lecture 13 Notes
+## 239. Lecture 13 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, Jim  
@@ -2222,7 +2412,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 43 pages; 11299 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 221. Lecture 7 Background Notes
+## 240. Lecture 7 Background Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -2232,7 +2422,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 6 pages; 12957 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 222. Lecture 15 Notes
+## 241. Lecture 15 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -2242,7 +2432,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 10 pages; 6984 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 223. 8.821 String Theory
+## 242. 8.821 String Theory
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2253,7 +2443,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 9 pages; 15295 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 224. Lecture 7 Notes
+## 243. Lecture 7 Notes
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Lynch, James  
@@ -2263,7 +2453,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 19 pages; 13446 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 225. Einstein's Equations, Lagrangians for General Relativity, and ADM Formalism
+## 244. Einstein's Equations, Lagrangians for General Relativity, and ADM Formalism
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Timothy Corbett  
@@ -2273,7 +2463,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 28 pages; 33446 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 226. ELEMENTS OF ENSEMBLE THEORY
+## 245. ELEMENTS OF ENSEMBLE THEORY
 
 **Identifier candidate:** unresolved  
 **Author metadata:** Dr. Ibrahim M. Nasser  
@@ -2283,7 +2473,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 11 pages; 13218 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 227. Acta Numerica (2025), pp. 123–291
+## 246. Acta Numerica (2025), pp. 123–291
 
 **Identifier candidate:** DOI: `10.1017/S0962492924000060`  
 **Author metadata:** unresolved  
@@ -2293,7 +2483,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 169 pages; 339943 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 228. Ensembles.nb
+## 247. Ensembles.nb
 
 **Identifier candidate:** unresolved  
 **Author metadata:** jjkelly  
@@ -2303,7 +2493,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 37 pages; 72288 non-space characters  
 **Title basis:** pdf-metadata  
 
-## 229. The Ensemble theory
+## 248. The Ensemble theory
 
 **Identifier candidate:** DOI: `10.1016/B978-044451560-5/50012-9`  
 **Author metadata:** Hussain  
@@ -2313,7 +2503,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 15 pages; 11250 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 230. Lecture 23 8.251 Spring 2007
+## 249. Lecture 23 8.251 Spring 2007
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2323,7 +2513,7 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Extraction:** extracted; 4 pages; 2533 non-space characters  
 **Title basis:** first-page-heuristic  
 
-## 231. 8.821 String Theory
+## 250. 8.821 String Theory
 
 **Identifier candidate:** unresolved  
 **Author metadata:** unresolved  
@@ -2332,197 +2522,4 @@ Duplicate lineages already represented in the human bibliography corpus and supp
 **Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/f704cfed444c1740427310905d04042d_lecture17.pdf`  
 **Keywords from source:** none detected  
 **Extraction:** extracted; 7 pages; 8125 non-space characters  
-**Title basis:** first-page-heuristic  
-
-## 232. Problem Set #5
-
-**Identifier candidate:** unresolved  
-**Author metadata:** Lynch, James  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/fc090da737f1091dd983337ab9494383_MIT2_682S12_Homework5.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 5 pages; 2488 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 233. Lecture 12 Background Notes
-
-**Identifier candidate:** unresolved  
-**Author metadata:** Lynch, James  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/ffe5d9df0936a18e21aeebf80fb24a8e_MIT2_682S12_bglec12.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 5 pages; 8146 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 234. 3 The Navier-Stokes Equation
-
-**Identifier candidate:** unresolved  
-**Author metadata:** David Tong  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/fluids2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 56 pages; 83541 non-space characters  
-**Title basis:** first-page-heuristic  
-
-## 235. FRACTIONAL HARDY INEQUALITIES
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/frac_hardy_visibility_ILTV_rev.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 30 pages; 55208 non-space characters  
-**Title basis:** first-page-heuristic  
-
-## 236. Fundamental equation(s) of string theory? - Physics Stack Exchange
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Fundamental equation(s) of string theory_ - Physics Stack Exchange.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 3 pages; 4257 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 237. The Lagrangian Approach to General
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/general-relativity-lagrangian.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 32436 non-space characters  
-**Title basis:** first-page-heuristic  
-
-## 238. Discrete gradient methods for solving variational image
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/gradientimproREVISED.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 20 pages; 40979 non-space characters  
-**Title basis:** first-page-heuristic  
-
-## 239. Gauge PDEs and AKSZ sigma models
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/GriroievTrieste2018slides.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 43 pages; 16861 non-space characters  
-**Title basis:** first-page-heuristic  
-
-## 240. Hologrammata - A simple and rigorous proof of 26/10 dimensions in string theory
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Hologrammata - A simple and rigorous proof of 26_10 dimensions in string theory.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 17 pages; 18235 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 241. This paper is comprised of notes for a talk I gave for the Calabi Conjecture Reading Group. The purpose
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/holonomy (1).pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 3 pages; 6372 non-space characters  
-**Title basis:** first-page-heuristic  
-
-## 242. Holonomy.dvi
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Holonomy.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 22955 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 243. Three-dimensional non-Abelian quantum holonomy
-
-**Identifier candidate:** DOI: `10.1038/s41567-022-01807-5`  
-**Author metadata:** Vera Neef  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/HOLONOMYs41567-022-01807-5.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 32135 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 244. HsH / SAT source toolkit
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/HsHtoolkit2_1.pdf`  
-**Duplicate repository paths:** `H(s)H_Toolkit/HsHtoolkit_1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1055 pages; 2019682 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 245. HsH / SAT source toolkit
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/HsHtoolkit2_4.pdf`  
-**Duplicate repository paths:** `H(s)H_Toolkit/HsHtoolkit_4.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1020 pages; 1724094 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 246. HsH / SAT source toolkit
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/HsHtoolkit2_5.pdf`  
-**Duplicate repository paths:** `H(s)H_Toolkit/HsHtoolkit_5.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 328 pages; 430538 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 247. HsH / SAT source toolkit
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/HsHtoolkit3_2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 335 pages; 423861 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 248. HsH / SAT source toolkit
-
-**Identifier candidate:** ARXIV: `1510.04407v1`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/HsHtoolkit_Addendum.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 241 pages; 359546 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 249. hypersph.dvi
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/hypersph.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 3 pages; 2079 non-space characters  
-**Title basis:** pdf-metadata  
-
-## 250. The main geometric objects of interest in [1] are hyperspherical varieties, which are
-
-**Identifier candidate:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/hyperspherical.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 27274 non-space characters  
 **Title basis:** first-page-heuristic  

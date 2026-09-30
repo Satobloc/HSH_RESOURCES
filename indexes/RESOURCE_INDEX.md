@@ -2,36 +2,38 @@
 
 > Generated navigation artifact; not a bibliography or theory-evidence judgment.
 
-- Scanned: `2026-09-15T06:51:46Z`
-- Tree/content state: `f5ee8d6cf4ccd9f39a02277e4c5b2eca49f054fe026bd25c18e77f0a6ba93f40`
+- Scanned: `2026-09-30T17:42:06Z`
+- Tree/content state: `277c39e83984d5f2848b8feb98c3998307025cf08ad3e264d89d70d5e724784e`
 - Coverage: complete structural traversal
-- Files: 2063
-- Uploaded source files: 1805
-- PDF papers: 1321
-- Repository machinery files: 258
-- Byte-identical duplicate groups: 119
+- Files: 2596
+- Uploaded source files: 2331
+- PDF papers: 1341
+- Repository machinery files: 265
+- Byte-identical duplicate groups: 162
 
 ## Top-level coverage
 
 | Path | Files |
 |---|---:|
 | `!_HSH_RESOURCES_INDEX.md` | 1 |
-| `.github` | 7 |
+| `.github` | 8 |
 | `.gitignore` | 1 |
 | `2020-10-braiding-photonic-topological-modes.pdf` | 1 |
+| `30SEP_PAPER_DUMP` | 27 |
 | `ARXIV PAPER - 2503.14745v2.pdf` | 1 |
 | `BIG PAPERS` | 3 |
-| `Consciousness + AI` | 16 |
+| `Consciousness + AI` | 20 |
 | `DATA` | 12 |
 | `EINSTEIN - Über die spezielle und die allgemeine Relativitätstheorie.txt` | 1 |
 | `EINSTEIN — SIDELIGHTS ON RELATIV.txt` | 1 |
 | `EINSTEIN+MINKOWSKI — PRINCIP RELAT.txt` | 1 |
-| `EXPOSURE_STATS` | 341 |
+| `EXPOSURE_STATS` | 639 |
 | `H(s)H_Toolkit` | 324 |
 | `HAUL 1` | 70 |
 | `HAUL 10` | 3 |
 | `HAUL 11` | 6 |
 | `HAUL 12` | 7 |
+| `HAUL 13` | 1 |
 | `HAUL 2` | 72 |
 | `HAUL 3` | 41 |
 | `HAUL 4` | 14 |
@@ -41,33 +43,48 @@
 | `HAUL 8` | 14 |
 | `HAUL 9` | 4 |
 | `HISTORICAL` | 28 |
+| `HQ` | 37 |
 | `KERR` | 16 |
 | `LIVE_RESEARCH_UPDATES` | 21 |
-| `OUTSIDE RESEARCH LIBRARY` | 344 |
-| `PDF_SPECS` | 33 |
-| `PRIOR_ART` | 365 |
+| `MAG_RECON` | 13 |
+| `OUTSIDE RESEARCH LIBRARY` | 355 |
+| `PDF_SPECS` | 35 |
+| `PRIOR_ART` | 442 |
+| `PRIVATE_WORKSPACE` | 12 |
 | `README.md` | 1 |
 | `REDISCOVERED` | 7 |
 | `SCRIPT_EXECUTION_SAFETY.md` | 1 |
-| `SOURCE_INVENTORY` | 3 |
+| `SOURCE_INVENTORY` | 4 |
 | `Topics_in_statistical_physics_invol.pdf` | 1 |
+| `WORKSPACES` | 21 |
 | `derived` | 45 |
-| `indexes` | 197 |
-| `info` | 7 |
+| `indexes` | 198 |
+| `info` | 28 |
 | `requirements-tools.txt` | 1 |
 | `symmetry-11-01298.pdf` | 1 |
 | `tests` | 1 |
-| `tools` | 12 |
+| `tools` | 18 |
 
 ## Duplicate-content groups
 
+- `01497349e0a06d4437e6fba9a01bbda6ad231b0c537f340f51debde77bb42b14`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS16SEP2.txt`
+  - `PRIOR_ART/NEWS16SEP2.txt`
 - `01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b`
+  - `30SEP_PAPER_DUMP/gitignore.txt`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/gitignore.txt`
   - `EXPOSURE_STATS/arXiv_analysis/gitignore.txt`
   - `HAUL 12/gitignore.txt`
+  - `HAUL 13/gitignore.txt`
   - `HISTORICAL/gitignore.txt`
   - `PDF_SPECS/gitignore.txt`
   - `PRIOR_ART/gitignore.txt`
   - `REDISCOVERED/gitignore.txt`
+- `02b57a0820fa0c896878c2c91892e8f0270effe66a1e5fac339ca9f308571c09`
+  - `EXPOSURE_STATS/Commits over time (1).csv`
+  - `EXPOSURE_STATS/Commits over time.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Commits over time (1).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Commits over time.csv`
 - `064069f9073580c36f12711012d0e52f2e6b2167a80f677908c6ed9d23a7fe24`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf`
   - `H(s)H_Toolkit/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf`
@@ -122,18 +139,30 @@
 - `2173c905c5d114e5dd559091a059c7d6b4c1d0e7863393b026d3d590b88b3b42`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheNewPhysics_TrendsChart_AvgConsumptionTime_SincePublished (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheNewPhysics_TrendsChart_AvgConsumptionTime_SincePublished.csv`
+- `227f9972c053d88c59ae262514dde415c8824b469845dd6c3e1858ad489a1b7a`
+  - `EXPOSURE_STATS/Code frequency.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Code frequency.csv`
 - `2292c55e99962c85ac3cb4d4896c431d0c1d22b657c01db983dbb6fa95742787`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB ACTIVITY - Unique cloners in last 14 days.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Unique cloners in last 14 days.csv`
+- `22d1c73da9fe60c78f395d062e7206f0da769dd7dcf3e6b69171391fb8bd5c3a`
+  - `EXPOSURE_STATS/Code frequency (1).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Code frequency (1).csv`
 - `23b4f2feeb20192662c43d839de47fb6226678e606101f7db6fb30892453da26`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/ANALYSIS - NEWS + THEORY.txt`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - BROADER SCIENCE.txt`
+- `2515cde2742b7241c6e58bad5609ba56837e7bd92f76bafb424b12f583d916ba`
+  - `EXPOSURE_STATS/Satobloc's Commits (1).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Satobloc's Commits (1).csv`
 - `2a066e046105cc5a5b488ba052854d38ddc2223b0add3912216017e2efefd6ee`
   - `HAUL 2/ssrn-6956780 (1).pdf`
   - `HAUL 2/ssrn-6956780.pdf`
 - `2ac120b755e53e489de64da1e8285c0b308eb64f63bc0db075e67cfbfac9f999`
   - `H(s)H_Toolkit/0b0d0496b0cfbbba1d88858ca8362e98_lecture11.pdf`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/0b0d0496b0cfbbba1d88858ca8362e98_lecture11.pdf`
+- `2afee84d714812926db4ed166a23bceb5e4a65cd4548bcf1314d117d22cb0184`
+  - `EXPOSURE_STATS/Total views in last 14 days.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Total views in last 14 days.csv`
 - `2b7c308566f7416a893aa3e0101484d453bee6f955387293cec47827f926442f`
   - `HAUL 8/RPP1978_Bell (1).pdf`
   - `HAUL 8/RPP1978_Bell (2).pdf`
@@ -154,14 +183,28 @@
 - `325df60a77e33a80b5652f3870c46002c675f270f37904c219b0bd000cb711a6`
   - `LIVE_RESEARCH_UPDATES/k41k-2pnc.pdf`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/k41k-2pnc.pdf`
+- `333144206ba6f17d3ca1090c1165d657d740b5b5dd4cd8a58b5bc0663e477412`
+  - `EXPOSURE_STATS/Satobloc_SAT_THEORY_ARCHIVE_2023-25_b588e6.json`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Satobloc_SAT_THEORY_ARCHIVE_2023-25_b588e6.json`
 - `35b46d6497c947b41f3f314065412c57d48b44c8de827eaa5174429a47c8e3c9`
   - `EXPOSURE_STATS/EXP_ANALYSIS/CONCAT_DAI_Transcripts_TEXT.txt`
   - `EXPOSURE_STATS/PODCAST_EPs/DAI_Transcripts_TEXT.txt`
+- `366a7b1ff007678dff387ce56915b6a8bd85636d0271dacd4e2f7137015e9e28`
+  - `EXPOSURE_STATS/Clones in last 14 days (3).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Clones in last 14 days (3).csv`
 - `37bc7d2921bad508feb7fdd04b7faa9e19d5a60257f49b534eceef1c2ccbf221`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_1-1-2026--6-16-2026 (1).csv`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_1-1-2026--6-16-2026.csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_1-1-2026--6-16-2026 (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_WeekOverWeekRetention_1-1-2026--6-16-2026.csv`
+- `3d260740f7da86fd0440f350a3dec6f134fe7e8f45766acac83af0b153fbcfd9`
+  - `EXPOSURE_STATS/Unique cloners in last 14 days (1).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Unique cloners in last 14 days (1).csv`
+- `3e44c583a870777479f15d8207f97145356684f78d4adfa37862a05ebc561b7a`
+  - `EXPOSURE_STATS/Commits over time (2).csv`
+  - `EXPOSURE_STATS/Commits over time (3).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Commits over time (2).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Commits over time (3).csv`
 - `42ab243dcce4ecf92215f81aa62f2102a1159b1572ce5a2c5a947b45780e887d`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (10).csv`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (9).csv`
@@ -170,6 +213,9 @@
 - `430f3bf16ba6f10c87a74775810b60b9f25d10e1ac164cb5b9925e10c4dff907`
   - `PRIOR_ART/2603.12434v1.pdf`
   - `PRIOR_ART/LENNY 2603.12434v1 (1).pdf`
+- `43599815b79f37b26c04438547c123cac659ffb0a5065a96577da5743b89d515`
+  - `EXPOSURE_STATS/Clones in last 14 days (2).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Clones in last 14 days (2).csv`
 - `47b14faa4ac02dad37138e094d6f8a4ddaac657faa498842c780241351e8fca6`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/TheNewPhysics_TrendsChart_AvgConsumptionTime_SincePublished (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/TheNewPhysics_TrendsChart_AvgConsumptionTime_SincePublished (2).csv`
@@ -184,6 +230,9 @@
 - `4b805b013b0a1fafc90ae9452423d0f438a5eceac454ec916549db0731c7cca2`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2605.22005v1.pdf`
+- `4c032e7b30ca66bbc8322226eb5a864499120781c99314c36f80c0480e836859`
+  - `EXPOSURE_STATS/Commits (3).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Commits (3).csv`
 - `5029c5a37bbbbd19b57d24f1228ff306a7ea6e632a8e60c2f7d13dff5fe93873`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A simple discovery is shaking the foundations of spintronics _ ScienceDaily - Copy.pdf`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A simple discovery is shaking the foundations of spintronics _ ScienceDaily.pdf`
@@ -201,6 +250,9 @@
 - `5507eaede9f2237fd272598086971096f1557543474151213156ff5d0a25a77e`
   - `LIVE_RESEARCH_UPDATES/6dt2-sq44.pdf`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/6dt2-sq44.pdf`
+- `57138c657fd4f51871fd3ada20bb4da27c0ca184e82c0cbda6c3d52ed448a794`
+  - `EXPOSURE_STATS/Code frequency (2).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Code frequency (2).csv`
 - `58ba1db7860eba50d2d9aa3dc42495f87234f49bd1b8e220040e4e9c9b0a3c08`
   - `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2606.25499v1.pdf`
   - `PRIOR_ART/2606.25499v1.pdf`
@@ -213,12 +265,20 @@
 - `5a03c3a3dd646b4e682535ac14b3e569265c310a0322957d3ecdf483af092c67`
   - `H(s)H_Toolkit/1c9e44c6a1b94e7c371c307a93779ffb_lecture25.pdf`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/1c9e44c6a1b94e7c371c307a93779ffb_lecture25.pdf`
+- `5a852cd8cef0ed2d4650040d9002f7818796044702daecea876a38e7756a5526`
+  - `EXPOSURE_STATS/HSH_TRAFFIC_23SEP26.txt`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/HSH_TRAFFIC_23SEP26.txt`
 - `5b862fda843c7de1a99af463264b746765064ce75049d02fbe6c4a260e5ff686`
   - `HAUL 1/ssrn-7228958 (1).pdf`
   - `HAUL 1/ssrn-7228958.pdf`
 - `5f35c6e848a6eb00c2f3cfc424d6000e796005934665e28432e367b5c9690832`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB ACTIVITY - MAY GITHUB ACTIVITY.txt`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — MAY GITHUB ACTIVITY.txt`
+- `5fc2bf98c225836ab25a3032a20239ade5a56f216fae30ce4b9b31b819fe3af4`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/razzant's Commits (1).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/razzant's Commits.csv`
+  - `EXPOSURE_STATS/razzant's Commits (1).csv`
+  - `EXPOSURE_STATS/razzant's Commits.csv`
 - `60aa04afd73906bd831556d6152e3603be5916c9c586eaf1c9df2bab45c667d7`
   - `HAUL 12/0512012v1.pdf`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/0512012v1.pdf`
@@ -231,6 +291,15 @@
 - `63c3435b2fd525afcf8672db37bdb8e2b0438550a57a3fb9aea4f53ce3208a4c`
   - `LIVE_RESEARCH_UPDATES/589s-s1yy.pdf`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/589s-s1yy.pdf`
+- `64eeb8237edeb9e0aeba19842ac9f1d028bd0137ac04ef919438214b9a6682b2`
+  - `EXPOSURE_STATS/Commits.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Commits.csv`
+- `650156a42b78fc41d544c7458686bd355eaedd04fbf385ffd889a9600bca16ab`
+  - `EXPOSURE_STATS/Commits (1).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Commits (1).csv`
+- `65bf7116ae10e64608d85d69b22d0fe99a0b51da63c8f10189c003842bb0683c`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/github-actions[bot]'s Commits (1).csv`
+  - `EXPOSURE_STATS/github-actions[bot]'s Commits (1).csv`
 - `660d1364447644b4eddf51ce56c6435ca90c799e14aebf8f6b4b38ea74812009`
   - `PRIOR_ART/2605.26410v1 (1).pdf`
   - `PRIOR_ART/2605.26410v1.pdf`
@@ -240,6 +309,9 @@
 - `66b5deb150c49484cfb031b8b56bdc97e0a72a65bba0b699cf82a7214ba85fee`
   - `HAUL 3/EPR (1).pdf`
   - `HAUL 3/EPR.pdf`
+- `66b843dfb015c636d678dc4ad2d17117b0196c566aaf0ecaad899ed8ff2ec9ef`
+  - `EXPOSURE_STATS/Clones in last 14 days (1).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Clones in last 14 days (1).csv`
 - `69bafd656f9f09a6d6248f926e65bd8bd090336fb46587487ef96169cd9c4626`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/a13b3444c1e2926aca5f25bdda522bc6_lecture07.pdf`
   - `H(s)H_Toolkit/a13b3444c1e2926aca5f25bdda522bc6_lecture07.pdf`
@@ -249,12 +321,22 @@
 - `6e70f9b7e04989238e08c647f314411e642b2c6bcf787b21335ccdd28df10d9e`
   - `HAUL 3/0010047v2 (1).pdf`
   - `HAUL 3/0010047v2.pdf`
+- `6ee7ecdee186189c7c5f533584e5c5025d76ede8ac64fcc112ea1f757d66b0ef`
+  - `EXPOSURE_STATS/Unique cloners in last 14 days (2).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Unique cloners in last 14 days (2).csv`
 - `72f21ed12d5a937c95540dace2700bc5b190a6132cf89691bc9a4b2d79440193`
   - `LIVE_RESEARCH_UPDATES/Can AI find physics beyond the standard model_.pdf`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Can AI find physics beyond the standard model_.pdf`
 - `743828e4368cce7613822b02440094fc3deb980da2fbec6fd805b3b9db8071ff`
   - `H(s)H_Toolkit/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`
+- `751a835ca00f1deb946353ecf877a63eac2c1f29ca202eb6ed48d5c1c3beeafb`
+  - `30SEP_PAPER_DUMP/2503.19970v1.pdf`
+  - `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2503.19970v1.pdf`
+- `75595ad43b3be82e56436c0bb4fc9bb9acc3f985d1dd92747f66d7a775636948`
+  - `EXPOSURE_STATS/GITHUB_INSIGHTS.txt`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/GITHUB_INSIGHTS.txt`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB_INSIGHTS.txt`
 - `75abda0396494af785d88d996fcad58b6cba9063ff23a1d9a988513459229999`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (5).csv`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (6).csv`
@@ -264,9 +346,18 @@
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (6).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (7).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (8).csv`
+- `75ef707b11a8be9698926fb4dfa9dfbc0d519c61bbe08a92891d0f550f8e05b3`
+  - `EXPOSURE_STATS/Unique cloners in last 14 days.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Unique cloners in last 14 days.csv`
+- `761b20730af235bc96e52eaafcf4c88833176059f49cef783248f4145b9ca67e`
+  - `EXPOSURE_STATS/Clones in last 14 days.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Clones in last 14 days.csv`
 - `76413659ed85e3a44a27b59eee6cc46a78063d3ee9bbfc4180c80887e8d3df17`
   - `HAUL 4/7075779.pdf`
   - `HAUL 5/ssrn-7075779.pdf`
+- `767a28fe1ded4ce172de4f0cd05c9a16936c206748e36bb8700fdc88b412b353`
+  - `EXPOSURE_STATS/Unique cloners in last 14 days (3).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Unique cloners in last 14 days (3).csv`
 - `77503f187b1530697d648402f8162a28d235052c5496d07171d00aa3798fcf65`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (1).csv`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (2).csv`
@@ -274,6 +365,11 @@
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (1).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (2).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days.csv`
+- `77703838417884bef92c2769eafff168c3eb4a03d9d2973d6a8cc15d6bed5b3c`
+  - `EXPOSURE_STATS/Unique visitors in last 14 days (2).csv`
+  - `EXPOSURE_STATS/Unique visitors in last 14 days (3).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Unique visitors in last 14 days (2).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Unique visitors in last 14 days (3).csv`
 - `778cffa3a62d2c01965ac5598ab27f1f291945833328ec14bb13db96e6a11382`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault - Copy.pdf`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault.pdf`
@@ -297,6 +393,9 @@
 - `85fb06fc0c55d3ebd80eb2e184d5198de6afdebbf5b5a7e8be305ba87b12874a`
   - `HAUL 1/ssrn-7075498 (1).pdf`
   - `HAUL 1/ssrn-7075498.pdf`
+- `8eabd50bc038430def1d701b00e34ad155db9f758b64fed7b2d4ac4256f5f9d3`
+  - `EXPOSURE_STATS/Commits (2).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Commits (2).csv`
 - `90316b0cfebb35db92065020670ed6603b904c3d87d3dba5b6bc2b217d1919ac`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A new hypothesis could connect two of physics’ greatest mysteries_ dark energy and quantum gravity - Copy.pdf`
   - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A new hypothesis could connect two of physics’ greatest mysteries_ dark energy and quantum gravity.pdf`
@@ -318,6 +417,9 @@
 - `98b86e6f8d2312c91c2c96ceb29891dd3c44d201598ba96dbf6460a6c07c685f`
   - `H(s)H_Toolkit/HsHtoolkit2_1.pdf`
   - `H(s)H_Toolkit/HsHtoolkit_1.pdf`
+- `9c4ce5acaac52c03653c7c07aec9599a5886bb4cbd14abcb664bc0804c32f993`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/github_traffic_readme.txt`
+  - `EXPOSURE_STATS/github_traffic_readme.txt`
 - `a1c28719e18532951800b35b33f55afae3c903491cdbeca2b20d6c51e18d6bfc`
   - `HAUL 2/ssrn-6887518 (1).pdf`
   - `HAUL 2/ssrn-6887518.pdf`
@@ -327,6 +429,9 @@
 - `a1fa3d81877b2cb1c49429ca22737d114ffb6eca95f319062c26407c39f77272`
   - `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.03001v1.pdf`
   - `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03001v1.pdf`
+- `a4f41ea1823103ab2ff003996cffc89426f073a916f429d4fb5baac6a6fc5b75`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/ndrew2's Commits.csv`
+  - `EXPOSURE_STATS/ndrew2's Commits.csv`
 - `a8d6928d72dff14ea8791c8afddb38e4a02e782025c9356e74b90d63a32aea50`
   - `PRIOR_ART/2510.25430v2.pdf`
   - `PRIOR_ART/3d ker 2510.25430v2 (1).pdf`
@@ -346,9 +451,15 @@
 - `b521569545fe74776b6eafd2707b90710e3b06260d32cd94776f4a02c07f21ac`
   - `HAUL 2/ssrn-7352038 (1).pdf`
   - `HAUL 2/ssrn-7352038.pdf`
+- `b569d6eacbb4b34eab761a2d7b7c22b2170d037a7699025eedfedba13027d5a6`
+  - `EXPOSURE_STATS/SAT_TRAFFIC_23SEP26.txt`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT_TRAFFIC_23SEP26.txt`
 - `b69fe7ab0267a553f6e1a180b0bbb98b5dafc6ec1176e623bcc1d276f50c53a3`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating  LISTENERSHIP.txt`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating  Listeners 2.txt`
+- `b6dbcfcc5425d892d1895e55a3a150178400fa1e80a1608cef2380f2a2786dbc`
+  - `EXPOSURE_STATS/Total views in last 14 days (1).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Total views in last 14 days (1).csv`
 - `b91414873efb096ba4982e96de429816ac853c60617b68024d5009bacd582989`
   - `OUTSIDE RESEARCH LIBRARY/BACKREACTION/2608.31163v1 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/STRINGS+/2608.31163v1.pdf`
@@ -361,6 +472,9 @@
 - `bdc002ee89d6450dfe075d7abfb418b31c26035d87e5a1d20ba75502fa98a407`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB ACTIVITY - Unique visitors in last 14 days.csv`
   - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/SAT GIT — Unique visitors in last 14 days.csv`
+- `bee3367a8e16d4b44a44249e833616cf4454ea8b9cf247280ae7fd72fdc35b5f`
+  - `EXPOSURE_STATS/PODCAST_GUIDE/cues/archive--debating-a-i-on-the-future-of-physics-renormalization-is-obsolete--68d775e33241.jsonl`
+  - `EXPOSURE_STATS/PODCAST_GUIDE/cues/archive--debating-a-i-on-the-future-of-physics-renormalization-is-obsolete-1--68d775e33241.jsonl`
 - `c5f441626fcae53d8bf7530a65b7790837f3db84a1ff031e42e4eed16e808875`
   - `HAUL 4/7258242.pdf`
   - `HAUL 7/ssrn-7258242.pdf`
@@ -379,12 +493,18 @@
 - `ce8a12a3cf27e0512ee84340b63d318f49ab07e1a11d2971ee315418dd95b806`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_AudienceSegments_1-1-2025--6-15-2026.csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_AudienceSegments_1-1-2025--6-15-2026.csv`
+- `ce930064aea4d18febde492b7a40939159443f53c4fd8b4ae394b7509895bdfb`
+  - `EXPOSURE_STATS/GITHUB_ASSISTANT_CONVO.txt`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/GITHUB_ASSISTANT_CONVO.txt`
 - `d1ee8716b2ffd59bf030f1e6ea7bb21e0b6437657a099c9435a7fa0b463ece81`
   - `HAUL 2/ssrn-6962403 (1).pdf`
   - `HAUL 2/ssrn-6962403.pdf`
 - `d3883c529cfe6a944d77e2899d53d17a35d0593f29f3199c7799c2f4979b69e2`
   - `H(s)H_Toolkit/HsHtoolkit2_5.pdf`
   - `H(s)H_Toolkit/HsHtoolkit_5.pdf`
+- `d52e0069472ec758b1099ba4505e7c3b3e48b3cad2a8465797529262dee122ee`
+  - `EXPOSURE_STATS/Unique visitors in last 14 days (1).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Unique visitors in last 14 days (1).csv`
 - `d7aabb1d64ca0acc5750bb4adf3c48c42ee22b5d6bf2c18b8c33ea49dc7fd4ca`
   - `HAUL 2/ssrn-6315940.pdf`
   - `HAUL 3/helic 6315940.pdf`
@@ -394,9 +514,15 @@
 - `d85ac3f315e3b976e87998d830e5139053840687ee9edbc823a2c11cc58fa66b`
   - `PRIOR_ART/2608.09607v1 (1).pdf`
   - `PRIOR_ART/2608.09607v1.pdf`
+- `daa673c5522179a5020d6481ae42aec0ad20e550312b0eb6d7522cef9dda292d`
+  - `EXPOSURE_STATS/Satobloc's Commits.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Satobloc's Commits.csv`
 - `df0543eceb0963bdb9019c3ca948ff8a15978cdaf075bd913468fce4d7cac4e6`
   - `H(s)H_Toolkit/HsHtoolkit2_4.pdf`
   - `H(s)H_Toolkit/HsHtoolkit_4.pdf`
+- `df7e6502b7432863fb2443fe66a222cf1aa30e2615756b4de0e05bb09b3607ef`
+  - `EXPOSURE_STATS/Unique visitors in last 14 days.csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Unique visitors in last 14 days.csv`
 - `dfffae212782a4f8cc680b2542cc7d0c777943a6d514f68b5b0509f238955fb5`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/af966809bba8f11cacf5f4e88d75ed1d_lecture06.pdf`
   - `H(s)H_Toolkit/af966809bba8f11cacf5f4e88d75ed1d_lecture06.pdf`
@@ -409,25 +535,47 @@
 - `e203faa631e24e4fc932ee00c22529d463b7f79f5b29f5ac5023f46619ca7966`
   - `HAUL 2/ssrn-6981703 (1).pdf`
   - `HAUL 2/ssrn-6981703.pdf`
+- `e34543899d054cbf7e45373f652fdf94b6edfe1d5f93335972968b87c83957ec`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/ouroboros-agent's Commits (1).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/ouroboros-agent's Commits.csv`
+  - `EXPOSURE_STATS/ouroboros-agent's Commits (1).csv`
+  - `EXPOSURE_STATS/ouroboros-agent's Commits.csv`
+- `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+  - `DATA/DATA RELEASE — PULL REQUESTS.txt`
+  - `WORKSPACES/MIRA/.keep`
 - `e676ea6df3cbbb1d5ac14661ba4be225fa9c71e6daec45d405d113ef63fafbec`
   - `2020-10-braiding-photonic-topological-modes.pdf`
   - `PRIOR_ART/2020-10-braiding-photonic-topological-modes.pdf`
 - `e6a4964452167426e8d694c84bf80070b9c1a3e2a0795dd64faecd8843ff024e`
   - `HAUL 1/ssrn-7133961 (1).pdf`
   - `HAUL 1/ssrn-7133961.pdf`
+- `e70b2c24f383df982023b0c7cf77a4d2997a0ed06a32110e270e94ea0c30dfd2`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/github-actions[bot]'s Commits.csv`
+  - `EXPOSURE_STATS/github-actions[bot]'s Commits.csv`
 - `e83ebde07da4fad53eea52b8afb0f19dca5fe904f82598bfb9c18250d2dcdd26`
   - `H(s)H_Toolkit/STRING THEORY (MIT)/deb6ad4ba42bb173e8e403f4b8acb73f_lecture18.pdf`
   - `H(s)H_Toolkit/deb6ad4ba42bb173e8e403f4b8acb73f_lecture18.pdf`
 - `e997c865a586381c9c8ab575f95a1bc09ff0283a18ba6d39e658649e95688df4`
   - `HAUL 7/ssrn-7242985 (1).pdf`
   - `HAUL 7/ssrn-7242985.pdf`
+- `ea50d0931d70eb284bc7ebe9ac6db90cc5ed28be5f5b960f8066705b63695cf9`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/claude's Commits.csv`
+  - `EXPOSURE_STATS/claude's Commits.csv`
 - `eb36dbcf07c92e092cee28044b74d6d0f613e7ac6c2c60305ea4b68592f9960e`
   - `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code 2.pdf`
   - `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code 3.pdf`
   - `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code.pdf`
+- `ec66f4ee042a754670fe9b1df8b98baff45d690eca8a0cdca7ad5375d2f07314`
+  - `EXPOSURE_STATS/Total views in last 14 days (2).csv`
+  - `EXPOSURE_STATS/Total views in last 14 days (3).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Total views in last 14 days (2).csv`
+  - `EXPOSURE_STATS/_SAT  Satobloc GitHubStats/CONTROLS/Total views in last 14 days (3).csv`
 - `eeaca47f4c1b046b98f25575bbc85d1f7be87c4bd54fa1c85828b6d17f865d1a`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2 (1).pdf`
   - `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2.pdf`
+- `ef52674d03366f930d00862ee8605ce1ad24f9ef676ca4bbafbc92565bde495c`
+  - `EXPOSURE_STATS/PODCAST_GUIDE/cues/archive--debating-a-i-on-the-future-of-physics-electrogravacoustics-2--407b1a9e2153.jsonl`
+  - `EXPOSURE_STATS/PODCAST_GUIDE/cues/archive--debating-a-i-on-the-future-of-physics-electrogravacoustics-2-1--289acc7a7a58.jsonl`
 - `f11f871f4aa948feade1a904b13e92097e58906e00965d32c764a539ffc6c640`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (4).csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_TrendsChart_PlaysAndDownloads_First7Days (4).csv`
@@ -455,6 +603,9 @@
 - `fbcebed5b0ac33642d6d10255ec69871c63890046204a0abd4cbd5ba1798331d`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI Podcast Stats.txt`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/Debating AI Podcast.txt`
+- `fe72d1f83ab31afdcef36125f0a130d9f58e61cee2672fcc3288fd7d6e47af11`
+  - `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/ALDEN CROSS — raw (2).json`
+  - `PRIOR_ART/ALDEN CROSS — raw (2).json`
 - `ffbdf650a8e6892a082e2eccba86e2b359ace8381177d8604ec5187dafe59b4d`
   - `EXPOSURE_STATS/DEBATING AI DATA/DebatingA.I.OntheFutureofPhysics_GeoLocationAllPlatforms_all-time.csv`
   - `EXPOSURE_STATS/SAT — PODCAST STATS/DebatingA.I.OntheFutureofPhysics_GeoLocationAllPlatforms_all-time.csv`
@@ -464,6 +615,26 @@
 | Path | Bytes | Identifier hint |
 |---|---:|---|
 | `2020-10-braiding-photonic-topological-modes.pdf` | 354922 |  |
+| `30SEP_PAPER_DUMP/0408104v2.pdf` | 202106 | unresolved-seven-digit-id:0408104v2 |
+| `30SEP_PAPER_DUMP/0707.0071v3.pdf` | 652197 | arxiv:0707.0071v3 |
+| `30SEP_PAPER_DUMP/1-s2.0-0097316573900332-main.pdf` | 1026705 |  |
+| `30SEP_PAPER_DUMP/1-s2.0-S000187081930115X-main.pdf` | 1295422 |  |
+| `30SEP_PAPER_DUMP/1-s2.0-S055032132500344X-main.pdf` | 2164479 |  |
+| `30SEP_PAPER_DUMP/1-s2.0-S0550321326002385-main.pdf` | 4448169 |  |
+| `30SEP_PAPER_DUMP/10.1007_bf02018723.pdf` | 1245611 |  |
+| `30SEP_PAPER_DUMP/1806.05232v1.pdf` | 403061 | arxiv:1806.05232v1 |
+| `30SEP_PAPER_DUMP/2210.06941v1.pdf` | 1246191 | arxiv:2210.06941v1 |
+| `30SEP_PAPER_DUMP/2503.19970v1.pdf` | 512477 | arxiv:2503.19970v1 |
+| `30SEP_PAPER_DUMP/2508.21326v2.pdf` | 1785734 | arxiv:2508.21326v2 |
+| `30SEP_PAPER_DUMP/2511.23447v3.pdf` | 873294 | arxiv:2511.23447v3 |
+| `30SEP_PAPER_DUMP/2Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 516837 |  |
+| `30SEP_PAPER_DUMP/3234Advanced Search _ arXiv e-print repository.pdf` | 1200383 |  |
+| `30SEP_PAPER_DUMP/3Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 570783 |  |
+| `30SEP_PAPER_DUMP/3Nathan McKnight - User on NightCafe - NightCafe.pdf` | 2900058 |  |
+| `30SEP_PAPER_DUMP/4Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 500339 |  |
+| `30SEP_PAPER_DUMP/5Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 508569 |  |
+| `30SEP_PAPER_DUMP/6Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 510021 |  |
+| `30SEP_PAPER_DUMP/7Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf` | 509380 |  |
 | `ARXIV PAPER - 2503.14745v2.pdf` | 16221373 | arxiv:2503.14745v2 |
 | `BIG PAPERS/qt2f18n5nk.pdf` | 14358136 |  |
 | `BIG PAPERS/ssrn-7385521.pdf` | 10277174 | ssrn:7385521 |

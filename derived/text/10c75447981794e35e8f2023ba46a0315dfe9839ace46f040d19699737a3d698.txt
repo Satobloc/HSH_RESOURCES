@@ -1,0 +1,747 @@
+===== PAGE 1 =====
+A latent spatial factor approach for synthesizing opioid
+associated deaths and treatment admissions in Ohio
+counties
+Staci A. Hepler1, Erin McKnight2, Andrea Bonny3, and David Kline4
+1Department of Mathematics and Statistics, Wake Forest University
+2,3Nationwide Children’s Hospital
+4Center for Biostatistics, The Ohio State University
+Abstract
+Background: Opioid misuse is a major public health issue in the United States and in par-
+ticular Ohio. However, the burden of the epidemic is challenging to quantify as public health
+surveillance measures capture different aspects of the problem. Here we synthesize county-
+level death and treatment counts to compare the relative burden across counties and assess as-
+sociations with social environmental covariates. Methods: We construct a generalized spatial
+factor model to jointly model death and treatment rates for each county. For each outcome, we
+specify a spatial rates parameterization for a Poisson regression model with spatially varying
+factor loadings. We use a conditional autoregressive model to account for spatial dependence
+within a Bayesian framework. Results: The estimated spatial factor was highest in the south-
+ern and southwestern counties of the state, representing a higher burden of the opioid epidemic.
+We found that relatively high rates of treatment contributed to the factor in the southern part of
+the state; whereas, relatively higher rates of death contributed in the southwest. The estimated
+1
+arXiv:1806.05232v1  [stat.AP]  13 Jun 2018
+
+===== PAGE 2 =====
+factor was also positively associated with the proportion of residents aged 18-64 on disability
+and negatively associated with the proportion of residents reporting white race. Conclusions:
+We synthesized the information in the opioid associated death and treatment counts through
+a spatial factor model to estimate a latent factor representing the consensus between the two
+surveillance measures. We believe this framework provides a coherent approach to describe
+the epidemic while leveraging information from multiple surveillance measures.
+Keywords: Bayesian hierarchical modeling, disease mapping, multivariate, spatial analysis,
+substance-related disorders
+Background
+Opioid misuse is currently a major public health issue in the United States because of its high
+prevalence and associated morbidity and mortality (1). When asked about use in the past month,
+approximately 4 million persons reported nonmedical use of a prescription opioid and 400,000
+reported heroin use (2; 3; 4). From 2000 to 2014, the rate of opioid overdose deaths has increased
+200% (5) and are now the leading cause of injury-related death in the United States (6).
+In Ohio, the toll of the epidemic has been particularly severe. In 2016, Ohio ranked second for
+highest overdose death rate (7). The death rates have only continued to increase in Ohio as fentanyl
+has penetrated the state (8). This has led to various policy initiatives aimed at directing resources
+for treatment to affected areas, particularly southern Ohio (9).
+When studying the epidemiology of the opioid epidemic, one particularly challenging aspect
+is choosing how to quantify its local burden. Direct evidence on opioid misuse at the county level
+is often difﬁcult to obtain because large ongoing public health surveys are not often designed to
+estimate rates at the county level and illicit drug use is likely to be underreported (10). Surveys
+using complex designs, like respondent driven sampling (11), have been designed to address some
+of these questions but are often quite resource and time intensive (12).
+Rather than use survey data, we elect to take advantage of surveillance data that are routinely
+collected by the state of Ohio. The state monitors opioid associated deaths and treatment admis-
+2
+
+===== PAGE 3 =====
+sions at the county level. Each outcome provides related but slightly different information regard-
+ing opioid misuse in a county. Rather than choose a single marker as a proxy for the burden of the
+opioid epidemic, we jointly modeled both outcomes in an attempt to gain a more comprehensive
+understanding of the epidemic. By doing so, we can leverage associations between outcomes to
+improve estimation and make joint inferences (13). More interestingly, we can extract common
+features from both counts to construct a spatial latent factor (14; 15). Like other conﬁrmatory
+factor models, we can assign the factor an interpretation based on its indicators. In this case, the
+indicators are opioid associated treatment and death counts so we choose to interpret the latent
+factor as the unobserved “burden” of the opioid epidemic for each county. This latent factor can
+then be used to evaluate the relative burden across the state and assist policy makers and public
+health professionals in targeting counties that are most in need of intervention.
+The computational objective of this study is to utilize the common conditional autoregressive
+(CAR) framework (16), which allows for handling of spatial dependence, and a spatial factor
+model (14) to better characterize the opioid epidemic in individual counties in the state of Ohio.
+The epidemiological objective is to use this modeling approach to synthesize two available surveil-
+lance measures to assess the county-level burden of opioid misuse. We also examine ecological
+associations of the level of burden with sociodemographic characteristics.
+Methods
+Data
+Our model is based on routinely collected surveillance data from the state of Ohio. The state
+monitors opioid associated deaths and treatment admissions for all of Ohio’s 88 counties. For this
+analysis, we used aggregate counts from the three most recent available years, 2013-2015. Death
+counts are publicly available from the Ohio Department of Health website (http://publicapps.odh.
+ohio.gov/EDW/DataCatalog) and were obtained from the Ohio Public Health Data Warehouse
+Ohio Resident Mortality Data. We included all resident deaths where poisoning from any opiate is
+3
+
+===== PAGE 4 =====
+mentioned on the death certiﬁcate. Deaths are counted in the county where the decedent resided
+at the time of death regardless of where the death occurred. ICD-10 multiple cause codes T40.0-
+T40.4 and T40.6 present on the death certiﬁcate denote poisoning from any opiate. Raw observed
+death rates for each county are displayed in Supplement Figure 1(A).
+We obtained treatment admission counts by patient county of residence through a data use
+agreement with the Ohio Department of Mental Health and Drug Addiction Services. Treatment
+admissions were identiﬁed through the diagnostic codes shown in Supplement Table 1 and include
+any residential, intensive outpatient, or outpatient treatment for opioid misuse. Patients who report
+to hospitals or any other medical facility to receive treatment for overdose or other complications
+from opioid misuse are not included in this count. Patients with multiple admissions are only
+counted once. Data were provided separately for those under and over age 21, but we will only
+consider the total counts in this analysis. Counts under 10 were suppressed or censored as a
+matter of state policy, which impacts four counties in this data set. Raw observed treatment rates
+are shown in Supplement Figure 1(B) with censored counties marked in bold. We also note a
+moderate, positive correlation between the death and treatment rates within fully observed counties
+(r = 0.46). A scatter plot of rates is shown in Supplement Figure 1(C).
+We note that Van Wert County was excluded from the analysis due to a data quality issue. Thus,
+87 counties were used in the analyses that follow.
+We obtained county level covariate information to examine associations between social envi-
+ronmental factors and the latent burden of the opioid epidemic. We used the 2015 5-year estimates
+from the United States Census Bureau’s American Community Survey to provide county popula-
+tion and demographic characteristics.
+Statistical Considerations
+For this study, we have bivariate count observations of opioid associated deaths and treatment
+admissions for 87 of Ohio’s counties. We elect to take a Bayesian approach for analyzing county
+level areal data. We will brieﬂy address the statistical approach here and will defer full details of
+4
+
+===== PAGE 5 =====
+the model to the Supplement.
+Our primary goal of the analysis is to synthesize the information from the rates of death and
+treatment in each county through a generalized common spatial factor model (14). Thus, we as-
+sume that there is an underlying spatial factor or latent variable that drives both death and treatment
+rates and also accounts for spatial dependence with factors of neighboring counties. The spatial
+factor is shared across both outcome models within a county as in a structural equation model (17)
+or shared latent variable model (18). This assumes that there are common underlying conditions
+in a county that are associated with both death and treatment rates. In this case, we interpret those
+conditions as the "burden" of the opioid epidemic in a particular county. We can then look for
+associations of the burden with social environmental covariates by including them as ﬁxed effects
+in the mean structure of the spatial factor.
+The joint model for death and treatment rates is speciﬁed as a generalized common spatial fac-
+tor model (14) for Poisson outcomes with spatially varying loadings (15). For each Poisson model,
+we use the spatial rates parameterization (19; 20). The spatial structure in the latent factor and the
+loadings are characterized using an intrinsic CAR model (21; 16). Uncorrelated heterogeneity is
+modeled using independent latent factors for each outcome. We account for the censored treatment
+counts through an adaptation of a censored generalized Poisson regression model (22) for the case
+of interval censoring.
+The full technical model speciﬁcation is provided in the Supplement. We also address the
+speciﬁcation of prior distributions, identiﬁability of the model, and computational details in the
+Supplement. The model was ﬁt using a Markov chain Monte Carlo algorithm that was implemented
+in MATLAB version 2015a and run using a single core of a 128GB node on a high performance
+computing cluster.
+5
+
+===== PAGE 6 =====
+(A) Log Standardized Mortality Ratio
+ (B) Log Standardized Treatment Rate Ratio
+(C) Estimated Spatial Factors
+ (D) Estimated Loadings
+Figure 1: Posterior mean estimates of model parameters for each county.
+6
+
+===== PAGE 7 =====
+Results
+The posterior mean estimates of the log standardized mortality ratio (SMR) are shown in Figure
+1(A). Each ratio reﬂects a comparison to the overall state opioid overdose death rate, which is
+57 deaths per 100,000 residents over the three year period under study. We observe the highest
+rates of opioid overdose death in the southwestern portion of the state near Cincinnati. We see
+approximately average rates of death in southern Ohio and in the northeastern part of the state near
+Cleveland. Below average rates are observed in the northwestern and eastern portions of the state.
+Figure 1(B) shows the log standardized treatment rate ratio for each county. Each ratio is com-
+pared to the overall state opioid misuse treatment admission rate of 563 admissions per 100,000
+residents over this three year period. We see the highest rates of opioid misuse treatment admis-
+sions in southern Ohio which is consistent with an initial state effort to direct resources to that area
+(9). We also see slightly elevated rates along the states eastern border and again see below average
+rates in the northwestern part of the state.
+A map of the posterior mean estimates of the spatial factor for each county is shown in Figure
+1(C). The spatial factor illustrates the consensus between the death and treatment rates for each
+county. This synthesis is evident when comparing Figure 1(C) to Figures 1(A) and 1(B). The spatial
+factor has been constructed such that high values reﬂect a higher burden of the opioid epidemic. We
+note that the scale of the latent factor is arbitrary so that only relative comparisons are meaningful.
+When looking at Figure 1(C), we see that the areas of highest burden are in the southern and
+southwestern portions of the state. We see slightly elevated burdens in the northeastern part of the
+state. We note below average burdens in the northwest part of the state as well as in the east central
+portion.
+The posterior mean estimates of the scaled loadings are shown in Figure 1(D). The technical
+purpose of the loadings is to allow the covariance between the death and treatment rates to vary
+across space. However, we can also interpret a scaled version of the loadings to gain additional
+insights (15). For loadings that are close to zero, this indicates that death and treatment rates are
+contributing roughly the same to the factor. For loadings greater than zero, death rates exert more
+7
+
+===== PAGE 8 =====
+Table 1: Posterior mean estimated regression coefﬁcients and 95% credible intervals capturing the
+association between each standardized covariate and the estimated latent factor.
+Variable Estimated Coefﬁcient 95% Credible Interval
+Median Age -0.014 (-0.103, 0.074)
+Proportion White -0.082 (-0.155, -0.008)
+Log of Median Household Income -0.036 (-0.151, 0.075)
+Proportion Aged 18-64 on Disability 0.322 (0.158, 0.483)
+inﬂuence over the factor, and for loadings less than zero, treatment rates are more inﬂuential. More
+simply, the loadings highlight areas with treatment or death rates that are more extreme than we
+would otherwise expect. We see loadings greater than zeros in southwestern and eastern Ohio
+where rates of death are high compared to the treatment rates. In contrast, in southern Ohio, we
+see negative loading estimates which represent much higher rates of treatment than expected based
+on death rates.
+Table 1 displays the posterior mean estimated regression coefﬁcients and 95% credible inter-
+vals for standardized covariates included in the mean of the spatial latent factor. All estimated
+associations are conditional on the other covariates in the model. We observe credible intervals
+that do not cross zero for the proportion of white residents and the proportion of residents aged
+18-64 on disability. Higher proportions of residents on disability are associated with higher values
+of the latent factor and thus higher burdens of opioids. Higher proportions of white residents are
+associated with lower burdens of opioids. A map of the proportion of white residents is shown in
+eFigure 2. We do not observe evidence of associations between burden of opioids and median age
+or log of median household income.
+Conclusion
+In this paper, we jointly modeled opioid associated deaths and treatment admissions and synthe-
+sized their information through a latent spatial factor. We interpreted the latent spatial factor as
+the burden of opioids in each county and examined associations between the burden and social
+environmental covariates. We observed that the county burden is positively associated with the
+8
+
+===== PAGE 9 =====
+proportion of county residents aged 18-64 on disability and negatively associated with the propor-
+tion of the county that reports their race as white. We were also able to identify counties in the
+state with higher or lower than average levels of relative burden.
+One major advantage of our approach is the ability to synthesize information from multiple
+outcomes related to opioid misuse to arrive at more comprehensive estimates than if we looked
+at either outcome in isolation. Since opioid misuse is an illicit activity, it is difﬁcult to measure
+directly within a surveillance context so it is common to examine proxies like overdose death and
+treatment admissions. However, there can be a desire to extend interpretations beyond the speciﬁc
+proxy to infer about a more general assessment of the severity of the epidemic or relative rates of
+misuse. This implicitly involves assuming a direct correlation between the proxy and misuse that
+is constant over space. However, we observe different spatial patterns for death rates and treat-
+ment rates in our analysis which means that the implicit assumption cannot be simultaneously true
+for both rates. Instead, we believe that the truth is likely to lie in between and by leveraging the
+information contained in multiple outcomes, we can obtain an estimate that better reﬂects hetero-
+geneity across space and extracts the commonalities across outcomes. Thus, rather than making
+conclusions speciﬁc to an outcome or making strong assumptions regarding the relationship be-
+tween the proxy and misuse, we instead coherently incorporate information from both outcomes
+in our estimate of the burden of the epidemic.
+We ultimately believe that our estimates of burden provide a more relevant marker for policy
+makers of the relative severity of the epidemic across counties in the state. By synthesizing multi-
+ple proxy outcomes, we are less likely to be misled by features that are speciﬁc to any one outcome.
+Instead, if we have chosen reasonable proxy outcomes, the consensus between them should pro-
+vide a better marker of the underlying driver of the outcomes or the burden of the epidemic. As
+policy makers allocate resources, areas with the highest burden should be prioritized for additional
+resources to stem the tide of the epidemic. The results of this analysis suggest that new treatment
+resources should be allocated to counties where overdose is contributing more to the burden as in
+southwestern Ohio. Signiﬁcant resources have already been allocated to southern and southeastern
+9
+
+===== PAGE 10 =====
+Ohio (9), which is evident by the relatively high rates of treatment. Our analysis suggests that such
+efforts should expand by focusing next on southwestern Ohio. Resources could include tools to
+reduce overdose deaths like intranasal naloxone or efforts to increase rates of treatment through
+improved access and novel interventions.
+Our approach here serves as the foundation for future modeling and a proof of concept when
+applied to the opioid epidemic. We can extend our model to incorporate additional surveillance
+data as it becomes available. Likewise, we can also extend this framework into the spatio-temporal
+setting. Additional sources of data and the inclusion of time will introduce additional statistical
+challenges as there will be other sources of dependence that require modeling and additional as-
+sumptions will likely be required about the joint set of surveillance outcomes. Our approach to
+this analysis is also not limited to this particular application. We advocate for the use of joint
+models and spatial factor models in other similar situations where multiple proxies may be readily
+available but the true underlying burden of the disease or disorder may be difﬁcult or impossible to
+obtain. This approach provides a principled model for synthesizing the information in the multiple
+outcomes into a readily interpretable relative comparison across space.
+There are a few overarching limitations to our analysis. We utilized state surveillance data
+on deaths and treatment admissions associated with opioids. Death count data is derived from
+reporting on death certiﬁcates which can be reported incorrectly (23). We did not account for this
+in our analysis. We also only had aggregate, areal data for this analysis and thus conclusions are
+limited to the county level and cannot be extended to the person level due to the ecological fallacy
+(24). In addition, our data were aggregated across time so we are not able to describe any temporal
+trends.
+In conclusion, we have demonstrated an approach using spatial factor models to synthesize
+multiple outcomes associated with the opioid epidemic to estimate the latent burden of opioids
+across Ohio counties. We believe this analysis provides a valuable tool for policy makers as they
+allocate resources to continue to combat the opioid epidemic. This framework provides a coher-
+ent, model-based approach for putting several of the pieces of the puzzle together to gain a more
+10
+
+===== PAGE 11 =====
+complete picture of the spatial epidemiology of opioid misuse in Ohio.
+References
+[1] Ofﬁce of National Drug Control Policy Executive, Ofﬁce of the President of the United
+States . Epidemic: responding to America’s prescription drug abuse crisis Internet 2011.
+http://www.whitehouse.gov/sites/default/ﬁles/ondcp/policy-and-research/rx_abuse_plan.pdf.
+[2] Brady K. T., McCauley J. L., Back S. E.. Prescription Opioid Misuse, Abuse, and Treatment
+in the United States: An Update. The American journal of psychiatry. 2016;173:18–26.
+[3] Dart R. C., Surratt H. L., Cicero T. J., et al. Trends in opioid analgesic abuse and mortality in
+the United States. The New England journal of medicine. 2015;372:241–8.
+[4] Center for Behavioral Health Statistics and Quality . Behavioral health trends in the United
+States: results from the 2014 National Survey on Drug Use and Health Internet 2015.
+http://www .samhsa .gov/ data/ sites/ default/ ﬁles/ NSDUH-FRR1-2014/ NSDUH-FRR1-
+2014 .pdf.
+[5] Rudd R. A., Aleshire N., Zibbell J. E., Gladden R. M.. Increases in Drug and Opioid Over-
+dose Deaths–United States, 2000-2014. MMWR. Morbidity and mortality weekly report.
+2016;64:50–51.
+[6] Chen L.H., Hedegaard H., Warner M.. QuickStat: Rates of death from drug poisoning involv-
+ing opioid analgesics-United States, 1999-2013 MMWR. 2015;64:32.
+[7] Hedegaard H., Warner M., Minino A.M.. Drug overdose deaths in the United States, 1999-
+2016 NCHS Data Brief. 2017;294.
+[8] Daniulaityte R., Juhascik M. P., Strayer K. E., et al. Overdose Deaths Related to Fentanyl and
+Its Analogs - Ohio, January-February 2017. MMWR. Morbidity and mortality weekly report.
+2017;66:904–908.
+11
+
+===== PAGE 12 =====
+[9] Governor’s Cabinet Opiate Action Team . Attacking Ohio’s opiate epidemic Online; accessed
+6-September-2017 2012. http://mha.ohio.gov/.
+[10] Palamar Joseph J., Shearston Jenni A., Cleland Charles M.. Discordant reporting of nonmed-
+ical opioid use in a nationally representative sample of US high school seniorsThe American
+Journal of Drug and Alcohol Abuse. 2016;42:530–538.
+[11] Handcock Mark S., Gile Krista J., Mar Corinne M.. Estimating hidden population size using
+Respondent-Driven Sampling data Electronic Journal of Statistics. 2014;8:1491–1521.
+[12] Platt Lucy, Wall Martin, Rhodes Tim, et al. Methods to Recruit Hard-to-Reach Groups: Com-
+paring Two Chain Referral Sampling Methods of Recruiting Injecting Drug Users Across
+Nine Studies in Russia and Estonia Journal of Urban Health. 2006;83:39–53.
+[13] Martinez-Beneito M. A., Botella-Rocamora P., Banerjee S.. Towards a multidimensional ap-
+proach to Bayesian disease mapping Bayesian Analysis. 2017;12:239–259.
+[14] Wall M. M., Wang F.. Generalized common spatial factor model Biostatistics. 2003;4:569–
+582.
+[15] Neeley E.S., Christensen W.F., Sain S.R.. A Bayesian spatial factor analysis approach for
+combining climate model ensembles Environmetrics. 2014;25:483–497.
+[16] Besag Julian. Spatial Interaction and the Statistical Analysis of Lattice Systems Journal of
+the Royal Statistical Society. Series B (Methodological). 1974;36:192–236.
+[17] Muthen B., Asparouhov T.. Bayesian structural equation modeling: a more ﬂexible represen-
+tation of substantive theory. Psychological methods. 2012;17:313–35.
+[18] Dunson David B.. Dynamic Latent Trait Models for Multidimensional Longitudinal Data
+Journal of the American Statistical Association. 2003;98:555–563.
+[19] Cressie Noel, Perrin Olivier, Thomas-Agnan Christine. Likelihood-based estimation for
+Gaussian MRFs Statistical Methodology. 2005;2:1–16.
+12
+
+===== PAGE 13 =====
+[20] Cressie Noel A. C., Wikle Christopher K.. Statistics for spatio-temporal data. Hoboken, N.J.:
+Wiley 2011.
+[21] Banerjee Sudipto., Carlin Bradley P., Gelfand Alan E.. Hierarchical modeling and analysis
+for spatial data. Boca Raton, Fla.: Chapman & Hall/CRC 2004.
+[22] Famoye Felix, Wang Weiren. Censored generalized Poisson regression modelComputational
+Statistics and Data Analysis. 2004;46:547–560.
+[23] Slavova S., O’Brien D. B., Creppage K., et al. Drug Overdose Deaths: Let’s Get Speciﬁc.
+Public health reports. 2015;130.
+[24] Pianntadosi Steven, Byar David P., Green Sylvan B.. The Ecological Fallacy American Jour-
+nal of Epidemiology. 1988;127:893-904.
+[25] Gelman Andrew. Prior distributions for variance parameters in hierarchical models (comment
+on article by Browne and Draper) Bayesian Analysis. 2006;1:515–534.
+[26] Roberts G.O., Rosenthal J.S.. Examples of adaptive MCMC Journal of Computational and
+Graphical Statistics. 2009;18:349–367.
+Supplementary Material
+Statistical Model
+The generalized common spatial factor model for bivariate Poisson outcomes forms the basis of
+our model. We use a spatial rates parameterization (19; 20) in order to estimate the relative risk
+of death and treatment admission for each county compared to the statewide average. For each
+countyi = 1,..., 87, let YD
+i be the count of deaths and YT
+i be the count of treatment admissions.
+If countyi does not have the treatment admission censored, then we have
+YD
+i |λD
+i
+ind
+∼ Poisson(ED
+i λD
+i ) (1)
+13
+
+===== PAGE 14 =====
+YT
+i |λT
+i
+ind
+∼ Poisson(ET
+i λT
+i ). (2)
+LetPi represent the population in county i. The baseline expected number of deaths in county i
+is the ﬁxed quantity ED
+i = PiµD whereµD =∑
+jYD
+j /∑
+jPj is the statewide average death rate
+(20, Section 4.2.6). Likewise, the baseline expected number of treatment admissions for county i
+isET
+i = PiµT whereµT is the statewide average treatment rate. Under this parameterization, λD
+i
+represents the relative risk of death in countyi compared to the statewide average andλT
+i represents
+the relative risk of treatment admission in county i compared to the statewide average. Note that
+we assume all dependence is modeled throughλD
+i andλT
+i .
+Treatment admission counts that were less than 10 for either adolescents or adults were cen-
+sored. There are four counties with adolescent counts less than 10 but adult counts greater than 10.
+For these four counties, we know the true count lies somewhere between the adult count and the
+adult count plus 9. Thus, we have a situation analogous to interval censoring and can incorporate
+that information into the likelihood by adapting the censored generalized Poisson regression model
+(22) to the more general case of interval censoring. Letci be an indicator function such that
+ci =
+
+
+
+0 total count observed
+1 adolescent count censored.
+(3)
+Thus, our data model for both counts of death and treatment admissions leads to the likelihood
+function
+L(λT, λD|YT, YD) =
+[ 87∏
+i=1
+f(YD
+i |λD
+i )
+]
+×
+[ 87∏
+i=1
+[f(YT
+i |λT
+i )]I(ci=0)[F (YT
+i + 9|λT
+i )−F (YT
+i − 1|λT
+i )]I(ci=1)
+] (4)
+where f(·|λT
+i ) and F (·|λT
+i ) are the probability mass function and cumulative distribution func-
+tion, respectively, of a Poisson random variable with meanET
+i λT
+i ,f(·|λD
+i ) is the probability mass
+function of a Poisson random variable with meanED
+i λD
+i , andI(·) is an indicator function.
+14
+
+===== PAGE 15 =====
+Using the canonical log link function for the relative risk, we assume the following joint gen-
+eralized linear mixed effects model for countyi:
+log(λD
+i ) =βD
+0 +αD
+i νi +ϵD
+i
+log(λT
+i ) =βT
+0 +αT
+i νi +ϵT
+i,
+(5)
+whereβD
+0 andβT
+0 are intercepts, νi is the factor for county i, αD
+i andαT
+i are the factor loadings
+for death and treatment, respectively, at county i, and ϵD
+i and ϵT
+i are error terms assumed to be
+independent, normally distributed with mean zero and variancesσ2
+D andσ2
+T , respectively.
+Two of the primary goals of this analysis are estimation of the common spatial factor νi and
+estimation of covariate effects related to the latent joint “burden” represented byνi. As it is shared
+across the models for death and treatment, it induces correlation between the death and treatment
+counts within a county. By adding spatial structure to the vector ν = (ν1,...,ν 88)′, it also induces
+spatial dependence on the models for both death and treatment. We specify an intrinsic conditional
+autoregressive (CAR) model for ν. That is, we assume the conditional distributions of the latent
+factor for each county are given by
+νi|ν−i∼N
+(
+Xiβ + 1
+wi+
+∑
+j∼i
+(νj− Xjβ), τ 2
+wi+
+)
+, (6)
+where Xi is the ith row of a design matrix with no intercept and whose covariates have all been
+standardized to allowβD
+0 andβT
+0 to be interpreted as an overall average. In (6),wi+ is the number of
+neighbors of countyi and the summation is over all the neighboring counties. Equation 6 induces
+the joint distribution
+ν∼N(Xβ,τ 2Q−1), (7)
+where Q is the precision matrix given by Q = D− W. The matrix W is the adjacency matrix
+whose (i,j )th element is one if counties i and j are neighbors and zero otherwise, and D =
+15
+
+===== PAGE 16 =====
+diag(wi+) is the diagonal matrix whose (i,i )th element is the number of neighbors of county i.
+The joint distribution (7) induced by the intrinsic CAR model is not a valid distribution since Q is
+not of full rank; however, it can be used as a prior distribution of a spatial random effect provided
+a centering constraint such as 1/n∑
+iνi = 0 is imposed (21). This centering constraint is also
+necessary to ensure the latent factor is identiﬁable with the intercepts βD
+0 andβT
+0 (14). Note that
+centering the latent factor to be mean zero is reasonable since the covariates in X have all been
+centered.
+As discussed in (15), for the model in equation (5) to be identiﬁable, we must assume one of
+the outcomes is used as a reference and all of the loadings for that outcome are constant. Thus, we
+assumeαT
+i = 1 fori = 1,...,n . The loadings for death vary spatially and are assumed to follow
+an intrinsic CAR model with mean one such that if αD = (αD
+1,...,α D
+n )′, then
+αD∼N
+(
+1,τ 2
+DQ−1)
+.
+A centering constraint 1/n∑
+iαD
+i = 1 in enforced so that the intrinsic CAR model can be used
+as a prior model for the random effect. Centering at one implies loadings that are equal to one
+correspond to locations where death has a similar inﬂuence on the latent factor as treatment. To
+ease in interpretation, the results presented in the manuscript are the loadings for death at each
+location divided by the sum of the two outcome loadings at that location. Then, 0.5 is subtracted
+from these rescaled loadings. After rescaling and centering in this way, loadings of approximately
+zero indicate locations where the two outcomes have similar inﬂuence on the latent factor. Positive
+values for death indicate locations where death has greater inﬂuence on the latent factor than treat-
+ment, and negative values indicate locations where treatment has greater inﬂuence on the latent
+factor than death.
+We specify prior distributions for all parameters in the model. The intercepts βD
+0 andβT
+0 are
+assigned independent, non-informative prior distributions that are uniform on the real line. The
+regression coefﬁcients in the latent factor,β are assumed to follow independent normal prior distri-
+16
+
+===== PAGE 17 =====
+butions with mean zero and variance 4. The variance parametersτ 2,τD
+2 ,σ2
+D,σ2
+T are independently
+uniform on the standard deviation (25). That is,
+τ∼U(0,∞)
+τD∼U(0,∞)
+σD∼U(0,∞)
+σT∼U(0,∞).
+(8)
+The posterior distribution of all unobservable quantities is given by
+π(ν, αD, ϵD,ϵT,βD
+0 ,βT
+0, βD, βTτ 2,τ 2
+Dσ2
+D,σ 2
+T| YD, YT)
+∝L(λT, λD|YT, YD)f(ν|τ 2)f(αD|τ 2
+D)f(ϵD|σ2
+D)f(ϵT|σ2
+T )
+×π(βD
+0 )π(βT
+0 )π(β)π(τ 2)π(τ 2
+D)π(σ2
+T )π(σ2
+D),
+(9)
+whereL(·|·) is the likelihood function,f(·|·) is used to denote the joint distributions of the random
+effects outlined in the previous section, andπ(·) is used to denote the prior distributions.
+Computational Details
+A Metropolis-within-Gibbs Markov chain Monte Carlo (MCMC) algorithm is used to explore
+the posterior distribution. Gibbs updates are used for the variance parameters and latent factor
+covariate effects, and Metropolis-Hastings updates are used for all random effects and the inter-
+cepts. Adaptive MCMC (26) is used to ensure adequate mixing for all parameters with Metropolis-
+Hastings updates. The centering constraints of the latent factorνi and the loadingsαD
+i are enforced
+by reparameterizing and centering within the MCMC algorithm. The full conditional distributions
+for each unknown quantity are provided below, and the code for the MCMC algorithm is included
+as a supplement. In what follows, π(·|... ) will be used to denote the full conditional distribution
+of a random variable given the data and all other random quantities.
+The spatial factor is updated using Metropolis-Hastings updates. To enforce the centering
+17
+
+===== PAGE 18 =====
+constraint 1/n∑
+iνi = 0 , we reparameterize by introducing variables ν∗
+i and updating each ν∗
+i
+individually then setting ν equal to the centered ν∗. That is, for i = 1,...,n , a new value of ν∗
+i is
+proposed, and the resulting proposed spatial factor is ν = ν∗− ¯ν∗, where ¯ν∗ is the mean of ν∗.
+The Metropolis-Hastings acceptance ratio is based on the full conditional distribution of ν, given
+by
+π(ν|... )∝L(λT, λD|YT, YD)f(ν|τ 2),
+whereL(λT, λD|YT, YD) is as given in (4) andf(ν|τ 2)∝ exp (−1/(2τ 2)(ν− Xβ)′Q(ν− Xβ)).
+As previously described, the spatial loadings for death require a mean one centering constraint.
+This is accomplished by introducing variablesα∗
+i that are updated individually, then setting αD =
+α∗− ¯α∗ + 1. The spatial loadings are updated with Metropolis-Hastings updates based on the full
+conditional distribution
+π(αD|... )∝L(λT, λD|YT, YD)f(αD|τ 2
+D),
+wheref(αD|τ 2
+D)∝ exp
+(
+−(1/2τ 2
+D)(αD− 1)′Q(αD− 1)
+)
+.
+The independent random errors ϵD
+i ,ϵT
+i are updated for each i = 1,...,n according to the full
+conditional distributions
+π(ϵT
+i,ϵD
+i|... )∝L(λT
+i,λD
+i|YT
+i ,Y D
+i )f(ϵT
+i|σ2
+T )f(ϵD
+i|σ2
+D),
+whereL(λT
+i,λD
+i|YT
+i ,Y D
+i ) is theith factor in (4) andf(ϵT
+i|σ2
+T ),f (ϵD
+i|σ2
+D) are the zero-mean normal
+probability density functions with variancesσ2
+T,σ 2
+D.
+The intercepts βD
+0 , βT
+0 are updated individually using Metropolis-Hastings updates. The full
+conditional distributions are given by
+π(βD
+0|... )∝L(λD|YD)π(βD
+0 )
+π(βT
+0|... )∝L(λT|YT )π(βT
+0 ),
+18
+
+===== PAGE 19 =====
+where by the conditional independence, L(λD|YD) and L(λT|YT ) are simply the factors in (4)
+corresponding to death and treatment, respectively, and by assumption,π(βD
+0 ) =π(βT
+0 ) = 1.
+The vector of latent factor regression coefﬁcients β can be updated with a Gibbs step. The full
+conditional distribution is multivariate normal with covariance matrixΣβ = (1/τ 2X′QX + 1/4I)−1
+and mean vector 1/τ 2ΣβX′Qν
+The variance parameters τ 2,τ 2
+D,σ 2
+D,σ 2
+T can be updated with Gibbs steps. The prior distribu-
+tions speciﬁed by (8) imply π(τ 2)∝ τ−1, π(τ 2
+D)∝ τ−1
+D , π(σ2
+D)∝ σ−1
+D andπ(σ2
+T )∝ σ−1
+T (25).
+Thus, the full conditional distributions are
+π(τ 2|... )∝f(ν|β,τ 2)π(τ 2)∝ (τ 2)−n/2−1/2 exp
+(
+− 1
+2τ 2 (ν− Xβ)′Q(ν− Xβ)
+)
+π(τ 2
+D|... )∝f(αD|τ 2
+D)π(τ 2
+D)∝ (τ 2
+D)−n/2−1/2 exp
+(
+− 1
+2τ 2
+D
+(αD− 1)′Q(αD− 1)
+)
+π(σ2
+D|... )∝f(ϵD|σ2
+D)π(σ2
+D)∝ (σ2
+D)−n/2−1/2 exp
+(
+− 1
+2σ2
+D
+ϵD
+′ϵD
+)
+π(σ2
+T|... )∝f(ϵT|σ2
+T )π(σ2
+T )∝ (σ2
+T )−n/2−1/2 exp
+(
+− 1
+2σ2
+T
+ϵT
+′ϵT
+)
+,
+which we can identify as being from the inverse-gamma family of distributions with shape param-
+etersn/2− 1/2 and scale parameters of 1/2(ν− Xβ)′Q(ν− Xβ), 1/2(αD− 1)′Q(αD− 1),
+1/2ϵ′
+DϵD, and 1/2ϵ′
+T ϵT , respectively.
+19
+
+===== PAGE 20 =====
+Table 1: Diagnostic codes used to deﬁne treatment
+ICD-9 Diagnostic Codes
+304.00 Opiate Type Dependence, Unspeciﬁed Use
+304.01 Opioid Type Dependence, Continuous Use
+304.02 Opioid Type Dependence, Episodic Use
+304.03 Opioid Type Dependence, in Remission
+304.70 Combinations of Opioid Type Drug with Any Other, Unspeciﬁed Use
+304.71 Combinations of Opioid Type Drug with Any Other, Continuous Use
+304.72 Combinations of Opioid Type Drug with Any Other, Episodic Use
+304.73 Combinations of Opioid Type Drug with Any Other, in Remission
+305.50 Opioid Abuse, Unspeciﬁed Use
+305.51 Opioid Abuse, Continuous Use
+305.52 Opioid Abuse, Episodic Use
+305.53 Opioid Abuse, in Remission
+DSM-IV-TR Diagnostic Codes
+292.00 Opioid Withdrawal
+292.11 Opoid-Induced Psychotic Disorder, with Delusions
+292.12 Opoid-Induced Psychotic Disorder, with Hallucinations
+292.81 Opioid Intoxication Delirium
+292.84 Opioid-Induced Mood Disorder
+292.89 Opioid Intoxication
+292.89 Opioid-Induced Sexual Dysfunction
+292.89 Opioid-Induced Sleep Disorder
+292.90 Opioid-Related Disorder, NOS
+304.00 Opioid Dependence
+305.50 Opioid Abuse
+Supplemental Results
+20
+
+===== PAGE 21 =====
+(A) Observed Death Rates
+ (B) Observed Treatment Rates
+(C) Scatterplot of Observed Treatment and
+Death Rates
+Figure 1: Observed County Opioid Associated Death Rates and Treatment Admission Rates per
+100,000 Residents, Ohio Counties, 2013-2015
+Figure 2: Estimated Proportion of White Residents for Each County
+21
+
+===== PAGE 22 =====
+(A) Independent Latent Factor for Death
+ (B) Independent Latent Factor for Treatment
+Figure 3: Estimated Independent Latent Factor for Each County for Death and Treatment Rates
+Table 2: Posterior Mean Estimates and 95% Credible Intervals for Variance Parameters in the
+Model
+Parameter Posterior Mean 95% Credible Interval
+τ 2 0.3792 (0 .1422, 0.7474)
+τ 2
+D 0.2679 (0 .1488, 0.4341)
+σ2
+D 0.0346 (0 .0012, 0.0846)
+σ2
+T 0.00860 (0 .0438, 0.1428)
+22
