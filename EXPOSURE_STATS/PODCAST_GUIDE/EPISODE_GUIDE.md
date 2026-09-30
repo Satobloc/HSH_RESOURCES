@@ -2,9 +2,9 @@
 
 Mechanical cross-repository guide. Podcast transcripts are public-exposure evidence, not automatic SAT/H(s)H core authority.
 
-Episodes represented: **101**  
-Source instances: **556**  
-Analytics/metadata instances: **215**
+Episodes represented: **127**  
+Source instances: **618**  
+Analytics/metadata instances: **238**
 
 | Date | Episode | Transcript | Sources | Review signals |
 |---|---|---|---:|---|
@@ -15,6 +15,7 @@ Analytics/metadata instances: **215**
 | 2026-01-15 | Scalar-Angular Theory Field Notes - Neutrino-Photon Identity, Quantum Tunneling, and Chondrules(..!) | located | 1 | rigor signal, field-language hazard |
 | 2026-01-16 | Scalar-Angular Theory Field Notes - Post-Closure Experimental Predictions | located | 2 | rigor signal, field-language hazard |
 | 2026-01-19 | Scalar-Angular Theory Field Notes - Timelike Twist in the Accelerator | located | 2 | rigor signal, field-language hazard |
+| 2026-01-21 | Making *Interesting* LLM Characters | located | 2 | rigor signal |
 | 2026-02-24 | Scalar-Angular Theory Field Notes - The 0.239 rad Constant | located | 2 | rigor signal, field-language hazard |
 | 2026-02-25 | Scalar-Angular Theory Field Notes - SAT’s Derivations | located | 2 | rigor signal, field-language hazard |
 | 2026-03-07 | Scalar-Angular Theory Field Notes - Method for QM-GR Unification | located | 2 | rigor signal, field-language hazard |
@@ -91,21 +92,46 @@ Analytics/metadata instances: **215**
 | 2026-06-16 | Debating A.I. On the Future of Physics - SAT == H(s)H | located | 2 | rigor signal, field-language hazard |
 | 2026-06-16 | Debating A.I. On the Future of Physics - SAT Rigor Pt 2 | located | 2 | rigor signal, field-language hazard |
 | 2026-06-16 | Debating A.I. On the Future of Physics - The c - H 0 Gap | located | 2 | rigor signal, field-language hazard |
+| 2026-06-16 | SAT == H(s)H | located | 1 | rigor signal, field-language hazard |
+| 2026-06-16 | The c - H 0 Gap | located | 1 | rigor signal, field-language hazard |
 | 2026-06-18 | Debating A.I. On the Future of Physics - Physics The Full Stack | located | 2 | field-language hazard |
 | 2026-06-18 | Debating A.I. On the Future of Physics - The Einstein-Rosen Key | located | 2 | rigor signal, field-language hazard |
+| 2026-06-18 | Physics The Full Stack | located | 1 | field-language hazard |
+| 2026-06-18 | The Einstein-Rosen Key | located | 1 | rigor signal, field-language hazard |
+| 2026-06-24 | Chemical-Optical Lab Bench | located | 1 | insight-generation requested, rigor signal, field-language hazard |
 | 2026-06-24 | Debating A.I. On the Future of Physics - Chemical-Optical Lab Bench | located | 2 | insight-generation requested, rigor signal, field-language hazard |
-| 2026-06-26 | 2026 ≠ 2024 | located | 2 | rigor signal, field-language hazard |
+| 2026-06-26 | 2026 ≠ 2024 | located | 3 | rigor signal, field-language hazard |
+| 2026-06-30 | Convergence | located | 1 | rigor signal, field-language hazard |
 | 2026-06-30 | Debating A.I. On the Future of Physics - Convergence | located | 2 | rigor signal, field-language hazard |
 | 2026-07-02 | Debating A.I. On the Future of Physics - Intellectual Playgrounds Thought As Structure — Revisited | located | 2 | rigor signal |
+| 2026-07-02 | Intellectual Playgrounds Thought As Structure — Revisited | located | 1 | rigor signal |
 | 2026-07-05 | Debating A.I. On the Future of Physics - The Math of it All | located | 2 | rigor signal, field-language hazard |
+| 2026-07-05 | The Math of it All | located | 1 | rigor signal, field-language hazard |
 | 2026-07-12 | Debating A.I. On the Future of Physics - Hasimoto Particle Cosmology | located | 2 | rigor signal, field-language hazard |
 | 2026-07-12 | Debating A.I. On the Future of Physics - Quantum Kelvin Waves | located | 2 | rigor signal, field-language hazard |
+| 2026-07-12 | Hasimoto Particle Cosmology | located | 1 | rigor signal, field-language hazard |
+| 2026-07-12 | Quantum Kelvin Waves | located | 1 | rigor signal, field-language hazard |
+| 2026-07-13 | (++++) or (+++,+++) | located | 1 | rigor signal, field-language hazard |
 | 2026-07-13 | Debating A.I. On the Future of Physics - (++++) or (+++,+++) | located | 2 | rigor signal, field-language hazard |
 | 2026-07-17 | Debating A.I. On the Future of Physics - Dual-Shell λ Expansion | located | 2 | rigor signal, field-language hazard |
 | 2026-07-17 | Debating A.I. On the Future of Physics - Finger Trap World | located | 2 | rigor signal, field-language hazard |
 | 2026-07-17 | Debating A.I. On the Future of Physics - Physics vs Dogma | located | 2 | insight-generation requested, rigor signal, field-language hazard |
 | 2026-07-17 | Debating A.I. On the Future of Physics - Viscous Or Superfluid | located | 2 | rigor signal, field-language hazard |
-| 2026-09-06 | Majorana Coupling & Coiled Cooper Pairing | located | 1 | rigor signal, field-language hazard |
+| 2026-07-17 | Dual-Shell λ Expansion | located | 1 | rigor signal, field-language hazard |
+| 2026-07-17 | Finger Trap World | located | 1 | rigor signal, field-language hazard |
+| 2026-07-17 | Physics vs Dogma | located | 1 | insight-generation requested, rigor signal, field-language hazard |
+| 2026-07-17 | Viscous Or Superfluid | located | 1 | rigor signal, field-language hazard |
+| 2026-07-18 | Black Hole Merger | located | 1 | rigor signal, field-language hazard |
+| 2026-07-18 | Particles & Inverse Black Holes | located | 1 | rigor signal, field-language hazard |
+| 2026-07-18 | The Time Travel Brick Wall | located | 1 | rigor signal, field-language hazard |
+| 2026-07-20 | AI Legibility — The Fun Way | located | 1 | rigor signal |
+| 2026-08-21 | Dzhanibekov Planets | located | 1 | rigor signal, field-language hazard |
+| 2026-08-26 | Crazy Talk | located | 1 | rigor signal |
+| 2026-09-06 | Another Look at Bell’s Theorem | located | 1 | rigor signal, field-language hazard |
+| 2026-09-06 | H(s)H Overview | located | 1 | rigor signal, field-language hazard |
+| 2026-09-06 | Majorana Coupling & Coiled Cooper Pairing | located | 3 | rigor signal, field-language hazard |
+| 2026-09-06 | Majorana Coupling & Coiled Cooper Pairing (1) | located | 1 | rigor signal, field-language hazard |
+| 2026-09-06 | Zitterbewegung & Worldtubes | located | 1 | rigor signal, field-language hazard |
 | undated | CROSS TRANSCRIPT KEYWORD INDEX | located | 1 |  |
 | undated | Scalar-Angular Theory Field Notes - Neutrino-Photon Identity, Quantum Tunneling, and Chondrules(..!) | located | 1 | rigor signal, field-language hazard |
 | undated | Scalar-Angular Theory Field Notes - Prior Model Prediction Drop 3.1.26 | located | 2 | insight-generation requested, rigor signal, field-language hazard |
