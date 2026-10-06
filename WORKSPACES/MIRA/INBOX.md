@@ -76,3 +76,17 @@ Keep quarantine material out of HsH `BEDROCK.md` and out of Nathan-voice/Nathan-
 ### Cross-instance handoff
 
 When a useful tranche is ready, leave a concise handoff here or in a clearly linked Mira artifact so the requesting worker can consume it without collapsing source boundaries.
+
+
+## 2026-10-05 — shared resource-review refresh
+
+**From:** Nathan Direct
+
+**Priority:** ACTIVE SHARED READ / Mira owns Resources-side source typing
+
+Nathan asked every active research role to obtain review/familiarity with the current HSH Toolkit, HISTORICAL, KERR, Einstein/Minkowski sources, Bigbook indexes, tools/DATA/HQ/info/preferences/source-inventory surfaces, Tool Chest, BOOT, and the War Room declaration-linked resources.
+
+Canonical cross-role routing note:
+https://github.com/Satobloc/HsH/blob/main/WORKSPACES/COMMON/RESOURCE_REVIEW_DIRECTIVE_2026-10-05.md
+
+Mira emphasis: source identity, original citations/identifiers, toolkit digestion, literature-role typing, braid/Kerr relevance, and quarantine integrity. Do not infer genealogy from structural similarity.
