@@ -1,0 +1,33 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="color-scheme" content="dark light"><title>H(s)H — Does the theory say this?</title><style>:root{color-scheme:dark light;}body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:1100px;margin:auto;padding:2rem;line-height:1.55;background:#0b0d10;color:#f4f7fb}h1,h2{color:#fff}p{margin:.75rem 0}.card{background:#13171c;border:1px solid #39424e;border-radius:10px;padding:.9rem 1rem;margin:.55rem 0}strong{color:#fff}em,small{color:#cfd7e3}input[type=checkbox]{transform:scale(1.25);margin-right:.65rem;accent-color:#ff2d7a}textarea{width:100%;box-sizing:border-box;background:#0f1318;color:#fff;border:1px solid #667180;border-radius:8px;padding:.85rem;font:inherit;min-height:14rem}a{color:#7fc7ff}code{color:#ffd479}@media (prefers-color-scheme:light){body{background:#fff;color:#111}.card{background:#f7f8fa;border-color:#aeb6c2}h1,h2,strong{color:#000}em,small{color:#333}textarea{background:#fff;color:#111;border-color:#555}}</style></head><body>
+<h1>H(s)H — “Does the theory say this?”</h1>
+<p><strong>Status:</strong> Nathan review instrument · seeded 2026-09-30 · update this when theory status materially changes.</p>
+<p><strong>State vocabulary:</strong> Core foundation · Nathan-approved conjecture / priority working assumption · LLM-interpreted likely · Open/undecided · Backburnered · Demoted/former · Disproven/excluded · Banned formulation.</p>
+<p><em>Nathan-approved means priority working assumption, not an absolute override. Alternate formulations remain admissible when explicitly tracked and pressure-tested.</em></p>
+<form>
+<div class="card"><label><input type="checkbox"> <strong>[Core foundation]</strong> SAT/H(s)H is a representational/geometric program; ontology is not automatically asserted.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Core foundation]</strong> Historical SAT claims remain historical and do not automatically become current H(s)H commitments.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Nathan-approved conjecture / priority working assumption]</strong> Finite-core persistent first-order coils are candidate massive-particle/worldtube carrier geometry.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Nathan-approved conjecture / priority working assumption]</strong> Traveling higher-order coils/packets are candidate excitation geometry.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Nathan-approved conjecture / priority working assumption]</strong> A fundamental-scale traveling coil/packet ('coil-let') may be the smallest recursive-coil member.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Nathan-approved conjecture / priority working assumption]</strong> Holonomic closure/correlation may distinguish particle-like registration from extended wave-like propagation.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Disproven / excluded]</strong> Particle-wave duality has already been derived from coil closure.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Nathan-approved conjecture / priority working assumption]</strong> Photon and neutrino may belong to a shared geometric carrier/coil family, provided spin/statistics/couplings/mixing emerge rather than being assigned.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Open / undecided]</strong> Photon = coil-let as a specific particle assignment.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Open / undecided]</strong> Neutrino = higher-order coil as a specific particle assignment.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Banned formulation]</strong> Photon/neutrino differences may be merely pictorial while standard representation/statistics are assigned afterward.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Nathan-approved conjecture / priority working assumption]</strong> Interaction geometry may permit calculable chirality transitions.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Disproven / excluded]</strong> Incident angle generically causes chirality flips.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Nathan-approved conjecture / priority working assumption]</strong> Three-sphere geometry may generate/index carrier, coil, closure and chirality states.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Nathan-approved conjecture / priority working assumption]</strong> ᚼ may map relationships/scales between successive indexed coil structures.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Demoted / former]</strong> Vacuum must be a sea of worldtubes.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Nathan-approved conjecture / priority working assumption]</strong> A non-worldtube background medium with emergent filament/vortex states is an allowed alternate vacuum branch.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Banned formulation]</strong> A preferred-frame aether may be imported unnoticed as the vacuum medium.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Nathan-approved conjecture / priority working assumption]</strong> BH::BB recurrence may preserve/persistentize twist/topological information while smoothing traveling kinks.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Disproven / excluded]</strong> BH::BB topology alone solves conservation/information/causality.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Disproven / excluded]</strong> Recursive universe/coil scaling is already established physics.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Core foundation]</strong> External research in HSH_RESOURCES is evidence/context, not endogenous theory authority.</label></div>
+<div class="card"><label><input type="checkbox"> <strong>[Nathan-approved conjecture / priority working assumption]</strong> Internal SAT/H(s)H documents, code and visuals landed in 30SEP_PAPER_DUMP may be used for theory development/historical reconstruction with per-file provenance preserved.</label></div>
+<h2>Add-ons / corrections / alternate formulations</h2><textarea placeholder="Nathan review notes…"></textarea>
+</form>
+<hr><p><small>Seed sources: HsH 30SEP intake routing and WORKSPACES/LABS/COILLET_WAVE_PACKET. This is a review/status surface, not physical validation or a replacement for source provenance.</small></p>
+</body></html>
