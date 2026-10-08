@@ -2,68 +2,74 @@
 
 Mechanical, literal keyword index only. Counts are case-insensitive literal matches; no semantic or causal interpretation is applied.
 
-Transcript-like text files indexed: **17**  
+Transcript-like text files indexed: **18**  
 Keyword phrases: **81**  
-Episode-keyword hit rows: **428**
+Episode-keyword hit rows: **461**
 
 ## Keyword totals
 
 | Keyword | Literal hits |
 |---|---:|
-| SAT | 509 |
+| SAT | 544 |
 | mass | 428 |
-| filament | 252 |
-| gravity | 162 |
-| phase | 162 |
+| filament | 264 |
+| phase | 166 |
+| gravity | 164 |
+| twist | 122 |
 | neutrino | 121 |
-| lattice | 115 |
-| twist | 112 |
-| constant | 90 |
-| torsion | 76 |
+| lattice | 118 |
+| constant | 92 |
+| torsion | 89 |
+| dark matter | 72 |
 | photon | 71 |
-| dark matter | 70 |
-| Standard Model | 69 |
-| braid | 56 |
-| projection | 54 |
+| Standard Model | 70 |
+| braid | 57 |
+| projection | 55 |
 | holonomy | 44 |
-| gauge | 39 |
+| gauge | 42 |
+| Scalar-Angular | 39 |
 | intersection | 37 |
 | time surface | 34 |
 | misalignment | 31 |
 | rope | 26 |
 | alpha | 25 |
 | dark energy | 23 |
-| pulsar | 21 |
-| indicatrix | 20 |
-| Hubble | 19 |
+| Hubble | 23 |
+| indicatrix | 23 |
+| pulsar | 23 |
+| worldline | 23 |
+| Scalar-Angular-Torsion | 20 |
+| Stringing Along Theory | 20 |
+| quantum gravity | 18 |
 | quantized | 17 |
-| quantum gravity | 17 |
-| Scalar-Angular | 16 |
+| collapse | 15 |
 | Scalar Angular | 15 |
-| collapse | 14 |
-| Zottenwelt | 13 |
+| Zottenwelt | 15 |
+| Universal Indicatrix | 13 |
 | fine structure | 12 |
 | quantization | 12 |
 | glitch | 11 |
-| Stringing Along Theory | 11 |
-| worldline | 11 |
 | braiding | 10 |
-| Universal Indicatrix | 10 |
-| Dirac | 8 |
+| Dirac | 9 |
 | Scalar Angular Torsion | 7 |
-| Scalar-Angular-Torsion | 7 |
+| yarn | 7 |
 | braided | 6 |
 | emergent metric | 6 |
-| yarn | 6 |
 | SU(3) | 5 |
 | theta_4 | 5 |
 | superhelical | 4 |
+| Minkowski | 3 |
+| 24-cell | 2 |
+| block universe | 2 |
 | chirality | 2 |
 | hyperhelical | 2 |
 | precession | 2 |
-| block universe | 1 |
+| emergent spacetime | 1 |
 | filament bundle | 1 |
+| He-3 | 1 |
+| Jarlskog | 1 |
 | Lorentz | 1 |
+| photoneutrino | 1 |
 | reconnection | 1 |
 | SU(2) | 1 |
 | time wavefront | 1 |

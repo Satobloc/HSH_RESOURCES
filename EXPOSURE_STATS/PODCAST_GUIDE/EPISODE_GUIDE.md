@@ -3,39 +3,39 @@
 Mechanical cross-repository guide. Podcast transcripts are public-exposure evidence, not automatic SAT/H(s)H core authority.
 
 Episodes represented: **143**  
-Source instances: **685**  
-Analytics/metadata instances: **238**
+Source instances: **719**  
+Analytics/metadata instances: **241**
 
 | Date | Episode | Transcript | Sources | Review signals |
 |---|---|---|---:|---|
 | 2025-02-02 | FIRST PUBLIC MENTION SAT DAI -- WHAT IS THOUGHT MADE OF | located | 1 | rigor signal |
 | 2025-12-21 | Scalar-Angular Theory Field Notes - Lithium-7 The First Dark Matter Horizon | located | 2 | rigor signal, field-language hazard |
-| 2025-12-22 | Quantum Relativity Made Easy | located | 2 | rigor signal, field-language hazard |
-| 2025-12-22 | Scalar-Angular Theory Field Notes - Unification in 93 Seconds | located | 2 | field-language hazard |
-| 2025-12-24 | Scalar-Angular Theory Field Notes - Proof GR & QM Are Compatible | located | 4 | rigor signal, field-language hazard |
+| 2025-12-22 | Quantum Relativity Made Easy | located | 3 | rigor signal, field-language hazard |
+| 2025-12-22 | Scalar-Angular Theory Field Notes - Unification in 93 Seconds | located | 3 | field-language hazard |
+| 2025-12-24 | Scalar-Angular Theory Field Notes - Proof GR & QM Are Compatible | located | 5 | rigor signal, field-language hazard |
 | 2026-01-15 | DAI Transcripts TEXT | located | 1 | insight-generation requested, rigor signal, field-language hazard |
 | 2026-01-15 | Scalar-Angular Theory Field Notes - Neutrino-Photon Identity, Quantum Tunneling, and Chondrules(..!) | located | 1 | rigor signal, field-language hazard |
-| 2026-01-16 | Scalar-Angular Theory Field Notes - All Hell In the Accelerator | located | 2 | rigor signal, field-language hazard |
-| 2026-01-16 | Scalar-Angular Theory Field Notes - Post-Closure Experimental Predictions | located | 4 | rigor signal, field-language hazard |
-| 2026-01-19 | Scalar-Angular Theory Field Notes - Timelike Twist in the Accelerator | located | 4 | rigor signal, field-language hazard |
+| 2026-01-16 | Scalar-Angular Theory Field Notes - All Hell In the Accelerator | located | 3 | rigor signal, field-language hazard |
+| 2026-01-16 | Scalar-Angular Theory Field Notes - Post-Closure Experimental Predictions | located | 5 | rigor signal, field-language hazard |
+| 2026-01-19 | Scalar-Angular Theory Field Notes - Timelike Twist in the Accelerator | located | 5 | rigor signal, field-language hazard |
 | 2026-01-21 | Making *Interesting* LLM Characters | located | 2 | rigor signal |
-| 2026-02-24 | Scalar-Angular Theory Field Notes - The 0.239 rad Constant | located | 4 | rigor signal, field-language hazard |
-| 2026-02-25 | Did This Theory Just Solve Physics? | located | 2 | rigor signal, field-language hazard |
-| 2026-02-25 | Scalar-Angular Theory Field Notes - SAT’s Derivations | located | 4 | rigor signal, field-language hazard |
-| 2026-03-07 | Did We Just Win Physics? | located | 2 | rigor signal, field-language hazard |
-| 2026-03-07 | Scalar-Angular Theory Field Notes - Method for QM-GR Unification | located | 4 | rigor signal, field-language hazard |
-| 2026-03-07 | Scalar-Angular Theory Field Notes - Quantum Gravityfoam | located | 2 | rigor signal, field-language hazard |
-| 2026-03-15 | Scalar-Angular Theory Field Notes - Denormalizing Renormalization | located | 2 | rigor signal, field-language hazard |
-| 2026-03-15 | Whirligig of Worlds to One Fully Determined Collapse | located | 2 | insight-generation requested, rigor signal, field-language hazard |
+| 2026-02-24 | Scalar-Angular Theory Field Notes - The 0.239 rad Constant | located | 5 | rigor signal, field-language hazard |
+| 2026-02-25 | Did This Theory Just Solve Physics? | located | 3 | rigor signal, field-language hazard |
+| 2026-02-25 | Scalar-Angular Theory Field Notes - SAT’s Derivations | located | 5 | rigor signal, field-language hazard |
+| 2026-03-07 | Did We Just Win Physics? | located | 3 | rigor signal, field-language hazard |
+| 2026-03-07 | Scalar-Angular Theory Field Notes - Method for QM-GR Unification | located | 5 | rigor signal, field-language hazard |
+| 2026-03-07 | Scalar-Angular Theory Field Notes - Quantum Gravityfoam | located | 3 | rigor signal, field-language hazard |
+| 2026-03-15 | Scalar-Angular Theory Field Notes - Denormalizing Renormalization | located | 3 | rigor signal, field-language hazard |
+| 2026-03-15 | Whirligig of Worlds to One Fully Determined Collapse | located | 3 | insight-generation requested, rigor signal, field-language hazard |
 | 2026-03-16 | Scalar-Angular Theory Field Notes - A Lab Testable TOE | located | 2 | rigor signal, field-language hazard |
-| 2026-03-17 | Scalar-Angular Theory Field Notes - Finding the Donut Pt. 1 | located | 2 | rigor signal, field-language hazard |
-| 2026-03-17 | Scalar-Angular Theory Field Notes - Finding the Donut Pt. 2 | located | 2 | rigor signal, field-language hazard |
-| 2026-03-18 | Unification Smoking Gun | located | 2 | rigor signal, field-language hazard |
-| 2026-03-18 | Whoa. 49:00 — AI Goes Off the Rails Trying to Unite Quantum Relativity [skip ahead to hear] | located | 2 | rigor signal, field-language hazard |
-| 2026-03-19 | How to Make Constants Make Sense | located | 2 | rigor signal, field-language hazard |
-| 2026-03-19 | Scalar-Angular Theory Field Notes - Making Constants Make Sense | located | 2 | rigor signal, field-language hazard |
-| 2026-03-23 | Light Cones and Bell’s Theorem | located | 2 | rigor signal, field-language hazard |
-| 2026-04-20 | Scalar-Angular Theory Field Notes - SAT Interview | located | 2 | rigor signal, field-language hazard |
+| 2026-03-17 | Scalar-Angular Theory Field Notes - Finding the Donut Pt. 1 | located | 3 | rigor signal, field-language hazard |
+| 2026-03-17 | Scalar-Angular Theory Field Notes - Finding the Donut Pt. 2 | located | 3 | rigor signal, field-language hazard |
+| 2026-03-18 | Unification Smoking Gun | located | 3 | rigor signal, field-language hazard |
+| 2026-03-18 | Whoa. 49:00 — AI Goes Off the Rails Trying to Unite Quantum Relativity [skip ahead to hear] | located | 3 | rigor signal, field-language hazard |
+| 2026-03-19 | How to Make Constants Make Sense | located | 3 | rigor signal, field-language hazard |
+| 2026-03-19 | Scalar-Angular Theory Field Notes - Making Constants Make Sense | located | 3 | rigor signal, field-language hazard |
+| 2026-03-23 | Light Cones and Bell’s Theorem | located | 3 | rigor signal, field-language hazard |
+| 2026-04-20 | Scalar-Angular Theory Field Notes - SAT Interview | located | 3 | rigor signal, field-language hazard |
 | 2026-04-21 | Superdeterminism and SAT | located | 2 | rigor signal, field-language hazard |
 | 2026-04-22 | Simulating Einstein, Pt 1 | located | 2 | rigor signal, field-language hazard |
 | 2026-04-22 | Simulating Einstein, Pt 2 | located | 2 | rigor signal |
@@ -52,8 +52,8 @@ Analytics/metadata instances: **238**
 | 2026-05-08 | Scalar-Angular Theory Field Notes - The 17mK He3 λ Anomaly | located | 2 | rigor signal, field-language hazard |
 | 2026-05-09 | Electrogravacoustics 1 | located | 2 | rigor signal, field-language hazard |
 | 2026-05-09 | Electrogravacoustics 2 | located | 4 | insight-generation requested, rigor signal, field-language hazard |
-| 2026-05-09 | GR-QCD-QED-QFT-SM-ST Unification in Plain English | located | 4 | rigor signal, field-language hazard |
-| 2026-05-09 | Scalar-Angular Theory Field Notes - Full Unification GR-QM-ST | located | 4 | rigor signal, field-language hazard |
+| 2026-05-09 | GR-QCD-QED-QFT-SM-ST Unification in Plain English | located | 5 | rigor signal, field-language hazard |
+| 2026-05-09 | Scalar-Angular Theory Field Notes - Full Unification GR-QM-ST | located | 5 | rigor signal, field-language hazard |
 | 2026-05-10 | How the Universe Scales | located | 2 | rigor signal |
 | 2026-05-10 | SAT’s Conservative Methodology | located | 2 | rigor signal, field-language hazard |
 | 2026-05-14 | No More Wick Rotation | located | 2 | rigor signal, field-language hazard |
@@ -126,7 +126,7 @@ Analytics/metadata instances: **238**
 | 2026-07-12 | Debating A.I. On the Future of Physics - Hasimoto Particle Cosmology | located | 2 | rigor signal, field-language hazard |
 | 2026-07-12 | Debating A.I. On the Future of Physics - Quantum Kelvin Waves | located | 2 | rigor signal, field-language hazard |
 | 2026-07-12 | Hasimoto Particle Cosmology | located | 1 | rigor signal, field-language hazard |
-| 2026-07-12 | Quantum Kelvin Waves | located | 3 | rigor signal, field-language hazard |
+| 2026-07-12 | Quantum Kelvin Waves | located | 4 | rigor signal, field-language hazard |
 | 2026-07-13 | (++++) or (+++,+++) | located | 1 | rigor signal, field-language hazard |
 | 2026-07-13 | Debating A.I. On the Future of Physics - (++++) or (+++,+++) | located | 2 | rigor signal, field-language hazard |
 | 2026-07-17 | Debating A.I. On the Future of Physics - Dual-Shell λ Expansion | located | 2 | rigor signal, field-language hazard |
@@ -143,7 +143,7 @@ Analytics/metadata instances: **238**
 | 2026-07-20 | AI Legibility — The Fun Way | located | 1 | rigor signal |
 | 2026-08-21 | Dzhanibekov Planets | located | 1 | rigor signal, field-language hazard |
 | 2026-08-26 | Crazy Talk | located | 1 | rigor signal |
-| 2026-09-06 | Another Look at Bell’s Theorem | located | 3 | rigor signal, field-language hazard |
+| 2026-09-06 | Another Look at Bell’s Theorem | located | 4 | rigor signal, field-language hazard |
 | 2026-09-06 | H(s)H Overview | located | 1 | rigor signal, field-language hazard |
 | 2026-09-06 | Majorana Coupling & Coiled Cooper Pairing | located | 3 | rigor signal, field-language hazard |
 | 2026-09-06 | Majorana Coupling & Coiled Cooper Pairing (1) | located | 1 | rigor signal, field-language hazard |
