@@ -1,0 +1,1505 @@
+Skip to content
+navanchauhan
+swift-photon
+Repository navigation
+Code
+Issues
+Pull requests
+Agents
+Actions
+Security and quality
+Insights
+Owner avatar
+swift-photon
+Public
+navanchauhan/swift-photon
+Go to file
+t
+T
+Name		
+navanchauhan
+navanchauhan
+imessage
+42489b9
+ · 
+2 months ago
+Sources
+imessage
+2 months ago
+Tests/swift-photonTests
+initial commit
+2 months ago
+.gitignore
+initial commit
+2 months ago
+Package.resolved
+initial commit
+2 months ago
+Package.swift
+initial commit
+2 months ago
+README.md
+imessage
+2 months ago
+Repository files navigation
+README
+swift-photon
+Unofficial swift sdk to use imessages stuff with spectrum
+
+Newer API surface
+The package now exposes PhotonImessage.Session, which keeps the gRPC channel and exposes:
+
+Message ops: send, sendReaction, unreact, editMessage, unsendMessage, getMessage, listMessages, fetchMissedMessages, getEmbeddedMedia, getMessageStats, subscribeMessageEvents
+listMessages now supports before/after Date windows and fetchMissedMessages(cursor:) for replay flows.
+Chat ops: createChat, getChat, getChatCount, leaveChat, markRead, shareContactInfo, startTyping, stopTyping, getParticipants, subscribeChatEvents
+Address ops: getAddress, getFocusStatus, checkAvailability
+Attachment ops: getAttachment, getAttachmentCount, uploadAttachment, downloadAttachment, getLivePhoto
+Poll ops: createPoll, vote, unvote, addPollOption, getPoll, subscribePollEvents
+send and createChat both support effectId / screen effect IDs for expressive send styling.
+
+To connect:
+
+let session = try await PhotonImessage.Session.connect()
+// ... call session methods ...
+try await session.close()
+runHelloWorld() is still available as a simple event-stream responder demo.
+
+About
+No description, website, or topics provided.
+Resources
+ Readme
+ Activity
+Stars
+ 0 stars
+Watchers
+ 0 watching
+Forks
+ 0 forks
+Report repository
+Releases
+No releases published
+Packages
+No packages published
+Contributors
+1
+@navanchauhan
+navanchauhan Navan Chauhan
+Languages
+Swift
+100.0%
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Community
+Docs
+Contact
+Manage cookies
+Do not share my personal information
+
+
+Skip to content
+navanchauhan
+cxdb
+Repository navigation
+Code
+Pull requests
+Agents
+Actions
+Projects
+Security and quality
+Insights
+Owner avatar
+cxdb
+Public
+forked from strongdm/cxdb
+navanchauhan/cxdb
+Go to file
+t
+T
+This branch is 10 commits ahead of strongdm/cxdb:main.
+Name		
+navanchauhan
+navanchauhan
+Show matching tool results in context debugger
+fbc75ca
+ · 
+last month
+.github
+Deploy Coolify from prebuilt GHCR images
+last month
+clients
+feat(types): add Synthetic field to UserInput
+4 months ago
+cxtx
+fix(cxtx): restore provider capture correctness
+3 months ago
+deploy
+Add generic OIDC auth for gateway
+last month
+docs
+Deploy Coolify from prebuilt GHCR images
+last month
+examples
+feat: cxtx CLI.
+3 months ago
+fixtures
+fix: return error frames instead of dropping connection on store errors
+4 months ago
+frontend
+Show matching tool results in context debugger
+last month
+gateway
+Fix CI lint failures
+last month
+scripts
+feat: create examples and test fixtures (Phase 4)
+5 months ago
+server
+Support named msgpack keys in projection
+last month
+tools/cxdb-writer
+feat: add cxdb-writer CLI tool for Playwright tests
+4 months ago
+.dockerignore
+fix(docker): include cxtx in image build
+3 months ago
+.gitignore
+feat(clients): add sse subscribe and turn follow
+4 months ago
+AUTHORS.md
+add AUTHORS.md
+4 months ago
+CLIENT_SPEC.md
+feat: migrate core source code with production reference scrubbing (P…
+5 months ago
+CONTRIBUTING.md
+feat: create GitHub infrastructure and governance (Phase 6)
+5 months ago
+Cargo.toml
+feat: cxtx CLI.
+3 months ago
+DISCLAIMER
+feat: add Apache 2.0 licensing and package metadata (Phase 1)
+5 months ago
+Dockerfile
+Fix Coolify healthcheck endpoints
+last month
+LICENSE
+feat: add Apache 2.0 licensing and package metadata (Phase 1)
+5 months ago
+Makefile
+fix: Rust clippy issues and Dockerfile binary name
+5 months ago
+NEW_SPEC.md
+feat: migrate core source code with production reference scrubbing (P…
+5 months ago
+NOTICE
+feat: add Apache 2.0 licensing and package metadata (Phase 1)
+5 months ago
+README.md
+feat: cxtx CLI.
+3 months ago
+SECURITY.md
+feat: create GitHub infrastructure and governance (Phase 6)
+5 months ago
+docker-compose.coolify.yml
+Deploy Coolify from prebuilt GHCR images
+last month
+Repository files navigation
+README
+Contributing
+License
+Security
+CXDB - AI Context Store
+CXDB is an AI Context Store for agents and LLMs, providing fast, branch-friendly storage for conversation histories and tool outputs with content-addressed deduplication.
+
+Built on a Turn DAG + Blob CAS architecture, CXDB gives you:
+
+Branch-from-any-turn: Fork conversations at any point without copying history
+Fast append: Optimized for the 99% case - appending new turns
+Content deduplication: Identical payloads stored once via BLAKE3 hashing
+Type-safe projections: Msgpack storage with typed JSON views for UIs
+Built-in UI: React frontend with turn visualization and custom renderers
+First-party CLI capture: cxtx wraps codex and claude sessions and stores them as canonical conversation turns
+Quick Start
+The fastest way to try CXDB is with the pre-built Docker image:
+
+# Run the server (binary protocol :9009, HTTP :9010)
+docker run -p 9009:9009 -p 9010:80 -v $(pwd)/data:/data cxdb/cxdb:latest
+
+# Create a context and append a turn (HTTP write path)
+curl -X POST http://localhost:9010/v1/contexts/create \
+  -H "Content-Type: application/json" \
+  -d '{"base_turn_id": "0"}'
+# => {"context_id": "1", "head_turn_id": "0", "head_depth": 0}
+
+curl -X POST http://localhost:9010/v1/contexts/1/append \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type_id": "com.example.Message",
+    "type_version": 1,
+    "data": {"role": "user", "text": "Hello!"}
+  }'
+
+# View in the UI
+open http://localhost:9010
+Capture a local codex or claude session into CXDB with the first-party wrapper:
+
+cargo run -p cxtx -- --help
+cargo run -p cxtx -- codex -- --help
+Installation
+From Source
+Prerequisites:
+
+Rust 1.75+ (for the server)
+Go 1.22+ (for the client SDK and gateway)
+Node.js 20+ with pnpm (for the frontend)
+# Clone the repository
+git clone https://github.com/strongdm/cxdb.git
+cd cxdb
+
+# Build the server
+cargo build --release
+
+# Run the server
+./target/release/cxdb-server
+
+# Build the gateway (optional - for OAuth and frontend serving)
+cd gateway
+go build -o bin/gateway ./cmd/server
+./bin/gateway
+
+# Build the frontend (optional - for UI development)
+cd frontend
+pnpm install
+pnpm build
+Using Docker
+# Build the image
+docker build -t cxdb:latest .
+
+# Run with persistent storage
+docker run -p 9009:9009 -p 9010:80 \
+  -v $(pwd)/data:/data \
+  -e CXDB_DATA_DIR=/data \
+  cxdb:latest
+Key Concepts
+Turn DAG
+A Turn is an immutable node in a directed acyclic graph (DAG):
+
+Turn {
+  turn_id: u64             # Unique, monotonically increasing
+  parent_turn_id: u64      # 0 for root turns
+  depth: u32               # Distance from root
+  payload_hash: [32]byte   # BLAKE3 hash of payload
+}
+Turns form chains:
+
+root (turn_id=1) → turn_id=2 → turn_id=3 (head)
+                     ↓
+                   turn_id=4 → turn_id=5 (alternate branch)
+A Context is a mutable branch head pointer:
+
+Context {
+  context_id: u64
+  head_turn_id: u64       # Current tip of this branch
+}
+Forking is O(1): create a new context pointing to an existing turn.
+
+Blob CAS (Content-Addressed Storage)
+All turn payloads are stored in a content-addressed blob store:
+
+Each blob is identified by BLAKE3(payload_bytes)
+Identical payloads are deduplicated automatically
+Blobs are compressed with Zstd level 3
+Stored in blobs/blobs.pack with an index at blobs/blobs.idx
+Type Registry
+CXDB supports typed payloads with forward-compatible schema evolution:
+
+Go writers define types with numeric field tags:
+
+type Message struct {
+    Role string `cxdb:"1"`
+    Text string `cxdb:"2"`
+}
+Registry bundles are published to the server, describing field types and names
+
+Rust server uses the registry to project msgpack → typed JSON for readers
+
+React UI consumes typed JSON with safe u64 handling and custom renderers
+
+Renderers
+Renderers are JavaScript modules that visualize turn payloads:
+
+// Renderer for com.example.Chart turns
+export default function ChartRenderer({ data }) {
+  return <LineChart data={data.points} />;
+}
+Renderers are:
+
+Loaded from CDN (ESM modules)
+Sandboxed with CSP
+Hot-swappable without server restart
+Architecture
+CXDB is a three-tier system:
+
+┌─────────────────┐
+│   React UI      │  (Frontend - TypeScript/Next.js)
+│   :3000         │
+└────────┬────────┘
+         │ HTTP/JSON
+         ↓
+┌─────────────────┐
+│   Go Gateway    │  (OAuth proxy + static serving)
+│   :8080         │
+└────────┬────────┘
+         │ HTTP/JSON
+         ↓
+┌─────────────────┐
+│  Rust Server    │  (Storage + binary protocol)
+│  :9009 binary   │
+│  :9010 HTTP     │
+└─────────────────┘
+         │
+         ↓
+┌─────────────────┐
+│   Storage       │
+│  - turns/       │  (Turn DAG)
+│  - blobs/       │  (Blob CAS)
+│  - registry/    │  (Type descriptors)
+└─────────────────┘
+Go writers (clients) connect via binary protocol (:9009) for high-throughput turn appends.
+
+HTTP readers (UI, tooling) use the JSON gateway (:9010) for typed projections and registry access.
+
+Documentation
+Getting Started: docs/getting-started.md
+Architecture: docs/architecture.md
+Binary Protocol: docs/protocol.md
+HTTP API: docs/http-api.md
+Type Registry: docs/type-registry.md
+Renderers: docs/renderers.md
+CLI Wrapper (cxtx): cxtx/README.md
+Deployment: docs/deployment.md
+Troubleshooting: docs/troubleshooting.md
+Development: docs/development.md
+Examples
+Go Writer (Binary Protocol)
+package main
+
+import (
+    "context"
+    "log"
+
+    "github.com/strongdm/cxdb/clients/go"
+)
+
+func main() {
+    // Connect to CXDB
+    client, err := cxdb.Dial("localhost:9009")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer client.Close()
+
+    // Create a context
+    ctx, err := client.CreateContext(context.Background(), 0)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Append a turn
+    payload := map[string]interface{}{
+        "role": "user",
+        "text": "What is the weather?",
+    }
+
+    turn, err := client.AppendTurn(context.Background(), &cxdb.AppendRequest{
+        ContextID:   ctx.ContextID,
+        TypeID:      "com.example.Message",
+        TypeVersion: 1,
+        Payload:     payload,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    log.Printf("Appended turn %d at depth %d", turn.TurnID, turn.Depth)
+}
+HTTP Reader (cURL)
+# List contexts
+curl http://localhost:9010/v1/contexts
+
+# Get turns from a context (typed JSON projection)
+curl http://localhost:9010/v1/contexts/1/turns?limit=10
+
+# Get raw msgpack bytes
+curl http://localhost:9010/v1/contexts/1/turns?view=raw
+
+# Page through history
+curl "http://localhost:9010/v1/contexts/1/turns?limit=10&before_turn_id=100"
+React UI
+import { useTurns } from '@/lib/hooks/useTurns';
+
+function ConversationView({ contextId }: { contextId: string }) {
+  const { turns, loading, error } = useTurns(contextId);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  return (
+    <div>
+      {turns.map(turn => (
+        <TurnCard key={turn.turn_id} turn={turn} />
+      ))}
+    </div>
+  );
+}
+Configuration
+CXDB is configured via environment variables:
+
+Variable	Default	Description
+CXDB_DATA_DIR	./data	Storage directory
+CXDB_BIND	127.0.0.1:9009	Binary protocol bind address
+CXDB_HTTP_BIND	127.0.0.1:9010	HTTP gateway bind address
+CXDB_LOG_LEVEL	info	Log level (debug, info, warn, error)
+CXDB_ENABLE_METRICS	false	Enable Prometheus metrics
+See docs/deployment.md for production configuration.
+
+Development
+# Run all tests
+make test
+
+# Format code
+make fmt
+
+# Lint
+make clippy
+
+# Run dev stack (backend + gateway + frontend in tmux)
+make dev
+
+# Stop dev stack
+make dev-stop
+See docs/development.md for details.
+
+Contributing
+We welcome contributions! Please:
+
+Fork the repository
+Create a feature branch (git checkout -b feature/amazing-feature)
+Commit your changes (git commit -m 'Add amazing feature')
+Push to the branch (git push origin feature/amazing-feature)
+Open a Pull Request
+Before submitting:
+
+# Run pre-commit checks
+make precommit
+Please read our Code of Conduct and Contributing Guide.
+
+Security
+For security issues, please email security@strongdm.com instead of using the public issue tracker.
+
+See SECURITY.md for our security policy.
+
+License
+CXDB is licensed under the Apache License 2.0. See LICENSE for details.
+
+Copyright 2025 StrongDM Inc.
+
+Acknowledgments
+Built with:
+
+Rust - Server implementation
+Go - Client SDK and gateway
+React + Next.js - Frontend
+BLAKE3 - Content hashing
+MessagePack - Binary serialization
+Zstd - Compression
+strongdm.com | Documentation | Issues
+
+About
+No description, website, or topics provided.
+Resources
+ Readme
+License
+ Apache-2.0 license
+Contributing
+ Contributing
+Security policy
+ Security policy
+ Activity
+Stars
+ 0 stars
+Watchers
+ 0 watching
+Forks
+ 0 forks
+Report repository
+Releases
+No releases published
+Packages
+2
+cxdb-server
+cxdb-gateway
+Contributors
+No contributors
+Languages
+Rust
+50.4%
+ 
+TypeScript
+29.3%
+ 
+Go
+18.9%
+ 
+Shell
+0.5%
+ 
+CSS
+0.3%
+ 
+Dockerfile
+0.3%
+ 
+Other
+0.3%
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Community
+Docs
+Contact
+Manage cookies
+Do not share my personal information
+
+
+Skip to content
+navanchauhan
+agent-autopsy
+Repository navigation
+Code
+Issues
+Pull requests
+Agents
+Actions
+Security and quality
+Insights
+Owner avatar
+agent-autopsy
+Public
+navanchauhan/agent-autopsy
+Go to file
+t
+T
+Name		
+navanchauhan
+navanchauhan
+Update agent captures
+f42cb75
+ · 
+2 weeks ago
+ampcode
+Normalize prompt harness variables
+last month
+antigravity
+Update agent captures
+2 weeks ago
+claude-code
+Update agent captures
+2 weeks ago
+codex
+Update agent captures
+2 weeks ago
+README.md
+Normalize prompt harness variables
+last month
+Repository files navigation
+README
+Agent Autopsy
+Collection of prompts and tool schemas for coding agents.
+
+Each coding-agent directory follows the same shape:
+
+prompts/: captured prompt files, with run-specific scalar values marked as <harnessVariable>{{name=example}}</harnessVariable> and repeated runtime sections marked with {{#each collectionName}}...{{/each}} inside <harnessVariable>...</harnessVariable>.
+tools/: one JSON file per observed tool. Each schema entry is the exact tool payload sent to the model; files use variants[] when payloads differ by model or capture mode.
+misc/: steering messages, feature-specific runtime messages, and extraction scripts.
+README.md: capture notes and refresh commands.
+VERSION: source version, capture metadata, and counts.
+Agents:
+
+codex/: prompts, tool schemas, and goal-feature steering from the Codex source tree.
+claude-code/: Claude Code non-interactive and tmux interactive captures in the shared layout.
+antigravity/: Antigravity CLI non-interactive and tmux interactive captures in the shared layout.
+ampcode/: Amp prompts and mode-specific tool schemas.
+About
+Collection of prompts and tool schemas for coding agents
+
+Resources
+ Readme
+ Activity
+Stars
+ 2 stars
+Watchers
+ 0 watching
+Forks
+ 0 forks
+Report repository
+Releases
+No releases published
+Packages
+No packages published
+Contributors
+1
+@navanchauhan
+navanchauhan Navan Chauhan
+Languages
+JavaScript
+100.0%
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Community
+Docs
+Contact
+Manage cookies
+Do not share my personal information
+
+
+Skip to content
+strongdm
+agate
+Repository navigation
+Code
+Issues
+Pull requests
+1
+ (1)
+Agents
+Actions
+Projects
+Security and quality
+Insights
+Owner avatar
+agate
+Public
+strongdm/agate
+Go to file
+t
+T
+Name		
+philhassey
+philhassey
+Merge web-frontend: terminal colors, lean sprint execution, interview UX
+ea95448
+ · 
+4 months ago
+cmd
+Add terminal colors to CLI output using fatih/color
+4 months ago
+internal
+Lean sprint execution: fix over-decomposition and redundant reviews
+4 months ago
+skills
+Lean sprint execution: fix over-decomposition and redundant reviews
+4 months ago
+.gitignore
+Initial commit
+4 months ago
+CLAUDE.md
+Initial commit
+4 months ago
+LICENSE
+Initial commit
+4 months ago
+README.md
+Initial commit
+4 months ago
+go.mod
+Add terminal colors to CLI output using fatih/color
+4 months ago
+go.sum
+Add terminal colors to CLI output using fatih/color
+4 months ago
+main.go
+Initial commit
+4 months ago
+Repository files navigation
+README
+Apache-2.0 license
+agate
+An attractor for software. You define a goal; AI agents converge on working code.
+
+What is an attractor?
+In dynamical systems, an attractor is a state toward which a system tends to evolve regardless of starting conditions. Agate applies this idea to software development: given a goal, it pulls multiple non-deterministic AI agents through iterative plan/implement/review cycles until the goal is met. The agents are chaotic, but the loop is convergent.
+
+Quick start
+go install github.com/strongdm/agate@latest
+
+mkdir my-project && cd my-project
+
+cat > GOAL.md << 'EOF'
+Build a CLI tool that converts CSV files to JSON.
+Language: Go
+EOF
+
+agate auto
+That's it. agate auto drives the entire lifecycle:
+
+Interview -- generates clarifying questions in .ai/interview.md, then stops (exit 255) so you can answer them
+Design -- produces .ai/design/overview.md and .ai/design/decisions.md
+Sprint planning -- breaks the work into tasks with skills assigned to each
+Implementation -- agents write code, reviewers gate each task
+Assessment -- when a sprint finishes, agate checks if the goal is met. If not, it plans the next sprint and keeps going
+When auto stops for human input (exit 255), answer the questions and re-run agate auto. It picks up where it left off.
+
+GOAL.md ──> interview ──> design ──> sprint plan ──> implement/review loop
+                                          │                    │
+                                          │    ┌───────────────┘
+                                          │    │ sprint complete?
+                                          │    ├── goal met ──> done
+                                          │    └── more work ──> next sprint
+                                          │                        │
+                                          └────────────────────────┘
+Commands
+Command	Purpose	Exit codes
+agate auto	Run the full lifecycle until done	0 = done, 255 = human action needed
+agate next	Advance exactly one step	0 = done, 1 = more work, 2 = error, 255 = human action needed
+agate status	Show progress and relevant files	same as next
+agate suggest 'text'	Send a hint to guide the next step	
+agate auto (recommended)
+Runs agate next in a loop. Stops when the project is complete (exit 0) or when human action is needed (exit 255). You can type suggestions on stdin between steps and they'll be forwarded automatically.
+
+agate auto                  # use default agent (Claude Opus)
+agate auto --agent haiku    # use Haiku (fast, cheap, good for testing)
+agate next
+For manual control. Each call advances one step -- generating the interview, producing the design, implementing a single task, reviewing it, etc. Chain it in a shell loop if you prefer:
+
+while agate next; [ $? -eq 1 ]; do :; done
+agate suggest
+Sends a suggestion that gets picked up on the next agate next invocation. Useful for steering the agents without editing files directly.
+
+agate suggest 'focus on error handling first'
+Agents
+Use --agent with auto or next to select which AI drives the work:
+
+Agent	Model	Notes
+claude	Claude Opus 4.5	Most capable, default
+haiku	Claude 3.5 Haiku	Fast, cheap, good for testing
+codex	GPT 5.2	OpenAI alternative
+dummy	No-op	For workflow testing
+State and files
+All state lives in plain markdown files -- no databases, no JSON blobs. Everything is human-readable and human-editable.
+
+Path	Contents
+GOAL.md	Your project description (you write this)
+.ai/interview.md	Clarifying questions and your answers
+.ai/design/overview.md	Architecture overview
+.ai/design/decisions.md	Technical decisions
+.ai/sprints/sprint-NNN.md	Sprint task lists with checkbox progress
+.ai/skills/*.md	Agent skill prompts (auto-generated + custom)
+.ai/logs/	Full agent invocation logs
+Built-in skills
+Agate generates language-specific skills automatically (e.g. go-coder, go-reviewer for Go projects). It also ships built-in skills prefixed with _:
+
+Skill	Purpose
+_planner	Creates sprint plans and task breakdowns
+_reviewer	Reviews implementation, gates task completion
+_recover	Diagnoses and fixes environment after agent failures
+_replanner	Rewrites failing tasks when review fails repeatedly
+_interviewer	Generates clarifying questions during planning
+_retro	Runs sprint retrospectives
+Sprint tasks reference skills by name (- [ ] go-coder: implement X). You can add custom skills as .md files in .ai/skills/.
+
+Install
+go install github.com/strongdm/agate@latest
+Or build from source: go build -o agate .
+
+Requires Claude CLI. Codex CLI is optional.
+
+License
+Apache License 2.0. See LICENSE.
+
+About
+an AI rock tumbler (orchestrator)
+
+Resources
+ Readme
+License
+ Apache-2.0 license
+ Activity
+ Custom properties
+Stars
+ 43 stars
+Watchers
+ 2 watching
+Forks
+ 19 forks
+Report repository
+Releases 1
+v0.0.1 — Initial Release
+Latest
+on Feb 23
+Packages
+No packages published
+Contributors
+2
+@philhassey
+philhassey Phil Hassey
+@claude
+claude Claude
+Languages
+Go
+100.0%
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Community
+Docs
+Contact
+Manage cookies
+Do not share my personal information
+
+
+Skip to content
+strongdm
+attractor
+Repository navigation
+Code
+Pull requests
+2
+ (2)
+Agents
+Actions
+Projects
+Security and quality
+Insights
+Owner avatar
+attractor
+Public
+strongdm/attractor
+Go to file
+t
+T
+Name		
+navanchauhan
+navanchauhan
+Fix spec inconsistencies and refresh model guidance
+fb57a55
+ · 
+3 months ago
+LICENSE
+Include Apache License 2.0
+4 months ago
+README.md
+Update link to Attractor implementation in README
+4 months ago
+attractor-spec.md
+Fix spec inconsistencies and refresh model guidance
+3 months ago
+coding-agent-loop-spec.md
+Fix spec inconsistencies and refresh model guidance
+3 months ago
+unified-llm-spec.md
+Fix spec inconsistencies and refresh model guidance
+3 months ago
+Repository files navigation
+README
+Apache-2.0 license
+Attractor
+This repository contains NLSpecs to build your own version of Attractor to create your own software factory.
+
+Although bringing your own agentic loop and unified LLM SDK is not required to build your own Attractor, we highly recommend controlling the stack so you have a strong foundation.
+
+Specs
+Attractor Specification
+Coding Agent Loop Specification
+Unified LLM Client Specification
+Building Attractor
+Supply the following prompt to a modern coding agent (Claude Code, Codex, OpenCode, Amp, Cursor, etc):
+
+codeagent> Implement Attractor as described by https://github.com/strongdm/attractor
+Terminology
+NLSpec (Natural Language Spec): a human-readable spec intended to be directly usable by coding agents to implement/validate behavior.
+About
+nlspec of StrongDM's Attractor, a non-interactive Coding Agent sufficient for use in a Software Factory
+
+factory.strongdm.ai/products/attractor
+Resources
+ Readme
+License
+ Apache-2.0 license
+ Activity
+ Custom properties
+Stars
+ 1.2k stars
+Watchers
+ 24 watching
+Forks
+ 194 forks
+Report repository
+Releases
+No releases published
+Packages
+No packages published
+Contributors
+5
+@navanchauhan
+@gensdm
+@jmccarthy
+@jaytaylor
+@zellyn
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Community
+Docs
+Contact
+Manage cookies
+Do not share my personal information
+
+Skip to content
+strongdm
+leash
+Repository navigation
+Code
+Issues
+11
+ (11)
+Pull requests
+4
+ (4)
+Agents
+Actions
+Security and quality
+Insights
+Owner avatar
+leash
+Public
+strongdm/leash
+Go to file
+t
+T
+Name		
+karimfanclaude
+and
+jaytaylor
+feat(configstore): support local .leash.toml override file
+fd8e0c1
+ · 
+2 months ago
+.github/workflows
+ci(coder-cli-releases-watchdog): watchdog artifact download bugfix
+7 months ago
+build
+ci(coder-cli-releases-watchdog): build and publish multi-arch coder d…
+7 months ago
+cmd
+feat(security): separate CA cert and key into public/private mounts
+8 months ago
+controlui
+build(web): update config for Next.js and React 19.2
+6 months ago
+docs
+Update Docker registry refs to AWS ECR 🚚
+5 months ago
+e2e
+fix(security): block target container from reaching leashd control pl…
+5 months ago
+internal
+feat(configstore): support local .leash.toml override file
+2 months ago
+mac-leash
+build(mac-leash): bump version to 1.1.0
+8 months ago
+npm/leash
+feat(release): add npm package build and publish workflow
+8 months ago
+.dockerignore
+Initial commit.
+8 months ago
+.gitignore
+chore(.gitignore): add test files to ignore list
+5 months ago
+.goreleaser.yaml
+build: add go generate hook
+8 months ago
+CONTRIBUTORS.md
+Initial commit.
+8 months ago
+DISCLAIMER.txt
+Initial commit.
+8 months ago
+Dockerfile.coder
+Add ripgrep to coder image
+6 months ago
+Dockerfile.leash
+fix(rocky-test): add `--allowerasing' to dnf install in Dockerfile
+6 months ago
+LICENSE
+Initial commit.
+8 months ago
+Makefile
+Add open env default and dev verbosity toggles
+5 months ago
+README.md
+Update Docker registry refs to AWS ECR 🚚
+5 months ago
+go.mod
+Initial commit.
+8 months ago
+go.sum
+Initial commit.
+8 months ago
+test_e2e.sh
+Initial commit.
+8 months ago
+Repository files navigation
+README
+Apache-2.0 license
+Leash
+Tests
+
+Leash wraps AI coding agents in containers and monitors their activity. You define policies in Cedar; Leash enforces them instantly.
+
+Leash demo
+
+Requirements
+Docker, Podman, or OrbStack
+macOS or Linux (WSL, too!)
+Installation
+Recommended method is via npm:
+
+npm install -g @strongdm/leash
+Alternative ways follow:
+
+Download the latest pre-built release binary from the releases page.
+
+or if you're on macOS:
+
+brew tap strongdm/tap
+brew install --cask leash-app
+macOS Note 1: This installs a helper app that enables experimental native mode on macOS and also installs the leash formula.
+
+macOS Note 2: If you download Leash from the releases page, you'll need to run xattr -d com.apple.quarantine leash after extracting it
+
+Refer to MACOS.md to learn more about the additional native macOS capabilities.
+
+Run your first Leash command
+# Launch codex with the Control UI and pop open the web browser automatically
+leash --open claude
+
+leash --open codex
+
+# Inspect available options
+leash --help
+AI agents claude, codex, gemini, qwen, and opencode are shipped in the default coder image.
+
+On first use Leash will prompt to mount the host's coder-agent config directory (for example ~/.claude) into the container.
+
+Choose whether to remember that decision globally, for the current project, or just this once; persistent choices are stored at ~/.config/leash/config.toml.
+
+Key Concepts
+Full monitoring captures every filesystem access and network connection initiated by the agent so Cedar policies and audit trails operate on complete telemetry.
+
+Agent container runs your command with the current directory bind-mounted, so tools see the same file tree they would on the host.
+
+Leash container monitors system calls, applies Cedar policies, and exposes the Control UI at http://localhost:18080 (use --open to launch it automatically).
+
+Mount prompts remember whether to forward host agent credentials (see CONFIG.md).
+
+Environment forwarding maps common API keys automatically: ANTHROPIC_API_KEY for claude, OPENAI_API_KEY for codex, GEMINI_API_KEY for gemini, and DASHSCOPE_API_KEY for qwen.
+
+MCP Integration
+Leash includes a Model Context Protocol (MCP) observer that inspects, records, and enforces MCP tool calls made by the agent. Requests flowing through supported MCP transports are correlated with filesystem and network telemetry, enabling Cedar policies to govern tool use alongside core runtime activity.
+
+Using Leash
+Images and Dependencies
+Keep the default public.ecr.aws/s5i7k8t3/strongdm/coder image for a ready-to-run AI tooling environment.
+Extend Dockerfile.coder with project packages, then point Leash at the new image.
+Reuse an existing project image by adding ca-certificates and configuring Leash to launch it.
+Configure alternative images through TOML, CLI flags, or environment variables:
+
+[leash]
+codex = true
+
+[projects."/absolute/path/to/project"]
+target_image = "ghcr.io/example/dev:latest"
+
+[projects."/absolute/path/to/project".volumes]
+"~/devtools" = "/workspace/devtools:rw"
+Configure	Use	Notes
+Target image	target_image in config.toml,	Defaults to public.ecr.aws/s5i7k8t3/strongdm/coder.
+LEASH_TARGET_IMAGE, or --image flag	
+Target container base	TARGET_CONTAINER	Auto-sanitized from the current directory when unset.
+Leash manager image	--leash-image, LEASH_IMAGE	Override when testing custom manager builds.
+Cedar policy file	--policy, LEASH_POLICY_FILE	Mount a specific Cedar policy.
+Control UI bind address	--listen, LEASH_LISTEN	Blank value binds to default 127.0.0.1:18080
+Extra bind mount	-v src:dst[:ro]	Repeatable for multiple mounts.
+Environment variables	-e KEY=value	Forwarded into both containers.
+Run ./bin/leash --help for a complete list of flags and environment variables.
+
+See CONFIG.md and CUSTOM-DOCKER-IMAGES.md for more information.
+
+Manual Volumes and Environment Variables
+Choose your own project-specific mounts and set additional environment variables as needed:
+
+leash -v ~/.myconfig:/root/.myconfig claude bash
+leash -e MY_VAR=value codex bash
+Deep Dives
+Dive deeper with CEDAR.md for ready-to-adapt snippets.
+
+Telemetry details live in TELEMETRY.md.
+Troubleshooting & Next Steps
+Reset mount decisions or inspect config behavior with the tips in CONFIG.md.
+Explore the development process in DEVELOPMENT.md and CONTRIBUTORS.md.
+About
+Leash by StrongDM - take your AI agents for a walk
+
+leash.strongdm.ai/
+Topics
+security ai sandbox container agentic claude-code codex-cli
+Resources
+ Readme
+License
+ Apache-2.0 license
+ Activity
+ Custom properties
+Stars
+ 573 stars
+Watchers
+ 7 watching
+Forks
+ 45 forks
+Report repository
+Releases 9
+v1.1.7
+Latest
+on Mar 11
++ 8 releases
+Contributors
+8
+@jaytaylor
+@navanchauhan
+@jmccarthy
+@claude
+@todofixthis
+@JuroOravec
+@karimfan
+@merphx
+Languages
+Go
+66.5%
+ 
+TypeScript
+13.0%
+ 
+Swift
+11.7%
+ 
+Shell
+2.7%
+ 
+C
+2.3%
+ 
+Python
+1.6%
+ 
+Other
+2.2%
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Community
+Docs
+Contact
+Manage cookies
+Do not share my personal information
+
+Skip to content
+strongdm
+leash
+Repository navigation
+Code
+Issues
+11
+ (11)
+Pull requests
+4
+ (4)
+Agents
+Actions
+Security and quality
+Insights
+Owner avatar
+leash
+Public
+strongdm/leash
+Go to file
+t
+T
+Name		
+karimfanclaude
+and
+jaytaylor
+feat(configstore): support local .leash.toml override file
+fd8e0c1
+ · 
+2 months ago
+.github/workflows
+ci(coder-cli-releases-watchdog): watchdog artifact download bugfix
+7 months ago
+build
+ci(coder-cli-releases-watchdog): build and publish multi-arch coder d…
+7 months ago
+cmd
+feat(security): separate CA cert and key into public/private mounts
+8 months ago
+controlui
+build(web): update config for Next.js and React 19.2
+6 months ago
+docs
+Update Docker registry refs to AWS ECR 🚚
+5 months ago
+e2e
+fix(security): block target container from reaching leashd control pl…
+5 months ago
+internal
+feat(configstore): support local .leash.toml override file
+2 months ago
+mac-leash
+build(mac-leash): bump version to 1.1.0
+8 months ago
+npm/leash
+feat(release): add npm package build and publish workflow
+8 months ago
+.dockerignore
+Initial commit.
+8 months ago
+.gitignore
+chore(.gitignore): add test files to ignore list
+5 months ago
+.goreleaser.yaml
+build: add go generate hook
+8 months ago
+CONTRIBUTORS.md
+Initial commit.
+8 months ago
+DISCLAIMER.txt
+Initial commit.
+8 months ago
+Dockerfile.coder
+Add ripgrep to coder image
+6 months ago
+Dockerfile.leash
+fix(rocky-test): add `--allowerasing' to dnf install in Dockerfile
+6 months ago
+LICENSE
+Initial commit.
+8 months ago
+Makefile
+Add open env default and dev verbosity toggles
+5 months ago
+README.md
+Update Docker registry refs to AWS ECR 🚚
+5 months ago
+go.mod
+Initial commit.
+8 months ago
+go.sum
+Initial commit.
+8 months ago
+test_e2e.sh
+Initial commit.
+8 months ago
+Repository files navigation
+README
+Apache-2.0 license
+Leash
+Tests
+
+Leash wraps AI coding agents in containers and monitors their activity. You define policies in Cedar; Leash enforces them instantly.
+
+Leash demo
+
+Requirements
+Docker, Podman, or OrbStack
+macOS or Linux (WSL, too!)
+Installation
+Recommended method is via npm:
+
+npm install -g @strongdm/leash
+Alternative ways follow:
+
+Download the latest pre-built release binary from the releases page.
+
+or if you're on macOS:
+
+brew tap strongdm/tap
+brew install --cask leash-app
+macOS Note 1: This installs a helper app that enables experimental native mode on macOS and also installs the leash formula.
+
+macOS Note 2: If you download Leash from the releases page, you'll need to run xattr -d com.apple.quarantine leash after extracting it
+
+Refer to MACOS.md to learn more about the additional native macOS capabilities.
+
+Run your first Leash command
+# Launch codex with the Control UI and pop open the web browser automatically
+leash --open claude
+
+leash --open codex
+
+# Inspect available options
+leash --help
+AI agents claude, codex, gemini, qwen, and opencode are shipped in the default coder image.
+
+On first use Leash will prompt to mount the host's coder-agent config directory (for example ~/.claude) into the container.
+
+Choose whether to remember that decision globally, for the current project, or just this once; persistent choices are stored at ~/.config/leash/config.toml.
+
+Key Concepts
+Full monitoring captures every filesystem access and network connection initiated by the agent so Cedar policies and audit trails operate on complete telemetry.
+
+Agent container runs your command with the current directory bind-mounted, so tools see the same file tree they would on the host.
+
+Leash container monitors system calls, applies Cedar policies, and exposes the Control UI at http://localhost:18080 (use --open to launch it automatically).
+
+Mount prompts remember whether to forward host agent credentials (see CONFIG.md).
+
+Environment forwarding maps common API keys automatically: ANTHROPIC_API_KEY for claude, OPENAI_API_KEY for codex, GEMINI_API_KEY for gemini, and DASHSCOPE_API_KEY for qwen.
+
+MCP Integration
+Leash includes a Model Context Protocol (MCP) observer that inspects, records, and enforces MCP tool calls made by the agent. Requests flowing through supported MCP transports are correlated with filesystem and network telemetry, enabling Cedar policies to govern tool use alongside core runtime activity.
+
+Using Leash
+Images and Dependencies
+Keep the default public.ecr.aws/s5i7k8t3/strongdm/coder image for a ready-to-run AI tooling environment.
+Extend Dockerfile.coder with project packages, then point Leash at the new image.
+Reuse an existing project image by adding ca-certificates and configuring Leash to launch it.
+Configure alternative images through TOML, CLI flags, or environment variables:
+
+[leash]
+codex = true
+
+[projects."/absolute/path/to/project"]
+target_image = "ghcr.io/example/dev:latest"
+
+[projects."/absolute/path/to/project".volumes]
+"~/devtools" = "/workspace/devtools:rw"
+Configure	Use	Notes
+Target image	target_image in config.toml,	Defaults to public.ecr.aws/s5i7k8t3/strongdm/coder.
+LEASH_TARGET_IMAGE, or --image flag	
+Target container base	TARGET_CONTAINER	Auto-sanitized from the current directory when unset.
+Leash manager image	--leash-image, LEASH_IMAGE	Override when testing custom manager builds.
+Cedar policy file	--policy, LEASH_POLICY_FILE	Mount a specific Cedar policy.
+Control UI bind address	--listen, LEASH_LISTEN	Blank value binds to default 127.0.0.1:18080
+Extra bind mount	-v src:dst[:ro]	Repeatable for multiple mounts.
+Environment variables	-e KEY=value	Forwarded into both containers.
+Run ./bin/leash --help for a complete list of flags and environment variables.
+
+See CONFIG.md and CUSTOM-DOCKER-IMAGES.md for more information.
+
+Manual Volumes and Environment Variables
+Choose your own project-specific mounts and set additional environment variables as needed:
+
+leash -v ~/.myconfig:/root/.myconfig claude bash
+leash -e MY_VAR=value codex bash
+Deep Dives
+Dive deeper with CEDAR.md for ready-to-adapt snippets.
+
+Telemetry details live in TELEMETRY.md.
+Troubleshooting & Next Steps
+Reset mount decisions or inspect config behavior with the tips in CONFIG.md.
+Explore the development process in DEVELOPMENT.md and CONTRIBUTORS.md.
+About
+Leash by StrongDM - take your AI agents for a walk
+
+leash.strongdm.ai/
+Topics
+security ai sandbox container agentic claude-code codex-cli
+Resources
+ Readme
+License
+ Apache-2.0 license
+ Activity
+ Custom properties
+Stars
+ 573 stars
+Watchers
+ 7 watching
+Forks
+ 45 forks
+Report repository
+Releases 9
+v1.1.7
+Latest
+on Mar 11
++ 8 releases
+Contributors
+8
+@jaytaylor
+@navanchauhan
+@jmccarthy
+@claude
+@todofixthis
+@JuroOravec
+@karimfan
+@merphx
+Languages
+Go
+66.5%
+ 
+TypeScript
+13.0%
+ 
+Swift
+11.7%
+ 
+Shell
+2.7%
+ 
+C
+2.3%
+ 
+Python
+1.6%
+ 
+Other
+2.2%
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Community
+Docs
+Contact
+Manage cookies
+Do not share my personal information
