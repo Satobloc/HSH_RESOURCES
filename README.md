@@ -1,5 +1,8 @@
 # HSH Resources
 
+> **2026-10-10 INTERNAL CROSS-FORMALISM REFERENCE INDEX:** [indexes/CROSS_FORMALISM_REFERENCE_INDEX_2026-10-10.md](indexes/CROSS_FORMALISM_REFERENCE_INDEX_2026-10-10.md). Private routing only; this index must not become a public cross-link target.
+
+
 > **Human-facing catalog:** [`!_HSH_RESOURCES_INDEX.md`](!%5FHSH%5FRESOURCES%5FINDEX.md)  
 > **AI / LLM start here:** [`indexes/AI_START_HERE.md`](indexes/AI_START_HERE.md)
 
