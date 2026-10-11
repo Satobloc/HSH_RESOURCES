@@ -39,3 +39,9 @@ This ledger is deliberately point-of-use oriented. Candidates remain **candidate
 6. saved news / LIVE_RESEARCH_UPDATES / outside-research lanes
 7. new research + web
 8. point-of-use closure against target papers
+
+
+## 2026-10-11 current-access amendment (preserves historical queue as history)
+The earlier intake queue above is historical, **not a current access authorization**. Per Nathan Direct 2026-10-09, **Hypothesis H proper and directly Schreiber-authored material remain strictly off-limits, including copies and quotations elsewhere**. The previous queue steps to read those sources are cancelled. Other previously restricted prior-art materials require individual clearance after documented SAT/H(s)H internal precedent and internal work. Default Mersearch PRIOR_ART/QUARANTINE exclusions remain in place. No unfiltered corpus extraction. Source-role and original bibliographic identity still must be confirmed at point of use.
+
+For current bounded source-identity findings and successor continuity see [2026-10-11 intake case](2026-10-11_SUCCESSOR_INTAKE_IDENTITY_AUDIT.md). The two filename aliases `0605126v1.pdf` and `0605126v1 (1).pdf` are identical Git blobs but **not citation-ready**; no authorship/source-owner clearance established. Retain their `CLEARANCE_HOLD` until individually verified.
