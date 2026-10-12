@@ -122,6 +122,10 @@ class ReviewGateTests(unittest.TestCase):
         (self.root / PATH).unlink()
         self.assertEqual(self.status(), "hold_physical_containment_unverified")
 
+    def test_physical_size_mismatch_blocks(self):
+        (self.root / PATH).write_bytes(b"short")
+        self.assertEqual(self.status(), "hold_physical_containment_unverified")
+
     def test_stale_commit_fails_globally(self):
         self.a["inventory_commit"] = "d" * 40
         with self.assertRaises(PreflightError): self.run_gate()
