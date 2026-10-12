@@ -31,7 +31,7 @@ Omitting --root holds all new candidates lacking physical-containment inspection
 
 ## Production blockers
 - Attestation fields cannot verify reviewer authenticity, actual authorship, bibliographic citation accuracy or permission.
-- The commit is format-checked, not verified against a live checkout's HEAD/clean tree; actual PDF bytes are not read. A production integration must independently enforce immutable-source identity.
+- The commit is format-checked, not verified against a live checkout's HEAD/clean tree. Physical inspection now requires the local file size to match the pinned inventory, but actual PDF bytes and Git blob content are not read; equal size is not immutable-source identity. A production integration must enforce the full blob/hash identity independently.
 - Physical symlink checks are inspection-time only, not a TOCTOU-resistant PDF-open control. Recheck at use time or use safe file descriptors in any later extractor integration.
 - A filename/title/author keyword deny rule cannot identify every forbidden source; source-owner per-item clearance is indispensable.
 - The existing production extractor and workflow are unchanged and do NOT use this preflight. An isolated review-only tool does not secure the live extractor.
