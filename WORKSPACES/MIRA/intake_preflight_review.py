@@ -98,8 +98,8 @@ def parse_approvals(obj: Any, commit: str) -> dict[str, dict[str, Any]]:
     return result
 
 
-def physical_check(root: Path | None, path: str) -> bool:
-    """Check physical location without reading PDF data. No root => no green paths."""
+def physical_check(root: Path | None, path: str, expected_bytes: int) -> bool:
+    """Check location and pinned size without reading PDF data. No root => no green paths."""
     if root is None:
         return False
     try:
@@ -113,7 +113,7 @@ def physical_check(root: Path | None, path: str) -> bool:
                 return False
         resolved = current.resolve(strict=True)
         resolved.relative_to(base)
-        return resolved.is_file()
+        return resolved.is_file() and resolved.stat().st_size == expected_bytes
     except (OSError, ValueError, RuntimeError):
         return False
 
@@ -159,7 +159,7 @@ def evaluate(inventory: Any, manifest: Any, approved: Any,
                 label = "hold_incomplete_review"
             elif explicitly_approved_blobs[file["blob_sha"].lower()] > 1:
                 label = "hold_multiple_approved_aliases"
-            elif not physical_check(root, path):
+            elif not physical_check(root, path, file["bytes"]):
                 label = "hold_physical_containment_unverified"
             else:
                 label = "provisional_review_pass_not_extraction_permission"
