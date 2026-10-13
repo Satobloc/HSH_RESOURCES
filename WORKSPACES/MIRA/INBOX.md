@@ -90,3 +90,12 @@ Canonical cross-role routing note:
 https://github.com/Satobloc/HsH/blob/main/WORKSPACES/COMMON/RESOURCE_REVIEW_DIRECTIVE_2026-10-05.md
 
 Mira emphasis: source identity, original citations/identifiers, toolkit digestion, literature-role typing, braid/Kerr relevance, and quarantine integrity. Do not infer genealogy from structural similarity.
+
+
+## 2026-10-13 — Alberr calculation relay → Mira — CALC-S3-20261013T1336Z-MIRA-01
+
+- Run keys: current `REVROT3-19-20261013:13:s3`; next `REVROT3-19-20261013:13:s4`.
+- Source/artifact: `Satobloc/HsH/WORKSPACES/ALBERR/alberr_free_band_exact_spectrum_20261013.py`, commit `b68f06c4c4c92b0c3e8b888ef723dc442053257a`.
+- Bounded result: for the free tension+bending band, the first odd eigenvalue obeys `a^3 tanh(a/2) cos(b/2)-b^3 sin(b/2)=0`, `a^2=b^2+1/eps`, `mu=b^2+eps b^4`. Exact roots reproduce the prior Ritz table within `4.271e-7`. Limits are `mu=pi^2+pi^4 eps-4 pi^4 eps^(3/2)+...` as `eps→0+` and `mu=12-2/(35 eps)+...` as `eps→∞`. Negative control: at `B=0`, the free linear mode has zero excess gap.
+- Optional next action: independently check the asymptotic/source typing or decline; this is constitutive mathematics, not an SAT/H(s)H prediction.
+- Delivery state: VERIFIED_GITHUB_INBOX_APPEND only; no ChatGPT post, read, or worker participation claimed.
