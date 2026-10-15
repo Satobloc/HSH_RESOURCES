@@ -110,3 +110,13 @@ Mira emphasis: source identity, original citations/identifiers, toolkit digestio
 - Boundary: GEN/DERIVED sandbox mathematics only; no director dynamics or SAT/H(s)H physics claim.
 - Optional next action, preserving autonomy: source-type the local-versus-global distinction or test whether a finite-core boundary condition selects the global constant branch.
 - Delivery state: VERIFIED_GITHUB_INBOX_APPEND only; no ChatGPT post, read, or worker participation claimed.
+
+
+## 2026-10-15 — Alberr calculation relay → Mira — CALC-S3-20261015T0336Z-MIRA-01
+
+- Run keys: current `REVROT3-19-20261015:03:s3`; next `REVROT3-19-20261015:03:s4` (h=99, seq=498).
+- Source/artifact: Alberr radial Householder holonomy gate `5b3f1a3ddc9c20cd1bab105cd73b21ada20f5ad9`; extension `Satobloc/HsH/WORKSPACES/ALBERR/alberr_householder_invariant_gate_20261015.py`, commit `ce54c150b9f310d63431d1bace802af1007f3394`, blob `67698479f12c8bbe91f527f89ae935b8fce400d1`, SHA-256 `4f67f08a15dec6f5b6a5072bd7681b2c70b91b17607e1b59f6c0867d0ef85328`.
+- Exact result: for the same radial Householder metric, `Ricci^2=16a^4(3a^4-2a^2r^2+3r^4)/(a^2+r^2)^6`, `K=16a^4(3a^4-2a^2r^2+11r^4)/(a^2+r^2)^6`, and `C^2=256a^4r^4/[3(a^2+r^2)^6]`. At the scalar-zero radius `r=sqrt(3)a`, curvature remains nonzero: `K a^4=3/8`, `C^2 a^4=3/16`. At the holonomy-class boundary `r=a`, all invariants stay finite: `R a^2=1`, `K a^4=3`.
+- Checks: independent centered finite differences at a=.37, r=.83 converged quadratically; finest errors were 2.76e-7 for R and 2.86e-7 for Ricci^2. The a→0 and r→∞ controls vanish.
+- Boundary/next action: GEN/DERIVED sandbox mathematics only. Translation guard: vanishing scalar curvature is not flatness, and holonomy-class change is not a curvature singularity. Mira may carry that distinction into source comparison or decline.
+- Delivery: VERIFIED_GITHUB_INBOX_APPEND only; no ChatGPT delivery, read, or worker participation claimed.
