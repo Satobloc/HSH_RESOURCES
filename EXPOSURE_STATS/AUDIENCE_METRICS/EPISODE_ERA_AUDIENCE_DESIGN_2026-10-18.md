@@ -23,3 +23,6 @@ Anomalous future publish dates in the export (2028–2034 throwback/time-capsule
 Use the podcast-guide builder and neutral Spotify-title chronology before creating a parallel episode database. Cross-repository input manifest and reproducible joins are mandatory. PRIOR_ART boundaries remain respected.
 
 Status: title export and guide machinery read; exact previously discussed 'turning point' file not conclusively identified; no geo-by-era inference made.
+
+## Clarification: transition and future-dated records (Nathan Direct, 2026-10-18)
+No separate 'turning point document' was asserted. The user meant the thematic turning point that emerges from examining the actual episode list. Detect it from the chronology and transcripts; do not search for or posit a special document. Future-dated throwback / return-visit episodes are intentionally scheduled or parked for future publication, not yet released; retain their metadata but **exclude dates after the observation cutoff from historical release and listening analyses**. Do not classify those planned dates as archival mistakes. The early philosophical/epistemological/LLM-consciousness and later technical physics categories overlap across the catalogue; treat transition date as an empirical estimate, not a presupposed single cutoff.
