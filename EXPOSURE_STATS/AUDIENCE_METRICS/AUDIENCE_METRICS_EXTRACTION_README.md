@@ -56,3 +56,17 @@ All-time geography reports approximately 94.46% United States. Age 35–44 is ap
 5. Search for the three target cities and assess repetition and reporting periods before interpreting a pattern.
 
 No analysis in this document is a claim of coordinated listening or causal connection.
+
+## Workflow discovery and execution route (2026-10-18)
+
+A cross-repository review found:
+
+- [RESOURCES] `tools/build_analytics_store.py`: existing source-traceable CSV and JSON ingestion into SQLite, with `--scope`, `--apply`, source SHA-256 and row/schema accounting. The existing `cross-diffusion-data.yml` invokes it but **does not currently include `EXPOSURE_STATS/AUDIENCE_METRICS`** among its explicitly named scopes. Its current trigger covers `EXPOSURE_STATS/**`, so avoid assuming a trigger implies inclusion.
+- [RESOURCES] `.github/workflows/extract-papers.yml`: safe automated checkout, Python execution, validation, and commit machinery, but its PDF extractor is not a CSV consolidation tool.
+- [[HsH]] `.github/workflows/extract-raw-window.yml`: request-triggered bounded extraction and output publication pattern, scoped to conversation windows.
+- [[HsH]] `.github/workflows/issue-publisher.yml`: owner-authored issue intake for bounded Markdown publication to a fixed HsH path, **not** an arbitrary Python execution route or cross-repository writer.
+- [[GLASS]] `.github/workflows/full-archive-index.yml`, `build-archive-structure.yml`, and `extract-pdf-text.yml`: historical archive indexing/extraction patterns.
+
+**Preferred local implementation:** Add a narrowly scoped `[RESOURCES]/tools/build_audience_metrics.py` and a workflow under `[RESOURCES]/.github/workflows/` that triggers on changes to the audience CSVs and the script. Run against the checked-out repository (no API calls per CSV), write a deterministic provenance-preserving consolidated JSON, validate file counts/row counts and content hashes, then commit only that generated artifact with a safe fetch/rebase or concurrency-aware retry. Optionally extend `build_analytics_store.py` with the audience-metrics scope as a distinct second layer, avoiding unrelated OCR/PDF work.
+
+**Important:** Reading these tools and recording this route does not mean the consolidator has been deployed or run. Verify workflow run, output integrity and independent repository readback before declaring completion.
