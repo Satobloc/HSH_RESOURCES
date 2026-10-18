@@ -2,7 +2,7 @@
 
 Neutral inventory only. No explanatory or similarity judgments are made here.
 
-Images in current scopes: **40**
+Images in current scopes: **41**
 
 | Source image | SHA-256 | Text status | Extracted text | Non-space characters |
 |---|---|---|---|---:|
@@ -45,4 +45,5 @@ Images in current scopes: **40**
 | [EXPOSURE_STATS/SAT_IMPACT/trends.PNG](../EXPOSURE_STATS/SAT_IMPACT/trends.PNG) | `be8f1dc5ce67dae1914032ad214178f380309e2aa4344c17d6a809ca75b5995d` | extracted | [text](../derived/image_text/be8f1dc5ce67dae1914032ad214178f380309e2aa4344c17d6a809ca75b5995d.txt) | 435 |
 | [EXPOSURE_STATS/SAT_IMPACT/trends2.PNG](../EXPOSURE_STATS/SAT_IMPACT/trends2.PNG) | `e28a7601470d97b13ab936b2a18d9a7e0f055a632b648131eb8fb3cb94b4922e` | extracted | [text](../derived/image_text/e28a7601470d97b13ab936b2a18d9a7e0f055a632b648131eb8fb3cb94b4922e.txt) | 364 |
 | [EXPOSURE_STATS/SAT_IMPACT/uniCapture.PNG](../EXPOSURE_STATS/SAT_IMPACT/uniCapture.PNG) | `09d2369ecdc3845a8ad2c961becfa861f207497eda458419e5eae705b8c3b5c0` | extracted | [text](../derived/image_text/09d2369ecdc3845a8ad2c961becfa861f207497eda458419e5eae705b8c3b5c0.txt) | 31 |
+| [EXPOSURE_STATS/WEBSITE_STATS/website.JPG](../EXPOSURE_STATS/WEBSITE_STATS/website.JPG) | `4c5814e9024b2fbeafe9e00b9c55df75d1cc01f9dd4c5b27602de953ade5c0f4` | extracted | [text](../derived/image_text/4c5814e9024b2fbeafe9e00b9c55df75d1cc01f9dd4c5b27602de953ade5c0f4.txt) | 275 |
 | [OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - GWTC4-Events-Poster-Landscape.jpeg](../OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - GWTC4-Events-Poster-Landscape.jpeg) | `9d5b0999c3ee829cb2beccd52cbac8cca1c6ff3f57c9b47033106c319c7bfc4a` | extracted | [text](../derived/image_text/9d5b0999c3ee829cb2beccd52cbac8cca1c6ff3f57c9b47033106c319c7bfc4a.txt) | 3926 |
