@@ -20,3 +20,6 @@ Date: 2026-10-18. User-supplied series identification is authoritative for catal
 - Parse OCR `| ### |` episode boundaries, but independently check where the source notes say boundaries are unreliable. Do not treat explanatory prose about analytics as measured data.
 - Future scheduled return-visit episodes are not published and should not enter observed release-period comparisons.
 - Use resulting episode/time panel to model genre-transition audience behavior; a geo-by-episode cross-tab is still not established from the currently verified sources.
+
+## Cross-name historical analytics union: critical priority
+**Nathan Direct, 2026-10-18:** The central reason to normalize DAI, Debating AI and later main-show titles to one series identity is that per-episode and historical metrics collected under *different names* can be combined into **one longitudinal data series for the same podcast**. Search and ingest all historical name variants, not just the latest brand. Alias normalization is applied prior to series-level grouping; do not remove raw display titles. Dedupe overlapping exports/snapshots and do not add cumulative counts from different dates. The separate SAT Field Notebook remains a distinct series and must not be pooled with the main show. Link Spotify episode URIs and source-specific dates, preserving metric definitions and snapshot boundaries.
