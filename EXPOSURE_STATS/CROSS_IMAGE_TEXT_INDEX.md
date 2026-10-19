@@ -2,13 +2,17 @@
 
 Neutral inventory only. No explanatory or similarity judgments are made here.
 
-Images in current scopes: **41**
+Images in current scopes: **45**
 
 | Source image | SHA-256 | Text status | Extracted text | Non-space characters |
 |---|---|---|---|---:|
 | [EXPOSURE_STATS/42972090-1784001087429-35862a49ce565.jpg](../EXPOSURE_STATS/42972090-1784001087429-35862a49ce565.jpg) | `6501338375615d81c5b284bbcf39d8c1d18b32495d69628ea6adf3d5156bf5ce` | extracted | [text](../derived/image_text/6501338375615d81c5b284bbcf39d8c1d18b32495d69628ea6adf3d5156bf5ce.txt) | 15 |
 | [EXPOSURE_STATS/_SAT  Satobloc GitHubStats/stereoscope_e7da221874e02410948deb78c586f0b9.jpg](../EXPOSURE_STATS/_SAT  Satobloc GitHubStats/stereoscope_e7da221874e02410948deb78c586f0b9.jpg) | `99d8545a976732839bfce6ffbca709e34fd771e80d8ad6392121830d59b2d86f` | extracted | [text](../derived/image_text/99d8545a976732839bfce6ffbca709e34fd771e80d8ad6392121830d59b2d86f.txt) | 15 |
 | [EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Total views in last 14 days.png](../EXPOSURE_STATS/_SAT  Satobloc GitHubStats/Total views in last 14 days.png) | `0c4d76e2d2e2de7400ed865cad70c4bb3d094d855ee9a174a7bb41090c71c0a0` | extracted | [text](../derived/image_text/0c4d76e2d2e2de7400ed865cad70c4bb3d094d855ee9a174a7bb41090c71c0a0.txt) | 140 |
+| [EXPOSURE_STATS/NotebookLM Mind Map (1).png](../EXPOSURE_STATS/NotebookLM Mind Map (1).png) | `a782014e8a51b7e7db1ba6c891935da461db199be29ffe3b2c5a249690145c1a` | extracted | [text](../derived/image_text/a782014e8a51b7e7db1ba6c891935da461db199be29ffe3b2c5a249690145c1a.txt) | 1854 |
+| [EXPOSURE_STATS/NotebookLM Mind Map (2).png](../EXPOSURE_STATS/NotebookLM Mind Map (2).png) | `4d003869814bd5e0acad5801067846f59dba51b54248b2abb29010c724658ff7` | extracted | [text](../derived/image_text/4d003869814bd5e0acad5801067846f59dba51b54248b2abb29010c724658ff7.txt) | 1934 |
+| [EXPOSURE_STATS/NotebookLM Mind Map (3).png](../EXPOSURE_STATS/NotebookLM Mind Map (3).png) | `a120c8aa8a803e0256d71433461f1b28354b95cd763f1630afaac8f123664720` | extracted | [text](../derived/image_text/a120c8aa8a803e0256d71433461f1b28354b95cd763f1630afaac8f123664720.txt) | 451 |
+| [EXPOSURE_STATS/NotebookLM Mind Map.png](../EXPOSURE_STATS/NotebookLM Mind Map.png) | `ab083c09333ecb754d41ceb07afbd1aee59898d6f8db4e68f04c42f3ab1b1450` | extracted | [text](../derived/image_text/ab083c09333ecb754d41ceb07afbd1aee59898d6f8db4e68f04c42f3ab1b1450.txt) | 228 |
 | [EXPOSURE_STATS/SAT — PODCAST STATS/34gtretCapture.JPG](../EXPOSURE_STATS/SAT — PODCAST STATS/34gtretCapture.JPG) | `f3665f5230b96bdbbbd25cb3997ed25cfb32fe3dffc89d8d36a5507c7f01d32e` | extracted | [text](../derived/image_text/f3665f5230b96bdbbbd25cb3997ed25cfb32fe3dffc89d8d36a5507c7f01d32e.txt) | 988 |
 | [EXPOSURE_STATS/SAT — PODCAST STATS/34qffsdf.JPG](../EXPOSURE_STATS/SAT — PODCAST STATS/34qffsdf.JPG) | `4fe37a75a512868a0857988fbc59b0fef9ae2268c61118802ff08644f6e17632` | extracted | [text](../derived/image_text/4fe37a75a512868a0857988fbc59b0fef9ae2268c61118802ff08644f6e17632.txt) | 960 |
 | [EXPOSURE_STATS/SAT — PODCAST STATS/34tferfCapture.JPG](../EXPOSURE_STATS/SAT — PODCAST STATS/34tferfCapture.JPG) | `dd69d91d89d1e43cf48e2617ee1bba7a9bbfc611f936db397003169f824df7da` | extracted | [text](../derived/image_text/dd69d91d89d1e43cf48e2617ee1bba7a9bbfc611f936db397003169f824df7da.txt) | 1000 |
