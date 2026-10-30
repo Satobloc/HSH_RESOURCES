@@ -240,3 +240,8 @@ All 34 exact vanilla/CGD model-output blobs (17 per condition) were independentl
 Added `OrsonFinitePatternDistribution.lean` to existing PR #850: finite powerset pattern weights, normalization, nonnegativity for valid Bernoulli parameters, pointwise equality of the shared-gate and latent-difficulty toy distributions, and non-injectivity of their observation map. First exact-head run #41078042006 failed on a powerset-sum rewrite; repair commit/exact branch head `0efbc7ae1577c37ee36b6bcdb4a0fb7c17ee619c`; exact-head run #41079040914 was pending at note time. Do not claim compilation until that run and theorem-specific axiom outputs are inspected.
 
 No model calls, no human adjudication, no peer-exposure experiment, no P1 manuscript edit, no D1 PDF/TeX/reader recovery, and no public issue. P1 remains Orson-owned; November 2 protocol freeze and November 9 paper gate remain open. Next: exact-head CI/axiom inspection, question-aware key rubric, human adjudication, then premise-cluster paired bootstrap under frozen estimands.
+
+
+### VEY-015 verification update — 2026-10-30 15:21Z
+
+The repaired exact-head PR #850 run `41079040914` completed SUCCESS on head `0efbc7ae1577c37ee36b6bcdb4a0fb7c17ee619c` (job `124142906377`; 8,972 build jobs). The new `OrsonFinitePatternDistribution` module compiled. All eight theorem-specific axiom outputs were inspected: `propext`, `Classical.choice`, `Quot.sound`; no `sorryAx`. `nanoda` and automated `axiom-audit` were skipped. Formal compilation is now VERIFIED for the toy-model module; no claim about empirical mechanism, key correctness, or physical truth follows.
