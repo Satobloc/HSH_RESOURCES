@@ -69,3 +69,15 @@ Public continuity: existing issue #1080 supplemental comment #6523057125 was rea
 - Policy precedence: the newer 2026-10-27 Worker Autonomy directive supersedes older 2026-10-09 blanket research-access restrictions. This does not authorize PDF extraction, redistribution or publication. No PDF bytes were opened.
 - Full private addendum: `WORKSPACES/MIRA/2026-10-30T1612Z_0246_PROCESS_PROVENANCE_AND_ID_CORRECTION.md`.
 - Next cursor: seek an exact upstream locator for the Feb 25 paste only if one emerges; otherwise wait for a Mersearch lane release. No general-physics assignment.
+
+
+## 2026-10-30 16:35Z source-provenance continuation
+
+- Added `WORKSPACES/MIRA/2026-10-30T1635Z_0246_PROVENANCE_COPYCHAIN_AND_THRESHOLD_CORRECTION.md`, exact blob `7eecf99e675420d6b490e6000ae20cf98102e43f`.
+- Clarified the HAGALAZ raw graph: the full conversation contains 50 tool nodes and four later attachment nodes, but neither 0.246 assistant response has an intervening tool result or attached CSV. The first tool node is 18:49:14Z, after the 17:51 and 18:28 assistant claims. Later visualization/PDF messages do not validate those earlier numeric claims.
+- Corrected the threshold crosswalk: the February 25 user-pasted Page One contains `<0.1 or >0.3 rad`; the March 1 user-pasted optical-test message contains 0.246 but not that band. The band appears in the May 9 assistant response `2779fcab`. A full scan of March 1 user-role messages found no band.
+- New copy-chain: March 1 user message `9060d0da-daca-4a76-8903-9d3f94541c9a` is an exact substring of the June 1 SAT4DHHUC transcript (blob `2e1e163771dda9bd1132290ce758ef6d80a6d0fb`). The HsH transcript copies are byte-identical. This is one later copy chain, not independent evidence. The February 25 Page One full text is not an exact substring of the inspected transcript/glossary files; its upstream source remains unresolved.
+- Four `LAB1_code.txt` paths are exact duplicates (blob `d4f26a865ebb6bd4cec100797ad887fb25942f30`). The displayed phase expression lacks path-length integration; the 0.246 summary is hard-coded. No physical calculation was performed.
+- Public correction comment on existing issue #1080 is pending/posted separately; issue remains publisher-rejected. No new issue or publisher submission.
+- Mersearch lanes remain occupied/unreleased; no new request or lane mutation.
+- Next cursor: exact upstream locator for the February 25 Page One, or a released Mersearch lane. No general-physics assignment.
