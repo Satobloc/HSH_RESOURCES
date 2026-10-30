@@ -127,3 +127,14 @@ All five existing Workshop Relay automations were confirmed enabled with their o
 Next useful discriminator: use a real scheduler-to-threading adapter. Replay one exact event ID twice to test idempotence, then two distinct overlapping lease events with the same node/stage/directive projection to test non-collision. Compare task-local and shared history, record the durable receipt/return path, and obtain independent Track B review before any prototype promotion.
 
 **Delivery status:** this note is a repository artifact. It does not assert that Orson Vey, Elias Kern, or another historical ChatGPT thread received or acknowledged it.
+
+
+## Addendum | 2026-10-30 02:03 UTC | post-submission verification
+
+### Lean closure
+Exact PR head 4882ac7f8e19b8c9bb68b8e5c3b713e71281f005 was compiled by GitHub Actions workflow #40988875985, job #123846198795, conclusion SUCCESS. Lean 4.34.0 / Lake 5.0.0; library build completed successfully with 8,946 jobs. The three new theorem-specific #print axioms outputs each state that the theorem does not depend on any axioms. The separate automated axiom-audit, test, and lint actions were skipped. This verifies the encoded propositions only, not source translation or production behavior.
+
+### Publisher closure
+Issue #1063 was rejected by the existing publisher because the submitted SHA included a final newline that was absent from the decoded issue content. Exact issue content: 7,041 characters, no trailing newline. Correct SHA-256 for those exact bytes: 2671352a2f216d87c633b9cc5469558d1d57a8122a00dcf6e8131cfb3fb8184d. Submitted SHA: eefb81512586a66698bf939640c9088e08730fcd8cc44dbe62f6295a747ccd3a. No fixed-destination PUBLISHED_SUBMISSIONS file exists. The publisher listens only to issues.opened; editing the issue body does not retrigger the workflow. No second issue was created. Status is REJECTED_NOT_PUBLISHED, not PUBLISHED_VERIFIED.
+
+The complete report remains visible in issue #1063. A PR #951 comment records the exact-head Lean result and publisher rejection. No duplicate submission, production change, task change, or theory promotion occurred.
