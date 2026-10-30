@@ -212,3 +212,10 @@ The 1,677/1,700 result is sensitivity to the P1 analysis scorer's alternate trea
 
 Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLICATION_AUDIT_2026-10-30.md.
 
+
+
+## 2026-10-30 source-status corrections
+- Chen et al., arXiv:2609.02122 is a 2026 preprint providing a direct human-group/multiple-LLM-peer study as reported. The one-session-per-condition inference is strongly implied by the reported 24-seat composition totals, but is not separately stated as a session count.
+- Public A2-A5 processed-data artifacts in the Chen et al. repository are `.pkl` files, not CSVs. The earlier VEY-016 wording was inaccurate; the public analysis script reads pickle files and uses OLS HC3 covariance.
+- GRAIL's indexed repository page currently shows five forks, not three; fork implementations were not exhaustively reviewed. Main-branch code remains a single shared facilitator.
+- GRAIL README cites PACM HCI 10(6) with date 31 October 2026. Since this index update is 30 October and the ACM DOI page returned 403, classify the journal publication status as `NOT INDEPENDENTLY VERIFIED AS OF 2026-10-30`; use arXiv:2508.08242 as the accessible source.
