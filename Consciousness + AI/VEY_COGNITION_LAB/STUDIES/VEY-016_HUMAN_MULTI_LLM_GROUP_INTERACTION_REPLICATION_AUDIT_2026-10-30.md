@@ -156,3 +156,40 @@ The paper treats the LLMs as separate participant slots and describes their repe
 ### Reported quantitative pattern (not independently re-estimated)
 
 The paper reports a pure-human final consensus mean of 0.695; the 12.5% agent condition is reported as 8.0% above that baseline (z = 3.282, p = 0.001), the 33.3% condition 23.1% below baseline (z = -12.326, p < 0.001), and the 75% condition at 0.725. At fixed 33.3% agent proportion, the high-persistence prompt is reported to reduce consensus by 9.6% relative to neutral agents (z = -3.289, p = 0.001); high adoption is not significant (p = 0.2684). These are the authors' reported statistics, not an independent reanalysis. Given the one-session-per-condition inference, they should be read as within-study descriptive contrasts rather than replicated group-level treatment estimates.
+
+
+## Verification and source-correction addendum | 2026-10-30 19:37Z
+
+### Exact-head Lean verification
+- Draft PR #1115 branch: `review/human-ai-group-unit-identifiability-20261030t1848z`.
+- Exact head: `c029318b96a07fc433ed16a9082cb2e7b29002ea`.
+- GitHub Actions run #41115603417, job #124268909008: **SUCCESS**. Lean 4.34.0, Lake 5.0.0, 8,973 build jobs.
+- The theorem-specific `#print axioms` outputs contain no `sorryAx`. The conditional identifiability theorems use standard dependencies `propext`, `Classical.choice`, and `Quot.sound`; arithmetic checks emit `propext`. The `nanoda` and automated `axiom-audit` steps were skipped.
+- Status: `LEAN_COMPILE_SUCCESS / THEOREM_AXIOMS_INSPECTED / AUTOMATED_AXIOM_AUDIT_NOT_RUN`.
+- Lean verifies only the formalized conditional statement. It does not prove the source-level inference that there was exactly one group/session per condition, validate the paper's data, or establish the paper's causal interpretation.
+
+### Independent arithmetic and design-matrix check
+- Reported human counts: `[24,21,16,12,6,16,16,16]`; reported LLM-agent slots: `[0,3,8,12,18,8,8,8]`.
+- Sums: 127 humans, 65 agent slots, 192 total seats. The supplement says 24 total participants per session; the eight compositions therefore strongly imply eight 24-seat sessions, one per condition. The paper does not separately state a session-replication count.
+- Conditional on that one-session-per-condition inference, the 8 group-indicator columns and 8 treatment-indicator columns are identical. A Python check of the 8x16 matrix `[I8 | I8]` gives rank 8 and nullity 8. This is a structural calculation, not a fit to participant-level observations.
+- With 24 participants paired once per round over 40 rounds, there are 12 dyads per round and 480 pairings per session. Across eight sessions that would be 3,840 pairings, conditional on the session-count inference. The actual pairing schedule is not released, so no actual network connectivity or agent-agent edge count is claimed.
+
+### Public data/code correction
+- The public repository stores `A2.pkl` through `A5.pkl` in `processed_data/`; these are pickle files, not CSVs. The earlier wording “A2–A5 questionnaire CSVs” was inaccurate and is corrected here.
+- The current analysis script reads the `.pkl` files and fits OLS with `cov_type="HC3"`. HC3 is heteroskedasticity-robust; it does not cluster repeated observations by participant or session.
+- The earlier audit's per-file row counts (108, 144, 189, 54) were not re-extracted from the pickle files in this pass. The arithmetic `495 = 55 x 9` is consistent with the paper's M5 N and nine sampled interactions, but the row-count extraction remains a prior-pass result.
+- The primary consensus outcome is cosine similarity under `all-MiniLM-L6-v2`, also used for the payoff feedback. It measures embedding convergence, not truth or independent task quality.
+- The study is an arXiv preprint (2609.02122, submitted 2026-09-02). Its public repository contains processed data and figure-reproduction scripts, not the live experiment runtime or per-agent request/context traces. Multi-human/multi-LLM peer interaction is verified as reported; independent per-agent state isolation is not independently auditable from the released artifacts.
+
+### GRAIL source-status correction
+- The current indexed GRAIL repository page shows five forks, not the three recorded in the first note. No exhaustive fork-by-fork code audit was performed; targeted search did not surface a fork implementing multiple peer agents.
+- The current main implementation has one `openaiModel`, one `getLLMResponse` path, one `Facilitator` sender, and a shared `llmLog`. It is a single-facilitator platform, not a multi-peer-agent platform out of the box.
+- The GRAIL README's companion-paper citation lists PACM HCI 10(6), 31 October 2026, one day after this run. The ACM DOI page returned 403 in this check. As of 30 October, journal publication status is therefore not independently confirmed; use the accessible arXiv:2508.08242 preprint as the source.
+- Reuse/adapt GRAIL rather than build a new platform. No new tool, paid API call, hosting deployment, participant recruitment, or human-subject session was initiated.
+
+### Scope and provenance
+- This source corrects the earlier Review-MIND gap statement: a direct multi-human/multi-LLM peer-interaction study exists as reported. The group-level replication and per-agent provenance limitations remain.
+- The original Oct 9 local / Oct 10 UTC Nathan instruction assigned Orson primarily to LLM cognition. The Oct 26 Nathan Direct reinforcement adds the four-of-five substantive-turn target and the Nov 9 P1 paper gate. The exact original conversation/message UUID was not recovered in this pass; do not attribute the Oct 26 reinforcement to the original role reset.
+- The OV-49–OV-53 answer-keyed cognition test bank remains unrecovered. OV-55/56 and OV-100 are analytical/synthetic artifacts, not administered human trials.
+- The Nov 9 minor paper remains separate from the Nov 30 major and Dec 14 full-theory gates. No manuscript, PDF, reader, or gate status changed.
+- Last recorded FIE reread: 2026-10-27, so the 14-day re-review threshold is not due.
