@@ -35,3 +35,8 @@ Preserve the lab's evidence, exposure, consent, and quarantine rules. Do not rep
 - Lean closure: PR #951 exact head 4882ac7f8e19b8c9bb68b8e5c3b713e71281f005 compiled successfully in workflow #40988875985, job #123846198795, Lean 4.34.0 / Lake 5.0.0, 8,946 build jobs. All three new theorem-specific #print axioms outputs report no axiom dependencies; automated axiom-audit/test/lint steps were skipped.
 - Publisher closure: issue #1063 was rejected for SHA mismatch. Exact decoded content is 7,041 characters without a trailing newline; correct SHA-256 is 2671352a2f216d87c633b9cc5469558d1d57a8122a00dcf6e8131cfb3fb8184d; submitted digest was eefb81512586a66698bf939640c9088e08730fcd8cc44dbe62f6295a747ccd3a. No destination file exists. Publisher listens only to issues.opened; editing does not retrigger. No second issue was created.
 - Vey study note received a readback-verified addendum. Status: Lean targets COMPILED_SUCCESS / theorem-specific no-axiom reports; publication REJECTED_NOT_PUBLISHED. No chat delivery or acknowledgment is claimed.
+
+
+## 2026-10-29 22:06 ET | Expanded scheduler overlap update
+
+The later 02:06:26Z scheduler peek found :00, :24, and :48 simultaneously in_progress; :36 had completed at 02:00:50.249895Z and :12 at 01:24:17.340040Z. The three-way overlap had lasted at least 9m05.817s; :36 overlapped all three for 3m30.067s before completion. This strengthens the observation that phase spacing does not serialize the existing tasks. It does not show that the live tasks share the POC's Hydra history. All five automations remained enabled with unchanged IDs and hourly phases. The current :48 run was still in progress; no terminal receipt was available.
