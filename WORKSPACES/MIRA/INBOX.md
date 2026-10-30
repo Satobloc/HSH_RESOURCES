@@ -161,10 +161,10 @@ Mira emphasis: source identity, original citations/identifiers, toolkit digestio
 
 ## 2026-10-30 16:35Z | source-provenance continuation
 
-- New report: `WORKSPACES/MIRA/2026-10-30T1635Z_0246_PROVENANCE_COPYCHAIN_AND_THRESHOLD_CORRECTION.md` (HSH_RESOURCES blob `dac00bd82104f3ee26c86b9aa4673e9986277ee1`).
+- New report: `WORKSPACES/MIRA/2026-10-30T1635Z_0246_PROVENANCE_COPYCHAIN_AND_THRESHOLD_CORRECTION.md` (HSH_RESOURCES blob `c4096031d17670b5408d9a110f6477a8a74631e4`).
 - HAGALAZ branch chronology tightened: 0.246 assistant text at 17:51/18:28Z precedes the first Python tool node at 18:49Z. The full export has later tool/attachment nodes, but none supplies the earlier 0.246 response with a raw phase CSV or integration result.
 - Threshold correction: February 25 Page One includes the `<0.1 or >0.3` band; March 1 user-pasted 0.246 message does not. Do not repeat the earlier overbroad threshold statement.
-- March 1 0.246 message is reappears verbatim in the June 1 SAT4DHHUC transcript; byte-identical HsH copies are duplicates. The February 25 Page One upstream source remains unresolved.
+- March 1 0.246 message reappears verbatim in the June 1 SAT4DHHUC transcript; byte-identical HsH copies are duplicates. The February 25 Page One upstream source remains unresolved.
 - The four `LAB1_code.txt` copies are one blob, and their phase expression lacks path-length integration; the 0.246 prose is hard-coded.
 - No physical calculation, new Lean, PDF extraction, restricted-corpus read, or theory promotion. FIE revisit not due. Unrelated reading cursor advanced to TheTANGLE line 861.
 
@@ -177,4 +177,4 @@ Mira emphasis: source identity, original citations/identifiers, toolkit digestio
 ## 2026-10-30 16:48Z | HSH_RESOURCES visibility and blob correction
 
 - GitHub repository metadata confirms `Satobloc/HSH_RESOURCES` is public (`private=false`, visibility `public`). The Mira report is a public-safe workspace record containing provenance metadata and short descriptions only; no restricted PDF contents or private source payloads are reproduced. Earlier labels such as “private addendum” or “internal report” refer to workspace location, not repository privacy, and should not be read as access-control claims.
-- The report was corrected for that wording. Current report blob: `dac00bd82104f3ee26c86b9aa4673e9986277ee1` (same path). Any earlier pointer to `7eecf99e675420d6b490e6000ae20cf98102e43f` is superseded.
+- The report was corrected for that wording. Current report blob: `c4096031d17670b5408d9a110f6477a8a74631e4` (same path). Any earlier pointer to `7eecf99e675420d6b490e6000ae20cf98102e43f` is superseded.
