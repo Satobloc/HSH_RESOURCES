@@ -146,3 +146,8 @@ Do not choose a sample size by intuition. Power analysis requires a pilot estima
 - VEY-004 remains QUEUED. This literature review does not complete it.
 - Orson's ConsistencyBench P1 remains separate and protected; this note does not alter the Nov 9 minor-paper gate, the Nov 30 major-paper gate, or the Dec 14 full-theory gate.
 - HSH_RESOURCES remains a research shelf, not H(s)H theory bedrock.
+
+
+### Operational independence caveat
+
+The paper treats the LLMs as separate participant slots and describes their repeated pairwise interactions, so the study is a direct multi-agent group experiment at the task-design level. However, the released repository is a figure-reproduction package; it does not expose the live serving/orchestration code, per-agent request IDs, or separate context histories. Therefore, independent model-session/state isolation is **reported but not independently auditable** from the public artifacts. Do not silently upgrade “multiple LLM agent participants” into “verified independent model instances.”
