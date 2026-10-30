@@ -167,3 +167,21 @@ Do not compare their error-correlation coefficients directly with VEY-013's pair
 - Finding: the common hard-coded `openrouter/openai/gpt-4o-mini` checker compares two same-model raw responses without the question or premise. The revision prompt receives question/premise context. The checker response is reduced to a Boolean flag in the archived result. The model does not receive other models' answers; panel majority is post-hoc.
 - Interpretation boundary: common evaluator and common benchmark are documented; common evidence-source exposure and causal peer influence are not identified.
 - Full source/pipeline analysis: `STUDIES/VEY-014_SOURCE_PIPELINE_AND_P1_SCOPE_AUDIT_2026-10-30.md`.
+
+
+## P1 key-semantics / finite-pattern source set (2026-10-30, VEY-015)
+
+### Original ConsistencyBench source
+- Repository: `aayambansal/ConsistencyBench`.
+- Full bank: `data/consistency_bench.json`, blob `3171d2899fd1eb4292794df5952514666b0e2f43`; read as parsed source data, 493 sets / 1,930 question positions.
+- Sample bank: `data/consistency_bench_sample.json`, blob `10eb2da27c84c706d8e9e2325afca864fcae6a0d`; read as parsed source data, 300 sets / 1,150 question positions / 268 unique premise strings.
+- Upstream evaluator: `src/evaluate.py`, blob `0453540cb7c19227601e59fb342fa93e736da849`; read relevant system-prompt, extract-answer, repair-prompt, CGD-loop and checker regions. The upstream `extract_answer` parser is distinct from the expected-key scorer used in the P1 replay.
+
+### P1 analysis scorer and archived model outputs
+- Orson replay script: `WORKSPACES/ORSON_VAY/CODE/2026_10_28_cgd_revision_balance_replay.py`, blob `2e10ed2510b8ce14e716780a887c0fe23c3067b9`; local `norm` function maps free-text expected keys and archived output labels.
+- The 17 vanilla and 17 CGD output blobs were independently re-fetched by immutable Git blob IDs from the existing Orson/Calder manifest. The exact 34-blob manifest is retained in the existing Calder full-17 PCR/sensitivity report and the Orson replay script; no new model calls were made.
+- Source-fidelity/sensitivity report: `STUDIES/VEY-015_P1_KEY_SEMANTICS_AND_FINITE_PATTERN_IDENTIFIABILITY_2026-10-30.md`.
+- Static key-row extraction: `STUDIES/VEY-015_P1_NEGATIVE_INFERENCE_KEY_ROWS_2026-10-30.csv`, 578 rows; 350 sample members. This is not a human-adjudicated key.
+
+### Interpretation boundary
+The 1,677/1,700 result is sensitivity to the P1 analysis scorer's alternate treatment of one expected-answer phrase. It is not an upstream benchmark score, corrected key, human adjudication, or causal effect. The OV-55/56 shared-gate and latent-difficulty mechanisms remain assistant-authored analytic models, not administered trials or measured LLM mechanisms.
