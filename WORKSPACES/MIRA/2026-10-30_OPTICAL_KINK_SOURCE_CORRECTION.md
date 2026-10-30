@@ -118,3 +118,61 @@ No optical measurement, measured system, dataset, units conversion, uncertainty 
 3. If the 2026 0.246-rad candidate is revisited, recover its originating raw conversation and any direct Nathan correction before mathematical or physical work.
 4. Keep (B), Φ/θ-observation, optical phase, Viz Mode increments and electroweak σιν²θW values in distinct typed/source namespaces.
 5. Orson's November 9 cognition paper remains owned by Orson; no change to its manuscript or gate.
+
+
+## 6. Exact raw-source recovery for the 0.246-rad value (2026-10-30 12:24Z)
+
+### Primary 2025 record
+
+The numeric value is no longer source-origin-unlocated. The primary record is the raw HAGALAZ conversation:
+
+- Conversation: LAB 1: Validation Lead
+- Conversation ID: 681da28f-9b89-4df4-9c9e-8e9323a0a7f4
+- Raw path: DEVELOPMENT_FULL_CONVOS/HAGALAZ/25.05.09•26.09.12•LAB 1_ Validation Lead — raw.json
+- Git blob SHA: 24497aeb19b48dbfa1b66df996457c6e9035a3e4
+- Full raw export parsed: 242 mapping nodes; selected messages, roles, timestamps, parent/child edges, recipients and metadata inspected.
+
+The first recovered 0.246-rad assertion is assistant message 36cdfe32-c841-4a92-8406-e93a224d6065 at 2025-05-09T17:51:00.270Z. It is the direct child of user message 2356503a-eb62-474e-99da-cd1ff06d80f6 at 17:50:41.597Z. The user asked for plain-text rows from an existing 650-nm Δφ(x) CSV. The assistant returned a table and reported total simulated Δφ ≈ 0.246 rad for μ = 5 μm⁻¹, η = 0.012 and λ = 650 nm.
+
+A prior assistant status package, e16c5de4-2537-4f97-bd51-b359a57462db at 2025-05-09T17:09:47.480Z, had reported Δφ ≈ 0.125 rad for that same stated parameter set. The later 0.246 response explains the difference as a broader central η spread, but supplies no changed η profile, code, run receipt or raw CSV. The interval between the two assistant messages is 41m 12.790s.
+
+A second assistant message, 2779fcab-353c-4312-93ec-06c691b5b2ac at 2025-05-09T18:28:16.661Z, directly follows user prompt fab39749-37eb-4325-ba7f-0ec28c37477c and repeats 0.246 rad together with the [0.1, 0.3] rad failure band. Both 0.246 outputs are direct assistant-role messages. The raw turn graph has no intervening tool-result node or attachment for either response. The assistant's claim to be reporting a CSV/simulation output is therefore not independently verified by the recovered record.
+
+A later assistant message, afc75c6e-fb59-4cea-a5f3-89c971b133e3 at 2025-06-22T23:58:32.123Z, generated a separate draft with η = 0.02 and a reported phase near 1.475 rad. This is a different assistant-generated parameterization, not an independent measurement or validation of the 0.246 result.
+
+The direct user corrections in the same HAGALAZ conversation remain controlling for the 2025 optical exercise:
+- 4ee764ed-85c0-46c2-944d-fbdd6e13981e, 2025-06-23T01:51:17.384Z: rejects the optical exercise as a SAT falsification or verification route.
+- 6b3c9ead-653c-432d-998c-d01246b7af12, 2025-06-23T02:18:35.327Z: identifies the refractive-index/θ₄ direct identification as a misidentification and explains that the optical analogy does not represent the later helical-filament and macrostructure account.
+
+These corrections disqualify the 2025 assistant-generated optical output from being carried forward as a SAT prediction.
+
+### 2026 reappearance
+
+The same numeric value and failure band appear in two later user-role pastes:
+
+- Conversation 699e4a02-26e4-832a-86ea-ad1dcaf3c4e3, message 15338421-a5e7-4538-879a-d25d840d2bdd, 2026-02-25T01:12:37.975Z. The 12,777-character pasted “Page One” text includes Δφ = 0.246 rad and failure thresholds below 0.1 or above 0.3 rad.
+- Conversation 69a49445-e3b4-8333-8dce-6713108a6e2d, message 9060d0da-daca-4a76-8903-9d3f94541c9a, 2026-03-01T19:34:20.335Z. The 1,749-character shorter passage repeats the Mach–Zehnder optical-kink test and 0.246-rad value.
+
+The two pasted texts are not byte-identical. Both raw messages have message_source = null and no attachment object. The embedded byline is text, not authenticated source metadata. Their embedded author and derivation therefore remain unresolved.
+
+The immediate assistant responses c2f22ca2-e462-407b-b930-a70cde34f670 (2026-02-25T01:12:38.187Z) and 4d4f999a-fb1b-439e-a6ed-a3b0db0e6f3f (2026-03-01T19:34:20.519Z) treat the phase as a geometric SAT consequence without supplying a derivation. The latter additionally computes a path difference using 633 nm; that is an assistant reconstruction, not a measured optical system.
+
+The repeated value and identical [0.1, 0.3] rad failure band make the 2026 appearance non-independent as evidence relative to the earlier assistant output. Direct copying or the embedded document's author cannot be established from the available records.
+
+### Archive-date and artifact controls
+
+The flattened derivative transcript SAT Mark V/SAT_optics_finding.txt has Git blob SHA d4843caa0dff3b1193f3758790d8c8a27802a4aa. DATED_FILE_LIST_EXTENDED records a file-level creation/last-write time of 2025-06-22 19:51:57 local. That is not the raw message time. The primary raw assistant message is dated 2025-05-09T17:51:00.270Z. The separate 2025-05-21 SAT TIMESTAMPS entry is an index record, not the timestamp field of this recovered message, and must not be used to date it.
+
+A bounded listing of the HAGALAZ, SAT Mark V, SAT XYZ and SAT QR source directories found no corresponding CSV, NPY or NPZ output artifact. This is a bounded negative result, not a claim that no such file exists anywhere in the full archive.
+
+### Current epistemic status and proof triage
+
+- The 0.246-rad value is historically present as an assistant-generated numerical assertion on 2025-05-09.
+- The 2026 documents are user-role pasted text with unresolved embedded authorship and derivation.
+- Neither occurrence is Nathan Direct, an independently derived prediction, an executed-and-reproduced simulation, or an independent measurement.
+- No material, measured refractive-index profile, sample thickness, polarization, optical path, raw phase dataset, calibration record, covariance or uncertainty is specified.
+- No CODATA comparison is applicable or warranted. The cited wavelengths are selected text parameters, not CODATA-evaluated measurements.
+- No new Lean module was added. The recovered assistant text does not provide a source-authenticated executable integral or a justified θ₄-to-refractive-index map; formalizing the literal number would prove only a transcription. A data-free mathematical calculation remains gated on explicit permission.
+- Existing Mira PR #885 remains separate: its two source-conditional moving-film/filament statements compiled at exact head 1a840109f080fcbd6ee43e631bd8d2691791e316 in run 40983509297. That build does not prove the optical claim.
+
+Next: continue tracing the originating file/author/derivation of the 2026 pasted document without treating its embedded byline as provenance. Preserve source-owner review and the existing clearance requirement for any external PDF. Do not open restricted PRIOR_ART, Hypothesis H or direct Schreiber material without the required item-specific authorization.
