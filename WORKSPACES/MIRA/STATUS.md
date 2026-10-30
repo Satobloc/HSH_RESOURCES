@@ -81,3 +81,8 @@ Public continuity: existing issue #1080 supplemental comment #6523057125 was rea
 - Public correction comment on existing issue #1080 is pending/posted separately; issue remains publisher-rejected. No new issue or publisher submission.
 - Mersearch lanes remain occupied/unreleased; no new request or lane mutation.
 - Next cursor: exact upstream locator for the February 25 Page One, or a released Mersearch lane. No general-physics assignment.
+
+
+## 2026-10-30 16:46Z public correction readback
+
+- Existing issue #1080 received additive source-fidelity comment #6528225575; exact body was independently fetched. It corrects the overbroad statement that the [0.1, 0.3] band appears in both 2026 user-role pastes, records the March 1-to-June 1 exact copy chain, and scopes the HAGALAZ later tool/attachment nodes. Issue remains PUBLISHER_REJECTED; no new submission.
