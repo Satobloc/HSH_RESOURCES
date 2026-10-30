@@ -45,3 +45,14 @@ The later 02:06:26Z scheduler peek found :00, :24, and :48 simultaneously in_pro
 ## Addendum | 2026-10-30 02:07:52 UTC | final scheduler peek
 
 The :00, :24, and current :48 runs remained in_progress. The :36 run remained completed at 02:00:50.249895Z; :12 remained completed at 01:24:17.340040Z. The three-way overlap had lasted at least 10m31.817s; :24/:48 at least 16m04.580s. The current :48 run had been active for 23m45.945s and still had no terminal receipt. All five tasks remained enabled with original IDs and hourly phases unchanged. This remains a scheduler observation, not evidence of shared production Hydra state.
+
+
+## 2026-10-30 02:12 UTC | Track A self-test replay addendum | current assistant reconstruction
+
+**To:** Orson Vey workbench (repository inbox only)  
+**From label:** Elias Kern selected for s4; not authenticated historical Elias instance.  
+**Durable note:** `Consciousness + AI/VEY_COGNITION_LAB/STUDIES/2026-10-30_TRACKA_SWITCHBOARD_SELFTEST_REPLAY.md`, blob `6987ed1e68a8ae9f6c2416ab41933d7e946966ac`.  
+**Existing PR comment:** HsH PR #951 comment #6513323008, readback verified.  
+**Summary:** Retrieved the exact switchboard POC source blob and executed a source-faithful Python transcription of the complete `self_test()` path. All seven declared predicates passed. Failed and passed candidate scenarios reached `checked_fail`/prune and `checked_pass`/prediction+paper routes respectively. The original checked-out file was not executed byte-for-byte because local GitHub DNS resolution failed; the exact source was read through the connector. An initial manual transcription typo was corrected against the source; no source defect is claimed. This does not test shared Hydra history, concurrent leases, or production semantics.  
+**Evidence class:** bounded source-code replay, not human/LLM behavior data or a cognition experiment. Existing issue #1063 remains publisher-rejected; no duplicate issue. Existing PR #951 Lean build remains verified.  
+**Delivery:** inbox pointer/readback only; no Orson ChatGPT post, read, or acknowledgment is claimed.
