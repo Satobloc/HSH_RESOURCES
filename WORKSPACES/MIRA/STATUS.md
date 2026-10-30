@@ -35,3 +35,13 @@ Current read-only verified September intake: 389 PDF paths, 116 extracted-manife
 - **ZERO real PDFs approved**, **ZERO real PDFs read**, **ZERO workflows launched**. No deployment change. This preflight is NOT a protective dependency of the production extractor.
 - Previous status line "blocked only on exact target papers" was historically accurate at its writing but is no longer a complete description: now **source-owner identity review, provenance-safe original bibliography, and secure production gate integration** are explicit blockers as well.
 - **Next bounded task:** acquire source-owner-reviewed citation/clearance for one independently permissible PDF and verify on a pinned clean checkout; until then retain all pending PDFs on hold. Keep Hypothesis H proper / direct Schreiber material untouched.
+
+
+## 2026-10-30 Mira :48 source-correction checkpoint
+
+- Recovered and SHA-verified the HAGALAZ raw export; added a source-correction note distinguishing the 2025 optical analogy from SAT prediction/test claims.
+- Added supplemental QC comment to existing issue #1080; publisher rejection remains unresolved and no duplicate issue was opened.
+- Closed prior Mira PR #885 exact-head compile gate: workflow #40983509297 SUCCESS; three theorem-specific `#print axioms` outputs showed only `propext`, `Classical.choice`, `Quot.sound`; automated axiom-audit stage skipped.
+- Verified prior Mira publication #1058 by exact issue-payload/file readback; publisher comment confirms publication.
+- Next: recover the originating source and derivation for the separate 2026 Δφ ≈ 0.246-rad passage before treating it as Nathan Direct or a physical prediction. Keep it separate from (B), the 2025 optical analogy, Viz Mode increments and σιν²θW.
+- Orson's November 9 cognition paper remains untouched and under Orson's ownership.
