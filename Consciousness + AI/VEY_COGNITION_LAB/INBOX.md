@@ -40,3 +40,8 @@ Preserve the lab's evidence, exposure, consent, and quarantine rules. Do not rep
 ## 2026-10-29 22:06 ET | Expanded scheduler overlap update
 
 The later 02:06:26Z scheduler peek found :00, :24, and :48 simultaneously in_progress; :36 had completed at 02:00:50.249895Z and :12 at 01:24:17.340040Z. The three-way overlap had lasted at least 9m05.817s; :36 overlapped all three for 3m30.067s before completion. This strengthens the observation that phase spacing does not serialize the existing tasks. It does not show that the live tasks share the POC's Hydra history. All five automations remained enabled with unchanged IDs and hourly phases. The current :48 run was still in progress; no terminal receipt was available.
+
+
+## Addendum | 2026-10-30 02:07:52 UTC | final scheduler peek
+
+The :00, :24, and current :48 runs remained in_progress. The :36 run remained completed at 02:00:50.249895Z; :12 remained completed at 01:24:17.340040Z. The three-way overlap had lasted at least 10m31.817s; :24/:48 at least 16m04.580s. The current :48 run had been active for 23m45.945s and still had no terminal receipt. All five tasks remained enabled with original IDs and hourly phases unchanged. This remains a scheduler observation, not evidence of shared production Hydra state.
