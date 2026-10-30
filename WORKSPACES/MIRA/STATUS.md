@@ -56,3 +56,16 @@ The 0.246 value and [0.1, 0.3] rad failure band reappear in separate Feb 25 and 
 No actual optical system, material-specific refractive-index measurement, raw CSV/NPY/NPZ, phase dataset, calibration or uncertainty was recovered in the bounded source search. No CODATA comparison and no new Lean theorem. Existing PR #885's source-conditional geometry proof is separate and exact-head CI succeeded. Continue with source-owner-cleared bibliography intake; do not access restricted PRIOR_ART, Hypothesis H or direct Schreiber material without item-specific authorization.
 
 Public continuity: existing issue #1080 supplemental comment #6523057125 was read back exactly; the original publisher-rejected status remains unchanged.
+
+
+## 2026-10-30 :12 — 0.246 process-provenance and source-ID correction
+
+- New source/process evidence: the 2026-03-01 `[A] Scaling Postulates Testing` raw conversation (HSH_RESOURCES Git blob `6c2624a4754c246aaeeb909e108da1fa6c7f5ca1`, conversation `69a49445-e3b4-8333-8dce-6713108a6e2d`) contains the 0.246-rad user-pasted module with null `message_source` and no attachment/byline. In the same conversation, user message `1dbfd075-d425-440f-966e-30a034cc82f4` explicitly describes the module set as simple worldline diagrams translated into math by LLMs. This is process-level provenance, not exact line-by-line authorship or a validated derivation.
+- The separate Feb 25 “Page One” paste has no embedded byline, date, source metadata or attachments. The user’s direct 0.239 projection correction and demand for mathematics remain distinct from the 0.246 optical-phase assertion.
+- **Correction:** the actual 2025-05-09 HAGALAZ raw blob `24497aeb19b48dbfa1b66df996457c6e9035a3e4` has conversation ID `681da28f-2d44-8003-bc6e-0e1929c125c4`. The alternate ID in the later 12:24 note/comment was a transcription error. Public issue #1080 correction comment #6527785334 was read back; issue remains `PUBLISHER_REJECTED`, no new publisher submission.
+- Current classification: **historical LLM-translated optical candidate; embedded author/upstream source unresolved; no derivation; no measurement; not a current universal physical threshold.** Do not conflate 0.246 with 0.239 projection language, B, or Φ.
+- No source-authenticated physical proposition is available: no measured optical system, material profile, phase dataset, calibration, uncertainty, or geometry-to-phase map. No physical calculation, new Lean module/proof, PDF extraction, or theory promotion.
+- Mersearch: lanes 1/3/4 have request-scoped receipts; lane 2 has no run manifest/receipt; release ledger has no release entries. No lane overwritten and no new request submitted. The completed Alberr lane-4 compact receipt is a discovery map only; raw results were not opened in this Mira turn.
+- Policy precedence: the newer 2026-10-27 Worker Autonomy directive supersedes older 2026-10-09 blanket research-access restrictions. This does not authorize PDF extraction, redistribution or publication. No PDF bytes were opened.
+- Full private addendum: `WORKSPACES/MIRA/2026-10-30T1612Z_0246_PROCESS_PROVENANCE_AND_ID_CORRECTION.md`.
+- Next cursor: seek an exact upstream locator for the Feb 25 paste only if one emerges; otherwise wait for a Mersearch lane release. No general-physics assignment.
