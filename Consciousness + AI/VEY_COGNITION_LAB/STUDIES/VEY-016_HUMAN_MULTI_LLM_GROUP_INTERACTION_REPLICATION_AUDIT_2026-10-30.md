@@ -193,3 +193,7 @@ The paper reports a pure-human final consensus mean of 0.695; the 12.5% agent co
 - The OV-49–OV-53 answer-keyed cognition test bank remains unrecovered. OV-55/56 and OV-100 are analytical/synthetic artifacts, not administered human trials.
 - The Nov 9 minor paper remains separate from the Nov 30 major and Dec 14 full-theory gates. No manuscript, PDF, reader, or gate status changed.
 - Last recorded FIE reread: 2026-10-27, so the 14-day re-review threshold is not due.
+
+
+### Publication verification
+- Existing issue #1116 remains the sole publisher submission for this note. Publisher receipt comment #6531798863 recorded commit `78873863192bf06b90aff915aa2cc9277f20efef`; artifact `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/reviewmind-human-ai-peer-group-replication-audit-20261030t1848z-s4-001.md` was read back and matched the issue payload exactly. Independent SHA-256: `38d9738ebb7aed17933815ce3d40d94fadf3600e389f0035e980bd9f03527888`. Additive correction comment #6532231836 was added; no second submission was created.
