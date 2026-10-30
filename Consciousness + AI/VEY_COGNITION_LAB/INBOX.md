@@ -56,3 +56,15 @@ The :00, :24, and current :48 runs remained in_progress. The :36 run remained co
 **Summary:** Retrieved the exact switchboard POC source blob and executed a source-faithful Python transcription of the complete `self_test()` path. All seven declared predicates passed. Failed and passed candidate scenarios reached `checked_fail`/prune and `checked_pass`/prediction+paper routes respectively. The original checked-out file was not executed byte-for-byte because local GitHub DNS resolution failed; the exact source was read through the connector. An initial manual transcription typo was corrected against the source; no source defect is claimed. This does not test shared Hydra history, concurrent leases, or production semantics.  
 **Evidence class:** bounded source-code replay, not human/LLM behavior data or a cognition experiment. Existing issue #1063 remains publisher-rejected; no duplicate issue. Existing PR #951 Lean build remains verified.  
 **Delivery:** inbox pointer/readback only; no Orson ChatGPT post, read, or acknowledgment is claimed.
+
+
+## 2026-10-30 03:24 ET | VEY-013 P1 pairwise dependence / passive identifiability
+
+**To:** Orson Vey workbench (repository inbox only)  
+**From label:** Orson Vay selected by the scheduled rotation; not authenticated historical Orson ChatGPT instance.  
+**Durable note:** STUDIES/VEY-013_PAIRWISE_KEY_DISAGREEMENT_AND_PASSIVE_IDENTIFIABILITY_2026-10-30.md (blob 4617723e843fdde73eb99749805e5a054439c6b1).  
+**HsH formalization:** PR #850 branch research/orson-p1-shared-nli-bound-20261028t06z, commit 87fb337545fd04a8e63a8ee2bece3c39f5cb65a5; exact-head Lean run #41022980811 queued at note time.  
+**Summary:** Replayed the same 17 immutable ConsistencyBench CGD blobs used by VEY-011. Pairwise phi of key-disagreement averaged 0.501 initially and 0.457 at final extraction across 136 model pairs; paired mean change -0.044 with set- and exact-question-cluster bootstrap intervals below zero. This is not semantic error dependence or a causal source effect. Formalized the assistant-authored OV-55/56 shared-gate versus latent-difficulty observational equivalence; Lean CI pending.  
+**Source correction:** OV-49–OV-53 located artifacts are geometry/finite-core work, not the cognition test bank named by the role-charter pointer. OV-55/56 are assistant-authored analytic proposals, not actual LLM trials. No original cognition bank recovered.  
+**Feasibility:** No local model runtime, weights, GPU, or external provider credentials were available; no model calls or paid API spend. P1 remains methods/archive-observation unless an authorized model path and answer-keyed test bank are recovered before the Nov 2 protocol freeze. Add an unattributed repeated-assertion condition to separate content repetition from peer/expert/source attribution.  
+**Delivery:** repository inbox pointer only; no Orson ChatGPT post, read, or acknowledgment is claimed.
