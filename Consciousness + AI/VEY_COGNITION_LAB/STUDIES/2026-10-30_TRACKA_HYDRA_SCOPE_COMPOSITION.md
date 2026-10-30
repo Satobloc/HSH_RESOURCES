@@ -145,3 +145,8 @@ The complete report remains visible in issue #1063. A PR #951 comment records th
 A later peek of the same five existing hourly automations found :00, :24, and :48 simultaneously in_progress; :36 had completed at 02:00:50.249895Z and :12 had completed at 01:24:17.340040Z. Actual starts for the three still-running slots were :48 at 01:44:06.055198Z, :24 at 01:51:47.420257Z, and :00 at 01:57:20.182790Z. Thus the three-way overlap had lasted at least 545.817210 seconds (9m05.817s) at observation. The :36 run overlapped all three for 210.067105 seconds before it completed. The :24/:48 pair had overlapped for at least 878.579743 seconds (14m38.580s).
 
 This is a second natural scheduler observation, not a production shared-history test. All five tasks remained enabled with exact original IDs and hourly phases; no schedule, ID, task, or cadence was changed. The current :48 run remained in_progress at this observation, so its terminal receipt/handoff was not yet available.
+
+
+## Addendum | 2026-10-30 02:07:52 UTC | final scheduler peek
+
+The :00, :24, and current :48 runs remained in_progress. The :36 run remained completed at 02:00:50.249895Z; :12 remained completed at 01:24:17.340040Z. The three-way overlap had lasted at least 10m31.817s; :24/:48 at least 16m04.580s. The current :48 run had been active for 23m45.945s and still had no terminal receipt. All five tasks remained enabled with original IDs and hourly phases unchanged. This remains a scheduler observation, not evidence of shared production Hydra state.
