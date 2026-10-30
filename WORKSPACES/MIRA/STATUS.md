@@ -73,7 +73,7 @@ Public continuity: existing issue #1080 supplemental comment #6523057125 was rea
 
 ## 2026-10-30 16:35Z source-provenance continuation
 
-- Added `WORKSPACES/MIRA/2026-10-30T1635Z_0246_PROVENANCE_COPYCHAIN_AND_THRESHOLD_CORRECTION.md`, exact blob `7eecf99e675420d6b490e6000ae20cf98102e43f`.
+- Added `WORKSPACES/MIRA/2026-10-30T1635Z_0246_PROVENANCE_COPYCHAIN_AND_THRESHOLD_CORRECTION.md`, exact blob `dac00bd82104f3ee26c86b9aa4673e9986277ee1`.
 - Clarified the HAGALAZ raw graph: the full conversation contains 50 tool nodes and four later attachment nodes, but neither 0.246 assistant response has an intervening tool result or attached CSV. The first tool node is 18:49:14Z, after the 17:51 and 18:28 assistant claims. Later visualization/PDF messages do not validate those earlier numeric claims.
 - Corrected the threshold crosswalk: the February 25 user-pasted Page One contains `<0.1 or >0.3 rad`; the March 1 user-pasted optical-test message contains 0.246 but not that band. The band appears in the May 9 assistant response `2779fcab`. A full scan of March 1 user-role messages found no band.
 - New copy-chain: March 1 user message `9060d0da-daca-4a76-8903-9d3f94541c9a` is an exact substring of the June 1 SAT4DHHUC transcript (blob `2e1e163771dda9bd1132290ce758ef6d80a6d0fb`). The HsH transcript copies are byte-identical. This is one later copy chain, not independent evidence. The February 25 Page One full text is not an exact substring of the inspected transcript/glossary files; its upstream source remains unresolved.
@@ -86,3 +86,9 @@ Public continuity: existing issue #1080 supplemental comment #6523057125 was rea
 ## 2026-10-30 16:46Z public correction readback
 
 - Existing issue #1080 received additive source-fidelity comment #6528225575; exact body was independently fetched. It corrects the overbroad statement that the [0.1, 0.3] band appears in both 2026 user-role pastes, records the March 1-to-June 1 exact copy chain, and scopes the HAGALAZ later tool/attachment nodes. Issue remains PUBLISHER_REJECTED; no new submission.
+
+
+## 2026-10-30 16:48Z | HSH_RESOURCES visibility and blob correction
+
+- GitHub repository metadata confirms `Satobloc/HSH_RESOURCES` is public (`private=false`, visibility `public`). The Mira report is a public-safe workspace record containing provenance metadata and short descriptions only; no restricted PDF contents or private source payloads are reproduced. Earlier labels such as “private addendum” or “internal report” refer to workspace location, not repository privacy, and should not be read as access-control claims.
+- The report was corrected for that wording. Current report blob: `dac00bd82104f3ee26c86b9aa4673e9986277ee1` (same path). Any earlier pointer to `7eecf99e675420d6b490e6000ae20cf98102e43f` is superseded.
