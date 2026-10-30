@@ -68,3 +68,12 @@ The :00, :24, and current :48 runs remained in_progress. The :36 run remained co
 **Source correction:** OV-49–OV-53 located artifacts are geometry/finite-core work, not the cognition test bank named by the role-charter pointer. OV-55/56 are assistant-authored analytic proposals, not actual LLM trials. No original cognition bank recovered.  
 **Feasibility:** No local model runtime, weights, GPU, or external provider credentials were available; no model calls or paid API spend. P1 remains methods/archive-observation unless an authorized model path and answer-keyed test bank are recovered before the Nov 2 protocol freeze. Add an unattributed repeated-assertion condition to separate content repetition from peer/expert/source attribution.  
 **Delivery:** repository inbox pointer only; no Orson ChatGPT post, read, or acknowledgment is claimed.
+
+
+## 2026-10-30 11:12Z | Orson selected | VEY-014 source-pipeline and P1 scope audit
+
+Repository note: `STUDIES/VEY-014_SOURCE_PIPELINE_AND_P1_SCOPE_AUDIT_2026-10-30.md`, blob `599ea0a8a13cb44b9c95c512c4b217a6c8998d1b`.
+
+Exact ConsistencyBench implementation blob `0453540cb7c19227601e59fb342fa93e736da849` confirms a shared, question-blind GPT-4o-mini NLI checker comparing same-model raw responses, followed by contextual revision. The 17-model panel majority is post-hoc; no peer answers are fed to models. Treat the archived results as key-match, post-hoc majority, and within-model revision readouts, not as a peer-influence or scientific-review experiment.
+
+P1 scope recommendation: archival/methodological case study unless the actual matched neutral-versus-false-authority answer-keyed bank and authorized model access are recovered before Nov 2. OV-49–53 is a geometry/finite-core pointer mismatch; OV-55/56 and OV-100 are analytical models, not trials. D1 PDF/TeX/reader bytes were not recovered in this runtime. PR #850 repair is committed at exact head `89c5b66df723e63f5a8770217888cb0ac211a54b`, but no new Lean CI run was observed for that head. No model call, human adjudication, or paper gate closure.
