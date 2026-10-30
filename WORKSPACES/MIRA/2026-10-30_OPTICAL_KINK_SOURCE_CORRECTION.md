@@ -161,7 +161,7 @@ The repeated value and identical [0.1, 0.3] rad failure band make the 2026 appea
 
 ### Archive-date and artifact controls
 
-The flattened derivative transcript SAT Mark V/SAT_optics_finding.txt has Git blob SHA d4843caa0dff3b1193f3758790d8c8a27802a4aa. DATED_FILE_LIST_EXTENDED records a file-level creation/last-write time of 2025-06-22 19:51:57 local. That is not the raw message time. The primary raw assistant message is dated 2025-05-09T17:51:00.270Z. The separate 2025-05-21 SAT TIMESTAMPS entry is an index record, not the timestamp field of this recovered message, and must not be used to date it.
+The flattened derivative transcript SAT Mark V/SAT_optics_finding.txt has Git blob SHA d4843caa0dff3b1193f3758790d8c8a27802a4aa. DATED_FILE_LIST_EXTENDED records a file-level creation/last-write time recorded as 2025-06-22 19:51:57 (timezone unspecified in the index). That is not the raw message time. The primary raw assistant message is dated 2025-05-09T17:51:00.270Z. The separate 2025-05-21 SAT TIMESTAMPS entry is an index record, not the timestamp field of this recovered message, and must not be used to date it.
 
 A bounded listing of the HAGALAZ, SAT Mark V, SAT XYZ and SAT QR source directories found no corresponding CSV, NPY or NPZ output artifact. This is a bounded negative result, not a claim that no such file exists anywhere in the full archive.
 
@@ -176,3 +176,6 @@ A bounded listing of the HAGALAZ, SAT Mark V, SAT XYZ and SAT QR source director
 - Existing Mira PR #885 remains separate: its two source-conditional moving-film/filament statements compiled at exact head 1a840109f080fcbd6ee43e631bd8d2691791e316 in run 40983509297. That build does not prove the optical claim.
 
 Next: continue tracing the originating file/author/derivation of the 2026 pasted document without treating its embedded byline as provenance. Preserve source-owner review and the existing clearance requirement for any external PDF. Do not open restricted PRIOR_ART, Hypothesis H or direct Schreiber material without the required item-specific authorization.
+
+
+Public continuity: existing issue #1080 received supplemental source-correction comment #6523057125; exact comment readback verified. The issue's earlier publisher-rejected status remains unchanged.
