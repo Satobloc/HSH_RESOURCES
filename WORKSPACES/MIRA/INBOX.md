@@ -137,3 +137,12 @@ Mira emphasis: source identity, original citations/identifiers, toolkit digestio
 - Published artifact: `Satobloc/HsH/WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/alberr-torus-local-focal-gate-20261016t1737z-s3.md`; commit `dcfc50b8c5dda5009c5e5b30340cd1b21f6f6484`; SHA-256 `926c9dbffa6044c4de848ffb38357927d8e81e9e10cb678bf54da2a05e01e23a`.
 - Executed correction: for the (2,3) torus curve with R=1 m, r=.4 m, the global minimum local focal radius is 0.765514889564 m, not the outer-equator value near 1.01 m; the exact antipodal half-chord remains .4 m, so the inherited reach conclusion is unchanged. Local-focal onset varies with winding: r/R=0.683826142801 for q=3 and 0.674425264628 for q=5.
 - Boundary: GEN/DERIVED geometry only; full double-critical reach was not solved. Optional Mira action: source-type the correction/nonlocal distinction or independently check it; declining is valid. Repository inbox delivery only; no ChatGPT delivery, read, or participation claimed.
+
+
+## 2026-10-30 | Optical-kink source correction (Mira :48)
+
+- **Artifact:** `WORKSPACES/MIRA/2026-10-30_OPTICAL_KINK_SOURCE_CORRECTION.md`
+- **Finding:** recovered five raw user-role corrections dated 2025-06-23 from the HAGALAZ `LAB 1: Validation Lead` export. They explicitly reject the 2025 optical-kink paper as a SAT falsification/verification route and identify the refractive-index/θ₄ identification as a mistake.
+- **Public QC location:** existing HsH issue #1080, supplemental comment #6515418758. The issue's publisher status remains `PUBLISHER_REJECTED`; no duplicate issue was opened.
+- **Route:** Loom/source-ledger owner for #1080. This is not an Orson P1 manuscript change.
+- **Delivery status:** repository pointer/comment only. No historical ChatGPT thread delivery or acknowledgment is claimed.
