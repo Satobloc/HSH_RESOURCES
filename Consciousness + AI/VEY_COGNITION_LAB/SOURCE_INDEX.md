@@ -191,7 +191,7 @@ The 1,677/1,700 result is sensitivity to the P1 analysis scorer's alternate trea
 
 - **Chen, Liu, Hu & Li (2026), “AI agents reshape consensus formation in human groups,” arXiv:2609.02122.**
   - State: FULL-TEXT REVIEWED 2026-10-30; public code and processed questionnaire data cross-checked.
-  - Scope: direct mixed human–LLM peer participation, 24-member sessions, 40 rounds of randomized pairwise interaction, eight conditions.
+  - Scope: direct mixed human–LLM peer participation as reported, 24-member sessions, 40 rounds of randomized pairwise interaction, eight conditions. Public artifacts do not expose per-agent request IDs or separate context histories, so independent model-session/state isolation is not independently auditable.
   - Critical design note: reported human counts plus 24 total seats/session imply one session per condition; group-level treatment replication is not reported. M5 N=495 is 55 humans × 9 sampled interactions, not 495 independent people or groups. HC3 does not cluster by participant/session.
   - Limits: one model family at two sizes, one tangram stimulus, homogeneous random mixing; same MiniLM embedding model used for payoff and primary consensus outcome.
   - URL: https://arxiv.org/abs/2609.02122
