@@ -77,3 +77,16 @@ Repository note: `STUDIES/VEY-014_SOURCE_PIPELINE_AND_P1_SCOPE_AUDIT_2026-10-30.
 Exact ConsistencyBench implementation blob `0453540cb7c19227601e59fb342fa93e736da849` confirms a shared, question-blind GPT-4o-mini NLI checker comparing same-model raw responses, followed by contextual revision. The 17-model panel majority is post-hoc; no peer answers are fed to models. Treat the archived results as key-match, post-hoc majority, and within-model revision readouts, not as a peer-influence or scientific-review experiment.
 
 P1 scope recommendation: archival/methodological case study unless the actual matched neutral-versus-false-authority answer-keyed bank and authorized model access are recovered before Nov 2. OV-49–53 is a geometry/finite-core pointer mismatch; OV-55/56 and OV-100 are analytical models, not trials. D1 PDF/TeX/reader bytes were not recovered in this runtime. PR #850 repair is committed at exact head `89c5b66df723e63f5a8770217888cb0ac211a54b`, but no new Lean CI run was observed for that head. No model call, human adjudication, or paper gate closure.
+
+
+## 2026-10-30 15:00Z | Orson selected | VEY-015 key semantics and finite-pattern identifiability
+
+Repository note: `STUDIES/VEY-015_P1_KEY_SEMANTICS_AND_FINITE_PATTERN_IDENTIFIABILITY_2026-10-30.md`, blob `01f9a213de14b8defab570105471a219281f1b1b`.
+
+Companion source-key packet: `STUDIES/VEY-015_P1_NEGATIVE_INFERENCE_KEY_ROWS_2026-10-30.csv`, blob `a6d93b39a47fa86d2720036e571bfed79586790e` (578 full-bank rows; 350 sample rows).
+
+Independent re-fetch of all 34 immutable vanilla/CGD result blobs reproduces 1,677/1,700 correctness-class changes under the alternate mapping of the 50 "No, not with certainty" sample keys; pooled correct count changes only 836→841. The same phrase is lexically mapped to `no`, while three other negative-inference key phrases map to `cannot_determine`. This is sensitivity, not a corrected key; human semantic adjudication remains absent.
+
+Existing PR #850 now includes a finite-pattern normalized-distribution/non-injective observation-map module. Earlier head 89c5 compiled successfully in run #41048055694; the new exact head `0efbc7ae1577c37ee36b6bcdb4a0fb7c17ee619c` has run #41079040914 pending at note time. Do not claim new-module compilation yet.
+
+Next: inspect exact-head Lean logs/axioms; freeze a question-aware scoring rubric by Nov 2; keep P1 archival/methodological unless authorized actual-model study and answer-keyed bank are recovered. No manuscript or public issue work.
