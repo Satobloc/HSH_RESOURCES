@@ -81,6 +81,17 @@ These materials are not assumed to be controlled experiments. Many are naturalis
    - **State:** TRIAGED
    - **Why it matters:** Directly relevant to VEY-004. Shared versus separate context affects consistency, noise and interdependence; useful literature comparator for the project's concern that nominally separate instances may not supply independent corroboration.
 
+8. **Hossain, Elias; Niloofar Yousefi; Ser-Nam Lim (2026), “Agreement Overstates Evidence: Error Dependence in LLM Judge Consensus.”**
+   - arXiv:2609.22512
+   - **State:** TRIAGED (abstract read; full-text review open)
+   - **Why it matters:** Reports correlated judge errors and reduced effective independent-judge information. Direct caution for interpreting panel agreement as independent evidence; not the same dataset or intervention as VEY-011.
+
+9. **Hu, Yibo; Jiaming Qu (2026), “Social Pressure Breaks Majority Voting in LLM Safety Panels.”**
+   - arXiv:2608.04415
+   - **State:** TRIAGED (abstract read; full-text review open)
+   - **Why it matters:** Controlled two-round peer-label exposure design. Important comparator for a future causal VEY-004 test; unlike VEY-011, this study actually shows peer labels to models and manipulates the cue.
+
+
 ### Longitudinal human–LLM collaboration
 
 8. **Du, Lingxiao (2026), “Human Reinforcement Learning from AI Feedback: Feedback Mechanisms, Meta-Collaborative Monitoring, and Identity Positioning in Long-Term Human-AI Collaboration.”**
