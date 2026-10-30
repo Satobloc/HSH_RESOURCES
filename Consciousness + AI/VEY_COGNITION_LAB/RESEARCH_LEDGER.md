@@ -279,3 +279,7 @@ The repaired exact-head PR #850 run `41079040914` completed SUCCESS on head `0ef
 - GRAIL repository now shows five forks, not three; no exhaustive fork audit. Main implementation remains a single shared facilitator. README cites PACM HCI 10(6) on 31 Oct 2026, future-dated relative to this run; ACM DOI page returned 403, so publication status is unverified as of 30 Oct. Use arXiv:2508.08242 as the accessible source.
 - Historical role provenance separated: original Oct 9 local/Oct 10 UTC instruction = primary LLM-cognition assignment; Oct 26 direct reinforcement = four-of-five target and Nov 9 P1 gate. Exact original conversation/message UUID not recovered.
 - No new human-subject work, model API calls, tool build, P1 manuscript change, BEDROCK promotion, or automation change.
+
+
+### Publication verification
+- Existing issue #1116 remains the sole publisher submission for this note. Publisher receipt comment #6531798863 recorded commit `78873863192bf06b90aff915aa2cc9277f20efef`; artifact `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/reviewmind-human-ai-peer-group-replication-audit-20261030t1848z-s4-001.md` was read back and matched the issue payload exactly. Independent SHA-256: `38d9738ebb7aed17933815ce3d40d94fadf3600e389f0035e980bd9f03527888`. Additive correction comment #6532231836 was added; no second submission was created.
