@@ -219,3 +219,24 @@ Pointer: `STUDIES/VEY-014_SOURCE_PIPELINE_AND_P1_SCOPE_AUDIT_2026-10-30.md`, blo
 Exact primary source: `aayambansal/ConsistencyBench/src/evaluate.py`, Git blob `0453540cb7c19227601e59fb342fa93e736da849`. The shared GPT-4o-mini NLI checker compares same-model prior/current raw answers without question/premise; the repair prompt is contextual; the panel majority is post-hoc and is not fed to models. This is a common evaluator, not peer exposure or a manipulated shared evidence source.
 
 The P1 should be framed as an archival/methodological case study unless an authorized model route and the actual answer-keyed neutral-versus-false-authority bank are recovered before the Nov 2 protocol freeze. The OV-49–53 charter pointer remains mismatched; OV-55/56 and OV-100 are analytical models, not administered trials. VEY-004 remains the separate controlled exposure study. The D1 PDF/TeX/reader bytes were not recovered in this runtime; Nov 9 PDF/reader and independent review gates remain open.
+
+
+## VEY-015 — P1 key semantics, row-level sensitivity, and finite-pattern identifiability
+
+**Status:** COMPLETE AS SOURCE-LOCKED REANALYSIS; new Lean module committed, exact-head CI pending; no human adjudication or new model trial.  
+**Date:** 2026-10-30  
+**Question:** How sensitive are the P1 key-accuracy and CGD-versus-vanilla comparisons to the scorer's treatment of free-text negative-inference answer keys, and can the OV-55/56 latent interpretations be shown to yield the same full finite observable distribution?
+
+Pointer: `STUDIES/VEY-015_P1_KEY_SEMANTICS_AND_FINITE_PATTERN_IDENTIFIABILITY_2026-10-30.md`, blob `01f9a213de14b8defab570105471a219281f1b1b`.
+
+Companion source extraction: `STUDIES/VEY-015_P1_NEGATIVE_INFERENCE_KEY_ROWS_2026-10-30.csv`, blob `a6d93b39a47fa86d2720036e571bfed79586790e`, 578 full-bank rows / 350 sample rows.
+
+Original source blobs: full bank `3171d2899fd1eb4292794df5952514666b0e2f43`; sample `10eb2da27c84c706d8e9e2325afca864fcae6a0d`; upstream evaluator `0453540cb7c19227601e59fb342fa93e736da849`; Orson analysis scorer `2e10ed2510b8ce14e716780a887c0fe23c3067b9`.
+
+The full bank contains 68 "No, not with certainty" keys; the sample contains 50. Three other negative-inference strings ("No, we cannot conclude that", "No, we cannot conclude either way", "No, not necessarily") map to `cannot_determine` under the analysis scorer while "No, not with certainty" maps to `no`. The phrase group is question/reasoning-specific; this is a lexical normalization sensitivity, not an adjudicated correction.
+
+All 34 exact vanilla/CGD model-output blobs (17 per condition) were independently re-fetched. On the 50 affected sample items, 1,677/1,700 correctness classifications change under the alternate mapping, but pooled correct counts move only 836→841 (+5). On that affected subset, CGD-minus-vanilla individual accuracy moves from -1.176 pp to +0.118 pp; 14/17 model labels reverse sign. These are fixed-panel descriptive sensitivities, not causal effects or independent model-population inference.
+
+Added `OrsonFinitePatternDistribution.lean` to existing PR #850: finite powerset pattern weights, normalization, nonnegativity for valid Bernoulli parameters, pointwise equality of the shared-gate and latent-difficulty toy distributions, and non-injectivity of their observation map. First exact-head run #41078042006 failed on a powerset-sum rewrite; repair commit/exact branch head `0efbc7ae1577c37ee36b6bcdb4a0fb7c17ee619c`; exact-head run #41079040914 was pending at note time. Do not claim compilation until that run and theorem-specific axiom outputs are inspected.
+
+No model calls, no human adjudication, no peer-exposure experiment, no P1 manuscript edit, no D1 PDF/TeX/reader recovery, and no public issue. P1 remains Orson-owned; November 2 protocol freeze and November 9 paper gate remain open. Next: exact-head CI/axiom inspection, question-aware key rubric, human adjudication, then premise-cluster paired bootstrap under frozen estimands.
