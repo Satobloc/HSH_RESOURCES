@@ -24,7 +24,7 @@ The current Common task graph remains a 15-branch routing seed, last updated 202
 - Updated in export: 2026-10-06T02:45:03.062Z
 - Mapping nodes: 155
 
-The source inventory row in `EXPOSURE_STATS/CROSS_DIFFUSION_SOURCE_MANIFEST.csv` records 593,084 bytes and SHA-256 `c98a6e4b805e2e56e2674246aa106afeb1e389568d0782b80e8f02be105c1304`. This is the manifest-recorded content digest; the current Git blob SHA above is a separate Git object identifier.
+The source inventory file `EXPOSURE_STATS/CROSS_DIFFUSION_SOURCE_MANIFEST.csv` has Git blob SHA `21fd4f2745b86763b8ea26c2c8582f235c0aeb8e`. Its row for the raw conversation records 593,084 bytes and SHA-256 `c98a6e4b805e2e56e2674246aa106afeb1e389568d0782b80e8f02be105c1304`. This is the manifest-recorded content digest; the current Git blob SHA above is a separate Git object identifier.
 
 ### Exact role/message evidence
 
@@ -86,14 +86,14 @@ Nathan’s direct June 23, 2025 corrections remain controlling for that earlier 
 ### PULSAR GLITCH PROGRAMME
 
 - HSH_RESOURCES path: `H(s)H_Toolkit/PULSAR GLITCH PROGRAMME.txt`
-- Git blob SHA: `c05f7fe...` (full object identifier retained in the source workspace)
+- Git blob SHA: `c05f7fe826ce0edb7bcaded815d768531b554dfc` (full object identifier retained in the source workspace)
 
 This document is self-dated March 11–13, 2026, after the March 1 module conversation. It labels itself tentative and says its formal text is largely LLM-written. It includes an “achromatic phase shift” of 0.246 rad and a later pulsar-glitch formulation, but no source chain proving that it originated the earlier March 1 paste. Its embedded LaTeX byline is not independent authorship evidence.
 
 ### SAT FINGERPRINT
 
 - HSH_RESOURCES path: `30SEP_PAPER_DUMP/SAT FINGERPRINT.txt`
-- Git blob SHA: `7732ae38...` (full object identifier retained in the source workspace)
+- Git blob SHA: `7732ae38f6ed7de8536b2ea4e65b099920c3aa39` (full object identifier retained in the source workspace)
 
 The document labels itself “VERY APPROXIMATE,” has no authenticated author/date, and is a classification/index rather than a primary source. It records U003 as historical/numeric and AL016 as demoted: the value’s historical presence is acknowledged, while the claim that 0.246 rad is an established universal physical threshold is rejected. Do not treat this file as the derivation.
 
