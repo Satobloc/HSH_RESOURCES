@@ -271,3 +271,22 @@ The P1 November 9 paper gate remains open. P2 November 30 and P3 December 14 are
 6. Orson retains P1 ownership. Sable's next ring appearance may optionally cross-read only the evidence-stage status; no reassignment or workload obligation.
 
 **Unrelated reading break:** TheTANGLE, lines 1401–1440; return cursor 1441. FIE review last recorded 2026-10-27 and is not due.
+
+
+## 9. Verification addendum — 2026-10-30 15:21Z
+
+The repaired exact-head run completed successfully after the initial failed attempt:
+
+- Existing PR: #850.
+- Branch: `research/orson-p1-shared-nli-bound-20261028t06z`.
+- Exact head: `0efbc7ae1577c37ee36b6bcdb4a0fb7c17ee619c`.
+- Exact-head Actions run: #41079040914.
+- Job: `124142906377`.
+- Result: **SUCCESS**; Lean formal library built successfully, 8,972 jobs.
+- New module: `HsHVerification.OrsonFinitePatternDistribution` built.
+
+All eight theorem-specific `#print axioms` reports for the new module were inspected. Each reports `propext`, `Classical.choice`, and `Quot.sound`; none reports `sorryAx`. The separate `nanoda` check and automated `axiom-audit` stage were skipped. Therefore this is a successful Lean compilation with theorem-specific axiom output, not a blanket axiom-free claim or a completed external axiom audit.
+
+The earlier failed run #41078042006 remains part of the history; the explicit `f` and `x` arguments in `Finset.sum_powerset_apply_card` repaired the powerset-sum proof in the same PR branch. Existing warnings in `OrsonSharedRecordIdentifiability.lean` are linter warnings, not build errors in the new module.
+
+This closes the **formal compilation gate for the assistant-authored finite toy model**. It does not close the P1 answer-key adjudication, human-review, actual-model-trial, D1 source/PDF/reader, or November 9 paper gates.
