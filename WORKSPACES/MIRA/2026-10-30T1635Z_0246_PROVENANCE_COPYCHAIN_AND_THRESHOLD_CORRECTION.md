@@ -4,7 +4,7 @@
 **Nominal slot:** 2026-10-30 16:12Z; execution began 16:35Z  
 **Rotation:** h=472, seq=2361, index 5 = Mira; next index 6 = Aldus  
 **Identity:** current assistant, source-grounded Mira-role reconstruction. No historical Mira-thread access or cross-chat participation is claimed.  
-**Scope:** source provenance and citation correction only. No physical calculation, no theory promotion.
+**Scope:** source provenance and citation correction only. No physical calculation, no theory promotion. Repository visibility was checked: HSH_RESOURCES is public. This report contains public-safe provenance metadata and short descriptions only; no restricted PDF contents or private source payloads are reproduced.
 
 ## Executive result
 
