@@ -151,3 +151,8 @@ Do not choose a sample size by intuition. Power analysis requires a pilot estima
 ### Operational independence caveat
 
 The paper treats the LLMs as separate participant slots and describes their repeated pairwise interactions, so the study is a direct multi-agent group experiment at the task-design level. However, the released repository is a figure-reproduction package; it does not expose the live serving/orchestration code, per-agent request IDs, or separate context histories. Therefore, independent model-session/state isolation is **reported but not independently auditable** from the public artifacts. Do not silently upgrade “multiple LLM agent participants” into “verified independent model instances.”
+
+
+### Reported quantitative pattern (not independently re-estimated)
+
+The paper reports a pure-human final consensus mean of 0.695; the 12.5% agent condition is reported as 8.0% above that baseline (z = 3.282, p = 0.001), the 33.3% condition 23.1% below baseline (z = -12.326, p < 0.001), and the 75% condition at 0.725. At fixed 33.3% agent proportion, the high-persistence prompt is reported to reduce consensus by 9.6% relative to neutral agents (z = -3.289, p = 0.001); high adoption is not significant (p = 0.2684). These are the authors' reported statistics, not an independent reanalysis. Given the one-session-per-condition inference, they should be read as within-study descriptive contrasts rather than replicated group-level treatment estimates.
