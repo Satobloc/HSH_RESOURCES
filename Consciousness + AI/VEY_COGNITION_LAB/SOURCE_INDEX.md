@@ -155,3 +155,15 @@ Where licensing and repository policy permit, preserve a local paper or text ext
   - URL: https://arxiv.org/abs/2606.01637
 
 Do not compare their error-correlation coefficients directly with VEY-013's pair-specific key-disagreement phi. Dataset, ground truth, missingness, item-difficulty conditioning, and intervention differ.
+
+
+## P1 implementation provenance: ConsistencyBench CGD evaluator
+
+- Repository: `aayambansal/ConsistencyBench`
+- Path: `src/evaluate.py`
+- Exact Git blob: `0453540cb7c19227601e59fb342fa93e736da849`
+- Read extent: 327 lines; exact blob fetched 2026-10-30.
+- Relevant regions: repair prompt lines 82-95; model-input/output handling lines 181-209; CGD loop and stored result fields lines 238-289; `NLIContradictionChecker` lines 296-327.
+- Finding: the common hard-coded `openrouter/openai/gpt-4o-mini` checker compares two same-model raw responses without the question or premise. The revision prompt receives question/premise context. The checker response is reduced to a Boolean flag in the archived result. The model does not receive other models' answers; panel majority is post-hoc.
+- Interpretation boundary: common evaluator and common benchmark are documented; common evidence-source exposure and causal peer influence are not identified.
+- Full source/pipeline analysis: `STUDIES/VEY-014_SOURCE_PIPELINE_AND_P1_SCOPE_AUDIT_2026-10-30.md`.
