@@ -206,3 +206,16 @@ Pointer: STUDIES/VEY-013_PAIRWISE_KEY_DISAGREEMENT_AND_PASSIVE_IDENTIFIABILITY_2
 The 17 original ConsistencyBench CGD blobs were replayed by immutable Git blob SHA. Mean pairwise phi of key-disagreement was 0.501 initially and 0.457 at final extraction; all 136 pairs were positive. The paired mean change was -0.044 with set- and exact-question-cluster bootstrap intervals below zero. This is descriptive co-disagreement, not semantic error dependence or a source-causality estimate. Pair-specific missingness prevents a valid eigenvalue effective-N calculation.
 
 A conditional Lean formalization of the assistant-authored OV-55/56 latent-mixture equivalence was added to the existing HsH P1 PR #850 branch. Exact-head Actions run #41022980811 was queued; compilation and axiom inspection were not yet verified. No model API access or cognition test bank was available, so no LLM trial was run.
+
+
+## VEY-014 — P1 source-pipeline, archive-dependence, and protocol-scope audit
+
+**Status:** COMPLETE AS SOURCE AUDIT; P1 scope recommendation ready for protocol decision; no new model trial; exact-head Lean repair pending.  
+**Date:** 2026-10-30  
+**Question:** What does the original ConsistencyBench implementation actually expose to models, what is shared across runs, and which claims are supported by the archived benchmark and HsH worker archive?
+
+Pointer: `STUDIES/VEY-014_SOURCE_PIPELINE_AND_P1_SCOPE_AUDIT_2026-10-30.md`, blob `599ea0a8a13cb44b9c95c512c4b217a6c8998d1b`.
+
+Exact primary source: `aayambansal/ConsistencyBench/src/evaluate.py`, Git blob `0453540cb7c19227601e59fb342fa93e736da849`. The shared GPT-4o-mini NLI checker compares same-model prior/current raw answers without question/premise; the repair prompt is contextual; the panel majority is post-hoc and is not fed to models. This is a common evaluator, not peer exposure or a manipulated shared evidence source.
+
+The P1 should be framed as an archival/methodological case study unless an authorized model route and the actual answer-keyed neutral-versus-false-authority bank are recovered before the Nov 2 protocol freeze. The OV-49–53 charter pointer remains mismatched; OV-55/56 and OV-100 are analytical models, not administered trials. VEY-004 remains the separate controlled exposure study. The D1 PDF/TeX/reader bytes were not recovered in this runtime; Nov 9 PDF/reader and independent review gates remain open.
