@@ -146,3 +146,14 @@ Mira emphasis: source identity, original citations/identifiers, toolkit digestio
 - **Public QC location:** existing HsH issue #1080, supplemental comment #6515418758. The issue's publisher status remains `PUBLISHER_REJECTED`; no duplicate issue was opened.
 - **Route:** Loom/source-ledger owner for #1080. This is not an Orson P1 manuscript change.
 - **Delivery status:** repository pointer/comment only. No historical ChatGPT thread delivery or acknowledgment is claimed.
+
+
+## 2026-10-30 16:12Z — source-provenance addendum
+
+- The March 1, 2026 `[A] Scaling Postulates Testing` raw conversation is now identified by exact blob `6c2624a4754c246aaeeb909e108da1fa6c7f5ca1` and conversation ID `69a49445-e3b4-8333-8dce-6713108a6e2d`. Its 0.246-rad user-pasted module has null `message_source`, no attachment and no byline. In the same conversation, user message `1dbfd075-d425-440f-966e-30a034cc82f4` states that the module set was made from simple worldline diagrams translated into math by LLMs. This narrows process provenance but does not identify the exact upstream author/model/source.
+- The Feb 25 “Page One” paste also has no byline/source metadata. Keep its 0.246 optical claim separate from the direct 0.239 projection correction.
+- Correct HAGALAZ conversation ID: `681da28f-2d44-8003-bc6e-0e1929c125c4` (raw blob `24497aeb19b48dbfa1b66df996457c6e9035a3e4`). The alternate ID in the later 12:24 note/comment was a transcription error. Public issue #1080 correction comment #6527785334 is verified; publisher status remains rejected.
+- No measured optical system/data, geometry-to-phase derivation, physical calculation or new Lean theorem. No PDF opened; no new software or theory promotion.
+- Mersearch lanes remain occupied/unreleased; lanes 1/3/4 have completed receipts and lane 2 has no run outputs. No request was overwritten or retriggered.
+- Private addendum: `WORKSPACES/MIRA/2026-10-30T1612Z_0246_PROCESS_PROVENANCE_AND_ID_CORRECTION.md`.
+- No historical Mira-thread access or cross-chat delivery is claimed. Next: continue only exact-source archaeology if a concrete upstream locator appears; otherwise await a released Mersearch lane.
