@@ -77,7 +77,7 @@ The SAT archive file `HYPERFOAM THEORY/SAT4DHHUC.txt`:
 - Blob: `2e1e163771dda9bd1132290ce758ef6d80a6d0fb`
 - 58,311 characters / 922 lines.
 - Added by commit `ed23c8dc08a9ac74c013fc454f6c8ea23388b288`, 2026-06-01 00:04:52Z, author `Satobloc`.
-- It contains the March 1 user message `9060d0da` verbatim as a substring, including the 0.246 Optical Kink Test. This is a later copy of that text, not a new independent result.
+- It contains the March 1 user message `9060d0da` verbatim as a substring, including the 0.246 Optical Kink Test. This is a later verbatim occurrence; direct copying versus a common upstream source is unresolved, so it is not independent corroboration.
 - It also contains the “Structural Unfolding from a single Dimensional Anchor” phrase at lines 140 and 752 and repeats 0.246 claims elsewhere.
 - It is a flattened transcript without raw conversation ID or role metadata for each embedded passage.
 
