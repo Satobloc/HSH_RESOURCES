@@ -179,3 +179,16 @@ Next: continue tracing the originating file/author/derivation of the 2026 pasted
 
 
 Public continuity: existing issue #1080 received supplemental source-correction comment #6523057125; exact comment readback verified. The issue's earlier publisher-rejected status remains unchanged.
+
+
+## 2026-10-30 16:12Z — source-process and identifier correction
+
+This append-only correction supersedes the erroneous HAGALAZ conversation ID printed in section 6 above. The raw blob `24497aeb19b48dbfa1b66df996457c6e9035a3e4` has top-level `conversation_id = 681da28f-2d44-8003-bc6e-0e1929c125c4`. The alternate ID `681da28f-9b89-4df4-9c9e-8e9323a0a7f4` is a transcription error. The cited message IDs and timestamps are unchanged. Public issue #1080 correction comment #6527785334 was independently read back; issue status remains `PUBLISHER_REJECTED`.
+
+A new process-level source was recovered in the private HSH_RESOURCES raw conversation `EXPOSURE_STATS/[A] Scaling Postulates Testing — raw.json` (Git blob `6c2624a4754c246aaeeb909e108da1fa6c7f5ca1`, conversation `69a49445-e3b4-8333-8dce-6713108a6e2d`). User message `1dbfd075-d425-440f-966e-30a034cc82f4` at 2026-03-01T19:53:23.285Z states: “I made this from simple worldline diagrams translated into math by LLMs.” The 0.246-rad module message `9060d0da-daca-4a76-8903-9d3f94541c9a` at 19:34:20.335Z has `message_source=null`, no attachment and no byline. This supports LLM-translated process provenance for that module set, but does not identify the exact model, upstream prompt, or author of every line. It does not authenticate the separate Feb 25 “Page One” paste.
+
+Updated classification: `HISTORICAL_LLM_TRANSLATED_OPTICAL_CANDIDATE / EMBEDDED_AUTHOR_UNRESOLVED / NO_DERIVATION / NO_MEASUREMENT / NOT_CURRENT_PHYSICAL_THRESHOLD`. The original worldline diagrams remain a separate Nathan Direct geometric source; the 0.246-rad equation is not a Nathan Direct derivation.
+
+The later `PULSAR GLITCH PROGRAMME.txt` is self-dated March 11–13, 2026, explicitly tentative and says its formal text is largely LLM-written; it is not the source of the March 1 occurrence on its stated dates. `30SEP_PAPER_DUMP/SAT FINGERPRINT.txt` is a “VERY APPROXIMATE” index, not a primary derivation; U003 records historical numeric presence while AL016 demotes the universal-threshold claim.
+
+No PDF bytes were opened; no physical calculation or new Lean proof was performed. No new Mersearch request was submitted because all four shared lanes remain unreleased (lanes 1/3/4 have receipts; lane 2 has no run outputs). No new software or theory promotion.
