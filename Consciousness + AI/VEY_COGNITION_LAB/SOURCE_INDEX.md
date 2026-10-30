@@ -219,3 +219,7 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 - Public A2-A5 processed-data artifacts in the Chen et al. repository are `.pkl` files, not CSVs. The earlier VEY-016 wording was inaccurate; the public analysis script reads pickle files and uses OLS HC3 covariance.
 - GRAIL's indexed repository page currently shows five forks, not three; fork implementations were not exhaustively reviewed. Main-branch code remains a single shared facilitator.
 - GRAIL README cites PACM HCI 10(6) with date 31 October 2026. Since this index update is 30 October and the ACM DOI page returned 403, classify the journal publication status as `NOT INDEPENDENTLY VERIFIED AS OF 2026-10-30`; use arXiv:2508.08242 as the accessible source.
+
+
+## 2026-10-30 publication readback
+- VEY-016 publisher issue #1116 is the only submission. Artifact readback matched the issue payload exactly; independently recomputed SHA-256 `38d9738ebb7aed17933815ce3d40d94fadf3600e389f0035e980bd9f03527888`. Correction comment #6532231836 is additive; no duplicate submission.
