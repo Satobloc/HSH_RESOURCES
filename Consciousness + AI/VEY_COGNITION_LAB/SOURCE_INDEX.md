@@ -125,3 +125,33 @@ These materials are not assumed to be controlled experiments. Many are naturalis
 ## Acquisition policy
 
 Where licensing and repository policy permit, preserve a local paper or text extract. Otherwise preserve a bibliographic record, stable URL/DOI/arXiv identifier, review notes and any legally reusable excerpts needed for research. Do not duplicate material merely to create volume; the purpose-driven index should remain smaller and more heavily reviewed than the general resource library.
+
+
+## P1 multi-agent dependence — full-text review addendum (2026-10-30)
+
+- **Hossain, Yousefi & Lim (2026), “Agreement Overstates Evidence: Error Dependence in LLM Judge Consensus,” arXiv:2609.22512.**
+  - State: FULL-TEXT REVIEWED 2026-10-30.
+  - Scope: passive correlated judge-error analysis. It does not manipulate shared evidence-source exposure or show peer answers to the judges.
+  - URL: https://arxiv.org/abs/2609.22512
+
+- **Kohli et al. (2026), “Nine Judges, Two Effective Votes,” arXiv:2605.29800.**
+  - State: FULL-TEXT REVIEWED 2026-10-30.
+  - Scope: judge-panel error dependence against human annotations. It is not a source-sharing intervention.
+  - URL: https://arxiv.org/abs/2605.29800
+
+- **Hu & Qu (2026), “Most LLM Conformity Needs No Speaker: Source-Free Conformity as a Baseline and Attribution Increment,” arXiv:2607.05545.**
+  - State: FULL-TEXT REVIEWED 2026-10-30.
+  - Scope: repeated answer content without an explicit speaker still changes responses; source/authority attribution adds an increment. The “source-free” arm still contains repeated content and is not a no-information control.
+  - URL: https://arxiv.org/abs/2607.05545
+
+- **Hu & Qu (2026), “Social Pressure Breaks Majority Voting in LLM Safety Panels,” arXiv:2608.04415.**
+  - State: FULL-TEXT REVIEWED 2026-10-30.
+  - Scope: peer-label exposure intervention; not an isolated content-only baseline.
+  - URL: https://arxiv.org/abs/2608.04415
+
+- **Qu et al. (2026), “Easier to Mislead Than to Correct,” arXiv:2606.01637.**
+  - State: FULL-TEXT REVIEWED in VEY-012.
+  - Scope: peer-majority and authority cues; related research group to the Hu & Qu studies, not an independent replication.
+  - URL: https://arxiv.org/abs/2606.01637
+
+Do not compare their error-correlation coefficients directly with VEY-013's pair-specific key-disagreement phi. Dataset, ground truth, missingness, item-difficulty conditioning, and intervention differ.
