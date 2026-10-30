@@ -73,7 +73,7 @@ Public continuity: existing issue #1080 supplemental comment #6523057125 was rea
 
 ## 2026-10-30 16:35Z source-provenance continuation
 
-- Added `WORKSPACES/MIRA/2026-10-30T1635Z_0246_PROVENANCE_COPYCHAIN_AND_THRESHOLD_CORRECTION.md`, exact blob `dac00bd82104f3ee26c86b9aa4673e9986277ee1`.
+- Added `WORKSPACES/MIRA/2026-10-30T1635Z_0246_PROVENANCE_COPYCHAIN_AND_THRESHOLD_CORRECTION.md`, exact blob `c4096031d17670b5408d9a110f6477a8a74631e4`.
 - Clarified the HAGALAZ raw graph: the full conversation contains 50 tool nodes and four later attachment nodes, but neither 0.246 assistant response has an intervening tool result or attached CSV. The first tool node is 18:49:14Z, after the 17:51 and 18:28 assistant claims. Later visualization/PDF messages do not validate those earlier numeric claims.
 - Corrected the threshold crosswalk: the February 25 user-pasted Page One contains `<0.1 or >0.3 rad`; the March 1 user-pasted optical-test message contains 0.246 but not that band. The band appears in the May 9 assistant response `2779fcab`. A full scan of March 1 user-role messages found no band.
 - New textual recurrence: March 1 user message `9060d0da-daca-4a76-8903-9d3f94541c9a` reappears verbatim in the June 1 SAT4DHHUC transcript (blob `2e1e163771dda9bd1132290ce758ef6d80a6d0fb`). The HsH transcript copies are byte-identical. This is a later verbatim occurrence; direct copying versus a common upstream source is unresolved, so it is not independent evidence. The February 25 Page One full text is not an exact substring of the inspected transcript/glossary files; its upstream source remains unresolved.
@@ -91,4 +91,4 @@ Public continuity: existing issue #1080 supplemental comment #6523057125 was rea
 ## 2026-10-30 16:48Z | HSH_RESOURCES visibility and blob correction
 
 - GitHub repository metadata confirms `Satobloc/HSH_RESOURCES` is public (`private=false`, visibility `public`). The Mira report is a public-safe workspace record containing provenance metadata and short descriptions only; no restricted PDF contents or private source payloads are reproduced. Earlier labels such as “private addendum” or “internal report” refer to workspace location, not repository privacy, and should not be read as access-control claims.
-- The report was corrected for that wording. Current report blob: `dac00bd82104f3ee26c86b9aa4673e9986277ee1` (same path). Any earlier pointer to `7eecf99e675420d6b490e6000ae20cf98102e43f` is superseded.
+- The report was corrected for that wording. Current report blob: `c4096031d17670b5408d9a110f6477a8a74631e4` (same path). Any earlier pointer to `7eecf99e675420d6b490e6000ae20cf98102e43f` is superseded.
