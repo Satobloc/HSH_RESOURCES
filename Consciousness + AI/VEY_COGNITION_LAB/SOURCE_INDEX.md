@@ -185,3 +185,30 @@ Do not compare their error-correlation coefficients directly with VEY-013's pair
 
 ### Interpretation boundary
 The 1,677/1,700 result is sensitivity to the P1 analysis scorer's alternate treatment of one expected-answer phrase. It is not an upstream benchmark score, corrected key, human adjudication, or causal effect. The OV-55/56 shared-gate and latent-difficulty mechanisms remain assistant-authored analytic models, not administered trials or measured LLM mechanisms.
+
+
+## Human–multi-LLM peer groups and reusable group-experiment platform (2026-10-30; VEY-016)
+
+- **Chen, Liu, Hu & Li (2026), “AI agents reshape consensus formation in human groups,” arXiv:2609.02122.**
+  - State: FULL-TEXT REVIEWED 2026-10-30; public code and processed questionnaire data cross-checked.
+  - Scope: direct mixed human–LLM peer participation, 24-member sessions, 40 rounds of randomized pairwise interaction, eight conditions.
+  - Critical design note: reported human counts plus 24 total seats/session imply one session per condition; group-level treatment replication is not reported. M5 N=495 is 55 humans × 9 sampled interactions, not 495 independent people or groups. HC3 does not cluster by participant/session.
+  - Limits: one model family at two sizes, one tangram stimulus, homogeneous random mixing; same MiniLM embedding model used for payoff and primary consensus outcome.
+  - URL: https://arxiv.org/abs/2609.02122
+  - Code/data: https://github.com/tsinghua-fib-lab/human-ai-consensus
+
+- **Alsobay et al. (2026), “Bringing Everyone to the Table: An Experimental Study of LLM-Facilitated Group Decision Making,” PACM HCI 10(6), CSCW059.**
+  - State: FULL-TEXT REVIEWED 2026-10-30.
+  - Scope: 1,475 participants in 281 five-person groups; 70 groups per condition; preregistered group-level experiment; GPT-4o facilitator.
+  - Interpretation: strong replicated human–LLM facilitator comparator, not a multi-LLM peer-group study. More unique factual information was shared, but optimal decision rate did not significantly improve.
+  - DOI: 10.1145/3816907
+  - URL: https://arxiv.org/abs/2508.08242
+
+- **Microsoft Research Group-AI Interaction Laboratory (GRAIL), repository microsoft/group_ai_lab.**
+  - State: REPOSITORY AND CORE SERVER CALLBACKS REVIEWED 2026-10-30.
+  - Scope: open-source MIT platform for synchronous human groups, treatment assignment, consent/surveys, shared chat, LLM facilitator, request/response logging and server-side timestamps.
+  - Limit: current implementation is one shared LLM facilitator, not multiple independently stateful peer agents. Adaptation requires per-agent state, identity, prompt/model configuration, turn scheduling and provenance logging.
+  - URL: https://github.com/microsoft/group_ai_lab
+
+Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLICATION_AUDIT_2026-10-30.md.
+
