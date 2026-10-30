@@ -283,3 +283,20 @@ The repaired exact-head PR #850 run `41079040914` completed SUCCESS on head `0ef
 
 ### Publication verification
 - Existing issue #1116 remains the sole publisher submission for this note. Publisher receipt comment #6531798863 recorded commit `78873863192bf06b90aff915aa2cc9277f20efef`; artifact `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/reviewmind-human-ai-peer-group-replication-audit-20261030t1848z-s4-001.md` was read back and matched the issue payload exactly. Independent SHA-256: `38d9738ebb7aed17933815ce3d40d94fadf3600e389f0035e980bd9f03527888`. Additive correction comment #6532231836 was added; no second submission was created.
+
+
+## VEY-017 — GRAIL multi-peer extension source audit
+
+**Status:** COMPLETE-AS-STAGE — SOURCE-CODE AUDIT / DESIGN PROPOSAL; no LLM trial or human-subject experiment.  
+**Date:** 2026-10-30 22:36Z.  
+**Question:** Can existing GRAIL be adapted for replicated human-plus-multiple-LLM-peer studies of shared evidence versus direct peer exposure?
+
+- Audited current `microsoft/group_ai_lab` main at commit `c7a2077281fed73f492a29ab187a7b86875203d8`. Exact source blobs for `callbacks.js`, `LLMConfig.js`, `treatments.yaml`, and README are recorded in VEY-017.
+- The current code implements one shared facilitator: one global model, one facilitator prompt/identity, one game-level log, and the complete group chat transcript sent to that model. No per-agent identity or state map appears in `callbacks.js`. The platform is not a multi-peer-agent system out of the box.
+- Reuse GRAIL rather than build a new platform. A multi-peer extension requires separate agent state/context, explicit message visibility, per-agent request/source lineage, and a turn scheduler.
+- Proposed minimum design separates shared-versus-disjoint evidence from peer-output visibility (a 2x2 design), with independent baseline answers before exposure, group/session randomization and replication, and externally adjudicated correctness distinct from consensus.
+- No sample-size calculation, new tool, API call, human session, hosting, recruitment, paid cost, external repo edit, or manuscript edit occurred.
+- Lean triage: the proposed visibility/state invariant is not defined by current GRAIL source. Formalizing a data-free state model is `BLOCKED_PENDING_NATHAN_PERMISSION`; no Lean module was written or run.
+- Original Orson neutral-versus-false-authority answer-keyed bank remains unrecovered. OV-49–53 are geometry/finite-core artifacts; OV-55/56/100 are analytic/synthetic, not administered trials. P1 #564 remains source/experiment readiness.
+
+Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.md`.
