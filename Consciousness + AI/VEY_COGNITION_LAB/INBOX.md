@@ -28,3 +28,10 @@ Preserve the lab's evidence, exposure, consent, and quarantine rules. Do not rep
 **Summary:** Actual :36 and :48 scheduled runs overlapped. A source-extracted receipt-gate method replay, using actual scheduler run records and an explicitly labeled event-tag adapter, showed that shared Hydra history can suppress a second distinct event while fresh per-run history processes both. This is conditional prototype behavior, not a production collision. The demo also leaves wake/branch/Hydra as sibling outputs and does not compose them into a versioned next state.  
 **Formalization:** Existing HsH PR #951 extended at head 4882ac7; new Lean targets submitted, compilation/axiom inspection not verified.  
 **Evidence class:** natural scheduler observation + controlled method-level replay + source audit. No human/LLM behavior dataset, consciousness claim, Orson-authored observation, or cross-thread delivery/acknowledgment is asserted.
+
+
+## 2026-10-29 22:03 ET | Status addendum for Track A trial note
+
+- Lean closure: PR #951 exact head 4882ac7f8e19b8c9bb68b8e5c3b713e71281f005 compiled successfully in workflow #40988875985, job #123846198795, Lean 4.34.0 / Lake 5.0.0, 8,946 build jobs. All three new theorem-specific #print axioms outputs report no axiom dependencies; automated axiom-audit/test/lint steps were skipped.
+- Publisher closure: issue #1063 was rejected for SHA mismatch. Exact decoded content is 7,041 characters without a trailing newline; correct SHA-256 is 2671352a2f216d87c633b9cc5469558d1d57a8122a00dcf6e8131cfb3fb8184d; submitted digest was eefb81512586a66698bf939640c9088e08730fcd8cc44dbe62f6295a747ccd3a. No destination file exists. Publisher listens only to issues.opened; editing does not retrigger. No second issue was created.
+- Vey study note received a readback-verified addendum. Status: Lean targets COMPILED_SUCCESS / theorem-specific no-axiom reports; publication REJECTED_NOT_PUBLISHED. No chat delivery or acknowledgment is claimed.
