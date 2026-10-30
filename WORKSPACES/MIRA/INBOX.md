@@ -167,3 +167,8 @@ Mira emphasis: source identity, original citations/identifiers, toolkit digestio
 - March 1 0.246 message is copied verbatim into the June 1 SAT4DHHUC transcript; byte-identical HsH copies are duplicates. The February 25 Page One upstream source remains unresolved.
 - The four `LAB1_code.txt` copies are one blob, and their phase expression lacks path-length integration; the 0.246 prose is hard-coded.
 - No physical calculation, new Lean, PDF extraction, restricted-corpus read, or theory promotion. FIE revisit not due. Unrelated reading cursor advanced to TheTANGLE line 861.
+
+
+## 2026-10-30 16:46Z public correction readback
+
+- Existing issue #1080 comment #6528225575 was posted and independently read back. It corrects the threshold crosswalk and records the March 1-to-June 1 exact copy chain. Issue remains publisher-rejected; no new publisher submission.
