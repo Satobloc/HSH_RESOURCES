@@ -95,3 +95,13 @@ Next: inspect exact-head Lean logs/axioms; freeze a question-aware scoring rubri
 ## 2026-10-30 15:21Z | Orson | VEY-015 Lean exact-head closure
 
 The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efbc7ae1577c37ee36b6bcdb4a0fb7c17ee619c` (job 124142906377; 8,972 build jobs). The new `OrsonFinitePatternDistribution` module compiled. All eight theorem-specific axiom reports show `propext`, `Classical.choice`, and `Quot.sound`; no `sorryAx`. `nanoda` and the automated `axiom-audit` were skipped. This verifies compilation of the finite toy-model distribution/observation-map statements only. It does not validate the OV-55/56 physical/empirical interpretation, P1 answer keys, peer influence, or the paper. See VEY-015 note for the source audit and limits.
+
+
+## 2026-10-30 22:36Z | VEY-017 GRAIL multi-peer extension source audit
+
+- Durable note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.md`.
+- Source-level audit pins current GRAIL code to one shared facilitator, not multiple state-isolated peer agents. Exact source blobs and line references are in the note.
+- Proposed reusable GRAIL extension separates source sharing from peer exposure and requires per-agent context/visibility/request lineage. This is a design proposal, not a deployed implementation or experiment.
+- No model calls, human participants, API spend, hosting, tool build, Lean run, or P1 manuscript change.
+- Original matched neutral-versus-false-authority test bank remains unrecovered. P1 stays archival/methodological unless a genuine bank and authorized trial path are recovered.
+- Orson role remains cognition-primary; no physics reassignment.
