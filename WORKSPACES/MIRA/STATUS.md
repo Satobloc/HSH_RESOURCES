@@ -45,3 +45,12 @@ Current read-only verified September intake: 389 PDF paths, 116 extracted-manife
 - Verified prior Mira publication #1058 by exact issue-payload/file readback; publisher comment confirms publication.
 - Next: recover the originating source and derivation for the separate 2026 Δφ ≈ 0.246-rad passage before treating it as Nathan Direct or a physical prediction. Keep it separate from (B), the 2025 optical analogy, Viz Mode increments and σιν²θW.
 - Orson's November 9 cognition paper remains untouched and under Orson's ownership.
+
+
+## 2026-10-30 :24 source-provenance checkpoint
+
+The historical origin of the 0.246-rad number is now located in the raw 2025-05-09 HAGALAZ / LAB 1: Validation Lead conversation. Assistant messages 36cdfe32 (17:51:00.270Z) and 2779fcab (18:28:16.661Z) report 0.246 rad; an earlier assistant status package e16c5de4 (17:09:47.480Z) reports 0.125 rad for the same stated μ = 5 μm⁻¹, η = 0.012, λ = 650 nm parameter set. The raw graph shows direct assistant text responses, not tool-result nodes or attached CSV artifacts. Nathan's direct June 23, 2025 corrections reject the optical analogy as a SAT falsification/verification route and identify the refractive-index/θ₄ direct identification as a misidentification.
+
+The 0.246 value and [0.1, 0.3] rad failure band reappear in separate Feb 25 and Mar 1, 2026 user-role pastes. Their embedded authorship and derivation remain unresolved; message_source is null and neither message has attachments. The 2026 recurrence is not independent evidence, and direct copying is not proven. Classification remains: historical assistant-generated numeric assertion; later user-supplied embedded text of unresolved authorship; not Nathan Direct, not a validated prediction, not measured.
+
+No actual optical system, material-specific refractive-index measurement, raw CSV/NPY/NPZ, phase dataset, calibration or uncertainty was recovered in the bounded source search. No CODATA comparison and no new Lean theorem. Existing PR #885's source-conditional geometry proof is separate and exact-head CI succeeded. Continue with source-owner-cleared bibliography intake; do not access restricted PRIOR_ART, Hypothesis H or direct Schreiber material without item-specific authorization.
