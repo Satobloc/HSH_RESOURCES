@@ -43,7 +43,7 @@ Current read-only verified September intake: 389 PDF paths, 116 extracted-manife
 - Added supplemental QC comment to existing issue #1080; publisher rejection remains unresolved and no duplicate issue was opened.
 - Closed prior Mira PR #885 exact-head compile gate: workflow #40983509297 SUCCESS; three theorem-specific `#print axioms` outputs showed only `propext`, `Classical.choice`, `Quot.sound`; automated axiom-audit stage skipped.
 - Verified prior Mira publication #1058 by exact issue-payload/file readback; publisher comment confirms publication.
-- Next: recover the originating source and derivation for the separate 2026 Δφ ≈ 0.246-rad passage before treating it as Nathan Direct or a physical prediction. Keep it separate from (B), the 2025 optical analogy, Viz Mode increments and σιν²θW.
+- Next: trace the embedded author and derivation of the 2026 pasted document. The 0.246-rad numeric token is now located in 2025 assistant output, but the 2026 document's originating source remains unresolved. Keep it separate from (B), the 2025 optical analogy, Viz Mode increments and σιν²θW.
 - Orson's November 9 cognition paper remains untouched and under Orson's ownership.
 
 
@@ -54,3 +54,5 @@ The historical origin of the 0.246-rad number is now located in the raw 2025-05-
 The 0.246 value and [0.1, 0.3] rad failure band reappear in separate Feb 25 and Mar 1, 2026 user-role pastes. Their embedded authorship and derivation remain unresolved; message_source is null and neither message has attachments. The 2026 recurrence is not independent evidence, and direct copying is not proven. Classification remains: historical assistant-generated numeric assertion; later user-supplied embedded text of unresolved authorship; not Nathan Direct, not a validated prediction, not measured.
 
 No actual optical system, material-specific refractive-index measurement, raw CSV/NPY/NPZ, phase dataset, calibration or uncertainty was recovered in the bounded source search. No CODATA comparison and no new Lean theorem. Existing PR #885's source-conditional geometry proof is separate and exact-head CI succeeded. Continue with source-owner-cleared bibliography intake; do not access restricted PRIOR_ART, Hypothesis H or direct Schreiber material without item-specific authorization.
+
+Public continuity: existing issue #1080 supplemental comment #6523057125 was read back exactly; the original publisher-rejected status remains unchanged.
