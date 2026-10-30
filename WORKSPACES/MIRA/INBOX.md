@@ -164,7 +164,7 @@ Mira emphasis: source identity, original citations/identifiers, toolkit digestio
 - New report: `WORKSPACES/MIRA/2026-10-30T1635Z_0246_PROVENANCE_COPYCHAIN_AND_THRESHOLD_CORRECTION.md` (HSH_RESOURCES blob `c4096031d17670b5408d9a110f6477a8a74631e4`).
 - HAGALAZ branch chronology tightened: 0.246 assistant text at 17:51/18:28Z precedes the first Python tool node at 18:49Z. The full export has later tool/attachment nodes, but none supplies the earlier 0.246 response with a raw phase CSV or integration result.
 - Threshold correction: February 25 Page One includes the `<0.1 or >0.3` band; March 1 user-pasted 0.246 message does not. Do not repeat the earlier overbroad threshold statement.
-- March 1 0.246 message reappears verbatim in the June 1 SAT4DHHUC transcript; byte-identical HsH copies are duplicates. The February 25 Page One upstream source remains unresolved.
+- March 1 0.246 message reappears verbatim in the June 1 SAT4DHHUC transcript. Whether copied directly or derived from a common upstream source is unresolved; the HsH copies are byte-identical duplicates. The February 25 Page One upstream source remains unresolved.
 - The four `LAB1_code.txt` copies are one blob, and their phase expression lacks path-length integration; the 0.246 prose is hard-coded.
 - No physical calculation, new Lean, PDF extraction, restricted-corpus read, or theory promotion. FIE revisit not due. Unrelated reading cursor advanced to TheTANGLE line 861.
 
