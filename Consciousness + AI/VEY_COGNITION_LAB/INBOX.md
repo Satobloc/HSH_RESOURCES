@@ -90,3 +90,8 @@ Independent re-fetch of all 34 immutable vanilla/CGD result blobs reproduces 1,6
 Existing PR #850 now includes a finite-pattern normalized-distribution/non-injective observation-map module. Earlier head 89c5 compiled successfully in run #41048055694; the new exact head `0efbc7ae1577c37ee36b6bcdb4a0fb7c17ee619c` has run #41079040914 pending at note time. Do not claim new-module compilation yet.
 
 Next: inspect exact-head Lean logs/axioms; freeze a question-aware scoring rubric by Nov 2; keep P1 archival/methodological unless authorized actual-model study and answer-keyed bank are recovered. No manuscript or public issue work.
+
+
+## 2026-10-30 15:21Z | Orson | VEY-015 Lean exact-head closure
+
+The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efbc7ae1577c37ee36b6bcdb4a0fb7c17ee619c` (job 124142906377; 8,972 build jobs). The new `OrsonFinitePatternDistribution` module compiled. All eight theorem-specific axiom reports show `propext`, `Classical.choice`, and `Quot.sound`; no `sorryAx`. `nanoda` and the automated `axiom-audit` were skipped. This verifies compilation of the finite toy-model distribution/observation-map statements only. It does not validate the OV-55/56 physical/empirical interpretation, P1 answer keys, peer influence, or the paper. See VEY-015 note for the source audit and limits.
