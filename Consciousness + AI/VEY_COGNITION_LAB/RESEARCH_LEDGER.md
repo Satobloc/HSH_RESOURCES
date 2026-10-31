@@ -349,3 +349,11 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Publisher-reported SHA-256: `c6f044362cd0ba02e6bdcf89eff0fafd9677fc1abf0f59de4c531843588d4cd4`.
 - The artifact was fetched independently and compared byte-for-byte with the JSON `content` field in issue #1152; exact content equality confirmed. Publisher bot comment #6543993690 reports readback verified.
 - P1 issue #564 pointer comment #6544004804 added. No manuscript or paper gate advanced.
+
+
+## 2026-10-31 | VEY-020 Amendment 01 - PR #850 finite-pattern CI scope
+
+- Corrected the earlier shorthand: PR #850 imports and compiles both `OrsonFinitePatternDistribution.lean` and `OrsonKishEffectiveSampleSize.lean` at current head `d59a17b270df730e84edbd614eaea3b1b76166e2`.
+- Exact-head CI #41160835210, job #124417786006, Lean 4.34.0, 8,943 build targets, SUCCESS; no `sorryAx` in the retrieved complete log. Tests, lint, nanoda, and automated axiom audit skipped.
+- The finite-pattern module proves normalization and non-injectivity between two specified latent labels under its finite model assumptions. It does not establish which mechanism generated real LLM behavior or validate empirical premises.
+- New VEY-020 evidence-lifecycle propositions remain unformalized. No new theorem, branch, or PR.
