@@ -115,3 +115,18 @@ Lean checks the encoded graph propositions only. It does not authenticate the ra
 2. If successful, add the bounded CI result to this note and the existing P1/publication records; if failed, preserve the failure and repair only the new module on the existing PR.
 3. Keep the original answer-keyed bank and authorized inference route as unresolved blockers; do not substitute VEY-021 for the missing experiment.
 4. At the November 2 freeze, record the P1 scope decision explicitly. No paper gate is advanced by this note.
+
+
+## Amendment 01 — exact-head Lean verification (2026-10-31 17:46Z)
+
+The rerun of the failed job in exact-head Actions run `41225441898` completed **SUCCESS** on commit `b820998976192ab3e4dc1cec1632d4d899bad031`.
+
+- Job: `verify`, ID `124609431758`.
+- Lean 4.34.0; Lake 5.0.0.
+- Full build: 8,974 jobs, SUCCESS.
+- New module `HsHVerification.OrsonVEY021RecordedAncestry` built in 5.4 seconds.
+- All four explicit theorem-specific `#print axioms` reports state that the theorem does not depend on any axioms.
+- Full retrieved job log: 100,490 characters; `sorryAx` occurrences: 0.
+- The workflow sets `test: false` and `lint: false`; no separate nanoda or automated axiom-audit stage was run.
+
+This is exact-head compilation and theorem-specific axiom-output inspection. It verifies the encoded finite graph only. It does not authenticate the source, prove context completeness, establish statistical independence, or establish causal influence. The initial attempt's failure cause remains unresolved because its log artifact was unavailable; the successful rerun does not retroactively explain that failure.
