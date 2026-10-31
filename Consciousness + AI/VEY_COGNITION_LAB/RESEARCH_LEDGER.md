@@ -328,3 +328,15 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Mersearch audit: the completed Orson bank search is broad/path-dominated; a sampled SAT Overview locator is tool-role, not Nathan Direct. Original neutral-versus-false-authority answer-keyed bank remains UNRECOVERED; no claim of absence.
 - Exact-head PR #850 run #41160835210 succeeded at d59a17b270df730e84edbd614eaea3b1b76166e2; conditional Kish module compiled, with no sorryAx in the full log. Automated axiom-audit/tests/lint/nanoda were skipped.
 - P1 #564 remains SOURCE / EXPERIMENT READINESS; protocol freeze Nov 2, paper gate Nov 9. No trial, model calls, human subjects, manuscript, PDF/reader, or gate advancement.
+
+
+## 2026-10-31 | VEY-020 - Evidence lineage, transmission, integration, and measurement validity
+
+- Added `STUDIES/VEY-020_EVIDENCE_LINEAGE_TRANSMISSION_INTEGRATION_AND_MEASUREMENT_2026-10-31.md`.
+- New primary literature: Gao et al. `Copies or Sources?` (arXiv:2610.06192); Toxtli/Delaflor hidden-profile LLM groups (CSCW Companion 2026); Imel et al. `Rare, Relevant, and Still Wrong` (arXiv:2610.37624); Siboni et al. inhibitory message passing (arXiv:2610.24718); Gong et al. SPLICE (arXiv:2610.40186).
+- Independently reimplemented both parsers for the released Qualification by Calibration trial files: 540/540 raw generations matched; both parser implementations matched their shipped outputs 540/540; 88/540 answer classifications changed; 172/540 outputs contained the quoted answer template, with 79 template-contaminated Yes parses.
+- Independently recomputed GULI-SET Core Bayesian targets: 48/48 matched, max posterior discrepancy 1.11e-16. Its deterministic naive page-counter baseline retains 100% choice accuracy while posterior MAE is 0.067296 and provenance MAE 1.375; synthetic baseline, not an LLM result.
+- Proposed typed evidence lifecycle separates origin, transmission, visibility, integration/adoption, and measurement. Lean targets identified but not compiled; no local Lean runtime and no branch mutation.
+- P1 #564 remains SOURCE / EXPERIMENT READINESS; original OV-49-OV-53 answer-keyed bank remains UNRECOVERED; all four Mersearch lanes occupied; no authorized inference endpoint, model call, human-subject session, or API spend.
+- November 2 freeze recommendation: if bank and authorized endpoint remain unavailable, freeze Nov 9 P1 as methods/archival synthesis, not an administered experiment. Recommendation only; no paper gate advanced.
+- Public-safe summary submitted through existing publisher: issue #1152, submission `orson-p1-evidence-lineage-20261031t1348z-s4-001`, SHA-256 `c6f044362cd0ba02e6bdcf89eff0fafd9677fc1abf0f59de4c531843588d4cd4`; publication receipt/readback pending at ledger update.
