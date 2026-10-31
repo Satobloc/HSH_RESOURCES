@@ -241,3 +241,15 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 - Main correction: convergence is not correctness; error dependence is not peer influence; facilitator studies are not multi-peer studies; nested turns/utterances/agent slots are not independent groups.
 - P1 source status unchanged: original neutral-versus-false-authority answer-keyed bank UNRECOVERED; OV-49–53 pointer mismatch; OV-95 is a separate artifact-presence protocol.
 - Lean QA: PR #850 exact head d59a17b270df730e84edbd614eaea3b1b76166e2, run #41160835210 SUCCESS; conditional Kish module only, not empirical exchangeability proof.
+
+
+## 2026-10-31 | VEY-023 receiver-relative evidence integration
+
+- **Kawada, Sebastien; Manolis Kellis (2026), “Evidence Integration in Large Language Models,” arXiv:2609.04290v1 (2026-09-03).**
+  - URL: https://arxiv.org/abs/2609.04290
+  - State: REVIEWED (targeted primary-source sections §§3.1–3.6, §§5.1–5.6, §6.3, §7, §8.6; not a line-by-line review of the full 114-page preprint).
+  - Why it matters: receiver-relative evidence integration; receiver-congruent wrong candidates; checking/use dissociation; transcript-only provenance non-identifiability; source-dependence and message-order effects. This adds a receiver-side mechanism to P1's existing source-lineage/transmission analysis.
+  - Limits: arXiv preprint, not peer-reviewed; scientific tasks use synthetic problems with exact oracles; composition tests limited to arithmetic; prior weight identified from answer-slot margins; no raw-trial/code artifact or independent reproduction located in this review. Not a direct multi-agent peer-interaction experiment.
+  - Distinguish its receiver-prior parameter a from VEY-020's posterior-equivalent copy weight w_m, and its verification-recruitment gain rho from checker competence or source reliability.
+  - Formalization pointer: HsH PR #850 module OrsonEvidenceCompositionLaw.lean; six conditional theorems, exact-head Lean CI status tracked in the HsH receipt/report.
+  - Durable note: STUDIES/VEY-023_RECEIVER_RELATIVE_EVIDENCE_INTEGRATION_AND_SOURCE_PROVENANCE_2026-10-31.md.
