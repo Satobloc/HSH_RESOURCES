@@ -114,3 +114,10 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 - Conditional Lean module added to existing HsH PR #850; exact-head CI #41160309297 pending at note creation. Verify exact-head run and theorem axiom outputs before claiming proof completion.
 - Original answer-keyed neutral/false-authority bank remains unrecovered. Mersearch request receipt is verified; raw result collection remains withheld. No model calls, human participants, trial, P1 manuscript or paper gate change.
 - No new tool/platform; no cross-thread delivery claim.
+
+
+## 2026-10-31T0238Z | Kish Lean correction
+
+- Exact-head Lean run #41160309297 FAILED. The first compile exposed noncomputable Real divisions and two proof errors; no theorem was verified and axiom audit did not run.
+- Fixed on existing PR #850 branch at d59a17b270df730e84edbd614eaea3b1b76166e2; exact-head run #41160835210 IN_PROGRESS.
+- A transient module copy landed on HsH main and was removed immediately (add commit 4ceb26bb3cbd2b289638c2dbc650d5b92ab8105e; removal 57bab61d9f784cd7325f0da50da428a8db4400b4). Corrected proof remains on the existing PR branch. No main import or theory change.
