@@ -130,3 +130,16 @@ The rerun of the failed job in exact-head Actions run `41225441898` completed **
 - The workflow sets `test: false` and `lint: false`; no separate nanoda or automated axiom-audit stage was run.
 
 This is exact-head compilation and theorem-specific axiom-output inspection. It verifies the encoded finite graph only. It does not authenticate the source, prove context completeness, establish statistical independence, or establish causal influence. The initial attempt's failure cause remains unresolved because its log artifact was unavailable; the successful rerun does not retroactively explain that failure.
+
+
+## Amendment 02 — raw-export context-completeness boundary (2026-10-31 17:47Z)
+
+A second direct census of the same 211-node raw JSON `mapping` found:
+- user nodes: 47;
+- assistant nodes: 98;
+- tool nodes: 65;
+- nodes with no message role: 1;
+- system nodes: 0;
+- developer nodes: 0.
+
+This is a count of exported mapping nodes, not model invocations or cognitive units. The export therefore does not itself provide a complete record of system/developer instructions or other potentially hidden context injections. The context-manifest requirement is substantive, not bureaucratic: an archive-only absence of a recorded ancestry path cannot justify `ANCESTRY_CLEAR`. Unless prompt, memory, retrieval, routing and other context completeness are independently attested, classify a no-path case as `UNKNOWN_CONTEXT_INCOMPLETE`. VEY-021 itself still fails ancestry-blindness because a prohibited path is positively present; the missing context layers do not erase that known path.
