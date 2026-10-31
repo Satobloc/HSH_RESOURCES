@@ -105,3 +105,12 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 - No model calls, human participants, API spend, hosting, tool build, Lean run, or P1 manuscript change.
 - Original matched neutral-versus-false-authority test bank remains unrecovered. P1 stays archival/methodological unless a genuine bank and authorized trial path are recovered.
 - Orson role remains cognition-primary; no physics reassignment.
+
+## 2026-10-31T0224Z | VEY-018 source crosswalk and conditional Kish proof
+
+- Read: Shao 2026 Wason-group replay; DeliChess 2026 human deliberation benchmark; Kohli 2026 correlated judge-error panel.
+- Durable note: STUDIES/VEY-018_SHAO_KOHLI_DELIDATA_CROSSWALK_AND_KISH_PROOF_2026-10-31.md.
+- Distinction: peer-exposed replay, passive cross-model error dependence, and human deliberation with objective scoring are different evidence regimes. P1 must separate consensus, correctness, effective independence, peer exposure, participation and evaluator dependence.
+- Conditional Lean module added to existing HsH PR #850; exact-head CI #41160309297 pending at note creation. Verify exact-head run and theorem axiom outputs before claiming proof completion.
+- Original answer-keyed neutral/false-authority bank remains unrecovered. Mersearch request receipt is verified; raw result collection remains withheld. No model calls, human participants, trial, P1 manuscript or paper gate change.
+- No new tool/platform; no cross-thread delivery claim.
