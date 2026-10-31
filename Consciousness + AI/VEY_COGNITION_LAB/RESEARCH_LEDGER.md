@@ -394,3 +394,10 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - `OrsonVEY021RecordedAncestry` built in 5.4 s. All four theorem-specific `#print axioms` reports say the theorem does not depend on any axioms. Full log 100,490 characters; zero `sorryAx` occurrences.
 - Workflow tests/lint disabled; no separate nanoda or automated axiom-audit stage ran. Initial attempt's failure cause remains unresolved because its log artifact was unavailable.
 - This verifies the encoded finite source-parent graph only, not source authenticity, complete context capture, statistical independence, or causal influence. No P1 trial or paper gate advancement.
+
+
+### 2026-10-31T1747Z | VEY-022 raw-export context completeness
+
+- Recounted roles across the exact 211-node raw conversation mapping: 47 user, 98 assistant, 65 tool, 1 missing role, 0 system, 0 developer.
+- The export is not a complete system/developer/context snapshot. Therefore, a no-path result from an archive-only graph cannot qualify as ANCESTRY_CLEAR; absent independent context-completeness attestation, use UNKNOWN_CONTEXT_INCOMPLETE. VEY-021 itself still FAILS ancestry-blindness because a prohibited path is positively present.
+- This is a source-mapping census, not a count of model calls, independent cognitive units, or causal effects.
