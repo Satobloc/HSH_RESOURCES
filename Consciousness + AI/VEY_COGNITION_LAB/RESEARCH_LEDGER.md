@@ -365,3 +365,13 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - The numeric copy weights are inferred from posterior-equivalent evidence units using verbalized probabilities and reconstructed from rounded table means. Treat as calibration-dependent behavioral estimates, not direct internal-belief measurements or universal constants.
 - Conflict probes and emitted-action channel provide qualitative corroboration, but do not independently validate exact numeric weights. Reference-rule effect remains a reported controlled-setting result.
 - Public addendum comments: publisher issue #1152 comment #6544077779; P1 issue #564 comment #6544078127.
+
+
+## 2026-10-31 | VEY-021 — Naturalistic podcast-reception hypothesis amplification
+
+- Added `STUDIES/VEY-021_NATURALISTIC_PODCAST_RECEPTION_HYPOTHESIS_AMPLIFICATION_2026-10-31.md`, blob `5b68608766042fd45c1075d5717b45153dbb2322`.
+- Followed a Mersearch selected locator in `SAT Theory Archive Overview — raw.json` (blob `dec20de13718ba09a59a76e9c958e3eee16304b0`) to its exact raw user/assistant parent chain. The user message is about podcast analytics and a prior audience hypothesis, not the OV-49–OV-53 answer-keyed test bank. It is a bounded false positive for that bank search, not evidence of global absence.
+- The assistant's later “small cohort / lab-chat” interpretation is downstream of the user's earlier hypothesis and an earlier assistant endorsement. Treat it as naturalistic context-conditioned narrative reinforcement, not independent corroboration or evidence of actual institutional/academic attention.
+- Mersearch query diagnostic: `name:*OV*` contributes 515,754/718,805 matched-term hits (71.7516%); `path:*ORSON*` 108,787 (15.1344%). Term counts overlap. A future search should use exact OV-49–OV-53 variants and distinctive phrases when a lane is actually released; no new request was submitted because all four lanes remain occupied.
+- The parent-chain graph is explicit, but the proposed ancestry-disjointness/independence proposition remains UNFORMALIZED. Existing PR #850 modules were inspected; no local Lean runtime and no branch/PR modification under the current interlock. This is a single naturalistic case, not a controlled experiment or P1 trial.
+- P1 #564 remains SOURCE / EXPERIMENT READINESS; no manuscript or paper gate advanced. No model call, human-subject session, physical calculation, or data-free numerical fixture.
