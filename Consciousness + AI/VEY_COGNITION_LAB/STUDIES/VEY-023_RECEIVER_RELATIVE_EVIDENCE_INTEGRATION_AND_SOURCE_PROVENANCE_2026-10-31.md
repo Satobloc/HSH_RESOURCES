@@ -130,3 +130,13 @@ Recommendation remains: at the November 2 protocol freeze, if the bank and autho
 ## 9. No project promotion
 
 No BEDROCK change, no theory promotion, no SAT-O/Blockwave edit, no physical calculation, no CODATA comparison, no new tooling, no automation/task/ID/cadence change.
+
+
+## Execution amendment 01 | 2026-10-31
+
+- Initial Lean run #41244151207 failed in the equal-channel commutation proof (unsolved additive-normalization goal; sorryAx appeared in that failed run).
+- Repair build #41244476754 succeeded with 8,975 build jobs on merge-reference commit 24a14402057420f3c5b00f64123db2b432330768. PR-branch and merge-reference blobs matched for the module and root aggregator. Complete log: zero sorryAx; theorem-specific outputs used standard propext, Classical.choice, and Quot.sound. Tests, lint, nanoda, and separate automated axiom audit were not run.
+- Linter cleanup was then pushed. Current PR #850 head fb44ce3bd3ac240142345e2613031b24e6a57e52; module blob 1e05539c4f215785e9760dec2f7a98fd6a68610d; root blob 8d9817accf811d002f3e43ce0fdcce18613eeec2. Fresh run #41244897947 is IN_PROGRESS at checkout; do not claim the cleaned final head compiled until the complete log and axiom outputs are read.
+- From the reported arithmetic prior weight 1+a approximately [0.20,0.65], a approximately [-0.80,-0.35]. Under the equal-channel order identity, the conditional magnitude is approximately 0.35–0.80 times |d1-d2|. This is a coefficient bound, not an observed order-effect size; no absolute tilt gap was supplied.
+- Publisher intake #1172 succeeded (run #41244723168); exact readback of the sole published artifact matched its payload. The two earlier SHA-mismatch intake issues #1170/#1171 were closed not-planned and wrote no artifact.
+- P1 #564 remains SOURCE / EXPERIMENT READINESS. No trial, model call, human subject, API spend, or paper-gate advancement.
