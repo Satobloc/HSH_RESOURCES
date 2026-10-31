@@ -154,3 +154,9 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 
 - PR #850 exact-head CI #41160835210 also compiled `OrsonFinitePatternDistribution.lean` and `OrsonKishEffectiveSampleSize.lean`; no `sorryAx` in the retrieved log.
 - The finite-pattern theorem proves non-injectivity of two encoded latent labels under the specified model, not empirical generation by real LLMs. VEY-020's new evidence-lifecycle propositions remain unformalized.
+
+
+## 2026-10-31 | VEY-020 copy-weight calibration amendment
+
+- Numerical `w_m` values are calibration-dependent estimates reconstructed from rounded published means, not raw-trial reanalysis or universal model constants. Qualitative copy effects have separate conflict/action-channel support.
+- See VEY-020 Amendment 02 and public comments #6544077779 / #6544078127.
