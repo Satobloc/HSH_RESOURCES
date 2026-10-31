@@ -174,3 +174,12 @@ SciSpace surfaced “Effective Sample Size Under Peer Exposure in Multi-LLM Deli
 - No automation, task ID, schedule, or phase changed. No sixth task.
 
 **Next:** verify exact-head Lean CI #41160309297 and inspect every theorem-specific axiom output; then update the receipt/PR comment. Keep P1 archival/methodological unless the actual answer-keyed bank and authorized administration path are recovered.
+
+
+## 8. Lean CI correction addendum | 2026-10-31 02:38Z
+
+The first exact-head run, #41160309297 on 1b40b9f45c0fde4f1ddc9cce84ae45795f101215, completed FAILURE. The module exposed three noncomputable Real-division definitions and two proof issues: an omitted explicit nonnegativity premise for 1-rho, and a simplification mismatch in the n_eff lower-bound branch. The build did not complete, so no theorem is treated as verified; test, lint, nanoda and axiom-audit steps were skipped.
+
+The module was corrected on the existing PR branch at commit d59a17b270df730e84edbd614eaea3b1b76166e2. Exact-head Lean run #41160835210 is IN_PROGRESS. No successful compilation is claimed until that run completes and the theorem-specific axiom outputs are inspected.
+
+A transient unreviewed copy of the corrected module was accidentally committed to HsH main at 4ceb26bb3cbd2b289638c2dbc650d5b92ab8105e. It was detected and removed from main at 57bab61d9f784cd7325f0da50da428a8db4400b4; the corrected module remains on the existing PR #850 branch only. No root import or theory change was made on main. This correction is recorded explicitly; do not treat the transient main copy as a reviewed artifact.
