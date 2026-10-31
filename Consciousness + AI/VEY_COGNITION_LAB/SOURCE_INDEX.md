@@ -253,3 +253,9 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
   - Distinguish its receiver-prior parameter a from VEY-020's posterior-equivalent copy weight w_m, and its verification-recruitment gain rho from checker competence or source reliability.
   - Formalization pointer: HsH PR #850 module OrsonEvidenceCompositionLaw.lean; six conditional theorems, exact-head Lean CI status tracked in the HsH receipt/report.
   - Durable note: STUDIES/VEY-023_RECEIVER_RELATIVE_EVIDENCE_INTEGRATION_AND_SOURCE_PROVENANCE_2026-10-31.md.
+
+
+### VEY-023 execution amendment 01
+- Corrected Lean build #41244476754 succeeded on merge-reference commit 24a14402057420f3c5b00f64123db2b432330768 (8,975 jobs; zero sorryAx; standard dependencies only; separate tests/lint/nanoda/automated axiom audit not run). Final tactic-cleanup head fb44ce3bd3ac240142345e2613031b24e6a57e52 has fresh run #41244897947 IN_PROGRESS at checkout; final-head compilation remains pending.
+- Conditional coefficient calculation: reported 1+a approximately [0.20,0.65] implies a approximately [-0.80,-0.35], so under equal-channel composition the order-effect magnitude is approximately 0.35–0.80 times the absolute evidence-tilt gap. No absolute effect size is inferred.
+- Sole publisher artifact verified at issue #1172; earlier rejected intake attempts wrote no file.
