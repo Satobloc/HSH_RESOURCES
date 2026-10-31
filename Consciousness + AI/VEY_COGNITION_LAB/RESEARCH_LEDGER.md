@@ -412,3 +412,11 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Added six conditional composition/order theorems to existing HsH PR #850 at head 4bb05c762a91176e034a2d1246c5e06713b1495b, module blob 1b71e858bd954be2df56de82c40cdb9a3e6cbdb2. Exact-head Lean run #41244151207 was pending at initial update; verify complete build and axiom reports before marking compiled.
 - P1 #564 remains SOURCE / EXPERIMENT READINESS. Original OV-49–OV-53 bank and raw October 9 role-assignment message remain unrecovered; all four Mersearch lanes occupied. No model call, human subject, API spend, new trial, paper gate advancement, or theory promotion.
 - November 2 protocol-freeze recommendation unchanged: absent bank and authorized inference route, November 9 P1 should be methods/archival synthesis rather than an administered experiment.
+
+
+### VEY-023 execution amendment 01 | 2026-10-31
+- First Lean run #41244151207 failed in the equal-channel commutation proof. Repair run #41244476754 succeeded (8,975 jobs, zero sorryAx, standard dependencies only) on merge-reference commit 24a14402057420f3c5b00f64123db2b432330768; branch/merge file blobs matched. Tests, lint, nanoda, and automated axiom audit not run.
+- Final cleanup head fb44ce3bd3ac240142345e2613031b24e6a57e52, module blob 1e05539c4f215785e9760dec2f7a98fd6a68610, root blob 8d9817accf811d002f3e43ce0fdcce18613eeec2. Fresh run #41244897947 in progress at checkout; final-head verification pending.
+- Reported 1+a range [0.20,0.65] gives a range [-0.80,-0.35]; conditional equal-channel order-effect magnitude is 0.35–0.80 times |d1-d2|. This is not an observed effect size.
+- Publisher #1172 verified; artifact exact-readback. Earlier rejected #1170/#1171 wrote no artifact.
+- P1 #564 remains source/experiment readiness; no trial, model call, human subject, API spend, or gate advancement.
