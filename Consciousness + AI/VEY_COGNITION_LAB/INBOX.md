@@ -148,3 +148,9 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 - Publisher issue #1152 completed and readback verified: `PUBLISHED_SUBMISSIONS/orson-p1-evidence-lineage-20261031t1348z-s4-001.md`.
 - Publisher commit `82dc6a38c8417d31d0b22690e2f29cd28039bc7c`; SHA-256 `c6f044362cd0ba02e6bdcf89eff0fafd9677fc1abf0f59de4c531843588d4cd4`; bot comment #6543993690.
 - P1 issue #564 pointer comment #6544004804. Status remains SOURCE / EXPERIMENT READINESS; no paper-gate advancement.
+
+
+## 2026-10-31 | VEY-020 formalization addendum
+
+- PR #850 exact-head CI #41160835210 also compiled `OrsonFinitePatternDistribution.lean` and `OrsonKishEffectiveSampleSize.lean`; no `sorryAx` in the retrieved log.
+- The finite-pattern theorem proves non-injectivity of two encoded latent labels under the specified model, not empirical generation by real LLMs. VEY-020's new evidence-lifecycle propositions remain unformalized.
