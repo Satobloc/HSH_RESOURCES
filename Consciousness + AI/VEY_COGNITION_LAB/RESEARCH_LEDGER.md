@@ -375,3 +375,13 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Mersearch query diagnostic: `name:*OV*` contributes 515,754/718,805 matched-term hits (71.7516%); `path:*ORSON*` 108,787 (15.1344%). Term counts overlap. A future search should use exact OV-49–OV-53 variants and distinctive phrases when a lane is actually released; no new request was submitted because all four lanes remain occupied.
 - The parent-chain graph is explicit, but the proposed ancestry-disjointness/independence proposition remains UNFORMALIZED. Existing PR #850 modules were inspected; no local Lean runtime and no branch/PR modification under the current interlock. This is a single naturalistic case, not a controlled experiment or P1 trial.
 - P1 #564 remains SOURCE / EXPERIMENT READINESS; no manuscript or paper gate advanced. No model call, human-subject session, physical calculation, or data-free numerical fixture.
+
+
+## 2026-10-31 | VEY-022 — Recorded ancestry and blind-adjudication eligibility
+
+- Added `STUDIES/VEY-022_RECORDED_ANCESTRY_AND_BLIND_ADJUDICATION_GATE_2026-10-31.md`.
+- Reopened raw conversation export blob `dec20de13718ba09a59a76e9c958e3eee16304b0`, conversation `6a22c443-54fc-83ea-a025-56256bbf7a27`, and independently verified all three parent edges among the four VEY-021 messages.
+- The final assistant interpretation is a transitive descendant of the original user hypothesis through an earlier assistant endorsement and later user-provided OCR; it is not a direct child. Endpoint roles differ. This is recorded ancestry, not a statistical-independence or causal-effect result.
+- New operational gate: FAIL_ANCESTRY_BLIND when a prohibited recorded ancestry path exists; UNKNOWN_CONTEXT_INCOMPLETE when the full context manifest is unavailable; ANCESTRY_CLEAR only when a complete versioned context manifest is present and no prohibited path/exposure is recorded. ANCESTRY_CLEAR is necessary leakage control, not sufficient statistical independence.
+- Added source-conditional Lean module to existing PR #850 branch: `OrsonVEY021RecordedAncestry.lean`, exact-head commit `b820998976192ab3e4dc1cec1632d4d899bad031`. Exact-head CI run #41225441898 was pending/in progress at ledger update; no compilation success claimed until logs are inspected.
+- P1 #564 remains SOURCE / EXPERIMENT READINESS. Original OV-49–OV-53 answer-keyed bank remains UNRECOVERED; no authorized inference endpoint, model call, human subject, or trial. No manuscript or paper gate advanced.
