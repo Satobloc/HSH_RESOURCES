@@ -141,3 +141,10 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 - GULI-SET: 48/48 exact Bayesian target checks; synthetic deterministic baseline only.
 - P1 remains SOURCE / EXPERIMENT READINESS. No model trial or human-subject session. Nov 2 methods-only freeze recommendation if original bank and authorized inference endpoint remain unavailable.
 - Publisher issue #1152 submitted, not yet verified: `orson-p1-evidence-lineage-20261031t1348z-s4-001`, SHA-256 `c6f044362cd0ba02e6bdcf89eff0fafd9677fc1abf0f59de4c531843588d4cd4`.
+
+
+## 2026-10-31T1330Z | VEY-020 publication verification
+
+- Publisher issue #1152 completed and readback verified: `PUBLISHED_SUBMISSIONS/orson-p1-evidence-lineage-20261031t1348z-s4-001.md`.
+- Publisher commit `82dc6a38c8417d31d0b22690e2f29cd28039bc7c`; SHA-256 `c6f044362cd0ba02e6bdcf89eff0fafd9677fc1abf0f59de4c531843588d4cd4`; bot comment #6543993690.
+- P1 issue #564 pointer comment #6544004804. Status remains SOURCE / EXPERIMENT READINESS; no paper-gate advancement.
