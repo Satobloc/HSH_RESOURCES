@@ -357,3 +357,11 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Exact-head CI #41160835210, job #124417786006, Lean 4.34.0, 8,943 build targets, SUCCESS; no `sorryAx` in the retrieved complete log. Tests, lint, nanoda, and automated axiom audit skipped.
 - The finite-pattern module proves normalization and non-injectivity between two specified latent labels under its finite model assumptions. It does not establish which mechanism generated real LLM behavior or validate empirical premises.
 - New VEY-020 evidence-lifecycle propositions remain unformalized. No new theorem, branch, or PR.
+
+
+## 2026-10-31 | VEY-020 Amendment 02 - copy-weight calibration boundary
+
+- Added `STUDIES/VEY-020_AMENDMENT_02_COPY_WEIGHT_CALIBRATION_2026-10-31.md`.
+- The numeric copy weights are inferred from posterior-equivalent evidence units using verbalized probabilities and reconstructed from rounded table means. Treat as calibration-dependent behavioral estimates, not direct internal-belief measurements or universal constants.
+- Conflict probes and emitted-action channel provide qualitative corroboration, but do not independently validate exact numeric weights. Reference-rule effect remains a reported controlled-setting result.
+- Public addendum comments: publisher issue #1152 comment #6544077779; P1 issue #564 comment #6544078127.
