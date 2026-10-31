@@ -223,3 +223,12 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 
 ## 2026-10-30 publication readback
 - VEY-016 publisher issue #1116 is the only submission. Artifact readback matched the issue payload exactly; independently recomputed SHA-256 `38d9738ebb7aed17933815ce3d40d94fadf3600e389f0035e980bd9f03527888`. Correction comment #6532231836 is additive; no duplicate submission.
+
+
+## 2026-10-31 | VEY-018 source cluster
+
+- Shao, Tengfei (2026), “Language-model groups overstate consensus when replaying human deliberation on a reasoning task,” arXiv:2609.20543v1. Primary record: https://arxiv.org/abs/2609.20543. OSF preregistration cited by paper: https://osf.io/5jp7s. Zenodo code/data DOI cited by paper: https://doi.org/10.5281/zenodo.21318346. Full-text mirror inspected: https://www.conceptio.app/document/978469/language-model-groups-overstate-consensus-when-replaying-human-deliber. Preregistration and Zenodo bytes not independently retrieved.
+- Zhu, Xiaochen et al. (2026), “DeliChess: A Multi-party Dialogue Dataset for Deliberation in Chess Puzzle Solving,” arXiv:2606.04987v1. Paper: https://arxiv.org/abs/2606.04987. Dataset: https://huggingface.co/datasets/SpaceHunterInf/DeliChess. Usage guide: https://huggingface.co/datasets/SpaceHunterInf/DeliChess/blob/main/USAGE.md. Dataset bytes/checksum not retrieved.
+- Karadzhov, Georgi; Tom Stafford; Andreas Vlachos (2023), DeliData, PACM HCI 7(CSCW2), Article 265. DOI: https://doi.org/10.1145/3610056. Repository copy: https://eprints.whiterose.ac.uk/id/eprint/207765/.
+- Kohli, Guneet (2026), “Nine Judges, Two Effective Votes: Correlated Errors Undermine LLM Evaluation Panels,” arXiv:2605.29800v1. Primary record: https://arxiv.org/abs/2605.29800. Full HTML: https://arxiv.org/html/2605.29800v1. Kish formula is conditional on exchangeability; eigenvalue n_eff is a separate non-exchangeable diagnostic.
+- SciSpace-only leads not counted as evidence: “Effective Sample Size Under Peer Exposure in Multi-LLM Deliberation” (OSF DOI 10.17605/osf.io/aw9vf) and “DelibSim: Procedural Parity, Outcome Mismatch.” Primary records/full texts not retrieved.
