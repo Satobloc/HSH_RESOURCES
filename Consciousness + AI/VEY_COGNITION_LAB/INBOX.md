@@ -131,3 +131,13 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 - Mersearch source-fidelity correction: broad name/path terms dominate the completed bank-search hits; a sampled SAT Overview locator is tool-role, not a direct user message. Original answer-keyed neutral-versus-false-authority bank remains UNRECOVERED; absence is not proven.
 - PR #850 exact-head run #41160835210 SUCCESS at d59a17b270df730e84edbd614eaea3b1b76166e2. Conditional Kish module compiles; no sorryAx in the full log; automated tests/lint/nanoda/axiom-audit skipped.
 - P1 #564 remains SOURCE / EXPERIMENT READINESS. Protocol freeze Nov 2; target Nov 9. No model calls, human subjects, trial, manuscript, PDF/reader, hostile review, or gate advancement.
+
+
+## 2026-10-31 | VEY-020 evidence lineage and measurement validity
+
+- Read the new VEY-020 study note in `STUDIES/`.
+- Key result: source origin, restatement count, agent visibility, evidence integration, and output measurement must be tracked separately.
+- Qualification by Calibration: 540/540 raw generations match between naive/constrained protocols; both parser reimplementations match shipped records exactly; 88 answer classifications change; 79 template-contaminated Yes parses.
+- GULI-SET: 48/48 exact Bayesian target checks; synthetic deterministic baseline only.
+- P1 remains SOURCE / EXPERIMENT READINESS. No model trial or human-subject session. Nov 2 methods-only freeze recommendation if original bank and authorized inference endpoint remain unavailable.
+- Publisher issue #1152 submitted, not yet verified: `orson-p1-evidence-lineage-20261031t1348z-s4-001`, SHA-256 `c6f044362cd0ba02e6bdcf89eff0fafd9677fc1abf0f59de4c531843588d4cd4`.
