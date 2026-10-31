@@ -317,3 +317,14 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - First exact-head run #41160309297 on 1b40b9f45c0fde4f1ddc9cce84ae45795f101215 FAILED: noncomputable Real division definitions plus two proof issues. Build did not complete; no theorem verified; tests/lint/nanoda/axiom audit skipped.
 - Corrected module committed to existing PR #850 branch at d59a17b270df730e84edbd614eaea3b1b76166e2. Exact-head run #41160835210 IN_PROGRESS; no success claimed.
 - A transient unreviewed copy was accidentally written to HsH main at 4ceb26bb3cbd2b289638c2dbc650d5b92ab8105e and removed at 57bab61d9f784cd7325f0da50da428a8db4400b4. Corrected module remains on PR branch only; no root import/theory change on main.
+
+
+## 2026-10-31 | VEY-019 — Five evidence regimes and consensus measurement audit
+
+- Added STUDIES/VEY-019_FIVE_EVIDENCE_REGIMES_AND_CONSENSUS_MEASUREMENT_AUDIT_2026-10-31.md.
+- Integrated Kohli correlated judge errors, Shao human-deliberation replay, Chen mixed human–LLM peer populations, DeliChess human deliberation with Stockfish quality, Alsobay LLM facilitation, and the passive ConsistencyBench evaluator pipeline.
+- Recomputed published-summary arithmetic: Kohli rounded-input Kish n_eff = 2.180232558; DeliChess 114/321 RR declines and 102/245 negative-RR cases among increased-modal-share cases.
+- Clarified that consensus, correctness, dependence, peer exposure, participation, evaluator coupling, source lineage, and replication unit are distinct.
+- Mersearch audit: the completed Orson bank search is broad/path-dominated; a sampled SAT Overview locator is tool-role, not Nathan Direct. Original neutral-versus-false-authority answer-keyed bank remains UNRECOVERED; no claim of absence.
+- Exact-head PR #850 run #41160835210 succeeded at d59a17b270df730e84edbd614eaea3b1b76166e2; conditional Kish module compiled, with no sorryAx in the full log. Automated axiom-audit/tests/lint/nanoda were skipped.
+- P1 #564 remains SOURCE / EXPERIMENT READINESS; protocol freeze Nov 2, paper gate Nov 9. No trial, model calls, human subjects, manuscript, PDF/reader, or gate advancement.
