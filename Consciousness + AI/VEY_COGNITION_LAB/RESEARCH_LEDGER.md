@@ -401,3 +401,14 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Recounted roles across the exact 211-node raw conversation mapping: 47 user, 98 assistant, 65 tool, 1 missing role, 0 system, 0 developer.
 - The export is not a complete system/developer/context snapshot. Therefore, a no-path result from an archive-only graph cannot qualify as ANCESTRY_CLEAR; absent independent context-completeness attestation, use UNKNOWN_CONTEXT_INCOMPLETE. VEY-021 itself still FAILS ancestry-blindness because a prohibited path is positively present.
 - This is a source-mapping census, not a count of model calls, independent cognitive units, or causal effects.
+
+
+## 2026-10-31 | VEY-023 receiver-relative evidence integration and source provenance
+
+- Added STUDIES/VEY-023_RECEIVER_RELATIVE_EVIDENCE_INTEGRATION_AND_SOURCE_PROVENANCE_2026-10-31.md, blob 23b6b54afab7eaf4dbf9b9615b23cbbf7749a3fb.
+- Targeted primary-source review of Kawada & Kellis, arXiv:2609.04290v1 (2026-09-03), §§3.1–3.6, §§5.1–5.6, §6.3, §7, §8.6. This is an arXiv preprint, not peer-reviewed; no raw-trial/code artifact or independent reproduction located.
+- New P1 distinction: source ancestry/transmission is not receiver-side evidence integration. Receiver-congruent errors can be more persuasive; checking and final action can dissociate; writable transcript labels do not authenticate origin. The paper is not a direct multi-agent peer-interaction study.
+- Do not merge the paper's receiver-prior parameter a with VEY-020's copy weight w_m; do not merge verification recruitment rho with checker competence or source reliability.
+- Added six conditional composition/order theorems to existing HsH PR #850 at head 4bb05c762a91176e034a2d1246c5e06713b1495b, module blob 1b71e858bd954be2df56de82c40cdb9a3e6cbdb2. Exact-head Lean run #41244151207 was pending at initial update; verify complete build and axiom reports before marking compiled.
+- P1 #564 remains SOURCE / EXPERIMENT READINESS. Original OV-49–OV-53 bank and raw October 9 role-assignment message remain unrecovered; all four Mersearch lanes occupied. No model call, human subject, API spend, new trial, paper gate advancement, or theory promotion.
+- November 2 protocol-freeze recommendation unchanged: absent bank and authorized inference route, November 9 P1 should be methods/archival synthesis rather than an administered experiment.
