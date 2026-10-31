@@ -300,3 +300,13 @@ The repaired exact-head PR #850 run `41079040914` completed SUCCESS on head `0ef
 - Original Orson neutral-versus-false-authority answer-keyed bank remains unrecovered. OV-49–53 are geometry/finite-core artifacts; OV-55/56/100 are analytic/synthetic, not administered trials. P1 #564 remains source/experiment readiness.
 
 Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.md`.
+
+## 2026-10-31 | VEY-018 — human-group replay, DeliChess, correlated judge errors
+
+- Study: [VEY-018_SHAO_KOHLI_DELIDATA_CROSSWALK_AND_KISH_PROOF_2026-10-31.md](STUDIES/VEY-018_SHAO_KOHLI_DELIDATA_CROSSWALK_AND_KISH_PROOF_2026-10-31.md)
+- Primary sources: Shao 2026 arXiv:2609.20543v1 (DeliData Wason replay); Zhu et al. 2026 arXiv:2606.04987v1 (DeliChess human-group benchmark and LLM action-selection diagnostic); Kohli 2026 arXiv:2605.29800v1 (correlated judge errors and Kish n_eff).
+- Main distinction: passive cross-model error dependence, peer-exposed LLM replay, and human deliberation with objective task scoring are separate regimes. Consensus, correctness, effective independence, peer influence, participation and evaluator dependence must remain separate outcomes.
+- Arithmetic: using Kohli's rounded k=9, mean phi=0.391 gives design effect 4.128, n_eff=2.18023256, nominal ratio 24.2248%, asymptote 2.55754. Rounded-input consistency check only; no raw output reanalysis.
+- Formalization: conditional exchangeable-variance/Kish module added to existing HsH PR #850; exact-head Lean run #41160309297 pending at report creation. No compile success claimed in this ledger entry until verified.
+- P1 remains source/experiment readiness. Original answer-keyed neutral/false-authority bank remains unrecovered; no trial, manuscript, PDF/reader gate, or theory promotion.
+- Shao OSF preregistration and Zenodo artifacts were not downloaded; DeliChess dataset bytes were not downloaded; no independent reproduction.
