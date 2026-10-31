@@ -160,3 +160,10 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 
 - Numerical `w_m` values are calibration-dependent estimates reconstructed from rounded published means, not raw-trial reanalysis or universal model constants. Qualitative copy effects have separate conflict/action-channel support.
 - See VEY-020 Amendment 02 and public comments #6544077779 / #6544078127.
+
+
+## 2026-10-31 | VEY-021 naturalistic case recorded
+
+- Added `STUDIES/VEY-021_NATURALISTIC_PODCAST_RECEPTION_HYPOTHESIS_AMPLIFICATION_2026-10-31.md`, blob `5b68608766042fd45c1075d5717b45153dbb2322`.
+- Research ledger updated, blob `725e53ba711a8f4ee46edb5275b1dfeba48af093`.
+- The Mersearch sample is a false positive for the OV-49–OV-53 bank but a source-verified naturalistic interaction. The final assistant interpretation is downstream of the user's prior hypothesis and earlier assistant endorsement; it is not independent corroboration. Single-case, uncontrolled, no P1 trial claim.
