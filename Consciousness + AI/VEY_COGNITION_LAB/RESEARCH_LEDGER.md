@@ -385,3 +385,12 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - New operational gate: FAIL_ANCESTRY_BLIND when a prohibited recorded ancestry path exists; UNKNOWN_CONTEXT_INCOMPLETE when the full context manifest is unavailable; ANCESTRY_CLEAR only when a complete versioned context manifest is present and no prohibited path/exposure is recorded. ANCESTRY_CLEAR is necessary leakage control, not sufficient statistical independence.
 - Added source-conditional Lean module to existing PR #850 branch: `OrsonVEY021RecordedAncestry.lean`, exact-head commit `b820998976192ab3e4dc1cec1632d4d899bad031`. Exact-head CI run #41225441898 was pending/in progress at ledger update; no compilation success claimed until logs are inspected.
 - P1 #564 remains SOURCE / EXPERIMENT READINESS. Original OV-49–OV-53 answer-keyed bank remains UNRECOVERED; no authorized inference endpoint, model call, human subject, or trial. No manuscript or paper gate advanced.
+
+
+### 2026-10-31T1746Z | VEY-022 exact-head Lean CI verification
+
+- Existing PR #850 exact head `b820998976192ab3e4dc1cec1632d4d899bad031`, Actions run #41225441898, rerun of failed job, completed SUCCESS.
+- Job `verify` #124609431758; Lean 4.34.0 / Lake 5.0.0; full build 8,974 jobs.
+- `OrsonVEY021RecordedAncestry` built in 5.4 s. All four theorem-specific `#print axioms` reports say the theorem does not depend on any axioms. Full log 100,490 characters; zero `sorryAx` occurrences.
+- Workflow tests/lint disabled; no separate nanoda or automated axiom-audit stage ran. Initial attempt's failure cause remains unresolved because its log artifact was unavailable.
+- This verifies the encoded finite source-parent graph only, not source authenticity, complete context capture, statistical independence, or causal influence. No P1 trial or paper gate advancement.
