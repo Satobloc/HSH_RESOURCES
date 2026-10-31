@@ -232,3 +232,12 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 - Karadzhov, Georgi; Tom Stafford; Andreas Vlachos (2023), DeliData, PACM HCI 7(CSCW2), Article 265. DOI: https://doi.org/10.1145/3610056. Repository copy: https://eprints.whiterose.ac.uk/id/eprint/207765/.
 - Kohli, Guneet (2026), “Nine Judges, Two Effective Votes: Correlated Errors Undermine LLM Evaluation Panels,” arXiv:2605.29800v1. Primary record: https://arxiv.org/abs/2605.29800. Full HTML: https://arxiv.org/html/2605.29800v1. Kish formula is conditional on exchangeability; eigenvalue n_eff is a separate non-exchangeable diagnostic.
 - SciSpace-only leads not counted as evidence: “Effective Sample Size Under Peer Exposure in Multi-LLM Deliberation” (OSF DOI 10.17605/osf.io/aw9vf) and “DelibSim: Procedural Parity, Outcome Mismatch.” Primary records/full texts not retrieved.
+
+
+## 2026-10-31 | VEY-019 five-regime consensus measurement audit
+
+- Full synthesis: STUDIES/VEY-019_FIVE_EVIDENCE_REGIMES_AND_CONSENSUS_MEASUREMENT_AUDIT_2026-10-31.md.
+- Evidence regimes: Kohli (correlated judge errors), Shao (LLM replay of human deliberation), Chen et al. (mixed human–LLM peer population), DeliChess (human-only deliberation with Stockfish outcome), Alsobay et al. (human groups with one LLM facilitator), plus passive ConsistencyBench.
+- Main correction: convergence is not correctness; error dependence is not peer influence; facilitator studies are not multi-peer studies; nested turns/utterances/agent slots are not independent groups.
+- P1 source status unchanged: original neutral-versus-false-authority answer-keyed bank UNRECOVERED; OV-49–53 pointer mismatch; OV-95 is a separate artifact-presence protocol.
+- Lean QA: PR #850 exact head d59a17b270df730e84edbd614eaea3b1b76166e2, run #41160835210 SUCCESS; conditional Kish module only, not empirical exchangeability proof.
