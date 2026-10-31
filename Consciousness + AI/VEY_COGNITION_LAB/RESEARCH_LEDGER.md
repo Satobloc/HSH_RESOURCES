@@ -340,3 +340,12 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - P1 #564 remains SOURCE / EXPERIMENT READINESS; original OV-49-OV-53 answer-keyed bank remains UNRECOVERED; all four Mersearch lanes occupied; no authorized inference endpoint, model call, human-subject session, or API spend.
 - November 2 freeze recommendation: if bank and authorized endpoint remain unavailable, freeze Nov 9 P1 as methods/archival synthesis, not an administered experiment. Recommendation only; no paper gate advanced.
 - Public-safe summary submitted through existing publisher: issue #1152, submission `orson-p1-evidence-lineage-20261031t1348z-s4-001`, SHA-256 `c6f044362cd0ba02e6bdcf89eff0fafd9677fc1abf0f59de4c531843588d4cd4`; publication receipt/readback pending at ledger update.
+
+
+## 2026-10-31T1330Z | VEY-020 publication verification
+
+- Existing publisher issue #1152 completed. Artifact: `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-p1-evidence-lineage-20261031t1348z-s4-001.md`.
+- Publisher commit: `82dc6a38c8417d31d0b22690e2f29cd28039bc7c`.
+- Publisher-reported SHA-256: `c6f044362cd0ba02e6bdcf89eff0fafd9677fc1abf0f59de4c531843588d4cd4`.
+- The artifact was fetched independently and compared byte-for-byte with the JSON `content` field in issue #1152; exact content equality confirmed. Publisher bot comment #6543993690 reports readback verified.
+- P1 issue #564 pointer comment #6544004804 added. No manuscript or paper gate advanced.
