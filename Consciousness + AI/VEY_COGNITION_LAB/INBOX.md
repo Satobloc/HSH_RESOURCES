@@ -121,3 +121,13 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 - Exact-head Lean run #41160309297 FAILED. The first compile exposed noncomputable Real divisions and two proof errors; no theorem was verified and axiom audit did not run.
 - Fixed on existing PR #850 branch at d59a17b270df730e84edbd614eaea3b1b76166e2; exact-head run #41160835210 IN_PROGRESS.
 - A transient module copy landed on HsH main and was removed immediately (add commit 4ceb26bb3cbd2b289638c2dbc650d5b92ab8105e; removal 57bab61d9f784cd7325f0da50da428a8db4400b4). Corrected proof remains on the existing PR branch. No main import or theory change.
+
+
+## 2026-10-31T0612Z | VEY-019 five-regime synthesis
+
+- Added VEY-019: STUDIES/VEY-019_FIVE_EVIDENCE_REGIMES_AND_CONSENSUS_MEASUREMENT_AUDIT_2026-10-31.md.
+- Primary-source checks distinguish five evidence regimes: Kohli passive correlated judge errors; Shao LLM replay of human deliberation; Chen et al. mixed human–LLM peer population; DeliChess human-only deliberation with Stockfish scoring; Alsobay human groups with one LLM facilitator. ConsistencyBench remains passive cross-model evaluation, not peer influence.
+- Measurement stack separates convergence, correctness/quality, error dependence, peer exposure, participation, evaluator coupling, source lineage, and replication unit.
+- Mersearch source-fidelity correction: broad name/path terms dominate the completed bank-search hits; a sampled SAT Overview locator is tool-role, not a direct user message. Original answer-keyed neutral-versus-false-authority bank remains UNRECOVERED; absence is not proven.
+- PR #850 exact-head run #41160835210 SUCCESS at d59a17b270df730e84edbd614eaea3b1b76166e2. Conditional Kish module compiles; no sorryAx in the full log; automated tests/lint/nanoda/axiom-audit skipped.
+- P1 #564 remains SOURCE / EXPERIMENT READINESS. Protocol freeze Nov 2; target Nov 9. No model calls, human subjects, trial, manuscript, PDF/reader, hostile review, or gate advancement.
