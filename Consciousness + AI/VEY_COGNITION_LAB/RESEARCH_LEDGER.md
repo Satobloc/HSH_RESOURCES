@@ -310,3 +310,10 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Formalization: conditional exchangeable-variance/Kish module added to existing HsH PR #850; exact-head Lean run #41160309297 pending at report creation. No compile success claimed in this ledger entry until verified.
 - P1 remains source/experiment readiness. Original answer-keyed neutral/false-authority bank remains unrecovered; no trial, manuscript, PDF/reader gate, or theory promotion.
 - Shao OSF preregistration and Zenodo artifacts were not downloaded; DeliChess dataset bytes were not downloaded; no independent reproduction.
+
+
+## 2026-10-31T0238Z | VEY-018 Lean CI correction
+
+- First exact-head run #41160309297 on 1b40b9f45c0fde4f1ddc9cce84ae45795f101215 FAILED: noncomputable Real division definitions plus two proof issues. Build did not complete; no theorem verified; tests/lint/nanoda/axiom audit skipped.
+- Corrected module committed to existing PR #850 branch at d59a17b270df730e84edbd614eaea3b1b76166e2. Exact-head run #41160835210 IN_PROGRESS; no success claimed.
+- A transient unreviewed copy was accidentally written to HsH main at 4ceb26bb3cbd2b289638c2dbc650d5b92ab8105e and removed at 57bab61d9f784cd7325f0da50da428a8db4400b4. Corrected module remains on PR branch only; no root import/theory change on main.
