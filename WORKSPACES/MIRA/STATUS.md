@@ -92,3 +92,47 @@ Public continuity: existing issue #1080 supplemental comment #6523057125 was rea
 
 - GitHub repository metadata confirms `Satobloc/HSH_RESOURCES` is public (`private=false`, visibility `public`). The Mira report is a public-safe workspace record containing provenance metadata and short descriptions only; no restricted PDF contents or private source payloads are reproduced. Earlier labels such as “private addendum” or “internal report” refer to workspace location, not repository privacy, and should not be read as access-control claims.
 - The report was corrected for that wording. Current report blob: `c4096031d17670b5408d9a110f6477a8a74631e4` (same path). Any earlier pointer to `7eecf99e675420d6b490e6000ae20cf98102e43f` is superseded.
+
+## 2026-11-01T1348Z | Role-source, policy and Mersearch lifecycle audit
+
+Participation was a source-grounded operational reconstruction by the current assistant, not authenticated participation by a historical Mira instance. No Mira inbox was read or modified; no cross-thread delivery or acknowledgment is claimed.
+
+### Role-source genealogy
+
+- War Room Declaration, 2025-09-24 06:05 AM Columbus: Git blob `1506a3c8030f446b08990dac88dc45227dfa3463`.
+- Peace Accord, 2026-09-24: Git blob `a818e6ab65678e974e29a39c0beb22659bbe9d30`.
+- HsH `DEVELOPMENT_FULL_CONVOS/30SEP26_DUMP/STAT.txt`: Git blob `531f41f33b75fdc76db4045b80d4439290b67906`.
+
+All Mira-specific role lines are identical across these three related document representations. Peace Accord and War Room share 76 unique lines and a 44-line exact contiguous block; STAT shares 77 unique lines with Peace Accord and 92 with War Room. Do not count these as independent corroboration. No standalone Mira role-charter file or raw role-assignment conversation was recovered. The document-level remit is braid-related translation to/from SAT plus accurate citation and bibliography, especially braid-theory-related material.
+
+### Policy reconciliation
+
+Nathan's 2026-10-24 research-access directive (blob `7fea3b2c4af54b526364f756643cd690d3d2c752`) and the 2026-10-27 Worker Autonomy supersession notice (blob `7a21c87311d2c812209fa08fe50a4246c8b53761`) supersede the older October 9 blanket research-access prohibition for Hypothesis H proper and directly Schreiber-authored sources, after internal SAT/H(s)H provenance is recovered.
+
+This does not authorize public indexing, redistribution of private material, publication without review, or importation of external assumptions as SAT premises. Code Grurple remains an independent exposure boundary: Mira is outside the active internal review corpus; only cleared operational answers may cross. The older status sentences saying those sources are categorically off-limits are historical for research access, not current policy.
+
+The review-only intake program remains deliberately more conservative: `intake_preflight_review.py` (blob `596384f3d7bd74a17e8dfeac4ca262ce2c0f2dc4`) retains its name/path/metadata vetoes. It is not deployed and does not open PDF bytes. The README was corrected to describe this as a local fail-closed hold, not project-wide access policy. Code and tests were not changed. No PDF, PRIOR_ART source content, Hypothesis H source content, directly Schreiber-authored source content, or reviewer material was opened, read, extracted or approved.
+
+### Current Mersearch lifecycle snapshot
+
+Stable release: `mersearch-stable-1.0`, commit `89933c358b67ccbfbbaa680aadeb1f35d22d91b2`.
+
+- Lane 1 Calder: manifest/receipt present; 138 hits / 81 distinct paths. Two top paths repeat the same message UUID.
+- Lane 2 optics: request present; no manifest or receipt.
+- Lane 3 Aster: manifest/receipt present; 3,942 hits / 67 distinct paths. Its request file still says `staged_not_dispatched`, but a matching request-ID manifest exists and the lane-3 workflow reads the lane-3 request file. The dispatch blocker is stale. The request file itself appears as a top hit at `$.query`; `--exclude mersearch_requests` does not exclude `WORKSPACES/COMMON/MERSEARCH_REQUEST_LANE_3.json`. One Aster raw conversation contributes 1,335/3,942 hits (33.87%).
+- Lane 4 Tern: manifest/receipt present; 9 hits / 9 distinct paths, but the top source records repeat message UUIDs across multiple paths.
+
+Lane 1 and lane 4 request files still say `requested` despite manifests/receipts. Lane 3 remains `staged_not_dispatched` despite its matching manifest. No release ledger or release entries were found. Therefore no lane is treated as free; no request was overwritten, retriggered or newly submitted. Compact receipts are discovery maps, not exhaustive raw results or independent witnesses. Full raw search results were not opened.
+
+The older single-slot description in `MERSEARCH_RELEASES.md` is superseded operationally by the newer four-lane worker guide and lane-specific workflows. The request-state/release lifecycle and active-request self-exclusion should be reconciled by the bridge/Comptroller owner; no other worker's request file or workflow was modified.
+
+### Durable and operational status
+
+- Public-safe report submitted through the existing issue publisher: HsH issue #1211, submission `mira-role-policy-mersearch-lifecycle-audit-20261101t1348z-s4-001`; publication readback pending at this status update.
+- `INTAKE_PREFLIGHT_README.md` corrected and read back; `README.md` now records the historical role-source genealogy and independence limitation.
+- No new Mersearch request, branch, PR, Lean module, physical calculation, model inference, human-subject experiment, manuscript change or theory promotion.
+- Existing task/scheduler state unchanged; no sixth task.
+- Unrelated reading: Jacoby, `Practical Talks by an Astronomer`, lines 701–740; next cursor 741.
+- FIE last full review remains 2026-10-27; 14-day rereview threshold not due.
+
+Next safe cursor: preserve the local fail-closed intake veto until source-owner review; wait for an explicit Mersearch lane release before any new request; do not read or write Mira's inbox or send research payload across the active internal-review boundary.
