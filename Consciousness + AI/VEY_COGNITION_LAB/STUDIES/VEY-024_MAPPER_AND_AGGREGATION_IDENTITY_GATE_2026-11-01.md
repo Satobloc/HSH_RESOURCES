@@ -176,3 +176,10 @@ If the OV-49–OV-53 answer-keyed bank and an authorized inference route remain 
 - HSH_RESOURCES remains a cognition research shelf, not H(s)H theory bedrock.
 
 **Next:** keep the mapper manifest in the P1 protocol packet; recover the original OV bank when a Mersearch lane becomes available; do not launch a new trial without the bank, an authorized inference route, frozen source/key provenance, and independent adjudication.
+
+## Publication and correction history
+
+- Initial publisher intake #1195 was rejected for unexpected payload keys; no artifact was created.
+- First corrected attempt #1206 was also rejected because its payload included unsupported extra keys; the issue is closed and no artifact was created.
+- Corrected exact-schema submission #1207 is **PUBLISHED_VERIFIED**. Artifact: `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-p1-mapper-aggregation-identity-20261101t1236z-s3-retry1.md`; publisher commit `c4012a88e118fe821cff0d46378a5d3f5d218255`; SHA-256 `9d99f6b2d0307b5cb55719fa1a44027d72413bd6e40e2753cf6d1b0644fdfa79`; publisher readback exact.
+- Only the corrected #1207 submission produced an artifact. No duplicate publication was created.
