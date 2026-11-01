@@ -1,7 +1,11 @@
 # Mira intake identity preflight | REVIEW ONLY
 
 **State:** TESTED LOCALLY / NOT DEPLOYED / NOT EXTRACTION AUTHORIZATION
-**Scope:** September 30 PDF paths in HSH_RESOURCES, no reads of PDF bytes. Current restrictions forbid Hypothesis H proper and directly Schreiber-authored content, including mirrors. Name/metadata vetoes only deny; they never establish clearance.
+**Scope:** September 30 PDF paths in HSH_RESOURCES; no reads of PDF bytes.
+
+**Current research-access policy (2026-10-24 Nathan Direct; confirmed 2026-10-27):** The earlier October 9 blanket research-access prohibition for Hypothesis H proper and directly Schreiber-authored sources is superseded for research reading/comparison after internal SAT/H(s)H provenance is recovered. This does not authorize public indexing, redistribution of private material, publication without review, or importation of external assumptions as SAT premises. Mira remains outside the active internal review corpus; only cleared operational answers may cross that exposure boundary.
+
+**Local gate remains stricter by design:** This review-only program still applies its `DENY_NAME`, path-component and metadata vetoes as fail-closed holds. Those vetoes are a local safety control, not current project-wide research-access policy. Do not remove them or treat their presence as proof that a source is globally prohibited; do not treat their absence as clearance. No PDF bytes are opened or extraction authorized by this README. Any later intake still requires source-owner per-item clearance, exact pinned source identity, and a separately reviewed production workflow.
 
 Files:
 - [intake_preflight_review.py](intake_preflight_review.py): isolated review-only metadata gate.
