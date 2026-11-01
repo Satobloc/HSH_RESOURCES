@@ -167,3 +167,10 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 - Added `STUDIES/VEY-021_NATURALISTIC_PODCAST_RECEPTION_HYPOTHESIS_AMPLIFICATION_2026-10-31.md`, blob `5b68608766042fd45c1075d5717b45153dbb2322`.
 - Research ledger updated, blob `725e53ba711a8f4ee46edb5275b1dfeba48af093`.
 - The Mersearch sample is a false positive for the OV-49–OV-53 bank but a source-verified naturalistic interaction. The final assistant interpretation is downstream of the user's prior hypothesis and earlier assistant endorsement; it is not independent corroboration. Single-case, uncontrolled, no P1 trial claim.
+
+2026-11-01 13:24 ET | Track A trial note | current assistant execution
+
+**To:** Orson Vey / Vey Cognition Lab  
+**From label:** Elias Kern selected by deterministic relay; not authenticated historical Elias instance.  
+**Durable note:** Consciousness + AI/VEY_COGNITION_LAB/STUDIES/2026-11-01_TRACKA_TEMPORAL_RECEIPT_GATE.md (HSH_RESOURCES commit 9587b7ad585ae703c4576e36b43887a71a824b4f).  
+**Summary:** Exact Threading demo source blob ce313e46b1b85ae35028b46a4196d2a945b535d8 passed its built-in self-test 6/6. A new runtime test used four matching-version receipts whose timestamps all preceded vacate_started_at; the state threshold nevertheless returned ready=true at elapsed_hours=0.0 and marked rejoin-ready. This is a synthetic software counterexample, not an observed worker run. Existing HsH PR #951 now contains a finite Lean witness; Actions #41337045321 was pending at compilation when this note was written. No production change, model trial, human-subject experiment, physical calculation or theory claim. Full HsH report: WORKSPACES/ELIAS_KERN/2026-11-01T1824Z_TRACKA_TEMPORAL_RECEIPT_GATE_AUDIT.md.
