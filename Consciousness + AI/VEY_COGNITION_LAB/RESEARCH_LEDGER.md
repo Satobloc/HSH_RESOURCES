@@ -420,3 +420,13 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Reported 1+a range [0.20,0.65] gives a range [-0.80,-0.35]; conditional equal-channel order-effect magnitude is 0.35–0.80 times |d1-d2|. This is not an observed effect size.
 - Publisher #1172 verified; artifact exact-readback. Earlier rejected #1170/#1171 wrote no artifact.
 - P1 #564 remains source/experiment readiness; no trial, model call, human subject, API spend, or gate advancement.
+
+## 2026-11-01 | VEY-024 — Mapper identity, transitive closure, and consensus measurement
+
+- Added `STUDIES/VEY-024_MAPPER_AND_AGGREGATION_IDENTITY_GATE_2026-11-01.md`.
+- New contribution: mapper/aggregation identity is an orthogonal measurement-transformation layer alongside the existing five evidence objects (alarm, edit, key score, semantic adjudication, causal completion). It must not be collapsed into an evidence stage.
+- Source audit pinned `mainlobelabs/pauper-consensus` commit `c328dab5ca1f1101b5ec56e2e92e3592898ceadf`. The exploratory `align_free` path uses bidirectional NLI thresholding and union-find closure with a transitivity-violation audit. The pinned registered primary path in `firstpass/exp/e1.py` calls `align_anchored`; later `align_instances` preserves pre-collapse claim instances. These are different mapper/retention modes.
+- Existing HsH PR #850 module `OrsonNLIClusterClosure.lean` compiled in merge-ref Actions run #41290611880 attempt 2, job #124852022587, Lean 4.34.0, full build 8,976 jobs. `clusterClosure_equivalence` has no axioms; the quotient/projection theorems use standard `propext` and `Quot.sound`. Full log has zero `sorryAx` and `admit`; tests, lint, nanoda and automated axiom audit skipped. Merge-ref build success is not an exact-head standalone build or empirical validation.
+- P1 implication: record mapper mode, source/commit, canonical-set hash, embedding/NLI versions, top-k, threshold, direct-edge hash, closure algorithm, transitivity violations, claim-instance retention, source cap, polarity, aggregation model, calibration, holdout, registration and execution identity. For ConsistencyBench, declare fixed-item mapping; do not imply free claim clustering.
+- No new model trial, human subject, API spend, raw-claim reanalysis, P1 manuscript edit, PDF/reader completion, or paper-gate advancement. Original OV-49–OV-53 answer-keyed bank remains UNRECOVERED; all four Mersearch lanes were occupied. P1 #564 remains SOURCE / EXPERIMENT READINESS.
+- Full report and source limits are in the linked study note. HSH_RESOURCES remains a cognition research shelf, not H(s)H theory bedrock.
