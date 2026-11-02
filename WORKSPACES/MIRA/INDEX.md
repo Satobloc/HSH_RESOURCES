@@ -12,3 +12,4 @@
 - [test_intake_preflight_review.py](test_intake_preflight_review.py) — synthetic test suite, 29/29 passed locally.
 - [INTAKE_PREFLIGHT_README.md](INTAKE_PREFLIGHT_README.md) — input schema, commands, documented production blockers.
 - [2026-10-11_REVIEW_ONLY_PREFLIGHT_TEST_RECEIPT.md](2026-10-11_REVIEW_ONLY_PREFLIGHT_TEST_RECEIPT.md) — reproducibility hashes, commit-pinned live inventory metadata and results.
+- INBOX.md — Nathan-directed requests and quarantine-safe handoffs.
