@@ -442,3 +442,13 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - P1 remains SOURCE / EXPERIMENT READINESS. Original OV-49–OV-53 bank remains unrecovered; no authorized inference endpoint, HsH trial, human session, API spend, manuscript/PDF completion, or paper-gate advancement.
 - All Mersearch lanes were occupied; no new request or tool was created. HSH_RESOURCES remains a cognition research shelf, not theory BEDROCK.
 
+
+
+## 2026-11-02 — VEY-026: realized influence and covariance-aware ESS
+
+- Added `STUDIES/VEY-026_REALIZED_INFLUENCE_AND_COVARIANCE_AWARE_ESS_2026-11-02.md` (blob `37a13bc9cef2596a01b2e7037219eb88833bb85e`; independently recomputed content SHA-256 `bfe6d21a3a4493b317b9b9b8ebaa754ebe7193f56a57d04268bffdc4cc043627`). Targeted primary-source crosswalk of Liu et al., arXiv:2607.03695v1, against the existing Kohli/Kish and VEY-023/024/025 work.
+- New distinction: visible exposure opportunity is not the same as realized influence; receiver-side evidence integration and shared evaluator/mapper/aggregation dependencies are separate objects. The existing fixed-item 17-model ConsistencyBench panel has no peer exposure; its shared checker is an evaluator dependency, not a social-influence network.
+- Assistant-derived conditional synthesis: for normalized nonnegative weights q, H=sum(q_i^2), equal marginal variance and common off-diagonal correlation rho, Var(q^T X)/sigma^2 = rho+(1-rho)H and N_eff=1/[rho+(1-rho)H]. It reduces to the source weight-concentration ESS at rho=0 and to the existing Kish formula for uniform weights. No P1 covariance matrix or q vector is available; no empirical N_eff is calculated.
+- Existing HsH PR #850 extended in place, no new branch/PR: commit `b6f6108077e4d81e285ed968c317f65b620e32c6`, module blob `bcc9e15ca2d2c2bf7da21f77f79b0f03ab99c6aa`. New Lean declarations read back; CI/compilation still pending at this ledger update.
+- P1 issue #564 remains SOURCE / EXPERIMENT READINESS; methods-only is a protocol recommendation, not a paper-gate decision. Original OV-49–OV-53 bank and authorized inference endpoint remain unavailable; no trial, model call, manuscript/PDF/reader completion, review sign-off or gate advancement.
+- Public-safe HsH publisher intake: issue #1262, submission ID `orson-vey026-realized-influence-covariance-ess-20261102t1124z-s2-001`, SHA-256 `bfe6d21a3a4493b317b9b9b8ebaa754ebe7193f56a57d04268bffdc4cc043627`; expected fixed artifact `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-vey026-realized-influence-covariance-ess-20261102t1124z-s2-001.md`. Initial state SUBMITTED_NOT_VERIFIED; verify publisher comment and independent file readback before marking complete.
