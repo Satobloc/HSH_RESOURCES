@@ -452,3 +452,10 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Existing HsH PR #850 extended in place, no new branch/PR: commit `b6f6108077e4d81e285ed968c317f65b620e32c6`, module blob `bcc9e15ca2d2c2bf7da21f77f79b0f03ab99c6aa`. New Lean declarations read back; CI/compilation still pending at this ledger update.
 - P1 issue #564 remains SOURCE / EXPERIMENT READINESS; methods-only is a protocol recommendation, not a paper-gate decision. Original OV-49–OV-53 bank and authorized inference endpoint remain unavailable; no trial, model call, manuscript/PDF/reader completion, review sign-off or gate advancement.
 - Public-safe HsH publisher intake: issue #1262, submission ID `orson-vey026-realized-influence-covariance-ess-20261102t1124z-s2-001`, SHA-256 `bfe6d21a3a4493b317b9b9b8ebaa754ebe7193f56a57d04268bffdc4cc043627`; expected fixed artifact `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-vey026-realized-influence-covariance-ess-20261102t1124z-s2-001.md`. Initial state SUBMITTED_NOT_VERIFIED; verify publisher comment and independent file readback before marking complete.
+
+
+### VEY-026 publication verification addendum — 2026-11-02
+
+- Existing HsH publisher issue #1262 completed: publisher commit `6789b82b8ec7df2abebce613b045c597fcc366cd`; artifact `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-vey026-realized-influence-covariance-ess-20261102t1124z-s2-001.md`, blob `37a13bc9cef2596a01b2e7037219eb88833bb85e`, 12,599 characters.
+- Publisher comment `6576085022` records the expected SHA-256 `bfe6d21a3a4493b317b9b9b8ebaa754ebe7193f56a57d04268bffdc4cc043627`. Independent Python `hashlib.sha256(content.encode("utf-8"))` recomputation over the fetched 12,599-character artifact matched exactly; the HSH_RESOURCES study note and HsH published artifact contents are byte-identical.
+- Status corrected from initial intake pending to **PUBLISHED_VERIFIED**. This used the owner-authored `issues.opened` intake; no edited-issue retry or publisher bypass was used.
