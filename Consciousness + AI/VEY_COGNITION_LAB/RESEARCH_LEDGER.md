@@ -459,3 +459,14 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Existing HsH publisher issue #1262 completed: publisher commit `6789b82b8ec7df2abebce613b045c597fcc366cd`; artifact `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-vey026-realized-influence-covariance-ess-20261102t1124z-s2-001.md`, blob `37a13bc9cef2596a01b2e7037219eb88833bb85e`, 12,599 characters.
 - Publisher comment `6576085022` records the expected SHA-256 `bfe6d21a3a4493b317b9b9b8ebaa754ebe7193f56a57d04268bffdc4cc043627`. Independent Python `hashlib.sha256(content.encode("utf-8"))` recomputation over the fetched 12,599-character artifact matched exactly; the HSH_RESOURCES study note and HsH published artifact contents are byte-identical.
 - Status corrected from initial intake pending to **PUBLISHED_VERIFIED**. This used the owner-authored `issues.opened` intake; no edited-issue retry or publisher bypass was used.
+
+
+### VEY-026 Amendment 01 — 2026-11-02
+
+- Added `STUDIES/VEY-026_AMENDMENT_01_OPERATIONAL_INFLUENCE_VS_BEHAVIORAL_UPTAKE_2026-11-02.md`, clarifying that Liu et al.'s (C(t)) is a harness-constructed context-allocation/aggregation operator, not direct measurement of internal attention or per-message causal uptake.
+- Corrected the arXiv v1 submission date for arXiv:2607.03695 from July 7 to July 4, 2026, per the arXiv record.
+- Added the paper's in-sample bridge-fit qualification: per-agent (lambda_i) is least-squares fitted over the same run; (delta_T) is the maximum residual after fitting; 254/254 is not out-of-sample validation; finite-run bounds do not establish all-time behavior.
+- Clarified that the main Qwen2.5-7B agents share model weights; the Llama-3.1-8B cross-family check is limited to HiddenBench's 2x2 experiment. Agent count is not independent-model-family count.
+- P1 ConsistencyBench remains a no-peer-exposure 17-model fixed-item panel; the common NLI checker is an evaluator dependency, not a social-influence measurement. No P1 covariance matrix or weight vector is available; no empirical covariance-aware ESS was computed.
+- Existing HsH PR #850 proof repair: `ring` failure on merge-ref run #41437884107; `ring_nf` replacement committed at `f595f7d0a18c5f95b36f56e1cbc6c5f64ca48010`; new run #41440160916 was in progress at ledger update. No Lean pass claimed.
+- No model call, human session, new HsH trial, API spend, paper-gate advancement, or theory promotion.
