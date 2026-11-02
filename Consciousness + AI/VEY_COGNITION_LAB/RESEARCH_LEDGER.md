@@ -470,3 +470,14 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - P1 ConsistencyBench remains a no-peer-exposure 17-model fixed-item panel; the common NLI checker is an evaluator dependency, not a social-influence measurement. No P1 covariance matrix or weight vector is available; no empirical covariance-aware ESS was computed.
 - Existing HsH PR #850 proof repair: `ring` failure on merge-ref run #41437884107; `ring_nf` replacement committed at `f595f7d0a18c5f95b36f56e1cbc6c5f64ca48010`; new run #41440160916 was in progress at ledger update. No Lean pass claimed.
 - No model call, human session, new HsH trial, API spend, paper-gate advancement, or theory promotion.
+
+
+### VEY-026 Amendment 01 publication — 2026-11-02
+
+- HsH issue #1263: `[HSH-PUBLISH-V1] VEY-026 amendment: operational influence versus behavioral uptake`.
+- Submission ID: `orson-vey026-operational-influence-uptake-amendment-20261102t1124z-s2-001`.
+- Publisher workflow #41440533075 completed SUCCESS; publisher commit `f3cd7b6dfe64c273df3d8794d31bbc686dc04b5a`.
+- Artifact: `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-vey026-operational-influence-uptake-amendment-20261102t1124z-s2-001.md`; Git blob `dd24902ac66d3b07a6e6a60c0d67bcf208df43af`; SHA-256 `8b101dd8bcd8b6a34441370237094d96525667fea7e1021f5937f81f52c548c8`.
+- Independent readback: issue content and published artifact both 7,369 characters and byte-identical; declared digest matches publisher receipt. **PUBLISHED_VERIFIED.**
+- This is an amendment to VEY-026, not a new experiment. No P1 trial, model call, API spend, or paper-gate advancement.
+- PR #850 Lean proof repair is being rechecked on head `19dfcbcec798d45404c96807dd2d8806545f0f8f`, run #41440854264 queued at ledger update; no compile pass claimed.
