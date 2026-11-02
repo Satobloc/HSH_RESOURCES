@@ -492,3 +492,13 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Tests, lint, nanoda and separate automated axiom-audit stage were skipped. Warnings remain for unused tactics, one unused variable and an unused simp argument.
 - Classification: **MERGE-REF BUILD PASS / PR-HEAD MODULE+ROOT BLOB IDENTITY PASS / EXACT-HEAD STANDALONE BUILD NOT RUN**. No empirical validation, source-translation validation, or P1 claim follows.
 - Public issue #1263 received status comment #6576658695; PR #850 received final verification comment #6576656017. No new issue, PR, branch, or task.
+
+
+### P1 protocol freeze and CGD self-exposure correction — 2026-11-02
+
+- HsH protocol freeze: `WORKSPACES/ORSON_VAY/P1_PROTOCOL_FREEZE_2026-11-02_METHODS_ARCHIVAL_SCOPE.md`, source blob `9af4448d25f656ad1e63301660de63fd32924d5f`.
+- Public publisher issue #1264: `orson-p1-protocol-freeze-methods-archival-scope-20261102t1124z-s2-001`. Publisher run #41442434592 succeeded; artifact path `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-p1-protocol-freeze-methods-archival-scope-20261102t1124z-s2-001.md`; artifact blob `9af4448d25f656ad1e63301660de63fd32924d5f`; 13,864 characters; SHA-256 `898ad4942eb0c8d8fe2572eaf94938081b07abf2490b2da7e6b12c66797c4529`. Issue content and artifact are byte-identical. **PUBLISHED_VERIFIED.**
+- Original ConsistencyBench `src/evaluate.py` blob `0453540cb7c19227601e59fb342fa93e736da849` was re-read. CGD initializes `prior_qa_pairs` inside each `evaluate_cgd(model_id, question_set, ...)` call, compares the current answer with that same model's earlier raw answers, and may prompt the same model_id to revise using its own previous question/answer. This is within-model self-exposure/self-revision, not cross-model peer deliberation. The shared NLI checker separately calls `openrouter/openai/gpt-4o-mini` on raw answer prefixes truncated to 500 characters.
+- The prior VEY-026 phrase “no peer-to-peer answer exposure” remains correct but incomplete; it does not mean zero answer exposure. P1 is now frozen as a source-audited methods/archival study of shared evaluator dependence and within-model self-revision. No cross-model social influence or deliberation claim is supported by this archive.
+- HsH issue #564 comment #6576778412 records the P1 freeze; issue #1263 comment #6576777557 records the source-code clarification. No new model trial, human session, API spend, independent review, canonical PDF/reader, or paper-gate advancement.
+- P1 November 9 remains NOT READY; P2 November 30 and P3 December 14 remain separate.
