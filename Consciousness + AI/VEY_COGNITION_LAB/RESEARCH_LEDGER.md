@@ -431,3 +431,14 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - No new model trial, human subject, API spend, raw-claim reanalysis, P1 manuscript edit, PDF/reader completion, or paper-gate advancement. Original OV-49–OV-53 answer-keyed bank remains UNRECOVERED; all four Mersearch lanes were occupied. P1 #564 remains SOURCE / EXPERIMENT READINESS.
 - Full report and source limits are in the linked study note. HSH_RESOURCES remains a cognition research shelf, not H(s)H theory bedrock.
 - Publication: corrected HsH publisher issue #1207 **PUBLISHED_VERIFIED**; artifact SHA-256 `9d99f6b2d0307b5cb55719fa1a44027d72413bd6e40e2753cf6d1b0644fdfa79`, commit `c4012a88e118fe821cff0d46378a5d3f5d218255`. Earlier #1195 and #1206 publisher intakes were rejected and produced no artifact; #1207 is the sole published copy.
+
+## 2026-11-02 | VEY-025 identity-channel factorial and revision-balance audit
+
+- Added `STUDIES/VEY-025_IDENTITY_CHANNEL_FACTORIAL_AND_REVISION_BALANCE_2026-11-02.md`.
+- New source-critical result: the three-cell TRUST anonymization design identifies a Channel-1 simple effect conditional on Channel 3 being anonymized; its missing y01 cell prevents identification of the Channel-1 × Channel-3 interaction. Six conditional algebraic theorems were added to existing HsH PR #850.
+- Corrected Lean 4.34.0 merge-ref build #41420522501 succeeded on 8,977 jobs. All six theorem-specific axiom reports list only `propext`, `Classical.choice`, and `Quot.sound`; no `sorryAx` or `admit` in the completed log. Tests, lint, nanoda, and separate automated axiom audit were skipped. This is not an exact-head standalone build or empirical validation.
+- Added identity visibility as a distinct factor from evidence ancestry and receiver state. Soffer et al. report prompt-level in-group/out-group conformity effects, but their peers are scripted and the outcome is restricted to initially correct items. Dietrich's multi-channel estimates are highly variable and nonsignificant at the paper's stated 2SE criterion.
+- Reconstructed common-denominator final accuracy from the existing Qu et al. aggregate CSV. This is exploratory and descriptive; raw generated response rows were not available for independent refitting.
+- P1 remains SOURCE / EXPERIMENT READINESS. Original OV-49–OV-53 bank remains unrecovered; no authorized inference endpoint, HsH trial, human session, API spend, manuscript/PDF completion, or paper-gate advancement.
+- All Mersearch lanes were occupied; no new request or tool was created. HSH_RESOURCES remains a cognition research shelf, not theory BEDROCK.
+

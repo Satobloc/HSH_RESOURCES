@@ -259,3 +259,11 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 - Corrected Lean build #41244476754 succeeded on merge-reference commit 24a14402057420f3c5b00f64123db2b432330768 (8,975 jobs; zero sorryAx; standard dependencies only; separate tests/lint/nanoda/automated axiom audit not run). Final tactic-cleanup head fb44ce3bd3ac240142345e2613031b24e6a57e52 has fresh run #41244897947 IN_PROGRESS at checkout; final-head compilation remains pending.
 - Conditional coefficient calculation: reported 1+a approximately [0.20,0.65] implies a approximately [-0.80,-0.35], so under equal-channel composition the order-effect magnitude is approximately 0.35–0.80 times the absolute evidence-tilt gap. No absolute effect size is inferred.
 - Sole publisher artifact verified at issue #1172; earlier rejected intake attempts wrote no file.
+
+## 2026-11-02 | VEY-025 identity-channel and revision-balance sources
+
+- Soffer et al. (2026), *LLMs Trust Their Own: Identity-Dependent Conformity in Multi-Agent Systems*, arXiv:2609.33495. Preprint. Twelve open-weight models, nine benchmark tasks, seven scripted peers, and 100 critical trials per cell. Identity cues altered wrong-majority conformity in some conditions; model-family and AI-versus-human contrasts were not significant in the paper's aggregate tests. Outcome restricted to targets initially correct; single-turn scripted-peer limits apply.
+- Dietrich (2026), *Peer Identity Bias in Multi-Agent LLM Evaluation: An Empirical Study Using the TRUST Democratic Discourse Analysis Pipeline*, arXiv:2604.22971. Preprint. Three identity channels are described, but the supervisor channel is rule-based in the reported implementation. The tested two-channel anonymization design omits the Channel-1-hidden/Channel-3-visible cell; the reported Channel-1 contrast is conditional on Channel 3 being anonymized and does not identify the channel interaction. Five runs per statement and high variability; no reported ΔIBC reaches the stated 2SE criterion.
+- Qu, Fu, and Hu (2026), arXiv:2606.01637, was already indexed in the existing source list. This run re-read the paper and official repository aggregate CSV; no duplicate source-index entry was added.
+- Durable study note: `STUDIES/VEY-025_IDENTITY_CHANNEL_FACTORIAL_AND_REVISION_BALANCE_2026-11-02.md`.
+
