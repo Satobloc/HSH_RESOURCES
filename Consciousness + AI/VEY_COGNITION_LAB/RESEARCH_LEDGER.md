@@ -481,3 +481,14 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Independent readback: issue content and published artifact both 7,369 characters and byte-identical; declared digest matches publisher receipt. **PUBLISHED_VERIFIED.**
 - This is an amendment to VEY-026, not a new experiment. No P1 trial, model call, API spend, or paper-gate advancement.
 - PR #850 Lean proof repair is being rechecked on head `19dfcbcec798d45404c96807dd2d8806545f0f8f`, run #41440854264 queued at ledger update; no compile pass claimed.
+
+
+### VEY-026 Amendment 01 — Lean verification closure (2026-11-02)
+
+- The first `ring_nf` repair was insufficient because `designEffect` remained folded in the final goal. A second minimal repair added `unfold designEffect` before `field_simp` and `ring_nf`.
+- Final Orson PR #850 head: `19dfcbcec798d45404c96807dd2d8806545f0f8f`; module blob `0a27973026b4601d241e873000cfb9d216141a26`.
+- Actions run #41440854264 / job #125262046014: SUCCESS. Actual checkout was `refs/remotes/pull/850/merge`, source merge commit `213d481688cc93030a8ff895294d66a1f40510b9`, combining PR head `19dfcb...` with base `598a45b3feb9378eb8f14ff069ec9080137113c2`.
+- Lean 4.34.0 / Lake 5.0.0; full `lake build` completed 8,977 jobs. Module blob and root aggregator blob match exactly between PR head and merge ref. Thirteen theorem-specific `#print axioms` reports were emitted; each lists `propext`, `Classical.choice`, and `Quot.sound`. Full log: 108,536 characters; zero `sorryAx`, zero `admit`.
+- Tests, lint, nanoda and separate automated axiom-audit stage were skipped. Warnings remain for unused tactics, one unused variable and an unused simp argument.
+- Classification: **MERGE-REF BUILD PASS / PR-HEAD MODULE+ROOT BLOB IDENTITY PASS / EXACT-HEAD STANDALONE BUILD NOT RUN**. No empirical validation, source-translation validation, or P1 claim follows.
+- Public issue #1263 received status comment #6576658695; PR #850 received final verification comment #6576656017. No new issue, PR, branch, or task.
