@@ -267,3 +267,12 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 - Qu, Fu, and Hu (2026), arXiv:2606.01637, was already indexed in the existing source list. This run re-read the paper and official repository aggregate CSV; no duplicate source-index entry was added.
 - Durable study note: `STUDIES/VEY-025_IDENTITY_CHANNEL_FACTORIAL_AND_REVISION_BALANCE_2026-11-02.md`.
 
+
+
+## 2026-11-03 | VEY-027 complete-case domain source map
+
+- Study note: `STUDIES/VEY-027_QUESTION_SPECIFIC_ELIGIBILITY_MASKS_2026-11-03.md`.
+- Primary dataset: `aayambansal/ConsistencyBench`, commit `bfc676baa848c7f1715bb73aee148180de15516e`; 17 immutable CGD result blobs, all checked against the commit tree.
+- Replayer: HsH `WORKSPACES/ORSON_VAY/CODE/2026_10_29_cross_model_agreement.js`, blob `c60efe6f868f2ef78bd33eaa85ec8a81802a5fd9`. Evaluator: `src/evaluate.py`, blob `0453540cb7c19227601e59fb342fa93e736da849`.
+- Finding: per-question complete-case model membership varies across initial and final answer stages; 106 distinct joint masks and 137,911 joint pair-question slots. This is a descriptive denominator/identifiability audit, not peer-influence or causal evidence.
+- Formalization pointer: HsH PR #873, `KestrelProjectedIncidence.lean`, blob `7b5c17118f87415d12b2deaa39628c75efe94435`; full PR build status and limits are in the study note.
