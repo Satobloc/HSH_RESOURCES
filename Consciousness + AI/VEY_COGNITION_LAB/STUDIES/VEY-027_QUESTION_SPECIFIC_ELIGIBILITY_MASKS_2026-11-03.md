@@ -93,7 +93,7 @@ Kestrel's existing generic Lean results in HsH PR #873 formalize the relevant fa
 
 ## Lean and proof boundary
 
-The reusable theorem is in Kestrel PR #873, module `KestrelProjectedIncidence.lean`, blob `7b5c0b28ec3e1a3b4e` (full blob recorded in the HsH worker report). Relevant declarations are `hallway_factorization_iff_fiber_compatibility` and `downstream_readout_cannot_restore_coarse_collapsed_pair`.
+The reusable theorem is in Kestrel PR #873, module `KestrelProjectedIncidence.lean`, blob `7b5c17118f87415d12b2deaa39628c75efe94435`. Relevant declarations are `hallway_factorization_iff_fiber_compatibility` and `downstream_readout_cannot_restore_coarse_collapsed_pair`.
 
 Actions run #41690832586 on PR #873 failed at the full-build level in `KestrelMovingSlice.lean` (unsolved goals at lines 114 and 125). The projected-incidence and identity-blindness modules replayed before that failure. This is module-level compile evidence, not a successful full PR build or exact-head standalone verification. Tests, lint, nanoda, and automated axiom audit were not completed. No new Lean theorem or P1-specific instantiation was added here.
 
