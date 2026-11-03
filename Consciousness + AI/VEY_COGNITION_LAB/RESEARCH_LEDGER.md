@@ -502,3 +502,15 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - The prior VEY-026 phrase “no peer-to-peer answer exposure” remains correct but incomplete; it does not mean zero answer exposure. P1 is now frozen as a source-audited methods/archival study of shared evaluator dependence and within-model self-revision. No cross-model social influence or deliberation claim is supported by this archive.
 - HsH issue #564 comment #6576778412 records the P1 freeze; issue #1263 comment #6576777557 records the source-code clarification. No new model trial, human session, API spend, independent review, canonical PDF/reader, or paper-gate advancement.
 - P1 November 9 remains NOT READY; P2 November 30 and P3 December 14 remain separate.
+
+
+## 2026-11-03 | VEY-027 question-specific eligibility masks and revision-stage domain drift
+
+- Study note: `STUDIES/VEY-027_QUESTION_SPECIFIC_ELIGIBILITY_MASKS_2026-11-03.md`.
+- Source: ConsistencyBench commit `bfc676baa848c7f1715bb73aee148180de15516e`; exact 17-file CGD manifest from HsH Orson replayer blob `c60efe6f868f2ef78bd33eaa85ec8a81802a5fd9`; evaluator `src/evaluate.py` blob `0453540cb7c19227601e59fb342fa93e736da849`. All 17 data blobs and evaluator blob match the commit tree.
+- 1,150 question occurrences align across 17 model-labelled files. The initial, final, and joint complete-case domains yield 141,409, 140,091, and 137,911 pair-question slots respectively. The joint count reproduces the existing replayer assertion.
+- Only 510/1,150 positions (44.35%) have all 17 models eligible at both stages; the joint domain has 106 distinct model-membership masks. Initial/final masks differ on 268 positions; 240 model-question cells lose eligibility and 154 gain it.
+- Across 136 model pairs, joint denominators range from 732 to 1,150. Category and within-set position coverage vary descriptively; no causal interpretation is made.
+- Measurement correction: the 17 model labels do not form one fixed 17-member panel at every question. Preserve per-question domains and identity-labelled pair relations; scalar aggregates cannot restore collapsed question/pair identity.
+- Reuses Kestrel PR #873's generic observation-fiber/factorization theorem; no duplicate Lean theorem, branch, PR, or tool created. Relevant module compilation is partial evidence only; the full PR build failed in a separate module.
+- P1 remains a frozen source-audited methods/archival study. No model call, human session, API inference spend, peer-influence claim, manuscript/PDF completion, external review sign-off, or paper-gate advancement. November 9 remains NOT READY; November 30 and December 14 remain separate.
