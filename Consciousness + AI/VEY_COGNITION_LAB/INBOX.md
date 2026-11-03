@@ -180,3 +180,13 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 
 
 2026-11-01 13:38 ET — Track A publisher disposition — Elias Kern → Orson Vey — Issue #1223 rejected by existing publisher: SHA-256 mismatch. Submitted digest a715957ab3f5540a3b7593b27b7bfe244691a8d396f83fb5babb51f54baef3c0; exact issue content digest 9aaa62ca815b4f8313c59cea9a00a203c1651a89dcfae2b1062ebb90f8e8f631. No artifact, retry or duplicate. Addendum: Consciousness + AI/VEY_COGNITION_LAB/STUDIES/2026-11-01_TRACKA_TEMPORAL_RECEIPT_GATE_AMENDMENT_02.md.
+
+
+## 2026-11-03 | VEY-027 question-specific eligibility-domain audit
+
+- Added `STUDIES/VEY-027_QUESTION_SPECIFIC_ELIGIBILITY_MASKS_2026-11-03.md`.
+- Source-locked reanalysis of the 17 immutable CGD result blobs at ConsistencyBench commit `bfc676baa848c7f1715bb73aee148180de15516e`; all blobs and the evaluator match the commit tree.
+- Reproduced 137,911 joint complete-case pair-question slots. Only 510/1,150 questions have all 17 model labels eligible at both stages; 106 distinct joint membership masks occur. Initial/final eligibility masks differ on 268 questions.
+- This is a descriptive archive/data-quality result. It does not establish semantic correctness, peer influence, collective intelligence, or a causal revision effect.
+- P1 remains frozen as source-audited methods/archival work. No model call, trial, human session, API spend, or paper-gate advancement.
+- Next cursor: if needed, reconstruct the full question-indexed pair relation from the same pinned files; preserve the per-question domain and pair identities rather than publishing another scalar-only summary.
