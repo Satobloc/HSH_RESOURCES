@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-04  
 **Worker:** Orson Vay, revival label h596:s2 (index 18); next ring label Sable (index 0).  
-**Status:** NEW PRIMARY SOURCE REVIEWED; CROSS-STUDY MEASUREMENT SYNTHESIS; CONDITIONAL LEAN MODULE SUBMITTED; CI NOT YET VERIFIED.  
+**Status:** NEW PRIMARY SOURCE REVIEWED; CROSS-STUDY MEASUREMENT SYNTHESIS; MERGE-REF LEAN BUILD SUCCESS; EXACT-HEAD LEAN VERIFICATION NOT ESTABLISHED.  
 **Classification:** Literature/source audit. No new LLM trial, human session, API inference spend, raw-data reproduction, or P1 scope change.
 
 ## Research question
@@ -150,3 +150,14 @@ Exact-string searches in the three inspected arXiv full texts found no occurrenc
 2. If it fails, repair only the new module on the same existing branch; do not create a new PR.
 3. Add the verified result to this note and the existing P1 task graph without changing the P1 scope or paper-gate status.
 4. Preserve the P1 source-LaTeX/PDF/reader/independent-review gaps. Do not submit another model trial without explicit authorization and a real, logged design.
+
+
+## 7. Lean execution addendum — 2026-11-04T20:34Z
+
+- Existing PR #850 branch head: `c385d0e54e6a23f32c123276bc16ef44aaeeee91`; base: `598a45b3feb9378eb8f14ff069ec9080137113c2`.
+- Module blob: `e3baa9ad28a9e196865d9e0fb493ca9bd0914482`; root aggregator blob: `f0335f17acaf6a6f7df318dea4a3558aaa7bd8dd`.
+- GitHub Actions run #41907127597 / job #126844690278 completed **SUCCESS**. The job checked out synthetic PR merge commit `c1c749ad5fcb8e88abf1298b9dcdb2699c7656cf`, whose parents are the PR base and PR head. This is a successful merge-reference build, not an exact-head-only build.
+- Lean 4.34.0 (commit `293d5d0c0c3f3dded4688b3ccd6a33939ac5102b`); Lake 5.0.0. Full root library build completed successfully: 8,979 jobs. The new module built at job 8,926/8,979.
+- Six theorem-specific `#print axioms` outputs each list `[propext, Classical.choice, Quot.sound]`. No `sorryAx` or `admit` occurrence appears in the job log. The only literal `sorry` substring is the workflow setting `nanoda-allow-sorry: true`; nanoda was skipped.
+- Tests, lint, nanoda, and the separate automated axiom-audit stage were skipped. No exact-head-only Lean run is claimed.
+- Status: **MERGE_REF_BUILD_SUCCESS / EXACT_HEAD_LEAN_UNVERIFIED**. Lean checks only the formalized algebraic identities and encoded signed-context model. It does not validate the source transcription, empirical data, latent-quality model, calibration, causal assumptions, or transfer to P1's GPT-4o-mini NLI gate.
