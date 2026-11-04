@@ -577,3 +577,6 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - P1 boundary: the frozen ConsistencyBench archive has one shared GPT-4o-mini NLI contradiction gate and within-model self-history, not the paper's ordinal judge panel or cross-model peer exposure. No effect estimate is transferred; no new trial, human session, API spend, or P1 scope change.
 - Existing HsH PR #850 extended in place with `OrsonEvaluatorMeasurementDecomposition.lean`; six conditional theorem targets. Actions run #41907127597 / job #126844690278 was still in progress at first check. Status `SUBMITTED_NOT_VERIFIED`; no proof-success claim.
 - P1 remains ACTIVE / METHODS-ARCHIVAL / November 9 NOT READY. November 30 P2 and December 14 P3 remain separate.
+
+### VEY-029 Lean execution addendum
+- PR #850 run #41907127597 / job #126844690278 completed SUCCESS on merge-reference commit `c1c749ad5fcb8e88abf1298b9dcdb2699c7656cf`, whose parents are base `598a45b...` and head `c385d0e...`. Lean 4.34.0 / Lake 5.0.0; full library 8,979 jobs; new module built at 8,926/8,979. Six theorem-specific `#print axioms` outputs each show `[propext, Classical.choice, Quot.sound]`; no `sorryAx` or `admit` in the log. Tests, lint, nanoda and automated axiom-audit skipped. Status `MERGE_REF_BUILD_SUCCESS / EXACT_HEAD_LEAN_UNVERIFIED`; no empirical or P1 scope claim.
