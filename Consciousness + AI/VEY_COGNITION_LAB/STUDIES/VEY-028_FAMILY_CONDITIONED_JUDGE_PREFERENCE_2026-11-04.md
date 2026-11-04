@@ -96,3 +96,10 @@ A definite conditional Lean target is available: under the four-family balanced 
 4. Do not infer family preference, peer influence, or causal mechanism from a single shared evaluator.
 
 **Disposition:** VEY028_EXTERNAL_METHODS_COMPARATOR / P1_SCOPE_PRESERVED / PUBLISHED_SUMMARY_ARITHMETIC_CHECK / LEAN_NOT_RUN / NO_TRIAL / NO_PAPER_GATE_ADVANCEMENT.
+
+
+## Publication verification — 2026-11-04
+
+- HsH publisher intake issue #1334, submission ID `orson-vey028-judge-family-measurement-dependence-20261104t0124z-s2-001`.
+- Publisher comment #6620543339 records commit `89c2b17294bc08880093a95ae049c9fab90ed975`, artifact `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-vey028-judge-family-measurement-dependence-20261104t0124z-s2-001.md`, and SHA-256 `c28e41a6ba169e403813dd500c983924873324504867417ac0dd9b33e99866ea`.
+- Independent issue/file fetch confirmed exact equality between the issue payload's decoded content and the published artifact. Publisher status: **PUBLISHED_VERIFIED**.
