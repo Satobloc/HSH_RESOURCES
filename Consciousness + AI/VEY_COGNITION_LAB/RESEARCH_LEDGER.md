@@ -536,3 +536,10 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Publisher comment #6620543339; commit `89c2b17294bc08880093a95ae049c9fab90ed975`; artifact blob `32209b5737a51c94c76f4b3cd1e04b9039ffca0e`.
 - SHA-256 `c28e41a6ba169e403813dd500c983924873324504867417ac0dd9b33e99866ea`; independent issue payload / published artifact equality check PASS. **PUBLISHED_VERIFIED.**
 - No paper-gate advancement or P1 protocol change.
+
+
+### 2026-11-04 | VEY-028 conditional Lean formalization submitted
+
+- Existing Orson PR #850 extended in place; new module `OrsonFamilyConditionedPreference.lean`, blob `58e097941587b9889707f63a012af5a2664803ce`; root aggregator blob `4586adeee53436723b8b57f0cfdb067b9ea1756b`; branch head `5bad1dcc79a686cd2a7e1f27c297a10cbcc802c6`.
+- Actions run #41870255531 / job #126715066924: checkout and Lake dependency manifest succeeded; Lean compile step in progress at last inspection. **SUBMITTED_NOT_VERIFIED**; no theorem-success or axiom-audit claim.
+- The formalization encodes only the source's balanced four-family algebra and a symmetric-noise bound. It does not validate raw data or any P1/causal claim. P1 remains frozen methods/archival; no new trial or paper-gate advancement.
