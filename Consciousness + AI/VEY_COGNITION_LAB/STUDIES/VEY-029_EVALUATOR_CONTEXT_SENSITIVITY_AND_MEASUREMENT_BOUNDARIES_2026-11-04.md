@@ -161,3 +161,8 @@ Exact-string searches in the three inspected arXiv full texts found no occurrenc
 - Six theorem-specific `#print axioms` outputs each list `[propext, Classical.choice, Quot.sound]`. No `sorryAx` or `admit` occurrence appears in the job log. The only literal `sorry` substring is the workflow setting `nanoda-allow-sorry: true`; nanoda was skipped.
 - Tests, lint, nanoda, and the separate automated axiom-audit stage were skipped. No exact-head-only Lean run is claimed.
 - Status: **MERGE_REF_BUILD_SUCCESS / EXACT_HEAD_LEAN_UNVERIFIED**. Lean checks only the formalized algebraic identities and encoded signed-context model. It does not validate the source transcription, empirical data, latent-quality model, calibration, causal assumptions, or transfer to P1's GPT-4o-mini NLI gate.
+
+
+## HsH publication verification — 2026-11-04T20:37Z
+
+The HsH publisher workflow completed successfully through issue #1363. Publisher comment #6641512474 verifies destination `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-vey029-evaluator-context-20261104t2024z-s2-001.md`, commit `4be071c33514e8cb2228e5dda23aec5209b4db3a`, SHA-256 `17834dbc6087079762c18df9e3f9b1de39ff7df3b44832642b7985379ed28a43`, and readback. Status `PUBLISHED_VERIFIED`; no duplicate submission.
