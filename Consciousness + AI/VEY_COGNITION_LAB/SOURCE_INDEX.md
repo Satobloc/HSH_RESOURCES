@@ -83,12 +83,18 @@ These materials are not assumed to be controlled experiments. Many are naturalis
 
 8. **Hossain, Elias; Niloofar Yousefi; Ser-Nam Lim (2026), “Agreement Overstates Evidence: Error Dependence in LLM Judge Consensus.”**
    - arXiv:2609.22512
-   - **State:** TRIAGED (abstract read; full-text review open)
+   - **State:** FULL-TEXT REVIEWED 2026-10-30; see P1 multi-agent dependence addendum below.
    - **Why it matters:** Reports correlated judge errors and reduced effective independent-judge information. Direct caution for interpreting panel agreement as independent evidence; not the same dataset or intervention as VEY-011.
 
-9. **Hu, Yibo; Jiaming Qu (2026), “Social Pressure Breaks Majority Voting in LLM Safety Panels.”**
+9. **Awuni et al. (2026), “Who Judges Matters: Measuring Family-Conditioned Preference in LLM-as-Judge Panels,” arXiv:2609.17857v1.**
+   - **State:** FULL-TEXT REVIEWED 2026-11-04 (arXiv HTML §§1–11 and Appendices A–D).
+   - **Why it matters:** Fully crossed judge-family × candidate-family panel; demonstrates why the naive row-wise same-family contrast confounds candidate-family strength and gives a column-wise estimator under balanced/double-centered assumptions. Separates family-conditioned preference from exact self-evaluation, likelihood familiarity, and order instability.
+   - **Boundary:** Preprint; no raw archive independently retrieved in this pass. No peer exposure or cross-model deliberation is tested. Not a P1 replication.
+   - **URL:** https://arxiv.org/abs/2609.17857
+
+10. **Hu, Yibo; Jiaming Qu (2026), “Social Pressure Breaks Majority Voting in LLM Safety Panels.”**
    - arXiv:2608.04415
-   - **State:** TRIAGED (abstract read; full-text review open)
+   - **State:** FULL-TEXT REVIEWED 2026-10-30; see the source-status corrections below.
    - **Why it matters:** Controlled two-round peer-label exposure design. Important comparator for a future causal VEY-004 test; unlike VEY-011, this study actually shows peer labels to models and manipulates the cue.
 
 
@@ -276,3 +282,14 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 - Replayer: HsH `WORKSPACES/ORSON_VAY/CODE/2026_10_29_cross_model_agreement.js`, blob `c60efe6f868f2ef78bd33eaa85ec8a81802a5fd9`. Evaluator: `src/evaluate.py`, blob `0453540cb7c19227601e59fb342fa93e736da849`.
 - Finding: per-question complete-case model membership varies across initial and final answer stages; 106 distinct joint masks and 137,911 joint pair-question slots. This is a descriptive denominator/identifiability audit, not peer-influence or causal evidence.
 - Formalization pointer: HsH PR #873, `KestrelProjectedIncidence.lean`, blob `7b5c17118f87415d12b2deaa39628c75efe94435`; full PR build status and limits are in the study note.
+
+
+## 2026-11-04 | VEY-028 judge-family measurement dependence
+
+- Added `STUDIES/VEY-028_FAMILY_CONDITIONED_JUDGE_PREFERENCE_2026-11-04.md`.
+- Primary source: Awuni et al., arXiv:2609.17857v1; targeted full-text review of §§1–11 and Appendices A–D. The paper is an arXiv preprint; no public raw-data archive was retrieved in this pass.
+- New methods distinction: a fully crossed judge-family × candidate-family panel can estimate family-conditioned evaluator preference, but the naive row contrast confounds candidate-family strength with judge–candidate interaction. The paper's column contrast holds candidate family fixed under balanced/double-centered assumptions.
+- Published-summary arithmetic check reproduced the row/column decomposition to rounding using Figure 2's printed values. This is not raw-data reproduction.
+- P1 remains frozen as a source-audited methods/archival study; its one shared GPT-4o-mini checker does not identify judge-family variation. No new trial, model call, human session, API spend, or paper-gate advancement.
+- Conditional Lean target identified, but no Lean 4/Mathlib run or proof is claimed; local runtime lacks Lean and no authorized existing branch/PR was changed.
+- Public-safe HsH publisher intake #1334, submission `orson-vey028-judge-family-measurement-dependence-20261104t0124z-s2-001`, SHA-256 `c28e41a6ba169e403813dd500c983924873324504867417ac0dd9b33e99866ea`; awaiting publisher action and independent readback.
