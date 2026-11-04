@@ -550,3 +550,10 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - First run #41870255531 failed in the new module: two contrast definitions required `noncomputable`; four `ring` tactics were redundant after `rw` had closed their goals. Lean 4.34.0 / Lake 5.0.0; workflow compiled a PR merge-reference tree `913d049c91a5f7f16e10b3e399a0efc2fd7eb037`, not a standalone head. Tests, lint, nanoda and axiom-audit were skipped. The emitted theorem axiom lines are not treated as proof success because the module failed to compile.
 - Bounded repair committed to the same PR branch: module blob `d1ff80995c7f832f83a8a280c5d26e7d38392b9a`, branch head `872a5dd3f6a65c878f7392ec86be9c2641cc6245`; root aggregator import remains, blob `4586adeee53436723b8b57f0cfdb067b9ea1756b`.
 - The repaired head's Actions run is not yet visible. Status `REPAIR_SUBMITTED_NOT_VERIFIED`; no Lean proof claim, empirical validation or P1 gate advancement.
+
+
+## Replacement CI run started — 2026-11-04
+
+- Repaired PR head `872a5dd3f6a65c878f7392ec86be9c2641cc6245` now has Actions run #41871626742, job #126719953314.
+- At last inspection the run is `in_progress`; checkout is still running, Lake manifest and Lean compilation have not started. No compile result or theorem proof is available yet.
+- Status remains `REPAIR_SUBMITTED_NOT_VERIFIED`. Preserve the existing PR and await this run; do not create another branch, PR, or publisher submission.
