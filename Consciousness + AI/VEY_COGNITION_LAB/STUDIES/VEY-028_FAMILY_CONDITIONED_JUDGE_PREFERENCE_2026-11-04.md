@@ -103,3 +103,11 @@ A definite conditional Lean target is available: under the four-family balanced 
 - HsH publisher intake issue #1334, submission ID `orson-vey028-judge-family-measurement-dependence-20261104t0124z-s2-001`.
 - Publisher comment #6620543339 records commit `89c2b17294bc08880093a95ae049c9fab90ed975`, artifact `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-vey028-judge-family-measurement-dependence-20261104t0124z-s2-001.md`, and SHA-256 `c28e41a6ba169e403813dd500c983924873324504867417ac0dd9b33e99866ea`.
 - Independent issue/file fetch confirmed exact equality between the issue payload's decoded content and the published artifact. Publisher status: **PUBLISHED_VERIFIED**.
+
+
+## Lean formalization addendum — 2026-11-04T16:36Z
+
+- The balanced four-family contrast identities and the independent symmetric-noise 50% reversal bound were transcribed into the existing HsH Orson formalization branch, PR #850. New module: `FORMAL_VERIFICATION/HsHVerification/OrsonFamilyConditionedPreference.lean`; module blob `58e097941587b9889707f63a012af5a2664803ce`; root aggregator blob `4586adeee53436723b8b57f0cfdb067b9ea1756b`; exact branch head `5bad1dcc79a686cd2a7e1f27c297a10cbcc802c6`.
+- Workflow run #41870255531, job #126715066924, is still in progress. Checkout and Lake manifest steps passed; the Lean compilation step was in progress at last inspection. **Status: SUBMITTED_NOT_VERIFIED.** No compile, axiom-audit, or theorem-success claim is made.
+- Formalization assumptions are explicit: four families; balanced judge-row means `μ+a_j=1/2`; zero-sum candidate-family effects; row- and column-centered interaction terms. The module states the row, column and difference identities and the symmetric-noise bound. It does not validate source data, randomization, empirical family effects, human anchoring, model independence or causal interpretation.
+- This is an external methods comparator only. The frozen P1 ConsistencyBench archive still contains one shared GPT-4o-mini evaluator and within-model self-exposure/self-revision, not cross-model peer exposure. No P1 protocol change, trial, or paper-gate advancement.
