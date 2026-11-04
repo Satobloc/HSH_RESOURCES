@@ -91,6 +91,7 @@ These materials are not assumed to be controlled experiments. Many are naturalis
    - **Why it matters:** Fully crossed judge-family × candidate-family panel; demonstrates why the naive row-wise same-family contrast confounds candidate-family strength and gives a column-wise estimator under balanced/double-centered assumptions. Separates family-conditioned preference from exact self-evaluation, likelihood familiarity, and order instability.
    - **Boundary:** Preprint; no raw archive independently retrieved in this pass. No peer exposure or cross-model deliberation is tested. Not a P1 replication.
    - **URL:** https://arxiv.org/abs/2609.17857
+   - **Public HsH artifact:** issue #1334 (PUBLISHED_VERIFIED).
 
 10. **Hu, Yibo; Jiaming Qu (2026), “Social Pressure Breaks Majority Voting in LLM Safety Panels.”**
    - arXiv:2608.04415
