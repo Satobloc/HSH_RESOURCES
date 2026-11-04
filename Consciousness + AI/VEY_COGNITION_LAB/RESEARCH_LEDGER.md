@@ -564,3 +564,16 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Replacement run #41871626742 / job #126719953314 remains `in_progress`.
 - Checkout completed successfully; Lake dependency-manifest generation is currently `in_progress`; Lean compile step has not started. Job logs are not yet available from the Actions API.
 - Final current status remains `REPAIR_SUBMITTED_NOT_VERIFIED`. No compile, axiom, or proof-success claim.
+
+
+## 2026-11-04 | VEY-029 evaluator-side context sensitivity and P1 measurement boundary
+
+- Added `STUDIES/VEY-029_EVALUATOR_CONTEXT_SENSITIVITY_AND_MEASUREMENT_BOUNDARIES_2026-11-04.md`.
+- New primary source: Guerra & Hu (2026), arXiv:2608.04463v2. Same-answer blind/informed judge ratings identify a judge-specific directional peer-context term under the paper's antisymmetric model. The authors do not separately identify a generic informed-pass shift.
+- Source equations: Δ_total = Δ_sp + Δ_content + Δ_pp; Δ_pp is explicitly a bundled peer-presentation residual, not a pure social-framing effect. The source's four open-weight judges show heterogeneous directional loadings; blind agreement is α=0.235. Anchor ordering improves from 73.3% reference-free to 97.5% reference-augmented.
+- Source reports 147,000 generated answers, 255,000 rating tasks, 1.24 GPU-hours measured for the blind/informed rating pass, and 25–30 GPU-hours estimated total local compute; hosted GPT API costs excluded. Only seed 42 enters the primary hierarchical fit because nominally identical greedy runs matched on 54% of Round-1 answers. Separate decomposition corpora are not numerically interchangeable with the pooled main corpus.
+- The paper's linked code/data repository returned 404 on 2026-11-04; no independent raw-data/code reproduction.
+- Crosswalked to already-reviewed VEY-014, VEY-025, VEY-028 and the 2026-10-05 Orson cognitive-stratigraphy note. Content repetition, peer presentation, evaluator context, identity cues, and persistent instance identity remain separate constructs.
+- P1 boundary: the frozen ConsistencyBench archive has one shared GPT-4o-mini NLI contradiction gate and within-model self-history, not the paper's ordinal judge panel or cross-model peer exposure. No effect estimate is transferred; no new trial, human session, API spend, or P1 scope change.
+- Existing HsH PR #850 extended in place with `OrsonEvaluatorMeasurementDecomposition.lean`; six conditional theorem targets. Actions run #41907127597 / job #126844690278 was still in progress at first check. Status `SUBMITTED_NOT_VERIFIED`; no proof-success claim.
+- P1 remains ACTIVE / METHODS-ARCHIVAL / November 9 NOT READY. November 30 P2 and December 14 P3 remain separate.
