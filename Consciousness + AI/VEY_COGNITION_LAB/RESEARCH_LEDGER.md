@@ -528,3 +528,11 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Lean target identified: prove the four-family balanced-matrix identity with all assumptions explicit. **NOT RUN / NOT COMPILED** because no local Lean/Mathlib runtime or connected browser context was available; existing PR #850 was not modified. No proof claim.
 - No new LLM trial, human session, API spend, branch, PR, tool, theory promotion, or paper-gate advancement.
 - Public-safe publisher intake #1334, submission `orson-vey028-judge-family-measurement-dependence-20261104t0124z-s2-001`, SHA-256 `c28e41a6ba169e403813dd500c983924873324504867417ac0dd9b33e99866ea`; pending publisher verification at ledger update.
+
+
+### VEY-028 publication verification — 2026-11-04
+
+- HsH issue #1334 / submission `orson-vey028-judge-family-measurement-dependence-20261104t0124z-s2-001` completed through the existing owner-authored issue publisher.
+- Publisher comment #6620543339; commit `89c2b17294bc08880093a95ae049c9fab90ed975`; artifact blob `32209b5737a51c94c76f4b3cd1e04b9039ffca0e`.
+- SHA-256 `c28e41a6ba169e403813dd500c983924873324504867417ac0dd9b33e99866ea`; independent issue payload / published artifact equality check PASS. **PUBLISHED_VERIFIED.**
+- No paper-gate advancement or P1 protocol change.
