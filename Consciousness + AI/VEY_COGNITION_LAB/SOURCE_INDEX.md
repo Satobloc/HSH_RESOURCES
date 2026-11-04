@@ -294,3 +294,16 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 - P1 remains frozen as a source-audited methods/archival study; its one shared GPT-4o-mini checker does not identify judge-family variation. No new trial, model call, human session, API spend, or paper-gate advancement.
 - Conditional Lean target identified, but no Lean 4/Mathlib run or proof is claimed; local runtime lacks Lean and no authorized existing branch/PR was changed.
 - Public-safe HsH publisher intake #1334, submission `orson-vey028-judge-family-measurement-dependence-20261104t0124z-s2-001`, SHA-256 `c28e41a6ba169e403813dd500c983924873324504867417ac0dd9b33e99866ea`; awaiting publisher action and independent readback.
+
+
+## 2026-11-04 | VEY-029 evaluator-side context sensitivity
+
+- Study note: `STUDIES/VEY-029_EVALUATOR_CONTEXT_SENSITIVITY_AND_MEASUREMENT_BOUNDARIES_2026-11-04.md`.
+- New primary source: Guerra & Hu (2026), “The Evaluator Is Part of the Experiment: Measuring Open-Ended LLM Conformity,” arXiv:2608.04463v2. Full-text review covered §§1–4, Appendices A–D, and selected Appendix E validation sections.
+- The same generated answer is rated blind and then with its peer block visible. The source's judge-specific signed-context term is γ_j d_i; it captures directional sensitivity under the antisymmetric model, not a generic informed-pass shift. The authors explicitly do not identify a condition-independent second-pass leniency term.
+- The source's total peer-arm shift decomposes into ordinary second-pass revision, candidate-content exposure, and a bundled peer-presentation residual. The residual is not a pure social-framing effect.
+- Blind judge agreement is low (α=0.235); correct-anchor ordering is 73.3% reference-free and 97.5% reference-augmented. The paper reports 147,000 generated answers and 255,000 rating tasks; 1.24 GPU-hours is the measured rating-pass time, while 25–30 GPU-hours is an estimate and hosted GPT judge costs are excluded.
+- The paper links a code/data repository, but the linked GitHub URL returned 404 on 2026-11-04; no raw code/data reproduction is claimed.
+- Crosswalks to already-indexed VEY-014 (speaker-free content floor), VEY-025 (identity-cue studies), VEY-028 (judge-family interaction), and the 2026-10-05 Orson cognitive-stratigraphy note. These are distinct measurement layers, not one generic conformity variable.
+- P1 remains frozen methods/archival: its shared GPT-4o-mini NLI gate is not the same instrument as the paper's ordinal judge panel; no transfer estimate, new trial, human session, API spend, or paper-gate advancement.
+- Conditional Lean formalization submitted in existing HsH PR #850: `OrsonEvaluatorMeasurementDecomposition.lean`; Actions run #41907127597 was in progress at note creation. No compile/proof-success claim.
