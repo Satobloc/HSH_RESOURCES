@@ -543,3 +543,10 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Existing Orson PR #850 extended in place; new module `OrsonFamilyConditionedPreference.lean`, blob `58e097941587b9889707f63a012af5a2664803ce`; root aggregator blob `4586adeee53436723b8b57f0cfdb067b9ea1756b`; branch head `5bad1dcc79a686cd2a7e1f27c297a10cbcc802c6`.
 - Actions run #41870255531 / job #126715066924: checkout and Lake dependency manifest succeeded; Lean compile step in progress at last inspection. **SUBMITTED_NOT_VERIFIED**; no theorem-success or axiom-audit claim.
 - The formalization encodes only the source's balanced four-family algebra and a symmetric-noise bound. It does not validate raw data or any P1/causal claim. P1 remains frozen methods/archival; no new trial or paper-gate advancement.
+
+
+## Lean failure / repair addendum — 2026-11-04
+
+- First run #41870255531 failed in the new module: two contrast definitions required `noncomputable`; four `ring` tactics were redundant after `rw` had closed their goals. Lean 4.34.0 / Lake 5.0.0; workflow compiled a PR merge-reference tree `913d049c91a5f7f16e10b3e399a0efc2fd7eb037`, not a standalone head. Tests, lint, nanoda and axiom-audit were skipped. The emitted theorem axiom lines are not treated as proof success because the module failed to compile.
+- Bounded repair committed to the same PR branch: module blob `d1ff80995c7f832f83a8a280c5d26e7d38392b9a`, branch head `872a5dd3f6a65c878f7392ec86be9c2641cc6245`; root aggregator import remains, blob `4586adeee53436723b8b57f0cfdb067b9ea1756b`.
+- The repaired head's Actions run is not yet visible. Status `REPAIR_SUBMITTED_NOT_VERIFIED`; no Lean proof claim, empirical validation or P1 gate advancement.
