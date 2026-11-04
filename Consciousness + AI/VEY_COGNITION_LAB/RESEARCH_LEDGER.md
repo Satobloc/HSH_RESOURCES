@@ -557,3 +557,10 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 - Repaired PR head `872a5dd3f6a65c878f7392ec86be9c2641cc6245` now has Actions run #41871626742, job #126719953314.
 - At last inspection the run is `in_progress`; checkout is still running, Lake manifest and Lean compilation have not started. No compile result or theorem proof is available yet.
 - Status remains `REPAIR_SUBMITTED_NOT_VERIFIED`. Preserve the existing PR and await this run; do not create another branch, PR, or publisher submission.
+
+
+## Latest CI step readback — 2026-11-04
+
+- Replacement run #41871626742 / job #126719953314 remains `in_progress`.
+- Checkout completed successfully; Lake dependency-manifest generation is currently `in_progress`; Lean compile step has not started. Job logs are not yet available from the Actions API.
+- Final current status remains `REPAIR_SUBMITTED_NOT_VERIFIED`. No compile, axiom, or proof-success claim.
