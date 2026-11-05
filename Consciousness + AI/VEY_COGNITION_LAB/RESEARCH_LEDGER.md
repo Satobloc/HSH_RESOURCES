@@ -580,3 +580,27 @@ Full note: `STUDIES/VEY-017_GRAIL_MULTI_PEER_EXTENSION_SOURCE_AUDIT_2026-10-30.m
 
 ### VEY-029 Lean execution addendum
 - PR #850 run #41907127597 / job #126844690278 completed SUCCESS on merge-reference commit `c1c749ad5fcb8e88abf1298b9dcdb2699c7656cf`, whose parents are base `598a45b...` and head `c385d0e...`. Lean 4.34.0 / Lake 5.0.0; full library 8,979 jobs; new module built at 8,926/8,979. Six theorem-specific `#print axioms` outputs each show `[propext, Classical.choice, Quot.sound]`; no `sorryAx` or `admit` in the log. Tests, lint, nanoda and automated axiom-audit skipped. Status `MERGE_REF_BUILD_SUCCESS / EXACT_HEAD_LEAN_UNVERIFIED`; no empirical or P1 scope claim.
+
+
+## VEY-030 — Handoff retention, access, uptake, and provenance
+
+**Status:** COMPLETE-AS-STAGE — external literature synthesis and proposed measurement architecture; no controlled LLM trial, no human participants, no API spend.  
+**Date:** 2026-11-05  
+**Question:** Does a handoff merely preserve information, or does the successor access, understand, correctly attribute, use, and act on it in time?
+
+Pointer: `STUDIES/VEY-030_HANDOFF_RETENTION_ACCESS_UPTAKE_AND_PROVENANCE_2026-11-05.md`.
+
+Three complementary external sources were triaged:
+- Wittendorff, *What Survives the Handover* (Zenodo DOI 10.5281/zenodo.22131392): pre-registration for fact/rule/provenance retention across successive handoffs; abstract/method record reviewed, outcomes not recovered.
+- Cazenille, *Shared Memory Is Not Enough for LLM-Agent Teams* (Figshare DOI 10.6084/m9.figshare.34332540): abstract-level record on access timing and coordinated task outcomes; sample size and full methods not recovered.
+- He & Yu, *Stored Is Not Supported* (arXiv:2609.02127): typed provenance and conditional assertion-mediation contract; 24 hand-authored conformance cases, not an end-to-end LLM evaluation.
+
+New distinction: **retention, availability, access, comprehension, decision uptake, task outcome, and provenance fidelity are separate observables**. The proposed record→compression→handoff→availability→access→comprehension→decision→outcome chain is an assistant-derived measurement schema; provenance must remain attached across transformations. Its arrows are hypotheses, not assumed implications.
+
+The existing relay's repository delivery/readback records establish repository availability, not authenticated ChatGPT-thread delivery, recipient reading, comprehension, decision uptake, or task success. This is an operational logging boundary, not a cognition result.
+
+The prospective test matrix separates (H1) provenance-vs-content loss across generations, (H2) availability vs access, (H3) access timing × task dependency effects on uptake/outcome, and (H4) typed vs flattened provenance representation. No numerical thresholds, sample-size calculation, or synthetic pilot data are supplied. No new trial, model call, human session, API spend, P1 scope change, manuscript edit, or paper-gate advancement.
+
+**Formal status:** no Lean module added. The schema is assistant-derived and not yet a source-defined mathematical statement; a data-free Lean fixture/proof remains BLOCKED_PENDING_NATHAN_PERMISSION under the current calculation BEDROCK. Formalization should follow a frozen typed transition schema grounded in real versioned handoff records.
+
+**Next:** retrieve and inspect the full Zenodo/Figshare instruments before adapting either; keep P1's November 9 methods/archival path and PDF/reader/independent-review gates separate.
