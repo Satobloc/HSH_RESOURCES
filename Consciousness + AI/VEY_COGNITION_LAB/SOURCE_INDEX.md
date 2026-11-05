@@ -309,3 +309,22 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 - Conditional Lean formalization submitted in existing HsH PR #850: `OrsonEvaluatorMeasurementDecomposition.lean`; Actions run #41907127597 was in progress at note creation. No compile/proof-success claim.
 
 - Lean execution addendum: PR #850 run #41907127597 succeeded on merge ref `c1c749ad5fcb8e88abf1298b9dcdb2699c7656cf` (parents: base `598a45b...`, head `c385d0e...`); Lean 4.34.0 / Lake 5.0.0; 8,979-job full build; six theorem `#print axioms` outputs each `[propext, Classical.choice, Quot.sound]`; no `sorryAx` or `admit` in logs. Tests/lint/nanoda/axiom-audit skipped; exact-head-only verification remains unestablished.
+
+
+### Agent handover, persistent memory, and provenance
+
+10. **Wittendorff, Kim (2026), “What Survives the Handover: Pre-registration of a Controlled Study of Fact, Rule, and Provenance Retention Across Agent Successions in Eleven Frontier Language Models.”**
+   - Zenodo DOI: https://doi.org/10.5281/zenodo.22131392; companion: https://doi.org/10.5281/zenodo.22122223
+   - **State:** TRIAGED — SciSpace record/abstract/method summary reviewed 2026-11-05; full instrument/outcomes not independently retrieved.
+   - **Why it matters:** Pre-registers fact, rule, authority, and distortion measurement across chained handoffs and token budgets. It is a pre-registration, not evidence that its hypotheses were confirmed.
+
+11. **Cazenille, Léo (2026), “Shared Memory Is Not Enough for LLM-Agent Teams.”**
+   - Figshare DOI: https://doi.org/10.6084/m9.figshare.34332540
+   - **State:** TRIAGED — abstract/record reviewed 2026-11-05; full methods, sample size, and uncertainty estimates not recovered.
+   - **Why it matters:** Separates record persistence from successor access timing and coordinated task outcome; suggests that availability alone is insufficient.
+
+12. **He, Jun; Deying Yu (2026), “Stored Is Not Supported: Typed Provenance and Assertion Guardrails for Persistent AI Agents.”**
+   - arXiv: https://arxiv.org/abs/2609.02127
+   - **State:** TRIAGED — abstract/structured record reviewed 2026-11-05; full end-to-end deployment evidence not established.
+   - **Why it matters:** Formalizes typed provenance and conditional assertion mediation. Its 24 hand-authored conformance cases validate encoded resolver/mediator obligations under stated assumptions, not end-to-end LLM extraction or memory behavior.
+
