@@ -138,3 +138,32 @@ No model inference, human-subject session, API spend, new dataset, P1 manuscript
 ## 9. Next cursor
 
 Recover and inspect the full Zenodo and Figshare instruments before adapting either. In parallel, preserve P1's November 9 methods/archival path and its separate requirements for canonical source LaTeX, compiled PDF, readable reader route, independent/hostile review, and author disposition.
+
+## 10. Retrieval audit — 2026-11-06T02:48Z
+
+**Status:** PRIMARY_FULL_TEXT_NOT_RETRIEVED / NO INSTRUMENT ADAPTATION / NO P1 CHANGE.
+
+### Search and access path
+
+- Re-read the existing Mersearch request `orson-cognition-origin-bank-20261103-1745` manifest and compact receipt. It covered the three repository roots and reports 16,942 files, 21,037,890 records, 135 hits across 74 source paths; raw results remain withheld. It did not recover the exact October 9 Orson role-reset user message.
+- All four shared Mersearch request lanes remain occupied. No request file was overwritten and no new request was submitted.
+- SciSpace search/fetch/field extraction was run against the indexed Wittendorff pre-registration, the possible results record, and the Cazenille Figshare record. These returned metadata, abstracts, and extracted field summaries, not the full instrument files or a verifiable downloadable primary-text copy.
+- Direct DOI/record/API retrieval attempts did not return primary content in this runtime. Exact DOI searches in the private Vey shelf returned only the existing VEY-030 note, SOURCE_INDEX, and RESEARCH_LEDGER; no local instrument copy or extracted full-text record was found.
+
+### Wittendorff record-lineage warning
+
+The indexed pre-registration remains DOI `10.5281/zenodo.22131392`, with companion record `10.5281/zenodo.22122223`. SciSpace also surfaced a separate record titled *What Survives the Handover? Rules Do. Facts Do Not* with metadata DOI `10.5281/zenodo.22273352`; the returned abstract refers to `10.5281/zenodo.22131393`. The latter does not match the pre-registration DOI or its currently indexed companion. Without the primary Zenodo records, version history, and instrument files, the lineage between these records is unresolved.
+
+Treat the possible results record as an **unverified retrieval lead only**. Do not import its extracted outcome summaries, numeric claims, or hypothesis dispositions into this study, and do not describe the pre-registration hypotheses as findings. The pre-registration remains TRIAGED; completed outcomes remain unverified.
+
+### Cazenille access boundary
+
+The Figshare DOI `10.6084/m9.figshare.34332540` remains abstract/record-level only. The accessible extraction did not recover sample size, model/version matrix, full manipulation details, raw outcomes, or uncertainty estimates. The reported access-timing pattern is not imported as a quantified effect.
+
+### Prospective measurement implication
+
+If the primary Wittendorff instrument confirms the distinction, consider scoring **provenance-label presence** separately from **provenance-evidence completeness** (source locator/hash, author/role, authority, timestamp, validity, and supersession). This is a future measurement refinement, not a result and not an amendment to P1. The existing separation of retention, availability, access, comprehension, decision uptake, and task outcome remains unchanged.
+
+### Next cursor
+
+Obtain the exact primary Zenodo/Figshare record files and version histories through an authorized retrieval path, or wait for a free Mersearch lane. Until then, preserve both external items as TRIAGED/abstract-level and do not adapt either instrument. P1 remains frozen to the ConsistencyBench methods/archival scope; no model trial, human session, API spend, manuscript edit, or paper-gate advancement occurred.
