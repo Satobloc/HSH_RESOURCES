@@ -608,3 +608,16 @@ The prospective test matrix separates (H1) provenance-vs-content loss across gen
 ## VEY-030 retrieval audit — 2026-11-06
 
 The full Zenodo/Figshare instruments remain unretrieved. SciSpace returned record/abstract and field-extraction summaries only. A possible Wittendorff results record surfaced with DOI 10.5281/zenodo.22273352, but its abstract refers to 10.5281/zenodo.22131393, which does not match the indexed pre-registration DOI 10.5281/zenodo.22131392 or companion 10.5281/zenodo.22122223. Treat this as an unresolved record-lineage lead, not verified results. Cazenille remains abstract-level; sample size, model/version matrix, full manipulations, and uncertainty estimates were not recovered. No outcome claims or instrument adaptations are imported. See VEY-030 §10 for the full retrieval audit. P1 remains frozen and unchanged.
+
+
+## VEY-031 — Claim-specific dependency profiles for LLM evidence
+
+**Status:** SOURCE-GROUNDED MEASUREMENT-ARCHITECTURE PROPOSAL / NO NEW TRIAL.  
+**Date:** 2026-11-06.  
+**Question:** How can P1 distinguish shared source, model-generation, exposure, evaluator, scoring, analysis, and adjudication lineage for each claim without reducing them to a scalar independence label?
+
+Pointer: `STUDIES/VEY-031_CLAIM_SPECIFIC_DEPENDENCY_PROFILES_2026-11-06.md`.
+
+The note applies the existing claim-scoped lineage idea channel-by-channel and crosswalks it to the frozen ConsistencyBench P1 archive. It records the verified shared benchmark/evaluator design, within-model self-history, 119 report/file inspection edges over 17 unique CGD output files and 19,550 archived records, and the limits of model identity, raw checker logs, semantic adjudication, and independent review. It separates provenance overlap from statistical dependence and provides a claim-to-evidence/failure matrix.
+
+No P1 scope change, new model trial, human session, API spend, new Lean module, or paper-gate advancement. Cross-channel formalization remains `FORMALIZATION_BLOCKED_DEFINITION` until source-defined channel maps and completeness conditions exist.
