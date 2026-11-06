@@ -604,3 +604,7 @@ The prospective test matrix separates (H1) provenance-vs-content loss across gen
 **Formal status:** no Lean module added. The schema is assistant-derived and not yet a source-defined mathematical statement; a data-free Lean fixture/proof remains BLOCKED_PENDING_NATHAN_PERMISSION under the current calculation BEDROCK. Formalization should follow a frozen typed transition schema grounded in real versioned handoff records.
 
 **Next:** retrieve and inspect the full Zenodo/Figshare instruments before adapting either; keep P1's November 9 methods/archival path and PDF/reader/independent-review gates separate.
+
+## VEY-030 retrieval audit — 2026-11-06
+
+The full Zenodo/Figshare instruments remain unretrieved. SciSpace returned record/abstract and field-extraction summaries only. A possible Wittendorff results record surfaced with DOI 10.5281/zenodo.22273352, but its abstract refers to 10.5281/zenodo.22131393, which does not match the indexed pre-registration DOI 10.5281/zenodo.22131392 or companion 10.5281/zenodo.22122223. Treat this as an unresolved record-lineage lead, not verified results. Cazenille remains abstract-level; sample size, model/version matrix, full manipulations, and uncertainty estimates were not recovered. No outcome claims or instrument adaptations are imported. See VEY-030 §10 for the full retrieval audit. P1 remains frozen and unchanged.
