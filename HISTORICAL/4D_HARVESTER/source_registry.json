@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "project": "History of physical/spatial higher-dimensional thought, 1870-1945",
+  "policy": "Treat each entry as an acquisition route, not evidence for a historical conclusion. Preserve source wording, date, identifier, rights, retrieval path, and known interface limitations.",
+  "automated_providers": [
+    {
+      "id": "ddb_newspaper_portal",
+      "name": "Deutsches Zeitungsportal / Deutsche Digitale Bibliothek",
+      "kind": "newspaper_fulltext_search",
+      "status": "implemented_with_api_key",
+      "portal": "https://www.deutsche-digitale-bibliothek.de/newspaper",
+      "api_docs": "https://labs.deutsche-digitale-bibliothek.de/app/ddbapi/",
+      "endpoint": "https://api.deutsche-digitale-bibliothek.de/search/index/newspaper-issues/select",
+      "authentication": "DDB API key in DDB_API_KEY environment variable; official DDB API documentation says registered users must create an API key.",
+      "coverage_note": "Full-text newspaper page search, with date/title/place/provider/language metadata and highlighted OCR snippets in the currently observed newspaper Solr collection. Verify collection schema against live responses.",
+      "tool_provider": "ddb",
+      "notes": [
+        "Search hit totals are page counts, not counts of unique articles or relevant historical arguments.",
+        "Search results are relevance-ordered; date bounds must be applied in the query. Do not treat returned order as chronology.",
+        "The official API docs describe the general Search API and key requirements; the newspaper-specific Solr field layout is based on the live portal's observed index interface and is guarded by response-schema checks."
+      ]
+    },
+    {
+      "id": "anno",
+      "name": "Austrian National Library, ANNO",
+      "kind": "newspaper_and_periodical_fulltext_search",
+      "status": "implemented_opt_in_undocumented_backend",
+      "portal": "https://anno.onb.ac.at/",
+      "linked_data": "https://labs.onb.ac.at/en/datasets/lod/",
+      "iiif_docs": "https://iiif.onb.ac.at/api/",
+      "observed_search_endpoint": "https://anno.onb.ac.at/anno-suche/rest/search/complex",
+      "observed_snippet_endpoint": "https://anno.onb.ac.at/anno-suche/rest/search/snippet",
+      "observed_ocr_endpoint": "https://anno.onb.ac.at/cgi-content/annoshow",
+      "authentication": "No key observed for the current AnnoSearch web-app backend; endpoint is undocumented and may change without notice.",
+      "tool_provider": "anno",
+      "opt_in_flag": "--allow-undocumented-anno-api",
+      "notes": [
+        "This adapter is disabled unless explicitly opted into. It validates JSON response shape and fails loudly on endpoint drift.",
+        "ANNO's linked-data service provides RDF metadata records at data.onb.ac.at/ANNO/{id}.rdf; issue identifiers are documented by the IIIF API.",
+        "The IIIF service has separate age/access restrictions; do not infer that a missing IIIF manifest means OCR text is unavailable.",
+        "The supplied 1924 issue PDF is a user-provided seed and is not fetched by this undocumented API adapter."
+      ]
+    },
+    {
+      "id": "loc_chronicling_america",
+      "name": "Library of Congress, Chronicling America",
+      "kind": "newspaper_api",
+      "status": "implemented",
+      "portal": "https://www.loc.gov/collections/chronicling-america/",
+      "api_docs": "https://www.loc.gov/apis/additional-apis/chronicling-america-api/",
+      "endpoint": "https://www.loc.gov/collections/chronicling-america/",
+      "tool_provider": "loc",
+      "notes": [
+        "JSON API; use for U.S. newspaper coverage and OCR page results.",
+        "Coverage and query semantics differ from German/Austrian newspaper archives."
+      ]
+    },
+    {
+      "id": "internet_archive",
+      "name": "Internet Archive",
+      "kind": "catalog_search_and_item_metadata",
+      "status": "implemented",
+      "api_docs": "https://doc-tools.readthedocs.io/en/ia-test-gsod/item-search-apis.html",
+      "search_endpoint": "https://archive.org/advancedsearch.php",
+      "metadata_endpoint": "https://archive.org/metadata/{identifier}",
+      "tool_provider": "ia",
+      "notes": [
+        "Advanced Search has a 10,000-result paging limit for sorted results; this harvester deliberately takes a bounded sample per query.",
+        "Automatic downloads require an explicit open-license or public-domain indicator and obey the configured byte limit."
+      ]
+    },
+    {
+      "id": "crossref",
+      "name": "Crossref REST API",
+      "kind": "scholarly_metadata_search",
+      "status": "implemented",
+      "api_docs": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/",
+      "endpoint": "https://api.crossref.org/works",
+      "tool_provider": "crossref",
+      "notes": [
+        "Bibliographic metadata and links; not a full-text search engine.",
+        "A Crossref record is not proof that the linked publication has been read or supports a claim."
+      ]
+    },
+    {
+      "id": "openalex",
+      "name": "OpenAlex",
+      "kind": "scholarly_metadata_search",
+      "status": "implemented",
+      "api_docs": "https://help.openalex.org/api/",
+      "endpoint": "https://api.openalex.org/works",
+      "tool_provider": "openalex",
+      "notes": [
+        "Searches works metadata, abstracts, and available indexed full text; OA locations and licensing are retained separately.",
+        "An OpenAlex OA flag alone does not qualify a file for automatic download; explicit license evidence is also required."
+      ]
+    },
+    {
+      "id": "generic_oai_pmh",
+      "name": "OAI-PMH repositories",
+      "kind": "repository_metadata_harvesting",
+      "status": "implemented_bounded",
+      "specification": "https://www.openarchives.org/OAI/openarchivesprotocol.html",
+      "tool_provider": "oai",
+      "notes": [
+        "The endpoint must be supplied by the operator.",
+        "ListRecords requests are bounded by --oai-max-batches. A run that stops at this ceiling is explicitly incomplete, not an exhaustive repository harvest."
+      ]
+    }
+  ],
+  "manual_or_catalogue_routes": [
+    {
+      "id": "ddb_portal_ui",
+      "name": "Deutsches Zeitungsportal browser search",
+      "url": "https://www.deutsche-digitale-bibliothek.de/newspaper",
+      "status": "manual_capture_supported",
+      "capture_method": "Save the rendered search results page as HTML and import with --import-html; retain the original text/export separately where possible.",
+      "notes": ["Do not scrape undocumented UI endpoints when the official API path is available.", "The supplied 2026-11-05 search capture reports 42,708 hits for the literal query 'vierte dimension'; this is a portal count, not a relevance count."]
+    },
+    {
+      "id": "kalliope",
+      "name": "Kalliope Union Catalogue of Personal Papers and Autographs",
+      "url": "https://kalliope-verbund.info/",
+      "status": "manual_catalogue_and_saved_html_import",
+      "priority_targets": ["Wundt estate", "Zöllner correspondence", "Foerster correspondence", "Fechner papers"],
+      "notes": ["Use catalogue records as discovery leads; order/view manuscript items under each repository's access terms."]
+    },
+    {
+      "id": "leipzig_university_library_wundt",
+      "name": "University of Leipzig Library, Wilhelm Wundt estate",
+      "url": "https://www.ub.uni-leipzig.de/en/research-library/digital-collections/bequest-of-wilhelm-wundt/",
+      "status": "manual_catalogue_and_saved_html_import",
+      "priority_targets": ["Wundt correspondence", "1879 Wundt-Ulrici controversy", "Wundt-Fechner letters"]
+    },
+    {
+      "id": "bbaw_archive",
+      "name": "Berlin-Brandenburg Academy of Sciences archive",
+      "url": "https://archiv.bbaw.de/",
+      "status": "manual_catalogue_and_archival_request",
+      "priority_targets": ["Helmholtz papers", "Academy minutes", "appointments and membership records"]
+    },
+    {
+      "id": "cambridge_spr",
+      "name": "Society for Psychical Research records, Cambridge University Library",
+      "url": "https://archivesearch.lib.cam.ac.uk/",
+      "status": "manual_catalogue_and_archival_request",
+      "priority_targets": ["Henry Sidgwick", "Frederic Myers", "Oliver Lodge", "William Crookes", "investigation correspondence and press cuttings"]
+    },
+    {
+      "id": "birmingham_lodge",
+      "name": "University of Birmingham, Oliver Lodge papers",
+      "url": "https://calmview.bham.ac.uk/Record.aspx?id=XOJL%2F1&src=CalmView.Catalog",
+      "status": "manual_catalogue_and_saved_html_import",
+      "priority_targets": ["Lodge correspondence", "physics career", "psychical research", "criticism and professional reactions"]
+    },
+    {
+      "id": "ucl_pearson",
+      "name": "UCL Special Collections, Karl Pearson papers",
+      "url": "https://www.ucl.ac.uk/library/collections/digital-collections/special-collections-digital-collections/karl-pearson-papers",
+      "status": "manual_catalogue_and_archival_request",
+      "priority_targets": ["Pearson's ether-squirt and higher-dimensional papers", "lectures", "appointments", "correspondence"]
+    },
+    {
+      "id": "onb_anno_lod",
+      "name": "Austrian National Library linked data for ANNO",
+      "url": "https://labs.onb.ac.at/en/datasets/lod/",
+      "status": "metadata_api_and_manual_fulltext_search",
+      "notes": ["EDM/RDF issue metadata and SPARQL access are documented.", "Full-text search uses the ANNO web interface's undocumented backend; see the explicit opt-in provider entry above."]
+    }
+  ]
+}
