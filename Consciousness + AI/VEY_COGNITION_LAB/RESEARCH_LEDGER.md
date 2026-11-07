@@ -644,3 +644,12 @@ No P1 scope change, new model trial, human session, API spend, new Lean module, 
 - Public-safe payload issue #1457, submission `orson-vey033-cgd-projection-addendum-20261107t2036z-s3-001`; declared and independently recomputed content SHA-256 match: `8f43f10a64cc99310190ce6d2a18c6d50ce3961994222c47dbd0dbb2836c22a6`.
 - Publisher was **not triggered**: title omitted required prefix `[HSH-PUBLISH-V1]`; live workflow listens only to `issues.opened` and checks that exact prefix. No publisher comment or canonical artifact exists. Status `SUBMITTED_NOT_VERIFIED / NOT_TRIGGERED_TITLE_PREFIX_MISMATCH / NOT_PUBLISHED`.
 - No duplicate issue, title edit/reopen, or manual publication-path write. Issue #1457 remains the sole submission record.
+
+
+### VEY-033 error-sentinel formalization | 2026-11-07
+
+- Corrected pinned-source locators: `call_model` lines 137-174, `[ERROR]` return line 170, NLI Boolean parser line 324. Source commit/blob unchanged.
+- Added two theorems to the existing PR #850 `OrsonCGDProjectionGate.lean`: `error_sentinel_maps_to_false` and `error_sentinel_indistinguishable_from_consistent`. They formalize the source-conditional collision for already-uppercase literals; they do not establish an actual runtime error.
+- Actions run #42416933193 / job #128536972640 SUCCESS on merge ref `17c3d7409cb13acaa9b9a06170af0fa7bbd26c39`, containing PR head `3bb0c57b56e1eff49139dcc21fcfe518a7717b8d`; Lean 4.34.0 / Lake 5.0.0, 8,983 jobs, module built. New theorem axiom outputs: `propext`, `Classical.choice`, `Quot.sound`; no `sorryAx`/ `admit` in log. Exact-head standalone and global axiom audit/tests/lint/nanoda/leanchecker remain unverified/skipped.
+- The archive lacks raw checker error state/counts; no empirical error rate or false-negative effect is identified. Proposed tri-state instrumentation only; no new trial or P1 scope change.
+- Issue #1457 remains NOT PUBLISHED because the title omitted required `[HSH-PUBLISH-V1]`; publisher only listens to `issues.opened`. No duplicate or manual bypass.
