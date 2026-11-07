@@ -621,3 +621,13 @@ Pointer: `STUDIES/VEY-031_CLAIM_SPECIFIC_DEPENDENCY_PROFILES_2026-11-06.md`.
 The note applies the existing claim-scoped lineage idea channel-by-channel and crosswalks it to the frozen ConsistencyBench P1 archive. It records the verified shared benchmark/evaluator design, within-model self-history, 119 report/file inspection edges over 17 unique CGD output files and 19,550 archived records, and the limits of model identity, raw checker logs, semantic adjudication, and independent review. It separates provenance overlap from statistical dependence and provides a claim-to-evidence/failure matrix.
 
 No P1 scope change, new model trial, human session, API spend, new Lean module, or paper-gate advancement. Cross-channel formalization remains `FORMALIZATION_BLOCKED_DEFINITION` until source-defined channel maps and completeness conditions exist.
+
+
+## 2026-11-07 | VEY-033 CGD checker/repair projections and dual-history state
+
+- Added `STUDIES/VEY-033_CGD_CHECKER_REPAIR_PROJECTION_AND_DUAL_HISTORY_2026-11-07.md`.
+- Pinned primary source: `aayambansal/ConsistencyBench`, commit `bfc676baa848c7f1715bb73aee148180de15516e`; `src/evaluate.py` blob `0453540cb7c19227601e59fb342fa93e736da849`.
+- New source-level refinement: the shared GPT-4o-mini checker sees only the first 500 characters of prior/current raw responses, with no question or premise; the repair prompt sees previous question, previous final extracted answer, premise, and current question. History stores both final answer and original raw response, so later checker comparisons remain anchored to the original raw response after a revision. The archived record does not preserve the triggering pair or raw judge prompt/output.
+- Clarified that the checker object is instantiated once per model/strategy run; “shared evaluator” refers to the common hardcoded endpoint/configuration, not one global mutable judge state.
+- Added source-conditional Lean module `OrsonCGDProjectionGate.lean` to existing HsH PR #850. It formalizes checker/repair projection loss, dual-history invariance, prefix dependence, and non-identifiability of the trigger pair from the archived result projection. Build status is tracked in the HsH h668:s3 receipt; no proof-success claim is inherited from older heads.
+- Added a prospective context/truncation, dual-history, and trigger-lineage test matrix with calibration/holdout and equivalence-bound falsification rules. No trial, model call, human session, API spend, P1 scope change, or paper-gate advancement.
