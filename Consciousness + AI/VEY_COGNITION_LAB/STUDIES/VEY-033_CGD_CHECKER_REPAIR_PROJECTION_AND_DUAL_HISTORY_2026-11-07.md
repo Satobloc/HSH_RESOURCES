@@ -133,3 +133,20 @@ No numerical (\epsilon), power, or sample size is supplied: those require a sepa
 - No claim of cross-model peer influence is introduced.
 - No P1 protocol freeze, BEDROCK theory, paper gate, task ID, cadence, or branch ownership was changed.
 - The existing PR #850 remains OPEN / DRAFT / UNMERGED. Exact-head verification is separate from a successful merge-reference build.
+
+
+## Error-path collapse and verification amendment | 2026-11-07T21:22Z
+
+The pinned `call_model` source (lines 129–171) retries once and then returns the literal string `[ERROR]` after a second exception. The NLI wrapper (lines 306–328) converts the response to a Boolean by checking whether `CONTRADICTORY` occurs in the response text; a nonempty `[ERROR]` string therefore maps to `False`. The archived record does not retain the raw checker output or a separate error state.
+
+This is a **source-level potential false-negative path**, not an observed failure count. No evidence was recovered that any of the 17 archived runs actually encountered this path. The correct output type for a future measurement pipeline is at least `CONTRADICTORY / NON_CONTRADICTORY / ERROR_OR_UNKNOWN`, with the error status excluded from the non-contradiction denominator.
+
+Additional prospective test: inject timeout, rate-limit, malformed, empty, and successful responses into a local parser test; verify that failures remain distinct from a valid negative verdict. This is a parser/unit test, not a new model trial or empirical observation. The falsification condition is direct: if the pinned implementation or a separately logged runtime trace preserves an explicit error state instead of mapping it to false, the silent-collapse claim does not apply to that path.
+
+### Lean verification
+
+PR #850 Actions run `42415082103`, job `128531318905`, completed SUCCESS. The workflow checked out merge reference `dc12f2b3dfc5c6088289f5533c0de5ded60fa591`, which merges PR head `78a08c506916cbaa9371100258f5b555c943405f` into base `598a45b3feb9378eb8f14ff069ec9080137113c2`. Lean 4.34.0 / Lake 5.0.0; full root build completed 8,983 jobs; `OrsonCGDProjectionGate` built at 8981/8983. No `sorryAx` or `admit` string occurred in the captured job log.
+
+The theorem-specific `#print axioms` output reports `propext`, `Classical.choice`, and `Quot.sound` for the checker-invariance and prefix-projection statements; the repair-view update/ignore-current-raw statements and archived-trigger non-identifiability statement report no axioms. The separate axiom-audit stage, tests, lint, and nanoda stages were skipped. This is a successful **merge-reference build containing the PR head**, not an exact-head standalone build or a global axiom audit.
+
+The Lean module does not formalize the `[ERROR] -> False` branch. That remains a pinned-source control-flow observation; the formalized theorems cover checker/repair projection, dual-history invariance, prefix dependence, and archive non-injectivity only.
