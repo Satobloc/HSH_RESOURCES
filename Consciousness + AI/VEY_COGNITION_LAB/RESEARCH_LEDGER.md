@@ -648,6 +648,8 @@ No P1 scope change, new model trial, human session, API spend, new Lean module, 
 
 ### VEY-033 error-sentinel formalization | 2026-11-07
 
+- Added H4 real-data holdout matrix row to the VEY-033 study note: instrumented provider/error responses, call-ID-disjoint holdout, typed parser comparator, and explicit non-estimability if no real error events are observed. No synthetic case is treated as empirical evidence.
+
 - Corrected pinned-source locators: `call_model` lines 137-174, `[ERROR]` return line 170, NLI Boolean parser line 324. Source commit/blob unchanged.
 - Added two theorems to the existing PR #850 `OrsonCGDProjectionGate.lean`: `error_sentinel_maps_to_false` and `error_sentinel_indistinguishable_from_consistent`. They formalize the source-conditional collision for already-uppercase literals; they do not establish an actual runtime error.
 - Actions run #42416933193 / job #128536972640 SUCCESS on merge ref `17c3d7409cb13acaa9b9a06170af0fa7bbd26c39`, containing PR head `3bb0c57b56e1eff49139dcc21fcfe518a7717b8d`; Lean 4.34.0 / Lake 5.0.0, 8,983 jobs, module built. New theorem axiom outputs: `propext`, `Classical.choice`, `Quot.sound`; no `sorryAx`/ `admit` in log. Exact-head standalone and global axiom audit/tests/lint/nanoda/leanchecker remain unverified/skipped.
