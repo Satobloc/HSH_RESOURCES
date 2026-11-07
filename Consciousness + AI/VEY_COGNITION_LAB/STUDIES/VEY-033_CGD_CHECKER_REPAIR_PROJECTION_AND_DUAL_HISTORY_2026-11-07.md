@@ -150,3 +150,10 @@ PR #850 Actions run `42415082103`, job `128531318905`, completed SUCCESS. The wo
 The theorem-specific `#print axioms` output reports `propext`, `Classical.choice`, and `Quot.sound` for the checker-invariance and prefix-projection statements; the repair-view update/ignore-current-raw statements and archived-trigger non-identifiability statement report no axioms. The separate axiom-audit stage, tests, lint, and nanoda stages were skipped. This is a successful **merge-reference build containing the PR head**, not an exact-head standalone build or a global axiom audit.
 
 The Lean module does not formalize the `[ERROR] -> False` branch. That remains a pinned-source control-flow observation; the formalized theorems cover checker/repair projection, dual-history invariance, prefix dependence, and archive non-injectivity only.
+
+
+## Publication status correction | 2026-11-07T21:35Z
+
+Public-safe content was submitted in issue #1457 with submission ID `orson-vey033-cgd-projection-addendum-20261107t2036z-s3-001`. The issue-body content SHA-256 independently recomputed as `8f43f10a64cc99310190ce6d2a18c6d50ce3961994222c47dbd0dbb2836c22a6`, matching the declared digest. However, the issue title omitted the required literal prefix `[HSH-PUBLISH-V1]`. The live publisher workflow listens only to `issues.opened` and its job condition requires that prefix, so no publisher job ran and no publisher comment or canonical artifact was created. The expected `PUBLISHED_SUBMISSIONS/<submission_id>.md` path is absent. Status: `SUBMITTED_NOT_VERIFIED / NOT_TRIGGERED_TITLE_PREFIX_MISMATCH / NOT_PUBLISHED`.
+
+No corrected duplicate issue, issue reopen, title edit, manual artifact write, or alternate publisher bypass was attempted. Issue #1457 remains the single public submission record. Do not resubmit the same artifact under a second issue.
