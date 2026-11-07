@@ -631,3 +631,9 @@ No P1 scope change, new model trial, human session, API spend, new Lean module, 
 - Clarified that the checker object is instantiated once per model/strategy run; “shared evaluator” refers to the common hardcoded endpoint/configuration, not one global mutable judge state.
 - Added source-conditional Lean module `OrsonCGDProjectionGate.lean` to existing HsH PR #850. It formalizes checker/repair projection loss, dual-history invariance, prefix dependence, and non-identifiability of the trigger pair from the archived result projection. Build status is tracked in the HsH h668:s3 receipt; no proof-success claim is inherited from older heads.
 - Added a prospective context/truncation, dual-history, and trigger-lineage test matrix with calibration/holdout and equivalence-bound falsification rules. No trial, model call, human session, API spend, P1 scope change, or paper-gate advancement.
+
+
+### VEY-033 verification amendment | 2026-11-07T21:22Z
+
+- Pinned-source error path: `call_model` retries once, then returns `[ERROR]`; the NLI wrapper's substring-to-Boolean parser maps this nonempty string to `False`. This is a potential false-negative path, not evidence that any archived run failed. The raw checker output/error state is not retained.
+- PR #850 merge-reference Actions run #42415082103 / job #128531318905 succeeded. Merge ref `dc12f2b3dfc5c6088289f5533c0de5ded60fa591` contains head `78a08c506916cbaa9371100258f5b555c943405f`; Lean 4.34.0 / Lake 5.0.0; 8,983 jobs; new module built. No `sorryAx` or `admit` occurrence in captured logs. Separate axiom audit, tests, lint, and nanoda skipped. Exact-head standalone verification remains unverified.
