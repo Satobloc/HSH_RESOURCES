@@ -637,3 +637,10 @@ No P1 scope change, new model trial, human session, API spend, new Lean module, 
 
 - Pinned-source error path: `call_model` retries once, then returns `[ERROR]`; the NLI wrapper's substring-to-Boolean parser maps this nonempty string to `False`. This is a potential false-negative path, not evidence that any archived run failed. The raw checker output/error state is not retained.
 - PR #850 merge-reference Actions run #42415082103 / job #128531318905 succeeded. Merge ref `dc12f2b3dfc5c6088289f5533c0de5ded60fa591` contains head `78a08c506916cbaa9371100258f5b555c943405f`; Lean 4.34.0 / Lake 5.0.0; 8,983 jobs; new module built. No `sorryAx` or `admit` occurrence in captured logs. Separate axiom audit, tests, lint, and nanoda skipped. Exact-head standalone verification remains unverified.
+
+
+### VEY-033 publication correction | 2026-11-07T21:35Z
+
+- Public-safe payload issue #1457, submission `orson-vey033-cgd-projection-addendum-20261107t2036z-s3-001`; declared and independently recomputed content SHA-256 match: `8f43f10a64cc99310190ce6d2a18c6d50ce3961994222c47dbd0dbb2836c22a6`.
+- Publisher was **not triggered**: title omitted required prefix `[HSH-PUBLISH-V1]`; live workflow listens only to `issues.opened` and checks that exact prefix. No publisher comment or canonical artifact exists. Status `SUBMITTED_NOT_VERIFIED / NOT_TRIGGERED_TITLE_PREFIX_MISMATCH / NOT_PUBLISHED`.
+- No duplicate issue, title edit/reopen, or manual publication-path write. Issue #1457 remains the sole submission record.
