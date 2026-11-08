@@ -702,3 +702,15 @@ A conditional Lean 4/Mathlib lemma is specified in the study note, but **LEAN_NO
 **Project boundary:** supplementary external comparator only. No Orson P1 scope/ownership change, no model trial, no human session, no API spend, no paper-gate advancement, and no theory authority.
 
 **Next:** if a future consented study is authorized, compare naturalistic, fixed, and adaptive modular scaffolds with balanced session timing, separate intervention factors, pre-registered outcomes, team-level randomization, explicit completion/quality/participation/friction measures, and blinded human quality review. Do not treat this preprint as a general verdict on scaffolding.
+
+
+## 2026-11-08 | VEY-037 — Ju & Aral human–AI dyad field experiment
+
+- Added `STUDIES/VEY-037_JU_ARAL_HUMAN_AI_DYAD_FIELD_EXPERIMENT_SOURCE_PROVENANCE_AUDIT_2026-11-08.md`.
+- Primary source: Ju & Aral, arXiv:2503.18238v3; full versioned HTML reviewed. Preprint status only; v3 metadata date and manuscript front-matter date do not reconcile.
+- Design: randomized human–human versus human–AI dyads, one GPT-4o agent in a 40-minute ad-production task. It is not a multi-human group or multi-LLM team study; no human-alone condition.
+- Findings: higher individual-human ad output and text ratings, lower image ratings and embedding-based output diversity; no significant direct H-AI effect on CPC/CTR/VTD in the downstream no-holdout X field evaluation. Recognition is post-task, not randomized.
+- QC: scripted arithmetic found unresolved attrition, team/participant, ad-total, and rater-denominator inconsistencies. Message-process categories use GPT-4o-mini; no independent human-coded validation sample was described in the reviewed text. Human ad ratings are a separate evaluator channel.
+- No raw data, logs, OSF materials, or core Pairit code retrieved; paper says data/code available upon request. No human session, model API call, Lean proof, P1 change, or paper-gate advancement.
+- Orson retains P1 ownership; this is a supporting literature note only.
+- HsH public-safe publisher intake: pending creation/verification in the paired h694:s4 receipt.
