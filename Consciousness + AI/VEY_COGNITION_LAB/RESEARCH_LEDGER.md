@@ -667,3 +667,13 @@ No P1 scope change, new model trial, human session, API spend, new Lean module, 
 - Public raw turn logs and analysis code were not retrieved; the arXiv record links an OSF prompt set, which returned 403 in this runtime. No participant-level data were accessed.
 - Conditional Lean formalization submitted in HsH draft PR #1480, stacked on existing Lean infrastructure branch. Module: `HumanAITeammateDyads.lean`; Actions run #42457673047 was in progress at note creation. Formal statements cover potential-pair arithmetic only, not source-premise truth, realized edges, causal effects, or cognition.
 - No new model trial, human session, API spend, P1 scope change, manuscript edit, paper-gate advancement, or theory promotion. Orson retains P1 ownership.
+
+
+## 2026-11-08 | VEY-035 — TRAIL longitudinal persona-memory carryover
+
+- Study note: STUDIES/VEY-035_TRAIL_LONGITUDINAL_PERSONA_MEMORY_CARRYOVER_IDENTIFIABILITY_2026-11-08.md.
+- Primary source: Samadi et al., “TRAIL: A Platform for Configurable Human–AI Teaming Experiments,” arXiv:2607.12180v1; official TRAIL project page accessed 2026-11-08.
+- Full paper architecture/demonstration and official site reviewed. The paper describes configurable persona, a four-stage message pipeline, short-term context plus reflective long-term summaries, persistent team/AI identities, and message-level decision/retrieval traces. Cross-session memory reset/carryover and per-team isolation semantics are not specified in the reviewed source.
+- Version/lineage guard: the paper's six-session demonstration (about 51 students, 99 team-sessions, 4,495 messages, cognitive-scaffolding vs socially-supportive personas) is not merged with the official site's ongoing Temporal HAT description (17 teams, five sessions, verbose vs terse). Their relationship remains unresolved.
+- New conditional design theorem: diagonal-only persona/history cells do not identify separate main effects in a saturated 2×2 model; all four cells identify the coefficients algebraically. HsH PR #1115 adds a formalization candidate. Status LEAN_NOT_RUN; no compile claim.
+- No raw human data, platform code, model calls, human sessions, API spend, causal result, P1 scope change, or paper-gate advancement. Orson retains P1 ownership.
