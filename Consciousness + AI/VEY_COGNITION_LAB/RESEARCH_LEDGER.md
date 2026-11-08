@@ -655,3 +655,15 @@ No P1 scope change, new model trial, human session, API spend, new Lean module, 
 - Actions run #42416933193 / job #128536972640 SUCCESS on merge ref `17c3d7409cb13acaa9b9a06170af0fa7bbd26c39`, containing PR head `3bb0c57b56e1eff49139dcc21fcfe518a7717b8d`; Lean 4.34.0 / Lake 5.0.0, 8,983 jobs, module built. New theorem axiom outputs: `propext`, `Classical.choice`, `Quot.sound`; no `sorryAx`/ `admit` in log. Exact-head standalone and global axiom audit/tests/lint/nanoda/leanchecker remain unverified/skipped.
 - The archive lacks raw checker error state/counts; no empirical error rate or false-negative effect is identified. Proposed tri-state instrumentation only; no new trial or P1 scope change.
 - Issue #1457 remains NOT PUBLISHED because the title omitted required `[HSH-PUBLISH-V1]`; publisher only listens to `issues.opened`. No duplicate or manual bypass.
+
+
+## 2026-11-08 | VEY-034 — Human-AI teammate replacement graph and temporal-claim correction
+
+- Study note: `STUDIES/VEY-034_HUMAN_AI_TEAMMATE_REPLACEMENT_GRAPH_AND_TEMPORAL_CLAIM_CORRECTION_2026-11-08.md`.
+- Primary source: Nixon et al., “The Social Cost of an AI Teammate,” arXiv:2607.27179v2 (2026-10-30); v1/v2 records compared.
+- Version correction: v1 described a randomized controlled study and called the cost immediate/present at baseline; v2 describes sequential, greedy random allocation and explicitly says no pre-task baseline exists, so onset is unknown. v2 reports 80 recruited, 5 excluded, 75 analyzed, 33 teams.
+- New structural crosswalk: treatment is 2 humans + 1 AI versus 3 humans, both three seats. Potential dyads per team are treatment 1 human-human + 2 human-AI; control 3 human-human + 0 human-AI. The all-human condition therefore has 3× the potential human-human dyads per team. This is a combinatorial design fact, not an observed message-edge count or causal mechanism.
+- The paper uses mixed-effects models with team nesting but only 33 teams; the authors report near-zero/boundary team-variance estimates in some models, a single AI configuration, and a group-size limitation. The reported airtime/felt-value association uses 16 treatment teams and is not a causal mediation result.
+- Public raw turn logs and analysis code were not retrieved; the arXiv record links an OSF prompt set, which returned 403 in this runtime. No participant-level data were accessed.
+- Conditional Lean formalization submitted in HsH draft PR #1480, stacked on existing Lean infrastructure branch. Module: `HumanAITeammateDyads.lean`; Actions run #42457673047 was in progress at note creation. Formal statements cover potential-pair arithmetic only, not source-premise truth, realized edges, causal effects, or cognition.
+- No new model trial, human session, API spend, P1 scope change, manuscript edit, paper-gate advancement, or theory promotion. Orson retains P1 ownership.
