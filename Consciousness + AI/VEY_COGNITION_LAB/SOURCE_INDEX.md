@@ -328,3 +328,15 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
    - **State:** TRIAGED — abstract/structured record reviewed 2026-11-05; full end-to-end deployment evidence not established.
    - **Why it matters:** Formalizes typed provenance and conditional assertion mediation. Its 24 hand-authored conformance cases validate encoded resolver/mediator obligations under stated assumptions, not end-to-end LLM extraction or memory behavior.
 
+
+
+## 2026-11-08 | VEY-034 single-AI-peer human-team study
+
+- **Nixon, Nia; Jaeyoon Choi; Pedro Martins De Bastos; Mohammad Amin Samadi; Seehee Park; and Spencer JaQuay (2026), “The Social Cost of an AI Teammate: How an Artificial Teammate Reshapes Human-Human Communication in Small-Team Decision-Making.”** arXiv:2607.27179v2, revised 2026-10-30. Primary records: https://arxiv.org/abs/2607.27179v1 and https://arxiv.org/abs/2607.27179v2; full v2 HTML: https://arxiv.org/html/2607.27179v2.
+- **State:** REVIEWED — v1 abstract/version record and v2 full HTML §§1-5.3, methods, results, limitations, and references. No raw participant transcript, turn log, analysis code, or participant-level dataset independently retrieved.
+- **Version correction:** v1 says randomized controlled study and “immediate and present at baseline”; v2 describes sequential, greedy random allocation and explicitly states no pre-task baseline, so the onset of the condition difference is unknown.
+- **Evidence regime:** one AI peer in a human team, not a multi-LLM peer panel or facilitator. 16 teams were 2 humans + 1 AI; 17 controls were 3 humans. One Gemini 2.5 Flash-Lite/persona/prompt/action-manager/response-generator configuration was used across treatment teams; model, persona, and prompt are confounded.
+- **Structural note:** both conditions have three seats and three potential total dyads, but the human-human dyad count is 1 per treatment team versus 3 per control team. This is a source-derived potential-edge count, not observed interaction or a causal explanation. See VEY-034 study note.
+- **Reported limits:** 33 teams; 75 analyzed students after five exclusions; some mixed-model team variance estimates near zero/boundary; GCA does not identify whether uptake is directed to humans or AI; single-session text task; no pre-task baseline. The small-N within-treatment airtime/felt-value correlation is exploratory.
+- **Prompt archive:** OSF https://osf.io/v53sx/ is linked by the paper; it returned 403 in this runtime. No raw turn logs were accessed. This is a retrieval limitation, not proof that the data do not exist.
+- **Crosswalk:** complements VEY-016 (human–multi-LLM peer-group audit) and VEY-019 (evidence-regime distinctions); it should not be merged into the multi-LLM peer-panel or P1 ConsistencyBench evidence regime.
