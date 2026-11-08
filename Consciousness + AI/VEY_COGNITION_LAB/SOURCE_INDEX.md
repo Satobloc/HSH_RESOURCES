@@ -354,3 +354,14 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 - **Conditional identifiability result:** in a saturated persona × memory-history 2×2 mean model, observing only diagonal cells cannot separate persona, history, and interaction effects; all four cells identify the coefficients algebraically. This is a design theorem, not a finding that TRAIL actually carried memory across sessions and not causal identification by itself.
 - **Formalization:** added to Orson's existing draft HsH PR #1115 as HumanAIMemoryCarryover.lean. Status LEAN_NOT_RUN: no local toolchain, no Lean Actions run for the new head. Do not claim compilation or merge.
 - **Crosswalk:** extends VEY-034's human-AI teammate evidence regime with a state-lineage/carryover-identifiability gate. It remains separate from P1 ConsistencyBench and does not change the November 9 gate.
+
+
+## 2026-11-08 | VEY-037 — Ju & Aral human–AI dyad field experiment
+
+- Study note: `STUDIES/VEY-037_JU_ARAL_HUMAN_AI_DYAD_FIELD_EXPERIMENT_SOURCE_PROVENANCE_AUDIT_2026-11-08.md`.
+- Primary source: Ju & Aral, “Collaborating with AI Agents: A Field Experiment on Teamwork, Productivity, and Performance,” arXiv:2503.18238v3; versioned full text reviewed.
+- Evidence regime: randomized two-person human–human versus human–AI dyads in a short online ad-creation task; one GPT-4o-2024-08-06 agent, not a multi-human group or multi-LLM team. No human-alone condition.
+- Reported outcomes: about 50% more ads per human worker, higher text ratings (+0.327), lower image ratings (−0.133), lower embedding-centroid diversity, more task-oriented messages and delegation; direct team-type effects on downstream CPC/CTR/VTD were not significant in the no-holdout X field evaluation.
+- Source QC: arXiv v3 manuscript/version dates differ; 2,500/2,310/2,234 attrition counts and reported 8.9% do not reconcile by the obvious denominator; 493 human–human teams versus 976 human participants do not form complete pairs; 11,024 versus 11,138 ad counts differ; message categories use GPT-4o-mini without an independent human-coded validation sample reported in the reviewed text.
+- Limits: arXiv preprint; OSF links inaccessible in this pass; raw data, logs, and code not retrieved; field results conditional on platform delivery. This is supporting literature only, not a P1 result or theory authority.
+- Orson retains P1 ownership and all primary LLM-cognition work. No P1 scope, manuscript, or November 9 gate change.
