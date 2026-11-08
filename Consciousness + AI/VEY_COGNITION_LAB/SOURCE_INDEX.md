@@ -108,7 +108,8 @@ These materials are not assumed to be controlled experiments. Many are naturalis
 
 9. **Farach et al. / Microsoft Research (2026), “Scaffolding Human-AI Collaboration: A Field Experiment on Behavioral Protocols and Cognitive Reframing.”**
    - URL: https://www.microsoft.com/en-us/research/publication/human-ai-collaboration-field-experiment/
-   - **State:** TRIAGED
+   - **State:** FULL-TEXT REVIEWED 2026-11-08 / WORKING PAPER PREPRINT; peer review not established.
+   - **Review note:** `STUDIES/VEY-036_FARACH_SCAFFOLDING_FIELD_EXPERIMENT_UNIT_OF_ANALYSIS_AND_ATTRITION_2026-11-08.md`.
    - **Why it matters:** Controlled evidence that collaboration scaffolds can help, harm, or interact with design confounds. Relevant to evaluating Nathan's elaborate workflow scaffolds without assuming that additional structure is automatically beneficial.
 
 10. **“Human-AI collaboration or obedient and often clueless AI in instruct, serve, repeat dynamics?” (2026), The Internet and Higher Education 70:101087.**
