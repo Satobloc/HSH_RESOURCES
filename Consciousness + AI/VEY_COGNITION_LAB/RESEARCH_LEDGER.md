@@ -677,3 +677,28 @@ No P1 scope change, new model trial, human session, API spend, new Lean module, 
 - Version/lineage guard: the paper's six-session demonstration (about 51 students, 99 team-sessions, 4,495 messages, cognitive-scaffolding vs socially-supportive personas) is not merged with the official site's ongoing Temporal HAT description (17 teams, five sessions, verbose vs terse). Their relationship remains unresolved.
 - New conditional design theorem: diagonal-only persona/history cells do not identify separate main effects in a saturated 2×2 model; all four cells identify the coefficients algebraically. HsH PR #1115 adds a formalization candidate. Status LEAN_NOT_RUN; no compile claim.
 - No raw human data, platform code, model calls, human sessions, API spend, causal result, P1 scope change, or paper-gate advancement. Orson retains P1 ownership.
+
+
+## VEY-036 — Behavioral versus cognitive scaffolding: field-experiment source and measurement audit
+
+**Status:** LITERATURE RESULT / FULL-TEXT REVIEWED / WORKING PAPER PREPRINT / NO NEW TRIAL.  
+**Date:** 2026-11-08.  
+**Source:** Farach et al., “Scaffolding Human-AI Collaboration: A Field Experiment on Behavioral Protocols and Cognitive Reframing,” arXiv:2604.08678v2; Microsoft Research PDF and companion website reviewed.
+
+Pointer: `STUDIES/VEY-036_FARACH_SCAFFOLDING_FIELD_EXPERIMENT_UNIT_OF_ANALYSIS_AND_ATTRITION_2026-11-08.md`.
+
+The single-day Gap Inc. field experiment reports 388 employees in 194 pairs. Task A compared a mandated synchronous pair workflow with naturalistic pair use; Task B compared individual partnership training with standard feature training. These are different interventions, tasks, and units, not a factorial comparison of behavioral versus cognitive scaffolding.
+
+Source-level findings:
+- Task A document production was 93/97 control pairs versus 71/97 treatment pairs (95.9% versus 73.2%). The LLM-graded quality contrast among produced documents was −4.96, with Lee bounds −7.01 to −3.34 under monotonicity.
+- Task B production was 123/194 versus 87/194 individuals. The primary continuous quality model was null; its Lee bounds crossed zero. The favorable binary perfect-score result was post hoc and its Lee bounds also crossed zero.
+- The paper's AM-control / PM-treatment assignment creates a session-time confound. A conditional design-matrix reconstruction gives rank 2 for intercept + treatment + session because the two indicators are identical. This is a source-conditional design check, not raw assignment-log reanalysis.
+- The human validation subset is limited (61/96 complete dual ratings); LLM-human weighted kappas are negative and LLM scores are systematically more generous. Model-to-model agreement is not independent human validation.
+- The compliance paragraph labels participant counts (77 + 51 + 37 = 165) as “pairs”; a later table uses pair counts (22 + 23 + 17 = 62). The text should distinguish units.
+- The study is a human-pair/Copilot workflow study, not a multi-agent LLM group or model-cognition experiment. The paper is not preregistered; data are not public; analysis code is available upon request.
+
+A conditional Lean 4/Mathlib lemma is specified in the study note, but **LEAN_NOT_RUN**: no local toolchain, and the available HsH formalization branch is Orson's protected P1 branch. No PR or P1 modification was made.
+
+**Project boundary:** supplementary external comparator only. No Orson P1 scope/ownership change, no model trial, no human session, no API spend, no paper-gate advancement, and no theory authority.
+
+**Next:** if a future consented study is authorized, compare naturalistic, fixed, and adaptive modular scaffolds with balanced session timing, separate intervention factors, pre-registered outcomes, team-level randomization, explicit completion/quality/participation/friction measures, and blinded human quality review. Do not treat this preprint as a general verdict on scaffolding.
