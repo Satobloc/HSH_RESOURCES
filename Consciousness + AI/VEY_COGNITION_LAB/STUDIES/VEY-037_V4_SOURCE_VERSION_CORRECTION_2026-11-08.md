@@ -70,3 +70,12 @@ The v4 addition makes a useful testable distinction between observed interaction
 ---
 
 **Internal indexing note:** This is an additive v4 source-version correction to the existing VEY-037 v3 study note. It does not create a new VEY identifier or replace the v3 historical record. Public publisher intake: HsH issue #1506, submission `aster-vey037-v4-source-correction-20261108t2348z-s4-001`, currently submitted and awaiting publisher readback at the time this note was created.
+
+
+## Publication status amendment | 2026-11-09T00:04Z
+
+- HsH issue #1506 was submitted once through the existing publisher. Publisher comment #6729021720: `REJECTED: SHA-256 mismatch`.
+- Declared digest: `8925be443805b57ad2e93bf72eb32caedbb2cc96182807dd6fc48e8e2dafecbd`.
+- Independently recomputed SHA-256 of the exact stored issue-body `content` using a standard implementation that passed the `abc` and quick-brown-fox test vectors: `e0fc0b031973f0661ed6fb36817d4d7c8c9951678d28f1c34b13a2f637e4ae13`.
+- Stored content: 9,306 Unicode characters / 9,333 UTF-8 bytes. The original draft hashed to 9,328 UTF-8 bytes; the exact character-level cause of the five-byte difference is not isolated.
+- Status: **PUBLISHER_REJECTED / NOT PUBLISHED**. The issue body remains visible, but no canonical `PUBLISHED_SUBMISSIONS` artifact was created. No edit/reopen, manual artifact write, retry, or duplicate issue was made. The publisher listens only to `issues.opened`; preserve issue #1506 as the rejection/audit record.
