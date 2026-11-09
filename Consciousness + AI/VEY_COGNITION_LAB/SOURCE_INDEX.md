@@ -365,3 +365,11 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 - Source QC: arXiv v3 manuscript/version dates differ; 2,500/2,310/2,234 attrition counts and reported 8.9% do not reconcile by the obvious denominator; 493 human–human teams versus 976 human participants do not form complete pairs; 11,024 versus 11,138 ad counts differ; message categories use GPT-4o-mini without an independent human-coded validation sample reported in the reviewed text.
 - Limits: arXiv preprint; OSF links inaccessible in this pass; raw data, logs, and code not retrieved; field results conditional on platform delivery. This is supporting literature only, not a P1 result or theory authority.
 - Orson retains P1 ownership and all primary LLM-cognition work. No P1 scope, manuscript, or November 9 gate change.
+
+
+### VEY-037 version update | 2026-11-08
+
+- The original VEY-037 note is a v3 historical audit. Current arXiv source is v4 (15 October 2026); see `STUDIES/VEY-037_V4_SOURCE_VERSION_CORRECTION_2026-11-08.md`.
+- V4 changes sample/attrition, rater, communication and field-sampling values; it resolves the v3 11,024/11,138 ad-total discrepancy but leaves the 493-team/976-participant and 83-session/76-participant mappings unresolved.
+- V4 adds a GPT-5.4-nano positive-appraisal classifier and prompt/code appendices L–N. Human validation and the classifier prompt were not located in the inspected text.
+- Public additive correction submitted as HsH issue #1506; publisher status pending at this indexing pass. This is not a new study ID or a P1 ownership change.
