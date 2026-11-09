@@ -121,3 +121,63 @@ Orson PR #1115 contains a separate conditional saturated-2×2 algebraic formaliz
 - **NOT P1:** no change to ConsistencyBench scope, November 9 readiness, manuscript, or paper gate.
 
 Next source task: retrieve the online appendix and AEA registry record if accessible, then determine whether the participant/team × session × condition × model-version crosswalk is recoverable.
+
+## 8. Addendum 2026-11-09: permission–execution–attribution–outcome map and assignment-to-analysis audit
+
+### 8.1 Additional primary-source facts
+
+A second-pass reading of the publisher's endnotes adds several design facts not made explicit in the first VEY-038 note:
+
+- Endnote 1 cites a workplace-team definition as two or more individuals sharing interdependence and responsibility for tasks and collective outputs. The experiment's team arms are two human professionals (one R&D, one commercial) with AI available; the AI is not randomized as a third autonomous team member.
+- Endnote 2 traces “cybernetic teammate” to feedback-regulated systems that adjust to environmental inputs. That is a functional collaboration description, not evidence of independent AI identity, authority, or phenomenology.
+- Endnote 11 says participants were nested within teams, business units and geographic regions. If one member of a two-person team failed to participate, the team was nullified and participants from incomplete teams were reassigned to individual assignments. This creates a post-assignment change in the collaboration/analysis unit that a future independent audit must reconstruct. It is a design-accounting requirement, not proof of bias.
+- Endnote 20 says the team-level outcome for two-person teams is the average of the individual participants' post-task changes.
+- Endnotes 8–9 report 791 randomized workshop participants, 776 complete post-task survey records (15 incomplete: 4 from non-AI teams and 11 from AI teams), and 35 nonrandomized participants excluded from the randomized analyses. The nonrandomized participants were isolated in separate sessions.
+- Endnote 17 describes a robustness analysis with standard errors clustered at eight business-unit × geography clusters and a wild cluster bootstrap (Online Appendix Table A3). The appendix was not retrieved, so the implementation and table cannot be independently checked.
+- Endnote 13 identifies GPT-4o access for the July workshop; the main methods describe GPT-4 via Azure. The participant/team × session × condition × exact-version crosswalk remains unavailable in the reviewed article.
+
+These facts require an explicit assignment-to-analysis flow map before any reanalysis: assignment unit, cluster, team formation, treatment receipt, team failure/reassignment, survey unit, outcome unit, evaluator, session and model version. They do not establish that the published analysis is biased or invalid.
+
+### 8.2 Revised measurement architecture
+
+The previous four-field operational-agency profile is retained as a proposed coding rubric, but it should not be treated as one scale or one latent variable. Split it into four separately observed layers:
+
+1. **Authorization / affordance:** what the system is permitted to initiate, delegate, coordinate, commit to, revoke, or request approval for; record scope and accountable human.
+2. **Execution / behavior:** what it actually does; preserve timestamped initiation, tool/action calls, task assignments, coordination events, handoffs, commitments, refusals, corrections, rollbacks and human overrides.
+3. **Human attribution:** what people believe the system can do or experiences; separate role-label presentation from perceived role, and perceived agency from perceived conscious experience.
+4. **Outcome / control:** task quality, completion, time, errors and coordination, alongside appropriate reliance/override and human control.
+
+Any claim about subjective experience remains a separate phenomenological question. It is not inferred from authorization, action logs, human attribution, trust, or task performance.
+
+The map integrates existing prior art rather than claiming a new validated scale:
+- Holter, Moruzzi & El-Assady (2025), “Toward Agency in Human–AI Collaboration,” proposes a design space organized around distribution, modeling and attribution (DOI 10.1109/MCG.2025.3623892).
+- Harris, Byun & Larson (2026), “What’s in a Name? Implications of AI Roles and Mind Perception for Human-AI Teams,” distinguishes role perception from role presentation and mind-perception agency from conscious experience (DOI 10.1177/00187208261457702).
+- Van den Bosch et al. (2024), “Measuring Meaningful Human Control in Human–AI Teaming,” operationalizes subjective, normative and moral control across advice, human-assigned and autonomous-agent triage designs (DOI 10.1007/s43681-024-00647-8).
+
+These three supporting records received abstract-level SciSpace triage, not full-text review. Scholar Sidekick's 2026-11-09 citation audit matched all four references used in this note (including Dell'Acqua et al.); no retraction was flagged. No originality or scale-validation claim is made.
+
+### 8.3 Prospective test architecture and failure conditions
+
+A source-faithful follow-up should vary **action rights** independently of **role framing**:
+
+- Action-rights factor: prompt-only response versus bounded delegated initiative.
+- Framing factor: neutral tool versus teammate label; an intermediate “support” level is an optional extension if the pilot supports it.
+- Human-only baseline: estimates the broader effect of AI access, not the agency contrast.
+
+Keep the model snapshot, system prompt, context, tool set, information access, task, training, time budget and human composition fixed. Vary who may initiate the same available actions, not which tools or information exist. Block or stratify by exact model version/session. Log permissions separately from executed actions. Collect human beliefs/affect at T0 (pre-assignment), T1 (post-assignment/pre-use), T2 (post-task) and T3 (delayed). Use held-out tasks, blinded outcome scoring and a separately run pilot before preregistering the primary outcome and minimum meaningful difference.
+
+| Hypothesis | Predicted observable | Comparator | Falsification / failure condition |
+|---|---|---|---|
+| Delegated rights produce exercised initiative. | Independently initiated, in-scope actions and coordination events in event logs. | Same model/tools/context in prompt-only mode. | No independently initiated actions: the delegated-agency manipulation failed. |
+| Exercised initiative adds coordination value. | Preregistered task/coordination outcome, errors and time at equal access and time. | Prompt-only mode; human-only baseline for total AI access. | No meaningful improvement at the preregistered threshold: no demonstrated coordination value. |
+| Role framing changes attribution independently of behavior. | Perceived agency/experience and acceptance when action rights and behavior are held constant. | Neutral tool framing. | Label shifts perception but not action logs: a framing effect, not operational agency. |
+| Human attribution is behavior-calibrated. | Agreement between perceived initiative/ownership and observed action traces; appropriate reliance/override. | Same task with independently benchmarked capability. | Perceived agency does not track behavior or appropriate reliance: attribution is not behavior-calibrated. |
+| Human control is preserved across delegation levels. | Subjective, normative and moral control measures, plus actual approval/override records. | Advice, bounded assignment and autonomous execution modes. | A preregistered meaningful loss of control or accountability blocks the stronger delegation claim. |
+
+No sample size, power calculation or numeric threshold is supplied without pilot variance and a task-specific minimum important difference. No P&G raw data, participant logs, model deployment records or analysis code were obtained. The online appendix and AEA registration record AEARCTR-0013603 remain unretrieved; the publisher article identifies both the appendix and registration, but the registry endpoint was not accessible in this pass.
+
+### 8.4 Formalization and campaign boundary
+
+The source supplies an empirical factorial design and nested assignment/outcome structure, not a source-complete theorem. The missing assignment/team/reassignment/version crosswalk prevents a faithful formal statement of the observed design. No guessed Lean schema, data-free calculation, new theorem, model trial or raw-data analysis was added. P&G-specific formalization remains **FORMALIZATION_BLOCKED_SOURCE_MAP_INCOMPLETE**.
+
+This addendum is supplementary literature/methods architecture, not P1 ConsistencyBench evidence. P1 remains frozen methods/archival scope and November 9 **NOT READY**; no paper gate, P1 ownership or scope changed. No theory authority, consciousness claim, or SAT/H(s)H promotion follows.
