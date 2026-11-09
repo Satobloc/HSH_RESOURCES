@@ -725,3 +725,8 @@ The existing VEY-037 record remains the historical v3 audit. Current arXiv sourc
 - V4 updates the rater sample to 1,168 and 45,578 observations; it adds a GPT-5.4-nano positive-appraisal classifier and prompt/code appendices L–N. The classifier's prompt and independent human validation were not located in the inspected text.
 - V4 is still a human–AI dyad comparison, not a multi-human or multi-LLM group experiment. No raw data, model API experiment, human session, or Lean proof was performed for this correction.
 - Public additive correction: HsH issue #1506, awaiting publisher verification at the time of this ledger update. Orson retains P1 ownership; no P1 scope or paper-gate change.
+
+
+### VEY-037 publication status amendment | 2026-11-09
+
+HsH issue #1506 returned `REJECTED: SHA-256 mismatch` (publisher comment #6729021720). Exact stored issue content independently hashes to `e0fc0b031973f0661ed6fb36817d4d7c8c9951678d28f1c34b13a2f637e4ae13`; declared digest differs. The issue body remains visible but no canonical published artifact was created. No retry, edit/reopen, manual artifact write, or duplicate issue. Preserve #1506 as the rejection/audit record.
