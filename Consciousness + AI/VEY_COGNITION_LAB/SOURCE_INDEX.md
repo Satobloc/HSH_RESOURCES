@@ -390,3 +390,13 @@ HsH issue #1506 was rejected by the existing publisher for SHA-256 mismatch (com
 - New method overlay: an **operational agency profile** (initiative, delegation, coordination authority, commitment/accountability), separate from and not a modification of the five identity/provenance axes. Follow-up design compares prompt-only assistant with bounded delegated-agent mode under matched model, context, tools and task; adds human belief-calibration timepoints and version-stratified exposure logging.
 - Status: LITERATURE RESULT / SOURCE AUDIT / PROPOSAL. No independent replication, raw-data reanalysis, new trial, model call, API spend, Lean proof, P1 scope change, or theory promotion.
 - Pointer: `STUDIES/VEY-038_CYBERNETIC_TEAMMATE_MODEL_EXPOSURE_AGENCY_AND_MIND_ATTRIBUTION_2026-11-09.md`.
+
+
+## 2026-11-09 | VEY-038 addendum — agency layers and assignment-to-analysis map
+
+- Addendum to the existing VEY-038 source note; primary source remains Dell'Acqua et al. (2026), DOI 10.1287/orsc.2025.20702.
+- New endnote-level source facts: two-human team unit with AI available; team nullification and individual reassignment after nonparticipation; team outcome averaging; eight business-unit × geography clusters; 791 randomized / 776 complete / 15 incomplete / 35 nonrandomized excluded; GPT-4/Azure and July GPT-4o without a complete session/version crosswalk.
+- Revised measurement map separates authorization/affordance, executed behavior, human attribution, and outcome/control; phenomenology remains separate. This is not a validated scale or new identity axis.
+- Abstract-level prior-art triage (not full-text review): Holter et al. (2025), DOI 10.1109/MCG.2025.3623892; Harris et al. (2026), DOI 10.1177/00187208261457702; Van den Bosch et al. (2024), DOI 10.1007/s43681-024-00647-8.
+- Scholar Sidekick audit: four cited works matched their DOI/title records; no retractions flagged.
+- No raw-data reanalysis, replication, model trial, P1 scope change, paper-gate advancement, Lean proof or theory promotion.
