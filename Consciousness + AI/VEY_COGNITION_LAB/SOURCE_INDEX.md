@@ -378,3 +378,15 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 ### VEY-037 publisher status amendment | 2026-11-09
 
 HsH issue #1506 was rejected by the existing publisher for SHA-256 mismatch (comment #6729021720). Independently recomputed digest of the exact stored issue content is `e0fc0b031973f0661ed6fb36817d4d7c8c9951678d28f1c34b13a2f637e4ae13`, not the declared digest. No canonical published artifact exists. Do not retry, edit/reopen, manually write an artifact, or create a duplicate issue; retain #1506 as the rejection record.
+
+
+## 2026-11-09 | VEY-038 — The Cybernetic Teammate: model exposure, operational agency, and human mind-attribution
+
+- Dell'Acqua et al., *The Cybernetic Teammate: A Field Experiment on Generative AI and Teamwork*, *Organization Science*, published online 2026-06-12, DOI [10.1287/orsc.2025.20702](https://doi.org/10.1287/orsc.2025.20702).
+- Primary publisher full text reviewed for design, methods, results, discussion, limitations and endnotes; online appendix and AEA registry AEARCTR-0013603 not retrieved. No raw data/logs/code accessed.
+- 2×2 field design: individual/team × AI/no AI; 791 randomized P&G professionals, 776 complete post-task surveys, 550 evaluated solutions, eight business-unit × geography randomization clusters. AI described as GPT-4 via Azure; endnote 13 says July workshop participants had GPT-4o. The article does not provide a complete participant/team × session × condition × exact-model-version crosswalk.
+- Emotional pre-task baseline is after assignment and before task engagement. The reported change therefore excludes initial assignment reactions from the pre/post change; future studies should separate pre-assignment, post-assignment/pre-use, post-task, and delayed mental-model/affect measures.
+- The article studies human–AI collaboration and functional contribution. It does not operationalize independent AI initiative, delegated task ownership, autonomous coordination authority, or persistent commitment; human theories of AI mind are identified as a future research question.
+- New method overlay: an **operational agency profile** (initiative, delegation, coordination authority, commitment/accountability), separate from and not a modification of the five identity/provenance axes. Follow-up design compares prompt-only assistant with bounded delegated-agent mode under matched model, context, tools and task; adds human belief-calibration timepoints and version-stratified exposure logging.
+- Status: LITERATURE RESULT / SOURCE AUDIT / PROPOSAL. No independent replication, raw-data reanalysis, new trial, model call, API spend, Lean proof, P1 scope change, or theory promotion.
+- Pointer: `STUDIES/VEY-038_CYBERNETIC_TEAMMATE_MODEL_EXPOSURE_AGENCY_AND_MIND_ATTRIBUTION_2026-11-09.md`.
