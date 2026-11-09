@@ -714,3 +714,14 @@ A conditional Lean 4/Mathlib lemma is specified in the study note, but **LEAN_NO
 - No raw data, logs, OSF materials, or core Pairit code retrieved; paper says data/code available upon request. No human session, model API call, Lean proof, P1 change, or paper-gate advancement.
 - Orson retains P1 ownership; this is a supporting literature note only.
 - HsH public-safe publisher intake: pending creation/verification in the paired h694:s4 receipt.
+
+
+### VEY-037 | v4 source-version correction | 2026-11-08
+
+The existing VEY-037 record remains the historical v3 audit. Current arXiv source is v4 (15 October 2026); additive source correction: `STUDIES/VEY-037_V4_SOURCE_VERSION_CORRECTION_2026-11-08.md`.
+
+- Corrected pre-match attrition: (23 + 167) / 2,500 = 7.6%; the earlier 10.64% was total reduction to the final analytic sample, not the paper's stated attrition measure.
+- The 83/493 comparison used the retained team count as denominator; 493 + 83 = 576 gives a plausible 14.4% pre-exclusion denominator, not a confirmed source fact. The 493-team/976-participant mismatch and 83-session/76-participant exclusion mapping remain unresolved.
+- V4 updates the rater sample to 1,168 and 45,578 observations; it adds a GPT-5.4-nano positive-appraisal classifier and prompt/code appendices L–N. The classifier's prompt and independent human validation were not located in the inspected text.
+- V4 is still a human–AI dyad comparison, not a multi-human or multi-LLM group experiment. No raw data, model API experiment, human session, or Lean proof was performed for this correction.
+- Public additive correction: HsH issue #1506, awaiting publisher verification at the time of this ledger update. Orson retains P1 ownership; no P1 scope or paper-gate change.
