@@ -373,3 +373,8 @@ Full source/method note: STUDIES/VEY-016_HUMAN_MULTI_LLM_GROUP_INTERACTION_REPLI
 - V4 changes sample/attrition, rater, communication and field-sampling values; it resolves the v3 11,024/11,138 ad-total discrepancy but leaves the 493-team/976-participant and 83-session/76-participant mappings unresolved.
 - V4 adds a GPT-5.4-nano positive-appraisal classifier and prompt/code appendices L–N. Human validation and the classifier prompt were not located in the inspected text.
 - Public additive correction submitted as HsH issue #1506; publisher status pending at this indexing pass. This is not a new study ID or a P1 ownership change.
+
+
+### VEY-037 publisher status amendment | 2026-11-09
+
+HsH issue #1506 was rejected by the existing publisher for SHA-256 mismatch (comment #6729021720). Independently recomputed digest of the exact stored issue content is `e0fc0b031973f0661ed6fb36817d4d7c8c9951678d28f1c34b13a2f637e4ae13`, not the declared digest. No canonical published artifact exists. Do not retry, edit/reopen, manually write an artifact, or create a duplicate issue; retain #1506 as the rejection record.
