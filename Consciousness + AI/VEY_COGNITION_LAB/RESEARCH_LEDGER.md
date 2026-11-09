@@ -730,3 +730,20 @@ The existing VEY-037 record remains the historical v3 audit. Current arXiv sourc
 ### VEY-037 publication status amendment | 2026-11-09
 
 HsH issue #1506 returned `REJECTED: SHA-256 mismatch` (publisher comment #6729021720). Exact stored issue content independently hashes to `e0fc0b031973f0661ed6fb36817d4d7c8c9951678d28f1c34b13a2f637e4ae13`; declared digest differs. The issue body remains visible but no canonical published artifact was created. No retry, edit/reopen, manual artifact write, or duplicate issue. Preserve #1506 as the rejection/audit record.
+
+
+## 2026-11-09 | VEY-038 — The Cybernetic Teammate: exposure, operational agency, and human theories of AI mind
+
+**Status:** LITERATURE RESULT / PUBLISHED PRIMARY SOURCE FULL-TEXT REVIEWED / NO REPLICATION / NO NEW TRIAL.  
+**Source:** Dell'Acqua et al., *The Cybernetic Teammate: A Field Experiment on Generative AI and Teamwork*, *Organization Science*, published online 2026-06-12, DOI 10.1287/orsc.2025.20702.  
+**Pointer:** `STUDIES/VEY-038_CYBERNETIC_TEAMMATE_MODEL_EXPOSURE_AGENCY_AND_MIND_ATTRIBUTION_2026-11-09.md`.
+
+The published field experiment randomized 791 P&G professionals in a 2×2 individual/team × AI/no-AI design; 776 supplied complete post-task surveys and 550 solutions were evaluated. Eight business-unit × geography randomization clusters are reported. The main methods describe GPT-4 through Azure; endnote 13 states that July workshop participants had GPT-4o. The article does not provide the complete participant/team × session × condition × exact-model-version crosswalk. This is a provenance gap, not proof of imbalance or confounding.
+
+For emotional-change measures, the pre-task baseline was taken after treatment assignment but before task engagement. The reported pre/post change therefore concerns task-period movement after assignment, not the full affective effect of assignment. The authors identify human theories of AI mind as a future research frontier; the paper does not directly measure detailed mental models of AI cognition or subjective experience.
+
+**Architecture improvement:** add an operational agency profile (initiative, delegation, coordination authority, commitment/accountability) as a behavioral overlay, not a sixth identity axis. The existing five identity/provenance axes remain unchanged. The paper supports functional human–AI collaboration; it does not operationalize independent AI initiation, delegated ownership, autonomous coordination, or persistent commitments. These fields are NOT_SPECIFIED / NOT_MEASURED, not proven absent.
+
+**Proposed follow-up:** compare human-prompted assistant mode with bounded delegated-agent mode under matched model snapshot, system prompt, context, tools, task, information, training and time; include human-only baseline; log every prompt/response/action/initiative and task assignment; measure human beliefs and affect before assignment, after assignment/pre-use, after task, and delayed; use held-out tasks and blind scoring; block/stratify by exact model version. No sample-size calculation or numerical threshold until pilot variance and task-specific minimum important difference are available.
+
+**Lean triage:** the article's 2×2 design/regression is an empirical specification, not a theorem. Orson PR #1115 is a separate conditional saturated-2×2 memory-history formalization, has no Lean run, and is not a proof of this study's causal design. Local Lean/Lake/Elan are absent; no source-faithful P&G theorem was identified. P&G-specific formalization is FORMALIZATION_BLOCKED_SOURCE_MAP_INCOMPLETE. No data-free calculation, new Lean module, model trial, human session, raw-data reanalysis, P1 scope change, paper-gate advancement, or theory promotion.
