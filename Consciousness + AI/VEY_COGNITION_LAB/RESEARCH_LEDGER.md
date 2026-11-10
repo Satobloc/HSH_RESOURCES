@@ -778,3 +778,15 @@ Conditional module `OrsonCGDManifestBounds.lean` was added to existing Orson PR 
 P1 remains frozen methods/archival, OPEN / NOT READY; the original neutral-versus-false-authority answer-keyed bank remains unrecovered. No model trial, human session, new model call, API spend, manuscript/PDF/reader, independent review or paper-gate advancement. Existing issue #853 remains the sole published stale-input report; no duplicate publisher issue was created.
 
 Full methods and row table: `STUDIES/2026-11-10_VEY-039_CGD_17_BLOB_MANIFEST_FORMALIZATION.md`.
+
+
+## Publication intake amendment | 2026-11-10
+
+A distinct additive publication envelope was opened after the Lean merge-reference build completed:
+- Issue #1557, title `[HSH-PUBLISH-V1] Orson P1 CGD manifest arithmetic and Lean table-proof addendum 2026-11-10`.
+- Submission ID: `orson-cgd-manifest-lean-addendum-20261110t0924z-s2-001`.
+- Exact four-key schema verified; content SHA-256 `fc204092321ba5cf0d63c74b4f28b48f5c48bba65547cb3e37a22b00ce2c1404`.
+- Issue body readback matches the intended content and declared digest.
+- Initial status: `SUBMITTED_NOT_VERIFIED`; no publisher comment or artifact readback yet.
+
+This is a new formalization addendum, not a duplicate of issue #853's original stale-input report. Do not resubmit. Verify issue #1557's publisher comment, workflow result and fixed-destination artifact before changing status.
