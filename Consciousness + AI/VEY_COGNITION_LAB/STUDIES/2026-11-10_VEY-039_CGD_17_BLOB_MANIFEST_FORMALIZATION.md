@@ -126,3 +126,10 @@ Issue #1557 completed through the existing issue publisher:
 - Independent connector readback matched the issue envelope content byte-for-byte (3,549 UTF-8 bytes); declared digest matches.
 
 Publication status: `PUBLISHED_VERIFIED`. This is a distinct additive formalization amendment; issue #853 remains the original stale-input-bounds report. No duplicate submission was made.
+
+
+## Cross-level interpretation
+
+The 17 model files are distinct archived outputs but share one benchmark/evaluator structure; they are not 17 independent experimental replications. Model-to-model differences are conditional on the same question-set design, revision protocol, answer extraction and NLI stopping rule. The archive exposes initial raw responses, revisions, labels and flags, but not provider-side request completion, the first NLI trigger pair, raw NLI prompts/outputs or all runtime/model-version conditions. This is a source-loop audit, not semantic adjudication or a causal model-revision result.
+
+Later scheduler readback is preserved in the public Orson receipt amendment `2026-11-10T1010Z_s2_orson_vay_AMENDMENT_01.md`; no task changes were made.
