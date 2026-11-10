@@ -201,3 +201,15 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 - Finite-table proof only; translation, semantic validity, API completion, causality and independent review remain outside the Lean claim.
 - P1 stays OPEN / NOT READY; no model/human trial, API spend, manuscript edit or paper-gate advancement. Existing issue #853 remains the sole published stale-input report; no duplicate publisher submission.
 - No Orson physics reassignment.
+
+
+## Publication intake amendment | 2026-11-10
+
+A distinct additive publication envelope was opened after the Lean merge-reference build completed:
+- Issue #1557, title `[HSH-PUBLISH-V1] Orson P1 CGD manifest arithmetic and Lean table-proof addendum 2026-11-10`.
+- Submission ID: `orson-cgd-manifest-lean-addendum-20261110t0924z-s2-001`.
+- Exact four-key schema verified; content SHA-256 `fc204092321ba5cf0d63c74b4f28b48f5c48bba65547cb3e37a22b00ce2c1404`.
+- Issue body readback matches the intended content and declared digest.
+- Initial status: `SUBMITTED_NOT_VERIFIED`; no publisher comment or artifact readback yet.
+
+This is a new formalization addendum, not a duplicate of issue #853's original stale-input report. Do not resubmit. Verify issue #1557's publisher comment, workflow result and fixed-destination artifact before changing status.
