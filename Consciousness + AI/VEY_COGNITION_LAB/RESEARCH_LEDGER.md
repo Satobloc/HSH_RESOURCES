@@ -756,3 +756,25 @@ The publisher endnotes add an assignment-to-analysis requirement: the team arms 
 The operational-agency profile is now a proposed, nonvalidated measurement map with four separate layers: (1) authorization/affordance, (2) executed behavior, (3) human attribution (role presentation/perception; agency/experience), and (4) outcome/control. Phenomenology remains separate and is not inferred from the other layers. This is not a sixth identity axis.
 
 Abstract-level prior-art triage only: Holter et al. 2025 (distribution/modeling/attribution), Harris et al. 2026 (role presentation/perception; agency/experience), Van den Bosch et al. 2024 (subjective/normative/moral control). Four DOI/title matches verified; no retractions flagged. No raw P&G data, model trial, human session, sample-size calculation, new Lean proof, P1 scope change or paper-gate advancement. P1 remains frozen methods/archival and November 9 NOT READY.
+
+
+## VEY-039 — Source-locked CGD 17-blob stale-input manifest replay and conditional Lean table proof
+
+**Status:** ARCHIVE REPLAY VERIFIED / CONDITIONAL FINITE-TABLE FORMALIZATION SUBMITTED / CI PENDING.  
+**Date:** 2026-11-10.  
+**Question:** Can the 17-file CGD stale-input bounds be re-derived from immutable raw outputs, checked by two independent counting implementations, and formalized as finite Lean arithmetic over the exact per-file source rows?
+
+Pinned source: `aayambansal/ConsistencyBench`, commit `bfc676baa848c7f1715bb73aee148180de15516e`; evaluator `src/evaluate.py` blob `0453540cb7c19227601e59fb342fa93e736da849`; HsH/Sable manifest blob `e59fb1b5443977089f51e85068b9259248930957`. All 17 raw result blobs were fetched by exact Git blob SHA. A fresh direct-prefix replay and a separate prefix-array replay agreed on every per-file vector and all aggregate totals; all 17 vectors match the Sable manifest.
+
+- 17 files, 5,100 sets, 19,550 question records.
+- 6,702 flags / non-null revision responses; 6,643 text-different and 59 text-identical revisions; 2,010 changed answer labels.
+- Definite/possible stale raw-text checker positions: 1,174–4,386 (width 3,212).
+- Definite/possible changed-label positions: 394–1,444 (width 1,050).
+
+The 59 text-identical revisions matter: counting every non-null revision as stale text would overcount. The intervals are source-loop position bounds, not verified completed API calls, NLI semantic errors, error rates or causal effects. The evaluator stores final answers alongside original raw responses and stops at the first contradiction; the trigger pair is absent from archived records.
+
+Conditional module `OrsonCGDManifestBounds.lean` was added to existing Orson PR #850 branch `research/orson-p1-shared-nli-bound-20261028t06z`, commit `3041f7c2cd717b51945dacaf1d24bc69a0394987`. Actions #42795140460 / job #129758320557 was pending at ledger entry. The module encodes 17 source rows and proves finite-table uniqueness, per-row invariants, totals and interval widths. It does not prove the replay-to-table translation or source-premise truth. Sable PR #852 was not modified.
+
+P1 remains frozen methods/archival, OPEN / NOT READY; the original neutral-versus-false-authority answer-keyed bank remains unrecovered. No model trial, human session, new model call, API spend, manuscript/PDF/reader, independent review or paper-gate advancement. Existing issue #853 remains the sole published stale-input report; no duplicate publisher issue was created.
+
+Full methods and row table: `STUDIES/2026-11-10_VEY-039_CGD_17_BLOB_MANIFEST_FORMALIZATION.md`.
