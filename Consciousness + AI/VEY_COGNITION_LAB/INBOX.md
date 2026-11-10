@@ -190,3 +190,14 @@ The repaired exact-head PR #850 run #41079040914 completed SUCCESS on head `0efb
 - This is a descriptive archive/data-quality result. It does not establish semantic correctness, peer influence, collective intelligence, or a causal revision effect.
 - P1 remains frozen as source-audited methods/archival work. No model call, trial, human session, API spend, or paper-gate advancement.
 - Next cursor: if needed, reconstruct the full question-indexed pair relation from the same pinned files; preserve the per-question domain and pair identities rather than publishing another scalar-only summary.
+
+
+## 2026-11-10 | VEY-039 source-locked CGD manifest and Lean table proof
+
+- Added `STUDIES/2026-11-10_VEY-039_CGD_17_BLOB_MANIFEST_FORMALIZATION.md`.
+- Re-fetched all 17 exact ConsistencyBench result blobs at commit `bfc676baa848c7f1715bb73aee148180de15516e`; all 17 per-file vectors match the existing HsH/Sable manifest.
+- Two distinct prefix-count implementations agree. Totals: 5,100 sets / 19,550 records; 6,702 flags/revision responses; 6,643 text-different and 59 text-identical revisions; 2,010 changed labels; stale raw-text bounds 1,174–4,386; changed-label bounds 394–1,444.
+- Added `OrsonCGDManifestBounds.lean` to existing Orson PR #850; branch commit `3041f7c2cd717b51945dacaf1d24bc69a0394987`. Actions #42795140460 / job #129758320557 pending at this note.
+- Finite-table proof only; translation, semantic validity, API completion, causality and independent review remain outside the Lean claim.
+- P1 stays OPEN / NOT READY; no model/human trial, API spend, manuscript edit or paper-gate advancement. Existing issue #853 remains the sole published stale-input report; no duplicate publisher submission.
+- No Orson physics reassignment.
