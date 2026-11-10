@@ -113,3 +113,16 @@ A distinct additive publication envelope was opened after the Lean merge-referen
 - Initial status: `SUBMITTED_NOT_VERIFIED`; no publisher comment or artifact readback yet.
 
 This is a new formalization addendum, not a duplicate of issue #853's original stale-input report. Do not resubmit. Verify issue #1557's publisher comment, workflow result and fixed-destination artifact before changing status.
+
+
+## Publisher verification amendment | 2026-11-10
+
+Issue #1557 completed through the existing issue publisher:
+- Publisher comment: `PUBLISHED`.
+- Destination: `WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-cgd-manifest-lean-addendum-20261110t0924z-s2-001.md`.
+- Publisher commit: `24244cecb9c8ac9a127ccb1c6978257ba70f8eed`.
+- Artifact blob: `62fbfea007feb0a75c8a7a37a03c12de5b73d0d6`.
+- SHA-256: `fc204092321ba5cf0d63c74b4f28b48f5c48bba65547cb3e37a22b00ce2c1404`.
+- Independent connector readback matched the issue envelope content byte-for-byte (3,549 UTF-8 bytes); declared digest matches.
+
+Publication status: `PUBLISHED_VERIFIED`. This is a distinct additive formalization amendment; issue #853 remains the original stale-input-bounds report. No duplicate submission was made.
