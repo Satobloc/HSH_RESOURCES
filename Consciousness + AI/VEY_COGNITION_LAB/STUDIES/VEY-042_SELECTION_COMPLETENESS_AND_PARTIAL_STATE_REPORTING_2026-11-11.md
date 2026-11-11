@@ -138,3 +138,15 @@ Next:
 5. Continue the frozen P1 OV-49–53 origin inventory and controlled experimental-feasibility check separately.
 
 **Disposition:** selection completeness is a distinct upstream continuation gate; PARTIAL is a required status, not a cosmetic annotation. Evidence remains a single-source preprint comparator pending full-text and item-level recovery.
+
+## Amendment 01 — Source relevance and carrier localization
+
+This addendum is separate from the original source-locked P001 analysis. It adds source relevance, source identity, access depth, duplicate-family identity, and carrier class as orthogonal dimensions. See METHODS/SELECTION_COVERAGE_CERTIFICATE_V1_ADDENDUM_01_SOURCE_RELEVANCE_AND_CARRIER_LOCALIZATION.md.
+
+A full Markdown manuscript review of Thomas Ryan, The Scaffold Continuity Trap (preprint v1.0.0, 2026-07-13, DOI 10.5281/zenodo.21342748), found four eligible blinded rows, one per condition, all 12/12 on the core score. Full scaffold did not beat no-memory or summary-only; sham stability passed. The no-memory condition still retained visible repository state, tests, and task files, so it is not a no-state baseline. One row per condition, shared broader Codex environment, low hidden-probe accuracy, and pending corrupted/adversarial conditions limit the result. The manuscript disclaims consciousness and subjective-continuity claims.
+
+The existing Mersearch receipt's top-ranked Meridian message was directly checked. At least three archive copies represent one source message, including two exact blob copies and one variant export with identical conversation/message identity, role, timestamp, and text. The message is relevant to general literature/resource planning but not to Orson's original role-reset instruction. Multiple paths are not independent source witnesses.
+
+The method addendum defines scope_relation, identity_state, access_depth, duplicate_family, carrier_class, and actual_access separately from coverage, authority, and provenance. It proposes a staged carrier-localization design followed by a separate selection/representation factorial. No new LLM trial, human session, or causal estimate was produced.
+
+Formalization: theorem noninjective_selection_remains_noninjective_after_encoding was added to existing PR #1115. The source is present, but no Lean Actions run or local Lean runtime was available; status remains LEAN_NOT_RUN. P1 issue #564 and its frozen protocol remain unchanged.
