@@ -400,3 +400,17 @@ HsH issue #1506 was rejected by the existing publisher for SHA-256 mismatch (com
 - Abstract-level prior-art triage (not full-text review): Holter et al. (2025), DOI 10.1109/MCG.2025.3623892; Harris et al. (2026), DOI 10.1177/00187208261457702; Van den Bosch et al. (2024), DOI 10.1007/s43681-024-00647-8.
 - Scholar Sidekick audit: four cited works matched their DOI/title records; no retractions flagged.
 - No raw-data reanalysis, replication, model trial, P1 scope change, paper-gate advancement, Lean proof or theory promotion.
+
+
+## 2026-11-11 | VEY-040 cognitive-state geometry and action-relative projection
+
+- **Status:** TRIAGED / ABSTRACT_ONLY for all new external comparators; not a completed full-text review.
+- **Historical user-source anchor:** HsH DEVELOPMENT_FULL_CONVOS/30SEP26_DUMP/CONSCI.txt, blob e691708e39984493a3c94fad20077d829e84e1c5, lines 86–95. Explicit “You said:” role label; original raw conversation ID/date unresolved. Three duplicate archive placements share identical content/SHA; count as one witness.
+- **Xue:** Jiangwei Xue, *What Does Successful Execution Certify? An Executable Decomposition of LLM-Agent Handoffs*, DOI 10.5281/zenodo.22668198, 2026-09-09. SciSpace-indexed abstract only. Reports global state fidelity versus immediate action support, structured-action correctness, and executed outcome. Full record/PDF/data/code and model/version assignment not retrieved.
+- **Cazenille:** Léo Cazenille, *Shared Memory Is Not Enough for LLM-Agent Teams*, DOI 10.6084/m9.figshare.34332540, 2026-10-10. SciSpace-indexed abstract only. Availability, actual access, timing relative to route choice, and coordination are distinct. No sample/model/effect details or verified code/data link retrieved.
+- **Candidate Cazenille code pointer rejected as unverified:** opanhw/memform-code README blob 5df2d065117d97e5a474e3948a8079922dfaafe5 identifies a separate “MemForm” memory-poisoning benchmark; no Cazenille title found in that repository.
+- **Wittendorff:** preregistration DOI 10.5281/zenodo.22131392 (indexed v2/Amendment 1) versus results abstract DOI 10.5281/zenodo.22273352, whose abstract cites preregistration 22131393 and amendment 22231102. Exact lineage unresolved; results values remain abstract-only.
+- **He and Yu:** *Stored Is Not Supported*, arXiv:2609.02127, 2026-09-02. Abstract-only in this run; typed provenance and assertion-boundedness proposal; 24 hand-authored conformance cases do not constitute end-to-end LLM evaluation.
+- **Conceptual update:** distinguish global state fidelity from action-relative support; provenance label from provenance evidence; availability from access; access from comprehension; comprehension from decision uptake; decision uptake from execution/outcome; behavior from complete internal state/subjective experience.
+- **Formalization:** generic projection lemmas in existing HsH PR #1115, branch review/human-ai-group-unit-identifiability-20261030t1848z, head cc5d92c6935aa2ae120de2efed7c4ac8a1ebfbc7. Compile pending; manual workflow_dispatch required and unavailable in this runtime. Not a source-specific empirical theorem.
+- **Use:** VEY-030 measurement architecture refinement and next-source retrieval cursor. Do not mark any comparator REVIEWED or import abstract numbers into lab data until primary files and DOI/version lineage are verified.
