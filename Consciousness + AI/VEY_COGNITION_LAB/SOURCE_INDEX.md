@@ -414,3 +414,11 @@ HsH issue #1506 was rejected by the existing publisher for SHA-256 mismatch (com
 - **Conceptual update:** distinguish global state fidelity from action-relative support; provenance label from provenance evidence; availability from access; access from comprehension; comprehension from decision uptake; decision uptake from execution/outcome; behavior from complete internal state/subjective experience.
 - **Formalization:** generic projection lemmas in existing HsH PR #1115, branch review/human-ai-group-unit-identifiability-20261030t1848z, head cc5d92c6935aa2ae120de2efed7c4ac8a1ebfbc7. Compile pending; manual workflow_dispatch required and unavailable in this runtime. Not a source-specific empirical theorem.
 - **Use:** VEY-030 measurement architecture refinement and next-source retrieval cursor. Do not mark any comparator REVIEWED or import abstract numbers into lab data until primary files and DOI/version lineage are verified.
+
+
+## VEY-040 publication status | 2026-11-11
+
+- Public-safe report submitted once as HsH issue #1598 with required [HSH-PUBLISH-V1] title prefix and hsh-publish-v1 four-key body schema.
+- Issue-body content readback exactly matches the report; SHA-256 d9dfdc07ff03e51d7a311029d85710f39ed1c8c4c3edfc7936397e3f1ec9ab03 matches the declared digest.
+- No publisher comment is present and the expected canonical PUBLISHED_SUBMISSIONS artifact returns 404.
+- Status remains SUBMITTED_NOT_VERIFIED / PUBLISHER_RESULT_PENDING. Do not edit/reopen/retry or duplicate; no manual artifact write.
