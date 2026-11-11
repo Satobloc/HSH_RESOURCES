@@ -422,3 +422,21 @@ HsH issue #1506 was rejected by the existing publisher for SHA-256 mismatch (com
 - Issue-body content readback exactly matches the report; SHA-256 d9dfdc07ff03e51d7a311029d85710f39ed1c8c4c3edfc7936397e3f1ec9ab03 matches the declared digest.
 - No publisher comment is present and the expected canonical PUBLISHED_SUBMISSIONS artifact returns 404.
 - Status remains SUBMITTED_NOT_VERIFIED / PUBLISHER_RESULT_PENDING. Do not edit/reopen/retry or duplicate; no manual artifact write.
+
+## 2026-11-11 — Ryan (2026), The Scaffold Continuity Trap
+
+- Thomas Ryan, The Scaffold Continuity Trap: A Blinded Scaffold-Lesion Test in Persistent Coding Agents, preprint v1.0.0, 2026-07-13. Zenodo DOI: https://doi.org/10.5281/zenodo.21342748. Public source repository: https://github.com/Atomics-hub/consciousness-research.
+- Full public Markdown manuscript and results summary reviewed from paper6/manuscript.md (blob ee308d71cee52de5bd280173ec7753a6ade4d9cc) and paper6/results_summary.md (blob d6f83842a65504b078ba42382580c9ce0404174a). Reproducibility note blob b0f1e752a53e90ae1653b80b28ef8d35bf915824; Zenodo metadata blob 82064f7344097752dac83430ffa1ffd10bec886f.
+- Four eligible blinded straight-condition rows, one per condition, all 12/12 on the core continuation score. Full scaffold did not outperform no-memory or summary-only; sham stability passed. Hidden-probe accuracy was 0.2 for full/sham and 0.0 for summary/no-memory; self-report continuity differed while action-level score did not.
+- Critical limitation: the no-memory condition retained visible repository state, tests, and task files. It is not a blank-agent or no-state baseline. The study supports a bounded task-local-carrier interpretation for small coding tasks, not a general claim that persistent memory is irrelevant.
+- Other limits: one row per condition; four separate Codex threads in the same broader environment; no independent human replication; low hidden-probe recovery; corrupted/adversarial conditions pending. No consciousness, personhood, survival, or subjective-continuity claim.
+- Public repository excludes coordinator-private harness state, hidden keys, blind packets, runner returns, and internal workspace outputs. None were accessed. The repository-declared PDF SHA-256 was not independently verified; the full Markdown manuscript was read. Peer-review status not established.
+- Evidence class: LITERATURE RESULT / FULL-MARKDOWN-MANUSCRIPT REVIEW, not independent replication or a new LLM trial.
+
+## 2026-11-11 — P001 metadata and source-relevance crosswalk
+
+- Jia Shen, Transfer Is Not Continuation, is identified on author-controlled pages as preprint v1.0 published 2026-10-11; version DOI 10.5281/zenodo.23291119; all-versions DOI 10.5281/zenodo.23291118; CC BY 4.0.
+- The SciSpace record uses the all-versions DOI and labels the item as a journal article. Treat this as indexer metadata, not a correction to the author-controlled preprint record.
+- The dedicated P001 page abbreviates the follow-up counts; the author publications page supplies the partial category. These are two pages in the same author source family, not independent evidence.
+- Zenodo PDF and item-level data remain unretrieved. SciSpace extraction is not a full-text review.
+- The existing Mersearch receipt's top-ranked Meridian user message was verified as one source witness across duplicate/variant archive copies. It is not Orson's original role-reset instruction.
