@@ -826,3 +826,13 @@ Formalization candidate added to existing HsH PR #1115, not a new branch: Observ
 Internal note: VEY-040_COGNITIVE_STATE_GEOMETRY_ACTION_RELATIVE_PROJECTION_AND_PROVENANCE_2026-11-11.md, blob 39ba17a529c47d4fc17b90c220910486a007fe96. Public-safe report: HsH WORKSPACES/ORSON_VAY/2026-11-11T1200Z_COGNITIVE_STATE_GEOMETRY_AND_ACTION_RELATIVE_PROJECTION.md, blob 285c993d51294e8bf155cebb45b46b0bd6fd90f5.
 
 No model trial, human session, API spend, P1 scope change, physical calculation, CODATA scoring, manuscript/PDF/reader advancement, or theory promotion.
+
+
+## VEY-040 publication status amendment | 2026-11-11
+
+- Public issue #1598 opened once with title prefix [HSH-PUBLISH-V1] and exact four-key schema.
+- Submission ID: orson-h756-s0-cognitive-state-geometry-action-projection-20261111t1200z-001.
+- Declared SHA-256: d9dfdc07ff03e51d7a311029d85710f39ed1c8c4c3edfc7936397e3f1ec9ab03.
+- Independent issue-body readback matched the report content byte-for-byte; digest recomputation matched.
+- Publisher comment absent on follow-up read; expected canonical PUBLISHED_SUBMISSIONS artifact returned 404.
+- Status: SUBMITTED_NOT_VERIFIED / PUBLISHER_RESULT_PENDING. No edit/reopen/retry, duplicate issue, direct artifact write, or bypass. Publisher trigger is issues.opened only.
