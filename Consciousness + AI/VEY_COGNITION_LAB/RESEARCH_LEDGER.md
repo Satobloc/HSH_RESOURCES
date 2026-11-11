@@ -883,3 +883,12 @@ Internal study note: `STUDIES/VEY-041_CHEN_2026_RELEASE_CODE_DATA_REPRODUCIBILIT
 
 
 VEY-042 reusable method and Tern advisory: METHODS/SELECTION_COVERAGE_CERTIFICATE_V1.md; TERN_ADVISORIES/2026-11-11_VEY-042_SELECTION_COVERAGE.md. Proposed, not validated in a controlled study.
+
+## VEY-042 Amendment 01 — source relevance and carrier localization (2026-11-11)
+
+- Read Thomas Ryan, The Scaffold Continuity Trap, preprint v1.0.0 (2026-07-13), DOI 10.5281/zenodo.21342748, from the full public Markdown manuscript and results summary. Four eligible blinded rows, one per condition, all scored 12/12. Full scaffold did not beat no-memory or summary-only; sham stability passed. The no-memory condition still had visible repository state, tests, and task files. This is a bounded task-local-carrier result, not evidence that memory is generally irrelevant or that AI has subjective continuity.
+- Source limitations: one eligible row per condition; same broader Codex environment; no independent human replication; low hidden-probe accuracy; corrupted/adversarial conditions pending. Public coordinator-private material was not accessed.
+- Mersearch receipt audit: 16,942 files / 21,037,890 records / 135 hits / 74 paths; raw results withheld. A top-ranked Meridian user message was verified in multiple archive copies, including two exact blob copies and one variant with identical conversation/message identity. It is one source witness, adjacent to general literature planning, not Orson's role-reset instruction. Original Oct 9 Orson role-reset message remains unrecovered.
+- VEY-042 method addendum adds scope relation, source identity, access depth, duplicate-family, carrier class, actual access, and a vector of evidence-independence dimensions. The staged carrier-localization design precedes a separate selection/representation factorial.
+- PR #1115 now contains the conditional non-injective-selection-after-encoding theorem, but no Lean run occurred. Status LEAN_SOURCE_PRESENT / LEAN_NOT_RUN.
+- P1 issue #564 and its frozen ConsistencyBench CGD protocol remain unchanged. No new LLM trial, human session, API spend, manuscript, or paper-gate advancement.
