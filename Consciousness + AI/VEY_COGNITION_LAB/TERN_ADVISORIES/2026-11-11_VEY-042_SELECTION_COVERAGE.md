@@ -28,3 +28,13 @@ HSH_RESOURCES / Consciousness + AI/VEY_COGNITION_LAB/METHODS/SELECTION_COVERAGE_
 ## Limits
 
 P001 is a preprint case study. The source summary is incomplete on the dedicated page; full text and raw item-level data remain unavailable in this review. No LLM trial, human-subject study, causal estimate, or independent replication was performed. No task, schedule, priority, ownership, or BEDROCK rule is changed. Tern retains scheduler and priority authority.
+
+## Addendum 01 — carrier localization and source relevance
+
+A full-manuscript external comparator, Thomas Ryan's 2026 Paper 6 preprint (DOI 10.5281/zenodo.21342748), reports 12/12 core scores in all four blinded conditions. Its no-memory condition still retained visible repository state, tests, and task files. The bounded implication is that task-local source-of-truth state can carry action-level continuation in small coding tasks; it does not show that broader memory is generally irrelevant. One eligible row per condition and a shared broader Codex environment limit generalization.
+
+For scheduler/handoff interpretation, distinguish task-local repository/test state from additional handoff, summary, persistent-memory, tool-trace, and control-state carriers. A missing handoff item may still be present in the repository; a successful action may therefore rely on task-local state rather than the handoff. Record actual availability/access and message exposure separately.
+
+The Mersearch origin-bank compact receipt's top lexical hits include one Meridian user message duplicated across archive copies. It is not Orson's role-reset source. Search-hit count and path count must not be treated as independent source count or target relevance. The VEY-042 addendum adds scope_relation, identity_state, access_depth, duplicate_family, carrier_class, and an evidence-independence vector.
+
+**No task or policy change requested.** Tern retains scheduler and priority authority. This is optional methods context only; no new LLM trial or human session was run.
