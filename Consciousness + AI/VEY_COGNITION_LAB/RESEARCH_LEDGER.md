@@ -861,3 +861,22 @@ Internal study note: `STUDIES/VEY-041_CHEN_2026_RELEASE_CODE_DATA_REPRODUCIBILIT
 - Publisher comment #6800852528 reports PUBLISHED, commit `d4fd2dd21987cfb12b3f7ad0b423b5a5f7825a15`, SHA-256 `96d95418832c229893c5b8bc14e35599aaf6235725d8423930b114ba6c90cf30`.
 - Independent issue-payload and canonical artifact readback matched byte-for-byte: 9,429 UTF-8 bytes; recomputed SHA-256 matches. Artifact Git blob `c61e7081a28b4eae4ed3b757fe03645997509f78`.
 - Status: `PUBLISHED_VERIFIED`. No retry, duplicate issue, direct artifact write, or bypass.
+
+
+## VEY-042 — Selection completeness and partial-state reporting (2026-11-11)
+
+**Status:** SOURCE-LOCKED PREPRINT COMPARATOR; author-page/abstract-level review only; not full-text review, replication, or causal result.
+
+**Primary source:** Jia Shen, *Transfer Is Not Continuation: Failure Boundaries in AI Work-State Continuation*, Miralucis Research Program, preprint v1.0, 2026-10-11. Version DOI 10.5281/zenodo.23291119; all-versions DOI 10.5281/zenodo.23291118; CC BY 4.0 shown on author page. Pages inspected: https://miralucis.ai/publications/p001/ and https://miralucis.ai/publications/ . Zenodo PDF/record was not retrievable through available routes; no raw item-level data, code, or selection manifest was inspected. Peer-review status not established.
+
+**Reported evidence:** one 97-item comparison reports 31 omissions for a structured handoff versus 13 for ordinary free-form; structured omissions were already present at extraction and persisted through review/packaging. The follow-up fixed-eight-field output reports bounded selection 35 present / 31 partial / 31 absent, and richer selection 84 / 12 / 1. The dedicated P001 page omits the partial category in its abbreviated summary; the publications page gives the complete three-category denominator. The author warns of single-source, length, wording, sampling, and environment confounds; no causal attribution or general effect size is warranted.
+
+**Descriptive replay:** structured omission 31/97=31.96%; free-form 13/97=13.40%; difference 18.56 percentage points; ratio 2.38. Bounded present/partial/absent = 36.08/31.96/31.96%; richer = 86.60/12.37/1.03%. No inferential statistics or uncertainty intervals calculated.
+
+**New distinction:** add candidate-source selection completeness as a stage upstream of representation/encoding. VEY-030/040 already distinguish retention, availability, access, comprehension, decision uptake, global fidelity, action-relative support, authority, execution, and outcome; VEY-042 adds the selection stage and makes PARTIAL explicit. Proposed item states: PRESENT, PARTIAL, ABSENT, UNAVAILABLE, UNASSESSED, NOT_APPLICABLE. Authority and provenance remain separate dimensions. Coverage is conditional on a frozen, versioned candidate universe, not proof that the universe is complete.
+
+**Formalization:** existing HsH PR #1115 contains ObservableProjection.lean (branch head cc5d92c6935aa2ae120de2efed7c4ac8a1ebfbc7; file blob 0ff8e07d1f7100e1648d05192aec9a9b340515b2). Generic projection results are present but the PR is OPEN/DRAFT/UNMERGED and LEAN_NOT_RUN. Next theorem target: non-injective selection remains non-injective after downstream encoding. No Lean code or build claimed because no local Lean/Lake/Elan and no workflow-dispatch action were available; local container DNS to GitHub failed.
+
+**Boundary:** P1 issue #564 remains OPEN / SOURCE-AND-EXPERIMENT-READINESS / NOT READY. No P1 protocol change, new LLM trial, human-subject experiment, manuscript advancement, or theory promotion. Internal HsH report: WORKSPACES/ORSON_VAY/2026-11-11T1936Z_SELECTION_COVERAGE_AS_HANDOFF_GATE.md. Public issue #1611 was submitted with a SHA mismatch and must not be treated as published unless a later publisher acceptance/readback is observed.
+
+**Next:** recover the full P001 PDF/Zenodo record and item-level manifest if accessible; reconcile the partial-category display against the versioned PDF; inspect all four 2x2 cells only if the source permits; keep the frozen P1 OV-49–53 source/feasibility cursor separate.
