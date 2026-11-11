@@ -231,7 +231,17 @@ This is the source-side half of the citation system. Create an entry only when a
 
 Mirror each active handoff in `Satobloc/HsH/ledgers/CITATION_LEDGER.md` using the same ID.
 
-No active handoffs recorded yet.
+### CITE-2026-001
+
+**Source:** `OUTSIDE RESEARCH LIBRARY/KELVIN/2608.25827v1.pdf`  
+**Source SHA-256:** `39347e5e0dd078714e486de3cfd67bcc8068bdd353f66307e628bff00b7a6c17`  
+**Extracted text:** `derived/text/39347e5e0dd078714e486de3cfd67bcc8068bdd353f66307e628bff00b7a6c17.txt` (Git blob `242c2296ff3eb69cb7425124d7893e05f280a2f5`; extraction manifest: extracted, 46 pages, processed 2026-09-07).  
+**HsH point of use:** `WORKSPACES/ARIADNE/2026-11-11T0124Z_KELVIN_CONTOUR_READOUT_SOURCE_AUDIT_AMENDMENT_05.md`, §2.  
+**Citation role:** `STD`  
+**Why needed:** Standard geometric reference for the time-dependent Lagrangian coordinates of a slender finite-core vortex tube, its metric/volume form, slenderness condition, and core-distortion limits. It is not empirical evidence, a raw dataset, or an H(s)H premise.  
+**Identified by / workflow:** Workshop Relay h745:s2 Ariadne, 2026-11-11.  
+**Status:** `VERIFIED` for the source statements cited at §§4.1, 5.1–5.2, 9 and Data Access Statement p.40.  
+**Verification / backlink notes:** Selective reading covered pp. 1–5, 15–17, 20–23, 32–34, and 37–46 (25/46 pages). The 4D sweep and projection to a centreline worldsheet in the HsH amendment are explicitly an assistant reconstruction, not the paper's terminology or claim. The paper states that no numerical codes or data sets were used. Its machine bibliography record remains provisional; this handoff does not promote that record.
 
 ### Handoff entry template
 
