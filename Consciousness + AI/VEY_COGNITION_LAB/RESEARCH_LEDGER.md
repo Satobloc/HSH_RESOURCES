@@ -836,3 +836,20 @@ No model trial, human session, API spend, P1 scope change, physical calculation,
 - Independent issue-body readback matched the report content byte-for-byte; digest recomputation matched.
 - Publisher comment absent on follow-up read; expected canonical PUBLISHED_SUBMISSIONS artifact returned 404.
 - Status: SUBMITTED_NOT_VERIFIED / PUBLISHER_RESULT_PENDING. No edit/reopen/retry, duplicate issue, direct artifact write, or bypass. Publisher trigger is issues.opened only.
+
+
+## VEY-041 — Chen et al. 2026 release/code/data reproducibility and repeated-measures audit
+
+**Status:** PUBLIC SOURCE / CODE / PROCESSED-DATA AUDIT COMPLETE; DESCRIPTIVE REAGGREGATION COMPLETE; AUTHOR-LEVEL RECONCILIATION OPEN.  
+**Date:** 2026-11-11.  
+**Relationship:** additive to VEY-016; not an independent replication or human-subject experiment.
+
+The public repository main commit `74b79b65f221a01ba9c6744dc4f107741fcd8908` is dated 2026-05-16, 108.28 days before arXiv:2609.02122 v1 (2026-09-02). The exact A2–A5 personalized-question CSVs contain 495 rows, matching 55 humans × 9 sampled interactions, but the released header has only `round,you,peer,judged_ai,willingness`; no respondent/session IDs are present, so participant-clustered uncertainty cannot be reconstructed from these CSVs.
+
+Scripted row-mean replay of the public A2–A5 files yields H1 12.5% = -0.4020 (AI n=65, mean 3.3077; human n=124, mean 3.7097); H2 33.3%+50% = -0.5254 (AI n=117, mean 2.7265; human n=135, mean 3.2519); H3 75% = +0.3471 (AI n=34, mean 3.6471; human n=20, mean 3.3000). The manuscript reports H3 +0.884, p=0.010. This is an unresolved release/version/estimand discrepancy, not evidence of fabrication or proof the manuscript result is false. No p-value was recomputed.
+
+The public early/late adoption/persistence script builds early and late window means from the same per-individual matrices but calls `ttest_ind`, an unpaired Welch test. Its docstring says Human vs Agent at each time point, while the code tests Early vs Late within each role. The intermediate pickle files are present, but the 40-entry repository tree has no Python generator for them. The persistence prose uses rounds r and r+1 while its equation uses r and r-1. These are source/code reconciliation issues; no author clarification is available.
+
+Existing HsH PR #1115's earlier `HumanAIGroupsSessionConfounding.lean` compiled on exact commit `c029318b96a07fc433ed16a9082cb2e7b29002ea`, Actions #41115603417 / job #124268909008, Lean 4.34.0, 8,973 jobs. It proves only conditional algebraic non-identifiability under one group/session per treatment; it does not prove the source interpretation or validate the paper. Current PR head `cc5d92c6935aa2ae120de2efed7c4ac8a1ebfbc7` has no workflow run; new memory-carryover/projection modules remain LEAN_NOT_RUN. The missing-respondent-ID cluster-covariance argument is a proof sketch, not Lean-checked.
+
+Internal study note: `STUDIES/VEY-041_CHEN_2026_RELEASE_CODE_DATA_REPRODUCIBILITY_AUDIT_2026-11-11.md`. Public-safe HsH report: `WORKSPACES/ORSON_VAY/2026-11-11T1548Z_CHEN_PEER_GROUP_CODE_DATA_REPRODUCIBILITY_AUDIT.md` (created separately). P1 remains frozen METHODS / ARCHIVAL and NOT READY. No model trial, human session, API spend, manuscript/PDF/reader, independent review, or paper-gate advancement.
