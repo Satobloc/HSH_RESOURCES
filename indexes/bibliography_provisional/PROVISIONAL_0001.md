@@ -4,656 +4,652 @@ Unique-content lineages: **50**
 
 > Machine-indexed from successful extraction state. Not individually reviewed.
 
-## 1. Let's rest here a moment
+## 1. The first demonstration of braiding in photonic topological zero modes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1038/s41567-020-1007-5`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `2020-10-braiding-photonic-topological-modes.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4819 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 2. ICHEP04 8-0864
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `Consciousness + AI/solonoid2.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/0408104v2.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 52 pages; 99657 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 2. ：0•0=0：＄¢④∞=00：
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `Consciousness + AI/solonoid5.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 26 pages; 35438 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 3. DESI spectral viewer
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** N  
-**Date hints:** unresolved  
-**Repository path:** `DATA/DATA REL - DESI spectral viewer.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 627 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 4. DESI spectral viewer
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** N  
-**Date hints:** unresolved  
-**Repository path:** `DATA/DATA REL - DESI spectral viewer2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 625 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 5. DESI spectral viewer
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** N  
-**Date hints:** unresolved  
-**Repository path:** `DATA/DATA REL - DESI spectral viewer3.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 627 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 6. notebooks-latest/03_ScienceExamples/EmLineGalaxies/02_EmLineGalaxies_Outliers.ipynb at master · astro-datalab/notebooks-latest
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1117/12.2057445`  
-**Author metadata:** N  
-**Date hints:** unresolved  
-**Repository path:** `DATA/DATA REL - notebooks-latest03_ScienceExamplesEmLineGalaxies02_EmLineGalaxies_Outliers.ipynb at master · astro-datalabnotebooks-latest.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 24865 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 7. notebooks-latest/04_HowTos/SPARCL/Plot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalab/notebooks-latest
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1117/12.2057445`  
-**Author metadata:** N  
-**Date hints:** unresolved  
-**Repository path:** `DATA/DATA REL - notebooks-latest04_HowTosSPARCLPlot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalabnotebooks-latest.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 12698 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 8. Notebooks
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1117/12.2057445`  
-**Author metadata:** N  
-**Date hints:** unresolved  
-**Repository path:** `DATA/DATA REL - SPARCL Notebooks.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 19 pages; 28252 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 9. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/2Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 440 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 10. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/3Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 436 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 11. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/4Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 434 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 12. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/5Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 371 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 13. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/6Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 415 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 14. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/7Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 460 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 15. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 475 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 16. Central Recursion
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/EXP_ANALYSIS/misc Central Recursion.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 57 pages; 75137 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 17. Those are very interesting. But my interests in electromagnetism reflect…
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/EXP_ANALYSIS/Misc — A Chat.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 36 pages; 52408 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 18. STEM in a changing world: 'Insider' and 'outsider' perspectives
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.4324/9781003404989-2`  
-**Author metadata:** Lyn D. English  
-**Date hints:** 2026/06/10  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/10.4324_9781003404989-2_chapterpdf.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 16 pages; 45779 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 19. 2025 Scientific Triumph- Unifying the Laws of Physics through Mathematical Genius - Scientia Magazine
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2025 Scientific Triumph- Unifying the Laws of Physics through Mathematical Geniu.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 3 pages; 3241 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 20. Long time derivation of the Boltzmann equation from hard sphere dynamics
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2408.07818v3`  
-**Author metadata:** Yu Deng; Zaher Hani; Xiao Ma  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2408.07818v3.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 192 pages; 537298 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 21. HILBERT’S SIXTH PROBLEM: DERIVATION OF FLUID EQUATIONS VIA
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2503.01800v1`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2503.01800v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 48 pages; 145727 non-space characters  
+**Extraction:** extracted; 15 pages; 29271 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 22. Revisiting Residual Connections: Orthogonal Updates for Stable and Efficient Deep Networks
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2505.11881v5`  
-**Author metadata:** Giyeong Oh; Woohyun Cho; Siyeol Kim; Suhwan Choi; Youngjae Yu  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2505.11881v5.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 34 pages; 82464 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 23. Superspace worldline formalism approach to Quantum Gravity: dimensional reduction and Holography
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2601.07382v1`  
-**Author metadata:** Jean-Baptiste Roux  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2601.07382v1.pdf`  
-**Keywords from source:** Worldline formalism, Quantum Gravity, AdS/CFT |Submitted to:Class. Quantum Grav  
-**Extraction:** extracted; 20 pages; 57755 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 24. Exclusive Self Attention
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2603.09078v1`  
-**Author metadata:** Shuangfei Zhai  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2603.09078v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 14793 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 25. Spectral reconstruction from Euclidean lattice correlators through singular value decomposition
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2605.15674v1`  
-**Author metadata:** Ryutaro Tsuji; Shoji Hashimoto  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2605.15674v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 29 pages; 36237 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 26. Two-nucleon systems at m_π≈292 MeV from lattice QCD
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2605.16977v1`  
-**Author metadata:** Kuan Zhang; Kang Yu; Yiqi Geng; Chuan Liu; Liuming Liu; Peng Sun; Jia-Jun Wu; Ruilin Zhu  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2605.16977v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 37545 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 27. Sharpening the Supersymmetric Axion Weak Gravity Conjecture
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2605.22912v1`  
-**Author metadata:** Muldrow Etheredge; Matthew Reece; Tom Rudelius; Christopher Tudball  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2605.22912v1.pdf`  
-**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - 2605.22912v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 43 pages; 73466 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 28. Trajectory Dynamics in Language Model Hidden States Predict Human Processing Costs Beyond Surprisal
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2606.05346v1`  
-**Author metadata:** Elan Barenholtz  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2606.05346v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 17 pages; 42923 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 29. Peer Review File
+## 3. Semileptonic decays of D mesons in three-ﬂavor lattice QCD
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/41586_2026_10652_MOESM4_ESM.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/0408306v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 30 pages; 95155 non-space characters  
+**Extraction:** extracted; 4 pages; 16925 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 30. ﻿Chapter 14 Theoretical and Methodological Innovative Futures for Physics in Postsecondary Contexts
+## 4. 2+1 Flavor QCD simulated in the ǫ-regime in
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.1007/978-981-96-9136-4_14`  
+**Identifier:** arXiv: `0707.0071v3`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/978-981-96-9136-4_14.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/0707.0071v3.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 19 pages; 51282 non-space characters  
+**Extraction:** extracted; 19 pages; 23559 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 5. PII: 0097-3165(73)90033-2
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/1-s2.0-0097316573900332-main.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 20 pages; 31466 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 31. [2605.19117] Quantum Magic Reveals CP Phases Invisible to Entanglement in Spin-0 Decays
+## 6. Advances in Mathematics 347 (2019) 192–272
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2605.19117`  
+**Identifier:** DOI: `10.1016/j.aim.2019.02.024`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/[2605.19117] Quantum Magic Reveals CP Phases Invisible to Entanglement in Spin-0.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/1-s2.0-S000187081930115X-main.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 5 pages; 2948 non-space characters  
+**Extraction:** extracted; 81 pages; 126344 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 7. Continuous spin superparticle in [formula omitted], [formula omitted] curved superspace
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.nuclphysb.2025.117135`  
+**Author metadata:** I.L. Buchbinder  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/1-s2.0-S055032132500344X-main.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 16 pages; 53677 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 32. A Unified SU(4) Qudit–Gauge Lattice
+## 8. Braided finite automata and representation theory
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
+**Identifier:** DOI: `10.1016/j.nuclphysb.2026.117532`  
+**Author metadata:** Anastasia Doikou  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/A Unified SU(4) Qudit Gauge Lattice Framework for Emergent Geometry and Interaction Bryan E. W. Van Zandt KILOWADS Studios LLC Averill Park NY USA Dated May 21 2026.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/1-s2.0-S0550321326002385-main.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 41 pages; 53579 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 33. A [[L3, 2L,L ]] CSS Code from the FCC Lattice
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1063/1.1499754`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/a-l3-2l-l-css-code-from-the-fcc.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 16298 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 34. Best Time to Post on r-redditpolicedept — Subreddit Analysis | Postpone
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Best Time to Post on r-redditpolicedept — Subreddit Analysis  Postpone.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 5930 non-space characters  
+**Extraction:** extracted; 39 pages; 114397 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 35. Class Likelihood Ratios to measure classification performance — scikit-learn 1.9.0 documentation
+## 9. Ueber die Bedeutung der Pacchionischen Granulationen
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** N  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Class Likelihood Ratios to measure classification performance — scikit-learn 1.9.0 documentation.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/10.1007_bf02018723.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 17069 non-space characters  
+**Extraction:** extracted; 19 pages; 34208 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 36. Dark Matter as a Trapped K=6 Remnant
+## 10. A latent spatial factor approach for synthesizing opioid
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
+**Identifier:** arXiv: `1806.05232v1`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/dark-matter-as-a-trapped.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/1806.05232v1.pdf`  
+**Keywords from source:** Bayesian hierarchical modeling, disease mapping, multivariate, spatial analysis,  
+**Extraction:** extracted; 22 pages; 31047 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 11. Generation of superhelical time-varying OAM beam with space-time-coding
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2210.06941v1`  
+**Author metadata:** ZHANG Jingxin  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/2210.06941v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 20 pages; 56561 non-space characters  
+**Extraction:** extracted; 16 pages; 21820 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 37. A Conceptual Architectural Design for Symbolic-Modular Cog nitive
+## 12. Electronic correlations in magnetized helical edge states coupled to s-wave superconductors
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.36227/techrxiv.176704918.84639135/v1`  
-**Author metadata:** unresolved  
+**Identifier:** arXiv: `2508.21326v2`  
+**Author metadata:** Zeinab Bakhshipour; Mir Vahid Hosseini  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/EdervaldoMelo.pdf`  
-**Keywords from source:** symbolic-modular systems, conceptual archi  
-**Extraction:** extracted; 6 pages; 22676 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 38. Visons, the Continuum Einstein-Hilbert Limit, and One-Loop Finiteness
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/emergent-quantum-gravity.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/2508.21326v2.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 17 pages; 40512 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 39. Tunable Distance at Constant Rate
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/flag-assisted-error-correction-on-fcc-lattice.pdf`  
-**Keywords from source:** quantum error correction, FCC lattice,  
-**Extraction:** extracted; 16 pages; 23444 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 40. TYPE Perspective
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.3389/fphy.2025.1731777`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/fphy-13-1731777.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 8 pages; 39816 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 41. Geometric Evaporation and Hierarchical Information Reduction
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/geometric-evaporation-primordial-black-hole-constraint.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 34406 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 42. Grand Unification Theories And Supersymmetry | Physics | Research Starters | EBSCO Research
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Grand Unification Theories And Supersymmetry  Physics  Research Starters  EBS.pdf`  
-**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Grand Unification Theories And Supersymmetry  Physics  Research Starters  EBS.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 11 pages; 22259 non-space characters  
+**Extraction:** extracted; 22 pages; 75288 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 43. Non-extremal island in de Sitter gravity
+## 13. Klein Bottle Cosmology
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.1007/JHEP03(2025)004`  
-**Author metadata:** unresolved  
+**Identifier:** arXiv: `2511.23447v3`  
+**Author metadata:** Brian Greene; Daniel Kabat; Janna Levin; Massimo Porrati  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/JHEP03(2025)004.pdf`  
-**Keywords from source:** de Sitter space, 2D Gravity, AdS-CFT Correspondence, Black Holes  
-**Extraction:** extracted; 53 pages; 111451 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 44. A teleportation protocol in Schwarzschild-de Sitter space
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1007/JHEP03(2025)095`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/JHEP03(2025)095.pdf`  
-**Keywords from source:** 2D Gravity, Black Holes, de Sitter space  
-**Extraction:** extracted; 28 pages; 56970 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 45. A 67%-Rate CSS Code on the FCC Lattice: [[192,130,3]] from Weight-12 Stabilizers
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2603.20294v1`  
-**Author metadata:** Raghu Kulkarni  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code 2.pdf`  
-**Duplicate repository paths:** `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code 3.pdf`; `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_FCC_Quantum_Code.pdf`  
-**Keywords from source:** quantum error correction, CSS codes, FCC lattice, topological codes,  
-**Extraction:** extracted; 14 pages; 24080 non-space characters  
+**Repository path:** `30SEP_PAPER_DUMP/2511.23447v3.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 25 pages; 29974 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 46. The Mass-Energy-Information Equivalence: A bottom-up identification of the particle spectrum via FCC lattice error correction
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1016/j.physo.2026.100414`  
-**Author metadata:** Raghu Kulkarni  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_Mass_Energy_Equivalence.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 23666 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 47. Matter as incomplete crystallization: Quark charges, color confinement, and the proton mass from a single extra node in the vacuum lattice
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1016/j.physo.2026.100423`  
-**Author metadata:** Raghu Kulkarni  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Kulkarni_Matter_as_Incomplete_Crystallization.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 59937 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 48. A Pascal Anti-Diagonal of M-theory Sector Dimensions
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.5281/zenodo.20059990`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Lehew-2026-Pascal-Anti-Diagonal Alpha-Letter.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 20352 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 49. Geometric Renormalization of the Speed of
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.5281/zenodo.18294925(2026`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/light (5) 2.pdf`  
-**Duplicate repository paths:** `EXPOSURE_STATS/MISC_PAPERS/light (5).pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 9652 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 50. T h e G + E M O r t h o g o n a l T r i a d : G r a v i t y a s t h e
+## 14. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/LIGHT_IS_GEM_v12.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/2Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 29071 non-space characters  
+**Extraction:** extracted; 4 pages; 4575 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 15. Advanced Search | arXiv e-print repository
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1145/3773078.3831930`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/3234Advanced Search _ arXiv e-print repository.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 17 pages; 31793 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 16. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/3Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4577 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 17. Nathan McKnight - User on NightCafe - NightCafe
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/3Nathan McKnight - User on NightCafe - NightCafe.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 2 pages; 1677 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 18. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/4Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4572 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 19. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/5Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4571 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 20. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/6Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4573 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 21. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/7Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4573 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 22. A Spectral–Geometric Tensor Framework Beyond Hartree–Fock and Kohn–Sham Closure - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.nexres.2026.102440`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/A Spectral–Geometric Tensor Framework Beyond Hartree–Fock and Kohn–Sham Closure - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 6 pages; 9029 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 23. PII: 0097-3165(73)90031-9
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/A-family-of-difference-sets-in-non-cyc_1973_Journal-of-Combinatorial-Theory-.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 10 pages; 13758 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 24. Advanced Search | arXiv e-print repository
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1103/PhysRevE.84.031912`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Advanced Search _ arXiv e-print repository.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 5 pages; 2504 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 25. AMNH Sign In | American Museum of Natural History
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/AMNH Sign In _ American Museum of Natural History.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 2 pages; 608 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 26. Topology-driven tuning of nonlinear opto-electronic properties in spiral-distorted quantum rings under magnetic field - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.micrna.2026.208745`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/atqerfwerfde.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 13097 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 27. Big Bang Nucleosynthesis (BBN) — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Big Bang Nucleosynthesis (BBN) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4261 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 28. Canonical quantum gravity - Wikipedia
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1103/PhysRev.144.1078`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Canonical quantum gravity - Wikipedia.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 9 pages; 19770 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 29. Carlo Rovelli - Wikipedia
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1007/BF01008729`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Carlo Rovelli - Wikipedia.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 10 pages; 25938 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 30. Carlo Rovelli takes aim at analytic philosophy's naive realism | Carlo Rovelli, Ozbir Kip » IAI TV
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Carlo Rovelli takes aim at analytic philosophy's naive realism _ Carlo Rovelli, Ozbir Kip » IAI TV.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4189 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 31. Casimir operators of4D ,N= 2supersymmetry in
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2608.27412v2`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Casimir operators of 4D , 𝒩=2 supersymmetry in the harmonic approach.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 39 pages; 74661 non-space characters  
 **Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 32. Casimir wormhole solutions in f(R,Lm) gravity - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.cjph.2024.03.008`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Casimir wormhole solutions in f(R,Lm) gravity - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 8 pages; 13493 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 33. PII: 0097-3165(73)90038-1
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Central-and-local-limit-theorems-applied-to-_1973_Journal-of-Combinatorial-T.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 21 pages; 19908 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 34. CHSH Bell Inequality Test — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/CHSH Bell Inequality Test — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 3648 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 35. PII: 0097-3165(73)90040-X
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Configurations-arising-from-maximal_1973_Journal-of-Combinatorial-Theory--Se.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 5 pages; 6875 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 36. Consciousness came before life » IAI TV
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Consciousness came before life » IAI TV.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4886 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 37. Consciousness can't be uploaded: Why digital immortality is a metaphysical mirage | William Egginton » IAI TV
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Consciousness can't be uploaded_ Why digital immortality is a metaphysical mirage _ William Egginton » IAI TV.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4347 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 38. Advanced Search | arXiv e-print repository
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1103/PhysRevD.86.014014`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/dfsadfAdvanced Search _ arXiv e-print repository.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 6764 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 39. PII: 0097-3165(73)90039-3
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Distributions-modulo-subgroups-of-G_1973_Journal-of-Combinatorial-Theory--Se.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 4901 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 40. Earthquake Aftershocks: Omori + Gutenberg-Richter — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Earthquake Aftershocks_ Omori + Gutenberg-Richter — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 3287 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 41. PII: 0097-3165(73)90030-7
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Editorial-Board_1973_Journal-of-Combinatorial-Theory--Series-A.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 391 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 42. Microsoft Word - _BE70 v3 (viudas, imgs, etc).docx
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.36446/be.2025.70.408`  
+**Author metadata:** Turco  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/El_teseracto_Kant_y_los_espejos_La_influencia_de_C.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 9 pages; 36899 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 43. Electronic correlations in magnetized helical edge states coupled to s-wave
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2508.21326v2`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Electronic correlations in magnetized helical edge states coupled to s-wave superconductors.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 22 pages; 75288 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 44. Exact Kantowski–Sachs and Bianchi type-III cosmologies in nonlinear f(T) gravity: Dynamics and background-level viability - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.aop.2026.170690`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Exact Kantowski–Sachs and Bianchi type-III cosmologies in nonlinear f(T) gravity_ Dynamics and background-level viability - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 14110 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 45. Extra dimensions – and how to hide them « Einstein-Online
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Extra dimensions – and how to hide them « Einstein-Online.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 6 pages; 5280 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 46. Faraday Waves — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Faraday Waves — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 3272 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 47. Fiber Bend & TIR Loss — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Fiber Bend & TIR Loss — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4753 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 48. Fresnel vs Fraunhofer — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Fresnel vs Fraunhofer — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 2962 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 49. Glossary « Einstein-Online
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Glossary « Einstein-Online.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 93 pages; 180582 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 50. Graphene Tight-Binding Band Structure — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Graphene Tight-Binding Band Structure — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 3403 non-space characters  
+**Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied

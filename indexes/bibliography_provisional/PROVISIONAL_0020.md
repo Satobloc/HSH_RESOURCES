@@ -4,652 +4,657 @@ Unique-content lineages: **50**
 
 > Machine-indexed from successful extraction state. Not individually reviewed.
 
-## 1. Gauge Geometry of Hodge Zero-Mode Transport in Parameter-Dependent Topological Data Analysis
+## 1. Braking indices as probes of r-mode spin-down in young pulsars
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2605.28326v1`  
-**Author metadata:** Satoshi Kanno; Rei Nishimura; Hiroshi Yamauchi; Yoshi-aki Shimada  
+**Identifier:** arXiv: `2607.27046v1`  
+**Author metadata:** Shahram Abbassi; Armin Memarian; Evelyn Sophia Guest; S. R. Valluri  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2605.28326v1.pdf`  
-**Keywords from source:** Topological data analysis, Hodge Laplacian, Parameter-dependent  
-**Extraction:** extracted; 61 pages; 96317 non-space characters  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2607.27046v1.pdf`  
+**Keywords from source:** pulsars, neutron stars, r-modes, braking index, gravitational waves, spin-down, torque fractions, neutron star equation  
+**Extraction:** extracted; 14 pages; 59810 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 2. Quantum Geometric Limits for Non-Abelian Holonomies
+## 2. LIGO Detector Characterization in the Second and Third Parts of the Fourth Observing Run
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2605.28754v1`  
-**Author metadata:** François Impens; David Guéry-Odelin  
+**Identifier:** arXiv: `2608.12193v1`  
+**Author metadata:** J. Glanzer; A. F. Helmling-Cornell; A. Calafat; S. R. Callos; E. Capote; A. Effler; T. A. Ferreira; E. Goetz; A. M. Knee; J. R. Mérou; D. Malakar; B. Mannix; D. Nandi; K. Pham; R. M. S. Schofield; P. Sharma; Z. Yarbrough; N. Arnaud; B. K. Berger; K. Burtnyk; C. M. Compton; G. Connolly; D. Davis; F. Di Renzo; G. Grant; J. C. Martins; G. Mo; A. Neunzert; L. K. Nuttall; J. Oberling; J. R. Olson; S. Soni; M. Trevor; R. Abbott; I. Abouelfettouh; R. X. Adhikari; A. Ahuja; S. Álvarez-López; A. Ananyeva; S. Appert; S. K. Apple; K. Arai; J. Areeda; N. Aritomi; S. M. Aston; M. Ball; S. W. Ballmer; D. Barker; L. Barsotti; J. Betzwieser; Z. S. Bhalla; D. Bhattacharjee; G. Billingsley; S. Biscans; C. D. Blair; N. Bode; E. Bonilla; V. Bossilkov; A. Branch; A. F. Brooks; D. D. Brown; R. Bruntz; J. Bryant; C. Cahillane; H. Cao; C. Chatterjee; N. Christensen; F. Clara; J. Collins; R. Cottingham; D. C. Coyne; R. Crouch; J. Csizmazia; A. Cumming; L. P. Dartez; N. Demos; E. Dohmen; K. L. Dooley; J. C. Driggers; S. E. Dwyer; A. Ejlli; T. Etzel; M. Evans; J. Feicht; R. Frey; W. Frischhertz; P. Fritschel; V. V. Frolov; M. Fuentes-Garcia; P. Fulda; M. Fyffe; D. Ganapathy; B. Gateley; T. Gayer; J. A. Giaime; K. D. Giardina; R. Goetz; G. Gonzalez; A. W. Goodwin-Jones; S. Gras; C. Gray; D. Griffith; H. Grote; T. Guidry; J. Gurs; E. D. Hall; J. Hanks; J. Hanson; M. C. Heintze; N. A. Holland; N. -T. Howard; D. Hoyland; H. Y. Huang; B. Hughey; Y. Inoue; A. L. James; A. Jamies; K. Jani; R. Jaume; A. Jennings; W. Jia; D. H. Jones; H. B. Kabagoz; S. Kandhasamy; S. Karat; S. Karki; M. Kasprzack; K. Kawabe; N. Kijbunchoo; P. J. King; J. S. Kissel; K. Komori; A. Kontos; R. Kumar; K. Kuns; M. Landry; B. Lantz; M. Laxen; K. Lee; M. Lesovsky; F. Llamas Villarreal; E. Lofquist-Fabris; M. Lormand; B. R. Lott; H. A. Loughlin; R. Macas; M. MacInnis; C. N. Makarem; G. L. Mansell; R. M. Martin; K. Mason; F. Matichard; N. Mavalvala; N. Maxwell; G. McCarrol; R. McCarthy; D. E. McClelland; S. McCormick; J. McIver; R. McNeil; T. McRae; F. Mera; E. L. Merilh; F. Meylahn; R. Mittleman; S. Mohan S; D. Moraru; G. Moreno; A. Mullavey; M. Nakano; T. J. N. Nelson; S. A. Nichols; J. Notte; T. O'Hanlon; R. Oram; C. Osthelder; D. J. Ottaway; H. Overmier; W. Parker; O. Patane; A. Pele; S. Perry; H. Pham; M. Pirello; J. Pullin; V. Quetschke; K. E. Ramirez; K. Ransom; J. Reyes; J. W. Richardson; K. Riles; M. Robinson; J. G. Rollins; C. L. Romel; J. H. Romie; M. P. Ross; B. I. Rotimi; K. Ryan; T. Sadecki; A. Sanchez; E. J. Sanchez; L. E. Sanchez; R. L. Savage; D. Schaetzl; M. G. Schiworski; R. Schnabel; E. Schwartz; D. Sellers; T. Shaffer; R. W. Short; D. Sigg; B. J. J. Slagmolen; J. R. Smith; C. Soike; V. Srivastava; T. Starkman; L. Sun; D. B. Tanner; J. Tasson; M. Thomas; P. Thomas; K. A. Thorne; E. M. Todd; M. R. Todd; C. I. Torrie; G. Traylor; A. S. Ubhi; R. P. Udall; G. Vajente; J. Vanosky; A. Vecchio; P. J. Veitch; A. M. Vibhute; E. R. G. von Reis; J. Warner; B. Weaver; R. Weiss; C. Whittle; P. Wilcox; B. Willke; C. C. Wipf; J. L. Wright; V. A. Xu; H. Yamamoto; L. Zhang; Z. Zhang; M. E. Zucker  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2605.28754v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.12193v1.pdf`  
+**Keywords from source:** LIGO detector characterization, data quality, instrumental noise  
+**Extraction:** extracted; 51 pages; 108652 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 3. Stress-Testing DANTE under Detector Domain Shift: a Representation-Coherent Reanalysis of LIGO O4a
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2608.15166v2`  
+**Author metadata:** Luca Cirfeta  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2 (1).pdf`  
+**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.15166v2.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 29119 non-space characters  
+**Extraction:** extracted; 13 pages; 38984 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 3. Testing loop quantum gravity through EHT observations of M87* and Sgr A* using rotating holonomy-corrected black holes
+## 4. Discovery of Three Glitches in the previously quiet pulsar PSR J1637-4642
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2605.28871v1`  
-**Author metadata:** Heena Ali; Sushant G. Ghosh  
+**Identifier:** arXiv: `2608.19555v1`  
+**Author metadata:** Zhaoyi Wang; Chuwen Zheng; Yuhong Zhuang; Hanyu Zhang; Peng Liu; Zhonghao Tu; Ang Li  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2605.28871v1.pdf`  
-**Keywords from source:** Loop quantum gravity, black hole shadow, EHT obse rvation, horizonless compact objects, pa  
-**Extraction:** extracted; 26 pages; 81521 non-space characters  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.19555v1.pdf`  
+**Keywords from source:** Neutron star cores (1107); Neutron stars (1108); Pulsars (1306)  
+**Extraction:** extracted; 13 pages; 36802 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 4. Greybody Factors, Absorption Cross Sections and Hawking Radiation of Holonomy-Corrected Schwarzschild Black Holes
+## 5. Correlated and coincident noise in Einstein Telescope's triangular configuration
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2605.28917v1`  
-**Author metadata:** Bekir Can Lütfüoğlu; Javlon Rayimbaev; Bekzod Rahmatov; Saidmuhammad Ahmedov; Nuriddin Kurbonov  
+**Identifier:** arXiv: `2608.22401v1`  
+**Author metadata:** Jan Harms  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2605.28917v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.22401v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 39960 non-space characters  
+**Extraction:** extracted; 14 pages; 49855 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 5. The Cartan-Topos Protocol: A Unified Geometric and Categorical Framework for Resilient Multi-Agent Coordination
+## 6. Unsupervised Deep Learning Method for Clustering KAGRA O3GK Transient Noise Data
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.00714v1`  
-**Author metadata:** Manuel Hernández; Eduardo Sánchez-Soto  
+**Identifier:** arXiv: `2608.24690v1`  
+**Author metadata:** Yubin Kim; Kihyun Jung; Kyujin Kwak  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.00714v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.24690v1.pdf`  
+**Keywords from source:** gravitational waves — methods: data analysis — software: machine learning  
+**Extraction:** extracted; 12 pages; 49129 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 7. Distinct Modes of Pulsar Glitch Activity Revealed by the Waiting-Time–Amplitude Morphology
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2608.28523v1`  
+**Author metadata:** Wen-Tong Liu; Wei-hua Wang; Xia Zhou; Fei-fei Kou  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.28523v1.pdf`  
+**Keywords from source:** Neutron stars (1108) — Pulsars (1306) — Astrostatistics (1882) — Stellar interiors (1606)  
+**Extraction:** extracted; 22 pages; 91130 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 8. Automated identification and subtraction of gravitational-wave glitches using boundary refinement
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2608.29295v1`  
+**Author metadata:** Mohammad Abu Thaher Chowdhury; Soumya D Mohanty  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.29295v1_part001_p0001-0015.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 19 pages; 49467 non-space characters  
+**Extraction:** extracted; 15 pages; 59579 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 6. Wilson Holonomy and Spectral Monodromy in Spin-Orbit Rings: Effective Gauge Connections and Loop Observables
+## 9. Automated identification and subtraction of gravitational-wave glitches using boundary refinement
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.01029v1`  
-**Author metadata:** N. Bolivar  
+**Identifier:** unresolved  
+**Author metadata:** Mohammad Abu Thaher Chowdhury; Soumya D Mohanty  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.01029v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.29295v1_part002_p0016-0023.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 41 pages; 78329 non-space characters  
+**Extraction:** extracted; 8 pages; 32832 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 7. Information Hierarchy in Many-Body Berry Phase
+## 10. Vortex pinning and the elastic response of neutron-star crusts - I. Axisymmetric loading
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.02155v1`  
-**Author metadata:** Kai Watanabe  
+**Identifier:** arXiv: `2608.30029v1`  
+**Author metadata:** Elia Giliberti; Gabriele Cambiotti  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.02155v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.30029v1.pdf`  
+**Keywords from source:** stars: neutron – pulsars: general – stars: interiors – stars: rotation – dense matter – methods: numerical  
+**Extraction:** extracted; 6 pages; 27050 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 11. Single-pulse reanalysis of the 2024 Vela glitch and new observations of PSR J0437-4715 and PSR J1644-4559
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2609.03056v1`  
+**Author metadata:** Carlos O. Lousto; Ruby Shrestha; Ezequiel Zubieta; Susana B. Araujo Furlan; Guillermo Gancio; Federico García; Santiago del Palacio; Ryan Missel; Linwei Wang  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2609.03056v1.pdf`  
+**Keywords from source:** Radio pulsars (1353) — Millisecond pulsars (1062) — Pulsar timing method (1305)  
+**Extraction:** extracted; 20 pages; 57969 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 12. New scaling relations from MESA models for mass and radius of subgiant stars: application to Kepler targets
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2609.03710v1`  
+**Author metadata:** T. Çakır Alsaç; M. Yıldız; S. Örtel  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2609.03710v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 15 pages; 45274 non-space characters  
+**Extraction:** extracted; 15 pages; 53852 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 8. Defect Holonomy Near Rank-Deficient Mixed States
+## 13. Long-term statistics of pulsar glitches due to history-dependent avalanches
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.02343v2`  
-**Author metadata:** Yu-Huan Huang; Xu-Yang Hou; Hao Guo  
+**Identifier:** arXiv: `2105.13588v1`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.02343v2.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/Long-term statistics of pulsar glitches due to history-dependent avalanches.pdf`  
+**Keywords from source:** : Astrostatistics, neutron stars, pulsars, stellar rotation  
+**Extraction:** extracted; 45 pages; 69265 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 14. A new hypothesis could connect two of physics’ greatest mysteries: dark energy and quantum gravity
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A new hypothesis could connect two of physics’ greatest mysteries_ dark energy and quantum gravity - Copy.pdf`  
+**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A new hypothesis could connect two of physics’ greatest mysteries_ dark energy and quantum gravity.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 34457 non-space characters  
+**Extraction:** extracted; 4 pages; 2344 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 9. Torsion-induced gauge structure in curved quantum waveguides
+## 15. A simple discovery is shaking the foundations of spintronics | ScienceDaily
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.03725v1`  
-**Author metadata:** Xu-Yang Hou; Xianlong Gao; Hao Guo  
+**Identifier:** DOI: `10.1093/nsr/nwaf240`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.03725v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A simple discovery is shaking the foundations of spintronics _ ScienceDaily - Copy.pdf`  
+**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/A simple discovery is shaking the foundations of spintronics _ ScienceDaily.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 47015 non-space characters  
+**Extraction:** extracted; 8 pages; 8157 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 10. Spin-charge deconfinement and emergent AdS_3 structure from a self-consistent dressing of Fierz-complete (1+1)d Dirac fermions
+## 16. ed6c00141 1..9
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.07955v1`  
-**Author metadata:** L. Haddad; K. Gonzales; J. Kahanek; M. Kolding; J. Maguire; V. Palombi; H. Truelson  
+**Identifier:** DOI: `10.1021/acs.jchemed.6c00141`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.07955v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/acs.jchemed.6c00141.pdf`  
+**Keywords from source:** First-Year Undergraduate/General, Organic Chemistry, Physical Chemistry, Misconceptions/Discrepant Events,  
+**Extraction:** extracted; 9 pages; 41466 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 17. Caltech startup unveils physics AI that skips transformers: No benchmark proof yet
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Caltech startup unveils physics AI that skips transformers_ No benchmark proof yet.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 81 pages; 186361 non-space characters  
+**Extraction:** extracted; 4 pages; 2557 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 11. Double-Current Deformations of Two-Dimensional QFTs with Anomalies
+## 18. Chemical physicists quantitatively model electron interactions in real quantum materials
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.09752v2`  
-**Author metadata:** Zhengyuan Du  
+**Identifier:** DOI: `10.1126/science.adq7402`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.09752v2.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Chemical physicists quantitatively model electron interactions in real quantum materials.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 45 pages; 77640 non-space characters  
+**Extraction:** extracted; 4 pages; 6402 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 12. Coherent manipulation of Kondo Majoranas in two-channel Kondo setups
+## 19. In-orbit test of the weak equivalence principle with atom interferometry | Science Advances
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.10259v1`  
-**Author metadata:** Yashar Komijani; C. J. Bolech  
+**Identifier:** DOI: `10.1126/sciadv.aeh4502`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.10259v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/In-orbit test of the weak equivalence principle with atom interferometry _ Science Advances.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 30 pages; 67931 non-space characters  
+**Extraction:** extracted; 22 pages; 48368 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 13. The stability of Margulis space-times with parabolic holonomy elements
+## 20. Long-predicted gravitational effect seen in a quantum object for the very first time – Einstein’s theory passes another crucial test
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.11694v1`  
-**Author metadata:** Suhyoung Choi  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.11694v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Long-predicted gravitational effect seen in a quantum object for the very first time – Einstein’s theory passes another crucial test.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 34243 non-space characters  
+**Extraction:** extracted; 6 pages; 5679 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 14. Protected Reconstruction from Codazzi Defects: Equianharmonic Quantization and a Minimal Standard-Model Carrier
+## 21. APOD: 2016 February 11 - LIGO Detects Gravitational Waves from Merging Black Holes
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.12693v3`  
-**Author metadata:** Piotr Ogonowski  
+**Identifier:** unresolved  
+**Author metadata:** N  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.12693v3.pdf`  
-**Keywords from source:** Codazzi defects; Lorentzian geometry; protected reconstru ction; equianharmonic quantization; ﬁnite  
-**Extraction:** extracted; 54 pages; 166577 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 15. Holonomy Analysis of Optical-polarization Temperature Trajectories in Stress-induced Ferroelectric SrTiO_3
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2606.13074v3`  
-**Author metadata:** Hirotaka Manaka; Kazuma Seike; Yoko Miura  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.13074v3.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - APOD 2016 February 11 - LIGO Detects Gravitational Waves from Merging Black Holes.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 79 pages; 135322 non-space characters  
+**Extraction:** extracted; 2 pages; 1805 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 16. The horizontal Laplacian of a Riemannian submersion with totally geodesic fibers and an integrable horizontal distribution
+## 22. October News - Polish Gangs Hunt PUAs after Tom Torero Killer Strikes Again - The AntiFeminist
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.17492v1`  
-**Author metadata:** Tatsuya Tate  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.17492v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - October News - Polish Gangs Hunt PUAs after Tom Torero Killer Strikes Again - Th.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 23 pages; 47471 non-space characters  
+**Extraction:** extracted; 97 pages; 70631 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 17. Projective Infinities and b-Calculus
+## 23. Dark E Theory]
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.17597v1`  
-**Author metadata:** Andreas Cap; A. Rod Gover  
+**Identifier:** DOI: `10.1098/rspa.2025.0912`  
+**Author metadata:** N  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.17597v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Taking dark energy out of the equation Mathematicians challenge the standard cosmological model of the universe.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 34 pages; 80781 non-space characters  
+**Extraction:** extracted; 6 pages; 6906 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 18. A Double–Scaling Large–d Saddle of BFSS/BMN Matrix Quantum Mechanics
+## 24. Oak Ridge solves why thermal cycling degrades quantum magnets: Spin physics at fault
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.17758v2`  
-**Author metadata:** Badis Ydri  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.17758v2.pdf`  
-**Keywords from source:** BFSS matrix quantum mechanics; BMN matrix model; large–dexpansion; double–  
-**Extraction:** extracted; 76 pages; 105275 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 19. A Flat Connection: The Pooling Factor and the Geometry of Centring in Hierarchical MCMC
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2606.19655v1`  
-**Author metadata:** Aidan D. Bindoff  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.19655v1.pdf`  
-**Keywords from source:** Markov chain Monte Carlo, hierarchical models, fiber bundles, Ehresmann  
-**Extraction:** extracted; 39 pages; 79286 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 20. Holonomies and Boundary Symmetries in the Discrete Warped Chern-Simons Gravity
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2606.22028v1`  
-**Author metadata:** H. T. Özer; Aytül Filiz  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.22028v1.pdf`  
-**Keywords from source:** warped Chern–Simons theory, boundary monodromies, holonomy sectors, Wilson loops, warped  
-**Extraction:** extracted; 69 pages; 129974 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 21. Liouvillian Geometry of Multidimensional Spectra: Pathway Transport and Observational Holonomy in Open Quantum Systems
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2606.22530v2`  
-**Author metadata:** Eric R. Bittner; Carlos Silva-Acuña; Hao Li  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.22530v2.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault - Copy.pdf`  
+**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Oak Ridge solves why thermal cycling degrades quantum magnets_ Spin physics at fault.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 15 pages; 54993 non-space characters  
+**Extraction:** extracted; 12 pages; 20523 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 22. Hodge Topology of Semiclassical Transport: A Coordinate-Free Geometric Framework for the Anomalous Hall Effect and Non-Linear Berry Dipole
+## 25. Science says some spiders can launch into the sky using silk and electricity to fly and the physics is wild
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2606.31409v1`  
-**Author metadata:** Zhi-Wei Wang; Samuel L. Braunstein  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2606.31409v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Science says some spiders can launch into the sky using silk and electricity to fly and the physics is wild.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 5 pages; 19020 non-space characters  
+**Extraction:** extracted; 4 pages; 2862 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 23. From Dirac Cones to Semions: An Exact Finite-Size Theory of Parity-Anomaly Transport in Chiral Spin Liquids
+## 26. Scientists just overturned a century-old physics assumption | ScienceDaily
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.01341v2`  
-**Author metadata:** Kumar Ghosh  
+**Identifier:** DOI: `10.1038/s41563-026-02611-9`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.01341v2.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists just overturned a century-old physics assumption _ ScienceDaily - Copy.pdf`  
+**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists just overturned a century-old physics assumption _ ScienceDaily.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 21 pages; 45763 non-space characters  
+**Extraction:** extracted; 8 pages; 10016 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 24. Quasi-holonomy in non-adiabatic quantum evolution
+## 27. Scientists observe Einstein's gravity in the quantum world
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.05218v1`  
-**Author metadata:** Erik Sjöqvist; Adam Fredriksson  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.05218v1.pdf`  
-**Keywords from source:** Quantum holonomy, Grassmann bundle, gauge theory  
-**Extraction:** extracted; 7 pages; 17240 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 25. Wilczek-Zee Realization of Uhlmann Parallel Transport
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.05591v1`  
-**Author metadata:** Yu-Huan Huang; Xu-Yang Hou; Jia-Chen Tang; Hao Guo  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.05591v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/Scientists observe Einstein's gravity in the quantum world.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 30076 non-space characters  
+**Extraction:** extracted; 4 pages; 2678 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 26. High-Accuracy Semi-Analytical Method for Solving the Problem of Electromagnetic Wave Scattering by Arbitrary Ensembles of Parallel Circular Cylinders
+## 28. The physics of brain development: How cells pull together to form the neural tube
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.06517v1`  
-**Author metadata:** V. V. Ternovski; M. I. Tribelsky  
+**Identifier:** DOI: `10.1016/j.cub.2026.02.068`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.06517v1.pdf`  
-**Keywords from source:** multiple scattering, Mie theory, cylindrical  
-**Extraction:** extracted; 21 pages; 79344 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 27. Horizon-Restricted Leading Soft QED as Open Quantum System
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.07342v1`  
-**Author metadata:** Soo-Jong Rey  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.07342v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/The physics of brain development_ How cells pull together to form the neural tube.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 32 pages; 70341 non-space characters  
+**Extraction:** extracted; 3 pages; 3870 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 28. Gram–Wishart–Stiefel formulation of the N=2, large–d gauge theory in 1D
+## 29. “Really bizarre” quantum discovery defies the rules of physics | ScienceDaily
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.08481v1`  
-**Author metadata:** Badis Ydri  
+**Identifier:** DOI: `10.1103/ms3x-pjsk`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.08481v1.pdf`  
-**Keywords from source:** BFSS matrix model; BMN matrix model; matrix quantum mechanics; lattice ma  
-**Extraction:** extracted; 99 pages; 131265 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 29. The Statistical physics of unsaturated soil water: kinetic theory and non commutative pore water dynamics
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.09416v1`  
-**Author metadata:** Riccardo Rigon  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.09416v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/“Really bizarre” quantum discovery defies the rules of physics _ ScienceDaily.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 40 pages; 155843 non-space characters  
+**Extraction:** extracted; 8 pages; 9069 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 30. Sharp Concentration Bounds for Bundle-Valued Statistics on Manifolds
+## 30. Black Hole-Tower Correspondence: Species backreaction in minimal black hole limits
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.10592v1`  
-**Author metadata:** Swagatam Das; Vaclav Snasel  
+**Identifier:** arXiv: `2609.00119v1`  
+**Author metadata:** Miquel Aparici; Alvaro Herráez; Joaquin Masias  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.10592v1.pdf`  
-**Keywords from source:** Concentration inequalities, Riemannian statistics, vector bundles, parallel transport,  
-**Extraction:** extracted; 65 pages; 122952 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 31. Non-Abelian A_4 vortices in SO(3) gauge theory and non-invertible symmetries
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.12366v1`  
-**Author metadata:** Yoshihiko Abe; Tetsutaro Higaki; Kazuya Murakami; Muneto Nitta; Ryo Yokokura  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.12366v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.00119v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 42167 non-space characters  
+**Extraction:** extracted; 64 pages; 135773 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 32. The dark side of translation surfaces: It is not all about dynamics
+## 31. Subleading Collinear Limits of Yang-Mills Amplitudes from Gravity
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.14822v1`  
-**Author metadata:** Gianluca Faraco  
+**Identifier:** arXiv: `2609.00153v1`  
+**Author metadata:** Jin Dong; Stephan Stieberger  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.14822v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.00153v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 70 pages; 193685 non-space characters  
+**Extraction:** extracted; 42 pages; 90929 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 33. A cubical formalisation of topos causal models: intervention, forcing, and a contextuality obstruction
+## 32. Carroll Limit of 𝒪(F^2) D_p-branes from Kaluza–Klein-like Null reduction in the Polyakov Formulation
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.15629v2`  
-**Author metadata:** Karen Sargsyan  
+**Identifier:** arXiv: `2609.00797v1`  
+**Author metadata:** Limin Zeng  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.15629v2.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.00797v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 21 pages; 61368 non-space characters  
+**Extraction:** extracted; 46 pages; 80303 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 34. Contextual Fraction on Permutation Gain Graphs: Exact Algorithms, Query Lower Bounds, and Dynamic Maintenance
+## 33. Disproving the Greedy Superstring Conjecture
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.16037v1`  
-**Author metadata:** Ronald Katende  
+**Identifier:** arXiv: `2609.01365v1`  
+**Author metadata:** Hiroki Shibata  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.16037v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01365v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 27775 non-space characters  
+**Extraction:** extracted; 13 pages; 29992 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 35. Distributed Topological Charge and Spinorial Holonomy in Yukawa-Regularized Graphene Disclinations
+## 34. Lagrangian varieties from q-matrix models
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.16835v1`  
-**Author metadata:** A. M. de M. Carvalho; G. Q. Garcia; E. Brito; C. Furtado  
+**Identifier:** arXiv: `2609.01454v1`  
+**Author metadata:** Victor Mishnyakov; Maxim Zabzine  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.16835v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01454v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 34859 non-space characters  
+**Extraction:** extracted; 68 pages; 77481 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 36. Signed circulants at the Ramanujan bound
+## 35. Curvature-driven spin transport in rank-two string-Carroll hydrodynamics
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.18334v1`  
-**Author metadata:** Vaibhav Suvagiya  
+**Identifier:** arXiv: `2609.01634v1`  
+**Author metadata:** Nikko John Leo Lobos; Reggie Pantig  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.18334v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01634v1.pdf`  
+**Keywords from source:** string-Carroll geometry, spin transport, spin hydrodynamics, black-hole horizons, near-horizon  
+**Extraction:** extracted; 25 pages; 77397 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 36. Solomonoff Induction and Singular Integrals
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2609.01666v1`  
+**Author metadata:** Will Troiani; Daniel Murfet  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01666v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 8504 non-space characters  
+**Extraction:** extracted; 19 pages; 28999 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 37. Semiclassical analysis for Yang–Mills random connections on compact surfaces
+## 37. GadIR: A Spatial-Topology Preserving Compiler for Quantum Many-Body Systems Simulation
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.19037v1`  
-**Author metadata:** Nguyen Viet Dang; Elias Nohra  
+**Identifier:** arXiv: `2609.01771v1`  
+**Author metadata:** Xiangyu Ren; Yuexun Huang; Zhaohui Yang; Yuchen Zhu; Tsung-Wei Huang; Tsung-Yi Ho; Zhiding Liang; Antonio Barbalace  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.19037v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01771v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 67 pages; 127836 non-space characters  
+**Extraction:** extracted; 25 pages; 129323 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 38. Do Sheaf Neural Networks Use Holonomy? A Measure–Intervene–Control Study
+## 38. Pre-Strings Lectures on Holographic Correlators and Analytic Bootstrap
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.19514v2`  
-**Author metadata:** Ankit Grover; Rémi Bourgerie  
+**Identifier:** arXiv: `2609.01986v1`  
+**Author metadata:** Xinan Zhou  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.19514v2.pdf`  
-**Keywords from source:** Geometric deep learning·Sheaf Neural Networks·Cellular  
-**Extraction:** extracted; 20 pages; 37397 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 39. Do Active SAE Feature Planes Carry More Holonomy? A Preregistered Reversal in Gemma
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.20522v1`  
-**Author metadata:** Larry Richards  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.20522v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.01986v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 23 pages; 61336 non-space characters  
+**Extraction:** extracted; 81 pages; 164278 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 40. TwistedMerge: Certified Higher-Order Diagnostics and Abstention for Model Merging
+## 39. Localization and Abelianization of Strings on Group Manifolds: The Simply Connected Case
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.20887v1`  
-**Author metadata:** Ting Gong; Shitan Xu  
+**Identifier:** arXiv: `2609.02425v1`  
+**Author metadata:** Yongchao Lü  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.20887v1.pdf`  
-**Keywords from source:** model merging, gauge synchronization, higher-order diagnostics, cohomology, holonomy, abstention  
-**Extraction:** extracted; 34 pages; 131732 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 41. Anti-Periodic Positional Encoding: Möbius Boundary Conditions Make In-Context Retrieval Reliable
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.21405v1`  
-**Author metadata:** Ji Ho Bae  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.21405v1.pdf`  
-**Keywords from source:** positional encoding, rotary position embedding, in-context  
-**Extraction:** extracted; 29 pages; 46703 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 42. Probability, Curvature and Spectrum on Graphs
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.21639v2`  
-**Author metadata:** Tianhong Zhao  
-**Date hints:** 2026/7/14  
-**Repository path:** `PRIOR_ART/2607.21639v2.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02425v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 12833 non-space characters  
+**Extraction:** extracted; 47 pages; 70622 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 43. A PDE approach to the 2D Yang-Mills measure
+## 40. Localization and Abelianization of Strings on Group Manifolds: The Non-simply Connected Case
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.22236v1`  
-**Author metadata:** Ilya Chevyrev; Tom Klose; Abdulwahab Mohamed  
+**Identifier:** arXiv: `2609.02472v1`  
+**Author metadata:** Yongchao Lü  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.22236v1.pdf`  
-**Keywords from source:** 2D Yang–Mills measure, rough path theory, regularity structures, Uhlenbeck compact  
-**Extraction:** extracted; 107 pages; 186538 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 44. The Yang-Mills measure on surfaces via Morse theory
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.24640v1`  
-**Author metadata:** Reda Chhaibi; Nguyen Viet Dang; Yannick Guedes Bonthonneau; Gabriel Rivière; Tat Dat Tô  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.24640v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02472v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 112 pages; 214846 non-space characters  
+**Extraction:** extracted; 44 pages; 65734 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 45. Quantum Mechanics on Non-Hausdorff One-Manifolds with Finite Graph Resolutions: Analytic Completion, Branching, and Invariant-Sector Scattering
+## 41. Variational preparation of thermofield double states for SYK models via multi-angle QAOA: sequential angle pruning for circuit reduction
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.26080v3`  
-**Author metadata:** Abhiram Sripat  
+**Identifier:** arXiv: `2609.02793v1`  
+**Author metadata:** Haji Muhammad Husnain Ashfaq; Moongul Byun; Keun-Young Kim  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.26080v3.pdf`  
-**Keywords from source:** non-Hausdorff manifolds, quantum mechanics, vector bundles, section extension, trans  
-**Extraction:** extracted; 131 pages; 253544 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 46. CasimirRFM: A Mathematica package for Riemann-flat compactifications with Casimir energies
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.26140v1`  
-**Author metadata:** Bruno Valeixo Bento  
-**Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.26140v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02793v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 34 pages; 55045 non-space characters  
+**Extraction:** extracted; 17 pages; 61281 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 47. Minimal Markovization via Stable Quotients in Holonomy-Cover Decision Processes
+## 42. Scale-separated AdS_2 flux vacua from type II
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.27132v1`  
-**Author metadata:** Zuyuan Zhang; Yongshan Chen; Mahdi Imani; Tian Lan  
+**Identifier:** arXiv: `2609.02814v1`  
+**Author metadata:** George Tringas; Timm Wrase  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.27132v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02814v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 84 pages; 240345 non-space characters  
+**Extraction:** extracted; 46 pages; 81113 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 48. Obstructions to Spin(7) Nahm transforms on tori
+## 43. Where Does Harness-Optimization Value Live? Localized Gains and the Budget-Splitting Trap in Self-Evolving LLM Agents
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2607.28303v1`  
-**Author metadata:** Spencer Whitehead  
+**Identifier:** arXiv: `2609.02889v1`  
+**Author metadata:** Michael Nguyen; Wei Chen Tan; Nurul Aisyah Hassan; Arvind Raman; Li Hua Lim; Ahmad Faiz Razak  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2607.28303v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 20 pages; 36291 non-space characters  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02889v1.pdf`  
+**Keywords from source:** large language model agents, self-evolving agents, prompt optimization, agent scaffolding,  
+**Extraction:** extracted; 24 pages; 68804 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 49. Which Holonomy Signatures Are Realizable? A Complete Answer for Closed Surfaces
+## 44. Monoidal Categorification and Quantization of Braid Varieties
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.01444v1`  
-**Author metadata:** Leyi Zhu  
+**Identifier:** arXiv: `2609.02962v1`  
+**Author metadata:** Yingjin Bi  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2608.01444v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.02962v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 28 pages; 68077 non-space characters  
+**Extraction:** extracted; 98 pages; 160995 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 50. Beyond K-Theory: Geometry and Holomorphy in Hyperbolic Band Theory
+## 45. Monstrous parafermionic defects and other non-invertible symmetries in chiral CFTs
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.01596v1`  
-**Author metadata:** Steven Rayan  
+**Identifier:** arXiv: `2609.03043v1`  
+**Author metadata:** Roberto Volpato  
 **Date hints:** unresolved  
-**Repository path:** `PRIOR_ART/2608.01596v1.pdf`  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03043v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 70 pages; 168632 non-space characters  
+**Extraction:** extracted; 47 pages; 94300 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 46. Discretization-Aware Fine-Tuning for Quantum Machine Learning with Chemical Foundation Models
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2609.03220v1`  
+**Author metadata:** Shunji Matsuura; Sonika Johri  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03220v1.pdf`  
+**Keywords from source:** Quantum machine learning, Hybrid quantum  
+**Extraction:** extracted; 10 pages; 48846 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 47. Convolution absorbing boundaries for explicit-circuit quantum simulation of the wave equation
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2609.03440v1`  
+**Author metadata:** Hoang Anh Nguyen; Ali Tura  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03440v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 22 pages; 74114 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 48. Plan Pointers and Record-Directive Form in Budgeted Verification of Inherited Agent Memory
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2609.03450v1`  
+**Author metadata:** Kazuki Nakayashiki  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03450v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 46 pages; 123362 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 49. Fractalizing spacetime: Floquet codes with fractonic excitations that are immobile in space and time
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2609.03703v1`  
+**Author metadata:** Juliette Soule; Dominic J. Williamson  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03703v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 17 pages; 53069 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 50. Semantic Bayesian World Models
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2609.03834v1`  
+**Author metadata:** Tommaso Soru  
+**Date hints:** unresolved  
+**Repository path:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03834v1.pdf`  
+**Keywords from source:** Semantic Web·Neuro-symbolic AI·Bayesian inference·  
+**Extraction:** extracted; 10 pages; 23101 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied

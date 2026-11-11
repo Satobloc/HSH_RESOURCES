@@ -1,11 +1,14 @@
 # HSH_RESOURCES — Folder: Repository root — Part 1 of 1
 
-> Records **1–1 of 1**. Subject tags are machine-assigned navigation aids until individually reviewed.
+> Records **1–4 of 4**. Subject tags are machine-assigned navigation aids until individually reviewed.
 
 [← Human-readable index](../../!_HSH_RESOURCES_INDEX.md)
 
 | Title | Author(s) | ID / date | Subject tag(s) | Source type | Status / read level | Repository path(s) | Description / identity note |
 |---|---|---|---|---|---|---|---|
+| Braids, 3-Manifolds, Elementary Particles: Number Theory and Symmetry in Particle Physics | Torsten Asselmeyer-Maluga | DOI: `10.3390/sym11101298` | Quantum Field Theory & Particle Physics; Geometry, Topology & Holonomy | Research/document PDF | **provisional**<br>machine extraction metadata + first-page heuristic only; no claim-level reading implied<br>record: `indexes/bibliography_provisional/PROVISIONAL_0021.md` | [`symmetry-11-01298.pdf`](<../../symmetry-11-01298.pdf>) | Metadata-only record; source keywords: standard model of elementary particles; 4-manifold topology; particles as 3-Braids; branched |
 | Data Release 1 of the Dark Energy Spectroscopic Instrument | DESI Collaboration | arXiv:2503.14745v2<br>v1 2025-03-18; v2 2026-03-04 | Cosmology & Astrophysics; Observational Data & Surveys | Survey/data-release paper | **reviewed**<br>Repository extraction present; arXiv metadata and abstract verified; full paper not read in this batch.<br>record: `indexes/bibliography_batches/BATCH_0001.md` | [`ARXIV PAPER - 2503.14745v2.pdf`](<../../ARXIV PAPER - 2503.14745v2.pdf>) | Presents DESI Data Release 1, covering the first 13 months of the main spectroscopic survey plus reprocessed Survey Validation data, and describes the observations, reductions, redshift products, large-scale-structure catalogs, value-added catalogs, and access pathways. |
+| The first demonstration of braiding in photonic topological zero modes | unresolved | DOI: `10.1038/s41567-020-1007-5` | Geometry, Topology & Holonomy; Condensed Matter & Topological Phases | Research/document PDF | **provisional**<br>machine extraction metadata + first-page heuristic only; no claim-level reading implied<br>record: `indexes/bibliography_provisional/PROVISIONAL_0001.md` | [`2020-10-braiding-photonic-topological-modes.pdf`](<../../2020-10-braiding-photonic-topological-modes.pdf>) | Metadata-only record; concise description pending individual review. |
+| wydro.dvi | unresolved | unresolved | Biology, Medicine & Applied Statistics | Research/document PDF | **provisional**<br>machine extraction metadata + first-page heuristic only; no claim-level reading implied<br>record: `indexes/bibliography_provisional/PROVISIONAL_0021.md` | [`Topics_in_statistical_physics_invol.pdf`](<../../Topics_in_statistical_physics_invol.pdf>) | Metadata-only record; concise description pending individual review. |
 
 [← Human-readable index](../../!_HSH_RESOURCES_INDEX.md)

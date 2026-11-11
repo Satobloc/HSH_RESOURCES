@@ -6,6 +6,6 @@
 
 | Directory / subfolder | Records | Catalog shard(s) |
 |---|---:|---|
-| `Repository root` | 1 | [1](folder-records__repository-root-e14963__001.md) |
+| `Repository root` | 4 | [1–4](folder-records__repository-root-e14963__001.md) |
 
 [← Human-readable index](../../!_HSH_RESOURCES_INDEX.md)

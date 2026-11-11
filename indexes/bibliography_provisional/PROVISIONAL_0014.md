@@ -4,654 +4,658 @@ Unique-content lineages: **50**
 
 > Machine-indexed from successful extraction state. Not individually reviewed.
 
-## 1. Density-preserving core-Einasto black holes with Event Horizon Telescope bounds
+## 1. 1350+ Days of Tritium Operation Experience of KATRIN at Tritium Laboratory Karlsruhe
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.09977v1`  
-**Author metadata:** Ali Övgün; Reggie C. Pantig  
+**Identifier:** DOI: `10.1080/15361055.2026.2672904`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2608.09977v1.pdf`  
+**Repository path:** `HAUL 4/1350  Days of Tritium Operation Experience of KATRIN at Tritium Laboratory Karlsruhe.pdf`  
+**Keywords from source:** Tritium, fuel cycle, permeator, direct internal recycling, KATRIN  
+**Extraction:** extracted; 8 pages; 20440 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 2. Electric ﬁelds and quantum wormholes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `1504.06336v2`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 4/1504.06336v2.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 45453 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 10 pages; 35416 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 2. Unified Exact Cylindrical Dirac Modes and Symmetry-Resolved Quantum Geometry
+## 3. Einstein’s 1935 papers: EPR=ER?
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.10563v1`  
-**Author metadata:** Zhongze Guo; Bei Xu; Qiang Gu  
+**Identifier:** arXiv: `1704.04648v2`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2608.10563v1.pdf`  
+**Repository path:** `HAUL 4/1704.04648v2 (1).pdf`  
+**Duplicate repository paths:** `HAUL 4/1704.04648v2.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 42084 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 43 pages; 78502 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 3. Asymptotic stability of the degree-one vortex in the abelian Yang-Mills-Higgs model
+## 4. Real-time Signal Detection for Cyclotron Radiation
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.10610v1`  
-**Author metadata:** Jonas Luhrmann; José M. Palacios; Fabio Pusateri; Wilhelm Schlag; Sohrab Shahshahani  
+**Identifier:** arXiv: `2310.02112v1`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2608.10610v1.pdf`  
+**Repository path:** `HAUL 4/2310.02112v1.pdf`  
+**Keywords from source:** Triggerconceptsandsystems(hardwareandsoftware),Triggeralgorithms,Spectrom  
+**Extraction:** extracted; 25 pages; 55858 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 5. Dynamics of Magnetic Evaporative Beamline Cooling for Preparation of Cold Atomic Beams
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2502.00188v2`  
+**Author metadata:** A. Ashtari Esfahani; S. Bhagvati; S. Böser; M. J. Brandsema; R. Cabral; V. A. Chirayath; C. Claessens; N. Coward; L. de Viveiros; P. J. Doe; M. G. Elliott; S. Enomoto; M. Fertl; J. A. Formaggio; B. T. Foust; J. K. Gaison; P. Harmston; K. M. Heeger; B. J. P. Jones; E. Karim; K. Kazkaz; P. T. Kolbeck; M. Li; A. Lindman; C. Y. Liu; C. Matthé; R. Mohiuddin; B. Monreal; B. Mucogllava; R. Mueller; A. Negi; J. A. Nikkel; E. Novitski; N. S. Oblath; M. Oueslati; J. I. Peña; W. Pettus; V. S. Ranatunga; R. Reimann; A. L. Reine; R. G. H. Robertson; L. Saldaña; P. L. Slocum; F. Spanier; J. Stachurska; K. Stogsdill; Y. H. Sun; P. T. Surukuchi; L. Taylor; A. B. Telles; F. Thomas; L. A. Thorne; T. Thümmler; W. Van De Pontseele; B. A. VanDevender; T. E. Weiss; M. Wynne; A. Ziegler  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 4/2502.00188v2.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 138 pages; 279332 non-space characters  
+**Extraction:** extracted; 33 pages; 85227 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 4. A Kinematic Measurement of the Effective Viscosity of the Intracluster Medium: The Cold Front of A3667 Seen by XRISM
+## 6. The real-time data processing and acquisition system for Project 8 Phase II
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2609.04316v1`  
-**Author metadata:** Yutaka Fujita; Yuki Omiya  
+**Identifier:** arXiv: `2506.22392v1`  
+**Author metadata:** A. Ashtari Esfahani; A. Banducci; S. Böser; N. Buzinsky; R. Cervantes; C. Claessens; L. de Viveiros; M. Fertl; J. A. Formaggio; L. Gladstone; M. Grando; M. Guigue; J. Hartse; K. M. Heeger; A. M. Jones; K. Kazkaz; B. H. LaRoque; A. Lindman; B. Monreal; J. A. Nikkel; E. Novitski; N. S. Oblath; W. Pettus; R. G. H. Robertson; G. Rybka; L. Saldaña; P. L. Slocum; Y. -H. Sun; P. T. Surukuchi; A. B. Telles; F. Thomas; M. Thomas; T. Thümmler; L. Tvrznikova; B. A. VanDevender; T. E. Weiss; A. Young; E. Zayas; A. Ziegler  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/BLACK HOLES+/2609.04316v1.pdf`  
-**Keywords from source:** Galaxy clusters (584) — Intracluster medium (858) — Plasma astrophysics (1261) — High  
-**Extraction:** extracted; 10 pages; 29778 non-space characters  
+**Repository path:** `HAUL 4/2506.22392v1.pdf`  
+**Keywords from source:** neutrino mass, project 8, data acquisition, ROACH, FPGA, signal processing  
+**Extraction:** extracted; 22 pages; 72139 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 5. Conformal and Noncommutative Gravity from Gauge Symmetry Breaking and SO(2,16) Unification
+## 7. A new understanding of Einstein-Rosen bridges
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.23220v1`  
-**Author metadata:** Stelios Stefas; George Zoupanos  
+**Identifier:** arXiv: `2512.20691v2`  
+**Author metadata:** Enrique Gaztañaga; K. Sravan Kumar; João Marto  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.23220v1.pdf`  
+**Repository path:** `HAUL 4/2512.20691v2.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 34736 non-space characters  
+**Extraction:** extracted; 71 pages; 142750 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 6. Dynamical Love numbers of analogue rotating black and white holes
+## 8. The Connecting Thread Theory
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.23496v1`  
-**Author metadata:** Satadal Datta; Wei-Can Syu; Da-Shin Lee  
+**Identifier:** DOI: `10.2139/ssrn.6953858`  
+**Author metadata:** Cefiyana  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.23496v1.pdf`  
+**Repository path:** `HAUL 4/7075779.pdf`  
+**Duplicate repository paths:** `HAUL 5/ssrn-7075779.pdf`  
+**Keywords from source:** Missing Transverse Energy, Kinematic Divergence, Dimensional Leakage, Critical Vacuum Ceiling, Heaviside  
+**Extraction:** extracted; 5 pages; 15766 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 9. Geometry, History, and Constraint
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Yufeng He  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 4/7258242.pdf`  
+**Duplicate repository paths:** `HAUL 7/ssrn-7258242.pdf`  
+**Keywords from source:** structural quantitative analysis; physical form; historical inheritance; sequence compatibility;  
+**Extraction:** extracted; 53 pages; 109076 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 10. BlackHoleDiagrams_EinsteinRosenBridgeSchwarzschildWormhole.pptx
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Gregory Mendell  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 4/BlackHoleDiagrams_EinsteinRosenBridgeSchwarzschildWormhole.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 43 pages; 69286 non-space characters  
+**Extraction:** extracted; 20 pages; 3133 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 7. Gravitational Wave Parity-Violating Strain from Pulsar Glitches in Chern-Simons Modified Gravity
+## 11. Evidence for Three Subpopulations of Merging Binary Black Holes at Different Primary Masses
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.24002v1`  
-**Author metadata:** Abhishek Rout; Brett Altschul  
+**Identifier:** DOI: `10.1103/blyb-lqv6`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.24002v1.pdf`  
-**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/PULSAR GLITCH/2608.24002v1.pdf`  
+**Repository path:** `HAUL 4/blyb-lqv6.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 41 pages; 147264 non-space characters  
+**Extraction:** extracted; 11 pages; 45528 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 8. Traversable wormholes in f(T,τ) gravity: a complete classification of the non-exotic sector
+## 12. © 2026 by Surya Ganguli
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.24108v1`  
-**Author metadata:** Ayan Banerjee; Takol Tangphati; Safiqul Islam; Safyan Mukhtar  
+**Identifier:** DOI: `10.1162/DAED.a.984`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.24108v1.pdf`  
+**Repository path:** `HAUL 4/daed.a.984.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 11 pages; 30080 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 17 pages; 41629 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 9. Towards Liouville Quantum Gravity on fractals
+## 13. Beauty production studies via quarkonia measurements
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.24675v1`  
-**Author metadata:** Patricia Alonso Ruiz; Eva Kopfer  
+**Identifier:** arXiv: `1111.1557`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.24675v1.pdf`  
+**Repository path:** `HAUL 4/eaefa732-a15e-43ca-bbeb-271c616501b3-meca.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 22 pages; 35888 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 4 pages; 13070 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 10. Quantum-Gravity-Inspired Effects in Neutron Stars: A Critical Map from Microscopic Assumptions to Observables
+## 14. The Unified Φ-Field Theory: Physics Sector —
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.24796v1`  
-**Author metadata:** Randall Hell Vargas Pradinett  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.24796v1.pdf`  
-**Keywords from source:** quantum gravity; neutron stars; generalized uncertainty principle; noncommu  
-**Extraction:** extracted; 33 pages; 61750 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 11. Dynamical Friction as Environmental Gravitational Self-Force
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2608.24800v1`  
-**Author metadata:** Sayak Datta  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.24800v1.pdf`  
+**Repository path:** `HAUL 5/ssrn-7060238 (1).pdf`  
+**Duplicate repository paths:** `HAUL 5/ssrn-7060238.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 8 pages; 31708 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 394 pages; 618848 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 12. GNSS-free quantum gravity-aided navigation and fine-scale marine surveying with a strapdown quantum gravimeter
+## 15. Toponium and Doubly-Charmed Spectroscopy under
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.25563v1`  
-**Author metadata:** Patrick J. Everitt; Donald H. White; Todd Lyon; Murat Muradoglu; Alessandro D'Ortenzio; Aaron J. Canciani; Malo Cadoret; Daniel D. Brown; David Adams; Yosri Ben-Aïcha; Suraj Bijjahalli; Mojtaba K. Farsani; Alexander Rischka; Karandeep S. Gill; Magdalena Meyer; Henry W. Orton; Nicholas P. Robins; Reuben Symon; Michael J. Biercuk; Michael R. Hush; Stuart S. Szigeti; Russell P. Anderson  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.25563v1.pdf`  
+**Repository path:** `HAUL 5/ssrn-7083318.pdf`  
+**Keywords from source:** MMA-DMF; toponium; doubly-charmed baryons; Ξ ++  
+**Extraction:** extracted; 38 pages; 73760 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 16. Universal Specificity: Mechanistic Unification of
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 5/ssrn-7301541.pdf`  
+**Keywords from source:** relativistic physics, time dilation, gravitation, inertia, equivalence  
+**Extraction:** extracted; 121 pages; 186821 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 17. Gauge Freedom, Quartic Indeterminacy, and Truncation Artifacts
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 5/ssrn-7329432.pdf`  
+**Keywords from source:** centrifugal distortion, Watson reduction, contact transformation, gauge freedom,  
+**Extraction:** extracted; 35 pages; 103254 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 18. A Reproducible Computational Assessment for Event Horizon
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** aswin k  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 5/ssrn-7344598.pdf`  
+**Keywords from source:** black hole shadow; regular black holes; Bardeen metric; Event Horizon Telescope; null geodesics;  
+**Extraction:** extracted; 15 pages; 31092 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 19. BAYESIAN COMPARISON OF BEC, NFW, AND GNFW HALO
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 5/ssrn-7344945.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 56774 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 13 pages; 35776 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 13. Reconstructing f(R) gravity from generalized entropies: exact Lagrangians
+## 20. ST Aqr: Photometric and Orbital Period Analysis of a Near-Contact Binary with a Secularly Decreasing Period
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.25722v1`  
-**Author metadata:** Ankit Anand; Sahil Devdutt; Kimet Jusufi; Ayan Chatterjee; Emmanuel N. Saridakis  
+**Identifier:** unresolved  
+**Author metadata:** M.F. Yıldırım;  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.25722v1.pdf`  
+**Repository path:** `HAUL 5/ssrn-7344946.pdf`  
+**Keywords from source:** binaries, eclipsing - stars, near-contact binaries - stars,  
+**Extraction:** extracted; 22 pages; 34733 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 21. CP6XnbzVJgTVLKhnXWhdD
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Un-named  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 6/ssrn-6725020.pdf`  
+**Keywords from source:** Theory of Entropicity (ToE); Information –Geometric Curvature; Entropic  
+**Extraction:** extracted; 391 pages; 644368 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 22. The Ja Model: Methodology and Empirical Demonstration of the
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.5281/zenodo.20551386`  
+**Author metadata:** jalal khawaldh  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 6/ssrn-6887958.pdf`  
+**Keywords from source:** MUja, dimensionless index, dissipative processes, cycle count, damped  
+**Extraction:** extracted; 75 pages; 78789 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 23. The Complex Hopf Fibration as the Canonical Space for
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 6/ssrn-6975959.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 15 pages; 56341 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 78 pages; 265199 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 14. Atmospheric Newtonian noise in torsion-balance measurements of the gravitational constant G
+## 24. The Unified Φ-Field Theory: Metaphysics and Philosophy
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.26020v1`  
-**Author metadata:** Jyotirmaya Mohanta; Yutaka Shikano  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.26020v1.pdf`  
-**Keywords from source:** torsion balance; Newtonian noise; gravity gradients; uncertainty evaluation; GUM;  
-**Extraction:** extracted; 19 pages; 43761 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 15. Torsion balances as operational probes of semiclassical gravity: Matched-filter bounds, torque-diffusion constraints, and quantum-noise benchmarks
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2608.26096v1`  
-**Author metadata:** Jyotirmaya Mohanta; Yutaka Shikano  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.26096v1.pdf`  
+**Repository path:** `HAUL 6/ssrn-6983738.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 16 pages; 58742 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 330 pages; 500047 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 16. The facts on quantum self-dual Einstein gravity and self-dual Yang-Mills theory
+## 25. The spectrum of a compact internal space. I. Gauge structure and fermion content
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.26242v1`  
-**Author metadata:** Noah Miller  
+**Identifier:** unresolved  
+**Author metadata:** Jinku Guo  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.26242v1.pdf`  
+**Repository path:** `HAUL 6/ssrn-7352020.pdf`  
+**Keywords from source:** Spectral datum; Scale flow; Gauge structure; Positive scalar mass; Coarse  
+**Extraction:** extracted; 100 pages; 218936 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 26. Electron-Only Systems in Linear Chains, Curved Chains and Platonic Solids: Comparing Molecular Orbital Theory and Confinement Models
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1002/andp`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 6/ssrn-7358564.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 128 pages; 226045 non-space characters  
+**Extraction:** extracted; 6 pages; 17470 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 17. Gödel-type universes in Lorentz-violating Kalb-Ramond gravity with Ricci- and Riemann-tensor nonminimal couplings
+## 27. Probing Rotating Einstein–Power-Yang–Mills Black Holes through Shadows and Quasinormal Modes: Prospects for Event Horizon Telescope Constraints
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.26472v2`  
-**Author metadata:** Fernando M. Belchior  
+**Identifier:** unresolved  
+**Author metadata:** I. Ezzaki; A. El Boukili; H. Lekbich; A. Benami  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.26472v2.pdf`  
+**Repository path:** `HAUL 6/ssrn-7359970.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 21 pages; 34164 non-space characters  
+**Extraction:** extracted; 29 pages; 74113 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 18. Testing holographic computation of entanglement pseudo-entropy in dS3/ICFT2
+## 28. Spectral–Fractal Operator Theory of Climate Criticality, Tipping
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.26997v1`  
-**Author metadata:** Liang Li  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.26997v1.pdf`  
-**Keywords from source:** holography, dS/CFT, entanglement entropy  
-**Extraction:** extracted; 27 pages; 52252 non-space characters  
-**Title basis:** pdf-metadata  
+**Repository path:** `HAUL 6/ssrn-7364618.pdf`  
+**Keywords from source:** Climate Criticality , Tipping Points , Planetary Instability , Spectral Theory , Operator Theory ,  
+**Extraction:** extracted; 227 pages; 526517 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 19. Conformal Cyclic Cosmology from Varying Fundamental Constants
+## 29. The Awakening of Machines or a Philosophical Mirage?
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.27014v1`  
-**Author metadata:** Konrad Marosek; Adam Balcerzak  
+**Identifier:** unresolved  
+**Author metadata:** Un-named  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.27014v1.pdf`  
+**Repository path:** `HAUL 6/ssrn-7365302.pdf`  
+**Keywords from source:** artificial intelligence; technological singularity; Thomism; ontology; strong ontological  
+**Extraction:** extracted; 25 pages; 50441 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 30. On coordinate frames relevant for pulsar physics
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 6/ssrn-7366135.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 28703 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 17 pages; 41018 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 20. Emergent vacua and stability constraints on black hole solutions in higher-dimensional f(R) gravity
+## 31. Resolving the EPRBA Paradox for Photons_v3
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.27297v1`  
-**Author metadata:** Nicolás Trullols Sandino; Andrei Galiautdinov  
+**Identifier:** unresolved  
+**Author metadata:** Lincoln Stoller  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.27297v1.pdf`  
+**Repository path:** `HAUL 6/ssrn-7377198.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 28226 non-space characters  
+**Extraction:** extracted; 37 pages; 87415 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 21. A geometric resolution limit from vacuum entanglement
+## 32. Teleparallel Gauss–Bonnet gravity beyond flat FLRW cosmology
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.27640v1`  
-**Author metadata:** Isbelia Martin  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.27640v1.pdf`  
-**Keywords from source:** entanglement entropy, quantum field theory in curved spacetime, geometric mass scale, vacuum  
-**Extraction:** extracted; 5 pages; 16515 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 22. Thermodynamic Criticality in FLRW Cosmology with Non-extensive Loop Quantum Gravity Entropy
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2608.27721v1`  
-**Author metadata:** Miguel Cruz; Joel Saavedra; Juan Rodriguez  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.27721v1.pdf`  
+**Repository path:** `HAUL 6/ssrn-7382518.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 23 pages; 46065 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 18 pages; 48868 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 23. Compact Core–Shell Equilibria in Gravitational Vlasov–Poisson Systems with Positive and Negative Mass
+## 33. Stable Circular Orbits in Anti–de Sitter Schwarzschild
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.27900v1`  
-**Author metadata:** Naoki Sato  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.27900v1.pdf`  
+**Repository path:** `HAUL 6/ssrn-7390778.pdf`  
+**Keywords from source:** General Relativity; Anti de Sitter Spaces; Schwarzschild Spacetime; Small Radial Oscilla  
+**Extraction:** extracted; 10 pages; 17197 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 34. Submitted Manuscript: Confidential
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** bhanson  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 6/ssrn-7394118.pdf`  
+**Keywords from source:** systemic risk, quantum field theory, VVIX, Kramers tunneling, phase transition,  
+**Extraction:** extracted; 22 pages; 36131 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 35. Tandem-in-Time Mass Spectrometry with Programmable Clifford Boundary Synthesis and Stability-Boundary Ejection
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Vladimir Baranov  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 6/ssrn-7404440.pdf`  
+**Keywords from source:** tandem-in-time mass spectrometry; birdcage electrode array; digital ion trap;  
+**Extraction:** extracted; 32 pages; 61340 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 36. Physics Vol. 1, No. 3, pp. 195-290, 1964 Physics Publishing Co. Printed in the United States
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 6/vol1p195-200_001.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 25 pages; 52669 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 6 pages; 10592 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 24. Holographic warped CFTs from General Relativity on AdS_3
+## 37. Mach’s principle in atomic transitions
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.28751v1`  
-**Author metadata:** Kristiansen Lara; Ricardo Troncoso  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.28751v1.pdf`  
+**Repository path:** `HAUL 7/ssrn-7112751.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 20806 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 9 pages; 30304 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 25. Acceleration and Rotation in Three Dimensions
+## 38. Design and Experimental Demonstration of a Conduction
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.28789v1`  
-**Author metadata:** Cameron R D Bunney; Ruth Gregory; Robert B Mann  
+**Identifier:** unresolved  
+**Author metadata:** Angel yang  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.28789v1.pdf`  
+**Repository path:** `HAUL 7/ssrn-7135127.pdf`  
+**Keywords from source:** Conduction cooling, Thermal link, RF cavity, Temperature stability, Hadron  
+**Extraction:** extracted; 24 pages; 31138 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 39. Physical Concepts Phase Dynamics : Quantum Topology and Terahertz Physics
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** H.Kovalov  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 7/ssrn-7171698.pdf`  
+**Keywords from source:** Phase dynamics; Terahertz resonator; Topological threshold; Chern index; Koide factor; Coherent  
+**Extraction:** extracted; 39 pages; 57839 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 40. The Naked Universe: A Non-Theoretical Framework for Physics Derived Strictly
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Miltos Karazoupis  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 7/ssrn-7189178.pdf`  
+**Keywords from source:** Foundations of Physics, Epistemology, Map -Territory Distinction,  
+**Extraction:** extracted; 80 pages; 211021 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 41. Does the formulation of a unified field
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Witold Nawrot  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 7/ssrn-7208083.pdf`  
+**Keywords from source:** Euclidean reality, wave model of particles, unified field theory, recession of  
+**Extraction:** extracted; 56 pages; 145753 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 42. A Complete Derivation of Physics, Consciousness, Metaphysics,
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 7/ssrn-7242985 (1).pdf`  
+**Duplicate repository paths:** `HAUL 7/ssrn-7242985.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 33 pages; 48911 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 968 pages; 1422459 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 26. Stationary Rotating Geometries Associated with Nonsingular Pulsating Collapse
+## 43. THE PYRAMID AS MEMORY HYPOTHESIS
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.28850v1`  
-**Author metadata:** A. D. Souza; F. A. Brito; J. Spinelly  
+**Identifier:** DOI: `10.5281/zenodo.22070174`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.28850v1.pdf`  
-**Keywords from source:** General Relativity. Black holes. Pulsating collapse. Rotation  
-**Extraction:** extracted; 19 pages; 38367 non-space characters  
-**Title basis:** pdf-metadata  
+**Repository path:** `HAUL 7/ssrn-7340278.pdf`  
+**Keywords from source:** Great Pyramid of Giza; Khufu; Akhet-Khufu; Horus-eye fractions; Wedjat fraction system; royal  
+**Extraction:** extracted; 77 pages; 259099 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 27. Spin-Graviton-Spin: a unique probe of quantum gravity
+## 44. Article Not peer-reviewed version
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.28901v1`  
-**Author metadata:** Radmehr Fathi; Nima Khosravi  
+**Identifier:** DOI: `10.20944/preprints202410.0190.v2`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.28901v1.pdf`  
+**Repository path:** `HAUL 8/ER-preprint.pdf`  
+**Keywords from source:** gravity and quantum mechanics; black holes; early universe cosmology and cosmic microwave  
+**Extraction:** extracted; 55 pages; 148121 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 45. Ultrastrong Unconventional Spin Current via Noncollinear Spin-Orbit Filtering
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1103/gzp7-1nvx`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 8/gzp7-1nvx.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 8 pages; 27114 non-space characters  
+**Extraction:** extracted; 12 pages; 45623 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 28. Energy extraction processes and thermodynamics in rotating Weyl conformal black holes
+## 46. Rep. Prog. Phys., Vol. 41, 1978. Printed in Great Britain
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.29277v1`  
-**Author metadata:** Dilmurod Ortiqboev; Farruh Atamurotov; Ahmadjon Abdujabbarov; Chen Zhou; G. Mustafa  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.29277v1.pdf`  
-**Keywords from source:** Conformal Weyl gravity; original Penrose scenario; Komar mass; Noether charge;  
-**Extraction:** extracted; 16 pages; 46349 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 29. Bound States in Perturbative Quantum Gravity with Hydrogen-like Degeneracy
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2608.29402v1`  
-**Author metadata:** Callum R. T. Jones; Shruti Paranjape; Marcos Skowronek  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.29402v1.pdf`  
+**Repository path:** `HAUL 8/RPP1978_Bell (1).pdf`  
+**Duplicate repository paths:** `HAUL 8/RPP1978_Bell (2).pdf`; `HAUL 8/RPP1978_Bell.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 42 pages; 98722 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 47 pages; 116687 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 30. Higher-Spin dS/CFT beyond minimal type-A, and the doubled nature of de Sitter space
+## 47. Citethisarticle: LohmillerW,SlotineJ-J
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.29594v1`  
-**Author metadata:** Julian Lang; Yasha Neiman  
+**Identifier:** arXiv: `2025.0413`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.29594v1.pdf`  
+**Repository path:** `HAUL 8/rspa.2025.0413.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 54 pages; 88702 non-space characters  
-**Title basis:** pdf-metadata  
+**Extraction:** extracted; 25 pages; 67792 non-space characters  
+**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 31. Testing f(Q) Gravity with Logarithmic Equation of State Using Latest Cosmological Data
+## 48. Measurement of the inhomogeneity of the KATRIN tritium source electric potential by high-resolution spectroscopy of conversion electrons from Kr
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.29718v1`  
-**Author metadata:** Chaymae Karam; Dalale Mhamdi; Taoufik Ouali; Rachid Ahl Laamara; Mohamed Bennai  
+**Identifier:** DOI: `10.1140/epjc/s10052-025-14354-z`  
+**Author metadata:** H. Acharya  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.29718v1.pdf`  
-**Keywords from source:** f(Q)gravity; logarithmic equation of state; late-time cosmic acceleration; dark energy  
-**Extraction:** extracted; 17 pages; 55838 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 32. Primordial Black Hole Seeds for Little Red Dots in f(R) Gravity
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2608.29727v1`  
-**Author metadata:** Saeed Fakhry  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.29727v1.pdf`  
+**Repository path:** `HAUL 8/s10052-025-14354-z.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 19 pages; 75819 non-space characters  
+**Extraction:** extracted; 13 pages; 53185 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 33. Seesaw and Axion in No-Scale Gravity
+## 49. Precise Construction of Helical Unimolecular Micelles from
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2608.29801v1`  
-**Author metadata:** Anamaria Hell; Lincoln da S. Pereira; Tsutomu T. Yanagida  
+**Identifier:** unresolved  
+**Author metadata:** 张振乾  
 **Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.29801v1.pdf`  
+**Repository path:** `HAUL 8/ssrn-5393479.pdf`  
+**Keywords from source:** Poly(phenylacetylene)s; Unimolecular micelles; Chiral induction;  
+**Extraction:** extracted; 19 pages; 33795 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 50. Microsoft Word - super sciences full paper
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 8/ssrn-5714603.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 28082 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 34. Periodic orbits around a magnetically charged black hole in f(R,T) gravity coupled with Euler-Heisenberg electrodynamics
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2608.30049v1`  
-**Author metadata:** Jun-Long Huang; Chen-Kai Qiao; Jun Tao  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.30049v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 19 pages; 54441 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 35. Newtonian Gravitational Curvature-Induced Entanglement Generation
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2608.30075v1`  
-**Author metadata:** Mughees Ahmad Khan; Asad Ali; M. I Hussain; H. Kuniyil; Saif Al-Kuwari  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.30075v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 15 pages; 57251 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 36. Spacelike reduction of the gravitational topological terms and associated helicity densities
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2608.30154v1`  
-**Author metadata:** Hongxi Huang; Jiang Long; Gan Zhao; Xin-Hao Zhou  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.30154v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 55 pages; 104586 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 37. Black hole correspondences of quasi-topological gravity : Shadows, quasinormal modes, graybody factors
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2608.30169v1`  
-**Author metadata:** Sihao Fan; Chen Wu; Wenjun Guo  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.30169v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 32016 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 38. Bekenstein–Hod Bound: A 3.3σ Confirmation from GW250114
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2608.31039v1`  
-**Author metadata:** Hai-Tian Wang; Shao-Peng Tang; Yi-Zhong Fan  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2608.31039v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 26021 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 39. Near-extremal asymptotics and strong cosmic censorship for black holes immersed in a Chaplygin-like dark fluid
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.00980v1`  
-**Author metadata:** Hao-Peng Yan; Zeng-Yi Zhang; Xiang-Qian Li; Xiao-Jun Yue  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.00980v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 45367 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 40. Perturbative Double-Scalar Hair on Planar Black Holes in AdS_4 Einstein-Scalar Gravity
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.01332v1`  
-**Author metadata:** Sangheon Yun  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.01332v1.pdf`  
-**Keywords from source:** Hairy black brane; Perturbation theory; ABJM theory; Irrelevant deformation; P¨ oschl  
-**Extraction:** extracted; 17 pages; 35565 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 41. On-shell recursion and soft theorems for worldline quantum field theory
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.01714v1`  
-**Author metadata:** Nathan Castet; Vincent F. He  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.01714v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 34 pages; 56966 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 42. How Much Geometry Does Horizon Entropy Determine? A Discourse on Entropy, Gravity, and Observable Quantities
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.01720v1`  
-**Author metadata:** Yen Chin Ong  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.01720v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 18 pages; 66481 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 43. Bell inequality violation with momentum-entangled massive particles
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.02009v1`  
-**Author metadata:** Y. S. Athreya; S. Kannan; X. T. Yan; K. V. Kheruntsyan; A. G. Truscott; S. S. Hodgman  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.02009v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 45345 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 44. Taxonomy of Potentials in Asymptotic Limits
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.03001v1`  
-**Author metadata:** Muldrow Etheredge; Dieter Lüst; Tom Rudelius  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.03001v1.pdf`  
-**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/STRINGS+/2609.03001v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 43 pages; 80092 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 45. Constraint closure and gravitational-wave content of shear-free cosmologies in metric f(R) gravity
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.03260v1`  
-**Author metadata:** Mudhahir Al Ajmi; Amare Abebe  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.03260v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 26184 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 46. An interpretation-independent formulation of the measurement problem
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.03409v1`  
-**Author metadata:** Antoine Soulas  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.03409v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 16 pages; 50877 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 47. Black holes in alternative theories of gravity
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.03983v1`  
-**Author metadata:** Jose Luis Blázquez-Salcedo; Fech Scen Khoo; Burkhard Kleihaus; Jutta Kunz  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.03983v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 18289 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 48. An off-shell conformally invariant Galilean Weyl tensor
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.04053v1`  
-**Author metadata:** Quentin Vigneron; Philip K. Schwartz; James Read  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.04053v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 44 pages; 88969 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 49. Euclid preparation. The shape of halo profiles in ΛCDM and non-standard cosmologies
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.04192v1`  
-**Author metadata:** Euclid Collaboration; L. Pizzuti; G. Y. Ferron; A. Ragagnin; A. M. C. Le Brun; P. -S. Corasaniti; T. Gayoux; G. Rácz; E. Altamura; Z. Sakr; C. Carbone; M. Baldi; C. Giocoli; T. Castro; F. Pace; J. E. Taylor; S. Borgani; O. Luongo; C. T. Mpetha; R. E. Angulo; B. Altieri; S. Andreon; N. Auricchio; C. Baccigalupi; S. Bardelli; P. Battaglia; A. Biviano; E. Branchini; M. Brescia; S. Camera; V. Capobianco; V. F. Cardone; J. Carretero; M. Castellano; G. Castignani; S. Cavuoti; K. C. Chambers; A. Cimatti; C. Colodro-Conde; G. Congedo; L. Conversi; Y. Copin; F. Courbin; H. M. Courtois; M. Cropper; H. Degaudenzi; G. De Lucia; H. Dole; F. Dubath; X. Dupac; S. Dusini; S. Escoffier; M. Farina; F. Faustini; S. Ferriol; F. Finelli; P. Fosalba; S. Fotopoulou; M. Frailis; E. Franceschi; M. Fumana; L. Gabarra; S. Galeotta; K. George; B. Gillis; J. Gracia-Carpio; A. Grazian; F. Grupp; S. V. H. Haugan; S. Hemmati; W. Holmes; F. Hormuth; A. Hornstrup; K. Jahnke; M. Jhabvala; B. Joachimi; S. Kermiche; A. Kiessling; B. Kubik; K. Kuijken; M. Kunz; H. Kurki-Suonio; S. Ligori; P. B. Lilje; V. Lindholm; I. Lloro; M. Magliocchetti; G. Mainetti; O. Mansutti; O. Marggraf; M. Martinelli; N. Martinet; F. Marulli; R. J. Massey; N. Mauri; S. Maurogordato; E. Medinaceli; S. Mei; M. Meneghetti; E. Merlin; G. Meylan; P. Monaco; A. Mora; M. Moresco; C. Moretti; L. Moscardini; E. Munari; C. Neissner; J. W. Nightingale; C. Padilla; S. Paltani; F. Pasian; V. Pettorino; A. Pezzotta; S. Pires; G. Polenta; M. Poncet; L. A. Popa; F. Raison; A. Renzi; J. Rhodes; G. Riccio; I. Risso; E. Romelli; M. Roncarelli; R. Saglia; D. Sapone; B. Sartoris; P. Schneider; T. Schrabback; A. Secroun; E. Sefusatti; E. Sihvola; P. Simon; C. Sirignano; G. Sirri; L. Stanco; J. -L. Starck; P. Tallada-Crespí; A. N. Taylor; I. Tereno; N. Tessore; S. Toft; R. Toledo-Moreo; F. Torradeflot; I. Tutusaus; E. A. Valentijn; J. Valiviita; T. Vassallo; Y. Wang; J. Weller; A. Zacchei; G. Zamorani; F. M. Zerbi; E. Zucca; M. Ballardini; P. Bergamini; A. Boucaud; E. Bozzo; C. Burigana; R. Cabanac; M. Calabrese; A. Cappi; F. Caro; J. A. Escartin Vigo; J. García-Bellido; T. Gasparetto; J. Macias-Perez; R. Maoli; R. B. Metcalf; M. Pöntinen; E. Sarpa; V. Scottez; M. Sereno; M. Tenti; M. Tucci; M. Viel; M. Wiesmann; J. A. Acevedo Barroso; Y. Akrami; I. T. Andika; S. Anselmi; M. Archidiacono; G. Aricò; F. Atrio-Barandela; M. Baes; L. Bazzanini; D. Bertacca; M. Bethermin; F. Beutler; A. Blanchard; L. Blot; H. Böhringer; M. L. Brown; S. Bruton; A. Calabro; B. Camacho Quevedo; C. S. Carvalho; F. Cogato; T. E. Collett; S. Conseil; A. R. Cooray; P. Corcho-Caballero; M. Costanzi; B. Csizi; O. Cucciati; T. de Boer; F. De Paolis; G. Desprez; A. Díaz-Sánchez; S. Di Domizio; J. M. Diego; V. Duret; Y. Fang; A. Farina; A. Finoguenov; F. Fontanot; A. Franco; Y. Fu; K. Ganga; R. Gavazzi; E. Gaztanaga; Z. Ghaffari; F. Giacomini; F. Gianotti; E. J. Gonzalez; G. Gozaliasl; A. Gruppuso; M. Guidi; C. M. Gutierrez; A. Hall; N. A. Hatch; C. Hernández-Monteagudo; H. Hildebrandt; J. Hjorth; J. J. E. Kajava; Y. Kang; V. Kansal; D. Karagiannis; J. Kim; C. C. Kirkpatrick; A. Kovács; I. Kovačić; K. Koyama; S. Kruk; M. C. Lam; M. Lattanzi; L. Legrand; M. Lembo; G. Leroy; G. F. Lesci; J. Lesgourgues; L. Linke; A. Manjón-García; F. Mannucci; F. R. Marleau; C. J. A. P. Martins; M. Migliaccio; M. Miluzio; G. Morgante; S. Nadathur; K. Naidoo; A. Navarro-Alsina; S. Nesseris; F. Oppizzi; D. Paoletti; F. Passalacqua; K. Paterson; L. Patrizii; C. Pattison; R. Paviot; A. Pisani; D. Potter; G. W. Pratt; S. Quai; M. Radovich; G. Rodighiero; W. Roster; S. Sacquegna; M. Sahlén; D. B. Sanders; A. Schneider; D. Sciotti; E. Sellentin; S. Serjeant; F. Shankar; L. C. Smith; J. G. Sorce; I. Szapudi; K. Tanidis; C. Tao; F. Tarsitano; G. Testera; R. Teyssier; S. Tosi; A. Troja; C. Uhlemann; C. Valieri; A. Venhola; D. Vergani; G. Verza; P. Vielzeuf; S. Vinciguerra; M. von Wietersheim-Kramsta; L. Wang; A. H. Wright; H. W. Yeung  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.04192v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 22 pages; 98291 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 50. The endless journey towards the horizon of a quantum black hole
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2609.05164v1`  
-**Author metadata:** Victor Franken; Thomas G. Mertens; Bruno de S. L. Torres  
-**Date hints:** unresolved  
-**Repository path:** `OUTSIDE RESEARCH LIBRARY/CONTEMPORARY RESEARCH/2609.05164v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 31867 non-space characters  
+**Extraction:** extracted; 13 pages; 31784 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied

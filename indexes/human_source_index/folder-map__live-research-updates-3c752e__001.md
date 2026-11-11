@@ -6,6 +6,6 @@
 
 | Directory / subfolder | Records | Catalog shard(s) |
 |---|---:|---|
-| `LIVE_RESEARCH_UPDATES` | 7 | [1–7](folder-records__live-research-updates-3c752e__001.md) |
+| `LIVE_RESEARCH_UPDATES` | 16 | [1–16](folder-records__live-research-updates-3c752e__001.md) |
 
 [← Human-readable index](../../!_HSH_RESOURCES_INDEX.md)

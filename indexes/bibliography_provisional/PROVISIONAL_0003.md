@@ -4,652 +4,653 @@ Unique-content lineages: **50**
 
 > Machine-indexed from successful extraction state. Not individually reviewed.
 
-## 1. Demystifying the Lagrangians of Special Relativity
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2108.07786v2`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2108.07786v2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 36 pages; 63947 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 2. XXXXX, 202X, X(X), X-X
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2202.13795v2`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2202.13795v2.pdf`  
-**Keywords from source:** Computer-aided design; Parametric modeling; Geometric constraint solving; GCS classification criteria; GCS detec  
-**Extraction:** extracted; 15 pages; 69593 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 3. DISCRETE OLLIVIER-RICCI CUR V A TURE
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2203.16837v1`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2203.16837v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 37 pages; 77630 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 4. TOW ARDS EQUIV ARIANT YANG-MILLS THEORY
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2210.00372v2`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2210.00372v2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 27 pages; 36893 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 5. Lecture 14 Background Notes
+## 1. The crisis of quantum gravity | Karen Crowther » IAI TV
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** Lynch, James  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/229b6f773f451e4391fb21c20a981b13_MIT2_682S12_bglec14.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/The crisis of quantum gravity _ Karen Crowther » IAI TV.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 3 pages; 4543 non-space characters  
+**Extraction:** extracted; 3 pages; 3926 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 6. FRACTIONAL HARDY INEQUALITIES AND CAPACITY DENSITY
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2404.05222v1`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2404.05222v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 29 pages; 64440 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 7. OLLIVIER-RICCI CUR V A TURE OF REGULAR GRAPHS
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2407.08854v3`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2407.08854v3.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 43 pages; 75016 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 8. BIMODULES OVER TWISTED ZHU ALGEBRAS AND TWISTED
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2409.08995v2`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2409.08995v2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 36 pages; 60765 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 9. Jet Modification and Medium Response - Theory Overview
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2504.21744v1`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2504.21744v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 8 pages; 22830 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 10. On biquandle-based invariant of immersed surface-links, Yoshikawa oriented fifth move, and ribbon 2-knots
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2505.14724v3`  
-**Author metadata:** Michal Jablonowski  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2505.14724v3.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 21996 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 11. Lecture 6 Background Notes
+## 2. The mathematical universe « Einstein-Online
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** Lynch, James  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/25058a02940443d8cae6dde3271fdbb6_MIT2_682S12_bglec06.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/The mathematical universe « Einstein-Online.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 8255 non-space characters  
+**Extraction:** extracted; 7 pages; 8758 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 12. BV Pushforward of Palatini-Cartan gravity
+## 3. The Morita theory of quantum graph isomorphisms
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2507.06279v1`  
-**Author metadata:** Giovanni Canepa; Alberto S. Cattaneo  
+**Identifier:** arXiv: `1801.09705v2`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2507.06279v1.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/The Morita theory of quantum graph isomorphisms.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 28 pages; 44450 non-space characters  
+**Extraction:** extracted; 68 pages; 93442 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 13. On some log-concavity properties of the Alexander-Conway and Links-Gould invariants
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2509.16868v1`  
-**Author metadata:** Matthew Harper; Ben-Michael Kohli; Jiebo Song; Guillaume Tahar  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2509.16868v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 26 pages; 43666 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 14. Interior Hessian estimates for sum Hessian quotient equation
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2510.21301v1`  
-**Author metadata:** Changyu Ren; Ziyi Wang  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2510.21301v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 20 pages; 23669 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 15. Generalized Gross-Pitaevskii Equation for 2D Bosons with Attractive Interactions
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2511.10115v3`  
-**Author metadata:** Michał Suchorowski; Fabian Brauneis; Hans-Werner Hammer; Michał Tomza; Artem G. Volosniev  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2511.10115v3.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 16 pages; 52350 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 16. Dynamic stress response kernels for dislocations and cracks: unified anisotropic Lagrangian formulation
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2601.02124v1`  
-**Author metadata:** Yves-Patrick Pellegrini; Marc Josien; Martin Chassard  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2601.02124v1.pdf`  
-**Keywords from source:** elastodynamics, dislocations, cracks, anisotropic elasticity, Stroh formalism  
-**Extraction:** extracted; 23 pages; 54604 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 17. The Assistant Axis: Situating and Stabilizing the Default Persona of Language Models
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2601.10387v1`  
-**Author metadata:** Christina Lu; Jack Gallagher; Jonathan Michala; Kyle Fish; Jack Lindsey  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2601.10387v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 54 pages; 152025 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 18. Multisymplectic AKSZ sigma models
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2601.16785v1`  
-**Author metadata:** Thomas Basile; Maxim Grigoriev; Evgeny Skvortsov  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2601.16785v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 23 pages; 60517 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 19. Interior Hessian estimates for Hessian quotient equations in dimension three
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2602.14064v3`  
-**Author metadata:** Heming Jiao; Zhenan Sui  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2602.14064v3.pdf`  
-**Keywords from source:** Interior Hessian estimates; Hessian quotient equations; Semi-convex  
-**Extraction:** extracted; 18 pages; 22393 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 20. Torus embeddings
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2603.03135v1`  
-**Author metadata:** Dan Stowell  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2603.03135v1.pdf`  
-**Keywords from source:** representation learning, deep embeddings,  
-**Extraction:** extracted; 21 pages; 49693 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 21. Geometry- and topology-controlled synchronization phase transition on manifolds
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2604.03770v2`  
-**Author metadata:** Yang Tian  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2604.03770v2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 33 pages; 114273 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 22. Gap Phenomenon for Yamabe Type Problems of M^m× T^n-m
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2605.25145v1`  
-**Author metadata:** Fang Wang; Zhixin Wang  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2605.25145v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 23 pages; 38510 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 23. A Multi-Invariant Preserving Discrete Gradient Methods
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2605.30827v1`  
-**Author metadata:** Haodong Pu; Maohua Ran  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2605.30827v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 19 pages; 28835 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 24. Generalized Frenet frames and frame sequences of singular space curves
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2606.17607v1`  
-**Author metadata:** Shun'ichi Honda  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2606.17607v1.pdf`  
-**Keywords from source:** generalized Frenet frame, frame sequence, higher-order curvature and torsion  
-**Extraction:** extracted; 13 pages; 22551 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 25. A non-convergence phenomenon for the CR Yamabe flow
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2606.27164v1`  
-**Author metadata:** Claudio Afeltra; Andrea Pinamonti; Pak Tung Ho  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2606.27164v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 17 pages; 25201 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 26. New constructions relating Real and Complex Contact Structure
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.01264v1`  
-**Author metadata:** Ali M. Elgindi  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.01264v1.pdf`  
-**Keywords from source:** contact structure, holomorphic  
-**Extraction:** extracted; 6 pages; 13082 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 27. Categorical structures of Kuranishi spaces with L_∞[1]-algebras
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.01371v1`  
-**Author metadata:** Taesu Kim  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.01371v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 57 pages; 98295 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 28. A homotopy coherent Pontryagin-Thom isomorphism
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.01482v2`  
-**Author metadata:** Kenneth Blakey; Liam Keenan  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.01482v2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 82 pages; 152033 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 29. Kuranishi chart categories and higher cocycle conditions
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.01732v1`  
-**Author metadata:** Taesu Kim  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.01732v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 24 pages; 40240 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 30. Every cusp singularity link admits infinitely many strong symplectic fillings
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.01991v1`  
-**Author metadata:** Naohiko Kasuya; Takahiro Oba  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.01991v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 15 pages; 28660 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 31. Conformally symplectic topology from a dynamical viewpoint
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.03019v1`  
-**Author metadata:** Julian Chaidez  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.03019v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 25 pages; 65809 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 32. Two-boost problem for the rotating Kepler problem
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.03139v1`  
-**Author metadata:** Jagna Wiśniewska  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.03139v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 34 pages; 51537 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 33. A Deformation of the Compact Fukaya Category via the Relative Fukaya Category
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.03234v1`  
-**Author metadata:** Mohamad Rabah  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.03234v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 43 pages; 70559 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 34. Isolated Hypersurface Singularities May Be Stably Degenerate
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.03497v1`  
-**Author metadata:** Mark McLean; Ivan Smith  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.03497v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 16 pages; 32710 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 35. Convex hypersurfaces and robust heterodimensional dynamics
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.03649v1`  
-**Author metadata:** Julian Chaidez; Michael Huang  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.03649v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 47 pages; 115964 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 36. Family Floer SYZ mirror algorithm for the Grassmannian Gr(2,4)
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.03843v1`  
-**Author metadata:** Zekai Yu; Hang Yuan  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.03843v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 28 pages; 54346 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 37. The Delayed Stabilizer ZX-Calculus
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.04015v1`  
-**Author metadata:** Cole Comfort; Giovanni de Felice  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.04015v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 53 pages; 82179 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 38. Algebra of the Infrared with Curve-Valued Potential
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.04039v1`  
-**Author metadata:** Longfei Li  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.04039v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 62 pages; 109223 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 39. Algebraic and Geometric Aspects of Non-Classical Knots
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.04445v1`  
-**Author metadata:** Ioannis Diamantis  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.04445v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 53 pages; 109905 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 40. Equivariant cosymplectic geometry
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.05211v1`  
-**Author metadata:** Eva Miranda; Pablo Nicolás  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.05211v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 28 pages; 56280 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 41. Hamiltonian group actions in cosymplectic geometry
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.05231v1`  
-**Author metadata:** Eva Miranda; Pablo Nicolás  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.05231v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 27 pages; 50085 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 42. Noncommutative Cartier Formulae
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.05360v1`  
-**Author metadata:** Semon Rezchikov  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.05360v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 80 pages; 217815 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 43. Virtual Jeffrey–Kirwan localisation
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.05575v1`  
-**Author metadata:** Riccardo Ontani; Richard P. Thomas  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.05575v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 69 pages; 135458 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 44. Shifted Poisson unfoldings and quantum anomalies
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.05918v1`  
-**Author metadata:** Mauricio Corrêa; Simone Noja  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.05918v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 41 pages; 118466 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 45. Symplectic billiards as Minkowski billiards
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.05986v1`  
-**Author metadata:** Peter Albers; Ana Chavez Caliz; Serge Tabachnikov  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.05986v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 20 pages; 26061 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 46. Comparison of Kähler quotients of torus actions
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.06345v1`  
-**Author metadata:** Xiangsheng Wang; Xiangdong Yang  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.06345v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 48 pages; 102188 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 47. Mutation matrices from Poisson CGL extensions
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.07028v1`  
-**Author metadata:** Zihang Liu; Jiang-Hua Lu; Yipeng Mi  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.07028v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 51 pages; 92158 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 48. Relative homotopy moment maps
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.07088v1`  
-**Author metadata:** Djounvouna Dinamo  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.07088v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 23 pages; 52264 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 49. Applications of relative multisymplectic geometry
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2607.07149v1`  
-**Author metadata:** Djounvouna Dinamo  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2607.07149v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 15 pages; 39717 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 50. Lecture 13 Background Notes
+## 4. The quantum world reveals reality is made of relations, not objects | George Webster » IAI TV
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** Lynch, James  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/27f301ca1e1e09e0479ec9cdc85b9da0_MIT2_682S12_bglec13.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/The quantum world reveals reality is made of relations, not objects _ George Webster » IAI TV.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 5 pages; 9762 non-space characters  
+**Extraction:** extracted; 4 pages; 4490 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 5. The self exists and it is an illusion » IAI TV
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/The self exists and it is an illusion » IAI TV.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4800 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 6. The universe is fine-tuned for technology, not just life | Jeff Shainline » IAI TV
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/The universe is fine-tuned for technology, not just life _ Jeff Shainline » IAI TV.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4483 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 7. PII: 0097-3165(73)90036-8
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/The-asymptotic-distribution-of-the-order-of-el_1973_Journal-of-Combinatorial.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 9 pages; 8485 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 8. PII: 0097-3165(73)90037-X
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/The-module-structure-of-integral-de_1973_Journal-of-Combinatorial-Theory--Se.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 16 pages; 20118 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 9. Botanical Sciences 97 (3): 447-538. 2019
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.17129/botsci.2210`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/The_Hintons_legacy_to_the_knowledge_of_the_flora_.pdf`  
+**Keywords from source:** Botanical collections, botanical exploration, databases, floristics, Mexican collectors  
+**Extraction:** extracted; 92 pages; 363690 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 10. Thin-Film Interference — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Thin-Film Interference — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4957 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 11. To unify Relativity and Quantum Mechanics we must abandon materialism | Dean Rickles » IAI TV
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/To unify Relativity and Quantum Mechanics we must abandon materialism _ Dean Rickles » IAI TV.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4970 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 12. Ueber die Bedeutung der Pacchionischen Granulationen
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Ueber die Bedeutung der Pacchionischen Granulationen (Ludwig Meyer) (z-library.sk, 1lib.sk, z-lib.sk).pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 19 pages; 34208 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 13. Unifying quantum mechanics with Einstein’s general relativity
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.32907/RO-111-138141`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Unifying quantum mechanics with Einstein’s general relativity.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 9 pages; 16477 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 14. Vortex Ring (Smoke Ring) — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Vortex Ring (Smoke Ring) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 2960 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 15. Your body thinks as much as your mind | Barbara Tversky » IAI TV
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Your body thinks as much as your mind _ Barbara Tversky » IAI TV.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4281 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 16. β⁻ Decay: Electron Spectrum — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/β⁻ Decay_ Electron Spectrum — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 2741 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 17. Let's rest here a moment
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `Consciousness + AI/solonoid2.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 52 pages; 99657 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 18. ：0•0=0：＄¢④∞=00：
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `Consciousness + AI/solonoid5.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 26 pages; 35438 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 19. DESI spectral viewer
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** N  
+**Date hints:** unresolved  
+**Repository path:** `DATA/DATA REL - DESI spectral viewer.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 627 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 20. DESI spectral viewer
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** N  
+**Date hints:** unresolved  
+**Repository path:** `DATA/DATA REL - DESI spectral viewer2.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 625 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 21. DESI spectral viewer
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** N  
+**Date hints:** unresolved  
+**Repository path:** `DATA/DATA REL - DESI spectral viewer3.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 627 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 22. notebooks-latest/03_ScienceExamples/EmLineGalaxies/02_EmLineGalaxies_Outliers.ipynb at master · astro-datalab/notebooks-latest
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1117/12.2057445`  
+**Author metadata:** N  
+**Date hints:** unresolved  
+**Repository path:** `DATA/DATA REL - notebooks-latest03_ScienceExamplesEmLineGalaxies02_EmLineGalaxies_Outliers.ipynb at master · astro-datalabnotebooks-latest.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 13 pages; 24865 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 23. notebooks-latest/04_HowTos/SPARCL/Plot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalab/notebooks-latest
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1117/12.2057445`  
+**Author metadata:** N  
+**Date hints:** unresolved  
+**Repository path:** `DATA/DATA REL - notebooks-latest04_HowTosSPARCLPlot_SPARCL_Spectra_with_Jdaviz.ipynb at master · astro-datalabnotebooks-latest.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 12698 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 24. Notebooks
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1117/12.2057445`  
+**Author metadata:** N  
+**Date hints:** unresolved  
+**Repository path:** `DATA/DATA REL - SPARCL Notebooks.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 19 pages; 28252 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 25. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/2Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 440 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 26. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/3Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 436 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 27. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/4Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 434 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 28. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/5Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 371 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 29. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/6Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 415 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 30. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/7Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 460 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 31. Analytics - Debating A.I. On the Future of Physics | Spotify for Creators
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/DEBATING AI DATA/Analytics - Debating A.I. On the Future of Physics _ Spotify for Creators.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 475 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 32. Central Recursion
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/EXP_ANALYSIS/misc Central Recursion.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 57 pages; 75137 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 33. Those are very interesting. But my interests in electromagnetism reflect…
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/EXP_ANALYSIS/Misc — A Chat.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 36 pages; 52408 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 34. STEM in a changing world: 'Insider' and 'outsider' perspectives
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.4324/9781003404989-2`  
+**Author metadata:** Lyn D. English  
+**Date hints:** 2026/06/10  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/10.4324_9781003404989-2_chapterpdf.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 16 pages; 45779 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 35. 2025 Scientific Triumph- Unifying the Laws of Physics through Mathematical Genius - Scientia Magazine
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2025 Scientific Triumph- Unifying the Laws of Physics through Mathematical Geniu.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 3241 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 36. Long time derivation of the Boltzmann equation from hard sphere dynamics
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2408.07818v3`  
+**Author metadata:** Yu Deng; Zaher Hani; Xiao Ma  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2408.07818v3.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 192 pages; 537298 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 37. HILBERT’S SIXTH PROBLEM: DERIVATION OF FLUID EQUATIONS VIA
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2503.01800v1`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2503.01800v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 48 pages; 145727 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 38. Revisiting Residual Connections: Orthogonal Updates for Stable and Efficient Deep Networks
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2505.11881v5`  
+**Author metadata:** Giyeong Oh; Woohyun Cho; Siyeol Kim; Suhwan Choi; Youngjae Yu  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2505.11881v5.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 34 pages; 82464 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 39. Superspace worldline formalism approach to Quantum Gravity: dimensional reduction and Holography
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2601.07382v1`  
+**Author metadata:** Jean-Baptiste Roux  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2601.07382v1.pdf`  
+**Keywords from source:** Worldline formalism, Quantum Gravity, AdS/CFT |Submitted to:Class. Quantum Grav  
+**Extraction:** extracted; 20 pages; 57755 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 40. Exclusive Self Attention
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2603.09078v1`  
+**Author metadata:** Shuangfei Zhai  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2603.09078v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 14793 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 41. Spectral reconstruction from Euclidean lattice correlators through singular value decomposition
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2605.15674v1`  
+**Author metadata:** Ryutaro Tsuji; Shoji Hashimoto  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2605.15674v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 29 pages; 36237 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 42. Two-nucleon systems at m_π≈292 MeV from lattice QCD
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2605.16977v1`  
+**Author metadata:** Kuan Zhang; Kang Yu; Yiqi Geng; Chuan Liu; Liuming Liu; Peng Sun; Jia-Jun Wu; Ruilin Zhu  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2605.16977v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 14 pages; 37545 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 43. Sharpening the Supersymmetric Axion Weak Gravity Conjecture
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2605.22912v1`  
+**Author metadata:** Muldrow Etheredge; Matthew Reece; Tom Rudelius; Christopher Tudball  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2605.22912v1.pdf`  
+**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - 2605.22912v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 43 pages; 73466 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 44. Trajectory Dynamics in Language Model Hidden States Predict Human Processing Costs Beyond Surprisal
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2606.05346v1`  
+**Author metadata:** Elan Barenholtz  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/2606.05346v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 17 pages; 42923 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 45. Peer Review File
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/41586_2026_10652_MOESM4_ESM.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 30 pages; 95155 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 46. ﻿Chapter 14 Theoretical and Methodological Innovative Futures for Physics in Postsecondary Contexts
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1007/978-981-96-9136-4_14`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/978-981-96-9136-4_14.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 19 pages; 51282 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 47. [2605.19117] Quantum Magic Reveals CP Phases Invisible to Entanglement in Spin-0 Decays
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2605.19117`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/[2605.19117] Quantum Magic Reveals CP Phases Invisible to Entanglement in Spin-0.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 5 pages; 2948 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 48. A Unified SU(4) Qudit–Gauge Lattice
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/A Unified SU(4) Qudit Gauge Lattice Framework for Emergent Geometry and Interaction Bryan E. W. Van Zandt KILOWADS Studios LLC Averill Park NY USA Dated May 21 2026.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 41 pages; 53579 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 49. A [[L3, 2L,L ]] CSS Code from the FCC Lattice
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1063/1.1499754`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/a-l3-2l-l-css-code-from-the-fcc.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 10 pages; 16298 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 50. Best Time to Post on r-redditpolicedept — Subreddit Analysis | Postpone
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Best Time to Post on r-redditpolicedept — Subreddit Analysis  Postpone.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 10 pages; 5930 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied

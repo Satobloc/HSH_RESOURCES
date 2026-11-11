@@ -4,657 +4,652 @@ Unique-content lineages: **50**
 
 > Machine-indexed from successful extraction state. Not individually reviewed.
 
-## 1. Discrete Wave Mechanics: Deriving the
+## 1. Higher « Search Results « Einstein-Online
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.5281/zenodo.18294925(2026`  
+**Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/limit (1).pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/Higher « Search Results « Einstein-Online.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 12131 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 2. Matter as incomplete crystallization- Quark charges, color confinement, and the proton mass from a single extra node in the vacuum lattice - ScienceDirect
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1016/j.physo.2026.100423`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Matter as incomplete crystallization- Quark charges, color confinement, and the .pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 50 pages; 61468 non-space characters  
+**Extraction:** extracted; 22 pages; 7765 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 3. Moving toward belonging in a physics department: What changes are possible with and without a paradigm shift? | Phys. Rev. Phys. Educ. Res
+## 2. Holographic dark energy in Einstein-Cartan spin cosmology - ScienceDirect
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.1103/PhysRevPhysEducRes.21.010114`  
-**Author metadata:** N  
+**Identifier:** DOI: `10.1016/j.physletb.2026.140975`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Moving toward belonging in a physics department What changes are possible with and without a paradigm shift  Phys. Rev. Phys. Educ. Res..pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/Holographic dark energy in Einstein-Cartan spin cosmology - ScienceDirect.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 41 pages; 89920 non-space characters  
+**Extraction:** extracted; 20 pages; 34686 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 4. NOTES ON THE LONG TIME DERIVATION OF BOLTZMANN’S EQUATION
+## 3. Holonomic 2D Hovercraft MPC (MPPI) — Simulator | PhysSandbox
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Notes_Boltzmann.pdf`  
-**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/MISC/ARXIV PAPER - Notes_Boltzmann.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/Holonomic 2D Hovercraft MPC (MPPI) — Simulator _ PhysSandbox.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 36 pages; 71907 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 5. Heraclitean Extended Relational Field Dynamics: Filament Ontology, Emergent Curvature, Bridge Maps to Effective Geometry and Quantum Sectors
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** N  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/OTHER - (99+) Heraclitean Extended Relational Field Dynamics Filament Ontology, Emergent Curvature, Bridge Maps to Effective Ge.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 48 pages; 184569 non-space characters  
+**Extraction:** extracted; 4 pages; 4579 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 6. Exact SO(4) Lattice QCD with Quarks as Tetrahedral Defects
+## 4. How Smuggling Groceries To The Starving Landed Me In Jail | by Winter.of.Discontext | Medium
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/physical-spacetime.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/How Smuggling Groceries To The Starving Landed Me In Jail _ by Winter.of.Discontext _ Medium.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 28 pages; 60206 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 7. Relaxation-Driven Cyclic Cosmology (RDCC) v21.0 - solves the near-adiabaticity puzzle
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.5281/zenodo.20218109`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Relaxation-Driven Cyclic Cosmology (RDCC) v21.0 - solves the near-adiabaticity p.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 11337 non-space characters  
+**Extraction:** extracted; 13 pages; 8381 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 8. A multi-agent system for automating scientific discovery
+## 5. Hunting for extra dimensions « Einstein-Online
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.1038/s41586-026-10652-y`  
-**Author metadata:** Ali Essam Ghareeb  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/s41586-026-10652-y_reference.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/Hunting for extra dimensions « Einstein-Online.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 36 pages; 85631 non-space characters  
+**Extraction:** extracted; 7 pages; 7169 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 9. Geometric Foundations of the Selection-Stitch Model: Deriving c, GN, lP, Lorentz Invariance, and the Decoherence Threshold from K=12 Lattice Topology
+## 6. Huygens Principle (Slit) — Simulator | PhysSandbox
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** Raghu Kulkarni;  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/ssrn-6469929.pdf`  
-**Keywords from source:** Discrete Spacetime, Lorentz Invariance, Planck Scale, Quantum Decoherence,  
-**Extraction:** extracted; 20 pages; 32064 non-space characters  
+**Repository path:** `30SEP_PAPER_DUMP/Huygens Principle (Slit) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4760 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 10. Exact Lorentz Invariance from Holographic Projection: Explicit RT Verification and the Boundary Origin of Bulk Symmetry in the Selection-Stitch Model
+## 7. Hybrid Expansion Cosmology in f(T) Gravity: Late-Time Evolution and Observational Bounds - ScienceDirect
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Raghu Kulkarni;  
+**Identifier:** DOI: `10.1016/j.jheap.2026.100756`  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/ssrn-6469931.pdf`  
-**Keywords from source:** Lorentz Invariance, Holographic Principle, Discrete Spacetime,  
-**Extraction:** extracted; 12 pages; 22638 non-space characters  
+**Repository path:** `30SEP_PAPER_DUMP/Hybrid Expansion Cosmology in f(T) Gravity_ Late-Time Evolution and Observational Bounds - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 10 pages; 18780 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 11. Reverse-Engineering the FCC Vacuum to a Single Bell
+## 8. IAI News Philosophy » IAI TV
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/ssrn-6708182.pdf`  
-**Keywords from source:** quantum error correction; spacetime emergence; Bell pair; FCC lattice; holographic  
-**Extraction:** extracted; 12 pages; 29414 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 12. Ten windows on the future of particle physics – CERN Courier
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Ten windows on the future of particle physics – CERN Courier.pdf`  
-**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/NEWS - Ten windows on the future of particle physics – CERN Courier.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/IAI News Philosophy » IAI TV.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 15 pages; 17188 non-space characters  
+**Extraction:** extracted; 4 pages; 3106 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 13. Test Functions — OptimLib documentation
+## 9. Ideal Line Vortex — Simulator | PhysSandbox
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** N  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Test Functions — OptimLib documentation.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/Ideal Line Vortex — Simulator _ PhysSandbox.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 17 pages; 8003 non-space characters  
+**Extraction:** extracted; 3 pages; 3192 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 14. The Neutrinoverse Hypothesis- Naming the Immutable Holographic Medium for Genuine Psi
+## 10. Inhomogeneity, magnetic auto-Bäcklund transformations and magnetic solitons for a generalized variable-coefficient Kraenkel-Manna-Merle system in a deformed ferrite - ScienceDirect
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.5281/zenodo.19795813`  
+**Identifier:** DOI: `10.1016/j.aml.2025.109615`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/The Neutrinoverse Hypothesis- Naming the Immutable Holographic Medium for Genuin.pdf`  
-**Keywords from source:** Cosmic Neutrino Background, CνB, relic neutrinos, psi, telepathy, microcalorimetry, beta-decay  
-**Extraction:** extracted; 6 pages; 6233 non-space characters  
+**Repository path:** `30SEP_PAPER_DUMP/Inhomogeneity, magnetic auto-Bäcklund transformations and magnetic solitons for a generalized variable-coefficient Kraenkel-Manna-Merle system in a deformed ferrite - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 8 pages; 13457 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 15. THE UNIFIED COMPRESSION-BASED FIELD THEORY- THE FINAL EDITION | by Corybrent | Medium
+## 11. Isomorphism of nonlocal sets of orthogonal product states in bipartite quantum systems - ScienceDirect
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
+**Identifier:** DOI: `10.1016/j.physa.2023.128734`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/THE UNIFIED COMPRESSION-BASED FIELD THEORY- THE FINAL EDITION  by Corybrent  M.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/Isomorphism of nonlocal sets of orthogonal product states in bipartite quantum systems - ScienceDirect.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 21 pages; 20729 non-space characters  
+**Extraction:** extracted; 6 pages; 11226 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 16. The Universe Has a Resolution Limit- New Theory Derives the Exact Mass Where Quantum Mechanics Ends
+## 12. PII: 0097-3165(73)90035-6
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.5281/zenodo.18447672`  
+**Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/The Universe Has a Resolution Limit- New Theory Derives the Exact Mass Where Qua.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/Maximal-sets-of-points-in-finite-projective-sp_1973_Journal-of-Combinatorial.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 5 pages; 4845 non-space characters  
+**Extraction:** extracted; 12 pages; 11990 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 17. 1 Main thread of the algorithm
+## 13. New studies suggest consciousness exists in organisms without brains | Natalie Lawrence » IAI TV
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/Toy_model_algorithm.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/New studies suggest consciousness exists in organisms without brains _ Natalie Lawrence » IAI TV.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 32 pages; 56627 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 18. su(3)from a Trapped Tetrahedral Defect in the FCC Lattice
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.5281/zenodo.18917946`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/trapped-tetrahedral-defect.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 11 pages; 18291 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 19. Uniphics Explained Simply
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/uniphics_explained_simply.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 12235 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 20. Geodesics in quantum gravity
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1103/w1sd-v69d`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/w1sd-v69d.pdf`  
-**Duplicate repository paths:** `LIVE_RESEARCH_UPDATES/w1sd-v69d.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 17 pages; 60179 non-space characters  
+**Extraction:** extracted; 4 pages; 5827 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 21. What to Expect from Physics in 2026 - by Samreet Dhillon
+## 14. New studies suggest unique state of matter gies rise to living organisms | Addy Pross » IAI TV
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/What to Expect from Physics in 2026 - by Samreet Dhillon.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/New studies suggest unique state of matter gies rise to living organisms _ Addy Pross » IAI TV.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 25 pages; 16863 non-space characters  
+**Extraction:** extracted; 3 pages; 3733 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 22. What AI Agents Actually Want
+## 15. New theory argues quantum physics must abandon irratonal numbers and the continuum | Tim Palmer » IAI TV
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `EXPOSURE_STATS/MISC_PAPERS/What_AI_Agents_Actually_Want_Measuring_R.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/New theory argues quantum physics must abandon irratonal numbers and the continuum _ Tim Palmer » IAI TV.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 113 pages; 250717 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 23. Frenet-Serret dynamics
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/0105040v2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 20 pages; 42645 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 24. In defence of naivet´ e: The conceptual status of
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/0112148v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 43 pages; 95846 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 25. Introduction to Eﬀective Lagrangians for QCD
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/0112205v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 22862 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 26. Lecture 11 Background Notes
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Lynch, James  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/02e4289db5d222757e3927a24cdcc141_MIT2_682S12_bglec11.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 6904 non-space characters  
+**Extraction:** extracted; 4 pages; 4432 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 27. Eﬀective Lagrangian of QED
+## 16. A Minkowski-First Comparison with Scalar–Angular–Torsion (SAT)
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/0609081v1.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/newPAPER.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 18737 non-space characters  
+**Extraction:** extracted; 7 pages; 17258 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 28. Holonomy and four-dimensional manifolds
+## 17. Newton's Cradle — Simulator | PhysSandbox
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/0609768v1.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/Newton's Cradle — Simulator _ PhysSandbox.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 11 pages; 10521 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 29. Lecture 2 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/061e1f35aad94b88fee585e928db8f61_lec2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 3903 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 30. ON THE MODULI OF CONST ANT MEAN CUR V A TURE CYLINDERS OF
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `0712.0108`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/0712.0108.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 44 pages; 127809 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 31. lecture11.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `0809.3238`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/0b0d0496b0cfbbba1d88858ca8362e98_lecture11.pdf`  
-**Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/0b0d0496b0cfbbba1d88858ca8362e98_lecture11.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 8772 non-space characters  
+**Extraction:** extracted; 3 pages; 3259 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 32. 2.682 Term Project Option 2
+## 18. Newton’s Rings — Simulator | PhysSandbox
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** Lynch, James  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/0c21782e7e67803613176d7fb8eef3d8_MIT2_682S12_termproject_02.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/Newton’s Rings — Simulator _ PhysSandbox.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 2 pages; 1520 non-space characters  
+**Extraction:** extracted; 3 pages; 2935 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 33. Lecture 5 8.251 Spring 2007
+## 19. PII: 0097-3165(73)90033-2
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/0cca13a5a5fa624cb90d0b457692b8d6_lec5.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/On-finite-limit-sets-for-transformations-o_1973_Journal-of-Combinatorial-The.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 3257 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 34. Introduction to Spectral Graph Theory
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Nathan Nie, Brian Pan, Daniel Wang  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1-2-Nathan-Brian-Daniel.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 32 pages; 8056 non-space characters  
+**Extraction:** extracted; 20 pages; 31466 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 35. Communications on Pure and Applied Analysis
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.3934/cpaa.2026045`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/10.3934_cpaa.2026045.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 18771 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 36. Dimension-Six Terms in the Standard Model Lagrangian ⋆
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `1008.4884v3`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1008.4884v3.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 17 pages; 35699 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 37. LOG-CONCAVITY OF THE ALEXANDER POLYNOMIAL
+## 20. PII: 0097-3165(73)90034-4
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/10633590.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/On-maximal-t-linearly-independent-_1973_Journal-of-Combinatorial-Theory--Ser.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 11 pages; 30954 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 38. Lectures on AKSZ Sigma Models for Physicists
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `1204.3714v6`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1204.3714v6.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 99 pages; 136295 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 39. Maybe embeddings should start to CARE
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2010.11929`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/123_Clifford_Algebraic_Rotor_E.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 5 pages; 13195 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 40. A FRAMEWORK FOR FRACTIONAL HARDY INEQUALITIES
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `1305.5181v2`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1305.5181v2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 16 pages; 29667 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 41. Application of Kawaguchi Lagrangian formulation to string theory
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `1508.02168v2`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1508.02168v2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 15059 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 42. MEAN-FIELD LIMIT OF BOSE SYSTEMS: RIGOROUS
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `1510.04407v1`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1510.04407v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 26 pages; 54021 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 43. A BRIEF INTRODUCTION TO SPECTRAL GRAPH THEORY
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `1609.08072v1`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1609.08072v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 92 pages; 177160 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 44. LECTURES ON BATALIN-VILKOVISKY FORMALISM AND ITS
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `1707.08096v1`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1707.08096v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 155 pages; 312208 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 45. REMARKS ON THE SELF-SHRINKING CLIFFORD TORUS
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `1802.01423v3`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1802.01423v3.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 31 pages; 63657 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 46. final_07-8.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1ac27d48fa5413f423aa295168f5af15_final_07.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 8822 non-space characters  
+**Extraction:** extracted; 9 pages; 9981 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 47. lec25.dvi
+## 21. PII: 0097-3165(73)90032-0
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1c9e44c6a1b94e7c371c307a93779ffb_lecture25.pdf`  
-**Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/1c9e44c6a1b94e7c371c307a93779ffb_lecture25.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/On-the-maximum-of-Stirling-numbers-of-th_1973_Journal-of-Combinatorial-Theor.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 11 pages; 13414 non-space characters  
+**Extraction:** extracted; 14 pages; 12509 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 48. Lecture 16 Notes
+## 22. Overview of the structural unification of quantum mechanics and relativity using the algebra of quantions
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Lynch, James  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1da781ae192c694ae6b5d71258358aee_MIT2_682S12_lec16.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 3 pages; 6110 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 49. Lecture 8 Notes
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Lynch, James  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/1ddc25b18ac33a1a86d16f4b05726f44_MIT2_682S12_lec08.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 6875 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 50. A Link Theoretic Perspective on the Isotopy
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
+**Identifier:** arXiv: `0901.0332v3`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/2012Morrison.pdf`  
+**Repository path:** `30SEP_PAPER_DUMP/Overview of the structural unification of quantum mechanics and relativity using the algebra of quantions.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 24697 non-space characters  
+**Extraction:** extracted; 23 pages; 31514 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 23. Convergent Geometric Motifs in Recent Fundamental
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1007/s00220-020-03707-2`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/paper1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 8 pages; 19658 non-space characters  
 **Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 24. Particle in a 1D Box — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Particle in a 1D Box — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 4549 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 25. Penrose’s theory of consciousness supported by new quantum evidence | Mike Wiest » IAI TV
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Penrose’s theory of consciousness supported by new quantum evidence _ Mike Wiest » IAI TV.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 5298 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 26. A Postquantum Theory of Classical Gravity?
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1103/PhysRevX.13.041040`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/PhysRevX.13.041040.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 37 pages; 146946 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 27. Pipe Friction & Moody Chart — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Pipe Friction & Moody Chart — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 2893 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 28. Quantum and non-signalling graph isomorphisms - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.jctb.2018.11.002`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Quantum and non-signalling graph isomorphisms - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 42 pages; 92037 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 29. Quantum dynamics in real Hilbert space: Algebraic isomorphism and symplectic geometry of the Schrödinger equation - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.aop.2026.170368`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Quantum dynamics in real Hilbert space_ Algebraic isomorphism and symplectic geometry of the Schrödinger equation - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 11 pages; 22021 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 30. Quantum Grothendieck ring isomorphisms, cluster algebras and Kazhdan-Lusztig algorithm - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.aim.2019.02.024`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Quantum Grothendieck ring isomorphisms, cluster algebras and Kazhdan-Lusztig algorithm - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 77 pages; 132612 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 31. Quantum measurement influences the past | Avshalom Elitzur
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Quantum measurement influences the past _ Avshalom Elitzur.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 2 pages; 1621 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 32. Real-commutant phase selection from real Hilbert representations - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.physleta.2026.132085`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Real-commutant phase selection from real Hilbert representations - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 17 pages; 41711 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 33. Reality is a dream not a simulation | Andrew T. Jaffe » IAI TV
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Reality is a dream not a simulation _ Andrew T. Jaffe » IAI TV.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4754 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 34. Reconstructed traversable wormholes and lensing features in linear f(R,Lm,T) gravity - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.hedp.2026.101318`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Reconstructed traversable wormholes and lensing features in linear f(R,Lm,T) gravity - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 8 pages; 14823 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 35. Relativity and the Quantum / Elementary Tour part 5: Superstrings and universal harmony « Einstein-Online
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Relativity and the Quantum _ Elementary Tour part 5_ Superstrings and universal harmony « Einstein-Online.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 3524 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 36. Relativity and the Quantum / Elementary Tour: Conclusion « Einstein-Online
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Relativity and the Quantum _ Elementary Tour_ Conclusion « Einstein-Online.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 2879 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 37. Relativity and the Quantum « Einstein-Online
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Relativity and the Quantum « Einstein-Online.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 4361 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 38. Rossby Waves on a Beta-Plane — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Rossby Waves on a Beta-Plane — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 3144 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 39. Autonomous ‘self-driving’
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1098/rsos.250646`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/rsos.250646.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 25 pages; 99025 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 40. Rubber Sheet & Ball — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Rubber Sheet & Ball — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 4228 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 41. Schrödinger’s blunder created the quantum measurement problem | Anthony Valentini » IAI TV
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Schrödinger’s blunder created the quantum measurement problem _ Anthony Valentini » IAI TV.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4293 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 42. Schwarzschild Orbit Precession (Rosette) — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Schwarzschild Orbit Precession (Rosette) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 3743 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 43. Search | arXiv e-print repository
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1080/08927022.2022.2120626`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Search _ arXiv e-print repository.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 11 pages; 20654 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 44. Search Publications | ResearchGate
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.36446/be.2025.70.408`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Search Publications _ ResearchGate.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 2577 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 45. SO(4) has six coordinate-plane generators: xy, xz, xw, yz, yw, zw
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/SO4_SIX_ROTATION_PLANES_CLASS_P.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1 pages; 229 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 46. Soap Film (Minimal Surface) — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Soap Film (Minimal Surface) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 4716 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 47. SPARC-calibrated galactic wormholes in Einstein–Cartan gravity with Dekel–Zhao and Hernquist dark-matter halos - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.dark.2026.102461`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/SPARC-calibrated galactic wormholes in Einstein–Cartan gravity with Dekel–Zhao and Hernquist dark-matter halos - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 8 pages; 16026 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 48. Spring Work (F–x) — Simulator | PhysSandbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/Spring Work (F–x) — Simulator _ PhysSandbox.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 4371 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 49. The Choi-Jamiolkowski Isomorphism: You’re Doing It Wrong! | Matt LeiferMatt Leifer
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/The Choi-Jamiolkowski Isomorphism_ You’re Doing It Wrong! _ Matt LeiferMatt Leifer.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 15085 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 50. The covariant origin of microforce balance in continua with coarse-grained scalar internal variables - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.ijplas.2026.104826`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `30SEP_PAPER_DUMP/The covariant origin of microforce balance in continua with coarse-grained scalar internal variables - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 11 pages; 27228 non-space characters  
+**Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied

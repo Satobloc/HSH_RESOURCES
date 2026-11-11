@@ -6,6 +6,6 @@
 
 | Directory / subfolder | Records | Catalog shard(s) |
 |---|---:|---|
-| `HAUL 2` | 61 | [1–61](folder-records__haul-2-f74426__001.md) |
+| `HAUL 2` | 62 | [1–62](folder-records__haul-2-f74426__001.md) |
 
 [← Human-readable index](../../!_HSH_RESOURCES_INDEX.md)

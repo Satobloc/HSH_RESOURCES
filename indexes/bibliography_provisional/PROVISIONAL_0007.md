@@ -4,484 +4,486 @@ Unique-content lineages: **50**
 
 > Machine-indexed from successful extraction state. Not individually reviewed.
 
-## 1. hwk1.dvi
+## 1. 7.2. CALCULUS OF VARIATIONS c©2006 Gilbert Strang
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/0e66221f4e5a6e9fe2dcc3412f4436e1_hwk1.pdf`  
+**Repository path:** `H(s)H_Toolkit/am72.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 1291 non-space characters  
+**Extraction:** extracted; 18 pages; 31331 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 2. Symplectic Geometry
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/anna-symplectic.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 11435 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 3. Annals of Mathematics, 162 (2005), 581–642
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/annals-v162-n2-p01.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 62 pages; 120366 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 4. The Standard Model of Particle Physics
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Bobby Samir AcharyaInternational Centre for Theoretical Physics and King's College London  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/ASPStandardModelSmall.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 90 pages; 41774 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 2. Lecture 20 8.251 Spring 2007
+## 5. Assembly theory: formalizing assembly spaces, discovering patterns and bounds | Royal Society Open Science | The Royal Society
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
+**Identifier:** DOI: `10.1098/rsos.260082`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/13ecf4aed160f37d6ad214bae026ee81_lec20.pdf`  
+**Repository path:** `H(s)H_Toolkit/Assembly theory_ formalizing assembly spaces, discovering patterns and bounds _ Royal Society Open Science _ The Royal Society.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 5 pages; 2673 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 3. Lecture 3 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/184b1fe03c3d32c9ac0a860af62b877c_lec3.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 3375 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 4. Lecture 12 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/19d1c9300ec6807a0a7a46c1db9141e9_lec12.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 2611 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 5. Lecture 13 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/1b4fc542f15f94af295ce319f443719a_lec13.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 2876 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 6. 8.251 – Homework 2
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/1e3eddd432bf1a79cea26708b94bab52_hwk2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 1923 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 7. pset04.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `0810.1563`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/21859d0b896e986df437b278d0038053_pset04.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 3858 non-space characters  
+**Extraction:** extracted; 48 pages; 78002 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 8. Lecture 18 8.251 Spring 2007
+## 6. Assembly theory explains and quantifies selection and evolution
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1038/s41586-023-06600-9`  
+**Author metadata:** Abhishek Sharma  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/AssemblyTheory.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/s41586-023-06600-9.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 12 pages; 48203 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 7. Review article
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.biosystems.2024.105378`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/AssemblyTheoryinlife-originmodels_Acriticalreview.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 13 pages; 84022 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 8. Spline-Based Smoothing of Noisy Discrete Curves in the Frenet–Serret Framework: Sensitivity Analysis of Curvature and Torsion Estimation via CSI and TSI Indices for Analytically Defined Space Curves
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.3390/axioms15050365`  
+**Author metadata:** Gülden Altay Suroğlu, Şeyma Firdevs Hızal and Hasan Bulut  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/axioms-15-00365.pdf`  
+**Keywords from source:** Frenet–Serret frame; curvature; torsion; noisy discrete curves; spline smoothing;  
+**Extraction:** extracted; 34 pages; 75732 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 9. Lecture 11 8.251 Spring 2007
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/21fb40c092d4a767e7de03bc6df5435d_lec18.pdf`  
+**Repository path:** `H(s)H_Toolkit/b446bd5f862e6e4f966d83bb96dd8d8b_lec11.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 3097 non-space characters  
+**Extraction:** extracted; 9 pages; 3641 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 9. lecture04.dvi
+## 10. A Geometric Constraint Solver
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `0808.1446`  
-**Author metadata:** unresolved  
+**Identifier:** unresolved  
+**Author metadata:** William Bouma, Ioannis Fudos, Christoph M. Hoffmann, Jiazhen Cai, and Robert Paige  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/22f010a84df39d4448ec5ff59382413d_lecture04.pdf`  
+**Repository path:** `H(s)H_Toolkit/Bouman-Computer_aided_Design-1995-Geometric_Constraint_Solver.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 7991 non-space characters  
+**Extraction:** extracted; 40 pages; 67410 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 10. Problem Set #4
+## 11. AN INTRODUCTION TO SPECTRAL GRAPH THEORY
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Brian-Nathan-Daniel-Final.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 30 pages; 50215 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 12. Defects in fully extended TQFT – a tour in
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Brunner.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 22 pages; 3564 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 13. Lecture 3 Background Notes
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** Lynch, James  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/246e2f7b317207759e175215abcb8112_MIT2_682S12_Homework4.pdf`  
+**Repository path:** `H(s)H_Toolkit/c46cef6df0457b15a773c0c5f99c2cec_MIT2_682S12_bglec03.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 161 non-space characters  
+**Extraction:** extracted; 3 pages; 5504 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 11. MIT OpenCourseWare
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `0807.4747`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/248fc0b9051e55a11af8a2aa13a55065_pset06.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 3886 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 12. Lecture 22 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/24e02a58e06196a8e6ef368374d4cfd1_lec22.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 3141 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 13. Lecture 7 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/2ed11482f84c747194ee6a8bf3a226ce_lec7.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 1371 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 14. F:\8251\probsets\HWK6.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/33bf0bfc449e34da9d348797df3f4c5d_hwk6.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 2 pages; 2602 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 15. MIT OpenCourseWare
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `0711.4467`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/347f8e896c34f40e57d77ded14a52b6f_endtrm_fin.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 3907 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 16. Lecture 26 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/36358312d9746554a60109324c58bebf_lec26.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 1687 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 17. pset01.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/3dc562d082f837011570ff565a84bef0_pset01.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 3502 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 18. Lecture 24 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/41a308ec52b976cf888d61dd5a9826d2_lec24.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 5 pages; 2244 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 19. hwk7.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/51949ae14435789a2c06c879235d22ae_hwk7.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 145 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 20. Lecture 25 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/60fd9c56a57f87f2a1dff7df6ebc0cb5_lec25.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 5176 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 21. pset03.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/72638bd04f1aa94b59d9d1feb745ac91_pset03.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 3104 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 22. lecture02.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/74a1f200767f0e321a50d878f7dc41e0_lecture02.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 9707 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 23. hwk11.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/753a675859981eb273241e98ecb56536_hwk11.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 1445 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 24. B. Zwiebach Wednesday March 16, 2005
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/75bbca72c08586caeb343f4691c19ce7_midterm_05.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 2 pages; 3179 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 25. hwk3.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/8111d4941a1acd97825409d83011d27d_hwk3.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 1293 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 26. lecture20.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/83dc0482e297f2ec6f03932553411230_lecture20.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 10042 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 27. Problem Set #3
+## 14. 2.682 Term Project Option 3
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** Lynch, James  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/8678cfa45f1c62427167f87bca6bae57_MIT2_682S12_Homework3.pdf`  
+**Repository path:** `H(s)H_Toolkit/c47d14e3e0f4151bc0f6f9266aa7838d_MIT2_682S12_termproject_03.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 161 non-space characters  
+**Extraction:** extracted; 2 pages; 803 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 28. MIT OpenCourseWare
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/8caef2b2fd460cd03dde5d4700041ee0_lecture14.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 4076 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 29. hwk10.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/8d9107e932e369c18a113953f77e6b34_hwk10.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 525 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 30. Lecture 1 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/8eb3080396f00109ea631e4bd45223a0_lec1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 3 pages; 1125 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 31. lecture05.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/992574ecdb4b83911e7514b8c4a2e507_lecture05.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 9597 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 32. Lecture 17 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/9a6b440592b2c873675e1f70bbd9c46e_lec17.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 5 pages; 3275 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 33. F:\8251\probsets\HWK4.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/9b8e3b2a6f153963ac0b16cd0acbf603_hwk4.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 2 pages; 3445 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 34. Lecture 19 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/9df3140e29275c1d64f2b74318d1a0e0_lec19.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 3282 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 35. practice.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/9ecdcfceddc533f3d72c197fa2c7deb9_practice.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 161 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 36. Problem Set #2
+## 15. Lecture 10 Notes
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** Lynch, James  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/9fc34e5bccf7fac1489f660600f4df16_MIT2_682S12_Homework2.pdf`  
+**Repository path:** `H(s)H_Toolkit/c6686ce9b18cabf5353456da3faea559_MIT2_682S12_lec10.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 296 non-space characters  
+**Extraction:** extracted; 7 pages; 6261 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 37. lecture21.dvi
+## 16. 8.251 2005 Midterm Solutions
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/a1005e3538578985183f9c5e183e6e87_lecture21.pdf`  
+**Repository path:** `H(s)H_Toolkit/c7378c3bda798753a7defaa02f4c121d_midterm_05_sols.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 7787 non-space characters  
+**Extraction:** extracted; 5 pages; 1764 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 17. CALCULUS OF VARIATIONS
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/calculus-of-variations.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 6 pages; 6757 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 18. Lectures Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/CalcVar.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 85 pages; 179955 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 19. Lecture 4-5 Background Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/ce6d1a2e7555af32ad9b1ed9b48b7b7e_MIT2_682S12_bglec0405.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 15364 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 20. 6 Symmetries in Quantum Field Theory
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/chap6.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 22 pages; 62257 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 21. Quantum Field Theory I, Chapter 4
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Prof. N. Beisert  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Chapter04.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 15 pages; 25602 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 22. GENERAL RELATIVITY: THE FIELD THEORY APPROACH
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/chapter9.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 13 pages; 21020 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 23. The Gross-Pitaevskii equation
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Tobias Donner and Sebastian Huberpdftitle  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Chapter_03.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 6 pages; 10282 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 24. classical mechanics - D-brane Lagrangian? - Physics Stack Exchange
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/classical mechanics - D-brane Lagrangian_ - Physics Stack Exchange.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 5 pages; 9173 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 25. THE COBORDISM HYPOTHESIS
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/cobordism.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 36 pages; 85285 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 26. The Calculus of Variations
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/cofv.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 187 pages; 165000 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 27. Tree metrics and log-concavity for matroids
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Federico Ardila-Mantilla, Sergio Cristancho , Graham Denham, Christopher Eur, June Huh, and Botong Wang  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/cristancho.pdf`  
+**Keywords from source:** matroid, valuated matroid, Lorentzian polynomial, log-concave, tree met  
+**Extraction:** extracted; 12 pages; 19259 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 28. Stringtheorie
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** David Reutter  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/CST2_Reutter.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 26 pages; 31206 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 29. Lecture 9 Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/d8e6732f545f465583e990b5ae07964c_MIT2_682S12_lec09.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 1298 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 30. Lecture 8 Background Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/dd5767e2b0bb489badbe5211c1ef7cf7_MIT2_682S12_bglec08.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 6973 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 31. MIT OpenCourseWare
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/deb6ad4ba42bb173e8e403f4b8acb73f_lecture18.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/deb6ad4ba42bb173e8e403f4b8acb73f_lecture18.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 10 pages; 11028 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 32. Lagrangian Formulation of General Relativity
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/DeGiuli.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 9 pages; 12087 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 33. disgrad.dvi
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/disgrad.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 9 pages; 10894 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 34. A geometric integration approach to smooth optimization: foundations of the discrete gradient method
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1093/imanum/drae037`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/drae037.pdf`  
+**Keywords from source:** geometricintegration;smoothoptimization;nonconvexoptimization;stochasticoptimization;  
+**Extraction:** extracted; 31 pages; 66248 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 35. Lecture 13 Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, Jim  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/e663e0865ce7ec44cabfe9532963cd29_MIT2_682S12_lec13.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 43 pages; 11299 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 36. Lecture 7 Background Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/e8982711372f0d28ab1a86726089ed77_MIT2_682S12_bglec07.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 6 pages; 12957 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 37. Lecture 15 Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/e9b53ba811f84183e7c3236239f93b3b_MIT2_682S12_lec15.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 10 pages; 6984 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
@@ -492,164 +494,166 @@ Unique-content lineages: **50**
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/a3e418ff0049144b2a70f4c8bdd5d8d1_lecture24.pdf`  
+**Repository path:** `H(s)H_Toolkit/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/e9cb1e45a51bfc887b72accb2486d034_lecture08.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 7575 non-space characters  
+**Extraction:** extracted; 9 pages; 15295 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 39. lecture13.dvi
+## 39. Lecture 7 Notes
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** unresolved  
+**Author metadata:** Lynch, James  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/a7c18070db260c88a6fe9080afabc659_lecture13.pdf`  
+**Repository path:** `H(s)H_Toolkit/eabd55bfae8f6afcfa447284123667a9_MIT2_682S12_lec07.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 4704 non-space characters  
+**Extraction:** extracted; 19 pages; 13446 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 40. lecture09.dvi
+## 40. Einstein's Equations, Lagrangians for General Relativity, and ADM Formalism
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** unresolved  
+**Author metadata:** Timothy Corbett  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/a9489a562dc17c13491aab189b92f012_lecture09.pdf`  
+**Repository path:** `H(s)H_Toolkit/Einsteins Equations Lagrangians for General Relativity and ADM.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 8 pages; 9901 non-space characters  
+**Extraction:** extracted; 28 pages; 33446 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 41. C:\ag\f\8251\EXAMS\test2_07p.dvi
+## 41. ELEMENTS OF ENSEMBLE THEORY
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** unresolved  
+**Author metadata:** Dr. Ibrahim M. Nasser  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/b01fc57a0482e5679b8fa522fd175165_test2_07p.pdf`  
+**Repository path:** `H(s)H_Toolkit/Elements_Ensample_Theory.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 5501 non-space characters  
+**Extraction:** extracted; 11 pages; 13218 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 42. F:\8251\probsets\HWK9.dvi
+## 42. Acta Numerica (2025), pp. 123–291
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
+**Identifier:** DOI: `10.1017/S0962492924000060`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/b12e9dac037667bc6c898ecece0c51b9_hwk9.pdf`  
+**Repository path:** `H(s)H_Toolkit/ensemble-kalman-methods-a-mean-field-perspective.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 834 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 43. C:\ag\f\8251\EXAMS\midterm_07.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/b22cc820187b199bed8ffcfa2fc60a1e_midterm_07.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 3 pages; 4075 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 44. MIT OpenCourseWare
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/b898cda715396a0d9ce9f4c2931a5c12_pset05.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 3078 non-space characters  
+**Extraction:** extracted; 169 pages; 339943 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 45. Lecture 16 8.251 Spring 2007
+## 43. Ensembles.nb
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** unresolved  
+**Author metadata:** jjkelly  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/c0a5a2c2790f048ab228ddcdf6441bb8_lec16.pdf`  
+**Repository path:** `H(s)H_Toolkit/Ensembles.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 2170 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 46. Lecture 9 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/c274eeae40ff1caf3cefc003b7d243bc_lec9.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 2639 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 47. lecture23_tongyan.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/c9cb6d23481b7450aaa996bbf2ebc16d_lecture23.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 6742 non-space characters  
+**Extraction:** extracted; 37 pages; 72288 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 48. hwk8.dvi
+## 44. The Ensemble theory
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
+**Identifier:** DOI: `10.1016/B978-044451560-5/50012-9`  
+**Author metadata:** Hussain  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/ce66f56d85495be4ef425a592bbe9238_hwk8.pdf`  
+**Repository path:** `H(s)H_Toolkit/ensembletheory.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 2 pages; 2081 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 49. Lecture 14 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/df880a05b61f15367954da065f22373c_lec14.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 3180 non-space characters  
+**Extraction:** extracted; 15 pages; 11250 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 50. Lecture 15 8.251 Spring 2007
+## 45. Lecture 23 8.251 Spring 2007
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/e309cde65505b6eb3b1133a1a70c9d98_lec15.pdf`  
+**Repository path:** `H(s)H_Toolkit/f02cdd1956836166ccaee966d679a4e5_lec23.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 2847 non-space characters  
+**Extraction:** extracted; 4 pages; 2533 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 46. MIT OpenCourseWare
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/f704cfed444c1740427310905d04042d_lecture17.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/f704cfed444c1740427310905d04042d_lecture17.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 8125 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 47. Problem Set #5
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/fc090da737f1091dd983337ab9494383_MIT2_682S12_Homework5.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 5 pages; 2488 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 48. Lecture 12 Background Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/ffe5d9df0936a18e21aeebf80fb24a8e_MIT2_682S12_bglec12.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 5 pages; 8146 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 49. 3 The Navier-Stokes Equation
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** David Tong  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/fluids2.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 56 pages; 83541 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 50. FRACTIONAL HARDY INEQUALITIES
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/frac_hardy_visibility_ILTV_rev.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 30 pages; 55208 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied

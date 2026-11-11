@@ -4,652 +4,658 @@ Unique-content lineages: **50**
 
 > Machine-indexed from successful extraction state. Not individually reviewed.
 
-## 1. Extended Cobordism Hypothesis
+## 1. Convex hypersurfaces and robust heterodimensional dynamics
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
+**Identifier:** arXiv: `2607.03649v1`  
+**Author metadata:** Julian Chaidez; Michael Huang  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/JHU_Talk_Slide.pdf`  
+**Repository path:** `H(s)H_Toolkit/2607.03649v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 6385 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 2. CS168: The Modern Algorithmic Toolbox
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/l11.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 11119 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 3. Lagrangian (field theory) - Wikipedia
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Lagrangian (field theory) - Wikipedia.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 24069 non-space characters  
+**Extraction:** extracted; 47 pages; 115964 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 4. Symmetry, Integrability and Geometry: Methods and Applica tions SIGMA * (201*), ***, ?? pages
+## 2. Family Floer SYZ mirror algorithm for the Grassmannian Gr(2,4)
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.3842/SIGMA.201`  
-**Author metadata:** unresolved  
+**Identifier:** arXiv: `2607.03843v1`  
+**Author metadata:** Zekai Yu; Hang Yuan  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/laplacehypersphere1108.3679v1.pdf`  
-**Keywords from source:** Hyperspherical geometry; Fundamental solution; Laplace’s equa tion; Separation  
-**Extraction:** extracted; 15 pages; 27518 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 5. APP - Lecture 8 - The QED Lagrangian
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Lecture11-QED-Lagrangian.pdf`  
+**Repository path:** `H(s)H_Toolkit/2607.03843v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 5352 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 6. Lecture 24: The cobordism hypothesis
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/lecture24.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 15669 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 7. University of Padua
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Lecture_Notes_on_Calculus_of_Variations_2025-2026.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 144 pages; 197890 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 8. Lectures on AKSZ Sigma Models for Physicists
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `1204.3714v5`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Lectures_on_AKSZ_Sigma_Models_for_Physicists.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 99 pages; 136291 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 9. PowerPoint Presentation
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Faisal Akram  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/LHC_school_2016.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 59 pages; 24727 non-space characters  
+**Extraction:** extracted; 28 pages; 54346 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 10. Introduction to Lie Groups and Lie Algebras
+## 3. The Delayed Stabilizer ZX-Calculus
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.04015v1`  
+**Author metadata:** Cole Comfort; Giovanni de Felice  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.04015v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 53 pages; 82179 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 4. Algebra of the Infrared with Curve-Valued Potential
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.04039v1`  
+**Author metadata:** Longfei Li  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.04039v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 62 pages; 109223 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 5. Algebraic and Geometric Aspects of Non-Classical Knots
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.04445v1`  
+**Author metadata:** Ioannis Diamantis  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.04445v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 53 pages; 109905 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 6. Equivariant cosymplectic geometry
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.05211v1`  
+**Author metadata:** Eva Miranda; Pablo Nicolás  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.05211v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 28 pages; 56280 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 7. Hamiltonian group actions in cosymplectic geometry
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.05231v1`  
+**Author metadata:** Eva Miranda; Pablo Nicolás  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.05231v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 27 pages; 50085 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 8. Noncommutative Cartier Formulae
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.05360v1`  
+**Author metadata:** Semon Rezchikov  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.05360v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 80 pages; 217815 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 9. Virtual Jeffrey–Kirwan localisation
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.05575v1`  
+**Author metadata:** Riccardo Ontani; Richard P. Thomas  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.05575v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 69 pages; 135458 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 10. Shifted Poisson unfoldings and quantum anomalies
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.05918v1`  
+**Author metadata:** Mauricio Corrêa; Simone Noja  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.05918v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 41 pages; 118466 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 11. Symplectic billiards as Minkowski billiards
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.05986v1`  
+**Author metadata:** Peter Albers; Ana Chavez Caliz; Serge Tabachnikov  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.05986v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 20 pages; 26061 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 12. Comparison of Kähler quotients of torus actions
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.06345v1`  
+**Author metadata:** Xiangsheng Wang; Xiangdong Yang  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.06345v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 48 pages; 102188 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 13. Mutation matrices from Poisson CGL extensions
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.07028v1`  
+**Author metadata:** Zihang Liu; Jiang-Hua Lu; Yipeng Mi  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.07028v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 51 pages; 92158 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 14. Relative homotopy moment maps
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.07088v1`  
+**Author metadata:** Djounvouna Dinamo  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.07088v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 23 pages; 52264 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 15. Applications of relative multisymplectic geometry
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2607.07149v1`  
+**Author metadata:** Djounvouna Dinamo  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2607.07149v1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 15 pages; 39717 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 16. Lecture 13 Background Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/27f301ca1e1e09e0479ec9cdc85b9da0_MIT2_682S12_bglec13.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 5 pages; 9762 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 17. Generalized Gross-Pitaevskii Equation for 2D Bosons with Attractive Interactions
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1103/2831-t3jk`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2831-t3jk.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 9 pages; 32836 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 18. Lecture 15 Background Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/294e57cf766a434b579e328ba55152e7_MIT2_682S12_bglec15.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 5 pages; 9587 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 19. soln05.dvi
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/liegroups.pdf`  
+**Repository path:** `H(s)H_Toolkit/2d0696f1323d19be278f3cd1db85d91e_soln05.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 136 pages; 244256 non-space characters  
+**Extraction:** extracted; 7 pages; 12004 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 20. MIT OpenCourseWare
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/2f8805397ee8506926404a60d8d677d2_lecture16.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/2f8805397ee8506926404a60d8d677d2_lecture16.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 8 pages; 7635 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 11. Lectures on Symplectic Geometry
+## 21. 4. Calculus of V ariations
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/lsg.pdf`  
+**Repository path:** `H(s)H_Toolkit/30021CalcVarLec.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 225 pages; 262416 non-space characters  
+**Extraction:** extracted; 10 pages; 9458 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 12. Contemporary Mathematics
+## 22. pset3sols.dvi
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/math0309175.pdf`  
+**Repository path:** `H(s)H_Toolkit/358719320647b5a5c15d038acc7c22ed_soln03.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 23889 non-space characters  
+**Extraction:** extracted; 9 pages; 13552 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 23. Lecture 1 Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/3719d6726de02bbc57b61939f0cd14c5_MIT2_682S12_lec01.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 2442 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 24. pset4sols.dvi
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/3eac34a102df34d001b9e721b2302922_soln04.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 8 pages; 15841 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 25. 4.2 Spike response model (SRM)
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/4.2 Spike response model (SRM).pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 16 pages; 24279 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 26. Lecture 11 Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/520494b38732649598f85bf5bc722d9e_MIT2_682S12_lec11.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 2426 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 27. Lecture 2 Background Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/58540cfbbdd42be15697f7a1523f343b_MIT2_682S12_bglec02.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 4812 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 28. Lecture 1 Background Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/58aeef5d8bd077782924c431bad2f2db_MIT2_682S12_bglec01.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 3526 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 29. On the Expressive Power of Ollivier-Ricci Curvature on Graphs
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.2140/involve.2020.13.559`  
+**Author metadata:** Joshua Southern, Jeremy Wayland, Michael Bronstein, Bastian Rieck  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/59_On_the_Expressive_Power_of_.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 14986 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 13. Mathematical formulation of the Standard Model - Wikipedia
+## 30. MIT OpenCourseWare
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Mathematical formulation of the Standard Model - Wikipedia.pdf`  
+**Repository path:** `H(s)H_Toolkit/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/6da5e974c4b04023f5dfa82875de834f_lecture15.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 17 pages; 36017 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 14. sympl.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Meinrenken.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 98 pages; 144911 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 15. 8.01SC S22 Chapter 30: Navier Stokes Equation
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Peter Dourmashkin  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/mit8_01scs22_chapter30.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 20 pages; 19929 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 16. Batalin-Vilkovisky formalism in
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/mnev_h.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 321 pages; 622132 non-space characters  
+**Extraction:** extracted; 7 pages; 8049 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 17. Nambu–Goto action - Wikipedia
+## 31. lecture12.dvi
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Nambu–Goto action - Wikipedia.pdf`  
+**Repository path:** `H(s)H_Toolkit/6e89ec211a53149e0f87d350191c4f63_lecture12.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/6e89ec211a53149e0f87d350191c4f63_lecture12.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 6159 non-space characters  
+**Extraction:** extracted; 9 pages; 5942 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 18. PowerPoint Presentation
+## 32. 2.682 Term Project Option 1
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** Denis Vasilescu  
+**Author metadata:** Lynch, James  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/navier_stokes.pdf`  
+**Repository path:** `H(s)H_Toolkit/70c4c4bbfedb587f8bb55d1848986d94_MIT2_682S12_termproject_01.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 36 pages; 2284 non-space characters  
+**Extraction:** extracted; 3 pages; 2542 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 19. Order theory for discrete gradient methods
+## 33. Problem Set #1
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.1007/s10543-022-00909-z`  
-**Author metadata:** Sølve Eidnes  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Order_theory_for_discrete_gradient_methods.pdf`  
+**Repository path:** `H(s)H_Toolkit/7906d22db4488e1baa7bb15196595bcc_MIT2_682S12_Homework1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 49 pages; 71381 non-space characters  
+**Extraction:** extracted; 2 pages; 158 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 20. INTRODUCTION TO QCD
+## 34. pset1sols.dvi
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/p94.pdf`  
+**Repository path:** `H(s)H_Toolkit/7e7dd3994f88a5d72db832da090358b3_soln01.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 56 pages; 128395 non-space characters  
+**Extraction:** extracted; 6 pages; 11204 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 35. 8.3. Quantum Electrodynamics (QED) — Theoretical Physics Reference 0.5 documentation
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `1412.8284`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/8.3. Quantum Electrodynamics (QED) — Theoretical Physics Reference 0.5 documentation.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 11 pages; 9429 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 36. Lecture 12 Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/81abfa54a934a8892501ef16dd126ede_MIT2_682S12_lec12.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 13 pages; 14748 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 37. lecture01.dvi
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/829a382e2a755917efbfc190507e51df_lecture01.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/829a382e2a755917efbfc190507e51df_lecture01.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 9 pages; 15075 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 38. Lecture 2 Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/842efb3f10cb24ec5ac67c17b2f5cd4f_MIT2_682S12_lec02.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 2675 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 39. Lecture 10 Background Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/886ead78325762a83434c151f70b0ee6_MIT2_682S12_bglec10.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 4538 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 40. su1rev2.dvi
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/8bcc5630863d39204a0dcc8e3c6a1eba_8251test2review.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 21 pages; 24972 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 41. Lecture 4 Notes
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/912f81a910bbd70f22a2be6e25113d09_MIT2_682S12_lec04.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 10 pages; 6360 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 42. MIT OpenCourseWare
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/946c81955784aacd7e6565e81c7f6b1f_soln02.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 9 pages; 17291 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 21. The Gross-Pitaevskii Equation
+## 43. The Eﬀective Lagrangian of QED with a Magnetic Charge
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/PDEs_Project____GPE_derivation-1.pdf`  
+**Repository path:** `H(s)H_Toolkit/9702402v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 6046 non-space characters  
+**Extraction:** extracted; 16 pages; 19403 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 22. Ollivier-Ricci curvature convergence in random geometric graphs
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1103/PhysRevResearch.3.013211`  
-**Author metadata:** Pim van der Hoorn  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/PhysRevResearch.3.013211.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 61440 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 23. Maple Computation of the Ollivier-Ricci
+## 44. MIT OpenCourseWare
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/proj6.pdf`  
+**Repository path:** `H(s)H_Toolkit/a13b3444c1e2926aca5f25bdda522bc6_lecture07.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/a13b3444c1e2926aca5f25bdda522bc6_lecture07.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 11 pages; 11676 non-space characters  
+**Extraction:** extracted; 7 pages; 7249 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 24. SPECTRAL GRAPH THEORY
+## 45. Lecture 9 Background Notes
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.2307/2689783`  
+**Identifier:** unresolved  
+**Author metadata:** Lynch, James  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/a2a2318a3203d55393f3859712d2039c_MIT2_682S12_bglec09.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 6047 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 46. Lecture 21 8.251 Spring 2007
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Purple.pdf`  
+**Repository path:** `H(s)H_Toolkit/a40eeb973ec6eb7693120fa59852ee17_lec21.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 17084 non-space characters  
+**Extraction:** extracted; 6 pages; 2961 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 25. qcdrpp.dvi
+## 47. test04.tex
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/qcdrpp.pdf`  
+**Repository path:** `H(s)H_Toolkit/a5676c7cf00e100493ae9ba3b7341f58_midterm04_prac.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 25 pages; 55429 non-space characters  
+**Extraction:** extracted; 2 pages; 3135 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 26. Quantum Field Theory
+## 48. Spectral Graph Theory
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/qft.pdf`  
+**Repository path:** `H(s)H_Toolkit/abacus_winter2020.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 155 pages; 212070 non-space characters  
+**Extraction:** extracted; 36 pages; 65186 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 27. 6. Quantum Electrodynamics
+## 49. AN OVERVIEW OF KNOT INVARIANTS
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** David Tong  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/qft6.pdf`  
+**Repository path:** `H(s)H_Toolkit/Adkisson.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 26 pages; 34804 non-space characters  
+**Extraction:** extracted; 17 pages; 25327 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 28. qftch21.DVI
+## 50. lecture06.dvi
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/qftch21.pdf`  
+**Repository path:** `H(s)H_Toolkit/af966809bba8f11cacf5f4e88d75ed1d_lecture06.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/STRING THEORY (MIT)/af966809bba8f11cacf5f4e88d75ed1d_lecture06.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 26 pages; 24155 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 29. Quantum chromodynamics - Wikipedia
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Quantum chromodynamics - Wikipedia.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 36072 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 30. quantum electrodynamics - What is the full QED Lagrangian with physics units written out? - Physics Stack Exchange
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/quantum electrodynamics - What is the full QED Lagrangian with physics units written out_ - Physics Stack Exchange.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 8 pages; 11862 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 31. Quantum electrodynamics - Wikipedia
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Quantum electrodynamics - Wikipedia.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 19 pages; 37623 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 32. Lecture Notes on General Relativity
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/REFERENCE — GR/9712019v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 238 pages; 386610 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 33. INTRODUCTION TO GENERAL RELATIVITY
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/REFERENCE — GR/genrel_2010.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 69 pages; 94477 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 34. Relativistic Lagrangian mechanics - Wikipedia
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Relativistic Lagrangian mechanics - Wikipedia.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 17774 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 35. Research Notes - Anthropic's Global Workspace / J-Space in LLMs | The Unfinishable Map
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1016/j.tics.2025.10.011`  
-**Author metadata:** unresolved  
-**Date hints:** 2026-07-07, 2026-07-06  
-**Repository path:** `H(s)H_Toolkit/Research Notes - Anthropic's Global Workspace _ J-Space in LLMs _ The Unfinishable Map.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 11 pages; 19131 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 36. T H E G R A D UAT E ST U D E N T S EC T I O N
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1090/noti1701`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/rnoti-p795.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 2 pages; 5922 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 37. Other quantum relatives of the Alexander polynomial through the Links-Gould invariants
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1090/proc/13699`  
-**Author metadata:** Ben-Michael Kohli; Bertrand Patureau-Mirand  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/S0002-9939-2017-13699-5.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 15 pages; 25037 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 38. PROCEEDINGS OF THE
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/S0002-9939-99-05088-1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 12059 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 39. Regular graphs with positive Ollivier–Ricci curvature
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1007/s00208-026-03327-6`  
-**Author metadata:** Moritz Hehl  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/s00208-026-03327-6.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 28 pages; 39687 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 40. Assembly Theory: What It Does and What It Does Not Do
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1007/s00239-024-10163-2`  
-**Author metadata:** Johannes Jaeger  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/s00239-024-10163-2.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 23226 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 41. Deformation of framed curves with boundary conditions
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1007/s00526-021-01980-0`  
-**Author metadata:** Peter Hornung  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/s00526-021-01980-0.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 26 pages; 51272 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 42. SYMPLECTIC GEOMETRY: LECTURE 1
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/S186630Lec1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 9669 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 43. A note on the fractional Hardy inequality
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1007/s40574-023-00359-7`  
-**Author metadata:** Matteo Aldovardi  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/s40574-023-00359-7.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 13667 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 44. Ollivier Ricci curvature of directed hypergraphs
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1038/s41598-020-68619-6`  
-**Author metadata:** Marzieh Eidi  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/s41598-020-68619-6.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 42727 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 45. Assembly theory and its relationship with computational complexity
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1038/s44260-025-00049-9`  
-**Author metadata:** Christopher P. Kempes  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/s44260-025-00049-9.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 73945 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 46. SLAC -PUB - 4429
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** rooster  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/slac-pub-4429.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 14 pages; 20204 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 47. Everything about Spectral Graph Theory
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Spectral_Graph_Theory.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 27 pages; 18502 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 48. Knots and Links
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/stml-74-prev.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 25 pages; 21700 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 49. MIT OpenCourseWare
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/078974bf19381340cab50a86fc8cc89f_lecture19.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 12437 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 50. lecture10_tongyan.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/0d1bda106dfd2af510daf14b261c56fb_lecture10.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 12684 non-space characters  
+**Extraction:** extracted; 9 pages; 13341 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied

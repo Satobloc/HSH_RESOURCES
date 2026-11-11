@@ -4,655 +4,655 @@ Unique-content lineages: **50**
 
 > Machine-indexed from successful extraction state. Not individually reviewed.
 
-## 1. Lecture 10 8.251 Spring 2007
+## 1. Fundamental equation(s) of string theory? - Physics Stack Exchange
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/e338d09d623b05f00e2c0f7c43cbd736_lec10.pdf`  
+**Repository path:** `H(s)H_Toolkit/Fundamental equation(s) of string theory_ - Physics Stack Exchange.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 3 pages; 1538 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 2. Lecture 4 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/e396b9a7aa6e59371bb55f00ad5d53c5_lec4.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 3472 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 3. lecture03.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/e5b834fb595f307dd99fcf6913971a4c_lecture03.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 7659 non-space characters  
+**Extraction:** extracted; 3 pages; 4257 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 4. hwk5.dvi
+## 2. The Lagrangian Approach to General
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/e614374c0a1313d85c95e7034454c563_hwk5.pdf`  
+**Repository path:** `H(s)H_Toolkit/general-relativity-lagrangian.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 1 pages; 1329 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 5. Lecture 8 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/e653d0e73146e6ba97242ad399e99366_lec8.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 2 pages; 865 non-space characters  
+**Extraction:** extracted; 13 pages; 32436 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 6. lecture22.dvi
+## 3. Discrete gradient methods for solving variational image
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/ea42d2182b4a78c0501b2577a5478572_lecture22.pdf`  
+**Repository path:** `H(s)H_Toolkit/gradientimproREVISED.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 8 pages; 10931 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 7. pset02.dvi
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/fb813f7f8eb1c6c5fbc0682b3ebc6ddf_pset02.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 3491 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 8. Lecture 6 8.251 Spring 2007
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/STRING THEORY (MIT)/ff2f84174d08a88ac0732145f00b3b7f_lec6.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 5 pages; 1987 non-space characters  
+**Extraction:** extracted; 20 pages; 40979 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 9. string theory FAQ in nLab
+## 4. Gauge PDEs and AKSZ sigma models
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/string theory FAQ in nLab.pdf`  
+**Repository path:** `H(s)H_Toolkit/GriroievTrieste2018slides.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 27 pages; 72346 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 10. String Theory
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/string.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 218 pages; 336720 non-space characters  
+**Extraction:** extracted; 43 pages; 16861 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 11. 1. The Relativistic String
+## 5. Hologrammata - A simple and rigorous proof of 26/10 dimensions in string theory
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1112/S0025579300000462`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Hologrammata - A simple and rigorous proof of 26_10 dimensions in string theory.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 17 pages; 18235 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 6. JORDAN ALAN WATTS
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/holonomy (1).pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 6372 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 7. Holonomy.dvi
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Holonomy.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 12 pages; 22955 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 8. Three-dimensional non-Abelian quantum holonomy
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1038/s41567-022-01807-5`  
+**Author metadata:** Vera Neef  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/HOLONOMYs41567-022-01807-5.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 32135 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 9. HsH / SAT source toolkit
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/HsHtoolkit2_1.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/HsHtoolkit_1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1055 pages; 2019682 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 10. HsH / SAT source toolkit
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/HsHtoolkit2_4.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/HsHtoolkit_4.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 1020 pages; 1724094 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 11. HsH / SAT source toolkit
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/HsHtoolkit2_5.pdf`  
+**Duplicate repository paths:** `H(s)H_Toolkit/HsHtoolkit_5.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 328 pages; 430538 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 12. HsH / SAT source toolkit
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/HsHtoolkit3_2.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 335 pages; 423861 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 13. HsH / SAT source toolkit
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `1510.04407v1`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/HsHtoolkit_Addendum.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 241 pages; 359546 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 14. hypersph.dvi
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/hypersph.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 2079 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 15. Hyperspherical varieties
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/hyperspherical.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 12 pages; 27274 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 16. Interior C2 estimates for a class of sum Hessian equations - ScienceDirect
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1016/j.jde.2025.113631`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Interior C2 estimates for a class of sum Hessian equations - ScienceDirect.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 6 pages; 7565 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 17. Extended Cobordism Hypothesis
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/JHU_Talk_Slide.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 6385 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 18. CS168: The Modern Algorithmic Toolbox
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/l11.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 6 pages; 11119 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 19. Lagrangian (field theory) - Wikipedia
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Lagrangian (field theory) - Wikipedia.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 14 pages; 24069 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 20. Symmetry, Integrability and Geometry: Methods and Applica tions SIGMA * (201*), ***, ?? pages
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.3842/SIGMA.201`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/laplacehypersphere1108.3679v1.pdf`  
+**Keywords from source:** Hyperspherical geometry; Fundamental solution; Laplace’s equa tion; Separation  
+**Extraction:** extracted; 15 pages; 27518 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 21. APP - Lecture 8 - The QED Lagrangian
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Lecture11-QED-Lagrangian.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 5352 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 22. Lecture 24: The cobordism hypothesis
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/lecture24.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 9 pages; 15669 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 23. University of Padua
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Lecture_Notes_on_Calculus_of_Variations_2025-2026.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 144 pages; 197890 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 24. Lectures on AKSZ Sigma Models for Physicists
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `1204.3714v5`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Lectures_on_AKSZ_Sigma_Models_for_Physicists.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 99 pages; 136291 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 25. PowerPoint Presentation
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Faisal Akram  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/LHC_school_2016.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 59 pages; 24727 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 26. Introduction to Lie Groups and Lie Algebras
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/liegroups.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 136 pages; 244256 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 27. Lectures on Symplectic Geometry
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/lsg.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 225 pages; 262416 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 28. Contemporary Mathematics
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/math0309175.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 12 pages; 23889 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 29. Mathematical formulation of the Standard Model - Wikipedia
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Mathematical formulation of the Standard Model - Wikipedia.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 17 pages; 36017 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 30. sympl.dvi
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Meinrenken.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 98 pages; 144911 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 31. 8.01SC S22 Chapter 30: Navier Stokes Equation
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Peter Dourmashkin  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/mit8_01scs22_chapter30.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 20 pages; 19929 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 32. Batalin-Vilkovisky formalism in
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/mnev_h.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 321 pages; 622132 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 33. Nambu–Goto action - Wikipedia
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Nambu–Goto action - Wikipedia.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 6159 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 34. PowerPoint Presentation
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Denis Vasilescu  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/navier_stokes.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 36 pages; 2284 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 35. Order theory for discrete gradient methods
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1007/s10543-022-00909-z`  
+**Author metadata:** Sølve Eidnes  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Order_theory_for_discrete_gradient_methods.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 49 pages; 71381 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 36. INTRODUCTION TO QCD
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/p94.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 56 pages; 128395 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 37. The Gross-Pitaevskii Equation
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/PDEs_Project____GPE_derivation-1.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 4 pages; 6046 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 38. Ollivier-Ricci curvature convergence in random geometric graphs
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1103/PhysRevResearch.3.013211`  
+**Author metadata:** Pim van der Hoorn  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/PhysRevResearch.3.013211.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 14 pages; 61440 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 39. Maple Computation of the Ollivier-Ricci
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/proj6.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 11 pages; 11676 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 40. SPECTRAL GRAPH THEORY
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.2307/2689783`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Purple.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 12 pages; 17084 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 41. qcdrpp.dvi
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/qcdrpp.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 25 pages; 55429 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 42. Quantum Field Theory
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/qft.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 155 pages; 212070 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 43. 6. Quantum Electrodynamics
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** David Tong  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/string1.pdf`  
+**Repository path:** `H(s)H_Toolkit/qft6.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 19 pages; 27442 non-space characters  
+**Extraction:** extracted; 26 pages; 34804 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 12. revised_wray_String_Theory.dvi
+## 44. qftch21.DVI
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/string_theory.pdf`  
+**Repository path:** `H(s)H_Toolkit/qftch21.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 324 pages; 417224 non-space characters  
+**Extraction:** extracted; 26 pages; 24155 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 13. OSU — S YMPLECTIC GEOMETRY CRASH COURSE IVO TEREK
+## 45. Quantum chromodynamics - Wikipedia
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/symp_geo.pdf`  
+**Repository path:** `H(s)H_Toolkit/Quantum chromodynamics - Wikipedia.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 86 pages; 129471 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 14. Lectures on Symplectic Geometry
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Symplectic.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 245 pages; 302015 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 15. Derivation of the Gross-Pitaevskii equation
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/talk-patna19b.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 23 pages; 8774 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 16. Heriot-W att University
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/TFG.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 37 pages; 53080 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 17. The deconstructed Standard Model equation | symmetry magazine
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/The deconstructed Standard Model equation _ symmetry magazine.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 11 pages; 6637 non-space characters  
+**Extraction:** extracted; 14 pages; 36072 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 18. v-conj-karlstad.dvi
+## 46. quantum electrodynamics - What is the full QED Lagrangian with physics units written out? - Physics Stack Exchange
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/v-conj-karlstad.pdf`  
+**Repository path:** `H(s)H_Toolkit/quantum electrodynamics - What is the full QED Lagrangian with physics units written out_ - Physics Stack Exchange.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 21 pages; 31584 non-space characters  
+**Extraction:** extracted; 8 pages; 11862 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 19. DydaVahakangas.dvi
+## 47. Quantum electrodynamics - Wikipedia
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.5186/aasfm.2014.3943`  
+**Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/vol39pp675-689.pdf`  
-**Keywords from source:** Fractional Hardy inequality, fractional Laplac ian, regularly varying function, As  
-**Extraction:** extracted; 15 pages; 29674 non-space characters  
+**Repository path:** `H(s)H_Toolkit/Quantum electrodynamics - Wikipedia.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 19 pages; 37623 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 20. Whole World Holonomy | Galileo Unbound
+## 48. Lecture Notes on General Relativity
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.1007/978-3-319-39799-`  
+**Identifier:** unresolved  
 **Author metadata:** unresolved  
-**Date hints:** 2025/11/05  
-**Repository path:** `H(s)H_Toolkit/Whole World Holonomy _ Galileo Unbound.pdf`  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/REFERENCE — GR/9712019v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 11578 non-space characters  
+**Extraction:** extracted; 238 pages; 386610 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 49. INTRODUCTION TO GENERAL RELATIVITY
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/REFERENCE — GR/genrel_2010.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 69 pages; 94477 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 50. Relativistic Lagrangian mechanics - Wikipedia
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `H(s)H_Toolkit/Relativistic Lagrangian mechanics - Wikipedia.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 13 pages; 17774 non-space characters  
 **Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 21. Open Access proceedings Journal of Physics: Conference series
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1088/1742-6596/1053/1/012010`  
-**Author metadata:** George Evans  
-**Date hints:** unresolved  
-**Repository path:** `H(s)H_Toolkit/Ye_2018_J._Phys.__Conf._Ser._1053_012010.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 14185 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 22. A Reading of the Field’s Own Results
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-6999018.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 30956 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 23. Microsoft Word - epCm.doc
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** User  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7016601.pdf`  
-**Keywords from source:** Relativistic circular motion, Ehrenfest paradox, Speed of ligh t, Schwarzschild metric,  
-**Extraction:** extracted; 13 pages; 24327 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 24. The Algorithm of the Third Element: Structural Mapping,
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Nik  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7028858.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 24188 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 25. Planetary Radius as a Regime-Dependent Relational
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** 天涯飞雪  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7040040.pdf`  
-**Keywords from source:** Transit-DepthPrecisionProblem;regimecoupling;proxyregimefactor;FactorHierarchyLaw;Four-Test  
-**Extraction:** extracted; 22 pages; 40367 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 26. The Architecture Principle
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7055399 (1).pdf`  
-**Duplicate repository paths:** `HAUL 1/ssrn-7055399.pdf`  
-**Keywords from source:** Green functions; mathematical physics; graph theory; quantum graphs;  
-**Extraction:** extracted; 17 pages; 22027 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 27. The Process Architecture Principle
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7060278.pdf`  
-**Keywords from source:** Green functions; Feynman diagrams; particle decays; transition amplitudes;  
-**Extraction:** extracted; 21 pages; 22174 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 28. The Architectural Factorization Principle
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7068058.pdf`  
-**Keywords from source:** Green functions; Feynman diagrams; graph theory; quantum field theory;  
-**Extraction:** extracted; 53 pages; 43998 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 29. ??????????????BHRNAntimatter
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Espen Haug  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7072815.pdf`  
-**Keywords from source:** extremal black holes; Reissner–Nordstr¨ om geometry; antimatter; charge con  
-**Extraction:** extracted; 15 pages; 38264 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 30. Architectural Magnitudes of Feynman Graphs
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7075498 (1).pdf`  
-**Duplicate repository paths:** `HAUL 1/ssrn-7075498.pdf`  
-**Keywords from source:** Green functions; Feynman diagrams; graph invariants; perturbative quantum  
-**Extraction:** extracted; 54 pages; 38995 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 31. Temporal Nihilism: The Ontological Decomposition of Time Preference
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Gerson Brilhante | LVNT INSIDE  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7079998.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 19215 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 32. Regime Audit of the Standard Model of Particle Physics by
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** 天涯飞雪  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7085578.pdf`  
-**Keywords from source:** FactorHierarchyLaw;TestabilityNorms;StandardModel;regimeaudit;activationoperators;charmquark;  
-**Extraction:** extracted; 24 pages; 42744 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 33. A Unified Framework for Quantum Mechanics and Relativity
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Juliet  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7088820.pdf`  
-**Keywords from source:** quantum gravity , general relativity , quantum mechanics , energy-momentum tensor ,  
-**Extraction:** extracted; 37 pages; 97880 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 34. Strange Region Discovery, Precursor Cascade, and the
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** 天涯飞雪  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7091978.pdf`  
-**Keywords from source:** FactorHierarchyLaw;TestabilityNorms;strangeregion;precursorcascade;transitionzonewidththeorem;  
-**Extraction:** extracted; 23 pages; 39813 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 35. Gauge Group Structure Theorem, Direct Product Theorem,
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** 天涯飞雪  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7092158.pdf`  
-**Keywords from source:** FactorHierarchyLaw;TestabilityNorms;gaugegroupstructure;directproducttheorem;three-generation  
-**Extraction:** extracted; 17 pages; 32598 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 36. The Arche Selector Operator
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Un-named  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7095358.pdf`  
-**Keywords from source:** discrete state transitions, selector operator, finite-state dynamics, greedy selection,  
-**Extraction:** extracted; 8 pages; 13925 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 37. Mathematical Reality and Physical Actuality
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Un-named  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7112098.pdf`  
-**Keywords from source:** quantum mechanics interpretation; wavefunction ontology; mathematical reality;  
-**Extraction:** extracted; 15 pages; 31558 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 38. A Generalized Gell–Mann–Nishijima Relation
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7133118.pdf`  
-**Keywords from source:** Gell–Mann–Nishijima relation; hyperspin; chirality; weak isospin; hyper  
-**Extraction:** extracted; 11 pages; 20128 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 39. Heavy Quark Mass Formation through
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7133961 (1).pdf`  
-**Duplicate repository paths:** `HAUL 1/ssrn-7133961.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 26346 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 40. Solving the Schr¨ odinger-Newton System in a Cubic Acoustic Cavity
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7133998.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 9032 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 41. Capacity-Limited Cosmology
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7135119.pdf`  
-**Keywords from source:** Quantum gravity; holographic entropy bounds; informational capacity; Boltzmann Brains;  
-**Extraction:** extracted; 20 pages; 49469 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 42. Revisiting completeness of the eigenstates of a Hermitian operator for a particle in
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7135120.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 29070 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 43. The Rate Constant of Sequencing
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Un-named  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7157341.pdf`  
-**Keywords from source:** speed of light, problem of time, constants of nature, special relativity, Planck units,  
-**Extraction:** extracted; 17 pages; 42031 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 44. The Boundary Between Matter and Radiation
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Un-named  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7186058.pdf`  
-**Keywords from source:** matter–radiation distinction; electron; photon; quantum field excitation;  
-**Extraction:** extracted; 23 pages; 45062 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 45. CKM Matrix from Left-Right Symmetric
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7191618.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 19 pages; 40569 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 46. Theoretical Extensions and Methodological Output of the
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** 天涯飞雪  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7195819.pdf`  
-**Keywords from source:** Regime-factorpurityspectrum;confirmed-breakpointnetworkbinarystructure;quantum-classicalhybrid;  
-**Extraction:** extracted; 19 pages; 47041 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 47. Five-Dimensional Independent Verification Across the K/G
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** 天涯飞雪  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7196021.pdf`  
-**Keywords from source:** StellarMain-SequenceRegimeBoundary;K/Gtransitionzone;TangBreak;FactorHierarchyLaw;  
-**Extraction:** extracted; 27 pages; 49120 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 48. The Reduction of Universality: A Regime Boundary Theory
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** 天涯飞雪  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7196178.pdf`  
-**Keywords from source:** FactorHierarchyLaw;regimeboundary;bimodalsplitting;precursorregimeboundary;tool-dependence;  
-**Extraction:** extracted; 26 pages; 45234 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 49. The Two Times of the Universe
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Juliet  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7197481.pdf`  
-**Keywords from source:** absolute time; relative time; proper time; Newton; Minkowski spacetime; radiation –  
-**Extraction:** extracted; 15 pages; 32228 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 50. From Regime Boundaries to Chemical Gauge Group: The
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** 天涯飞雪  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 1/ssrn-7199463.pdf`  
-**Keywords from source:** ChemicalGaugeGroupTheorem;FactorHierarchyLaw;regime-switchingtheory;periodiclaw;  
-**Extraction:** extracted; 23 pages; 52740 non-space characters  
-**Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied

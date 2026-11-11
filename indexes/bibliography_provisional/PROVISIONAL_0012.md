@@ -4,655 +4,663 @@ Unique-content lineages: **50**
 
 > Machine-indexed from successful extraction state. Not individually reviewed.
 
-## 1. A Reproducible Computational Assessment for Event Horizon
+## 1. General Approach to Solving Spin Moiré Superstructures
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** aswin k  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 5/ssrn-7344598.pdf`  
-**Keywords from source:** black hole shadow; regular black holes; Bardeen metric; Event Horizon Telescope; null geodesics;  
-**Extraction:** extracted; 15 pages; 31092 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 2. BAYESIAN COMPARISON OF BEC, NFW, AND GNFW HALO
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
+**Identifier:** DOI: `10.1103/bjq3-py7l`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 5/ssrn-7344945.pdf`  
+**Repository path:** `HAUL 10/bjq3-py7l.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 35776 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 3. ST Aqr: Photometric and Orbital Period Analysis of a Near-Contact Binary with a Secularly Decreasing Period
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** M.F. Yıldırım;  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 5/ssrn-7344946.pdf`  
-**Keywords from source:** binaries, eclipsing - stars, near-contact binaries - stars,  
-**Extraction:** extracted; 22 pages; 34733 non-space characters  
+**Extraction:** extracted; 16 pages; 51759 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 4. CP6XnbzVJgTVLKhnXWhdD
+## 2. Cyclotron Radiation Emission Spectroscopy of Electrons from Tritium Beta Decay
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2303.12055v3`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 11/2303.12055v3.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 41 pages; 153051 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 3. Calorimetric Wire Detector for Measurement of Atomic Hydrogen Beams
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2501.01268v2`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 11/2501.01268v2.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 17 pages; 54478 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 4. Spray Simulation
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** Un-named  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-6725020.pdf`  
-**Keywords from source:** Theory of Entropicity (ToE); Information –Geometric Curvature; Entropic  
-**Extraction:** extracted; 391 pages; 644368 non-space characters  
+**Repository path:** `HAUL 11/ssrn-5240551.pdf`  
+**Keywords from source:** Physics extraction, data reduction, volume of fluid, geometric  
+**Extraction:** extracted; 38 pages; 60004 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 5. What Is Time? A Deterministic Interpretation Under the MMA-DMF Framework
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Paulo Adriano  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 11/ssrn-6731179.pdf`  
+**Keywords from source:** MMA-DMF; time ontology; active vacuum; memory kernel; fluctuation–dissipation  
+**Extraction:** extracted; 54 pages; 103541 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 5. The Ja Model: Methodology and Empirical Demonstration of the
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.5281/zenodo.20551386`  
-**Author metadata:** jalal khawaldh  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-6887958.pdf`  
-**Keywords from source:** MUja, dimensionless index, dissipative processes, cycle count, damped  
-**Extraction:** extracted; 75 pages; 78789 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 6. The Complex Hopf Fibration as the Canonical Space for
+## 6. EUROPEAN ORGANIZATION FOR NUCLEAR RESEARCH
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-6975959.pdf`  
+**Repository path:** `HAUL 12/0512012v1.pdf`  
+**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/0512012v1.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 78 pages; 265199 non-space characters  
+**Extraction:** extracted; 79 pages; 154741 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 7. The Unified Φ-Field Theory: Metaphysics and Philosophy
+## 7. PAPER • OPEN ACCESS
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
+**Identifier:** DOI: `10.1088/1748-0221/20/06/P06013`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-6983738.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 330 pages; 500047 non-space characters  
+**Repository path:** `HAUL 12/Forstner_2025_J._Inst._20_P06013 (1).pdf`  
+**Keywords from source:** Detector alignment and calibration methods (lasers, sources, particle-beams); Detector  
+**Extraction:** extracted; 23 pages; 57558 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 8. The spectrum of a compact internal space. I. Gauge structure and fermion content
+## 8. PAPER • OPEN ACCESS
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Jinku Guo  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-7352020.pdf`  
-**Keywords from source:** Spectral datum; Scale flow; Gauge structure; Positive scalar mass; Coarse  
-**Extraction:** extracted; 100 pages; 218936 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 9. Electron-Only Systems in Linear Chains, Curved Chains and Platonic Solids: Comparing Molecular Orbital Theory and Confinement Models
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1002/andp`  
+**Identifier:** DOI: `10.1088/1748-0221/20/06/P06013`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-7358564.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 17470 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 10. Probing Rotating Einstein–Power-Yang–Mills Black Holes through Shadows and Quasinormal Modes: Prospects for Event Horizon Telescope Constraints
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** I. Ezzaki; A. El Boukili; H. Lekbich; A. Benami  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-7359970.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 29 pages; 74113 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 11. Spectral–Fractal Operator Theory of Climate Criticality, Tipping
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-7364618.pdf`  
-**Keywords from source:** Climate Criticality , Tipping Points , Planetary Instability , Spectral Theory , Operator Theory ,  
-**Extraction:** extracted; 227 pages; 526517 non-space characters  
+**Repository path:** `HAUL 12/Forstner_2025_J._Inst._20_P06013.pdf`  
+**Keywords from source:** Detector alignment and calibration methods (lasers, sources, particle-beams); Detector  
+**Extraction:** extracted; 23 pages; 57558 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 12. The Awakening of Machines or a Philosophical Mirage?
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Un-named  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-7365302.pdf`  
-**Keywords from source:** artificial intelligence; technological singularity; Thomism; ontology; strong ontological  
-**Extraction:** extracted; 25 pages; 50441 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 13. On coordinate frames relevant for pulsar physics
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-7366135.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 17 pages; 41018 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 14. Resolving the EPRBA Paradox for Photons_v3
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Lincoln Stoller  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-7377198.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 37 pages; 87415 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 15. Teleparallel Gauss–Bonnet gravity beyond flat FLRW cosmology
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-7382518.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 18 pages; 48868 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 16. Stable Circular Orbits in Anti–de Sitter Schwarzschild
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-7390778.pdf`  
-**Keywords from source:** General Relativity; Anti de Sitter Spaces; Schwarzschild Spacetime; Small Radial Oscilla  
-**Extraction:** extracted; 10 pages; 17197 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 17. Submitted Manuscript: Confidential
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** bhanson  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-7394118.pdf`  
-**Keywords from source:** systemic risk, quantum field theory, VVIX, Kramers tunneling, phase transition,  
-**Extraction:** extracted; 22 pages; 36131 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 18. Tandem-in-Time Mass Spectrometry with Programmable Clifford Boundary Synthesis and Stability-Boundary Ejection
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Vladimir Baranov  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/ssrn-7404440.pdf`  
-**Keywords from source:** tandem-in-time mass spectrometry; birdcage electrode array; digital ion trap;  
-**Extraction:** extracted; 32 pages; 61340 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 19. Physics Vol. 1, No. 3, pp. 195-290, 1964 Physics Publishing Co. Printed in the United States
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 6/vol1p195-200_001.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 6 pages; 10592 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 20. Mach’s principle in atomic transitions
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 7/ssrn-7112751.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 30304 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 21. Design and Experimental Demonstration of a Conduction
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Angel yang  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 7/ssrn-7135127.pdf`  
-**Keywords from source:** Conduction cooling, Thermal link, RF cavity, Temperature stability, Hadron  
-**Extraction:** extracted; 24 pages; 31138 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 22. Physical Concepts Phase Dynamics : Quantum Topology and Terahertz Physics
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** H.Kovalov  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 7/ssrn-7171698.pdf`  
-**Keywords from source:** Phase dynamics; Terahertz resonator; Topological threshold; Chern index; Koide factor; Coherent  
-**Extraction:** extracted; 39 pages; 57839 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 23. The Naked Universe: A Non-Theoretical Framework for Physics Derived Strictly
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Miltos Karazoupis  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 7/ssrn-7189178.pdf`  
-**Keywords from source:** Foundations of Physics, Epistemology, Map -Territory Distinction,  
-**Extraction:** extracted; 80 pages; 211021 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 24. Does the formulation of a unified field
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** Witold Nawrot  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 7/ssrn-7208083.pdf`  
-**Keywords from source:** Euclidean reality, wave model of particles, unified field theory, recession of  
-**Extraction:** extracted; 56 pages; 145753 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 25. A Complete Derivation of Physics, Consciousness, Metaphysics,
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 7/ssrn-7242985 (1).pdf`  
-**Duplicate repository paths:** `HAUL 7/ssrn-7242985.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 968 pages; 1422459 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 26. THE PYRAMID AS MEMORY HYPOTHESIS
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.5281/zenodo.22070174`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 7/ssrn-7340278.pdf`  
-**Keywords from source:** Great Pyramid of Giza; Khufu; Akhet-Khufu; Horus-eye fractions; Wedjat fraction system; royal  
-**Extraction:** extracted; 77 pages; 259099 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 27. Article Not peer-reviewed version
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.20944/preprints202410.0190.v2`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 8/ER-preprint.pdf`  
-**Keywords from source:** gravity and quantum mechanics; black holes; early universe cosmology and cosmic microwave  
-**Extraction:** extracted; 55 pages; 148121 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 28. Ultrastrong Unconventional Spin Current via Noncollinear Spin-Orbit Filtering
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** DOI: `10.1103/gzp7-1nvx`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 8/gzp7-1nvx.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 12 pages; 45623 non-space characters  
-**Title basis:** pdf-metadata  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 29. Rep. Prog. Phys., Vol. 41, 1978. Printed in Great Britain
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 8/RPP1978_Bell (1).pdf`  
-**Duplicate repository paths:** `HAUL 8/RPP1978_Bell (2).pdf`; `HAUL 8/RPP1978_Bell.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 47 pages; 116687 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 30. Citethisarticle: LohmillerW,SlotineJ-J
+## 9. Citethisarticle: LohmillerW,SlotineJ-J
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** arXiv: `2025.0413`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 8/rspa.2025.0413.pdf`  
+**Repository path:** `HAUL 12/rspa.2025.0413.pdf`  
+**Duplicate repository paths:** `OUTSIDE RESEARCH LIBRARY/SCIENCE NEWS/rspa.2025.0413.pdf`  
 **Keywords from source:** none detected  
 **Extraction:** extracted; 25 pages; 67792 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 31. Measurement of the inhomogeneity of the KATRIN tritium source electric potential by high-resolution spectroscopy of conversion electrons from Kr
+## 10. Sterile-neutrino search based on 259 days of KATRIN data
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.1140/epjc/s10052-025-14354-z`  
+**Identifier:** DOI: `10.1038/s41586-025-09739-9`  
 **Author metadata:** H. Acharya  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 8/s10052-025-14354-z.pdf`  
+**Repository path:** `HAUL 12/s41586-025-09739-9.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 53185 non-space characters  
+**Extraction:** extracted; 25 pages; 76691 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 32. Precise Construction of Helical Unimolecular Micelles from
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** 张振乾  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 8/ssrn-5393479.pdf`  
-**Keywords from source:** Poly(phenylacetylene)s; Unimolecular micelles; Chiral induction;  
-**Extraction:** extracted; 19 pages; 33795 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 33. Microsoft Word - super sciences full paper
+## 11. Umbilic thermodynamics
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 8/ssrn-5714603.pdf`  
+**Repository path:** `HAUL 12/ssrn-7347618.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 13 pages; 31784 non-space characters  
+**Extraction:** extracted; 48 pages; 83822 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 34. Space -time continuum ortime and space
+## 12. A Development Process of X-Ray Films For
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 8/ssrn-5722962.pdf`  
+**Repository path:** `HAUL 2/My Development of X-Ray Films.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 13952 non-space characters  
+**Extraction:** extracted; 10 pages; 13258 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 35. Bell’s Inequality and Quantum Gravity: On the Incompleteness of Quantum Mechanics and General Relativity
+## 13. Helical Phase Geometry of Electrons: A Geometric Interpretation of Quantum and Relativistic Structures
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** DOI: `10.4236/jhepgc.2025.113057`  
-**Author metadata:** Xinzhong Wu  
+**Identifier:** unresolved  
+**Author metadata:** Natarajan T S  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 8/ssrn-5796106.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 25 pages; 67215 non-space characters  
+**Repository path:** `HAUL 2/ssrn-6315940.pdf`  
+**Duplicate repository paths:** `HAUL 3/helic 6315940.pdf`  
+**Keywords from source:** Helical electron model; geometric interpretation of quantum  
+**Extraction:** extracted; 29 pages; 47651 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 36. Blank 193
+## 14. 1. Introduction
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1142/1407`  
+**Author metadata:** 符伯益  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6400621.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 16 pages; 23808 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 15. Topological necessity of V2X communication
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1109/ITSC.2018.8569552`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6435063.pdf`  
+**Keywords from source:** string stability; V2X communication; cooperative adaptive cruise control;  
+**Extraction:** extracted; 5 pages; 6471 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 16. Non-perturbative spectral gravity measure: pro-torsor structure and the obstruction to canonical expectations
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** unresolved  
+**Author metadata:** David Alfyorov, Igor Shnyukov  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 8/ssrn-5800644.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 18 pages; 7377 non-space characters  
+**Repository path:** `HAUL 2/ssrn-6564246.pdf`  
+**Keywords from source:** spectral action, non-perturbative measure, pro-torsor, Feldman–Hájek singu  
+**Extraction:** extracted; 29 pages; 65178 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 37. The Fundamental Tension in Topological
+## 17. The_Decompression_Cosmos_Revised_Ontology
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `HAUL 8/ssrn-5914523.pdf`  
-**Keywords from source:** Topological quantum computing, Fibonacci anyons, reservoir computing, echo state property, quantum machine  
-**Extraction:** extracted; 10 pages; 37254 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 38. ssrn-6104466
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 8/ssrn-6104466.pdf`  
+**Repository path:** `HAUL 2/ssrn-6645638.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 66 pages; 139759 non-space characters  
-**Title basis:** repository-filename  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 39. Project 8 Apparatus for Cyclotron Radiation Emission
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** arXiv: `2503.08807v1`  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 9/2503.08807v1.pdf`  
-**Keywords from source:** Neutrino mass, Cyclotron Radiation Emission Spectroscopy, CRES, Hardware  
-**Extraction:** extracted; 29 pages; 57062 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 40. On the Unified Field Theory and the Structure of Space-Time
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 9/ssrn-6093306.pdf`  
-**Keywords from source:** Unified field theory; Ricci scalar curvature; quantized space-time; graviton; photon; gluon;  
-**Extraction:** extracted; 15 pages; 33894 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 41. Unified Fractal Information Geometry of Entropy Operators and
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 9/ssrn-7351441.pdf`  
-**Keywords from source:** Information Manifold Theory , Fractal Information , Entropy Projections , Curvature-Driven Collapse  
-**Extraction:** extracted; 238 pages; 526232 non-space characters  
-**Title basis:** first-page-heuristic  
-**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
-
-## 42. Matrix-Isolation Infrared Spectroscopic Evidence of Se-HSe and Se-HS Hydrogen Bonding in Benzeneselenol Complexes
-
-**Status:** provisional machine index; not individually reviewed  
-**Source type:** PDF resource  
-**Identifier:** unresolved  
-**Author metadata:** unresolved  
-**Date hints:** unresolved  
-**Repository path:** `HAUL 9/ssrn-7366944.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 15 pages; 46576 non-space characters  
+**Extraction:** extracted; 28 pages; 59621 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 43. The Project Gutenberg eBook #47167: On the Quantum Theory of Line-Spectra, Part II
+## 18. PVF SERIES | EXPERIMENTAL PREDICTIONS | v3.0
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** Niels Henrik David Bohr  
+**Author metadata:** Un-named  
 **Date hints:** unresolved  
-**Repository path:** `HISTORICAL/BOHR — QUANT SPECT 1+2.pdf`  
+**Repository path:** `HAUL 2/ssrn-6658920.pdf`  
+**Keywords from source:** electron screening, NIF fusion, Coulomb barrier, bound-electron anomaly, vacuum  
+**Extraction:** extracted; 15 pages; 15801 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 19. Toward a Dual-Zeta / Nilpotent Fiber View of
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Un-named  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6684378.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 212 pages; 272170 non-space characters  
+**Extraction:** extracted; 18 pages; 14822 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 20. Untitled document
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6823978.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 3 pages; 2962 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 44. The Project Gutenberg eBook #47464: The Theory of Spectra and Atomic Constitution
+## 21. Time: Cosmic Motion, Entropy, and Human
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
-**Author metadata:** Niels Henrik David Bohr  
+**Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `HISTORICAL/BOHR — SPECTRA.pdf`  
+**Repository path:** `HAUL 2/ssrn-6873458.pdf`  
+**Keywords from source:** Relational time, Quantum gravity, Thermody  
+**Extraction:** extracted; 7 pages; 33531 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 22. Negative energies states in TTBM
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** arXiv: `2106.05827`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6873965.pdf`  
+**Keywords from source:** Quantum Mechanics Foundations; Negative energies; Antimatter; Majorana’s sym  
+**Extraction:** extracted; 4 pages; 10220 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 23. CONSISTENCY WITHOUT COHERENCE
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6887518 (1).pdf`  
+**Duplicate repository paths:** `HAUL 2/ssrn-6887518.pdf`  
+**Keywords from source:** consistency vs. coherence; mathematical apparatus; framework preservation; dark  
+**Extraction:** extracted; 36 pages; 82012 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 24. Structural Emergence Research Program: Programmatic Scientific Claims and Research
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Nik  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6897338.pdf`  
+**Keywords from source:** structural emergence; emergence theory; philosophy of science; scientific  
+**Extraction:** extracted; 13 pages; 31302 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 25. Ten Papers: Physical Formulas Are Not Discovered, but Defined
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** BARTON  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6906778.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 209 pages; 264441 non-space characters  
+**Extraction:** extracted; 9 pages; 12924 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 26. Insufficient Scale: The Scaling Hypothesis and Popper’s Line of
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Un-named  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6912299 (1).pdf`  
+**Duplicate repository paths:** `HAUL 2/ssrn-6912299.pdf`  
+**Keywords from source:** falsifiability, demarcation, artificial general intelligence, scaling laws, induction,  
+**Extraction:** extracted; 12 pages; 28095 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 27. Derivation from Relativistic Corrections
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1038/nature09250`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6918478.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 11 pages; 21080 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 28. Heisenberg Uncertainty Relation Derived as a Special Limiting
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.1007/s10701-021-00462-w`  
+**Author metadata:** Ковалёв Геннадий  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6924741.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 7 pages; 12085 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 29. June 14, 2026
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6935318.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 135 pages; 335406 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 30. It is time to talk about Z
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Abdennour ABBAS  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6954558.pdf`  
+**Keywords from source:** Atomic number | Atomic spectra | Spectral boundary | Spectral structure | Spectral  
+**Extraction:** extracted; 16 pages; 39680 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 31. Grand Unification: The Spiral of Fate and Freedom
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Un-named  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6956780 (1).pdf`  
+**Duplicate repository paths:** `HAUL 2/ssrn-6956780.pdf`  
+**Keywords from source:** Gray Zone; the spiral of fate and freedom; grand unification; 0↔1↔4↔∞; Two-Layer  
+**Extraction:** extracted; 13 pages; 34887 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 32. Probability is Lack of Information: Part III
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.2139/ssrn.6085046`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6962403 (1).pdf`  
+**Duplicate repository paths:** `HAUL 2/ssrn-6962403.pdf`  
+**Keywords from source:** Probability is Lack of Information, Binary Entropy Function (H(p)),  
+**Extraction:** extracted; 8 pages; 15496 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 33. Information Conservation Principle Unifies Quantum
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Un-named  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6964138.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 17 pages; 39464 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 34. Probability is Lack of Information: Part IV
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.2139/ssrn.6962403`  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6972282 (1).pdf`  
+**Duplicate repository paths:** `HAUL 2/ssrn-6972282.pdf`  
+**Keywords from source:** Probability is Lack of Information, Binary Entropy Function (H(p)), Sec  
+**Extraction:** extracted; 8 pages; 16187 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 35. MAXWELL'S SPHERE AS THE χ-CELL: Deriving c as a Geometric Phase Lock and K=1/π (v.02)
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.5281/zenodo.22133307`  
+**Author metadata:** H.Kovalov  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6975520.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 5 pages; 9668 non-space characters  
 **Title basis:** pdf-metadata  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 45. Project Gutenberg eBook of The Foundations of Geometry,
+## 36. The Geometric Absolute of Lepton Generations: Deriving the Koide Formula
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.5281/zenodo.20808887`  
+**Author metadata:** H.Kovalov  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6981262.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 5 pages; 10426 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 37. Simultaneous Galaxy Emergence and Primordial Mapping
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `HISTORICAL/HILBERT — FOUND GEO.pdf`  
+**Repository path:** `HAUL 2/ssrn-6981338.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 101 pages; 170730 non-space characters  
+**Extraction:** extracted; 39 pages; 42011 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 46. Corrections and Comments on the Multipole
+## 38. Relational Time Flow from Particles' Internal Cyclic Times
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Donatello Dolce;  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6981703 (1).pdf`  
+**Duplicate repository paths:** `HAUL 2/ssrn-6981703.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 20 pages; 50469 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 39. FROM MAXWELL'S SPHERE TO THE LEPTON MASS HIERARCHY
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.5281/zenodo.20810756`  
+**Author metadata:** H.Kovalov  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6981958.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 9 pages; 15466 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 40. The Relativistic Extension of the Active
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `KERR/0407064v3 (1).pdf`  
-**Duplicate repository paths:** `KERR/0407064v3.pdf`  
+**Repository path:** `HAUL 2/ssrn-6982561.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 10 pages; 14155 non-space characters  
+**Extraction:** extracted; 8 pages; 16263 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 47. 156 Kerr bound
+## 41. FROM MAXWELL'S SPHERE TO THE LEPTON MASS HIERARCHY (v.05)
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.5281/zenodo.20818791`  
+**Author metadata:** H.Kovalov  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6985119.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 17 pages; 19298 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 42. The Proton Radius Determination
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
 **Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `KERR/1365236_156-159.pdf`  
+**Repository path:** `HAUL 2/ssrn-6989058.pdf`  
 **Keywords from source:** none detected  
-**Extraction:** extracted; 4 pages; 9162 non-space characters  
+**Extraction:** extracted; 21 pages; 42986 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 48. Muon–electron scattering at NLO
+## 43. Time as a Quantum Field: The Fundamental Unity of Temporal Dynamics and Physical Reality
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `1811.06743v3`  
+**Identifier:** unresolved  
+**Author metadata:** Andriy Lemeshko  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6990938.pdf`  
+**Keywords from source:** temporal field, time quantization, chronons, Kaluza–Klein theory, emergent geometry,  
+**Extraction:** extracted; 22 pages; 50835 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 44. Analytic Continuation, Zeta Regularization, and Ontic Structural Realism: Stabilizing Singularities through Mathematical Structure
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Sidney A. Morris;  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-6993036 (1).pdf`  
+**Duplicate repository paths:** `HAUL 2/ssrn-6993036.pdf`  
+**Keywords from source:** analytic continuation, zeta regularization, singularities, Ontic Structural  
+**Extraction:** extracted; 4 pages; 9253 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 45. The Observer and the World
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** Daniel John Murray  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-7347861.pdf`  
+**Keywords from source:** none detected  
+**Extraction:** extracted; 30 pages; 74834 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 46. Emergent Time and the Geometric Unification
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** DOI: `10.5281/zenodo.21206430`  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `KERR/1811.06743v3.pdf`  
-**Keywords from source:** Fixed target experiments, Precision QED, NLO computations  
-**Extraction:** extracted; 26 pages; 55475 non-space characters  
+**Repository path:** `HAUL 2/ssrn-7350638.pdf`  
+**Keywords from source:** Physics, Emergent Time, Geometric Unification  
+**Extraction:** extracted; 12 pages; 27772 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 49. The role of the irreducible mass in repetitive Penrose energy extraction processes in a
+## 47. Dimensionless Scaling and Physical
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2405.10459v1`  
+**Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `KERR/2405.10459v1.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 7 pages; 20960 non-space characters  
+**Repository path:** `HAUL 2/ssrn-7350878.pdf`  
+**Keywords from source:** atomic systems; planetary systems; dimensionless scaling; Gold-197; Sun–Earth system; atomic–  
+**Extraction:** extracted; 15 pages; 50122 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
 
-## 50. The role of the irreducible mass in repetitive Penrose energy extraction processes in a
+## 48. The spectrum of a compact internal space. II. Effective couplings and mass scales
 
 **Status:** provisional machine index; not individually reviewed  
 **Source type:** PDF resource  
-**Identifier:** arXiv: `2405.10459v4`  
+**Identifier:** unresolved  
+**Author metadata:** Jinku Guo  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-7351999.pdf`  
+**Keywords from source:** spectral datum, compact internal space, effective couplings, scale flow, posi  
+**Extraction:** extracted; 71 pages; 131119 non-space characters  
+**Title basis:** pdf-metadata  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 49. A Spectral Criterion for Emergent Gravity
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
 **Author metadata:** unresolved  
 **Date hints:** unresolved  
-**Repository path:** `KERR/2405.10459v4.pdf`  
-**Keywords from source:** none detected  
-**Extraction:** extracted; 9 pages; 28057 non-space characters  
+**Repository path:** `HAUL 2/ssrn-7352000.pdf`  
+**Keywords from source:** Emergent gravity; Spectral function; Spin-2 polarization; Langevin equation;  
+**Extraction:** extracted; 49 pages; 112788 non-space characters  
+**Title basis:** first-page-heuristic  
+**Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied  
+
+## 50. Coarse-Graining and the Classification
+
+**Status:** provisional machine index; not individually reviewed  
+**Source type:** PDF resource  
+**Identifier:** unresolved  
+**Author metadata:** unresolved  
+**Date hints:** unresolved  
+**Repository path:** `HAUL 2/ssrn-7352038 (1).pdf`  
+**Duplicate repository paths:** `HAUL 2/ssrn-7352038.pdf`  
+**Keywords from source:** Coarse-graining; Conservation laws; Ward identity; Spectral function; Oper  
+**Extraction:** extracted; 37 pages; 96988 non-space characters  
 **Title basis:** first-page-heuristic  
 **Read level:** machine extraction metadata + first-page heuristic only; no claim-level reading implied
