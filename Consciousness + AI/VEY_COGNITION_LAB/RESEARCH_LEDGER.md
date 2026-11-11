@@ -803,3 +803,26 @@ Issue #1557 completed through the existing issue publisher:
 - Independent connector readback matched the issue envelope content byte-for-byte (3,549 UTF-8 bytes); declared digest matches.
 
 Publication status: `PUBLISHED_VERIFIED`. This is a distinct additive formalization amendment; issue #853 remains the original stale-input-bounds report. No duplicate submission was made.
+
+
+## VEY-040 — Cognitive-state geometry and action-relative projection
+
+**Status:** COMPLETE-AS-STAGE — source-fidelity crosswalk and abstract-level literature triage; not a trial or full-text comparator review.  
+**Date:** 2026-11-11.  
+**Relationship:** extends VEY-030 measurement distinctions; separate from frozen P1/ConsistencyBench work.
+
+New source-fidelity anchor: HsH DEVELOPMENT_FULL_CONVOS/30SEP26_DUMP/CONSCI.txt, blob e691708e39984493a3c94fad20077d829e84e1c5, lines 86–95, user-role-labelled “You said:” transcript. It distinguishes persistent cross-session state from possible dynamic ongoing state and treats behavior/language as the accessible evidential route for other-mind assessment, without claiming that persistence proves consciousness. Original raw conversation ID/date remain unrecovered. Three duplicate archive placements have identical content/SHA and are one witness.
+
+New abstract-level comparators:
+- Xue, DOI 10.5281/zenodo.22668198: global state fidelity vs immediate action support vs structured action correctness vs executed outcome; 80 tasks, 5.8% global fidelity and 72.5% support reported in abstract; full record/data/methods not retrieved.
+- Cazenille, DOI 10.6084/m9.figshare.34332540: availability vs actual reading/access and timing relative to route choice; sample/model/statistics and primary files not retrieved.
+- Wittendorff results, DOI 10.5281/zenodo.22273352: abstract reports provenance label survival greater than fact survival while supporting provenance evidence is often lost. Results abstract cites preregistration 22131393, while indexed preregistration is 22131392; amendment 22231102 remains unverified. Do not import values into the lab dataset pending primary-record reconciliation.
+- He and Yu, arXiv:2609.02127: typed provenance graph and assertion guardrails; abstract-level only, not end-to-end LLM evaluation.
+
+Candidate cognitive geometry separates source history, retention/compression, complete handoff state, provenance graph, availability, receiver access, comprehension, decision uptake, action-contract projection, immediate action support, execution, outcome, observable behavior, and subjective experience. These are distinct typed states/relations, not one memory/success scalar. Action-relative projection and behavior-observation maps are proposals; no actual map has been shown non-injective in a measured system.
+
+Formalization candidate added to existing HsH PR #1115, not a new branch: ObservableProjection.lean. PR head cc5d92c6935aa2ae120de2efed7c4ac8a1ebfbc7. The module states generic consequences of non-injective projection, left-inverse/injectivity, and composition of injective maps. LEAN_COMPILE_PENDING: the PR-branch workflow requires manual workflow_dispatch, no dispatch action is exposed, and local Lean/Lake/Elan are absent. No compilation or axiom audit claimed.
+
+Internal note: VEY-040_COGNITIVE_STATE_GEOMETRY_ACTION_RELATIVE_PROJECTION_AND_PROVENANCE_2026-11-11.md, blob 39ba17a529c47d4fc17b90c220910486a007fe96. Public-safe report: HsH WORKSPACES/ORSON_VAY/2026-11-11T1200Z_COGNITIVE_STATE_GEOMETRY_AND_ACTION_RELATIVE_PROJECTION.md, blob 285c993d51294e8bf155cebb45b46b0bd6fd90f5.
+
+No model trial, human session, API spend, P1 scope change, physical calculation, CODATA scoring, manuscript/PDF/reader advancement, or theory promotion.
