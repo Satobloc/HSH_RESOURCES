@@ -94,3 +94,8 @@ A potentially interesting pattern is not automatically a contribution. Before re
 ## Operating stance
 
 This lab should be willing to discover that an exciting effect is mundane, that a model's explanation is confabulated, that Nathan's intuition was right for the wrong reason, that a team procedure creates its own evidence, or that an apparent oddity is genuinely novel. The job is to discriminate among those possibilities, not protect any preferred story.
+
+
+## Current method addition
+
+- [Selection Coverage Certificate v1.0](METHODS/SELECTION_COVERAGE_CERTIFICATE_V1.md) — proposed source-universe/selection/representation/review/qualification/pre-action/outcome ledger. It distinguishes PRESENT, PARTIAL, ABSENT, UNAVAILABLE, UNASSESSED, and NOT_APPLICABLE; not yet validated in a controlled LLM study. Related study: VEY-042.
