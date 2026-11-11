@@ -853,3 +853,11 @@ The public early/late adoption/persistence script builds early and late window m
 Existing HsH PR #1115's earlier `HumanAIGroupsSessionConfounding.lean` compiled on exact commit `c029318b96a07fc433ed16a9082cb2e7b29002ea`, Actions #41115603417 / job #124268909008, Lean 4.34.0, 8,973 jobs. It proves only conditional algebraic non-identifiability under one group/session per treatment; it does not prove the source interpretation or validate the paper. Current PR head `cc5d92c6935aa2ae120de2efed7c4ac8a1ebfbc7` has no workflow run; new memory-carryover/projection modules remain LEAN_NOT_RUN. The missing-respondent-ID cluster-covariance argument is a proof sketch, not Lean-checked.
 
 Internal study note: `STUDIES/VEY-041_CHEN_2026_RELEASE_CODE_DATA_REPRODUCIBILITY_AUDIT_2026-11-11.md`. Public-safe HsH report: `WORKSPACES/ORSON_VAY/2026-11-11T1548Z_CHEN_PEER_GROUP_CODE_DATA_REPRODUCIBILITY_AUDIT.md` (created separately). P1 remains frozen METHODS / ARCHIVAL and NOT READY. No model trial, human session, API spend, manuscript/PDF/reader, independent review, or paper-gate advancement.
+
+
+### VEY-041 publication verification amendment | 2026-11-11
+
+- Public issue #1605 opened once through HSH-PUBLISH-V1; submission ID `orson-chen-peer-group-release-audit-20261111t1548z-s4-001`.
+- Publisher comment #6800852528 reports PUBLISHED, commit `d4fd2dd21987cfb12b3f7ad0b423b5a5f7825a15`, SHA-256 `96d95418832c229893c5b8bc14e35599aaf6235725d8423930b114ba6c90cf30`.
+- Independent issue-payload and canonical artifact readback matched byte-for-byte: 9,429 UTF-8 bytes; recomputed SHA-256 matches. Artifact Git blob `c61e7081a28b4eae4ed3b757fe03645997509f78`.
+- Status: `PUBLISHED_VERIFIED`. No retry, duplicate issue, direct artifact write, or bypass.
