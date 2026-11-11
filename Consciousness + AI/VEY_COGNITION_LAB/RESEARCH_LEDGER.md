@@ -880,3 +880,6 @@ Internal study note: `STUDIES/VEY-041_CHEN_2026_RELEASE_CODE_DATA_REPRODUCIBILIT
 **Boundary:** P1 issue #564 remains OPEN / SOURCE-AND-EXPERIMENT-READINESS / NOT READY. No P1 protocol change, new LLM trial, human-subject experiment, manuscript advancement, or theory promotion. Internal HsH report: WORKSPACES/ORSON_VAY/2026-11-11T1936Z_SELECTION_COVERAGE_AS_HANDOFF_GATE.md. Public issue #1611 was submitted with a SHA mismatch and must not be treated as published unless a later publisher acceptance/readback is observed.
 
 **Next:** recover the full P001 PDF/Zenodo record and item-level manifest if accessible; reconcile the partial-category display against the versioned PDF; inspect all four 2x2 cells only if the source permits; keep the frozen P1 OV-49–53 source/feasibility cursor separate.
+
+
+VEY-042 reusable method and Tern advisory: METHODS/SELECTION_COVERAGE_CERTIFICATE_V1.md; TERN_ADVISORIES/2026-11-11_VEY-042_SELECTION_COVERAGE.md. Proposed, not validated in a controlled study.
