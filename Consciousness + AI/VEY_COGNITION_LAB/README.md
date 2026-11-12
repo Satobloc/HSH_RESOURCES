@@ -101,3 +101,6 @@ This lab should be willing to discover that an exciting effect is mundane, that 
 - [Selection Coverage Certificate v1.0](METHODS/SELECTION_COVERAGE_CERTIFICATE_V1.md) — proposed source-universe/selection/representation/review/qualification/pre-action/outcome ledger. It distinguishes PRESENT, PARTIAL, ABSENT, UNAVAILABLE, UNASSESSED, and NOT_APPLICABLE; not yet validated in a controlled LLM study. Related study: VEY-042.
 
 - [Selection Coverage Certificate v1.0, Addendum 01](METHODS/SELECTION_COVERAGE_CERTIFICATE_V1_ADDENDUM_01_SOURCE_RELEVANCE_AND_CARRIER_LOCALIZATION.md) — source relevance, identity, access depth, duplicate-family, carrier localization, and evidence-independence dimensions; proposed, not controlled-study validated. Related study: VEY-042.
+
+
+- [VEY-043 — Communication revision and passive error dependence](STUDIES/VEY-043_COMMUNICATION_REVISION_AND_ERROR_DEPENDENCE_CROSSWALK_2026-11-12.md) — separates passive pre-exposure error dependence, shared evaluator dependence, causal peer-message revision, and deliberative aggregation. Structured full-text extraction of two new arXiv preprints; direct PDFs/appendices/data/code not retrieved. Supporting literature only; not a P1 protocol amendment or controlled LLM result.
