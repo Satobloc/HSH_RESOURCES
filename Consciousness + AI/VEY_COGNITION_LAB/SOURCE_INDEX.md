@@ -440,3 +440,13 @@ HsH issue #1506 was rejected by the existing publisher for SHA-256 mismatch (com
 - The dedicated P001 page abbreviates the follow-up counts; the author publications page supplies the partial category. These are two pages in the same author source family, not independent evidence.
 - Zenodo PDF and item-level data remain unretrieved. SciSpace extraction is not a full-text review.
 - The existing Mersearch receipt's top-ranked Meridian user message was verified as one source witness across duplicate/variant archive copies. It is not Orson's original role-reset instruction.
+
+
+## 2026-11-12 | VEY-043 — communication revision and passive error dependence
+
+- **Li et al. (2026):** Shixuan Li, Wei Yang, Peiyu Zhang, Anzhe Cheng, Heng Ping, Paul Bogdan, "Beyond Final Accuracy: Auditing Communication in LLM Multi-Agent Systems," arXiv:2610.01042, submitted 2026-10-01. Primary identifier: https://arxiv.org/abs/2610.01042. Structured full-text extraction reviewed; direct PDF/appendix/data/code not retrieved. ICR separates independent reasoning, message condition and receiver revision; four reasoning benchmarks; correction/preservation trade-off; exact effect magnitudes unavailable in this review.
+- **Gong et al. (2026):** Yaxin Gong, Gangyi Zhang, Chongming Gao, Leyang Shen, Chenxiao Fan, Jiakai Wang, Dong Wang, Yang Liu, Wenjie Wang, Xiangnan He, "When Upstream Messages Override Correct Answers: A Controlled Study of Multi-Agent LLM Collaboration," arXiv:2609.36855, submitted 2026-09-29. Primary identifier: https://arxiv.org/abs/2609.36855. Structured full-text extraction reviewed; direct PDF/appendix/data/code not retrieved. Controlled upstream-message manipulation with downstream evidence held fixed; headline 32% and 94% retained only with abstract qualifiers; exact denominators unresolved.
+- **Existing comparators reused, not newly indexed:** Hossain et al., arXiv:2609.22512 (VEY-013); Barrera-Lemarchand et al., arXiv:2609.22497 (VEY-012).
+- **Evidence distinction:** passive judge-error dependence, shared evaluator dependence, peer-message causal revision, and deliberative aggregation are not interchangeable. Current ConsistencyBench CGD remains within-model self-history with a shared NLI evaluator and no cross-model peer messages.
+- **Review provenance:** Scholar Sidekick matched all four references; no retractions/correction notices flagged. SciSpace structured extraction is a review aid, not a substitute for direct PDF, appendix, code or raw-data inspection. Both new identifiers are arXiv DOIs; peer-review status not established.
+- **Internal study:** STUDIES/VEY-043_COMMUNICATION_REVISION_AND_ERROR_DEPENDENCE_CROSSWALK_2026-11-12.md.
