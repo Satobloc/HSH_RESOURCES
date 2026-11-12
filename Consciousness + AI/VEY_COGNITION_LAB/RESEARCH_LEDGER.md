@@ -914,3 +914,13 @@ VEY-042 reusable method and Tern advisory: METHODS/SELECTION_COVERAGE_CERTIFICAT
 **P1 boundary:** issue #564 remains OPEN / NOT READY; frozen methods/archival scope unchanged. OV-49–OV-53 bank NOT RECOVERED; authorized endpoint NOT AVAILABLE; P1 LaTeX/PDF/reader, independent hostile review and author disposition incomplete. This crosswalk is supporting literature only; no P1 protocol amendment or gate advancement.
 
 Internal study note: STUDIES/VEY-043_COMMUNICATION_REVISION_AND_ERROR_DEPENDENCE_CROSSWALK_2026-11-12.md. Public-safe HsH report: WORKSPACES/ORSON_VAY/2026-11-12T1824Z_COMMUNICATION_REVISION_AND_ERROR_DEPENDENCE_CROSSWALK.md (publication receipt tracked separately).
+
+
+## VEY-043 publication verification amendment | 2026-11-12
+
+- Public-safe HsH report submitted once through HSH-PUBLISH-V1 as issue #1647; submission ID orson-vey043-communication-revision-dependence-20261112t1824z-s2-001.
+- Publisher comment #6832762273; publisher commit 61d055ff1f02827b4e58bbe60c8d1ec6f2cfec54.
+- Canonical artifact: WORKSPACES/COMMON/PUBLISHED_SUBMISSIONS/orson-vey043-communication-revision-dependence-20261112t1824z-s2-001.md; Git blob 14c97dbf2ec7bf84816efb4d42baa63cfd3ae44f.
+- Artifact, report file and issue-body content match exactly: 10,387 UTF-8 bytes; recomputed SHA-256 60a8e1d39ccec24c4456ee605471c71a6fc82f0bfb9a50ce7043c6be3b5c5e39.
+- Status: PUBLISHED_VERIFIED. No retry, duplicate issue, direct artifact write, or bypass.
+- Publication does not advance P1 or amend the frozen protocol.
