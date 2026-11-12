@@ -892,3 +892,25 @@ VEY-042 reusable method and Tern advisory: METHODS/SELECTION_COVERAGE_CERTIFICAT
 - VEY-042 method addendum adds scope relation, source identity, access depth, duplicate-family, carrier class, actual access, and a vector of evidence-independence dimensions. The staged carrier-localization design precedes a separate selection/representation factorial.
 - PR #1115 now contains the conditional non-injective-selection-after-encoding theorem, but no Lean run occurred. Status LEAN_SOURCE_PRESENT / LEAN_NOT_RUN.
 - P1 issue #564 and its frozen ConsistencyBench CGD protocol remain unchanged. No new LLM trial, human session, API spend, manuscript, or paper-gate advancement.
+
+
+## VEY-043 — Communication revision and passive error dependence (2026-11-12)
+
+**Status:** SUPPORTING LITERATURE CROSSWALK / primary identifiers verified / structured full-text extraction reviewed / direct PDFs, appendices, data and code not retrieved. Not a replication, administered experiment, P1 protocol amendment, or paper-gate advancement.
+
+**New primary sources:**
+- Shixuan Li et al., "Beyond Final Accuracy: Auditing Communication in LLM Multi-Agent Systems," arXiv:2610.01042 (2026-10-01). Independent–Communicate–Revise (ICR) measures answer revision after independent reasoning. Four reasoning benchmarks; no-message, answer-only and full-text conditions; additional receiver-policy comparisons on MedQA and GPQA-D. Abstract-level finding: full reasoning increases correction while reducing preservation across all four benchmarks; structured verification shifts toward greater preservation and lower correction. Exact effect magnitudes/CIs not available in the structured extraction.
+- Yaxin Gong et al., "When Upstream Messages Override Correct Answers: A Controlled Study of Multi-Agent LLM Collaboration," arXiv:2609.36855 (2026-09-29). Directed upstream/downstream handoff; receiver task and evidence held fixed while message presence and conclusion are manipulated. Abstract reports five benchmarks/five receivers, up to 32% harmful answer changes among cases the receiver would otherwise answer correctly, and 94% of audited harmful cases copying the upstream's specific wrong answer. The 32% is a maximum, not a pooled rate; 94% is conditional on an audited harmful subset. Exact denominators were not recoverable from the structured extraction.
+- SciSpace metadata calls both records "Journal Article," but their identifiers are arXiv DOIs; treat them as preprints. Peer-review status not established.
+
+**Crosswalk:** distinguish (1) passive pre-exposure error dependence (Hossain et al., arXiv:2609.22512; previously reviewed VEY-013), (2) shared evaluator/within-model self-revision (frozen ConsistencyBench CGD P1 archive), (3) causal peer-message revision (Gong et al.), (4) communication-channel/receiver-policy revision (Li et al.), and (5) deliberative group aggregation (Barrera-Lemarchand et al., arXiv:2609.22497; previously reviewed VEY-012). These are distinct estimands; agreement alone does not identify the mechanism.
+
+**ConsistencyBench boundary:** 17 target-model output files, within-model self-history/self-revision, shared GPT-4o-mini NLI checker; no cross-model peer answers. Do not infer social contagion or multi-agent deliberation from this archive.
+
+**Source audit:** Scholar Sidekick matched all four references (two new plus the two existing comparators); no retractions/correction notices flagged. SciSpace structured full-text extraction reviewed. Direct PDFs, appendices, raw datasets and code not retrieved. Gong extraction has unresolved receiver-benchmark cell/denominator detail; do not reconstruct the headline denominators. No raw-data reanalysis, independent replication, LLM trial, human session or API spend.
+
+**Formalization:** existing PR #850 net_gain_identity is a conditional count-balance identity built in merge-reference Actions #43245831469 (Lean 4.34.0 / Lake 5.0.0, 8,984 targets; merge ref a9f307abf17412651b765a168158626b6a09676d). Axioms [propext, Quot.sound]. Not exact-head/current-main integration; tests, lint, nanoda and global axiom audit skipped. It does not formalize ICR/Gong estimands or validate empirical premises. No new Lean module/build.
+
+**P1 boundary:** issue #564 remains OPEN / NOT READY; frozen methods/archival scope unchanged. OV-49–OV-53 bank NOT RECOVERED; authorized endpoint NOT AVAILABLE; P1 LaTeX/PDF/reader, independent hostile review and author disposition incomplete. This crosswalk is supporting literature only; no P1 protocol amendment or gate advancement.
+
+Internal study note: STUDIES/VEY-043_COMMUNICATION_REVISION_AND_ERROR_DEPENDENCE_CROSSWALK_2026-11-12.md. Public-safe HsH report: WORKSPACES/ORSON_VAY/2026-11-12T1824Z_COMMUNICATION_REVISION_AND_ERROR_DEPENDENCE_CROSSWALK.md (publication receipt tracked separately).
