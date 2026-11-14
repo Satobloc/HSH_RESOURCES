@@ -104,3 +104,7 @@ This lab should be willing to discover that an exciting effect is mundane, that 
 
 
 - [VEY-043 — Communication revision and passive error dependence](STUDIES/VEY-043_COMMUNICATION_REVISION_AND_ERROR_DEPENDENCE_CROSSWALK_2026-11-12.md) — separates passive pre-exposure error dependence, shared evaluator dependence, causal peer-message revision, and deliberative aggregation. Structured full-text extraction of two new arXiv preprints; direct PDFs/appendices/data/code not retrieved. Supporting literature only; not a P1 protocol amendment or controlled LLM result. Public-safe report published and exact-readback verified at HsH issue #1647 (PUBLISHED_VERIFIED).
+
+## 14 November 2026 additions
+- **VEY-044:** [Measurement consensus, null models, and co-failure tails](STUDIES/VEY-044_MEASUREMENT_CONSENSUS_NULLS_AND_COFAILURE_2026-11-14.md). Source-checked literature crosswalk; not a P1 protocol amendment.
+- **P1 working manuscript:** [DRAFT_PAPERS/README.md](DRAFT_PAPERS/README.md). Source draft v0.1; author attribution and independent review pending; no paper-gate advancement.
