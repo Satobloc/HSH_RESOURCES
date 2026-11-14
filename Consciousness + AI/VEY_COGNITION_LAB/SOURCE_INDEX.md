@@ -451,3 +451,18 @@ HsH issue #1506 was rejected by the existing publisher for SHA-256 mismatch (com
 - **Evidence distinction:** passive judge-error dependence, shared evaluator dependence, peer-message causal revision, and deliberative aggregation are not interchangeable. Current ConsistencyBench CGD remains within-model self-history with a shared NLI evaluator and no cross-model peer messages.
 - **Review provenance:** Scholar Sidekick matched all four references; no retractions/correction notices flagged. SciSpace structured extraction is a review aid, not a substitute for direct PDF, appendix, code or raw-data inspection. Both new identifiers are arXiv DOIs; peer-review status not established.
 - **Internal study:** STUDIES/VEY-043_COMMUNICATION_REVISION_AND_ERROR_DEPENDENCE_CROSSWALK_2026-11-12.md.
+
+## 2026-11-14 | VEY-044 measurement-consensus crosswalk
+
+- Jo, Garg & Raghavan (2026), *The Subjectivity of Monoculture*, arXiv:2602.24086 — population/null-model sensitivity; NeurIPS 2026 paper record.
+- Han & Kim (2026), *Agreement Without Alignment*, arXiv:2610.13303 — preregistered rubric-clarification study; judge consensus did not translate into human-rating agreement.
+- Chernets (2026), *Verification Theater*, DOI 10.5281/zenodo.23197641 — preprint/accepted non-archival workshop poster; difficulty-stratified verifier failure and peer-label conformity.
+- Chen (2026), *When Does Combining Language Models Help?*, arXiv:2606.27288 — pairwise dependence does not identify joint co-failure tails.
+- Kim et al. (2025), *Correlated Errors in Large Language Models*, arXiv:2506.07962 — correlated model errors.
+- Hossain, Yousefi & Lim (2026), *Agreement Overstates Evidence*, arXiv:2609.22512 — dependent judge evidence.
+- Kohli et al. (2026), *Nine Judges, Two Effective Votes*, arXiv:2605.29800 — effective evidence count under correlated judge errors.
+- Li et al. (2026), *Beyond Final Accuracy*, arXiv:2610.01042 — communication exposure as a separate stage.
+- Gong et al. (2026), *When Upstream Messages Override Correct Answers*, arXiv:2609.36855 — controlled peer-message exposure.
+- aayambansal/ConsistencyBench, source code/data commit `bfc676baa848c7f1715bb73aee148180de15516e` — source of the P1 archival case study.
+
+All titles/identifiers were checked with Scholar Sidekick; this is bibliographic identity screening, not peer review. See VEY-044 for evidence-status and transfer limitations.
