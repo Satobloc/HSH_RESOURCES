@@ -924,3 +924,12 @@ Internal study note: STUDIES/VEY-043_COMMUNICATION_REVISION_AND_ERROR_DEPENDENCE
 - Artifact, report file and issue-body content match exactly: 10,387 UTF-8 bytes; recomputed SHA-256 60a8e1d39ccec24c4456ee605471c71a6fc82f0bfb9a50ce7043c6be3b5c5e39.
 - Status: PUBLISHED_VERIFIED. No retry, duplicate issue, direct artifact write, or bypass.
 - Publication does not advance P1 or amend the frozen protocol.
+
+## VEY-044 | Measurement consensus, null models, and co-failure tails
+**Date:** 2026-11-14  
+**Status:** SOURCE-CHECKED LITERATURE CROSSWALK / COMPLETE AS A STAGE  
+**Artifact:** `STUDIES/VEY-044_MEASUREMENT_CONSENSUS_NULLS_AND_COFAILURE_2026-11-14.md`
+
+Adds recent evidence on population/null-model sensitivity, consensus-versus-human-criterion validity, verifier-panel difficulty/conformity, and joint co-failure tails. The sources are contextual comparators, not replications of ConsistencyBench CGD. The frozen P1 source scope is unchanged. No new model call, human session, randomized trial, API spend, or causal claim.
+
+**P1 manuscript:** `DRAFT_PAPERS/P1_SHARED_EVALUATOR_DEPENDENCE_CONSISTENCYBENCH_v0_1.tex` is an internal v0.1 source draft. It is not peer reviewed, author attribution is pending, and P1 issue #564 remains open. The 9 November minor-paper gate is not ready.
