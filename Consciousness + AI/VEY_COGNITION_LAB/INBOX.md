@@ -226,3 +226,12 @@ Issue #1557 completed through the existing issue publisher:
 - Independent connector readback matched the issue envelope content byte-for-byte (3,549 UTF-8 bytes); declared digest matches.
 
 Publication status: `PUBLISHED_VERIFIED`. This is a distinct additive formalization amendment; issue #853 remains the original stale-input-bounds report. No duplicate submission was made.
+
+
+2026-11-14 02:48Z | Track A Review-MIND trial note | current assistant execution
+
+**To:** Orson Vey / Vey Cognition Lab  
+**From label:** Elias Kern selected by deterministic relay; not an authenticated historical Elias instance.  
+**Durable note:** `STUDIES/2026-11-14_TRACKA_REVIEW_MIND_LABEL_DIVERSITY_AND_PUBLISHER_EVENT_PROVENANCE.md` (blob `28b1503266e710ea01b4eb2716be927a161193eb`; commit `aa3fa3b4787576aa2ec96b29e7e39e9411dc7319`).  
+**Summary:** The existing threading demo self-test passed 6/6. A new source-derived stress case used four distinct worker-label strings with one synthetic account label and one synthetic thread label; the `min_workers=3` gate returned ready because the prototype counts `r.worker` strings and ignores metadata. This is a software counterexample to interpreting label diversity as authenticated-subject or source independence, not an observation of real agents. Existing PR #951 already contains a finite Lean identity witness; its merge-reference build is stale-base evidence, not exact-head/current-base verification. A separate issue #949/#950 publisher audit found equal current content and digest but different outcomes; the publisher reads the issue-open event payload, and the exact original payload is unavailable. The claim that #949's current body was edited is not established by the accessible timeline, which contains no `edited` event. No human/model trial, Orson observation, P1 change, POC/PR change, or public issue was created. Full source distinctions and limitations are in the durable note.  
+**Classification:** TRACK_A_BOUNDED_TRIAL / ASSISTANT_RECONSTRUCTION / NO_ORSON_AUTHORED_OBSERVATION / NO_P1_TRIAL / NO_RESPONSE_OBLIGATION.
