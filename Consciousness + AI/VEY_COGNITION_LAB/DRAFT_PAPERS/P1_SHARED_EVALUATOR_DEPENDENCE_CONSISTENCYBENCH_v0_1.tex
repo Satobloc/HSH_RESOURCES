@@ -1,0 +1,222 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\emergencystretch=2em
+\setlist{nosep,leftmargin=1.5em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Internal working draft v0.1}
+\rhead{14 November 2026}
+\cfoot{\thepage\ / \pageref{LastPage}}
+\title{Shared Evaluator Dependence and Within-Model Self-Revision in Multi-Model Evaluation:\\A Source-Audited Methods Study of ConsistencyBench}
+\author{Author attribution pending}
+\date{Working draft v0.1 --- 14 November 2026\\[0.4em]\large Internal research draft; not peer reviewed; not for citation}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Multiple model labels are often treated as multiple witnesses. That interpretation is unsafe when the measurement pipeline itself is shared or when each model is exposed to its own prior outputs. We conduct a source-audited methods study of the public ConsistencyBench Consistency-Guided Decoding (CGD) archive. At a pinned upstream commit, the evaluator compares each target model's current raw answer with that same model's earlier raw answers within the same question set. A common, hard-coded GPT-4o-mini natural-language-inference (NLI) checker returns a Boolean contradiction flag; when a flag is positive, the same target model is prompted to revise. The source contains no cross-model answer channel.
+
+We audit 17 archived CGD result files, each containing 300 sets and 1,150 question records, for 5,100 recorded sets and 19,550 records in aggregate. The archive contains 6,702 contradiction flags and non-null revision responses, 6,643 text-different revisions, 59 text-identical revisions, and 2,010 extracted-label changes. Because the archive omits the first-trigger index and the NLI input/output, the number of source-loop comparison positions is bounded rather than point-identified. A key-relative diagnostic on 14,450 eligible later-position records gives a positive predictive value of 46.15\%, sensitivity of 51.86\%, and specificity of 57.47\% against the benchmark's published answer keys. These are finite-corpus ratios against source keys, not semantic validation or population probabilities.
+
+The evidence supports a bounded account of shared evaluator dependence, common benchmark inputs, and within-model self-revision. It does not establish semantic correctness of the checker, a causal revision effect, cross-model peer influence, deliberative group consensus, or 17 independent model-plus-evaluator systems. The paper is a methods/archival study, not a newly administered LLM experiment.
+\end{abstract}
+
+\textbf{Keywords:} LLM evaluation; evaluator dependence; self-revision; source provenance; measurement validity; correlated errors; reproducibility.
+
+\section*{Status and epistemic legend}
+This manuscript is a source-audited archival analysis of public code and archived output files. It reports no new model inference, no human-subject session, no independent NLI call, and no randomized intervention. "Correct" and "error" are used only when explicitly qualified as agreement or disagreement with the benchmark's published key. Semantic validity remains unresolved. The 17 file labels are not treated as 17 independent replications or as a random sample of all language models.
+
+\section{Introduction}
+A panel of differently named language models can look like a panel of independent witnesses. But the number of model labels is not the number of independent evidence paths. Models can share prompts, source material, retrieval corpora, training lineage, evaluators, answer keys, and aggregation rules. They can also be exposed to their own earlier outputs or to the outputs of other systems. These mechanisms are distinct and should not be collapsed into a single claim of "consensus" or "correlated error".
+
+This paper audits one concrete pipeline: the public ConsistencyBench CGD evaluator and its archived result files. The case is useful because its source code makes two dependencies explicit. First, all target-model outputs are evaluated by the same fixed NLI-checker configuration. Second, the revision loop is within-model: a target model is compared with its own earlier answers and may revise in light of its own prior question/answer pair. The source does not pass one target model's answer to another target model.
+
+Our purpose is not to estimate a general property of LLMs. It is to identify what the archived source and outputs warrant, what they leave unidentified, and how the measurement pipeline should be represented in subsequent work.
+
+\section{Scope and research questions}
+The scope is frozen to a source-audited methods/archival study of the public ConsistencyBench CGD archive and evaluator pipeline. The working questions are:
+\begin{enumerate}
+  \item What dependency structure is explicit in the evaluator source?
+  \item Which finite-corpus properties can be reproduced from the archived output files?
+  \item Which claims about semantic validity, causal revision, cross-model influence, and independent evidence remain unidentified?
+\end{enumerate}
+
+The study does not test cross-model peer influence, social contagion, multi-agent deliberation, collective intelligence, consciousness, or subjective experience. It does not infer that a model changed another model's answer. It does not treat a post-hoc panel majority as a treatment or as an independent ground truth.
+
+\section{Source provenance and corpus}
+\subsection{Pinned upstream sources}
+The upstream repository is \url{https://github.com/aayambansal/ConsistencyBench}. The source-locked audit used commit \url{bfc676baa848c7f1715bb73aee148180de15516e}. At that commit:
+\begin{itemize}
+  \item \url{src/evaluate.py} has Git blob \url{0453540cb7c19227601e59fb342fa93e736da849};
+  \item \url{data/consistency_bench_sample.json} has blob \url{10eb2da27c84c706d8e9e2325afca864fcae6a0d};
+  \item \url{data/consistency_bench.json} has blob \url{3171d2899fd1eb4292794df5952514666b0e2f43}.
+\end{itemize}
+The 17 archived CGD result files were individually identified by path and Git blob in a source manifest. All 17 files were re-fetched and their per-file vectors matched the existing manifest replay. Each file contains 300 sets and 1,150 question records. Thus the aggregate is 5,100 recorded sets and 19,550 records. These are archived outputs in a public repository, not newly administered calls in this study.
+
+\subsection{Unit of analysis}
+The primary descriptive unit is a record indexed by target-model file label, question-set identifier, and within-set question position. The evaluator's comparison unit is different: a candidate pair of a prior raw response and the current raw response, examined in sequence until the first positive contradiction result or exhaustion of the prior-answer list. The archive does not preserve the exact pair that triggered a positive flag.
+
+\section{Evaluator and revision pipeline}
+\subsection{Within-model history}
+In \texttt{evaluate\_cgd}, the list \texttt{prior\_qa\_pairs} is initialized inside each target-model/question-set evaluation. For a current question, the evaluator compares the current raw response against earlier raw responses in that same list. On the first positive checker result, it stores the corresponding prior question, prior final answer, and prior raw response, then breaks out of the comparison loop.
+
+If a contradiction is flagged, the revision prompt contains the prior question, prior final answer, the question-set premise, and the current question. The revision call is made using the same target-model identifier as the initial answer call. The loop then appends the current question, its final extracted answer, and the original raw response to the local history. The archive therefore records a within-model self-history/self-revision procedure.
+
+\subsection{Shared evaluator}
+The NLI checker hard-codes \texttt{openrouter/openai/gpt-4o-mini}, with temperature 0 and a 10-token limit. Its prompt receives two raw answer strings, each truncated to 500 characters. It does not receive the corresponding question or premise. The returned text is interpreted by testing whether it contains the substring \texttt{CONTRADICTORY}. The archived output retains a Boolean \texttt{contradiction\_detected} field, but not the triggering prior-answer index, the exact checker prompt, the checker response, or an independent adjudication.
+
+The same checker configuration is therefore a shared measurement dependency across target-model labels. This is a source-level fact. It is not, by itself, a measurement of statistical error correlation or proof that the checker made the same error on multiple records.
+
+\subsection{Dependency map}
+Figure~\ref{fig:pipeline} is a typed source map. Arrows denote data flow specified by the code, not a claim of causal effect beyond the implemented calls.
+\begin{figure}[h]
+\centering
+\fbox{\begin{minipage}{0.94\linewidth}
+\centering
+\textbf{Shared benchmark source}\quad (questions, premises, published keys)\\[0.35em]
+$\downarrow$\\[0.25em]
+\textbf{Target model $T_i$}\quad initial response $r_{i,j}$\\[0.25em]
+$\downarrow$\hspace{2.0em}\textbf{Prior raw responses from the same $T_i$}\\[0.25em]
+\textbf{Shared NLI checker $J$}\\[0.25em]
+$\downarrow$\\[0.25em]
+\textbf{Boolean flag} $F_{i,j}$\\[0.25em]
+$\downarrow$ if positive\\[0.25em]
+\textbf{Same target model $T_i$}\quad revision response $r'_{i,j}$\\[0.35em]
+\textit{No source-code edge passes $T_k$'s answer to $T_i$ for $k\ne i$.}
+\end{minipage}}
+\caption{Source-level pipeline. The common checker is shared across target-model labels; the answer-history edge is local to one target model and one question-set evaluation.}
+\label{fig:pipeline}
+\end{figure}
+
+\section{Estimands and identification limits}
+We separate five questions that are often conflated.
+\begin{description}
+  \item[E1: flag/key relationship.] Does the archived Boolean flag predict disagreement between the initial extracted answer and the benchmark's published key on positions eligible for checking? This is descriptively identifiable on the finite archive under the stated normalization.
+  \item[E2: semantic validity.] Does the NLI flag correctly identify a logical contradiction? This is not identified because the triggering pair and checker input/output are absent, the checker is question-blind, and no blinded semantic adjudication is available.
+  \item[E3: causal revision efficacy.] Did the revision step cause an improvement or degradation? This is not identified by the archive. There is no randomized no-revision control, and the checker-trigger trace is incomplete.
+  \item[E4: independence across model systems.] Are the 17 target-model labels independent witnesses? This is not established. The labels share benchmark inputs and the same checker configuration; the outputs also include within-model self-history. The archive does not supply a complete model-family, training, retrieval, or backend-version lineage.
+  \item[E5: effective sample size.] What covariance-adjusted number of independent evaluators does the panel represent? No empirical covariance matrix or aggregation-weight vector is available. Existing exchangeable-covariance and Kish results are conditional mathematics, not a measured P1 effective sample size.
+\end{description}
+
+\section{Results}
+\subsection{Archived counts}
+The 17-file replay gives the following finite-corpus totals.
+\begin{table}[h]
+\centering
+\begin{tabular}{lr}
+\toprule
+Quantity & Count \\
+\midrule
+Archived target-model file labels & 17 \\
+Recorded question sets & 5,100 \\
+Question records & 19,550 \\
+Contradiction flags / non-null revision responses & 6,702 \\
+Text-different revisions & 6,643 \\
+Text-identical revisions & 59 \\
+Extracted answer-label changes & 2,010 \\
+\bottomrule
+\end{tabular}
+\caption{Source-locked aggregate counts across the 17 archived CGD files.}
+\label{tab:counts}
+\end{table}
+
+The text-identical revisions matter: a non-null revision response is not necessarily a change to the raw text or extracted answer. Treating all 6,702 revision responses as changed answers would overcount.
+
+\subsection{Comparison-position bounds}
+The source loop may inspect multiple prior answers and stops at the first positive result. Because the archive stores neither the first-trigger index nor the exact checker input/output, the number of comparison positions is bounded:
+\begin{table}[h]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Comparison class & Definite lower bound & Possible upper bound \\
+\midrule
+Raw-text comparison positions & 1,174 & 4,386 \\
+Extracted-label comparison positions & 394 & 1,444 \\
+\bottomrule
+\end{tabular}
+\caption{Source-loop comparison-position bounds. These are not authenticated provider/API request counts.}
+\label{tab:bounds}
+\end{table}
+The lower bounds follow from unflagged current rows, for which the loop traverses the full prior list. Flagged rows contribute to the upper bounds, but the first-positive short-circuit location is not archived. Provider retries and request logs are also absent. These intervals are not counts of completed external API calls, semantic checker errors, or causal effects.
+
+\subsection{Flag versus published key}
+The first question in each set is structurally ineligible for a prior-answer comparison. The key-relative diagnostic therefore uses 14,450 later-position records, not all 19,550 records. Against the original published keys, the eligible finite-corpus table is:
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+ & Initially key-wrong & Initially key-right & Total \\
+\midrule
+Flagged & 3,093 & 3,609 & 6,702 \\
+Unflagged & 2,871 & 4,877 & 7,748 \\
+\midrule
+Total & 5,964 & 8,486 & 14,450 \\
+\bottomrule
+\end{tabular}
+\caption{Contradiction flag versus disagreement with the published answer key, among eligible later positions.}
+\label{tab:flagkey}
+\end{table}
+The resulting ratios are: positive predictive value $3093/6702=46.1504\%$; sensitivity to published-key disagreement $3093/5964=51.8612\%$; specificity $4877/8486=57.4711\%$; and eligible base rate $5964/14450=41.2734\%$. These are exact finite-corpus ratios, not sampling confidence intervals or population probabilities. A low key-relative positive predictive value does not prove the NLI checker is semantically wrong: a pair of individually key-matching answers can still be logically contradictory under a shared premise.
+
+\subsection{Prompt-component identity}
+A source audit of the sample bank found 300 sets, 1,150 question occurrences, 977 unique exact question strings, and 81 repeated exact-question groups. The full bank contained 493 sets, 1,904 question occurrences, 1,538 unique exact question strings, and 122 repeated groups. In the sample, 39 of 81 repeated groups have different parent premise or logical-form metadata; in the full bank, 65 of 122 do. Initial model calls use the question text, whereas revision prompts additionally include the parent premise and prior question/answer context. Therefore exact question-string identity and revision-context identity are different keys. These source projections do not establish observed train/test leakage or semantic equivalence.
+
+\subsection{Published-key sensitivity}
+A separate sensitivity audit isolated 50 sample items whose exact published key is \texttt{No, not with certainty}. Under an alternate, unadjudicated mapping of that phrase, 1,677 of 1,700 archived response records change correctness class, while the pooled count of correct records changes only from 836 to 841. Fourteen of 17 target-model file labels reverse the sign of the affected-subset CGD-minus-vanilla accuracy difference. This demonstrates that aggregate net changes can conceal extensive row-level reclassification. It does not establish that the alternate mapping is correct; blinded semantic adjudication is absent.
+
+\subsection{Pairwise co-disagreement}
+A separate analysis computed the mean of 136 pairwise phi coefficients for binary disagreement with the published keys. The unweighted mean was 0.501 at the initial-label stage and 0.457 at the final-label stage. Pair-specific complete-case sample sizes ranged from 781 to 1,150 initially and 763 to 1,150 finally. Only 510 of 1,150 positions were complete for all 17 labels at both stages. This is descriptive co-disagreement with the published keys, not semantic error correlation, a causal revision effect, or an empirical effective sample size. Pair-specific missingness also means the pairwise matrix is not guaranteed to be positive semidefinite.
+
+\section{Related work and evidence regimes}
+Prior work on correlated LLM errors and judge panels shows that agreement can overstate independent evidence when errors are dependent \cite{Kim2025,Hossain2026,Kohli2026}. Work on model-population and null-model sensitivity shows that conclusions about evaluator monoculture depend on the chosen population and comparison baseline \cite{Jo2026}. A preregistered rubric-clarification study reports increased LLM-judge consensus without a corresponding increase in agreement with human ratings, illustrating that consensus and criterion validity are separate outcomes \cite{Han2026}. A verifier-panel preprint reports difficulty-stratified failure regimes and conformity effects; it is an accepted workshop poster, not an archival proceedings paper, as of this draft date \cite{Chernets2026}. A separate co-failure study argues that pairwise dependence does not by itself identify joint failure tails \cite{Chen2026}.
+
+Controlled communication studies manipulate messages shown to a receiver after independent reasoning and report revision effects under those conditions \cite{Li2026,Gong2026}. They measure a different evidence regime from ConsistencyBench CGD. In the present archive, the revision history is local to each target model and question set. These external studies are contextual comparators, not replications of this archive and not evidence that ConsistencyBench models exchanged peer answers.
+
+\section{Discussion}
+The source supports a narrower but important conclusion: the archived panel is not 17 independent model-plus-evaluator systems. All target-model labels share a common NLI-checker configuration and common benchmark materials; within each model's CGD run, prior raw answers are fed back into the same model's revision process. This is enough to reject a simple interpretation of the 17 labels as independent witnesses. It is not enough to estimate the magnitude of statistical dependence or to infer that the shared checker caused correlated errors.
+
+A defensible report of model-panel evidence should therefore keep at least six fields separate: (1) observed output agreement; (2) source and prompt lineage; (3) evaluator and rubric lineage; (4) actual peer-message exposure and recipient revision; (5) criterion validity against an external or independently adjudicated standard; and (6) population and null-model specification. A single consensus score cannot substitute for this profile.
+
+For a future study, the minimum trace would preserve each initial answer, the exact source context, each evaluator input and output, the trigger index, each revision prompt and response, model/version identifiers, and the final criterion adjudication. A causal peer-exposure design would additionally randomize message conditions while holding the receiver's initial answer and evidence fixed. These are methodological requirements, not an amendment to the frozen P1 protocol or authorization for a new trial.
+
+\section{Limitations}
+The study is bounded by the public archive. The original NLI request/response traces, triggering answer pairs, retry logs, and full provider-side model/version attestations are absent. The answer keys are published benchmark labels, not independently adjudicated semantic truth. The 17 file labels are fixed archival labels, not a probability sample of all models. The data do not contain cross-model answer exposure, and no randomized control isolates a causal revision effect. Prompt overlap and key-normalization choices create additional dependence and measurement sensitivity. External studies are preprints or workshop materials in several cases; their methods and populations differ from this case study.
+
+\section{Conclusion}
+The ConsistencyBench CGD archive is best described as a source-audited record of within-model self-revision under a shared evaluator and common benchmark materials. Its 17 target-model labels do not constitute 17 independent model-plus-judge witnesses. The archived flags can be compared with published keys, but they cannot be treated as semantic contradiction labels without the missing trigger traces and independent adjudication. The archive does not identify causal revision efficacy or cross-model peer influence. These limits do not make the archive useless; they define the narrower methods claims it can support.
+
+\appendix
+\section{Formalization and reproducibility boundary}
+The existing HsH PR \#850 contains a source-manifest bounds module and conditional exchangeable-covariance/Kish effective-sample-size results. The relevant merge-reference Actions run \#43577327594 completed successfully on synthetic merge-reference commit \url{82f18224dfdd028a1ac884d08913631b059efc9a}, combining PR head \url{b79014779284b57dd8300d3a00eb53207a51c40b} with base \url{598a45b3feb9378eb8f14ff069ec9080137113c2}. The build completed 8,985 jobs under Lean 4.34.0 / Lake 5.0.0. The manifest module's structural theorems compiled without axioms; aggregate table-count theorems reported \texttt{propext}. The Kish module's theorem-specific outputs reported standard \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}. The full retrieved log contained no \texttt{sorryAx} or literal \texttt{admit}. Tests, lint, nanoda, and the automated global axiom audit were skipped. This is a successful merge-reference build, not standalone exact-head or current-main integration.
+
+Lean checks only the formalized finite-table and conditional algebraic statements. It does not authenticate the upstream source transcription, prove that the archived API calls occurred as written, establish semantic correctness, identify a causal effect, or validate a physical premise. The formalized exchangeable-covariance formula is not an empirical P1 estimate because no P1 covariance matrix or aggregation-weight vector is available.
+
+\section{References}
+\begin{thebibliography}{99}
+\bibitem{Kim2025} Kim et al. (2025). \emph{Correlated Errors in Large Language Models}. arXiv:2506.07962. \url{https://arxiv.org/abs/2506.07962}.
+\bibitem{Hossain2026} Hossain, Yousefi, and Lim (2026). \emph{Agreement Overstates Evidence: Error Dependence in LLM Judge Consensus}. arXiv:2609.22512. \url{https://arxiv.org/abs/2609.22512}.
+\bibitem{Kohli2026} Kohli et al. (2026). \emph{Nine Judges, Two Effective Votes: Correlated Errors Undermine LLM Evaluation Panels}. arXiv:2605.29800. \url{https://arxiv.org/abs/2605.29800}.
+\bibitem{Jo2026} Jo, Garg, and Raghavan (2026). \emph{The Subjectivity of Monoculture}. arXiv:2602.24086. \url{https://arxiv.org/abs/2602.24086}.
+\bibitem{Han2026} Han and Kim (2026). \emph{Agreement Without Alignment: Label-Free Rubric Clarification Increases LLM-Judge Consensus but Not Agreement with Humans}. arXiv:2610.13303. \url{https://arxiv.org/abs/2610.13303}.
+\bibitem{Chernets2026} Chernets (2026). \emph{Verification Theater: Measured Failure Modes of AI Verifier Panels}. Zenodo preprint, DOI: 10.5281/zenodo.23197641. \url{https://doi.org/10.5281/zenodo.23197641}.
+\bibitem{Chen2026} Chen (2026). \emph{When Does Combining Language Models Help? A Co-Failure Ceiling on Routing, Voting, and Mixture-of-Agents Across 67 Frontier Models}. arXiv:2606.27288. \url{https://arxiv.org/abs/2606.27288}.
+\bibitem{Li2026} Li et al. (2026). \emph{Beyond Final Accuracy: Auditing Communication in LLM Multi-Agent Systems}. arXiv:2610.01042. \url{https://arxiv.org/abs/2610.01042}.
+\bibitem{Gong2026} Gong et al. (2026). \emph{When Upstream Messages Override Correct Answers: A Controlled Study of Multi-Agent LLM Collaboration}. arXiv:2609.36855. \url{https://arxiv.org/abs/2609.36855}.
+\bibitem{ConsistencyBench} aayambansal/ConsistencyBench (2026). Source code and data repository, pinned commit \url{bfc676baa848c7f1715bb73aee148180de15516e}. \url{https://github.com/aayambansal/ConsistencyBench}.
+\end{thebibliography}
+
+\vspace{1em}
+\textbf{Draft status.} Source draft v0.1. Author attribution, independent hostile review, revision disposition, and a canonical reader route remain pending. This draft does not close P1 issue \#564 or advance the November 9 paper gate.
+\end{document}
