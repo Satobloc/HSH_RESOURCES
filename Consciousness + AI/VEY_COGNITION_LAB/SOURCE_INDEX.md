@@ -477,3 +477,13 @@ All titles/identifiers were checked with Scholar Sidekick; this is bibliographic
 - **Key reported pattern:** across seven long-context model rows, simple mean CandidateDisambiguation 0.955 versus StateTrajectory 0.399; adjacent means 0.964 versus 0.863. These are descriptive row means, not independent replications. The 4,012 instances are paired evaluations of 2,006 QA pairs.
 - **Reproduction caveat:** paper reports GPT-4o judge; code default is gpt-4.1-mini, while README reproduction commands explicitly set gpt-4o. Judge identity and prompt/rubric provenance must be recorded.
 - **Use boundary:** synthetic generated benchmark, not naturalistic real-user memory evidence; future-methods crosswalk only, not a P1 protocol amendment. See STUDIES/VEY-045_MEMOPS_LIFECYCLE_STATE_TRAJECTORY_AND_EVALUATOR_DEPENDENCE_2026-11-19.md.
+
+
+## 2026-11-19 | VEY-043 Addendum 01 — Gong et al. denominator and break-even reconstruction
+
+- **Primary source:** Yaxin Gong et al., “When Upstream Messages Override Correct Answers: A Controlled Study of Multi-Agent LLM Collaboration,” arXiv:2609.36855v1 (2026-09-29), https://arxiv.org/abs/2609.36855.
+- **New source depth:** full arXiv HTML sections 3.2–3.6, 4, 6 and relevant appendices A.1, A.8, A.10–A.11, A.18–A.22, A.25–A.26 reviewed. Direct PDF, raw per-item outputs, code and downloadable dataset not acquired.
+- **Denominator correction:** 297/2,667 c→w across 25 cells including DROP; 279 transitions in the 21-cell upstream-correctness audit; 250/279 occur with upstream-wrong answers; 77/82 audited harmful transitions copy the peer's specific wrong answer. Four non-DROP benchmarks: 274/2,184. Keep these populations distinct.
+- **Summary-statistic reconstruction:** BIRD 92/150, +10.9 pp conditional removal gain, -1.3 pp unconditional removal effect → inferred correct-message cost 20.6517 pp and p*=65.45%; L2W 16/120, +1.7 pp, -21.8 pp → cost 25.4154 pp and p*=93.73%. These are rounded-table reconstructions, not raw-data reanalysis or confidence intervals.
+- **Formalization:** assistant-reconstructed conditional threshold theorem submitted in HsH PR #2130. First CI failed at a declaration-doc-comment boundary; corrected head 918815a905d96f9c070fa90a6d66fcda1e8fa601 has no fresh exact-head run. Do not mark LEAN_VERIFIED.
+- **Boundary:** no model trial, human session, API spend, P1 protocol change, P2/P3 paper-gate advancement, or theory promotion. See STUDIES/VEY-043_ADDENDUM_01_BREAK_EVEN_GATE_AND_DENOMINATOR_RECONCILIATION_2026-11-19.md.
