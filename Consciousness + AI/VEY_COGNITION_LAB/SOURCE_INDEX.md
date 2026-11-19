@@ -466,3 +466,14 @@ HsH issue #1506 was rejected by the existing publisher for SHA-256 mismatch (com
 - aayambansal/ConsistencyBench, source code/data commit `bfc676baa848c7f1715bb73aee148180de15516e` — source of the P1 archival case study.
 
 All titles/identifiers were checked with Scholar Sidekick; this is bibliographic identity screening, not peer review. See VEY-044 for evidence-status and transfer limitations.
+
+
+## 2026-11-19 | VEY-045 — MemOps lifecycle operations and state trajectories
+
+- **Paper:** Xixuan Hao et al., “MemOps: Benchmarking Lifecycle Memory Operations in Long-Horizon Conversations,” arXiv:2607.12893 (July 2026). https://arxiv.org/abs/2607.12893
+- **Implementation:** https://github.com/MemTensor/MemOps; inspected main commit 312af65e2c7b6d1b70f062ffa8b4cde32aaf6f35. README blob 4036f8608b0af760d63915b7af681fff35442275; operation-metric evaluator blob aad2c023b5b8c14647d6c2cd3131c9f527ca26e8; MIT license blob 8d3647227143ff3ff58677f7d026c0326fec58f7.
+- **Review state:** REVIEWED / SOURCE-CRITICAL; full paper §§1–5 and references, README, license, and evaluator script inspected. No model pipeline or paid API calls executed.
+- **Why it matters:** explicit operation traces (type, target, old/new value, evidence spans) and separate trajectory probes expose a gap between rejecting a wrong candidate and reconstructing ordered intermediate state. This is an event-semantics layer complementary to VEY-030/040/042/044.
+- **Key reported pattern:** across seven long-context model rows, simple mean CandidateDisambiguation 0.955 versus StateTrajectory 0.399; adjacent means 0.964 versus 0.863. These are descriptive row means, not independent replications. The 4,012 instances are paired evaluations of 2,006 QA pairs.
+- **Reproduction caveat:** paper reports GPT-4o judge; code default is gpt-4.1-mini, while README reproduction commands explicitly set gpt-4o. Judge identity and prompt/rubric provenance must be recorded.
+- **Use boundary:** synthetic generated benchmark, not naturalistic real-user memory evidence; future-methods crosswalk only, not a P1 protocol amendment. See STUDIES/VEY-045_MEMOPS_LIFECYCLE_STATE_TRAJECTORY_AND_EVALUATOR_DEPENDENCE_2026-11-19.md.
