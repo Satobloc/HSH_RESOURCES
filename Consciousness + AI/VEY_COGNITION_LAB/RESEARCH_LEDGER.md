@@ -933,3 +933,20 @@ Internal study note: STUDIES/VEY-043_COMMUNICATION_REVISION_AND_ERROR_DEPENDENCE
 Adds recent evidence on population/null-model sensitivity, consensus-versus-human-criterion validity, verifier-panel difficulty/conformity, and joint co-failure tails. The sources are contextual comparators, not replications of ConsistencyBench CGD. The frozen P1 source scope is unchanged. No new model call, human session, randomized trial, API spend, or causal claim.
 
 **P1 manuscript:** `DRAFT_PAPERS/P1_SHARED_EVALUATOR_DEPENDENCE_CONSISTENCYBENCH_v0_1.tex` is an internal v0.1 source draft. It is not peer reviewed, author attribution is pending, and P1 issue #564 remains open. The 9 November minor-paper gate is not ready.
+
+
+## VEY-045 — MemOps lifecycle operations, state trajectories, and evaluator dependence (2026-11-19)
+
+**Status:** SOURCE-CRITICAL REVIEW / FUTURE-METHODS ADDENDUM / NO MODEL TRIAL / NO P1 PROTOCOL CHANGE.
+
+**Primary source:** Hao et al., “MemOps: Benchmarking Lifecycle Memory Operations in Long-Horizon Conversations,” arXiv:2607.12893 (July 2026). Full paper §§1–5 and references reviewed. Public implementation checked at MemTensor/MemOps main commit 312af65e2c7b6d1b70f062ffa8b4cde32aaf6f35; README, MIT license, and operation-metric evaluator source inspected.
+
+**Contribution:** adds an event-semantics/trajectory axis to the existing Vey evidence architecture. MemOps models Remember, Forget, Update, Reflect, and composed TrajectoryOps, with six probes for operation trace, target binding, state transition, candidate disambiguation, operation application, and state trajectory. It complements rather than replaces VEY-030 retention/access/uptake/provenance, VEY-040 action-relative projection, VEY-042 selection completeness, and VEY-044 evaluator dependence.
+
+**Descriptive replay of published Table 5:** across seven long-context model rows, unweighted mean CandidateDisambiguation = 0.955 and StateTrajectory = 0.399 (gap 0.556); adjacent means are 0.964 and 0.863 (gap 0.101). The mean gap widens by 0.455; mean trajectory score drops by 0.464 while candidate-disambiguation changes by 0.009. Session-level versus turn-level RAG StateTrajectory is 0.549 versus 0.073; MemOS versus Mem0 is 0.439 versus 0.085. These are descriptive row means/differences, not inferential estimates or independent replications. The 4,012 evaluation instances are 2,006 QA pairs in two paired settings, not 4,012 independent questions.
+
+**Evaluator/reproduction finding:** the paper says GPT-4o judged operation-level metrics and reports judge instability; the code's default judge is gpt-4.1-mini, while the README's reproduction commands explicitly override to gpt-4o. A reproduction that omits the override can change evaluator identity. The proposed evaluation architecture separates deterministic checks of exact spans, target IDs, operation order, and state transitions from semantic/human-calibrated reflection and application judgments; judge identity, prompt/rubric, and calibration provenance must be retained.
+
+**Formalization:** HsH PR #2112 is a separate draft future-methods formalization of a minimal two-target Remember/Update/Forget model. Python replay passed the concrete Remember→Forget/empty-history collision and 16 target-isolation cases. LEAN_UNTESTED: no local Lean/Lake/Elan, and no exact-head Lean workflow triggered because the existing Lean project/workflow is on a non-default P1 base branch. No successful Lean compilation or axiom audit claimed. This is an assistant reconstruction, not the paper authors' formal semantics.
+
+**Boundary:** no ConsistencyBench P1 protocol change, no issue #564 or PR #850 modification, no new LLM trial, human session, paid API call, benchmark reproduction, or manuscript/paper-gate advancement. The benchmark uses controlled generated conversations; it is not a naturalistic sample of real users. Internal study note: STUDIES/VEY-045_MEMOPS_LIFECYCLE_STATE_TRAJECTORY_AND_EVALUATOR_DEPENDENCE_2026-11-19.md.
