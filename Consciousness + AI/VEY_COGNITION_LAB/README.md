@@ -108,3 +108,8 @@ This lab should be willing to discover that an exciting effect is mundane, that 
 ## 14 November 2026 additions
 - **VEY-044:** [Measurement consensus, null models, and co-failure tails](STUDIES/VEY-044_MEASUREMENT_CONSENSUS_NULLS_AND_COFAILURE_2026-11-14.md). Source-checked literature crosswalk; not a P1 protocol amendment.
 - **P1 working manuscript:** [DRAFT_PAPERS/README.md](DRAFT_PAPERS/README.md). Source draft v0.1; author attribution and independent review pending; no paper-gate advancement.
+
+
+## 19 November 2026 addition
+
+- **VEY-045 — [MemOps lifecycle operations, state trajectories, and evaluator dependence](STUDIES/VEY-045_MEMOPS_LIFECYCLE_STATE_TRAJECTORY_AND_EVALUATOR_DEPENDENCE_2026-11-19.md).** Adds an event-semantics layer to the existing retention/access/uptake, action-relative projection, selection-completeness, and evaluator-dependence work. The key distinction is operation history versus final-state snapshot; the published benchmark shows a large descriptive gap between candidate rejection and long-context trajectory reconstruction. Source-critical review only; synthetic benchmark, no new model trial, no paid API call, no P1 protocol change. A minimal Lean reconstruction is draft and LEAN_UNTESTED.
