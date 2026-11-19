@@ -27,7 +27,7 @@ Open-source implementation: https://github.com/MemTensor/MemOps
 Source review: full arXiv HTML paper, sections 1–5 and references; repository README; repository license; operation-metric evaluator source. No benchmark model calls were run.
 
 Implementation snapshot checked: MemTensor/MemOps main commit 312af65e2c7b6d1b70f062ffa8b4cde32aaf6f35 (2026-07-24).  
-- README blob: 5d7d5d1f8a4f0d4f0f8f7b4f9c5f5e5a0a5d5f5f (source file read from main; see repository commit for exact current content).  
+- README blob: 4036f8608b0af760d63915b7af681fff35442275 (source file read from main; see repository commit for exact current content).  
 - Evaluator script: 5.5-evaluate_operation_metrics.py, blob aad2c023b5b8c14647d6c2cd3131c9f527ca26e8.  
 - LICENSE: MIT, blob 8d3647227143ff3ff58677f7d026c0326fec58f7.
 
