@@ -950,3 +950,16 @@ Adds recent evidence on population/null-model sensitivity, consensus-versus-huma
 **Formalization:** HsH PR #2112 is a separate draft future-methods formalization of a minimal two-target Remember/Update/Forget model. Python replay passed the concrete Remember→Forget/empty-history collision and 16 target-isolation cases. LEAN_UNTESTED: no local Lean/Lake/Elan, and no exact-head Lean workflow triggered because the existing Lean project/workflow is on a non-default P1 base branch. No successful Lean compilation or axiom audit claimed. This is an assistant reconstruction, not the paper authors' formal semantics.
 
 **Boundary:** no ConsistencyBench P1 protocol change, no issue #564 or PR #850 modification, no new LLM trial, human session, paid API call, benchmark reproduction, or manuscript/paper-gate advancement. The benchmark uses controlled generated conversations; it is not a naturalistic sample of real users. Internal study note: STUDIES/VEY-045_MEMOPS_LIFECYCLE_STATE_TRAJECTORY_AND_EVALUATOR_DEPENDENCE_2026-11-19.md.
+
+
+## VEY-043 Addendum 01 — denominator reconciliation and break-even message gate (2026-11-19)
+
+**Status:** SOURCE-VERIFIED FULL-TEXT ADDENDUM / SUMMARY-STATISTIC RECONSTRUCTION / ASSISTANT FORMALIZATION SUBMITTED / NO MODEL TRIAL / NO P1 PROTOCOL CHANGE.
+
+The full arXiv HTML for Gong et al. (arXiv:2609.36855v1) resolves the earlier denominator gap: 297/2,667 correct-to-wrong transitions across all 25 receiver×benchmark cells (including DROP); 279 transitions in the 21-cell upstream-correctness audit; 250/279 (90%) occur when the upstream answer is wrong; and 77/82 (94%) audited harmful transitions copy the peer's specific wrong answer. Four non-DROP benchmarks total 274/2,184. These are different populations, not competing estimates.
+
+The paper's break-even precision can be reconstructed from Tables 1 and 9. With p the detector precision among flagged messages, g the gain from removing a wrong message, and c the loss from removing a correct message, the assistant-derived rule is E=p*g-(1-p)*c, so E≥0 iff p≥c/(g+c), for g+c>0. Rounded table inputs yield BIRD p*=65.45% and L2W p*=93.73%, close to the paper's approximate 66% and 94%. The BIRD residual difference is left open because unrounded bootstrap quantities are unavailable. Rounding-sensitivity ranges are not confidence intervals.
+
+HsH PR #2130 contains the conditional theorem and exact-rational summary reconstructions. First Lean run #44618869420 failed on a declaration-doc-comment boundary before #eval; those commands still printed 5989/9150, 3304/3525, their percentages, and zero net at threshold. The comment was corrected at head 918815a905d96f9c070fa90a6d66fcda1e8fa601, but no fresh exact-head run was observed. Status: LEAN_FAILED on first head / LEAN_UNTESTED on corrected head. This is not a verified theorem yet.
+
+P1 issue #564 and PR #850 remain untouched; no cross-model peer-exposure data were added to the frozen ConsistencyBench protocol. No raw data, code, or direct PDF was acquired; no model trial, human session, API spend, paper-gate advancement, or theory promotion occurred. Full details: STUDIES/VEY-043_ADDENDUM_01_BREAK_EVEN_GATE_AND_DENOMINATOR_RECONCILIATION_2026-11-19.md.
