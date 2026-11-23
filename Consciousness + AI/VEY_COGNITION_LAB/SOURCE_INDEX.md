@@ -487,3 +487,15 @@ All titles/identifiers were checked with Scholar Sidekick; this is bibliographic
 - **Summary-statistic reconstruction:** BIRD 92/150, +10.9 pp conditional removal gain, -1.3 pp unconditional removal effect → inferred correct-message cost 20.6517 pp and p*=65.45%; L2W 16/120, +1.7 pp, -21.8 pp → cost 25.4154 pp and p*=93.73%. These are rounded-table reconstructions, not raw-data reanalysis or confidence intervals.
 - **Formalization:** assistant-reconstructed conditional threshold theorem submitted in HsH PR #2130. First CI failed at a declaration-doc-comment boundary; corrected head 918815a905d96f9c070fa90a6d66fcda1e8fa601 has no fresh exact-head run. Do not mark LEAN_VERIFIED. Public HsH report: https://github.com/Satobloc/HsH/issues/2131 (PUBLISHED_VERIFIED). Separate MemOps proof packet: https://github.com/Satobloc/HsH/blob/main/WORKSPACES/COMMON/FACTORY_HANDOFF_PENDING/ORSON-H957-S2-MEMOPS-PROJECTION.json.
 - **Boundary:** no model trial, human session, API spend, P1 protocol change, P2/P3 paper-gate advancement, or theory promotion. See STUDIES/VEY-043_ADDENDUM_01_BREAK_EVEN_GATE_AND_DENOMINATOR_RECONCILIATION_2026-11-19.md.
+
+## VEY-046 | Claim denominators and human arrangements in Human-AI Teaming (2026-11-23)
+
+- **Source:** Hanjing Shi, Kimberly Wang, Sabrina Doherty, and Dominic DiFranzo, "Same Team Label, Different Evidence: A Full-Text Audit of Claim Denominators in Human-AI Teaming Research," arXiv:2609.27849v1 (2026-08-25). https://arxiv.org/abs/2609.27849
+- **Source type / status:** arXiv preprint; full HTML read; bibliographic identity verified high confidence; no retraction record found; peer-review status not established.
+- **Local copy:** none. External index/link only; no PDF or raw data stored.
+- **Internal study:** STUDIES/VEY-046_CLAIM_DENOMINATORS_AND_GROUP_PROJECTION_SCOPE_2026-11-23.md
+- **Scope:** purposive full-text audit of 86 records from a 419-record title/abstract map. Full-text review changed core membership for 40 records; final roles were 42 core empirical, 23 boundary-mechanism, 13 background/theory, and 8 context.
+- **Key measurement findings:** team/collaboration vocabulary crossed dyads and multi-human peer teams; only 20/86 papers specified who could see AI output. The proposed mechanism chain links human arrangement, AI role, relational coupling (visibility, autonomy, control, responsibility), team process, and outcome level.
+- **LLM diagnostic limit:** four blinded model runs were unanimous on subsets but differed from full-text adjudication in 32% of screening and 34% of arrangement consensus labels. Each model-condition ran once; the authors explicitly say these are surface-representation diagnostics, not general model-capability evaluations.
+- **Use:** claim-denominator and evidence-scope comparator for the CRTC group-projection kernel. It motivates explicit arrangement, role, visibility, authority, responsibility, process, and outcome fields. It is not an H(s)H premise or causal result for CRTC.
+- **Evidence boundary:** no raw dataset/code reanalysis, model trial, human session, or P1 protocol change. See VEY-046 study note.
