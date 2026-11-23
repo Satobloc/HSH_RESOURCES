@@ -253,3 +253,14 @@ Mirror each active handoff in `Satobloc/HsH/ledgers/CITATION_LEDGER.md` using th
 **Identified by / workflow:**  
 **Status:** `NEEDED | PLACED | VERIFIED | REJECTED | SUPERSEDED`  
 **Verification / backlink notes:**
+
+### 17. *Same Team Label, Different Evidence: A Full-Text Audit of Claim Denominators in Human-AI Teaming Research*
+
+**Author(s):** Hanjing Shi; Kimberly Wang; Sabrina Doherty; Dominic DiFranzo  
+**Bibliographic ID:** arXiv:2609.27849v1  
+**Date / publication:** 2026-08-25; arXiv preprint; peer-review status not established  
+**Public source:** https://arxiv.org/abs/2609.27849  
+**Local repository copy:** none; external index/link only  
+**Keywords:** human-AI teaming; claim denominator; human arrangement; AI role; visibility; authority; responsibility; team process; outcome level; evidence synthesis  
+**Summary:** Purposive full-text audit of 86 records from a 419-record title/abstract map. Full-text reading changed core membership for 40 records. Team/collaboration vocabulary crossed dyads and multi-human peer teams; only 20/86 papers specified who could see AI output. The paper proposes a claim-pooling checkpoint organized around human arrangement, AI role, relational coupling, team process, and outcome level. Four blinded LLM diagnostics were unanimous on subsets but differed from full-text adjudication in 32%/34% of consensus labels; the authors explicitly do not treat these runs as general capability evaluation.  
+**Notes:** Full arXiv HTML read 2026-11-23. Citation identity verified high-confidence; no retraction record found. This is a methodological audit, not a causal experiment or representative prevalence estimate. See Consciousness + AI/VEY_COGNITION_LAB/STUDIES/VEY-046_CLAIM_DENOMINATORS_AND_GROUP_PROJECTION_SCOPE_2026-11-23.md.
