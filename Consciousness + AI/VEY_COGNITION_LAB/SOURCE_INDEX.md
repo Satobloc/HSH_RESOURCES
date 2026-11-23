@@ -489,6 +489,7 @@ All titles/identifiers were checked with Scholar Sidekick; this is bibliographic
 - **Boundary:** no model trial, human session, API spend, P1 protocol change, P2/P3 paper-gate advancement, or theory promotion. See STUDIES/VEY-043_ADDENDUM_01_BREAK_EVEN_GATE_AND_DENOMINATOR_RECONCILIATION_2026-11-19.md.
 
 ## VEY-046 | Claim denominators and human arrangements in Human-AI Teaming (2026-11-23)
+- **Citation handoff:** CITE-2026-002; HsH point of use is the h1033 Orson CRTC projection/claim-denominator report.
 
 - **Source:** Hanjing Shi, Kimberly Wang, Sabrina Doherty, and Dominic DiFranzo, "Same Team Label, Different Evidence: A Full-Text Audit of Claim Denominators in Human-AI Teaming Research," arXiv:2609.27849v1 (2026-08-25). https://arxiv.org/abs/2609.27849
 - **Source type / status:** arXiv preprint; full HTML read; bibliographic identity verified high confidence; no retraction record found; peer-review status not established.
