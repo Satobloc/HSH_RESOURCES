@@ -500,3 +500,17 @@ All titles/identifiers were checked with Scholar Sidekick; this is bibliographic
 - **LLM diagnostic limit:** four blinded model runs were unanimous on subsets but differed from full-text adjudication in 32% of screening and 34% of arrangement consensus labels. Each model-condition ran once; the authors explicitly say these are surface-representation diagnostics, not general model-capability evaluations.
 - **Use:** claim-denominator and evidence-scope comparator for the CRTC group-projection kernel. It motivates explicit arrangement, role, visibility, authority, responsibility, process, and outcome fields. It is not an H(s)H premise or causal result for CRTC.
 - **Evidence boundary:** no raw dataset/code reanalysis, model trial, human session, or P1 protocol change. See VEY-046 study note.
+
+
+## 2026-11-23 | VEY-047 — Multi-Agent Memory Inconsistency and pair-preserving handoffs
+
+- **Primary source:** Hejia Zhang et al., “Multi-Agent Memory Inconsistency: Where Factual Conflicts Disappear in LLM Agents,” arXiv:2611.22245v1, submitted 2026-11-17. https://arxiv.org/abs/2611.22245
+- **Bibliographic status:** Scholar Sidekick title/author/year match; no retraction flag; peer-review status not established.
+- **Review depth:** full arXiv HTML main text and references reviewed. No local PDF, raw traces, dataset, or paper-specific code repository acquired.
+- **Design:** 73 planted numerical conflicts in 11 Harvey LAB tasks; three model setups, two runs per model/policy, three delegation policies, 198 task executions, 1,314 conflict observations.
+- **Measurement:** stage-wise Pair Recall at Source Reads, Worker Reports, Lead Evidence, and Final Report; Same/Split contributor provenance at the first three stages; separate Judge Pass for discrepancy identification plus accurate quantitative treatment.
+- **Key result:** Required delegation raises Source Reads Pair Recall to 68.7% from 50.2% under None, but Judge Pass falls to 13.2% from 16.2%. Only 106 of 301 source-complete pairs (35.2%) also appear in Worker Reports; Worker Reports and Lead Evidence each show 107/438 (24.4%). Optional has the highest pooled Judge Pass (24.2%), but combines several policy changes.
+- **Interpretation boundary:** Same/Split cohorts are based on observed retrieval/reporting choices, not randomized assignments; the paper's narrow planted-conflict benchmark does not establish a universal or causal multi-agent effect.
+- **Use:** source-specific semantics for the VEY-040/041/046 provenance and CRTC projection work; supports separate item identity, disclosure-event identity, stage availability, recipient delivery, lead-context inclusion, and semantic judgment. Distinct contributor IDs are not authenticated model identities; declared source-root disjointness is not statistical independence.
+- **Internal study:** STUDIES/VEY-047_MULTI_AGENT_MEMORY_INCONSISTENCY_PAIR_RECALL_HANDOFF_AUDIT_2026-11-23.md
+- **Formalization pointer:** HsH PR #2375 draft branch, new OrsonEvidenceFlow module; CI initially pending. Not P1 and not a protocol amendment.

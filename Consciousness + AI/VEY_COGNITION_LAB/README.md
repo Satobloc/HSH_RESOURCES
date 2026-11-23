@@ -116,3 +116,7 @@ This lab should be willing to discover that an exciting effect is mundane, that 
 
 
 - **VEY-043 Addendum 01 — [denominator reconciliation and break-even message gate](STUDIES/VEY-043_ADDENDUM_01_BREAK_EVEN_GATE_AND_DENOMINATOR_RECONCILIATION_2026-11-19.md)** — full arXiv HTML review resolves the 297/2,667, 279/21-cell, 250/279, and 77/82 denominator scopes; reconstructs the BIRD/L2W break-even precision thresholds from rounded Tables 1 and 9; submits a conditional Lean theorem in HsH PR #2130. First CI failed on a doc-comment boundary; corrected head remains unverified. Supporting literature/methods only, no P1 change or model trial. HsH public report #2131 is PUBLISHED_VERIFIED; the separate MemOps proof's geometry-gated pending packet is WORKSPACES/COMMON/FACTORY_HANDOFF_PENDING/ORSON-H957-S2-MEMOPS-PROJECTION.json.
+
+## 23 November 2026 addition
+
+- **VEY-047 — [Multi-Agent Memory Inconsistency: pair recall, contributor distribution, and handoff loss](STUDIES/VEY-047_MULTI_AGENT_MEMORY_INCONSISTENCY_PAIR_RECALL_HANDOFF_AUDIT_2026-11-23.md).** Full arXiv HTML review of a new 2026 preprint; adds a source-defined stage-wise pair-recall and Same/Split crosswalk. It distinguishes source retrieval, worker reporting, lead evidence, final artifact, and semantic Judge Pass. A small assistant-reconstructed Lean kernel was submitted to existing HsH PR #2375; CI status is tracked separately. Adjacent LLM-agent workflow evidence only, not human-LLM group data, P1 evidence, or a protocol amendment.

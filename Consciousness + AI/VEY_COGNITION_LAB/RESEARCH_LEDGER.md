@@ -984,3 +984,26 @@ P1 issue #564 and PR #850 remain untouched; no cross-model peer-exposure data we
 **CRTC implication:** the assistant-reconstructed HsH PR #2375 group-event kernel has a static roster and event-level author, availability, uptake, decision-incorporation, payload, and timestamp. It is a conditional projection model, not an empirical adapter. It still lacks explicit human-arrangement/membership intervals, AI role/authority/autonomy/control/responsibility, separate information-item and disclosure-event identities, item-linked uptake and decision-use records, outcome unit/criterion, and source/evaluator provenance. Future formal work should type Participant/Role, InformationItem, DisclosureEvent, UptakeRecord, DecisionUse, DecisionRecord, and OutcomeRecord, with explicit group/subgroup/member and information/outcome projections plus composition conditions. This is a design proposal, not implemented code or validation.
 
 **Boundary:** no raw dataset/code reanalysis, model trial, human session, API spend, P1 protocol change, manuscript edit, paper-gate advancement, or theory promotion. P1 issue #564 and the frozen ConsistencyBench CGD protocol remain unchanged. See STUDIES/VEY-046_CLAIM_DENOMINATORS_AND_GROUP_PROJECTION_SCOPE_2026-11-23.md.
+
+
+## VEY-047 — Multi-Agent Memory Inconsistency: pair recall and handoff loss (2026-11-23)
+
+**Status:** LITERATURE_RESULT / FULL ARXIV HTML REVIEW / BIBLIOGRAPHIC MATCH / ASSISTANT FORMALIZATION SUBMITTED / NO MODEL TRIAL / NO HUMAN SESSION / NO P1 CHANGE.
+
+**Citation handoff:** CITE-2026-003.
+
+**Primary source:** Hejia Zhang, Zhongming Yu, Yimin Ding, Wei-Ting Chen, Hengjia Yu, Wentao Ni, Yijun Liu, Cong Xu, Xin Chen, Matrix Yao, Fan Zhao, and Jishen Zhao, “Multi-Agent Memory Inconsistency: Where Factual Conflicts Disappear in LLM Agents,” arXiv:2611.22245v1 (submitted 2026-11-17), https://arxiv.org/abs/2611.22245. Scholar Sidekick matched title/authors/year and did not flag retraction. Peer-review status not established.
+
+**New delta:** VEY-040/041/046 already identify action-relative projection, context exposure, InformationItem/DisclosureEvent separation, and item-linked uptake as requirements. VEY-047 adds a recent empirical stage-wise measurement contract for conflict-pair preservation across Source Reads, Worker Reports, Lead Evidence, and Final Report, plus a separate Judge Pass.
+
+**Design:** 73 planted numerical conflicts across 11 Harvey LAB document-review tasks; GPT-5.6 Luna and GPT-6 Luna through Codex SDK, Claude Haiku 5.5 through Claude Code SDK; three policies (None, Optional, Required); two runs per model/policy; 198 task executions; 1,314 conflict observations; 146 per model/policy and 438 per pooled policy. Repeated conflicts are clustered within tasks.
+
+**Measures:** Pair Recall is the fraction of planted pairs for which both endpoints are present at a stage. Same means one contributor supplies both endpoints; Split means the contributors' union contains both but no one contributor supplies both. Same takes precedence. Judge Pass separately requires explicit discrepancy identification and accurate quantitative treatment.
+
+**Key results:** Required versus None Source Reads Pair Recall 68.7% versus 50.2%, while Judge Pass is 13.2% versus 16.2%; Optional Judge Pass is 24.2%. Under Required, 301/438 pairs are complete at Source Reads; 106/301 (35.2%) also appear in Worker Reports. Worker Reports and Lead Evidence each show 107/438 (24.4%). Matched Same/Split comparisons favor Required in Same cohorts and None in Split cohorts, but these cohorts are selected from observed retrieval/reporting choices, not randomized.
+
+**Limitations:** narrow Harvey LAB due-diligence tasks and planted numerical conflicts; two runs per model/policy; repeated conflicts clustered within tasks; no first-joint-availability timing; three manually identified Judge Pass label errors; Required bundles multiple interventions; different SDKs across model families; retrospective budget/checkpoint choices; no paper-specific raw-data/code release located. The paper's results do not establish a universal multi-agent failure rate or causal Same/Split effect.
+
+**Formalization:** HsH PR #2375 draft branch received OrsonEvidenceFlow.lean at commit 967b660e13685019a890615d8480b42f7fd87538. It separates item IDs, source-root sets, disclosure-event IDs, stages, Same/Split, recipient-addressed worker reports, and semantic judgments. It proves conditional pair-preservation and finite counterexamples only. Initial CI run #45180457730 was pending; amend after actual readback. No successful Lean compilation is claimed until the run completes and exact module/aggregator blobs are checked.
+
+**Boundary:** adjacent LLM-agent workflow evidence, not human-LLM group data, not P1 ConsistencyBench evidence, not a protocol amendment, and not a consciousness claim. No new model trial, human session, API spend, manuscript edit, or paper-gate advancement. Full note: STUDIES/VEY-047_MULTI_AGENT_MEMORY_INCONSISTENCY_PAIR_RECALL_HANDOFF_AUDIT_2026-11-23.md.
