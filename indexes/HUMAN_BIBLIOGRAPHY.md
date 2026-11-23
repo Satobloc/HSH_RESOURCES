@@ -264,3 +264,15 @@ Mirror each active handoff in `Satobloc/HsH/ledgers/CITATION_LEDGER.md` using th
 **Keywords:** human-AI teaming; claim denominator; human arrangement; AI role; visibility; authority; responsibility; team process; outcome level; evidence synthesis  
 **Summary:** Purposive full-text audit of 86 records from a 419-record title/abstract map. Full-text reading changed core membership for 40 records. Team/collaboration vocabulary crossed dyads and multi-human peer teams; only 20/86 papers specified who could see AI output. The paper proposes a claim-pooling checkpoint organized around human arrangement, AI role, relational coupling, team process, and outcome level. Four blinded LLM diagnostics were unanimous on subsets but differed from full-text adjudication in 32%/34% of consensus labels; the authors explicitly do not treat these runs as general capability evaluation.  
 **Notes:** Full arXiv HTML read 2026-11-23. Citation identity verified high-confidence; no retraction record found. This is a methodological audit, not a causal experiment or representative prevalence estimate. See Consciousness + AI/VEY_COGNITION_LAB/STUDIES/VEY-046_CLAIM_DENOMINATORS_AND_GROUP_PROJECTION_SCOPE_2026-11-23.md.
+
+## Citation handoff CITE-2026-002
+
+- **External source:** Hanjing Shi, Kimberly Wang, Sabrina Doherty, and Dominic DiFranzo, "Same Team Label, Different Evidence: A Full-Text Audit of Claim Denominators in Human-AI Teaming Research," arXiv:2609.27849v1 (2026-08-25), https://arxiv.org/abs/2609.27849.
+- **Source-side record:** Consciousness + AI/VEY_COGNITION_LAB/STUDIES/VEY-046_CLAIM_DENOMINATORS_AND_GROUP_PROJECTION_SCOPE_2026-11-23.md
+- **Source-side record blob:** 3f862e80d4dec01cde19046097b9c2dbc46170f8
+- **Local paper copy:** none; external-only link. No PDF or raw dataset stored.
+- **HsH point of use:** WORKSPACES/ORSON_VAY/2026-11-23T0124Z_H1033_S2_CRTC_PROJECTION_CLOSURE_AND_CLAIM_DENOMINATOR_CROSSWALK.md, section 4.
+- **Citation role:** COMPARISON / CLAIM-DENOMINATOR METHOD.
+- **Claim supported:** a surface team label is not a stable evidence denominator; human arrangement, AI role, relational coupling, process, and outcome level must be explicit. Only 20/86 audited papers specified audience-specific AI-output visibility.
+- **Limitations:** purposive 86-record full-text audit, not a representative prevalence estimate; arXiv preprint, peer-review status not established; LLM diagnostics are not general capability evaluation.
+- **Status:** VERIFIED for the stated methodological comparison; not an H(s)H premise, causal result, or empirical validation of CRTC.
