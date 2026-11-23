@@ -965,6 +965,7 @@ HsH PR #2130 contains the conditional theorem and exact-rational summary reconst
 P1 issue #564 and PR #850 remain untouched; no cross-model peer-exposure data were added to the frozen ConsistencyBench protocol. No raw data, code, or direct PDF was acquired; no model trial, human session, API spend, paper-gate advancement, or theory promotion occurred. Full details: STUDIES/VEY-043_ADDENDUM_01_BREAK_EVEN_GATE_AND_DENOMINATOR_RECONCILIATION_2026-11-19.md.
 
 ## VEY-046 - Claim denominators and human arrangements in Human-AI Teaming (2026-11-23)
+**Citation handoff:** CITE-2026-002; HsH point of use is WORKSPACES/ORSON_VAY/2026-11-23T0124Z_H1033_S2_CRTC_PROJECTION_CLOSURE_AND_CLAIM_DENOMINATOR_CROSSWALK.md, section 4. External-only source; no local PDF stored.
 
 **Status:** FULL-TEXT SOURCE REVIEW / FUTURE-METHODS CROSSWALK / NO MODEL TRIAL / NO P1 PROTOCOL CHANGE.
 
