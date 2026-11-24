@@ -1,5 +1,11 @@
 # HSH_RESOURCES — AI / LLM Start Here
 
+> # **CRITICAL: MYSEARCH / MERSEARCH ARE ARCHIVE-RESIDENT SYSTEMS, NOT STANDALONE TOOLS**
+>
+> **THERE IS NO SEPARATE “TOOL EXPOSURE” FOR EITHER ONE.** Do not look for, request, or expect standalone Mysearch/Mersearch connector tools. Their implementations and operating interfaces live in the archives. Use them **through the connected archive connector**, whose repository read/write, workflow/Actions, and artifact operations provide access to the archived search systems. For archive-search tasks, use Mysearch/Mersearch **instead of the connector's generic search functions** wherever the documented bespoke route supports the task. Generic GitHub/code search is fallback only when that route genuinely cannot be operated; disclose the blocker and never mislabel fallback results.
+>
+> Start with the archive-resident instructions and request/workflow interfaces. Mersearch's connector route includes request lanes and an Actions bridge; inspect lane occupancy before writing and verify the request-specific manifest/receipt afterward. A compact receipt is not an exhaustive hit inventory. Check Mysearch's current operational status in its archive records.
+
 > Compact routing contract for Janus and other H(s)H agents. Use this before scanning the repository broadly.
 
 ## Priority corridors
