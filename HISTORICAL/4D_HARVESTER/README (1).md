@@ -13,7 +13,7 @@ It is **not** a historical synthesis and does not pre-judge whether stigma cause
 - `harvested/runs/` — immutable per-run JSONL records and run manifests.
 - `harvested/objects/` — content-addressed downloads, only when separately requested and rights-qualified.
 
-The harvester itself is in `tools/fourth_dimension_history_harvester/`.
+The harvester implementation and its operating instructions are in `HISTORICAL/4D_HARVESTER/` (`harvest.py` and `README.md`). Its only generated-output target is `HISTORICAL/FOURTH_DIMENSION_HISTORY/harvested/`.
 
 ## Evidence handling
 
