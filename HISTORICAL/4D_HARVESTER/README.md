@@ -1,6 +1,6 @@
 # Fourth-Dimension History Harvester
 
-**Version:** 0.2.0  
+**Version:** 0.2.1  
 **Repository:** `Satobloc/HSH_RESOURCES`  
 **Tool and configuration location:** `HISTORICAL/4D_HARVESTER/`  
 **Only write target:** `HISTORICAL/FOURTH_DIMENSION_HISTORY/harvested/`
