@@ -252,8 +252,9 @@ The β operation is exploratory, not a theory-validation or theory-promotion gat
 
 | Glyph | Code point | Canonical meaning | Class | Scope |
 |---|---|---|---|---|
-| S | U+0053 | SAT/H(s)H interpretive lens | Interpretive mode | Read historical dimensional biology through the workshop's literal physical 4D ontology: matter and organisms are extended in 4D; the familiar 3D present is their section/intersection with the time surface. |
+| ᛟ | U+16DF | SAT/H(s)H interpretive lens | Interpretive mode | Read relevant historical, biological, mathematical and cross-disciplinary material through the user's stipulated physical four-dimensional SAT/H(s)H ontology, while keeping source claims distinct from our reinterpretation. |
 | β | U+03B2 | Contemporary biological reconstruction | Research mode | Latter-half reconnaissance pass updating the historical/Hinton picture with modern biology, genetics, physiology, evolution, developmental biology, physics, mathematics and other relevant disciplines. Exploratory, not a proof or validation gate. |
+| d | U+0064 | Dimensional Normalization paper | Method-source component | Companion methodological source: McKnight & Sol, “Metric Symmetry to Reveal the Grain” (2026-09-09 draft); apply its frozen normalization/residual-audit method selectively to suitable equations and formal models. Not a historical source or ontological authority. |
 
 ### ᛟ — SAT/H(s)H lens
 
