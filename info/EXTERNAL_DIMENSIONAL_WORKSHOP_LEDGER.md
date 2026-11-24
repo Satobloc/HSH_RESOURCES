@@ -272,3 +272,14 @@ Canonical order is **Tock–Tick**, with Tock as the organizational main level a
 ## 16. Signature integrity: no undefined placeholders — 2026-11-24
 
 Live signatures contain only defined operators, assigned phase glyphs, and meaningful labels/references. No dummy slots or undefined tokens. An exception is a defined operator pointing to an identifiable, populated but extensible collection/list. Discuss uninstantiated possibilities in prose; do not encode them as live workflow state. Omit undefined branches, targets, conditions, and continuations until they are actually defined.
+
+
+## 17. Code ledger and maximal-compression convention — 2026-11-24
+
+Adopted a single-character-first notation system. The code ledger is the semantic lookup table; the repeated signature carries only assigned tokens and structure. Left-to-right adjacency implies succession. Use one Unicode code point per operation/component wherever practical. Avoid word labels in the signature.
+
+Compound branch notation may use token references: `⑂{cu}` is equivalent to `⑂{A: Credenza | B: Unicode notation}` when c and u are defined and order is unambiguous. Where explicit branch ordering is needed, pair uppercase position labels with lowercase component codes: `⑂{AcBu}` = branch A has component c; branch B has component u.
+
+No undefined placeholders. A token may reference a real, identifiable, populated but extensible list. The code ledger records each glyph, code point, meaning, class, scope, date/version, and constraints. Meanings are not expected to be memorized; consult the ledger.
+
+**Immediate construction sequence:** complete the initial workshop ledger; define the known work components (including category theory, biology, historical/cultural lineage, computation, science bridges, and workshop systems); then encode the initial work plan as a compact signature. This remains a bespoke pilot.
