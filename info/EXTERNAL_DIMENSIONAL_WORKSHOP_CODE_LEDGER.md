@@ -140,7 +140,7 @@ The current programme is two coequal starting streams, followed by mathematics/c
 
 The programme order is **b and h coequal → m → x**. The two opening streams may be interwoven or investigated in parallel; neither is subordinate to the other. Mathematics/category theory follows those initial explorations. Cross-disciplinary investigation follows from connections actually encountered; do not prepopulate a rigid list of disciplines.
 
-Retired from the active plan (but not deleted from history): `p` as a separate Computation/Modelling programme, `s` as a separately predetermined Science Bridges programme, and `w` as a scheduled final Workshop Systems phase. Workshop evaluation/adaptation remains an ongoing maintenance activity rather than a final research stage. Existing glyph definitions are retained in the ledger's history; do not silently reuse those glyphs for different meanings.
+Historical retirements (not deleted from history): `p` as a separate Computation/Modelling programme and `w` as a scheduled final Workshop Systems phase remain retired. The former `s` assignment as a separately predetermined Science Bridges programme also remains retired; on 2026-11-24 the user explicitly reinstated lowercase `s` with a new meaning, dedicated spiritualist readings (see the current assignment below). This is a documented supersession, not a silent reuse. Workshop evaluation/adaptation remains ongoing maintenance, not a final research stage.
 
 
 ## Unity / intersection operator
@@ -160,10 +160,11 @@ Distinction: `⑂` (fork) creates separately tracked branches; `∩` expresses c
 | ρ | U+03C1 | Reorient and review | Phase | Review lessons from the preceding Tock, revise the next workflow if warranted, then establish the next direction. |
 | k | U+006B | Category-theory reading programme | Component | Larger literature programme on category theory, higher categories, geometry and related foundations. |
 
-The initial literature sequence is now:
+The literature sequence is now:
 1. Integrated coequal biology + history/cultural lineage, with deliberate attention to nineteenth-century and related historical treatments of biology, including material that may be retrospectively interpretable as biological or proto-biological.
 2. Reorientation/review point: assess what the first integrated reading taught us, then decide whether and how to modify the next workflow.
-3. Larger category-theory-related literature programme.
+3. Larger category-theory-related literature programme and its integrated mathematics/geometric/cross-disciplinary exploration.
+4. Deferred dedicated spiritualist readings (`s`), corresponding to PIN 5, after the category-theory/mathematics exploration.
 
 The review point is a genuine planned operation, not a placeholder. It may leave the following workflow unchanged if no revision is warranted.
 
@@ -172,17 +173,18 @@ The review point is a genuine planned operation, not a placeholder. It may leave
 
 The user's currently intended full sequence is exactly:
 
-`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]`
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`
 
 Do not truncate this to the currently active first stage when reporting the overall plan.
 
 Interpretation:
 - `⌖◉▣✓`: completed setup/initial-ledger establishment and verification.
 - `@`: current position, immediately before the first uncompleted operation.
-- `⊕[bhᛟd]β`: integrated, coequal biology and historical/cultural reading, with the SAT/H(s)H interpretive lens and Dimensional Normalization method companion; β marks the latter-half contemporary biological reconstruction pass. Give particular attention to nineteenth-century and early-twentieth-century historical treatments of biology. Keep authorial claims distinct from retrospective interpretation.
+- `⊕[bhᛟdᵃ]β`: integrated, coequal biology and historical/cultural reading, with the SAT/H(s)H interpretive lens and Dimensional Normalization method companion; β marks the latter-half contemporary biological reconstruction pass. Give particular attention to nineteenth-century and early-twentieth-century historical treatments of biology. Keep authorial claims distinct from retrospective interpretation.
 - `ρ`: reorientation checkpoint after that integrated reading. Review what was learned and decide whether to adjust the following workflow. The checkpoint is required; changes to the plan are optional.
 - `k`: larger category-theory-related literature programme.
 - `⊕[mbxᛟd]`: subsequent integrated mathematics/category-theory/geometric work, with biology kept active and cross-disciplinary connections arising naturally from the reviewed material, using the SAT/H(s)H lens and Dimensional Normalization method companion. Computer science is one candidate connection; do not restrict this to computer science or predefine a closed list.
+- `s` (U+0073): dedicated spiritualist readings, deferred until after the category-theory/mathematics exploration. This is separate from `h`: historically relevant spiritualist/psychical sources may be consulted within `h` for immediate context, while `s` preserves the systematic reading intention on the longer to-do list.
 
 Important: the signature records the entire intended workflow, not just the active portion. The position marker indicates where execution currently stands. As the work advances, move `@` without deleting future stages. Revise the full signature only when the user changes the plan or the reorientation checkpoint yields an explicitly adopted change.
 
@@ -190,7 +192,7 @@ Important: the signature records the entire intended workflow, not just the acti
 ## Full-plan signature grammar and current programme
 
 The complete live plan uses:
-`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]`
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`
 
 The entire planned sequence remains visible in the repeated signature. `@` marks the current position; it does not remove or hide future stages. `⊕[bhᛟdᵃ]` means coequal integrated biology/history inquiry, read through the SAT/H(s)H lens `ᛟ`, using the Dimensional Normalization paper `d` as a companion methodological reference, and keeping archive-acquisition infrastructure `ᵃ` active as a companion capability. `β` marks the latter-half contemporary biological reconstruction pass. After that, `⌖◉▣` is the explicit reorientation, next-Tock selection and plan-recording sequence; `ρ` is the lessons-learned review/decision; `k` is category-theory reading; `⊕[mbxᛟd]` is mathematics/category theory integrated with the continuing biological perspective and naturally emerging cross-disciplinary connections, also read through `ᛟ` and informed by `d`. Spaces between the two displayed stages are readability whitespace only; adjacency otherwise implies succession.
 
@@ -452,3 +454,18 @@ These are register names and labels, not newly assigned workflow glyphs. Keep th
 ## Archive-acquisition marker — ᵃ (U+1D43)
 
 **ᵃ = archive acquisition and research-intake infrastructure.** It marks the companion capability for source discovery, multilingual archive search, scraper/provider adapters, export/import, provenance capture, corpus intake, quality/coverage checks and later publication of reusable acquisition methods. It may appear as a modifier inside an active research bundle, e.g. `⊕[bhᛟdᵃ]β`. It is a workflow/capability marker, not a research conclusion and not a claim that the machinery is operational or complete. Its state must be read from the acquisition ledger and acceptance receipts. Keep it distinct from `⌕` as the act of searching: `ᵃ` denotes the reusable infrastructure and intake program around repeated searches.
+
+
+## Dedicated spiritualist-reading marker — s (U+0073)
+
+**Current assignment (user-restored 2026-11-24):** lowercase `s` denotes the dedicated spiritualist-reading programme. It appears as the final character of the current full workflow signature:
+
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`
+
+This is a planned future reading intention, not the current active Tock. It corresponds to PIN 5 and follows completion of the category-theory/mathematics exploration `k⊕[mbxᛟd]`.
+
+**Scope:** read and historically reconstruct Spiritualism, psychical research, Theosophy, Anthroposophy and relevant occult traditions, keeping them distinct rather than flattening them into one movement. Trace primary writings, periodicals, practitioners, organizations, institutions, experiments/claims, and their historically specific relationships to higher-dimensional space, bodies, life and organismal concepts.
+
+**Relation to `h`:** the current historical/cultural stream `h` may read spiritualist/psychical materials when they directly illuminate nineteenth-century higher-dimensional thought or the current biological-history overview. That contextual use does not satisfy or replace `s`. The trailing `s` explicitly preserves the broader dedicated reading programme as a to-do item.
+
+**Supersession history:** `s` was previously retired from its former meaning “separately predetermined Science Bridges programme.” That meaning remains retired. The user explicitly reinstated the same ASCII code point with this new, narrower and deliberately deferred spiritualist-reading meaning. Record this as a user-directed supersession; do not silently revert to the old Science Bridges meaning.
