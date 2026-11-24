@@ -255,3 +255,10 @@ Braces delimit operator scope; labels identify branches; bracketed annotations s
 `⌕⑂{A: sources | B: geometry}⑃⤳`.
 
 All assignments are provisional and workshop-local. Branch identity/output, explicit rejoin conditions, bounded cycles, path-specific waiting, and explicit halt status are required to avoid ambiguity. Nested/overlapping forms remain deferred pending simple-use testing.
+
+
+## 15. Canonical Tock–tick hierarchy — 2026-11-24
+
+User preference: **Tock–tick** is the canonical order. Tocks are the larger organizational/main-level work packages; ticks are lower-order operations contained within an active tock. The Credenza organizes the tock-level landscape, work tray, priorities, and return points. The Unicode signature tracks tick-level position and sequencing inside the active tock.
+
+A tock closes only when its intended durable result, status, and next cursor are recorded and checked. A tick is a position/operation marker, not by itself a completion claim. Canonical cycle: **Tock → ticks → durable result → tock closure/advance**. This is a workshop-local refinement of the Credenza model, not a general recommendation.
