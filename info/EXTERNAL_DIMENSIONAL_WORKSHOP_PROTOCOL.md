@@ -617,3 +617,37 @@ Always distinguish:
 - Reconnaissance conjecture.
 
 Preserve scientific accuracy and mark uncertainty, but do not allow premature proof requirements to shut down the exploratory survey. The β operation is not a theory-promotion or empirical-validation step.
+
+
+## 32. Lowercase designations; uppercase reserved for future organization
+
+Effective 2026-11-24, use lowercase letters for newly assigned workshop components, interpretive modes, and research designations. Reserve uppercase letters for possible future higher-level organization, ordering, hierarchy, or branch-position labels. “Higher capitalization” is the mnemonic. Do not populate hypothetical uppercase labels until an actual organizational need arises.
+
+The formerly proposed uppercase S for the SAT/H(s)H lens is superseded by lowercase s. The Greek lowercase beta β remains the modernization-pass character. Existing established lowercase codes retain their meanings. Never silently reassign a code.
+
+## 33. Victorian-first historical scope
+
+The historical reading programme should concentrate primarily on Victorian material and its immediate intellectual environment. Later historical works may be included where there is a clear basis to treat them as a natural extension, reception, transformation, or continuation of the Victorian material. Do not turn the historical component into a general survey of every later use of “fourth dimension.”
+
+Modern scientific sources remain eligible in the separate β contemporary reconstruction pass. Keep historical lineage and contemporary scientific comparison distinct.
+
+## 34. Fractal dimensionality is parked, not equated with literal 4D ontology
+
+West–Brown–Enquist's “The Fourth Dimension of Life” and similar fractal/network-dimension accounts do not already express the workshop's SAT/H(s)H ontology. Their “fourth dimension” concerns effective/fractal dimensionality of transport or network organization in ordinary three-dimensional organisms, not straightforward physical extension along the orthogonal w direction.
+
+Park these accounts as possible later reinterpretation material. An open question is whether fractal biological organization could be re-read in relation to literal four-dimensional processes or an interdimensional connection. Do not conflate effective fractal dimension with a literal ambient spatial dimension.
+
+## 35. Literal orthogonal-w / “rounding the corner of time” conjecture
+
+The user wants to explore whether processes can literally “round the corner of time”: structural or informational relationships that are not exhausted by progression along familiar time, but involve the orthogonal w direction in the four-dimensional structure. “Interdimensional connection” is intended literally, not metaphorically or as spiritualist language.
+
+Treat this as an exploratory conjecture, not an established mechanism. Ask:
+- What precisely does “rounding the corner of time” mean in the relevant SAT/H(s)H coordinate conventions?
+- How could a process carry structural or informational relations into or along orthogonal w?
+- What would distinguish a physical connection from metaphor, coordinate relabeling, projection artifact, or ordinary causal propagation?
+- Could fractal organization, recursive biological structure, or scale-spanning networks offer useful modern comparison points without conflating effective fractal dimension with literal ambient dimensionality?
+- What would distinguish ordinary worldtube/time-surface interaction from a genuinely orthogonal-w connection?
+
+Keep metric, coordinate and version conventions explicit. The archive contains differing historical descriptions, including Minkowski-style language and later ++++ / cw=t / w-as-fourth-spatial-dimension descriptions. Do not silently collapse them into one formal geometry. Treat orthogonality to w as a working geometric description whose exact type and metric must be checked against the source/version being used.
+
+Do not infer that nonlocal influence, retrocausation, information transfer, or a physical mechanism has been established. Equally, do not dismiss the line of inquiry because the phrase has rhetorical baggage; translate the user's intended physical geometry into precise questions and explore it at reconnaissance level.
