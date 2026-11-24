@@ -262,3 +262,41 @@ Use these provenance labels in reading notes:
 - **Reconnaissance conjecture**
 
 β is not an empirical-validation gate or theory-promotion operation.
+
+
+## Lowercase designation convention
+
+**Adopted 2026-11-24.** Use lowercase letters for all newly assigned workshop component, lens, mode, and collection designations. Reserve uppercase letters for possible future organizational labels, ordering systems, hierarchy markers, or branch-position labels. The user's joke “higher capitalization” is a mnemonic for keeping uppercase available for higher-level organization.
+
+- Existing lowercase codes retain their meanings.
+- The previously added uppercase S is superseded as a live designation by lowercase s.
+- New contemporary reconstruction character: lowercase Greek beta (β) is unchanged because it is already lowercase.
+- Do not use uppercase S as a current component/lens code. Its previous proposed meaning is retained in this supersession record only.
+- Uppercase labels may be introduced later when a real ordering or organizational need arises; do not prepopulate hypothetical labels in the live signature.
+
+## Victorian-first historical scope and later-lineage filter
+
+The historical reading emphasis is Victorian material and its immediate intellectual environment. Later works may enter the historical lineage only when there is a clear basis for interpreting them as a natural extension, reception, transformation, or continuation of the Victorian material. Do not let the historical inquiry drift into a general survey of every later use of “fourth dimension.”
+
+Modern scientific material may still be brought in during the separate β modernization/reconstruction pass. Distinguish this contemporary scientific update from historical lineage.
+
+## Parked contemporary comparison: fractal dimensionality
+
+West–Brown–Enquist's “The Fourth Dimension of Life” and related fractal/network-dimension approaches are **not** to be treated as already expressing the workshop's literal four-dimensional ontology. Their “fourth dimension” refers to an effective/fractal dimension of transport/network organization within ordinary three-dimensional organisms, not straightforwardly to physical extension along the workshop's fourth, orthogonal w direction.
+
+Keep this material parked as a possible later reinterpretation, not a core historical source and not an equivalent 4D ontology. The open conjectural question is whether fractal biological organization could be re-read in relation to literal four-dimensional processes, or to an interdimensional connection in the precise physical sense below.
+
+## Literal “rounding the corner of time” / orthogonal-w connection
+
+The user proposes exploring whether some biological or physical processes can “round the corner of time”: a process whose structural or informational relationships are not exhausted by progression along the familiar time direction, but involve the orthogonal w direction in the four-dimensional structure. The phrase “interdimensional connection” is intended literally, not as spiritualist or metaphorical language.
+
+Treat this as a reconnaissance conjecture. Potential questions include:
+- What is the precise geometric meaning of “rounding the corner of time” in the current SAT/H(s)H coordinate conventions?
+- How could a process carry structural or informational relationships into or along orthogonal w?
+- What would count as a physical connection rather than a metaphor, coordinate relabeling, projection artifact, or ordinary causal propagation?
+- Could fractal biological organization, recursive structure, or scale-spanning transport networks provide useful modern comparison points without conflating effective fractal dimension with a literal ambient dimension?
+- What observable or conceptual distinctions would separate an ordinary worldtube/time-surface interaction from a genuinely orthogonal-w connection?
+
+Keep the current SAT/H(s)H coordinate and metric conventions explicit. The archive contains differing historical conventions, including Minkowski-style language and later ++++ / cw=t / w-as-fourth-spatial-dimension descriptions; do not silently merge these. “Orthogonal w” is a working geometric description whose type and metric must be checked against the particular source/version under discussion.
+
+This idea belongs in the exploratory concept-space. It does not establish nonlocal influence, retrocausation, information transfer, or a physical mechanism. Do not dismiss it merely because the phrase has rhetorical baggage; interpret the user's intended geometry literally and formulate the question carefully.
