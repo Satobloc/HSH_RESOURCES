@@ -992,3 +992,65 @@ The user explicitly restored lowercase `s` at the end of the full ticker so the 
 **Sequence and status:** `s` is a visible future intention, not the current active Tock. It remains deferred until after the planned `k⊕[mbxᛟd]` category-theory/mathematics exploration. `@` stays before the unfinished integrated biology/history Tock. No advance or completion is implied.
 
 **Glyph history:** lowercase `s` was previously retired from a different use as the separately predetermined “Science Bridges” programme. The user has now explicitly reinstated the same code point with a new meaning: dedicated spiritualist readings. This is an intentional, documented supersession, not a silent reuse. The old Science Bridges meaning remains retired.
+
+
+## 45. Carrel primary-source retrieval routes and refined physiological-time classification — 2026-11-24
+
+The two 1931 Carrel articles remain **bibliographically verified but not yet read in full as primary texts**. New archival access routes have now been located.
+
+### Primary-source identities
+
+- Alexis Carrel, “The New Cytology,” *Science* 73(1890), 297–303 (20 March 1931), DOI 10.1126/science.73.1890.297, PMID 17811580. PubMed record: https://pubmed.ncbi.nlm.nih.gov/17811580/. OpenAlex classifies this record as closed access: https://openalex.org/W2056014132.
+- Alexis Carrel, “Physiological Time,” *Science* 74(1929), 618–621 (18 December 1931), DOI 10.1126/science.74.1929.618, PMID 17740867. PubMed record: https://pubmed.ncbi.nlm.nih.gov/17740867/. OpenAlex classifies this record as closed access: https://openalex.org/W4235426938.
+
+### Archive routes
+
+1. **Georgetown University Manuscripts — Alexis Carrel Papers, GTM-530913, Box 14, Folder 7 (“Health”).** The finding-aid item list explicitly names “The New Cytology” (1931), “Inner Time” (circa 1931), and “Physiological Time” (circa 1931), among other mixed materials. Citation: “Health, Box: 14, Folder: 7. Alexis Carrel Papers, GTM-530913. Georgetown University Manuscripts, Booth Family Center for Special Collections.” Finding aid: https://findingaids.library.georgetown.edu/repositories/15/archival_objects/1494026. Most manuscript collections are open to researchers, but restrictions may apply; off-site materials require a minimum of three days for retrieval, and researchers should contact the Booth Family Center in advance at speccoll@georgetown.edu. This is a **catalogue locator**, not evidence that the physical folder has been consulted or that all items are unrestricted.
+2. **Bibliothèque de l’Académie nationale de médecine — Fonds Alexis Carrel.** The 2012 inventory identifies “The New Cytology,” *Science*, 20 March 1931, 73(1890), 297–303 as item **Carrel 11.1, no. 68**. Inventory PDF: https://bibliotheque.academie-medecine.fr/wp-content/uploads/2013/06/Carrel_Inventaire-version-d%C3%A9finitive.pdf. The inventory metadata is useful for a second repository locator; it does not provide the paper's text. The exact record was inspected on PDF page 76 (zero-indexed viewer page 75).
+3. **Publisher/journal access.** PubMed and OpenAlex confirm both articles' records; OpenAlex currently reports closed access for both. A library subscription or interlibrary/document-delivery route may therefore be needed if the archive copies cannot be consulted.
+
+### Refined reading of Carrel through the secondary source
+
+Rosine Kelz, “Tissue culture and biological time: Alexis Carrel, Henri Bergson and the plasticity of living matter,” *BioSocieties* 17, 442–460 (2022; online 13 March 2021), DOI 10.1057/s41292-020-00224-2, is open access: https://link.springer.com/article/10.1057/s41292-020-00224-2. The “Carrel and physiological time” section (especially notes/passages around pp. 457–458 of the article) reports that Carrel distinguished physiological duration from psychological time and treated physiological time as a material substratum for psychological and social time. It is linked to the organism's relation with its milieu. He describes living bodies as processes in which the past persists and is “entered in the tissues”; dead organs and static histological sections are useful abstractions, not the complete living organism. Kelz quotes Carrel's “Physiological Time” p. 619 and “The New Cytology” p. 298.
+
+Carrel's use of “fourth dimension” is therefore **physiological/processual time within a space-time account**, not a claim that organisms extend along a fourth *spatial* axis. It is nevertheless a useful comparison: Carrel and the user's histological proposal both challenge static anatomical sections as exhaustive descriptions of living structure. Their constructions differ: Carrel emphasizes organism–milieu-dependent physiological duration and tissue process; the user's proposal adds a literal branching physical 4D continuity across apparently separate individuals. No evidence from Carrel is to be treated as proof of that latter topology.
+
+**Historical caution:** Kelz also documents the disputed status of Carrel's celebrated “immortal chick-heart” tissue cultures. The claimed indefinite survival is doubtful; Hayflick's later findings and possible introduction of new viable cells via embryonic extract or contamination are discussed. Do not repeat “immortality” as an established experimental result. Broader racist/eugenic and political elements in Carrel's later work must be contextualized separately and not imputed to the two biological-time articles without direct textual evidence.
+
+**Next Carrel operation:** request/check the Georgetown Box 14 Folder 7 material and/or Academy of Medicine item Carrel 11.1 no. 68; obtain and read the two primary articles with page-level notes; compare Carrel's treatment of temporal persistence, tissue constitution and organism–milieu relation with Woodger and the private histological model.
+
+## 46. Woodger's organism-as-event passage and the processual bridge — 2026-11-24
+
+### Primary book and accessible contents evidence
+
+Joseph Henry Woodger, *Biological Principles: A Critical Study* (1929), London: Routledge & Kegan Paul. The accessible Routledge/Book preview (52 pages) provides the contents but does **not** include the substantive pages 299–301. The relevant contents are visible in the preview's contents page (viewer page 11, zero-indexed page 10):
+
+- Chapter VI, section 6: “The importance of time in biology. ‘Taking time seriously.’ Organism and history,” book p. 299.
+- Chapter VI, section 7: “The assimilation of time and space. The organism as an event,” book p. 301.
+- Section 8: “Division. Repetition of spatial parts. Types of division. Symmetry,” book p. 303.
+
+Preview: https://api.pageplace.de/preview/DT0400.9781317830962_A23912257/preview-9781317830962_A23912257.pdf. This is a **contents-level primary-book locator**, not a reading of the cited primary pages.
+
+### Page-specific secondary quotation
+
+John Dupré and Daniel J. Nicholson, “A Manifesto for a Processual Philosophy of Biology” (2018), in *Everything Flows: Towards a Processual Philosophy of Biology*, quote Woodger's *Biological Principles* (1929a: 219): “An organism, whatever else it may be, is an event—something happening. It is temporally as well as spatially extended. It has temporal as well as spatial parts.” The full passage uses a pet dog on successive days to explain temporal parts and identity through continuity. The authors also cite Woodger 1929a:299 for his call to consider temporal relations and note that his work attempted to extend Whitehead's views to biology. Accessible text: https://www.researchgate.net/publication/322836168_A_Manifesto_for_a_Processual_Philosophy_of_Biology.
+
+Keep the quoted locus **p. 219** distinct from the contents' later Chapter VI time/event sections at pp. 299–301. These may represent separate discussions. Do not silently relocate the quotation to p. 301. Retrieve the full book and inspect both loci before claiming direct primary-text verification.
+
+### Interpretation and connection to the active model
+
+Woodger provides a particularly useful conceptual bridge between static anatomy and the organism as an extended event. Temporal parts are to the organism's identity as spatial parts are to its anatomy; the living entity is not exhausted by one present-time slice. This fits a processual reading of biological continuity and invites careful analysis of criteria for diachronic identity.
+
+It does **not**, by itself, posit an additional spatial dimension or say that different people's bodies are physically connected as branches of one larger organism. Its temporal extension is compatible with ordinary spacetime and processual biology. The user's proposal adds a stronger and distinct claim: a literal branching physical/histological 4D structure in which apparently separate individuals are connected across time and potentially form distal appendages of a larger organism. Treat Woodger as a formal/conceptual comparator, not as prior evidence for that claim.
+
+### Provisional comparison matrix
+
+| Strand | What is extended / connected? | Meaning of “four-dimensional” | Relation to user's histological model |
+|---|---|---|---|
+| Carrel | Physiological processes, tissue constitution, organism–milieu relations and persistence of the past in living tissue | Physiological duration / space-time continuum | Shares the critique of static sections; no demonstrated branching inter-individual topology |
+| Woodger | The organism as an event with spatial and temporal parts; identity through continuity | Temporal extension of organismal process | Strong conceptual bridge for temporal parts and identity; no extra spatial axis or macro-organism of separate individuals |
+| User's histological proposal | Neural-core, layered tissue appendages and their proposed physical continuity/branching across time | Literal physical 4D structure, with a proposed additional spatial-temporal organization | Distinct working hypothesis requiring its own geometrical, anatomical and evidential specification |
+
+**Next Woodger operation:** obtain full text or a library scan of *Biological Principles*; inspect pp. 219 and 299–303 directly; extract Woodger's exact account of time, history, organism-as-event, spatial/temporal part relations, division and symmetry. Then compare his concepts with current process philosophy and the user's model without collapsing their ontological commitments.
+
+**Status:** Carrel and Woodger primary bibliographic/archival locators and secondary analyses are advanced; neither primary text's key passages have yet been fully read in this workshop. No Tock closure or `@` advance.
