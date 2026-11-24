@@ -126,10 +126,11 @@ HISTORICAL/4D_HARVESTER/
   seed_file_register.json
   research_questions.md
   test_fourth_dimension_history_harvester.py
+  ddb_vierte_dimension_results_2026-11-05.txt  # retained seed capture
 
 HISTORICAL/FOURTH_DIMENSION_HISTORY/
   seed_inputs/
-    ddb_vierte_dimension_results_2026-11-05.txt
+    2026-11-24_user-supplied-newsfeed-triage.md
   harvested/                         # created when the first --apply run is saved
     runs/<run_id>/records.jsonl
     runs/<run_id>/run.json
