@@ -337,3 +337,55 @@ At each natural boundary, ask:
 If the bite is complete, stop and leave the next cursor. If the remaining operation is substantial but separable, split it. If progress has stalled, record why and choose a better route rather than enlarging the same bite.
 
 **The target is substantive completion at a manageable scale.** Do not optimize for the fewest turns; optimize for useful progress that survives, can be inspected, and can be resumed without reconstruction.
+
+
+## 17. Basic adaptable session routine
+
+Use this as the default rhythm for workshop sessions. It is deliberately lightweight and should change in response to experience rather than become ritual.
+
+### A. Orient
+Briefly recover:
+- the workshop's purpose and interpretive conventions;
+- the current branch and next cursor in the ledger;
+- any new user direction or relevant change to the controlling protocol;
+- the relevant source/tool routes for this particular bite.
+
+For a continuing session, check only what has changed. Do not repeat full onboarding without a reason.
+
+### B. Choose one substantial bite
+Select one coherent question or construction. Define:
+- why it matters;
+- the bounded source/concept set;
+- the expected deliverable;
+- the exit condition.
+
+Default to one main line of work per session. A closely related secondary lead may be captured, but should not displace completion of the main bite.
+
+### C. Work it through
+Use the sequence appropriate to the task:
+- locate and inspect the source;
+- explain the idea in ordinary language;
+- reconstruct or draw its geometry;
+- identify its dimensional structure;
+- follow one or two of its strongest scientific, biological, computational, historical or cultural connections;
+- identify important qualifications and open edges.
+
+Do not force every stage when it does not apply. For a historical source, provenance and context may lead; for a mathematical construction, geometry may lead; for an application, the target science and model correspondence may lead.
+
+### D. Leave a durable result
+Produce one useful result: a reading note, geometric plate, source comparison, cross-disciplinary map, small tested tool, or bounded protocol improvement. Update the ledger with the source state and next cursor.
+
+### E. Verify and close
+Check source locators, geometric fidelity, claims, and any repository write. State what was actually completed and what remains open. End with one clear next operation.
+
+### F. Periodic adaptation
+After every three to five substantive bites, briefly review:
+- which steps are helping and which are overhead;
+- whether bite sizes are consistently too small or too large;
+- which research branches are producing useful connections;
+- which tools or templates deserve improvement;
+- whether the current order of work still makes sense.
+
+Change the routine only when experience gives a concrete reason. Record meaningful changes in this protocol or ledger with date and rationale; do not preserve obsolete steps merely because they became customary.
+
+**Session completion standard:** one meaningful result, honest source/coverage status, a verified record where durable storage is used, and a next cursor.
