@@ -418,13 +418,13 @@ The workflow signature is a **Unicode glyph string**, not a chain of words or ar
 
 | Glyph | Phase |
 |---|---|
-| ⌖ | Orient |
+| ⌖ | Orient; recover context and exact Tock/Tick position, consult the ledger/protocol/code ledger, and route archive retrieval |
 | ◉ | Focus / select bite |
 | ⌕ | Investigate |
 | ⧖ | Geometrize |
 | ⤳ | Connect |
 | ▣ | Record |
-| ✓ | Verify |
+| ✓ | Verify source claims, locators, archive query/engine/scope/receipts, coverage and durable readback |
 | ⇢ | Next / deliberate transition |
 
 These are provisional assignments for this workshop. They are not claimed to be registered in the general Unicode String-to-Glyph assignment workbook unless and until that workbook is deliberately updated. A glyph is one Unicode code point here; its semantic assignment is maintained by this protocol.
@@ -439,6 +439,10 @@ These are provisional assignments for this workshop. They are not claimed to be 
 - Keep the live signature compact: show the relevant phase string and, only when not inferable, a short current-position or branch annotation.
 
 Do not insert redundant arrows between successive phase glyphs. Do not expand the signature into prose unless explaining or revising the notation.
+
+### Bracketed subject/lens bundles in live signatures
+
+Use square brackets to group the subject components with their selected interpretive and methodological companions. The order is **subject components → interpretive lens → method-source**. Examples: ⊕[bhᛟd] and ⊕[mbxᛟd]. Do not use curly braces to delimit these groups in rendered live signatures: {...} is reserved by the message renderer for expressions and may disappear from display. Curly-braced branch/operator examples elsewhere in this protocol are grammar examples, not live signature bundles.
 
 
 ## 20. Pilot status and promotion boundary
@@ -586,10 +590,16 @@ The live signature should retain the entire current intended workflow, including
 
 Append the **entire current workflow signature** to every assistant message in this workshop. Preserve all completed, current, and planned stages; do not shorten it to the active fragment. The position marker `@` identifies the next operation/current position. Advance it left-to-right only when the current operation or bounded unit is actually complete. Keep the full signature unchanged when work has progressed within a phase but has not crossed its completion boundary. The signature is the final line of each assistant response.
 
+Current adopted full signature (square-bracket group syntax): ⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd].
+
 
 ## 30. Orientation carries standing work assumptions
 
 Orientation (`⌖`) includes not only context recovery but also reactivation of the workshop's standing interpretive assumptions: (a) read “higher” explicitly as “higher-dimensional” in dimensional contexts, without overriding clear alternative authorial meanings; (b) actively seek explicit, implicit, and straightforwardly extended connections to other disciplines; (c) keep biological inquiry active throughout all research stages; and (d) distinguish source claims from retrospective interpretation and our own extensions. These assumptions apply throughout the workflow and require no additional signature characters.
+
+Archive retrieval is also an Orient/Verify responsibility. Prefer **Mysearch** for direct Nathan archive requests once its independent fast lane is actually operational and validated. The current Mysearch status/implementation records still classify it as scaffold only, not a production-validated search service. Until that changes, use **Mersearch stable 1.0** as the active archive-search standard. Follow Satobloc/HsH/WORKSPACES/COMMON/MERSEARCH_WORKER_START_HERE.md: search all three permitted repositories together by default (SAT_THEORY_ARCHIVE_2023-25, HsH, HSH_RESOURCES), respect exclusions and source classifications, and do not silently restrict the search to one archive. Treat HSH_RESOURCES as internal reference/toolkit material, not theory authority.
+
+The route is: **Mysearch when validated/available → otherwise Mersearch stable 1.0 → disclosed GitHub code-search fallback only if the bespoke routes are genuinely unavailable.** A fallback is not a Mersearch or Mysearch result. Never claim that a search ran merely because a request file or workflow exists. For Mersearch, preserve the exact query, engine/ref, repository commits, exclusions, request/run identity, manifest and receipt, result totals and coverage limitations. The post-containment Actions bridge publishes compact receipts, not exhaustive raw result inventories; use an authorized local pinned checkout or approved restricted artifact route for full-hit inventories. A search hit is not a source read: inspect original matched context and distinguish searched, located, metadata-inventoried, read and verified. The ✓ phase verifies these provenance and coverage details as well as the substantive claim and durable storage.
 
 
 ## 31. SAT/H(s)H ontology and biological modernization pass
@@ -623,7 +633,7 @@ Preserve scientific accuracy and mark uncertainty, but do not allow premature pr
 
 Effective 2026-11-24, use lowercase letters for newly assigned workshop components, interpretive modes, and research designations. Reserve uppercase letters for possible future higher-level organization, ordering, hierarchy, or branch-position labels. “Higher capitalization” is the mnemonic. Do not populate hypothetical uppercase labels until an actual organizational need arises.
 
-The formerly proposed uppercase S for the SAT/H(s)H lens is superseded by lowercase s. The Greek lowercase beta β remains the modernization-pass character. Existing established lowercase codes retain their meanings. Never silently reassign a code.
+The formerly proposed uppercase S for the SAT/H(s)H lens is superseded by the user-selected glyph ᛟ (U+16DF). The older lowercase s remains the retired Science Bridges component designation and is not reused as the SAT/H(s)H lens. The Greek lowercase beta β remains the contemporary biological reconstruction character. Existing established codes retain their meanings; never silently reassign a code.
 
 ## 33. Victorian-first historical scope
 
@@ -769,3 +779,20 @@ In relativity it is common to define a length-valued time coordinate, often writ
 The earlier formula `c = wt` is dimensionally inconsistent under the standard meanings of c (L/T), w (L), and t (T); it would have units L·T, not L/T. Do not use its rearrangements `w=c/t` or `t=c/w`.
 
 **Important notation caution:** if the workshop's W coordinate is the Minkowski time coordinate expressed as a length, write `W=ct` or explicitly define `W\equiv ct`. Avoid switching between lowercase `w` and uppercase `W` without defining whether one is a scalar coordinate value and the other an axis label. The user's broader SAT/H(s)H ontology that W is the time axis remains foundational; this correction only restores the standard dimensional relation used to express that time coordinate in length units.
+
+## 37. Dimensional Normalization companion method (d) and SAT/H(s)H lens marker (ᛟ)
+
+The workshop code ledger assigns:
+
+- **ᛟ (U+16DF):** the SAT/H(s)H interpretive lens. Apply the stipulated physical four-dimensional ontology as a clearly labeled interpretive pass across the integrated b/h reading and the later mbx reading. Preserve the historical or contemporary source's own claims separately; never attribute the workshop's developed ontology to an author who did not state it.
+- **d (U+0064):** the Dimensional Normalization paper, Nathan McKnight & Janus C. Sol, “Metric Symmetry to Reveal the Grain” (2026-09-09 draft). The canonical archive contains DIMENSIONAL_NORMALIZATION.pdf, DIMENSIONAL_NORMALIZATION.tex and _AUTO_EXTRACTED_TEXT/DIMENSIONAL_NORMALIZATION.txt in Satobloc/SAT_THEORY_ARCHIVE_2023-25.
+
+The paper proposes a fixed w = ct time-to-length normalization, a declared class of invertible transformations, and a residual audit across heterogeneous equations. Its own stated scope is methodological: it claims no new constant and makes no ontological claim. Use d as a companion method when biological, historical, mathematical or cross-disciplinary sources supply equations or formal models. Preserve the source's native notation and units first; record each transformation; distinguish normalization from physical equivalence; and keep residuals such as derivative order, characteristic scale, coupling, nonlinearity, dissipation, dispersion, discreteness, sources, metric signature and topology. Do not force non-equational material through the method, silently rewrite historical equations, or treat the paper as a SAT/H(s)H authority. It does not define Forest Normalization.
+
+The bracketed signature bundles make the intended return-to-work lenses explicit:
+
+- ⊕[bhᛟd]β: integrated biology/history, interpreted through SAT/H(s)H and methodologically cross-checked with the Dimensional Normalization paper; β marks the later contemporary biological reconstruction pass.
+- ⊕[mbxᛟd]: mathematics/category theory, with biology kept active and natural cross-disciplinary connections, using the same SAT/H(s)H and normalization companions.
+
+These are workflow reminders, not claims that every source will support every lens. The reading sequence remains source-first and selective: apply the lenses where their scope fits, and record when a lens is not applicable.
+

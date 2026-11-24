@@ -1,12 +1,14 @@
 # External Dimensional Workshop — Unicode Code Ledger
 
 **Status:** Bespoke experimental pilot. Local meanings only; no general recommendation implied.  
-**Version:** 0.1  
+**Version:** 0.2  
 **Updated:** 2026-11-24
 
 ## Grammar
 
 Single Unicode code points represent phases, operators, components, or states. Adjacent tokens imply left-to-right succession. Structural operators preserve their defined semantics. The live signature carries codes; this ledger carries meanings. Memorization is unnecessary.
+
+For live integrated-work signatures, square brackets group the subject components and their selected interpretive/method companions. Use the order **subject components → interpretive lens → method-source**. For example, `⊕[bhᛟd]` means integrated biology/history work read through the SAT/H(s)H lens and informed by the Dimensional Normalization paper. The bracket group is a compact scope bundle, not a new branch or operator.
 
 For branches, `⑂{cu}` is equivalent to `⑂{A: Credenza | B: Unicode notation}` when component codes are defined and left-to-right order is sufficient. Where additional ordering labels are needed, uppercase labels indicate branch/order positions and lowercase tokens identify components: `⑂{AcBu}`.
 
@@ -16,14 +18,22 @@ No undefined placeholders. A code may refer to a real, identifiable, populated, 
 
 | Glyph | Code point | Canonical meaning | Class | Scope / constraints |
 |---|---|---|---|---|
-| ⌖ | U+2316 | Orient | Phase | Recover relevant context and position |
+| ⌖ | U+2316 | Orient | Phase | Recover context and exact Tock/Tick position; consult the workshop ledger, protocol and code ledger; choose the authorized archive-search route before substantive archive retrieval |
 | ◉ | U+25C9 | Focus / select Tock | Phase | Select and bound the substantial work unit |
 | ⌕ | U+2315 | Investigate | Phase | Locate and examine sources or concepts |
 | ⧖ | U+2996 | Geometrize | Phase | Construct the geometric/dimensional account |
 | ⤳ | U+2933 | Connect | Phase | Follow relevant connections |
 | ▣ | U+25A3 | Record | Phase | Preserve durable result |
-| ✓ | U+2713 | Verify | Phase | Check claims, locators, result, and storage |
+| ✓ | U+2713 | Verify | Phase | Verify claims, original-source locators, archive query/scope/engine, repository commits and exclusions, run manifest/receipt, coverage limits, result and durable storage/readback |
 | ⇢ | U+21E2 | Deliberate transition / next | Operator | Explicit decision/transition point; not ordinary succession |
+
+### Archive retrieval and verification under ⌖ / ✓
+
+- **Mysearch is the first-choice direct-Nathan archive-search route when operational and validated.** Its current repository status record still says `SCAFFOLD ONLY / NOT VALIDATED / NOT YET A PRODUCTION SEARCH SERVICE`; do not report a Mysearch execution or rely on it as an available production route until that status changes and the route is actually accessible.
+- **Until Mysearch is operational, use Mersearch as the active archive-search standard**, pinned to stable Mersearch 1.0. Follow `Satobloc/HsH/WORKSPACES/COMMON/MERSEARCH_WORKER_START_HERE.md`; search all three permitted repositories together by default: `Satobloc/SAT_THEORY_ARCHIVE_2023-25`, `Satobloc/HsH`, and `Satobloc/HSH_RESOURCES`. Preserve the distinct source status of HSH_RESOURCES as internal reference/toolkit material, not theory authority.
+- Prefer the local pinned searcher for full, inspectable result sets. The GitHub Actions bridge's post-containment compact receipts are not exhaustive full-hit inventories. Never claim exhaustiveness from a compact receipt; report the searched roots, refs/SHAs, engine, query, exclusions, counts, receipt state and limitations.
+- Use GitHub code search only as a documented fallback when Mysearch/Mersearch cannot actually be used. Label it as fallback search, not a Mysearch or Mersearch result, and disclose scope/coverage limitations. Do not silently substitute it.
+- A search hit is not a source read. `✓` requires opening and inspecting the original matched source (or recording why it cannot be inspected), preserving exact locators and distinguishing searched, located, metadata-inventoried, read, and verified states.
 
 ## Compound workflow operators
 
@@ -61,7 +71,7 @@ Never silently reassign a glyph. Add new codes with meanings, code points, class
 |---|---|---|---|---|
 | m | U+006D | Mathematics / category theory | Component | Category theory, geometry, topology, higher structures |
 | b | U+0062 | Biology | Component | Organismal biology, physiology, evolution, biological organization |
-| h | U+0068 | History and cultural lineage | Component | Victorian dimensional thought, spiritualism, science fiction, fandom, time-binding |
+| h | U+0068 | History and cultural lineage | Component | Nineteenth-century and early-twentieth-century dimensional thought, Victorian intellectual context, spiritualism, psychical research, science fiction, fandom and documented cultural reception |
 | p | U+0070 | Computation | Component | Computational models, simulations, programming, computational tools |
 | s | U+0073 | Science bridges | Component | Cross-disciplinary applications and connections |
 | w | U+0077 | Workshop systems | Component | Credenza, notation, methods, workflow experiments and infrastructure |
@@ -152,17 +162,17 @@ The review point is a genuine planned operation, not a placeholder. It may leave
 
 The user's currently intended full sequence is exactly:
 
-`⌖◉▣✓@⊕{bh}ρk⊕{mx}`
+`⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`
 
 Do not truncate this to the currently active first stage when reporting the overall plan.
 
 Interpretation:
 - `⌖◉▣✓`: completed setup/initial-ledger establishment and verification.
 - `@`: current position, immediately before the first uncompleted operation.
-- `⊕{bh}`: integrated, coequal biology and historical/cultural reading. Give particular attention to nineteenth-century and adjacent-era historical treatments of biology, including works that may be interpreted as biological even if not framed in modern biological terms. Keep authorial claims distinct from retrospective interpretation.
+- `⊕[bhᛟd]β`: integrated, coequal biology and historical/cultural reading, with the SAT/H(s)H interpretive lens and Dimensional Normalization method companion; β marks the latter-half contemporary biological reconstruction pass. Give particular attention to nineteenth-century and early-twentieth-century historical treatments of biology. Keep authorial claims distinct from retrospective interpretation.
 - `ρ`: reorientation checkpoint after that integrated reading. Review what was learned and decide whether to adjust the following workflow. The checkpoint is required; changes to the plan are optional.
 - `k`: larger category-theory-related literature programme.
-- `⊕{mx}`: subsequent integrated mathematics/category-theory/geometric work together with cross-disciplinary connections that arise naturally from the reviewed material. Computer science is one candidate connection; do not restrict this to computer science or predefine a closed list.
+- `⊕[mbxᛟd]`: subsequent integrated mathematics/category-theory/geometric work, with biology kept active and cross-disciplinary connections arising naturally from the reviewed material, using the SAT/H(s)H lens and Dimensional Normalization method companion. Computer science is one candidate connection; do not restrict this to computer science or predefine a closed list.
 
 Important: the signature records the entire intended workflow, not just the active portion. The position marker indicates where execution currently stands. As the work advances, move `@` without deleting future stages. Revise the full signature only when the user changes the plan or the reorientation checkpoint yields an explicitly adopted change.
 
@@ -170,9 +180,9 @@ Important: the signature records the entire intended workflow, not just the acti
 ## Full-plan signature grammar and current programme
 
 The complete live plan uses:
-`⌖◉▣✓@⊕{bh}⌖◉▣ρk⊕{mx}`
+`⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`
 
-The entire planned sequence remains visible in the repeated signature. `@` marks the current position; it does not remove or hide future stages. `⊕{bh}` means coequal integrated biology/history inquiry. After that, `⌖◉▣` is the explicit reorientation, next-Tock selection and plan-recording sequence; `ρ` is the lessons-learned review/decision; `k` is category-theory reading; `⊕{mx}` is mathematics/category theory integrated with naturally emerging cross-disciplinary connections. Spaces between the two displayed stages are optional readability whitespace only; adjacency otherwise implies succession.
+The entire planned sequence remains visible in the repeated signature. `@` marks the current position; it does not remove or hide future stages. `⊕[bhᛟd]` means coequal integrated biology/history inquiry, read through the SAT/H(s)H lens `ᛟ` and using the Dimensional Normalization paper `d` as a companion methodological reference. `β` marks the latter-half contemporary biological reconstruction pass. After that, `⌖◉▣` is the explicit reorientation, next-Tock selection and plan-recording sequence; `ρ` is the lessons-learned review/decision; `k` is category-theory reading; `⊕[mbxᛟd]` is mathematics/category theory integrated with the continuing biological perspective and naturally emerging cross-disciplinary connections, also read through `ᛟ` and informed by `d`. Spaces between the two displayed stages are readability whitespace only; adjacency otherwise implies succession.
 
 
 ## Orientation assumptions (applies throughout the programme)
@@ -203,8 +213,9 @@ These letter labels are classification tags for reading notes only; they are not
 
 | Glyph | Code point | Canonical meaning | Class | Scope |
 |---|---|---|---|---|
-| S | U+0053 | SAT/H(s)H interpretive lens | Interpretive mode | Read historical dimensional biology through the user's explicitly physical, four-dimensional SAT/H(s)H ontology. Applies to the integrated historical-biological inquiry and later synthesis. |
-| β | U+03B2 | Biological modernization / contemporary reconstruction | Research mode | In the latter portion of the reading, deliberately revisit the historical picture using modern biology, genetics, physiology, evolution, developmental biology, neuroscience where relevant, and contemporary physics/mathematics. Reconnaissance and concept-space construction are permitted; full proof or quantitative validation is not a prerequisite at this stage. |
+| ᛟ | U+16DF | SAT/H(s)H interpretive lens | Interpretive mode | Read the relevant historical, biological, mathematical and cross-disciplinary material through the user's stipulated physical four-dimensional SAT/H(s)H ontology, while keeping source claims distinct from our reinterpretation. |
+| β | U+03B2 | Biological modernization / contemporary reconstruction | Research mode | In the latter portion of the integrated biology-history reading, revisit the historical picture using modern biology, genetics, physiology, evolution, developmental biology, neuroscience where relevant, and contemporary physics/mathematics. Reconnaissance and concept-space construction are permitted; full proof or quantitative validation is not a prerequisite at this stage. |
+| d | U+0064 | Dimensional Normalization paper | Method-source component | Companion methodological source: Nathan McKnight & Janus C. Sol, “Metric Symmetry to Reveal the Grain” (2026-09-09 draft), archived as `DIMENSIONAL_NORMALIZATION.pdf`, `.tex`, and `_AUTO_EXTRACTED_TEXT/DIMENSIONAL_NORMALIZATION.txt` in `Satobloc/SAT_THEORY_ARCHIVE_2023-25`. Use its frozen normalization/residual-audit method where equations or formal models make it useful; it is not a historical biological source or an ontological authority. |
 
 ### SAT/H(s)H lens: reading rule
 
@@ -241,10 +252,11 @@ The β operation is exploratory, not a theory-validation or theory-promotion gat
 
 | Glyph | Code point | Canonical meaning | Class | Scope |
 |---|---|---|---|---|
-| S | U+0053 | SAT/H(s)H interpretive lens | Interpretive mode | Read historical dimensional biology through the workshop's literal physical 4D ontology: matter and organisms are extended in 4D; the familiar 3D present is their section/intersection with the time surface. |
+| ᛟ | U+16DF | SAT/H(s)H interpretive lens | Interpretive mode | Read relevant historical, biological, mathematical and cross-disciplinary material through the user's stipulated physical four-dimensional SAT/H(s)H ontology, while keeping source claims distinct from our reinterpretation. |
 | β | U+03B2 | Contemporary biological reconstruction | Research mode | Latter-half reconnaissance pass updating the historical/Hinton picture with modern biology, genetics, physiology, evolution, developmental biology, physics, mathematics and other relevant disciplines. Exploratory, not a proof or validation gate. |
+| d | U+0064 | Dimensional Normalization paper | Method-source component | Companion methodological source: McKnight & Sol, “Metric Symmetry to Reveal the Grain” (2026-09-09 draft); apply its frozen normalization/residual-audit method selectively to suitable equations and formal models. Not a historical source or ontological authority. |
 
-### S — SAT/H(s)H lens
+### ᛟ — SAT/H(s)H lens
 
 Do not dilute this lens into “may have a four-dimensional component” or “in some higher-dimensional space.” The working premise is literal physical extension of matter and organisms in a four-dimensional ambient universe. The ordinary three-dimensional “now” is a section/intersection/readout of that extended structure at the time surface; it reveals only the portion intersected at that moment, not the whole object. Read the Minkowski/worldtube representation ontologically for this exploratory reconstruction, not merely as diagrammatic bookkeeping.
 
@@ -269,9 +281,10 @@ Use these provenance labels in reading notes:
 **Adopted 2026-11-24.** Use lowercase letters for all newly assigned workshop component, lens, mode, and collection designations. Reserve uppercase letters for possible future organizational labels, ordering systems, hierarchy markers, or branch-position labels. The user's joke “higher capitalization” is a mnemonic for keeping uppercase available for higher-level organization.
 
 - Existing lowercase codes retain their meanings.
-- The previously added uppercase S is superseded as a live designation by lowercase s.
-- New contemporary reconstruction character: lowercase Greek beta (β) is unchanged because it is already lowercase.
-- Do not use uppercase S as a current component/lens code. Its previous proposed meaning is retained in this supersession record only.
+- The earlier uppercase `S` designation for the SAT/H(s)H lens is superseded by `ᛟ` (U+16DF), the user's selected replacement.
+- The legacy lowercase `s` remains the retired Science Bridges component label from the earlier programme design; it is **not** reused for the SAT/H(s)H lens.
+- The lowercase Greek beta (β) remains the contemporary biological modernization-pass character.
+- Do not use `S` or `s` as the current SAT/H(s)H lens code. Preserve their historical assignments/supersession rather than silently reassigning them.
 - Uppercase labels may be introduced later when a real ordering or organizational need arises; do not prepopulate hypothetical labels in the live signature.
 
 ## Victorian-first historical scope and later-lineage filter

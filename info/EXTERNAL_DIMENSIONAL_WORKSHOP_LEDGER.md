@@ -37,6 +37,7 @@ Reading states are LOCATED unless otherwise stated. A source reference in this m
 | `info/WORKFLOW_SWITCHBOARD_POC.md` | TOP/CENTRAL/BRANCH/HYDRA control architecture | REVIEWED | Adapt only the mechanisms useful to this smaller workshop |
 | `info/WORKFLOW_THREADING_PROTOTYPE.md` | SEED/YIELD/AWAIT/ACCUMULATE/RENDEZVOUS/REJOIN | REVIEWED | Use as an optional temporal coordination vocabulary |
 | `info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md` | Workshop operating rules | CREATED | Current controlling workshop protocol |
+| `Satobloc/SAT_THEORY_ARCHIVE_2023-25/DIMENSIONAL_NORMALIZATION.pdf` and companion .tex / extracted .txt | McKnight & Sol, “Metric Symmetry to Reveal the Grain” (2026-09-09 draft); frozen normalization and cross-sector residual-audit method | SOURCE-READ | Use as the d methodological companion in integrated b/h and later mbx readings; not a historical biological source or ontological authority |
 
 ## 3. First source-backed research leads
 
@@ -63,6 +64,8 @@ Reading states are LOCATED unless otherwise stated. A source reference in this m
 | Source/toolkit cards | ADOPT | Useful for reusable mathematical methods and cross-disciplinary machinery |
 | SQLite analytics | DEFER | Wait for recurring structured queries that exceed the ledger |
 | Large custom workflow compiler | REJECT FOR NOW | Existing methods suffice; demonstrate need before adding machinery |
+| Archive retrieval | Mysearch first when validated/operational; until then Mersearch stable 1.0 is the active standard | Mysearch is currently documented as scaffold only / not validated; use the documented three-repository Mersearch route, preserve provenance and disclose coverage limits |
+| Dimensional Normalization paper (d) | ADOPT AS COMPANION METHOD | Apply its fixed normalization/residual-audit approach selectively to equations and formal models encountered in b/h and mbx; do not treat it as historical evidence or SAT/H(s)H ontology |
 | Raw archive reorganization | REJECT | Build derived navigation and cards, preserve source placement |
 
 ## 5. Active queue
@@ -367,16 +370,16 @@ Computer science and other disciplines are not predetermined subprogrammes; they
 
 The full current plan, including future stages, is:
 
-`⌖◉▣✓@⊕{bh}ρk⊕{mx}`
+`⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`
 
 This is the complete intention, not merely a representation of the active first stage.
 
 - Completed setup: `⌖◉▣✓`.
 - Current position: `@`.
-- First Tock: `⊕{bh}`, integrated and coequal biology plus historical/cultural reading, with emphasis on nineteenth-century and adjacent-era historical treatments of biology and retrospectively biological interpretations. Distinguish source authors' claims from our interpretations.
+- First Tock: `⊕[bhᛟd]β`, integrated and coequal biology plus historical/cultural reading, with emphasis on nineteenth-century and adjacent-era historical treatments of biology and retrospectively biological interpretations. Distinguish source authors' claims from our interpretations.
 - Review checkpoint: `ρ`, required reorientation after the first Tock; revise the next workflow only if lessons warrant it.
 - Next Tock: `k`, larger category-theory-related literature programme.
-- Following integrated Tock: `⊕{mx}`, mathematics/category theory/geometric work together with cross-disciplinary connections that naturally emerge from the reading. Computer science is an example, not an exhaustive boundary.
+- Following integrated Tock: `⊕[mbxᛟd]`, mathematics/category theory/geometric work together with cross-disciplinary connections that naturally emerge from the reading. Computer science is an example, not an exhaustive boundary.
 
 The full signature remains visible in the conversation even while work is focused on its first active segment. Move the position marker as work completes; do not omit future intentions from the signature.
 
@@ -385,19 +388,19 @@ The full signature remains visible in the conversation even while work is focuse
 
 The user's complete current plan is encoded as:
 
-`⌖◉▣✓@⊕{bh} ⌖◉▣ρk⊕{mx}`
+`⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`
 
 Whitespace separates the two major stages for readability; it is not a workflow operator. Compact equivalent:
-`⌖◉▣✓@⊕{bh}⌖◉▣ρk⊕{mx}`
+`⌖◉▣✓@⊕[bhᛟd]β⌖◉▣ρk⊕[mbxᛟd]`
 
 Interpretation:
 1. `⌖◉▣✓`: initial orientation, Tock selection, recording and verification/setup sequence completed.
 2. `@`: current position begins at the integrated opening inquiry.
-3. `⊕{bh}`: coequal integrated study of biology and history/cultural lineage. Give particular attention to nineteenth-century and adjacent-era historical treatments of biology, including works and ideas that may be interpreted as biological in retrospect. Keep original authorial claims distinct from retrospective interpretation.
+3. `⊕[bhᛟd]β`: coequal integrated study of biology and history/cultural lineage. Give particular attention to nineteenth-century and adjacent-era historical treatments of biology, including works and ideas that may be interpreted as biological in retrospect. Keep original authorial claims distinct from retrospective interpretation.
 4. `⌖◉▣`: after completing the opening inquiry, reorient, select/bound the next Tock, and record the revised or retained plan.
 5. `ρ`: explicit lessons-learned review and decision about whether to modify the next workflow. The checkpoint is required; modification is optional.
 6. `k`: proceed into the larger category-theory-related literature.
-7. `⊕{mx}`: integrate mathematics/category theory with cross-disciplinary connections that emerge naturally from the material, including computer science where relevant. Do not predefine a closed list of disciplines or substitute a modelling-only agenda.
+7. `⊕[mbxᛟd]`: integrate mathematics/category theory with cross-disciplinary connections that emerge naturally from the material, including computer science where relevant. Do not predefine a closed list of disciplines or substitute a modelling-only agenda.
 
 This is the complete current intention, not a fixed immutable commitment. The plan may be revised at the reorientation point or earlier if the research warrants it. Preserve the entire planned sequence in the live signature while placing `@` at the current position; do not truncate the signature to only the active stage.
 
@@ -405,7 +408,7 @@ This is the complete current intention, not a fixed immutable commitment. The pl
 ## 23. Full signature repeated on every message — 2026-11-24
 
 Every assistant message in this workshop ends with the complete current signature:
-`⌖◉▣✓@⊕{bh} ⌖◉▣ρk⊕{mx}`
+`⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`
 
 Maintain the full string, including future workflow. Advance `@` left-to-right only when the current operation/Tock is actually complete. Do not replace it with an abbreviated active fragment.
 
@@ -642,3 +645,39 @@ In relativity it is common to define a length-valued time coordinate, often writ
 The earlier formula `c = wt` is dimensionally inconsistent under the standard meanings of c (L/T), w (L), and t (T); it would have units L·T, not L/T. Do not use its rearrangements `w=c/t` or `t=c/w`.
 
 **Important notation caution:** if the workshop's W coordinate is the Minkowski time coordinate expressed as a length, write `W=ct` or explicitly define `W\equiv ct`. Avoid switching between lowercase `w` and uppercase `W` without defining whether one is a scalar coordinate value and the other an axis label. The user's broader SAT/H(s)H ontology that W is the time axis remains foundational; this correction only restores the standard dimensional relation used to express that time coordinate in length units.
+
+## 27. Active integrated b/h reading Tock and shared lenses — 2026-11-24
+
+**Current position:** the active Tock is the coequal, integrated biology/history reading. It is not complete; the position marker remains before this Tock. The current complete signature is:
+
+⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]
+
+### The two coequal reading streams
+
+- **h — historical and cultural lineage:** concentrate on nineteenth-century and early-twentieth-century material, especially Victorian dimensional thought and its immediate intellectual environment. Investigate books, articles, periodicals, scientific and popular discussions, spiritualist/psychical material, and reception where these directly illuminate higher-dimensional biology or adjacent conceptions of life and organismal form. Later material enters the historical lineage only where a documented reception, transformation, or continuation connects it to that earlier corpus.
+- **b — biological applications and implications:** examine organismal form, bilateral symmetry and chirality, microscopic constituents, vitality, nervous-system accounts, morphology, heredity, development, physiology, evolution, and related biological organization. Preserve both historically situated biological claims and present-day biological comparisons; do not attribute modern categories or mechanisms to historical authors who did not use them.
+- **Integration:** b and h are coequal and mutually informing, not sequential or ranked. Read historical sources in their own terms, then identify biological implications and modern correspondences. Keep authorial claims, contextual implications, retrospective interpretations, and our own extensions explicitly distinct.
+
+### Current historical anchors and their source types
+
+- **C. H. Hinton, The Fourth Dimension (1904):** explicit but qualified speculation connecting four-dimensional spatial motion among minute constituents of living matter with organic bilateral/right-left symmetry. Hinton calls the argument inconclusive and does not claim to explain life by four-dimensional motion.
+- **W. Whately Smith, A Theory of the Mechanism of Survival (1920):** psychical-vitalist speculation about vitality, the body, the nervous system and a proposed four-dimensional vehicle of consciousness. Do not conflate this separate-vehicle account with Hinton's microscopic-motion proposal or with modern biological anatomy.
+- **Edwin A. Abbott, Flatland (1884):** literary dimensional analogy and social satire with organismal/anatomical world-building, not a scientific claim that organisms are four-dimensional.
+- **Modern comparators** such as West–Brown–Enquist (1999) and Ginzburg–Damuth (2008) remain modern comparison points, not Victorian historical evidence or proof of a continuous lineage. Keep effective/fractal network dimension, temporal lifetime dimension, and literal ambient physical dimensionality distinct.
+
+These are starting anchors, not a closed canon. Continue locating related nineteenth-century and early-twentieth-century sources both inside the three-repository archive and through external primary-source/library/catalogue and scholarly routes. Record the exact edition, publication date, page/section locator, source path or stable URL, provenance, reading extent, and whether each item is a historical source, retrospective comparison, or contemporary scientific source. A title/search hit alone is not a read.
+
+### Archive retrieval standard carried by orientation and verification
+
+Use **Mysearch first when it is operational and validated** for direct Nathan archive requests. The current MYSEARCH_STATUS.md / implementation plan in Satobloc/HsH still classifies it as a scaffold, not a validated production search service. Until that changes, **Mersearch stable 1.0 is the active archive-search route**. Follow Satobloc/HsH/WORKSPACES/COMMON/MERSEARCH_WORKER_START_HERE.md, search all three permitted repositories by default, and preserve its exclusions, exact query, engine/ref, repository commit SHAs, result/receipt state and coverage limits. Do not silently substitute GitHub connector code search; use it only as a disclosed fallback if the bespoke routes are genuinely unavailable. Distinguish searched, located, metadata-inventoried, source-read and verified.
+
+### Shared interpretive and methodological companions
+
+- **ᛟ — SAT/H(s)H interpretive lens (U+16DF):** after preserving the historical author's own claims, reread the relevant biological, geometric, mathematical and cross-disciplinary material through the workshop's stipulated physical four-dimensional SAT/H(s)H ontology. The familiar three-dimensional present is a section/intersection/readout of physically extended four-dimensional structure. This is our declared interpretive lens; do not attribute it to Hinton, Smith, Abbott or any other historical author unless their source independently says it.
+- **d — Dimensional Normalization paper (U+0064):** Nathan McKnight & Janus C. Sol, “Metric Symmetry to Reveal the Grain,” dated 2026-09-09, marked DRAFT. The PDF is DIMENSIONAL_NORMALIZATION.pdf (SHA-256 14ecb786e2659adf227c9455e048e79ff43774574a3d9b10711613af69208b06); the companion TeX is DIMENSIONAL_NORMALIZATION.tex (Git blob 52c7183e6d4bd657f5a34efb7f40ce89b6a2dcb1); extracted text is _AUTO_EXTRACTED_TEXT/DIMENSIONAL_NORMALIZATION.txt (Git blob e7e16f5a1480c1bed98bd0e451c312b15e58cb79). Its methodological proposal is a frozen w = ct time-to-length map plus a declared transformation grammar and residual audit across heterogeneous equations. The paper explicitly makes no ontological claim and claims no new constant. Use it to ask what normalizes away and what mathematical/physical structure remains when suitable equations or formal models arise in the b/h and later mbx reading. Preserve the source's original variables and conventions first; do not silently normalize a historical equation or merge its notation with another SAT/H(s)H coordinate convention. The paper does not define Forest Normalization.
+- **β — contemporary biological reconstruction:** retain the latter-half reconnaissance pass that revisits historical material through modern biology and related sciences. It is exploratory concept-space building, not a proof or theory-validation gate.
+
+The bracketed scope strings record these companions so a tangent can be followed and the intended interpretive/method lenses recovered on return: ⊕[bhᛟd]β and ⊕[mbxᛟd]. ᛟ is the SAT/H(s)H reading lens; d is the dimensional-normalization methodological reference. The second group retains b because biological perspective remains active throughout later mathematics/category theory and emergent cross-disciplinary exploration.
+
+**No Tock closure or cursor advance is recorded here.** The historical-biological reading, continued archive/external source recovery, later SAT/H(s)H rereading, and β modernization pass remain active obligations.
+
