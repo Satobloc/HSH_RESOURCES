@@ -565,3 +565,8 @@ First finish the initial workshop ledger and define the known work components th
 ## 25. User-directed research ordering
 
 When the user supplies an explicit order, preserve it exactly, including non-monotonic numeric or alphabetic labels. Do not normalize, sort, or reinterpret labels as sequence order. Record each Tock/component code in the code ledger, then represent the chosen sequence left to right. The position marker `@` goes immediately before the next uncompleted component. Mark a component complete only after its stated completion check passes.
+
+
+## 26. Research ordering: coequal streams and emergent connections
+
+Do not force user-described coequal subjects into a serial order. Encode them as coequal or parallel branches when appropriate. Distinguish planned research domains from connections that emerge during investigation. Cross-disciplinary exploration should follow evidence and conceptual affordances from material actually reviewed; do not impose a predetermined closed list or substitute a modelling agenda for broader connection-finding. Workshop-system evaluation is ongoing maintenance unless the user explicitly makes it a separate research stage.
