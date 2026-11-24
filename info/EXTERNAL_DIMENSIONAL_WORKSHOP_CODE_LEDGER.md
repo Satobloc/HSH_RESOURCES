@@ -165,3 +165,11 @@ Interpretation:
 - `⊕{mx}`: subsequent integrated mathematics/category-theory/geometric work together with cross-disciplinary connections that arise naturally from the reviewed material. Computer science is one candidate connection; do not restrict this to computer science or predefine a closed list.
 
 Important: the signature records the entire intended workflow, not just the active portion. The position marker indicates where execution currently stands. As the work advances, move `@` without deleting future stages. Revise the full signature only when the user changes the plan or the reorientation checkpoint yields an explicitly adopted change.
+
+
+## Full-plan signature grammar and current programme
+
+The complete live plan uses:
+`⌖◉▣✓@⊕{bh}⌖◉▣ρk⊕{mx}`
+
+The entire planned sequence remains visible in the repeated signature. `@` marks the current position; it does not remove or hide future stages. `⊕{bh}` means coequal integrated biology/history inquiry. After that, `⌖◉▣` is the explicit reorientation, next-Tock selection and plan-recording sequence; `ρ` is the lessons-learned review/decision; `k` is category-theory reading; `⊕{mx}` is mathematics/category theory integrated with naturally emerging cross-disciplinary connections. Spaces between the two displayed stages are optional readability whitespace only; adjacency otherwise implies succession.
