@@ -80,3 +80,29 @@ Never silently reassign a glyph. Add new codes with meanings, code points, class
 
 **Placement rule:** place `@` immediately before the next uncompleted token. The preceding tokens are completed; the following tokens remain. For a compound branch, place it before the next branch or operation to execute. If the next item is itself a compound structure, place it before that structure.
 
+
+## Research sequence and ordering codes
+
+| Glyph | Code point | Canonical meaning | Class | Scope |
+|---|---|---|---|---|
+| 0 | U+0030 | Setup and starting-ledger closeout | Tock component | Finish and verify initial ledger; closed when verified |
+| 2 | U+0032 | Mathematics, category theory, geometric atlas | Tock component | First substantive literature/reconstruction programme |
+| 1 | U+0031 | Biological applications | Tock component | Biological uses and mathematical models |
+| 3 | U+0033 | Historical and cultural lineage | Tock component | Victorian dimensional thought through later cultural reception |
+| 4 | U+0034 | Computation and modelling | Tock component | Computational implementations, simulations and tools |
+| 5 | U+0035 | Cross-disciplinary science connections | Tock component | Connections and applications across sciences |
+| 6 | U+0036 | Workshop evaluation and adaptation | Tock component | Evaluate and revise the pilot workflow and Credenza integration |
+
+**Ordering convention:** these numeric tokens are the user's requested priority labels, not numerical sort order. The active sequence is explicitly `0 → 2 → 1 → 3 → 4 → 5 → 6`. Do not reorder numerically. The signature is read left to right.
+
+## Current status and position
+
+- `0` setup/starting-ledger closeout: provisionally complete; the initial ledger, protocol, reading-note template, code ledger and index have been created and read back. A final completeness review remains the acceptance check.
+- `2` mathematics/category theory/geometric atlas: next.
+- `1` biology: queued.
+- `3` history/cultural lineage: queued.
+- `4` computation/modelling: queued.
+- `5` science bridges: queued.
+- `6` workshop evaluation/adaptation: queued.
+
+Position marker `@` precedes the next active component. The resulting current plan is `0@213456` only if setup is accepted complete; until that final check, use `@0213456`.
