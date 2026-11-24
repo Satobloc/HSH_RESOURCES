@@ -575,3 +575,8 @@ Do not force user-described coequal subjects into a serial order. Encode them as
 ## 27. Reorientation checkpoint between major reading programmes
 
 After a substantial integrated reading Tock, include an explicit reorientation operation before starting the next major programme. Review findings, sources, unexpected connections, unresolved questions, and workflow performance. Decide whether to retain, revise, reorder, split, or expand the next programme. The checkpoint is mandatory; changing the plan is not. Keep emergent cross-disciplinary connections exploratory rather than preassigning a closed list.
+
+
+## 28. Preserve the complete intended plan in the live signature
+
+The live signature should retain the entire current intended workflow, including future stages, while `@` marks the immediate current position. Do not shorten it to the active stage alone. Use explicit stage transitions and review checkpoints as defined in the code ledger. The plan remains revisable; retain the current version until an explicit update is made.
