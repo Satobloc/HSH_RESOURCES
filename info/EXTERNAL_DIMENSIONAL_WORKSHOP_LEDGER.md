@@ -1258,3 +1258,54 @@ For the user's histological proposal, this suggests a useful separation of quest
 Jaeger's inspected chapters provide mathematical symmetry groups and applications to 3D morphology, crystals, living forms and molecular chirality. No explicit theory of four-dimensional biological symmetry has been located in the inspected primary text. Woodger's recommendation to extend symmetry from a four-dimensional point of view is a separate instruction in Woodger's book; Jaeger's treatise is a source on the symmetry principle, not presently evidence that Jaeger himself supplied a 4D organismal account. Until the remaining chapters and the exact wording of Woodger's footnote are verified, keep their roles distinct.
 
 **Status update:** Jaeger's preface and early biological morphology chapters are directly inspected in OCR through approximately p. 166; page-image cross-check remains unavailable due renderer limits. Chapter VIII/IX are identified but not yet directly read. No Tock closure or `@` advance.
+
+
+## 51. Jacques Loeb primary-text verification of Jaeger's symmetry–tropism link — 2026-11-24
+
+Jaeger explicitly cites Jacques Loeb's *Dynamik der Lebenserscheinungen* (Leipzig, 1906) for the relation between bilateral symmetry and stimulus-directed movement. The English edition, *The Dynamics of Living Matter* (New York: Columbia University Press / Macmillan, 1906), was opened and its primary text inspected in the searchable scan.
+
+**Primary scan:** https://upload.wikimedia.org/wikipedia/commons/f/f8/The_dynamics_of_living_matter_%28IA_dynamicsofliving00loeb%29.pdf  
+**BHL catalogue:** https://www.biodiversitylibrary.org/item/118293 (Cornell University Library; public domain). The book's author preface is dated 1 January 1906; it develops an explicitly physico-chemical/experimental conception of living processes.
+
+### 1. Loeb's symmetry principle in his own words — Lecture VIII, pp. 138–140
+
+Loeb says that organisms are generally symmetrical not only morphologically but also chemically or dynamically. Corresponding surface-points on the body possess, in his model, approximately the same qualitative and quantitative chemical substances; their chemical reactions therefore proceed at similar rates. Asymmetric points may have different chemical structures and reaction rates.
+
+When an external field (light, electric current or other influence) strikes the two sides unequally, corresponding sensory/surface points undergo different chemical reactions, producing unequal tension in the muscles or contractile elements. The organism turns until corresponding points on the two sides are struck at the same angle; then the tension becomes equal and the body maintains its orientation.
+
+Loeb supplies evidence cases rather than treating this only as a formal analogy:
+- In one-eyed/one-sidedly blinded butterflies (*Vanessa antiopa*), blackening one eye produces circular locomotion in the predicted direction.
+- In animals responding to light, one-sided stimulus changes muscle tone; equal stimulation of corresponding sensory points stabilizes the orientation.
+- Similar principles are discussed for galvanotropism and chemotropism.
+
+This is the primary mechanism behind Jaeger's brief description of “functional dissymmetries” and tropisms as mechanisms tending to restore definite symmetry conditions. The account is historical and should not be treated as a fully established modern neurophysiological law. Its importance for our genealogy is that Jaeger's reading of Loeb is substantially grounded in Loeb's own mechanistic account.
+
+### 2. Same organism, different life stage and mode of organization — Lecture VII, pp. 124–126
+
+Loeb describes *Eudendrium* as an organism observed first as a free-swimming, ciliated larva and shortly afterwards as an attached, sessile form from which a polyp grows. While free-swimming, larvae orient and swim toward one-sided light; after attachment, the developing polyp undergoes a plant-like heliotropic curvature in response to the same directional illumination. Loeb emphasizes that the same individual can be observed first behaving like a freely moving animal and then like a heliotropic plant.
+
+This is especially useful as an ordinary biological example of a continuous organism changing its morphology, orientation and functional mode across development. It distinguishes a persistent organism from a fixed body-plan snapshot, and it demonstrates that the relevant symmetry axis may be reorganized by life stage and environmental context. It does not imply an extra spatial dimension or a connection between separate individuals.
+
+### 3. Related but separate process: tissue-level tropisms
+
+In Lecture VIII, pp. 157–159, Loeb remarks that tropisms and tropism-like compulsory reactions can contribute to the mutual arrangement of organs and tissues. He describes examples such as chromatophores moving onto blood vessels in a *Fundulus* embryo, and discusses proposed tropistic explanations for mesenchyme-cell migration during sea-urchin gastrulation. These examples are not demonstrations that every tissue arrangement is governed by tropisms; Loeb labels some mechanisms uncertain. But they show that his framework was not restricted to whole-organism locomotion: he considered directional response and cell movement relevant to tissue organization and morphogenesis.
+
+### 4. Regeneration as a separate research route
+
+Loeb's *Dynamics of Living Matter* includes Lecture XI, “On the Dynamics of Regenerative Processes,” from p. 199: heteromorphosis and regeneration in *Tubularia*, *Cerianthus*, planarians, the influence of the central nervous system, correlation in regeneration, environmental conditions, reversible processes, and the distribution of regenerative capacity across the animal kingdom. The contents and primary text are present in the scan, but this regeneration lecture has **not yet been read in detail** during this pass. It is a next source-reading target, particularly relevant to Jaeger's claim that bilateral symmetry may be restored following injury or amputation.
+
+### 5. Relation to the user's histological 4D proposal
+
+The Loeb–Jaeger connection adds an important intermediate level to the model-comparison framework:
+
+- **Static anatomical symmetry:** the spatial arrangement of corresponding tissues/parts.
+- **Dynamic physiological symmetry:** corresponding sides or regions have similar chemical states/reaction capacities.
+- **Stimulus-induced functional asymmetry:** a directional field produces unequal local reactions and action.
+- **Reorientation/restoration:** organismal movement or tissue change can restore equal stimulation or a preferred organization.
+- **Developmental reorganization:** the same organism can transition between distinct modes of morphology and behaviour.
+
+For the user's distal-appendage hypothesis, this suggests asking separately whether a proposed coordinated action is due to (a) local stimulus-response asymmetry within one ordinary organism, (b) developmental or physiological coordination across time, or (c) the stronger proposed 4D structural linkage among regions that appear to be distinct organisms. Loeb provides a historical model for (a) and an example of (b); he does not evidence (c).
+
+**Source-image limit:** the PDF text was searchable and the cited passages were inspected in its OCR/text layer. The screenshot service rejected the 14.98 MB scan as too large, so page-image cross-check was unavailable. Treat the direct-primary reading as OCR-inspected, not image-verified. Any exact quotation for publication must be checked against the original scan page.
+
+**Next:** read Loeb's Lecture XI on regeneration in detail; locate the exact Przibram work(s) Jaeger had in mind; compare their experimental claims with Jaeger's symmetry-restoration summary and current regenerative biology. Keep the historical claims separate from current scientific consensus and from our 4D extension. No Tock closure or `@` advance.
