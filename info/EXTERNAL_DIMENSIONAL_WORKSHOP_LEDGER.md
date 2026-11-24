@@ -915,3 +915,19 @@ The existing `queries.json` contains `core`, `stigma`, `people`, `newspapers`, `
 - Next operation: from an authorized local checkout, run `python -m unittest discover -s HISTORICAL/4D_HARVESTER -p 'test_fourth_dimension_history_harvester.py' -v`, then run the no-provider dry-run `python HISTORICAL/4D_HARVESTER/harvest.py --repo-root . --providers '' --query-group core`. Only after both pass should the biological/higher-dimensional query group be prepared and a small live provider preview considered.
 
 No Tock completion or `@` advance follows from this static repair.
+
+
+## 39. Local harvester acceptance attempt — execution-environment blocker — 2026-11-24
+
+The next prescribed operation was attempted: create a disposable local checkout and run the corrected offline unit suite followed by the no-provider dry-run. The local attempt did not reach either command: `git clone --depth 1 https://github.com/Satobloc/HSH_RESOURCES.git /tmp/HSH_RESOURCES-validation` failed with `Could not resolve host: github.com`. Python 3.13.5 and Git 2.47.3 are present, but this runtime currently has no working DNS/network route to GitHub.
+
+The GitHub archive connector continues to read repository files, and the current harvester tree/test/bootstrap were independently inspected and read back. The repository workflow inventory contains no existing general-purpose test workflow suitable for invoking these exact local tests remotely. No workflow, request lane, or unrelated automation was changed to manufacture an execution route.
+
+**Result:** `SUBMITTED_NOT_APPLICABLE` is not used; no test execution was submitted. Unit tests: **NOT RUN**. No-provider dry-run: **NOT RUN**. Live provider pilot: **NOT RUN**. No `--apply` output or downloaded object was created. The acceptance gate remains open.
+
+**Next cursor:** repeat the two documented local commands from an authorized checkout/runtime with GitHub network access:
+```bash
+python -m unittest discover -s HISTORICAL/4D_HARVESTER -p 'test_fourth_dimension_history_harvester.py' -v
+python HISTORICAL/4D_HARVESTER/harvest.py --repo-root . --providers '' --query-group core
+```
+Do not add the biological query group or launch a live provider pilot until both pass. The current ticker and Tock position are unchanged.
