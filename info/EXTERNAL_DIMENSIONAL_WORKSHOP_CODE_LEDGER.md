@@ -146,3 +146,22 @@ The initial literature sequence is now:
 3. Larger category-theory-related literature programme.
 
 The review point is a genuine planned operation, not a placeholder. It may leave the following workflow unchanged if no revision is warranted.
+
+
+## Current complete intended workflow
+
+The user's currently intended full sequence is exactly:
+
+`⌖◉▣✓@⊕{bh}ρk⊕{mx}`
+
+Do not truncate this to the currently active first stage when reporting the overall plan.
+
+Interpretation:
+- `⌖◉▣✓`: completed setup/initial-ledger establishment and verification.
+- `@`: current position, immediately before the first uncompleted operation.
+- `⊕{bh}`: integrated, coequal biology and historical/cultural reading. Give particular attention to nineteenth-century and adjacent-era historical treatments of biology, including works that may be interpreted as biological even if not framed in modern biological terms. Keep authorial claims distinct from retrospective interpretation.
+- `ρ`: reorientation checkpoint after that integrated reading. Review what was learned and decide whether to adjust the following workflow. The checkpoint is required; changes to the plan are optional.
+- `k`: larger category-theory-related literature programme.
+- `⊕{mx}`: subsequent integrated mathematics/category-theory/geometric work together with cross-disciplinary connections that arise naturally from the reviewed material. Computer science is one candidate connection; do not restrict this to computer science or predefine a closed list.
+
+Important: the signature records the entire intended workflow, not just the active portion. The position marker indicates where execution currently stands. As the work advances, move `@` without deleting future stages. Revise the full signature only when the user changes the plan or the reorientation checkpoint yields an explicitly adopted change.
