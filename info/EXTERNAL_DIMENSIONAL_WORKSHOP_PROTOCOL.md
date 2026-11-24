@@ -796,3 +796,6 @@ The bracketed signature bundles make the intended return-to-work lenses explicit
 
 These are workflow reminders, not claims that every source will support every lens. The reading sequence remains source-first and selective: apply the lenses where their scope fits, and record when a lens is not applicable.
 
+## 31. Durable instruction and concise-edit rule — 2026-11-24
+
+Any user-directed standing instruction, workflow change, or new required operation is recorded in the appropriate ledger definition as part of carrying it forward. Do not rely on conversational memory alone. Update the smallest authoritative record; avoid duplicating rules or expanding the protocol when an existing definition can simply be clarified. Prefer greater concision in all ledger/protocol edits.
