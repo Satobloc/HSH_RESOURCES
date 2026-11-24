@@ -370,7 +370,7 @@ Computer science and other disciplines are not predetermined subprogrammes; they
 
 The full current plan, including future stages, is:
 
-`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]ss`
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`
 
 This is the complete intention, not merely a representation of the active first stage.
 
@@ -388,7 +388,7 @@ The full signature remains visible in the conversation even while work is focuse
 
 The user's complete current plan is encoded as:
 
-`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]ss`
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`
 
 Whitespace separates the two major stages for readability; it is not a workflow operator. Compact equivalent:
 `⌖◉▣✓@⊕[bhᛟdᵃ]β⌖◉▣ρk⊕[mbxᛟd]s`
@@ -408,7 +408,7 @@ This is the complete current intention, not a fixed immutable commitment. The pl
 ## 23. Full signature repeated on every message — 2026-11-24
 
 Every assistant message in this workshop ends with the complete current signature:
-`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]ss`
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`
 
 Maintain the full string, including future workflow. Advance `@` left-to-right only when the current operation/Tock is actually complete. Do not replace it with an abbreviated active fragment.
 
@@ -650,7 +650,7 @@ The earlier formula `c = wt` is dimensionally inconsistent under the standard me
 
 **Current position:** the active Tock is the coequal, integrated biology/history reading. It is not complete; the position marker remains before this Tock. The current complete signature is:
 
-⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]ss
+⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s
 
 ### The two coequal reading streams
 
@@ -677,14 +677,14 @@ Use **Mysearch first when it is operational and validated** for direct Nathan ar
 - **d — Dimensional Normalization paper (U+0064):** Nathan McKnight & Janus C. Sol, “Metric Symmetry to Reveal the Grain,” dated 2026-09-09, marked DRAFT. The PDF is DIMENSIONAL_NORMALIZATION.pdf (SHA-256 14ecb786e2659adf227c9455e048e79ff43774574a3d9b10711613af69208b06); the companion TeX is DIMENSIONAL_NORMALIZATION.tex (Git blob 52c7183e6d4bd657f5a34efb7f40ce89b6a2dcb1); extracted text is _AUTO_EXTRACTED_TEXT/DIMENSIONAL_NORMALIZATION.txt (Git blob e7e16f5a1480c1bed98bd0e451c312b15e58cb79). Its methodological proposal is a frozen w = ct time-to-length map plus a declared transformation grammar and residual audit across heterogeneous equations. The paper explicitly makes no ontological claim and claims no new constant. Use it to ask what normalizes away and what mathematical/physical structure remains when suitable equations or formal models arise in the b/h and later mbx reading. Preserve the source's original variables and conventions first; do not silently normalize a historical equation or merge its notation with another SAT/H(s)H coordinate convention. The paper does not define Forest Normalization.
 - **β — contemporary biological reconstruction:** retain the latter-half reconnaissance pass that revisits historical material through modern biology and related sciences. It is exploratory concept-space building, not a proof or theory-validation gate.
 
-The bracketed scope strings record these companions so a tangent can be followed and the intended interpretive/method lenses recovered on return: ⊕[bhᛟdᵃ]β and ⊕[mbxᛟd]s. ᛟ is the SAT/H(s)H reading lens; d is the dimensional-normalization methodological reference. The second group retains b because biological perspective remains active throughout later mathematics/category theory and emergent cross-disciplinary exploration.
+The bracketed scope strings record interpretive and methodological companions so a tangent can be followed and the intended lenses recovered on return: ⊕[bhᛟdᵃ]β and ⊕[mbxᛟd]. ᛟ is the SAT/H(s)H reading lens; d is the dimensional-normalization methodological reference. The second group retains b because biological perspective remains active throughout later mathematics/category theory and emergent cross-disciplinary exploration. The separate trailing s is the deferred dedicated spiritualist-reading intention, not a modifier inside either integrated-work bundle.
 
 **No Tock closure or cursor advance is recorded here.** The historical-biological reading, continued archive/external source recovery, later SAT/H(s)H rereading, and β modernization pass remain active obligations.
 
 ## 28. Workflow continuity and archive-search blocker — 2026-11-24
 
 - Going forward, any user-directed workflow change or durable instruction is to be added to the appropriate ledger definition, not left only in conversation. Prefer concise edits; do not duplicate an existing rule.
-- Current Tock remains the integrated, coequal biology/history reading. Do not advance `@` until its reading, source recovery, SAT/H(s)H rereading and contemporary biological reconstruction obligations have been completed and recorded. Preserve the complete signature: `⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]ss`.
+- Current Tock remains the integrated, coequal biology/history reading. Do not advance `@` until its reading, source recovery, SAT/H(s)H rereading and contemporary biological reconstruction obligations have been completed and recorded. Preserve the complete signature: `⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`.
 - Historical and biological work must be informed by the source-authenticated Hinton (1906 edition of the 1904 first-edition work; see exact repository source below), Smith (1920), and Abbott (1884) materials, while continuing to seek further nineteenth- and early-twentieth-century sources. Keep authorial claims, historical context, later comparison and SAT/H(s)H reinterpretation distinct.
 - Archive retrieval remains Mysearch when validated/operational; otherwise Mersearch stable 1.0 across all three permitted repositories. Never represent GitHub code search as Mersearch. Do not overwrite occupied Mersearch request lanes.
 - **Current tool blocker:** the four connector bridge request files were all occupied by existing requests at inspection; the local pinned checkout route could not be run because no archive checkout/searcher was present in the runtime and the runtime could not resolve github.com. No Mersearch query was therefore executed in this session. This is a blocked retrieval operation, not a negative search result. Resume with a verified idle lane or local pinned checkout; retain all three-repository coverage and normal exclusions.
@@ -900,7 +900,7 @@ A Daily Galaxy clipping about a computer model of an Earth without life is a sec
 2. The README's test command searched root `tests/`, but the harvester test is colocated with the implementation. The command now discovers tests under `HISTORICAL/4D_HARVESTER/`.
 3. The test bootstrap pointed to the nonexistent tools directory. It now imports `harvest.py` from its own containing directory.
 4. The collection README's source/seed/output locations and the DDB capture locator in `seed_file_register.json` now match the repository paths actually inspected.
-5. The canonical ticker copies in the code ledger and operating protocol now both include the active `ᵃ` companion: `⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`.
+5. The canonical ticker copies in the code ledger and operating protocol now both include the active `ᵃ` companion and the restored trailing `s` spiritualist-reading intention: `⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`.
 
 ### Current configuration inventory
 
