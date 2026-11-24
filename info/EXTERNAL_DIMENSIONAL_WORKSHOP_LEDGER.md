@@ -228,3 +228,10 @@ Adopted a compact, repeated signature line to preserve the ordered workflow and 
 **ORIENT → BITE → INVESTIGATE → GEOMETRIZE → CONNECT → RECORD → VERIFY → NEXT**
 
 The signature carries the active branch, current task, state, and next operation. It is a context-window recovery aid; the repository ledger and protocol remain the durable records.
+
+
+## 12. Compact Unicode workflow notation — 2026-11-24
+
+The user clarified that the signature must be a compact Unicode glyph string, not a word sequence decorated with arrows. **Adjacent phase glyphs imply succession.** Current provisional assignments: ⌖ orient; ◉ focus/select bite; ⌕ investigate; ⧖ geometrize; ⤳ connect; ▣ record; ✓ verify; ⇢ next/deliberate transition.
+
+Canonical linear signature: `⌖◉⌕⧖⤳▣✓⇢`. The prefixed example `⌖◉⇢⌕⧖⤳▣✓⇢` marks the first two phases complete and a deliberate pause before investigation to decide how to proceed. Compound operators for branching, cycling, joining, waiting and stopping remain to be specified; do not invent or conflate their meanings.
