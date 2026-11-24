@@ -346,3 +346,18 @@ Interpretation:
 - `∩{mx}`: mathematics/category theory/geometric atlas integrated with naturally emerging cross-disciplinary connections.
 
 This notation is the user's proposed structure and is recorded as the current intended plan. Further syntax should only be added where actual use shows it is needed. `∩` is formally defined in the code ledger.
+
+
+## 21. Refined reading sequence — 2026-11-24
+
+The intended sequence is:
+
+**First:** integrated, coequal reading of biology and historical/cultural lineage. In particular, investigate nineteenth-century and adjacent-era treatments of biology in the historical literature, including texts and ideas that may reasonably be interpreted through a biological lens even when their authors did not use modern biological categories. Preserve the distinction between what historical authors explicitly claimed and our retrospective interpretation.
+
+**Second:** an explicit reorientation/review operation. Assess the first Tock's findings, source discoveries, conceptual connections, uncertainties, and workflow performance. Then decide whether to modify the plan for the next Tock. Revision is optional and evidence-driven; the checkpoint is required.
+
+**Third:** proceed into the larger category-theory-related reading programme, informed by the first stage and any revisions made at reorientation.
+
+The user supplied the structural pattern `⌖◉▣✓@∩{bh}⌖◉▣∩{mx}` as an earlier draft. The clarified semantics supersede that rough sequence: integrated biology/history first, explicit reorientation second, larger category theory third. The operator `∩` remains formally the intersection operator; a distinct integration/synthesis operator `⊕` is now assigned to express coequal synthesis where literal set intersection is not intended.
+
+Computer science and other disciplines are not predetermined subprogrammes; they are to be followed as natural extensions of the literature under review.
