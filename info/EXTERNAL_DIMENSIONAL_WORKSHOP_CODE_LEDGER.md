@@ -300,3 +300,20 @@ Treat this as a reconnaissance conjecture. Potential questions include:
 Keep the current SAT/H(s)H coordinate and metric conventions explicit. The archive contains differing historical conventions, including Minkowski-style language and later ++++ / cw=t / w-as-fourth-spatial-dimension descriptions; do not silently merge these. “Orthogonal w” is a working geometric description whose type and metric must be checked against the particular source/version under discussion.
 
 This idea belongs in the exploratory concept-space. It does not establish nonlocal influence, retrocausation, information transfer, or a physical mechanism. Do not dismiss it merely because the phrase has rhetorical baggage; interpret the user's intended geometry literally and formulate the question carefully.
+
+
+## Time is the W axis; no separate bridge
+
+**Adopted 2026-11-24 from direct user clarification.** In the user's current SAT/H(s)H interpretation, time is the traditional Minkowski W axis, orthogonal to X, Y, and Z. The W axis is also, distinctly, the direction of motion/propagation of the time action. Preserve both aspects without splitting them into an axis plus a separate temporal process.
+
+The user's relational formulation is deliberately symmetric: X is to Y as Y is to Z, X is to Z, and each spatial axis is related to W in the same general dimensional sense. Do not treat W as an alien region, separate domain, or extra destination that ordinary time must somehow reach.
+
+Consequences for this workshop's language:
+- If a process happens in time, its physical four-dimensional structure is extended along W. That is the ordinary implication of taking time as the W axis.
+- Do not describe time as a bridge between 3D and some separate fourth-dimensional place. Time itself is the W direction / propagation direction; **there is no additional bridge**.
+- Do not suggest that a process needs a special interdimensional crossing merely because it has temporal extension. Its extension along W is already part of what it means for it to happen in time.
+- Reserve “rounding the corner of time” or “orthogonal-w connection” for a more specific conjecture only if a distinction beyond ordinary extension along W is actually intended and defined. Do not use those phrases to reintroduce a false separation between time and W.
+- Distinguish the coordinate axis/dimensional direction W from the direction of propagation of the time action as conceptual aspects that are related but not interchangeable in every sentence. Do not collapse this distinction, but do not detach them into independent entities either.
+- The familiar three-dimensional “now” is an intersection/section of physically extended four-dimensional structure; it is not an object that must be connected to a separate temporal realm.
+
+This clarification governs all subsequent SAT/H(s)H reinterpretation, including the reading of Hinton. It supersedes any earlier workshop wording that implied a temporal bridge, a separate temporal region, or a necessary transition from ordinary time into W.
