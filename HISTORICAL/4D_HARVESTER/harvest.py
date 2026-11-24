@@ -277,7 +277,14 @@ def write_run_file(repo_root: Path, rel_path: Path, data: bytes) -> Path:
         if target.read_bytes() == data:
             return target
         raise FileExistsError(f"refusing to replace existing run artifact: {rel_path}")
-    atomic_write(target, data)
+    try:
+        # Publish without replacing a file another process may have created
+        # after the existence check. Reconcile only byte-identical artifacts.
+        atomic_create(target, data)
+    except FileExistsError:
+        if target.is_file() and not target.is_symlink() and target.read_bytes() == data:
+            return target
+        raise FileExistsError(f"refusing to replace concurrently created run artifact: {rel_path}") from None
     return target
 
 
