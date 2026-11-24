@@ -6,12 +6,12 @@ It is **not** a historical synthesis and does not pre-judge whether stigma cause
 
 ## Contents
 
-- `source_registry.json` — known acquisition routes, API status, authentication, and limitations.
-- `research_questions.md` — questions, candidate people, career-evidence protocol, and acquisition sequence.
-- `seed_file_register.json` — provenance and hashes for the initial user-provided materials.
-- `seed_inputs/` — small user-provided text capture from Deutsches Zeitungsportal search results.
-- `harvested/runs/` — immutable per-run JSONL records and run manifests.
-- `harvested/objects/` — content-addressed downloads, only when separately requested and rights-qualified.
+- `HISTORICAL/4D_HARVESTER/source_registry.json` — known acquisition routes, API status, authentication, and limitations.
+- `HISTORICAL/4D_HARVESTER/research_questions.md` — questions, candidate people, career-evidence protocol, and acquisition sequence.
+- `HISTORICAL/4D_HARVESTER/seed_file_register.json` — provenance and hashes for the initial user-provided materials.
+- `HISTORICAL/4D_HARVESTER/ddb_vierte_dimension_results_2026-11-05.txt` — small user-provided Deutsches Zeitungsportal capture.
+- `HISTORICAL/FOURTH_DIMENSION_HISTORY/harvested/runs/` — immutable per-run JSONL records and run manifests (created by the first `--apply` run).
+- `HISTORICAL/FOURTH_DIMENSION_HISTORY/harvested/objects/` — content-addressed downloads, only when separately requested and rights-qualified.
 
 The harvester implementation and its operating instructions are in `HISTORICAL/4D_HARVESTER/` (`harvest.py` and `README.md`). Its only generated-output target is `HISTORICAL/FOURTH_DIMENSION_HISTORY/harvested/`.
 
@@ -21,7 +21,7 @@ A source hit records a discovery, not a finding. Newspaper pages require full-ar
 
 The original 21 November 1924 *Neues Wiener Tagblatt* issue PDF supplied as a 93.6 MB attachment is registered by SHA-256 but is not copied into Git. It contains the two-page Feuilleton article “Das Problem des Vierdimensionalen” on PDF pages 2–3. Keep the original in a separate local source store or approved large-file store; do not replace it with OCR text.
 
-The smaller Deutsches Zeitungsportal result capture is retained under `seed_inputs/`. Its reported `42,708` total is the portal's hit count for the literal query `vierte dimension`, not a count of relevant documents.
+The smaller Deutsches Zeitungsportal result capture is retained at `HISTORICAL/4D_HARVESTER/ddb_vierte_dimension_results_2026-11-05.txt`. Its reported `42,708` total is the portal's hit count for the literal query `vierte dimension`, not a count of relevant documents. The separate `HISTORICAL/FOURTH_DIMENSION_HISTORY/seed_inputs/` directory contains the 24 November 2026 news-feed triage note.
 
 ## Scraper boundaries
 
