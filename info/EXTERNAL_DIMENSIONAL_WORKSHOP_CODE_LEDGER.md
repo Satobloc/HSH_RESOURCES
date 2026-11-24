@@ -197,3 +197,41 @@ These assumptions govern orientation at the beginning of each Tock and remain ac
 | D | Space-time organism | Organism treated as spatially and temporally extended, with time/lifetime as a fourth dimension |
 
 These letter labels are classification tags for reading notes only; they are not workflow glyphs and must not be inserted into the live signature without a separate assignment. Do not conflate A–D or infer historical influence without evidence.
+
+
+## SAT/H(s)H interpretive lens and contemporary reconstruction character
+
+| Glyph | Code point | Canonical meaning | Class | Scope |
+|---|---|---|---|---|
+| S | U+0053 | SAT/H(s)H interpretive lens | Interpretive mode | Read historical dimensional biology through the user's explicitly physical, four-dimensional SAT/H(s)H ontology. Applies to the integrated historical-biological inquiry and later synthesis. |
+| β | U+03B2 | Biological modernization / contemporary reconstruction | Research mode | In the latter portion of the reading, deliberately revisit the historical picture using modern biology, genetics, physiology, evolution, developmental biology, neuroscience where relevant, and contemporary physics/mathematics. Reconnaissance and concept-space construction are permitted; full proof or quantitative validation is not a prerequisite at this stage. |
+
+### SAT/H(s)H lens: reading rule
+
+The SAT/H(s)H lens is not a generic appeal to “some higher-dimensional component.” When interpreting the relevant historical material, treat the working premise as literal physical extension in a four-dimensional ambient reality:
+
+- Matter and organisms are physically extended structures in the four-dimensional universe, not merely three-dimensional objects supplemented by metaphorical or abstract temporal descriptions.
+- The familiar three-dimensional “now” is a section/intersection/readout of that extended structure. It exposes only the portion intersected by the present time surface; it is not the whole object.
+- The Minkowski/worldtube picture is to be read ontologically for purposes of this exploratory lens, not merely as a convenient diagram or bookkeeping device.
+- Organisms may therefore be considered as physically extended four-dimensional structures with three-dimensional sections, and their persistence, development, reproduction, morphology, and biological relations can be examined as properties of those extended structures.
+- Do not soften this premise into phrases such as “may have a four-dimensional component” or “in some higher-dimensional space.” State the physical extension directly when presenting the SAT/H(s)H interpretation.
+- Keep the distinction between the historical author's actual claim and our interpretive reconstruction explicit. In particular, describe Hinton as an approximate precursor or nearby conceptual picture only to the extent supported by his text; do not claim that he possessed the later SAT ontology or its complete physical account.
+- This interpretive premise is a declared working ontology of this workshop, not a claim that contemporary physics has independently established SAT/H(s)H.
+
+### Two-pass reading within the integrated biology-history Tock
+
+1. **Historical/source pass:** recover what the author said, what the author implied, and what can reasonably be inferred in context. Preserve terminology, qualifications, doubts, and historical setting.
+2. **SAT/H(s)H interpretation pass:** ask how the source's organism, life process, symmetry, development, identity, or morphology would be represented if treated as a physically extended four-dimensional structure whose 3D present sections are intersections with a time surface.
+
+### β phase: latter-half modernization
+
+The latter portion of the reading adds a deliberate contemporary reconstruction pass. Use modern biology, genetics, physiology, evolution, developmental biology, morphology, physics, mathematics, and other relevant disciplines to update and expand the Hinton/SAT picture. This is reconnaissance and concept-space construction: develop plausible correspondences, candidate mechanisms, diagrams, analogies with explicit type labels, questions, and research avenues. Do not stall the exercise by requiring every proposed connection to be proven to publication-grade scientific rigor before it can be explored.
+
+Maintain clear labels:
+- **Historical claim:** directly present in the source.
+- **Historical implication:** follows reasonably from the source's own argument, even if not stated in modern language.
+- **SAT/H(s)H reinterpretation:** the source re-read through the workshop's literal four-dimensional ontology.
+- **Modern biological correspondence:** a connection to established contemporary biology or physics, accurately characterized.
+- **Reconnaissance conjecture:** a tentative proposed bridge or mechanism to explore, not yet demonstrated.
+
+The β operation is exploratory, not a theory-validation or theory-promotion gate. Preserve scientific distinctions and mark uncertainty, but do not let proof obligations prematurely constrict the concept-space survey.
