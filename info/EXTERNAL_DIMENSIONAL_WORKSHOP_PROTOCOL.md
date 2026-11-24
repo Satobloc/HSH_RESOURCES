@@ -439,3 +439,18 @@ These are provisional assignments for this workshop. They are not claimed to be 
 - Keep the live signature compact: show the relevant phase string and, only when not inferable, a short current-position or branch annotation.
 
 Do not insert redundant arrows between successive phase glyphs. Do not expand the signature into prose unless explaining or revising the notation.
+
+
+## 20. Pilot status and promotion boundary
+
+This workshop is a **bespoke experimental pilot** of the workflow and Unicode-notation system. Its purpose is to discover what works in this particular collaboration and research context. Do not assume that its conventions, glyph assignments, operators, or session routine are generally useful or recommended for other users, projects, or assistants.
+
+Treat all current notation and workflow rules as pilot-local and provisional. Observe their practical performance, including clarity, compactness, recoverability, ambiguity, cognitive overhead, and ease of editing. Record useful evidence and friction, but do not prematurely generalize.
+
+Promotion beyond this workshop requires an explicit decision by the user after something noteworthy has emerged. Any proposed general recommendation should identify:
+- the observed benefit and the problem it solves;
+- the contexts in which it was actually tested;
+- known limitations, failure cases, and accessibility/rendering concerns;
+- which parts are reusable and which depend on this workshop's particular needs.
+
+Until such a decision is made, keep the system local to this pilot and label it accordingly.
