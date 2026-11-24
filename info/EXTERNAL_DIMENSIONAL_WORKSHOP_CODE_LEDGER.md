@@ -173,3 +173,15 @@ The complete live plan uses:
 `⌖◉▣✓@⊕{bh}⌖◉▣ρk⊕{mx}`
 
 The entire planned sequence remains visible in the repeated signature. `@` marks the current position; it does not remove or hide future stages. `⊕{bh}` means coequal integrated biology/history inquiry. After that, `⌖◉▣` is the explicit reorientation, next-Tock selection and plan-recording sequence; `ρ` is the lessons-learned review/decision; `k` is category-theory reading; `⊕{mx}` is mathematics/category theory integrated with naturally emerging cross-disciplinary connections. Spaces between the two displayed stages are optional readability whitespace only; adjacency otherwise implies succession.
+
+
+## Orientation assumptions (applies throughout the programme)
+
+The orientation phase `⌖` includes the following standing interpretive assumptions. These are not separate workflow stages or additional glyphs; consult them whenever interpreting later stages:
+
+1. **Dimensional reading:** Interpret the word **“higher” explicitly as “higher-dimensional”** wherever the context concerns dimensionality, spatial thought, geometry, or related mathematical/physical structures. Do not silently reduce “higher” to rank, abstraction, sophistication, or hierarchy. Preserve other meanings where the author clearly intends them, and record ambiguities rather than forcing the dimensional reading.
+2. **Cross-disciplinary attention:** Actively look for connections that a source makes explicitly, implies, or supports by a straightforward, clearly explained extension. This includes biology and other sciences, mathematics, physics, computation/computer science, cognition, and any other field naturally indicated by the material. Distinguish explicit claims, implicit implications, and our own extensions.
+3. **Biology remains active:** The biological perspective `b` remains in the working mix throughout the entire programme, including historical reading, category-theory reading, and subsequent cross-disciplinary exploration. It is not confined to the opening historical/biological Tock.
+4. **Source fidelity:** Do not attribute a modern interpretation to a historical author unless the source supports it. Separate original terminology and claims from retrospective interpretation and contemporary extension.
+
+These assumptions govern orientation at the beginning of each Tock and remain active during investigation, geometrization, connection-building, recording, and verification.
