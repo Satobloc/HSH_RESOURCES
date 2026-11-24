@@ -1567,3 +1567,51 @@ Morgan's 1940 memoir may contain a simple textual slip (“smaller” for “lar
 - Morgan's 1940 memoir is the source of the anomalous “smaller claw” wording; the exact scanned p. 327 is preserved in the screenshot record from this session.
 
 **Next:** retrieve Wilson's 1903 pp. 197–210 through an article-level BHL download, Internet Archive item/part, or separate scan; read the 1903 *Science* abstract; then determine whether Morgan 1940 is a typographical/authorial error or is describing an additional distinct experiment. Do not revise the mechanism until that check. No Tock closure or `@` advance.
+
+## 56. Loeb's 1906 and 1916 regeneration texts: source-access correction and the scope of "correlation" — 2026-11-24
+
+This section corrects the prior progress note about Loeb's 1906 *The Dynamics of Living Matter*. The searchable Wikimedia scan opened in this session contains the contents listing for Lecture XI (printed pp. 199–218), but its accessible text ends around printed p. 171. The body of Lecture XI is **not present in this scan copy/text extraction**. The lecture's listed sections include *Tubularia*, *Cerianthus*, planarians, the influence of the central nervous system on regeneration, correlations among regenerating parts, and external conditions. The ToC is not evidence of the chapter's arguments. Lecture XI remains a primary-source retrieval task.
+
+### A. What was actually read in the 1906 book
+
+The accessible text from *The Dynamics of Living Matter* (1906) does permit some direct primary-source reading of earlier material:
+- Loeb's preface and methodology emphasize experimental control and physico-chemical analysis of development, self-preservation and reproduction.
+- Lectures preceding XI discuss tropisms, organismal orientation and *Tubularia*'s contact-induced curvature. These observations concern environmental response, not the unavailable regeneration chapter.
+- The accessible scan reaches only the early part of the volume, ending around printed p. 171; it does not include the contents-listed Lecture XI at p. 199.
+
+**Status correction:** the earlier working update saying that the 1906 regeneration chapter was accessible as a complete primary text was too strong. No direct claim about the contents of Lecture XI should be attributed to this session. Seek the complete first-edition 1906 scan or another library copy before reading it.
+
+### B. Loeb's 1916 primary account does provide a separate regeneration analysis
+
+Jacques Loeb, *The Organism as a Whole, from a Physicochemical Viewpoint* (New York: G. P. Putnam's Sons, 1916), Chapter VII, “Regeneration,” has now been directly read in a complete searchable text transcription. Stable access:
+- Internet Archive source images catalogue: https://archive.org/details/organismaswholef00loeb
+- Searchable Project Gutenberg transcription: https://www.gutenberg.org/cache/epub/45962/pg45962-images.html
+- Accessible transcription with full context: https://www.arc-codex.com/library/45962
+
+The chapter opens by arguing that the organism as a whole can suppress regenerative capacities in its parts, and that isolation can release those capacities (printed pp. 153 ff.). Loeb then develops an account of correlation in regeneration through flows of sap or blood-borne substances and the influence of developing parts on other regions.
+
+Relevant primary passages inspected:
+1. **Printed pp. 153–157:** plant regeneration and organ correlation, including the Bermuda “life plant” (*Bryophyllum*), willow cuttings, and the transport of shoot-/root-forming substances. Loeb describes the “whole” as constraining regenerative potential in individual parts through circulation and the distribution/consumption of substances.
+2. **Printed pp. 159–160:** Loeb distinguishes central nervous system influence from chemical/circulatory regulation in *Amblystoma* metamorphosis. He reports that cutting the spinal cord did not prevent simultaneous metamorphosis of gills at the head and tail; he attributes the coordination to blood-borne substances rather than the central nervous system. This is a specific claim about metamorphosis, not a blanket rule that nerves never affect growth or regeneration.
+3. **Printed pp. 160–162:** Loeb describes *Tubularia* stolon pieces regenerating polyps at both ends; the oral-end polyp forms faster, and suppressing its formation can accelerate the aboral-end polyp. He interprets this as inhibition/correlation between developing parts. The text then discusses other forms of organismal regulation, tissue differentiation and the role of internal substances.
+4. **Printed p. 176:** the *Alpheus* claw-reversal observation is presented as a possible example of internal secretion or substances contained in the blood. Loeb says that after removal of the **larger** chela, the remaining small chela assumes the large form at the next molt while a small-type chela regenerates at the amputated site; repetition restores the original asymmetry. He then writes that Przibram had shown the nervous system had “no connection with this phenomenon.” His footnote [161] identifies only Przibram, *Archiv für Entwicklungsmechanik*, 1901, vol. XI, p. 329. Loeb does not cite Wilson's 1903 paper in this passage.
+
+### C. The precise scope of Loeb's Alpheus statement
+
+Loeb's sentence is not a general conclusion drawn from his own new neural experiment on *Alpheus*. It is explicitly an attribution to Przibram's 1901 report, and Loeb places it in an argument about internal secretions and blood-borne substances. This appears to be a report of what Loeb understood Przibram's experiments to have established, rather than an exhaustive review of later neurophysiological work.
+
+This matters because Wilson's 1903 work was published after Przibram's 1901 paper. Thompson (1917) and Govind, Mellon & Quigley (1987) describe an additional nerve-section experiment by Wilson. Therefore Loeb's 1916 sentence is historically intelligible as a summary of the 1901 result, but cannot be treated as the final or current account of the mechanism once the 1903 and later work are considered.
+
+### D. Correlation in regeneration: a useful distinction for the active inquiry
+
+Loeb uses “correlation” broadly for relations whereby an organism's other parts regulate what a regenerating region can become. He presents possible mediators such as:
+- circulation of formative substances through sap/blood;
+- local consumption or “suction” of those substances by a developing organ;
+- inhibition by one developing part upon another;
+- environmental conditions that alter whether or where a regenerative process proceeds.
+
+The *Tubularia* example is especially instructive: the two poles are capable of producing a polyp, but the oral pole develops sooner and inhibits or delays the aboral pole; suppressing the first permits the second to accelerate. This is a local, ordinary biological correlation within a continuous organism, not evidence for an extra spatial dimension.
+
+For the user's histological 4D proposal, Loeb offers a vocabulary for distinguishing structural connectedness, functional/regulatory coupling and circulating inter-part signals. The shrimp case supplies a more specialized paired-appendage example. Neither source establishes a physical connection among separate organisms.
+
+**Source status:** Loeb's 1916 Chapter VII is directly read in searchable primary-text transcription at the passages listed above. Its page images have not been independently checked. The 1906 Lecture XI is not read; the available scan copy is incomplete at that location. No cursor advance.
