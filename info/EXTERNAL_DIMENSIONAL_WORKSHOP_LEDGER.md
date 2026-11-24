@@ -408,3 +408,15 @@ Every assistant message in this workshop ends with the complete current signatur
 `⌖◉▣✓@⊕{bh} ⌖◉▣ρk⊕{mx}`
 
 Maintain the full string, including future workflow. Advance `@` left-to-right only when the current operation/Tock is actually complete. Do not replace it with an abbreviated active fragment.
+
+
+## 24. Standing orientation assumptions — 2026-11-24
+
+The orientation glyph `⌖` includes standing work assumptions, not merely recovery of position:
+
+- Interpret **“higher” explicitly as “higher-dimensional”** in dimensional/geometry contexts. Do not conflate this with higher rank or abstraction where those are genuinely intended; preserve ambiguity and authorial meaning.
+- Actively seek relationships to other fields when they are explicit in the source, implicit in its structure, or follow by a simple and stated extension. Mark which kind of connection is being claimed.
+- Keep biology (`b`) active throughout all stages, not only the initial integrated biology/history inquiry.
+- Preserve source fidelity: distinguish historical authors' actual claims and vocabulary from retrospective biological/dimensional interpretations and our own extensions.
+
+These are standing assumptions carried by `⌖`; no new characters or workflow steps are introduced.
