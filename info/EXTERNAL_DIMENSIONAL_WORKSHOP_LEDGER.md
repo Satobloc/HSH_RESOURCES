@@ -1093,3 +1093,43 @@ Woodger's “four-dimensional event” is an organism within a space-time contin
 **Updated primary-text status:** *Biological Principles* has now been read directly in OCR around pp. 219, 299–306. Page-image verification is still outstanding for any formal quotation. The contents and direct text are consistent about the relevant section locations. Dupré and Nicholson (2018) remains a useful secondary synthesis but is no longer the only route to Woodger's central claims.
 
 **Next:** inspect scan images for pp. 219 and 299–307 if a formal quotation or exact punctuation is required; follow Woodger's explicit four-dimensional symmetry footnote into D'Arcy Thompson, Jaeger and Whitehead; and use the part-producing/whole-producing distinction when refining the user's proposed branching organism. No Tock closure or `@` advance.
+
+
+## 48. Four-dimensional symmetry, morphology and multi-timescale dimensionality — 2026-11-24
+
+Woodger's newly inspected 1929 footnote (book p. 306) opens a useful route from temporal organismal organization into morphology and mathematical symmetry. He explicitly recommends extending the treatment of symmetry from a four-dimensional point of view, naming D'Arcy Thompson's *Growth and Form*, F. M. Jaeger's *Lectures on the Principle of Symmetry*, and Whitehead's discussions of four-dimensional geometry.
+
+### Primary and near-primary source map
+
+1. **F. M. Jaeger, *Lectures on the Principle of Symmetry and Its Applications in All Natural Sciences* (1917; 2nd augmented ed. 1920).** The Biodiversity Heritage Library identifies a 1917 Toronto-held edition and a 1920 University of California Libraries edition, the latter augmented with 173 diagrams and three portraits. Both are marked not in copyright and have digitized-page/OCR access. The Google Books record for the 1920 edition includes biological observations about symmetry, including comparative animal symmetry and evolutionary changes. BHL metadata: https://www.biodiversitylibrary.org/bibliography/22096 (1920); https://www.biodiversitylibrary.org/bibliography/19096 (1917). Full item record: https://www.biodiversitylibrary.org/item/62582. **Status:** located from Woodger's direct footnote and bibliographically inventoried; Jaeger's relevant pages have not yet been read. Do not assume that the book itself develops a 4D symmetry theory simply because Woodger cites it in a four-dimensional-symmetry footnote.
+
+2. **D'Arcy Wentworth Thompson, *On Growth and Form* (1917), Chapter XVII, “On the Theory of Transformations, or the Comparison of Related Forms.”** Project Gutenberg's catalogue identifies the book and the chapter; the original 1917 chapter is a primary source for Thompson's grid-based comparison of related biological forms. https://www.gutenberg.org/files/55264/55264-h/55264-h.htm. The first edition's Chapter XVII begins at p. 719. **Status:** source located, but primary chapter not yet read directly in this pass.
+
+3. **Wallace Arthur, “D’Arcy Thompson’s Morphological Transformations: Issues of Causality and Dimensionality,” *Biological Theory* 20, 119–130 (2025; published online 21 June 2023), DOI 10.1007/s13752-023-00438-0.** Open access: https://link.springer.com/article/10.1007/s13752-023-00438-0. Arthur argues that Thompson's familiar diagrams depict two-dimensional outlines of adult forms, and that even extending these to three spatial dimensions leaves an inadequate temporal account if one tries to interpret them as physical causal transformations. He distinguishes **developmental transformations** within one individual's lifetime from **evolutionary transformations/repatterning** over multiple generations. Drawing on Scott F. Gilbert (2007, p. 371), Arthur describes a five-dimensional evo-devo representation: three spatial dimensions plus two temporal scales (developmental and paleontological/evolutionary). Arthur immediately qualifies that these are strictly two distinct timescales, not literally two independent time dimensions; he nevertheless finds the “five dimensions” language useful for exposing analyses that ignore one of the temporal scales.
+
+4. **Scott F. Gilbert, “Fate Maps, Gene Expression Maps, and the Evidentiary Structure of Evolutionary Developmental Biology” (2007), in *From Embryology to Evo-Devo*, pp. 358–374, esp. p. 371.** The chapter's conclusion calls for a five-dimensional representation in evolutionary developmental biology, placing the familiar four space-time dimensions in the context of paleontological time. An accessible author-uploaded copy/record is indexed at https://www.academia.edu/102758256/Fate_Maps_Gene_Expression_Maps_and_the_Evidentiary_Structure_of_Evolutionary_Developmental_Biology. Arthur's article is an accessible, critically engaged route to this passage.
+
+### Conceptual distinctions to preserve
+
+This research now reveals at least four meanings of dimensionality that can coexist in biological writing without making the same claim:
+
+- **Ontological spatial dimensionality:** an organism or tissue is proposed to extend into an additional spatial direction. This remains the stronger higher-space reading associated with Hinton and the user's own distinct histological hypothesis.
+- **Spatiotemporal event dimensionality:** an ordinary organism occupies a four-dimensional space-time continuum (three spatial dimensions plus time); Woodger explicitly frames the organism as a limited event/slab and rejects the careless phrase that time is merely a fourth spatial dimension.
+- **Morphological representation dimensionality:** a biological form, projection, grid, map or diagram has a certain number of representational dimensions. A 2D grid transformation of adult body outlines does not contain all dimensions necessary to represent real ontogeny or phylogeny as physical causal processes.
+- **Multi-timescale evo-devo dimensionality:** a model must represent both within-lifetime development and across-generation evolutionary change. The “five-dimensional” vocabulary can denote three spatial dimensions plus two temporal *scales*. Arthur explicitly cautions against treating the two temporal scales as two independent physical time dimensions.
+
+### Relevance to the user's histological model
+
+The Woodger–Thompson–Arthur sequence is useful for clarifying what a biologically meaningful 4D representation must contain. Woodger supplies the temporally extended organism and 4D symmetry problem; Thompson supplies mathematical morphology, geometric transformations, and organismal shape comparison; Arthur exposes the danger of treating a static shape transformation as a complete causal account when development and evolution occur on different timescales.
+
+For the user's proposal, this suggests a methodological check: separate the geometry of an individual 4D organismal tendril from (a) its ordinary spatial morphology at a given temporal slice, (b) the developmental history of that tendril, and (c) evolutionary changes in the organization of such tendrils across generations. A model that projects all three into one undifferentiated “time” coordinate risks conflating distinct processes. Conversely, adding an extra spatial dimension must be a separately justified geometric claim, not an inference from the fact that biology needs temporal and morphological coordinates.
+
+### New biological symmetry questions
+
+- How should ordinary bilateral/radial symmetry, serial segmentation, spiral repetition and rhythm be distinguished when represented across time?
+- Can 4D symmetry transformations describe the relation between successive spatial arrangements without implying that a literal spatially higher-dimensional organism exists?
+- How does Woodger's distinction between part-producing and whole-producing division alter the interpretation of branching biological structures across ontogeny and phylogeny?
+- Does Thompson's mathematical morphology offer useful local geometric tools for tissue and body-form comparison while remaining silent about the user's larger 4D continuity hypothesis?
+- How should a multi-timescale representation track a persistent organismal pattern while its spatial parts, developmental state and lineage context change?
+
+**Next:** read Woodger's named Jaeger source at the relevant sections; read Thompson's 1917 Chapter XVII directly; inspect Arthur's complete dimensionality argument alongside Gilbert p. 371; compare their use of shape, time, symmetry and causality with the user's histological model. Keep this as current biological/history reconnaissance and not as the beginning of the deferred category-theory or dedicated spiritualist-reading programmes. No Tock closure or `@` advance.
