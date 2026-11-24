@@ -590,7 +590,7 @@ The live signature should retain the entire current intended workflow, including
 
 Append the **entire current workflow signature** to every assistant message in this workshop. Preserve all completed, current, and planned stages; do not shorten it to the active fragment. The position marker `@` identifies the next operation/current position. Advance it left-to-right only when the current operation or bounded unit is actually complete. Keep the full signature unchanged when work has progressed within a phase but has not crossed its completion boundary. The signature is the final line of each assistant response.
 
-Current adopted full signature (square-bracket group syntax): ⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd].
+Current adopted full signature (square-bracket group syntax): ⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]. The `ᵃ` companion is active archive-acquisition/research-intake infrastructure within the current biology/history Tock.
 
 
 ## 30. Orientation carries standing work assumptions
