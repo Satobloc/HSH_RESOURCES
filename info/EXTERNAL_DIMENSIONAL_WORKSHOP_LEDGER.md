@@ -1309,3 +1309,77 @@ For the user's distal-appendage hypothesis, this suggests asking separately whet
 **Source-image limit:** the PDF text was searchable and the cited passages were inspected in its OCR/text layer. The screenshot service rejected the 14.98 MB scan as too large, so page-image cross-check was unavailable. Treat the direct-primary reading as OCR-inspected, not image-verified. Any exact quotation for publication must be checked against the original scan page.
 
 **Next:** read Loeb's Lecture XI on regeneration in detail; locate the exact Przibram work(s) Jaeger had in mind; compare their experimental claims with Jaeger's symmetry-restoration summary and current regenerative biology. Keep the historical claims separate from current scientific consensus and from our 4D extension. No Tock closure or `@` advance.
+
+
+## 52. Przibram and Wilson: experimental reversal of lateral claw asymmetry — 2026-11-24
+
+This source pass sharpens the Jaeger–Loeb thread. The relevant phenomenon is **not restoration of equal bilateral symmetry**. In *Alpheus* and several other decapod crustaceans, the asymmetric differentiation of a paired appendage can be transferred from one side of the body to the other after injury. The animal remains heterochelic (one dominant claw and one lesser claw), but which side carries the dominant morphology changes.
+
+### A. Przibram's primary synthesis, 1909
+
+Hans Przibram, *Experimental-Zoologie*, II: *Regeneration: Eine Zusammenfassung der durch Versuche ermittelten Gesetzmässigkeiten tierischer Wieder-Erzeugung (Nachwachsen, Umformung, Missbildung)* (Leipzig/Wien: Franz Deuticke, 1909), VIII+338+[16] pp. Primary scanned text, with the 16 lithographic plates missing from the digital copy:
+
+- Catalogue and holding locator: Polish Academy of Sciences / IBD PAN, call no. 11735/2: https://www.rcin.org.pl/dlibra/publication/150330/edition/120492
+- Full searchable scan/OCR PDF: https://rcin.org.pl/Content/120492/PDF/WA488_150330_2011735-2_Przibram_Exp.Zool-Regeneration-BRAK-TABLIC.pdf
+- The title page and contents identify it as the second part of Przibram's experimental zoology series. The preface says the synthesis incorporates literature through 1908. The book describes a broad comparative experimental zoology of regeneration across protozoa, coelenterates, echinoderms, worms, arthropods, molluscs, urochordates and vertebrates.
+
+**Introductory taxonomy (printed pp. 1–3; OCR lines 388–453):**
+- Przibram distinguishes wound healing from regeneration in the stricter sense, which grows the lost part from the wound surface.
+- Some organisms restore form through reduction toward a more embryonic condition and subsequent reorganization. He uses “morphallaxis” for formation of a whole from a small piece by transformation/reorganization.
+- He distinguishes **correlation/correlative regulation**, where a regenerative process affects a distant part of the same organism, and **compensation/compensatory regulation**, where a related body part develops more strongly to make up for the loss elsewhere. He gives the example of injury to one antler followed by reduction of the other at the next antler change, and of compensatory enlargement of a remaining claw in crayfish.
+- Regeneration is not a uniform drive toward a single ideal form: outcomes depend on organism, part, injury, developmental stage and environmental/physiological conditions.
+
+**Decapod chela asymmetry (printed pp. 101–105; OCR lines 4692–4865):**
+- Przibram says that removing the smaller claw of certain decapods had proved a fruitful route for studying the influence of one body side upon the other (p. 101).
+- He distinguishes **homoeochely** (right and left chelae alike in size and form) from **heterochely** (asymmetric development of the paired chelae).
+- Following Stahr, he abbreviates the massive “Knoten- oder Knackschere” as the **K claw** (knobbly/crushing claw) and the slender “Zähnchen- oder Zwickschere” as the **Z claw** (small/toothed or pinching claw). These are morphological/functional types, not merely big versus small labels in every decapod.
+- In suitable heterochelous species, when the K claw is removed, the undamaged contralateral Z claw may develop into a K claw over subsequent molts, while the original K-side regenerates a new Z claw. This is **Scherenumkehr**, claw reversal (pp. 101–102).
+- Przibram cites *Alpheus* species and other taxa including *Athanas*, *Carcinus*, *Callianassa*, *Portunus* and *Typton*. Results vary: some species regenerate directly; some reverse; some show transient stages with two Z claws; outcomes can depend on sex, size, age, which claw is removed, and whether both chelae or nerves are operated on.
+- Reversal is generally more readily produced in younger animals; in larger animals it can be slower or absent. When both claws are removed, direct regeneration often occurs rather than the same reversal. The exact conditions are not resolved in all cases; Przibram explicitly calls for further experimental analysis (pp. 102–105).
+- Przibram discusses effects of nerve sections and differences in regeneration speed. This prevents a simplistic claim that all regeneration is independent of neural input.
+
+**Interpretive point:** what is maintained is not bilateral equality but a differentiated *pair* of appendages. The functional/morphological asymmetry migrates from one side to the other. Repeated removal of the newly dominant claw can reverse the pattern again. This is a particularly clear case of compensatory correlation between paired parts of one animal.
+
+### B. Wilson's original experimental report, 1903: located, not yet read
+
+Edmund B. Wilson, “Notes on the Reversal of Asymmetry in the Regeneration of the Chela in *Alpheus heterochelis*,” *Biological Bulletin* 4 (1902–1903), p. 197 onward. The volume IV table of contents explicitly lists the article at p. 197; a contemporary bibliography gives pp. 197–210, while a later bibliography in Herrick gives pp. 197–214. Treat the end page as **bibliographically inconsistent** until the original article is checked. The complete scanned *Biological Bulletin* volume IV is here: https://file.iflora.cn/fastdfs/group1/M00/63/B3/wKhnoF15ugWASWddATcI2K5PnDc835.pdf. Its searchable text extraction in the present session did not expose Wilson's article body, only the contents entry. Therefore the article is **located but not directly read**.
+
+### C. Contemporary synthesis and independent context: Herrick, 1911
+
+Francis Hobart Herrick, *Natural History of the American Lobster*, U.S. Bureau of Fisheries Bulletin (1911), digitized government publication: https://spo.nmfs.noaa.gov/sites/default/files/pdf-content/fish-bull/fb29.6.pdf. The chapter on the great forceps (especially printed pp. 276–278 in the scan) gives a useful contemporary synthesis of Przibram, Wilson, Zeleny and Emmel:
+
+- Herrick describes the *Alpheus* snapping/hammer claw and smaller opposite claw. After loss of the large claw, the smaller contralateral claw can grow into the snapping type, while the amputated side regenerates the simpler small type.
+- He reports that Wilson found sex-dependent differences in the timing/type of the regenerated claw: the male's small chela changed more rapidly because it was further advanced in the direction of the large form.
+- Removing the smaller claw, or both claws at the same time, does not produce the same reversal in *Alpheus*.
+- Przibram reported the reversal in several additional genera and found that the tendency was strongest in younger stages and declined with age.
+- Herrick stresses that this is **not a universal crustacean rule**. In the American lobster (*Homarus*), ordinary regeneration usually replaces a lost claw with one of the same type; only rare or partial changes were known, and the mechanism/extent remained disputed. He notes no evidence for a full contralateral compensation in those cases.
+
+This source is a contemporary natural-history synthesis, not a replacement for Wilson's original experiment. It is particularly useful because it makes species- and stage-dependence explicit rather than presenting one striking case as a universal symmetry law.
+
+### D. Loeb's interpretation and an important neural caveat
+
+Jacques Loeb, *The Organism as a Whole, from a Physicochemical Viewpoint* (1916), in the regeneration discussion, repeats Przibram's *Alpheus* observation and says Przibram found the nervous system unrelated to the claw-reversal phenomenon. Loeb suggests the case as a possible effect of internal secretions or substances in the blood. Searchable scan text: https://upload.wikimedia.org/wikipedia/commons/7/7e/The_organism_as_a_whole%2C_from_a_physicochemical_viewpoint_%28IA_organismaswholef00loebrich%29.pdf. The PDF itself could not be opened through the web reader in this pass because it exceeded the service's size limit; the quoted paragraph is available in the indexed search result.
+
+This must be reconciled carefully with Przibram's 1909 discussion of nerve-section experiments, where nerve cuts and differential growth rates can affect outcomes. Loeb's statement may concern the direct causal basis of *Alpheus* reversal, not the claim that nerves can never influence regeneration. The current evidence does not justify a blanket “nervous system has no effect on regeneration” statement.
+
+### E. Relation to the symmetry and histological inquiry
+
+This example requires us to keep at least four phenomena distinct:
+
+1. **Bilateral morphological symmetry:** paired structures are similar in size/form.
+2. **Stable heterochely:** paired structures are intentionally/characteristically differentiated, one K and one Z.
+3. **Compensatory lateral reversal:** after the dominant chela is lost, the contralateral minor chela changes into the dominant form while the amputated side regrows a minor form. The asymmetric pattern is retained but changes sides.
+4. **Direct regeneration:** an amputated part is replaced with the same type, without a corresponding transformation on the opposite side.
+
+Przibram/Wilson provide a historical experimental example of strong systemic interdependence between distal, paired appendages within a single animal. The uninjured side is changed by an intervention on its opposite counterpart. This is a useful ordinary-biological comparator for thinking about distal paired structures, correlated development and whole-organism regulation. It does **not** demonstrate an additional spatial axis, nonlocal action between organisms, or the user's proposed physical 4D branching continuity. The mechanisms discussed are regeneration, molt-dependent differentiation and organism-level correlation within a conventional individual crustacean.
+
+For the user's 4D histological proposal, the analogy is useful but bounded: it gives us a known case in which apparently separate body sides are not functionally independent. What remains unique to the proposal is the claim that apparently separate people/organisms can be physically continuous appendages of a larger 4D histological body. That stronger relation needs its own anatomical and geometrical specification.
+
+### F. Next source operations
+
+1. Obtain and read Wilson's original 1903 article directly; the volume scan is known but its OCR parser skipped the relevant article body. Find a BHL/Internet Archive page-level download or another readable scan.
+2. Locate Przibram's original 1901 and 1907 experimental studies. His 1909 book is a primary synthesis and includes a detailed account, but it cites these earlier reports as the experimental papers.
+3. Read Loeb's Lecture XI (1906) on regeneration in *Tubularia*, *Cerianthus* and planarians, with attention to tissue/organelle formation, correlation and environmental constraints. The contents are available, but this lecture has not yet been read in full.
+4. Compare with current experimental/regenerative biology only after the historical claims and their conditions are stable.
+
+**Status:** Przibram's 1909 primary synthesis directly OCR-inspected pp. 1–3 and 101–105; Wilson's primary paper bibliographically located but article body not yet read; Herrick's 1911 contemporary synthesis inspected; Loeb's 1916 indexed paragraph available but full scan not opened. No Tock closure or `@` advance.
