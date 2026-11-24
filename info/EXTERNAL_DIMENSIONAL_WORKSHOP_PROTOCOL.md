@@ -590,3 +590,30 @@ Append the **entire current workflow signature** to every assistant message in t
 ## 30. Orientation carries standing work assumptions
 
 Orientation (`⌖`) includes not only context recovery but also reactivation of the workshop's standing interpretive assumptions: (a) read “higher” explicitly as “higher-dimensional” in dimensional contexts, without overriding clear alternative authorial meanings; (b) actively seek explicit, implicit, and straightforwardly extended connections to other disciplines; (c) keep biological inquiry active throughout all research stages; and (d) distinguish source claims from retrospective interpretation and our own extensions. These assumptions apply throughout the workflow and require no additional signature characters.
+
+
+## 31. SAT/H(s)H ontology and biological modernization pass
+
+The workshop's historical-biological inquiry now includes an explicit SAT/H(s)H interpretive lens. It is not a generic “higher-dimensional component” qualification. For this lens, the working premise is that matter and organisms are physically extended structures in a four-dimensional ambient reality. The familiar three-dimensional present is a section/intersection/readout of those extended structures at the time surface, not the whole object. Treat the Minkowski/worldtube picture literally and ontologically for the purposes of this exploratory reconstruction, rather than as diagrammatic bookkeeping alone.
+
+When reading Hinton and related historical authors:
+- First preserve the source: distinguish what the author explicitly said, implied, and left unresolved.
+- Then perform a SAT/H(s)H reading: ask how the organism, biological process, symmetry, development, identity, or morphology would be understood as a physically extended 4D structure whose 3D sections are intersections with the present time surface.
+- Do not dilute the interpretive premise with wording such as “may have a four-dimensional component” or “in some higher-dimensional space.”
+- Do not falsely attribute the full SAT/H(s)H ontology to Hinton. Treat his picture as an approximate precursor or nearby conceptual picture only where his text warrants it, and state where our interpretation goes beyond him.
+- This is the workshop's declared working ontology, not a claim that contemporary physics has independently established SAT/H(s)H.
+
+The reading has two passes within the integrated biology-history Tock: (1) historical/source recovery and (2) SAT/H(s)H interpretation.
+
+### β: contemporary biological reconstruction
+
+Add a deliberate latter-half operation, identified by `β`, to revisit and tentatively update the historical/Hinton picture using modern biology, genetics, physiology, evolution, developmental biology, organismal morphology, physics, mathematics, and any other relevant fields. This is general reconnaissance and concept-space construction, not a formal theory-validation gate. We may build candidate correspondences, conceptual maps, possible mechanisms, and research questions without requiring every detail to be proven to publication-grade rigor before exploration proceeds.
+
+Always distinguish:
+- Historical claim.
+- Historical implication.
+- SAT/H(s)H reinterpretation.
+- Modern biological/physical correspondence.
+- Reconnaissance conjecture.
+
+Preserve scientific accuracy and mark uncertainty, but do not allow premature proof requirements to shut down the exploratory survey. The β operation is not a theory-promotion or empirical-validation step.
