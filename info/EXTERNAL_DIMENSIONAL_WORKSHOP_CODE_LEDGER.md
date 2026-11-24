@@ -29,6 +29,16 @@ No undefined placeholders. A code may refer to a real, identifiable, populated, 
 
 ### Archive retrieval and verification under ⌖ / ✓
 
+> # **CRITICAL OPERATING INSTRUCTION — MYSEARCH / MERSEARCH**
+>
+> **THERE IS NO SEPARATE MERSEARCH OR MYSEARCH “TOOL EXPOSURE.” DO NOT LOOK FOR, REQUEST, OR EXPECT STANDALONE CONNECTOR TOOLS BY THOSE NAMES.**
+>
+> Mysearch and Mersearch are **bespoke search systems that exist in the archives**: their implementations, instructions, request schemas, bridge workflows, and result/receipt structures are archive-resident. Use them **through the connected archive connector**. The connector is the interface and transport/control layer: use its repository read, write, workflow, and artifact functions to inspect and invoke the archive-resident search interfaces. Where a bespoke search route exists for an archive task, it **replaces the connector's generic archive-search functions**; do not substitute generic search merely because Mysearch/Mersearch are not listed as separately exposed tools.
+>
+> For Mersearch, use the documented connector route (including the request-lane files and Actions bridge when appropriate), then inspect the request-specific manifest and receipt. Respect lane occupancy and publication/coverage limits. A compact receipt is not an exhaustive full-hit inventory. Mysearch's current operational/validation status must be checked in its archive records; the fact that it is not a standalone exposed tool says **nothing** about whether its archive-resident implementation or route exists.
+>
+> **Generic GitHub/code search is fallback only** when the documented bespoke archive route genuinely cannot be executed. If fallback is necessary, state the precise blocker and label the result as fallback, never as Mysearch or Mersearch.
+>
 - **Mysearch is the first-choice direct-Nathan archive-search route when operational and validated.** Its current repository status record still says `SCAFFOLD ONLY / NOT VALIDATED / NOT YET A PRODUCTION SEARCH SERVICE`; do not report a Mysearch execution or rely on it as an available production route until that status changes and the route is actually accessible.
 - **Until Mysearch is operational, use Mersearch as the active archive-search standard**, pinned to stable Mersearch 1.0. Follow `Satobloc/HsH/WORKSPACES/COMMON/MERSEARCH_WORKER_START_HERE.md`; search all three permitted repositories together by default: `Satobloc/SAT_THEORY_ARCHIVE_2023-25`, `Satobloc/HsH`, and `Satobloc/HSH_RESOURCES`. Preserve the distinct source status of HSH_RESOURCES as internal reference/toolkit material, not theory authority.
 - Prefer the local pinned searcher for full, inspectable result sets. The GitHub Actions bridge's post-containment compact receipts are not exhaustive full-hit inventories. Never claim exhaustiveness from a compact receipt; report the searched roots, refs/SHAs, engine, query, exclusions, counts, receipt state and limitations.
