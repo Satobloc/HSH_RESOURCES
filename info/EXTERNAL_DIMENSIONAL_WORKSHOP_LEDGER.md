@@ -370,13 +370,13 @@ Computer science and other disciplines are not predetermined subprogrammes; they
 
 The full current plan, including future stages, is:
 
-`⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]ss`
 
 This is the complete intention, not merely a representation of the active first stage.
 
 - Completed setup: `⌖◉▣✓`.
 - Current position: `@`.
-- First Tock: `⊕[bhᛟd]β`, integrated and coequal biology plus historical/cultural reading, with emphasis on nineteenth-century and adjacent-era historical treatments of biology and retrospectively biological interpretations. Distinguish source authors' claims from our interpretations.
+- First Tock: `⊕[bhᛟdᵃ]β`, integrated and coequal biology plus historical/cultural reading, with emphasis on nineteenth-century and adjacent-era historical treatments of biology and retrospectively biological interpretations. Distinguish source authors' claims from our interpretations.
 - Review checkpoint: `ρ`, required reorientation after the first Tock; revise the next workflow only if lessons warrant it.
 - Next Tock: `k`, larger category-theory-related literature programme.
 - Following integrated Tock: `⊕[mbxᛟd]`, mathematics/category theory/geometric work together with cross-disciplinary connections that naturally emerge from the reading. Computer science is an example, not an exhaustive boundary.
@@ -388,15 +388,15 @@ The full signature remains visible in the conversation even while work is focuse
 
 The user's complete current plan is encoded as:
 
-`⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]ss`
 
 Whitespace separates the two major stages for readability; it is not a workflow operator. Compact equivalent:
-`⌖◉▣✓@⊕[bhᛟd]β⌖◉▣ρk⊕[mbxᛟd]`
+`⌖◉▣✓@⊕[bhᛟdᵃ]β⌖◉▣ρk⊕[mbxᛟd]s`
 
 Interpretation:
 1. `⌖◉▣✓`: initial orientation, Tock selection, recording and verification/setup sequence completed.
 2. `@`: current position begins at the integrated opening inquiry.
-3. `⊕[bhᛟd]β`: coequal integrated study of biology and history/cultural lineage. Give particular attention to nineteenth-century and adjacent-era historical treatments of biology, including works and ideas that may be interpreted as biological in retrospect. Keep original authorial claims distinct from retrospective interpretation.
+3. `⊕[bhᛟdᵃ]β`: coequal integrated study of biology and history/cultural lineage. Give particular attention to nineteenth-century and adjacent-era historical treatments of biology, including works and ideas that may be interpreted as biological in retrospect. Keep original authorial claims distinct from retrospective interpretation.
 4. `⌖◉▣`: after completing the opening inquiry, reorient, select/bound the next Tock, and record the revised or retained plan.
 5. `ρ`: explicit lessons-learned review and decision about whether to modify the next workflow. The checkpoint is required; modification is optional.
 6. `k`: proceed into the larger category-theory-related literature.
@@ -408,7 +408,7 @@ This is the complete current intention, not a fixed immutable commitment. The pl
 ## 23. Full signature repeated on every message — 2026-11-24
 
 Every assistant message in this workshop ends with the complete current signature:
-`⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]ss`
 
 Maintain the full string, including future workflow. Advance `@` left-to-right only when the current operation/Tock is actually complete. Do not replace it with an abbreviated active fragment.
 
@@ -650,7 +650,7 @@ The earlier formula `c = wt` is dimensionally inconsistent under the standard me
 
 **Current position:** the active Tock is the coequal, integrated biology/history reading. It is not complete; the position marker remains before this Tock. The current complete signature is:
 
-⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]
+⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]ss
 
 ### The two coequal reading streams
 
@@ -677,14 +677,14 @@ Use **Mysearch first when it is operational and validated** for direct Nathan ar
 - **d — Dimensional Normalization paper (U+0064):** Nathan McKnight & Janus C. Sol, “Metric Symmetry to Reveal the Grain,” dated 2026-09-09, marked DRAFT. The PDF is DIMENSIONAL_NORMALIZATION.pdf (SHA-256 14ecb786e2659adf227c9455e048e79ff43774574a3d9b10711613af69208b06); the companion TeX is DIMENSIONAL_NORMALIZATION.tex (Git blob 52c7183e6d4bd657f5a34efb7f40ce89b6a2dcb1); extracted text is _AUTO_EXTRACTED_TEXT/DIMENSIONAL_NORMALIZATION.txt (Git blob e7e16f5a1480c1bed98bd0e451c312b15e58cb79). Its methodological proposal is a frozen w = ct time-to-length map plus a declared transformation grammar and residual audit across heterogeneous equations. The paper explicitly makes no ontological claim and claims no new constant. Use it to ask what normalizes away and what mathematical/physical structure remains when suitable equations or formal models arise in the b/h and later mbx reading. Preserve the source's original variables and conventions first; do not silently normalize a historical equation or merge its notation with another SAT/H(s)H coordinate convention. The paper does not define Forest Normalization.
 - **β — contemporary biological reconstruction:** retain the latter-half reconnaissance pass that revisits historical material through modern biology and related sciences. It is exploratory concept-space building, not a proof or theory-validation gate.
 
-The bracketed scope strings record these companions so a tangent can be followed and the intended interpretive/method lenses recovered on return: ⊕[bhᛟd]β and ⊕[mbxᛟd]. ᛟ is the SAT/H(s)H reading lens; d is the dimensional-normalization methodological reference. The second group retains b because biological perspective remains active throughout later mathematics/category theory and emergent cross-disciplinary exploration.
+The bracketed scope strings record these companions so a tangent can be followed and the intended interpretive/method lenses recovered on return: ⊕[bhᛟdᵃ]β and ⊕[mbxᛟd]s. ᛟ is the SAT/H(s)H reading lens; d is the dimensional-normalization methodological reference. The second group retains b because biological perspective remains active throughout later mathematics/category theory and emergent cross-disciplinary exploration.
 
 **No Tock closure or cursor advance is recorded here.** The historical-biological reading, continued archive/external source recovery, later SAT/H(s)H rereading, and β modernization pass remain active obligations.
 
 ## 28. Workflow continuity and archive-search blocker — 2026-11-24
 
 - Going forward, any user-directed workflow change or durable instruction is to be added to the appropriate ledger definition, not left only in conversation. Prefer concise edits; do not duplicate an existing rule.
-- Current Tock remains the integrated, coequal biology/history reading. Do not advance `@` until its reading, source recovery, SAT/H(s)H rereading and contemporary biological reconstruction obligations have been completed and recorded. Preserve the complete signature: `⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`.
+- Current Tock remains the integrated, coequal biology/history reading. Do not advance `@` until its reading, source recovery, SAT/H(s)H rereading and contemporary biological reconstruction obligations have been completed and recorded. Preserve the complete signature: `⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]ss`.
 - Historical and biological work must be informed by the source-authenticated Hinton (1906 edition of the 1904 first-edition work; see exact repository source below), Smith (1920), and Abbott (1884) materials, while continuing to seek further nineteenth- and early-twentieth-century sources. Keep authorial claims, historical context, later comparison and SAT/H(s)H reinterpretation distinct.
 - Archive retrieval remains Mysearch when validated/operational; otherwise Mersearch stable 1.0 across all three permitted repositories. Never represent GitHub code search as Mersearch. Do not overwrite occupied Mersearch request lanes.
 - **Current tool blocker:** the four connector bridge request files were all occupied by existing requests at inspection; the local pinned checkout route could not be run because no archive checkout/searcher was present in the runtime and the runtime could not resolve github.com. No Mersearch query was therefore executed in this session. This is a blocked retrieval operation, not a negative search result. Resume with a verified idle lane or local pinned checkout; retain all three-repository coverage and normal exclusions.
@@ -844,14 +844,14 @@ Repository search specifically included labels and folders such as WEIRD, WACKY,
 
 ### Mutable pins and sequence
 
-- **PIN 5 — spiritualist/occult/Theosophical tradition:** deferred. Return **after the category-theory exploration**, then reconstruct its actual organizations, practitioners, experiments, journals/press, and historically specific links to higher-dimensional organism/body concepts. Do not collapse spiritualism, Theosophy, anthroposophy, psychical research or general occultism into one movement.
+- **PIN 5 / `s` — dedicated spiritualist/occult/Theosophical reading intention:** deferred. Return **after the category-theory exploration**, then reconstruct its actual organizations, practitioners, experiments, journals/press, and historically specific links to higher-dimensional organism/body concepts. Do not collapse spiritualism, Theosophy, anthroposophy, psychical research or general occultism into one movement.
 - **NOW:** finish general 4D organismal-biology reconnaissance using primary sources, repositories, multilingual press and unconventional/personal-science materials.
 - **NEXT / transition gate:** complete the compact synthesis and identify remaining gaps; then move to the category-theory reading sequence already signposted in the ticker.
-- **After category theory:** return to PIN 5 and the dedicated spiritualist-history branch.
+- **After category theory:** return to PIN 5 / `s` and the dedicated spiritualist-history reading branch.
 
 **Output storage rule:** all future scraped or exported workshop research materials intended for durable retention are stored in `Satobloc/HSH_RESOURCES`, preferably in the relevant source-family/harvest run structure with provenance and rights metadata. HsH receives the later selected, validated public-facing pilot/workflow package; HSH_RESOURCES remains the workshop's research-data home.
 
-**Ticker order is now explicit:** active integrated biology/history plus archive acquisition remains `⊕[bhᛟdᵃ]β`; category theory is the next planned reading branch after the overview gate; spiritualist history is PIN 5 after category theory. No current Tock closure and no `@` advance.
+**Ticker order is now explicit:** active integrated biology/history plus archive acquisition remains `⊕[bhᛟdᵃ]β`; category theory/mathematics and emergent cross-disciplinary work follows at `k⊕[mbxᛟd]`; dedicated spiritualist readings are visibly retained as trailing `s`, corresponding to deferred PIN 5 after the category-theory/math exploration. Incidental source-fidelity reading of historically relevant spiritualist material may still occur within `h`; `s` denotes the separate, systematic reading intention. No current Tock closure and no `@` advance.
 
 
 ## 36. Primary bibliographic records for the organismal-time and dimensional-analogy strands — 2026-11-24
@@ -900,7 +900,7 @@ A Daily Galaxy clipping about a computer model of an Earth without life is a sec
 2. The README's test command searched root `tests/`, but the harvester test is colocated with the implementation. The command now discovers tests under `HISTORICAL/4D_HARVESTER/`.
 3. The test bootstrap pointed to the nonexistent tools directory. It now imports `harvest.py` from its own containing directory.
 4. The collection README's source/seed/output locations and the DDB capture locator in `seed_file_register.json` now match the repository paths actually inspected.
-5. The canonical ticker copies in the code ledger and operating protocol now both include the active `ᵃ` companion: `⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]`.
+5. The canonical ticker copies in the code ledger and operating protocol now both include the active `ᵃ` companion: `⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`.
 
 ### Current configuration inventory
 
@@ -975,3 +975,20 @@ The original Satobloc/SAT_THEORY_ARCHIVE_2023-25 transcript was re-opened: FUN S
 **Access/evidence limit:** the PubMed and JSTOR records establish bibliographic identity, not the full original text. Kelz supplies accessible, page-specific quotations and contextual interpretation, but is still a secondary source. The two 1931 primary papers have **not** yet been obtained and read in full during this workshop. Do not mark them “primary text inspected” until that occurs.
 
 **Next:** obtain the complete primary texts through an accessible journal/library route; verify quotations and their surrounding arguments directly; then compare Carrel with Woodger's spatiotemporal organism and the user's distinct histological 4D topology without collapsing the three.
+
+
+## 44. Restore explicit spiritualist-reading intention marker — 2026-11-24
+
+The user explicitly restored lowercase `s` at the end of the full ticker so the dedicated spiritualist readings intention remains visible rather than being implicitly subsumed under the broader historical/cultural component `h`.
+
+**Current canonical full ticker:**
+
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`
+
+**Meaning of trailing `s` (U+0073):** a deferred, dedicated spiritualist-reading programme, corresponding to PIN 5. Its scope includes sustained reading and historical reconstruction of Spiritualism, psychical research, Theosophy, Anthroposophy and relevant occult traditions, with their actual differences, organizations, practitioners, periodicals, institutions, experimental claims and higher-dimensional/body/biological concepts preserved. Do not collapse these into one movement.
+
+**Why `s` is separate from `h`:** `h` remains the coequal historical/cultural stream of the current biology/history inquiry and may consult relevant spiritualist or psychical sources when needed to establish the immediate historical context or quote a source faithfully. Trailing `s` marks the separate systematic reading programme that remains on the to-do list after the category-theory/mathematics exploration. The existence of relevant material under `h` does not discharge `s`.
+
+**Sequence and status:** `s` is a visible future intention, not the current active Tock. It remains deferred until after the planned `k⊕[mbxᛟd]` category-theory/mathematics exploration. `@` stays before the unfinished integrated biology/history Tock. No advance or completion is implied.
+
+**Glyph history:** lowercase `s` was previously retired from a different use as the separately predetermined “Science Bridges” programme. The user has now explicitly reinstated the same code point with a new meaning: dedicated spiritualist readings. This is an intentional, documented supersession, not a silent reuse. The old Science Bridges meaning remains retired.
