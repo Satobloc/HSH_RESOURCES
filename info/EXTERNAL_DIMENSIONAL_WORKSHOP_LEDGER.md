@@ -588,3 +588,16 @@ The user further proposes that universal scientific invariants and laws, includi
 - Modern biology and physics are brought into the reconnaissance to elaborate and update the consequences of the ontology, not to decide whether the ontology is allowed as the workshop's starting premise.
 
 This section supersedes any contrary phrasing elsewhere in the workshop records, especially language that describes the W-axis ontology as a conjecture, asks whether ordinary temporal extension involves W, or treats W as a separate dimension requiring a bridge.
+
+
+## Universal coordinate conversion identities
+
+**Foundational convention, confirmed 2026-11-24:** the coordinate relations are universal across all systems:
+
+\[
+c = wt, \qquad ct = w, \qquad cw = t.
+\]
+
+These are to be preserved as the user's stipulated conversion identities in every coordinate system / reference system under consideration. Do not silently replace them with a convention that applies only in a selected frame, region, epoch, or subsystem. Do not “correct” or normalize the identities into a different expression; retain the exact three relations as stated.
+
+They are part of the foundational SAT/H(s)H coordinate ontology and are not posed as questions or optional hypotheses. Any later formal reconstruction must carry these identities explicitly and examine their mathematical consequences without weakening their stipulated universality.
