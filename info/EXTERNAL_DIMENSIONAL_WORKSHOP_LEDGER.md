@@ -297,3 +297,21 @@ The initial research plan is encoded using assigned component tokens. Left-to-ri
 7. Workshop-system evaluation and adaptation.
 
 Initial Tick sequence: `⌖◉▣✓⇢mbhpsw`. The transition marker separates setup/ledger completion from the ordered research programme. Canonical compressed string contains no spaces.
+
+
+## 18. User's preferred literature order — 2026-11-24
+
+The research programme follows the user's original topic order, not numerical order:
+**0 → 2 → 1 → 3 → 4 → 5 → 6**
+
+- 0: finish and verify the starting ledger [provisionally done; final acceptance check]
+- 2: mathematics, category theory, and geometric atlas
+- 1: biological applications
+- 3: historical and cultural lineage
+- 4: computation and modelling
+- 5: cross-disciplinary science connections
+- 6: workshop evaluation and adaptation
+
+These numeric characters are defined ordering labels / Tock components in the code ledger. They deliberately preserve the user's numbering, even though the sequence is non-monotonic. Do not sort them numerically.
+
+**Position:** setup closeout is provisionally complete, pending final completeness check. Next substantive literature Tock is 2 (mathematics/category theory/geometric atlas). The live signature should place `@` immediately before the next uncompleted component.
