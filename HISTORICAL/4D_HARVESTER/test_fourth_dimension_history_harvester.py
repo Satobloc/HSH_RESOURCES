@@ -89,7 +89,7 @@ class HarvesterTests(unittest.TestCase):
             root = Path(td)
             rel = harvest.OUTPUT_ROOT / "runs" / "r1" / "run.json"
             target = root / rel
-            competing_bytes = b'{"other-process":true}\\n'
+            competing_bytes = b'{"other-process":true}\n'
 
             def competing_create(path, data):
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -98,7 +98,7 @@ class HarvesterTests(unittest.TestCase):
 
             with patch.object(harvest, "atomic_create", side_effect=competing_create):
                 with self.assertRaises(FileExistsError):
-                    harvest.write_run_file(root, rel, b'{"this-process":true}\\n')
+                    harvest.write_run_file(root, rel, b'{"this-process":true}\n')
 
             self.assertEqual(target.read_bytes(), competing_bytes)
 
@@ -106,16 +106,14 @@ class HarvesterTests(unittest.TestCase):
             # harmless and may be treated as an idempotent success.
             with tempfile.TemporaryDirectory() as td2:
                 root2 = Path(td2)
-                target2 = root2 / rel
-
                 def identical_create(path, data):
                     path.parent.mkdir(parents=True, exist_ok=True)
                     path.write_bytes(data)
                     raise FileExistsError(path)
 
                 with patch.object(harvest, "atomic_create", side_effect=identical_create):
-                    result = harvest.write_run_file(root2, rel, b'{"same":true}\\n')
-                self.assertEqual(result.read_bytes(), b'{"same":true}\\n')
+                    result = harvest.write_run_file(root2, rel, b'{"same":true}\n')
+                self.assertEqual(result.read_bytes(), b'{"same":true}\n')
 
     def test_content_addressed_object(self):
         with tempfile.TemporaryDirectory() as td:
