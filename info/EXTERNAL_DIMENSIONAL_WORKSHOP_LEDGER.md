@@ -235,3 +235,8 @@ The signature carries the active branch, current task, state, and next operation
 The user clarified that the signature must be a compact Unicode glyph string, not a word sequence decorated with arrows. **Adjacent phase glyphs imply succession.** Current provisional assignments: ⌖ orient; ◉ focus/select bite; ⌕ investigate; ⧖ geometrize; ⤳ connect; ▣ record; ✓ verify; ⇢ next/deliberate transition.
 
 Canonical linear signature: `⌖◉⌕⧖⤳▣✓⇢`. The prefixed example `⌖◉⇢⌕⧖⤳▣✓⇢` marks the first two phases complete and a deliberate pause before investigation to decide how to proceed. Compound operators for branching, cycling, joining, waiting and stopping remain to be specified; do not invent or conflate their meanings.
+
+
+## 13. Pilot boundary — 2026-11-24
+
+The Unicode workflow notation and its associated routine are a **bespoke experimental pilot for this workshop**. They are not presumed useful, portable, or recommended outside this workflow. Evaluate them locally through use; note benefits, ambiguity, overhead, and failures. Generalization or promotion requires a separate explicit user decision based on something noteworthy and evidence from the pilot. No external recommendation is implied by inclusion in this repository.
