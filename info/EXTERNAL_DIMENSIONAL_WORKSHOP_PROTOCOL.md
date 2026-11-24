@@ -799,3 +799,31 @@ These are workflow reminders, not claims that every source will support every le
 ## 31. Durable instruction and concise-edit rule — 2026-11-24
 
 Any user-directed standing instruction, workflow change, or new required operation is recorded in the appropriate ledger definition as part of carrying it forward. Do not rely on conversational memory alone. Update the smallest authoritative record; avoid duplicating rules or expanding the protocol when an existing definition can simply be clarified. Prefer greater concision in all ledger/protocol edits.
+
+
+## 38. Living ticker and Credenza architecture — 2026-11-24
+
+The live ticker is the **first workflow guide**, not a canonical, final or complete specification. It is mutable: revise, reorder, split, combine, rename, rewrite or replace it as experience warrants. It records current position and intended direction. Retire completed/stale left-side elements once their durable progress is captured in authoritative documentation. The exact visible ticker changes with the work; no immutable full-signature rule may prevent a warranted revision.
+
+Use a journalistic inverted-pyramid documentation architecture: compact apex capsules state the essential current position and route to deeper sources. Under them sit progressively richer definitions, ledgers, source dossiers, plans, workflows, methods, calculations and tools. Optimize for minimalist representation and maximal information density. Capsules point; they do not duplicate. Preserve provenance and clear authority at each level.
+
+Adapt the full experimental Memory Credenza model and its extensions as appropriate:
+- **Key:** tiny continuity/boot capsule with remit, active position, re-entry cue and Credenza pointer.
+- **Compass:** purpose, boundaries and priorities.
+- **Atlas:** projects, branches, repositories and cross-links.
+- **Work tray:** `PIN | NOW | NEXT | RETURN`.
+- **Watchtower:** pending dependencies, stale/broken routes, review signals and neglected areas.
+- **Registers/cubbies:** purpose-specific access points, including static definitions/terms and stable references; mutable work state; pins/possibilities; sources/evidence/provenance; questions/competing interpretations; findings/decisions; tools/methods/quality controls; cross-branch connections; deferred/superseded/retired items; and experiments/capability development. Add, split, combine, rename or retire registers as demonstrated useful.
+- **Castle:** the full repository-backed information and tool environment. The Credenza routes to it and does not duplicate it.
+- **Caretaker:** a lightweight periodic review of relevance, route integrity, missing registers, duplication, neglected branches, bias and overhead. It may recommend reversible changes, not silently alter priorities/conclusions.
+- **Extensions:** coverage rotation and stratified/random neglect sampling remain possible future capabilities; implement only after an adequate inventory exists and a bounded pilot demonstrates value.
+
+When the user says “put a pin in X” or floats a possible Y, add a concise numbered/prioritized record to the mutable PIN register: label, one-line capsule, status, trigger/return cue, and pointer to expanded material if needed. Reorder, combine, split, promote to NOW/NEXT, defer or retire it as work evolves. Not every idea warrants a document.
+
+At bounded work-bite/Tock exits and periodic Credenza review points, explicitly inspect whether ticker structure, definitions/registers, compartments, notation, review cadence or documentation pyramid should be changed, extended, consolidated or retired. Define review stops in the ticker or ledger. Do not create calendar automation unless separately authorized.
+
+**Search route:** Mysearch first when verified operational; Mersearch when mathematics is part of the query or as fallback to Mysearch; GitHub repository/file search as fallback to both, explicitly labeled and never misrepresented as Mysearch/Mersearch. Search the three permitted repositories together by default, preserve exclusions and provenance, and distinguish search hits from source reading.
+
+**Tool failure is a repair obligation, not a reason to wait indefinitely.** Diagnose the failing stage (tool discovery, request ingress, queue/lane, permissions, runner, checkout, index/search, result generation, publication or readback); inspect the implementation; isolate and repair the cause or build a justified workaround; run bounded acceptance tests; record failure details and verified status. Do not overwrite occupied queues/lanes, discard another worker's work, or claim a search ran when it did not. A GitHub fallback search is useful discovery but does not prove the bespoke route was repaired.
+
+This section governs this workshop's own ticker/Credenza evolution. It does not silently adopt unrelated HsH schedules, identity, automation or scheduler controls.
