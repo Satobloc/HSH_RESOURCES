@@ -185,3 +185,15 @@ The orientation phase `⌖` includes the following standing interpretive assumpt
 4. **Source fidelity:** Do not attribute a modern interpretation to a historical author unless the source supports it. Separate original terminology and claims from retrospective interpretation and contemporary extension.
 
 These assumptions govern orientation at the beginning of each Tock and remain active during investigation, geometrization, connection-building, recording, and verification.
+
+
+## 4D biology research distinctions (working classification)
+
+| Code | Meaning | Diagnostic distinction |
+|---|---|---|
+| A | Additional spatial dimension in living matter | A genuinely extra spatial direction or motion affecting organic structure |
+| B | Higher-space vital vehicle | A four-dimensional organism/vehicle or life-principle associated with a three-dimensional body |
+| C | Effective/fractal internal dimension | Additional effective dimension of biological transport/network organization embedded in ordinary three-dimensional space |
+| D | Space-time organism | Organism treated as spatially and temporally extended, with time/lifetime as a fourth dimension |
+
+These letter labels are classification tags for reading notes only; they are not workflow glyphs and must not be inserted into the live signature without a separate assignment. Do not conflate A–D or infer historical influence without evidence.
