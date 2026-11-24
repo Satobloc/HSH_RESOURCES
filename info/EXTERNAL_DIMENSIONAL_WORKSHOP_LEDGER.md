@@ -931,3 +931,16 @@ python -m unittest discover -s HISTORICAL/4D_HARVESTER -p 'test_fourth_dimension
 python HISTORICAL/4D_HARVESTER/harvest.py --repo-root . --providers '' --query-group core
 ```
 Do not add the biological query group or launch a live provider pilot until both pass. The current ticker and Tock position are unchanged.
+
+
+## 41. Harvester concurrent-write integrity repair — 2026-11-24
+
+A deeper static review after the blocked local acceptance attempt found a race in `write_run_file()`: it checked whether a run artifact existed, then called `atomic_write()`, whose replace semantics could overwrite a file created by another process between those operations. This contradicted the intended append-only/no-clobber run-artifact rule.
+
+**Repair committed:** `write_run_file()` now uses the existing hard-link-based `atomic_create()` publication primitive. If another process wins the creation race, the harvester accepts the result only when the target is a regular non-symlink file and its bytes exactly match the intended artifact; otherwise it raises `FileExistsError` without replacing the competing file. The harvester is now version **0.2.1**.
+
+**Regression test added:** `test_run_file_never_overwrites_concurrent_creation` simulates both a competing writer with different bytes (must be preserved; our write must fail) and a competing writer with identical bytes (may be treated as idempotent success). Test-fixture newline escaping was checked and corrected during repository readback.
+
+**Commit/readback state:** code, test, README version and protocol note are committed and independently read back. The exact test suite has **NOT RUN**; the no-provider dry-run has **NOT RUN**. The added test is therefore a static/code-reviewed regression test, not a verified passing test. The previously recorded GitHub DNS blocker remains the validation blocker. No biological query group, live acquisition, `--apply`, Mersearch lane mutation, Tock completion, or `@` advance occurred.
+
+**Next cursor:** run the full documented offline suite and no-provider dry-run for version 0.2.1 from an authorized checkout/runtime with GitHub network access. Only after both pass may biological/higher-dimensional query-pack work proceed.
