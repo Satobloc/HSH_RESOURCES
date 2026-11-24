@@ -745,3 +745,27 @@ These are the same relation expressed in three algebraically equivalent forms. P
 Treat this as foundational, not as a question or conjecture. Any subsequent formalization must use this relation as given and examine its consequences consistently. Do not infer additional unit assignments or reinterpret the symbols beyond the user's definitions without an explicit source or clarification. Where dimensional analysis is performed, state the assumed meanings and units of c, w, and t explicitly and check them against this governing relation.
 
 This relation applies in all systems. Do not restrict it to a particular coordinate frame, local region, or special physical regime.
+
+
+## Correction: restore standard c, t, w relation
+
+**Correction dated 2026-11-24.** The immediately preceding entry `c = wt` was written after the user said they meant the standard physics use, then recognized they may have misstated it. It is superseded and must not be treated as a foundational SAT/H(s)H relation.
+
+The standard relation for light-travel distance is:
+
+```
+w = c t
+t = w / c
+c = w / t
+```
+
+Here:
+- `c` is the speed of light (distance per unit time),
+- `t` is elapsed time,
+- `w` is the corresponding light-travel distance / time-coordinate length.
+
+In relativity it is common to define a length-valued time coordinate, often written `ct` (or `T=ct`), so time is represented in distance units. This does not mean ordinary SI time itself has changed units; it means the coordinate `ct` has units of length. With units where c=1, the numerical value of the conversion factor is absorbed into the unit convention.
+
+The earlier formula `c = wt` is dimensionally inconsistent under the standard meanings of c (L/T), w (L), and t (T); it would have units L·T, not L/T. Do not use its rearrangements `w=c/t` or `t=c/w`.
+
+**Important notation caution:** if the workshop's W coordinate is the Minkowski time coordinate expressed as a length, write `W=ct` or explicitly define `W\equiv ct`. Avoid switching between lowercase `w` and uppercase `W` without defining whether one is a scalar coordinate value and the other an axis label. The user's broader SAT/H(s)H ontology that W is the time axis remains foundational; this correction only restores the standard dimensional relation used to express that time coordinate in length units.
