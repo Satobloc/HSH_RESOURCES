@@ -1652,3 +1652,83 @@ Morgan's 1940 National Academy memoir says Wilson repeated Przibram's Alpheus ex
 For the histological 4D proposal, the Alpheus case demonstrates distal paired-part developmental coupling within one ordinary organism. It does not establish an extra spatial dimension or physical linkage among separate organisms. Keep structural connectedness, regulatory coupling, physiological communication and organic part-whole membership distinct.
 
 **Next:** retrieve Wilson 1903 pp. 197–210 directly; inspect Przibram 1901 p. 329 and its methods; then assess whether Loeb's later summary and Morgan's 1940 memoir each contain a distinct historical misstatement. No Tock closure or cursor advance.
+
+
+## 58. Loeb 1906 Lecture XI recovered in full; Wilson's 1903 nerve experiment confirmed in Loeb's own primary text — 2026-11-24
+
+The earlier source-access limitation in section 56 is now superseded. The incomplete Wikimedia PDF was not the only scan. The Internet Archive copy linked from the Biodiversity Heritage Library (MBLWHOI item) provides the **complete 233-page text/OCR** of Jacques Loeb, *The Dynamics of Living Matter* (New York: Columbia University Press, 1906), including printed pp. 199–218, Lecture XI, “On the Dynamics of Regenerative Processes.”
+
+**Full scan/item:** https://archive.org/details/dynamicsofliving00loeb  
+**Complete searchable OCR:** https://archive.org/stream/dynamicsofliving00loeb/dynamicsofliving00loeb_djvu.txt  
+**BHL publication record:** https://www.biodiversitylibrary.org/bibliography/46232 (MBLWHOI scan is public domain; Cornell copy also public domain). BHL's alternative MBL scan/item is https://field.biodiversitylibrary.org/item/17110. Google Books' full-view record confirms 233 pages and contents: https://books.google.com/books?id=tFdm-ljZNUQC.
+
+The OCR text has now been opened and inspected across printed pp. 199–218. Page-image verification was not performed in this pass; exact quotations and technical details remain OCR-dependent and should be checked against scans before formal publication.
+
+### A. Loeb's regenerative morphology begins with physical/chemical determinants — Lecture XI, §§1–2, pp. 199–207
+
+Loeb introduces regeneration as a more experimentally tractable way to study organ formation than embryogenesis, because the egg is too small for easy experimental analysis. He takes up Sachs's hypothesis that organ form depends on differing chemical constitution and that formative substances move through plants in directed streams.
+
+**Compensatory hypertrophy:** on p. 201 Loeb notes the increase in mass of the remaining kidney after the other is removed. He suggests that, if Sachs's hypothesis applies, growth-promoting substances that formerly flowed through both glands may now be concentrated in the remaining one. This is a historical hypothesis about chemical supply, not a modern settled mechanism.
+
+**Tubularia heteromorphosis and polarity:** Loeb describes hydroid stem segments capable of forming polyps at both ends, but the oral end normally forms its polyp sooner than the aboral end. If the oral end is embedded in sand to suppress oral-pole polyp formation, the aboral polyp forms much sooner (pp. 202–203). He reasons that an internal current carries substances through the stem and that suppression of the first-formed oral polyp alters the developmental opportunity at the other pole.
+
+Loeb further observes that the hydroid is a hollow cylinder with a body cavity divided into chambers that communicate at the ends; ciliary motion establishes opposing streams of liquid, carrying pigment granules. He proposes that this current is involved in morphological polarity and notes that closing the cut ends and establishing circulation is necessary for regeneration in the experimental fragments (pp. 205–207). He says that the precise retention/localization of pigment granules still needs explanation and that the observations do not rule out Sachs's specific formative-substance hypothesis.
+
+**Interpretive value:** this is a clear historical example of organismal/regenerative pattern being treated as dependent on internal transport, tissue boundaries, circulation and spatially directed physiological processes. It is a functional/physiological continuity within an ordinary organism, not a fourth-spatial-dimensional structure.
+
+### B. Planarian regeneration and the emergence of new anatomical organization — §§3–4, pp. 207–213
+
+The chapter next discusses regeneration in the actinian *Cerianthus* and freshwater planarians. For planarians, Loeb describes how oblique cuts can produce a tiny head at the foremost corner of a fragment and a tail at the hindmost corner, rather than regenerating uniformly across the cut surface. He considers this in terms of directional currents/transport and gathering of formative substances. Where substances gather in two separated locations at the anterior end, two heads may form (around pp. 210–213).
+
+This is another historical case of morphology depending on spatially distributed physiological conditions. The appearance of multiple heads is a developmental result in a regenerating fragment, not evidence for multiple independent organisms or nonlocal agency.
+
+### C. The central nervous system and regeneration — §5, pp. 213–216
+
+The section heading itself is explicit: “On the Influence of the Central Nervous System upon Regeneration and on Phenomena of Correlation in Regeneration.”
+
+Loeb opens by stating that the central nervous system plays an important role in regeneration. He reports:
+- In the marine planarian *Thysanozoon brocchii*, an isolated head containing ganglia regenerates rapidly, while the body portion without ganglia regenerates less or more slowly (p. 213). He notes that food uptake is not responsible, since the isolated head cannot feed.
+- Other investigators (T. H. Morgan, Child, Lillie and Lillian Morgan) had found that oesophageal ganglia substantially influence regeneration in marine planarians.
+- Freshwater planarians differ: their oesophageal ganglia are not required for complete and rapid regeneration. Loeb notes that their longitudinal nerves contain more ganglia than the corresponding nerves of *Thysanozoon* (pp. 213–214).
+- In decapod crustaceans, Herbst showed that whether an amputated eye regenerates as an eye or as an antenna depends on whether the optic ganglion is removed with the eye. If the optic ganglion is removed, an antenna forms; if it is left intact, an eye forms. This was reported for *Palaemon*, *Palaemonetes*, *Sicyonia*, *Palinurus* and other crustaceans. Loeb reports Herbst's interpretation that the optic ganglion exerts a “formative stimulus” on the wound's hypodermal cells (p. 214).
+- In earthworms, Morgan reported that a new head can form at the anterior cut end of the nerve cord rather than at the external body edge if a piece of the nerve cord is removed in a particular way. In some experiments, two anterior nerve-cord ends were followed by two new heads (pp. 214–215).
+- Loeb then reviews lens induction: the optic vesicle's contact with ectoderm is required for lens formation; transplanting the optic vesicle can induce lens formation at a different ectodermal location (pp. 215–216).
+
+Loeb insists that the role of ganglia/nerves requires a physical or chemical explanation; the phrase “formative stimulus” is not by itself a mechanism. He considers two classes of possibilities: nerve conduction of stimuli and nerve conduction of substances along the axon cylinder.
+
+### D. Critical confirmation: Loeb 1906 directly reports Wilson's 1903 Alpheus nerve-section experiment — p. 216
+
+This is the decisive correction to the previous historical reconstruction.
+
+Loeb first summarizes Przibram's claw reversal: removal of the larger chela leads the smaller to assume the larger form at the next molt, while the regenerating chela assumes the smaller form. He then explicitly says:
+
+- E. B. Wilson repeated Przibram's experiments.
+- Wilson made the significant discovery that, after removal of the larger chela, growth of the remaining smaller chela did **not** occur if the nerve of that smaller chela had first been cut.
+- Loeb cautions that the number of successful operations was small, but calls the results significant.
+- Loeb interprets the result as suggesting that nerves have a function beyond conducting ordinary stimuli, namely promoting the growth or development of certain organs.
+- He considers whether nerves may carry chemical substances between the periphery and ganglion cells through the axon cylinder. He cites Hans Meyer's finding that tetanus toxin can be carried from a wound to the central nervous system through nerve axons rather than through blood vessels, lymphatics or the nerve sheath (pp. 216–217).
+
+This directly confirms the Wilson experiment described later by Thompson (1917) and Govind, Mellon & Quigley (1987). Wilson's original *Biological Bulletin* article is still not directly read, but Loeb's 1906 primary text is an independent contemporary report with a bibliographic footnote to Wilson, *Biological Bulletin*, vol. 4, p. 197.
+
+### E. Correcting the Loeb chronology and the apparent 1906/1916 contradiction
+
+The history must now be represented in two separate Loeb books:
+
+1. **Loeb 1906, *The Dynamics of Living Matter*, Lecture XI, p. 216:** explicitly cites and accepts Wilson's 1903 nerve-section finding as significant evidence for a neural role in claw reversal. Loeb concludes that nerves may have a growth/development function and speculates about axonal transport of substances.
+2. **Loeb 1916, *The Organism as a Whole, from a Physicochemical Viewpoint*, Chapter VII, p. 176:** in the searchable text previously inspected, Loeb says Przibram had shown that the nervous system had “no connection” with the *Alpheus* reversal and cites only Przibram 1901, p. 329. This is not a claim in the 1906 book. It appears to be inconsistent with his own 1906 account of Wilson's later experiment.
+
+Thus the earlier section 57 statement that the 1916 Loeb claim was merely a pre-Wilson account was incorrect. The 1916 book came after Wilson's 1903 paper and after Loeb's own 1906 discussion of it. The stronger finding is that **Loeb's 1916 text appears to revert to or repeat the older 1901 Przibram attribution while failing to mention Wilson's 1903 nerve experiment, despite his own earlier publication having acknowledged it**. Whether this is an oversight, a different interpretive context or a textual problem needs further investigation; do not infer motive.
+
+### F. Implications for our biology/history framework
+
+This chapter supplies a much better historical vocabulary for the active inquiry:
+- **morphological polarity:** why one end/region forms a particular organ and another end a different one;
+- **internal circulation / transport:** tissue cavities and directed currents as routes for substances or signals;
+- **local developmental inhibition / correlation:** activity at one pole changes what occurs at another;
+- **nervous-system formative influence:** ganglia and axons can influence regeneration and the identity of regenerated structures;
+- **heteromorphosis:** one organ type is regenerated in the place of a different one, depending on local/connected anatomical conditions;
+- **correlative organogenesis:** a developing organ or neural center can influence another region of the same organism.
+
+For the user's 4D histological proposal, the most useful distinction is now even sharper: Loeb's 1906 model describes internal, physically mediated relations within a continuous body — tissue boundaries, circulation, nerves, ganglia, local stimulus, and transported substances. These are real inter-part relations, but they remain ordinary three-dimensional biology and do not establish the proposed extra-spatial or inter-individual topology.
+
+**Source status:** Loeb 1906 Lecture XI is now directly read in full searchable OCR, including printed pp. 199–218; page-image cross-check is still outstanding. Loeb 1916 Chapter VII was separately read in searchable transcription. Wilson 1903 original paper remains located but not directly read. No Tock completion or `@` advance.
