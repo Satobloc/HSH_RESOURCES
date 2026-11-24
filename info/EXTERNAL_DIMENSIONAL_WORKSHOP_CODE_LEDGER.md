@@ -235,3 +235,30 @@ Maintain clear labels:
 - **Reconnaissance conjecture:** a tentative proposed bridge or mechanism to explore, not yet demonstrated.
 
 The β operation is exploratory, not a theory-validation or theory-promotion gate. Preserve scientific distinctions and mark uncertainty, but do not let proof obligations prematurely constrict the concept-space survey.
+
+
+## Interpretive and modernization codes
+
+| Glyph | Code point | Canonical meaning | Class | Scope |
+|---|---|---|---|---|
+| S | U+0053 | SAT/H(s)H interpretive lens | Interpretive mode | Read historical dimensional biology through the workshop's literal physical 4D ontology: matter and organisms are extended in 4D; the familiar 3D present is their section/intersection with the time surface. |
+| β | U+03B2 | Contemporary biological reconstruction | Research mode | Latter-half reconnaissance pass updating the historical/Hinton picture with modern biology, genetics, physiology, evolution, developmental biology, physics, mathematics and other relevant disciplines. Exploratory, not a proof or validation gate. |
+
+### S — SAT/H(s)H lens
+
+Do not dilute this lens into “may have a four-dimensional component” or “in some higher-dimensional space.” The working premise is literal physical extension of matter and organisms in a four-dimensional ambient universe. The ordinary three-dimensional “now” is a section/intersection/readout of that extended structure at the time surface; it reveals only the portion intersected at that moment, not the whole object. Read the Minkowski/worldtube representation ontologically for this exploratory reconstruction, not merely as diagrammatic bookkeeping.
+
+Historical source fidelity still applies. First record what Hinton or another author explicitly claims, implies, and leaves unresolved. Then state the SAT/H(s)H reinterpretation as our extension. Do not attribute the developed SAT ontology to Hinton. “Approximate precursor” or “nearby conceptual picture” is permissible only with a clear account of the resemblance and the difference. This is a workshop working ontology, not a claim that contemporary physics has independently established SAT/H(s)H.
+
+### β — modernization pass
+
+β marks the latter-half operation of revisiting and tentatively updating the historical/Hinton picture using contemporary science. Its purpose is broad reconnaissance and concept-space construction. Candidate correspondences, conceptual maps, proposed mechanisms and research questions may be developed without first proving every detail to publication-grade rigor. Accuracy and uncertainty labels remain necessary; premature proof demands must not prevent exploratory mapping.
+
+Use these provenance labels in reading notes:
+- **Historical claim**
+- **Historical implication**
+- **SAT/H(s)H reinterpretation**
+- **Modern biological/physical correspondence**
+- **Reconnaissance conjecture**
+
+β is not an empirical-validation gate or theory-promotion operation.
