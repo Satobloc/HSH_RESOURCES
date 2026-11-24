@@ -329,3 +329,20 @@ User clarified the intended sequence:
 The prior sequence `0 → 2 → 1 → 3 → 4 → 5 → 6` and the proposed independent `p`, `s`, `w` research phases did not express the user's intention. They are superseded for active planning but preserved in the record as prior drafts.
 
 **Current position:** initial ledger closeout remains provisionally complete pending the final check; substantive reading is about to begin in the coequal `b` and `h` starting streams. Mathematics `m` follows; emergent connections `x` follow the reviewed material.
+
+
+## 20. Unity operator and integrated starting streams — 2026-11-24
+
+The user clarifies that biology and historical/cultural lineage are coequal and integrated starting streams, not separate parallel branches. The operator is the actual Unicode intersection character **`∩` (U+2229)**, not a literal `u` and not the fork operator `⑂`.
+
+The intended plan shape is:
+`⌖◉▣✓@∩{bh}⌖◉▣∩{mx}`
+
+Interpretation:
+- `⌖◉▣✓`: setup/ledger sequence completed.
+- `@`: current position begins here.
+- `∩{bh}`: biology and historical/cultural lineage treated as coequal, integrated starting material.
+- `⌖◉▣`: subsequent planning/setup transition after the opening inquiry.
+- `∩{mx}`: mathematics/category theory/geometric atlas integrated with naturally emerging cross-disciplinary connections.
+
+This notation is the user's proposed structure and is recorded as the current intended plan. Further syntax should only be added where actual use shows it is needed. `∩` is formally defined in the code ledger.
