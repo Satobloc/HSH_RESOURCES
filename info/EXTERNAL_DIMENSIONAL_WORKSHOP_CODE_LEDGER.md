@@ -294,7 +294,7 @@ Use these provenance labels in reading notes:
 
 - Existing lowercase codes retain their meanings.
 - The earlier uppercase `S` designation for the SAT/H(s)H lens is superseded by `ᛟ` (U+16DF), the user's selected replacement.
-- The legacy lowercase `s` remains the retired Science Bridges component label from the earlier programme design; it is **not** reused for the SAT/H(s)H lens.
+- The legacy lowercase `s` assignment to Science Bridges remains retired; the user explicitly restored `s` on 2026-11-24 for dedicated spiritualist readings. It is not the SAT/H(s)H lens, which remains `ᛟ`.
 - The lowercase Greek beta (β) remains the contemporary biological modernization-pass character.
 - Do not use `S` or `s` as the current SAT/H(s)H lens code. Preserve their historical assignments/supersession rather than silently reassigning them.
 - Uppercase labels may be introduced later when a real ordering or organizational need arises; do not prepopulate hypothetical labels in the live signature.
