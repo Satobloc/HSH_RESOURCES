@@ -361,3 +361,21 @@ The intended sequence is:
 The user supplied the structural pattern `⌖◉▣✓@∩{bh}⌖◉▣∩{mx}` as an earlier draft. The clarified semantics supersede that rough sequence: integrated biology/history first, explicit reorientation second, larger category theory third. The operator `∩` remains formally the intersection operator; a distinct integration/synthesis operator `⊕` is now assigned to express coequal synthesis where literal set intersection is not intended.
 
 Computer science and other disciplines are not predetermined subprogrammes; they are to be followed as natural extensions of the literature under review.
+
+
+## 22. Full intended workflow signature — 2026-11-24
+
+The full current plan, including future stages, is:
+
+`⌖◉▣✓@⊕{bh}ρk⊕{mx}`
+
+This is the complete intention, not merely a representation of the active first stage.
+
+- Completed setup: `⌖◉▣✓`.
+- Current position: `@`.
+- First Tock: `⊕{bh}`, integrated and coequal biology plus historical/cultural reading, with emphasis on nineteenth-century and adjacent-era historical treatments of biology and retrospectively biological interpretations. Distinguish source authors' claims from our interpretations.
+- Review checkpoint: `ρ`, required reorientation after the first Tock; revise the next workflow only if lessons warrant it.
+- Next Tock: `k`, larger category-theory-related literature programme.
+- Following integrated Tock: `⊕{mx}`, mathematics/category theory/geometric work together with cross-disciplinary connections that naturally emerge from the reading. Computer science is an example, not an exhaustive boundary.
+
+The full signature remains visible in the conversation even while work is focused on its first active segment. Move the position marker as work completes; do not omit future intentions from the signature.
