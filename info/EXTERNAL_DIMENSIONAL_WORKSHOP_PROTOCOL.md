@@ -651,3 +651,19 @@ Treat this as an exploratory conjecture, not an established mechanism. Ask:
 Keep metric, coordinate and version conventions explicit. The archive contains differing historical descriptions, including Minkowski-style language and later ++++ / cw=t / w-as-fourth-spatial-dimension descriptions. Do not silently collapse them into one formal geometry. Treat orthogonality to w as a working geometric description whose exact type and metric must be checked against the source/version being used.
 
 Do not infer that nonlocal influence, retrocausation, information transfer, or a physical mechanism has been established. Equally, do not dismiss the line of inquiry because the phrase has rhetorical baggage; translate the user's intended physical geometry into precise questions and explore it at reconnaissance level.
+
+
+## 36. Time is W; no separate bridge or destination
+
+In the user's current SAT/H(s)H interpretation, time is the traditional Minkowski W axis orthogonal to X, Y, and Z. W is also, distinctly, the direction of motion/propagation of the time action. Preserve both aspects. Do not separate a temporal axis from an independent temporal process, but also do not collapse coordinate direction and propagation direction into an identical phrase in every context.
+
+The dimensional relations are symmetric in the user's formulation: X is to Y as Y is to Z, X is to Z, and each spatial axis is related to W in the same general dimensional sense. W is not an alien region, separate realm, or destination that ordinary time must bridge into.
+
+Therefore:
+- Any process that happens in time is physically extended along W. That is the ordinary implication of time being the W axis.
+- There is no additional bridge between three-dimensional structure and W. Time itself is the W direction and the direction of temporal propagation.
+- Do not call ordinary temporal extension an “interdimensional crossing.”
+- Use “rounding the corner of time” or “orthogonal-w connection” only for a more specific conjecture that adds a clearly defined distinction beyond ordinary extension along W. Do not let those phrases recreate a separation between time and W.
+- The familiar three-dimensional present is an intersection/section of physically extended four-dimensional structures, not a 3D object that must be connected to a separate temporal domain.
+
+This rule governs SAT/H(s)H interpretation throughout the workshop and supersedes earlier phrasing that might imply a temporal bridge, a separate time-region, or a necessary transition into W.
