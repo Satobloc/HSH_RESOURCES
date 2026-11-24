@@ -135,3 +135,78 @@ The archived file is a collected page/excerpt corpus, with mixed dates and page 
 ### Immediate next bounded operation
 
 Retrieve and inspect the primary Baez–Otter paper first. Produce a geometric reading note and a diagram of the operad/tree composition, then test whether the same visual explanation transfers to a second example from DNA segment categories or stock-flow/Petri-net models.
+
+
+## 9. Direct nLab mirror inspection — biology and higher-dimensional structures
+
+**Source:** `ncatlab/nlab-content`, the file-based Markdown mirror of nLab. The biology page was retrieved directly from the mirror at `pages/4/8/3/2/2384/content.md` and read in full. This is a substantially better source surface than relying only on the older HSH_RESOURCES page capture.
+
+### What the nLab biology page explicitly connects
+
+| Mathematical structure | Biological target / application | Geometric reading to develop | Source state |
+|---|---|---|---|
+| Ologs | Genomic ontologies, disease categories, gene expression | Typed diagrams: types as nodes, characteristic relations as directed arrows | Page fully inspected; cited primary applications pending |
+| Categories of DNA segments | Natural/experimental DNA operations and genetics | Ordered segment configurations, fibers of surjections, monotone maps and embeddings | Page gives explicit definitions; primary Tuyeras paper needs inspection |
+| Stock-flow diagrams | Epidemics and COVID-19 models | Stocks/compartments, directed flows and links; functors from a freely generated category to finite sets; open systems compose by cospans | Page gives construction and cited papers |
+| Pedigrads | Genomic data and algorithms | Functorial models built over categories of DNA segments | Primary Tuyeras papers identified |
+| Adjunctions | Pathogens, disease symptoms/diagnoses and immune responses | Two related subset lattices with paired structure-preserving maps; nLab describes a time/space-indexed version | Page gives a proposed formalization; biological validity/application must be examined in cited work |
+| Operads | Phylogenetic trees | Trees as compositional/branching structures with operadic grafting and substitution | Baez–Otter primary paper identified |
+| Persistent homology | Neuronal morphologies | Invariants of the topology of branching forms, potentially across scales | Kanari et al. (2016) identified |
+| Fuzzy simplicial sets | UMAP and computational biology | Fuzzy neighborhood relations represented by simplicial structures in data space | Jackson and Spivak technical references identified |
+| Algebraic geometry: singularities, manifolds, moduli spaces | Anatomical morphology and molecular mechanisms in cells | Spaces of forms/configurations and their singular or parameter-dependent transitions | Gromov and Zeeman references identified |
+| Hyperstructures | Biological hierarchical organization | Repeated aggregation of subsets into labeled wholes, then aggregation of those wholes | Baas references identified; geometry merits special attention |
+| Bigraphs and process calculi | Cellular organization, biochemical processes, membrane budding | Nested relational/spatial graphs with transformations representing process evolution | Milner/Krivine/Regev/Shapiro references identified |
+| 2-categories and higher-dimensional π-calculus models | Process computation and biological processes | Processes, transformations between processes, and transformations between transformations | Stay–Meredith (2015) identified; retrieve and visualize |
+| Memory Evolutive Systems | Rosen organisms, hierarchy, emergence, cognition and neural organization | Dynamical hierarchy of components/aggregates, with higher-level structures formed from lower-level ones | Ehresmann–Vanbremeersch and related literature identified |
+
+### Particularly important geometric observation: hyperstructures versus higher-dimensional categories
+
+The nLab biology page presents a useful contrast. It says hyperstructures permit biological organization that is not necessarily oriented as globular arrows; instead, biological systems may organize through aggregates and bonds.
+
+Its illustrative sequence is:
+
+`cells → selected group of liver cells → liver → organ systems → body`.
+
+Each aggregate is a subset of lower-level agents together with a label/description that identifies the aggregate. The operation repeats at higher organizational levels, with compatibility conditions among the labels.
+
+This is a particularly useful geometrical comparison for our project:
+- higher-dimensional categories organize objects and transformations in dimensionally stratified, often globular forms;
+- hyperstructures model iterated aggregation and bonding, potentially capturing organization that is not naturally represented as a simple directed sequence of globular cells.
+
+We should visualize both and compare their incidence structures, not assume one is a synonym or replacement for the other. This may also connect to the user's earlier point about lower-dimensional structures being components of a higher-dimensional whole, though the exact mathematical relation must be specified.
+
+### Cross-disciplinary extension map
+
+The nLab biology page is explicit evidence that category-theoretic methods already have direct applications across biology and computation. Its citations also point outward into:
+- genetics and genomic algorithms;
+- epidemic modeling and reaction networks;
+- evolutionary phylogenetics;
+- neuronal morphology;
+- anatomical and molecular shape;
+- biochemical process computation;
+- systems biology and theories of organisms;
+- cognitive/neural systems.
+
+This is not yet evidence that all these applications use *higher-dimensional* categories in the same sense. We will inspect the actual constructions and apply the workshop dimensional reading consistently, noting the dimensions and geometric carriers used by each.
+
+### Important nLab entry points
+
+- Biology: `ncatlab/nlab-content/pages/4/8/3/2/2384/content.md`
+- Higher structures contents: discover via the mirror's page index and links from the biology page.
+- Category theory and biology discussion: n-Category Café, November 2007.
+- Operads and Phylogenetic Trees: Baez & Otter, TAC 32 (2017), 1397–1453.
+- Category Theory for Genetics I and II: Rémy Tuyeras (2018).
+- Compositional Modeling with Stock and Flow Diagrams: Baez, Li, Libkind, Osgood and Patterson, arXiv:2205.08373.
+- A Compositional Framework for Reaction Networks: Baez & Pollard, arXiv:1704.02051.
+- Quantifying Topological Invariants of Neuronal Morphologies: Kanari et al., arXiv:1603.08432.
+- Higher Category Models of the π-Calculus: Stay & Meredith, arXiv:1504.04311.
+- Memory Evolutive Systems: Hierarchy, Emergence, Cognition: Ehresmann & Vanbremeersch (2007).
+
+### Revised next operation
+
+Begin with the nLab biology page's own diagrams and explicit definitions before jumping to a single external paper. Build three geometric plates:
+1. DNA segment and morphism-of-segments;
+2. stock-flow diagram as a composable open system;
+3. hyperstructure as a multilevel aggregate/bond hierarchy.
+
+Then inspect Baez–Otter as the first external paper, because it provides a clear evolutionary-biology case with a concrete tree geometry.
