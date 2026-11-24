@@ -2,7 +2,7 @@
 
 **Version:** 0.2.0  
 **Repository:** `Satobloc/HSH_RESOURCES`  
-**Tool location:** `tools/fourth_dimension_history_harvester/`  
+**Tool and configuration location:** `HISTORICAL/4D_HARVESTER/`  
 **Only write target:** `HISTORICAL/FOURTH_DIMENSION_HISTORY/harvested/`
 
 A reproducible, bounded source-acquisition tool for the history of physical/spatial higher-dimensional thought, the Zöllner–Slade affair, spiritualism stigma, scientific boundary-setting, and possible academic career consequences.
@@ -23,7 +23,7 @@ The harvester is a **source collector**, not a historical adjudicator. A search 
 | **Saved HTML** | Import a locally saved, already-rendered portal result page | Link labels, canonical URL, source page title, local source path | JavaScript-only pages may not preserve results in saved HTML. |
 | **Local seed files** | Register explicit local PDFs, text, HTML, XML, or JSON | SHA-256, byte size, page count and available metadata | Source file is not copied into the repository by the registration step. |
 
-See `HISTORICAL/FOURTH_DIMENSION_HISTORY/source_registry.json` for endpoint details, authentication, status, and manual archival targets.
+See `HISTORICAL/4D_HARVESTER/source_registry.json` for endpoint details, authentication, status, and manual archival targets.
 
 ## Install
 
@@ -39,22 +39,22 @@ From a local checkout of `Satobloc/HSH_RESOURCES`:
 
 ```bash
 # Preview only. Makes network requests but writes no repository files.
-python tools/fourth_dimension_history_harvester/harvest.py \
+python HISTORICAL/4D_HARVESTER/harvest.py \
   --repo-root . --query-group core --limit 10
 
 # Save records and a run manifest in a new, immutable run folder.
-python tools/fourth_dimension_history_harvester/harvest.py \
+python HISTORICAL/4D_HARVESTER/harvest.py \
   --repo-root . --query-group stigma --start-year 1876 --end-year 1938 \
   --limit 20 --apply
 
 # Save a local source file's hash and metadata, without copying the source binary.
-python tools/fourth_dimension_history_harvester/harvest.py \
+python HISTORICAL/4D_HARVESTER/harvest.py \
   --repo-root . --providers '' --query-group manual \
   --import-file /path/to/ONB_nwg_19241121.pdf \
   --import-file-url 'https://anno.onb.ac.at/' --apply
 
 # Import a saved browser capture from DDB, ANNO, Kalliope, or another archive.
-python tools/fourth_dimension_history_harvester/harvest.py \
+python HISTORICAL/4D_HARVESTER/harvest.py \
   --repo-root . --providers '' --query-group manual \
   --import-html /path/to/saved-results.html --apply
 ```
@@ -67,7 +67,7 @@ The official DDB API documentation requires a registered user and API key. Creat
 
 ```bash
 export DDB_API_KEY='your-key'
-python tools/fourth_dimension_history_harvester/harvest.py \
+python HISTORICAL/4D_HARVESTER/harvest.py \
   --repo-root . --providers ddb --query-group manual \
   --query '"vierte dimension"' \
   --start-year 1870 --end-year 1945 \
@@ -83,7 +83,7 @@ The `--ddb-max-pages` default is 5, at up to 100 results per page. To sweep more
 ANNO exposes linked-data metadata and IIIF documentation, but the currently observed full-text search route is an undocumented backend of its AnnoSearch web application. It is disabled unless explicitly enabled:
 
 ```bash
-python tools/fourth_dimension_history_harvester/harvest.py \
+python HISTORICAL/4D_HARVESTER/harvest.py \
   --repo-root . --providers anno --query-group manual \
   --query '"vierte Dimension"' \
   --start-year 1870 --end-year 1945 \
@@ -97,18 +97,18 @@ python tools/fourth_dimension_history_harvester/harvest.py \
 
 ```bash
 # Metadata search via the scholarly registries.
-python tools/fourth_dimension_history_harvester/harvest.py \
+python HISTORICAL/4D_HARVESTER/harvest.py \
   --repo-root . --providers crossref,openalex,ia --query-group people \
   --limit 50 --apply
 
 # Optional, bounded OAI-PMH ListRecords search.
-python tools/fourth_dimension_history_harvester/harvest.py \
+python HISTORICAL/4D_HARVESTER/harvest.py \
   --repo-root . --providers oai --query-group manual \
   --query 'Zöllner' --oai-endpoint 'https://example.org/oai' \
   --oai-max-batches 5 --apply
 
 # Download only sources carrying an explicit open-license/public-domain signal.
-python tools/fourth_dimension_history_harvester/harvest.py \
+python HISTORICAL/4D_HARVESTER/harvest.py \
   --repo-root . --query-group core --limit 10 --download --apply
 ```
 
@@ -117,14 +117,20 @@ Set `OPENALEX_MAILTO` to a contact address if you want to identify the polite-po
 ## Output layout
 
 ```text
-HISTORICAL/FOURTH_DIMENSION_HISTORY/
+HISTORICAL/4D_HARVESTER/
   README.md
+  README (1).md
+  harvest.py
+  queries.json
   source_registry.json
   seed_file_register.json
   research_questions.md
+  test_fourth_dimension_history_harvester.py
+
+HISTORICAL/FOURTH_DIMENSION_HISTORY/
   seed_inputs/
     ddb_vierte_dimension_results_2026-11-05.txt
-  harvested/
+  harvested/                         # created when the first --apply run is saved
     runs/<run_id>/records.jsonl
     runs/<run_id>/run.json
     objects/<first-two-sha-chars>/<sha256>.<extension>
@@ -152,11 +158,11 @@ For career consequences, collect appointment/promotion records, university or ac
 
 ## Validation
 
-Run the standard-library test suite and dry-run smoke test from the repository root:
+Run the standard-library test suite and dry-run smoke test from the repository root. The test file lives beside the implementation, under `HISTORICAL/4D_HARVESTER/`:
 
 ```bash
-python -m unittest discover -s tests -p 'test_fourth_dimension_history_harvester.py' -v
-python tools/fourth_dimension_history_harvester/harvest.py \
+python -m unittest discover -s HISTORICAL/4D_HARVESTER -p 'test_fourth_dimension_history_harvester.py' -v
+python HISTORICAL/4D_HARVESTER/harvest.py \
   --repo-root . --providers '' --query-group core
 ```
 
