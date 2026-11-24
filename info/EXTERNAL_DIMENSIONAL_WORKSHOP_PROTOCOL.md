@@ -585,3 +585,8 @@ The live signature should retain the entire current intended workflow, including
 ## 29. Persistent full-signature rule
 
 Append the **entire current workflow signature** to every assistant message in this workshop. Preserve all completed, current, and planned stages; do not shorten it to the active fragment. The position marker `@` identifies the next operation/current position. Advance it left-to-right only when the current operation or bounded unit is actually complete. Keep the full signature unchanged when work has progressed within a phase but has not crossed its completion boundary. The signature is the final line of each assistant response.
+
+
+## 30. Orientation carries standing work assumptions
+
+Orientation (`⌖`) includes not only context recovery but also reactivation of the workshop's standing interpretive assumptions: (a) read “higher” explicitly as “higher-dimensional” in dimensional contexts, without overriding clear alternative authorial meanings; (b) actively seek explicit, implicit, and straightforwardly extended connections to other disciplines; (c) keep biological inquiry active throughout all research stages; and (d) distinguish source claims from retrospective interpretation and our own extensions. These assumptions apply throughout the workflow and require no additional signature characters.
