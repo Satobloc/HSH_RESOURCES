@@ -518,3 +518,17 @@ Use **Tock–Tick** as the canonical conceptual order. A Tock is the higher-leve
 - **Closure:** finishing a Tick does not finish the Tock. Completing the Tock requires the durable-result and next-cursor test. A chat turn or tool call alone is neither.
 
 Use this hierarchy in all subsequent descriptions and records. Prefer the order **Tock → Tick** when naming the system. Preserve existing source terminology when accurately describing the original Credenza document, but our pilot's adopted convention is Tock–Tick.
+
+
+## 23. No undefined placeholders in live signatures
+
+Live workflow signatures must contain only defined operators, assigned phase glyphs, and meaningful labels or references. Do not insert empty slots, dummy branch labels, hypothetical states, or placeholder tokens merely to suggest possible future structure.
+
+Exception: a defined operator may point to a populated collection or registry whose membership is intentionally open or not yet exhaustive. The collection itself must exist and be identifiable; its members need not all be populated in advance.
+
+Distinguish:
+- **Open collection:** a real, named, populated list that may accept additional entries.
+- **Undefined placeholder:** an empty or invented token with no established referent; prohibited in signatures.
+- **Uninstantiated possibility:** a workflow structure that may be useful later; discuss it in prose, not as if it were already part of the live signature.
+
+If a branch, target, condition, or continuation is not yet defined, omit it from the signature. Define it first, then include it. Keep the signature an accurate representation of existing workflow state, not a sketch of imagined state.
