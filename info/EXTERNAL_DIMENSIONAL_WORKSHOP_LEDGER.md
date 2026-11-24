@@ -681,3 +681,11 @@ The bracketed scope strings record these companions so a tangent can be followed
 
 **No Tock closure or cursor advance is recorded here.** The historical-biological reading, continued archive/external source recovery, later SAT/H(s)H rereading, and β modernization pass remain active obligations.
 
+## 28. Workflow continuity and archive-search blocker — 2026-11-24
+
+- Going forward, any user-directed workflow change or durable instruction is to be added to the appropriate ledger definition, not left only in conversation. Prefer concise edits; do not duplicate an existing rule.
+- Current Tock remains the integrated, coequal biology/history reading. Do not advance `@` until its reading, source recovery, SAT/H(s)H rereading and contemporary biological reconstruction obligations have been completed and recorded. Preserve the complete signature: `⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`.
+- Historical and biological work must be informed by the source-authenticated Hinton (1906 edition of the 1904 first-edition work; see exact repository source below), Smith (1920), and Abbott (1884) materials, while continuing to seek further nineteenth- and early-twentieth-century sources. Keep authorial claims, historical context, later comparison and SAT/H(s)H reinterpretation distinct.
+- Archive retrieval remains Mysearch when validated/operational; otherwise Mersearch stable 1.0 across all three permitted repositories. Never represent GitHub code search as Mersearch. Do not overwrite occupied Mersearch request lanes.
+- **Current tool blocker:** the four connector bridge request files were all occupied by existing requests at inspection; the local pinned checkout route could not be run because no archive checkout/searcher was present in the runtime and the runtime could not resolve github.com. No Mersearch query was therefore executed in this session. This is a blocked retrieval operation, not a negative search result. Resume with a verified idle lane or local pinned checkout; retain all three-repository coverage and normal exclusions.
+- The user has explicitly established that future requests to do work should be recorded in the appropriate ledger definition. This is a standing update-discipline rule; future edits should be concise and nonduplicative.
