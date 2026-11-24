@@ -4,6 +4,12 @@
 
 No record-bearing catalog document contains more than **100 records**.
 
+## Active workshop
+
+- [External Dimensional Literature Workshop — Operating Protocol](info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md)
+- [Workshop Ledger and Research Queue](info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md)
+- [Workshop Reading Note Template](info/WORKSHOP_READING_NOTE_TEMPLATE.md)
+
 ## Browse the archive
 
 | View | Use it for |
