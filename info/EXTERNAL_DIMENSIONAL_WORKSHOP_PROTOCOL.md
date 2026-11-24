@@ -274,3 +274,66 @@ Start with these linked work packages:
 Start with durable workshop navigation, a compact source/idea ledger, and reusable reading-note templates. Do not build a large switchboard, database or automation before actual use demonstrates the need. Improve the system through bounded experiments, explicit failure notes and transfer to a second task.
 
 **Current next operation:** establish the workshop workspace and source/idea ledger, then begin the nLab visual atlas with the geometry of points, paths and homotopies.
+
+
+## 16. Work-bite sizing and stopping rule
+
+**Standing instruction from Nathan, 2026-11-24:** take reasonable-sized bites. Avoid both tiny, low-value nibbles and oversized chunks likely to hang, sprawl, or end without a verified result.
+
+A normal work bite should produce one coherent result, not merely touch a large number of files or topics.
+
+### Bite-size test
+
+Before starting, define:
+
+- **Question:** one central question or tightly related cluster.
+- **Scope:** a bounded set of sources, concepts, or operations.
+- **Output:** one useful artifact, explanation, diagram, comparison, or verified state change.
+- **Exit condition:** what will count as a complete bite.
+- **Next cursor:** the most valuable next operation, left explicit.
+
+Prefer a bite that can be completed, checked and recorded within one focused work session. As a practical default, use roughly 2–5 primary sources or one substantial source plus its essential context, one main geometric construction, or one coherent workflow improvement. This is a heuristic, not a quota. A genuinely short source may be paired with a related source; a difficult source may need to be divided by chapter, construction or central result.
+
+### Avoid undersized bites
+
+Do not spend a full work session merely:
+- locating one obvious source when the source can also be triaged;
+- adding a single pointer without checking its target;
+- repeating orientation or planning without advancing the work;
+- reporting a problem without making the bounded repair that is already within scope.
+
+Combine adjacent micro-operations when they naturally form one result: locate → inspect → explain; define → diagram → check; edit → read back → record.
+
+### Avoid oversized bites
+
+Do not try to:
+- survey an entire discipline in one pass;
+- digest a very large archive or wiki as one undifferentiated task;
+- build a large database, switchboard, scraper or automation before demonstrating the recurring need;
+- pursue every branch surfaced by an interesting source in the same turn;
+- make a long chain of dependent repository changes without intermediate validation.
+
+Split such work into staged bites with clear dependencies and durable intermediate outputs. Each stage should be independently useful and resumable.
+
+### Chunking and execution safeguards
+
+For large files, archives, or source collections:
+1. inspect structure and metadata first;
+2. select a bounded section or source family;
+3. process it in chunks with stable source locators;
+4. record completed coverage and remaining coverage;
+5. verify the output before moving to the next chunk.
+
+For code, searches, and repository writes, use bounded batches and inspect results between stages. Avoid large parallel bursts when they make failures hard to isolate or outputs likely to be truncated. Prefer several small, well-verified batches to one massive call.
+
+### Stop / split / continue decision
+
+At each natural boundary, ask:
+- Has the stated output been produced?
+- Is it verified to the level required?
+- Is the next operation a necessary part of this same result, or a separate branch?
+- Is additional work still producing useful evidence, clarity, capability or a discriminating test?
+
+If the bite is complete, stop and leave the next cursor. If the remaining operation is substantial but separable, split it. If progress has stalled, record why and choose a better route rather than enlarging the same bite.
+
+**The target is substantive completion at a manageable scale.** Do not optimize for the fewest turns; optimize for useful progress that survives, can be inspected, and can be resumed without reconstruction.
