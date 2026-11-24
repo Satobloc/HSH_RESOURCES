@@ -437,3 +437,8 @@ The earlier formula `c = wt` is dimensionally inconsistent under the standard me
 ## Living ticker and Credenza register codes — provisional descriptive terms
 
 These are register names and labels, not newly assigned workflow glyphs. Keep the live ticker's compact glyph syntax separate from Credenza content. Current useful registers: **STATIC** (stable definitions/terms); **PIN** (numbered mutable possibilities); **NOW**, **NEXT**, **RETURN** (current attention and re-entry); **SOURCES** (evidence/provenance); **QUESTIONS** (open questions and alternatives); **FINDINGS** (results/decisions); **METHODS** (tools, methods and quality checks); **BRANCHES** (cross-links); **PARKED** and **RETIRED** (deferred and superseded work). Registers may be added, split, combined, renamed or retired after review. A pin receives a short ID, priority/order, capsule, status, trigger/return cue and deep pointer where warranted. No new glyph assignment is made here.
+
+
+## Archive-acquisition marker — ᵃ (U+1D43)
+
+**ᵃ = archive acquisition and research-intake infrastructure.** It marks the companion capability for source discovery, multilingual archive search, scraper/provider adapters, export/import, provenance capture, corpus intake, quality/coverage checks and later publication of reusable acquisition methods. It may appear as a modifier inside an active research bundle, e.g. `⊕[bhᛟdᵃ]β`. It is a workflow/capability marker, not a research conclusion and not a claim that the machinery is operational or complete. Its state must be read from the acquisition ledger and acceptance receipts. Keep it distinct from `⌕` as the act of searching: `ᵃ` denotes the reusable infrastructure and intake program around repeated searches.
