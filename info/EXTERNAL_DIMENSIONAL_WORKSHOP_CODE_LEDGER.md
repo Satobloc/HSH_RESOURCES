@@ -432,3 +432,8 @@ In relativity it is common to define a length-valued time coordinate, often writ
 The earlier formula `c = wt` is dimensionally inconsistent under the standard meanings of c (L/T), w (L), and t (T); it would have units L·T, not L/T. Do not use its rearrangements `w=c/t` or `t=c/w`.
 
 **Important notation caution:** if the workshop's W coordinate is the Minkowski time coordinate expressed as a length, write `W=ct` or explicitly define `W\equiv ct`. Avoid switching between lowercase `w` and uppercase `W` without defining whether one is a scalar coordinate value and the other an axis label. The user's broader SAT/H(s)H ontology that W is the time axis remains foundational; this correction only restores the standard dimensional relation used to express that time coordinate in length units.
+
+
+## Living ticker and Credenza register codes — provisional descriptive terms
+
+These are register names and labels, not newly assigned workflow glyphs. Keep the live ticker's compact glyph syntax separate from Credenza content. Current useful registers: **STATIC** (stable definitions/terms); **PIN** (numbered mutable possibilities); **NOW**, **NEXT**, **RETURN** (current attention and re-entry); **SOURCES** (evidence/provenance); **QUESTIONS** (open questions and alternatives); **FINDINGS** (results/decisions); **METHODS** (tools, methods and quality checks); **BRANCHES** (cross-links); **PARKED** and **RETIRED** (deferred and superseded work). Registers may be added, split, combined, renamed or retired after review. A pin receives a short ID, priority/order, capsule, status, trigger/return cue and deep pointer where warranted. No new glyph assignment is made here.
