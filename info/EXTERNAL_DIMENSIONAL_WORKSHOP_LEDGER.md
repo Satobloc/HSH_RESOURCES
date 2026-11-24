@@ -315,3 +315,17 @@ The research programme follows the user's original topic order, not numerical or
 These numeric characters are defined ordering labels / Tock components in the code ledger. They deliberately preserve the user's numbering, even though the sequence is non-monotonic. Do not sort them numerically.
 
 **Position:** setup closeout is provisionally complete, pending final completeness check. Next substantive literature Tock is 2 (mathematics/category theory/geometric atlas). The live signature should place `@` immediately before the next uncompleted component.
+
+
+## 19. Research-order correction — 2026-11-24
+
+User clarified the intended sequence:
+- **Biological applications (`b`) and historical/cultural lineage (`h`) are coequal starting streams.** They are not ordered one after the other and neither is subordinate. They may be explored in parallel or interwoven.
+- **Mathematics/category theory/geometric atlas (`m`) follows** those initial explorations.
+- **Cross-disciplinary connections (`x`) follow from the material actually reviewed.** Computer science is an explicit example. Other fields should emerge naturally from the concepts and sources, not from a predetermined modelling agenda or closed checklist.
+- There is no separate planned "Computation and modelling" stage. Computation may arise naturally as a cross-disciplinary connection when warranted.
+- Workshop evaluation/adaptation is continuous pilot maintenance, not a final numbered research stage.
+
+The prior sequence `0 → 2 → 1 → 3 → 4 → 5 → 6` and the proposed independent `p`, `s`, `w` research phases did not express the user's intention. They are superseded for active planning but preserved in the record as prior drafts.
+
+**Current position:** initial ledger closeout remains provisionally complete pending the final check; substantive reading is about to begin in the coequal `b` and `h` starting streams. Mathematics `m` follows; emergent connections `x` follow the reviewed material.
