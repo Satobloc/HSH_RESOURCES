@@ -454,3 +454,39 @@ Promotion beyond this workshop requires an explicit decision by the user after s
 - which parts are reusable and which depend on this workshop's particular needs.
 
 Until such a decision is made, keep the system local to this pilot and label it accordingly.
+
+
+## 21. Pilot compound workflow operators (provisional)
+
+The following operators extend the linear phase string. These are local experimental conventions, not general recommendations.
+
+### Operator vocabulary
+
+| Glyph | Name | Operational meaning |
+|---|---|---|
+| `⑂` | Fork | Split the current workflow into two or more independently tracked branches. |
+| `⑃` | Rejoin | Reunite branches at a shared continuation after their outputs are available and reconciled. |
+| `⟳` | Cycle | Repeat the immediately enclosed or explicitly delimited sequence until its exit condition is met. |
+| `…` | Await | Suspend this path pending an identified event, input, result, or condition. |
+| `■` | Halt | Stop this path. It is complete, cancelled, or deliberately parked only when the state annotation says which. |
+
+### Provisional syntax and examples
+
+Use braces to delimit the scope of a compound operation; braces are structural punctuation, not operators.
+
+- Fork: `⌕⑂{A: source review | B: geometric reconstruction}`
+- Rejoin: `⑃{A+B}`
+- Fork, work independently, then rejoin: `⌕⑂{A: sources | B: geometry}⑃⤳`
+- Cycle: `⟳{⌕⧖}` means repeat investigation and geometrization as a cycle. Its stopping condition must be stated when it is not obvious.
+- Await: `…[primary source located]` means this branch is suspended until that condition is met.
+- Halt/park: `■[parked: await later evidence]`; `■[complete]` is a completed path.
+
+### Semantics and safeguards
+
+1. Fork creates distinct branches, not merely a list of topics. Each branch needs an identity and a defined task or output.
+2. Rejoin is not automatic: it requires branch outputs to be available and reconciled. If a branch is abandoned, record that explicitly rather than silently treating it as complete.
+3. A cycle needs a bounded repetition rule or an observable exit condition. Avoid unbounded repetition.
+4. Await suspends only the marked path; other branches may continue.
+5. Halt is terminal for that path unless explicitly reopened. The annotation distinguishes completed, cancelled, and parked states.
+6. Nested or overlapping constructs are allowed in principle but deferred until simple cases have been used and tested.
+7. These symbols are provisional one-code-point assignments in this workshop. They are not registered in the general glyph-assignment workbook.
