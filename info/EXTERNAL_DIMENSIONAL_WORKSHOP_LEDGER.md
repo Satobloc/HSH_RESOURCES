@@ -370,7 +370,7 @@ Computer science and other disciplines are not predetermined subprogrammes; they
 
 The full current plan, including future stages, is:
 
-`⌖◉▣✓@⊕[bhᛟd]βρk⊕[mbxᛟd]`
+`⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`
 
 This is the complete intention, not merely a representation of the active first stage.
 
