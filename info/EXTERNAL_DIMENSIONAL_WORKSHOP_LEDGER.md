@@ -267,3 +267,8 @@ A tock closes only when its intended durable result, status, and next cursor are
 ## 15. Tock–Tick hierarchy adopted — 2026-11-24
 
 Canonical order is **Tock–Tick**, with Tock as the organizational main level and Tick as the lower-order sub-operation/progress level. A Tock is a bounded work package with scope, expected durable result, exit condition, and next cursor. It contains one or more Ticks, which may form linear or compound workflows. A Tick marks progress; it does not certify Tock completion. The Credenza routes and preserves Tocks; Unicode notation describes their internal Tick structure and live state. Tock closure requires a durable result and recorded next cursor.
+
+
+## 16. Signature integrity: no undefined placeholders — 2026-11-24
+
+Live signatures contain only defined operators, assigned phase glyphs, and meaningful labels/references. No dummy slots or undefined tokens. An exception is a defined operator pointing to an identifiable, populated but extensible collection/list. Discuss uninstantiated possibilities in prose; do not encode them as live workflow state. Omit undefined branches, targets, conditions, and continuations until they are actually defined.
