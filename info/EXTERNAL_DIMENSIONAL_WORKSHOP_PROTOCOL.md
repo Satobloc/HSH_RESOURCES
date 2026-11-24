@@ -570,3 +570,8 @@ When the user supplies an explicit order, preserve it exactly, including non-mon
 ## 26. Research ordering: coequal streams and emergent connections
 
 Do not force user-described coequal subjects into a serial order. Encode them as coequal or parallel branches when appropriate. Distinguish planned research domains from connections that emerge during investigation. Cross-disciplinary exploration should follow evidence and conceptual affordances from material actually reviewed; do not impose a predetermined closed list or substitute a modelling agenda for broader connection-finding. Workshop-system evaluation is ongoing maintenance unless the user explicitly makes it a separate research stage.
+
+
+## 27. Reorientation checkpoint between major reading programmes
+
+After a substantial integrated reading Tock, include an explicit reorientation operation before starting the next major programme. Review findings, sources, unexpected connections, unresolved questions, and workflow performance. Decide whether to retain, revise, reorder, split, or expand the next programme. The checkpoint is mandatory; changing the plan is not. Keep emergent cross-disciplinary connections exploratory rather than preassigning a closed list.
