@@ -1133,3 +1133,61 @@ For the user's proposal, this suggests a methodological check: separate the geom
 - How should a multi-timescale representation track a persistent organismal pattern while its spatial parts, developmental state and lineage context change?
 
 **Next:** read Woodger's named Jaeger source at the relevant sections; read Thompson's 1917 Chapter XVII directly; inspect Arthur's complete dimensionality argument alongside Gilbert p. 371; compare their use of shape, time, symmetry and causality with the user's histological model. Keep this as current biological/history reconnaissance and not as the beginning of the deferred category-theory or dedicated spiritualist-reading programmes. No Tock closure or `@` advance.
+
+
+## 49. Jaeger and D'Arcy Thompson: symmetry as biological morphology, not a hidden fourth axis — 2026-11-24
+
+This pass follows the explicit four-dimensional-symmetry footnote in Woodger's *Biological Principles* (1929, p. 306). It establishes what the cited morphology/symmetry sources contribute and what they do not.
+
+### Jaeger: a broad symmetry programme across natural sciences
+
+**Primary bibliographic record:** F. M. Jaeger, *Lectures on the Principle of Symmetry and Its Applications in All Natural Sciences*, first edition 1917; second augmented edition, Amsterdam: Elsevier, 1920, xii + 348 pages, 173 diagrams and three portraits. The 1920 edition is held by University of California Libraries and is catalogued by the Biodiversity Heritage Library as not in copyright: https://www.biodiversitylibrary.org/bibliography/22096 and https://www.biodiversitylibrary.org/item/62582. The first edition is also catalogued in BHL (University of Toronto holding): https://www.biodiversitylibrary.org/item/58808.
+
+**Contemporary reception:** the 6 June 1918 *Nature* review, “Symmetry in Nature,” describes Jaeger's first four chapters as covering the nature, aesthetic value and laws of symmetry; symmetry as a mathematical problem; reflection/inversion and mirror-image repetition; and deriving possible symmetry types using groups of movements. It reports application to the morphology of crystals, plants and animals, including examples of highly symmetrical radiolaria and other organisms. The review further describes Jaeger's broad treatment of enantiomorphism and optical activity. Indexed text of the 1918 review: https://dbc.wroc.pl/Content/29783/PDF/032288.pdf.
+
+The 14 April 1921 *Nature* review confirms that the second edition is substantially the same as the first, with minor corrections and a few additions: https://www.nature.com/articles/107200e0. Google Books' indexed 1920 text supplies snippets defining symmetry in terms of geometrical regularity, repetition and periodic arrangement (p. 2), and discusses symmetry in living nature and evolutionary change in lower/higher animal groups (pp. 201, 203): https://books.google.com/books?id=o2tkAAAAIAAJ.
+
+**Evidence limit:** Jaeger's primary text has been located and its OCR/download routes identified, but the BHL item-text endpoint returned HTTP 403 in this session; Google Books provides only snippets. Accordingly, do not call Jaeger's book directly read yet. Its title and Woodger's reference do not establish that Jaeger develops a four-dimensional symmetry theory. The secure present conclusion is narrower: Jaeger offers a broad mathematical and natural-scientific study of symmetry, including biological morphology, crystallography and molecular optical activity.
+
+### Thompson: the 1917 transformation chapter read directly
+
+**Primary text:** D'Arcy Wentworth Thompson, *On Growth and Form* (1917), Chapter XVII, “On the Theory of Transformations, or the Comparison of Related Forms,” beginning at first-edition p. 719. The original public-domain text was read in full enough to inspect its opening argument and coordinate-transformation method: https://readingroo.ms/5/5/2/6/55264/55264-h/55264-h.htm. A readable transcription of the same public-domain chapter is available at https://redlectern.com/read/on-growth-and-form/8. Project Gutenberg's contents confirms the first-edition chapter title and page: https://www.gutenberg.org/files/55264/55264-h/55264-h.htm.
+
+**Primary findings (first-edition pagination):**
+
+- **pp. 719–722:** Thompson argues that mathematical description of form can move morphology from static shape toward dynamic relations, where a form can be treated as a diagram of forces in equilibrium and differences between related forms as indicating the magnitude/direction of forces that could produce the change. He places organic form within the wider science of form and rejects a categorical separation between organic and inorganic mathematical form; the complexity of living forms lies in the interacting forces and resistances.
+- **pp. 723–725:** the morphologist often compares related forms rather than fully defining each shape. Thompson uses Cartesian coordinates to inscribe an organism or part as a function of x,y, then deforms the coordinate system; the figure follows the transformed grid. This is a mathematical comparison of related outlines, intended to suggest a possible deformation and the forces capable of producing it. Thompson limits useful comparisons to relatively simple transformations between organisms that are manifestly related and belong to the same zoological class.
+- **Interpretive boundary:** the grid transformation is a formal representation of shape correspondence. It is not, by itself, a demonstrated causal history or a literal physical path through a fourth dimension. Thompson's confidence that the diagram can help infer force direction/magnitude should be distinguished from proof that the depicted transformation occurred as a physical process.
+
+### Arthur's dimensional-sufficiency critique
+
+Wallace Arthur, “D'Arcy Thompson's Morphological Transformations: Issues of Causality and Dimensionality,” *Biological Theory* 20, 119–130 (2025; published online 21 June 2023), DOI 10.1007/s13752-023-00438-0, open access: https://link.springer.com/article/10.1007/s13752-023-00438-0.
+
+Arthur distinguishes two different things often blurred by the iconic diagrams:
+
+1. **Developmental transformations:** physical shape changes within one individual's lifetime.
+2. **Evolutionary transformations / developmental repatterning:** changes across generations in the developmental process or its outcomes.
+
+He argues that Thompson's famous diagrams compare adult forms of different species and do not, as drawn, represent the actual physical causal process that produces those different adults. A three-dimensional spatial view alone is not enough if the relevant temporal axis is underspecified. Drawing on Scott F. Gilbert (2007, p. 371), Arthur uses a five-dimensional evo-devo representation: three spatial dimensions plus two temporal scales, developmental and evolutionary/palaeontological time. Crucially, Arthur explicitly cautions that these are **two temporal scales**, not two physically independent time dimensions. His point is methodological: one cannot explain the evolution of development while ignoring either the within-life developmental process or the across-generations changes to that process.
+
+Arthur also qualifies Thompson's causal confidence: the transformation grids may be insightful abstractions, but the exact forces responsible are not specified, and subsequent analysis of the classic crab example has found oversimplifications and misleading mappings. Thus the diagrams should not be read as a complete mechanistic explanation.
+
+### A useful three-level separation for our work
+
+The Woodger–Jaeger–Thompson–Arthur chain now suggests keeping three different dimensions of biological analysis explicit:
+
+- **Organismal spacetime continuity (Woodger):** a living organism as a temporally extended event, with spatial and temporal parts, serial change and persistence.
+- **Morphological symmetry and shape relations (Jaeger/Thompson):** patterns, repetitions, transformations and correspondences between biological forms; a geometric relation is not automatically a trajectory or causal process.
+- **Multiple biological timescales (Arthur/Gilbert):** within-organism development versus evolutionary change across generations; these are distinct scales of time, not two new physical axes.
+
+The user's histological 4D proposal should not be reduced to Thompson's shape transformations, nor should a 5D evo-devo representation be mistaken for a fourth spatial dimension. Instead, these readings supply analytic tools and guardrails: distinguish a 3D cross-section at a given time from a temporally extended organism; distinguish shape correspondence from physical continuity; and distinguish continuity within one organism from evolutionary change across generations.
+
+### Immediate implications for the private histological model
+
+1. Treat the proposed neural-core/tissue-sheath appendage as a spatially organized histological form at a given time-slice.
+2. Treat its extension and temporal branching as a separate claim about physical continuity through time. It requires an explicit criterion for when a later/earlier region is an organic part of one larger whole rather than merely a related organism.
+3. Keep ontogenetic development and phylogenetic/evolutionary change as different timescales. A family-tree diagram may encode reproductive history, but that alone does not establish the user's stronger proposed physical 4D part-whole continuity.
+4. Use symmetry (bilateral, radial, serial, spiral, metameric) to characterize relations among parts or temporal slices, not to infer an unseen spatial axis without additional premises.
+5. For causal claims, specify the physical process that realizes a proposed transformation or coordinated action; a grid, projection or symmetry relation is a representation until a mechanism is supplied.
+
+**Updated source status:** Thompson's 1917 Chapter XVII has been directly read from the public-domain text; Arthur's full open-access article has been inspected; Jaeger is located and its contemporary review and Google Books snippets inspected, but Jaeger's primary text is not yet fully read. No new primary four-dimensional biological organism claim has been identified here. No Tock closure or `@` advance.
