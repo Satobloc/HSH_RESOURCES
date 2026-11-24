@@ -505,3 +505,16 @@ Use **TOCK–TICK** as the canonical conceptual and organizational order. The to
 - Keep the hierarchy shallow unless actual work requires nesting. Do not make every tick a tock or create a tock for every chat turn.
 
 This replaces any wording or diagram that places Tick before Tock as the organizational hierarchy. It refines, rather than discards, the Credenza model's operational distinction between the tick as place marker and the tock as a completed bounded operation.
+
+
+## 22. Tock–Tick hierarchy
+
+Use **Tock–Tick** as the canonical conceptual order. A Tock is the higher-level bounded work unit; Ticks are the lower-order operations and progress markers within it. This is an organizational hierarchy, not merely a temporal sequence.
+
+- **Tock:** a bounded work package, session objective, or coherent deliverable. It has a purpose, scope, expected result, and completion/exit condition. A Tock is complete only when its result is durable and its next cursor is recorded.
+- **Tick:** a sub-operation, transition, inspection, or position marker within a Tock. A Tick records where the work is, not that the enclosing Tock is complete.
+- **Tock–Tick relationship:** one Tock contains an ordered or compound arrangement of Ticks. A Tock may contain linear, branched, cyclic, waiting, or halted paths using the Unicode workflow operators.
+- **Credenza relationship:** the Credenza organizes and routes Tocks, preserves their context and return cues, and keeps wider work visible. The glyph notation describes the internal Tick structure and live state of a Tock.
+- **Closure:** finishing a Tick does not finish the Tock. Completing the Tock requires the durable-result and next-cursor test. A chat turn or tool call alone is neither.
+
+Use this hierarchy in all subsequent descriptions and records. Prefer the order **Tock → Tick** when naming the system. Preserve existing source terminology when accurately describing the original Credenza document, but our pilot's adopted convention is Tock–Tick.
