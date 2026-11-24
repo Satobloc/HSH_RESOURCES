@@ -490,3 +490,18 @@ Use braces to delimit the scope of a compound operation; braces are structural p
 5. Halt is terminal for that path unless explicitly reopened. The annotation distinguishes completed, cancelled, and parked states.
 6. Nested or overlapping constructs are allowed in principle but deferred until simple cases have been used and tested.
 7. These symbols are provisional one-code-point assignments in this workshop. They are not registered in the general glyph-assignment workbook.
+
+
+## 22. Tock–tick hierarchy (pilot convention)
+
+Use **TOCK–TICK** as the canonical conceptual and organizational order. The tock is the larger work unit; ticks are its smaller constituent operations.
+
+- **Tock:** a bounded, coherent work package or main-level unit of progress. It has a purpose, scope, intended result, and completion/exit condition. A tock may contain multiple ticks and may itself contain subordinate tocks only when useful.
+- **Tick:** a lower-order operation within a tock: a step, inspection, calculation, source read, diagram, branch action, or verification operation. Ticks help locate and sequence the work inside the larger unit.
+- A tick is not automatically a completed tock. Completing several ticks may contribute to a tock, but the tock is complete only when its intended durable result and next cursor have been recorded and checked.
+- The Unicode workflow string primarily tracks tick-level operations and their control structure. The Credenza's work tray and project/branch map organize tocks and their return points.
+- Canonical sequence: **Tock → ticks → durable result → tock closure/advance**. The Credenza may retain a larger queue of tocks while the active tock carries its own tick sequence.
+- A tick marker is a position indicator, not evidence of completion. Tock closure requires an inspectable result, status, and next cursor.
+- Keep the hierarchy shallow unless actual work requires nesting. Do not make every tick a tock or create a tock for every chat turn.
+
+This replaces any wording or diagram that places Tick before Tock as the organizational hierarchy. It refines, rather than discards, the Credenza model's operational distinction between the tick as place marker and the tock as a completed bounded operation.
