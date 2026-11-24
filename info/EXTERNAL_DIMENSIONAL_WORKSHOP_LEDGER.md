@@ -540,3 +540,26 @@ Continue the historical-biological sweep with:
 - Smith's cited antecedents (Bergson, James, Carrington, Balfour);
 - historical writing on vitalism and the late-Victorian science/spiritualism interface;
 - then inspect modern chirality and organismal morphology as comparison points, not retroactive validation.
+
+
+## Corrected temporal ontology: W is time; no separate bridge
+
+**Adopted 2026-11-24 from direct user clarification.** In the current SAT/H(s)H interpretation, time is the traditional Minkowski W axis, orthogonal to X, Y, and Z. W is also, distinctly, the direction of motion/propagation of the time action. Preserve both aspects without splitting them into an axis plus an independent temporal process.
+
+The dimensional relation is symmetric: X is to Y as Y is to Z, X is to Z, and each spatial axis is related to W in the same general dimensional sense. Do not treat W as an alien region, separate realm, or destination that ordinary time must bridge into.
+
+Consequences:
+- If a process happens in time, its physical four-dimensional structure is extended along W. This is the ordinary implication of taking time as the W axis.
+- There is no additional bridge between 3D structure and W. Time itself is the W direction and direction of temporal propagation.
+- Do not describe ordinary temporal extension as a special interdimensional crossing.
+- Reserve “rounding the corner of time” or “orthogonal-w connection” for a more specific conjecture only if a distinction beyond ordinary extension along W is actually intended and defined.
+- Distinguish the coordinate axis/dimensional direction W from the direction of propagation of the time action as conceptual aspects that are related but not interchangeable in every sentence. Do not collapse them, but do not detach them into independent entities either.
+- The familiar 3D present is an intersection/section of physically extended 4D structure, not an object that must be connected to a separate temporal realm.
+
+This clarification governs all subsequent SAT/H(s)H interpretation, including Hinton. It supersedes earlier wording that implied a temporal bridge, separate temporal region, or necessary transition into W.
+
+### w=ct and equal status of dimensions
+
+The user's current statement is that w=ct everywhere and at all times and places, with time measured in meters. Unless a source or argument justifies a difference, X, Y, Z, and W are unified coordinate axes of the same space and should be treated alike dimensionally. The directly observed distinguishing feature is that W carries an obligatory motion/expansion vector, or possibly a rotation vector. Do not silently decide between motion/expansion and rotation; retain the alternative as unresolved.
+
+The user further proposes that universal scientific invariants and laws, including Newton's laws, are universal throughout the block-universe model. Time/W is involved in exerting or transmitting force in the ordinary way along W, while apparent differences arise from the obligate vector attached to W. Treat this as the current interpretive proposal to explore, not as a completed derivation. Do not reintroduce a time/space ontological split merely because conventional notation or interpretation does so. Preserve the user's W-metric and unit convention when reconstructing this view; check signature/metric details against the particular SAT/H(s)H version rather than assume the conventional Lorentzian metric has already been adopted.
