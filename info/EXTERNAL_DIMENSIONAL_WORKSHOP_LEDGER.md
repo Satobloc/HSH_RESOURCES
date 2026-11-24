@@ -420,3 +420,53 @@ The orientation glyph `⌖` includes standing work assumptions, not merely recov
 - Preserve source fidelity: distinguish historical authors' actual claims and vocabulary from retrospective biological/dimensional interpretations and our own extensions.
 
 These are standing assumptions carried by `⌖`; no new characters or workflow steps are introduced.
+
+
+## 25. First historical 4D-biology reconnaissance — 2026-11-24
+
+### Strongest primary historical finding: C. H. Hinton, *The Fourth Dimension* (1904)
+
+- Repository source: `HISTORICAL/HINTON — 4TH DIMENSION*` (exact corpus file(s) still to be inventoried); external full text: Project Gutenberg, `https://www.gutenberg.org/files/67153/old/67153-h/67153-h.htm`.
+- Key location: Chapter III, “The Significance of a Four-Dimensional Existence” (around printed pp. 18–23) and Chapter VII, “The Evidences for a Fourth Dimension” (around printed pp. 76–79).
+- Hinton explicitly discusses organic beings' bilateral/right-left symmetry and asks whether a four-dimensional folding or movement of minute constituents of living matter could produce corresponding right- and left-handed structures. He states that one general characteristic of organismal forms might be accounted for by four-dimensional motion in the process of life.
+- Crucial qualification: Hinton explicitly says he does **not** mean that life can be explained as four-dimensional movement; he resists reducing life and volition to matter and motion. He treats the symmetry argument as inconclusive and frames the possible motion as occurring in minute constituents, not gross bodies. He also discusses germ structure and heredity as unresolved difficulties.
+- Classification: **EXPLICIT 4D BIOLOGICAL SPECULATION**, not established biology. Strong historical target for close reading because the author directly connects four-dimensional spatial geometry, the microscopic constituents of living matter, organismal bilateral symmetry, life, and volition.
+
+### Second historical source: W. Whately Smith, *A Theory of the Mechanism of Survival: The Fourth Dimension and Its Applications* (1920)
+
+- Repository source: `HISTORICAL/SMITH — 4TH DIMENSIONAL APPLIC.txt`; online Project Gutenberg source: `https://www.gutenberg.org/files/64055/64055-h/64055-h.htm`.
+- Key locations: Chapter V, “Vitality and Will” (printed pp. 113 onward), Chapter VII, “The Connecting Link” (pp. 136 onward), plus Chapter II and IV for the overall hypothesis.
+- Smith explicitly extends higher-space concepts to vitality and the relation between life and the body. He contrasts a productive view (life as a product of bodily processes) with a transmissive view (the body as a means through which life manifests). He speculates that life could exist apart from ordinary physical matter and affect it from a region of higher space. In Chapter VII he suggests the nervous system as a possible connecting mechanism between a three-dimensional physical body and a four-dimensional vehicle of consciousness.
+- Crucial qualification: The book's preface calls its hypotheses speculative and extrapolatory. Its argument is strongly entangled with psychical research, survival, and a separate four-dimensional vehicle of consciousness. Smith expressly rejects the notion that the three-dimensional body is merely a section of a four-dimensional whole. Do not conflate this with Hinton's more tentative microscopic symmetry argument or with modern biology.
+- Classification: **EXPLICIT FOUR-DIMENSIONAL VITALIST / PSYCHICAL SPECULATION**, biologically adjacent rather than empirical biological theory.
+
+### Third historical source: Edwin A. Abbott, *Flatland* (1884)
+
+- Repository source: `HISTORICAL/ABBOTT — FLATLAND.txt`; Project Gutenberg eBook 45506.
+- Its principal biological relevance in this initial inspection is analogical and literary: inhabitants are represented as living two-dimensional figures with anatomy-like forms, sensory limitations, development, heredity/social class metaphors, and a higher-dimensional observer's access to structures inaccessible to them.
+- Classification: **BIOLOGICAL ANALOGY / ORGANISMAL WORLD-BUILDING**, not a direct claim that organisms are four-dimensional. Requires a separate literary reading to distinguish biological analogy from social satire.
+
+### Modern retrospective control points (not historical sources)
+
+1. Geoffrey B. West, James H. Brown & Brian J. Enquist, “The Fourth Dimension of Life: Fractal Geometry and Allometric Scaling of Organisms,” *Science* 284 (1999), 1677–1679, DOI 10.1126/science.284.5420.1677. They argue that fractal-like transport networks effectively endow organisms with an additional **fourth spatial dimension**. This is a metaphorical/effective internal network dimension embedded in ordinary three-dimensional organisms, not an extra independently navigable spatial axis. Primary text found online; not yet fully analyzed.
+2. Lev Ginzburg & John Damuth, “The Space-Lifetime Hypothesis: Viewing Organisms in Four Dimensions, Literally,” *The American Naturalist* 171 (2008), 125–131, DOI 10.1086/523947. They propose combining organismal space with generation/lifetime as a **fourth temporal dimension** in metabolic-scaling analysis. Their abstract explicitly distinguishes this literal temporal fourth dimension from the metaphorical extra spatial dimension in WBE-type network accounts.
+3. Modern process philosophy of organisms offers another temporal four-dimensional framing: organisms as temporally extended processes rather than momentary three-dimensional bodies. This is a later conceptual comparison, not evidence of historical influence on Hinton or Smith.
+
+### Initial synthesis
+
+The archive and external literature already reveal at least four distinct senses of “four-dimensional biology” that must not be collapsed:
+
+- **A. Extra spatial dimensionality:** living matter or its constituents participate in a genuinely additional spatial direction (Hinton's speculative proposal).
+- **B. Higher-space vital vehicle:** life or consciousness is said to operate through a four-dimensional organism/vehicle related to a three-dimensional body (Smith's psychical-vitalist proposal).
+- **C. Effective/fractal internal dimension:** three-dimensional biological transport networks behave as though they occupy an additional spatial dimension (West–Brown–Enquist).
+- **D. Space-time organism:** an organism is treated as extended through spatial dimensions and time/lifetime (Ginzburg–Damuth; later process accounts).
+
+These are different ontologies and mathematical operations. They form a promising historical-to-modern comparison, but not a continuous lineage unless source evidence establishes one.
+
+### Next source operations
+
+- Inventory and inspect the exact Hinton corpus file in HSH_RESOURCES, checking edition and text against Gutenberg.
+- Read Hinton Chapters III and VII closely, preserving printed page locators and his explicit caveats.
+- Read Smith Chapter V and the relevant parts of VII, separating biological/vitality claims from psychical-survival arguments.
+- Inspect the relevant sections of *Flatland* as a biological analogy and social satire, not as a scientific proposal.
+- Retrieve and analyze West–Brown–Enquist (1999) and Ginzburg–Damuth (2008) as distinct modern comparators.
