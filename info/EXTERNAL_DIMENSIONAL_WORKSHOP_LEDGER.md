@@ -220,3 +220,11 @@ The workshop now uses the adaptable session routine in the operating protocol:
 The routine is a working default, not a fixed ceremony. Reassess it after every three to five substantive bites, adjusting only in response to observed friction or benefit.
 
 **Next session bite:** start the nLab visual atlas with the geometry of a path and a homotopy between two paths. Build the picture first, then relate it to the corresponding one- and two-dimensional morphisms. Use one or two examples, and leave the biological bridge as a follow-on rather than expanding this first atlas plate into a survey.
+
+
+## 11. Workflow signature convention — 2026-11-24
+
+Adopted a compact, repeated signature line to preserve the ordered workflow and current work position in the active conversation context. Canonical order:
+**ORIENT → BITE → INVESTIGATE → GEOMETRIZE → CONNECT → RECORD → VERIFY → NEXT**
+
+The signature carries the active branch, current task, state, and next operation. It is a context-window recovery aid; the repository ledger and protocol remain the durable records.
