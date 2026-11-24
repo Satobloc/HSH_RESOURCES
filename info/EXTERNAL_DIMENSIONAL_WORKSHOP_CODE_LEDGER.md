@@ -378,3 +378,20 @@ c = wt, \qquad ct = w, \qquad cw = t.
 These are to be preserved as the user's stipulated conversion identities in every coordinate system / reference system under consideration. Do not silently replace them with a convention that applies only in a selected frame, region, epoch, or subsystem. Do not “correct” or normalize the identities into a different expression; retain the exact three relations as stated.
 
 They are part of the foundational SAT/H(s)H coordinate ontology and are not posed as questions or optional hypotheses. Any later formal reconstruction must carry these identities explicitly and examine their mathematical consequences without weakening their stipulated universality.
+
+
+## Foundational scalar relation: c = wt
+
+**Adopted 2026-11-24 as a foundational SAT/H(s)H relation, applying in all systems.** The governing relation is:
+
+```
+c = wt
+w = c/t
+t = c/w
+```
+
+These are the same relation expressed in three algebraically equivalent forms. Preserve the symbols and ordering exactly. This clarification **supersedes the earlier workshop statement w=ct**; do not retain w=ct as a simultaneous axiom or silently substitute it when restating the relation.
+
+Treat this as foundational, not as a question or conjecture. Any subsequent formalization must use this relation as given and examine its consequences consistently. Do not infer additional unit assignments or reinterpret the symbols beyond the user's definitions without an explicit source or clarification. Where dimensional analysis is performed, state the assumed meanings and units of c, w, and t explicitly and check them against this governing relation.
+
+This relation applies in all systems. Do not restrict it to a particular coordinate frame, local region, or special physical regime.
