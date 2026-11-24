@@ -106,3 +106,18 @@ Never silently reassign a glyph. Add new codes with meanings, code points, class
 - `6` workshop evaluation/adaptation: queued.
 
 Position marker `@` precedes the next active component. The resulting current plan is `0@213456` only if setup is accepted complete; until that final check, use `@0213456`.
+
+## Revised research programme codes
+
+The current programme is two coequal starting streams, followed by mathematics/category theory, then natural cross-disciplinary extensions emerging from the reviewed material. Computer science is an explicit example of a cross-disciplinary connection, not a separate modelling programme.
+
+| Glyph | Code point | Canonical meaning | Class | Scope |
+|---|---|---|---|---|
+| b | U+0062 | Biological applications | Tock component | Organismal biology, physiology, evolution, biological organization |
+| h | U+0068 | Historical and cultural lineage | Tock component | Victorian higher-dimensional thought, spiritualism, psychical research, science fiction, fandom, time-binding |
+| m | U+006D | Mathematics, category theory, geometric atlas | Tock component | Higher category theory, geometry, topology, homotopy and related mathematical structures |
+| x | U+0078 | Cross-disciplinary connections | Tock component | Natural extensions arising from the literature under review, including computer science, computation where relevant, physics, cognition, information, and other sciences. This is exploratory, not a predetermined closed list. |
+
+The programme order is **b and h coequal → m → x**. The two opening streams may be interwoven or investigated in parallel; neither is subordinate to the other. Mathematics/category theory follows those initial explorations. Cross-disciplinary investigation follows from connections actually encountered; do not prepopulate a rigid list of disciplines.
+
+Retired from the active plan (but not deleted from history): `p` as a separate Computation/Modelling programme, `s` as a separately predetermined Science Bridges programme, and `w` as a scheduled final Workshop Systems phase. Workshop evaluation/adaptation remains an ongoing maintenance activity rather than a final research stage. Existing glyph definitions are retained in the ledger's history; do not silently reuse those glyphs for different meanings.
