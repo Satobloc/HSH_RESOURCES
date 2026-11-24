@@ -6,8 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-TOOL_DIR = ROOT / "tools" / "fourth_dimension_history_harvester"
+TOOL_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(TOOL_DIR))
 
 import harvest  # noqa: E402
