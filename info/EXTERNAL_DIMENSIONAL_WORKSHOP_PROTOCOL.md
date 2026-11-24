@@ -560,3 +560,8 @@ The repeated signature is a compact externalized memory of the current workflow 
 ### Pilot build sequence
 
 First finish the initial workshop ledger and define the known work components that will form the near-term plan. At minimum, establish entries for category theory, biology, history/cultural lineage, computation, science bridges, and workshop systems, with finer subdivisions only when useful. Then encode the current plan as a compact signature using the assigned tokens and operators. This is a pilot-local convention; do not generalize without explicit promotion.
+
+
+## 25. User-directed research ordering
+
+When the user supplies an explicit order, preserve it exactly, including non-monotonic numeric or alphabetic labels. Do not normalize, sort, or reinterpret labels as sequence order. Record each Tock/component code in the code ledger, then represent the chosen sequence left to right. The position marker `@` goes immediately before the next uncompleted component. Mark a component complete only after its stated completion check passes.
