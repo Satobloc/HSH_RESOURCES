@@ -71,3 +71,12 @@ Never silently reassign a glyph. Add new codes with meanings, code points, class
 | Glyph | Code point | Canonical meaning | Class | Scope |
 |---|---|---|---|---|
 | t | U+0074 | Initial workshop Tock | Tock | Complete starting ledger and establish the ordered research programme |
+
+## Position marker
+
+| Glyph | Code point | Canonical meaning | Class | Scope |
+|---|---|---|---|---|
+| @ | U+0040 | Current position marker | State marker | Prefixes the next uncompleted item in the active Tock/Tick sequence. It does not itself add a workflow operation. |
+
+**Placement rule:** place `@` immediately before the next uncompleted token. The preceding tokens are completed; the following tokens remain. For a compound branch, place it before the next branch or operation to execute. If the next item is itself a compound structure, place it before that structure.
+
