@@ -880,3 +880,38 @@ Two items have workshop value:
 A Daily Galaxy clipping about a computer model of an Earth without life is a secondary astrobiology/biosignature context lead, not a source on organismal structure. The ultracold-lithium Hubbard-system clipping is quantum-physics context and is outside the current biology overview. The remaining feed was not exhaustively classified for every possible branch.
 
 **Storage/rights practice:** for mixed user-supplied feed exports, preserve a hash and concise triage record in HSH_RESOURCES; retain only relevant bibliographic metadata, short descriptions and source links unless full-text storage is clearly warranted and rights permit it. Do not treat an aggregator's recommended headline as a source actually read. No change to the current overview goal, category-theory transition gate, or deferred PIN 5.
+
+
+## 38. Fourth-Dimension History Harvester static layout audit — 2026-11-24
+
+**State:** path/provenance reconciliation completed; local runtime and provider behavior remain UNVERIFIED. This was a bounded source-layout inspection through the archive connector, not a live harvest or a Mysearch/Mersearch search run.
+
+### Confirmed repository layout
+
+- Implementation, adjacent configuration, registry, seed register, research questions and test are in `HISTORICAL/4D_HARVESTER/`.
+- `harvest.py` reads the adjacent `queries.json` using `Path(__file__).with_name("queries.json")`.
+- The implementation's fixed output boundary is `HISTORICAL/FOURTH_DIMENSION_HISTORY/harvested/`; the directory is created only when an `--apply` run writes its first artifacts.
+- The 5 November DDB capture is actually stored at `HISTORICAL/4D_HARVESTER/ddb_vierte_dimension_results_2026-11-05.txt`. Its seed-register path was incorrect and is now corrected.
+- The separate 24 November news-feed triage note is at `HISTORICAL/FOURTH_DIMENSION_HISTORY/seed_inputs/2026-11-24_user-supplied-newsfeed-triage.md`. These are distinct inputs and were not moved or merged.
+
+### Defects repaired
+
+1. The operating README referenced nonexistent `tools/fourth_dimension_history_harvester/` paths for the script, config and source registry. It now names the actual implementation/config directory and actual output tree.
+2. The README's test command searched root `tests/`, but the harvester test is colocated with the implementation. The command now discovers tests under `HISTORICAL/4D_HARVESTER/`.
+3. The test bootstrap pointed to the nonexistent tools directory. It now imports `harvest.py` from its own containing directory.
+4. The collection README's source/seed/output locations and the DDB capture locator in `seed_file_register.json` now match the repository paths actually inspected.
+5. The canonical ticker copies in the code ledger and operating protocol now both include the active `ᵃ` companion: `⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]`.
+
+### Current configuration inventory
+
+The existing `queries.json` contains `core`, `stigma`, `people`, `newspapers`, `appointments` and `manual` groups. A dedicated biological/higher-dimensional group has **not** yet been added; adding it remains downstream of the local acceptance baseline.
+
+### Verification boundary and next cursor
+
+- Repository readback confirms the README, collection note, test bootstrap, seed register, code ledger and protocol updates.
+- The offline unit suite and no-provider dry-run smoke test have **not** been executed from a local checkout.
+- No live DDB, ANNO, LOC, Internet Archive, Crossref, OpenAlex or OAI-PMH request was run; no `--apply` output was written; no source PDF was downloaded.
+- No Mersearch request lane was modified. All four current lane request files were still marked `requested`; Lane 2 has a request-scoped manifest/receipt, while the other three current request IDs did not have matching request folders at readback. No release was established, so no lane was treated as free.
+- Next operation: from an authorized local checkout, run `python -m unittest discover -s HISTORICAL/4D_HARVESTER -p 'test_fourth_dimension_history_harvester.py' -v`, then run the no-provider dry-run `python HISTORICAL/4D_HARVESTER/harvest.py --repo-root . --providers '' --query-group core`. Only after both pass should the biological/higher-dimensional query group be prepared and a small live provider preview considered.
+
+No Tock completion or `@` advance follows from this static repair.
