@@ -379,3 +379,24 @@ This is the complete intention, not merely a representation of the active first 
 - Following integrated Tock: `⊕{mx}`, mathematics/category theory/geometric work together with cross-disciplinary connections that naturally emerge from the reading. Computer science is an example, not an exhaustive boundary.
 
 The full signature remains visible in the conversation even while work is focused on its first active segment. Move the position marker as work completes; do not omit future intentions from the signature.
+
+
+## 22. Complete current intended programme — 2026-11-24
+
+The user's complete current plan is encoded as:
+
+`⌖◉▣✓@⊕{bh} ⌖◉▣ρk⊕{mx}`
+
+Whitespace separates the two major stages for readability; it is not a workflow operator. Compact equivalent:
+`⌖◉▣✓@⊕{bh}⌖◉▣ρk⊕{mx}`
+
+Interpretation:
+1. `⌖◉▣✓`: initial orientation, Tock selection, recording and verification/setup sequence completed.
+2. `@`: current position begins at the integrated opening inquiry.
+3. `⊕{bh}`: coequal integrated study of biology and history/cultural lineage. Give particular attention to nineteenth-century and adjacent-era historical treatments of biology, including works and ideas that may be interpreted as biological in retrospect. Keep original authorial claims distinct from retrospective interpretation.
+4. `⌖◉▣`: after completing the opening inquiry, reorient, select/bound the next Tock, and record the revised or retained plan.
+5. `ρ`: explicit lessons-learned review and decision about whether to modify the next workflow. The checkpoint is required; modification is optional.
+6. `k`: proceed into the larger category-theory-related literature.
+7. `⊕{mx}`: integrate mathematics/category theory with cross-disciplinary connections that emerge naturally from the material, including computer science where relevant. Do not predefine a closed list of disciplines or substitute a modelling-only agenda.
+
+This is the complete current intention, not a fixed immutable commitment. The plan may be revised at the reorientation point or earlier if the research warrants it. Preserve the entire planned sequence in the live signature while placing `@` at the current position; do not truncate the signature to only the active stage.
