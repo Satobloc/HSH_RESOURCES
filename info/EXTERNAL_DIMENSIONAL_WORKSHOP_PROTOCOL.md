@@ -532,3 +532,31 @@ Distinguish:
 - **Uninstantiated possibility:** a workflow structure that may be useful later; discuss it in prose, not as if it were already part of the live signature.
 
 If a branch, target, condition, or continuation is not yet defined, omit it from the signature. Define it first, then include it. Keep the signature an accurate representation of existing workflow state, not a sketch of imagined state.
+
+
+## 24. Code-ledger grammar and maximal compression
+
+The pilot adopts a compact code-ledger system. The **code ledger defines the meaning**; the repeated signature carries only the codes and their structural arrangement. The user and assistant need not memorize definitions. Consult the ledger whenever a code is unfamiliar or a meaning is uncertain.
+
+### Core grammar
+
+- Each assigned operation or workflow component receives a single Unicode code point wherever practical.
+- Adjacent tokens are interpreted left to right by default. Ordinary succession needs no separator.
+- Structural operators (such as fork, join, cycle, await, halt, and deliberate transition) retain their explicitly defined meanings.
+- A compound structure may use a compact token reference rather than a written label. For example, `⑂{cu}` and `⑂{A: Credenza | B: Unicode notation}` are equivalent when `c` and `u` are defined in the code ledger and the branch ordering is unambiguous.
+- Where ordering is more complex than left-to-right, use uppercase single-character ordering labels paired with lowercase component tokens, e.g. `⑂{AcBu}`: branch A contains component c; branch B contains component u. Uppercase labels identify ordering/branch positions; lowercase tokens identify the referenced components.
+- Do not use undefined placeholders. A token may refer to an existing populated but extensible list.
+- Prefer one-code-point representations over words, abbreviations, or multi-character labels when they remain unambiguous and practical.
+- Avoid redundant punctuation and explanatory prose in the live signature. Keep definitions and interpretation in the code ledger.
+
+### Code-ledger requirements
+
+Each assignment must record: glyph/code point, canonical name, concise meaning, class (phase/operator/component/state), scope, assignment date/version, and any syntax or constraints. Codes are stable once adopted; revisions must be explicit and preserve prior meanings or record a supersession. Do not silently reassign a glyph.
+
+### Signature function
+
+The repeated signature is a compact externalized memory of the current workflow structure and position. The signature plus code ledger, not memorization, preserves the system. The signature must describe actual instantiated work, ordered left-to-right unless marked otherwise.
+
+### Pilot build sequence
+
+First finish the initial workshop ledger and define the known work components that will form the near-term plan. At minimum, establish entries for category theory, biology, history/cultural lineage, computation, science bridges, and workshop systems, with finer subdivisions only when useful. Then encode the current plan as a compact signature using the assigned tokens and operators. This is a pilot-local convention; do not generalize without explicit promotion.
