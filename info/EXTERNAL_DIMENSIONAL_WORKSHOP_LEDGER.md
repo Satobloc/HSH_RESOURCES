@@ -1383,3 +1383,99 @@ For the user's 4D histological proposal, the analogy is useful but bounded: it g
 4. Compare with current experimental/regenerative biology only after the historical claims and their conditions are stable.
 
 **Status:** Przibram's 1909 primary synthesis directly OCR-inspected pp. 1–3 and 101–105; Wilson's primary paper bibliographically located but article body not yet read; Herrick's 1911 contemporary synthesis inspected; Loeb's 1916 indexed paragraph available but full scan not opened. No Tock closure or `@` advance.
+
+
+## 53. Modern developmental mechanism of Alpheus claw reversal — lateral inhibition, neural remodeling and muscle re-specification — 2026-11-24
+
+The earlier Przibram/Loeb interpretation now has a substantially richer modern evidence base. The most important result is that claw reversal in *Alpheus heterochelis* is not merely enlargement of an opposite appendage. It involves a paired developmental system in which one side inhibits or constrains the other, with coordinated changes to nervous tissue, muscle phenotype and external morphology.
+
+### 1. The modern model: lateral inhibition in a threshold trait
+
+A. Richard Palmer, “Developmental origins of normal and anomalous random right-left asymmetry: lateral inhibition versus developmental error in a threshold trait,” *Contributions to Zoology* 81(2), 111–124 (2012), full text: https://repository.naturalis.nl/pub/419175/CtZ81-02_111-124_Palmer.pdf.
+
+Palmer reviews several developmental models for random left/right asymmetry and distinguishes normal random asymmetry (where nearly all individuals are conspicuously asymmetric, but the side is random) from anomalous asymmetry (rare asymmetries in otherwise symmetric species). His general account treats asymmetry as a threshold/polyphenism in which one side crosses a developmental threshold while the paired side does not. For normal random asymmetries, lateral inhibition — transformation of one side suppressing transformation of the opposite — is likely a crucial developmental step.
+
+In snapping shrimp, asymmetry usually appears at later juvenile stages (e.g. sixth juvenile stage in *Alpheus heterochelis*). The more-used claw can initially become the snapper. After asymmetry is established, however, removal of the dominant snapper can induce the opposite pincer to become a snapper, while the amputated side regrows a pincer. Palmer distinguishes this from the American lobster (*Homarus americanus*), where loss of the crusher typically regenerates a crusher on the same side and the original laterality is maintained. His review therefore makes species-specificity explicit: a related paired-claw system need not have the same developmental rules.
+
+Palmer also notes that central nervous system-mediated inhibition is implicated in both snapping shrimp and lobsters, while emphasizing alternative possibilities across taxa, including local signals and diffusible morphogens. This is a review-level mechanistic model, not proof that all bilateral asymmetry uses the same neural pathway.
+
+### 2. Neural remodeling precedes the external transformation
+
+C. K. Govind and Joanne Pearce, “Remodeling of nerves during claw reversal in adult snapping shrimps,” *Journal of Comparative Neurology* 268(1), 121–130 (1 February 1988), DOI 10.1002/cne.902680112. Bibliographic record and abstract: https://pubmed.ncbi.nlm.nih.gov/3346380/ and author-shared abstract page: https://www.researchgate.net/publication/19810695_Remodeling_of_nerves_during_claw_reversal_in_adult_snapping_shrimps.
+
+The authors report that nerves to the ganglion are remodeled as the minor claw transforms into a major claw and a new minor claw regenerates at the old major site. The minor-to-major nerve conversion occurs within days after removal of the contralateral major claw: many sensory axons are added and a smaller number deleted. Neural remodeling is essentially complete within the first intermolt, in tandem with motoneuron changes, well before the larger changes in muscle and external morphology.
+
+The reverse major-to-minor nerve transition is more traumatic and prolonged: it involves extensive sensory-axon degeneration during the first and second intermolts, followed by proliferation of largely unmyelinated axons during the third intermolt, with some later myelination.
+
+This gives a sequence that is especially relevant to the histological lens: the nervous system is not merely a passive occupant of the claw. Its architecture is itself remodeled in advance of the full morphological transformation.
+
+### 3. Experimental support for a central trigger
+
+Govind, Wong and Pearce, “Experimental induction of claw transformation in snapping shrimps,” *Journal of Experimental Zoology* 248(3), 371–375 (1988), DOI 10.1002/jez.1402480317. Abstract: https://eurekamag.com/research/007/331/007331536.php.
+
+Removing the major claw induced contralateral transformation in all tested animals. Cutting its nerve produced transformation in about two-thirds; tenotomy of the closer muscle induced it in fewer than half; opener-muscle tenotomy did so occasionally; immobilizing the claw did not induce transformation. The authors interpret the graded effectiveness in relation to the amount/type of trauma as evidence for a central mechanism controlling bilateral asymmetry. This shows the effect is not simply caused by reduced mechanical use of the missing claw.
+
+The result is suggestive of a central control system but does not by itself establish the complete causal pathway or identify the initiating signal.
+
+### 4. Limb-bud stage determines whether reversal can occur
+
+C. K. Govind and A. T. Read, “Regenerate Limb Bud Sufficient for Claw Reversal in Adult Snapping Shrimps,” *The Biological Bulletin* 186(2), 241–246 (1 April 1994), DOI 10.2307/1542057. Full abstract and bibliographic page: https://www.journals.uchicago.edu/doi/10.2307/1542057.
+
+When both claws are autotomized at the same time, each regenerates in its previous morphotype. Sequential experiments show that the stage of the first regenerated limb bud matters: if a stage 1–2 bud exists at the pincer site before removal of the snapper, asymmetry remains in its prior configuration; if a more advanced stage 3–5 bud has formed, reversal occurs. The minimum condition for pincer-to-snapper transformation is therefore a sufficiently advanced limb bud at the pincer site. The newly transforming snapper is proposed to restrict the contralateral regenerating site to a pincer.
+
+This is a valuable temporal and developmental boundary condition: the two sides are not instantaneously interchangeable. Their capacity to change depends on where each is in its regenerative sequence.
+
+### 5. An explicit inhibition experiment
+
+A. T. Read and C. K. Govind, “Claw Transformation and Regeneration in Adult Snapping Shrimp: Test of the Inhibition Hypothesis for Maintaining Bilateral Asymmetry,” *The Biological Bulletin* 193(3), 401–409 (1 December 1997), full abstract and bibliographic record: https://www.journals.uchicago.edu/doi/abs/10.2307/1542942.
+
+The study directly tests lateral inhibition:
+- The intact snapper normally inhibits the opposite pincer from becoming a snapper.
+- Following snapper loss, the pincer-to-snapper advancement occurs almost immediately, even when the animal is late in premolt.
+- The transforming claw in turn inhibits the new claw regenerating at the old snapper site from becoming a second snapper.
+- Cutting the dactyl of the transforming claw removes this inhibitory influence, allowing the other side to regenerate as another snapper and produce a double-snapper shrimp.
+- The authors suggest the inhibition may be manifested partly through the greater innervation of the snapper relative to the pincer.
+
+This is much more precise than an undifferentiated “compensation” story: the paired structures participate in a directional, state-dependent inhibitory relationship that helps maintain a one-snapper/one-pincer configuration.
+
+### 6. Muscle phenotype changes during transformation
+
+M. M. Quigley and D. Mellon Jr., “Changes in myofibrillar gene expression during fiber-type transformation in the claw closer muscles of the snapping shrimp, *Alpheus heterochelis*,” *Developmental Biology* 106(1), 262–265 (November 1984), DOI 10.1016/0012-1606(84)90081-2. Abstract: https://pubmed.ncbi.nlm.nih.gov/6489610/.
+
+The authors characterize myofibrillar proteins in the closer muscles of the dimorphic claws and find differences in myosin light chains and tropomyosin between fast/slow fibers. During claw reversal, the main closer muscle undergoes a quasi-developmental fiber-type transition. Changes in myofibrillar protein expression resemble those associated with cross-innervation-induced changes in vertebrate muscle. This demonstrates that transformation is not just a skeletal/external shape change: contractile tissue is re-specified too.
+
+Karen M. Mearow and C. K. Govind, “Selective degeneration of fast muscle during claw transformation in snapping shrimps,” *Developmental Biology* 118(1), 314–318 (November 1986), DOI 10.1016/0012-1606(86)90099-0. Abstract: https://www.sciencedirect.com/science/article/pii/0012160686900990. They report that the pincer closer muscle contains a central band of fast fibers flanked by slow fibers, while the snapper closer muscle is composed entirely of slow fibers; transformation includes selective degeneration of the central fast-fiber band.
+
+### 7. Time course and behavioral consequences
+
+Ariane Pereira et al., “Post-autotomy claw regrowth and functional recovery in the snapping shrimp *Alpheus angulosus*,” *Marine and Freshwater Behaviour and Physiology* 47(3), 147–159 (2014), DOI 10.1080/10236244.2014.905008. ResearchGate excerpt indexed on the 1988 study page: https://www.researchgate.net/publication/19810695_Remodeling_of_nerves_during_claw_reversal_in_adult_snapping_shrimps.
+
+In *A. angulosus* (a related species, not the exact *A. heterochelis* in the original reversal studies), a functional snapping claw can emerge in one molt, but key external morphology and the plunger do not reach mature form until the third molt or later, depending on sex. This provides a useful comparison between early functional recovery and later morphological maturation. Keep species identities distinct.
+
+### 8. Revisions to the early interpretation
+
+This modern work requires three corrections to the earlier historical notes:
+
+1. **Loeb's 1916 claim:** Loeb repeated Przibram's observation and suggested the nervous system was unrelated to claw reversal, proposing internal secretions or blood-borne substances. That claim is not consistent with later evidence of rapid sensory-axon remodeling, neural-control experiments and the 1997 inhibition model. Treat Loeb's explanation as a historical hypothesis, not the best current mechanistic account.
+2. **“Symmetry restoration”:** the system does not seek bilateral equality. It maintains a *heterochelous* pair (one snapper, one pincer) through a controlled, lateralized differentiation. After injury the side assignment may reverse. The regulated invariant is the differentiated pair, not symmetry in the strict equal-parts sense.
+3. **Age dependence:** Przibram/Herrick's early observation that reversal was more readily induced in younger animals must not be generalized to mean adult snapping-shrimp reversal does not occur. Modern experiments explicitly study reversal in adult *Alpheus*. Age, life stage, molt phase, species, developmental history and limb-bud state all matter; different taxa can have different rules.
+
+### 9. Connection to the histological 4D proposal
+
+This is an exceptionally useful example of *intra-organismal distal coupling*:
+- The state of one appendage affects the developmental fate of the opposite appendage.
+- The response unfolds across several timescales: rapid neural remodeling (days/first intermolt), limb-bud development, subsequent molt-dependent morphology, and later maturation of contractile tissue.
+- The pair maintains a relational organization that cannot be understood by considering either claw alone.
+- The relation is nevertheless an experimentally grounded ordinary 3D biological system inside one individual, mediated through central neural and developmental processes. It is not evidence for an additional spatial dimension or physical connections among separate organisms.
+
+This suggests a useful constraint for our own model: distinguish **paired-part systemic regulation inside one organism** from the much stronger proposition that apparently independent organisms are physically continuous distal appendages of one larger 4D histological body. The shrimp gives us an empirical comparator for the first class, not proof of the second.
+
+### 10. Earlier primary-paper status is still open
+
+**Wilson 1903:** Edmund B. Wilson, “Notes on the Reversal of Asymmetry in the Regeneration of the Chela in *Alpheus heterochelis*,” *Biological Bulletin* 4, 197 onward. The full volume is located, but the available scan/OCR parser did not return the article body and the PDF was too large for page-image rendering. Its contents page gives start p. 197 and Florence Peebles' next paper starts p. 210. The National Academy of Sciences bibliography gives pp. 197–210 (https://www.nasonline.org/wp-content/uploads/2024/06/wilson-edmund.pdf); Herrick's later bibliography gives 197–214. The precise end-page discrepancy should be resolved from the original article. Status remains **located, not directly read**.
+
+**Przibram 1901:** “Experimentelle Studien über Regeneration,” *Archiv für Entwicklungsmechanik* 11, 321–345, DOI 10.1007/BF02278218, OpenAlex work W2331310158. The OpenAlex record links a public-domain copy via Zenodo and Archive.org, and contemporaneous bibliographies describe the 1901 study as concerning Crustacea and Crinoidea. Direct download/open attempts failed because the Zenodo record and nested Archive.org archive-member route were inaccessible to the web reader. Status remains **bibliographically verified, not directly read**. Do not infer that it treats only *Antedon* or only *Alpheus* from the partial secondary citations.
+
+**Przibram 1905/1907:** the 1907 article is *Die Scherenumkehr bei decapoden Crustaceen*, *Archiv für Entwicklungsmechanik* 25, 266 onward. Bibliographic sources disagree on its end page (343 or 348) and on the 1905 paper's pagination (181–217 or 181–247). The full 1909 synthesis remains directly OCR-read for the relevant pp. 101–105, but the 1905 and 1907 original experimental reports have not yet been read.
+
+**Status:** the modern developmental account is reconstructed from accessible abstracts, Palmer's full open-access review, and primary paper bibliographic records. No modern full experimental paper beyond the review has been read in full. The original Wilson/Przibram papers remain priority source-retrieval tasks. No Tock closure or `@` advance.
