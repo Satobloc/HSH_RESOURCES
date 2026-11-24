@@ -283,3 +283,17 @@ Compound branch notation may use token references: `⑂{cu}` is equivalent to `�
 No undefined placeholders. A token may reference a real, identifiable, populated but extensible list. The code ledger records each glyph, code point, meaning, class, scope, date/version, and constraints. Meanings are not expected to be memorized; consult the ledger.
 
 **Immediate construction sequence:** complete the initial workshop ledger; define the known work components (including category theory, biology, historical/cultural lineage, computation, science bridges, and workshop systems); then encode the initial work plan as a compact signature. This remains a bespoke pilot.
+
+
+## Initial workshop Tock plan — 2026-11-24
+
+The initial research plan is encoded using assigned component tokens. Left-to-right order governs:
+1. Complete and verify the starting ledger and code definitions.
+2. Mathematics/category theory and geometric atlas.
+3. Biological applications.
+4. Historical and cultural lineage.
+5. Computation and modelling.
+6. Cross-disciplinary science bridges.
+7. Workshop-system evaluation and adaptation.
+
+Initial Tick sequence: `⌖◉▣✓⇢mbhpsw`. The transition marker separates setup/ledger completion from the ordered research programme. Canonical compressed string contains no spaces.
