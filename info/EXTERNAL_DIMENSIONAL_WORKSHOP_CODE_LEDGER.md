@@ -65,3 +65,9 @@ Never silently reassign a glyph. Add new codes with meanings, code points, class
 | p | U+0070 | Computation | Component | Computational models, simulations, programming, computational tools |
 | s | U+0073 | Science bridges | Component | Cross-disciplinary applications and connections |
 | w | U+0077 | Workshop systems | Component | Credenza, notation, methods, workflow experiments and infrastructure |
+
+## Tock codes
+
+| Glyph | Code point | Canonical meaning | Class | Scope |
+|---|---|---|---|---|
+| t | U+0074 | Initial workshop Tock | Tock | Complete starting ledger and establish the ordered research programme |
