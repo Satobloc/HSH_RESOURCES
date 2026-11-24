@@ -1479,3 +1479,61 @@ This suggests a useful constraint for our own model: distinguish **paired-part s
 **Przibram 1905/1907:** the 1907 article is *Die Scherenumkehr bei decapoden Crustaceen*, *Archiv für Entwicklungsmechanik* 25, 266 onward. Bibliographic sources disagree on its end page (343 or 348) and on the 1905 paper's pagination (181–217 or 181–247). The full 1909 synthesis remains directly OCR-read for the relevant pp. 101–105, but the 1905 and 1907 original experimental reports have not yet been read.
 
 **Status:** the modern developmental account is reconstructed from accessible abstracts, Palmer's full open-access review, and primary paper bibliographic records. No modern full experimental paper beyond the review has been read in full. The original Wilson/Przibram papers remain priority source-retrieval tasks. No Tock closure or `@` advance.
+
+
+## 54. Przibram's experimental series clarified; early neural/mechanical findings contrasted with modern inhibition models — 2026-11-24
+
+Further source discovery clarifies the chronology and exposes a useful unresolved conflict in the history of the mechanism.
+
+### A. The experimental series is a sequence, not one 1907 discovery
+
+The bibliography and the titles of Przibram's own works establish the following sequence:
+
+1. **1901, first communication:** Hans Przibram, “Experimentelle Studien über Regeneration,” *Archiv für Entwickelungsmechanik der Organismen* 11, 321–345, DOI 10.1007/BF02278218. OpenAlex record W2331310158 identifies the original article and repository locations: https://openalex.org/works/W2331310158. A contemporary review in *Zoologischer Jahresbericht* describes it as work on crustaceans and crinoids; Ariane Dröscher's later bibliography specifically notes *Alpheus*. This supports inclusion of the snapping-shrimp work in the first communication, but does not mean the whole paper concerns *Alpheus* alone. The full paper is bibliographically verified, not directly read in this workshop.
+2. **1902, second communication:** a separate Przibram communication on Crustacea in *Archiv* 13, identified in later bibliographies. The exact title/pages have not yet been independently reconciled from a primary copy.
+3. **1905, third communication:** “Die Heterochelie bei decapoden Crustaceen” (*Experimentelle Studien über Regeneration*, third communication), *Archiv* 19, 181–247, plates 8–13. This is a study of heterochely (paired chelae with different morphologies). Bibliographic locators: https://crabs-japan.linnaeus.naturalis.nl/linnaeus_ng/app/views/literature2/reference.php?epi=32&id=22181 and https://w3w.fiddlercrab.info/references/Przibram1905.html. The range 181–217 appears in some secondary databases, while other specialized bibliographies and the journal-volume record give 181–247; page range remains a bibliographic discrepancy until a full volume scan is checked.
+4. **1907, fourth communication:** “Die ‘Scherenumkehr’ bei decapoden Crustaceen” (*Experimentelle Studien über Regeneration*, fourth communication), *Archiv* 25, 266 onward. The end page is reported as 343 or 348 in different catalogues/citations; preserve the discrepancy. ResearchGate's record for the article exposes a structured excerpt of Przibram's ten “programme questions” and answers, including the conclusions below, but not the full paper: https://www.researchgate.net/publication/230013617_Equilibrium_of_animal_form (article listing at lines 116–130). A later bibliography likewise lists the title as the 1907 fourth communication: https://documentation.eurekamag.com/research/092/110/.
+5. **1917, fifth communication / transitional forms:** “Transitäre Scherenformen der Winklerkrabbe, *Gelasimus pugnax* Smith,” *Archiv* 43, 47–62. It is described in the same specialist bibliography as the fifth communication and a second study of arthropod homoeosis. This is a later extension and is not part of the current claw-reversal primary reading yet.
+
+### B. What Przibram's 1907 summary actually claims
+
+The 1907 ResearchGate record contains a ten-point synopsis apparently drawn from Przibram's article. Treat it as an **article synopsis excerpt**, not a complete primary-text reading. Its notable conclusions are:
+
+- Claw reversal extends beyond *Alpheus* and occurs in both Macrura and Brachyura: the first cheliped pair in *Athanas*, *Alpheus*, *Callianassa*, *Carcinus* and *Portunus*, and the second pair in *Typton* where the heterochely lies on that pair.
+- Reversal proceeds more slowly in larger animals; above roughly 10 mm carapace length, two Z-type claws may occur temporarily.
+- **Nerve transection is said to have no effect on the reversal itself other than possible inhibition/retardation of growth.**
+- Total removal of the K (major/crushing) claw can yield animals with only a K or only a Z claw depending on whether the unoperated contralateral Z claw is allowed to continue growing or is held at a lower growth stage by autotomy or nerve transection.
+- Even decapods that usually regenerate the removed claw directly can show variation in claw-side relations; Przibram identifies Paguridae as an exception with more fixed side orientation.
+- Morphological traits characteristic of the removed claw can reappear in the corresponding regenerated claw form whether it develops on the original or opposite side.
+- Nutritional insufficiency and repeated severe losses can reduce overall body size over successive molts, particularly noted in *Typton*.
+- In *Carcinus*, removal of a K-claw dactyl can also simplify the dactyl of the opposite Z-claw.
+- Regenerates pass through developmental morphologies that Przibram relates to forms in ontogeny and phylogeny.
+- Infection, pathology and shedding malformed regenerates at the first molt can create apparent individual variation in regeneration quality.
+
+The excerpt is particularly valuable because it gives an early experimental account of developmental state as a condition for reversal. It also shows that Przibram's 1907 view of nervous influence is more specific than the broad phrase “nerves are irrelevant”: he says nerve severing does not independently determine the reversal, while acknowledging that it can retard growth and can be used to hold a contralateral claw at a lower developmental stage.
+
+### C. A real historical-mechanistic tension to preserve
+
+The 1907 synopsis says nerve transection affects reversal only by retarding growth. Later experimental papers report stronger neural involvement:
+
+- Govind, Wong & Pearce (1988), “Experimental induction of claw transformation in snapping shrimps,” reports that removal of the major claw induced transformation in all tested animals, major-claw nerve section induced transformation in about two-thirds, closer-muscle tenotomy in fewer than half, and immobilization did not induce it. DOI 10.1002/jez.1402480317; abstracts at https://eurekamag.com/research/007/331/007331536.php and https://ouci.dntb.gov.ua/en/works/4az3Yq0l/.
+- Govind & Pearce (1988), “Remodeling of nerves during claw reversal in adult snapping shrimps,” reports rapid remodeling of sensory axons and motoneuron changes during the first intermolt, before the full muscle/external morphological conversion. DOI 10.1002/cne.902680112; abstract: https://www.researchgate.net/publication/19810695_Remodeling_of_nerves_during_claw_reversal_in_adult_snapping_shrimps.
+- Read & Govind (1997) experimentally test a lateral-inhibition hypothesis: the intact snapper suppresses the contralateral pincer; once the snapper is lost, the pincer advances toward the snapper state; the transforming claw inhibits a second snapper from regenerating contralaterally. The University of Chicago Press abstract is https://www.journals.uchicago.edu/doi/abs/10.2307/1542942.
+- Palmer (2012) synthesizes these findings and places snapping-shrimp claw laterality in a developmental threshold/lateral-inhibition framework; he identifies central nervous system-mediated inhibition as the likely explanation while distinguishing taxa where laterality is fixed or regulated differently.
+
+The contrast should **not** be flattened into “Przibram was wrong” or “the nervous system is irrelevant.” The precise manipulated structures, species, developmental/molt stages, nerve sections, and endpoints must be compared. Przibram's 1907 statement concerns the effect of nerve transection on the reversal sequence; later work tests specific nerve manipulation, induction and the neural architecture accompanying conversion. A potential distinction between peripheral sensory interruption, central lateral inhibition, growth-rate effects and motor/sensory axon remodeling needs to be kept open until experimental methods are checked side by side.
+
+### D. What this reveals about the biological system
+
+The best current formulation is a **state-dependent, laterality-regulating system of paired appendages**, not a homeostatic drive toward bilateral sameness. The major/minor asymmetry is normally maintained by interaction between the two sides; after trauma, the opposite side can be re-specified as the major form. This involves developmental thresholds, inter-side inhibition, nerve remodeling, muscle-fiber reorganization and molt-dependent external morphology. The system's invariant is a relational configuration (one snapper + one pincer) rather than strict morphological symmetry.
+
+For our larger histological inquiry, this is valuable because it is an experimentally grounded example of distal structures acting as a coupled developmental system. It gives a real model for interactions among separated tissue regions within one organism. It does not establish a 4D extra-spatial structure or physical coupling between distinct organisms.
+
+### E. Remaining source tasks
+
+1. Locate and read Przibram's 1901 paper directly; the title, DOI, year and pages are verified, and accessible public-domain routes are recorded, but the download route failed here. Confirm its experiments on both Crustacea and Crinoidea and identify which *Alpheus* observations belong to it.
+2. Obtain full 1905 and 1907 *Archiv* texts and inspect their methods and exact results; resolve their end-page discrepancies.
+3. Read Wilson's original 1903 article. The volume is located but the OCR parser skipped Wilson's body. The 1903 volume contents start the article at p. 197 and list the next paper at p. 210; the National Academy of Sciences bibliography gives pp. 197–210, while Herrick's later bibliography gives a different terminal page. Until the article itself is inspected, preserve as a pagination discrepancy.
+4. Compare Przibram's nerve transection experiments with Govind, Wong & Pearce (1988) and the 1997 lateral-inhibition experiment, using exact anatomical target, timing, species and outcome as comparison fields.
+
+**Status:** early publication chronology improved; Przibram 1907 article synopsis located and inspected but not full paper; Wilson 1903 original still located/not read; Przibram 1901/1905/1907 full primary papers remain retrieval tasks. No Tock closure or `@` advance.
