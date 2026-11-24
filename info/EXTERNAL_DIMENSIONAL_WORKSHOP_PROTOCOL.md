@@ -389,3 +389,22 @@ After every three to five substantive bites, briefly review:
 Change the routine only when experience gives a concrete reason. Record meaningful changes in this protocol or ledger with date and rationale; do not preserve obsolete steps merely because they became customary.
 
 **Session completion standard:** one meaningful result, honest source/coverage status, a verified record where durable storage is used, and a next cursor.
+
+
+## 18. Workflow signature line
+
+At the end of each substantive workshop response, repeat a compact signature line that preserves the ordered workflow inside the active conversation context. The signature is a live state marker, not decoration and not a substitute for the ledger.
+
+Canonical form:
+
+`WORKSHOP SIG | ORIENT → BITE → INVESTIGATE → GEOMETRIZE → CONNECT → RECORD → VERIFY → NEXT | BRANCH: [branch] | CURRENT: [short task] | STATE: [status] | NEXT: [next operation]`
+
+Rules:
+- Keep the phase order stable unless experience or an explicit user decision warrants revision.
+- Use only the phases relevant to the current bite, but do not silently reorder them.
+- Keep branch, current task, state, and next operation short enough to remain scannable.
+- State values should be plain and honest, for example: active, source-located, source-read, draft, verified, blocked, or parked.
+- When a phase is skipped, mark it only when useful (for example, `CONNECT: deferred`); do not clutter every signature.
+- Update the signature every substantive turn so the latest line captures the live position. Repeat it even when the turn is mainly procedural.
+- If the session resumes after a gap or context shift, use the latest signature as a quick recovery pointer, then check the ledger and protocol for durable truth.
+- The repository ledger remains authoritative for durable project state; the signature is a compact in-context working pointer.
