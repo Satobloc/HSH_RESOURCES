@@ -39,3 +39,5 @@ Human-facing catalog records: **1099** (69 reviewed, 1029 provisional, 1 explici
 Subject tags are navigation aids, not theory claims. They are machine-assigned until individually reviewed and may be corrected without changing source provenance.
 
 For citation decisions use `indexes/HUMAN_BIBLIOGRAPHY.md` and the HsH point-of-use citation ledger. For exact machine coverage use `indexes/BIBLIOGRAPHY_COVERAGE.md` and `indexes/RESOURCE_INDEX.md`.
+
+- [Workshop Unicode code ledger](info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md)
