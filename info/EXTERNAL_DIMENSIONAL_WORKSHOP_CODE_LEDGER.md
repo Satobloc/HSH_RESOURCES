@@ -130,3 +130,19 @@ Retired from the active plan (but not deleted from history): `p` as a separate C
 | ∩ | U+2229 | Unity / intersection | Structural operator | Combines coequal, mutually intersecting or jointly constituted workstreams into one integrated inquiry. It does not denote independent parallel branches. Use within `u{...}` to mark a shared/intersectional starting set or work package. |
 
 Distinction: `⑂` (fork) creates separately tracked branches; `∩` expresses coequal integration/intersection. The user’s intended `u` in earlier examples is a mnemonic for unity/intersection, but the actual Unicode operator is `∩`. Do not use the ASCII letter `u` as the operator when `∩` is intended.
+
+
+## Refined sequence and review-point codes
+
+| Glyph | Code point | Canonical meaning | Class | Scope |
+|---|---|---|---|---|
+| ⊕ | U+2295 | Integrated / coequal synthesis | Structural operator | Marks the integrated biology-history inquiry and any coequal synthesis; distinct from set intersection where literal set membership is not meant. |
+| ρ | U+03C1 | Reorient and review | Phase | Review lessons from the preceding Tock, revise the next workflow if warranted, then establish the next direction. |
+| k | U+006B | Category-theory reading programme | Component | Larger literature programme on category theory, higher categories, geometry and related foundations. |
+
+The initial literature sequence is now:
+1. Integrated coequal biology + history/cultural lineage, with deliberate attention to nineteenth-century and related historical treatments of biology, including material that may be retrospectively interpretable as biological or proto-biological.
+2. Reorientation/review point: assess what the first integrated reading taught us, then decide whether and how to modify the next workflow.
+3. Larger category-theory-related literature programme.
+
+The review point is a genuine planned operation, not a placeholder. It may leave the following workflow unchanged if no revision is warranted.
