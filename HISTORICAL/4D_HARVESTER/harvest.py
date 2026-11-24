@@ -40,7 +40,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Iterable
 
-VERSION = "0.2.0"
+VERSION = "0.2.1"
 PROJECT_ROOT = Path("HISTORICAL/FOURTH_DIMENSION_HISTORY")
 OUTPUT_ROOT = PROJECT_ROOT / "harvested"
 DEFAULT_CONFIG = Path(__file__).with_name("queries.json")
