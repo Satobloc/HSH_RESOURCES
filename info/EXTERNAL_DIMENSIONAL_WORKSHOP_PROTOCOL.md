@@ -580,3 +580,8 @@ After a substantial integrated reading Tock, include an explicit reorientation o
 ## 28. Preserve the complete intended plan in the live signature
 
 The live signature should retain the entire current intended workflow, including future stages, while `@` marks the immediate current position. Do not shorten it to the active stage alone. Use explicit stage transitions and review checkpoints as defined in the code ledger. The plan remains revisable; retain the current version until an explicit update is made.
+
+
+## 29. Persistent full-signature rule
+
+Append the **entire current workflow signature** to every assistant message in this workshop. Preserve all completed, current, and planned stages; do not shorten it to the active fragment. The position marker `@` identifies the next operation/current position. Advance it left-to-right only when the current operation or bounded unit is actually complete. Keep the full signature unchanged when work has progressed within a phase but has not crossed its completion boundary. The signature is the final line of each assistant response.
