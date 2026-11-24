@@ -1615,3 +1615,40 @@ The *Tubularia* example is especially instructive: the two poles are capable of 
 For the user's histological 4D proposal, Loeb offers a vocabulary for distinguishing structural connectedness, functional/regulatory coupling and circulating inter-part signals. The shrimp case supplies a more specialized paired-appendage example. Neither source establishes a physical connection among separate organisms.
 
 **Source status:** Loeb's 1916 Chapter VII is directly read in searchable primary-text transcription at the passages listed above. Its page images have not been independently checked. The 1906 Lecture XI is not read; the available scan copy is incomplete at that location. No cursor advance.
+
+
+## 57. Wilson's 1903 nerve experiment, Thompson's growth-rate explanation, and the scope of Loeb 1916 — 2026-11-24
+
+The cross-source chronology now permits a more precise reconstruction. Wilson's 1903 original article remains located but not directly read; two later sources describe its nerve-section experiment, and Thompson supplies a distinct growth-rate interpretation.
+
+### A. Morgan 1901: reversal established, causal regulator still unresolved
+
+Thomas Hunt Morgan, *Regeneration* (1901), printed p. 63, summarizes Przibram's *Alpheus* result: when the **larger claw** is lost and the smaller remains, the smaller changes into the large form at the next molt (sometimes after two), while a small-type claw regenerates at the amputated site. Repeating removal of the newly acquired large claw reverses the side assignment again. Removing both claws simultaneously produces two small replacements. Morgan adds that no experiments had yet shown what factors regulate development of either claw type. Searchable text locator: https://litbit.ru/en/thomas-hunt-morgan/regeneration.
+
+### B. Wilson 1903 as summarized by Thompson (1917) and Govind et al. (1987)
+
+Thompson, *On Growth and Form* (1917), printed pp. 150–151, discusses Wilson's experiments immediately after the general Alpheus reversal. Thompson states that sectioning a claw's nerve retards its growth. In Alpheus, when the large claw is removed and the nerve to the surviving lesser claw is also severed, the latter's growth is slowed sufficiently for the regenerating large-side claw to catch up; the two claws then remain approximately coequal in size. Thompson presents this as a growth-rate account of the phenomenon. Primary text: https://proxybridge.pythonanywhere.com/cache/epub/55264/pg55264-images.html.
+
+Govind, Mellon & Quigley, “Muscle and Muscle Fiber Type Transformation in Clawed Crustaceans,” *American Zoologist* 27(4), 1079–1098 (1987), DOI 10.1093/icb/27.4.1079, give a neural-developmental interpretation. They say Wilson removed the large claw and subsequently severed **both nerve trunks** supplying the remaining pincer; reversal then did not occur. They call this the earliest direct evidence that pincer transformation may be under nervous influence. They also describe later experiments in which cutting the snapper's nerves in otherwise intact shrimp could trigger transformation of the opposite pincer. Full text: https://www.researchgate.net/publication/31012126_Muscle_and_Muscle_Fiber_Type_Transformation_In_Clawed_Crustaceans (around article pp. 1090–1092).
+
+These interpretations may be compatible at the level of observation: neural interruption changes the outcome; Thompson describes the proximate effect as retarded pincer growth, while Govind et al. frame it as evidence for neural influence over the transformation. Neither source alone identifies the complete pathway. Separate observed result, proposed mechanism and later reinterpretation.
+
+### C. Loeb 1916: a 1901 attribution, not the last word
+
+Loeb, *The Organism as a Whole* (1916), Chapter VII, printed p. 176, cites only Przibram 1901, *Archiv für Entwicklungsmechanik* XI, p. 329. Loeb presents the Alpheus observation as an example potentially explained by internal secretions/blood-borne substances and says Przibram had shown the nervous system had “no connection with this phenomenon.” Loeb does not cite Wilson's 1903 paper in that passage.
+
+The chronology matters: Przibram's 1901 result preceded Wilson's later nerve-section experiment. Morgan's 1901 account says the regulator was still experimentally undetermined; Wilson's 1903 experiment, as later described by Thompson and Govind et al., added evidence that neural input can affect reversal. Loeb's 1916 statement is therefore best treated as an over-categorical attribution to the 1901 result, not a final assessment of the later evidence. Primary transcription: https://www.arc-codex.com/library/45962 (Chapter VII, pp. 159–176).
+
+### D. Morgan 1940 memoir: “smaller” remains a likely but uncorrected slip
+
+Morgan's 1940 National Academy memoir says Wilson repeated Przibram's Alpheus experiments “after removal of the smaller one” (printed p. 327). This conflicts with Morgan's own 1901 account (larger-claw removal), Thompson 1917, Herrick 1911 and Govind et al. 1987 (all describing larger/snapper removal). The most likely explanation is a textual slip in the memoir, but the original Wilson paper is decisive. Preserve the 1940 wording in quotation; do not silently emend it or declare an erratum before Wilson's original is inspected.
+
+### E. What is now established, and what remains open
+
+- Established by converging historical/modern secondary accounts: losing the major snapper can induce the contralateral pincer to transform; nerve interruption can alter or prevent that transformation; growth rate is one proposed proximate mechanism.
+- Not yet directly verified in this workshop: Wilson's exact 1903 methods and wording; Przibram's 1901 primary methods; whether the Morgan 1940 “smaller one” phrase reflects a simple slip or a separate compressed experiment.
+- The 1906 Loeb Lecture XI remains unread because the available scan copy ends around printed p. 171, before its listed start on p. 199. Loeb's 1916 Chapter VII has been read and recorded separately in section 56.
+
+For the histological 4D proposal, the Alpheus case demonstrates distal paired-part developmental coupling within one ordinary organism. It does not establish an extra spatial dimension or physical linkage among separate organisms. Keep structural connectedness, regulatory coupling, physiological communication and organic part-whole membership distinct.
+
+**Next:** retrieve Wilson 1903 pp. 197–210 directly; inspect Przibram 1901 p. 329 and its methods; then assess whether Loeb's later summary and Morgan's 1940 memoir each contain a distinct historical misstatement. No Tock closure or cursor advance.
