@@ -400,3 +400,11 @@ Interpretation:
 7. `⊕{mx}`: integrate mathematics/category theory with cross-disciplinary connections that emerge naturally from the material, including computer science where relevant. Do not predefine a closed list of disciplines or substitute a modelling-only agenda.
 
 This is the complete current intention, not a fixed immutable commitment. The plan may be revised at the reorientation point or earlier if the research warrants it. Preserve the entire planned sequence in the live signature while placing `@` at the current position; do not truncate the signature to only the active stage.
+
+
+## 23. Full signature repeated on every message — 2026-11-24
+
+Every assistant message in this workshop ends with the complete current signature:
+`⌖◉▣✓@⊕{bh} ⌖◉▣ρk⊕{mx}`
+
+Maintain the full string, including future workflow. Advance `@` left-to-right only when the current operation/Tock is actually complete. Do not replace it with an abbreviated active fragment.
