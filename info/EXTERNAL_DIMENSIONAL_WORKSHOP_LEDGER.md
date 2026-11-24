@@ -1537,3 +1537,33 @@ For our larger histological inquiry, this is valuable because it is an experimen
 4. Compare Przibram's nerve transection experiments with Govind, Wong & Pearce (1988) and the 1997 lateral-inhibition experiment, using exact anatomical target, timing, species and outcome as comparison fields.
 
 **Status:** early publication chronology improved; Przibram 1907 article synopsis located and inspected but not full paper; Wilson 1903 original still located/not read; Przibram 1901/1905/1907 full primary papers remain retrieval tasks. No Tock closure or `@` advance.
+
+
+## 55. Critical source discrepancy: Morgan's 1940 Wilson memoir reverses the claw-removal trigger — 2026-11-24
+
+A new cross-check has exposed an important contradiction that must remain visible until Wilson's own 1903 article is inspected. **T. H. Morgan's 1940 National Academy biographical memoir says Wilson repeated Przibram's 1901 Alpheus claw-reversal experiments “after removal of the smaller one.”** The printed scan confirms that this is not an OCR artefact: see *National Academy Biographical Memoirs*, vol. XXI, pp. 326–327, especially p. 327. OCR and scanned page: https://www.nasonline.org/wp-content/uploads/2024/06/wilson-edmund.pdf.
+
+That statement conflicts with multiple other sources:
+
+1. **Morgan's own earlier book, 1901:** *Regeneration*, p. 63, describing Przibram's *Alpheus platyrhynchus*, explicitly says that when the **larger** claw is thrown off and the smaller is left intact, the smaller changes into the large form at the next moult (sometimes after two), while the newly regenerated claw takes the smaller form. If the experiment is repeated after the newly acquired large claw is removed, the sides switch again. Removing both claws together instead yields two small replacement claws. Primary OCR: https://upload.wikimedia.org/wikipedia/commons/a/a1/Regeneration_%28IA_regenerationmorg%29.pdf (find result around printed p. 63).
+2. **D'Arcy Thompson, 1917:** *On Growth and Form*, in the regeneration discussion at printed pp. 150–151, likewise says that in *Alpheus* the **large or knobby claw (A)** is removed, after which the opposite claw (B) assumes its size/form and the amputated side regenerates as the weaker claw. Thompson cites Wilson's 1903 paper (Biol. Bull. IV, p. 197) in this context. Text: https://alb-lang.org/library/read/55264.
+3. **Francis H. Herrick, 1911:** *Natural History of the American Lobster*, printed p. 277, states that reversal in *Alpheus* occurs when it loses its big “hammer” claw; the smaller contralateral claw grows into the hammer, while the old site regrows the small form. Herrick explicitly states that amputating the smaller claw alone does **not** produce reversal. Primary-era synthesis: https://spo.nmfs.noaa.gov/sites/default/files/pdf-content/fish-bull/fb29.6.pdf.
+4. **Modern literature:** reviews and experimental papers consistently describe snapper/major claw loss as the trigger for the opposite pincer-to-snapper transformation. Palmer (2012) and the modern experimental literature are summarized in section 53. A modern crustacean-morphology review also explicitly attributes the large-claw-removal plus subsequent pincer-nerve-section experiment to Wilson (1903): https://www.researchgate.net/publication/31012126_Muscle_and_Muscle_Fiber_Type_Transformation_In_Clawed_Crustaceans.
+
+### Best provisional interpretation
+
+Morgan's 1940 memoir may contain a simple textual slip (“smaller” for “larger”), or it may compress a different experimental detail in a misleading way. The surrounding sentence says Wilson confirmed Przibram's conclusions, and Wilson's later bibliographic record includes an additional abstract, “Notes on the Artificial Reversal of Asymmetry in *Alpheus*,” *Science* N.S. 17, 491–492 (1903). Neither fact resolves the discrepancy. The 1940 memoir's printed wording is clear, but it is contradicted by Morgan's own 1901 description, Thompson's 1917 account, Herrick's 1911 synthesis, and later experimental historiography.
+
+**Do not silently normalize the memoir to “large claw.”** Preserve the discrepancy and assign different evidence weights:
+- Morgan 1940: explicit printed statement, but conflicting and likely erroneous.
+- Morgan 1901: direct description of Przibram's earlier result, before Wilson's 1903 experiment.
+- Thompson 1917 / Herrick 1911: contemporary/near-contemporary secondary syntheses consistent with the large-claw trigger.
+- Wilson 1903 primary article: not yet directly read; decisive source for the exact experimental procedure and whether the memoir might refer to a separate manipulation.
+
+### Newly located bibliographic leads
+
+- Wilson's 1903 paper is in *The Biological Bulletin* 4, 197–210; the full volume is held by Biodiversity Heritage Library, item 16879, and the scan used in this workshop is the 342-page volume: https://www.biodiversitylibrary.org/item/16879 and https://file.iflora.cn/fastdfs/group1/M00/63/B3/wKhnoF15ugWASWddATcI2K5PnDc835.pdf. The web text parser exposes the contents (article begins p. 197, next article begins p. 210) but skips Wilson's body. The screenshot service rejected the 20.38 MB PDF, so the original article's page image has not yet been inspected.
+- Wilson's separate 1903 abstract, “Notes on the Artificial Reversal of Asymmetry in *Alpheus*,” appears in *Science* N.S. 17, 491–492. A 1903 bibliography in *Archiv für Naturgeschichte* lists it separately from the full *Biological Bulletin* article. Its abstract text has not yet been obtained.
+- Morgan's 1940 memoir is the source of the anomalous “smaller claw” wording; the exact scanned p. 327 is preserved in the screenshot record from this session.
+
+**Next:** retrieve Wilson's 1903 pp. 197–210 through an article-level BHL download, Internet Archive item/part, or separate scan; read the 1903 *Science* abstract; then determine whether Morgan 1940 is a typographical/authorial error or is describing an additional distinct experiment. Do not revise the mechanism until that check. No Tock closure or `@` advance.
