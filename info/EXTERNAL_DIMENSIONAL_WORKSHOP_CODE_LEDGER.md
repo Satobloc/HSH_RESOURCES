@@ -50,16 +50,18 @@ None registered yet. Add a collection only when it exists as an identifiable, po
 
 Tock is the higher-level bounded work package; Tick is a subordinate operation or position marker within it. The Credenza routes and preserves Tocks; the Unicode string describes their internal Tick structure. Tock completion requires a durable result and recorded next cursor. The live signature is the Tick-level compact representation; the ledger stores full Tock status and history.
 
-## Planned component assignments
-
-These are planned domains, **not yet assigned glyphs**. Do not place them in a live signature until single-character codes are selected and entered here:
-- category theory / mathematics
-- biology / organismal science
-- history and cultural lineage
-- computation
-- cross-disciplinary science bridges
-- workshop systems
 
 ## Change control
 
 Never silently reassign a glyph. Add new codes with meanings, code points, class, scope, date/version, and syntax constraints. For changed meanings, retain a supersession record.
+
+## Research-domain component codes
+
+| Glyph | Code point | Canonical meaning | Class | Scope |
+|---|---|---|---|---|
+| m | U+006D | Mathematics / category theory | Component | Category theory, geometry, topology, higher structures |
+| b | U+0062 | Biology | Component | Organismal biology, physiology, evolution, biological organization |
+| h | U+0068 | History and cultural lineage | Component | Victorian dimensional thought, spiritualism, science fiction, fandom, time-binding |
+| p | U+0070 | Computation | Component | Computational models, simulations, programming, computational tools |
+| s | U+0073 | Science bridges | Component | Cross-disciplinary applications and connections |
+| w | U+0077 | Workshop systems | Component | Credenza, notation, methods, workflow experiments and infrastructure |
