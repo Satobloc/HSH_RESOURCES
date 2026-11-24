@@ -690,3 +690,28 @@ This clarification governs all subsequent SAT/H(s)H interpretation, including Hi
 The user's current statement is that w=ct everywhere and at all times and places, with time measured in meters. Unless a source or argument justifies a difference, X, Y, Z, and W are unified coordinate axes of the same space and should be treated alike dimensionally. The directly observed distinguishing feature is that W carries an obligatory motion/expansion vector, or possibly a rotation vector. Do not silently decide between motion/expansion and rotation; retain the alternative as unresolved.
 
 The user further proposes that universal scientific invariants and laws, including Newton's laws, are universal throughout the block-universe model. Time/W is involved in exerting or transmitting force in the ordinary way along W, while apparent differences arise from the obligate vector attached to W. Treat this as the current interpretive proposal to explore, not as a completed derivation. Do not reintroduce a time/space ontological split merely because conventional notation or interpretation does so. Preserve the user's W-metric and unit convention when reconstructing this view; check signature/metric details against the particular SAT/H(s)H version rather than assume the conventional Lorentzian metric has already been adopted.
+
+
+## Foundational SAT/H(s)H axiom status: W/time and four-dimensional physical extension
+
+**Epistemic status: FOUNDATIONAL WORKSHOP ASSUMPTION, not an open question or optional hypothesis.** The following is the user's stipulated ontology for this workshop and governs all interpretation unless the user explicitly revises it. Do not recast it as a question, conjecture, candidate model, or item awaiting validation.
+
+1. **Four-dimensional physical space:** X, Y, Z, and W are the unified axes of the physical space. Unless a specific reason is supplied, they are dimensionally alike and stand in symmetric dimensional relations.
+2. **Time is W:** W is the traditional Minkowski time axis, orthogonal to X, Y, and Z. Time is measured in meters under the convention w=ct. There is no ontological separation between time and place.
+3. **Temporal propagation:** W is also, distinctly, the direction of motion/propagation of the time action. The coordinate direction and the propagation direction are conceptually distinguishable aspects of the same foundational arrangement, not separate entities.
+4. **Obligate W-vector:** The directly observed distinction associated with W is its obligatory motion/expansion vector, with rotation retained as an alternative characterization. This vector accounts for the apparent distinctions associated with W; do not treat it as evidence that W is a different kind of dimension.
+5. **No bridge:** Time itself is W. There is no separate temporal region, process, destination, or bridge between ordinary space and W. Any process that happens in time is physically extended along W. Its extension along W is already intrinsic to its temporal existence.
+6. **Block-universe scope:** Universal scientific invariants and laws, including Newton's laws, are taken to be universal throughout the block-universe model. Time/W participates in exerting or transmitting force in the ordinary way along W; apparent differences arise from the obligatory vector associated with W.
+7. **Present section:** The familiar three-dimensional present is an intersection/section of physically extended four-dimensional structures. It is not the complete structure and does not need to connect to a separate temporal domain.
+
+### Consequence for interpretation and language
+
+- State these as premises, not questions. They are not awaiting a decision about whether time might be W, whether processes might extend along W, or whether a bridge is needed.
+- Do not phrase ordinary temporal extension as an “interdimensional crossing,” “rounding the corner into W,” or a process that must somehow enter a fourth-dimensional region. Such language contradicts the axiom.
+- A phrase like “rounding the corner of time” may only be used for a genuinely additional, specifically defined geometric phenomenon beyond the ordinary W-extension already implied by temporal existence. It must not be used to redescribe time itself as a bridge.
+- Do not introduce caveats that downgrade the ontology to “working hypothesis,” “proposed interpretation,” “possible mechanism,” or “unproven premise.” The ontology is foundational by user stipulation. Scientific or mathematical questions may concern its consequences, formal expression, compatibility, or explanatory reach, but not whether the workshop should assume it.
+- Keep mathematical discipline about coordinate conventions and equations, but do not let unresolved formal details unsettle the stipulated ontology.
+- Historical authors such as Hinton are interpreted from this foundation while maintaining source fidelity: distinguish their original claims from our SAT/H(s)H reading. Do not attribute the complete ontology to them.
+- Modern biology and physics are brought into the reconnaissance to elaborate and update the consequences of the ontology, not to decide whether the ontology is allowed as the workshop's starting premise.
+
+This section supersedes any contrary phrasing elsewhere in the workshop records, especially language that describes the W-axis ontology as a conjecture, asks whether ordinary temporal extension involves W, or treats W as a separate dimension requiring a bridge.
