@@ -8,7 +8,7 @@
 
 Single Unicode code points represent phases, operators, components, or states. Adjacent tokens imply left-to-right succession. Structural operators preserve their defined semantics. The live signature carries codes; this ledger carries meanings. Memorization is unnecessary.
 
-For live integrated-work signatures, square brackets group the subject components and their selected interpretive/method companions. Use the order **subject components → interpretive lens → method-source**. For example, `⊕[bhᛟd]` means integrated biology/history work read through the SAT/H(s)H lens and informed by the Dimensional Normalization paper. The bracket group is a compact scope bundle, not a new branch or operator.
+For live integrated-work signatures, square brackets group the subject components and their selected interpretive/method companions. Use the order **subject components → interpretive lens → method-source**. For example, `⊕[bhᛟdᵃ]` means integrated biology/history work read through the SAT/H(s)H lens, informed by the Dimensional Normalization paper, with archive-acquisition infrastructure active as a companion. The bracket group is a compact scope bundle, not a new branch or operator.
 
 For branches, `⑂{cu}` is equivalent to `⑂{A: Credenza | B: Unicode notation}` when component codes are defined and left-to-right order is sufficient. Where additional ordering labels are needed, uppercase labels indicate branch/order positions and lowercase tokens identify components: `⑂{AcBu}`.
 
@@ -172,7 +172,7 @@ The review point is a genuine planned operation, not a placeholder. It may leave
 
 The user's currently intended full sequence is exactly:
 
-`⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]`
 
 Do not truncate this to the currently active first stage when reporting the overall plan.
 
@@ -190,9 +190,9 @@ Important: the signature records the entire intended workflow, not just the acti
 ## Full-plan signature grammar and current programme
 
 The complete live plan uses:
-`⌖◉▣✓@⊕[bhᛟd]β ⌖◉▣ρk⊕[mbxᛟd]`
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]`
 
-The entire planned sequence remains visible in the repeated signature. `@` marks the current position; it does not remove or hide future stages. `⊕[bhᛟd]` means coequal integrated biology/history inquiry, read through the SAT/H(s)H lens `ᛟ` and using the Dimensional Normalization paper `d` as a companion methodological reference. `β` marks the latter-half contemporary biological reconstruction pass. After that, `⌖◉▣` is the explicit reorientation, next-Tock selection and plan-recording sequence; `ρ` is the lessons-learned review/decision; `k` is category-theory reading; `⊕[mbxᛟd]` is mathematics/category theory integrated with the continuing biological perspective and naturally emerging cross-disciplinary connections, also read through `ᛟ` and informed by `d`. Spaces between the two displayed stages are readability whitespace only; adjacency otherwise implies succession.
+The entire planned sequence remains visible in the repeated signature. `@` marks the current position; it does not remove or hide future stages. `⊕[bhᛟdᵃ]` means coequal integrated biology/history inquiry, read through the SAT/H(s)H lens `ᛟ`, using the Dimensional Normalization paper `d` as a companion methodological reference, and keeping archive-acquisition infrastructure `ᵃ` active as a companion capability. `β` marks the latter-half contemporary biological reconstruction pass. After that, `⌖◉▣` is the explicit reorientation, next-Tock selection and plan-recording sequence; `ρ` is the lessons-learned review/decision; `k` is category-theory reading; `⊕[mbxᛟd]` is mathematics/category theory integrated with the continuing biological perspective and naturally emerging cross-disciplinary connections, also read through `ᛟ` and informed by `d`. Spaces between the two displayed stages are readability whitespace only; adjacency otherwise implies succession.
 
 
 ## Orientation assumptions (applies throughout the programme)
