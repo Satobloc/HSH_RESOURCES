@@ -121,3 +121,12 @@ The current programme is two coequal starting streams, followed by mathematics/c
 The programme order is **b and h coequal → m → x**. The two opening streams may be interwoven or investigated in parallel; neither is subordinate to the other. Mathematics/category theory follows those initial explorations. Cross-disciplinary investigation follows from connections actually encountered; do not prepopulate a rigid list of disciplines.
 
 Retired from the active plan (but not deleted from history): `p` as a separate Computation/Modelling programme, `s` as a separately predetermined Science Bridges programme, and `w` as a scheduled final Workshop Systems phase. Workshop evaluation/adaptation remains an ongoing maintenance activity rather than a final research stage. Existing glyph definitions are retained in the ledger's history; do not silently reuse those glyphs for different meanings.
+
+
+## Unity / intersection operator
+
+| Glyph | Code point | Canonical meaning | Class | Scope / constraints |
+|---|---|---|---|---|
+| ∩ | U+2229 | Unity / intersection | Structural operator | Combines coequal, mutually intersecting or jointly constituted workstreams into one integrated inquiry. It does not denote independent parallel branches. Use within `u{...}` to mark a shared/intersectional starting set or work package. |
+
+Distinction: `⑂` (fork) creates separately tracked branches; `∩` expresses coequal integration/intersection. The user’s intended `u` in earlier examples is a mnemonic for unity/intersection, but the actual Unicode operator is `∩`. Do not use the ASCII letter `u` as the operator when `∩` is intended.
