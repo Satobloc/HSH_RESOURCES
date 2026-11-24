@@ -1191,3 +1191,70 @@ The user's histological 4D proposal should not be reduced to Thompson's shape tr
 5. For causal claims, specify the physical process that realizes a proposed transformation or coordinated action; a grid, projection or symmetry relation is a representation until a mechanism is supplied.
 
 **Updated source status:** Thompson's 1917 Chapter XVII has been directly read from the public-domain text; Arthur's full open-access article has been inspected; Jaeger is located and its contemporary review and Google Books snippets inspected, but Jaeger's primary text is not yet fully read. No new primary four-dimensional biological organism claim has been identified here. No Tock closure or `@` advance.
+
+
+## 50. Jaeger full-text primary-source inspection — symmetry in organismal morphology, movement, regeneration and phyllotaxis — 2026-11-24
+
+The earlier section 49 classified Jaeger as located but not directly read. That status is now superseded in part: the full searchable OCR/text extraction of the 1920 second edition was opened and inspected through the preface and the first six chapters, through approximately printed page 166. The 1917 first edition is also held in the Biodiversity Heritage Library. The 1920 volume is identified as not in copyright by BHL.
+
+**Primary scan consulted:** F. M. Jaeger, *Lectures on the Principle of Symmetry and Its Applications in All Natural Sciences*, 2nd augmented ed. (Amsterdam: Elsevier, 1920), University of California Libraries scan. BHL catalogue/item: https://www.biodiversitylibrary.org/item/62582; searchable PDF/text rendition: https://upload.wikimedia.org/wikipedia/commons/3/38/Lectures_on_the_principle_of_symmetry_and_its_applications_in_all_natural_sciences_%28IA_lecturesonprinci00jaegrich%29.pdf. The parsed scan provides printed page markers and OCR, but page images could not be rendered: the screenshot service rejected the 57.8 MB PDF as too large; a separate 1918 *Nature* review PDF screenshot attempt was also blocked by the service. Accordingly, primary-text reading below is based on the scan's searchable text, not visual page-image verification. Exact quotations, figures, botanical identifications and technical terms should be checked against page images before formal quotation/publication.
+
+### 1. Jaeger's own methodological caveat — preface, pp. viii–ix
+
+Jaeger says that his purpose is not an exhaustive mathematical treatise, but to show the usefulness of symmetry for morphological description and chemical/physical phenomena. He notes that the biological/morphological examples are **preliminary** and “have no claim to absolute correctness”: as a chemist or physicist, he cannot judge exact morphological classifications from drawings alone unless he has studied those subjects in detail. He explicitly invites biologists to correct or improve them. This is an important self-limitation: Jaeger is offering a mathematical descriptive framework and illustrative examples, not claiming that his biological classifications are definitive.
+
+The 1918 *Nature* review corroborates the breadth of the work: the first four chapters develop the symmetry principle and group-based classification; the biological applications include morphology of crystals, plants and animals; later chapters treat phyllotaxis and Pasteur's law, molecular optical activity, physiological action of enantiomorphous antipodes and asymmetric synthesis. The reviewer calls the latter stereochemical topics among the book's strongest sections.
+
+### 2. Living forms and the historical "higher-to-lower symmetry" claim — §6, printed pp. 55–58
+
+Jaeger classifies many familiar higher animals (including humans, quadrupeds, birds and insects) as bilateral forms possessing one plane of reflection, while listing lower animals such as Blastoidea, corals, radiolarians, Discomedusae and ascidians as often possessing higher rotational symmetry and multiple planes of symmetry.
+
+He then proposes that morphological evolution in living nature appears to proceed from higher toward lower symmetry. Crucially, he does **not** present this as a settled law: he says that the frequent bilateral symmetry of higher animals has not yet been rationally explained. He tentatively associates it with animal locomotion. Sedentary organisms may benefit from presenting repeated body parts to the environment in many directions, whereas freely moving animals may benefit from bilateral organization and mechanical stability. He notes that plant organs are generally more symmetrical than animal organs, while immobile crystals provide the most perfect symmetry.
+
+This is a historical biological hypothesis, not a reliable modern evolutionary generalization. Jaeger's “higher/lower animals” language reflects early twentieth-century taxonomic and evolutionary ranking. Its proposed direction of morphological evolution should be treated critically, not carried forward as a contemporary principle. The more durable observation is that symmetry type is correlated with organismal organization and lifestyle in ways that require explanation.
+
+### 3. Bilateral symmetry, regeneration and directional responses — §6, pp. 57–58
+
+Jaeger connects symmetry to dynamical biological phenomena and cites experimental work by Przibram and Jacques Loeb. He describes cases where bilateral symmetry, disrupted by injury or amputation, is restored, sometimes at the expense of normal development or by degeneration of the remaining organ. He interprets the body as an organization of two symmetrical and mutually independent halves, with regeneration phenomena tending to preserve or restore symmetry.
+
+He also discusses responses to asymmetrically applied stimuli: phototropism, geotropism and chemotropism. Following Loeb, he describes tropisms as functional dissymmetries with directional orientation and, in some cases, restoration of symmetry.
+
+**Use with caution:** these are Jaeger's historical summaries and interpretations of the biological literature available to him, not a modern experimental review. The interesting conceptual distinction is between (a) structural symmetry of the body plan, (b) functional asymmetry generated by a stimulus, and (c) developmental/regenerative processes that may preserve, restore or reorganize structure. These should not be collapsed into one simple "symmetry-maintenance" mechanism.
+
+### 4. Organism as a growing, potentially unlimited system — Chapter VI, §29, pp. 159–166
+
+Jaeger distinguishes the symmetry of an individual organ from the mutual arrangement of an organism's organs. Because a plant or animal continuously increases its volume through growth, he suggests that a living organism can be regarded theoretically as an unlimited system, analogous to a crystal's indefinitely repeated spatial lattice; finite lifespan and other limits arise from contingent or secondary factors.
+
+He then develops plant phyllotaxis as an example of regular spatial arrangement:
+
+- Leaves occur in spiral series around an axis; he distinguishes orthostichies (aligned rows) and parastichies (spiral series).
+- A cycle is described by a fraction recording the number of spiral turns and the number of inserted leaves.
+- The ratios include (1/2, 1/3, 2/5, 3/8, 5/13, 8/21,ldots), which converge toward the golden-section divergence.
+- Jaeger describes the idealized angular divergence as approximately (137^circ 30' 28''), linking it to the arrangement of leaves, sunflower fruits, pineapple bracts and related structures.
+- He notes an unresolved question: whether the apparent optimization of exposure to light and air is teleological fiction or reflects real adaptive relations. He cites Wiesner on light absorption.
+
+This is an especially useful bridge to geometry and morphogenesis: Jaeger treats an organismal structure as a repeated spatial organization on a surface, with a generative spiral and lattice-like relations. It is not a fourth spatial dimension or a temporal worldtube model. The apparent continuity across successive leaf insertions is the development of a spatial pattern; it should not be conflated with Woodger's temporal organism or the user's stronger 4D histological continuity proposal.
+
+### 5. Molecular chirality and physiological specificity — Chapters VIII and IX, contents-level status
+
+The second edition's contents explicitly identify a substantial stereochemical/biological programme beginning at printed p. 204: Pasteur's law, fission of racemoids, molecular dissymmetry and optical activity, physiological action of antipodes, enzyme action, racemisation, asymmetric atoms, and chemical-molecular symmetry. Chapter IX (p. 283 onward) treats reactions of optically active and inactive compounds, reaction rates of antipodes, and natural/asymmetric synthesis. The 1918 *Nature* review likewise emphasizes Jaeger's treatment of Pasteur's law and asymmetric synthesis of organic molecules.
+
+However, the searchable PDF text extraction available in this session appears to stop near printed p. 166. The detailed text of Chapters VIII and IX has **not yet been read directly**. Do not record Jaeger's specific argument about enzyme action or physiological differences between antipodes as read or verified. Those contents are a clear next primary-reading target.
+
+### 6. What Jaeger contributes to our active inquiry
+
+Jaeger is now more than a generic symmetry bibliography. He supplies a contemporaneous bridge among:
+
+1. **Morphological symmetry:** group-theoretic description of animal and plant form.
+2. **Functional symmetry/dissymmetry:** locomotion, stimulus orientation and tropisms.
+3. **Regenerative dynamics:** restoration or reorganization after injury.
+4. **Unlimited spatial organization:** phyllotaxis and other repeated patterns on cylindrical/conical surfaces.
+5. **Molecular chirality:** Pasteur's law, optical activity and physiological specificity (located in the book's structure; full chapters still pending).
+
+For the user's histological proposal, this suggests a useful separation of questions: what is the spatial symmetry of a tissue/appendage at one time-slice; what functional dissymmetries arise during action; what transformations occur through development/regeneration; and what molecular chiral constraints exist at the cell/molecular scale. None of those, alone or together, establishes an extra spatial axis or a branching inter-individual organism. But they identify the biological organization that any such proposal must describe.
+
+### 7. Jaeger and the 4D question — do not overread Woodger's footnote
+
+Jaeger's inspected chapters provide mathematical symmetry groups and applications to 3D morphology, crystals, living forms and molecular chirality. No explicit theory of four-dimensional biological symmetry has been located in the inspected primary text. Woodger's recommendation to extend symmetry from a four-dimensional point of view is a separate instruction in Woodger's book; Jaeger's treatise is a source on the symmetry principle, not presently evidence that Jaeger himself supplied a 4D organismal account. Until the remaining chapters and the exact wording of Woodger's footnote are verified, keep their roles distinct.
+
+**Status update:** Jaeger's preface and early biological morphology chapters are directly inspected in OCR through approximately p. 166; page-image cross-check remains unavailable due renderer limits. Chapter VIII/IX are identified but not yet directly read. No Tock closure or `@` advance.
