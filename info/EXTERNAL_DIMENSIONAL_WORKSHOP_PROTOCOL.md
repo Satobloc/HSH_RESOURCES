@@ -408,3 +408,34 @@ Rules:
 - Update the signature every substantive turn so the latest line captures the live position. Repeat it even when the turn is mainly procedural.
 - If the session resumes after a gap or context shift, use the latest signature as a quick recovery pointer, then check the ledger and protocol for durable truth.
 - The repository ledger remains authoritative for durable project state; the signature is a compact in-context working pointer.
+
+
+## 19. Compact Unicode workflow notation
+
+The workflow signature is a **Unicode glyph string**, not a chain of words or arrows. Each assigned glyph denotes one workflow phase; adjacency means ordinary succession. Therefore, do not print explicit sequential arrows between every glyph.
+
+### Current provisional phase assignments
+
+| Glyph | Phase |
+|---|---|
+| ⌖ | Orient |
+| ◉ | Focus / select bite |
+| ⌕ | Investigate |
+| ⧖ | Geometrize |
+| ⤳ | Connect |
+| ▣ | Record |
+| ✓ | Verify |
+| ⇢ | Next / deliberate transition |
+
+These are provisional assignments for this workshop. They are not claimed to be registered in the general Unicode String-to-Glyph assignment workbook unless and until that workbook is deliberately updated. A glyph is one Unicode code point here; its semantic assignment is maintained by this protocol.
+
+### Linear sequence and control markers
+
+- `⌖◉⌕⧖⤳▣✓⇢` means the ordered workflow, with implicit succession.
+- A leading prefix records completed phases. For example, `⌖◉⇢⌕⧖⤳▣✓⇢` means orientation and bite selection are complete; the next phase is investigation, but execution pauses at the transition marker to deliberate how to proceed.
+- `⇢` is a deliberate transition / decision point, not a duplicate of ordinary adjacency.
+- Reserve separate control glyphs for branching, cycling, joining, waiting, and stopping. Do not assign those operators casually or use them interchangeably.
+- Branch, cycle, join, and other compound forms must be defined with small examples before use. Their grammar should distinguish the workflow graph from the linear sequence of phases.
+- Keep the live signature compact: show the relevant phase string and, only when not inferable, a short current-position or branch annotation.
+
+Do not insert redundant arrows between successive phase glyphs. Do not expand the signature into prose unless explaining or revising the notation.
