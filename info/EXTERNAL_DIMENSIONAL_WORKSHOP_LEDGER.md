@@ -92,3 +92,46 @@ This section uses only the general protocol concepts explicitly discussed in the
 - Keep the ledger compact. Long analysis belongs in bounded reading notes, not in this navigation file.
 - Revisit parked leads when new evidence or a new mathematical construction makes them useful.
 - Record the exact next cursor whenever a task is paused.
+
+
+## 8. First geometric-application reconnaissance — nLab biology collection
+
+**Source inspected:** `PRIOR_ART/NLAB--interesting.txt`, a large archived nLab page collection containing a captured page titled `nLabbiology`. The archive copy was directly inspected around its biology entry and references. This is an nLab-curated reference hub, not a systematic review; individual papers must be retrieved and read before substantive use.
+
+The archived nLab biology page explicitly describes category-theoretic and adjacent mathematical frameworks applied to biological systems at multiple scales, from DNA mechanisms to protein interactions and complex systems. It provides an unusually rich first bridge for this workshop.
+
+| Mathematical construction / literature | Biological or computational target | Candidate geometric reading | State / next action |
+|---|---|---|---|
+| Ologs (ontology logs) | Genomic categories, observable phenomena, diseases and gene expression | Objects/types connected by typed relations; visualize as a directed network of assertions | LOCATED; retrieve source paper and draw example |
+| Categories of DNA segments | Natural and experimental DNA operations | Ordered segments, fibers and maps between segment configurations; explicit combinatorial geometry | LOCATED; inspect Tuyeras references |
+| Stock-flow diagrams and Petri nets | Epidemics, COVID-19, reaction networks | Compartments/stocks connected by directed flows; open systems composed by cospans | LOCATED; inspect Baez et al. papers and diagrams |
+| Pedigrads | Genomic data and algorithms | Functorial representation over categories of segments; inspect what the construction's dimension actually is | LOCATED; retrieve Category Theory for Genetics papers |
+| Adjunctions | Pathogen/disease sets and immune responses | Paired maps between structured families of subsets, with order/containment relations | LOCATED; reconstruct the diagram and conditions |
+| Operads | Phylogenetic trees | Branching/compositional trees with permitted grafting/substitution operations | Citation located: Baez & Otter (2017); retrieve primary paper |
+| Algebraic topology / persistent homology | Neuronal morphologies | Geometric shape and topological invariants across measurement scales | Primary citation located: Kanari et al. (2016); retrieve paper |
+| Fuzzy simplicial sets / UMAP | Computational biology and sequence-data classification | High-dimensional data neighborhoods represented by fuzzy simplicial structures | Reference lead located; retrieve primary technical sources |
+| Algebraic geometry / singularities / moduli spaces | Anatomical morphology and molecular mechanisms in cells | Families of possible shapes/configurations, singular transitions and parameterized moduli | Several nLab references located; inspect sources individually |
+| Hyperstructures (Norbert Baas) | Hierarchical organization in biology | Aggregates of agents bonded by descriptions/relations; potentially useful for non-globular organization | Primary references listed; inspect Baas papers |
+| Bigraphs and process calculi | Biochemical processes, cellular organization, replication | Nested spatial/relational graphs and composable process transformations | References located; retrieve Milner and biochemical π-calculus sources |
+| Higher-dimensional category models of the π-calculus | Computation/process algebra, with biological process relevance | Higher-dimensional transformations between process executions and their equivalences | Stay & Meredith (2015) identified; retrieve paper |
+| Memory Evolutive Systems | Rosen organisms, neuroscience and intelligence | Multilevel organization with composition and emergence across organizational levels | Ehresmann & Vanbremeersch sources identified; retrieve and visualize |
+
+### Especially promising immediate leads
+
+1. **Baez & Otter, “Operads and Phylogenetic Trees,” Theory and Applications of Categories 32 (2017), 1397–1453.** This is a direct mathematics-to-evolutionary-biology bridge. The first geometric task is to visualize a phylogenetic tree as a compositional object and show how operadic composition corresponds to joining/grafting tree structures. Do not reduce this to the bare fact that a tree is a graph; investigate the extra compositional structure.
+
+2. **Kanari et al., “Quantifying Topological Invariants of Neuronal Morphologies,” arXiv:1603.08432 (2016).** Direct geometry/topology-to-neuroscience bridge. Visualize neuronal branching geometry, scale, and the topological invariants being measured. Determine which invariants preserve biologically relevant shape information and which discard metric detail.
+
+3. **Category theory for genetics (Tuyeras).** The nLab collection identifies DNA segment categories and pedigrads for genome data, sequence alignment, mutations, genotype, phenotype and haplotype. This is an especially promising bridge among geometry, evolution, computation and biological organization.
+
+4. **Hyperstructures in biology (Baas).** The archived nLab text contrasts hyperstructures with n-categories, noting that biological processes may be organized as aggregates with bonds rather than simply as oriented globular arrows. This deserves a careful geometric comparison with higher-dimensional categories, not a quick dismissal as another abstract formalism.
+
+5. **Higher-dimensional category models of process calculi.** Stay and Meredith's work on higher-dimensional category models of the π-calculus may bridge computation and biological process modeling. The core visualization question is what a higher-dimensional morphism represents between process histories, and what geometric dimension that object has in the model.
+
+### Caution about the archived nLab text
+
+The archived file is a collected page/excerpt corpus, with mixed dates and page contexts. It contains historical captures and a mix of technical expositions and bibliographic leads. Treat the page as an index to the intellectual landscape, not as a peer-reviewed synthesis or confirmation that every described application is established or successful. Primary sources and exact pages are the next step.
+
+### Immediate next bounded operation
+
+Retrieve and inspect the primary Baez–Otter paper first. Produce a geometric reading note and a diagram of the operad/tree composition, then test whether the same visual explanation transfers to a second example from DNA segment categories or stock-flow/Petri-net models.
