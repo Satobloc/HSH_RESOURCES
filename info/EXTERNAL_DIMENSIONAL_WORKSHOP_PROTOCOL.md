@@ -590,7 +590,7 @@ The live signature should retain the entire current intended workflow, including
 
 Append the **entire current workflow signature** to every assistant message in this workshop. Preserve all completed, current, and planned stages; do not shorten it to the active fragment. The position marker `@` identifies the next operation/current position. Advance it left-to-right only when the current operation or bounded unit is actually complete. Keep the full signature unchanged when work has progressed within a phase but has not crossed its completion boundary. The signature is the final line of each assistant response.
 
-Current adopted full signature (square-bracket group syntax): ⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]. The `ᵃ` companion is active archive-acquisition/research-intake infrastructure within the current biology/history Tock.
+Current adopted full signature (square-bracket group syntax): ⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s. The `ᵃ` companion is active archive-acquisition/research-intake infrastructure within the current biology/history Tock.
 
 
 ## 30. Orientation carries standing work assumptions
@@ -646,7 +646,7 @@ Preserve scientific accuracy and mark uncertainty, but do not allow premature pr
 
 Effective 2026-11-24, use lowercase letters for newly assigned workshop components, interpretive modes, and research designations. Reserve uppercase letters for possible future higher-level organization, ordering, hierarchy, or branch-position labels. “Higher capitalization” is the mnemonic. Do not populate hypothetical uppercase labels until an actual organizational need arises.
 
-The formerly proposed uppercase S for the SAT/H(s)H lens is superseded by the user-selected glyph ᛟ (U+16DF). The older lowercase s remains the retired Science Bridges component designation and is not reused as the SAT/H(s)H lens. The Greek lowercase beta β remains the contemporary biological reconstruction character. Existing established codes retain their meanings; never silently reassign a code.
+The formerly proposed uppercase S for the SAT/H(s)H lens is superseded by the user-selected glyph ᛟ (U+16DF). Lowercase `s` previously had a retired Science Bridges meaning; on 2026-11-24 the user explicitly reinstated lowercase `s` with a new meaning: the deferred dedicated spiritualist-readings intention at the end of the full ticker. This is a recorded supersession, not an unacknowledged reuse. The Greek lowercase beta β remains the contemporary biological reconstruction character.
 
 ## 33. Victorian-first historical scope
 
@@ -869,7 +869,7 @@ The proximal goal is to finish a broad overview of 4D/higher-dimensional organis
 
 Do not begin the category-theory reading sequence until the overview has a stable taxonomy, major historical sources/actors, language and press map, repository findings, source-quality distinctions and an explicit gap list. Exhaustiveness is not required; a coherent general map is. Then transition to category theory using the existing planned reading branch and carry the biological examples into that exploration.
 
-**Deferred PIN 5:** investigate the actual spiritualist/occult/Theosophical tradition **after** category-theory exploration. Treat these as distinct historical traditions/organizations and trace their actual periodicals, practitioners, institutions, experimental claims and biological/higher-body concepts; do not conflate them. Limited reading needed to quote a source faithfully in the current overview is allowed, but the dedicated movement-history investigation is deferred.
+**Deferred PIN 5 / trailing `s`:** preserve the dedicated spiritualist-readings intention **after** category-theory/mathematics exploration. Investigate Spiritualism, psychical research, Theosophy, Anthroposophy and relevant occult traditions as distinct histories rather than one conflated movement. Trace primary readings, periodicals, practitioners, institutions, experiments/claims and historically specific connections to higher-dimensional bodies, biology and organismal form. Limited reading needed to quote a source faithfully or explain immediate context in the active `h` stream is allowed, but it does not discharge this separate systematic reading programme.
 
 **Scraped material destination:** all workshop scraper/export results selected for retention, including records, run manifests and approved content-addressed objects, must be written inside the `Satobloc/HSH_RESOURCES` repository, under the documented workshop archive structure (`HISTORICAL/FOURTH_DIMENSION_HISTORY/harvested/` unless a validated revised structure is adopted). Preserve per-item source URL, provider, query, language, publication/source date, harvest timestamp, stable identifiers, rights/license, OCR/full-text/image status, content hash, and coverage/pagination limitations. No scraped run is considered safely stored until repository readback verifies its actual files. HsH is the later distribution/adaptation home for selected validated workflow notes and public-facing experimental materials, not the default raw scrape destination.
 
@@ -877,3 +877,18 @@ Do not begin the category-theory reading sequence until the overview has a stabl
 
 
 **Acceptance attempt update — 2026-11-24:** a disposable local clone was attempted for the next offline test and no-provider dry-run, but `git clone` failed before checkout because this runtime could not resolve `github.com` (`Could not resolve host: github.com`). Python 3.13.5 and Git 2.47.3 are present. The GitHub connector remains available for repository reads, but the workflow inventory has no existing general-purpose test job for this exact suite. No workflow or other automation was modified. Unit tests and dry-run remain **NOT RUN**; runtime status remains **NOT VERIFIED**. Resume the two commands in ledger section 39 from an authorized checkout with GitHub network access. No ticker advance.
+
+
+## 41. User-restored explicit spiritualist readings intention — 2026-11-24
+
+The user requested that lowercase `s` be restored as a visible final marker in the full workflow signature so the spiritualist readings remain plainly visible on the to-do list, even though some related historical material already falls within `h`.
+
+**Canonical full signature:**
+
+`⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`
+
+**Meaning:** trailing `s` (U+0073) is the dedicated spiritualist-readings intention corresponding to deferred PIN 5. It follows the category-theory/mathematics exploration `k⊕[mbxᛟd]`.
+
+**Not redundant with `h`:** `h` may consult historically relevant spiritualist or psychical sources when needed for the active biology/history inquiry. `s` retains the separate, systematic reading programme: primary texts and historical reconstruction of Spiritualism, psychical research, Theosophy, Anthroposophy and relevant occult traditions, with their organizations, practitioners, periodicals, institutions and claims kept distinct.
+
+**Historical glyph record:** lowercase `s` had previously been retired from the different “Science Bridges” programme. The user now explicitly reinstated the same code point with this spiritualist-reading meaning. This is a documented supersession; the former Science Bridges meaning remains retired. No active Tock change or `@` advance follows from this addition.
