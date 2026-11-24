@@ -1,7 +1,7 @@
 # External Dimensional Workshop — Unicode Code Ledger
 
 **Status:** Bespoke experimental pilot. Local meanings only; no general recommendation implied.  
-**Version:** 0.1  
+**Version:** 0.2  
 **Updated:** 2026-11-24
 
 ## Grammar
@@ -169,10 +169,10 @@ Do not truncate this to the currently active first stage when reporting the over
 Interpretation:
 - `⌖◉▣✓`: completed setup/initial-ledger establishment and verification.
 - `@`: current position, immediately before the first uncompleted operation.
-- `⊕{bh}`: integrated, coequal biology and historical/cultural reading. Give particular attention to nineteenth-century and adjacent-era historical treatments of biology, including works that may be interpreted as biological even if not framed in modern biological terms. Keep authorial claims distinct from retrospective interpretation.
+- `⊕[bhᛟd]β`: integrated, coequal biology and historical/cultural reading, with the SAT/H(s)H interpretive lens and Dimensional Normalization method companion; β marks the latter-half contemporary biological reconstruction pass. Give particular attention to nineteenth-century and early-twentieth-century historical treatments of biology. Keep authorial claims distinct from retrospective interpretation.
 - `ρ`: reorientation checkpoint after that integrated reading. Review what was learned and decide whether to adjust the following workflow. The checkpoint is required; changes to the plan are optional.
 - `k`: larger category-theory-related literature programme.
-- `⊕{mx}`: subsequent integrated mathematics/category-theory/geometric work together with cross-disciplinary connections that arise naturally from the reviewed material. Computer science is one candidate connection; do not restrict this to computer science or predefine a closed list.
+- `⊕[mbxᛟd]`: subsequent integrated mathematics/category-theory/geometric work, with biology kept active and cross-disciplinary connections arising naturally from the reviewed material, using the SAT/H(s)H lens and Dimensional Normalization method companion. Computer science is one candidate connection; do not restrict this to computer science or predefine a closed list.
 
 Important: the signature records the entire intended workflow, not just the active portion. The position marker indicates where execution currently stands. As the work advances, move `@` without deleting future stages. Revise the full signature only when the user changes the plan or the reorientation checkpoint yields an explicitly adopted change.
 
