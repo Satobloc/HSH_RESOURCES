@@ -240,3 +240,18 @@ Canonical linear signature: `⌖◉⌕⧖⤳▣✓⇢`. The prefixed example `�
 ## 13. Pilot boundary — 2026-11-24
 
 The Unicode workflow notation and its associated routine are a **bespoke experimental pilot for this workshop**. They are not presumed useful, portable, or recommended outside this workflow. Evaluate them locally through use; note benefits, ambiguity, overhead, and failures. Generalization or promotion requires a separate explicit user decision based on something noteworthy and evidence from the pilot. No external recommendation is implied by inclusion in this repository.
+
+
+## 14. Compound workflow operators — provisional pilot definitions, 2026-11-24
+
+Proposed local operators:
+- `⑂` fork: create independently tracked branches;
+- `⑃` rejoin: reunite branches after outputs are available and reconciled;
+- `⟳` cycle: repeat a delimited sequence to an exit condition;
+- `…` await: suspend a path pending an identified event/input/result;
+- `■` halt: terminate or park a path, distinguished by state annotation.
+
+Braces delimit operator scope; labels identify branches; bracketed annotations state conditions/status. Example:
+`⌕⑂{A: sources | B: geometry}⑃⤳`.
+
+All assignments are provisional and workshop-local. Branch identity/output, explicit rejoin conditions, bounded cycles, path-specific waiting, and explicit halt status are required to avoid ambiguity. Nested/overlapping forms remain deferred pending simple-use testing.
