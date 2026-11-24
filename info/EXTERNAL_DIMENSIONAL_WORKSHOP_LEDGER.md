@@ -210,3 +210,13 @@ Begin with the nLab biology page's own diagrams and explicit definitions before 
 3. hyperstructure as a multilevel aggregate/bond hierarchy.
 
 Then inspect Baez–Otter as the first external paper, because it provides a clear evolutionary-biology case with a concrete tree geometry.
+
+
+## 10. Session routine adopted — 2026-11-24
+
+The workshop now uses the adaptable session routine in the operating protocol:
+**Orient → Choose one substantial bite → Work it through → Leave a durable result → Verify and close → Periodically adapt.**
+
+The routine is a working default, not a fixed ceremony. Reassess it after every three to five substantive bites, adjusting only in response to observed friction or benefit.
+
+**Next session bite:** start the nLab visual atlas with the geometry of a path and a homotopy between two paths. Build the picture first, then relate it to the corresponding one- and two-dimensional morphisms. Use one or two examples, and leave the biological bridge as a follow-on rather than expanding this first atlas plate into a survey.
