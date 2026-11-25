@@ -2051,3 +2051,24 @@ Existing request `phy01-internal-first-worldtube-hinton-highercats-20261125-01` 
 **Interpretation:** the request is submitted and the workflow reached the search step, but no result has been verified. The long-running status plus missing logs/outputs is consistent with a stalled or unresolved job, but does not establish either successful completion or a definitive failure. Do not duplicate, overwrite, release or retrigger the occupied request/lane. A future PHYS conversation must perform a fresh live read of the run, job steps and request-scoped artifacts before acting.
 
 This operational refresh does not alter the PHYS research cursor, the Bite 16 conclusions, or the separate BIO/GIT lane cursors.
+
+
+---
+
+## 27. Bite 16 addendum — direct 1985 report inspection changes the version map
+
+**Recorded:** 2026-11-25 · **State:** PARTIAL PRIMARY-SOURCE VISUAL INSPECTION; no ticker advance.
+
+The 1985 report 85-0067 has now been recovered directly from nLab and screenshot-inspected at its cover, introduction, Section 4 (printed p. 8½) and Section 5 (printed p. 14).
+
+**Correction to the earlier account:**
+- The 1985 report already contains a section explicitly titled **“Ribbons and braids.”**
+- It attributes the ribbon example to **Fred Linton**. The example permits ribbons to twist, treats their two edges as strings, and gives a faithful strict monoidal functor from the ribbon-braid category to the string-braid category by sending n ribbons to 2n strings.
+- In this first appearance the construction is a **counterexample**: it demonstrates that certain listed braiding axioms do not imply the earlier axioms B1/B2. It is not yet the later systematic balanced/tortile categorical theory.
+- The 1985 report also already has a “Coherence for braidings” section and Theorem 4's free braided-category universal property. These results must not be attributed as first appearing in 1986 or 1993.
+- The 1986 report's introduction independently calls it the non-example suggested by “F.E.J. Linton.” The source names are consistent with category theorist Fred Linton. This is not evidence of a connection to Charles Howard Hinton.
+
+**What remains open:** the full 1985 report is a 31-page scan with poor OCR; only key pages have been visually inspected. The full 1993 article remains inaccessible through the publisher endpoint in this pass. Absence claims about sections/features in 1985 therefore remain provisional.
+
+Detailed comparison and visual locators are in [PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md](../WORKSPACES/PHYSICS/PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md).
+
