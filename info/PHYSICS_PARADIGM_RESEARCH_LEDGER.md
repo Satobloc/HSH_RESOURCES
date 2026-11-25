@@ -889,3 +889,72 @@ Resume the ordered Connect subpath without rearrangement:
 
 
 `⌖◉⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢`
+
+---
+
+## 13. ⟐ Lane boundary — comparative history and cross-disciplinary intersections
+
+**Recorded:** 2026-11-25  
+**Authority:** Nathan Direct, current conversation.  
+**Disposition:** Standing scope boundary for this conversation's PHYS-01 research lane.
+
+### Lane identity
+
+This is a **separate HSH_RESOURCES research lane**, not an extension of the main H(s)H theory-development or worker-governance programme. Its object is to investigate cross-disciplinary history, the historical development of ideas and methods, and substantive intersections among contemporary physics, mathematics, geometry, topology, category theory, biology and other relevant fields as the sources warrant.
+
+The active strands remain:
+
+- `f` — contemporary physics and physical foundations, read as a field of current research developments and their own stated evidence;
+- `h` — historical and cultural lineage, including documented transmission, parallel development, retrospective interpretation and source-specific context;
+- `k` — higher-dimensional mathematics and related structures, reconstructed on their actual mathematical terms.
+
+The integrated inquiry asks where these fields genuinely meet, where they merely resemble one another, where their histories intersect, and where a proposed correspondence fails. Do not infer influence from conceptual similarity; distinguish documented transmission, independent convergence, analogy, shared mathematical machinery and retrospective reinterpretation.
+
+### Repository and authority boundary
+
+- **Primary work and record destination:** `Satobloc/HSH_RESOURCES`. Keep this lane's plans, source maps, historical notes, comparisons, findings, questions and methods here.
+- **Reference repositories:** `Satobloc/SAT_THEORY_ARCHIVE_2023-25` and `Satobloc/HsH` may be searched/read when useful for primary source recovery, chronology, attribution and comparison. Their contents retain their original provenance, authority and epistemic status.
+- H(s)H/SAT concepts may be used as comparative reference material and as a named framework being examined. They are not silently attributed to outside fields or promoted by resemblance.
+- This lane does **not** set, revise or publish HsH worker policy; direct HsH workers; change HsH BEDROCK, theory registers, worker directives, shared workflows or scheduler controls; or treat its comparative findings as HsH theory decisions.
+- No lane finding is written back into HsH theory records. A future, explicitly separate theory-development decision would be required for any such transfer; this lane itself does not initiate one.
+
+### Research method
+
+1. Recover source and authorship before synthesis. Distinguish primary statements, later commentary, assistant-generated summaries and current interpretations.
+2. Reconstruct each field's own objects, dimensions, definitions, methods and evidential standards before comparing them.
+3. Use H(s)H/SAT as a clearly marked comparison, not an external authority and not a substitute for reading the target field on its own terms.
+4. Separate documented historical influence from structural analogy, shared mathematical language, independent convergence and conjectural correspondence.
+5. Preserve contrary evidence, failed mappings and non-equivalence. A useful intersection can be partial; a visual or verbal resemblance is not a derivation.
+6. Store durable outputs and source maps in HSH_RESOURCES. Mersearch is source discovery; hits and compact receipts are not substitutes for reading original material.
+
+### Current Mersearch position
+
+The existing request `phy01-internal-first-worldtube-hinton-highercats-20261125-01` remains an active **source-discovery dependency** in Mersearch transport lane 2. It searches the three configured repositories; that transport scope does not change this conversation's repository/authority boundary.
+
+Latest Actions readback:
+- Run: `45554091984`, attempt 1; job: `139001876678`.
+- Step 9, **Run Mersearch**: `in_progress`.
+- Step 10, **Build run manifest**: `pending`.
+- Step 11, **Build bounded, provenance-bearing search receipt**: `pending`.
+- Step 12, **Publish auditable request-scoped results**: `pending`.
+- The request-specific manifest/receipt paths are not present on HsH `main`; the workflow artifact list is empty.
+- Therefore the search has not yet returned source locators or a receipt from which a more advanced research position can be inferred. Its present line position is the running search step, not a completed search or a failure.
+- Do not overwrite or duplicate that request. Once it reaches a terminal state, inspect the manifest and receipt, recover exact source locators, and read original source records. Treat the receipt as bounded navigation, not an exhaustive hit inventory.
+
+The Mersearch transport lane number is distinct from this conversation's ⟐ research-lane designation.
+
+### ▶ NOW / ▷ NEXT / ↩ RETURN
+
+- **NOW — ◈:** source-authenticated object/core geometry and historical lineage; continue comparing the SAT filament/worldline, timesheet/time-wavefront and H(s)H finite-core descriptions without collapsing them.
+- **NEXT — ∂:** define candidate history boundaries, identity histories and composition only after the source objects are established.
+- **NEXT — Δ:** test what causal, bordism and configuration-space descriptions retain or discard; preserve non-equivalence where demonstrated.
+- **AWAIT — …:** existing Mersearch lane-2 search step 9 and its manifest/receipt/publication steps 10–12.
+- **RETURN:** when the receipt is available, use its exact source locators to refine ◈; do not promote a correspondence from a search hit alone.
+
+### Ticker
+
+The ticker identifies the comparative-history lane and retains the full planned programme, current Connect work, pending Mersearch dependency, recording, verification and reorientation.
+
+**LIVE TICKER — final line:**
+`⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢`
+
