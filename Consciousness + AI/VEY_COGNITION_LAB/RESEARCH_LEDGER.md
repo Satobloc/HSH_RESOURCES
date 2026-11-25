@@ -1007,3 +1007,26 @@ P1 issue #564 and PR #850 remain untouched; no cross-model peer-exposure data we
 **Formalization:** HsH PR #2375 draft branch received OrsonEvidenceFlow.lean at commit 967b660e13685019a890615d8480b42f7fd87538. It separates item IDs, source-root sets, disclosure-event IDs, stages, Same/Split, recipient-addressed worker reports, and semantic judgments. It proves conditional pair-preservation and finite counterexamples only. Initial CI run #45180457730 was pending; amend after actual readback. No successful Lean compilation is claimed until the run completes and exact module/aggregator blobs are checked.
 
 **Boundary:** adjacent LLM-agent workflow evidence, not human-LLM group data, not P1 ConsistencyBench evidence, not a protocol amendment, and not a consciousness claim. No new model trial, human session, API spend, manuscript edit, or paper-gate advancement. Full note: STUDIES/VEY-047_MULTI_AGENT_MEMORY_INCONSISTENCY_PAIR_RECALL_HANDOFF_AUDIT_2026-11-23.md.
+
+
+## VEY-048 — Intra-agent memory re-entry and derivative-record recycling (2026-11-25)
+
+**Status:** SOURCE-CRITICAL LITERATURE CROSSWALK / COMPLETE AS A STAGE / NO MODEL TRIAL / NO P1 CHANGE.
+
+**Primary project:** Ovidiu Boticiu, Intra-Agent Evidence Recycling, https://github.com/ovidiuboticiu/intra-agent-evidence-recycling. Historical empirical preprint v0.4, *When One Source Returns*, DOI 10.5281/zenodo.22282120; software/reproducibility archive DOI 10.5281/zenodo.22259801; methodological note DOI 10.5281/zenodo.22306245.
+
+**Review extent:** repository README, external replication guide, prior-art reassessment, priority-claim withdrawal, v0.4.3 forensic validation addendum, and post-publication correction record reviewed. Corrected manuscript draft located but not fully read in this pass; no raw data downloaded/reanalysed and no code executed.
+
+**Bounded result:** v0.4.3 used Qwen3.5-4B, 32 fictional binary items, and 168 planned trajectories. H1 retention 22/32 versus 0/32 for an equal-count unrelated-memory control (RD 0.6875; Holm-adjusted p approximately 9.54e-7); H2 active-lineage contrast 2/32 versus 0/32 was not supported. A later same-project, same-configuration-class Level B direct replication reports 24/32 versus 0/32 for H1 and 3/32 versus 0/32 for H2. This is not independent-lab, cross-family, or bit-for-bit runtime replication; the original GGUF artifact was not hash-pinned.
+
+**Interpretation boundary:** the manipulation jointly changes derivative-record multiplicity, semantic/lexical repetition, target-consistent salience, explicit root-source references, and prompt structure/length. The result supports a narrow behavioral retention contrast, not literal internal source counting. The project withdrew its historical priority claim after prior-art reassessment; v0.4.3 is now described as pre-specified/frozen before collection, not publicly preregistered. Project status is PAUSED; no v0.8 run is authorized.
+
+**Crosswalk:** adds within-agent memory re-entry as a distinct event path relative to VEY-043 peer-message exposure, VEY-045 memory-operation/state trajectories, VEY-046 group projection, and VEY-047 multi-agent handoff loss. A future authorized trace would distinguish source_root_id, evidence_item_id, record_id, event_id, memory write/read, peer send/receive, exposure, uptake, and decision incorporation. This is a design note, not an implemented schema or protocol amendment.
+
+**Formal link:** HsH PR #2375's source-only dependence-identifiability theorem is conditionally relevant, but current modules do not model explicit memory-record write/read events. Its successful build was on a stale merge base, not current-main integration. No new Lean theorem/build for VEY-048.
+
+**Boundary:** no issue #564 or PR #850 change, no LLM trial, human session, API spend, dataset expansion/reanalysis, protocol amendment, manuscript edit, or paper-gate advancement. No IAER project modification or v0.8 run. No novelty or mechanism claim.
+
+**Public-safe HsH submission:** issue #2545, publication status pending final issue/artifact reconciliation at time of this ledger entry.
+
+**Internal study:** STUDIES/VEY-048_INTRA_AGENT_MEMORY_REENTRY_CROSSWALK_2026-11-25.md.
