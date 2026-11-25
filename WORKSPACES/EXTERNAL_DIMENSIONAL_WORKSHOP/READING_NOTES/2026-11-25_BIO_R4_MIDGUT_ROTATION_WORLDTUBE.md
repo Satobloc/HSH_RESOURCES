@@ -95,7 +95,7 @@ This adds a more concrete example of how an organismal worldtube contains tempor
 
 ## 5. Bounded conclusion
 
-Midgut rotation is a later organogenetic event embedded in the embryo's longer four-dimensional history. In mouse, the right-sided HA/TSG-6 matrix pathway is supported by molecular localization and loss-of-function evidence; Tsg6 and bikunin deficiency disrupt initiation of rotation. Comparative chicken experiments resolve additional local tissue mechanisms. The developing dorsal mesentery and gut form a coupled, changing structure whose asymmetry is distributed across both sides and across molecular, cellular, extracellular and organ scales.
+Midgut rotation is a later organogenetic event embedded in the embryo's longer four-dimensional history. In mouse, right-sided HA and inter-alpha-trypsin inhibitor enrichment, together with Tsg6- and bikunin-loss phenotypes, support a TSG-6/HC-HA-dependent function in initiating rotation. Direct localization of TSG-6 protein in mouse DM was not achieved in this study. Comparative chicken experiments resolve additional local tissue mechanisms. The developing dorsal mesentery and gut form a coupled, changing structure whose asymmetry is distributed across both sides and across molecular, cellular, extracellular and organ scales.
 
 The ᛟ reading makes the delayed, nested and distributed character of this development explicit. It does not replace the experimental mechanisms or establish additional predictive content.
 
