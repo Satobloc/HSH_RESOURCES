@@ -9,7 +9,7 @@
 **Date:** 2026-11-25  
 **Primary repository of record:** `Satobloc/HSH_RESOURCES`  
 **Lane:** `GIT`  
-**Current operational sublane:** `GIT_TRAFFIC` / `GTT-02`
+**Current operational sublane:** `GIT_TRAFFIC` / `GTT-A01` (active; mechanism-to-target mapping at `@↦`). `GTT-02` is parked pending direct Traffic-attribution evidence.
 
 ## 1. Lane identity and boundary
 
