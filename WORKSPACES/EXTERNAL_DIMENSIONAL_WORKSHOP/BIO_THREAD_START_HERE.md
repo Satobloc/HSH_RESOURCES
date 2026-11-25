@@ -18,7 +18,7 @@ Completed BIO bites:
 - `χ` — cellular chirality and actomyosin comparison: complete.
 - `r` — active; not complete.
 
-**Current inner position:** `r / R.1) is complete. Resume at **R.2**. Do not advance the outer ticker past the active `r) group until the `r) mapping work is complete. R.1 completion is a sub-bite, not completion of `r).
+**Current inner position:** The R.1 sub-bite under the active `r` component is complete. Resume at **R.2**. Do not advance the outer ticker past the active `r` group until the `r` mapping work is complete. R.1 completion is a sub-bite, not completion of `r`.
 
 **R.2 next:** Map the already reconstructed mouse node left–right developmental history into the stipulated four-dimensional worldtube picture. Keep the bite limited to node geometry, ciliary motion, nodal flow, sensory response and early signaling. Preserve the established biological mechanism; test whether the worldtube representation clarifies continuity and temporal incidence.
 
@@ -26,10 +26,10 @@ Completed BIO bites:
 
 1. **This file first.** It gives the lane, cursor, method and pointer map.
 2. **Work Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`: read §§74–80 for the current BIO programme, completed bites, R.1 result and handoff. Earlier numbered sections hold the historical biology work and wider workshop context.
-3. **Code Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md`: consult the BIO subpath, lane selector, current ticker, `ᛟ), `β), `d), investigation modifiers and shared grouping grammar. The code ledger defines glyphs; do not infer unfamiliar symbols from memory.
+3. **Code Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md`: consult the BIO subpath, lane selector, current ticker, `ᛟ`, `β`, `d`, investigation modifiers and shared grouping grammar. The code ledger defines glyphs; do not infer unfamiliar symbols from memory.
 4. **Protocol** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md`: use §§22, 24, 30–31, 37 and 42 for Tock–Tick scope, compact signatures, orientation, the stipulated SAT/H(s)H lens, Dimensional Normalization, and lane-local cursors.
 5. **Reading notes** — follow the links in Work Ledger §§75–79. These contain the source-level findings and limitations; the ledger is the index/continuity layer, not a substitute for the detailed notes.
-6. **Primary sources and companion archives** — follow exact URLs, DOIs, page/section locators and archive paths inside each reading note. For the `d) companion method, the source is in `Satobloc/SAT_THEORY_ARCHIVE_2023-25` as `DIMENSIONAL_NORMALIZATION.pdf), `.tex), and `_AUTO_EXTRACTED_TEXT/DIMENSIONAL_NORMALIZATION.txt`. Consult `Satobloc/HsH` materials as reference material when relevant; do not move BIO findings into HsH BEDROCK.
+6. **Primary sources and companion archives** — follow exact URLs, DOIs, page/section locators and archive paths inside each reading note. For the `d` companion method, the source is in `Satobloc/SAT_THEORY_ARCHIVE_2023-25` as `DIMENSIONAL_NORMALIZATION.pdf`, `.tex`, and `_AUTO_EXTRACTED_TEXT/DIMENSIONAL_NORMALIZATION.txt`. Consult `Satobloc/HsH` materials as reference material when relevant; do not move BIO findings into HsH BEDROCK.
 
 This is the intended pointer chain: **start anchor → work ledger → code/protocol → bite note → cited primary source or companion archive → deeper source-specific material**. Follow only as far down the chain as the current bite requires.
 
@@ -66,10 +66,10 @@ For each bite:
 ## 6. Interpretation and scope safeguards
 
 - The ᛟ lens is the workshop's stipulated literal physical four-dimensional ontology. This is the working premise of this reconstruction, **not** a claim that contemporary physics has independently established SAT/H(s)H.
-- The Dimensional Normalization paper (`d)) is a method companion only. Preserve native equations/units; apply its frozen normalization and residual audit only when a specific formal model makes that useful. Do not force conceptual biology through a numerical method.
+- The Dimensional Normalization paper (`d`) is a method companion only. Preserve native equations/units; apply its frozen normalization and residual audit only when a specific formal model makes that useful. Do not force conceptual biology through a numerical method.
 - Keep species, developmental stages, cell types, mechanisms and scales distinct. Do not aggregate different pathways into one universal chain.
 - Keep `v → n → χ → r → m` in its established local order. The `m) bite is selective mathematical application to a concrete biological structure; it does not by itself start the larger `k) category-theory programme.
-- The wider intended sequence retains `ρ) as a review point, then the larger `k⊕[mbxᛟd]) programme, with dedicated spiritualist readings `s) last.
+- The wider intended sequence retains `ρ` as a review point, then the larger `k⊕[mbxᛟd]` programme, with dedicated spiritualist readings `s` last.
 - This is a BIO comparative-history workspace. Do not amend H(s)H BEDROCK, central theory, worker directives, or the independent PHYS/GIT cursors.
 
 ## 7. Current durable records
@@ -80,14 +80,14 @@ For each bite:
 - Protocol: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md`.
 
 **BIO reading notes**
-- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIOLOGICAL_VARIABLE_MAP_CHIRALITY_LATERALITY.md` — `v).
-- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_MOUSE_NODE_LEFT_RIGHT_DETERMINATION.md` — `n).
-- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_CELLULAR_CHIRALITY_ACTOMYOSIN_TEE_2015.md` — `χ).
-- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R1_ORGANISM_AS_WORLDTUBE.md` — `r / R.1).
+- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIOLOGICAL_VARIABLE_MAP_CHIRALITY_LATERALITY.md` — `v`.
+- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_MOUSE_NODE_LEFT_RIGHT_DETERMINATION.md` — `n`.
+- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_CELLULAR_CHIRALITY_ACTOMYOSIN_TEE_2015.md` — `χ`.
+- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R1_ORGANISM_AS_WORLDTUBE.md` — `r / R.1`.
 
 **Reference repositories**
 - `Satobloc/HSH_RESOURCES`: primary BIO work, notes, workshop ledgers and tools.
-- `Satobloc/SAT_THEORY_ARCHIVE_2023-25`: source archive for SAT papers and the `d) companion method.
+- `Satobloc/SAT_THEORY_ARCHIVE_2023-25`: source archive for SAT papers and the `d` companion method.
 - `Satobloc/HsH`: H(s)H reference material and shared infrastructure. Consult as needed, preserve its own authority and scope, and do not write this lane's conclusions into BEDROCK.
 
 ## 8. Immediate next action
