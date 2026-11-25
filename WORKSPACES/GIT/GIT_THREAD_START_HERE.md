@@ -110,11 +110,11 @@ GTT-03 can open only after GTT-A01 is complete and qualifying GTT-02 Traffic-att
 
 ▶ **NOW**
 
-GTT-A01 / Tick A (`⌕ᵃ`): inventory the three repositories' automation/workflow files, welcome and AI-facing pages, workflow recommendations, worker-facing documents and work logs. This is a bounded source inventory, not a conclusion about actual cloning.
+GTT-A01 / Tick B (`↦`): map the inventoried workflows, instructions and recommendations to their target repositories and operation types. Tick A's bounded tree inventory is complete; see [the source inventory](GTT-A01_SOURCE_INVENTORY_2026-11-25.md).
 
 ▷ **NEXT**
 
-Map configured mechanisms to target repositories and operations (`↦`); connect instructions/configuration to actual run/job/step/event evidence (`⤳`); reconcile evidence and identities without double counting (`∑`); record (`▣`); independently verify source paths, SHAs, joins and readback (`✓`); then make an explicit gate decision (`⇢`). Rejoin the GTT main path only with a documented disposition (`⑃`).
+Connect the mapped mechanisms to actual run/job/step/event evidence (`⤳`); reconcile evidence and identities without double counting (`∑`); record (`▣`); independently verify source paths, SHAs, joins and readback (`✓`); then make an explicit gate decision (`⇢`). Rejoin the GTT main path only with a documented disposition (`⑃`).
 
 ⚑ **PIN**
 
@@ -124,7 +124,7 @@ Map configured mechanisms to target repositories and operations (`↦`); connect
 
 ↩ **RETURN**
 
-Re-enter with this file, then inspect the live shared Code Ledger and Protocol, then [GTT-A01 source inventory](GTT-A01_SOURCE_INVENTORY_2026-11-25.md) and its continuation notes. For traffic metrics, return to the HsH historical-observation catalogue and GTT tick ledger. For GTT-02's evidence, return to the internal-attribution record and its reopening condition. Re-fetch every referenced artifact before moving a cursor.
+Re-enter with this file, then inspect the live shared Code Ledger and Protocol, then [GTT-A01 source inventory](GTT-A01_SOURCE_INVENTORY_2026-11-25.md). Current cursor: GTT-A01.B, mechanism-to-target mapping. For traffic metrics, return to the HsH historical-observation catalogue and GTT tick ledger. For GTT-02's evidence, return to the internal-attribution record and its reopening condition. Re-fetch every referenced artifact before moving a cursor.
 
 § **SOURCES**
 
@@ -198,4 +198,4 @@ Start here. Re-fetch this anchor, the live shared Protocol/Code Ledger and the l
 
 **Message capsule for substantive work:** `▸ TICK:<current operation> | TOCK:<durable result/cursor or —> | PIN:<return obligation>`. Keep it compact, and keep the full ticker as the final line of every substantive assistant reply.
 
-GIT_TRAFFIC:⑂@⌕ᵃ↦⤳∑▣✓⇢⑃
+GIT_TRAFFIC:⑂⌕ᵃ@↦⤳∑▣✓⇢⑃
