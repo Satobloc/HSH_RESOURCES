@@ -3,7 +3,7 @@
 **Lane:** PHYS · ⟐ HSH_RESOURCES comparative-history workspace  
 **Lens:** ℬ, geometric braid → categorical structure and its mathematical-physics applications  
 **Recorded:** 2026-11-25  
-**State:** PARTIAL SOURCE-STRATIGRAPHY RESULT · 1986 report inspected as primary source; 1993 publication metadata and reproduced introduction/contents inspected; 1985 precursor and complete 1993 article not yet directly inspected.  
+**State:** PARTIAL SOURCE-STRATIGRAPHY RESULT · 1985 report visually inspected at key primary-source pages; 1986 report text inspected as primary source; 1993 publication metadata and reproduced introduction/contents inspected; full linear reading of the 1985 report and complete 1993 article remains outstanding.  
 **Cursor effect:** none. PHYS remains at Connect / ℬ. Do not advance the ticker on this partial bite.
 
 ## 1. Question
@@ -16,12 +16,25 @@ This matters to the wider PHYS question because the formal mathematical landscap
 
 | Source | Identity / access | State in this bite |
 |---|---|---|
-| Joyal & Street, *Braided monoidal categories*, Macquarie Math. Report 85-0067 (Dec. 1985) | nLab and later bibliographies identify a 31-page precursor. Ross Street's publication list identifies it alongside the revised 1986 report. The linked university PDF endpoints timed out / were inaccessible during this bite. | LOCATED; NOT READ |
+| Joyal & Street, *Braided monoidal categories*, Macquarie Math. Report 85-0067 (Dec. 1985) | Scanned 31-page report recovered from nLab: https://ncatlab.org/nlab/files/JoyalStreet-BraidedMonoidal85.pdf. Cover, introduction, Section 4 “Ribbons and braids” (printed p. 8½), and Section 5 “Coherence for braidings” (printed p. 14) screenshot-inspected. Full text extraction is poor and complete linear reading remains outstanding. | PARTIAL PRIMARY-SOURCE VISUAL INSPECTION |
 | Joyal & Street, *Braided monoidal categories*, Macquarie Math. Report 860081 (Nov. 1986) | Full report recovered at https://ncatlab.org/nlab/files/JoyalStreet-BraidedMonoidal.pdf. Title page, introduction, braid-category construction, universal-property section, group-cohomology/categorical-group section and quadratic-form classification were inspected. Selected pages were screenshot-inspected. | READ / PRIMARY SOURCE |
 | Joyal & Street, *Braided tensor categories*, *Advances in Mathematics* 102(1) (Nov. 1993), pp. 20–78, DOI 10.1006/aima.1993.1055 | Macquarie's publication record confirms authorship, peer-reviewed article status, journal, volume, issue, date, pagination and DOI. The original publisher full text could not be retrieved in this bite. The article's title, contents and a portion of its introduction appear reproduced in Gregory Moore's 2024 history-of-physics slide deck. | BIBLIOGRAPHICALLY VERIFIED; PARTIAL REPRODUCED TEXT; FULL ARTICLE NOT READ |
 | John Baez / Michael Shulman, *Lectures on n-Categories and Cohomology* | Lecture-note discussion explicitly compares the unpublished 1986 report with the 1993 published paper and identifies a substantive omission. | SECONDARY HISTORICAL / MATHEMATICAL COMMENTARY |
 | nLab, *braided monoidal category* | Entry explicitly warns that the published version does not completely supersede the Macquarie reports, which contain extra results; it lists both reports and the 1993 article. | SECONDARY NAVIGATION / CROSS-CHECK |
 | Ross Street, publications and *An Australian Conspectus of Higher Categories* | Author retrospective / bibliography establishes the 1985 report as revised in 1986 and provides contextual history of the subsequent braid, ribbon and tortile developments. | AUTHOR RETROSPECTIVE / BIBLIOGRAPHIC CROSS-CHECK |
+
+
+## 2A. New primary-source correction: the 1985 report already contains ribbons
+
+The first direct visual inspection of the 1985 report changes the earlier version map materially.
+
+- The 1985 report is not merely an early string-braid precursor. Its Section 4 is explicitly titled **“Ribbons and braids.”**
+- It records: **“Fred Linton provided the following example”** after a lecture on the paper. Linton's example defines a monoidal category whose arrows are braids on ribbons rather than strings, with ribbon twisting allowed. Each ribbon has two edges that act as strings, giving a faithful strict monoidal functor to the string-braid category by sending n ribbons to 2n strings.
+- The purpose of this construction in the 1985 report is specific: it is a **counterexample** showing that axioms B3–B7 of Proposition 1 do not imply B1 or B2. It is not yet the later general theory of balanced/tortile categories.
+- The 1985 report also already contains Section 5, “Coherence for braidings,” and its Theorem 4 states the universal/free braided-category property. Thus neither the coherence theorem nor the mere ribbon-braid idea should be described as first appearing in 1986 or 1993.
+- The 1986 report's introduction explicitly refers to the “non-example suggested by F.E.J. Linton” and places it among the examples distinguishing braiding axioms. The 1985 report's “Fred Linton” and the 1986 report's “F.E.J. Linton” are consistent with the category theorist Fred Linton; no connection to Charles Howard Hinton is established or implied.
+
+**Important distinction:** the 1985 ribbon example is a diagnostic countermodel. The later balanced/tortile programme turns ribbon twisting and duality into systematic categorical structure. These are related stages, not identical constructions.
 
 ## 3. What the 1986 primary report actually builds
 
@@ -97,6 +110,22 @@ This is consistent with two other observations:
 
 Do not overstate the comparison yet: the 1985 report and complete 1993 article have not been directly collated here. The precise changes between 1985 and 1986, and the full scope of what the 1993 article retains or omits, remain open.
 
+
+## 5A. Version-stratigraphy correction after direct 1985 inspection
+
+The previous description of the 1985 precursor as “not read” is superseded. Key pages have now been visually inspected directly. The accurate comparison is:
+
+| Feature | 1985 report 85-0067 | 1986 report 860081 | 1993 article |
+|---|---|---|---|
+| Braided monoidal category / distinction from symmetry | Present in introduction and formal axioms | Present and expanded | Central subject |
+| Braid category and configuration-space construction | Present | Present, with developed exposition | Retained and embedded in wider tensor-category programme |
+| Free braided-category theorem / coherence | Already present in Section 5 | Present as main result of Section 4 | Retained and developed in categorical framework |
+| Ribbon-braid construction | Present as Linton's counterexample in Section 4 | Present as Linton's non-example in Section 2 | Ribbon/twist structure develops into balanced categories; not the same role |
+| Crossed modules, categorical groups, H^3 and quadratic classification | Not established by the inspected 1985 pages; complete absence not yet certified by linear collation | Substantial Sections 6–7 | Selective braided categorical-group treatment; secondary sources say general 2-group classification is omitted |
+| Balanced categories and autonomy | Not yet identified as systematic sections in 1985 | Not yet established as full programme in the report | Explicit Sections 6–7 |
+
+This table is deliberately conservative: “not yet identified” is not equivalent to proof of absence. The 1985 report's full 31 pages still need linear collation, and the 1993 full text still needs direct reading.
+
 ## 6. Relevance to the larger PHYS / SAT-H(s)H investigation
 
 This bite reinforces a central method for decoding the higher-category landscape:
@@ -125,7 +154,12 @@ The deeper lesson is that “higher category theory” here is not an unbounded 
 
 ## 8. Source map and exact locators
 
-### Primary mathematical source
+### Primary mathematical sources
+- Joyal, A. & Street, *Braided monoidal categories*, Macquarie Mathematics Report 85-0067 (December 1985). PDF: https://ncatlab.org/nlab/files/JoyalStreet-BraidedMonoidal85.pdf
+  - Cover/title page: report identity and date.
+  - Printed p. 8½, Section 4 “Ribbons and braids”: Fred Linton's ribbon-braid counterexample, ribbon twist and faithful functor to the string-braid category.
+  - Printed p. 14, Section 5 “Coherence for braidings”: Theorem 4/free braided-category universal property.
+  - Visual inspection only for these pages; the scan's OCR/text extraction is poor and complete linear reading remains open.
 - Joyal, A. & Street, R., *Braided monoidal categories*, Macquarie Mathematics Report 860081 (November 1986). PDF: https://ncatlab.org/nlab/files/JoyalStreet-BraidedMonoidal.pdf
   - Title page and report identity: PDF cover; printed front matter.
   - Braiding versus symmetry and programme overview: printed front matter pp. ii–vii.
