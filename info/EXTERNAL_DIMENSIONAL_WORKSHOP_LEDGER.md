@@ -2609,3 +2609,72 @@ This gives a grounded biological example of persistent organizational memory wit
 - Morgan's exact fiddler-crab species in 1923/1924 remains unspecified in the available abstract; a specialist bibliography suggests *Minuca pugnax*, but do not assign that species without direct article confirmation.
 
 **Next:** retrieve Morgan 1923/1924 full article pages and confirm sample/molt details; then inspect Yamaguchi's full 1977 article for exact sizes, survival and molt counts. After that, return to Zeleny's 1905 102-page *Compensatory Regulation* or Morgan 1900 mixed-lineage regeneration sequel, depending on which source can be directly recovered. No Tock completion or cursor advance.
+
+## 61. Morgan 1907, Experimental Zoology, Chapter XVIII: grafted bodies, polarity and part-whole relations — 2026-11-24
+
+**Primary source inspected:** Thomas Hunt Morgan, Experimental Zoology (New York: Macmillan, 1907), Chapter XVIII, "Experiments in Grafting," printed pp. 285–301. Full Columbia University Library scan/OCR: https://www.columbia.edu/cu/lweb/digital/collections/cul/texts/ldpd_5949112_000/ldpd_5949112_000.pdf. The PDF text was opened and inspected; page-image screenshot returned a cache miss, so this is OCR-based, not image-verified. This is the book chapter, not Morgan's separate 1908 American Naturalist paper.
+
+### A. The distinctions Morgan makes
+
+Morgan divides animal-grafting questions into: which regions can unite; how united parts influence each other; whether grafting can produce hybridization; and what grafting reveals about embryonic development (pp. 285–286). These are separate outcomes. Anatomical union, physiological integration, developmental influence and inheritance are not interchangeable.
+
+### B. Earthworms: permanent unions and duplicated poles
+
+Joest's earthworm grafts use ligatures through the skin; contact surfaces unite within days and the threads are shed. Parts from different individuals can unite as readily as parts from the same worm. Morgan describes a short worm made by removing a middle region and joining the anterior and posterior ends; a long worm made by inserting a middle piece between anterior and posterior sections; and permanent unions of two anterior or two posterior cut surfaces. Two posterior ends joined by their anterior cut faces can make a two-tailed, headless composite that slowly starves (pp. 286–287).
+
+If the median planes or nervous systems do not align, regeneration may occur at the junction. Morgan assigns the nervous system a major role as the centre from which heads or tails form. Misaligned nerve-cord ends may grow toward one another and unite through connective nerve tissue; if too far apart, regeneration is more likely to occur from one or both ends (p. 287).
+
+### C. Tadpoles: ectopic grafts and self-differentiation
+
+Born's experiments joined pieces of very young tadpoles, including tail tissue grafted to non-native body locations. Morgan reports that grafts could remain attached and continue developing their normal structures, without regeneration at the graft boundary even when unlike organs were not matched. He interprets this as self-differentiation: once a region's developmental trajectory has begun, it can continue in a new anatomical location (p. 287). One tail graft was later absorbed around metamorphosis, when the normal tail is also absorbed. This is a stage-specific outcome, not a general persistence rule.
+
+### D. Planarians: neural continuity and mixed-origin heads
+
+Mrs. Morgan's experiments with Phagocata gracilis and Planaria maculata joined cut surfaces from different body levels. If the graft was perfect, equal-sized pieces left no free edges and remained permanently joined without regeneration at the junction. If nerve cords united, regeneration at the graft line generally did not occur; if one or both cords remained free, one or two heads could appear. In inverted anterior-to-anterior unions, two heads sometimes formed at the junction, one above and one below. Each was connected to the ventral nerve cord of one component, while pigment distribution indicated that each new head included material from both worms (pp. 288–289).
+
+This means tissue provenance and neural organization can tell different parts of the story: a new organ can contain material from both components yet be associated with one component's nerve cord.
+
+### E. Hydra: fusion, separation, remodeling and polarity reversal
+
+Morgan emphasizes that hydra and planarians can remodel old tissue into a typical whole with little new tissue, unlike animals that mainly replace lost parts by new growth (pp. 289–290).
+
+Examples:
+- An anterior half joined to a posterior half can produce one normal-proportioned hydra.
+- Two individually short pieces form a short composite that elongates toward normal proportions.
+- Two individually long pieces develop a new foot and tentacles near the junction, then pinch apart into two hydras.
+- Anterior-to-anterior unions can fuse lengthwise into one body or develop two sets of tentacles and separate.
+- Posterior-to-posterior unions form two new feet and subsequently separate.
+- Lateral grafts can share a trunk before splitting, form a graft-derived head, or pinch off locally.
+- A graft may be absorbed into the host if it cannot separate or establish a stable shared configuration.
+
+In some very short grafts, joining oral/anterior ends can reverse the graft's polarity: a head may form at its posterior/aboral end. Morgan says the explanation is difficult and needs careful re-examination (pp. 294–296).
+
+Morgan's pressure/tension account is explicitly a provisional working hypothesis. He suggests that relative size, orientation, polarity and contact geometry may influence whether pieces fuse, remodel, separate or reverse polarity (pp. 292–298).
+
+### F. Different-species composites: shared circulation without demonstrated identity blending
+
+Morgan reports that a composite earthworm made from Lumbricus rubellus and Allolobophora terrestris lived eight months. Blood circulated between components, but neither showed material influence from the other. In a second earthworm composite, a regenerated head retained the color characteristic of the species from which it formed, despite receiving nourishment from blood that came from both components.
+
+Different frog species could also be joined, but each region generally retained its own specific characteristics. Morgan describes a particularly intimate reciprocal tail graft between Rana sylvatica and Rana palustris in which outer ectoderm and underlying tissues could have different species origins; subsequent regeneration showed no detectable influence of one component's cells on the other. Some interspecific hydra combinations failed after temporary adhesion; others persisted (pp. 298–301).
+
+Morgan concludes that grafted cells retain species-specific characteristics even when they live side by side in a composite animal. He distinguishes this from fertilization, where hereditary material combines within a cell.
+
+### G. Theoretical and methodological limit
+
+Morgan rejects "formative force" when it merely renames the capacity to change form. His own physical tension/pressure explanation remains provisional: he concedes that the cellular response and especially the differentiation effects of mutual pressure are not understood (pp. 297–298). He also refuses to infer hybridization from grafting or shared circulation alone.
+
+### H. Relevance to the External Dimensional Workshop
+
+The experiments provide a useful taxonomy for claims that apparently separate living structures belong to a larger organism:
+
+1. Contact and tissue adhesion.
+2. Stable anatomical continuity.
+3. Physiological integration, including shared circulation.
+4. Neural continuity or alignment.
+5. Developmental coordination, fusion, remodeling or separation.
+6. Mixed tissue provenance in a new organ.
+7. Transfer (or non-transfer) of organism-specific traits.
+
+These levels must not be collapsed. Morgan demonstrates experimentally constructed composite organisms and inter-part developmental relations in ordinary three-dimensional animals. He does not demonstrate naturally occurring extra-spatial continuity between separate organisms, nor that genealogy itself is a physical anatomical branch. His work does, however, give us concrete tests for what organismal part-whole membership would require: more than contact, more than circulation, and more than shared developmental influence.
+
+**Status:** Morgan 1907, Chapter XVIII, printed pp. 285–301 inspected in searchable OCR; page-image verification not achieved. No cursor advance.
