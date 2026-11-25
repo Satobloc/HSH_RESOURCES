@@ -2,6 +2,12 @@
 
 **Purpose:** This file is the continuity anchor for the BIO comparative-history lane. Its central question is what SAT/H(s)H implies about biology and how its four-dimensional ontology converges with, differs from, or independently reconstructs the Hinton tradition, nLab/n-Category Café, higher mathematics and related physics. Biology is a major application, not a specialist mechanism catalogue. Start here, then follow the linked pointers.
 
+**Mandatory cross-conversation inheritance:** the complete shared Tocktick pilot ticker is inherited unchanged from the preceding PHYS/GIT/BIO pilot conversation. Its live signature is:
+
+`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
+
+Resume at the existing `@⤳` position. Never restart, abbreviate, replace, regenerate, or move the marker because a new conversation has begun. BIO's lane-local ticker below remains a separate, subordinate BIO cursor; it does not replace or truncate the shared full ticker. Re-fetch this anchor, the live Work Ledger, shared Protocol and Code Ledger before continuing.
+
 **Last updated:** 2026-11-25  
 **Primary repository:** `Satobloc/HSH_RESOURCES`  
 **Lane:** BIO, within the HSH_RESOURCES comparative-history lane (`⟐`)
@@ -121,4 +127,4 @@ Begin `m` with a compact orientation map, not another technical biological case 
 
 ---
 
-**Handoff rule:** When a conversation ends or context is lost, start with this file; then re-read the live Work Ledger and Code Ledger before doing research or changing the cursor.
+**Handoff rule:** When a conversation ends or context is lost, start with this file; preserve the complete shared ticker exactly as printed at the top and resume at `@⤳`. Then re-read the live Work Ledger, Protocol and Code Ledger. The BIO-local ticker remains independent and subordinate. Do not reset or shorten the shared sequence.
