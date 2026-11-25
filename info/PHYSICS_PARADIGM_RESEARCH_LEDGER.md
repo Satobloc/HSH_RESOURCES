@@ -1701,3 +1701,56 @@ The ◈ geometry prerequisite remains first. The current research order is to id
 **LIVE TICKER — final line:**
 
 ⌖◉⟐⊕[fhkℬᛟᵃ]⌕⧖@⤳◈ℬ∂Δ…▣✓ρ⇢
+
+---
+
+## 22. Bite 13 — dimensional uplift: Hinton's film and SAT's three-dimensional timesheet
+
+**Recorded:** 2026-11-25  
+**Lane:** ⟐ HSH_RESOURCES comparative-history / PHYS-01  
+**State:** CONDITIONAL CONFIGURATION-SPACE RESULT RECORDED · this is a mathematical discriminator, not a selection of the native SAT geometry.
+
+A 90-line dimensional test note is stored at:
+
+- WORKSPACES/PHYSICS/PHY01_BRAID_DIMENSIONAL_UPLIFT_20261125.md
+- Blob: c1f8e1520cc271a8d90e29f60bc4233ed8fd77de
+- Commit: 5404011eebe8ce3356df2b4a56e89d0f81ae6280
+
+### ∴ THE DIMENSIONAL UPLIFT
+
+Hinton's 1906 comparator uses a two-dimensional film. Multiple point-valued intersections moving on that film, if they remain distinct and indistinguishable, are governed by the planar configuration space and can carry Artin braid classes. Hinton's text itself describes the successive path of a point intersection; it does not define the braid group or propose a physical braid mechanism.
+
+The archived SAT/RMS description instead calls the timesheet a three-dimensional surface in a four-dimensional construction. If n point-valued filament intersections move freely across a simply connected three-dimensional leaf, under standard point-particle and collision-exclusion assumptions, the unordered configuration-space fundamental group is S_n, not the planar Artin braid group B_n.
+
+### ∴ TWO-POINT CHECK
+
+For two ordered points in R^d, the configuration space is R^d × (R^d minus the origin), which deformation-retracts to S^(d-1). Thus:
+
+- In d=2, π1(S^1)=Z. The ordered case gives P₂; the unordered case gives B₂, also isomorphic to Z. A half-turn of the relative vector exchanges the two points; a full turn corresponds to the pure-braid subgroup.
+- In d=3, π1(S^2)=0 for the ordered case. The unordered quotient has relative directions identified antipodally, giving RP² with π1=Z₂, isomorphic to S₂. Standard point-particle exchange retains parity, not an unrestricted integer winding.
+
+This is the reason a projected crossing diagram cannot by itself establish an Artin braid on a three-dimensional timesheet.
+
+### ∴ CONDITIONS THAT COULD CHANGE THE RESULT
+
+A richer structure remains possible if the actual SAT/H(s)H construction supplies a physically specified two-dimensional constraint within the timesheet, extended intersection objects such as rings or links, nontrivial leaf topology/boundaries, internal constituent braiding, or higher-dimensional embedding motions. Each candidate requires its own source-defined object and configuration space. The H(s)H finite-core cross-section is still unresolved.
+
+### ⁇ QUESTIONS AND PINS
+
+- **PHY-Q48:** Do multiple SAT filament intersections move freely on a three-dimensional timesheet, or are they constrained to a source-defined two-dimensional submanifold?
+- **PHY-Q49:** What is the actual timesheet topology and its admissible configuration space, including global boundaries or excluded regions?
+- **PHY-Q50:** Are the proposed SAT triple/double braids internal composite strands, point-intersection exchange paths, or a different embedded-object construction?
+- **PHY-Q51:** What finite-core spatial cross-section is read out on a timesheet, and does its embedding/motion space support loop/ring braid groups?
+- **PHY-Q52:** Which braid-like properties are invariant under admissible projection changes and which depend on the readout coordinates?
+- **PHY-P27 (Priority 1):** Recover the native timesheet dimension/topology and the physical configuration space of point-valued intersections.
+- **PHY-P28 (Priority 1):** Identify any genuine two-dimensional constraint or extended-core topology that could support a richer motion group.
+
+### ↩ RETURN
+
+The result is conditional: **if** the SAT readout is point intersections freely moving across an ordinary three-dimensional timesheet, the natural exchange group is S_n. This does not rule out internal composite braiding or motion groups of extended cores. Continue at ◈; ℬ remains queued for formal source-based braid reconstruction, with the dimensional discriminator now available.
+
+**Bite status:** a key historical/mathematical distinction between planar and three-dimensional readout motion is recorded. No physical braid group is assigned to SAT/H(s)H.
+
+**LIVE TICKER — final line:**
+
+⌖◉⟐⊕[fhkℬᛟᵃ]⌕⧖@⤳◈ℬ∂Δ…▣✓ρ⇢
