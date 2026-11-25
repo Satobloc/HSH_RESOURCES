@@ -31,6 +31,13 @@ Do not collapse the candidates into one “everything is braids/entanglement” 
 
 ## 4. Core work mechanics
 
+**Cross-conversation continuity is mandatory.** This conversation inherits the complete shared pilot ticker exactly as it stood in the preceding conversation. Never reset, abbreviate, replace, reinterpret or regenerate it at a conversation boundary. Resume at the existing `@` position; move `@` only after the corresponding operation is completed, recorded and verified. The shared inherited ticker is:
+
+`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
+
+The lane-local PHYS research state and bite chronology remain subordinate records. They may add detail, but they do not replace or truncate this complete ticker. Re-fetch the live PHYS ledger and shared Code Ledger before advancing it.
+
+
 - **Tock:** one bounded work package. Current Tock is `PHY-01`.
 - **Tick:** a subordinate operation / position inside that Tock.
 - **Credenza:** persistent routing and memory registers: STATIC, NOW, NEXT, RETURN, PIN, SOURCES, QUESTIONS, FINDINGS, METHODS, BRANCHES, PARKED and RETIRED.
@@ -66,11 +73,11 @@ Check request-lane occupancy before writing. Never overwrite, duplicate or retri
 
 ## 7. Current position and next bite
 
-**Live PHYS bite ticker:**
+**Inherited complete pilot ticker (resume exactly):**
 
-`@⧉`
+`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
 
-One symbol represents one bounded bite; `@` marks the next uncompleted bite. Do not put workflow phases, topics, or multi-step prose bundles into the ticker. The live bite is Bite 19, SAT-first correspondence overview. Later bite symbols are assigned only when their scopes are selected and entered in the master ledger. The former phase-level signature is historical, not the live ticker.
+The next uncompleted operation remains `⤳`. Do not restart at `⌖`, move the marker to a newly invented bite token, or substitute `@⧉`. Bite 19 remains the current PHYS research package and its SAT-first correspondence overview remains the work context; the shared ticker records the larger ordered workflow across conversations. The PHYS ledger's local bite chronology is a supporting index, not a replacement ticker.
 
 **Last complete result:** Bite 15 established from the inspected Joyal–Street 1986 and 1991 primary texts, and Kohno 1987, (a) the configuration-space construction of the braid category, (b) its free braided strict monoidal universal property, (c) a portable diagrammatic tensor calculus across physics/computation/networks, and (d) an analytic configuration-space → monodromy → Yang–Baxter/quantum-group bridge. This is an initial bridge, not a complete genealogy.
 
@@ -88,4 +95,4 @@ One symbol represents one bounded bite; `@` marks the next uncompleted bite. Do 
 6. **Open physical geometry prerequisite:** return to the master ledger's ◈ questions and source recovery for filament, timesheet family, inter-leaf transport, finite core, ambient metric/signature and admissible motion.
 7. **Other research lanes:** biology → BIO lane and its own ticker; repository/tooling → GIT lane. Neither cursor is inherited here.
 
-**Cold-start instruction:** begin with this page; read the current top-level section and live ticker in the master PHYS ledger; check the Credenza NOW/RETURN and any active Mersearch dependency; then do only the next bounded bite. Expand into linked notes when the current question requires them. Record and verify before moving the cursor.
+**Cold-start instruction:** begin with this page; preserve the complete inherited pilot ticker exactly as printed above; read the current top-level section and live state in the master PHYS ledger; check the Credenza NOW/RETURN and any active Mersearch dependency; then resume at the existing `@` position. Never restart or replace the inherited sequence. Expand into linked notes only when the current operation requires them. Record and verify before moving the cursor.
