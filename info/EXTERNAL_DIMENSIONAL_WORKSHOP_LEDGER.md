@@ -2988,3 +2988,38 @@ The 2011 study “Pregnancy, Microchimerism, and the Maternal Grandmother” exa
 Next, inspect the 2011 primary paper and then studies of maternal-origin microchimerism in adult offspring and fetal-origin microchimerism in mothers, distinguishing qPCR detection from direct cell localization, engraftment and function. Do not infer macroscopic continuity from cellular chimerism.
 
 **Status:** Karlmark et al. 2021 full text, methods, results and discussion inspected through the indexed full text. Page-image verification not performed. This is one small study (28 informative samples, five positive); it requires independent replication and stronger cell-level confirmation. No cursor advance.
+
+
+## 68. Gammill et al. 2011: maternal-grandmother-origin microchimerism in pregnant women — 2026-11-24
+
+**Primary study inspected:** Hilary S. Gammill et al., “Pregnancy, Microchimerism, and the Maternal Grandmother,” *PLOS ONE* 6(8) (30 August 2011), e24101, DOI 10.1371/journal.pone.0024101. Open full text: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0024101. Full article, methods, tables and results inspected through the PLOS full-text HTML. Page-image check was not needed for HTML text.
+
+### A. What the study measured
+
+The study asks whether cells a woman acquired in utero from her own mother remain detectable in her peripheral blood during the woman's later pregnancy. The authors call the pregnant woman the proband and her own mother the mother-of-the-proband (MP). Family members were HLA genotyped at DRB1, DQA1 and DQB1 to identify an allele unique to the grandmother, then HLA-specific quantitative PCR was used on DNA extracted from the proband's peripheral-blood mononuclear cells (PBMCs).
+
+The longitudinal healthy-pregnancy group included 27 women with uncomplicated singleton pregnancies, selected from a larger recruitment cohort. A separate comparison included 20 women with preeclampsia and 20 matched healthy controls (matched by parity and gestational age).
+
+### B. Results
+
+Grandmother-origin microchimerism was detected in the PBMCs of women with normal uncomplicated pregnancies, with detection increasing across gestation and peaking in the third trimester. For each advancing trimester, the modeled probability of detection increased 12.7-fold (95% CI 3.2–50.3; p<0.001). Mean concentrations also rose from no detectable signal pre-pregnancy/first trimester to higher levels in the second and third trimesters, then fell postpartum.
+
+In the preeclampsia comparison, none of the 20 women with preeclampsia had detectable MP microchimerism, compared with 30% of the 20 matched healthy controls (p=0.03). The authors interpret this as a possible marker of maternal adaptation to pregnancy, not proof that these cells cause a healthy outcome.
+
+### C. Limits
+
+The assay detects grandmother-specific HLA DNA in extracted PBMC material. It is evidence consistent with maternal-grandmother-origin microchimeric cells circulating in the pregnant woman, but the study does not image individual donor cells or prove their viability, tissue integration, or function. It is not a direct experiment on the transfer of these cells from the pregnant woman into her fetus.
+
+The longitudinal healthy cohort is small (27); the preeclampsia comparison is also small (20+20). The 12.7-fold trimester estimate has a wide confidence interval. The association with preeclampsia is observational and should not be described as causal. PLOS reports that the women with normal pregnancies were followed longitudinally; the preeclampsia group was sampled at diagnosis and compared with matched healthy subjects.
+
+### D. How it joins the 2021 third-generation cord-blood study
+
+The two papers measured different links:
+- **Gammill et al. 2011:** a woman carries detectable HLA DNA consistent with cells derived from her own mother, and this signal becomes more detectable during her pregnancy.
+- **Karlmark et al. 2021:** grandmother-specific HLA DNA is detected in a subset of cord-blood samples from the woman's child (5/28 informative samples).
+
+Together they support a plausible grandmother → mother → fetus route for microchimeric material. They are not one longitudinally followed family chain and therefore do not directly track the same grandmother-derived cells through the mother's circulation and into the fetus. They also do not establish that the cells persist in the child's tissues after birth or contribute to organ function.
+
+For the workshop, this is a real multigenerational cell-lineage phenomenon at the microscopic/cellular scale. It is a much narrower proposition than a macroscopic anatomical body spanning grandmother, mother and child. The evidence concerns rare cell populations and donor-specific genetic material, not a shared circulatory system among the three people.
+
+**Status:** Gammill et al. 2011 full-text article inspected, including methods and results; page-image verification not needed for HTML. Combined with Karlmark et al. 2021, this gives a plausible but not directly tracked transgenerational microchimerism route. No cursor advance.
