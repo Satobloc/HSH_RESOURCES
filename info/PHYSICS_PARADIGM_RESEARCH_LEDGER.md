@@ -685,4 +685,19 @@ Resume by obtaining the exact source-authenticated definitions of the SAT filame
 - HsH BEDROCK, **ND-2026-10-18-04**: Minkowski build-first control, nested worldtubes, finite-core and minimal-pair discipline.
 - This ledger, **Bite 03**, sections 8.2–8.9: causal-order, mapping-space and braid-dimension background literature, with its source states and limitations.
 
+### ⚙ MERSEARCH EXECUTION DIAGNOSIS
+
+The stable 1.0 source and lane-2 bridge were inspected after the job remained in progress:
+
+- The pinned searcher traverses each permitted root recursively with rglob, then processes eligible TXT/Markdown/CSV/TSV/YAML/code/TeX/JSON/PDF files serially. JSON conversations are expanded into messages; text files into nonempty lines; PDFs page by page.
+- The bridge passes no hit limit. Stable 1.0 defaults to --limit 0, and the script applies a positive limit only after it has scanned and evaluated the corpus. A hit limit would therefore cap retained output, not bound scan time.
+- The scan emits no per-root or per-file progress telemetry in the inspected stable script. It collects matching hits in memory, sorts them, and only then writes its output files.
+- The dedicated Jobs/Steps API still reports all four checkout steps complete and the Mersearch step in progress. The run object has not advanced its last-update timestamp beyond 2026-11-25T05:30:52Z; the decoded job-log endpoint returned BlobNotFound, and no manifest, compact receipt, or workflow artifact is available.
+
+**Assessment:** a long runtime is plausible from a serial full-corpus scan with no visible progress, but the inspected evidence does not prove a hang or establish the precise bottleneck. Do not cancel, overwrite lane 2, duplicate the request, or claim completion. Preserve the request and diagnose further only from a refreshed run state or a verified failure.
+
+### ⚑ PIN ADDITION
+
+- **PHY-P12 (Priority 2):** Mersearch 1.0 execution observability and throughput. After the current request reaches a terminal state, test bounded progress/throughput instrumentation on a development or bridge layer without changing the pinned stable 1.0 search semantics. Measure per-root file/record counts and elapsed time, preserve full-result behavior, and add an explicit runtime/status receipt. Trigger: current run completion/failure or a later reproducible long-running request.
+
 **Bite status:** partial Connect scaffold recorded. The Connect Tick remains open pending primary-source fidelity and explicit construction of the maps. No theory proposition, external claim or physical result is promoted.
