@@ -24,8 +24,9 @@ This is not the main H(s)H theory lane and is not a worker-policy or governance 
 | Tock | Work package | State |
 |---|---|---|
 | GTT-01 | Historical Traffic source inventory and observation reconciliation | **CLOSED** |
-| GTT-02 | Internal activity attribution | **PARKED**; A–F complete for the bounded primary window |
-| GTT-03 | Matched-window internal contribution and external/unexplained residual bounds | **NOT OPENED**; gated by direct Traffic-attribution evidence |
+| GTT-02 | Internal activity attribution from the canonical event ledger | **PARKED**; A–F complete for the bounded primary window |
+| GTT-A01 | Three-repository automation, AI-facing surface, workflow and worker-document audit | **NEXT / separate branch**; required by the original Haul 9 Traffic Rules, not completed by GTT-02 |
+| GTT-03 | Matched-window internal contribution and external/unexplained residual bounds | **NOT OPENED**; gated by GTT-A01 and direct Traffic-attribution evidence |
 
 ### GTT-02 result to preserve
 
@@ -57,7 +58,27 @@ The paired daily unique-cloner CSV sums to 25,011 and has a daily maximum of 6,5
 
 The six unresolved cases are five failed workflows with empty Jobs API evidence and one cancelled run with repository present but provisioning unknown. Keep them unresolved rather than infer a clone.
 
+**Original-scope gap:** the Haul 9 Traffic Rules also explicitly requested a review of all three repositories' automation machinery, welcome/AI-facing pages, workflow recommendations, worker-facing documentation and work logs. GTT-01 inventoried a bounded HSH_RESOURCES Traffic-source corpus; GTT-02 analyzed a bounded HsH event-ledger tranche. Neither completed that broader mechanism/documentation audit. It remains required and is recorded separately as **GTT-A01** below.
+
 **Ticker reconciliation:** the older HsH GIT_TRAFFIC reference files end with the abbreviated cursor `@…`. That was the parked-state shorthand, not the complete full-plan signature required by the shared Protocol. Use the complete ticker at the end of this HSH_RESOURCES anchor as the current GIT_TRAFFIC route. The HsH analysis files remain read-only references in this lane; they were not edited.
+
+## GTT-A01 — Three-repository automation and worker-surface audit
+
+This is an additive branch recovered from the original Haul 9 user request. It does not reopen or rewrite GTT-02's already-verified event-ledger tranche, and it does not claim Traffic attribution by inspecting configuration alone.
+
+| Tick | Operation | Required result |
+|---|---|---|
+| A · `⌕ᵃ` | Inventory automation/workflow files, repository welcome and AI-facing pages, worker instructions, workflow recommendations and work logs in HsH, SAT_THEORY_ARCHIVE_2023-25 and HSH_RESOURCES. | Source manifest with repository, path, blob/commit SHA, date/version and inspection state. |
+| B · `⌕↦` | Map each mechanism to its actual target repository and operation: explicit `git clone`, Actions checkout, API/Contents access, archive download, cache/workspace reuse, or other materialization. | Mechanism-to-target map; config, recommendation and observed execution kept distinct. |
+| C · `⤳` | Connect source instructions and workflow definitions to actual run/job/step records and to matching canonical event-ledger evidence where available. | Provenance-bearing source-to-execution joins; unmatched or ambiguous joins retained. |
+| D · `⌕∑` | Reconcile event identities, checkout keys, dates and mechanism counts across repositories without double-counting runs, jobs, revisions or repeated instructions. | Dated mechanism inventory with explicit grain, coverage and unknowns. |
+| E · `▣` | Record the bounded audit and exact unresolved evidence requests in the GIT workspace. | Durable source map and mechanism findings. |
+| F · `✓` | Independently verify paths, SHAs, workflow/run/job/step evidence, joins and readback. | Recomputed counts and a verified audit record. |
+| G · `⇢` | Decide whether the audit found new clone-generating evidence, resolves any GTT-02 unknowns, or leaves the Traffic gate unchanged. | Rejoin the main path with an explicit disposition; no inference from configuration alone. |
+
+**Exit condition:** all three repositories have a bounded, source-located inventory of the requested surfaces, each candidate mechanism has an evidence-based disposition, and the audit distinguishes stated practice from actual execution. A documented limit is acceptable; a claim of exhaustive visibility is not.
+
+**Search constraint:** Mysearch/Mersearch availability is governed by §5. While both are blocked, start with bounded repository-tree inventories and direct file reads; any generic GitHub search must be labelled fallback discovery, with exact scope and caps. Do not represent a source inventory as full-text coverage.
 
 ## 3. Reopening condition and next Tock
 
@@ -69,13 +90,13 @@ Reopen GTT-02 only when qualifying evidence arrives:
 
 A future last-14-days capture is a **new window**, not a retroactive reconstruction of 2026-11-10–23.
 
-After the gate is satisfied, GTT-03 can open: orient/select the matched-window comparison; map Traffic observations to their exact repository, metric and window; calculate evidence-bounded low/central/high internal contribution and unexplained residual; record; independently verify; then make the decision/use assessment. Keep clone counts and unique-cloner implications separate.
+GTT-03 can open only after GTT-A01 is complete and qualifying GTT-02 Traffic-attribution evidence is available. Then orient/select the matched-window comparison; map Traffic observations to their exact repository, metric and window; calculate evidence-bounded low/central/high internal contribution and unexplained residual; record; independently verify; then make the decision/use assessment. Keep clone counts and unique-cloner implications separate.
 
 ## 4. Live Credenza
 
 - **STATIC:** common glyph meanings live in the shared Code Ledger. Tock is the bounded work package; Tick is a subordinate operation/position. The ticker is the complete route, not decoration. `@` marks the next unfinished item. `⇢` is a deliberate decision/transition. `…` awaits a specified condition.
-- **NOW:** GTT-02 is parked at the evidence gate. No numerical residual calculation is running.
-- **NEXT:** GTT-03 matched-window bounds, only after the reopening trigger is met.
+- **NOW:** GTT-A01, Tick A: inventory automation, welcome/AI-facing, workflow-recommendation, worker-document and work-log sources across the three repositories.
+- **NEXT:** map mechanisms; connect definitions to actual runs/jobs/events; reconcile; record; verify; rejoin the Traffic path.
 - **PIN:** GTT-02 reopening trigger above. Preserve the unresolved unique-cloner and event-attribution questions.
 - **RETURN:** re-enter via the GTT-02 attribution record, the GIT_TRAFFIC thread key and tick ledger in HsH; use the historical-observation catalogue for the original Traffic captures.
 - **PARKED:** GTT-02. **NOT OPENED:** GTT-03. The broader GIT lane remains available for separate repository/tooling work.
@@ -119,4 +140,4 @@ Start here. Re-fetch this anchor, the live shared Protocol/Code Ledger and the l
 
 **Message capsule for substantive work:** `▸ TICK:<current operation> | TOCK:<durable result/cursor or —> | PIN:<return obligation>`. Keep it compact, and keep the full ticker as the final line of every substantive assistant reply.
 
-GIT_TRAFFIC:⌖◉⌕↦⌕∑⌕∅▣✓⇢@…⇢⌖◉⌕↦⌕∑▣✓⇢
+GIT_TRAFFIC:⌖◉⌕ᵃ⌕↦⌕∑⌕∅▣✓⇢⌖◉⌕↦⌕∑⌕∅▣✓⇢⑂@⌕ᵃ⌕↦⤳⌕∑▣✓⇢⑃…⇢⌖◉⌕↦⌕∑▣✓⇢
