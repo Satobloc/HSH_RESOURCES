@@ -2678,3 +2678,79 @@ The experiments provide a useful taxonomy for claims that apparently separate li
 These levels must not be collapsed. Morgan demonstrates experimentally constructed composite organisms and inter-part developmental relations in ordinary three-dimensional animals. He does not demonstrate naturally occurring extra-spatial continuity between separate organisms, nor that genealogy itself is a physical anatomical branch. His work does, however, give us concrete tests for what organismal part-whole membership would require: more than contact, more than circulation, and more than shared developmental influence.
 
 **Status:** Morgan 1907, Chapter XVIII, printed pp. 285–301 inspected in searchable OCR; page-image verification not achieved. No cursor advance.
+
+## 62. Rabes 1901: histological and physiological integration in grafted earthworms — 2026-11-24
+
+**Primary source inspected:** Otto Rabes, "Die histologischen und physiologischen Ergebnisse der Verwachsungsversuche an Lumbriciden," published in *Sitzungsberichte der Gesellschaft zur Beförderung der gesammten Naturwissenschaften zu Marburg*, 1901 volume (printed 1902), pp. 105–115. The original report was opened and read in searchable PDF text; screenshot/page-image verification is still outstanding. Full scan: https://www.zobodat.at/pdf/Sber-Ges-Natwiss-Marburg_1901_0001-0206.pdf. This is Rabes's own short meeting-report account of his histological work, not the full 1901 monograph, which is separately catalogued as *Archiv für Entwicklungsmechanik* 13, 239–352, plates 3–11.
+
+### A. Why Rabes undertook the follow-up
+
+Rabes says Joest's earlier graft results were based mainly on macroscopic inspection and careful observation of the living components. Rabes examined serial histological sections to determine how union occurred and what happened to individual tissues and organs at the joining site. He highlights the advance of conducting these operations in mature, sexually developed earthworms rather than only in embryos or simple coelenterates.
+
+The 1901 report distinguishes same-individual grafts, grafts between individuals, and grafts between species in the broader literature. Heteroplastic composites are visually notable because their component parts retain their different coloration after permanent union.
+
+### B. External wall and musculature
+
+After the pieces are held together with sutures, lymph cells enter the narrow gap, line the two wound surfaces and close the external wound. In favourable cases, Rabes says, closure may occur within about an hour. Epidermal/hypodermal cells from both sides advance over the scar tissue and form a continuous surface seam.
+
+The circular musculature remains contracted longer. Cells from the hypodermis, including mitotically produced cells, enter the scar and form a new zone between the two old circular-muscle ends. New muscle fibrils are visible at roughly day seven and connect the older stumps. Rabes describes this circular muscle as predominantly ectodermal in origin. Longitudinal muscle is formed almost entirely by cells migrating from the old longitudinal musculature. These are his histological interpretations, based on the preparations available in 1901.
+
+### C. Gut continuity
+
+Rabes reports union of the intestinal ends in all experimental series. Epithelial surfaces first adhere; lymph cells around the wound hold the two ends in position. The junction becomes passable to food particles relatively early, and mitoses in intestinal epithelial cells after about twelve days complete the union. He describes the connection as extension/growth of the intestinal ends into one another.
+
+This is direct evidence for digestive continuity across a graft boundary, not just an externally attached composite.
+
+### D. Vascular continuity, including rotated grafts
+
+Rabes reports blood-vessel union in all experimental series:
+- In normally oriented grafts, vessel ends unite directly.
+- With a 90-degree longitudinal rotation, free vessel ends bend toward each other and form a bayonet-shaped connector.
+- With a 180-degree rotation, dorsal vessels may connect directly with ventral vessels despite their different diameters. Because the flow directions would otherwise conflict, segmental collateral vessels linking dorsal and ventral vessels restore a normal circulation path.
+- In implanted side pieces, the side-piece dorsal vessel can connect by multiple anastomoses with the host's ventral vessel.
+- Blood communication returns early: waves of blood enter lacunae in the scar tissue and then find a path through the lymph-cell network from one vessel end to the other; vessel walls of the connector develop from the scar tissue.
+
+Thus the claim in Morgan 1907 that blood circulated through different earthworm components has a histological basis in Rabes's work. Crucially, it does not imply that component-specific traits or identities were transferred.
+
+### E. Nervous-system continuity is a further, separable achievement
+
+Rabes calls the nervous-cord junction the most interesting result. One day after operation, the ventral nerve-cord stumps end as frayed bundles in the wound. Old nerve fibers then grow actively from both components through the scar, meet and unite, re-establishing a neural connection. Mitoses appear in ganglia near the junction; new ganglion cells form clusters that populate the connective segment between the old nerve-cord stumps. Rabes says the old ventral nerve cord is primarily responsible for establishing the neural continuity.
+
+This union depends on orientation:
+- With rotation up to 90 degrees, even when nerve-cord ends are not directly opposite, the free ends bend toward each other and their axons unite in a bayonet-shaped connection.
+- With 180-degree rotation, a neural union does not occur because the cord ends are separated by half the body circumference.
+- Rabes interprets the directed growth as a form of chemotropism, which Forsmann had called "neurotropism": degenerating nerve material at the cut ends is proposed to attract/regulate the direction of outgrowing axons. He estimates the effective range in these earthworm operations at about a quarter of the body circumference, or four to five times the diameter of the nerve cord.
+
+Rabes describes a visible twitch response after stimulation of the anterior end, even before the giant Leydig fibers have joined. He also describes a reversed direction of conduction in two-tail unions as evidence of a very intimate neural connection between the components. These are historical observations and interpretations; the proposed neurotropic mechanism is not to be treated as settled modern neurobiology.
+
+### F. The decisive distinction: vegetative unity versus full physiological unity
+
+Rabes explicitly separates two levels:
+- First, union of gut and blood vessels gives the components shared food and blood exchange. He calls this a "vegetative unity" and describes it as the basic condition for continued existence.
+- Then the free nerve ends unite, restoring what he calls the "complete physiological unity of the individual."
+
+A particularly revealing case occurs when a posterior piece is implanted into a normal worm. Only one pair of ventral-cord stumps may unite, creating a normally functioning individual from two sections that have secondarily joined. The third component can remain connected through epidermis and musculature, and be nutritionally/vascularly integrated, but remain nervously isolated: Rabes describes it as an appendage of the new main body. Which cord ends join seems to depend on their spatial proximity.
+
+This shows why "one organism" cannot be reduced to a single binary test. In Rabes's grafts, outer tissue continuity, alimentary continuity, vascular continuity and neural continuity can be partially independent. A component can belong to the composite body in some anatomical and physiological respects while remaining a nervous-system-isolated appendage.
+
+### G. Other findings and longevity
+
+Rabes reports that the exact correspondence of the joined body regions is not essential: sections from different intestinal, vascular and nervous-system levels can unite, as can hypodermis and musculature. Regenerative buds can form at some graft junctions, and the nervous system appears to be an important determinant.
+
+Tiny skin-muscle fragments too small to live alone can survive when joined to larger viable pieces. Rabes reports that they can form large regenerates using material supplied by the larger component. In one case a regenerate normally expected to form a head instead formed a typical posterior end, a heteromorphic regeneration.
+
+At the time of his report, autoplastically and homoplastically joined earthworms had survived for more than five years; the oldest living composite was about five years and eight months old. These are historical longevity observations, not proof of indefinite survival. Later reports by Korschelt/Rabes give still longer survival for some specific grafts; keep those later durations tied to their own records.
+
+### H. Relation to Morgan 1907 and the workshop's organismal-boundary problem
+
+Rabes supplies the missing tissue-level underpinning for Morgan's description of composites:
+1. **External continuity:** a continuous epithelial surface and reconstructed muscle wall.
+2. **Digestive continuity:** connected intestine and shared passage of food.
+3. **Vascular continuity:** anastomosed blood vessels and circulation across component boundaries.
+4. **Neural continuity:** axons and ventral nerve cords can regrow and unite, but may fail depending on geometry.
+5. **Functional integration:** the first three can sustain a vegetative composite; neural union may restore coordinated physiological function.
+6. **Partial membership:** one graft component can remain vascularly/structurally connected yet nervously isolated, acting as an appendage.
+
+This is unusually relevant to the larger histological proposal because it experimentally demonstrates that anatomical and physiological integration has layers, and that a body can contain components with unequal degrees of integration. But the operations are deliberate surgical grafts in one conventional earthworm composite. They do not show natural extra-spatial continuity among organisms or genealogical branching as a literal anatomical structure. They do give us concrete candidate criteria to test rather than relying on analogy.
+
+**Status:** Rabes's 1901 Marburg report, printed pp. 105–115, inspected in searchable OCR; original full article in *Archiv für Entwicklungsmechanik* 13 (1901), 239–352, still not directly inspected. Page images not verified. No cursor advance.
