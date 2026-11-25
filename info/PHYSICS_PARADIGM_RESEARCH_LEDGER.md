@@ -46,7 +46,7 @@ The Tick sequence follows the shared code ledger. Adjacency means succession; `@
 
 **Current signature:**
 
-`⌖◉⌕@⧖⤳▣✓⇢`
+`⌖◉⌕⧖@⤳▣✓⇢`
 
 - `⌖` Orient: completed for this Tock; current instructions, repositories, protocol, and code ledger consulted.
 - `◉` Select/bound Tock: completed; PHY-01 established.
@@ -258,7 +258,7 @@ The first draft of this ledger used conventional APS DOI-looking strings for fou
 
 ### 6.5 Tick transition
 
-`⌖◉⌕@⧖⤳▣✓⇢`
+`⌖◉⌕⧖@⤳▣✓⇢`
 
 Investigation has produced enough source material for the first geometric comparison. The next Tick is **⧖ Geometrize**: diagram the two constructions, identify physical versus internal/state-space dimensions, then test potential SAT/H(s)H correspondences without forcing them.
 
@@ -367,6 +367,130 @@ The strongest current point of contact with SAT/H(s)H is geometric: persistent e
 
 ### 7.9 Tick state
 
-`⌖◉⌕@⧖⤳▣✓⇢`
+`⌖◉⌕⧖@⤳▣✓⇢`
 
 The next operation remains **⧖ Geometrize**. Begin by drawing a common comparison diagram for Hinton's static filament + moving film, the SAT/H(s)H worldtube + timesheet, and the extended-TQFT bordism hierarchy. Mark which dimensions are physical, internal, readout, or categorical. Keep the Mersearch request pending as a parallel evidence-recovery branch.
+
+
+---
+
+## 8. Bite 03 — Monotonic causal order, connection multiplicity, and the braid-dimension test
+
+**Recorded:** 2026-11-25T05:36:32.724Z  
+**State:** Geometric/categorical synthesis from inspected foundational sources and peer-reviewed mathematical literature. This is a conceptual reconstruction and research hypothesis, not a physical calculation or new H(s)H result.
+
+### 8.1 Nathan's landscape proposal, recorded as a working hypothesis
+
+Nathan's HAUL 9 framing proposes three linked ideas:
+
+1. **Monotonicity as time-axis alignment:** an admissible representation should preserve the forward temporal/causal ordering of the physical construction.
+2. **Comparative connection multiplicity:** higher-dimensional category theory and homotopy permit multiple paths, morphisms, morphisms-between-morphisms and other ways of connecting the same objects. The number and structure of these connections create a landscape of candidate representations.
+3. **Minkowski/SAT selection:** the known physical world is already strongly constrained by 3+1 Lorentzian/Minkowski worldline geometry. SAT/H(s)H proposes that faithful realization of this known geometry selects a much narrower admissible subset than unconstrained abstract connection structures.
+
+This is recorded as **Nathan's working interpretive proposal**, not as an established theorem about category theory or a demonstrated solution of the physics landscape problem. The phrase "comparative connection multiplicity" is a useful project term, not a standard established term in the literature.
+
+### 8.2 A precise mathematical bridge for temporal monotonicity
+
+There is a concrete existing structure that resembles the first idea.
+
+For a time-oriented Lorentzian spacetime ((M,g,T)), causal precedence can be represented by a relation:
+[
+ppreceq q quad	ext{iff a future-directed causal curve runs from }p	ext{ to }q.
+]
+
+This gives an ordered structure on events (subject to the relevant causality assumptions). In causal-set theory, the causal relation is explicitly modeled as a locally finite partial order. In algebraic QFT, there is a category (mathbf{Loc}) whose objects are oriented and time-oriented globally hyperbolic Lorentzian manifolds and whose morphisms are orientation- and time-orientation-preserving isometric embeddings with open, causally convex image. These are real categorical constructions, not a metaphor.
+
+A candidate monotonicity-preserving map (F) should satisfy:
+[
+ppreceq q Longrightarrow F(p)preceq F(q).
+]
+But this condition alone is **not** enough to specify a physical spacetime map. It preserves order, not Lorentzian interval, proper time, light-cone opening, metric scale, or the full field dynamics. Time-orientation preservation and causal-cone preservation are stronger geometric constraints, and an isometric embedding preserves still more structure.
+
+**Useful distinction:** order/time-axis alignment may select temporal direction and exclude causal reversals, while the Minkowski metric and its causal cones further constrain which monotone maps represent the same physical geometry. This gives a rigorous candidate interpretation of Nathan's monotonicity idea without treating monotonicity as the whole of time.
+
+### 8.3 A candidate description of comparative connection multiplicity
+
+At the elementary categorical level, the multiplicity between objects (A) and (B) is the set (or, in a higher category, the structured space) of morphisms from (A) to (B). In homotopy-sensitive settings, the more useful object may be the homotopy type of the path/mapping space, rather than simply the number of paths.
+
+A provisional research object is therefore:
+[
+operatorname{Conn}(A,B)
+   := operatorname{Map}_{mathcal C}(A,B),
+]
+with its connected components representing inequivalent connection classes and its higher homotopies representing equivalences/deformations among those connections.
+
+For a physical realization, the category (mathcal C) must be specified. A candidate realization map into the causal path/geometry structure of a time-oriented Lorentzian spacetime should preserve the selected composition and causal order. If physically distinct abstract connections collapse to the same spacetime realization, the representation loses information; if a proposed connection has no admissible Lorentzian realization, it is not part of the physical solution set without further mechanism.
+
+**No uniqueness theorem follows yet.** We have not defined (mathcal C), its objects, its higher morphisms, the realization functor, or a measure on candidate connections. The next formal task is to define those objects from the actual SAT/H(s)H worldtube construction, rather than borrowing a pre-built higher category and declaring it ontological.
+
+### 8.4 The braid-dimension discriminator
+
+A necessary caution for any SAT/H(s)H use of "braiding":
+
+- For (n) identical point particles moving in ordinary three-dimensional space, the fundamental group of the unordered configuration space is (S_n), the permutation group.
+- For (n) identical point particles moving in a plane, it is the Artin braid group (B_n).
+- The result depends on the configuration space and on what counts as a particle/object. It is not enough to draw crossing worldlines in a spacetime projection and call the crossings a braid.
+- Extended objects, such as disjoint circles/links in (\mathbb R^3), have different configuration spaces. Brendle and Hatcher show that configuration spaces of unlinked rings in (\mathbb R^3) have a richer homotopy structure related to spaces of links and braid-permutation groups.
+
+This matters directly to H(s)H because its working particle picture is a **finite-core worldtube**, not merely a point-particle centerline. We must identify the actual spatial cross-section/topology of the core and construct the appropriate configuration space before assigning braid groups, braid invariants, or braid-history charges.
+
+Open discriminator:
+- If a H(s)H core cross-section is ball-like and remains a point-like object at the relevant coarse-graining level, the ordinary 3D point-particle exchange topology may reduce to permutations.
+- If the core contains ring-, loop-, torus-, or link-like substructure, the configuration space may carry additional topology; determine it from the actual core geometry.
+- If the relevant objects are strings/surfaces/worldsheets rather than particles, derive the correct higher-dimensional braid or motion group from their embeddings and allowed deformations.
+- Distinguish geometric linking of disjoint embedded cores, isotopy classes, worldtube intersection, and a braid group action. They are not interchangeable.
+
+This is a potentially decisive geometric test of the inherited SAT language: it can expose whether "interbraid" is a literal topological invariant, a dynamical/geometric interaction, or a looser descriptive term in a particular regime.
+
+### 8.5 Three structures that must remain distinct
+
+| Structure | Mathematical content | Physical role / caution |
+|---|---|---|
+| Causal/Lorentzian category | Time-oriented spacetimes and causal/time-orientation preserving embeddings | Captures locality and causal admissibility. A causal map is not automatically an isometry unless metric preservation is included. |
+| Bordism / extended-TQFT higher category | Manifolds, bordisms, boundaries, corners, higher bordisms and their composition | Captures gluing/composition and extended observables. Categorical degree does not automatically mean an extra physical dimension. |
+| Configuration-space / motion category | Paths and homotopies in spaces of allowed configurations; fundamental groups give braid/motion groups | Captures possible exchanges and topological history. The result depends on spatial dimension and the topology of the objects. |
+
+The three can interact, but they are not the same category. A future synthesis must provide the functors/maps between them and show which structures are physically retained.
+
+### 8.6 Candidate common diagram (formal specification, not a physical model)
+
+1. Begin with a time-oriented Lorentzian 4-manifold ((M^{3,1},g,T)), using Minkowski spacetime as the initial exact control.
+2. Let (Sigma_t) be an admissible family of spacelike 3D readout hypersurfaces. If represented by a global time function (	au), then (Sigma_t=	au^{-1}(t)); do not assume every spacetime admits a preferred global foliation.
+3. Let (gamma) be an ideal 1D worldline and (W) the explicitly dimensioned finite-core worldtube. Their section/readouts are:
+[
+gammacapSigma_tquad	ext{(point-like trace)},qquad
+WcapSigma_tquad	ext{(finite spatial core, when the dimensions and transversality permit)}.
+]
+4. A causal order/category records permitted future-directed relations between events or spacetime regions. A bordism/higher category records how boundaries, histories and extended structures compose. A configuration-space/motion structure records which exchanges, deformations and linkings are admissible.
+5. H(s)H must specify how its actual worldtube/timesheet interactions map into these structures. The realization must preserve causal ordering and known Minkowski geometry before additional physical interpretations are assigned.
+
+This common diagram makes the comparison tractable without equating Hinton's plane-being analogy, Lorentzian timesheets, worldtube dynamics, and higher categorical morphisms.
+
+### 8.7 Research questions promoted into the Credenza
+
+- **PHY-Q9 / Temporal order:** Is the relevant timesheet/time-wavefront representable by a global temporal function, a foliation, a family of local sections, or a more general dynamical hypersurface? Which construction is actually present in the primary SAT sources?
+- **PHY-Q10 / Connection multiplicity:** What are the objects, 1-morphisms, 2-morphisms and higher morphisms of the candidate physical category? What is meant by a distinct connection, and which equivalences identify two connections?
+- **PHY-Q11 / Realization:** Can a faithful, causality/time-orientation preserving realization of the relevant category into the Minkowski/worldtube geometry be constructed? What information is preserved, and what is lost?
+- **PHY-Q12 / Braid test:** What is the topology of the actual finite-core spatial cross-section and of its configuration space? Does the relevant motion group reduce to (S_n), or does it admit a richer link/ring/surface motion group?
+- **PHY-Q13 / Dynamics vs topology:** Which alleged braids are topological invariants, which are geometric linking histories, and which require a dynamical interaction law? Does the worldtube construction supply all three, or only some?
+
+### 8.8 Credenza pin update
+
+- **PHY-P7 (Priority 1):** Directed/causal categories, time-orientation-preserving maps, and temporal monotonicity.
+- **PHY-P8 (Priority 1):** Finite-core configuration spaces and the distinction between (S_n), Artin braids, link/ring motion groups, and higher braids.
+- **PHY-P9 (Priority 2):** Formalize Nathan's "comparative connection multiplicity" as the homotopy type of a mapping/path space and test whether Minkowski/H(s)H realization constraints genuinely reduce the admissible connection landscape.
+
+### 8.9 New external sources
+
+- Baez & Dolan, *Higher-Dimensional Algebra and Topological Quantum Field Theory*, Journal of Mathematical Physics 36 (1995): https://doi.org/10.1063/1.531236
+- Maciążek & Sawicki, *Non-abelian Quantum Statistics on Graphs*, Communications in Mathematical Physics (2019): https://doi.org/10.1007/s00220-019-03583-5
+- Brendle & Hatcher, *Configuration spaces of rings and wickets*, Commentarii Mathematici Helvetici 88 (2013): https://doi.org/10.4171/CMH/280
+- *Lorentzian bordisms in algebraic quantum field theory*, 2025: https://doi.org/10.1007/s11005-025-01906-3
+- Sati & Schreiber, *Higher Gauge Theory — 1. Introduction* (2026 lecture notes): https://ncatlab.org/schreiber/files/HigherGaugeLectures_260531.pdf
+- Causal-set order and locality discussion: https://link.springer.com/article/10.1365/s13291-023-00268-w
+
+### 8.10 Tick state
+
+`⌖◉⌕⧖@⤳▣✓⇢`
+
+The first source reconnaissance and first two geometric/historical bites are complete enough for a synthesis step. The next Tick is **⤳ Connect**: construct the explicit comparison functor/mapping data from the actual SAT/H(s)H primary sources and test which of the causal, bordism, and configuration-space structures are genuinely required. The internal Mersearch request remains parallel and pending, and must be reconciled before any major theory correspondence is promoted.
