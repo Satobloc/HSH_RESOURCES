@@ -621,3 +621,36 @@ Interpretation:
 - `s`: the deferred dedicated spiritualist-reading programme after the category-theory/mathematics exploration.
 
 This BIO ticker is a lane-local detail cursor inside the wider shared programme. It does not replace or advance the shared master ticker or any PHYS/GIT cursor.
+
+---
+
+## Investigation intent modifiers — added 2026-11-25
+
+These modifiers qualify the existing `⌕` (Investigate) phase. They explain **why this investigation is being performed / what kind of evidence operation it is**. They do not replace `⌕`, create an additional search phase, or alter the shared phase sequence.
+
+**Syntax:** `⌕<modifier>` is one investigative Tick with a stated intent. The `@` cursor goes before the complete pair. A lane may use only the modifiers needed by its actual work; repeated bare `⌕` is allowed only when the distinct purposes are clear in the lane ledger.
+
+| Modifier | Code point | General meaning | Class | Constraints |
+|---|---|---|---|---|
+| ᵃ | U+1D43 | Archive acquisition / source inventory | Existing research-intake marker, reused as an intent modifier after `⌕` | Identify and acquire/triage the source material needed for the task; preserve provenance and intake state. This reuses the existing `ᵃ` assignment and does not claim the acquisition infrastructure is complete or operational. |
+| ↦ | U+21A6 | Mapping / attribution | Investigation intent modifier | Establish what a source, object, variable or observation refers to and map it to its proper identity, role or relation. Preserve ambiguous and unmapped cases. |
+| ∑ | U+2211 | Quantitative / structured reconciliation | Investigation intent modifier | Reconcile compatible values, relations, records or constraints across sources. Sum only additive, commensurate quantities; compare rather than add overlapping or non-additive observations. |
+| ∅ | U+2205 | Evidence-gap recovery | Investigation intent modifier | Locate or explain missing required evidence and seek a direct source that closes the gap. The marker denotes an evidence gap, **not a numerical zero, an empty measurement, or proof that the thing did not occur**. Keep unresolved values UNKNOWN. |
+
+### Lane-specific interpretations
+
+The general meanings above are shared. The following are **separate lane interpretations**, not interchangeable evidence and not amendments to another lane's Tock or ticker. Each lane retains its own ledger, cursor, source standards and subject-matter conclusions. A lane may refine its own interpretation with a dated local entry; a change to the general meaning requires shared-ledger change control.
+
+| Modifier | PHYS / PHY-01 interpretation | BIO / β biological reconstruction interpretation | GIT_TRAFFIC / GTT-01 interpretation |
+|---|---|---|---|
+| `⌕ᵃ` | Acquire and inventory primary physics papers, historical dimensional sources and relevant mathematical records; preserve paper/version/source provenance and distinguish located from read. | Acquire and inventory primary biological studies, datasets and methods records; preserve organism, species, developmental stage, experimental system and source provenance. | Inventory Traffic CSVs, composite TXT reports, screenshots and indices; preserve storage path, blob SHA, commit provenance, duplicate family and reading state. |
+| `⌕↦` | Map each source's actual mathematical/physical construction to objects, dimensions, embeddings, transformations, observables and its relation (or non-relation) to SAT/H(s)H. | Map biological variables and scales to evidenced structures, mechanisms and causal relations; distinguish homochirality, cellular/cytoskeletal chirality, ciliary flow, embryonic laterality and organ asymmetry. | Attribute each single-repository CSV or labeled TXT section to the repository it measures, metric and observation window. Storage repository is not measured-repository identity. |
+| `⌕∑` | Reconcile equations, dimensions, units, assumptions, geometric constraints and independent source claims without forcing distinct formalisms into equivalence. | Reconcile measurements, perturbations and findings across studies while preserving species, stage, method and scale differences; do not manufacture a causal link by aggregation. | Reconcile daily clone sums, 14-day windows, overlapping-window drop/add bridges and duplicate export identities. Do not sum daily unique-cloner counts into a window-deduplicated total. |
+| `⌕∅` | Recover missing definitions, parameters, primary-source passages, observational discriminators or testable consequences; unresolved geometry/physics inputs remain unknown. | Recover missing mechanistic links, perturbation evidence, species comparisons or measurement definitions; an absent link remains unestablished, not disproven. | Seek direct window-level unique-cloner totals and exact dashboard capture times, especially for the 119,670-clone HsH window; do not substitute daily unique counts or upload times. |
+
+### Lane ownership and interpretation rule
+
+- The code ledger is shared vocabulary. The active Tock, Tick IDs, ticker, evidence catalogue and interpretation details remain lane-owned.
+- The PHYS and BIO columns document how these shared modifiers can be interpreted against their recorded work. They do not move either lane's cursor or claim that those lanes have adopted this particular four-modifier sequence.
+- GIT_TRAFFIC uses the modifiers in its own GTT-01 ticker and records its local operations in its own tick ledger. Traffic evidence is not imported from BIO or PHYS.
+- If a lane needs a materially different sense, preserve the general meaning and record the lane-local sense explicitly; never silently redefine the shared glyph.
