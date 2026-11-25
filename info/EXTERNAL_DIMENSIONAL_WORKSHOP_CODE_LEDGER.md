@@ -527,7 +527,7 @@ These codes identify the five ordered bites inside the active contemporary biolo
 
 ### Ordered subpath
 
-`βᛟv@nχrm`
+`BIO:βᛟvn@χrmρk⊕[mbxᛟd]s`
 
 - `β` is the existing contemporary biological reconstruction pass.
 - `ᛟ` is the existing SAT/H(s)H interpretive lens applied throughout the subpath.
@@ -567,15 +567,15 @@ The uppercase strings below are lane labels, not workflow glyphs and not operati
 |---|---|---|
 | **PHYS** | Contemporary physics and physical foundations; relation to higher geometry, Hinton, nLab and related mathematical-physics traditions | Maintain its own active cursor, research questions, source notes and interpretation overlay. Its existing `f` domain component remains applicable. |
 | **BIO** | Biological implications of the stipulated SAT/H(s)H ontology, informed by Hinton, nLab/n-Category Café, modern biology and relevant higher mathematics | Current lane for the five-bite subpath `v n χ r m`; maintain its own cursor and biological reading notes. |
-| **GIT** | GitHub/repository operations, shared archives, version control, research infrastructure, tooling and cross-conversation continuity | Maintain its own operational cursor, repository changes, checks and handoff records. Do not mistake repository state for a physics or biological result. |
+| **GIT** (with **GIT_TRAFFIC / GTT-01** as a defined operational sublane) | GitHub/repository operations, shared archives, version control, research infrastructure, tooling and cross-conversation continuity | Maintain its own operational cursor, repository changes, checks and handoff records. The Traffic-measurement sublane retains its narrower GTT-01 scope. Do not mistake repository state for a physics or biological result. |
 
 ### Scope and precedence rules
 
 1. **Common meaning first.** A glyph's general canonical meaning and code point remain in this Code Ledger.
-2. **Lane interpretation second.** PHYS, BIO and GIT may each record a separate interpretation or implementation of the same glyph, suitable to their work.
-3. **No cross-lane mutation by implication.** Adding or changing a BIO interpretation does not rewrite PHYS or GIT, and vice versa. Existing meanings in other lanes remain intact unless that lane explicitly updates its own record.
+2. **Lane interpretation second.** PHYS, BIO and GIT (including GIT_TRAFFIC where relevant) may each record a separate interpretation or implementation of the same glyph, suitable to their work.
+3. **No cross-lane mutation by implication.** Adding or changing a BIO interpretation does not rewrite PHYS, GIT or GIT_TRAFFIC, and vice versa. Existing meanings in other lanes remain intact unless that lane explicitly updates its own record.
 4. **Local definitions are scoped.** A newly assigned subcomponent is not automatically a global assignment. The BIO codes `v`, `n`, `χ` and `r` are BIO-lane subcomponents. Another lane may use the same code point only with an explicit lane-scoped record and without overwriting the BIO record.
-5. **Shared handoffs carry the lane label.** Use the prefix `PHYS:`, `BIO:` or `GIT:` before a lane-local ticker when a ticker is being passed across conversations. The label is metadata, not an operation. The ticker body remains one character per operation/component, with established grouping syntax preserved.
+5. **Shared handoffs carry the lane label.** Use the prefix `PHYS:`, `BIO:`, `GIT:` or the more specific `GIT_TRAFFIC:` before a lane-local ticker when a ticker is being passed across conversations. The label is metadata, not an operation. The ticker body remains one character per operation/component, with established grouping syntax preserved.
 6. **No lane cursor substitution.** A shared ledger can record all lanes, but an entry from one lane must not advance another lane's `@` position.
 7. **Do not create glyphs just to name lanes.** The uppercase lane labels are enough. New glyphs are reserved for actual reusable operations, components, states or subcomponents.
 
@@ -583,7 +583,7 @@ The uppercase strings below are lane labels, not workflow glyphs and not operati
 
 The operation glyphs retain one common meaning. The following table records their domain-specific realization, not a new glyph assignment.
 
-| Glyph | General meaning | PHYS interpretation | BIO interpretation | GIT interpretation |
+| Glyph | General meaning | PHYS interpretation | BIO interpretation | GIT / GIT_TRAFFIC interpretation |
 |---|---|---|---|---|
 | `⌕` | Investigate | Retrieve and assess physics literature, mathematical sources, experiments and theory records | Retrieve and assess biological primary sources, comparative systems and developmental mechanisms | Locate repository paths, source files, commits, branches, issues, workflows and tool specifications |
 | `⧖` | Geometrize | Reconstruct physical spacetime, field, causal and mathematical geometry | Reconstruct organismal, tissue, cellular, ciliary, fluid and W-extended developmental geometry | Map repository, dependency, branch or workflow structure when a geometric/topological representation is useful; this use is operational, not physical |
@@ -593,7 +593,7 @@ The operation glyphs retain one common meaning. The following table records thei
 
 ### Shared component interpretations
 
-| Glyph | Common definition | PHYS interpretation | BIO interpretation | GIT interpretation |
+| Glyph | Common definition | PHYS interpretation | BIO interpretation | GIT / GIT_TRAFFIC interpretation |
 |---|---|---|---|---|
 | `ᛟ` | SAT/H(s)H interpretive lens | Read physical structures and theories through the stipulated four-dimensional ontology while retaining source distinctions | Read organisms and biological processes as physically four-dimensionally extended structures with 3D sections along W | Preserve and route the stipulated ontology and its provenance when editing archives; repository operations do not themselves apply a new physical interpretation |
 | `m` | Mathematics / category theory | Mathematical structures relevant to physical foundations and spacetime models | Selective mathematical application to concrete biological structures; in this subpath it is not the full `k` programme | No standing GIT subcomponent is assigned at present |
@@ -620,7 +620,7 @@ Interpretation:
 - `k⊕[mbxᛟd]`: the larger category-theory/mathematics programme with biology retained and cross-disciplinary connections emerging naturally.
 - `s`: the deferred dedicated spiritualist-reading programme after the category-theory/mathematics exploration.
 
-This BIO ticker is a lane-local detail cursor inside the wider shared programme. It does not replace or advance the shared master ticker or any PHYS/GIT cursor.
+This BIO ticker is a lane-local detail cursor inside the wider shared programme. It does not replace or advance the shared master ticker or any PHYS/GIT/GIT_TRAFFIC cursor.
 
 ---
 
@@ -654,3 +654,6 @@ The general meanings above are shared. The following are **separate lane interpr
 - The PHYS and BIO columns document how these shared modifiers can be interpreted against their recorded work. They do not move either lane's cursor or claim that those lanes have adopted this particular four-modifier sequence.
 - GIT_TRAFFIC uses the modifiers in its own GTT-01 ticker and records its local operations in its own tick ledger. Traffic evidence is not imported from BIO or PHYS.
 - If a lane needs a materially different sense, preserve the general meaning and record the lane-local sense explicitly; never silently redefine the shared glyph.
+
+
+**GIT naming clarification — 2026-11-25:** **GIT** is the conversation/lane shorthand supplied for repository and tooling work. **GIT_TRAFFIC / GTT-01** is the specifically identified GitHub Traffic measurement sublane in the investigation-modifier overlay. Treat GIT_TRAFFIC as a scoped operational sublane under the broader GIT lane, not as a replacement for the GIT label. Its traffic metrics, evidence standards and cursor remain separate from BIO and PHYS.
