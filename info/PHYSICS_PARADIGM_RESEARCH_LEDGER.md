@@ -1582,3 +1582,76 @@ All numerical checks passed to floating-point precision. The example values are 
 **LIVE TICKER — final line:**
 
 ⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢
+
+
+---
+
+## 20. Bite 11 — explicit braid-theory and geometric-motion programme
+
+**Recorded:** 2026-11-25  
+**Lane:** ⟐ HSH_RESOURCES comparative-history / PHYS-01  
+**State:** ADDED AS AN EXPLICIT RESEARCH PACKAGE. ℬ is planned after source-defined object/core geometry (◈). This is a programme definition, not a claim that any one braid group describes SAT/H(s)H.
+
+Bite 03 already recorded the braid-dimension discriminator, but braid theory is now a named subtask rather than a passing subtopic inside generic higher mathematics. The lane-local code ℬ (U+212C) is registered in the code ledger, and the dedicated 145-line plan is stored at:
+
+- WORKSPACES/PHYSICS/PHY01_BRAID_THEORY_RESEARCH_PLAN_20261125.md
+- Blob: 1e470d20767e534bb05cc776ecb1c6dfc5fc1681
+- Commit: 70ecb69ce1ad023ecde9ec92a57f9486dcf182f8
+
+### ∴ PROGRAMME STRUCTURE
+
+The explicit sequence is:
+
+\[
+\boxed{\ \ ◈\ \longrightarrow\ \mathcal B\ \longrightarrow\ \partial\ \longrightarrow\ \Delta\ \ }
+\]
+
+- **◈ Object/core geometry:** define the actual filament, timesheet family, finite core, cross-section and admissible motion space.
+- **ℬ Braid theory and geometric motion groups:** reconstruct classical braid theory, configuration-space dependence, extended-object motion groups, braided categorical structures, and their mathematical-physics applications.
+- **∂ History and composition:** define boundaries, identities and gluing for histories of the source-defined objects.
+- **Δ Projection fidelity:** test which causal, bordism and configuration/motion views preserve or erase braid-relevant information.
+
+Braid theory may be researched mathematically while ◈ remains active, but application to SAT/H(s)H remains conditional on source-defined objects.
+
+### ∴ FIVE RESEARCH STRANDS
+
+1. Classical geometric braid theory: Artin braid groups, pure braid groups, configuration spaces, generators/relations, isotopy and braid closures.
+2. Dimension dependence: ordered/unordered point configurations in planes, surfaces and three-space, including the effects of labels, collisions, ambient topology and boundaries.
+3. Extended-object motion: embedded circles, rings, links, ribbons, strings and surfaces; loop-braid / braid-permutation candidates only where their defining object spaces fit.
+4. Categorical/algebraic extensions: braided monoidal categories, braid-group actions, Yang–Baxter structures, groupoids, higher braids and topological field theory where source-supported.
+5. Physics and historical lineages: exchange statistics, anyonic systems, topological phases, topological quantum computation and mathematical physics; direct transmission must be distinguished from shared antecedents, independent convergence, analogy and retrospective interpretation.
+
+### ∴ CORE MATHEMATICAL DISCRIMINATORS
+
+| Objects / ambient space | Candidate structure | Required caution |
+|---|---|---|
+| Labeled points in a plane | Pure braid group | Ordered configuration space |
+| Indistinguishable points in a plane | Artin braid group | Unordered configuration space |
+| Indistinguishable point particles in ordinary three-space | Permutation group under standard point-particle assumptions | A projected crossing does not restore the planar braid group |
+| Embedded rings / links in three-space | Embedding spaces and motion groups; loop-braid or braid-permutation structures where hypotheses fit | Extended objects, orientation, linking and admissible isotopy matter |
+| Strings, sheets and higher-dimensional objects | Higher-dimensional embedding and motion structures | Intrinsic dimension, codimension, ambient dimension and collision/intersection rules decide the result |
+| Time-extended worldtubes | Histories / paths in a defined spatial configuration or embedding space | A worldtube, a static link type and a braid diagram are not interchangeable |
+
+These rows are routing categories, not a completed theorem survey. The exact hypotheses and historical sources are part of ℬ.
+
+### ∴ PHYSICAL-REALIZATION GATE
+
+No braid group, braid invariant or braided categorical action may be assigned to SAT/H(s)H until the actual cross-section/topology, dimension/codimension, orientation/boundary, labeling and indistinguishability conventions, configuration space, collision/reconnection rules, admissible isotopies, time orientation, history equivalence and history-to-group map are defined from source-backed geometry.
+
+Crossings in a 2D projection are not, by themselves, physical intersections, linking events or braid generators. Keep separate: static linking, paths of configurations, motion-group classes, worldtube intersections, dynamical interactions, and quantum-statistical exchange actions.
+
+The framework-internal use of winding or Interbraid remains at its recorded epistemic status. An unwrapped winding count is not automatically an element of an Artin braid group, pure braid group, loop-braid group or higher categorical braid.
+
+### ⁇ QUESTIONS AND PINS
+
+Questions PHY-Q36–Q42 and pins PHY-P20–P23 are specified in the dedicated braid plan. They cover primary-source mathematical history; exact dimensional/configuration hypotheses; extended-object motion groups; braided categories/Yang–Baxter/TQFT; source-defined worldtube motion; projection-invariant crossings; and any independent map from motion groups to quantum-state actions.
+
+### ↩ CURRENT ORDER AND STATUS
+
+The ℬ package is queued after ◈ and before ∂ and Δ. The current @ does not move: ◈ remains the first unfinished geometric prerequisite. The existing Mersearch lane-2 request is still the internal-source acquisition dependency; do not duplicate or overwrite it. The compact receipt, when published, will be navigation, not proof.
+
+**Bite status:** braid theory is now explicit in the research plan, its lane-local glyph, its dedicated work-package document, and the master PHY-01 ledger. No physical braid-group assignment, historical transmission claim, new physical model or HsH theory promotion is made.
+
+**LIVE TICKER — final line:**
+
+⌖◉⟐⊕[fhkℬᛟᵃ]⌕⧖@⤳◈ℬ∂Δ…▣✓ρ⇢
