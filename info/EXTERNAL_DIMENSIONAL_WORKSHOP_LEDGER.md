@@ -2863,3 +2863,89 @@ This article focuses on mature-colony histology and RFamide-positive neural popu
 Next, compare this clonal-colony condition with a colonial tunicate such as *Botryllus*, whose zooids are physically linked by a common vascular network and may undergo synchronized budding/regression, and with colonial hydroids. The key question is whether those systems arise from one embryo and asexual budding, or whether independent individuals can fuse while retaining partial individuality. Maintain distinctions between clonal development, fusion of genetically different individuals, shared circulation, and shared neural coordination.
 
 **Status:** Church et al. 2015 open-access article directly inspected through relevant sections and figure legends. This is a current histological source; no page-image audit needed because the source was an HTML article with embedded figure assets. No cursor advance.
+
+
+## 66. Botryllus schlosseri: natural fusion of independently founded colonies, vascular chimerism and germ-line competition — 2026-11-24
+
+**Primary experimental paper directly inspected:** Douglas S. Stoner & Irving L. Weissman, “Somatic and germ cell parasitism in a colonial ascidian: Possible role for a highly polymorphic allorecognition system,” *Proceedings of the National Academy of Sciences* 93(26), 15254–15259 (24 December 1996), DOI 10.1073/pnas.93.26.15254. Full text/OCR inspected through ResearchGate's author-uploaded article copy: https://www.researchgate.net/publication/14220932_Somatic_and_germ_cell_parasitism_in_a_colonial_ascidian_Possible_role_for_a_highly_polymorphic_allorecognition_system. Independent PubMed record: https://pubmed.ncbi.nlm.nih.gov/8986797/. A 2014 open review by Taketa & De Tomaso provides broader allorecognition and life-history context: https://pmc.ncbi.nlm.nih.gov/articles/PMC4185259/.
+
+### A. The biological unit before fusion
+
+Each *Botryllus schlosseri* colony begins with a sexually derived tadpole larva that settles and metamorphoses into a founder (oozooid). The founder then buds asexually to produce a colony of genetically identical zooids. Each zooid is an anatomically complex individual with a heart, gut, gonads and nervous system. The colony's zooids are linked by an **extracorporeal vascular network** enclosed in a common tunic; the vascular system ends in peripheral ampullae.
+
+The key point is that the units that fuse at the edge are not merely adjacent zooids within one clonal colony. They can be two independently founded colonies, each with its own clonal history and set of zooids, that grow toward one another across a substrate.
+
+### B. Compatibility gates whether two colonies fuse
+
+When the peripheral ampullae of two colonies contact, one of two outcomes occurs:
+- If their genotypes share at least one allele at the highly polymorphic Fu/HC (fusion/histocompatibility) locus, the ampullae can anastomose and establish a shared vascular connection; the result is a vascular chimera.
+- If they share no allele, an inflammatory rejection destroys the interacting ampullae and blocks further vascular integration.
+
+The 2014 review describes the reaction as typically occurring within 24–48 hours. The 1996 article says the laboratory colonies generally fused within 2–3 days after placement in contact. The Fu/HC system is a specific tunicate allorecognition system, not an MHC homolog simply transferred from vertebrates; the 2014 review notes that no apparent orthologous conservation of allorecognition mechanisms across taxa has been established.
+
+### C. Laboratory experiment: two separately founded colonies become a vascular chimera
+
+Stoner and Weissman generated nine laboratory chimeras using compatible colony pairs. They divided each colony into subclones, placed compatible partners next to one another on slides, and sampled at one, four and eight weeks; some pairs were surgically separated one week after fusion and sampled later.
+
+Key observations:
+- All nine fused pairs showed both partner genotypes in sampled blood and/or tissues within eight weeks.
+- By week one, the blood was already chimeric in distinguishable pairs, even before all stable chimeras showed detectable donor DNA in buds.
+- In the five pairs that remained stably fused, mixed-genotype bud tissue appeared by week four and persisted through week eight.
+- In stable pairs surgically separated one week after fusion, five of five showed donor-derived chimerism in buds at the later sampling point; none of these five had detectable bud chimerism at week one. This is evidence that donor-derived cells can move through the shared circulation and establish themselves in the partner after an initial period of vascular contact, with some lineage consequences persisting after surgical separation.
+- Four of nine laboratory pairs underwent a later resorption process, in which all zooids of one component colony died and were absorbed by the surviving partner. Chimerism patterns varied substantially with whether resorption occurred.
+
+### D. Somatic chimerism: shared tissue contribution is real but not unlimited
+
+Genetic typing showed that buds could contain cells from both founding colonies. In some systems, both genotypes were found side by side (sectorial chimerism); in others, mixed genotypes were distributed throughout the sampled chimera. The authors did not find complete replacement of every sampled bud by the partner; they interpret the data as somatic cell parasitism/chimerism that is real but incomplete in the tested cases.
+
+The paper notes that asexually derived buds are not wholly clonal in their cellular origin: bud formation involves several distinct cell types, and the different cell lines can contribute to a new bud. Therefore, the boundary between the two founding genotypes can be present within the same regenerated/reproductive structures.
+
+### E. Germ-line transfer and competition
+
+The most striking result is that circulating germ-line progenitors can cross the vascular connection and colonize gonadal tissues in the partner colony:
+- All five stable laboratory chimeras had testes containing a genotype from the partner.
+- In some examples, the donor genotype was detected at levels implying that at least 96–98% of the tested tissue DNA came from that donor genotype; the assay's detection threshold was about 2–4% of the alternative genotype.
+- Apparent replacement of a partner's gametic tissue could occur within four weeks and persist for at least eight weeks after fusion.
+- The authors considered both clonogenic seeding of a testis and active cell-line competition as possible explanations; their study does not fully distinguish these mechanisms.
+- Crosses of field-derived chimeras then confirmed that the transferred lineage was reproductively functional. The partner genotype's share of sperm in the testes predicted its contribution to offspring. Germ-cell parasitism was also found in eggs, not only sperm.
+
+In 10 naturally collected field chimeras, both partner genotypes were present in blood in all 10; somatic chimerism was detected in 8 of 10; germ-line transfer was detected in 8 of 10; and clear germ-cell parasitism was detected in 4 of 10. In two of those four field examples, nearly the entire sperm output had been usurped by one chimeric partner.
+
+The authors call this germ-cell or somatic-cell parasitism because a donor cell lineage can obtain a reproductive advantage using the somatic support of the recipient colony. A colony's visible somatic appearance may therefore fail to reveal which lineage contributes most of its gametes.
+
+### F. The effect of rejection: boundaries are maintained in most incompatible contacts
+
+To compare fused chimeras with adjacent unfused colonies, the authors sampled 15 pairs of colonies in physical contact but not fused. No somatic or germ-line admixture was detected in 13 of 15; one pair showed evidence of both GCP and SCP, and one showed low-level SCP. The authors estimated a lower rate of parasitism in unfused pairs (6.7%) than in fused chimeras (40%). They caution that the field pairs were retrospectively classified as putatively rejecting: because rejection signs can disappear, they could not prove prospectively that every unfused pair had actually undergone rejection rather than never reacting.
+
+### G. The key distinction for the organismal-boundary model
+
+This system contains several different biological identities at once:
+1. **Founding-colony identity:** two colonies with independent sexually founded histories can contact.
+2. **Vascular identity:** if compatible, they form a connected vascular chimera and share circulating blood cells.
+3. **Somatic lineage identity:** cells from each founder can contribute to the composite's buds and tissues.
+4. **Germ-line identity:** donor germ-line progenitors can enter and occupy reproductive niches in the partner.
+5. **Visible colony identity:** the exterior can appear as a single fused or chimeric structure even while its genetic lineages remain multiple and compete.
+6. **Resorption:** in some combinations one colony's zooids die and are absorbed, while donor cells or lineages can persist in the remaining composite.
+
+This is a much closer natural comparator to the workshop's question than a clonal siphonophore: **separately founded organisms can establish a shared vascular system and become a physiological chimera, with living cell lineages crossing the original boundary.** The relation is not merely social or ecological; it is anatomical, circulatory, somatic and reproductive.
+
+But the limits are equally important:
+- Fusion is conditional on a specific histocompatibility match, not universal.
+- The fusion joins two colony-level clonal bodies through peripheral vascular anastomoses; it does not establish that all component zooids or tissues become one undifferentiated organism.
+- Multiple genotypes and competing cell lines persist, and one partner can parasitize another's germ line.
+- This is ordinary three-dimensional tissue and vascular biology. It does not show genealogical connections extending physically through time, an extra spatial dimension, or human individuals as distal components of one larger body.
+
+### H. Implications for the next biological comparisons
+
+*Botryllus* suggests a more precise set of experimental questions for any proposed larger organism:
+- Is there a physical anastomosis across the boundary?
+- Does a shared internal transport system form?
+- Which cell lineages cross, and by what route?
+- Do cells enter somatic tissues, germ lines, or both?
+- Does the original boundary persist, remodel or disappear?
+- Can the composite be surgically separated without losing transferred lineages?
+- Is the relationship stable, transient, competitive, or destructive?
+
+The user's hypothesis requires evidence at least comparable to this level before ordinary genealogical or developmental relationships can be called literal anatomical continuity.
+
+**Status:** Stoner & Weissman 1996 primary paper directly inspected in full searchable text through the ResearchGate author-uploaded copy, including methods, results, tables and conclusions. Taketa & De Tomaso 2014 review inspected for allorecognition and life-history context. No page-image check was needed for the HTML/OCR text interface used. No cursor advance.
