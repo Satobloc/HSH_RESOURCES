@@ -527,7 +527,7 @@ These codes identify the five ordered bites inside the active contemporary biolo
 
 ### Ordered subpath
 
-`βᛟ@vnχrm`
+`βᛟv@nχrm`
 
 - `β` is the existing contemporary biological reconstruction pass.
 - `ᛟ` is the existing SAT/H(s)H interpretive lens applied throughout the subpath.
