@@ -668,3 +668,17 @@ The general meanings above are shared. The following are **separate lane interpr
 
 **Use:** prefix this lane's full ticker with `⟐` (for example, `⌖◉⟐⊕[fhkᛟᵃ]…`). Keep its research findings, plans, source maps and workflow notes in HSH_RESOURCES. Do not write lane conclusions into HsH BEDROCK or present them as HsH worker directives. Existing HsH/SAT material remains citable reference material with its original provenance and epistemic status.
 
+
+---
+
+## PHYS-01 braid-theory subtask token — added 2026-11-25
+
+This is an explicit subtask code for the ⟐ HSH_RESOURCES comparative-history / PHYS-01 lane. It does not redefine the shared ⋈ branch marker or the global mathematics/category-theory components.
+
+| Glyph | Code point | Lane-local meaning | Class | Scope / guard |
+|---|---|---|---|---|
+| ℬ | U+212C | Braid theory and geometric motion groups | PHYS-01 subtask | Reconstruct the historical and mathematical development of braid groups, pure braids, configuration spaces, motion groups of extended objects, loop/ribbon braids, braided categories and higher braid structures where source-supported. Distinguish mathematical theory from any proposed physical realization. Do not assign a group or braid invariant to SAT/H(s)H until the actual object/core, ambient space, configuration space, labels, collision rules and admissible motions have been defined. |
+
+**Ordering:** ◈ → ℬ → ∂ → Δ for the current PHY-01 Connect programme. First recover the source-defined filament, timesheet and finite-core geometry (◈); then reconstruct braid/motion-group mathematics and test only those constructions compatible with the specified configuration space (ℬ); then define histories, boundary identities and composition (∂); finally test the fidelity and information loss of the different projections (Δ).
+
+**Lane boundary:** ℬ is a PHYS-01 subtask, not a general shared phase, not a BIO reassignment of β, and not a declaration that H(s)H's “interbraid” is a proven Artin braid, loop braid, braid category or physical topological invariant. Historical influence, independent mathematical convergence, structural analogy and framework-internal proposal remain separate statuses.
