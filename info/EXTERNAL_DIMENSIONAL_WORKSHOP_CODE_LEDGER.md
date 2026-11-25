@@ -706,3 +706,16 @@ The PHYS ticker is a sequence of bounded research bites, not a concatenation of 
 | ⧉ | U+29C9 | SAT-first correspondence overview | Bite token | One bounded overview mapping the foundational SAT/H(s)H ontology and selected current developments to relevant nLab / n-Category Café concepts and wider four-dimensional historical/contemporary thought and physics. Primary comparison corpus: 2023–25 archive's *Fundamental Intuitions*, *one drop*, *single-file*, *standalone* and related foundational materials; current HsH theory is the evolving backdrop. This is not exhaustive source archaeology or proof-level validation. Full bite specification is Bite 19 in the PHYS master ledger. |
 
 **Current PHYS bite ticker:** `@⧉`. The prior phase-level ticker is retained in the ledger's historical record only; it is not the live bite ticker.
+
+
+## Shared pilot ticker continuity — PHYS / GIT / BIO
+
+**Canonical inherited full ticker:**
+
+`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
+
+This is the complete shared Tocktick pilot signature. The current `@` position is immediately before `⤳`. Preserve the full string across conversation boundaries, including the completed prefix and all remaining suffix tokens. Never replace it with a bite-only shorthand such as `@⧉`, a local lane cursor, or a shortened phase signature. `@` moves only when the operation it marks has been completed and the relevant durable record has been verified.
+
+PHYS, GIT and BIO have independent local research/operational cursors. Their local tickers remain valid as subordinate lane state, but they do not supersede the shared full ticker. The shared ticker records continuity across the three pilot conversations; local manifests record lane-specific scope, evidence, and return obligations. A new conversation resumes the existing sequence, it does not begin a new one.
+
+**Correction / supersession:** the 2026-11-25 PHYS `@⧉` bite-only replacement was an incomplete handoff and is superseded. `⧉` must not be used as a replacement for the full shared pilot ticker. Preserve Bite 19 as a PHYS work-package reference in its ledger, but the live shared position remains `@⤳`.
