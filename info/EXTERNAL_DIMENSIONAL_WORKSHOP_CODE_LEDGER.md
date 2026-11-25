@@ -708,14 +708,16 @@ A bite reference identifies a bounded PHYS work package in the master ledger. It
 **PHYS Bite 19 reference:** `⧉` (U+29C9), retained as a local work-package identifier only. It is not a live ticker, does not carry the `@` marker, and does not supersede the shared pilot signature. The live shared position is `@⤳`.
 
 
-## Shared pilot ticker continuity — PHYS / GIT / BIO
+## Pilot ticker continuity and lane-local workplans
 
-**Canonical inherited full ticker:**
+The three pilot threads share a vocabulary and operating method, not one global work queue or one immutable ticker. Each lane maintains its own live, editable workplan and current @ position:
 
-`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
+- **PHYS:** current workplan is recorded in WORKSPACES/PHYSICS/PHYS_THREAD_START_HERE.md and info/PHYSICS_PARADIGM_RESEARCH_LEDGER.md.
+- **BIO:** current workplan is recorded in WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/BIO_THREAD_START_HERE.md and the External Dimensional Workshop Work Ledger.
+- **GIT:** current operational plan is recorded in WORKSPACES/GIT/GIT_THREAD_START_HERE.md; GIT_TRAFFIC may maintain its own nested sublane ticker.
 
-This is the complete shared Tocktick pilot signature. The current `@` position is immediately before `⤳`. Preserve the full string across conversation boundaries, including the completed prefix and all remaining suffix tokens. Never replace it with a bite-only shorthand such as `@⧉`, a local lane cursor, or a shortened phase signature. `@` moves only when the operation it marks has been completed and the relevant durable record has been verified.
+A ticker is a current workplan, not a canonized or immutable signature. It externalizes the ordered intended operations so the full plan need not be held in context. Symbols are pointers to definitions and scoped work recorded in the relevant ledger. The plan may be revised, reordered, expanded, shortened, split, combined or replaced as work develops. When it changes, update the corresponding entrypoint and ledger so the next conversation can recover the actual current state.
 
-PHYS, GIT and BIO have independent local research/operational cursors. Their local tickers remain valid as subordinate lane state, but they do not supersede the shared full ticker. The shared ticker records continuity across the three pilot conversations; local manifests record lane-specific scope, evidence, and return obligations. A new conversation resumes the existing sequence, it does not begin a new one.
+Do not copy one lane's ticker into another lane as if it were a shared cursor. Do not advance one lane because another lane advanced. Common glyph meanings are shared; the workplan, evidence, Credenza and @ position are lane-local.
 
-**Correction / supersession:** the 2026-11-25 PHYS `@⧉` bite-only replacement was an incomplete handoff and is superseded. `⧉` must not be used as a replacement for the full shared pilot ticker. Preserve Bite 19 as a PHYS work-package reference in its ledger, but the live shared position remains `@⤳`.
+**Correction to the 2026-11-25 handoff:** the attempt to impose one "shared pilot ticker" across PHYS, BIO and GIT, and to describe its current string as canonical or mandatory, was mistaken. The string ⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢ is the current PHYS workplan at this point in the work, not a global ticker for all three lanes and not a permanent signature. The PHYS bite reference ⧉ remains only a work-package reference; whether it appears in a ticker is a live planning decision, not a prohibition.
