@@ -671,14 +671,24 @@ The general meanings above are shared. The following are **separate lane interpr
 
 ---
 
-## PHYS-01 braid-theory subtask token — added 2026-11-25
+## Cross-disciplinary braid-theory lens — revised 2026-11-25
 
-This is an explicit subtask code for the ⟐ HSH_RESOURCES comparative-history / PHYS-01 lane. It does not redefine the shared ⋈ branch marker or the global mathematics/category-theory components.
+This is a lane-local research lens for the ⟐ HSH_RESOURCES comparative-history workspace. It is **not PHYS-only** and does not redefine the shared ⋈ branch marker or the general mathematics/category-theory components.
 
 | Glyph | Code point | Lane-local meaning | Class | Scope / guard |
 |---|---|---|---|---|
-| ℬ | U+212C | Braid theory and geometric motion groups | PHYS-01 subtask | Reconstruct the historical and mathematical development of braid groups, pure braids, configuration spaces, motion groups of extended objects, loop/ribbon braids, braided categories and higher braid structures where source-supported. Distinguish mathematical theory from any proposed physical realization. Do not assign a group or braid invariant to SAT/H(s)H until the actual object/core, ambient space, configuration space, labels, collision rules and admissible motions have been defined. |
+| ℬ | U+212C | Braid theory and its cross-disciplinary geometric/formal lineage | Cross-disciplinary research lens | Investigate braids as geometry, topology, configuration-space motion, algebraic/categorical abstraction, and portable formal machinery across mathematics, representation theory, particle physics, quantum gravity, cosmology where actually evidenced, condensed matter, quantum information/computing, and other source-supported fields. Track how geometric structures are rendered as formal objects and carried between disciplines. Distinguish documented transmission, shared antecedents, independent convergence, structural analogy and retrospective reinterpretation. |
 
-**Ordering:** ◈ → ℬ → ∂ → Δ for the current PHY-01 Connect programme. First recover the source-defined filament, timesheet and finite-core geometry (◈); then reconstruct braid/motion-group mathematics and test only those constructions compatible with the specified configuration space (ℬ); then define histories, boundary identities and composition (∂); finally test the fidelity and information loss of the different projections (Δ).
+**Working interpretation to test:** Nathan proposes that braid theory and its descendants can be read as increasingly exact mathematical treatments of geometrical relations and histories, in some cases independently converging on principles that SAT/H(s)H approaches from its Minkowski/worldline/timesheet starting point. This is a research hypothesis about structural convergence and disciplinary development, not an established historical claim that braid theory descended from Minkowski or SAT. The mathematical record must be allowed to confirm, refine or reject particular parts of it.
 
-**Lane boundary:** ℬ is a PHYS-01 subtask, not a general shared phase, not a BIO reassignment of β, and not a declaration that H(s)H's “interbraid” is a proven Artin braid, loop braid, braid category or physical topological invariant. Historical influence, independent mathematical convergence, structural analogy and framework-internal proposal remain separate statuses.
+**Primary observational focus:** nLab and the n-Category Café are priority sites because they explicitly connect geometric braids, configuration spaces, Yang–Baxter structures, braided monoidal categories, higher categories and physics. They are not treated as one unified school or as proof of a single intentional programme. Record individual authors, posts, cited sources and dated versions.
+
+**Methodological comparison:** test the contrast between (a) minimal, empirically constrained geometrical primitives and (b) broad abstract spaces of relations, morphisms and higher morphisms. Do not caricature higher category theory as unconstrained: its coherence laws, universal properties and equivalences are substantive constraints. Ask instead which abstract structures preserve the geometry of a given physical system, which generalize it, and which admit multiple realizations.
+
+**Domains are open, not exhaustive:** history/philosophy of geometry; classical topology and knot theory; algebra and representation theory; mathematical physics and QFT/TQFT; particle physics; quantum geometry and quantum gravity; cosmology where source-supported; condensed matter and anyons; quantum computation; robotics/configuration spaces; computation and other fields as warranted by evidence.
+
+**Physical application gate:** no braid group, braid invariant or physical mechanism is assigned to SAT/H(s)H until the actual object/core, ambient and leaf dimensions, configuration space, labels, collision rules and admissible motions are defined. Keep internal composite braiding, inter-object motion, accumulated winding, topological invariants, dynamics and quantum-state actions distinct.
+
+**Workflow:** the sequence ◈ → ℬ → ∂ → Δ remains the order for the SAT/H(s)H physical-realization branch only: recover source-defined objects/core geometry (◈); test applicable braid/motion-group structures (ℬ); define history identities and composition (∂); test projection fidelity (Δ). Cross-disciplinary historical and mathematical research under ℬ may proceed in parallel with ◈ and must not be misrepresented as waiting on that physical application gate.
+
+**Supersession:** this revision replaces the former description of ℬ as a PHYS-01-only subtask. Earlier PHYS-01 plans and findings remain valid as the physics case study within the larger programme.
