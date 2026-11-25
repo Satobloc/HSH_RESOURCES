@@ -341,7 +341,9 @@ The projection question is now decomposed into slice incidence, observable reado
 
 **Completed in this pass:** ∂ candidate history identity and composition contracts, separating whole-slice cobordisms, configuration histories and composite-filament operations. The physical equivalence relation and unique composition algebra remain undetermined.
 
-**Next operation:** Δ — test projection/readout fidelity: what information a 3D slice or observable readout preserves, loses, or can reconstruct about the 4D filament/worldtube history, and whether projection commutes with composition.
+**Completed in this pass:** Δ projection/readout fidelity analysis, separating slice incidence, observable readout and history reconstruction. A family of exact intersections can reconstruct a covered geometric object under explicit foliation/transversality conditions; a single slice or lossy readout cannot be presumed to do so. Projection/composition compatibility, metric fidelity and preservation of internal labels remain model-specific tests.
+
+**Next operation:** … — await the existing lane-2 Mersearch request for its run manifest, search receipt and bounded source candidates. The request is still in progress with no published artifacts; do not duplicate, overwrite, cancel or retrigger it. On a state change or receipt publication, resume with ▣ record, ✓ verify, ρ review and ⇢ transition.
 
 ## 8. Source register
 
