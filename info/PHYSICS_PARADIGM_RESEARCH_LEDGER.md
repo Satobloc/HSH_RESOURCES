@@ -2031,3 +2031,23 @@ Remain at Connect / ℬ. The next bite is to close JS-V01 and JS-V02 from the or
 **LIVE TICKER — final line:**
 
 ⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢
+
+
+---
+
+## 26. Operational refresh — PHYS Mersearch dependency
+
+**Rechecked:** 2026-11-25 · **Disposition:** SUBMITTED_NOT_VERIFIED
+
+Existing request `phy01-internal-first-worldtube-hinton-highercats-20261125-01` remains in Mersearch lane 2. Actions run `45554091984`, attempt 1; job `139001876678`.
+
+- Repository checkouts and request validation steps 1–8: completed successfully.
+- Step 9, **Run Mersearch**: still reported `in_progress`.
+- Steps 10–12 (manifest, bounded receipt, publication): pending.
+- Request-specific output directory: absent at the latest readback (404).
+- Job-log endpoint: returned `BlobNotFound`.
+- Run metadata's last `updated_at`: `2026-11-25T05:30:52Z`; no later transition was visible in the readback.
+
+**Interpretation:** the request is submitted and the workflow reached the search step, but no result has been verified. The long-running status plus missing logs/outputs is consistent with a stalled or unresolved job, but does not establish either successful completion or a definitive failure. Do not duplicate, overwrite, release or retrigger the occupied request/lane. A future PHYS conversation must perform a fresh live read of the run, job steps and request-scoped artifacts before acting.
+
+This operational refresh does not alter the PHYS research cursor, the Bite 16 conclusions, or the separate BIO/GIT lane cursors.
