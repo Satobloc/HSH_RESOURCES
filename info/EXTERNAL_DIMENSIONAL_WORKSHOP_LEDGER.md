@@ -2117,3 +2117,144 @@ The active biology taxonomy should now explicitly distinguish:
 These dimensions can covary, but the *Botryllus* literature demonstrates that they can also come apart.
 
 **Source-grade status:** 2013 Voskoboynik et al. primary article directly read in full PMC HTML. 2025 Rinkevich perspective directly read in full PMC HTML. 2025 De Tomaso/Rodriguez-Valbuena review read through Springer full text and excerpts. 2026 Sokolova et al. abstract read via PubMed. 2024 Rodriguez-Valbuena et al. article supported by indexed full-text snippets, with page-by-page direct access blocked. 2011 Carpenter et al. and 2004 Rinkevich/Yankelevich supported by abstracts plus structured article extraction, not full texts. No Tock completion or cursor advance.
+
+
+## 63. Charles Zeleny: double-chela duplication, compensatory regulation and quantitative regeneration — 2026-11-24
+
+This pass distinguishes three separate items that have sometimes been conflated: (1) Zeleny's 1905 single-case paper on a duplicated fiddler-crab claw; (2) his 102-page 1905 *Compensatory Regulation* paper; and (3) his later quantitative studies of regeneration rate. The first has been directly read; the second is located but not yet directly read; the third is directly inspectable in the 1916 monograph and a 1912 student thesis conducted under Zeleny's supervision.
+
+### A. Zeleny 1905: regeneration of a true double chela
+
+**Primary source directly OCR-inspected:** Charles Zeleny, “The Regeneration of a Double Chela in the Fiddler-Crab (*Gelasimus pugilator*) in Place of a Normal Single One,” *The Biological Bulletin* 9 (August 1905), 152–155. Complete searchable issue scan: https://file.iflora.cn/fastdfs/group2/M00/64/B0/wKhnol15uhmAGYBUAVWWdlgzX6g273.pdf. Web text locations: printed pp. 152–155 (PDF lines 2388–2453). Screenshot/page-image attempts failed with cache miss, so this is OCR-inspected but not image-verified.
+
+**Procedure:**
+- One male *Gelasimus pugilator* originally had a normal small right chela and a normal large left chela.
+- On 2 July 1902, both chela nerves were injured with a needle, producing immediate autotomy of both appendages at the breaking joint.
+- The crab was isolated and fed mussel (*Mytilus*).
+- It molted on 4 August, 33 days after operation. Both regenerated chelae were substantial; the right/small-side regenerate was observed to be double.
+- It was followed for 17 days after molt, 50 days after the operation.
+
+**Anatomical result:**
+- The first three podomeres were single and typical.
+- The fourth podomere (propodite) divided terminally, with two separate indices and two associated dactylopodites.
+- The split extended deeply into the propodite, especially on the index side; the two pinchers were near mirror images with slight differences in size/proportions.
+- In life, both portions functioned as pinchers.
+- Zeleny classed it as a “true double appendage” rather than an accessory projection that was itself bifid.
+
+**Zeleny's hypothesis, explicitly tentative:** he suggests that after the regenerating bud had become specified, a mechanical force partly divided it along the plane of the future chela, leaving two nearly equal structures able to form complete pincers. He cannot identify the agency responsible for the division and proposes future experiments to test whether regeneration buds can be divided in a manner analogous to Spemann's constriction experiments on amphibian eggs.
+
+**Important distinction:** the doubled chela is a true duplicated appendage, but the proposed mechanical splitting of a specified bud is an interpretation, not an observed mechanism. The paper reports one anomalous successful animal. Its footnote says the operation belonged to the larger compensatory-regulation experimental series then in press; it is not itself a summary of that programme.
+
+### B. Zeleny 1905: *Compensatory Regulation* is a separate 102-page study
+
+**Bibliographic identity verified, full primary text not yet retrieved:**
+- Charles Zeleny, “Compensatory Regulation,” *Journal of Experimental Zoölogy* 2(1), 1–102, 27 text figures, April 1905, DOI 10.1002/jez.1400020102.
+- Contemporary institutional bibliography: *Year-book of the Brooklyn Institute of Arts and Sciences* (1904–1905), p.265, lists the title, venue, volume/pages, 27 figures and April 1905 publication.
+- The complete *Journal of Experimental Zoology*, vol. 2 (1905), is catalogued by Biodiversity Heritage Library, item 86598, University of Toronto/MBL copies: https://www.biodiversitylibrary.org/item/86598. Google Books/Play catalogue for the same volume: https://play.google.com/store/books/details/Ross_Granville_Harrison_Journal_of_Experimental_Zo?id=y7gBAAAAYAAJ.
+- A specialist fiddler-crab bibliography identifies *Gelasimus pugilator* in Zeleny's article at printed pp. 5, 81–85, 88, 96 and 98–100: https://wwwf.fiddlercrab.info/references/Zeleny1905.2.html.
+- A specialist regeneration bibliography describes the work as regulation and interaction among parts of the fiddler crab, carried out at Woods Hole and Naples under the direction of Davenport, Wilson and Morgan: https://www.academia.edu/5520307/Regeneration_research_at_the_Stazione_Zoologica_Anton_Dohrn_di_Napoli_a_bibliography_1873-1970s.
+
+The BHL/Google Books volume is located, but the BHL item-level text reader and full-text route have returned cache/access errors in this session. The article is **not directly read**. Do not infer detailed experiments solely from the single-chela paper's footnote or later citations.
+
+**Bibliographic correction:** some later sources, notably a Herrick/Bureau of Fisheries bibliography, misattribute *Compensatory Regulation* to *Biological Bulletin* vol. 11, pp. 1–102. The verified original citation is *Journal of Experimental Zoölogy* vol. 2, no. 1, pp. 1–102. The separate single double-chela case report is *Biological Bulletin* vol. 9, pp. 152–155.
+
+### C. Zeleny 1916: controlled quantitative programme on the rate of regeneration
+
+**Primary source directly OCR-inspected:** Charles Zeleny, *Studies on the Factors Controlling the Rate of Regeneration*, *Illinois Biological Monographs* 3(1) (1916), 1–170. Full scan: https://upload.wikimedia.org/wikipedia/commons/1/1e/Illinois_biological_monographs_%28IA_illinoisbiologic03univ%29.pdf. Relevant text includes the introduction, Parts I, III and V, and data summaries on printed pp. 7–10, 61 onward and 136–155. Screenshot attempts on selected PDF pages failed with cache miss; record as OCR-inspected, not page-image verified.
+
+This later monograph is not a substitute for the 1905 *Compensatory Regulation* paper. It is an expanded quantitative programme on how several independent factors affect regeneration rate:
+- whether regeneration begins from newly produced versus older tissue;
+- the number of successive removals;
+- the anatomical level of the cut;
+- where the animal is in the regeneration cycle;
+- the degree of simultaneous injury.
+
+The author emphasizes controlling age, nutritional state, temperature, size, molt timing and level of amputation. He also says that individual variation and unmeasured factors cannot be completely eliminated. In some comparisons he delegates measurements to observers who do not know the expected result to reduce measurement bias.
+
+#### C1. Degree of injury: salamander foreleg experiment, 1913
+
+In *Amblystoma punctatum*, Zeleny compares three injury conditions:
+1. right foreleg alone removed;
+2. both forelegs removed;
+3. both forelegs plus one-half of the tail removed.
+
+In the main series, young from the same egg lot were selected to make individuals as similar as possible. The regenerate lengths of forelegs were recorded at 2, 4, 6, 8, 10, 12, 14, 16 and 19 days. The study used five replicate sets; typically one individual from each injury condition was killed and measured at each timepoint.
+
+Zeleny reports that simultaneous removal of additional parts did not retard the regenerating foreleg. In most timepoint comparisons, the foreleg with additional injury regenerated more than the single-injury condition; adding tail removal did not clearly accelerate it further than the second foreleg removal. The effect was variable across days and the groups converged toward the later measurements.
+
+**Descriptive calculation from Zeleny's reported mean lengths (mm):**
+
+| Days | Right foreleg alone | Both forelegs | Both forelegs + half-tail |
+|---:|---:|---:|---:|
+| 2 | 0.13 | 0.16 | 0.15 |
+| 4 | 0.22 | 0.36 | 0.29 |
+| 6 | 0.42 | 0.53 | 0.55 |
+| 8 | 0.66 | 0.83 | 0.73 |
+| 10 | 0.91 | 1.34 | 1.24 |
+| 12 | 1.48 | 1.60 | 1.61 |
+| 14 | 1.98 | 2.19 | 2.29 |
+| 16 | 3.02 | 3.01 | 3.08 |
+| 19 | 3.84 | 3.64 | 3.90 |
+
+Calculated directly from those nine reported means:
+- Both-forelegs condition exceeds the single-foreleg condition at 7 of 9 timepoints; the mean ratio across the nine separately reported timepoint means is 1.221 (about +22.1%). The two exceptions are the 16-day point (about −0.3%) and 19-day point (about −5.2%).
+- Both-forelegs-plus-half-tail exceeds the single-foreleg condition at all 9 timepoints; the mean ratio across timepoints is 1.170 (about +17.0%).
+- These are descriptive averages of ratios across timepoints, not estimates of a single biological treatment effect. The timepoints use different sacrificed animals, and the available summary does not include standard errors or inferential tests for all these ratios. Do not interpret the mean ratios as a pooled effect size.
+
+Zeleny's own interpretation is cautious: additional injury, especially of a corresponding organ, may accelerate regeneration within a certain range; excessive injury may exceed an optimum and then reduce regeneration. He stresses that some differences are small and may lie within probable measurement error.
+
+#### C2. The relationship between tissue stage and regeneration rate
+
+In the regeneration-cycle chapter, Zeleny reports an initial slow phase during cell migration, a faster phase associated with cell multiplication and limited differentiation, then a declining rate associated with visible cellular differentiation. He says that there is likely a causal relationship but that available knowledge does not yet allow him to explain the control mechanism.
+
+This provides a useful historical quantitative analogue for a biological process in which tissue structure and regenerative velocity change together over time. It does not show that one universal compensatory force regulates all the parts.
+
+### D. Zeleny's 1912 supervised thesis: independent quantitative replication in crayfish
+
+**Primary thesis directly OCR-inspected:** Arthur Thompson Evans, *Effect of Degree of Injury upon Rate of Regeneration and Rate of Molting in the Crayfish, Cambarus blandingi* (University of Illinois BA thesis, 1912), 16 pages, University of Illinois repository:
+https://www.ideals.illinois.edu/items/52284/bitstreams/151105/data.pdf.
+
+The thesis title page and approval record identify Zeleny as instructor in charge. Its text explicitly describes the experiment as conducted in the zoological laboratory under Dr. Charles Zeleny's direction.
+
+**Design:**
+- Two lots of young crayfish (*Cambarus blandingi*), 33 and 54 animals at start.
+- Comparison: removal of the right chela only versus removal of both chelae.
+- Conditions controlled as far as possible for size/age, laboratory history, temperature, sex (young specimens), food and operation timing relative to the molt.
+- Operations performed on the second day after the first recorded molt.
+- The propodite of the large chela was measured to 0.01 mm after a later molt; because some claws had not regrown after one molt, the measure covered two molt periods.
+- Individuals that died or molted late were excluded by design; the experiment was terminated when ten matched pairs had molted in each series. A few markedly abnormal regeneration cases were excluded from the summary but remained visible in the underlying record.
+
+**Reported results:**
+- Greater injury (both chelae removed) produced 0.30 mm more regenerated length than lesser injury in Series I (+8%) and 0.17 mm more in Series II (+5%).
+- Specific amount of regeneration, defined as regenerated length divided by thoracic length, increased by 7% in Series I and nearly 5% in Series II.
+- Specific rate, defined as specific amount divided by days regenerating (here measured over two molt periods), increased by 16% in Series I and 22% in Series II.
+- Molting occurred 5.5 days earlier in the more severely injured group in Series I and 4.33 days earlier in Series II.
+
+The thesis author proposes several possible explanations rather than a proven mechanism: greater functional demand for food capture and defense after loss of both claws; exercise effects; possible reduced investment in a remaining claw when it can increase efficiency; increased nutrient availability after removal of large, muscular, heavily used chelae; and an associated shortening of molt interval. These should be treated as hypotheses, not as established causal mechanisms.
+
+The thesis itself notes that excessive injury can exceed Zeleny's “optimum limit” and slow regeneration. It criticizes one contrary lobster experiment as potentially exceeding that limit and failing to control food/feeding ability, but this is the student's interpretation. It is useful as a contemporary follow-up in Zeleny's laboratory, not an independently blinded, modern replication.
+
+### E. An older precursor: Zeleny's compensatory regulation of a hydroid operculum (1902)
+
+**Bibliographic identity confirmed, primary article body not yet located:**
+Charles Zeleny, “A Case of Compensatory Regulation in the Regeneration of *Hydroides dianthus*,” *Archiv für Entwicklungsmechanik der Organismen* 13 (1902), 597–609, three figures.
+- Contemporary *Zoologischer Jahresbericht für 1902* lists title, journal, volume, pages and three figures: https://upload.wikimedia.org/wikipedia/commons/6/6d/Zoologischer_Jahresbericht_%28IA_zoologischerjahr1902staz%29.pdf (printed page 16 in the Vermes bibliography, p.597–609).
+- Later bibliographies likewise cite the full article; one 1973 paper discusses later research on *Hydroides* opercular regulation and lists the 1902 Zeleny paper.
+- The original article itself has not yet been directly read. It is an important next target because it appears to be the earlier source behind Zeleny's use of “compensatory regulation” before the 1905 fiddler-crab programme.
+
+Do not assume the Hydroides model and fiddler-crab model use identical mechanisms. The hydroid paper may concern an operculum/paired opercular structures, whereas the 1905 crab programme concerns chela morphology and the relationship between paired appendages.
+
+### F. What Zeleny contributes to the current histological inquiry
+
+Zeleny's work separates several types of organization:
+- **Morphological duplication:** one regenerative bud produces two appendage-like structures.
+- **Paired-part compensation:** injury/removal of one structure changes the size, morphology or developmental path of another.
+- **Regenerative rate regulation:** additional injury may alter the velocity and timing of regeneration.
+- **Molt coupling:** regeneration and molt timing can change together.
+- **Developmental-stage dependence:** regenerative velocity varies with the histological/ontogenetic stage of the new tissue.
+
+This is a valuable extension of Morgan and Loeb: biological interdependence need not only be physical connection or shared circulation; one body part's loss can change the fate or rate of development of another. But “compensatory” does not automatically mean the body returns to a globally optimized state, and “regulatory” does not identify one mechanism. The mechanisms may involve functional demand, neural input, systemic nutrients, growth signals, developmental state and molt timing.
+
+For the user's 4D proposal, this furnishes another conventional biological control class: inter-part regulation over developmental time. It remains ordinary within-organism physiology/development and does not demonstrate extra-spatial physical continuity across distinct individuals.
+
+**Source-grade status:** Zeleny 1905 double-chela paper directly OCR-inspected; Zeleny 1916 monograph directly OCR-inspected at relevant sections and numerical tables; Evans 1912 thesis directly OCR-inspected, with page screenshots attempted but cache-missed. Zeleny's 1905 *Compensatory Regulation* is bibliographically verified and located in BHL/Google Books but not directly read. Zeleny's 1902 *Hydroides* paper is bibliographically verified via contemporary bibliography but not directly read. No Tock completion or cursor advance.
