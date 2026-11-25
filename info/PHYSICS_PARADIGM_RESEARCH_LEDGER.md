@@ -1542,3 +1542,43 @@ At the start of this continuation, the same request, lane and workflow were poll
 **LIVE TICKER — final line:**
 
 ⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢
+
+
+---
+
+## 19. Bite 10 addendum — reproducible readout-map checks
+
+**Recorded:** 2026-11-25  
+**State:** COMPUTATIONAL SANITY CHECK PASS · illustrative geometry only.
+
+A small reproducible NumPy test has been added to the primary HSH_RESOURCES workspace:
+
+- Path: WORKSPACES/PHYSICS/PHY01_FOLIATION_READOUT_MINIMAL_TEST_20261125.py
+- Blob: 76abf6f4f70afe8fdc5bf36f290f908b27567f53
+- Commit: e98edbaee6b892a9b1c71b92626685248cdc743a
+
+The script tests the parallel-leaf and concentric-\(S^3\)-wavefront examples, verifies the inverse-rotation re-identification, checks that each radial point lies on its stated leaf, and evaluates the Lorentzian timelike margin/curvature for an explicitly separate comparator.
+
+The array calculations were independently reproduced. For the arbitrary illustration \(R=2\) length units, \(k=0.15\) inverse length units, \(z_0=0.4\) length units, over 10,001 samples spanning twenty readout periods:
+
+| Check | Maximum numerical error / result |
+|---|---:|
+| Parallel-leaf circle radius | \(2.22\times10^{-16}\) length units |
+| Inverse-rotated readout becomes stationary | \(4.44\times10^{-16}\) length units |
+| Radial point lies on its \(S^3_\rho\) leaf | \(5.68\times10^{-14}\) length units |
+| Radial pullback lies on unit \(S^3\) | \(1.11\times10^{-16}\) |
+| Generic transverse 1D/3D intersection in 4D | dimension \(0\) |
+| Lorentzian control timelike margin \(1-(Rk)^2\) | \(0.91\) |
+| Lorentzian control \(\gamma^2\) | \(1.0989010989\) |
+| Lorentzian control proper curvature | \(0.04945054945\) inverse length units |
+| Readout period \(2\pi/k\) | \(41.88790205\) length units |
+
+All numerical checks passed to floating-point precision. The example values are chosen solely to test the constructions; they are not particle parameters, a fit, a measurement, or a SAT/H(s)H prediction. The Lorentzian curvature belongs only to the \((-+++)\) comparator and does not select the native SAT metric.
+
+**Interpretive result:** the script verifies the constructed examples and the coordinate dependence under a chosen family of leaf re-identifications. It does not establish which transport rule is physically or framework-native. The source-recovery requirement in PHY-P18/P19 therefore remains open.
+
+**Bite status:** calculation and script verification complete for the illustrative readout constructions; ◈ remains open.
+
+**LIVE TICKER — final line:**
+
+⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢
