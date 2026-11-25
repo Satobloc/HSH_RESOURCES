@@ -2798,3 +2798,68 @@ Evidence:
 **Access status:** Google Play/Books identifies *Archiv für Entwicklungsmechanik der Organismen*, Band 5 (1897), as an 886-page digitized full-view volume. The book metadata is visible, but the volume's page-level text/images and Joest's article body did not open in this session. The original 1897 article is therefore **bibliographically verified but not directly read**. Do not attribute detailed experimental protocols to Joest from the yearbook alone.
 
 **Next retrieval target:** obtain pages 419–569 from Band 5 or a separate offprint; when available, compare Joest's own descriptions and diagrams with Morgan 1907 and Rabes 1901. Until then, rely on Morgan for graft outcome descriptions and Rabes for the inspected histological report. No cursor advance.
+
+
+## 65. Siphonophore colony histology: natural modular body with continuous gastrovascular space and distributed neural organization — 2026-11-24
+
+**Primary modern research article directly inspected:** Samuel H. Church, Stefan Siebert, Pathikrit Bhattacharyya & Casey W. Dunn, “The histology of *Nanomia bijuga* (Hydrozoa: Siphonophora),” *Journal of Experimental Zoology Part B: Molecular and Developmental Evolution* 324B, 435–449 (2015), DOI 10.1002/jez.b.22629. Open-access full text: https://onlinelibrary.wiley.com/doi/full/10.1002/jez.b.22629. Full article text inspected through lines/sections on colony formation, histology, stem structure, and neural-cell distribution. Page-image view not needed for this HTML article; associated histological figure captions were inspected textually.
+
+### A. Colony origin and growth architecture
+
+*Nanomia bijuga* begins as a single sexually produced polyp, the protozooid. It develops two localized growth zones along its body column; the protozooid elongates into a stem, and new zooids are added by budding. The mature colony is organized into two main regions:
+- **Nectosome:** bears the pneumatophore and nectophores, the propulsion/swimming zooids.
+- **Siphosome:** carries feeding, digestive, reproductive and protective zooids arranged as repeated cormidia.
+
+Each zooid is a modified polyp or medusa and is structurally and functionally specialized. Zooid production takes place at the two growth zones and yields regular colony-level organization. The paper emphasizes that zooids are asexually produced and genetically identical, while morphologically distinct and functionally specialized.
+
+This is not an accidental aggregate of independently assembled animals. It is an organized clonal body whose repeated modules arise from one founding individual through controlled developmental budding.
+
+### B. Direct anatomical continuity
+
+The authors state that all zooids attach to the colony stem and that the gastric cavity of the stem is continuous with the gastric cavities of each zooid. This is the physical basis for colony-wide internal continuity: the zooids are attached modules with a shared gastrovascular space, not simply adjacent bodies.
+
+The paper's microanatomy confirms extensive structural differentiation:
+- The pneumatophore develops by invagination at the aboral/anterior end of the protozooid and comprises five distinct tissue populations in the mature structure, including external and invaginated epithelial layers, endodermal layers, mesoglea, a chitin-lined gas chamber, and internal aeriform cells.
+- Gastozooids are feeding polyps with a specialized hypostome and basigaster, secretory/glandular endoderm, nematocyst-producing ectoderm and absorptive cells.
+- Palpons attach to the stem through a peduncle. Their endoderm has specialized funnel cells with microvilli and absorptive cells, supporting particle capture and intracellular digestion.
+- Male and female gonodendra are compound reproductive structures attached close to palpon bases; their stalks connect to the siphosomal stem.
+- The stem itself has contractile ectodermal cells with myofibrils along radial extensions of mesoglea, an endodermal/gastrodermal lining around the gastric cavity, and a large axon at its dorsal ridge.
+
+### C. Distributed neural organization
+
+The study combines histology with in situ hybridization for a neuropeptide marker, *rfamide*. It finds:
+- nerve-cell rings at the bases of zooid peduncles, including gastrozooids and palpons;
+- neuronal cell populations around the mouth region of gastrozooids;
+- scattered neuronal cells in the siphosomal stem;
+- a giant axon running along the stem, dorsal in the siphosome and ventral in the nectosome;
+- transverse neural collars/bands posterior to each gastrozooid, possibly associated with circular musculature and stem constriction.
+
+The giant axon's change in dorsal/ventral position between nectosome and siphosome is interpreted as evidence of a 180-degree torsion between the regions during development, consistent with a previous developmental hypothesis. This is a specific anatomical orientation observation, not an extra spatial dimension.
+
+### D. Functional interdependence and modular specialization
+
+The colony has a strong division of labour: zooids specialize in locomotion, feeding, digestion, protection and sexual reproduction. These specialized modules remain integrated through the stem and continuous gastric cavity, while the stem's contractile and neural structures provide a distributed bodily axis.
+
+The analogy to organs is useful but incomplete. The article notes that zooids are evolutionarily homologous to free-living solitary cnidarians, remain multicellular, possess zooid-specific cell types and show regional subfunctionalization. So the zooids are not merely cells or tissues; they are specialized repeated biological modules at a scale that corresponds evolutionarily to solitary animal forms. Developmentally, however, the colony is generated from a single sexually produced founder and its asexual buds.
+
+### E. What this contributes to our organismal-boundary taxonomy
+
+*Nanomia* gives a natural example with several properties that were surgically reconstructed in Morgan/Joest/Rabes worm grafts:
+1. physically attached modules;
+2. one continuous gastrovascular cavity;
+3. distributed neural structures with a giant conducting axon along the stem;
+4. contractile tissue in the shared stem;
+5. repeated modules with specialized roles;
+6. growth zones that add new modules while preserving a stereotyped colony architecture.
+
+Unlike the earthworm grafts, this organization develops naturally and predictably rather than being surgically assembled. Unlike ordinary multicellular human anatomy, its modules are zooids homologous to solitary cnidarian animals. But it is still a clonal colony arising from one embryo; it does not demonstrate an anatomical union between separate adult organisms or a physical connection between members of a genealogy through time.
+
+For the user's 4D histological proposal, this is a valuable comparator for a body organized as a serially developing, modular, extended structure with physically continuous internal pathways. Its growth zone and repeated zooids make the "body as an ongoing generative architecture" idea much more concrete. The unproven step in the user's proposal remains the extension from one organismal lineage/colony to apparently separate individuals or intertemporal branches as literal parts of one larger physical body.
+
+### F. Caution and next source questions
+
+This article focuses on mature-colony histology and RFamide-positive neural populations; it does not experimentally test colony-level neural signal propagation, whole-colony circulation dynamics, or how the colony behaves after loss of selected zooids. The shared gastrovascular cavity and giant axon are anatomical observations; do not infer a complete nervous or circulatory mechanism beyond what the study demonstrates.
+
+Next, compare this clonal-colony condition with a colonial tunicate such as *Botryllus*, whose zooids are physically linked by a common vascular network and may undergo synchronized budding/regression, and with colonial hydroids. The key question is whether those systems arise from one embryo and asexual budding, or whether independent individuals can fuse while retaining partial individuality. Maintain distinctions between clonal development, fusion of genetically different individuals, shared circulation, and shared neural coordination.
+
+**Status:** Church et al. 2015 open-access article directly inspected through relevant sections and figure legends. This is a current histological source; no page-image audit needed because the source was an HTML article with embedded figure assets. No cursor advance.
