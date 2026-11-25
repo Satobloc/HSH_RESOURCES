@@ -197,6 +197,71 @@ Current HsH BEDROCK describes H(s)H as a tentative world-tubification of SAT and
 
 **◈ result:** the source-defined object family is now mapped with its version differences and type dependencies visible. The central unresolved objects are not vague: the metric/connection, time function and leaf family, causal type of the filament tangent, thickening map T_i, worldtube intrinsic dimension, timesheet/bulk response, readout P_t, and typed composite maps are the specific missing pieces. No unique finite-core or braid geometry is selected.
 
+## 6B. ∂ History identity and composition contracts
+
+The source corpus gives a hierarchy and several kinds of history, but does not yet define a single composition algebra. Keep the following candidate structures separate.
+
+### A. Slice/history category
+
+A natural cobordism-style organization is:
+
+- **Objects:** 3D time-surface leaves Σ_t, with their specified topology, boundary conditions and induced/readout data.
+- **Morphisms:** 4D spacetime slabs W[t₀,t₁] whose incoming/outgoing boundaries are the selected leaves (with orientation conventions declared).
+- **Composition:** glue W[t₀,t₁] to W[t₁,t₂] along the common intermediate leaf Σ_{t₁}, yielding W[t₀,t₂].
+- **Identity:** a product cylinder Σ×[0,1] with no change in the slice's geometric/state data.
+- **Associativity:** successive gluing is associative up to the declared diffeomorphism/equivalence convention.
+
+This is the standard shape of a 4D cobordism category. It is a promising way to formalize successive SAT/H(s)H slices and intervening histories, but the actual SAT objects, metric and boundary data must be supplied before a functor to a cobordism category is defined.
+
+### B. Filament-configuration history category
+
+A second, distinct category can describe the contents of a leaf:
+
+- **Objects:** a configuration X_t of filament intersections or finite-core readouts on Σ_t, with labels and internal state where source-defined.
+- **Morphisms:** admissible worldline/worldtube histories connecting X_{t₀} to X_{t₁} through the slab.
+- **Identity:** stationary continuation of each object with all declared internal labels, twist/winding sectors and core data unchanged.
+- **Composition:** concatenate histories at the shared intermediate configuration.
+- **Monoidal product:** disjoint union/juxtaposition of independent configurations and histories, if the physical separation and interaction rules make that operation admissible.
+
+Do not conflate this configuration category with the cobordism category of whole spatial slices. They are related levels of description: a 4D slab carries configurations and their histories, while the slice itself is the boundary object in the cobordism category.
+
+### C. Composite-filament operations
+
+The archive's 2024 hierarchy is filament → thread → twine → yarn → bundle → rope. The 2025 SAT4D formalization separately defines phase-locked bundles of n filaments with relative phase differences and topological-interlock conditions. These are not yet one composition law:
+
+- 2024 “bundle” means a bound collection of yarns.
+- 2025 “bundle” means a phase-locked set of n filaments.
+- “Thread,” “twine,” “yarn” and “rope” are described geometrically, but typed input/output domains, binding operations and associativity rules are not supplied.
+- The historical stability claim S(n) for n=1,2,3 versus n≥4 is not a proven composition theorem or empirical result.
+
+A candidate family of operations C_k^(4) may be used as a bookkeeping scaffold, but each operation must state its source and target types, binding conditions, labels, allowed reconnections and identity/equivalence rules. Do not infer associativity or a monoidal structure from the vocabulary of “bundling” alone.
+
+### D. Projection/composition compatibility
+
+If C_k^(4) composes 4D objects and P_t reads them onto a time-surface leaf, a necessary compatibility question is whether there exists a 3D composition C_k^(3) such that:
+
+P_t(C_k^(4)(x₁,…,xₙ)) = C_k^(3)(P_t(x₁),…,P_t(xₙ)).
+
+This is a proposed commuting-map contract, not an archived SAT equation and not yet established. If projection is non-injective, distinct 4D histories or composites may share one 3D readout; the projected operation may therefore lose identity, topology or internal state. The reverse implication cannot be assumed.
+
+### E. Creation, annihilation and branching
+
+A history category must say whether filament number is conserved through every slab:
+
+- If every filament intersects every leaf once and histories do not branch, the history induces a bijection between point configurations.
+- If filaments begin/end, split/reconnect, or composite identities change, the morphism must include explicit birth/death/reconnection data and any relevant source/sink or conservation law.
+- Particle creation, annihilation and apparent changes in intersection count must not be silently identified with creation/destruction of independent finite-core worldtubes or with net conserved-charge generation.
+
+These alternatives affect the category's objects and morphisms. They cannot be hidden inside a generic “history” arrow.
+
+### F. Identity and equivalence are physical questions
+
+The category needs a declared equivalence relation on histories. Candidates include orientation-preserving reparameterization of γ, ambient isotopy, homotopy through admissible configurations, or a stronger equivalence preserving twist, phase, core geometry and conserved labels. These are not interchangeable.
+
+A geometric curve may be unchanged under reparameterization while its parametrized phase data changes; two histories may be isotopic as unlabelled curves but differ in physical labels or internal sectors. The physical identity rule must say which data are retained.
+
+**∂ result:** the category-theoretic structure is now separated into (i) whole-slice cobordisms, (ii) configurations and their histories, and (iii) composite-filament operations, with explicit identity, composition, monoidal-product and projection-compatibility questions. The source corpus does not yet determine the physical equivalence relation or a unique composition algebra.
+
 ## 7. First conclusions and open questions
 
 1. SAT's foundational worldline/time-surface picture has a direct mathematical neighbourhood in spacetime curves, hypersurface foliations and incidence geometry. These structures clarify the proposal but are not unique to SAT.
