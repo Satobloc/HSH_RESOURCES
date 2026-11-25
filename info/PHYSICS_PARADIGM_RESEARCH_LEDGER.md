@@ -17,9 +17,9 @@
 
 **Current lane boundary:** PHYS has its own cursor. Detailed 4D-organism, developmental and cellular-biology investigation belongs to the separate BIO lane; PHYS only follows a specific biophysics connection when it materially arises, and then points to BIO rather than duplicating or advancing BIO work. GIT/repository operations likewise retain their own cursor.
 
-**Current complete PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`. The current Connect work is the broad cross-disciplinary `ℬ` programme. Its separate SAT/H(s)H physical-realization gate remains `◈ → ℬ → ∂ → Δ`; do not assign external motion/braid structures to native SAT/H(s)H objects before source-defined geometry is recovered.
+**Current complete PHYS ticker:** `@⧉`. The ticker is bite-level: each defined symbol represents one bounded research bite, not a phase, topic bundle, or sequence of workflow operations. `@` marks the next uncompleted bite. Only assign further bite symbols when their scope is actually selected and recorded. The former phase-level ticker remains historical context, not the live ticker.
 
-**Immediate return:** compare Joyal–Street's 1985 precursor, 1986 report and 1993 *Braided Tensor Categories* paper, continuing the established Bite 15 result. Check the existing Mersearch lane-2 request before any further archive search; never duplicate or overwrite it. The detailed next bite and all pointers are in [PHYS THREAD START HERE](../WORKSPACES/PHYSICS/PHYS_THREAD_START_HERE.md).
+**Immediate return:** execute Bite 19 (`⧉`), the SAT-first correspondence overview. Begin with the 2023–25 archive's *Fundamental Intuitions* and the relevant *one drop*, *single-file*, *standalone* and related source families; compare them with selected nLab / n-Category Café concepts and the current HsH geometry. Keep the scope at the level of conventions, ideas and tentative mappings. Do not resume the Joyal–Street source collation as the governing task. Check the existing Mersearch lane-2 request before any further archive search; never duplicate or overwrite it.
 
 
 ## 1. Tock: PHY-01 — Contemporary physics and the higher-dimensional synthesis
@@ -81,15 +81,11 @@ The Credenza is the working cabinet for Tocks: it routes active work, preserves 
 
 ### ▶ NOW
 
-**PHY-01 / Tick at `⤳` (Connect), active subpath `ℬ`:** continue the cross-disciplinary braid/geometric-formalization programme. Immediate bite: compare Joyal–Street's 1985 precursor, 1986 report and 1993 paper, identifying what is retained, generalized or changed between versions. The independent physical-realization sequence remains gated at `◈`.
+**PHY-01 / Bite 19 (`⧉`): SAT-first correspondence overview.** Reconstruct the foundational SAT/H(s)H picture from its own primary materials, then map its principal objects and ideas tentatively onto nLab / n-Category Café concepts and the wider four-dimensional historical and contemporary physics landscape. The archive's 2023–25 *Fundamental Intuitions*, *one drop*, *single-file*, *standalone* and related materials are primary comparison sources; current HsH theory work is the evolving backdrop. Keep this an overview, not exhaustive source archaeology. Distinguish source-defined SAT claims, current HsH developments, external mathematical conventions, plausible mappings, mismatches and open questions.
 
 ### ▷ NEXT
 
-1. Compare Joyal–Street 1985, 1986 and 1993 directly; map the geometric braid category, free braided strict monoidal universal property, Yang–Baxter structure, and version-to-version changes.
-2. Trace the original Freyd–Yetter, Drinfeld, Kohno, Tsuchiya–Kanie, Jones, Moore–Seiberg and Witten source network, one bounded source family at a time.
-3. Map Joyal–Street tensor/diagram calculus into networks, Petri nets, circuits, concurrency and computation using primary sources.
-4. Build separate application histories for TQFT, anyons, topological quantum computing, quantum geometry/gravity, robotics and computation.
-5. Continue the independent source recovery at `◈` without blocking the broader `ℬ) historical/mathematical investigation.
+No subsequent bite is yet assigned a ticker symbol. After Bite 19, select the next bounded bite from the correspondence gaps it actually exposes. Likely candidates include a focused worldtube/timesheet–cobordism comparison, braid/composition structures, historical 4D lineages, or a contemporary physics connection. Do not pre-load these as an unbounded sequence.
 
 ### ↩ RETURN
 
@@ -2183,3 +2179,70 @@ The 1985/1986 comparison is established at section/proposition-architecture leve
 Rechecked during Bite 18. Run 45554091984 and job 139001876678 remain in_progress; step 9 Run Mersearch remains active; steps 10–12 remain pending; run updated_at remains 2026-11-25T05:30:52Z; artifact count remains zero. The request-scoped output directory still returns 404. Job logs again return BlobNotFound (latest response timestamp 2026-11-25T08:16:21.6248571Z). The request JSON remains unchanged at blob SHA bcf6e3ef22b50b13d2b31747d22d9666623cefc2, request ID phy01-internal-first-worldtube-hinton-highercats-20261125-01, lane 2.
 
 Disposition remains SUBMITTED_NOT_VERIFIED / unresolved. No cancellation, rerun, duplicate or retrigger. No research cursor change.
+
+
+---
+
+## 35. Bite 19 — SAT-first correspondence overview (selected; not yet executed)
+
+**Bite token:** `⧉` (U+29C9)  
+**Live ticker:** `@⧉`  
+**State:** SELECTED / NEXT TO EXECUTE  
+**Purpose:** Re-center PHYS on the user's actual goal: understand how SAT/H(s)H maps to nLab / n-Category Café material, and to related historical and contemporary four-dimensional thought and physics, with SAT/H(s)H as the explicit interpretive lens.
+
+### Primary comparison corpus
+
+1. `Satobloc/SAT_THEORY_ARCHIVE_2023-25/DEV CONVERSATION/FUNDAMENTAL INTUITIONS.txt` — foundational ontology and conceptual commitments. The user's September 2026 annotation explicitly says these original intuitions remain the bedrock, extended rather than superseded, and that H(s)H is their later fulfillment in spirit.
+2. The archive's *one drop* materials — compact/core formulations and the ideas they isolate. Identify the exact source documents before treating any one as authoritative.
+3. The archive's *single-file* materials, including `_AUTO_EXTRACTED_TEXT/ONE FILE SAT 2.txt` — consolidated presentations and test regimes. Distinguish theory content from instructions to an earlier assistant and from claims that remain unverified.
+4. The archive's *standalone* materials, including `SAT XYZ/STANDALONE CODES.txt` — self-contained computational/formal expressions. Inspect the actual code and model assumptions before using them as evidence for the physical theory.
+5. Related 2023–25 foundational and synthesis documents, selected by their relationship to the above rather than by folder volume.
+6. Current HsH theory work — interpretive and developmental backdrop, not a replacement for the earlier primary corpus and not automatically a settled canonical statement.
+
+### Bite objective
+
+Produce a concise SAT-first concept map with a small number of high-value correspondences to:
+- nLab and n-Category Café: categories, higher categories, groupoids, morphisms, composition/coherence, cobordisms, braids, homotopy and topological field theory, only where relevant to SAT's actual objects and operations;
+- four-dimensional historical thought: Hinton and other geometrical / physical traditions where the comparison is source-supported;
+- contemporary physics: spacetime/worldtubes, foliations, field theory, topology, higher gauge theory and related approaches.
+
+The map must explain the external convention in plain language, what SAT/H(s)H might map to it, what is preserved, where the analogy breaks, and what the comparison newly helps us see. Prefer an overview and tentative mapping over exhaustive histories or proof-level reconstruction.
+
+### Required conceptual anchors
+
+Use the foundational SAT architecture as the initial spine:
+- four-dimensional filaments / worldlines as physically extended structures;
+- the advancing three-dimensional time surface and its intersections with filaments;
+- reciprocal interaction between time surface and filaments;
+- backreaction / curvature;
+- particle properties and stability as arising from intersectional and interaction geometry;
+- the proposed common structural continuum between vacuum and matter;
+- evolving traces, winding, twist and composite structure, without presuming a particular external braid group;
+- the declared import-and-translate stance toward the Standard Model, GR and QM.
+
+Keep separate: original SAT intuition; later formalization; current HsH development; external established mathematics/physics; proposed crosswalk; speculation or untested physical claim.
+
+### Working comparison format
+
+For each selected correspondence, record:
+1. SAT/H(s)H source concept and exact archive locator;
+2. external concept and its ordinary mathematical/physical meaning;
+3. tentative mapping and the structure it preserves;
+4. mismatch, extra assumptions, or category error to avoid;
+5. insight gained and next discriminating question.
+
+### Scope and stopping rule
+
+This is one overview bite, not a commitment to read the entire nLab, reconstruct Joyal–Street, or survey every historical tradition. Aim for a coherent first atlas and a prioritized set of follow-on bites. Stop when the central SAT objects have a defensible initial crosswalk and the next research questions can be selected intelligently.
+
+### Sources inspected so far / limits
+
+- *Fundamental Intuitions of SAT*, `DEV CONVERSATION/FUNDAMENTAL INTUITIONS.txt`, blob `0318d803fc4bb948d781d1aa0d9257dc2bcead77`: read in full during this turn. It states the foundational worldline/filament, time-surface, intersection, reciprocal interaction, backreaction, particle-geometry, vacuum/matter-continuum and Standard Model / GR / QM import intuitions.
+- *ONE FILE SAT 2*, extracted text `_AUTO_EXTRACTED_TEXT/ONE FILE SAT 2.txt`, blob `a8767b229d757473e5cb3f8501d88742b14bfdad`: inspected opening and core test regime, master action / Universal Indicatrix claims, selected photon-neutrino extension. This is a mixed historical conversation/test prompt, not a clean canonical theory statement; its numerical and unification claims remain to be checked against equations and sources.
+- *STANDALONE CODES.txt*, `SAT XYZ/STANDALONE CODES.txt`: located by archive search; not yet read in full.
+- *one drop* exact source family: not yet resolved; do not infer that *ONE FILE SAT 2* is the same thing.
+- Current HsH active theory materials: not yet freshly inspected for this bite.
+
+### Immediate return
+
+Continue Bite 19 by identifying and reading the exact *one drop* and *single-file* source families, then inspect selected standalone material and current HsH theory references. After that, build the SAT-first correspondence map against a deliberately small selection of nLab / n-Category Café entries and relevant historical/physics sources. No ticker advance until the overview atlas is recorded and verified.
