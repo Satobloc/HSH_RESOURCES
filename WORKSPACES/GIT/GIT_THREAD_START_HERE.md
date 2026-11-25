@@ -68,7 +68,7 @@ The six unresolved cases are five failed workflows with empty Jobs API evidence 
 
 **Original-scope gap:** the Haul 9 Traffic Rules also explicitly requested a review of all three repositories' automation machinery, welcome/AI-facing pages, workflow recommendations, worker-facing documentation and work logs. GTT-01 inventoried a bounded HSH_RESOURCES Traffic-source corpus; GTT-02 analyzed a bounded HsH event-ledger tranche. Neither completed that broader mechanism/documentation audit. It remains required and is recorded separately as **GTT-A01** below.
 
-**Ticker reconciliation:** the older HsH GIT_TRAFFIC reference files end with the abbreviated cursor `@…`. That was the parked-state shorthand, not the complete full-plan signature required by the shared Protocol. Use the complete ticker at the end of this HSH_RESOURCES anchor as the current GIT_TRAFFIC route. The HsH analysis files remain read-only references in this lane; they were not edited.
+**Ticker reconciliation:** the inherited shared pilot ticker at the top of this file is a separate master cursor and must remain unchanged. The GIT_TRAFFIC ticker at the end is its lane-local subcursor. Use compact operation glyphs only: routine searching/reading/provenance checks are inherent in the work and do not receive repeated search ticks; left-to-right order already supplies ordinary progression. Retain `⑂`/`⑃` for fork/rejoin and `⇢` only for the deliberate decision gate. The HsH analysis files remain read-only references in this lane.
 
 ## GTT-A01 — Three-repository automation and worker-surface audit
 
@@ -114,7 +114,7 @@ GTT-A01 / Tick A (`⌕ᵃ`): inventory the three repositories' automation/workfl
 
 ▷ **NEXT**
 
-Map configured mechanisms to target repositories and operations (`⌕↦`); connect instructions/configuration to actual run/job/step/event evidence (`⤳`); reconcile evidence and identities without double counting (`⌕∑`); record (`▣`); independently verify source paths, SHAs, joins and readback (`✓`); then make an explicit gate decision (`⇢`). Rejoin the GTT main path only with a documented disposition (`⑃`).
+Map configured mechanisms to target repositories and operations (`↦`); connect instructions/configuration to actual run/job/step/event evidence (`⤳`); reconcile evidence and identities without double counting (`∑`); record (`▣`); independently verify source paths, SHAs, joins and readback (`✓`); then make an explicit gate decision (`⇢`). Rejoin the GTT main path only with a documented disposition (`⑃`).
 
 ⚑ **PIN**
 
@@ -124,7 +124,7 @@ Map configured mechanisms to target repositories and operations (`⌕↦`); conn
 
 ↩ **RETURN**
 
-Re-enter with this file, then inspect the live shared Code Ledger and Protocol, then the exact GTT-A01 source inventory/continuation notes. For traffic metrics, return to the HsH historical-observation catalogue and GTT tick ledger. For GTT-02's evidence, return to the internal-attribution record and its reopening condition. Re-fetch every referenced artifact before moving a cursor.
+Re-enter with this file, then inspect the live shared Code Ledger and Protocol, then [GTT-A01 source inventory](GTT-A01_SOURCE_INVENTORY_2026-11-25.md) and its continuation notes. For traffic metrics, return to the HsH historical-observation catalogue and GTT tick ledger. For GTT-02's evidence, return to the internal-attribution record and its reopening condition. Re-fetch every referenced artifact before moving a cursor.
 
 § **SOURCES**
 
@@ -194,8 +194,8 @@ During this reconstitution, generic GitHub code search and direct repository-fil
 
 ## 8. Successor boot instruction
 
-Start here. Re-fetch this anchor, the live shared Protocol/Code Ledger and the linked GIT_TRAFFIC records. First preserve the complete inherited pilot ticker exactly as printed at the top; resume at its existing `@⤳` marker. The GIT_TRAFFIC route is subordinate local state, not a replacement. Never reset or shorten the shared ticker at a conversation boundary. Check whether a qualifying Traffic-attribution trigger has arrived. If not, preserve the parked state; do not repeat completed GTT-02 work, estimate a percentage, submit a speculative search request, or silently abandon the GIT_TRAFFIC PIN. Any separate GIT repository/tooling task gets its own bounded Tock and must preserve this parked return obligation.
+Start here. Re-fetch this anchor, the live shared Protocol/Code Ledger and the linked GIT_TRAFFIC records. Preserve the complete inherited pilot ticker exactly as printed at the top; resume at its existing `@⤳` marker. The GIT_TRAFFIC route is subordinate local state, not a replacement. Its active branch is GTT-A01, with source inventory at `@⌕ᵃ`; use the linked inventory as the return point. Do not repeat completed GTT-02 work, estimate a percentage, submit a speculative search request, or silently abandon the GIT_TRAFFIC PIN.
 
 **Message capsule for substantive work:** `▸ TICK:<current operation> | TOCK:<durable result/cursor or —> | PIN:<return obligation>`. Keep it compact, and keep the full ticker as the final line of every substantive assistant reply.
 
-GIT_TRAFFIC:⌖◉⌕ᵃ⌕↦⌕∑⌕∅▣✓⇢⌖◉⌕↦⌕∑⌕∅▣✓⇢⑂@⌕ᵃ⌕↦⤳⌕∑▣✓⇢⑃…⇢⌖◉⌕↦⌕∑▣✓⇢
+GIT_TRAFFIC:⑂@⌕ᵃ↦⤳∑▣✓⇢⑃
