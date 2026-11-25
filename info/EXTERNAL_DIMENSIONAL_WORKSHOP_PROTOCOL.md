@@ -890,9 +890,11 @@ Do not begin the category-theory reading sequence until the overview has a stabl
 
 The user requested that lowercase `s` be restored as a visible final marker in the full workflow signature so the spiritualist readings remain plainly visible on the to-do list, even though some related historical material already falls within `h`.
 
-**Canonical full signature:**
+**BIO workplan snapshot at that point:**
 
 `⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s`
+
+This was a dated planning representation, not a canonized ticker. The active BIO ticker is maintained in the BIO entrypoint and Work Ledger and may be revised as work changes.
 
 **Meaning:** trailing `s` (U+0073) is the dedicated spiritualist-readings intention corresponding to deferred PIN 5. It follows the category-theory/mathematics exploration `k⊕[mbxᛟd]`.
 
@@ -909,7 +911,7 @@ Each lane maintains its own active Tock/Tick position, ticker, reading notes, qu
 
 When a ticker is carried between conversations, prefix it with the relevant lane label (for example, `BIO:`). The lane label is metadata, not an operation; the ticker body retains one character per operation/component and all established grouping syntax.
 
-**Current BIO local path:** `BIO:βᛟvn@χrmρk⊕[mbxᛟd]s`. The shared master workflow remains separately governed by its canonical full signature. Other lanes retain their own tickers and evidence standards.
+**BIO local path recorded in this 2026-11-25 snapshot:** `BIO:βᛟvn@χrmρk⊕[mbxᛟd]s`. This is a historical lane-local workplan snapshot; the current BIO position is maintained in the live BIO Work Ledger and entrypoint. Other lanes retain their own tickers and evidence standards.
 
 
 ## Pilot-thread continuity and living tickers
