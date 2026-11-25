@@ -829,6 +829,8 @@ Adapt the full experimental Memory Credenza model and its extensions as appropri
 - **Work tray:** `PIN | NOW | NEXT | RETURN`.
 - **Watchtower:** pending dependencies, stale/broken routes, review signals and neglected areas.
 - **Registers/cubbies:** purpose-specific access points, including static definitions/terms and stable references; mutable work state; pins/possibilities; sources/evidence/provenance; questions/competing interpretations; findings/decisions; tools/methods/quality controls; cross-branch connections; deferred/superseded/retired items; and experiments/capability development. Add, split, combine, rename or retire registers as demonstrated useful.
+
+**Credenza register glyphs (code-ledger v0.3, 2026-11-25):** `≝` STATIC; `▶` NOW; `▷` NEXT; `↩` RETURN; `⚑` PIN; `§` SOURCES; `⁇` QUESTIONS; `∴` FINDINGS; `⚙` METHODS; `⋈` BRANCHES; `⏸` PARKED; `⊘` RETIRED. These single-code-point characters select registers; they are not phase/operation tokens, do not imply order or completion, and never move `@`. PARKED is deferred/recoverable; RETIRED is superseded/closed with history preserved. The PIN remains mutable and ranked.
 - **Castle:** the full repository-backed information and tool environment. The Credenza routes to it and does not duplicate it.
 - **Caretaker:** a lightweight periodic review of relevance, route integrity, missing registers, duplication, neglected branches, bias and overhead. It may recommend reversible changes, not silently alter priorities/conclusions.
 - **Extensions:** coverage rotation and stratified/random neglect sampling remain possible future capabilities; implement only after an adequate inventory exists and a bounded pilot demonstrates value.
