@@ -10,15 +10,16 @@
 
 **Current ticker, preserved exactly as supplied:**
 
-`BIO:⟐βᛟvnχ@⊕[rmρk:ᛟd]⊕[ᛟd:mbx]s`
+`BIO:⟐βᛟvnχr@⊕[mρk:ᛟd]⊕[ᛟd:mbx]s`
 
 Completed BIO bites:
 - `v` — biological variable map: complete.
 - `n` — mouse nodal left–right determination: complete.
 - `χ` — cellular chirality and actomyosin comparison: complete.
-- `r` — active; not complete.
+- `r` — complete for the defined node-to-organogenesis mapping.
+- `m` — current; selective mathematical application to a concrete biological structure.
 
-**Current inner position:** R.1–R.4 are complete sub-bites under the active `r` component. Reorient the remaining `r` scope before selecting any further bite; no R.5 is authorized. Do not advance the outer ticker past the active `r` group until the `r` mapping work and its review are complete.
+**Current position:** `r` is complete for its bounded remit after R.1–R.4. The review found that the original node-to-downstream-organogenesis question has been covered at the required descriptive level. The outer cursor now marks `m` as next: selective mathematical application to a concrete biological structure. No R.5 is authorized. Remaining organism-boundary, vascular-lineage and full quantitative-mechanics questions are recorded as optional extensions or candidates for `m`, not hidden requirements of `r`.
 
 **R.4 result:** Midgut rotation is a later organogenetic event nested within the embryo's worldtube. Mouse evidence supports right-sided HA/I-α-I enrichment and a TSG-6/HC-HA-dependent function in initiating rotation; Tsg6- and bikunin-null embryos show rotation defects. Direct mouse TSG-6 protein localization was not achieved in the study. See the [R.4 note](READING_NOTES/2026-11-25_BIO_R4_MIDGUT_ROTATION_WORLDTUBE.md) and Work Ledger §84.
 
@@ -79,7 +80,7 @@ For each bite:
 ## 7. Current durable records
 
 **Work and continuity**
-- Work Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`, especially §§74–84.
+- Work Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`, especially §§74–85.
 - Code Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md`.
 - Protocol: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md`.
 
@@ -114,7 +115,9 @@ For each bite:
 
 ## 8. Immediate next action
 
-Reorient the remaining `r` programme against Work Ledger §§74–84, the R.1–R.4 notes and the original `r` scope. R.4 has now covered one downstream organogenetic example: midgut rotation and its coupled dorsal-mesentery/ECM history. Identify what remains genuinely necessary to complete the stated `r` remit, distinguish coverage gaps from optional extensions, and select no further bite until that review is explicit. Do not assume an R.5 or advance the outer ticker merely because R.1–R.4 are complete.
+Begin `m`: selective mathematical application to a concrete biological structure. The most direct candidate is the coupled gut/dorsal-mesentery morphogenesis from R.4. First recover the source-defined model and its variables, equations, geometry, assumptions and perturbation data; then decide whether continuum mechanics, differential growth, elasticity or another formal tool actually fits. Do not force category theory or braid theory into the example. Preserve the distinction between a source's existing mathematical model and any additional H(s)H/SAT interpretation.
+
+---
 
 ---
 
