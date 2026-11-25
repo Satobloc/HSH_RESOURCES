@@ -590,7 +590,7 @@ The live signature should retain the entire current intended workflow, including
 
 ## 29. Persistent full-signature rule
 
-Append the **entire current workflow signature** to every assistant message in this workshop. Preserve all completed, current, and planned stages; do not shorten it to the active fragment. The position marker `@` identifies the next operation/current position. Advance it left-to-right only when the current operation or bounded unit is actually complete. Keep the full signature unchanged when work has progressed within a phase but has not crossed its completion boundary. The signature is the final line of each assistant response.
+Append the **current lane ticker** to every substantive assistant message in this workshop. Preserve the full current workplan, including completed context and known planned stages; do not shorten it to only the active fragment. The position marker `@` identifies the next operation. Advance it when that operation is complete. If the workplan itself changes before an operation is complete, revise the ticker and its entrypoint/ledger together; otherwise leave it as the current route while working through that operation. The ticker is the final line of each substantive assistant response.
 
 Current adopted full signature (square-bracket group syntax): ⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s. The `ᵃ` companion is active archive-acquisition/research-intake infrastructure within the current biology/history Tock.
 
