@@ -396,3 +396,50 @@ The exact relationship between this 1986 general classification and the 1993 bra
 **Author retrospective:** Ross Street, *An Australian Conspectus of Higher Categories*, https://www.math.uchicago.edu/~may/IMA/Incoming/Street/Street.pdf. Use as retrospective testimony, not a substitute for the reports.
 
 **State:** first proposition-level comparison matrix established. The 1985 scan is substantively visually inspected; the 1986 report's typed primary text has been checked against the matrix. A complete proof-by-proof textual diff and the full 1993 paper remain outstanding. No ticker advance.
+
+
+## 13. Bite 18 continuation — the 1993 introduction is now recoverable as reproduced primary text
+
+A more complete 2024 Rutgers slide-deck text extraction has been located. Gregory Moore reproduces the 1993 article's title page, contents and opening introduction, including the authors' first-person account of the programme's widening after the 1986 report. This is **reproduced primary text inside a secondary presentation**, not the complete original article and not an independently accessed publisher PDF.
+
+### 13.1 What the reproduced 1993 introduction says
+
+The article's own introduction identifies two 1986 stimuli:
+- Peter Freyd's Cambridge Category Theory Conference talk on joint work with David Yetter, where their tangle category was found to be braided, autonomous and free in a relevant sense.
+- Vladimir Drinfeld's International Congress talk on quantum groups, where quasitriangular bialgebras supplied new examples of braided structures.
+
+The reproduced introduction then dates a further step to mid-1987:
+- Joyal and Street turned from string tangles to ribbon tangles.
+- This led to balanced tensor categories, which add a twist on each object to the braiding.
+- Incorporating dual objects led to tortile tensor categories.
+
+This is stronger than a later historian's inference: it is the authors' own retrospective explanation as printed in their article, although accessed here through Moore's reproduction. It supports a sequence in which the 1985/1986 report's string-braid programme is widened by new tangle and quantum-group examples, then by ribbon twists and duality.
+
+### 13.2 Contents of the 1993 article, as reproduced
+
+The slide-deck reproduction gives the article's seven sections:
+1. Tensor categories.
+2. Braidings and Yang–Baxter operators.
+3. Braided categorical groups.
+4. A braiding for representations of the finite general linear groups.
+5. Abstract categorical aspects of braidings.
+6. Balanced tensor categories.
+7. Autonomy.
+
+The contents confirm that the 1993 paper is not merely a reprint of the 1986 report. It places tensor categories, Yang–Baxter operators, representation theory, abstract categorical structure, balanced structure and autonomy into one publication architecture.
+
+### 13.3 Evidence boundary
+
+The slide deck itself explicitly warns that its historical account is focused mostly on Moore's own role and that memory is unreliable. That caveat applies to Moore's recollections, not to the literal article text he reproduces. Keep the two evidence types separate:
+- The title, contents and reproduced Joyal–Street introduction are primary text quoted/reproduced in a secondary venue.
+- Moore's broader chronology and recollections are secondary eyewitness testimony and should be triangulated.
+- The complete 1993 article remains **NOT READ**. No claims about the full proofs, exact theorem statements, or every retained/omitted result should be upgraded on the basis of the excerpt.
+
+### 13.4 Source locator
+
+Gregory Moore, *From Rational Conformal Field Theories to Modular Tensor Categories to Nonabelions* (Rutgers, 26 September 2024), PDF: https://www.physics.rutgers.edu/~gmoore/From-RCFT-To-MTC-20240926-FINAL.pdf.
+- PDF extracted-text lines 1540–1571 reproduce the 1993 title, contents and opening introduction.
+- Lines 14–20 state the author's explicit scope/memory caveats.
+- The slide deck's broader chronology begins at lines 28–35 and should be treated as a perspective rather than a complete history.
+
+**Current source-family result:** the 1985/1986 comparison is now established at section/proposition-architecture level. The 1993 article's own introduction and contents are recoverable in reproduction, but the original complete article remains outstanding. No ticker advance.
