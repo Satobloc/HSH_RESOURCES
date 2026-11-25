@@ -2258,3 +2258,139 @@ This is a valuable extension of Morgan and Loeb: biological interdependence need
 For the user's 4D proposal, this furnishes another conventional biological control class: inter-part regulation over developmental time. It remains ordinary within-organism physiology/development and does not demonstrate extra-spatial physical continuity across distinct individuals.
 
 **Source-grade status:** Zeleny 1905 double-chela paper directly OCR-inspected; Zeleny 1916 monograph directly OCR-inspected at relevant sections and numerical tables; Evans 1912 thesis directly OCR-inspected, with page screenshots attempted but cache-missed. Zeleny's 1905 *Compensatory Regulation* is bibliographically verified and located in BHL/Google Books but not directly read. Zeleny's 1902 *Hydroides* paper is bibliographically verified via contemporary bibliography but not directly read. No Tock completion or cursor advance.
+
+## 64. Zeleny's Hydroides opercular compensation and Okada's experimental dissection of the mechanism — 2026-11-24
+
+The Hydroides branch now has a substantial primary-text basis even though the original Zeleny 1902 and 1911 articles remain incompletely retrieved. The key source is Yô K. Okada's own experimental paper on the same reversible opercular asymmetry in a closely related species.
+
+### A. What Zeleny first reported: reciprocal transformation of paired opercula
+
+**Zeleny bibliographic record:** “A Case of Compensatory Regulation in the Regeneration of *Hydroides dianthus*,” *Archiv für Entwicklungsmechanik der Organismen* 13, 597–609, 3 figures. Contemporary *Zoologischer Jahresbericht* lists it in the 1902 report; Okada (1933) refers to Zeleny's first observation as 1901, and later reviews also vary between 1901 and 1902. A 1909 French review by Ch. Gravier calls it Zeleny (1902), and Przibram (1909) cites the phenomenon as Zeleny 1902. The safest bibliographic representation is **1901/1902, volume XIII (published/cited across the 1901–1902 boundary), pp.597–609**, pending the original title page. Do not erase this date discrepancy.
+- Contemporary bibliography: *Zoologischer Jahresbericht* for 1902, OCR result: https://upload.wikimedia.org/wikipedia/commons/6/6d/Zoologischer_Jahresbericht_%28IA_zoologischerjahr1902staz%29.pdf.
+- Near-contemporary French summary: Ch. Gravier, *Annales des sciences naturelles*, 9th series, vol. IX (1909), printed pp. 145–146; complete searchable text: https://upload.wikimedia.org/wikipedia/commons/7/78/Annales_des_sciences_naturelles_%28IA_annalesdesscienc99miln%29.pdf.
+- Full later experimental discussion: Yô K. Okada (1933), below.
+
+In *Hydroides* there are two corresponding opercula, each derived from a branchial/gill filament. In a typical asymmetric animal one is a large, functional plug that closes the opening of its calcareous tube, while the other remains small and rudimentary.
+
+Okada's historical summary (1933, printed pp.655–656) attributes these results to Zeleny:
+- Remove the functional operculum: the opposite rudimentary operculum begins growing and within weeks can reach the size and function of the one removed.
+- A new rudimentary organ develops at the stump on the original side.
+- The animal therefore switches from right-handed to left-handed or vice versa; the switch may be reversed again by another operation.
+- Remove the rudimentary operculum alone: the functional operculum remains unchanged.
+- Remove both at once: sometimes the former rudimentary side becomes functional first, but sometimes two functional opercula develop.
+- Zeleny's thoracic cut experiments could yield two functional opercula; Okada suggests that absence or immaturity of the cerebral ganglia while the opercula are forming may explain failure to establish the usual asymmetry, but this is Okada's interpretation, not a proven neural mechanism.
+
+Gravier's 1909 account independently says that cutting the developed operculum at its base produces a small stump without ordinary regeneration, while the opposite rudiment develops into the removed organ's form and size; functional balance is restored. Gravier calls it “régularisation compensatrice.”
+
+### B. Zeleny's 1911 follow-up: cut level affects whether reversal or double function appears
+
+**Primary paper located but not yet directly read:** Charles Zeleny, “Experiments on the Control of Asymmetry in the Development of the Serpulid, *Hydroides dianthus*,” *Journal of Morphology* 22 (1911), 927–944, 7 figures.
+- Contemporary 1911 *Zoologischer Jahresbericht* author index confirms title, volume, pages and figures: https://upload.wikimedia.org/wikipedia/commons/4/44/Zoologischer_Jahresbericht_%28IA_zoologischerjahr1911staz%29.pdf.
+- BHL volume 22 record: item 43304, *Journal of Morphology* (1911), MBLWHOI scan, public domain: https://www.biodiversitylibrary.org/item/43304.
+- Volume contents independently list Zeleny's paper beginning p.927: https://embryology.med.unsw.edu.au/embryology/index.php?title=Journal_of_Morphology_22_%281911%29.
+
+Okada (1933, pp.657–659) provides a detailed contemporary summary of Zeleny's 1911 cutting-level experiments:
+- Removal of only the upper cup of the functional operculum usually does **not** reverse asymmetry.
+- Injury below the upper cup, to the main body or stalk, does induce compensatory growth of the opposite rudiment.
+- Zeleny found that cuts at the most distal level and the most proximal level tend to reverse asymmetry, whereas intermediate-level cuts more often result in two functional opercula.
+- Zeleny's proposed explanation is a difference in the state and timing of the regenerate at the original functional side. A distal cut may leave the basal embryonic tissue relatively undamaged; a proximal cut may injure it directly; both can delay or impair regeneration on the original side while the opposite rudiment gets a developmental head start. Intermediate cuts allow more rapid growth of a regenerate at the original functional site, so it may coexist with the now-developing opposite operculum.
+- Zeleny regarded the basal region below the breaking joint as embryonic or developmentally active. Okada tests that anatomical idea and finds the connective tissue there not obviously different from surrounding tissue; he sees somewhat taller and more crowded ectodermal cells but cautions that this alone is insufficient evidence to call it embryonic.
+
+This is not a simple “remove one part, the other grows” rule. The site and depth of injury alter the relative developmental trajectories of both structures and may produce reversal, two functional organs or other outcomes.
+
+### C. Okada 1933: direct experimental work on Hydroides norvegica
+
+**Primary source directly read in full searchable text:** Yô K. Okada, “Remarks on the Reversible Asymmetry in the Opercula of the Polychaete *Hydroides*,” *Journal of the Marine Biological Association of the United Kingdom* 18(2) (January 1933), 655–670, 5 figures. DOI 10.1017/S0025315400043976. Complete PDF and OCR: https://plymsea.ac.uk/id/eprint/799/1/Remarks_on_the_reversible_asymmetry_in_the_opercula_of_the_polychaete_hydroides.pdf. Text lines in the opened full PDF include pp.655–670. Screenshot/page-image service returned cache miss, so this is OCR-inspected, not image-verified. Keep the species distinct: Okada's own experiments are on *Hydroides norvegica* from the Plymouth district, while his historical summary discusses Zeleny's *H. dianthus* and allied species.
+
+Okada first confirms that the animal can switch sides:
+- The functional operculum restrains development of its opposite rudiment.
+- Its removal allows the opposite rudiment to grow.
+- Transverse thoracic cuts can produce two nearly symmetrical rudiments; in most specimens one begins growing faster and becomes the sole functional organ.
+- In his series, double functional opercula were relatively uncommon after thoracic cuts alone (a few out of roughly 50 in three repeated series), but could be induced more readily by injuring the growing tip of the rudimentary operculum after removing the functional one.
+- If the brain remained attached to the side with the rudimentary operculum after removal of half the head, that rudiment became functional. If the brain was removed together with the functional operculum, the opposite rudiment did not grow until the missing half of the head had regenerated. Okada interprets this as a possible influence of the cerebral ganglia, but the observations do not isolate a specific neural signal.
+
+### D. Operculum histology: a functional branchial filament with a vascular core
+
+Okada describes the functional operculum as comprising a distal crown/cup and a long proximal shaft. It is a modified gill filament:
+- Beneath the cuticle is tall epithelium.
+- Beneath that is a reticular connective tissue containing a large axial blood vessel.
+- The vessel travels up the shaft, branches to the proximal cup, then passes into the upper cup and the central region of radiating spines.
+- Each spine receives a direct blood supply, while distal parts of the spines and leaf-like processes lack direct blood supply.
+- The opposite rudimentary organ is histologically more embryonic-looking: club-shaped, with plump cells, large nuclei and strong staining. As it differentiates, it develops into shaft and two cups.
+
+This supplies a useful histological anatomy for the functional/rudimentary difference. But Okada cautions against treating the developmental state of the functional operculum's base as proven solely from cell crowding.
+
+### E. Okada's selective injury experiments: the inhibitory property is localized to the intact organ
+
+Okada tests which portions of the functional operculum have to remain intact to restrain the opposite rudiment:
+1. Removing all distal spines and half of the proximal cup while leaving the other half and the entire shaft intact still caused the rudimentary organ to become fully functional in about two weeks.
+2. Removing one side of each cup, leaving more than half of each, also caused growth of the rudimentary organ.
+3. Removing just the distal circlet of spines while retaining a complete proximal cup slowed the opposite rudiment's growth, but it still became functional; the same occurred when one side of the proximal cup was cut while the distal spines remained.
+4. Okada concludes that the two cup structures, as complete structures, are needed for full inhibition.
+5. Removing the peripheral spines and leaf-like processes outside the direct blood supply had no effect on the regulatory relation.
+6. A simple fine-needle puncture, even if deep, had no effect.
+7. A deeper wound that destroyed internal organization and caused greenish blood to escape almost invariably allowed the rudimentary organ to grow.
+
+This distinction is important: the relevant perturbation is not merely “damage” or “stimulation of nerves.” The severity and depth of injury, and whether it disrupts the organ's internal constitution, determine the response.
+
+### F. Attempts to distinguish neural reflex, chemical stimulus and local inhibitory action
+
+Okada evaluates three possible explanations:
+- **Nervous reflex:** he rejects the ordinary reflex account as inadequate. The effect depends on the degree and kind of local injury, and superficial cuts do not provoke reversal. This does not prove that the nervous system has no developmental role: his own brain-removal observations suggest the brain may be necessary in some contexts. The narrower conclusion is that the opercular compensation is not adequately explained as a simple reflex triggered by wounded nerves.
+- **Blood-borne or secreted chemical growth stimulant:** he first ligated the functional operculum's shaft and injured the distal region, expecting ligature to block transport of a putative signal. However, ligation alone also caused growth of the rudimentary organ, confounding interpretation. He then collected internal material from 20 wounded opercula, diluted/filtered it and injected it via the thoracic vein into ten intact animals. None showed a reversal or altered growth even after more than two weeks. This is a negative result for his injected-substance hypothesis, not proof that no chemical mediation is possible.
+- **Local loss of inhibition:** Okada's preferred working conclusion is that injury directly destroys the intact functional operculum's inhibitory influence, allowing the opposite rudiment to develop. He says that the exact physical/chemical basis is unknown. The inhibitory influence appears to be localized in the operculum, not generally in the gill or rest of the body: cutting off all gill filaments or other body parts without injuring the intact functional operculum does not trigger reversal.
+
+### G. Okada's final model: a local antagonistic pair with developmental threshold and timing
+
+In the discussion and summary (pp.660–669), Okada develops a model in which the two organ rudiments are initially capable of developing on either side. Ordinarily one grows faster, becomes functional and inhibits the other from doing the same. Once the functional organ is injured deeply enough, its inhibitory property is lost; the opposite rudiment begins to grow and takes over. At the original side, a new small rudiment forms, and the now functional opposite organ restrains it. If both sides develop to similar states, the outcome may be two functional or two rudimentary opercula. Okada suggests a threshold process to explain which side first gains dominance, with a general rightward growth tendency in *H. norvegica* but a labile, reversible asymmetry.
+
+The paper's own final summary emphasizes:
+- asymmetry is due to a growth difference between two corresponding organs;
+- the functional organ holds its mate in check;
+- removal/injury of the functional organ releases the rudimentary side;
+- the effect is not a straightforward nervous reflex and is not proven to be a chemical growth stimulant;
+- inhibition is local to the operculum and depends on intact internal organization;
+- the functional operculum has no regenerative capacity, while the rudimentary one retains it;
+- with suitable injury/developmental timing, two functional or two rudimentary organs can be produced;
+- in *H. norvegica*, the right side usually grows faster, but the asymmetry remains labile.
+
+### H. Comparison with Alpheus: similar relational form, distinct biological mechanism
+
+Both Hydroides and Alpheus exhibit a paired-organ regulatory relationship:
+- one member is functionally dominant and the opposite member remains rudimentary or specialized;
+- removing or damaging the functional structure changes the developmental fate of the opposite side;
+- the new functional organ then restrains the development of the newly regenerated rudiment on its own side;
+- outcomes depend on the timing and developmental stage of the two sides.
+
+But the mechanisms are not interchangeable:
+- In *Alpheus*, evidence points to nerve-mediated lateral inhibition, neural remodeling, muscle-fiber re-specification and molt-dependent transformation.
+- In Okada's *Hydroides*, the immediate inhibitory property is experimentally localized to the internal constitution of the functional operculum itself; deep injury and blood leakage trigger reversal, while superficial injury, simple needle puncture, or cutting other gill structures do not. Neural and chemical roles remain unresolved, and Okada rejects a simple reflex explanation.
+
+The common pattern is relational asymmetry: the developmental state of one member of a pair depends on the state/integrity of the other. The causal implementations differ.
+
+### I. Model relevance to the 4D histological inquiry
+
+Hydroides provides a strong anatomical example of **local paired-organ inhibition** where histological organization matters:
+- The functional operculum is itself a differentiated gill filament with epithelial, connective, vascular and cuticular substructures.
+- Its internal constitution exerts a regulatory effect on a separate rudimentary organ on the opposite side.
+- A wound to selected substructures changes the developmental trajectory of the opposite organ.
+- The body can reversibly transfer the functional role from one side to the other, or be experimentally driven into two functional or two rudimentary states.
+
+This is a clear case where organismal organization cannot be understood by looking at either operculum in isolation. But the experiments show local, ordinary physical and developmental regulation in a 3D animal. They do not show an extra spatial dimension or physical continuity among separate organisms.
+
+For the working taxonomy, add:
+1. **Inter-organ inhibition:** one developed organ locally restrains a paired rudiment.
+2. **Developmental asymmetry with reversibility:** left/right role assignment can be changed experimentally.
+3. **Injury-depth sensitivity:** the organ's regulatory influence depends on specific internal structures, not any wound.
+4. **Threshold/timing dynamics:** relative growth states determine whether the result is reversal, two functional organs or two rudimentary organs.
+5. **Histological localization:** cell organization and vascular anatomy constrain the mechanism, but do not alone identify it.
+
+### J. Source status and next operations
+
+- Zeleny 1901/1902 *Hydroides dianthus* original: bibliographically secured, original pages not yet retrieved. Date varies across sources: 1901 in Okada's citation, 1902 in contemporary annual bibliography and several later sources.
+- Zeleny 1911 *Hydroides dianthus* paper, *Journal of Morphology* 22:927–944: BHL volume 22 item 43304 located; content summarized in detail by Okada 1933 but not yet directly read.
+- Okada 1933 *Hydroides* paper: full 16-page paper directly OCR-inspected pp.655–670, not page-image verified due screenshot cache miss.
+- Gravier 1909 French literature review: directly OCR-inspected; its Zeleny summary supports the functional/rudimentary transformation, but it is secondary.
+- Zeleny 1905 102-page *Compensatory Regulation* remains located but unread; do not confuse it with the *Hydroides* paper or the single 1905 double-chela case.
+
+**Next:** obtain the Zeleny 1911 article from BHL volume 22 item 43304 or an alternate full-text source; then return to Zeleny's 1905 102-page *Compensatory Regulation*. The Okada 1933 primary experiment already supplies a well-controlled comparison of the mechanism, so do not wait on those older texts before integrating this case into the biology taxonomy. No Tock closure or cursor advance.
