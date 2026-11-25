@@ -958,3 +958,101 @@ The ticker identifies the comparative-history lane and retains the full planned 
 **LIVE TICKER — final line:**
 `⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢`
 
+---
+
+## 14. Bite 07 — Hinton's distinct historical programmes: readout analogy, vortex physics and constructive geometry
+
+**Recorded:** 2026-11-25  
+**State:** Targeted primary-text passages read from the HSH_RESOURCES copies. Authorship and edition layers have been checked against the source preface. This is a historical reconstruction, not validation of Hinton's physical conjectures or a claim of direct influence on later mathematics.
+
+### § SOURCES AND TEXT LAYERS
+
+1. **Charles Howard Hinton, *The Fourth Dimension*** — the HSH_RESOURCES text identifies the underlying publication as the 1906 Swan Sonnenschein edition, Project Gutenberg eBook #67153. The repository text is derived from Internet Archive page images; the transcription notes that illustrations have been omitted and that obvious typographical errors were silently corrected. Blob: `ece2e416bbc417d79a98b9ae90ec385361d85ae3`.
+   - Filament/film and Parmenides passage: repository text around lines 960–1090.
+   - Four-dimensional vortex / electric-current passage: around lines 2860–2970.
+2. **Charles Howard Hinton, *A New Era of Thought*** — the title page identifies the London Swan Sonnenschein edition as 1888; the repository copy is Project Gutenberg eBook #60607, derived from Internet Archive images. Blob: `cf0272d50e0366238fe8af9d6c60d80220ff3a94`.
+   - Editorial preface and original authorship statement: around lines 80–180.
+   - Contents and division into Parts I and II: around lines 180–260.
+   - The two-way counting/order discussion occurs in the early Part I material (around lines 1080 onward).
+   - The detailed tessaract-section exercise around lines 6950–7560 is **Appendix H**, not an unqualified Hinton-authored passage.
+
+### ∴ FINDING 1 — THE FILM/FILAMENT MODEL IS A SYMBOLIC PHILOSOPHICAL ANALOGY
+
+In *The Fourth Dimension*, Hinton uses a static spiral traversed by a moving film. The successive intersections appear to an observer associated with the film as a moving point. He extends the illustration to complicated filamentary structures whose intersections could appear as the atoms and moving bodies of a lower-dimensional world.
+
+The passage is explicitly framed as a representation of Parmenides' contrast between permanent being and apparent change. It explores a possible relation between a complete higher-dimensional existence and a temporally successive lower-dimensional experience. Hinton then considers a modified case in which the higher structure itself changes while the film traverses it, producing two sources of apparent motion.
+
+**Crucial qualification:** when Hinton asks what degree of truth lies in this higher-dimensional consciousness/readout representation, he says it is, as far as he can see, **merely symbolical**, and that the proper path for investigating higher dimensionality lies elsewhere. The analogy is therefore historically valuable but must not be presented as Hinton's established physical account of time, a Lorentzian foliation, or a demonstrated model of matter.
+
+This supplies a clear early historical comparison with section/readout descriptions, but it also supplies its own warning against literalizing the analogy. Keep the philosophical/readout strand distinct from Hinton's constructive geometry and from his later physical conjectures.
+
+### ∴ FINDING 2 — THE FOUR-DIMENSIONAL VORTEX IS A SEPARATE PHYSICAL CONJECTURE
+
+In a separate passage, Hinton begins with persistent vortices in an ideal fluid, whose constituent fluid remains associated with the vortex, and asks what a vortex would be in a four-dimensional fluid. He replaces the ordinary line axis with a plane axis and describes four-dimensional vortex sheets with a boundary contour. He then proposes an analogy between such a four-dimensional vortex and electric current, invoking an ether whose motion would give the phenomenon of current.
+
+This is not the film/spiral readout model. It is a distinct historical attempt to connect:
+- higher-dimensional geometry;
+- fluid mechanics and vortex persistence;
+- boundary conditions and closed-circuit structure;
+- ether theories and electromagnetic phenomena.
+
+The passage records Hinton's own speculative physical proposal. It is not a derivation of Maxwell's equations, a modern account of electric current, or experimental evidence for a four-dimensional ether. The exact historical source of Hinton's vortex analogy and its relationship to nineteenth-century vortex theories remain to be traced rather than inferred from resemblance.
+
+### ∴ FINDING 3 — *A NEW ERA OF THOUGHT* HAS MULTIPLE AUTHORSHIP LAYERS
+
+The source's own preface is decisive for attribution:
+
+- The editors state that **Part I** is printed almost exactly as it came from Hinton's hands, with only limited intervention.
+- **Part II** was composed from a hurried sketch that Hinton considered inadequate; the editors corrected and supplemented it.
+- Chapter XI of Part II was entirely rewritten by the editors.
+- Appendix E, Appendix H, and all exercises were written by the editors.
+- The preface is signed by **Alicia Boole** and **H. John Falk**.
+
+The elaborate section-by-section cube/tessaract reconstruction previously cited in Bite 02 occurs in **Appendix H**. It is therefore an editor-authored pedagogical/mathematical treatment in a Hinton-associated book, not direct evidence of Hinton's own wording or detailed derivation. The earlier Bite 02 source row is corrected additively: the volume remains relevant to Hinton's programme, but passages must be tagged by textual layer and authorship before attribution.
+
+The early Part I discussion of two-way counting, order and distance is within the portion the editors say is nearly as Hinton wrote it. There Hinton distinguishes a two-way ordering of positions from a metric notion of distance, which arises only when the positions are associated with material things in juxtaposition. This is a historically interesting structural distinction, but it is not by itself a modern partial order, a configuration space, or category theory.
+
+### ≝ THREE HINTON-ERA INTERSECTIONS TO KEEP SEPARATE
+
+| Strand | What the source actually does | What it must not be conflated with |
+|---|---|---|
+| Philosophy / experience of time | Uses a moving-film intersection as a symbolic representation of Parmenidean permanence and apparent temporal change | A physical time coordinate, Lorentzian causal structure, or a proven worldtube theory |
+| Fluid mechanics / electromagnetic speculation | Extends vortex-fluid imagery to a four-dimensional vortex sheet and proposes an ether-current analogy | Modern Maxwell/QED theory, established four-dimensional fluid physics, or the readout analogy |
+| Mathematical pedagogy / epistemology | Advocates objective construction, models and disciplined reconstruction of higher-dimensional sections; the detailed Appendix H exercises are editor-authored | Direct evidence that Hinton authored every exercise or that the pedagogy founded category theory |
+
+The broader Part I preface of *A New Era* calls for objective, tactile/model-based treatment rather than merely reading descriptions or looking at illustrations. It describes higher-space learning as an experiment requiring repeated presentation to the senses and continuous contact with constructed facts. This is a distinctive intersection of geometry, pedagogy, epistemology and material model-making. Preserve the editor-authored status of the later worked exercises.
+
+### ⋈ BRANCHES AND NEXT HISTORICAL COMPARISONS
+
+- **h₁ — philosophical/readout lineage:** compare Hinton's own qualification of the film model with other historical accounts of persistence, sectioning, simultaneity and temporal experience. Do not infer direct transmission without documentary evidence.
+- **h₂/f — vortex and electromagnetic lineage:** trace the particular 19th-century fluid-vortex and ether concepts Hinton draws upon; compare them with the historical development of electromagnetic field theory, keeping Hinton's conjecture separate from established electrodynamics.
+- **h₃/k — constructive geometry and pedagogy:** separate Hinton's Part I methodology from the editors' Part II and Appendix H contributions; trace the mathematical and educational lineage of sectioning, projection, model construction and disciplined lower-dimensional inference.
+- **k — category-theory lineage:** retain Bite 02's conclusion: no direct Hinton → Eilenberg/Mac Lane → higher-category transmission has been established. The current source family supports adjacent or convergent dimensional interests, not a proven genealogy.
+
+### ⁇ QUESTIONS AND PIN UPDATE
+
+- **PHY-Q18 / Authorship stratigraphy:** Which claims in Hinton-associated volumes are Hinton's own, editor-authored, revised from his sketches, or later commentary? Extend this control to all historical sources in the lane.
+- **PHY-Q19 / Analogy versus physical construction:** Where does each author explicitly distinguish symbolic analogy, mathematical construction, physical conjecture and empirical claim?
+- **PHY-Q20 / Vortex genealogy:** Which exact fluid-mechanical and ether-theoretical sources underlie Hinton's four-dimensional vortex/current analogy, and what was their historical relationship to electromagnetic field theory?
+- **PHY-Q21 / Sectioning pedagogy:** What is the documented history of higher-dimensional sectioning, physical models and constrained lower-dimensional reasoning, including the separate contributions of Alicia Boole and H. John Falk?
+
+**PHY-P13 (Priority 1):** complete authorship/source-layer stratigraphy for the Hinton source family and trace the source history of the 4D vortex/ether analogy before making cross-disciplinary claims. Return cue: after the current Mersearch receipt supplies exact internal source locations and source chronology.
+
+### ⚙ METHODS AND LIMITS
+
+- Use the book's own prefaces, title pages and contents to determine authorship and textual layers before interpreting passages.
+- Preserve original edition date separately from digitization/release/update dates.
+- Where illustrations were omitted from the repository transcription, do not infer unobserved diagram details from the text alone.
+- Treat Hinton's stated "merely symbolical" qualification as part of the source, not as a later downgrade.
+- Do not promote Hinton's ether/vortex hypothesis into established physics or infer that it anticipated current theory merely because terminology resembles modern geometry.
+- Do not attribute Appendix H's section exercises to Hinton; credit the preface's editorial authorship statement.
+- The HSH_RESOURCES copy remains the working source record; use external sources later to reconstruct documented intellectual histories, not to replace this primary-text reading.
+
+### ↩ RETURN
+
+Resume at ◈ with the SAT/H(s)H source-object recovery and the Mersearch dependency. In the historical branch, continue with source-authorship stratigraphy and the vortex/ether genealogy; keep the readout analogy, physical conjecture and constructive pedagogy as separate subbranches. Then return to ∂ and Δ for the formal history/projection tests.
+
+**Bite status:** Hinton's main cross-disciplinary strands and a major editorial-attribution correction are recorded. Connect remains open; no Hintonian physical proposal is adopted and no H(s)H theory status is changed.
+
+
+`⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢`
