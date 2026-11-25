@@ -3323,7 +3323,7 @@ Under the stipulated `ᛟ` lens, the organism's full existence is read literally
 This file is the explicit entry point for any successor conversation when this thread ends or loses context. Read it first, then follow its ordered pointer chain into this Work Ledger, the Code Ledger, the Protocol, the BIO reading notes, and the exact primary sources/companion archives those notes cite.
 
 The anchor stores, in compact form:
-- the exact current BIO ticker and inner R.2 resume position;
+- the exact current BIO ticker and inner R.3 resume position;
 - the lane's comparative purpose and boundaries;
 - the small-bite research method and evidence/provenance distinctions;
 - the stipulated `ᛟ` interpretation and the limited role of companion method `d`;
@@ -3331,7 +3331,7 @@ The anchor stores, in compact form:
 - the source-note, ledger, codebook, protocol and repository pointer chain;
 - the rule to refetch live SHAs before edits, then read back and verify each durable result.
 
-**Current resume state:** `r / R.1` complete; `R.2` next. The outer user-supplied ticker remains exactly `BIO:⟐βᛟvnχ@⊕[rmρk:ᛟd]⊕[ᛟd:mbx]s`. Preserve the exact authored grouping and do not normalize it to an older signature.
+**Current resume state:** `r / R.1` and `R.2` complete; `R.3` next. The outer user-supplied ticker remains exactly `BIO:⟐βᛟvnχ@⊕[rmρk:ᛟd]⊕[ᛟd:mbx]s`. Preserve the exact authored grouping and do not normalize it to an older signature.
 
 **Purpose of the anchor:** a successor should be able to recover the current question, operating method, status, and next action without mining the prior conversation. It is a navigation layer, not a replacement for source notes or the full ledgers.
 
