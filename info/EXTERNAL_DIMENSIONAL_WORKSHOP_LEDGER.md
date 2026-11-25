@@ -1847,3 +1847,131 @@ This is the likely basis for the 2017 paper's wording that nerve intervention pl
 4. Then determine whether Morgan's 1940 “after removal of the smaller one” is a plain error or reflects a separate experiment; maintain the printed text exactly until the comparison is complete.
 
 **Status:** Wilson title/author/journal/year/page range/three-figure count are independently verified by a contemporary 1903 bibliography and multiple later bibliographies. Wilson's article body and his separate 1903 *Science* abstract are not directly read. The original paper remains the active source retrieval blocker. No Tock completion or cursor advance.
+
+## 61. Morgan's grafting programme: mixed-lineage regeneration, compound organisms, shared circulation and morphallaxis — 2026-11-24
+
+This section consolidates direct primary-source reading of Thomas Hunt Morgan's 1899 paper and his 1907 synthesis in *Experimental Zoölogy*. It establishes an empirical bridge to the user's questions about physical continuity, histological organization and organismal boundaries, while keeping the experiments' limits explicit.
+
+### A. Morgan 1899: regeneration from a mixed-species tissue interface
+
+**Primary source:** Thomas Hunt Morgan, “Regeneration of Tissue Composed of Parts of Two Species,” *The Biological Bulletin* 1 (1899), 7–14. Original volume PDF: https://upload.wikimedia.org/wikipedia/commons/5/53/The_Biological_bulletin_%28IA_biologicalbullet01mari%29.pdf. The article body, printed pp. 7–14, was inspected in searchable OCR/text extraction. The PDF screenshot renderer returned a cache miss, so this is OCR-inspected, not page-image verified.
+
+Morgan opens with Born's amphibian grafts and Joest's earthworm grafts, where the component parts of grafted animals retain their species characteristics. He notes that a regenerating part of a grafted earthworm had retained the identity of the region from which it immediately arose, despite being joined to a much larger component of another species. His own question is narrower and more novel: when a new regenerating tissue contains cells originating from two species, do the cells blend their specific characteristics or retain their separate identities?
+
+**Procedure and material:**
+- He used differently pigmented tadpoles identified as *Rana sylvatica* and *Rana palustris*.
+- A tail from one species was grafted to the body of the other. As the animals developed, the host-body ectoderm extended over the base of the transplanted tail.
+- The composite tail was then amputated near the junction so that the exposed cut surface contained outer ectoderm from one species and inner tissues (muscle, connective tissue, pigment cells, notochord and nerve cord) from the other.
+- The regenerating region therefore contained adjacent tissue layers from two species, and the regenerated tail could be followed by the contrasting pigmentation of its ectoderm and mesodermal pigment cells.
+
+**Observed results:**
+- In reciprocal grafts, the new tail had the host species' ectoderm over the graft species' darker or lighter internal tissues. Morgan says each component regenerated its own specific tissue, with no blending of the visible characters.
+- In oblique cuts where both species' ectoderm was present at the wound surface, the new tail retained the distinct pigmentation patterns along the contact region. The cells remained identifiable as belonging to their respective source tissues.
+- Morgan explicitly notes uncertainty: pigmentation was his main practical lineage marker; some mesodermal pigment cells were imperfectly developed, and he occasionally found isolated cells whose identity was doubtful. He says most well-developed cells were clearly like those of the tissue from which the new tail arose.
+- He also acknowledges that most larvae in one series died and that regenerated tails departed from normal form, increasing uncertainty. He did not claim a comprehensive cellular or genetic assay.
+
+**What this experiment establishes at the level Morgan could measure:** a regenerating anatomical structure can be composed of cells and tissues derived from two species, physically adjacent and participating in one regenerated appendage, while the distinguishable tissue components retain their lineage-associated pigmentation. It is not a hybrid organism at the cellular/genetic level; the study does not demonstrate cell fusion or genetic exchange. Its inference that other species-specific traits would also persist is broader than the directly measured pigment characters and should remain identified as Morgan's inference.
+
+### B. Morgan 1907: grafting as an experimental investigation of organismal boundaries
+
+**Primary source:** Thomas Hunt Morgan, *Experimental Zoölogy* (New York: Macmillan, 1907), especially Chapter XVIII, “Experiments in Grafting,” printed pp. 285–305, and Chapter XVII, “Growth and Regeneration,” pp. 277–281. Columbia scan and searchable PDF: https://www.columbia.edu/cu/lweb/digital/collections/cul/texts/ldpd_5949112_000/ldpd_5949112_000.pdf. Printed passages were inspected directly through the text layer. The PDF screenshot renderer returned cache miss for page images, so this remains OCR-inspected, not visual-page verified.
+
+Morgan begins by distinguishing grafting plants (often small buds inserted into stocks) from grafting animals, where complete cut surfaces of already formed structures can be brought together, sometimes exposing entire cross-sections of two animals. He groups the questions under (1) which regions can unite, (2) how united parts influence one another, (3) whether grafting can hybridize species, and (4) what embryonic development reveals about self-differentiation and correlated development.
+
+#### B1. Earthworm grafts: permanent physical unions, altered body topology
+
+Morgan summarizes Joest's experiments:
+- Parts from different individual earthworms can unite, not merely complementary pieces from one animal.
+- Inserting a middle section between anterior and posterior regions produces a permanently elongated “long” worm; removing a middle region and joining the two ends produces a “short” worm. Where union is complete, the junction may show no regeneration.
+- Two anterior cut surfaces or two posterior cut surfaces can also be joined. A graft of two tail ends can produce a permanent two-tailed, headless composite, which slowly starves because it has no head/mouth.
+- Where nerve cords align and unite, regeneration at the junction may not occur; where one or both nerve cords remain free, one or two heads may form. In an inverted graft, two heads can regenerate on opposite sides of the junction, each connected with one component's ventral nerve cord.
+- Different species are harder to unite than members of the same species, but Joest obtained a compound worm from *Lumbricus rubellus* and *Allolobophora terrestris* that lived for eight months.
+
+This is not merely superficial adhesion. In selected cases the components form a persistent composite animal with a shared body plan at the junction. But Morgan's account also shows that anatomical integration can be incomplete, pathological or nonviable (such as the two-tail/no-head composite).
+
+#### B2. Hydra: morphallaxis can create one animal, two animals or an absorbed component
+
+Morgan contrasts many animals whose formed tissues cannot remodel extensively with hydra and planarians, which can reorganize existing tissue to regain a typical body form with relatively little new tissue production. He describes:
+- Joining anterior and posterior halves can make one normal hydra.
+- Joining two sub-half pieces creates a short hydra that grows into normal proportions.
+- Joining two pieces each longer than half creates a long hydra. It may produce a new foot and tentacles at the junction, then constrict into two separate hydras.
+- Joining two oral/anterior ends can result in the heads fusing into one body, or in two heads and separation, depending on the relative orientations and subsequent changes.
+- Joining two aboral/posterior ends can lead to new feet at the junction and separation into two individuals.
+- Lateral grafts may share a trunk, shift position, split off, produce a foot or head at the junction, or be absorbed into the stock.
+- A small fragment that cannot detach and cannot successfully join the shared trunk may be absorbed into the larger hydra.
+
+Morgan says these outcomes vary with orientation, length, level and relative size of the pieces. His explanation is based on pressure/tension relationships and cell differentiation, but he explicitly labels the hypothesis provisional.
+
+#### B3. Planarians: graft geometry, neural continuity and regenerative polarity
+
+In planarian grafts, cut surfaces can unite; when union is complete and nerve cords connect, regeneration at the graft line may not occur. If one or both nerve cords remain free, one or two heads may appear. An upside-down graft of anterior pieces can yield two heads at the junction, one on either side, each aligned with a different nerve cord. Unlike hydra, planarians do not show the same routine ability to pinch apart and separate; misplaced parts can be remodeled or absorbed. Short reversed graft fragments may show polarity reversal, although Morgan notes that uninjured very short planarian pieces can also form two heads, making the graft-specific cause uncertain.
+
+These observations make the nervous system and polarity relevant to boundary formation, but do not imply that a nerve cord alone defines organismal identity.
+
+#### B4. Different species in one compound body: shared circulation without homogenized lineage
+
+Morgan gives an especially important earthworm example:
+- A compound worm formed from *Lumbricus rubellus* and *Allolobophora terrestris* lived for eight months.
+- Blood circulation passed from one component into the other.
+- Neither component showed a material influence on the other half's characteristic phenotype.
+- In a further test, a new head regenerated from the *Lumbricus rubellus* component of a composite made with *Allolobophora foetida*. Though the regenerating region was nourished by blood from both components, the new head retained the lighter *Lumbricus* coloration and showed no influence of the darker other component.
+
+Morgan's cross-species tadpole grafts similarly show that some combinations persist for weeks or apparently longer, but each region generally maintains the species-specific traits visible in color. Some pairings fail to unite permanently, or die/separate. This is evidence of composite physical and circulatory continuity with persistent local differentiation, not a homogeneous fusion of biological identity.
+
+#### B5. Moth pupa grafts: integumentary union does not guarantee internal-organ continuity
+
+Crampton's grafts of moth pupae can produce adult moths made from parts of different species. Morgan notes that the internal organs do not unite; the skin and integumentary organs do unite. Most components retain their own coloring, although two reported cases suggest possible pigment influence, which Morgan tentatively attributes to hemolymph passing from the larger component into the smaller. This is another reason not to use “graft” or “fusion” as a single undifferentiated category: the degree and type of tissue continuity vary.
+
+### C. Morgan's proposed mechanism: pressure/tension relations are an explicit working hypothesis
+
+In Chapter XVII, Morgan observes that regenerative growth rates differ according to the level at which an organism is cut, and that growth often slows as the typical form or size is approached. He proposes that the existing differentiated material constrains new growth and that the relations among tissues can be understood through pressure/tension and mutual response among cells.
+
+In Chapter XVIII, he extends the idea to grafting: the relation of the united pieces, their orientation and the tension/pressure state at the junction may determine whether they fuse into one form, remain composite, remodel, divide or form additional parts. He explicitly warns against using an unexplained “formative force” as a causal answer. His hypothesis treats tension as a physical stimulus and proposes that cell differentiation can depend on mutual pressure. But he says the latter assumption is difficult to reconcile with current knowledge and is only a provisional or working hypothesis (printed p. 298).
+
+Keep the categories separate:
+- **Observed:** graft union, survival, circulation, regeneration, morphallactic remodeling, separation, pigmentation.
+- **Morgan's interpretation:** pressure/tension relations help explain developmental adjustment and differentiation.
+- **Not established by these experiments:** a universal mechanical law of morphogenesis, or any extra spatial dimension.
+
+### D. A useful conceptual matrix for the broader H(s)H inquiry
+
+These primary sources show that "one organism" cannot be reduced to a single yes/no test. At least six distinct relations can vary independently:
+
+1. **Physical tissue continuity:** do tissues actually unite at the junction, or merely adhere?
+2. **Histological coexistence:** can differently derived tissues live side by side in a shared structure?
+3. **Circulatory continuity:** is there a shared vascular/blood route between components?
+4. **Neural continuity:** do nerve cords connect, remain separate, or drive distinct regenerative organization?
+5. **Developmental/regulatory coupling:** does one component alter the differentiation, polarity, growth or remodeling of the other?
+6. **Whole-organism integration:** does the composite function and persist as one body, remodel into a typical organism, remain a composite, split into multiple organisms, or fail to survive?
+
+Morgan's examples populate different combinations:
+- Cross-species earthworm: persistent physical union + shared circulation + retained local lineage phenotype.
+- Tadpole graft: physical union + mixed tissue boundary + lineage-associated pigmentation retained.
+- Moth pupa: integumentary union without internal-organ union.
+- Hydra: physical fusion followed by morphallaxis, common-body integration, or separation into individuals depending on graft configuration.
+- Planaria: fusion and nerve-cord alignment can suppress regeneration at the junction; misalignment/free cords can yield additional heads.
+
+### E. Relevance to the user's 4D histological proposal: analogies and limits
+
+The strongest biological comparator so far is not the snapping-shrimp claw but the grafting literature. These experiments demonstrate that:
+- parts from different individuals, and sometimes different species, can become physically continuous;
+- circulation can cross the interface without erasing regional tissue identity;
+- regenerative growth can create a new histological structure that contains tissues of distinct lineages;
+- physical union, physiological coupling, developmental influence and organismal wholeness are separable variables;
+- geometry and orientation can alter whether components persist, remodel, split or form new axes.
+
+This gives us real 3D biological cases against which to define the proposed 4D relation. But the grafted pieces are joined in ordinary space and time through surgical contact, tissue healing, circulation, nerves and developmental processes. The experiments do not demonstrate a body whose physically connected parts are separated along an additional spatial or temporal dimension, and do not show that separate people are continuous appendages of a larger organism.
+
+The critical model question remains: what extra relation would the 4D proposal predict that cannot be captured by (i) ordinary physical continuity, (ii) common circulation or neural coupling, (iii) developmental field/induction, (iv) lineage-specific tissue persistence, or (v) ecological/functional integration? The proposal will need a structural or observational discriminator beyond the fact that the components are related, coupled or share a history.
+
+### F. Morgan's 1900 sequel and next operations
+
+Morgan also published “Further Experiments on the Regeneration of Tissue Composed of Parts of Two Species,” *Biological Bulletin* 2 (1900), 111–119. Its identity is confirmed in Morgan's 1960 bibliography and the MBL History of the Marine Biological Laboratory's digitized bibliography, but the complete article body has not yet been retrieved or read. Do not merge it with the 1899 paper; it is a separate follow-up.
+
+Next primary-source tasks:
+1. Retrieve and read Morgan's 1900 sequel to determine what additional mixed-lineage regeneration experiments it reports.
+2. Obtain Zeleny's full 1905 *Compensatory Regulation* (102 pages), which Morgan cites in the 1907 book as an independent experimental programme on interactions among body parts during regeneration. The 1905 *double chela* case report is a separate publication and must not be conflated with the 102-page monograph.
+3. Compare Morgan's historic graft observations with modern literature on chimerism, vascular anastomosis, tissue lineage and developmental integration, using modern terminology without retroactively imposing it on the older authors.
+4. Return to Wilson 1903 once a complete scan is available; it remains located but not directly read.
+
+**Source status:** Morgan 1899 article directly OCR-inspected pp. 7–14; Morgan 1907 *Experimental Zoölogy* directly OCR-inspected pp. 277–305; PDF screenshot service returned cache miss for both sources, so no page-image verification. Morgan 1900 sequel bibliographically verified only. Zeleny 1905 *Compensatory Regulation* located bibliographically, not directly read. No Tock completion or cursor advance.
