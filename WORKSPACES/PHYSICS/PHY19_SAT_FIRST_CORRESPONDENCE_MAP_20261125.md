@@ -100,6 +100,46 @@ The existing reconnaissance note identifies the following high-value formal stru
 
 The nLab / n-Category Café reconnaissance is an existing source map, not a substitute for original papers or proof that SAT has a unique categorical realization.
 
+## 5A. Braid/formalization bridge (ℬ)
+
+The existing nLab / n-Category Café reconnaissance supports a precise geometry-to-formalization route:
+
+1. A geometric braid is a history of distinct strands with a specified longitudinal parameter and collision-free transverse configuration.
+2. Its isotopy classes form braid groups; for n points in the plane, the group is Bₙ.
+3. Organizing all strand counts and braid morphisms gives the braid category: objects are natural numbers (strand counts), morphisms are braids, and monoidal product is juxtaposition. The elementary braid generators obey the Yang–Baxter / braid relation.
+4. The nLab describes the Artin braid category as the free braided strict monoidal category on one generating object, and as a “walking Yang–Baxter object.” The category is not merely decorative notation: its universal property packages the geometric composition and coherence laws in a portable form.
+
+### Conditional SAT realization test
+
+A possible SAT configuration category, still to be defined, would have:
+
+- objects: source-defined n-filament or n-core configurations on a chosen timesheet leaf;
+- morphisms: admissible histories of those configurations through a spacetime slab;
+- composition: concatenation/gluing of histories at a shared intermediate slice;
+- monoidal product: disjoint juxtaposition of independent configurations;
+- braiding: a permitted exchange history that returns to the same endpoint configuration up to the chosen identity convention.
+
+A functor from this physical-history category to the braid category would need to preserve identities, composition, tensor product and the relevant braiding/coherence. It must also preserve whatever physical labels, orientations, twist sectors or core data are required to identify a particle/composite. No such source-defined SAT functor is currently established.
+
+### The dimensional gate is decisive
+
+The existing PHY01 dimensional-uplift calculation supplies the discriminator:
+
+- If n point-like intersections move without collision on a 2D film, the relevant configuration-space fundamental group is the Artin braid group Bₙ (pure braid group Pₙ for labelled points).
+- If n indistinguishable point intersections move freely in a simply connected 3D timesheet leaf such as ℝ³ or S³, the generic exchange group is Sₙ. For two ordered points, F₂(ℝᵈ) ≅ ℝᵈ × (ℝᵈ\{0}); the relative direction retracts to Sᵈ⁻¹. Thus π₁(S¹)=ℤ in d=2, while π₁(S²)=0 in d=3; after quotienting by exchange, the two-point group is ℤ₂.
+- Therefore, the 3D SAT timesheet does not by itself give ordinary Artin braids for freely moving point intersections.
+
+This does **not** rule out richer SAT braiding. It identifies the missing physical discriminator: a genuine 2D constraint, nontrivial leaf topology, extended intersection/core objects, internal constituent braiding, or a higher-dimensional embedding/motion group. These are different mathematical problems and must not be collapsed into one “braid” label.
+
+### Cross-disciplinary connections
+
+- **TQFT / cobordisms:** a 3D slice can be an object and a 4D spacetime slab between slices a cobordism morphism; gluing slabs composes histories. A TQFT assigns algebraic/state-space data to these objects and maps to cobordisms. This is a natural formal neighbour for the slice/history architecture, but not yet a unique SAT realization.
+- **Non-Abelian anyons:** braid-group representations can act on multi-anyon state spaces in effectively two-dimensional systems. This is a well-established mathematical-physics bridge, but it does not automatically transfer to freely moving point intersections on a 3D timesheet.
+- **Quantum-geometry proposals:** Bilson-Thompson, Markopoulou and Smolin proposed braided ribbon-graph patterns as candidates for first-generation fermions in quantum geometry. This is a model-specific comparator, not evidence that SAT's filaments are the same objects.
+- **Hinton:** the moving 2D film is a historical geometric comparator for planar point-intersection histories. Hinton does not define the Artin braid group or claim the later category-theoretic construction.
+
+**ℬ result:** braid theory offers a rigorous language for geometric histories, exchange and composition, and category theory packages that language coherently. Whether SAT uses Bₙ, Sₙ, a motion group of extended cores, or a different structure is determined by the native geometry, not by the appearance of a braid diagram.
+
 ## 6. Current H(s)H geometry as backdrop
 
 Current BEDROCK describes H(s)H as a tentative, status-preserving world-tubification of SAT. It keeps open whether the responsive mechanism is best represented by a timesheet or a bulk response, and requires a local time direction and metric-aware orientation. The particle/worldtube construction remains tentative.
