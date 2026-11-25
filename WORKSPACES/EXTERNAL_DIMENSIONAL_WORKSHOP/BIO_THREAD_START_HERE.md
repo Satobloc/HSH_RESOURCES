@@ -10,7 +10,7 @@
 
 ## 1. Resume point
 
-**Current BIO ticker, from Work Ledger §86:**
+**Current BIO ticker, from Work Ledger §87:**
 
 `BIO:⟐βᛟvnχr@⊕[mρk:ᛟd]⊕[ᛟd:mbx]s`
 
