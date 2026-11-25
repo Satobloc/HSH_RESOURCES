@@ -1,13 +1,14 @@
-# PHY-01 Research Plan: Braid Theory and Geometric Motion Groups
+# PHYS-01 Case Study: Braid Theory and Geometric Motion Groups
 
 **Lane:** ⟐ HSH_RESOURCES comparative-history lane  
-**Subtask:** ℬ (U+212C), registered in the HSH_RESOURCES code ledger  
-**Status:** PLANNED; current prerequisite is source-defined object/core geometry (◈).  
+**Subtask:** ℬ (U+212C), a cross-disciplinary research lens registered in the HSH_RESOURCES code ledger  
+**Scope of this document:** PHYS-01 is one domain-specific case study inside the broader ℬ programme; it does not define the programme's total scope.  
+**Status:** PHYS-specific applications are conditional on source-defined object/core geometry (◈).  
 **Created:** 2026-11-25
 
 ## Purpose
 
-Make braid theory a distinct historical, mathematical and physics-comparison work package within PHY-01. Do not leave it as a minor subtopic of generic category theory.
+Preserve the PHYS-01 analysis as the physics-specific case study within the broader cross-disciplinary braid and geometric-formalization programme. The umbrella scope, including the nLab and n-Category Café source observatory and applications across mathematics, physics, quantum geometry, quantum computing, robotics and other fields, is recorded in WORKSPACES/COMMON/BRAID_AS_CROSS_DISCIPLINARY_GEOMETRIC_LENS_20261125.md.
 
 The task has two separate products:
 
@@ -157,3 +158,15 @@ Hinton's illustrative film is two-dimensional; noncolliding point histories on i
 This is a conditional mathematical gate, not a selection of the native SAT geometry. It sharpens the order of work: recover the timesheet and actual object/core at ◈; then determine whether the relevant configuration space is planar, three-dimensional point motion, or extended-object embedding motion before assigning any braid group.
 
 Added ledger questions: PHY-Q48–Q52. Added priority pins: PHY-P27–P28.
+
+
+---
+
+## Scope revision — 2026-11-25
+
+This PHYS-01 plan is now explicitly a **physics case study**, not the whole ℬ programme. The broader cross-disciplinary lens and first nLab / n-Category Café reconnaissance are recorded in:
+
+- WORKSPACES/COMMON/BRAID_AS_CROSS_DISCIPLINARY_GEOMETRIC_LENS_20261125.md
+- WORKSPACES/COMMON/NLAB_NCATEGORY_CAFE_BRAID_RECONNAISSANCE_20261125.md
+
+Cross-disciplinary historical and mathematical research under ℬ can proceed while ◈ remains open. The ◈ gate applies only when assigning an external braid or motion-group structure to the actual SAT/H(s)H physical objects. This PHYS-specific plan retains its questions, pins and configuration-space tests as one application branch.
