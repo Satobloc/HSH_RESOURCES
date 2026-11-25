@@ -3454,3 +3454,28 @@ The anchor stores, in compact form:
 
 **Lane boundary:** BIO comparative-history only. No H(s)H BEDROCK, main theory, worker policy, or PHYS/GIT cursor change.
 
+
+
+## 86. BIO lane mission reorientation — SAT/H(s)H, Hinton, higher mathematics and biology — 2026-11-25
+
+**User clarification:** The BIO lane must not drift into a narrow, increasingly technical developmental-biology project. Its central question is what SAT/H(s)H says about biology and how the SAT/H(s)H four-dimensional ontology maps onto, converges with, diverges from or independently reconstructs the Hinton tradition, nLab/n-Category Café, higher geometry/topology/category theory and related historical/contemporary physics. Biology is a major application and interpretive testbed, not the sole organizing subject.
+
+**Primary archive hierarchy:** SAT_THEORY_ARCHIVE_2023-25 is the first source corpus for Fundamental Intuitions, biological implications, 4D organismal biology, weird/onto/HoloJesu/superhelical/tentative material, and the one-file/one-drop/standalone build cluster. HSH_RESOURCES holds the BIO lane's own notes and the already existing shared nLab/n-Category Café reconnaissance. Live HsH BEDROCK is consulted only as a current-theory backdrop; this lane does not reconstitute H(s)H or set its policy.
+
+**SAT/H(s)H lens:** begin with the original four-dimensional filament/worldline and moving time-surface intuitions, their intersection and interaction, backreaction on the time surface, physical temporal extent, and helical/braided traces. Preserve the original import posture toward SM/GR/QM. Keep early/speculative propositions tentative and source-attributed. The current H(s)H worldtube reformulation remains status-preserving and tentative where BEDROCK says so.
+
+**Biological emphasis:** ask about organisms as extended histories; nested cell/tissue/organism structures; development and lineage as temporally extended organization; morphogenesis as distributed geometry and constraint; and possible biosphere-scale or superorganism readings. Distinguish a useful structural conjecture from stronger claims of literal unified organismality. Use contemporary biology to constrain the interpretation, not to replace it with an exhaustive mechanism catalogue.
+
+**Comparison labels:** prior art / documented transmission; independent convergence; formal translation; mainstream intersection; analogy / heuristic; divergence; speculative extension. For every source preserve authorship and status (Nathan-authored, assistant-generated, collaborative transcript, historical primary source, review, etc.). Unusual presentation is not grounds for dismissal; archive presence or polished phrasing is not grounds for promotion.
+
+**Existing resource:** the first-pass nLab / n-Category Café braid reconnaissance is already in `WORKSPACES/COMMON/NLAB_NCATEGORY_CAFE_BRAID_RECONNAISSANCE_20261125.md`. Reuse it as a shared map, not as a substitute for BIO's own biological interpretation or for primary sources.
+
+**Immediate `m` task:** produce a compact orientation map of the SAT primary-source clusters and their relation to Hinton/nLab/higher mathematics, then identify the most promising biological correspondences. Do not begin another deep developmental-biology or gut-mechanics bite unless it resolves a specific conceptual mapping.
+
+**Durable note:** [BIO mission reorientation — SAT/H(s)H, Hinton, higher mathematics and biology](../WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_MISSION_REORIENTATION_SAT_HSH_HINTON_NLAB.md).
+
+**Ticker:** unchanged; `m` remains current:
+`BIO:⟐βᛟvnχr@⊕[mρk:ᛟd]⊕[ᛟd:mbx]s`.
+
+**Lane boundary:** BIO comparative-history only. No H(s)H BEDROCK, main theory, worker policy, PHYS/GIT cursor or shared scheduler change.
+
