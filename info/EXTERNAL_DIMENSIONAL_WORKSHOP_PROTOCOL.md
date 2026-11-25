@@ -910,3 +910,18 @@ Each lane maintains its own active Tock/Tick position, ticker, reading notes, qu
 When a ticker is carried between conversations, prefix it with the relevant lane label (for example, `BIO:`). The lane label is metadata, not an operation; the ticker body retains one character per operation/component and all established grouping syntax.
 
 **Current BIO local path:** `BIO:βᛟvn@χrmρk⊕[mbxᛟd]s`. The shared master workflow remains separately governed by its canonical full signature. Other lanes retain their own tickers and evidence standards.
+
+
+## Cross-conversation Tocktick continuity — mandatory pilot rule
+
+The PHYS, GIT and BIO pilot conversations are continuous working threads, not independent workflow launches. A new conversation inherits the complete live shared ticker exactly as recorded by the preceding conversation. It must resume at the existing `@` marker without resetting, abbreviating, replacing, regenerating, renumbering or reinterpreting the sequence. Conversation boundaries do not complete operations and do not authorize cursor movement.
+
+**Canonical shared pilot ticker at this handoff:**
+
+`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
+
+The next uncompleted operation is `⤳`. The entire sequence, including completed prefix and uncompleted suffix, is part of the state and must remain visible in every pilot entrypoint. Move `@` only after the operation it prefixes has been completed, durably recorded and independently checked as required by the lane's method.
+
+PHYS, GIT and BIO retain separate lane-local Credenzas, task ledgers, branches, evidence and subordinate cursors. Those local cursors may refine the work but must never replace or truncate the shared ticker. A lane-local bite token, phase abbreviation, status shorthand or newly invented symbol is not an acceptable substitute for the full inherited signature. When a local cursor and shared ticker appear to disagree, preserve both, stop advancement, inspect the live records and resolve the discrepancy explicitly rather than silently resetting either one.
+
+At every handoff, the outgoing conversation must leave the full ticker in its entrypoint/manifest and the relevant live ledger. The incoming conversation must re-fetch and verify those records before work. The shared signature is a continuity object, not a decorative summary.
