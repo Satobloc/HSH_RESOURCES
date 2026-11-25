@@ -55,11 +55,11 @@ A source-grounded geometric atlas and comparison map containing:
 
 PHY-01 closes only when the above map has been built from inspected sources, the important geometry has been reconstructed faithfully, comparisons have source-level support, uncertainty and counterexamples are visible, and a next Tock is recorded. The Tock does **not** require proving SAT/H(s)H or declaring a new mainstream consensus.
 
-## 2. Historical phase grammar (not the live bite ticker)
+## 2. Shared ticker operation grammar
 
-The following phase sequence records the original workflow grammar established at Tock setup. The full inherited pilot ticker is live, not historical; this section explains its operation grammar. Resume at its existing `@` marker and preserve the complete suffix.
+The following operation key explains the glyphs used in the live inherited pilot ticker. The complete current signature is recorded at the ledger apex and in the three pilot entrypoints. The abbreviated setup snapshot below is historical evidence of the initial workflow, not a substitute for the complete live signature. Resume at the current `@` marker and preserve the entire sequence.
 
-**Initial phase signature at Tock setup (historical snapshot only):**
+**Initial setup snapshot (historical subset of the current operation grammar):**
 
 `⌖◉⌕⧖@⤳▣✓⇢`
 
@@ -73,7 +73,7 @@ The following phase sequence records the original workflow grammar established a
 - `✓` Verify: check source claims, exact locators, geometric fidelity, status labels, and repository readback.
 - `⇢` Deliberate next step and record the next cursor.
 
-This compact phase key is explanatory only. The complete inherited pilot ticker remains live and is reproduced at the ledger apex; do not substitute a shortened bite-only cursor.
+This compact key explains operation meanings only. The complete inherited pilot ticker remains live and is reproduced at the ledger apex; never substitute this abbreviated key or a bite-only cursor for it.
 
 ## 3. Credenza
 
@@ -85,7 +85,7 @@ The Credenza is the working cabinet for Tocks: it routes active work, preserves 
 
 ### ▷ NEXT
 
-No subsequent bite is yet assigned a ticker symbol. After Bite 19, select the next bounded bite from the correspondence gaps it actually exposes. Likely candidates include a focused worldtube/timesheet–cobordism comparison, braid/composition structures, historical 4D lineages, or a contemporary physics connection. Do not pre-load these as an unbounded sequence.
+No subsequent PHYS work package has been assigned a local bite reference. After Bite 19, select the next bounded bite from the correspondence gaps it actually exposes. Likely candidates include a focused worldtube/timesheet–cobordism comparison, braid/composition structures, historical 4D lineages, or a contemporary physics connection. Do not pre-load these as an unbounded sequence.
 
 ### ↩ RETURN
 
