@@ -17,7 +17,7 @@
 
 **Current lane boundary:** PHYS has its own cursor. Detailed 4D-organism, developmental and cellular-biology investigation belongs to the separate BIO lane; PHYS only follows a specific biophysics connection when it materially arises, and then points to BIO rather than duplicating or advancing BIO work. GIT/repository operations likewise retain their own cursor.
 
-**Current complete inherited pilot ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`. Resume exactly at `@⤳`. This is the full ordered workflow signature and must persist unchanged across PHYS, GIT and BIO conversation boundaries. Do not abbreviate it to `@⧉`, replace it with a lane-local bite token, or treat a conversation restart as a new workflow. Lane-specific ledgers and bite records are subordinate detail; they never supersede the complete shared ticker.
+**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`. Resume at `@⤳` for Connect. This is the current PHYS workplan, not a fixed signature or a shared cursor for BIO/GIT. Revise it as the work develops, and keep this apex, the PHYS entrypoint and the detailed Credenza aligned.
 
 **Immediate return:** execute Bite 19 (`⧉`), the SAT-first correspondence overview. Begin with the 2023–25 archive's *Fundamental Intuitions* and the relevant *one drop*, *single-file*, *standalone* and related source families; compare them with selected nLab / n-Category Café concepts and the current HsH geometry. Keep the scope at the level of conventions, ideas and tentative mappings. Do not resume the Joyal–Street source collation as the governing task. Check the existing Mersearch lane-2 request before any further archive search; never duplicate or overwrite it.
 
@@ -2186,7 +2186,7 @@ Disposition remains SUBMITTED_NOT_VERIFIED / unresolved. No cancellation, rerun,
 ## 35. Bite 19 — SAT-first correspondence overview (selected; not yet executed)
 
 **Bite reference:** Bite 19, SAT-first correspondence overview.  
-**Shared live ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`  
+**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`  
 **Current operation:** `@⤳`  
 **State:** SELECTED / IN PROGRESS CONTEXT  
 **Purpose:** Re-center PHYS on the user's actual goal: understand how SAT/H(s)H maps to nLab / n-Category Café material, and to related historical and contemporary four-dimensional thought and physics, with SAT/H(s)H as the explicit interpretive lens.
