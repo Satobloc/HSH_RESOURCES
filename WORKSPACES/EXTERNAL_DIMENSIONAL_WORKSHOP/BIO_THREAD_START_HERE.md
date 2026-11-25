@@ -18,7 +18,9 @@ Completed BIO bites:
 - `χ` — cellular chirality and actomyosin comparison: complete.
 - `r` — active; not complete.
 
-**Current inner position:** R.1 and R.2 are complete sub-bites under the active `r` component. Resume at **R.3**. Do not advance the outer ticker past the active `r` group until the `r` mapping work is complete.
+**Current inner position:** R.1–R.4 are complete sub-bites under the active `r` component. Reorient the remaining `r` scope before selecting any further bite; no R.5 is authorized. Do not advance the outer ticker past the active `r` group until the `r` mapping work and its review are complete.
+
+**R.4 result:** Midgut rotation is a later organogenetic event nested within the embryo's worldtube. Mouse evidence supports right-sided HA/I-α-I enrichment and a TSG-6/HC-HA-dependent function in initiating rotation; Tsg6- and bikunin-null embryos show rotation defects. Direct mouse TSG-6 protein localization was not achieved in the study. See the [R.4 note](READING_NOTES/2026-11-25_BIO_R4_MIDGUT_ROTATION_WORLDTUBE.md) and Work Ledger §84.
 
 **R.3 result:** A parent cell's history as one organized cellular unit terminates through division; two daughter-cell histories follow, linked by a division/ancestry relation. Material trajectories are apportioned or replicated according to biology and should not be confused with lineage. See the [R.3 note](READING_NOTES/2026-11-25_BIO_R3_CELL_DIVISION_LINEAGE_WORLDTUBE.md) and Work Ledger §83.
 
@@ -27,7 +29,7 @@ Completed BIO bites:
 ## 2. Read in this order
 
 1. **This file first.** It gives the lane, cursor, method and pointer map.
-2. **Work Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`: read §§74–81 for the current BIO programme, completed bites, R.1/R.2 results and handoff. Earlier numbered sections hold the historical biology work and wider workshop context.
+2. **Work Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`: read §§74–84 for the current BIO programme, completed bites and R.1–R.4 results. Earlier numbered sections hold the historical biology work and wider workshop context.
 3. **Code Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md`: consult the BIO subpath, lane selector, current ticker, `ᛟ`, `β`, `d`, investigation modifiers and shared grouping grammar. The code ledger defines glyphs; do not infer unfamiliar symbols from memory.
 4. **Protocol** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md`: use §§22, 24, 30–31, 37 and 42 for Tock–Tick scope, compact signatures, orientation, the stipulated SAT/H(s)H lens, Dimensional Normalization, and lane-local cursors.
 5. **Reading notes** — follow the links in Work Ledger §§75–81. These contain the source-level findings and limitations; the ledger is the index/continuity layer, not a substitute for the detailed notes.
@@ -77,7 +79,7 @@ For each bite:
 ## 7. Current durable records
 
 **Work and continuity**
-- Work Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`, especially §§74–80.
+- Work Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`, especially §§74–84.
 - Code Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md`.
 - Protocol: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md`.
 
@@ -87,6 +89,8 @@ For each bite:
 - `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_CELLULAR_CHIRALITY_ACTOMYOSIN_TEE_2015.md` — `χ`.
 - `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R1_ORGANISM_AS_WORLDTUBE.md` — `r / R.1`.
 - `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R2_MOUSE_NODE_WORLDTUBE_MAPPING.md` — `r / R.2`.
+- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R3_CELL_DIVISION_LINEAGE_WORLDTUBE.md` — `r / R.3`.
+- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R4_MIDGUT_ROTATION_WORLDTUBE.md` — `r / R.4`.
 
 **Reference repositories**
 - `Satobloc/HSH_RESOURCES`: primary BIO work, notes, workshop ledgers and tools.
@@ -95,22 +99,24 @@ For each bite:
 
 ## 9. Successor conversation boot record — 2026-11-25
 
-**BIO THREAD RESTART: this conversation is the active successor for the BIO lane.** Reconstitution is complete from the live repository records. The authoritative resume point remains R.3; this boot record does not advance the ticker or claim R.3 work has begun.
+**BIO THREAD RESTART: this conversation is the active successor for the BIO lane.** Reconstitution was completed from the live repository records. At the time this boot record was written, R.3 was next; R.3 and R.4 have since been completed and recorded in Work Ledger §§83–84.
 
 - Repository and primary continuity anchor verified on the live `main` branch.
-- Current BIO ticker retained exactly; `r / R.1` and `R.2` complete; `R.3` next.
+- Current BIO ticker retained exactly; `r / R.1`–`R.4` complete; remaining `r` scope now requires reorientation.
 - Work Ledger §§74–81, Code Ledger BIO path and shared-lane definitions, and workshop protocol inspected.
 - Original BIO conversation in `HAUL 9` inspected as provenance for the remit and operating corrections.
 - Current search routing: Mysearch remains unvalidated; the four Mersearch bridge lanes are occupied by other requests in `Satobloc/HsH`. No request was written, replaced, or dispatched. Direct GitHub retrieval/search was used as a disclosed fallback for this reconstitution, not represented as Mysearch or Mersearch.
 - No H(s)H BEDROCK, PHYS, GIT, shared ticker, worker policy, or scheduler state changed.
 
-**Resume instruction:** begin the next substantive BIO bite at R.3, as specified below. Preserve the established small-bite method and update the reading note, Work Ledger, and anchor only when supported by actual work.
+**Historical resume instruction:** R.3 was the next bite at the time of reconstitution. Subsequent work supersedes that cursor as recorded in §§83–84.
 
 ---
 
 ## 8. Immediate next action
 
-Resume **R.3** as defined in the R.2 note. Examine cell division and lineage branching as a focused worldtube/identity-bookkeeping problem. Distinguish a parent's material history from daughter-cell histories and the lineage relation between them. Use R.1 for the worldtube baseline, R.2 for the mouse-node application, and the relevant primary developmental-biology sources for cell division/lineage. Do not turn this into a general theory of organismal individuation.
+Reorient the remaining `r` programme against Work Ledger §§74–84, the R.1–R.4 notes and the original `r` scope. R.4 has now covered one downstream organogenetic example: midgut rotation and its coupled dorsal-mesentery/ECM history. Identify what remains genuinely necessary to complete the stated `r` remit, distinguish coverage gaps from optional extensions, and select no further bite until that review is explicit. Do not assume an R.5 or advance the outer ticker merely because R.1–R.4 are complete.
+
+---
 
 ---
 
