@@ -17,9 +17,9 @@
 
 **Current lane boundary:** PHYS has its own cursor. Detailed 4D-organism, developmental and cellular-biology investigation belongs to the separate BIO lane; PHYS only follows a specific biophysics connection when it materially arises, and then points to BIO rather than duplicating or advancing BIO work. GIT/repository operations likewise retain their own cursor.
 
-**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳ℬ◈@∂Δ…▣✓ρ⇢`. The first-pass Connect crosswalk, ℬ braid/formalization bridge and ◈ source-defined geometry inventory are recorded; resume at `@∂` to define candidate history identities and composition contracts. The core/readout types remain partly unresolved and are explicitly recorded. This is the current PHYS workplan, not a fixed signature or a shared cursor for BIO/GIT. Revise it as the work develops, and keep this apex, the PHYS entrypoint and the detailed Credenza aligned.
+**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳ℬ◈∂@Δ…▣✓ρ⇢`. The first-pass Connect crosswalk, ℬ braid/formalization bridge, ◈ source-defined geometry inventory and ∂ history/composition contracts are recorded; resume at `@Δ` to test projection/readout fidelity and information loss. The physical equivalence relation and unique composition algebra remain open. This is the current PHYS workplan, not a fixed signature or a shared cursor for BIO/GIT. Revise it as the work develops, and keep this apex, the PHYS entrypoint and the detailed Credenza aligned.
 
-**Immediate return:** continue Bite 19 (`⧉`) from `@∂`. The first-pass Connect crosswalk, ℬ braid/formalization bridge and ◈ source-defined geometry/type inventory are recorded in [PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md](../WORKSPACES/PHYSICS/PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md). Now define candidate history identities and composition contracts for the available filament, timesheet, worldtube and composite objects. Keep source-defined hierarchy separate from proposed composition maps; explicitly mark where the unresolved core/readout type prevents a physical composition law from being selected. The exact one-drop source lineage remains unresolved; SAT UNODROP.txt is only a located candidate. The standalone-codes artifact is a transcript/prompt, not a clean code package. Do not resume Joyal–Street source archaeology as the governing task. Check the existing Mersearch lane-2 request before further archive search; never duplicate or overwrite it.
+**Immediate return:** continue Bite 19 (`⧉`) from `@Δ`. The first-pass Connect crosswalk, ℬ braid/formalization bridge, ◈ source-defined geometry/type inventory and ∂ candidate history/composition contracts are recorded in [PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md](../WORKSPACES/PHYSICS/PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md). Now test projection/readout fidelity: information retained or lost by 3D slicing, reconstruction from a family of slices, and compatibility of projection with composition. The exact one-drop source lineage remains unresolved; SAT UNODROP.txt is only a located candidate. The standalone-codes artifact is a transcript/prompt, not a clean code package. Do not resume Joyal–Street source archaeology as the governing task. Check the existing Mersearch lane-2 request before further archive search; never duplicate or overwrite it.
 
 
 ## 1. Tock: PHY-01 — Contemporary physics and the higher-dimensional synthesis
@@ -2188,9 +2188,9 @@ Disposition remains SUBMITTED_NOT_VERIFIED / unresolved. No cancellation, rerun,
 ## 35. Bite 19 — SAT-first correspondence overview (in progress)
 
 **Bite reference:** Bite 19, SAT-first correspondence overview.  
-**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳ℬ◈@∂Δ…▣✓ρ⇢`  
-**Current operation:** `@∂`  
-**State:** IN PROGRESS / CONNECT, ℬ AND ◈ SOURCE GEOMETRY INVENTORY RECORDED  
+**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳ℬ◈∂@Δ…▣✓ρ⇢`  
+**Current operation:** `@Δ`  
+**State:** IN PROGRESS / CONNECT, ℬ, ◈ AND ∂ FIRST-PASS CONTRACTS RECORDED  
 **Purpose:** Re-center PHYS on the user's actual goal: understand how SAT/H(s)H maps to nLab / n-Category Café material, and to related historical and contemporary four-dimensional thought and physics, with SAT/H(s)H as the explicit interpretive lens.
 
 ### Primary comparison corpus
