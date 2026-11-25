@@ -484,3 +484,31 @@ This is a planned future reading intention, not the current active Tock. It corr
 **Use:** `f` is a subject component, not a claim that a paradigm shift has been established. It may be integrated with existing `h` (history), `k` (category-theory programme), and `ᛟ` (SAT/H(s)H lens) components. For the current physics pilot, see `info/PHYSICS_PARADIGM_RESEARCH_LEDGER.md`, Tock PHY-01.
 
 **Change control:** this adds `f` without changing or reassigning any existing code. The existing `s` assignment remains the deferred dedicated spiritualist-reading programme.
+
+
+---
+
+## Biological reconstruction subpath codes — added 2026-11-25
+
+These codes identify the five ordered bites inside the active contemporary biological reconstruction pass. They are subcomponents of the existing `β` pass, read throughout through the existing SAT/H(s)H interpretive lens `ᛟ`. They do not replace or redefine `b`, `β`, `ᛟ`, `m`, or `k`.
+
+| Glyph | Code point | Canonical meaning | Class | Scope |
+|---|---|---|---|---|
+| v | U+0076 | Biological variable map | Tock subcomponent | Distinguish molecular homochirality, cytoskeletal/cellular chirality, ciliary orientation/flow, bilateral body symmetry, embryonic left–right laterality, and organ asymmetry; map only evidenced causal links. |
+| n | U+006E | Nodal left–right determination | Tock subcomponent | Mechanism-level reconstruction of the mouse embryonic node and relevant comparative vertebrate systems: organizer, cilia, flow, sensing, signaling, perturbations and species limits. |
+| χ | U+03C7 | Cellular chirality and actomyosin | Tock subcomponent | Primary-source reconstruction of cellular chirality, actin/myosin organization, force and motion, handedness measures, perturbations and any demonstrated link to organismal laterality. |
+| r | U+0072 | SAT/H(s)H biological reconstruction map | Tock subcomponent | Map the stipulated four-dimensional organism/worldtube account onto explicitly defined biological variables and processes; identify cross-scale relations and distinguish reinterpretation from source evidence and established mechanism. |
+| m | U+006D | Selective higher-mathematics application | Existing component, instantiated as a subcomponent here | Apply specific mathematical machinery—geometry, topology, configuration spaces, braid theory, category theory, homotopy or related higher-dimensional fields—only where a concrete biological structure or process calls for it. This is a targeted application bite, not commencement or completion of the larger `k` category-theory reading programme. |
+
+### Ordered subpath
+
+`βᛟ@v n χ r m`
+
+- `β` is the existing contemporary biological reconstruction pass.
+- `ᛟ` is the existing SAT/H(s)H interpretive lens applied throughout the subpath.
+- `@` marks the next unfinished bite.
+- `v → n → χ → r → m` is the ordered sequence. Adjacency is succession; the spaces in the displayed signature are readability separators only.
+- `m` here is selective application of mathematical tools. The broader `k` reading programme remains separately defined and is not silently pulled forward.
+- Completion of one bite advances `@` to the next code only after a durable result and recorded next cursor.
+
+The assignments `v`, `n`, `χ`, and `r` are new, workshop-local lowercase codes. They were checked against existing exact glyph assignments before adoption. The existing `m` assignment is reused without alteration.
