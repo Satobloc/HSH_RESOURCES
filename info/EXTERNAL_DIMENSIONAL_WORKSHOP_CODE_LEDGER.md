@@ -657,3 +657,14 @@ The general meanings above are shared. The following are **separate lane interpr
 
 
 **GIT naming clarification — 2026-11-25:** **GIT** is the conversation/lane shorthand supplied for repository and tooling work. **GIT_TRAFFIC / GTT-01** is the specifically identified GitHub Traffic measurement sublane in the investigation-modifier overlay. Treat GIT_TRAFFIC as a scoped operational sublane under the broader GIT lane, not as a replacement for the GIT label. Its traffic metrics, evidence standards and cursor remain separate from BIO and PHYS.
+
+---
+
+## Research-lane selector — added 2026-11-25
+
+| Glyph | Code point | Canonical meaning | Class | Scope / boundary |
+|---|---|---|---|---|
+| ⟐ | U+27D0 | HSH_RESOURCES comparative-history lane | Research-lane selector | Identifies this conversation's siloed inquiry into cross-disciplinary history, conceptual intersections and source-grounded comparisons among fields. HSH_RESOURCES is the primary work/record repository; SAT archive and HsH materials are consulted as references. The selector is not a Tock/Tick phase, does not move `@`, and grants no authority to set HsH theory, worker policy or operational procedure. |
+
+**Use:** prefix this lane's full ticker with `⟐` (for example, `⌖◉⟐⊕[fhkᛟᵃ]…`). Keep its research findings, plans, source maps and workflow notes in HSH_RESOURCES. Do not write lane conclusions into HsH BEDROCK or present them as HsH worker directives. Existing HsH/SAT material remains citable reference material with its original provenance and epistemic status.
+
