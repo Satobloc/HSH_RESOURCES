@@ -469,3 +469,16 @@ This is a planned future reading intention, not the current active Tock. It corr
 **Relation to `h`:** the current historical/cultural stream `h` may read spiritualist/psychical materials when they directly illuminate nineteenth-century higher-dimensional thought or the current biological-history overview. That contextual use does not satisfy or replace `s`. The trailing `s` explicitly preserves the broader dedicated reading programme as a to-do item.
 
 **Supersession history:** `s` was previously retired from its former meaning “separately predetermined Science Bridges programme.” That meaning remains retired. The user explicitly reinstated the same ASCII code point with this new, narrower and deliberately deferred spiritualist-reading meaning. Record this as a user-directed supersession; do not silently revert to the old Science Bridges meaning.
+
+
+---
+
+## Physics-domain extension — f (U+0066), added 2026-11-25
+
+| Glyph | Code point | Canonical meaning | Class | Scope |
+|---|---|---|---|---|
+| f | U+0066 | Contemporary physics and physical foundations | Research-domain component | Current and historical physics research relevant to spacetime, relativity, quantum theory, quantum gravity, cosmology, geometry and topology, causal/time structure, quantum information, holography, emergent spacetime, foundational experiments, and mathematical physics. |
+
+**Use:** `f` is a subject component, not a claim that a paradigm shift has been established. It may be integrated with existing `h` (history), `k` (category-theory programme), and `ᛟ` (SAT/H(s)H lens) components. For the current physics pilot, see `info/PHYSICS_PARADIGM_RESEARCH_LEDGER.md`, Tock PHY-01.
+
+**Change control:** this adds `f` without changing or reassigning any existing code. The existing `s` assignment remains the deferred dedicated spiritualist-reading programme.
