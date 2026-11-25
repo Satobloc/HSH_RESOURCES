@@ -2142,3 +2142,20 @@ Fresh live GitHub readback of HsH Actions run 45554091984 and job 139001876678:
 **Interpretation:** the request remains submitted and its workflow is still reported in progress, but the search step has not produced a verifiable output. Missing logs/artifacts/output plus a frozen run update are consistent with an unresolved or stalled worker, but do not prove failure. The lane remains occupied. Do not edit, duplicate, cancel, rerun or retrigger. The next PHYS session must perform another fresh status/steps/output read before taking any action.
 
 No effect on the research ticker or other lane cursors.
+
+
+---
+
+## 32. Bite 18 — proposition-level 1985/1986 comparison
+
+The 1985/1986 report pair has now been collated at the level of section architecture and central propositions. The most important correction is that the 1985 report already contains the homotopy motivation: its introduction describes joint work of M. Tierney and Joyal on homotopy 3-types, and Section 2 includes a “Homotopy structure of the 2-sphere” example. The 1986 report's crossed-module/bracket treatment is therefore not a wholly new homotopy connection. It generalizes and formalizes that earlier example, explicitly identifying crossed modules as groups in Cat, braidings as bracket operations, and the bracket with the Samelson bracket in homotopy theory.
+
+**What was already in 1985:** braiding axioms and non-symmetric examples; configuration-space braid group, Artin generators/relations, juxtaposition and braid category; the Linton ribbon counterexample; multiplication ↔ braiding Propositions 2–3 and the 2-category equivalence with monoidal categories carrying multiplication; free braided category / Theorem 4 / coherence; enriched categories and Propositions 5–6; Day convolution and Proposition 7.
+
+**What the 1986 report reorganizes or strengthens:** the braid category and Linton example move into a consolidated example gallery; multiplication ↔ braiding and the free-category/coherence theorems are retained with clearer typed exposition; the 2-monadic framing of the free braided category is more explicit; enrichment is retained with its reliance on braiding axioms B5/B6 rather than symmetric coherence; convolution is integrated as an example.
+
+**Major 1986 extension:** a systematic crossed-module/bracket treatment, the 2-category H³ of groups/modules/3-cocycles, biequivalence with compact monoidal groupoids, interpretation through crossed modules, and classification of compact braided monoidal groupoids by abelian groups and quadratic functions traced from braidings.
+
+The 1985 report's numbering is anomalous: its Fred Linton ribbon page is printed p. 8½ and headed §4, followed by p. 9 headed §3. The source note preserves that anomaly rather than imposing a clean section order. Exact proposition-level locators and qualifications are in [PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md](../WORKSPACES/PHYSICS/PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md), Bite 18, §12.
+
+**Interpretive result:** the 1986 report is a substantial revision and expansion, not a first formulation of the braid category or its central categorical machinery. The principal new terrain is the categorical-group/homotopy classification programme. The 1993 article remains not directly read; its relation to the 1986 H³ and braided-group classification is still open. No ticker advance.
