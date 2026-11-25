@@ -1,0 +1,99 @@
+# BIO THREAD START HERE
+
+**Purpose:** This file is the continuity anchor for any new conversation taking over the BIO comparative-history lane. Start here, then follow the linked pointers. It is deliberately compact; the detailed evidence and definitions live in the linked notes and ledgers.
+
+**Last updated:** 2026-11-25  
+**Primary repository:** `Satobloc/HSH_RESOURCES`  
+**Lane:** BIO, within the HSH_RESOURCES comparative-history lane (`⟐`)
+
+## 1. Resume point
+
+**Current ticker, preserved exactly as supplied:**
+
+`BIO:⟐βᛟvnχ@⊕[rmρk:ᛟd]⊕[ᛟd:mbx]s`
+
+Completed BIO bites:
+- `v` — biological variable map: complete.
+- `n` — mouse nodal left–right determination: complete.
+- `χ` — cellular chirality and actomyosin comparison: complete.
+- `r` — active; not complete.
+
+**Current inner position:** `r / R.1) is complete. Resume at **R.2**. Do not advance the outer ticker past the active `r) group until the `r) mapping work is complete. R.1 completion is a sub-bite, not completion of `r).
+
+**R.2 next:** Map the already reconstructed mouse node left–right developmental history into the stipulated four-dimensional worldtube picture. Keep the bite limited to node geometry, ciliary motion, nodal flow, sensory response and early signaling. Preserve the established biological mechanism; test whether the worldtube representation clarifies continuity and temporal incidence.
+
+## 2. Read in this order
+
+1. **This file first.** It gives the lane, cursor, method and pointer map.
+2. **Work Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`: read §§74–80 for the current BIO programme, completed bites, R.1 result and handoff. Earlier numbered sections hold the historical biology work and wider workshop context.
+3. **Code Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md`: consult the BIO subpath, lane selector, current ticker, `ᛟ), `β), `d), investigation modifiers and shared grouping grammar. The code ledger defines glyphs; do not infer unfamiliar symbols from memory.
+4. **Protocol** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md`: use §§22, 24, 30–31, 37 and 42 for Tock–Tick scope, compact signatures, orientation, the stipulated SAT/H(s)H lens, Dimensional Normalization, and lane-local cursors.
+5. **Reading notes** — follow the links in Work Ledger §§75–79. These contain the source-level findings and limitations; the ledger is the index/continuity layer, not a substitute for the detailed notes.
+6. **Primary sources and companion archives** — follow exact URLs, DOIs, page/section locators and archive paths inside each reading note. For the `d) companion method, the source is in `Satobloc/SAT_THEORY_ARCHIVE_2023-25` as `DIMENSIONAL_NORMALIZATION.pdf), `.tex), and `_AUTO_EXTRACTED_TEXT/DIMENSIONAL_NORMALIZATION.txt`. Consult `Satobloc/HsH` materials as reference material when relevant; do not move BIO findings into HsH BEDROCK.
+
+This is the intended pointer chain: **start anchor → work ledger → code/protocol → bite note → cited primary source or companion archive → deeper source-specific material**. Follow only as far down the chain as the current bite requires.
+
+## 3. What this lane is doing
+
+The broad comparative question is whether SAT/H(s)H has independently converged on, or reconstructed, structures that already have analogues in higher mathematics, category theory, braid theory, theoretical physics and neighboring fields, and whether the formal language in those fields can be translated back into an intelligible geometrical/conceptual account.
+
+BIO is one bounded case study: **how do contemporary biological systems, especially developing organisms, correspond to a literal four-dimensional organism/worldtube picture?** Biological mechanisms are investigated on their own evidence first; the ᛟ lens then reads their full histories as physically four-dimensionally extended structures.
+
+The examples that motivated the wider comparison (braids/filaments, vortex atoms, monotonicity/time, back-pull/entanglement) are research leads, not established equivalences. Do not import them into a BIO bite unless a concrete biological structure calls for it.
+
+## 4. Compact operating method
+
+For each bite:
+
+1. **Orient.** Read this anchor and the live ledger/codebook. Re-fetch current repository files and verify the active cursor. Do not rely on a stale conversation summary when a live archive record exists.
+2. **Bound.** State one answerable question, what is in scope, what is excluded, and what counts as a finished bite. Keep work small enough to complete and record in one pass.
+3. **Recover evidence.** Prefer primary sources for mechanisms and original claims. Record organism/species, tissue, developmental stage, experimental system, source date, exact URL/DOI and page/section where available. Distinguish searched, located, abstract-read, section-read and full-text-read.
+4. **Separate layers.** Keep (a) source/author claims, (b) established biological or physical mechanism, (c) ᛟ reinterpretation, (d) structural analogy, and (e) conjecture visibly distinct. An analogy is not an identity or causal link.
+5. **Apply ᛟ literally.** Treat the familiar three-dimensional present as a section of the organism's four-dimensional physical history. Do not dilute this stipulated workshop lens into a merely possible extra dimension. Equally, do not attribute the full SAT/H(s)H ontology to a historical or scientific source that did not claim it.
+6. **Test the payoff.** Ask what the four-dimensional account makes explicit: persistence, changing sections, constituent histories, event/structure incidence, cross-scale organization, or constraints. Also state what it does not solve. Do not add mechanisms unsupported by the sources.
+7. **Stop at the boundary.** Record the smallest useful result, caveats, unresolved discriminator and one next bite. Park category theory, braid theory, formal derivations or other branches until the concrete structure warrants them.
+8. **Persist and verify.** Create or update a compact reading note; append a concise Work Ledger entry; update the code/ticker only when the actual cursor changes. Fetch the live target SHA immediately before each edit, use it for the write, then fetch the saved file again to verify its contents and SHA. Never overwrite a concurrent change with a stale copy.
+9. **Hand off.** Leave this anchor, the Work Ledger, Code Ledger, and lane ticker mutually consistent. The next conversation should be able to resume without reconstructing the method from chat history.
+
+## 5. Evidence and search rules
+
+- **Mysearch** is the preferred first-choice archive search when its live implementation is operational and validated. Its last recorded status (2026-11-25) was implementation scaffold / not production-validated. Recheck the live implementation plan and status before claiming use.
+- **Mersearch** is the documented archive-search route while Mysearch is unavailable. Check current lane occupancy and the worker start instructions before dispatch. The last recorded check (2026-11-25) found all four canonical request lanes occupied; that is a dated snapshot, not a permanent state. Do not overwrite another lane's request.
+- If neither bespoke route can be executed, use an explicitly disclosed fallback. Generic GitHub code search or direct file fetch is not Mysearch or Mersearch. Record exact repositories, files, refs/SHAs, queries, exclusions and coverage limits. A search hit is not a source read.
+- External literature/web search is appropriate for contemporary scientific sources. Cite factual claims derived from external sources in the conversation and preserve stable locators in the reading note.
+- Never claim completeness from a bounded search, compact receipt or partial abstract. Absence from searched results is not evidence of nonexistence.
+
+## 6. Interpretation and scope safeguards
+
+- The ᛟ lens is the workshop's stipulated literal physical four-dimensional ontology. This is the working premise of this reconstruction, **not** a claim that contemporary physics has independently established SAT/H(s)H.
+- The Dimensional Normalization paper (`d)) is a method companion only. Preserve native equations/units; apply its frozen normalization and residual audit only when a specific formal model makes that useful. Do not force conceptual biology through a numerical method.
+- Keep species, developmental stages, cell types, mechanisms and scales distinct. Do not aggregate different pathways into one universal chain.
+- Keep `v → n → χ → r → m` in its established local order. The `m) bite is selective mathematical application to a concrete biological structure; it does not by itself start the larger `k) category-theory programme.
+- The wider intended sequence retains `ρ) as a review point, then the larger `k⊕[mbxᛟd]) programme, with dedicated spiritualist readings `s) last.
+- This is a BIO comparative-history workspace. Do not amend H(s)H BEDROCK, central theory, worker directives, or the independent PHYS/GIT cursors.
+
+## 7. Current durable records
+
+**Work and continuity**
+- Work Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`, especially §§74–80.
+- Code Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md`.
+- Protocol: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md`.
+
+**BIO reading notes**
+- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIOLOGICAL_VARIABLE_MAP_CHIRALITY_LATERALITY.md` — `v).
+- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_MOUSE_NODE_LEFT_RIGHT_DETERMINATION.md` — `n).
+- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_CELLULAR_CHIRALITY_ACTOMYOSIN_TEE_2015.md` — `χ).
+- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R1_ORGANISM_AS_WORLDTUBE.md` — `r / R.1).
+
+**Reference repositories**
+- `Satobloc/HSH_RESOURCES`: primary BIO work, notes, workshop ledgers and tools.
+- `Satobloc/SAT_THEORY_ARCHIVE_2023-25`: source archive for SAT papers and the `d) companion method.
+- `Satobloc/HsH`: H(s)H reference material and shared infrastructure. Consult as needed, preserve its own authority and scope, and do not write this lane's conclusions into BEDROCK.
+
+## 8. Immediate next action
+
+Resume **R.2** as defined in the R.1 note. Use Work Ledger §76 as the biological mechanism source map, and the R.1 note as the worldtube baseline. Ask whether mapping the mouse organizer sequence into one four-dimensional developmental history makes temporal continuity or event/structure relations more explicit than the ordinary stage-by-stage causal description. Keep the first pass descriptive and bounded.
+
+---
+
+**Handoff rule:** When a conversation ends or context is lost, start with this file; then re-read the live Work Ledger and Code Ledger before doing research or changing the cursor.
