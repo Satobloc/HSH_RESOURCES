@@ -238,3 +238,28 @@ The last column is deliberately marked “as currently evidenced”: the 1993 fu
 Keep the version-family closure open. Prioritize obtaining the 1993 article through an alternate institutional or author-hosted route, and continue the 1985 report's page-by-page collation. Do not branch into the wider Freyd–Yetter/Drinfeld/Witten history until the source comparison is adequately closed.
 
 **Return cursor:** Connect / ℬ. No ticker advance.
+
+
+## 10. Bite 17 continuation — expanded visual inspection of the 1985 scan
+
+The 1985 scan is now visually inspected beyond the cover and the two previously noted key pages. Newly inspected leaves include the introduction (unnumbered front matter), printed pp. 1–9 and the inserted-looking half-page numbered 8½.
+
+### Directly observed on the 1985 pages
+
+- The introductory discussion explicitly frames the project as relaxing the symmetry requirement while retaining natural isomorphisms and coherence. It situates the work in relation to Mac Lane coherence, Eilenberg–Kelly, and the Eckmann–Hilton argument.
+- The opening formal section defines a braiding by a natural family of isomorphisms (c_{A,B}:A\otimes B\to B\otimes A) satisfying two diagrams/hexagon conditions, and distinguishes it from symmetry by the additional involutivity condition.
+- The report already gives examples of braided structures that are not symmetric, including a graded-module example parameterized by an invertible element (k\in K), with symmetry requiring (k^2=1).
+- The braid-category discussion defines the braid group through the fundamental group of the configuration space of n-element subsets of a Euclidean plane, gives the Artin generators and braid relations, and describes braid addition as juxtaposition. It then packages the braid groups into a category whose objects are natural numbers and whose hom-sets are braid groups for equal strand counts (empty otherwise), with tensor product by addition/juxtaposition.
+- The ribbon-braid counterexample is visible on the inserted-looking printed p. 8½. It attributes the example to Fred Linton, allows twisting of ribbons, regards each ribbon's two edges as strings, and gives a faithful strict monoidal functor sending n ribbons to 2n strings. The example satisfies selected later-listed diagrams while failing B1/B2; it is a diagnostic counterexample, not yet the systematic balanced/tortile theory.
+
+### Source-layout caution
+
+The scan's pagination/section ordering is not entirely straightforward: the inspected leaves include a printed p. 8½ headed “4. Ribbons and braids,” while the next sequential printed leaf p. 9 begins “§3. Multiplications on monoidal categories.” Do not silently normalize this into a clean linear section sequence. The report's own introduction gives a section roadmap that should be reconciled against the scan's apparent inserted leaf(s) and the remaining pages. This is another reason not to mark the 1985 report fully collated.
+
+### Consequence for the chronology
+
+The configuration-space braid group, its generators/relations, juxtaposition, and the categorical braid object are already present in the 1985 report. They are not innovations first appearing in 1986. The 1986 report should be treated as a substantial revision/expansion of an already established geometric and categorical construction, not as its first formulation.
+
+**Visual locators:** 1985 report PDF pages 1–9 and inserted p. 8½, especially the braid-category definition and Artin relations (printed pp. 5–8), ribbon counterexample (printed p. 8½), and opening multiplication discussion (printed p. 9): https://ncatlab.org/nlab/files/JoyalStreet-BraidedMonoidal85.pdf. The PDF's text extraction is poor; these are direct visual inspections.
+
+**State:** PARTIAL PRIMARY-SOURCE VISUAL INSPECTION; full page-by-page collation remains open. No ticker advance.
