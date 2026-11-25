@@ -262,6 +262,70 @@ A geometric curve may be unchanged under reparameterization while its parametriz
 
 **∂ result:** the category-theoretic structure is now separated into (i) whole-slice cobordisms, (ii) configurations and their histories, and (iii) composite-filament operations, with explicit identity, composition, monoidal-product and projection-compatibility questions. The source corpus does not yet determine the physical equivalence relation or a unique composition algebra.
 
+## 6C. Δ Projection and readout fidelity
+
+The comparison must distinguish three operations that are easily conflated:
+
+1. **Slice incidence:** I_t(A)=A∩Σ_t. This is the geometric intersection of a 4D object A with a 3D leaf. It is not, by itself, an observation or a projection.
+2. **Readout:** R_t maps the intersection data to an observable 3D configuration or measurement record. This is where coarse-graining, detector limits, omitted internal labels or loss of geometry may enter.
+3. **History reconstruction:** the family of all slice intersections/readouts across t may or may not reconstruct the underlying 4D object/history. This depends on foliation coverage, transversality, monotonicity and the fidelity of R_t.
+
+### A. Single slice versus full family
+
+For a foliation of a region by leaves Σ_t, a fully specified submanifold or region A is set-theoretically covered by the union of its intersections:
+
+A = ⋃_t (A∩Σ_t),
+
+provided the leaves cover the relevant region and each point of A belongs to the foliation as specified. This identity says nothing about whether an observer actually has every intersection or whether a readout preserves it.
+
+A single slice I_t(A) generally cannot determine A's full 4D history. Many distinct histories can share the same instantaneous slice. For a 1D filament γ, if every leaf intersects γ exactly once and transversely, the family p(t)=γ∩Σ_t can recover the curve as a time-indexed set of events, up to the declared parameterization and coordinate choices. If γ backtracks relative to the time function, is tangent to a leaf, intersects a leaf more than once, or misses part of the foliation, this simple readout fails or becomes multivalued.
+
+For a finite-core region W, the family W_t=W∩Σ_t reconstructs W only if the foliation covers W and the full spatial cross-section is retained at each t. A coarse observable R_t(W_t) need not retain enough information to reconstruct W.
+
+### B. Projection can be non-faithful
+
+Let O_t=R_t(I_t(A)) be the actual readout. If R_t is non-injective, distinct 4D objects, core states or internal histories may have the same observed 3D representation. That is not automatically a defect; it may be an intended coarse-graining. But then the lost distinctions cannot be recovered from the readout alone without additional assumptions or evidence.
+
+The relevant questions are therefore explicit:
+
+- **Coverage:** which leaves and which parts of each intersection are actually represented?
+- **Injectivity / faithfulness:** can distinct 4D states or histories collapse to the same readout?
+- **Surjectivity onto observations:** does every observed 3D configuration have a source-defined 4D preimage?
+- **Labels:** are phase, twist, orientation, core boundary and conserved quantities retained?
+- **Metric fidelity:** does the induced 3-metric and its evolution preserve the quantities used to infer distance, angle, curvature or inertia?
+- **Temporal fidelity:** does the readout preserve ordering, causal relations and the distinction between a local time direction and a chosen global coordinate?
+- **Composition:** does the readout respect the source-defined composite/history operations?
+
+No universal information-conservation or reconstruction claim is assumed. Each property must be established for a specified map and observation regime.
+
+### C. Composition square
+
+For a 4D composite operation C_k^(4), a 3D readout R_t∘I_t and a candidate 3D operation C_k^(3), test the commutation condition:
+
+R_t(I_t(C_k^(4)(x₁,…,xₙ))) = C_k^(3)(R_t(I_t(x₁)),…,R_t(I_t(xₙ))).
+
+If this fails, the projected composition is not the readout of the 4D composition under that proposed C_k^(3). If it holds only after discarding labels or topology, record exactly what was lost. A categorical functor can preserve identities and composition while still failing to be faithful; the formal translation must state which properties it preserves and which it forgets.
+
+### D. Relation to 3+1 spacetime geometry
+
+A 3+1 foliation of a Lorentzian spacetime does not identify the intrinsic curvature of one leaf with the full curvature of spacetime. The induced 3-metric h_ij, extrinsic curvature K_ij, lapse and shift, together with the relevant constraints/evolution equations, carry different parts of the geometry. Gauss–Codazzi relations connect intrinsic leaf curvature, extrinsic curvature and ambient spacetime curvature.
+
+Thus a SAT “curved time surface” must say whether it means:
+- intrinsic curvature of Σ_t;
+- extrinsic curvature of Σ_t in M⁴;
+- deformation/evolution of the foliation (for example, through K_ij and lapse/shift);
+- or curvature of the ambient 4D metric.
+
+A single 3D slice's intrinsic geometry is not enough to reconstruct the ambient 4D curvature. The SAT/H(s)H readout must identify the geometric data actually available and the dynamical equations that relate successive slices.
+
+### E. Hinton comparison
+
+Hinton's moving 2D film illustrates the distinction between an instantaneous section and the history traced by successive intersections. SAT's proposed 3D timesheet is dimensionally different, and the Hinton analogy does not guarantee that either readout is complete. In both cases, the section is a view of the higher-dimensional object; the full object is not identified with any one section.
+
+### Δ result
+
+The projection question is now decomposed into slice incidence, observable readout and history reconstruction. A family of exact intersections can reconstruct a covered geometric object under explicit foliation/transversality conditions; a single slice or a lossy readout cannot be presumed to do so. Projection/composition compatibility, metric fidelity and preservation of internal labels remain model-specific tests, not universal guarantees.
+
 ## 7. First conclusions and open questions
 
 1. SAT's foundational worldline/time-surface picture has a direct mathematical neighbourhood in spacetime curves, hypersurface foliations and incidence geometry. These structures clarify the proposal but are not unique to SAT.
