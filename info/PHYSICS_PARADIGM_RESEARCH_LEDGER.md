@@ -382,7 +382,7 @@ The strongest current point of contact with SAT/H(s)H is geometric: persistent e
 
 `⌖◉⌕⧖@⤳▣✓⇢`
 
-At the close of Bite 01, the next operation was **⧖ Geometrize**. This is a historical cursor snapshot, superseded by subsequent bites and the current Bite 19 plan at the ledger apex. The comparison diagram and dimensional distinctions remain useful source material; do not resume this old cursor over the current @◈ position.
+At the close of Bite 01, the next operation was **⧖ Geometrize**. This is a historical cursor snapshot, superseded by subsequent bites and the current Bite 19 plan at the ledger apex. The comparison diagram and dimensional distinctions remain useful source material; do not resume this old cursor over the current @… wait position.
 
 
 ---
