@@ -15,7 +15,7 @@
 
 **GIT_TRAFFIC** is the current, narrower workstream: estimate externally generated GitHub clone traffic after separating activity attributable to our own systems and workers. It is a sublane of GIT, not a replacement for the broader GIT remit.
 
-This is not the main H(s)H theory lane and is not a worker-policy or governance channel. Use HsH, SAT and other repositories as sources when needed; do not set worker instructions, take over Tern's WH-01 coordination, change HsH controls, or move the BIO/PHYS cursors. BIO, PHYS and GIT share the Tock–Tick/Creden­za vocabulary, not one undifferentiated work queue.
+This is not the main H(s)H theory lane and is not a worker-policy or governance channel. Use HsH, SAT and other repositories as sources when needed; do not set worker instructions, take over Tern's WH-01 coordination, change HsH controls, or move the BIO/PHYS cursors. BIO, PHYS and GIT share the Tock–Tick/Credenza vocabulary, not one undifferentiated work queue.
 
 **Primary focus:** HsH clone traffic. HSH_RESOURCES is the primary workspace for this conversation's research notes and continuity records, especially `EXPOSURE_STATS/`. HsH is consulted for the internal event ledger and related operational evidence. SAT_THEORY_ARCHIVE_2023-25 is a reference archive, not a default destination for unrelated theory work.
 
@@ -85,7 +85,7 @@ User preference: **Mysearch first** when it is genuinely operational and validat
 Verified state on 2026-11-25:
 
 - Mysearch has a dedicated Nathan Direct workflow scaffold, but its status is **SCAFFOLD ONLY / NOT VALIDATED / NOT YET A PRODUCTION SEARCH SERVICE**. The connected GitHub interface available in this session does not expose the required workflow-dispatch operation. No Mysearch run is claimed.
-- The four Mersearch bridge request lanes are occupied by existing requests; the legacy root request file is occupied too. No GIT request was submitted and no GIT queue position was assigned. Do not overwrite, displace or supersede another request.
+- Mersearch has four parallel slots, not one serial queue: Lane 1 uses the legacy `MERSEARCH_REQUEST.json`; Lanes 2–4 use `MERSEARCH_REQUEST_LANE_2.json` through `..._4.json`. All four currently contain outstanding requests. Lane 2's current PHY-01 request (`phy01-internal-first-worldtube-hinton-highercats-20261125-01`) is run `45554091984`, still `in_progress` at the latest direct Actions read. The older lane-2 run `44818799476` completed successfully on 2026-11-21; it is not the current lane-2 request and did not release the slot. Lanes 1, 3 and 4 also contain existing requests. No GIT request was submitted, so there is no GIT slot or queue position to report. Do not overwrite, displace or supersede another request.
 - The documented route is Mysearch when validated, otherwise stable Mersearch 1.0. If neither can be operated, disclose the exact blocker and label any generic GitHub code search as **fallback discovery**, never as Mysearch or Mersearch. Compact Mersearch receipts are navigation samples, not exhaustive result inventories.
 
 During this reconstitution, generic GitHub code search and direct repository-file reads were used only to inspect the Haul 9 conversation exports and primary protocol/work-state records. That work is **not** represented as a Mysearch/Mersearch execution or a fresh exhaustive Traffic-source search.
