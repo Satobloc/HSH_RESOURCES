@@ -17,9 +17,9 @@
 
 **Current lane boundary:** PHYS has its own cursor. Detailed 4D-organism, developmental and cellular-biology investigation belongs to the separate BIO lane; PHYS only follows a specific biophysics connection when it materially arises, and then points to BIO rather than duplicating or advancing BIO work. GIT/repository operations likewise retain their own cursor.
 
-**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`. Resume at `@⤳` for Connect. This is the current PHYS workplan, not a fixed signature or a shared cursor for BIO/GIT. Revise it as the work develops, and keep this apex, the PHYS entrypoint and the detailed Credenza aligned.
+**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳@ℬ◈∂Δ…▣✓ρ⇢`. The first-pass Connect crosswalk has been recorded; resume at `@ℬ` for the cross-disciplinary braid/formalization bridge. This is the current PHYS workplan, not a fixed signature or a shared cursor for BIO/GIT. Revise it as the work develops, and keep this apex, the PHYS entrypoint and the detailed Credenza aligned.
 
-**Immediate return:** execute Bite 19 (`⧉`), the SAT-first correspondence overview. Begin with the 2023–25 archive's *Fundamental Intuitions* and the relevant *one drop*, *single-file*, *standalone* and related source families; compare them with selected nLab / n-Category Café concepts and the current HsH geometry. Keep the scope at the level of conventions, ideas and tentative mappings. Do not resume the Joyal–Street source collation as the governing task. Check the existing Mersearch lane-2 request before any further archive search; never duplicate or overwrite it.
+**Immediate return:** continue Bite 19 (`⧉`) from `@ℬ`. The first-pass SAT-first correspondence map is recorded in [PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md](../WORKSPACES/PHYSICS/PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md). Reuse the nLab/n-Category Café reconnaissance and the conditional braid-dimension discriminator; develop the cross-disciplinary braid/formalization bridge without assigning an Artin braid group to SAT's physical objects prematurely. The exact one-drop source lineage remains unresolved; SAT UNODROP.txt is only a located candidate. The standalone-codes artifact is a transcript/prompt, not a clean code package. Keep the physical braid assignment gated by ◈ and the native object/core geometry. Do not resume Joyal–Street source archaeology as the governing task. Check the existing Mersearch lane-2 request before further archive search; never duplicate or overwrite it.
 
 
 ## 1. Tock: PHY-01 — Contemporary physics and the higher-dimensional synthesis
@@ -2186,9 +2186,9 @@ Disposition remains SUBMITTED_NOT_VERIFIED / unresolved. No cancellation, rerun,
 ## 35. Bite 19 — SAT-first correspondence overview (selected; not yet executed)
 
 **Bite reference:** Bite 19, SAT-first correspondence overview.  
-**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`  
-**Current operation:** `@⤳`  
-**State:** SELECTED / IN PROGRESS CONTEXT  
+**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳@ℬ◈∂Δ…▣✓ρ⇢`  
+**Current operation:** `@ℬ`  
+**State:** IN PROGRESS / FIRST-PASS CONNECT CROSSWALK RECORDED  
 **Purpose:** Re-center PHYS on the user's actual goal: understand how SAT/H(s)H maps to nLab / n-Category Café material, and to related historical and contemporary four-dimensional thought and physics, with SAT/H(s)H as the explicit interpretive lens.
 
 ### Primary comparison corpus
@@ -2240,10 +2240,12 @@ This is one overview bite, not a commitment to read the entire nLab, reconstruct
 
 - *Fundamental Intuitions of SAT*, `DEV CONVERSATION/FUNDAMENTAL INTUITIONS.txt`, blob `0318d803fc4bb948d781d1aa0d9257dc2bcead77`: read in full during this turn. It states the foundational worldline/filament, time-surface, intersection, reciprocal interaction, backreaction, particle-geometry, vacuum/matter-continuum and Standard Model / GR / QM import intuitions.
 - *ONE FILE SAT 2*, extracted text `_AUTO_EXTRACTED_TEXT/ONE FILE SAT 2.txt`, blob `a8767b229d757473e5cb3f8501d88742b14bfdad`: inspected opening and core test regime, master action / Universal Indicatrix claims, selected photon-neutrino extension. This is a mixed historical conversation/test prompt, not a clean canonical theory statement; its numerical and unification claims remain to be checked against equations and sources.
-- *STANDALONE CODES.txt*, `SAT XYZ/STANDALONE CODES.txt`: located by archive search; not yet read in full.
-- *one drop* exact source family: not yet resolved; do not infer that *ONE FILE SAT 2* is the same thing.
+- *STANDALONE CODES.txt*, `SAT XYZ/STANDALONE CODES.txt`, blob `26d66cabee4178ec8f8e2ed8214a3074688a90dc`: located and triaged. Despite its name, the inspected opening/tail show a long Activator Modes/SATxy conversation transcript and prompt specification, not a clean executable-code package; deeper inspection remains optional if a specific standalone build question arises.
+- `SAT UNODROP.txt`, root blob `53437e7d734b8e77894a7465a8cd37cc8ac8462a`: located and triaged as a 97,893-character mixed evaluation/test record with 27 assistant-generated test sections. Plausible one-drop candidate by filename, but not yet established as the unique intended one-drop source family.
+- `ONE FILE SAT 2.pdf`, root blob `6853f6666fc2c9f4b2468800ffe3314773cbbf94`, extracted text blob `a8767b229d757473e5cb3f8501d88742b14bfdad`: 19-page mixed test/evaluation artifact, not a clean theory statement.
+- *one drop* exact source family: still unresolved. `SAT UNODROP.txt` is a plausible candidate but the archive README does not establish a unique source-family mapping. Do not infer that *ONE FILE SAT 2* is the same thing.
 - Current HsH active theory materials: not yet freshly inspected for this bite.
 
 ### Immediate return
 
-Continue Bite 19 by identifying and reading the exact *one drop* and *single-file* source families, then inspect selected standalone material and current HsH theory references. After that, build the SAT-first correspondence map against a deliberately small selection of nLab / n-Category Café entries and relevant historical/physics sources. No ticker advance until the overview atlas is recorded and verified.
+Continue Bite 19 at ℬ: build the braid/formalization bridge from the existing nLab/n-Category Café reconnaissance and PHY01 dimensional-uplift discriminator. Keep the physical assignment conditional on ◈ and the actual core geometry. The first-pass crosswalk is recorded in PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md. After ℬ, return to ◈ for the source-defined filament/core, timesheet and thickening/readout geometry, then ∂ and Δ. The one-drop family remains unresolved; pursue it only if it changes the comparison map. No later bite is assigned yet.
