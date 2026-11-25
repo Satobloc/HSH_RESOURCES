@@ -68,7 +68,7 @@ For each bite:
 - The ᛟ lens is the workshop's stipulated literal physical four-dimensional ontology. This is the working premise of this reconstruction, **not** a claim that contemporary physics has independently established SAT/H(s)H.
 - The Dimensional Normalization paper (`d`) is a method companion only. Preserve native equations/units; apply its frozen normalization and residual audit only when a specific formal model makes that useful. Do not force conceptual biology through a numerical method.
 - Keep species, developmental stages, cell types, mechanisms and scales distinct. Do not aggregate different pathways into one universal chain.
-- Keep `v → n → χ → r → m` in its established local order. The `m) bite is selective mathematical application to a concrete biological structure; it does not by itself start the larger `k) category-theory programme.
+- Keep `v → n → χ → r → m` in its established local order. The `m` bite is selective mathematical application to a concrete biological structure; it does not by itself start the larger `k` category-theory programme.
 - The wider intended sequence retains `ρ` as a review point, then the larger `k⊕[mbxᛟd]` programme, with dedicated spiritualist readings `s` last.
 - This is a BIO comparative-history workspace. Do not amend H(s)H BEDROCK, central theory, worker directives, or the independent PHYS/GIT cursors.
 
