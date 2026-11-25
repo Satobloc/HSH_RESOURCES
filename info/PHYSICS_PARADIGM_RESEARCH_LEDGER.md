@@ -2121,3 +2121,24 @@ Directly observed: (1) braid groups from configuration spaces of finite subsets 
 This materially sharpens the chronology: 1986 did not first introduce braid categories, the free construction/coherence, multiplication–braiding connection, enrichment or convolution. It substantially develops a programme already visible in 1985, and adds a major categorical-group/crossed-module/cohomological classification branch. The scan has unusual pagination, including a printed p. 8½ leaf and section-number irregularities; the report has been substantively visually inspected, not fully transcribed or proof-audited. A proposition-by-proposition comparison with 1986 remains necessary.
 
 Detailed page locators and source-state qualification: [PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md](../WORKSPACES/PHYSICS/PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md). The full 1993 paper remains NOT READ; the H^3(G,M) versus H^4(K(G,2),A) distinction remains a secondary-source guide pending direct collation. No ticker advance.
+
+
+---
+
+## 31. PHYS Mersearch operational recheck — still unresolved
+
+**Rechecked:** 2026-11-25T08:09:54Z · **Disposition:** SUBMITTED_NOT_VERIFIED · **No retry or duplicate submission.**
+
+Fresh live GitHub readback of HsH Actions run 45554091984 and job 139001876678:
+
+- Workflow run Mersearch Request Bridge Lane 2: in_progress; conclusion null; run_attempt 1; run updated_at remains 2026-11-25T05:30:52Z.
+- Job search: in_progress; conclusion null; started 2026-11-25T05:30:51Z.
+- Steps 1–8 complete/success; step 9 Run Mersearch still in_progress; steps 10–12 (manifest, bounded receipt, publication) remain pending.
+- Run artifacts endpoint: total_count 0.
+- Request-scoped output directory indexes/mersearch_requests/phy01-internal-first-worldtube-hinton-highercats-20261125-01: 404 / Not Found.
+- Job-log endpoint: 404 with BlobNotFound, returned at 2026-11-25T08:09:54.0250713Z.
+- Request file WORKSPACES/COMMON/MERSEARCH_REQUEST_LANE_2.json independently re-read; blob SHA remains bcf6e3ef22b50b13d2b31747d22d9666623cefc2, request ID and lane unchanged.
+
+**Interpretation:** the request remains submitted and its workflow is still reported in progress, but the search step has not produced a verifiable output. Missing logs/artifacts/output plus a frozen run update are consistent with an unresolved or stalled worker, but do not prove failure. The lane remains occupied. Do not edit, duplicate, cancel, rerun or retrigger. The next PHYS session must perform another fresh status/steps/output read before taking any action.
+
+No effect on the research ticker or other lane cursors.
