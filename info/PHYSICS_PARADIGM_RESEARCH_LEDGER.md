@@ -703,3 +703,88 @@ The stable 1.0 source and lane-2 bridge were inspected after the job remained in
 **Bite status:** partial Connect scaffold recorded. The Connect Tick remains open pending primary-source fidelity and explicit construction of the maps. No theory proposition, external claim or physical result is promoted.
 
 **Operational provenance:** the HsH clone-ledger readback above records this turn's Contents API access and the four successful Actions checkout-step status observations. It does not report a full clone count or resolve GitHub Traffic.
+
+
+---
+
+## 11. Bite 05 — Source-stratified filament, timesheet and finite-core anatomy
+
+**Recorded:** 2026-11-25  
+**State:** New source-record distinctions recovered and incorporated. The original SAT/FIE/RMS primary-source retrieval is still incomplete; the Mersearch lane-2 search remains active. This bite refines the prior geometric schema without promoting a physical construction.
+
+### § SOURCE RECOVERY
+
+The following source records were read in the current continuation:
+
+- **HsH BEDROCK, BR-005:** SAT `θ₄` measures the filament–timesheet intersection angle from the **time normal**. Null/vacuum orientation is `θ₄ = 0`; the filament tangent is parallel to the time normal / timesheet propagation direction. For a particle at rest, `θ₄` is equivalent to inverse helical pitch. The adjacent winding-origin hypothesis is not part of BR-005.
+- **HsH BEDROCK, BR-006:** worldtube geometry is the framework-internal interaction mechanism; particle motion is described as worldtube topology; inertia as resistance to geometric change; Interbraid/back-tug as interaction across complete histories. The cumulative winding expression is framework-internal and does not, by itself, define an element of a braid group or establish external physics.
+- **HsH BEDROCK, ND-2026-11-24-01:** H(s)H is a tentative world-tubification of SAT with status-preserving inheritance. Its current Kerr-ER-Pauli twisted-vacuum-worldtube picture remains tentative.
+- **HsH BEDROCK, ND-2026-10-18-04:** Minkowski is the controlling known-physics construction; build the full geometry first and let its output determine differences. Preserve nested worldtube morphology and distinguish geometric construction from interpretation.
+- **HsH `!!_RUNNING_COTHEORIST_LOG.md`, 2026-09-16:** the `θ₄` baseline and the distinction between persistent/extended coiling and transient propagating helical excitation are recorded. The origin of winding is explicitly bracketed; `θ₄` need not itself generate winding.
+- **HsH `!!_RUNNING_COTHEORIST_LOG.md`, 2026-10-09 Nathan-direct correction:** the SAT inheritance is a worldline and time wavefront, **not a worldline wrapped around a separate core or carrier**. The straight timelike history parallel to the time-propagation normal is the candidate `θ₄=0` vacuum reference and is perpendicular to the timesheet. H(s)H adds a tentative finite-core ER/Kerr-like singular-support tube with inductively active Kerr-shell boundaries. “Kerr ring” denotes a possible **intersectional trace**, not a circular object around which the worldline wraps. Pauli exclusion still requires an independent quantum-statistical derivation. This log records the signed Nathan-direct cross-post, but its raw message ID remains pending; retain that provenance limitation.
+
+### ∴ OBJECT STRATIGRAPHY — DO NOT COLLAPSE THE TERMS
+
+1. **SAT filament / worldline:** preserve the source's own distinction. The inherited SAT description names a worldline and time wavefront; it does not posit a worldline wound around an independent carrier/core. Do not silently recast the SAT filament as an H(s)H finite-volume tube.
+2. **Timesheet / time wavefront:** a source-defined geometric object with a propagation direction / time normal. Its exact dimension, intrinsic geometry, global status, and relation (if any) to a conventional global simultaneity foliation still require primary-source recovery. The `θ₄` convention does not settle those questions.
+3. **H(s)H finite-core worldtube:** an added, tentative geometric construction with Kerr/ER-like shell and inductive/reconnection machinery. Its exact dimension, codimension, cross-section, boundaries and admissible deformations are not yet source-verified here.
+4. **Kerr-ring trace:** an intersectional/readout candidate, not a literal ring carrier for a wrapped worldline.
+5. **Winding, shell deformation, inductive propagation/reconnection, and traveling kink/deformation:** keep these as distinct candidate geometric/physical processes. SAT winding does not automatically map one-to-one into H(s)H winding or shell response.
+
+The SAT particle-zoo record also distinguishes persistent/extended helical coiling from transient propagating helical excitation. Any H(s)H reconstruction of bosonic/fermionic identity must preserve that historical distinction and test whether shell deformation, inductive/reconnection propagation, or a traveling kink carries the relevant identity. No mode identification is adopted in this bite.
+
+### ≝ GEOMETRIC BOOKKEEPING CORRECTION TO BITE 04
+
+Bite 04's `Σ_t = τ^{-1}(t)` remains a valid **ordinary Minkowski control/readout family**, not a source-established definition of the native SAT timesheet. Keep those objects separate.
+
+Bite 04's `W_i` and `K_i(t)` are retained only as conditional placeholders. The prior wording that treated `W_i` as a four-dimensional finite-volume region was too specific to count as source-backed. In a simple time-extension, a spatial core of dimension `d` has a history/worldvolume of dimension `d+1`; a point history, a filament history and a swept three-dimensional volume therefore have different dimensions. The recovered sources do not yet fix the relevant `d` or prove that the H(s)H finite core is a three-dimensional spatial volume. Likewise, a central worldline is not guaranteed to exist as a privileged centerline of every finite-core object. Use `K_i(t)=W_i∩Σ_t` only after the core, slice/readout family and intersection conditions are specified.
+
+The 4D Minkowski slab `X[t₀,t₁]` is an **ambient comparison construction**, not the worldtube/core itself. It can support a bordism-style composition test without deciding the dimensionality of the embedded object. Do not identify the full native timesheet with `Σ_t`, or the SAT worldline with the centerline of an H(s)H finite core, absent the source map.
+
+### ∂ CANDIDATE HISTORY COMPOSITION — FIRST FORMAL STEP
+
+On the explicitly declared Minkowski control, let `Σ_{t₀}` and `Σ_{t₁}` be the chosen readout boundaries of an ambient slab. A candidate decorated history `H₀₁` carries the source-defined geometric data through that slab and specifies incoming/outgoing boundary data `D₀,D₁`. Then:
+
+- `H₀₁ : D₀ → D₁` is composable with `H₁₂ : D₁' → D₂` only when `D₁` and `D₁'` match under an explicitly declared boundary equivalence, including the required geometric, time-orientation and source-defined core data.
+- Composition is gluing along the shared readout boundary. Associativity is expected only after the boundary equivalence and gluing conventions are fixed.
+- The candidate identity on `D` is a product/cylindrical history carrying `D` unchanged, not an unexplained empty history. A bordism-style category must state its treatment of noncompact spatial slices or impose a suitable compact-support/boundary convention.
+
+This gives a conditional boundary-composition template for PHY-Q14 / PHY-P10. It is not yet a defined physical category or proof that H(s)H supplies all the required data.
+
+### Δ TRI-PROJECTION DISCRIMINATOR
+
+Retain the three views from Bite 04 but make their input conditional on the object stratigraphy above:
+
+- **Causal projection `C(H)`:** records the event/region precedence and time-oriented Lorentzian data actually retained. Order preservation alone does not imply metric or proper-time preservation.
+- **Bordism projection `B(H)`:** records the ambient slab and its source-defined embedded/decorated history, with composition only when boundary data match.
+- **Configuration projection `Q(H)`:** records a path through the configuration space of the **actual** permitted core cross-sections. It remains uninstantiated until the core dimension/topology, labels, non-overlap rules, collisions and allowed deformations are recovered.
+
+The combined `R(H)=(C(H),B(H),Q(H))` remains a tri-projection schema, not a proven functor. The next discriminator is to identify which histories become indistinguishable under each projection, what each projection discards, and whether an invariant/observable separates physically distinct histories. Do not call three views equivalent merely because they share one input description.
+
+### ⁇ QUESTIONS / PIN REFINEMENT
+
+- **PHY-Q17 / Object lineage and dimension:** What are the exact dimensions, embeddings and boundary structures of the SAT filament/worldline, native timesheet/time wavefront, and added H(s)H finite-core worldtube? What source-authenticated map relates them without turning a SAT worldline into a wrapped carrier?
+- **PHY-Q14 / History composition:** Which boundary data define an admissible history, its identity and its gluing?
+- **PHY-Q16 / Core motion class:** What is the actual core cross-section and the topology of its allowed configuration space?
+- **PHY-Q15 / Projection fidelity:** Which geometric, causal, compositional and motion data are preserved or forgotten by `C`, `B` and `Q`?
+
+**PIN refinement:** PHY-P10 remains priority 1 for the minimal history category; PHY-P11 remains priority 1 and now explicitly includes the SAT-to-H(s)H object/dimension stratigraphy before assigning a motion group; PHY-P9 remains priority 2 for mapping-space realization and projection fidelity. PHY-P7/P8 remain active. No question or pin is closed.
+
+### ▶ NOW / ▷ NEXT / ↩ RETURN
+
+- **NOW — ◈:** recover the exact original SAT/FIE/RMS source definitions for filament, worldline, timesheet/time wavefront, and the exact H(s)H finite-core source material. Establish dimensions and source ancestry before choosing a core model.
+- **NEXT — ∂:** define the boundary objects, identity history, admissible gluing and composition using only source-specified data.
+- **NEXT — Δ:** test projection fidelity and the data-loss/separation questions after the first two items are specified.
+- **Parallel dependency — Mersearch:** keep lane 2 request `phy01-internal-first-worldtube-hinton-highercats-20261125-01` intact. It remains in progress; no new request, lane overwrite, or fallback relabeling. Await its manifest/receipt and then inspect the original source hits before final verification.
+- **RETURN:** resume at ◈ and keep the Connect Tick active until these object, composition and projection tests have a source-grounded result; then record, verify, reorient and choose the next Tock.
+
+### ⚙ STATUS AND LIMITS
+
+This bite corrects the object model and tightens the composition schema; it does not close Connect. No category/functor, physical law, braid group, particle identity, Kerr construction, or empirical prediction is established. The H(s)H finite-core picture remains tentative; the SAT-to-H(s)H object map is unfinished; the native timesheet remains undefined at the needed level; and the original source retrieval is pending.
+
+**Ticker scope:** the full planned PHY-01 scope remains the integrated current-physics, historical-lineage and higher-dimensional-mathematics inquiry under the SAT/H(s)H comparison lens and archive-acquisition route. The remaining Connect tasks are ordered ◈ → ∂ → Δ, followed by the Mersearch dependency, recording, verification, and a reorientation/next-Tock decision.
+
+**Operational provenance:** current-turn repository reads and this append are to be reconciled in the HsH clone ledger with exact event identities; no checkout count or GitHub Traffic metric is inferred.
+
+**LIVE TICKER — final line:**
+`⌖◉⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢`
