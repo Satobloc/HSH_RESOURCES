@@ -142,3 +142,18 @@ The framework-internal use of winding or Interbraid remains at its recorded epis
 - the historical map distinguishes actual transmission from convergence and analogy.
 
 The ℬ work package does not alter HsH policy, worker directives or theory status. Its records belong to HSH_RESOURCES.
+
+---
+
+## Initial dimensional checkpoint — added 2026-11-25
+
+The first explicit dimensional discriminator is now developed in:
+
+- WORKSPACES/PHYSICS/PHY01_BRAID_DIMENSIONAL_UPLIFT_20261125.md
+- Blob: c1f8e1520cc271a8d90e29f60bc4233ed8fd77de
+
+Hinton's illustrative film is two-dimensional; noncolliding point histories on it can carry planar Artin braid classes. The archived SAT/RMS time surface is described as three-dimensional. If point-valued intersections move freely across that full 3D leaf, the standard unordered configuration-space fundamental group is the permutation group S_n, not B_n. A richer braid structure would require a source-defined 2D constraint, extended intersection objects, nontrivial leaf topology or another specified embedding/motion construction.
+
+This is a conditional mathematical gate, not a selection of the native SAT geometry. It sharpens the order of work: recover the timesheet and actual object/core at ◈; then determine whether the relevant configuration space is planar, three-dimensional point motion, or extended-object embedding motion before assigning any braid group.
+
+Added ledger questions: PHY-Q48–Q52. Added priority pins: PHY-P27–P28.
