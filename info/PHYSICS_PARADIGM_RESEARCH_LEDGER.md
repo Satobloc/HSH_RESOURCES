@@ -1010,7 +1010,7 @@ The source's own preface is decisive for attribution:
 
 The elaborate section-by-section cube/tessaract reconstruction previously cited in Bite 02 occurs in **Appendix H**. It is therefore an editor-authored pedagogical/mathematical treatment in a Hinton-associated book, not direct evidence of Hinton's own wording or detailed derivation. The earlier Bite 02 source row is corrected additively: the volume remains relevant to Hinton's programme, but passages must be tagged by textual layer and authorship before attribution.
 
-The early Part I discussion of two-way counting, order and distance is within the portion the editors say is nearly as Hinton wrote it. There Hinton distinguishes a two-way ordering of positions from a metric notion of distance, which arises only when the positions are associated with material things in juxtaposition. This is a historically interesting structural distinction, but it is not by itself a modern partial order, a configuration space, or category theory.
+The two-way counting discussion is in Hinton's single-author *The Fourth Dimension* (1906), around lines 1120–1170 of the repository copy, not in *A New Era of Thought*. Hinton describes ordered letter-pairs as a two-way arrangement not necessarily involving distance; metric distance arises only when the positions are identified with equal material things in juxtaposition. This is a historically interesting separation of order and metric assignment, but it is not by itself a modern partial order, a configuration space, or category theory.
 
 ### ≝ THREE HINTON-ERA INTERSECTIONS TO KEEP SEPARATE
 
@@ -1053,6 +1053,55 @@ The broader Part I preface of *A New Era* calls for objective, tactile/model-bas
 Resume at ◈ with the SAT/H(s)H source-object recovery and the Mersearch dependency. In the historical branch, continue with source-authorship stratigraphy and the vortex/ether genealogy; keep the readout analogy, physical conjecture and constructive pedagogy as separate subbranches. Then return to ∂ and Δ for the formal history/projection tests.
 
 **Bite status:** Hinton's main cross-disciplinary strands and a major editorial-attribution correction are recorded. Connect remains open; no Hintonian physical proposal is adopted and no H(s)H theory status is changed.
+
+
+`⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢`
+
+---
+
+## 15. Bite 07 addendum — epistemology, moral practice and the correction of source attribution
+
+**Recorded:** 2026-11-25  
+**State:** Additional Part I passages checked in the 1888 *A New Era of Thought* copy; one source-reference error in Bite 07 corrected above and explicitly logged here.
+
+### ∴ SOURCE-ATTRIBUTION CORRECTION
+
+Bite 07's initial statement that the two-way counting/order-distance passage belonged to *A New Era of Thought* was incorrect. The passage is in **Hinton's *The Fourth Dimension* (1906)**, repository lines approximately 1120–1170. The source itself says that the paired-letter arrangement gives a two-way order and cautions against assuming distance; distance enters when the positions are associated with equal material things in juxtaposition.
+
+The corrected Bite 07 text now assigns this passage to *The Fourth Dimension*. The separate *A New Era* source-layer statement remains: Part I is nearly as Hinton wrote it, while the tessaract-section exercises in Appendix H are editor-authored. This correction changes attribution only; no research cursor or epistemic status is advanced by the correction.
+
+### ∴ A NEW ERA PART I — THEORY, PRACTICE AND THE SELF-ELEMENTS OF KNOWLEDGE
+
+The 1888 *A New Era of Thought* copy contains two especially relevant Part I discussions, within the portion the editors say is printed almost exactly as Hinton wrote it:
+
+1. **Chapter IV, “Theory and Practice” (book pages 24–28; repository text around line 1088):** Hinton argues that scientific knowledge is not exhausted by intellectual acquaintance with principles; it includes being able to act in accordance with facts through practical manipulation. He extends the distinction to moral life: abstract knowledge of justice is different from the practical ability to act justly. His examples connect learning chemistry, manipulating material apparatus, changing one's point of view, forming habits and developing an emotional response to justice and the lives of others.
+2. **Chapter V, “Knowledge: Self-Elements” (book pages 29–34; repository text around line 1229):** Hinton uses a named 3×3×3 block of twenty-seven cubes to examine how a learner's spatial knowledge incorporates the observer's conditions. The familiar above/below relation is treated as a “self element” because it is strongly shaped by gravity and the observer's habitual orientation. He proposes repeatedly changing which cubes are mentally central, and otherwise reorganizing the representation, to reduce the dominance of that observer-conditioned feature.
+
+These passages show Hinton's dimensional programme intersecting with **epistemology, pedagogy, practical science, embodied/model-based learning and moral philosophy**. The geometry is not merely an illustration added to an otherwise independent philosophy: Hinton is using disciplined spatial reconstruction as a way to investigate how knowledge is acquired, how observer-conditioned assumptions enter representation, and how practice transforms understanding.
+
+**Limits:** this is Hinton's philosophical and pedagogical argument, not a modern cognitive-science experiment, a derivation of relativistic frame invariance, a quantum observer effect, or an established moral theory. The comparison with contemporary ideas of situated or embodied cognition remains a historical/comparative question, not an attribution of influence.
+
+### ⋈ INTERDISCIPLINARY MAP — NOW MORE PRECISE
+
+- **Mathematics ↔ epistemology:** the two-way ordering scheme in *The Fourth Dimension* distinguishes order from metric distance; the cube-block exercise in *A New Era* examines observer-conditioned spatial relations. These are different arguments and should remain separate.
+- **Geometry ↔ pedagogy/material practice:** Hinton's own Part I argues that spatial knowledge must be built through manipulation and sustained familiarity, not merely through verbal rules or passive viewing. The detailed Appendix H tessaract exercises are later/editor-authored elaborations.
+- **Science ↔ moral philosophy:** *A New Era* Chapter IV explicitly compares theoretical/practical knowledge in chemistry and moral action, then relates the development of habits and perspective-taking to justice and altruism. Record this as Hinton's philosophical programme, not as an empirical result.
+- **Fluid mechanics ↔ electromagnetism:** the 4D vortex/ether-current proposal in *The Fourth Dimension* remains a distinct historical physical conjecture requiring its own lineage.
+- **Dimensional geometry ↔ philosophical time:** the film/filament readout analogy remains symbolic by Hinton's own qualification, not his validated physical account of time.
+
+### ⁇ ADDED QUESTIONS AND PIN
+
+- **PHY-Q22 / Historical source of two-way counting:** What historical or mathematical source supports Hinton's claim about Pythagoras, and how does his paired-letter scheme compare with established histories of number, order and lattice representation?
+- **PHY-Q23 / Observer-conditioned spatial knowledge:** How does Hinton's “self-elements” argument relate historically to perspective, reference frames, situated knowledge and embodied cognition? Which similarities are independent convergence rather than documented influence?
+- **PHY-Q24 / Practice and moral development:** What intellectual and historical sources inform Hinton's connection between scientific manipulation, habit formation, justice, altruism and self-transformation?
+- **PHY-P14 (Priority 2):** Trace Hinton's Part I epistemology/practice programme across geometry pedagogy, philosophy of knowledge and moral philosophy; compare with later ideas only after checking source chronology and documented transmission.
+
+### ↩ RETURN / CURRENT PLAN
+
+Continue the source-object task at ◈ and the pending Mersearch receipt; keep Hinton's readout, vortex, order/metric, and epistemology/practice strands separate until their historical paths have been reconstructed. Then proceed to history composition at ∂ and projection tests at Δ.
+
+**Bite status:** the source-attribution error is corrected; Hinton's epistemology/practice strand has been added to the cross-disciplinary map. Connect remains open.
+
 
 
 `⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢`
