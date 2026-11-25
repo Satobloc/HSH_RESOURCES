@@ -697,15 +697,15 @@ This is a lane-local research lens for the ⟐ HSH_RESOURCES comparative-history
 **Supersession:** this revision replaces the former description of ℬ as a PHYS-01-only subtask. Earlier PHYS-01 plans and findings remain valid as the physics case study within the larger programme.
 
 
-## Bite-level ticker codes
+## PHYS bite reference codes
 
-The PHYS ticker is a sequence of bounded research bites, not a concatenation of workflow phases or a prose outline. **One bite receives one symbol.** The symbol identifies the bite's scope in the master ledger; the usual phases (investigate, geometrize, connect, record, verify) are performed within the bite and do not each occupy ticker positions. Use `@` immediately before the next uncompleted bite. Assign later bite symbols only when their scope is selected and recorded; do not invent placeholder codes for speculative future work.
+A bite reference identifies a bounded PHYS work package in the master ledger. It is subordinate to, and must never replace, the complete shared pilot ticker defined in the continuity section below. A bite reference is not itself a complete ticker and must not be presented as the lane's live workflow signature. The shared ticker retains the ordered workflow, its completed prefix, its uncompleted suffix and the exact `@` position across conversations.
 
 | Glyph | Code point | Canonical meaning | Class | Scope / constraints |
 |---|---|---|---|---|
 | ⧉ | U+29C9 | SAT-first correspondence overview | Bite token | One bounded overview mapping the foundational SAT/H(s)H ontology and selected current developments to relevant nLab / n-Category Café concepts and wider four-dimensional historical/contemporary thought and physics. Primary comparison corpus: 2023–25 archive's *Fundamental Intuitions*, *one drop*, *single-file*, *standalone* and related foundational materials; current HsH theory is the evolving backdrop. This is not exhaustive source archaeology or proof-level validation. Full bite specification is Bite 19 in the PHYS master ledger. |
 
-**Current PHYS bite ticker:** `@⧉`. The prior phase-level ticker is retained in the ledger's historical record only; it is not the live bite ticker.
+**PHYS Bite 19 reference:** `⧉` (U+29C9), retained as a local work-package identifier only. It is not a live ticker, does not carry the `@` marker, and does not supersede the shared pilot signature. The live shared position is `@⤳`.
 
 
 ## Shared pilot ticker continuity — PHYS / GIT / BIO
