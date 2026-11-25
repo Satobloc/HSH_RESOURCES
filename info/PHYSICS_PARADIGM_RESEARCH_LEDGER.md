@@ -2072,3 +2072,26 @@ The 1985 report 85-0067 has now been recovered directly from nLab and screenshot
 
 Detailed comparison and visual locators are in [PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md](../WORKSPACES/PHYSICS/PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md).
 
+
+
+---
+
+## 28. Bite 17 addendum — Joyal–Street classification shift and access audit
+
+**Recorded:** 2026-11-25 · **State:** partial source-stratigraphy continuation · **Cursor:** unchanged at Connect / ℬ.
+
+The latest pass sharpens the 1986/1993 comparison. Baez–Shulman's *Lectures on n-Categories and Cohomology* explicitly distinguishes the general 2-group/categorical-group classification in Joyal–Street's 1986 Macquarie report from the braided 2-group classification in the 1993 publication. Their account says the 1986 report uses group cohomology to describe the whole 2-category of 2-groups, while the 1993 article leaves out that general classification and moves to braided 2-groups. They describe braided 2-groups as morally corresponding to connected pointed homotopy types with only \(\pi_2\) and \(\pi_3\) nontrivial, with classification involving \(H^4(K(G,2),A)\), rather than \(H^3(K(G,1),A)=H^3(G,A)\).
+
+**Interpretation:** this is not merely a shorter version of the same classification. It marks a shift in the homotopy-theoretic level associated with adding braiding. This is a secondary-source finding pending direct theorem-by-theorem collation of the 1993 article; Baez–Shulman's notes are explicitly informal and should be used as a strong guide rather than a replacement for the original.
+
+A fresh check of the 1986 report's opening definitions reconfirms the precise distinction: a braiding is a natural family of isomorphisms \(c_{A,B}:A\otimes B\to B\otimes A\) satisfying two hexagon conditions; a symmetry is a braiding with the additional involutivity condition. The report defines \(B_n\) as the fundamental group of the configuration space of n-element subsets of the Euclidean plane, then packages the braid groups into the braid category with strand counts as objects and juxtaposition as tensor product.
+
+**Access audit:** the ScienceDirect author page indexes the 1993 paper as “Open archive” and offers a PDF link, but direct page/PDF access returned 403. Elsevier API text/XML endpoints were inaccessible, and the bishtref mirror also returned 403. The Macquarie record verifies the article's peer-reviewed bibliographic identity but supplies no full text. The 2024 Rutgers slides remain a partial reproduction, not the article itself. Thus the 1993 article remains NOT READ; do not upgrade its source state.
+
+**Next:** continue seeking an institutional/author-hosted copy of the complete 1993 paper and collate the 1985 scan page by page. Do not branch prematurely into the wider Freyd–Yetter/Drinfeld/Witten history. No ticker advance; no change to the independent SAT/H(s)H physical-object/core-geometry gate.
+
+Detailed note: [PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md](../WORKSPACES/PHYSICS/PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md).
+
+**LIVE TICKER — final line:**
+
+⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢
