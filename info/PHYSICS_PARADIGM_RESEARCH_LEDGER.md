@@ -17,9 +17,9 @@
 
 **Current lane boundary:** PHYS has its own cursor. Detailed 4D-organism, developmental and cellular-biology investigation belongs to the separate BIO lane; PHYS only follows a specific biophysics connection when it materially arises, and then points to BIO rather than duplicating or advancing BIO work. GIT/repository operations likewise retain their own cursor.
 
-**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳ℬ◈∂@Δ…▣✓ρ⇢`. The first-pass Connect crosswalk, ℬ braid/formalization bridge, ◈ source-defined geometry inventory and ∂ history/composition contracts are recorded; resume at `@Δ` to test projection/readout fidelity and information loss. The physical equivalence relation and unique composition algebra remain open. This is the current PHYS workplan, not a fixed signature or a shared cursor for BIO/GIT. Revise it as the work develops, and keep this apex, the PHYS entrypoint and the detailed Credenza aligned.
+**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳ℬ◈∂Δ@…▣✓ρ⇢`. The first-pass Connect crosswalk, ℬ braid/formalization bridge, ◈ source-defined geometry inventory, ∂ history/composition contracts and Δ projection/readout analysis are recorded. Resume at `@…` for the existing lane-2 Mersearch dependency. The physical equivalence relation and unique composition algebra remain open. This is the current PHYS workplan, not a fixed signature or a shared cursor for BIO/GIT. Revise it as the work develops, and keep this apex, the PHYS entrypoint and the detailed Credenza aligned.
 
-**Immediate return:** continue Bite 19 (`⧉`) from `@Δ`. The first-pass Connect crosswalk, ℬ braid/formalization bridge, ◈ source-defined geometry/type inventory and ∂ candidate history/composition contracts are recorded in [PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md](../WORKSPACES/PHYSICS/PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md). Now test projection/readout fidelity: information retained or lost by 3D slicing, reconstruction from a family of slices, and compatibility of projection with composition. The exact one-drop source lineage remains unresolved; SAT UNODROP.txt is only a located candidate. The standalone-codes artifact is a transcript/prompt, not a clean code package. Do not resume Joyal–Street source archaeology as the governing task. Check the existing Mersearch lane-2 request before further archive search; never duplicate or overwrite it.
+**Immediate return:** Bite 19 (`⧉`) is waiting at `@…` on the existing lane-2 Mersearch request. The Connect crosswalk, ℬ braid/formalization bridge, ◈ source-defined geometry/type inventory, ∂ history/composition contracts and Δ projection/readout analysis are recorded in [PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md](../WORKSPACES/PHYSICS/PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md). The request is still in progress, with Run Mersearch active and no run manifest, search receipt or artifacts published. Resume when the run changes state or publishes its request-scoped outputs; then complete ▣ record, ✓ verify, ρ review and ⇢ transition. Do not duplicate, overwrite, cancel or retrigger the occupied request. The exact one-drop source lineage remains unresolved; SAT UNODROP.txt is only a located candidate. The standalone-codes artifact is a transcript/prompt, not a clean code package.
 
 
 ## 1. Tock: PHY-01 — Contemporary physics and the higher-dimensional synthesis
@@ -2188,9 +2188,9 @@ Disposition remains SUBMITTED_NOT_VERIFIED / unresolved. No cancellation, rerun,
 ## 35. Bite 19 — SAT-first correspondence overview (in progress)
 
 **Bite reference:** Bite 19, SAT-first correspondence overview.  
-**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳ℬ◈∂@Δ…▣✓ρ⇢`  
-**Current operation:** `@Δ`  
-**State:** IN PROGRESS / CONNECT, ℬ, ◈ AND ∂ FIRST-PASS CONTRACTS RECORDED  
+**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳ℬ◈∂Δ@…▣✓ρ⇢`  
+**Current operation:** `@…`  
+**State:** WAITING / CONNECT, ℬ, ◈, ∂ AND Δ RECORDED; MERSEARCH PENDING  
 **Purpose:** Re-center PHYS on the user's actual goal: understand how SAT/H(s)H maps to nLab / n-Category Café material, and to related historical and contemporary four-dimensional thought and physics, with SAT/H(s)H as the explicit interpretive lens.
 
 ### Primary comparison corpus
@@ -2251,3 +2251,20 @@ This is one overview bite, not a commitment to read the entire nLab, reconstruct
 ### Immediate return
 
 Continue Bite 19 at ∂: define candidate history identity/composition contracts over the source-defined objects and the ◈ type inventory in PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md. Keep the 2024 composite hierarchy, 2025 phase-locked filament bundles and 2026 finite-core worldtube distinct until typed maps connect them. After ∂, proceed to Δ for projection/readout fidelity. The one-drop family remains unresolved; pursue it only if it changes the comparison map. No later bite is assigned yet.
+
+---
+
+## 36. Bite 19 Mersearch wait-state recheck — no publication yet
+
+**Checked:** 2026-11-25, after the Connect/ℬ/◈/∂/Δ first-pass work.
+
+- Request ID: phy01-internal-first-worldtube-hinton-highercats-20261125-01.
+- Request path: Satobloc/HsH / WORKSPACES/COMMON/MERSEARCH_REQUEST_LANE_2.json.
+- Request blob SHA remains bcf6e3ef22b50b13d2b31747d22d9666623cefc2.
+- Workflow run: 45554091984; job: 139001876678.
+- Run status: in_progress; run updated_at remains 2026-11-25T05:30:52Z.
+- Steps 1–8, including all four repository checkouts and input recording, are completed successfully. Step 9, Run Mersearch, remains in_progress. Steps 10–12 (manifest, bounded receipt and publication) remain pending.
+- Artifact endpoint returns zero artifacts.
+- Disposition: SUBMITTED_NOT_VERIFIED / apparently stalled or unresolved, not confirmed failure.
+
+**Wait condition:** resume when the existing run changes state or publishes RUN_MANIFEST.json / SEARCH_RECEIPT.json / SEARCH_RECEIPT.md and request-scoped results. Do not duplicate, overwrite, cancel, rerun or retrigger the occupied request. If the workflow remains stalled, record the precise state and choose a fallback only through an explicit plan revision. The current ticker parks at @… before final record/verification/review/transition.
