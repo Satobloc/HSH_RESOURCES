@@ -604,7 +604,7 @@ The specific `v`, `n`, `χ` and `r` assignments are listed in the BIO-only subpa
 
 ### BIO lane full local path and current position
 
-The current BIO ticker is the user's exact, current grouping:
+The current BIO ticker, as last recorded in Work Ledger §86, is:
 
 `BIO:⟐βᛟvnχr@⊕[mρk:ᛟd]⊕[ᛟd:mbx]s`
 
@@ -623,7 +623,7 @@ Local status:
 
 **Inner cursor:** `r / R.1` through `R.4` are complete. Review determined that the defined `r` remit is sufficiently covered; no R.5 is authorized. The outer `@` has advanced to `m`, the selective mathematical-application component.
 
-This BIO ticker is a lane-local detail cursor inside the wider shared programme. It does not replace or advance the shared master ticker or any PHYS/GIT/GIT_TRAFFIC cursor.
+This is the current BIO workplan and its lane-local cursor. It does not advance any PHYS or GIT/GIT_TRAFFIC workplan.
 
 ---
 
