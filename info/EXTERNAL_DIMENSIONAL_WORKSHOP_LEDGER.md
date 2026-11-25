@@ -3508,7 +3508,7 @@ The anchor stores, in compact form:
 
 **Key discriminator:** what objective structural and dynamical conditions make temporally separated regions parts of one extended organism, rather than a lineage, ecosystem, causal network or merely connected set of worldtubes?
 
-**Decision:** `m` is COMPLETE for its defined overview-level comparative and selective-mathematical remit. This does not complete the wider `k) programme. The next planned component is `ρ`, the explicit review/reorientation checkpoint. It must assess whether the remaining workflow should be changed before the broader mathematics/category-theory programme begins.
+**Decision:** `m` is COMPLETE for its defined overview-level comparative and selective-mathematical remit. This does not complete the wider `k` programme. The next planned component is `ρ`, the explicit review/reorientation checkpoint. It must assess whether the remaining workflow should be changed before the broader mathematics/category-theory programme begins.
 
 **Cursor transition:** advance exactly one component from `m` to `ρ`; preserve all remaining groups and their order:
 
