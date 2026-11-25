@@ -3169,3 +3169,22 @@ The current job is to finish a bounded general reconnaissance, not to restart th
 **Decision gate:** do not force a chirality mapping. If no model-specific correspondence or new constraint survives, record that and select another biological implication.
 
 **Next cursor:** Bite 1, construct the biological variable map from primary sources and reviews; then select the next mechanism-level reading.
+
+
+## 74. Five-bite biological reconstruction path — 2026-11-25
+
+The five planned bites now have explicit single-character identifiers in the Unicode Code Ledger. This replaces the earlier ticker draft that repeated the generic eight-phase workflow once for each future bite.
+
+| Glyph | Bite | Planned result |
+|---|---|---|
+| v | Biological variable map | Separate molecular, cellular, ciliary, bilateral and embryonic-laterality variables; identify demonstrated causal links |
+| n | Mouse embryonic left–right determination | Reconstruct nodal organizer geometry, ciliary flow, mechanosensing, Pkd2/calcium, Dand5 and downstream signaling, including perturbations and species limits |
+| χ | Cellular chirality and actomyosin | Read Tee et al. in depth; reconstruct actin/myosin geometry, force/motion, handedness measure and any demonstrated relation to organismal laterality |
+| r | SAT/H(s)H biological mapping | Map the stipulated 4D organism/worldtube account to defined biological variables and processes; identify cross-scale relations without conflating reinterpretation and established mechanisms |
+| m | Selective application of higher mathematics | Apply relevant geometry, topology, configuration-space, braid, category, homotopy or other higher-dimensional machinery only where the biological system calls for it |
+
+**Parent/frame:** the five bites sit inside the existing `β` contemporary biological reconstruction pass and are read through the existing `ᛟ` SAT/H(s)H interpretive lens. The existing `m` mathematics component is instantiated selectively at bite five; this does not launch the larger `k` category-theory reading programme.
+
+**Current position:** Bite 1 is next. The five-bite path is `βᛟ@v n χ r m`.
+
+**Ticker correction:** use one character per planned bite, not a repeated generic workflow glyph sequence. The detailed work definition stays here and in the reading notes; the signature displays the ordered path and current position.
