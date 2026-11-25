@@ -1,6 +1,6 @@
 # BIO THREAD START HERE
 
-**Purpose:** This file is the continuity anchor for any new conversation taking over the BIO comparative-history lane. Start here, then follow the linked pointers. It is deliberately compact; the detailed evidence and definitions live in the linked notes and ledgers.
+**Purpose:** This file is the continuity anchor for the BIO comparative-history lane. Its central question is what SAT/H(s)H implies about biology and how its four-dimensional ontology converges with, differs from, or independently reconstructs the Hinton tradition, nLab/n-Category Café, higher mathematics and related physics. Biology is a major application, not a specialist mechanism catalogue. Start here, then follow the linked pointers.
 
 **Last updated:** 2026-11-25  
 **Primary repository:** `Satobloc/HSH_RESOURCES`  
@@ -17,9 +17,9 @@ Completed BIO bites:
 - `n` — mouse nodal left–right determination: complete.
 - `χ` — cellular chirality and actomyosin comparison: complete.
 - `r` — complete for the defined node-to-organogenesis mapping.
-- `m` — current; selective mathematical application to a concrete biological structure.
+- `m` — current; compact comparative orientation across SAT/H(s)H, Hinton, nLab/n-Category Café and higher mathematics, with biological implications in the foreground.
 
-**Current position:** `r` is complete for its bounded remit after R.1–R.4. The review found that the original node-to-downstream-organogenesis question has been covered at the required descriptive level. The outer cursor now marks `m` as next: selective mathematical application to a concrete biological structure. No R.5 is authorized. Remaining organism-boundary, vascular-lineage and full quantitative-mechanics questions are recorded as optional extensions or candidates for `m`, not hidden requirements of `r`.
+**Current position:** `r` is complete for its bounded remit after R.1–R.4. The mission has now been clarified: do not continue into increasingly detailed developmental biology by default. The outer cursor remains at `m`, now interpreted as an overview-level comparative map of SAT/H(s)H against the Hinton tradition, nLab/n-Category Café and related higher mathematics, asking what this says about biology. See the [mission reorientation note](READING_NOTES/2026-11-25_BIO_MISSION_REORIENTATION_SAT_HSH_HINTON_NLAB.md). No R.5 is authorized.
 
 **R.4 result:** Midgut rotation is a later organogenetic event nested within the embryo's worldtube. Mouse evidence supports right-sided HA/I-α-I enrichment and a TSG-6/HC-HA-dependent function in initiating rotation; Tsg6- and bikunin-null embryos show rotation defects. Direct mouse TSG-6 protein localization was not achieved in the study. See the [R.4 note](READING_NOTES/2026-11-25_BIO_R4_MIDGUT_ROTATION_WORLDTUBE.md) and Work Ledger §84.
 
@@ -28,6 +28,8 @@ Completed BIO bites:
 **R.2 result:** The mouse node is mapped as a temporally bounded organizer substructure within the embryo's longer worldtube. Ciliary histories, the nodal-cavity velocity field, sensory deformations and early signal propagation occupy related histories within it. Fast ciliary cycles and slower developmental progression share one time coordinate. The mapping clarifies event/structure incidence but introduces no new biological mechanism or demonstrated prediction. See the R.2 note.
 
 ## 2. Read in this order
+
+0. **Mission reorientation:** [BIO mission reorientation — SAT/H(s)H, Hinton, higher mathematics and biology](READING_NOTES/2026-11-25_BIO_MISSION_REORIENTATION_SAT_HSH_HINTON_NLAB.md). This governs the current emphasis and comparison labels.
 
 1. **This file first.** It gives the lane, cursor, method and pointer map.
 2. **Work Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`: read §§74–84 for the current BIO programme, completed bites and R.1–R.4 results. Earlier numbered sections hold the historical biology work and wider workshop context.
@@ -80,7 +82,7 @@ For each bite:
 ## 7. Current durable records
 
 **Work and continuity**
-- Work Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`, especially §§74–85.
+- Work Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`, especially §§74–86.
 - Code Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md`.
 - Protocol: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md`.
 
@@ -115,9 +117,7 @@ For each bite:
 
 ## 8. Immediate next action
 
-Begin `m`: selective mathematical application to a concrete biological structure. The most direct candidate is the coupled gut/dorsal-mesentery morphogenesis from R.4. First recover the source-defined model and its variables, equations, geometry, assumptions and perturbation data; then decide whether continuum mechanics, differential growth, elasticity or another formal tool actually fits. Do not force category theory or braid theory into the example. Preserve the distinction between a source's existing mathematical model and any additional H(s)H/SAT interpretation.
-
----
+Begin `m` with a compact orientation map, not another technical biological case study. Reconcile the primary SAT archive clusters (Fundamental Intuitions; biological implications and 4D organismal biology; weird/onto/HoloJesu/superhelical and tentative material; one-file/one-drop/standalone builds), then map the main Hinton and nLab/n-Category Café neighbourhoods. Make the SAT/H(s)H lens explicit and identify likely biological implications at organism, cell, tissue and biosphere scales. Keep the result overview-level; open deeper mathematical or biological modules only when they resolve a specific correspondence or discriminator.
 
 ---
 
