@@ -1285,3 +1285,78 @@ The refreshed Actions readback still shows:
 **LIVE TICKER — final line:**
 
 ⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢
+
+
+---
+
+## 17. Bite 09 — Hinton's moving-film geometry and the meaning of a circular trace
+
+**Recorded:** 2026-11-25  
+**Lane:** ⟐ HSH_RESOURCES comparative-history lane  
+**State:** PRIMARY HISTORICAL PASSAGE RE-READ · source-grounded geometric comparison added to ◈. This refines Bite 08's intersection-dimension finding; it does not change the SAT/H(s)H source status or establish historical transmission.
+
+### § PRIMARY SOURCE
+
+Charles Howard Hinton, *The Fourth Dimension*, 1906 Swan Sonnenschein edition, chapter IV, “The First Chapter in the History of Four Space.” HSH_RESOURCES transcription blob ece2e416bbc417d79a98b9ae90ec385361d85ae3; exact passage begins around repository line 989, with the spiral/film statement at line 1004, filamentary structures at line 1018, the plane-world generalization at line 1030, and Hinton's explicit “merely symbolical” qualification at line 1097. The repository transcription is derived from Internet Archive page images and omits illustrations; the title-page metadata identifies the 1906 edition.
+
+### ∴ FINDING 1 — INSTANTANEOUS INTERSECTION AND RECORDED TRAJECTORY ARE DIFFERENT OBJECTS
+
+Hinton's concrete analogy begins with a slanted stick intersecting a still-water surface. At any instant, the stick and water meet at a point; as the stick moves, the point moves. He then replaces the water with a thin film and introduces a spiral passing through it. The instantaneous intersection remains a point, while the successive positions of that point trace a circle in the film's own readout.
+
+The geometry can be separated as follows:
+
+1. **Ambient construction:** a spiral curve is embedded in a higher-dimensional setting.
+2. **Instantaneous cut:** a moving film intersects the spiral at a point.
+3. **Readout history:** as the film advances, the intersection point is recorded at successive internal film-coordinates.
+4. **Displayed trace:** the ordered locus of those successive coordinates is circular.
+
+The circle is therefore not the instantaneous curve–film intersection. It is the trajectory/locus of the point-valued intersections under the advancing family of films and the chosen coordinates of the film observer.
+
+This is consistent with the dimension rule in Bite 08: a transverse 1D curve meeting a 2D film in a 3D analogy, or a 1D worldline meeting a 3D hypersurface in 4D, generically gives a 0D intersection at each instant. A one-dimensional path can arise from the succession of those point intersections.
+
+### ∴ FINDING 2 — HINTON ALSO SEPARATES SECTION-MOTION FROM INTRINSIC CHANGE
+
+Hinton then asks what happens if the higher-dimensional filamentary structures themselves move while the film traverses them. He distinguishes two contributions to the lower-dimensional observer's apparent motion:
+
+- the motion produced by the advancing film reading off a structure that is otherwise permanent;
+- additional motion produced by changes in the higher-dimensional structure during the traversal.
+
+This is a precise historical distinction between **readout-induced apparent motion** and **intrinsic change of the object being read**. It is conceptually useful when comparing a propagating timesheet with a filament/worldline whose own geometry may also vary. The two contributions should be represented separately rather than bundled into a single undifferentiated “motion” term.
+
+### ∴ FINDING 3 — THE HISTORICAL LIMIT IS PART OF THE MODEL
+
+Hinton generalizes from the plane-world analogy to a higher-dimensional existence traversed by a “space of consciousness.” He explicitly cautions that, as far as he can see, this representation is **merely symbolical**, and that the true route to investigating higher dimensionality lies elsewhere.
+
+Accordingly, the model is evidence about Hinton's philosophical and geometrical imagination, not a derivation of physical time, a Lorentzian foliation, a causal law, or a verified higher-dimensional physical mechanism. Its value here is the clean distinction between instantaneous section and accumulated readout history, together with Hinton's own warning not to literalize the analogy.
+
+### ⋈ COMPARISON WITH THE SAT CIRCULAR-TRACE LANGUAGE
+
+The July 3 SAT narrative says that the intersection of a helix with a 3D plane in the four-dimensional construction could produce a circular trace. The inspected SAT text does not yet state unambiguously whether “trace” means an instantaneous intersection, a projection of the helix, or the locus accumulated through a family of moving timesheets.
+
+Hinton supplies a historically documented **candidate interpretation** of that language: the instantaneous intersection can be point-like, while the succession of those points in the readout coordinates forms a circular path. This is a structural comparison only:
+
+| Question | Hinton, 1906 | SAT source language, 2026 |
+|---|---|---|
+| Higher-dimensional object | Spiral / filamentary structures | Helix / filament / worldline |
+| Readout object | Moving film or plane of consciousness | Propagating time wavefront / timesheet |
+| Instantaneous result | Point at the intersection | Not yet explicitly distinguished from the stated circular trace |
+| Sequence of readouts | Point trajectory can trace a circle on the film | Could be a circular locus, but the family of timesheets and coordinate map are not yet specified |
+| Intrinsic object change | Explicitly separated from the moving-film effect | Must be separated from timesheet propagation and worldline curvature |
+| Status | Philosophical analogy, explicitly called symbolic | Framework-internal geometrical proposal, with its own unresolved metric and map obligations |
+
+No documentary evidence of Hinton-to-SAT transmission has been established. The chronological priority of Hinton's book and the similarity of the section/readout motif do not demonstrate that SAT derived its construction from Hinton. Record this as **structural convergence / comparison**, not intellectual descent.
+
+### ⁇ QUESTION AND PIN UPDATE
+
+- **PHY-Q31 / Readout history:** In the SAT source, is the circular trace the locus of successive point intersections with a family of moving timesheets, a projection of a helix, or an instantaneous intersection of a higher-dimensional support? Specify the readout coordinates and distinguish readout-induced motion from intrinsic filament change.
+- **PHY-P17 (Priority 1):** Resolve the instantaneous-intersection / accumulated-trace distinction in the source-defined SAT geometry. Return cue: primary SAT source locator and exact timesheet family / projection map recovered.
+
+### ↩ RETURN
+
+Bite 09 narrows the ◈ problem without closing it. A circular trace is geometrically possible as the path of successive point-valued intersections; the source must still identify the moving-surface family and coordinate map that generate it. Keep Hinton's symbolic model separate from SAT's physical proposal and from H(s)H's tentative finite-core construction. Continue at ◈; do not advance to ∂ or infer a braid/category structure from the trace alone.
+
+**Bite status:** one historical comparator now clarifies the distinction between instantaneous cut and readout trajectory. No causal influence, physical validation or HsH policy change is claimed.
+
+**LIVE TICKER — final line:**
+
+⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢
