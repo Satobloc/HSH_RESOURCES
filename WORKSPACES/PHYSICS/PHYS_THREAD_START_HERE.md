@@ -31,11 +31,11 @@ Do not collapse the candidates into one “everything is braids/entanglement” 
 
 ## 4. Core work mechanics
 
-**Cross-conversation continuity is mandatory.** This conversation inherits the complete shared pilot ticker exactly as it stood in the preceding conversation. Never reset, abbreviate, replace, reinterpret or regenerate it at a conversation boundary. Resume at the existing `@` position; move `@` only after the corresponding operation is completed, recorded and verified. The shared inherited ticker is:
+**PHYS continuity:** resume this lane's current workplan from the live PHYS ledger. The ticker is an editable working plan, not a fixed or shared signature. Preserve its current position when resuming, but revise it whenever the work warrants; record the revised plan in this entrypoint and ledger. BIO and GIT have independent workplans and cursors. The current PHYS ticker is:
 
 `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
 
-The lane-local PHYS research state and bite chronology remain subordinate records. They may add detail, but they do not replace or truncate this complete ticker. Re-fetch the live PHYS ledger and shared Code Ledger before advancing it.
+The ticker is the compact route through the current PHYS plan. Its symbols are resolved through the Code Ledger and the bite/branch records below. Re-fetch the live PHYS ledger and Code Ledger before continuing; if the plan no longer fits, revise it rather than preserving it for its own sake.
 
 
 - **Tock:** one bounded work package. Current Tock is `PHY-01`.
@@ -77,7 +77,7 @@ Check request-lane occupancy before writing. Never overwrite, duplicate or retri
 
 `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
 
-The next uncompleted operation remains `⤳`. Do not restart at `⌖`, move the marker to a newly invented bite token, or substitute `@⧉`. Bite 19 remains the current PHYS research package and its SAT-first correspondence overview remains the work context; the shared ticker records the larger ordered workflow across conversations. The PHYS ledger's local bite chronology is a supporting index, not a replacement ticker.
+The next uncompleted operation is currently `⤳` (Connect). Bite 19 remains the current PHYS research package and its SAT-first correspondence overview remains the work context. This ticker is the PHYS workplan at this moment; update it as that work develops.
 
 **Last complete result:** Bite 15 established from the inspected Joyal–Street 1986 and 1991 primary texts, and Kohno 1987, (a) the configuration-space construction of the braid category, (b) its free braided strict monoidal universal property, (c) a portable diagrammatic tensor calculus across physics/computation/networks, and (d) an analytic configuration-space → monodromy → Yang–Baxter/quantum-group bridge. This is an initial bridge, not a complete genealogy.
 
@@ -93,6 +93,6 @@ The next uncompleted operation remains `⤳`. Do not restart at `⌖`, move the 
 4. **Current mathematical programme:** [Braid Theory as a Cross-Disciplinary Geometric Lens](BRAID_AS_CROSS_DISCIPLINARY_GEOMETRIC_LENS_20261125.md) → [nLab / n-Category Café Reconnaissance](../COMMON/NLAB_NCATEGORY_CAFE_BRAID_RECONNAISSANCE_20261125.md) → primary papers and bibliographies.
 5. **Physics application case:** [PHYS-01 Braid Theory Case Study](PHY01_BRAID_THEORY_RESEARCH_PLAN_20261125.md) → [Internal Braid Source Stratigraphy](PHY01_BRAID_SOURCE_STRATIGRAPHY_20261125.md) → [Dimensional Uplift Test](PHY01_BRAID_DIMENSIONAL_UPLIFT_20261125.md).
 6. **Open physical geometry prerequisite:** return to the master ledger's ◈ questions and source recovery for filament, timesheet family, inter-leaf transport, finite core, ambient metric/signature and admissible motion.
-7. **Other research lanes:** biology → BIO lane and its own local ticker; repository/tooling → GIT lane and its own local ticker. Their lane-local cursors are not inherited into PHYS, but the complete shared pilot ticker is inherited across all three conversations exactly as printed above.
+7. **Other research lanes:** biology → BIO lane and its own local ticker; repository/tooling → GIT lane and its own local ticker. Their lane-local workplans and cursors are independent of PHYS.
 
-**Cold-start instruction:** begin with this page; preserve the complete inherited pilot ticker exactly as printed above; read the current top-level section and live state in the master PHYS ledger; check the Credenza NOW/RETURN and any active Mersearch dependency; then resume at the existing `@` position. Never restart or replace the inherited sequence. Expand into linked notes only when the current operation requires them. Record and verify before moving the cursor.
+**Cold-start instruction:** begin with this page; read the current PHYS ticker and live state in the master PHYS ledger; check the Credenza NOW/RETURN and any active Mersearch dependency; then resume at the recorded `@` position. Reassess and revise the workplan if the evidence or priorities warrant it. Expand into linked notes only when the current operation requires them. Record and verify before moving the cursor.
