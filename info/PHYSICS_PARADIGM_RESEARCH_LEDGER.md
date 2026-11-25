@@ -17,9 +17,9 @@
 
 **Current lane boundary:** PHYS has its own cursor. Detailed 4D-organism, developmental and cellular-biology investigation belongs to the separate BIO lane; PHYS only follows a specific biophysics connection when it materially arises, and then points to BIO rather than duplicating or advancing BIO work. GIT/repository operations likewise retain their own cursor.
 
-**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳@ℬ◈∂Δ…▣✓ρ⇢`. The first-pass Connect crosswalk has been recorded; resume at `@ℬ` for the cross-disciplinary braid/formalization bridge. This is the current PHYS workplan, not a fixed signature or a shared cursor for BIO/GIT. Revise it as the work develops, and keep this apex, the PHYS entrypoint and the detailed Credenza aligned.
+**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳ℬ@◈∂Δ…▣✓ρ⇢`. The first-pass Connect crosswalk and ℬ braid/formalization bridge are recorded; resume at `@◈` for source-defined object/core and timesheet geometry. This is the current PHYS workplan, not a fixed signature or a shared cursor for BIO/GIT. Revise it as the work develops, and keep this apex, the PHYS entrypoint and the detailed Credenza aligned.
 
-**Immediate return:** continue Bite 19 (`⧉`) from `@ℬ`. The first-pass SAT-first correspondence map is recorded in [PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md](../WORKSPACES/PHYSICS/PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md). Reuse the nLab/n-Category Café reconnaissance and the conditional braid-dimension discriminator; develop the cross-disciplinary braid/formalization bridge without assigning an Artin braid group to SAT's physical objects prematurely. The exact one-drop source lineage remains unresolved; SAT UNODROP.txt is only a located candidate. The standalone-codes artifact is a transcript/prompt, not a clean code package. Keep the physical braid assignment gated by ◈ and the native object/core geometry. Do not resume Joyal–Street source archaeology as the governing task. Check the existing Mersearch lane-2 request before further archive search; never duplicate or overwrite it.
+**Immediate return:** continue Bite 19 (`⧉`) from `@◈`. The first-pass SAT-first correspondence and ℬ braid/formalization bridge are recorded in [PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md](../WORKSPACES/PHYSICS/PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md). Now recover and type the source-defined filament/core, finite-core worldtube, timesheet/bulk response and readout geometry. Resolve what object actually intersects a leaf, its intrinsic dimension, and the thickening/projection maps before selecting a physical braid or motion group. The exact one-drop source lineage remains unresolved; SAT UNODROP.txt is only a located candidate. The standalone-codes artifact is a transcript/prompt, not a clean code package. Do not resume Joyal–Street source archaeology as the governing task. Check the existing Mersearch lane-2 request before further archive search; never duplicate or overwrite it.
 
 
 ## 1. Tock: PHY-01 — Contemporary physics and the higher-dimensional synthesis
@@ -2186,9 +2186,9 @@ Disposition remains SUBMITTED_NOT_VERIFIED / unresolved. No cancellation, rerun,
 ## 35. Bite 19 — SAT-first correspondence overview (selected; not yet executed)
 
 **Bite reference:** Bite 19, SAT-first correspondence overview.  
-**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳@ℬ◈∂Δ…▣✓ρ⇢`  
-**Current operation:** `@ℬ`  
-**State:** IN PROGRESS / FIRST-PASS CONNECT CROSSWALK RECORDED  
+**Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳ℬ@◈∂Δ…▣✓ρ⇢`  
+**Current operation:** `@◈`  
+**State:** IN PROGRESS / CONNECT AND ℬ FIRST-PASS BRIDGE RECORDED  
 **Purpose:** Re-center PHYS on the user's actual goal: understand how SAT/H(s)H maps to nLab / n-Category Café material, and to related historical and contemporary four-dimensional thought and physics, with SAT/H(s)H as the explicit interpretive lens.
 
 ### Primary comparison corpus
@@ -2248,4 +2248,4 @@ This is one overview bite, not a commitment to read the entire nLab, reconstruct
 
 ### Immediate return
 
-Continue Bite 19 at ℬ: build the braid/formalization bridge from the existing nLab/n-Category Café reconnaissance and PHY01 dimensional-uplift discriminator. Keep the physical assignment conditional on ◈ and the actual core geometry. The first-pass crosswalk is recorded in PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md. After ℬ, return to ◈ for the source-defined filament/core, timesheet and thickening/readout geometry, then ∂ and Δ. The one-drop family remains unresolved; pursue it only if it changes the comparison map. No later bite is assigned yet.
+Continue Bite 19 at ◈: recover and type the source-defined filament/core, finite-core worldtube, timesheet/bulk response and readout geometry. The first-pass Connect and ℬ bridge are recorded in PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md. After ◈, proceed to ∂ for history identity/composition and Δ for projection fidelity. The one-drop family remains unresolved; pursue it only if it changes the comparison map. No later bite is assigned yet.
