@@ -912,16 +912,12 @@ When a ticker is carried between conversations, prefix it with the relevant lane
 **Current BIO local path:** `BIO:βᛟvn@χrmρk⊕[mbxᛟd]s`. The shared master workflow remains separately governed by its canonical full signature. Other lanes retain their own tickers and evidence standards.
 
 
-## Cross-conversation Tocktick continuity — mandatory pilot rule
+## Pilot-thread continuity and living tickers
 
-The PHYS, GIT and BIO pilot conversations are continuous working threads, not independent workflow launches. A new conversation inherits the complete live shared ticker exactly as recorded by the preceding conversation. It must resume at the existing `@` marker without resetting, abbreviating, replacing, regenerating, renumbering or reinterpreting the sequence. Conversation boundaries do not complete operations and do not authorize cursor movement.
+PHYS, BIO and GIT are continuing work threads with independent scopes, ledgers, Credenzas and live tickers. When a conversation resumes, recover that lane's current workplan from its entrypoint and live ledger, then continue at the recorded @ position. Do not reconstruct the plan from conversational memory when the repository already records it.
 
-**Canonical shared pilot ticker at this handoff:**
+A ticker is a **living workplan**, not a canonized signature, immutable protocol, or independent authority. It externalizes the ordered intended work so that the full plan need not be held in working context. Its symbols point to definitions and scoped operations recorded in the ledgers. The ticker may be revised, reordered, expanded, shortened, split, combined or replaced when the work, evidence or priorities warrant it. Preserve continuity by updating the relevant lane's entrypoint and ledger together, not by freezing an old string.
 
-`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
+Each lane's ticker remains lane-local. PHYS does not inherit BIO's or GIT's cursor; BIO does not inherit PHYS's or GIT's cursor; GIT does not inherit either research lane's cursor. Common glyph meanings are shared, but workplans and @ positions are independent. A local sublane, such as GIT_TRAFFIC, may have its own ticker nested within the broader GIT remit.
 
-The next uncompleted operation is `⤳`. The entire sequence, including completed prefix and uncompleted suffix, is part of the state and must remain visible in every pilot entrypoint. Move `@` only after the operation it prefixes has been completed, durably recorded and independently checked as required by the lane's method.
-
-PHYS, GIT and BIO retain separate lane-local Credenzas, task ledgers, branches, evidence and subordinate cursors. Those local cursors may refine the work but must never replace or truncate the shared ticker. A lane-local bite token, phase abbreviation, status shorthand or newly invented symbol is not an acceptable substitute for the full inherited signature. When a local cursor and shared ticker appear to disagree, preserve both, stop advancement, inspect the live records and resolve the discrepancy explicitly rather than silently resetting either one.
-
-At every handoff, the outgoing conversation must leave the full ticker in its entrypoint/manifest and the relevant live ledger. The incoming conversation must re-fetch and verify those records before work. The shared signature is a continuity object, not a decorative summary.
+At handoff, leave the current lane ticker and its meaning/next-operation pointer in the entrypoint. On resumption, read the entrypoint and relevant ledger, confirm that the recorded workplan still fits, and continue or revise it deliberately. Do not treat the ticker as sacred; do not discard it casually either. Its job is to make continuity cheap and inspectable.
