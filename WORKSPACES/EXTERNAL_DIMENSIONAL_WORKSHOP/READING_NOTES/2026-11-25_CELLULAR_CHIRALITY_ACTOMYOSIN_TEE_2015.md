@@ -2,8 +2,9 @@
 
 **Lane:** BIO / comparative-history lane  
 **Created:** 2026-11-25  
-**Status:** SYNTHESIZED / `χ` bite ready for ledger closure  
-**Parent path:** `BIO:⟐βᛟvnχ@rmρk⊕[mbxᛟd]s`  
+**Status:** COMPLETE / durable note and lane-ledger readback verified  
+**Starting ticker:** `BIO:⟐βᛟvn@χrmρk⊕[mbxᛟd]s`  
+**Resulting ticker:** `BIO:⟐βᛟvnχ@rmρk⊕[mbxᛟd]s`  
 **Primary repository:** `Satobloc/HSH_RESOURCES`  
 **Purpose:** Reconstruct Tee et al. (2015) at mechanism level, then compare it with independent actomyosin- and Myo1D-related systems that connect cell chirality to organismal laterality. This is a comparative biological study, not a change to H(s)H theory or worker policy.
 
