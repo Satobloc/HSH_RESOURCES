@@ -3147,3 +3147,25 @@ The current job is to finish a bounded general reconnaissance, not to restart th
 **Next cursor:** compare (a) Hinton's extra-spatial mirror transformation, (b) ordinary biological chirality, and (c) temporal worldtube twist/orientation. Identify permitted transformations and the additional structure required for a valid mapping.
 
 **No main-program Tocktick advance:** this is a focused biology crosswalk and a new comparative branch result, not a declaration that the broader biological/historical Tock is complete.
+
+
+## 73. Geometry crosswalk — parity, biological chirality, and the worldtube — 2026-11-25
+
+**Note:** [Geometry Crosswalk 01 — Parity, Biological Chirality, and the Worldtube](../WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_PARITY_CHIRALITY_WORLDTUBE_GEOMETRY.md)
+
+**Completed comparison:** ordinary 3D parity/chirality; Hinton's extra-spatial 4D mirror transformation; and a 3+1D worldtube with temporal sections. A proper half-turn in the Euclidean x-w plane has 4D determinant +1 while restricting at its endpoint on w=0 to the 3D reflection (x,y,z) → (−x,y,z). This provides the geometric content behind Hinton's proposal. It is not the same operation as evolution along time in a spacetime worldtube.
+
+**Biological vocabulary correction:** molecular homochirality, cell chirality, bilateral body symmetry, and embryonic left–right symmetry breaking/laterality are distinct variables. Do not infer that the Tee et al. cultured-cell actin-chirality mechanism is the mechanism of mouse nodal flow or of organismal laterality without evidence.
+
+**Interpretive result:** Hinton is direct prior art for the *extra-spatial mirror transformation* and for a speculative microscopic biological application. It is divergent from the SAT/H(s)H spacetime/worldtube fourth dimension. A worldtube represents changing handedness over time but does not itself provide a physical mechanism for parity reversal.
+
+**Updated biology-first sequence:**
+1. Map molecular homochirality, cytoskeletal/cellular chirality, ciliary orientation/flow, bilateral symmetry and embryonic laterality as distinct biological variables and identify demonstrated causal links.
+2. Trace mouse nodal left–right determination in depth; distinguish organizer geometry, ciliary flow, mechanosensing, Pkd2/calcium, Dand5, downstream signals, perturbations and species limits.
+3. Read Tee et al. 2015 in full and reconstruct the actomyosin geometry, force mechanism, perturbations and computational model; determine whether a link to organismal laterality is demonstrated.
+4. Attempt the model-specific SAT/H(s)H mapping only after the biology is explicit; require an operational variable, cross-scale mechanism and discriminating consequence.
+5. Bring in category/homotopy/braid/configuration-space tools only where a concrete biological object or process calls for them. Classify each connection as prior art, divergent comparator, mainstream intersection, direct application or natural extension.
+
+**Decision gate:** do not force a chirality mapping. If no model-specific correspondence or new constraint survives, record that and select another biological implication.
+
+**Next cursor:** Bite 1, construct the biological variable map from primary sources and reviews; then select the next mechanism-level reading.
