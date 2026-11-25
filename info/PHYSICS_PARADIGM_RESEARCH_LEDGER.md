@@ -55,7 +55,7 @@ A source-grounded geometric atlas and comparison map containing:
 
 PHY-01 closes only when the above map has been built from inspected sources, the important geometry has been reconstructed faithfully, comparisons have source-level support, uncertainty and counterexamples are visible, and a next Tock is recorded. The Tock does **not** require proving SAT/H(s)H or declaring a new mainstream consensus.
 
-## 2. Shared ticker operation grammar
+## 2. PHYS ticker operation grammar
 
 The following operation key explains the glyphs used in the PHYS workplan. The current PHYS ticker is recorded at this ledger's apex and in the PHYS entrypoint. The abbreviated setup snapshot below is historical evidence of the initial workflow, not the current workplan. Resume at the current `@` marker; revise the ticker and its records when the plan changes.
 
