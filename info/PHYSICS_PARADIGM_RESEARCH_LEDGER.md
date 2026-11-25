@@ -2,10 +2,25 @@
 
 **Status:** ACTIVE SEED · thread-local research Tock with shared workflow architecture  
 **Created:** 2026-11-25T05:25:31.390Z  
-**Owner / direction:** Nathan's current instruction in the clone-traffic thread, 2026-11-25  
+**Owner / direction:** Nathan's PHYS-lane direction, reconstituted from HAUL 9 and continued here, 2026-11-25  
 **Purpose:** Establish this thread's Tock–Tick and Credenza, then investigate current foundational changes in physics, their intersections with SAT/H(s)H, and the historical/mathematical lineages connecting nineteenth-century higher-dimensional thought, Hinton, and modern higher-dimensional category theory and related structures.
 
 > This is a living pilot ledger, not a canonical or complete framework. Keep the apex concise and route detail to source records, branch notes, and deeper analyses. Modify it when actual work demonstrates a better structure.
+
+## 0. PHYS THREAD START HERE — cold-start handoff
+
+**New PHYS conversation? Start here:** [PHYS THREAD START HERE](../WORKSPACES/PHYSICS/PHYS_THREAD_START_HERE.md). It is the compact launchpad to this master ledger, the shared Tocktick protocol and code ledger, Mersearch instructions, and deeper subject/source maps. Read its cold-start instruction, then return here for the authoritative live state.
+
+**One-line mission:** determine how far SAT/H(s)H's Minkowski/worldline/timesheet/filament approach independently reconstructs, converges with, or differs from the geometry, topology, algebra, braid, category, higher-category and mathematical-physics structures developed elsewhere; decode those formalisms from their actual geometric objects and operations, not from intimidating vocabulary alone.
+
+**Core mechanics:** Tock = bounded work package; Tick = subordinate operation; Credenza = persistent NOW/NEXT/RETURN/PIN/SOURCES/QUESTIONS/FINDINGS/METHODS/BRANCHES and parked/retired registers; ticker = ordered compact plan; `@` = next uncompleted operation. Work in reasonable, inspectable bites (normally 2–5 primary sources or one substantial source plus essential context). Each bite ends with source locators, epistemic status, durable record, verification/readback and a return cursor. Reorient after roughly 3–5 substantive bites or sooner when evidence changes direction. Full definitions are in the [Protocol](EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md) and [Code Ledger](EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md).
+
+**Current lane boundary:** PHYS has its own cursor. Detailed 4D-organism, developmental and cellular-biology investigation belongs to the separate BIO lane; PHYS only follows a specific biophysics connection when it materially arises, and then points to BIO rather than duplicating or advancing BIO work. GIT/repository operations likewise retain their own cursor.
+
+**Current complete PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`. The current Connect work is the broad cross-disciplinary `ℬ` programme. Its separate SAT/H(s)H physical-realization gate remains `◈ → ℬ → ∂ → Δ`; do not assign external motion/braid structures to native SAT/H(s)H objects before source-defined geometry is recovered.
+
+**Immediate return:** compare Joyal–Street's 1985 precursor, 1986 report and 1993 *Braided Tensor Categories* paper, continuing the established Bite 15 result. Check the existing Mersearch lane-2 request before any further archive search; never duplicate or overwrite it. The detailed next bite and all pointers are in [PHYS THREAD START HERE](../WORKSPACES/PHYSICS/PHYS_THREAD_START_HERE.md).
+
 
 ## 1. Tock: PHY-01 — Contemporary physics and the higher-dimensional synthesis
 
@@ -66,19 +81,19 @@ The Credenza is the working cabinet for Tocks: it routes active work, preserves 
 
 ### ▶ NOW
 
-**PHY-01 / Tick at `⌕`:** establish the evidence map of contemporary foundational physics. First source bite: inspect the 2026 higher-derivative/QFT proposal associated with Neil Turok and Sam Bateman, and one current geometric/topological cosmology example. Separate the paper's own claims from commentary and from claims made by the repository's generated paradigm dossier.
+**PHY-01 / Tick at `⤳` (Connect), active subpath `ℬ`:** continue the cross-disciplinary braid/geometric-formalization programme. Immediate bite: compare Joyal–Street's 1985 precursor, 1986 report and 1993 paper, identifying what is retained, generalized or changed between versions. The independent physical-realization sequence remains gated at `◈`.
 
 ### ▷ NEXT
 
-1. Inspect the current Turok/Bateman higher-derivative QFT proposal and its mathematical mechanism, assumptions, claimed unitarity/causality result, and limitations.
-2. Inspect the 2026 Klein-bottle cosmology / non-orientable compactification papers; reconstruct the geometry and distinguish a model construction from evidence that our universe has that topology.
-3. Survey independent research streams involving entanglement, holography, quantum error correction, emergent geometry, higher gauge theory, and categorical formulations. Choose examples based on source-supported relevance, not thematic resemblance alone.
-4. Revisit the Hinton and historical dimensional source family, then trace the actual mathematical transitions toward topology, homotopy, categorical and higher-categorical structures.
-5. Build the SAT/H(s)H intersection matrix only after the relevant physics constructions have been read and geometrized.
+1. Compare Joyal–Street 1985, 1986 and 1993 directly; map the geometric braid category, free braided strict monoidal universal property, Yang–Baxter structure, and version-to-version changes.
+2. Trace the original Freyd–Yetter, Drinfeld, Kohno, Tsuchiya–Kanie, Jones, Moore–Seiberg and Witten source network, one bounded source family at a time.
+3. Map Joyal–Street tensor/diagram calculus into networks, Petri nets, circuits, concurrency and computation using primary sources.
+4. Build separate application histories for TQFT, anyons, topological quantum computing, quantum geometry/gravity, robotics and computation.
+5. Continue the independent source recovery at `◈` without blocking the broader `ℬ) historical/mathematical investigation.
 
 ### ↩ RETURN
 
-Return to this ledger and the live signature after each substantive bite. Check this Tock's source/geometry cursor before opening a new branch. Reorientation is appropriate after 3–5 substantive bites or sooner if the evidence materially changes the direction.
+Return here after each bounded bite. Resume from the precise source/version and line/page locator recorded in the latest bite, preserve the complete ticker, and check the independent Mersearch dependency. Reorient after roughly 3–5 substantive bites or sooner if evidence materially changes the direction.
 
 ### ≝ STATIC
 
@@ -88,7 +103,7 @@ Return to this ledger and the live signature after each substantive bite. Check 
 - **Lineage discipline:** distinguish direct historical influence, documented transmission, shared antecedent, structural convergence, retrospective reinterpretation, and analogy. Do not assume that Hinton directly founded or caused category theory; investigate the actual intervening history.
 - **SAT/H(s)H comparison discipline:** use SAT/H(s)H as the working explanatory lens, but do not relabel an external result as confirmation of SAT merely because the geometries resemble one another. State mapping, mismatch, assumptions, and testable consequences separately.
 - **Dimensional discipline:** a higher morphism is not automatically an extra physical spatial dimension. Explain the relevant geometric or categorical dimension rather than conflating them.
-- **Scope discipline:** the Tock is about the physics paradigm question and its intersections. No automatic expansion into unrelated biology, spiritualism, or general AI topics.
+- **Scope discipline:** keep PHYS centered on physics, geometry, topology, algebra, category/higher-category structures, mathematical physics and their historical/cross-disciplinary lineages. Detailed 4D-organism, developmental, cellular-chirality and other biological reconstruction belongs to BIO; PHYS may record a pointer when a concrete physics connection materially arises, but does not duplicate that work or advance BIO's cursor. The dedicated spiritualist reading programme remains deferred under its separate `s` assignment.
 
 ### ⚑ PIN
 
@@ -170,7 +185,7 @@ The SAT/H(s)H comparison is a cross-cutting interpretive lens across A/B/C, not 
 ### ⏸ PARKED
 
 - **PARK-01:** dedicated spiritualist / psychical research / Theosophical / Anthroposophical programme. Preserve the existing lowercase `s` assignment and defer this systematic programme unless it becomes directly necessary to the present Tock. Contextual historical references do not satisfy the dedicated programme.
-- **PARK-02:** detailed biological applications, unless a physics or category-theory source naturally creates a substantive biological bridge.
+- **PARK-02 (transferred to BIO):** detailed 4D-organism, developmental, cellular-chirality and organismal biology questions belong to the separate BIO lane and its local ticker. PHYS retains only a concise pointer when a specific biophysics connection is materially relevant; do not open a parallel biological workstream here.
 
 ### ⊘ RETIRED
 
