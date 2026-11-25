@@ -2174,3 +2174,12 @@ The reproduced contents list seven sections: tensor categories; braidings and Ya
 Source: Gregory Moore, *From Rational Conformal Field Theories to Modular Tensor Categories to Nonabelions* (Rutgers, 26 Sep 2024), https://www.physics.rutgers.edu/~gmoore/From-RCFT-To-MTC-20240926-FINAL.pdf, extracted-text lines 14–20 and 1540–1571.
 
 The 1985/1986 comparison is established at section/proposition-architecture level. Full 1993 collation remains open. No ticker advance.
+
+
+---
+
+## 34. Bite 18 Mersearch recheck — no state transition
+
+Rechecked during Bite 18. Run 45554091984 and job 139001876678 remain in_progress; step 9 Run Mersearch remains active; steps 10–12 remain pending; run updated_at remains 2026-11-25T05:30:52Z; artifact count remains zero. The request-scoped output directory still returns 404. Job logs again return BlobNotFound (latest response timestamp 2026-11-25T08:16:21.6248571Z). The request JSON remains unchanged at blob SHA bcf6e3ef22b50b13d2b31747d22d9666623cefc2, request ID phy01-internal-first-worldtube-hinton-highercats-20261125-01, lane 2.
+
+Disposition remains SUBMITTED_NOT_VERIFIED / unresolved. No cancellation, rerun, duplicate or retrigger. No research cursor change.
