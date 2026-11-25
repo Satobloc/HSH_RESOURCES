@@ -275,7 +275,9 @@ A geometric curve may be unchanged under reparameterization while its parametriz
 
 **Completed in this pass:** ◈ source-defined object and geometry inventory, including version distinctions and explicit missing type dependencies. The physical core and readout are not uniquely fixed by the sources; that uncertainty is now recorded rather than guessed.
 
-**Next operation:** ∂ — define candidate history identities and composition contracts over the typed objects that are available. Separate source-defined composite hierarchy from proposed formal composition maps; state where composition cannot yet be defined because the core or readout type remains unresolved.
+**Completed in this pass:** ∂ candidate history identity and composition contracts, separating whole-slice cobordisms, configuration histories and composite-filament operations. The physical equivalence relation and unique composition algebra remain undetermined.
+
+**Next operation:** Δ — test projection/readout fidelity: what information a 3D slice or observable readout preserves, loses, or can reconstruct about the 4D filament/worldtube history, and whether projection commutes with composition.
 
 ## 8. Source register
 
