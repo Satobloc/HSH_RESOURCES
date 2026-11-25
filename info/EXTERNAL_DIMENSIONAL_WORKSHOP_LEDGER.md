@@ -2781,3 +2781,20 @@ The 1901 *Zoologischer Jahresbericht* independently lists the expanded *Archiv* 
 For now, cite the **Marburg short report** as the directly inspected primary source for tissue, gut, blood-vessel and nerve-cord union, but keep the 352-page *Archiv* article as a higher-resolution primary-source target, not as a text already read. The *Biologisches Centralblatt* 633–650 paper is also separately identified and remains unread. Do not conflate the four versions or assume the expanded article is merely a verbatim reprint of the short report.
 
 **Sources used in this retrieval audit:** Index Catalogue author entry for Rabes (1901 a–d); *Zoologischer Jahresbericht* (1901) author index; Google Books/Google Play volume 13 record; *Sitzungsberichte* PDF record. No new experimental claims are added here. No cursor advance.
+
+
+## 64. Joest 1897 bibliography corrected: original article pp. 419–569 — 2026-11-24
+
+A focused bibliographic audit of Ernst Joest's *Transplantationsversuche an Lumbriciden: Morphologie und Physiologie der Transplantationen* resolves the page-range discrepancy noted in earlier source mapping.
+
+**Best-supported citation:** E. Joest, 1897, *Archiv für Entwicklungsmechanik der Organismen* 5, pp. **419–569**, 18 figures, plates 6–7.
+
+Evidence:
+- The contemporary *Zoologischer Jahresbericht für 1897* lists the title and subtitle, volume 5, pp. 419–569, 18 figures and plates 6–7.
+- A contemporary/near-contemporary bibliographic list in *Bollettino della Società dei Naturalisti in Napoli* likewise lists volume 5, pp. 419–569 and plates 6–7.
+- The 1901 Marburg Rabes report and Morgan's 1907 *Experimental Zoölogy* cite Joest's work as the basis for the worm grafting experiments.
+- A later EurekaMag indexing page gives two conflicting entries, one of which shortens the range to 419–469. Against the contemporary yearbook and second bibliographic record, 419–569 is the stronger reading; retain the shorter range as a likely miscitation, not as an equal alternative.
+
+**Access status:** Google Play/Books identifies *Archiv für Entwicklungsmechanik der Organismen*, Band 5 (1897), as an 886-page digitized full-view volume. The book metadata is visible, but the volume's page-level text/images and Joest's article body did not open in this session. The original 1897 article is therefore **bibliographically verified but not directly read**. Do not attribute detailed experimental protocols to Joest from the yearbook alone.
+
+**Next retrieval target:** obtain pages 419–569 from Band 5 or a separate offprint; when available, compare Joest's own descriptions and diagrams with Morgan 1907 and Rabes 1901. Until then, rely on Morgan for graft outcome descriptions and Rabes for the inspected histological report. No cursor advance.
