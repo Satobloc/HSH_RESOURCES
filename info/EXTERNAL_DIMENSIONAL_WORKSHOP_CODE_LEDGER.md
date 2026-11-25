@@ -3,8 +3,8 @@
 > **Small but significant bites. Don't choke, don't nibble.**
 
 **Status:** Bespoke experimental pilot. Local meanings only; no general recommendation implied.  
-**Version:** 0.2  
-**Updated:** 2026-11-24
+**Version:** 0.3  
+**Updated:** 2026-11-25
 
 ## Grammar
 
@@ -71,6 +71,31 @@ None registered yet. Add a collection only when it exists as an identifiable, po
 ## State and Tock tracking
 
 Tock is the higher-level bounded work package; Tick is a subordinate operation or position marker within it. The Credenza routes and preserves Tocks; the Unicode string describes their internal Tick structure. Tock completion requires a durable result and recorded next cursor. The live signature is the Tick-level compact representation; the ledger stores full Tock status and history.
+
+
+## Credenza register codes
+
+| Glyph | Code point | Register | Class | Purpose |
+|---|---|---|---|---|
+| ≝ | U+225D | STATIC | Credenza register | Stable definitions and rules; definitions intended to persist across Tocks unless explicitly superseded. |
+| ▶ | U+25B6 | NOW | Credenza register | Immediate active work; the current attention slot, not a separate phase. |
+| ▷ | U+25B7 | NEXT | Credenza register | Ordered upcoming work not yet active. |
+| ↩ | U+21A9 | RETURN | Credenza register | Re-entry instructions, exact resumption point and dependencies. |
+| ⚑ | U+2691 | PIN | Credenza register | Ranked, mutable possibilities and deferred ideas; each pin has an ID, priority, capsule, state, trigger/return cue and pointer where warranted. |
+| § | U+00A7 | SOURCES | Credenza register | Source identities, exact locators, provenance, reading state and access/coverage limits. |
+| ⁇ | U+2047 | QUESTIONS | Credenza register | Unresolved questions, alternatives and discriminators. |
+| ∴ | U+2234 | FINDINGS | Credenza register | Results, corrections and decisions with epistemic status. |
+| ⚙ | U+2699 | METHODS | Credenza register | Tools, procedures, search routes, tests and quality controls. |
+| ⋈ | U+22C8 | BRANCHES | Credenza register | Connected workstreams and their cross-links; does not imply equivalence. |
+| ⏸ | U+23F8 | PARKED | Credenza register | Deferred work with a possible return trigger; not closed or superseded. |
+| ⊘ | U+2298 | RETIRED | Credenza register | Superseded or closed work retained for history; not merely paused. |
+
+**Use and separation rules**
+- A glyph identifies a register, not a workflow action. It may head a ledger section or appear as a compact pointer in a Credenza capsule; it is not inserted into the Tock/Tick sequence merely because that register is being read or updated.
+- NOW and NEXT are distinct: ▶ is active attention; ▷ is ordered but not yet active.
+- PARKED and RETIRED are distinct: ⏸ preserves a deferred path with a possible return trigger; ⊘ preserves a superseded/closed path and its history.
+- A PIN is mutable and ranked; it is not a commitment to execute. Do not create a blank/undefined pin or code placeholder.
+- No register glyph supersedes @, and none changes the semantics of existing phase, operator, component or Tock codes.
 
 
 ## Change control
@@ -450,7 +475,7 @@ The earlier formula `c = wt` is dimensionally inconsistent under the standard me
 
 ## Living ticker and Credenza register codes — provisional descriptive terms
 
-These are register names and labels, not newly assigned workflow glyphs. Keep the live ticker's compact glyph syntax separate from Credenza content. Current useful registers: **STATIC** (stable definitions/terms); **PIN** (numbered mutable possibilities); **NOW**, **NEXT**, **RETURN** (current attention and re-entry); **SOURCES** (evidence/provenance); **QUESTIONS** (open questions and alternatives); **FINDINGS** (results/decisions); **METHODS** (tools, methods and quality checks); **BRANCHES** (cross-links); **PARKED** and **RETIRED** (deferred and superseded work). Registers may be added, split, combined, renamed or retired after review. A pin receives a short ID, priority/order, capsule, status, trigger/return cue and deep pointer where warranted. No new glyph assignment is made here.
+The following single-code-point designations label Credenza registers. They are register selectors, not phases or operations: they do not sequence work, imply completion, or move the ticker's @ cursor. Keep register content in the Credenza and the ordered Tick sequence in the live ticker. The register system remains mutable; add, split, combine, rename or retire a register only with an explicit code-ledger update and supersession history.
 
 
 ## Archive-acquisition marker — ᵃ (U+1D43)
