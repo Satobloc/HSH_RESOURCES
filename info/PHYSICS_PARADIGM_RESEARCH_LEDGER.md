@@ -1655,3 +1655,49 @@ The ℬ package is queued after ◈ and before ∂ and Δ. The current @ does no
 **LIVE TICKER — final line:**
 
 ⌖◉⟐⊕[fhkℬᛟᵃ]⌕⧖@⤳◈ℬ∂Δ…▣✓ρ⇢
+
+---
+
+## 21. Bite 12 — braid as internal encoding, inter-worldtube interaction and motion class
+
+**Recorded:** 2026-11-25  
+**Lane:** ⟐ HSH_RESOURCES comparative-history / PHYS-01  
+**State:** INTERNAL SOURCE STRATIGRAPHY RECORDED · ℬ taxonomy sharpened. This reconstructs recorded uses of braiding inside SAT/H(s)H; it does not establish an external mathematical lineage or physical braid-group realization.
+
+### § SOURCE NOTE
+
+A 73-line source-stratigraphy note was added to the primary workspace:
+
+- WORKSPACES/PHYSICS/PHY01_BRAID_SOURCE_STRATIGRAPHY_20261125.md
+- Blob: 089f1a726b99316ac6d86d300b9b90220a686791
+- Commit: 582810ca59358b484a7ff84b01313253fe8fb997
+
+It reads the July 3 SAT narrative, HsH BEDROCK BR-006 and the October 9 / September 16 running-log clarifications. Exact repository identities and blob SHAs are in the note.
+
+### ∴ THREE SOURCE-LEVEL MEANINGS
+
+1. **Internal composite encoding:** the 2026-07-03 SAT narrative chooses braiding worldlines as a geometric grammar for color confinement, proposing triple-braid quarks, double-braid mesons and Borromean-/Hopf-like intersectional representations. The source calls this a representational leap; it is not a derived QCD result.
+2. **Inter-worldtube interaction:** BR-006 describes Interbraid/back-tug as a framework-internal mechanical constraint among distinct, interlocked worldtube histories. This is not automatically a static link type, Artin braid or externally established dynamical law.
+3. **Cumulative winding / braid history:** BR-006 records an unwrapped relative-turn count. This is a scalar history measure until an object space, configuration space, angle, labels, endpoints, collision rules and homotopy relation establish a map to a winding or motion-group class.
+
+These are different mathematical problems. An internal multi-strand composite is not the same as exchanging several already-formed particles. A turn counter is not automatically a full braid-group word or quantum exchange operator.
+
+### ∴ DIMENSIONAL DISCRIMINATOR
+
+For two ordered points in a plane, the relative-position vector lives in the punctured plane and its loops have integer winding. For two unordered planar points, exchange generates the two-strand Artin braid group, isomorphic to the integers; a full 2π turn of an ordered relative vector corresponds to the pure-braid subgroup, not automatically one exchange generator. For two indistinguishable point particles in ordinary three-space, the standard unordered configuration-space group is S₂, recording exchange parity. Extended rings/links require their own configuration/embedding spaces.
+
+The BR-006 turn count could map into one of these structures only under additional hypotheses. No planar or 3D braid statistics are assigned to H(s)H.
+
+### ⁇ QUESTIONS AND PINS
+
+PHY-Q43–Q47 and PHY-P24–P26 are detailed in the source note. They concern internal strand identity and closure, Interbraid's mathematical type, the winding-to-group map, internal versus exchange braids, and any independent quantum-state representation.
+
+### ↩ RETURN
+
+The ◈ geometry prerequisite remains first. The current research order is to identify the source-defined filament, timesheet, transport and finite core; then separate the three braid targets; then construct their configuration/embedding spaces and only afterward investigate braid groups, braided categories and quantum-statistical actions. ℬ remains queued, not active. No physical braid-group assignment or external lineage claim is made.
+
+**Bite status:** internal braid terminology stratified and recorded; no theory or epistemic promotion.
+
+**LIVE TICKER — final line:**
+
+⌖◉⟐⊕[fhkℬᛟᵃ]⌕⧖@⤳◈ℬ∂Δ…▣✓ρ⇢
