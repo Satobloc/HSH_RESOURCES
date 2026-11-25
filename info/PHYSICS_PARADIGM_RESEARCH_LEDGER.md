@@ -523,7 +523,7 @@ The first source reconnaissance and first two geometric/historical bites are com
 - Actions run: [45554091984](https://github.com/Satobloc/HsH/actions/runs/45554091984), attempt 1; job `139001876678`.
 - The dedicated Jobs/Steps endpoints show successful completion of HsH main checkout, request validation, stable Mersearch checkout, SAT archive checkout, HSH_RESOURCES checkout, Python setup, and exact-input recording. The actual Mersearch search step is still **in_progress**; manifest creation, compact receipt generation, and publication remain pending.
 - The current GitHub run object still reports `in_progress`; last returned run metadata is stale at `2026-11-25T05:30:52Z`. The decoded job-log endpoint returned a BlobNotFound error, so actual checkout depth and post-checkout SHAs were not recovered from logs in this checkpoint.
-- The prior clone-ledger event `phy01-mersearch-action-run-observed-20261125T053402` is therefore still the prior observation. Do not retroactively mark its checkout step as complete or infer Traffic attribution from the workflow. Append a later supplement only after exact checkout evidence is available, preserving UNKNOWN and the original row.
+- The original clone-ledger event `phy01-mersearch-action-run-observed-20261125T053402` is preserved. An append-only reconciliation was published in HsH `WORKSPACES/COMMON/CLONE_LEDGER.jsonl`: five API-only access/write events and four checkout-step status readbacks (steps 2, 4, 5 and 6), commit `fb2e9923ce8ce00c238b18c5be6948865e05d4db`. The file was read back with 551 parseable JSONL rows. All four checkout steps are recorded as completed/success, but checkout depth, checked-out SHAs, materialization class and Traffic attribution remain UNKNOWN because the decoded job-log endpoint returned BlobNotFound. The HsH step-2 row is an explicit supplement; the prior in-progress row was not rewritten. Further supplements should be appended only if new job-log or manifest evidence resolves those fields.
 
 ### Active work and next cursor
 
@@ -535,7 +535,7 @@ The preceding checkpoint misplaced `@` one token too far to the right. The Bite 
 
 The next research operation is **⤳ Connect**: build the explicit mapping/composition data linking the actual SAT/H(s)H worldtube/timesheet construction with (i) causal/time-oriented Lorentzian structure, (ii) bordism/extended-TQFT composition, and (iii) finite-core configuration-space/motion topology. Keep those structures distinct until a source-grounded map demonstrates their relationship. The Mersearch request is a parallel source-recovery dependency, not permission to promote a correspondence before its provenance is inspected.
 
-**Re-entry:** resume with the PHY-01 Bite 03 questions Q9–Q13 and pins PHY-P7–P9. First refresh run 45554091984 and the request-specific output directory. Do not duplicate the request, overwrite a lane, claim a completed search, or move the Tick cursor merely because checkout succeeded.
+**Re-entry:** resume with PHY-01 questions Q9–Q16 and pins PHY-P7–P12. First refresh run 45554091984 and the request-specific output directory. Do not duplicate the request, overwrite a lane, claim a completed search, or move the Tick cursor merely because checkout succeeded.
 
 
 ---
@@ -701,3 +701,5 @@ The stable 1.0 source and lane-2 bridge were inspected after the job remained in
 - **PHY-P12 (Priority 2):** Mersearch 1.0 execution observability and throughput. After the current request reaches a terminal state, test bounded progress/throughput instrumentation on a development or bridge layer without changing the pinned stable 1.0 search semantics. Measure per-root file/record counts and elapsed time, preserve full-result behavior, and add an explicit runtime/status receipt. Trigger: current run completion/failure or a later reproducible long-running request.
 
 **Bite status:** partial Connect scaffold recorded. The Connect Tick remains open pending primary-source fidelity and explicit construction of the maps. No theory proposition, external claim or physical result is promoted.
+
+**Operational provenance:** the HsH clone-ledger readback above records this turn's Contents API access and the four successful Actions checkout-step status observations. It does not report a full clone count or resolve GitHub Traffic.
