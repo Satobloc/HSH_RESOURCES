@@ -3512,6 +3512,6 @@ The anchor stores, in compact form:
 
 **Cursor transition:** advance exactly one component from `m` to `ρ`; preserve all remaining groups and their order:
 
-`BIO:⟐βᛟvnχr⊕[m]@ρk:ᛟd]⊕[ᛟd:mbx]s`
+`BIO:⟐βᛟvnχr⊕[m@ρk:ᛟd]⊕[ᛟd:mbx]s`
 
 **Lane boundary:** BIO comparative-history only. No H(s)H BEDROCK, main theory, worker policy, PHYS/GIT cursor or shared scheduler change.
