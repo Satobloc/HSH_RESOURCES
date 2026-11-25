@@ -1981,3 +1981,53 @@ The broad ℬ lens remains active. The next source operations are the 1993 Joyal
 **LIVE TICKER — final line:**
 
 ⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢
+
+
+---
+
+## 25. Bite 16 — Joyal–Street version stratigraphy: 1985 / 1986 / 1993
+
+**Recorded:** 2026-11-25  
+**Lane:** ⟐ HSH_RESOURCES comparative-history / PHYS-01 / ℬ  
+**State:** PARTIAL SOURCE-STRATIGRAPHY RESULT · 1986 report inspected as primary source; 1993 publication record and reproduced article excerpt inspected; 1985 precursor and complete 1993 article remain unread.  
+**Cursor effect:** NONE. Remain at Connect / ℬ; this bite does not complete the version comparison or advance the Ticker.
+
+### ∴ FINDINGS
+
+1. **The 1986 report starts from a precise geometric construction.** Joyal–Street define B_n as the fundamental group of the configuration space of n-element subsets of a Euclidean plane. The braid category packages these groups with strand count as objects, braid-group morphisms, composition by braid multiplication and tensor product by juxtaposition.
+
+2. **The categorical translation preserves the braid structure.** Theorem 4 characterizes the braid category as the free braided strict monoidal category on one generator. Their coherence result makes diagrammatic equations valid when the associated braids agree. This is a universal categorical packaging of the geometry, not a replacement of geometric content by unconstrained symbolism.
+
+3. **The 1986 report also includes a substantial higher-categorical / homotopical programme.** Section 6 treats H^3(G,M), categorical groups and crossed modules through monoidal groupoids and 2-categorical coherence. Section 7 treats the braided abelian case through abelian 3-cocycles and quadratic functions. This is a deeper classification layer, distinct from the initial braid-category construction.
+
+4. **The 1993 article is a reorganization and development, not demonstrably a complete superset.** Its reproduced contents show sections on braided categorical groups, finite-general-linear-group representations, abstract categorical aspects, balanced tensor categories and autonomy. A reproduced introduction describes the widening influence of Freyd–Yetter tangle work and Drinfeld quantum groups, followed by ribbon braids, twists and duality/tortile structure.
+
+5. **An important omission is identified by secondary mathematical history.** Baez–Shulman state that the published article leaves out the general classification of 2-groups/categorical groups developed in the 1986 report and proceeds directly to the braided 2-group classification. nLab independently warns that the published version does not completely supersede the Macquarie reports, which retain additional results. Treat the precise scope of the omission as a secondary-source finding pending full 1993 collation.
+
+### § SOURCES AND ACCESS LIMITS
+
+- **PRIMARY READ:** Joyal & Street, *Braided monoidal categories*, Macquarie Math. Report 860081 (Nov. 1986), https://ncatlab.org/nlab/files/JoyalStreet-BraidedMonoidal.pdf. The cover, introductory programme, configuration-space/braid-category construction, Theorem 4/coherence and group-cohomology/quadratic-form sections were read; selected pages were screenshot-inspected.
+- **LOCATED / NOT READ:** Joyal & Street, *Braided monoidal categories*, Macquarie Math. Report 85-0067 (Dec. 1985), 31 pp. The university PDF endpoints timed out or were inaccessible.
+- **BIBLIOGRAPHICALLY VERIFIED / PARTIAL REPRODUCTION:** Joyal & Street, *Braided tensor categories*, *Advances in Mathematics* 102(1) (Nov. 1993), pp. 20–78, DOI 10.1006/aima.1993.1055. Macquarie's peer-reviewed publication record was inspected. The title, contents and part of the introduction are reproduced in Gregory Moore's 2024 Rutgers history-of-physics slide deck; the publisher's complete original full text was not retrieved. The slide PDF screenshot endpoint rejected the oversized file, so the reproduction was text-inspected only.
+- **SECONDARY CROSS-CHECK:** Baez–Shulman, *Lectures on n-Categories and Cohomology*, and the nLab braided-monoidal-category entry identify material present in the Macquarie reports but not fully carried into the 1993 publication.
+- **AUTHOR RETROSPECTIVE / BIBLIOGRAPHY:** Ross Street's publications list records the 1985 report and 1986 revision; his *Australian Conspectus of Higher Categories* supplies contextual recollection of the Freyd–Yetter, Drinfeld, ribbon and tortile developments.
+
+Detailed source states, line/page locators, findings and unresolved differences are in [PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md](../WORKSPACES/PHYSICS/PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md).
+
+### ⁇ QUESTIONS / ⚑ PINS ADDED
+
+- **JS-V01 / BL-P09 (Priority 1):** recover and read 1985 report 85-0067 directly; compare precise revisions/additions/deletions against 1986 report 860081.
+- **JS-V02 / BL-P10 (Priority 1):** obtain and read the complete 1993 article; compare all seven sections against the 1986 report, especially the categorical-group, cohomology and autonomy material.
+- **JS-V03:** verify exactly which braided categorical-group classification survives in 1993 and how it relates to the 1986 H^3(G,M) / abelian 3-cocycle / quadratic-form treatment.
+- **JS-V04:** reconstruct the change from string braids to ribbon/tangle, balanced and tortile categories, including twist and duality.
+- **JS-V05:** separate the Freyd–Yetter and Drinfeld stimulus from the authors' original 1985/1986 development; document direct influence and parallel contributions separately.
+
+### ↩ RETURN
+
+Remain at Connect / ℬ. The next bite is to close JS-V01 and JS-V02 from the original source versions before opening the full Drinfeld–Witten or computational-network branches. No SAT/H(s)H braid-group assignment is made; the independent ◈ physical-object/core geometry gate remains open.
+
+**Bite status:** primary 1986 construction and its homotopy/categorical-group extension established; 1993 direction and the known publication omission are provisionally mapped; direct 1985 and complete 1993 comparisons remain outstanding.
+
+**LIVE TICKER — final line:**
+
+⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢
