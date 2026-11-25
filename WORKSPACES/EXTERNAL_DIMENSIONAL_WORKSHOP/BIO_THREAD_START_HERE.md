@@ -20,6 +20,8 @@ Completed BIO bites:
 
 **Current inner position:** R.1 and R.2 are complete sub-bites under the active `r` component. Resume at **R.3**. Do not advance the outer ticker past the active `r` group until the `r` mapping work is complete.
 
+**R.3 result:** A parent cell's history as one organized cellular unit terminates through division; two daughter-cell histories follow, linked by a division/ancestry relation. Material trajectories are apportioned or replicated according to biology and should not be confused with lineage. See the [R.3 note](READING_NOTES/2026-11-25_BIO_R3_CELL_DIVISION_LINEAGE_WORLDTUBE.md) and Work Ledger §83.
+
 **R.2 result:** The mouse node is mapped as a temporally bounded organizer substructure within the embryo's longer worldtube. Ciliary histories, the nodal-cavity velocity field, sensory deformations and early signal propagation occupy related histories within it. Fast ciliary cycles and slower developmental progression share one time coordinate. The mapping clarifies event/structure incidence but introduces no new biological mechanism or demonstrated prediction. See the R.2 note.
 
 ## 2. Read in this order
