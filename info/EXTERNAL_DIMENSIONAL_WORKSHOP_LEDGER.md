@@ -3310,7 +3310,7 @@ Under the stipulated `ᛟ` lens, the organism's full existence is read literally
 
 **Next bite:** `R.2` — map the mouse node left–right developmental history from §76 into the worldtube picture, initially limited to node geometry, ciliary motion, nodal flow, sensory response and early signaling. Preserve the established causal biology; test whether the four-dimensional account clarifies continuity and incidence.
 
-**Ticker:** The outer `r) position remains active. R.1 is a completed sub-bite; it does not advance the outer ticker to `m).
+**Ticker:** The outer `r` position remains active. R.1 is a completed sub-bite; it does not advance the outer ticker to `m`.
 
 **Lane boundary:** BIO comparative-history only. No changes to H(s)H BEDROCK, central theory, worker policy, or PHYS/GIT cursors.
 
@@ -3326,7 +3326,7 @@ The anchor stores, in compact form:
 - the exact current BIO ticker and inner R.2 resume position;
 - the lane's comparative purpose and boundaries;
 - the small-bite research method and evidence/provenance distinctions;
-- the stipulated `ᛟ) interpretation and the limited role of companion method `d);
+- the stipulated `ᛟ` interpretation and the limited role of companion method `d`;
 - current Mysearch/Mersearch status as a dated snapshot plus instructions to recheck it;
 - the source-note, ledger, codebook, protocol and repository pointer chain;
 - the rule to refetch live SHAs before edits, then read back and verify each durable result.
