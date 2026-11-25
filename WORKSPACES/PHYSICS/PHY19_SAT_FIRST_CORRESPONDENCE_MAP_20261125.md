@@ -208,7 +208,9 @@ Current HsH BEDROCK describes H(s)H as a tentative world-tubification of SAT and
 
 **Completed in this pass:** first-pass Connect crosswalk and the ℬ braid/formalization bridge. The mathematical discriminator is recorded; no physical braid group has been assigned to SAT.
 
-**Next operation:** ◈ — recover and type the source-defined filament/core, finite-core worldtube, timesheet/bulk response and readout geometry. This is the prerequisite for deciding whether the physical object supports Bₙ, Sₙ, an extended-core motion group or something else. Keep all alternatives open until the native objects and admissible motions are specified.
+**Completed in this pass:** ◈ source-defined object and geometry inventory, including version distinctions and explicit missing type dependencies. The physical core and readout are not uniquely fixed by the sources; that uncertainty is now recorded rather than guessed.
+
+**Next operation:** ∂ — define candidate history identities and composition contracts over the typed objects that are available. Separate source-defined composite hierarchy from proposed formal composition maps; state where composition cannot yet be defined because the core or readout type remains unresolved.
 
 ## 8. Source register
 
