@@ -907,7 +907,7 @@ This was a dated planning representation, not a canonized ticker. The active BIO
 
 The shared ledger/codebook supports three conversation lanes: **PHYS**, **BIO**, and **GIT**. The lane names are uppercase textual metadata, not workflow glyphs. **GIT_TRAFFIC / GTT-01** is a specifically scoped operational sublane under the broader GIT repository/tooling remit.
 
-Each lane maintains its own active Tock/Tick position, ticker, reading notes, questions, decisions and next cursor. The shared Code Ledger stores common glyph semantics and lane-specific interpretations; the workshop Ledger stores this BIO lane's results and cursor. A new BIO definition does not overwrite PHYS or GIT/GIT_TRAFFIC, and advancing the BIO `@` does not advance either other lane or the broader shared master ticker.
+Each lane maintains its own active Tock/Tick position, ticker, reading notes, questions, decisions and next cursor. The shared Code Ledger stores common glyph semantics and lane-specific interpretations; the workshop Ledger stores this BIO lane's results and cursor. A new BIO definition does not overwrite PHYS or GIT/GIT_TRAFFIC, and advancing the BIO `@` does not advance either other lane's workplan.
 
 When a ticker is carried between conversations, prefix it with the relevant lane label (for example, `BIO:`). The lane label is metadata, not an operation; the ticker body retains one character per operation/component and all established grouping syntax.
 
