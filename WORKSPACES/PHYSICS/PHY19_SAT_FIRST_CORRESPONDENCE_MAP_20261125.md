@@ -146,6 +146,57 @@ Current BEDROCK describes H(s)H as a tentative, status-preserving world-tubifica
 
 The HsH source-fidelity note identifies three uncomposed descriptions: the 2024 filament→thread→twine→yarn→bundle→rope hierarchy; the 2025 1D filament/worldline and 3D time wavefront; and 2026 finite-core worldtube / helical-core / hollow-outer-superhelix / 3D readout clarifications. Its proposed missing maps are typed 4D composition maps, a timesheet projection/readout map and a thickening map from filament to finite-core worldtube. These are the right next geometric questions; they are not already solved by the analogy to a rope.
 
+## 6A. ◈ Source-defined geometry and type audit
+
+The primary archive and the HsH source-fidelity record expose several distinct historical layers. They should be typed separately rather than compressed into a single “filament/worldtube” object.
+
+### 2024–2025 source layers
+
+- **RMS Spacetime Filaments.txt** (SAT archive blob 0323682e7a49278b5a76d0c6a5a7787a13eb17d6) describes a 4D structure with a 3D time surface, 1D filaments, and the hierarchy filament → thread → twine → yarn → bundle → rope. Its bundle is a bound collection of yarns; ropes are larger composites of bundles. The source is explicitly a speculative “toy theory” overview.
+- **SAT4D_LIVE_DRAFT.txt** (SAT archive blob 2a79fe25018cce7e99a2c33786d88b0551db6ae7; June 2025) describes a filament as a smooth 1D object γ:R→R³,¹, a time surface Σ_t moving through a static 4D block, and in its definitions a worldtube as a 4D volume swept out by a vibrating filament. It also contains later sections describing active hyperhelical filament dynamics and multiple operating modes. Its Mode 1 freezes the block and moves the slice; Modes 2 and 3 are explicitly alternate extensions. Treat it as a mixed development draft with mode-specific and section-level variation, not as one internally uniform final definition.
+- **SAT4D_4.txt** (SAT archive blob efc88f4523b2fd616e64898737c2aa45e5f39b9a; July 2025) gives a compact glossary: M is a smooth 4D manifold with no metric, gauge field or connection assumed a priori; γ:R→M is a physical 1D filament; v=dγ/dλ; Σ_t is a propagating 3D wavefront; u^μ is a local time-flow vector normal to Σ_t; θ₄ is the misalignment angle between v and u; S_{μν}=∇_μu_ν+∇_νu_μ is a strain tensor; τ is a twist/winding sector; and ℓ_f=(2A/T)^(1/3) is called an emergent transverse scale.
+- **SAT4D_6.txt** (SAT archive blob 167136310cdf33ca8f986f33634692314c1a0946; July 2025) says derived behaviors must emerge from filament geometry and intersection with the propagating 3D wavefront, with no unstated assumptions, extrinsic fields or handwaved dynamics; all else is tentative. It is a methodological directive, not proof that the proposed derivations succeed.
+
+### Typed object inventory
+
+| Symbol / object | Source-supported type | Current status / unresolved edge |
+|---|---|---|
+| M | Smooth 4D manifold; some SAT4D draft sections specialize to Minkowski R³,¹ | Metric and connection status varies by version/mode; do not mix a metric-free glossary with Minkowski contractions without declaring the selected structure. |
+| γ_i | 1D parameterized curve in M⁴ | Source calls it a physical filament/worldline. Its causal character, regularity, self-intersection and whether it is point-particle-like or a constituent strand need explicit declaration. |
+| v_i | Tangent dγ_i/dλ | If γ_i is a timelike worldline, v_i is timelike; normalize and specify the metric/signature before invariant angle or norm claims. |
+| Σ_t | 3D wavefront / resolving hypersurface in M⁴ | Determine whether it is a foliation leaf, a single propagating front, or an idealized limit of a finite-thickness active-update region. |
+| u^μ | Local time-flow vector described as normal to Σ_t | A vector normal requires a metric; without one, the conormal dT is available but a normal vector is not uniquely defined. Define local time direction and its normalization. |
+| θ₄ | Misalignment of v and u; early source wording sometimes says angle to the surface | No invariant angle is defined while the metric/signature and causal character are unspecified. If v and u are future unit timelike vectors in signature (-+++), their invariant separation is a rapidity χ with coshχ = -g(u,v), not an ordinary Euclidean angle. Treat this as a candidate clarification, not a source-established replacement. |
+| S_{μν} | Symmetrized derivative of u_ν | Requires a connection and index-lowering metric; those are not supplied by the metric-free glossary. The exact relation to intrinsic, extrinsic or ambient curvature is unresolved. |
+| W_i | Later finite-core worldtube; 2025 draft calls it a 4D swept volume | Intrinsic dimension, cross-section and thickening map are not fixed by the 2026 direct-source audit. Keep W_i⊂M⁴ with dim(W_i) explicitly unresolved until the core is specified. |
+| Outer superhelix | 2026 direct clarification: hollow outer winding around one helical core | Do not treat it as a second physical core or carrier. Its status as boundary, trace or winding of the core still needs a map. |
+| ℓ_f | 2025 glossary formula (2A/T)^(1/3); 2026 direct correction identifies a first-order coil-diameter scale | Not filament thickness and not a substitute for the missing finite-core cross-section. A, T and the derivation/measurement of the scale remain open. |
+| Bundle | 2024 hierarchy: bound yarns; 2025 SAT4D: phase-locked set of n filaments | Two source-defined uses collide. Preserve both until an explicit renaming or composition map resolves them. |
+
+### Two precise formal dependencies
+
+1. The July 2025 glossary declares no metric or connection a priori, yet defines a normal vector, an angle, a lowered-index strain tensor and a covariant derivative. Those expressions require additional geometric structure. This is a formal dependency to supply, not a reason to discard the source.
+2. If v and u are both timelike in a Lorentzian spacetime, “angle” must be interpreted through Lorentzian relative motion (for example, rapidity) or through a separately defined spatial projection. The 2026 HsH BEDROCK likewise warns that a naive Euclidean “angle to time” is not automatically a Lorentz-invariant spin, flavor or helicity diagnostic. Keep the early θ₄ intuition while leaving its invariant definition open.
+
+### Thickening and readout maps still missing
+
+A useful typed scaffold is:
+
+- γ_i:I→M⁴: source-defined filament/worldline.
+- T_i:γ_i↦W_i⊂M⁴: proposed thickening/core map, requiring a specified normal cross-section, thickness, regularity and boundary conditions.
+- Σ_t⊂M⁴: ideal 3D leaf or a defined finite-thickness response region.
+- P_t:W_i∩Σ_t→X_t: readout/projection to the observed 3D configuration.
+
+For a transverse intersection in 4D, dim(W_i∩Σ_t)=dim(W_i)+3−4. Thus a 1D worldline yields a 0D event; a 4D region yields a 3D spatial region. This is why the 1D filament, finite-core worldtube and observed slice must not be treated as interchangeable.
+
+The 2026 source-fidelity record further identifies the missing typed 4D composition maps C_thread, C_twine, C_yarn, C_bundle and C_rope, plus the readout map P_t and thickening map T_i. It also records that the timesheet-versus-bulk response remains open, and that the proposed classical identification of worldtube curvature with inertia is not yet derived.
+
+### Current H(s)H backdrop, status-preserving
+
+Current HsH BEDROCK describes H(s)H as a tentative world-tubification of SAT and identifies the Kerr-ER-Pauli exclusion construction of a particle as a twisted vacuum worldtube as its present foundational model direction. This is a current, explicitly tentative H(s)H construction, not a replacement for the original SAT filament/time-surface intuitions and not a mathematical or empirical validation. The BEDROCK keeps open whether the responsive mechanism is represented by a timesheet or a bulk response, and requires the local time direction and metric-aware orientation to be operationally defined.
+
+**◈ result:** the source-defined object family is now mapped with its version differences and type dependencies visible. The central unresolved objects are not vague: the metric/connection, time function and leaf family, causal type of the filament tangent, thickening map T_i, worldtube intrinsic dimension, timesheet/bulk response, readout P_t, and typed composite maps are the specific missing pieces. No unique finite-core or braid geometry is selected.
+
 ## 7. First conclusions and open questions
 
 1. SAT's foundational worldline/time-surface picture has a direct mathematical neighbourhood in spacetime curves, hypersurface foliations and incidence geometry. These structures clarify the proposal but are not unique to SAT.
