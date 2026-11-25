@@ -18,17 +18,17 @@ Completed BIO bites:
 - `χ` — cellular chirality and actomyosin comparison: complete.
 - `r` — active; not complete.
 
-**Current inner position:** The R.1 sub-bite under the active `r` component is complete. Resume at **R.2**. Do not advance the outer ticker past the active `r` group until the `r` mapping work is complete. R.1 completion is a sub-bite, not completion of `r`.
+**Current inner position:** R.1 and R.2 are complete sub-bites under the active `r` component. Resume at **R.3**. Do not advance the outer ticker past the active `r` group until the `r` mapping work is complete.
 
-**R.2 next:** Map the already reconstructed mouse node left–right developmental history into the stipulated four-dimensional worldtube picture. Keep the bite limited to node geometry, ciliary motion, nodal flow, sensory response and early signaling. Preserve the established biological mechanism; test whether the worldtube representation clarifies continuity and temporal incidence.
+**R.2 result:** The mouse node is mapped as a temporally bounded organizer substructure within the embryo's longer worldtube. Ciliary histories, the nodal-cavity velocity field, sensory deformations and early signal propagation occupy related histories within it. Fast ciliary cycles and slower developmental progression share one time coordinate. The mapping clarifies event/structure incidence but introduces no new biological mechanism or demonstrated prediction. See the R.2 note.
 
 ## 2. Read in this order
 
 1. **This file first.** It gives the lane, cursor, method and pointer map.
-2. **Work Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`: read §§74–80 for the current BIO programme, completed bites, R.1 result and handoff. Earlier numbered sections hold the historical biology work and wider workshop context.
+2. **Work Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`: read §§74–81 for the current BIO programme, completed bites, R.1/R.2 results and handoff. Earlier numbered sections hold the historical biology work and wider workshop context.
 3. **Code Ledger** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md`: consult the BIO subpath, lane selector, current ticker, `ᛟ`, `β`, `d`, investigation modifiers and shared grouping grammar. The code ledger defines glyphs; do not infer unfamiliar symbols from memory.
 4. **Protocol** — `info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md`: use §§22, 24, 30–31, 37 and 42 for Tock–Tick scope, compact signatures, orientation, the stipulated SAT/H(s)H lens, Dimensional Normalization, and lane-local cursors.
-5. **Reading notes** — follow the links in Work Ledger §§75–79. These contain the source-level findings and limitations; the ledger is the index/continuity layer, not a substitute for the detailed notes.
+5. **Reading notes** — follow the links in Work Ledger §§75–81. These contain the source-level findings and limitations; the ledger is the index/continuity layer, not a substitute for the detailed notes.
 6. **Primary sources and companion archives** — follow exact URLs, DOIs, page/section locators and archive paths inside each reading note. For the `d` companion method, the source is in `Satobloc/SAT_THEORY_ARCHIVE_2023-25` as `DIMENSIONAL_NORMALIZATION.pdf`, `.tex`, and `_AUTO_EXTRACTED_TEXT/DIMENSIONAL_NORMALIZATION.txt`. Consult `Satobloc/HsH` materials as reference material when relevant; do not move BIO findings into HsH BEDROCK.
 
 This is the intended pointer chain: **start anchor → work ledger → code/protocol → bite note → cited primary source or companion archive → deeper source-specific material**. Follow only as far down the chain as the current bite requires.
@@ -84,6 +84,7 @@ For each bite:
 - `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_MOUSE_NODE_LEFT_RIGHT_DETERMINATION.md` — `n`.
 - `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_CELLULAR_CHIRALITY_ACTOMYOSIN_TEE_2015.md` — `χ`.
 - `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R1_ORGANISM_AS_WORLDTUBE.md` — `r / R.1`.
+- `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R2_MOUSE_NODE_WORLDTUBE_MAPPING.md` — `r / R.2`.
 
 **Reference repositories**
 - `Satobloc/HSH_RESOURCES`: primary BIO work, notes, workshop ledgers and tools.
@@ -92,7 +93,7 @@ For each bite:
 
 ## 8. Immediate next action
 
-Resume **R.2** as defined in the R.1 note. Use Work Ledger §76 as the biological mechanism source map, and the R.1 note as the worldtube baseline. Ask whether mapping the mouse organizer sequence into one four-dimensional developmental history makes temporal continuity or event/structure relations more explicit than the ordinary stage-by-stage causal description. Keep the first pass descriptive and bounded.
+Resume **R.3** as defined in the R.2 note. Examine cell division and lineage branching as a focused worldtube/identity-bookkeeping problem. Distinguish a parent's material history from daughter-cell histories and the lineage relation between them. Use R.1 for the worldtube baseline, R.2 for the mouse-node application, and the relevant primary developmental-biology sources for cell division/lineage. Do not turn this into a general theory of organismal individuation.
 
 ---
 
