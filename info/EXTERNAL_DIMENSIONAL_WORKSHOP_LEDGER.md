@@ -2476,3 +2476,136 @@ For the workshop's broader model, this is valuable as a documented **inter-organ
 - Schochet 1973 Part II: abstract/structured extraction only; full article not directly opened; detailed nerve sample counts and methods not verified.
 
 **Next:** retrieve Schochet Part I via BHL item 15261 and inspect its figures/observations on opercular ontogeny and lifetime reversal; retrieve Part II via Wiley/author repository and verify the nerve-section sample counts and exact sequence; then revisit the original Zeleny 1905 *Compensatory Regulation* for the wider paired-organ programme. No Tock completion or cursor advance.
+
+
+## 66. Morgan 1923/1924: developmental establishment and persistent memory of fiddler-crab handedness — 2026-11-24
+
+The Morgan fiddler-crab branch is now clarified by pairing his two papers with an independent 1977 experimental study, a 2012 developmental synthesis, and later work on post-autotomy claw morphology. The important distinction is between **establishing which side becomes major** and **regenerating the structure after handedness has already been established**.
+
+### A. Morgan 1923: the initial experiment and its acknowledged uncertainty
+
+**Primary citation:** T. H. Morgan, “The Development of Asymmetry in the Fiddler Crab,” *The American Naturalist* 57(650), 269–273 (May 1923), DOI 10.1086/279921. SciSpace article record/abstract: https://scispace.com/papers/the-development-of-asymmetry-in-the-fiddler-crab-26ogkdb4rw.
+
+The full journal page is catalogued by University of Chicago Press, but its article reader/PDF returned access errors in this session. The available SciSpace abstract and structured article extraction have been read; the whole paper has **not** been directly inspected. Accordingly, details below should be cited as abstract/extraction-derived, not full-text reading.
+
+Morgan begins from the known contrast between crustacean groups:
+- In *Alpheus* and some other decapods, loss of the large claw can lead the contralateral smaller claw to become large.
+- In fiddler crabs, loss of the large claw does not cause the small opposite claw to transform; the large claw is regenerated at the same stump.
+- Very young fiddler crabs initially have two small, similar chelipeds. Morgan asks whether removing one during this symmetrical stage will cause the intact one to become large.
+
+**Field observations and experiment:**
+- Juveniles were collected at North Falmouth, Massachusetts, on 10 July, 3 August, 2 September and 15 September 1922.
+- Developmental stage was classified by carapace width, chela size, shape and bilateral equality.
+- Morgan tested removal of one claw in young crabs whose paired claws were initially equivalent, then observed the animals after subsequent molts.
+- He also recorded claw laterality in 524 adult males: 241 had a right major claw and 283 a left major claw. This is near a 1:1 split rather than evidence of a fixed population-wide right or left bias.
+
+In one especially relevant group of 18 juveniles with still-symmetrical claws, eight developed the large male-type claw on the intact side after removal of the opposite claw; ten regenerated a small claw. However, their sex could not be identified, and young males may naturally pass through a temporary two-large-claw phase. Morgan explicitly treats the result as suggestive, not yet decisive: the observed transformation might be temporary rather than a permanent setting of handedness.
+
+### B. Morgan 1924: larger follow-up and the symmetric two-small-claw result
+
+**Primary citation:** T. H. Morgan, “The Artificial Induction of Symmetrical Claws in Male Fiddler Crabs,” *The American Naturalist* 58(657), 289–295 (1 July 1924), DOI 10.1086/279981. SciSpace article record/abstract: https://scispace.com/papers/the-artificial-induction-of-symmetrical-claws-in-male-17ovvayj13.
+
+Again, the publisher's free article page was blocked in this session; I inspected its abstract and structured article extraction, not the complete article body. The article abstract says that Morgan repeated the prior work with a larger number of cases and considered the earlier temporary-change concern. Its central claims are explicit:
+- Young male fiddler crabs pass through a stage in which they possess two large claws.
+- Loss of one of these two large claws during the critical stage determines the later fixed asymmetry: the remaining claw becomes the “fiddle” (major), while the replacement at the lost side becomes the small claw.
+- A new result: when **both large claws are removed simultaneously** during the critical stage, two small claws regenerate and remain small through later molts.
+- Thus, if the young male does not become unbalanced by the loss of only one claw during this developmental window, it does not establish the usual one-major/one-minor asymmetry.
+
+This clarifies the developmental event far better than the 1923 abstract alone. The side is not predetermined by an inherent right/left program in the individual: the early loss event selects which side retains the future major-claw trajectory. But Morgan's actual 1924 paper is still only abstract/extraction-inspected here; exact sample sizes, molt intervals, and full statistical presentation remain outstanding.
+
+### C. Independent experimental confirmation: Yamaguchi 1977 in Uca lactea
+
+**Primary article and full abstract directly read on the journal page:** Takao Yamaguchi, “Studies on the Handedness of the Fiddler Crab, *Uca lactea*,” *The Biological Bulletin* 152(3), 424–436 (1 June 1977), DOI 10.2307/1540430. Journal page: https://www.journals.uchicago.edu/doi/10.2307/1540430.
+
+Yamaguchi's abstract reports:
+- Early juveniles have two small chelipeds with no morphological difference between the sexes.
+- All males above 5.3 mm carapace width exhibited cheliped asymmetry.
+- Artificial removal of one cheliped from megalopae or young crabs that still had symmetrical chelipeds induced handedness; the large cheliped always developed on the **intact** side.
+- When both chelipeds were removed simultaneously before asymmetry was attained, males failed to develop a giant claw and retained two small chelipeds permanently. The abstract says reproductive function was not detectably abnormal.
+- If a male did not lose a cheliped, two giant chelipeds developed.
+- Once handedness was established, removal of one or both chelipeds could not reverse it.
+
+This is a very close independent replication of the Morgan developmental logic, in a named species. It also resolves an important timing distinction: removal of both claws **before** handedness is established yields two small claws; removal of both **after** handedness is established preserves the already acquired right/left regenerative target.
+
+### D. What is actually “fixed”: positional target, not an unchanging claw
+
+A crucial interpretive correction: the major appendage itself is not a permanently intact structure. It can be lost and regenerated. What persists is its **side assignment** or the organism's developmental target morphology:
+- before asymmetry is established, a single claw loss on one side selects the opposite intact side for future major development;
+- after establishment, subsequent removal of the major claw, minor claw or even both claws does not switch the handedness to the other side;
+- the regenerates follow the already established asymmetric pattern.
+
+Thus the state is not “the right claw is always large” or “the particular major claw never changes.” The state is an enduring relational rule for future paired-appendage differentiation.
+
+### E. Palmer 2012: threshold-trait model and the role of lateral inhibition
+
+A. Richard Palmer, “Developmental origins of normal and anomalous random right-left asymmetry: lateral inhibition versus developmental error in a threshold trait,” *Contributions to Zoology* 81(2), 111–124 (2012). Full-text PDF directly opened and inspected: https://repository.naturalis.nl/pub/419175/CtZ81-02_111-124_Palmer.pdf.
+
+Palmer distinguishes normal random asymmetry (most individuals are asymmetric, but the side is random) from anomalous random asymmetry (a minority of individuals become asymmetric). His review describes fiddler-crab development as unusual relative to lobsters and snapping shrimp:
+- Both claws begin transforming toward major signalling claws in very young crabs (approximately 4–5 mm carapace width in the cited work).
+- One of the two large chelae is then autotomized at random; a small claw regenerates in its place.
+- Once the side is established, it remains fixed through subsequent molts even after the major claw is lost and regenerated.
+- Palmer proposes that **lateral inhibition is not the initiating cause** of asymmetry in fiddler crabs, unlike some other crustaceans; it plays an important role in **maintaining the chosen side** after the first loss event.
+
+This differs from:
+- *Homarus* lobster: one claw crosses an activity threshold and begins transformation; it inhibits the other from transforming, and the direction remains fixed. Fiddler crabs may initially have both sides moving toward the major state before one is lost.
+- *Alpheus* snapping shrimp: after normal asymmetry is established, removal of the major snapper can induce the opposite pincer to transform into a new snapper, reversing the side assignment.
+- *Hydroides* serpulid worms: the functional operculum can be replaced by its formerly rudimentary partner repeatedly during the animal's normal life.
+
+The three paired-organ systems therefore have different transition rules; do not infer one universal mechanism from their shared surface pattern of asymmetrical paired structures.
+
+### F. The “memory” of handedness: an unresolved organism-level regulatory state
+
+The most interesting feature for our larger inquiry is that the established handedness persists even after both chelipeds are removed. The two appendages are no longer present to carry the full positional memory, yet regenerates follow the same right/left target. This suggests that the regulatory state is retained somewhere beyond the missing appendages.
+
+Daniel Lobo, Mauricio Solano, George A. Bubenik & Michael Levin, “A linear-encoding model explains the variability of the target morphology in regeneration,” *Journal of the Royal Society Interface* 11(92) (2014), DOI 10.1098/rsif.2013.0918. Full PMC text directly read: https://pmc.ncbi.nlm.nih.gov/articles/PMC3899861/.
+
+The authors use the fiddler crab as an example of a persistent, injury-established regenerative target. They suggest that the handedness encoding must lie somewhere in the organism rather than in the lost major claw or the absent appendages, because even after later simultaneous removal of both claws the same pattern is rebuilt. They propose a conceptual “linear encoding” of morphology to explain how cells might regenerate a selected target form. Their suggestion that this target-state encoding is distributed through the body is a **model-level hypothesis**, not a directly localized physiological mechanism. They explicitly note that no physiological mechanism controlling and maintaining fiddler-crab handedness is known; a dynamical mathematical model had been proposed (Seno & Shigemoto 2007).
+
+Use “persistent organism-level pattern memory” as a descriptive question, not as an identified anatomical object or proof of a literal body-wide information field.
+
+### G. Current post-autotomy morphology: handedness persistence does not mean perfect morphological restoration
+
+Pablo D. Ribeiro, Nahuel E. Farías, Emiliano H. Ocampo, Jesús D. Nuñez & Tomás A. Luppi, “The influence of the post-autotomy regeneration of a sexual trait and mating tactics in a fiddler crab,” *Current Zoology* 71(1), 54–64, published online 26 April 2024 and in the February 2025 collection, DOI 10.1093/cz/zoae019. Full PMC article read: https://pmc.ncbi.nlm.nih.gov/articles/PMC11846806/.
+
+This study is on *Leptuca uruguayensis*, and concerns the morphology/function of regenerated adult major claws, not the initial establishment of handedness:
+- The authors analyze a population sample of 259 male claws and compare full-size and newly regenerated forms.
+- They conduct a laboratory autotomy experiment on 120 animals and a field experiment, following the consequences of claw loss/regeneration.
+- The supposed brachychelous (robust) and leptochelous (slender) classes in this species are not cleanly discrete; the population appears to form a morphological continuum.
+- Newly regenerated claws are initially small and proportional to body size; after several molts, a field experiment confirms recovery of claw length.
+- Nevertheless, size/energy constraints and differential growth mean that muscle-bearing manus robustness may not recover in the same way as total length. Regenerated claws can be less robust at equivalent body size and can trade weapon function against display/ornament function.
+- Leptochelous males were at a disadvantage at high population density but not at low density, suggesting that the fitness consequences of a regenerated claw depend on social context.
+
+Other fiddler-crab species differ: some have more discrete brachychelous/leptochelous morphotypes, with regenerated claws remaining slender, while in *L. uruguayensis* morphology is more continuous. Do not generalize a single regeneration outcome to all fiddler-crab species.
+
+### H. Biological comparison: three distinct forms of paired-structure dynamics
+
+| System | Initiation of asymmetry | Response after dominant-structure loss | Time-course |
+|---|---|---|---|
+| Fiddler crab (*Uca* group) | Juvenile claw loss selects which side retains the major trajectory | Same side regenerates major; handedness persists, even after both claws are later removed | Developmental side-selection followed by stable target-state |
+| Snapping shrimp (*Alpheus*) | Juvenile developmental/use-dependent differentiation with neural regulation | Loss of major snapper can let contralateral pincer transform; side can reverse | State-dependent, molt-associated lateral reversal |
+| Serpulid *Hydroides* | Relative growth/differentiation of paired opercular rudiments, with inhibition and peripheral pathways | Functional operculum can be replaced by the opposite side; spontaneous and experimentally induced reversals occur | Multiple reversals can occur during the individual lifespan |
+
+The similarity is a relational dependence between paired structures. The differences are in the temporal window, which perturbation sets the state, whether handedness is maintained or transferred, the degree of reversibility and the physiological mechanisms involved.
+
+### I. Implications for the historical 4D/histological inquiry
+
+Morgan and Yamaguchi add a fourth type of biological organization to the comparison:
+- **Structural asymmetry** is not necessarily inherited as a fixed left/right trait from the start.
+- A contingent developmental event can establish a persistent laterality state.
+- Once the state is established, it survives the removal of both appendages and is expressed again during regeneration.
+- This persistence suggests an organism-level regulator or target-state memory beyond the appendages themselves, but its location and material basis remain unknown.
+- Later claw morphology may still vary with body size, energetic budget, molt history and social environment even while left/right target direction remains stable.
+
+This gives a grounded biological example of persistent organizational memory without requiring continuous persistence of the original physical appendage. However, it remains ordinary within-organism development and regeneration. It does not establish extra-spatial continuity, a 4D branch between different people or organisms, or a biological “worldtree.” It may instead help sharpen what the stronger 4D proposal must claim beyond ordinary persistent patterning: does it posit an actual additional physical connection, or is it a model of how an organism's form and identity remain related through changing tissues and time?
+
+### J. Source status and open issues
+
+- Morgan 1923 article: bibliographically verified, SciSpace abstract and structured extraction inspected; full journal article not opened. The 8/18 result and 524-male count are from extraction, and should be checked against original pages before exact quotation.
+- Morgan 1924 article: bibliographically verified, abstract and structured extraction inspected; full article not opened. Exact sample sizes and full experimental table remain outstanding.
+- Yamaguchi 1977 *Uca lactea*: journal page and abstract directly opened; full article body not read.
+- Palmer 2012: full open PDF text directly opened and relevant sections inspected; PDF page-image rendering has not been verified in this session.
+- Lobo et al. 2014: full PMC text directly read; this is a theoretical/model paper, not identification of the physical substrate.
+- Ribeiro et al. 2024/2025 *Leptuca uruguayensis*: full PMC text directly read; post-autotomy adult claw morphology, not initial handedness establishment.
+- Morgan's exact fiddler-crab species in 1923/1924 remains unspecified in the available abstract; a specialist bibliography suggests *Minuca pugnax*, but do not assign that species without direct article confirmation.
+
+**Next:** retrieve Morgan 1923/1924 full article pages and confirm sample/molt details; then inspect Yamaguchi's full 1977 article for exact sizes, survival and molt counts. After that, return to Zeleny's 1905 102-page *Compensatory Regulation* or Morgan 1900 mixed-lineage regeneration sequel, depending on which source can be directly recovered. No Tock completion or cursor advance.
