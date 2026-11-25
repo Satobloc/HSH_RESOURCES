@@ -17,7 +17,7 @@
 
 **Current lane boundary:** PHYS has its own cursor. Detailed 4D-organism, developmental and cellular-biology investigation belongs to the separate BIO lane; PHYS only follows a specific biophysics connection when it materially arises, and then points to BIO rather than duplicating or advancing BIO work. GIT/repository operations likewise retain their own cursor.
 
-**Current complete PHYS ticker:** `@⧉`. The ticker is bite-level: each defined symbol represents one bounded research bite, not a phase, topic bundle, or sequence of workflow operations. `@` marks the next uncompleted bite. Only assign further bite symbols when their scope is actually selected and recorded. The former phase-level ticker remains historical context, not the live ticker.
+**Current complete inherited pilot ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`. Resume exactly at `@⤳`. This is the full ordered workflow signature and must persist unchanged across PHYS, GIT and BIO conversation boundaries. Do not abbreviate it to `@⧉`, replace it with a lane-local bite token, or treat a conversation restart as a new workflow. Lane-specific ledgers and bite records are subordinate detail; they never supersede the complete shared ticker.
 
 **Immediate return:** execute Bite 19 (`⧉`), the SAT-first correspondence overview. Begin with the 2023–25 archive's *Fundamental Intuitions* and the relevant *one drop*, *single-file*, *standalone* and related source families; compare them with selected nLab / n-Category Café concepts and the current HsH geometry. Keep the scope at the level of conventions, ideas and tentative mappings. Do not resume the Joyal–Street source collation as the governing task. Check the existing Mersearch lane-2 request before any further archive search; never duplicate or overwrite it.
 
@@ -57,7 +57,7 @@ PHY-01 closes only when the above map has been built from inspected sources, the
 
 ## 2. Historical phase grammar (not the live bite ticker)
 
-The following phase sequence records the original workflow grammar established at Tock setup. These operations are performed within each bounded bite; they are not separate ticker entries. The live ticker is bite-level and is maintained at the ledger apex and in Bite 19.
+The following phase sequence records the original workflow grammar established at Tock setup. The full inherited pilot ticker is live, not historical; this section explains its operation grammar. Resume at its existing `@` marker and preserve the complete suffix.
 
 **Initial phase signature at Tock setup (historical snapshot only):**
 
@@ -73,7 +73,7 @@ The following phase sequence records the original workflow grammar established a
 - `✓` Verify: check source claims, exact locators, geometric fidelity, status labels, and repository readback.
 - `⇢` Deliberate next step and record the next cursor.
 
-This phase signature is retained for procedural reference only. It is not the current research ticker; the live bite ticker is `@⧉`.
+This compact phase key is explanatory only. The complete inherited pilot ticker remains live and is reproduced at the ledger apex; do not substitute a shortened bite-only cursor.
 
 ## 3. Credenza
 
@@ -2185,9 +2185,10 @@ Disposition remains SUBMITTED_NOT_VERIFIED / unresolved. No cancellation, rerun,
 
 ## 35. Bite 19 — SAT-first correspondence overview (selected; not yet executed)
 
-**Bite token:** `⧉` (U+29C9)  
-**Live ticker:** `@⧉`  
-**State:** SELECTED / NEXT TO EXECUTE  
+**Bite reference:** Bite 19, SAT-first correspondence overview.  
+**Shared live ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`  
+**Current operation:** `@⤳`  
+**State:** SELECTED / IN PROGRESS CONTEXT  
 **Purpose:** Re-center PHYS on the user's actual goal: understand how SAT/H(s)H maps to nLab / n-Category Café material, and to related historical and contemporary four-dimensional thought and physics, with SAT/H(s)H as the explicit interpretive lens.
 
 ### Primary comparison corpus
