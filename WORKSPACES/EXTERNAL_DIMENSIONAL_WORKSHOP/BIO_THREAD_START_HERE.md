@@ -118,6 +118,4 @@ Reorient the remaining `r` programme against Work Ledger §§74–84, the R.1–
 
 ---
 
----
-
 **Handoff rule:** When a conversation ends or context is lost, start with this file; then re-read the live Work Ledger and Code Ledger before doing research or changing the cursor.
