@@ -120,3 +120,8 @@ This lab should be willing to discover that an exciting effect is mundane, that 
 ## 23 November 2026 addition
 
 - **VEY-047 — [Multi-Agent Memory Inconsistency: pair recall, contributor distribution, and handoff loss](STUDIES/VEY-047_MULTI_AGENT_MEMORY_INCONSISTENCY_PAIR_RECALL_HANDOFF_AUDIT_2026-11-23.md).** Full arXiv HTML review of a new 2026 preprint; adds a source-defined stage-wise pair-recall and Same/Split crosswalk. It distinguishes source retrieval, worker reporting, lead evidence, final artifact, and semantic Judge Pass. A small assistant-reconstructed Lean kernel was submitted to existing HsH PR #2375; CI status is tracked separately. Adjacent LLM-agent workflow evidence only, not human-LLM group data, P1 evidence, or a protocol amendment.
+
+
+## 25 November 2026 addition
+
+- **VEY-048 — [Intra-agent memory re-entry and derivative-record recycling](STUDIES/VEY-048_INTRA_AGENT_MEMORY_REENTRY_CROSSWALK_2026-11-25.md).** Source-critical review of Boticiu's paused IAER project and its correction/prior-art records. The bounded v0.4.3 H1 retention contrast and same-configuration-class replication are preserved with their construct-validity and independence limits. Crosswalks within-agent memory re-entry against VEY-043 peer-message exposure, VEY-045 memory-operation trajectories, VEY-046 group projection, and VEY-047 multi-agent handoff. Literature result only; no model trial, no P1 protocol change, no novelty or mechanism claim.
