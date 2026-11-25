@@ -3479,3 +3479,39 @@ The anchor stores, in compact form:
 
 **Lane boundary:** BIO comparative-history only. No H(s)H BEDROCK, main theory, worker policy, PHYS/GIT cursor or shared scheduler change.
 
+
+
+## 87. BIO selective mathematical/comparative orientation map — completion of `m` — 2026-11-25
+
+**Scope:** Complete the compact orientation map requested after the BIO mission reorientation. This was an overview-level comparison of the SAT primary-source clusters with Hinton and the nLab / n-Category Café braid and higher-mathematics neighbourhood, keeping the 4D organismal proposal in view. It was not an exhaustive history or the full `k` programme.
+
+**Durable result:** `WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_COMPARATIVE_ORIENTATION_MAP_SAT_HINTON_NLAB.md`.
+
+**Primary SAT findings:**
+- The user-annotated *Fundamental Intuitions* explicitly place organisms within SAT's intended scope, from quarks to organisms to the observable universe. This is foundational scope, not a derived biological mechanism.
+- The 4D Organismal Biology transcript contains a stronger user-authored conjecture: histological physical contiguity, layered tissue/sheath organization, temporally extended appendages and possible coordinated action across a larger 4D organism. The user's own corrections narrow the proposal away from cosmological filament tension and away from genetic inheritance in the first histological diagram. Assistant elaborations about global agency and consciousness are not automatically Nathan-authored.
+- The early *Biological Implications of SAT* file opens with assistant-generated proposals. Treat it as a question catalogue, not an authoritative list of user propositions or derived SAT results.
+- The 2026 Superhelicalism note is user-authored but explicitly speculative; its scale-coarse-graining and phase-alignment ideas are not yet a biological model. Battery/centrifuge and turbine proposals lack quantitative effect predictions.
+- HoloJesu is a large mode/persona transcript requiring speaker-level provenance. Wacky 4D paths were not successfully fetched. The root one-file/one-drop PDF cluster remains unresolved; do not equate one-file, one-drop, single-file and standalone.
+
+**Historical/mathematical comparison:**
+- Hinton's *A New Era of Thought* (1888) is a primary source for tactile/constructive training in higher-dimensional spatial intuition, sections and projections of tessaracts, and the distinction between teaching higher-space conception and later scientific investigation. This is a historical conceptual antecedent, not a demonstrated source for SAT or a biological superorganism theory. Hinton's higher dimension is spatial; SAT's fourth-dimensional ontology is organized around worldline extent and a moving time surface.
+- nLab / n-Category Café braid material connects configuration spaces, braid groups, braided monoidal categories, Yang–Baxter structures, quantum groups, knot invariants, TQFT, anyons and topological quantum computation. These are real mathematical/formal structures and established theoretical-physics applications, but they do not automatically describe biological continuity.
+- A braid group applies only when a concrete configuration space and admissible non-colliding exchange paths are defined. Branching lineage histories are first represented as directed branching structures, not automatically braids. Higher categories are compositional formal structures, not additional physical dimensions.
+
+**Biological correspondence map:**
+- Organism worldtube and time slices: mainstream geometric intersection / formal representation.
+- Histological layers as nested regions: candidate stratified-space, submanifold or bundle description; conditions not yet established.
+- Temporally extended people as branches/tendrils: directed lineage graphs and branching worldtubes; speculative extension requiring a criterion of organismal membership.
+- Coordinated distal action: possible distributed-dynamics/control-network question; speculative until coupling and causal pathways are defined.
+- Twisting/coiling in biological structures: mainstream intersections exist in particular biological domains, but SAT translation requires actual strands, ambient space, motions and invariants.
+
+**Key discriminator:** what objective structural and dynamical conditions make temporally separated regions parts of one extended organism, rather than a lineage, ecosystem, causal network or merely connected set of worldtubes?
+
+**Decision:** `m` is COMPLETE for its defined overview-level comparative and selective-mathematical remit. This does not complete the wider `k) programme. The next planned component is `ρ`, the explicit review/reorientation checkpoint. It must assess whether the remaining workflow should be changed before the broader mathematics/category-theory programme begins.
+
+**Cursor transition:** advance exactly one component from `m` to `ρ`; preserve all remaining groups and their order:
+
+`BIO:⟐βᛟvnχr⊕[m]@ρk:ᛟd]⊕[ᛟd:mbx]s`
+
+**Lane boundary:** BIO comparative-history only. No H(s)H BEDROCK, main theory, worker policy, PHYS/GIT cursor or shared scheduler change.
