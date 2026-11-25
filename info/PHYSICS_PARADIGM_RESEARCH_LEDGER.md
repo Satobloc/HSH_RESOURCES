@@ -261,3 +261,112 @@ The first draft of this ledger used conventional APS DOI-looking strings for fou
 `⌖◉⌕@⧖⤳▣✓⇢`
 
 Investigation has produced enough source material for the first geometric comparison. The next Tick is **⧖ Geometrize**: diagram the two constructions, identify physical versus internal/state-space dimensions, then test potential SAT/H(s)H correspondences without forcing them.
+
+
+---
+
+## 7. Bite 02 — Hinton, slicing geometry, and the actual categorical route into physics
+
+**Recorded:** 2026-11-25T05:33:59.584Z  
+**State:** Primary Hinton excerpts inspected; category/history and mathematical-physics bridges inspected from external primary/research literature; internal archive search remains pending. This is a bounded historical/geometric comparison, not a complete genealogy.
+
+### 7.1 Hinton primary sources: what the texts actually say
+
+**Charles Howard Hinton, *The Fourth Dimension* (1904 first edition; archived text is the 1906 second edition):**
+
+- In the chapter passage around archived text lines 990–1044, Hinton constructs a plane-world analogy: a static spiral intersects a moving plane/film; successive intersections appear as a moving point. He then extends the construction to complicated structures made of filaments, whose intersections with the film are proposed as the “atoms” of the lower-dimensional world. The plane's steady traversal produces a time-series of changing cross-sections, while the higher-dimensional structure is conceived as comparatively permanent.
+- This is an explicit historical example of persistent higher-dimensional structures generating lower-dimensional traces and apparent motion through a moving section. Its explanatory frame includes a plane of consciousness and philosophical readings of Parmenides; it is not a Lorentzian spacetime model, an experimentally established account of matter, or a derivation of quantum physics.
+- In the later vortex passage (archived lines 2880–2925), Hinton generalizes a 3D vortex filament to a 4D vortex-sheet construction with a planar axis. He speculates about an analogy to electric current and field. Preserve this as Hinton's historical proposal, not as a correct account of electromagnetism.
+
+**Hinton, *A New Era of Thought* (1888):**
+
+- The source is a constructive programme for conceiving four-dimensional figures through lower-dimensional sections, projections, models, and constrained reasoning by a hypothetical plane-being.
+- The tessaract exercises stress deriving the possible sections from measured relations and projections, rather than treating four-dimensional geometry as unconstrained imagination. The text explicitly says the value is in the process of determining the sections, not simply viewing pre-drawn shapes.
+- The source's geometric method is a major historical lead for our visualization practice. It is not the same as the 1906 filament/film passage, and the two texts should retain separate source anchors.
+
+### 7.2 First geometric comparison with SAT/H(s)H
+
+| Feature | Hinton's slicing model | Current SAT/H(s)H working construction |
+|---|---|---|
+| Persistent object | Spiral/filamentary structure in higher-dimensional space | SAT worldline extended as an H(s)H finite-core worldtube |
+| Lower-dimensional readout | Moving plane/film intersects filaments; point-like traces appear | Timesheet/time-wavefront intersects or reads worldtube structure |
+| Apparent motion | Successive cross-sections of a more permanent structure | Apparent particle/worldline history from the 4D worldtube and its relevant readout |
+| Ambient geometry | Higher spatial dimension in Hinton's thought experiment; no Lorentzian metric specified in this passage | Native Minkowski kinematics and 3+1 spacetime baseline, with any additional dimensions or altered metrics requiring explicit derivation |
+| Dynamics/causality | Plane traversal is part of the analogy; no physical causal law is derived | Causal and dynamical admissibility, metric structure, finite core and interactions are explicit obligations |
+| Epistemic status | Historical conceptual model / philosophical and geometric speculation | Framework-internal working premises and tentative physical construction; not established physics |
+
+**Provisional correspondence:** a structural analogy exists at the level “persistent extended object + moving lower-dimensional section/readout → sequence of lower-dimensional traces.” It is worth testing geometrically. It is not yet an isomorphism: Hinton's intersecting plane, additional spatial dimension and philosophical consciousness model are not equivalent by definition to SAT/H(s)H's Minkowski timesheet, worldtube, local time direction or causal propagation.
+
+**Current H(s)H status from BEDROCK:** H(s)H is explicitly a tentative world-tubification of SAT, with status-preserving inheritance. Its current foundational particle picture is the Kerr-ER-Pauli exclusion construction of a particle as a twisted vacuum worldtube, and that construction remains tentative. SAT's Minkowski construction is the first exact control; the current programme reconstructs known physics under its constraints rather than importing attractive outside geometry as new ontology. See `HsH/BEDROCK.md`, particularly ND-2026-11-24-01, ND-2026-10-22 primary research mandate, and ND-2026-10-18-04.
+
+### 7.3 The historical route into category theory is different
+
+The primary chronology supported by the inspected history is not a straight line from Hinton to higher categories:
+
+1. **19th-century higher-dimensional geometry:** Riemann, Schläfli and other mathematicians develop abstract geometries and higher-dimensional figures. Hinton's work is one important popular, pedagogical and speculative strand that trains intuition through projection, sectioning and models.
+2. **Algebraic topology / homological algebra:** homology and cohomology create a need to compare spaces, groups and algebraic invariants in a systematic way.
+3. **Eilenberg and Mac Lane (1945):** category theory is introduced to organize functors and natural transformations, especially the relation between algebraic and topological structures. It is not introduced as a theory of extra spatial dimensions.
+4. **Grothendieck, Lawvere and later developments:** categories become intrinsic mathematical environments; homotopy theory, groupoids and the “category of categories” lead to higher categories and weak (n)-categorical structures.
+5. **Higher categories in physics:** Atiyah-style TQFT assigns algebraic data to manifolds and bordisms. Baez and Dolan (1995) develop the programme of (n)-dimensional TQFTs as representations of (n)-categories. Here (k)-morphisms can be represented by (k)-dimensional manifolds, including boundaries and corners. This is a concrete bridge between geometric dimension and categorical composition, not proof that categorical degrees are additional physical spatial dimensions.
+
+**Genealogical conclusion:** Hinton's higher-space programme and category theory are historically adjacent/convergent strands that meet in modern geometry and mathematical physics, but the inspected sources do not establish direct Hinton → Eilenberg/Mac Lane → higher category transmission. Do not claim that Hinton founded or directly caused category theory.
+
+### 7.4 Concrete mathematical-physics bridges
+
+**Extended TQFT / bordism:** Baez & Dolan, *Higher-Dimensional Algebra and Topological Quantum Field Theory* (1995), explicitly propose higher categories to encode extended local structure in TQFT. The geometric hierarchy is point → 1-dimensional bordism → 2-dimensional bordism between bordisms → higher-dimensional morphisms. The categorical hierarchy organises how local pieces compose and glue.
+
+**Higher gauge theory / topological matter:** Delcamp & Tiwari, *On 2-form gauge models of topological phases* (JHEP, 2019), study 2-form topological gauge theories in 3+1 dimensions. Their construction uses the second classifying space (B^2G), 2-form cocycles and a relation between 2-form 4-cocycles, associators and braiding isomorphisms in a premodular category, with a connection to the Walker-Wang model. This is a concrete case where higher gauge fields, homotopy, categorical braiding and physical topological phases meet.
+
+**Current 2026 higher-gauge programme:** Hisham Sati & Urs Schreiber, *Complete Topological Quantization of Higher Gauge Fields* (dated 3 June 2026; expanded lecture notes), develops global completion and topological quantization of higher gauge fields appearing in higher-dimensional supergravity. It uses differential forms of multiple degrees, (L_infty)-algebras, smooth (infty)-groupoids, nonabelian differential cohomology, cohomotopy and phase-space stacks. The authors distinguish a 5D Maxwell-Chern-Simons example (Hypothesis (h), 2-cohomotopy) from an analogous 11D C-field completion (Hypothesis (H), 4-cohomotopy) associated with the conjectural M-theory topological sector and M5-branes. These are the authors' named research hypotheses/programme, not settled consensus physics. Their “Hypothesis H” is only a naming coincidence with H(s)H; no relation or influence is assumed.
+
+**Dimensional discipline:** differential-form degree, homotopy degree, categorical morphism level, brane dimension, compactification dimension and physical spacetime dimension are related in specific constructions but are not interchangeable. A 2-form field, a 2-morphism and a 2-dimensional surface are not automatically the same object.
+
+### 7.5 Initial crosswalk questions for the next geometric bite
+
+- Can Hinton's moving film be expressed as a family of embeddings/intersections (i_t:Sigma_thookrightarrow X) with trace/intersection operator (I_t(F)), while respecting that his model does not specify a Lorentzian causal metric?
+- In SAT/H(s)H, what is the precise object corresponding to (X), the worldtube (F), the timesheet (Sigma_t), and the observable trace (I_t(F))? Which are physical objects and which are readout/representation?
+- Can worldtube/timesheet interactions be represented compositionally using a bordism or higher-groupoid framework without mistaking that categorical representation for new physical dimensions?
+- Which interaction data would require 2-morphisms or higher morphisms, and which are merely ordinary field/trajectory data?
+- Does the SAT/H(s)H construction naturally require higher gauge structure, or would importing such structure add machinery not forced by its own constraints?
+- Which specific invariant, composition law or observable could distinguish a genuine categorical encoding of the physics from a merely convenient diagrammatic description?
+
+### 7.6 Source-state and route status
+
+| Source | State | Exact internal/external locator |
+|---|---|---|
+| Hinton, *The Fourth Dimension* (1906 archived edition) | PARTIAL, primary text inspected | `HSH_RESOURCES/HISTORICAL/HINTON — 4TH DIMENSION.txt`, especially lines 990–1060 and 2880–2925; Project Gutenberg: https://www.gutenberg.org/files/67153/old/67153-h/67153-h.htm |
+| Hinton, *A New Era of Thought* (1888) | PARTIAL, primary text inspected | `HSH_RESOURCES/HISTORICAL/HINTON — 4TH DIM NEW ERA.txt`, especially lines 7265–7545 |
+| SEP, “Category Theory” | PARTIAL, history and definitions inspected | https://plato.stanford.edu/entries/category-theory/ |
+| Baez & Dolan (1995) | LOCATED / abstract and introduction inspected | https://arxiv.org/abs/q-alg/9503002 |
+| Delcamp & Tiwari (2019) | PARTIAL, abstract/introduction and section outline inspected | https://doi.org/10.1007/JHEP05(2019)064 |
+| Sati & Schreiber (2026) | PARTIAL, abstract, introduction, higher-field constructions and selected later sections inspected; PDF screenshots of pages 1, 3 and 42 examined | https://ncatlab.org/schreiber/files/CompleteTopQuant-260603.pdf |
+| SAT/H(s)H current position | PARTIAL, controlling BEDROCK passages inspected | `HsH/BEDROCK.md`, ND-2026-11-24-01; ND-2026-10-18-04; ND-2026-10-22 |
+
+### 7.7 Mersearch internal-first request: state
+
+- Request ID: `phy01-internal-first-worldtube-hinton-highercats-20261125-01`.
+- Lane: 2, reusing prior lane-2 request only after its previous manifest and compact receipt had been verified.
+- Request file commit: `3d740279da1fd8a8df5a31ae28d83354a9b8c8b8`.
+- Actions run: `45554091984`; job `139001876678`; workflow: [Mersearch Request Bridge Lane 2](https://github.com/Satobloc/HsH/actions/runs/45554091984).
+- Last inspected state: run/job `in_progress`; first step `Checkout HsH main` also `in_progress`, subsequent checkout/search/publication steps pending; request-scoped manifest and receipt not yet published. Last API update timestamp was `2026-11-25T05:30:52Z`. Do not claim the Mersearch search completed or use a receipt that does not exist.
+- The workflow declares four checkout steps: HsH main (fetch-depth 0), stable Mersearch (fetch-depth 1), original SAT archive (fetch-depth 1), HSH_RESOURCES (fetch-depth 1). Actual completion, job logs, and checked-out SHA evidence are not yet available. The checkout steps are not yet recorded as completed clone-ledger events; Traffic attribution would remain UNKNOWN even after completion.
+- Other older lanes were not overwritten. Lane 1, 3 and 4 lacked verified request receipts at the time of lane selection.
+- Mysearch operational validation state has not yet been confirmed; Mersearch stable 1.0 is the known supported route. If the run remains blocked, record the exact route/run blocker and resume from the request ID rather than pretending GitHub's generic search was an equivalent full-archive query.
+
+### 7.8 Provisional synthesis
+
+The research supports **several interacting but distinct structural developments**, not one already established replacement paradigm:
+
+- geometric reconceptualization of spacetime and quantum fields;
+- global topology and higher-dimensional compactification;
+- algebraic-topological/homotopical descriptions of gauge structure;
+- higher-categorical encoding of locality, defects, braiding and extended operators;
+- independent efforts to expose limits of semiclassical geometry.
+
+The strongest current point of contact with SAT/H(s)H is geometric: persistent extended objects, sections/readouts, worldtube histories, topology, and interactions. The strongest formal bridge is categorical/compositional: bordisms, higher gauge transformations, groupoids and higher morphisms. Neither bridge, by itself, validates SAT/H(s)H or establishes a unique common physical ontology.
+
+### 7.9 Tick state
+
+`⌖◉⌕@⧖⤳▣✓⇢`
+
+The next operation remains **⧖ Geometrize**. Begin by drawing a common comparison diagram for Hinton's static filament + moving film, the SAT/H(s)H worldtube + timesheet, and the extended-TQFT bordism hierarchy. Mark which dimensions are physical, internal, readout, or categorical. Keep the Mersearch request pending as a parallel evidence-recovery branch.
