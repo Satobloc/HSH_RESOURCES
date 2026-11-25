@@ -1806,3 +1806,44 @@ This specimen shows that natural observations of paired-chela symmetry may arise
 4. The system is a clear ordinary 3D example of inter-part neural inhibition in a single organism. It does not imply an extra spatial axis or organism-to-organism physical continuity.
 
 **Status:** Young, Pearce & Govind 1994 full OCR text inspected, including methods, Tables 1–3 and Discussion, pp. 319–326. Soledade et al. 2017 p.182 directly OCR-inspected; page image not verified. Mellon & Stephens 1978 abstract read. Wilson 1903 remains located but not directly read. No Tock closure or cursor advance.
+
+## 60. Wilson 1903 retrieval status and pagination audit — contemporary 1903 bibliography confirms pp. 197–210 — 2026-11-24
+
+The article's bibliographic identity is now stable, although its body remains inaccessible through the scans located so far.
+
+### A. Page range cross-checks
+
+The most consistent and earliest bibliographic witnesses report:
+- **Zoologischer Jahresbericht für 1903**, Arthropoda author index: Edmund B. Wilson, “Notes on the reversal of asymmetry in the regeneration of the chelae in *Alpheus heterochelis*,” *Biological Bulletin*, Woods Hole, vol. 4, pp. **197–210**, 3 figures. Direct OCR inspection: https://upload.wikimedia.org/wikipedia/commons/4/48/Zoologischer_Jahresbericht_%28IA_zoologischerjahr1903staz%29.pdf (author index, printed page 18; OCR around line 4144 of web extraction). This is a contemporary bibliographic record dated 1903, not the article itself.
+- **National Academy of Sciences, Edmund Beecher Wilson biographical memoir**, bibliography of his 1903 work: *Biological Bulletin* 4, pp. 197–210. Searchable PDF: https://www.nasonline.org/wp-content/uploads/2024/06/wilson-edmund.pdf.
+- **Mellon & Stephens (1978)** cite Wilson's 1903 work as *Biological Bulletin* 4, 197–210 in the reference list of “Limb morphology and function are transformed by contralateral nerve section in snapping shrimps,” *Nature* 272, 246–248. The abstract is directly available here: https://www.nature.com/articles/272246a0.
+- **Soledade, Oliveira & Almeida (2017)** list the same citation, *Biological Bulletin* 4:197–210, in their references (PDF p.184): https://pfeil-verlag.de/wp-content/uploads/2017/11/SPIX_40_2_03_SO.pdf.
+- **Zoologischer Jahresbericht** also separately lists Wilson's abstract “Notes on the Artificial Reversal of Asymmetry in *Alpheus*,” *Science* N.S. 17, 491–492 (1903). It is a separate meeting abstract, not the full *Biological Bulletin* article.
+
+Herrick (1911) is the outlier, listing pp. 197–214 in its bibliography. Since the contemporary 1903 index, NAS bibliography, 1978 Nature bibliography and 2017 bibliography agree on 197–210, the 197–214 range is likely a miscitation. This corrects the provisional uncertainty in section 55, although the page images of Wilson's article remain unavailable.
+
+### B. Scan coverage issue
+
+The identified *Biological Bulletin* vol. IV scan is:
+- Internet Archive identifier biologicalbullet04mari, MBLWHOI scan;
+- BHL item 16879;
+- PDF used in this pass: https://file.iflora.cn/fastdfs/group1/M00/63/B3/wKhnoF15ugWASWddATcI2K5PnDc835.pdf.
+
+Its contents page explicitly lists Holmes beginning p.191, Wilson beginning p.197, and Peebles beginning p.210, with Wilson's subsequent paper beginning p.215. However, the BHL item's indexed article records omit the three papers occupying pp.191–214 (Holmes, Wilson, Peebles), and the searchable scan extraction located so far does not expose Wilson's article body. The screenshot service returned a cache miss for the volume PDF. This makes a scan coverage/metadata gap plausible; it is not yet proof that every available copy lacks those pages. Avoid saying the original paper itself is unavailable everywhere.
+
+### C. Why the 1994 primary experiment matters while Wilson is missing
+
+Section 59 records the full 1994 experimental results. The 1994 paper distinguishes:
+- nerve 1 section in the transforming pincer-to-snapper claw: normal adult reversal still occurs, with the old snapper site regenerating as a pincer;
+- nerve 2 section, or section of both nerves in that transforming claw: the old snapper site can regenerate as a second snapper, producing paired snappers in a subset of successful trials.
+
+This is the likely basis for the 2017 paper's wording that nerve intervention plus major-claw removal can yield a second major cheliped. The 2017 article compresses Wilson, Mellon & Stephens, Govind et al. and Young et al. into one sentence, and uses the unusual word “suture.” The precise 1994 experiment is recoverable; the 2017 sentence should not be attributed solely to Wilson.
+
+### D. Outstanding retrieval targets
+
+1. Obtain Wilson pp.197–210 from a second complete copy or article-level scan, if possible. BHL item 16879 and the biologicalbullet04mari volume scan appear to have an indexed coverage gap across pp.191–214.
+2. Retrieve the separate *Science* 17 abstract at pp.491–492 as an independent contemporary statement by Wilson.
+3. Once Wilson is directly read, compare exact sample, species, timing, side, nerve branch, and endpoint against Loeb's 1906 p.216 report and the 1994 nerve-1/nerve-2 experiment.
+4. Then determine whether Morgan's 1940 “after removal of the smaller one” is a plain error or reflects a separate experiment; maintain the printed text exactly until the comparison is complete.
+
+**Status:** Wilson title/author/journal/year/page range/three-figure count are independently verified by a contemporary 1903 bibliography and multiple later bibliographies. Wilson's article body and his separate 1903 *Science* abstract are not directly read. The original paper remains the active source retrieval blocker. No Tock completion or cursor advance.
