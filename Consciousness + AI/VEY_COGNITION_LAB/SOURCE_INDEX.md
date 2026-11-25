@@ -514,3 +514,16 @@ All titles/identifiers were checked with Scholar Sidekick; this is bibliographic
 - **Use:** source-specific semantics for the VEY-040/041/046 provenance and CRTC projection work; supports separate item identity, disclosure-event identity, stage availability, recipient delivery, lead-context inclusion, and semantic judgment. Distinct contributor IDs are not authenticated model identities; declared source-root disjointness is not statistical independence.
 - **Internal study:** STUDIES/VEY-047_MULTI_AGENT_MEMORY_INCONSISTENCY_PAIR_RECALL_HANDOFF_AUDIT_2026-11-23.md
 - **Formalization pointer:** HsH PR #2375 draft branch, new OrsonEvidenceFlow module; CI initially pending. Not P1 and not a protocol amendment.
+
+
+## 2026-11-25 | VEY-048 — intra-agent memory re-entry
+
+- **Primary project:** Ovidiu Boticiu, *Intra-Agent Evidence Recycling*, https://github.com/ovidiuboticiu/intra-agent-evidence-recycling.
+- **Historical empirical preprint:** v0.4, *When One Source Returns*, DOI https://doi.org/10.5281/zenodo.22282120. **Software/reproducibility archive:** https://doi.org/10.5281/zenodo.22259801. **Methodological note:** https://doi.org/10.5281/zenodo.22306245.
+- **Source depth:** repository README, external replication guide, prior-art reassessment, priority-claim withdrawal, v0.4.3 forensic validation addendum, and post-publication correction record reviewed. Corrected manuscript draft located but not fully reviewed in this pass; no raw data or code executed.
+- **Current status:** project PAUSED; no v0.8 behavioral run authorized. Historical priority claim withdrawn. v0.4.3 wording is "pre-specified and frozen before collection," not publicly preregistered; equal-count control, not verified length/token matching.
+- **Bounded result:** v0.4.3 H1 22/32 vs 0/32 under Qwen3.5-4B; H2 lineage contrast not supported. Later same-project/same-configuration-class replication 24/32 vs 0/32; not independent-lab, not cross-family, not bit-for-bit runtime replication.
+- **Interpretation:** behavioral retention effect under a bundled manipulation; not evidence of literal internal source counting. Lexical/semantic repetition, target salience, explicit root references, and prompt structure/length remain confounded.
+- **Crosswalk:** VEY-043 (peer-message exposure), VEY-045 (memory-operation/state trajectory), VEY-046 (group projection), VEY-047 (multi-agent handoff). IAER adds a within-agent derivative-memory read/re-entry comparator; it is not a priority or novelty claim.
+- **Internal study:** Consciousness + AI/VEY_COGNITION_LAB/STUDIES/VEY-048_INTRA_AGENT_MEMORY_REENTRY_CROSSWALK_2026-11-25.md.
+- **Evidence class:** LITERATURE RESULT / SOURCE-CRITICAL REPOSITORY AND CORRECTION-RECORD REVIEW; no new model trial or independent replication.
