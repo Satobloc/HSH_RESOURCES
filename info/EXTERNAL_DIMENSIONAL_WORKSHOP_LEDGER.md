@@ -3188,3 +3188,29 @@ The five planned bites now have explicit single-character identifiers in the Uni
 **Current position:** Bite 1 is next. The five-bite path is `βᛟ@vnχrm`.
 
 **Ticker correction:** use one character per planned bite, not a repeated generic workflow glyph sequence. The detailed work definition stays here and in the reading notes; the signature displays the ordered path and current position.
+
+
+## 75. Biological variable map — chirality and laterality — 2026-11-25
+
+**Note:** [Biological Variable Map 01 — Chirality, Laterality, and Organismal Form](../WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIOLOGICAL_VARIABLE_MAP_CHIRALITY_LATERALITY.md)
+
+**Bite:** `v` — COMPLETE.  
+**Question:** Which distinct biological variables are grouped under handedness/left–right, and which causal connections among them are demonstrated?
+
+**Result:** The map distinguishes molecular homochirality; chiral protein/filament architecture; ciliary axonemal chirality; cellular actomyosin chirality; planar cell polarity/ciliary orientation; organizer fluid flow; asymmetric Nodal-pathway signaling; embryonic left–right axis specification; and asymmetric organ morphogenesis. These are causally connected in particular systems but do not form one universal chain.
+
+**Key demonstrated routes:**
+- Drosophila: Myo1D/actomyosin/PCP-dependent cellular chirality contributes to asymmetric gut and genital morphogenesis.
+- Mouse and several vertebrates: organizer polarity + ciliary architecture/tilt → directional flow → asymmetric Nodal-pathway signaling → visceral laterality.
+- Zebrafish: Myo1D and Vangl2/PCP connect cytoskeletal organization to cilia orientation and organizer flow, linking features of both routes.
+- Chick, some reptiles and other taxa demonstrate that the canonical cilia-driven flow mechanism is not universal.
+
+**Important distinction:** molecular homochirality is foundational to macromolecular structure and function, but the sources inspected do not establish a direct, single-step explanation from L-amino-acid/D-sugar homochirality to organ situs. Bilateral body symmetry, embryonic left–right axis specification, and visceral organ asymmetry are distinct properties.
+
+**Sources inspected:** Hamada 2020, full open-access review sections on vertebrate axis organization, L-R organizer, ciliary chirality/tilt, signaling and organogenesis; Dasgupta & Amack 2016, review sections on cilia, nodal flow, laterality phenotypes and unresolved flow sensing; Juan et al. 2018, primary study abstract, introduction and results on Drosophila Myo1D, zebrafish Kupffer's vesicle, cilia orientation, Vangl2/PCP and laterality phenotypes; Inaki et al. 2016 review abstract; PNAS 2025 homochirality article abstract. Full source bibliography and exact URLs are in the reading note. The Inaki and PNAS sources were not fully read in this bite.
+
+**SAT/H(s)H reading:** the stipulated four-dimensional organismal structure represents developmental continuity as one W-extended history with its 3D configurations as sections. This is an interpretive overlay here, not a new mechanism or a replacement for the biological causal relations.
+
+**Next cursor:** `n` — reconstruct mouse embryonic nodal left–right determination in depth, with uncertain sensing steps and species-specific limits explicitly marked.
+
+**Ticker advance:** `βᛟv@nχrm`. The `v` bite is complete; the `n` bite is now current.
