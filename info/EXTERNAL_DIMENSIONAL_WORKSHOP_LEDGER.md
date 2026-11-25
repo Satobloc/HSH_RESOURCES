@@ -2949,3 +2949,42 @@ But the limits are equally important:
 The user's hypothesis requires evidence at least comparable to this level before ordinary genealogical or developmental relationships can be called literal anatomical continuity.
 
 **Status:** Stoner & Weissman 1996 primary paper directly inspected in full searchable text through the ResearchGate author-uploaded copy, including methods, results, tables and conclusions. Taketa & De Tomaso 2014 review inspected for allorecognition and life-history context. No page-image check was needed for the HTML/OCR text interface used. No cursor advance.
+
+
+## 67. Grandmaternal microchimerism in human cord blood — 2021 three-generation HLA study — 2026-11-24
+
+**Primary study inspected:** Karlmark et al., “Grandmaternal cells in cord blood,” *eBioMedicine* 74 (2021), 103721, DOI 10.1016/j.ebiom.2021.103721, PMID 34844192, PMCID PMC8720789. Open full text: https://www.sciencedirect.com/science/article/pii/S2352396421005156; PubMed record: https://pubmed.ncbi.nlm.nih.gov/34844192/. Full article text, methods, results, tables and discussion were inspected through the indexed full-text rendition. Direct PDF page-image verification was not performed.
+
+### A. Design and detection
+
+The authors collected umbilical cord blood from healthy primigravid women and obtained three-generation HLA typing for the maternal grandmother, mother and infant. Of 29 available three-generation families, 28 samples met the criteria for informative HLA-based detection of grandmaternal-specific material. They selected non-inherited HLA alleles present in the grandmother but not shared with the mother or child. HLA-A, -B and -DRB1 typing made it possible to distinguish grandmother-origin genetic material from the ordinary maternal-origin microchimerism signal.
+
+They used HLA-specific quantitative PCR on cord-blood whole-blood DNA and sorted cell fractions, including peripheral-blood mononuclear cells, T cells, B cells, granulocytes and hematopoietic progenitor/stem-cell fractions. Sorted fractions were reported as greater than 95% pure. Results were expressed as genome equivalents of microchimeric donor cells per million host-cell genome equivalents. The qPCR detection method was highly sensitive; ten replicate wells increased combined theoretical sensitivity to 0.0005% under the stated DNA input conditions.
+
+### B. Main result
+
+Grandmaternal-specific signal was found in **5 of 28 informative cord-blood samples (18%)**. By comparison, ordinary maternal-origin microchimerism was found in 57% of the same samples. In whole blood and PBMCs, the grandmaternal signal quantities were about 100 times lower than the maternal signal.
+
+One sample had a relatively high grandmaternal signal in the CD34+ hematopoietic progenitor-cell fraction despite no detectable signal in whole blood or PBMCs. However, the DNA yield from this rare cell fraction was low (about 5,500 genome equivalents tested), so the authors caution that its normalized concentration could be overestimated. The study did not show that grandmaternal material is evenly distributed across cell classes.
+
+### C. Source discrimination and limitations
+
+The study excluded one initially positive sample because the grandmother's and mother's non-inherited HLA alleles were indistinguishable, so the source could not be assigned. Three of the five retained positive samples had paternal HLA typing available; in those three, the relevant grandmaternal allele did not match the child's non-inherited paternal allele, which the authors used to rule out a vanished dizygotic twin as the source. Fathers were unavailable for the other two positive cases, so that particular alternative could not be excluded in the same way for all five.
+
+The authors discuss the possibility of prenatal procedures or unusual pregnancy factors influencing transfer. In a small sample, two of four positive cases with available risk data had elevated aneuploidy-screening risk and invasive trophoblastic procedures, compared with none of 19 negative cases (reported Fisher exact p=0.024). This is exploratory, small-n evidence, not proof that such procedures cause transfer. They also report a lower HLA-compatibility pattern in families with positive samples, but their own discussion cautions that the small number of positive samples limits inference.
+
+Most importantly, the assay measures **grandmother-specific DNA** in whole blood and purified blood-cell fractions. It is consistent with grandmother-origin microchimeric cells in the fetal circulation and is the authors' interpretation, but it is not direct microscopy of intact living donor cells, a single-cell genotype demonstration, longitudinal tracking of cell persistence after birth, or proof of functional engraftment in a tissue. The paper itself says it remains unknown whether the detected grandmaternal material is passive or immunologically active.
+
+### D. What it establishes for the workshop
+
+This is a genuine third-generation genetic signal in a human biological compartment: maternal-grandmother-specific HLA material is detectable in a subset of newborn cord-blood samples, beyond the mother's own non-inherited alleles. It provides evidence consistent with transfer of a lineage across two successive maternal pregnancy interfaces.
+
+It does **not** establish a continuous macroscopic anatomical structure connecting grandmother, mother and child; does not show a shared vascular system across the three bodies; does not demonstrate tissue-level integration or a continuing functional role in the child; and does not support an additional spatial dimension. Its significance is narrower and still striking: genetic material associated with the grandmother can appear in the grandchild's prenatal circulation.
+
+### E. Related evidence and next discriminating question
+
+The 2011 study “Pregnancy, Microchimerism, and the Maternal Grandmother” examined maternal-grandmother-origin microchimerism in adult pregnant women, a possible intermediate host reservoir. The 2021 cord-blood study then detects grandmaternal-specific signal in the next generation. The two findings together make a plausible pathway, but they do not prove a continuous chain of viable cells from grandmother through mother to fetus in the same family over time.
+
+Next, inspect the 2011 primary paper and then studies of maternal-origin microchimerism in adult offspring and fetal-origin microchimerism in mothers, distinguishing qPCR detection from direct cell localization, engraftment and function. Do not infer macroscopic continuity from cellular chimerism.
+
+**Status:** Karlmark et al. 2021 full text, methods, results and discussion inspected through the indexed full text. Page-image verification not performed. This is one small study (28 informative samples, five positive); it requires independent replication and stronger cell-level confirmation. No cursor advance.
