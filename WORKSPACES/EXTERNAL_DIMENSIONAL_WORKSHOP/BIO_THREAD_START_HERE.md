@@ -2,11 +2,7 @@
 
 **Purpose:** This file is the continuity anchor for the BIO comparative-history lane. Its central question is what SAT/H(s)H implies about biology and how its four-dimensional ontology converges with, differs from, or independently reconstructs the Hinton tradition, nLab/n-Category Café, higher mathematics and related physics. Biology is a major application, not a specialist mechanism catalogue. Start here, then follow the linked pointers.
 
-**Mandatory cross-conversation inheritance:** the complete shared Tocktick pilot ticker is inherited unchanged from the preceding PHYS/GIT/BIO pilot conversation. Its live signature is:
-
-`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
-
-Resume at the existing `@⤳` position. Never restart, abbreviate, replace, regenerate, or move the marker because a new conversation has begun. BIO's lane-local ticker below remains a separate, subordinate BIO cursor; it does not replace or truncate the shared full ticker. Re-fetch this anchor, the live Work Ledger, shared Protocol and Code Ledger before continuing.
+**BIO continuity:** resume the BIO lane from its current workplan in this entrypoint and the live Work Ledger. Its ticker is an editable working plan, not a fixed or shared signature. PHYS and GIT have independent workplans and cursors; do not import their @ positions into BIO. Reassess and revise the BIO ticker whenever the research direction or priorities warrant it, keeping this anchor and the ledger aligned.
 
 **Last updated:** 2026-11-25  
 **Primary repository:** `Satobloc/HSH_RESOURCES`  
@@ -127,4 +123,4 @@ Begin `m` with a compact orientation map, not another technical biological case 
 
 ---
 
-**Handoff rule:** When a conversation ends or context is lost, start with this file; preserve the complete shared ticker exactly as printed at the top and resume at `@⤳`. Then re-read the live Work Ledger, Protocol and Code Ledger. The BIO-local ticker remains independent and subordinate. Do not reset or shorten the shared sequence.
+**Handoff rule:** When a conversation ends or context is lost, start with this file; recover the current BIO ticker and its meaning from the Work Ledger and Code Ledger, then resume at its recorded `@` position. Reassess the workplan rather than treating it as fixed. Keep this anchor and the live ledger aligned. PHYS and GIT retain their independent workplans.
