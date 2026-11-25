@@ -11,7 +11,7 @@
 
 **New PHYS conversation? Start here:** [PHYS THREAD START HERE](../WORKSPACES/PHYSICS/PHYS_THREAD_START_HERE.md). It is the compact launchpad to this master ledger, the shared Tocktick protocol and code ledger, Mersearch instructions, and deeper subject/source maps. Read its cold-start instruction, then return here for the authoritative live state.
 
-**One-line mission:** determine how far SAT/H(s)H's Minkowski/worldline/timesheet/filament approach independently reconstructs, converges with, or differs from the geometry, topology, algebra, braid, category, higher-category and mathematical-physics structures developed elsewhere; decode those formalisms from their actual geometric objects and operations, not from intimidating vocabulary alone.
+**One-line mission:** begin with SAT/H(s)H's own foundational architecture and use it as the explicit lens for understanding its likely correspondences with nLab / n-Category Café material, four-dimensional historical thought, and contemporary physics. Use external mathematics to clarify SAT's objects and operations, not to turn the project into an exhaustive survey of mathematics.
 
 **Core mechanics:** Tock = bounded work package; Tick = subordinate operation; Credenza = persistent NOW/NEXT/RETURN/PIN/SOURCES/QUESTIONS/FINDINGS/METHODS/BRANCHES and parked/retired registers; ticker = ordered compact plan; `@` = next uncompleted operation. Work in reasonable, inspectable bites (normally 2–5 primary sources or one substantial source plus essential context). Each bite ends with source locators, epistemic status, durable record, verification/readback and a return cursor. Reorient after roughly 3–5 substantive bites or sooner when evidence changes direction. Full definitions are in the [Protocol](EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md) and [Code Ledger](EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md).
 
@@ -55,11 +55,11 @@ A source-grounded geometric atlas and comparison map containing:
 
 PHY-01 closes only when the above map has been built from inspected sources, the important geometry has been reconstructed faithfully, comparisons have source-level support, uncertainty and counterexamples are visible, and a next Tock is recorded. The Tock does **not** require proving SAT/H(s)H or declaring a new mainstream consensus.
 
-## 2. Live Tick
+## 2. Historical phase grammar (not the live bite ticker)
 
-The Tick sequence follows the shared code ledger. Adjacency means succession; `@` marks the next uncompleted operation.
+The following phase sequence records the original workflow grammar established at Tock setup. These operations are performed within each bounded bite; they are not separate ticker entries. The live ticker is bite-level and is maintained at the ledger apex and in Bite 19.
 
-**Initial signature at Tock setup (historical snapshot):**
+**Initial phase signature at Tock setup (historical snapshot only):**
 
 `⌖◉⌕⧖@⤳▣✓⇢`
 
@@ -73,7 +73,7 @@ The Tick sequence follows the shared code ledger. Adjacency means succession; `@
 - `✓` Verify: check source claims, exact locators, geometric fidelity, status labels, and repository readback.
 - `⇢` Deliberate next step and record the next cursor.
 
-The signature is a live cursor, not a decorative summary and not a substitute for the Credenza or source records.
+This phase signature is retained for procedural reference only. It is not the current research ticker; the live bite ticker is `@⧉`.
 
 ## 3. Credenza
 
