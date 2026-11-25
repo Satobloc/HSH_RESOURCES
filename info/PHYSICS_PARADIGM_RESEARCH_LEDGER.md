@@ -788,3 +788,104 @@ This bite corrects the object model and tightens the composition schema; it does
 
 **LIVE TICKER — final line:**
 `⌖◉⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢`
+
+---
+
+## 12. Bite 06 — Identity, composition and projection-fidelity tests
+
+**Recorded:** 2026-11-25  
+**State:** Formal test plan derived from the conditional Bite 05 boundary template. No source-defined category, physical functor or empirical result is claimed. The actual SAT/H(s)H object data remain the prerequisite.
+
+### ∂ MINIMAL HISTORY STRUCTURE
+
+Use `Hist_src` as a **provisional name** for a category that may be defined only after its objects and source-decorations are recovered.
+
+- An object `D` is a declared admissible readout-boundary datum. It carries the source-certified object identity and dimensional data available at that boundary, the selected readout structure, and the equivalence convention used to compare boundary data. It is not automatically just a spatial shape.
+- A morphism `H₀₁ : D₀ → D₁` is a source-decorated history over an explicitly chosen interval in the Minkowski control or in a subsequently specified spacetime. It carries the embedded/extended geometric data, time orientation, readout/boundary identifications and the declared equivalence relation.
+- Composition `H₁₂ ∘ H₀₁` is defined only when the outgoing datum of the first history matches the incoming datum of the second under the declared boundary equivalence. The composite is the glued history, not a new independent physical process inserted at the seam.
+- The identity `1_D` is a product/cylindrical history that carries `D` unchanged. Its existence is a construction requirement, not proof that the physical system literally pauses.
+- Associativity requires the gluing and boundary-identification rules to make the two iterated gluings equivalent. If they agree only up to a specified isomorphism, the appropriate structure may be weak/pseudo-categorical rather than strict. Do not impose strictness merely for notational convenience.
+
+**Control boundary:** the conventional Minkowski slab and its two readout boundaries remain an exact comparison construction. Native SAT timesheet data and the H(s)H finite-core geometry enter `D` only when their primary-source definitions and dimensions have been recovered. For noncompact spatial boundaries, the eventual category must state whether it uses noncompact bordisms, compact support, specified asymptotic behavior, or another justified boundary convention.
+
+### ∴ THREE FUNCTORIALITY CHECKS
+
+The three projections from Bite 04/05 become testable by asking whether they respect identities and composition. Their codomains and equivalences must be explicitly chosen before these equations can be asserted as theorems.
+
+**Causal view `C`:**
+
+```text
+C(1_D) ≅ 1_{C(D)}
+C(H₁₂ ∘ H₀₁) ≅ C(H₁₂) ∘ C(H₀₁)
+```
+
+The causal output must say exactly whether it retains only causal precedence, the full causal relation on events/regions, time orientation, or Lorentzian metric data. A precedence-only map can preserve order while forgetting proper time, interval scale and finite-core morphology. A map retaining only endpoint precedence is even coarser: different internal histories can share the same endpoint relation.
+
+**Bordism view `B`:**
+
+```text
+B(1_D) ≅ cylindrical bordism on D
+B(H₁₂ ∘ H₀₁) ≅ B(H₁₂) glued to B(H₀₁)
+```
+
+A plain topological bordism class can forget Lorentzian metric, parameterized timing, fields and dynamical response. A decorated/geometric bordism can retain some of those data, but only if its decoration and its equivalence relation explicitly preserve them. The word “bordism” alone does not decide the fidelity level.
+
+**Configuration/motion view `Q`:**
+
+```text
+Q(1_D) ≃ constant path at the boundary configuration
+Q(H₁₂ ∘ H₀₁) ≃ Q(H₀₁) ⋆ Q(H₁₂)
+```
+
+Here `⋆` is path concatenation, with equivalence up to the declared reparameterization. If `Q` retains only a homotopy class, it may forget speed, proper-time distribution, pitch and other parameterized data. If those matter, retain a parameterized path or add separately declared observables rather than expecting a homotopy class to remember them.
+
+These checks are **obligations on candidate maps**, not findings that the maps already exist. If a projection preserves composition only up to coherent equivalence, record the coherence data and test a weak/pseudo-functor rather than forcing a strict functor.
+
+### Δ FIDELITY / INFORMATION-LOSS DISCRIMINATORS
+
+First choose the equivalence relation `~` on source histories. Only then can one test whether a projection or combined map is faithful.
+
+- **Faithfulness (modulo the declared equivalence):** if `R(H) = R(H')`, does it follow that `H ~ H'`? If not, the combined view still identifies histories that the source structure regards as distinct.
+- **Fullness / liftability:** does every admissible target triple of causal, bordism and configuration data arise from an actual source history? If not, the target product contains formally compatible-looking triples that no source history realizes.
+- **Object coverage:** does each target boundary datum correspond to an allowed source boundary object? Do not confuse broad formal target coverage with physical realizability.
+
+Candidate information-loss pairs to seek once ◈ is completed:
+
+1. Histories with the same causal order but different source-certified core morphology or `θ₄` relation. This tests what the causal projection forgets; it is not yet asserted that such a pair is physically admissible.
+2. Histories in the same undecorated bordism class but with different metric, parameterized history or constitutive data. This tests whether the bordism decoration is too coarse.
+3. Configuration paths in the same homotopy class but with different parameterization or proper-time allocation. This tests whether the motion projection discards data relevant to the physical question.
+4. Histories with the same separate projections but different cross-relations among causal, boundary and core data. This tests whether the product triple is sufficient or whether the projections need compatible cross-data.
+
+The decisive result could be positive or negative. The three views may be jointly faithful, may require richer decorations, or may remain deliberately complementary and non-equivalent. **Do not assume the product map is injective, full, or physically sufficient.** A failure identifies what additional source-defined structure must be retained; it does not authorize importing a convenient extra structure.
+
+### ⁇ NEXT DISCRIMINATOR
+
+When the actual source objects are recovered, build the smallest explicit pair of histories that differ in exactly one controlled item—core topology, boundary identification, time parameterization, or permitted deformation—while keeping the other declared data fixed. Compute the three projections independently and compare their outputs. This is the first minimal-pair test of projection fidelity. Do not use invented physical data or fitted parameters.
+
+### ⚙ COMPLETION GATE FOR CONNECT
+
+Connect remains open until all of the following hold:
+
+1. The SAT filament/worldline, native timesheet/time-wavefront and H(s)H finite-core worldtube have source-authenticated definitions, dimensions and lineage.
+2. The relevant boundary data and actual core configuration space are specified, or a clear source-based reason is recorded for why a proposed category does not require one.
+3. Identity, composition and the causal/bordism/configuration maps are explicitly defined and tested at least on a nontrivial minimal pair.
+4. The maps' data retention, equivalence relations, information losses and unresolved dependencies are documented.
+5. The pending Mersearch request has reached a terminal state, its manifest/receipt has been inspected, and any relevant original source hits have been opened and read. A compact receipt is not treated as an exhaustive inventory.
+
+Only then proceed from Connect to Record/Verify and reorientation. A successful source recovery or an elegant formal schema alone is not Tick completion.
+
+### ↩ RETURN / CURRENT ORDER
+
+Resume the ordered Connect subpath without rearrangement:
+
+- `◈` recover source-defined object/core geometry, dimensions, ancestry and admissible motion.
+- `∂` specify boundaries, identity histories, gluing and composition.
+- `Δ` run the three identity/composition checks and projection-fidelity minimal pairs.
+- `…` reconcile the existing lane-2 Mersearch request and read its source results; preserve lane occupancy until resolved.
+- `▣✓` record and independently verify the durable result.
+- `ρ⇢` reorient and decide the next Tock.
+
+**Bite status:** formal tests sharpened; Connect remains active. No Tick advance, theory promotion, category claim or physical result.
+
+
+`⌖◉⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢`
