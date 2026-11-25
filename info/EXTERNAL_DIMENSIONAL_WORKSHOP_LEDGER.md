@@ -3396,3 +3396,30 @@ The anchor stores, in compact form:
 **Next:** Reorient within the remaining \`r\` programme before selecting another sub-bite. R.3 completion alone does not authorize an R.4 or outer-ticker advance.
 
 **Lane boundary:** BIO comparative-history only. No H(s)H BEDROCK, main theory, worker policy, or PHYS/GIT cursor change.
+
+
+## 84. BIO lane — R.4: midgut rotation as a later organogenetic history — 2026-11-25
+
+**Lane:** BIO / HSH_RESOURCES comparative-history lane (`⟐`)  
+**Note:** [BIO R.4 — Midgut Rotation as a Later Organogenetic History](../WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R4_MIDGUT_ROTATION_WORLDTUBE.md)
+
+**Bite:** `r / R.4` — COMPLETE. The larger `r` mapping remains active; outer ticker not advanced.
+
+**Reorientation basis:** The original `r` specification explicitly includes downstream organogenesis. R.2 ended at early Nodal/Lefty propagation, and R.3 addressed cell-division/lineage bookkeeping. R.4 therefore follows one concrete downstream example rather than inventing a general new biological subprogramme.
+
+**Question:** How does an early left–right asymmetry become a later organ-level morphogenetic event, and what does the worldtube reading make explicit about the intervening histories?
+
+**Result:** Midgut rotation is not adequately described as an isolated gut tube turning by itself. The dorsal mesentery suspends the gut and undergoes left–right asymmetric tissue/ECM changes that deform it and tilt the attached gut tube. The 2018 Sivakumar et al. study identifies a right-sided HA/TSG-6/HC-HA matrix pathway as an active contributor. In mouse DM at E10.5, HA and inter-alpha-trypsin inhibitor are enriched on the right; Tsg6-null and bikunin-null embryos show defects in initiating midgut rotation. Direct mouse TSG-6 protein localization was not achieved in that study. Chicken experiments provide additional direct perturbation evidence for right-sided HA-dependent expansion and gut tilt; those results remain species-labeled.
+
+**Important correction to a linear account:** early left-sided Nodal/Pitx2 information is not by itself a complete local execution mechanism. The midgut case includes a right-sided matrix mechanism and distinct left/right functions. The right side is an active morphogenetic compartment, not merely passive absence of left identity.
+
+**Compact map:** `W_DM, W_gut ⊂ W_emb`; changing left/right DM matrix environments contribute to DM deformation, gut tilt and later rotation. The ᛟ reading places the transient node, persistent patterning, later mesentery and gut configurations within one embryo history, while preserving their temporal separation and local causal relations.
+
+**Evidence:** Sivakumar et al. (2018), DOI 10.1016/j.devcel.2018.08.002, full text inspected; Hamada (2020), DOI 10.2183/pjab.96.021, relevant full-text sections inspected; Kurpios et al. (2008), DOI 10.1073/pnas.0803578105, PubMed abstract and figure captions inspected. Species and access levels are recorded in the R.4 note.
+
+**Interpretive boundary:** The worldtube reading makes delayed, nested and distributed morphogenesis explicit. It adds no new biological mechanism or demonstrated prediction. Quantitative continuum mechanics, complete vascular lineage histories and the detailed relation between left Pitx2 and right TSG-6/HC-HA pathways remain outside or unresolved in this bite.
+
+**Next:** Reorient the remaining `r` scope before selecting any further bite. Candidate residuals include organism-boundary/material-exchange bookkeeping or lineage-resolved tissue/vascular histories, but neither is automatically authorized. Do not assume an R.5 or advance the outer ticker.
+
+**Lane boundary:** BIO comparative-history only. No H(s)H BEDROCK, main theory, worker policy, or PHYS/GIT cursor change.
+
