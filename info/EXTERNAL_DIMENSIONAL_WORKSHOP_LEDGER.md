@@ -3023,3 +3023,54 @@ Together they support a plausible grandmother → mother → fetus route for mic
 For the workshop, this is a real multigenerational cell-lineage phenomenon at the microscopic/cellular scale. It is a much narrower proposition than a macroscopic anatomical body spanning grandmother, mother and child. The evidence concerns rare cell populations and donor-specific genetic material, not a shared circulatory system among the three people.
 
 **Status:** Gammill et al. 2011 full-text article inspected, including methods and results; page-image verification not needed for HTML. Combined with Karlmark et al. 2021, this gives a plausible but not directly tracked transgenerational microchimerism route. No cursor advance.
+
+
+## 69. Human fetal microchimerism in healed maternal caesarean scars — cell localization and phenotype — 2026-11-24
+
+**Primary study inspected:** Uzma Mahmood & Keelin O'Donoghue, “Microchimeric fetal cells play a role in maternal wound healing after pregnancy,” *Chimerism* 5(2) (2014), 40–52, DOI 10.4161/chim.28746, PMID 24717775, PMCID PMC4199806. Open full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC4199806/. Article methods, results, figure legends and discussion were inspected in the indexed full-text rendition.
+
+### A. Design
+
+The study examined 70 skin biopsies: 31 samples of normal/unwounded skin and 39 caesarean-section scars. Women with prior blood transfusions, stem-cell transplantation or organ transplantation were excluded. The research team used XY-FISH (X/Y chromosome fluorescence in situ hybridization) to locate male cells in tissue sections, additional Y-FISH and nested SRY PCR to confirm male genetic material, and immunostaining on the same sections to identify cell phenotype and extracellular-matrix markers.
+
+The biological logic is that a male fetus can transfer cells into the mother. However, the authors correctly call the cells "male presumed-fetal" in their discussion: a Y chromosome establishes male genetic origin, not in every case the identity of a specific pregnancy.
+
+### B. Findings in the scar
+
+Male cells were identified in healed caesarean scars, particularly in women whose first male child had been delivered by caesarean section. The study reported 90 male cells in 115 tissue sections, with rare isolated cells (the abstract reports 0–9 cells per section). The male cells were located predominantly in the epidermis; some were also seen in the dermis. The comparison skin samples from women whose first male child had been delivered vaginally did not show the same scar-associated pattern.
+
+Combined XY-FISH and immunostaining found that the epidermal male cells expressed pan-cytokeratin, identifying them phenotypically as keratinocytes. The study also found male cells expressing collagen I, collagen III, fibronectin and transforming growth factor beta markers (including TGF-β3). Figure legends show same-section co-localization of chromosome signal and tissue marker staining.
+
+Y-FISH using an alternative probe and nested PCR for SRY were used as additional confirmation of male genetic material in the scar samples. The study therefore goes beyond bulk qPCR detection: it locates individual male-origin nuclei in maternal tissue and assesses their phenotype.
+
+### C. What is and is not established
+
+The data support the presence of rare male-origin cells in healed maternal caesarean scars and provide histological evidence that some have an epidermal keratinocyte phenotype. This is consistent with persistent fetal-origin cells becoming incorporated into maternal tissue and possibly participating in wound repair.
+
+The study does **not** demonstrate that these cells caused improved scar healing, that they materially changed wound mechanics, or that they were necessary for repair. The authors infer possible recruitment/proliferation in response to injury, but the design is observational and does not manipulate or selectively remove the cells. Expression of collagen/TGF-β markers is suggestive of a repair-associated phenotype, not functional proof of a causal role.
+
+Y-chromosome identification is not equivalent to unique pregnancy-source tracing. Women with prior miscarriages could carry male-origin cells from a pregnancy loss; the authors found male cells in some scar samples from women without sons but with previous miscarriages of unknown fetal sex. Although transplantation and transfusion were excluded, the study does not genetically distinguish a particular son from every other possible male pregnancy source in each case.
+
+### D. Relevance to the multi-generational organismal question
+
+This gives a human example of a cell population crossing the fetal–maternal boundary and later being found embedded in a differentiated maternal tissue. Unlike the 2011 and 2021 HLA-qPCR studies, this study uses microscopy and phenotype markers to show a tissue-level location and cell identity.
+
+Still, its scale and evidential scope are specific:
+- a few rare cells are found in a localized maternal scar;
+- the cells are presumed fetal based on male origin and reproductive history;
+- some express host-tissue-associated markers;
+- no continuous organ, vascular system or gross anatomical structure links mother and child;
+- no chain is traced from a grandmother through mother into child.
+
+This is an example of **cellular incorporation across an individual boundary**, not whole-organism fusion or an anatomical body extending across generations.
+
+### E. Place in the growing taxonomy
+
+The microchimerism branch now distinguishes:
+1. maternal-grandmother-origin DNA in a pregnant woman's PBMCs (Gammill et al. 2011, ledger §68);
+2. grandmother-specific DNA in a subset of newborn cord-blood samples (Karlmark et al. 2021, ledger §67);
+3. male presumed-fetal cells in maternal tissues, with histological evidence of differentiated cell phenotypes (Mahmood & O'Donoghue 2014, this section).
+
+These studies measure different compartments and different generational directions. They should not be merged into a single directly traced lineage. The next useful comparison is a study that demonstrates fetal-derived cells in maternal marrow or multiple organs, ideally combining Y-FISH with tissue/cell markers and a well-defined obstetric history.
+
+**Status:** Mahmood & O'Donoghue 2014 full indexed article text, methods, results and figure legends inspected. Direct high-resolution image validation of the FISH panels was not performed during this pass. Observational evidence supports tissue localization and marker expression, not causal wound-repair function. No cursor advance.
