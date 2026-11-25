@@ -1975,3 +1975,145 @@ Next primary-source tasks:
 4. Return to Wilson 1903 once a complete scan is available; it remains located but not directly read.
 
 **Source status:** Morgan 1899 article directly OCR-inspected pp. 7–14; Morgan 1907 *Experimental Zoölogy* directly OCR-inspected pp. 277–305; PDF screenshot service returned cache miss for both sources, so no page-image verification. Morgan 1900 sequel bibliographically verified only. Zeleny 1905 *Compensatory Regulation* located bibliographically, not directly read. No Tock completion or cursor advance.
+
+
+## 62. Botryllus schlosseri: natural vascular fusion, allorecognition and chimeric stem-cell lineages — 2026-11-24
+
+This section adds a modern biological comparator to Morgan's historical grafting experiments. The colonial ascidian *Botryllus schlosseri* can undergo natural vascular fusion with genetically compatible conspecific colonies, producing a shared circulatory system and, depending on subsequent cell competition, a persistent chimera. It is a much more direct example of a biological entity formed through inter-individual fusion than the Alpheus claw system, and it allows physical continuity, lineage persistence and organismal identity to be examined separately.
+
+### A. Anatomical and organismal setup
+
+A *Botryllus* colony contains many asexually budded zooids embedded in a shared tunic and connected by extracorporeal blood vessels terminating in ampullae. When two colonies contact one another at their growing peripheral ampullae, they may either reject one another or fuse their vessels. Fusion establishes a shared vascular circulation; rejection occurs at the contact sites and produces localized points of rejection. A 2025 review describes fusion/rejection as outcomes of colony allorecognition and shows a compatible pair that fuses and later undergoes resorption of one colony's zooids, leaving the remaining colony with two functional zooid systems. Source: Rinkevich, “From seabed to sickbed: lessons gained from allorecognition in marine invertebrates,” *Frontiers in Immunology* 16 (2025), 1563685, https://pmc.ncbi.nlm.nih.gov/articles/PMC12018476/. Full text inspected in HTML.
+
+This is not ordinary surgical mammalian parabiosis. It is natural vascular fusion in a colonial marine chordate. “Parabiont” may occur in the literature as a label for the fused vascular entity, but “vascularly fused chimera” is clearer for this workshop.
+
+### B. 2013 primary identification of BHF: a compatibility gate for fusion or rejection
+
+**Primary source:** Ayelet Voskoboynik et al., “Identification of a Colonial Chordate Histocompatibility Gene,” *Science* 341(6144) (26 July 2013), DOI 10.1126/science.1238036. Full open text: https://pmc.ncbi.nlm.nih.gov/articles/PMC3810301/.
+
+This paper was read directly in the full PMC HTML text:
+- The authors identify Botryllus Histocompatibility Factor (BHF) as a genetic determinant that accurately predicts observed fusion/rejection outcomes in the tested colony pairs.
+- Among 23 colonies, ten unique BHF alleles were identified. A separate validation cohort had six blind predictions, all confirmed (6/6).
+- BHF was significantly upregulated in challenged colonies approaching fusion/rejection (P=0.009) and was strongly expressed in the vasculature, including ampullae.
+- In BHF morpholino knockdown experiments, control colony pairs generally fused or rejected, while BHF-knockdown pairs showed no reaction during the observation period. This supports BHF participation in initiating the histocompatibility response.
+- The authors describe the key downstream biological problem: after vascular fusion, stem cells from the two colonies compete to overtake germline and/or somatic lineages. This may eliminate the other colony's genome, or produce a mixed-genotype chimeric colony.
+
+Primary-source passages: https://pmc.ncbi.nlm.nih.gov/articles/PMC3810301/ (especially the results section around BHF validation, expression and morpholino tests, and the paragraph on post-fusion stem-cell competition). The article directly measures BHF-related prediction, expression and knockdown outcomes; its discussion of the broader competition among stem-cell lineages cites earlier research and should not be presented as though the 2013 experiments themselves conducted all those long-term lineage studies.
+
+### C. 2011 juvenile fusion study: growth benefit and distinct somatic/germline outcomes
+
+**Primary study identified and abstract/methods/results extracted; full primary article not directly opened in this session:**
+
+Meredith A. Carpenter, John H. Powell, Katherine J. Ishizuka, Karla J. Palmeri, Snjezana Rendulic & Anthony W. De Tomaso, “Growth and Long-Term Somatic and Germline Chimerism Following Fusion of Juvenile *Botryllus schlosseri*,” *The Biological Bulletin* (2011), DOI 10.1086/BBLV220N1P57, PMCID PMC4265767. SciSpace record: https://scispace.com/papers/growth-and-long-term-somatic-and-germline-chimerism-1woz3rpbd0?utm_source=chatgpt&utm_medium=tool.
+
+The extracted abstract and article-level structured summary report:
+- The study compared naturally formed and controlled-fusion juvenile chimeras, with high- and low-density growth conditions.
+- Growth was density dependent. Under high-density conditions the chimeras grew while almost all individual colonies did not; growth improved when individual colonies were moved to low-density conditions.
+- The authors assessed genotype contributions in somatic tissues and testes using AFLP markers.
+- Somatic and germline outcomes were not necessarily the same: a genotype losing in somatic tissues could still contribute to the germline, or vice versa.
+- Most individual testes sampled in chimeras were clonally derived.
+- In linear three-part chimeras, the position of a component was associated with the probability of resorption; the middle partner was resorbed less often than expected, while outside partners were resorbed more often.
+
+This is a strong hint that “the chimera's genotype” is not a single scalar property. Somatic tissue composition, germline composition, morphology and growth can have different outcomes. Because this session did not retrieve the full paper text, regard detailed methodological/results claims here as abstract and structured-extraction level until primary full text can be inspected.
+
+### D. 2004 environmental experiment: somatic composition shifts while germline parasitism can remain distinct
+
+**Primary article identified; abstract and structured methods/results extracted, full primary text not directly opened in this session:**
+
+Baruch Rinkevich & Irena Yankelevich, “Environmental split between germ cell parasitism and somatic cell synergism in chimeras of a colonial urochordate,” *Journal of Experimental Biology* 207 (2004), DOI 10.1242/jeb.01184. SciSpace record: https://scispace.com/papers/environmental-split-between-germ-cell-parasitism-and-somatic-492hzcd12p?utm_source=chatgpt&utm_medium=tool. Publisher full-PDF route listed in the record: https://jeb.biologists.org/content/207/20/3531.full.pdf.
+
+The article's abstract reports:
+- Colonies can fuse if they share at least one allele at the highly polymorphic fusibility/histocompatibility locus.
+- A partner that is morphologically resorbed can still contribute circulating totipotent cells to the surviving partner's soma or germline.
+- The two stem-cell lineage outcomes can be dissociated: somatic cell composition shifted with seawater temperature in the tested pairings, while germline parasitism showed little/no corresponding temperature shift.
+- The chimera can therefore contain a composite of genotypes through two distinct, partly unlinked interactions: germline parasitism and somatic cell cooperation/competition.
+
+The study directly challenges a simple inference from morphology: a colony that has disappeared as a visible body component may still have contributed cell lineages to the composite. Conversely, visible tissue dominance does not guarantee germline dominance.
+
+### E. Molecular allorecognition update: more than a single-gene story
+
+**2024 primary research:**
+
+Henry Rodriguez-Valbuena et al., “Genetic and functional diversity of allorecognition receptors in the urochordate, *Botryllus schlosseri*,” *Nature Communications* (2024), PMID 39463968; open full-text record: https://pmc.ncbi.nlm.nih.gov/articles/PMC11507803/.
+
+The indexed full-text results describe:
+- The *fuhc* allorecognition locus includes highly polymorphic haplotypes.
+- The previously identified receptors *fester* and *uncle fester* are not the whole picture. *Fester* is part of an expanded gene family (more than 37 loci in their analysis).
+- The authors identify a diverse additional family of Fester co-receptors (FcoRs), with more than 50 candidate loci in their assembled data; these transmembrane proteins encode ITIM and hemITAM signaling motifs.
+- The work supports a model in which activating and inhibitory signaling pathways are integrated to determine fusion or rejection.
+
+The full PMC page could not be opened due a browser access challenge, but indexed full-text snippets expose the abstract and detailed results. Treat this as indexed article-text evidence rather than a fully inspected page-by-page read until full article access succeeds.
+
+**2025 review:**
+
+Anthony W. De Tomaso & Henry Rodriguez-Valbuena, “Histocompatibility in *Botryllus schlosseri* and the origins of adaptive immunity,” *Immunogenetics* 77 (2025), article 22, DOI 10.1007/s00251-025-01379-7. Full open Springer text: https://link.springer.com/article/10.1007/s00251-025-01379-7.
+
+The review describes a broader architecture within the *fuhc* locus: multiple candidate ligands, receptors and signaling components, including *fester*, FcoRs, HE3L and a linked region containing BHF and other candidate ligands. It stresses that not every gene's role is resolved. It is a current synthesis and research agenda, not a new primary experiment. The key correction is to avoid describing the whole recognition apparatus as “a single gene.” BHF remains the gene identified in 2013 as a highly accurate predictor of fusion/rejection in the tested sets, while a broader receptor/signaling architecture is being worked out.
+
+### F. New 2025 synthesis of marine allorecognition: individuality is dynamic and state-dependent
+
+Baruch Rinkevich, “From seabed to sickbed: lessons gained from allorecognition in marine invertebrates,” *Frontiers in Immunology* 16 (10 April 2025), 1563685, DOI 10.3389/fimmu.2025.1563685. Full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC12018476/.
+
+This is a perspective/review and proposes an “allorecognition landscape” to think about self/non-self as dynamic across combinations and time. Its useful empirically grounded observations include:
+- *Botryllus* allorecognition is not merely a binary response with all colonies permanently classified as compatible or incompatible in every possible context; the review discusses transitive and non-transitive response hierarchies, indifference, reciprocal or unilateral outcomes and genotype-specific interactions.
+- Compatible colony fusion can be followed by resorption of one morphologically visible partner.
+- A colony can interact with more than one neighbor at once, and recognition is spatially localized to particular contacting ampullae.
+- The review reports that colonies can form chimeras after donor tissue is introduced in ways that bypass the usual ampulla-level recognition interface, despite incompatible natural contact at peripheral vessels. This implies that recognition, cell survival and post-entry lineage behavior are separable stages.
+
+The review author's broader claim that immunity evolved primarily to preserve individuality is a theoretical thesis, not an established universal evolutionary explanation. Do not elevate the proposed “allorecognition landscape” metaphor to a proven law. But the empirical point that different stages of contact, recognition, fusion, resorption and stem-cell competition can have different outcomes is highly relevant.
+
+### G. September 2026 BHF population-genetics result
+
+Agniya M. Sokolova, Jacob Douek & Baruch Rinkevich, “Intra-colony divergence and global allele sharing reflect purifying selection and recombination at the *Botryllus* histocompatibility factor locus,” *Immunogenetics* 78(1) (9 September 2026), article 21, DOI 10.1007/s00251-026-01413-2, PMID 42711581. PubMed full abstract: https://pubmed.ncbi.nlm.nih.gov/42711581/.
+
+The study analyzed full-length BHF alleles from 19 laboratory-born and wild colonies:
+- Highly divergent alleles can coexist within individual colonies.
+- Identical alleles can be shared across continental-scale distances.
+- Despite pronounced nucleotide diversity and intragenic recombination, 33 alleles encoded only 17 distinct protein variants.
+- The authors did not detect balancing or directional selection in their sample; they report signatures of purifying selection.
+- They propose recombination, human-mediated gene flow and linkage to nearby loci under balancing selection as possible contributors to high nucleotide variation, while functional constraints preserve protein-level stability.
+
+This is a recent population-genetic study of the **BHF locus**, not a new experiment on whole-colony fusion outcomes or long-term chimerism. It refines our understanding of the molecular recognition landscape but does not alter the basic empirical distinction among vascular fusion, lineage competition and organ-level integration.
+
+### H. Comparison with Morgan 1899/1907: a continuity matrix
+
+The Morgan graft examples and *Botryllus* together provide a useful series of different integration states:
+
+| Relation | Morgan's historical animal grafts | *Botryllus schlosseri* |
+|---|---|---|
+| Physical tissue continuity | Cut surfaces unite; some grafts make persistent composite bodies | Natural ampullary fusion creates joined vascular tissue |
+| Shared circulation | Cross-species earthworm grafts can share blood circulation | Common vascular network and circulation after compatible fusion |
+| Regional lineage persistence | Mixed-species regenerates retain source-associated pigmentation | Mixed genetic cell lineages can persist after fusion |
+| Neural continuity | Earthworm/planarian nerve-cord alignment affects regenerative pattern | Not the defining fusion criterion; hematopoietic/stem-cell and vascular systems are central |
+| Developmental coupling | Fusion may remodel, split, absorb tissue or form new parts | Colony-level resorption and stem-cell migration/competition alter long-term composition |
+| Somatic vs germline outcome | Not separately genotyped with modern lineage markers | Somatic and germline contributions can diverge |
+| Recognition gate | Surgical contact bypasses natural compatibility; outcome depends on tissue/organism | Ampulla-level allorecognition can direct fusion or rejection |
+
+The table is a conceptual comparison, not a claim that the organisms use homologous mechanisms.
+
+### I. What this adds to our model, and what it does not prove
+
+*Botryllus* demonstrates that natural biological fusion can make a multi-genotype vascularly integrated entity. It further shows that:
+- morphological disappearance/resorption of one colony does not necessarily mean all of its cells or genetic contributions disappear;
+- vascular continuity is not the same as homogeneous tissue identity;
+- somatic and germline contributions can follow different histories;
+- the compatibility mechanism itself is a spatially localized recognition process, and successful fusion is followed by a distinct competition phase;
+- an organism-level composite may have a temporal identity that outlasts the visible morphology of one component.
+
+This is a strong 3D biological counterexample to any simplistic rule that one body must correspond to one genome, one lineage, one visible morphology or one uninterrupted founder individual. It does **not** show the user's proposed extra-spatial 4D continuity among separate people, nor a life-tree structure linking individuals across historical time. The *Botryllus* relations are physically mediated through vessels, mobile cells, stem-cell competition and the ordinary time-course of development.
+
+### J. Updated conceptual distinctions
+
+The active biology taxonomy should now explicitly distinguish:
+1. **Vascular union:** connection of fluid-transport systems.
+2. **Tissue continuity:** actual integration of tissue layers or anatomical structures.
+3. **Cellular chimerism:** persistent coexistence of genetically distinct cell lineages.
+4. **Somatic lineage dominance:** which genotype occupies the non-reproductive body tissues.
+5. **Germline contribution:** which genotype contributes reproductive cells.
+6. **Morphological persistence/resorption:** whether the original visible colony structures remain.
+7. **Allorecognition:** the mechanism that permits or rejects initial contact/fusion.
+8. **Whole-colony integration:** long-term functional integration despite multi-genotype ancestry.
+
+These dimensions can covary, but the *Botryllus* literature demonstrates that they can also come apart.
+
+**Source-grade status:** 2013 Voskoboynik et al. primary article directly read in full PMC HTML. 2025 Rinkevich perspective directly read in full PMC HTML. 2025 De Tomaso/Rodriguez-Valbuena review read through Springer full text and excerpts. 2026 Sokolova et al. abstract read via PubMed. 2024 Rodriguez-Valbuena et al. article supported by indexed full-text snippets, with page-by-page direct access blocked. 2011 Carpenter et al. and 2004 Rinkevich/Yankelevich supported by abstracts plus structured article extraction, not full texts. No Tock completion or cursor advance.
