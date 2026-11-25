@@ -252,7 +252,7 @@ Do not merge these models: the first has an auxiliary indefinite field/state-spa
 - Compactification without orientation: https://doi.org/10.1103/fp2t-9xwj
 - Fractal universe and quantum gravity made simple: https://doi.org/10.1103/kbkv-vs5t
 - Negative energies and breakdown of bulk geometry: https://doi.org/10.1103/1dc1-c7d9
-- Dobkowski et al., Science Advances: https://www.science.org/doi/10.1126/sciadv.aeb9619
+- Dobkowski et al., Science Advances: https://www.science.org/doi/10.1126/sciadv.aec8045
 
 The first draft of this ledger used conventional APS DOI-looking strings for four papers. Those were replaced here by the exact DOI URLs verified against the APS pages.
 
