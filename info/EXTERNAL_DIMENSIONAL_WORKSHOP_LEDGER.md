@@ -3342,13 +3342,13 @@ The anchor stores, in compact form:
 **Lane:** BIO / HSH_RESOURCES comparative-history lane (`⟐`)  
 **Note:** [BIO R.2 — Mapping Mouse Nodal Laterality into the Organismal Worldtube](../WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R2_MOUSE_NODE_WORLDTUBE_MAPPING.md)
 
-**Bite:** `r / R.2` — COMPLETE. The larger `r) mapping remains active.
+**Bite:** `r / R.2` — COMPLETE. The larger `r` mapping remains active.
 
 **Question:** What occupies the four-dimensional developmental history of the mouse node left–right organizer, and what does each three-dimensional time-slice contain?
 
 **Result:** The node is a transient organizer substructure inside the longer worldtube of the developing embryo. Its geometry and cell arrangement, central motile cilia, peripheral sensory cilia, nodal-cavity flow field, ciliary deformations, calcium/Dand5 responses and early Nodal/Lefty propagation have related spatial and temporal histories within the embryo.
 
-**Compact map:** `W_emb) = embryo worldtube; `W_node ⊂ W_emb) = transient node/organizer history; `C_i) = changing history of a cilium; `u(x,t)) = time-dependent fluid-velocity field in/around the node cavity; `S_L,S_R) = left/right crown-cell mechanical and signaling states. These are descriptive mappings, not new mechanisms. The fluid region is coupled to the node but should not simply be relabeled as organismal tissue.
+**Compact map:** `W_emb` = embryo worldtube; `W_node ⊂ W_emb` = transient node/organizer history; `C_i` = changing history of a cilium; `u(x,t)` = time-dependent fluid-velocity field in/around the node cavity; `S_L,S_R` = left/right crown-cell mechanical and signaling states. These are descriptive mappings, not new mechanisms. The fluid region is coupled to the node but should not simply be relabeled as organismal tissue.
 
 **Causal sequence preserved:** pre-existing A–P/D–V organization → PCP-associated posterior basal-body positioning and ciliary tilt → clockwise motile-cilium rotation and net leftward flow → asymmetric bending of peripheral sensory cilia → Pkd2-associated calcium response on the left → Dand5 mRNA degradation → early Nodal expression in left lateral plate mesoderm with Lefty1 at the midline. Katoh 2024 provides a current full-text mechanism-level synthesis; Nonaka et al. 2005 provide the primary posterior-tilt and fluid-model study. No mechanism was changed by the worldtube mapping.
 
@@ -3356,7 +3356,7 @@ The anchor stores, in compact form:
 
 **Interpretive boundary:** the W-extended view makes the transient node's nesting within the embryo, the distinct trajectories/roles of motile and sensory cilia, the time-dependent flow field and the mechanical-to-molecular-to-tissue sequence explicit within one four-dimensional history. It does not add a causal mechanism, new prediction or demonstrated extra constraint beyond ordinary dynamical developmental descriptions. Whether it yields such a constraint remains open.
 
-**Next bite:** `R.3) — examine cell division and lineage branching as a focused worldtube/identity-bookkeeping problem. Distinguish a parent's material history from the daughter-cell histories and the lineage relation between them; do not attempt a general theory of organismal individuation.
+**Next bite:** `R.3` — examine cell division and lineage branching as a focused worldtube/identity-bookkeeping problem. Distinguish a parent's material history from the daughter-cell histories and the lineage relation between them; do not attempt a general theory of organismal individuation.
 
 **Source record:** Katoh (2024), DOI 10.2142/biophysico.bppb-v21.0018, full-text HTML inspected: https://www.jstage.jst.go.jp/article/biophysico/21/3/21_e210018/_html/-char/en. Nonaka et al. (2005), DOI 10.1371/journal.pbio.0030268, relevant full-text sections inspected: https://pmc.ncbi.nlm.nih.gov/articles/PMC1180513/. The note records section-level detail and evidence boundaries.
 
