@@ -2108,3 +2108,16 @@ The Fred Linton ribbon-braid counterexample appears on a printed half-page numbe
 **Chronological consequence:** the 1986 report is a substantial revision/expansion of an already established geometric braid-category programme, not the first appearance of the configuration-space construction, Artin relations, juxtaposition or categorical braid object. The 1985 report remains PARTIALLY VISUALLY INSPECTED; complete linear collation remains open.
 
 Detailed page-level findings and locators are in [PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md](../WORKSPACES/PHYSICS/PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md). No ticker advance.
+
+
+---
+
+## 30. Bite 17 continuation — 1985 report's broader programme visually established
+
+Further visual inspection of Joyal–Street 1985 report 85-0067, through its substantive body and references, establishes that the report already contains a broad braided-monoidal programme, not just an early definition of braiding.
+
+Directly observed: (1) braid groups from configuration spaces of finite subsets of the Euclidean plane, Artin generators/relations, juxtaposition and the braid category; (2) a generalized Eckmann–Hilton argument in which a compatible second multiplication on a monoidal category yields a braiding, with a converse construction; (3) the Fred Linton ribbon-braid counterexample on an inserted-looking printed p. 8½ leaf; (4) Theorem 4/free braided monoidal category and coherence (printed p. 14 headed “5A. Coherence for braidings”); (5) categories enriched over braided monoidal categories; and (6) convolution/bilinearity constructions, including a result transporting braided structure to a suitable convolution category.
+
+This materially sharpens the chronology: 1986 did not first introduce braid categories, the free construction/coherence, multiplication–braiding connection, enrichment or convolution. It substantially develops a programme already visible in 1985, and adds a major categorical-group/crossed-module/cohomological classification branch. The scan has unusual pagination, including a printed p. 8½ leaf and section-number irregularities; the report has been substantively visually inspected, not fully transcribed or proof-audited. A proposition-by-proposition comparison with 1986 remains necessary.
+
+Detailed page locators and source-state qualification: [PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md](../WORKSPACES/PHYSICS/PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md). The full 1993 paper remains NOT READ; the H^3(G,M) versus H^4(K(G,2),A) distinction remains a secondary-source guide pending direct collation. No ticker advance.
