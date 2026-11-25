@@ -1027,6 +1027,6 @@ P1 issue #564 and PR #850 remain untouched; no cross-model peer-exposure data we
 
 **Boundary:** no issue #564 or PR #850 change, no LLM trial, human session, API spend, dataset expansion/reanalysis, protocol amendment, manuscript edit, or paper-gate advancement. No IAER project modification or v0.8 run. No novelty or mechanism claim.
 
-**Public-safe HsH submission:** issue #2545, publication status pending final issue/artifact reconciliation at time of this ledger entry.
+**Public-safe HsH submission:** issue #2545, PUBLISHED_VERIFIED. Artifact and current issue-body content are byte-identical; SHA-256 6dd07db41575e6678a0c0c3f02a2110e939ab62555ede2fe28c660f9aa5a1e13. Publisher confirmation #7160043546; final readback reconciliation #7160173416.
 
 **Internal study:** STUDIES/VEY-048_INTRA_AGENT_MEMORY_REENTRY_CROSSWALK_2026-11-25.md.
