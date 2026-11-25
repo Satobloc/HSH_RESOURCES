@@ -1360,3 +1360,185 @@ Bite 09 narrows the ◈ problem without closing it. A circular trace is geometri
 **LIVE TICKER — final line:**
 
 ⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢
+
+
+---
+
+## 18. Bite 10 — foliation, leaf identification and accumulated trace geometry
+
+**Recorded:** 2026-11-25  
+**Lane:** ⟐ HSH_RESOURCES comparative-history lane  
+**State:** FORMAL READOUT MODEL BUILT AS A COMPARISON TOOL · ◈ remains PARTIAL. The moving-film distinction from Hinton is now expressed as a family of leaves plus an explicit identification/transport of their points. Two candidate geometries are demonstrated. Neither is asserted to be the native SAT construction.
+
+### § THE MISSING GEOMETRIC DATA
+
+Bites 08–09 distinguish a point-valued instantaneous intersection from the curve traced by successive readouts. The latter requires more than a curve and one hypersurface. It requires:
+
+1. an ambient manifold \(M\);
+2. a one-parameter family of three-dimensional leaves \(\Sigma_\lambda\);
+3. a filament/history \(\gamma\) that meets each relevant leaf once;
+4. a rule identifying points on different leaves with points in a common reference three-space \(S\).
+
+Let \(T:M\rightarrow I\) be a smooth submersion with leaves \(\Sigma_\lambda=T^{-1}(\lambda)\). Assume \(T\circ\gamma\) is monotone on the interval being studied, so the intersection point \(p_\lambda=\gamma\cap\Sigma_\lambda\) is unique. Let \(F_\lambda:S\rightarrow\Sigma_\lambda\) identify a reference three-space with the \(\lambda\)-leaf. The readout history is then
+
+\[
+q(\lambda)=F_\lambda^{-1}(p_\lambda)\in S.
+\]
+
+The instantaneous physical intersection is \(p_\lambda\), a point. The accumulated trace is the path \(q:I\rightarrow S\), which may be a circle, helix, open arc, or another curve depending on the filament, the leaves and the identification maps \(F_\lambda\).
+
+This is the minimal formal structure needed to state what a “circular intersection trace” means without calling a sequence of points a simultaneous ring.
+
+### ∴ CONSTRUCTION A — PARALLEL HYPERSURFACES IN FOUR-DIMENSIONAL COORDINATE SPACE
+
+Take \(M=\mathbb R^4\), with coordinates \((x,y,z,w)\), and define parallel three-dimensional leaves
+
+\[
+\Sigma_\lambda=\{(x,y,z,w):w=\lambda\}.
+\]
+
+Use the canonical affine identification
+
+\[
+F_\lambda(x,y,z)=(x,y,z,\lambda).
+\]
+
+For an illustrative curve
+
+\[
+\gamma(s)=
+\big(R\cos(ks),\ R\sin(ks),\ z_0,\ s\big),
+\]
+
+each leaf is met once at \(s=\lambda\). Therefore
+
+\[
+p_\lambda=
+\big(R\cos(k\lambda),R\sin(k\lambda),z_0,\lambda\big)
+\]
+
+and
+
+\[
+q(\lambda)=
+\big(R\cos(k\lambda),R\sin(k\lambda),z_0\big).
+\]
+
+The readout history is a circle of radius \(R\) in the reference three-space, even though every individual leaf intersects the one-dimensional curve at only one point.
+
+This is a coordinate-geometric demonstration, not a native SAT equation. If \(w\) is assigned a Lorentzian time coordinate, additional metric and causal requirements apply. In the ordinary \((-+++)\) Minkowski control with \(w=ct\), this particular curve is timelike only when \((Rk)^2<1\); it is non-geodesic for \(Rk\ne0\). The Euclidean four-coordinate example and the Lorentzian physical interpretation must not be silently mixed.
+
+### ∴ CONSTRUCTION B — CONCENTRIC THREE-SPHERE WAVEFRONTS IN POSITIVE-DEFINITE FOUR-SPACE
+
+A different candidate begins with an origin and a radial wavefront family in Euclidean \(\mathbb R^4\):
+
+\[
+\Sigma_\rho=\{X\in\mathbb R^4:\|X\|=\rho\}
+\cong S^3_\rho.
+\]
+
+Use the unit three-sphere \(S=S^3_1\) as the reference space and radial identification
+
+\[
+F_\rho(n)=\rho n,\qquad n\in S^3_1.
+\]
+
+Choose an illustrative filament/history
+
+\[
+\gamma(\rho)=\rho\,n(\rho),
+\qquad
+n(\rho)=
+\big(\cos(k\rho),\sin(k\rho),0,0\big)\in S^3_1.
+\]
+
+Its intersection with \(\Sigma_\rho\) is the single point \(p_\rho=\gamma(\rho)\). Pulling the point back by radial projection gives
+
+\[
+q(\rho)=F_\rho^{-1}(p_\rho)=n(\rho).
+\]
+
+The readout history therefore traces a great circle in the unit \(S^3\), while the actual intersections occur one at a time on expanding, distinct \(S^3_\rho\) leaves.
+
+This construction is geometrically compatible with a four-dimensional positive-definite radial-wavefront picture, but it does not establish that SAT uses concentric \(S^3\) wavefronts in this exact form. The archived RMS snapshot describes a three-dimensional time surface propagating outward in a four-dimensional construction; the July 3 SAT narrative separately proposes a positive-signature four-axis interpretation. The exact native metric, foliation and radial identification remain source-open.
+
+### ∴ FINDING 1 — BOTH FLAT AND RADIAL READOUTS CAN PRODUCE A CIRCLE
+
+The two constructions show that a circular accumulated trace does not uniquely determine the ambient geometry:
+
+- parallel 3D leaves with affine translation can yield a circular readout;
+- concentric \(S^3\) wavefronts with radial projection can also yield a circular readout.
+
+They are not the same geometry. They differ in leaf shape, normal field, global structure, metric assumptions and natural point-identification rule. A circle in the readout therefore cannot by itself tell us whether the intended timesheet is a parallel simultaneity foliation, a radial wavefront, or another family.
+
+### ∴ FINDING 2 — THE TRANSPORT / IDENTIFICATION RULE IS NOT OPTIONAL
+
+The map \(F_\lambda\) is substantive data. A different \(\lambda\)-dependent identification of the same leaves changes the recorded path \(q(\lambda)\). In particular, replacing \(F_\lambda\) by \(F_\lambda\circ h_\lambda\), where \(h_\lambda:S\rightarrow S\) is a smooth family of diffeomorphisms, changes the readout coordinates to
+
+\[
+\widetilde q(\lambda)=h_\lambda^{-1}(q(\lambda)).
+\]
+
+With sufficiently flexible \(h_\lambda\), a circular readout can be made stationary in the reference coordinates, or a stationary point can be made to trace a coordinate circle. Therefore the shape of the accumulated trace is not automatically an invariant of the curve-plus-foliation pair alone.
+
+A physical or geometrically preferred trace requires a constrained transport rule: for example, affine translation along a specified normal flow, radial projection from a specified center, or a connection/observer rule derived from the native geometry. Only after that rule is fixed can the trace's shape, winding, homotopy class or observable significance be tested.
+
+This is not a claim that the trace is “just coordinates.” It is a statement that its invariant content has not yet been identified. A source-defined transport rule may make it geometrically meaningful.
+
+### ∴ FINDING 3 — READOUT MOTION AND INTRINSIC FILAMENT CHANGE CAN BE SEPARATED
+
+Hinton's distinction between the moving film reading a permanent structure and the structure itself changing can be represented by holding the leaf family and transport rule fixed while varying the curve \(\gamma\).
+
+- **Readout contribution:** \(q(\lambda)\) changes because the same fixed higher-dimensional curve meets successive leaves at different points.
+- **Intrinsic-change contribution:** a family of curves \(\gamma_\alpha\), or a time-dependent deformation of the curve within the ambient model, changes the intersection history beyond the effect of leaf progression.
+- **Combined case:** both the leaf family and the filament/history vary, and the readout must record the two changes separately.
+
+A static block-geometric curve can thus generate a nonconstant readout path without requiring the curve itself to evolve in an external time parameter. But this should not be confused with a claim that the curve has zero geometric curvature or that the resulting physical particle is unaccelerated. Those are separate metric/dynamical questions.
+
+### ⋈ CROSSWALK — WHAT MUST BE SPECIFIED FOR A NATIVE SAT READOUT
+
+| Required datum | Parallel-leaf candidate | Radial-wavefront candidate | Current SAT source state |
+|---|---|---|---|
+| Ambient geometry | Affine four-coordinate space; metric separately specified | Positive-definite \(\mathbb R^4\) with chosen origin and radial distance | Four-dimensional construction is described; current native metric/signature not closed |
+| Leaf | \(w=\lambda\) hyperplane | \(S^3_\rho\) wavefront | Three-dimensional time surface/wavefront described; exact family not fully specified |
+| Normal / propagation | Constant affine normal | Radial unit normal | θ₄ is measured from time normal; exact normal field requires native geometry |
+| Filament | One-dimensional curve meeting each leaf once | One-dimensional curve with monotone radius | Worldline/filament inherited; exact global parameterization remains open |
+| Leaf identification | Affine translation | Radial projection from origin | No fully explicit source-defined transport/trivialization yet recovered |
+| Instantaneous result | One event per leaf | One event per leaf | Point-valued intersection is dimensionally expected for transverse 1D/3D intersection |
+| Accumulated result | Path in a reference \(\mathbb R^3\), possibly circular | Path on a reference \(S^3\), possibly circular | “Circular trace” is proposed, but its exact readout meaning remains open |
+| Invariant status | Depends on affine structure and allowed transformations | Depends on origin, radial flow and allowed transformations | Not yet established |
+
+### ⁇ QUESTIONS ADDED
+
+- **PHY-Q32 / Leaf family:** Is the native SAT timesheet a family of parallel hypersurfaces, expanding radial \(S^3\) wavefronts, a more general evolving hypersurface, or a different construction?
+- **PHY-Q33 / Inter-leaf transport:** What physically/geometrically defines the identification of points on successive timesheets: affine normal flow, radial projection, a connection, an observer congruence, or another rule?
+- **PHY-Q34 / Trace invariance:** Which transformations of the leaf coordinates and transport maps are physically admissible, and what part of the readout path remains invariant under them?
+- **PHY-Q35 / Readout versus deformation:** How should the source-defined equations distinguish the effect of advancing the time wavefront from intrinsic filament deformation or motion?
+
+### ⚑ PIN UPDATE
+
+- **PHY-P18 (Priority 1):** Recover the source-defined timesheet family and its inter-leaf transport/identification rule. Return cue: primary SAT/FIE/RMS source passages or diagrams specify the family, normal field and readout map.
+- **PHY-P19 (Priority 1):** Test which properties of the accumulated trace are invariant under the explicitly permitted re-identifications. Return cue: native transport structure and allowed transformations are known.
+
+### ↩ RETURN / ◈ EXIT TEST
+
+This bite demonstrates two viable mathematical readout constructions and identifies the missing datum that distinguishes them. It does **not** select one as SAT's native geometry. The ◈ gate remains open pending:
+
+1. source resolution of the native ambient metric/signature and time orientation;
+2. exact timesheet family and normal/propagation field;
+3. source-defined inter-leaf transport or reference-space identification;
+4. source-defined filament parameterization and θ₄ inner product;
+5. the supporting geometry and status of the H(s)H finite core and Kerr-ring trace;
+6. distinction between readout progression and intrinsic deformation, with dynamics supplied only where the source provides them.
+
+Keep Hinton's symbolic readout model, SAT's framework-internal proposals and H(s)H's tentative finite-core addition separate. No Hinton-to-SAT causal lineage, higher-category construction, braid-group assignment or physical validation is inferred.
+
+### … MERSEARCH STATUS
+
+At the start of this continuation, the same request, lane and workflow were polled. Step 9 remained in progress; steps 10–12 remained pending; no artifacts or request-specific manifest/receipt/results were published. The job-log endpoint had not been required for this update. No retry, cancellation, duplicate request or lane overwrite was made.
+
+**Bite status:** two explicit foliation/readout models now show how point-valued intersections can accumulate into a circle, while proving that the result depends on the leaf-identification rule. This sharpens the next source-recovery target: not merely “what is the timesheet?” but “what is the timesheet family, and how are successive leaves identified?” The ◈ cursor remains open.
+
+**LIVE TICKER — final line:**
+
+⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢
