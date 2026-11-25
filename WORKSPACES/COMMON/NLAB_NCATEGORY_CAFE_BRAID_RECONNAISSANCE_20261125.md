@@ -206,3 +206,75 @@ The first pass supports a substantial, self-aware cross-disciplinary history: ge
 The stronger claim that this constitutes a deliberate century-long escape from spiritualist associations, or that every branch derives from one Hintonian principle, remains open. The current evidence is strongest for repeated geometric formalization, successful mathematical portability and documented recontextualization. It is not yet strong enough for one unified causal genealogy.
 
 This research programme belongs to HSH_RESOURCES. It does not establish HsH worker policy, alter SAT/H(s)H status, or authorize writing comparative-history conclusions into HsH BEDROCK.
+
+
+---
+
+## 10. Primary insider chronology: Gregory Moore's 2024 history talk
+
+A particularly valuable additional source is Gregory Moore's slide deck, *From Rational Conformal Field Theories to Modular Tensor Categories to Nonabelions*, presented in the Perspectives in Theoretical Physics / History of Physics series on 26 September 2024.
+
+Source: https://www.physics.rutgers.edu/~gmoore/From-RCFT-To-MTC-20240926-FINAL.pdf
+
+### 10.1 The historian's warning is explicit
+
+Moore says the talk is intended to provide primary source material for a hypothetical historian of science. He also says it focuses mostly on his own work and role in 1986–1989, admits that the account is biased, warns that memory is unreliable, and acknowledges that people tend to inflate their own importance. He also reflects on the fragility of scientific-community memory and the loss of records.
+
+This is unusually self-aware source material. It gives us a participant's recollection while explicitly warning us how to use it: corroborate it against papers, correspondence, seminar records and other participants.
+
+### 10.2 Moore's dated sequence
+
+The slide deck lays out a focused chronology:
+
+- 1986–1987: three roads toward rational conformal field theory;
+- Fall 1987–January 1988: Princeton discussions;
+- Spring 1988: Moore–Seiberg braiding, fusion and S/T matrices;
+- July 1988–July 1989: Chern–Simons theory;
+- August–November 1989: modular tensor categories and anyons.
+
+This is a concrete record of the rapid convergence of braiding, fusion, modular transformations, conformal field theory, Chern–Simons theory and anyonic structures in a specific research network.
+
+### 10.3 Two 1986 meetings widened the braided-category programme
+
+Moore recalls two influential talks:
+
+1. Peter Freyd presented joint work with David Yetter on categories of tangles that were braided and autonomous/free in an appropriate sense.
+2. Vladimir Drinfeld's International Congress talk on quantum groups provided examples through quasitriangular bialgebras.
+
+Moore says these talks supplied new examples of the structures under discussion. In mid-1987, Joyal and Street approached the issue using ribbon tangles rather than ordinary strings, leading to balanced and then tortile tensor categories. This is a documented intersection among geometric tangle theory, quantum groups and categorical structure; it is not one simple one-way derivation.
+
+### 10.4 Conformal blocks and braid-group monodromy
+
+The presentation reproduces Tsuchiya and Kanie's 1987 paper, *Vertex Operators in Conformal Field Theory on P¹ and Monodromy Representations of Braid Group*, and Toshitake Kohno's 1987 paper, *Monodromy Representations of Braid Groups and Yang–Baxter Equations*.
+
+Kohno's paper describes monodromy representations of braid groups arising from integrable connections over configuration spaces and connects them with classical and quantum Yang–Baxter equations and quantum groups. This supplies a particularly important geometric mechanism:
+
+1. configuration space of insertion points;
+2. differential equations / integrable connections over that space;
+3. analytic continuation around loops;
+4. monodromy representations of the braid group;
+5. algebraic constraints linked to Yang–Baxter and quantum-group structures.
+
+This is not simply a decorative braid diagram placed over a quantum theory. The braid group appears through the topology of configuration space and the monodromy of actual mathematical data.
+
+### 10.5 Moore's own account of category theory's reception
+
+The slides include Moore's recollection that he was aware of category theory but had not studied it deeply. He says he initially regarded it as "overly formal abstract nonsense" and made fun of it. After Pierre Deligne explained tensor categories in a discussion, he jokes to Cumrun Vafa, "Oh you're just defining a functor." Moore also recalls that most physicists he spoke with did not know category theory and did not like it when it was explained.
+
+This is direct evidence of a boundary between physicists' existing geometric/analytic methods and the specialized categorical language. It also shows a shift in attitude as categorical descriptions became useful for organizing fusion, braiding, modular data and consistency conditions.
+
+**Interpretive limit:** this supports the claim that formal categorical language was not always the natural first language of physicists and that its uptake was historically negotiated. It does not establish that category theory was invented or adopted to escape spiritualist associations. The immediate mathematical motivations visible in this account are configuration-space monodromy, quantum groups, fusion/braiding consistency, Chern–Simons theory and rational conformal field theory.
+
+### 10.6 What this adds to the larger hypothesis
+
+This source strengthens three parts of the working interpretation:
+
+- **Self-aware diffusion:** a major participant explicitly reconstructs the braid/fusion/Chern–Simons/anyon sequence and its mathematical cross-connections.
+- **Independent and parallel routes:** Freyd–Yetter tangle categories, Drinfeld quantum groups, Joyal–Street braided/ribbon categories, conformal-block monodromy and Moore–Seiberg data emerge through multiple interacting routes.
+- **Abstraction as translation rather than erasure:** categorical formalization can organize and generalize geometric operations while retaining braid/tangle content and adding coherence, functoriality and universal properties.
+
+It also warns against presenting a single unified lineage. Moore's account is one participant's focused and explicitly biased reconstruction. The 1980s developments require corroboration against the original articles and accounts from Joyal, Street, Freyd, Yetter, Drinfeld, Moore, Seiberg, Witten, Kohno, Tsuchiya and Kanie.
+
+### 10.7 Source-reading limitation
+
+The web text layer exposed the slide contents and their sequence. The PDF screenshot endpoint returned a content-length error, so visual inspection of the slides was not completed in this pass. Any claim depending on diagram layout or visual details should be checked against the page images in a later source-reading pass.
