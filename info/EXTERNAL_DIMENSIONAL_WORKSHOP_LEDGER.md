@@ -3236,3 +3236,24 @@ The five planned bites now have explicit single-character identifiers in the Uni
 **BIO lane ticker:** `BIO:βᛟvn@χrmρk⊕[mbxᛟd]s`.
 
 **Lane boundary:** PHYS and GIT positions remain independent. This entry closes `n` only in BIO.
+
+
+## 77. BIO lane continuation after mouse nodal laterality — 2026-11-25
+
+The current BIO subpath is ordered and lane-scoped:
+
+`BIO:βᛟvn@χrmρk⊕[mbxᛟd]s`
+
+| Ticker | Bite / stage | Required output |
+|---|---|---|
+| `χ` | Cellular chirality and actomyosin | Full mechanism note on Tee et al. 2015, compared with Drosophila Myo1D/PCP and zebrafish Myo1D/organizer function. Establish which cytoskeletal relations are genuinely shared and which are only analogous; do not assume cultured-cell chirality is the mouse nodal mechanism. |
+| `r` | SAT/H(s)H biological mapping | Represent the node and its developmental history as one W-extended biological event: ciliary trajectories, time-varying flow, sensory deformation, signaling fields and downstream organogenesis. Separate already-established biology from what the 4D representation adds in continuity, incidence, constraints or cross-scale organization. |
+| `m` | Selective higher-mathematics application | Choose tools from the actual model: low-Reynolds-number fluid mechanics/vector fields; elasticity and mechanotransduction; symmetry/parity; topology and configuration spaces; category/higher-category machinery only where composition of biological processes needs it; braid theory only where actual trajectories form meaningful braid configurations. This is not the larger `k` reading programme. |
+| `ρ` | Reorient / review | Synthesize the five-bite biological reconstruction, evaluate what the comparison established and left open, and decide whether another biological target is warranted before the broader mathematics sequence. |
+| `k⊕[mbxᛟd]` | Larger category-theory/mathematics programme | Carry biology forward as an active source of examples while studying higher categories, geometry, topology, homotopy and naturally emerging cross-disciplinary connections under the SAT/H(s)H lens and dimensional-normalization method. |
+| `s` | Dedicated spiritualist readings | Preserve the already defined deferred reading programme after the category-theory/mathematics exploration. |
+
+**After `nχrm`:** `m` closes the current BIO mini-programme; `ρ` is the explicit review/transition point, then the previously planned `k⊕[mbxᛟd]` programme follows, with `s` remaining last. No new glyph is required for these stages.
+
+**Scope protection:** this BIO ticker is a lane-local detail cursor. It does not change the shared master ticker, the PHYS ticker, or the GIT/GIT_TRAFFIC operational cursor. The Code Ledger holds the shared meanings and lane overlays; this ledger holds BIO's current research state.
+
