@@ -3185,6 +3185,6 @@ The five planned bites now have explicit single-character identifiers in the Uni
 
 **Parent/frame:** the five bites sit inside the existing `β` contemporary biological reconstruction pass and are read through the existing `ᛟ` SAT/H(s)H interpretive lens. The existing `m` mathematics component is instantiated selectively at bite five; this does not launch the larger `k` category-theory reading programme.
 
-**Current position:** Bite 1 is next. The five-bite path is `βᛟ@v n χ r m`.
+**Current position:** Bite 1 is next. The five-bite path is `βᛟ@vnχrm`.
 
 **Ticker correction:** use one character per planned bite, not a repeated generic workflow glyph sequence. The detailed work definition stays here and in the reading notes; the signature displays the ordered path and current position.
