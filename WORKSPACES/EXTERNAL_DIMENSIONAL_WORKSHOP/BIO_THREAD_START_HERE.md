@@ -12,7 +12,7 @@
 
 **Current BIO ticker, from Work Ledger §87:**
 
-`BIO:⟐βᛟvnχr@⊕[mρk:ᛟd]⊕[ᛟd:mbx]s`
+`BIO:⟐βᛟvnχr⊕[m@ρk:ᛟd]⊕[ᛟd:mbx]s`
 
 Completed BIO bites:
 - `v` — biological variable map: complete.
