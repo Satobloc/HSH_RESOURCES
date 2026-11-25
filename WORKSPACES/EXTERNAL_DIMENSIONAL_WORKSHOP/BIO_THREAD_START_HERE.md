@@ -84,7 +84,7 @@ For each bite:
 ## 7. Current durable records
 
 **Work and continuity**
-- Work Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`, especially §§74–86.
+- Work Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_LEDGER.md`, especially §§74–87.
 - Code Ledger: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md`.
 - Protocol: `info/EXTERNAL_DIMENSIONAL_WORKSHOP_PROTOCOL.md`.
 
@@ -104,7 +104,7 @@ For each bite:
 
 ## 9. Successor conversation boot record — 2026-11-25
 
-**BIO THREAD RESTART: this conversation is the active successor for the BIO lane.** Reconstitution was completed from the live repository records. At the time this boot record was written, R.3 was next; R.3 and R.4 have since been completed and recorded in Work Ledger §§83–84.
+**BIO THREAD RESTART: this conversation is the active successor for the BIO lane.** Reconstitution was completed from the live repository records. At the time this boot record was written, R.3 was next; R.3 and R.4 have since been completed and recorded in Work Ledger §§83–84; `m` has since been completed and `ρ` is current.
 
 - Repository and primary continuity anchor verified on the live `main` branch.
 - Current BIO ticker retained exactly; `r / R.1`–`R.4` complete; remaining `r` scope now requires reorientation.
@@ -119,8 +119,8 @@ For each bite:
 
 ## 8. Immediate next action
 
-Begin `m` with a compact orientation map, not another technical biological case study. Reconcile the primary SAT archive clusters (Fundamental Intuitions; biological implications and 4D organismal biology; weird/onto/HoloJesu/superhelical and tentative material; one-file/one-drop/standalone builds), then map the main Hinton and nLab/n-Category Café neighbourhoods. Make the SAT/H(s)H lens explicit and identify likely biological implications at organism, cell, tissue and biosphere scales. Keep the result overview-level; open deeper mathematical or biological modules only when they resolve a specific correspondence or discriminator.
+`m` is complete for its bounded overview-level comparative and selective-mathematical remit. The orientation map is recorded in `READING_NOTES/2026-11-25_BIO_COMPARATIVE_ORIENTATION_MAP_SAT_HINTON_NLAB.md` and Work Ledger §87. The current ticker position is now `ρ`. Conduct the planned review/reorientation checkpoint: assess what the source comparison established, identify unresolved assumptions and decide whether the remaining `k` and integrated `⊕[ᛟd:mbx]` sequence should remain as planned or be adjusted. Do not begin the full category-theory programme before this review.
 
 ---
 
-**Handoff rule:** When a conversation ends or context is lost, start with this file; recover the current BIO ticker and its meaning from the Work Ledger and Code Ledger, then resume at its recorded `@` position. Reassess the workplan rather than treating it as fixed. Keep this anchor and the live ledger aligned. PHYS and GIT retain their independent workplans.
+**Handoff rule:** When a conversation ends or context is lost, start with this file; recover the current BIO ticker and its meaning from the Work Ledger and Code Ledger, then resume at its recorded `@` position. Current ticker: `BIO:⟐βᛟvnχr⊕[m@ρk:ᛟd]⊕[ᛟd:mbx]s`. Reassess the workplan rather than treating it as fixed. Keep this anchor and the live ledger aligned. PHYS and GIT retain their independent workplans.
