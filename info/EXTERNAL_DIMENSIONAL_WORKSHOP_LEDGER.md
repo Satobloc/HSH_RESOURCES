@@ -3423,3 +3423,34 @@ The anchor stores, in compact form:
 
 **Lane boundary:** BIO comparative-history only. No H(s)H BEDROCK, main theory, worker policy, or PHYS/GIT cursor change.
 
+
+
+## 85. BIO lane — review of `r` mapping and transition to `m` — 2026-11-25
+
+**Review basis:** Work Ledger §§74–84, the live BIO Code Ledger, and the R.1–R.4 reading notes.
+
+**Decision:** `r` is COMPLETE for its defined, bounded remit. The original scope was to map the developing organism/node history as one W-extended biological event, including ciliary trajectories, time-varying flow, sensory response, signaling and downstream organogenesis, while distinguishing established mechanism from four-dimensional interpretation.
+
+**Coverage:**
+- R.1 established the organismal worldtube/slice baseline and identified the biological complication of changing constituents and organization.
+- R.2 placed the transient mouse node, ciliary trajectories, flow field, sensory response and early signaling within the embryo's longer history.
+- R.3 separated material continuity, cellular-unit continuity and genealogical lineage across cell division.
+- R.4 followed a later organogenetic event, midgut rotation, and mapped the coupled dorsal-mesentery/gut and left/right extracellular-matrix histories.
+
+**What the mapping establishes:** The four-dimensional reading gives one temporal-spatial frame for nested structures and processes at organism, organizer, cell, tissue, matrix and organ scales. It makes delayed realization, changing configurations, lineage relations and distributed local morphogenesis explicit. It has not yielded a new biological mechanism or demonstrated predictive constraint beyond the source-backed models.
+
+**Residuals and disposition:**
+- Organism-boundary criteria and detailed material exchange remain open as a general biological individuation problem. They are not required to finish this bounded node-to-organogenesis mapping and should not silently expand `r`.
+- Complete lineage-resolved vascular histories and full cell/material partition maps remain optional deeper studies.
+- Quantitative continuum mechanics, differential growth, elasticity and related formal tools are natural candidates for `m`, provided an actual source-defined model supplies the needed variables and assumptions.
+- Additional organs, species and non-ciliary laterality mechanisms remain comparative extensions, not blockers for this case study.
+- Category theory, braid theory and homotopy are not imported merely because they occur later in the overall programme.
+
+**Cursor transition:** `r` closes. The BIO ticker advances exactly one component to `m`:
+
+`BIO:⟐βᛟvnχr@⊕[mρk:ᛟd]⊕[ᛟd:mbx]s`
+
+**Next:** recover the source-defined mathematics of the R.4 gut/dorsal-mesentery model and determine which formal tools are genuinely applicable. Preserve original model equations and biological assumptions before adding any H(s)H/SAT interpretation.
+
+**Lane boundary:** BIO comparative-history only. No H(s)H BEDROCK, main theory, worker policy, or PHYS/GIT cursor change.
+
