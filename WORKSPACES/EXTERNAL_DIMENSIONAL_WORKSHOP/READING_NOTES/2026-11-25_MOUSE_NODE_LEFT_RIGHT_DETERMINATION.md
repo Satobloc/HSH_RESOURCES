@@ -152,7 +152,7 @@ Choose mathematical tools from the actual structure of the biology:
 This is selective mathematical application inside the BIO lane, not the larger category-theory programme `k`.
 
 ### After m — review and transition
-Use the existing `ρ` reorientation/review operation. Synthesize what the five-bite biological reconstruction establishes, what remains speculative or unconnected, and whether another biological target is warranted. Then proceed to the existing larger `k` mathematics/category-theory programme with biology kept active, using `⊕[mbxᛟd]`; preserve the deferred dedicated spiritualist programme `s) after that. No new glyph is required for this transition.
+Use the existing `ρ` reorientation/review operation. Synthesize what the five-bite biological reconstruction establishes, what remains speculative or unconnected, and whether another biological target is warranted. Then proceed to the existing larger `k` mathematics/category-theory programme with biology kept active, using `⊕[mbxᛟd]`; preserve the deferred dedicated spiritualist programme `s` after that. No new glyph is required for this transition.
 
 ## 12. Source record and reading state
 
