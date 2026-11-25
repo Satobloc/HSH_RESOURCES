@@ -91,6 +91,21 @@ For each bite:
 - `Satobloc/SAT_THEORY_ARCHIVE_2023-25`: source archive for SAT papers and the `d` companion method.
 - `Satobloc/HsH`: H(s)H reference material and shared infrastructure. Consult as needed, preserve its own authority and scope, and do not write this lane's conclusions into BEDROCK.
 
+## 9. Successor conversation boot record — 2026-11-25
+
+**BIO THREAD RESTART: this conversation is the active successor for the BIO lane.** Reconstitution is complete from the live repository records. The authoritative resume point remains R.3; this boot record does not advance the ticker or claim R.3 work has begun.
+
+- Repository and primary continuity anchor verified on the live `main` branch.
+- Current BIO ticker retained exactly; `r / R.1` and `R.2` complete; `R.3` next.
+- Work Ledger §§74–81, Code Ledger BIO path and shared-lane definitions, and workshop protocol inspected.
+- Original BIO conversation in `HAUL 9` inspected as provenance for the remit and operating corrections.
+- Current search routing: Mysearch remains unvalidated; the four Mersearch bridge lanes are occupied by other requests in `Satobloc/HsH`. No request was written, replaced, or dispatched. Direct GitHub retrieval/search was used as a disclosed fallback for this reconstitution, not represented as Mysearch or Mersearch.
+- No H(s)H BEDROCK, PHYS, GIT, shared ticker, worker policy, or scheduler state changed.
+
+**Resume instruction:** begin the next substantive BIO bite at R.3, as specified below. Preserve the established small-bite method and update the reading note, Work Ledger, and anchor only when supported by actual work.
+
+---
+
 ## 8. Immediate next action
 
 Resume **R.3** as defined in the R.2 note. Examine cell division and lineage branching as a focused worldtube/identity-bookkeeping problem. Distinguish a parent's material history from daughter-cell histories and the lineage relation between them. Use R.1 for the worldtube baseline, R.2 for the mouse-node application, and the relevant primary developmental-biology sources for cell division/lineage. Do not turn this into a general theory of organismal individuation.
