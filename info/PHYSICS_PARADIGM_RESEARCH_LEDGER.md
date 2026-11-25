@@ -494,3 +494,43 @@ This common diagram makes the comparison tractable without equating Hinton's pla
 `⌖◉⌕⧖@⤳▣✓⇢`
 
 The first source reconnaissance and first two geometric/historical bites are complete enough for a synthesis step. The next Tick is **⤳ Connect**: construct the explicit comparison functor/mapping data from the actual SAT/H(s)H primary sources and test which of the causal, bordism, and configuration-space structures are genuinely required. The internal Mersearch request remains parallel and pending, and must be reconciled before any major theory correspondence is promoted.
+
+
+---
+
+## 9. Reconstitution checkpoint — HAUL 9 PHYS conversation
+
+**Recorded:** 2026-11-25  
+**State:** Context recovered; PHY-01 active at Connect. No Tock or Tick advancement made by this checkpoint.
+
+### Recovered conversation context
+
+- HAUL 9 source capture: `HAUL 9/reconstitute-ND.txt`, conversation `6b066971-53f4-83e9-83c2-37d9fa48a3fc`. Its initial topic correction concerns a *separate GitHub clone-traffic thread*: “4D biology” was to be replaced by “GitHub traffic” there. That traffic work remains under its existing Tern coordination and is not reactivated by this PHYS restoration.
+- The active PHYS research is `PHY-01`, as already recorded in this ledger. Its three evidence streams remain current physics (`f`), historical dimensional lineage (`h`), and higher-dimensional mathematics (`k`), with SAT/H(s)H as the comparison lens rather than an attribution to external sources.
+- Related workflow-origin conversations inspected: `ND Research Higher Dimensional Biology.txt` and `ND Review Workflow State.txt`. These preserve the source instructions that Tocks are bounded work packages, Ticks are subordinate operations, the ticker is a compact ordered live cursor, and the Credenza is the larger persistent routing/work-memory system.
+- The complete planned sequence must be retained in its own context. Do not shorten grouped components, deferred stages, or planned review/reorientation steps when reproducing a signature. Move `@` only when the active stage's exit condition is met. “We should”, “let's”, “plan”, and “going forward” are instructions to capture in the appropriate ledger/register or planned workflow, unless they are being executed in the current bite.
+
+### Protocol and search-route state
+
+- Mysearch is not a chat-native tool. Its current HsH status remains **SCAFFOLD ONLY / NOT VALIDATED / NOT YET A PRODUCTION SEARCH SERVICE**; do not claim execution.
+- Use stable Mersearch 1.0 through the documented repository/Actions bridge when a supported archive query is required. Default scope is the three permitted repositories; preserve source distinctions, exact SHAs, exclusions and limitations.
+- Mersearch lanes are mutable shared request slots. Inspect them before writing; do not overwrite a pending, running, or unverified request. Post-containment bridge output consists of a request-specific manifest and compact receipt files; compact receipts are not exhaustive raw hit inventories. Generic GitHub code search remains a disclosed fallback only if the bespoke route genuinely cannot be executed.
+- At this checkpoint, all four lane request files are occupied by existing request IDs. Lane 2 belongs to `phy01-internal-first-worldtube-hinton-highercats-20261125-01`; no lane was overwritten.
+
+### Lane-2 execution readback
+
+- Request-file commit: `3d740279da1fd8a8df5a31ae28d83354a9b8c8b8`.
+- Actions run: [45554091984](https://github.com/Satobloc/HsH/actions/runs/45554091984), attempt 1; job `139001876678`.
+- The dedicated Jobs/Steps endpoints show successful completion of HsH main checkout, request validation, stable Mersearch checkout, SAT archive checkout, HSH_RESOURCES checkout, Python setup, and exact-input recording. The actual Mersearch search step is still **in_progress**; manifest creation, compact receipt generation, and publication remain pending.
+- The current GitHub run object still reports `in_progress`; last returned run metadata is stale at `2026-11-25T05:30:52Z`. The decoded job-log endpoint returned a BlobNotFound error, so actual checkout depth and post-checkout SHAs were not recovered from logs in this checkpoint.
+- The prior clone-ledger event `phy01-mersearch-action-run-observed-20261125T053402` is therefore still the prior observation. Do not retroactively mark its checkout step as complete or infer Traffic attribution from the workflow. Append a later supplement only after exact checkout evidence is available, preserving UNKNOWN and the original row.
+
+### Active work and next cursor
+
+**Current signature remains:**
+
+`⌖◉⌕⧖⤳@▣✓⇢`
+
+The next research operation is **⤳ Connect**: build the explicit mapping/composition data linking the actual SAT/H(s)H worldtube/timesheet construction with (i) causal/time-oriented Lorentzian structure, (ii) bordism/extended-TQFT composition, and (iii) finite-core configuration-space/motion topology. Keep those structures distinct until a source-grounded map demonstrates their relationship. The Mersearch request is a parallel source-recovery dependency, not permission to promote a correspondence before its provenance is inspected.
+
+**Re-entry:** resume with the PHY-01 Bite 03 questions Q9–Q13 and pins PHY-P7–P9. First refresh run 45554091984 and the request-specific output directory. Do not duplicate the request, overwrite a lane, claim a completed search, or move the Tick cursor merely because checkout succeeded.
