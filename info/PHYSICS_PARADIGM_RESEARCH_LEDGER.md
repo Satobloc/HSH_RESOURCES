@@ -2095,3 +2095,16 @@ Detailed note: [PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md](../WORKSPAC
 **LIVE TICKER — final line:**
 
 ⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢
+
+
+---
+
+## 29. Bite 17 continuation — 1985 geometric braid construction directly confirmed
+
+Expanded visual inspection of the 1985 Macquarie report now directly confirms that its geometric/categorical core predates the 1986 revision. The 1985 report already defines the braid group through the fundamental group of the configuration space of n-element subsets of the Euclidean plane; gives Artin generators and braid relations; defines braid addition by juxtaposition; and packages the groups into the braid category with natural-number strand counts as objects and tensor product by addition/juxtaposition. It also already distinguishes braiding from symmetry and supplies non-symmetric examples, including graded modules.
+
+The Fred Linton ribbon-braid counterexample appears on a printed half-page numbered 8½. It allows ribbon twisting, treats the two edges of each ribbon as strings, and maps n ribbons faithfully to 2n strings. The scan's leaf ordering is anomalous: the inserted-looking p. 8½ “Ribbons and braids” page is followed by printed p. 9 headed “§3. Multiplications on monoidal categories.” The introduction's section roadmap must be reconciled against the remaining leaves; do not silently impose a clean sequence or declare the 1985 report fully collated.
+
+**Chronological consequence:** the 1986 report is a substantial revision/expansion of an already established geometric braid-category programme, not the first appearance of the configuration-space construction, Artin relations, juxtaposition or categorical braid object. The 1985 report remains PARTIALLY VISUALLY INSPECTED; complete linear collation remains open.
+
+Detailed page-level findings and locators are in [PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md](../WORKSPACES/PHYSICS/PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md). No ticker advance.
