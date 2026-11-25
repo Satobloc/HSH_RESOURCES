@@ -2159,3 +2159,18 @@ The 1985/1986 report pair has now been collated at the level of section architec
 The 1985 report's numbering is anomalous: its Fred Linton ribbon page is printed p. 8½ and headed §4, followed by p. 9 headed §3. The source note preserves that anomaly rather than imposing a clean section order. Exact proposition-level locators and qualifications are in [PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md](../WORKSPACES/PHYSICS/PHY01_JOYAL_STREET_VERSION_STRATIGRAPHY_20261125.md), Bite 18, §12.
 
 **Interpretive result:** the 1986 report is a substantial revision and expansion, not a first formulation of the braid category or its central categorical machinery. The principal new terrain is the categorical-group/homotopy classification programme. The 1993 article remains not directly read; its relation to the 1986 H³ and braided-group classification is still open. No ticker advance.
+
+
+---
+
+## 33. Bite 18 continuation — 1993 article introduction recovered in reproduction
+
+The Rutgers 2024 slide deck by Gregory Moore now supplies a more complete text reproduction of the 1993 Joyal–Street article's title page, contents and opening introduction (PDF extracted-text lines 1540–1571). The article's own introduction identifies two 1986 stimuli: Freyd's talk on joint work with Yetter's braided/autonomous tangle category, and Drinfeld's International Congress talk on quantum groups/quasitriangular bialgebras. It then dates the move to ribbon tangles to mid-1987, leading to balanced tensor categories with twists and, after incorporating dual objects, tortile tensor categories.
+
+The reproduced contents list seven sections: tensor categories; braidings and Yang–Baxter operators; braided categorical groups; a braiding for representations of finite general linear groups; abstract categorical aspects of braidings; balanced tensor categories; autonomy.
+
+**Evidence distinction:** the title, contents and reproduced Joyal–Street introduction are primary article text reproduced in a secondary venue. Moore's broader historical account is eyewitness secondary testimony; he explicitly warns that the talk focuses mostly on his role and that memory is unreliable. The complete original 1993 article remains NOT READ; do not infer full proof content or complete retention/omission from this excerpt.
+
+Source: Gregory Moore, *From Rational Conformal Field Theories to Modular Tensor Categories to Nonabelions* (Rutgers, 26 Sep 2024), https://www.physics.rutgers.edu/~gmoore/From-RCFT-To-MTC-20240926-FINAL.pdf, extracted-text lines 14–20 and 1540–1571.
+
+The 1985/1986 comparison is established at section/proposition-architecture level. Full 1993 collation remains open. No ticker advance.
