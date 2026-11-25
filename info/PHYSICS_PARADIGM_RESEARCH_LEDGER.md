@@ -46,7 +46,7 @@ The Tick sequence follows the shared code ledger. Adjacency means succession; `@
 
 **Current signature:**
 
-`⌖◉@⌕⧖⤳▣✓⇢`
+`⌖◉⌕@⧖⤳▣✓⇢`
 
 - `⌖` Orient: completed for this Tock; current instructions, repositories, protocol, and code ledger consulted.
 - `◉` Select/bound Tock: completed; PHY-01 established.
@@ -190,9 +190,74 @@ Change the system based on observed need. Preserve supersession history; do not 
 
 ## 5. Immediate next operation
 
-**Read and geometrize PHY-P1:** inspect Bateman & Turok's arXiv:2607.00096 directly. Extract the exact higher-derivative action, state-space/inner-product construction, ghost-parity mechanism, quantization and probability rules, unitarity/causality claims, and the authors' stated limitations. Then compare its geometrical and conceptual structure with the relevant SAT/H(s)H materials without declaring equivalence.
-
-**Current status:** source lead located; primary paper not yet inspected in this thread.
+**Next operation:** draw and compare the two already inspected geometries: (1) 4D Lorentzian spacetime with a four-derivative scalar field and an auxiliary (O(1,1)) two-field/Krein construction; (2) six-dimensional (M^{3,1}\times K^2) spacetime, with a non-orientable compact Klein-bottle factor and a 3+1 brane. State physical, internal and state-space dimensions separately. Then connect only the geometrical correspondences that survive that comparison.
 
 ---
 *Working state. Update additively and keep the apex short as the ledger expands.*
+
+
+---
+
+## 6. Bite 01 — first source-grounded physics reconnaissance
+
+**Recorded:** 2026-11-25  
+**State:** Investigation pass complete for initial bounded source set; geometrization is now the active Tick. Reading states remain partial/triaged, not FULL.
+
+### 6.1 Source reading states
+
+| Source | State | What was inspected | Not yet done |
+|---|---|---|---|
+| Bateman & Turok, *Escape from Ostrogradsky via Hidden Ghost Parity*, arXiv:2607.00096 | PARTIAL | Abstract; introduction and model action; Krein-space structure; generalized Born rule; ghost-parity/O(1,1) embedding; stated limitations and future work | Full appendix derivations, hostile independent review, reproducing calculations, later-order proof details |
+| Greene, Kabat, Levin & Porrati, *Klein bottle cosmology*, Phys. Rev. D 113, 063576 (2026) | PARTIAL | Full paper PDF pages 1–3; abstract, dimensional setup, covering-space identifications and boundary-condition discussion; screenshots of pages 1–3 | Remaining derivation, condensate-wall calculations, brane dynamics and full conclusions |
+| Greene et al., *Compactification without orientation, or a topological scenario for CP violation*, Phys. Rev. D 113, 065020 (2026) | PARTIAL | APS abstract and section outline; 6D free field theory on flat Klein bottle, Pin structures, symmetry-breaking mechanism | Full paper and detailed spinor/boundary-condition derivations |
+| Preskill, Usatyuk & Vardhan, *Negative energies and the breakdown of bulk geometry*, Phys. Rev. D 114, 106011 (2026) | TRIAGED | APS abstract and arXiv introduction; 2D JT gravity, semiclassical state overlaps, random-matrix dual and proposed scale of breakdown | Full derivation, assumptions, robustness and relation to higher-dimensional models |
+| Briscese & Calcagni, *Fractal universe and quantum gravity made simple*, Phys. Rev. D 114, 046011 (2026) | TRIAGED | APS abstract and bibliographic metadata | Full action, definition of effective/multifractal dimension, unitarity proof, phenomenology and tests |
+| Dobkowski et al., *Observation of the quantum phase of free fall and the consistency with the equivalence principle*, Science Advances (2 September 2026) | TRIAGED | Oxford institutional account and its distinction between the measured effect and stronger quantum-gravity claims | Primary experimental paper, apparatus details, uncertainties, supplementary data and independent assessment |
+
+### 6.2 First geometrical distinctions
+
+**Bateman–Turok model**
+
+- The action integrates over ordinary four-dimensional Lorentzian spacetime: (d^4x), with a four-derivative scalar field equation.
+- The paper's auxiliary two-field formulation has an internal (O(1,1)) structure. Its two fields ((\Omega,\Upsilon)) are not two extra physical spacetime dimensions.
+- The Krein state space decomposes into positive- and negative-definite sectors. This is an indefinite inner-product/state-space construction, not a spacetime embedding.
+- The ghost-parity operation is a discrete symmetry of the auxiliary field formulation. The physical-process positivity argument uses the generalized Born rule and weak ghost symmetry.
+
+**Klein-bottle cosmology**
+
+- The bulk is explicitly six-dimensional: (M^{3,1}\times K^2), namely four-dimensional Minkowski spacetime times a two-dimensional compact Klein bottle.
+- The Klein bottle can be constructed from a covering torus/rectangle with identifications of the form
+  [
+  (x^4,x^5)\sim(x^4+2\pi r_4,x^5),\qquad
+  (x^4,x^5)\sim(-x^4,x^5+2\pi r_5).
+  ]
+- The twist reverses one internal coordinate under traversal of the other. The resulting compact surface is non-orientable; the local geometry is flat while global topology changes the allowed field/boundary structure.
+- A 3+1-dimensional brane is embedded in the 5+1-dimensional bulk. The paper studies what happens when it moves through condensate walls associated with the Klein-bottle topology.
+
+Do not merge these models: the first has an auxiliary indefinite field/state-space structure within 4D spacetime; the second has a genuinely higher-dimensional physical spacetime with a compact non-orientable internal surface.
+
+### 6.3 Initial findings (provisional)
+
+- F4. The 2026 material surfaced so far does not constitute one unified replacement paradigm. It includes at least four different activities: alternative quantization of higher-derivative fields; topology-driven symmetry breaking in compactified higher-dimensional models; nonperturbative limits on semiclassical bulk geometry; and quantum-interferometric tests of gravity's effect on quantum matter.
+- F5. Bateman–Turok's paper is a six-page 2026 preprint, not proof of a fully constructed quantum theory of gravity. The paper calls its result a modest step, focuses on short-distance perturbative scattering, establishes tree-level positivity, and explicitly leaves massless collinear infrared divergences and their regulation/resummation as further work. Its conformally flat quadratic-gravity limit decouples spin-two graviton modes.
+- F6. The Klein-bottle construction is explicitly a 6D bulk (M^{3,1}\times K^2), not evidence that the observed universe has a Klein-bottle compactification. The companion paper examines free six-dimensional theories on a flat Klein bottle and associated Pin boundary structures.
+- F7. The Oxford-reported 2026 atom-interferometry experiment measured the predicted quantum phase of a freely falling atom consistent with the equivalence principle. The institution explicitly says it neither unifies quantum mechanics with gravity nor shows gravity itself to be quantum. It is a meaningful quantum-matter/gravity-interface test, not a direct quantum-gravity detection.
+- F8. Preskill–Usatyuk–Vardhan's result concerns 2D Jackiw–Teitelboim gravity and its random-matrix dual. Its conclusions should not be generalized automatically to 3+1D gravity.
+- F9. The apparent convergence is presently best described as several active geometric/foundational research programmes with overlapping questions, not yet an established single paradigm shift.
+
+### 6.4 Corrected source links
+
+- Bateman & Turok: https://arxiv.org/abs/2607.00096
+- Klein bottle cosmology: https://doi.org/10.1103/dyym-ywsr
+- Compactification without orientation: https://doi.org/10.1103/fp2t-9xwj
+- Fractal universe and quantum gravity made simple: https://doi.org/10.1103/kbkv-vs5t
+- Negative energies and breakdown of bulk geometry: https://doi.org/10.1103/1dc1-c7d9
+- Dobkowski et al., Science Advances: https://www.science.org/doi/10.1126/sciadv.aeb9619
+
+The first draft of this ledger used conventional APS DOI-looking strings for four papers. Those were replaced here by the exact DOI URLs verified against the APS pages.
+
+### 6.5 Tick transition
+
+`⌖◉⌕@⧖⤳▣✓⇢`
+
+Investigation has produced enough source material for the first geometric comparison. The next Tick is **⧖ Geometrize**: diagram the two constructions, identify physical versus internal/state-space dimensions, then test potential SAT/H(s)H correspondences without forcing them.
