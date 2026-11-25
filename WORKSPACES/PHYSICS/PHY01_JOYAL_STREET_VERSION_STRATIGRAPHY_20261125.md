@@ -185,3 +185,56 @@ The deeper lesson is that “higher category theory” here is not an unbounded 
   - First-person historical account of Freyd/Yetter, Drinfeld, ribbon braids, balanced/tortile categories and related developments.
 
 **Reading-state rule:** a bibliographic record, reproduced excerpt, or secondary comparison is not a substitute for reading the complete 1985 and 1993 papers. Keep those gaps visible until closed.
+
+
+## 9. Bite 17 addendum — classification shift and access audit
+
+**Recorded:** 2026-11-25 · **State:** PRIMARY 1986 REPORT RE-READ AT INTRODUCTION/DEFINITIONAL LEVEL; SECONDARY CLASSIFICATION COMPARISON VERIFIED; FULL 1985/1993 COLLATION STILL OPEN. **Ticker:** unchanged.
+
+### 9.1 A more precise account of what the 1993 publication leaves out
+
+The Baez–Shulman lecture notes make the contrast more specific than the shorthand “the 1993 paper omits the 2-group classification” can suggest:
+
+- The 1986 report classifies categorical groups (their term for 2-groups) using group cohomology, including the general (H^3(G,M)) data, and describes the whole 2-category of such structures.
+- The 1993 paper does not simply reproduce that general classification. It moves to **braided 2-groups**, which Baez–Shulman describe as corresponding, morally, to connected pointed homotopy types with only (pi_2) and (pi_3) nontrivial.
+- The corresponding classification is then expressed through (H^4(K(G,2),A)), rather than (H^3(K(G,1),A)=H^3(G,A)).
+
+This is a meaningful shift of homotopy level, not merely a shorter presentation of the same theorem. It also shows why the distinction between ordinary categorical groups and braided categorical groups matters: the added braiding changes the homotopy-theoretic object being classified.
+
+**Epistemic boundary:** this is a direct reading of Baez–Shulman's explicit secondary comparison, not yet a direct theorem-by-theorem reading of the 1993 article. Their notes describe the lectures as informal and explicitly say they gloss over precision. Use the statement as a strong navigation clue, not as a substitute for the original paper.
+
+### 9.2 1986 definitional checks from the report itself
+
+A fresh pass through the 1986 report's introduction and opening definitions confirms:
+
+- A monoidal category has tensor product, unit, associator and unit constraints.
+- A braiding is a natural family of isomorphisms (c_{A,B}:A\otimes B\to B\otimes A) satisfying two hexagon conditions.
+- A symmetry is a braiding with the additional involutivity condition. The report explicitly says not every braiding is a symmetry.
+- The braid group (B_n) is introduced as the fundamental group of the configuration space of (n)-element subsets of the Euclidean plane.
+- The braid category packages strand counts as objects and braid groups as endomorphisms; tensor product is juxtaposition.
+- The free braided monoidal category on one generator and the coherence theorem are already part of the 1986 report's central construction.
+
+These checks reinforce that “braided” is not a loose synonym for “intertwined.” It is a precise natural isomorphism plus coherence constraints, and its non-involutivity is what distinguishes it from symmetry.
+
+### 9.3 1993 full-text access attempts
+
+The publisher's author page identifies the article as **Open archive** and offers “View PDF,” but the ScienceDirect page returned 403 on direct opening. The PDF endpoint and the Elsevier API text/XML endpoints were not retrievable through the available web access. The Macquarie research record confirms the bibliographic identity and peer-reviewed status but does not expose the article text. The bishtref mirror also returned 403.
+
+The 2024 Rutgers slides remain a partial reproduction of the title, contents and introduction, not the complete article. The full 1993 text therefore remains **NOT READ**.
+
+### 9.4 Current comparison, sharpened
+
+| Layer | 1986 report | 1993 publication, as currently evidenced |
+|---|---|---|
+| Ordinary categorical groups / 2-groups | General (H^3(G,M))-based classification and 2-categorical treatment | General classification not carried over in the same form, according to Baez–Shulman |
+| Braided categorical groups / braided 2-groups | Braided/abelian refinement and quadratic-form classification | Becomes a central classification target; homotopy interpretation shifts to connected pointed 3-types with (pi_2,pi_3), associated with (H^4(K(G,2),A)) |
+| Ribbon/twist and duality | Earlier ribbon-braid counterexample; not yet the later systematic programme | Explicit balanced tensor categories and autonomy; author retrospective traces the ribbon/tortile development |
+| Mathematical physics examples | Homotopy/cohomology examples and braid category | Finite general linear group representations, Yang–Baxter operators, and wider knot/tangle/quantum-group context |
+
+The last column is deliberately marked “as currently evidenced”: the 1993 full paper has not been read directly, so detailed theorem statements and exact retention of individual constructions remain unverified.
+
+### 9.5 Next operation
+
+Keep the version-family closure open. Prioritize obtaining the 1993 article through an alternate institutional or author-hosted route, and continue the 1985 report's page-by-page collation. Do not branch into the wider Freyd–Yetter/Drinfeld/Witten history until the source comparison is adequately closed.
+
+**Return cursor:** Connect / ℬ. No ticker advance.
