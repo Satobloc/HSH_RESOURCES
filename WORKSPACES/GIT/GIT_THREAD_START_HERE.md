@@ -4,6 +4,12 @@
 
 **Purpose:** cold-start continuity anchor for the GIT conversation. Read this file first, then follow the pointers only as far as the current task requires. It is a routing capsule, not a duplicate evidence archive.
 
+**Mandatory cross-conversation inheritance:** the complete shared Tocktick pilot ticker is inherited unchanged from the preceding PHYS/GIT/BIO pilot conversation. Its live signature is:
+
+`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
+
+Resume at the existing `@⤳` position. Never restart, abbreviate, replace, regenerate, or move the marker because a new conversation has begun. GIT's local GIT_TRAFFIC ticker below is a lane-specific subcursor; it does not replace or truncate the shared full ticker. Re-fetch this anchor, the shared Protocol/Code Ledger, and the GIT Credenza before continuing.
+
 **Date:** 2026-11-25  
 **Primary repository of record:** `Satobloc/HSH_RESOURCES`  
 **Lane:** `GIT`  
@@ -188,7 +194,7 @@ During this reconstitution, generic GitHub code search and direct repository-fil
 
 ## 8. Successor boot instruction
 
-Start here. Re-fetch this anchor, the live shared Protocol/Code Ledger and the linked GIT_TRAFFIC records before advancing any cursor. Check whether a qualifying Traffic-attribution trigger has arrived. If not, preserve the parked state; do not repeat completed GTT-02 work, estimate a percentage, submit a speculative search request, or silently abandon the GIT_TRAFFIC PIN. Any separate GIT repository/tooling task gets its own bounded Tock and must preserve this parked return obligation.
+Start here. Re-fetch this anchor, the live shared Protocol/Code Ledger and the linked GIT_TRAFFIC records. First preserve the complete inherited pilot ticker exactly as printed at the top; resume at its existing `@⤳` marker. The GIT_TRAFFIC route is subordinate local state, not a replacement. Never reset or shorten the shared ticker at a conversation boundary. Check whether a qualifying Traffic-attribution trigger has arrived. If not, preserve the parked state; do not repeat completed GTT-02 work, estimate a percentage, submit a speculative search request, or silently abandon the GIT_TRAFFIC PIN. Any separate GIT repository/tooling task gets its own bounded Tock and must preserve this parked return obligation.
 
 **Message capsule for substantive work:** `▸ TICK:<current operation> | TOCK:<durable result/cursor or —> | PIN:<return obligation>`. Keep it compact, and keep the full ticker as the final line of every substantive assistant reply.
 
