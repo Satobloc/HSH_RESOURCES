@@ -606,7 +606,7 @@ The specific `v`, `n`, `χ` and `r` assignments are listed in the BIO-only subpa
 
 The current BIO ticker is the user's exact, current grouping:
 
-`BIO:⟐βᛟvnχ@⊕[rmρk:ᛟd]⊕[ᛟd:mbx]s`
+`BIO:⟐βᛟvnχr@⊕[mρk:ᛟd]⊕[ᛟd:mbx]s`
 
 Preserve this current string exactly, including its bracketed groups and colon. The cursor has advanced past the completed `r` component and now marks `m` as current; the sequence and remaining group order are unchanged. Do not flatten, reorder, or normalize the user-authored grouping. Where a future edit needs a more detailed interpretation of an internal grouping, use the user's explicit definitions and the live code ledger rather than inventing semantics.
 
@@ -617,7 +617,6 @@ Local status:
 - `@`: current outer position, before the active grouped continuation.
 - `r`: SAT/H(s)H biological mapping; complete for the bounded node-to-organogenesis remit after R.1–R.4.
 - `m`: selective application of higher mathematics to concrete biological structures; current.
-- `m`: selective application of higher mathematics to concrete biological structures.
 - `ρ`: reorientation/review after the integrated work.
 - `k`: the larger category-theory/mathematics programme.
 - `s`: deferred dedicated spiritualist-reading programme after the category-theory/mathematics exploration.
