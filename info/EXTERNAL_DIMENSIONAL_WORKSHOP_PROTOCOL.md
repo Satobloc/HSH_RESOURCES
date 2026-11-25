@@ -846,6 +846,9 @@ At bounded work-bite/Tock exits and periodic Credenza review points, explicitly 
 This section governs this workshop's own ticker/Credenza evolution. It does not silently adopt unrelated HsH schedules, identity, automation or scheduler controls.
 
 
+**Full-plan ticker rule — Nathan Direct, 2026-11-25:** In each working response, place the live ticker on the **final line**. It records the full plan for the active Tock, not merely the current operation: include its scope/strand bundle and all known planned work packages, branches, waits, review points and deferred stages, using exact codes or a compact approximate path when necessary. Do not shorten the ticker to the currently active segment or drop future work for readability. The Credenza and deeper ledgers retain the full explanation; the ticker remains the visible route. Keep `@` immediately before the next uncompleted item and move it only when that item's exit condition is satisfied. This is a completeness-of-plan rule, not a rule that makes the ticker immutable or canonical.
+
+
 ## 39. Inclusive source corpus, archive acquisition and HsH pilot transfer — 2026-11-24
 
 **Corpus inclusion:** search relevant repository/archive materials even when labelled *weird*, *wacky*, *speculative*, *fringe*, *personal science*, *unorthodox*, *anomalous*, *occult*, *fantastic* or similar. Such labels are source metadata and historical/contextual clues, not automatic exclusion criteria, truth labels or quality rankings. Preserve exact provenance and authorship; distinguish direct user material from assistant additions and historical source claims. Do not flatten neighboring corrections or source context. Keep evidential reliability, historical significance and conceptual usefulness as separate assessments.
