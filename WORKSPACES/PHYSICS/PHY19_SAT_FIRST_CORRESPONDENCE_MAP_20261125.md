@@ -155,7 +155,9 @@ The HsH source-fidelity note identifies three uncomposed descriptions: the 2024 
 5. Cobordism categories are a promising way to formalize successive 3D slices and 4D histories, provided the slice objects, history slabs and gluing operation are specified.
 6. Hinton supplies two different comparators: a moving 2D film as symbolic section/readout geometry, and an extra-spatial-dimensional rotation proposal for chirality. Neither should be conflated with SAT's temporal fourth dimension.
 
-**Next operation:** ℬ — develop the cross-disciplinary braid/formalization bridge from the existing nLab/n-Category Café reconnaissance and the dimensional-uplift discriminator. Keep the physical braid assignment gated by ◈: source-defined core/object geometry first, then determine whether any braid or motion group actually applies.
+**Completed in this pass:** first-pass Connect crosswalk and the ℬ braid/formalization bridge. The mathematical discriminator is recorded; no physical braid group has been assigned to SAT.
+
+**Next operation:** ◈ — recover and type the source-defined filament/core, finite-core worldtube, timesheet/bulk response and readout geometry. This is the prerequisite for deciding whether the physical object supports Bₙ, Sₙ, an extended-core motion group or something else. Keep all alternatives open until the native objects and admissible motions are specified.
 
 ## 8. Source register
 
