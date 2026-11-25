@@ -1105,3 +1105,183 @@ Continue the source-object task at ◈ and the pending Mersearch receipt; keep H
 
 
 `⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢`
+
+
+---
+
+## 16. Bite 08 — source-authenticated worldline, timesheet and finite-core dimension audit
+
+**Recorded:** 2026-11-25  
+**Lane:** ⟐ HSH_RESOURCES comparative-history lane  
+**State:** SOURCE CROSSWALK ADVANCED · ◈ remains PARTIAL. Original source files have now been read directly from the SAT and HsH reference repositories. The dimension, signature, instantaneous-intersection and finite-core questions are more sharply bounded, but the source set does not yet define one complete native geometry. No HsH or SAT repository was modified.
+
+### § SOURCE STRATIGRAPHY AND VERSION CONTROL
+
+| Source | Source identity / locator | What it contributes | Reading and authority limit |
+|---|---|---|---|
+| SAT ALL TOGETHER SYNTHESIS.txt | Satobloc/SAT_THEORY_ARCHIVE_2023-25; dated 2026-07-03 in line 1; blob 86cf006ca5ebf58263552c7515a9c9d575caae37; especially lines 11, 27, 31, 35, 39, 47, 51, 55, 59, 67, 83–142 | First-person SAT reconstruction using worldline and timesheet as primitives; intersection-angle kinematics; helix/coiling and braided intersection proposals; an active timesheet interaction proposal; a later positive-signature (++++) proposal and expansion-rate speculation | Direct narrative as stored in the archive; treat each move as a dated proposal, not as a completed derivation. The source itself calls some steps leaps/speculation and says the descriptive presentation is not yet a theory. |
+| RMS Spacetime Filaments.txt | Same SAT archive; blob 0323682e7a49278b5a76d0c6a5a7787a13eb17d6; lines 1–31 and repeated copy at 35–67 | Calls the framework a “toy theory”; describes a four-dimensional structure, a three-dimensional propagating time surface, radial/stringlike filaments, and higher-dimensional composites | No explicit composition date in the file. It repeats substantially the same text twice. Preserve as an undated conceptual snapshot, not a controlling geometry specification. |
+| Fundamental Intuitions of SAT | Satobloc/HsH, DEVELOPMENT_FULL_CONVOS/30SEP26_DUMP/FUNDAMENTAL INTUITIONS.txt; blob 81ae23a106939cba7e3d134ed5c90a7d7a979a25; 33 lines | States a four-dimensional world of particle worldlines/filaments, a time wavefront, particle appearance at intersections, and tentative interpretations of the intersection angle and helical traces | Archive-dump source. It gives a conceptual object inventory but no metric tensor, signature, parameterization, global topology or fully specified intersection map. |
+| Nathan-direct clarification: θ₄ and winding | Satobloc/HsH, !!_RUNNING_COTHEORIST_LOG.md; blob 350529123d219def10f866601e7e2ed6ccdc4a97; 2026-09-16 entry, lines 45–60 | Measures θ₄ from the time normal; θ₄=0 when the filament tangent is parallel to the normal / propagation direction; brackets the origin of winding and says θ₄ need not generate it | Explicitly attributed to Nathan Direct by the record. Raw message ID is still pending. |
+| Nathan-direct straight-vacuum / Kerr correction | Same running log, 2026-10-09 entry, lines 29–44 | SAT inheritance is worldline plus time wavefront, not a worldline wound around an independent carrier; H(s)H separately adds a tentative finite-core ER/Kerr-like singular-support tube; “Kerr ring” is a possible intersectional trace; Pauli exclusion needs an independent quantum-statistical derivation | The log records a signed cross-post with [OWL], but the raw message ID remains pending. The Kerr/ER construction and particle-mode interpretations are explicitly tentative. |
+| Ravel straight-vacuum coiling gate | Satobloc/HsH, WORKSPACES/RAVEL/SANDBOX_2026-10-09_STRAIGHT_VACUUM_COILING_GATE.md; blob 8a8d88d1b536b844cdb0ea70ff33820310bd1bac; sections 1–4 | Gives a controlled Lorentzian Minkowski straight-line and helical-trajectory comparison, a simple finite normal-neighbourhood tube, its local coordinate bound, and proposed physical discriminators | Assistant-authored mathematical sandbox, not a Nathan premise, not an external result and not the actual ER/Kerr core. It explicitly labels the helix as a local geometric test and the core as a simplified normal-ball example. |
+| BEDROCK methodological controls | Satobloc/HsH, BEDROCK.md; blob ed791df242d6f3beddeaeeabd0d1ced3d1341e9d; BR-005/006 at lines 452–480 and ND-2026-10-18-04 at lines 620–655 | Preserves the θ₄ convention; distinguishes framework-internal interaction claims from demonstrated physics; requires the Minkowski build-first control, minimal pairs and nested-core morphology | Read-only reference. These controls were not copied into or changed in HsH. |
+
+**Chronology warning:** the July 2026 SAT narrative, the undated RMS toy-theory snapshot, the 30 September dump, the September/October direct clarifications and the October Ravel sandbox are different record layers. A later statement can clarify an earlier one, but it does not retroactively make every earlier geometrical description precise. Keep the dated versions and their author/role labels attached.
+
+### ∴ FINDING 1 — THE SAT PRIMITIVES ARE A CURVE AND A PROPAGATING THREE-DIMENSIONAL SHEET
+
+The inspected SAT sources converge on two primitive objects: a filament described in the later direct clarification as a **one-dimensional worldline/history**, and a **time wavefront/timesheet** described in the RMS and later conceptual descriptions as a three-dimensional surface in a four-dimensional ambient construction.
+
+The July 3 narrative explicitly treats the worldline and timesheet as the minimal geometric language. It associates changes in their intersection orientation with kinematics and proposes additional geometric encodings for particle properties. The 30 September conceptual snapshot likewise describes the perceived particle as an intersection of worldline and time wavefront.
+
+The October 9 direct clarification supplies a critical negative definition: SAT does **not** begin with a worldline wrapped around an independent carrier or core. A separate finite-core object belongs to the later H(s)H proposal. This is a source-stratification rule for the comparison, even though the full native SAT ambient geometry remains incomplete.
+
+| Object | Intrinsic dimension stated or conditionally implied | What remains open |
+|---|---:|---|
+| SAT filament / worldline | 1 | Native parameter, global topology, metric and whether “worldline” is always exact rather than a limiting representation |
+| SAT timesheet / time wavefront | 3 in the RMS and later conceptual descriptions | Global topology, whether it is one hypersurface or a family, local/global normal, metric type, orientation and foliation conditions |
+| Instantaneous filament–timesheet intersection | Generically 0 for a transverse 1D/3D intersection in 4D | The additional “circular trace” language needs a separate construction |
+| Actual H(s)H finite-core worldtube | Not yet fixed | Intrinsic dimension, codimension, cross-section, topology, boundaries, normal bundle and admissible deformations |
+| Ravel normal-ball tube | 4D region in its particular Minkowski comparison | Only a simple tubular-neighbourhood comparator, not the proposed physical core |
+| Kerr-ring trace | Ring-like trace proposed; supporting object unspecified | Which higher-dimensional support, boundary or projection produces a one-dimensional ring |
+
+### ∴ FINDING 2 — THE INTERSECTION DIMENSION IS A HARD GEOMETRIC GATE
+
+For transverse submanifolds \(A^m\) and \(B^n\) in a \(D\)-dimensional ambient manifold, the generic intersection dimension is
+
+\[
+\dim(A\cap B)=m+n-D.
+\]
+
+For the presently stated SAT primitives,
+
+\[
+1+3-4=0.
+\]
+
+Thus a one-dimensional worldline meeting a three-dimensional timesheet transversely produces an event, not an instantaneous circle. This does not refute the proposed circular/Kerr-like readout; it identifies what is not yet specified.
+
+At least one additional construction must be made explicit. Possibilities include a higher-dimensional support whose intersection is one-dimensional, a projection of the helical history, or a trace accumulated over a family of readout surfaces. These are alternatives to discriminate, not interchangeable descriptions and not permission to insert a new carrier.
+
+Useful comparison cases:
+- a 2D worldsheet intersecting a 3D hypersurface in 4D can generically produce a 1D curve;
+- a 3D spatial region intersecting a 3D hypersurface can produce a 2D surface;
+- a 4D finite worldtube region intersecting a 3D readout hypersurface can produce a 3D spatial volume.
+
+Future diagrams must label whether a displayed circle is an instantaneous intersection, a projection, a cross-section of a finite core, or a trace accumulated across a family of timesheets. A diagram alone must not silently change object dimension.
+
+### ∴ FINDING 3 — θ₄ IS REFERENCED TO THE TIME NORMAL, BUT ITS METRIC MEANING IS NOT YET CLOSED
+
+The July 3 SAT narrative first speaks informally of an angle between the worldline and the timesheet, then explicitly says to measure the angle against the **time normal**. The 16 September Nathan-direct clarification fixes the working convention: θ₄=0 when the filament tangent is parallel to the time normal / timesheet propagation direction; for a particle at rest, θ₄ is associated with inverse helical pitch. The angle to the hypersurface itself is therefore the complementary geometric description in a positive-definite orthogonal picture.
+
+That convention does not, by itself, specify the metric used to calculate the angle.
+
+- The July 3 narrative proposes treating all four directions with positive signature (++++) while also discussing a Minkowski-based construction and a differential expansion rate along one axis.
+- The Ravel sandbox uses ordinary Lorentzian Minkowski signature (-+++) as an explicit comparison/control. It treats the straight reference as timelike.
+- The October methodological record requires the native four-spatial-dimensional construction, any induced/effective Lorentzian metric and ordinary 3+1 Minkowski notation to be distinguished rather than silently exchanged.
+
+This is a source-version / representation question, not a wording detail. In an ordinary Lorentzian spacetime, the relative orientation of two future timelike unit vectors is described by a **rapidity** (a hyperbolic angle), not by an ordinary Euclidean angle. If θ₄ is an ordinary angle in a positive-definite four-dimensional construction, its inner product and normal must be specified there. If it is intended as a Lorentzian relative angle, the corresponding hyperbolic definition must be supplied. No single formula should be imposed before the native metric and object types are fixed.
+
+**Terminology safeguard:** BR-005 uses “null/vacuum orientation” for θ₄=0. The Ravel Lorentzian control explicitly says its straight reference tangent is **timelike**, not a null light-cone vector. Until a source defines the intended causal classification, “null/vacuum” must be read as the framework’s label for the zero-misalignment reference, not silently equated with the standard Lorentzian term “null vector.”
+
+### ∴ FINDING 4 — THE SIMPLE MINKOWSKI TUBE IS A COMPARATOR, NOT THE H(s)H CORE
+
+Ravel’s sandbox sets \(w=ct\), uses \(\eta=\mathrm{diag}(-1,+1,+1,+1)\), and takes the straight reference line
+
+\[
+X^\mu_{\mathrm{str}}(w)=(w,x_0,y_0,z_0).
+\]
+
+It then constructs a simple normal-neighbourhood tube by adjoining a spatial three-ball \(B^3_\epsilon\) to that line. In this example only:
+- the central history is 1D;
+- each constant-\(w\) spatial cross-section is a 3D ball \(B^3_\epsilon\);
+- the tube’s interior is 4D;
+- its lateral boundary is locally \(I\times S^2\), a 3D shell;
+- for a finite parameter interval, the two end caps are 3D balls.
+
+This provides a dimensionally explicit *comparison model* for what a four-dimensional finite region around a line could mean. It does **not** establish that the H(s)H ER/Kerr-like core is a ball, that its boundary is an \(S^2\) bundle, that it has a preferred centreline, or that ε is a Kerr length. Those identifications would exceed the sandbox’s own stated scope.
+
+### ∴ FINDING 5 — A HELICAL WORLDLINE IS NOT A FREE INERTIAL REFERENCE
+
+The Ravel sandbox’s local comparison trajectory is
+
+\[
+X^\mu_{\mathrm{coil}}(w)
+=(w,\ R\cos(kw),\ R\sin(kw),\ \beta_z w).
+\]
+
+For this Lorentzian Minkowski test, the timelike condition is
+
+\[
+(Rk)^2+\beta_z^2<1,
+\]
+
+and its proper curvature is
+
+\[
+\kappa_4=
+\frac{Rk^2}{1-\beta_z^2-(Rk)^2}.
+\]
+
+The straight reference has zero four-acceleration; a nontrivial helix has nonzero proper curvature. A physical persistent coil therefore needs an independently derived constraint, interaction or constitutive mechanism. The sandbox lists possible candidate loci, but does not choose or prove one. Its local Fermi-tube condition \(\epsilon\kappa_4<1\) is a normal-coordinate regularity bound, **not** a Pauli rule, a global injectivity result, a Kerr-horizon condition or a source-established physical-core limit.
+
+This also keeps two distinct pictures apart: a static four-dimensional coiled morphology in a block description, and a dynamical particle trajectory whose proper acceleration is nonzero. A source must state which interpretation is being used before an acceleration equation is assigned physical meaning.
+
+### ∴ CURRENT GEOMETRIC CROSSWALK
+
+| Feature | SAT inherited structure | H(s)H addition | Safe comparator / current limit |
+|---|---|---|---|
+| Primitive history | 1D worldline / filament | Retained by status-preserving inheritance | Ordinary Minkowski timelike curve is a control, not proof of the native signature |
+| Time structure | 3D time wavefront / timesheet in a 4D construction | Used in the worldtube reformulation | Do not identify automatically with every conventional simultaneity slice |
+| Particle / support | Intersectional appearance in SAT descriptions | Tentative twisted-vacuum finite-core worldtube | Actual core topology and intersectional identity remain open |
+| Zero-misalignment reference | θ₄=0, tangent parallel to the time normal | Candidate aligned straight-core reference | “Null/vacuum” label is not yet a standard causal classification |
+| Coiling | Helical geometry appears in several SAT descriptions; winding origin is bracketed | Shell deformation / inductive propagation / reconnection are separate candidate H(s)H processes | Ravel helix is a local kinematic test, not the source-defined particle solution |
+| Kerr-ring | Not a SAT carrier | Possible intersectional trace | The support and map producing a 1D ring still need explicit dimension data |
+| Motion / topology | SAT worldline and time-sheet relation | Worldtube topology and interbraid are framework-internal claims | Configuration space, collision rules and homotopy class remain undefined until the actual core is specified |
+
+### ⁇ QUESTIONS ADDED
+
+- **PHY-Q25 / Native metric and signature:** What exact ambient metric, signature and time-orientation map define the current SAT construction, and how do the (++++) proposal, the four-spatial-dimensional language and the Lorentzian Minkowski control map to one another?
+- **PHY-Q26 / Ring-producing intersection:** What is the actual higher-dimensional support or projection whose intersection/readout yields the proposed circular/Kerr-ring trace, given that a 1D/3D transverse intersection in 4D is a point?
+- **PHY-Q27 / Finite-core topology:** What is the intrinsic dimension, codimension, spatial cross-section, boundary topology and normal structure of the tentative ER/Kerr-like H(s)H core?
+- **PHY-Q28 / Angular measure:** Is θ₄ an ordinary angle in a positive-definite ambient metric, a Lorentzian rapidity-like quantity, or a projection-defined measurement? What is its exact inner product and normalization?
+- **PHY-Q29 / Coil mechanism:** Which independently specified constraint or interaction supports a persistent non-geodesic helical morphology, and what distinguishes a static block-geometry coil from a dynamical accelerated worldline?
+- **PHY-Q30 / Version lineage:** Which source revision fixes the native time-wavefront geometry, and which earlier radial-wavefront / helical / positive-signature descriptions remain historical alternatives?
+
+### ⚑ PIN UPDATE
+
+- **PHY-P15 (Priority 1):** Reconcile the dated SAT geometry versions, ambient signature and θ₄ measure from the original source cluster. Return cue: Mersearch manifest/receipt and exact source locators read.
+- **PHY-P16 (Priority 1):** Define the object that produces the proposed ring/circular trace and recover the actual H(s)H finite-core cross-section, shell and admissible deformation space. Return cue: source-authenticated core and intersection geometry available.
+
+### ↩ RETURN / COMPLETION GATE FOR ◈
+
+The ◈ subtask is **advanced but not complete**. It cannot close until the following are source-resolved:
+
+1. Native ambient dimension, metric/signature, time orientation and timesheet identity.
+2. Source-faithful filament/worldline definition and exact θ₄ inner product.
+3. The dimensional construction yielding the circular/Kerr-ring trace.
+4. Actual ER/Kerr finite-core topology, codimension, cross-section and boundary structure, distinguished from the Ravel normal-ball comparator.
+5. Allowed core/worldline deformations and motion classes, with the dynamic constraint for persistent coiling distinguished from a static block morphology.
+6. Historical/version lineage sufficient to identify superseded descriptions without erasing them.
+
+Only then proceed to ∂ for boundary identities and composable histories, followed by Δ for projection fidelity. No higher-category structure, braid group or physical core topology is inferred solely from notation or a drawing.
+
+### … MERSEARCH STATUS — CHECKED THIS CONTINUATION
+
+The existing request remains phy01-internal-first-worldtube-hinton-highercats-20261125-01, lane 2, submitted 2026-11-25T05:30:45.753Z. The existing run is 45554091984, job 139001876678, attempt 1, workflow 395264519, head 3d740279da1fd8a8df5a31ae28d83354a9b8c8b8.
+
+The refreshed Actions readback still shows:
+- Steps 1–8 complete;
+- Step 9, **Run Mersearch**, in progress;
+- Steps 10–12, manifest, compact receipt and request-scoped publication, pending;
+- no workflow artifacts;
+- the job-log endpoint returns BlobNotFound/404.
+
+**Status:** IN PROGRESS / NO RECEIPT / NO SOURCE LOCATORS FROM THIS RUN. The old run has not been declared failed or cancelled. Do not duplicate the request, overwrite lane 2 or treat these direct reads as a substitute for its pending three-repository discovery receipt.
+
+**Bite status:** the native geometry is now more tightly specified at the level of known dimensions and explicit unknowns. The most important result is a constrained question, not a completed model: the source-described 1D worldline and 3D timesheet yield a point event under transverse intersection, so the proposed circular trace requires another explicitly identified support or projection. The ◈ gate remains open; no cursor advance, theory promotion, HsH worker directive or HsH repository write is made.
+
+**LIVE TICKER — final line:**
+
+⌖◉⟐⊕[fhkᛟᵃ]⌕⧖@⤳◈∂Δ…▣✓ρ⇢
