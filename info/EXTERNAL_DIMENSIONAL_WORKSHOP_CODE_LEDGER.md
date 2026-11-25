@@ -699,13 +699,13 @@ This is a lane-local research lens for the ⟐ HSH_RESOURCES comparative-history
 
 ## PHYS bite reference codes
 
-A bite reference identifies a bounded PHYS work package in the master ledger. It is subordinate to, and must never replace, the complete shared pilot ticker defined in the continuity section below. A bite reference is not itself a complete ticker and must not be presented as the lane's live workflow signature. The shared ticker retains the ordered workflow, its completed prefix, its uncompleted suffix and the exact `@` position across conversations.
+A bite reference identifies a bounded PHYS work package in the master ledger. It is one possible planning component in the PHYS ticker, not a replacement for the ticker as a whole. Whether it appears in the live ticker depends on the current workplan; the ticker and bite register are both editable.
 
 | Glyph | Code point | Canonical meaning | Class | Scope / constraints |
 |---|---|---|---|---|
 | ⧉ | U+29C9 | SAT-first correspondence overview | Bite token | One bounded overview mapping the foundational SAT/H(s)H ontology and selected current developments to relevant nLab / n-Category Café concepts and wider four-dimensional historical/contemporary thought and physics. Primary comparison corpus: 2023–25 archive's *Fundamental Intuitions*, *one drop*, *single-file*, *standalone* and related foundational materials; current HsH theory is the evolving backdrop. This is not exhaustive source archaeology or proof-level validation. Full bite specification is Bite 19 in the PHYS master ledger. |
 
-**PHYS Bite 19 reference:** `⧉` (U+29C9), retained as a local work-package identifier only. It is not a live ticker, does not carry the `@` marker, and does not supersede the shared pilot signature. The live shared position is `@⤳`.
+**PHYS Bite 19 reference:** `⧉` (U+29C9), a local work-package identifier for the SAT-first correspondence overview. The current PHYS ticker and its `@` position are recorded in the PHYS entrypoint and master ledger; Bite 19's reference does not freeze or dictate that workplan.
 
 
 ## Pilot ticker continuity and lane-local workplans
