@@ -537,3 +537,18 @@ These codes identify the five ordered bites inside the active contemporary biolo
 - Completion of one bite advances `@` to the next code only after a durable result and recorded next cursor.
 
 The assignments `v`, `n`, `χ`, and `r` are new, workshop-local lowercase codes. They were checked against existing exact glyph assignments before adoption. The existing `m` assignment is reused without alteration.
+
+
+---
+
+## PHY-01 geometric-connect continuation tokens — added 2026-11-25
+
+These Tock subcomponent codes make the remaining Connect plan visible in the live ticker. They identify research tasks, not physical objects or established theory claims. Their ordinary mathematical uses remain unchanged outside the ticker.
+
+| Glyph | Code point | Canonical meaning | Class | Scope |
+|---|---|---|---|---|
+| ◈ | U+25C8 | Object/core geometry and motion space | Tock subcomponent | Recover the source-defined SAT filament, worldline and time-wavefront; distinguish the added H(s)H finite-core worldtube; establish actual cross-section topology, admissible configurations and motion classes. |
+| ∂ | U+2202 | Boundary and history composition | Tock subcomponent | Specify boundary objects, identity histories, compatible gluing and composition for candidate worldtube histories. |
+| Δ | U+0394 | Projection fidelity / discriminant | Tock subcomponent | Determine what causal, bordism and configuration-space views preserve or discard; seek invariants and discriminators without assuming equivalence. |
+
+**Ordered Connect subpath:** `◈ → ∂ → Δ`. Object identity and core geometry precede the construction of composable histories; projection fidelity is tested only after the relevant structures have been specified. The subpath belongs to PHY-01 and does not create a new Tock or move the current `@` by itself.
