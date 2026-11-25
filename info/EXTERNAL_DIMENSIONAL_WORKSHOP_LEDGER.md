@@ -1732,3 +1732,77 @@ This chapter supplies a much better historical vocabulary for the active inquiry
 For the user's 4D histological proposal, the most useful distinction is now even sharper: Loeb's 1906 model describes internal, physically mediated relations within a continuous body — tissue boundaries, circulation, nerves, ganglia, local stimulus, and transported substances. These are real inter-part relations, but they remain ordinary three-dimensional biology and do not establish the proposed extra-spatial or inter-individual topology.
 
 **Source status:** Loeb 1906 Lecture XI is now directly read in full searchable OCR, including printed pp. 199–218; page-image cross-check is still outstanding. Loeb 1916 Chapter VII was separately read in searchable transcription. Wilson 1903 original paper remains located but not directly read. No Tock completion or `@` advance.
+
+
+## 59. Read, Pearce & Govind 1994 resolves the double-snapper nerve experiment; the 2017 “suture” summary compresses distinct operations — 2026-11-24
+
+A full searchable text of the 1994 *Journal of Experimental Zoology* article has now been inspected, and it materially clarifies the earlier nerve-operation ambiguity:
+
+**Primary source:** R. E. Young, J. Pearce & C. K. Govind, “Establishment and Maintenance of Claw Bilateral Asymmetry in Snapping Shrimps,” *Journal of Experimental Zoology* 269, 319–326 (1994), DOI 10.1002/jez.1402690405. Full text transcription: https://www.academia.edu/54775623/Establishment_and_maintenance_of_claw_bilateral_asymmetry_in_snapping_shrimps. Article was inspected in OCR/text extraction, not page-image verified.
+
+### A. The 1994 study's two distinct developmental regimes
+
+1. **Juvenile determination:** paired claws are morphologically similar and undifferentiated through early juvenile stages. Hypertrophy of one claw begins in the fifth juvenile stage; by the sixth stage it is differentiated as the snapper with hammer and socket. Removal of one claw during the third or fourth juvenile stage results in the intact claw becoming snapper and the regenerate becoming pincer. This suggests use-dependent/neural input helps determine laterality during a critical juvenile period. Early removal in the second stage does not influence which side becomes major.
+2. **Adult reversal:** after asymmetry is established, removal/autotomy of the snapper claw results in the intact pincer transforming into a snapper, while a new pincer regenerates at the old snapper site. This is not permanent laterality; the adult system remains reversibly lateralized.
+
+The article explicitly distinguishes the establishment of asymmetry in juveniles from its maintenance/reversal in adults. Do not conflate the two processes.
+
+### B. Adult experiment: exact nerve operations and sample outcomes
+
+The critical experimental question is why the old snapper site normally regenerates as a pincer even though the transforming intact pincer is becoming a snapper. Young, Pearce & Govind hypothesize that the transforming pincer-to-snapper claw inhibits a second snapper from developing at the opposite site. They reduce neural input from the transforming claw by tenotomy or nerve transection, then remove the snapper.
+
+**Methods (printed pp. 320–322):**
+- Each claw receives two nerves, a smaller nerve 1 and a larger nerve 2. Nerve 1 has roughly one-third the axon profiles of nerve 2.
+- In adults, after the snapper claw is autotomized, the contralateral intact pincer begins transforming into a snapper.
+- Nerve transection involves removing a length of nerve from the mid-merus to the autotomy plane in the basi-ischium. The nerve is grasped through a small cuticular window and pulled until it breaks at the autotomy plane. The wound is sterilized and sealed. Both nerves can be sectioned separately or together.
+- When lesioning the pincer claw, the snapper is removed after the nerve lesion. This is an experiment on the **transforming pincer-to-snapper limb**, not simply section of a nerve in the original snapper.
+
+**Results (Table 3, printed p. 324):**
+- Control snapper autotomy alone: 12/12 successful animals show the normal pattern. The intact pincer transforms into a snapper; the regenerated claw at the old snapper site is a pincer.
+- Section of the **small nerve 1 only** in the transforming pincer: 10/14 successful. The intact pincer still transforms into a snapper; the regenerate remains a pincer. This is not significantly different from control.
+- Section of the **large nerve 2 only** in the transforming pincer: 9/25 successful. The intact pincer transforms into a snapper; the regenerate appears as either a pincer (4) or a snapper (5), a significant departure from control (P<0.02).
+- Section of **both nerves 1 and 2** in the transforming pincer: 9/19 successful. The intact pincer transforms into a snapper; the regenerate appears as a pincer (4) or snapper (4), again significantly different from control (P<0.02; one further case not tabulated as a valid binary morphology outcome in the OCR).
+
+Thus sectioning nerve 2 or both nerves from the transforming claw can permit a second snapper to regenerate at the old snapper site, yielding paired symmetric snappers in some successful trials. Sectioning nerve 1 alone does not produce this effect. The study concludes that neural influences from the transforming pincer-to-snapper claw restrict regeneration on the contralateral side to a pincer, maintaining bilateral asymmetry.
+
+### C. Relation to Wilson, Loeb, Mellon & Stephens, and the 1988 experiments
+
+This helps distinguish at least three different nerve manipulations and their endpoints:
+
+1. **Wilson 1903 as reported contemporaneously by Loeb (1906, p.216):** Loeb says Wilson removed the major chela and cut the nerve of the remaining smaller chela first; Loeb reports the smaller claw's growth/transformation did not occur. Wilson's original text is still not retrieved, so the detailed method and the exact meaning of “growth does not occur” remain provisional pending the original article.
+2. **Mellon & Stephens 1978 / Govind, Wong & Pearce 1988:** damage/section of a nerve in the existing major snapper can itself trigger transformation of the opposite pincer into a snapper. The 1988 abstract reports removal of the major claw as 100% effective, sectioning its nerve as effective in about two-thirds, closer muscle tenotomy in fewer than half, opener-muscle tenotomy occasionally, and immobilization as ineffective. This is a manipulation of the existing **snapper-side** pathway, not the 1994 experiment on the transforming pincer-side pathway.
+3. **Young, Pearce & Govind 1994:** after snapper removal has already initiated pincer-to-snapper transformation, section the small or large nerves in that **transforming pincer**. Nerve 2 or both nerves may remove enough inhibition to let the old snapper site regenerate a second snapper. This is the specific route to paired-snapper symmetry shown in Table 3.
+
+These operations can produce different outcomes because they target different limb sides, nerve diameters, and stages in the transformation. “Nerve section” without naming the target claw, nerve branch and time relative to autotomy is too imprecise to compare the experiments.
+
+### D. The 2017 “complete suture” wording: treat as a compressed or imprecise summary
+
+Soledade, Oliveira & Almeida, “A specimen of the snapping shrimp *Alpheus pontederiae* ... with symmetric chelipeds,” *Spixiana* 40(2), 181–184 (2017), PDF: https://pfeil-verlag.de/wp-content/uploads/2017/11/SPIX_40_2_03_SO.pdf, directly inspected in searchable PDF text, p. 182, says: “The complete suture of the contralateral nerve of the minor cheliped,” followed by major-claw removal, resulted in cheliped symmetry, “i.e., in the development of a second major cheliped.” It attributes this to Wilson 1903, Mellon & Stephens 1978, Govind et al. 1988 and Young et al. 1994 together.
+
+The word **“suture”** is preserved exactly as the accessible text extraction gives it. It is not the standard term for nerve transection and may be a wording/translation error; the PDF screenshot service returned cache miss, so the printed page image has not been visually checked. The cited outcome (a second major cheliped) corresponds closely to the **Young et al. 1994 nerve-2/both-nerve experiment** above, where denervating the transforming pincer could remove its inhibitory influence on the contralateral regenerate. It should not be attributed wholly to Wilson 1903 without Wilson's paper. The 2017 sentence appears to compress findings from four studies with distinct experimental protocols.
+
+### E. Updated mechanistic account
+
+The snapping-shrimp pair is governed by a state-dependent, asymmetric inhibitory relation:
+- A major snapper suppresses the other side from becoming another snapper.
+- Loss/damage to the established snapper can release the pincer to transform.
+- The transforming pincer-to-snapper then inhibits the old snapper-side regenerate from becoming another snapper.
+- Nerve 2, the larger nerve in the transforming claw, is especially important in maintaining this inhibition in the 1994 experiments; nerve 1 alone is insufficient to disrupt it.
+- If the inhibition is sufficiently reduced, the animal can develop two snappers. This paired-snapper state can persist for several molts, although subsequent claw loss can restore asymmetry.
+
+This is a stronger and more precise model than “the organism restores symmetry.” The normal invariant is not equality: it is one snapper plus one pincer. Nerve-mediated lateral inhibition helps preserve that differentiated paired configuration, while sufficiently strong disturbance can shift it to a two-snapper state.
+
+### F. A naturally occurring counterexample with two minor claws
+
+The 2017 *A. pontederiae* specimen is not an experimental result; it is one preserved male specimen (8.6 mm carapace length) with two minor chelipeds. The authors consider three possibilities: failure to differentiate a major chela during juvenile development; adult loss of the major claw without subsequent pincer-to-snapper transformation; or collection during an early stage of reversal. A small deformity in the right pollex is consistent with possible prior injury, but cannot identify the history. They regard the second hypothesis as most plausible, not proven.
+
+This specimen shows that natural observations of paired-chela symmetry may arise through distinct developmental histories; a static symmetric specimen does not alone identify the underlying process.
+
+### G. Research consequences
+
+1. Keep Wilson 1903 original paper open. Loeb's contemporary 1906 report is direct evidence that Wilson performed a nerve operation, but not a replacement for his experimental text.
+2. Keep Morgan 1940's “smaller one” phrase uncorrected until Wilson is read; the 1903/1906/1917/1994 sources overwhelmingly support larger/snapper claw loss as the normal reversal trigger.
+3. When comparing nerve experiments, record target side/claw, nerve number, lesion timing, autotomy timing, species, sample successes, and endpoint morphotype. Do not collapse all into one “nerve cut” category.
+4. The system is a clear ordinary 3D example of inter-part neural inhibition in a single organism. It does not imply an extra spatial axis or organism-to-organism physical continuity.
+
+**Status:** Young, Pearce & Govind 1994 full OCR text inspected, including methods, Tables 1–3 and Discussion, pp. 319–326. Soledade et al. 2017 p.182 directly OCR-inspected; page image not verified. Mellon & Stephens 1978 abstract read. Wilson 1903 remains located but not directly read. No Tock closure or cursor advance.
