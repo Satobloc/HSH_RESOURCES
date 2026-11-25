@@ -3214,3 +3214,25 @@ The five planned bites now have explicit single-character identifiers in the Uni
 **Next cursor:** `n` — reconstruct mouse embryonic nodal left–right determination in depth, with uncertain sensing steps and species-specific limits explicitly marked.
 
 **Ticker advance:** `βᛟv@nχrm`. The `v` bite is complete; the `n` bite is now current.
+
+
+## 76. BIO lane — mouse nodal left–right determination — 2026-11-25
+
+**Lane:** BIO  
+**Note:** [Biological Mechanism 02 — Mouse Nodal Left–Right Determination](../WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_MOUSE_NODE_LEFT_RIGHT_DETERMINATION.md)
+
+**Bite:** `n` — COMPLETE.
+
+**Result:** Mouse laterality is established by a transient left–right organizer using already established A–P and D–V polarity plus the chirality of ciliary rotation. PCP/Wnt5-Sfrp positioning displaces basal bodies posteriorly; the domed node-cell surface tilts motile cilia posteriorly; clockwise rotation plus tilt and the no-slip boundary condition produces net leftward flow. Peripheral immotile cilia receive the flow. Side-dependent bending and polarized Pkd2 localization create a directional mechanical response; ciliary calcium activity and Dand5 mRNA degradation initiate left-specific Nodal signaling. Nodal/Lefty feedback and Pitx2 help propagate and stabilize the asymmetry, with organ-specific morphogenetic implementations downstream.
+
+**Strong perturbation evidence:** imposed rightward flow reverses situs in the mouse; Katoh et al. (2023) optical-tweezer stimulation of individual immotile cilia induces calcium responses and Dand5 mRNA degradation. Full details and limitations are preserved in the note.
+
+**Open boundaries:** Pkd1l1-Pkd2 mechanosensory molecular details remain under investigation; universality of the Pkd2 localization/bending-direction arrangement is not established; cilia-driven organizer flow is not universal across vertebrates.
+
+**SAT/H(s)H reading:** the node, ciliary trajectories, time-varying flow, sensory deformations, signaling fields and later organogenesis are parts of one W-extended developmental history. This is the BIO lane's interpretive representation of the mechanism, not a replacement for its documented biological causal relations.
+
+**Next cursor:** `χ` — inspect cellular chirality and actomyosin in depth, then compare cultured-cell actomyosin chirality, Drosophila Myo1D/PCP, and the zebrafish organizer intersection. Do not assume one is the direct mechanism of the mouse node.
+
+**BIO lane ticker:** `BIO:βᛟvn@χrmρk⊕[mbxᛟd]s`.
+
+**Lane boundary:** PHYS and GIT positions remain independent. This entry closes `n` only in BIO.
