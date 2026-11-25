@@ -3085,3 +3085,50 @@ The abstract reports male cells identified by XY-FISH in marrow-derived mesenchy
 **Evidence boundary:** this session inspected the PubMed abstract, not the complete Lancet paper or its full methods/results. Y-chromosome detection supports male-origin material but, by itself, does not uniquely identify which pregnancy supplied each cell. The sample is small, and the abstract's interpretation of stem-cell identity and lifelong persistence should be treated as the authors' inference, not independently established here. The paper supports possible long-term cellular persistence in maternal marrow/bone; it does not show whole-organism continuity or a shared anatomical system between mother and child.
 
 **Status:** bibliographic record and abstract inspected; full text not inspected. This is a bounded source note, not a synthesis of the entire microchimerism literature.
+
+
+## 71. Predecessor-conversation review and active Tock handoff — 2026-11-24
+
+### Conversation material reviewed
+
+- ND Research Higher Dimensional Biology - raw (1).txt: full conversation export (JSON payload despite the .txt filename), including the assistant's research, tool results and the full sequence of user corrections. The adjacent ND Research Higher Dimensional Biology.txt files are condensed user-message exports, not substitutes for the full research conversation.
+- ND Review Workflow State - raw.json and its .txt companion: reviewed as the workflow handoff and ticker-development record.
+- HsH/DEVELOPMENT_FULL_CONVOS/SAT_CONVOS_23/Reboot Higher Dimensional Research (1).txt: consulted for broader mathematical/nLab/braid context only. Its endpoint is not the current biology Tock. Provenance-oriented discussion is background, not an active workstream.
+
+### Findings carried forward
+
+1. The subject has several distinct meanings that must remain separate: literal additional spatial dimensionality of living matter; higher-spatial vitalist or psychical vehicles; biological effective/fractal network dimensionality; and organisms treated as extended through time/lifetime. The latter two are not, by themselves, claims of an extra spatial axis.
+2. Hinton is the strongest direct historical anchor so far. His 1904 treatment connects four-dimensional spatial geometry to organic right/left symmetry and possible microscopic movement/folding of living constituents. He explicitly treats the argument as inconclusive, does not claim to explain life by four-dimensional motion, and raises germ-structure and heredity difficulties. Keep his author's claims distinct from the workshop's SAT/H(s)H reading.
+3. Whately Smith is a different historical strand. His 1920 account uses vitality, nervous-system and sensory language but proposes a speculative higher-dimensional vehicle associated with psychical survival; he expressly does not treat the 3D body as a section of a 4D whole. Do not merge his view with Hinton's.
+4. Abbott's Flatland is a biological/world-building analogy, useful for dimensional perception and organismal-world construction, not a direct scientific proposal about actual 4D organisms.
+5. The dimensional-menagerie literature is a separate, productive historical substream: biological examples (flat-dwellers, worms, etc.) are used to reason about dimensional perception and geometry. Trace the primary writers cited by Blacklock rather than treating the review abstract as the whole evidence.
+6. Organism-as-process / physiological-time material adds another distinct comparison. Carrel and Woodger are relevant to temporally extended living organization, but this is not automatically the same as an extra spatial dimension or the user's histological 4D construction.
+7. The biological record is now substantial, not empty. Existing ledger work covers symmetry and regeneration (including Alpheus and Hydroides), grafting and composite bodies, histological/vascular/neural continuity, siphonophore modularity, Botryllus fusion/chimerism, and human microchimerism. These are comparison cases for organismal boundaries, continuity and organization; none should be promoted into proof of extra spatial dimensionality.
+8. The user's own 4D histological construction is a distinct direct-user model. Its proposed physical tissue contiguity, layered neural/muscular/skeletal/skin structure and temporal branching must not be conflated with historical authors or ordinary genetic inheritance. The 28 related image assets have only been metadata-inventoried; visual reconstruction and turn-to-diagram mapping remain open.
+9. The dimensional-normalization paper remains a method companion (d), not the ontology and not a substitute for the biology/history synthesis. Its integration into the biological question remains unfinished.
+10. The geometry-first category-theory introduction exists, but the substantive k reading programme is still future work. The dedicated spiritualist reading (s) remains deferred until after that programme; relevant historical references may still be read within h where needed.
+
+### Active handoff and next execution order
+
+The current job is to finish a bounded general reconnaissance, not to restart the ledger's already-developed biological case studies. Execute the remaining overview work in this order, adjusting only when a source result justifies it:
+
+1. Obtain and read Carrel's two 1931 primary papers, “The New Cytology” and “Physiological Time”; check the quotations and context currently available only through secondary literature.
+2. Revisit Hinton's 1884/1904 primary texts where needed, separating the dimensional-analogy passages, organic handedness argument and etherial/vitalist-organism discussion.
+3. Read only the relevant Steiner 1905 organism/growth passages for immediate historical context; do not begin the deferred systematic spiritualist survey.
+4. Check Woodger's primary text and the cited Schrödinger vierdimensionales Muster passage against their bibliographic/page context. Preserve organism-as-event/process as its own category.
+5. Trace the nineteenth-century primary writers behind the dimensional-menagerie account (Sylvester, Helmholtz, Clifford, Rodwell, Pearson); establish which biological analogies each actually uses.
+6. Complete the German/Austrian and other-language press/repository overview, including the unconventional, speculative, personal-science and “weird/wacky” source families. Labels are discovery metadata, not evidence ratings.
+7. Reconstruct the user's 4D histological diagrams from the 28 assets and direct-user turns, once image bytes are accessible; keep histological and cellular/chromosome sequences distinct.
+8. Produce the compact synthesis required by §35: meaning taxonomy, historical chronology, traditions/actors, biological concepts, primary-source map, multilingual/repository coverage, and unresolved questions. Only when that overview is adequate should the Tock proceed through β, then ρ, then k.
+
+### Operational and interpretive controls
+
+- Use the user's stipulated SAT/H(s)H ontology as the reading frame: physical structures are four-dimensionally extended along W/time; the familiar 3D present is a section/intersection. Do not reframe this premise as a hypothesis to be tested or attribute the complete ontology to historical writers.
+- Preserve the ledger's final coordinate correction: W = ct (or w = ct for a scalar coordinate value), not the superseded c = wt entry. The active ledger's §626 correction governs.
+- The harvester is not acceptance-tested: local unit tests and the no-provider dry run remain NOT RUN because the available execution environment could not reach GitHub. Do not add the biological query group or run live harvests before that acceptance gate passes. Intended durable harvest outputs remain inside this repository.
+- Mysearch remains scaffold-only/unvalidated. Mersearch stable 1.0 is the intended archive standard, but its four request lanes must not be overwritten; compact bridge receipts are not exhaustive. If the documented route is unavailable, label GitHub search explicitly as fallback.
+- No @ advance follows from this review. The biology/history Tock remains open.
+
+**Current full ticker (unchanged):**
+
+⌖◉▣✓@⊕[bhᛟdᵃ]β ⌖◉▣ρk⊕[mbxᛟd]s
