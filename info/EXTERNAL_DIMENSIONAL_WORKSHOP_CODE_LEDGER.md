@@ -527,7 +527,7 @@ These codes identify the five ordered bites inside the active contemporary biolo
 
 ### Ordered subpath
 
-`BIO:⟐βᛟvnχr@⊕[mρk:ᛟd]⊕[ᛟd:mbx]s`
+`BIO:⟐βᛟvnχr⊕[m@ρk:ᛟd]⊕[ᛟd:mbx]s`
 
 - `β` is the existing contemporary biological reconstruction pass.
 - `ᛟ` is the existing SAT/H(s)H interpretive lens applied throughout the subpath.
@@ -604,24 +604,24 @@ The specific `v`, `n`, `χ` and `r` assignments are listed in the BIO-only subpa
 
 ### BIO lane full local path and current position
 
-The current BIO ticker, as last recorded in Work Ledger §86, is:
+The current BIO ticker, as last recorded in Work Ledger §87, is:
 
-`BIO:⟐βᛟvnχr@⊕[mρk:ᛟd]⊕[ᛟd:mbx]s`
+`BIO:⟐βᛟvnχr⊕[m@ρk:ᛟd]⊕[ᛟd:mbx]s`
 
-Preserve this current string exactly, including its bracketed groups and colon. The cursor has advanced past the completed `r` component and now marks `m` as current; the sequence and remaining group order are unchanged. Do not flatten, reorder, or normalize the user-authored grouping. Where a future edit needs a more detailed interpretation of an internal grouping, use the user's explicit definitions and the live code ledger rather than inventing semantics.
+Preserve this current string exactly, including its bracketed groups and colon. The cursor has advanced past the completed `r` and `m` components and now marks `ρ` as current; the sequence and remaining group order are unchanged. Do not flatten, reorder, or normalize the user-authored grouping. Where a future edit needs a more detailed interpretation of an internal grouping, use the user's explicit definitions and the live code ledger rather than inventing semantics.
 
 Local status:
 - `⟐`: HSH_RESOURCES comparative-history lane.
 - `βᛟ`: contemporary biological reconstruction under the stipulated SAT/H(s)H lens.
 - `v`, `n`, and `χ`: completed BIO bites.
-- `@`: current outer position, before the active grouped continuation.
+- `@`: current position within the active grouped continuation, now at `ρ`.
 - `r`: SAT/H(s)H biological mapping; complete for the bounded node-to-organogenesis remit after R.1–R.4.
-- `m`: selective application of higher mathematics to concrete biological structures; current.
-- `ρ`: reorientation/review after the integrated work.
+- `m`: selective application of higher mathematics to concrete biological structures; complete for the bounded overview-level comparative mapping recorded in Work Ledger §87.
+- `ρ`: current reorientation/review checkpoint after `m`; review the lessons and decide whether the remaining plan should be adjusted before the larger `k` programme.
 - `k`: the larger category-theory/mathematics programme.
 - `s`: deferred dedicated spiritualist-reading programme after the category-theory/mathematics exploration.
 
-**Inner cursor:** `r / R.1` through `R.4` are complete. Review determined that the defined `r` remit is sufficiently covered; no R.5 is authorized. The outer `@` has advanced to `m`, the selective mathematical-application component.
+**Inner cursor:** `r / R.1` through `R.4` are complete. Review determined that the defined `r` remit is sufficiently covered; no R.5 is authorized. The `@` cursor has advanced from `m` to `ρ`, the review/reorientation checkpoint.
 
 This is the current BIO workplan and its lane-local cursor. It does not advance any PHYS or GIT/GIT_TRAFFIC workplan.
 
