@@ -171,3 +171,39 @@ Directly read these five surfaces, along with `GUESTBOOK.txt`, and the WORKFLOWS
 **GTT-A01.A COMPLETE for the bounded main-branch tree inventory.** The three full recursive trees were read without truncation, the 63 workflow-directory files and priority orientation/control/log surfaces were inventoried, and the prior October 30 HsH audit was recovered to prevent duplication. The inventory is not a full-text review and does not claim that every candidate is active or authoritative.
 
 **Next:** GTT-A01.B maps workflow configuration and worker recommendations to the actual repository targets and operation types. Inspect the 63 workflow files in bounded batches, prioritizing cross-repository reads, checkout/materialization, write permissions, bot commits, issue/PR creation, request-file triggers, schedules, recursion guards and concurrency. Existing Oct 30 findings should be treated as provisional leads until current YAML and execution evidence are read.
+
+
+## GTT-A01.B — Initial mechanism-to-target mapping (sampled families)
+
+**State:** ACTIVE / first high-priority families mapped. This is not yet the complete 63-file workflow classification. Configuration and run evidence are distinguished below; none of these observations establishes GitHub Traffic attribution.
+
+| Repository / workflow family | Configured trigger and permissions | Repository access / output mechanism | Evidence state |
+|---|---|---|---|
+| HsH Conversation Viewer build | Manual, hourly at minute 23, and scoped pushes; `contents: write`; concurrency group; skip marker `[skip conversation-viewer]` | Checks out HsH full history and SAT archive shallowly; discovers external conversations; generates catalog/body-search/manifests; commits and pushes generated output to HsH main, with up to four fresh-main retries | YAML directly inspected. Cross-repository read and bot write are configured. Current run not established by the recent first-page run sample. |
+| HsH Viewer Pages deployment | Manual and scoped pushes; `contents: read`, Pages write and OIDC | Checks out HsH; validates catalog; uploads Pages artifact and deploys. No repository-content write step in this workflow | YAML directly inspected. Deployment is an execution event, not itself evidence of a Git clone by an outside actor. |
+| HsH Mersearch request bridge, lane 2 | Push to lane-2 request file; `contents: write`; independent concurrency group | Checks out HsH full history, stable Mersearch shallow, SAT archive shallow, HSH_RESOURCES shallow; runs Mersearch; builds request manifest/receipt; commits request-scoped results to HsH | Run **45554091984** is live/in progress. Job **139001876678** confirms all four checkout steps completed and Mersearch execution is in progress. No result/receipt claimed. This is another lane's PHY-01 request; GIT did not submit it. |
+| HsH issue publisher | Issue events; only owner-authored `[HSH-PUBLISH-V1]` payloads; `contents: write`, `issues: write` | Checks out HsH, then uses GitHub REST Contents API GET/PUT to publish a validated submission and read it back; comments on the issue. It does not use a Git push for the published artifact | Run **45574724859** completed successfully. Job **139069704782** logs show the checkout and verified submission `aldus-h1088-s0-whirligig-source-lineage-decoder-20261125t0800z-001`. Direct execution evidence. |
+| SAT Archive Admin | Broad push and manual dispatch; `contents: write`; concurrency; skips its own `[skip archive-admin]` commit | Checks out SAT full history; request-driven Archive Admin tasks, indexing, extraction, logs; commits dashboard/AI files and index to SAT main | Run **44684054130** succeeded. Job **136114046436** confirms Archive Admin, request/index steps and commit. Detailed log shows append-buffer absorption rejected unrecognized material but the workflow continued, recorded a warning, and successfully committed its log/output. |
+| HSH three-repository source inventory | Manual, every six hours, and pushes except its generated-output folder; `contents: write`; concurrency group | Checks out HSH full history, HsH shallow, SAT/GLASS shallow; runs the HsH sampler over all three; writes a generated private inventory into HSH_RESOURCES and commits it | Run **45577972228** is in progress. Job **139081117818** confirms HSH and HsH checkouts completed and GLASS checkout was in progress at read time. Run **45578519813** is pending on the GIT anchor commit; it has no job yet. Three runs associated with the preceding GIT writes were cancelled; cancellation cause is not established. |
+| HSH cross-archive audience catalogue | Daily schedule at 08:19 UTC, manual and scoped pushes; `contents: write` | One HSH checkout; script uses authenticated GitHub REST API to read recursive trees and blobs across HSH_RESOURCES, HsH and SAT; writes a generated catalogue and pushes to HSH | YAML and script directly inspected. API-based cross-repository reads are configured; no current run was established in this sample. |
+| HSH cross-diffusion compiler | Manual and scoped pushes; `contents: write` | One HSH full-history checkout; focused PDF extraction/OCR, analytics database, source manifests and chronology; commits derived output to HSH | YAML directly inspected. No cross-repository checkout appears in this workflow. |
+
+### Important execution observations
+
+1. The GIT workspace writes themselves triggered HSH_RESOURCES' `source-inventory.yml` because its push filter excludes only `SOURCE_INVENTORY/SABLE/source_inventory_run/**`. This is a real automation feedback path: a normal GIT anchor/manifest commit schedules a three-repository inventory run.
+2. Four GIT-related commits in this session produced three observed cancelled source-inventory runs and one pending run; an earlier run remains in progress. The workflow declares `cancel-in-progress: false`, so the reason for the cancellations is not inferred from the configuration. Do not treat a pending run as a completed checkout.
+3. The source-inventory workflow itself checks out HsH and GLASS as well as HSH_RESOURCES. The current in-progress run directly confirms two checkouts completed and the third was underway. This is strong evidence of an internal cross-repository automation mechanism, but **not** a direct GitHub Traffic COUNTED attribution.
+4. The Mersearch lane-2 run independently confirms four repository checkouts in an active search job. It belongs to PHYS and must not be overwritten, claimed as GIT work, or counted as a GIT-submitted search.
+5. The HsH issue publisher demonstrates why a workflow run and a Git checkout must be separated from a repository clone event: it checks out the full HsH working tree, but publishes its artifact through REST Contents API calls and an issue comment, not a Git push.
+6. The SAT Archive Admin run's successful conclusion masks a contained subtask warning: append-buffer absorption rejected unrecognized material, left the Dashboard/index untouched, and routine logging/publication continued. Workflow success is not equivalent to every internal subtask succeeding.
+
+### Next B bite
+
+Continue the remaining workflow families, prioritizing any that:
+- check out more than one repository;
+- use broad push or scheduled triggers;
+- write commits or create issues/PRs;
+- trigger another workflow or consume request files;
+- access repositories through authenticated APIs without checkout.
+
+After the configuration map is sufficiently bounded, use `⤳` to join selected actual runs/jobs/steps to canonical event-ledger rows. Preserve missing or ambiguous event identity and Traffic attribution as UNKNOWN. Avoid additional repository writes until this inspection batch is consolidated, because HSH_RESOURCES writes themselves activate the source-inventory workflow.
