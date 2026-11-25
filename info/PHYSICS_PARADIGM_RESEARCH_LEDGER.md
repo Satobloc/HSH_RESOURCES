@@ -1,6 +1,6 @@
 # Physics Paradigm / SAT–H(s)H Research Ledger
 
-**Status:** ACTIVE SEED · thread-local research Tock with shared workflow architecture  
+**Status:** ACTIVE SEED · PHYS-lane research Tock using shared method vocabulary and lane-local workplan  
 **Created:** 2026-11-25T05:25:31.390Z  
 **Owner / direction:** Nathan's PHYS-lane direction, reconstituted from HAUL 9 and continued here, 2026-11-25  
 **Purpose:** Establish this thread's Tock–Tick and Credenza, then investigate current foundational changes in physics, their intersections with SAT/H(s)H, and the historical/mathematical lineages connecting nineteenth-century higher-dimensional thought, Hinton, and modern higher-dimensional category theory and related structures.
@@ -57,7 +57,7 @@ PHY-01 closes only when the above map has been built from inspected sources, the
 
 ## 2. Shared ticker operation grammar
 
-The following operation key explains the glyphs used in the live inherited pilot ticker. The complete current signature is recorded at the ledger apex and in the three pilot entrypoints. The abbreviated setup snapshot below is historical evidence of the initial workflow, not a substitute for the complete live signature. Resume at the current `@` marker and preserve the entire sequence.
+The following operation key explains the glyphs used in the PHYS workplan. The current PHYS ticker is recorded at this ledger's apex and in the PHYS entrypoint. The abbreviated setup snapshot below is historical evidence of the initial workflow, not the current workplan. Resume at the current `@` marker; revise the ticker and its records when the plan changes.
 
 **Initial setup snapshot (historical subset of the current operation grammar):**
 
@@ -73,7 +73,7 @@ The following operation key explains the glyphs used in the live inherited pilot
 - `✓` Verify: check source claims, exact locators, geometric fidelity, status labels, and repository readback.
 - `⇢` Deliberate next step and record the next cursor.
 
-This compact key explains operation meanings only. The complete inherited pilot ticker remains live and is reproduced at the ledger apex; never substitute this abbreviated key or a bite-only cursor for it.
+This compact key explains operation meanings only. The current PHYS ticker is reproduced at the ledger apex; it is a living workplan, not a permanent signature. BIO and GIT have independent workplans.
 
 ## 3. Credenza
 
@@ -81,7 +81,7 @@ The Credenza is the working cabinet for Tocks: it routes active work, preserves 
 
 ### ▶ NOW
 
-**PHY-01 / Bite 19 (`⧉`): SAT-first correspondence overview.** Reconstruct the foundational SAT/H(s)H picture from its own primary materials, then map its principal objects and ideas tentatively onto nLab / n-Category Café concepts and the wider four-dimensional historical and contemporary physics landscape. The archive's 2023–25 *Fundamental Intuitions*, *one drop*, *single-file*, *standalone* and related materials are primary comparison sources; current HsH theory work is the evolving backdrop. Keep this an overview, not exhaustive source archaeology. Distinguish source-defined SAT claims, current HsH developments, external mathematical conventions, plausible mappings, mismatches and open questions.
+**PHY-01 / Bite 19 (`⧉`): SAT-first correspondence overview.** Reconstruct the foundational SAT/H(s)H picture from its own primary materials, then map its principal objects and ideas tentatively onto nLab / n-Category Café concepts and the wider four-dimensional historical and contemporary physics landscape. The archive's 2023–25 *Fundamental Intuitions* is the primary conceptual anchor. The *one drop*, *single-file* and *standalone* families are source-recovery targets whose exact identities and source status must be checked; mixed test transcripts and assistant-generated claims are not promoted to theory statements. Current HsH theory work is the evolving backdrop. Keep this an overview, not exhaustive source archaeology. Distinguish source-defined SAT claims, current HsH developments, external mathematical conventions, plausible mappings, mismatches and open questions.
 
 ### ▷ NEXT
 
@@ -199,9 +199,11 @@ After 3–5 substantive bites, review:
 
 Change the system based on observed need. Preserve supersession history; do not silently reassign existing glyphs.
 
-## 5. Immediate next operation
+## 5. Initial setup next operation (historical; superseded by the current Bite 19 plan)
 
-**Next operation:** draw and compare the two already inspected geometries: (1) 4D Lorentzian spacetime with a four-derivative scalar field and an auxiliary (O(1,1)) two-field/Krein construction; (2) six-dimensional (M^{3,1}\times K^2) spacetime, with a non-orientable compact Klein-bottle factor and a 3+1 brane. State physical, internal and state-space dimensions separately. Then connect only the geometrical correspondences that survive that comparison.
+This was the initial setup's next operation before the later source passes and Bite 19 reorientation. It is retained as provenance, not as the current cursor.
+
+**Historical next operation:** draw and compare the two already inspected geometries: (1) 4D Lorentzian spacetime with a four-derivative scalar field and an auxiliary (O(1,1)) two-field/Krein construction; (2) six-dimensional (M^{3,1}\times K^2) spacetime, with a non-orientable compact Klein-bottle factor and a 3+1 brane. State physical, internal and state-space dimensions separately. Then connect only the geometrical correspondences that survive that comparison.
 
 ---
 *Working state. Update additively and keep the apex short as the ledger expands.*
@@ -380,7 +382,7 @@ The strongest current point of contact with SAT/H(s)H is geometric: persistent e
 
 `⌖◉⌕⧖@⤳▣✓⇢`
 
-The next operation remains **⧖ Geometrize**. Begin by drawing a common comparison diagram for Hinton's static filament + moving film, the SAT/H(s)H worldtube + timesheet, and the extended-TQFT bordism hierarchy. Mark which dimensions are physical, internal, readout, or categorical. Keep the Mersearch request pending as a parallel evidence-recovery branch.
+At the close of Bite 01, the next operation was **⧖ Geometrize**. This is a historical cursor snapshot, superseded by subsequent bites and the current Bite 19 plan at the ledger apex. The comparison diagram and dimensional distinctions remain useful source material; do not resume this old cursor over the current @◈ position.
 
 
 ---
@@ -2183,7 +2185,7 @@ Disposition remains SUBMITTED_NOT_VERIFIED / unresolved. No cancellation, rerun,
 
 ---
 
-## 35. Bite 19 — SAT-first correspondence overview (selected; not yet executed)
+## 35. Bite 19 — SAT-first correspondence overview (in progress)
 
 **Bite reference:** Bite 19, SAT-first correspondence overview.  
 **Current PHYS ticker:** `⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳ℬ@◈∂Δ…▣✓ρ⇢`  
@@ -2196,7 +2198,7 @@ Disposition remains SUBMITTED_NOT_VERIFIED / unresolved. No cancellation, rerun,
 1. `Satobloc/SAT_THEORY_ARCHIVE_2023-25/DEV CONVERSATION/FUNDAMENTAL INTUITIONS.txt` — foundational ontology and conceptual commitments. The user's September 2026 annotation explicitly says these original intuitions remain the bedrock, extended rather than superseded, and that H(s)H is their later fulfillment in spirit.
 2. The archive's *one drop* materials — compact/core formulations and the ideas they isolate. Identify the exact source documents before treating any one as authoritative.
 3. The archive's *single-file* materials, including `_AUTO_EXTRACTED_TEXT/ONE FILE SAT 2.txt` — consolidated presentations and test regimes. Distinguish theory content from instructions to an earlier assistant and from claims that remain unverified.
-4. The archive's *standalone* materials, including `SAT XYZ/STANDALONE CODES.txt` — self-contained computational/formal expressions. Inspect the actual code and model assumptions before using them as evidence for the physical theory.
+4. The archive's standalone-labeled materials, including `SAT XYZ/STANDALONE CODES.txt` — inspect the artifact type before assuming it contains executable code; the first triage found a long Activator Modes/SATxy transcript and prompt specification.
 5. Related 2023–25 foundational and synthesis documents, selected by their relationship to the above rather than by folder volume.
 6. Current HsH theory work — interpretive and developmental backdrop, not a replacement for the earlier primary corpus and not automatically a settled canonical statement.
 
