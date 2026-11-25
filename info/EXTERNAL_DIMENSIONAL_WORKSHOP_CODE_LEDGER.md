@@ -1,5 +1,7 @@
 # External Dimensional Workshop — Unicode Code Ledger
 
+> **Small but significant bites. Don't choke, don't nibble.**
+
 **Status:** Bespoke experimental pilot. Local meanings only; no general recommendation implied.  
 **Version:** 0.2  
 **Updated:** 2026-11-24
