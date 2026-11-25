@@ -552,3 +552,72 @@ These Tock subcomponent codes make the remaining Connect plan visible in the liv
 | Δ | U+0394 | Projection fidelity / discriminant | Tock subcomponent | Determine what causal, bordism and configuration-space views preserve or discard; seek invariants and discriminators without assuming equivalence. |
 
 **Ordered Connect subpath:** `◈ → ∂ → Δ`. Object identity and core geometry precede the construction of composable histories; projection fidelity is tested only after the relevant structures have been specified. The subpath belongs to PHY-01 and does not create a new Tock or move the current `@` by itself.
+
+---
+
+## Shared Tocktick lanes and scoped interpretations — added 2026-11-25
+
+**Purpose:** the Tocktick and code ledger are shared across three conversations, but the conversations do not share one undifferentiated work queue. This registry separates common glyph semantics from lane-local operational interpretations and planned subpaths.
+
+### Lane identifiers
+
+The uppercase strings below are lane labels, not workflow glyphs and not operations in the ticker.
+
+| Lane label | Lane remit | Shared-ledger treatment |
+|---|---|---|
+| **PHYS** | Contemporary physics and physical foundations; relation to higher geometry, Hinton, nLab and related mathematical-physics traditions | Maintain its own active cursor, research questions, source notes and interpretation overlay. Its existing `f` domain component remains applicable. |
+| **BIO** | Biological implications of the stipulated SAT/H(s)H ontology, informed by Hinton, nLab/n-Category Café, modern biology and relevant higher mathematics | Current lane for the five-bite subpath `v n χ r m`; maintain its own cursor and biological reading notes. |
+| **GIT** | GitHub/repository operations, shared archives, version control, research infrastructure, tooling and cross-conversation continuity | Maintain its own operational cursor, repository changes, checks and handoff records. Do not mistake repository state for a physics or biological result. |
+
+### Scope and precedence rules
+
+1. **Common meaning first.** A glyph's general canonical meaning and code point remain in this Code Ledger.
+2. **Lane interpretation second.** PHYS, BIO and GIT may each record a separate interpretation or implementation of the same glyph, suitable to their work.
+3. **No cross-lane mutation by implication.** Adding or changing a BIO interpretation does not rewrite PHYS or GIT, and vice versa. Existing meanings in other lanes remain intact unless that lane explicitly updates its own record.
+4. **Local definitions are scoped.** A newly assigned subcomponent is not automatically a global assignment. The BIO codes `v`, `n`, `χ` and `r` are BIO-lane subcomponents. Another lane may use the same code point only with an explicit lane-scoped record and without overwriting the BIO record.
+5. **Shared handoffs carry the lane label.** Use the prefix `PHYS:`, `BIO:` or `GIT:` before a lane-local ticker when a ticker is being passed across conversations. The label is metadata, not an operation. The ticker body remains one character per operation/component, with established grouping syntax preserved.
+6. **No lane cursor substitution.** A shared ledger can record all lanes, but an entry from one lane must not advance another lane's `@` position.
+7. **Do not create glyphs just to name lanes.** The uppercase lane labels are enough. New glyphs are reserved for actual reusable operations, components, states or subcomponents.
+
+### Core operation overlays
+
+The operation glyphs retain one common meaning. The following table records their domain-specific realization, not a new glyph assignment.
+
+| Glyph | General meaning | PHYS interpretation | BIO interpretation | GIT interpretation |
+|---|---|---|---|---|
+| `⌕` | Investigate | Retrieve and assess physics literature, mathematical sources, experiments and theory records | Retrieve and assess biological primary sources, comparative systems and developmental mechanisms | Locate repository paths, source files, commits, branches, issues, workflows and tool specifications |
+| `⧖` | Geometrize | Reconstruct physical spacetime, field, causal and mathematical geometry | Reconstruct organismal, tissue, cellular, ciliary, fluid and W-extended developmental geometry | Map repository, dependency, branch or workflow structure when a geometric/topological representation is useful; this use is operational, not physical |
+| `⤳` | Connect | Relate physical frameworks, mathematical structures and empirical constraints | Relate biological mechanisms across levels and connect biology to SAT/H(s)H and relevant mathematics | Relate repositories, records, artifacts, tooling, provenance and continuity paths |
+| `▣` | Record | Preserve source-backed physics findings, equations, open questions and lane cursor | Preserve source-backed biological findings, geometric reconstructions and lane cursor | Preserve artifacts, commits, manifests, checksums and operational state |
+| `✓` | Verify | Check physical claims, derivations, assumptions, citations and uncertainty | Check mechanisms, perturbations, organism/species scope, source locators and biological inference | Check repository readback, blob/commit SHAs, tests, permissions, workflow receipts and actual write effects |
+
+### Shared component interpretations
+
+| Glyph | Common definition | PHYS interpretation | BIO interpretation | GIT interpretation |
+|---|---|---|---|---|
+| `ᛟ` | SAT/H(s)H interpretive lens | Read physical structures and theories through the stipulated four-dimensional ontology while retaining source distinctions | Read organisms and biological processes as physically four-dimensionally extended structures with 3D sections along W | Preserve and route the stipulated ontology and its provenance when editing archives; repository operations do not themselves apply a new physical interpretation |
+| `m` | Mathematics / category theory | Mathematical structures relevant to physical foundations and spacetime models | Selective mathematical application to concrete biological structures; in this subpath it is not the full `k` programme | No standing GIT subcomponent is assigned at present |
+| `f` | Contemporary physics and physical foundations | Active domain component | May identify directly relevant biophysics/mechanobiology material; does not replace `b` or `β` | No standing GIT subcomponent is assigned at present |
+| `β` | Contemporary biological reconstruction pass | Not inherited as a PHYS task merely because the glyph exists | Active BIO research mode | Not inherited as a GIT task |
+
+The specific `v`, `n`, `χ` and `r` assignments are listed in the BIO-only subpath section below. Their lane scope is part of their canonical assignment. The existing global `k` category-theory programme and trailing `s` spiritualist programme retain their original meanings and order.
+
+### BIO lane full local path and current position
+
+The current BIO ticker is:
+
+`BIO:βᛟvn@χrmρk⊕[mbxᛟd]s`
+
+Interpretation:
+- `βᛟ`: contemporary biological reconstruction under the stipulated SAT/H(s)H lens.
+- `v`: biological variable map, complete.
+- `n`: mouse nodal left–right determination, complete.
+- `@`: current position, immediately before `χ`.
+- `χ`: cellular chirality and actomyosin.
+- `r`: SAT/H(s)H biological mapping.
+- `m`: selective application of higher mathematics to the biological work.
+- `ρ`: reorientation/review after the biological subpath.
+- `k⊕[mbxᛟd]`: the larger category-theory/mathematics programme with biology retained and cross-disciplinary connections emerging naturally.
+- `s`: the deferred dedicated spiritualist-reading programme after the category-theory/mathematics exploration.
+
+This BIO ticker is a lane-local detail cursor inside the wider shared programme. It does not replace or advance the shared master ticker or any PHYS/GIT cursor.
