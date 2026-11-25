@@ -44,7 +44,7 @@ PHY-01 closes only when the above map has been built from inspected sources, the
 
 The Tick sequence follows the shared code ledger. Adjacency means succession; `@` marks the next uncompleted operation.
 
-**Current signature:**
+**Initial signature at Tock setup (historical snapshot):**
 
 `⌖◉⌕⧖@⤳▣✓⇢`
 
@@ -527,10 +527,162 @@ The first source reconnaissance and first two geometric/historical bites are com
 
 ### Active work and next cursor
 
-**Current signature remains:**
+**Corrected current signature:**
 
-`⌖◉⌕⧖⤳@▣✓⇢`
+`⌖◉⌕⧖@⤳▣✓⇢`
+
+The preceding checkpoint misplaced `@` one token too far to the right. The Bite 03 transition text correctly left **⤳ Connect** as the next uncompleted Tick; this correction restores the marker to that position. No work stage is being declared complete by this correction.
 
 The next research operation is **⤳ Connect**: build the explicit mapping/composition data linking the actual SAT/H(s)H worldtube/timesheet construction with (i) causal/time-oriented Lorentzian structure, (ii) bordism/extended-TQFT composition, and (iii) finite-core configuration-space/motion topology. Keep those structures distinct until a source-grounded map demonstrates their relationship. The Mersearch request is a parallel source-recovery dependency, not permission to promote a correspondence before its provenance is inspected.
 
 **Re-entry:** resume with the PHY-01 Bite 03 questions Q9–Q13 and pins PHY-P7–P9. First refresh run 45554091984 and the request-specific output directory. Do not duplicate the request, overwrite a lane, claim a completed search, or move the Tick cursor merely because checkout succeeded.
+
+
+---
+
+## 10. Bite 04 — A common worldtube history with three distinct geometric views
+
+**Recorded:** 2026-11-25  
+**State:** CONNECT / PARTIAL. First source-grounded crosswalk drafted from current H(s)H bedrock. This is a representation map and a set of formal obligations, not a completed functor construction, calculation, or theory promotion.
+
+### § SOURCES AND CONTROLLING STATUS
+
+The current H(s)H source hierarchy supplies four relevant controls:
+
+1. **ND-2026-11-24-01, HsH BEDROCK:** H(s)H is the tentative world-tubification of SAT. Its current foundational particle picture is the Kerr-ER-Pauli exclusion construction of a particle as a twisted vacuum worldtube. The role of this construction is current and foundational within the program; its physical construction remains tentative. Worldtubification preserves the epistemic status of inherited SAT material.
+2. **BR-005, HsH BEDROCK:** SAT's θ₄ angle is measured between the filament and timesheet from the time normal. At θ₄ = 0 the filament tangent is parallel to the time normal / timesheet propagation direction. The associated winding-origin hypothesis is not included in this established convention.
+3. **BR-006, HsH BEDROCK:** the framework describes particle motion through worldtube topology, inertia as resistance to changing that geometry, and Interbraid/back-tug as an interaction constraint among interlocked worldtube histories. Its unwrapped cumulative braid expression is a framework-internal assignment; it does not by itself identify the relevant configuration space or prove a particular braid-group representation.
+4. **ND-2026-10-18-04, HsH BEDROCK:** the Minkowski construction is the control for faithfully mapping known physics. Build the geometry first, use its output to locate differences, then interpret them. Nested finite-core geometry and internal morphology must not be erased by an unjustified centerline approximation.
+
+These are internal framework sources and premises with the epistemic statuses stated above. They are not external experimental confirmation.
+
+### ≝ STATIC: COMMON GEOMETRIC DATA
+
+Use the following as a **comparison scaffold**, not as a claim that every symbol has already been defined in the original SAT equations:
+
+- M is the 3+1-dimensional Minkowski spacetime used as the exact control.
+- g is its Lorentzian metric and T its chosen future time orientation.
+- τ is the ordinary global Minkowski time function for this control; Σ_t = τ⁻¹(t) is a spacelike three-dimensional readout hypersurface.
+- W_i is the finite-core worldtube associated with object i, understood as its time-extended four-dimensional region in M. Its precise internal topology and boundary conditions still require primary-source recovery.
+- K_i(t) = W_i ∩ Σ_t is the spatial cross-section/readout when the intersection is well-defined and transverse.
+- γ_i is an idealized centerline/worldline where that approximation is warranted; γ_i ∩ Σ_t is an event-like point readout, not the finite core itself.
+- n_t is the time normal to Σ_t. The BR-005 θ₄ convention uses this normal as its reference direction.
+
+**Dimensional safeguard:** a four-dimensional worldtube region intersecting a three-dimensional slice can produce a three-dimensional finite spatial cross-section. An ideal one-dimensional worldline intersecting the same slice generically produces a point. A two-dimensional worldsheet, a three-dimensional timesheet, and a four-dimensional worldtube are not interchangeable names for one object.
+
+For the Minkowski control, a global τ and its slices are available. Do not generalize this preferred foliation to arbitrary curved spacetimes without checking the relevant global-hyperbolicity and foliation conditions. Most importantly, do not yet identify the source's complete “timesheet” with Σ_t: that is precisely one of the outstanding source-level questions.
+
+### ∴ FINDINGS: THREE VIEWS OF THE SAME CANDIDATE HISTORY
+
+The useful synthesis is not that causal order, bordism, and configuration-space topology are the same structure. They are three distinct projections of a proposed worldtube history.
+
+| View | Geometric object | What it preserves | What it does not establish alone |
+|---|---|---|---|
+| Causal / Lorentzian | Events and regions in (M,g,T), with future-directed causal precedence | Time orientation, causal admissibility and, with stronger metric data, light-cone and interval structure | The full topology of finite cores, their exchange classes, or how histories glue as extended objects |
+| Bordism / composition | A spacetime slab between readout slices, with worldtube data embedded through it | Initial/final boundary data, intervening history, and composition by gluing compatible slabs | That every categorical level is a physical dimension, or that a TQFT has been derived |
+| Configuration / motion | The permitted configuration of finite-core cross-sections K_i(t), and paths through that configuration space | Admissible motion, exchange, deformation, linking and homotopy classes for the specified core type | The Lorentzian metric, causal cones, or dynamical law unless separately supplied |
+
+#### A. Causal view
+
+For events p and q in M, write p ≼ q when a future-directed causal curve runs from p to q. A candidate realization map F that preserves temporal order must at least satisfy:
+
+    p ≼ q  implies  F(p) ≼ F(q).
+
+This is an order-preservation condition, not a complete physical map. It does not by itself preserve proper time, Lorentzian intervals, metric scale, or the exact light-cone structure. If the comparison requires full Minkowski fidelity, the relevant metric and time-orientation conditions must be specified in addition to monotonicity.
+
+Thus the working idea “monotonicity as time-axis alignment” has a precise first interpretation: exclude order-reversing realizations. The Minkowski metric imposes additional constraints beyond that first filter.
+
+#### B. Bordism / composition view
+
+For t₀ ≤ t₁, define the Minkowski slab:
+
+    X[t₀,t₁] = τ⁻¹([t₀,t₁]).
+
+Its initial and final readout boundaries are Σ_t₀ and Σ_t₁. The restriction W_i ∩ X[t₀,t₁] is the portion of a worldtube history through that interval. When the outgoing boundary data of one slab match the incoming data of the next, the slabs can be glued along their common slice.
+
+This gives a natural candidate composition rule for worldtube histories:
+
+    H[t₀,t₁] followed by H[t₁,t₂] = H[t₀,t₂],
+
+provided the shared boundary configurations and all required geometric data match.
+
+This is a geometric cobordism/composition picture. It is not yet a claim that the H(s)H theory is a topological quantum field theory. A bordism category would need explicit objects, morphisms, identity histories, admissible gluing, and any proposed higher morphisms. A 2-morphism should represent a specified deformation/equivalence between histories, not merely be added because the notation permits it.
+
+#### C. Configuration-space / motion view
+
+Let Conf_K(Σ_t) denote, provisionally, the space of allowed configurations of the actual finite-core cross-sections in Σ_t, for a specified core type K and explicit non-overlap, orientation, boundary and identity rules. A worldtube history induces a path through these configurations:
+
+    t ↦ (K₁(t), …, K_n(t)).
+
+Loops and homotopies in this space may encode exchange or motion classes. Their group depends on the actual spatial dimension and on the topology of the objects being moved. For point particles, the familiar contrast is S_n for exchanges in three spatial dimensions versus the Artin braid group B_n for exchanges in a plane. For extended finite cores in three-space, the relevant embedding/configuration space must be constructed from the actual core topology; neither point-particle permutations nor planar braids can be assigned by drawing crossings in a projection.
+
+**Important BR-006 distinction:** the framework's unwrapped winding counter
+
+    B(t) - B(t₀) = [Φ(t) - Φ(t₀)] / (2π)
+
+is not automatically an element of a braid group. To make that identification, we still need the object space, permitted paths, equivalence under homotopy, labeling or quotient-by-permutation convention, collision rules, and a map from the geometric history to the resulting motion class. A winding count may be useful data without being the complete topological invariant.
+
+### ⋈ BRANCHES: CANDIDATE TRI-PROJECTION
+
+The proposed common input is a worldtube-history object H_WT: a time-oriented Minkowski region together with its finite-core histories, admissible readout slices, and the boundary data needed for composition.
+
+From that same input, test three maps:
+
+1. **Causal projection:** C(H_WT) records event/region precedence and the metric/time-orientation data retained by the realization.
+2. **Bordism projection:** B(H_WT) records each interval history as a slab with embedded worldtube data and records compatible gluing.
+3. **Configuration projection:** Q(H_WT) records the induced path through the actual finite-core configuration space and its allowed homotopies.
+
+A candidate combined realization is therefore:
+
+    R(H_WT) = (C(H_WT), B(H_WT), Q(H_WT)).
+
+This is currently a **tri-projection schema**, not yet a proven functor into a defined product category. The formal construction must show that identity histories map to identities, concatenation maps to the corresponding compositions, and equivalent/reparameterized histories are treated consistently. It must also identify exactly which data each projection forgets.
+
+### ∴ CONNECTION MULTIPLICITY: A CONSTRAINED MAPPING SPACE
+
+The earlier working term “comparative connection multiplicity” can be made more precise without pretending that a numerical count already exists.
+
+For a specified category C and objects A and B, consider its mapping space Map_C(A,B), rather than only a raw set of arrows. Its connected components represent connection classes under the chosen equivalence; higher homotopies represent deformations or equivalences between those connections.
+
+If a realization map R into the Minkowski/worldtube geometry is defined, the physically admissible subspace can be written provisionally as:
+
+    Map_C^adm(A,B) =
+      { f in Map_C(A,B) | R(f) satisfies the selected causal,
+        time-orientation, Minkowski, slice and finite-core constraints }.
+
+This gives a candidate way to ask whether faithful Minkowski realization reduces the available connection landscape. It does not yet show that it does. The category C, its objects and higher morphisms, the equivalence relation, realization map, constraints, and any measure or invariant over the mapping space all remain to be defined. No uniqueness theorem follows.
+
+### ⁇ QUESTIONS: ADDED DISCRIMINATORS
+
+- **PHY-Q14 / History composition:** What are the exact incoming/outgoing boundary objects for a source-faithful worldtube history? Under what conditions can two histories be glued, and what is the identity history?
+- **PHY-Q15 / Projection fidelity:** Which data are preserved or lost by C, B and Q? Is there an invariant or observable that distinguishes a genuine geometric constraint from three descriptions of the same input data?
+- **PHY-Q16 / Core motion class:** What is the actual topology of K_i(t), what motions are permitted, and what equivalence defines two histories as the same motion class?
+
+### ⚑ PIN UPDATE
+
+- **PHY-P10 (Priority 1):** Define the minimal worldtube-history category H_WT from source-authenticated objects and composable interval histories. Return cue: after the Mersearch source recovery and the precise timesheet/worldtube distinction are established.
+- **PHY-P11 (Priority 1):** Recover the actual spatial finite-core cross-section and its allowed configuration space before assigning a permutation, braid, link-motion or higher-motion group. Return cue: exact core topology and boundary conditions available.
+
+PHY-P7 (causal order), PHY-P8 (finite-core configuration spaces) and PHY-P9 (mapping-space/realization test) remain active and are refined by this bite, not closed.
+
+### ⚙ METHODS AND LIMITS
+
+- Use the Minkowski construction as the known-physics control, in the source-mandated build-first order.
+- Keep causal order, metric preservation, bordism composition, embedded-core topology and dynamics as separate fields in the comparison matrix.
+- Do not identify a 2-morphism with an extra physical dimension, or a configuration-space loop with a spacetime braid, without the required construction.
+- Do not calculate or fit physical parameters in this conceptual pass. Any later quantitative calculation must use an identifiable real physical system and genuine observations under the current H(s)H data-first requirements.
+- The internal-first Mersearch request remains the preferred recovery route for the original source cluster. Its pending state is an unresolved dependency, not a license to describe a search as complete.
+
+### ↩ RETURN
+
+Resume by obtaining the exact source-authenticated definitions of the SAT filament, timesheet and worldtube, then instantiate the three projections using those definitions. First inspect the current Mersearch run and request-specific manifest/receipt. Do not duplicate its request or overwrite lane 2. Once the source objects and map are specified, revisit PHY-Q14–Q16 and test the composition and projection laws.
+
+### § SOURCE POINTERS
+
+- HsH BEDROCK, **ND-2026-11-24-01**: current H(s)H worldtubification and tentative Kerr-ER-Pauli twisted-vacuum-worldtube picture.
+- HsH BEDROCK, **BR-005**: θ₄ filament/time-normal/timesheet convention.
+- HsH BEDROCK, **BR-006**: worldtube interaction, interbraid and framework-internal unwrapped winding relation.
+- HsH BEDROCK, **ND-2026-10-18-04**: Minkowski build-first control, nested worldtubes, finite-core and minimal-pair discipline.
+- This ledger, **Bite 03**, sections 8.2–8.9: causal-order, mapping-space and braid-dimension background literature, with its source states and limitations.
+
+**Bite status:** partial Connect scaffold recorded. The Connect Tick remains open pending primary-source fidelity and explicit construction of the maps. No theory proposition, external claim or physical result is promoted.
