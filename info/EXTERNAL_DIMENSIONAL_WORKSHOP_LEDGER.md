@@ -2394,3 +2394,85 @@ For the working taxonomy, add:
 - Zeleny 1905 102-page *Compensatory Regulation* remains located but unread; do not confuse it with the *Hydroides* paper or the single 1905 double-chela case.
 
 **Next:** obtain the Zeleny 1911 article from BHL volume 22 item 43304 or an alternate full-text source; then return to Zeleny's 1905 102-page *Compensatory Regulation*. The Okada 1933 primary experiment already supplies a well-controlled comparison of the mechanism, so do not wait on those older texts before integrating this case into the biology taxonomy. No Tock closure or cursor advance.
+
+## 65. Schochet's 1973 two-part Hydroides programme: natural life-course reversals and neural involvement — 2026-11-24
+
+The Okada/Zeleny interpretation is now extended by Joy Schochet's two experimental papers on *Hydroides dianthus*. These are especially important because they distinguish (a) naturally occurring reversals across an individual lifespan, (b) local inhibitory effects of the functional operculum, and (c) nervous pathways that may be required to execute or trigger reversal. They qualify Okada's 1933 conclusion that no simple nervous reflex explains the phenomenon.
+
+### A. Part I: opercular ontogeny, distribution and flux
+
+**Primary paper identified; abstract and structured extraction inspected, full article not directly opened in this session:**
+
+Joy Schochet, “Opercular Regulation in the Polychaete *Hydroides dianthus* (Verrill, 1873). I. Opercular Ontogeny, Distribution and Flux,” *The Biological Bulletin* 144 (1973), DOI 10.2307/1540017, open-access BHL part 15261. SciSpace record: https://scispace.com/papers/opercular-regulation-in-the-polychaete-hydroides-dianthus-2dgebrb05g. Full BHL item/part: https://www.biodiversitylibrary.org/part/15261.
+
+The abstract reports:
+- Although a population maintains roughly equal proportions of right- and left-handed animals, individual *H. dianthus* continually modify their side assignment.
+- Two routes can produce reversal. The functional operculum may spontaneously autotomize, allowing the rudimentary partner to enlarge; or the rudimentary operculum may develop independently, temporarily producing two large opercula, after which the older functional organ autotomizes.
+- Left- and right-handed individuals change at equal rates, so the population remains balanced despite flux in individual handedness.
+- An individual can undergo several reversals during a normal lifespan, beginning in larval stages. The rate gradually declines with age.
+
+This materially changes the biological interpretation: reversal is not merely a laboratory response to an experimental wound. It is part of normal ontogenetic/life-history variation in this species. A population-level 50:50 left/right ratio can therefore coexist with repeated individual-level transitions; static cross-sectional handedness frequencies alone do not reveal the organism's history.
+
+The available abstract is the direct source extract in this session. It does not expose the detailed sample sizes, exact observation periods, or statistical methods. Do not supply those from inference.
+
+### B. Part II: control of opercular regulation
+
+**Primary paper identified; abstract and structured article-level extraction inspected, full text not directly opened:**
+
+Joy Schochet, “Opercular Regulation in the Polychaete *Hydroides dianthus* (Verrill, 1873). II. Control of Opercular Regulation,” *Journal of Experimental Zoology* 184(2) (1973), DOI 10.1002/jez.1401840210. SciSpace record: https://scispace.com/papers/opercular-regulation-in-the-polychaete-hydroides-dianthus-4ktlcj49en. Publisher DOI page: https://onlinelibrary.wiley.com/doi/10.1002/jez.1401840210. This paper is not the same as the *Biological Bulletin* Part I.
+
+The abstract reports the following controlled experiments:
+- Amputating the adult functional operculum below the secondary cup causes the opposite rudimentary organ to become functional, while a new rudiment regenerates from the stump of the former functional organ.
+- Reversal is proportional to injury severity, with reported order: amputation > crushing > ligation > puncture.
+- Removing the rudimentary operculum alone does not affect the functional organ, but in some cases the regenerating rudiment may differentiate into a second functional operculum.
+- Removing distal parts of both opercula can produce reversal. Removing both at their bases leads to a functional operculum forming on the side opposite its original position.
+- Removing the branchial apparatus together with both opercula tends to result in regeneration on the original side.
+- **Neural operations:** decerebration or bisection of the supraoesophageal ganglion does not prevent normal reversal. Severing the external opercular nerves prevents reversal, while sectioning the internal opercular nerve produces reversal in about one-third of the animals.
+- Schochet concludes that the opercular regulatory system discriminates among degrees and types of injury, and that the branchiae may participate in opercular relationships.
+
+The extracted structured summary gives a potentially discordant formulation of the nerve experiments in one secondary field (it suggests all animals in a nervous-system interruption group reversed within a week); because the original article body is not yet opened and that is not transparently reconcilable with the abstract's external-vs-internal nerve result, **do not use the all-animals-within-a-week statement**. Retain the abstract's clear summary only and mark detailed sample sizes/timing as unverified.
+
+### C. Reconciling Okada 1933 and Schochet 1973
+
+The findings should not be collapsed into “neural” versus “non-neural”:
+- Okada (1933) found that ordinary superficial injury, a simple needle puncture, or removal of structures outside the blood-supplied internal core did not induce reversal. Deep injury to the functional operculum causing internal disruption and blood leakage usually did; he could not demonstrate a transmissible substance by ligation/injection experiments. He concluded that injury destroys an inhibitory property local to the functional operculum and rejected a simple reflex model.
+- Schochet (1973 II) reports that the cerebral/supraoesophageal ganglion is not required, but external opercular nerves are necessary for reversal in her operations, while internal-nerve section yields a partial response. This suggests nervous pathways may be required for the operation or execution of the regulatory process without the process being a simple reflex generated by the brain.
+- These results are not necessarily contradictory. “Nervous involvement” can mean a local peripheral pathway, maintenance of tissue state, trophic support, effector coordination, or a sensory reflex. The experiments described do not establish which role applies.
+- Injury severity matters in both Okada and Schochet. The tissue's internal state, the particular pathway interrupted and whether it remains able to regenerate all condition the outcome.
+
+### D. Updated relational model for the Hydroides opercula
+
+A cautious integrated formulation is:
+1. Two corresponding organs develop with different states: one functional, the other rudimentary.
+2. The functional organ's intact internal organization participates in suppressing or restraining the opposite rudiment.
+3. The effect depends on the depth and kind of injury; superficial damage is not equivalent to internal disruption.
+4. Peripheral neural routes influence the ability to reverse, but the supraoesophageal ganglion is not required in the reported Schochet experiments.
+5. Developmental timing and relative growth state determine whether reversal, double functionality or other outcomes occur.
+6. In ordinary life, the animal may reverse repeatedly; population handedness proportions can remain balanced even as individual animals change.
+
+This is more layered than a simple “one side inhibits the other.” It points to a distributed local control architecture involving organ integrity, tissue state, peripheral nerve pathways, relative growth and developmental history. But the precise molecular mechanism remains unresolved.
+
+### E. Cross-comparison with Alpheus and relevance to the 4D histological question
+
+Hydroides and *Alpheus* share a relational form but not an established identical mechanism:
+- Both involve paired structures with unequal differentiation.
+- The state of one member of the pair affects development of the other.
+- Injury to the dominant structure can transfer functional dominance to the previously subordinate structure.
+- The relationship can be disrupted to produce two functional structures.
+
+Differences:
+- *Alpheus* reversal is closely tied to a molt-dependent crustacean claw transformation and has strong modern evidence for lateral inhibition, neural remodeling and muscle-fiber re-specification.
+- *Hydroides* opercular asymmetry can reverse spontaneously in the normal life course, apparently several times, and Schochet's experimental work implicates peripheral nerve pathways while not requiring the supraoesophageal ganglion.
+- The *Hydroides* organs are modified gill filaments with a vascular core, epithelial and connective tissue components, a proximal shaft and distal cup structures.
+
+For the workshop's broader model, this is valuable as a documented **inter-organ relation with reversibility and normal temporal flux**. It shows that the functionally dominant side is a dynamic state, not necessarily a fixed lifetime identity. It remains an ordinary 3D developmental/physiological process; it does not imply extra-spatial continuity or inter-individual structural fusion.
+
+### F. Source status and next operation
+
+- Zeleny 1901/1902 *H. dianthus* paper: bibliographically secured; original body still not directly read.
+- Zeleny 1911 *H. dianthus* paper: BHL volume 22 item 43304 located; Okada 1933 summarizes relevant experiments; full Zeleny article not directly read.
+- Okada 1933 *H. norvegica* study: full text OCR-inspected in section 64, not page-image verified.
+- Schochet 1973 Part I: abstract/structured extraction only; full article not directly opened. BHL part 15261 identifies open-access scan.
+- Schochet 1973 Part II: abstract/structured extraction only; full article not directly opened; detailed nerve sample counts and methods not verified.
+
+**Next:** retrieve Schochet Part I via BHL item 15261 and inspect its figures/observations on opercular ontogeny and lifetime reversal; retrieve Part II via Wiley/author repository and verify the nerve-section sample counts and exact sequence; then revisit the original Zeleny 1905 *Compensatory Regulation* for the wider paired-organ programme. No Tock completion or cursor advance.
