@@ -2754,3 +2754,30 @@ Rabes supplies the missing tissue-level underpinning for Morgan's description of
 This is unusually relevant to the larger histological proposal because it experimentally demonstrates that anatomical and physiological integration has layers, and that a body can contain components with unequal degrees of integration. But the operations are deliberate surgical grafts in one conventional earthworm composite. They do not show natural extra-spatial continuity among organisms or genealogical branching as a literal anatomical structure. They do give us concrete candidate criteria to test rather than relying on analogy.
 
 **Status:** Rabes's 1901 Marburg report, printed pp. 105–115, inspected in searchable OCR; original full article in *Archiv für Entwicklungsmechanik* 13 (1901), 239–352, still not directly inspected. Page images not verified. No cursor advance.
+
+
+## 63. Rabes full monograph retrieval audit — expanded 1901 article identified, scan access not yet achieved — 2026-11-24
+
+A bounded retrieval check was made for Otto Rabes's expanded paper, *Transplantationsversuche an Lumbriciden: Histologie und Physiologie der Transplantationen*, *Archiv für Entwicklungsmechanik der Organismen* 13 (1901), 239–352.
+
+### Verified bibliographic versions
+
+The Index Catalogue of Medical and Veterinary Zoology lists four versions/records:
+- 1901 dissertation, 27 pages, Marburg.
+- Preliminary article in *Biologisches Centralblatt* 21(20), 15 October 1901, pp. 633–650.
+- Expanded article in *Archiv für Entwicklungsmechanik der Organismen* 13 (1–2), 12 November 1901, pp. 239–352, seven text figures and plates 3–11 (figures 1–77).
+- Rabes's presentation summary in *Sitzungsberichte der Gesellschaft zur Beförderung der gesammten Naturwissenschaften zu Marburg* (8), 27 July 1901, pp. 105–115, read 10 July.
+
+The 1901 *Zoologischer Jahresbericht* independently lists the expanded *Archiv* article at volume 13, pp. 239–352, seven figures and plates 3–11, as well as the preliminary *Biologisches Centralblatt* paper. A 1903 curriculum vitae/professional record likewise lists the dissertation, interim article and *Archiv* paper as distinct publications. This confirms that the short 11-page Marburg report read in section 62 is not identical to the full article.
+
+### Access results
+
+- Google Play/Books record identifies *Archiv für Entwicklungsmechanik der Organismen*, volume 13, 1901–02, as a 764-page full-view volume. The host's page was indexed but returned a cache miss when opened; page-level text and images for Rabes were not exposed in this session.
+- The Internet Archive/BHL routes tried earlier did not yield the article body. The accessible *Biologisches Centralblatt* volume scan has a contents/index entry for Rabes at p. 633, but the exposed scan-text does not include the article body at those pages; do not treat the index entry as access to the paper.
+- The screenshot service was also tried for the Marburg short report (printed pp. 105–115; estimated PDF page index 119) and returned a cache miss. Thus section 62 is accurately marked as OCR/text inspected and not page-image verified.
+
+### Current source-use rule
+
+For now, cite the **Marburg short report** as the directly inspected primary source for tissue, gut, blood-vessel and nerve-cord union, but keep the 352-page *Archiv* article as a higher-resolution primary-source target, not as a text already read. The *Biologisches Centralblatt* 633–650 paper is also separately identified and remains unread. Do not conflate the four versions or assume the expanded article is merely a verbatim reprint of the short report.
+
+**Sources used in this retrieval audit:** Index Catalogue author entry for Rabes (1901 a–d); *Zoologischer Jahresbericht* (1901) author index; Google Books/Google Play volume 13 record; *Sitzungsberichte* PDF record. No new experimental claims are added here. No cursor advance.
