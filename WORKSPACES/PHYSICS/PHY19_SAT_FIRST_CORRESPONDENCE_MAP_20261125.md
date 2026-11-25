@@ -2,7 +2,7 @@
 
 **Lane:** PHYS / ⟐ comparative-history  
 **Bite:** 19 — SAT-first correspondence overview  
-**State:** PARTIAL / FIRST-PASS CROSSWALK RECORDED  
+**State:** PARTIAL / CONNECT, ℬ, ◈, ∂ AND Δ RECORDED; AWAITING MERSEARCH  
 **Purpose:** Begin from SAT's own foundational geometry, then compare it with selected higher mathematics, Hinton's dimensional thought, and contemporary spacetime/field geometry. This is an orientation map, not a proof of equivalence or physical validation.
 
 ## 1. Source hierarchy and reading status
@@ -350,9 +350,15 @@ The projection question is now decomposed into slice incidence, observable reado
 - SAT archive, DEV CONVERSATION/FUNDAMENTAL INTUITIONS.txt — blob 0318d803fc4bb948d781d1aa0d9257dc2bcead77 — FULL.
 - SAT archive, THE FUNDAMENTAL INTUITIONS — EXTENDED.pdf — blob ba0af013da1681a070b4947def6499cedb403162; extracted text blob 9b94093053f28be8bf64ee227d3382d2296f63ea — FULL.
 - SAT archive, SAT UNODROP.txt — blob 53437e7d734b8e77894a7465a8cd37cc8ac8462a — LOCATED/TRIAGED; mixed AI test artifact.
+- SAT archive, RMS Spacetime Filaments.txt — blob 0323682e7a49278b5a76d0c6a5a7787a13eb17d6 — FULL; 2024 toy-theory description and composite hierarchy.
+- SAT archive, SATOBLOC/SAT4D_LIVE_DRAFT.txt — blob 2a79fe25018cce7e99a2c33786d88b0551db6ae7 — PARTIAL targeted read; mixed June 2025 development draft with static-block and alternate-mode sections.
+- SAT archive, SAT 4D Theory Work/SAT4D_4.txt — blob efc88f4523b2fd616e64898737c2aa45e5f39b9a — FULL; July 2025 glossary.
+- SAT archive, SAT 4D Theory Work/SAT4D_6.txt — blob 167136310cdf33ca8f986f33634692314c1a0946 — FULL; July 2025 official directives.
+- HSH_RESOURCES, HISTORICAL/HINTON — 4TH DIMENSION.txt — blob ece2e416bbc417d79a98b9ae90ec385361d85ae3 — source anchor for the 1906 moving-film passage and spatial-dimension comparison.
+- HSH_RESOURCES, WORKSPACES/PHYSICS/PHY01_BRAID_DIMENSIONAL_UPLIFT_20261125.md — blob c1f8e1520cc271a8d90e29f60bc4233ed8fd77de — FULL; conditional 2D/3D configuration-space discriminator.
 - SAT archive, ONE FILE SAT 2.pdf — blob 6853f6666fc2c9f4b2468800ffe3314773cbbf94; extracted text blob a8767b229d757473e5cb3f8501d88742b14bfdad — 19-page mixed test/evaluation artifact.
 - SAT archive, SAT XYZ/STANDALONE CODES.txt — blob 26d66cabee4178ec8f8e2ed8214a3074688a90dc — LOCATED/TRIAGED; long transcript/prompt, not a clean executable source.
-- HSH_RESOURCES, NLAB_NCATEGORY_CAFE_BRAID_RECONNAISSANCE_20261125.md — blob 0753776601121c761c8105c09268a65d3bc0cc86 — existing first-pass map.
+- HSH_RESOURCES, NLAB_NCATEGORY_CAFE_BRAID_RECONNAISSANCE_20261125.md — blob 0753776601121c761c8105c09268a65d3bc0cc86 — relevant sections inspected; existing first-pass map.
 - HSH_RESOURCES, BRAID_AS_CROSS_DISCIPLINARY_GEOMETRIC_LENS_20261125.md — blob d44aa213b5cb6cc709c0ea5c262366ef2009c06a.
 - HSH_RESOURCES, PHY01_BRAID_DIMENSIONAL_UPLIFT_20261125.md — blob c1f8e1520cc271a8d90e29f60bc4233ed8fd77de.
 - HSH_RESOURCES, BIOLOGICAL_CHIRALITY_CROSSWALK.md — blob c4418273fb329e467890163ecbc1020e6647eabd.
