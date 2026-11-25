@@ -1,5 +1,7 @@
 # External Dimensional Literature Workshop — Operating Protocol
 
+> **Small but significant bites. Don't choke, don't nibble.**
+
 **Created:** 2026-11-24  
 **Status:** Active workshop protocol, version 0.1  
 **Scope:** This workshop's research, reading, visualization, cross-disciplinary exploration, and durable notes.  
