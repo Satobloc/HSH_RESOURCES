@@ -64,11 +64,11 @@ The signature is a live cursor, not a decorative summary and not a substitute fo
 
 The Credenza is the working cabinet for Tocks: it routes active work, preserves context and re-entry conditions, and keeps useful possibilities visible without forcing them into the current bite. These registers are descriptive labels, not new Unicode assignments. This structure is provisional and should evolve through use.
 
-### NOW
+### ▶ NOW
 
 **PHY-01 / Tick at `⌕`:** establish the evidence map of contemporary foundational physics. First source bite: inspect the 2026 higher-derivative/QFT proposal associated with Neil Turok and Sam Bateman, and one current geometric/topological cosmology example. Separate the paper's own claims from commentary and from claims made by the repository's generated paradigm dossier.
 
-### NEXT
+### ▷ NEXT
 
 1. Inspect the current Turok/Bateman higher-derivative QFT proposal and its mathematical mechanism, assumptions, claimed unitarity/causality result, and limitations.
 2. Inspect the 2026 Klein-bottle cosmology / non-orientable compactification papers; reconstruct the geometry and distinguish a model construction from evidence that our universe has that topology.
@@ -76,11 +76,11 @@ The Credenza is the working cabinet for Tocks: it routes active work, preserves 
 4. Revisit the Hinton and historical dimensional source family, then trace the actual mathematical transitions toward topology, homotopy, categorical and higher-categorical structures.
 5. Build the SAT/H(s)H intersection matrix only after the relevant physics constructions have been read and geometrized.
 
-### RETURN
+### ↩ RETURN
 
 Return to this ledger and the live signature after each substantive bite. Check this Tock's source/geometry cursor before opening a new branch. Reorientation is appropriate after 3–5 substantive bites or sooner if the evidence materially changes the direction.
 
-### STATIC
+### ≝ STATIC
 
 - **Interpretive convention:** read mathematical uses of “higher” through the agreed higher-dimensional lens; in discussion, write “higher-dimensional” out. Then describe the construction's actual dimensions and distinguish physical spacetime dimensions from internal categorical/homotopical degrees.
 - **Geometry first:** explain what the object is, its ambient and intrinsic dimensions, how it is embedded/projected/sliced/connected, what transformations and compositions are allowed, and what is physically specified.
@@ -90,7 +90,7 @@ Return to this ledger and the live signature after each substantive bite. Check 
 - **Dimensional discipline:** a higher morphism is not automatically an extra physical spatial dimension. Explain the relevant geometric or categorical dimension rather than conflating them.
 - **Scope discipline:** the Tock is about the physics paradigm question and its intersections. No automatic expansion into unrelated biology, spiritualism, or general AI topics.
 
-### PIN
+### ⚑ PIN
 
 Pins are mutable possibilities. Each gets an identifier, rank, capsule, state, return condition, and source pointer. They may be reordered, expanded, combined, parked, or retired.
 
@@ -103,7 +103,7 @@ Pins are mutable possibilities. Each gets an identifier, rank, capsule, state, r
 | PHY-P5 | 5 | Hinton, Victorian hyperspace, and later geometric/topological/category-theoretic developments | INTERNAL SOURCE FAMILY LOCATED; trace actual lineage |
 | PHY-P6 | 6 | SAT/H(s)H correspondence and potential discriminating tests | DEFER detailed mapping until primary-source geometry inspected |
 
-### QUESTIONS
+### ⁇ QUESTIONS
 
 - Q1. What exactly is changing in theoretical physics: objects, ontology, mathematical language, quantization rules, explanatory standards, or experiment?
 - Q2. Is the apparent shift one coherent programme or several partially related developments?
@@ -114,7 +114,7 @@ Pins are mutable possibilities. Each gets an identifier, rank, capsule, state, r
 - Q7. Which structures match SAT/H(s)H at the level of actual geometry, and which only share vocabulary or broad motifs?
 - Q8. What would discriminate among competing descriptions or support a genuine physical correspondence?
 
-### SOURCES
+### § SOURCES
 
 **Internal source leads; not all are fully inspected:**
 
@@ -138,7 +138,7 @@ Pins are mutable possibilities. Each gets an identifier, rank, capsule, state, r
 
 All external items above are **LOCATED leads** in the current research state, not necessarily fully read or independently verified in this Tock. Confirm exact bibliographic metadata, paper versions, and claim-level relevance before relying on them.
 
-### FINDINGS
+### ∴ FINDINGS
 
 **Initial orientation only; not a research verdict.**
 
@@ -147,7 +147,7 @@ All external items above are **LOCATED leads** in the current research state, no
 - F2. Higher category theory has established mathematical-physics intersections, but that does not imply a general physics consensus or a direct genealogical line from Hinton.
 - F3. Hinton's primary-source family is present in the archive; historical reading and exact source anchors remain necessary.
 
-### METHODS
+### ⚙ METHODS
 
 - Use Mysearch when and only when its production validation status supports it. The code ledger currently records Mysearch as scaffold-only / not validated.
 - Use the documented stable Mersearch 1.0 route as the active bespoke archive-search route; follow `HsH/WORKSPACES/COMMON/MERSEARCH_WORKER_START_HERE.md`. Generic GitHub code search is fallback only when the bespoke route genuinely cannot be executed; record the exact blocker and label the result as fallback.
@@ -157,7 +157,7 @@ All external items above are **LOCATED leads** in the current research state, no
 - Maintain separate columns for source statement, mathematical/physical interpretation, SAT/H(s)H correspondence, mismatch, and test.
 - Use reasonable-sized bites, normally 2–5 primary sources or one substantial source plus the context essential to interpret it. Do not survey an entire field in one turn.
 
-### BRANCHES
+### ⋈ BRANCHES
 
 These are three connected evidence streams inside one Tock, not claims that the objects or histories are identical.
 
@@ -167,12 +167,12 @@ These are three connected evidence streams inside one Tock, not claims that the 
 
 The SAT/H(s)H comparison is a cross-cutting interpretive lens across A/B/C, not a fourth silo.
 
-### PARKED
+### ⏸ PARKED
 
 - **PARK-01:** dedicated spiritualist / psychical research / Theosophical / Anthroposophical programme. Preserve the existing lowercase `s` assignment and defer this systematic programme unless it becomes directly necessary to the present Tock. Contextual historical references do not satisfy the dedicated programme.
 - **PARK-02:** detailed biological applications, unless a physics or category-theory source naturally creates a substantive biological bridge.
 
-### RETIRED
+### ⊘ RETIRED
 
 - This thread's former clone-traffic focus is handed off by user direction. The shared HsH clone-footprint investigation remains active under its existing Tern coordination and is not cancelled or reassigned by this record.
 - The earlier six-stage SEED/YIELD/AWAIT/ACCUMULATE/RENDEZVOUS/REJOIN summary is not the Tock–Tick ticker. Those are coordination ideas, not replacements for the repository-defined Tock hierarchy and Unicode Tick grammar.
