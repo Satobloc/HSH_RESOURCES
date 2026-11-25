@@ -3294,13 +3294,13 @@ The current BIO subpath is ordered and lane-scoped:
 **Lane:** BIO / HSH_RESOURCES comparative-history lane (`⟐`)  
 **Note:** [BIO R.1 — One Developing Organism as a Four-Dimensional Worldtube](../WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R1_ORGANISM_AS_WORLDTUBE.md)
 
-**Bite:** `r / R.1` — COMPLETE. The larger `r) mapping remains active.
+**Bite:** `r / R.1` — COMPLETE. The larger `r` mapping remains active.
 
 **Question:** What does it mean to represent one developing organism as a four-dimensional physical structure whose familiar anatomy appears as successive three-dimensional sections?
 
 **Result:** Standard spacetime/continuum mechanics already represents an extended body by a four-dimensional worldtube: material-point worldlines form the tube, and the intersection with each spatial slice gives the body's configuration at that time (Jadoo 2023, §3.2; Weatherall 2022, “Classical Spacetime Structure”). The basic worldtube/slice architecture is therefore not a new SAT/H(s)H mathematical construction.
 
-Under the stipulated `ᛟ) lens, the organism's full existence is read literally as a physically four-dimensionally extended structure, with successive three-dimensional anatomies as its sections. A compact representation is `W_org ⊂ M_(3+1)`, with `O_t = W_org ∩ Σ_t`.
+Under the stipulated `ᛟ` lens, the organism's full existence is read literally as a physically four-dimensionally extended structure, with successive three-dimensional anatomies as its sections. A compact representation is `W_org ⊂ M_(3+1)`, with `O_t = W_org ∩ Σ_t`.
 
 **Biological qualification:** a standard material-body model may use a fixed reference space of material points. A living organism grows, exchanges matter, turns over cells, divides cells, loses cells, differentiates lineages and reorganizes tissues. Therefore, the biological application must distinguish the organism-level worldtube from the changing histories of constituent cells/material and from lineage, boundary-crossing and organizational relations. The bare geometric worldtube does not by itself settle organismal identity, cell identity, developmental mechanism or the criterion that maintains organism-level organization.
 
