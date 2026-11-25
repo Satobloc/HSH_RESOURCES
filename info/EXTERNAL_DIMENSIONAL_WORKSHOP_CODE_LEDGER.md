@@ -621,7 +621,7 @@ Local status:
 - `k`: the larger category-theory/mathematics programme.
 - `s`: deferred dedicated spiritualist-reading programme after the category-theory/mathematics exploration.
 
-**Inner cursor:** `r / R.1` and `R.2` are complete; `R.3` is next. Completing R.2 does not complete `r` or move the outer `@` to `m`.
+**Inner cursor:** `r / R.1` through `R.4` are complete; reorientation/review of the remaining `r` scope is next. No R.5 is authorized. Completing R.4 does not complete `r` or move the outer `@` to `m`.
 
 This BIO ticker is a lane-local detail cursor inside the wider shared programme. It does not replace or advance the shared master ticker or any PHYS/GIT/GIT_TRAFFIC cursor.
 
