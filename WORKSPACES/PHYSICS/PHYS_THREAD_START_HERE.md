@@ -33,7 +33,7 @@ Do not collapse the candidates into one “everything is braids/entanglement” 
 
 **PHYS continuity:** resume this lane's current workplan from the live PHYS ledger. The ticker is an editable working plan, not a fixed or shared signature. Preserve its current position when resuming, but revise it whenever the work warrants; record the revised plan in this entrypoint and ledger. BIO and GIT have independent workplans and cursors. The current PHYS ticker is:
 
-`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
+`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳@ℬ◈∂Δ…▣✓ρ⇢`
 
 The ticker is the compact route through the current PHYS plan. Its symbols are resolved through the Code Ledger and the bite/branch records below. Re-fetch the live PHYS ledger and Code Ledger before continuing; if the plan no longer fits, revise it rather than preserving it for its own sake.
 
@@ -75,9 +75,9 @@ Check request-lane occupancy before writing. Never overwrite, duplicate or retri
 
 **Inherited complete pilot ticker (resume exactly):**
 
-`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
+`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖⤳@ℬ◈∂Δ…▣✓ρ⇢`
 
-The next uncompleted operation is currently `⤳` (Connect). Bite 19 remains the current PHYS research package and its SAT-first correspondence overview remains the work context. This ticker is the PHYS workplan at this moment; update it as that work develops.
+The first-pass Connect crosswalk is recorded in [PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md](PHY19_SAT_FIRST_CORRESPONDENCE_MAP_20261125.md). The next operation is `ℬ`: develop the cross-disciplinary braid/formalization bridge, using the existing nLab/n-Category Café reconnaissance and dimensional-uplift discriminator. Keep physical braid assignment gated by `◈` and source-defined core geometry. Bite 19 remains the current PHYS work package; this ticker is the PHYS workplan at this moment and remains editable.
 
 **Last complete result:** Bite 15 established from the inspected Joyal–Street 1986 and 1991 primary texts, and Kohno 1987, (a) the configuration-space construction of the braid category, (b) its free braided strict monoidal universal property, (c) a portable diagrammatic tensor calculus across physics/computation/networks, and (d) an analytic configuration-space → monodromy → Yang–Baxter/quantum-group bridge. This is an initial bridge, not a complete genealogy.
 
@@ -95,4 +95,4 @@ The next uncompleted operation is currently `⤳` (Connect). Bite 19 remains the
 6. **Open physical geometry prerequisite:** return to the master ledger's ◈ questions and source recovery for filament, timesheet family, inter-leaf transport, finite core, ambient metric/signature and admissible motion.
 7. **Other research lanes:** biology → BIO lane and its own local ticker; repository/tooling → GIT lane and its own local ticker. Their lane-local workplans and cursors are independent of PHYS.
 
-**Cold-start instruction:** begin with this page; read the current PHYS ticker and live state in the master PHYS ledger; check the Credenza NOW/RETURN and any active Mersearch dependency; then resume at the recorded `@` position. Reassess and revise the workplan if the evidence or priorities warrant it. Expand into linked notes only when the current operation requires them. Record and verify before moving the cursor.
+**Cold-start instruction:** begin with this page; read the current PHYS ticker and live state in the master PHYS ledger; check the Credenza NOW/RETURN and any active Mersearch dependency; then resume at the recorded `@` position. The current Bite 19 crosswalk is linked above; the next operation is ℬ. Reassess and revise the workplan if the evidence or priorities warrant it. Expand into linked notes only when the current operation requires them. Record and verify before moving the cursor.
