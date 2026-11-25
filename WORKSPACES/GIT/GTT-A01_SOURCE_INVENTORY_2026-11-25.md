@@ -141,3 +141,33 @@ The previous audit specifically called for:
 6. No workflow, issue, branch, PR, worker instruction, scheduler setting, or production site state was changed by this inventory.
 
 **Next substantive bite:** inspect the SAT `AI/` welcome entry and the live HsH automation controls/prior audit, then classify the 63 workflow files and map only the relevant execution evidence. Keep documentation/configuration distinct from actual runs and actual Traffic attribution.
+
+
+## Additional entry-point verification — SAT archive
+
+The SAT archive README's instruction to start with an `AI/` folder does not match the live tree. The recursive tree contains no root `AI/` directory. The actual AI/tooling welcome surface is `.[⚙️_AI_FILES]/`, and the direct entry sequence is:
+
+1. `README.md`
+2. `.[⚙️_AI_FILES]/🪧_WAYFINDING.txt`
+3. `.[⚙️_AI_FILES]/ORIENTATION.txt`
+4. `.[⚙️_AI_FILES]/INSTITUTIONAL_MAP.txt`
+5. `.[⚙️_AI_FILES]/RESOURCES.txt`
+
+Directly read these five surfaces, along with `GUESTBOOK.txt`, and the WORKFLOWS, TOOLS and LOGS wayfinding files. The institutional map distinguishes SAT artifacts, artifact catalogs and archive machinery; it explicitly says `_MIGRATION_HOLD/` contains older/relocated automation and must not be treated as current without confirmation. The Archive Admin request-file workflow is documented as the default for routine archive operations; manual `workflow_dispatch` is fallback/debug. This is documentation evidence only; actual current workflow triggers and execution are for the mechanism-mapping stage.
+
+**Documentation defect:** the root README's AI welcome pointer is stale or misnamed relative to the current tree. Preserve this as a finding for later recommendation, not an authorization to edit the README during inventory.
+
+**Source identities:**
+- Root `..findex.txt`: blob `0355c349587a5e3ffffe46117b2157b29a6e384a`, generated 2026-11-23T21:32:19.564781Z.
+- `.[⚙️_AI_FILES]/..findex.txt`: blob `1c456c66f159feca61eb4b374bd45860745c4c1e`, indexed 2026-06-08, depth 2 / max 500 entries; historical structural guide, not a current complete inventory.
+- `.[⚙️_AI_FILES]/ORIENTATION.txt`: blob `6a8dd474aa7c88e77fe8ea36caafda1803f5e6de`.
+- `.[⚙️_AI_FILES]/🪧_WAYFINDING.txt`: blob `be4256c244e9eb470272d0e8d1e4a0444ee63ebc`.
+- `.[⚙️_AI_FILES]/INSTITUTIONAL_MAP.txt`: blob `01f9ecef145d9845f1ffbec41f1c94b62be867ad`.
+- `.[⚙️_AI_FILES]/RESOURCES.txt`: blob `dedb4ce25f2ca2ff85caf2f0975bae6a751e5a4c`.
+- `.[⚙️_AI_FILES]/GUESTBOOK.txt`: blob `599ef7b370c7cdde47ee2f74fbc119c44660d115`.
+
+## A-stage disposition
+
+**GTT-A01.A COMPLETE for the bounded main-branch tree inventory.** The three full recursive trees were read without truncation, the 63 workflow-directory files and priority orientation/control/log surfaces were inventoried, and the prior October 30 HsH audit was recovered to prevent duplication. The inventory is not a full-text review and does not claim that every candidate is active or authoritative.
+
+**Next:** GTT-A01.B maps workflow configuration and worker recommendations to the actual repository targets and operation types. Inspect the 63 workflow files in bounded batches, prioritizing cross-repository reads, checkout/materialization, write permissions, bot commits, issue/PR creation, request-file triggers, schedules, recursion guards and concurrency. Existing Oct 30 findings should be treated as provisional leads until current YAML and execution evidence are read.
