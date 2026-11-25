@@ -3375,3 +3375,24 @@ The anchor stores, in compact form:
 **Boundaries:** no H(s)H BEDROCK, main theory, worker policy, shared master ticker, PHYS/GIT cursor, or scheduler state changed.
 
 **Next:** R.3 — cell division and lineage branching as a bounded worldtube/identity-bookkeeping problem. Distinguish a parent cell's material history from daughter-cell histories and the lineage relation between them; do not turn the bite into a general theory of organismal individuation.
+
+## 83. BIO lane — R.3: cell division and lineage branching — 2026-11-25
+
+**Lane:** BIO / HSH_RESOURCES comparative-history lane (\`⟐\`)  
+**Note:** [BIO R.3 — Cell Division and Lineage as Branching Cellular Histories](../WORKSPACES/EXTERNAL_DIMENSIONAL_WORKSHOP/READING_NOTES/2026-11-25_BIO_R3_CELL_DIVISION_LINEAGE_WORLDTUBE.md)
+
+**Bite:** \`r / R.3\` — COMPLETE. The larger \`r\` mapping remains active; outer ticker not advanced.
+
+**Question:** How should cell division and lineage branching be represented inside an organismal worldtube without conflating material continuity, cellular identity and genealogical descent?
+
+**Result:** A parent cell's history as one organized cellular unit terminates through division; two daughter-cell histories follow, linked to the parent by a division/ancestry relation. This is not one unbranched parent-cell worldline that simply forks. Constituent material histories are apportioned or replicated according to component-specific biological processes and do not all branch into both daughters.
+
+**Compact map:** \`W_P → (W_D1, W_D2)\` via division transition \`𝒟\`, with all three histories nested inside \`W_org\`. The arrow records division/ancestry, not literal branching of every material trajectory. Cell-state similarity and genealogical lineage are distinct.
+
+**Evidence:** NCBI *Molecular Biology of the Cell*, “Cytokinesis,” sections on asymmetric division and organelle distribution; Baron & van Oudenaarden (2019), DOI 10.1038/s41580-019-0186-3; Wagner & Klein (2020), DOI 10.1038/s41576-020-0223-2; Abyzov & Vaccarino (2020), DOI 10.1146/annurev-genom-083118-015241. Access levels and source limitations are recorded in the note.
+
+**Interpretive boundary:** The ᛟ reading makes nested histories and the distinction between cellular organization and constituent material trajectories explicit. It adds no biological mechanism or demonstrated new prediction. Exact parent-boundary/cytokinetic geometry and component-level partition maps remain unconstructed; fusion, syncytia and other non-binary cases are outside this bite.
+
+**Next:** Reorient within the remaining \`r\` programme before selecting another sub-bite. R.3 completion alone does not authorize an R.4 or outer-ticker advance.
+
+**Lane boundary:** BIO comparative-history only. No H(s)H BEDROCK, main theory, worker policy, or PHYS/GIT cursor change.
