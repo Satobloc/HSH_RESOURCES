@@ -527,7 +527,7 @@ These codes identify the five ordered bites inside the active contemporary biolo
 
 ### Ordered subpath
 
-`BIO:βᛟvn@χrmρk⊕[mbxᛟd]s`
+`BIO:⟐βᛟvnχ@⊕[rmρk:ᛟd]⊕[ᛟd:mbx]s`
 
 - `β` is the existing contemporary biological reconstruction pass.
 - `ᛟ` is the existing SAT/H(s)H interpretive lens applied throughout the subpath.
@@ -604,21 +604,24 @@ The specific `v`, `n`, `χ` and `r` assignments are listed in the BIO-only subpa
 
 ### BIO lane full local path and current position
 
-The current BIO ticker is:
+The current BIO ticker is the user's exact, current grouping:
 
-`BIO:βᛟvn@χrmρk⊕[mbxᛟd]s`
+`BIO:⟐βᛟvnχ@⊕[rmρk:ᛟd]⊕[ᛟd:mbx]s`
 
-Interpretation:
+Preserve this string exactly, including the bracketed groups and colon. Do not flatten it, reorder its contents, or normalize it back to an earlier BIO ticker. The grouping is the active user-authored workflow expression; retain its full structure as the continuity anchor. Where a future edit needs a more detailed interpretation of an internal grouping, use the user's explicit definitions and the live code ledger rather than inventing semantics.
+
+Local status:
+- `⟐`: HSH_RESOURCES comparative-history lane.
 - `βᛟ`: contemporary biological reconstruction under the stipulated SAT/H(s)H lens.
-- `v`: biological variable map, complete.
-- `n`: mouse nodal left–right determination, complete.
-- `@`: current position, immediately before `χ`.
-- `χ`: cellular chirality and actomyosin.
-- `r`: SAT/H(s)H biological mapping.
-- `m`: selective application of higher mathematics to the biological work.
-- `ρ`: reorientation/review after the biological subpath.
-- `k⊕[mbxᛟd]`: the larger category-theory/mathematics programme with biology retained and cross-disciplinary connections emerging naturally.
-- `s`: the deferred dedicated spiritualist-reading programme after the category-theory/mathematics exploration.
+- `v`, `n`, and `χ`: completed BIO bites.
+- `@`: current outer position, before the active grouped continuation.
+- `r`: SAT/H(s)H biological mapping; active.
+- `m`: selective application of higher mathematics to concrete biological structures.
+- `ρ`: reorientation/review after the integrated work.
+- `k`: the larger category-theory/mathematics programme.
+- `s`: deferred dedicated spiritualist-reading programme after the category-theory/mathematics exploration.
+
+**Inner cursor:** `r / R.1` is complete; `R.2` is next. Completing R.1 does not complete `r) or move the outer `@` to `m).
 
 This BIO ticker is a lane-local detail cursor inside the wider shared programme. It does not replace or advance the shared master ticker or any PHYS/GIT/GIT_TRAFFIC cursor.
 
