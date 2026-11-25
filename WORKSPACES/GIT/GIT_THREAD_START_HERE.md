@@ -4,11 +4,7 @@
 
 **Purpose:** cold-start continuity anchor for the GIT conversation. Read this file first, then follow the pointers only as far as the current task requires. It is a routing capsule, not a duplicate evidence archive.
 
-**Mandatory cross-conversation inheritance:** the complete shared Tocktick pilot ticker is inherited unchanged from the preceding PHYS/GIT/BIO pilot conversation. Its live signature is:
-
-`⌖◉⟐⊕[fhkℬxᛟᵃ]⌕⧖@⤳ℬ◈∂Δ…▣✓ρ⇢`
-
-Resume at the existing `@⤳` position. Never restart, abbreviate, replace, regenerate, or move the marker because a new conversation has begun. GIT's local GIT_TRAFFIC ticker below is a lane-specific subcursor; it does not replace or truncate the shared full ticker. Re-fetch this anchor, the shared Protocol/Code Ledger, and the GIT Credenza before continuing.
+**GIT continuity:** resume this lane's current operational workplan from this entrypoint and its linked live records. Its ticker is an editable working plan, not a fixed or shared signature. GIT_TRAFFIC may carry a nested sublane ticker. PHYS and BIO maintain independent workplans and cursors; do not import their @ positions into GIT. Reassess the GIT plan on resumption and revise it when the evidence or priorities warrant it.
 
 **Date:** 2026-11-25  
 **Primary repository of record:** `Satobloc/HSH_RESOURCES`  
@@ -68,7 +64,7 @@ The six unresolved cases are five failed workflows with empty Jobs API evidence 
 
 **Original-scope gap:** the Haul 9 Traffic Rules also explicitly requested a review of all three repositories' automation machinery, welcome/AI-facing pages, workflow recommendations, worker-facing documentation and work logs. GTT-01 inventoried a bounded HSH_RESOURCES Traffic-source corpus; GTT-02 analyzed a bounded HsH event-ledger tranche. Neither completed that broader mechanism/documentation audit. It remains required and is recorded separately as **GTT-A01** below.
 
-**Ticker reconciliation:** the inherited shared pilot ticker at the top of this file is a separate master cursor and must remain unchanged. The GIT_TRAFFIC ticker at the end is its lane-local subcursor. Use compact operation glyphs only: routine searching/reading/provenance checks are inherent in the work and do not receive repeated search ticks; left-to-right order already supplies ordinary progression. Retain `⑂`/`⑃` for fork/rejoin and `⇢` only for the deliberate decision gate. The HsH analysis files remain read-only references in this lane.
+**Ticker reconciliation:** GIT_TRAFFIC's ticker at the end of this file is its lane-local current workplan. It is not subordinate to a global PHYS/BIO ticker; the broader GIT plan and GTT-01 sublane are represented by this entrypoint and their linked records. Use compact operation glyphs only: routine searching/reading/provenance checks are inherent in the work and do not receive repeated search ticks; left-to-right order already supplies ordinary progression. Retain `⑂`/`⑃` for fork/rejoin and `⇢` only for the deliberate decision gate. The HsH analysis files remain read-only references in this lane.
 
 ## GTT-A01 — Three-repository automation and worker-surface audit
 
@@ -194,7 +190,7 @@ During this reconstitution, generic GitHub code search and direct repository-fil
 
 ## 8. Successor boot instruction
 
-Start here. Re-fetch this anchor, the live shared Protocol/Code Ledger and the linked GIT_TRAFFIC records. Preserve the complete inherited pilot ticker exactly as printed at the top; resume at its existing `@⤳` marker. The GIT_TRAFFIC route is subordinate local state, not a replacement. Its active branch is GTT-A01, with source inventory at `@⌕ᵃ`; use the linked inventory as the return point. Do not repeat completed GTT-02 work, estimate a percentage, submit a speculative search request, or silently abandon the GIT_TRAFFIC PIN.
+Start here. Re-fetch this anchor, the live shared Protocol/Code Ledger and the linked GIT_TRAFFIC records. Resume the GIT workplan from this entrypoint and the current GIT_TRAFFIC sublane ticker at the end. Its active branch is GTT-A01, with source inventory at `@⌕ᵃ`; use the linked inventory as the return point. Reassess the plan and update its ticker if the work warrants it. Do not repeat completed GTT-02 work, estimate a percentage, submit a speculative search request, or silently abandon the GIT_TRAFFIC PIN.
 
 **Message capsule for substantive work:** `▸ TICK:<current operation> | TOCK:<durable result/cursor or —> | PIN:<return obligation>`. Keep it compact, and keep the full ticker as the final line of every substantive assistant reply.
 
