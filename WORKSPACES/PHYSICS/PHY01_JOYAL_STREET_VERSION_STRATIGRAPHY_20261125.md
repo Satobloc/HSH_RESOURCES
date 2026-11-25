@@ -263,3 +263,42 @@ The configuration-space braid group, its generators/relations, juxtaposition, an
 **Visual locators:** 1985 report PDF pages 1–9 and inserted p. 8½, especially the braid-category definition and Artin relations (printed pp. 5–8), ribbon counterexample (printed p. 8½), and opening multiplication discussion (printed p. 9): https://ncatlab.org/nlab/files/JoyalStreet-BraidedMonoidal85.pdf. The PDF's text extraction is poor; these are direct visual inspections.
 
 **State:** PARTIAL PRIMARY-SOURCE VISUAL INSPECTION; full page-by-page collation remains open. No ticker advance.
+
+
+## 11. Bite 17 continuation — 1985 programme through convolution
+
+Visual inspection now extends through the main body and references of the 1985 scan (printed pp. 1–23 and references pp. 25–26; the scan has nonstandard inserted leaves/pagination). This closes most of the report's substantive contents at the level of visual reading, though not a full transcription or line-by-line proof audit.
+
+### 11.1 The 1985 report's mathematical architecture
+
+The inspected pages establish the following sequence of content:
+
+1. **Braiding axioms and examples.** A braiding is a natural isomorphism (c_{A,B}:A\otimes B\to B\otimes A) satisfying B1/B2; symmetry adds involutivity. Examples include graded modules with a scalar parameter and the braid category.
+2. **Braid category.** The braid group is the fundamental group of the configuration space of finite subsets of the Euclidean plane. The report gives generators and Artin braid relations, braid addition by juxtaposition, and the category with natural numbers as objects and braid groups as endomorphisms.
+3. **Multiplications on monoidal categories.** A multiplication is treated as a strong monoidal functor (V\times V\to V) with a pseudo-identity. Proposition 2 constructs a braiding from such a multiplication; Proposition 3 runs the construction in the other direction. The authors explicitly connect this to a generalized Eckmann–Hilton argument. This is a key conceptual result: braiding is not merely imported as a geometric diagram but can arise from a second compatible multiplication.
+4. **Ribbon-braid counterexample.** The inserted-looking printed p. 8½ leaf, attributed to Fred Linton, allows ribbons to twist and maps each ribbon to its two edge strings. It demonstrates the independence/non-implication of selected braiding axioms.
+5. **Coherence / free construction.** Theorem 4 states the free braided monoidal category on one generator, with evaluation at the generator giving the relevant equivalence of categories. The proof uses the braid relations and faithfulness of the braid interpretation to establish coherence. The report's printed p. 14 is headed “5A. Coherence for braidings,” so the coherence result is directly located in the scan.
+6. **Categories enriched over braided monoidal categories.** Section 5 treats enriched categories and proves the required enriched structure from the braiding axioms.
+7. **Convolution and bilinearity.** Section 6 develops convolution constructions and notes that convolution can transport braided monoidal structure. Proposition 7 gives a completeness result for a suitable convolution category. The graded-module example is revisited through convolution.
+
+The section/pagination sequence contains an apparent inserted p. 8½ leaf and duplicated-looking section numbering in the scan. The report's introductory roadmap and the actual leaf order should remain separately recorded until a clean source copy or author copy resolves the layout. The content above is based on the visible headings and propositions, not a reconstructed clean typeset edition.
+
+### 11.2 What this changes in the 1985/1986 comparison
+
+The 1985 report already contains much more than the isolated braid-category definition:
+- the configuration-space and Artin-presentation geometry;
+- the free braided category and coherence theorem;
+- the generalized Eckmann–Hilton / multiplication ↔ braiding bridge;
+- a ribbon-braid counterexample;
+- enrichment over braided monoidal categories; and
+- convolution constructions.
+
+Therefore the 1986 report's novelty should not be summarized as “it introduces braids/categories.” The direct comparison now points to a substantial expansion and formal development of an already broad programme, with the most conspicuous new branch in 1986 being categorical groups, crossed modules, group cohomology and quadratic-form classification. A full diff still requires systematic collation of every 1985 and 1986 proposition and example.
+
+### 11.3 Current 1985 source state
+
+**State:** SUBSTANTIVE VISUAL INSPECTION OF MAIN BODY AND REFERENCES; NOT A FULL LINEAR TRANSCRIPTION OR PROOF AUDIT. The 1985 report can now be treated as a primary source for the main programme and the claims above, but exact wording and proof details should be checked against a clean copy before fine-grained theorem comparison.
+
+**Visual locators:** 1985 PDF printed pp. 5–8 (configuration-space braid category, generators/relations, juxtaposition and categorical packaging); printed p. 8½ (Fred Linton ribbon counterexample); printed pp. 9–18 (multiplication/braiding, coherence/free construction); printed pp. 19–21 (enrichment); printed pp. 22–23 (convolution); references pp. 25–26. PDF: https://ncatlab.org/nlab/files/JoyalStreet-BraidedMonoidal85.pdf.
+
+**Cursor:** unchanged. Complete 1986/1993 collation and direct 1993 reading remain open.
