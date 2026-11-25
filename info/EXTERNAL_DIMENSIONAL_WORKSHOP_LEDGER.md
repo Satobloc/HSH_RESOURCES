@@ -3074,3 +3074,14 @@ The microchimerism branch now distinguishes:
 These studies measure different compartments and different generational directions. They should not be merged into a single directly traced lineage. The next useful comparison is a study that demonstrates fetal-derived cells in maternal marrow or multiple organs, ideally combining Y-FISH with tissue/cell markers and a well-defined obstetric history.
 
 **Status:** Mahmood & O'Donoghue 2014 full indexed article text, methods, results and figure legends inspected. Direct high-resolution image validation of the FISH panels was not performed during this pass. Observational evidence supports tissue localization and marker expression, not causal wound-repair function. No cursor advance.
+
+
+## 70. O'Donoghue et al. 2004: fetal-origin cells in maternal marrow and bone — focused source note
+
+**Primary paper:** Keelin O'Donoghue et al., “Microchimerism in female bone marrow and bone decades after fetal mesenchymal stem-cell trafficking in pregnancy,” *The Lancet* 364(9429), 179–182 (July 2004), DOI 10.1016/S0140-6736(04)16631-2. PubMed abstract: https://pubmed.ncbi.nlm.nih.gov/15246731/.
+
+The abstract reports male cells identified by XY-FISH in marrow-derived mesenchymal stem-cell preparations and rib sections from all women in the male-pregnancy group, versus none of the controls (9/9 vs 0/5; p=0.0005). The authors infer that fetal cells transferred into maternal blood can engraft maternal marrow and persist long term.
+
+**Evidence boundary:** this session inspected the PubMed abstract, not the complete Lancet paper or its full methods/results. Y-chromosome detection supports male-origin material but, by itself, does not uniquely identify which pregnancy supplied each cell. The sample is small, and the abstract's interpretation of stem-cell identity and lifelong persistence should be treated as the authors' inference, not independently established here. The paper supports possible long-term cellular persistence in maternal marrow/bone; it does not show whole-organism continuity or a shared anatomical system between mother and child.
+
+**Status:** bibliographic record and abstract inspected; full text not inspected. This is a bounded source note, not a synthesis of the entire microchimerism literature.
