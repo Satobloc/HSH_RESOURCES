@@ -57,6 +57,8 @@ The paired daily unique-cloner CSV sums to 25,011 and has a daily maximum of 6,5
 
 The six unresolved cases are five failed workflows with empty Jobs API evidence and one cancelled run with repository present but provisioning unknown. Keep them unresolved rather than infer a clone.
 
+**Ticker reconciliation:** the older HsH GIT_TRAFFIC reference files end with the abbreviated cursor `@…`. That was the parked-state shorthand, not the complete full-plan signature required by the shared Protocol. Use the complete ticker at the end of this HSH_RESOURCES anchor as the current GIT_TRAFFIC route. The HsH analysis files remain read-only references in this lane; they were not edited.
+
 ## 3. Reopening condition and next Tock
 
 Reopen GTT-02 only when qualifying evidence arrives:
