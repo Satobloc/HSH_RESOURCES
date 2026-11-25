@@ -23,14 +23,14 @@ These are bookkeeping labels for the biological structures and histories already
 
 ## 1. What successive time-slices contain
 
-The mapping is not one static picture stretched along an axis. Each `Σ_t) intersects the embryo's worldtube in a different three-dimensional configuration.
+The mapping is not one static picture stretched along an axis. Each `Σ_t` intersects the embryo's worldtube in a different three-dimensional configuration.
 
 | Slice/history component | What is present in the ordinary 3D view | What the four-dimensional map makes explicit |
 |---|---|---|
 | Before node symmetry breaking | Embryonic geometry and established anterior–posterior and dorsal–ventral polarity | Those spatial polarity structures and gradients persist/change through earlier sections of the same embryonic history |
-| Node formation and activity | The transient midline node at the anterior end of the primitive streak; central pit cells and peripheral crown cells | A finite-duration substructure `W_node) within `W_emb), with a changing shape, cell arrangement and functional organization |
+| Node formation and activity | The transient midline node at the anterior end of the primitive streak; central pit cells and peripheral crown cells | A finite-duration substructure `W_node` within `W_emb`, with a changing shape, cell arrangement and functional organization |
 | Central motile cilia | Posteriorly tilted cilia undergoing clockwise rotation | The changing shapes and trajectories of cilia through successive slices; the cilium's movement is not visible in a single snapshot |
-| Nodal flow | An instantaneous pattern of fluid velocity in and around the node | A velocity field `u(x,t)) whose spatial distribution and direction evolve through time; fluid-particle paths are histories through that field |
+| Nodal flow | An instantaneous pattern of fluid velocity in and around the node | A velocity field `u(x,t)` whose spatial distribution and direction evolve through time; fluid-particle paths are histories through that field |
 | Peripheral sensory cilia | Crown-cell cilia bent by the flow, with Pkd2 polarized toward the dorsal side | Each cilium's deformation history, and the different left/right mechanical histories produced by the same directional flow |
 | Initial signaling | Calcium responses and left-side Dand5 mRNA degradation | A temporally ordered sequence of local cellular states/events following the asymmetric mechanical input |
 | Early tissue propagation | Left-sided Nodal expression in lateral plate mesoderm and Lefty1 expression at the midline | The continuation of the initial node asymmetry into later, spatially distinct embryonic sections and signaling regions |
@@ -39,7 +39,7 @@ The node itself is not the whole embryo. It is a transient organizer embedded in
 
 ## 2. The established causal sequence, now located within W
 
-The biological mechanism remains the one reconstructed in bite `n):
+The biological mechanism remains the one reconstructed in bite `n`:
 
 1. **Pre-existing spatial organization:** anterior–posterior and dorsal–ventral polarity are already present. The node forms at the embryonic midline.
 2. **Ciliary orientation:** PCP-associated polarity positions basal bodies posteriorly in domed pit cells, producing posteriorly tilted motile cilia.
@@ -92,7 +92,7 @@ This bite stops at early signal propagation. It does not map downstream organ-sp
 
 1. Takanobu A. Katoh, “Function of nodal cilia in left-right determination: Mechanical regulation in initiation of symmetry breaking,” *Biophysics and Physicobiology* 21 (2024), e210018, DOI: https://doi.org/10.2142/biophysico.bppb-v21.0018. Open full text: https://www.jstage.jst.go.jp/article/biophysico/21/3/21_e210018/_html/-char/en. Relevant sections: Introduction; flow generation; mechanical sensing; bending-direction sensitivity; conclusions. Full-text HTML inspected.
 2. Shigenori Nonaka et al., “De Novo Formation of Left–Right Asymmetry by Posterior Tilt of Nodal Cilia,” *PLoS Biology* 3(8) (2005), e268, DOI: https://doi.org/10.1371/journal.pbio.0030268. Open full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC1180513/. Relevant sections: Introduction, ciliary trajectories, posterior-tilt measurements and fluid-dynamics model. Full-text sections inspected.
-3. BIO bite `n) — [Mouse Nodal Left–Right Determination](2026-11-25_MOUSE_NODE_LEFT_RIGHT_DETERMINATION.md), which preserves the detailed mechanism, perturbation evidence, species boundaries and additional references.
+3. BIO bite `n` — [Mouse Nodal Left–Right Determination](2026-11-25_MOUSE_NODE_LEFT_RIGHT_DETERMINATION.md), which preserves the detailed mechanism, perturbation evidence, species boundaries and additional references.
 
 **Evidence status:** this note is a spacetime reinterpretation of the existing source-backed biological mechanism. It does not claim that Katoh, Nonaka or the cited experimental authors formulated their results in SAT/H(s)H terms.
 
