@@ -41,3 +41,10 @@ Subject tags are navigation aids, not theory claims. They are machine-assigned u
 For citation decisions use `indexes/HUMAN_BIBLIOGRAPHY.md` and the HsH point-of-use citation ledger. For exact machine coverage use `indexes/BIBLIOGRAPHY_COVERAGE.md` and `indexes/RESOURCE_INDEX.md`.
 
 - [Workshop Unicode code ledger](info/EXTERNAL_DIMENSIONAL_WORKSHOP_CODE_LEDGER.md)
+
+
+## SAT / H(s)H equation compendium
+
+- [Machine-record guide](indexes/equation_compendium_seed/README.md)
+- [Equation compendium seed — gzip JSON](indexes/equation_compendium_seed/SAT_EQUATION_COMPENDIUM_SEED.json.gz)
+- [Nathan Direct projection-angle extract — gzip JSON](indexes/equation_compendium_seed/NATHAN_DIRECT_PROJECTION_ANGLE_SEED.json.gz)
