@@ -212,6 +212,42 @@ jobs:
           print(json.dumps(manifest, indent=2, sort_keys=True))
           PY
 
+      - name: Validate equation and Nathan Direct seed archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import gzip
+          import json
+          from pathlib import Path
+
+          root = Path("RESOURCES/indexes/equation_compendium_seed")
+          names = [
+              "SAT_EQUATION_COMPENDIUM_SEED.json.gz",
+              "NATHAN_DIRECT_PROJECTION_ANGLE_SEED.json.gz",
+          ]
+          for name in names:
+              path = root / name
+              if not path.is_file():
+                  raise SystemExit(f"Missing seed archive: {path}")
+              with gzip.open(path, "rt", encoding="utf-8") as handle:
+                  data = json.load(handle)
+              if not isinstance(data, (dict, list)):
+                  raise SystemExit(f"Unexpected JSON root type in {name}: {type(data).__name__}")
+              summary = {
+                  "file": name,
+                  "compressed_bytes": path.stat().st_size,
+                  "root_type": type(data).__name__,
+                  "top_level_keys": list(data.keys()) if isinstance(data, dict) else None,
+                  "top_level_list_lengths": {
+                      key: len(value)
+                      for key, value in data.items()
+                      if isinstance(value, list)
+                  } if isinstance(data, dict) else {"items": len(data)},
+              }
+              print(json.dumps(summary, ensure_ascii=False, sort_keys=True))
+          PY
+
       - name: Commit refreshed private inventory
         shell: bash
         run: |
