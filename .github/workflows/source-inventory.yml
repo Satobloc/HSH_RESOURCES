@@ -331,10 +331,17 @@ jobs:
               if not isinstance(data, (dict, list)):
                   print(json.dumps({"file": name, "status": "INVALID_JSON_ROOT", "root_type": type(data).__name__}))
                   continue
+              recovered.mkdir(parents=True, exist_ok=True)
+              plain_name = name[:-3] if name.endswith(".gz") else name + ".json"
+              (recovered / plain_name).write_text(
+                  json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\\n",
+                  encoding="utf-8",
+              )
               print(json.dumps({
                   "file": name,
                   "status": status,
                   "compressed_bytes": path.stat().st_size,
+                  "uncompressed_json": plain_name,
                   **summary_for(data),
               }, ensure_ascii=False, sort_keys=True))
           PY
@@ -369,7 +376,7 @@ jobs:
             git add "$TARGET"
           if [ -d "$OUT/recovered_seeds" ]; then
             mkdir -p indexes/equation_compendium_seed
-            find "$OUT/recovered_seeds" -maxdepth 1 -type f -name '*.json.gz' -print0 |
+            find "$OUT/recovered_seeds" -maxdepth 1 -type f \\( -name '*.json' -o -name '*.json.gz' \\) -print0 |
               while IFS= read -r -d '' recovered_seed; do
                 target_seed="indexes/equation_compendium_seed/$(basename "$recovered_seed")"
                 cp "$recovered_seed" "$target_seed"
